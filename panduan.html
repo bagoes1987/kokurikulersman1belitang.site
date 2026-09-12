@@ -1,0 +1,1573 @@
+<!DOCTYPE html>
+<html class="h-full" lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <title>Panduan & Silabus FINCESTEM 2026 - SMAN 1 Belitang</title>
+  <link rel="icon" type="image/png" href="LOGO FICESTEM2026.png">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    @layer base {
+      html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+      }
+      body {
+        overscroll-behavior-y: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      .pt-safe {
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'on-secondary-fixed-variant': '#005049',
+            'on-error-container': '#93000a',
+            'primary-fixed-dim': '#b6c4ff',
+            'tertiary-fixed': '#e9ddff',
+            'on-secondary-fixed': '#00201d',
+            'primary-container': '#1e3a8a',
+            'on-error': '#ffffff',
+            'on-background': '#131b2e',
+            'on-primary': '#ffffff',
+            'surface-dim': '#d2d9f4',
+            'surface-tint': '#4059aa',
+            'outline': '#757682',
+            'error-container': '#ffdad6',
+            'tertiary-container': '#4e03b8',
+            'background': '#faf8ff',
+            'surface-container-high': '#e2e7ff',
+            'outline-variant': '#c5c5d3',
+            'on-primary-container': '#90a8ff',
+            'surface-container-low': '#f2f3ff',
+            'on-secondary-container': '#006f66',
+            'inverse-on-surface': '#eef0ff',
+            'surface': '#faf8ff',
+            'surface-bright': '#faf8ff',
+            'on-surface': '#131b2e',
+            'on-secondary': '#ffffff',
+            'on-tertiary-fixed': '#23005c',
+            'secondary': '#006a61',
+            'tertiary': '#340081',
+            'primary-fixed': '#dce1ff',
+            'on-tertiary-container': '#b89cff',
+            'error': '#ba1a1a',
+            'on-tertiary': '#ffffff',
+            'secondary-fixed-dim': '#6bd8cb',
+            'surface-variant': '#dae2fd',
+            'tertiary-fixed-dim': '#d0bcff',
+            'on-surface-variant': '#444651',
+            'primary': '#00236f',
+            'on-primary-fixed': '#00164e',
+            'inverse-primary': '#b6c4ff',
+            'on-tertiary-fixed-variant': '#5516be',
+            'secondary-fixed': '#89f5e7',
+            'on-primary-fixed-variant': '#264191',
+            'inverse-surface': '#283044',
+            'secondary-container': '#86f2e4',
+            'surface-container-highest': '#dae2fd',
+            'surface-container': '#eaedff',
+            'surface-container-lowest': '#ffffff'
+          },
+          spacing: {
+            'space-xs': '0.25rem',
+            'space-xl': '2.5rem',
+            'space-lg': '1.5rem',
+            'gutter': '1.5rem',
+            'space-md': '1rem',
+            'gutter-mobile': '1rem',
+            'margin': '2rem',
+            'space-sm': '0.5rem',
+            'margin-mobile': '1rem'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-full">
+
+  <!-- TOP APP HEADER -->
+  <header class="sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
+    <div class="h-16 px-4 flex items-center justify-between max-w-lg mx-auto w-full">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="w-10 h-10 rounded-2xl bg-surface-container flex items-center justify-center p-1 border border-outline-variant/30 shrink-0">
+          <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="LOGO SMAN1 BELITANG.png">
+        </a>
+        <div class="flex flex-col">
+          <span class="text-[10.5px] text-primary font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
+          <span class="text-sm font-bold text-on-surface leading-tight">Panduan &amp; Silabus</span>
+        </div>
+      </div>
+      <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs transition-all shadow-2xs">
+        <span class="material-symbols-outlined text-sm">arrow_back</span>
+        <span>Beranda</span>
+      </a>
+    </div>
+
+    <!-- HORIZONTAL TAB BAR -->
+    <div class="max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 overflow-x-auto border-t border-surface-container/50 no-scrollbar">
+      <button id="tabBtn-pilar" onclick="switchGuideTab('pilar')" class="py-2 px-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all bg-primary text-white shadow-xs">
+        4 Pilar Utama
+      </button>
+      <button id="tabBtn-oku" onclick="switchGuideTab('oku')" class="py-2 px-3 rounded-xl text-xs font-semibold whitespace-nowrap text-on-surface-variant hover:bg-surface-container transition-all">
+        Zona OKU Timur
+      </button>
+      <button id="tabBtn-luar" onclick="switchGuideTab('luar')" class="py-2 px-3 rounded-xl text-xs font-semibold whitespace-nowrap text-on-surface-variant hover:bg-surface-container transition-all">
+        Zona Luar OKU
+      </button>
+      <button id="tabBtn-aktivitas" onclick="switchGuideTab('aktivitas')" class="py-2 px-3 rounded-xl text-xs font-semibold whitespace-nowrap text-on-surface-variant hover:bg-surface-container transition-all">
+        Detail Ekspedisi
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 flex flex-col relative w-full bg-surface max-w-lg mx-auto pb-16">
+    
+    <!-- PANEL 1: 4 PILAR UTAMA -->
+    <div id="panel-pilar" class="flex flex-col w-full">
+      
+      <div class="flex flex-col w-full">
+        <!-- Subtle decorative ambient header ribbon -->
+        <div class="px-gutter-mobile pt-space-md pb-space-xs">
+          <div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm cursor-pointer" onclick="navigate('dashboard')">
+            <span class="material-symbols-outlined text-[15px] text-primary">school</span>
+            <span class="hover:text-primary transition-colors">Beranda</span>
+            <span class="material-symbols-outlined text-[13px] text-outline-variant">chevron_right</span>
+            <span class="text-primary font-bold">Tentang Program</span>
+          </div>
+        </div>
+
+        <!-- Hero Presentation Card -->
+        <div class="px-gutter-mobile pt-space-xs pb-space-sm">
+          <div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest shadow-md p-space-lg">
+            <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-primary-fixed/40 blur-2xl pointer-events-none"></div>
+            <div class="absolute -left-6 -top-6 w-32 h-32 rounded-full bg-secondary-container/40 blur-xl pointer-events-none"></div>
+            <div class="relative z-10 flex flex-col gap-space-sm">
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-primary font-label-sm font-bold">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+                  Kokurikuler Terpadu 2026
+                </span>
+                <span class="font-label-sm text-outline">Kelas X &amp; XI</span>
+              </div>
+              <div class="mt-1">
+                <h2 class="font-headline-xl-mobile text-on-surface tracking-tight">Mengenal FINCESTEM</h2>
+                <p class="font-label-md text-primary font-semibold mt-0.5">SMAN 1 Belitang, OKU Timur</p>
+              </div>
+              <p class="font-body-md text-on-surface-variant leading-relaxed mt-1">
+                FINCESTEM (Financial, Culture, Exploration, STEM) adalah model pembelajaran terintegrasi unggulan yang mentransformasikan ruang belajar kelas menjadi petualangan kontekstual berbasis potensi lumbung pangan dan kekayaan multikultur Belitang.
+              </p>
+
+              <!-- Dynamic Crest Highlight with Emblem -->
+              <div class="mt-space-sm p-space-sm rounded-xl bg-surface-container flex items-center gap-space-md">
+                <div class="w-14 h-14 rounded-full bg-surface-container-lowest p-0.5 shadow-sm shrink-0 flex items-center justify-center">
+                  <img src="LOGO FICESTEM2026.png" alt="Logo FINCESTEM 2026 SMAN 1 Belitang" class="w-full h-full object-contain rounded-full drop-shadow-sm">
+                </div>
+                <div class="min-w-0 flex-1">
+                  <span class="font-label-sm text-primary uppercase tracking-wider block font-bold">Identitas Pembelajaran</span>
+                  <span class="font-title-md text-on-surface block truncate font-bold">Kombinasi 4 Pilar Transformatif</span>
+                  <span class="font-body-md text-on-surface-variant text-[13px] block">Membangun generasi cerdas finansial, berakar budaya, analitis, &amp; inovatif.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Student Showcase -->
+        <div class="px-gutter-mobile py-space-sm">
+          <div class="grid grid-cols-2 gap-space-sm">
+            <div class="rounded-2xl overflow-hidden shadow-sm relative h-36 bg-surface-container cursor-pointer" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuBifm1i7GH8qA-a4HUyYxM-OqVwJUDQpMawzCRZclPqH4F7R-TxQCjdvwfseIcdqU-3yMmj1SIh3fIeaR07UEdvQcyXcqs1bho2ELf6Sw5PuNYhEUOusMjnC4VWaR-htcIFgJZThtxIiysgMq9G95CwClcmSKAsgYieCheSYWLqjnto3wrpxyuAJ9ETevfQjJSVuJvHq4F27aRO9M6rOxD4X9z0hjgBfScaFyE3jfY5_MdSscWB64X-', 'Riset Agrikultur Modern Siswa')">
+              <img class="w-full h-full object-cover" alt="Riset Agrikultur" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBifm1i7GH8qA-a4HUyYxM-OqVwJUDQpMawzCRZclPqH4F7R-TxQCjdvwfseIcdqU-3yMmj1SIh3fIeaR07UEdvQcyXcqs1bho2ELf6Sw5PuNYhEUOusMjnC4VWaR-htcIFgJZThtxIiysgMq9G95CwClcmSKAsgYieCheSYWLqjnto3wrpxyuAJ9ETevfQjJSVuJvHq4F27aRO9M6rOxD4X9z0hjgBfScaFyE3jfY5_MdSscWB64X-">
+              <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent flex items-end p-2.5">
+                <span class="text-on-primary font-label-md font-bold">Riset Agrikultur Modern</span>
+              </div>
+            </div>
+            <div class="rounded-2xl overflow-hidden shadow-sm relative h-36 bg-surface-container cursor-pointer" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuA65TJ5SoRiNc6x6T-1ikFOUEqQx5qUd8pvs7zPfuSns4OSFhIXuTWvxBpaLkOliOcEdcMNSXrdeDluDY4zxKP3f9vNtTL7eeSsIDBcK37LpJD8GR_2TnFHJ8VJXkT7spzBu-CpCa4eIgEpkQtVrIN9huH6QYOTS7B2Tzfpl11ny3XVvjpqPusjNLH3GH7vUZYlKcRRiJMw6nRffU56Yn5wFhwqM-coYxb1kjikU1_2GLcEfUsY2Bob', 'Gelar Budaya & Karya Siswa')">
+              <img class="w-full h-full object-cover" alt="Gelar Budaya" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA65TJ5SoRiNc6x6T-1ikFOUEqQx5qUd8pvs7zPfuSns4OSFhIXuTWvxBpaLkOliOcEdcMNSXrdeDluDY4zxKP3f9vNtTL7eeSsIDBcK37LpJD8GR_2TnFHJ8VJXkT7spzBu-CpCa4eIgEpkQtVrIN9huH6QYOTS7B2Tzfpl11ny3XVvjpqPusjNLH3GH7vUZYlKcRRiJMw6nRffU56Yn5wFhwqM-coYxb1kjikU1_2GLcEfUsY2Bob">
+              <div class="absolute inset-0 bg-gradient-to-t from-tertiary/80 via-transparent to-transparent flex items-end p-2.5">
+                <span class="text-on-tertiary font-label-md font-bold">Gelar Budaya &amp; Karya</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Program Objectives (Tujuan Program) -->
+        <div class="px-gutter-mobile pt-space-md pb-space-sm">
+          <div class="flex items-center justify-between mb-space-sm">
+            <div>
+              <span class="font-label-sm uppercase tracking-wider text-secondary font-bold">Fondasi Belajar</span>
+              <h3 class="font-headline-sm text-on-surface font-bold">Tujuan Utama Program</h3>
+            </div>
+            <span class="material-symbols-outlined text-secondary text-[26px]">track_changes</span>
+          </div>
+          <div class="grid grid-cols-1 gap-space-sm">
+            <!-- Objective 1 -->
+            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm flex items-start gap-space-md hover:shadow-md transition-shadow">
+              <div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                <span class="font-title-md font-extrabold">01</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <span class="material-symbols-outlined text-[18px] text-[#b45309]">account_balance_wallet</span>
+                  <h4 class="font-title-md text-on-surface font-bold">Literasi Finansial Dini</h4>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+                  Menumbuhkan kesadaran pengelolaan aset produktif, budaya menabung, serta kalkulasi margin usaha tani lokal sejak bangku SMA.
+                </p>
+              </div>
+            </div>
+            <!-- Objective 2 -->
+            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm flex items-start gap-space-md hover:shadow-md transition-shadow">
+              <div class="w-10 h-10 rounded-xl bg-tertiary/10 text-tertiary flex items-center justify-center shrink-0">
+                <span class="font-title-md font-extrabold">02</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <span class="material-symbols-outlined text-[18px] text-tertiary">theater_comedy</span>
+                  <h4 class="font-title-md text-on-surface font-bold">Revitalisasi Budaya Nusantara</h4>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+                  Menghargai keragaman multikultur transmigrasi Belitang, kearifan tutur sesepuh desa, serta seni kriya tradisional Komering.
+                </p>
+              </div>
+            </div>
+            <!-- Objective 3 -->
+            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm flex items-start gap-space-md hover:shadow-md transition-shadow">
+              <div class="w-10 h-10 rounded-xl bg-[#c2410c]/10 text-[#c2410c] flex items-center justify-center shrink-0">
+                <span class="font-title-md font-extrabold">03</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <span class="material-symbols-outlined text-[18px] text-[#c2410c]">explore</span>
+                  <h4 class="font-title-md text-on-surface font-bold">Karakter Eksplorasi Tangguh</h4>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+                  Membangun jiwa kepemimpinan, kepedulian teritorial, dan rasa penasaran ilmiah melalui penjelajahan ekosistem nyata lapangan.
+                </p>
+              </div>
+            </div>
+            <!-- Objective 4 -->
+            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm flex items-start gap-space-md hover:shadow-md transition-shadow">
+              <div class="w-10 h-10 rounded-xl bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
+                <span class="font-title-md font-extrabold">04</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-1.5 mb-1">
+                  <span class="material-symbols-outlined text-[18px] text-secondary">biotech</span>
+                  <h4 class="font-title-md text-on-surface font-bold">Problem Solving STEM</h4>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+                  Meningkatkan daya saing sains dan rekayasa teknologi digital lewat purwarupa IoT, bio-kompos, serta analitika presisi panen.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 Main Pillars Breakdown (Interactive Accordion) -->
+        <div class="px-gutter-mobile pt-space-md pb-space-sm">
+          <div class="flex items-center justify-between mb-space-xs">
+            <div>
+              <span class="font-label-sm uppercase tracking-wider text-primary font-bold">Struktur Kurikulum</span>
+              <h3 class="font-headline-sm text-on-surface font-bold">4 Pilar Inti FINCESTEM</h3>
+            </div>
+            <span class="inline-block px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm font-semibold">Integratif</span>
+          </div>
+          <p class="font-body-md text-on-surface-variant mb-space-sm">
+            Keempat pilar dirancang saling berkelindan untuk menciptakan pemahaman holistik bagi para siswa.
+          </p>
+
+          <!-- Accordion/Tab Interactive Container -->
+          <div class="flex flex-col gap-space-sm" id="pillars-container">
+            <!-- Pillar 1: Financial -->
+            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm transition-all duration-300">
+              <div class="flex items-center justify-between cursor-pointer" onclick="togglePillar('p-fin')">
+                <div class="flex items-center gap-space-sm">
+                  <div class="w-10 h-10 rounded-xl bg-[#fef3c7] text-[#b45309] flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">payments</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 rounded-full bg-[#fef3c7] text-[#b45309] font-label-sm font-bold uppercase tracking-wider">Financial</span>
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#f59e0b]"></span>
+                    </div>
+                    <h4 class="font-title-md text-on-surface font-bold">Literasi &amp; Analisis Usaha Tani</h4>
+                  </div>
+                </div>
+                <button aria-label="Toggle detail Financial" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[20px] transition-transform duration-300 rotate-180" id="icon-p-fin">expand_more</span>
+                </button>
+              </div>
+              <div class="mt-space-sm pt-space-sm space-y-2" id="p-fin">
+                <p class="font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+                  Fokus pembelajaran mencakup pengenalan instrumen perbankan syariah, simulasi portofolio tabungan pelajar berbasis SimPel, penyusunan neraca laba-rugi sederhana bagi sentra beras Belitang, serta adopsi pembayaran nirsentuh QRIS lokal.
+                </p>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Tabungan Pelajar</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Kalkulasi Margin Panen</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Fintech &amp; Syariah</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pillar 2: Culture -->
+            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm transition-all duration-300">
+              <div class="flex items-center justify-between cursor-pointer" onclick="togglePillar('p-cul')">
+                <div class="flex items-center gap-space-sm">
+                  <div class="w-10 h-10 rounded-xl bg-[#f3e8ff] text-[#6d28d9] flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">spa</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 rounded-full bg-[#f3e8ff] text-[#6d28d9] font-label-sm font-bold uppercase tracking-wider">Culture</span>
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#8b5cf6]"></span>
+                    </div>
+                    <h4 class="font-title-md text-on-surface font-bold">Harmoni &amp; Warisan OKU Timur</h4>
+                  </div>
+                </div>
+                <button aria-label="Toggle detail Culture" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[20px] transition-transform duration-300" id="icon-p-cul">expand_more</span>
+                </button>
+              </div>
+              <div class="mt-space-sm pt-space-sm space-y-2 hidden" id="p-cul">
+                <p class="font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+                  Mempelajari interaksi harmonis kebudayaan Jawa, Bali, dan Komering asli yang hidup berdampingan secara damai di Belitang. Siswa mendokumentasikan folklor, kuliner tradisi beras kencur &amp; lempok, serta etika gotong-royong.
+                </p>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Kearifan Komering</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Transmigrasi Damai</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Dokumentasi Etnografi</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pillar 3: Exploration -->
+            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm transition-all duration-300">
+              <div class="flex items-center justify-between cursor-pointer" onclick="togglePillar('p-exp')">
+                <div class="flex items-center gap-space-sm">
+                  <div class="w-10 h-10 rounded-xl bg-[#ffedd5] text-[#c2410c] flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">travel_explore</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 rounded-full bg-[#ffedd5] text-[#c2410c] font-label-sm font-bold uppercase tracking-wider">Exploration</span>
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#f97316]"></span>
+                    </div>
+                    <h4 class="font-title-md text-on-surface font-bold">Ekspedisi Geospasial &amp; Irigasi</h4>
+                  </div>
+                </div>
+                <button aria-label="Toggle detail Exploration" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[20px] transition-transform duration-300" id="icon-p-exp">expand_more</span>
+                </button>
+              </div>
+              <div class="mt-space-sm pt-space-sm space-y-2 hidden" id="p-exp">
+                <p class="font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+                  Peserta melakukan observasi kanal bendung Upper Komering, menelaah topografi agrowisata lumbung, pemetaan GIS vegetasi sekolah, serta studi ketahanan pangan langsung bersama para petani teladan di kawasan BK 0 hingga BK 10.
+                </p>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Sistem Saluran BK</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Navigasi GPS &amp; GIS</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Fieldwork Ekologi</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pillar 4: STEM -->
+            <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm transition-all duration-300">
+              <div class="flex items-center justify-between cursor-pointer" onclick="togglePillar('p-stem')">
+                <div class="flex items-center gap-space-sm">
+                  <div class="w-10 h-10 rounded-xl bg-[#ccfbf1] text-[#0f766e] flex items-center justify-center">
+                    <span class="material-symbols-outlined text-[22px]">precision_manufacturing</span>
+                  </div>
+                  <div>
+                    <div class="flex items-center gap-2">
+                      <span class="px-2 py-0.5 rounded-full bg-[#ccfbf1] text-[#0f766e] font-label-sm font-bold uppercase tracking-wider">STEM</span>
+                      <span class="w-1.5 h-1.5 rounded-full bg-[#0d9488]"></span>
+                    </div>
+                    <h4 class="font-title-md text-on-surface font-bold">Agroteknologi &amp; Inovasi Sains</h4>
+                  </div>
+                </div>
+                <button aria-label="Toggle detail STEM" class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                  <span class="material-symbols-outlined text-[20px] transition-transform duration-300" id="icon-p-stem">expand_more</span>
+                </button>
+              </div>
+              <div class="mt-space-sm pt-space-sm space-y-2 hidden" id="p-stem">
+                <p class="font-body-md text-on-surface-variant text-[13px] leading-relaxed">
+                  Pengembangan prototype sensor kelembaban tanah menggunakan mikrokontroler ESP32, formulasi pupuk organik cair dari limbah sekam padi, rekayasa sirkulasi hidroponik otomatis, dan analisis data klimatologi mikro wilayah OKU Timur.
+                </p>
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">IoT Smart Agrikultur</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Bioteknologi Pupuk</span>
+                  <span class="px-2.5 py-1 rounded-lg bg-surface-container text-on-surface font-label-sm">Data Sensor Cuaca</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Learning Outcomes & Radar Competencies -->
+        <div class="px-gutter-mobile pt-space-md pb-space-sm">
+          <div class="rounded-2xl bg-surface-container-lowest shadow-sm p-space-lg">
+            <div class="flex items-center justify-between mb-space-sm">
+              <div>
+                <span class="font-label-sm uppercase tracking-wider text-primary font-bold">Standar Kelulusan</span>
+                <h3 class="font-headline-sm text-on-surface font-bold">Capaian Pembelajaran</h3>
+              </div>
+              <div class="w-9 h-9 rounded-full bg-primary-fixed flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined text-[20px]">military_tech</span>
+              </div>
+            </div>
+            <p class="font-body-md text-on-surface-variant mb-space-md">
+              Evaluasi komprehensif mengukur 4 klaster kompetensi abad 21 melalui rubrik asesmen autentik:
+            </p>
+            <!-- Competency Metrics Bars -->
+            <div class="space-y-space-md">
+              <!-- Metric 1 -->
+              <div>
+                <div class="flex items-center justify-between text-on-surface mb-1">
+                  <span class="font-label-lg flex items-center gap-1.5 font-bold">
+                    <span class="material-symbols-outlined text-[17px] text-secondary">groups</span>
+                    Kolaborasi &amp; Kepemimpinan Tim
+                  </span>
+                  <span class="font-title-md text-secondary font-bold">95%</span>
+                </div>
+                <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-secondary to-secondary-fixed-dim rounded-full" style="width: 95%;"></div>
+                </div>
+              </div>
+              <!-- Metric 2 -->
+              <div>
+                <div class="flex items-center justify-between text-on-surface mb-1">
+                  <span class="font-label-lg flex items-center gap-1.5 font-bold">
+                    <span class="material-symbols-outlined text-[17px] text-primary">psychology</span>
+                    Analisis Kritis &amp; Riset Masalah
+                  </span>
+                  <span class="font-title-md text-primary font-bold">92%</span>
+                </div>
+                <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-primary to-primary-container rounded-full" style="width: 92%;"></div>
+                </div>
+              </div>
+              <!-- Metric 3 -->
+              <div>
+                <div class="flex items-center justify-between text-on-surface mb-1">
+                  <span class="font-label-lg flex items-center gap-1.5 font-bold">
+                    <span class="material-symbols-outlined text-[17px] text-[#6d28d9]">palette</span>
+                    Kreativitas &amp; Apresiasi Budaya
+                  </span>
+                  <span class="font-title-md text-[#6d28d9] font-bold">90%</span>
+                </div>
+                <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-[#6d28d9] to-tertiary-fixed-dim rounded-full" style="width: 90%;"></div>
+                </div>
+              </div>
+              <!-- Metric 4 -->
+              <div>
+                <div class="flex items-center justify-between text-on-surface mb-1">
+                  <span class="font-label-lg flex items-center gap-1.5 font-bold">
+                    <span class="material-symbols-outlined text-[17px] text-[#b45309]">devices</span>
+                    Kecakapan Digital &amp; Rekayasa STEM
+                  </span>
+                  <span class="font-title-md text-[#b45309] font-bold">88%</span>
+                </div>
+                <div class="w-full h-2.5 bg-surface-container rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-[#b45309] to-[#f59e0b] rounded-full" style="width: 88%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Activity Timeline (Alur Pelaksanaan) -->
+        <div class="px-gutter-mobile pt-space-md pb-space-md">
+          <div class="flex items-center justify-between mb-space-sm">
+            <div>
+              <span class="font-label-sm uppercase tracking-wider text-secondary font-bold">Roadmap Siswa</span>
+              <h3 class="font-headline-sm text-on-surface font-bold">Alur Pelaksanaan Kegiatan</h3>
+            </div>
+            <span class="material-symbols-outlined text-outline-variant text-[24px]">route</span>
+          </div>
+
+          <div class="relative pl-6 space-y-space-md before:content-[''] before:absolute before:left-2.5 before:top-3 before:bottom-3 before:w-0.5 before:bg-surface-container-high">
+            <!-- Step 1 -->
+            <div class="relative flex flex-col gap-1">
+              <div class="absolute -left-6 top-1.5 w-5 h-5 rounded-full bg-primary flex items-center justify-center text-on-primary text-[10px] font-bold shadow-sm ring-4 ring-background">
+                1
+              </div>
+              <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm">
+                <div class="flex items-center justify-between mb-1">
+                  <h4 class="font-title-md text-on-surface font-bold">Pra-Kegiatan &amp; Pembekalan</h4>
+                  <span class="font-label-sm px-2 py-0.5 rounded-full bg-primary-fixed text-primary font-bold">Bulan 1</span>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-[13px]">
+                  Sosialisasi modul, pembentukan kelompok lintas minat, pembagian LKPD (Lembar Kerja Peserta Didik), serta workshop perumusan hipotesis penelitian.
+                </p>
+              </div>
+            </div>
+            <!-- Step 2 -->
+            <div class="relative flex flex-col gap-1">
+              <div class="absolute -left-6 top-1.5 w-5 h-5 rounded-full bg-secondary flex items-center justify-center text-on-secondary text-[10px] font-bold shadow-sm ring-4 ring-background">
+                2
+              </div>
+              <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm">
+                <div class="flex items-center justify-between mb-1">
+                  <h4 class="font-title-md text-on-surface font-bold">5 Hari Lapangan Terpandu</h4>
+                  <span class="font-label-sm px-2 py-0.5 rounded-full bg-secondary-container text-secondary font-bold">Bulan 2</span>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-[13px]">
+                  Eksplorasi riil ke stasiun irigasi Komering, sentra industri kriya, laboratorium pertanian terapan, dan wawancara pelaku UMKM lokal Belitang.
+                </p>
+              </div>
+            </div>
+            <!-- Step 3 -->
+            <div class="relative flex flex-col gap-1">
+              <div class="absolute -left-6 top-1.5 w-5 h-5 rounded-full bg-[#8b5cf6] flex items-center justify-center text-on-tertiary text-[10px] font-bold shadow-sm ring-4 ring-background">
+                3
+              </div>
+              <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm">
+                <div class="flex items-center justify-between mb-1">
+                  <h4 class="font-title-md text-on-surface font-bold">Pengumpulan Portofolio &amp; LKPD</h4>
+                  <span class="font-label-sm px-2 py-0.5 rounded-full bg-tertiary-fixed text-tertiary font-bold">Bulan 3</span>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-[13px]">
+                  Digitalisasi data observasi, kurasi video esai kebudayaan, pembuatan mock-up purwarupa alat, dan asistensi intensif dengan guru pamong.
+                </p>
+              </div>
+            </div>
+            <!-- Step 4 -->
+            <div class="relative flex flex-col gap-1">
+              <div class="absolute -left-6 top-1.5 w-5 h-5 rounded-full bg-[#f59e0b] flex items-center justify-center text-on-primary text-[10px] font-bold shadow-sm ring-4 ring-background">
+                4
+              </div>
+              <div class="p-space-md rounded-2xl bg-surface-container-lowest shadow-sm">
+                <div class="flex items-center justify-between mb-1">
+                  <h4 class="font-title-md text-on-surface font-bold">Expo Karya &amp; Gelar Budaya 2026</h4>
+                  <span class="font-label-sm px-2 py-0.5 rounded-full bg-[#fef3c7] text-[#b45309] font-bold">Puncak</span>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-[13px]">
+                  Pameran akbar stan STEM, pagelaran seni kolaboratif, penyerahan e-sertifikat prestasi kokurikuler, dan penganugerahan Tim Inovator Muda FINCESTEM.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Footer Call-to-Action Card -->
+        <div class="px-gutter-mobile pt-space-xs pb-space-lg">
+          <div class="rounded-2xl bg-gradient-to-br from-primary to-primary-container text-on-primary p-space-lg shadow-xl relative overflow-hidden text-center flex flex-col items-center">
+            <div class="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-secondary-fixed/20 blur-xl"></div>
+            <div class="w-12 h-12 rounded-full bg-surface-container-lowest/10 backdrop-blur-md flex items-center justify-center mb-space-sm text-secondary-fixed">
+              <span class="material-symbols-outlined text-[28px]">badge</span>
+            </div>
+            <h3 class="font-headline-sm font-bold tracking-tight">Siap Memulai Petualangan?</h3>
+            <p class="font-body-md text-primary-fixed text-[13px] max-w-xs mt-1 mb-space-md">
+              Akses LKPD interaktif, monitor progres tim Anda, dan verifikasi sertifikat kokurikuler resmi SMAN 1 Belitang.
+            </p>
+            <button class="w-full inline-flex items-center justify-center gap-2 py-3 px-6 rounded-full bg-surface-container-lowest text-primary font-title-md shadow-md hover:bg-surface-container-low active:scale-[0.98] transition-all" onclick="navigate('login')">
+              <span>Login Siswa Sekarang</span>
+              <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+            </button>
+            <div class="mt-space-md flex items-center justify-center gap-space-sm text-[12px] text-primary-fixed-dim">
+              <span class="flex items-center gap-1">
+                <span class="material-symbols-outlined text-[15px]">verified_user</span> Terakreditasi A
+              </span>
+              <span>•</span>
+              <span>Kurikulum Merdeka 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+
+    <!-- PANEL 2: ZONA OKU TIMUR -->
+    <div id="panel-oku" class="hidden flex flex-col w-full">
+      
+      <div class="flex flex-col w-full px-gutter-mobile space-y-space-md">
+        <!-- Top Navigation Bar -->
+        <div class="flex items-center justify-between pt-space-xs">
+          <button class="flex items-center gap-space-xs text-on-surface-variant hover:text-primary transition-colors min-h-[44px] min-w-[44px] -ml-space-xs p-space-xs rounded-full" onclick="navigate('dashboard')">
+            <span class="material-symbols-outlined text-[24px]">arrow_back</span>
+            <span class="font-label-lg font-bold">Kembali</span>
+          </button>
+          <div class="flex items-center gap-space-xs">
+            <span class="font-label-sm uppercase tracking-wider text-secondary bg-secondary-container/30 px-3 py-1 rounded-full font-bold">5 Hari Ekspedisi</span>
+          </div>
+        </div>
+
+        <!-- Program Header Summary Card -->
+        <div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-md shadow-sm">
+          <div class="absolute -top-12 -right-12 w-40 h-40 bg-secondary-container/40 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col space-y-space-sm">
+            <div class="flex items-center gap-2">
+              <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-on-primary">
+                <span class="material-symbols-outlined text-[18px]">explore</span>
+              </span>
+              <div>
+                <span class="font-label-sm text-primary uppercase tracking-wider font-bold">Ekspedisi Tematik 2026</span>
+                <h1 class="font-headline-sm text-on-surface leading-tight font-bold">FINCESTEM OKU Timur</h1>
+              </div>
+            </div>
+            <p class="font-body-md text-on-surface-variant text-xs leading-relaxed">
+              Eksplorasi Potensi Lokal Belitang &amp; OKU Timur 2026: Mengintegrasikan literasi finansial, kekayaan tradisi, dan inovasi sains terapan di lumbung pangan Sumatera Selatan.
+            </p>
+            <div class="flex flex-wrap items-center gap-space-xs pt-1">
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container font-label-md text-on-surface-variant text-xs">
+                <span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+                <span>Kecamatan Belitang</span>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container font-label-md text-on-surface-variant text-xs">
+                <span class="material-symbols-outlined text-[16px] text-secondary">water</span>
+                <span>Bendungan Komering</span>
+              </div>
+              <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container font-label-md text-on-surface-variant text-xs">
+                <span class="material-symbols-outlined text-[16px] text-tertiary">temple_buddhist</span>
+                <span>Desa Budaya</span>
+              </div>
+            </div>
+            <!-- Quick Progress Bar -->
+            <div class="pt-space-xs">
+              <div class="flex justify-between items-center text-on-surface-variant mb-1.5">
+                <span class="font-label-sm">Progres Agenda Siswa</span>
+                <span class="font-label-sm font-bold text-primary">Hari ke-3 dari 5 (60%)</span>
+              </div>
+              <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-full bg-primary rounded-full transition-all duration-500" style="width: 60%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Timeline Section -->
+        <div class="flex flex-col space-y-space-sm pt-space-xs">
+          <div class="flex items-center justify-between">
+            <h2 class="font-title-md text-on-surface font-bold">Jadwal &amp; Lembar Kerja Ekspedisi</h2>
+            <span class="font-label-sm text-on-surface-variant font-bold">Tahap 3 Aktif</span>
+          </div>
+
+          <!-- Timeline Root Container -->
+          <div class="relative pl-6 space-y-space-lg">
+            <div class="absolute top-4 left-[11px] bottom-6 w-[2px] bg-surface-container-high -z-0"></div>
+
+            <!-- HARI 1: Selesai -->
+            <div class="relative z-10">
+              <div class="absolute -left-6 top-1.5 w-6 h-6 rounded-full bg-secondary text-on-secondary flex items-center justify-center shadow-sm">
+                <span class="material-symbols-outlined text-[14px] font-bold">check</span>
+              </div>
+              <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm space-y-space-sm ml-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="font-label-sm uppercase px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold">Financial</span>
+                      <span class="font-label-sm text-secondary font-bold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">task_alt</span> Selesai
+                      </span>
+                    </div>
+                    <h3 class="font-title-md text-on-surface leading-tight font-bold">Hari 1: Orientasi &amp; Pemetaan Finansial Lumbung Pangan Belitang</h3>
+                  </div>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-xs leading-relaxed">
+                  Pengenalan ekosistem distribusi hasil panen padi sawah irigasi teknis Belitang serta tata kelola permodalan gapoktan.
+                </p>
+                <div class="space-y-space-xs pt-1">
+                  <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                      <span class="material-symbols-outlined text-primary text-[20px] shrink-0">picture_as_pdf</span>
+                      <div class="min-w-0">
+                        <span class="font-label-sm text-on-surface block truncate font-semibold">Modul Dasar Sirkulasi Ekonomi Pertanian</span>
+                        <span class="font-label-sm text-on-surface-variant text-[11px]">PDF • 2.4 MB</span>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-primary text-[18px]">download</span>
+                  </div>
+                  <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                      <span class="material-symbols-outlined text-secondary text-[20px] shrink-0">assignment_turned_in</span>
+                      <div class="min-w-0">
+                        <span class="font-label-sm text-on-surface block truncate font-semibold">LKPD Analisis Biaya Tani &amp; Margin Usaha</span>
+                        <span class="font-label-sm text-secondary text-[11px] font-bold">Terkumpul • Nilai: 94/100</span>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- HARI 2: Selesai -->
+            <div class="relative z-10">
+              <div class="absolute -left-6 top-1.5 w-6 h-6 rounded-full bg-secondary text-on-secondary flex items-center justify-center shadow-sm">
+                <span class="material-symbols-outlined text-[14px] font-bold">check</span>
+              </div>
+              <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm space-y-space-sm ml-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="font-label-sm uppercase px-2 py-0.5 rounded-full bg-purple-100 text-purple-900 font-bold">Culture</span>
+                      <span class="font-label-sm text-secondary font-bold flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">task_alt</span> Selesai
+                      </span>
+                    </div>
+                    <h3 class="font-title-md text-on-surface leading-tight font-bold">Hari 2: Eksplorasi Budaya &amp; Tradisi Tenun Songket Komering</h3>
+                  </div>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-xs leading-relaxed">
+                  Menelusuri sejarah kain tradisional, teknik pewarnaan alami tumbuhan tepian sungai, dan narasi kearifan tetua adat.
+                </p>
+                <div class="space-y-space-xs pt-1">
+                  <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                      <span class="material-symbols-outlined text-primary text-[20px] shrink-0">menu_book</span>
+                      <div class="min-w-0">
+                        <span class="font-label-sm text-on-surface block truncate font-semibold">Buku Panduan Motif Budaya OKU Timur</span>
+                        <span class="font-label-sm text-on-surface-variant text-[11px]">E-Book Bacaan • 18 Halaman</span>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-primary text-[18px]">visibility</span>
+                  </div>
+                  <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                      <span class="material-symbols-outlined text-secondary text-[20px] shrink-0">fact_check</span>
+                      <div class="min-w-0">
+                        <span class="font-label-sm text-on-surface block truncate font-semibold">LKPD Etnografi Budaya Lokal Komering</span>
+                        <span class="font-label-sm text-secondary text-[11px] font-bold">Terkumpul • Terverifikasi</span>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- HARI 3: Sedang Berlangsung (ACTIVE - HIGHLIGHTED) -->
+            <div class="relative z-10">
+              <div class="absolute -left-[27px] top-1 w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center shadow-md">
+                <div class="w-4 h-4 rounded-full bg-secondary flex items-center justify-center animate-pulse">
+                  <div class="w-1.5 h-1.5 rounded-full bg-surface"></div>
+                </div>
+              </div>
+              <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-lg ml-2 bg-gradient-to-br from-surface-container-lowest to-secondary-container/10 border-2 border-secondary/20">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="font-label-sm uppercase px-2 py-0.5 rounded-full bg-teal-100 text-teal-900 font-bold">STEM &amp; Rekayasa</span>
+                      <span class="font-label-sm font-bold text-secondary flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-secondary animate-ping"></span> Sedang Berlangsung
+                      </span>
+                    </div>
+                    <h3 class="font-headline-sm text-on-surface leading-snug font-bold">Hari 3: STEM: Rekayasa Sistem Irigasi Komering &amp; Sensor Tanah</h3>
+                  </div>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-xs mt-1 leading-relaxed">
+                  Pengujian lapangan hidrologi pintu air Bendungan Perjaya, pengukuran parameter kelembapan tanah, dan integrasi IoT mikrokontroler.
+                </p>
+                <div class="space-y-space-xs pt-2">
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer" onclick="navigate('activity-detail')">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                      <span class="material-symbols-outlined text-primary text-[22px] shrink-0">analytics</span>
+                      <div class="min-w-0">
+                        <span class="font-label-sm text-on-surface block truncate font-bold">Slide Kajian Debit Air Irigasi &amp; pH Tanah</span>
+                        <span class="font-label-sm text-primary text-[11px] font-semibold">Klik untuk baca &amp; telusuri data</span>
+                      </div>
+                    </div>
+                    <span class="material-symbols-outlined text-primary text-[20px] shrink-0">open_in_new</span>
+                  </div>
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-surface-container hover:bg-surface-container-high transition-colors cursor-pointer" onclick="navigate('activity-detail')">
+                    <div class="flex items-center gap-space-sm min-w-0">
+                      <span class="material-symbols-outlined text-secondary text-[22px] shrink-0">upload_file</span>
+                      <div class="min-w-0">
+                        <span class="font-label-sm text-on-surface block truncate font-bold">LKPD Uji Laboratorium Air &amp; Rancang Prototipe</span>
+                        <span class="font-label-sm text-error text-[11px] font-bold">Batas Waktu: Hari ini 21.00 WIB</span>
+                      </div>
+                    </div>
+                    <span class="px-2.5 py-1 rounded-full bg-secondary text-on-secondary font-label-sm text-[11px] font-bold shrink-0">Unggah</span>
+                  </div>
+                </div>
+                <!-- Prominent Action CTA to Activity Detail -->
+                <div class="pt-space-sm">
+                  <button class="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-primary text-on-primary font-label-lg font-bold shadow-md hover:bg-on-primary-fixed-variant active:scale-[0.99] transition-all" onclick="navigate('activity-detail')">
+                    <span>Buka Detail Aktivitas Hari 3</span>
+                    <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- HARI 4: Segera Hadir / Terkunci -->
+            <div class="relative z-10 opacity-75">
+              <div class="absolute -left-6 top-1.5 w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center">
+                <span class="material-symbols-outlined text-[14px]">lock</span>
+              </div>
+              <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm space-y-space-sm ml-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="font-label-sm uppercase px-2 py-0.5 rounded-full bg-orange-100 text-orange-900 font-bold">Exploration</span>
+                      <span class="font-label-sm text-on-surface-variant font-medium flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">schedule</span> Segera Hadir
+                      </span>
+                    </div>
+                    <h3 class="font-title-md text-on-surface leading-tight font-bold">Hari 4: Eksplorasi Lapangan: Agrowisata Buah &amp; Smart Farming Belitang</h3>
+                  </div>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-xs leading-relaxed">
+                  Studi banding teknik budidaya modern, greenhouse otomatisasi penyiraman, dan pengolahan pascapanen bernilai tambah.
+                </p>
+                <div class="p-2.5 rounded-xl bg-surface-container-low flex items-center justify-between">
+                  <span class="font-label-sm text-on-surface-variant text-xs">Modul &amp; LKPD terbuka besok pukul 07.00 WIB</span>
+                  <span class="material-symbols-outlined text-outline text-[18px]">lock</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- HARI 5: Gelar Karya & Refleksi -->
+            <div class="relative z-10 opacity-75">
+              <div class="absolute -left-6 top-1.5 w-6 h-6 rounded-full bg-surface-container-highest text-on-surface-variant flex items-center justify-center">
+                <span class="material-symbols-outlined text-[14px]">lock</span>
+              </div>
+              <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm space-y-space-sm ml-2">
+                <div class="flex items-start justify-between gap-2">
+                  <div>
+                    <div class="flex items-center gap-2 mb-1">
+                      <span class="font-label-sm uppercase px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-bold">Refleksi &amp; Gelar Karya</span>
+                      <span class="font-label-sm text-on-surface-variant font-medium flex items-center gap-1">
+                        <span class="material-symbols-outlined text-[14px]">event</span> Hari Terakhir
+                      </span>
+                    </div>
+                    <h3 class="font-title-md text-on-surface leading-tight font-bold">Hari 5: Gelar Karya, Expo Finansial &amp; Refleksi Program OKU Timur</h3>
+                  </div>
+                </div>
+                <p class="font-body-md text-on-surface-variant text-xs leading-relaxed">
+                  Presentasi purwarupa sensor irigasi, simulasi bazar produk olahan tani, dan penyerahan penghargaan kelompok berprestasi.
+                </p>
+                <div class="p-2.5 rounded-xl bg-surface-container-low flex items-center justify-between">
+                  <span class="font-label-sm text-on-surface-variant text-xs">Pameran &amp; e-sertifikat pasca-selesai</span>
+                  <span class="material-symbols-outlined text-outline text-[18px]">lock</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Field Study Location Spot Preview -->
+        <div class="rounded-2xl bg-surface-container-lowest p-space-md shadow-sm space-y-space-sm">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-[20px]">map</span>
+              <h3 class="font-title-md text-on-surface font-bold">Peta Lokasi Riset Hari 3</h3>
+            </div>
+            <span class="font-label-sm text-secondary font-bold">Perjaya, OKU Timur</span>
+          </div>
+          <div class="w-full h-44 rounded-xl bg-cover bg-center overflow-hidden relative shadow-inner" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBxhZkR2_KiRM7-O2Z0v6Rg0dGpGszB8TKj3VfesCVGOSK-7LjpcjktuRNONggJRkHI9Gu-xtit1ZQ6OFS64B87Q5TQA02VVfu4i0_r_LpF3lPPFNXowGAEWEr9-WthN6so7IC_4qGlvftV3zDMvbXKrUwTjGMiRiadCtevkQEjFI9TGuVHA7XwSN9Ii8ywZHUmG09zxIkthUTPFr3pv9KFccceKjkqmxCVLXynVb14oNRqHzkm13cO')">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+            <div class="absolute bottom-3 left-3 right-3 text-white flex items-center justify-between">
+              <div>
+                <p class="font-label-md font-bold text-white">Bendungan &amp; Pintu Air Perjaya</p>
+                <p class="font-label-sm text-white/80 text-[11px]">Jantung irigasi persawahan Belitang</p>
+              </div>
+              <a class="px-2.5 py-1 rounded-full bg-white/20 backdrop-blur-md text-white font-label-sm flex items-center gap-1 hover:bg-white/30 transition-colors" href="https://maps.google.com/?q=Bendungan+Perjaya+OKU+Timur" target="_blank" rel="noopener noreferrer">
+                <span>Buka GPS</span>
+                <span class="material-symbols-outlined text-[14px]">near_me</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emergency / Mentor Contact Banner -->
+        <div class="rounded-xl bg-surface-container p-space-md flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary shrink-0">
+              <span class="material-symbols-outlined text-[20px]">support_agent</span>
+            </div>
+            <div>
+              <p class="font-label-md font-bold text-on-surface">Pusat Pendamping Lapangan</p>
+              <p class="font-label-sm text-on-surface-variant text-[11px]">Guru Pembimbing SMAN 1 Belitang</p>
+            </div>
+          </div>
+          <button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-sm font-bold shadow-sm hover:bg-surface-container-high transition-colors shrink-0" onclick="showHelpModal()">
+            Hubungi
+          </button>
+        </div>
+      </div>
+    
+    </div>
+
+    <!-- PANEL 3: ZONA LUAR OKU TIMUR -->
+    <div id="panel-luar" class="hidden flex flex-col w-full">
+      
+      <div class="flex flex-col w-full px-gutter-mobile space-y-space-md">
+        <!-- Top Action Breadcrumb Bar -->
+        <div class="flex items-center justify-between pt-space-xs">
+          <button class="flex items-center gap-space-xs text-primary font-label-lg py-1 px-2 -ml-2 rounded-full hover:bg-surface-container transition-colors font-bold" onclick="navigate('dashboard')">
+            <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+            <span>Beranda</span>
+          </button>
+          <div class="flex items-center gap-space-xs bg-surface-container-high px-3 py-1 rounded-full text-on-surface-variant font-label-sm shadow-sm font-bold">
+            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+            <span>Ekspedisi Berjalan</span>
+          </div>
+        </div>
+
+        <!-- Program Header Summary Bento Card -->
+        <div class="relative overflow-hidden rounded-2xl bg-surface-container-lowest p-space-md shadow-sm">
+          <div class="absolute top-0 right-0 w-36 h-36 bg-primary-container/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col gap-space-sm">
+            <div class="flex flex-wrap items-center gap-space-xs">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm font-bold">
+                <span class="material-symbols-outlined text-[14px]">explore</span>
+                Zona Ekspedisi Luar
+              </span>
+              <span class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant font-label-sm font-bold">
+                5 Hari Akademik
+              </span>
+            </div>
+            <div>
+              <h1 class="font-headline-sm text-on-surface font-bold">FINCESTEM Luar OKU Timur</h1>
+              <p class="font-body-md text-on-surface-variant mt-1 text-xs">
+                Ekspedisi Edukasi Lintas Wilayah (Palembang – Lampung – Industri Sentra) mempertemukan riset aplikatif dengan ekosistem nasional.
+              </p>
+            </div>
+            <!-- Overall Progress Snapshot -->
+            <div class="mt-space-xs pt-space-sm bg-surface-container-low/60 p-space-sm rounded-xl flex flex-col gap-2">
+              <div class="flex items-center justify-between font-label-sm">
+                <span class="text-on-surface-variant font-medium">Capaian Kurikulum Ekspedisi</span>
+                <span class="text-primary font-bold">35% Selesai</span>
+              </div>
+              <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-primary to-secondary rounded-full" style="width: 35%"></div>
+              </div>
+              <div class="flex items-center justify-between text-on-surface-variant font-label-sm pt-0.5 text-xs">
+                <span class="flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px] text-secondary">check_circle</span>
+                  Hari 1 Tuntas
+                </span>
+                <span class="flex items-center gap-1 text-primary font-semibold">
+                  <span class="material-symbols-outlined text-[14px] text-primary">navigation</span>
+                  Hari 2 Berlangsung
+                </span>
+                <span>3 Hari Menanti</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Direct Quick Links Bento Panel -->
+        <div class="grid grid-cols-2 gap-space-sm">
+          <button class="flex flex-col justify-between p-space-sm rounded-xl bg-primary text-on-primary shadow-sm hover:bg-primary/90 transition-all active:scale-[0.98] text-left" onclick="navigate('activity-detail')">
+            <div class="flex items-center justify-between">
+              <span class="material-symbols-outlined text-[22px]">play_circle</span>
+              <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+            </div>
+            <div class="mt-3">
+              <span class="font-label-sm opacity-80 block">Akses Segera</span>
+              <span class="font-title-md leading-tight font-bold">Detail Hari Ini</span>
+            </div>
+          </button>
+          <button class="flex flex-col justify-between p-space-sm rounded-xl bg-surface-container-lowest text-on-surface shadow-sm hover:bg-surface-container transition-all active:scale-[0.98] text-left" onclick="navigate('program-oku')">
+            <div class="flex items-center justify-between">
+              <span class="material-symbols-outlined text-[22px] text-secondary">domain</span>
+              <span class="material-symbols-outlined text-[18px] text-on-surface-variant">sync_alt</span>
+            </div>
+            <div class="mt-3">
+              <span class="font-label-sm text-on-surface-variant block">Ganti Rute</span>
+              <span class="font-title-md text-on-surface leading-tight font-bold">Program OKU Timur</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Section Header -->
+        <div class="flex items-center justify-between pt-space-xs">
+          <div>
+            <h2 class="font-title-md text-on-surface font-bold">Jadwal &amp; Agenda Interdisipliner</h2>
+            <p class="font-label-sm text-on-surface-variant">Modul materi, LKPD terstruktur, dan dokumentasi lapangan</p>
+          </div>
+        </div>
+
+        <!-- 5-Day Interactive Vertical Timeline -->
+        <div class="flex flex-col gap-space-md relative">
+          <div class="absolute left-4 top-5 bottom-8 w-0.5 bg-surface-container-highest -z-0"></div>
+
+          <!-- HARI 1: FINANCIAL (Selesai) -->
+          <div class="timeline-card relative z-10 flex flex-col rounded-2xl bg-surface-container-lowest shadow-sm transition-all duration-200">
+            <div class="p-space-md cursor-pointer flex items-start gap-space-sm" onclick="toggleTimeline('day1-content', 'day1-chevron')">
+              <div class="w-8 h-8 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 shadow-sm">
+                <span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">check</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-space-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 font-label-sm uppercase tracking-wider font-bold">
+                    Hari 1 • Financial
+                  </span>
+                  <span class="inline-flex items-center gap-1 font-label-sm text-secondary font-bold shrink-0">
+                    <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    Selesai
+                  </span>
+                </div>
+                <h3 class="font-title-md text-on-surface mt-1 leading-snug font-bold">
+                  Edukasi Pasar Modal &amp; Perbankan Digital (IDX Center)
+                </h3>
+                <p class="font-label-sm text-on-surface-variant mt-0.5 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">location_on</span>
+                  Kantor Perwakilan BEI Palembang
+                </p>
+              </div>
+              <button aria-label="Buka Rincian Hari 1" class="text-on-surface-variant p-1 rounded-full hover:bg-surface-container transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[20px] transition-transform duration-200" id="day1-chevron">expand_more</span>
+              </button>
+            </div>
+            <div class="px-space-md pb-space-md pt-0 flex flex-col gap-space-xs" id="day1-content">
+              <div class="p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between gap-space-sm">
+                <div class="flex items-center gap-space-sm min-w-0">
+                  <div class="w-9 h-9 rounded-lg bg-surface-container-highest text-primary flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">menu_book</span>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="font-label-sm text-on-surface-variant block uppercase text-[10px]">Materi Pembelajaran</span>
+                    <p class="font-title-md text-on-surface truncate text-sm">Pengantar Investasi Sehat OJK</p>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-primary text-[18px]">download</span>
+              </div>
+              <div class="p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between gap-space-sm">
+                <div class="flex items-center gap-space-sm min-w-0">
+                  <div class="w-9 h-9 rounded-lg bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">assignment_turned_in</span>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="font-label-sm text-on-surface-variant block uppercase text-[10px]">Tugas Siswa (LKPD)</span>
+                    <p class="font-title-md text-on-surface truncate text-sm">Simulasi Portofolio Pelajar</p>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary font-label-sm font-bold text-xs">Terkumpul</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- HARI 2: CULTURE (Sedang Berlangsung) -->
+          <div class="timeline-card relative z-10 flex flex-col rounded-2xl bg-surface-container-lowest shadow-md transition-all duration-200 border-2 border-primary/20">
+            <div class="h-1.5 w-full bg-gradient-to-r from-tertiary to-primary rounded-t-2xl"></div>
+            <div class="p-space-md cursor-pointer flex items-start gap-space-sm" onclick="toggleTimeline('day2-content', 'day2-chevron')">
+              <div class="relative w-8 h-8 shrink-0">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-40"></span>
+                <div class="relative w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+                  <span class="material-symbols-outlined text-[18px]">near_me</span>
+                </div>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-space-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-purple-100 text-purple-900 font-label-sm uppercase tracking-wider font-bold">
+                    Hari 2 • Culture
+                  </span>
+                  <span class="inline-flex items-center gap-1 font-label-sm text-primary font-bold shrink-0">
+                    <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    Sedang Berlangsung
+                  </span>
+                </div>
+                <h3 class="font-title-md text-on-surface mt-1 leading-snug font-bold">
+                  Eksplorasi Sejarah Bahari &amp; Museum Balaputradeva Palembang
+                </h3>
+                <p class="font-label-sm text-on-surface-variant mt-0.5 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">museum</span>
+                  Museum Negeri Balaputradeva
+                </p>
+              </div>
+              <button aria-label="Buka Rincian Hari 2" class="text-on-surface-variant p-1 rounded-full hover:bg-surface-container transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[20px] transition-transform duration-200 rotate-180" id="day2-chevron">expand_more</span>
+              </button>
+            </div>
+            <div class="px-space-md pb-space-md pt-0 flex flex-col gap-space-xs" id="day2-content">
+              <div class="p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between gap-space-sm">
+                <div class="flex items-center gap-space-sm min-w-0">
+                  <div class="w-9 h-9 rounded-lg bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">auto_stories</span>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="font-label-sm text-on-surface-variant block uppercase text-[10px]">Katalog Studi</span>
+                    <p class="font-title-md text-on-surface truncate text-sm">Katalog Prasasti Kedukan Bukit</p>
+                  </div>
+                </div>
+                <span class="material-symbols-outlined text-primary text-[18px]">visibility</span>
+              </div>
+              <div class="p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between gap-space-sm cursor-pointer" onclick="navigate('activity-detail')">
+                <div class="flex items-center gap-space-sm min-w-0">
+                  <div class="w-9 h-9 rounded-lg bg-amber-100 text-amber-900 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-[20px]">edit_note</span>
+                  </div>
+                  <div class="min-w-0">
+                    <span class="font-label-sm text-on-surface-variant block uppercase text-[10px]">Tugas Berjalan (LKPD)</span>
+                    <p class="font-title-md text-on-surface truncate text-sm">LKPD Catatan Kuratorial &amp; Sejarah</p>
+                  </div>
+                </div>
+                <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-label-sm font-bold text-xs">Proses</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- HARI 3: STEM -->
+          <div class="timeline-card relative z-10 flex flex-col rounded-2xl bg-surface-container-lowest shadow-sm transition-all duration-200">
+            <div class="p-space-md cursor-pointer flex items-start gap-space-sm" onclick="toggleTimeline('day3-content', 'day3-chevron')">
+              <div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center shrink-0">
+                <span class="font-label-sm font-bold">03</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-space-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-teal-100 text-teal-900 font-label-sm uppercase tracking-wider font-bold">
+                    Hari 3 • STEM
+                  </span>
+                  <span class="font-label-sm text-on-surface-variant font-bold">Terjadwal</span>
+                </div>
+                <h3 class="font-title-md text-on-surface mt-1 leading-snug font-bold">
+                  Kunjungan Pembangkit Solar Cell &amp; Pusat Otomasi Robotika
+                </h3>
+                <p class="font-label-sm text-on-surface-variant mt-0.5 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">bolt</span>
+                  Sentra Riset Energi Terbarukan
+                </p>
+              </div>
+              <button aria-label="Buka Rincian Hari 3" class="text-on-surface-variant p-1 rounded-full hover:bg-surface-container transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[20px] transition-transform duration-200" id="day3-chevron">expand_more</span>
+              </button>
+            </div>
+            <div class="hidden px-space-md pb-space-md pt-0 flex flex-col gap-space-xs" id="day3-content">
+              <div class="p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between">
+                <span class="font-label-sm text-on-surface">Modul PLTS Solar Cell &amp; Smart Grid</span>
+                <span class="font-label-sm text-outline">Terkunci</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- HARI 4: EXPLORATION -->
+          <div class="timeline-card relative z-10 flex flex-col rounded-2xl bg-surface-container-lowest shadow-sm transition-all duration-200">
+            <div class="p-space-md cursor-pointer flex items-start gap-space-sm" onclick="toggleTimeline('day4-content', 'day4-chevron')">
+              <div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center shrink-0">
+                <span class="font-label-sm font-bold">04</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-space-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-orange-100 text-orange-900 font-label-sm uppercase tracking-wider font-bold">
+                    Hari 4 • Exploration
+                  </span>
+                  <span class="font-label-sm text-on-surface-variant font-bold">Terjadwal</span>
+                </div>
+                <h3 class="font-title-md text-on-surface mt-1 leading-snug font-bold">
+                  Analisis Ekosistem Pesisir &amp; Konservasi Mangrove
+                </h3>
+                <p class="font-label-sm text-on-surface-variant mt-0.5 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">water</span>
+                  Kawasan Suaka Pesisir Lampung
+                </p>
+              </div>
+              <button aria-label="Buka Rincian Hari 4" class="text-on-surface-variant p-1 rounded-full hover:bg-surface-container transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[20px] transition-transform duration-200" id="day4-chevron">expand_more</span>
+              </button>
+            </div>
+            <div class="hidden px-space-md pb-space-md pt-0 flex flex-col gap-space-xs" id="day4-content">
+              <div class="p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between">
+                <span class="font-label-sm text-on-surface">Observasi Bioma Pesisir &amp; Salinitas</span>
+                <span class="font-label-sm text-outline">Terkunci</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- HARI 5: GELAR INOVASI -->
+          <div class="timeline-card relative z-10 flex flex-col rounded-2xl bg-surface-container-lowest shadow-sm transition-all duration-200">
+            <div class="p-space-md cursor-pointer flex items-start gap-space-sm" onclick="toggleTimeline('day5-content', 'day5-chevron')">
+              <div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center shrink-0">
+                <span class="font-label-sm font-bold">05</span>
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-space-xs">
+                  <span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm uppercase tracking-wider font-bold">
+                    Hari 5 • Refleksi &amp; Kolaborasi
+                  </span>
+                  <span class="font-label-sm text-on-surface-variant font-bold">Puncak Ekspedisi</span>
+                </div>
+                <h3 class="font-title-md text-on-surface mt-1 leading-snug font-bold">
+                  Gelar Inovasi Pelajar &amp; Penyerahan E-Sertifikat Nasional
+                </h3>
+                <p class="font-label-sm text-on-surface-variant mt-0.5 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[14px]">military_tech</span>
+                  Balai Pertemuan SMAN 1 Belitang
+                </p>
+              </div>
+              <button aria-label="Buka Rincian Hari 5" class="text-on-surface-variant p-1 rounded-full hover:bg-surface-container transition-colors shrink-0">
+                <span class="material-symbols-outlined text-[20px] transition-transform duration-200" id="day5-chevron">expand_more</span>
+              </button>
+            </div>
+            <div class="hidden px-space-md pb-space-md pt-0 flex flex-col gap-space-xs" id="day5-content">
+              <div class="p-space-sm rounded-xl bg-surface-container-low flex items-center justify-between">
+                <span class="font-label-sm text-on-surface">Presentasi Kolaboratif &amp; Evaluasi Capaian</span>
+                <span class="font-label-sm text-outline">Terkunci</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+
+    <!-- PANEL 4: DETAIL AKTIVITAS -->
+    <div id="panel-aktivitas" class="hidden flex flex-col w-full">
+      
+      <div class="flex flex-col w-full pb-10">
+        <!-- Top Meta & Badge Bar -->
+        <div class="px-gutter-mobile pt-space-sm pb-space-sm flex items-center justify-between">
+          <button class="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-primary transition-colors py-space-xs font-bold" onclick="navigate('program-oku')">
+            <span class="material-symbols-outlined text-[18px]">arrow_back_ios</span>
+            <span class="font-label-md text-label-md font-semibold">Kembali ke Timeline</span>
+          </button>
+          <div class="flex items-center gap-space-xs">
+            <span class="px-space-sm py-0.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant font-bold tracking-wider uppercase">
+              Hari 3 dari 5
+            </span>
+            <span class="flex items-center gap-1.5 px-space-sm py-0.5 rounded-full font-label-sm text-label-sm bg-secondary-container text-on-secondary-container font-bold">
+              <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+              Sedang Berjalan
+            </span>
+          </div>
+        </div>
+
+        <!-- Main Content Container -->
+        <div class="px-gutter-mobile space-y-space-md mt-space-xs">
+          <!-- Activity Header Card -->
+          <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-secondary-fixed via-secondary to-primary"></div>
+            <div class="flex items-center gap-2 mb-space-sm pt-1">
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-secondary-container text-on-secondary-container uppercase tracking-wide font-bold">
+                <span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Pilar STEM &amp; Rekayasa
+              </span>
+              <span class="text-on-surface-variant text-label-sm font-label-sm font-medium">FINCESTEM 2026</span>
+            </div>
+            <h2 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-snug">
+              STEM: Rekayasa Irigasi Komering &amp; Analisis Kualitas Air Pertanian Belitang
+            </h2>
+            <!-- Metadata Box -->
+            <div class="mt-space-md p-space-sm bg-surface-container-low rounded-xl space-y-1.5">
+              <div class="flex items-center gap-space-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px] text-secondary">calendar_today</span>
+                <span class="font-label-md text-label-md font-semibold">Kamis, 15 Januari 2026 • 08.00 - 15.30 WIB</span>
+              </div>
+              <div class="flex items-start gap-space-xs text-on-surface-variant">
+                <span class="material-symbols-outlined text-[18px] text-secondary mt-0.5">location_on</span>
+                <span class="font-label-md text-label-md leading-relaxed font-semibold">Bendung Perjaya &amp; Laboratorium Sains SMAN 1 Belitang, OKU Timur</span>
+              </div>
+            </div>
+            <p class="mt-space-md font-body-md text-body-md text-on-surface-variant leading-relaxed text-xs">
+              Siswa melakukan pengukuran debit aliran air saluran sekunder Belitang, menguji kadar keasaman (pH) tanah sawah dengan sensor digital portabel, serta merumuskan rekomendasi efisiensi irigasi ramah lingkungan.
+            </p>
+            <!-- Completion Status Callout Banner -->
+            <div class="mt-space-md p-space-sm bg-secondary-container/40 rounded-xl flex items-center justify-between gap-space-xs" id="lkpdStatusBanner">
+              <div class="flex items-center gap-space-xs min-w-0">
+                <div class="w-8 h-8 rounded-full bg-secondary text-on-secondary flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[18px]">assignment_turned_in</span>
+                </div>
+                <div class="min-w-0">
+                  <p class="font-label-md text-label-md font-bold text-on-surface truncate" id="lkpdStatusTitle">Status: LKPD Siap Diunggah</p>
+                  <p class="font-label-sm text-label-sm text-on-secondary-container" id="lkpdStatusSubtitle">Tenggat Pengumpulan: Hari ini, 21:00 WIB</p>
+                </div>
+              </div>
+              <span class="shrink-0 font-label-sm text-label-sm px-2 py-1 rounded-lg bg-surface-container-lowest text-secondary font-bold shadow-xs">
+                Wajib
+              </span>
+            </div>
+          </div>
+
+          <!-- Section 1: Materi Pembelajaran -->
+          <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm space-y-space-md">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-space-xs">
+                <div class="w-7 h-7 rounded-lg bg-primary-fixed flex items-center justify-center text-primary">
+                  <span class="material-symbols-outlined text-[18px]">menu_book</span>
+                </div>
+                <h3 class="font-title-md text-title-md font-bold text-on-surface">1. Materi Pembelajaran</h3>
+              </div>
+              <span class="font-label-sm text-label-sm text-primary font-semibold">2 Berkas</span>
+            </div>
+            <!-- File Resource Card -->
+            <div class="bg-surface-container-low p-space-sm rounded-xl space-y-space-sm">
+              <div class="flex items-start gap-space-sm">
+                <div class="w-10 h-10 rounded-xl bg-error/10 text-error flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[24px]">picture_as_pdf</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-label-lg text-label-lg font-bold text-on-surface truncate">Slide Presentasi Modul Irigasi &amp; IoT</h4>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant text-xs">Modul-03-Irigasi-IoT.pdf • 14.2 MB</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+                <button class="h-10 px-space-sm rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all" onclick="showNotification('Membuka pratinjau Modul 03...')">
+                  <span class="material-symbols-outlined text-[18px]">visibility</span>
+                  <span>Lihat Preview</span>
+                </button>
+                <button class="h-10 px-space-sm rounded-xl bg-primary text-on-primary font-label-md text-label-md font-semibold flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all" onclick="showNotification('Mengunduh Modul-03-Irigasi-IoT.pdf...')">
+                  <span class="material-symbols-outlined text-[18px]">download</span>
+                  <span>Unduh Modul</span>
+                </button>
+              </div>
+            </div>
+            <!-- Video Card Preview -->
+            <div class="bg-surface-container-low rounded-xl overflow-hidden shadow-xs cursor-pointer" onclick="openVideoModal()">
+              <div class="relative w-full h-36 bg-surface-container-highest">
+                <img class="w-full h-full object-cover" alt="Video Kalibrasi Sensor pH" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCosOmz1FcJTIfuWXoNj2UaclQRnxv8aem7XVH4s6yZxyM42b2C4nytAw3dTPmO_pKSBmQXbtj2iBVdzu5taACaPK4BdhicYVCRvGsob7kIoYbh-xM1yn0U4M8BvTGjr_jP0CzsPJrBF623LmHXTzAn9iK4r6-q_72rOnMCrrSNqidhZQiJOr2rQFfcEPEhfr7hxaacuPHDQYE56oqA39WVGt783s1mzKju5fMo_WQos_wib6SkyLhp">
+                <div class="absolute inset-0 bg-primary/30 flex items-center justify-center">
+                  <div class="w-12 h-12 rounded-full bg-surface-container-lowest/90 text-primary flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+                    <span class="material-symbols-outlined text-[28px] ml-1" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                  </div>
+                </div>
+                <span class="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-inverse-surface/80 text-inverse-on-surface font-label-sm text-label-sm font-semibold">
+                  08:14 Menit
+                </span>
+              </div>
+              <div class="p-space-sm flex items-center justify-between">
+                <div>
+                  <h4 class="font-label-lg text-label-lg font-bold text-on-surface">Video: Kalibrasi Sensor pH Tanah</h4>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant text-xs">Panduan teknis pengujian lapangan per kelompok</p>
+                </div>
+                <span class="material-symbols-outlined text-secondary text-[22px]">ondemand_video</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: LKPD Lembar Kerja Peserta Didik -->
+          <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm space-y-space-md">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-space-xs">
+                <div class="w-7 h-7 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container">
+                  <span class="material-symbols-outlined text-[18px]">task</span>
+                </div>
+                <h3 class="font-title-md text-title-md font-bold text-on-surface">2. Lembar Kerja (LKPD)</h3>
+              </div>
+              <span class="font-label-sm text-label-sm px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-semibold">Format Kelompok</span>
+            </div>
+            <!-- LKPD Description & Action Card -->
+            <div class="bg-surface-container-low p-space-sm rounded-xl space-y-space-sm">
+              <div class="flex items-start gap-space-sm">
+                <div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-[24px]">description</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-label-lg text-label-lg font-bold text-on-surface truncate">LKPD-03: Formulir Pengujian Parameter Air &amp; Skema Irigasi</h4>
+                  <p class="font-label-sm text-label-sm text-on-surface-variant text-xs">Template resmi Belitang Water Quality Index</p>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+                <button class="h-10 px-space-sm rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1 shadow-sm active:scale-95 transition-all" onclick="showNotification('Menampilkan soal LKPD-03...')">
+                  <span class="material-symbols-outlined text-[16px]">quiz</span>
+                  <span>Lihat Soal</span>
+                </button>
+                <button class="h-10 px-space-sm rounded-xl bg-surface-container-lowest text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-1 shadow-sm active:scale-95 transition-all" onclick="showNotification('Mengunduh template LKPD-03.docx...')">
+                  <span class="material-symbols-outlined text-[16px]">file_download</span>
+                  <span>Template (.docx)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Upload Submission Zone -->
+            <div class="space-y-space-xs">
+              <label class="font-label-md text-label-md font-bold text-on-surface flex items-center justify-between">
+                <span>Unggah Laporan Hasil Pengamatan</span>
+                <span class="font-label-sm text-label-sm text-outline">Maks. 10MB (PDF/DOCX)</span>
+              </label>
+              <div class="p-space-lg rounded-2xl bg-surface-container-low text-center flex flex-col items-center justify-center transition-colors cursor-pointer hover:bg-surface-container active:bg-surface-container border-2 border-dashed border-outline-variant/60" id="dropzone" onclick="document.getElementById('fileInput').click()">
+                <div class="w-12 h-12 rounded-full bg-surface-container-highest text-primary flex items-center justify-center mb-space-xs shadow-xs">
+                  <span class="material-symbols-outlined text-[26px]">cloud_upload</span>
+                </div>
+                <p class="font-label-lg text-label-lg font-bold text-on-surface">Ketuk untuk Mengunggah Laporan</p>
+                <p class="font-label-sm text-label-sm text-on-surface-variant mt-0.5 text-xs">Atau pilih berkas laporan kelompok Anda</p>
+                <input accept=".pdf,.doc,.docx" class="hidden" id="fileInput" type="file">
+                <button class="mt-space-sm px-space-md py-1.5 rounded-full bg-surface-container-lowest font-label-sm text-label-sm font-semibold text-primary shadow-xs" type="button">
+                  Pilih File dari Perangkat
+                </button>
+              </div>
+              <div class="hidden p-space-sm bg-surface-container-low rounded-xl items-center justify-between" id="fileSelectedState">
+                <div class="flex items-center gap-space-xs min-w-0">
+                  <span class="material-symbols-outlined text-secondary text-[20px]">check_circle</span>
+                  <span class="font-label-md text-label-md text-on-surface truncate font-semibold" id="fileNameDisplay">Tugas_Kelompok4_Hari3.pdf</span>
+                </div>
+                <button class="text-error p-1" id="removeFileBtn" type="button" onclick="handleRemoveFile()">
+                  <span class="material-symbols-outlined text-[18px]">close</span>
+                </button>
+              </div>
+              <!-- Submit CTA Button -->
+              <button class="w-full h-12 mt-space-sm rounded-xl bg-secondary text-on-secondary font-label-lg text-label-lg font-bold flex items-center justify-center gap-space-xs shadow-md active:scale-98 transition-transform" id="submitTaskBtn" type="button" onclick="handleSubmitLKPD()">
+                <span class="material-symbols-outlined text-[20px]">send</span>
+                <span>Kirim Tugas Kelompok</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Section 3: Dokumentasi Kegiatan Siswa -->
+          <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm space-y-space-md">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-space-xs">
+                <div class="w-7 h-7 rounded-lg bg-surface-container-high flex items-center justify-center text-on-surface">
+                  <span class="material-symbols-outlined text-[18px]">photo_library</span>
+                </div>
+                <h3 class="font-title-md text-title-md font-bold text-on-surface">3. Dokumentasi Aktivitas</h3>
+              </div>
+              <span class="font-label-sm text-label-sm text-on-surface-variant font-medium" id="photoCountLabel">4 Foto Terverifikasi</span>
+            </div>
+            <!-- 2x2 Photo Grid -->
+            <div class="grid grid-cols-2 gap-space-sm" id="docPhotoGrid">
+              <!-- Photo 1 -->
+              <div class="flex flex-col gap-1 cursor-pointer" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuCRre3eLqMe7AeQIN0bSoo3KMKX6cHVsGiLyGuZbEpeycq3yqN20eQ_wvgOpdfH3wQTCTUv4X9NBO8IDjYrWvTTBDC1_VPzT2NboxdpchTkDuQlsWIeFnNc1mm5i466uG83YUfNft-4Pnlxe1VlRvh90g4L_6kmrp0YAzy4Kte2vlAdxl8bqriuMX-y0i16WGb4tBZ9a2tFuQGI5_uhDq3VbKe5D3SoJVU-3nI7K2zjSptFJ3V1lQVl', '1. Pengukuran debit air di Pintu Air Belitang')">
+                <div class="w-full h-28 rounded-xl overflow-hidden bg-surface-container-high relative">
+                  <img class="w-full h-full object-cover" alt="Pengukuran debit air" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRre3eLqMe7AeQIN0bSoo3KMKX6cHVsGiLyGuZbEpeycq3yqN20eQ_wvgOpdfH3wQTCTUv4X9NBO8IDjYrWvTTBDC1_VPzT2NboxdpchTkDuQlsWIeFnNc1mm5i466uG83YUfNft-4Pnlxe1VlRvh90g4L_6kmrp0YAzy4Kte2vlAdxl8bqriuMX-y0i16WGb4tBZ9a2tFuQGI5_uhDq3VbKe5D3SoJVU-3nI7K2zjSptFJ3V1lQVl">
+                </div>
+                <p class="font-label-sm text-label-sm text-on-surface-variant line-clamp-2 leading-tight">1. Pengukuran debit air di Pintu Air Belitang</p>
+              </div>
+              <!-- Photo 2 -->
+              <div class="flex flex-col gap-1 cursor-pointer" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuDw1k8xQpUxwcEyocl8Yx5IPSUc7MS0lzkXankjJpU7auFwLNa78z0zZSo-peU53_oWfdHL8wd2D-WAckXkPS-ndeUtM_f1oNGMRNbn1mrO15PstCi5QjMUCnjdbBVPaqCmku1Kmo7EtuM9e72-g9f_5QEXq4DYe0ghbTdBnUAOJpkrZO-e6FIoJox-JWh2N4jaxZbuDO6N4NyJtq-2Id7Q2gqIadW7q_e8R5pAv7MIG_5oK8b8aWKG', '2. Uji lab kimia air bersama guru pembimbing')">
+                <div class="w-full h-28 rounded-xl overflow-hidden bg-surface-container-high relative">
+                  <img class="w-full h-full object-cover" alt="Uji lab kimia air" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDw1k8xQpUxwcEyocl8Yx5IPSUc7MS0lzkXankjJpU7auFwLNa78z0zZSo-peU53_oWfdHL8wd2D-WAckXkPS-ndeUtM_f1oNGMRNbn1mrO15PstCi5QjMUCnjdbBVPaqCmku1Kmo7EtuM9e72-g9f_5QEXq4DYe0ghbTdBnUAOJpkrZO-e6FIoJox-JWh2N4jaxZbuDO6N4NyJtq-2Id7Q2gqIadW7q_e8R5pAv7MIG_5oK8b8aWKG">
+                </div>
+                <p class="font-label-sm text-label-sm text-on-surface-variant line-clamp-2 leading-tight">2. Uji lab kimia air bersama guru pembimbing</p>
+              </div>
+              <!-- Photo 3 -->
+              <div class="flex flex-col gap-1 cursor-pointer" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuAP8zN_N0W8apg_PYxQ8A1J23TCArumov9JnHt-3h_rVs7VrLxDkAS1j_L9Hdsaz7iYBBE9-bYThaCEaIFBn2LANsL8GyqvqFl9iGUVUHsNynby0kvHvYjq2eOOci31pb9hb5wswE2PEC8tcVD3zbotxKtAMcXppVzAp9cMaTCWhZxUkKjpIRuXde5rDNcSYUAPiQCff6QnazB_8nkv4VRakHj_XWEz85Y3j6zi9JBolAgCPuG6Zojz', '3. Diskusi kelompok siswa XI MIPA 1')">
+                <div class="w-full h-28 rounded-xl overflow-hidden bg-surface-container-high relative">
+                  <img class="w-full h-full object-cover" alt="Diskusi kelompok siswa" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP8zN_N0W8apg_PYxQ8A1J23TCArumov9JnHt-3h_rVs7VrLxDkAS1j_L9Hdsaz7iYBBE9-bYThaCEaIFBn2LANsL8GyqvqFl9iGUVUHsNynby0kvHvYjq2eOOci31pb9hb5wswE2PEC8tcVD3zbotxKtAMcXppVzAp9cMaTCWhZxUkKjpIRuXde5rDNcSYUAPiQCff6QnazB_8nkv4VRakHj_XWEz85Y3j6zi9JBolAgCPuG6Zojz">
+                </div>
+                <p class="font-label-sm text-label-sm text-on-surface-variant line-clamp-2 leading-tight">3. Diskusi kelompok siswa XI MIPA 1</p>
+              </div>
+              <!-- Photo 4 -->
+              <div class="flex flex-col gap-1 cursor-pointer" onclick="openLightbox('https://lh3.googleusercontent.com/aida-public/AB6AXuATOSUz0F5OpiEFONNBVvRTmW710Amuf9ruHyhzKevrPb4fosDKQq8VJxyznzgosSSC-ebfM8dV0G6Jps_9n7Y98CADqo_VwggnZPSlXoN7XHTBVOe6CKy8ykUQA46jNqGo0yyX0Qu3oDvfW0aTpc8XS2rQFkv0pJ1SV7vPDXzEujObMwFmEVWunCkjlu95lz6f4M5GPrn98FGqGIjusvyHOqcY2zfMvaFwA9eMs0W4HliEgvdZqGwl', '4. Pencatatan data pada lembar kerja digital')">
+                <div class="w-full h-28 rounded-xl overflow-hidden bg-surface-container-high relative">
+                  <img class="w-full h-full object-cover" alt="Pencatatan data sensor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuATOSUz0F5OpiEFONNBVvRTmW710Amuf9ruHyhzKevrPb4fosDKQq8VJxyznzgosSSC-ebfM8dV0G6Jps_9n7Y98CADqo_VwggnZPSlXoN7XHTBVOe6CKy8ykUQA46jNqGo0yyX0Qu3oDvfW0aTpc8XS2rQFkv0pJ1SV7vPDXzEujObMwFmEVWunCkjlu95lz6f4M5GPrn98FGqGIjusvyHOqcY2zfMvaFwA9eMs0W4HliEgvdZqGwl">
+                </div>
+                <p class="font-label-sm text-label-sm text-on-surface-variant line-clamp-2 leading-tight">4. Pencatatan data pada lembar kerja digital</p>
+              </div>
+            </div>
+
+            <!-- Add Documentation Button -->
+            <button class="w-full h-11 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md font-semibold flex items-center justify-center gap-space-xs active:bg-surface-container transition-colors" type="button" onclick="handleAddPhotoPrompt()">
+              <span class="material-symbols-outlined text-[20px] text-primary">add_a_photo</span>
+              <span>+ Tambah Dokumentasi Kelompok</span>
+            </button>
+          </div>
+
+          <!-- Day Navigation Pagination Card -->
+          <div class="pt-space-xs pb-space-sm flex items-center justify-between gap-space-sm">
+            <button class="flex-1 p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-start hover:bg-surface-container-low transition-colors text-left" onclick="navigate('program-oku')">
+              <span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant font-medium">
+                <span class="material-symbols-outlined text-[14px]">arrow_back</span>
+                Sebelumnya
+              </span>
+              <span class="font-label-md text-label-md font-bold text-on-surface truncate w-full mt-0.5">
+                Hari 2: Budaya Komering
+              </span>
+            </button>
+            <button class="flex-1 p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-end text-right hover:bg-surface-container-low transition-colors" onclick="navigate('program-oku')">
+              <span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant font-medium">
+                Selanjutnya
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </span>
+              <span class="font-label-md text-label-md font-bold text-on-surface truncate w-full mt-0.5">
+                Hari 4: Agrowisata Belitang
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+
+  </main>
+
+  <script src="js/core.js"></script>
+  <script>
+    function switchGuideTab(tabId) {
+      const tabs = ['pilar', 'oku', 'luar', 'aktivitas'];
+      tabs.forEach(t => {
+        const panel = document.getElementById('panel-' + t);
+        const btn = document.getElementById('tabBtn-' + t);
+        if (panel) {
+          if (t === tabId) {
+            panel.classList.remove('hidden');
+          } else {
+            panel.classList.add('hidden');
+          }
+        }
+        if (btn) {
+          if (t === tabId) {
+            btn.className = 'py-2 px-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all bg-primary text-white shadow-xs';
+          } else {
+            btn.className = 'py-2 px-3 rounded-xl text-xs font-semibold whitespace-nowrap text-on-surface-variant hover:bg-surface-container transition-all';
+          }
+        }
+      });
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    // Toggle Accordion on About Page
+    function togglePillar(id) {
+      const el = document.getElementById(id);
+      const icon = document.getElementById('icon-' + id);
+      if (!el || !icon) return;
+
+      if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        icon.classList.add('rotate-180');
+      } else {
+        el.classList.add('hidden');
+        icon.classList.remove('rotate-180');
+      }
+    }
+
+    // Toggle Timeline Collapsible on Program Luar
+    function toggleTimeline(contentId, chevronId) {
+      const content = document.getElementById(contentId);
+      const chevron = document.getElementById(chevronId);
+      if (!content || !chevron) return;
+
+      if (content.classList.contains('hidden')) {
+        content.classList.remove('hidden');
+        chevron.classList.add('rotate-180');
+      } else {
+        content.classList.add('hidden');
+        chevron.classList.remove('rotate-180');
+      }
+    }
+
+    // Hash handler
+    window.addEventListener('DOMContentLoaded', () => {
+      const hash = window.location.hash.replace('#', '');
+      if (['financial', 'culture', 'exploration', 'stem'].includes(hash)) {
+        switchGuideTab('pilar');
+        setTimeout(() => {
+          const target = document.getElementById('pillar-' + hash);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+            togglePillar('pillar-' + hash);
+          }
+        }, 300);
+      } else if (hash === 'oku') {
+        switchGuideTab('oku');
+      } else if (hash === 'luar') {
+        switchGuideTab('luar');
+      } else if (hash === 'aktivitas') {
+        switchGuideTab('aktivitas');
+      }
+    });
+  </script>
+</body>
+</html>

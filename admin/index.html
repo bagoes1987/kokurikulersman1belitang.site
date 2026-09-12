@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html class="h-full" lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <title>Portal Administrator IT - FINCESTEM 2026</title>
+  <link rel="icon" type="image/png" href="../LOGO FICESTEM2026.png">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    @layer base {
+      html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+      }
+      body {
+        overscroll-behavior-y: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      .pt-safe {
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'on-secondary-fixed-variant': '#005049',
+            'on-error-container': '#93000a',
+            'primary-fixed-dim': '#b6c4ff',
+            'tertiary-fixed': '#e9ddff',
+            'on-secondary-fixed': '#00201d',
+            'primary-container': '#1e3a8a',
+            'on-error': '#ffffff',
+            'on-background': '#131b2e',
+            'on-primary': '#ffffff',
+            'surface-dim': '#d2d9f4',
+            'surface-tint': '#4059aa',
+            'outline': '#757682',
+            'error-container': '#ffdad6',
+            'tertiary-container': '#4e03b8',
+            'background': '#faf8ff',
+            'surface-container-high': '#e2e7ff',
+            'outline-variant': '#c5c5d3',
+            'on-primary-container': '#90a8ff',
+            'surface-container-low': '#f2f3ff',
+            'on-secondary-container': '#006f66',
+            'inverse-on-surface': '#eef0ff',
+            'surface': '#faf8ff',
+            'surface-bright': '#faf8ff',
+            'on-surface': '#131b2e',
+            'on-secondary': '#ffffff',
+            'on-tertiary-fixed': '#23005c',
+            'secondary': '#006a61',
+            'tertiary': '#340081',
+            'primary-fixed': '#dce1ff',
+            'on-tertiary-container': '#b89cff',
+            'error': '#ba1a1a',
+            'on-tertiary': '#ffffff',
+            'secondary-fixed-dim': '#6bd8cb',
+            'surface-variant': '#dae2fd',
+            'tertiary-fixed-dim': '#d0bcff',
+            'on-surface-variant': '#444651',
+            'primary': '#00236f',
+            'on-primary-fixed': '#00164e',
+            'inverse-primary': '#b6c4ff',
+            'on-tertiary-fixed-variant': '#5516be',
+            'secondary-fixed': '#89f5e7',
+            'on-primary-fixed-variant': '#264191',
+            'inverse-surface': '#283044',
+            'secondary-container': '#86f2e4',
+            'surface-container-highest': '#dae2fd',
+            'surface-container': '#eaedff',
+            'surface-container-lowest': '#ffffff'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-full">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
+    <div class="h-16 px-4 flex items-center justify-between max-w-lg mx-auto w-full">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center p-1 border border-indigo-200 shrink-0">
+          <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
+        </a>
+        <div class="flex flex-col">
+          <span class="text-[10.5px] text-[#312e81] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
+          <span class="text-sm font-bold text-on-surface leading-tight">Portal Administrator</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
+          <span class="material-symbols-outlined text-xl">home</span>
+        </a>
+        <button onclick="FincestemCore.auth.logout('index.html')" class="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all" title="Keluar Akun">
+          <span class="material-symbols-outlined text-xl">logout</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50 overflow-x-auto no-scrollbar">
+      <button id="btnTabAdm1" onclick="switchAdmTab('users')" class="py-2 px-3 text-xs font-bold border-b-2 border-[#312e81] text-[#312e81] whitespace-nowrap">
+        Akun &amp; Dapodik
+      </button>
+      <button id="btnTabAdm2" onclick="switchAdmTab('config')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap">
+        Konfigurasi
+      </button>
+      <button id="btnTabAdm3" onclick="switchAdmTab('logs')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap">
+        Audit Log
+      </button>
+      <button id="btnTabAdm4" onclick="switchAdmTab('backup')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap">
+        Cadangan Data
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
+
+    <!-- USER BADGE -->
+    <div class="bg-gradient-to-r from-[#1e1b4b] to-[#312e81] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center text-white">
+          <span class="material-symbols-outlined text-2xl">admin_panel_settings</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-[11px] text-indigo-200 font-semibold">Administrator Sistem IT</span>
+          <h2 class="text-sm font-extrabold text-white leading-tight">Tim IT SMAN 1 Belitang</h2>
+          <span class="text-[10.5px] text-indigo-200/80">Hak Akses: Super Administrator</span>
+        </div>
+      </div>
+      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold">Root Access</span>
+    </div>
+
+    <!-- STATS -->
+    <div class="grid grid-cols-4 gap-1.5 text-center">
+      <div class="bg-surface-container-lowest p-2.5 rounded-2xl border border-outline-variant/25 shadow-2xs">
+        <span class="text-sm font-extrabold text-[#312e81]">1.165</span>
+        <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Siswa</span>
+      </div>
+      <div class="bg-surface-container-lowest p-2.5 rounded-2xl border border-outline-variant/25 shadow-2xs">
+        <span class="text-sm font-extrabold text-[#312e81]">24</span>
+        <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Fasilitator</span>
+      </div>
+      <div class="bg-surface-container-lowest p-2.5 rounded-2xl border border-outline-variant/25 shadow-2xs">
+        <span class="text-sm font-extrabold text-[#312e81]">4</span>
+        <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Koordinator</span>
+      </div>
+      <div class="bg-surface-container-lowest p-2.5 rounded-2xl border border-outline-variant/25 shadow-2xs">
+        <span class="text-sm font-extrabold text-[#006a61]">100%</span>
+        <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Aktif</span>
+      </div>
+    </div>
+
+    <!-- TAB 1: USERS & DAPODIK -->
+    <div id="panelAdminUsers" class="flex flex-col gap-3">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-sm text-on-surface">Sinkronisasi Data Dapodik</h3>
+          <span class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-800">Tersinkron</span>
+        </div>
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+          Basis data akun siswa (NISN), rombel kelas, dan NIP guru pamong tersinkron dengan server Dapodik Kemendikbudristek.
+        </p>
+        <button onclick="syncDapodik()" class="w-full py-2.5 rounded-xl bg-[#312e81] text-white font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-[#1e1b4b] transition-all">
+          <span class="material-symbols-outlined text-sm">sync</span>
+          <span>Tarik Pembaruan Dapodik Terbaru</span>
+        </button>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <h4 class="font-bold text-sm text-on-surface">Sampel Akun Pengguna</h4>
+        <div class="flex flex-col gap-2 text-xs">
+          <div class="p-2.5 rounded-xl bg-surface-container-low flex justify-between items-center">
+            <div>
+              <span class="font-bold text-on-surface">Anindya Putri Rahayu</span>
+              <span class="block text-[10.5px] text-on-surface-variant">NISN: 007261944 (XI MIPA 1)</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">Siswa</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-surface-container-low flex justify-between items-center">
+            <div>
+              <span class="font-bold text-on-surface">Rahmat Hidayat, S.Pd., Gr.</span>
+              <span class="block text-[10.5px] text-on-surface-variant">NIP: 198203152008011005</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-800">Fasilitator</span>
+          </div>
+          <div class="p-2.5 rounded-xl bg-surface-container-low flex justify-between items-center">
+            <div>
+              <span class="font-bold text-on-surface">Drs. H. Suryanto, M.Pd.</span>
+              <span class="block text-[10.5px] text-on-surface-variant">NIP: 197508142000031002</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">Koordinator</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CONFIG -->
+    <div id="panelAdminConfig" class="hidden flex flex-col gap-3">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5 text-xs">
+        <h3 class="font-bold text-sm text-on-surface">Pengaturan Parameter Kokurikuler</h3>
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Nama Kegiatan Resmi</label>
+          <input type="text" value="FINCESTEM 2026 SMAN 1 Belitang" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-indigo-600 outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Tahun Ajaran</label>
+          <input type="text" value="2026/2027" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-indigo-600 outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Batas Waktu Pengumpulan LKPD</label>
+          <input type="text" value="15 September 2026, 17:00 WIB" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-indigo-600 outline-none">
+        </div>
+        <button onclick="FincestemCore.ui.toast('Konfigurasi sistem berhasil disimpan!', 'success')" class="w-full py-2.5 rounded-xl bg-[#312e81] text-white font-bold text-xs">
+          Simpan Konfigurasi
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 3: AUDIT LOGS -->
+    <div id="panelAdminLogs" class="hidden flex flex-col gap-3">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-2.5 text-xs">
+        <h3 class="font-bold text-sm text-on-surface mb-1">Catatan Audit Keamanan Sistem</h3>
+        <div class="p-2 rounded-xl bg-surface-container-low font-mono text-[11px] flex justify-between">
+          <span>[12/09 14:30] LKPD Hari 3 diunggah Kelompok 4</span>
+          <span class="text-emerald-700 font-bold">SUCCESS</span>
+        </div>
+        <div class="p-2 rounded-xl bg-surface-container-low font-mono text-[11px] flex justify-between">
+          <span>[12/09 15:10] Penilaian dirilis oleh Rahmat Hidayat</span>
+          <span class="text-blue-700 font-bold">GRADED</span>
+        </div>
+        <div class="p-2 rounded-xl bg-surface-container-low font-mono text-[11px] flex justify-between">
+          <span>[12/09 15:45] Persetujuan Rute oleh Drs. Suryanto</span>
+          <span class="text-teal-700 font-bold">APPROVED</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: BACKUP & SANDBOX -->
+    <div id="panelAdminBackup" class="hidden flex flex-col gap-3">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <h3 class="font-bold text-sm text-on-surface">Cadangan Basis Data</h3>
+        <p class="text-xs text-on-surface-variant">
+          Unduh seluruh data siswa, kelompok, lembar LKPD, dan penilaian dalam format file JSON.
+        </p>
+        <button onclick="downloadBackupJSON()" class="w-full py-2.5 rounded-xl bg-[#312e81] text-white font-bold text-xs flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">download</span>
+          <span>Unduh Cadangan Database (JSON)</span>
+        </button>
+      </div>
+
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-red-200 shadow-sm flex flex-col gap-3">
+        <h3 class="font-bold text-sm text-red-700">Zona Bahaya: Reset Sandbox Demo</h3>
+        <p class="text-xs text-on-surface-variant">
+          Kembalikan seluruh data simulasi ke kondisi awal bawaan pabrik (default demo).
+        </p>
+        <button onclick="resetSandboxData()" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">restart_alt</span>
+          <span>Reset Semua Data Demo Sandbox</span>
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../js/data-mock.js"></script>
+  <script src="../js/core.js"></script>
+  <script>
+    function switchAdmTab(tab) {
+      ['users', 'config', 'logs', 'backup'].forEach((t, i) => {
+        const panel = document.getElementById('panelAdmin' + t.charAt(0).toUpperCase() + t.slice(1));
+        const btn = document.getElementById('btnTabAdm' + (i + 1));
+        if (panel) {
+          if (t === tab) panel.classList.remove('hidden');
+          else panel.classList.add('hidden');
+        }
+        if (btn) {
+          if (t === tab) {
+            btn.className = 'py-2 px-3 text-xs font-bold border-b-2 border-[#312e81] text-[#312e81] whitespace-nowrap';
+          } else {
+            btn.className = 'py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap';
+          }
+        }
+      });
+    }
+
+    function syncDapodik() {
+      FincestemCore.ui.toast('Sinkronisasi 1.165 data siswa dari Dapodik SMAN 1 Belitang sukses!', 'success');
+    }
+
+    function downloadBackupJSON() {
+      const data = FincestemDB.get();
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+      const a = document.createElement('a');
+      a.setAttribute("href", str);
+      a.setAttribute("download", "FINCESTEM_2026_Backup.json");
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      FincestemCore.ui.toast('Cadangan JSON berhasil diunduh.', 'success');
+    }
+
+    function resetSandboxData() {
+      if (confirm('Apakah Anda yakin ingin mereset seluruh data simulasi ke kondisi bawaan?')) {
+        FincestemDB.resetDefaults();
+        FincestemCore.ui.toast('Data demo telah direset ke pengaturan awal.', 'info');
+        setTimeout(() => location.reload(), 800);
+      }
+    }
+  </script>
+</body>
+</html>

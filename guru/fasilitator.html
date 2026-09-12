@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html class="h-full" lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <title>Portal Fasilitator Guru - FINCESTEM 2026 - SMAN 1 Belitang</title>
+  <link rel="icon" type="image/png" href="../LOGO FICESTEM2026.png">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    @layer base {
+      html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+      }
+      body {
+        overscroll-behavior-y: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .pb-safe {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      .pt-safe {
+        padding-top: env(safe-area-inset-top, 0px);
+      }
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'on-secondary-fixed-variant': '#005049',
+            'on-error-container': '#93000a',
+            'primary-fixed-dim': '#b6c4ff',
+            'tertiary-fixed': '#e9ddff',
+            'on-secondary-fixed': '#00201d',
+            'primary-container': '#1e3a8a',
+            'on-error': '#ffffff',
+            'on-background': '#131b2e',
+            'on-primary': '#ffffff',
+            'surface-dim': '#d2d9f4',
+            'surface-tint': '#4059aa',
+            'outline': '#757682',
+            'error-container': '#ffdad6',
+            'tertiary-container': '#4e03b8',
+            'background': '#faf8ff',
+            'surface-container-high': '#e2e7ff',
+            'outline-variant': '#c5c5d3',
+            'on-primary-container': '#90a8ff',
+            'surface-container-low': '#f2f3ff',
+            'on-secondary-container': '#006f66',
+            'inverse-on-surface': '#eef0ff',
+            'surface': '#faf8ff',
+            'surface-bright': '#faf8ff',
+            'on-surface': '#131b2e',
+            'on-secondary': '#ffffff',
+            'on-tertiary-fixed': '#23005c',
+            'secondary': '#006a61',
+            'tertiary': '#340081',
+            'primary-fixed': '#dce1ff',
+            'on-tertiary-container': '#b89cff',
+            'error': '#ba1a1a',
+            'on-tertiary': '#ffffff',
+            'secondary-fixed-dim': '#6bd8cb',
+            'surface-variant': '#dae2fd',
+            'tertiary-fixed-dim': '#d0bcff',
+            'on-surface-variant': '#444651',
+            'primary': '#00236f',
+            'on-primary-fixed': '#00164e',
+            'inverse-primary': '#b6c4ff',
+            'on-tertiary-fixed-variant': '#5516be',
+            'secondary-fixed': '#89f5e7',
+            'on-primary-fixed-variant': '#264191',
+            'inverse-surface': '#283044',
+            'secondary-container': '#86f2e4',
+            'surface-container-highest': '#dae2fd',
+            'surface-container': '#eaedff',
+            'surface-container-lowest': '#ffffff'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-full">
+
+  <!-- TOP HEADER -->
+  <header class="sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
+    <div class="h-16 px-4 flex items-center justify-between max-w-lg mx-auto w-full">
+      <div class="flex items-center gap-3">
+        <a href="../index.html" class="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center p-1 border border-purple-200 shrink-0">
+          <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
+        </a>
+        <div class="flex flex-col">
+          <span class="text-[10.5px] text-[#581c87] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
+          <span class="text-sm font-bold text-on-surface leading-tight">Portal Fasilitator Guru</span>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="../index.html" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
+          <span class="material-symbols-outlined text-xl">home</span>
+        </a>
+        <button onclick="FincestemCore.auth.logout('fasilitator.html')" class="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all" title="Keluar Akun">
+          <span class="material-symbols-outlined text-xl">logout</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50">
+      <button id="btnTabFas1" onclick="switchFasTab('penilaian')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#581c87] text-[#581c87]">
+        Penilaian LKPD
+      </button>
+      <button id="btnTabFas2" onclick="switchFasTab('presensi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">
+        Presensi Siswa
+      </button>
+      <button id="btnTabFas3" onclick="switchFasTab('materi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">
+        Bahan Bimbingan
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
+
+    <!-- USER BADGE -->
+    <div class="bg-gradient-to-r from-[#581c87] to-[#7e22ce] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center text-white">
+          <span class="material-symbols-outlined text-2xl">co_present</span>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-[11px] text-purple-200 font-semibold">Guru Fasilitator Lapangan</span>
+          <h2 class="text-sm font-extrabold text-white leading-tight">Rahmat Hidayat, S.Pd., Gr.</h2>
+          <span class="text-[10.5px] text-purple-200/80">Pembina: Kelompok 1 s.d. 5 (XI MIPA 1 &amp; 2)</span>
+        </div>
+      </div>
+      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold">Fasilitator</span>
+    </div>
+
+    <!-- TAB 1: PENILAIAN LKPD -->
+    <div id="panelFasPenilaian" class="flex flex-col gap-3">
+
+      <!-- GROUP 4 (LIVE SYNCED TO MOCK DB) -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h4 class="font-extrabold text-sm text-primary">Kelompok 4 - Belitang Cerdas</h4>
+            <span class="text-xs text-on-surface-variant">Ketua: Anindya Putri Rahayu (XI MIPA 1)</span>
+          </div>
+          <span id="badgeLKPDGroup4" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800">Telah Dinilai (94/100)</span>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-surface-container-low text-xs text-on-surface-variant flex flex-col gap-1">
+          <div class="flex justify-between">
+            <span>Tugas:</span>
+            <span class="font-semibold text-on-surface">Uji Debit &amp; Kualitas Air Saluran Primer BK 9</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Berkas Siswa:</span>
+            <span class="font-bold text-primary">Laporan_Kelompok4_FINCESTEM_BK9.pdf</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Nilai Rubrik:</span>
+            <span id="scoreDisplayGroup4" class="font-extrabold text-teal-700">94 / 100 • Sangat Baik</span>
+          </div>
+        </div>
+
+        <button onclick="openGradingModal('group-4', 'Kelompok 4 - Belitang Cerdas', 'Anindya Putri Rahayu')" class="w-full py-2.5 rounded-xl bg-[#581c87] hover:bg-[#4c1d95] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm">
+          <span class="material-symbols-outlined text-sm">edit_note</span>
+          <span>Buka &amp; Nilai Lembar LKPD Ini</span>
+        </button>
+      </div>
+
+      <!-- GROUP 1 -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h4 class="font-extrabold text-sm text-primary">Kelompok 1 - Sinar Komering</h4>
+            <span class="text-xs text-on-surface-variant">Ketua: Ahmad Fauzi (XI MIPA 1)</span>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800">Selesai (92/100)</span>
+        </div>
+        <div class="p-3 rounded-2xl bg-surface-container-low text-xs text-on-surface-variant flex flex-col gap-1">
+          <div class="flex justify-between">
+            <span>Tugas:</span>
+            <span class="font-semibold text-on-surface">Kajian Sejarah Budaya Candi Martapura</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Nilai:</span>
+            <span class="font-bold text-teal-700">92 / 100 • Tuntas</span>
+          </div>
+        </div>
+        <button onclick="openGradingModal('group-1', 'Kelompok 1 - Sinar Komering', 'Ahmad Fauzi')" class="w-full py-2.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+          <span class="material-symbols-outlined text-sm">visibility</span>
+          <span>Lihat Rincian Penilaian</span>
+        </button>
+      </div>
+
+      <!-- GROUP 2 -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h4 class="font-extrabold text-sm text-primary">Kelompok 2 - Sriwijaya Muda</h4>
+            <span class="text-xs text-on-surface-variant">Ketua: Rian Pratama (XI MIPA 2)</span>
+          </div>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Menunggu Penilaian</span>
+        </div>
+        <button onclick="openGradingModal('group-2', 'Kelompok 2 - Sriwijaya Muda', 'Rian Pratama')" class="w-full py-2.5 rounded-xl bg-[#581c87] hover:bg-[#4c1d95] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm">
+          <span class="material-symbols-outlined text-sm">edit_note</span>
+          <span>Beri Nilai LKPD Kelompok 2</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- TAB 2: PRESENSI SISWA -->
+    <div id="panelFasPresensi" class="hidden flex flex-col gap-3">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <h3 class="font-bold text-sm text-on-surface">Presensi Lapangan Kelompok 4 (Hari Ke-3)</h3>
+        <div class="flex flex-col gap-2 text-xs">
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+            <span>Anindya Putri Rahayu</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10.5px]">Hadir</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+            <span>Budi Santoso</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10.5px]">Hadir</span>
+          </div>
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+            <span>Citra Dewi Lestari</span>
+            <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-[10.5px]">Hadir</span>
+          </div>
+        </div>
+        <button onclick="FincestemCore.ui.toast('Presensi kehadiran lapangan tersimpan!', 'success')" class="w-full py-2.5 rounded-xl bg-primary text-white font-bold text-xs">
+          Simpan Presensi Kelas
+        </button>
+      </div>
+    </div>
+
+    <!-- TAB 3: BAHAN BIMBINGAN -->
+    <div id="panelFasMateri" class="hidden flex flex-col gap-3">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <h3 class="font-bold text-sm text-on-surface">Panduan Rubrik Penilaian 4 Pilar</h3>
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+          Gunakan rubrik analitis berjenjang 1 s.d. 100 dengan bobot berimbang: Financial (25%), Culture (25%), Exploration (25%), STEM (25%).
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL RUBRIK PENILAIAN FASILITATOR (INTEGRATED WITH LOCALSTORAGE) -->
+  <div id="modalGradingFasilitator" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-surface-container pb-2">
+        <div>
+          <h3 id="modalGradingGroupName" class="font-extrabold text-base text-primary">Kelompok 4 - Belitang Cerdas</h3>
+          <span id="modalGradingStudentName" class="text-xs text-on-surface-variant">Ketua: Anindya Putri Rahayu</span>
+        </div>
+        <button onclick="closeGradingModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3 text-xs">
+        <!-- Rubrik 1 -->
+        <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col gap-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-amber-800">1. Pilar Financial (Kalkulasi HPP &amp; Analisis)</span>
+            <input id="gradeFinancial" type="number" min="0" max="100" value="95" class="w-16 px-2 py-1 rounded-lg border border-amber-400 bg-white text-right font-bold text-xs">
+          </div>
+          <span class="text-[10.5px] text-on-surface-variant">Akurasi struktur biaya produksi dan pemahaman rantai tata niaga beras.</span>
+        </div>
+
+        <!-- Rubrik 2 -->
+        <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex flex-col gap-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-purple-800">2. Pilar Culture (Kearifan Lokal Belitang)</span>
+            <input id="gradeCulture" type="number" min="0" max="100" value="92" class="w-16 px-2 py-1 rounded-lg border border-purple-400 bg-white text-right font-bold text-xs">
+          </div>
+          <span class="text-[10.5px] text-on-surface-variant">Pemaknaan nilai gotong royong sambatan dan catatan sejarah transmigrasi.</span>
+        </div>
+
+        <!-- Rubrik 3 -->
+        <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col gap-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-emerald-800">3. Pilar Exploration (Navigasi Lapangan)</span>
+            <input id="gradeExploration" type="number" min="0" max="100" value="96" class="w-16 px-2 py-1 rounded-lg border border-emerald-400 bg-white text-right font-bold text-xs">
+          </div>
+          <span class="text-[10.5px] text-on-surface-variant">Ketepatan titik elevasi saluran air dan dokumentasi geospasial.</span>
+        </div>
+
+        <!-- Rubrik 4 -->
+        <div class="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex flex-col gap-1.5">
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-blue-800">4. Pilar STEM (Uji Kualitas Air &amp; Debit)</span>
+            <input id="gradeSTEM" type="number" min="0" max="100" value="94" class="w-16 px-2 py-1 rounded-lg border border-blue-400 bg-white text-right font-bold text-xs">
+          </div>
+          <span class="text-[10.5px] text-on-surface-variant">Presisi pengujian pH air dan kalkulasi debit aliran kontinu (Q = A x v).</span>
+        </div>
+
+        <!-- Feedback -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface mb-1">Catatan &amp; Umpan Balik Guru Pembina</label>
+          <textarea id="gradeFeedbackInput" rows="3" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed focus:border-purple-600 outline-none">Analisis debit air dan perhitungan marjin ekonomi sangat akurat. Dokumentasi lapangan lengkap dan memenuhi standar akademik.</textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-2 border-t border-surface-container">
+        <button onclick="closeGradingModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all">
+          Tutup
+        </button>
+        <button onclick="submitGrading()" class="flex-1 py-2.5 rounded-xl bg-[#581c87] hover:bg-[#4c1d95] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md">
+          <span class="material-symbols-outlined text-sm">send</span>
+          <span>Kirim Nilai ke Siswa</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/data-mock.js"></script>
+  <script src="../js/core.js"></script>
+  <script>
+    let activeGroupId = 'group-4';
+
+    function switchFasTab(tab) {
+      ['penilaian', 'presensi', 'materi'].forEach(t => {
+        const panel = document.getElementById('panelFas' + t.charAt(0).toUpperCase() + t.slice(1));
+        const btn = document.getElementById('btnTabFas' + (t === 'penilaian' ? '1' : (t === 'presensi' ? '2' : '3')));
+        if (panel) {
+          if (t === tab) panel.classList.remove('hidden');
+          else panel.classList.add('hidden');
+        }
+        if (btn) {
+          if (t === tab) {
+            btn.className = 'flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#581c87] text-[#581c87]';
+          } else {
+            btn.className = 'flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface';
+          }
+        }
+      });
+    }
+
+    function openGradingModal(groupId, groupName, studentName) {
+      activeGroupId = groupId;
+      const grp = FincestemDB.getGroup(groupId);
+      document.getElementById('modalGradingGroupName').textContent = groupName;
+      document.getElementById('modalGradingStudentName').textContent = 'Ketua: ' + studentName;
+
+      if (grp && grp.scores) {
+        document.getElementById('gradeFinancial').value = grp.scores.financial || 90;
+        document.getElementById('gradeCulture').value = grp.scores.culture || 90;
+        document.getElementById('gradeExploration').value = grp.scores.exploration || 90;
+        document.getElementById('gradeSTEM').value = grp.scores.stem || 90;
+        document.getElementById('gradeFeedbackInput').value = grp.feedback || '';
+      }
+
+      const modal = document.getElementById('modalGradingFasilitator');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeGradingModal() {
+      const modal = document.getElementById('modalGradingFasilitator');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function submitGrading() {
+      const fin = parseInt(document.getElementById('gradeFinancial').value) || 90;
+      const cul = parseInt(document.getElementById('gradeCulture').value) || 90;
+      const exp = parseInt(document.getElementById('gradeExploration').value) || 90;
+      const stem = parseInt(document.getElementById('gradeSTEM').value) || 90;
+      const fb = document.getElementById('gradeFeedbackInput').value;
+
+      const avg = Math.round((fin + cul + exp + stem) / 4);
+
+      // Save into FincestemDB (LocalStorage)
+      FincestemDB.gradeGroup(activeGroupId, { financial: fin, culture: cul, exploration: exp, stem: stem }, fb);
+
+      if (activeGroupId === 'group-4') {
+        document.getElementById('badgeLKPDGroup4').textContent = 'Telah Dinilai (' + avg + '/100)';
+        document.getElementById('scoreDisplayGroup4').textContent = avg + ' / 100 • Sangat Baik';
+      }
+
+      closeGradingModal();
+      FincestemCore.ui.toast('Nilai ' + avg + '/100 berhasil dirilis untuk ' + activeGroupId + '!', 'success');
+    }
+  </script>
+</body>
+</html>
