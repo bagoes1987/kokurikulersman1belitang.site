@@ -303,7 +303,7 @@
 
       <!-- Welcome / Philosophy Card: KEGIATAN KOKURIKULER FINCESTEM -->
       <div class="px-margin-mobile mt-6">
-        <div class="relative overflow-hidden rounded-3xl bg-surface-container-lowest p-5 sm:p-6 shadow-sm flex flex-col gap-3.5 border border-outline-variant/20">
+        <div id="fincestem-card-container" class="relative overflow-hidden rounded-3xl bg-surface-container-lowest p-5 sm:p-6 shadow-sm flex flex-col gap-3.5 border border-outline-variant/20">
           <div class="flex items-start gap-3.5">
             <div class="w-11 h-11 rounded-2xl bg-secondary-container flex items-center justify-center flex-shrink-0 shadow-2xs">
               <span class="material-symbols-outlined text-on-secondary-container text-2xl" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
@@ -316,8 +316,15 @@
             </div>
           </div>
 
-          <!-- Paragraphs (Visible Preview) -->
-          <div class="flex flex-col gap-3 text-on-surface-variant font-body-md text-[13.5px] leading-relaxed text-justify">
+          <!-- Collapsed Preview (Hanya Paragraf Inti FINCESTEM) -->
+          <div id="fincestem-preview" class="text-on-surface-variant font-body-md text-[13.5px] sm:text-[14px] leading-relaxed text-justify">
+            <p>
+              SMA Negeri 1 Belitang mengembangkan kegiatan kokurikuler bertema <strong class="text-on-surface font-bold">FINCESTEM (Financial, Culture, Exploration, and STEM)</strong> sebagai pembelajaran berbasis pengalaman yang mengintegrasikan literasi finansial, kebudayaan, eksplorasi, serta <em>Science, Technology, Engineering, and Mathematics</em>. Pelaksanaannya dibagi menjadi dua ruang pembelajaran, yaitu FINCESTEM di Kabupaten OKU Timur dan FINCESTEM di luar Kabupaten OKU Timur.
+            </p>
+          </div>
+
+          <!-- Full Content (Tampil Berurutan dari Paragraf 1 sampai 6 saat Baca Selengkapnya) -->
+          <div id="fincestem-full" class="hidden flex flex-col gap-3.5 text-on-surface-variant font-body-md text-[13.5px] sm:text-[14px] leading-relaxed text-justify">
             <p>
               Pendidikan pada jenjang Sekolah Menengah Atas tidak hanya berlangsung melalui pembelajaran di dalam kelas, tetapi juga melalui pengalaman nyata yang mampu mengembangkan pengetahuan, keterampilan, karakter, dan kompetensi peserta didik secara utuh. Kegiatan kokurikuler menjadi ruang strategis untuk menghubungkan konsep yang dipelajari di sekolah dengan berbagai fenomena sosial, budaya, ekonomi, lingkungan, sains, dan teknologi.
             </p>
@@ -325,43 +332,42 @@
               SMA Negeri 1 Belitang mengembangkan kegiatan kokurikuler bertema <strong class="text-on-surface font-bold">FINCESTEM (Financial, Culture, Exploration, and STEM)</strong> sebagai pembelajaran berbasis pengalaman yang mengintegrasikan literasi finansial, kebudayaan, eksplorasi, serta <em>Science, Technology, Engineering, and Mathematics</em>. Pelaksanaannya dibagi menjadi dua ruang pembelajaran, yaitu FINCESTEM di Kabupaten OKU Timur dan FINCESTEM di luar Kabupaten OKU Timur.
             </p>
 
-            <!-- Extended Content (Toggled by Baca Selengkapnya) -->
-            <div id="fincestem-extended-text" class="hidden flex flex-col gap-3 pt-1">
-              <div class="p-3.5 rounded-2xl bg-surface-container-low/70 border border-outline-variant/25 flex flex-col gap-2">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-secondary"></span>
-                  <h3 class="font-title-md text-xs font-bold text-on-surface uppercase tracking-wide">FINCESTEM di Kabupaten OKU Timur</h3>
-                </div>
-                <p>
-                  FINCESTEM di Kabupaten OKU Timur menjadikan potensi daerah sebagai laboratorium pembelajaran nyata. Peserta didik mengkaji aspek finansial melalui kebanksentralan, koperasi, perbankan mini, pengelolaan keuangan, transaksi, investasi, dan ekonomi lokal. Eksplorasi budaya dan potensi sumber daya dilakukan melalui kajian serta observasi terhadap pertanian, perkebunan, dan perikanan, termasuk komoditas lokal, teknik budidaya, kearifan masyarakat, dan pengelolaan sumber daya alam. Pendekatan STEM diterapkan melalui pemanfaatan teknologi budidaya, perancangan alat sederhana, serta analisis matematis terhadap produktivitas, biaya, pendapatan, dan keuntungan. Hasil kegiatan kemudian diolah menjadi laporan dan dokumentasi video kreatif sebagai bentuk analisis, refleksi, dan publikasi pembelajaran.
-                </p>
+            <!-- Sub-section: FINCESTEM di Kabupaten OKU Timur -->
+            <div class="p-3.5 sm:p-4 rounded-2xl bg-surface-container-low/80 border border-outline-variant/30 flex flex-col gap-2 shadow-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                <h3 class="font-title-md text-xs sm:text-sm font-bold text-on-surface uppercase tracking-wide">FINCESTEM di Kabupaten OKU Timur</h3>
               </div>
-
-              <div class="p-3.5 rounded-2xl bg-surface-container-low/70 border border-outline-variant/25 flex flex-col gap-2">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-primary"></span>
-                  <h3 class="font-title-md text-xs font-bold text-on-surface uppercase tracking-wide">FINCESTEM di Luar Kabupaten OKU Timur</h3>
-                </div>
-                <p>
-                  Sementara itu, FINCESTEM di luar Kabupaten OKU Timur dilaksanakan melalui perjalanan pembelajaran Belitang–Semarang–Malang–Bromo–Yogyakarta–Belitang. Keragaman potensi setiap daerah menjadi sumber belajar kontekstual bagi peserta didik untuk mengeksplorasi pendidikan, ekonomi, kebudayaan, agribisnis, ekonomi kreatif, teknologi, geologi, vulkanisme, lingkungan, pariwisata, serta kehidupan masyarakat. Peserta didik melakukan observasi, wawancara, pengumpulan dan analisis data, dokumentasi, diskusi, penyusunan laporan, pengembangan produk, dan refleksi.
-                </p>
-              </div>
-
-              <p>
-                Seluruh rangkaian FINCESTEM diperkuat melalui pendekatan <strong class="text-on-surface font-semibold">Pembelajaran Mendalam</strong>, dengan menempatkan peserta didik sebagai subjek aktif yang belajar melalui pengalaman, bukti, analisis, kolaborasi, pemecahan masalah, dan penciptaan karya. Kegiatan ini terutama diarahkan untuk mengembangkan <em>Penalaran Kritis, Kolaborasi, dan Kreativitas</em>, sekaligus memperkuat <em>Kewargaan, Kemandirian, dan Komunikasi</em>.
-              </p>
-
-              <p>
-                Dengan demikian, FINCESTEM menghadirkan pembelajaran dari potensi lokal menuju wawasan yang lebih luas. Peserta didik tidak sekadar mempelajari konsep, tetapi mengalami, mengamati, menganalisis, membandingkan, dan menghasilkan karya dari berbagai sumber belajar. Melalui eksplorasi OKU Timur hingga Semarang, Malang, Bromo, dan Yogyakarta, peserta didik diharapkan mampu mengenali potensi daerahnya, memperluas wawasan, serta menerapkan pengetahuan dan keterampilan untuk menghasilkan gagasan dan solusi yang kreatif, inovatif, dan berkelanjutan.
+              <p class="text-on-surface-variant text-[13px] sm:text-[13.5px] leading-relaxed">
+                FINCESTEM di Kabupaten OKU Timur menjadikan potensi daerah sebagai laboratorium pembelajaran nyata. Peserta didik mengkaji aspek finansial melalui kebanksentralan, koperasi, perbankan mini, pengelolaan keuangan, transaksi, investasi, dan ekonomi lokal. Eksplorasi budaya dan potensi sumber daya dilakukan melalui kajian serta observasi terhadap pertanian, perkebunan, dan perikanan, termasuk komoditas lokal, teknik budidaya, kearifan masyarakat, dan pengelolaan sumber daya alam. Pendekatan STEM diterapkan melalui pemanfaatan teknologi budidaya, perancangan alat sederhana, serta analisis matematis terhadap produktivitas, biaya, pendapatan, dan keuntungan. Hasil kegiatan kemudian diolah menjadi laporan dan dokumentasi video kreatif sebagai bentuk analisis, refleksi, dan publikasi pembelajaran.
               </p>
             </div>
+
+            <!-- Sub-section: FINCESTEM di Luar Kabupaten OKU Timur -->
+            <div class="p-3.5 sm:p-4 rounded-2xl bg-surface-container-low/80 border border-outline-variant/30 flex flex-col gap-2 shadow-xs">
+              <div class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                <h3 class="font-title-md text-xs sm:text-sm font-bold text-on-surface uppercase tracking-wide">FINCESTEM di Luar Kabupaten OKU Timur</h3>
+              </div>
+              <p class="text-on-surface-variant text-[13px] sm:text-[13.5px] leading-relaxed">
+                Sementara itu, FINCESTEM di luar Kabupaten OKU Timur dilaksanakan melalui perjalanan pembelajaran Belitang–Semarang–Malang–Bromo–Yogyakarta–Belitang. Keragaman potensi setiap daerah menjadi sumber belajar kontekstual bagi peserta didik untuk mengeksplorasi pendidikan, ekonomi, kebudayaan, agribisnis, ekonomi kreatif, teknologi, geologi, vulkanisme, lingkungan, pariwisata, serta kehidupan masyarakat. Peserta didik melakukan observasi, wawancara, pengumpulan dan analisis data, dokumentasi, diskusi, penyusunan laporan, pengembangan produk, dan refleksi.
+              </p>
+            </div>
+
+            <p>
+              Seluruh rangkaian FINCESTEM diperkuat melalui pendekatan <strong class="text-on-surface font-semibold">Pembelajaran Mendalam</strong>, dengan menempatkan peserta didik sebagai subjek aktif yang belajar melalui pengalaman, bukti, analisis, kolaborasi, pemecahan masalah, dan penciptaan karya. Kegiatan ini terutama diarahkan untuk mengembangkan <em>Penalaran Kritis, Kolaborasi, dan Kreativitas</em>, sekaligus memperkuat <em>Kewargaan, Kemandirian, dan Komunikasi</em>.
+            </p>
+
+            <p>
+              Dengan demikian, FINCESTEM menghadirkan pembelajaran dari potensi lokal menuju wawasan yang lebih luas. Peserta didik tidak sekadar mempelajari konsep, tetapi mengalami, mengamati, menganalisis, membandingkan, dan menghasilkan karya dari berbagai sumber belajar. Melalui eksplorasi OKU Timur hingga Semarang, Malang, Bromo, dan Yogyakarta, peserta didik diharapkan mampu mengenali potensi daerahnya, memperluas wawasan, serta menerapkan pengetahuan dan keterampilan untuk menghasilkan gagasan dan solusi yang kreatif, inovatif, dan berkelanjutan.
+            </p>
           </div>
 
           <!-- Read More / Collapse Toggle Button -->
           <div class="pt-1">
-            <button id="btn-toggle-fincestem-readmore" onclick="toggleFincestemReadMore()" class="inline-flex items-center gap-1.5 py-2 px-3.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold font-label-md text-xs active:scale-95 transition-all shadow-2xs">
+            <button id="btn-toggle-fincestem-readmore" onclick="toggleFincestemReadMore()" class="inline-flex items-center gap-1.5 py-2.5 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold font-label-md text-xs sm:text-sm active:scale-95 transition-all shadow-2xs cursor-pointer select-none">
               <span id="text-fincestem-readmore">Baca Selengkapnya</span>
-              <span id="icon-fincestem-readmore" class="material-symbols-outlined text-sm">arrow_forward</span>
+              <span id="icon-fincestem-readmore" class="material-symbols-outlined text-sm sm:text-base">arrow_forward</span>
             </button>
           </div>
         </div>
@@ -593,18 +599,33 @@
   <script>
     // Toggle FINCESTEM Philosophy Read More
     function toggleFincestemReadMore() {
-      const ext = document.getElementById('fincestem-extended-text');
+      const previewEl = document.getElementById('fincestem-preview');
+      const fullEl = document.getElementById('fincestem-full');
       const btnText = document.getElementById('text-fincestem-readmore');
       const btnIcon = document.getElementById('icon-fincestem-readmore');
-      if (!ext) return;
-      if (ext.classList.contains('hidden')) {
-        ext.classList.remove('hidden');
+      const cardContainer = document.getElementById('fincestem-card-container');
+
+      if (!previewEl || !fullEl) return;
+
+      const isExpanded = !fullEl.classList.contains('hidden');
+
+      if (!isExpanded) {
+        // Tampilkan versi lengkap (Paragraf 1 s.d. 6 berurutan)
+        previewEl.classList.add('hidden');
+        fullEl.classList.remove('hidden');
         if (btnText) btnText.textContent = 'Tutup Sebagian';
         if (btnIcon) btnIcon.textContent = 'arrow_upward';
       } else {
-        ext.classList.add('hidden');
+        // Kembalikan ke versi ringkas (Hanya paragraf inti FINCESTEM)
+        fullEl.classList.add('hidden');
+        previewEl.classList.remove('hidden');
         if (btnText) btnText.textContent = 'Baca Selengkapnya';
         if (btnIcon) btnIcon.textContent = 'arrow_forward';
+
+        // Scroll halus ke kartu agar pengguna tidak kehilangan posisi baca
+        if (cardContainer) {
+          cardContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }
     }
   </script>
