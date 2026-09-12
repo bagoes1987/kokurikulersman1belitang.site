@@ -92,7 +92,7 @@ Lalu buka peramban Anda pada alamat:
 ## 🏛️ Identitas Institusi
 **SMA Negeri 1 Belitang**  
 Kabupaten Ogan Komering Ulu Timur, Sumatera Selatan  
-Jalan M.P. Bangsa Raja No. 1001, Gumawang, Kec. Belitang, Kab. OKU Timur, Sumsel 32382  
-Telepon/Faksimile: (0735) 450106 | Laman: [www.sman1belitang.sch.id](http://www.sman1belitang.sch.id) | Pos-el: sman1belitang@gmail.com
+Jl. M.P. Bangsa Raja No. 1001, Gumawang, Kec. Belitang, Kab. OKU Timur, Prov. Sumsel  
+Tel/Faks: (0735) 450106 | Website: [www.sman1belitang.sch.id](http://www.sman1belitang.sch.id) | Email: sman1belitang@gmail.com | Kode Pos: 32182
 
 © 2026 Kurikulum SMAN 1 Belitang. All Rights Reserved.
