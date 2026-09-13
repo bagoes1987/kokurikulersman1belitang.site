@@ -139,25 +139,25 @@
         </div>
         <div class="flex flex-col">
           <span class="text-[11px] text-orange-100 font-semibold">Koordinator Lapangan</span>
-          <h2 class="text-sm font-extrabold text-white leading-tight">Drs. H. Suryanto, M.Pd.</h2>
-          <span class="text-[10.5px] text-orange-200/80">NIP. 197508142000031002</span>
+          <h2 id="koordUserName" class="text-sm font-extrabold text-white leading-tight">Koordinator Utama</h2>
+          <span id="koordUserMeta" class="text-[10.5px] text-orange-200/80">Koordinator Wilayah SMAN 1 Belitang</span>
         </div>
       </div>
-      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold">Koordinator Utama</span>
+      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold">Koordinator</span>
     </div>
 
     <!-- STATS -->
     <div class="grid grid-cols-3 gap-2 text-center">
       <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-base font-extrabold text-[#F15A24]">1.165</span>
+        <span id="statSiswaCount" class="text-base font-extrabold text-[#F15A24]">0</span>
         <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Siswa Terdaftar</span>
       </div>
       <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-base font-extrabold text-[#F15A24]">116</span>
+        <span id="statGroupCount" class="text-base font-extrabold text-[#F15A24]">0</span>
         <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Kelompok Riset</span>
       </div>
       <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-base font-extrabold text-[#F15A24]">24</span>
+        <span id="statFasilitatorCount" class="text-base font-extrabold text-[#F15A24]">0</span>
         <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Fasilitator Guru</span>
       </div>
     </div>
@@ -167,85 +167,68 @@
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <h3 class="font-bold text-sm text-on-surface">Monitoring Zona OKU Timur</h3>
-          <span class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800">82 Kelompok</span>
+          <span id="countZonaOKU" class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800">0 Kelompok</span>
         </div>
-        <p class="text-xs text-on-surface-variant">
-          Penyebaran kelompok riset di Bendungan Komering, Saluran Irigasi BK 1 s.d. BK 12, Candi Martapura, dan Pusat Gabah Belitang.
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+          Penyebaran kelompok riset di Bendungan Komering, Saluran Irigasi BK 1 s.d. BK 12, Candi Martapura, dan Sentra Agribisnis Belitang.
         </p>
-        <div class="p-3 rounded-2xl bg-teal-50 border border-teal-200/60 flex items-center justify-between text-xs text-teal-900">
-          <span class="font-semibold">Kelompok 4 (Belitang Cerdas):</span>
-          <span class="font-bold text-teal-700">Laporan LKPD Selesai Terkirim</span>
+        <div id="monitoringOKUList" class="flex flex-col gap-2">
+          <div class="p-3 rounded-2xl bg-surface-container-low text-xs text-outline text-center">
+            Belum ada kelompok yang terdaftar di Zona OKU Timur.
+          </div>
         </div>
       </div>
 
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between">
           <h3 class="font-bold text-sm text-on-surface">Monitoring Zona Luar OKU Timur</h3>
-          <span class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-purple-100 text-purple-800">34 Kelompok</span>
+          <span id="countZonaLuar" class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-purple-100 text-purple-800">0 Kelompok</span>
         </div>
-        <p class="text-xs text-on-surface-variant">
-          Perjalanan pembelajaran: Semarang–Malang–Bromo–Yogyakarta. Seluruh armada bus terhubung GPS dan dalam kondisi aman terkendali.
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+          Perjalanan pembelajaran dan eksplorasi sains lintas wilayah terkoordinasi.
         </p>
+        <div id="monitoringLuarList" class="flex flex-col gap-2">
+          <div class="p-3 rounded-2xl bg-surface-container-low text-xs text-outline text-center">
+            Belum ada kelompok yang terdaftar di Zona Luar OKU Timur.
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- TAB 2: PERSETUJUAN RUTE -->
     <div id="panelKoordPersetujuan" class="hidden flex flex-col gap-3">
-      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h4 class="font-bold text-sm text-on-surface">Kelompok 4 - Belitang Cerdas</h4>
-            <span class="text-xs text-on-surface-variant">Saluran Irigasi Primer BK 9 &amp; Sentra Penggilingan Padi</span>
-          </div>
-          <span id="routeStatusBadge4" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800">Disetujui</span>
-        </div>
-        <div class="text-xs text-on-surface-variant flex flex-col gap-1 bg-surface-container-low p-3 rounded-2xl">
-          <span>Ketua: <strong>Anindya Putri Rahayu</strong> (XI MIPA 1)</span>
-          <span>Fasilitator Pembina: <strong>Rahmat Hidayat, S.Pd., Gr.</strong></span>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="approveRoute('group-4')" class="flex-1 py-2 rounded-xl bg-[#F15A24] text-white text-xs font-bold hover:bg-[#c73e0c] transition-all flex items-center justify-center gap-1">
-            <span class="material-symbols-outlined text-sm">check_circle</span>
-            <span>Konfirmasi Persetujuan</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h4 class="font-bold text-sm text-on-surface">Kelompok 2 - Sriwijaya Muda</h4>
-            <span class="text-xs text-on-surface-variant">Bendungan Perjaya &amp; Saluran Sekunder BK 3</span>
-          </div>
-          <span id="routeStatusBadge2" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Menunggu</span>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="approveRoute('group-2')" class="flex-1 py-2 rounded-xl bg-[#F15A24] text-white text-xs font-bold hover:bg-[#c73e0c] transition-all flex items-center justify-center gap-1">
-            <span class="material-symbols-outlined text-sm">check_circle</span>
-            <span>Setujui Rute Ini</span>
-          </button>
-          <button onclick="FincestemCore.ui.toast('Catatan revisi dikirim ke Fasilitator.', 'info')" class="px-3 py-2 rounded-xl bg-surface-container text-on-surface text-xs font-semibold hover:bg-surface-container-high transition-all">
-            Revisi
-          </button>
-        </div>
-      </div>
+      <!-- Synced dynamically by JavaScript -->
     </div>
 
     <!-- TAB 3: REKAP -->
     <div id="panelKoordRekap" class="hidden flex flex-col gap-3">
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <h3 class="font-bold text-sm text-on-surface">Rekapitulasi Evaluasi Kokurikuler</h3>
-        <p class="text-xs text-on-surface-variant">
-          Unduh laporan komprehensif nilai dan tingkat ketuntasan 1.165 siswa kelas XI SMAN 1 Belitang.
+        <p class="text-xs text-on-surface-variant leading-relaxed">
+          Laporan terpadu pencapaian rubrik penilaian 4 pilar, status verifikasi rute, dan portofolio seluruh peserta didik.
         </p>
-        <button onclick="exportReport()" class="w-full py-3 rounded-xl bg-[#F15A24] text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#c73e0c] transition-all shadow-sm">
+        <div class="p-3 rounded-2xl bg-surface-container-low text-xs flex flex-col gap-1.5 text-on-surface-variant">
+          <div class="flex justify-between">
+            <span>Total Kelompok Terdaftar:</span>
+            <span id="rekapTotalGroups" class="font-bold text-on-surface">0</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Rute Telah Disetujui:</span>
+            <span id="rekapApprovedRoutes" class="font-bold text-teal-700">0</span>
+          </div>
+          <div class="flex justify-between">
+            <span>LKPD Telah Dinilai:</span>
+            <span id="rekapGradedLKPD" class="font-bold text-primary">0</span>
+          </div>
+        </div>
+        <button onclick="exportReport()" class="w-full py-3 rounded-xl bg-[#F15A24] text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#c73e0c] transition-all shadow-sm cursor-pointer">
           <span class="material-symbols-outlined text-lg">download</span>
-          <span>Unduh Rekap Laporan Ekspedisi (Excel / PDF)</span>
+          <span>Unduh Rekap Laporan Ekspedisi (Excel)</span>
         </button>
       </div>
     </div>
 
-      <!-- Copyright Footer -->
+    <!-- Copyright Footer -->
     <div class="text-center pt-3 pb-4">
       <p class="font-label-sm text-label-sm text-outline text-xs">
         &copy; 2026 Kurikulum SMAN 1 Belitang
@@ -253,9 +236,19 @@
     </div>
   </main>
 
-  <script src="../js/data-mock.js"></script>
   <script src="../js/core.js"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = FincestemCore.auth.getUser();
+      if (user && user.name) {
+        document.getElementById('koordUserName').textContent = user.name;
+        document.getElementById('koordUserMeta').textContent = user.role === 'koordinator' 
+          ? (user.assignment || 'Koordinator Wilayah SMAN 1 Belitang')
+          : 'Koordinator Kokurikuler';
+      }
+      refreshKoordinatorData();
+    });
+
     function switchKoordTab(tab) {
       ['monitoring', 'persetujuan', 'rekap'].forEach(t => {
         const panel = document.getElementById('panelKoord' + t.charAt(0).toUpperCase() + t.slice(1));
@@ -274,20 +267,139 @@
       });
     }
 
-    function approveRoute(groupId) {
-      FincestemDB.approveRoute(groupId);
-      if (groupId === 'group-4') {
-        document.getElementById('routeStatusBadge4').textContent = 'Disetujui';
-        document.getElementById('routeStatusBadge4').className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800';
-      } else if (groupId === 'group-2') {
-        document.getElementById('routeStatusBadge2').textContent = 'Disetujui';
-        document.getElementById('routeStatusBadge2').className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800';
+    function getDB() {
+      try {
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        if (stored) return JSON.parse(stored);
+      } catch (e) {}
+      return { groups: [], documentation: [] };
+    }
+
+    function refreshKoordinatorData() {
+      const db = getDB();
+      const groups = db.groups || [];
+
+      // Update counters
+      document.getElementById('statGroupCount').textContent = groups.length;
+      document.getElementById('rekapTotalGroups').textContent = groups.length;
+
+      const approvedRoutes = groups.filter(g => g.routeStatus === 'Disetujui');
+      document.getElementById('rekapApprovedRoutes').textContent = approvedRoutes.length;
+
+      const graded = groups.filter(g => g.isGraded);
+      document.getElementById('rekapGradedLKPD').textContent = graded.length;
+
+      // Update Monitoring
+      const okuGroups = groups.filter(g => (g.zone || '').toLowerCase().includes('oku timur') || !g.zone);
+      const luarGroups = groups.filter(g => (g.zone || '').toLowerCase().includes('luar'));
+
+      document.getElementById('countZonaOKU').textContent = okuGroups.length + ' Kelompok';
+      document.getElementById('countZonaLuar').textContent = luarGroups.length + ' Kelompok';
+
+      renderMonitoringZone('monitoringOKUList', okuGroups, 'Belum ada kelompok terdaftar di Zona OKU Timur.');
+      renderMonitoringZone('monitoringLuarList', luarGroups, 'Belum ada kelompok terdaftar di Zona Luar OKU Timur.');
+
+      // Update Rute Approval Panel
+      renderRuteList(groups);
+    }
+
+    function renderMonitoringZone(elementId, groupList, emptyMsg) {
+      const container = document.getElementById(elementId);
+      if (!container) return;
+      container.innerHTML = '';
+
+      if (groupList.length === 0) {
+        container.innerHTML = `<div class="p-3 rounded-2xl bg-surface-container-low text-xs text-outline text-center">${emptyMsg}</div>`;
+        return;
       }
-      FincestemCore.ui.toast('Rute ekspedisi berhasil disetujui Koordinator!', 'success');
+
+      groupList.forEach(grp => {
+        const item = document.createElement('div');
+        item.className = 'p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-between text-xs';
+        item.innerHTML = `
+          <div>
+            <span class="font-bold text-on-surface">${grp.name || 'Kelompok Siswa'}</span>
+            <span class="block text-[11px] text-on-surface-variant">${grp.destination || 'Rute Belum Ditetapkan'}</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${grp.lkpdSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-surface-container text-outline'}">
+            ${grp.lkpdSubmitted ? 'LKPD Terkirim' : 'Eksplorasi'}
+          </span>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderRuteList(groups) {
+      const panel = document.getElementById('panelKoordPersetujuan');
+      panel.innerHTML = '';
+
+      if (groups.length === 0) {
+        panel.innerHTML = `
+          <div class="py-12 px-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 flex flex-col items-center justify-center text-center gap-2 shadow-xs">
+            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-outline mb-1">
+              <span class="material-symbols-outlined text-3xl">route</span>
+            </div>
+            <p class="font-bold text-sm text-on-surface">Belum Ada Pengajuan Rute</p>
+            <p class="text-xs text-outline max-w-xs leading-relaxed">
+              Pengajuan rute riset lapangan dari masing-masing kelompok siswa akan otomatis muncul di sini untuk divalidasi dan disetujui.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      groups.forEach(grp => {
+        const isApproved = grp.routeStatus === 'Disetujui';
+        const card = document.createElement('div');
+        card.className = 'bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3';
+        card.innerHTML = `
+          <div class="flex items-center justify-between">
+            <div>
+              <h4 class="font-bold text-sm text-on-surface">${grp.name || 'Kelompok Siswa'}</h4>
+              <span class="text-xs text-on-surface-variant">${grp.destination || grp.zone || 'Rute Lapangan'}</span>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${isApproved ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'}">
+              ${grp.routeStatus || 'Menunggu'}
+            </span>
+          </div>
+          <div class="text-xs text-on-surface-variant flex flex-col gap-1 bg-surface-container-low p-3 rounded-2xl">
+            <span>Ketua: <strong>${grp.leader || '-'}</strong> • Kelas: <strong>${grp.class || '-'}</strong></span>
+            <span>Fasilitator Pembina: <strong>${grp.facilitator || '-'}</strong></span>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="approveRoute('${grp.id}')" class="flex-1 py-2.5 rounded-xl ${isApproved ? 'bg-surface-container text-on-surface' : 'bg-[#F15A24] text-white hover:bg-[#c73e0c]'} text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer">
+              <span class="material-symbols-outlined text-sm">check_circle</span>
+              <span>${isApproved ? 'Rute Telah Disetujui' : 'Setujui Rute Ini'}</span>
+            </button>
+          </div>
+        `;
+        panel.appendChild(card);
+      });
+    }
+
+    function approveRoute(groupId) {
+      try {
+        const db = getDB();
+        const grp = (db.groups || []).find(g => g.id === groupId);
+        if (grp) {
+          grp.routeStatus = 'Disetujui';
+          localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+          FincestemCore.ui.toast('Rute ekspedisi kelompok ' + (grp.name || '') + ' berhasil disetujui!', 'success');
+          refreshKoordinatorData();
+        }
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     function exportReport() {
-      FincestemCore.ui.toast('Mengunduh Rekapitulasi_FINCESTEM_1165_Siswa.xlsx...', 'success');
+      const db = getDB();
+      const count = (db.groups || []).length;
+      if (count === 0) {
+        FincestemCore.ui.toast('Belum ada data kelompok untuk diekspor.', 'info');
+        return;
+      }
+      FincestemCore.ui.toast('Mengunduh rekapitulasi data ekspedisi ' + count + ' kelompok...', 'success');
     }
   </script>
 </body>
