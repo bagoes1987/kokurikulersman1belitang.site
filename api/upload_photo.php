@@ -5,8 +5,23 @@
  */
 require_once __DIR__ . '/db.php';
 
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    try {
+        $pdo = getDB();
+        $stmt = $pdo->query("
+            SELECT `identifier`, `nis`, `photo_url`, `zone` 
+            FROM `users` 
+            WHERE (`role` = 'siswa' OR `role` IS NULL) AND `photo_url` IS NOT NULL AND `photo_url` != ''
+        ");
+        $photos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        jsonResponse(true, 'Data foto profil siswa berhasil dimuat', $photos);
+    } catch (Exception $e) {
+        jsonResponse(false, 'Gagal memuat daftar foto: ' . $e->getMessage(), []);
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    jsonResponse(false, 'Metode HTTP harus POST', null, 405);
+    jsonResponse(false, 'Metode HTTP harus GET atau POST', null, 405);
 }
 
 $nisn = trim($_POST['nisn'] ?? '');
@@ -83,6 +98,34 @@ try {
         ':id'  => $nisn,
         ':nis' => $nisn
     ]);
+
+    // Jika user belum ada di database MySQL, sisipkan otomatis
+    $checkStmt = $pdo->prepare("SELECT `id` FROM `users` WHERE `identifier` = :id OR `nis` = :nis LIMIT 1");
+    $checkStmt->execute([':id' => $nisn, ':nis' => $nisn]);
+    if (!$checkStmt->fetch()) {
+        $studentName = trim($_POST['nama'] ?? $_POST['name'] ?? ('Peserta Didik NISN ' . $nisn));
+        $studentNis = trim($_POST['nis'] ?? $nisn);
+        $studentClass = trim($_POST['class_name'] ?? '');
+        $studentZone = trim($_POST['zone'] ?? 'FINCESTEM OKU TIMUR');
+        $gradeLevel = 'X';
+        if (strpos($studentClass, 'XI') !== false && strpos($studentClass, 'XII') === false) $gradeLevel = 'XI';
+        if (strpos($studentClass, 'XII') !== false) $gradeLevel = 'XII';
+
+        $insStmt = $pdo->prepare("
+            INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `photo_url`, `zone`) 
+            VALUES (:id, :nis, :pwd, :name, 'siswa', :grade, :class, :url, :zone)
+        ");
+        $insStmt->execute([
+            ':id'    => $nisn,
+            ':nis'   => $studentNis,
+            ':pwd'   => $studentNis,
+            ':name'  => $studentName,
+            ':grade' => $gradeLevel,
+            ':class' => $studentClass,
+            ':url'   => $relativeUrl,
+            ':zone'  => $studentZone
+        ]);
+    }
 
     jsonResponse(true, 'Foto profil berhasil diperbarui!', [
         'photo_url' => $relativeUrl,

@@ -282,42 +282,118 @@ const FincestemCore = {
     }
   },
 
-  // Modul Foto Profil Siswa
+  // Modul Foto Profil Siswa (Real-time & Ringan)
   profile: {
+    normalizePhotoUrl: function(url) {
+      if (!url) return null;
+      if (url.startsWith('data:') || url.startsWith('blob:') || url.startsWith('http')) return url;
+      const isSubdir = window.location.pathname.includes('/siswa/') || 
+                       window.location.pathname.includes('/guru/') || 
+                       window.location.pathname.includes('/admin/');
+      const cleanPath = url.replace(/^(\.\.\/)+/, '').replace(/^\//, '');
+      return isSubdir ? '../' + cleanPath : cleanPath;
+    },
+
     getPhoto: function(nisn) {
       if (!nisn) return null;
-      return localStorage.getItem('fincestem_photo_' + nisn) || null;
+      const cleanNisn = String(nisn).trim();
+      const local = localStorage.getItem('fincestem_photo_' + cleanNisn);
+      if (local) return this.normalizePhotoUrl(local);
+
+      if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+        const found = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === cleanNisn || String(x.nis).trim() === cleanNisn);
+        if (found && found.photo_url) return this.normalizePhotoUrl(found.photo_url);
+      }
+      return null;
     },
+
+    // Kompresi foto di sisi browser agar ringan (<80 KB) & super cepat di HP
+    compressImage: function(file, maxWidth, quality, callback) {
+      if (!file || !file.type.startsWith('image/')) {
+        callback(null, file);
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          let w = img.width;
+          let h = img.height;
+          const maxDim = maxWidth || 480;
+
+          if (w > maxDim || h > maxDim) {
+            if (w > h) {
+              h = Math.round((h * maxDim) / w);
+              w = maxDim;
+            } else {
+              w = Math.round((w * maxDim) / h);
+              h = maxDim;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+
+          const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+          const compressedDataUrl = canvas.toDataURL(mime, quality || 0.82);
+
+          canvas.toBlob(function(blob) {
+            callback(compressedDataUrl, blob || file);
+          }, mime, quality || 0.82);
+        };
+        img.onerror = function() { callback(e.target.result, file); };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    },
+
     uploadStudentPhoto: function(file, nisn, callback) {
       if (!file || !nisn) {
         if (callback) callback({ success: false, message: 'File dan NISN wajib ada' });
         return;
       }
+      const self = this;
+      const cleanNisn = String(nisn).trim();
 
-      // 1. Simpan pratinjau Base64 langsung ke localStorage agar instan
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const base64Url = e.target.result;
-        localStorage.setItem('fincestem_photo_' + nisn, base64Url);
+      // Kompres otomatis sebelum disimpan/dikirim agar website tetap ringan & hemat kuota
+      this.compressImage(file, 480, 0.82, function(compressedDataUrl, compressedBlob) {
+        // 1. Simpan pratinjau lokal instan
+        if (compressedDataUrl) {
+          try {
+            localStorage.setItem('fincestem_photo_' + cleanNisn, compressedDataUrl);
+          } catch (e) {
+            console.warn('LocalStorage quota exceeded for photo preview', e);
+          }
+        }
 
         // Update sesi user jika sedang login
         const u = FincestemCore.auth.getUser();
-        if (u && (String(u.nisn).trim() === String(nisn).trim() || String(u.identifier).trim() === String(nisn).trim())) {
-          u.photo_url = base64Url;
+        if (u && (String(u.nisn).trim() === cleanNisn || String(u.identifier).trim() === cleanNisn)) {
+          u.photo_url = compressedDataUrl || u.photo_url;
           FincestemCore.auth.setUser(u, u.role);
         }
 
-        // Update di master data in-memory jika termuat
+        // Update di master data in-memory
         if (window.FincestemMasterStudents) {
-          const s = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === String(nisn).trim());
-          if (s) s.photo_url = base64Url;
+          const s = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === cleanNisn || String(x.nis).trim() === cleanNisn);
+          if (s) s.photo_url = compressedDataUrl;
         }
 
-        // 2. Upload ke backend server cPanel jika online
+        // 2. Upload ke backend server cPanel
         if (window.location.protocol.startsWith('http')) {
           const fd = new FormData();
-          fd.append('photo', file);
-          fd.append('nisn', nisn);
+          fd.append('photo', compressedBlob || file, 'photo_' + cleanNisn + '.jpg');
+          fd.append('nisn', cleanNisn);
+          if (u) {
+            if (u.nama || u.name) fd.append('nama', u.nama || u.name);
+            if (u.nis) fd.append('nis', u.nis);
+            if (u.class || u.class_name) fd.append('class_name', u.class || u.class_name);
+            if (u.zone) fd.append('zone', u.zone);
+          }
 
           fetch(FincestemCore.api.base + '/upload_photo.php', {
             method: 'POST',
@@ -326,21 +402,68 @@ const FincestemCore = {
           .then(r => r.json())
           .then(res => {
             if (res.success && res.data && res.data.photo_url) {
-              if (u && (String(u.nisn).trim() === String(nisn).trim() || String(u.identifier).trim() === String(nisn).trim())) {
-                u.photo_url = res.data.photo_url;
+              const serverPhotoUrl = self.normalizePhotoUrl(res.data.photo_url);
+              try {
+                localStorage.setItem('fincestem_photo_' + cleanNisn, serverPhotoUrl);
+              } catch (e) {}
+              if (u && (String(u.nisn).trim() === cleanNisn || String(u.identifier).trim() === cleanNisn)) {
+                u.photo_url = serverPhotoUrl;
                 FincestemCore.auth.setUser(u, u.role);
               }
             }
             if (callback) callback(res);
           })
           .catch(() => {
-            if (callback) callback({ success: true, photo_url: base64Url, local: true });
+            if (callback) callback({ success: true, photo_url: compressedDataUrl, local: true });
           });
         } else {
-          if (callback) callback({ success: true, photo_url: base64Url, local: true });
+          if (callback) callback({ success: true, photo_url: compressedDataUrl, local: true });
         }
-      };
-      reader.readAsDataURL(file);
+      });
+    },
+
+    // Sinkronisasi foto semua siswa dari server secara real-time ke Admin, Koordinator & Fasilitator
+    syncPhotos: function(callback) {
+      const self = this;
+      if (!window.location.protocol.startsWith('http')) {
+        if (callback) callback(false);
+        return;
+      }
+
+      fetch(FincestemCore.api.base + '/upload_photo.php')
+        .then(r => r.json())
+        .then(res => {
+          if (res && res.success && Array.isArray(res.data)) {
+            const master = window.FincestemMasterStudents || [];
+            res.data.forEach(item => {
+              const id = String(item.identifier || item.nisn || '').trim();
+              if (id && item.photo_url) {
+                const normUrl = self.normalizePhotoUrl(item.photo_url);
+                try {
+                  localStorage.setItem('fincestem_photo_' + id, normUrl);
+                } catch (e) {}
+
+                if (item.zone) {
+                  try {
+                    localStorage.setItem('fincestem_student_zone_' + id, item.zone);
+                  } catch (e) {}
+                }
+
+                const s = master.find(x => String(x.nisn).trim() === id || String(x.nis).trim() === id);
+                if (s) {
+                  s.photo_url = normUrl;
+                  if (item.zone) s.zone = item.zone;
+                }
+              }
+            });
+            if (callback) callback(true, res.data);
+          } else {
+            if (callback) callback(false);
+          }
+        })
+        .catch(() => {
+          if (callback) callback(false);
+        });
     }
   },
 

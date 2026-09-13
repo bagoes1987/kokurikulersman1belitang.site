@@ -700,6 +700,15 @@
       }
 
       initAdminStudentModule();
+
+      // Sinkronisasi berkala di latar belakang setiap 45 detik jika portal admin aktif & tab terlihat
+      setInterval(() => {
+        if (!document.hidden && FincestemCore.auth.isLoggedIn() && FincestemCore.profile && FincestemCore.profile.syncPhotos) {
+          FincestemCore.profile.syncPhotos(function(updated) {
+            if (updated) renderAdminStudentList();
+          });
+        }
+      }, 45000);
     });
 
     function checkAdminAuth() {
@@ -719,6 +728,13 @@
         if (admTabs) admTabs.classList.remove('hidden');
         if (logoutBtn) logoutBtn.classList.remove('hidden');
         refreshAdminStats();
+
+        // Sinkronisasi foto & zona siswa dari server cPanel secara real-time
+        if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
+          FincestemCore.profile.syncPhotos(function() {
+            renderAdminStudentList();
+          });
+        }
       } else {
         if (dashboardHeader) dashboardHeader.classList.add('hidden');
         if (loginSec) loginSec.classList.remove('hidden');

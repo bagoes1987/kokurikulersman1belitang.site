@@ -392,6 +392,15 @@
           if (e.key === 'Enter') handleFasilLogin();
         });
       }
+
+      // Sinkronisasi foto siswa secara berkala (45 detik) saat fasilitator sedang aktif
+      setInterval(() => {
+        if (!document.hidden && FincestemCore.auth.isLoggedIn() && FincestemCore.profile && FincestemCore.profile.syncPhotos) {
+          FincestemCore.profile.syncPhotos(function(updated) {
+            if (updated) renderPenilaianList();
+          });
+        }
+      }, 45000);
     });
 
     function checkFasilAuth() {
@@ -417,6 +426,11 @@
           document.getElementById('fasUserMeta').textContent = user.assignment || 'Pembina Kokurikuler FINCESTEM';
         }
         renderPenilaianList();
+        if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
+          FincestemCore.profile.syncPhotos(function() {
+            renderPenilaianList();
+          });
+        }
       } else {
         if (dashboardHeader) dashboardHeader.classList.add('hidden');
         if (loginSec) loginSec.classList.remove('hidden');
@@ -577,14 +591,17 @@
         let badgeClass = isGraded ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800';
         let badgeText = isGraded ? `Nilai: ${prog.average_score} (${prog.predicate || 'A'})` : 'Menunggu Review';
 
+        const savedPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(s.nisn)) || s.photo_url;
+        const photoHtml = savedPhoto 
+          ? `<img src="${savedPhoto}" alt="Foto" class="w-10 h-10 rounded-2xl object-cover border border-outline-variant/40 shrink-0">` 
+          : `<div class="w-10 h-10 rounded-2xl bg-emerald-50 text-[#42A447] flex items-center justify-center font-bold text-sm shrink-0"><span class="material-symbols-outlined text-lg">person</span></div>`;
+
         const card = document.createElement('div');
         card.className = 'bg-surface-container-lowest rounded-3xl p-4 border border-outline-variant/25 shadow-xs flex flex-col gap-2.5';
         card.innerHTML = `
           <div class="flex items-start justify-between gap-2">
             <div class="flex items-start gap-2.5 min-w-0">
-              <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-[#42A447] flex items-center justify-center font-bold text-sm shrink-0">
-                <span class="material-symbols-outlined text-lg">person</span>
-              </div>
+              ${photoHtml}
               <div class="flex flex-col min-w-0">
                 <h4 class="font-extrabold text-xs sm:text-sm text-on-surface truncate">${s.nama}</h4>
                 <span class="text-[11px] text-on-surface-variant">NISN: ${s.nisn} • ${s.class}</span>

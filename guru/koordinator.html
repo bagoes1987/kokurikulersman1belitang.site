@@ -355,6 +355,10 @@
           document.getElementById('koordUserMeta').textContent = user.assignment || 'Koordinator Wilayah SMAN 1 Belitang';
         }
         refreshKoordinatorData();
+
+        if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
+          FincestemCore.profile.syncPhotos();
+        }
       } else {
         if (dashboardHeader) dashboardHeader.classList.add('hidden');
         if (loginSec) loginSec.classList.remove('hidden');
