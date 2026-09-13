@@ -64,6 +64,51 @@ const FincestemCore = {
       }
 
       if (role === 'siswa') {
+        const cleanId = id.replace(/\D/g, '');
+        const paddedId = (cleanId.length >= 8 && cleanId.length <= 10) ? cleanId.padStart(10, '0') : cleanId;
+
+        // 1. Cek Master Data 1.165 Siswa Dapodik
+        const masterList = window.FincestemMasterStudents || [];
+        if (Array.isArray(masterList) && masterList.length > 0) {
+          const found = masterList.find(s => 
+            String(s.nisn).trim() === paddedId || 
+            String(s.nisn).trim() === cleanId || 
+            String(s.nis).trim() === cleanId
+          );
+
+          if (!found) {
+            return { success: false, message: 'NISN ' + id + ' tidak terdaftar dalam database Dapodik SMAN 1 Belitang!' };
+          }
+
+          // Password harus berupa NIS siswa (atau NISN)
+          const validNis = String(found.nis || '').trim();
+          if (pwd !== validNis && pwd !== String(found.nisn).trim()) {
+            return { success: false, message: 'Kata sandi salah! Masukkan nomor NIS (Nomor Induk Siswa) Anda.' };
+          }
+
+          return {
+            success: true,
+            user: {
+              name: found.nama,
+              nisn: found.nisn,
+              nis: found.nis,
+              class: found.class,
+              level: found.level,
+              gender: found.gender,
+              school_origin: found.asal_sekolah,
+              address: found.alamat,
+              ttl: found.ttl,
+              ayah: found.ayah,
+              ibu: found.ibu,
+              pekerjaan_ortu: found.pekerjaan_ortu,
+              group: 'Belum Terdaftar Kelompok',
+              groupId: '',
+              role: 'siswa'
+            }
+          };
+        }
+
+        // 2. Cek LocalStorage Cache (jika master list belum termuat)
         let db = {};
         try {
           const stored = localStorage.getItem('fincestem_db_2026_v1');
@@ -72,42 +117,44 @@ const FincestemCore = {
 
         const students = Array.isArray(db.students) ? db.students : [];
         if (students.length > 0) {
-          const found = students.find(s => String(s.nisn).trim() === id);
+          const found = students.find(s => String(s.nisn).trim() === paddedId || String(s.nisn).trim() === id);
           if (!found) {
-            return { success: false, message: 'NISN ' + id + ' belum terdaftar di sistem Dapodik SMAN 1 Belitang!' };
+            return { success: false, message: 'NISN ' + id + ' belum terdaftar di sistem!' };
           }
-          const validPwd = found.password || found.nisn || '123456';
-          if (pwd !== validPwd && pwd !== found.nisn) {
-            return { success: false, message: 'Kata sandi siswa tidak sesuai!' };
+          const validPwd = String(found.nis || found.password || found.nisn).trim();
+          if (pwd !== validPwd) {
+            return { success: false, message: 'Kata sandi siswa (NIS) tidak sesuai!' };
           }
           return {
             success: true,
             user: {
               name: found.name,
               nisn: found.nisn,
+              nis: found.nis || '-',
               class: found.class || '-',
               group: found.group || 'Belum Ditentukan',
               groupId: found.groupId || '',
               role: 'siswa'
             }
           };
-        } else {
-          // Basis data siswa belum diimpor: validasi NISN numerik standar
-          if (id.length < 5 || isNaN(id)) {
-            return { success: false, message: 'Format NISN harus berupa angka (minimal 5 digit)!' };
-          }
-          return {
-            success: true,
-            user: {
-              name: 'Peserta Didik (NISN: ' + id + ')',
-              nisn: id,
-              class: 'Kelas XI',
-              group: 'Belum Terdaftar Kelompok',
-              groupId: '',
-              role: 'siswa'
-            }
-          };
         }
+
+        // Fallback jika database belum aktif
+        if (id.length < 5 || isNaN(id)) {
+          return { success: false, message: 'Format NISN harus berupa angka resmi (10 digit)!' };
+        }
+        return {
+          success: true,
+          user: {
+            name: 'Peserta Didik (NISN: ' + id + ')',
+            nisn: id,
+            nis: pwd,
+            class: 'Kelas X',
+            group: 'Belum Terdaftar Kelompok',
+            groupId: '',
+            role: 'siswa'
+          }
+        };
       }
 
       return { success: false, message: 'Peran pengguna tidak valid.' };

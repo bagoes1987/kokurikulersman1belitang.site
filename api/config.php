@@ -24,9 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 // Silakan sesuaikan dengan nama database & user yang Anda buat di cPanel
 // ----------------------------------------------------------------------
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'kokuriku_fincestem'); // Ganti dengan nama database cPanel Anda
-define('DB_USER', 'kokuriku_admin');     // Ganti dengan username database cPanel Anda
-define('DB_PASS', 'Belitang2026!');      // Ganti dengan password database cPanel Anda
+define('DB_NAME', 'n1667321_fincestem');
+define('DB_USER', 'n1667321_admin_fincestem');
+define('DB_PASS', 'Fincestem2026!'); // Pastikan ini sesuai password yang Anda masukkan tadi
 define('DB_CHARSET', 'utf8mb4');
 
 // ----------------------------------------------------------------------

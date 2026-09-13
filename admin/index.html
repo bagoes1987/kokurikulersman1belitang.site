@@ -265,42 +265,66 @@
       </div>
     </div>
 
-    <!-- TAB 1: USERS & DAPODIK -->
+    <!-- TAB 1: USERS & DAPODIK (DIPISAH: KELAS X, XI, XII) -->
     <div id="panelAdminUsers" class="flex flex-col gap-3">
+      <!-- HEADER PANEL & FILTER KELAS -->
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between">
-          <h3 class="font-bold text-sm text-on-surface">Data Akun &amp; Dapodik</h3>
-          <span id="dapodikStatusBadge" class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-amber-100 text-amber-800">Belum Ada Data</span>
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">Data Peserta Didik Dapodik</h3>
+            <span class="text-[11px] text-on-surface-variant">SMAN 1 Belitang &bull; TP 2026/2027</span>
+          </div>
+          <span id="dapodikStatusBadge" class="px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800">1.165 Siswa Terdata</span>
         </div>
-        <p class="text-xs text-on-surface-variant leading-relaxed">
-          Basis data akun peserta didik (NISN), rombel kelas, dan pembimbing resmi SMAN 1 Belitang.
-        </p>
+
+        <!-- TABS TINGKAT KELAS X, XI, XII -->
+        <div class="grid grid-cols-4 gap-1.5 p-1 bg-surface-container/70 rounded-2xl">
+          <button id="btnGradeAll" onclick="setAdminGradeFilter('ALL')" class="py-2 px-1 text-center rounded-xl text-xs font-bold bg-white text-[#0875D1] shadow-xs transition-all cursor-pointer">
+            Semua (1.165)
+          </button>
+          <button id="btnGradeX" onclick="setAdminGradeFilter('X')" class="py-2 px-1 text-center rounded-xl text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-all cursor-pointer">
+            Kelas X (386)
+          </button>
+          <button id="btnGradeXI" onclick="setAdminGradeFilter('XI')" class="py-2 px-1 text-center rounded-xl text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-all cursor-pointer">
+            Kelas XI (389)
+          </button>
+          <button id="btnGradeXII" onclick="setAdminGradeFilter('XII')" class="py-2 px-1 text-center rounded-xl text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-all cursor-pointer">
+            Kelas XII (390)
+          </button>
+        </div>
+
+        <!-- PENCARIAN & FILTER ROMBEL -->
         <div class="flex gap-2">
-          <button onclick="handleImportDapodik()" class="flex-1 py-2.5 rounded-xl bg-[#0875D1] text-white font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-[#02569b] transition-all cursor-pointer">
-            <span class="material-symbols-outlined text-sm">upload_file</span>
-            <span>Impor Data Siswa</span>
-          </button>
-          <button onclick="handleTambahPenggunaManual()" class="py-2.5 px-3 rounded-xl border border-outline-variant/50 text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-surface-container transition-all cursor-pointer">
-            <span class="material-symbols-outlined text-sm">person_add</span>
-            <span>Tambah</span>
-          </button>
+          <div class="relative flex-1 flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-base">search</span>
+            <input id="adminSearchStudent" type="text" oninput="handleAdminStudentSearch()" placeholder="Cari nama, NISN, NIS, asal sekolah..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-outline-variant/40 text-xs font-medium outline-none focus:border-[#0875D1] focus:ring-2 focus:ring-[#0875D1]/20">
+          </div>
+          <select id="adminFilterRombel" onchange="handleAdminStudentSearch()" class="px-2.5 py-2.5 rounded-xl border border-outline-variant/40 text-xs font-bold bg-surface-container-lowest outline-none text-on-surface">
+            <option value="ALL">Semua Rombel</option>
+          </select>
         </div>
       </div>
 
+      <!-- LIST SISWA HASIL FILTER -->
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between">
-          <h4 class="font-bold text-sm text-on-surface">Daftar Akun Pengguna</h4>
-          <span id="userCountBadge" class="text-[11px] font-bold text-on-surface-variant bg-surface-container px-2.5 py-0.5 rounded-full">0 Akun</span>
+          <h4 id="studentListTitle" class="font-bold text-sm text-on-surface">Daftar Siswa</h4>
+          <span id="studentShowingBadge" class="text-[11px] font-bold text-on-surface-variant bg-surface-container px-2.5 py-0.5 rounded-full">Menampilkan 0</span>
         </div>
-        <div id="userListContainer" class="flex flex-col gap-2 text-xs">
-          <!-- State Kosong (Data Dummy Dihapus) -->
-          <div class="py-8 text-center flex flex-col items-center justify-center gap-2 text-on-surface-variant">
-            <div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-outline">
-              <span class="material-symbols-outlined text-2xl">person_off</span>
-            </div>
-            <p class="text-xs font-bold text-on-surface">Belum ada akun pengguna</p>
-            <p class="text-[11px] text-outline max-w-xs">Semua data dummy telah dihapus. Data akun pengguna akan tampil di sini setelah ditambahkan atau diimpor dari file Dapodik.</p>
-          </div>
+
+        <div id="studentCardsContainer" class="flex flex-col gap-2">
+          <!-- Populated by JavaScript -->
+        </div>
+
+        <!-- NAVIGASI PAGINASI -->
+        <div id="studentPagination" class="flex items-center justify-between pt-3 border-t border-outline-variant/20 text-xs">
+          <button id="btnPrevPage" onclick="changeAdminStudentPage(-1)" class="px-3 py-1.5 rounded-xl border border-outline-variant/40 font-bold hover:bg-surface-container text-on-surface disabled:opacity-30 cursor-pointer">
+            &larr; Sebelumnya
+          </button>
+          <span id="paginationInfo" class="font-semibold text-on-surface-variant text-[11px]">Halaman 1 dari 1</span>
+          <button id="btnNextPage" onclick="changeAdminStudentPage(1)" class="px-3 py-1.5 rounded-xl border border-outline-variant/40 font-bold hover:bg-surface-container text-on-surface disabled:opacity-30 cursor-pointer">
+            Berikutnya &rarr;
+          </button>
         </div>
       </div>
     </div>
@@ -372,6 +396,78 @@
       </div>
     </div>
 
+    <!-- MODAL DETAIL LENGKAP SISWA -->
+    <div id="modalStudentDetail" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden opacity-0 transition-all duration-200">
+      <div class="bg-surface-container-lowest w-full max-w-lg rounded-3xl p-6 shadow-2xl border border-outline-variant/30 flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-blue-100 text-[#0875D1] flex items-center justify-center font-bold text-base">
+              <span class="material-symbols-outlined">badge</span>
+            </div>
+            <div>
+              <h3 id="modalStudentName" class="text-sm font-extrabold text-on-surface leading-tight">Nama Siswa</h3>
+              <span id="modalStudentClass" class="text-xs font-semibold text-[#0875D1]">KELAS X.1</span>
+            </div>
+          </div>
+          <button onclick="closeStudentDetail()" class="p-1.5 rounded-xl hover:bg-surface-container text-on-surface-variant cursor-pointer">
+            <span class="material-symbols-outlined text-lg">close</span>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2.5 text-xs">
+          <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20">
+            <span class="text-[10.5px] text-on-surface-variant block font-medium">Username (NISN)</span>
+            <span id="modalStudentNisn" class="font-extrabold text-sm text-primary">0000000000</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20">
+            <span class="text-[10.5px] text-on-surface-variant block font-medium">Kata Sandi (NIS)</span>
+            <span id="modalStudentNis" class="font-extrabold text-sm text-[#0875D1]">00000</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-2 text-xs">
+          <div class="flex justify-between py-1.5 border-b border-outline-variant/15">
+            <span class="text-on-surface-variant">Jenis Kelamin</span>
+            <span id="modalStudentGender" class="font-bold text-on-surface">-</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-outline-variant/15">
+            <span class="text-on-surface-variant">Agama</span>
+            <span id="modalStudentAgama" class="font-bold text-on-surface">-</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-outline-variant/15">
+            <span class="text-on-surface-variant">Tempat, Tanggal Lahir</span>
+            <span id="modalStudentTtl" class="font-bold text-on-surface text-right max-w-xs">-</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-outline-variant/15">
+            <span class="text-on-surface-variant">Asal Sekolah SMP/MTs</span>
+            <span id="modalStudentAsal" class="font-bold text-on-surface text-right max-w-xs">-</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-outline-variant/15">
+            <span class="text-on-surface-variant">Nama Ayah</span>
+            <span id="modalStudentAyah" class="font-bold text-on-surface">-</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-outline-variant/15">
+            <span class="text-on-surface-variant">Nama Ibu</span>
+            <span id="modalStudentIbu" class="font-bold text-on-surface">-</span>
+          </div>
+          <div class="flex justify-between py-1.5 border-b border-outline-variant/15">
+            <span class="text-on-surface-variant">Pekerjaan Orang Tua</span>
+            <span id="modalStudentPekerjaan" class="font-bold text-on-surface">-</span>
+          </div>
+          <div class="flex flex-col gap-1 py-1.5">
+            <span class="text-on-surface-variant">Alamat Lengkap</span>
+            <span id="modalStudentAlamat" class="font-semibold text-on-surface leading-relaxed p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/15">-</span>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-outline-variant/20 flex justify-end">
+          <button onclick="closeStudentDetail()" class="w-full py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs cursor-pointer">
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- Copyright Footer -->
     <div class="text-center pt-3 pb-4">
       <p class="font-label-sm text-label-sm text-outline text-xs">
@@ -380,8 +476,16 @@
     </div>
   </main>
 
+  <script src="../js/siswa_data.js"></script>
   <script src="../js/core.js"></script>
   <script>
+    let adminCurrentGrade = 'ALL';
+    let adminSearchQuery = '';
+    let adminCurrentRombel = 'ALL';
+    let adminCurrentPage = 1;
+    const adminPageSize = 25;
+    let filteredStudents = [];
+
     document.addEventListener('DOMContentLoaded', () => {
       checkAdminAuth();
 
@@ -391,6 +495,8 @@
           if (e.key === 'Enter') handleAdminLogin();
         });
       }
+
+      initAdminStudentModule();
     });
 
     function checkAdminAuth() {
@@ -471,16 +577,23 @@
     }
 
     function refreshAdminStats() {
-      try {
-        const stored = localStorage.getItem('fincestem_db_2026_v1');
-        if (stored) {
-          const db = JSON.parse(stored);
-          const students = Array.isArray(db.students) ? db.students.length : 0;
-          const groups = Array.isArray(db.groups) ? db.groups.length : 0;
-          document.getElementById('statTotalSiswa').textContent = students;
-          document.getElementById('statTotalKelompok').textContent = groups;
-        }
-      } catch (e) {}
+      const list = window.FincestemMasterStudents || [];
+      const total = list.length || 1165;
+      document.getElementById('statTotalSiswa').textContent = total.toLocaleString('id-ID');
+      
+      const elX = document.getElementById('btnGradeX');
+      const elXI = document.getElementById('btnGradeXI');
+      const elXII = document.getElementById('btnGradeXII');
+      
+      const countX = list.filter(s => s.level === 'X').length || 386;
+      const countXI = list.filter(s => s.level === 'XI').length || 389;
+      const countXII = list.filter(s => s.level === 'XII').length || 390;
+
+      if (elX) elX.textContent = `Kelas X (${countX})`;
+      if (elXI) elXI.textContent = `Kelas XI (${countXI})`;
+      if (elXII) elXII.textContent = `Kelas XII (${countXII})`;
+
+      renderAdminStudentList();
     }
 
     function switchAdmTab(tab) {
@@ -501,12 +614,200 @@
       });
     }
 
-    function handleImportDapodik() {
-      FincestemCore.ui.toast('Menu impor data Dapodik siap dikonfigurasi.', 'info');
+    /* ========================================================
+       MANAJEMEN DATA SISWA KELAS X, XI, DAN XII
+       ======================================================== */
+    function initAdminStudentModule() {
+      populateRombelOptions();
+      applyStudentFilters();
     }
 
-    function handleTambahPenggunaManual() {
-      FincestemCore.ui.toast('Menu tambah pengguna manual siap dikonfigurasi.', 'info');
+    function setAdminGradeFilter(grade) {
+      adminCurrentGrade = grade;
+      adminCurrentPage = 1;
+
+      // Update button active state
+      ['All', 'X', 'XI', 'XII'].forEach(lvl => {
+        const btn = document.getElementById('btnGrade' + lvl);
+        if (btn) {
+          if ((lvl === 'All' && grade === 'ALL') || lvl === grade) {
+            btn.className = 'py-2 px-1 text-center rounded-xl text-xs font-bold bg-white text-[#0875D1] shadow-xs transition-all cursor-pointer';
+          } else {
+            btn.className = 'py-2 px-1 text-center rounded-xl text-xs font-semibold text-on-surface-variant hover:text-on-surface transition-all cursor-pointer';
+          }
+        }
+      });
+
+      populateRombelOptions();
+      applyStudentFilters();
+    }
+
+    function populateRombelOptions() {
+      const select = document.getElementById('adminFilterRombel');
+      if (!select) return;
+      const list = window.FincestemMasterStudents || [];
+      
+      const relevant = (adminCurrentGrade === 'ALL') 
+        ? list 
+        : list.filter(s => s.level === adminCurrentGrade);
+
+      const rombels = [...new Set(relevant.map(s => s.class))].sort();
+
+      select.innerHTML = '<option value="ALL">Semua Rombel</option>';
+      rombels.forEach(r => {
+        const opt = document.createElement('option');
+        opt.value = r;
+        opt.textContent = r;
+        select.appendChild(opt);
+      });
+      adminCurrentRombel = 'ALL';
+    }
+
+    function handleAdminStudentSearch() {
+      adminSearchQuery = (document.getElementById('adminSearchStudent').value || '').trim().toLowerCase();
+      adminCurrentRombel = document.getElementById('adminFilterRombel').value || 'ALL';
+      adminCurrentPage = 1;
+      applyStudentFilters();
+    }
+
+    function applyStudentFilters() {
+      const list = window.FincestemMasterStudents || [];
+      filteredStudents = list.filter(s => {
+        // Filter Tingkat Kelas
+        if (adminCurrentGrade !== 'ALL' && s.level !== adminCurrentGrade) return false;
+        // Filter Rombel
+        if (adminCurrentRombel !== 'ALL' && s.class !== adminCurrentRombel) return false;
+        // Search query
+        if (adminSearchQuery) {
+          const matchNama = (s.nama || '').toLowerCase().includes(adminSearchQuery);
+          const matchNisn = (s.nisn || '').toLowerCase().includes(adminSearchQuery);
+          const matchNis = (s.nis || '').toLowerCase().includes(adminSearchQuery);
+          const matchAsal = (s.asal_sekolah || '').toLowerCase().includes(adminSearchQuery);
+          const matchKelas = (s.class || '').toLowerCase().includes(adminSearchQuery);
+          if (!matchNama && !matchNisn && !matchNis && !matchAsal && !matchKelas) return false;
+        }
+        return true;
+      });
+
+      renderAdminStudentList();
+    }
+
+    function renderAdminStudentList() {
+      const container = document.getElementById('studentCardsContainer');
+      const badge = document.getElementById('studentShowingBadge');
+      const title = document.getElementById('studentListTitle');
+      const info = document.getElementById('paginationInfo');
+      const prevBtn = document.getElementById('btnPrevPage');
+      const nextBtn = document.getElementById('btnNextPage');
+
+      if (!container) return;
+      container.innerHTML = '';
+
+      const total = filteredStudents.length;
+      badge.textContent = `Total: ${total} Siswa`;
+
+      const gradeLabel = (adminCurrentGrade === 'ALL') ? 'Semua Tingkat' : `Kelas ${adminCurrentGrade}`;
+      title.textContent = `Daftar Siswa ${gradeLabel}`;
+
+      if (total === 0) {
+        container.innerHTML = `
+          <div class="py-10 text-center flex flex-col items-center justify-center gap-2 text-on-surface-variant">
+            <span class="material-symbols-outlined text-3xl text-outline">search_off</span>
+            <p class="text-xs font-bold text-on-surface">Tidak ada siswa yang sesuai</p>
+            <p class="text-[11px] text-outline">Coba ubah kata kunci pencarian atau ganti filter kelas.</p>
+          </div>
+        `;
+        info.textContent = 'Halaman 0 dari 0';
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+        return;
+      }
+
+      const totalPages = Math.ceil(total / adminPageSize);
+      if (adminCurrentPage > totalPages) adminCurrentPage = totalPages;
+      if (adminCurrentPage < 1) adminCurrentPage = 1;
+
+      const startIdx = (adminCurrentPage - 1) * adminPageSize;
+      const pageItems = filteredStudents.slice(startIdx, startIdx + adminPageSize);
+
+      info.textContent = `Halaman ${adminCurrentPage} dari ${totalPages} (${startIdx + 1}-${Math.min(startIdx + adminPageSize, total)})`;
+      prevBtn.disabled = adminCurrentPage === 1;
+      nextBtn.disabled = adminCurrentPage === totalPages;
+
+      pageItems.forEach((s, idx) => {
+        const card = document.createElement('div');
+        card.className = 'p-3 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex items-center justify-between gap-2 hover:border-[#0875D1]/50 transition-all';
+        
+        const gBadge = s.gender === 'L' 
+          ? '<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-blue-100 text-blue-800">L</span>' 
+          : '<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-pink-100 text-pink-800">P</span>';
+
+        card.innerHTML = `
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center text-xs font-extrabold text-[#0875D1] shrink-0">
+              ${startIdx + idx + 1}
+            </div>
+            <div class="min-w-0 flex flex-col">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="font-extrabold text-xs text-on-surface truncate">${s.nama}</span>
+                ${gBadge}
+              </div>
+              <div class="flex items-center gap-2 text-[11px] text-on-surface-variant flex-wrap mt-0.5">
+                <span>NISN: <strong>${s.nisn}</strong></span>
+                <span>•</span>
+                <span>NIS: <strong>${s.nis}</strong></span>
+                <span>•</span>
+                <span class="font-bold text-[#0875D1]">${s.class}</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="openStudentDetail('${s.nisn}')" class="px-2.5 py-1.5 rounded-xl bg-white border border-outline-variant/40 hover:bg-surface-container text-[#0875D1] font-bold text-[11px] shrink-0 transition-all flex items-center gap-1 cursor-pointer shadow-2xs">
+            <span class="material-symbols-outlined text-sm">visibility</span>
+            <span>Detail</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function changeAdminStudentPage(delta) {
+      adminCurrentPage += delta;
+      renderAdminStudentList();
+      const panel = document.getElementById('panelAdminUsers');
+      if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function openStudentDetail(nisn) {
+      const list = window.FincestemMasterStudents || [];
+      const s = list.find(item => String(item.nisn).trim() === String(nisn).trim());
+      if (!s) return;
+
+      document.getElementById('modalStudentName').textContent = s.nama;
+      document.getElementById('modalStudentClass').textContent = `${s.class} • ${s.level === 'X' ? 'Tingkat X' : (s.level === 'XI' ? 'Tingkat XI' : 'Tingkat XII')}`;
+      document.getElementById('modalStudentNisn').textContent = s.nisn;
+      document.getElementById('modalStudentNis').textContent = s.nis;
+      document.getElementById('modalStudentGender').textContent = s.gender === 'L' ? 'Laki-Laki' : 'Perempuan';
+      document.getElementById('modalStudentAgama').textContent = s.agama || '-';
+      document.getElementById('modalStudentTtl').textContent = s.ttl || '-';
+      document.getElementById('modalStudentAsal').textContent = s.asal_sekolah || '-';
+      document.getElementById('modalStudentAyah').textContent = s.ayah || '-';
+      document.getElementById('modalStudentIbu').textContent = s.ibu || '-';
+      document.getElementById('modalStudentPekerjaan').textContent = s.pekerjaan_ortu || '-';
+      document.getElementById('modalStudentAlamat').textContent = s.alamat || '-';
+
+      const modal = document.getElementById('modalStudentDetail');
+      modal.classList.remove('hidden');
+      setTimeout(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+      }, 10);
+    }
+
+    function closeStudentDetail() {
+      const modal = document.getElementById('modalStudentDetail');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 200);
     }
 
     function saveAdminConfig() {
@@ -520,24 +821,24 @@
     }
 
     function downloadBackupJSON() {
-      const stored = localStorage.getItem('fincestem_db_2026_v1') || '{}';
-      const str = "data:text/json;charset=utf-8," + encodeURIComponent(stored);
+      const list = window.FincestemMasterStudents || [];
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(list, null, 2));
       const a = document.createElement('a');
       a.setAttribute("href", str);
-      a.setAttribute("download", "FINCESTEM_2026_Backup.json");
+      a.setAttribute("download", "DATABASE_SISWA_SMAN1_BELITANG_2026.json");
       document.body.appendChild(a);
       a.click();
       a.remove();
-      FincestemCore.ui.toast('Cadangan JSON berhasil diunduh.', 'success');
+      FincestemCore.ui.toast('Cadangan JSON 1.165 siswa berhasil diunduh.', 'success');
     }
 
     function clearAllSystemData() {
-      if (confirm('Apakah Anda yakin ingin mengosongkan seluruh data sistem dan membersihkan cache lokal?')) {
+      if (confirm('Apakah Anda yakin ingin mengosongkan seluruh sesi akun dan membersihkan cache lokal?')) {
         localStorage.removeItem('fincestem_db_2026_v1');
         localStorage.removeItem('fincestem_auth');
         localStorage.removeItem('fincestem_user');
         localStorage.removeItem('fincestem_role');
-        FincestemCore.ui.toast('Semua data sistem berhasil dikosongkan dan dibersihkan.', 'success');
+        FincestemCore.ui.toast('Semua data sesi berhasil dikosongkan dan dibersihkan.', 'success');
         setTimeout(() => location.reload(), 600);
       }
     }

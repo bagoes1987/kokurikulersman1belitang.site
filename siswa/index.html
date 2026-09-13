@@ -144,12 +144,12 @@
           <img src="../LOGO SMAN1 BELITANG.png" alt="SMAN 1 Belitang" class="w-full h-full object-contain">
         </div>
         <h1 class="text-xl font-extrabold text-primary">Login Peserta Didik</h1>
-        <p class="text-xs text-on-surface-variant max-w-xs">Gunakan NISN resmi Dapodik SMAN 1 Belitang untuk mengakses LKPD dan materi ekspedisi.</p>
+        <p class="text-xs text-on-surface-variant max-w-xs">Gunakan NISN resmi sebagai username dan nomor NIS sebagai kata sandi login.</p>
       </div>
 
       <div class="flex flex-col gap-4 mt-2">
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1.5">NISN (Nomor Induk Siswa Nasional)</label>
+          <label class="block text-xs font-bold text-on-surface mb-1.5">Username (NISN Siswa)</label>
           <div class="relative flex items-center">
             <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">badge</span>
             <input id="nisnInput" type="text" placeholder="Masukkan 10 digit NISN" class="w-full pl-11 pr-4 py-3 rounded-xl border border-outline-variant/50 focus:border-[#08A7B5] focus:ring-2 focus:ring-[#08A7B5]/20 text-sm font-semibold outline-none transition-all">
@@ -157,10 +157,10 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1.5">Kata Sandi</label>
+          <label class="block text-xs font-bold text-on-surface mb-1.5">Kata Sandi (Nomor Induk Siswa / NIS)</label>
           <div class="relative flex items-center">
             <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">lock</span>
-            <input id="passwordInput" type="password" placeholder="Masukkan kata sandi" class="w-full pl-11 pr-11 py-3 rounded-xl border border-outline-variant/50 focus:border-[#08A7B5] focus:ring-2 focus:ring-[#08A7B5]/20 text-sm font-semibold outline-none transition-all">
+            <input id="passwordInput" type="password" placeholder="Masukkan nomor NIS Anda" class="w-full pl-11 pr-11 py-3 rounded-xl border border-outline-variant/50 focus:border-[#08A7B5] focus:ring-2 focus:ring-[#08A7B5]/20 text-sm font-semibold outline-none transition-all">
             <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 text-on-surface-variant hover:text-on-surface">
               <span id="passwordEyeIcon" class="material-symbols-outlined text-lg">visibility</span>
             </button>
@@ -174,7 +174,7 @@
       </div>
 
       <div class="border-t border-outline-variant/20 pt-4 text-center">
-        <p class="text-[11px] text-on-surface-variant">Lupa kata sandi atau kendala NISN? Hubungi Fasilitator Pembina Kelas Anda.</p>
+        <p class="text-[11px] text-on-surface-variant">Kombinasi login: <strong>Username = NISN (10 Digit)</strong> &bull; <strong>Kata Sandi = NIS resmi</strong>. Kendala akses? Hubungi Fasilitator Pembina.</p>
       </div>
     </div>
       <!-- Copyright Footer -->
@@ -185,6 +185,7 @@
     </div>
   </main>
 
+  <script src="../js/siswa_data.js"></script>
   <script src="../js/core.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {

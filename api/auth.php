@@ -27,13 +27,16 @@ if ($action === 'login') {
 
     $pdo = getDB();
 
-    // Query user by identifier
-    $stmt = $pdo->prepare("SELECT * FROM `users` WHERE `identifier` = :id LIMIT 1");
-    $stmt->execute([':id' => $identifier]);
+    // Query user by identifier (mendukung NISN 10 digit padded, atau NIS)
+    $cleanId = preg_replace('/\D/', '', $identifier);
+    $paddedId = (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) ? str_pad($cleanId, 10, '0', STR_PAD_LEFT) : $identifier;
+
+    $stmt = $pdo->prepare("SELECT * FROM `users` WHERE `identifier` = :id OR `identifier` = :padded OR `nis` = :id LIMIT 1");
+    $stmt->execute([':id' => $identifier, ':padded' => $paddedId]);
     $user = $stmt->fetch();
 
     if (!$user) {
-        jsonResponse(false, 'Akun atau NISN "' . htmlspecialchars($identifier) . '" tidak ditemukan dalam sistem!');
+        jsonResponse(false, 'Akun atau NISN "' . htmlspecialchars($identifier) . '" tidak ditemukan dalam sistem Dapodik SMAN 1 Belitang!');
     }
 
     // Role check if specified
@@ -41,19 +44,20 @@ if ($action === 'login') {
         jsonResponse(false, 'Akun ini terdaftar sebagai peran "' . $user['role'] . '", bukan "' . $role . '"!');
     }
 
-    // Verify Password (mendukung plaintext bawaan impor Dapodik atau hash password_verify)
+    // Verify Password: Password siswa adalah nomor NIS (atau password_hash)
     $validPassword = false;
     if ($user['password_hash'] === $password) {
+        $validPassword = true;
+    } elseif (isset($user['nis']) && (string)$user['nis'] === $password) {
         $validPassword = true;
     } elseif (password_verify($password, $user['password_hash'])) {
         $validPassword = true;
     } elseif ($user['role'] === 'siswa' && $password === $user['identifier']) {
-        // Fallback default kata sandi siswa = NISN masing-masing
         $validPassword = true;
     }
 
     if (!$validPassword) {
-        jsonResponse(false, 'Kata sandi tidak sesuai!');
+        jsonResponse(false, 'Kata sandi (NIS) tidak sesuai!');
     }
 
     // Ambil info kelompok jika siswa

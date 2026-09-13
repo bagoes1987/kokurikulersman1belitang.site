@@ -12,18 +12,29 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS `users` (
   `id` INT AUTO_INCREMENT PRIMARY KEY,
-  `identifier` VARCHAR(50) NOT NULL UNIQUE COMMENT 'NISN untuk siswa, NIP/Username untuk guru/admin',
+  `identifier` VARCHAR(50) NOT NULL UNIQUE COMMENT 'NISN untuk siswa (Username), NIP/Username untuk guru/admin',
+  `nis` VARCHAR(30) DEFAULT NULL COMMENT 'Nomor Induk Siswa (Kata Sandi Login Siswa)',
   `password_hash` VARCHAR(255) NOT NULL COMMENT 'Kata sandi atau hash sandi',
   `name` VARCHAR(150) NOT NULL COMMENT 'Nama Lengkap Siswa / Guru / Admin',
   `role` ENUM('siswa', 'fasilitator', 'koordinator', 'admin') NOT NULL DEFAULT 'siswa',
+  `grade_level` ENUM('X', 'XI', 'XII') DEFAULT NULL COMMENT 'Tingkat Kelas (X, XI, XII)',
+  `class_name` VARCHAR(50) DEFAULT NULL COMMENT 'Rombongan Belajar (misal: KELAS X.1, KELAS XI.2)',
   `gender` ENUM('L', 'P') DEFAULT NULL COMMENT 'Jenis Kelamin',
-  `class_name` VARCHAR(50) DEFAULT NULL COMMENT 'Kelas siswa (misal: X.1, XI.3)',
-  `assignment` VARCHAR(150) DEFAULT NULL COMMENT 'Tugas tambahan (misal: Pembina Kelas XI)',
-  `phone` VARCHAR(30) DEFAULT NULL,
+  `agama` VARCHAR(50) DEFAULT NULL COMMENT 'Agama',
+  `birth_info` VARCHAR(150) DEFAULT NULL COMMENT 'Tempat, Tanggal Lahir',
+  `address` TEXT DEFAULT NULL COMMENT 'Alamat Domisili Siswa',
+  `parent_father` VARCHAR(150) DEFAULT NULL COMMENT 'Nama Ayah',
+  `parent_mother` VARCHAR(150) DEFAULT NULL COMMENT 'Nama Ibu',
+  `parent_job` VARCHAR(100) DEFAULT NULL COMMENT 'Pekerjaan Orang Tua',
+  `school_origin` VARCHAR(150) DEFAULT NULL COMMENT 'Asal Sekolah SMP/MTs',
+  `assignment` VARCHAR(150) DEFAULT NULL COMMENT 'Tugas tambahan guru (misal: Pembina Kelas XI)',
+  `phone` VARCHAR(50) DEFAULT NULL COMMENT 'No. HP / WhatsApp',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX `idx_role` (`role`),
-  INDEX `idx_class` (`class_name`)
+  INDEX `idx_grade` (`grade_level`),
+  INDEX `idx_class` (`class_name`),
+  INDEX `idx_nis` (`nis`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------------------
