@@ -4,6 +4,19 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <title>Portal Administrator IT - FINCESTEM 2026</title>
+  <script>
+    // Clean URL: Hapus index.html dari address bar browser
+    (function() {
+      try {
+        if (window.location.protocol.startsWith('http')) {
+          if (window.location.pathname.endsWith('/index.html')) {
+            var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/') || '/admin/';
+            window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
   <link rel="icon" type="image/png" href="../LOGO FICESTEM2026.png">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
@@ -96,7 +109,7 @@
   <header class="sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
     <div class="h-16 px-4 flex items-center justify-between max-w-lg mx-auto w-full">
       <div class="flex items-center gap-3">
-        <a href="../index.html" class="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center p-1 border border-indigo-200 shrink-0">
+        <a href="../" class="w-10 h-10 rounded-2xl bg-indigo-50 flex items-center justify-center p-1 border border-indigo-200 shrink-0">
           <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
         </a>
         <div class="flex flex-col">
@@ -105,10 +118,10 @@
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <a href="../index.html" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
+        <a href="../" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
           <span class="material-symbols-outlined text-xl">home</span>
         </a>
-        <button onclick="FincestemCore.auth.logout('index.html')" class="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all" title="Keluar Akun">
+        <button onclick="FincestemCore.auth.logout('./')" class="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all" title="Keluar Akun">
           <span class="material-symbols-outlined text-xl">logout</span>
         </button>
       </div>

@@ -34,12 +34,12 @@ const FincestemCore = {
       localStorage.removeItem('fincestem_user');
       FincestemCore.ui.toast('Anda telah keluar dari akun.', 'info');
       setTimeout(function() {
-        window.location.href = redirectUrl || '../index.html';
+        window.location.href = redirectUrl || '../';
       }, 500);
     },
     requireAuth: function(requiredRole, redirectLoginUrl) {
       if (!this.isLoggedIn() || (requiredRole && this.getRole() !== requiredRole)) {
-        window.location.href = redirectLoginUrl || '../index.html';
+        window.location.href = redirectLoginUrl || '../';
       }
     }
   },
@@ -117,3 +117,30 @@ const FincestemCore = {
 };
 
 window.FincestemCore = FincestemCore;
+
+// Clean URL & Local file:// fallback helper
+(function() {
+  try {
+    if (window.location.protocol.startsWith('http')) {
+      if (window.location.pathname.endsWith('/index.html')) {
+        const clean = window.location.pathname.replace(/\/index\.html$/, '') || '/';
+        window.history.replaceState(null, '', clean + window.location.search + window.location.hash);
+      }
+    } else if (window.location.protocol === 'file:') {
+      // Jika dibuka lokal via file://, arahkan ./ ke index.html dan ../ ke ../index.html agar tidak 404
+      const fixLocalLinks = function() {
+        document.querySelectorAll('a[href="./"]').forEach(function(el) {
+          el.setAttribute('href', 'index.html');
+        });
+        document.querySelectorAll('a[href="../"]').forEach(function(el) {
+          el.setAttribute('href', '../index.html');
+        });
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', fixLocalLinks);
+      } else {
+        fixLocalLinks();
+      }
+    }
+  } catch (e) {}
+})();

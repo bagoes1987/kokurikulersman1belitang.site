@@ -4,6 +4,19 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <title>Login Siswa - Portal FINCESTEM - SMAN 1 Belitang</title>
+  <script>
+    // Clean URL: Hapus index.html dari address bar browser
+    (function() {
+      try {
+        if (window.location.protocol.startsWith('http')) {
+          if (window.location.pathname.endsWith('/index.html')) {
+            var cleanPath = window.location.pathname.replace(/\/index\.html$/, '/') || '/siswa/';
+            window.history.replaceState(null, '', cleanPath + window.location.search + window.location.hash);
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
   <link rel="icon" type="image/png" href="../LOGO FICESTEM2026.png">
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
@@ -93,7 +106,7 @@
 <body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-full">
   <main class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full p-6">
     <div class="flex items-center justify-between mb-8">
-      <a href="../index.html" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs transition-all">
+      <a href="../" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs transition-all">
         <span class="material-symbols-outlined text-sm">arrow_back</span>
         <span>Beranda Utama</span>
       </a>
