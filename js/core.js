@@ -136,6 +136,91 @@ const FincestemCore = {
     }
   },
 
+  // cPanel / MySQL Backend API Bridge
+  api: {
+    base: (function() {
+      // Menyesuaikan path relatif api berdasarkan kedalaman folder
+      const depth = (window.location.pathname.match(/\//g) || []).length;
+      if (window.location.pathname.includes('/siswa/') || window.location.pathname.includes('/guru/') || window.location.pathname.includes('/admin/')) {
+        return '../api';
+      }
+      return './api';
+    })(),
+
+    async login(identifier, password, role) {
+      try {
+        const res = await fetch(this.base + '/auth.php?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier, password, role })
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.success && json.data && json.data.user) {
+            FincestemCore.auth.setUser(json.data.user, json.data.user.role);
+          }
+          return json;
+        }
+      } catch (e) {
+        console.warn('API backend offline / fallback to local storage:', e);
+      }
+      return null;
+    },
+
+    async upload(file, category) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('category', category || 'tugas');
+      const res = await fetch(this.base + '/upload.php', {
+        method: 'POST',
+        body: formData
+      });
+      return await res.json();
+    },
+
+    async getMateri(pillar) {
+      const url = this.base + '/materi.php?action=list' + (pillar ? '&pillar=' + encodeURIComponent(pillar) : '');
+      const res = await fetch(url);
+      return await res.json();
+    },
+
+    async submitLKPD(payload) {
+      const res = await fetch(this.base + '/lkpd.php?action=submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      return await res.json();
+    },
+
+    async getLKPD(groupId, pillar) {
+      const url = this.base + '/lkpd.php?action=get&group_id=' + groupId + (pillar ? '&pillar=' + pillar : '');
+      const res = await fetch(url);
+      return await res.json();
+    },
+
+    async gradeGroup(payload) {
+      const res = await fetch(this.base + '/nilai.php?action=grade', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      return await res.json();
+    },
+
+    async getNilai(groupId) {
+      const url = this.base + '/nilai.php?action=get' + (groupId ? '&group_id=' + groupId : '');
+      const res = await fetch(url);
+      return await res.json();
+    },
+
+    async getDokumentasi(groupId) {
+      const url = this.base + '/dokumentasi.php?action=list' + (groupId ? '&group_id=' + groupId : '');
+      const res = await fetch(url);
+      return await res.json();
+    }
+  },
+
   // UI Utilities
   ui: {
     toast: function(msg, type) {
