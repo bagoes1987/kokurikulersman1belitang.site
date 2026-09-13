@@ -109,5 +109,33 @@ if ($method === 'POST') {
         }
     }
 
+    if ($action === 'set_student_zone') {
+        $nisn = trim($input['nisn'] ?? '');
+        $zone = trim($input['zone'] ?? 'FINCESTEM OKU TIMUR');
+
+        if (!$nisn) {
+            jsonResponse(false, 'NISN / Pengenal siswa wajib diisi!', null, 400);
+        }
+
+        try {
+            $pdo = getDB();
+            $stmt = $pdo->prepare("
+                UPDATE `users` 
+                SET `zone` = :z 
+                WHERE (`identifier` = :nisn OR `nis` = :nisn) AND `role` = 'siswa'
+            ");
+            $stmt->execute([':z' => $zone, ':nisn' => $nisn]);
+            $count = $stmt->rowCount();
+
+            jsonResponse(true, "Zona untuk siswa {$nisn} berhasil diperbarui menjadi '{$zone}'.", [
+                'nisn' => $nisn,
+                'zone' => $zone,
+                'affected_rows' => $count
+            ]);
+        } catch (Exception $e) {
+            jsonResponse(false, 'Gagal memperbarui zona siswa: ' . $e->getMessage(), null, 500);
+        }
+    }
+
     jsonResponse(false, 'Aksi tidak valid', null, 400);
 }

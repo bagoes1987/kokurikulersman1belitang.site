@@ -469,6 +469,74 @@ const FincestemCore = {
       }
 
       if (callback) callback({ success: true });
+    },
+
+    getStudentZone: function(nisn, className, defaultZone) {
+      if (!nisn) return defaultZone || 'FINCESTEM OKU TIMUR';
+      try {
+        const stored = localStorage.getItem('fincestem_student_zone_' + String(nisn).trim());
+        if (stored) return stored;
+      } catch (e) {}
+
+      if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+        const found = window.FincestemMasterStudents.find(s => String(s.nisn).trim() === String(nisn).trim() || String(s.nis).trim() === String(nisn).trim());
+        if (found && found.zone) return found.zone;
+      }
+
+      if (className) {
+        const classInfo = this.getClassInfo(className);
+        if (classInfo && classInfo.zone) return classInfo.zone;
+      }
+
+      return defaultZone || 'FINCESTEM OKU TIMUR';
+    },
+
+    setStudentZone: function(nisn, zone, callback) {
+      if (!nisn) {
+        if (callback) callback({ success: false, message: 'NISN tidak valid' });
+        return;
+      }
+      const cleanNisn = String(nisn).trim();
+      try {
+        localStorage.setItem('fincestem_student_zone_' + cleanNisn, zone);
+      } catch (e) {}
+
+      // Update in master student list memory
+      if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+        const found = window.FincestemMasterStudents.find(s => String(s.nisn).trim() === cleanNisn || String(s.nis).trim() === cleanNisn);
+        if (found) {
+          found.zone = zone;
+        }
+      }
+
+      // Update current user if active session is this student
+      const u = FincestemCore.auth.getUser();
+      if (u && (String(u.nisn).trim() === cleanNisn || String(u.identifier).trim() === cleanNisn || String(u.nis).trim() === cleanNisn)) {
+        u.zone = zone;
+        FincestemCore.auth.setUser(u, u.role);
+      }
+
+      // Sync to backend MySQL
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'set_student_zone',
+            nisn: cleanNisn,
+            zone: zone
+          })
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (callback) callback(res);
+        })
+        .catch(() => {
+          if (callback) callback({ success: true, local: true, zone: zone });
+        });
+      } else {
+        if (callback) callback({ success: true, local: true, zone: zone });
+      }
     }
   },
 

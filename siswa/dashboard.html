@@ -126,65 +126,67 @@
   </header>
 
   <!-- MAIN DASHBOARD CONTENT -->
-  <main class="flex-1 flex flex-col max-w-xl mx-auto w-full p-4 gap-4 pb-24">
+  <main class="flex-1 flex flex-col max-w-xl mx-auto w-full p-3.5 sm:p-4 gap-3.5 sm:gap-4 pb-24">
 
-    <!-- 1. USER PROFILE CARD (PROFESIONAL DENGAN UPLOAD FOTO HP) -->
-    <div class="bg-gradient-to-br from-[#08A7B5] via-[#068490] to-[#045D66] text-white rounded-3xl p-6 shadow-md relative overflow-hidden">
+    <!-- 1. USER PROFILE CARD (PROFESIONAL & SANGAT RAPI DI HP) -->
+    <div class="bg-gradient-to-br from-[#08A7B5] via-[#068490] to-[#045D66] text-white rounded-3xl p-5 sm:p-6 shadow-md relative overflow-hidden">
       <!-- Ornamen Dekoratif -->
       <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-cyan-300/15 blur-2xl pointer-events-none"></div>
       <div class="absolute -left-10 -top-10 w-32 h-32 rounded-full bg-teal-200/10 blur-xl pointer-events-none"></div>
 
-      <div class="relative z-10 flex flex-col gap-4">
-        <div class="flex items-start justify-between gap-3">
-          <!-- Avatar + Tombol Kamera Upload HP -->
-          <div class="flex items-center gap-4 min-w-0">
-            <div class="relative shrink-0 group">
-              <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-white/20 border-2 border-white/50 overflow-hidden shadow-md flex items-center justify-center">
-                <img id="userPhotoImg" src="" alt="Foto Siswa" class="w-full h-full object-cover hidden">
-                <span id="userPhotoFallback" class="material-symbols-outlined text-3xl text-white">person</span>
-              </div>
-              <!-- Tombol Kamera Upload HP -->
-              <label for="inputStudentPhoto" class="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 flex items-center justify-center shadow-md cursor-pointer transition-transform active:scale-90" title="Upload Pasfoto dari HP">
-                <span class="material-symbols-outlined text-sm font-bold">photo_camera</span>
-              </label>
-              <input id="inputStudentPhoto" type="file" accept="image/*" capture="user" class="hidden" onchange="handleStudentPhotoUpload(event)">
+      <div class="relative z-10 flex flex-col gap-3.5">
+        <!-- Row 1: Foto Profil & Info Siswa -->
+        <div class="flex items-center gap-3.5 min-w-0">
+          <div class="relative shrink-0">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/20 border-2 border-white/60 overflow-hidden shadow-md flex items-center justify-center">
+              <img id="userPhotoImg" src="" alt="Foto Siswa" class="w-full h-full object-cover hidden">
+              <span id="userPhotoFallback" class="material-symbols-outlined text-3xl text-white">person</span>
             </div>
-
-            <!-- Nama & Identitas -->
-            <div class="flex flex-col min-w-0">
-              <span class="text-[11px] text-cyan-100 font-medium">Selamat Datang,</span>
-              <h2 id="userName" class="text-base sm:text-lg font-extrabold text-white leading-snug truncate">Peserta Didik</h2>
-              <div class="flex items-center gap-2 text-xs text-cyan-100/90 mt-0.5 flex-wrap">
-                <span>NISN: <strong id="userNisn" class="text-white">-</strong></span>
-                <span>•</span>
-                <span>NIS: <strong id="userNis" class="text-white">-</strong></span>
-              </div>
-              <div class="mt-1 flex items-center gap-1.5 flex-wrap">
-                <span id="userClassBadge" class="px-2 py-0.5 rounded-lg bg-white/20 text-[11px] font-extrabold text-white">KELAS X</span>
-              </div>
-            </div>
+            <!-- Tombol Kamera Upload HP -->
+            <label for="inputStudentPhoto" class="absolute -bottom-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 flex items-center justify-center shadow-md cursor-pointer transition-transform active:scale-90" title="Upload Pasfoto dari HP">
+              <span class="material-symbols-outlined text-xs sm:text-sm font-black">photo_camera</span>
+            </label>
+            <input id="inputStudentPhoto" type="file" accept="image/*" capture="user" class="hidden" onchange="handleStudentPhotoUpload(event)">
           </div>
 
-          <!-- Keterangan Zona FINCESTEM (OKU TIMUR / LUAR OKU TIMUR) -->
-          <div class="shrink-0 flex flex-col items-end">
-            <div id="userZoneBadge" class="px-3 py-1.5 rounded-2xl text-[11px] font-black tracking-wider uppercase shadow-sm flex items-center gap-1.5 bg-emerald-400 text-slate-950">
-              <span class="material-symbols-outlined text-sm">explore</span>
-              <span id="userZoneText">FINCESTEM OKU TIMUR</span>
+          <div class="flex flex-col min-w-0 flex-1">
+            <span class="text-[10px] sm:text-[11px] text-cyan-200 font-medium leading-tight">Selamat Datang,</span>
+            <h2 id="userName" class="text-base sm:text-lg font-extrabold text-white leading-snug truncate">Peserta Didik</h2>
+            <div class="flex items-center gap-1.5 text-[11px] text-cyan-100/90 mt-0.5 flex-wrap">
+              <span>NISN: <strong id="userNisn" class="text-white font-bold">-</strong></span>
+              <span>•</span>
+              <span>NIS: <strong id="userNis" class="text-white font-bold">-</strong></span>
+              <span id="userClassBadge" class="px-2 py-0.5 rounded-md bg-white/25 text-[10px] font-black text-white">KELAS X</span>
             </div>
-            <span class="text-[10px] text-cyan-200 mt-1 font-semibold">Zona Riset Lapangan</span>
           </div>
         </div>
 
-        <!-- Bar Koordinator & Fasilitator -->
-        <div class="pt-3.5 border-t border-white/20 grid grid-cols-2 gap-3 text-xs">
-          <div class="flex flex-col bg-black/15 p-2.5 rounded-2xl backdrop-blur-xs">
-            <span class="text-cyan-200 text-[10.5px] font-semibold flex items-center gap-1">
+        <!-- Row 2: Dedicated Zone Banner (Sangat Rapi & Jelas di Layar HP) -->
+        <div class="flex items-center justify-between p-2.5 rounded-2xl bg-black/20 backdrop-blur-xs border border-white/15 gap-2">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center text-white shrink-0">
+              <span class="material-symbols-outlined text-sm">explore</span>
+            </span>
+            <div class="flex flex-col min-w-0">
+              <span class="text-[9.5px] text-cyan-200 font-semibold leading-tight">Zona Riset Lapangan</span>
+              <span id="userZoneText" class="text-xs font-black text-white tracking-wide uppercase truncate">FINCESTEM OKU TIMUR</span>
+            </div>
+          </div>
+          <span id="userZoneBadge" class="px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs">
+            OKU TIMUR
+          </span>
+        </div>
+
+        <!-- Row 3: Bar Koordinator & Fasilitator (Grid Responsif Mobile) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1 border-t border-white/15">
+          <div class="flex flex-col bg-black/15 p-2 rounded-xl backdrop-blur-xs border border-white/10 min-w-0">
+            <span class="text-cyan-200 text-[10px] font-semibold flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">manage_accounts</span> Koordinator Wilayah
             </span>
             <span id="userCoordinator" class="font-bold text-white text-xs mt-0.5 truncate">Drs. H. Koordinator FINCESTEM</span>
           </div>
-          <div class="flex flex-col bg-black/15 p-2.5 rounded-2xl backdrop-blur-xs">
-            <span class="text-cyan-200 text-[10.5px] font-semibold flex items-center gap-1">
+          <div class="flex flex-col bg-black/15 p-2 rounded-xl backdrop-blur-xs border border-white/10 min-w-0">
+            <span class="text-cyan-200 text-[10px] font-semibold flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">supervisor_account</span> Fasilitator Pembina
             </span>
             <span id="userFacilitator" class="font-bold text-white text-xs mt-0.5 truncate">Tim Fasilitator SMAN 1 Belitang</span>
@@ -511,20 +513,21 @@
       document.getElementById('userNis').textContent = s.nis || '-';
       document.getElementById('userClassBadge').textContent = s.class || s.class_name || 'KELAS X';
 
-      // Zona Riset FINCESTEM
-      const classSettings = (FincestemCore.zones && FincestemCore.zones.getClassInfo)
-        ? FincestemCore.zones.getClassInfo(s.class || s.class_name)
-        : { zone: 'FINCESTEM OKU TIMUR', coordinator_name: 'Drs. H. Koordinator FINCESTEM', facilitator_name: 'Tim Fasilitator SMAN 1 Belitang' };
+      // Zona Riset FINCESTEM (Prioritaskan pengaturan individual per-siswa)
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(s.nisn || s.identifier, s.class || s.class_name, user.zone || s.zone)
+        : (user.zone || s.zone || 'FINCESTEM OKU TIMUR');
 
-      const studentZone = user.zone || s.zone || classSettings.zone || 'FINCESTEM OKU TIMUR';
       const zoneBadge = document.getElementById('userZoneBadge');
       const zoneText = document.getElementById('userZoneText');
 
       if (studentZone.toUpperCase().includes('LUAR')) {
-        zoneBadge.className = 'px-3 py-1.5 rounded-2xl text-[11px] font-black tracking-wider uppercase shadow-sm flex items-center gap-1.5 bg-amber-400 text-slate-950';
+        zoneBadge.className = 'px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 shrink-0 shadow-xs';
+        zoneBadge.textContent = 'LUAR OKU';
         zoneText.textContent = 'FINCESTEM LUAR OKU TIMUR';
       } else {
-        zoneBadge.className = 'px-3 py-1.5 rounded-2xl text-[11px] font-black tracking-wider uppercase shadow-sm flex items-center gap-1.5 bg-emerald-400 text-slate-950';
+        zoneBadge.className = 'px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs';
+        zoneBadge.textContent = 'OKU TIMUR';
         zoneText.textContent = 'FINCESTEM OKU TIMUR';
       }
 
@@ -691,6 +694,28 @@
       });
     }
 
+    let expandedDayNumber = 1;
+
+    function toggleDayAccordion(dayNumber) {
+      const dNum = Number(dayNumber);
+      const detailEl = document.getElementById('dayDetails_' + dNum);
+      const chevronEl = document.getElementById('dayChevron_' + dNum);
+      if (!detailEl) return;
+
+      const isHidden = detailEl.classList.contains('hidden');
+      if (isHidden) {
+        detailEl.classList.remove('hidden');
+        detailEl.classList.add('flex');
+        if (chevronEl) chevronEl.classList.add('rotate-180', 'text-teal-600');
+        expandedDayNumber = dNum;
+      } else {
+        detailEl.classList.remove('flex');
+        detailEl.classList.add('hidden');
+        if (chevronEl) chevronEl.classList.remove('rotate-180', 'text-teal-600');
+        if (expandedDayNumber === dNum) expandedDayNumber = null;
+      }
+    }
+
     function renderDaysSchedule(days) {
       const container = document.getElementById('scheduleDaysContainer');
       container.innerHTML = '';
@@ -699,23 +724,25 @@
       const records = (studentProgress && studentProgress.records) || [];
 
       days.forEach(d => {
-        const card = document.createElement('div');
+        const dNum = Number(d.day_number);
         const isOpen = !!d.is_open;
-        
-        let borderClass = isOpen ? 'border-teal-500/50 shadow-md ring-1 ring-teal-500/20' : 'border-slate-200/80 shadow-xs opacity-90';
+        const isExpanded = (expandedDayNumber === dNum);
+
+        let borderClass = isOpen ? 'border-teal-500/40 shadow-xs ring-1 ring-teal-500/10' : 'border-slate-200/80 shadow-xs opacity-95';
         let bgClass = isOpen ? 'bg-white' : 'bg-slate-50/70';
+        let dayIconBg = isOpen ? 'bg-gradient-to-br from-[#08A7B5] to-[#045D66]' : 'bg-slate-300 text-slate-600';
 
         let badgeHtml = '';
         if (isOpen) {
           badgeHtml = `
-            <span class="px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800 flex items-center gap-1">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 flex items-center gap-1">
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
               Terbuka
             </span>
           `;
         } else {
           badgeHtml = `
-            <span class="px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-slate-200 text-slate-600 flex items-center gap-1">
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-slate-200 text-slate-600 flex items-center gap-1">
               <span class="material-symbols-outlined text-xs">lock</span>
               Terkunci
             </span>
@@ -723,8 +750,7 @@
         }
 
         // Cek status pengerjaan hari ini
-        const dNum = d.day_number;
-        const dayRecord = records.find(r => Number(r.day_number) === Number(dNum));
+        const dayRecord = records.find(r => Number(r.day_number) === dNum);
         const hasLkpd = !!taskMap[dNum + '_lkpd'];
         const hasAsesmen = !!taskMap[dNum + '_asesmen'];
         const hasRefleksi = !!taskMap[dNum + '_refleksi'];
@@ -733,106 +759,174 @@
         let dayProgressBadge = '';
         if (dayRecord && dayRecord.score) {
           dayProgressBadge = `
-            <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-1">
+            <span class="px-2 py-0.5 rounded-md text-[9.5px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-0.5">
               <span class="material-symbols-outlined text-xs text-emerald-600">verified</span>
               Nilai: ${dayRecord.score} (${dayRecord.predicate || 'A'})
             </span>
           `;
+          dayIconBg = 'bg-gradient-to-br from-emerald-500 to-teal-700';
         } else if (hasLkpd || hasAsesmen || hasRefleksi || hasDok) {
           dayProgressBadge = `
-            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-900 border border-amber-300/60 flex items-center gap-1">
+            <span class="px-2 py-0.5 rounded-md text-[9.5px] font-bold bg-amber-100 text-amber-900 border border-amber-300/60 flex items-center gap-0.5">
               <span class="material-symbols-outlined text-xs text-amber-600">schedule</span>
-              Menunggu Penilaian
+              Terkirim
             </span>
           `;
         }
 
         // Mini checkmarks aktivitas
         const miniChecks = `
-          <div class="flex items-center gap-1.5 text-[10px] text-slate-500 font-semibold mt-1 flex-wrap">
-            <span class="px-1.5 py-0.5 rounded bg-slate-100 flex items-center gap-0.5 ${hasLkpd ? 'text-teal-800 bg-teal-50 font-bold' : ''}">
+          <div class="flex items-center gap-1.5 text-[10px] text-slate-500 font-semibold flex-wrap">
+            <span class="px-1.5 py-0.5 rounded ${hasLkpd ? 'text-teal-800 bg-teal-100/70 font-bold' : 'bg-slate-100'} flex items-center gap-0.5">
               <span class="material-symbols-outlined text-[11px]">${hasLkpd ? 'check_circle' : 'radio_button_unchecked'}</span> LKPD
             </span>
-            <span class="px-1.5 py-0.5 rounded bg-slate-100 flex items-center gap-0.5 ${hasAsesmen ? 'text-blue-800 bg-blue-50 font-bold' : ''}">
+            <span class="px-1.5 py-0.5 rounded ${hasAsesmen ? 'text-blue-800 bg-blue-100/70 font-bold' : 'bg-slate-100'} flex items-center gap-0.5">
               <span class="material-symbols-outlined text-[11px]">${hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}</span> Asesmen
             </span>
-            <span class="px-1.5 py-0.5 rounded bg-slate-100 flex items-center gap-0.5 ${hasRefleksi ? 'text-purple-800 bg-purple-50 font-bold' : ''}">
+            <span class="px-1.5 py-0.5 rounded ${hasRefleksi ? 'text-purple-800 bg-purple-100/70 font-bold' : 'bg-slate-100'} flex items-center gap-0.5">
               <span class="material-symbols-outlined text-[11px]">${hasRefleksi ? 'check_circle' : 'radio_button_unchecked'}</span> Refleksi
             </span>
-            <span class="px-1.5 py-0.5 rounded bg-slate-100 flex items-center gap-0.5 ${hasDok ? 'text-pink-800 bg-pink-50 font-bold' : ''}">
+            <span class="px-1.5 py-0.5 rounded ${hasDok ? 'text-pink-800 bg-pink-100/70 font-bold' : 'bg-slate-100'} flex items-center gap-0.5">
               <span class="material-symbols-outlined text-[11px]">${hasDok ? 'check_circle' : 'radio_button_unchecked'}</span> Foto
             </span>
           </div>
         `;
 
-        card.className = `p-4 rounded-3xl ${bgClass} border ${borderClass} flex flex-col gap-3 transition-all`;
-
-        // Sub-activities: Materi, LKPD, Asesmen, Refleksi, Dokumentasi, Penilaian/Feedback
-        const actionsHtml = `
-          <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-2 border-t border-slate-100">
-            <button onclick="handleActivityClick(${d.day_number}, 'materi')" class="p-2 rounded-2xl ${isOpen ? 'bg-amber-50 hover:bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
-              <span class="material-symbols-outlined text-lg">menu_book</span>
-              <span class="text-[10px] font-bold">Materi</span>
-            </button>
-            <button onclick="handleActivityClick(${d.day_number}, 'lkpd')" class="p-2 rounded-2xl ${isOpen ? 'bg-teal-50 hover:bg-teal-100 text-teal-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
-              <span class="material-symbols-outlined text-lg">edit_document</span>
-              <span class="text-[10px] font-bold">LKPD</span>
-            </button>
-            <button onclick="handleActivityClick(${d.day_number}, 'asesmen')" class="p-2 rounded-2xl ${isOpen ? 'bg-blue-50 hover:bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
-              <span class="material-symbols-outlined text-lg">fact_check</span>
-              <span class="text-[10px] font-bold">Asesmen</span>
-            </button>
-            <button onclick="handleActivityClick(${d.day_number}, 'refleksi')" class="p-2 rounded-2xl ${isOpen ? 'bg-purple-50 hover:bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
-              <span class="material-symbols-outlined text-lg">psychology</span>
-              <span class="text-[10px] font-bold">Refleksi</span>
-            </button>
-            <button onclick="handleActivityClick(${d.day_number}, 'dokumentasi')" class="p-2 rounded-2xl ${isOpen ? 'bg-pink-50 hover:bg-pink-100 text-pink-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
-              <span class="material-symbols-outlined text-lg">photo_camera</span>
-              <span class="text-[10px] font-bold">Foto/Video</span>
-            </button>
-            <button onclick="handleActivityClick(${d.day_number}, 'penilaian')" class="p-2 rounded-2xl ${isOpen ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
-              <span class="material-symbols-outlined text-lg">stars</span>
-              <span class="text-[10px] font-bold">Nilai &amp; Catatan</span>
-            </button>
-          </div>
-        `;
-
         const lockAlertHtml = !isOpen ? `
-          <div class="px-3 py-2 rounded-xl bg-slate-100/90 border border-slate-200/60 flex items-center gap-2 text-[11px] text-slate-600">
-            <span class="material-symbols-outlined text-base text-slate-400">lock_clock</span>
-            <span>${d.status_label || 'Aktivitas hari ini ditutup oleh Admin.'}</span>
+          <div class="px-3 py-2 rounded-xl bg-amber-50/90 border border-amber-200/70 flex items-center gap-2 text-[11px] text-amber-900">
+            <span class="material-symbols-outlined text-base text-amber-600 shrink-0">lock_clock</span>
+            <span>${d.status_label || 'Aktivitas hari ini ditutup oleh Admin. Harap tunggu jadwal resmi dibuka.'}</span>
           </div>
         ` : '';
 
+        const card = document.createElement('div');
+        card.className = `p-3.5 sm:p-4 rounded-3xl ${bgClass} border ${borderClass} flex flex-col gap-2.5 transition-all shadow-xs`;
+
         card.innerHTML = `
-          <div class="flex items-start justify-between gap-2">
-            <div class="flex items-start gap-2.5 min-w-0">
-              <div class="w-9 h-9 rounded-2xl ${isOpen ? 'bg-[#08A7B5] text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center text-xs font-black shrink-0 shadow-xs">
-                D${d.day_number}
+          <!-- CARD HEADER (RINGKAS & MENARIK, DAPAT DIKLIK) -->
+          <div onclick="toggleDayAccordion(${dNum})" class="flex items-center justify-between gap-2 cursor-pointer select-none group">
+            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+              <!-- Day Icon Pill -->
+              <div class="w-10 h-10 rounded-2xl ${dayIconBg} text-white flex flex-col items-center justify-center shrink-0 shadow-2xs">
+                <span class="text-[8.5px] font-bold uppercase tracking-wider opacity-80 leading-none">DAY</span>
+                <span class="text-sm font-black leading-none">${dNum}</span>
               </div>
-              <div class="flex flex-col min-w-0">
-                <div class="flex items-center gap-2 flex-wrap">
+              <!-- Day Info -->
+              <div class="flex flex-col min-w-0 flex-1">
+                <div class="flex items-center gap-1.5 flex-wrap">
                   <h4 class="font-extrabold text-xs sm:text-sm text-slate-800 truncate">${d.title}</h4>
                   ${dayProgressBadge}
                 </div>
-                <span class="text-[11px] font-semibold text-[#08A7B5] mt-0.5">${d.theme}</span>
-                <div class="flex items-center gap-2 text-[10.5px] text-slate-500 mt-1 flex-wrap">
-                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">calendar_today</span> ${d.date_formatted || d.date}</span>
+                <span class="text-[10.5px] font-semibold text-[#08A7B5] truncate mt-0.5">${d.theme || ''}</span>
+                <div class="flex items-center gap-1.5 text-[10px] text-slate-500 mt-0.5 flex-wrap">
+                  <span class="flex items-center gap-0.5"><span class="material-symbols-outlined text-[11px]">calendar_today</span> ${d.date_formatted || d.date}</span>
                   <span>•</span>
-                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">schedule</span> ${d.start_time} - ${d.end_time} WIB</span>
+                  <span>${d.start_time} - ${d.end_time} WIB</span>
                 </div>
-                ${miniChecks}
               </div>
             </div>
-            <div class="shrink-0">
+
+            <!-- Right Controls: Status & Chevron -->
+            <div class="shrink-0 flex items-center gap-2">
               ${badgeHtml}
+              <div class="w-7 h-7 rounded-xl bg-slate-100 group-hover:bg-teal-50 text-slate-400 group-hover:text-teal-600 flex items-center justify-center transition-colors">
+                <span id="dayChevron_${dNum}" class="material-symbols-outlined text-lg transition-transform duration-300 ${isExpanded ? 'rotate-180 text-teal-600' : ''}">expand_more</span>
+              </div>
             </div>
           </div>
 
-          <p class="text-xs text-slate-600 leading-relaxed">${d.description || '-'}</p>
+          <!-- CARD BODY (HANYA TERBUKA KETIKA DIKLIK / ACCORDION) -->
+          <div id="dayDetails_${dNum}" class="${isExpanded ? 'flex' : 'hidden'} flex-col gap-3 pt-3 border-t border-slate-100">
+            <!-- Deskripsi Panduan Hari Ini -->
+            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 leading-relaxed">
+              <div class="flex items-center gap-1.5 font-bold text-slate-700 mb-1">
+                <span class="material-symbols-outlined text-sm text-[#08A7B5]">info</span>
+                <span>Sasaran &amp; Panduan Kegiatan:</span>
+              </div>
+              <p>${d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.'}</p>
+            </div>
 
-          ${lockAlertHtml}
-          ${actionsHtml}
+            <!-- Mini Checklist -->
+            <div class="flex items-center justify-between bg-teal-50/40 p-2.5 rounded-2xl border border-teal-100/70 flex-wrap gap-2">
+              <span class="text-[10.5px] font-bold text-teal-950 flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-teal-600">playlist_add_check</span> Checklist Pengerjaan:
+              </span>
+              ${miniChecks}
+            </div>
+
+            ${lockAlertHtml}
+
+            <!-- 6 Tombol Aktivitas Utama (Mobile-Friendly 2 Kolom di HP) -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
+              <button onclick="handleActivityClick(${dNum}, 'materi')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
+                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base">menu_book</span>
+                </span>
+                <div class="flex flex-col text-left min-w-0">
+                  <span class="text-xs font-bold leading-tight truncate">Materi Riset</span>
+                  <span class="text-[9.5px] ${isOpen ? 'text-amber-700' : 'text-slate-400'} leading-tight">Modul Belajar</span>
+                </div>
+              </button>
+
+              <button onclick="handleActivityClick(${dNum}, 'lkpd')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
+                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-teal-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base">edit_document</span>
+                </span>
+                <div class="flex flex-col text-left min-w-0">
+                  <span class="text-xs font-bold leading-tight truncate">LKPD Digital</span>
+                  <span class="text-[9.5px] ${isOpen ? 'text-teal-700' : 'text-slate-400'} leading-tight">Lembar Kerja</span>
+                </div>
+              </button>
+
+              <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
+                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-blue-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base">fact_check</span>
+                </span>
+                <div class="flex flex-col text-left min-w-0">
+                  <span class="text-xs font-bold leading-tight truncate">Asesmen</span>
+                  <span class="text-[9.5px] ${isOpen ? 'text-blue-700' : 'text-slate-400'} leading-tight">Uji Harian</span>
+                </div>
+              </button>
+
+              <button onclick="handleActivityClick(${dNum}, 'refleksi')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
+                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-purple-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base">psychology</span>
+                </span>
+                <div class="flex flex-col text-left min-w-0">
+                  <span class="text-xs font-bold leading-tight truncate">Refleksi</span>
+                  <span class="text-[9.5px] ${isOpen ? 'text-purple-700' : 'text-slate-400'} leading-tight">Jurnal Mandiri</span>
+                </div>
+              </button>
+
+              <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-pink-50 hover:bg-pink-100 text-pink-900 border border-pink-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
+                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-pink-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                </span>
+                <div class="flex flex-col text-left min-w-0">
+                  <span class="text-xs font-bold leading-tight truncate">Dokumentasi</span>
+                  <span class="text-[9.5px] ${isOpen ? 'text-pink-700' : 'text-slate-400'} leading-tight">Foto/Video</span>
+                </div>
+              </button>
+
+              <button onclick="handleActivityClick(${dNum}, 'penilaian')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
+                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base">stars</span>
+                </span>
+                <div class="flex flex-col text-left min-w-0">
+                  <span class="text-xs font-bold leading-tight truncate">Nilai &amp; Catatan</span>
+                  <span class="text-[9.5px] ${isOpen ? 'text-emerald-700' : 'text-slate-400'} leading-tight">Feedback Guru</span>
+                </div>
+              </button>
+            </div>
+
+            <!-- Tombol Tutup Rincian -->
+            <div class="flex justify-center pt-1">
+              <button type="button" onclick="toggleDayAccordion(${dNum})" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer">
+                <span>Tutup Rincian Day ${dNum}</span>
+                <span class="material-symbols-outlined text-xs">expand_less</span>
+              </button>
+            </div>
+          </div>
         `;
 
         container.appendChild(card);
