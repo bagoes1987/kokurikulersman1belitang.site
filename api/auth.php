@@ -57,7 +57,8 @@ if ($action === 'login') {
     }
 
     if (!$validPassword) {
-        jsonResponse(false, 'Kata sandi (NIS) tidak sesuai!');
+        $msg = ($user['role'] === 'siswa') ? 'Kata sandi (NIS) tidak sesuai!' : 'Kata sandi tidak sesuai!';
+        jsonResponse(false, $msg);
     }
 
     // Ambil info kelompok jika siswa

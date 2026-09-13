@@ -164,9 +164,9 @@ CREATE TABLE IF NOT EXISTS `presensi` (
 -- Sandi default dapat diganti setelah masuk sistem
 -- ----------------------------------------------------------------------
 INSERT INTO `users` (`identifier`, `password_hash`, `name`, `role`, `assignment`) VALUES
-('admin', 'admin2026', 'Administrator IT', 'admin', 'Tim IT SMAN 1 Belitang'),
+('admin_fincestem', 'Fincestem2026!', 'Administrator IT', 'admin', 'Tim IT SMAN 1 Belitang'),
 ('koordinator', 'koordinator2026', 'Koordinator Kokurikuler', 'koordinator', 'Koordinator Wilayah SMAN 1 Belitang'),
 ('fasilitator', 'fasilitator2026', 'Fasilitator Pembina', 'fasilitator', 'Pembina Kokurikuler FINCESTEM')
-ON DUPLICATE KEY UPDATE `name` = VALUES(`name`);
+ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `password_hash` = VALUES(`password_hash`);
 
 SET FOREIGN_KEY_CHECKS = 1;

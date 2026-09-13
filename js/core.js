@@ -31,11 +31,13 @@ const FincestemCore = {
       }
 
       if (role === 'admin') {
-        const savedAdminPwd = localStorage.getItem('fincestem_admin_pwd') || 'admin';
-        if (id.toLowerCase() === 'admin' && (pwd === savedAdminPwd || pwd === 'admin')) {
+        const savedAdminPwd = localStorage.getItem('fincestem_admin_pwd') || 'Fincestem2026!';
+        const validUser = (id.toLowerCase() === 'admin_fincestem' || id.toLowerCase() === 'admin');
+        const validPwd = (pwd === savedAdminPwd || pwd === 'Fincestem2026!');
+        if (validUser && validPwd) {
           return {
             success: true,
-            user: { name: 'Administrator IT', role: 'admin', title: 'Tim IT SMAN 1 Belitang' }
+            user: { name: 'Administrator IT', role: 'admin', title: 'Tim IT SMAN 1 Belitang', username: 'admin_fincestem' }
           };
         }
         return { success: false, message: 'Username atau kata sandi Administrator salah!' };
