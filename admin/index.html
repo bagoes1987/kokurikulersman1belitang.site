@@ -187,23 +187,23 @@
       <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold">Root Access</span>
     </div>
 
-    <!-- STATS -->
+    <!-- STATS (CLEAN / REAL TIME) -->
     <div class="grid grid-cols-4 gap-1.5 text-center">
       <div class="bg-surface-container-lowest p-2.5 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-sm font-extrabold text-[#0875D1]">1.165</span>
+        <span id="statTotalSiswa" class="text-sm font-extrabold text-[#0875D1]">0</span>
         <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Siswa</span>
       </div>
       <div class="bg-surface-container-lowest p-2.5 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-sm font-extrabold text-[#0875D1]">24</span>
+        <span id="statTotalFasilitator" class="text-sm font-extrabold text-[#0875D1]">0</span>
         <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Fasilitator</span>
       </div>
       <div class="bg-surface-container-lowest p-2.5 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-sm font-extrabold text-[#0875D1]">4</span>
+        <span id="statTotalKoordinator" class="text-sm font-extrabold text-[#0875D1]">0</span>
         <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Koordinator</span>
       </div>
       <div class="bg-surface-container-lowest p-2.5 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-sm font-extrabold text-[#006a61]">100%</span>
-        <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Aktif</span>
+        <span id="statTotalKelompok" class="text-sm font-extrabold text-[#006a61]">0</span>
+        <span class="block text-[9.5px] text-on-surface-variant mt-0.5">Kelompok</span>
       </div>
     </div>
 
@@ -211,41 +211,37 @@
     <div id="panelAdminUsers" class="flex flex-col gap-3">
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between">
-          <h3 class="font-bold text-sm text-on-surface">Sinkronisasi Data Dapodik</h3>
-          <span class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-800">Tersinkron</span>
+          <h3 class="font-bold text-sm text-on-surface">Data Akun &amp; Dapodik</h3>
+          <span id="dapodikStatusBadge" class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-amber-100 text-amber-800">Belum Ada Data</span>
         </div>
         <p class="text-xs text-on-surface-variant leading-relaxed">
-          Basis data akun siswa (NISN), rombel kelas, dan NIP guru pamong tersinkron dengan server Dapodik Kemendikbudristek.
+          Basis data akun peserta didik (NISN), rombel kelas, dan pembimbing resmi SMAN 1 Belitang.
         </p>
-        <button onclick="syncDapodik()" class="w-full py-2.5 rounded-xl bg-[#0875D1] text-white font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-[#02569b] transition-all">
-          <span class="material-symbols-outlined text-sm">sync</span>
-          <span>Tarik Pembaruan Dapodik Terbaru</span>
-        </button>
+        <div class="flex gap-2">
+          <button onclick="handleImportDapodik()" class="flex-1 py-2.5 rounded-xl bg-[#0875D1] text-white font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-[#02569b] transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-sm">upload_file</span>
+            <span>Impor Data Siswa</span>
+          </button>
+          <button onclick="handleTambahPenggunaManual()" class="py-2.5 px-3 rounded-xl border border-outline-variant/50 text-on-surface font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-surface-container transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-sm">person_add</span>
+            <span>Tambah</span>
+          </button>
+        </div>
       </div>
 
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-        <h4 class="font-bold text-sm text-on-surface">Sampel Akun Pengguna</h4>
-        <div class="flex flex-col gap-2 text-xs">
-          <div class="p-2.5 rounded-xl bg-surface-container-low flex justify-between items-center">
-            <div>
-              <span class="font-bold text-on-surface">Anindya Putri Rahayu</span>
-              <span class="block text-[10.5px] text-on-surface-variant">NISN: 007261944 (XI MIPA 1)</span>
+        <div class="flex items-center justify-between">
+          <h4 class="font-bold text-sm text-on-surface">Daftar Akun Pengguna</h4>
+          <span id="userCountBadge" class="text-[11px] font-bold text-on-surface-variant bg-surface-container px-2.5 py-0.5 rounded-full">0 Akun</span>
+        </div>
+        <div id="userListContainer" class="flex flex-col gap-2 text-xs">
+          <!-- State Kosong (Data Dummy Dihapus) -->
+          <div class="py-8 text-center flex flex-col items-center justify-center gap-2 text-on-surface-variant">
+            <div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-outline">
+              <span class="material-symbols-outlined text-2xl">person_off</span>
             </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800">Siswa</span>
-          </div>
-          <div class="p-2.5 rounded-xl bg-surface-container-low flex justify-between items-center">
-            <div>
-              <span class="font-bold text-on-surface">Rahmat Hidayat, S.Pd., Gr.</span>
-              <span class="block text-[10.5px] text-on-surface-variant">NIP: 198203152008011005</span>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-100 text-purple-800">Fasilitator</span>
-          </div>
-          <div class="p-2.5 rounded-xl bg-surface-container-low flex justify-between items-center">
-            <div>
-              <span class="font-bold text-on-surface">Drs. H. Suryanto, M.Pd.</span>
-              <span class="block text-[10.5px] text-on-surface-variant">NIP: 197508142000031002</span>
-            </div>
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-teal-100 text-teal-800">Koordinator</span>
+            <p class="text-xs font-bold text-on-surface">Belum ada akun pengguna</p>
+            <p class="text-[11px] text-outline max-w-xs">Semua data dummy telah dihapus. Data akun pengguna akan tampil di sini setelah ditambahkan atau diimpor dari file Dapodik.</p>
           </div>
         </div>
       </div>
@@ -257,17 +253,17 @@
         <h3 class="font-bold text-sm text-on-surface">Pengaturan Parameter Kokurikuler</h3>
         <div>
           <label class="block font-bold text-on-surface mb-1">Nama Kegiatan Resmi</label>
-          <input type="text" value="FINCESTEM 2026 SMAN 1 Belitang" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-[#0875D1] outline-none">
+          <input id="cfgNamaKegiatan" type="text" value="FINCESTEM 2026 SMAN 1 Belitang" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-[#0875D1] outline-none">
         </div>
         <div>
           <label class="block font-bold text-on-surface mb-1">Tahun Ajaran</label>
-          <input type="text" value="2026/2027" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-[#0875D1] outline-none">
+          <input id="cfgTahunAjaran" type="text" value="2026/2027" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-[#0875D1] outline-none">
         </div>
         <div>
           <label class="block font-bold text-on-surface mb-1">Batas Waktu Pengumpulan LKPD</label>
-          <input type="text" value="15 September 2026, 17:00 WIB" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-[#0875D1] outline-none">
+          <input id="cfgDeadlineLKPD" type="text" value="" placeholder="Belum ditentukan (Contoh: 15 Oktober 2026, 17:00 WIB)" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-[#0875D1] outline-none">
         </div>
-        <button onclick="FincestemCore.ui.toast('Konfigurasi sistem berhasil disimpan!', 'success')" class="w-full py-2.5 rounded-xl bg-[#0875D1] hover:bg-[#02569b] text-white font-bold text-xs transition-all">
+        <button onclick="saveAdminConfig()" class="w-full py-2.5 rounded-xl bg-[#0875D1] hover:bg-[#02569b] text-white font-bold text-xs transition-all cursor-pointer">
           Simpan Konfigurasi
         </button>
       </div>
@@ -275,49 +271,50 @@
 
     <!-- TAB 3: AUDIT LOGS -->
     <div id="panelAdminLogs" class="hidden flex flex-col gap-3">
-      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-2.5 text-xs">
-        <h3 class="font-bold text-sm text-on-surface mb-1">Catatan Audit Keamanan Sistem</h3>
-        <div class="p-2 rounded-xl bg-surface-container-low font-mono text-[11px] flex justify-between">
-          <span>[12/09 14:30] LKPD Hari 3 diunggah Kelompok 4</span>
-          <span class="text-emerald-700 font-bold">SUCCESS</span>
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3 text-xs">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-sm text-on-surface">Catatan Audit Keamanan Sistem</h3>
+          <span class="text-[11px] font-bold text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full">0 Catatan</span>
         </div>
-        <div class="p-2 rounded-xl bg-surface-container-low font-mono text-[11px] flex justify-between">
-          <span>[12/09 15:10] Penilaian dirilis oleh Rahmat Hidayat</span>
-          <span class="text-blue-700 font-bold">GRADED</span>
-        </div>
-        <div class="p-2 rounded-xl bg-surface-container-low font-mono text-[11px] flex justify-between">
-          <span>[12/09 15:45] Persetujuan Rute oleh Drs. Suryanto</span>
-          <span class="text-teal-700 font-bold">APPROVED</span>
+        <div id="auditLogContainer" class="flex flex-col gap-2">
+          <!-- State Kosong (Data Dummy Dihapus) -->
+          <div class="py-8 text-center flex flex-col items-center justify-center gap-2 text-on-surface-variant">
+            <div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-outline">
+              <span class="material-symbols-outlined text-2xl">history_toggle_off</span>
+            </div>
+            <p class="text-xs font-bold text-on-surface">Belum ada catatan aktivitas</p>
+            <p class="text-[11px] text-outline max-w-xs">Seluruh catatan log dummy telah dibersihkan. Riwayat sistem akan otomatis tercatat saat ada aktivitas login, pengunggahan, atau penilaian.</p>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- TAB 4: BACKUP & SANDBOX -->
+    <!-- TAB 4: BACKUP & PEMELIHARAAN -->
     <div id="panelAdminBackup" class="hidden flex flex-col gap-3">
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <h3 class="font-bold text-sm text-on-surface">Cadangan Basis Data</h3>
         <p class="text-xs text-on-surface-variant">
-          Unduh seluruh data siswa, kelompok, lembar LKPD, dan penilaian dalam format file JSON.
+          Unduh seluruh basis data akun, kelompok, dan hasil kegiatan dalam format file JSON.
         </p>
-        <button onclick="downloadBackupJSON()" class="w-full py-2.5 rounded-xl bg-[#0875D1] hover:bg-[#02569b] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all">
+        <button onclick="downloadBackupJSON()" class="w-full py-2.5 rounded-xl bg-[#0875D1] hover:bg-[#02569b] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
           <span class="material-symbols-outlined text-sm">download</span>
           <span>Unduh Cadangan Database (JSON)</span>
         </button>
       </div>
 
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-red-200 shadow-sm flex flex-col gap-3">
-        <h3 class="font-bold text-sm text-red-700">Zona Bahaya: Reset Sandbox Demo</h3>
+        <h3 class="font-bold text-sm text-red-700">Pembersihan Data Sistem</h3>
         <p class="text-xs text-on-surface-variant">
-          Kembalikan seluruh data simulasi ke kondisi awal bawaan pabrik (default demo).
+          Kosongkan seluruh data cache lokal browser agar sistem kembali bersih dari sisa sesi atau data simulasi.
         </p>
-        <button onclick="resetSandboxData()" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-1.5">
-          <span class="material-symbols-outlined text-sm">restart_alt</span>
-          <span>Reset Semua Data Demo Sandbox</span>
+        <button onclick="clearAllSystemData()" class="w-full py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-sm">delete_sweep</span>
+          <span>Kosongkan Semua Data Cache</span>
         </button>
       </div>
     </div>
 
-      <!-- Copyright Footer -->
+    <!-- Copyright Footer -->
     <div class="text-center pt-3 pb-4">
       <p class="font-label-sm text-label-sm text-outline text-xs">
         &copy; 2026 Kurikulum SMAN 1 Belitang
@@ -325,7 +322,6 @@
     </div>
   </main>
 
-  <script src="../js/data-mock.js"></script>
   <script src="../js/core.js"></script>
   <script>
     function switchAdmTab(tab) {
@@ -346,13 +342,27 @@
       });
     }
 
-    function syncDapodik() {
-      FincestemCore.ui.toast('Sinkronisasi 1.165 data siswa dari Dapodik SMAN 1 Belitang sukses!', 'success');
+    function handleImportDapodik() {
+      FincestemCore.ui.toast('Menu impor data Dapodik siap dikonfigurasi.', 'info');
+    }
+
+    function handleTambahPenggunaManual() {
+      FincestemCore.ui.toast('Menu tambah pengguna manual siap dikonfigurasi.', 'info');
+    }
+
+    function saveAdminConfig() {
+      const nama = document.getElementById('cfgNamaKegiatan').value;
+      const thn = document.getElementById('cfgTahunAjaran').value;
+      const ddl = document.getElementById('cfgDeadlineLKPD').value;
+      localStorage.setItem('fincestem_cfg_nama', nama);
+      localStorage.setItem('fincestem_cfg_thn', thn);
+      localStorage.setItem('fincestem_cfg_ddl', ddl);
+      FincestemCore.ui.toast('Konfigurasi sistem berhasil disimpan!', 'success');
     }
 
     function downloadBackupJSON() {
-      const data = FincestemDB.get();
-      const str = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+      const stored = localStorage.getItem('fincestem_db_2026_v1') || '{}';
+      const str = "data:text/json;charset=utf-8," + encodeURIComponent(stored);
       const a = document.createElement('a');
       a.setAttribute("href", str);
       a.setAttribute("download", "FINCESTEM_2026_Backup.json");
@@ -362,11 +372,14 @@
       FincestemCore.ui.toast('Cadangan JSON berhasil diunduh.', 'success');
     }
 
-    function resetSandboxData() {
-      if (confirm('Apakah Anda yakin ingin mereset seluruh data simulasi ke kondisi bawaan?')) {
-        FincestemDB.resetDefaults();
-        FincestemCore.ui.toast('Data demo telah direset ke pengaturan awal.', 'info');
-        setTimeout(() => location.reload(), 800);
+    function clearAllSystemData() {
+      if (confirm('Apakah Anda yakin ingin mengosongkan seluruh data sistem dan membersihkan cache lokal?')) {
+        localStorage.removeItem('fincestem_db_2026_v1');
+        localStorage.removeItem('fincestem_auth');
+        localStorage.removeItem('fincestem_user');
+        localStorage.removeItem('fincestem_role');
+        FincestemCore.ui.toast('Semua data sistem berhasil dikosongkan dan dibersihkan.', 'success');
+        setTimeout(() => location.reload(), 600);
       }
     }
   </script>
