@@ -117,7 +117,7 @@
     <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-2">
       <div class="flex items-center justify-between">
         <h2 class="font-extrabold text-base text-primary">Jurnal Foto Kegiatan Riset</h2>
-        <span id="docCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-secondary/15 text-secondary">4 Foto Terverifikasi</span>
+        <span id="docCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-surface-container text-on-surface-variant">0 Foto Tersimpan</span>
       </div>
       <p class="text-xs text-on-surface-variant leading-relaxed">
         Setiap kelompok wajib mengunggah bukti foto lapangan pada tiap pilar kegiatan sebagai komponen portofolio penilaian kokurikuler.
@@ -138,7 +138,7 @@
       <!-- Synced dynamically by JavaScript -->
     </div>
 
-      <!-- Copyright Footer -->
+    <!-- Copyright Footer -->
     <div class="text-center pt-3 pb-4">
       <p class="font-label-sm text-label-sm text-outline text-xs">
         &copy; 2026 Kurikulum SMAN 1 Belitang
@@ -169,7 +169,7 @@
 
         <div>
           <label class="block text-xs font-bold text-on-surface mb-1">Judul / Aktivitas Foto</label>
-          <input id="modalPhotoTitle" type="text" placeholder="Contoh: Pengambilan Sampel Air di BK 9" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-primary outline-none">
+          <input id="modalPhotoTitle" type="text" placeholder="Contoh: Pengambilan Sampel Air di Saluran Irigasi" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-primary outline-none">
         </div>
 
         <div>
@@ -178,13 +178,16 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Pilih Contoh Sampel Foto</label>
-          <select id="modalPhotoUrl" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-primary outline-none">
-            <option value="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=600&q=80">Sampel 1: Uji pH Air di Tabung Reaksi (STEM)</option>
-            <option value="https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=600&q=80">Sampel 2: Wawancara Petani Gabah (Financial)</option>
-            <option value="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=600&q=80">Sampel 3: Bangunan Pintu Air Kolonial (Culture)</option>
-            <option value="https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80">Sampel 4: Pengukuran Debit Saluran (Exploration)</option>
-          </select>
+          <label class="block text-xs font-bold text-on-surface mb-1">Pilih Berkas Foto Lapangan</label>
+          <div class="relative border-2 border-dashed border-outline-variant/60 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 hover:border-primary/60 transition-all bg-surface-container-low cursor-pointer" onclick="document.getElementById('modalPhotoFileInput').click()">
+            <input id="modalPhotoFileInput" type="file" accept="image/*" class="hidden" onchange="handlePhotoFileSelected(event)">
+            <div id="uploadPlaceholder" class="flex flex-col items-center gap-1 text-center py-2">
+              <span class="material-symbols-outlined text-3xl text-primary">add_a_photo</span>
+              <span class="text-xs font-bold text-on-surface">Pilih dari Galeri atau Kamera</span>
+              <span class="text-[10px] text-outline">Format JPG, PNG, atau WEBP</span>
+            </div>
+            <img id="uploadPreviewImg" class="hidden max-h-40 rounded-xl object-contain w-full" alt="Pratinjau Foto">
+          </div>
         </div>
       </div>
 
@@ -200,12 +203,17 @@
     </div>
   </div>
 
-  <script src="../js/data-mock.js"></script>
   <script src="../js/core.js"></script>
   <script>
     let currentFilter = 'all';
+    let selectedPhotoBase64 = null;
 
     document.addEventListener('DOMContentLoaded', () => {
+      const user = FincestemCore.auth.getUser();
+      if (!user) {
+        window.location.href = 'index.html';
+        return;
+      }
       renderPhotos();
     });
 
@@ -218,14 +226,75 @@
       }
     }
 
+    function handlePhotoFileSelected(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        FincestemCore.ui.toast('Hanya berkas gambar yang diperbolehkan!', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        selectedPhotoBase64 = e.target.result;
+        const preview = document.getElementById('uploadPreviewImg');
+        const placeholder = document.getElementById('uploadPlaceholder');
+        preview.src = selectedPhotoBase64;
+        preview.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function getDocumentationList() {
+      try {
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        if (stored) {
+          const db = JSON.parse(stored);
+          if (Array.isArray(db.documentation)) {
+            return db.documentation;
+          }
+        }
+      } catch (e) {}
+      return [];
+    }
+
     function renderPhotos() {
-      const db = FincestemDB.get();
-      const list = db.documentation || [];
+      const list = getDocumentationList();
       const grid = document.getElementById('photoGrid');
       grid.innerHTML = '';
 
+      const badge = document.getElementById('docCountBadge');
+      badge.textContent = list.length + ' Foto Tersimpan';
+      if (list.length > 0) {
+        badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-secondary/15 text-secondary';
+      } else {
+        badge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-surface-container text-on-surface-variant';
+      }
+
       const filtered = currentFilter === 'all' ? list : list.filter(p => p.pillar === currentFilter || p.category === currentFilter);
-      document.getElementById('docCountBadge').textContent = list.length + ' Foto Terverifikasi';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-2 py-12 px-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 flex flex-col items-center justify-center text-center gap-2 shadow-xs">
+            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-outline mb-1">
+              <span class="material-symbols-outlined text-3xl">photo_library</span>
+            </div>
+            <p class="font-bold text-sm text-on-surface">Belum Ada Foto Dokumentasi</p>
+            <p class="text-xs text-outline max-w-xs leading-relaxed">
+              ${currentFilter === 'all' 
+                ? 'Belum ada foto riset yang diunggah. Klik tombol di bawah untuk mendokumentasikan kegiatan kelompok Anda.' 
+                : 'Belum ada foto dokumentasi untuk pilar ' + currentFilter + '.'}
+            </p>
+            <button onclick="toggleUploadModal(true)" class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-xs hover:bg-primary/90 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-sm">add_a_photo</span>
+              <span>Unggah Foto Sekarang</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
 
       filtered.forEach(photo => {
         let badgeColor = 'bg-blue-100 text-blue-700';
@@ -235,7 +304,7 @@
 
         const card = document.createElement('div');
         card.className = 'bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/25 shadow-xs flex flex-col group cursor-pointer hover:shadow-md transition-all';
-        card.onclick = () => FincestemCore.ui.openLightbox(photo.url, photo.title + ' • ' + photo.author);
+        card.onclick = () => FincestemCore.ui.openLightbox(photo.url, photo.title + (photo.author ? ' • ' + photo.author : ''));
         card.innerHTML = `
           <div class="relative aspect-[4/3] bg-surface-container overflow-hidden">
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="${photo.url}" alt="${photo.title}" loading="lazy">
@@ -244,7 +313,7 @@
           <div class="p-2.5 flex flex-col gap-1">
             <h4 class="font-bold text-xs text-on-surface line-clamp-1 leading-tight">${photo.title}</h4>
             <p class="text-[10.5px] text-on-surface-variant line-clamp-2 leading-relaxed">${photo.description || ''}</p>
-            <span class="text-[9.5px] text-outline font-semibold mt-0.5">${photo.date}</span>
+            <span class="text-[9.5px] text-outline font-semibold mt-0.5">${photo.date || '-'}</span>
           </div>
         `;
         grid.appendChild(card);
@@ -254,7 +323,9 @@
     function filterPhotos(category) {
       currentFilter = category;
       document.querySelectorAll('.photo-filter-btn').forEach(b => {
-        if (b.textContent.toLowerCase().includes(category.toLowerCase())) {
+        if (category === 'all' && b.textContent.includes('Semua')) {
+          b.className = 'photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs whitespace-nowrap';
+        } else if (category !== 'all' && b.textContent.toLowerCase().includes(category.toLowerCase())) {
           b.className = 'photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs whitespace-nowrap';
         } else {
           b.className = 'photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-semibold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap';
@@ -264,28 +335,52 @@
     }
 
     function submitNewPhoto() {
+      const user = FincestemCore.auth.getUser();
       const title = document.getElementById('modalPhotoTitle').value.trim();
       const desc = document.getElementById('modalPhotoDesc').value.trim();
       const pillar = document.getElementById('modalPillarSelect').value;
-      const url = document.getElementById('modalPhotoUrl').value;
 
       if (!title) {
         FincestemCore.ui.toast('Judul foto wajib diisi!', 'error');
         return;
       }
 
-      FincestemDB.addDocumentation({
+      if (!selectedPhotoBase64) {
+        FincestemCore.ui.toast('Silakan pilih berkas foto terlebih dahulu!', 'error');
+        return;
+      }
+
+      const newPhoto = {
+        id: 'doc-' + Date.now(),
         title: title,
         description: desc,
         pillar: pillar,
         category: pillar,
-        url: url,
-        author: 'Kelompok 4 - Belitang Cerdas'
-      });
+        url: selectedPhotoBase64,
+        author: user ? (user.group || user.name) : 'Siswa',
+        date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
+      };
+
+      try {
+        let db = {};
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        if (stored) db = JSON.parse(stored);
+        if (!Array.isArray(db.documentation)) db.documentation = [];
+        db.documentation.unshift(newPhoto);
+        localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+      } catch (e) {
+        console.error(e);
+      }
 
       toggleUploadModal(false);
       document.getElementById('modalPhotoTitle').value = '';
       document.getElementById('modalPhotoDesc').value = '';
+      document.getElementById('modalPhotoFileInput').value = '';
+      document.getElementById('uploadPreviewImg').classList.add('hidden');
+      document.getElementById('uploadPreviewImg').src = '';
+      document.getElementById('uploadPlaceholder').classList.remove('hidden');
+      selectedPhotoBase64 = null;
+
       FincestemCore.ui.toast('Foto dokumentasi berhasil disimpan!', 'success');
       renderPhotos();
     }

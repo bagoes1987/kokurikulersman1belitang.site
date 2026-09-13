@@ -6,112 +6,8 @@ const FINCESTEM_DB_KEY = 'fincestem_db_2026_v1';
 
 const defaultDB = {
   version: '2026.1',
-  currentUser: {
-    nisn: '007261944',
-    name: 'Anindya Putri Rahayu',
-    class: 'XI MIPA 1',
-    group: 'Kelompok 4 - Belitang Cerdas',
-    groupId: 'group-4',
-    role: 'Ketua Kelompok',
-    phone: '0812-7890-1234',
-    email: 'anindya.putri@sman1belitang.sch.id'
-  },
-  groups: [
-    {
-      id: 'group-4',
-      number: 4,
-      name: 'Kelompok 4 - Belitang Cerdas',
-      class: 'XI MIPA 1',
-      zone: 'Zona OKU Timur',
-      destination: 'Saluran Irigasi Primer BK 9 & Sentra Penggilingan Padi',
-      leader: 'Anindya Putri Rahayu',
-      facilitator: 'Rahmat Hidayat, S.Pd., Gr.',
-      status: 'Laporan Dikirim',
-      lkpdSubmitted: true,
-      submittedAt: '12 Sep 2026, 14:30 WIB',
-      fileName: 'Laporan_Kelompok4_FINCESTEM_BK9.pdf',
-      fileSize: '3.4 MB',
-      answers: {
-        ph: '6.8',
-        debit: '14.2 m3/s',
-        suhu: '28.5 °C',
-        hpp: 'Rp 6.200 / kg',
-        hargaJual: 'Rp 7.400 / kg',
-        catatanBudaya: 'Tradisi sambatan / gotong royong para petani transmigran Belitang dalam pengelolaan air saluran irigasi sekunder sangat terjaga.',
-        kesimpulan: 'Kualitas air saluran irigasi BK 9 memenuhi standar baku mutu pertanian kelas II dengan pH optimal untuk varietas Ciherang dan Inpari 32.'
-      },
-      routeStatus: 'Disetujui',
-      scores: {
-        financial: 95,
-        culture: 92,
-        exploration: 96,
-        stem: 94,
-        average: 94
-      },
-      isGraded: true,
-      feedback: 'Analisis debit air dan perhitungan marjin ekonomi sangat akurat. Dokumentasi lapangan lengkap dan memenuhi standar akademik.'
-    },
-    {
-      id: 'group-1',
-      number: 1,
-      name: 'Kelompok 1 - Sinar Komering',
-      class: 'XI MIPA 1',
-      zone: 'Zona OKU Timur',
-      destination: 'Hulu Sungai Komering & Situs Sejarah Candi Martapura',
-      leader: 'Ahmad Fauzi',
-      facilitator: 'Rahmat Hidayat, S.Pd., Gr.',
-      status: 'Selesai Dinilai',
-      lkpdSubmitted: true,
-      submittedAt: '11 Sep 2026, 16:15 WIB',
-      fileName: 'LKPD_Kelompok1_Final.pdf',
-      fileSize: '2.8 MB',
-      answers: {},
-      routeStatus: 'Disetujui',
-      scores: { financial: 90, culture: 94, exploration: 92, stem: 90, average: 92 },
-      isGraded: true,
-      feedback: 'Analisis kearifan lokal sangat mendalam.'
-    },
-    {
-      id: 'group-2',
-      number: 2,
-      name: 'Kelompok 2 - Sriwijaya Muda',
-      class: 'XI MIPA 2',
-      zone: 'Zona OKU Timur',
-      destination: 'Bendungan Perjaya & Saluran Sekunder BK 3',
-      leader: 'Rian Pratama',
-      facilitator: 'Rahmat Hidayat, S.Pd., Gr.',
-      status: 'Menunggu Penilaian',
-      lkpdSubmitted: true,
-      submittedAt: '12 Sep 2026, 11:20 WIB',
-      fileName: 'Laporan_Kelompok2_Perjaya.pdf',
-      fileSize: '4.1 MB',
-      answers: {},
-      routeStatus: 'Menunggu',
-      scores: null,
-      isGraded: false,
-      feedback: ''
-    },
-    {
-      id: 'group-3',
-      number: 3,
-      name: 'Kelompok 3 - Mitra Tani Belitang',
-      class: 'XI MIPA 2',
-      zone: 'Zona Luar OKU Timur',
-      destination: 'Balai Besar Riset Padi Sukamandi & Pasar Induk Jakabaring',
-      leader: 'Siti Aminah',
-      facilitator: 'Rahmat Hidayat, S.Pd., Gr.',
-      status: 'Eksplorasi Lapangan',
-      lkpdSubmitted: false,
-      submittedAt: null,
-      fileName: null,
-      fileSize: null,
-      answers: {},
-      routeStatus: 'Disetujui',
-      scores: null,
-      isGraded: false,
-      feedback: ''
-    }
-  ],
+  currentUser: null,
+  groups: [],
   modules: [
     {
       id: 'mod-financial',
@@ -178,48 +74,7 @@ const defaultDB = {
       ]
     }
   ],
-  documentation: [
-    {
-      id: 'doc-1',
-      title: 'Pengambilan Sampel Air di Pintu Pembagi BK 9',
-      category: 'STEM',
-      pillar: 'STEM',
-      author: 'Kelompok 4 - Belitang Cerdas',
-      date: '12 Sep 2026, 09:15 WIB',
-      url: 'https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&w=600&q=80',
-      description: 'Pengujian pH air irigasi menggunakan pH meter digital dan kertas lakmus terstandar.'
-    },
-    {
-      id: 'doc-2',
-      title: 'Wawancara Analisis Harga Bersama Petani & Penebas Gabah',
-      category: 'Financial',
-      pillar: 'Financial',
-      author: 'Kelompok 4 - Belitang Cerdas',
-      date: '12 Sep 2026, 10:45 WIB',
-      url: 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&w=600&q=80',
-      description: 'Diskusi struktur biaya benih, pupuk subsidi, dan biaya angkut gabah menuju penggilingan.'
-    },
-    {
-      id: 'doc-3',
-      title: 'Dokumentasi Prasasti dan Struktur Bangunan Pintu Air Kolonial',
-      category: 'Culture',
-      pillar: 'Culture',
-      author: 'Kelompok 4 - Belitang Cerdas',
-      date: '12 Sep 2026, 11:30 WIB',
-      url: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=600&q=80',
-      description: 'Pencatatan data sejarah arsitektur hidrolik peninggalan era kolonisasi 1937.'
-    },
-    {
-      id: 'doc-4',
-      title: 'Survei Aliran Debit Air Menggunakan Metode Current Meter',
-      category: 'Exploration',
-      pillar: 'Exploration',
-      author: 'Kelompok 4 - Belitang Cerdas',
-      date: '12 Sep 2026, 13:10 WIB',
-      url: 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
-      description: 'Pengukuran kecepatan aliran saluran sekunder untuk kalkulasi debit volume per detik.'
-    }
-  ]
+  documentation: []
 };
 
 const FincestemDB = {
@@ -298,15 +153,16 @@ const FincestemDB = {
 
   addDocumentation: function(photo) {
     const db = this.get();
+    if (!Array.isArray(db.documentation)) db.documentation = [];
     const newDoc = {
       id: 'doc-' + Date.now(),
       title: photo.title || 'Dokumentasi Lapangan Baru',
       category: photo.category || 'STEM',
       pillar: photo.pillar || photo.category || 'STEM',
-      author: photo.author || 'Kelompok 4 - Belitang Cerdas',
-      date: 'Baru saja',
-      url: photo.url || 'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=600&q=80',
-      description: photo.description || 'Dokumentasi kegiatan kokurikuler lapangan FINCESTEM 2026.'
+      author: photo.author || 'Siswa',
+      date: photo.date || 'Baru saja',
+      url: photo.url || '',
+      description: photo.description || ''
     };
     db.documentation.unshift(newDoc);
     this.save(db);

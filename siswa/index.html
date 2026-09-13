@@ -167,12 +167,7 @@
           </div>
         </div>
 
-        <button onclick="fillDemoCredentials()" type="button" class="py-2 px-3 rounded-xl bg-surface-container-low hover:bg-surface-container text-secondary text-xs font-bold flex items-center justify-center gap-1.5 transition-all">
-          <span class="material-symbols-outlined text-sm">auto_fix_high</span>
-          <span>Isi Kredensial Demo Siswa (Anindya - 007261944)</span>
-        </button>
-
-        <button id="submitBtn" onclick="handleSiswaLogin()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#08A7B5] to-[#068490] hover:from-[#0795a2] hover:to-[#05717c] text-white font-bold text-sm shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 mt-2">
+        <button id="submitBtn" onclick="handleSiswaLogin()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#08A7B5] to-[#068490] hover:from-[#0795a2] hover:to-[#05717c] text-white font-bold text-sm shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer">
           <span id="btnText">Masuk ke Portal Siswa</span>
           <span class="material-symbols-outlined text-lg">arrow_forward</span>
         </button>
@@ -190,7 +185,6 @@
     </div>
   </main>
 
-  <script src="../js/data-mock.js"></script>
   <script src="../js/core.js"></script>
   <script>
     function togglePasswordVisibility() {
@@ -205,40 +199,56 @@
       }
     }
 
-    function fillDemoCredentials() {
-      document.getElementById('nisnInput').value = '007261944';
-      document.getElementById('passwordInput').value = 'Belitang2026!';
-      FincestemCore.ui.toast('Kredensial demo terisi: 007261944', 'info');
-    }
-
     function handleSiswaLogin() {
       const nisn = document.getElementById('nisnInput').value.trim();
       const btnText = document.getElementById('btnText');
       const btn = document.getElementById('submitBtn');
 
       if (!nisn) {
-        FincestemCore.ui.toast('Silakan masukkan NISN Anda!', 'error');
+        FincestemCore.ui.toast('Silakan masukkan NISN resmi Anda!', 'error');
         return;
       }
 
-      btnText.textContent = 'Memverifikasi Dapodik...';
+      btnText.textContent = 'Memverifikasi Data...';
       btn.classList.add('opacity-80', 'pointer-events-none');
 
       setTimeout(() => {
+        // Cari data siswa dari database lokal jika sudah diimpor
+        let sName = 'Peserta Didik';
+        let sClass = '-';
+        let sGroup = 'Belum Terdaftar Kelompok';
+        let sGroupId = '';
+
+        try {
+          const stored = localStorage.getItem('fincestem_db_2026_v1');
+          if (stored) {
+            const db = JSON.parse(stored);
+            if (db.students && Array.isArray(db.students)) {
+              const found = db.students.find(s => String(s.nisn).trim() === nisn);
+              if (found) {
+                sName = found.name;
+                sClass = found.class || sClass;
+                sGroup = found.group || sGroup;
+                sGroupId = found.groupId || '';
+              }
+            }
+          }
+        } catch (e) {}
+
         const student = {
-          name: 'Anindya Putri Rahayu',
-          nisn: nisn || '007261944',
-          class: 'XI MIPA 1',
-          group: 'Kelompok 4 - Belitang Cerdas',
-          groupId: 'group-4',
+          name: sName,
+          nisn: nisn,
+          class: sClass,
+          group: sGroup,
+          groupId: sGroupId,
           role: 'siswa'
         };
         FincestemCore.auth.setUser(student, 'siswa');
-        FincestemCore.ui.toast('Selamat datang, ' + student.name + '!', 'success');
+        FincestemCore.ui.toast('Berhasil masuk ke portal.', 'success');
         setTimeout(() => {
           window.location.href = 'dashboard.html';
-        }, 500);
-      }, 600);
+        }, 400);
+      }, 500);
     }
   </script>
 </body>

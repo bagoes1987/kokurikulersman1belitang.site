@@ -15,13 +15,7 @@ const FincestemCore = {
         const u = localStorage.getItem('fincestem_user');
         if (u) return JSON.parse(u);
       } catch (e) {}
-      return {
-        name: 'Anindya Putri Rahayu',
-        nisn: '007261944',
-        class: 'XI MIPA 1',
-        group: 'Kelompok 4 - Belitang Cerdas',
-        role: 'siswa'
-      };
+      return null;
     },
     setUser: function(userObj, role) {
       localStorage.setItem('fincestem_auth', 'true');

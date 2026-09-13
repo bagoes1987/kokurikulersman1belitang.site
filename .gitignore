@@ -6,4 +6,5 @@ desktop.ini
 # Logs & scratch
 *.log
 scratch/
-.system_generated/
+# Temporary Office files
+~$*
