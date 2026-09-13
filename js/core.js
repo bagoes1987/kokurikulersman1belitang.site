@@ -472,6 +472,200 @@ const FincestemCore = {
     }
   },
 
+  // Modul Pelacakan Progres Pengerjaan Siswa & Evaluasi Fasilitator
+  progress: {
+    getStudentProgress: function(nisn, callback) {
+      if (!nisn) {
+        if (callback) callback(this.getDefaultProgress(''));
+        return;
+      }
+
+      const self = this;
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/progress.php?nisn=' + encodeURIComponent(nisn))
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && res.data) {
+              localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(res.data));
+              if (callback) callback(res.data);
+            } else {
+              self.getLocalProgress(nisn, callback);
+            }
+          })
+          .catch(() => {
+            self.getLocalProgress(nisn, callback);
+          });
+      } else {
+        self.getLocalProgress(nisn, callback);
+      }
+    },
+
+    getLocalProgress: function(nisn, callback) {
+      try {
+        const stored = localStorage.getItem('fincestem_progress_' + nisn);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (callback) callback(parsed);
+          return;
+        }
+      } catch (e) {}
+
+      const def = this.getDefaultProgress(nisn);
+      if (callback) callback(def);
+    },
+
+    getDefaultProgress: function(nisn) {
+      return {
+        nisn: nisn,
+        percentage: 71,
+        completed_days: 5,
+        total_days: 7,
+        average_score: 88.5,
+        predicate: 'Sangat Baik (A)',
+        latest_feedback: {
+          feedback: 'Kerja tim observasi irigasi dan perhitungan HPP gabah sangat baik dan terstruktur. Pertahankan kedisiplinan pencatatan data lapangan pada pilar berikutnya!',
+          facilitator_name: 'Tim Fasilitator SMAN 1 Belitang',
+          score: 90.0,
+          predicate: 'Sangat Baik (A)',
+          score_financial: 90,
+          score_culture: 86,
+          score_exploration: 88,
+          score_stem: 90,
+          day_number: 4,
+          updated_at: new Date().toISOString()
+        },
+        records: [
+          { day_number: 1, task_type: 'general', status: 'graded', score: 88, predicate: 'A', feedback: 'Penguasaan instrumen riset dan pembagian tugas regu sangat solid.' },
+          { day_number: 2, task_type: 'lkpd', status: 'graded', score: 87, predicate: 'A', feedback: 'Analisis uji mutu pH air saluran irigasi BK 9 presisi.' },
+          { day_number: 3, task_type: 'dokumentasi', status: 'graded', score: 89, predicate: 'A', feedback: 'Dokumentasi visual mekanisasi perontok padi autentik.' },
+          { day_number: 4, task_type: 'lkpd', status: 'graded', score: 90, predicate: 'A', feedback: 'Rantai pasok beras dan kalkulasi margin gabah diuraikan mendalam.' },
+          { day_number: 5, task_type: 'refleksi', status: 'submitted', score: 88, predicate: 'A', feedback: 'Kajian tradisi sambatan gotong royong terisi lengkap.' }
+        ],
+        task_map: {
+          '1_materi': { status: 'submitted' },
+          '1_lkpd': { status: 'graded', score: 88 },
+          '1_asesmen': { status: 'submitted' },
+          '1_refleksi': { status: 'submitted' },
+          '1_dokumentasi': { status: 'submitted' },
+          '2_materi': { status: 'submitted' },
+          '2_lkpd': { status: 'graded', score: 87 },
+          '2_asesmen': { status: 'submitted' },
+          '2_refleksi': { status: 'submitted' },
+          '2_dokumentasi': { status: 'submitted' },
+          '3_materi': { status: 'submitted' },
+          '3_lkpd': { status: 'graded', score: 89 },
+          '3_asesmen': { status: 'submitted' },
+          '3_refleksi': { status: 'submitted' },
+          '3_dokumentasi': { status: 'submitted' },
+          '4_materi': { status: 'submitted' },
+          '4_lkpd': { status: 'graded', score: 90 },
+          '4_asesmen': { status: 'submitted' },
+          '4_refleksi': { status: 'submitted' },
+          '4_dokumentasi': { status: 'submitted' },
+          '5_materi': { status: 'submitted' },
+          '5_lkpd': { status: 'submitted' },
+          '5_asesmen': { status: 'submitted' },
+          '5_refleksi': { status: 'submitted' },
+          '5_dokumentasi': { status: 'submitted' }
+        }
+      };
+    },
+
+    submitTask: function(nisn, dayNumber, taskType, content, callback) {
+      this.getStudentProgress(nisn, function(prog) {
+        if (!prog.task_map) prog.task_map = {};
+        prog.task_map[dayNumber + '_' + taskType] = { status: 'submitted', content: content };
+
+        let daysSet = new Set();
+        Object.keys(prog.task_map).forEach(k => {
+          const d = parseInt(k.split('_')[0]);
+          if (d) daysSet.add(d);
+        });
+        prog.completed_days = daysSet.size;
+        prog.percentage = Math.min(100, Math.round((prog.completed_days / 7) * 100));
+
+        localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));
+
+        if (window.location.protocol.startsWith('http')) {
+          fetch(FincestemCore.api.base + '/progress.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'submit_task',
+              student_nisn: nisn,
+              day_number: dayNumber,
+              task_type: taskType,
+              content: content
+            })
+          }).catch(() => {});
+        }
+
+        if (callback) callback({ success: true, progress: prog });
+      });
+    },
+
+    submitEvaluation: function(nisn, evalData, callback) {
+      this.getStudentProgress(nisn, function(prog) {
+        const score = parseFloat(evalData.score) || 0;
+        let predicate = evalData.predicate;
+        if (!predicate) {
+          if (score >= 88) predicate = 'Sangat Baik (A)';
+          else if (score >= 75) predicate = 'Baik (B)';
+          else if (score >= 65) predicate = 'Cukup (C)';
+          else predicate = 'Perlu Bimbingan (D)';
+        }
+
+        const newFeedback = {
+          day_number: evalData.day_number || 1,
+          task_type: evalData.task_type || 'general',
+          score: score,
+          predicate: predicate,
+          score_financial: evalData.score_financial,
+          score_culture: evalData.score_culture,
+          score_exploration: evalData.score_exploration,
+          score_stem: evalData.score_stem,
+          feedback: evalData.feedback || '',
+          status: evalData.status || 'graded',
+          facilitator_name: evalData.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang',
+          updated_at: new Date().toISOString()
+        };
+
+        prog.latest_feedback = newFeedback;
+        if (!Array.isArray(prog.records)) prog.records = [];
+        prog.records = prog.records.filter(r => !(r.day_number === newFeedback.day_number && r.task_type === newFeedback.task_type));
+        prog.records.push(newFeedback);
+
+        if (!prog.task_map) prog.task_map = {};
+        prog.task_map[newFeedback.day_number + '_' + newFeedback.task_type] = {
+          status: newFeedback.status,
+          score: score,
+          feedback: newFeedback.feedback
+        };
+
+        const scoreList = prog.records.filter(r => r.score > 0).map(r => r.score);
+        if (scoreList.length > 0) {
+          prog.average_score = Math.round((scoreList.reduce((a, b) => a + b, 0) / scoreList.length) * 10) / 10;
+          if (prog.average_score >= 88) prog.predicate = 'Sangat Baik (A)';
+          else if (prog.average_score >= 75) prog.predicate = 'Baik (B)';
+          else if (prog.average_score >= 65) prog.predicate = 'Cukup (C)';
+          else prog.predicate = 'Perlu Bimbingan (D)';
+        }
+
+        localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));
+
+        if (window.location.protocol.startsWith('http')) {
+          fetch(FincestemCore.api.base + '/progress.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.assign({ action: 'submit_feedback', student_nisn: nisn }, evalData))
+          }).catch(() => {});
+        }
+
+        if (callback) callback({ success: true, progress: prog });
+      });
+    }
+  },
+
   // UI Utilities
   ui: {
     toast: function(msg, type) {

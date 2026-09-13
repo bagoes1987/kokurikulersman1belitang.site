@@ -42,3 +42,25 @@ ON DUPLICATE KEY UPDATE
   `start_time` = VALUES(`start_time`),
   `end_time` = VALUES(`end_time`),
   `description` = VALUES(`description`);
+
+-- 4. Buat tabel student_progress_eval untuk pelacakan progres tugas siswa & feedback fasilitator
+CREATE TABLE IF NOT EXISTS `student_progress_eval` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `student_nisn` VARCHAR(50) NOT NULL COMMENT 'NISN Siswa',
+  `day_number` INT NOT NULL DEFAULT 1 COMMENT 'Nomor Hari 1 - 7',
+  `task_type` VARCHAR(50) NOT NULL DEFAULT 'lkpd' COMMENT 'materi, lkpd, asesmen, refleksi, dokumentasi, general',
+  `content` TEXT DEFAULT NULL COMMENT 'Catatan ringkas jawaban atau data tugas',
+  `status` ENUM('belum_mulai', 'draft', 'submitted', 'review', 'graded', 'revisi') NOT NULL DEFAULT 'submitted',
+  `score` DECIMAL(5, 2) DEFAULT NULL COMMENT 'Nilai angka 0 - 100',
+  `predicate` VARCHAR(20) DEFAULT NULL COMMENT 'Predikat: Sangat Baik (A), Baik (B), dll',
+  `score_financial` DECIMAL(5, 2) DEFAULT NULL,
+  `score_culture` DECIMAL(5, 2) DEFAULT NULL,
+  `score_exploration` DECIMAL(5, 2) DEFAULT NULL,
+  `score_stem` DECIMAL(5, 2) DEFAULT NULL,
+  `feedback` TEXT DEFAULT NULL COMMENT 'Catatan apresiasi / umpan balik fasilitator pembina',
+  `facilitator_name` VARCHAR(150) DEFAULT NULL COMMENT 'Nama fasilitator yang memberi evaluasi',
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `uniq_student_day_task` (`student_nisn`, `day_number`, `task_type`),
+  INDEX `idx_student_nisn` (`student_nisn`),
+  INDEX `idx_day_number` (`day_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

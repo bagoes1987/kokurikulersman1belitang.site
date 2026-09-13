@@ -595,6 +595,26 @@
           </div>
         </div>
 
+        <!-- Progres & Feedback Fasilitator di Modal Admin -->
+        <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 flex flex-col gap-2 text-xs">
+          <div class="flex items-center justify-between">
+            <span class="font-extrabold text-emerald-950 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm text-emerald-700">analytics</span> Progres &amp; Evaluasi Pembina
+            </span>
+            <span id="modalStudentProgressBadge" class="px-2 py-0.5 rounded-md text-[10.5px] font-black bg-emerald-200 text-emerald-900">71% Selesai</span>
+          </div>
+          <div class="flex justify-between items-center text-[11px]">
+            <span class="text-slate-600">Nilai Rata-rata: <strong id="modalStudentAvgScore" class="text-emerald-800">88.5 (A)</strong></span>
+            <span class="text-slate-600">Hari Selesai: <strong id="modalStudentDays" class="text-slate-800">5 / 7 Hari</strong></span>
+          </div>
+          <div class="p-2 rounded-xl bg-white/90 border border-emerald-100 flex flex-col gap-0.5">
+            <span class="text-[10px] font-bold text-emerald-800">Feedback Fasilitator Terkini:</span>
+            <p id="modalStudentFeedbackText" class="text-[11px] text-slate-700 italic leading-relaxed">
+              "Observasi lapangan dan data pengukuran irigasi sangat baik."
+            </p>
+          </div>
+        </div>
+
         <div class="pt-2 border-t border-outline-variant/20 flex justify-end">
           <button onclick="closeStudentDetail()" class="w-full py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs cursor-pointer">
             Tutup
@@ -964,6 +984,18 @@
       const zBadgeEl = document.getElementById('modalStudentZoneBadge');
       zBadgeEl.textContent = isLuar ? 'LUAR OKU TIMUR' : 'OKU TIMUR';
       zBadgeEl.className = isLuar ? 'px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-900 uppercase' : 'px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase';
+
+      // Progres & Feedback Siswa
+      if (FincestemCore.progress) {
+        FincestemCore.progress.getStudentProgress(s.nisn, function(prog) {
+          if (!prog) return;
+          document.getElementById('modalStudentProgressBadge').textContent = `${prog.percentage || 0}% Selesai`;
+          document.getElementById('modalStudentAvgScore').textContent = `${prog.average_score || '-'} (${prog.predicate || 'A'})`;
+          document.getElementById('modalStudentDays').textContent = `${prog.completed_days || 0} / 7 Hari`;
+          const fb = prog.latest_feedback?.feedback || 'Belum ada catatan khusus dari fasilitator.';
+          document.getElementById('modalStudentFeedbackText').textContent = `"${fb}"`;
+        });
+      }
 
       const modal = document.getElementById('modalStudentDetail');
       modal.classList.remove('hidden');

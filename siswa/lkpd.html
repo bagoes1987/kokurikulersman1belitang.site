@@ -372,9 +372,16 @@
           localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
         } catch (e) {}
 
+        // Sinkronkan ke modul progres siswa
+        const urlParams = new URLSearchParams(window.location.search);
+        const dayNum = parseInt(urlParams.get('day')) || 2;
+        if (FincestemCore.progress && activeUser && (activeUser.nisn || activeUser.identifier)) {
+          FincestemCore.progress.submitTask(activeUser.nisn || activeUser.identifier, dayNum, 'lkpd', answers);
+        }
+
         btn.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Berhasil Disimpan</span>';
         btn.classList.remove('pointer-events-none', 'opacity-80');
-        FincestemCore.ui.toast('Laporan LKPD berhasil disimpan dan siap diperiksa pembina!', 'success');
+        FincestemCore.ui.toast('Laporan LKPD Day ' + dayNum + ' berhasil disimpan & progres diperbarui!', 'success');
         loadLKPDData();
       }, 500);
     }

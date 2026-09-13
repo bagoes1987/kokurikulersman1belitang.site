@@ -198,6 +198,31 @@ ON DUPLICATE KEY UPDATE
   `description` = VALUES(`description`);
 
 -- ----------------------------------------------------------------------
+-- 10. TABEL PROGRES TUGAS & EVALUASI SISWA (student_progress_eval)
+-- Menyimpan status pengerjaan tugas Day 1-7 serta nilai & feedback fasilitator
+-- ----------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `student_progress_eval` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `student_nisn` VARCHAR(50) NOT NULL COMMENT 'NISN Siswa',
+  `day_number` INT NOT NULL DEFAULT 1 COMMENT 'Nomor Hari 1 - 7',
+  `task_type` VARCHAR(50) NOT NULL DEFAULT 'lkpd' COMMENT 'materi, lkpd, asesmen, refleksi, dokumentasi, general',
+  `content` TEXT DEFAULT NULL COMMENT 'Catatan ringkas jawaban atau data tugas',
+  `status` ENUM('belum_mulai', 'draft', 'submitted', 'review', 'graded', 'revisi') NOT NULL DEFAULT 'submitted',
+  `score` DECIMAL(5, 2) DEFAULT NULL COMMENT 'Nilai angka 0 - 100',
+  `predicate` VARCHAR(20) DEFAULT NULL COMMENT 'Predikat: Sangat Baik (A), Baik (B), dll',
+  `score_financial` DECIMAL(5, 2) DEFAULT NULL,
+  `score_culture` DECIMAL(5, 2) DEFAULT NULL,
+  `score_exploration` DECIMAL(5, 2) DEFAULT NULL,
+  `score_stem` DECIMAL(5, 2) DEFAULT NULL,
+  `feedback` TEXT DEFAULT NULL COMMENT 'Catatan apresiasi / umpan balik fasilitator pembina',
+  `facilitator_name` VARCHAR(150) DEFAULT NULL COMMENT 'Nama fasilitator yang memberi evaluasi',
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `uniq_student_day_task` (`student_nisn`, `day_number`, `task_type`),
+  INDEX `idx_student_nisn` (`student_nisn`),
+  INDEX `idx_day_number` (`day_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------
 -- AKUN DEFAULT AWAL (Bisa langsung digunakan login pertama kali)
 -- Sandi default dapat diganti setelah masuk sistem
 -- ----------------------------------------------------------------------

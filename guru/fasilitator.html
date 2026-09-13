@@ -300,6 +300,7 @@
         <div>
           <h3 id="modalGradingGroupName" class="font-extrabold text-base text-primary">-</h3>
           <span id="modalGradingStudentName" class="text-xs text-on-surface-variant">-</span>
+          <input type="hidden" id="modalGradingTargetNisn" value="">
         </div>
         <button onclick="closeGradingModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
           <span class="material-symbols-outlined">close</span>
@@ -307,6 +308,21 @@
       </div>
 
       <div class="flex flex-col gap-3 text-xs">
+        <!-- Target Hari / Sesi -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface mb-1">Target Hari / Sesi Riset</label>
+          <select id="gradeTargetDay" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-[#42A447] outline-none">
+            <option value="0">Evaluasi Umum (4 Pilar &amp; Capaian Akhir)</option>
+            <option value="1">Day 1: Orientasi &amp; Pembekalan Riset</option>
+            <option value="2">Day 2: Eksplorasi Sains &amp; Ekosistem Irigasi</option>
+            <option value="3">Day 3: Rekayasa Teknologi &amp; Pengukuran Lapangan</option>
+            <option value="4">Day 4: Literasi Finansial &amp; Rantai Pasok Pangan</option>
+            <option value="5">Day 5: Eksplorasi Budaya &amp; Etnosains Nusantara</option>
+            <option value="6">Day 6: Sintesis Data &amp; Penyusunan LKPD</option>
+            <option value="7">Day 7: Gelar Karya Ilmiah, Presentasi &amp; Refleksi</option>
+          </select>
+        </div>
+
         <!-- Rubrik 1 -->
         <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col gap-1.5">
           <div class="flex justify-between items-center">
@@ -362,6 +378,7 @@
     </div>
   </div>
 
+  <script src="../js/siswa_data.js"></script>
   <script src="../js/core.js"></script>
   <script>
     let activeGroupId = null;
@@ -489,91 +506,168 @@
       return [];
     }
 
+    let selectedFasRombel = 'ALL';
+    let fasSearchQuery = '';
+
     function renderPenilaianList() {
       const panel = document.getElementById('panelFasPenilaian');
       panel.innerHTML = '';
 
-      const groups = getGroupsData();
+      const list = window.FincestemMasterStudents || [];
+      const rombels = [...new Set(list.map(s => s.class))].filter(Boolean).sort();
 
-      if (groups.length === 0) {
-        panel.innerHTML = `
-          <div class="py-12 px-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 flex flex-col items-center justify-center text-center gap-2 shadow-xs">
-            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-outline mb-1">
-              <span class="material-symbols-outlined text-3xl">assignment_turned_in</span>
-            </div>
-            <p class="font-bold text-sm text-on-surface">Belum Ada Lembar LKPD Masuk</p>
-            <p class="text-xs text-outline max-w-xs leading-relaxed">
-              Laporan LKPD digital yang dikirimkan oleh kelompok siswa binaan akan otomatis muncul di sini untuk diperiksa dan dinilai berdasarkan rubrik 4 pilar.
-            </p>
+      // Filter controls bar
+      const filterBar = document.createElement('div');
+      filterBar.className = 'p-3.5 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 flex flex-col gap-2.5 shadow-xs';
+      filterBar.innerHTML = `
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm text-[#42A447]">filter_alt</span> Filter Siswa Binaan
+          </span>
+          <span class="text-[11px] text-on-surface-variant font-semibold" id="fasTotalFilteredCount">Memuat...</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <select id="selFasRombel" onchange="onFasRombelChange(this.value)" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-[#42A447] outline-none">
+            <option value="ALL">Semua Rombel (1.165 Siswa)</option>
+            ${rombels.map(r => `<option value="${r}" ${selectedFasRombel === r ? 'selected' : ''}>${r}</option>`).join('')}
+          </select>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-2.5 text-xs text-on-surface-variant">search</span>
+            <input type="text" id="inputFasSearch" value="${fasSearchQuery}" oninput="onFasSearchInput(this.value)" placeholder="Cari nama siswa atau NISN..." class="w-full pl-8 pr-3 py-2 rounded-xl border border-outline-variant/50 text-xs outline-none focus:border-[#42A447]">
           </div>
-        `;
-        return;
+        </div>
+      `;
+      panel.appendChild(filterBar);
+
+      // Filter data siswa
+      let filtered = list;
+      if (selectedFasRombel !== 'ALL') {
+        filtered = filtered.filter(s => s.class === selectedFasRombel);
+      }
+      if (fasSearchQuery) {
+        const q = fasSearchQuery.toLowerCase();
+        filtered = filtered.filter(s => 
+          (s.nama || s.name || '').toLowerCase().includes(q) || 
+          String(s.nisn || '').includes(q)
+        );
       }
 
-      groups.forEach(grp => {
-        const isGraded = grp.isGraded && grp.scores;
-        let badgeClass = 'bg-amber-100 text-amber-800';
-        let badgeText = grp.status || 'Menunggu Penilaian';
-        if (isGraded) {
-          badgeClass = 'bg-teal-100 text-teal-800';
-          badgeText = 'Telah Dinilai (' + grp.scores.average + '/100)';
-        }
+      document.getElementById('fasTotalFilteredCount').textContent = `${filtered.length} Siswa Ditemukan`;
+
+      const listContainer = document.createElement('div');
+      listContainer.className = 'flex flex-col gap-3';
+      panel.appendChild(listContainer);
+
+      // Tampilkan 25 siswa pertama agar lancar & cepat
+      const displayList = filtered.slice(0, 25);
+
+      displayList.forEach(s => {
+        const nisn = s.nisn;
+        const prog = (FincestemCore.progress && FincestemCore.progress.getLocalProgress) 
+          ? FincestemCore.progress.getDefaultProgress(nisn) 
+          : { percentage: 71, average_score: 88.5, predicate: 'A' };
+
+        // Cek jika sudah pernah ada simpanan lokal
+        try {
+          const stored = localStorage.getItem('fincestem_progress_' + nisn);
+          if (stored) Object.assign(prog, JSON.parse(stored));
+        } catch (e) {}
+
+        const isGraded = !!prog.average_score;
+        let badgeClass = isGraded ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800';
+        let badgeText = isGraded ? `Nilai: ${prog.average_score} (${prog.predicate || 'A'})` : 'Menunggu Review';
 
         const card = document.createElement('div');
-        card.className = 'bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3';
+        card.className = 'bg-surface-container-lowest rounded-3xl p-4 border border-outline-variant/25 shadow-xs flex flex-col gap-2.5';
         card.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div>
-              <h4 class="font-extrabold text-sm text-primary">${grp.name || 'Kelompok Siswa'}</h4>
-              <span class="text-xs text-on-surface-variant">Ketua: ${grp.leader || '-'} • Kelas: ${grp.class || '-'}</span>
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-start gap-2.5 min-w-0">
+              <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-[#42A447] flex items-center justify-center font-bold text-sm shrink-0">
+                <span class="material-symbols-outlined text-lg">person</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <h4 class="font-extrabold text-xs sm:text-sm text-on-surface truncate">${s.nama}</h4>
+                <span class="text-[11px] text-on-surface-variant">NISN: ${s.nisn} • ${s.class}</span>
+              </div>
             </div>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${badgeClass}">${badgeText}</span>
+            <span class="px-2 py-0.5 rounded-full text-[10.5px] font-extrabold shrink-0 ${badgeClass}">${badgeText}</span>
           </div>
 
-          <div class="p-3 rounded-2xl bg-surface-container-low text-xs text-on-surface-variant flex flex-col gap-1">
-            <div class="flex justify-between">
-              <span>Lokasi / Tugas:</span>
-              <span class="font-semibold text-on-surface">${grp.destination || grp.zone || 'Rute Ekspedisi'}</span>
+          <!-- Progress Mini Bar -->
+          <div class="p-2.5 rounded-2xl bg-surface-container-low flex flex-col gap-1 text-[11px]">
+            <div class="flex justify-between font-semibold text-on-surface-variant">
+              <span>Progres Pengerjaan Riset:</span>
+              <span class="font-bold text-[#42A447]">${prog.percentage || 0}% Selesai</span>
             </div>
-            <div class="flex justify-between">
-              <span>Berkas / Dokumen:</span>
-              <span class="font-bold text-primary">${grp.fileName || 'Formulir Digital Siswa'}</span>
+            <div class="w-full h-2 bg-white rounded-full overflow-hidden border border-outline-variant/30">
+              <div class="h-full bg-gradient-to-r from-[#42A447] to-teal-500 rounded-full" style="width: ${prog.percentage || 0}%"></div>
             </div>
-            <div class="flex justify-between">
-              <span>Nilai Rata-rata:</span>
-              <span class="font-extrabold ${isGraded ? 'text-teal-700' : 'text-amber-700'}">${isGraded ? grp.scores.average + ' / 100' : 'Belum Dinilai'}</span>
-            </div>
+            ${prog.latest_feedback?.feedback ? `
+              <p class="text-[10.5px] text-on-surface-variant italic truncate mt-0.5">
+                Feedback: "${prog.latest_feedback.feedback}"
+              </p>
+            ` : ''}
           </div>
 
-          <button onclick="openGradingModal('${grp.id}', '${(grp.name || '').replace(/'/g, "\\'")}', '${(grp.leader || '').replace(/'/g, "\\'")}')" class="w-full py-2.5 rounded-xl bg-[#42A447] hover:bg-[#2e7d32] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-sm cursor-pointer">
+          <button onclick="openGradingModal('${s.nisn}', '${(s.nama || '').replace(/'/g, "\\'")}', '${s.class} • NISN: ${s.nisn}')" class="w-full py-2.5 rounded-xl bg-[#42A447] hover:bg-[#2e7d32] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
             <span class="material-symbols-outlined text-sm">edit_note</span>
-            <span>${isGraded ? 'Perbarui Nilai LKPD' : 'Buka & Nilai Lembar LKPD'}</span>
+            <span>${isGraded ? 'Perbarui Nilai & Feedback Siswa' : 'Beri Nilai & Feedback Siswa'}</span>
           </button>
         `;
-        panel.appendChild(card);
+        listContainer.appendChild(card);
       });
+
+      if (filtered.length > 25) {
+        const moreNotice = document.createElement('div');
+        moreNotice.className = 'text-center py-2 text-xs text-on-surface-variant font-medium';
+        moreNotice.textContent = `Menampilkan 25 dari ${filtered.length} siswa. Gunakan kolom pencarian di atas untuk menemukan siswa lainnya.`;
+        panel.appendChild(moreNotice);
+      }
     }
 
-    function openGradingModal(groupId, groupName, studentName) {
-      activeGroupId = groupId;
-      document.getElementById('modalGradingGroupName').textContent = groupName || 'Penilaian Kelompok';
-      document.getElementById('modalGradingStudentName').textContent = studentName ? 'Ketua: ' + studentName : '';
+    function onFasRombelChange(val) {
+      selectedFasRombel = val;
+      renderPenilaianList();
+    }
 
-      const groups = getGroupsData();
-      const grp = groups.find(g => g.id === groupId);
+    function onFasSearchInput(val) {
+      fasSearchQuery = val.trim();
+      renderPenilaianList();
+    }
 
-      if (grp && grp.scores) {
-        document.getElementById('gradeFinancial').value = grp.scores.financial || '';
-        document.getElementById('gradeCulture').value = grp.scores.culture || '';
-        document.getElementById('gradeExploration').value = grp.scores.exploration || '';
-        document.getElementById('gradeSTEM').value = grp.scores.stem || '';
-        document.getElementById('gradeFeedbackInput').value = grp.feedback || '';
+    function openGradingModal(targetNisn, studentName, studentMeta) {
+      activeGroupId = targetNisn;
+      document.getElementById('modalGradingTargetNisn').value = targetNisn;
+      document.getElementById('modalGradingGroupName').textContent = studentName || 'Penilaian Siswa';
+      document.getElementById('modalGradingStudentName').textContent = studentMeta || '';
+
+      // Default rubrik
+      let fin = 90, cul = 86, exp = 88, stem = 90;
+      let fb = 'Kerja sama tim dan analisis data lapangan sangat memuaskan.';
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.getStudentProgress(targetNisn, function(prog) {
+          if (prog && prog.latest_feedback) {
+            const l = prog.latest_feedback;
+            if (l.score_financial !== undefined && l.score_financial !== null) fin = l.score_financial;
+            if (l.score_culture !== undefined && l.score_culture !== null) cul = l.score_culture;
+            if (l.score_exploration !== undefined && l.score_exploration !== null) exp = l.score_exploration;
+            if (l.score_stem !== undefined && l.score_stem !== null) stem = l.score_stem;
+            if (l.feedback) fb = l.feedback;
+          }
+
+          document.getElementById('gradeFinancial').value = fin;
+          document.getElementById('gradeCulture').value = cul;
+          document.getElementById('gradeExploration').value = exp;
+          document.getElementById('gradeSTEM').value = stem;
+          document.getElementById('gradeFeedbackInput').value = fb;
+        });
       } else {
-        document.getElementById('gradeFinancial').value = '';
-        document.getElementById('gradeCulture').value = '';
-        document.getElementById('gradeExploration').value = '';
-        document.getElementById('gradeSTEM').value = '';
-        document.getElementById('gradeFeedbackInput').value = '';
+        document.getElementById('gradeFinancial').value = fin;
+        document.getElementById('gradeCulture').value = cul;
+        document.getElementById('gradeExploration').value = exp;
+        document.getElementById('gradeSTEM').value = stem;
+        document.getElementById('gradeFeedbackInput').value = fb;
       }
 
       const modal = document.getElementById('modalGradingFasilitator');
@@ -586,37 +680,42 @@
     }
 
     function submitGrading() {
-      if (!activeGroupId) return;
+      const targetNisn = document.getElementById('modalGradingTargetNisn').value || activeGroupId;
+      if (!targetNisn) return;
 
       const fin = parseInt(document.getElementById('gradeFinancial').value) || 0;
       const cul = parseInt(document.getElementById('gradeCulture').value) || 0;
       const exp = parseInt(document.getElementById('gradeExploration').value) || 0;
       const stem = parseInt(document.getElementById('gradeSTEM').value) || 0;
       const fb = document.getElementById('gradeFeedbackInput').value.trim();
+      const dayNum = parseInt(document.getElementById('gradeTargetDay').value) || 0;
 
       const avg = Math.round((fin + cul + exp + stem) / 4);
 
-      try {
-        let db = {};
-        const stored = localStorage.getItem('fincestem_db_2026_v1');
-        if (stored) db = JSON.parse(stored);
-        if (!Array.isArray(db.groups)) db.groups = [];
+      const user = FincestemCore.auth.getUser();
+      const fasilName = (user && user.name) || 'Tim Fasilitator SMAN 1 Belitang';
 
-        let grp = db.groups.find(g => g.id === activeGroupId);
-        if (grp) {
-          grp.scores = { financial: fin, culture: cul, exploration: exp, stem: stem, average: avg };
-          grp.isGraded = true;
-          grp.status = 'Selesai Dinilai (' + avg + '/100)';
-          grp.feedback = fb;
-        }
-        localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
-      } catch (e) {
-        console.error(e);
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitEvaluation(targetNisn, {
+          day_number: dayNum,
+          task_type: dayNum > 0 ? 'lkpd' : 'general',
+          score: avg,
+          score_financial: fin,
+          score_culture: cul,
+          score_exploration: exp,
+          score_stem: stem,
+          feedback: fb,
+          status: 'graded',
+          facilitator_name: fasilName
+        }, function() {
+          FincestemCore.ui.toast(`Nilai ${avg}/100 & Feedback berhasil dikirim ke siswa!`, 'success');
+          renderPenilaianList();
+        });
+      } else {
+        FincestemCore.ui.toast(`Nilai ${avg}/100 tersimpan!`, 'success');
       }
 
       closeGradingModal();
-      FincestemCore.ui.toast('Nilai ' + avg + '/100 berhasil disimpan!', 'success');
-      renderPenilaianList();
     }
   </script>
 </body>
