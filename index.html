@@ -143,9 +143,21 @@
           </div>
         </div>
 
-        <!-- FINCESTEM Official Hero Banner -->
-        <div class="relative overflow-hidden rounded-3xl shadow-md border border-outline-variant/25 mt-1 bg-surface-container-lowest">
-          <img src="baner%20backgroun%20lp.png" alt="Banner Kokurikuler FINCESTEM 2026 SMAN 1 Belitang" class="w-full h-auto object-cover rounded-3xl" loading="eager">
+        <!-- FINCESTEM Official Hero Banner (Proportional 1670x942 & Responsive) -->
+        <div class="relative w-full overflow-hidden rounded-3xl shadow-md border border-outline-variant/25 bg-surface-container-lowest transition-all hover:shadow-lg mt-1 cursor-pointer group" onclick="openBannerLightbox()" title="Ketuk untuk melihat banner lengkap">
+          <div class="aspect-[1670/942] w-full overflow-hidden relative">
+            <img 
+              src="FIX%20BANNER%20FINCESTEM.png" 
+              alt="Banner Resmi FINCESTEM SMAN 1 Belitang 2026" 
+              class="w-full h-full object-cover object-center rounded-3xl transition-transform duration-500 group-hover:scale-[1.01]"
+              loading="eager"
+              fetchpriority="high"
+            >
+            <div class="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-md text-white text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity shadow-sm">
+              <span class="material-symbols-outlined text-[13px]">zoom_in</span>
+              <span>Perbesar</span>
+            </div>
+          </div>
         </div>
 
         <!-- Hero Presentation Card -->
@@ -716,6 +728,44 @@
         }
       }
     }
+
+    // Banner Lightbox Modal Handler
+    function openBannerLightbox() {
+      const modal = document.getElementById('bannerLightbox');
+      if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+
+    function closeBannerLightbox() {
+      const modal = document.getElementById('bannerLightbox');
+      if (modal) {
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        document.body.style.overflow = '';
+      }
+    }
   </script>
+
+  <!-- BANNER LIGHTBOX MODAL -->
+  <div id="bannerLightbox" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-opacity duration-300" onclick="closeBannerLightbox()">
+    <div class="relative max-w-2xl w-full flex flex-col items-center" onclick="event.stopPropagation()">
+      <div class="w-full flex items-center justify-between pb-2 text-white">
+        <span class="text-xs font-bold flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-sm text-secondary-fixed">image</span>
+          Banner Resmi FINCESTEM 2026
+        </span>
+        <button onclick="closeBannerLightbox()" class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 rounded-full p-1 transition-all cursor-pointer flex items-center justify-center" title="Tutup">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+      <div class="w-full rounded-2xl overflow-hidden shadow-2xl border border-white/20 bg-black">
+        <img src="FIX%20BANNER%20FINCESTEM.png" alt="Banner FINCESTEM 2026 SMAN 1 Belitang" class="w-full h-auto object-contain">
+      </div>
+      <p class="text-white/80 text-[11px] text-center mt-2 font-medium">SMAN 1 Belitang • Tahun Pelajaran 2026/2027</p>
+    </div>
+  </div>
 </body>
 </html>
