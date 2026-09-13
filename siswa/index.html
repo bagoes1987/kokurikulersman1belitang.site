@@ -187,6 +187,19 @@
 
   <script src="../js/core.js"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (FincestemCore.auth.isLoggedIn() && FincestemCore.auth.getRole() === 'siswa') {
+        window.location.replace('dashboard.html');
+      }
+
+      const pwdInput = document.getElementById('passwordInput');
+      if (pwdInput) {
+        pwdInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') handleSiswaLogin();
+        });
+      }
+    });
+
     function togglePasswordVisibility() {
       const input = document.getElementById('passwordInput');
       const icon = document.getElementById('passwordEyeIcon');
@@ -201,6 +214,7 @@
 
     function handleSiswaLogin() {
       const nisn = document.getElementById('nisnInput').value.trim();
+      const pwd = document.getElementById('passwordInput').value.trim();
       const btnText = document.getElementById('btnText');
       const btn = document.getElementById('submitBtn');
 
@@ -208,47 +222,29 @@
         FincestemCore.ui.toast('Silakan masukkan NISN resmi Anda!', 'error');
         return;
       }
+      if (!pwd) {
+        FincestemCore.ui.toast('Silakan masukkan kata sandi!', 'error');
+        return;
+      }
 
       btnText.textContent = 'Memverifikasi Data...';
       btn.classList.add('opacity-80', 'pointer-events-none');
 
       setTimeout(() => {
-        // Cari data siswa dari database lokal jika sudah diimpor
-        let sName = 'Peserta Didik';
-        let sClass = '-';
-        let sGroup = 'Belum Terdaftar Kelompok';
-        let sGroupId = '';
+        const res = FincestemCore.auth.validateLogin(nisn, pwd, 'siswa');
+        if (!res.success) {
+          btnText.textContent = 'Masuk ke Portal Siswa';
+          btn.classList.remove('opacity-80', 'pointer-events-none');
+          FincestemCore.ui.toast(res.message, 'error');
+          return;
+        }
 
-        try {
-          const stored = localStorage.getItem('fincestem_db_2026_v1');
-          if (stored) {
-            const db = JSON.parse(stored);
-            if (db.students && Array.isArray(db.students)) {
-              const found = db.students.find(s => String(s.nisn).trim() === nisn);
-              if (found) {
-                sName = found.name;
-                sClass = found.class || sClass;
-                sGroup = found.group || sGroup;
-                sGroupId = found.groupId || '';
-              }
-            }
-          }
-        } catch (e) {}
-
-        const student = {
-          name: sName,
-          nisn: nisn,
-          class: sClass,
-          group: sGroup,
-          groupId: sGroupId,
-          role: 'siswa'
-        };
-        FincestemCore.auth.setUser(student, 'siswa');
-        FincestemCore.ui.toast('Berhasil masuk ke portal.', 'success');
+        FincestemCore.auth.setUser(res.user, 'siswa');
+        FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
         setTimeout(() => {
           window.location.href = 'dashboard.html';
         }, 400);
-      }, 500);
+      }, 400);
     }
   </script>
 </body>

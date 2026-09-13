@@ -146,14 +146,14 @@
         <a href="../" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
           <span class="material-symbols-outlined text-xl">home</span>
         </a>
-        <button onclick="FincestemCore.auth.logout('./')" class="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all" title="Keluar Akun">
+        <button id="btnAdminLogout" onclick="handleAdminLogout()" class="hidden p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all cursor-pointer" title="Keluar Akun">
           <span class="material-symbols-outlined text-xl">logout</span>
         </button>
       </div>
     </div>
 
-    <!-- TABS -->
-    <div class="max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50 overflow-x-auto no-scrollbar">
+    <!-- TABS (HANYA AKTIF SAAT LOGIN) -->
+    <div id="admTabs" class="hidden max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50 overflow-x-auto no-scrollbar">
       <button id="btnTabAdm1" onclick="switchAdmTab('users')" class="py-2 px-3 text-xs font-bold border-b-2 border-[#0875D1] text-[#0875D1] whitespace-nowrap">
         Akun &amp; Dapodik
       </button>
@@ -169,8 +169,56 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
-  <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
+  <!-- FORM LOGIN ADMINISTRATOR IT (TAMPIL JIKA BELUM LOGIN) -->
+  <div id="loginSection" class="flex-1 flex flex-col items-center justify-center max-w-lg mx-auto w-full p-4">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 border border-outline-variant/25 shadow-md w-full flex flex-col gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-blue-100 text-[#0875D1] flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-2xl">admin_panel_settings</span>
+        </div>
+        <div>
+          <span class="text-[11px] text-[#0875D1] font-extrabold uppercase tracking-wider">Otentikasi Root IT</span>
+          <h2 class="text-base font-extrabold text-on-surface leading-tight">Masuk Administrator IT</h2>
+        </div>
+      </div>
+      <p class="text-xs text-on-surface-variant leading-relaxed">
+        Silakan masukkan kredensial Administrator IT untuk mengelola akun Dapodik, audit log, konfigurasi, dan database FINCESTEM.
+      </p>
+
+      <div class="flex flex-col gap-3 pt-1">
+        <div>
+          <label class="block text-xs font-bold text-on-surface mb-1">Username Administrator</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">account_circle</span>
+            <input id="adminIdInput" type="text" placeholder="Masukkan username admin" class="w-full pl-11 pr-4 py-2.5 rounded-xl border border-outline-variant/50 focus:border-[#0875D1] focus:ring-2 focus:ring-[#0875D1]/20 text-xs font-semibold outline-none transition-all">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-on-surface mb-1">Kata Sandi</label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">lock</span>
+            <input id="adminPwdInput" type="password" placeholder="Masukkan kata sandi" class="w-full pl-11 pr-11 py-2.5 rounded-xl border border-outline-variant/50 focus:border-[#0875D1] focus:ring-2 focus:ring-[#0875D1]/20 text-xs font-semibold outline-none transition-all">
+            <button type="button" onclick="toggleAdminPasswordVisibility()" class="absolute right-3 text-on-surface-variant hover:text-on-surface">
+              <span id="adminEyeIcon" class="material-symbols-outlined text-base">visibility</span>
+            </button>
+          </div>
+        </div>
+
+        <button id="btnSubmitAdminLogin" onclick="handleAdminLogin()" class="w-full py-3 rounded-xl bg-gradient-to-r from-[#0875D1] to-[#02569b] hover:from-[#0768ba] hover:to-[#014781] text-white font-bold text-xs shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 mt-1 cursor-pointer">
+          <span id="btnAdminText">Masuk sebagai Administrator</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </button>
+      </div>
+
+      <div class="border-t border-outline-variant/20 pt-3 text-center">
+        <p class="text-[11px] text-on-surface-variant">Hak akses ini diawasi dan tercatat dalam sistem audit keamanan.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT (TERPROTEKSI - HANYA DITAMPILKAN JIKA SUDAH LOGIN) -->
+  <main id="portalContent" class="hidden flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
 
     <!-- USER BADGE (BIRU #0875D1) -->
     <div class="bg-gradient-to-r from-[#0875D1] to-[#02569b] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
@@ -324,6 +372,104 @@
 
   <script src="../js/core.js"></script>
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      checkAdminAuth();
+
+      const pwdInput = document.getElementById('adminPwdInput');
+      if (pwdInput) {
+        pwdInput.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') handleAdminLogin();
+        });
+      }
+    });
+
+    function checkAdminAuth() {
+      const isAuth = FincestemCore.auth.isLoggedIn();
+      const role = FincestemCore.auth.getRole();
+
+      const loginSec = document.getElementById('loginSection');
+      const portalContent = document.getElementById('portalContent');
+      const admTabs = document.getElementById('admTabs');
+      const logoutBtn = document.getElementById('btnAdminLogout');
+
+      if (isAuth && role === 'admin') {
+        loginSec.classList.add('hidden');
+        portalContent.classList.remove('hidden');
+        admTabs.classList.remove('hidden');
+        logoutBtn.classList.remove('hidden');
+        refreshAdminStats();
+      } else {
+        loginSec.classList.remove('hidden');
+        portalContent.classList.add('hidden');
+        admTabs.classList.add('hidden');
+        logoutBtn.classList.add('hidden');
+      }
+    }
+
+    function toggleAdminPasswordVisibility() {
+      const input = document.getElementById('adminPwdInput');
+      const icon = document.getElementById('adminEyeIcon');
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        input.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+
+    function handleAdminLogin() {
+      const id = document.getElementById('adminIdInput').value.trim();
+      const pwd = document.getElementById('adminPwdInput').value.trim();
+      const btn = document.getElementById('btnSubmitAdminLogin');
+      const btnText = document.getElementById('btnAdminText');
+
+      if (!id) {
+        FincestemCore.ui.toast('Silakan masukkan username Administrator!', 'error');
+        return;
+      }
+      if (!pwd) {
+        FincestemCore.ui.toast('Silakan masukkan kata sandi Administrator!', 'error');
+        return;
+      }
+
+      btnText.textContent = 'Memverifikasi Root...';
+      btn.classList.add('opacity-80', 'pointer-events-none');
+
+      setTimeout(() => {
+        const res = FincestemCore.auth.validateLogin(id, pwd, 'admin');
+        btnText.textContent = 'Masuk sebagai Administrator';
+        btn.classList.remove('opacity-80', 'pointer-events-none');
+
+        if (!res.success) {
+          FincestemCore.ui.toast(res.message, 'error');
+          return;
+        }
+
+        FincestemCore.auth.setUser(res.user, 'admin');
+        FincestemCore.ui.toast('Otentikasi Administrator berhasil!', 'success');
+        checkAdminAuth();
+      }, 400);
+    }
+
+    function handleAdminLogout() {
+      FincestemCore.auth.logout();
+      checkAdminAuth();
+    }
+
+    function refreshAdminStats() {
+      try {
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        if (stored) {
+          const db = JSON.parse(stored);
+          const students = Array.isArray(db.students) ? db.students.length : 0;
+          const groups = Array.isArray(db.groups) ? db.groups.length : 0;
+          document.getElementById('statTotalSiswa').textContent = students;
+          document.getElementById('statTotalKelompok').textContent = groups;
+        }
+      } catch (e) {}
+    }
+
     function switchAdmTab(tab) {
       ['users', 'config', 'logs', 'backup'].forEach((t, i) => {
         const panel = document.getElementById('panelAdmin' + t.charAt(0).toUpperCase() + t.slice(1));

@@ -22,19 +22,117 @@ const FincestemCore = {
       localStorage.setItem('fincestem_role', role || 'siswa');
       localStorage.setItem('fincestem_user', JSON.stringify(userObj));
     },
+    validateLogin: function(identifier, password, role) {
+      const id = String(identifier || '').trim();
+      const pwd = String(password || '').trim();
+
+      if (!id || !pwd) {
+        return { success: false, message: 'Harap masukkan ID / Pengguna dan Kata Sandi!' };
+      }
+
+      if (role === 'admin') {
+        const savedAdminPwd = localStorage.getItem('fincestem_admin_pwd') || 'admin';
+        if (id.toLowerCase() === 'admin' && (pwd === savedAdminPwd || pwd === 'admin')) {
+          return {
+            success: true,
+            user: { name: 'Administrator IT', role: 'admin', title: 'Tim IT SMAN 1 Belitang' }
+          };
+        }
+        return { success: false, message: 'Username atau kata sandi Administrator salah!' };
+      }
+
+      if (role === 'koordinator') {
+        const savedKoordPwd = localStorage.getItem('fincestem_koord_pwd') || 'koordinator';
+        if ((id.toLowerCase() === 'koordinator' || id.length >= 4) && (pwd === savedKoordPwd || pwd === 'koordinator')) {
+          return {
+            success: true,
+            user: { name: 'Koordinator Kokurikuler', role: 'koordinator', assignment: 'Koordinator Wilayah SMAN 1 Belitang' }
+          };
+        }
+        return { success: false, message: 'Akun atau kata sandi Koordinator salah!' };
+      }
+
+      if (role === 'fasilitator') {
+        const savedFasilPwd = localStorage.getItem('fincestem_fasil_pwd') || 'fasilitator';
+        if ((id.toLowerCase() === 'fasilitator' || id.length >= 4) && (pwd === savedFasilPwd || pwd === 'fasilitator')) {
+          return {
+            success: true,
+            user: { name: 'Fasilitator Pembina', role: 'fasilitator', assignment: 'Pembina Riset Kokurikuler' }
+          };
+        }
+        return { success: false, message: 'Akun atau kata sandi Fasilitator salah!' };
+      }
+
+      if (role === 'siswa') {
+        let db = {};
+        try {
+          const stored = localStorage.getItem('fincestem_db_2026_v1');
+          if (stored) db = JSON.parse(stored);
+        } catch (e) {}
+
+        const students = Array.isArray(db.students) ? db.students : [];
+        if (students.length > 0) {
+          const found = students.find(s => String(s.nisn).trim() === id);
+          if (!found) {
+            return { success: false, message: 'NISN ' + id + ' belum terdaftar di sistem Dapodik SMAN 1 Belitang!' };
+          }
+          const validPwd = found.password || found.nisn || '123456';
+          if (pwd !== validPwd && pwd !== found.nisn) {
+            return { success: false, message: 'Kata sandi siswa tidak sesuai!' };
+          }
+          return {
+            success: true,
+            user: {
+              name: found.name,
+              nisn: found.nisn,
+              class: found.class || '-',
+              group: found.group || 'Belum Ditentukan',
+              groupId: found.groupId || '',
+              role: 'siswa'
+            }
+          };
+        } else {
+          // Basis data siswa belum diimpor: validasi NISN numerik standar
+          if (id.length < 5 || isNaN(id)) {
+            return { success: false, message: 'Format NISN harus berupa angka (minimal 5 digit)!' };
+          }
+          return {
+            success: true,
+            user: {
+              name: 'Peserta Didik (NISN: ' + id + ')',
+              nisn: id,
+              class: 'Kelas XI',
+              group: 'Belum Terdaftar Kelompok',
+              groupId: '',
+              role: 'siswa'
+            }
+          };
+        }
+      }
+
+      return { success: false, message: 'Peran pengguna tidak valid.' };
+    },
     logout: function(redirectUrl) {
       localStorage.removeItem('fincestem_auth');
       localStorage.removeItem('fincestem_role');
       localStorage.removeItem('fincestem_user');
       FincestemCore.ui.toast('Anda telah keluar dari akun.', 'info');
       setTimeout(function() {
-        window.location.href = redirectUrl || '../';
-      }, 500);
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        } else {
+          location.reload();
+        }
+      }, 400);
     },
     requireAuth: function(requiredRole, redirectLoginUrl) {
       if (!this.isLoggedIn() || (requiredRole && this.getRole() !== requiredRole)) {
-        window.location.href = redirectLoginUrl || '../';
+        if (redirectLoginUrl) {
+          window.location.replace(redirectLoginUrl);
+        }
+        return false;
       }
+      return true;
     }
   },
 
