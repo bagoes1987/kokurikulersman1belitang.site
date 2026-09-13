@@ -104,10 +104,10 @@
 <body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-full">
 
   <!-- TOP APP HEADER -->
-  <header class="sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
+  <header class="sticky top-0 w-full z-40 bg-surface-container-lowest/95 backdrop-blur-xl border-b border-surface-container-high shadow-2xs">
     <div class="h-16 px-4 flex items-center justify-between max-w-lg mx-auto w-full">
       <div class="flex items-center gap-3">
-        <a href="index.html" class="w-10 h-10 rounded-2xl bg-surface-container flex items-center justify-center p-1 border border-outline-variant/30 shrink-0">
+        <a href="index.html" class="w-10 h-10 rounded-2xl bg-surface-container flex items-center justify-center p-1 border border-outline-variant/30 shrink-0 hover:scale-105 transition-transform" title="Beranda FINCESTEM">
           <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="LOGO SMAN1 BELITANG.png">
         </a>
         <div class="flex flex-col">
@@ -115,43 +115,244 @@
           <span class="text-sm font-bold text-on-surface leading-tight">Silabus FINCESTEM</span>
         </div>
       </div>
-      <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs transition-all shadow-2xs">
-        <span class="material-symbols-outlined text-sm">arrow_back</span>
-        <span>Beranda</span>
-      </a>
-    </div>
-
-    <!-- HORIZONTAL TAB BAR -->
-    <div class="max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 overflow-x-auto border-t border-surface-container/50 no-scrollbar">
-      <button id="tabBtn-pilar" onclick="switchGuideTab('pilar')" class="py-2 px-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all bg-primary text-white shadow-xs">
-        Silabus &amp; Profil Lulusan
-      </button>
-      <button id="tabBtn-oku" onclick="switchGuideTab('oku')" class="py-2 px-3 rounded-xl text-xs font-semibold whitespace-nowrap text-on-surface-variant hover:bg-surface-container transition-all">
-        Zona OKU Timur
-      </button>
-      <button id="tabBtn-luar" onclick="switchGuideTab('luar')" class="py-2 px-3 rounded-xl text-xs font-semibold whitespace-nowrap text-on-surface-variant hover:bg-surface-container transition-all">
-        Zona Luar OKU
-      </button>
-      <button id="tabBtn-aktivitas" onclick="switchGuideTab('aktivitas')" class="py-2 px-3 rounded-xl text-xs font-semibold whitespace-nowrap text-on-surface-variant hover:bg-surface-container transition-all">
-        Detail Ekspedisi
-      </button>
+      <div class="flex items-center gap-1.5">
+        <button id="headerBtnMenu" onclick="showMainMenu()" class="hidden inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary font-bold text-xs transition-all shadow-2xs cursor-pointer">
+          <span class="material-symbols-outlined text-sm">grid_view</span>
+          <span>Pilihan Menu</span>
+        </button>
+        <a href="index.html" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs transition-all shadow-2xs cursor-pointer" title="Kembali ke Beranda">
+          <span class="material-symbols-outlined text-sm">home</span>
+          <span>Beranda</span>
+        </a>
+      </div>
     </div>
   </header>
 
   <!-- MAIN CONTENT CONTAINER -->
   <main class="flex-1 flex flex-col relative w-full bg-surface max-w-lg mx-auto pb-16">
     
+    <!-- PANEL 0: PILIHAN MENU SILABUS FINCESTEM (BENTO HUB) -->
+    <div id="panel-menu" class="flex flex-col w-full px-gutter-mobile pt-space-md pb-space-lg space-y-4">
+      
+      <!-- Top Action Bar -->
+      <div class="flex items-center justify-between">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-bold text-xs transition-all shadow-2xs cursor-pointer">
+          <span class="material-symbols-outlined text-sm">arrow_back</span>
+          <span>Kembali ke Beranda</span>
+        </a>
+        <span class="text-[11px] font-bold text-on-surface-variant bg-surface-container-high px-2.5 py-1 rounded-full">
+          Kurikulum Merdeka 2026
+        </span>
+      </div>
+
+      <!-- Hero Header Card -->
+      <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-[#002b49] to-[#004b75] p-5 text-white shadow-md border border-white/10">
+        <div class="absolute -right-8 -bottom-8 w-44 h-44 rounded-full bg-cyan-400/15 blur-2xl pointer-events-none"></div>
+        <div class="absolute -left-8 -top-8 w-32 h-32 rounded-full bg-amber-400/10 blur-xl pointer-events-none"></div>
+        <div class="relative z-10 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-white font-label-sm font-extrabold uppercase tracking-wider text-[10.5px] backdrop-blur-md border border-white/20">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              Silabus Resmi FINCESTEM
+            </span>
+            <span class="text-xs text-cyan-200 font-medium">SMAN 1 Belitang</span>
+          </div>
+          <div>
+            <h1 class="text-xl sm:text-2xl font-black leading-tight tracking-tight text-white">
+              Belajar Melampaui Ruang Kelas
+            </h1>
+            <p class="text-xs text-white/90 leading-relaxed mt-1">
+              Panduan silabus pembelajaran kokurikuler mendalam berbasis pengalaman nyata. Pilih salah satu modul di bawah untuk mempelajari rincian materi:
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category Label -->
+      <div class="flex items-center gap-2 pt-1">
+        <span class="material-symbols-outlined text-primary text-lg">widgets</span>
+        <h2 class="text-xs uppercase font-extrabold tracking-wider text-on-surface-variant">Pilihan Modul Silabus</h2>
+      </div>
+
+      <!-- 4 BENTO CARDS GRID -->
+      <div class="flex flex-col gap-3.5">
+        
+        <!-- CARD 1: TENTANG PROGRAM & PROFIL LULUSAN (ROYAL BLUE) -->
+        <div onclick="openGuideSection('pilar')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#1e3a8a] via-[#1d4ed8] to-[#2563eb] text-white p-4 shadow-md hover:shadow-lg active:scale-[0.99] transition-all cursor-pointer border border-blue-400/30">
+          <div class="absolute -right-10 -bottom-10 w-36 h-36 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
+                <span class="material-symbols-outlined text-2xl">psychology</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-white/20 text-[10.5px] font-extrabold uppercase tracking-wider text-blue-100 backdrop-blur-md">
+                Fondasi &amp; 4 Pilar
+              </span>
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-white leading-snug group-hover:underline">
+                Tentang Program &amp; Profil Lulusan
+              </h3>
+              <p class="text-[12px] text-blue-100/90 leading-relaxed mt-1">
+                Filosofi pembelajaran mendalam, 4 pilar FINCESTEM (Financial, Culture, Exploration, STEM), 8 dimensi profil lulusan, dan 10 luaran resmi hasil karya siswa.
+              </p>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-white/20">
+              <span class="text-[11.5px] font-bold text-blue-200">Pelajari Filosofi &amp; Luaran</span>
+              <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:translate-x-1 transition-transform">
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2: ZONA OKU TIMUR (EMERALD FOREST / TEAL) -->
+        <div onclick="openGuideSection('oku')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#064e3b] via-[#047857] to-[#0d9488] text-white p-4 shadow-md hover:shadow-lg active:scale-[0.99] transition-all cursor-pointer border border-emerald-400/30">
+          <div class="absolute -right-10 -bottom-10 w-36 h-36 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
+                <span class="material-symbols-outlined text-2xl">location_on</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-white/20 text-[10.5px] font-extrabold uppercase tracking-wider text-emerald-100 backdrop-blur-md">
+                Ruang Belajar 1 • 7 Hari
+              </span>
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-white leading-snug group-hover:underline">
+                Zona OKU Timur
+              </h3>
+              <p class="text-[12px] text-emerald-100/90 leading-relaxed mt-1">
+                Silabus 7 hari kearifan lokal: Budaya Komering, Irigasi Komering &amp; Pangan, Koperasi Merah Putih (Pergub No. 21/2025), Agrikultur Modern, dan Eduwisata BK 9.
+              </p>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-white/20">
+              <span class="text-[11.5px] font-bold text-emerald-200">Lihat Silabus 7 Hari OKU Timur</span>
+              <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:translate-x-1 transition-transform">
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3: ZONA LUAR OKU TIMUR (TERRACOTTA SUNSET / AMBER) -->
+        <div onclick="openGuideSection('luar')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#7c2d12] via-[#b45309] to-[#c2410c] text-white p-4 shadow-md hover:shadow-lg active:scale-[0.99] transition-all cursor-pointer border border-amber-400/30">
+          <div class="absolute -right-10 -bottom-10 w-36 h-36 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
+                <span class="material-symbols-outlined text-2xl">explore</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-white/20 text-[10.5px] font-extrabold uppercase tracking-wider text-amber-100 backdrop-blur-md">
+                Ruang Belajar 2 • 7 Hari
+              </span>
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-white leading-snug group-hover:underline">
+                Zona Luar OKU Timur
+              </h3>
+              <p class="text-[12px] text-amber-100/90 leading-relaxed mt-1">
+                Silabus 7 hari ekspedisi lintas provinsi: Bank Indonesia (28 Juli 2026), Industri Kimia PUSRI, Pertambangan Hijau PT Bukit Asam &amp; Geotermal, Kampus dan Budaya Nasional.
+              </p>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-white/20">
+              <span class="text-[11.5px] font-bold text-amber-200">Lihat Ekspedisi Luar Daerah</span>
+              <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:translate-x-1 transition-transform">
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4: DETAIL EKSPEDISI & MATRIKS LUARAN (ROYAL VIOLET) -->
+        <div onclick="openGuideSection('aktivitas')" class="group relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#3b0764] via-[#5b21b6] to-[#7c3aed] text-white p-4 shadow-md hover:shadow-lg active:scale-[0.99] transition-all cursor-pointer border border-purple-400/30">
+          <div class="absolute -right-10 -bottom-10 w-36 h-36 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+          <div class="relative z-10 flex flex-col gap-3">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-inner">
+                <span class="material-symbols-outlined text-2xl">fact_check</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full bg-white/20 text-[10.5px] font-extrabold uppercase tracking-wider text-purple-100 backdrop-blur-md">
+                11 Destinasi &amp; Matriks LKPD
+              </span>
+            </div>
+            <div>
+              <h3 class="text-base font-extrabold text-white leading-snug group-hover:underline">
+                Detail Ekspedisi &amp; Matriks Luaran
+              </h3>
+              <p class="text-[12px] text-purple-100/90 leading-relaxed mt-1">
+                Matriks 11 destinasi resmi &amp; judul output siswa (Proposal Hal. 18), lembar kerja peserta didik (LKPD) lapangan interaktif, instrumen evaluasi, dan paginasi hari.
+              </p>
+            </div>
+            <div class="flex items-center justify-between pt-2 border-t border-white/20">
+              <span class="text-[11.5px] font-bold text-purple-200">Buka Matriks &amp; Lembar Kerja</span>
+              <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:translate-x-1 transition-transform">
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Back to Dashboard Button -->
+      <div class="pt-2">
+        <a href="index.html" class="w-full py-3 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high border border-outline-variant/30 text-on-surface font-bold text-xs flex items-center justify-center gap-2 transition-all shadow-2xs">
+          <span class="material-symbols-outlined text-base text-primary">home</span>
+          <span>Kembali ke Beranda Utama FINCESTEM</span>
+        </a>
+      </div>
+
+    </div>
+
     <!-- PANEL 1: 4 PILAR UTAMA -->
-    <div id="panel-pilar" class="flex flex-col w-full">
+    <div id="panel-pilar" class="hidden flex flex-col w-full">
       
       <div class="flex flex-col w-full">
-        <!-- Subtle decorative ambient header ribbon -->
-        <div class="px-gutter-mobile pt-space-md pb-space-xs">
-          <div class="flex items-center gap-space-xs text-on-surface-variant font-label-sm cursor-pointer" onclick="navigate('dashboard')">
-            <span class="material-symbols-outlined text-[15px] text-primary">school</span>
-            <span class="hover:text-primary transition-colors">Beranda</span>
-            <span class="material-symbols-outlined text-[13px] text-outline-variant">chevron_right</span>
-            <span class="text-primary font-bold">Tentang Program</span>
+        <!-- TOP NAVIGATION & QUICK SWITCHER (MOBILE FRIENDLY) -->
+        <div class="px-gutter-mobile pt-space-md pb-space-xs flex flex-col gap-2">
+          <!-- Back & Home Action Bar -->
+          <div class="flex items-center justify-between">
+            <button onclick="showMainMenu()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary/10 hover:bg-primary/20 text-primary font-bold text-xs transition-all min-h-[40px] cursor-pointer">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Pilihan Menu</span>
+            </button>
+            <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary font-bold text-xs transition-all min-h-[40px] cursor-pointer">
+              <span class="material-symbols-outlined text-base text-primary">home</span>
+              <span>Beranda</span>
+            </a>
+          </div>
+
+          <!-- Active Breadcrumb -->
+          <div class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+            <a href="index.html" class="hover:text-primary transition-colors flex items-center gap-0.5 cursor-pointer">
+              <span class="material-symbols-outlined text-[14px]">home</span>
+              <span>Beranda</span>
+            </a>
+            <span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+            <button onclick="showMainMenu()" class="hover:text-primary transition-colors cursor-pointer">Pilihan Menu</button>
+            <span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+            <span class="font-bold text-primary truncate">Tentang Program &amp; Profil</span>
+          </div>
+
+          <!-- 2x2 Quick Switcher Grid (No Horizontal Scrolling) -->
+          <div class="grid grid-cols-2 gap-1.5 p-1 bg-surface-container-low rounded-2xl border border-outline-variant/30 mt-1">
+            <button onclick="openGuideSection('pilar')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left bg-blue-600 text-white shadow-xs cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-white/20 text-white shrink-0">1</span>
+              <span class="text-[11px] font-bold truncate">Tentang Program</span>
+            </button>
+            <button onclick="openGuideSection('oku')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-emerald-600/20 text-emerald-700 shrink-0">2</span>
+              <span class="text-[11px] font-semibold truncate">Zona OKU Timur</span>
+            </button>
+            <button onclick="openGuideSection('luar')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-amber-600/20 text-amber-700 shrink-0">3</span>
+              <span class="text-[11px] font-semibold truncate">Zona Luar OKU</span>
+            </button>
+            <button onclick="openGuideSection('aktivitas')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-purple-600/20 text-purple-700 shrink-0">4</span>
+              <span class="text-[11px] font-semibold truncate">Detail Ekspedisi</span>
+            </button>
           </div>
         </div>
 
@@ -801,6 +1002,18 @@
             </div>
           </div>
         </div>
+
+        <!-- BOTTOM PANEL NAVIGATION -->
+        <div class="px-gutter-mobile pt-space-xs pb-space-lg flex flex-col gap-2">
+          <button onclick="showMainMenu()" class="w-full py-3 px-4 rounded-2xl bg-primary text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">grid_view</span>
+            <span>Kembali ke Pilihan Menu Silabus</span>
+          </button>
+          <a href="index.html" class="w-full py-2.5 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base text-primary">home</span>
+            <span>Kembali ke Beranda Utama</span>
+          </a>
+        </div>
       </div>
     
     </div>
@@ -809,14 +1022,50 @@
     <div id="panel-oku" class="hidden flex flex-col w-full">
       
       <div class="flex flex-col w-full px-gutter-mobile space-y-space-md">
-        <!-- Top Navigation Bar -->
-        <div class="flex items-center justify-between pt-space-xs">
-          <button class="flex items-center gap-space-xs text-on-surface-variant hover:text-primary transition-colors min-h-[44px] min-w-[44px] -ml-space-xs p-space-xs rounded-full" onclick="navigate('dashboard')">
-            <span class="material-symbols-outlined text-[24px]">arrow_back</span>
-            <span class="font-label-lg font-bold">Kembali</span>
-          </button>
-          <div class="flex items-center gap-space-xs">
-            <span class="font-label-sm uppercase tracking-wider text-secondary bg-secondary-container/30 px-3 py-1 rounded-full font-bold text-xs">7 Hari Pembelajaran</span>
+        <!-- TOP NAVIGATION & QUICK SWITCHER (MOBILE FRIENDLY) -->
+        <div class="flex flex-col gap-2 pt-space-xs">
+          <!-- Back & Home Action Bar -->
+          <div class="flex items-center justify-between">
+            <button onclick="showMainMenu()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600/10 hover:bg-emerald-600/20 text-emerald-800 font-bold text-xs transition-all min-h-[40px] cursor-pointer">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Pilihan Menu</span>
+            </button>
+            <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary font-bold text-xs transition-all min-h-[40px] cursor-pointer">
+              <span class="material-symbols-outlined text-base text-primary">home</span>
+              <span>Beranda</span>
+            </a>
+          </div>
+
+          <!-- Active Breadcrumb -->
+          <div class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+            <a href="index.html" class="hover:text-primary transition-colors flex items-center gap-0.5 cursor-pointer">
+              <span class="material-symbols-outlined text-[14px]">home</span>
+              <span>Beranda</span>
+            </a>
+            <span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+            <button onclick="showMainMenu()" class="hover:text-primary transition-colors cursor-pointer">Pilihan Menu</button>
+            <span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+            <span class="font-bold text-emerald-700 truncate">Zona OKU Timur (7 Hari)</span>
+          </div>
+
+          <!-- 2x2 Quick Switcher Grid (No Horizontal Scrolling) -->
+          <div class="grid grid-cols-2 gap-1.5 p-1 bg-surface-container-low rounded-2xl border border-outline-variant/30 mt-1">
+            <button onclick="openGuideSection('pilar')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-blue-600/20 text-blue-700 shrink-0">1</span>
+              <span class="text-[11px] font-semibold truncate">Tentang Program</span>
+            </button>
+            <button onclick="openGuideSection('oku')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left bg-emerald-700 text-white shadow-xs cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-white/20 text-white shrink-0">2</span>
+              <span class="text-[11px] font-bold truncate">Zona OKU Timur</span>
+            </button>
+            <button onclick="openGuideSection('luar')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-amber-600/20 text-amber-700 shrink-0">3</span>
+              <span class="text-[11px] font-semibold truncate">Zona Luar OKU</span>
+            </button>
+            <button onclick="openGuideSection('aktivitas')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-purple-600/20 text-purple-700 shrink-0">4</span>
+              <span class="text-[11px] font-semibold truncate">Detail Ekspedisi</span>
+            </button>
           </div>
         </div>
 
@@ -1143,9 +1392,21 @@
               <p class="font-label-sm text-on-surface-variant text-[11px]">Guru Pembimbing SMAN 1 Belitang</p>
             </div>
           </div>
-          <button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-sm font-bold shadow-sm hover:bg-surface-container-high transition-colors shrink-0" onclick="showHelpModal()">
+          <button class="px-3 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-sm font-bold shadow-sm hover:bg-surface-container-high transition-colors shrink-0 cursor-pointer" onclick="showHelpModal()">
             Hubungi
           </button>
+        </div>
+
+        <!-- BOTTOM PANEL NAVIGATION -->
+        <div class="pt-space-xs pb-space-lg flex flex-col gap-2">
+          <button onclick="showMainMenu()" class="w-full py-3 px-4 rounded-2xl bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">grid_view</span>
+            <span>Kembali ke Pilihan Menu Silabus</span>
+          </button>
+          <a href="index.html" class="w-full py-2.5 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base text-primary">home</span>
+            <span>Kembali ke Beranda Utama</span>
+          </a>
         </div>
       </div>
     
@@ -1155,15 +1416,50 @@
     <div id="panel-luar" class="hidden flex flex-col w-full">
       
       <div class="flex flex-col w-full px-gutter-mobile space-y-space-md">
-        <!-- Top Action Breadcrumb Bar -->
-        <div class="flex items-center justify-between pt-space-xs">
-          <button class="flex items-center gap-space-xs text-primary font-label-lg py-1 px-2 -ml-2 rounded-full hover:bg-surface-container transition-colors font-bold" onclick="navigate('dashboard')">
-            <span class="material-symbols-outlined text-[20px]">arrow_back</span>
-            <span>Beranda</span>
-          </button>
-          <div class="flex items-center gap-space-xs bg-secondary-container/30 px-3 py-1 rounded-full text-secondary font-label-sm shadow-xs font-bold">
-            <span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
-            <span>Rute Ekspedisi Nasional</span>
+        <!-- TOP NAVIGATION & QUICK SWITCHER (MOBILE FRIENDLY) -->
+        <div class="flex flex-col gap-2 pt-space-xs">
+          <!-- Back & Home Action Bar -->
+          <div class="flex items-center justify-between">
+            <button onclick="showMainMenu()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-amber-600/10 hover:bg-amber-600/20 text-amber-800 font-bold text-xs transition-all min-h-[40px] cursor-pointer">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Pilihan Menu</span>
+            </button>
+            <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary font-bold text-xs transition-all min-h-[40px] cursor-pointer">
+              <span class="material-symbols-outlined text-base text-primary">home</span>
+              <span>Beranda</span>
+            </a>
+          </div>
+
+          <!-- Active Breadcrumb -->
+          <div class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+            <a href="index.html" class="hover:text-primary transition-colors flex items-center gap-0.5 cursor-pointer">
+              <span class="material-symbols-outlined text-[14px]">home</span>
+              <span>Beranda</span>
+            </a>
+            <span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+            <button onclick="showMainMenu()" class="hover:text-primary transition-colors cursor-pointer">Pilihan Menu</button>
+            <span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+            <span class="font-bold text-amber-700 truncate">Zona Luar OKU Timur (7 Hari)</span>
+          </div>
+
+          <!-- 2x2 Quick Switcher Grid (No Horizontal Scrolling) -->
+          <div class="grid grid-cols-2 gap-1.5 p-1 bg-surface-container-low rounded-2xl border border-outline-variant/30 mt-1">
+            <button onclick="openGuideSection('pilar')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-blue-600/20 text-blue-700 shrink-0">1</span>
+              <span class="text-[11px] font-semibold truncate">Tentang Program</span>
+            </button>
+            <button onclick="openGuideSection('oku')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-emerald-600/20 text-emerald-700 shrink-0">2</span>
+              <span class="text-[11px] font-semibold truncate">Zona OKU Timur</span>
+            </button>
+            <button onclick="openGuideSection('luar')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left bg-[#c2410c] text-white shadow-xs cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-white/20 text-white shrink-0">3</span>
+              <span class="text-[11px] font-bold truncate">Zona Luar OKU</span>
+            </button>
+            <button onclick="openGuideSection('aktivitas')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-purple-600/20 text-purple-700 shrink-0">4</span>
+              <span class="text-[11px] font-semibold truncate">Detail Ekspedisi</span>
+            </button>
           </div>
         </div>
 
@@ -1778,6 +2074,18 @@
             </div>
           </div>
         </div>
+
+        <!-- BOTTOM PANEL NAVIGATION -->
+        <div class="pt-space-xs pb-space-lg flex flex-col gap-2">
+          <button onclick="showMainMenu()" class="w-full py-3 px-4 rounded-2xl bg-[#c2410c] text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">grid_view</span>
+            <span>Kembali ke Pilihan Menu Silabus</span>
+          </button>
+          <a href="index.html" class="w-full py-2.5 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base text-primary">home</span>
+            <span>Kembali ke Beranda Utama</span>
+          </a>
+        </div>
       </div>
     
     </div>
@@ -1786,13 +2094,54 @@
     <div id="panel-aktivitas" class="hidden flex flex-col w-full">
       
       <div class="flex flex-col w-full pb-10">
-        <!-- Top Meta & Badge Bar -->
-        <div class="px-gutter-mobile pt-space-sm pb-space-sm flex items-center justify-between">
-          <button class="inline-flex items-center gap-space-xs text-on-surface-variant hover:text-primary transition-colors py-space-xs font-bold" onclick="switchGuideTab('oku')">
-            <span class="material-symbols-outlined text-[18px]">arrow_back_ios</span>
-            <span class="font-label-md text-label-md font-semibold">Kembali ke Timeline</span>
-          </button>
-          <div class="flex items-center gap-space-xs">
+        <!-- TOP NAVIGATION & QUICK SWITCHER (MOBILE FRIENDLY) -->
+        <div class="px-gutter-mobile pt-space-xs pb-space-xs flex flex-col gap-2">
+          <!-- Back & Home Action Bar -->
+          <div class="flex items-center justify-between">
+            <button onclick="showMainMenu()" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-purple-600/10 hover:bg-purple-600/20 text-purple-800 font-bold text-xs transition-all min-h-[40px] cursor-pointer">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Pilihan Menu</span>
+            </button>
+            <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant hover:text-primary font-bold text-xs transition-all min-h-[40px] cursor-pointer">
+              <span class="material-symbols-outlined text-base text-primary">home</span>
+              <span>Beranda</span>
+            </a>
+          </div>
+
+          <!-- Active Breadcrumb -->
+          <div class="flex items-center gap-1.5 text-xs text-on-surface-variant font-medium">
+            <a href="index.html" class="hover:text-primary transition-colors flex items-center gap-0.5 cursor-pointer">
+              <span class="material-symbols-outlined text-[14px]">home</span>
+              <span>Beranda</span>
+            </a>
+            <span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+            <button onclick="showMainMenu()" class="hover:text-primary transition-colors cursor-pointer">Pilihan Menu</button>
+            <span class="material-symbols-outlined text-xs text-outline-variant">chevron_right</span>
+            <span class="font-bold text-purple-700 truncate">Detail Ekspedisi &amp; Matriks</span>
+          </div>
+
+          <!-- 2x2 Quick Switcher Grid (No Horizontal Scrolling) -->
+          <div class="grid grid-cols-2 gap-1.5 p-1 bg-surface-container-low rounded-2xl border border-outline-variant/30 mt-1">
+            <button onclick="openGuideSection('pilar')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-blue-600/20 text-blue-700 shrink-0">1</span>
+              <span class="text-[11px] font-semibold truncate">Tentang Program</span>
+            </button>
+            <button onclick="openGuideSection('oku')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-emerald-600/20 text-emerald-700 shrink-0">2</span>
+              <span class="text-[11px] font-semibold truncate">Zona OKU Timur</span>
+            </button>
+            <button onclick="openGuideSection('luar')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left text-on-surface-variant hover:bg-surface-container transition-all cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-amber-600/20 text-amber-700 shrink-0">3</span>
+              <span class="text-[11px] font-semibold truncate">Zona Luar OKU</span>
+            </button>
+            <button onclick="openGuideSection('aktivitas')" class="flex items-center gap-1.5 py-2 px-2 rounded-xl text-left bg-purple-700 text-white shadow-xs cursor-pointer">
+              <span class="w-5 h-5 rounded-md flex items-center justify-center text-[11px] font-black bg-white/20 text-white shrink-0">4</span>
+              <span class="text-[11px] font-bold truncate">Detail Ekspedisi</span>
+            </button>
+          </div>
+
+          <!-- Sub status tag -->
+          <div class="flex items-center justify-between pt-1">
             <span class="px-space-sm py-0.5 rounded-full font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant font-bold tracking-wider uppercase text-[11px]">
               Hari 3 dari 7 Hari (Tabel 7)
             </span>
@@ -2064,7 +2413,7 @@
 
           <!-- Day Navigation Pagination Card -->
           <div class="pt-space-xs pb-space-sm flex items-center justify-between gap-space-sm">
-            <button class="flex-1 p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-start hover:bg-surface-container-low transition-colors text-left border border-outline-variant/20" onclick="switchGuideTab('oku')">
+            <button class="flex-1 p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-start hover:bg-surface-container-low transition-colors text-left border border-outline-variant/20 cursor-pointer" onclick="openGuideSection('oku')">
               <span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant font-medium">
                 <span class="material-symbols-outlined text-[14px]">arrow_back</span>
                 Sebelumnya
@@ -2073,7 +2422,7 @@
                 Hari 2: Finansial &amp; Koperasi
               </span>
             </button>
-            <button class="flex-1 p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-end text-right hover:bg-surface-container-low transition-colors border border-outline-variant/20" onclick="switchGuideTab('oku')">
+            <button class="flex-1 p-space-sm rounded-xl bg-surface-container-lowest shadow-sm flex flex-col items-end text-right hover:bg-surface-container-low transition-colors border border-outline-variant/20 cursor-pointer" onclick="openGuideSection('oku')">
               <span class="flex items-center gap-1 font-label-sm text-label-sm text-on-surface-variant font-medium">
                 Selanjutnya
                 <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
@@ -2082,6 +2431,18 @@
                 Hari 4: STEM Lahan OKU Timur
               </span>
             </button>
+          </div>
+
+          <!-- BOTTOM PANEL NAVIGATION -->
+          <div class="pt-space-xs pb-space-lg flex flex-col gap-2">
+            <button onclick="showMainMenu()" class="w-full py-3 px-4 rounded-2xl bg-purple-700 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm active:scale-[0.99] transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">grid_view</span>
+              <span>Kembali ke Pilihan Menu Silabus</span>
+            </button>
+            <a href="index.html" class="w-full py-2.5 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base text-primary">home</span>
+              <span>Kembali ke Beranda Utama</span>
+            </a>
           </div>
         </div>
       </div>
@@ -2092,30 +2453,74 @@
 
   <script src="js/core.js"></script>
   <script>
-    function switchGuideTab(tabId) {
-      const tabs = ['pilar', 'oku', 'luar', 'aktivitas'];
-      tabs.forEach(t => {
-        const panel = document.getElementById('panel-' + t);
-        const btn = document.getElementById('tabBtn-' + t);
-        if (panel) {
-          if (t === tabId) {
-            panel.classList.remove('hidden');
-          } else {
-            panel.classList.add('hidden');
-          }
-        }
-        if (btn) {
-          if (t === tabId) {
-            btn.className = 'py-2 px-3 rounded-xl text-xs font-bold whitespace-nowrap transition-all bg-primary text-white shadow-xs';
-          } else {
-            btn.className = 'py-2 px-3 rounded-xl text-xs font-semibold whitespace-nowrap text-on-surface-variant hover:bg-surface-container transition-all';
-          }
-        }
+    // Tampilkan Menu Hub (Pilihan 4 Modul Silabus)
+    function showMainMenu() {
+      const panels = ['pilar', 'oku', 'luar', 'aktivitas'];
+      panels.forEach(p => {
+        const el = document.getElementById('panel-' + p);
+        if (el) el.classList.add('hidden');
       });
+      const menuPanel = document.getElementById('panel-menu');
+      if (menuPanel) menuPanel.classList.remove('hidden');
+
+      const headerBtn = document.getElementById('headerBtnMenu');
+      if (headerBtn) headerBtn.classList.add('hidden');
+
+      window.history.replaceState(null, '', window.location.pathname + '#menu');
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
-    // Toggle Accordion on About Page
+    // Buka sub-modul silabus tertentu
+    function openGuideSection(sectionId) {
+      const menuPanel = document.getElementById('panel-menu');
+      if (menuPanel) menuPanel.classList.add('hidden');
+
+      const panels = ['pilar', 'oku', 'luar', 'aktivitas'];
+      panels.forEach(p => {
+        const el = document.getElementById('panel-' + p);
+        if (el) {
+          if (p === sectionId) {
+            el.classList.remove('hidden');
+          } else {
+            el.classList.add('hidden');
+          }
+        }
+      });
+
+      const headerBtn = document.getElementById('headerBtnMenu');
+      if (headerBtn) headerBtn.classList.remove('hidden');
+
+      window.history.replaceState(null, '', window.location.pathname + '#' + sectionId);
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    // Alias fungsi navigasi untuk kompatibilitas
+    function switchGuideTab(tabId) {
+      openGuideSection(tabId);
+    }
+
+    // Penanganan tautan & aksi navigasi umum
+    function navigate(dest) {
+      if (dest === 'dashboard' || dest === 'beranda' || dest === 'home') {
+        window.location.href = 'index.html';
+      } else if (dest === 'login') {
+        window.location.href = 'index.html#login-dialog';
+      } else if (dest === 'activity-detail') {
+        openGuideSection('aktivitas');
+      } else if (dest === 'program-oku' || dest === 'oku') {
+        openGuideSection('oku');
+      } else if (dest === 'program-luar' || dest === 'luar') {
+        openGuideSection('luar');
+      } else if (dest === 'pilar') {
+        openGuideSection('pilar');
+      } else if (dest === 'menu') {
+        showMainMenu();
+      } else {
+        window.location.href = 'index.html';
+      }
+    }
+
+    // Toggle Accordion Pilar FINCESTEM
     function togglePillar(id) {
       const el = document.getElementById(id);
       const icon = document.getElementById('icon-' + id);
@@ -2130,7 +2535,7 @@
       }
     }
 
-    // Toggle Timeline Collapsible on Program Luar
+    // Toggle Timeline Collapsible pada Program Luar
     function toggleTimeline(contentId, chevronId) {
       const content = document.getElementById(contentId);
       const chevron = document.getElementById(chevronId);
@@ -2145,11 +2550,39 @@
       }
     }
 
-    // Hash handler
-    window.addEventListener('DOMContentLoaded', () => {
+    // Helper interaktif untuk LKPD & dokumentasi
+    function showNotification(msg) {
+      alert(msg);
+    }
+
+    function handleRemoveFile() {
+      const fileInput = document.getElementById('fileInput');
+      if (fileInput) fileInput.value = '';
+      const selectedState = document.getElementById('fileSelectedState');
+      if (selectedState) selectedState.classList.add('hidden');
+    }
+
+    function handleSubmitLKPD() {
+      alert('Tugas kelompok Anda berhasil dikirim untuk diverifikasi guru pembimbing!');
+    }
+
+    function handleAddPhotoPrompt() {
+      alert('Fitur unggah foto dokumentasi kegiatan kelompok siap digunakan.');
+    }
+
+    function showHelpModal() {
+      alert('Pusat Pendampingan Kokurikuler FINCESTEM SMAN 1 Belitang.\\nSilakan hubungi Guru Pembimbing kelompok Anda atau kunjungi Posko Kokurikuler di sekolah.');
+    }
+
+    function openVideoModal() {
+      alert('Memutar Video Pembelajaran: Kalibrasi Sensor pH Tanah & Kualitas Air Belitang.');
+    }
+
+    // Routing berbasis URL Hash & Tombol Back Browser
+    function handleRouting() {
       const hash = window.location.hash.replace('#', '');
       if (['financial', 'culture', 'exploration', 'stem'].includes(hash)) {
-        switchGuideTab('pilar');
+        openGuideSection('pilar');
         setTimeout(() => {
           const target = document.getElementById('pillar-' + hash);
           if (target) {
@@ -2157,14 +2590,21 @@
             togglePillar('pillar-' + hash);
           }
         }, 300);
+      } else if (hash === 'pilar') {
+        openGuideSection('pilar');
       } else if (hash === 'oku') {
-        switchGuideTab('oku');
+        openGuideSection('oku');
       } else if (hash === 'luar') {
-        switchGuideTab('luar');
+        openGuideSection('luar');
       } else if (hash === 'aktivitas') {
-        switchGuideTab('aktivitas');
+        openGuideSection('aktivitas');
+      } else {
+        showMainMenu();
       }
-    });
+    }
+
+    window.addEventListener('DOMContentLoaded', handleRouting);
+    window.addEventListener('hashchange', handleRouting);
   </script>
 </body>
 </html>
