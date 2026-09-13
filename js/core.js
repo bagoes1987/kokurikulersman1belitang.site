@@ -88,6 +88,12 @@ const FincestemCore = {
             return { success: false, message: 'Kata sandi salah! Masukkan nomor NIS (Nomor Induk Siswa) Anda.' };
           }
 
+          // Ambil pengaturan zona & pembina untuk kelas ini jika sudah ada di storage
+          const classSettings = (FincestemCore.zones && FincestemCore.zones.getClassInfo) 
+            ? FincestemCore.zones.getClassInfo(found.class) 
+            : { zone: 'FINCESTEM OKU TIMUR', coordinator_name: 'Drs. H. Koordinator FINCESTEM', facilitator_name: 'Tim Fasilitator SMAN 1 Belitang' };
+          const savedPhoto = localStorage.getItem('fincestem_photo_' + found.nisn) || found.photo_url || null;
+
           return {
             success: true,
             user: {
@@ -97,12 +103,18 @@ const FincestemCore = {
               class: found.class,
               level: found.level,
               gender: found.gender,
+              agama: found.agama || 'ISLAM',
               school_origin: found.asal_sekolah,
               address: found.alamat,
               ttl: found.ttl,
               ayah: found.ayah,
               ibu: found.ibu,
               pekerjaan_ortu: found.pekerjaan_ortu,
+              phone: found.phone || '-',
+              photo_url: savedPhoto,
+              zone: classSettings.zone || 'FINCESTEM OKU TIMUR',
+              coordinator_name: classSettings.coordinator_name || 'Drs. H. Koordinator FINCESTEM',
+              facilitator_name: classSettings.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang',
               group: 'Belum Terdaftar Kelompok',
               groupId: '',
               role: 'siswa'
@@ -267,6 +279,196 @@ const FincestemCore = {
       const url = this.base + '/dokumentasi.php?action=list' + (groupId ? '&group_id=' + groupId : '');
       const res = await fetch(url);
       return await res.json();
+    }
+  },
+
+  // Modul Foto Profil Siswa
+  profile: {
+    getPhoto: function(nisn) {
+      if (!nisn) return null;
+      return localStorage.getItem('fincestem_photo_' + nisn) || null;
+    },
+    uploadStudentPhoto: function(file, nisn, callback) {
+      if (!file || !nisn) {
+        if (callback) callback({ success: false, message: 'File dan NISN wajib ada' });
+        return;
+      }
+
+      // 1. Simpan pratinjau Base64 langsung ke localStorage agar instan
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const base64Url = e.target.result;
+        localStorage.setItem('fincestem_photo_' + nisn, base64Url);
+
+        // Update sesi user jika sedang login
+        const u = FincestemCore.auth.getUser();
+        if (u && (String(u.nisn).trim() === String(nisn).trim() || String(u.identifier).trim() === String(nisn).trim())) {
+          u.photo_url = base64Url;
+          FincestemCore.auth.setUser(u, u.role);
+        }
+
+        // Update di master data in-memory jika termuat
+        if (window.FincestemMasterStudents) {
+          const s = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === String(nisn).trim());
+          if (s) s.photo_url = base64Url;
+        }
+
+        // 2. Upload ke backend server cPanel jika online
+        if (window.location.protocol.startsWith('http')) {
+          const fd = new FormData();
+          fd.append('photo', file);
+          fd.append('nisn', nisn);
+
+          fetch(FincestemCore.api.base + '/upload_photo.php', {
+            method: 'POST',
+            body: fd
+          })
+          .then(r => r.json())
+          .then(res => {
+            if (res.success && res.data && res.data.photo_url) {
+              if (u && (String(u.nisn).trim() === String(nisn).trim() || String(u.identifier).trim() === String(nisn).trim())) {
+                u.photo_url = res.data.photo_url;
+                FincestemCore.auth.setUser(u, u.role);
+              }
+            }
+            if (callback) callback(res);
+          })
+          .catch(() => {
+            if (callback) callback({ success: true, photo_url: base64Url, local: true });
+          });
+        } else {
+          if (callback) callback({ success: true, photo_url: base64Url, local: true });
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  },
+
+  // Modul Jadwal Eksplor FINCESTEM Day 1 s.d. Day 7
+  schedule: {
+    getDefaults: function() {
+      return [
+        { day_number: 1, title: 'Day 1: Orientasi & Pembekalan Riset', theme: 'Pembekalan STEM & Etika Riset Lapangan', date: '2026-11-09', date_formatted: '09 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 1, description: 'Pengenalan instrumen observasi, sosialisasi modul kokurikuler, dan konsolidasi tim ekspedisi.' },
+        { day_number: 2, title: 'Day 2: Eksplorasi Sains & Ekosistem Irigasi', theme: 'STEM Sains & Konservasi Lingkungan Belitang', date: '2026-11-10', date_formatted: '10 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pengambilan sampel kualitas air saluran irigasi, identifikasi flora-fauna sawah pasang surut.' },
+        { day_number: 3, title: 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan', theme: 'Teknologi Pertanian Modern & Mekanisasi', date: '2026-11-11', date_formatted: '11 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Observasi mekanisasi pengolahan pascapanen, pengoperasian sensor lingkungan dan dokumentasi teknologi.' },
+        { day_number: 4, title: 'Day 4: Literasi Finansial & Rantai Pasok Pangan', theme: 'Financial Literacy & Ekonomi Agrikultur', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Analisis biaya produksi, wawancara harga pasar komoditas beras, serta simulasi manajemen modal usaha tani.' },
+        { day_number: 5, title: 'Day 5: Eksplorasi Budaya & Etnosains Nusantara', theme: 'Culture & Kearifan Lokal Komunitas Multikultural', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Wawancara tetua adat, kajian tradisi gotong royong lumbung desa, dan pencatatan nilai-nilai budaya.' },
+        { day_number: 6, title: 'Day 6: Sintesis Data & Penyusunan Instrumen LKPD', theme: 'Data Science & Penyusunan Laporan Proyek', date: '2026-11-14', date_formatted: '14 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pengolahan data statistik hasil observasi 4 pilar, input laporan akhir, dan upload berkas LKPD.' },
+        { day_number: 7, title: 'Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi', theme: 'Diseminasi Temuan & Refleksi Kokurikuler', date: '2026-11-15', date_formatted: '15 November 2026', start_time: '07:00', end_time: '20:00', is_active: 0, auto_schedule: 1, description: 'Pameran poster riset, presentasi di depan dewan penguji dan fasilitator, serta pengisian lembar refleksi mandiri.' }
+      ];
+    },
+
+    getSchedule: function(callback) {
+      const self = this;
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php')
+          .then(r => r.json())
+          .then(data => {
+            if (data && data.success && data.data && Array.isArray(data.data.days)) {
+              localStorage.setItem('fincestem_schedules', JSON.stringify(data.data.days));
+              if (callback) callback(data.data.days, data.data.server_time);
+              return;
+            }
+            self.getFallbackSchedule(callback);
+          })
+          .catch(() => self.getFallbackSchedule(callback));
+      } else {
+        self.getFallbackSchedule(callback);
+      }
+    },
+
+    getFallbackSchedule: function(callback) {
+      try {
+        const stored = localStorage.getItem('fincestem_schedules');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length === 7) {
+            if (callback) callback(parsed, new Date().toISOString());
+            return;
+          }
+        }
+      } catch (e) {}
+      const def = this.getDefaults();
+      localStorage.setItem('fincestem_schedules', JSON.stringify(def));
+      if (callback) callback(def, new Date().toISOString());
+    },
+
+    saveSchedule: function(days, callback) {
+      localStorage.setItem('fincestem_schedules', JSON.stringify(days));
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'update_all', days: days })
+        })
+        .then(r => r.json())
+        .then(res => { if (callback) callback(res); })
+        .catch(() => { if (callback) callback({ success: true, local: true }); });
+      } else {
+        if (callback) callback({ success: true, local: true });
+      }
+    },
+
+    toggleDay: function(dayNumber, isActive, callback) {
+      const stored = localStorage.getItem('fincestem_schedules');
+      let days = stored ? JSON.parse(stored) : this.getDefaults();
+      const d = days.find(x => x.day_number === Number(dayNumber));
+      if (d) d.is_active = isActive ? 1 : 0;
+      this.saveSchedule(days, callback);
+    }
+  },
+
+  // Modul Pengaturan Zona & Pembina
+  zones: {
+    getClassInfo: function(className) {
+      try {
+        const stored = localStorage.getItem('fincestem_class_settings');
+        if (stored) {
+          const map = JSON.parse(stored);
+          if (map && map[className]) return map[className];
+        }
+      } catch (e) {}
+
+      // Default zona: Jika belum diset, kelas X.1 s.d X.6 OKU Timur, lainnya Luar OKU Timur atau default OKU Timur
+      return {
+        zone: 'FINCESTEM OKU TIMUR',
+        coordinator_name: 'Drs. H. Koordinator FINCESTEM',
+        facilitator_name: 'Tim Fasilitator SMAN 1 Belitang'
+      };
+    },
+
+    saveClassInfo: function(className, info, callback) {
+      let map = {};
+      try {
+        const stored = localStorage.getItem('fincestem_class_settings');
+        if (stored) map = JSON.parse(stored);
+      } catch (e) {}
+
+      map[className] = Object.assign(map[className] || {}, info);
+      localStorage.setItem('fincestem_class_settings', JSON.stringify(map));
+
+      // Jika user yang sedang login adalah di kelas ini, perbarui datanya
+      const u = FincestemCore.auth.getUser();
+      if (u && u.class === className) {
+        if (info.zone) u.zone = info.zone;
+        if (info.coordinator_name) u.coordinator_name = info.coordinator_name;
+        if (info.facilitator_name) u.facilitator_name = info.facilitator_name;
+        FincestemCore.auth.setUser(u, u.role);
+      }
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'set_class_zone',
+            class_name: className,
+            zone: info.zone
+          })
+        }).catch(() => {});
+      }
+
+      if (callback) callback({ success: true });
     }
   },
 

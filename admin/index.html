@@ -153,18 +153,21 @@
     </div>
 
     <!-- TABS (HANYA AKTIF SAAT LOGIN) -->
-    <div id="admTabs" class="hidden max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50 overflow-x-auto no-scrollbar">
-      <button id="btnTabAdm1" onclick="switchAdmTab('users')" class="py-2 px-3 text-xs font-bold border-b-2 border-[#0875D1] text-[#0875D1] whitespace-nowrap">
-        Akun &amp; Dapodik
+    <div id="admTabs" class="hidden max-w-2xl mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50 overflow-x-auto no-scrollbar">
+      <button id="btnTabAdm_users" onclick="switchAdmTab('users')" class="py-2 px-3 text-xs font-bold border-b-2 border-[#0875D1] text-[#0875D1] whitespace-nowrap cursor-pointer">
+        Data Siswa (1.165)
       </button>
-      <button id="btnTabAdm2" onclick="switchAdmTab('config')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap">
+      <button id="btnTabAdm_schedule" onclick="switchAdmTab('schedule')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
+        Jadwal Day 1 - 7
+      </button>
+      <button id="btnTabAdm_zones" onclick="switchAdmTab('zones')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
+        Zona &amp; Pembina
+      </button>
+      <button id="btnTabAdm_config" onclick="switchAdmTab('config')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
         Konfigurasi
       </button>
-      <button id="btnTabAdm3" onclick="switchAdmTab('logs')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap">
-        Audit Log
-      </button>
-      <button id="btnTabAdm4" onclick="switchAdmTab('backup')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap">
-        Cadangan Data
+      <button id="btnTabAdm_backup" onclick="switchAdmTab('backup')" class="py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
+        Cadangan &amp; Audit
       </button>
     </div>
   </header>
@@ -329,7 +332,135 @@
       </div>
     </div>
 
-    <!-- TAB 2: CONFIG -->
+    <!-- TAB 2: JADWAL & EKSPLORASI FINCESTEM (DAY 1 S.D DAY 7) -->
+    <div id="panelAdminSchedule" class="hidden flex flex-col gap-3">
+      <!-- HEADER & CONTROLS -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">Manajemen Jadwal Eksplor (Day 1 - 7)</h3>
+            <p class="text-[11px] text-on-surface-variant">Atur tanggal, jam buka/tutup, dan status aktif harian siswa.</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="setAllDaysStatus(true)" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center gap-1 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-sm">lock_open</span> Buka Semua
+            </button>
+            <button onclick="setAllDaysStatus(false)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-sm">lock</span> Kunci Semua
+            </button>
+            <button onclick="saveAllScheduleChanges()" class="px-3 py-1.5 rounded-xl bg-[#0875D1] hover:bg-[#02569b] text-white font-bold text-xs flex items-center gap-1 shadow-xs cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-sm">save</span> Simpan Jadwal
+            </button>
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-blue-50/60 border border-blue-100 flex items-center gap-2 text-xs text-blue-900">
+          <span class="material-symbols-outlined text-blue-600 text-base">info</span>
+          <span>Jika <strong>Jadwal Otomatis</strong> aktif, aktivitas hari tersebut akan terbuka otomatis hanya pada tanggal dan rentang jam yang ditentukan.</span>
+        </div>
+      </div>
+
+      <!-- CARDS DAY 1 - 7 -->
+      <div id="adminScheduleCards" class="flex flex-col gap-3">
+        <!-- Rendered by JavaScript -->
+      </div>
+    </div>
+
+    <!-- TAB 3: PEMBAGIAN ZONA & PENUGASAN PEMBINA -->
+    <div id="panelAdminZones" class="hidden flex flex-col gap-3">
+      <!-- RINGKASAN ZONA -->
+      <div class="grid grid-cols-2 gap-2.5">
+        <div class="p-4 rounded-3xl bg-emerald-50 border border-emerald-200/70 flex flex-col gap-1">
+          <div class="flex items-center gap-1.5 text-emerald-800">
+            <span class="material-symbols-outlined text-lg">explore</span>
+            <span class="text-xs font-bold uppercase">FINCESTEM OKU TIMUR</span>
+          </div>
+          <span id="countZoneOkuTimur" class="text-xl font-black text-emerald-700 mt-1">386 Siswa</span>
+          <span class="text-[10.5px] text-emerald-800/80">Zona riset wilayah lokal Kab. OKU Timur</span>
+        </div>
+        <div class="p-4 rounded-3xl bg-amber-50 border border-amber-200/70 flex flex-col gap-1">
+          <div class="flex items-center gap-1.5 text-amber-800">
+            <span class="material-symbols-outlined text-lg">travel_explore</span>
+            <span class="text-xs font-bold uppercase">FINCESTEM LUAR OKU TIMUR</span>
+          </div>
+          <span id="countZoneLuarOkuTimur" class="text-xl font-black text-amber-700 mt-1">779 Siswa</span>
+          <span class="text-[10.5px] text-amber-800/80">Zona riset ekspedisi luar kabupaten</span>
+        </div>
+      </div>
+
+      <!-- AKSI MASSAL CEPAT (BULK SET) -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Aksi Cepat Pembagian Zona Massal</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+          <button onclick="setGradeZoneBulk('X', 'FINCESTEM OKU TIMUR')" class="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 border border-slate-200 flex flex-col gap-1 text-left transition-all cursor-pointer">
+            <span class="font-bold text-slate-800">Semua Kelas X &rarr; OKU Timur</span>
+            <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas X ke zona lokal</span>
+          </button>
+          <button onclick="setGradeZoneBulk('XI', 'FINCESTEM LUAR OKU TIMUR')" class="p-3 rounded-2xl bg-slate-50 hover:bg-amber-50 hover:border-amber-200 border border-slate-200 flex flex-col gap-1 text-left transition-all cursor-pointer">
+            <span class="font-bold text-slate-800">Semua Kelas XI &rarr; Luar OKU</span>
+            <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas XI ke luar daerah</span>
+          </button>
+          <button onclick="setGradeZoneBulk('XII', 'FINCESTEM LUAR OKU TIMUR')" class="p-3 rounded-2xl bg-slate-50 hover:bg-amber-50 hover:border-amber-200 border border-slate-200 flex flex-col gap-1 text-left transition-all cursor-pointer">
+            <span class="font-bold text-slate-800">Semua Kelas XII &rarr; Luar OKU</span>
+            <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas XII ke luar daerah</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FORM PENGATURAN PER ROMBEL -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5 text-xs">
+        <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Form Pengaturan Zona &amp; Pembina per Rombel</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-on-surface mb-1">Pilih Rombongan Belajar (Rombel)</label>
+            <select id="zoneSelectRombel" onchange="onZoneRombelChanged()" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 font-bold bg-surface-container-lowest outline-none text-on-surface">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-on-surface mb-1">Zona Riset Kokurikuler</label>
+            <select id="zoneSelectTargetZone" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 font-bold bg-surface-container-lowest outline-none text-on-surface">
+              <option value="FINCESTEM OKU TIMUR">FINCESTEM OKU TIMUR (Zona Lokal)</option>
+              <option value="FINCESTEM LUAR OKU TIMUR">FINCESTEM LUAR OKU TIMUR (Zona Ekspedisi Luar)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-bold text-on-surface mb-1">Nama Guru Koordinator</label>
+            <input id="zoneInputCoordinator" type="text" value="Drs. H. Koordinator FINCESTEM" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-[#0875D1] outline-none">
+          </div>
+          <div>
+            <label class="block font-bold text-on-surface mb-1">Nama Guru Fasilitator Pembina</label>
+            <input id="zoneInputFacilitator" type="text" value="Tim Fasilitator SMAN 1 Belitang" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 font-semibold focus:border-[#0875D1] outline-none">
+          </div>
+        </div>
+        <button onclick="applyClassZoneAndPembina()" class="w-full py-2.5 rounded-xl bg-[#0875D1] hover:bg-[#02569b] text-white font-bold text-xs shadow-xs transition-all cursor-pointer">
+          Terapkan Pengaturan ke Rombel Ini
+        </button>
+      </div>
+
+      <!-- TABEL DAFTAR 33 ROMBEL & STATUS ZONA -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Daftar Status Seluruh Rombongan Belajar</h4>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-outline-variant/20 text-on-surface-variant text-[11px]">
+                <th class="py-2 pr-3">Rombel</th>
+                <th class="py-2 pr-3">Tingkat</th>
+                <th class="py-2 pr-3">Zona Riset</th>
+                <th class="py-2 pr-3">Fasilitator</th>
+                <th class="py-2 text-right">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="tableZoneRombelBody" class="divide-y divide-outline-variant/10">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: CONFIG -->
     <div id="panelAdminConfig" class="hidden flex flex-col gap-3">
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5 text-xs">
         <h3 class="font-bold text-sm text-on-surface">Pengaturan Parameter Kokurikuler</h3>
@@ -400,13 +531,17 @@
     <div id="modalStudentDetail" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden opacity-0 transition-all duration-200">
       <div class="bg-surface-container-lowest w-full max-w-lg rounded-3xl p-6 shadow-2xl border border-outline-variant/30 flex flex-col gap-4 max-h-[90vh] overflow-y-auto">
         <div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-10 h-10 rounded-2xl bg-blue-100 text-[#0875D1] flex items-center justify-center font-bold text-base">
-              <span class="material-symbols-outlined">badge</span>
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-blue-100 border border-blue-200 overflow-hidden flex items-center justify-center shrink-0 shadow-2xs">
+              <img id="modalStudentPhoto" src="" alt="Foto Siswa" class="w-full h-full object-cover hidden">
+              <span id="modalStudentPhotoFallback" class="material-symbols-outlined text-2xl text-[#0875D1]">person</span>
             </div>
             <div>
               <h3 id="modalStudentName" class="text-sm font-extrabold text-on-surface leading-tight">Nama Siswa</h3>
-              <span id="modalStudentClass" class="text-xs font-semibold text-[#0875D1]">KELAS X.1</span>
+              <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                <span id="modalStudentClass" class="text-xs font-semibold text-[#0875D1]">KELAS X.1</span>
+                <span id="modalStudentZoneBadge" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase">OKU TIMUR</span>
+              </div>
             </div>
           </div>
           <button onclick="closeStudentDetail()" class="p-1.5 rounded-xl hover:bg-surface-container text-on-surface-variant cursor-pointer">
@@ -597,21 +732,24 @@
     }
 
     function switchAdmTab(tab) {
-      ['users', 'config', 'logs', 'backup'].forEach((t, i) => {
+      const allTabs = ['users', 'schedule', 'zones', 'config', 'backup'];
+      allTabs.forEach(t => {
         const panel = document.getElementById('panelAdmin' + t.charAt(0).toUpperCase() + t.slice(1));
-        const btn = document.getElementById('btnTabAdm' + (i + 1));
+        const btn = document.getElementById('btnTabAdm_' + t);
         if (panel) {
           if (t === tab) panel.classList.remove('hidden');
           else panel.classList.add('hidden');
         }
         if (btn) {
           if (t === tab) {
-            btn.className = 'py-2 px-3 text-xs font-bold border-b-2 border-[#0875D1] text-[#0875D1] whitespace-nowrap';
+            btn.className = 'py-2 px-3 text-xs font-bold border-b-2 border-[#0875D1] text-[#0875D1] whitespace-nowrap cursor-pointer';
           } else {
-            btn.className = 'py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap';
+            btn.className = 'py-2 px-3 text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer';
           }
         }
       });
+      if (tab === 'schedule') renderAdminScheduleView();
+      if (tab === 'zones') renderAdminZonesView();
     }
 
     /* ========================================================
@@ -742,15 +880,26 @@
           ? '<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-blue-100 text-blue-800">L</span>' 
           : '<span class="px-1.5 py-0.5 rounded-md text-[10px] font-extrabold bg-pink-100 text-pink-800">P</span>';
 
+        const savedPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(s.nisn)) || s.photo_url;
+        const photoHtml = savedPhoto 
+          ? `<img src="${savedPhoto}" alt="Foto" class="w-8 h-8 rounded-xl object-cover border border-outline-variant/40 shrink-0">`
+          : `<div class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center text-xs font-extrabold text-[#0875D1] shrink-0">${startIdx + idx + 1}</div>`;
+
+        const classSettings = (FincestemCore.zones && FincestemCore.zones.getClassInfo) ? FincestemCore.zones.getClassInfo(s.class) : {};
+        const zoneName = s.zone || classSettings.zone || 'FINCESTEM OKU TIMUR';
+        const isLuar = zoneName.toUpperCase().includes('LUAR');
+        const zBadge = isLuar 
+          ? '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-amber-100 text-amber-900 uppercase">LUAR OKU</span>' 
+          : '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-bold bg-emerald-100 text-emerald-900 uppercase">OKU TIMUR</span>';
+
         card.innerHTML = `
           <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center text-xs font-extrabold text-[#0875D1] shrink-0">
-              ${startIdx + idx + 1}
-            </div>
+            ${photoHtml}
             <div class="min-w-0 flex flex-col">
               <div class="flex items-center gap-1.5 flex-wrap">
                 <span class="font-extrabold text-xs text-on-surface truncate">${s.nama}</span>
                 ${gBadge}
+                ${zBadge}
               </div>
               <div class="flex items-center gap-2 text-[11px] text-on-surface-variant flex-wrap mt-0.5">
                 <span>NISN: <strong>${s.nisn}</strong></span>
@@ -795,6 +944,27 @@
       document.getElementById('modalStudentPekerjaan').textContent = s.pekerjaan_ortu || '-';
       document.getElementById('modalStudentAlamat').textContent = s.alamat || '-';
 
+      // Tampilkan Foto Siswa jika ada
+      const savedPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(s.nisn)) || s.photo_url;
+      const modalPhotoImg = document.getElementById('modalStudentPhoto');
+      const modalPhotoFallback = document.getElementById('modalStudentPhotoFallback');
+      if (savedPhoto) {
+        modalPhotoImg.src = savedPhoto;
+        modalPhotoImg.classList.remove('hidden');
+        modalPhotoFallback.classList.add('hidden');
+      } else {
+        modalPhotoImg.classList.add('hidden');
+        modalPhotoFallback.classList.remove('hidden');
+      }
+
+      // Zona Siswa
+      const classSettings = (FincestemCore.zones && FincestemCore.zones.getClassInfo) ? FincestemCore.zones.getClassInfo(s.class) : {};
+      const zoneName = s.zone || classSettings.zone || 'FINCESTEM OKU TIMUR';
+      const isLuar = zoneName.toUpperCase().includes('LUAR');
+      const zBadgeEl = document.getElementById('modalStudentZoneBadge');
+      zBadgeEl.textContent = isLuar ? 'LUAR OKU TIMUR' : 'OKU TIMUR';
+      zBadgeEl.className = isLuar ? 'px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-100 text-amber-900 uppercase' : 'px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 uppercase';
+
       const modal = document.getElementById('modalStudentDetail');
       modal.classList.remove('hidden');
       setTimeout(() => {
@@ -808,6 +978,274 @@
       modal.classList.remove('opacity-100');
       modal.classList.add('opacity-0');
       setTimeout(() => modal.classList.add('hidden'), 200);
+    }
+
+    /* ========================================================
+       MANAJEMEN JADWAL EKSPLOR FINCESTEM (DAY 1 - 7)
+       ======================================================== */
+    let adminScheduleList = [];
+
+    function renderAdminScheduleView() {
+      const container = document.getElementById('adminScheduleCards');
+      if (!container) return;
+      container.innerHTML = '<div class="py-6 text-center text-xs text-slate-400">Memuat jadwal...</div>';
+
+      FincestemCore.schedule.getSchedule(function(days) {
+        adminScheduleList = days;
+        container.innerHTML = '';
+
+        days.forEach(d => {
+          const card = document.createElement('div');
+          const isOpen = Number(d.is_active) === 1;
+          const isAuto = Number(d.auto_schedule) === 1;
+
+          card.className = 'p-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 shadow-xs flex flex-col gap-3';
+          card.id = 'adminDayCard_' + d.day_number;
+
+          card.innerHTML = `
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-[#0875D1] text-white flex items-center justify-center font-black text-xs">
+                  D${d.day_number}
+                </span>
+                <div>
+                  <h4 class="font-extrabold text-xs sm:text-sm text-on-surface">${d.title}</h4>
+                  <span class="text-[11px] font-semibold text-[#0875D1]">${d.theme || ''}</span>
+                </div>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="chkDayActive_${d.day_number}" ${isOpen ? 'checked' : ''} onchange="toggleSingleDayActive(${d.day_number})" class="sr-only peer">
+                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                <span id="labelDayActive_${d.day_number}" class="ml-2 text-xs font-bold ${isOpen ? 'text-emerald-700' : 'text-slate-400'}">${isOpen ? 'BUKA' : 'TUTUP'}</span>
+              </label>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <div>
+                <label class="block font-bold text-on-surface mb-1">Tanggal Pelaksanaan</label>
+                <input type="date" id="inputDayDate_${d.day_number}" value="${d.date}" class="w-full px-3 py-2 rounded-xl border border-outline-variant/40 font-semibold text-xs outline-none focus:border-[#0875D1]">
+              </div>
+              <div>
+                <label class="block font-bold text-on-surface mb-1">Jam Buka (WIB)</label>
+                <input type="time" id="inputDayStart_${d.day_number}" value="${d.start_time || '07:00'}" class="w-full px-3 py-2 rounded-xl border border-outline-variant/40 font-semibold text-xs outline-none focus:border-[#0875D1]">
+              </div>
+              <div>
+                <label class="block font-bold text-on-surface mb-1">Jam Tutup (WIB)</label>
+                <input type="time" id="inputDayEnd_${d.day_number}" value="${d.end_time || '18:00'}" class="w-full px-3 py-2 rounded-xl border border-outline-variant/40 font-semibold text-xs outline-none focus:border-[#0875D1]">
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/15 text-xs flex-wrap gap-2">
+              <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-on-surface-variant">
+                <input type="checkbox" id="chkDayAuto_${d.day_number}" ${isAuto ? 'checked' : ''} class="rounded border-outline-variant text-[#0875D1] focus:ring-0">
+                <span>Otomatis buka/tutup sesuai jam di atas</span>
+              </label>
+              <button onclick="saveSingleDay(${d.day_number})" class="px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[#0875D1] font-bold text-xs flex items-center gap-1 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-xs">check</span> Simpan Hari Ini
+              </button>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      });
+    }
+
+    function toggleSingleDayActive(dayNumber) {
+      const chk = document.getElementById('chkDayActive_' + dayNumber);
+      const lbl = document.getElementById('labelDayActive_' + dayNumber);
+      if (!chk || !lbl) return;
+      const isOpen = chk.checked;
+      lbl.textContent = isOpen ? 'BUKA' : 'TUTUP';
+      lbl.className = 'ml-2 text-xs font-bold ' + (isOpen ? 'text-emerald-700' : 'text-slate-400');
+    }
+
+    function saveSingleDay(dayNumber) {
+      const d = adminScheduleList.find(x => x.day_number === Number(dayNumber));
+      if (!d) return;
+
+      d.date = document.getElementById('inputDayDate_' + dayNumber).value;
+      d.start_time = document.getElementById('inputDayStart_' + dayNumber).value;
+      d.end_time = document.getElementById('inputDayEnd_' + dayNumber).value;
+      d.is_active = document.getElementById('chkDayActive_' + dayNumber).checked ? 1 : 0;
+      d.auto_schedule = document.getElementById('chkDayAuto_' + dayNumber).checked ? 1 : 0;
+
+      FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
+        FincestemCore.ui.toast(`Jadwal Day ${dayNumber} berhasil diperbarui!`, 'success');
+      });
+    }
+
+    function saveAllScheduleChanges() {
+      if (!Array.isArray(adminScheduleList) || adminScheduleList.length === 0) return;
+
+      adminScheduleList.forEach(d => {
+        const elDate = document.getElementById('inputDayDate_' + d.day_number);
+        const elStart = document.getElementById('inputDayStart_' + d.day_number);
+        const elEnd = document.getElementById('inputDayEnd_' + d.day_number);
+        const elActive = document.getElementById('chkDayActive_' + d.day_number);
+        const elAuto = document.getElementById('chkDayAuto_' + d.day_number);
+
+        if (elDate) d.date = elDate.value;
+        if (elStart) d.start_time = elStart.value;
+        if (elEnd) d.end_time = elEnd.value;
+        if (elActive) d.is_active = elActive.checked ? 1 : 0;
+        if (elAuto) d.auto_schedule = elAuto.checked ? 1 : 0;
+      });
+
+      FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
+        FincestemCore.ui.toast('Seluruh jadwal Day 1 s.d. Day 7 berhasil disimpan!', 'success');
+      });
+    }
+
+    function setAllDaysStatus(isOpen) {
+      if (!Array.isArray(adminScheduleList)) return;
+      adminScheduleList.forEach(d => {
+        d.is_active = isOpen ? 1 : 0;
+        const chk = document.getElementById('chkDayActive_' + d.day_number);
+        const lbl = document.getElementById('labelDayActive_' + d.day_number);
+        if (chk) chk.checked = isOpen;
+        if (lbl) {
+          lbl.textContent = isOpen ? 'BUKA' : 'TUTUP';
+          lbl.className = 'ml-2 text-xs font-bold ' + (isOpen ? 'text-emerald-700' : 'text-slate-400');
+        }
+      });
+      FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
+        FincestemCore.ui.toast(`Seluruh hari berhasil diatur menjadi ${isOpen ? 'TERBUKA' : 'TERKUNCI'}!`, 'info');
+      });
+    }
+
+    /* ========================================================
+       MANAJEMEN PEMBAGIAN ZONA & PENUGASAN PEMBINA
+       ======================================================== */
+    function renderAdminZonesView() {
+      const list = window.FincestemMasterStudents || [];
+      const rombels = [...new Set(list.map(s => s.class))].filter(Boolean).sort();
+
+      // Hitung jumlah siswa per zona
+      let countOku = 0;
+      let countLuar = 0;
+
+      rombels.forEach(r => {
+        const info = FincestemCore.zones.getClassInfo(r);
+        const countInClass = list.filter(s => s.class === r).length;
+        if ((info.zone || '').toUpperCase().includes('LUAR')) {
+          countLuar += countInClass;
+        } else {
+          countOku += countInClass;
+        }
+      });
+
+      document.getElementById('countZoneOkuTimur').textContent = `${countOku.toLocaleString('id-ID')} Siswa`;
+      document.getElementById('countZoneLuarOkuTimur').textContent = `${countLuar.toLocaleString('id-ID')} Siswa`;
+
+      // Isi dropdown rombel jika kosong
+      const select = document.getElementById('zoneSelectRombel');
+      if (select && select.children.length <= 1) {
+        select.innerHTML = '';
+        rombels.forEach(r => {
+          const opt = document.createElement('option');
+          opt.value = r;
+          opt.textContent = r;
+          select.appendChild(opt);
+        });
+      }
+
+      onZoneRombelChanged();
+
+      // Isi tabel rombel
+      const tbody = document.getElementById('tableZoneRombelBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      rombels.forEach(r => {
+        const info = FincestemCore.zones.getClassInfo(r);
+        const gradeLevel = r.includes('XII') ? 'XII' : (r.includes('XI') ? 'XI' : 'X');
+        const countInClass = list.filter(s => s.class === r).length;
+        const isLuar = (info.zone || '').toUpperCase().includes('LUAR');
+
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-surface-container-low transition-colors';
+        tr.innerHTML = `
+          <td class="py-2.5 pr-3 font-bold text-on-surface">
+            ${r}
+            <span class="block text-[10px] font-normal text-on-surface-variant">${countInClass} siswa</span>
+          </td>
+          <td class="py-2.5 pr-3 font-extrabold text-[#0875D1]">${gradeLevel}</td>
+          <td class="py-2.5 pr-3">
+            <span class="px-2 py-0.5 rounded-md text-[10px] font-bold ${isLuar ? 'bg-amber-100 text-amber-900' : 'bg-emerald-100 text-emerald-900'} uppercase">
+              ${isLuar ? 'LUAR OKU' : 'OKU TIMUR'}
+            </span>
+          </td>
+          <td class="py-2.5 pr-3 text-[11px] text-on-surface truncate max-w-[120px]">
+            ${info.facilitator_name || 'Tim Fasilitator'}
+          </td>
+          <td class="py-2.5 text-right">
+            <button onclick="editClassZoneInForm('${r}')" class="px-2 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-[#0875D1] font-bold text-[10.5px] cursor-pointer">
+              Atur
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function onZoneRombelChanged() {
+      const select = document.getElementById('zoneSelectRombel');
+      if (!select || !select.value) return;
+      const r = select.value;
+      const info = FincestemCore.zones.getClassInfo(r);
+
+      document.getElementById('zoneSelectTargetZone').value = info.zone || 'FINCESTEM OKU TIMUR';
+      document.getElementById('zoneInputCoordinator').value = info.coordinator_name || 'Drs. H. Koordinator FINCESTEM';
+      document.getElementById('zoneInputFacilitator').value = info.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+    }
+
+    function editClassZoneInForm(rombel) {
+      const select = document.getElementById('zoneSelectRombel');
+      if (select) {
+        select.value = rombel;
+        onZoneRombelChanged();
+        select.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function applyClassZoneAndPembina() {
+      const rombel = document.getElementById('zoneSelectRombel').value;
+      const zone = document.getElementById('zoneSelectTargetZone').value;
+      const coord = document.getElementById('zoneInputCoordinator').value.trim();
+      const fasil = document.getElementById('zoneInputFacilitator').value.trim();
+
+      if (!rombel) {
+        FincestemCore.ui.toast('Harap pilih rombel terlebih dahulu!', 'error');
+        return;
+      }
+
+      FincestemCore.zones.saveClassInfo(rombel, {
+        zone: zone,
+        coordinator_name: coord,
+        facilitator_name: fasil
+      }, function() {
+        FincestemCore.ui.toast(`Pengaturan zona & pembina untuk ${rombel} berhasil diterapkan!`, 'success');
+        renderAdminZonesView();
+        renderAdminStudentList();
+      });
+    }
+
+    function setGradeZoneBulk(grade, targetZone) {
+      const list = window.FincestemMasterStudents || [];
+      const rombels = [...new Set(list.filter(s => s.level === grade).map(s => s.class))].filter(Boolean);
+
+      rombels.forEach(r => {
+        const cur = FincestemCore.zones.getClassInfo(r);
+        FincestemCore.zones.saveClassInfo(r, {
+          zone: targetZone,
+          coordinator_name: cur.coordinator_name,
+          facilitator_name: cur.facilitator_name
+        });
+      });
+
+      FincestemCore.ui.toast(`Seluruh ${rombels.length} rombel Kelas ${grade} berhasil diatur ke ${targetZone}!`, 'success');
+      renderAdminZonesView();
+      renderAdminStudentList();
     }
 
     function saveAdminConfig() {

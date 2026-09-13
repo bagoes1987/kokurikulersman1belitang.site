@@ -20,6 +20,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `grade_level` ENUM('X', 'XI', 'XII') DEFAULT NULL COMMENT 'Tingkat Kelas (X, XI, XII)',
   `class_name` VARCHAR(50) DEFAULT NULL COMMENT 'Rombongan Belajar (misal: KELAS X.1, KELAS XI.2)',
   `gender` ENUM('L', 'P') DEFAULT NULL COMMENT 'Jenis Kelamin',
+  `photo_url` VARCHAR(255) DEFAULT NULL COMMENT 'Path URL foto profil siswa',
+  `zone` VARCHAR(50) DEFAULT 'FINCESTEM OKU TIMUR' COMMENT 'Zona Riset Siswa (OKU TIMUR / LUAR OKU TIMUR)',
   `agama` VARCHAR(50) DEFAULT NULL COMMENT 'Agama',
   `birth_info` VARCHAR(150) DEFAULT NULL COMMENT 'Tempat, Tanggal Lahir',
   `address` TEXT DEFAULT NULL COMMENT 'Alamat Domisili Siswa',
@@ -28,13 +30,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `parent_job` VARCHAR(100) DEFAULT NULL COMMENT 'Pekerjaan Orang Tua',
   `school_origin` VARCHAR(150) DEFAULT NULL COMMENT 'Asal Sekolah SMP/MTs',
   `assignment` VARCHAR(150) DEFAULT NULL COMMENT 'Tugas tambahan guru (misal: Pembina Kelas XI)',
+  `coordinator_name` VARCHAR(150) DEFAULT 'Drs. H. Koordinator FINCESTEM' COMMENT 'Nama Guru Koordinator',
+  `facilitator_name` VARCHAR(150) DEFAULT 'Tim Fasilitator SMAN 1 Belitang' COMMENT 'Nama Guru Fasilitator',
   `phone` VARCHAR(50) DEFAULT NULL COMMENT 'No. HP / WhatsApp',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   INDEX `idx_role` (`role`),
   INDEX `idx_grade` (`grade_level`),
   INDEX `idx_class` (`class_name`),
-  INDEX `idx_nis` (`nis`)
+  INDEX `idx_nis` (`nis`),
+  INDEX `idx_zone` (`zone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ----------------------------------------------------------------------
@@ -158,6 +163,39 @@ CREATE TABLE IF NOT EXISTS `presensi` (
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `unique_student_date` (`student_nisn`, `date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ----------------------------------------------------------------------
+-- 9. TABEL JADWAL EKSPLORASI DAY 1 S.D DAY 7 (day_schedules)
+-- Pengaturan waktu, tema, serta kontrol buka/tutup aktivitas harian
+-- ----------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `day_schedules` (
+  `day_number` INT PRIMARY KEY COMMENT 'Nomor Hari (1 - 7)',
+  `title` VARCHAR(150) NOT NULL COMMENT 'Judul Tema Hari',
+  `theme` VARCHAR(100) NOT NULL COMMENT 'Sub Tema Riset',
+  `date` DATE NOT NULL COMMENT 'Tanggal Pelaksanaan',
+  `start_time` TIME NOT NULL DEFAULT '07:00:00' COMMENT 'Jam Mulai Pengerjaan',
+  `end_time` TIME NOT NULL DEFAULT '18:00:00' COMMENT 'Jam Selesai Pengerjaan',
+  `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '1 = Buka (Open), 0 = Tutup (Locked)',
+  `auto_schedule` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '1 = Otomatis sesuai tanggal dan jam, 0 = Manual override',
+  `description` TEXT DEFAULT NULL,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+INSERT INTO `day_schedules` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `description`) VALUES
+(1, 'Day 1: Orientasi & Pembekalan Riset', 'Pembekalan STEM & Etika Riset Lapangan', '2026-11-09', '07:00:00', '18:00:00', 1, 1, 'Pengenalan instrumen observasi, sosialisasi modul kokurikuler, dan konsolidasi tim ekspedisi.'),
+(2, 'Day 2: Eksplorasi Sains & Ekosistem Irigasi', 'STEM Sains & Konservasi Lingkungan Belitang', '2026-11-10', '07:00:00', '18:00:00', 0, 1, 'Pengambilan sampel kualitas air saluran irigasi, identifikasi flora-fauna sawah pasang surut.'),
+(3, 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan', 'Teknologi Pertanian Modern & Mekanisasi', '2026-11-11', '07:00:00', '18:00:00', 0, 1, 'Observasi mekanisasi pengolahan pascapanen, pengoperasian sensor lingkungan dan dokumentasi teknologi.'),
+(4, 'Day 4: Literasi Finansial & Rantai Pasok Pangan', 'Financial Literacy & Ekonomi Agrikultur', '2026-11-12', '07:00:00', '18:00:00', 0, 1, 'Analisis biaya produksi, wawancara harga pasar komoditas beras, serta simulasi manajemen modal usaha tani.'),
+(5, 'Day 5: Eksplorasi Budaya & Etnosains Nusantara', 'Culture & Kearifan Lokal Komunitas Multikultural', '2026-11-13', '07:00:00', '18:00:00', 0, 1, 'Wawancara tetua adat, kajian tradisi gotong royong lumbung desa, dan pencatatan nilai-nilai budaya.'),
+(6, 'Day 6: Sintesis Data & Penyusunan Instrumen LKPD', 'Data Science & Penyusunan Laporan Proyek', '2026-11-14', '07:00:00', '18:00:00', 0, 1, 'Pengolahan data statistik hasil observasi 4 pilar, input laporan akhir, dan upload berkas LKPD.'),
+(7, 'Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi', 'Diseminasi Temuan & Refleksi Kokurikuler', '2026-11-15', '07:00:00', '20:00:00', 0, 1, 'Pameran poster riset, presentasi di depan dewan penguji dan fasilitator, serta pengisian lembar refleksi mandiri.')
+ON DUPLICATE KEY UPDATE 
+  `title` = VALUES(`title`),
+  `theme` = VALUES(`theme`),
+  `date` = VALUES(`date`),
+  `start_time` = VALUES(`start_time`),
+  `end_time` = VALUES(`end_time`),
+  `description` = VALUES(`description`);
 
 -- ----------------------------------------------------------------------
 -- AKUN DEFAULT AWAL (Bisa langsung digunakan login pertama kali)

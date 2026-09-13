@@ -100,25 +100,25 @@
     };
   </script>
 </head>
-<body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-full">
+<body class="bg-[#F8FAFC] font-body-md text-on-surface antialiased flex flex-col min-h-full">
 
   <!-- TOP HEADER -->
-  <header class="sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
-    <div class="h-16 px-4 flex items-center justify-between max-w-lg mx-auto w-full">
+  <header class="sticky top-0 w-full z-40 bg-white/90 backdrop-blur-xl border-b border-outline-variant/30">
+    <div class="h-16 px-4 flex items-center justify-between max-w-xl mx-auto w-full">
       <div class="flex items-center gap-3">
         <a href="../" class="w-10 h-10 rounded-2xl bg-surface-container flex items-center justify-center p-1 border border-outline-variant/30 shrink-0">
           <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
         </a>
         <div class="flex flex-col">
-          <span class="text-[10.5px] text-primary font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
-          <span class="text-sm font-bold text-on-surface leading-tight">Portal Siswa</span>
+          <span class="text-[10.5px] text-[#08A7B5] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
+          <span class="text-sm font-bold text-on-surface leading-tight">Portal Siswa FINCESTEM</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
         <a href="../" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
           <span class="material-symbols-outlined text-xl">home</span>
         </a>
-        <button onclick="FincestemCore.auth.logout('./')" class="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all" title="Keluar Akun">
+        <button onclick="FincestemCore.auth.logout('./')" class="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all cursor-pointer" title="Keluar Akun">
           <span class="material-symbols-outlined text-xl">logout</span>
         </button>
       </div>
@@ -126,185 +126,530 @@
   </header>
 
   <!-- MAIN DASHBOARD CONTENT -->
-  <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
+  <main class="flex-1 flex flex-col max-w-xl mx-auto w-full p-4 gap-4 pb-24">
 
-    <!-- USER WELCOME CARD (TOSKA #08A7B5) -->
-    <div class="bg-gradient-to-br from-[#08A7B5] to-[#068490] text-white rounded-3xl p-6 shadow-md relative overflow-hidden">
-      <div class="absolute -right-8 -bottom-8 w-36 h-36 rounded-full bg-cyan-300/20 blur-2xl"></div>
-      <div class="flex items-start justify-between relative z-10">
-        <div class="flex items-center gap-3.5">
-          <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white ring-2 ring-white/30 shrink-0 shadow-xs">
-            <span class="material-symbols-outlined text-2xl">school</span>
+    <!-- 1. USER PROFILE CARD (PROFESIONAL DENGAN UPLOAD FOTO HP) -->
+    <div class="bg-gradient-to-br from-[#08A7B5] via-[#068490] to-[#045D66] text-white rounded-3xl p-6 shadow-md relative overflow-hidden">
+      <!-- Ornamen Dekoratif -->
+      <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-cyan-300/15 blur-2xl pointer-events-none"></div>
+      <div class="absolute -left-10 -top-10 w-32 h-32 rounded-full bg-teal-200/10 blur-xl pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col gap-4">
+        <div class="flex items-start justify-between gap-3">
+          <!-- Avatar + Tombol Kamera Upload HP -->
+          <div class="flex items-center gap-4 min-w-0">
+            <div class="relative shrink-0 group">
+              <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-white/20 border-2 border-white/50 overflow-hidden shadow-md flex items-center justify-center">
+                <img id="userPhotoImg" src="" alt="Foto Siswa" class="w-full h-full object-cover hidden">
+                <span id="userPhotoFallback" class="material-symbols-outlined text-3xl text-white">person</span>
+              </div>
+              <!-- Tombol Kamera Upload HP -->
+              <label for="inputStudentPhoto" class="absolute -bottom-1.5 -right-1.5 w-7 h-7 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-900 flex items-center justify-center shadow-md cursor-pointer transition-transform active:scale-90" title="Upload Pasfoto dari HP">
+                <span class="material-symbols-outlined text-sm font-bold">photo_camera</span>
+              </label>
+              <input id="inputStudentPhoto" type="file" accept="image/*" capture="user" class="hidden" onchange="handleStudentPhotoUpload(event)">
+            </div>
+
+            <!-- Nama & Identitas -->
+            <div class="flex flex-col min-w-0">
+              <span class="text-[11px] text-cyan-100 font-medium">Selamat Datang,</span>
+              <h2 id="userName" class="text-base sm:text-lg font-extrabold text-white leading-snug truncate">Peserta Didik</h2>
+              <div class="flex items-center gap-2 text-xs text-cyan-100/90 mt-0.5 flex-wrap">
+                <span>NISN: <strong id="userNisn" class="text-white">-</strong></span>
+                <span>•</span>
+                <span>NIS: <strong id="userNis" class="text-white">-</strong></span>
+              </div>
+              <div class="mt-1 flex items-center gap-1.5 flex-wrap">
+                <span id="userClassBadge" class="px-2 py-0.5 rounded-lg bg-white/20 text-[11px] font-extrabold text-white">KELAS X</span>
+              </div>
+            </div>
           </div>
-          <div class="flex flex-col">
-            <span class="text-xs text-cyan-100 font-semibold">Selamat Datang,</span>
-            <h2 id="userName" class="text-base font-extrabold text-white leading-tight">Peserta Didik</h2>
-            <span id="userMeta" class="text-xs text-cyan-50/80 mt-0.5">NISN: - • Kelas: -</span>
+
+          <!-- Keterangan Zona FINCESTEM (OKU TIMUR / LUAR OKU TIMUR) -->
+          <div class="shrink-0 flex flex-col items-end">
+            <div id="userZoneBadge" class="px-3 py-1.5 rounded-2xl text-[11px] font-black tracking-wider uppercase shadow-sm flex items-center gap-1.5 bg-emerald-400 text-slate-950">
+              <span class="material-symbols-outlined text-sm">explore</span>
+              <span id="userZoneText">FINCESTEM OKU TIMUR</span>
+            </div>
+            <span class="text-[10px] text-cyan-200 mt-1 font-semibold">Zona Riset Lapangan</span>
           </div>
         </div>
-        <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-extrabold uppercase">Siswa Aktif</span>
-      </div>
 
-      <div class="mt-5 pt-4 border-t border-white/15 flex items-center justify-between text-xs">
-        <div class="flex flex-col">
-          <span class="text-cyan-100 text-[10.5px]">Kelompok Belajar:</span>
-          <span id="userGroup" class="font-bold text-white">Belum Terdaftar</span>
-        </div>
-        <div class="flex flex-col text-right">
-          <span class="text-cyan-100 text-[10.5px]">Fasilitator Pembina:</span>
-          <span id="userFacilitator" class="font-bold text-white">-</span>
+        <!-- Bar Koordinator & Fasilitator -->
+        <div class="pt-3.5 border-t border-white/20 grid grid-cols-2 gap-3 text-xs">
+          <div class="flex flex-col bg-black/15 p-2.5 rounded-2xl backdrop-blur-xs">
+            <span class="text-cyan-200 text-[10.5px] font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">manage_accounts</span> Koordinator Wilayah
+            </span>
+            <span id="userCoordinator" class="font-bold text-white text-xs mt-0.5 truncate">Drs. H. Koordinator FINCESTEM</span>
+          </div>
+          <div class="flex flex-col bg-black/15 p-2.5 rounded-2xl backdrop-blur-xs">
+            <span class="text-cyan-200 text-[10.5px] font-semibold flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">supervisor_account</span> Fasilitator Pembina
+            </span>
+            <span id="userFacilitator" class="font-bold text-white text-xs mt-0.5 truncate">Tim Fasilitator SMAN 1 Belitang</span>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- QUICK NAV THREE MODULE CARDS (ZERO COLLISION NAVIGATION) -->
-    <div class="grid grid-cols-3 gap-2.5">
-      <!-- Card 1: Materi -->
-      <a href="materi.html" class="flex flex-col items-center text-center p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/25 shadow-xs hover:shadow-md hover:border-primary/40 active:scale-98 transition-all group">
-        <div class="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-          <span class="material-symbols-outlined text-2xl">menu_book</span>
+    <!-- 2. BIODATA SISWA LENGKAP (COLLAPSIBLE / RAPI DARI DAPODIK) -->
+    <div class="bg-white rounded-3xl p-5 border border-outline-variant/30 shadow-xs">
+      <div class="flex items-center justify-between cursor-pointer select-none" onclick="toggleBiodataSection()">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center">
+            <span class="material-symbols-outlined text-lg">badge</span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm text-slate-800 leading-tight">Biodata Lengkap Peserta Didik</h3>
+            <span class="text-[11px] text-slate-500">Data resmi terverifikasi Dapodik SMAN 1 Belitang</span>
+          </div>
         </div>
-        <span class="font-bold text-xs text-on-surface leading-tight">Modul Materi</span>
-        <span class="text-[10px] text-on-surface-variant mt-0.5">4 Pilar Sains</span>
-      </a>
+        <button id="btnToggleBiodata" class="p-1 rounded-xl text-slate-500 hover:bg-slate-100 transition-all">
+          <span id="iconToggleBiodata" class="material-symbols-outlined text-xl transition-transform duration-300">expand_more</span>
+        </button>
+      </div>
 
-      <!-- Card 2: LKPD -->
-      <a href="lkpd.html" class="flex flex-col items-center text-center p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/25 shadow-xs hover:shadow-md hover:border-primary/40 active:scale-98 transition-all group">
-        <div class="w-11 h-11 rounded-xl bg-teal-500/10 text-teal-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-          <span class="material-symbols-outlined text-2xl">edit_document</span>
+      <!-- Konten Biodata Grid -->
+      <div id="biodataContainer" class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-400 text-[10.5px]">Nama Lengkap:</span>
+            <span id="bioNama" class="font-bold text-slate-800 mt-0.5">-</span>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-400 text-[10.5px]">Rombongan Belajar (Kelas):</span>
+            <span id="bioKelas" class="font-bold text-[#08A7B5] mt-0.5">-</span>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-400 text-[10.5px]">NISN / NIS:</span>
+            <span id="bioNisnNis" class="font-bold text-slate-800 mt-0.5">-</span>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-400 text-[10.5px]">Jenis Kelamin / Agama:</span>
+            <span id="bioGenderAgama" class="font-bold text-slate-800 mt-0.5">-</span>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-400 text-[10.5px]">Tempat, Tanggal Lahir:</span>
+            <span id="bioTtl" class="font-bold text-slate-800 mt-0.5">-</span>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-400 text-[10.5px]">Asal Sekolah (SMP/MTs):</span>
+            <span id="bioAsal" class="font-bold text-slate-800 mt-0.5">-</span>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-400 text-[10.5px]">Nama Orang Tua (Ayah / Ibu):</span>
+            <span id="bioOrtu" class="font-bold text-slate-800 mt-0.5">-</span>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-400 text-[10.5px]">Pekerjaan Orang Tua / No. HP:</span>
+            <span id="bioPekerjaanHp" class="font-bold text-slate-800 mt-0.5">-</span>
+          </div>
         </div>
-        <span class="font-bold text-xs text-on-surface leading-tight">Lembar LKPD</span>
-        <span class="text-[10px] text-on-surface-variant mt-0.5">Isi &amp; Unggah</span>
-      </a>
-
-      <!-- Card 3: Dokumentasi -->
-      <a href="dokumentasi.html" class="flex flex-col items-center text-center p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/25 shadow-xs hover:shadow-md hover:border-primary/40 active:scale-98 transition-all group">
-        <div class="w-11 h-11 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center mb-2 group-hover:scale-105 transition-transform">
-          <span class="material-symbols-outlined text-2xl">photo_camera</span>
+        <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col text-xs">
+          <span class="text-slate-400 text-[10.5px]">Alamat Domisili Siswa:</span>
+          <span id="bioAlamat" class="font-bold text-slate-800 mt-0.5 leading-relaxed">-</span>
         </div>
-        <span class="font-bold text-xs text-on-surface leading-tight">Dokumentasi</span>
-        <span class="text-[10px] text-on-surface-variant mt-0.5">Jurnal Foto</span>
-      </a>
+      </div>
     </div>
 
-    <!-- STATUS LKPD BANNER -->
-    <div id="lkpdStatusCard" class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+    <!-- 3. EKSPLOR FINCESTEM (DAY 1 S.D. DAY 7) - KONTROL OTOMATIS ADMIN -->
+    <div class="flex flex-col gap-3 mt-1">
       <div class="flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-primary text-xl">fact_check</span>
-          <h3 id="lkpdTitle" class="font-bold text-sm text-on-surface">Status Lembar LKPD</h3>
+          <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+            <span class="material-symbols-outlined text-lg">calendar_month</span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm text-slate-800">Eksplor FINCESTEM (Day 1 - Day 7)</h3>
+            <p class="text-[11px] text-slate-500">Jadwal &amp; instrumen riset terintegrasi (9 - 15 November 2026)</p>
+          </div>
         </div>
-        <span id="lkpdBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Belum Mengunggah</span>
+        <span id="badgeServerSync" class="px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-teal-50 text-teal-700 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span> Terhubung
+        </span>
       </div>
 
-      <div id="lkpdEmptyState" class="p-4 rounded-2xl bg-surface-container-low flex flex-col items-center text-center gap-1.5 text-xs text-on-surface-variant">
-        <span class="material-symbols-outlined text-2xl text-outline-variant">assignment_late</span>
-        <p class="font-bold text-on-surface">Belum ada laporan LKPD yang diunggah</p>
-        <p class="text-[11px] text-outline max-w-xs">Silakan lakukan pengisian data instrumen riset dan unggah laporan kelompok Anda pada menu Lembar LKPD.</p>
-      </div>
-
-      <div id="lkpdDetailBox" class="hidden p-3 rounded-2xl bg-surface-container-low flex flex-col gap-1.5 text-xs text-on-surface-variant">
-        <div class="flex justify-between">
-          <span>Waktu Unggah:</span>
-          <span id="lkpdTime" class="font-semibold text-on-surface">-</span>
-        </div>
-        <div class="flex justify-between">
-          <span>File Terkirim:</span>
-          <span id="lkpdFile" class="font-semibold text-primary">-</span>
-        </div>
-      </div>
-
-      <div id="gradeSummaryBox" class="hidden p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200/60 flex flex-col gap-2">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-emerald-800">Nilai Evaluasi Fasilitator:</span>
-          <span id="gradeScore" class="text-base font-black text-emerald-700">-</span>
-        </div>
-        <p id="gradeFeedback" class="text-xs text-emerald-900 leading-relaxed italic"></p>
-      </div>
-
-      <a href="lkpd.html" class="w-full py-2.5 px-4 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer">
-        <span>Buka Lembar LKPD</span>
-        <span class="material-symbols-outlined text-sm">arrow_forward</span>
-      </a>
-    </div>
-
-    <!-- EXPEDITION ROUTE DETAILS -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <span class="material-symbols-outlined text-secondary text-xl">map</span>
-          <h3 class="font-bold text-sm text-on-surface">Rute Ekspedisi Kelompok</h3>
-        </div>
-        <span id="routeZoneBadge" class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-surface-container text-on-surface-variant">Belum Ditentukan</span>
-      </div>
-
-      <p id="routeLocation" class="text-xs text-on-surface-variant leading-relaxed">
-        <strong>Lokasi Riset:</strong> Rute ekspedisi dan sasaran lapangan akan diumumkan oleh Koordinator Wilayah.
-      </p>
-
-      <div class="grid grid-cols-2 gap-2 text-xs">
-        <div class="p-2.5 rounded-xl bg-surface-container-low flex flex-col">
-          <span class="text-on-surface-variant text-[10.5px]">Status Izin Rute:</span>
-          <span id="routeStatusText" class="font-bold text-amber-700 flex items-center gap-1 mt-0.5">
-            <span class="material-symbols-outlined text-sm">schedule</span> Menunggu Konfirmasi
-          </span>
-        </div>
-        <div class="p-2.5 rounded-xl bg-surface-container-low flex flex-col">
-          <span class="text-on-surface-variant text-[10.5px]">Peralatan Lab:</span>
-          <span id="routeEquipment" class="font-bold text-on-surface mt-0.5">Sesuai Lembar Panduan</span>
-        </div>
+      <!-- Container 7 Cards Hari -->
+      <div id="scheduleDaysContainer" class="flex flex-col gap-3">
+        <!-- Rendered via Javascript -->
       </div>
     </div>
 
     <!-- Copyright Footer -->
-    <div class="text-center pt-3 pb-4">
-      <p class="font-label-sm text-label-sm text-outline text-xs">
-        &copy; 2026 Kurikulum SMAN 1 Belitang
+    <div class="text-center pt-4 pb-2">
+      <p class="text-xs text-slate-400 font-medium">
+        &copy; 2026 Kurikulum &amp; Tim IT SMAN 1 Belitang
       </p>
     </div>
   </main>
 
+  <!-- MODAL AKTIVITAS DAY (MATERI, ASESMEN, REFLEKSI, FEEDBACK) -->
+  <div id="modalDayActivity" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div id="modalActIconBox" class="w-9 h-9 rounded-2xl bg-teal-50 text-teal-600 flex items-center justify-center">
+            <span id="modalActIcon" class="material-symbols-outlined text-xl">fact_check</span>
+          </div>
+          <div>
+            <h4 id="modalActTitle" class="text-sm font-extrabold text-slate-800">Aktivitas Riset</h4>
+            <span id="modalActSubtitle" class="text-[11px] text-slate-500">Day 1 - FINCESTEM</span>
+          </div>
+        </div>
+        <button onclick="closeDayActivityModal()" class="p-1 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div id="modalActBody" class="flex flex-col gap-3 text-xs">
+        <!-- Dynamic content for Refleksi / Asesmen / Feedback -->
+      </div>
+
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeDayActivityModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs hover:bg-slate-200 transition-all cursor-pointer">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/siswa_data.js"></script>
   <script src="../js/core.js"></script>
   <script>
+    let currentStudent = null;
+    let daysSchedule = [];
+    let isBiodataExpanded = false;
+
     document.addEventListener('DOMContentLoaded', () => {
+      loadStudentProfile();
+      loadDaysSchedule();
+    });
+
+    function loadStudentProfile() {
       const user = FincestemCore.auth.getUser();
       if (!user) {
-        window.location.href = 'index.html';
+        window.location.replace('index.html');
         return;
       }
 
-      if (user.name) {
-        document.getElementById('userName').textContent = user.name;
-        document.getElementById('userMeta').textContent = 'NISN: ' + (user.nisn || '-') + ' • Kelas: ' + (user.class || '-');
-      }
-      if (user.group) {
-        document.getElementById('userGroup').textContent = user.group;
+      // Cek master data untuk data paling lengkap
+      const masterList = window.FincestemMasterStudents || [];
+      const nisnTarget = String(user.nisn || user.identifier || '').trim();
+      const s = masterList.find(item => String(item.nisn).trim() === nisnTarget || String(item.nis).trim() === String(user.nis).trim()) || user;
+
+      currentStudent = s;
+
+      // Header info
+      document.getElementById('userName').textContent = s.nama || s.name || 'Peserta Didik';
+      document.getElementById('userNisn').textContent = s.nisn || s.identifier || '-';
+      document.getElementById('userNis').textContent = s.nis || '-';
+      document.getElementById('userClassBadge').textContent = s.class || s.class_name || 'KELAS X';
+
+      // Zona Riset FINCESTEM
+      const classSettings = (FincestemCore.zones && FincestemCore.zones.getClassInfo)
+        ? FincestemCore.zones.getClassInfo(s.class || s.class_name)
+        : { zone: 'FINCESTEM OKU TIMUR', coordinator_name: 'Drs. H. Koordinator FINCESTEM', facilitator_name: 'Tim Fasilitator SMAN 1 Belitang' };
+
+      const studentZone = user.zone || s.zone || classSettings.zone || 'FINCESTEM OKU TIMUR';
+      const zoneBadge = document.getElementById('userZoneBadge');
+      const zoneText = document.getElementById('userZoneText');
+
+      if (studentZone.toUpperCase().includes('LUAR')) {
+        zoneBadge.className = 'px-3 py-1.5 rounded-2xl text-[11px] font-black tracking-wider uppercase shadow-sm flex items-center gap-1.5 bg-amber-400 text-slate-950';
+        zoneText.textContent = 'FINCESTEM LUAR OKU TIMUR';
+      } else {
+        zoneBadge.className = 'px-3 py-1.5 rounded-2xl text-[11px] font-black tracking-wider uppercase shadow-sm flex items-center gap-1.5 bg-emerald-400 text-slate-950';
+        zoneText.textContent = 'FINCESTEM OKU TIMUR';
       }
 
-      // Cek apakah ada data laporan LKPD di localStorage untuk kelompok ini
-      try {
-        const stored = localStorage.getItem('fincestem_db_2026_v1');
-        if (stored) {
-          const db = JSON.parse(stored);
-          const userGrpId = user.groupId || '';
-          const grp = db.groups ? db.groups.find(g => g.id === userGrpId) : null;
-          if (grp && grp.lkpdSubmitted) {
-            document.getElementById('lkpdEmptyState').classList.add('hidden');
-            document.getElementById('lkpdDetailBox').classList.remove('hidden');
-            document.getElementById('lkpdBadge').textContent = grp.status || 'Terkirim';
-            document.getElementById('lkpdBadge').className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800';
-            if (grp.submittedAt) document.getElementById('lkpdTime').textContent = grp.submittedAt;
-            if (grp.fileName) document.getElementById('lkpdFile').textContent = grp.fileName;
+      // Koordinator & Fasilitator
+      document.getElementById('userCoordinator').textContent = user.coordinator_name || s.coordinator_name || classSettings.coordinator_name || 'Drs. H. Koordinator FINCESTEM';
+      document.getElementById('userFacilitator').textContent = user.facilitator_name || s.facilitator_name || classSettings.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
 
-            if (grp.isGraded && grp.scores) {
-              document.getElementById('gradeSummaryBox').classList.remove('hidden');
-              document.getElementById('gradeScore').textContent = (grp.scores.average || '-') + ' / 100';
-              document.getElementById('gradeFeedback').textContent = '"' + (grp.feedback || '') + '"';
-            }
-          }
+      // Foto Profil
+      renderProfilePhoto(s.nisn || s.identifier, user.photo_url || s.photo_url);
+
+      // Biodata Lengkap
+      document.getElementById('bioNama').textContent = s.nama || s.name || '-';
+      document.getElementById('bioKelas').textContent = `${s.class || s.class_name || '-'} (Tingkat ${s.level || s.grade_level || 'X'})`;
+      document.getElementById('bioNisnNis').textContent = `${s.nisn || s.identifier || '-'} / ${s.nis || '-'}`;
+      document.getElementById('bioGenderAgama').textContent = `${s.gender === 'L' ? 'Laki-Laki' : 'Perempuan'} • ${s.agama || 'ISLAM'}`;
+      document.getElementById('bioTtl').textContent = s.ttl || s.birth_info || '-';
+      document.getElementById('bioAsal').textContent = s.asal_sekolah || s.school_origin || '-';
+      document.getElementById('bioOrtu').textContent = `Ayah: ${s.ayah || s.parent_father || '-'} | Ibu: ${s.ibu || s.parent_mother || '-'}`;
+      document.getElementById('bioPekerjaanHp').textContent = `${s.pekerjaan_ortu || s.parent_job || '-'} | HP: ${s.phone || '-'}`;
+      document.getElementById('bioAlamat').textContent = s.alamat || s.address || '-';
+    }
+
+    function renderProfilePhoto(nisn, customUrl) {
+      const img = document.getElementById('userPhotoImg');
+      const fallback = document.getElementById('userPhotoFallback');
+      const savedPhoto = customUrl || (FincestemCore.profile && FincestemCore.profile.getPhoto(nisn));
+
+      if (savedPhoto) {
+        img.src = savedPhoto;
+        img.classList.remove('hidden');
+        fallback.classList.add('hidden');
+      } else {
+        img.classList.add('hidden');
+        fallback.classList.remove('hidden');
+      }
+    }
+
+    function handleStudentPhotoUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        FincestemCore.ui.toast('Silakan pilih file gambar (JPG/PNG)!', 'error');
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        FincestemCore.ui.toast('Ukuran foto maksimal 5 MB!', 'error');
+        return;
+      }
+
+      const nisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
+      FincestemCore.ui.toast('Sedang mengunggah foto...', 'info');
+
+      FincestemCore.profile.uploadStudentPhoto(file, nisn, function(res) {
+        if (res.success) {
+          FincestemCore.ui.toast('Foto profil berhasil diunggah & tersinkron!', 'success');
+          renderProfilePhoto(nisn, res.photo_url || res.data?.photo_url);
+        } else {
+          FincestemCore.ui.toast(res.message || 'Foto tersimpan di perangkat ini.', 'success');
         }
-      } catch (e) {}
-    });
+      });
+    }
+
+    function toggleBiodataSection() {
+      isBiodataExpanded = !isBiodataExpanded;
+      const box = document.getElementById('biodataContainer');
+      const icon = document.getElementById('iconToggleBiodata');
+      if (isBiodataExpanded) {
+        box.classList.remove('hidden');
+        icon.style.transform = 'rotate(180deg)';
+      } else {
+        box.classList.add('hidden');
+        icon.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    /* ========================================================
+       EKSPLOR FINCESTEM (DAY 1 S.D. DAY 7)
+       ======================================================== */
+    function loadDaysSchedule() {
+      FincestemCore.schedule.getSchedule(function(days, serverTime) {
+        daysSchedule = days;
+        renderDaysSchedule(days);
+      });
+    }
+
+    function renderDaysSchedule(days) {
+      const container = document.getElementById('scheduleDaysContainer');
+      container.innerHTML = '';
+
+      days.forEach(d => {
+        const card = document.createElement('div');
+        const isOpen = !!d.is_open;
+        
+        let borderClass = isOpen ? 'border-teal-500/50 shadow-md ring-1 ring-teal-500/20' : 'border-slate-200/80 shadow-xs opacity-90';
+        let bgClass = isOpen ? 'bg-white' : 'bg-slate-50/70';
+
+        let badgeHtml = '';
+        if (isOpen) {
+          badgeHtml = `
+            <span class="px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800 flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
+              Terbuka
+            </span>
+          `;
+        } else {
+          badgeHtml = `
+            <span class="px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-slate-200 text-slate-600 flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">lock</span>
+              Terkunci
+            </span>
+          `;
+        }
+
+        card.className = `p-4 rounded-3xl ${bgClass} border ${borderClass} flex flex-col gap-3 transition-all`;
+
+        // Sub-activities: Materi, LKPD, Asesmen, Refleksi, Dokumentasi, Penilaian/Feedback
+        const actionsHtml = `
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-2 pt-2 border-t border-slate-100">
+            <button onclick="handleActivityClick(${d.day_number}, 'materi')" class="p-2 rounded-2xl ${isOpen ? 'bg-amber-50 hover:bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-lg">menu_book</span>
+              <span class="text-[10px] font-bold">Materi</span>
+            </button>
+            <button onclick="handleActivityClick(${d.day_number}, 'lkpd')" class="p-2 rounded-2xl ${isOpen ? 'bg-teal-50 hover:bg-teal-100 text-teal-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-lg">edit_document</span>
+              <span class="text-[10px] font-bold">LKPD</span>
+            </button>
+            <button onclick="handleActivityClick(${d.day_number}, 'asesmen')" class="p-2 rounded-2xl ${isOpen ? 'bg-blue-50 hover:bg-blue-100 text-blue-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-lg">fact_check</span>
+              <span class="text-[10px] font-bold">Asesmen</span>
+            </button>
+            <button onclick="handleActivityClick(${d.day_number}, 'refleksi')" class="p-2 rounded-2xl ${isOpen ? 'bg-purple-50 hover:bg-purple-100 text-purple-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-lg">psychology</span>
+              <span class="text-[10px] font-bold">Refleksi</span>
+            </button>
+            <button onclick="handleActivityClick(${d.day_number}, 'dokumentasi')" class="p-2 rounded-2xl ${isOpen ? 'bg-pink-50 hover:bg-pink-100 text-pink-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-lg">photo_camera</span>
+              <span class="text-[10px] font-bold">Foto/Video</span>
+            </button>
+            <button onclick="handleActivityClick(${d.day_number}, 'penilaian')" class="p-2 rounded-2xl ${isOpen ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-400 cursor-not-allowed'} flex flex-col items-center justify-center text-center gap-1 transition-all">
+              <span class="material-symbols-outlined text-lg">stars</span>
+              <span class="text-[10px] font-bold">Nilai &amp; Catatan</span>
+            </button>
+          </div>
+        `;
+
+        const lockAlertHtml = !isOpen ? `
+          <div class="px-3 py-2 rounded-xl bg-slate-100/90 border border-slate-200/60 flex items-center gap-2 text-[11px] text-slate-600">
+            <span class="material-symbols-outlined text-base text-slate-400">lock_clock</span>
+            <span>${d.status_label || 'Aktivitas hari ini ditutup oleh Admin.'}</span>
+          </div>
+        ` : '';
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-start gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-2xl ${isOpen ? 'bg-[#08A7B5] text-white' : 'bg-slate-200 text-slate-600'} flex items-center justify-center text-xs font-black shrink-0 shadow-xs">
+                D${d.day_number}
+              </div>
+              <div class="flex flex-col min-w-0">
+                <h4 class="font-extrabold text-xs sm:text-sm text-slate-800 truncate">${d.title}</h4>
+                <span class="text-[11px] font-semibold text-[#08A7B5] mt-0.5">${d.theme}</span>
+                <div class="flex items-center gap-2 text-[10.5px] text-slate-500 mt-1 flex-wrap">
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">calendar_today</span> ${d.date_formatted || d.date}</span>
+                  <span>•</span>
+                  <span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">schedule</span> ${d.start_time} - ${d.end_time} WIB</span>
+                </div>
+              </div>
+            </div>
+            <div class="shrink-0">
+              ${badgeHtml}
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-600 leading-relaxed">${d.description || '-'}</p>
+
+          ${lockAlertHtml}
+          ${actionsHtml}
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function handleActivityClick(dayNumber, type) {
+      const day = daysSchedule.find(d => d.day_number === Number(dayNumber));
+      if (!day) return;
+
+      if (!day.is_open) {
+        FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} saat ini terkunci! Harap tunggu jadwal resmi dibuka oleh Admin.`, 'error');
+        return;
+      }
+
+      // Jika Materi -> buka modul materi
+      if (type === 'materi') {
+        window.location.href = 'materi.html';
+        return;
+      }
+      // Jika LKPD -> buka form LKPD
+      if (type === 'lkpd') {
+        window.location.href = 'lkpd.html';
+        return;
+      }
+      // Jika Dokumentasi -> buka galeri upload
+      if (type === 'dokumentasi') {
+        window.location.href = 'dokumentasi.html';
+        return;
+      }
+
+      // Modal untuk Asesmen, Refleksi, dan Penilaian
+      openDayActivityModal(day, type);
+    }
+
+    function openDayActivityModal(day, type) {
+      const modal = document.getElementById('modalDayActivity');
+      const title = document.getElementById('modalActTitle');
+      const subtitle = document.getElementById('modalActSubtitle');
+      const icon = document.getElementById('modalActIcon');
+      const iconBox = document.getElementById('modalActIconBox');
+      const body = document.getElementById('modalActBody');
+
+      subtitle.textContent = `${day.title} (${day.date_formatted || day.date})`;
+
+      if (type === 'asesmen') {
+        title.textContent = `Asesmen Pemahaman - Day ${day.day_number}`;
+        icon.textContent = 'fact_check';
+        iconBox.className = 'w-9 h-9 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center';
+        body.innerHTML = `
+          <div class="p-3 rounded-2xl bg-blue-50/60 border border-blue-100 flex flex-col gap-1 text-slate-700">
+            <span class="font-bold text-xs text-blue-800">Instrumen Observasi Lapangan</span>
+            <p class="text-[11px] leading-relaxed">Pastikan kelompok Anda telah menjawab pertanyaan panduan observasi 4 pilar (Sains, Teknologi, Finansial, Budaya) pada lembar kerja harian.</p>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="font-bold text-slate-700">Catatan Ringkas Hasil Investigasi:</label>
+            <textarea id="txtAsesmenNote" rows="3" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs outline-none focus:border-blue-500" placeholder="Tuliskan temuan penting hari ini..."></textarea>
+          </div>
+          <button onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-all shadow-xs cursor-pointer">
+            Kirim Jawaban Asesmen
+          </button>
+        `;
+      } else if (type === 'refleksi') {
+        title.textContent = `Jurnal Refleksi Mandiri - Day ${day.day_number}`;
+        icon.textContent = 'psychology';
+        iconBox.className = 'w-9 h-9 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center';
+        body.innerHTML = `
+          <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-100 flex flex-col gap-1 text-slate-700">
+            <span class="font-bold text-xs text-purple-800">Refleksi Belajar Siswa</span>
+            <p class="text-[11px] leading-relaxed">Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?</p>
+          </div>
+          <div class="flex flex-col gap-1.5">
+            <label class="font-bold text-slate-700">Jurnal Refleksi:</label>
+            <textarea id="txtRefleksiNote" rows="4" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs outline-none focus:border-purple-500" placeholder="Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat..."></textarea>
+          </div>
+          <button onclick="saveStudentNote(${day.day_number}, 'refleksi')" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-all shadow-xs cursor-pointer">
+            Simpan Jurnal Refleksi
+          </button>
+        `;
+      } else if (type === 'penilaian') {
+        title.textContent = `Penilaian & Catatan Fasilitator - Day ${day.day_number}`;
+        icon.textContent = 'stars';
+        iconBox.className = 'w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center';
+        body.innerHTML = `
+          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-emerald-800">Status Evaluasi:</span>
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-200 text-emerald-900 uppercase">Aktif Dinilai</span>
+            </div>
+            <p class="text-xs text-emerald-950 leading-relaxed italic">
+              "Pertahankan kekompakan tim, kedisiplinan pencatatan data lapangan, dan kualitas dokumentasi autentik di wilayah riset."
+            </p>
+            <span class="text-[10px] text-emerald-700 font-semibold mt-1">Oleh: ${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</span>
+          </div>
+        `;
+      }
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+    }
+
+    function closeDayActivityModal() {
+      const modal = document.getElementById('modalDayActivity');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function saveStudentNote(dayNumber, type) {
+      FincestemCore.ui.toast(`Data ${type} Day ${dayNumber} berhasil disimpan!`, 'success');
+      closeDayActivityModal();
+    }
   </script>
 </body>
 </html>

@@ -77,17 +77,32 @@ if ($action === 'login') {
 
     // Siapkan data user publik yang aman (tanpa password_hash)
     $userData = [
-        'id'          => (int)$user['id'],
-        'identifier'  => $user['identifier'],
-        'name'        => $user['name'],
-        'role'        => $user['role'],
-        'gender'      => $user['gender'],
-        'class'       => $user['class_name'],
-        'assignment'  => $user['assignment'],
-        'group'       => $groupInfo ? $groupInfo['name'] : 'Belum Ditentukan',
-        'groupId'     => $groupInfo ? (int)$groupInfo['id'] : null,
-        'groupRole'   => $groupInfo ? $groupInfo['role_in_group'] : 'Anggota',
-        'routeStatus' => $groupInfo ? $groupInfo['route_status'] : null
+        'id'               => (int)$user['id'],
+        'identifier'       => $user['identifier'],
+        'nisn'             => $user['identifier'],
+        'nis'              => $user['nis'] ?? '',
+        'name'             => $user['name'],
+        'role'             => $user['role'],
+        'grade_level'      => $user['grade_level'] ?? '',
+        'class'            => $user['class_name'] ?? '',
+        'gender'           => $user['gender'] ?? '',
+        'photo_url'        => $user['photo_url'] ?? null,
+        'zone'             => !empty($user['zone']) ? $user['zone'] : 'FINCESTEM OKU TIMUR',
+        'coordinator_name' => !empty($user['coordinator_name']) ? $user['coordinator_name'] : 'Drs. H. Koordinator FINCESTEM',
+        'facilitator_name' => !empty($user['facilitator_name']) ? $user['facilitator_name'] : 'Tim Fasilitator SMAN 1 Belitang',
+        'agama'            => $user['agama'] ?? '',
+        'birth_info'       => $user['birth_info'] ?? '',
+        'address'          => $user['address'] ?? '',
+        'parent_father'    => $user['parent_father'] ?? '',
+        'parent_mother'    => $user['parent_mother'] ?? '',
+        'parent_job'       => $user['parent_job'] ?? '',
+        'school_origin'    => $user['school_origin'] ?? '',
+        'phone'            => $user['phone'] ?? '',
+        'assignment'       => $user['assignment'] ?? '',
+        'group'            => $groupInfo ? $groupInfo['name'] : 'Belum Terdaftar Kelompok',
+        'groupId'          => $groupInfo ? (int)$groupInfo['id'] : null,
+        'groupRole'        => $groupInfo ? $groupInfo['role_in_group'] : 'Anggota',
+        'routeStatus'      => $groupInfo ? $groupInfo['route_status'] : null
     ];
 
     jsonResponse(true, 'Login berhasil! Selamat datang, ' . $user['name'], [
