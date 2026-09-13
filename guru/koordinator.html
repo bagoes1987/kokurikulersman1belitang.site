@@ -100,7 +100,7 @@
           <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
         </a>
         <div class="flex flex-col">
-          <span class="text-[10.5px] text-[#006a61] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
+          <span class="text-[10.5px] text-[#F15A24] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
           <span class="text-sm font-bold text-on-surface leading-tight">Portal Koordinator</span>
         </div>
       </div>
@@ -116,7 +116,7 @@
 
     <!-- TABS -->
     <div class="max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50">
-      <button id="btnTabKoord1" onclick="switchKoordTab('monitoring')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#006a61] text-[#006a61]">
+      <button id="btnTabKoord1" onclick="switchKoordTab('monitoring')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#F15A24] text-[#F15A24]">
         Monitoring Wilayah
       </button>
       <button id="btnTabKoord2" onclick="switchKoordTab('persetujuan')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">
@@ -131,16 +131,16 @@
   <!-- MAIN CONTENT -->
   <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
 
-    <!-- USER BADGE -->
-    <div class="bg-gradient-to-r from-[#005049] to-[#00796b] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
+    <!-- USER BADGE (ORANYE #F15A24) -->
+    <div class="bg-gradient-to-r from-[#F15A24] to-[#c73e0c] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-white/15 flex items-center justify-center text-white">
+        <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white">
           <span class="material-symbols-outlined text-2xl">account_tree</span>
         </div>
         <div class="flex flex-col">
-          <span class="text-[11px] text-teal-100 font-semibold">Koordinator Lapangan</span>
+          <span class="text-[11px] text-orange-100 font-semibold">Koordinator Lapangan</span>
           <h2 class="text-sm font-extrabold text-white leading-tight">Drs. H. Suryanto, M.Pd.</h2>
-          <span class="text-[10.5px] text-teal-200/80">NIP. 197508142000031002</span>
+          <span class="text-[10.5px] text-orange-200/80">NIP. 197508142000031002</span>
         </div>
       </div>
       <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold">Koordinator Utama</span>
@@ -149,15 +149,15 @@
     <!-- STATS -->
     <div class="grid grid-cols-3 gap-2 text-center">
       <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-base font-extrabold text-[#006a61]">1.165</span>
+        <span class="text-base font-extrabold text-[#F15A24]">1.165</span>
         <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Siswa Terdaftar</span>
       </div>
       <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-base font-extrabold text-[#006a61]">116</span>
+        <span class="text-base font-extrabold text-[#F15A24]">116</span>
         <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Kelompok Riset</span>
       </div>
       <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span class="text-base font-extrabold text-teal-600">24</span>
+        <span class="text-base font-extrabold text-[#F15A24]">24</span>
         <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Fasilitator Guru</span>
       </div>
     </div>
@@ -204,7 +204,7 @@
           <span>Fasilitator Pembina: <strong>Rahmat Hidayat, S.Pd., Gr.</strong></span>
         </div>
         <div class="flex gap-2">
-          <button onclick="approveRoute('group-4')" class="flex-1 py-2 rounded-xl bg-[#006a61] text-white text-xs font-bold hover:bg-[#005049] transition-all flex items-center justify-center gap-1">
+          <button onclick="approveRoute('group-4')" class="flex-1 py-2 rounded-xl bg-[#F15A24] text-white text-xs font-bold hover:bg-[#c73e0c] transition-all flex items-center justify-center gap-1">
             <span class="material-symbols-outlined text-sm">check_circle</span>
             <span>Konfirmasi Persetujuan</span>
           </button>
@@ -220,7 +220,7 @@
           <span id="routeStatusBadge2" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Menunggu</span>
         </div>
         <div class="flex gap-2">
-          <button onclick="approveRoute('group-2')" class="flex-1 py-2 rounded-xl bg-[#006a61] text-white text-xs font-bold hover:bg-[#005049] transition-all flex items-center justify-center gap-1">
+          <button onclick="approveRoute('group-2')" class="flex-1 py-2 rounded-xl bg-[#F15A24] text-white text-xs font-bold hover:bg-[#c73e0c] transition-all flex items-center justify-center gap-1">
             <span class="material-symbols-outlined text-sm">check_circle</span>
             <span>Setujui Rute Ini</span>
           </button>
@@ -238,7 +238,7 @@
         <p class="text-xs text-on-surface-variant">
           Unduh laporan komprehensif nilai dan tingkat ketuntasan 1.165 siswa kelas XI SMAN 1 Belitang.
         </p>
-        <button onclick="exportReport()" class="w-full py-3 rounded-xl bg-[#006a61] text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#005049] transition-all shadow-sm">
+        <button onclick="exportReport()" class="w-full py-3 rounded-xl bg-[#F15A24] text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#c73e0c] transition-all shadow-sm">
           <span class="material-symbols-outlined text-lg">download</span>
           <span>Unduh Rekap Laporan Ekspedisi (Excel / PDF)</span>
         </button>
@@ -266,7 +266,7 @@
         }
         if (btn) {
           if (t === tab) {
-            btn.className = 'flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#006a61] text-[#006a61]';
+            btn.className = 'flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#F15A24] text-[#F15A24]';
           } else {
             btn.className = 'flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface';
           }
