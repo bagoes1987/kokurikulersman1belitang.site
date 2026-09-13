@@ -1,0 +1,15 @@
+# FINCESTEM 2026 - Apache Configuration
+# SMAN 1 BELITANG
+
+Options -Indexes
+
+DirectoryIndex index.html index.php
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+<FilesMatch "\.(sql|env|log)$">
+    Require all denied
+</FilesMatch>
