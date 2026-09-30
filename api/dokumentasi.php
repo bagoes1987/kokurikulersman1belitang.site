@@ -173,25 +173,44 @@ if ($action === 'add') {
 }
 
 if ($action === 'delete') {
-    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        jsonResponse(false, 'Metode harus POST', null, 405);
-    }
     $input = getJsonInput();
     if (empty($input)) $input = $_POST;
+    if (empty($input)) $input = $_GET;
+
     $id = (int)($input['id'] ?? 0);
-    if ($id <= 0) {
-        jsonResponse(false, 'ID dokumentasi tidak valid');
+    $rawUrl = trim($input['file_url'] ?? $input['url'] ?? '');
+
+    if ($id <= 0 && empty($rawUrl)) {
+        jsonResponse(false, 'ID atau berkas foto tidak valid');
     }
-    $stmt = $pdo->prepare("SELECT `file_url` FROM `dokumentasi_media` WHERE `id` = :id");
-    $stmt->execute([':id' => $id]);
-    $doc = $stmt->fetch();
-    if ($doc && !empty($doc['file_url']) && strpos($doc['file_url'], 'data:image') === false) {
-        $docRel = ltrim(str_replace(['../', '..\\'], '', $doc['file_url']), '/\\');
-        $docPath = BASE_DIR . DIRECTORY_SEPARATOR . $docRel;
-        if (file_exists($docPath)) @unlink($docPath);
+
+    $doc = null;
+    if ($id > 0) {
+        $stmt = $pdo->prepare("SELECT `id`, `file_url` FROM `dokumentasi_media` WHERE `id` = :id");
+        $stmt->execute([':id' => $id]);
+        $doc = $stmt->fetch();
+    } elseif (!empty($rawUrl)) {
+        $cleanUrl = ltrim(str_replace(['../', '..\\'], '', $rawUrl), '/\\');
+        $baseName = basename($cleanUrl);
+        $stmt = $pdo->prepare("SELECT `id`, `file_url` FROM `dokumentasi_media` WHERE `file_url` = :fu OR `file_url` = :clean OR `file_url` LIKE :patt LIMIT 1");
+        $stmt->execute([
+            ':fu' => $rawUrl,
+            ':clean' => $cleanUrl,
+            ':patt' => '%' . $baseName
+        ]);
+        $doc = $stmt->fetch();
     }
-    $del = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `id` = :id");
-    $del->execute([':id' => $id]);
+
+    if ($doc) {
+        if (!empty($doc['file_url']) && strpos($doc['file_url'], 'data:image') === false) {
+            $docRel = ltrim(str_replace(['../', '..\\'], '', $doc['file_url']), '/\\');
+            $docPath = BASE_DIR . DIRECTORY_SEPARATOR . $docRel;
+            if (file_exists($docPath)) @unlink($docPath);
+        }
+        $del = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `id` = :id");
+        $del->execute([':id' => $doc['id']]);
+    }
+
     jsonResponse(true, 'Dokumentasi berhasil dihapus');
 }
 

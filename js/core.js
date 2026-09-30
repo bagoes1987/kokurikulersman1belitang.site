@@ -88,7 +88,7 @@ const FincestemCore = {
         if ((id.toLowerCase() === 'koordinator' || id.length >= 4) && (pwd === savedKoordPwd || pwd === 'koordinator')) {
           return {
             success: true,
-            user: { name: 'Koordinator Kokurikuler', role: 'koordinator', assignment: 'Koordinator Wilayah SMAN 1 Belitang', username: id }
+            user: { name: 'Koordinator Kokurikuler', role: 'koordinator', assignment: 'Koordinator Kokurikuler SMAN 1 Belitang', username: id }
           };
         }
         return { success: false, message: 'Akun atau kata sandi Koordinator salah!' };
@@ -111,7 +111,7 @@ const FincestemCore = {
         if ((id.toLowerCase() === 'fasilitator' || id.length >= 4) && (pwd === savedFasilPwd || pwd === 'fasilitator')) {
           return {
             success: true,
-            user: { name: 'Fasilitator Pembina', role: 'fasilitator', assignment: 'Pembina Riset Kokurikuler', username: id }
+            user: { name: 'Fasilitator Kokurikuler', role: 'fasilitator', assignment: 'Fasilitator Kokurikuler', username: id }
           };
         }
         return { success: false, message: 'Akun atau kata sandi Fasilitator salah!' };

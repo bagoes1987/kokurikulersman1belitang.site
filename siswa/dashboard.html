@@ -185,19 +185,25 @@
           </span>
         </div>
 
-        <!-- Row 3: Bar Koordinator & Fasilitator (Grid Responsif Mobile) -->
+        <!-- Row 3: Bar Koordinator & Fasilitator Kokurikuler (Grid Responsif Mobile - Susun ke Bawah jika Lebih dari 1 Orang) -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm pt-2 border-t border-white/15">
-          <div class="flex flex-col bg-black/15 p-2.5 rounded-xl backdrop-blur-xs border border-white/10 min-w-0">
-            <span class="text-cyan-200 text-xs font-bold flex items-center gap-1">
-              <span class="material-symbols-outlined text-sm">manage_accounts</span> Koordinator Wilayah
+          <div class="flex flex-col bg-black/20 p-3 rounded-2xl backdrop-blur-xs border border-white/10 min-w-0">
+            <span class="text-cyan-200 text-xs font-bold flex items-center gap-1.5 pb-1 border-b border-white/10">
+              <span class="material-symbols-outlined text-sm text-cyan-300">manage_accounts</span>
+              <span>Koordinator Kokurikuler</span>
             </span>
-            <span id="userCoordinator" class="font-bold text-white text-xs sm:text-sm mt-0.5 truncate">Drs. H. Koordinator FINCESTEM</span>
+            <div id="userCoordinatorContainer" class="flex flex-col gap-1 mt-1.5 min-w-0">
+              <span id="userCoordinator" class="font-bold text-white text-xs sm:text-sm">Drs. H. Koordinator FINCESTEM</span>
+            </div>
           </div>
-          <div class="flex flex-col bg-black/15 p-2.5 rounded-xl backdrop-blur-xs border border-white/10 min-w-0">
-            <span class="text-cyan-200 text-xs font-bold flex items-center gap-1">
-              <span class="material-symbols-outlined text-sm">supervisor_account</span> Fasilitator Pembina
+          <div class="flex flex-col bg-black/20 p-3 rounded-2xl backdrop-blur-xs border border-white/10 min-w-0">
+            <span class="text-cyan-200 text-xs font-bold flex items-center gap-1.5 pb-1 border-b border-white/10">
+              <span class="material-symbols-outlined text-sm text-cyan-300">supervisor_account</span>
+              <span>Fasilitator Kokurikuler</span>
             </span>
-            <span id="userFacilitator" class="font-bold text-white text-xs sm:text-sm mt-0.5 truncate">Tim Fasilitator SMAN 1 Belitang</span>
+            <div id="userFacilitatorContainer" class="flex flex-col gap-1 mt-1.5 min-w-0">
+              <span id="userFacilitator" class="font-bold text-white text-xs sm:text-sm">Tim Fasilitator SMAN 1 Belitang</span>
+            </div>
           </div>
         </div>
       </div>
@@ -273,7 +279,7 @@
           </div>
           <div>
             <h3 class="font-extrabold text-base text-slate-800 leading-tight">Progres Riset &amp; Capaian Belajar</h3>
-            <span class="text-xs sm:text-sm text-slate-500 font-medium">Pelacakan tugas &amp; verifikasi pembina</span>
+            <span class="text-xs sm:text-sm text-slate-500 font-medium">Pelacakan tugas &amp; verifikasi Fasilitator Kokurikuler</span>
           </div>
         </div>
         <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-teal-50 border border-teal-200/70 text-teal-900">
@@ -335,7 +341,7 @@
         </div>
       </div>
 
-      <!-- KARTU KHUSUS: FEEDBACK & CATATAN TERBARU FASILITATOR PEMBINA -->
+      <!-- KARTU KHUSUS: FEEDBACK & CATATAN TERBARU FASILITATOR KOKURIKULER -->
       <div id="facilitatorFeedbackCard" class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-50/90 via-teal-50/50 to-white border border-emerald-200/80 flex flex-col gap-3">
         <div class="flex items-center justify-between gap-2 flex-wrap">
           <div class="flex items-center gap-2.5">
@@ -347,7 +353,7 @@
               <span id="feedbackFasilName" class="text-xs text-emerald-700 font-semibold">Tim Fasilitator SMAN 1 Belitang</span>
             </div>
           </div>
-          <span id="feedbackDateBadge" class="text-xs font-bold text-slate-500 bg-white/90 px-2.5 py-1 rounded-lg border border-slate-200/70">Evaluasi Pembina</span>
+          <span id="feedbackDateBadge" class="text-xs font-bold text-slate-500 bg-white/90 px-2.5 py-1 rounded-lg border border-slate-200/70">Evaluasi Fasilitator</span>
         </div>
 
         <!-- Kutipan Feedback Autentik -->
@@ -452,7 +458,7 @@
             <span class="material-symbols-outlined text-2xl">grade</span>
           </div>
           <div>
-            <h4 class="text-base font-extrabold text-slate-800">Rekapitulasi Nilai &amp; Catatan Pembina</h4>
+            <h4 class="text-base font-extrabold text-slate-800">Rekapitulasi Nilai &amp; Catatan Fasilitator Kokurikuler</h4>
             <span class="text-xs text-slate-500 font-medium">Evaluasi menyeluruh 7 Hari Riset &amp; 4 Pilar</span>
           </div>
         </div>
@@ -500,6 +506,36 @@
       loadDaysSchedule();
       loadStudentProgress();
     });
+
+    function renderStaffVerticalList(containerId, namesString, defaultName) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const raw = (namesString && String(namesString).trim()) ? String(namesString).trim() : defaultName;
+      // Pisahkan jika dipisahkan oleh koma (,), titik koma (;), garis miring (/), atau baris baru (\n)
+      const list = raw.split(/[,;\n\/]+/).map(n => n.trim()).filter(Boolean);
+
+      if (list.length <= 1) {
+        const single = list[0] || defaultName;
+        container.innerHTML = `
+          <div class="flex items-center gap-1.5 min-w-0">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-300 shrink-0"></span>
+            <span class="font-bold text-white text-xs sm:text-sm leading-snug break-words">${single}</span>
+          </div>
+        `;
+      } else {
+        // Susun ke bawah secara rapi dengan nomor urut agar siswa tidak salah baca
+        let html = '';
+        list.forEach((name, idx) => {
+          html += `
+            <div class="flex items-start gap-1.5 py-0.5 border-b border-white/10 last:border-0 min-w-0">
+              <span class="px-1.5 py-0.2 rounded-md bg-white/20 text-[10px] font-black text-cyan-200 shrink-0 mt-0.5">${idx + 1}</span>
+              <span class="font-bold text-white text-xs sm:text-sm leading-snug break-words">${name}</span>
+            </div>
+          `;
+        });
+        container.innerHTML = html;
+      }
+    }
 
     function loadStudentProfile() {
       const user = FincestemCore.auth.getUser();
@@ -561,8 +597,8 @@
         initialFasil = user.facilitator_name || (classInfo && classInfo.facilitator_name) || 'Tim Fasilitator SMAN 1 Belitang';
       }
 
-      document.getElementById('userCoordinator').textContent = initialCoord;
-      document.getElementById('userFacilitator').textContent = initialFasil;
+      renderStaffVerticalList('userCoordinatorContainer', initialCoord, 'Drs. H. Koordinator FINCESTEM');
+      renderStaffVerticalList('userFacilitatorContainer', initialFasil, 'Tim Fasilitator SMAN 1 Belitang');
       if (currentStudent) {
         currentStudent.coordinator_name = initialCoord;
         currentStudent.facilitator_name = initialFasil;
@@ -574,7 +610,7 @@
           const freshCoord = FincestemCore.assignments.getClassCoordinator(studentClass);
           const freshFasil = FincestemCore.assignments.getClassFacilitator(studentClass);
           if (freshCoord && freshCoord !== 'Drs. H. Koordinator FINCESTEM') {
-            document.getElementById('userCoordinator').textContent = freshCoord;
+            renderStaffVerticalList('userCoordinatorContainer', freshCoord, 'Drs. H. Koordinator FINCESTEM');
             if (currentStudent) currentStudent.coordinator_name = freshCoord;
             if (user) {
               user.coordinator_name = freshCoord;
@@ -582,7 +618,7 @@
             }
           }
           if (freshFasil && freshFasil !== 'Tim Fasilitator SMAN 1 Belitang') {
-            document.getElementById('userFacilitator').textContent = freshFasil;
+            renderStaffVerticalList('userFacilitatorContainer', freshFasil, 'Tim Fasilitator SMAN 1 Belitang');
             if (currentStudent) currentStudent.facilitator_name = freshFasil;
             if (user) {
               user.facilitator_name = freshFasil;
@@ -1275,7 +1311,7 @@
           `}
         `;
       } else if (type === 'penilaian') {
-        title.textContent = isTrial ? 'Simulasi Feedback & Evaluasi Pembina' : `Penilaian & Catatan Fasilitator - Day ${day.day_number}`;
+        title.textContent = isTrial ? 'Simulasi Feedback & Evaluasi Fasilitator Kokurikuler' : `Penilaian & Catatan Fasilitator - Day ${day.day_number}`;
         icon.textContent = 'stars';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0';
 
@@ -1390,7 +1426,7 @@
 
         const note = rec && rec.feedback 
           ? rec.feedback 
-          : (i <= 5 ? 'Aktivitas lapangan telah diverifikasi oleh tim pembina.' : 'Menunggu pelaksanaan jadwal resmi.');
+          : (i <= 5 ? 'Aktivitas lapangan telah diverifikasi oleh tim fasilitator kokurikuler.' : 'Menunggu pelaksanaan jadwal resmi.');
 
         row.innerHTML = `
           <div class="flex items-center justify-between gap-2 flex-wrap">

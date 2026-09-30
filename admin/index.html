@@ -853,7 +853,7 @@
               <thead>
                 <tr class="bg-surface-container-low text-on-surface-variant font-bold border-b border-outline-variant/20 text-[11px]">
                   <th class="py-2.5 px-3">Rombel</th>
-                  <th class="py-2.5 px-3">Daftar Fasilitator Pembina (Urut Abjad A-Z)</th>
+                  <th class="py-2.5 px-3">Daftar Fasilitator Kokurikuler (Urut Abjad A-Z)</th>
                   <th class="py-2.5 px-3 text-center">Jumlah</th>
                   <th class="py-2.5 px-3 text-right">Kelola</th>
                 </tr>
@@ -4362,7 +4362,7 @@
           const box = document.getElementById('boxCurrentClassFacilitators');
           box.innerHTML = '';
           if (classFasils.length === 0) {
-            box.innerHTML = `<span class="text-xs text-slate-400 italic">Belum ada fasilitator pembina yang ditugaskan di ${targetClass}. Silakan pilih guru di atas dan klik tombol tugaskan.</span>`;
+            box.innerHTML = `<span class="text-xs text-slate-400 italic">Belum ada fasilitator kokurikuler yang ditugaskan di ${targetClass}. Silakan pilih guru di atas dan klik tombol tugaskan.</span>`;
           } else {
             classFasils.forEach(f => {
               const item = document.createElement('div');
@@ -4545,7 +4545,7 @@
             <td class="py-2.5 px-3 font-extrabold ${gradeColor} whitespace-nowrap">${cls}</td>
             <td class="py-2.5 px-3">
               <div class="flex items-center gap-1.5 flex-wrap">
-                ${fasilPills || '<span class="text-slate-400 italic text-[11px]">Belum ada fasilitator pembina</span>'}
+                ${fasilPills || '<span class="text-slate-400 italic text-[11px]">Belum ada fasilitator kokurikuler</span>'}
               </div>
             </td>
             <td class="py-2.5 px-3 text-center font-bold text-[#006a61] whitespace-nowrap">${classFasils.length}</td>
