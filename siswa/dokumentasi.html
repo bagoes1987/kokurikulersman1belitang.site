@@ -22,6 +22,11 @@
   </script>
   <style>
     @layer base {
+      html {
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
       html, body {
         width: 100%;
         margin: 0;
@@ -110,11 +115,11 @@
           <span class="material-symbols-outlined text-xl">arrow_back</span>
         </a>
         <div class="flex flex-col">
-          <span class="text-[10.5px] text-[#08A7B5] font-extrabold uppercase tracking-wider leading-tight">Portal Siswa</span>
-          <span class="text-sm font-bold text-on-surface leading-tight">Galeri &amp; Jurnal Dokumentasi</span>
+          <span class="text-xs text-[#08A7B5] font-extrabold uppercase tracking-wider leading-tight">Portal Siswa</span>
+          <span class="text-base font-extrabold text-on-surface leading-tight">Galeri &amp; Jurnal Dokumentasi</span>
         </div>
       </div>
-      <button onclick="toggleUploadModal(true)" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-primary text-white font-bold text-xs shadow-xs hover:bg-primary/90 transition-all">
+      <button onclick="toggleUploadModal(true)" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-primary text-white font-bold text-xs sm:text-sm shadow-xs hover:bg-primary/90 transition-all cursor-pointer">
         <span class="material-symbols-outlined text-base">add_a_photo</span>
         <span>Unggah Foto</span>
       </button>
@@ -124,23 +129,23 @@
   <!-- MAIN DOKUMENTASI CONTENT -->
   <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
 
-    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-2">
-      <div class="flex items-center justify-between">
-        <h2 class="font-extrabold text-base text-primary">Jurnal Foto Kegiatan Riset</h2>
-        <span id="docCountBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-surface-container text-on-surface-variant">0 Foto Tersimpan</span>
+    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-2.5">
+      <div class="flex items-center justify-between gap-2">
+        <h2 class="font-black text-lg text-primary">Jurnal Foto Kegiatan Riset</h2>
+        <span id="docCountBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container text-on-surface-variant">0 Foto Tersimpan</span>
       </div>
-      <p class="text-xs text-on-surface-variant leading-relaxed">
+      <p class="text-sm text-on-surface-variant leading-relaxed font-medium">
         Setiap kelompok wajib mengunggah bukti foto lapangan pada tiap pilar kegiatan sebagai komponen portofolio penilaian kokurikuler.
       </p>
     </div>
 
     <!-- FILTER BUTTONS -->
-    <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-1">
-      <button onclick="filterPhotos('all')" class="photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs whitespace-nowrap">Semua Pilar</button>
-      <button onclick="filterPhotos('STEM')" class="photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-semibold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap">STEM</button>
-      <button onclick="filterPhotos('Financial')" class="photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-semibold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap">Financial</button>
-      <button onclick="filterPhotos('Culture')" class="photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-semibold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap">Culture</button>
-      <button onclick="filterPhotos('Exploration')" class="photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-semibold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap">Exploration</button>
+    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+      <button onclick="filterPhotos('all')" class="photo-filter-btn py-2 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-primary text-white shadow-xs whitespace-nowrap">Semua Pilar</button>
+      <button onclick="filterPhotos('STEM')" class="photo-filter-btn py-2 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap">STEM</button>
+      <button onclick="filterPhotos('Financial')" class="photo-filter-btn py-2 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap">Financial</button>
+      <button onclick="filterPhotos('Culture')" class="photo-filter-btn py-2 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap">Culture</button>
+      <button onclick="filterPhotos('Exploration')" class="photo-filter-btn py-2 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap">Exploration</button>
     </div>
 
     <!-- PHOTO GRID -->
@@ -160,16 +165,16 @@
   <div id="uploadModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
     <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high">
       <div class="flex items-center justify-between">
-        <h3 class="font-extrabold text-base text-primary">Unggah Foto Lapangan Baru</h3>
+        <h3 class="font-black text-lg text-primary">Unggah Foto Lapangan Baru</h3>
         <button onclick="toggleUploadModal(false)" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
-          <span class="material-symbols-outlined">close</span>
+          <span class="material-symbols-outlined text-xl">close</span>
         </button>
       </div>
 
-      <div class="flex flex-col gap-3">
+      <div class="flex flex-col gap-3.5">
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Pilar Kegiatan</label>
-          <select id="modalPillarSelect" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-primary outline-none">
+          <label class="block text-sm font-bold text-on-surface mb-1.5">Pilar Kegiatan</label>
+          <select id="modalPillarSelect" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary outline-none transition-all">
             <option value="STEM">Pilar 04 - STEM (Uji Kualitas / Alat Sains)</option>
             <option value="Financial">Pilar 01 - Financial (Wawancara Pasar / Gabah)</option>
             <option value="Culture">Pilar 02 - Culture (Sejarah / Kearifan Lokal)</option>
@@ -178,36 +183,172 @@
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Judul / Aktivitas Foto</label>
-          <input id="modalPhotoTitle" type="text" placeholder="Contoh: Pengambilan Sampel Air di Saluran Irigasi" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-primary outline-none">
+          <label class="block text-sm font-bold text-on-surface mb-1.5">Judul / Aktivitas Foto</label>
+          <input id="modalPhotoTitle" type="text" placeholder="Contoh: Pengambilan Sampel Air di Saluran Irigasi" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary outline-none transition-all placeholder:text-slate-400">
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Keterangan / Refleksi Singkat</label>
-          <textarea id="modalPhotoDesc" rows="2" placeholder="Tuliskan catatan singkat pengamatan lapangan..." class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-normal focus:border-primary outline-none"></textarea>
+          <label class="block text-sm font-bold text-on-surface mb-1.5">Keterangan / Refleksi Singkat</label>
+          <textarea id="modalPhotoDesc" rows="3" placeholder="Tuliskan catatan singkat pengamatan lapangan..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400 leading-relaxed"></textarea>
         </div>
 
-        <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Pilih Berkas Foto Lapangan</label>
-          <div class="relative border-2 border-dashed border-outline-variant/60 rounded-2xl p-4 flex flex-col items-center justify-center gap-2 hover:border-primary/60 transition-all bg-surface-container-low cursor-pointer" onclick="document.getElementById('modalPhotoFileInput').click()">
-            <input id="modalPhotoFileInput" type="file" accept="image/*" class="hidden" onchange="handlePhotoFileSelected(event)">
-            <div id="uploadPlaceholder" class="flex flex-col items-center gap-1 text-center py-2">
-              <span class="material-symbols-outlined text-3xl text-primary">add_a_photo</span>
-              <span class="text-xs font-bold text-on-surface">Pilih dari Galeri atau Kamera</span>
-              <span class="text-[10px] text-outline">Format JPG, PNG, atau WEBP</span>
+        <!-- Status GPS Geotag Lapangan -->
+        <div id="gpsStatusContainer" class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex items-center justify-between gap-2.5">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div id="gpsStatusIconBox" class="w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0">
+              <span id="gpsStatusIcon" class="material-symbols-outlined text-lg animate-pulse">my_location</span>
             </div>
-            <img id="uploadPreviewImg" class="hidden max-h-40 rounded-xl object-contain w-full" alt="Pratinjau Foto">
+            <div class="min-w-0">
+              <p id="gpsStatusTitle" class="text-xs font-black text-on-surface truncate">Mendeteksi Titik Koordinat GPS...</p>
+              <p id="gpsStatusSub" class="text-[11px] text-slate-500 truncate">Izinkan akses lokasi browser/HP untuk geotagging otomatis</p>
+            </div>
+          </div>
+          <button type="button" onclick="requestGPSCoordinates(true)" class="px-2.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container text-[11px] font-bold text-on-surface shrink-0 flex items-center gap-1 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-sm">refresh</span>
+            <span>Ulang</span>
+          </button>
+        </div>
+
+        <!-- Panduan Izin Lokasi Bahasa Indonesia -->
+        <div id="gpsHelpGuide" class="p-3 rounded-2xl bg-sky-50 border border-sky-200 text-sky-950 flex flex-col gap-1.5 text-xs">
+          <div class="flex items-center gap-1.5 font-bold text-sky-900">
+            <span class="material-symbols-outlined text-base text-sky-600">contact_support</span>
+            <span>Petunjuk Izin Lokasi di Layar HP:</span>
+          </div>
+          <p class="leading-relaxed text-[11px] text-sky-800 font-medium">
+            Jika muncul kotak izin di layar HP Anda, silakan pilih:
+            <br>• Bila HP Bahasa Indonesia: Klik <b>"Izinkan saat mengunjungi situs"</b>
+            <br>• Bila HP Bahasa Inggris: Klik <b>"Allow while visiting the site"</b>
+          </p>
+        </div>
+
+        <div>
+          <label class="block text-sm font-bold text-on-surface mb-1.5">Ambil / Unggah Foto Lapangan</label>
+          
+          <!-- Input Kamera HP (capture="environment") dan File Picker Galeri -->
+          <input id="modalPhotoCameraInput" type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoFileSelected(event, 'camera')">
+          <input id="modalPhotoFileInput" type="file" accept="image/*" class="hidden" onchange="handlePhotoFileSelected(event, 'gallery')">
+
+          <!-- Tombol Pilihan Pengambilan Foto -->
+          <div id="uploadActionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
+            <button type="button" onclick="triggerCameraCapture()" class="w-full py-3 px-4 rounded-xl bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer">
+              <span class="material-symbols-outlined text-xl">photo_camera</span>
+              <span>Buka Kamera HP (Geotag)</span>
+            </button>
+            <button type="button" onclick="triggerFilePicker()" class="w-full py-3 px-4 rounded-xl bg-surface-container-high text-on-surface font-bold text-sm hover:bg-surface-container transition-all flex items-center justify-center gap-2 border border-outline-variant/40 cursor-pointer">
+              <span class="material-symbols-outlined text-xl">photo_library</span>
+              <span>Pilih dari Galeri (No Geotag)</span>
+            </button>
+          </div>
+
+          <!-- Loading Box saat Stamping Watermark & Map -->
+          <div id="stampLoadingBox" class="hidden border border-outline-variant/40 rounded-2xl p-5 flex flex-col items-center justify-center gap-2.5 bg-surface-container-low text-center">
+            <div class="w-10 h-10 rounded-full border-3 border-primary/30 border-t-primary animate-spin"></div>
+            <p id="stampLoadingTitle" class="text-xs font-bold text-on-surface">Mencetak Geotag & Radar Map...</p>
+            <p id="stampLoadingDesc" class="text-[11px] text-slate-500">Menyematkan watermark Kokurikuler 2026 dan koordinat GPS</p>
+          </div>
+
+          <!-- Pratinjau Foto Berwatermark / Bersih Galeri -->
+          <div id="uploadPreviewCard" class="hidden relative border border-outline-variant/40 rounded-2xl overflow-hidden bg-slate-950 flex flex-col shadow-sm">
+            <div class="relative w-full aspect-[4/3] bg-black overflow-hidden flex items-center justify-center cursor-pointer group" onclick="viewPhotoFullscreen()" title="Ketuk untuk melihat foto dalam ukuran penuh">
+              <img id="uploadPreviewImg" class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]" alt="Pratinjau Foto">
+              
+              <span id="uploadPreviewBadge" class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600/90 text-white backdrop-blur-xs flex items-center gap-1 shadow-md">
+                <span class="material-symbols-outlined text-xs">verified</span>
+                <span>Watermark + Peta Terpasang</span>
+              </span>
+
+              <!-- Overlay Petunjuk Ketuk untuk Perbesar -->
+              <div class="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-all flex flex-col items-center justify-center gap-1 pointer-events-none">
+                <span class="px-3.5 py-1.5 rounded-full bg-slate-900/85 text-white text-xs font-bold backdrop-blur-md flex items-center gap-1.5 shadow-xl border border-white/20 group-hover:scale-105 transition-transform">
+                  <span class="material-symbols-outlined text-base text-cyan-400">zoom_in</span>
+                  <span>Ketuk untuk Perbesar & Cek Hasil</span>
+                </span>
+                <span class="text-[10px] text-white/90 font-semibold drop-shadow-md">Periksa ketajaman foto, stempel waktu, & peta</span>
+              </div>
+            </div>
+
+            <!-- Bar Aksi Pratinjau -->
+            <div class="p-3 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center justify-between gap-2">
+              <div class="flex flex-col min-w-0">
+                <span class="text-xs text-on-surface font-bold truncate" id="previewPhotoMeta">Foto Berhasil Diproses</span>
+                <span class="text-[11px] text-emerald-600 font-semibold">Cek foto di atas sebelum diunggah</span>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <button type="button" onclick="viewPhotoFullscreen()" class="px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs flex items-center gap-1 transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-sm">fullscreen</span>
+                  <span>Perbesar</span>
+                </button>
+                <button type="button" onclick="retakePhoto()" class="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-sm">replay</span>
+                  <span>Pilih Ulang</span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 pt-2">
-        <button onclick="toggleUploadModal(false)" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all">
+      <div class="flex items-center gap-3 pt-2">
+        <button onclick="toggleUploadModal(false)" class="flex-1 py-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-sm sm:text-base transition-all">
           Batal
         </button>
-        <button onclick="submitNewPhoto()" class="flex-1 py-2.5 rounded-xl bg-primary text-white font-bold text-xs hover:bg-primary/90 transition-all flex items-center justify-center gap-1.5">
-          <span class="material-symbols-outlined text-sm">upload</span>
-          <span>Simpan Foto</span>
+        <button onclick="submitNewPhoto()" class="flex-1 py-3 rounded-xl bg-primary text-white font-bold text-sm sm:text-base hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer">
+          <span class="material-symbols-outlined text-lg">cloud_upload</span>
+          <span>Unggah Foto</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL FULLSCREEN INSPEKSI FOTO (PINCH-TO-ZOOM READY) -->
+  <div id="photoInspectModal" class="fixed inset-0 z-[60] bg-black/95 backdrop-blur-md flex flex-col items-center justify-between p-3 sm:p-5 opacity-0 pointer-events-none transition-all duration-300 select-none">
+    <div class="w-full max-w-4xl flex items-center justify-between gap-2 text-white pb-2 border-b border-white/10 shrink-0">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="material-symbols-outlined text-cyan-400">verified</span>
+        <div class="flex flex-col">
+          <span class="text-xs sm:text-sm font-bold truncate">Pratinjau Hasil Foto Lapangan (Full Size)</span>
+          <span class="text-[10px] sm:text-xs text-white/70">Cubit layar untuk zoom & cek kejelasan foto sebelum diunggah</span>
+        </div>
+      </div>
+
+      <!-- Toolbar Zoom Inspect Modal -->
+      <div class="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-full backdrop-blur-md">
+        <button id="inspectBtnZoomOut" type="button" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer" title="Perkecil">
+          <span class="material-symbols-outlined text-base">remove</span>
+        </button>
+        <button id="inspectBtnResetZoom" type="button" class="px-2.5 h-7 rounded-full bg-white/15 hover:bg-white/25 active:scale-95 text-amber-300 font-extrabold text-[11px] flex items-center justify-center transition-all cursor-pointer" title="Reset Zoom">
+          <span id="inspectZoomLevel">100%</span>
+        </button>
+        <button id="inspectBtnZoomIn" type="button" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer" title="Perbesar">
+          <span class="material-symbols-outlined text-base">add</span>
+        </button>
+      </div>
+
+      <button onclick="closePhotoInspectModal()" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/15 hover:bg-white/25 flex items-center justify-center text-white transition-all cursor-pointer">
+        <span class="material-symbols-outlined text-xl">close</span>
+      </button>
+    </div>
+
+    <!-- Container Gambar Fullscreen dengan Touch Pinch-to-Zoom -->
+    <div id="inspectModalContainer" class="relative flex-1 w-full max-w-4xl flex items-center justify-center overflow-hidden my-2 cursor-grab active:cursor-grabbing touch-none">
+      <img id="inspectModalImg" class="max-h-[72vh] w-auto max-w-full rounded-xl object-contain shadow-2xl border border-white/15 select-none pointer-events-auto" alt="Detail Foto Lapangan">
+    </div>
+
+    <!-- Tombol Aksi Bawah: Foto Ulang vs Sudah Pas / Unggah Foto -->
+    <div class="w-full max-w-4xl pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/10 shrink-0">
+      <p class="text-xs text-white/80 text-center sm:text-left flex items-center gap-1.5 justify-center sm:justify-start">
+        <span class="material-symbols-outlined text-sm text-cyan-300">pinch</span>
+        <span>Cubit 2 jari untuk zoom. Apakah foto dan stempel sudah jelas?</span>
+      </p>
+      <div class="flex items-center gap-2.5 w-full sm:w-auto">
+        <button type="button" onclick="closePhotoInspectModal(); retakePhoto();" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-white/15 hover:bg-white/25 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-base">replay</span>
+          <span>Pilih Ulang</span>
+        </button>
+        <button type="button" onclick="confirmPhotoFromInspect()" class="flex-1 sm:flex-initial px-5 py-2.5 rounded-xl bg-primary text-white font-bold text-xs sm:text-sm hover:bg-primary/90 flex items-center justify-center gap-1.5 shadow-lg transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-base">cloud_upload</span>
+          <span>Foto Sudah Pas, Unggah Foto!</span>
         </button>
       </div>
     </div>
@@ -217,6 +358,7 @@
   <script>
     let currentFilter = 'all';
     let selectedPhotoBase64 = null;
+    let currentGPS = null;
 
     document.addEventListener('DOMContentLoaded', () => {
       const user = FincestemCore.auth.getUser();
@@ -224,35 +366,669 @@
         window.location.href = 'index.html';
         return;
       }
+
+      // Verifikasi jika diakses via tautan jadwal harian ?day=X
+      const urlParams = new URLSearchParams(window.location.search);
+      const dayParam = urlParams.get('day');
+      const isReadOnlyUrl = (urlParams.get('readonly') === '1');
+      if (dayParam) {
+        const dayNum = parseInt(dayParam);
+        const nisn = user ? (user.nisn || user.identifier) : '';
+        FincestemCore.schedule.getSchedule(function(days) {
+          FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+            const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
+            if (!access.canAccess) {
+              FincestemCore.ui.toast(`Dokumentasi Day ${dayNum} belum dapat diakses! Harap selesaikan dan tunggu penetapan status 'Completed' dari Fasilitator pada Day ${dayNum - 1}.`, 'error');
+              setTimeout(() => {
+                window.location.replace('dashboard.html');
+              }, 1200);
+              return;
+            }
+            if (!access.canEdit || isReadOnlyUrl) {
+              // Sembunyikan tombol tambah foto jika mode hanya lihat
+              const upBtns = document.querySelectorAll('button[onclick="toggleUploadModal(true)"]');
+              upBtns.forEach(b => b.classList.add('hidden'));
+
+              const alertBox = document.createElement('div');
+              alertBox.className = 'p-4 rounded-3xl bg-amber-500/15 border border-amber-400 text-amber-950 flex items-center gap-3 shadow-xs mb-4';
+              alertBox.innerHTML = `
+                <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-xl">lock_clock</span>
+                </div>
+                <div class="flex flex-col min-w-0">
+                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Mode Hanya Lihat (Read-Only)</span>
+                  <span class="text-sm font-extrabold leading-snug">Jadwal Day ${dayNum} Ditutup oleh Admin</span>
+                  <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Anda tetap dapat melihat dokumentasi foto yang telah diunggah sebelumnya. Unggah foto baru dinonaktifkan sementara.</p>
+                </div>
+              `;
+              const mainEl = document.querySelector('main');
+              if (mainEl) mainEl.insertBefore(alertBox, mainEl.firstChild);
+            }
+          });
+        });
+      }
+
       renderPhotos();
+      syncDocumentationFromServer(function() {
+        renderPhotos();
+      });
     });
 
     function toggleUploadModal(show) {
       const modal = document.getElementById('uploadModal');
       if (show) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
+        // Kunci sinyal GPS saat modal dibuka
+        requestGPSCoordinates(false);
       } else {
         modal.classList.add('opacity-0', 'pointer-events-none');
       }
     }
 
-    function handlePhotoFileSelected(event) {
+    function triggerCameraCapture() {
+      const cam = document.getElementById('modalPhotoCameraInput');
+      if (cam) cam.click();
+    }
+
+    function triggerFilePicker() {
+      const picker = document.getElementById('modalPhotoFileInput');
+      if (picker) picker.click();
+    }
+
+    let inspectZoomController = null;
+
+    function viewPhotoFullscreen() {
+      if (!selectedPhotoBase64) return;
+      const modal = document.getElementById('photoInspectModal');
+      const img = document.getElementById('inspectModalImg');
+      const container = document.getElementById('inspectModalContainer');
+      const zoomLevelEl = document.getElementById('inspectZoomLevel');
+
+      if (modal && img) {
+        img.src = selectedPhotoBase64;
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+
+        if (!inspectZoomController && container && window.FincestemCore && FincestemCore.ui && FincestemCore.ui.attachPinchZoom) {
+          inspectZoomController = FincestemCore.ui.attachPinchZoom(container, img, {
+            minScale: 1,
+            maxScale: 4,
+            onZoom: function(scale) {
+              if (zoomLevelEl) zoomLevelEl.textContent = Math.round(scale * 100) + '%';
+            }
+          });
+          const btnIn = document.getElementById('inspectBtnZoomIn');
+          const btnOut = document.getElementById('inspectBtnZoomOut');
+          const btnReset = document.getElementById('inspectBtnResetZoom');
+          if (btnIn) btnIn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (inspectZoomController) inspectZoomController.zoomIn();
+          });
+          if (btnOut) btnOut.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (inspectZoomController) inspectZoomController.zoomOut();
+          });
+          if (btnReset) btnReset.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (inspectZoomController) inspectZoomController.reset();
+          });
+        }
+        if (inspectZoomController) {
+          inspectZoomController.reset();
+        }
+      }
+    }
+
+    function closePhotoInspectModal() {
+      const modal = document.getElementById('photoInspectModal');
+      if (modal) {
+        if (inspectZoomController) inspectZoomController.reset();
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function confirmPhotoFromInspect() {
+      closePhotoInspectModal();
+      submitNewPhoto();
+    }
+
+    function retakePhoto() {
+      closePhotoInspectModal();
+      selectedPhotoBase64 = null;
+      const prevCard = document.getElementById('uploadPreviewCard');
+      if (prevCard) prevCard.classList.add('hidden');
+      const actContainer = document.getElementById('uploadActionsContainer');
+      if (actContainer) actContainer.classList.remove('hidden');
+      const camInput = document.getElementById('modalPhotoCameraInput');
+      if (camInput) camInput.value = '';
+      const fileInput = document.getElementById('modalPhotoFileInput');
+      if (fileInput) fileInput.value = '';
+      if (selectedPhotoSource === 'gallery') {
+        triggerFilePicker();
+      } else {
+        triggerCameraCapture();
+      }
+    }
+
+    function requestGPSCoordinates(forceToast = false) {
+      const icon = document.getElementById('gpsStatusIcon');
+      const title = document.getElementById('gpsStatusTitle');
+      const sub = document.getElementById('gpsStatusSub');
+      const iconBox = document.getElementById('gpsStatusIconBox');
+
+      if (icon) icon.className = 'material-symbols-outlined text-lg animate-spin';
+      if (title) title.textContent = 'Mendeteksi Titik Koordinat GPS...';
+      if (sub) sub.textContent = 'Menghubungkan ke satelit GPS perangkat HP/browser';
+
+      if (!navigator.geolocation) {
+        applyFallbackGPS('GPS tidak didukung browser ini. Menggunakan referensi Belitang.');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        function(pos) {
+          currentGPS = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude,
+            accuracy: Math.round(pos.coords.accuracy || 10),
+            isFallback: false
+          };
+          if (icon) icon.className = 'material-symbols-outlined text-lg';
+          if (iconBox) {
+            iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
+          }
+          if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
+          if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m (SMAN 1 Belitang & Sekitarnya)`;
+          const helpGuide = document.getElementById('gpsHelpGuide');
+          if (helpGuide) helpGuide.classList.add('hidden');
+          if (forceToast) FincestemCore.ui.toast('GPS berhasil dikunci: ' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5), 'success');
+        },
+        function(err) {
+          console.warn('GPS Geolocation Error:', err);
+          let errMsg = 'Izin lokasi belum diberikan. Menggunakan koordinat SMAN 1 Belitang.';
+          if (err.code === 1) errMsg = 'Izin GPS belum disetujui. Menggunakan koordinat SMAN 1 Belitang.';
+          else if (err.code === 2) errMsg = 'Sinyal satelit GPS tidak terdeteksi.';
+          else if (err.code === 3) errMsg = 'Batas waktu pencarian sinyal GPS habis.';
+          applyFallbackGPS(errMsg);
+          if (forceToast) FincestemCore.ui.toast(errMsg, 'warning');
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
+        }
+      );
+    }
+
+    function applyFallbackGPS(msg) {
+      currentGPS = {
+        lat: -4.135240,
+        lng: 104.624890,
+        accuracy: 15,
+        isFallback: true
+      };
+      const icon = document.getElementById('gpsStatusIcon');
+      const title = document.getElementById('gpsStatusTitle');
+      const sub = document.getElementById('gpsStatusSub');
+      const iconBox = document.getElementById('gpsStatusIconBox');
+
+      if (icon) icon.className = 'material-symbols-outlined text-lg';
+      if (iconBox) {
+        iconBox.className = 'w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0';
+      }
+      if (title) title.textContent = `📍 GPS Referensi: -4.13524°, 104.62489°`;
+      if (sub) sub.textContent = msg || 'Koordinat referensi SMAN 1 Belitang (OKU Timur)';
+    }
+
+    function roundRectHelper(ctx, x, y, w, h, r) {
+      if (ctx.roundRect) {
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, r);
+      } else {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y);
+        ctx.lineTo(x + w - r, y);
+        ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r);
+        ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h);
+        ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r);
+        ctx.quadraticCurveTo(x, y, x + r, y);
+        ctx.closePath();
+      }
+    }
+
+    function drawMapPin(ctx, px, py) {
+      ctx.fillStyle = 'rgba(239, 68, 68, 0.35)';
+      ctx.beginPath();
+      ctx.arc(px, py, 14, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(px, py, 6, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(px, py, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawVectorRadarMap(ctx, x, y, width, height, lat, lng, isFallback) {
+      ctx.save();
+      roundRectHelper(ctx, x, y, width, height, 12);
+      ctx.clip();
+
+      ctx.fillStyle = '#091322';
+      ctx.fillRect(x, y, width, height);
+
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.22)';
+      ctx.lineWidth = 1;
+      const step = 20;
+      for (let gx = x; gx < x + width; gx += step) {
+        ctx.beginPath();
+        ctx.moveTo(gx, y);
+        ctx.lineTo(gx, y + height);
+        ctx.stroke();
+      }
+      for (let gy = y; gy < y + height; gy += step) {
+        ctx.beginPath();
+        ctx.moveTo(x, gy);
+        ctx.lineTo(x + width, gy);
+        ctx.stroke();
+      }
+
+      const cx = x + width / 2;
+      const cy = y + height / 2;
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+      [width * 0.2, width * 0.35, width * 0.48].forEach(r => {
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.stroke();
+      });
+
+      ctx.beginPath();
+      ctx.moveTo(cx, y);
+      ctx.lineTo(cx, y + height);
+      ctx.moveTo(x, cy);
+      ctx.lineTo(x + width, cy);
+      ctx.stroke();
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 9px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('N', cx, y + 4);
+      ctx.textBaseline = 'bottom';
+      ctx.fillText('S', cx, y + height - 22);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('W', x + 4, cy);
+      ctx.textAlign = 'right';
+      ctx.fillText('E', x + width - 4, cy);
+
+      drawMapPin(ctx, cx, cy);
+
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+      ctx.fillRect(x, y + height - 20, width, 20);
+      ctx.fillStyle = isFallback ? '#fbbf24' : '#38bdf8';
+      ctx.font = 'bold 9px monospace';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(isFallback ? 'BELITANG RADAR' : 'LIVE GPS RADAR', cx, y + height - 10);
+
+      ctx.restore();
+
+      ctx.save();
+      ctx.strokeStyle = isFallback ? 'rgba(251, 191, 36, 0.7)' : 'rgba(56, 189, 248, 0.7)';
+      ctx.lineWidth = 2;
+      roundRectHelper(ctx, x, y, width, height, 12);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function renderGeotaggedWatermark(img, gps, studentInfo, callback) {
+      const maxDimension = 1600;
+      let w = img.naturalWidth || img.width;
+      let h = img.naturalHeight || img.height;
+
+      if (w > maxDimension || h > maxDimension) {
+        if (w > h) {
+          h = Math.round((h * maxDimension) / w);
+          w = maxDimension;
+        } else {
+          w = Math.round((w * maxDimension) / h);
+          h = maxDimension;
+        }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+
+      // 1. Gambar foto utama
+      ctx.drawImage(img, 0, 0, w, h);
+
+      // 2. Badge Sudut Kanan Atas: "Kokurikuler2026_SMAN1 Belitang_Fincestem"
+      const badgeText = "Kokurikuler2026_SMAN1 Belitang_Fincestem";
+      const badgeFontSize = Math.max(13, Math.round(w * 0.016));
+      ctx.font = `bold ${badgeFontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
+      const textMetrics = ctx.measureText(badgeText);
+      const badgeW = textMetrics.width + Math.round(badgeFontSize * 2.8);
+      const badgeH = Math.round(badgeFontSize * 2.3);
+      const badgeX = w - badgeW - Math.round(w * 0.02);
+      const badgeY = Math.round(w * 0.02);
+
+      ctx.save();
+      ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 3;
+
+      ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
+      roundRectHelper(ctx, badgeX, badgeY, badgeW, badgeH, 12);
+      ctx.fill();
+
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = "rgba(56, 189, 248, 0.7)";
+      ctx.stroke();
+
+      const dotRadius = badgeFontSize * 0.32;
+      const dotX = badgeX + badgeFontSize * 1.1;
+      const dotY = badgeY + badgeH / 2;
+      ctx.fillStyle = "#10b981";
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, dotRadius, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "rgba(16, 185, 129, 0.4)";
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, dotRadius * 1.8, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.textBaseline = "middle";
+      ctx.fillText(badgeText, dotX + dotRadius + 8, dotY);
+      ctx.restore();
+
+      // 3. Banner Bawah (Dark Gradient + Top Neon Accent Line)
+      const bannerHeight = Math.max(135, Math.round(h * 0.175));
+      const bannerY = h - bannerHeight;
+
+      const gradient = ctx.createLinearGradient(0, bannerY - 30, 0, h);
+      gradient.addColorStop(0, "rgba(15, 23, 42, 0)");
+      gradient.addColorStop(0.18, "rgba(15, 23, 42, 0.90)");
+      gradient.addColorStop(1, "rgba(15, 23, 42, 0.98)");
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, bannerY - 30, w, bannerHeight + 30);
+
+      ctx.fillStyle = "#38bdf8";
+      ctx.fillRect(0, bannerY - 2, w, 3);
+
+      // 4. Minimap Box di Sisi Kiri Bawah
+      const pad = Math.max(14, Math.round(w * 0.016));
+      const mapH = bannerHeight - (pad * 2);
+      const mapW = Math.round(mapH * 1.28);
+      const mapX = pad;
+      const mapY = bannerY + pad;
+
+      // 5. Informasi Teks di Samping Kanan Minimap
+      function renderWatermarkText() {
+        const textX = mapX + mapW + pad * 1.1;
+        const textStartY = mapY + 2;
+        const lineHeight = (mapH - 6) / 5;
+
+        ctx.save();
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+
+        // Baris 1: Judul Utama Permintaan User
+        const l1Size = Math.max(14, Math.round(w * 0.021));
+        ctx.font = `900 ${l1Size}px "Plus Jakarta Sans", -apple-system, sans-serif`;
+        ctx.fillStyle = '#fbbf24'; // Amber Gold
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        ctx.shadowBlur = 4;
+        ctx.fillText('Kokurikuler2026_SMAN1 Belitang_Fincestem', textX, textStartY);
+
+        // Baris 2: Subtitle Riset
+        const l2Size = Math.max(11, Math.round(w * 0.014));
+        ctx.font = `bold ${l2Size}px -apple-system, sans-serif`;
+        ctx.fillStyle = '#38bdf8'; // Sky Cyan
+        ctx.shadowBlur = 2;
+        ctx.fillText('Riset Lapangan FINCESTEM • Belitang, OKU Timur', textX, textStartY + lineHeight * 1.15);
+
+        // Baris 3: Koordinat GPS, Akurasi Satelit & Lokasi Lapangan
+        const l3Size = Math.max(11, Math.round(w * 0.0135));
+        ctx.font = `bold ${l3Size}px "Plus Jakarta Sans", monospace, sans-serif`;
+        ctx.fillStyle = '#ffffff';
+        const coordText = `📍 Lat: ${gps.lat.toFixed(6)}°, Long: ${gps.lng.toFixed(6)}° (±${gps.accuracy}m) • Belitang, OKU Timur`;
+        ctx.fillText(coordText, textX, textStartY + lineHeight * 2.2);
+
+        // Baris 4: Hari, Tanggal, Jam, Menit, Detik (WIB)
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+        const timeFormatted = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':') + ' WIB';
+        const l4Size = Math.max(10, Math.round(w * 0.0125));
+        ctx.font = `600 ${l4Size}px -apple-system, sans-serif`;
+        ctx.fillStyle = '#cbd5e1'; // Slate 300
+        ctx.fillText(`⏰ ${dateStr} • ${timeFormatted}`, textX, textStartY + lineHeight * 3.2);
+
+        // Baris 5: Identitas Siswa & Kelompok
+        const l5Size = Math.max(10, Math.round(w * 0.0125));
+        ctx.font = `700 ${l5Size}px -apple-system, sans-serif`;
+        ctx.fillStyle = '#94a3b8'; // Slate 400
+        ctx.fillText(`👤 ${studentInfo.name} (${studentInfo.nisn}) • ${studentInfo.group}`, textX, textStartY + lineHeight * 4.15);
+
+        ctx.restore();
+
+        try {
+          const resultDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+          callback(resultDataUrl);
+        } catch (e) {
+          console.error('Canvas export error:', e);
+          callback(img.src);
+        }
+      }
+
+      // Render Minimap (OSM Tile jika online atau Vector Radar jika offline)
+      const zoom = 14;
+      const n = Math.pow(2, zoom);
+      const tileX = Math.floor((gps.lng + 180) / 360 * n);
+      const latRad = gps.lat * Math.PI / 180;
+      const tileY = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
+      const tileUrl = `https://tile.openstreetmap.org/${zoom}/${tileX}/${tileY}.png`;
+
+      let mapRendered = false;
+      const tileTimeout = setTimeout(() => {
+        if (!mapRendered) {
+          mapRendered = true;
+          drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
+          renderWatermarkText();
+        }
+      }, 1200);
+
+      const tileImg = new Image();
+      tileImg.crossOrigin = 'anonymous';
+      tileImg.onload = function() {
+        if (!mapRendered) {
+          mapRendered = true;
+          clearTimeout(tileTimeout);
+          try {
+            ctx.save();
+            roundRectHelper(ctx, mapX, mapY, mapW, mapH, 12);
+            ctx.clip();
+            ctx.drawImage(tileImg, mapX, mapY, mapW, mapH);
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.22)';
+            ctx.fillRect(mapX, mapY, mapW, mapH);
+            drawMapPin(ctx, mapX + mapW / 2, mapY + mapH / 2);
+
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
+            ctx.fillRect(mapX, mapY + mapH - 18, mapW, 18);
+            ctx.fillStyle = '#38bdf8';
+            ctx.font = 'bold 9px monospace';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('OSM GPS MAP', mapX + mapW / 2, mapY + mapH - 9);
+            ctx.restore();
+
+            ctx.save();
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
+            ctx.lineWidth = 2;
+            roundRectHelper(ctx, mapX, mapY, mapW, mapH, 12);
+            ctx.stroke();
+            ctx.restore();
+          } catch (err) {
+            drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
+          }
+          renderWatermarkText();
+        }
+      };
+      tileImg.onerror = function() {
+        if (!mapRendered) {
+          mapRendered = true;
+          clearTimeout(tileTimeout);
+          drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
+          renderWatermarkText();
+        }
+      };
+      tileImg.src = tileUrl;
+    }
+
+    let selectedPhotoSource = 'camera';
+    let selectedPhotoHasGeotag = false;
+
+    function renderCleanGalleryPhoto(img, callback) {
+      const maxDimension = 1600;
+      let w = img.naturalWidth || img.width;
+      let h = img.naturalHeight || img.height;
+
+      if (w > maxDimension || h > maxDimension) {
+        if (w > h) {
+          h = Math.round((h * maxDimension) / w);
+          w = maxDimension;
+        } else {
+          w = Math.round((w * maxDimension) / h);
+          h = maxDimension;
+        }
+      }
+
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      // Gambar foto asli bersih tanpa stempel watermark, banner, atau peta apapun
+      ctx.drawImage(img, 0, 0, w, h);
+
+      try {
+        const resultDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+        callback(resultDataUrl);
+      } catch (e) {
+        console.error('Gallery canvas export error:', e);
+        callback(img.src);
+      }
+    }
+
+    function handlePhotoFileSelected(event, source) {
+      source = source || 'camera';
+      selectedPhotoSource = source;
+      selectedPhotoHasGeotag = (source === 'camera');
+
       const file = event.target.files && event.target.files[0];
       if (!file) return;
 
       if (!file.type.startsWith('image/')) {
-        FincestemCore.ui.toast('Hanya berkas gambar yang diperbolehkan!', 'error');
+        FincestemCore.ui.toast('Hanya berkas gambar/foto yang diperbolehkan!', 'error');
         return;
+      }
+
+      // Sembunyikan tombol aksi, tampilkan indikator proses
+      const actionsContainer = document.getElementById('uploadActionsContainer');
+      const stampBox = document.getElementById('stampLoadingBox');
+      const stampTitle = document.getElementById('stampLoadingTitle');
+      const stampDesc = document.getElementById('stampLoadingDesc');
+      const previewCard = document.getElementById('uploadPreviewCard');
+      const previewBadge = document.getElementById('uploadPreviewBadge');
+
+      if (actionsContainer) actionsContainer.classList.add('hidden');
+      if (stampBox) stampBox.classList.remove('hidden');
+      if (previewCard) previewCard.classList.add('hidden');
+
+      if (source === 'camera') {
+        if (stampTitle) stampTitle.textContent = 'Mencetak Geotag & Radar Map...';
+        if (stampDesc) stampDesc.textContent = 'Menyematkan watermark Kokurikuler 2026, koordinat GPS satelit, & peta';
+      } else {
+        if (stampTitle) stampTitle.textContent = 'Memproses Foto dari Galeri...';
+        if (stampDesc) stampDesc.textContent = 'Menyesuaikan resolusi tanpa stempel geotag (unggah dokumen album)';
       }
 
       const reader = new FileReader();
       reader.onload = function(e) {
-        selectedPhotoBase64 = e.target.result;
-        const preview = document.getElementById('uploadPreviewImg');
-        const placeholder = document.getElementById('uploadPlaceholder');
-        preview.src = selectedPhotoBase64;
-        preview.classList.remove('hidden');
-        placeholder.classList.add('hidden');
+        const rawDataUrl = e.target.result;
+        const img = new Image();
+        img.onload = function() {
+          if (source === 'camera') {
+            // FOTO KAMERA HP: bubuhkan stempel Geotag + Radar Peta + Waktu Detik Otentik
+            if (!currentGPS) {
+              applyFallbackGPS();
+            }
+
+            const user = FincestemCore.auth.getUser() || {};
+            const studentInfo = {
+              name: user.name || 'Siswa SMAN 1 Belitang',
+              nisn: user.nisn || user.identifier || '-',
+              group: user.group || 'Kelompok Riset',
+              class_name: user.class_name || user.class || 'Fase E'
+            };
+
+            renderGeotaggedWatermark(img, currentGPS, studentInfo, function(watermarkedDataUrl) {
+              selectedPhotoBase64 = watermarkedDataUrl;
+
+              if (stampBox) stampBox.classList.add('hidden');
+              if (previewCard) previewCard.classList.remove('hidden');
+
+              const previewImg = document.getElementById('uploadPreviewImg');
+              if (previewImg) previewImg.src = watermarkedDataUrl;
+
+              if (previewBadge) {
+                previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
+                previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">location_on</span><span>📍 Kamera Geotag (Otentik)</span>';
+              }
+
+              const previewMeta = document.getElementById('previewPhotoMeta');
+              if (previewMeta) {
+                previewMeta.textContent = `📍 Kamera HP • Geotag: ${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)} • ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB`;
+              }
+              FincestemCore.ui.toast('Foto kamera berhasil distempel geotag! Ketuk foto untuk cek & perbesar.', 'success');
+            });
+          } else {
+            // FOTO GALERI: foto bersih TANPA stempel geotag & TANPA radar map
+            renderCleanGalleryPhoto(img, function(cleanDataUrl) {
+              selectedPhotoBase64 = cleanDataUrl;
+
+              if (stampBox) stampBox.classList.add('hidden');
+              if (previewCard) previewCard.classList.remove('hidden');
+
+              const previewImg = document.getElementById('uploadPreviewImg');
+              if (previewImg) previewImg.src = cleanDataUrl;
+
+              if (previewBadge) {
+                previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-amber-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
+                previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">photo_library</span><span>📁 Galeri (Tanpa Geotag)</span>';
+              }
+
+              const previewMeta = document.getElementById('previewPhotoMeta');
+              if (previewMeta) {
+                previewMeta.textContent = `📁 Unggahan Galeri • Tidak Memiliki Stempel Geotag Lapangan`;
+              }
+              FincestemCore.ui.toast('Foto galeri diproses tanpa geotag. Fasilitator dapat membedakannya saat penilaian.', 'info');
+            });
+          }
+        };
+        img.src = rawDataUrl;
       };
       reader.readAsDataURL(file);
     }
@@ -268,6 +1044,52 @@
         }
       } catch (e) {}
       return [];
+    }
+
+    function syncDocumentationFromServer(callback) {
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list')
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && Array.isArray(res.data)) {
+              try {
+                let db = {};
+                const stored = localStorage.getItem('fincestem_db_2026_v1');
+                if (stored) db = JSON.parse(stored);
+                const localDocs = Array.isArray(db.documentation) ? db.documentation : [];
+                const serverDocs = res.data.map(d => ({
+                  id: 'doc-srv-' + d.id,
+                  title: d.title,
+                  description: d.caption,
+                  pillar: d.pillar || 'FINCESTEM',
+                  category: d.pillar || 'FINCESTEM',
+                  url: (d.file_url.startsWith('http') || d.file_url.startsWith('data:')) ? d.file_url : ('../' + d.file_url),
+                  author: d.student_name || d.group_name || d.uploaded_by_nisn || 'Siswa',
+                  nisn: d.uploaded_by_nisn,
+                  source: d.source || (d.gps_location ? 'camera' : 'gallery'),
+                  has_geotag: (d.has_geotag == 1 || (d.gps_location && d.source !== 'gallery')) ? 1 : 0,
+                  gps_location: d.gps_location || '',
+                  date: d.created_at || '-'
+                }));
+
+                const mapUrls = new Set();
+                const merged = [];
+                [...localDocs, ...serverDocs].forEach(item => {
+                  if (item.url && !mapUrls.has(item.url)) {
+                    mapUrls.add(item.url);
+                    merged.push(item);
+                  }
+                });
+                db.documentation = merged;
+                localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+              } catch(e) {}
+            }
+            if (callback) callback();
+          })
+          .catch(() => { if (callback) callback(); });
+      } else {
+        if (callback) callback();
+      }
     }
 
     function renderPhotos() {
@@ -298,7 +1120,7 @@
                 : 'Belum ada foto dokumentasi untuk pilar ' + currentFilter + '.'}
             </p>
             <button onclick="toggleUploadModal(true)" class="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold shadow-xs hover:bg-primary/90 transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-sm">add_a_photo</span>
+              <span class="material-symbols-outlined text-sm">cloud_upload</span>
               <span>Unggah Foto Sekarang</span>
             </button>
           </div>
@@ -312,18 +1134,30 @@
         else if (photo.pillar === 'Culture') badgeColor = 'bg-purple-100 text-purple-700';
         else if (photo.pillar === 'Exploration') badgeColor = 'bg-emerald-100 text-emerald-700';
 
+        const isGeotag = (photo.has_geotag === 1 || photo.has_geotag === true || (photo.source === 'camera' && (photo.gps_location || photo.gps)));
+
         const card = document.createElement('div');
         card.className = 'bg-surface-container-lowest rounded-2xl overflow-hidden border border-outline-variant/25 shadow-xs flex flex-col group cursor-pointer hover:shadow-md transition-all';
-        card.onclick = () => FincestemCore.ui.openLightbox(photo.url, photo.title + (photo.author ? ' • ' + photo.author : ''));
+        card.onclick = () => FincestemCore.ui.openLightbox(photo.url, photo.title + (photo.author ? ' • ' + photo.author : '') + (isGeotag ? ' (📍 Kamera Geotag)' : ' (📁 Galeri Tanpa Geotag)'));
         card.innerHTML = `
           <div class="relative aspect-[4/3] bg-surface-container overflow-hidden">
             <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" src="${photo.url}" alt="${photo.title}" loading="lazy">
-            <span class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[10px] font-extrabold ${badgeColor}">${photo.pillar || photo.category}</span>
+            <div class="absolute top-2 left-2 flex flex-wrap gap-1">
+              <span class="px-2.5 py-1 rounded-xl text-xs font-black shadow-xs ${badgeColor}">${photo.pillar || photo.category}</span>
+              ${isGeotag 
+                ? '<span class="px-2 py-1 rounded-xl text-[10px] font-extrabold bg-slate-900/90 text-emerald-400 backdrop-blur-xs shadow-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-xs">location_on</span>Kamera Geotag</span>'
+                : '<span class="px-2 py-1 rounded-xl text-[10px] font-extrabold bg-slate-900/90 text-amber-300 backdrop-blur-xs shadow-xs flex items-center gap-0.5"><span class="material-symbols-outlined text-xs">photo_library</span>Galeri (No Geotag)</span>'}
+            </div>
           </div>
-          <div class="p-2.5 flex flex-col gap-1">
-            <h4 class="font-bold text-xs text-on-surface line-clamp-1 leading-tight">${photo.title}</h4>
-            <p class="text-[10.5px] text-on-surface-variant line-clamp-2 leading-relaxed">${photo.description || ''}</p>
-            <span class="text-[9.5px] text-outline font-semibold mt-0.5">${photo.date || '-'}</span>
+          <div class="p-3 flex flex-col gap-1.5">
+            <h4 class="font-extrabold text-sm text-on-surface line-clamp-1 leading-snug">${photo.title}</h4>
+            <p class="text-xs sm:text-sm text-on-surface-variant line-clamp-2 leading-relaxed font-normal">${photo.description || photo.caption || ''}</p>
+            <div class="flex items-center justify-between text-xs text-slate-500 font-semibold mt-0.5">
+              <span>${photo.date || '-'}</span>
+              ${isGeotag && photo.gps_location 
+                ? '<span class="text-[10px] text-emerald-600 font-bold truncate max-w-[120px]">📍 ' + photo.gps_location + '</span>' 
+                : '<span class="text-[10px] text-amber-600 font-semibold">📁 Galeri</span>'}
+            </div>
           </div>
         `;
         grid.appendChild(card);
@@ -334,11 +1168,11 @@
       currentFilter = category;
       document.querySelectorAll('.photo-filter-btn').forEach(b => {
         if (category === 'all' && b.textContent.includes('Semua')) {
-          b.className = 'photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs whitespace-nowrap';
+          b.className = 'photo-filter-btn py-2 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-primary text-white shadow-xs whitespace-nowrap';
         } else if (category !== 'all' && b.textContent.toLowerCase().includes(category.toLowerCase())) {
-          b.className = 'photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-bold bg-primary text-white shadow-xs whitespace-nowrap';
+          b.className = 'photo-filter-btn py-2 px-3.5 rounded-xl text-xs sm:text-sm font-bold bg-primary text-white shadow-xs whitespace-nowrap';
         } else {
-          b.className = 'photo-filter-btn py-1.5 px-3 rounded-xl text-xs font-semibold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap';
+          b.className = 'photo-filter-btn py-2 px-3.5 rounded-xl text-xs sm:text-sm font-semibold bg-surface-container-high text-on-surface-variant hover:bg-surface-container whitespace-nowrap';
         }
       });
       renderPhotos();
@@ -346,19 +1180,26 @@
 
     function submitNewPhoto() {
       const user = FincestemCore.auth.getUser();
-      const title = document.getElementById('modalPhotoTitle').value.trim();
+      const titleInput = document.getElementById('modalPhotoTitle');
+      let title = titleInput ? titleInput.value.trim() : '';
       const desc = document.getElementById('modalPhotoDesc').value.trim();
       const pillar = document.getElementById('modalPillarSelect').value;
 
-      if (!title) {
-        FincestemCore.ui.toast('Judul foto wajib diisi!', 'error');
+      if (!selectedPhotoBase64) {
+        FincestemCore.ui.toast('Silakan ambil foto dengan kamera atau pilih berkas foto terlebih dahulu!', 'error');
         return;
       }
 
-      if (!selectedPhotoBase64) {
-        FincestemCore.ui.toast('Silakan pilih berkas foto terlebih dahulu!', 'error');
-        return;
+      if (!title) {
+        title = `Riset Lapangan ${pillar || 'FINCESTEM'} - SMAN 1 Belitang`;
+        if (titleInput) titleInput.value = title;
       }
+
+      closePhotoInspectModal();
+
+      const studentNisn = user ? (user.nisn || user.identifier || '') : '';
+      const isGeotagged = (selectedPhotoSource === 'camera' && selectedPhotoHasGeotag);
+      const gpsCoordStr = (isGeotagged && currentGPS) ? (currentGPS.lat.toFixed(6) + ', ' + currentGPS.lng.toFixed(6)) : '';
 
       const newPhoto = {
         id: 'doc-' + Date.now(),
@@ -368,6 +1209,11 @@
         category: pillar,
         url: selectedPhotoBase64,
         author: user ? (user.group || user.name) : 'Siswa',
+        nisn: studentNisn,
+        author_nisn: studentNisn,
+        source: selectedPhotoSource,
+        has_geotag: isGeotagged ? 1 : 0,
+        gps_location: gpsCoordStr,
         date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
       };
 
@@ -382,16 +1228,43 @@
         console.error(e);
       }
 
+      // Sinkronkan ke database server cPanel jika online
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/dokumentasi.php?action=add', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            group_id: user ? (user.groupId || 0) : 0,
+            title: title,
+            caption: desc,
+            media_type: 'foto',
+            file_url: selectedPhotoBase64,
+            source: selectedPhotoSource,
+            has_geotag: isGeotagged ? 1 : 0,
+            gps_location: gpsCoordStr,
+            uploaded_by: studentNisn
+          })
+        }).catch(err => console.warn('Sync dokumentasi error:', err));
+      }
+
       toggleUploadModal(false);
       document.getElementById('modalPhotoTitle').value = '';
       document.getElementById('modalPhotoDesc').value = '';
-      document.getElementById('modalPhotoFileInput').value = '';
-      document.getElementById('uploadPreviewImg').classList.add('hidden');
-      document.getElementById('uploadPreviewImg').src = '';
-      document.getElementById('uploadPlaceholder').classList.remove('hidden');
+      const camInput = document.getElementById('modalPhotoCameraInput');
+      if (camInput) camInput.value = '';
+      const fileInput = document.getElementById('modalPhotoFileInput');
+      if (fileInput) fileInput.value = '';
+      const prevCard = document.getElementById('uploadPreviewCard');
+      if (prevCard) prevCard.classList.add('hidden');
+      const prevImg = document.getElementById('uploadPreviewImg');
+      if (prevImg) prevImg.src = '';
+      const stampBox = document.getElementById('stampLoadingBox');
+      if (stampBox) stampBox.classList.add('hidden');
+      const actContainer = document.getElementById('uploadActionsContainer');
+      if (actContainer) actContainer.classList.remove('hidden');
       selectedPhotoBase64 = null;
 
-      FincestemCore.ui.toast('Foto dokumentasi berhasil disimpan!', 'success');
+      FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
       renderPhotos();
     }
   </script>

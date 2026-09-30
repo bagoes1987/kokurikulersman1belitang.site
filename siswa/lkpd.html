@@ -22,6 +22,11 @@
   </script>
   <style>
     @layer base {
+      html {
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
       html, body {
         width: 100%;
         margin: 0;
@@ -110,8 +115,8 @@
           <span class="material-symbols-outlined text-xl">arrow_back</span>
         </a>
         <div class="flex flex-col">
-          <span class="text-[10.5px] text-[#08A7B5] font-extrabold uppercase tracking-wider leading-tight">Portal Siswa</span>
-          <span class="text-sm font-bold text-on-surface leading-tight">Lembar Kerja Peserta Didik (LKPD)</span>
+          <span class="text-xs text-[#08A7B5] font-extrabold uppercase tracking-wider leading-tight">Portal Siswa</span>
+          <span class="text-base font-extrabold text-on-surface leading-tight">Lembar Kerja Peserta Didik (LKPD)</span>
         </div>
       </div>
       <a href="dashboard.html" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all">
@@ -124,128 +129,128 @@
   <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
 
     <!-- IDENTITAS TUGAS & STATUS BANNER -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-secondary uppercase tracking-wider">Instrumen LKPD Digital</span>
-        <span id="lkpdStatusBadge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Draf Lembar Kerja</span>
+    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-xs font-extrabold text-secondary uppercase tracking-wider">Instrumen LKPD Digital</span>
+        <span id="lkpdStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Draf Lembar Kerja</span>
       </div>
-      <h2 class="text-base font-extrabold text-primary leading-tight">
+      <h2 class="text-lg font-black text-primary leading-tight">
         Pengukuran Sains, Analisis Finansial &amp; Refleksi Budaya Lapangan
       </h2>
-      <p class="text-xs text-on-surface-variant">
-        Kelompok: <strong id="lkpdGroupName">Belum Terdaftar Kelompok</strong> • Fasilitator: <strong id="lkpdFacilitatorName">-</strong>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Kelompok: <strong id="lkpdGroupName" class="text-on-surface">Belum Terdaftar Kelompok</strong> • Fasilitator: <strong id="lkpdFacilitatorName" class="text-on-surface">-</strong>
       </p>
 
       <!-- Grade Box if evaluated (Hidden by default) -->
-      <div id="gradeBox" class="hidden p-3.5 rounded-2xl bg-emerald-50 border border-emerald-300/70 flex flex-col gap-2">
+      <div id="gradeBox" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-300/70 flex flex-col gap-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs font-extrabold text-emerald-900">Nilai Evaluasi Fasilitator:</span>
-          <span id="lkpdAverageScore" class="text-base font-black text-emerald-800">-</span>
+          <span class="text-sm font-extrabold text-emerald-950">Nilai Evaluasi Fasilitator:</span>
+          <span id="lkpdAverageScore" class="text-lg font-black text-emerald-800">-</span>
         </div>
-        <div class="grid grid-cols-4 gap-1.5 text-center text-[11px] font-bold mt-1">
-          <div class="bg-white/80 p-1.5 rounded-xl border border-emerald-200">
-            <span class="block text-[9.5px] text-emerald-700">Financial</span>
-            <span id="scoreFin" class="text-emerald-900">-</span>
+        <div class="grid grid-cols-4 gap-2 text-center text-xs font-bold mt-1">
+          <div class="bg-white/90 p-2 rounded-xl border border-emerald-200">
+            <span class="block text-xs text-emerald-700 font-semibold">Financial</span>
+            <span id="scoreFin" class="text-emerald-900 text-sm font-black">-</span>
           </div>
-          <div class="bg-white/80 p-1.5 rounded-xl border border-emerald-200">
-            <span class="block text-[9.5px] text-emerald-700">Culture</span>
-            <span id="scoreCul" class="text-emerald-900">-</span>
+          <div class="bg-white/90 p-2 rounded-xl border border-emerald-200">
+            <span class="block text-xs text-emerald-700 font-semibold">Culture</span>
+            <span id="scoreCul" class="text-emerald-900 text-sm font-black">-</span>
           </div>
-          <div class="bg-white/80 p-1.5 rounded-xl border border-emerald-200">
-            <span class="block text-[9.5px] text-emerald-700">Exploration</span>
-            <span id="scoreExp" class="text-emerald-900">-</span>
+          <div class="bg-white/90 p-2 rounded-xl border border-emerald-200">
+            <span class="block text-xs text-emerald-700 font-semibold">Exploration</span>
+            <span id="scoreExp" class="text-emerald-900 text-sm font-black">-</span>
           </div>
-          <div class="bg-white/80 p-1.5 rounded-xl border border-emerald-200">
-            <span class="block text-[9.5px] text-emerald-700">STEM</span>
-            <span id="scoreStem" class="text-emerald-900">-</span>
+          <div class="bg-white/90 p-2 rounded-xl border border-emerald-200">
+            <span class="block text-xs text-emerald-700 font-semibold">STEM</span>
+            <span id="scoreStem" class="text-emerald-900 text-sm font-black">-</span>
           </div>
         </div>
-        <p id="teacherFeedback" class="text-xs text-emerald-900 italic mt-1 leading-relaxed"></p>
+        <p id="teacherFeedback" class="text-sm text-emerald-950 italic mt-1 leading-relaxed bg-white/70 p-3 rounded-xl border border-emerald-100 font-medium"></p>
       </div>
     </div>
 
     <!-- FORM SECTION 1: STEM INSTRUMENT -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
-      <div class="flex items-center gap-2 text-primary font-bold text-sm border-b border-surface-container pb-2">
-        <span class="material-symbols-outlined text-lg text-blue-600">science</span>
+    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
+      <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
+        <span class="material-symbols-outlined text-xl text-blue-600">science</span>
         <span>Instrumen 1: Sains Fisika &amp; Kimia Air Saluran</span>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-on-surface mb-1">Tingkat Derajat Keasaman (pH Air Irigasi)</label>
-        <input id="inputPh" type="text" placeholder="Contoh: 6.8 (Netral/Optimal)" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
-        <span class="text-[10.5px] text-on-surface-variant mt-0.5 block">Standar baku mutu air pertanian kelas II: pH 6.0 - 8.5</span>
+        <label class="block text-sm font-bold text-on-surface mb-1.5">Tingkat Derajat Keasaman (pH Air Irigasi)</label>
+        <input id="inputPh" type="text" placeholder="Contoh: 6.8 (Netral/Optimal)" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400">
+        <span class="text-xs text-on-surface-variant mt-1 block font-medium">Standar baku mutu air pertanian kelas II: pH 6.0 - 8.5</span>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-on-surface mb-1">Debit Aliran Air Saluran (m³/detik)</label>
-        <input id="inputDebit" type="text" placeholder="Contoh: 14.2 m³/s" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
-        <span class="text-[10.5px] text-on-surface-variant mt-0.5 block">Rumus: Q = Luas Penampang Basah (A) × Kecepatan Arus (v)</span>
+        <label class="block text-sm font-bold text-on-surface mb-1.5">Debit Aliran Air Saluran (m³/detik)</label>
+        <input id="inputDebit" type="text" placeholder="Contoh: 14.2 m³/s" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400">
+        <span class="text-xs text-on-surface-variant mt-1 block font-medium">Rumus: Q = Luas Penampang Basah (A) × Kecepatan Arus (v)</span>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-on-surface mb-1">Suhu Permukaan Air Saluran (°C)</label>
-        <input id="inputSuhu" type="text" placeholder="Contoh: 28.5 °C" class="w-full px-3.5 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
+        <label class="block text-sm font-bold text-on-surface mb-1.5">Suhu Permukaan Air Saluran (°C)</label>
+        <input id="inputSuhu" type="text" placeholder="Contoh: 28.5 °C" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400">
       </div>
     </div>
 
     <!-- FORM SECTION 2: FINANCIAL INSTRUMENT -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
-      <div class="flex items-center gap-2 text-primary font-bold text-sm border-b border-surface-container pb-2">
-        <span class="material-symbols-outlined text-lg text-amber-600">payments</span>
+    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
+      <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
+        <span class="material-symbols-outlined text-xl text-amber-600">payments</span>
         <span>Instrumen 2: Analisis Rantai Pasok Finansial</span>
       </div>
 
-      <div class="grid grid-cols-2 gap-2.5">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">HPP Gabah Petani / kg</label>
-          <input id="inputHpp" type="text" placeholder="Contoh: Rp 6.200 / kg" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-primary outline-none">
+          <label class="block text-sm font-bold text-on-surface mb-1.5">HPP Gabah Petani / kg</label>
+          <input id="inputHpp" type="text" placeholder="Contoh: Rp 6.200 / kg" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary outline-none transition-all placeholder:text-slate-400">
         </div>
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Harga Jual GKP / kg</label>
-          <input id="inputHargaJual" type="text" placeholder="Contoh: Rp 7.400 / kg" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-primary outline-none">
+          <label class="block text-sm font-bold text-on-surface mb-1.5">Harga Jual GKP / kg</label>
+          <input id="inputHargaJual" type="text" placeholder="Contoh: Rp 7.400 / kg" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary outline-none transition-all placeholder:text-slate-400">
         </div>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-on-surface mb-1">Analisis Margin &amp; Pembiayaan Usaha Tani</label>
-        <textarea id="inputAnalisisFin" rows="2" placeholder="Tuliskan hasil wawancara terkait marjin pedagang, biaya angkut, dan pembiayaan modal..." class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed font-normal focus:border-primary outline-none"></textarea>
+        <label class="block text-sm font-bold text-on-surface mb-1.5">Analisis Margin &amp; Pembiayaan Usaha Tani</label>
+        <textarea id="inputAnalisisFin" rows="3" placeholder="Tuliskan hasil wawancara terkait marjin pedagang, biaya angkut, dan pembiayaan modal..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base leading-relaxed font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400"></textarea>
       </div>
     </div>
 
     <!-- FORM SECTION 3: CULTURE & REFLECTION -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
-      <div class="flex items-center gap-2 text-primary font-bold text-sm border-b border-surface-container pb-2">
-        <span class="material-symbols-outlined text-lg text-purple-600">account_balance</span>
+    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
+      <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
+        <span class="material-symbols-outlined text-xl text-purple-600">account_balance</span>
         <span>Instrumen 3: Refleksi Budaya &amp; Guyub Warga</span>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-on-surface mb-1">Catatan Tradisi Sambatan / Gotong Royong Pengairan</label>
-        <textarea id="inputBudaya" rows="2" placeholder="Tuliskan catatan kearifan lokal gotong royong pengelolaan air di saluran irigasi..." class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed font-normal focus:border-primary outline-none"></textarea>
+        <label class="block text-sm font-bold text-on-surface mb-1.5">Catatan Tradisi Sambatan / Gotong Royong Pengairan</label>
+        <textarea id="inputBudaya" rows="3" placeholder="Tuliskan catatan kearifan lokal gotong royong pengelolaan air di saluran irigasi..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base leading-relaxed font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400"></textarea>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-on-surface mb-1">Kesimpulan Kelompok</label>
-        <textarea id="inputKesimpulan" rows="2" placeholder="Tuliskan kesimpulan akhir hasil penyelidikan lapangan kelompok..." class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed font-normal focus:border-primary outline-none"></textarea>
+        <label class="block text-sm font-bold text-on-surface mb-1.5">Kesimpulan Kelompok</label>
+        <textarea id="inputKesimpulan" rows="3" placeholder="Tuliskan kesimpulan akhir hasil penyelidikan lapangan kelompok..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base leading-relaxed font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400"></textarea>
       </div>
     </div>
 
     <!-- FORM SECTION 4: FILE ATTACHMENT -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-      <div class="flex items-center gap-2 text-primary font-bold text-sm border-b border-surface-container pb-2">
-        <span class="material-symbols-outlined text-lg text-teal-600">upload_file</span>
+    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+      <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
+        <span class="material-symbols-outlined text-xl text-teal-600">upload_file</span>
         <span>Unggah Dokumen Laporan Lengkap (PDF)</span>
       </div>
 
-      <div id="dropzoneBox" class="border-2 border-dashed border-outline-variant/70 rounded-2xl p-4 text-center flex flex-col items-center justify-center gap-1.5 bg-surface-container-low/50">
-        <span class="material-symbols-outlined text-3xl text-outline-variant">cloud_upload</span>
-        <span id="attachedFileName" class="text-xs font-bold text-on-surface">Belum ada file dipilih</span>
-        <span class="text-[10px] text-on-surface-variant">Pilih atau seret berkas PDF laporan kegiatan ke sini</span>
+      <div id="dropzoneBox" class="border-2 border-dashed border-outline-variant/70 rounded-2xl p-5 text-center flex flex-col items-center justify-center gap-2 bg-surface-container-low/50">
+        <span class="material-symbols-outlined text-4xl text-outline-variant">cloud_upload</span>
+        <span id="attachedFileName" class="text-sm font-bold text-on-surface">Belum ada file dipilih</span>
+        <span class="text-xs text-on-surface-variant font-medium">Pilih atau seret berkas PDF laporan kegiatan ke sini</span>
       </div>
 
-      <button id="saveLkpdBtn" onclick="saveAndSubmitLKPD()" class="w-full py-3.5 rounded-xl bg-primary text-white font-bold text-sm shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer">
-        <span class="material-symbols-outlined text-lg">send</span>
+      <button id="saveLkpdBtn" onclick="saveAndSubmitLKPD()" class="w-full py-4 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-base shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2.5 mt-2 cursor-pointer">
+        <span class="material-symbols-outlined text-xl">send</span>
         <span>Simpan &amp; Kirim Laporan ke Fasilitator</span>
       </button>
     </div>
@@ -268,8 +273,92 @@
         window.location.href = 'index.html';
         return;
       }
+
+      // Verifikasi keterbukaan jadwal hari ini
+      const urlParams = new URLSearchParams(window.location.search);
+      const rawDay = urlParams.get('day');
+      const dayNum = (rawDay !== null && rawDay !== '') ? parseInt(rawDay) : 1;
+
+      if (dayNum === 0) {
+        const banner = document.createElement('div');
+        banner.className = 'p-4 rounded-3xl bg-amber-500/15 border border-amber-400 text-amber-950 flex items-center gap-3 shadow-xs';
+        banner.innerHTML = `
+          <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-xl">model_training</span>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Day 0 • Gladi Bersih</span>
+            <span class="text-sm font-extrabold leading-snug">LKPD Digital Simulasi &amp; Latihan Pengisian</span>
+            <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Formulir ini dapat digunakan untuk mencoba pengisian data observasi dan pengunggahan berkas sebelum pelaksanaan riset sesungguhnya.</p>
+          </div>
+        `;
+        const mainEl = document.querySelector('main');
+        if (mainEl) mainEl.insertBefore(banner, mainEl.firstChild);
+      }
+
+      const isReadOnlyUrl = (urlParams.get('readonly') === '1');
+      const nisn = activeUser ? (activeUser.nisn || activeUser.identifier) : '';
+
+      FincestemCore.schedule.getSchedule(function(days) {
+        FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+          const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
+          if (!access.canAccess) {
+            FincestemCore.ui.toast(`Aktivitas Day ${dayNum} belum dapat diakses! Harap tunggu penetapan status 'Completed' dari Fasilitator pada Day ${dayNum - 1}.`, 'error');
+            setTimeout(() => {
+              window.location.replace('dashboard.html');
+            }, 1200);
+            return;
+          }
+
+          if (!access.canEdit || isReadOnlyUrl) {
+            const saveBtn = document.getElementById('saveLkpdBtn');
+            if (saveBtn) saveBtn.classList.add('hidden');
+
+            const dropzone = document.getElementById('dropzoneBox');
+            if (dropzone) dropzone.classList.add('pointer-events-none', 'opacity-60');
+
+            const inputs = document.querySelectorAll('input, textarea');
+            inputs.forEach(el => {
+              el.setAttribute('disabled', 'disabled');
+              el.classList.add('bg-slate-100', 'cursor-not-allowed');
+            });
+
+            const roBanner = document.createElement('div');
+            roBanner.className = 'p-4 rounded-3xl bg-amber-500/15 border border-amber-400 text-amber-950 flex items-center gap-3 shadow-xs mb-3';
+            roBanner.innerHTML = `
+              <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-xl">lock_clock</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Mode Hanya Lihat (Read-Only)</span>
+                <span class="text-sm font-extrabold leading-snug">Jadwal Day ${dayNum} Ditutup oleh Admin</span>
+                <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Anda tetap dapat meninjau data pengamatan yang tersimpan, namun pengiriman atau pembaharuan data baru dinonaktifkan.</p>
+              </div>
+            `;
+            const mainEl = document.querySelector('main');
+            if (mainEl) mainEl.insertBefore(roBanner, mainEl.firstChild);
+          }
+        });
+      });
+
       if (activeUser.group) {
         document.getElementById('lkpdGroupName').textContent = activeUser.group + (activeUser.class ? ' (' + activeUser.class + ')' : '');
+      }
+
+      // Tampilkan nama fasilitator kelas
+      const studentClass = activeUser.class || '';
+      let initialFasil = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+        : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+      document.getElementById('lkpdFacilitatorName').textContent = initialFasil;
+
+      if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
+        FincestemCore.assignments.getAssignments(function() {
+          const freshFasil = FincestemCore.assignments.getClassFacilitator(studentClass);
+          if (freshFasil) {
+            document.getElementById('lkpdFacilitatorName').textContent = freshFasil;
+          }
+        });
       }
       loadLKPDData();
     });
@@ -374,14 +463,16 @@
 
         // Sinkronkan ke modul progres siswa
         const urlParams = new URLSearchParams(window.location.search);
-        const dayNum = parseInt(urlParams.get('day')) || 2;
+        const rawDay = urlParams.get('day');
+        const dayNum = (rawDay !== null && rawDay !== '') ? parseInt(rawDay) : 2;
         if (FincestemCore.progress && activeUser && (activeUser.nisn || activeUser.identifier)) {
           FincestemCore.progress.submitTask(activeUser.nisn || activeUser.identifier, dayNum, 'lkpd', answers);
         }
 
         btn.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Berhasil Disimpan</span>';
         btn.classList.remove('pointer-events-none', 'opacity-80');
-        FincestemCore.ui.toast('Laporan LKPD Day ' + dayNum + ' berhasil disimpan & progres diperbarui!', 'success');
+        const dayLabel = dayNum === 0 ? 'Day 0 (Simulasi)' : 'Day ' + dayNum;
+        FincestemCore.ui.toast('Laporan LKPD ' + dayLabel + ' berhasil disimpan & progres diperbarui!', 'success');
         loadLKPDData();
       }, 500);
     }

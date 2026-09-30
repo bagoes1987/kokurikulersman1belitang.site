@@ -11,7 +11,7 @@ function getDB() {
         $options = [
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_EMULATE_PREPARES   => true,
         ];
         try {
             $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
@@ -27,6 +27,11 @@ function getDB() {
  * Standard JSON Response Helper
  */
 function jsonResponse($success, $message = '', $data = null, $code = 200) {
+    if (!headers_sent()) {
+        header('Content-Type: application/json; charset=utf-8');
+        header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+        header('Pragma: no-cache');
+    }
     http_response_code($code);
     echo json_encode([
         'success'   => (bool)$success,

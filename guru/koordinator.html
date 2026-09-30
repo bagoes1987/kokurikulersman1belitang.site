@@ -5,14 +5,14 @@
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
   <title>Portal Koordinator - FINCESTEM 2026 - SMAN 1 Belitang</title>
   <meta name="title" content="Portal Koordinator - FINCESTEM 2026 SMAN 1 Belitang">
-  <meta name="description" content="Portal Monitoring Wilayah & Validasi Rute Riset Kokurikuler FINCESTEM SMAN 1 Belitang.">
+  <meta name="description" content="Portal Koordinasi Kelas, Monitoring Kinerja Fasilitator & Validasi Rute Riset Kokurikuler FINCESTEM SMAN 1 Belitang.">
 
   <!-- Open Graph / WhatsApp / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kokurikulersman1belitang.site/guru/koordinator.html">
   <meta property="og:site_name" content="FINCESTEM SMAN 1 Belitang">
   <meta property="og:title" content="Portal Koordinator - FINCESTEM 2026 SMAN 1 Belitang">
-  <meta property="og:description" content="Portal Monitoring Wilayah & Validasi Rute Riset Kokurikuler FINCESTEM SMAN 1 Belitang.">
+  <meta property="og:description" content="Portal Koordinasi Kelas, Monitoring Kinerja Fasilitator & Validasi Rute Riset Kokurikuler FINCESTEM SMAN 1 Belitang.">
   <meta property="og:image" content="https://kokurikulersman1belitang.site/og-banner.jpg">
   <meta property="og:image:secure_url" content="https://kokurikulersman1belitang.site/og-banner.jpg">
   <meta property="og:image:type" content="image/jpeg">
@@ -24,7 +24,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://kokurikulersman1belitang.site/guru/koordinator.html">
   <meta name="twitter:title" content="Portal Koordinator - FINCESTEM 2026 SMAN 1 Belitang">
-  <meta name="twitter:description" content="Portal Monitoring Wilayah & Validasi Rute Riset Kokurikuler FINCESTEM SMAN 1 Belitang.">
+  <meta name="twitter:description" content="Portal Koordinasi Kelas, Monitoring Kinerja Fasilitator & Validasi Rute Riset Kokurikuler FINCESTEM SMAN 1 Belitang.">
   <meta name="twitter:image" content="https://kokurikulersman1belitang.site/og-banner.jpg">
 
   <!-- Legacy & Web Crawler Image Fallback -->
@@ -119,9 +119,9 @@
 
   <!-- TOP HEADER (HANYA AKTIF SAAT LOGIN) -->
   <header id="dashboardHeader" class="hidden sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
-    <div class="h-16 px-4 flex items-center justify-between max-w-lg mx-auto w-full">
+    <div class="h-16 px-4 flex items-center justify-between max-w-xl mx-auto w-full">
       <div class="flex items-center gap-3">
-        <a href="../" class="w-10 h-10 rounded-2xl bg-teal-50 flex items-center justify-center p-1 border border-teal-200 shrink-0">
+        <a href="../" class="w-10 h-10 rounded-2xl bg-orange-50 flex items-center justify-center p-1 border border-orange-200 shrink-0">
           <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
         </a>
         <div class="flex flex-col">
@@ -139,21 +139,29 @@
       </div>
     </div>
 
-    <!-- TABS (HANYA AKTIF SAAT LOGIN) -->
-    <div id="koordTabs" class="hidden max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50">
-      <button id="btnTabKoord1" onclick="switchKoordTab('monitoring')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#F15A24] text-[#F15A24]">
-        Monitoring Wilayah
+    <!-- 4 TABS UTAMA KOORDINATOR -->
+    <div id="koordTabs" class="hidden max-w-xl mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50 overflow-x-auto no-scrollbar">
+      <button id="btnTabKoord1" onclick="switchKoordTab('ringkasan')" class="py-2 px-2.5 text-center text-xs font-bold border-b-2 border-[#F15A24] text-[#F15A24] whitespace-nowrap cursor-pointer">
+        Ringkasan &amp; Kelas
       </button>
-      <button id="btnTabKoord2" onclick="switchKoordTab('persetujuan')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">
-        Validasi Rute
+      <button id="btnTabKoord2" onclick="switchKoordTab('siswa')" class="py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer flex items-center gap-1">
+        <span>Daftar Siswa</span>
+        <span class="text-[9.5px] px-1.5 py-0.2 rounded bg-slate-100 font-bold text-slate-600">Read-Only</span>
       </button>
-      <button id="btnTabKoord3" onclick="switchKoordTab('rekap')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">
-        Rekapitulasi
+      <button id="btnTabKoord3" onclick="switchKoordTab('kinerja')" class="py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
+        Kinerja Fasilitator
+      </button>
+      <button id="btnTabKoord4" onclick="switchKoordTab('wilayah')" class="py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
+        Wilayah &amp; Rute
+      </button>
+      <button id="btnTabKoord5" onclick="switchKoordTab('galeri')" class="py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer flex items-center gap-1">
+        <span class="material-symbols-outlined text-sm">photo_library</span>
+        <span>Dokumentasi Riset</span>
       </button>
     </div>
   </header>
 
-  <!-- FORM LOGIN KOORDINATOR (TAMPIL JIKA BELUM LOGIN - PERSIS SEPERTI SISWA) -->
+  <!-- FORM LOGIN KOORDINATOR (TAMPIL JIKA BELUM LOGIN) -->
   <main id="loginSection" class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full p-6">
     <div class="flex items-center justify-between mb-8">
       <a href="../" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs transition-all">
@@ -168,8 +176,8 @@
         <div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center p-2 border border-outline-variant/30 shadow-xs">
           <img src="../LOGO SMAN1 BELITANG.png" alt="SMAN 1 Belitang" class="w-full h-full object-contain">
         </div>
-        <h1 class="text-xl font-extrabold text-primary">Login Koordinator Wilayah</h1>
-        <p class="text-xs text-on-surface-variant max-w-xs">Akses monitoring zona ekspedisi, validasi izin rute riset, dan rekapitulasi evaluasi kokurikuler.</p>
+        <h1 class="text-xl font-extrabold text-primary">Login Koordinator Kelas</h1>
+        <p class="text-xs text-on-surface-variant max-w-xs">Koordinasi kelas binaan, monitoring progres siswa, dan pemantauan kinerja guru fasilitator.</p>
       </div>
 
       <div class="flex flex-col gap-4 mt-2">
@@ -199,7 +207,7 @@
       </div>
 
       <div class="border-t border-outline-variant/20 pt-4 text-center">
-        <p class="text-[11px] text-on-surface-variant">Kendala akses pimpinan? Hubungi Administrator IT SMAN 1 Belitang.</p>
+        <p class="text-[11px] text-on-surface-variant">Kendala akun koordinator? Hubungi Administrator IT SMAN 1 Belitang.</p>
       </div>
     </div>
 
@@ -211,103 +219,169 @@
     </div>
   </main>
 
-  <!-- MAIN CONTENT (TERPROTEKSI - HANYA DITAMPILKAN JIKA SUDAH LOGIN) -->
-  <main id="portalContent" class="hidden flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
+  <!-- MAIN CONTENT (TERPROTEKSI) -->
+  <main id="portalContent" class="hidden flex-1 flex flex-col max-w-xl mx-auto w-full p-4 gap-4 pb-20">
 
     <!-- USER BADGE (ORANYE #F15A24) -->
     <div class="bg-gradient-to-r from-[#F15A24] to-[#c73e0c] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white">
+        <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white shrink-0">
           <span class="material-symbols-outlined text-2xl">account_tree</span>
         </div>
-        <div class="flex flex-col">
-          <span class="text-[11px] text-orange-100 font-semibold">Koordinator Lapangan</span>
-          <h2 id="koordUserName" class="text-sm font-extrabold text-white leading-tight">Koordinator Utama</h2>
-          <span id="koordUserMeta" class="text-[10.5px] text-orange-200/80">Koordinator Wilayah SMAN 1 Belitang</span>
+        <div class="flex flex-col min-w-0">
+          <span class="text-[11px] text-orange-100 font-semibold">Guru Koordinator Kelas</span>
+          <h2 id="koordUserName" class="text-sm font-extrabold text-white leading-tight truncate">Koordinator Utama</h2>
+          <span id="koordUserMeta" class="text-[10.5px] text-orange-200/80 truncate">Koordinator Kokurikuler FINCESTEM</span>
         </div>
       </div>
-      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold">Koordinator</span>
+      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold shrink-0">Koordinator</span>
     </div>
 
-    <!-- STATS -->
-    <div class="grid grid-cols-3 gap-2 text-center">
-      <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span id="statSiswaCount" class="text-base font-extrabold text-[#F15A24]">0</span>
-        <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Siswa Terdaftar</span>
+    <!-- TAB 1: RINGKASAN & KELAS KOORDINATOR -->
+    <div id="panelKoordRingkasan" class="flex flex-col gap-3">
+      <!-- 1. RINGKASAN STATS 4 KPI -->
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
+          <span id="statCoordinatedClassesCount" class="text-base font-extrabold text-[#F15A24]">0</span>
+          <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Kelas Binaan</span>
+        </div>
+        <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
+          <span id="statClassFacilitatorsCount" class="text-base font-extrabold text-[#006a61]">0</span>
+          <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Fasilitator Kelas</span>
+        </div>
+        <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
+          <span id="statCoordinatedStudentsCount" class="text-base font-extrabold text-primary">0</span>
+          <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Total Siswa</span>
+        </div>
       </div>
-      <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span id="statGroupCount" class="text-base font-extrabold text-[#F15A24]">0</span>
-        <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Kelompok Riset</span>
-      </div>
-      <div class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/25 shadow-2xs">
-        <span id="statFasilitatorCount" class="text-base font-extrabold text-[#F15A24]">0</span>
-        <span class="block text-[10.5px] text-on-surface-variant mt-0.5 font-medium">Fasilitator Guru</span>
-      </div>
-    </div>
 
-    <!-- TAB 1: MONITORING -->
-    <div id="panelKoordMonitoring" class="flex flex-col gap-3">
+      <!-- 2. KELAS KOORDINATOR (CARDS PER KELAS) -->
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between">
-          <h3 class="font-bold text-sm text-on-surface">Monitoring Zona OKU Timur</h3>
-          <span id="countZonaOKU" class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800">0 Kelompok</span>
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">Daftar Kelas yang Dikoordinasikan</h3>
+            <p class="text-[11px] text-on-surface-variant">Hubungan Fasilitator otomatis terhubung melalui kelas binaan.</p>
+          </div>
+          <span id="badgeClassCountSummary" class="px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold bg-orange-100 text-[#F15A24]">0 Rombel</span>
         </div>
-        <p class="text-xs text-on-surface-variant leading-relaxed">
-          Penyebaran kelompok riset di Bendungan Komering, Saluran Irigasi BK 1 s.d. BK 12, Candi Martapura, dan Sentra Agribisnis Belitang.
-        </p>
-        <div id="monitoringOKUList" class="flex flex-col gap-2">
-          <div class="p-3 rounded-2xl bg-surface-container-low text-xs text-outline text-center">
-            Belum ada kelompok yang terdaftar di Zona OKU Timur.
+
+        <div id="containerClassCoordinatorCards" class="flex flex-col gap-3 pt-1">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: DAFTAR SISWA (READ-ONLY) -->
+    <div id="panelKoordSiswa" class="hidden flex flex-col gap-3">
+      <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center gap-2 text-xs text-amber-900 shadow-2xs">
+        <span class="material-symbols-outlined text-base text-amber-600 shrink-0">visibility</span>
+        <span class="leading-relaxed"><strong>Peran Read-Only:</strong> Koordinator hanya dapat memonitor data pengerjaan &amp; penilaian siswa. Penilaian dan feedback dilakukan oleh Guru Fasilitator.</span>
+      </div>
+
+      <!-- FILTER & SEARCH SISWA -->
+      <div class="p-3.5 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 flex flex-col gap-2.5 shadow-xs">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-on-surface flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm text-[#F15A24]">filter_alt</span> Filter Siswa Binaan
+          </span>
+          <span id="lblTotalFilteredKoordStudents" class="text-[11px] text-on-surface-variant font-semibold">0 Siswa</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <select id="selKoordFilterClass" onchange="onKoordClassFilterChanged(this.value)" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-[#F15A24] outline-none">
+            <option value="ALL">Semua Kelas Koordinasi</option>
+          </select>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-2.5 text-xs text-on-surface-variant">search</span>
+            <input type="text" id="inputKoordStudentSearch" oninput="onKoordSearchInput(this.value)" placeholder="Cari nama atau NISN..." class="w-full pl-8 pr-3 py-2 rounded-xl border border-outline-variant/50 text-xs outline-none focus:border-[#F15A24]">
           </div>
         </div>
       </div>
 
+      <!-- LIST SISWA BINAAN -->
+      <div id="containerKoordStudentList" class="flex flex-col gap-2.5">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- TAB 3: MONITORING KINERJA FASILITATOR -->
+    <div id="panelKoordKinerja" class="hidden flex flex-col gap-3">
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between">
-          <h3 class="font-bold text-sm text-on-surface">Monitoring Zona Luar OKU Timur</h3>
-          <span id="countZonaLuar" class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-purple-100 text-purple-800">0 Kelompok</span>
-        </div>
-        <p class="text-xs text-on-surface-variant leading-relaxed">
-          Perjalanan pembelajaran dan eksplorasi sains lintas wilayah terkoordinasi.
-        </p>
-        <div id="monitoringLuarList" class="flex flex-col gap-2">
-          <div class="p-3 rounded-2xl bg-surface-container-low text-xs text-outline text-center">
-            Belum ada kelompok yang terdaftar di Zona Luar OKU Timur.
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">Monitoring Kinerja Guru Fasilitator</h3>
+            <p class="text-[11px] text-on-surface-variant">Evaluasi kecepatan koreksi tugas, review siswa, dan catatan koordinasi.</p>
           </div>
+          <span id="badgeFasilPerformanceCount" class="px-2.5 py-0.5 rounded-full text-[10.5px] font-extrabold bg-teal-100 text-[#006a61]">0 Guru</span>
+        </div>
+
+        <div id="containerFasilPerformanceList" class="flex flex-col gap-3 pt-1">
+          <!-- Populated by JS -->
         </div>
       </div>
     </div>
 
-    <!-- TAB 2: PERSETUJUAN RUTE -->
-    <div id="panelKoordPersetujuan" class="hidden flex flex-col gap-3">
-      <!-- Synced dynamically by JavaScript -->
-    </div>
-
-    <!-- TAB 3: REKAP -->
-    <div id="panelKoordRekap" class="hidden flex flex-col gap-3">
+    <!-- TAB 4: WILAYAH & RUTE -->
+    <div id="panelKoordWilayah" class="hidden flex flex-col gap-3">
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-        <h3 class="font-bold text-sm text-on-surface">Rekapitulasi Evaluasi Kokurikuler</h3>
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-sm text-on-surface">Monitoring Zona Riset</h3>
+          <span id="badgeTotalGroupsCount" class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800">0 Kelompok</span>
+        </div>
         <p class="text-xs text-on-surface-variant leading-relaxed">
-          Laporan terpadu pencapaian rubrik penilaian 4 pilar, status verifikasi rute, dan portofolio seluruh peserta didik.
+          Penyebaran kelompok riset di Bendungan Komering, Saluran Irigasi BK 1 s.d. BK 12, dan Sentra Agribisnis Belitang.
         </p>
-        <div class="p-3 rounded-2xl bg-surface-container-low text-xs flex flex-col gap-1.5 text-on-surface-variant">
-          <div class="flex justify-between">
-            <span>Total Kelompok Terdaftar:</span>
-            <span id="rekapTotalGroups" class="font-bold text-on-surface">0</span>
+
+        <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+          <div class="p-3 rounded-2xl bg-teal-50 border border-teal-200 flex flex-col gap-1">
+            <span class="font-bold text-teal-900">OKU Timur</span>
+            <span id="countZonaOKU" class="text-lg font-black text-teal-700">0 Kelompok</span>
           </div>
-          <div class="flex justify-between">
-            <span>Rute Telah Disetujui:</span>
-            <span id="rekapApprovedRoutes" class="font-bold text-teal-700">0</span>
-          </div>
-          <div class="flex justify-between">
-            <span>LKPD Telah Dinilai:</span>
-            <span id="rekapGradedLKPD" class="font-bold text-primary">0</span>
+          <div class="p-3 rounded-2xl bg-purple-50 border border-purple-200 flex flex-col gap-1">
+            <span class="font-bold text-purple-900">Luar OKU Timur</span>
+            <span id="countZonaLuar" class="text-lg font-black text-purple-700">0 Kelompok</span>
           </div>
         </div>
-        <button onclick="exportReport()" class="w-full py-3 rounded-xl bg-[#F15A24] text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-[#c73e0c] transition-all shadow-sm cursor-pointer">
-          <span class="material-symbols-outlined text-lg">download</span>
-          <span>Unduh Rekap Laporan Ekspedisi (Excel)</span>
-        </button>
+
+        <div id="monitoringGroupList" class="flex flex-col gap-2 pt-2 border-t border-outline-variant/15">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: GALERI DOKUMENTASI RISET LAPANGAN KOORDINATOR -->
+    <div id="panelKoordGaleri" class="hidden flex flex-col gap-3">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">Monitoring Dokumentasi Riset Siswa</h3>
+            <p class="text-xs text-on-surface-variant">Pantau bukti dokumentasi di seluruh kelas binaan dengan pemisahan Kamera Geotag vs Galeri.</p>
+          </div>
+          <span id="badgeKoordPhotoCount" class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-[#F15A24]/15 text-[#F15A24]">0 Foto</span>
+        </div>
+
+        <!-- Filter Bar: Dropdown Kelas & Tombol Geotag -->
+        <div class="flex flex-col sm:flex-row gap-2 pt-1 border-t border-surface-container/60">
+          <div class="flex-1">
+            <select id="koordPhotoClassFilter" onchange="renderKoordGallery()" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-[#F15A24] outline-none">
+              <option value="all">Semua Kelas Terbina</option>
+            </select>
+          </div>
+          <div class="flex items-center gap-1.5 overflow-x-auto">
+            <button id="koordPhotoFilterAll" onclick="filterKoordPhotos('all')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#F15A24] text-white shadow-xs whitespace-nowrap cursor-pointer">Semua</button>
+            <button id="koordPhotoFilterCamera" onclick="filterKoordPhotos('camera')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>📍 Kamera Geotag</span>
+            </button>
+            <button id="koordPhotoFilterGallery" onclick="filterKoordPhotos('gallery')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              <span>📁 Galeri</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="koordPhotoGrid" class="grid grid-cols-2 gap-2.5 pt-1">
+          <!-- Populated by JS -->
+        </div>
       </div>
     </div>
 
@@ -319,8 +393,59 @@
     </div>
   </main>
 
+  <!-- MODAL EVALUASI & CATATAN KOORDINATOR UNTUK FASILITATOR -->
+  <div id="modalKoordEvalFasil" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high">
+      <div class="flex items-center justify-between border-b border-surface-container pb-2">
+        <div>
+          <h3 id="modalEvalFasilName" class="font-extrabold text-base text-[#F15A24]">Evaluasi Fasilitator</h3>
+          <span id="modalEvalFasilMeta" class="text-xs text-on-surface-variant">Kelas: -</span>
+          <input type="hidden" id="modalEvalTargetFasilUser" value="">
+          <input type="hidden" id="modalEvalTargetClass" value="">
+        </div>
+        <button onclick="closeKoordEvalModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3 text-xs">
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Rating Kinerja Bimbingan:</label>
+          <select id="modalEvalRating" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-bold text-on-surface focus:border-[#F15A24] outline-none">
+            <option value="5">⭐⭐⭐⭐⭐ Sangat Baik (5 / 5)</option>
+            <option value="4">⭐⭐⭐⭐ Baik (4 / 5)</option>
+            <option value="3">⭐⭐⭐ Cukup (3 / 5)</option>
+            <option value="2">⭐⭐ Perlu Pembinaan (2 / 5)</option>
+            <option value="1">⭐ Kurang Aktif (1 / 5)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Catatan Evaluasi &amp; Rekomendasi Koordinator:</label>
+          <textarea id="modalEvalNotes" rows="4" placeholder="Tuliskan masukan koordinasi untuk guru fasilitator ini (misal: percepat review tugas Day 2, ingatkan siswa revisi LKPD)..." class="w-full p-3 rounded-xl border border-outline-variant/50 text-xs leading-relaxed focus:border-[#F15A24] outline-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-2 border-t border-surface-container">
+        <button onclick="closeKoordEvalModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all">
+          Batal
+        </button>
+        <button onclick="submitKoordEvalFasil()" class="flex-1 py-2.5 rounded-xl bg-[#F15A24] hover:bg-[#c73e0c] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md">
+          <span class="material-symbols-outlined text-sm">save</span>
+          <span>Simpan Catatan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/siswa_data.js"></script>
+  <script src="../js/guru_data.js"></script>
   <script src="../js/core.js"></script>
   <script>
+    let currentCoordinatorData = null;
+    let selectedKoordClassFilter = 'ALL';
+    let koordStudentSearchQuery = '';
+
     document.addEventListener('DOMContentLoaded', () => {
       checkKoordAuth();
 
@@ -352,13 +477,9 @@
 
         if (user && user.name) {
           document.getElementById('koordUserName').textContent = user.name;
-          document.getElementById('koordUserMeta').textContent = user.assignment || 'Koordinator Wilayah SMAN 1 Belitang';
+          document.getElementById('koordUserMeta').textContent = user.assignment || 'Koordinator Kelas SMAN 1 Belitang';
         }
-        refreshKoordinatorData();
-
-        if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
-          FincestemCore.profile.syncPhotos();
-        }
+        loadCoordinatorPortalData();
       } else {
         if (dashboardHeader) dashboardHeader.classList.add('hidden');
         if (loginSec) loginSec.classList.remove('hidden');
@@ -386,12 +507,8 @@
       const btn = document.getElementById('btnSubmitKoordLogin');
       const btnText = document.getElementById('btnKoordText');
 
-      if (!id) {
-        FincestemCore.ui.toast('Silakan masukkan akun atau NIP Koordinator!', 'error');
-        return;
-      }
-      if (!pwd) {
-        FincestemCore.ui.toast('Silakan masukkan kata sandi!', 'error');
+      if (!id || !pwd) {
+        FincestemCore.ui.toast('Harap masukkan NIP/Akun dan Kata Sandi!', 'error');
         return;
       }
 
@@ -409,7 +526,7 @@
         }
 
         FincestemCore.auth.setUser(res.user, 'koordinator');
-        FincestemCore.ui.toast('Berhasil masuk! Membuka Portal Koordinator...', 'success');
+        FincestemCore.ui.toast('Berhasil masuk ke Portal Koordinator!', 'success');
         checkKoordAuth();
       }, 400);
     }
@@ -420,156 +537,592 @@
     }
 
     function switchKoordTab(tab) {
-      ['monitoring', 'persetujuan', 'rekap'].forEach(t => {
-        const panel = document.getElementById('panelKoord' + t.charAt(0).toUpperCase() + t.slice(1));
-        const btn = document.getElementById('btnTabKoord' + (t === 'monitoring' ? '1' : (t === 'persetujuan' ? '2' : '3')));
+      const tabs = [
+        { key: 'ringkasan', btnId: 'btnTabKoord1', panelId: 'panelKoordRingkasan' },
+        { key: 'siswa', btnId: 'btnTabKoord2', panelId: 'panelKoordSiswa' },
+        { key: 'kinerja', btnId: 'btnTabKoord3', panelId: 'panelKoordKinerja' },
+        { key: 'wilayah', btnId: 'btnTabKoord4', panelId: 'panelKoordWilayah' },
+        { key: 'galeri', btnId: 'btnTabKoord5', panelId: 'panelKoordGaleri' }
+      ];
+
+      tabs.forEach(t => {
+        const panel = document.getElementById(t.panelId);
+        const btn = document.getElementById(t.btnId);
         if (panel) {
-          if (t === tab) panel.classList.remove('hidden');
+          if (t.key === tab) panel.classList.remove('hidden');
           else panel.classList.add('hidden');
         }
         if (btn) {
-          if (t === tab) {
-            btn.className = 'flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#F15A24] text-[#F15A24]';
+          if (t.key === tab) {
+            btn.className = 'py-2 px-2.5 text-center text-xs font-bold border-b-2 border-[#F15A24] text-[#F15A24] whitespace-nowrap cursor-pointer flex items-center gap-1';
           } else {
-            btn.className = 'flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface';
+            btn.className = 'py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer flex items-center gap-1';
           }
         }
       });
+
+      if (tab === 'galeri') {
+        renderKoordGallery();
+      }
     }
 
-    function getDB() {
-      try {
-        const stored = localStorage.getItem('fincestem_db_2026_v1');
-        if (stored) return JSON.parse(stored);
-      } catch (e) {}
-      return { groups: [], documentation: [] };
+    function loadCoordinatorPortalData() {
+      const user = FincestemCore.auth.getUser();
+      const coordUser = (user && user.username) || (user && user.nip) || (user && user.kode) || '';
+
+      if (FincestemCore.assignments) {
+        FincestemCore.assignments.getCoordinatorData(coordUser, function(data) {
+          currentCoordinatorData = data;
+          renderRingkasanTab(data);
+          renderSiswaTab(data);
+          renderKinerjaTab(data);
+          renderWilayahTab();
+        });
+      }
     }
 
-    function refreshKoordinatorData() {
-      const db = getDB();
-      const groups = db.groups || [];
+    // 1. RENDER RINGKASAN & KELAS KOORDINATOR
+    function renderRingkasanTab(data) {
+      if (!data) return;
 
-      // Update counters
-      document.getElementById('statGroupCount').textContent = groups.length;
-      document.getElementById('rekapTotalGroups').textContent = groups.length;
+      const classes = FincestemCore.sortClasses(data.classes || []);
+      const facilitators = data.facilitators || [];
+      const students = data.students || [];
 
-      const approvedRoutes = groups.filter(g => g.routeStatus === 'Disetujui');
-      document.getElementById('rekapApprovedRoutes').textContent = approvedRoutes.length;
+      document.getElementById('statCoordinatedClassesCount').textContent = classes.length;
+      document.getElementById('statClassFacilitatorsCount').textContent = facilitators.length;
+      document.getElementById('statCoordinatedStudentsCount').textContent = students.length;
+      document.getElementById('badgeClassCountSummary').textContent = `${classes.length} Rombel`;
 
-      const graded = groups.filter(g => g.isGraded);
-      document.getElementById('rekapGradedLKPD').textContent = graded.length;
-
-      // Update Monitoring
-      const okuGroups = groups.filter(g => (g.zone || '').toLowerCase().includes('oku timur') || !g.zone);
-      const luarGroups = groups.filter(g => (g.zone || '').toLowerCase().includes('luar'));
-
-      document.getElementById('countZonaOKU').textContent = okuGroups.length + ' Kelompok';
-      document.getElementById('countZonaLuar').textContent = luarGroups.length + ' Kelompok';
-
-      renderMonitoringZone('monitoringOKUList', okuGroups, 'Belum ada kelompok terdaftar di Zona OKU Timur.');
-      renderMonitoringZone('monitoringLuarList', luarGroups, 'Belum ada kelompok terdaftar di Zona Luar OKU Timur.');
-
-      // Update Rute Approval Panel
-      renderRuteList(groups);
-    }
-
-    function renderMonitoringZone(elementId, groupList, emptyMsg) {
-      const container = document.getElementById(elementId);
-      if (!container) return;
+      const container = document.getElementById('containerClassCoordinatorCards');
       container.innerHTML = '';
 
-      if (groupList.length === 0) {
-        container.innerHTML = `<div class="p-3 rounded-2xl bg-surface-container-low text-xs text-outline text-center">${emptyMsg}</div>`;
+      if (classes.length === 0) {
+        container.innerHTML = `
+          <div class="py-10 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-2xl border border-outline-variant/20 p-4">
+            <span class="material-symbols-outlined text-3xl text-outline mb-1">domain_disabled</span>
+            <p class="font-bold text-on-surface">Belum Ada Kelas Penugasan</p>
+            <p class="text-[11px] text-outline mt-0.5">Admin belum menetapkan rombel untuk akun koordinator Anda. Hubungi Administrator IT untuk penetapan kelas binaan.</p>
+          </div>
+        `;
         return;
       }
 
-      groupList.forEach(grp => {
-        const item = document.createElement('div');
-        item.className = 'p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-between text-xs';
-        item.innerHTML = `
-          <div>
-            <span class="font-bold text-on-surface">${grp.name || 'Kelompok Siswa'}</span>
-            <span class="block text-[11px] text-on-surface-variant">${grp.destination || 'Rute Belum Ditetapkan'}</span>
-          </div>
-          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${grp.lkpdSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-surface-container text-outline'}">
-            ${grp.lkpdSubmitted ? 'LKPD Terkirim' : 'Eksplorasi'}
+      classes.forEach(cls => {
+        const classFasils = facilitators.filter(f => f.class_name === cls);
+        const classStudents = students.filter(s => s.class_name === cls);
+        const totalStu = classStudents.length;
+
+        // Rata-rata progres kelas
+        const sumPct = classStudents.reduce((acc, s) => acc + (s.percentage || 0), 0);
+        const avgPct = totalStu > 0 ? Math.round(sumPct / totalStu) : 0;
+
+        const fasilNames = classFasils.map(f => `
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10.5px] font-bold bg-teal-50 text-[#006a61] border border-teal-200">
+            <span class="material-symbols-outlined text-xs">person</span>
+            <span>${f.teacher_name || f.teacher_username}</span>
           </span>
-        `;
-        container.appendChild(item);
-      });
-    }
+        `).join(' ');
 
-    function renderRuteList(groups) {
-      const panel = document.getElementById('panelKoordPersetujuan');
-      panel.innerHTML = '';
-
-      if (groups.length === 0) {
-        panel.innerHTML = `
-          <div class="py-12 px-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 flex flex-col items-center justify-center text-center gap-2 shadow-xs">
-            <div class="w-14 h-14 rounded-2xl bg-surface-container flex items-center justify-center text-outline mb-1">
-              <span class="material-symbols-outlined text-3xl">route</span>
-            </div>
-            <p class="font-bold text-sm text-on-surface">Belum Ada Pengajuan Rute</p>
-            <p class="text-xs text-outline max-w-xs leading-relaxed">
-              Pengajuan rute riset lapangan dari masing-masing kelompok siswa akan otomatis muncul di sini untuk divalidasi dan disetujui.
-            </p>
-          </div>
-        `;
-        return;
-      }
-
-      groups.forEach(grp => {
-        const isApproved = grp.routeStatus === 'Disetujui';
         const card = document.createElement('div');
-        card.className = 'bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3';
+        card.className = 'p-4 rounded-2xl bg-surface-container-low border border-outline-variant/25 shadow-2xs flex flex-col gap-3';
         card.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div>
-              <h4 class="font-bold text-sm text-on-surface">${grp.name || 'Kelompok Siswa'}</h4>
-              <span class="text-xs text-on-surface-variant">${grp.destination || grp.zone || 'Rute Lapangan'}</span>
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex flex-col min-w-0">
+              <div class="flex items-center gap-2">
+                <span class="w-8 h-8 rounded-xl bg-orange-100 text-[#F15A24] flex items-center justify-center font-black text-xs">
+                  ${cls.replace('KELAS ', '')}
+                </span>
+                <h4 class="font-extrabold text-sm text-on-surface truncate">${cls}</h4>
+              </div>
+              <span class="text-[11px] text-on-surface-variant font-medium mt-1">
+                ${totalStu} Peserta Didik Terdaftar
+              </span>
             </div>
-            <span class="px-2.5 py-0.5 rounded-full text-xs font-bold ${isApproved ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'}">
-              ${grp.routeStatus || 'Menunggu'}
+            <span class="px-2.5 py-1 rounded-xl text-xs font-black bg-orange-50 text-[#F15A24] border border-orange-200">
+              ${avgPct}% Selesai
             </span>
           </div>
-          <div class="text-xs text-on-surface-variant flex flex-col gap-1 bg-surface-container-low p-3 rounded-2xl">
-            <span>Ketua: <strong>${grp.leader || '-'}</strong> • Kelas: <strong>${grp.class || '-'}</strong></span>
-            <span>Fasilitator Pembina: <strong>${grp.facilitator || '-'}</strong></span>
+
+          <!-- Fasilitator di kelas ini -->
+          <div class="p-2.5 rounded-xl bg-white border border-outline-variant/20 flex flex-col gap-1 text-xs">
+            <span class="text-[10.5px] font-bold text-on-surface-variant">Fasilitator Pembina:</span>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              ${fasilNames || '<span class="text-slate-400 italic text-[11px]">Belum ada fasilitator ditugaskan</span>'}
+            </div>
           </div>
-          <div class="flex gap-2">
-            <button onclick="approveRoute('${grp.id}')" class="flex-1 py-2.5 rounded-xl ${isApproved ? 'bg-surface-container text-on-surface' : 'bg-[#F15A24] text-white hover:bg-[#c73e0c]'} text-xs font-bold transition-all flex items-center justify-center gap-1 cursor-pointer">
-              <span class="material-symbols-outlined text-sm">check_circle</span>
-              <span>${isApproved ? 'Rute Telah Disetujui' : 'Setujui Rute Ini'}</span>
+
+          <!-- Progress bar rombel -->
+          <div class="flex flex-col gap-1 text-[10.5px] text-on-surface-variant">
+            <div class="flex justify-between font-semibold">
+              <span>Progres Rata-rata Kelas:</span>
+              <span class="font-bold text-[#F15A24]">${avgPct}%</span>
+            </div>
+            <div class="w-full h-2 bg-white rounded-full overflow-hidden border border-outline-variant/30">
+              <div class="h-full bg-gradient-to-r from-[#F15A24] to-amber-500 rounded-full" style="width: ${avgPct}%"></div>
+            </div>
+          </div>
+
+          <!-- 3 Tombol Aksi Spesifikasi User -->
+          <div class="grid grid-cols-3 gap-1.5 pt-1 border-t border-outline-variant/15 text-[11px] font-bold">
+            <button onclick="viewClassStudents('${cls}')" class="py-2 px-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface flex items-center justify-center gap-1 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-sm">groups</span>
+              <span>Lihat Siswa</span>
+            </button>
+            <button onclick="viewClassProgress('${cls}', ${avgPct})" class="py-2 px-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[#F15A24] flex items-center justify-center gap-1 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-sm">trending_up</span>
+              <span>Lihat Progress</span>
+            </button>
+            <button onclick="viewClassFasilitator('${cls}')" class="py-2 px-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[#006a61] flex items-center justify-center gap-1 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-sm">monitoring</span>
+              <span>Kinerja Fasil</span>
             </button>
           </div>
         `;
-        panel.appendChild(card);
+        container.appendChild(card);
       });
     }
 
-    function approveRoute(groupId) {
-      try {
-        const db = getDB();
-        const grp = (db.groups || []).find(g => g.id === groupId);
-        if (grp) {
-          grp.routeStatus = 'Disetujui';
-          localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
-          FincestemCore.ui.toast('Rute ekspedisi kelompok ' + (grp.name || '') + ' berhasil disetujui!', 'success');
-          refreshKoordinatorData();
+    // 2. RENDER DAFTAR SISWA (READ-ONLY TANPA TOMBOL NILAI)
+    function renderSiswaTab(data) {
+      if (!data) return;
+      const classes = FincestemCore.sortClasses(data.classes || []);
+      const students = data.students || [];
+
+      // Isi filter rombel
+      const selClass = document.getElementById('selKoordFilterClass');
+      if (selClass && selClass.children.length <= 1) {
+        selClass.innerHTML = '<option value="ALL">Semua Kelas Koordinasi</option>';
+        classes.forEach(c => {
+          const opt = document.createElement('option');
+          opt.value = c;
+          opt.textContent = c;
+          selClass.appendChild(opt);
+        });
+      }
+
+      let filtered = students;
+      if (selectedKoordClassFilter !== 'ALL') {
+        filtered = filtered.filter(s => s.class_name === selectedKoordClassFilter);
+      }
+      if (koordStudentSearchQuery) {
+        const q = koordStudentSearchQuery.toLowerCase();
+        filtered = filtered.filter(s => 
+          (s.name || '').toLowerCase().includes(q) ||
+          String(s.nisn || '').includes(q) ||
+          String(s.nis || '').includes(q)
+        );
+      }
+
+      document.getElementById('lblTotalFilteredKoordStudents').textContent = `${filtered.length} Siswa`;
+
+      const container = document.getElementById('containerKoordStudentList');
+      container.innerHTML = '';
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="py-8 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-2xl border border-outline-variant/20">
+            Tidak ada siswa yang cocok dengan filter pencarian.
+          </div>
+        `;
+        return;
+      }
+
+      // Tampilkan 30 siswa pertama agar responsif
+      filtered.slice(0, 30).forEach(stu => {
+        let badgeStatusClass = 'bg-slate-100 text-slate-700';
+        let badgeStatusText = 'Belum Mulai';
+
+        if (stu.task_status === 'completed') {
+          badgeStatusClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+          badgeStatusText = 'Completed';
+        } else if (stu.task_status === 'revision') {
+          badgeStatusClass = 'bg-rose-100 text-rose-900 border border-rose-300';
+          badgeStatusText = 'Perlu Revisi';
+        } else if (stu.task_status === 'reviewed') {
+          badgeStatusClass = 'bg-blue-100 text-blue-900 border border-blue-300';
+          badgeStatusText = 'Reviewed';
+        } else if (stu.task_status === 'submitted') {
+          badgeStatusClass = 'bg-amber-100 text-amber-900 border border-amber-300';
+          badgeStatusText = 'Submitted';
         }
-      } catch (e) {
-        console.error(e);
+
+        const finalGradeBadge = stu.final_score 
+          ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-purple-100 text-purple-900 border border-purple-300">Nilai Akhir: ${stu.final_score} (${stu.final_predicate || 'A'})</span>`
+          : `<span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-100 text-slate-500">Nilai Akhir: Belum Ditetapkan</span>`;
+
+        const card = document.createElement('div');
+        card.className = 'p-3.5 rounded-2xl bg-surface-container-lowest border border-outline-variant/25 shadow-2xs flex flex-col gap-2.5';
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex flex-col min-w-0">
+              <h5 class="font-extrabold text-xs sm:text-sm text-on-surface truncate">${stu.name}</h5>
+              <span class="text-[11px] text-on-surface-variant font-medium">NISN: ${stu.nisn} &bull; ${stu.class_name}</span>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black shrink-0 ${badgeStatusClass}">
+              ${badgeStatusText}
+            </span>
+          </div>
+
+          <!-- Progress Mini Details -->
+          <div class="p-2.5 rounded-xl bg-surface-container-low flex items-center justify-between gap-2 flex-wrap text-[11px]">
+            <div class="flex items-center gap-1.5">
+              <span class="text-on-surface-variant font-semibold">Progres Day:</span>
+              <span class="font-bold text-[#F15A24]">${stu.completed_days || 0}/7 Hari (${stu.percentage || 0}%)</span>
+            </div>
+            <div>${finalGradeBadge}</div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      if (filtered.length > 30) {
+        const moreNotice = document.createElement('div');
+        moreNotice.className = 'text-center py-2 text-xs text-on-surface-variant font-medium';
+        moreNotice.textContent = `Menampilkan 30 dari ${filtered.length} siswa. Gunakan kolom pencarian di atas untuk siswa lainnya.`;
+        container.appendChild(moreNotice);
       }
     }
 
-    function exportReport() {
-      const db = getDB();
-      const count = (db.groups || []).length;
-      if (count === 0) {
-        FincestemCore.ui.toast('Belum ada data kelompok untuk diekspor.', 'info');
+    function onKoordClassFilterChanged(val) {
+      selectedKoordClassFilter = val;
+      renderSiswaTab(currentCoordinatorData);
+    }
+
+    function onKoordSearchInput(val) {
+      koordStudentSearchQuery = val.trim();
+      renderSiswaTab(currentCoordinatorData);
+    }
+
+    function viewClassStudents(className) {
+      selectedKoordClassFilter = className;
+      const selClass = document.getElementById('selKoordFilterClass');
+      if (selClass) selClass.value = className;
+      switchKoordTab('siswa');
+      renderSiswaTab(currentCoordinatorData);
+    }
+
+    function viewClassProgress(className, avgPct) {
+      FincestemCore.ui.toast(`Rombel ${className}: Rata-rata ketercapaian kegiatan ${avgPct}%. Sesuai target timeline.`, 'info');
+    }
+
+    function viewClassFasilitator(className) {
+      switchKoordTab('kinerja');
+    }
+
+    // 3. RENDER MONITORING KINERJA FASILITATOR
+    function renderKinerjaTab(data) {
+      if (!data) return;
+      const perfList = data.fasil_performance || [];
+
+      document.getElementById('badgeFasilPerformanceCount').textContent = `${perfList.length} Guru`;
+
+      const container = document.getElementById('containerFasilPerformanceList');
+      container.innerHTML = '';
+
+      if (perfList.length === 0) {
+        container.innerHTML = `
+          <div class="py-8 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-2xl border border-outline-variant/20 p-4">
+            Belum ada data kinerja fasilitator pada kelas yang dikoordinasikan.
+          </div>
+        `;
         return;
       }
-      FincestemCore.ui.toast('Mengunduh rekapitulasi data ekspedisi ' + count + ' kelompok...', 'success');
+
+      perfList.forEach(p => {
+        const total = p.total_students || 0;
+        const graded = p.graded_count || 0;
+        const unreviewed = p.unreviewed_count || 0;
+        const gradedPct = total > 0 ? Math.round((graded / total) * 100) : 0;
+
+        const ratingStars = p.coordinator_rating ? '⭐'.repeat(p.coordinator_rating) : 'Belum dinilai';
+
+        const card = document.createElement('div');
+        card.className = 'p-4 rounded-2xl bg-surface-container-low border border-outline-variant/25 shadow-2xs flex flex-col gap-3';
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-2">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-10 h-10 rounded-xl bg-teal-100 text-[#006a61] flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-xl">co_present</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <h4 class="font-extrabold text-xs sm:text-sm text-on-surface truncate">${p.teacher_name}</h4>
+                <span class="text-[11px] text-on-surface-variant font-medium">Pembina Rombel: <strong>${p.class_name}</strong> &bull; ${total} Siswa</span>
+              </div>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black shrink-0 ${gradedPct >= 70 ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'}">
+              ${gradedPct}% Dikoreksi
+            </span>
+          </div>
+
+          <!-- Indikator Kinerja Kualitatif & Kuantitatif -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px] p-2.5 rounded-xl bg-white border border-outline-variant/20">
+            <div class="flex flex-col">
+              <span class="text-on-surface-variant font-semibold">Tugas Diperiksa:</span>
+              <span class="font-bold text-teal-700">${graded} Siswa</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-on-surface-variant font-semibold">Belum Dikoreksi:</span>
+              <span class="font-bold text-amber-700">${unreviewed} Siswa</span>
+            </div>
+            <div class="flex flex-col col-span-2 sm:col-span-1">
+              <span class="text-on-surface-variant font-semibold">Aktivitas Terakhir:</span>
+              <span class="font-bold text-slate-700">${p.last_activity ? new Date(p.last_activity).toLocaleDateString('id-ID') : 'Belum aktif'}</span>
+            </div>
+          </div>
+
+          <!-- Catatan Evaluasi Koordinator -->
+          <div class="p-2.5 rounded-xl bg-orange-50/70 border border-orange-100 flex flex-col gap-1 text-xs">
+            <div class="flex items-center justify-between">
+              <span class="font-bold text-orange-950 text-[11px]">Evaluasi Koordinator:</span>
+              <span class="text-[11px] font-extrabold text-amber-600">${ratingStars}</span>
+            </div>
+            <p class="text-[11px] text-slate-700 italic leading-relaxed">
+              "${p.coordinator_notes || 'Belum ada catatan pembinaan dari Koordinator untuk fasilitator ini.'}"
+            </p>
+          </div>
+
+          <button onclick="openKoordEvalModal('${p.teacher_username}', '${p.teacher_name}', '${p.class_name}', ${p.coordinator_rating || 5}, '${(p.coordinator_notes || '').replace(/'/g, "\\'")}')" class="w-full py-2.5 rounded-xl bg-[#F15A24] hover:bg-[#c73e0c] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
+            <span class="material-symbols-outlined text-sm">rate_review</span>
+            <span>Beri Catatan Evaluasi &amp; Rating Fasilitator</span>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function openKoordEvalModal(teacherUser, teacherName, className, rating, notes) {
+      document.getElementById('modalEvalTargetFasilUser').value = teacherUser;
+      document.getElementById('modalEvalTargetClass').value = className;
+      document.getElementById('modalEvalFasilName').textContent = teacherName;
+      document.getElementById('modalEvalFasilMeta').textContent = `Fasilitator Kelas: ${className}`;
+      document.getElementById('modalEvalRating').value = rating || 5;
+      document.getElementById('modalEvalNotes').value = notes || '';
+
+      const modal = document.getElementById('modalKoordEvalFasil');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeKoordEvalModal() {
+      const modal = document.getElementById('modalKoordEvalFasil');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function submitKoordEvalFasil() {
+      const fasilUser = document.getElementById('modalEvalTargetFasilUser').value;
+      const className = document.getElementById('modalEvalTargetClass').value;
+      const rating = parseInt(document.getElementById('modalEvalRating').value) || 5;
+      const notes = document.getElementById('modalEvalNotes').value.trim();
+
+      const user = FincestemCore.auth.getUser();
+      const coordUser = (user && user.username) || (user && user.nip) || 'koordinator';
+
+      if (FincestemCore.assignments) {
+        FincestemCore.assignments.saveFacilitatorEvaluation({
+          coordinator_username: coordUser,
+          facilitator_username: fasilUser,
+          class_name: className,
+          rating: rating,
+          notes: notes
+        }, function(res) {
+          FincestemCore.ui.toast('Catatan evaluasi untuk fasilitator berhasil disimpan!', 'success');
+          closeKoordEvalModal();
+          loadCoordinatorPortalData();
+        });
+      }
+    }
+
+    // 4. RENDER WILAYAH & RUTE
+    function renderWilayahTab() {
+      try {
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        const db = stored ? JSON.parse(stored) : { groups: [] };
+        const groups = db.groups || [];
+
+        document.getElementById('badgeTotalGroupsCount').textContent = `${groups.length} Kelompok`;
+
+        const okuGroups = groups.filter(g => (g.zone || '').toLowerCase().includes('oku timur') || !g.zone);
+        const luarGroups = groups.filter(g => (g.zone || '').toLowerCase().includes('luar'));
+
+        document.getElementById('countZonaOKU').textContent = `${okuGroups.length} Kelompok`;
+        document.getElementById('countZonaLuar').textContent = `${luarGroups.length} Kelompok`;
+
+        const listContainer = document.getElementById('monitoringGroupList');
+        if (!listContainer) return;
+        listContainer.innerHTML = '';
+
+        if (groups.length === 0) {
+          listContainer.innerHTML = `<div class="p-3 rounded-2xl bg-surface-container-low text-xs text-outline text-center">Belum ada kelompok riset terdaftar.</div>`;
+          return;
+        }
+
+        groups.forEach(g => {
+          const item = document.createElement('div');
+          item.className = 'p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20 flex items-center justify-between text-xs';
+          item.innerHTML = `
+            <div>
+              <span class="font-bold text-on-surface">${g.name || 'Kelompok Siswa'}</span>
+              <span class="block text-[11px] text-on-surface-variant">${g.destination || g.zone || 'Rute Riset'}</span>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${g.routeStatus === 'Disetujui' ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'}">
+              ${g.routeStatus || 'Menunggu'}
+            </span>
+          `;
+          listContainer.appendChild(item);
+        });
+      } catch (e) {}
+    }
+
+    // 5. RENDER GALERI DOKUMENTASI KOORDINATOR
+    let koordPhotoFilterCurrent = 'all';
+
+    function filterKoordPhotos(type) {
+      koordPhotoFilterCurrent = type;
+      const btnAll = document.getElementById('koordPhotoFilterAll');
+      const btnCam = document.getElementById('koordPhotoFilterCamera');
+      const btnGal = document.getElementById('koordPhotoFilterGallery');
+      
+      if (btnAll) btnAll.className = type === 'all' ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-[#F15A24] text-white shadow-xs whitespace-nowrap cursor-pointer' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer';
+      if (btnCam) btnCam.className = type === 'camera' ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white shadow-xs whitespace-nowrap cursor-pointer flex items-center gap-1' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer flex items-center gap-1';
+      if (btnGal) btnGal.className = type === 'gallery' ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-600 text-white shadow-xs whitespace-nowrap cursor-pointer flex items-center gap-1' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer flex items-center gap-1';
+      
+      renderKoordGallery();
+    }
+
+    function renderKoordGallery() {
+      const grid = document.getElementById('koordPhotoGrid');
+      const countBadge = document.getElementById('badgeKoordPhotoCount');
+      const classSelect = document.getElementById('koordPhotoClassFilter');
+      if (!grid) return;
+
+      // Isi opsi filter kelas jika masih kosong
+      if (classSelect && classSelect.options.length <= 1) {
+        let classes = [];
+        if (currentCoordinatorData && Array.isArray(currentCoordinatorData.assigned_classes) && currentCoordinatorData.assigned_classes.length > 0) {
+          classes = currentCoordinatorData.assigned_classes;
+        } else {
+          // Ambil dari kelas umum
+          for (let i = 1; i <= 11; i++) classes.push(`KELAS X.${i}`);
+        }
+        classes.forEach(cls => {
+          const opt = document.createElement('option');
+          opt.value = cls;
+          opt.textContent = cls;
+          classSelect.appendChild(opt);
+        });
+      }
+
+      const selectedClass = classSelect ? classSelect.value : 'all';
+
+      grid.innerHTML = `
+        <div class="col-span-2 py-8 flex flex-col items-center justify-center gap-2 text-slate-400">
+          <div class="w-6 h-6 rounded-full border-2 border-[#F15A24]/30 border-t-[#F15A24] animate-spin"></div>
+          <span class="text-xs">Memuat foto dokumentasi lapangan...</span>
+        </div>
+      `;
+
+      function displayPhotos(list) {
+        let filtered = list;
+        // Filter kelas
+        if (selectedClass !== 'all') {
+          filtered = filtered.filter(p => (p.class_name || '').toUpperCase() === selectedClass.toUpperCase());
+        }
+        // Filter Geotag vs Galeri
+        if (koordPhotoFilterCurrent === 'camera') {
+          filtered = filtered.filter(p => p.has_geotag == 1 || p.source === 'camera' || p.gps_location);
+        } else if (koordPhotoFilterCurrent === 'gallery') {
+          filtered = filtered.filter(p => p.has_geotag == 0 && (p.source === 'gallery' || !p.gps_location));
+        }
+
+        if (countBadge) countBadge.textContent = filtered.length + ' Foto';
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-2 py-10 px-4 rounded-2xl bg-surface-container-low border border-dashed border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2">
+              <span class="material-symbols-outlined text-3xl text-outline">photo_library</span>
+              <p class="font-bold text-xs text-on-surface">Tidak Ada Foto Dokumentasi</p>
+              <p class="text-[11px] text-outline max-w-xs">
+                ${selectedClass !== 'all' ? 'Belum ada foto riset yang diunggah untuk ' + selectedClass + '.' : 'Belum ada foto riset pada filter ini.'}
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = '';
+        filtered.forEach(p => {
+          const isGeotag = (p.has_geotag == 1 || (p.source === 'camera' && (p.gps_location || p.gps)));
+          const imgUrl = (p.url || p.file_url || '');
+          const fixedUrl = (imgUrl.startsWith('http') || imgUrl.startsWith('data:')) ? imgUrl : ('../' + imgUrl);
+          const studentName = p.student_name || p.author || p.uploaded_by_nisn || 'Siswa';
+          const className = p.class_name || '-';
+          const safeCaption = ((p.title || 'Dokumentasi Riset') + ' • ' + studentName + ' (' + className + ')').replace(/'/g, "\\'");
+
+          const card = document.createElement('div');
+          card.className = 'group rounded-2xl overflow-hidden border border-outline-variant/25 bg-surface-container-lowest shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col';
+          card.onclick = () => FincestemCore.ui.openLightbox(fixedUrl, safeCaption + (isGeotag ? ' [📍 Kamera Geotag]' : ' [📁 Galeri]'));
+          card.innerHTML = `
+            <div class="relative aspect-[4/3] bg-surface-container overflow-hidden">
+              <img src="${fixedUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="${p.title || 'Dokumentasi'}" loading="lazy">
+              <div class="absolute top-2 left-2 flex flex-wrap gap-1">
+                ${isGeotag 
+                  ? '<span class="px-2 py-0.5 rounded-lg text-[9.5px] font-black bg-slate-900/90 text-emerald-400 backdrop-blur-xs flex items-center gap-0.5 shadow-xs"><span class="material-symbols-outlined text-[11px]">location_on</span>Kamera Geotag</span>'
+                  : '<span class="px-2 py-0.5 rounded-lg text-[9.5px] font-black bg-slate-900/90 text-amber-300 backdrop-blur-xs flex items-center gap-0.5 shadow-xs"><span class="material-symbols-outlined text-[11px]">photo_library</span>Galeri (No Geotag)</span>'}
+              </div>
+            </div>
+            <div class="p-2.5 flex flex-col gap-1">
+              <h4 class="font-extrabold text-xs text-on-surface line-clamp-1">${p.title || 'Foto Riset Lapangan'}</h4>
+              <div class="flex items-center justify-between text-[10px] text-on-surface-variant font-semibold">
+                <span class="truncate max-w-[100px]">${studentName}</span>
+                <span class="px-1.5 py-0.2 rounded bg-surface-container font-bold text-[9px] text-[#F15A24]">${className}</span>
+              </div>
+              <div class="flex items-center justify-between text-[9.5px] text-slate-400 border-t border-surface-container/60 pt-1 mt-0.5">
+                <span>${p.date || p.created_at || '-'}</span>
+                ${isGeotag && p.gps_location ? '<span class="text-emerald-700 font-bold truncate max-w-[80px]">📍 ' + p.gps_location + '</span>' : '<span class="text-amber-700 font-medium">Galeri</span>'}
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      let localDocs = [];
+      try {
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        if (stored) {
+          const db = JSON.parse(stored);
+          if (Array.isArray(db.documentation)) localDocs = db.documentation;
+        }
+      } catch(e) {}
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list')
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
+              const map = new Map();
+              res.data.forEach(d => {
+                const url = d.file_url;
+                map.set(url, {
+                  ...d,
+                  url: (url.startsWith('http') || url.startsWith('data:')) ? url : ('../' + url),
+                  date: d.created_at
+                });
+              });
+              localDocs.forEach(d => {
+                if (d.url && !map.has(d.url)) {
+                  map.set(d.url, d);
+                }
+              });
+              displayPhotos(Array.from(map.values()));
+            } else {
+              displayPhotos(localDocs);
+            }
+          })
+          .catch(() => displayPhotos(localDocs));
+      } else {
+        displayPhotos(localDocs);
+      }
     }
   </script>
 </body>

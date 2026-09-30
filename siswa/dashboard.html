@@ -22,15 +22,23 @@
   </script>
   <style>
     @layer base {
+      html {
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
       html, body {
         width: 100%;
         margin: 0;
         padding: 0;
         min-height: 100%;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       }
       body {
         overscroll-behavior-y: none;
         -webkit-tap-highlight-color: transparent;
+        line-height: 1.5;
+        letter-spacing: -0.01em;
       }
       .pb-safe {
         padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -110,265 +118,265 @@
           <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
         </a>
         <div class="flex flex-col">
-          <span class="text-[10.5px] text-[#08A7B5] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
-          <span class="text-sm font-bold text-on-surface leading-tight">Portal Siswa FINCESTEM</span>
+          <span class="text-xs text-[#08A7B5] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
+          <span class="text-base font-extrabold text-on-surface leading-tight">Portal Siswa FINCESTEM</span>
         </div>
       </div>
       <div class="flex items-center gap-2">
-        <a href="../" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
-          <span class="material-symbols-outlined text-xl">home</span>
+        <a href="../" class="p-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
+          <span class="material-symbols-outlined text-2xl">home</span>
         </a>
-        <button onclick="FincestemCore.auth.logout('./')" class="p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all cursor-pointer" title="Keluar Akun">
-          <span class="material-symbols-outlined text-xl">logout</span>
+        <button onclick="FincestemCore.auth.logout('./')" class="p-2.5 rounded-xl text-red-600 hover:bg-red-50 transition-all cursor-pointer" title="Keluar Akun">
+          <span class="material-symbols-outlined text-2xl">logout</span>
         </button>
       </div>
     </div>
   </header>
 
   <!-- MAIN DASHBOARD CONTENT -->
-  <main class="flex-1 flex flex-col max-w-xl mx-auto w-full p-3.5 sm:p-4 gap-3.5 sm:gap-4 pb-24">
+  <main class="flex-1 flex flex-col max-w-xl mx-auto w-full p-4 sm:p-5 gap-4 pb-24">
 
-    <!-- 1. USER PROFILE CARD (PROFESIONAL & SANGAT RAPI DI HP) -->
+    <!-- 1. USER PROFILE CARD (PROFESIONAL & JELAS TERBACA DI HP) -->
     <div class="bg-gradient-to-br from-[#08A7B5] via-[#068490] to-[#045D66] text-white rounded-3xl p-5 sm:p-6 shadow-md relative overflow-hidden">
       <!-- Ornamen Dekoratif -->
       <div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-cyan-300/15 blur-2xl pointer-events-none"></div>
       <div class="absolute -left-10 -top-10 w-32 h-32 rounded-full bg-teal-200/10 blur-xl pointer-events-none"></div>
 
-      <div class="relative z-10 flex flex-col gap-3.5">
+      <div class="relative z-10 flex flex-col gap-4">
         <!-- Row 1: Foto Profil & Info Siswa -->
-        <div class="flex items-center gap-3.5 min-w-0">
+        <div class="flex items-center gap-4 min-w-0">
           <div class="relative shrink-0">
-            <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-white/20 border-2 border-white/60 overflow-hidden shadow-md flex items-center justify-center">
+            <div class="w-16 h-16 sm:w-18 sm:h-18 rounded-2xl bg-white/20 border-2 border-white/60 overflow-hidden shadow-md flex items-center justify-center">
               <img id="userPhotoImg" src="" alt="Foto Siswa" class="w-full h-full object-cover hidden">
               <span id="userPhotoFallback" class="material-symbols-outlined text-3xl text-white">person</span>
             </div>
             <!-- Tombol Upload Foto dari Galeri / Drive HP -->
-            <label for="inputStudentPhoto" class="absolute -bottom-1 -right-1 w-6 h-6 sm:w-7 sm:h-7 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 flex items-center justify-center shadow-md cursor-pointer transition-transform active:scale-90" title="Upload Foto dari Drive / Galeri HP">
-              <span class="material-symbols-outlined text-xs sm:text-sm font-black">upload_file</span>
+            <label for="inputStudentPhoto" class="absolute -bottom-1 -right-1 w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 flex items-center justify-center shadow-md cursor-pointer transition-transform active:scale-90" title="Upload Foto dari Drive / Galeri HP">
+              <span class="material-symbols-outlined text-sm font-black">upload_file</span>
             </label>
             <input id="inputStudentPhoto" type="file" accept="image/*" class="hidden" onchange="handleStudentPhotoUpload(event)">
           </div>
 
           <div class="flex flex-col min-w-0 flex-1">
-            <span class="text-[10px] sm:text-[11px] text-cyan-200 font-medium leading-tight">Selamat Datang,</span>
-            <h2 id="userName" class="text-base sm:text-lg font-extrabold text-white leading-snug truncate">Peserta Didik</h2>
-            <div class="flex items-center gap-1.5 text-[11px] text-cyan-100/90 mt-0.5 flex-wrap">
+            <span class="text-xs text-cyan-200 font-semibold leading-tight">Selamat Datang,</span>
+            <h2 id="userName" class="text-lg sm:text-xl font-black text-white leading-snug truncate mt-0.5">Peserta Didik</h2>
+            <div class="flex items-center gap-2 text-xs sm:text-sm text-cyan-100 font-medium mt-1 flex-wrap">
               <span>NISN: <strong id="userNisn" class="text-white font-bold">-</strong></span>
               <span>•</span>
               <span>NIS: <strong id="userNis" class="text-white font-bold">-</strong></span>
-              <span id="userClassBadge" class="px-2 py-0.5 rounded-md bg-white/25 text-[10px] font-black text-white">KELAS X</span>
+              <span id="userClassBadge" class="px-2.5 py-0.5 rounded-lg bg-white/25 text-xs font-black text-white">KELAS X</span>
             </div>
           </div>
         </div>
 
-        <!-- Row 2: Dedicated Zone Banner (Sangat Rapi & Jelas di Layar HP) -->
-        <div class="flex items-center justify-between p-2.5 rounded-2xl bg-black/20 backdrop-blur-xs border border-white/15 gap-2">
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="w-7 h-7 rounded-xl bg-white/20 flex items-center justify-center text-white shrink-0">
-              <span class="material-symbols-outlined text-sm">explore</span>
+        <!-- Row 2: Dedicated Zone Banner (Jelas, Tebal & Nyaman Dibaca di HP) -->
+        <div class="flex items-center justify-between p-3 rounded-2xl bg-black/25 backdrop-blur-xs border border-white/20 gap-3">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-white shrink-0">
+              <span class="material-symbols-outlined text-base">explore</span>
             </span>
             <div class="flex flex-col min-w-0">
-              <span class="text-[9.5px] text-cyan-200 font-semibold leading-tight">Zona Riset Lapangan</span>
-              <span id="userZoneText" class="text-xs font-black text-white tracking-wide uppercase truncate">FINCESTEM OKU TIMUR</span>
+              <span class="text-xs text-cyan-200 font-bold leading-tight">Zona Riset Lapangan:</span>
+              <span id="userZoneText" class="text-sm font-black text-white tracking-wide uppercase truncate mt-0.5">FINCESTEM OKU TIMUR</span>
             </div>
           </div>
-          <span id="userZoneBadge" class="px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs">
+          <span id="userZoneBadge" class="px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs">
             OKU TIMUR
           </span>
         </div>
 
         <!-- Row 3: Bar Koordinator & Fasilitator (Grid Responsif Mobile) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs pt-1 border-t border-white/15">
-          <div class="flex flex-col bg-black/15 p-2 rounded-xl backdrop-blur-xs border border-white/10 min-w-0">
-            <span class="text-cyan-200 text-[10px] font-semibold flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs">manage_accounts</span> Koordinator Wilayah
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm pt-2 border-t border-white/15">
+          <div class="flex flex-col bg-black/15 p-2.5 rounded-xl backdrop-blur-xs border border-white/10 min-w-0">
+            <span class="text-cyan-200 text-xs font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">manage_accounts</span> Koordinator Wilayah
             </span>
-            <span id="userCoordinator" class="font-bold text-white text-xs mt-0.5 truncate">Drs. H. Koordinator FINCESTEM</span>
+            <span id="userCoordinator" class="font-bold text-white text-xs sm:text-sm mt-0.5 truncate">Drs. H. Koordinator FINCESTEM</span>
           </div>
-          <div class="flex flex-col bg-black/15 p-2 rounded-xl backdrop-blur-xs border border-white/10 min-w-0">
-            <span class="text-cyan-200 text-[10px] font-semibold flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs">supervisor_account</span> Fasilitator Pembina
+          <div class="flex flex-col bg-black/15 p-2.5 rounded-xl backdrop-blur-xs border border-white/10 min-w-0">
+            <span class="text-cyan-200 text-xs font-bold flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">supervisor_account</span> Fasilitator Pembina
             </span>
-            <span id="userFacilitator" class="font-bold text-white text-xs mt-0.5 truncate">Tim Fasilitator SMAN 1 Belitang</span>
+            <span id="userFacilitator" class="font-bold text-white text-xs sm:text-sm mt-0.5 truncate">Tim Fasilitator SMAN 1 Belitang</span>
           </div>
         </div>
       </div>
     </div>
 
     <!-- 2. BIODATA SISWA LENGKAP (COLLAPSIBLE / RAPI DARI DAPODIK) -->
-    <div class="bg-white rounded-3xl p-5 border border-outline-variant/30 shadow-xs">
+    <div class="bg-white rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs">
       <div class="flex items-center justify-between cursor-pointer select-none" onclick="toggleBiodataSection()">
-        <div class="flex items-center gap-2.5">
-          <div class="w-8 h-8 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center">
-            <span class="material-symbols-outlined text-lg">badge</span>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">badge</span>
           </div>
           <div>
-            <h3 class="font-extrabold text-sm text-slate-800 leading-tight">Biodata Lengkap Peserta Didik</h3>
-            <span class="text-[11px] text-slate-500">Data resmi terverifikasi Dapodik SMAN 1 Belitang</span>
+            <h3 class="font-extrabold text-base text-slate-800 leading-tight">Biodata Lengkap Peserta Didik</h3>
+            <span class="text-xs sm:text-sm text-slate-500 font-medium">Data resmi terverifikasi Dapodik SMAN 1 Belitang</span>
           </div>
         </div>
-        <button id="btnToggleBiodata" class="p-1 rounded-xl text-slate-500 hover:bg-slate-100 transition-all">
-          <span id="iconToggleBiodata" class="material-symbols-outlined text-xl transition-transform duration-300">expand_more</span>
+        <button id="btnToggleBiodata" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-all">
+          <span id="iconToggleBiodata" class="material-symbols-outlined text-2xl transition-transform duration-300">expand_more</span>
         </button>
       </div>
 
       <!-- Konten Biodata Grid -->
       <div id="biodataContainer" class="hidden mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-            <span class="text-slate-400 text-[10.5px]">Nama Lengkap:</span>
-            <span id="bioNama" class="font-bold text-slate-800 mt-0.5">-</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-500 text-xs font-semibold">Nama Lengkap:</span>
+            <span id="bioNama" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-snug">-</span>
           </div>
-          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-            <span class="text-slate-400 text-[10.5px]">Rombongan Belajar (Kelas):</span>
-            <span id="bioKelas" class="font-bold text-[#08A7B5] mt-0.5">-</span>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-500 text-xs font-semibold">Rombongan Belajar (Kelas):</span>
+            <span id="bioKelas" class="font-bold text-[#08A7B5] text-sm sm:text-base mt-0.5 leading-snug">-</span>
           </div>
-          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-            <span class="text-slate-400 text-[10.5px]">NISN / NIS:</span>
-            <span id="bioNisnNis" class="font-bold text-slate-800 mt-0.5">-</span>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-500 text-xs font-semibold">NISN / NIS:</span>
+            <span id="bioNisnNis" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-snug">-</span>
           </div>
-          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-            <span class="text-slate-400 text-[10.5px]">Jenis Kelamin / Agama:</span>
-            <span id="bioGenderAgama" class="font-bold text-slate-800 mt-0.5">-</span>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-500 text-xs font-semibold">Jenis Kelamin / Agama:</span>
+            <span id="bioGenderAgama" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-snug">-</span>
           </div>
-          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-            <span class="text-slate-400 text-[10.5px]">Tempat, Tanggal Lahir:</span>
-            <span id="bioTtl" class="font-bold text-slate-800 mt-0.5">-</span>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-500 text-xs font-semibold">Tempat, Tanggal Lahir:</span>
+            <span id="bioTtl" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-snug">-</span>
           </div>
-          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-            <span class="text-slate-400 text-[10.5px]">Asal Sekolah (SMP/MTs):</span>
-            <span id="bioAsal" class="font-bold text-slate-800 mt-0.5">-</span>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-500 text-xs font-semibold">Asal Sekolah (SMP/MTs):</span>
+            <span id="bioAsal" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-snug">-</span>
           </div>
-          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-            <span class="text-slate-400 text-[10.5px]">Nama Orang Tua (Ayah / Ibu):</span>
-            <span id="bioOrtu" class="font-bold text-slate-800 mt-0.5">-</span>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-500 text-xs font-semibold">Nama Orang Tua (Ayah / Ibu):</span>
+            <span id="bioOrtu" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-snug">-</span>
           </div>
-          <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
-            <span class="text-slate-400 text-[10.5px]">Pekerjaan Orang Tua / No. HP:</span>
-            <span id="bioPekerjaanHp" class="font-bold text-slate-800 mt-0.5">-</span>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col">
+            <span class="text-slate-500 text-xs font-semibold">Pekerjaan Orang Tua / No. HP:</span>
+            <span id="bioPekerjaanHp" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-snug">-</span>
           </div>
         </div>
-        <div class="p-2.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col text-xs">
-          <span class="text-slate-400 text-[10.5px]">Alamat Domisili Siswa:</span>
-          <span id="bioAlamat" class="font-bold text-slate-800 mt-0.5 leading-relaxed">-</span>
+        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col text-sm mt-1">
+          <span class="text-slate-500 text-xs font-semibold">Alamat Domisili Siswa:</span>
+          <span id="bioAlamat" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-relaxed">-</span>
         </div>
       </div>
     </div>
 
-    <!-- 2.5 PROGRES PENGERJAAN SISWA & EVALUASI FASILITATOR (PROFESIONAL & MOBILE FRIENDLY) -->
-    <div class="bg-white rounded-3xl p-5 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
+    <!-- 2.5 PROGRES PENGERJAAN SISWA & EVALUASI FASILITATOR (JELAS & NYAMAN DI HP) -->
+    <div class="bg-white rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
       <!-- Header Progres -->
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-2xl bg-cyan-50 text-[#08A7B5] flex items-center justify-center">
-            <span class="material-symbols-outlined text-xl">analytics</span>
+      <div class="flex items-center justify-between gap-2 flex-wrap">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-cyan-50 text-[#08A7B5] flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">analytics</span>
           </div>
           <div>
-            <h3 class="font-extrabold text-sm text-slate-800 leading-tight">Progres Riset &amp; Capaian Belajar</h3>
-            <span class="text-[11px] text-slate-500">Pelacakan instrumen tugas &amp; verifikasi pembina</span>
+            <h3 class="font-extrabold text-base text-slate-800 leading-tight">Progres Riset &amp; Capaian Belajar</h3>
+            <span class="text-xs sm:text-sm text-slate-500 font-medium">Pelacakan tugas &amp; verifikasi pembina</span>
           </div>
         </div>
-        <div class="flex items-center gap-1.5 px-3 py-1 rounded-2xl bg-teal-50 border border-teal-200/60 text-teal-800">
-          <span id="progressPercentBadge" class="text-sm font-black">0%</span>
-          <span class="text-[10px] font-bold uppercase tracking-wider text-teal-600">Selesai</span>
+        <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-teal-50 border border-teal-200/70 text-teal-900">
+          <span id="progressPercentBadge" class="text-base sm:text-lg font-black">0%</span>
+          <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Selesai</span>
         </div>
       </div>
 
       <!-- Progress Bar Visual -->
-      <div class="flex flex-col gap-1.5">
-        <div class="flex justify-between text-[11px] font-semibold text-slate-600">
+      <div class="flex flex-col gap-2">
+        <div class="flex justify-between text-xs sm:text-sm font-bold text-slate-700">
           <span id="progressMilestoneText">Tahap Investigasi Lapangan</span>
           <span id="progressDaysCompletedText">0 / 7 Hari Terpenuhi</span>
         </div>
-        <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/60">
+        <div class="w-full h-3.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/70">
           <div id="progressBarFill" class="h-full bg-gradient-to-r from-[#08A7B5] via-teal-500 to-emerald-500 rounded-full transition-all duration-700 ease-out" style="width: 0%;"></div>
         </div>
       </div>
 
       <!-- 4 Quick Stats Boxes (Grid Responsif Mobile Friendly) -->
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between gap-1">
-          <span class="text-slate-400 text-[10px] font-semibold uppercase flex items-center gap-1">
-            <span class="material-symbols-outlined text-xs text-blue-500">task_alt</span> Hari Selesai
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between gap-1.5">
+          <span class="text-slate-500 text-xs font-bold uppercase flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm text-blue-500">task_alt</span> Hari Selesai
           </span>
-          <div class="flex items-baseline gap-1 mt-0.5">
-            <span id="statCompletedDays" class="text-base font-extrabold text-slate-800">0</span>
-            <span class="text-[11px] text-slate-400 font-semibold">/ 7 Hari</span>
+          <div class="flex items-baseline gap-1 mt-1">
+            <span id="statCompletedDays" class="text-lg sm:text-xl font-black text-slate-800">0</span>
+            <span class="text-xs text-slate-500 font-bold">/ 7 Hari</span>
           </div>
         </div>
 
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between gap-1">
-          <span class="text-slate-400 text-[10px] font-semibold uppercase flex items-center gap-1">
-            <span class="material-symbols-outlined text-xs text-amber-500">description</span> LKPD &amp; Tugas
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between gap-1.5">
+          <span class="text-slate-500 text-xs font-bold uppercase flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm text-amber-500">description</span> LKPD &amp; Tugas
           </span>
-          <div class="flex items-baseline gap-1 mt-0.5">
-            <span id="statTotalSubmissions" class="text-base font-extrabold text-slate-800">0</span>
-            <span class="text-[11px] text-slate-400 font-semibold">Terkirim</span>
+          <div class="flex items-baseline gap-1 mt-1">
+            <span id="statTotalSubmissions" class="text-lg sm:text-xl font-black text-slate-800">0</span>
+            <span class="text-xs text-slate-500 font-bold">Terkirim</span>
           </div>
         </div>
 
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between gap-1">
-          <span class="text-slate-400 text-[10px] font-semibold uppercase flex items-center gap-1">
-            <span class="material-symbols-outlined text-xs text-emerald-500">hotel_class</span> Nilai Rata-rata
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between gap-1.5">
+          <span class="text-slate-500 text-xs font-bold uppercase flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm text-emerald-500">hotel_class</span> Nilai Rata-rata
           </span>
-          <div class="flex items-baseline gap-1 mt-0.5">
-            <span id="statAverageScore" class="text-base font-black text-emerald-700">-</span>
-            <span id="statPredicate" class="text-[10px] font-extrabold text-emerald-800 truncate"></span>
+          <div class="flex items-baseline gap-1 mt-1">
+            <span id="statAverageScore" class="text-lg sm:text-xl font-black text-emerald-700">-</span>
+            <span id="statPredicate" class="text-xs font-extrabold text-emerald-800 truncate"></span>
           </div>
         </div>
 
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between gap-1">
-          <span class="text-slate-400 text-[10px] font-semibold uppercase flex items-center gap-1">
-            <span class="material-symbols-outlined text-xs text-purple-500">verified</span> Status Verifikasi
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 flex flex-col justify-between gap-1.5">
+          <span class="text-slate-500 text-xs font-bold uppercase flex items-center gap-1">
+            <span class="material-symbols-outlined text-sm text-purple-500">verified</span> Status Nilai
           </span>
-          <div class="flex items-center gap-1 mt-0.5">
-            <span id="statVerificationBadge" class="px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800">Aktif Dinilai</span>
+          <div class="flex items-center gap-1 mt-1">
+            <span id="statVerificationBadge" class="px-2.5 py-1 rounded-lg text-xs font-extrabold bg-emerald-100 text-emerald-800">Aktif Dinilai</span>
           </div>
         </div>
       </div>
 
       <!-- KARTU KHUSUS: FEEDBACK & CATATAN TERBARU FASILITATOR PEMBINA -->
-      <div id="facilitatorFeedbackCard" class="p-4 rounded-2xl bg-gradient-to-br from-emerald-50/90 via-teal-50/50 to-white border border-emerald-200/80 flex flex-col gap-2.5">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <div class="w-7 h-7 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-xs font-black">
-              <span class="material-symbols-outlined text-sm">support_agent</span>
+      <div id="facilitatorFeedbackCard" class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-50/90 via-teal-50/50 to-white border border-emerald-200/80 flex flex-col gap-3">
+        <div class="flex items-center justify-between gap-2 flex-wrap">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center text-sm font-black shrink-0">
+              <span class="material-symbols-outlined text-lg">support_agent</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-[11px] font-extrabold text-emerald-950">Catatan &amp; Umpan Balik Guru Fasilitator</span>
-              <span id="feedbackFasilName" class="text-[10px] text-emerald-700 font-semibold">Tim Fasilitator SMAN 1 Belitang</span>
+              <span class="text-xs sm:text-sm font-extrabold text-emerald-950">Catatan &amp; Umpan Balik Guru Fasilitator</span>
+              <span id="feedbackFasilName" class="text-xs text-emerald-700 font-semibold">Tim Fasilitator SMAN 1 Belitang</span>
             </div>
           </div>
-          <span id="feedbackDateBadge" class="text-[10px] font-bold text-slate-400 bg-white/80 px-2 py-0.5 rounded-md border border-slate-100">Evaluasi Pembina</span>
+          <span id="feedbackDateBadge" class="text-xs font-bold text-slate-500 bg-white/90 px-2.5 py-1 rounded-lg border border-slate-200/70">Evaluasi Pembina</span>
         </div>
 
         <!-- Kutipan Feedback Autentik -->
-        <p id="feedbackQuoteText" class="text-xs text-slate-700 leading-relaxed italic bg-white/70 p-3 rounded-xl border border-emerald-100/60">
+        <p id="feedbackQuoteText" class="text-sm sm:text-base text-slate-800 leading-relaxed italic bg-white/80 p-3.5 rounded-2xl border border-emerald-100/70 font-medium">
           "Tetap cermat dalam pencatatan parameter mutu air dan wawancara rantai pasok gabah. Pertahankan kerja sama tim yang solid!"
         </p>
 
         <!-- 4 Mini Pilar Badges -->
-        <div id="feedbackPillarsRow" class="grid grid-cols-4 gap-1.5 text-center text-[10px] font-bold">
-          <div class="p-1.5 rounded-xl bg-white border border-emerald-100">
-            <span class="block text-[9px] text-amber-700 uppercase">Financial</span>
-            <span id="pillScoreFin" class="text-slate-800 font-extrabold">90</span>
+        <div id="feedbackPillarsRow" class="grid grid-cols-4 gap-2 text-center">
+          <div class="p-2 rounded-xl bg-white border border-emerald-100">
+            <span class="block text-xs text-amber-700 uppercase font-bold">Financial</span>
+            <span id="pillScoreFin" class="text-base sm:text-lg text-slate-800 font-black">90</span>
           </div>
-          <div class="p-1.5 rounded-xl bg-white border border-emerald-100">
-            <span class="block text-[9px] text-purple-700 uppercase">Culture</span>
-            <span id="pillScoreCul" class="text-slate-800 font-extrabold">86</span>
+          <div class="p-2 rounded-xl bg-white border border-emerald-100">
+            <span class="block text-xs text-purple-700 uppercase font-bold">Culture</span>
+            <span id="pillScoreCul" class="text-base sm:text-lg text-slate-800 font-black">86</span>
           </div>
-          <div class="p-1.5 rounded-xl bg-white border border-emerald-100">
-            <span class="block text-[9px] text-emerald-700 uppercase">Exploration</span>
-            <span id="pillScoreExp" class="text-slate-800 font-extrabold">88</span>
+          <div class="p-2 rounded-xl bg-white border border-emerald-100">
+            <span class="block text-xs text-emerald-700 uppercase font-bold">Exploration</span>
+            <span id="pillScoreExp" class="text-base sm:text-lg text-slate-800 font-black">88</span>
           </div>
-          <div class="p-1.5 rounded-xl bg-white border border-emerald-100">
-            <span class="block text-[9px] text-blue-700 uppercase">STEM</span>
-            <span id="pillScoreStem" class="text-slate-800 font-extrabold">90</span>
+          <div class="p-2 rounded-xl bg-white border border-emerald-100">
+            <span class="block text-xs text-blue-700 uppercase font-bold">STEM</span>
+            <span id="pillScoreStem" class="text-base sm:text-lg text-slate-800 font-black">90</span>
           </div>
         </div>
 
-        <button onclick="openFeedbackHistoryModal()" class="mt-1 w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
-          <span class="material-symbols-outlined text-sm">assignment_turned_in</span>
+        <button onclick="openFeedbackHistoryModal()" class="mt-1 w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
+          <span class="material-symbols-outlined text-base">assignment_turned_in</span>
           <span>Lihat Rekapitulasi Nilai &amp; Riwayat Feedback Lengkap</span>
         </button>
       </div>
@@ -377,22 +385,22 @@
     <!-- 3. EKSPLOR FINCESTEM (DAY 1 S.D. DAY 7) - KONTROL OTOMATIS ADMIN -->
     <div class="flex flex-col gap-3 mt-1">
       <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
-            <span class="material-symbols-outlined text-lg">calendar_month</span>
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-2xl bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-xl">calendar_month</span>
           </div>
           <div>
-            <h3 class="font-extrabold text-sm text-slate-800">Eksplor FINCESTEM (Day 1 - Day 7)</h3>
-            <p class="text-[11px] text-slate-500">Jadwal &amp; instrumen riset terintegrasi (9 - 15 November 2026)</p>
+            <h3 class="font-extrabold text-base text-slate-800 leading-tight">Eksplor FINCESTEM (Day 1 - Day 7)</h3>
+            <p class="text-xs sm:text-sm text-slate-500 font-medium">Jadwal &amp; instrumen riset terintegrasi (9 - 15 November 2026)</p>
           </div>
         </div>
-        <span id="badgeServerSync" class="px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-teal-50 text-teal-700 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-teal-500 animate-pulse"></span> Terhubung
+        <span id="badgeServerSync" class="px-3 py-1 rounded-full text-xs font-bold bg-teal-50 border border-teal-200/60 text-teal-700 flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span> Terhubung
         </span>
       </div>
 
       <!-- Container 7 Cards Hari -->
-      <div id="scheduleDaysContainer" class="flex flex-col gap-3">
+      <div id="scheduleDaysContainer" class="flex flex-col gap-3.5">
         <!-- Rendered via Javascript -->
       </div>
     </div>
@@ -439,40 +447,40 @@
   <div id="modalFeedbackHistory" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
     <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl flex flex-col gap-4 max-h-[88vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-        <div class="flex items-center gap-2.5">
-          <div class="w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
-            <span class="material-symbols-outlined text-xl">grade</span>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">grade</span>
           </div>
           <div>
-            <h4 class="text-sm font-extrabold text-slate-800">Rekapitulasi Nilai &amp; Catatan Pembina</h4>
-            <span class="text-[11px] text-slate-500">Evaluasi menyeluruh 7 Hari Riset &amp; 4 Pilar</span>
+            <h4 class="text-base font-extrabold text-slate-800">Rekapitulasi Nilai &amp; Catatan Pembina</h4>
+            <span class="text-xs text-slate-500 font-medium">Evaluasi menyeluruh 7 Hari Riset &amp; 4 Pilar</span>
           </div>
         </div>
-        <button onclick="closeFeedbackHistoryModal()" class="p-1 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">
-          <span class="material-symbols-outlined text-lg">close</span>
+        <button onclick="closeFeedbackHistoryModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+          <span class="material-symbols-outlined text-xl">close</span>
         </button>
       </div>
 
       <!-- Ringkasan Rata-rata Skor -->
-      <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center justify-between shadow-sm">
+      <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center justify-between shadow-sm">
         <div class="flex flex-col">
-          <span class="text-[11px] text-emerald-100 font-semibold">Predikat &amp; Skor Akhir Siswa</span>
-          <h3 id="modalRecapPredicate" class="text-base font-extrabold text-white mt-0.5">Sangat Baik (A)</h3>
-          <span id="modalRecapFasil" class="text-[10.5px] text-emerald-100/90 mt-0.5">Dinilai oleh Tim Fasilitator SMAN 1 Belitang</span>
+          <span class="text-xs text-emerald-100 font-semibold">Predikat &amp; Skor Akhir Siswa</span>
+          <h3 id="modalRecapPredicate" class="text-lg font-black text-white mt-0.5">Sangat Baik (A)</h3>
+          <span id="modalRecapFasil" class="text-xs text-emerald-100/90 mt-0.5 font-medium">Dinilai oleh Tim Fasilitator SMAN 1 Belitang</span>
         </div>
         <div class="text-right">
-          <span id="modalRecapScore" class="text-3xl font-black tracking-tight text-white">88.5</span>
-          <span class="block text-[10px] text-emerald-200 uppercase font-bold">Skala 100</span>
+          <span id="modalRecapScore" class="text-3xl sm:text-4xl font-black tracking-tight text-white">88.5</span>
+          <span class="block text-xs text-emerald-200 uppercase font-bold">Skala 100</span>
         </div>
       </div>
 
       <!-- Container Daftar Hari & Catatan Evaluasi -->
-      <div id="modalRecapDaysList" class="flex flex-col gap-2.5">
+      <div id="modalRecapDaysList" class="flex flex-col gap-3">
         <!-- Rendered via Javascript -->
       </div>
 
-      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
-        <button onclick="closeFeedbackHistoryModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs hover:bg-slate-200 transition-all cursor-pointer">
+      <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
+        <button onclick="closeFeedbackHistoryModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-all cursor-pointer">
           Tutup Rekapitulasi
         </button>
       </div>
@@ -514,26 +522,79 @@
       document.getElementById('userClassBadge').textContent = s.class || s.class_name || 'KELAS X';
 
       // Zona Riset FINCESTEM (Prioritaskan pengaturan individual per-siswa)
-      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+      const classInfo = (FincestemCore.zones && FincestemCore.zones.getClassInfo)
+        ? FincestemCore.zones.getClassInfo(s.class || s.class_name)
+        : null;
+
+      let studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
         ? FincestemCore.zones.getStudentZone(s.nisn || s.identifier, s.class || s.class_name, user.zone || s.zone)
         : (user.zone || s.zone || 'FINCESTEM OKU TIMUR');
 
-      const zoneBadge = document.getElementById('userZoneBadge');
-      const zoneText = document.getElementById('userZoneText');
+      renderStudentZoneUI(studentZone);
 
-      if (studentZone.toUpperCase().includes('LUAR')) {
-        zoneBadge.className = 'px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 shrink-0 shadow-xs';
-        zoneBadge.textContent = 'LUAR OKU';
-        zoneText.textContent = 'FINCESTEM LUAR OKU TIMUR';
-      } else {
-        zoneBadge.className = 'px-2.5 py-1 rounded-xl text-[10px] font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs';
-        zoneBadge.textContent = 'OKU TIMUR';
-        zoneText.textContent = 'FINCESTEM OKU TIMUR';
+      // Sinkronkan data zona & profil terbaru dari server cPanel secara asinkron
+      if (FincestemCore.zones && FincestemCore.zones.syncZones) {
+        FincestemCore.zones.syncZones(function() {
+          const freshZone = FincestemCore.zones.getStudentZone(s.nisn || s.identifier, s.class || s.class_name, studentZone);
+          if (freshZone && freshZone !== studentZone) {
+            studentZone = freshZone;
+            renderStudentZoneUI(freshZone);
+            if (currentStudent) currentStudent.zone = freshZone;
+          }
+        });
       }
 
-      // Koordinator & Fasilitator
-      document.getElementById('userCoordinator').textContent = user.coordinator_name || s.coordinator_name || classSettings.coordinator_name || 'Drs. H. Koordinator FINCESTEM';
-      document.getElementById('userFacilitator').textContent = user.facilitator_name || s.facilitator_name || classSettings.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+      // Koordinator & Fasilitator Kelas (Sinkronisasi Otomatis dari Admin & cPanel)
+      const studentClass = s.class || s.class_name || user.class || '';
+
+      let initialCoord = (FincestemCore.assignments && FincestemCore.assignments.getClassCoordinator)
+        ? FincestemCore.assignments.getClassCoordinator(studentClass)
+        : '';
+      if (!initialCoord || initialCoord === 'Drs. H. Koordinator FINCESTEM') {
+        initialCoord = user.coordinator_name || (classInfo && classInfo.coordinator_name) || 'Drs. H. Koordinator FINCESTEM';
+      }
+
+      let initialFasil = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+        : '';
+      if (!initialFasil || initialFasil === 'Tim Fasilitator SMAN 1 Belitang') {
+        initialFasil = user.facilitator_name || (classInfo && classInfo.facilitator_name) || 'Tim Fasilitator SMAN 1 Belitang';
+      }
+
+      document.getElementById('userCoordinator').textContent = initialCoord;
+      document.getElementById('userFacilitator').textContent = initialFasil;
+      if (currentStudent) {
+        currentStudent.coordinator_name = initialCoord;
+        currentStudent.facilitator_name = initialFasil;
+      }
+
+      // Sinkronkan penugasan koordinator & fasilitator terbaru dari server cPanel secara asinkron
+      if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
+        FincestemCore.assignments.getAssignments(function() {
+          const freshCoord = FincestemCore.assignments.getClassCoordinator(studentClass);
+          const freshFasil = FincestemCore.assignments.getClassFacilitator(studentClass);
+          if (freshCoord && freshCoord !== 'Drs. H. Koordinator FINCESTEM') {
+            document.getElementById('userCoordinator').textContent = freshCoord;
+            if (currentStudent) currentStudent.coordinator_name = freshCoord;
+            if (user) {
+              user.coordinator_name = freshCoord;
+              FincestemCore.auth.setUser(user, 'siswa');
+            }
+          }
+          if (freshFasil && freshFasil !== 'Tim Fasilitator SMAN 1 Belitang') {
+            document.getElementById('userFacilitator').textContent = freshFasil;
+            if (currentStudent) currentStudent.facilitator_name = freshFasil;
+            if (user) {
+              user.facilitator_name = freshFasil;
+              FincestemCore.auth.setUser(user, 'siswa');
+            }
+            const fbName = document.getElementById('feedbackFasilName');
+            if (fbName && (!fbName.textContent || fbName.textContent.includes('Fasilitator'))) {
+              fbName.textContent = freshFasil;
+            }
+          }
+        });
+      }
 
       // Foto Profil
       renderProfilePhoto(s.nisn || s.identifier, user.photo_url || s.photo_url);
@@ -548,6 +609,22 @@
       document.getElementById('bioOrtu').textContent = `Ayah: ${s.ayah || s.parent_father || '-'} | Ibu: ${s.ibu || s.parent_mother || '-'}`;
       document.getElementById('bioPekerjaanHp').textContent = `${s.pekerjaan_ortu || s.parent_job || '-'} | HP: ${s.phone || '-'}`;
       document.getElementById('bioAlamat').textContent = s.alamat || s.address || '-';
+    }
+
+    function renderStudentZoneUI(studentZone) {
+      const zoneBadge = document.getElementById('userZoneBadge');
+      const zoneText = document.getElementById('userZoneText');
+      if (!zoneBadge || !zoneText) return;
+
+      if ((studentZone || '').toUpperCase().includes('LUAR')) {
+        zoneBadge.className = 'px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-amber-400 text-slate-950 shrink-0 shadow-xs';
+        zoneBadge.textContent = 'LUAR OKU';
+        zoneText.textContent = 'FINCESTEM LUAR OKU TIMUR';
+      } else {
+        zoneBadge.className = 'px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs';
+        zoneBadge.textContent = 'OKU TIMUR';
+        zoneText.textContent = 'FINCESTEM OKU TIMUR';
+      }
     }
 
     function renderProfilePhoto(nisn, customUrl) {
@@ -681,6 +758,14 @@
         document.getElementById('pillScoreCul').textContent = fb.score_culture !== undefined && fb.score_culture !== null ? fb.score_culture : '86';
         document.getElementById('pillScoreExp').textContent = fb.score_exploration !== undefined && fb.score_exploration !== null ? fb.score_exploration : '88';
         document.getElementById('pillScoreStem').textContent = fb.score_stem !== undefined && fb.score_stem !== null ? fb.score_stem : '90';
+      } else {
+        document.getElementById('feedbackFasilName').textContent = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+        document.getElementById('feedbackQuoteText').textContent = '"Belum ada catatan atau umpan balik dari Fasilitator. Mulai isi lembar kerja dan jurnal harian sesuai jadwal riset Anda."';
+        document.getElementById('feedbackDateBadge').textContent = 'Menunggu Aktivitas';
+        document.getElementById('pillScoreFin').textContent = '-';
+        document.getElementById('pillScoreCul').textContent = '-';
+        document.getElementById('pillScoreExp').textContent = '-';
+        document.getElementById('pillScoreStem').textContent = '-';
       }
     }
 
@@ -725,28 +810,115 @@
 
       days.forEach(d => {
         const dNum = Number(d.day_number);
-        const isOpen = !!d.is_open;
+        const isTrial = (dNum === 0);
         const isExpanded = (expandedDayNumber === dNum);
 
-        let borderClass = isOpen ? 'border-teal-500/40 shadow-xs ring-1 ring-teal-500/10' : 'border-slate-200/80 shadow-xs opacity-95';
-        let bgClass = isOpen ? 'bg-white' : 'bg-slate-50/70';
-        let dayIconBg = isOpen ? 'bg-gradient-to-br from-[#08A7B5] to-[#045D66]' : 'bg-slate-300 text-slate-600';
+        // Validasi Akses Bertingkat (4-Role Rule):
+        // Day N (N > 1) mensyaratkan Day N-1 berstatus Completed
+        // Dan Day N harus dibuka (is_open) oleh Admin
+        const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, days);
+        const dayStatus = FincestemCore.progress.getDayStatus(studentProgress, dNum);
 
+        let borderClass = 'border-slate-200/80 shadow-xs opacity-95';
+        let bgClass = 'bg-slate-50/70';
+        let dayIconBg = 'bg-slate-300 text-slate-600';
         let badgeHtml = '';
-        if (isOpen) {
+        let lockAlertHtml = '';
+
+        if (!access.isPreviousCompleted) {
+          borderClass = 'border-rose-200/80 shadow-xs opacity-90';
+          bgClass = 'bg-rose-50/20';
+          dayIconBg = 'bg-slate-300 text-slate-500';
           badgeHtml = `
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-800 flex items-center gap-1">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span>
-              Terbuka
+            <span class="px-3 py-1 rounded-xl text-xs font-black bg-rose-100 text-rose-800 flex items-center gap-1.5 shadow-2xs">
+              <span class="material-symbols-outlined text-sm">lock</span>
+              Menunggu Day ${dNum - 1} Completed
             </span>
+          `;
+          lockAlertHtml = `
+            <div class="px-3.5 py-2.5 rounded-2xl bg-rose-50/95 border border-rose-200/80 flex items-center gap-2.5 text-xs sm:text-sm text-rose-950 font-medium leading-relaxed">
+              <span class="material-symbols-outlined text-lg text-rose-600 shrink-0">lock</span>
+              <span>Aktivitas Day ${dNum} terkunci! Harap selesaikan dan tunggu penetapan status <strong>Completed</strong> dari Fasilitator pada Day ${dNum - 1}.</span>
+            </div>
+          `;
+        } else if (!access.isOpen) {
+          borderClass = 'border-slate-200/80 shadow-xs opacity-95';
+          bgClass = 'bg-slate-50/70';
+          dayIconBg = 'bg-slate-300 text-slate-600';
+          badgeHtml = `
+            <span class="px-3 py-1 rounded-xl text-xs font-black bg-slate-200 text-slate-600 flex items-center gap-1.5 shadow-2xs">
+              <span class="material-symbols-outlined text-sm">lock</span>
+              Ditutup Admin (Read-Only)
+            </span>
+          `;
+          lockAlertHtml = `
+            <div class="px-3.5 py-2.5 rounded-2xl bg-amber-50/95 border border-amber-200/80 flex items-center gap-2.5 text-xs sm:text-sm text-amber-950 font-medium leading-relaxed">
+              <span class="material-symbols-outlined text-lg text-amber-600 shrink-0">lock_clock</span>
+              <span>Aktivitas Day ${dNum} ditutup oleh Admin (Hanya Lihat). Anda tetap dapat membaca materi dan melihat rekap tugas yang telah dikirim.</span>
+            </div>
           `;
         } else {
-          badgeHtml = `
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-slate-200 text-slate-600 flex items-center gap-1">
-              <span class="material-symbols-outlined text-xs">lock</span>
-              Terkunci
-            </span>
-          `;
+          if (isTrial) {
+            borderClass = 'border-amber-400/80 shadow-sm ring-2 ring-amber-400/25';
+            bgClass = 'bg-gradient-to-br from-amber-50/40 via-white to-teal-50/25';
+            dayIconBg = 'bg-gradient-to-br from-amber-500 via-orange-500 to-teal-600 text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300/80 flex items-center gap-1.5 shadow-2xs">
+                <span class="w-2 h-2 rounded-full bg-amber-600 animate-pulse"></span>
+                Simulasi Aktif
+              </span>
+            `;
+          } else if (dayStatus === 'completed') {
+            borderClass = 'border-emerald-500/50 shadow-xs ring-1 ring-emerald-500/20';
+            bgClass = 'bg-emerald-50/20';
+            dayIconBg = 'bg-gradient-to-br from-emerald-500 to-teal-700 text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300/80 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+                Completed
+              </span>
+            `;
+          } else if (dayStatus === 'revision') {
+            borderClass = 'border-amber-400/70 shadow-xs ring-1 ring-amber-400/20';
+            bgClass = 'bg-amber-50/15';
+            dayIconBg = 'bg-gradient-to-br from-amber-500 to-orange-600 text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300/80 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-amber-600">warning</span>
+                Perlu Revisi
+              </span>
+            `;
+          } else if (dayStatus === 'reviewed') {
+            borderClass = 'border-blue-400/70 shadow-xs ring-1 ring-blue-400/20';
+            bgClass = 'bg-blue-50/15';
+            dayIconBg = 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-blue-100 text-blue-900 border border-blue-300/80 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-blue-600">rate_review</span>
+                Reviewed
+              </span>
+            `;
+          } else if (dayStatus === 'submitted') {
+            borderClass = 'border-teal-400/70 shadow-xs ring-1 ring-teal-400/20';
+            bgClass = 'bg-teal-50/15';
+            dayIconBg = 'bg-gradient-to-br from-[#08A7B5] to-[#045D66] text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-teal-100 text-teal-900 border border-teal-300/80 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
+                Submitted
+              </span>
+            `;
+          } else {
+            borderClass = 'border-teal-500/40 shadow-xs ring-1 ring-teal-500/10';
+            bgClass = 'bg-white';
+            dayIconBg = 'bg-gradient-to-br from-[#08A7B5] to-[#045D66] text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-800 flex items-center gap-1.5 shadow-2xs">
+                <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+                Terbuka
+              </span>
+            `;
+          }
         }
 
         // Cek status pengerjaan hari ini
@@ -757,99 +929,160 @@
         const hasDok = !!taskMap[dNum + '_dokumentasi'];
 
         let dayProgressBadge = '';
-        if (dayRecord && dayRecord.score) {
+        if (isTrial) {
           dayProgressBadge = `
-            <span class="px-2 py-0.5 rounded-md text-[9.5px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-0.5">
-              <span class="material-symbols-outlined text-xs text-emerald-600">verified</span>
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
+              GLADI BERSIH
+            </span>
+          `;
+        }
+        if (dayRecord && dayRecord.score) {
+          dayProgressBadge += `
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
               Nilai: ${dayRecord.score} (${dayRecord.predicate || 'A'})
             </span>
           `;
-          dayIconBg = 'bg-gradient-to-br from-emerald-500 to-teal-700';
-        } else if (hasLkpd || hasAsesmen || hasRefleksi || hasDok) {
-          dayProgressBadge = `
-            <span class="px-2 py-0.5 rounded-md text-[9.5px] font-bold bg-amber-100 text-amber-900 border border-amber-300/60 flex items-center gap-0.5">
-              <span class="material-symbols-outlined text-xs text-amber-600">schedule</span>
+        } else if (dayStatus === 'revision') {
+          dayProgressBadge += `
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300/60 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm text-amber-600">sync_problem</span>
+              Perlu Revisi
+            </span>
+          `;
+        } else if (dayStatus === 'reviewed') {
+          dayProgressBadge += `
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-blue-100 text-blue-900 border border-blue-300/60 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm text-blue-600">rate_review</span>
+              Ditinjau Fasilitator
+            </span>
+          `;
+        } else if (dayStatus === 'submitted' || hasLkpd || hasAsesmen || hasRefleksi || hasDok) {
+          dayProgressBadge += `
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 border border-teal-300/60 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
               Terkirim
             </span>
           `;
         }
 
-        // Mini checkmarks aktivitas
+        // Mini checkmarks aktivitas (Grid Simetris 2 Kolom di HP / 4 Kolom di Tablet-PC)
         const miniChecks = `
-          <div class="flex items-center gap-1.5 text-[10px] text-slate-500 font-semibold flex-wrap">
-            <span class="px-1.5 py-0.5 rounded ${hasLkpd ? 'text-teal-800 bg-teal-100/70 font-bold' : 'bg-slate-100'} flex items-center gap-0.5">
-              <span class="material-symbols-outlined text-[11px]">${hasLkpd ? 'check_circle' : 'radio_button_unchecked'}</span> LKPD
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs text-slate-600 font-semibold w-full">
+            <span class="px-2.5 py-1.5 rounded-xl ${hasLkpd ? 'text-teal-900 bg-teal-100/90 font-bold border border-teal-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
+              <span class="material-symbols-outlined text-sm ${hasLkpd ? 'text-teal-700' : 'text-slate-400'}">${hasLkpd ? 'check_circle' : 'radio_button_unchecked'}</span>
+              <span>LKPD</span>
             </span>
-            <span class="px-1.5 py-0.5 rounded ${hasAsesmen ? 'text-blue-800 bg-blue-100/70 font-bold' : 'bg-slate-100'} flex items-center gap-0.5">
-              <span class="material-symbols-outlined text-[11px]">${hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}</span> Asesmen
+            <span class="px-2.5 py-1.5 rounded-xl ${hasAsesmen ? 'text-blue-900 bg-blue-100/90 font-bold border border-blue-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
+              <span class="material-symbols-outlined text-sm ${hasAsesmen ? 'text-blue-700' : 'text-slate-400'}">${hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}</span>
+              <span>Asesmen</span>
             </span>
-            <span class="px-1.5 py-0.5 rounded ${hasRefleksi ? 'text-purple-800 bg-purple-100/70 font-bold' : 'bg-slate-100'} flex items-center gap-0.5">
-              <span class="material-symbols-outlined text-[11px]">${hasRefleksi ? 'check_circle' : 'radio_button_unchecked'}</span> Refleksi
+            <span class="px-2.5 py-1.5 rounded-xl ${hasRefleksi ? 'text-purple-900 bg-purple-100/90 font-bold border border-purple-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
+              <span class="material-symbols-outlined text-sm ${hasRefleksi ? 'text-purple-700' : 'text-slate-400'}">${hasRefleksi ? 'check_circle' : 'radio_button_unchecked'}</span>
+              <span>Refleksi</span>
             </span>
-            <span class="px-1.5 py-0.5 rounded ${hasDok ? 'text-pink-800 bg-pink-100/70 font-bold' : 'bg-slate-100'} flex items-center gap-0.5">
-              <span class="material-symbols-outlined text-[11px]">${hasDok ? 'check_circle' : 'radio_button_unchecked'}</span> Foto
+            <span class="px-2.5 py-1.5 rounded-xl ${hasDok ? 'text-pink-900 bg-pink-100/90 font-bold border border-pink-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
+              <span class="material-symbols-outlined text-sm ${hasDok ? 'text-pink-700' : 'text-slate-400'}">${hasDok ? 'check_circle' : 'radio_button_unchecked'}</span>
+              <span>Foto</span>
             </span>
           </div>
         `;
 
-        const lockAlertHtml = !isOpen ? `
-          <div class="px-3 py-2 rounded-xl bg-amber-50/90 border border-amber-200/70 flex items-center gap-2 text-[11px] text-amber-900">
-            <span class="material-symbols-outlined text-base text-amber-600 shrink-0">lock_clock</span>
-            <span>${d.status_label || 'Aktivitas hari ini ditutup oleh Admin. Harap tunggu jadwal resmi dibuka.'}</span>
-          </div>
-        ` : '';
+        const canInteract = access.canAccess;
+        const canEdit = access.canEdit;
+
+        const materiBtnClass = canInteract ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const materiIconClass = canInteract ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500';
+
+        const lkpdBtnClass = canInteract ? (canEdit ? 'bg-teal-50 hover:bg-teal-100 text-teal-950 border border-teal-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const lkpdIconClass = canInteract ? (canEdit ? 'bg-teal-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+
+        const asesmenBtnClass = canInteract ? (canEdit ? 'bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const asesmenIconClass = canInteract ? (canEdit ? 'bg-blue-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+
+        const refleksiBtnClass = canInteract ? (canEdit ? 'bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const refleksiIconClass = canInteract ? (canEdit ? 'bg-purple-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+
+        const dokBtnClass = canInteract ? (canEdit ? 'bg-pink-50 hover:bg-pink-100 text-pink-950 border border-pink-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const dokIconClass = canInteract ? (canEdit ? 'bg-pink-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+
+        const nilaiBtnClass = canInteract ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const nilaiIconClass = canInteract ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-500';
 
         const card = document.createElement('div');
-        card.className = `p-3.5 sm:p-4 rounded-3xl ${bgClass} border ${borderClass} flex flex-col gap-2.5 transition-all shadow-xs`;
+        card.className = `p-4 sm:p-5 rounded-3xl ${bgClass} border ${borderClass} flex flex-col gap-3 transition-all shadow-xs`;
+
+        const dayPillHtml = isTrial
+          ? `
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${dayIconBg} flex flex-col items-center justify-center shrink-0 shadow-2xs">
+              <span class="text-[7.5px] sm:text-[8px] font-black uppercase tracking-wider leading-none">UJI COBA</span>
+              <span class="material-symbols-outlined text-sm sm:text-base font-black leading-none mt-0.5">model_training</span>
+            </div>
+          `
+          : `
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-2xl ${dayIconBg} text-white flex flex-col items-center justify-center shrink-0 shadow-2xs">
+              <span class="text-[8.5px] sm:text-[9.5px] font-black uppercase tracking-wider opacity-90 leading-none">DAY</span>
+              <span class="text-sm sm:text-base font-black leading-none mt-0.5">${dNum}</span>
+            </div>
+          `;
 
         card.innerHTML = `
-          <!-- CARD HEADER (RINGKAS & MENARIK, DAPAT DIKLIK) -->
-          <div onclick="toggleDayAccordion(${dNum})" class="flex items-center justify-between gap-2 cursor-pointer select-none group">
-            <div class="flex items-center gap-2.5 min-w-0 flex-1">
-              <!-- Day Icon Pill -->
-              <div class="w-10 h-10 rounded-2xl ${dayIconBg} text-white flex flex-col items-center justify-center shrink-0 shadow-2xs">
-                <span class="text-[8.5px] font-bold uppercase tracking-wider opacity-80 leading-none">DAY</span>
-                <span class="text-sm font-black leading-none">${dNum}</span>
+          <!-- CARD HEADER (PROPOSIONAL & TERBACA JELAS DI HP) -->
+          <div onclick="toggleDayAccordion(${dNum})" class="cursor-pointer select-none group flex flex-col gap-2">
+            <!-- Baris 1: Ikon Hari, Judul Utama & Tombol Expand Kanan Atas -->
+            <div class="flex items-start justify-between gap-2.5">
+              <div class="flex items-start gap-3 min-w-0 flex-1">
+                ${dayPillHtml}
+                <div class="flex flex-col min-w-0 flex-1 pt-0.5">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <h4 class="font-extrabold text-sm sm:text-base text-slate-800 leading-snug break-words">${d.title}</h4>
+                    ${dayProgressBadge}
+                  </div>
+                  <span class="text-xs sm:text-sm font-semibold ${isTrial ? 'text-amber-700' : 'text-[#08A7B5]'} leading-snug mt-0.5 break-words">${d.theme || ''}</span>
+                </div>
               </div>
-              <!-- Day Info -->
-              <div class="flex flex-col min-w-0 flex-1">
-                <div class="flex items-center gap-1.5 flex-wrap">
-                  <h4 class="font-extrabold text-xs sm:text-sm text-slate-800 truncate">${d.title}</h4>
-                  ${dayProgressBadge}
-                </div>
-                <span class="text-[10.5px] font-semibold text-[#08A7B5] truncate mt-0.5">${d.theme || ''}</span>
-                <div class="flex items-center gap-1.5 text-[10px] text-slate-500 mt-0.5 flex-wrap">
-                  <span class="flex items-center gap-0.5"><span class="material-symbols-outlined text-[11px]">calendar_today</span> ${d.date_formatted || d.date}</span>
-                  <span>•</span>
-                  <span>${d.start_time} - ${d.end_time} WIB</span>
-                </div>
+
+              <!-- Tombol Panah Buka / Tutup -->
+              <div class="shrink-0 w-8 h-8 rounded-xl bg-slate-100/90 group-hover:bg-teal-50 text-slate-500 group-hover:text-teal-600 flex items-center justify-center transition-colors shadow-2xs mt-0.5">
+                <span id="dayChevron_${dNum}" class="material-symbols-outlined text-xl transition-transform duration-300 ${isExpanded ? 'rotate-180 text-teal-600' : ''}">expand_more</span>
               </div>
             </div>
 
-            <!-- Right Controls: Status & Chevron -->
-            <div class="shrink-0 flex items-center gap-2">
-              ${badgeHtml}
-              <div class="w-7 h-7 rounded-xl bg-slate-100 group-hover:bg-teal-50 text-slate-400 group-hover:text-teal-600 flex items-center justify-center transition-colors">
-                <span id="dayChevron_${dNum}" class="material-symbols-outlined text-lg transition-transform duration-300 ${isExpanded ? 'rotate-180 text-teal-600' : ''}">expand_more</span>
+            <!-- Baris 2: Tanggal, Waktu & Badge Status (Bar Penuh, Tidak Menghimpit Judul) -->
+            <div class="flex items-center justify-between gap-2 flex-wrap pt-2 border-t border-slate-200/60">
+              <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium flex-wrap">
+                <span class="inline-flex items-center gap-1 whitespace-nowrap bg-white/70 px-2 py-0.5 rounded-lg border border-slate-200/50">
+                  <span class="material-symbols-outlined text-xs text-slate-400">calendar_today</span>
+                  <span>${d.date_formatted || d.date}</span>
+                </span>
+                <span class="inline-flex items-center gap-1 whitespace-nowrap bg-white/70 px-2 py-0.5 rounded-lg border border-slate-200/50">
+                  <span class="material-symbols-outlined text-xs text-slate-400">schedule</span>
+                  <span>${d.start_time} - ${d.end_time} WIB</span>
+                </span>
+              </div>
+
+              <!-- Badge Status Akses -->
+              <div class="shrink-0">
+                ${badgeHtml}
               </div>
             </div>
           </div>
 
           <!-- CARD BODY (HANYA TERBUKA KETIKA DIKLIK / ACCORDION) -->
-          <div id="dayDetails_${dNum}" class="${isExpanded ? 'flex' : 'hidden'} flex-col gap-3 pt-3 border-t border-slate-100">
+          <div id="dayDetails_${dNum}" class="${isExpanded ? 'flex' : 'hidden'} flex-col gap-3.5 pt-3 border-t border-slate-100">
             <!-- Deskripsi Panduan Hari Ini -->
-            <div class="p-3 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-600 leading-relaxed">
-              <div class="flex items-center gap-1.5 font-bold text-slate-700 mb-1">
-                <span class="material-symbols-outlined text-sm text-[#08A7B5]">info</span>
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-100 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <div class="flex items-center gap-1.5 font-bold text-slate-800 mb-1.5 text-sm">
+                <span class="material-symbols-outlined text-base text-[#08A7B5]">info</span>
                 <span>Sasaran &amp; Panduan Kegiatan:</span>
               </div>
-              <p>${d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.'}</p>
+              <p class="leading-relaxed">${d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.'}</p>
             </div>
 
             <!-- Mini Checklist -->
-            <div class="flex items-center justify-between bg-teal-50/40 p-2.5 rounded-2xl border border-teal-100/70 flex-wrap gap-2">
-              <span class="text-[10.5px] font-bold text-teal-950 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs text-teal-600">playlist_add_check</span> Checklist Pengerjaan:
+            <div class="flex flex-col gap-2 bg-teal-50/50 p-3 rounded-2xl border border-teal-100/80">
+              <span class="text-xs font-bold text-teal-950 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-teal-600">playlist_add_check</span> Checklist Pengerjaan:
               </span>
               ${miniChecks}
             </div>
@@ -857,73 +1090,73 @@
             ${lockAlertHtml}
 
             <!-- 6 Tombol Aktivitas Utama (Mobile-Friendly 2 Kolom di HP) -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
-              <button onclick="handleActivityClick(${dNum}, 'materi')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
-                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base">menu_book</span>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 pt-1">
+              <button onclick="handleActivityClick(${dNum}, 'materi')" class="p-2.5 sm:p-3 rounded-2xl ${materiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
+                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${materiIconClass} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base sm:text-lg">menu_book</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs font-bold leading-tight truncate">Materi Riset</span>
-                  <span class="text-[9.5px] ${isOpen ? 'text-amber-700' : 'text-slate-400'} leading-tight">Modul Belajar</span>
+                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Materi Riset</span>
+                  <span class="text-[10px] sm:text-xs ${canInteract ? 'text-amber-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Modul Belajar</span>
                 </div>
               </button>
 
-              <button onclick="handleActivityClick(${dNum}, 'lkpd')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-teal-50 hover:bg-teal-100 text-teal-900 border border-teal-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
-                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-teal-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base">edit_document</span>
+              <button onclick="handleActivityClick(${dNum}, 'lkpd')" class="p-2.5 sm:p-3 rounded-2xl ${lkpdBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
+                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${lkpdIconClass} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base sm:text-lg">edit_document</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs font-bold leading-tight truncate">LKPD Digital</span>
-                  <span class="text-[9.5px] ${isOpen ? 'text-teal-700' : 'text-slate-400'} leading-tight">Lembar Kerja</span>
+                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">LKPD Digital</span>
+                  <span class="text-[10px] sm:text-xs ${canInteract && canEdit ? 'text-teal-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Lembar Kerja</span>
                 </div>
               </button>
 
-              <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
-                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-blue-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base">fact_check</span>
+              <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 sm:p-3 rounded-2xl ${asesmenBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
+                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${asesmenIconClass} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base sm:text-lg">fact_check</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs font-bold leading-tight truncate">Asesmen</span>
-                  <span class="text-[9.5px] ${isOpen ? 'text-blue-700' : 'text-slate-400'} leading-tight">Uji Harian</span>
+                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Asesmen</span>
+                  <span class="text-[10px] sm:text-xs ${canInteract && canEdit ? 'text-blue-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Uji Harian</span>
                 </div>
               </button>
 
-              <button onclick="handleActivityClick(${dNum}, 'refleksi')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
-                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-purple-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base">psychology</span>
+              <button onclick="handleActivityClick(${dNum}, 'refleksi')" class="p-2.5 sm:p-3 rounded-2xl ${refleksiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
+                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${refleksiIconClass} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base sm:text-lg">psychology</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs font-bold leading-tight truncate">Refleksi</span>
-                  <span class="text-[9.5px] ${isOpen ? 'text-purple-700' : 'text-slate-400'} leading-tight">Jurnal Mandiri</span>
+                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Refleksi</span>
+                  <span class="text-[10px] sm:text-xs ${canInteract && canEdit ? 'text-purple-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Jurnal Mandiri</span>
                 </div>
               </button>
 
-              <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-pink-50 hover:bg-pink-100 text-pink-900 border border-pink-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
-                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-pink-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base">photo_camera</span>
+              <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 sm:p-3 rounded-2xl ${dokBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
+                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${dokIconClass} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base sm:text-lg">photo_camera</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs font-bold leading-tight truncate">Dokumentasi</span>
-                  <span class="text-[9.5px] ${isOpen ? 'text-pink-700' : 'text-slate-400'} leading-tight">Foto/Video</span>
+                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Dokumentasi</span>
+                  <span class="text-[10px] sm:text-xs ${canInteract && canEdit ? 'text-pink-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Foto/Video</span>
                 </div>
               </button>
 
-              <button onclick="handleActivityClick(${dNum}, 'penilaian')" class="p-2.5 rounded-2xl ${isOpen ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-200/70' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed'} flex items-center gap-2 transition-all shadow-2xs cursor-pointer">
-                <span class="w-8 h-8 rounded-xl ${isOpen ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-500'} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base">stars</span>
+              <button onclick="handleActivityClick(${dNum}, 'penilaian')" class="p-2.5 sm:p-3 rounded-2xl ${nilaiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
+                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${nilaiIconClass} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base sm:text-lg">stars</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs font-bold leading-tight truncate">Nilai &amp; Catatan</span>
-                  <span class="text-[9.5px] ${isOpen ? 'text-emerald-700' : 'text-slate-400'} leading-tight">Feedback Guru</span>
+                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Nilai &amp; Catatan</span>
+                  <span class="text-[10px] sm:text-xs ${canInteract ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Feedback Guru</span>
                 </div>
               </button>
             </div>
 
             <!-- Tombol Tutup Rincian -->
             <div class="flex justify-center pt-1">
-              <button type="button" onclick="toggleDayAccordion(${dNum})" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer">
+              <button type="button" onclick="toggleDayAccordion(${dNum})" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all cursor-pointer">
                 <span>Tutup Rincian Day ${dNum}</span>
-                <span class="material-symbols-outlined text-xs">expand_less</span>
+                <span class="material-symbols-outlined text-sm">expand_less</span>
               </button>
             </div>
           </div>
@@ -934,11 +1167,14 @@
     }
 
     function handleActivityClick(dayNumber, type) {
-      const day = daysSchedule.find(d => d.day_number === Number(dayNumber));
+      const dNum = Number(dayNumber);
+      const day = daysSchedule.find(d => Number(d.day_number) === dNum);
       if (!day) return;
 
-      if (!day.is_open) {
-        FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} saat ini terkunci! Harap tunggu jadwal resmi dibuka oleh Admin.`, 'error');
+      const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
+
+      if (!access.canAccess) {
+        FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan dan tunggu penetapan status 'Completed' dari Fasilitator pada Day ${dNum - 1}.`, 'error');
         return;
       }
 
@@ -946,6 +1182,25 @@
         window.location.href = 'materi.html?day=' + dayNumber;
         return;
       }
+
+      if (!access.canEdit) {
+        if (type === 'penilaian') {
+          openDayActivityModal(day, type, true);
+          return;
+        }
+        FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} ditutup oleh Admin (Hanya Lihat). Pengumpulan tugas dinonaktifkan.`, 'warning');
+        if (type === 'lkpd') {
+          window.location.href = 'lkpd.html?day=' + dayNumber + '&readonly=1';
+          return;
+        }
+        if (type === 'dokumentasi') {
+          window.location.href = 'dokumentasi.html?day=' + dayNumber + '&readonly=1';
+          return;
+        }
+        openDayActivityModal(day, type, true);
+        return;
+      }
+
       if (type === 'lkpd') {
         window.location.href = 'lkpd.html?day=' + dayNumber;
         return;
@@ -956,10 +1211,10 @@
       }
 
       // Modal untuk Asesmen, Refleksi, dan Penilaian
-      openDayActivityModal(day, type);
+      openDayActivityModal(day, type, false);
     }
 
-    function openDayActivityModal(day, type) {
+    function openDayActivityModal(day, type, isReadOnly) {
       const modal = document.getElementById('modalDayActivity');
       const title = document.getElementById('modalActTitle');
       const subtitle = document.getElementById('modalActSubtitle');
@@ -967,50 +1222,62 @@
       const iconBox = document.getElementById('modalActIconBox');
       const body = document.getElementById('modalActBody');
 
+      const isTrial = (Number(day.day_number) === 0);
       subtitle.textContent = `${day.title} (${day.date_formatted || day.date})`;
 
       const taskMap = (studentProgress && studentProgress.task_map) || {};
       const savedTask = taskMap[day.day_number + '_' + type];
       const savedContent = savedTask ? (savedTask.content || '') : '';
+      const readOnlyAttr = isReadOnly ? 'disabled' : '';
+      const readOnlyBanner = isReadOnly ? `
+        <div class="p-3 rounded-xl bg-amber-100 border border-amber-300 text-amber-900 text-xs sm:text-sm font-bold flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-base text-amber-600">lock_clock</span>
+          <span>Day ini ditutup oleh Admin (Mode Hanya Lihat)</span>
+        </div>
+      ` : '';
 
       if (type === 'asesmen') {
-        title.textContent = `Asesmen Pemahaman - Day ${day.day_number}`;
+        title.textContent = isTrial ? 'Asesmen Simulasi (Gladi Bersih)' : `Asesmen Pemahaman - Day ${day.day_number}`;
         icon.textContent = 'fact_check';
-        iconBox.className = 'w-9 h-9 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center';
+        iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
         body.innerHTML = `
-          <div class="p-3 rounded-2xl bg-blue-50/60 border border-blue-100 flex flex-col gap-1 text-slate-700">
-            <span class="font-bold text-xs text-blue-800">Instrumen Observasi Lapangan</span>
-            <p class="text-[11px] leading-relaxed">Pastikan kelompok Anda telah menjawab pertanyaan panduan observasi 4 pilar (Sains, Teknologi, Finansial, Budaya) pada lembar kerja harian.</p>
+          <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100 flex flex-col gap-1 text-slate-800">
+            <span class="font-bold text-sm text-blue-900">${isTrial ? 'Latihan Pengisian Instrumen Uji Coba' : 'Instrumen Observasi Lapangan'}</span>
+            <p class="text-xs sm:text-sm leading-relaxed text-slate-600">${isTrial ? 'Sesi gladi bersih untuk mencoba alur pengiriman asesmen kuis harian. Silakan isi jawaban latihan di bawah ini untuk membiasakan diri dengan sistem.' : 'Pastikan kelompok Anda telah menjawab pertanyaan panduan observasi 4 pilar (Sains, Teknologi, Finansial, Budaya) pada lembar kerja harian.'}</p>
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="font-bold text-slate-700">Catatan Ringkas Hasil Investigasi:</label>
-            <textarea id="txtAsesmenNote" rows="3" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs outline-none focus:border-blue-500" placeholder="Tuliskan temuan penting hari ini...">${savedContent}</textarea>
+            <label class="font-bold text-sm text-slate-800">Catatan Ringkas Hasil Investigasi (Latihan):</label>
+            <textarea id="txtAsesmenNote" ${readOnlyAttr} rows="3" class="w-full p-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="${isTrial ? 'Contoh: Berhasil melakukan uji coba pengukuran pH air dan simulasi pencatatan harga gabah...' : 'Tuliskan temuan penting hari ini...'}">${savedContent}</textarea>
           </div>
-          <button onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-all shadow-xs cursor-pointer">
-            Kirim Jawaban Asesmen
+          ${readOnlyBanner ? readOnlyBanner : `
+          <button onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-xs cursor-pointer">
+            ${isTrial ? 'Kirim Jawaban Asesmen (Simulasi)' : 'Kirim Jawaban Asesmen'}
           </button>
+          `}
         `;
       } else if (type === 'refleksi') {
-        title.textContent = `Jurnal Refleksi Mandiri - Day ${day.day_number}`;
+        title.textContent = isTrial ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' : `Jurnal Refleksi Mandiri - Day ${day.day_number}`;
         icon.textContent = 'psychology';
-        iconBox.className = 'w-9 h-9 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center';
+        iconBox.className = 'w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0';
         body.innerHTML = `
-          <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-100 flex flex-col gap-1 text-slate-700">
-            <span class="font-bold text-xs text-purple-800">Refleksi Belajar Siswa</span>
-            <p class="text-[11px] leading-relaxed">Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?</p>
+          <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100 flex flex-col gap-1 text-slate-800">
+            <span class="font-bold text-sm text-purple-900">${isTrial ? 'Simulasi Jurnal Refleksi Siswa' : 'Refleksi Belajar Siswa'}</span>
+            <p class="text-xs sm:text-sm leading-relaxed text-slate-600">${isTrial ? 'Cobalah mengetikkan refleksi atau harapan Anda selama mengikuti program FINCESTEM 2026 ini.' : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?'}</p>
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="font-bold text-slate-700">Jurnal Refleksi:</label>
-            <textarea id="txtRefleksiNote" rows="4" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs outline-none focus:border-purple-500" placeholder="Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...">${savedContent}</textarea>
+            <label class="font-bold text-sm text-slate-800">Jurnal Refleksi:</label>
+            <textarea id="txtRefleksiNote" ${readOnlyAttr} rows="4" class="w-full p-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="${isTrial ? 'Contoh: Saya siap dan antusias mengikuti seluruh rangkaian riset kokurikuler FINCESTEM...' : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...'}">${savedContent}</textarea>
           </div>
-          <button onclick="saveStudentNote(${day.day_number}, 'refleksi')" class="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition-all shadow-xs cursor-pointer">
-            Simpan Jurnal Refleksi
+          ${readOnlyBanner ? readOnlyBanner : `
+          <button onclick="saveStudentNote(${day.day_number}, 'refleksi')" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm transition-all shadow-xs cursor-pointer">
+            ${isTrial ? 'Simpan Jurnal Refleksi (Simulasi)' : 'Simpan Jurnal Refleksi'}
           </button>
+          `}
         `;
       } else if (type === 'penilaian') {
-        title.textContent = `Penilaian & Catatan Fasilitator - Day ${day.day_number}`;
+        title.textContent = isTrial ? 'Simulasi Feedback & Evaluasi Pembina' : `Penilaian & Catatan Fasilitator - Day ${day.day_number}`;
         icon.textContent = 'stars';
-        iconBox.className = 'w-9 h-9 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center';
+        iconBox.className = 'w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0';
 
         const records = (studentProgress && studentProgress.records) || [];
         const dayRec = records.find(r => Number(r.day_number) === Number(day.day_number));
@@ -1018,31 +1285,42 @@
         let scoreBox = '';
         if (dayRec && dayRec.score) {
           scoreBox = `
-            <div class="flex items-center justify-between p-3 rounded-xl bg-white border border-emerald-200">
-              <span class="font-bold text-emerald-900">Skor Evaluasi:</span>
-              <span class="text-base font-black text-emerald-700">${dayRec.score} / 100 (${dayRec.predicate || 'A'})</span>
+            <div class="flex items-center justify-between p-3.5 rounded-xl bg-white border border-emerald-200">
+              <span class="font-bold text-emerald-950 text-sm">Skor Evaluasi:</span>
+              <span class="text-lg font-black text-emerald-700">${dayRec.score} / 100 (${dayRec.predicate || 'A'})</span>
+            </div>
+          `;
+        } else if (isTrial) {
+          scoreBox = `
+            <div class="flex items-center justify-between p-3.5 rounded-xl bg-white border border-amber-300">
+              <span class="font-bold text-amber-950 text-sm">Skor Simulasi:</span>
+              <span class="text-lg font-black text-amber-700">100 / 100 (Sangat Baik - A)</span>
             </div>
           `;
         }
 
         const noteText = (dayRec && dayRec.feedback) 
           ? dayRec.feedback 
-          : 'Pertahankan kekompakan tim, kedisiplinan pencatatan data lapangan, dan kualitas dokumentasi autentik di wilayah riset.';
+          : (isTrial 
+              ? 'Selamat! Anda telah mencoba seluruh menu aktivitas FINCESTEM pada sesi Gladi Bersih ini. Siapkan diri dan tim Anda untuk riset lapangan sesungguhnya.' 
+              : 'Pertahankan kekompakan tim, kedisiplinan pencatatan data lapangan, dan kualitas dokumentasi autentik di wilayah riset.');
+
+        const evalStatusLabel = (dayRec && dayRec.status) ? dayRec.status.toUpperCase() : (dayRec ? 'TELAH DINILAI' : 'BELUM DINILAI');
 
         body.innerHTML = `
-          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex flex-col gap-2.5">
-            <div class="flex items-center justify-between">
-              <span class="text-xs font-bold text-emerald-800">Status Evaluasi Pembina:</span>
-              <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-emerald-200 text-emerald-900 uppercase">${dayRec ? 'Telah Dinilai' : 'Aktif Dinilai'}</span>
+          <div class="p-4 sm:p-5 rounded-2xl bg-emerald-50 border border-emerald-100 flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="text-xs sm:text-sm font-bold text-emerald-900">Status Evaluasi Fasilitator:</span>
+              <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-emerald-200 text-emerald-900 uppercase">${evalStatusLabel}</span>
             </div>
             ${scoreBox}
-            <div class="flex flex-col gap-1">
-              <span class="text-[11px] font-bold text-emerald-900">Catatan &amp; Umpan Balik:</span>
-              <p class="text-xs text-emerald-950 leading-relaxed italic bg-white/80 p-2.5 rounded-xl border border-emerald-200/50">
+            <div class="flex flex-col gap-1.5">
+              <span class="text-xs sm:text-sm font-bold text-emerald-950">Catatan &amp; Umpan Balik:</span>
+              <p class="text-sm text-emerald-950 leading-relaxed italic bg-white/90 p-3 rounded-xl border border-emerald-200/60 font-medium">
                 "${noteText}"
               </p>
             </div>
-            <span class="text-[10px] text-emerald-700 font-semibold mt-0.5">Oleh: ${dayRec?.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</span>
+            <span class="text-xs text-emerald-800 font-semibold mt-0.5">Oleh: ${dayRec?.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</span>
           </div>
         `;
       }
@@ -1058,12 +1336,18 @@
     }
 
     function saveStudentNote(dayNumber, type) {
+      const access = FincestemCore.progress.canAccessDay(dayNumber, studentProgress, daysSchedule);
+      if (!access.canEdit) {
+        FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} sedang ditutup oleh Admin. Tidak dapat mengirim data.`, 'error');
+        return;
+      }
+
       const noteInput = type === 'asesmen' ? document.getElementById('txtAsesmenNote') : document.getElementById('txtRefleksiNote');
       const note = noteInput ? noteInput.value.trim() : '';
 
       const nisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
       FincestemCore.progress.submitTask(nisn, dayNumber, type, note, function() {
-        FincestemCore.ui.toast(`Tugas ${type.toUpperCase()} Day ${dayNumber} berhasil dikirim & progres diperbarui!`, 'success');
+        FincestemCore.ui.toast(`Tugas ${type.toUpperCase()} Day ${dayNumber} berhasil dikirim (Status: Submitted)!`, 'success');
         loadStudentProgress();
       });
 
@@ -1093,12 +1377,12 @@
         const dayTitle = daySched ? daySched.title : `Day ${i}: Eksplorasi Riset`;
 
         const row = document.createElement('div');
-        row.className = 'p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2 text-xs';
+        row.className = 'p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2.5';
 
-        let scoreHtml = '<span class="text-slate-400 font-semibold italic text-[11px]">Belum ada penilaian</span>';
+        let scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Belum ada penilaian</span>';
         if (rec && rec.score) {
           scoreHtml = `
-            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+            <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
               Nilai: ${rec.score} (${rec.predicate || 'A'})
             </span>
           `;
@@ -1109,14 +1393,14 @@
           : (i <= 5 ? 'Aktivitas lapangan telah diverifikasi oleh tim pembina.' : 'Menunggu pelaksanaan jadwal resmi.');
 
         row.innerHTML = `
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="w-6 h-6 rounded-lg bg-teal-600 text-white flex items-center justify-center font-bold text-[11px]">D${i}</span>
-              <h5 class="font-extrabold text-slate-800 text-xs">${dayTitle}</h5>
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-7 h-7 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-xs shrink-0">D${i}</span>
+              <h5 class="font-extrabold text-slate-800 text-sm leading-snug">${dayTitle}</h5>
             </div>
             ${scoreHtml}
           </div>
-          <p class="text-slate-600 text-[11.5px] leading-relaxed italic bg-white p-2 rounded-xl border border-slate-100">
+          <p class="text-slate-700 text-xs sm:text-sm leading-relaxed italic bg-white p-3 rounded-xl border border-slate-100 font-medium">
             "${note}"
           </p>
         `;

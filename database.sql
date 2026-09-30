@@ -143,6 +143,8 @@ CREATE TABLE IF NOT EXISTS `dokumentasi_media` (
   `thumbnail_url` VARCHAR(255) DEFAULT NULL,
   `gps_location` VARCHAR(100) DEFAULT NULL COMMENT 'Koordinat latitude, longitude atau nama lokasi',
   `uploaded_by_nisn` VARCHAR(50) DEFAULT NULL,
+  `source` VARCHAR(20) DEFAULT 'camera' COMMENT 'camera atau gallery',
+  `has_geotag` TINYINT(1) DEFAULT 1 COMMENT '1 jika foto kamera ber-geotag, 0 jika dari galeri',
   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (`group_id`) REFERENCES `groups`(`id`) ON DELETE CASCADE,
   INDEX `idx_media_group` (`group_id`)
@@ -232,4 +234,26 @@ INSERT INTO `users` (`identifier`, `password_hash`, `name`, `role`, `assignment`
 ('fasilitator', 'fasilitator2026', 'Fasilitator Pembina', 'fasilitator', 'Pembina Kokurikuler FINCESTEM')
 ON DUPLICATE KEY UPDATE `name` = VALUES(`name`), `password_hash` = VALUES(`password_hash`);
 
+-- ----------------------------------------------------------------------
+-- 11. TABEL MASTER GURU & TENAGA PENDIDIK (teachers)
+-- Master data guru 8 kolom resmi dengan kredensial login terintegrasi
+-- ----------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `teachers` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `kode_guru` VARCHAR(50) NOT NULL UNIQUE COMMENT 'Kode identitas guru e.g. 1D, 2C',
+  `nama_guru` VARCHAR(255) NOT NULL COMMENT 'Nama lengkap dan gelar guru',
+  `nip` VARCHAR(50) DEFAULT '-' COMMENT 'Nomor Induk Pegawai resmi atau -',
+  `mata_pelajaran` VARCHAR(255) NOT NULL COMMENT 'Mata pelajaran yang diampu',
+  `jabatan` VARCHAR(100) DEFAULT 'Guru Mata Pelajaran' COMMENT 'Jabatan formal',
+  `tugas_tambahan` VARCHAR(255) DEFAULT '-' COMMENT 'Tugas tambahan e.g. Koord Projek, Wali Kelas, dll',
+  `username` VARCHAR(100) NOT NULL UNIQUE COMMENT 'Username login akun portal guru',
+  `password` VARCHAR(100) NOT NULL COMMENT 'Kata sandi login',
+  `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX `idx_tch_user` (`username`),
+  INDEX `idx_tch_code` (`kode_guru`),
+  INDEX `idx_tch_name` (`nama_guru`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 SET FOREIGN_KEY_CHECKS = 1;
+

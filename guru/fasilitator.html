@@ -121,11 +121,11 @@
   <header id="dashboardHeader" class="hidden sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
     <div class="h-16 px-4 flex items-center justify-between max-w-lg mx-auto w-full">
       <div class="flex items-center gap-3">
-        <a href="../" class="w-10 h-10 rounded-2xl bg-purple-50 flex items-center justify-center p-1 border border-purple-200 shrink-0">
+        <a href="../" class="w-10 h-10 rounded-2xl bg-emerald-50 flex items-center justify-center p-1 border border-emerald-200 shrink-0">
           <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
         </a>
         <div class="flex flex-col">
-          <span class="text-[10.5px] text-[#42A447] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
+          <span class="text-[10.5px] text-[#006a61] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
           <span class="text-sm font-bold text-on-surface leading-tight">Portal Fasilitator Guru</span>
         </div>
       </div>
@@ -141,26 +141,29 @@
 
     <!-- TABS (HANYA AKTIF SAAT LOGIN) -->
     <div id="fasTabs" class="hidden max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50">
-      <button id="btnTabFas1" onclick="switchFasTab('penilaian')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#42A447] text-[#42A447]">
-        Penilaian LKPD
+      <button id="btnTabFas1" onclick="switchFasTab('penilaian')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#006a61] text-[#006a61] cursor-pointer">
+        Penilaian
       </button>
-      <button id="btnTabFas2" onclick="switchFasTab('presensi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">
-        Presensi Siswa
+      <button id="btnTabFas2" onclick="switchFasTab('presensi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer">
+        Presensi
       </button>
-      <button id="btnTabFas3" onclick="switchFasTab('materi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface">
-        Bahan Bimbingan
+      <button id="btnTabFas4" onclick="switchFasTab('galeri')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer flex items-center justify-center gap-1">
+        <span>Galeri Foto</span>
+      </button>
+      <button id="btnTabFas3" onclick="switchFasTab('materi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer">
+        Rubrik
       </button>
     </div>
   </header>
 
-  <!-- FORM LOGIN FASILITATOR (TAMPIL JIKA BELUM LOGIN - PERSIS SEPERTI SISWA) -->
+  <!-- FORM LOGIN FASILITATOR (TAMPIL JIKA BELUM LOGIN) -->
   <main id="loginSection" class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full p-6">
     <div class="flex items-center justify-between mb-8">
       <a href="../" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs transition-all">
         <span class="material-symbols-outlined text-sm">arrow_back</span>
         <span>Beranda Utama</span>
       </a>
-      <span class="text-xs font-semibold text-[#42A447] px-2.5 py-1 rounded-full bg-[#42A447]/15">Portal Fasilitator</span>
+      <span class="text-xs font-semibold text-[#006a61] px-2.5 py-1 rounded-full bg-[#006a61]/15">Portal Fasilitator</span>
     </div>
 
     <div class="bg-surface-container-lowest rounded-3xl p-7 shadow-sm border border-outline-variant/20 flex flex-col gap-5">
@@ -168,16 +171,16 @@
         <div class="w-16 h-16 rounded-2xl bg-surface-container flex items-center justify-center p-2 border border-outline-variant/30 shadow-xs">
           <img src="../LOGO SMAN1 BELITANG.png" alt="SMAN 1 Belitang" class="w-full h-full object-contain">
         </div>
-        <h1 class="text-xl font-extrabold text-primary">Login Guru Fasilitator</h1>
-        <p class="text-xs text-on-surface-variant max-w-xs">Bimbingan lapangan, presensi peserta didik, dan penilaian lembar LKPD 4 pilar FINCESTEM.</p>
+        <h1 class="text-xl font-extrabold text-primary">Login Fasilitator Guru</h1>
+        <p class="text-xs text-on-surface-variant max-w-xs">Pembimbingan kelas binaan, penilaian tugas harian, dan penetapan nilai akhir kokurikuler.</p>
       </div>
 
       <div class="flex flex-col gap-4 mt-2">
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1.5">NIP / Akun Guru Fasilitator</label>
+          <label class="block text-xs font-bold text-on-surface mb-1.5">Akun / NIP Fasilitator</label>
           <div class="relative flex items-center">
             <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">badge</span>
-            <input id="fasilIdInput" type="text" placeholder="Masukkan NIP atau Akun Fasilitator" class="w-full pl-11 pr-4 py-3 rounded-xl border border-outline-variant/50 focus:border-[#42A447] focus:ring-2 focus:ring-[#42A447]/20 text-sm font-semibold outline-none transition-all">
+            <input id="fasilIdInput" type="text" placeholder="Masukkan NIP atau Akun Fasilitator" class="w-full pl-11 pr-4 py-3 rounded-xl border border-outline-variant/50 focus:border-[#006a61] focus:ring-2 focus:ring-[#006a61]/20 text-sm font-semibold outline-none transition-all">
           </div>
         </div>
 
@@ -185,15 +188,15 @@
           <label class="block text-xs font-bold text-on-surface mb-1.5">Kata Sandi</label>
           <div class="relative flex items-center">
             <span class="material-symbols-outlined absolute left-3.5 text-on-surface-variant text-lg">lock</span>
-            <input id="fasilPwdInput" type="password" placeholder="Masukkan kata sandi" class="w-full pl-11 pr-11 py-3 rounded-xl border border-outline-variant/50 focus:border-[#42A447] focus:ring-2 focus:ring-[#42A447]/20 text-sm font-semibold outline-none transition-all">
+            <input id="fasilPwdInput" type="password" placeholder="Masukkan kata sandi" class="w-full pl-11 pr-11 py-3 rounded-xl border border-outline-variant/50 focus:border-[#006a61] focus:ring-2 focus:ring-[#006a61]/20 text-sm font-semibold outline-none transition-all">
             <button type="button" onclick="toggleFasilPasswordVisibility()" class="absolute right-3 text-on-surface-variant hover:text-on-surface">
               <span id="fasilEyeIcon" class="material-symbols-outlined text-lg">visibility</span>
             </button>
           </div>
         </div>
 
-        <button id="btnSubmitFasilLogin" onclick="handleFasilLogin()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#42A447] to-[#2e7d32] hover:from-[#4caf50] hover:to-[#256629] text-white font-bold text-sm shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer">
-          <span id="btnFasilText">Masuk ke Portal Fasilitator</span>
+        <button id="btnSubmitFasilLogin" onclick="handleFasilLogin()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-[#006a61] to-[#004f48] hover:from-[#008176] hover:to-[#003833] text-white font-bold text-sm shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer">
+          <span id="btnFasilText">Masuk Portal Fasilitator</span>
           <span class="material-symbols-outlined text-lg">arrow_forward</span>
         </button>
       </div>
@@ -211,27 +214,60 @@
     </div>
   </main>
 
-  <!-- MAIN CONTENT (TERPROTEKSI - HANYA DITAMPILKAN JIKA SUDAH LOGIN) -->
+  <!-- MAIN CONTENT (TERPROTEKSI) -->
   <main id="portalContent" class="hidden flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
 
-    <!-- USER BADGE (HIJAU #42A447) -->
-    <div class="bg-gradient-to-r from-[#42A447] to-[#2e7d32] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
+    <!-- USER BADGE (HIJAU TOSCA #006a61) -->
+    <div class="bg-gradient-to-r from-[#006a61] to-[#004f48] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white">
+        <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white shrink-0">
           <span class="material-symbols-outlined text-2xl">co_present</span>
         </div>
-        <div class="flex flex-col">
-          <span class="text-[11px] text-emerald-100 font-semibold">Guru Fasilitator Lapangan</span>
-          <h2 id="fasUserName" class="text-sm font-extrabold text-white leading-tight">Fasilitator Pembina</h2>
-          <span id="fasUserMeta" class="text-[10.5px] text-emerald-200/80">Pembina Kokurikuler FINCESTEM</span>
+        <div class="flex flex-col min-w-0">
+          <span class="text-[11px] text-teal-200 font-semibold">Guru Fasilitator Kelas</span>
+          <h2 id="fasUserName" class="text-sm font-extrabold text-white leading-tight truncate">Fasilitator Pembina</h2>
+          <span id="fasUserMeta" class="text-[10.5px] text-teal-100/80 truncate">Pembina Kokurikuler FINCESTEM</span>
         </div>
       </div>
-      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold">Fasilitator</span>
+      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold shrink-0">Fasilitator</span>
     </div>
 
-    <!-- TAB 1: PENILAIAN LKPD -->
+    <!-- BANNER KELAS BINAAN TUNGGAL (ATURAN KETAT 1 FASILITATOR = 1 KELAS) -->
+    <div class="p-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 shadow-xs flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <span class="w-9 h-9 rounded-xl bg-teal-50 text-[#006a61] flex items-center justify-center shrink-0">
+          <span class="material-symbols-outlined text-lg">domain</span>
+        </span>
+        <div class="flex flex-col min-w-0">
+          <span class="text-[11px] text-on-surface-variant font-semibold">Kelas Penugasan Anda:</span>
+          <h3 id="lblAssignedClassName" class="text-sm font-black text-[#006a61] truncate">Memuat Kelas...</h3>
+        </div>
+      </div>
+      <span id="lblAssignedStudentCount" class="px-2.5 py-1 rounded-xl text-xs font-black bg-teal-100 text-[#006a61] shrink-0">
+        0 Siswa
+      </span>
+    </div>
+
+    <!-- TAB 1: PENILAIAN LKPD & TUGAS KELAS -->
     <div id="panelFasPenilaian" class="flex flex-col gap-3">
-      <!-- Synced dynamically by JavaScript -->
+      <!-- Search & Status Filter -->
+      <div class="p-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/25 flex items-center gap-2 shadow-2xs">
+        <span class="material-symbols-outlined text-sm text-on-surface-variant pl-1">search</span>
+        <input type="text" id="inputFasStudentSearch" oninput="onFasSearchInput(this.value)" placeholder="Cari nama siswa atau NISN..." class="w-full text-xs outline-none bg-transparent">
+      </div>
+
+      <!-- Notice Status Aturan Ketat -->
+      <div class="p-3 rounded-2xl bg-teal-50/70 border border-teal-100 flex items-start gap-2 text-xs text-teal-950 shadow-2xs">
+        <span class="material-symbols-outlined text-base text-[#006a61] shrink-0 mt-0.5">info</span>
+        <p class="leading-relaxed">
+          Tentukan status penilaian tugas: <strong>Submitted</strong>, <strong>Reviewed</strong>, <strong>Revision</strong>, atau <strong>Completed</strong>. Siswa hanya dapat melangkah ke Day berikutnya jika status ditetapkan <strong>Completed</strong>.
+        </p>
+      </div>
+
+      <!-- Student Cards List -->
+      <div id="containerFasStudentCards" class="flex flex-col gap-2.5">
+        <!-- Populated dynamically by JS -->
+      </div>
     </div>
 
     <!-- TAB 2: PRESENSI SISWA -->
@@ -242,22 +278,52 @@
           <span id="presensiDateBadge" class="text-xs text-on-surface-variant font-semibold">Hari Riset</span>
         </div>
         <p class="text-xs text-on-surface-variant leading-relaxed">
-          Pencatatan kehadiran peserta didik dalam bimbingan riset lapangan kokurikuler.
+          Pencatatan kehadiran peserta didik dalam bimbingan riset lapangan kokurikuler rombel binaan Anda.
         </p>
 
-        <div id="presensiContainer" class="py-10 px-4 rounded-2xl bg-surface-container-low flex flex-col items-center justify-center text-center gap-2">
+        <div id="presensiContainer" class="py-6 px-4 rounded-2xl bg-surface-container-low flex flex-col items-center justify-center text-center gap-2">
           <div class="w-12 h-12 rounded-2xl bg-surface-container flex items-center justify-center text-outline">
             <span class="material-symbols-outlined text-2xl">how_to_reg</span>
           </div>
-          <p class="font-bold text-xs text-on-surface">Belum Ada Roster Siswa Aktif</p>
+          <p class="font-bold text-xs text-on-surface">Presensi Kelas Binaan Aktif</p>
           <p class="text-[11px] text-outline max-w-xs leading-relaxed">
-            Daftar kehadiran siswa per kelompok akan aktif setelah penetapan kelompok atau data siswa terdaftar di sistem.
+            Kehadiran siswa tercatat otomatis saat pengerjaan jurnal observasi lapangan harian.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- TAB 3: BAHAN BIMBINGAN -->
+    <!-- TAB 4: GALERI DOKUMENTASI FOTO RISET KELAS BINAAN -->
+    <div id="panelFasGaleri" class="hidden flex flex-col gap-3">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="font-bold text-sm text-on-surface">Galeri Foto Riset Siswa</h3>
+            <p class="text-xs text-on-surface-variant">Pantau bukti dokumentasi lapangan dengan pemisahan Kamera Geotag vs Galeri.</p>
+          </div>
+          <span id="fasilPhotoCountBadge" class="px-2.5 py-1 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800">0 Foto</span>
+        </div>
+
+        <!-- Filter Kamera Geotag vs Galeri -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1">
+          <button id="fasilPhotoFilterAll" onclick="filterFasilPhotos('all')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#006a61] text-white shadow-xs whitespace-nowrap cursor-pointer">Semua Foto</button>
+          <button id="fasilPhotoFilterCamera" onclick="filterFasilPhotos('camera')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+            <span>📍 Kamera Geotag</span>
+          </button>
+          <button id="fasilPhotoFilterGallery" onclick="filterFasilPhotos('gallery')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer flex items-center gap-1">
+            <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+            <span>📁 Galeri (No Geotag)</span>
+          </button>
+        </div>
+
+        <div id="fasilPhotoGrid" class="grid grid-cols-2 gap-2.5 pt-1">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: BAHAN BIMBINGAN & RUBRIK 4 PILAR -->
     <div id="panelFasMateri" class="hidden flex flex-col gap-3">
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <h3 class="font-bold text-sm text-on-surface">Panduan Rubrik Penilaian 4 Pilar</h3>
@@ -293,13 +359,13 @@
     </div>
   </main>
 
-  <!-- MODAL RUBRIK PENILAIAN FASILITATOR (INTEGRATED WITH LOCALSTORAGE) -->
+  <!-- MODAL RUBRIK PENILAIAN TUGAS HARIAN FASILITATOR (DENGAN 4 STATUS) -->
   <div id="modalGradingFasilitator" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
     <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high max-h-[90vh] overflow-y-auto">
       <div class="flex items-center justify-between border-b border-surface-container pb-2">
         <div>
-          <h3 id="modalGradingGroupName" class="font-extrabold text-base text-primary">-</h3>
-          <span id="modalGradingStudentName" class="text-xs text-on-surface-variant">-</span>
+          <h3 id="modalGradingStudentName" class="font-extrabold text-base text-[#006a61]">-</h3>
+          <span id="modalGradingStudentMeta" class="text-xs text-on-surface-variant">-</span>
           <input type="hidden" id="modalGradingTargetNisn" value="">
         </div>
         <button onclick="closeGradingModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
@@ -310,9 +376,8 @@
       <div class="flex flex-col gap-3 text-xs">
         <!-- Target Hari / Sesi -->
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Target Hari / Sesi Riset</label>
-          <select id="gradeTargetDay" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-[#42A447] outline-none">
-            <option value="0">Evaluasi Umum (4 Pilar &amp; Capaian Akhir)</option>
+          <label class="block text-xs font-bold text-on-surface mb-1">Target Hari / Sesi Kegiatan</label>
+          <select id="gradeTargetDay" onchange="onTargetDayChange(this.value)" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-[#006a61] outline-none">
             <option value="1">Day 1: Orientasi &amp; Pembekalan Riset</option>
             <option value="2">Day 2: Eksplorasi Sains &amp; Ekosistem Irigasi</option>
             <option value="3">Day 3: Rekayasa Teknologi &amp; Pengukuran Lapangan</option>
@@ -320,49 +385,107 @@
             <option value="5">Day 5: Eksplorasi Budaya &amp; Etnosains Nusantara</option>
             <option value="6">Day 6: Sintesis Data &amp; Penyusunan LKPD</option>
             <option value="7">Day 7: Gelar Karya Ilmiah, Presentasi &amp; Refleksi</option>
+            <option value="0">Day 0: Uji Coba / Simulasi Gladi Bersih</option>
           </select>
         </div>
 
-        <!-- Rubrik 1 -->
-        <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col gap-1.5">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-amber-800">1. Pilar Financial (HPP &amp; Analisis)</span>
-            <input id="gradeFinancial" type="number" min="0" max="100" placeholder="0-100" class="w-16 px-2 py-1 rounded-lg border border-amber-400 bg-white text-right font-bold text-xs">
+        <!-- BUKTI FOTO DOKUMENTASI LAPANGAN SISWA (PENILAIAN OTENTIKASI) -->
+        <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-[#006a61]">photo_camera</span>
+              <span class="font-extrabold text-xs text-on-surface">Foto Dokumentasi Sesi Ini</span>
+            </div>
+            <span class="text-[10px] text-on-surface-variant font-medium">Ketuk foto untuk zoom 2 jari</span>
           </div>
-          <span class="text-[10.5px] text-on-surface-variant">Akurasi struktur biaya produksi dan pemahaman rantai tata niaga beras.</span>
+
+          <!-- Petunjuk Penilaian Otentikasi -->
+          <div class="text-[10.5px] text-slate-600 bg-white/90 p-2 rounded-xl border border-slate-200 leading-tight">
+            💡 <b>Pedoman Fasilitator:</b> Nilai foto berstempel <b>📍 Kamera Geotag</b> sebagai kehadiran live di lapangan, dan foto <b>📁 Galeri</b> sebagai unggahan album.
+          </div>
+
+          <div id="modalGradingPhotoContainer" class="flex flex-col gap-1.5">
+            <!-- Dynamically populated -->
+          </div>
         </div>
 
-        <!-- Rubrik 2 -->
-        <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex flex-col gap-1.5">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-purple-800">2. Pilar Culture (Kearifan Lokal)</span>
-            <input id="gradeCulture" type="number" min="0" max="100" placeholder="0-100" class="w-16 px-2 py-1 rounded-lg border border-purple-400 bg-white text-right font-bold text-xs">
-          </div>
-          <span class="text-[10.5px] text-on-surface-variant">Pemaknaan nilai gotong royong sambatan dan catatan sejarah transmigrasi.</span>
-        </div>
-
-        <!-- Rubrik 3 -->
-        <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col gap-1.5">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-emerald-800">3. Pilar Exploration (Navigasi)</span>
-            <input id="gradeExploration" type="number" min="0" max="100" placeholder="0-100" class="w-16 px-2 py-1 rounded-lg border border-emerald-400 bg-white text-right font-bold text-xs">
-          </div>
-          <span class="text-[10.5px] text-on-surface-variant">Ketepatan titik elevasi saluran air dan dokumentasi geospasial.</span>
-        </div>
-
-        <!-- Rubrik 4 -->
-        <div class="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex flex-col gap-1.5">
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-blue-800">4. Pilar STEM (Uji Kualitas Air &amp; Debit)</span>
-            <input id="gradeSTEM" type="number" min="0" max="100" placeholder="0-100" class="w-16 px-2 py-1 rounded-lg border border-blue-400 bg-white text-right font-bold text-xs">
-          </div>
-          <span class="text-[10.5px] text-on-surface-variant">Presisi pengujian pH air dan kalkulasi debit aliran kontinu (Q = A x v).</span>
-        </div>
-
-        <!-- Feedback -->
+        <!-- PILIHAN 4 STATUS PENILAIAN (PERSYARATAN UTAMA) -->
         <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Catatan &amp; Umpan Balik Guru Pembina</label>
-          <textarea id="gradeFeedbackInput" rows="3" placeholder="Tuliskan catatan evaluasi dan umpan balik pembina untuk kelompok ini..." class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed focus:border-[#42A447] outline-none"></textarea>
+          <label class="block text-xs font-bold text-on-surface mb-1">Status Penilaian Tugas:</label>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <label class="p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50 has-[:checked]:ring-1 has-[:checked]:ring-emerald-500">
+              <input type="radio" name="evalStatusRadio" id="statusRadioCompleted" value="completed" checked class="text-emerald-600 focus:ring-0">
+              <div class="flex flex-col">
+                <span class="font-extrabold text-emerald-900">Completed</span>
+                <span class="text-[10px] text-emerald-700 font-medium">Lulus &amp; Buka Day N+1</span>
+              </div>
+            </label>
+
+            <label class="p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50 has-[:checked]:ring-1 has-[:checked]:ring-blue-500">
+              <input type="radio" name="evalStatusRadio" id="statusRadioReviewed" value="reviewed" class="text-blue-600 focus:ring-0">
+              <div class="flex flex-col">
+                <span class="font-extrabold text-blue-900">Reviewed</span>
+                <span class="text-[10px] text-blue-700 font-medium">Telah Diperiksa</span>
+              </div>
+            </label>
+
+            <label class="p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all has-[:checked]:border-rose-600 has-[:checked]:bg-rose-50 has-[:checked]:ring-1 has-[:checked]:ring-rose-500">
+              <input type="radio" name="evalStatusRadio" id="statusRadioRevision" value="revision" class="text-rose-600 focus:ring-0">
+              <div class="flex flex-col">
+                <span class="font-extrabold text-rose-900">Revision</span>
+                <span class="text-[10px] text-rose-700 font-medium">Perlu Perbaikan</span>
+              </div>
+            </label>
+
+            <label class="p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all has-[:checked]:border-amber-600 has-[:checked]:bg-amber-50 has-[:checked]:ring-1 has-[:checked]:ring-amber-500">
+              <input type="radio" name="evalStatusRadio" id="statusRadioSubmitted" value="submitted" class="text-amber-600 focus:ring-0">
+              <div class="flex flex-col">
+                <span class="font-extrabold text-amber-900">Submitted</span>
+                <span class="text-[10px] text-amber-700 font-medium">Menunggu Koreksi</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Rubrik 4 Pilar -->
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <div class="p-2.5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col gap-1">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-amber-900">1. Financial</span>
+              <input id="gradeFinancial" type="number" min="0" max="100" placeholder="0-100" class="w-14 px-1.5 py-0.5 rounded-lg border border-amber-400 bg-white text-right font-bold text-xs">
+            </div>
+            <span class="text-[9.5px] text-on-surface-variant">Struktur biaya &amp; tata niaga</span>
+          </div>
+
+          <div class="p-2.5 rounded-2xl bg-purple-50 border border-purple-200 flex flex-col gap-1">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-purple-900">2. Culture</span>
+              <input id="gradeCulture" type="number" min="0" max="100" placeholder="0-100" class="w-14 px-1.5 py-0.5 rounded-lg border border-purple-400 bg-white text-right font-bold text-xs">
+            </div>
+            <span class="text-[9.5px] text-on-surface-variant">Kearifan lokal &amp; sambatan</span>
+          </div>
+
+          <div class="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col gap-1">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-emerald-900">3. Exploration</span>
+              <input id="gradeExploration" type="number" min="0" max="100" placeholder="0-100" class="w-14 px-1.5 py-0.5 rounded-lg border border-emerald-400 bg-white text-right font-bold text-xs">
+            </div>
+            <span class="text-[9.5px] text-on-surface-variant">Elevasi &amp; navigasi saluran</span>
+          </div>
+
+          <div class="p-2.5 rounded-2xl bg-blue-50 border border-blue-200 flex flex-col gap-1">
+            <div class="flex justify-between items-center">
+              <span class="font-bold text-blue-900">4. STEM</span>
+              <input id="gradeSTEM" type="number" min="0" max="100" placeholder="0-100" class="w-14 px-1.5 py-0.5 rounded-lg border border-blue-400 bg-white text-right font-bold text-xs">
+            </div>
+            <span class="text-[9.5px] text-on-surface-variant">Uji pH air &amp; debit debit</span>
+          </div>
+        </div>
+
+        <!-- Feedback & Komentar Guru -->
+        <div>
+          <label class="block text-xs font-bold text-on-surface mb-1">Feedback &amp; Komentar Pembina:</label>
+          <textarea id="gradeFeedbackInput" rows="3" placeholder="Tuliskan umpan balik konstruktif untuk peserta didik..." class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed focus:border-[#006a61] outline-none"></textarea>
         </div>
       </div>
 
@@ -370,18 +493,64 @@
         <button onclick="closeGradingModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all">
           Batal
         </button>
-        <button onclick="submitGrading()" class="flex-1 py-2.5 rounded-xl bg-[#42A447] hover:bg-[#2e7d32] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md">
+        <button onclick="submitGrading()" class="flex-1 py-2.5 rounded-xl bg-[#006a61] hover:bg-[#004f48] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md">
           <span class="material-symbols-outlined text-sm">send</span>
-          <span>Simpan Nilai</span>
+          <span>Simpan Evaluasi</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PENETAPAN NILAI AKHIR KOKURIKULER -->
+  <div id="modalFinalGrade" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high">
+      <div class="flex items-center justify-between border-b border-surface-container pb-2">
+        <div>
+          <h3 id="modalFinalStudentName" class="font-extrabold text-base text-purple-800">Nilai Akhir Kokurikuler</h3>
+          <span id="modalFinalStudentMeta" class="text-xs text-on-surface-variant">-</span>
+          <input type="hidden" id="modalFinalTargetNisn" value="">
+        </div>
+        <button onclick="closeFinalGradeModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <div class="flex flex-col gap-3 text-xs">
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Nilai Akhir Kokurikuler (Skala 0 - 100):</label>
+          <input id="inputFinalScore" type="number" min="0" max="100" placeholder="Contoh: 90" oninput="onFinalScoreInput(this.value)" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-black focus:border-purple-600 outline-none text-purple-900">
+        </div>
+
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Predikat Capaian Dimensi Profil:</label>
+          <input id="inputFinalPredicate" type="text" readonly value="Sangat Baik (A)" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-outline-variant/30 text-xs font-bold text-slate-700 outline-none">
+        </div>
+
+        <div>
+          <label class="block font-bold text-on-surface mb-1">Catatan Deskripsi Capaian Kompetensi:</label>
+          <textarea id="inputFinalNotes" rows="3" placeholder="Tuliskan capaian profil pelajar Pancasila dan literasi riset siswa selama kokurikuler..." class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed focus:border-purple-600 outline-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 pt-2 border-t border-surface-container">
+        <button onclick="closeFinalGradeModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all">
+          Batal
+        </button>
+        <button onclick="submitFinalGrade()" class="flex-1 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md">
+          <span class="material-symbols-outlined text-sm">verified</span>
+          <span>Simpan Nilai Akhir</span>
         </button>
       </div>
     </div>
   </div>
 
   <script src="../js/siswa_data.js"></script>
+  <script src="../js/guru_data.js"></script>
   <script src="../js/core.js"></script>
   <script>
-    let activeGroupId = null;
+    let assignedClass = null;
+    let assignedStudents = [];
+    let fasStudentSearchQuery = '';
 
     document.addEventListener('DOMContentLoaded', () => {
       checkFasilAuth();
@@ -392,15 +561,6 @@
           if (e.key === 'Enter') handleFasilLogin();
         });
       }
-
-      // Sinkronisasi foto siswa secara berkala (45 detik) saat fasilitator sedang aktif
-      setInterval(() => {
-        if (!document.hidden && FincestemCore.auth.isLoggedIn() && FincestemCore.profile && FincestemCore.profile.syncPhotos) {
-          FincestemCore.profile.syncPhotos(function(updated) {
-            if (updated) renderPenilaianList();
-          });
-        }
-      }, 45000);
     });
 
     function checkFasilAuth() {
@@ -425,12 +585,7 @@
           document.getElementById('fasUserName').textContent = user.name;
           document.getElementById('fasUserMeta').textContent = user.assignment || 'Pembina Kokurikuler FINCESTEM';
         }
-        renderPenilaianList();
-        if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
-          FincestemCore.profile.syncPhotos(function() {
-            renderPenilaianList();
-          });
-        }
+        loadFacilitatorClassData();
       } else {
         if (dashboardHeader) dashboardHeader.classList.add('hidden');
         if (loginSec) loginSec.classList.remove('hidden');
@@ -458,12 +613,8 @@
       const btn = document.getElementById('btnSubmitFasilLogin');
       const btnText = document.getElementById('btnFasilText');
 
-      if (!id) {
-        FincestemCore.ui.toast('Silakan masukkan akun atau NIP Fasilitator!', 'error');
-        return;
-      }
-      if (!pwd) {
-        FincestemCore.ui.toast('Silakan masukkan kata sandi!', 'error');
+      if (!id || !pwd) {
+        FincestemCore.ui.toast('Silakan masukkan akun/NIP dan kata sandi!', 'error');
         return;
       }
 
@@ -481,7 +632,7 @@
         }
 
         FincestemCore.auth.setUser(res.user, 'fasilitator');
-        FincestemCore.ui.toast('Berhasil masuk! Membuka Portal Fasilitator...', 'success');
+        FincestemCore.ui.toast('Berhasil masuk ke Portal Fasilitator!', 'success');
         checkFasilAuth();
       }, 400);
     }
@@ -492,109 +643,128 @@
     }
 
     function switchFasTab(tab) {
-      ['penilaian', 'presensi', 'materi'].forEach(t => {
-        const panel = document.getElementById('panelFas' + t.charAt(0).toUpperCase() + t.slice(1));
-        const btn = document.getElementById('btnTabFas' + (t === 'penilaian' ? '1' : (t === 'presensi' ? '2' : '3')));
+      const tabs = [
+        { key: 'penilaian', btnId: 'btnTabFas1', panelId: 'panelFasPenilaian' },
+        { key: 'presensi', btnId: 'btnTabFas2', panelId: 'panelFasPresensi' },
+        { key: 'galeri', btnId: 'btnTabFas4', panelId: 'panelFasGaleri' },
+        { key: 'materi', btnId: 'btnTabFas3', panelId: 'panelFasMateri' }
+      ];
+
+      tabs.forEach(t => {
+        const panel = document.getElementById(t.panelId);
+        const btn = document.getElementById(t.btnId);
         if (panel) {
-          if (t === tab) panel.classList.remove('hidden');
+          if (t.key === tab) panel.classList.remove('hidden');
           else panel.classList.add('hidden');
         }
         if (btn) {
-          if (t === tab) {
-            btn.className = 'flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#42A447] text-[#42A447]';
+          if (t.key === tab) {
+            btn.className = 'flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#006a61] text-[#006a61] cursor-pointer flex items-center justify-center gap-1';
           } else {
-            btn.className = 'flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface';
+            btn.className = 'flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer flex items-center justify-center gap-1';
           }
         }
       });
-    }
 
-    function getGroupsData() {
-      try {
-        const stored = localStorage.getItem('fincestem_db_2026_v1');
-        if (stored) {
-          const db = JSON.parse(stored);
-          if (Array.isArray(db.groups)) return db.groups;
-        }
-      } catch (e) {}
-      return [];
-    }
-
-    let selectedFasRombel = 'ALL';
-    let fasSearchQuery = '';
-
-    function renderPenilaianList() {
-      const panel = document.getElementById('panelFasPenilaian');
-      panel.innerHTML = '';
-
-      const list = window.FincestemMasterStudents || [];
-      const rombels = [...new Set(list.map(s => s.class))].filter(Boolean).sort();
-
-      // Filter controls bar
-      const filterBar = document.createElement('div');
-      filterBar.className = 'p-3.5 rounded-3xl bg-surface-container-lowest border border-outline-variant/25 flex flex-col gap-2.5 shadow-xs';
-      filterBar.innerHTML = `
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-bold text-on-surface flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-sm text-[#42A447]">filter_alt</span> Filter Siswa Binaan
-          </span>
-          <span class="text-[11px] text-on-surface-variant font-semibold" id="fasTotalFilteredCount">Memuat...</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          <select id="selFasRombel" onchange="onFasRombelChange(this.value)" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-[#42A447] outline-none">
-            <option value="ALL">Semua Rombel (1.165 Siswa)</option>
-            ${rombels.map(r => `<option value="${r}" ${selectedFasRombel === r ? 'selected' : ''}>${r}</option>`).join('')}
-          </select>
-          <div class="relative flex items-center">
-            <span class="material-symbols-outlined absolute left-2.5 text-xs text-on-surface-variant">search</span>
-            <input type="text" id="inputFasSearch" value="${fasSearchQuery}" oninput="onFasSearchInput(this.value)" placeholder="Cari nama siswa atau NISN..." class="w-full pl-8 pr-3 py-2 rounded-xl border border-outline-variant/50 text-xs outline-none focus:border-[#42A447]">
-          </div>
-        </div>
-      `;
-      panel.appendChild(filterBar);
-
-      // Filter data siswa
-      let filtered = list;
-      if (selectedFasRombel !== 'ALL') {
-        filtered = filtered.filter(s => s.class === selectedFasRombel);
+      if (tab === 'galeri') {
+        renderFasilGallery();
       }
-      if (fasSearchQuery) {
-        const q = fasSearchQuery.toLowerCase();
+    }
+
+    // LOAD KELAS BINAAN FASILITATOR (STRICT: HANYA 1 KELAS!)
+    function loadFacilitatorClassData() {
+      const user = FincestemCore.auth.getUser();
+      const fasilUser = (user && user.username) || (user && user.nip) || (user && user.kode) || '';
+
+      if (FincestemCore.assignments) {
+        FincestemCore.assignments.getFacilitatorData(fasilUser, function(data) {
+          if (data && data.class_name) {
+            assignedClass = data.class_name;
+            assignedStudents = data.students || [];
+            document.getElementById('lblAssignedClassName').textContent = assignedClass;
+            document.getElementById('lblAssignedStudentCount').textContent = `${assignedStudents.length} Siswa`;
+          } else {
+            // Jika belum ditugaskan oleh admin, ambil fallback kelas pertama dari master data
+            const masterList = window.FincestemMasterStudents || [];
+            assignedClass = 'KELAS X.1';
+            assignedStudents = masterList.filter(s => s.class === assignedClass).map(s => ({
+              nisn: s.nisn,
+              name: s.nama,
+              class_name: s.class,
+              nis: s.nis,
+              photo_url: s.photo_url,
+              zone: s.zone
+            }));
+            document.getElementById('lblAssignedClassName').textContent = `${assignedClass} (Mode Demo)`;
+            document.getElementById('lblAssignedStudentCount').textContent = `${assignedStudents.length} Siswa`;
+          }
+
+          renderAssignedStudentList();
+        });
+      }
+    }
+
+    function onFasSearchInput(val) {
+      fasStudentSearchQuery = val.trim();
+      renderAssignedStudentList();
+    }
+
+    function renderAssignedStudentList() {
+      const container = document.getElementById('containerFasStudentCards');
+      if (!container) return;
+      container.innerHTML = '';
+
+      let filtered = assignedStudents;
+      if (fasStudentSearchQuery) {
+        const q = fasStudentSearchQuery.toLowerCase();
         filtered = filtered.filter(s => 
-          (s.nama || s.name || '').toLowerCase().includes(q) || 
+          (s.name || '').toLowerCase().includes(q) ||
           String(s.nisn || '').includes(q)
         );
       }
 
-      document.getElementById('fasTotalFilteredCount').textContent = `${filtered.length} Siswa Ditemukan`;
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="py-8 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-2xl border border-outline-variant/20 p-4">
+            Tidak ada siswa ditemukan di kelas binaan ini.
+          </div>
+        `;
+        return;
+      }
 
-      const listContainer = document.createElement('div');
-      listContainer.className = 'flex flex-col gap-3';
-      panel.appendChild(listContainer);
-
-      // Tampilkan 25 siswa pertama agar lancar & cepat
-      const displayList = filtered.slice(0, 25);
-
-      displayList.forEach(s => {
-        const nisn = s.nisn;
-        const prog = (FincestemCore.progress && FincestemCore.progress.getLocalProgress) 
-          ? FincestemCore.progress.getDefaultProgress(nisn) 
-          : { percentage: 71, average_score: 88.5, predicate: 'A' };
-
-        // Cek jika sudah pernah ada simpanan lokal
+      filtered.forEach(stu => {
+        let prog = null;
         try {
-          const stored = localStorage.getItem('fincestem_progress_' + nisn);
-          if (stored) Object.assign(prog, JSON.parse(stored));
+          const pStr = localStorage.getItem('fincestem_progress_' + stu.nisn);
+          if (pStr) prog = JSON.parse(pStr);
         } catch (e) {}
 
-        const isGraded = !!prog.average_score;
-        let badgeClass = isGraded ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800';
-        let badgeText = isGraded ? `Nilai: ${prog.average_score} (${prog.predicate || 'A'})` : 'Menunggu Review';
+        const completedDays = prog ? (prog.completed_days || 0) : 0;
+        const percentage = prog ? (prog.percentage || 0) : 0;
+        const avgScore = prog ? prog.average_score : null;
+        const latestStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : (prog ? FincestemCore.progress.getDayStatus(prog, 1) : 'belum_mulai');
 
-        const savedPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(s.nisn)) || s.photo_url;
+        let badgeStatusClass = 'bg-slate-100 text-slate-700';
+        let badgeStatusText = 'Belum Mulai';
+
+        if (latestStatus === 'completed') {
+          badgeStatusClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+          badgeStatusText = 'Completed';
+        } else if (latestStatus === 'revision') {
+          badgeStatusClass = 'bg-rose-100 text-rose-900 border border-rose-300';
+          badgeStatusText = 'Perlu Revisi';
+        } else if (latestStatus === 'reviewed') {
+          badgeStatusClass = 'bg-blue-100 text-blue-900 border border-blue-300';
+          badgeStatusText = 'Reviewed';
+        } else if (latestStatus === 'submitted') {
+          badgeStatusClass = 'bg-amber-100 text-amber-900 border border-amber-300';
+          badgeStatusText = 'Submitted';
+        }
+
+        const savedPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(stu.nisn)) || stu.photo_url;
         const photoHtml = savedPhoto 
           ? `<img src="${savedPhoto}" alt="Foto" class="w-10 h-10 rounded-2xl object-cover border border-outline-variant/40 shrink-0">` 
-          : `<div class="w-10 h-10 rounded-2xl bg-emerald-50 text-[#42A447] flex items-center justify-center font-bold text-sm shrink-0"><span class="material-symbols-outlined text-lg">person</span></div>`;
+          : `<div class="w-10 h-10 rounded-2xl bg-teal-50 text-[#006a61] flex items-center justify-center font-bold text-sm shrink-0"><span class="material-symbols-outlined text-lg">person</span></div>`;
 
         const card = document.createElement('div');
         card.className = 'bg-surface-container-lowest rounded-3xl p-4 border border-outline-variant/25 shadow-xs flex flex-col gap-2.5';
@@ -603,89 +773,53 @@
             <div class="flex items-start gap-2.5 min-w-0">
               ${photoHtml}
               <div class="flex flex-col min-w-0">
-                <h4 class="font-extrabold text-xs sm:text-sm text-on-surface truncate">${s.nama}</h4>
-                <span class="text-[11px] text-on-surface-variant">NISN: ${s.nisn} • ${s.class}</span>
+                <h4 class="font-extrabold text-xs sm:text-sm text-on-surface truncate">${stu.name}</h4>
+                <span class="text-[11px] text-on-surface-variant">NISN: ${stu.nisn} &bull; ${stu.class_name}</span>
               </div>
             </div>
-            <span class="px-2 py-0.5 rounded-full text-[10.5px] font-extrabold shrink-0 ${badgeClass}">${badgeText}</span>
+            <span class="px-2 py-0.5 rounded-full text-[10.5px] font-black shrink-0 ${badgeStatusClass}">${badgeStatusText}</span>
           </div>
 
           <!-- Progress Mini Bar -->
           <div class="p-2.5 rounded-2xl bg-surface-container-low flex flex-col gap-1 text-[11px]">
             <div class="flex justify-between font-semibold text-on-surface-variant">
-              <span>Progres Pengerjaan Riset:</span>
-              <span class="font-bold text-[#42A447]">${prog.percentage || 0}% Selesai</span>
+              <span>Progres Riset: <strong>${completedDays}/7 Hari</strong></span>
+              <span class="font-bold text-[#006a61]">${percentage}%</span>
             </div>
             <div class="w-full h-2 bg-white rounded-full overflow-hidden border border-outline-variant/30">
-              <div class="h-full bg-gradient-to-r from-[#42A447] to-teal-500 rounded-full" style="width: ${prog.percentage || 0}%"></div>
+              <div class="h-full bg-gradient-to-r from-[#006a61] to-teal-500 rounded-full" style="width: ${percentage}%"></div>
             </div>
-            ${prog.latest_feedback?.feedback ? `
+            ${prog?.latest_feedback?.feedback ? `
               <p class="text-[10.5px] text-on-surface-variant italic truncate mt-0.5">
-                Feedback: "${prog.latest_feedback.feedback}"
+                "${prog.latest_feedback.feedback}"
               </p>
             ` : ''}
           </div>
 
-          <button onclick="openGradingModal('${s.nisn}', '${(s.nama || '').replace(/'/g, "\\'")}', '${s.class} • NISN: ${s.nisn}')" class="w-full py-2.5 rounded-xl bg-[#42A447] hover:bg-[#2e7d32] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
-            <span class="material-symbols-outlined text-sm">edit_note</span>
-            <span>${isGraded ? 'Perbarui Nilai & Feedback Siswa' : 'Beri Nilai & Feedback Siswa'}</span>
-          </button>
+          <!-- Dua Tombol Aksi Fasilitator: Nilai Tugas & Nilai Akhir -->
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}')" class="py-2.5 px-2 rounded-xl bg-[#006a61] hover:bg-[#004f48] text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
+              <span class="material-symbols-outlined text-sm">edit_note</span>
+              <span>Nilai Harian</span>
+            </button>
+            <button onclick="openFinalGradeModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}')" class="py-2.5 px-2 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs cursor-pointer">
+              <span class="material-symbols-outlined text-sm">verified</span>
+              <span>Nilai Akhir</span>
+            </button>
+          </div>
         `;
-        listContainer.appendChild(card);
+        container.appendChild(card);
       });
-
-      if (filtered.length > 25) {
-        const moreNotice = document.createElement('div');
-        moreNotice.className = 'text-center py-2 text-xs text-on-surface-variant font-medium';
-        moreNotice.textContent = `Menampilkan 25 dari ${filtered.length} siswa. Gunakan kolom pencarian di atas untuk menemukan siswa lainnya.`;
-        panel.appendChild(moreNotice);
-      }
     }
 
-    function onFasRombelChange(val) {
-      selectedFasRombel = val;
-      renderPenilaianList();
-    }
-
-    function onFasSearchInput(val) {
-      fasSearchQuery = val.trim();
-      renderPenilaianList();
-    }
-
+    // MODAL PENILAIAN HARIAN (DAY 1 - 7 & DAY 0)
     function openGradingModal(targetNisn, studentName, studentMeta) {
-      activeGroupId = targetNisn;
       document.getElementById('modalGradingTargetNisn').value = targetNisn;
-      document.getElementById('modalGradingGroupName').textContent = studentName || 'Penilaian Siswa';
-      document.getElementById('modalGradingStudentName').textContent = studentMeta || '';
+      document.getElementById('modalGradingStudentName').textContent = studentName || 'Penilaian Siswa';
+      document.getElementById('modalGradingStudentMeta').textContent = studentMeta || '';
 
-      // Default rubrik
-      let fin = 90, cul = 86, exp = 88, stem = 90;
-      let fb = 'Kerja sama tim dan analisis data lapangan sangat memuaskan.';
-
-      if (FincestemCore.progress) {
-        FincestemCore.progress.getStudentProgress(targetNisn, function(prog) {
-          if (prog && prog.latest_feedback) {
-            const l = prog.latest_feedback;
-            if (l.score_financial !== undefined && l.score_financial !== null) fin = l.score_financial;
-            if (l.score_culture !== undefined && l.score_culture !== null) cul = l.score_culture;
-            if (l.score_exploration !== undefined && l.score_exploration !== null) exp = l.score_exploration;
-            if (l.score_stem !== undefined && l.score_stem !== null) stem = l.score_stem;
-            if (l.feedback) fb = l.feedback;
-          }
-
-          document.getElementById('gradeFinancial').value = fin;
-          document.getElementById('gradeCulture').value = cul;
-          document.getElementById('gradeExploration').value = exp;
-          document.getElementById('gradeSTEM').value = stem;
-          document.getElementById('gradeFeedbackInput').value = fb;
-        });
-      } else {
-        document.getElementById('gradeFinancial').value = fin;
-        document.getElementById('gradeCulture').value = cul;
-        document.getElementById('gradeExploration').value = exp;
-        document.getElementById('gradeSTEM').value = stem;
-        document.getElementById('gradeFeedbackInput').value = fb;
-      }
+      const targetDay = parseInt(document.getElementById('gradeTargetDay').value) || 1;
+      loadStudentDayEvaluation(targetNisn, targetDay);
 
       const modal = document.getElementById('modalGradingFasilitator');
       modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -696,8 +830,50 @@
       modal.classList.add('opacity-0', 'pointer-events-none');
     }
 
+    function onTargetDayChange(dayNum) {
+      const nisn = document.getElementById('modalGradingTargetNisn').value;
+      if (nisn) loadStudentDayEvaluation(nisn, parseInt(dayNum));
+    }
+
+    function loadStudentDayEvaluation(nisn, dayNum) {
+      let fin = 90, cul = 86, exp = 88, stem = 90;
+      let fb = 'Kerja sama tim dan analisis data lapangan sangat memuaskan.';
+      let st = 'completed';
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+          if (prog && prog.records) {
+            const r = prog.records.find(x => parseInt(x.day_number) === dayNum);
+            if (r) {
+              if (r.score_financial !== undefined && r.score_financial !== null) fin = r.score_financial;
+              if (r.score_culture !== undefined && r.score_culture !== null) cul = r.score_culture;
+              if (r.score_exploration !== undefined && r.score_exploration !== null) exp = r.score_exploration;
+              if (r.score_stem !== undefined && r.score_stem !== null) stem = r.score_stem;
+              if (r.feedback) fb = r.feedback;
+              if (r.status) st = r.status;
+            }
+          }
+
+          document.getElementById('gradeFinancial').value = fin;
+          document.getElementById('gradeCulture').value = cul;
+          document.getElementById('gradeExploration').value = exp;
+          document.getElementById('gradeSTEM').value = stem;
+          document.getElementById('gradeFeedbackInput').value = fb;
+
+          // Set radio status
+          const radio = document.querySelector(`input[name="evalStatusRadio"][value="${st}"]`);
+          if (radio) radio.checked = true;
+
+          // Muat foto dokumentasi siswa untuk hari/sesi ini
+          renderGradingPhotos(nisn, dayNum);
+        });
+      } else {
+        renderGradingPhotos(nisn, dayNum);
+      }
+    }
+
     function submitGrading() {
-      const targetNisn = document.getElementById('modalGradingTargetNisn').value || activeGroupId;
+      const targetNisn = document.getElementById('modalGradingTargetNisn').value;
       if (!targetNisn) return;
 
       const fin = parseInt(document.getElementById('gradeFinancial').value) || 0;
@@ -705,10 +881,12 @@
       const exp = parseInt(document.getElementById('gradeExploration').value) || 0;
       const stem = parseInt(document.getElementById('gradeSTEM').value) || 0;
       const fb = document.getElementById('gradeFeedbackInput').value.trim();
-      const dayNum = parseInt(document.getElementById('gradeTargetDay').value) || 0;
+      const dayNum = parseInt(document.getElementById('gradeTargetDay').value) || 1;
+
+      const selectedStatusRadio = document.querySelector('input[name="evalStatusRadio"]:checked');
+      const status = selectedStatusRadio ? selectedStatusRadio.value : 'completed';
 
       const avg = Math.round((fin + cul + exp + stem) / 4);
-
       const user = FincestemCore.auth.getUser();
       const fasilName = (user && user.name) || 'Tim Fasilitator SMAN 1 Belitang';
 
@@ -722,17 +900,309 @@
           score_exploration: exp,
           score_stem: stem,
           feedback: fb,
-          status: 'graded',
+          status: status,
           facilitator_name: fasilName
         }, function() {
-          FincestemCore.ui.toast(`Nilai ${avg}/100 & Feedback berhasil dikirim ke siswa!`, 'success');
-          renderPenilaianList();
+          const statusText = status === 'completed' ? 'Completed (Lulus & Lanjut Day Berikutnya)' : status.toUpperCase();
+          FincestemCore.ui.toast(`Nilai ${avg}/100 (${statusText}) berhasil disimpan untuk siswa!`, 'success');
+          closeGradingModal();
+          renderAssignedStudentList();
         });
-      } else {
-        FincestemCore.ui.toast(`Nilai ${avg}/100 tersimpan!`, 'success');
+      }
+    }
+
+    // MODAL NILAI AKHIR KOKURIKULER
+    function openFinalGradeModal(targetNisn, studentName, studentMeta) {
+      document.getElementById('modalFinalTargetNisn').value = targetNisn;
+      document.getElementById('modalFinalStudentName').textContent = studentName || 'Nilai Akhir Siswa';
+      document.getElementById('modalFinalStudentMeta').textContent = studentMeta || '';
+
+      let score = 90;
+      let notes = 'Memiliki kemandirian, nalar kritis, dan gotong royong yang sangat baik selama pelaksanaan riset 4 pilar FINCESTEM.';
+
+      // Cek simpanan sebelumnya
+      try {
+        const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
+        if (local && local.final_grades) {
+          const fg = local.final_grades.find(g => g.student_nisn === targetNisn);
+          if (fg) {
+            score = fg.final_score;
+            notes = fg.notes;
+          }
+        }
+      } catch (e) {}
+
+      document.getElementById('inputFinalScore').value = score;
+      document.getElementById('inputFinalNotes').value = notes;
+      onFinalScoreInput(score);
+
+      const modal = document.getElementById('modalFinalGrade');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeFinalGradeModal() {
+      const modal = document.getElementById('modalFinalGrade');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function onFinalScoreInput(val) {
+      const num = parseFloat(val) || 0;
+      let pred = 'Sangat Baik (A)';
+      if (num >= 88) pred = 'Sangat Baik (A)';
+      else if (num >= 75) pred = 'Baik (B)';
+      else if (num >= 65) pred = 'Cukup (C)';
+      else pred = 'Perlu Bimbingan (D)';
+      document.getElementById('inputFinalPredicate').value = pred;
+    }
+
+    function submitFinalGrade() {
+      const targetNisn = document.getElementById('modalFinalTargetNisn').value;
+      if (!targetNisn) return;
+
+      const score = parseFloat(document.getElementById('inputFinalScore').value) || 0;
+      const pred = document.getElementById('inputFinalPredicate').value;
+      const notes = document.getElementById('inputFinalNotes').value.trim();
+
+      const user = FincestemCore.auth.getUser();
+      const fasilUser = (user && user.username) || (user && user.nip) || '';
+
+      if (FincestemCore.assignments) {
+        FincestemCore.assignments.saveFinalGrade({
+          student_nisn: targetNisn,
+          class_name: assignedClass,
+          final_score: score,
+          final_predicate: pred,
+          notes: notes,
+          facilitator_username: fasilUser
+        }, function(res) {
+          FincestemCore.ui.toast(`Nilai Akhir Kokurikuler (${score} - ${pred}) berhasil ditetapkan!`, 'success');
+          closeFinalGradeModal();
+          renderAssignedStudentList();
+        });
+      }
+    }
+
+    // FUNGSI INSPEKSI DOKUMENTASI SISWA OLEH FASILITATOR
+    function renderGradingPhotos(nisn, dayNum) {
+      const container = document.getElementById('modalGradingPhotoContainer');
+      if (!container) return;
+      container.innerHTML = `
+        <div class="py-3 flex items-center justify-center gap-2 text-xs text-slate-400">
+          <div class="w-4 h-4 rounded-full border-2 border-primary/30 border-t-primary animate-spin"></div>
+          <span>Memuat foto dokumentasi siswa...</span>
+        </div>
+      `;
+
+      let allDocs = [];
+      try {
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        if (stored) {
+          const db = JSON.parse(stored);
+          if (Array.isArray(db.documentation)) allDocs = db.documentation;
+        }
+      } catch(e) {}
+
+      function filterAndDisplay(docs) {
+        const studentDocs = docs.filter(d => {
+          const matchNisn = String(d.nisn || d.uploaded_by_nisn || d.author_nisn || '').trim() === String(nisn).trim();
+          return matchNisn;
+        });
+
+        if (studentDocs.length === 0) {
+          container.innerHTML = `
+            <div class="py-3 px-3 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center flex flex-col items-center gap-1">
+              <span class="material-symbols-outlined text-slate-400 text-xl">no_photography</span>
+              <span class="text-xs font-semibold text-slate-600">Belum ada foto dokumentasi untuk siswa ini</span>
+              <span class="text-[10px] text-slate-400">Siswa dapat mengunggah melalui menu Dokumentasi di portal siswa.</span>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = `
+          <div class="text-[11px] font-bold text-slate-700 flex items-center justify-between">
+            <span>${studentDocs.length} Foto Dokumentasi Ditemukan</span>
+            <span class="text-[10px] text-[#006a61] font-extrabold">Ketuk untuk Inspect (Pinch Zoom)</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
+            ${studentDocs.map(p => {
+              const isGeotag = (p.has_geotag == 1 || (p.source === 'camera' && (p.gps_location || p.gps)));
+              const imgUrl = (p.url || p.file_url || '');
+              const fixedUrl = (imgUrl.startsWith('http') || imgUrl.startsWith('data:')) ? imgUrl : ('../' + imgUrl);
+              const safeCaption = ((p.title || 'Dokumentasi Siswa') + ' • ' + (p.date || '-')).replace(/'/g, "\\'");
+              return `
+                <div class="group relative rounded-xl overflow-hidden border border-slate-200 bg-white shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col" onclick="FincestemCore.ui.openLightbox('${fixedUrl}', '${safeCaption}')">
+                  <div class="aspect-[4/3] bg-slate-100 overflow-hidden relative">
+                    <img src="${fixedUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform" alt="Dokumentasi">
+                    <div class="absolute top-1.5 left-1.5 flex flex-wrap gap-1">
+                      ${isGeotag 
+                        ? '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-black bg-emerald-600 text-white shadow-xs flex items-center gap-0.5">📍 Kamera Geotag</span>'
+                        : '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-black bg-amber-600 text-white shadow-xs flex items-center gap-0.5">📁 Galeri</span>'}
+                    </div>
+                  </div>
+                  <div class="p-1.5 flex flex-col gap-0.5">
+                    <span class="text-[11px] font-bold text-slate-800 line-clamp-1">${p.title || 'Foto Riset'}</span>
+                    <span class="text-[9.5px] text-slate-500">${p.date || '-'}</span>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
       }
 
-      closeGradingModal();
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list&nisn=' + encodeURIComponent(nisn))
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
+              const serverDocs = res.data.map(d => ({
+                id: 'doc-srv-' + d.id,
+                title: d.title,
+                caption: d.caption,
+                url: d.file_url,
+                uploaded_by_nisn: d.uploaded_by_nisn,
+                nisn: d.uploaded_by_nisn,
+                source: d.source,
+                has_geotag: d.has_geotag,
+                gps_location: d.gps_location,
+                date: d.created_at
+              }));
+              filterAndDisplay([...serverDocs, ...allDocs]);
+            } else {
+              filterAndDisplay(allDocs);
+            }
+          })
+          .catch(() => filterAndDisplay(allDocs));
+      } else {
+        filterAndDisplay(allDocs);
+      }
+    }
+
+    let fasilPhotoFilterCurrent = 'all';
+
+    function filterFasilPhotos(type) {
+      fasilPhotoFilterCurrent = type;
+      const btnAll = document.getElementById('fasilPhotoFilterAll');
+      const btnCam = document.getElementById('fasilPhotoFilterCamera');
+      const btnGal = document.getElementById('fasilPhotoFilterGallery');
+      
+      if (btnAll) btnAll.className = type === 'all' ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-[#006a61] text-white shadow-xs whitespace-nowrap cursor-pointer' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer';
+      if (btnCam) btnCam.className = type === 'camera' ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white shadow-xs whitespace-nowrap cursor-pointer flex items-center gap-1' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer flex items-center gap-1';
+      if (btnGal) btnGal.className = type === 'gallery' ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-600 text-white shadow-xs whitespace-nowrap cursor-pointer flex items-center gap-1' : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-surface-container text-on-surface-variant hover:bg-surface-container-high whitespace-nowrap cursor-pointer flex items-center gap-1';
+      
+      renderFasilGallery();
+    }
+
+    function renderFasilGallery() {
+      const grid = document.getElementById('fasilPhotoGrid');
+      const countBadge = document.getElementById('fasilPhotoCountBadge');
+      if (!grid) return;
+
+      grid.innerHTML = `
+        <div class="col-span-2 py-8 flex flex-col items-center justify-center gap-2 text-slate-400">
+          <div class="w-6 h-6 rounded-full border-2 border-primary/30 border-t-primary animate-spin"></div>
+          <span class="text-xs">Memuat galeri foto riset kelas binaan...</span>
+        </div>
+      `;
+
+      function displayPhotos(list) {
+        let filtered = list;
+        if (fasilPhotoFilterCurrent === 'camera') {
+          filtered = list.filter(p => p.has_geotag == 1 || p.source === 'camera' || p.gps_location);
+        } else if (fasilPhotoFilterCurrent === 'gallery') {
+          filtered = list.filter(p => p.has_geotag == 0 && (p.source === 'gallery' || !p.gps_location));
+        }
+
+        if (countBadge) countBadge.textContent = filtered.length + ' Foto';
+
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+            <div class="col-span-2 py-10 px-4 rounded-2xl bg-surface-container-low border border-dashed border-outline-variant/30 flex flex-col items-center justify-center text-center gap-2">
+              <span class="material-symbols-outlined text-3xl text-outline">photo_library</span>
+              <p class="font-bold text-xs text-on-surface">Tidak Ada Foto Ditemukan</p>
+              <p class="text-[11px] text-outline max-w-xs">
+                ${fasilPhotoFilterCurrent === 'all' ? 'Belum ada foto dokumentasi yang diunggah oleh siswa bimbingan Anda.' : 'Tidak ada foto pada kategori filter yang dipilih.'}
+              </p>
+            </div>
+          `;
+          return;
+        }
+
+        grid.innerHTML = '';
+        filtered.forEach(p => {
+          const isGeotag = (p.has_geotag == 1 || (p.source === 'camera' && (p.gps_location || p.gps)));
+          const imgUrl = (p.url || p.file_url || '');
+          const fixedUrl = (imgUrl.startsWith('http') || imgUrl.startsWith('data:')) ? imgUrl : ('../' + imgUrl);
+          const studentName = p.student_name || p.author || p.uploaded_by_nisn || 'Siswa';
+          const className = p.class_name || 'Kelas X';
+          const safeCaption = ((p.title || 'Dokumentasi') + ' • ' + studentName + ' (' + className + ')').replace(/'/g, "\\'");
+
+          const card = document.createElement('div');
+          card.className = 'group rounded-2xl overflow-hidden border border-outline-variant/25 bg-surface-container-lowest shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col';
+          card.onclick = () => FincestemCore.ui.openLightbox(fixedUrl, safeCaption + (isGeotag ? ' [📍 Kamera Geotag]' : ' [📁 Galeri]'));
+          card.innerHTML = `
+            <div class="relative aspect-[4/3] bg-surface-container overflow-hidden">
+              <img src="${fixedUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" alt="${p.title || 'Dokumentasi'}" loading="lazy">
+              <div class="absolute top-2 left-2 flex flex-wrap gap-1">
+                ${isGeotag 
+                  ? '<span class="px-2 py-0.5 rounded-lg text-[9.5px] font-black bg-slate-900/90 text-emerald-400 backdrop-blur-xs flex items-center gap-0.5 shadow-xs"><span class="material-symbols-outlined text-[11px]">location_on</span>Kamera Geotag</span>'
+                  : '<span class="px-2 py-0.5 rounded-lg text-[9.5px] font-black bg-slate-900/90 text-amber-300 backdrop-blur-xs flex items-center gap-0.5 shadow-xs"><span class="material-symbols-outlined text-[11px]">photo_library</span>Galeri (No Geotag)</span>'}
+              </div>
+            </div>
+            <div class="p-2.5 flex flex-col gap-1">
+              <h4 class="font-extrabold text-xs text-on-surface line-clamp-1">${p.title || 'Foto Riset'}</h4>
+              <div class="flex items-center justify-between text-[10px] text-on-surface-variant font-semibold">
+                <span class="truncate max-w-[100px]">${studentName}</span>
+                <span class="px-1.5 py-0.2 rounded bg-surface-container font-bold text-[9px] text-[#006a61]">${className}</span>
+              </div>
+              <div class="flex items-center justify-between text-[9.5px] text-slate-400 border-t border-surface-container/60 pt-1 mt-0.5">
+                <span>${p.date || p.created_at || '-'}</span>
+                ${isGeotag && p.gps_location ? '<span class="text-emerald-700 font-bold truncate max-w-[80px]">📍 ' + p.gps_location + '</span>' : '<span class="text-amber-700 font-medium">Album</span>'}
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      }
+
+      let localDocs = [];
+      try {
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        if (stored) {
+          const db = JSON.parse(stored);
+          if (Array.isArray(db.documentation)) localDocs = db.documentation;
+        }
+      } catch(e) {}
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list')
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
+              const map = new Map();
+              res.data.forEach(d => {
+                const url = d.file_url;
+                map.set(url, {
+                  ...d,
+                  url: (url.startsWith('http') || url.startsWith('data:')) ? url : ('../' + url),
+                  date: d.created_at
+                });
+              });
+              localDocs.forEach(d => {
+                if (d.url && !map.has(d.url)) {
+                  map.set(d.url, d);
+                }
+              });
+              displayPhotos(Array.from(map.values()));
+            } else {
+              displayPhotos(localDocs);
+            }
+          })
+          .catch(() => displayPhotos(localDocs));
+      } else {
+        displayPhotos(localDocs);
+      }
     }
   </script>
 </body>
