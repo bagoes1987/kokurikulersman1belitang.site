@@ -331,8 +331,8 @@
     </div>
 
     <!-- Container Gambar Fullscreen dengan Touch Pinch-to-Zoom -->
-    <div id="inspectModalContainer" class="relative flex-1 w-full max-w-4xl flex items-center justify-center overflow-hidden my-2 cursor-grab active:cursor-grabbing touch-none">
-      <img id="inspectModalImg" class="max-h-[72vh] w-auto max-w-full rounded-xl object-contain shadow-2xl border border-white/15 select-none pointer-events-auto" alt="Detail Foto Lapangan">
+    <div id="inspectModalContainer" class="relative flex-1 w-full max-w-4xl flex items-center justify-center overflow-hidden my-2 cursor-grab active:cursor-grabbing touch-none select-none">
+      <img id="inspectModalImg" class="max-h-[72vh] w-auto max-w-full rounded-xl object-contain shadow-2xl border border-white/15 select-none pointer-events-auto touch-none" alt="Detail Foto Lapangan">
     </div>
 
     <!-- Tombol Aksi Bawah: Foto Ulang vs Sudah Pas / Unggah Foto -->
@@ -460,18 +460,18 @@
           const btnIn = document.getElementById('inspectBtnZoomIn');
           const btnOut = document.getElementById('inspectBtnZoomOut');
           const btnReset = document.getElementById('inspectBtnResetZoom');
-          if (btnIn) btnIn.addEventListener('click', function(e) {
+          if (btnIn) btnIn.onclick = function(e) {
             e.stopPropagation();
             if (inspectZoomController) inspectZoomController.zoomIn();
-          });
-          if (btnOut) btnOut.addEventListener('click', function(e) {
+          };
+          if (btnOut) btnOut.onclick = function(e) {
             e.stopPropagation();
             if (inspectZoomController) inspectZoomController.zoomOut();
-          });
-          if (btnReset) btnReset.addEventListener('click', function(e) {
+          };
+          if (btnReset) btnReset.onclick = function(e) {
             e.stopPropagation();
             if (inspectZoomController) inspectZoomController.reset();
-          });
+          };
         }
         if (inspectZoomController) {
           inspectZoomController.reset();
@@ -755,73 +755,87 @@
       ctx.fillText(badgeText, dotX + dotRadius + 8, dotY);
       ctx.restore();
 
-      // 3. Banner Bawah (Dark Gradient + Top Neon Accent Line)
-      const bannerHeight = Math.max(135, Math.round(h * 0.175));
+      // 3. Hitung Proporsi Font & Jarak Ketikan Spasi (Rapat, Tebal & Berukuran Besar Terbaca)
+      const scaleRef = Math.max(w, 800);
+      const l1Size = Math.max(20, Math.round(scaleRef * 0.026)); // Judul Utama: 31px pada 1200w
+      const l2Size = Math.max(16, Math.round(scaleRef * 0.019)); // Subtitle: 23px pada 1200w
+      const l3Size = Math.max(16, Math.round(scaleRef * 0.019)); // Koordinat GPS: 23px pada 1200w
+      const l4Size = Math.max(16, Math.round(scaleRef * 0.019)); // Hari, Tanggal, Jam WIB: 23px pada 1200w
+      const l5Size = Math.max(15, Math.round(scaleRef * 0.018)); // Identitas Siswa & Rombel: 22px pada 1200w
+
+      // Spasi antar baris ketikan dibuat rapat & proporsional (8px - 11px)
+      const lineGap = Math.max(6, Math.round(scaleRef * 0.007));
+      const totalTextH = l1Size + l2Size + l3Size + l4Size + l5Size + (lineGap * 4);
+
+      // Ukuran Banner & Minimap
+      const pad = Math.max(14, Math.round(scaleRef * 0.016));
+      const mapH = totalTextH;
+      const mapW = Math.round(mapH * 1.16);
+      const bannerHeight = totalTextH + (pad * 2);
       const bannerY = h - bannerHeight;
 
-      const gradient = ctx.createLinearGradient(0, bannerY - 30, 0, h);
-      gradient.addColorStop(0, "rgba(15, 23, 42, 0)");
-      gradient.addColorStop(0.18, "rgba(15, 23, 42, 0.90)");
-      gradient.addColorStop(1, "rgba(15, 23, 42, 0.98)");
+      // Banner Bawah Gelap Solid + Garis Aksen Neon
+      ctx.save();
+      const gradient = ctx.createLinearGradient(0, bannerY - 35, 0, h);
+      gradient.addColorStop(0, "rgba(10, 15, 30, 0)");
+      gradient.addColorStop(0.22, "rgba(10, 15, 30, 0.92)");
+      gradient.addColorStop(1, "rgba(10, 15, 30, 0.98)");
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, bannerY - 30, w, bannerHeight + 30);
+      ctx.fillRect(0, bannerY - 35, w, bannerHeight + 35);
 
       ctx.fillStyle = "#38bdf8";
       ctx.fillRect(0, bannerY - 2, w, 3);
+      ctx.restore();
 
-      // 4. Minimap Box di Sisi Kiri Bawah
-      const pad = Math.max(14, Math.round(w * 0.016));
-      const mapH = bannerHeight - (pad * 2);
-      const mapW = Math.round(mapH * 1.28);
+      // Posisi Koordinat Minimap dan Teks
       const mapX = pad;
       const mapY = bannerY + pad;
+      const textX = mapX + mapW + Math.round(pad * 1.2);
+      const textStartY = mapY;
 
       // 5. Informasi Teks di Samping Kanan Minimap
       function renderWatermarkText() {
-        const textX = mapX + mapW + pad * 1.1;
-        const textStartY = mapY + 2;
-        const lineHeight = (mapH - 6) / 5;
-
         ctx.save();
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
 
-        // Baris 1: Judul Utama Permintaan User
-        const l1Size = Math.max(14, Math.round(w * 0.021));
-        ctx.font = `900 ${l1Size}px "Plus Jakarta Sans", -apple-system, sans-serif`;
-        ctx.fillStyle = '#fbbf24'; // Amber Gold
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
-        ctx.shadowBlur = 4;
-        ctx.fillText('Kokurikuler2026_SMAN1 Belitang_Fincestem', textX, textStartY);
+        let curY = textStartY;
 
-        // Baris 2: Subtitle Riset
-        const l2Size = Math.max(11, Math.round(w * 0.014));
-        ctx.font = `bold ${l2Size}px -apple-system, sans-serif`;
+        // Baris 1: Judul Utama Permintaan User (Besar & Tebal)
+        ctx.font = `900 ${l1Size}px "Plus Jakarta Sans", system-ui, sans-serif`;
+        ctx.fillStyle = '#fbbf24'; // Amber Gold
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
+        ctx.shadowBlur = 6;
+        ctx.fillText('Kokurikuler2026_SMAN1 Belitang_Fincestem', textX, curY);
+        curY += l1Size + lineGap;
+
+        // Baris 2: Subtitle Riset (Cyan Kontras Tinggi)
+        ctx.font = `bold ${l2Size}px system-ui, sans-serif`;
         ctx.fillStyle = '#38bdf8'; // Sky Cyan
-        ctx.shadowBlur = 2;
-        ctx.fillText('Riset Lapangan FINCESTEM • Belitang, OKU Timur', textX, textStartY + lineHeight * 1.15);
+        ctx.shadowBlur = 4;
+        ctx.fillText('Riset Lapangan FINCESTEM • Belitang, OKU Timur', textX, curY);
+        curY += l2Size + lineGap;
 
         // Baris 3: Koordinat GPS, Akurasi Satelit & Lokasi Lapangan
-        const l3Size = Math.max(11, Math.round(w * 0.0135));
         ctx.font = `bold ${l3Size}px "Plus Jakarta Sans", monospace, sans-serif`;
         ctx.fillStyle = '#ffffff';
-        const coordText = `📍 Lat: ${gps.lat.toFixed(6)}°, Long: ${gps.lng.toFixed(6)}° (±${gps.accuracy}m) • Belitang, OKU Timur`;
-        ctx.fillText(coordText, textX, textStartY + lineHeight * 2.2);
+        const coordText = `📍 Lat: ${gps.lat.toFixed(6)}°, Long: ${gps.lng.toFixed(6)}° (±${gps.accuracy}m)`;
+        ctx.fillText(coordText, textX, curY);
+        curY += l3Size + lineGap;
 
         // Baris 4: Hari, Tanggal, Jam, Menit, Detik (WIB)
         const now = new Date();
         const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
         const timeFormatted = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':') + ' WIB';
-        const l4Size = Math.max(10, Math.round(w * 0.0125));
-        ctx.font = `600 ${l4Size}px -apple-system, sans-serif`;
-        ctx.fillStyle = '#cbd5e1'; // Slate 300
-        ctx.fillText(`⏰ ${dateStr} • ${timeFormatted}`, textX, textStartY + lineHeight * 3.2);
+        ctx.font = `bold ${l4Size}px system-ui, sans-serif`;
+        ctx.fillStyle = '#4ade80'; // Emerald Green
+        ctx.fillText(`⏰ ${dateStr} • ${timeFormatted}`, textX, curY);
+        curY += l4Size + lineGap;
 
         // Baris 5: Identitas Siswa & Kelompok
-        const l5Size = Math.max(10, Math.round(w * 0.0125));
-        ctx.font = `700 ${l5Size}px -apple-system, sans-serif`;
-        ctx.fillStyle = '#94a3b8'; // Slate 400
-        ctx.fillText(`👤 ${studentInfo.name} (${studentInfo.nisn}) • ${studentInfo.group}`, textX, textStartY + lineHeight * 4.15);
+        ctx.font = `bold ${l5Size}px system-ui, sans-serif`;
+        ctx.fillStyle = '#e2e8f0'; // Slate 200
+        ctx.fillText(`👤 ${studentInfo.name} (${studentInfo.nisn}) • ${studentInfo.class_name}`, textX, curY);
 
         ctx.restore();
 

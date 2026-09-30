@@ -1518,19 +1518,34 @@ const FincestemCore = {
       options = options || {};
       let scale = 1;
       const minScale = options.minScale || 1;
-      const maxScale = options.maxScale || 4;
+      const maxScale = options.maxScale || 4.5;
       let panX = 0;
       let panY = 0;
       let startX = 0;
       let startY = 0;
       let isDragging = false;
+      let isPinching = false;
       let initialPinchDist = 0;
       let initialScale = 1;
       let lastTapTime = 0;
 
+      // KUNCI UTAMA MOBILE: Terapkan touch-action: none pada container MAUPUN gambar
+      if (containerEl) {
+        containerEl.style.touchAction = 'none';
+        containerEl.style.userSelect = 'none';
+        containerEl.style.webkitUserSelect = 'none';
+      }
+      if (imgEl) {
+        imgEl.style.touchAction = 'none';
+        imgEl.style.userSelect = 'none';
+        imgEl.style.webkitUserSelect = 'none';
+        imgEl.style.pointerEvents = 'auto';
+      }
+
       function updateTransform(animate) {
+        if (!imgEl) return;
         if (animate) {
-          imgEl.style.transition = 'transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1)';
+          imgEl.style.transition = 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)';
         } else {
           imgEl.style.transition = 'none';
         }
@@ -1556,22 +1571,25 @@ const FincestemCore = {
         updateTransform(true);
       }
 
-      containerEl.style.touchAction = 'none';
-
-      containerEl.addEventListener('touchstart', function(e) {
-        if (e.touches.length === 2) {
+      // Handler Multi-Touch (Pinch 2 Jari, Pan 1 Jari, Double Tap)
+      function handleTouchStart(e) {
+        if (e.touches.length >= 2) {
+          if (e.cancelable) e.preventDefault();
+          isPinching = true;
           isDragging = false;
           const t1 = e.touches[0];
           const t2 = e.touches[1];
           initialPinchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
           initialScale = scale;
         } else if (e.touches.length === 1) {
+          isPinching = false;
           const now = Date.now();
-          if (now - lastTapTime < 300) {
+          if (now - lastTapTime < 320) {
+            if (e.cancelable) e.preventDefault();
             if (scale > 1.2) {
               resetZoom();
             } else {
-              setZoom(2.2);
+              setZoom(2.5);
             }
             lastTapTime = 0;
             return;
@@ -1583,10 +1601,10 @@ const FincestemCore = {
             startY = e.touches[0].clientY - panY;
           }
         }
-      }, { passive: true });
+      }
 
-      containerEl.addEventListener('touchmove', function(e) {
-        if (e.touches.length === 2 && initialPinchDist > 0) {
+      function handleTouchMove(e) {
+        if (e.touches.length >= 2 && initialPinchDist > 5) {
           if (e.cancelable) e.preventDefault();
           const t1 = e.touches[0];
           const t2 = e.touches[1];
@@ -1602,39 +1620,77 @@ const FincestemCore = {
           if (e.cancelable) e.preventDefault();
           panX = e.touches[0].clientX - startX;
           panY = e.touches[0].clientY - startY;
-          const maxPanX = (containerEl.clientWidth * (scale - 1)) / 1.6;
-          const maxPanY = (containerEl.clientHeight * (scale - 1)) / 1.6;
+          const rect = containerEl ? containerEl.getBoundingClientRect() : { width: 360, height: 480 };
+          const maxPanX = (rect.width * (scale - 1)) / 1.4;
+          const maxPanY = (rect.height * (scale - 1)) / 1.4;
           panX = Math.max(-maxPanX, Math.min(maxPanX, panX));
           panY = Math.max(-maxPanY, Math.min(maxPanY, panY));
           updateTransform(false);
         }
-      }, { passive: false });
+      }
 
-      containerEl.addEventListener('touchend', function(e) {
-        if (e.touches.length === 0) {
-          isDragging = false;
+      function handleTouchEnd(e) {
+        if (e.touches.length < 2) {
+          isPinching = false;
           initialPinchDist = 0;
-          if (scale < 1.05) {
-            resetZoom();
+          if (e.touches.length === 1 && scale > 1) {
+            isDragging = true;
+            startX = e.touches[0].clientX - panX;
+            startY = e.touches[0].clientY - panY;
+          } else if (e.touches.length === 0) {
+            isDragging = false;
+            if (scale < 1.05) {
+              resetZoom();
+            }
           }
-        } else if (e.touches.length === 1 && scale > 1) {
-          isDragging = true;
-          startX = e.touches[0].clientX - panX;
-          startY = e.touches[0].clientY - panY;
         }
-      }, { passive: true });
+      }
 
-      containerEl.addEventListener('wheel', function(e) {
-        if (e.cancelable) e.preventDefault();
-        const delta = e.deltaY < 0 ? 0.25 : -0.25;
-        setZoom(scale + delta);
-      }, { passive: false });
+      // Pasang listener pada containerEl dan imgEl dengan { passive: false }
+      [containerEl, imgEl].forEach(function(target) {
+        if (!target) return;
+        target.addEventListener('touchstart', handleTouchStart, { passive: false });
+        target.addEventListener('touchmove', handleTouchMove, { passive: false });
+        target.addEventListener('touchend', handleTouchEnd, { passive: true });
+        target.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+      });
+
+      // Mouse drag pada Desktop
+      if (containerEl) {
+        containerEl.addEventListener('mousedown', function(e) {
+          if (scale > 1) {
+            isDragging = true;
+            startX = e.clientX - panX;
+            startY = e.clientY - panY;
+            containerEl.style.cursor = 'grabbing';
+          }
+        });
+        window.addEventListener('mousemove', function(e) {
+          if (isDragging && scale > 1) {
+            panX = e.clientX - startX;
+            panY = e.clientY - startY;
+            updateTransform(false);
+          }
+        });
+        window.addEventListener('mouseup', function() {
+          if (isDragging) {
+            isDragging = false;
+            if (containerEl) containerEl.style.cursor = scale > 1 ? 'grab' : 'default';
+          }
+        });
+        containerEl.addEventListener('wheel', function(e) {
+          if (e.cancelable) e.preventDefault();
+          const delta = e.deltaY < 0 ? 0.3 : -0.3;
+          setZoom(scale + delta);
+        }, { passive: false });
+      }
 
       return {
         reset: resetZoom,
         zoomIn: function() { setZoom(scale + 0.5); },
         zoomOut: function() { setZoom(scale - 0.5); },
-        getScale: function() { return scale; }
+        getScale: function() { return scale; },
+        setScale: setZoom
       };
     },
 
@@ -1673,8 +1729,8 @@ const FincestemCore = {
           </div>
 
           <!-- Container Gambar Interaktif (Pinch-to-zoom dengan 2 jari) -->
-          <div id="lightboxImgContainer" class="relative flex-1 w-full max-w-4xl flex items-center justify-center overflow-hidden my-2 cursor-grab active:cursor-grabbing touch-none">
-            <img id="lightboxImg" class="max-h-[74vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl border border-white/20 select-none pointer-events-auto" src="" alt="Pratinjau Foto">
+          <div id="lightboxImgContainer" class="relative flex-1 w-full max-w-4xl flex items-center justify-center overflow-hidden my-2 cursor-grab active:cursor-grabbing touch-none select-none">
+            <img id="lightboxImg" class="max-h-[74vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl border border-white/20 select-none pointer-events-auto touch-none" src="" alt="Pratinjau Foto">
           </div>
 
           <!-- Bagian Bawah: Caption & Petunjuk Sentuh -->
