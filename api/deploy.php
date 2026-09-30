@@ -41,23 +41,44 @@ if (!$isAuthorized) {
     jsonResponse(false, 'Akses ditolak! Token otentikasi deployment tidak valid.', null, 403);
 }
 
+// Cek jika event adalah ping dari GitHub Webhook
+$githubEvent = $_SERVER['HTTP_X_GITHUB_EVENT'] ?? '';
+if ($githubEvent === 'ping') {
+    jsonResponse(true, 'Pong! Webhook FINCESTEM aktif dan terhubung sempurna ke GitHub.', ['event' => 'ping']);
+}
+
 // -------------------------------------------------------------
 // 1. ACTION: CHECK STATUS (Cek Commit Terbaru di GitHub)
 // -------------------------------------------------------------
 if ($action === 'check') {
     $url = "https://api.github.com/repos/" . REPO_OWNER . "/" . REPO_NAME . "/commits/" . BRANCH;
-    $opts = [
-        'http' => [
-            'method' => 'GET',
-            'header' => [
-                'User-Agent: FINCESTEM-Deployer/1.0',
-                'Accept: application/vnd.github.v3+json'
-            ],
-            'timeout' => 8
-        ]
-    ];
-    $ctx = stream_context_create($opts);
-    $res = @file_get_contents($url, false, $ctx);
+    $res = false;
+    
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERAGENT, 'FINCESTEM-Deployer/1.0');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Accept: application/vnd.github.v3+json']);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 8);
+        $res = curl_exec($ch);
+        curl_close($ch);
+    }
+    
+    if (!$res) {
+        $opts = [
+            'http' => [
+                'method' => 'GET',
+                'header' => [
+                    'User-Agent: FINCESTEM-Deployer/1.0',
+                    'Accept: application/vnd.github.v3+json'
+                ],
+                'timeout' => 8
+            ]
+        ];
+        $ctx = stream_context_create($opts);
+        $res = @file_get_contents($url, false, $ctx);
+    }
+
     if ($res) {
         $data = json_decode($res, true);
         if ($data && isset($data['sha'])) {
