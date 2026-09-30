@@ -1103,9 +1103,10 @@ const FincestemCore = {
                 const dNisn = String(d.nisn || d.author_nisn || '').trim();
                 const isStudent = (dNisn === cleanNisn || String(d.author || '').toLowerCase().includes(cleanNisn));
                 if (!isStudent) return true;
-                if (targetDay === 0) {
-                  return !(d.title && (d.title.includes('Day 0') || d.title.includes('Simulasi') || d.title.includes('Gladi')));
+                if (targetDay > 0) {
+                  return !(d.title && d.title.includes('Day ' + targetDay));
                 }
+                // Jika targetDay === 0 (Uji Coba) atau all_days, bersihkan dokumentasi siswa ini
                 return false;
               });
               localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
@@ -1232,11 +1233,11 @@ const FincestemCore = {
           if (stored) {
             const db = JSON.parse(stored);
             if (Array.isArray(db.documentation)) {
-              if (scope === 'all_days') {
+              if (scope === 'all_days' || targetDay === 0) {
                 db.documentation = [];
-              } else if (targetDay === 0) {
+              } else if (targetDay > 0) {
                 db.documentation = db.documentation.filter(d => {
-                  return !(d.title && (d.title.includes('Day 0') || d.title.includes('Simulasi') || d.title.includes('Gladi')));
+                  return !(d.title && d.title.includes('Day ' + targetDay));
                 });
               }
               localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));

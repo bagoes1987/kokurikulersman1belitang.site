@@ -356,10 +356,28 @@ if ($method === 'POST') {
             // 4. Hapus foto dokumentasi jika opsi dokumentasi dicentang
             if ($resetDok) {
                 try {
-                    if ($targetDay === 0) {
-                        $stmtDoc = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` = :nisn AND (`title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `caption` LIKE '%Day 0%')");
-                        $stmtDoc->execute([':nisn' => $nisn]);
+                    $docQuery = "SELECT `id`, `file_url` FROM `dokumentasi_media` WHERE `uploaded_by_nisn` = :nisn";
+                    if ($targetDay > 0) {
+                        $docQuery .= " AND (`title` LIKE :dtit OR `caption` LIKE :dtit)";
+                    }
+                    $stmtDocFind = $pdo->prepare($docQuery);
+                    $docParams = [':nisn' => $nisn];
+                    if ($targetDay > 0) $docParams[':dtit'] = "%Day {$targetDay}%";
+                    $stmtDocFind->execute($docParams);
+                    $docs = $stmtDocFind->fetchAll();
+                    foreach ($docs as $d) {
+                        if (!empty($d['file_url']) && strpos($d['file_url'], 'data:image') === false) {
+                            $docRel = ltrim(str_replace(['../', '..\\'], '', $d['file_url']), '/\\');
+                            $docPath = BASE_DIR . DIRECTORY_SEPARATOR . $docRel;
+                            if (file_exists($docPath) && is_file($docPath)) @unlink($docPath);
+                        }
+                    }
+
+                    if ($targetDay > 0) {
+                        $stmtDoc = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` = :nisn AND (`title` LIKE :dtit OR `caption` LIKE :dtit)");
+                        $stmtDoc->execute([':nisn' => $nisn, ':dtit' => "%Day {$targetDay}%"]);
                     } else {
+                        // Reset Day 0 / Uji Coba atau Semua Hari: hapus semua dokumentasi uji coba siswa ini
                         $stmtDoc = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` = :nisn");
                         $stmtDoc->execute([':nisn' => $nisn]);
                     }
@@ -448,19 +466,24 @@ if ($method === 'POST') {
             // 4. Dokumentasi media
             if ($resetDok) {
                 try {
-                    if ($targetDay === 0) {
-                        $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `caption` LIKE '%Day 0%'");
-                    } else {
-                        $stmtAllDocs = $pdo->query("SELECT `file_url` FROM `dokumentasi_media`");
-                        if ($stmtAllDocs) {
-                            while ($d = $stmtAllDocs->fetch()) {
-                                if (!empty($d['file_url']) && strpos($d['file_url'], 'data:image') === false) {
-                                    $docRel = ltrim(str_replace(['../', '..\\'], '', $d['file_url']), '/\\');
-                                    $docPath = BASE_DIR . DIRECTORY_SEPARATOR . $docRel;
-                                    if (file_exists($docPath) && is_file($docPath)) @unlink($docPath);
-                                }
+                    $whereDocs = "";
+                    if ($targetDay > 0) {
+                        $whereDocs = " WHERE `title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%'";
+                    }
+                    // Jika $targetDay === 0 (Uji Coba) atau $targetDay === -1 (Total), bersihkan seluruh foto dokumentasi
+                    $stmtAllDocs = $pdo->query("SELECT `file_url` FROM `dokumentasi_media`" . $whereDocs);
+                    if ($stmtAllDocs) {
+                        while ($d = $stmtAllDocs->fetch()) {
+                            if (!empty($d['file_url']) && strpos($d['file_url'], 'data:image') === false) {
+                                $docRel = ltrim(str_replace(['../', '..\\'], '', $d['file_url']), '/\\');
+                                $docPath = BASE_DIR . DIRECTORY_SEPARATOR . $docRel;
+                                if (file_exists($docPath) && is_file($docPath)) @unlink($docPath);
                             }
                         }
+                    }
+                    if ($targetDay > 0) {
+                        $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%'");
+                    } else {
                         $pdo->exec("DELETE FROM `dokumentasi_media`");
                     }
                 } catch (Exception $e) {}

@@ -27,7 +27,7 @@ if ($action === 'list') {
 
     $className = trim($_GET['class_name'] ?? '');
     if ($className !== '') {
-        $where[] = "(g.class_name = :cls OR s.class_name = :cls)";
+        $where[] = "(g.class_name = :cls OR u.class_name = :cls)";
         $params[':cls'] = $className;
     }
 
@@ -43,12 +43,12 @@ if ($action === 'list') {
     $sql = "
         SELECT d.*, 
                COALESCE(g.name, 'Kelompok Riset') AS group_name, 
-               COALESCE(g.class_name, s.class_name, '-') AS class_name, 
-               COALESCE(g.zone, 'OKU TIMUR') AS zone,
-               COALESCE(s.name, d.uploaded_by_nisn, 'Peserta Didik') AS student_name
+               COALESCE(g.class_name, u.class_name, '-') AS class_name, 
+               COALESCE(g.zone, u.zone, 'OKU TIMUR') AS zone,
+               COALESCE(u.name, d.uploaded_by_nisn, 'Peserta Didik') AS student_name
         FROM `dokumentasi_media` d
         LEFT JOIN `groups` g ON d.group_id = g.id
-        LEFT JOIN `students` s ON d.uploaded_by_nisn = s.nisn
+        LEFT JOIN `users` u ON (d.uploaded_by_nisn = u.identifier OR d.uploaded_by_nisn = u.nis)
         $whereSql
         ORDER BY d.created_at DESC
         LIMIT $limit

@@ -1099,22 +1099,13 @@
         fetch(FincestemCore.api.base + '/dokumentasi.php?action=list')
           .then(r => r.json())
           .then(res => {
-            if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
-              const map = new Map();
-              res.data.forEach(d => {
-                const url = d.file_url;
-                map.set(url, {
-                  ...d,
-                  url: (url.startsWith('http') || url.startsWith('data:')) ? url : ('../' + url),
-                  date: d.created_at
-                });
-              });
-              localDocs.forEach(d => {
-                if (d.url && !map.has(d.url)) {
-                  map.set(d.url, d);
-                }
-              });
-              displayPhotos(Array.from(map.values()));
+            if (res && res.success && Array.isArray(res.data)) {
+              const list = res.data.map(d => ({
+                ...d,
+                url: (d.file_url.startsWith('http') || d.file_url.startsWith('data:')) ? d.file_url : ('../' + d.file_url),
+                date: d.created_at
+              }));
+              displayPhotos(list);
             } else {
               displayPhotos(localDocs);
             }

@@ -1056,7 +1056,6 @@
                 let db = {};
                 const stored = localStorage.getItem('fincestem_db_2026_v1');
                 if (stored) db = JSON.parse(stored);
-                const localDocs = Array.isArray(db.documentation) ? db.documentation : [];
                 const serverDocs = res.data.map(d => ({
                   id: 'doc-srv-' + d.id,
                   title: d.title,
@@ -1072,15 +1071,9 @@
                   date: d.created_at || '-'
                 }));
 
-                const mapUrls = new Set();
-                const merged = [];
-                [...localDocs, ...serverDocs].forEach(item => {
-                  if (item.url && !mapUrls.has(item.url)) {
-                    mapUrls.add(item.url);
-                    merged.push(item);
-                  }
-                });
-                db.documentation = merged;
+                // Ketika terhubung online ke server, daftar foto dari server MySQL adalah sumber data resmi.
+                // Jika admin telah mereset/menghapus foto di server, browser siswa langsung menyelaraskan cache.
+                db.documentation = serverDocs;
                 localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
               } catch(e) {}
             }
