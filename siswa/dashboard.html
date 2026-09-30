@@ -511,8 +511,9 @@
       const container = document.getElementById(containerId);
       if (!container) return;
       const raw = (namesString && String(namesString).trim()) ? String(namesString).trim() : defaultName;
-      // Pisahkan jika dipisahkan oleh koma (,), titik koma (;), garis miring (/), atau baris baru (\n)
-      const list = raw.split(/[,;\n\/]+/).map(n => n.trim()).filter(Boolean);
+      // Pisahkan HANYA jika dipisahkan oleh titik koma (;) atau baris baru (\n)
+      // JANGAN pisahkan koma (,) karena koma dipakai dalam gelar akademik: "Neti Diana, M.Pd."
+      const list = raw.split(/[;\n]+/).map(n => n.trim()).filter(Boolean);
 
       if (list.length <= 1) {
         const single = list[0] || defaultName;

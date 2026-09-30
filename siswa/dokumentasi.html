@@ -1249,22 +1249,27 @@
     function deletePhoto(photo) {
       if (!confirm('Hapus foto ini? Tindakan ini tidak bisa dibatalkan.')) return;
 
-      // Remove from localStorage
-      const db = FincestemCore.db.get();
-      if (db && db.documentation) {
-        db.documentation = db.documentation.filter(p => p.id !== photo.id);
-        FincestemCore.db.set(db);
+      // Hapus dari localStorage langsung (sesuai pola di file ini)
+      try {
+        const stored = localStorage.getItem('fincestem_db_2026_v1');
+        const db = stored ? JSON.parse(stored) : {};
+        if (Array.isArray(db.documentation)) {
+          db.documentation = db.documentation.filter(p => p.id !== photo.id);
+          localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+        }
+      } catch (e) {
+        console.error('deletePhoto localStorage error:', e);
       }
 
-      // If it's a server photo (id starts with 'doc-srv-'), delete from server too
+      // Jika foto dari server (id: 'doc-srv-{n}'), hapus juga dari server
       if (photo.id && photo.id.startsWith('doc-srv-')) {
         const numericId = parseInt(photo.id.replace('doc-srv-', ''), 10);
         if (!isNaN(numericId) && navigator.onLine) {
-          fetch('api/dokumentasi.php?action=delete', {
+          fetch('../api/dokumentasi.php?action=delete', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: numericId })
-          }).catch(() => {/* silent – already removed from local */});
+          }).catch(() => {/* silent – sudah terhapus dari lokal */});
         }
       }
 
