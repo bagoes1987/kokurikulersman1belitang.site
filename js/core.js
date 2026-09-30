@@ -1914,7 +1914,7 @@ const FincestemCore = {
       if (matches.length > 0) {
         const names = matches.map(c => c.teacher_name || c.teacher_username).filter(Boolean);
         const uniqueNames = [...new Set(names)];
-        if (uniqueNames.length > 0) return uniqueNames.join(', ');
+        if (uniqueNames.length > 0) return uniqueNames.join('\n');
       }
       try {
         const classInfo = FincestemCore.zones && FincestemCore.zones.getClassInfo ? FincestemCore.zones.getClassInfo(className) : null;
@@ -1933,7 +1933,7 @@ const FincestemCore = {
       if (matches.length > 0) {
         const names = matches.map(f => f.teacher_name || f.teacher_username).filter(Boolean);
         const uniqueNames = [...new Set(names)];
-        if (uniqueNames.length > 0) return uniqueNames.join(', ');
+        if (uniqueNames.length > 0) return uniqueNames.join('\n');
       }
       try {
         const classInfo = FincestemCore.zones && FincestemCore.zones.getClassInfo ? FincestemCore.zones.getClassInfo(className) : null;
