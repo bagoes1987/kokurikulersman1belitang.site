@@ -250,21 +250,37 @@
 
           <!-- Pratinjau Foto Berwatermark / Bersih Galeri -->
           <div id="uploadPreviewCard" class="hidden relative border border-outline-variant/40 rounded-2xl overflow-hidden bg-slate-950 flex flex-col shadow-sm">
-            <div class="relative w-full aspect-[4/3] bg-black overflow-hidden flex items-center justify-center cursor-pointer group" onclick="viewPhotoFullscreen()" title="Ketuk untuk melihat foto dalam ukuran penuh">
-              <img id="uploadPreviewImg" class="w-full h-full object-contain transition-transform duration-300 group-hover:scale-[1.02]" alt="Pratinjau Foto">
+            <div id="uploadPreviewContainer" class="relative w-full aspect-[4/3] bg-black overflow-hidden flex items-center justify-center select-none touch-none">
+              <img id="uploadPreviewImg" class="w-full h-full object-contain select-none pointer-events-none touch-none" alt="Pratinjau Foto">
               
-              <span id="uploadPreviewBadge" class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600/90 text-white backdrop-blur-xs flex items-center gap-1 shadow-md">
+              <span id="uploadPreviewBadge" class="absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600/90 text-white backdrop-blur-xs flex items-center gap-1 shadow-md pointer-events-none z-10">
                 <span class="material-symbols-outlined text-xs">verified</span>
                 <span>Watermark + Peta Terpasang</span>
               </span>
 
-              <!-- Overlay Petunjuk Ketuk untuk Perbesar -->
-              <div class="absolute inset-0 bg-black/25 group-hover:bg-black/35 transition-all flex flex-col items-center justify-center gap-1 pointer-events-none">
-                <span class="px-3.5 py-1.5 rounded-full bg-slate-900/85 text-white text-xs font-bold backdrop-blur-md flex items-center gap-1.5 shadow-xl border border-white/20 group-hover:scale-105 transition-transform">
-                  <span class="material-symbols-outlined text-base text-cyan-400">zoom_in</span>
-                  <span>Ketuk untuk Perbesar & Cek Hasil</span>
+              <!-- Floating Zoom Toolbar pada Kartu Pratinjau Form -->
+              <div class="absolute top-2.5 right-2.5 flex items-center gap-1 bg-black/75 px-2 py-1 rounded-full backdrop-blur-md border border-white/20 z-10">
+                <button id="previewBtnZoomOut" type="button" class="w-6 h-6 rounded-full bg-white/20 hover:bg-white/30 active:scale-95 text-white flex items-center justify-center cursor-pointer text-xs" title="Perkecil">
+                  <span class="material-symbols-outlined text-sm">remove</span>
+                </button>
+                <button id="previewBtnResetZoom" type="button" class="px-2 h-6 rounded-full bg-white/25 hover:bg-white/35 text-amber-300 font-extrabold text-[10px] flex items-center justify-center cursor-pointer" title="Reset Zoom">
+                  <span id="previewZoomLevel">100%</span>
+                </button>
+                <button id="previewBtnZoomIn" type="button" class="w-6 h-6 rounded-full bg-white/20 hover:bg-white/30 active:scale-95 text-white flex items-center justify-center cursor-pointer text-xs" title="Perbesar">
+                  <span class="material-symbols-outlined text-sm">add</span>
+                </button>
+              </div>
+
+              <!-- Bar Informasi Sentuh Bawah & Tombol Buka Layar Penuh -->
+              <div class="absolute bottom-2.5 inset-x-2.5 pointer-events-none flex items-center justify-between z-10">
+                <span class="text-[10px] font-bold text-white/95 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/15 flex items-center gap-1 shadow-sm">
+                  <span class="material-symbols-outlined text-xs text-amber-300">pinch</span>
+                  <span>Cubit 2 jari / Ketuk 2x untuk zoom</span>
                 </span>
-                <span class="text-[10px] text-white/90 font-semibold drop-shadow-md">Periksa ketajaman foto, stempel waktu, & peta</span>
+                <button type="button" onclick="viewPhotoFullscreen()" class="pointer-events-auto px-2.5 py-1 rounded-lg bg-primary hover:bg-primary/90 text-white text-[11px] font-bold shadow-md flex items-center gap-1 backdrop-blur-xs cursor-pointer active:scale-95 transition-all">
+                  <span class="material-symbols-outlined text-xs">fullscreen</span>
+                  <span>Layar Penuh</span>
+                </button>
               </div>
             </div>
 
@@ -277,7 +293,7 @@
               <div class="flex items-center gap-2 shrink-0">
                 <button type="button" onclick="viewPhotoFullscreen()" class="px-3 py-1.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-primary font-bold text-xs flex items-center gap-1 transition-all cursor-pointer">
                   <span class="material-symbols-outlined text-sm">fullscreen</span>
-                  <span>Perbesar</span>
+                  <span>Layar Penuh</span>
                 </button>
                 <button type="button" onclick="retakePhoto()" class="px-3 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-700 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer">
                   <span class="material-symbols-outlined text-sm">replay</span>
@@ -332,7 +348,7 @@
 
     <!-- Container Gambar Fullscreen dengan Touch Pinch-to-Zoom -->
     <div id="inspectModalContainer" class="relative flex-1 w-full max-w-4xl flex items-center justify-center overflow-hidden my-2 cursor-grab active:cursor-grabbing touch-none select-none">
-      <img id="inspectModalImg" class="max-h-[72vh] w-auto max-w-full rounded-xl object-contain shadow-2xl border border-white/15 select-none pointer-events-auto touch-none" alt="Detail Foto Lapangan">
+      <img id="inspectModalImg" class="max-h-[72vh] w-auto max-w-full rounded-xl object-contain shadow-2xl border border-white/15 select-none pointer-events-none touch-none" alt="Detail Foto Lapangan">
     </div>
 
     <!-- Tombol Aksi Bawah: Foto Ulang vs Sudah Pas / Unggah Foto -->
@@ -421,6 +437,7 @@
         // Kunci sinyal GPS saat modal dibuka
         requestGPSCoordinates(false);
       } else {
+        if (previewZoomController) previewZoomController.reset();
         modal.classList.add('opacity-0', 'pointer-events-none');
       }
     }
@@ -436,6 +453,40 @@
     }
 
     let inspectZoomController = null;
+    let previewZoomController = null;
+
+    function initPreviewZoom() {
+      const container = document.getElementById('uploadPreviewContainer');
+      const img = document.getElementById('uploadPreviewImg');
+      const zoomLevelEl = document.getElementById('previewZoomLevel');
+      if (!previewZoomController && container && img && window.FincestemCore && FincestemCore.ui && FincestemCore.ui.attachPinchZoom) {
+        previewZoomController = FincestemCore.ui.attachPinchZoom(container, img, {
+          minScale: 1,
+          maxScale: 5,
+          onZoom: function(scale) {
+            if (zoomLevelEl) zoomLevelEl.textContent = Math.round(scale * 100) + '%';
+          }
+        });
+        const btnIn = document.getElementById('previewBtnZoomIn');
+        const btnOut = document.getElementById('previewBtnZoomOut');
+        const btnReset = document.getElementById('previewBtnResetZoom');
+        if (btnIn) btnIn.onclick = function(e) {
+          e.stopPropagation();
+          if (previewZoomController) previewZoomController.zoomIn();
+        };
+        if (btnOut) btnOut.onclick = function(e) {
+          e.stopPropagation();
+          if (previewZoomController) previewZoomController.zoomOut();
+        };
+        if (btnReset) btnReset.onclick = function(e) {
+          e.stopPropagation();
+          if (previewZoomController) previewZoomController.reset();
+        };
+      }
+      if (previewZoomController) {
+        previewZoomController.reset();
+      }
+    }
 
     function viewPhotoFullscreen() {
       if (!selectedPhotoBase64) return;
@@ -452,7 +503,7 @@
         if (!inspectZoomController && container && window.FincestemCore && FincestemCore.ui && FincestemCore.ui.attachPinchZoom) {
           inspectZoomController = FincestemCore.ui.attachPinchZoom(container, img, {
             minScale: 1,
-            maxScale: 4,
+            maxScale: 5,
             onZoom: function(scale) {
               if (zoomLevelEl) zoomLevelEl.textContent = Math.round(scale * 100) + '%';
             }
@@ -495,6 +546,7 @@
 
     function retakePhoto() {
       closePhotoInspectModal();
+      if (previewZoomController) previewZoomController.reset();
       selectedPhotoBase64 = null;
       const prevCard = document.getElementById('uploadPreviewCard');
       if (prevCard) prevCard.classList.add('hidden');
@@ -1007,6 +1059,8 @@
               const previewImg = document.getElementById('uploadPreviewImg');
               if (previewImg) previewImg.src = watermarkedDataUrl;
 
+              initPreviewZoom();
+
               if (previewBadge) {
                 previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
                 previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">location_on</span><span>📍 Kamera Geotag (Otentik)</span>';
@@ -1016,7 +1070,7 @@
               if (previewMeta) {
                 previewMeta.textContent = `📍 Kamera HP • Geotag: ${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)} • ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB`;
               }
-              FincestemCore.ui.toast('Foto kamera berhasil distempel geotag! Ketuk foto untuk cek & perbesar.', 'success');
+              FincestemCore.ui.toast('Foto kamera berhasil distempel geotag! Cubit 2 jari / ketuk 2x untuk perbesar.', 'success');
             });
           } else {
             // FOTO GALERI: foto bersih TANPA stempel geotag & TANPA radar map
@@ -1029,6 +1083,8 @@
               const previewImg = document.getElementById('uploadPreviewImg');
               if (previewImg) previewImg.src = cleanDataUrl;
 
+              initPreviewZoom();
+
               if (previewBadge) {
                 previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-amber-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
                 previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">photo_library</span><span>📁 Galeri (Tanpa Geotag)</span>';
@@ -1038,7 +1094,7 @@
               if (previewMeta) {
                 previewMeta.textContent = `📁 Unggahan Galeri • Tidak Memiliki Stempel Geotag Lapangan`;
               }
-              FincestemCore.ui.toast('Foto galeri diproses tanpa geotag. Fasilitator dapat membedakannya saat penilaian.', 'info');
+              FincestemCore.ui.toast('Foto galeri diproses tanpa geotag. Cubit 2 jari / ketuk 2x untuk perbesar.', 'info');
             });
           }
         };
