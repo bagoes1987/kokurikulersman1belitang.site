@@ -1445,27 +1445,27 @@ const FincestemCore = {
         };
       }
 
-      // Day 1: CAN_ACCESS_DAY_1 = (ADMIN_DAY_1 == OPEN)
-      if (d === 1) {
-        let isFt = false;
-        try {
-          const user = FincestemCore.auth.getUser() || {};
-          const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-            ? FincestemCore.zones.getStudentZone(user.nisn || user.identifier, user.class || user.class_name, user.zone)
-            : (user.zone || '');
-          const zUpper = (studentZone || '').toUpperCase();
-          if (zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP')) {
-            isFt = true;
-          }
-        } catch (e) {}
+      let isFt = false;
+      try {
+        const user = FincestemCore.auth.getUser() || {};
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(user.nisn || user.identifier, user.class || user.class_name, user.zone)
+          : (user.zone || '');
+        const zUpper = (studentZone || '').toUpperCase();
+        if (zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP')) {
+          isFt = true;
+        }
+      } catch (e) {}
 
+      // Day 1 & Day 2 Field Trip: CAN_ACCESS = true
+      if (d === 1 || (d === 2 && isFt)) {
         const effectiveOpen = isFt ? true : isOpenByAdmin;
         return {
           canAccess: true,
           canEdit: effectiveOpen,
           isOpen: effectiveOpen,
           isPreviousCompleted: true,
-          reason: effectiveOpen ? '' : 'Day 1 ditutup oleh Admin (Hanya Lihat).'
+          reason: effectiveOpen ? '' : `Day ${d} ditutup oleh Admin (Hanya Lihat).`
         };
       }
 

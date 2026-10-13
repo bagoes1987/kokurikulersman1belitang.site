@@ -860,15 +860,16 @@
       return Array.from(ids);
     }
 
-    function getFTDay1ProgressStatus(taskMap) {
+    function getFTProgressStatus(taskMap, dayNum) {
+      dayNum = Number(dayNum) || 1;
       taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
       const idList = getStudentStorageIdentifiers();
 
-      let hasMateri = !!taskMap['1_materi'];
+      let hasMateri = !!taskMap[dayNum + '_materi'];
       if (!hasMateri) {
         for (const id of idList) {
           try {
-            const raw = localStorage.getItem('fincestem_materi_ft_day1_' + id);
+            const raw = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
               if (p && (p.conclusion || p.text || p.content || p.summary)) {
@@ -880,14 +881,14 @@
         }
       }
 
-      let hasLkpd = !!taskMap['1_lkpd'];
+      let hasLkpd = !!taskMap[dayNum + '_lkpd'];
       if (!hasLkpd) {
         for (const id of idList) {
           try {
-            const raw = localStorage.getItem('fincestem_lkpd_ft_day1_' + id);
+            const raw = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
-              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined)) {
+              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined)) {
                 hasLkpd = true;
                 break;
               }
@@ -896,11 +897,11 @@
         }
       }
 
-      let hasAsesmen = !!taskMap['1_asesmen'];
+      let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
       if (!hasAsesmen) {
         for (const id of idList) {
           try {
-            const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
+            const raw = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id);
             if (raw) {
               try {
                 const p = JSON.parse(raw);
@@ -919,11 +920,11 @@
         }
       }
 
-      let hasDok = !!taskMap['1_dokumentasi'];
+      let hasDok = !!taskMap[dayNum + '_dokumentasi'];
       if (!hasDok) {
         for (const id of idList) {
           try {
-            if (localStorage.getItem('fincestem_dok_ft_day1_' + id) === 'true') {
+            if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true') {
               hasDok = true;
               break;
             }
@@ -938,7 +939,7 @@
                 hasDok = db.documentation.some(p => {
                   const docDay = Number(p.day || p.day_number || 0);
                   const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
-                  return docDay === 1 && idList.includes(docNisn);
+                  return docDay === dayNum && idList.includes(docNisn);
                 });
               }
             }
@@ -946,11 +947,11 @@
         }
       }
 
-      let hasRefleksi = !!taskMap['1_refleksi'];
+      let hasRefleksi = !!taskMap[dayNum + '_refleksi'];
       if (!hasRefleksi) {
         for (const id of idList) {
           try {
-            const raw = localStorage.getItem('fincestem_refleksi_ft_day1_' + id);
+            const raw = localStorage.getItem(`fincestem_refleksi_ft_day${dayNum}_` + id);
             if (raw) {
               hasRefleksi = true;
               break;
@@ -980,7 +981,12 @@
       };
     }
 
-    function showStepLockedModal(targetStep, prereqTitle, prereqAction) {
+    function getFTDay1ProgressStatus(taskMap) {
+      return getFTProgressStatus(taskMap, 1);
+    }
+
+    function showStepLockedModal(targetStep, prereqTitle, prereqAction, dayNum) {
+      dayNum = dayNum || 1;
       let modal = document.getElementById('modalStepLocked');
       if (!modal) {
         modal = document.createElement('div');
@@ -996,12 +1002,12 @@
               <span class="material-symbols-outlined text-2xl">lock</span>
             </div>
             <div class="flex flex-col">
-              <span class="text-xs font-black uppercase text-amber-700 tracking-wider">Aktivitas Berurutan Day 1</span>
+              <span class="text-xs font-black uppercase text-amber-700 tracking-wider">Aktivitas Berurutan Day ${dayNum}</span>
               <h3 class="text-base sm:text-lg font-black text-slate-900 leading-snug">${targetStep} Masih Terkunci</h3>
             </div>
           </div>
           <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-            Sesuai panduan kegiatan Field Trip Day 1, Anda harus menyelesaikan <strong>${prereqTitle}</strong> terlebih dahulu sebelum dapat membuka menu ini.
+            Sesuai panduan kegiatan Field Trip Day ${dayNum}, Anda harus menyelesaikan <strong>${prereqTitle}</strong> terlebih dahulu sebelum dapat membuka menu ini.
           </p>
           <div class="flex flex-col gap-2 pt-2">
             <button id="btnLockedGoPrereq" type="button" class="w-full py-3.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all">
@@ -1148,16 +1154,37 @@
           : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
         const zUpper = (studentZone || '').toUpperCase();
         const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-        const isFTDay1 = (dNum === 1 && isFieldTrip);
-        const ftStatus = isFTDay1 ? getFTDay1ProgressStatus(taskMap) : null;
+        const isFTDay = isFieldTrip && (dNum === 1 || dNum === 2);
+        const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
+
+        // Metadata Tampilan Khusus Siswa Field Trip
+        let cardTitle = d.title;
+        let cardTheme = d.theme || '';
+        let cardDate = d.date_formatted || d.date;
+        let cardTime = `${d.start_time} - ${d.end_time} WIB`;
+        let cardDesc = d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.';
+
+        if (isFieldTrip && dNum === 1) {
+          cardTitle = 'Day 1: Keberangkatan Belitang → Semarang';
+          cardTheme = 'Perjalanan Darat, Penyeberangan Selat Sunda & Manajemen Logistik';
+          cardDate = 'Senin, 09 November 2026';
+          cardTime = '07.00 - 23.59 WIB';
+          cardDesc = 'Perjalanan rombongan bus dari Belitang menuju Pelabuhan Bakauheni, penyeberangan kapal ferry Selat Sunda ke Merak, lanjut melintasi Tol Trans-Jawa via Cirebon menuju transit Semarang.';
+        } else if (isFieldTrip && dNum === 2) {
+          cardTitle = 'Day 2: AKPOL Semarang, Lawang Sewu → Malang';
+          cardTheme = 'Karakter Disiplin AKPOL, Heritage Lawang Sewu & Perjalanan Malang';
+          cardDate = 'Selasa, 10 November 2026';
+          cardTime = '04.30 - 20.30 WIB';
+          cardDesc = '8 Sesi Rangkaian Kegiatan: Transit Semarang (04.30–05.00) • Sarapan Pagi (05.00–07.00) • Persiapan Kunjungan (07.00–08.00) • Kunjungan Edukatif AKPOL Semarang (09.00–12.00) • Makan Siang (12.00–12.30) • Kunjungan Heritage Lawang Sewu (13.00–14.30) • Perjalanan ke Malang via Tol Trans-Jawa (14.30–20.30) • Check-in Hotel Malang (20.30 s.d. Selesai).';
+        }
 
         // Cek status pengerjaan hari ini
         const dayRecord = records.find(r => Number(r.day_number) === dNum);
-        let hasMateri = isFTDay1 ? ftStatus.hasMateri : !!taskMap[dNum + '_materi'];
-        let hasLkpd = isFTDay1 ? ftStatus.hasLkpd : !!taskMap[dNum + '_lkpd'];
-        let hasAsesmen = isFTDay1 ? ftStatus.hasAsesmen : !!taskMap[dNum + '_asesmen'];
-        let hasDok = isFTDay1 ? ftStatus.hasDok : !!taskMap[dNum + '_dokumentasi'];
-        let hasRefleksi = isFTDay1 ? ftStatus.hasRefleksi : !!taskMap[dNum + '_refleksi'];
+        let hasMateri = isFTDay ? ftStatus.hasMateri : !!taskMap[dNum + '_materi'];
+        let hasLkpd = isFTDay ? ftStatus.hasLkpd : !!taskMap[dNum + '_lkpd'];
+        let hasAsesmen = isFTDay ? ftStatus.hasAsesmen : !!taskMap[dNum + '_asesmen'];
+        let hasDok = isFTDay ? ftStatus.hasDok : !!taskMap[dNum + '_dokumentasi'];
+        let hasRefleksi = isFTDay ? ftStatus.hasRefleksi : !!taskMap[dNum + '_refleksi'];
 
         let dayProgressBadge = '';
         if (isTrial) {
@@ -1188,18 +1215,18 @@
               Ditinjau Fasilitator
             </span>
           `;
-        } else if (dayStatus === 'submitted' || hasLkpd || hasAsesmen || hasRefleksi || hasDok || (isFTDay1 && hasMateri)) {
+        } else if (dayStatus === 'submitted' || hasLkpd || hasAsesmen || hasRefleksi || hasDok || (isFTDay && hasMateri)) {
           dayProgressBadge += `
             <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 border border-teal-300/60 flex items-center gap-1">
               <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
-              ${(isFTDay1 && hasRefleksi) ? 'Lengkap • Menunggu Guru' : 'Dalam Proses'}
+              ${(isFTDay && hasRefleksi) ? 'Lengkap • Menunggu Guru' : 'Dalam Proses'}
             </span>
           `;
         }
 
         // Mini checkmarks aktivitas
         let miniChecks = '';
-        if (isFTDay1) {
+        if (isFTDay) {
           miniChecks = `
             <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 text-xs text-slate-600 font-semibold w-full">
               <span class="px-2 py-1.5 rounded-xl ${hasMateri ? 'text-amber-950 bg-amber-100/90 font-bold border border-amber-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
@@ -1250,14 +1277,14 @@
         const canInteract = access.canAccess;
         const canEdit = access.canEdit;
 
-        // Kontrol Tombol Berjenjang Khusus Day 1 Field Trip:
+        // Kontrol Tombol Berjenjang Khusus Field Trip (Day 1 & Day 2):
         // Modul (1) -> LKPD (2) -> Asesmen (3) -> Dokumentasi (4) -> Refleksi (5) -> Penilaian (6)
         const canOpenMateri = canInteract;
-        const canOpenLkpd = canInteract && (!isFTDay1 || ftStatus.canLkpd);
-        const canOpenAsesmen = canInteract && (!isFTDay1 || ftStatus.canAsesmen);
-        const canOpenDok = canInteract && (!isFTDay1 || ftStatus.canDok);
-        const canOpenRefleksi = canInteract && (!isFTDay1 || ftStatus.canRefleksi);
-        const canOpenPenilaian = canInteract && (!isFTDay1 || ftStatus.canPenilaian);
+        const canOpenLkpd = canInteract && (!isFTDay || ftStatus.canLkpd);
+        const canOpenAsesmen = canInteract && (!isFTDay || ftStatus.canAsesmen);
+        const canOpenDok = canInteract && (!isFTDay || ftStatus.canDok);
+        const canOpenRefleksi = canInteract && (!isFTDay || ftStatus.canRefleksi);
+        const canOpenPenilaian = canInteract && (!isFTDay || ftStatus.canPenilaian);
 
         const materiBtnClass = canOpenMateri ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
         const materiIconClass = canOpenMateri ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500';
@@ -1304,10 +1331,10 @@
                 ${dayPillHtml}
                 <div class="flex flex-col min-w-0 flex-1 pt-0.5">
                   <div class="flex items-center gap-1.5 flex-wrap">
-                    <h4 class="font-extrabold text-sm sm:text-base text-slate-800 leading-snug break-words">${d.title}</h4>
+                    <h4 class="font-extrabold text-sm sm:text-base text-slate-800 leading-snug break-words">${cardTitle}</h4>
                     ${dayProgressBadge}
                   </div>
-                  <span class="text-xs sm:text-sm font-semibold ${isTrial ? 'text-amber-700' : 'text-[#08A7B5]'} leading-snug mt-0.5 break-words">${d.theme || ''}</span>
+                  <span class="text-xs sm:text-sm font-semibold ${isTrial ? 'text-amber-700' : 'text-[#08A7B5]'} leading-snug mt-0.5 break-words">${cardTheme}</span>
                 </div>
               </div>
 
@@ -1322,11 +1349,11 @@
               <div class="flex items-center gap-1.5 text-xs text-slate-500 font-medium flex-wrap">
                 <span class="inline-flex items-center gap-1 whitespace-nowrap bg-white/70 px-2 py-0.5 rounded-lg border border-slate-200/50">
                   <span class="material-symbols-outlined text-xs text-slate-400">calendar_today</span>
-                  <span>${d.date_formatted || d.date}</span>
+                  <span>${cardDate}</span>
                 </span>
                 <span class="inline-flex items-center gap-1 whitespace-nowrap bg-white/70 px-2 py-0.5 rounded-lg border border-slate-200/50">
                   <span class="material-symbols-outlined text-xs text-slate-400">schedule</span>
-                  <span>${d.start_time} - ${d.end_time} WIB</span>
+                  <span>${cardTime}</span>
                 </span>
               </div>
 
@@ -1345,18 +1372,18 @@
                 <span class="material-symbols-outlined text-base text-[#08A7B5]">info</span>
                 <span>Sasaran &amp; Panduan Kegiatan:</span>
               </div>
-              <p class="leading-relaxed">${d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.'}</p>
+              <p class="leading-relaxed">${cardDesc}</p>
             </div>
 
-            ${isFTDay1 ? `
-              <!-- ALUR BERURUTAN KHUSUS DAY 1 FIELD TRIP -->
+            ${isFTDay ? `
+              <!-- ALUR BERURUTAN KHUSUS DAY ${dNum} FIELD TRIP -->
               <div class="p-3 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-amber-950 text-xs flex flex-col gap-1 leading-relaxed">
                 <span class="font-extrabold flex items-center gap-1 text-amber-900">
                   <span class="material-symbols-outlined text-sm text-amber-700">alt_route</span>
-                  Alur Pengerjaan Wajib Berurutan:
+                  Alur Pengerjaan Wajib Berurutan Day ${dNum}:
                 </span>
                 <span class="text-[11px] text-amber-900/90">
-                  <strong>1. Modul Belajar</strong> (baca &amp; isi resume) &rarr; <strong>2. LKPD</strong> (budgeting plan) &rarr; <strong>3. Asesmen</strong> &rarr; <strong>4. Dokumentasi Foto</strong> &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Nilai Guru</strong>.
+                  <strong>1. Modul Belajar</strong> (baca &amp; isi resume) &rarr; <strong>2. LKPD</strong> (lembar kerja harian) &rarr; <strong>3. Asesmen</strong> (5 kuis ringkas) &rarr; <strong>4. Dokumentasi Foto</strong> &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Nilai Guru</strong>.
                 </span>
               </div>
             ` : ''}
@@ -1380,7 +1407,7 @@
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Modul Belajar</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenMateri ? 'text-amber-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${(isFTDay1 && hasMateri) ? 'Resume Tersimpan' : 'Materi Eksplor'}</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenMateri ? 'text-amber-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${(isFTDay && hasMateri) ? 'Resume Tersimpan' : 'Materi Eksplor'}</span>
                 </div>
               </button>
 
@@ -1435,7 +1462,7 @@
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Nilai &amp; Catatan</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenPenilaian ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenPenilaian ? 'Terkunci (Refleksi Dulu)' : ((isFTDay1 && hasRefleksi) ? 'Menunggu Review' : 'Feedback Guru')}</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenPenilaian ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenPenilaian ? 'Terkunci (Refleksi Dulu)' : ((isFTDay && hasRefleksi) ? 'Menunggu Review' : 'Feedback Guru')}</span>
                 </div>
               </button>
             </div>
@@ -1511,24 +1538,24 @@
         : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-      const isFTDay1 = (dNum === 1 && isFieldTrip);
+      const isFTDay = isFieldTrip && (dNum === 1 || dNum === 2);
 
-      // VALIDASI ALUR BERURUTAN KHUSUS DAY 1 FIELD TRIP
-      if (isFTDay1) {
-        const ftStatus = getFTDay1ProgressStatus();
+      // VALIDASI ALUR BERURUTAN KHUSUS FIELD TRIP (DAY 1 & DAY 2)
+      if (isFTDay) {
+        const ftStatus = getFTProgressStatus(null, dNum);
 
         // Tahap 2: LKPD butuh Modul
         if (type === 'lkpd' && !ftStatus.canLkpd) {
-          showStepLockedModal('LKPD Digital', 'Tahap 1: Modul Belajar & Resume', () => { window.location.href = 'materi.html?day=1'; });
+          showStepLockedModal('LKPD Digital', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
           return;
         }
 
         // Tahap 3: Asesmen butuh Modul & LKPD
         if (type === 'asesmen' && !ftStatus.canAsesmen) {
           if (!ftStatus.hasMateri) {
-            showStepLockedModal('Kuis Asesmen', 'Tahap 1: Modul Belajar & Resume', () => { window.location.href = 'materi.html?day=1'; });
+            showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
           } else {
-            showStepLockedModal('Kuis Asesmen', 'Tahap 2: Lembar Kerja (LKPD)', () => { window.location.href = 'lkpd.html?day=1'; });
+            showStepLockedModal('Kuis Asesmen', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
           }
           return;
         }
@@ -1536,11 +1563,11 @@
         // Tahap 4: Dokumentasi butuh Modul, LKPD & Asesmen
         if (type === 'dokumentasi' && !ftStatus.canDok) {
           if (!ftStatus.hasMateri) {
-            showStepLockedModal('Dokumentasi Foto', 'Tahap 1: Modul Belajar & Resume', () => { window.location.href = 'materi.html?day=1'; });
+            showStepLockedModal('Dokumentasi Foto', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
           } else if (!ftStatus.hasLkpd) {
-            showStepLockedModal('Dokumentasi Foto', 'Tahap 2: Lembar Kerja (LKPD)', () => { window.location.href = 'lkpd.html?day=1'; });
+            showStepLockedModal('Dokumentasi Foto', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
           } else {
-            showStepLockedModal('Dokumentasi Foto', 'Tahap 3: Kuis Asesmen Finansial', () => { handleActivityClick(1, 'asesmen'); });
+            showStepLockedModal('Dokumentasi Foto', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
           }
           return;
         }
@@ -1548,16 +1575,16 @@
         // Tahap 5: Refleksi butuh Modul, LKPD, Asesmen & Dokumentasi
         if (type === 'refleksi' && !ftStatus.canRefleksi) {
           if (!ftStatus.canDok) {
-            showStepLockedModal('Jurnal Refleksi', 'Tahap 3: Kuis Asesmen Finansial', () => { handleActivityClick(1, 'asesmen'); });
+            showStepLockedModal('Jurnal Refleksi', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
           } else {
-            showStepLockedModal('Jurnal Refleksi', 'Tahap 4: Dokumentasi Foto Kegiatan', () => { window.location.href = 'dokumentasi.html?day=1'; });
+            showStepLockedModal('Jurnal Refleksi', `Tahap 4: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
           }
           return;
         }
 
         // Tahap 6: Penilaian butuh Refleksi selesai
         if (type === 'penilaian' && !ftStatus.canPenilaian) {
-          showStepLockedModal('Nilai & Feedback Guru', 'Tahap 5: Jurnal Refleksi Mandiri', () => { handleActivityClick(1, 'refleksi'); });
+          showStepLockedModal('Nilai & Feedback Guru', `Tahap 5: Jurnal Refleksi Mandiri Day ${dNum}`, () => { handleActivityClick(dNum, 'refleksi'); }, dNum);
           return;
         }
       }
@@ -1628,6 +1655,7 @@
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
+      const isFTDay2 = isFieldTrip && Number(day.day_number) === 2;
 
       if (type === 'asesmen') {
         if (isFTDay1) {
@@ -1775,9 +1803,161 @@
               </div>
             ` : (readOnlyBanner ? readOnlyBanner : `
               <div class="pt-2">
-                <button type="button" onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
+                <button type="button" onclick="saveStudentNote(1, 'asesmen')" class="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
                   <span class="material-symbols-outlined text-lg">send</span>
                   <span>Kirim Jawaban Asesmen &amp; Buka Dokumentasi</span>
+                </button>
+              </div>
+            `)}
+          `;
+        } else if (isFTDay2) {
+          title.textContent = 'Asesmen Day 2 (AKPOL Semarang, Lawang Sewu & Malang)';
+          icon.textContent = 'fact_check';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
+
+          let ftAsesmen = null;
+          const idList = getStudentStorageIdentifiers();
+          for (const id of idList) {
+            try {
+              const raw = localStorage.getItem('fincestem_asesmen_ft_day2_' + id);
+              if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && (parsed.submitted || parsed.score !== undefined)) {
+                  ftAsesmen = parsed;
+                  break;
+                }
+              }
+            } catch(e) {}
+          }
+
+          const isSubmitted = ftAsesmen && ftAsesmen.submitted;
+          const score = ftAsesmen ? (ftAsesmen.score ?? 100) : 0;
+          const savedAnswers = (ftAsesmen && ftAsesmen.answers) || {};
+          const isModalReadOnly = isReadOnly || isSubmitted;
+          const fieldDisabled = isModalReadOnly ? 'disabled' : '';
+
+          const questions = [
+            {
+              id: 1,
+              text: '1. Akademi Kepolisian (AKPOL) Semarang merupakan lembaga pendidikan tinggi kedinasan yang mendidik dan mencetak calon perwira Polri berpangkat Inspektur Polisi Dua (Ipda) dengan gelar akademik resmi...',
+              options: [
+                { key: 'A', text: 'Sarjana Hukum Pidana (S.H.)' },
+                { key: 'B', text: 'Sarjana Terapan Kepolisian (S.Tr.K.)' },
+                { key: 'C', text: 'Sarjana Ilmu Komunikasi (S.I.Kom.)' },
+                { key: 'D', text: 'Sarjana Sains Kepolisian (S.Si.)' }
+              ]
+            },
+            {
+              id: 2,
+              text: '2. Dalam membentuk karakter disiplin ketat, kepemimpinan, dan etika profesi, para taruna AKPOL Semarang berpedoman pada doktrin utama yaitu...',
+              options: [
+                { key: 'A', text: 'Tribrata dan Catur Prasetya' },
+                { key: 'B', text: 'Dasadharma dan Tri Satya' },
+                { key: 'C', text: 'Sumpah Pemuda dan Sapta Marga' },
+                { key: 'D', text: 'Tri Dharma Perguruan Tinggi' }
+              ]
+            },
+            {
+              id: 3,
+              text: '3. Gedung bersejarah Lawang Sewu di Kota Semarang yang mulai dibangun tahun 1904 awalnya berfungsi sebagai kantor pusat...',
+              options: [
+                { key: 'A', text: 'Bank Sentral De Javasche Bank Semarang' },
+                { key: 'B', text: 'Kantor Otoritas Pelabuhan Tanjung Emas' },
+                { key: 'C', text: 'Perusahaan Kereta Api Swasta Hindia Belanda (NIS / Nederlandsch-Indische Spoorweg Maatschappij)' },
+                { key: 'D', text: 'Benteng Pertahanan Militer Belanda' }
+              ]
+            },
+            {
+              id: 4,
+              text: '4. Ruangan di dalam gedung Lawang Sewu tetap terasa sejuk secara alami tanpa AC modern karena menerapkan prinsip sains arsitektur pasif, yaitu...',
+              options: [
+                { key: 'A', text: 'Ventilasi silang (cross-ventilation) ribuan pintu/jendela louvre kayu, plafon tinggi > 4 meter, dan lorong penyejuk bawah tanah' },
+                { key: 'B', text: 'Dinding kaca tebal kedap udara yang menahan panas matahari' },
+                { key: 'C', text: 'Pemasangan ratusan unit pendingin ruangan tenaga generator' },
+                { key: 'D', text: 'Pengering udara mekanik bertenaga uap batu bara' }
+              ]
+            },
+            {
+              id: 5,
+              text: '5. Selama menempuh perjalanan darat 6 jam dari Semarang menuju Malang melintasi Tol Trans-Jawa, tindakan bijak siswa dalam mengelola uang saku harian adalah...',
+              options: [
+                { key: 'A', text: 'Membeli perhiasan mewah di gerai rest area tol' },
+                { key: 'B', text: 'Membeli banyak makanan camilan tanpa mencatat pengeluaran di buku kas' },
+                { key: 'C', text: 'Meminjam uang teman untuk berbelanja di minimarket rest area' },
+                { key: 'D', text: 'Mengutamakan kebutuhan esensial (minum/toilet), menahan jajan impulsif, dan mencatat pengeluaran di Buku Kas Harian LKPD' }
+              ]
+            }
+          ];
+
+          let qHtml = questions.map((q) => {
+            const chosen = savedAnswers['q' + q.id] || '';
+            const optsHtml = q.options.map(opt => {
+              const isChecked = chosen === opt.key ? 'checked' : '';
+              return `
+                <label class="p-2.5 rounded-xl border ${isChecked ? 'border-blue-500 bg-blue-50/60 font-semibold' : 'border-slate-200 hover:bg-slate-50'} flex items-start gap-2.5 cursor-pointer text-xs sm:text-sm text-slate-800 transition-colors">
+                  <input type="radio" name="ftAsesmenDay2Q${q.id}" value="${opt.key}" ${isChecked} ${fieldDisabled} class="mt-0.5 text-blue-600 focus:ring-0">
+                  <span class="leading-relaxed"><strong>${opt.key}.</strong> ${opt.text}</span>
+                </label>
+              `;
+            }).join('');
+
+            return `
+              <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col gap-2">
+                <span class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">${q.text}</span>
+                <div class="flex flex-col gap-1.5 pt-1">
+                  ${optsHtml}
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          let statusBanner = '';
+          if (isSubmitted) {
+            statusBanner = `
+              <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between gap-2 flex-wrap">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
+                  <div class="flex flex-col">
+                    <span class="font-black text-xs sm:text-sm text-emerald-950">Asesmen Day 2 Selesai!</span>
+                    <span class="text-[11px] text-emerald-700">Tahap 4 (Dokumentasi Foto) telah terbuka.</span>
+                  </div>
+                </div>
+                <div class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-black text-xs sm:text-sm shadow-2xs">
+                  Skor: ${score} / 100
+                </div>
+              </div>
+            `;
+          }
+
+          body.innerHTML = `
+            <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100 flex flex-col gap-1 text-slate-800">
+              <span class="font-bold text-sm text-blue-900">Uji Pemahaman Materi Day 2 (5 Soal Pilihan Ganda)</span>
+              <p class="text-xs sm:text-sm leading-relaxed text-slate-600">
+                Pilihlah salah satu jawaban yang paling tepat berdasarkan materi Kunjungan AKPOL, Lawang Sewu, dan Perjalanan Tol Malang yang telah Anda pelajari pada Modul Day 2.
+              </p>
+            </div>
+
+            ${statusBanner}
+
+            <div class="flex flex-col gap-3">
+              ${qHtml}
+            </div>
+
+            ${isSubmitted ? `
+              <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=2';" class="flex-1 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">photo_camera</span>
+                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
+                  Tutup
+                </button>
+              </div>
+            ` : (readOnlyBanner ? readOnlyBanner : `
+              <div class="pt-2">
+                <button type="button" onclick="saveStudentNote(2, 'asesmen')" class="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-lg">send</span>
+                  <span>Kirim Jawaban Asesmen Day 2 &amp; Buka Dokumentasi</span>
                 </button>
               </div>
             `)}
@@ -1803,21 +1983,37 @@
           `;
         }
       } else if (type === 'refleksi') {
-        title.textContent = isTrial ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' : (isFTDay1 ? 'Jurnal Refleksi Day 1 (Field Trip: Belitang → Semarang)' : `Jurnal Refleksi Mandiri - Day ${day.day_number}`);
+        title.textContent = isTrial 
+          ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' 
+          : (isFTDay1 
+              ? 'Jurnal Refleksi Day 1 (Field Trip: Belitang → Semarang)' 
+              : (isFTDay2 
+                  ? 'Jurnal Refleksi Day 2 (AKPOL Semarang, Lawang Sewu → Malang)' 
+                  : `Jurnal Refleksi Mandiri - Day ${day.day_number}`));
         icon.textContent = 'psychology';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0';
 
-        const reflTitle = isTrial ? 'Simulasi Jurnal Refleksi Siswa' : (isFTDay1 ? 'Cerita Pengalaman Hari Pertama (Field Trip Belitang → Semarang)' : 'Refleksi Belajar Siswa');
+        const reflTitle = isTrial 
+          ? 'Simulasi Jurnal Refleksi Siswa' 
+          : (isFTDay1 
+              ? 'Cerita Pengalaman Hari Pertama (Field Trip Belitang → Semarang)' 
+              : (isFTDay2 
+                  ? 'Refleksi Nilai Belajar & Karakter Hari Kedua (Semarang & Lawang Sewu Menuju Malang)' 
+                  : 'Refleksi Belajar Siswa'));
         const reflPrompt = isTrial 
           ? 'Cobalah mengetikkan refleksi atau harapan Anda selama mengikuti program FINCESTEM 2026 ini.' 
           : (isFTDay1 
               ? 'Ceritakan pengalaman Anda di hari pertama perjalanan ini: momen berpamitan di sekolah, pengalaman menyeberangi Selat Sunda dengan kapal ferry, kebersamaan di dalam bus bersama teman, serta bagaimana komitmen Anda dalam menjaga dan mengelola uang saku selama 7 hari perjalanan ke depan.'
-              : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?');
+              : (isFTDay2 
+                  ? 'Refleksikan apa yang Anda rasakan dan pelajari hari ini: (1) Inspirasi kedisiplinan dan kepemimpinan taruna AKPOL Semarang bagi masa depan Anda, (2) Kekaguman sains arsitektur pasif Lawang Sewu dan heroisme pemuda AMKA, serta (3) Kebiasaan Anda dalam mengendalikan pengeluaran uang saku selama perjalanan panjang menuju hotel di Malang.' 
+                  : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?'));
         const reflPlaceholder = isTrial 
           ? 'Contoh: Saya siap dan antusias mengikuti seluruh rangkaian riset kokurikuler FINCESTEM...' 
           : (isFTDay1 
               ? 'Tuliskan cerita pengalaman hari pertama perjalanan Anda dari Belitang menuju Semarang di sini secara jujur dan mendalam...' 
-              : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...');
+              : (isFTDay2 
+                  ? 'Tuliskan refleksi pengalaman Day 2 Anda di AKPOL Semarang, Lawang Sewu, dan perjalanan tol menuju Malang di sini secara jujur dan mendalam...' 
+                  : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...'));
 
         body.innerHTML = `
           <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100 flex flex-col gap-1 text-slate-800">
@@ -1902,7 +2098,7 @@
         return;
       }
 
-      // Deteksi siswa Field Trip Day 1
+      // Deteksi siswa Field Trip Day 1 & Day 2
       const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
       const cleanNisn = String(studentNisn).trim();
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
@@ -1911,6 +2107,7 @@
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay1 = isFieldTrip && Number(dayNumber) === 1;
+      const isFTDay2 = isFieldTrip && Number(dayNumber) === 2;
 
       let note = '';
       if (type === 'asesmen' && isFTDay1) {
@@ -1961,6 +2158,54 @@
 
         closeDayActivityModal();
         return;
+      } else if (type === 'asesmen' && isFTDay2) {
+        const q1 = document.querySelector('input[name="ftAsesmenDay2Q1"]:checked')?.value;
+        const q2 = document.querySelector('input[name="ftAsesmenDay2Q2"]:checked')?.value;
+        const q3 = document.querySelector('input[name="ftAsesmenDay2Q3"]:checked')?.value;
+        const q4 = document.querySelector('input[name="ftAsesmenDay2Q4"]:checked')?.value;
+        const q5 = document.querySelector('input[name="ftAsesmenDay2Q5"]:checked')?.value;
+
+        if (!q1 || !q2 || !q3 || !q4 || !q5) {
+          FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan asesmen pilihan ganda Day 2!', 'warning');
+          return;
+        }
+
+        // Kunci Jawaban Day 2: 1:B (S.Tr.K), 2:A (Tribrata & Catur Prasetya), 3:C (NIS 1904), 4:A (Cross-ventilation), 5:D (Kebutuhan & Buku Kas)
+        const keys = { q1: 'B', q2: 'A', q3: 'C', q4: 'A', q5: 'D' };
+        const answers = { q1, q2, q3, q4, q5 };
+        let correctCount = 0;
+        for (let i = 1; i <= 5; i++) {
+          if (answers['q' + i] === keys['q' + i]) correctCount++;
+        }
+        const totalScore = correctCount * 20;
+
+        const asesmenPayload = {
+          submitted: true,
+          score: totalScore,
+          correctCount: correctCount,
+          totalQuestions: 5,
+          answers: answers,
+          submitted_at: new Date().toISOString()
+        };
+
+        const idList = getStudentStorageIdentifiers();
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_asesmen_ft_day2_' + id, JSON.stringify(asesmenPayload));
+        });
+
+        note = `Skor Asesmen Day 2: ${totalScore}/100 (${correctCount}/5 Benar). Kunci Jawaban: Q1=${q1}, Q2=${q2}, Q3=${q3}, Q4=${q4}, Q5=${q5}`;
+
+        if (studentProgress && studentProgress.task_map) {
+          studentProgress.task_map['2_asesmen'] = { status: 'submitted', content: note };
+        }
+
+        FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
+          FincestemCore.ui.toast(`Asesmen Day 2 Selesai! Skor Anda: ${totalScore}/100. Tahap 4 (Dokumentasi Foto) sekarang telah terbuka.`, 'success');
+          loadStudentProgress();
+        });
+
+        closeDayActivityModal();
+        return;
       } else if (type === 'asesmen') {
         const noteInput = document.getElementById('txtAsesmenNote');
         note = noteInput ? noteInput.value.trim() : '';
@@ -1983,6 +2228,25 @@
         if (studentProgress && studentProgress.task_map) {
           studentProgress.task_map['1_refleksi'] = { status: 'submitted', content: note };
         }
+      } else if (type === 'refleksi' && isFTDay2) {
+        const noteInput = document.getElementById('txtRefleksiNote');
+        note = noteInput ? noteInput.value.trim() : '';
+        if (!note || note.length < 15) {
+          FincestemCore.ui.toast('Harap tuliskan refleksi pengalaman Day 2 minimal beberapa kalimat!', 'warning');
+          return;
+        }
+        const refleksiPayload = {
+          submitted: true,
+          content: note,
+          submitted_at: new Date().toISOString()
+        };
+        const idList = getStudentStorageIdentifiers();
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_refleksi_ft_day2_' + id, JSON.stringify(refleksiPayload));
+        });
+        if (studentProgress && studentProgress.task_map) {
+          studentProgress.task_map['2_refleksi'] = { status: 'submitted', content: note };
+        }
       } else {
         const noteInput = document.getElementById('txtRefleksiNote');
         note = noteInput ? noteInput.value.trim() : '';
@@ -1991,6 +2255,8 @@
       FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
         if (isFTDay1 && type === 'refleksi') {
           FincestemCore.ui.toast('Jurnal Refleksi Day 1 berhasil disimpan! Seluruh tahapan pengerjaan Day 1 Anda telah lengkap.', 'success');
+        } else if (isFTDay2 && type === 'refleksi') {
+          FincestemCore.ui.toast('Jurnal Refleksi Day 2 berhasil disimpan! Seluruh tahapan pengerjaan Day 2 Anda telah lengkap.', 'success');
         } else {
           FincestemCore.ui.toast(`Tugas ${type.toUpperCase()} Day ${dayNumber} berhasil dikirim (Status: Submitted)!`, 'success');
         }

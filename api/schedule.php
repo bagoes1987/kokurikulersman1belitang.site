@@ -58,8 +58,8 @@ function ensureDaySchedulesTable($pdo) {
             ");
         }
 
-        // Pastikan Day 1 terbuka aktif untuk kegiatan Field Trip
-        $pdo->exec("UPDATE `day_schedules` SET `auto_schedule` = 0, `is_active` = 1 WHERE `day_number` = 1");
+        // Pastikan Day 1 & Day 2 terbuka aktif untuk kegiatan Field Trip
+        $pdo->exec("UPDATE `day_schedules` SET `auto_schedule` = 0, `is_active` = 1 WHERE `day_number` IN (1, 2)");
     } catch (Exception $e) {
         // Fallback jika ada batasan izin di cPanel
     }

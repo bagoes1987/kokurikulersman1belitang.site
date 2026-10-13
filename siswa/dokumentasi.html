@@ -370,7 +370,7 @@
           <span>Foto Sudah Pas, Unggah Foto!</span>
         </button>
       </div>
-  <!-- MODAL SUKSES DOKUMENTASI DAY 1 FIELD TRIP -->
+  <!-- MODAL SUKSES DOKUMENTASI FIELD TRIP (DAY 1 & DAY 2) -->
   <div id="ftDokSuccessModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
     <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high animate-in fade-in zoom-in-95 duration-200">
       <div class="w-14 h-14 rounded-2xl bg-pink-500/15 text-pink-600 flex items-center justify-center mx-auto mb-1">
@@ -378,16 +378,16 @@
       </div>
       <div class="text-center flex flex-col gap-1">
         <h3 class="font-black text-lg text-primary">Foto Dokumentasi Berhasil Diunggah!</h3>
-        <p class="text-xs text-slate-600 font-medium leading-relaxed">
-          Bukti foto lapangan Day 1 Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:
+        <p id="ftDokSuccessSubtitle" class="text-xs text-slate-600 font-medium leading-relaxed">
+          Bukti foto lapangan Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:
         </p>
       </div>
 
       <div class="flex flex-col gap-2.5 pt-2">
         <!-- Opsi 1: Lanjut ke Refleksi -->
-        <a href="dashboard.html?day=1&task=refleksi" class="w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center">
+        <a id="btnFtDokNextRefleksi" href="dashboard.html?day=1&task=refleksi" class="w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center">
           <span class="material-symbols-outlined text-xl">psychology</span>
-          <span>Lanjut ke Refleksi Mandiri (Tahap 5)</span>
+          <span id="btnFtDokNextText">Lanjut ke Refleksi Mandiri (Tahap 5)</span>
           <span class="material-symbols-outlined text-lg">arrow_forward</span>
         </a>
 
@@ -430,16 +430,16 @@
               return;
             }
 
-            // Validasi alur berurutan khusus Day 1 Field Trip: Asesmen wajib selesai dulu!
+            // Validasi alur berurutan khusus Day 1 & Day 2 Field Trip: Asesmen wajib selesai dulu!
             const studentCategory = getStudentCategoryInfo();
-            if (studentCategory.isFieldTrip && dayNum === 1) {
+            if (studentCategory.isFieldTrip && (dayNum === 1 || dayNum === 2)) {
               const taskMap = (prog && prog.task_map) || {};
-              let hasAsesmen = !!taskMap['1_asesmen'];
+              let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
               if (!hasAsesmen) {
                 const ids = [nisn, String(nisn).trim(), String(nisn).trim().replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
                 for (const id of ids) {
                   try {
-                    const ask = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
+                    const ask = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id);
                     if (ask) {
                       try {
                         const parsed = JSON.parse(ask);
@@ -455,15 +455,15 @@
                 }
               }
               if (!hasAsesmen) {
-                FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day 1 sebelum mengunggah Dokumentasi!', 'warning');
+                FincestemCore.ui.toast(`Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day ${dayNum} sebelum mengunggah Dokumentasi!`, 'warning');
                 setTimeout(() => {
-                  window.location.replace('dashboard.html?day=1&task=asesmen');
+                  window.location.replace(`dashboard.html?day=${dayNum}&task=asesmen`);
                 }, 1200);
                 return;
               }
             }
             let canEdit = access.canEdit;
-            if (studentCategory.isFieldTrip && dayNum === 1) {
+            if (studentCategory.isFieldTrip && (dayNum === 1 || dayNum === 2)) {
               canEdit = true;
             }
             if (!canEdit || isReadOnlyUrl) {
@@ -1554,16 +1554,25 @@
       FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
       renderPhotos();
 
-      // Untuk Day 1 Field Trip, munculkan modal navigasi ke Tahap 5: Refleksi
+      // Untuk Siswa Field Trip (Day 1 & Day 2), munculkan modal navigasi ke Tahap 5: Refleksi
       const cat = getStudentCategoryInfo();
-      if (cat.isFieldTrip && docDayNum === 1) {
+      if (cat.isFieldTrip && (docDayNum === 1 || docDayNum === 2)) {
         setTimeout(() => {
-          showFtDokSuccessModal();
+          showFtDokSuccessModal(docDayNum);
         }, 350);
       }
     }
 
-    function showFtDokSuccessModal() {
+    function showFtDokSuccessModal(dayNum) {
+      dayNum = dayNum || 1;
+      const subtitle = document.getElementById('ftDokSuccessSubtitle');
+      if (subtitle) {
+        subtitle.textContent = `Bukti foto lapangan Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:`;
+      }
+      const nextBtn = document.getElementById('btnFtDokNextRefleksi');
+      if (nextBtn) {
+        nextBtn.href = `dashboard.html?day=${dayNum}&task=refleksi`;
+      }
       const modal = document.getElementById('ftDokSuccessModal');
       if (modal) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
