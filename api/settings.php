@@ -152,6 +152,18 @@ function ensureRoleTables($pdo) {
                             $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `role` = 'siswa' AND `identifier` IN ($inNisn)");
                         }
                     }
+                    $nameList = [];
+                    foreach ($ftStudents as $st) {
+                        $nm = !empty($st['nama']) ? $st['nama'] : (!empty($st['name']) ? $st['name'] : '');
+                        if (!empty($nm)) $nameList[] = "'" . addslashes(trim($nm)) . "'";
+                    }
+                    if (!empty($nameList)) {
+                        $chunks = array_chunk($nameList, 100);
+                        foreach ($chunks as $chunk) {
+                            $inName = implode(',', $chunk);
+                            $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `role` = 'siswa' AND `name` IN ($inName)");
+                        }
+                    }
 
                     $insertValues = [];
                     foreach ($ftStudents as $st) {
@@ -223,6 +235,18 @@ if ($method === 'GET') {
                 foreach ($chunks as $chunk) {
                     $inNisn = implode(',', $chunk);
                     $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `role` = 'siswa' AND `identifier` IN ($inNisn)");
+                }
+            }
+            $nameList = [];
+            foreach ($ftStudents as $st) {
+                $nm = !empty($st['nama']) ? $st['nama'] : (!empty($st['name']) ? $st['name'] : '');
+                if (!empty($nm)) $nameList[] = "'" . addslashes(trim($nm)) . "'";
+            }
+            if (!empty($nameList)) {
+                $chunks = array_chunk($nameList, 100);
+                foreach ($chunks as $chunk) {
+                    $inName = implode(',', $chunk);
+                    $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `role` = 'siswa' AND `name` IN ($inName)");
                 }
             }
 
