@@ -472,6 +472,44 @@
     }
 
     // ==========================================
+    // HELPER FORMAT RUPIAH & RIBUAN OTOMATIS
+    // ==========================================
+    function formatRupiahInput(el) {
+      if (!el) return;
+      const prevVal = el.value || '';
+      const prevCaret = el.selectionStart || 0;
+      
+      // Ambil hanya digit
+      const rawDigits = prevVal.replace(/\D/g, '');
+      if (!rawDigits) {
+        el.value = '';
+        return;
+      }
+      
+      // Format angka dengan titik ribuan
+      const formatted = Number(rawDigits).toLocaleString('id-ID');
+      el.value = formatted;
+      
+      // Hitung selisih panjang untuk penyesuaian kursor
+      const diff = formatted.length - prevVal.length;
+      const newCaret = Math.max(0, prevCaret + diff);
+      try {
+        el.setSelectionRange(newCaret, newCaret);
+      } catch (e) {}
+    }
+
+    function parseRupiah(val) {
+      if (val === null || val === undefined) return 0;
+      if (typeof val === 'number') return val;
+      return parseFloat(String(val).replace(/\D/g, '')) || 0;
+    }
+
+    function formatNumberId(num) {
+      if (num === null || num === undefined || isNaN(num) || num === '' || Number(num) === 0) return '';
+      return Number(num).toLocaleString('id-ID');
+    }
+
+    // ==========================================
     // MODUL LKPD KHUSUS FIELD TRIP DAY 1
     // ==========================================
     function renderFieldTripDay1LKPD(isReadOnly) {
@@ -577,9 +615,9 @@
             <label class="block text-sm font-bold text-on-surface mb-1">Total Uang Saku yang Anda Bawa (Rp):</label>
             <div class="relative">
               <span class="absolute left-3.5 top-3 text-sm font-bold text-slate-500">Rp</span>
-              <input id="ftTotalSaku" type="number" min="0" step="5000" placeholder="Contoh: 700000" value="${saved?.totalSaku || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-12 pr-4 py-3 rounded-xl border border-outline-variant/50 text-base font-black text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:font-normal placeholder:text-slate-400">
+              <input id="ftTotalSaku" type="text" inputmode="numeric" autocomplete="off" placeholder="Contoh: 700.000" value="${formatNumberId(saved?.totalSaku)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-12 pr-4 py-3 rounded-xl border border-outline-variant/50 text-base font-black text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:font-normal placeholder:text-slate-400">
             </div>
-            <span class="text-[11px] text-slate-500 mt-1 block">Tuliskan nominal uang saku murni yang Anda pegang (tidak termasuk biaya biro).</span>
+            <span class="text-[11px] text-slate-500 mt-1 block">Tuliskan nominal uang saku murni yang Anda pegang (tidak termasuk biaya biro). Titik ribuan akan muncul otomatis saat Anda mengetik.</span>
           </div>
         </div>
 
@@ -603,7 +641,7 @@
               <span class="text-[11.5px] text-slate-500">Target: Camilan/minuman santai di rest area &amp; kapal ferry</span>
               <div class="relative">
                 <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
-                <input id="ftPlanD1" type="number" min="0" placeholder="0" value="${saved?.d1 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+                <input id="ftPlanD1" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="${formatNumberId(saved?.d1)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
               </div>
             </div>
 
@@ -616,7 +654,7 @@
               <span class="text-[11.5px] text-slate-500">Target: Minuman segar / jajan santai saat istirahat siang</span>
               <div class="relative">
                 <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
-                <input id="ftPlanD2" type="number" min="0" placeholder="0" value="${saved?.d2 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+                <input id="ftPlanD2" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="${formatNumberId(saved?.d2)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
               </div>
             </div>
 
@@ -629,7 +667,7 @@
               <span class="text-[11.5px] text-slate-500">Target: Apel petik segar kiloan tambahan / suvenir sains</span>
               <div class="relative">
                 <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
-                <input id="ftPlanD3" type="number" min="0" placeholder="0" value="${saved?.d3 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+                <input id="ftPlanD3" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="${formatNumberId(saved?.d3)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
               </div>
             </div>
 
@@ -642,7 +680,7 @@
               <span class="text-[11.5px] text-slate-500">Target: Sarung tangan/kupluk hangat, camilan lereng kawah</span>
               <div class="relative">
                 <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
-                <input id="ftPlanD4" type="number" min="0" placeholder="0" value="${saved?.d4 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+                <input id="ftPlanD4" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="${formatNumberId(saved?.d4)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
               </div>
             </div>
 
@@ -655,7 +693,7 @@
               <span class="text-[11.5px] text-slate-500">Target: Perlengkapan batik / merchandise kampus UNY</span>
               <div class="relative">
                 <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
-                <input id="ftPlanD5" type="number" min="0" placeholder="0" value="${saved?.d5 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+                <input id="ftPlanD5" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="${formatNumberId(saved?.d5)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
               </div>
             </div>
 
@@ -668,7 +706,7 @@
               <span class="text-[11.5px] text-amber-900">Target: <strong>Oleh-oleh utama untuk orang tua / keluarga di rumah</strong></span>
               <div class="relative">
                 <span class="absolute left-3 top-2 text-xs font-bold text-amber-700">Rp</span>
-                <input id="ftPlanD6" type="number" min="0" placeholder="0" value="${saved?.d6 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-amber-300 bg-white font-bold text-xs outline-none focus:border-amber-600">
+                <input id="ftPlanD6" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="${formatNumberId(saved?.d6)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-amber-300 bg-white font-bold text-xs outline-none focus:border-amber-600">
               </div>
             </div>
 
@@ -681,7 +719,7 @@
               <span class="text-[11.5px] text-slate-500">Target: Bekal camilan santai perjalanan pulang</span>
               <div class="relative">
                 <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
-                <input id="ftPlanD7" type="number" min="0" placeholder="0" value="${saved?.d7 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+                <input id="ftPlanD7" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="${formatNumberId(saved?.d7)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
               </div>
             </div>
 
@@ -694,7 +732,7 @@
               <span class="text-[11.5px] text-emerald-800">Target saldo sisa yang <strong>wajib utuh</strong> untuk dibawa pulang kembali ke Belitang</span>
               <div class="relative">
                 <span class="absolute left-3 top-2 text-xs font-bold text-emerald-700">Rp</span>
-                <input id="ftPlanEmergency" type="number" min="0" placeholder="0" value="${saved?.emergency || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-emerald-300 bg-white font-black text-xs outline-none focus:border-emerald-600">
+                <input id="ftPlanEmergency" type="text" inputmode="numeric" autocomplete="off" placeholder="0" value="${formatNumberId(saved?.emergency)}" oninput="formatRupiahInput(this); calculateFtDay1Budgeting();" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-emerald-300 bg-white font-black text-xs outline-none focus:border-emerald-600">
               </div>
             </div>
           </div>
@@ -880,15 +918,15 @@
 
     // Perhitungan Real-Time Budgeting & Diagnosis Finansial
     function calculateFtDay1Budgeting() {
-      const totalSaku = parseFloat(document.getElementById('ftTotalSaku')?.value) || 0;
-      const d1 = parseFloat(document.getElementById('ftPlanD1')?.value) || 0;
-      const d2 = parseFloat(document.getElementById('ftPlanD2')?.value) || 0;
-      const d3 = parseFloat(document.getElementById('ftPlanD3')?.value) || 0;
-      const d4 = parseFloat(document.getElementById('ftPlanD4')?.value) || 0;
-      const d5 = parseFloat(document.getElementById('ftPlanD5')?.value) || 0;
-      const d6 = parseFloat(document.getElementById('ftPlanD6')?.value) || 0;
-      const d7 = parseFloat(document.getElementById('ftPlanD7')?.value) || 0;
-      const emergency = parseFloat(document.getElementById('ftPlanEmergency')?.value) || 0;
+      const totalSaku = parseRupiah(document.getElementById('ftTotalSaku')?.value);
+      const d1 = parseRupiah(document.getElementById('ftPlanD1')?.value);
+      const d2 = parseRupiah(document.getElementById('ftPlanD2')?.value);
+      const d3 = parseRupiah(document.getElementById('ftPlanD3')?.value);
+      const d4 = parseRupiah(document.getElementById('ftPlanD4')?.value);
+      const d5 = parseRupiah(document.getElementById('ftPlanD5')?.value);
+      const d6 = parseRupiah(document.getElementById('ftPlanD6')?.value);
+      const d7 = parseRupiah(document.getElementById('ftPlanD7')?.value);
+      const emergency = parseRupiah(document.getElementById('ftPlanEmergency')?.value);
 
       const totalAllocated = d1 + d2 + d3 + d4 + d5 + d6 + d7 + emergency;
       const diff = totalSaku - totalAllocated;
@@ -1001,20 +1039,20 @@
         return;
       }
 
-      const totalSaku = parseFloat(document.getElementById('ftTotalSaku')?.value) || 0;
+      const totalSaku = parseRupiah(document.getElementById('ftTotalSaku')?.value);
       if (totalSaku <= 0) {
         FincestemCore.ui.toast('Silakan masukkan total uang saku yang Anda bawa di Bagian 1!', 'error');
         return;
       }
 
-      const d1 = parseFloat(document.getElementById('ftPlanD1')?.value) || 0;
-      const d2 = parseFloat(document.getElementById('ftPlanD2')?.value) || 0;
-      const d3 = parseFloat(document.getElementById('ftPlanD3')?.value) || 0;
-      const d4 = parseFloat(document.getElementById('ftPlanD4')?.value) || 0;
-      const d5 = parseFloat(document.getElementById('ftPlanD5')?.value) || 0;
-      const d6 = parseFloat(document.getElementById('ftPlanD6')?.value) || 0;
-      const d7 = parseFloat(document.getElementById('ftPlanD7')?.value) || 0;
-      const emergency = parseFloat(document.getElementById('ftPlanEmergency')?.value) || 0;
+      const d1 = parseRupiah(document.getElementById('ftPlanD1')?.value);
+      const d2 = parseRupiah(document.getElementById('ftPlanD2')?.value);
+      const d3 = parseRupiah(document.getElementById('ftPlanD3')?.value);
+      const d4 = parseRupiah(document.getElementById('ftPlanD4')?.value);
+      const d5 = parseRupiah(document.getElementById('ftPlanD5')?.value);
+      const d6 = parseRupiah(document.getElementById('ftPlanD6')?.value);
+      const d7 = parseRupiah(document.getElementById('ftPlanD7')?.value);
+      const emergency = parseRupiah(document.getElementById('ftPlanEmergency')?.value);
       const totalAllocated = d1 + d2 + d3 + d4 + d5 + d6 + d7 + emergency;
 
       if (totalAllocated > totalSaku) {
