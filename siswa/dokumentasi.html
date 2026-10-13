@@ -370,7 +370,10 @@
           <span>Foto Sudah Pas, Unggah Foto!</span>
         </button>
       </div>
-  <!-- MODAL SUKSES DOKUMENTASI FIELD TRIP (DAY 1 & DAY 2) -->
+    </div>
+  </div>
+
+  <!-- MODAL SUKSES DOKUMENTASI FIELD TRIP (DAY 1 S.D. 7) -->
   <div id="ftDokSuccessModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
     <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high animate-in fade-in zoom-in-95 duration-200">
       <div class="w-14 h-14 rounded-2xl bg-pink-500/15 text-pink-600 flex items-center justify-center mx-auto mb-1">
@@ -430,9 +433,9 @@
               return;
             }
 
-            // Validasi alur berurutan khusus Day 1 & Day 2 Field Trip: Asesmen wajib selesai dulu!
+            // Validasi alur berurutan khusus Day 1 s.d. 7 Field Trip: Asesmen wajib selesai dulu!
             const studentCategory = getStudentCategoryInfo();
-            if (studentCategory.isFieldTrip && (dayNum === 1 || dayNum === 2)) {
+            if (studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
               const taskMap = (prog && prog.task_map) || {};
               let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
               if (!hasAsesmen) {
@@ -463,7 +466,7 @@
               }
             }
             let canEdit = access.canEdit;
-            if (studentCategory.isFieldTrip && (dayNum === 1 || dayNum === 2)) {
+            if (studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
               canEdit = true;
             }
             if (!canEdit || isReadOnlyUrl) {
@@ -1554,9 +1557,9 @@
       FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
       renderPhotos();
 
-      // Untuk Siswa Field Trip (Day 1 & Day 2), munculkan modal navigasi ke Tahap 5: Refleksi
+      // Untuk Siswa Field Trip (Day 1 s.d. 7), munculkan modal navigasi ke Tahap 5: Refleksi
       const cat = getStudentCategoryInfo();
-      if (cat.isFieldTrip && (docDayNum === 1 || docDayNum === 2)) {
+      if (cat.isFieldTrip && (docDayNum >= 1 && docDayNum <= 7)) {
         setTimeout(() => {
           showFtDokSuccessModal(docDayNum);
         }, 350);

@@ -304,7 +304,8 @@
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
         ? FincestemCore.zones.getStudentZone(nisn, studentClass, activeUser.zone)
         : (activeUser.zone || 'FINCESTEM OKU TIMUR');
-      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
       // TAMPILKAN LKPD FIELD TRIP DAY 1 SEGERA (TERPISAH DARI PENUTUPAN JADWAL REGULER)
       if (isFieldTrip && dayNum === 1) {
@@ -314,6 +315,11 @@
       // TAMPILKAN LKPD FIELD TRIP DAY 2
       if (isFieldTrip && dayNum === 2) {
         renderFieldTripDay2LKPD(false);
+        return;
+      }
+      // TAMPILKAN LKPD FIELD TRIP DAY 3 S.D. 7
+      if (isFieldTrip && dayNum >= 3 && dayNum <= 7) {
+        renderFieldTripGenericLKPD(dayNum, false);
         return;
       }
 
@@ -1652,6 +1658,317 @@
         inner.classList.remove('scale-100');
         inner.classList.add('scale-95');
       }
+    }
+
+    // ==========================================
+    // MODUL LKPD KHUSUS FIELD TRIP DAY 3 S.D. 7
+    // ==========================================
+    function renderFieldTripGenericLKPD(dayNum, isReadOnly) {
+      const mainEl = document.querySelector('main');
+      if (!mainEl) return;
+
+      const ftCfg = (FincestemCore.schedule && FincestemCore.schedule.getFieldTripDayConfig)
+        ? FincestemCore.schedule.getFieldTripDayConfig(dayNum)
+        : null;
+
+      const title = ftCfg ? ftCfg.title : `Day ${dayNum}: Lembar Kerja Riset Lapangan Field Trip`;
+      const theme = ftCfg ? ftCfg.theme : 'Investigasi 4 Pilar FINCESTEM Lapangan';
+      const route = ftCfg ? ftCfg.route : 'Rute Resmi Ekspedisi Field Trip 2026';
+      const date = ftCfg ? ftCfg.date_formatted : `Day ${dayNum}`;
+
+      const studentName = activeUser.name || 'Peserta Field Trip';
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+        : (activeUser.facilitator_name || 'Tim Guru Pendamping Field Trip');
+
+      // Ambil data yang tersimpan sebelumnya
+      let saved = null;
+      try {
+        const stored = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + studentNisn);
+        if (stored) saved = JSON.parse(stored);
+      } catch (e) {}
+
+      // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan Day X
+      let hasMateri = false;
+      try {
+        const cleanNisn = String(studentNisn).trim();
+        const unpadded = cleanNisn.replace(/^0+/, '');
+        const localMateri = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + cleanNisn) ||
+                            localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + unpadded) ||
+                            localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + ('0' + unpadded));
+        if (localMateri) {
+          const parsed = JSON.parse(localMateri);
+          if (parsed && (parsed.conclusion || parsed.text || parsed.content)) {
+            hasMateri = true;
+          }
+        }
+      } catch (e) {}
+
+      if (saved && (saved.submitted || saved.obsSains)) {
+        hasMateri = true;
+      }
+
+      const isSubmitted = saved && saved.submitted;
+      const isLockedByPrereq = !hasMateri;
+      const readOnlyAttr = isLockedByPrereq ? 'disabled' : '';
+
+      mainEl.innerHTML = `
+        ${isLockedByPrereq ? `
+          <!-- BANNER PERINGATAN PRASYARAT BERJENJANG -->
+          <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm animate-pulse-once">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-2xl">lock</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
+                <h3 class="text-base font-extrabold text-amber-950">LKPD Day ${dayNum} Masih Terkunci!</h3>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              Anda belum membaca <strong>Modul Belajar Day ${dayNum} (${title})</strong> atau belum menyimpan kesimpulan pemahaman di bagian bawah modul.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
+              <a href="materi.html?day=${dayNum}" class="px-5 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all">
+                <span class="material-symbols-outlined text-lg">menu_book</span>
+                <span>Buka Modul Belajar Day ${dayNum} Sekarang</span>
+              </a>
+              <a href="dashboard.html" class="px-5 py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 border border-slate-300 transition-all">
+                <span class="material-symbols-outlined text-lg">arrow_back</span>
+                <span>Kembali ke Beranda</span>
+              </a>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- BANNER IDENTITAS LKPD DAY ${dayNum} -->
+        <div class="bg-gradient-to-br from-teal-700 via-[#006a61] to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-teal-100 backdrop-blur-md">
+              Field Trip • Day ${dayNum}
+            </span>
+            <span id="ftGenStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-emerald-400 text-slate-950' : 'bg-white/20 text-white'}">
+              ${isSubmitted ? '✓ Telah Dikirim (Bintang 5 Otomatis)' : 'Lembar Kerja Mandiri'}
+            </span>
+          </div>
+
+          <h2 class="font-black text-xl sm:text-2xl leading-tight">
+            ${title}
+          </h2>
+          <span class="text-xs sm:text-sm font-semibold text-teal-200 leading-snug">
+            ${theme}
+          </span>
+          <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-teal-200 font-semibold flex-wrap">
+            <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+              <span class="material-symbols-outlined text-sm">calendar_today</span>
+              <span>${date}</span>
+            </span>
+            <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+              <span class="material-symbols-outlined text-sm">alt_route</span>
+              <span>${route}</span>
+            </span>
+          </div>
+
+          <!-- KARTU DATA SISWA -->
+          <div class="p-3.5 rounded-2xl bg-white/10 backdrop-blur-md border border-white/15 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <div>
+              <span class="text-teal-200 block text-[10px] uppercase font-bold">Nama Peserta</span>
+              <span class="font-bold text-white truncate block">${studentName}</span>
+            </div>
+            <div>
+              <span class="text-teal-200 block text-[10px] uppercase font-bold">NISN</span>
+              <span class="font-bold text-white truncate block">${studentNisn}</span>
+            </div>
+            <div>
+              <span class="text-teal-200 block text-[10px] uppercase font-bold">Kelas</span>
+              <span class="font-bold text-white truncate block">${studentClass}</span>
+            </div>
+            <div>
+              <span class="text-teal-200 block text-[10px] uppercase font-bold">Guru Pendamping</span>
+              <span class="font-bold text-white truncate block">${fasilName}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM INVESTIGASI 4 PILAR TERPADU -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
+          <div class="flex items-center gap-2.5 text-teal-950 pb-2 border-b border-slate-100">
+            <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center font-black text-sm shrink-0">
+              <span class="material-symbols-outlined text-lg">science</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xs font-black uppercase text-teal-700 tracking-wider">Instrumen Lapangan</span>
+              <h3 class="font-extrabold text-base text-on-surface">1. Observasi Sains &amp; Lingkungan Day ${dayNum}</h3>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            Deskripsikan hasil pengamatan ilmiah Anda terkait fenomena alam, kondisi lingkungan, suhu udara, keanekaragaman hayati, atau materi sains di titik destinasi hari ini:
+          </p>
+          <textarea id="ftGenObsSains" ${readOnlyAttr} rows="4" class="w-full p-4 rounded-2xl border border-slate-300 text-xs sm:text-sm text-slate-900 leading-relaxed focus:border-teal-600 focus:ring-2 focus:ring-teal-100 outline-none transition-all ${isLockedByPrereq ? 'bg-slate-100 cursor-not-allowed' : ''}" placeholder="Tuliskan temuan observasi sains & lingkungan di sini...">${(saved && saved.obsSains) || ''}</textarea>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
+          <div class="flex items-center gap-2.5 text-teal-950 pb-2 border-b border-slate-100">
+            <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center font-black text-sm shrink-0">
+              <span class="material-symbols-outlined text-lg">precision_manufacturing</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xs font-black uppercase text-blue-700 tracking-wider">Instrumen Lapangan</span>
+              <h3 class="font-extrabold text-base text-on-surface">2. Rekayasa &amp; Teknologi (STEM) Day ${dayNum}</h3>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            Jelaskan penerapan teknologi, alat transportasi, sistem mekanika/mesin produksi, atau inovasi rekayasa yang Anda temukan di lokasi riset:
+          </p>
+          <textarea id="ftGenTeknologi" ${readOnlyAttr} rows="4" class="w-full p-4 rounded-2xl border border-slate-300 text-xs sm:text-sm text-slate-900 leading-relaxed focus:border-blue-600 focus:ring-2 focus:ring-blue-100 outline-none transition-all ${isLockedByPrereq ? 'bg-slate-100 cursor-not-allowed' : ''}" placeholder="Tuliskan analisis teknologi & rekayasa di sini...">${(saved && saved.teknologi) || ''}</textarea>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
+          <div class="flex items-center gap-2.5 text-teal-950 pb-2 border-b border-slate-100">
+            <div class="w-9 h-9 rounded-xl bg-amber-600 text-white flex items-center justify-center font-black text-sm shrink-0">
+              <span class="material-symbols-outlined text-lg">payments</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xs font-black uppercase text-amber-700 tracking-wider">Buku Kas Harian</span>
+              <h3 class="font-extrabold text-base text-on-surface">3. Manajemen Finansial &amp; Pengeluaran Uang Saku Day ${dayNum}</h3>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+            <div class="flex flex-col gap-1.5">
+              <label class="font-bold text-slate-800">Total Pengeluaran Uang Saku Hari Ini (Rp):</label>
+              <input id="ftGenBiaya" type="text" ${readOnlyAttr} value="${(saved && saved.biaya) || ''}" class="p-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold text-slate-900 focus:border-amber-600 outline-none ${isLockedByPrereq ? 'bg-slate-100 cursor-not-allowed' : ''}" placeholder="Contoh: Rp 35.000">
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="font-bold text-slate-800">Rincian Pos Belanja &amp; Alokasi Hemat:</label>
+              <input id="ftGenCatatanFin" type="text" ${readOnlyAttr} value="${(saved && saved.catatanFin) || ''}" class="p-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold text-slate-900 focus:border-amber-600 outline-none ${isLockedByPrereq ? 'bg-slate-100 cursor-not-allowed' : ''}" placeholder="Contoh: Air mineral, suvenir kecil, obat pribadi">
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
+          <div class="flex items-center gap-2.5 text-teal-950 pb-2 border-b border-slate-100">
+            <div class="w-9 h-9 rounded-xl bg-purple-600 text-white flex items-center justify-center font-black text-sm shrink-0">
+              <span class="material-symbols-outlined text-lg">diversity_3</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xs font-black uppercase text-purple-700 tracking-wider">Karakter &amp; Nilai Budaya</span>
+              <h3 class="font-extrabold text-base text-on-surface">4. Kolaborasi Tim &amp; Kearifan Budaya Day ${dayNum}</h3>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            Uraikan bagaimana kekompakan kelompok Anda, dinamika pembagian tugas, serta nilai etika/budaya lokal yang Anda pelajari hari ini:
+          </p>
+          <textarea id="ftGenBudaya" ${readOnlyAttr} rows="3" class="w-full p-4 rounded-2xl border border-slate-300 text-xs sm:text-sm text-slate-900 leading-relaxed focus:border-purple-600 focus:ring-2 focus:ring-purple-100 outline-none transition-all ${isLockedByPrereq ? 'bg-slate-100 cursor-not-allowed' : ''}" placeholder="Tuliskan catatan kerja sama dan nilai budaya di sini...">${(saved && saved.budaya) || ''}</textarea>
+        </div>
+
+        <!-- TOMBOL SIMPAN & KIRIM LKPD -->
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+          <a href="dashboard.html" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs sm:text-sm border border-slate-300 flex items-center justify-center gap-2 transition-all">
+            <span class="material-symbols-outlined text-lg">arrow_back</span>
+            <span>Kembali ke Beranda</span>
+          </a>
+          <button id="saveFtLkpdGenBtn" type="button" onclick="saveFieldTripGenericLKPD(${dayNum})" ${readOnlyAttr} class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${isLockedByPrereq ? 'opacity-50 pointer-events-none' : ''}">
+            <span class="material-symbols-outlined text-lg">save</span>
+            <span>Simpan &amp; Kirim LKPD Day ${dayNum}</span>
+          </button>
+        </div>
+
+        <!-- MODAL SUKSES PENGIRIMAN LKPD -->
+        <div id="modalLkpdFtGenSuccess" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 flex flex-col gap-4 text-center transform scale-95 transition-transform duration-200">
+            <div class="w-16 h-16 rounded-3xl bg-teal-100 text-teal-700 flex items-center justify-center mx-auto shadow-xs">
+              <span class="material-symbols-outlined text-4xl">check_circle</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <span class="text-xs font-black uppercase text-teal-800 tracking-wider">Tahap 2 Selesai</span>
+              <h3 class="text-lg font-black text-slate-900 leading-tight">LKPD Day ${dayNum} Berhasil Disimpan!</h3>
+              <p class="text-xs text-slate-600 leading-relaxed mt-1">
+                Data lembar kerja Anda telah terekam. Tahap berikutnya adalah <strong>Kuis Asesmen Day ${dayNum} (Tahap 3)</strong>.
+              </p>
+            </div>
+            <div class="flex flex-col gap-2 pt-2">
+              <a href="dashboard.html?day=${dayNum}&task=asesmen" class="w-full py-3.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all">
+                <span class="material-symbols-outlined text-lg">fact_check</span>
+                <span>Lanjut ke Kuis Asesmen Day ${dayNum}</span>
+              </a>
+              <button type="button" onclick="document.getElementById('modalLkpdFtGenSuccess').classList.add('opacity-0', 'pointer-events-none')" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer transition-all">
+                Tetap di Halaman Ini
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveFieldTripGenericLKPD(dayNum) {
+      const studentNisn = activeUser ? (activeUser.nisn || activeUser.identifier || '') : '';
+      const obsSains = document.getElementById('ftGenObsSains')?.value.trim() || '';
+      const teknologi = document.getElementById('ftGenTeknologi')?.value.trim() || '';
+      const biaya = document.getElementById('ftGenBiaya')?.value.trim() || '';
+      const catatanFin = document.getElementById('ftGenCatatanFin')?.value.trim() || '';
+      const budaya = document.getElementById('ftGenBudaya')?.value.trim() || '';
+
+      if (!obsSains || obsSains.length < 15) {
+        FincestemCore.ui.toast(`Harap isi deskripsi observasi sains & lingkungan Day ${dayNum} minimal beberapa kalimat!`, 'warning');
+        return;
+      }
+
+      const btn = document.getElementById('saveFtLkpdGenBtn');
+      if (btn) {
+        btn.classList.add('pointer-events-none', 'opacity-80');
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan Lembar Kerja...</span>';
+      }
+
+      const payload = {
+        day: dayNum,
+        submitted: true,
+        obsSains: obsSains,
+        teknologi: teknologi,
+        biaya: biaya,
+        catatanFin: catatanFin,
+        budaya: budaya,
+        submitted_at: new Date().toISOString()
+      };
+
+      try {
+        const cleanNisn = String(studentNisn).trim();
+        const unpadded = cleanNisn.replace(/^0+/, '');
+        localStorage.setItem(`fincestem_lkpd_ft_day${dayNum}_` + cleanNisn, JSON.stringify(payload));
+        localStorage.setItem(`fincestem_lkpd_ft_day${dayNum}_` + unpadded, JSON.stringify(payload));
+        localStorage.setItem(`fincestem_lkpd_ft_day${dayNum}_` + ('0' + unpadded), JSON.stringify(payload));
+      } catch (e) {}
+
+      if (FincestemCore.progress && studentNisn) {
+        FincestemCore.progress.submitTask(studentNisn, dayNum, 'lkpd', payload);
+      }
+
+      setTimeout(() => {
+        if (btn) {
+          btn.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Lembar Kerja Berhasil Disimpan</span>';
+          btn.classList.remove('pointer-events-none', 'opacity-80');
+        }
+
+        const badge = document.getElementById('ftGenStatusBadge');
+        if (badge) {
+          badge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-emerald-400 text-slate-950';
+          badge.textContent = '✓ Telah Dikirim (Bintang 5 Otomatis)';
+        }
+
+        FincestemCore.ui.toast(`LKPD Day ${dayNum} Field Trip berhasil disimpan!`, 'success');
+
+        const modal = document.getElementById('modalLkpdFtGenSuccess');
+        if (modal) {
+          modal.classList.remove('opacity-0', 'pointer-events-none');
+          modal.classList.add('opacity-100');
+          const inner = modal.querySelector('div');
+          if (inner) {
+            inner.classList.remove('scale-95');
+            inner.classList.add('scale-100');
+          }
+        }
+      }, 400);
     }
   </script>
 </body>

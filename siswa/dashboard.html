@@ -1248,6 +1248,8 @@
       };
     }
 
+    const FIELD_TRIP_DAYS_CONFIG = (FincestemCore.schedule && FincestemCore.schedule.fieldTripDaysConfig) || {};
+
     function renderDaysSchedule(days) {
       const container = document.getElementById('scheduleDaysContainer');
       container.innerHTML = '';
@@ -1375,28 +1377,25 @@
           : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
         const zUpper = (studentZone || '').toUpperCase();
         const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-        const isFTDay = isFieldTrip && (dNum === 1 || dNum === 2);
+        const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
         const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
+        const ftConfig = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
 
-        // Metadata Tampilan Khusus Siswa Field Trip
+        // Metadata Tampilan:
+        // Jika Siswa Field Trip -> Gunakan konfigurasi Day 1 s.d. 7 khusus Field Trip
+        // Jika Siswa Non-Field Trip -> Gunakan data bawaan OKU Timur dari database (d.title, d.theme, d.description, dll)
         let cardTitle = d.title;
         let cardTheme = d.theme || '';
         let cardDate = d.date_formatted || d.date;
         let cardTime = `${d.start_time} - ${d.end_time} WIB`;
         let cardDesc = d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.';
 
-        if (isFieldTrip && dNum === 1) {
-          cardTitle = 'Day 1: Keberangkatan Belitang → Semarang';
-          cardTheme = 'Perjalanan Darat, Penyeberangan Selat Sunda & Manajemen Logistik';
-          cardDate = 'Senin, 09 November 2026';
-          cardTime = '07.00 - 23.59 WIB';
-          cardDesc = 'Perjalanan rombongan bus dari Belitang menuju Pelabuhan Bakauheni, penyeberangan kapal ferry Selat Sunda ke Merak, lanjut melintasi Tol Trans-Jawa via Cirebon menuju transit Semarang.';
-        } else if (isFieldTrip && dNum === 2) {
-          cardTitle = 'Day 2: AKPOL Semarang, Lawang Sewu → Malang';
-          cardTheme = 'Karakter Disiplin AKPOL, Heritage Lawang Sewu & Perjalanan Malang';
-          cardDate = 'Selasa, 10 November 2026';
-          cardTime = '04.30 - 20.30 WIB';
-          cardDesc = '8 Sesi Rangkaian Kegiatan: Transit Semarang (04.30–05.00) • Sarapan Pagi (05.00–07.00) • Persiapan Kunjungan (07.00–08.00) • Kunjungan Edukatif AKPOL Semarang (09.00–12.00) • Makan Siang (12.00–12.30) • Kunjungan Heritage Lawang Sewu (13.00–14.30) • Perjalanan ke Malang via Tol Trans-Jawa (14.30–20.30) • Check-in Hotel Malang (20.30 s.d. Selesai).';
+        if (ftConfig) {
+          cardTitle = ftConfig.title;
+          cardTheme = ftConfig.theme;
+          cardDate = ftConfig.date_formatted;
+          cardTime = ftConfig.time_range;
+          cardDesc = ftConfig.description;
         }
 
         // Cek status pengerjaan hari ini
@@ -1620,15 +1619,56 @@
               <p class="leading-relaxed">${cardDesc}</p>
             </div>
 
-            ${isFTDay ? `
+            ${ftConfig ? `
+              <!-- JADWAL & RUTE PERJALANAN RIIL FIELD TRIP (SESI DEMI SESI PER JAM) -->
+              <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-white border border-amber-300/80 flex flex-col gap-2.5 shadow-2xs">
+                <div class="flex items-start justify-between gap-2 flex-wrap">
+                  <div class="flex flex-col min-w-0 flex-1">
+                    <div class="flex items-center gap-1.5 font-black text-amber-950 text-xs sm:text-sm">
+                      <span class="material-symbols-outlined text-base text-amber-600">alt_route</span>
+                      <span>Rute Perjalanan Resmi:</span>
+                    </div>
+                    <span class="text-xs text-amber-900 font-bold mt-0.5 leading-snug break-words">${ftConfig.route}</span>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-xl bg-amber-400 text-slate-950 font-black text-[11px] shadow-2xs whitespace-nowrap">
+                    ${ftConfig.sessions.length} Sesi Kegiatan
+                  </span>
+                </div>
+
+                <!-- Rangkaian Sesi per Jam (Timeline) -->
+                <div class="flex flex-col gap-1.5 pt-2 border-t border-amber-200/70">
+                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-amber-900 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-amber-700">schedule</span>
+                    Jadwal Rangkaian Kegiatan Sesi demi Sesi:
+                  </span>
+                  <div class="grid grid-cols-1 gap-1.5">
+                    ${ftConfig.sessions.map((sess) => `
+                      <div class="p-2.5 rounded-xl bg-white/95 border border-amber-200/80 shadow-2xs flex items-start gap-2.5">
+                        <span class="px-2 py-1 rounded-lg bg-amber-100 text-amber-950 font-black text-[10.5px] whitespace-nowrap shrink-0 mt-0.5 border border-amber-300 flex items-center gap-1">
+                          <span class="material-symbols-outlined text-xs text-amber-700">${sess.icon || 'schedule'}</span>
+                          <span>${sess.time}</span>
+                        </span>
+                        <div class="flex flex-col min-w-0 flex-1">
+                          <div class="flex items-center gap-1.5 flex-wrap">
+                            <span class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">${sess.title}</span>
+                            <span class="text-[10px] sm:text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.2 rounded-md border border-amber-200">📍 ${sess.location}</span>
+                          </div>
+                          <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed mt-0.5">${sess.desc}</p>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+
               <!-- ALUR BERURUTAN KHUSUS DAY ${dNum} FIELD TRIP -->
-              <div class="p-3 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-amber-950 text-xs flex flex-col gap-1 leading-relaxed">
+              <div class="p-3 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-amber-950 text-xs flex flex-col gap-1 leading-relaxed">
                 <span class="font-extrabold flex items-center gap-1 text-amber-900">
-                  <span class="material-symbols-outlined text-sm text-amber-700">alt_route</span>
+                  <span class="material-symbols-outlined text-sm text-amber-700">playlist_play</span>
                   Alur Pengerjaan Wajib Berurutan Day ${dNum}:
                 </span>
                 <span class="text-[11px] text-amber-900/90">
-                  <strong>1. Modul Belajar</strong> (baca &amp; isi resume) &rarr; <strong>2. LKPD</strong> (lembar kerja harian) &rarr; <strong>3. Asesmen</strong> (5 kuis ringkas) &rarr; <strong>4. Dokumentasi Foto</strong> &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Nilai Guru</strong>.
+                  <strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Foto Dokumentasi</strong> &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Bintang 5 Otomatis</strong>.
                 </span>
               </div>
             ` : ''}
@@ -1789,9 +1829,9 @@
         : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-      const isFTDay = isFieldTrip && (dNum === 1 || dNum === 2);
+      const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
 
-      // VALIDASI ALUR BERURUTAN KHUSUS FIELD TRIP (DAY 1 & DAY 2)
+      // VALIDASI ALUR BERURUTAN KHUSUS FIELD TRIP (DAY 1 S.D. 7)
       if (isFTDay) {
         const ftStatus = getFTProgressStatus(null, dNum);
 
@@ -2234,37 +2274,30 @@
           `;
         }
       } else if (type === 'refleksi') {
+        const ftCfg = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
         title.textContent = isTrial 
           ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' 
-          : (isFTDay1 
-              ? 'Jurnal Refleksi Day 1 (Field Trip: Belitang → Semarang)' 
-              : (isFTDay2 
-                  ? 'Jurnal Refleksi Day 2 (AKPOL Semarang, Lawang Sewu → Malang)' 
-                  : `Jurnal Refleksi Mandiri - Day ${day.day_number}`));
+          : (ftCfg 
+              ? ftCfg.refl_title 
+              : `Jurnal Refleksi Mandiri - Day ${day.day_number}`);
         icon.textContent = 'psychology';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0';
 
         const reflTitle = isTrial 
           ? 'Simulasi Jurnal Refleksi Siswa' 
-          : (isFTDay1 
-              ? 'Cerita Pengalaman Hari Pertama (Field Trip Belitang → Semarang)' 
-              : (isFTDay2 
-                  ? 'Refleksi Nilai Belajar & Karakter Hari Kedua (Semarang & Lawang Sewu Menuju Malang)' 
-                  : 'Refleksi Belajar Siswa'));
+          : (ftCfg 
+              ? `Jurnal Refleksi Day ${day.day_number} Field Trip` 
+              : 'Refleksi Belajar Siswa');
         const reflPrompt = isTrial 
           ? 'Cobalah mengetikkan refleksi atau harapan Anda selama mengikuti program FINCESTEM 2026 ini.' 
-          : (isFTDay1 
-              ? 'Ceritakan pengalaman Anda di hari pertama perjalanan ini: momen berpamitan di sekolah, pengalaman menyeberangi Selat Sunda dengan kapal ferry, kebersamaan di dalam bus bersama teman, serta bagaimana komitmen Anda dalam menjaga dan mengelola uang saku selama 7 hari perjalanan ke depan.'
-              : (isFTDay2 
-                  ? 'Refleksikan apa yang Anda rasakan dan pelajari hari ini: (1) Inspirasi kedisiplinan dan kepemimpinan taruna AKPOL Semarang bagi masa depan Anda, (2) Kekaguman sains arsitektur pasif Lawang Sewu dan heroisme pemuda AMKA, serta (3) Kebiasaan Anda dalam mengendalikan pengeluaran uang saku selama perjalanan panjang menuju hotel di Malang.' 
-                  : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?'));
+          : (ftCfg 
+              ? ftCfg.refl_prompt 
+              : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?');
         const reflPlaceholder = isTrial 
           ? 'Contoh: Saya siap dan antusias mengikuti seluruh rangkaian riset kokurikuler FINCESTEM...' 
-          : (isFTDay1 
-              ? 'Tuliskan cerita pengalaman hari pertama perjalanan Anda dari Belitang menuju Semarang di sini secara jujur dan mendalam...' 
-              : (isFTDay2 
-                  ? 'Tuliskan refleksi pengalaman Day 2 Anda di AKPOL Semarang, Lawang Sewu, dan perjalanan tol menuju Malang di sini secara jujur dan mendalam...' 
-                  : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...'));
+          : (ftCfg 
+              ? `Tuliskan cerita dan refleksi mendalam Anda terkait pengalaman dan pembelajaran Day ${day.day_number} di sini...` 
+              : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...');
 
         body.innerHTML = `
           <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100 flex flex-col gap-1 text-slate-800">
@@ -2687,11 +2720,36 @@
       } else if (type === 'asesmen') {
         const noteInput = document.getElementById('txtAsesmenNote');
         note = noteInput ? noteInput.value.trim() : '';
-      } else if (type === 'refleksi' && isFTDay1) {
+        if (isFieldTrip) {
+          if (!note || note.length < 5) {
+            FincestemCore.ui.toast(`Harap tuliskan catatan asesmen temuan lapangan Day ${dayNumber}!`, 'warning');
+            return;
+          }
+          const asesmenPayload = {
+            submitted: true,
+            score: 100,
+            content: note,
+            submitted_at: new Date().toISOString()
+          };
+          const idList = getStudentStorageIdentifiers();
+          idList.forEach(id => {
+            localStorage.setItem(`fincestem_asesmen_ft_day${dayNumber}_` + id, JSON.stringify(asesmenPayload));
+          });
+          if (studentProgress && studentProgress.task_map) {
+            studentProgress.task_map[`${dayNumber}_asesmen`] = { status: 'submitted', content: note };
+          }
+          FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
+            FincestemCore.ui.toast(`Asesmen Day ${dayNumber} selesai! Tahap 4 (Dokumentasi Foto) sekarang telah terbuka.`, 'success');
+            loadStudentProgress();
+          });
+          closeDayActivityModal();
+          return;
+        }
+      } else if (type === 'refleksi' && isFieldTrip) {
         const noteInput = document.getElementById('txtRefleksiNote');
         note = noteInput ? noteInput.value.trim() : '';
         if (!note || note.length < 15) {
-          FincestemCore.ui.toast('Harap tuliskan refleksi pengalaman Day 1 minimal beberapa kalimat!', 'warning');
+          FincestemCore.ui.toast(`Harap tuliskan refleksi pengalaman Day ${dayNumber} minimal beberapa kalimat!`, 'warning');
           return;
         }
         const refleksiPayload = {
@@ -2701,29 +2759,10 @@
         };
         const idList = getStudentStorageIdentifiers();
         idList.forEach(id => {
-          localStorage.setItem('fincestem_refleksi_ft_day1_' + id, JSON.stringify(refleksiPayload));
+          localStorage.setItem(`fincestem_refleksi_ft_day${dayNumber}_` + id, JSON.stringify(refleksiPayload));
         });
         if (studentProgress && studentProgress.task_map) {
-          studentProgress.task_map['1_refleksi'] = { status: 'submitted', content: note };
-        }
-      } else if (type === 'refleksi' && isFTDay2) {
-        const noteInput = document.getElementById('txtRefleksiNote');
-        note = noteInput ? noteInput.value.trim() : '';
-        if (!note || note.length < 15) {
-          FincestemCore.ui.toast('Harap tuliskan refleksi pengalaman Day 2 minimal beberapa kalimat!', 'warning');
-          return;
-        }
-        const refleksiPayload = {
-          submitted: true,
-          content: note,
-          submitted_at: new Date().toISOString()
-        };
-        const idList = getStudentStorageIdentifiers();
-        idList.forEach(id => {
-          localStorage.setItem('fincestem_refleksi_ft_day2_' + id, JSON.stringify(refleksiPayload));
-        });
-        if (studentProgress && studentProgress.task_map) {
-          studentProgress.task_map['2_refleksi'] = { status: 'submitted', content: note };
+          studentProgress.task_map[`${dayNumber}_refleksi`] = { status: 'submitted', content: note };
         }
       } else {
         const noteInput = document.getElementById('txtRefleksiNote');
@@ -2731,10 +2770,8 @@
       }
 
       FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
-        if (isFTDay1 && type === 'refleksi') {
-          FincestemCore.ui.toast('Jurnal Refleksi Day 1 berhasil disimpan! Seluruh tahapan pengerjaan Day 1 Anda telah lengkap.', 'success');
-        } else if (isFTDay2 && type === 'refleksi') {
-          FincestemCore.ui.toast('Jurnal Refleksi Day 2 berhasil disimpan! Seluruh tahapan pengerjaan Day 2 Anda telah lengkap.', 'success');
+        if (isFieldTrip && type === 'refleksi') {
+          FincestemCore.ui.toast(`Jurnal Refleksi Day ${dayNumber} berhasil disimpan! Seluruh tahapan pengerjaan Day ${dayNumber} Anda telah lengkap (Bintang 5 Lapangan ⭐⭐⭐⭐⭐).`, 'success');
         } else {
           FincestemCore.ui.toast(`Tugas ${type.toUpperCase()} Day ${dayNumber} berhasil dikirim (Status: Submitted)!`, 'success');
         }
