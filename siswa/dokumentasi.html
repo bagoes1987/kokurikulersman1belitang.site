@@ -1433,6 +1433,19 @@
         }).catch(err => console.warn('Sync dokumentasi error:', err));
       }
 
+      // Catat ke progres siswa untuk sinkronisasi aktivitas berurutan
+      const urlParams = new URLSearchParams(window.location.search);
+      const dayParam = urlParams.get('day');
+      const docDayNum = dayParam ? parseInt(dayParam) : 1;
+      if (FincestemCore.progress && studentNisn) {
+        FincestemCore.progress.submitTask(studentNisn, docDayNum, 'dokumentasi', {
+          photoId: newPhoto.id,
+          title: title,
+          has_geotag: newPhoto.has_geotag,
+          date: newPhoto.date
+        });
+      }
+
       toggleUploadModal(false);
       document.getElementById('modalPhotoTitle').value = '';
       document.getElementById('modalPhotoDesc').value = '';

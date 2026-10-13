@@ -511,18 +511,56 @@
         if (stored) saved = JSON.parse(stored);
       } catch (e) {}
 
+      // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan
+      let hasMateri = false;
+      try {
+        const localMateri = localStorage.getItem('fincestem_materi_ft_day1_' + studentNisn);
+        if (localMateri) {
+          const parsed = JSON.parse(localMateri);
+          if (parsed && parsed.conclusion && parsed.conclusion.trim().length >= 15) {
+            hasMateri = true;
+          }
+        }
+      } catch (e) {}
+
       const isSubmitted = saved && saved.submitted;
-      const readOnlyAttr = (isReadOnly || isSubmitted) ? 'disabled' : '';
+      const isLockedByPrereq = !hasMateri;
+      const readOnlyAttr = (isReadOnly || isSubmitted || isLockedByPrereq) ? 'disabled' : '';
 
       mainEl.innerHTML = `
+        ${isLockedByPrereq ? `
+          <!-- BANNER PERINGATAN PRASYARAT BERJENJANG -->
+          <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm animate-pulse-once">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-2xl">lock</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
+                <h3 class="text-base font-extrabold text-amber-950">LKPD Day 1 Masih Terkunci!</h3>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Sesuai alur kurikulum FINCESTEM Day 1, Anda <strong>wajib membaca Modul Belajar</strong> dan <strong>mengisi kesimpulan pemahaman</strong> (Kebutuhan vs Keinginan &amp; Formula 50-30-20) di bagian bawah modul sebelum dapat mengisi LKPD ini.
+            </p>
+            <div class="pt-1">
+              <a href="materi.html?day=1" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-md transition-all">
+                <span class="material-symbols-outlined text-base">menu_book</span>
+                <span>Buka &amp; Isi Kesimpulan di Modul Belajar Day 1</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        ` : ''}
+
         <!-- IDENTITAS TUGAS FIELD TRIP DAY 1 -->
         <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
           <div class="flex items-center justify-between gap-2 flex-wrap">
             <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500/15 text-amber-800">
               Field Trip • Day 1 (Financial)
             </span>
-            <span id="ftStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'}">
-              ${isSubmitted ? 'Telah Dikirim / Menunggu Penilaian' : 'Draf Lembar Kerja'}
+            <span id="ftStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800' : (isSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800')}">
+              ${isLockedByPrereq ? 'Terkunci (Belum Resume Modul)' : (isSubmitted ? 'Telah Dikirim / Menunggu Penilaian' : 'Draf Lembar Kerja')}
             </span>
           </div>
           <h2 class="text-lg sm:text-xl font-black text-primary leading-tight">
@@ -824,10 +862,17 @@
         <!-- TOMBOL SIMPAN & KIRIM LKPD DAY 1 -->
         ${isReadOnly ? '' : `
           <div class="pt-2">
-            <button id="saveFtLkpdBtn" type="button" onclick="saveAndSubmitFtDay1LKPD()" class="w-full py-4 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-xl">send</span>
-              <span>${isSubmitted ? 'Perbarui Laporan LKPD Day 1' : 'Simpan &amp; Kirim LKPD Day 1'}</span>
-            </button>
+            ${isLockedByPrereq ? `
+              <a href="materi.html?day=1" class="w-full py-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-xl">menu_book</span>
+                <span>Tahap 1 Belum Selesai • Buka &amp; Isi Modul Belajar Terlebih Dahulu</span>
+              </a>
+            ` : `
+              <button id="saveFtLkpdBtn" type="button" onclick="saveAndSubmitFtDay1LKPD()" class="w-full py-4 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-xl">send</span>
+                <span>${isSubmitted ? 'Perbarui Laporan LKPD Day 1' : 'Simpan &amp; Kirim LKPD Day 1'}</span>
+              </button>
+            `}
           </div>
         `}
 
@@ -947,6 +992,25 @@
     // Simpan & Kirim LKPD Day 1 Field Trip
     function saveAndSubmitFtDay1LKPD() {
       const studentNisn = activeUser.nisn || activeUser.identifier || '';
+
+      // Cek prasyarat kesimpulan modul
+      let hasMateri = false;
+      try {
+        const localMateri = localStorage.getItem('fincestem_materi_ft_day1_' + studentNisn);
+        if (localMateri) {
+          const parsed = JSON.parse(localMateri);
+          if (parsed && parsed.conclusion && parsed.conclusion.trim().length >= 15) {
+            hasMateri = true;
+          }
+        }
+      } catch(e) {}
+
+      if (!hasMateri) {
+        FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib membaca Modul Belajar dan mengisi kesimpulan sebelum mengirimkan LKPD!', 'error');
+        setTimeout(() => { window.location.href = 'materi.html?day=1'; }, 1000);
+        return;
+      }
+
       const totalSaku = parseFloat(document.getElementById('ftTotalSaku')?.value) || 0;
       if (totalSaku <= 0) {
         FincestemCore.ui.toast('Silakan masukkan total uang saku yang Anda bawa di Bagian 1!', 'error');

@@ -958,12 +958,48 @@
           }
         }
 
+        // Deteksi Siswa Field Trip vs Non-Field Trip
+        const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
+          : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
+        const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+        const isFTDay1 = (dNum === 1 && isFieldTrip);
+
         // Cek status pengerjaan hari ini
         const dayRecord = records.find(r => Number(r.day_number) === dNum);
-        const hasLkpd = !!taskMap[dNum + '_lkpd'];
-        const hasAsesmen = !!taskMap[dNum + '_asesmen'];
-        const hasRefleksi = !!taskMap[dNum + '_refleksi'];
-        const hasDok = !!taskMap[dNum + '_dokumentasi'];
+        let hasMateri = !!taskMap[dNum + '_materi'];
+        let hasLkpd = !!taskMap[dNum + '_lkpd'];
+        let hasAsesmen = !!taskMap[dNum + '_asesmen'];
+        let hasRefleksi = !!taskMap[dNum + '_refleksi'];
+        let hasDok = !!taskMap[dNum + '_dokumentasi'];
+
+        // Fallback pengecekan lokal khusus Day 1 Field Trip jika belum sinkron penuh
+        if (isFTDay1) {
+          if (!hasMateri) {
+            try {
+              const mat = localStorage.getItem('fincestem_materi_ft_day1_' + studentNisn);
+              if (mat && JSON.parse(mat).conclusion) hasMateri = true;
+            } catch(e) {}
+          }
+          if (!hasLkpd) {
+            try {
+              const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + studentNisn);
+              if (lk && JSON.parse(lk).submitted) hasLkpd = true;
+            } catch(e) {}
+          }
+          if (!hasDok) {
+            try {
+              const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+              if (dbStr) {
+                const db = JSON.parse(dbStr);
+                if (Array.isArray(db.documentation)) {
+                  hasDok = db.documentation.some(p => String(p.nisn || p.author_nisn || p.uploaded_by || '').trim() === String(studentNisn).trim());
+                }
+              }
+            } catch(e) {}
+          }
+        }
 
         let dayProgressBadge = '';
         if (isTrial) {
@@ -994,54 +1030,90 @@
               Ditinjau Fasilitator
             </span>
           `;
-        } else if (dayStatus === 'submitted' || hasLkpd || hasAsesmen || hasRefleksi || hasDok) {
+        } else if (dayStatus === 'submitted' || hasLkpd || hasAsesmen || hasRefleksi || hasDok || (isFTDay1 && hasMateri)) {
           dayProgressBadge += `
             <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 border border-teal-300/60 flex items-center gap-1">
               <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
-              Terkirim
+              ${(isFTDay1 && hasRefleksi) ? 'Lengkap • Menunggu Guru' : 'Dalam Proses'}
             </span>
           `;
         }
 
-        // Mini checkmarks aktivitas (Grid Simetris 2 Kolom di HP / 4 Kolom di Tablet-PC)
-        const miniChecks = `
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs text-slate-600 font-semibold w-full">
-            <span class="px-2.5 py-1.5 rounded-xl ${hasLkpd ? 'text-teal-900 bg-teal-100/90 font-bold border border-teal-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
-              <span class="material-symbols-outlined text-sm ${hasLkpd ? 'text-teal-700' : 'text-slate-400'}">${hasLkpd ? 'check_circle' : 'radio_button_unchecked'}</span>
-              <span>LKPD</span>
-            </span>
-            <span class="px-2.5 py-1.5 rounded-xl ${hasAsesmen ? 'text-blue-900 bg-blue-100/90 font-bold border border-blue-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
-              <span class="material-symbols-outlined text-sm ${hasAsesmen ? 'text-blue-700' : 'text-slate-400'}">${hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}</span>
-              <span>Asesmen</span>
-            </span>
-            <span class="px-2.5 py-1.5 rounded-xl ${hasRefleksi ? 'text-purple-900 bg-purple-100/90 font-bold border border-purple-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
-              <span class="material-symbols-outlined text-sm ${hasRefleksi ? 'text-purple-700' : 'text-slate-400'}">${hasRefleksi ? 'check_circle' : 'radio_button_unchecked'}</span>
-              <span>Refleksi</span>
-            </span>
-            <span class="px-2.5 py-1.5 rounded-xl ${hasDok ? 'text-pink-900 bg-pink-100/90 font-bold border border-pink-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
-              <span class="material-symbols-outlined text-sm ${hasDok ? 'text-pink-700' : 'text-slate-400'}">${hasDok ? 'check_circle' : 'radio_button_unchecked'}</span>
-              <span>Foto</span>
-            </span>
-          </div>
-        `;
+        // Mini checkmarks aktivitas
+        let miniChecks = '';
+        if (isFTDay1) {
+          miniChecks = `
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 text-xs text-slate-600 font-semibold w-full">
+              <span class="px-2 py-1.5 rounded-xl ${hasMateri ? 'text-amber-950 bg-amber-100/90 font-bold border border-amber-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasMateri ? 'text-amber-700' : 'text-slate-400'}">${hasMateri ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>1. Modul</span>
+              </span>
+              <span class="px-2 py-1.5 rounded-xl ${hasLkpd ? 'text-teal-950 bg-teal-100/90 font-bold border border-teal-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasLkpd ? 'text-teal-700' : 'text-slate-400'}">${hasLkpd ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>2. LKPD</span>
+              </span>
+              <span class="px-2 py-1.5 rounded-xl ${hasAsesmen ? 'text-blue-950 bg-blue-100/90 font-bold border border-blue-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasAsesmen ? 'text-blue-700' : 'text-slate-400'}">${hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>3. Asesmen</span>
+              </span>
+              <span class="px-2 py-1.5 rounded-xl ${hasDok ? 'text-pink-950 bg-pink-100/90 font-bold border border-pink-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasDok ? 'text-pink-700' : 'text-slate-400'}">${hasDok ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>4. Foto</span>
+              </span>
+              <span class="col-span-2 sm:col-span-1 px-2 py-1.5 rounded-xl ${hasRefleksi ? 'text-purple-950 bg-purple-100/90 font-bold border border-purple-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasRefleksi ? 'text-purple-700' : 'text-slate-400'}">${hasRefleksi ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>5. Refleksi</span>
+              </span>
+            </div>
+          `;
+        } else {
+          miniChecks = `
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs text-slate-600 font-semibold w-full">
+              <span class="px-2.5 py-1.5 rounded-xl ${hasLkpd ? 'text-teal-900 bg-teal-100/90 font-bold border border-teal-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasLkpd ? 'text-teal-700' : 'text-slate-400'}">${hasLkpd ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>LKPD</span>
+              </span>
+              <span class="px-2.5 py-1.5 rounded-xl ${hasAsesmen ? 'text-blue-900 bg-blue-100/90 font-bold border border-blue-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasAsesmen ? 'text-blue-700' : 'text-slate-400'}">${hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>Asesmen</span>
+              </span>
+              <span class="px-2.5 py-1.5 rounded-xl ${hasDok ? 'text-pink-900 bg-pink-100/90 font-bold border border-pink-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasDok ? 'text-pink-700' : 'text-slate-400'}">${hasDok ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>Foto</span>
+              </span>
+              <span class="px-2.5 py-1.5 rounded-xl ${hasRefleksi ? 'text-purple-900 bg-purple-100/90 font-bold border border-purple-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
+                <span class="material-symbols-outlined text-sm ${hasRefleksi ? 'text-purple-700' : 'text-slate-400'}">${hasRefleksi ? 'check_circle' : 'radio_button_unchecked'}</span>
+                <span>Refleksi</span>
+              </span>
+            </div>
+          `;
+        }
 
         const canInteract = access.canAccess;
         const canEdit = access.canEdit;
 
-        const materiBtnClass = canInteract ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const materiIconClass = canInteract ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500';
+        // Kontrol Tombol Berjenjang Khusus Day 1 Field Trip:
+        // Modul (1) -> LKPD (2) -> Asesmen (3) -> Dokumentasi (4) -> Refleksi (5) -> Penilaian (6)
+        const canOpenMateri = canInteract;
+        const canOpenLkpd = canInteract && (!isFTDay1 || hasMateri);
+        const canOpenAsesmen = canInteract && (!isFTDay1 || hasLkpd);
+        const canOpenDok = canInteract && (!isFTDay1 || hasAsesmen);
+        const canOpenRefleksi = canInteract && (!isFTDay1 || hasDok);
 
-        const lkpdBtnClass = canInteract ? (canEdit ? 'bg-teal-50 hover:bg-teal-100 text-teal-950 border border-teal-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const lkpdIconClass = canInteract ? (canEdit ? 'bg-teal-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+        const materiBtnClass = canOpenMateri ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const materiIconClass = canOpenMateri ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500';
 
-        const asesmenBtnClass = canInteract ? (canEdit ? 'bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const asesmenIconClass = canInteract ? (canEdit ? 'bg-blue-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+        const lkpdBtnClass = canOpenLkpd ? (canEdit ? 'bg-teal-50 hover:bg-teal-100 text-teal-950 border border-teal-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const lkpdIconClass = canOpenLkpd ? (canEdit ? 'bg-teal-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
 
-        const refleksiBtnClass = canInteract ? (canEdit ? 'bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const refleksiIconClass = canInteract ? (canEdit ? 'bg-purple-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+        const asesmenBtnClass = canOpenAsesmen ? (canEdit ? 'bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const asesmenIconClass = canOpenAsesmen ? (canEdit ? 'bg-blue-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
 
-        const dokBtnClass = canInteract ? (canEdit ? 'bg-pink-50 hover:bg-pink-100 text-pink-950 border border-pink-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const dokIconClass = canInteract ? (canEdit ? 'bg-pink-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+        const dokBtnClass = canOpenDok ? (canEdit ? 'bg-pink-50 hover:bg-pink-100 text-pink-950 border border-pink-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const dokIconClass = canOpenDok ? (canEdit ? 'bg-pink-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+
+        const refleksiBtnClass = canOpenRefleksi ? (canEdit ? 'bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const refleksiIconClass = canOpenRefleksi ? (canEdit ? 'bg-purple-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
 
         const nilaiBtnClass = canInteract ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
         const nilaiIconClass = canInteract ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-500';
@@ -1116,6 +1188,19 @@
               <p class="leading-relaxed">${d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.'}</p>
             </div>
 
+            ${isFTDay1 ? `
+              <!-- ALUR BERURUTAN KHUSUS DAY 1 FIELD TRIP -->
+              <div class="p-3 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-amber-950 text-xs flex flex-col gap-1 leading-relaxed">
+                <span class="font-extrabold flex items-center gap-1 text-amber-900">
+                  <span class="material-symbols-outlined text-sm text-amber-700">alt_route</span>
+                  Alur Pengerjaan Wajib Berurutan:
+                </span>
+                <span class="text-[11px] text-amber-900/90">
+                  <strong>1. Modul Belajar</strong> (baca &amp; isi resume) &rarr; <strong>2. LKPD</strong> (budgeting plan) &rarr; <strong>3. Asesmen</strong> &rarr; <strong>4. Dokumentasi Foto</strong> &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Nilai Guru</strong>.
+                </span>
+              </div>
+            ` : ''}
+
             <!-- Mini Checklist -->
             <div class="flex flex-col gap-2 bg-teal-50/50 p-3 rounded-2xl border border-teal-100/80">
               <span class="text-xs font-bold text-teal-950 flex items-center gap-1">
@@ -1126,65 +1211,71 @@
 
             ${lockAlertHtml}
 
-            <!-- 6 Tombol Aktivitas Utama (Mobile-Friendly 2 Kolom di HP) -->
+            <!-- 6 Tombol Aktivitas Utama (Berurutan Simetris) -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 pt-1">
+              <!-- 1. MODUL BELAJAR -->
               <button onclick="handleActivityClick(${dNum}, 'materi')" class="p-2.5 sm:p-3 rounded-2xl ${materiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
                 <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${materiIconClass} flex items-center justify-center shrink-0">
                   <span class="material-symbols-outlined text-base sm:text-lg">menu_book</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Modul Belajar</span>
-                  <span class="text-[10px] sm:text-xs ${canInteract ? 'text-amber-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Materi Eksplor</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenMateri ? 'text-amber-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${(isFTDay1 && hasMateri) ? 'Resume Tersimpan' : 'Materi Eksplor'}</span>
                 </div>
               </button>
 
+              <!-- 2. LKPD DIGITAL -->
               <button onclick="handleActivityClick(${dNum}, 'lkpd')" class="p-2.5 sm:p-3 rounded-2xl ${lkpdBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
                 <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${lkpdIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">edit_document</span>
+                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenLkpd ? 'lock' : 'edit_document'}</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">LKPD Digital</span>
-                  <span class="text-[10px] sm:text-xs ${canInteract && canEdit ? 'text-teal-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Lembar Kerja</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenLkpd ? 'text-teal-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenLkpd ? 'Terkunci (Baca Modul)' : (hasLkpd ? 'Sudah Dikirim' : 'Lembar Kerja')}</span>
                 </div>
               </button>
 
+              <!-- 3. ASESMEN -->
               <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 sm:p-3 rounded-2xl ${asesmenBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
                 <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${asesmenIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">fact_check</span>
+                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenAsesmen ? 'lock' : 'fact_check'}</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Asesmen</span>
-                  <span class="text-[10px] sm:text-xs ${canInteract && canEdit ? 'text-blue-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Uji Harian</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenAsesmen ? 'text-blue-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenAsesmen ? 'Terkunci (Isi LKPD)' : (hasAsesmen ? 'Sudah Dikirim' : 'Uji Pemahaman')}</span>
                 </div>
               </button>
 
-              <button onclick="handleActivityClick(${dNum}, 'refleksi')" class="p-2.5 sm:p-3 rounded-2xl ${refleksiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
-                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${refleksiIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">psychology</span>
-                </span>
-                <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Refleksi</span>
-                  <span class="text-[10px] sm:text-xs ${canInteract && canEdit ? 'text-purple-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Jurnal Mandiri</span>
-                </div>
-              </button>
-
+              <!-- 4. DOKUMENTASI FOTO -->
               <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 sm:p-3 rounded-2xl ${dokBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
                 <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${dokIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">photo_camera</span>
+                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenDok ? 'lock' : 'photo_camera'}</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Dokumentasi</span>
-                  <span class="text-[10px] sm:text-xs ${canInteract && canEdit ? 'text-pink-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Foto/Video</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenDok ? 'text-pink-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenDok ? 'Terkunci (Asesmen Dulu)' : (hasDok ? 'Foto Terunggah' : 'Foto/Video')}</span>
                 </div>
               </button>
 
+              <!-- 5. REFLEKSI -->
+              <button onclick="handleActivityClick(${dNum}, 'refleksi')" class="p-2.5 sm:p-3 rounded-2xl ${refleksiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
+                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${refleksiIconClass} flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenRefleksi ? 'lock' : 'psychology'}</span>
+                </span>
+                <div class="flex flex-col text-left min-w-0">
+                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Refleksi</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenRefleksi ? 'text-purple-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenRefleksi ? 'Terkunci (Foto Dulu)' : (hasRefleksi ? 'Jurnal Selesai' : 'Jurnal Mandiri')}</span>
+                </div>
+              </button>
+
+              <!-- 6. NILAI & CATATAN GURU -->
               <button onclick="handleActivityClick(${dNum}, 'penilaian')" class="p-2.5 sm:p-3 rounded-2xl ${nilaiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
                 <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${nilaiIconClass} flex items-center justify-center shrink-0">
                   <span class="material-symbols-outlined text-base sm:text-lg">stars</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Nilai &amp; Catatan</span>
-                  <span class="text-[10px] sm:text-xs ${canInteract ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Feedback Guru</span>
+                  <span class="text-[10px] sm:text-xs ${canInteract ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${(isFTDay1 && hasRefleksi) ? 'Menunggu Review' : 'Feedback Guru'}</span>
                 </div>
               </button>
             </div>
@@ -1213,6 +1304,74 @@
       if (!access.canAccess) {
         FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan dan tunggu penetapan status 'Completed' dari Fasilitator pada Day ${dNum - 1}.`, 'error');
         return;
+      }
+
+      // Deteksi Kategori Siswa (Field Trip vs Non-Field Trip)
+      const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
+        : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
+      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+      const isFTDay1 = (dNum === 1 && isFieldTrip);
+
+      // VALIDASI ALUR BERURUTAN KHUSUS DAY 1 FIELD TRIP
+      if (isFTDay1) {
+        const taskMap = (studentProgress && studentProgress.task_map) || {};
+        let hasMateri = !!taskMap['1_materi'];
+        if (!hasMateri) {
+          try {
+            const mat = localStorage.getItem('fincestem_materi_ft_day1_' + studentNisn);
+            if (mat && JSON.parse(mat).conclusion) hasMateri = true;
+          } catch(e) {}
+        }
+
+        let hasLkpd = !!taskMap['1_lkpd'];
+        if (!hasLkpd) {
+          try {
+            const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + studentNisn);
+            if (lk && JSON.parse(lk).submitted) hasLkpd = true;
+          } catch(e) {}
+        }
+
+        let hasAsesmen = !!taskMap['1_asesmen'];
+
+        let hasDok = !!taskMap['1_dokumentasi'];
+        if (!hasDok) {
+          try {
+            const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+            if (dbStr) {
+              const db = JSON.parse(dbStr);
+              if (Array.isArray(db.documentation)) {
+                hasDok = db.documentation.some(p => String(p.nisn || p.author_nisn || p.uploaded_by || '').trim() === String(studentNisn).trim());
+              }
+            }
+          } catch(e) {}
+        }
+
+        // Tahap 2 (LKPD) butuh Modul
+        if (type === 'lkpd' && !hasMateri) {
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib membaca Modul Belajar dan mengisi kesimpulan sebelum membuka LKPD!', 'warning');
+          setTimeout(() => { window.location.href = 'materi.html?day=1'; }, 1000);
+          return;
+        }
+
+        // Tahap 3 (Asesmen) butuh LKPD
+        if (type === 'asesmen' && !hasLkpd) {
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan & mengirimkan LKPD Budgeting Plan sebelum mengerjakan Asesmen!', 'warning');
+          return;
+        }
+
+        // Tahap 4 (Dokumentasi) butuh Asesmen
+        if (type === 'dokumentasi' && !hasAsesmen) {
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan Asesmen Pemahaman sebelum mengunggah foto Dokumentasi!', 'warning');
+          return;
+        }
+
+        // Tahap 5 (Refleksi) butuh Dokumentasi
+        if (type === 'refleksi' && !hasDok) {
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib mengunggah foto Dokumentasi kegiatan hari ini sebelum mengisi Jurnal Refleksi!', 'warning');
+          return;
+        }
       }
 
       if (type === 'materi') {
@@ -1273,33 +1432,77 @@
         </div>
       ` : '';
 
-      if (type === 'asesmen') {
-        title.textContent = isTrial ? 'Asesmen Simulasi (Gladi Bersih)' : `Asesmen Pemahaman - Day ${day.day_number}`;
-        icon.textContent = 'fact_check';
-        iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
-        body.innerHTML = `
-          <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100 flex flex-col gap-1 text-slate-800">
-            <span class="font-bold text-sm text-blue-900">${isTrial ? 'Latihan Pengisian Instrumen Uji Coba' : 'Instrumen Observasi Lapangan'}</span>
-            <p class="text-xs sm:text-sm leading-relaxed text-slate-600">${isTrial ? 'Sesi gladi bersih untuk mencoba alur pengiriman asesmen kuis harian. Silakan isi jawaban latihan di bawah ini untuk membiasakan diri dengan sistem.' : 'Pastikan kelompok Anda telah menjawab pertanyaan panduan observasi 4 pilar (Sains, Teknologi, Finansial, Budaya) pada lembar kerja harian.'}</p>
-          </div>
-          <div class="flex flex-col gap-1.5">
-            <label class="font-bold text-sm text-slate-800">Catatan Ringkas Hasil Investigasi (Latihan):</label>
-            <textarea id="txtAsesmenNote" ${readOnlyAttr} rows="3" class="w-full p-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="${isTrial ? 'Contoh: Berhasil melakukan uji coba pengukuran pH air dan simulasi pencatatan harga gabah...' : 'Tuliskan temuan penting hari ini...'}">${savedContent}</textarea>
-          </div>
-          ${readOnlyBanner ? readOnlyBanner : `
-          <button onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-xs cursor-pointer">
-            ${isTrial ? 'Kirim Jawaban Asesmen (Simulasi)' : 'Kirim Jawaban Asesmen'}
-          </button>
-          `}
-        `;
-      } else if (type === 'refleksi') {
-        const currentUser = FincestemCore.auth.getUser() || {};
-        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-          ? FincestemCore.zones.getStudentZone(currentUser.nisn || currentUser.identifier, currentUser.class || currentUser.class_name, currentUser.zone)
-          : (currentUser.zone || 'FINCESTEM OKU TIMUR');
-        const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
-        const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
+      const currentUser = FincestemCore.auth.getUser() || {};
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(currentUser.nisn || currentUser.identifier, currentUser.class || currentUser.class_name, currentUser.zone)
+        : (currentUser.zone || 'FINCESTEM OKU TIMUR');
+      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+      const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
 
+      if (type === 'asesmen') {
+        if (isFTDay1) {
+          title.textContent = 'Asesmen Finansial Day 1 (Evaluasi Disiplin Anggaran)';
+          icon.textContent = 'fact_check';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
+
+          let q1Val = '', q2Val = '', q3Val = '';
+          if (typeof savedContent === 'string' && savedContent.includes('\n2. Strategi')) {
+            const lines = savedContent.split('\n');
+            q1Val = (lines[0] || '').replace('1. Realisasi: ', '').trim();
+            q2Val = (lines[1] || '').replace('2. Strategi Impulse Buying: ', '').trim();
+            q3Val = (lines[2] || '').replace('3. Sisa Uang Saku: ', '').trim();
+          } else {
+            q1Val = savedContent;
+          }
+
+          body.innerHTML = `
+            <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100 flex flex-col gap-1 text-slate-800">
+              <span class="font-bold text-sm text-blue-900">Uji Literasi Finansial Hari Pertama</span>
+              <p class="text-xs sm:text-sm leading-relaxed text-slate-600">
+                Jawablah 3 pertanyaan evaluasi kepatuhan anggaran perjalanan Belitang &rarr; Semarang di bawah ini secara jujur:
+              </p>
+            </div>
+            <div class="flex flex-col gap-2.5">
+              <div>
+                <label class="font-bold text-xs text-slate-800 block mb-1">1. Evaluasi Realisasi Pengeluaran Day 1:</label>
+                <textarea id="txtAsesmenQ1" ${readOnlyAttr} rows="2" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="Apakah pengeluaran hari ini sesuai batas rencana Day 1 di LKPD? Berapa nominal riil yang Anda belanjakan?">${q1Val}</textarea>
+              </div>
+              <div>
+                <label class="font-bold text-xs text-slate-800 block mb-1">2. Strategi Mengendalikan Lapar Mata (Impulse Buying):</label>
+                <textarea id="txtAsesmenQ2" ${readOnlyAttr} rows="2" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="Godaan belanja apa yang Anda rasakan di rest area atau kapal ferry, dan bagaimana cara Anda berhasil menahannya?">${q2Val}</textarea>
+              </div>
+              <div>
+                <label class="font-bold text-xs text-slate-800 block mb-1">3. Estimasi Sisa Uang Saku Riil Malam Ini:</label>
+                <input id="txtAsesmenQ3" ${readOnlyAttr} type="text" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="Contoh: Sisa Rp 660.000 utuh disimpan di amplop ransel" value="${q3Val}">
+              </div>
+            </div>
+            ${readOnlyBanner ? readOnlyBanner : `
+            <button onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-xs cursor-pointer">
+              Simpan Jawaban Asesmen &amp; Buka Dokumentasi
+            </button>
+            `}
+          `;
+        } else {
+          title.textContent = isTrial ? 'Asesmen Simulasi (Gladi Bersih)' : `Asesmen Pemahaman - Day ${day.day_number}`;
+          icon.textContent = 'fact_check';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
+          body.innerHTML = `
+            <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100 flex flex-col gap-1 text-slate-800">
+              <span class="font-bold text-sm text-blue-900">${isTrial ? 'Latihan Pengisian Instrumen Uji Coba' : 'Instrumen Observasi Lapangan'}</span>
+              <p class="text-xs sm:text-sm leading-relaxed text-slate-600">${isTrial ? 'Sesi gladi bersih untuk mencoba alur pengiriman asesmen kuis harian. Silakan isi jawaban latihan di bawah ini untuk membiasakan diri dengan sistem.' : 'Pastikan kelompok Anda telah menjawab pertanyaan panduan observasi 4 pilar (Sains, Teknologi, Finansial, Budaya) pada lembar kerja harian.'}</p>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label class="font-bold text-sm text-slate-800">Catatan Ringkas Hasil Investigasi (Latihan):</label>
+              <textarea id="txtAsesmenNote" ${readOnlyAttr} rows="3" class="w-full p-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="${isTrial ? 'Contoh: Berhasil melakukan uji coba pengukuran pH air dan simulasi pencatatan harga gabah...' : 'Tuliskan temuan penting hari ini...'}">${savedContent}</textarea>
+            </div>
+            ${readOnlyBanner ? readOnlyBanner : `
+            <button onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-xs cursor-pointer">
+              ${isTrial ? 'Kirim Jawaban Asesmen (Simulasi)' : 'Kirim Jawaban Asesmen'}
+            </button>
+            `}
+          `;
+        }
+      } else if (type === 'refleksi') {
         title.textContent = isTrial ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' : (isFTDay1 ? 'Jurnal Refleksi Day 1 (Field Trip: Belitang → Semarang)' : `Jurnal Refleksi Mandiri - Day ${day.day_number}`);
         icon.textContent = 'psychology';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0';
@@ -1399,12 +1602,41 @@
         return;
       }
 
-      const noteInput = type === 'asesmen' ? document.getElementById('txtAsesmenNote') : document.getElementById('txtRefleksiNote');
-      const note = noteInput ? noteInput.value.trim() : '';
+      // Deteksi siswa Field Trip Day 1
+      const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
+        : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
+      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+      const isFTDay1 = isFieldTrip && Number(dayNumber) === 1;
 
-      const nisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
-      FincestemCore.progress.submitTask(nisn, dayNumber, type, note, function() {
-        FincestemCore.ui.toast(`Tugas ${type.toUpperCase()} Day ${dayNumber} berhasil dikirim (Status: Submitted)!`, 'success');
+      let note = '';
+      if (type === 'asesmen' && isFTDay1) {
+        const q1 = document.getElementById('txtAsesmenQ1')?.value.trim() || '';
+        const q2 = document.getElementById('txtAsesmenQ2')?.value.trim() || '';
+        const q3 = document.getElementById('txtAsesmenQ3')?.value.trim() || '';
+
+        if (!q1 || !q2) {
+          FincestemCore.ui.toast('Harap lengkapi jawaban evaluasi asesmen finansial Anda!', 'error');
+          return;
+        }
+        note = `1. Realisasi: ${q1}\n2. Strategi Impulse Buying: ${q2}\n3. Sisa Uang Saku: ${q3}`;
+      } else if (type === 'asesmen') {
+        const noteInput = document.getElementById('txtAsesmenNote');
+        note = noteInput ? noteInput.value.trim() : '';
+      } else {
+        const noteInput = document.getElementById('txtRefleksiNote');
+        note = noteInput ? noteInput.value.trim() : '';
+      }
+
+      FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
+        if (isFTDay1 && type === 'asesmen') {
+          FincestemCore.ui.toast('Asesmen Finansial Day 1 tersimpan! Tahap berikutnya (Dokumentasi Foto) sekarang telah terbuka.', 'success');
+        } else if (isFTDay1 && type === 'refleksi') {
+          FincestemCore.ui.toast('Jurnal Refleksi Day 1 berhasil disimpan! Seluruh tahapan Day 1 Anda telah lengkap.', 'success');
+        } else {
+          FincestemCore.ui.toast(`Tugas ${type.toUpperCase()} Day ${dayNumber} berhasil dikirim (Status: Submitted)!`, 'success');
+        }
         loadStudentProgress();
       });
 
