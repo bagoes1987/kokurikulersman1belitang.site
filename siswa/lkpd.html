@@ -360,6 +360,19 @@
           }
         });
       }
+
+      // Deteksi Kategori Siswa (Field Trip vs Non-Field Trip)
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(activeUser.nisn || activeUser.identifier, studentClass, activeUser.zone)
+        : (activeUser.zone || 'FINCESTEM OKU TIMUR');
+      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+
+      // TAMPILKAN LKPD FIELD TRIP DAY 1 JIKA SISWA ADALAH FIELD TRIP & DAY = 1
+      if (isFieldTrip && dayNum === 1) {
+        renderFieldTripDay1LKPD(isReadOnlyUrl);
+        return;
+      }
+
       loadLKPDData();
     });
 
@@ -474,6 +487,547 @@
         const dayLabel = dayNum === 0 ? 'Day 0 (Simulasi)' : 'Day ' + dayNum;
         FincestemCore.ui.toast('Laporan LKPD ' + dayLabel + ' berhasil disimpan & progres diperbarui!', 'success');
         loadLKPDData();
+      }, 500);
+    }
+
+    // ==========================================
+    // MODUL LKPD KHUSUS FIELD TRIP DAY 1
+    // ==========================================
+    function renderFieldTripDay1LKPD(isReadOnly) {
+      const mainEl = document.querySelector('main');
+      if (!mainEl) return;
+
+      const studentName = activeUser.name || 'Peserta Field Trip';
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+        : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+      // Ambil simpanan sebelumnya jika ada
+      let saved = null;
+      try {
+        const stored = localStorage.getItem('fincestem_lkpd_ft_day1_' + studentNisn);
+        if (stored) saved = JSON.parse(stored);
+      } catch (e) {}
+
+      const isSubmitted = saved && saved.submitted;
+      const readOnlyAttr = (isReadOnly || isSubmitted) ? 'disabled' : '';
+
+      mainEl.innerHTML = `
+        <!-- IDENTITAS TUGAS FIELD TRIP DAY 1 -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500/15 text-amber-800">
+              Field Trip • Day 1 (Financial)
+            </span>
+            <span id="ftStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800'}">
+              ${isSubmitted ? 'Telah Dikirim / Menunggu Penilaian' : 'Draf Lembar Kerja'}
+            </span>
+          </div>
+          <h2 class="text-lg sm:text-xl font-black text-primary leading-tight">
+            LKPD 01: Budgeting Plan &amp; Manajemen Uang Saku 7 Hari Ekspedisi
+          </h2>
+          <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+            Siswa: <strong>${studentName}</strong> (NISN: ${studentNisn} • ${studentClass})<br>
+            Fasilitator Pembina: <strong>${fasilName}</strong>
+          </p>
+
+          <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-200 text-teal-950 text-xs sm:text-sm leading-relaxed flex flex-col gap-1">
+            <strong>ℹ️ Petunjuk Penting:</strong>
+            <span>Seluruh biaya utama (bus pariwisata, tol, tiket kapal ferry, hotel, makan 3x sehari, dan tiket wisata) <strong>sudah ditanggung penuh oleh biro perjalanan</strong>. Fokus LKPD ini adalah melatih Anda membuat perencanaan uang saku pribadi yang Anda bawa dari rumah dari Hari 1 hingga Hari 7.</span>
+          </div>
+        </div>
+
+        <!-- BAGIAN 1: TOTAL UANG SAKU -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+          <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
+            <span class="material-symbols-outlined text-xl text-amber-600">account_balance_wallet</span>
+            <span>Bagian 1: Modal Uang Saku Pribadi</span>
+          </div>
+          <div>
+            <label class="block text-sm font-bold text-on-surface mb-1">Total Uang Saku yang Anda Bawa (Rp):</label>
+            <div class="relative">
+              <span class="absolute left-3.5 top-3 text-sm font-bold text-slate-500">Rp</span>
+              <input id="ftTotalSaku" type="number" min="0" step="5000" placeholder="Contoh: 700000" value="${saved?.totalSaku || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-12 pr-4 py-3 rounded-xl border border-outline-variant/50 text-base font-black text-slate-900 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:font-normal placeholder:text-slate-400">
+            </div>
+            <span class="text-[11px] text-slate-500 mt-1 block">Tuliskan nominal uang saku murni yang Anda pegang (tidak termasuk biaya biro).</span>
+          </div>
+        </div>
+
+        <!-- BAGIAN 2: TABEL RENG-RENGAN BUDGETING DAY 1 - DAY 7 -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
+            <span class="material-symbols-outlined text-xl text-blue-600">table_chart</span>
+            <span>Bagian 2: "Reng-rengan" Alokasi Pengeluaran (Day 1 s.d. Day 7)</span>
+          </div>
+          <p class="text-xs sm:text-sm text-on-surface-variant leading-relaxed">
+            Perkirakan batas pengeluaran untuk keperluan jajan, suvenir, oleh-oleh keluarga, dan dana cadangan darurat:
+          </p>
+
+          <div class="space-y-3 text-xs sm:text-sm">
+            <!-- Day 1 -->
+            <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-slate-900">Day 1: Belitang &rarr; Semarang (Perjalanan)</span>
+                <span class="text-[11px] text-amber-700 font-bold">Tol &amp; Kapal Ferry</span>
+              </div>
+              <span class="text-[11.5px] text-slate-500">Target: Camilan/minuman santai di rest area &amp; kapal ferry</span>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
+                <input id="ftPlanD1" type="number" min="0" placeholder="0" value="${saved?.d1 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+              </div>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-slate-900">Day 2: Semarang &rarr; Batu (Lawang Sewu &amp; AKPOL)</span>
+                <span class="text-[11px] text-blue-700 font-bold">Semarang</span>
+              </div>
+              <span class="text-[11.5px] text-slate-500">Target: Minuman segar / jajan santai saat istirahat siang</span>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
+                <input id="ftPlanD2" type="number" min="0" placeholder="0" value="${saved?.d2 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+              </div>
+            </div>
+
+            <!-- Day 3 -->
+            <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-slate-900">Day 3: Batu (Petik Apel, Jatim Park 1 &amp; Museum Angkut)</span>
+                <span class="text-[11px] text-emerald-700 font-bold">Kota Batu</span>
+              </div>
+              <span class="text-[11.5px] text-slate-500">Target: Apel petik segar kiloan tambahan / suvenir sains</span>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
+                <input id="ftPlanD3" type="number" min="0" placeholder="0" value="${saved?.d3 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+              </div>
+            </div>
+
+            <!-- Day 4 -->
+            <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-slate-900">Day 4: Bromo &rarr; Yogyakarta (Pasir Berbisik &amp; Kawah)</span>
+                <span class="text-[11px] text-purple-700 font-bold">Gunung Bromo</span>
+              </div>
+              <span class="text-[11.5px] text-slate-500">Target: Sarung tangan/kupluk hangat, camilan lereng kawah</span>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
+                <input id="ftPlanD4" type="number" min="0" placeholder="0" value="${saved?.d4 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+              </div>
+            </div>
+
+            <!-- Day 5 -->
+            <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-slate-900">Day 5: Yogyakarta (Prambanan, Batik &amp; UNY)</span>
+                <span class="text-[11px] text-teal-700 font-bold">Yogyakarta</span>
+              </div>
+              <span class="text-[11.5px] text-slate-500">Target: Perlengkapan batik / merchandise kampus UNY</span>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
+                <input id="ftPlanD5" type="number" min="0" placeholder="0" value="${saved?.d5 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+              </div>
+            </div>
+
+            <!-- Day 6 -->
+            <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-amber-950">Day 6: Yogyakarta (Pabrik Bakpia &amp; Pantai Drini)</span>
+                <span class="px-2 py-0.5 rounded bg-amber-500 text-white font-black text-[10px]">Oleh-Oleh Utama</span>
+              </div>
+              <span class="text-[11.5px] text-amber-900">Target: <strong>Oleh-oleh utama untuk orang tua / keluarga di rumah</strong></span>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs font-bold text-amber-700">Rp</span>
+                <input id="ftPlanD6" type="number" min="0" placeholder="0" value="${saved?.d6 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-amber-300 bg-white font-bold text-xs outline-none focus:border-amber-600">
+              </div>
+            </div>
+
+            <!-- Day 7 -->
+            <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-slate-900">Day 7: Perjalanan Pulang ke Belitang</span>
+                <span class="text-[11px] text-slate-600 font-bold">Kepulangan</span>
+              </div>
+              <span class="text-[11.5px] text-slate-500">Target: Bekal camilan santai perjalanan pulang</span>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs font-bold text-slate-400">Rp</span>
+                <input id="ftPlanD7" type="number" min="0" placeholder="0" value="${saved?.d7 || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white font-bold text-xs outline-none focus:border-primary">
+              </div>
+            </div>
+
+            <!-- Pos Dana Darurat / Tabungan Sisa -->
+            <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-300 flex flex-col gap-1.5">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-emerald-950">Tabungan Sisa / Dana Cadangan Darurat</span>
+                <span class="px-2 py-0.5 rounded bg-emerald-600 text-white font-black text-[10px]">Wajib Dibawa Pulang</span>
+              </div>
+              <span class="text-[11.5px] text-emerald-800">Target saldo sisa yang <strong>wajib utuh</strong> untuk dibawa pulang kembali ke Belitang</span>
+              <div class="relative">
+                <span class="absolute left-3 top-2 text-xs font-bold text-emerald-700">Rp</span>
+                <input id="ftPlanEmergency" type="number" min="0" placeholder="0" value="${saved?.emergency || ''}" oninput="calculateFtDay1Budgeting()" ${readOnlyAttr} class="w-full pl-9 pr-3 py-2 rounded-xl border border-emerald-300 bg-white font-black text-xs outline-none focus:border-emerald-600">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAGIAN 3: KALKULASI & DIAGNOSIS KESEHATAN KEUANGAN -->
+        <div id="ftDiagnosisCard" class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+          <div class="flex items-center justify-between border-b border-surface-container pb-2.5">
+            <span class="text-sm font-extrabold text-primary flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-teal-600">analytics</span>
+              <span>Bagian 3: Diagnosis Kesehatan Finansial</span>
+            </span>
+            <span id="ftDiagPill" class="px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide bg-slate-100 text-slate-700">
+              Menunggu Input
+            </span>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold">
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-[10.5px] text-slate-500 block">Total Uang Saku</span>
+              <span id="ftDispTotal" class="text-xs sm:text-sm font-black text-slate-900">Rp 0</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-[10.5px] text-slate-500 block">Total Alokasi</span>
+              <span id="ftDispAllocated" class="text-xs sm:text-sm font-black text-blue-900">Rp 0</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+              <span class="text-[10.5px] text-slate-500 block">Sisa Belum Alokasi</span>
+              <span id="ftDispDiff" class="text-xs sm:text-sm font-black text-emerald-700">Rp 0</span>
+            </div>
+          </div>
+
+          <!-- Pesan Kesimpulan Sistem -->
+          <div id="ftDiagBox" class="p-3.5 rounded-2xl bg-slate-100 text-slate-700 text-xs sm:text-sm leading-relaxed flex flex-col gap-1">
+            <span class="font-bold text-slate-900">Silakan masukkan nominal uang saku dan alokasi harian di atas.</span>
+            <span class="text-[11.5px] text-slate-600">Sistem akan secara otomatis menganalisis apakah pola anggaran Anda: <strong>Sangat Baik</strong>, <strong>Cukup/Waspada</strong>, atau <strong>Terlalu Boros</strong>.</span>
+          </div>
+        </div>
+
+        <!-- BAGIAN 4: SOAL PILIHAN GANDA LITERASI FINANSIAL -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
+            <span class="material-symbols-outlined text-xl text-purple-600">quiz</span>
+            <span>Bagian 4: Soal Analisis Literasi Finansial</span>
+          </div>
+
+          <!-- Soal 1 -->
+          <div class="flex flex-col gap-2 text-xs sm:text-sm">
+            <span class="font-bold text-slate-900">1. Di kapal ferry penyeberangan Selat Sunda, Anda melihat kios camilan mahal padahal baru selesai makan siang rombongan. Keputusan finansial yang paling bijak adalah...</span>
+            <div class="space-y-1.5 text-xs">
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq1" value="A" ${saved?.mcq1 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>A. Membeli banyak camilan mumpung uang saku masih utuh di hari pertama.</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq1" value="B" ${saved?.mcq1 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>B. Menahan diri (mencegah <em>impulse buying</em>) karena makan berikutnya sudah disiapkan biro dan uang saku diprioritaskan untuk oleh-oleh keluarga di hari berikutnya.</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq1" value="C" ${saved?.mcq1 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>C. Meminjam uang teman untuk membeli aksesori kapal ferry.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Soal 2 -->
+          <div class="flex flex-col gap-2 text-xs sm:text-sm pt-2 border-t border-slate-100">
+            <span class="font-bold text-slate-900">2. Mengapa pos oleh-oleh untuk keluarga (Day 6 di Jogja) dan pos tabungan darurat sebaiknya dialokasikan minimal 60%–70% dari total uang saku?</span>
+            <div class="space-y-1.5 text-xs">
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq2" value="A" ${saved?.mcq2 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>A. Sebagai bentuk bakti membahagiakan orang tua yang telah membiayai perjalanan serta mengantisipasi kebutuhan darurat di perjalanan.</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq2" value="B" ${saved?.mcq2 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>B. Karena harga oleh-oleh di Yogyakarta sangat murah dan tidak bernilai.</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq2" value="C" ${saved?.mcq2 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>C. Agar uang saku habis total tanpa menyisakan saldo saat tiba di rumah.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Soal 3 -->
+          <div class="flex flex-col gap-2 text-xs sm:text-sm pt-2 border-t border-slate-100">
+            <span class="font-bold text-slate-900">3. Jika seorang siswa membawa uang saku Rp 700.000, berapa alokasi dana cadangan darurat minimal (20%) yang wajib disimpan terpisah dan tidak boleh disentuh?</span>
+            <div class="space-y-1.5 text-xs">
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq3" value="A" ${saved?.mcq3 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>A. Rp 50.000</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq3" value="B" ${saved?.mcq3 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>B. Rp 140.000</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq3" value="C" ${saved?.mcq3 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>C. Rp 350.000</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Soal 4 -->
+          <div class="flex flex-col gap-2 text-xs sm:text-sm pt-2 border-t border-slate-100">
+            <span class="font-bold text-slate-900">4. Apa dampak negatif paling berbahaya jika siswa membelanjakan lebih dari 60% uang sakunya pada Day 1 dan Day 2?</span>
+            <div class="space-y-1.5 text-xs">
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq4" value="A" ${saved?.mcq4 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>A. Bus pariwisata akan tertunda keberangkatannya.</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq4" value="B" ${saved?.mcq4 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>B. Kehabisan uang saat tiba di Batu dan Yogyakarta sehingga gagal membeli oleh-oleh untuk keluarga dan tidak ada dana darurat.</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq4" value="C" ${saved?.mcq4 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>C. Penginapan hotel akan dibatalkan otomatis.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Soal 5 -->
+          <div class="flex flex-col gap-2 text-xs sm:text-sm pt-2 border-t border-slate-100">
+            <span class="font-bold text-slate-900">5. Cara paling aman dan bijak dalam mengelola uang tunai selama berada di keramaian objek wisata adalah...</span>
+            <div class="space-y-1.5 text-xs">
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq5" value="A" ${saved?.mcq5 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>A. Memegang seluruh lembaran uang di tangan agar mudah membayar.</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq5" value="B" ${saved?.mcq5 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>B. Memisahkan uang jajan harian secukupnya di saku depan, dan menyimpan uang simpanan utama di amplop aman di dalam tas ransel.</span>
+              </label>
+              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
+                <input type="radio" name="ftMcq5" value="C" ${saved?.mcq5 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
+                <span>C. Menitipkan seluruh uang saku kepada teman yang baru dikenal.</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAGIAN 5: KOMITMEN STRATEGI FINANSIAL -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+          <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
+            <span class="material-symbols-outlined text-xl text-teal-600">verified</span>
+            <span>Bagian 5: Komitmen &amp; Strategi Pengendalian Diri</span>
+          </div>
+          <div>
+            <label class="block text-xs sm:text-sm font-bold text-on-surface mb-1.5">Tuliskan komitmen Anda dalam mematuhi anggaran di atas:</label>
+            <textarea id="ftCommitment" rows="3" placeholder="Contoh: Saya berkomitmen tidak jajan sembarangan di rest area dan menahan diri agar uang saku cukup untuk membeli Bakpia untuk orang tua di Jogja..." ${readOnlyAttr} class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-xs sm:text-sm leading-relaxed outline-none focus:border-primary transition-all placeholder:text-slate-400">${saved?.commitment || ''}</textarea>
+          </div>
+        </div>
+
+        <!-- TOMBOL SIMPAN & KIRIM LKPD DAY 1 -->
+        ${isReadOnly ? '' : `
+          <div class="pt-2">
+            <button id="saveFtLkpdBtn" type="button" onclick="saveAndSubmitFtDay1LKPD()" class="w-full py-4 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-xl">send</span>
+              <span>${isSubmitted ? 'Perbarui Laporan LKPD Day 1' : 'Simpan &amp; Kirim LKPD Day 1'}</span>
+            </button>
+          </div>
+        `}
+
+        <!-- Copyright Footer -->
+        <div class="text-center pt-2 pb-4">
+          <p class="font-label-sm text-label-sm text-outline text-xs">
+            &copy; 2026 Kurikulum SMAN 1 Belitang
+          </p>
+        </div>
+      `;
+
+      // Jalankan kalkulasi awal jika ada data tersimpan
+      calculateFtDay1Budgeting();
+    }
+
+    // Perhitungan Real-Time Budgeting & Diagnosis Finansial
+    function calculateFtDay1Budgeting() {
+      const totalSaku = parseFloat(document.getElementById('ftTotalSaku')?.value) || 0;
+      const d1 = parseFloat(document.getElementById('ftPlanD1')?.value) || 0;
+      const d2 = parseFloat(document.getElementById('ftPlanD2')?.value) || 0;
+      const d3 = parseFloat(document.getElementById('ftPlanD3')?.value) || 0;
+      const d4 = parseFloat(document.getElementById('ftPlanD4')?.value) || 0;
+      const d5 = parseFloat(document.getElementById('ftPlanD5')?.value) || 0;
+      const d6 = parseFloat(document.getElementById('ftPlanD6')?.value) || 0;
+      const d7 = parseFloat(document.getElementById('ftPlanD7')?.value) || 0;
+      const emergency = parseFloat(document.getElementById('ftPlanEmergency')?.value) || 0;
+
+      const totalAllocated = d1 + d2 + d3 + d4 + d5 + d6 + d7 + emergency;
+      const diff = totalSaku - totalAllocated;
+
+      // Update Tampilan Angka
+      const dispTotal = document.getElementById('ftDispTotal');
+      const dispAllocated = document.getElementById('ftDispAllocated');
+      const dispDiff = document.getElementById('ftDispDiff');
+      const pill = document.getElementById('ftDiagPill');
+      const diagBox = document.getElementById('ftDiagBox');
+
+      if (dispTotal) dispTotal.textContent = 'Rp ' + totalSaku.toLocaleString('id-ID');
+      if (dispAllocated) dispAllocated.textContent = 'Rp ' + totalAllocated.toLocaleString('id-ID');
+      if (dispDiff) {
+        dispDiff.textContent = (diff < 0 ? '-Rp ' : 'Rp ') + Math.abs(diff).toLocaleString('id-ID');
+        dispDiff.className = diff < 0 ? 'text-xs sm:text-sm font-black text-rose-600' : 'text-xs sm:text-sm font-black text-emerald-700';
+      }
+
+      if (!pill || !diagBox) return;
+
+      if (totalSaku <= 0) {
+        pill.className = 'px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide bg-slate-100 text-slate-700';
+        pill.textContent = 'Menunggu Input';
+        diagBox.className = 'p-3.5 rounded-2xl bg-slate-100 text-slate-700 text-xs sm:text-sm leading-relaxed flex flex-col gap-1';
+        diagBox.innerHTML = `
+          <span class="font-bold text-slate-900">Masukkan nominal uang saku Anda di Bagian 1.</span>
+          <span class="text-[11.5px] text-slate-600">Sistem akan otomatis menghitung alokasi harian dan memberikan kesimpulan kesehatan finansial.</span>
+        `;
+        return;
+      }
+
+      const earlySpend = d1 + d2 + d3;
+      const earlySpendRatio = totalSaku > 0 ? (earlySpend / totalSaku) : 0;
+      const emergencyRatio = totalSaku > 0 ? (emergency / totalSaku) : 0;
+      const olehOlehRatio = totalSaku > 0 ? (d6 / totalSaku) : 0;
+
+      let diagnosisStatus = 'good';
+      let statusLabel = 'Manajemen Keuangan Sangat Baik';
+      let badgeClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+      let boxClass = 'bg-emerald-50 border border-emerald-200 text-emerald-950';
+      let icon = 'sentiment_very_satisfied';
+      let explanation = '';
+
+      if (totalAllocated > totalSaku) {
+        // DEFISIT
+        diagnosisStatus = 'wasteful';
+        statusLabel = 'Terlalu Boros (Defisit Anggaran)';
+        badgeClass = 'bg-rose-100 text-rose-900 border border-rose-300';
+        boxClass = 'bg-rose-50 border border-rose-200 text-rose-950';
+        icon = 'error';
+        explanation = `⚠️ <strong>Peringatan Defisit:</strong> Total rencana pengeluaran Anda (Rp ${totalAllocated.toLocaleString('id-ID')}) melebihi uang saku yang Anda bawa (Rp ${totalSaku.toLocaleString('id-ID')}) sebesar Rp ${Math.abs(diff).toLocaleString('id-ID')}! Rencana ini sangat berisiko membuat Anda kehabisan uang di tengah jalan atau berutang. Kurangi pos jajan harian Anda.`;
+      } else if (earlySpendRatio > 0.55) {
+        // TERLALU BOROS DI AWAL
+        diagnosisStatus = 'wasteful';
+        statusLabel = 'Terlalu Boros di Awal Perjalanan';
+        badgeClass = 'bg-rose-100 text-rose-900 border border-rose-300';
+        boxClass = 'bg-rose-50 border border-rose-200 text-rose-950';
+        icon = 'warning';
+        explanation = `⚠️ <strong>Pola Konsumtif Awal:</strong> Lebih dari 55% uang saku Anda (${Math.round(earlySpendRatio * 100)}%) direncanakan habis di Day 1 s.d. Day 3. Pola ini sangat berisiko membuat Anda kehabisan uang saat tiba di Yogyakarta untuk membeli oleh-oleh orang tua. Kurangi jajan di hari pertama dan kedua!`;
+      } else if (emergencyRatio >= 0.15 && olehOlehRatio >= 0.20 && diff >= 0) {
+        // SANGAT BAIK
+        diagnosisStatus = 'good';
+        statusLabel = 'Manajemen Keuangan Sangat Baik (Sehat & Bijak)';
+        badgeClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+        boxClass = 'bg-emerald-50 border border-emerald-200 text-emerald-950';
+        icon = 'verified';
+        explanation = `✅ <strong>Luar Biasa &amp; Sehat:</strong> Perencanaan Anda sangat matang! Anda menyisihkan minimal 15% untuk dana cadangan darurat (Rp ${emergency.toLocaleString('id-ID')}) dan memprioritaskan oleh-oleh untuk orang tua/keluarga di Day 6 (Rp ${d6.toLocaleString('id-ID')}). Pengeluaran harian Anda terdistribusi secara seimbang.`;
+      } else {
+        // CUKUP / WASPADA BOROS
+        diagnosisStatus = 'moderate';
+        statusLabel = 'Manajemen Keuangan Cukup (Waspada Boros)';
+        badgeClass = 'bg-amber-100 text-amber-900 border border-amber-300';
+        boxClass = 'bg-amber-50 border border-amber-200 text-amber-950';
+        icon = 'info';
+        explanation = `🟡 <strong>Perlu Penyesuaian:</strong> Anggaran Anda cukup aman, namun pos dana cadangan darurat masih di bawah 15% atau uang saku habis tanpa sisa tabungan pulang. Disarankan menambah pos cadangan darurat agar Anda memiliki bekal aman jika ada keperluan mendesak di perjalanan.`;
+      }
+
+      pill.className = `px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide ${badgeClass}`;
+      pill.textContent = statusLabel;
+
+      diagBox.className = `p-3.5 rounded-2xl ${boxClass} text-xs sm:text-sm leading-relaxed flex flex-col gap-1.5 shadow-2xs`;
+      diagBox.innerHTML = `
+        <div class="flex items-center gap-1.5 font-bold">
+          <span class="material-symbols-outlined text-base">${icon}</span>
+          <span>Kesimpulan Sistem: ${statusLabel}</span>
+        </div>
+        <p class="text-xs sm:text-[12.5px] leading-relaxed">${explanation}</p>
+      `;
+    }
+
+    // Simpan & Kirim LKPD Day 1 Field Trip
+    function saveAndSubmitFtDay1LKPD() {
+      const studentNisn = activeUser.nisn || activeUser.identifier || '';
+      const totalSaku = parseFloat(document.getElementById('ftTotalSaku')?.value) || 0;
+      if (totalSaku <= 0) {
+        FincestemCore.ui.toast('Silakan masukkan total uang saku yang Anda bawa di Bagian 1!', 'error');
+        return;
+      }
+
+      const d1 = parseFloat(document.getElementById('ftPlanD1')?.value) || 0;
+      const d2 = parseFloat(document.getElementById('ftPlanD2')?.value) || 0;
+      const d3 = parseFloat(document.getElementById('ftPlanD3')?.value) || 0;
+      const d4 = parseFloat(document.getElementById('ftPlanD4')?.value) || 0;
+      const d5 = parseFloat(document.getElementById('ftPlanD5')?.value) || 0;
+      const d6 = parseFloat(document.getElementById('ftPlanD6')?.value) || 0;
+      const d7 = parseFloat(document.getElementById('ftPlanD7')?.value) || 0;
+      const emergency = parseFloat(document.getElementById('ftPlanEmergency')?.value) || 0;
+      const totalAllocated = d1 + d2 + d3 + d4 + d5 + d6 + d7 + emergency;
+
+      if (totalAllocated > totalSaku) {
+        if (!confirm('Peringatan: Total rencana alokasi pengeluaran Anda melebihi total uang saku (Defisit). Apakah Anda tetap ingin mengirimkan laporan ini?')) {
+          return;
+        }
+      }
+
+      const mcq1 = document.querySelector('input[name="ftMcq1"]:checked')?.value || '';
+      const mcq2 = document.querySelector('input[name="ftMcq2"]:checked')?.value || '';
+      const mcq3 = document.querySelector('input[name="ftMcq3"]:checked')?.value || '';
+      const mcq4 = document.querySelector('input[name="ftMcq4"]:checked')?.value || '';
+      const mcq5 = document.querySelector('input[name="ftMcq5"]:checked')?.value || '';
+      const commitment = document.getElementById('ftCommitment')?.value.trim() || '';
+
+      const diagnosisText = document.getElementById('ftDiagPill')?.textContent || 'Selesai Dianalisis';
+
+      const payload = {
+        totalSaku: totalSaku,
+        d1: d1,
+        d2: d2,
+        d3: d3,
+        d4: d4,
+        d5: d5,
+        d6: d6,
+        d7: d7,
+        emergency: emergency,
+        totalAllocated: totalAllocated,
+        diagnosis: diagnosisText,
+        mcq1: mcq1,
+        mcq2: mcq2,
+        mcq3: mcq3,
+        mcq4: mcq4,
+        mcq5: mcq5,
+        commitment: commitment,
+        submitted: true,
+        submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
+      };
+
+      const btn = document.getElementById('saveFtLkpdBtn');
+      if (btn) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan Laporan Finansial...</span>';
+        btn.classList.add('pointer-events-none', 'opacity-80');
+      }
+
+      setTimeout(() => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day1_' + studentNisn, JSON.stringify(payload));
+        } catch(e) {}
+
+        // Sinkronkan ke modul progres siswa
+        if (FincestemCore.progress && studentNisn) {
+          FincestemCore.progress.submitTask(studentNisn, 1, 'lkpd', payload);
+        }
+
+        if (btn) {
+          btn.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Berhasil Disimpan</span>';
+          btn.classList.remove('pointer-events-none', 'opacity-80');
+        }
+
+        const statusBadge = document.getElementById('ftStatusBadge');
+        if (statusBadge) {
+          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800';
+          statusBadge.textContent = 'Telah Dikirim / Menunggu Penilaian';
+        }
+
+        FincestemCore.ui.toast('LKPD Day 1 Field Trip (Budgeting Plan) berhasil disimpan & diagnosis dicatat!', 'success');
       }, 500);
     }
   </script>

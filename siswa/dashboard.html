@@ -1133,8 +1133,8 @@
                   <span class="material-symbols-outlined text-base sm:text-lg">menu_book</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Materi Riset</span>
-                  <span class="text-[10px] sm:text-xs ${canInteract ? 'text-amber-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Modul Belajar</span>
+                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Modul Belajar</span>
+                  <span class="text-[10px] sm:text-xs ${canInteract ? 'text-amber-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">Materi Eksplor</span>
                 </div>
               </button>
 
@@ -1293,17 +1293,37 @@
           `}
         `;
       } else if (type === 'refleksi') {
-        title.textContent = isTrial ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' : `Jurnal Refleksi Mandiri - Day ${day.day_number}`;
+        const currentUser = FincestemCore.auth.getUser() || {};
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(currentUser.nisn || currentUser.identifier, currentUser.class || currentUser.class_name, currentUser.zone)
+          : (currentUser.zone || 'FINCESTEM OKU TIMUR');
+        const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+        const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
+
+        title.textContent = isTrial ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' : (isFTDay1 ? 'Jurnal Refleksi Day 1 (Field Trip: Belitang → Semarang)' : `Jurnal Refleksi Mandiri - Day ${day.day_number}`);
         icon.textContent = 'psychology';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0';
+
+        const reflTitle = isTrial ? 'Simulasi Jurnal Refleksi Siswa' : (isFTDay1 ? 'Cerita Pengalaman Hari Pertama (Field Trip Belitang → Semarang)' : 'Refleksi Belajar Siswa');
+        const reflPrompt = isTrial 
+          ? 'Cobalah mengetikkan refleksi atau harapan Anda selama mengikuti program FINCESTEM 2026 ini.' 
+          : (isFTDay1 
+              ? 'Ceritakan pengalaman Anda di hari pertama perjalanan ini: momen berpamitan di sekolah, pengalaman menyeberangi Selat Sunda dengan kapal ferry, kebersamaan di dalam bus bersama teman, serta bagaimana komitmen Anda dalam menjaga dan mengelola uang saku selama 7 hari perjalanan ke depan.'
+              : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?');
+        const reflPlaceholder = isTrial 
+          ? 'Contoh: Saya siap dan antusias mengikuti seluruh rangkaian riset kokurikuler FINCESTEM...' 
+          : (isFTDay1 
+              ? 'Tuliskan cerita pengalaman hari pertama perjalanan Anda dari Belitang menuju Semarang di sini secara jujur dan mendalam...' 
+              : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...');
+
         body.innerHTML = `
           <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100 flex flex-col gap-1 text-slate-800">
-            <span class="font-bold text-sm text-purple-900">${isTrial ? 'Simulasi Jurnal Refleksi Siswa' : 'Refleksi Belajar Siswa'}</span>
-            <p class="text-xs sm:text-sm leading-relaxed text-slate-600">${isTrial ? 'Cobalah mengetikkan refleksi atau harapan Anda selama mengikuti program FINCESTEM 2026 ini.' : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?'}</p>
+            <span class="font-bold text-sm text-purple-900">${reflTitle}</span>
+            <p class="text-xs sm:text-sm leading-relaxed text-slate-600">${reflPrompt}</p>
           </div>
           <div class="flex flex-col gap-1.5">
-            <label class="font-bold text-sm text-slate-800">Jurnal Refleksi:</label>
-            <textarea id="txtRefleksiNote" ${readOnlyAttr} rows="4" class="w-full p-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="${isTrial ? 'Contoh: Saya siap dan antusias mengikuti seluruh rangkaian riset kokurikuler FINCESTEM...' : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...'}">${savedContent}</textarea>
+            <label class="font-bold text-sm text-slate-800">Jurnal Refleksi Siswa:</label>
+            <textarea id="txtRefleksiNote" ${readOnlyAttr} rows="5" class="w-full p-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="${reflPlaceholder}">${savedContent}</textarea>
           </div>
           ${readOnlyBanner ? readOnlyBanner : `
           <button onclick="saveStudentNote(${day.day_number}, 'refleksi')" class="w-full py-3 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-sm transition-all shadow-xs cursor-pointer">

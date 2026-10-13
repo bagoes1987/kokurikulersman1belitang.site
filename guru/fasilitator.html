@@ -389,7 +389,8 @@
           </select>
         </div>
 
-        <!-- BUKTI FOTO DOKUMENTASI LAPANGAN SISWA (PENILAIAN OTENTIKASI) -->
+        <!-- PRATINJAU JAWABAN LKPD / BUDGETING PLAN SISWA -->
+        <div id="modalGradingLkpdPreview" class="empty:hidden"></div>
         <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-1.5">
@@ -868,6 +869,61 @@
           // Set radio status
           const radio = document.querySelector(`input[name="evalStatusRadio"][value="${st}"]`);
           if (radio) radio.checked = true;
+
+          // Pratinjau LKPD Day 1 Field Trip (Budgeting Plan) jika ada
+          const lkpdPreviewEl = document.getElementById('modalGradingLkpdPreview');
+          if (lkpdPreviewEl) {
+            lkpdPreviewEl.innerHTML = '';
+            if (dayNum === 1) {
+              try {
+                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day1_' + nisn);
+                if (storedFt) {
+                  const ftData = JSON.parse(storedFt);
+                  const isGood = ftData.diagnosis && ftData.diagnosis.includes('Sangat Baik');
+                  const isWasteful = ftData.diagnosis && ftData.diagnosis.includes('Boros');
+                  const badgeColor = isGood ? 'bg-emerald-600 text-white' : (isWasteful ? 'bg-rose-600 text-white' : 'bg-amber-600 text-white');
+
+                  lkpdPreviewEl.innerHTML = `
+                    <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col gap-2 text-xs">
+                      <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <span class="font-extrabold text-amber-950 flex items-center gap-1">
+                          <span class="material-symbols-outlined text-sm text-amber-700">account_balance_wallet</span>
+                          <span>Budgeting Plan Uang Saku (LKPD Day 1 Field Trip)</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${badgeColor}">
+                          ${ftData.diagnosis || 'Dianalisis'}
+                        </span>
+                      </div>
+                      <div class="grid grid-cols-2 gap-2 text-[11px]">
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
+                          <span class="text-slate-500 block">Total Uang Saku:</span>
+                          <span class="font-black text-slate-900">Rp ${(ftData.totalSaku || 0).toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
+                          <span class="text-slate-500 block">Pos Oleh-Oleh (Day 6):</span>
+                          <span class="font-black text-amber-900">Rp ${(ftData.d6 || 0).toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
+                          <span class="text-slate-500 block">Dana Darurat / Pulang:</span>
+                          <span class="font-black text-emerald-800">Rp ${(ftData.emergency || 0).toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
+                          <span class="text-slate-500 block">Total Dialokasikan:</span>
+                          <span class="font-black text-blue-900">Rp ${(ftData.totalAllocated || 0).toLocaleString('id-ID')}</span>
+                        </div>
+                      </div>
+                      ${ftData.commitment ? `
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
+                          <strong class="text-slate-700 block">Komitmen Finansial Siswa:</strong>
+                          <p class="text-slate-600 italic mt-0.5">"${ftData.commitment}"</p>
+                        </div>
+                      ` : ''}
+                    </div>
+                  `;
+                }
+              } catch(e) {}
+            }
+          }
 
           // Muat foto dokumentasi siswa untuk hari/sesi ini
           renderGradingPhotos(nisn, dayNum);
