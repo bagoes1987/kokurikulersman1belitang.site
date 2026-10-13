@@ -403,6 +403,29 @@
               }, 1200);
               return;
             }
+
+            // Validasi alur berurutan khusus Day 1 Field Trip: Asesmen wajib selesai dulu!
+            const studentCategory = getStudentCategoryInfo();
+            if (studentCategory.isFieldTrip && dayNum === 1) {
+              const taskMap = (prog && prog.task_map) || {};
+              let hasAsesmen = !!taskMap['1_asesmen'];
+              if (!hasAsesmen) {
+                try {
+                  const cleanNisn = String(nisn).trim();
+                  const unpadded = cleanNisn.replace(/^0+/, '');
+                  const ask = localStorage.getItem('fincestem_asesmen_ft_day1_' + cleanNisn) ||
+                              localStorage.getItem('fincestem_asesmen_ft_day1_' + unpadded);
+                  if (ask && JSON.parse(ask).submitted) hasAsesmen = true;
+                } catch(e) {}
+              }
+              if (!hasAsesmen) {
+                FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day 1 sebelum mengunggah Dokumentasi!', 'warning');
+                setTimeout(() => {
+                  window.location.replace('dashboard.html?day=1&task=asesmen');
+                }, 1200);
+                return;
+              }
+            }
             if (!access.canEdit || isReadOnlyUrl) {
               // Sembunyikan tombol tambah foto jika mode hanya lihat
               const upBtns = document.querySelectorAll('button[onclick="toggleUploadModal(true)"]');
@@ -1387,8 +1410,14 @@
       const isGeotagged = (selectedPhotoSource === 'camera' && selectedPhotoHasGeotag);
       const gpsCoordStr = (isGeotagged && currentGPS) ? (currentGPS.lat.toFixed(6) + ', ' + currentGPS.lng.toFixed(6)) : '';
 
+      const urlParams = new URLSearchParams(window.location.search);
+      const dayParam = urlParams.get('day');
+      const docDayNum = dayParam ? parseInt(dayParam) : 1;
+
       const newPhoto = {
         id: 'doc-' + Date.now(),
+        day: docDayNum,
+        day_number: docDayNum,
         title: title,
         description: desc,
         pillar: pillar,
@@ -1410,6 +1439,10 @@
         if (!Array.isArray(db.documentation)) db.documentation = [];
         db.documentation.unshift(newPhoto);
         localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+
+        const cleanNisn = String(studentNisn).trim();
+        localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + cleanNisn, 'true');
+        localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + cleanNisn.replace(/^0+/, ''), 'true');
       } catch (e) {
         console.error(e);
       }

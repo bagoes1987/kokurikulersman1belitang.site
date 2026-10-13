@@ -976,32 +976,76 @@
 
         // Fallback pengecekan lokal khusus Day 1 Field Trip jika belum sinkron penuh
         if (isFTDay1) {
+          const cleanNisn = String(studentNisn).trim();
+          const unpadded = cleanNisn.replace(/^0+/, '');
+
           if (!hasMateri) {
             try {
-              const mat = localStorage.getItem('fincestem_materi_ft_day1_' + studentNisn);
+              const mat = localStorage.getItem('fincestem_materi_ft_day1_' + cleanNisn) ||
+                          localStorage.getItem('fincestem_materi_ft_day1_' + unpadded);
               if (mat && JSON.parse(mat).conclusion) hasMateri = true;
             } catch(e) {}
           }
           if (!hasLkpd) {
             try {
-              const cleanNisn = String(studentNisn).trim();
-              const unpadded = cleanNisn.replace(/^0+/, '');
               const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + cleanNisn) ||
-                         localStorage.getItem('fincestem_lkpd_ft_day1_' + unpadded) ||
-                         localStorage.getItem('fincestem_lkpd_ft_day1_' + ('0' + unpadded));
+                         localStorage.getItem('fincestem_lkpd_ft_day1_' + unpadded);
               if (lk && JSON.parse(lk).submitted) hasLkpd = true;
+            } catch(e) {}
+          }
+          if (!hasAsesmen) {
+            try {
+              const ask = localStorage.getItem('fincestem_asesmen_ft_day1_' + cleanNisn) ||
+                          localStorage.getItem('fincestem_asesmen_ft_day1_' + unpadded);
+              if (ask && JSON.parse(ask).submitted) hasAsesmen = true;
             } catch(e) {}
           }
           if (!hasDok) {
             try {
-              const dbStr = localStorage.getItem('fincestem_db_2026_v1');
-              if (dbStr) {
-                const db = JSON.parse(dbStr);
-                if (Array.isArray(db.documentation)) {
-                  hasDok = db.documentation.some(p => String(p.nisn || p.author_nisn || p.uploaded_by || '').trim() === String(studentNisn).trim());
+              const dokFlag = localStorage.getItem('fincestem_dok_ft_day1_' + cleanNisn) ||
+                              localStorage.getItem('fincestem_dok_ft_day1_' + unpadded);
+              if (dokFlag === 'true') {
+                hasDok = true;
+              } else {
+                const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+                if (dbStr) {
+                  const db = JSON.parse(dbStr);
+                  if (Array.isArray(db.documentation)) {
+                    hasDok = db.documentation.some(p => {
+                      const docDay = Number(p.day || p.day_number || 0);
+                      const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+                      const docUnpadded = docNisn.replace(/^0+/, '');
+                      return docDay === 1 && (docNisn === cleanNisn || docUnpadded === unpadded);
+                    });
+                  }
                 }
               }
             } catch(e) {}
+          }
+          if (!hasRefleksi) {
+            try {
+              const ref = localStorage.getItem('fincestem_refleksi_ft_day1_' + cleanNisn) ||
+                          localStorage.getItem('fincestem_refleksi_ft_day1_' + unpadded);
+              if (ref) hasRefleksi = true;
+            } catch(e) {}
+          }
+
+          // ATURAN BERURUTAN MUTLAK (STRICT CASCADE):
+          // Modul -> LKPD -> Asesmen -> Dokumentasi -> Refleksi -> Penilaian
+          if (!hasMateri) {
+            hasLkpd = false;
+            hasAsesmen = false;
+            hasDok = false;
+            hasRefleksi = false;
+          } else if (!hasLkpd) {
+            hasAsesmen = false;
+            hasDok = false;
+            hasRefleksi = false;
+          } else if (!hasAsesmen) {
+            hasDok = false;
+            hasRefleksi = false;
+          } else if (!hasDok) {
+            hasRefleksi = false;
           }
         }
 
@@ -1100,9 +1144,10 @@
         // Modul (1) -> LKPD (2) -> Asesmen (3) -> Dokumentasi (4) -> Refleksi (5) -> Penilaian (6)
         const canOpenMateri = canInteract;
         const canOpenLkpd = canInteract && (!isFTDay1 || hasMateri);
-        const canOpenAsesmen = canInteract && (!isFTDay1 || hasLkpd);
-        const canOpenDok = canInteract && (!isFTDay1 || hasAsesmen);
-        const canOpenRefleksi = canInteract && (!isFTDay1 || hasDok);
+        const canOpenAsesmen = canInteract && (!isFTDay1 || (hasMateri && hasLkpd));
+        const canOpenDok = canInteract && (!isFTDay1 || (hasMateri && hasLkpd && hasAsesmen));
+        const canOpenRefleksi = canInteract && (!isFTDay1 || (hasMateri && hasLkpd && hasAsesmen && hasDok));
+        const canOpenPenilaian = canInteract && (!isFTDay1 || (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi));
 
         const materiBtnClass = canOpenMateri ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
         const materiIconClass = canOpenMateri ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500';
@@ -1119,8 +1164,8 @@
         const refleksiBtnClass = canOpenRefleksi ? (canEdit ? 'bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
         const refleksiIconClass = canOpenRefleksi ? (canEdit ? 'bg-purple-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
 
-        const nilaiBtnClass = canInteract ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const nilaiIconClass = canInteract ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-500';
+        const nilaiBtnClass = canOpenPenilaian ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
+        const nilaiIconClass = canOpenPenilaian ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-500';
 
         const card = document.createElement('div');
         card.id = 'dayCard_' + dNum;
@@ -1276,11 +1321,11 @@
               <!-- 6. NILAI & CATATAN GURU -->
               <button onclick="handleActivityClick(${dNum}, 'penilaian')" class="p-2.5 sm:p-3 rounded-2xl ${nilaiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
                 <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${nilaiIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">stars</span>
+                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenPenilaian ? 'lock' : 'stars'}</span>
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Nilai &amp; Catatan</span>
-                  <span class="text-[10px] sm:text-xs ${canInteract ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${(isFTDay1 && hasRefleksi) ? 'Menunggu Review' : 'Feedback Guru'}</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenPenilaian ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenPenilaian ? 'Terkunci (Refleksi Dulu)' : ((isFTDay1 && hasRefleksi) ? 'Menunggu Review' : 'Feedback Guru')}</span>
                 </div>
               </button>
             </div>
@@ -1359,11 +1404,15 @@
 
       // VALIDASI ALUR BERURUTAN KHUSUS DAY 1 FIELD TRIP
       if (isFTDay1) {
+        const cleanNisn = String(studentNisn).trim();
+        const unpadded = cleanNisn.replace(/^0+/, '');
+
         const taskMap = (studentProgress && studentProgress.task_map) || {};
         let hasMateri = !!taskMap['1_materi'];
         if (!hasMateri) {
           try {
-            const mat = localStorage.getItem('fincestem_materi_ft_day1_' + studentNisn);
+            const mat = localStorage.getItem('fincestem_materi_ft_day1_' + cleanNisn) ||
+                        localStorage.getItem('fincestem_materi_ft_day1_' + unpadded);
             if (mat && JSON.parse(mat).conclusion) hasMateri = true;
           } catch(e) {}
         }
@@ -1371,52 +1420,82 @@
         let hasLkpd = !!taskMap['1_lkpd'];
         if (!hasLkpd) {
           try {
-            const cleanNisn = String(studentNisn).trim();
-            const unpadded = cleanNisn.replace(/^0+/, '');
             const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + cleanNisn) ||
-                       localStorage.getItem('fincestem_lkpd_ft_day1_' + unpadded) ||
-                       localStorage.getItem('fincestem_lkpd_ft_day1_' + ('0' + unpadded));
+                       localStorage.getItem('fincestem_lkpd_ft_day1_' + unpadded);
             if (lk && JSON.parse(lk).submitted) hasLkpd = true;
           } catch(e) {}
         }
 
         let hasAsesmen = !!taskMap['1_asesmen'];
+        if (!hasAsesmen) {
+          try {
+            const ask = localStorage.getItem('fincestem_asesmen_ft_day1_' + cleanNisn) ||
+                        localStorage.getItem('fincestem_asesmen_ft_day1_' + unpadded);
+            if (ask && JSON.parse(ask).submitted) hasAsesmen = true;
+          } catch(e) {}
+        }
 
         let hasDok = !!taskMap['1_dokumentasi'];
         if (!hasDok) {
           try {
-            const dbStr = localStorage.getItem('fincestem_db_2026_v1');
-            if (dbStr) {
-              const db = JSON.parse(dbStr);
-              if (Array.isArray(db.documentation)) {
-                hasDok = db.documentation.some(p => String(p.nisn || p.author_nisn || p.uploaded_by || '').trim() === String(studentNisn).trim());
+            const dokFlag = localStorage.getItem('fincestem_dok_ft_day1_' + cleanNisn) ||
+                            localStorage.getItem('fincestem_dok_ft_day1_' + unpadded);
+            if (dokFlag === 'true') {
+              hasDok = true;
+            } else {
+              const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+              if (dbStr) {
+                const db = JSON.parse(dbStr);
+                if (Array.isArray(db.documentation)) {
+                  hasDok = db.documentation.some(p => {
+                    const docDay = Number(p.day || p.day_number || 0);
+                    const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+                    const docUnpadded = docNisn.replace(/^0+/, '');
+                    return docDay === 1 && (docNisn === cleanNisn || docUnpadded === unpadded);
+                  });
+                }
               }
             }
           } catch(e) {}
         }
 
+        let hasRefleksi = !!taskMap['1_refleksi'];
+        if (!hasRefleksi) {
+          try {
+            const ref = localStorage.getItem('fincestem_refleksi_ft_day1_' + cleanNisn) ||
+                        localStorage.getItem('fincestem_refleksi_ft_day1_' + unpadded);
+            if (ref) hasRefleksi = true;
+          } catch(e) {}
+        }
+
         // Tahap 2 (LKPD) butuh Modul
         if (type === 'lkpd' && !hasMateri) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib membaca Modul Belajar dan mengisi kesimpulan sebelum membuka LKPD!', 'warning');
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib membaca Modul Belajar dan mengisi resume kesimpulan sebelum membuka LKPD!', 'warning');
           setTimeout(() => { window.location.href = 'materi.html?day=1'; }, 1000);
           return;
         }
 
-        // Tahap 3 (Asesmen) butuh LKPD
-        if (type === 'asesmen' && !hasLkpd) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan & mengirimkan LKPD Budgeting Plan sebelum mengerjakan Asesmen!', 'warning');
+        // Tahap 3 (Asesmen) butuh Modul & LKPD
+        if (type === 'asesmen' && (!hasMateri || !hasLkpd)) {
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan & mengirimkan LKPD terlebih dahulu sebelum mengerjakan Asesmen!', 'warning');
           return;
         }
 
-        // Tahap 4 (Dokumentasi) butuh Asesmen
-        if (type === 'dokumentasi' && !hasAsesmen) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan Asesmen Pemahaman sebelum mengunggah foto Dokumentasi!', 'warning');
+        // Tahap 4 (Dokumentasi) butuh Modul, LKPD & Asesmen
+        if (type === 'dokumentasi' && (!hasMateri || !hasLkpd || !hasAsesmen)) {
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen terlebih dahulu sebelum mengunggah foto Dokumentasi!', 'warning');
           return;
         }
 
-        // Tahap 5 (Refleksi) butuh Dokumentasi
-        if (type === 'refleksi' && !hasDok) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib mengunggah foto Dokumentasi kegiatan hari ini sebelum mengisi Jurnal Refleksi!', 'warning');
+        // Tahap 5 (Refleksi) butuh Modul, LKPD, Asesmen & Dokumentasi
+        if (type === 'refleksi' && (!hasMateri || !hasLkpd || !hasAsesmen || !hasDok)) {
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib mengunggah foto Dokumentasi kegiatan hari ini terlebih dahulu sebelum mengisi Jurnal Refleksi!', 'warning');
+          return;
+        }
+
+        // Tahap 6 (Penilaian) butuh Refleksi selesai
+        if (type === 'penilaian' && (!hasMateri || !hasLkpd || !hasAsesmen || !hasDok || !hasRefleksi)) {
+          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan seluruh rangkaian tahapan hingga Jurnal Refleksi terlebih dahulu!', 'warning');
           return;
         }
       }
@@ -1480,54 +1559,158 @@
       ` : '';
 
       const currentUser = FincestemCore.auth.getUser() || {};
+      const cleanNisn = String(currentUser.nisn || currentUser.identifier || '').trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(currentUser.nisn || currentUser.identifier, currentUser.class || currentUser.class_name, currentUser.zone)
+        ? FincestemCore.zones.getStudentZone(cleanNisn, currentUser.class || currentUser.class_name, currentUser.zone)
         : (currentUser.zone || 'FINCESTEM OKU TIMUR');
       const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
       const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
 
       if (type === 'asesmen') {
         if (isFTDay1) {
-          title.textContent = 'Asesmen Finansial Day 1 (Evaluasi Disiplin Anggaran)';
+          title.textContent = 'Asesmen Finansial Day 1 (Uji Pemahaman Finansial)';
           icon.textContent = 'fact_check';
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
 
-          let q1Val = '', q2Val = '', q3Val = '';
-          if (typeof savedContent === 'string' && savedContent.includes('\n2. Strategi')) {
-            const lines = savedContent.split('\n');
-            q1Val = (lines[0] || '').replace('1. Realisasi: ', '').trim();
-            q2Val = (lines[1] || '').replace('2. Strategi Impulse Buying: ', '').trim();
-            q3Val = (lines[2] || '').replace('3. Sisa Uang Saku: ', '').trim();
-          } else {
-            q1Val = savedContent;
+          let ftAsesmen = null;
+          try {
+            const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + cleanNisn) ||
+                        localStorage.getItem('fincestem_asesmen_ft_day1_' + unpadded);
+            if (raw) ftAsesmen = JSON.parse(raw);
+          } catch(e) {}
+
+          const isSubmitted = ftAsesmen && ftAsesmen.submitted;
+          const score = ftAsesmen ? (ftAsesmen.score ?? 100) : 0;
+          const savedAnswers = (ftAsesmen && ftAsesmen.answers) || {};
+          const isModalReadOnly = isReadOnly || isSubmitted;
+          const fieldDisabled = isModalReadOnly ? 'disabled' : '';
+
+          const questions = [
+            {
+              id: 1,
+              text: '1. Seluruh biaya utama seperti bus pariwisata, tol Trans-Sumatera, tiket penyeberangan kapal ferry, hotel, dan makan 3 kali sehari selama Field Trip ini sudah ditanggung oleh...',
+              options: [
+                { key: 'A', text: 'Uang saku pribadi masing-masing siswa yang dibawa dari rumah' },
+                { key: 'B', text: 'Pihak biro perjalanan wisata (sudah termasuk paket tour resmi)' },
+                { key: 'C', text: 'Iuran kas kelas harian saat di perjalanan' },
+                { key: 'D', text: 'Guru pendamping secara mandiri' }
+              ]
+            },
+            {
+              id: 2,
+              text: '2. Manakah di bawah ini yang merupakan contoh Kebutuhan (Needs) esensial selama perjalanan Day 1 di dalam bus dan kapal ferry?',
+              options: [
+                { key: 'A', text: 'Membeli obat-obatan pribadi anti mabuk dan kuota internet darurat' },
+                { key: 'B', text: 'Membeli boneka gantungan kunci suvenir di kapal ferry' },
+                { key: 'C', text: 'Membeli camilan keripik secara berlebihan di setiap rest area tol' },
+                { key: 'D', text: 'Menyewa fasilitas hiburan berbayar di dek kapal' }
+              ]
+            },
+            {
+              id: 3,
+              text: '3. Mengapa siswa disarankan menahan godaan belanja impulsif (lapar mata) di rest area tol dan kapal ferry pada Day 1?',
+              options: [
+                { key: 'A', text: 'Karena pedagang di rest area melarang siswa sekolah berbelanja' },
+                { key: 'B', text: 'Karena kapal ferry tidak menyediakan kasir pembayaran tunai' },
+                { key: 'C', text: 'Karena uang saku harus dihemat untuk pos belanja oleh-oleh utama keluarga di Yogyakarta dan kebutuhan hari-hari berikutnya' },
+                { key: 'D', text: 'Karena siswa tidak diperbolehkan memiliki uang saku lebih dari Rp 10.000' }
+              ]
+            },
+            {
+              id: 4,
+              text: '4. Dalam formula alokasi uang saku bijak 50 - 30 - 20, porsi terbesar yaitu 50% sebaiknya dialokasikan khusus untuk pos apa?',
+              options: [
+                { key: 'A', text: 'Jajan camilan di rest area pada perjalanan hari pertama' },
+                { key: 'B', text: 'Membayar tiket penyeberangan kapal ferry' },
+                { key: 'C', text: 'Membayar kamar hotel tambahan' },
+                { key: 'D', text: 'Oleh-oleh utama untuk orang tua / keluarga di rumah (dibeli saat Day 6 di Jogja)' }
+              ]
+            },
+            {
+              id: 5,
+              text: '5. Bagaimana cara paling aman dan disiplin dalam mengelola uang saku tunai selama 7 hari perjalanan?',
+              options: [
+                { key: 'A', text: 'Menghabiskan seluruh uang saku di hari pertama agar tidak khawatir hilang' },
+                { key: 'B', text: 'Memisahkan uang saku jajan harian secukupnya di saku/dompet kecil, dan menyimpan uang utama/cadangan aman di dalam tas ransel' },
+                { key: 'C', text: 'Meletakkan seluruh lembaran uang di atas kursi bus saat keluar ke rest area' },
+                { key: 'D', text: 'Menitipkan seluruh uang saku kepada orang asing yang baru dikenal' }
+              ]
+            }
+          ];
+
+          let qHtml = questions.map((q) => {
+            const chosen = savedAnswers['q' + q.id] || '';
+            const optsHtml = q.options.map(opt => {
+              const isChecked = chosen === opt.key ? 'checked' : '';
+              return `
+                <label class="p-2.5 rounded-xl border ${isChecked ? 'border-blue-500 bg-blue-50/60 font-semibold' : 'border-slate-200 hover:bg-slate-50'} flex items-start gap-2.5 cursor-pointer text-xs sm:text-sm text-slate-800 transition-colors">
+                  <input type="radio" name="ftAsesmenQ${q.id}" value="${opt.key}" ${isChecked} ${fieldDisabled} class="mt-0.5 text-blue-600 focus:ring-0">
+                  <span class="leading-relaxed"><strong>${opt.key}.</strong> ${opt.text}</span>
+                </label>
+              `;
+            }).join('');
+
+            return `
+              <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col gap-2">
+                <span class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">${q.text}</span>
+                <div class="flex flex-col gap-1.5 pt-1">
+                  ${optsHtml}
+                </div>
+              </div>
+            `;
+          }).join('');
+
+          let statusBanner = '';
+          if (isSubmitted) {
+            statusBanner = `
+              <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between gap-2 flex-wrap">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
+                  <div class="flex flex-col">
+                    <span class="font-black text-xs sm:text-sm text-emerald-950">Asesmen Day 1 Selesai!</span>
+                    <span class="text-[11px] text-emerald-700">Tahap 4 (Dokumentasi Foto) telah terbuka.</span>
+                  </div>
+                </div>
+                <div class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-black text-xs sm:text-sm shadow-2xs">
+                  Skor: ${score} / 100
+                </div>
+              </div>
+            `;
           }
 
           body.innerHTML = `
             <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100 flex flex-col gap-1 text-slate-800">
-              <span class="font-bold text-sm text-blue-900">Uji Literasi Finansial Hari Pertama</span>
+              <span class="font-bold text-sm text-blue-900">Uji Literasi Finansial Ringan (5 Soal Pilihan Ganda)</span>
               <p class="text-xs sm:text-sm leading-relaxed text-slate-600">
-                Jawablah 3 pertanyaan evaluasi kepatuhan anggaran perjalanan Belitang &rarr; Semarang di bawah ini secara jujur:
+                Pilihlah salah satu jawaban yang paling tepat berdasarkan materi Modul Belajar Day 1 yang telah Anda pelajari.
               </p>
             </div>
-            <div class="flex flex-col gap-2.5">
-              <div>
-                <label class="font-bold text-xs text-slate-800 block mb-1">1. Evaluasi Realisasi Pengeluaran Day 1:</label>
-                <textarea id="txtAsesmenQ1" ${readOnlyAttr} rows="2" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="Apakah pengeluaran hari ini sesuai batas rencana Day 1 di LKPD? Berapa nominal riil yang Anda belanjakan?">${q1Val}</textarea>
-              </div>
-              <div>
-                <label class="font-bold text-xs text-slate-800 block mb-1">2. Strategi Mengendalikan Lapar Mata (Impulse Buying):</label>
-                <textarea id="txtAsesmenQ2" ${readOnlyAttr} rows="2" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="Godaan belanja apa yang Anda rasakan di rest area atau kapal ferry, dan bagaimana cara Anda berhasil menahannya?">${q2Val}</textarea>
-              </div>
-              <div>
-                <label class="font-bold text-xs text-slate-800 block mb-1">3. Estimasi Sisa Uang Saku Riil Malam Ini:</label>
-                <input id="txtAsesmenQ3" ${readOnlyAttr} type="text" class="w-full p-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="Contoh: Sisa Rp 660.000 utuh disimpan di amplop ransel" value="${q3Val}">
-              </div>
+
+            ${statusBanner}
+
+            <div class="flex flex-col gap-3">
+              ${qHtml}
             </div>
-            ${readOnlyBanner ? readOnlyBanner : `
-            <button onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-xs cursor-pointer">
-              Simpan Jawaban Asesmen &amp; Buka Dokumentasi
-            </button>
-            `}
+
+            ${isSubmitted ? `
+              <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=1';" class="flex-1 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">photo_camera</span>
+                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
+                  Tutup
+                </button>
+              </div>
+            ` : (readOnlyBanner ? readOnlyBanner : `
+              <div class="pt-2">
+                <button type="button" onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-lg">send</span>
+                  <span>Kirim Jawaban Asesmen &amp; Buka Dokumentasi</span>
+                </button>
+              </div>
+            `)}
           `;
         } else {
           title.textContent = isTrial ? 'Asesmen Simulasi (Gladi Bersih)' : `Asesmen Pemahaman - Day ${day.day_number}`;
@@ -1651,36 +1834,86 @@
 
       // Deteksi siswa Field Trip Day 1
       const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
+      const cleanNisn = String(studentNisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
+        ? FincestemCore.zones.getStudentZone(cleanNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
         : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
       const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
       const isFTDay1 = isFieldTrip && Number(dayNumber) === 1;
 
       let note = '';
       if (type === 'asesmen' && isFTDay1) {
-        const q1 = document.getElementById('txtAsesmenQ1')?.value.trim() || '';
-        const q2 = document.getElementById('txtAsesmenQ2')?.value.trim() || '';
-        const q3 = document.getElementById('txtAsesmenQ3')?.value.trim() || '';
+        const q1 = document.querySelector('input[name="ftAsesmenQ1"]:checked')?.value;
+        const q2 = document.querySelector('input[name="ftAsesmenQ2"]:checked')?.value;
+        const q3 = document.querySelector('input[name="ftAsesmenQ3"]:checked')?.value;
+        const q4 = document.querySelector('input[name="ftAsesmenQ4"]:checked')?.value;
+        const q5 = document.querySelector('input[name="ftAsesmenQ5"]:checked')?.value;
 
-        if (!q1 || !q2) {
-          FincestemCore.ui.toast('Harap lengkapi jawaban evaluasi asesmen finansial Anda!', 'error');
+        if (!q1 || !q2 || !q3 || !q4 || !q5) {
+          FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan asesmen pilihan ganda!', 'warning');
           return;
         }
-        note = `1. Realisasi: ${q1}\n2. Strategi Impulse Buying: ${q2}\n3. Sisa Uang Saku: ${q3}`;
+
+        // Kunci Jawaban: 1:B, 2:A, 3:C, 4:D, 5:B
+        const keys = { q1: 'B', q2: 'A', q3: 'C', q4: 'D', q5: 'B' };
+        const answers = { q1, q2, q3, q4, q5 };
+        let correctCount = 0;
+        for (let i = 1; i <= 5; i++) {
+          if (answers['q' + i] === keys['q' + i]) correctCount++;
+        }
+        const totalScore = correctCount * 20;
+
+        const asesmenPayload = {
+          submitted: true,
+          score: totalScore,
+          correctCount: correctCount,
+          totalQuestions: 5,
+          answers: answers,
+          submitted_at: new Date().toISOString()
+        };
+
+        localStorage.setItem('fincestem_asesmen_ft_day1_' + cleanNisn, JSON.stringify(asesmenPayload));
+        if (unpadded !== cleanNisn) {
+          localStorage.setItem('fincestem_asesmen_ft_day1_' + unpadded, JSON.stringify(asesmenPayload));
+        }
+
+        note = `Skor Asesmen Day 1: ${totalScore}/100 (${correctCount}/5 Benar). Kunci Jawaban: Q1=${q1}, Q2=${q2}, Q3=${q3}, Q4=${q4}, Q5=${q5}`;
+
+        FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
+          FincestemCore.ui.toast(`Asesmen Day 1 Selesai! Skor Anda: ${totalScore}/100. Tahap 4 (Dokumentasi Foto) sekarang telah terbuka.`, 'success');
+          loadStudentProgress();
+        });
+
+        closeDayActivityModal();
+        return;
       } else if (type === 'asesmen') {
         const noteInput = document.getElementById('txtAsesmenNote');
         note = noteInput ? noteInput.value.trim() : '';
+      } else if (type === 'refleksi' && isFTDay1) {
+        const noteInput = document.getElementById('txtRefleksiNote');
+        note = noteInput ? noteInput.value.trim() : '';
+        if (!note || note.length < 15) {
+          FincestemCore.ui.toast('Harap tuliskan refleksi pengalaman Day 1 minimal beberapa kalimat!', 'warning');
+          return;
+        }
+        const refleksiPayload = {
+          submitted: true,
+          content: note,
+          submitted_at: new Date().toISOString()
+        };
+        localStorage.setItem('fincestem_refleksi_ft_day1_' + cleanNisn, JSON.stringify(refleksiPayload));
+        if (unpadded !== cleanNisn) {
+          localStorage.setItem('fincestem_refleksi_ft_day1_' + unpadded, JSON.stringify(refleksiPayload));
+        }
       } else {
         const noteInput = document.getElementById('txtRefleksiNote');
         note = noteInput ? noteInput.value.trim() : '';
       }
 
       FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
-        if (isFTDay1 && type === 'asesmen') {
-          FincestemCore.ui.toast('Asesmen Finansial Day 1 tersimpan! Tahap berikutnya (Dokumentasi Foto) sekarang telah terbuka.', 'success');
-        } else if (isFTDay1 && type === 'refleksi') {
-          FincestemCore.ui.toast('Jurnal Refleksi Day 1 berhasil disimpan! Seluruh tahapan Day 1 Anda telah lengkap.', 'success');
+        if (isFTDay1 && type === 'refleksi') {
+          FincestemCore.ui.toast('Jurnal Refleksi Day 1 berhasil disimpan! Seluruh tahapan pengerjaan Day 1 Anda telah lengkap.', 'success');
         } else {
           FincestemCore.ui.toast(`Tugas ${type.toUpperCase()} Day ${dayNumber} berhasil dikirim (Status: Submitted)!`, 'success');
         }
