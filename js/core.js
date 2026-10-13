@@ -1450,8 +1450,11 @@ const FincestemCore = {
         let isFt = false;
         try {
           const user = FincestemCore.auth.getUser() || {};
-          const studentZone = (user.zone || '').toUpperCase();
-          if (studentZone.includes('LUAR') || studentZone.includes('FIELD') || studentZone.includes('TRIP')) {
+          const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+            ? FincestemCore.zones.getStudentZone(user.nisn || user.identifier, user.class || user.class_name, user.zone)
+            : (user.zone || '');
+          const zUpper = (studentZone || '').toUpperCase();
+          if (zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP')) {
             isFt = true;
           }
         } catch (e) {}

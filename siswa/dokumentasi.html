@@ -370,6 +370,32 @@
           <span>Foto Sudah Pas, Unggah Foto!</span>
         </button>
       </div>
+  <!-- MODAL SUKSES DOKUMENTASI DAY 1 FIELD TRIP -->
+  <div id="ftDokSuccessModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high animate-in fade-in zoom-in-95 duration-200">
+      <div class="w-14 h-14 rounded-2xl bg-pink-500/15 text-pink-600 flex items-center justify-center mx-auto mb-1">
+        <span class="material-symbols-outlined text-3xl">photo_camera</span>
+      </div>
+      <div class="text-center flex flex-col gap-1">
+        <h3 class="font-black text-lg text-primary">Foto Dokumentasi Berhasil Diunggah!</h3>
+        <p class="text-xs text-slate-600 font-medium leading-relaxed">
+          Bukti foto lapangan Day 1 Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-2.5 pt-2">
+        <!-- Opsi 1: Lanjut ke Refleksi -->
+        <a href="dashboard.html?day=1&task=refleksi" class="w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center">
+          <span class="material-symbols-outlined text-xl">psychology</span>
+          <span>Lanjut ke Refleksi Mandiri (Tahap 5)</span>
+          <span class="material-symbols-outlined text-lg">arrow_forward</span>
+        </a>
+
+        <!-- Opsi 2: Tetap di Galeri Dokumentasi -->
+        <button onclick="closeFtDokSuccessModal()" class="w-full py-3 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs sm:text-sm transition-all border border-outline-variant/30 text-center cursor-pointer">
+          Tetap di Galeri Foto
+        </button>
+      </div>
     </div>
   </div>
 
@@ -436,7 +462,11 @@
                 return;
               }
             }
-            if (!access.canEdit || isReadOnlyUrl) {
+            let canEdit = access.canEdit;
+            if (studentCategory.isFieldTrip && dayNum === 1) {
+              canEdit = true;
+            }
+            if (!canEdit || isReadOnlyUrl) {
               // Sembunyikan tombol tambah foto jika mode hanya lihat
               const upBtns = document.querySelectorAll('button[onclick="toggleUploadModal(true)"]');
               upBtns.forEach(b => b.classList.add('hidden'));
@@ -482,43 +512,56 @@
 
     function toggleUploadModal(show) {
       const modal = document.getElementById('uploadModal');
+      if (!modal) return;
       if (show) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
         // Kunci sinyal GPS saat modal dibuka
-        requestGPSCoordinates(false);
+        try {
+          requestGPSCoordinates(false);
+        } catch (e) {
+          console.warn('GPS init error:', e);
+        }
 
         // Perbarui panduan ketentuan berdasarkan kategori Non-Field Trip vs Field Trip
         const policyEl = document.getElementById('uploadPolicyNotice');
         if (policyEl) {
-          const cat = getStudentCategoryInfo();
-          if (cat.isNonFieldTrip) {
-            policyEl.innerHTML = `
-              <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs flex items-start gap-2.5 shadow-2xs">
-                <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">verified_user</span>
-                <div class="flex flex-col">
-                  <span class="font-extrabold text-amber-950 text-xs">Ketentuan Peserta Non-Field Trip:</span>
-                  <span class="text-[11px] text-amber-900 leading-relaxed mt-0.5">
-                    Wajib mengambil foto langsung via <strong>Kamera HP (Geotag)</strong> di lokasi kegiatan. Jika mengunggah dari <strong>Galeri</strong>, sistem otomatis memberikan <strong>Rekomendasi Bintang 1 (⭐☆☆☆☆)</strong> pada evaluasi harian Fasilitator.
-                  </span>
+          try {
+            const cat = getStudentCategoryInfo();
+            if (cat.isNonFieldTrip) {
+              policyEl.innerHTML = `
+                <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs flex items-start gap-2.5 shadow-2xs">
+                  <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">verified_user</span>
+                  <div class="flex flex-col">
+                    <span class="font-extrabold text-amber-950 text-xs">Ketentuan Peserta Non-Field Trip:</span>
+                    <span class="text-[11px] text-amber-900 leading-relaxed mt-0.5">
+                      Wajib mengambil foto langsung via <strong>Kamera HP (Geotag)</strong> di lokasi kegiatan. Jika mengunggah dari <strong>Galeri</strong>, sistem otomatis memberikan <strong>Rekomendasi Bintang 1 (⭐☆☆☆☆)</strong> pada evaluasi harian Fasilitator.
+                    </span>
+                  </div>
                 </div>
-              </div>
-            `;
-          } else {
-            policyEl.innerHTML = `
-              <div class="p-3 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-xs flex items-start gap-2.5 shadow-2xs">
-                <span class="material-symbols-outlined text-sky-700 text-lg shrink-0 mt-0.5">travel_explore</span>
-                <div class="flex flex-col">
-                  <span class="font-extrabold text-sky-950 text-xs">Ketentuan Peserta Field Trip:</span>
-                  <span class="text-[11px] text-sky-900 leading-relaxed mt-0.5">
-                    Gunakan <strong>Kamera HP (Geotag)</strong> di titik rute perjalanan manapun (lintas daerah / provinsi) untuk merekam koordinat satelit riset lapangan Anda.
-                  </span>
+              `;
+            } else {
+              policyEl.innerHTML = `
+                <div class="p-3 rounded-2xl bg-sky-500/10 border border-sky-500/30 text-xs flex items-start gap-2.5 shadow-2xs">
+                  <span class="material-symbols-outlined text-sky-700 text-lg shrink-0 mt-0.5">travel_explore</span>
+                  <div class="flex flex-col">
+                    <span class="font-extrabold text-sky-950 text-xs">Ketentuan Peserta Field Trip:</span>
+                    <span class="text-[11px] text-sky-900 leading-relaxed mt-0.5">
+                      Gunakan <strong>Kamera HP (Geotag)</strong> di titik rute perjalanan manapun (lintas daerah / provinsi) untuk merekam koordinat satelit riset lapangan Anda.
+                    </span>
+                  </div>
                 </div>
-              </div>
-            `;
+              `;
+            }
+          } catch (e) {
+            console.warn('Policy notice error:', e);
           }
         }
       } else {
-        if (previewZoomController) previewZoomController.reset();
+        if (previewZoomController) {
+          try { previewZoomController.reset(); } catch (e) {}
+        }
+        modal.classList.remove('opacity-100');
         modal.classList.add('opacity-0', 'pointer-events-none');
       }
     }
@@ -1452,8 +1495,10 @@
         localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
 
         const cleanNisn = String(studentNisn).trim();
-        localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + cleanNisn, 'true');
-        localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + cleanNisn.replace(/^0+/, ''), 'true');
+        const idList = [studentNisn, cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + id, 'true');
+        });
       } catch (e) {
         console.error(e);
       }
@@ -1478,9 +1523,6 @@
       }
 
       // Catat ke progres siswa untuk sinkronisasi aktivitas berurutan
-      const urlParams = new URLSearchParams(window.location.search);
-      const dayParam = urlParams.get('day');
-      const docDayNum = dayParam ? parseInt(dayParam) : 1;
       if (FincestemCore.progress && studentNisn) {
         FincestemCore.progress.submitTask(studentNisn, docDayNum, 'dokumentasi', {
           photoId: newPhoto.id,
@@ -1491,8 +1533,10 @@
       }
 
       toggleUploadModal(false);
-      document.getElementById('modalPhotoTitle').value = '';
-      document.getElementById('modalPhotoDesc').value = '';
+      const titleEl = document.getElementById('modalPhotoTitle');
+      if (titleEl) titleEl.value = '';
+      const descEl = document.getElementById('modalPhotoDesc');
+      if (descEl) descEl.value = '';
       const camInput = document.getElementById('modalPhotoCameraInput');
       if (camInput) camInput.value = '';
       const fileInput = document.getElementById('modalPhotoFileInput');
@@ -1509,6 +1553,30 @@
 
       FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
       renderPhotos();
+
+      // Untuk Day 1 Field Trip, munculkan modal navigasi ke Tahap 5: Refleksi
+      const cat = getStudentCategoryInfo();
+      if (cat.isFieldTrip && docDayNum === 1) {
+        setTimeout(() => {
+          showFtDokSuccessModal();
+        }, 350);
+      }
+    }
+
+    function showFtDokSuccessModal() {
+      const modal = document.getElementById('ftDokSuccessModal');
+      if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+      }
+    }
+
+    function closeFtDokSuccessModal() {
+      const modal = document.getElementById('ftDokSuccessModal');
+      if (modal) {
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none');
+      }
     }
   </script>
 </body>
