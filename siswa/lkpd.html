@@ -904,6 +904,45 @@
           </div>
         `}
 
+        <!-- MODAL KONFIRMASI TAHAP BERIKUTNYA (ASESMEN ATAU KEMBALI KE DAY 1) -->
+        <div id="modalLkpdFtSuccess" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 flex flex-col gap-4 transform transition-all duration-300 scale-95">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                <span class="material-symbols-outlined text-2xl">check_circle</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-black uppercase text-teal-700 tracking-wider">Tahap 2 LKPD Selesai</span>
+                <h3 class="text-base sm:text-lg font-black text-slate-900 leading-snug">LKPD Day 1 Berhasil Disimpan!</h3>
+              </div>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+              Data rencana uang saku dan komitmen finansial Anda telah tersimpan. Silakan pilih langkah yang ingin Anda lakukan selanjutnya:
+            </p>
+
+            <div class="flex flex-col gap-2.5 pt-2">
+              <!-- Opsi 1: Lanjut ke Asesmen -->
+              <a href="dashboard.html?day=1&task=asesmen" class="w-full py-3.5 px-4 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center">
+                <span class="material-symbols-outlined text-xl">fact_check</span>
+                <span>Lanjut ke Asesmen (Tahap 3)</span>
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+              </a>
+
+              <!-- Opsi 2: Kembali ke Halaman Day 1 -->
+              <a href="dashboard.html?day=1" class="w-full py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all text-center">
+                <span class="material-symbols-outlined text-lg">home</span>
+                <span>Kembali ke Halaman Day 1</span>
+              </a>
+
+              <!-- Opsi 3: Tetap di LKPD -->
+              <button type="button" onclick="closeFtLkpdModal()" class="w-full py-2 text-xs font-semibold text-slate-400 hover:text-slate-600 transition-colors cursor-pointer">
+                Tetap di Lembar Kerja Ini
+              </button>
+            </div>
+          </div>
+        </div>
+
         <!-- Copyright Footer -->
         <div class="text-center pt-2 pb-4">
           <p class="font-label-sm text-label-sm text-outline text-xs">
@@ -1120,7 +1159,36 @@
         }
 
         FincestemCore.ui.toast('LKPD Day 1 Field Trip (Budgeting Plan) berhasil disimpan & diagnosis dicatat!', 'success');
+
+        // Tampilkan modal pilihan: Lanjut ke Asesmen atau Kembali ke Halaman Day 1
+        setTimeout(() => {
+          showFtLkpdSuccessModal();
+        }, 300);
       }, 500);
+    }
+
+    function showFtLkpdSuccessModal() {
+      const modal = document.getElementById('modalLkpdFtSuccess');
+      if (!modal) return;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const inner = modal.querySelector('div');
+      if (inner) {
+        inner.classList.remove('scale-95');
+        inner.classList.add('scale-100');
+      }
+    }
+
+    function closeFtLkpdModal() {
+      const modal = document.getElementById('modalLkpdFtSuccess');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      const inner = modal.querySelector('div');
+      if (inner) {
+        inner.classList.remove('scale-100');
+        inner.classList.add('scale-95');
+      }
     }
   </script>
 </body>

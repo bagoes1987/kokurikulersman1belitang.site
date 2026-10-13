@@ -984,7 +984,11 @@
           }
           if (!hasLkpd) {
             try {
-              const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + studentNisn);
+              const cleanNisn = String(studentNisn).trim();
+              const unpadded = cleanNisn.replace(/^0+/, '');
+              const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + cleanNisn) ||
+                         localStorage.getItem('fincestem_lkpd_ft_day1_' + unpadded) ||
+                         localStorage.getItem('fincestem_lkpd_ft_day1_' + ('0' + unpadded));
               if (lk && JSON.parse(lk).submitted) hasLkpd = true;
             } catch(e) {}
           }
@@ -1119,6 +1123,7 @@
         const nilaiIconClass = canInteract ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-500';
 
         const card = document.createElement('div');
+        card.id = 'dayCard_' + dNum;
         card.className = `p-4 sm:p-5 rounded-3xl ${bgClass} border ${borderClass} flex flex-col gap-3 transition-all shadow-xs`;
 
         const dayPillHtml = isTrial
@@ -1292,6 +1297,44 @@
 
         container.appendChild(card);
       });
+
+      checkUrlAction();
+    }
+
+    let hasHandledUrlAction = false;
+    function checkUrlAction() {
+      if (hasHandledUrlAction) return;
+      if (!daysSchedule || daysSchedule.length === 0 || !studentProgress) return;
+      const urlParams = new URLSearchParams(window.location.search);
+      const targetDay = parseInt(urlParams.get('day'));
+      const targetTask = urlParams.get('task');
+      if (targetDay) {
+        hasHandledUrlAction = true;
+        // Buka accordion Day yang dituju jika masih tertutup
+        const detailEl = document.getElementById('dayDetails_' + targetDay);
+        const chevronEl = document.getElementById('dayChevron_' + targetDay);
+        if (detailEl && detailEl.classList.contains('hidden')) {
+          detailEl.classList.remove('hidden');
+          detailEl.classList.add('flex');
+          if (chevronEl) chevronEl.classList.add('rotate-180', 'text-teal-600');
+          expandedDayNumber = targetDay;
+        }
+
+        // Scroll halus ke kartu Day
+        const cardEl = document.getElementById('dayCard_' + targetDay);
+        if (cardEl) {
+          setTimeout(() => {
+            cardEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }, 150);
+        }
+
+        // Jika ada targetTask (misal: 'asesmen'), buka langsung modal aktivitasnya
+        if (targetTask) {
+          setTimeout(() => {
+            handleActivityClick(targetDay, targetTask);
+          }, 350);
+        }
+      }
     }
 
     function handleActivityClick(dayNumber, type) {
@@ -1328,7 +1371,11 @@
         let hasLkpd = !!taskMap['1_lkpd'];
         if (!hasLkpd) {
           try {
-            const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + studentNisn);
+            const cleanNisn = String(studentNisn).trim();
+            const unpadded = cleanNisn.replace(/^0+/, '');
+            const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + cleanNisn) ||
+                       localStorage.getItem('fincestem_lkpd_ft_day1_' + unpadded) ||
+                       localStorage.getItem('fincestem_lkpd_ft_day1_' + ('0' + unpadded));
             if (lk && JSON.parse(lk).submitted) hasLkpd = true;
           } catch(e) {}
         }
