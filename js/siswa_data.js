@@ -2774,7 +2774,7 @@ window.FincestemMasterStudents = [
     "ibu": "EKA SUSANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG JAYA",
     "hp": "",
-    "zone": "FINCESTEM LUAR OKU TIMUR"
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -4736,7 +4736,7 @@ window.FincestemMasterStudents = [
     "ibu": "DEWI ANDRAYANI",
     "asal_sekolah": "SMP NEGERI O1 BELITANG",
     "hp": "",
-    "zone": "FINCESTEM LUAR OKU TIMUR"
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -6068,7 +6068,7 @@ window.FincestemMasterStudents = [
     "ibu": "SULARMI",
     "asal_sekolah": "AMP NEGERI 01 BELITANG",
     "hp": "",
-    "zone": "FINCESTEM LUAR OKU TIMUR"
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -8966,7 +8966,7 @@ window.FincestemMasterStudents = [
     "ibu": "SULAN NINGSIH",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
     "hp": "",
-    "zone": "FINCESTEM OKU TIMUR"
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -9920,7 +9920,7 @@ window.FincestemMasterStudents = [
     "ibu": "ERVINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
     "hp": "",
-    "zone": "FINCESTEM OKU TIMUR"
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -11900,7 +11900,7 @@ window.FincestemMasterStudents = [
     "ibu": "YUSROH",
     "asal_sekolah": "SMP NEGERI 01 BUAY PEMUKA BANGSA RAJA",
     "hp": "",
-    "zone": "FINCESTEM OKU TIMUR"
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -12152,7 +12152,7 @@ window.FincestemMasterStudents = [
     "ibu": "EFITRIA ESTIRIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
     "hp": "",
-    "zone": "FINCESTEM OKU TIMUR"
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -12854,7 +12854,7 @@ window.FincestemMasterStudents = [
     "ibu": "RINAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MADANG RAYA",
     "hp": "",
-    "zone": "FINCESTEM OKU TIMUR"
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -13988,7 +13988,7 @@ window.FincestemMasterStudents = [
     "ibu": "EVI RAHAYU",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
     "hp": "82176201223",
-    "zone": "FINCESTEM LUAR OKU TIMUR"
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -14060,7 +14060,7 @@ window.FincestemMasterStudents = [
     "ibu": "MUJIASIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
     "hp": "85758507486",
-    "zone": "FINCESTEM LUAR OKU TIMUR"
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,

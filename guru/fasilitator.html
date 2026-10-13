@@ -148,10 +148,13 @@
         Presensi
       </button>
       <button id="btnTabFas4" onclick="switchFasTab('galeri')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer flex items-center justify-center gap-1">
-        <span>Galeri Foto</span>
+        <span>Galeri</span>
       </button>
       <button id="btnTabFas3" onclick="switchFasTab('materi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer">
         Rubrik
+      </button>
+      <button id="btnTabFas5" onclick="switchFasTab('rekap')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer flex items-center justify-center gap-1">
+        <span>Rekap FT</span>
       </button>
     </div>
   </header>
@@ -347,6 +350,109 @@
             <span class="font-bold text-blue-800">Pilar STEM</span>
             <span class="text-[11px] text-on-surface-variant">Uji mutu air baku pH &amp; kalkulasi debit air.</span>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: REKAPITULASI PESERTA FIELD TRIP (ROMBEL BINAAN & SEMUA KELAS) -->
+    <div id="panelFasRekap" class="hidden flex flex-col gap-3.5">
+      <!-- Header Banner -->
+      <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent rounded-3xl p-5 border border-amber-300/60 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md">
+              <span class="material-symbols-outlined text-2xl">travel_explore</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <h3 class="font-extrabold text-sm sm:text-base text-slate-800">Rekap Peserta Field Trip</h3>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500 text-white">2026</span>
+              </div>
+              <p class="text-xs text-slate-500 mt-0.5">Daftar siswa Field Trip vs Non-Field Trip rombel binaan</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Stats Kelas Binaan -->
+        <div class="grid grid-cols-3 gap-2 pt-2 border-t border-amber-200/50 text-center">
+          <div class="p-2.5 rounded-2xl bg-white/80 border border-amber-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-amber-800">Peserta FT</span>
+            <div id="fasRekapCountFT" class="text-base font-black text-amber-600 mt-0.5">0</div>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-white/80 border border-emerald-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-emerald-800">Non-FT</span>
+            <div id="fasRekapCountNonFT" class="text-base font-black text-emerald-600 mt-0.5">0</div>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-white/80 border border-slate-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-slate-700">Total Kelas</span>
+            <div id="fasRekapCountTotal" class="text-base font-black text-slate-800 mt-0.5">0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab Sub-Switcher: Kelas Binaan vs Seluruh Sekolah -->
+      <div class="flex items-center gap-1.5 p-1 rounded-2xl bg-surface-container-high/60 border border-outline-variant/30">
+        <button id="btnFasRekapSubBinaan" onclick="switchFasRekapSubView('binaan')" class="flex-1 py-1.5 text-xs font-bold rounded-xl transition-all bg-[#006a61] text-white shadow-2xs cursor-pointer">
+          Kelas Binaan Saya
+        </button>
+        <button id="btnFasRekapSubAll" onclick="switchFasRekapSubView('all')" class="flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all text-on-surface-variant hover:text-on-surface cursor-pointer">
+          Semua 33 Rombel
+        </button>
+      </div>
+
+      <!-- VIEW 1: DAFTAR SISWA KELAS BINAAN -->
+      <div id="fasRekapViewBinaan" class="bg-surface-container-lowest rounded-3xl p-4 border border-outline-variant/25 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-[#006a61] text-lg">format_list_bulleted</span>
+            <h4 id="fasRekapBinaanTitle" class="font-bold text-xs text-on-surface">Daftar Siswa Kelas Binaan</h4>
+          </div>
+          <span id="fasRekapBinaanBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-[#006a61]">Memuat...</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-surface-container-high/60 text-on-surface font-extrabold uppercase text-[10px] border-b border-outline-variant/30">
+              <tr>
+                <th class="py-2 px-2 text-center w-8">No</th>
+                <th class="py-2 px-2.5">NISN</th>
+                <th class="py-2 px-2.5">Nama Siswa</th>
+                <th class="py-2 px-2 text-center w-8">L/P</th>
+                <th class="py-2 px-2 text-center">Status</th>
+              </tr>
+            </thead>
+            <tbody id="fasRekapBinaanTableBody" class="divide-y divide-outline-variant/10 text-xs">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VIEW 2: REKAPITULASI 33 ROMBEL LENGKAP -->
+      <div id="fasRekapViewAll" class="hidden bg-surface-container-lowest rounded-3xl p-4 border border-outline-variant/25 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-amber-600 text-lg">table_chart</span>
+            <h4 class="font-bold text-xs text-on-surface">Rekap 33 Rombel SMAN 1 Belitang</h4>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">455 Peserta FT</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="bg-surface-container-high/60 text-on-surface font-extrabold uppercase text-[10px] border-b border-outline-variant/30">
+              <tr>
+                <th class="py-2 px-2 text-center w-8">No</th>
+                <th class="py-2 px-2">Rombel</th>
+                <th class="py-2 px-2 text-center">FT</th>
+                <th class="py-2 px-2 text-center">Non-FT</th>
+                <th class="py-2 px-2 text-center">Total</th>
+              </tr>
+            </thead>
+            <tbody id="fasRekapAllTableBody" class="divide-y divide-outline-variant/10 text-xs">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -653,7 +759,8 @@
         { key: 'penilaian', btnId: 'btnTabFas1', panelId: 'panelFasPenilaian' },
         { key: 'presensi', btnId: 'btnTabFas2', panelId: 'panelFasPresensi' },
         { key: 'galeri', btnId: 'btnTabFas4', panelId: 'panelFasGaleri' },
-        { key: 'materi', btnId: 'btnTabFas3', panelId: 'panelFasMateri' }
+        { key: 'materi', btnId: 'btnTabFas3', panelId: 'panelFasMateri' },
+        { key: 'rekap', btnId: 'btnTabFas5', panelId: 'panelFasRekap' }
       ];
 
       tabs.forEach(t => {
@@ -674,6 +781,9 @@
 
       if (tab === 'galeri') {
         renderFasilGallery();
+      }
+      if (tab === 'rekap') {
+        renderFasRekapView();
       }
     }
 
@@ -1382,6 +1492,127 @@
           .catch(() => displayPhotos(localDocs));
       } else {
         displayPhotos(localDocs);
+      }
+    }
+    // ==========================================
+    // REKAP PESERTA FIELD TRIP PORTAL FASILITATOR
+    // ==========================================
+    let currentFasRekapSub = 'binaan';
+
+    function switchFasRekapSubView(sub) {
+      currentFasRekapSub = sub;
+      const btnBinaan = document.getElementById('btnFasRekapSubBinaan');
+      const btnAll = document.getElementById('btnFasRekapSubAll');
+      const viewBinaan = document.getElementById('fasRekapViewBinaan');
+      const viewAll = document.getElementById('fasRekapViewAll');
+
+      if (sub === 'binaan') {
+        if (btnBinaan) btnBinaan.className = 'flex-1 py-1.5 text-xs font-bold rounded-xl transition-all bg-[#006a61] text-white shadow-2xs cursor-pointer';
+        if (btnAll) btnAll.className = 'flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all text-on-surface-variant hover:text-on-surface cursor-pointer';
+        if (viewBinaan) viewBinaan.classList.remove('hidden');
+        if (viewAll) viewAll.classList.add('hidden');
+      } else {
+        if (btnBinaan) btnBinaan.className = 'flex-1 py-1.5 text-xs font-semibold rounded-xl transition-all text-on-surface-variant hover:text-on-surface cursor-pointer';
+        if (btnAll) btnAll.className = 'flex-1 py-1.5 text-xs font-bold rounded-xl transition-all bg-[#006a61] text-white shadow-2xs cursor-pointer';
+        if (viewBinaan) viewBinaan.classList.add('hidden');
+        if (viewAll) viewAll.classList.remove('hidden');
+      }
+    }
+
+    function renderFasRekapView() {
+      const allStudents = window.FincestemMasterStudents || [];
+      const currentClass = assignedClass || 'KELAS X.1';
+      const normClass = currentClass.replace(/^KELAS\s+/i, '').trim().toUpperCase();
+
+      const studentsInBinaan = allStudents.filter(s => {
+        const sClass = (s.class || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        return sClass === normClass;
+      });
+
+      const ftStudents = studentsInBinaan.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
+      const nonFtStudents = studentsInBinaan.filter(s => s.zone !== 'FINCESTEM LUAR OKU TIMUR' && !s.is_field_trip);
+
+      // Update counters
+      const elFT = document.getElementById('fasRekapCountFT');
+      const elNonFT = document.getElementById('fasRekapCountNonFT');
+      const elTotal = document.getElementById('fasRekapCountTotal');
+      const elTitle = document.getElementById('fasRekapBinaanTitle');
+      const elBadge = document.getElementById('fasRekapBinaanBadge');
+
+      if (elFT) elFT.textContent = `${ftStudents.length} Siswa`;
+      if (elNonFT) elNonFT.textContent = `${nonFtStudents.length} Siswa`;
+      if (elTotal) elTotal.textContent = `${studentsInBinaan.length} Siswa`;
+      if (elTitle) elTitle.textContent = `Daftar Siswa ${currentClass}`;
+      if (elBadge) elBadge.textContent = `${ftStudents.length} Field Trip (${studentsInBinaan.length} Total)`;
+
+      // Sort: FT first, then by name
+      const sortedBinaan = [...studentsInBinaan].sort((a, b) => {
+        const aIsFT = a.zone === 'FINCESTEM LUAR OKU TIMUR' || a.is_field_trip === true;
+        const bIsFT = b.zone === 'FINCESTEM LUAR OKU TIMUR' || b.is_field_trip === true;
+        if (aIsFT && !bIsFT) return -1;
+        if (!aIsFT && bIsFT) return 1;
+        return (a.nama || '').localeCompare(b.nama || '');
+      });
+
+      // Render Binaan Table
+      const tbBinaan = document.getElementById('fasRekapBinaanTableBody');
+      if (tbBinaan) {
+        if (sortedBinaan.length === 0) {
+          tbBinaan.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400 text-xs">Belum ada data siswa untuk kelas ini.</td></tr>`;
+        } else {
+          let htmlBinaan = '';
+          sortedBinaan.forEach((s, idx) => {
+            const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+            const badge = isFT
+              ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500 text-white shadow-2xs">✈️ Field Trip</span>`
+              : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">🌿 Non-FT</span>`;
+
+            htmlBinaan += `
+              <tr class="${isFT ? 'bg-amber-50/30' : ''} hover:bg-slate-50 transition-colors">
+                <td class="py-2 px-2 text-center font-bold text-slate-400">${idx + 1}</td>
+                <td class="py-2 px-2.5 font-medium text-slate-600">${s.nisn || '-'}</td>
+                <td class="py-2 px-2.5 font-bold text-slate-800">${s.nama || '-'}</td>
+                <td class="py-2 px-2 text-center font-medium text-slate-600">${s.gender || '-'}</td>
+                <td class="py-2 px-2 text-center whitespace-nowrap">${badge}</td>
+              </tr>
+            `;
+          });
+          tbBinaan.innerHTML = htmlBinaan;
+        }
+      }
+
+      // Render All 33 Rombels Table
+      const tbAll = document.getElementById('fasRekapAllTableBody');
+      if (tbAll) {
+        const classList = [];
+        ['X', 'XI', 'XII'].forEach(lvl => {
+          for (let i = 1; i <= 11; i++) {
+            classList.push(`KELAS ${lvl}.${i}`);
+          }
+        });
+
+        let htmlAll = '';
+        classList.forEach((cls, idx) => {
+          const norm = cls.replace(/^KELAS\s+/i, '').trim().toUpperCase();
+          const inClass = allStudents.filter(s => (s.class || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+          const ft = inClass.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true).length;
+          const nonFt = inClass.length - ft;
+          const isMyClass = norm === normClass;
+
+          htmlAll += `
+            <tr class="${isMyClass ? 'bg-teal-50/60 font-bold' : ''} hover:bg-slate-50 transition-colors">
+              <td class="py-2 px-2 text-center font-bold text-slate-400">${idx + 1}</td>
+              <td class="py-2 px-2 font-bold text-slate-800 whitespace-nowrap">
+                <span>${cls}</span>
+                ${isMyClass ? '<span class="ml-1 text-[9px] px-1.5 py-0.2 rounded bg-teal-600 text-white font-extrabold">Anda</span>' : ''}
+              </td>
+              <td class="py-2 px-2 text-center whitespace-nowrap font-extrabold text-amber-700">${ft > 0 ? ft : '<span class="text-slate-300 font-normal">0</span>'}</td>
+              <td class="py-2 px-2 text-center whitespace-nowrap text-emerald-700">${nonFt}</td>
+              <td class="py-2 px-2 text-center whitespace-nowrap font-black text-slate-700">${inClass.length}</td>
+            </tr>
+          `;
+        });
+        tbAll.innerHTML = htmlAll;
       }
     }
   </script>
