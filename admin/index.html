@@ -525,12 +525,51 @@
     </div>
 
     <!-- TAB 2: JADWAL & EKSPLORASI FINCESTEM (DAY 1 S.D DAY 7) -->
-    <div id="panelAdminSchedule" class="hidden flex flex-col gap-3">
-      <!-- SAKELAR KONTROL DAY UJI COBA (GLADI BERSIH) -->
-      <div class="bg-gradient-to-br from-amber-500/10 via-amber-50 to-orange-50/40 rounded-3xl p-5 border border-amber-300 shadow-sm flex flex-col gap-3">
+    <div id="panelAdminSchedule" class="hidden flex flex-col gap-3.5">
+
+      <!-- SUB-NAVIGASI SEGMENTED CONTROL: FIELD TRIP VS NON-FIELD TRIP -->
+      <div class="bg-surface-container-lowest p-1.5 rounded-2xl border border-outline-variant/30 flex items-center gap-1.5 shadow-2xs">
+        <button id="btnSchedSubTab_ft" onclick="switchAdminScheduleCategory('field_trip')" class="flex-1 py-2.5 px-3 text-center text-xs font-black rounded-xl transition-all cursor-pointer bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-xs flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-base">directions_bus</span>
+          <span>Jadwal Field Trip (455 Siswa)</span>
+        </button>
+        <button id="btnSchedSubTab_nonft" onclick="switchAdminScheduleCategory('non_field_trip')" class="flex-1 py-2.5 px-3 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-base">school</span>
+          <span>Jadwal Non-Field Trip (OKU Timur)</span>
+        </button>
+      </div>
+
+      <!-- BANNER KHUSUS FIELD TRIP (AKTIF KETIKA SUB-TAB FIELD TRIP DIPILIH) -->
+      <div id="bannerAdminFieldTripInfo" class="bg-gradient-to-br from-amber-500/10 via-amber-50/70 to-orange-50/40 rounded-3xl p-5 border border-amber-300/80 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between flex-wrap gap-3">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center shrink-0 shadow-xs">
+              <span class="material-symbols-outlined text-2xl font-black">route</span>
+            </div>
+            <div class="min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <h4 class="font-extrabold text-sm sm:text-base text-slate-900 leading-snug">Jadwal Resmi Ekspedisi Field Trip (Day 1 s.d. 7)</h4>
+                <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-200 text-slate-950 border border-amber-400 shadow-2xs">455 SISWA</span>
+              </div>
+              <p class="text-xs text-amber-950/85 mt-0.5 leading-relaxed font-medium">
+                Rute 7 Hari: Belitang → Semarang → Malang → Bromo → Yogyakarta → Belitang (09 - 15 Nov 2026).
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="px-3 py-1.5 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1.5 shadow-2xs">
+              <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+              Didampingi Pembina 24/7 (Bintang 5)
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- SAKELAR KONTROL DAY UJI COBA (GLADI BERSIH - HANYA MUNCUL DI SUB-TAB NON-FIELD TRIP) -->
+      <div id="boxAdminTrialDay" class="hidden bg-gradient-to-br from-blue-500/10 via-blue-50 to-indigo-50/40 rounded-3xl p-5 border border-blue-200 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-11 h-11 rounded-2xl bg-[#0875D1] text-white flex items-center justify-center shrink-0 shadow-xs">
               <span class="material-symbols-outlined text-2xl">model_training</span>
             </div>
             <div class="min-w-0">
@@ -538,25 +577,25 @@
                 <h4 class="font-extrabold text-sm sm:text-base text-slate-800 leading-snug">Day Uji Coba (Gladi Bersih FINCESTEM)</h4>
                 <span id="badgeTrialStatus" class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs">AKTIF</span>
               </div>
-              <p class="text-xs text-amber-900/85 mt-0.5 leading-relaxed font-medium">
-                Sesi simulasi orientasi sistem bagi peserta didik sebelum pelaksanaan riil. Letak di posisi paling atas.
+              <p class="text-xs text-slate-600 mt-0.5 leading-relaxed font-medium">
+                Sesi simulasi orientasi sistem bagi peserta didik Non-Field Trip sebelum pelaksanaan riil.
               </p>
             </div>
           </div>
 
           <!-- Switch Toggle Aktif/Nonaktif -->
-          <div class="flex items-center gap-3 bg-white px-3.5 py-2 rounded-2xl border border-amber-300/80 shadow-2xs">
+          <div class="flex items-center gap-3 bg-white px-3.5 py-2 rounded-2xl border border-blue-200 shadow-2xs">
             <span class="text-xs font-bold text-slate-700">Tampilkan ke Siswa:</span>
             <label class="relative inline-flex items-center cursor-pointer">
               <input type="checkbox" id="chkMasterTrialDay" onchange="toggleMasterTrialDay(this.checked)" class="sr-only peer" checked>
-              <div class="w-12 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-amber-500"></div>
+              <div class="w-12 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
             </label>
           </div>
         </div>
 
-        <div class="p-3 rounded-2xl bg-white/90 border border-amber-200 text-xs text-amber-950 flex items-center gap-2">
-          <span class="material-symbols-outlined text-amber-600 text-base shrink-0">visibility</span>
-          <span id="textTrialExplain">Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan. Matikan sakelar ini saat kegiatan resmi dimulai agar siswa fokus pada Day 1-7.</span>
+        <div class="p-3 rounded-2xl bg-white/90 border border-blue-100 text-xs text-slate-700 flex items-center gap-2">
+          <span class="material-symbols-outlined text-blue-600 text-base shrink-0">visibility</span>
+          <span id="textTrialExplain">Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan simulasi. Matikan sakelar ini saat kegiatan resmi dimulai.</span>
         </div>
       </div>
 
@@ -564,8 +603,8 @@
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between flex-wrap gap-2">
           <div>
-            <h3 class="font-bold text-sm text-on-surface">Manajemen Jadwal Eksplor (Day 1 - 7)</h3>
-            <p class="text-[11px] text-on-surface-variant">Atur tanggal, jam buka/tutup, dan status aktif harian siswa.</p>
+            <h3 id="adminScheduleHeaderTitle" class="font-bold text-sm text-on-surface">Manajemen Jadwal Field Trip (Day 1 - 7)</h3>
+            <p id="adminScheduleHeaderDesc" class="text-[11px] text-on-surface-variant">Atur tanggal, jam buka/tutup, dan status aktif harian siswa Field Trip secara independen.</p>
           </div>
           <div class="flex items-center gap-2">
             <button onclick="setAllDaysStatus(true)" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center gap-1 cursor-pointer transition-all">
@@ -580,9 +619,9 @@
           </div>
         </div>
 
-        <div class="p-3 rounded-2xl bg-blue-50/60 border border-blue-100 flex items-center gap-2 text-xs text-blue-900">
-          <span class="material-symbols-outlined text-blue-600 text-base">info</span>
-          <span>Jika <strong>Jadwal Otomatis</strong> aktif, aktivitas hari tersebut akan terbuka otomatis hanya pada tanggal dan rentang jam yang ditentukan.</span>
+        <div id="adminScheduleInfoNotice" class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center gap-2 text-xs text-amber-950">
+          <span class="material-symbols-outlined text-amber-600 text-base shrink-0">directions_bus</span>
+          <span>Jadwal Field Trip 7 Hari terhubung langsung dengan rute resmi dan penilaian tervalidasi otomatis Bintang 5 di portal siswa.</span>
         </div>
       </div>
 
@@ -3782,9 +3821,62 @@
     }
 
     /* ========================================================
-       MANAJEMEN JADWAL EKSPLOR FINCESTEM (DAY 1 - 7 & DAY 0)
+       MANAJEMEN JADWAL EKSPLOR FINCESTEM (FIELD TRIP & NON-FIELD TRIP)
        ======================================================== */
     let adminScheduleList = [];
+    let currentAdminScheduleCategory = 'field_trip';
+
+    function switchAdminScheduleCategory(category) {
+      currentAdminScheduleCategory = category;
+
+      const btnFt = document.getElementById('btnSchedSubTab_ft');
+      const btnNonFt = document.getElementById('btnSchedSubTab_nonft');
+      const boxTrial = document.getElementById('boxAdminTrialDay');
+      const bannerFt = document.getElementById('bannerAdminFieldTripInfo');
+      const hdrTitle = document.getElementById('adminScheduleHeaderTitle');
+      const hdrDesc = document.getElementById('adminScheduleHeaderDesc');
+      const infoNotice = document.getElementById('adminScheduleInfoNotice');
+
+      if (category === 'field_trip') {
+        if (btnFt) {
+          btnFt.className = 'flex-1 py-2.5 px-3 text-center text-xs font-black rounded-xl transition-all cursor-pointer bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 shadow-xs flex items-center justify-center gap-2';
+        }
+        if (btnNonFt) {
+          btnNonFt.className = 'flex-1 py-2.5 px-3 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center gap-2';
+        }
+        if (boxTrial) boxTrial.classList.add('hidden');
+        if (bannerFt) bannerFt.classList.remove('hidden');
+        if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal Field Trip (Day 1 - 7)';
+        if (hdrDesc) hdrDesc.textContent = 'Ekspedisi Luar 2026: Belitang → Semarang → Malang → Bromo → Yogyakarta (455 Siswa). Atur tanggal, jam, dan status buka/tutup harian.';
+        if (infoNotice) {
+          infoNotice.className = 'p-3 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center gap-2 text-xs text-amber-950';
+          infoNotice.innerHTML = `
+            <span class="material-symbols-outlined text-amber-600 text-base shrink-0">directions_bus</span>
+            <span>Jadwal Field Trip 7 Hari terhubung langsung dengan rute resmi dan penilaian tervalidasi otomatis Bintang 5 di portal siswa.</span>
+          `;
+        }
+      } else {
+        if (btnFt) {
+          btnFt.className = 'flex-1 py-2.5 px-3 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center gap-2';
+        }
+        if (btnNonFt) {
+          btnNonFt.className = 'flex-1 py-2.5 px-3 text-center text-xs font-black rounded-xl transition-all cursor-pointer bg-[#0875D1] text-white shadow-xs flex items-center justify-center gap-2';
+        }
+        if (boxTrial) boxTrial.classList.remove('hidden');
+        if (bannerFt) bannerFt.classList.add('hidden');
+        if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal Non-Field Trip (OKU Timur)';
+        if (hdrDesc) hdrDesc.textContent = 'Riset Lapangan OKU Timur (710 Siswa). Atur tanggal, jam buka/tutup, dan status aktif harian siswa.';
+        if (infoNotice) {
+          infoNotice.className = 'p-3 rounded-2xl bg-blue-50/60 border border-blue-100 flex items-center gap-2 text-xs text-blue-900';
+          infoNotice.innerHTML = `
+            <span class="material-symbols-outlined text-blue-600 text-base shrink-0">info</span>
+            <span>Jika <strong>Jadwal Otomatis</strong> aktif, aktivitas hari tersebut akan terbuka otomatis hanya pada tanggal dan rentang jam yang ditentukan.</span>
+          `;
+        }
+      }
+
+      renderAdminScheduleView();
+    }
 
     function toggleMasterTrialDay(isActive) {
       const badge = document.getElementById('badgeTrialStatus');
@@ -3797,7 +3889,7 @@
       }
       if (text) {
         text.innerHTML = isActive 
-          ? 'Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan. Matikan sakelar ini saat kegiatan resmi dimulai agar siswa fokus pada Day 1-7.' 
+          ? 'Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan simulasi. Matikan sakelar ini saat kegiatan resmi dimulai.' 
           : 'Saat <strong>NONAKTIF</strong>, Day 0 disembunyikan sepenuhnya dari peserta didik &amp; fasilitator sehingga tidak mengganggu kegiatan resmi.';
       }
 
@@ -3817,27 +3909,32 @@
       if (!container) return;
       container.innerHTML = '<div class="py-6 text-center text-xs text-slate-400">Memuat jadwal...</div>';
 
+      const cat = currentAdminScheduleCategory || 'field_trip';
+      const isFT = (cat === 'field_trip');
+
       FincestemCore.schedule.getSchedule(function(days) {
         adminScheduleList = days;
         container.innerHTML = '';
 
-        // Sinkronkan Sakelar Master Day Uji Coba (Day 0)
-        const d0 = days.find(x => Number(x.day_number) === 0);
-        const isTrialActive = d0 ? (Number(d0.is_active) === 1) : false;
-        const chkMaster = document.getElementById('chkMasterTrialDay');
-        const badgeMaster = document.getElementById('badgeTrialStatus');
-        const textMaster = document.getElementById('textTrialExplain');
-        if (chkMaster) chkMaster.checked = isTrialActive;
-        if (badgeMaster) {
-          badgeMaster.textContent = isTrialActive ? 'AKTIF' : 'NONAKTIF';
-          badgeMaster.className = isTrialActive 
-            ? 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs' 
-            : 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs';
-        }
-        if (textMaster) {
-          textMaster.innerHTML = isTrialActive 
-            ? 'Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan. Matikan sakelar ini saat kegiatan resmi dimulai agar siswa fokus pada Day 1-7.' 
-            : 'Saat <strong>NONAKTIF</strong>, Day 0 disembunyikan sepenuhnya dari peserta didik &amp; fasilitator sehingga tidak mengganggu kegiatan resmi.';
+        // Sinkronkan Sakelar Master Day Uji Coba (Day 0) hanya jika non_field_trip
+        if (!isFT) {
+          const d0 = days.find(x => Number(x.day_number) === 0);
+          const isTrialActive = d0 ? (Number(d0.is_active) === 1) : false;
+          const chkMaster = document.getElementById('chkMasterTrialDay');
+          const badgeMaster = document.getElementById('badgeTrialStatus');
+          const textMaster = document.getElementById('textTrialExplain');
+          if (chkMaster) chkMaster.checked = isTrialActive;
+          if (badgeMaster) {
+            badgeMaster.textContent = isTrialActive ? 'AKTIF' : 'NONAKTIF';
+            badgeMaster.className = isTrialActive 
+              ? 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs' 
+              : 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs';
+          }
+          if (textMaster) {
+            textMaster.innerHTML = isTrialActive 
+              ? 'Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan simulasi. Matikan sakelar ini saat kegiatan resmi dimulai.' 
+              : 'Saat <strong>NONAKTIF</strong>, Day 0 disembunyikan sepenuhnya dari peserta didik &amp; fasilitator sehingga tidak mengganggu kegiatan resmi.';
+          }
         }
 
         days.forEach(d => {
@@ -3846,63 +3943,85 @@
           const isOpen = Number(d.is_active) === 1;
           const isAuto = Number(d.auto_schedule) === 1;
 
-          const borderStyle = isTrial ? 'border-amber-300 bg-amber-50/20' : 'border-outline-variant/25 bg-surface-container-lowest';
-          const iconBg = isTrial ? 'bg-amber-500 text-white' : 'bg-[#0875D1] text-white';
-          const iconLabel = isTrial ? 'D0' : ('D' + d.day_number);
-          const trialBadge = isTrial ? '<span class="ml-1.5 px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-300 text-slate-950 uppercase tracking-wide">DAY UJI COBA</span>' : '';
+          // Styling khusus Field Trip vs Non-Field Trip
+          let borderStyle = isTrial 
+            ? 'border-amber-300 bg-amber-50/20' 
+            : (isFT ? 'border-amber-200/90 bg-white hover:border-amber-300' : 'border-outline-variant/25 bg-surface-container-lowest');
+          let iconBg = isTrial 
+            ? 'bg-amber-500 text-white' 
+            : (isFT ? 'bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-black shadow-2xs' : 'bg-[#0875D1] text-white font-black');
+          let iconLabel = isTrial ? 'D0' : ('D' + d.day_number);
+          let categoryBadge = isFT 
+            ? '<span class="ml-1 px-2.5 py-0.5 rounded-lg text-[10.5px] font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs">FIELD TRIP</span>' 
+            : (isTrial ? '<span class="ml-1.5 px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-300 text-slate-950 uppercase tracking-wide">DAY UJI COBA</span>' : '<span class="ml-1 px-2.5 py-0.5 rounded-lg text-[10.5px] font-bold bg-slate-100 text-slate-700 border border-slate-200">NON-FIELD</span>');
 
-          card.className = `p-4 rounded-3xl ${borderStyle} border shadow-xs flex flex-col gap-3`;
+          // Rute untuk Field Trip
+          const routeHtml = (isFT && d.route) ? `
+            <div class="p-2.5 rounded-2xl bg-amber-50/70 border border-amber-200/80 text-[11.5px] text-amber-950 flex items-start gap-2 shadow-2xs">
+              <span class="material-symbols-outlined text-base text-amber-600 shrink-0 mt-0.5">near_me</span>
+              <div class="min-w-0">
+                <span class="font-bold text-amber-900">Rute Perjalanan:</span>
+                <span class="text-slate-700 font-medium ml-1">${d.route}</span>
+              </div>
+            </div>
+          ` : '';
+
+          card.className = `p-4 sm:p-5 rounded-3xl ${borderStyle} border shadow-xs flex flex-col gap-3.5 transition-all`;
           card.id = 'adminDayCard_' + d.day_number;
 
           card.innerHTML = `
-            <div class="flex items-start justify-between gap-2">
-              <div class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-xl ${iconBg} flex items-center justify-center font-black text-xs shrink-0">
+            <div class="flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
+              <div class="flex items-center gap-3 min-w-0">
+                <span class="w-10 h-10 rounded-2xl ${iconBg} flex items-center justify-center text-sm shrink-0">
                   ${iconLabel}
                 </span>
-                <div>
-                  <div class="flex items-center gap-1 flex-wrap">
-                    <h4 class="font-extrabold text-xs sm:text-sm text-on-surface">${d.title}</h4>
-                    ${trialBadge}
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <h4 class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">${d.title}</h4>
+                    ${categoryBadge}
                   </div>
-                  <span class="text-[11px] font-semibold ${isTrial ? 'text-amber-700' : 'text-[#0875D1]'}">${d.theme || ''}</span>
+                  <span class="text-[11px] sm:text-xs font-semibold ${isTrial ? 'text-amber-700' : (isFT ? 'text-amber-800' : 'text-[#0875D1]')} block truncate mt-0.5">${d.theme || ''}</span>
                 </div>
               </div>
-              <label class="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" id="chkDayActive_${d.day_number}" ${isOpen ? 'checked' : ''} onchange="toggleSingleDayActive(${d.day_number})" class="sr-only peer">
-                <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
-                <span id="labelDayActive_${d.day_number}" class="ml-2 text-xs font-bold ${isOpen ? 'text-emerald-700' : 'text-slate-400'}">${isOpen ? 'BUKA' : 'TUTUP'}</span>
-              </label>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-              <div>
-                <label class="block font-bold text-on-surface mb-1">Tanggal Pelaksanaan</label>
-                <input type="date" id="inputDayDate_${d.day_number}" value="${d.date}" class="w-full px-3 py-2 rounded-xl border border-outline-variant/40 font-semibold text-xs outline-none focus:border-[#0875D1]">
-              </div>
-              <div>
-                <label class="block font-bold text-on-surface mb-1">Jam Buka (WIB)</label>
-                <input type="time" id="inputDayStart_${d.day_number}" value="${d.start_time || '07:00'}" class="w-full px-3 py-2 rounded-xl border border-outline-variant/40 font-semibold text-xs outline-none focus:border-[#0875D1]">
-              </div>
-              <div>
-                <label class="block font-bold text-on-surface mb-1">Jam Tutup (WIB)</label>
-                <input type="time" id="inputDayEnd_${d.day_number}" value="${d.end_time || '18:00'}" class="w-full px-3 py-2 rounded-xl border border-outline-variant/40 font-semibold text-xs outline-none focus:border-[#0875D1]">
+              <div class="flex items-center gap-2 self-end sm:self-auto shrink-0 bg-slate-50 px-3 py-1.5 rounded-2xl border border-slate-200">
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" id="chkDayActive_${d.day_number}" ${isOpen ? 'checked' : ''} onchange="toggleSingleDayActive(${d.day_number})" class="sr-only peer">
+                  <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-500"></div>
+                  <span id="labelDayActive_${d.day_number}" class="ml-2 text-xs font-bold ${isOpen ? 'text-emerald-700' : 'text-slate-400'}">${isOpen ? 'BUKA' : 'TUTUP'}</span>
+                </label>
               </div>
             </div>
 
-            <div class="flex items-center justify-between pt-2 border-t border-outline-variant/15 text-xs flex-wrap gap-2">
-              <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-on-surface-variant">
-                <input type="checkbox" id="chkDayAuto_${d.day_number}" ${isAuto ? 'checked' : ''} class="rounded border-outline-variant text-[#0875D1] focus:ring-0">
-                <span>Otomatis buka/tutup sesuai jam di atas</span>
+            ${routeHtml}
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Tanggal Pelaksanaan</label>
+                <input type="date" id="inputDayDate_${d.day_number}" value="${d.date}" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-semibold text-xs outline-none focus:border-[#0875D1] bg-white">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Jam Buka (WIB)</label>
+                <input type="time" id="inputDayStart_${d.day_number}" value="${d.start_time || '07:00'}" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-semibold text-xs outline-none focus:border-[#0875D1] bg-white">
+              </div>
+              <div>
+                <label class="block font-bold text-slate-700 mb-1">Jam Tutup (WIB)</label>
+                <input type="time" id="inputDayEnd_${d.day_number}" value="${d.end_time || (isFT ? '23:59' : '18:00')}" class="w-full px-3 py-2 rounded-xl border border-slate-300 font-semibold text-xs outline-none focus:border-[#0875D1] bg-white">
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2.5 border-t border-slate-200/80 text-xs flex-wrap gap-2">
+              <label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-slate-600 font-medium">
+                <input type="checkbox" id="chkDayAuto_${d.day_number}" ${isAuto ? 'checked' : ''} class="rounded border-slate-300 text-[#0875D1] focus:ring-0">
+                <span>Otomatis buka/tutup sesuai rentang jam di atas</span>
               </label>
-              <button onclick="saveSingleDay(${d.day_number})" class="px-3 py-1.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-[#0875D1] font-bold text-xs flex items-center gap-1 cursor-pointer transition-all">
+              <button onclick="saveSingleDay(${d.day_number})" class="px-3.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-[#0875D1] font-bold text-xs flex items-center gap-1 cursor-pointer transition-all">
                 <span class="material-symbols-outlined text-xs">check</span> Simpan Hari Ini
               </button>
             </div>
           `;
           container.appendChild(card);
         });
-      });
+      }, cat);
     }
 
     function toggleSingleDayActive(dayNumber) {
@@ -3922,10 +4041,13 @@
         }
       }
 
+      const cat = currentAdminScheduleCategory || 'field_trip';
+      const catLabel = (cat === 'field_trip') ? 'Field Trip' : 'Non-Field Trip';
+
       // Simpan perubahan secara langsung seketika
       FincestemCore.schedule.toggleDay(dayNumber, isOpen, function(res) {
-        FincestemCore.ui.toast(`Day ${dayNumber} berhasil ${isOpen ? 'DIBUKA' : 'DITUTUP PAKSA'}! Status langsung aktif di portal siswa.`, isOpen ? 'success' : 'info');
-      });
+        FincestemCore.ui.toast(`Day ${dayNumber} (${catLabel}) berhasil ${isOpen ? 'DIBUKA' : 'DITUTUP PAKSA'}! Status langsung aktif di portal siswa.`, isOpen ? 'success' : 'info');
+      }, cat);
     }
 
     function saveSingleDay(dayNumber) {
@@ -3938,9 +4060,12 @@
       d.is_active = document.getElementById('chkDayActive_' + dayNumber).checked ? 1 : 0;
       d.auto_schedule = document.getElementById('chkDayAuto_' + dayNumber).checked ? 1 : 0;
 
+      const cat = currentAdminScheduleCategory || 'field_trip';
+      const catLabel = (cat === 'field_trip') ? 'Field Trip' : 'Non-Field Trip';
+
       FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
-        FincestemCore.ui.toast(`Jadwal Day ${dayNumber} berhasil diperbarui & disimpan!`, 'success');
-      });
+        FincestemCore.ui.toast(`Jadwal Day ${dayNumber} (${catLabel}) berhasil diperbarui & disimpan!`, 'success');
+      }, cat);
     }
 
     function saveAllScheduleChanges() {
@@ -3960,9 +4085,12 @@
         if (elAuto) d.auto_schedule = elAuto.checked ? 1 : 0;
       });
 
+      const cat = currentAdminScheduleCategory || 'field_trip';
+      const catLabel = (cat === 'field_trip') ? 'Field Trip' : 'Non-Field Trip';
+
       FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
-        FincestemCore.ui.toast('Seluruh jadwal Day 1 s.d. Day 7 berhasil disimpan!', 'success');
-      });
+        FincestemCore.ui.toast(`Seluruh jadwal Day 1 s.d. Day 7 (${catLabel}) berhasil disimpan!`, 'success');
+      }, cat);
     }
 
     function setAllDaysStatus(isOpen) {
@@ -3978,9 +4106,13 @@
           lbl.className = 'ml-2 text-xs font-bold ' + (isOpen ? 'text-emerald-700' : 'text-slate-400');
         }
       });
+
+      const cat = currentAdminScheduleCategory || 'field_trip';
+      const catLabel = (cat === 'field_trip') ? 'Field Trip' : 'Non-Field Trip';
+
       FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
-        FincestemCore.ui.toast(`Seluruh hari berhasil diatur menjadi ${isOpen ? 'TERBUKA' : 'TERKUNCI PAKSA'}!`, 'info');
-      });
+        FincestemCore.ui.toast(`Seluruh hari (${catLabel}) berhasil diatur menjadi ${isOpen ? 'TERBUKA' : 'TERKUNCI PAKSA'}!`, 'info');
+      }, cat);
     }
 
     /* ========================================================

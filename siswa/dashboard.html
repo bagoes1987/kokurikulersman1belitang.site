@@ -836,10 +836,21 @@
        EKSPLOR FINCESTEM (DAY 1 S.D. DAY 7)
        ======================================================== */
     function loadDaysSchedule() {
+      const u = FincestemCore.auth.getUser() || {};
+      const s = currentStudent || u;
+      const sNisn = s.nisn || s.identifier || u.nisn || u.identifier || '';
+      const sClass = s.class || s.class_name || u.class || u.class_name || '';
+      const sZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(sNisn, sClass, s.zone || u.zone)
+        : (s.zone || u.zone || '');
+      const zUpper = (sZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+      const cat = isFieldTrip ? 'field_trip' : 'non_field_trip';
+
       FincestemCore.schedule.getSchedule(function(days, serverTime) {
         daysSchedule = days;
         renderDaysSchedule(days);
-      });
+      }, cat);
     }
 
     let expandedDayNumber = 1;

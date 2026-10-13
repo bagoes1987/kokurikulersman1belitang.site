@@ -752,33 +752,93 @@ const FincestemCore = {
       return days.map(d => self.evaluateDayStatus(d, serverTime));
     },
 
-    getSchedule: function(callback) {
+    getFieldTripDefaults: function() {
+      const configs = this.fieldTripDaysConfig || {};
+      const dates = [
+        '2026-11-09',
+        '2026-11-10',
+        '2026-11-11',
+        '2026-11-12',
+        '2026-11-13',
+        '2026-11-14',
+        '2026-11-15'
+      ];
+      const times = [
+        { start: '07:00', end: '23:59' },
+        { start: '04:30', end: '20:30' },
+        { start: '07:00', end: '23:30' },
+        { start: '00:00', end: '21:00' },
+        { start: '06:00', end: '21:30' },
+        { start: '06:30', end: '23:59' },
+        { start: '05:00', end: '14:00' }
+      ];
+      const list = [];
+      for (let i = 1; i <= 7; i++) {
+        const c = configs[i] || {};
+        const tm = times[i - 1] || { start: '07:00', end: '23:59' };
+        list.push({
+          day_number: i,
+          title: c.title || ('Day ' + i),
+          theme: c.theme || '',
+          date: dates[i - 1] || '2026-11-09',
+          date_formatted: c.date_formatted || '',
+          start_time: tm.start,
+          end_time: tm.end,
+          is_active: 1,
+          auto_schedule: 0,
+          route: c.route || '',
+          description: c.description || ''
+        });
+      }
+      return list;
+    },
+
+    getSchedule: function(callback, category) {
       const self = this;
       const u = FincestemCore.auth.getUser();
       const roleParam = (u && u.role === 'admin') ? '&role=admin' : '';
+
+      let cat = category;
+      if (!cat) {
+        if (u && (u.role === 'siswa' || !u.role)) {
+          const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+            ? FincestemCore.zones.getStudentZone(u.nisn || u.identifier, u.class || u.class_name, u.zone)
+            : (u.zone || '');
+          const zUpper = (z || '').toUpperCase();
+          cat = (zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP')) ? 'field_trip' : 'non_field_trip';
+        } else {
+          cat = 'non_field_trip';
+        }
+      }
+      const catParam = '&category=' + encodeURIComponent(cat);
+      const storageKey = 'fincestem_schedules_' + cat;
+
       if (window.location.protocol.startsWith('http')) {
         // Anti-cache timestamp untuk menjamin siswa mendapat status terbaru
-        fetch(FincestemCore.api.base + '/schedule.php?_t=' + Date.now() + roleParam, { cache: 'no-store' })
+        fetch(FincestemCore.api.base + '/schedule.php?_t=' + Date.now() + roleParam + catParam, { cache: 'no-store' })
           .then(r => r.json())
           .then(data => {
             if (data && data.success && data.data && Array.isArray(data.data.days)) {
               const evaluated = self.evaluateScheduleList(data.data.days, data.data.server_time);
-              localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
-              if (callback) callback(evaluated, data.data.server_time);
+              localStorage.setItem(storageKey, JSON.stringify(evaluated));
+              if (cat === 'non_field_trip') {
+                localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
+              }
+              if (callback) callback(evaluated, data.data.server_time, cat);
               return;
             }
-            self.getFallbackSchedule(callback);
+            self.getFallbackSchedule(callback, cat);
           })
-          .catch(() => self.getFallbackSchedule(callback));
+          .catch(() => self.getFallbackSchedule(callback, cat));
       } else {
-        self.getFallbackSchedule(callback);
+        self.getFallbackSchedule(callback, cat);
       }
     },
 
     toggleTrialDay: function(isActive, callback) {
       const actNum = isActive ? 1 : 0;
       try {
-        const stored = localStorage.getItem('fincestem_schedules');
+        const stored = localStorage.getItem('fincestem_schedules_non_field_trip') || localStorage.getItem('fincestem_schedules');
         let days = stored ? JSON.parse(stored) : this.getDefaults();
         const d0 = days.find(x => Number(x.day_number) === 0);
         if (d0) {
@@ -787,6 +847,7 @@ const FincestemCore = {
           d0.status_code = (actNum === 1) ? 'OPEN' : 'MANUAL_CLOSED';
           d0.status_label = (actNum === 1) ? 'Aktivitas Sedang Dibuka' : 'Ditutup Manual oleh Admin';
         }
+        localStorage.setItem('fincestem_schedules_non_field_trip', JSON.stringify(days));
         localStorage.setItem('fincestem_schedules', JSON.stringify(days));
       } catch (e) {}
 
@@ -796,6 +857,7 @@ const FincestemCore = {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'toggle_trial_day',
+            category: 'non_field_trip',
             is_active: actNum
           })
         })
@@ -807,54 +869,67 @@ const FincestemCore = {
       }
     },
 
-    getFallbackSchedule: function(callback) {
+    getFallbackSchedule: function(callback, category) {
       const self = this;
+      const cat = category || 'non_field_trip';
+      const storageKey = 'fincestem_schedules_' + cat;
       try {
-        const stored = localStorage.getItem('fincestem_schedules');
+        const stored = localStorage.getItem(storageKey) || (cat === 'non_field_trip' ? localStorage.getItem('fincestem_schedules') : null);
         if (stored) {
           const parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length >= 7) {
             const evaluated = self.evaluateScheduleList(parsed);
-            localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
-            if (callback) callback(evaluated, new Date().toISOString());
+            localStorage.setItem(storageKey, JSON.stringify(evaluated));
+            if (callback) callback(evaluated, new Date().toISOString(), cat);
             return;
           }
         }
       } catch (e) {}
-      const def = self.evaluateScheduleList(this.getDefaults());
-      localStorage.setItem('fincestem_schedules', JSON.stringify(def));
-      if (callback) callback(def, new Date().toISOString());
+      const rawDef = (cat === 'field_trip') ? this.getFieldTripDefaults() : this.getDefaults();
+      const def = self.evaluateScheduleList(rawDef);
+      localStorage.setItem(storageKey, JSON.stringify(def));
+      if (cat === 'non_field_trip') {
+        localStorage.setItem('fincestem_schedules', JSON.stringify(def));
+      }
+      if (callback) callback(def, new Date().toISOString(), cat);
     },
 
-    saveSchedule: function(days, callback) {
+    saveSchedule: function(days, callback, category) {
+      const cat = category || 'non_field_trip';
+      const storageKey = 'fincestem_schedules_' + cat;
       const evaluated = this.evaluateScheduleList(days);
-      localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
+      localStorage.setItem(storageKey, JSON.stringify(evaluated));
+      if (cat === 'non_field_trip') {
+        localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
+      }
       if (window.location.protocol.startsWith('http')) {
         fetch(FincestemCore.api.base + '/schedule.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'update_all', days: evaluated })
+          body: JSON.stringify({ action: 'update_all', category: cat, days: evaluated })
         })
         .then(r => r.json())
         .then(res => { if (callback) callback(res); })
-        .catch(() => { if (callback) callback({ success: true, local: true, days: evaluated }); });
+        .catch(() => { if (callback) callback({ success: true, local: true, days: evaluated, category: cat }); });
       } else {
-        if (callback) callback({ success: true, local: true, days: evaluated });
+        if (callback) callback({ success: true, local: true, days: evaluated, category: cat });
       }
     },
 
-    toggleDay: function(dayNumber, isActive, callback) {
+    toggleDay: function(dayNumber, isActive, callback, category) {
       const self = this;
       const num = Number(dayNumber);
       const actNum = isActive ? 1 : 0;
+      const cat = category || 'non_field_trip';
+      const storageKey = 'fincestem_schedules_' + cat;
 
       // 1. Simpan & hitung ulang di storage lokal seketika
       let days = [];
       try {
-        const stored = localStorage.getItem('fincestem_schedules');
-        days = stored ? JSON.parse(stored) : self.getDefaults();
+        const stored = localStorage.getItem(storageKey) || (cat === 'non_field_trip' ? localStorage.getItem('fincestem_schedules') : null);
+        days = stored ? JSON.parse(stored) : (cat === 'field_trip' ? self.getFieldTripDefaults() : self.getDefaults());
       } catch (e) {
-        days = self.getDefaults();
+        days = (cat === 'field_trip' ? self.getFieldTripDefaults() : self.getDefaults());
       }
 
       const d = days.find(x => Number(x.day_number) === num);
@@ -867,24 +942,27 @@ const FincestemCore = {
         }
       }
       const evaluated = self.evaluateScheduleList(days);
-      localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
+      localStorage.setItem(storageKey, JSON.stringify(evaluated));
+      if (cat === 'non_field_trip') {
+        localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
+      }
 
       // 2. Kirim update tunggal toggle_day ke backend cPanel
       if (window.location.protocol.startsWith('http')) {
         fetch(FincestemCore.api.base + '/schedule.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'toggle_day', day_number: num, is_active: actNum })
+          body: JSON.stringify({ action: 'toggle_day', category: cat, day_number: num, is_active: actNum })
         })
         .then(r => r.json())
         .then(res => {
           if (callback) callback(res);
         })
         .catch(() => {
-          if (callback) callback({ success: true, local: true, day_number: num, is_active: actNum });
+          if (callback) callback({ success: true, local: true, day_number: num, is_active: actNum, category: cat });
         });
       } else {
-        if (callback) callback({ success: true, local: true, day_number: num, is_active: actNum });
+        if (callback) callback({ success: true, local: true, day_number: num, is_active: actNum, category: cat });
       }
     }
   },
