@@ -1447,12 +1447,22 @@ const FincestemCore = {
 
       // Day 1: CAN_ACCESS_DAY_1 = (ADMIN_DAY_1 == OPEN)
       if (d === 1) {
+        let isFt = false;
+        try {
+          const user = FincestemCore.auth.getUser() || {};
+          const studentZone = (user.zone || '').toUpperCase();
+          if (studentZone.includes('LUAR') || studentZone.includes('FIELD') || studentZone.includes('TRIP')) {
+            isFt = true;
+          }
+        } catch (e) {}
+
+        const effectiveOpen = isFt ? true : isOpenByAdmin;
         return {
           canAccess: true,
-          canEdit: isOpenByAdmin,
-          isOpen: isOpenByAdmin,
+          canEdit: effectiveOpen,
+          isOpen: effectiveOpen,
           isPreviousCompleted: true,
-          reason: isOpenByAdmin ? '' : 'Day 1 ditutup oleh Admin (Hanya Lihat).'
+          reason: effectiveOpen ? '' : 'Day 1 ditutup oleh Admin (Hanya Lihat).'
         };
       }
 

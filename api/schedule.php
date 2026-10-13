@@ -57,6 +57,9 @@ function ensureDaySchedulesTable($pdo) {
                 (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM (mempelajari materi modul simulasi, mengisi instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mengunggah foto dokumentasi) sebelum pelaksanaan riset lapangan sesungguhnya.')
             ");
         }
+
+        // Pastikan Day 1 terbuka aktif untuk kegiatan Field Trip
+        $pdo->exec("UPDATE `day_schedules` SET `auto_schedule` = 0, `is_active` = 1 WHERE `day_number` = 1");
     } catch (Exception $e) {
         // Fallback jika ada batasan izin di cPanel
     }

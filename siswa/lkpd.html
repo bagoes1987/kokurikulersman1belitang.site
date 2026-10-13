@@ -298,6 +298,19 @@
 
       const isReadOnlyUrl = (urlParams.get('readonly') === '1');
       const nisn = activeUser ? (activeUser.nisn || activeUser.identifier) : '';
+      const studentClass = activeUser.class || '';
+
+      // Deteksi Kategori Siswa (Field Trip vs Non-Field Trip)
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(nisn, studentClass, activeUser.zone)
+        : (activeUser.zone || 'FINCESTEM OKU TIMUR');
+      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+
+      // TAMPILKAN LKPD FIELD TRIP DAY 1 SEGERA (TERPISAH DARI PENUTUPAN JADWAL REGULER)
+      if (isFieldTrip && dayNum === 1) {
+        renderFieldTripDay1LKPD(false);
+        return;
+      }
 
       FincestemCore.schedule.getSchedule(function(days) {
         FincestemCore.progress.getStudentProgress(nisn, function(prog) {
@@ -340,38 +353,6 @@
           }
         });
       });
-
-      if (activeUser.group) {
-        document.getElementById('lkpdGroupName').textContent = activeUser.group + (activeUser.class ? ' (' + activeUser.class + ')' : '');
-      }
-
-      // Tampilkan nama fasilitator kelas
-      const studentClass = activeUser.class || '';
-      let initialFasil = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
-        : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
-      document.getElementById('lkpdFacilitatorName').textContent = initialFasil;
-
-      if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
-        FincestemCore.assignments.getAssignments(function() {
-          const freshFasil = FincestemCore.assignments.getClassFacilitator(studentClass);
-          if (freshFasil) {
-            document.getElementById('lkpdFacilitatorName').textContent = freshFasil;
-          }
-        });
-      }
-
-      // Deteksi Kategori Siswa (Field Trip vs Non-Field Trip)
-      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(activeUser.nisn || activeUser.identifier, studentClass, activeUser.zone)
-        : (activeUser.zone || 'FINCESTEM OKU TIMUR');
-      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
-
-      // TAMPILKAN LKPD FIELD TRIP DAY 1 JIKA SISWA ADALAH FIELD TRIP & DAY = 1
-      if (isFieldTrip && dayNum === 1) {
-        renderFieldTripDay1LKPD(isReadOnlyUrl);
-        return;
-      }
 
       loadLKPDData();
     });
@@ -514,18 +495,27 @@
       // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan
       let hasMateri = false;
       try {
-        const localMateri = localStorage.getItem('fincestem_materi_ft_day1_' + studentNisn);
+        const cleanNisn = String(studentNisn).trim();
+        const unpadded = cleanNisn.replace(/^0+/, '');
+        const localMateri = localStorage.getItem('fincestem_materi_ft_day1_' + cleanNisn) ||
+                            localStorage.getItem('fincestem_materi_ft_day1_' + unpadded) ||
+                            localStorage.getItem('fincestem_materi_ft_day1_' + ('0' + unpadded));
         if (localMateri) {
           const parsed = JSON.parse(localMateri);
-          if (parsed && parsed.conclusion && parsed.conclusion.trim().length >= 15) {
+          if (parsed && (parsed.conclusion || parsed.text || parsed.content)) {
             hasMateri = true;
           }
         }
       } catch (e) {}
 
+      // Jika LKPD sudah pernah diisi atau disimpan sebagian, jangan dikunci kembali
+      if (saved && (saved.total_saku || saved.submitted || saved.plan_emergency)) {
+        hasMateri = true;
+      }
+
       const isSubmitted = saved && saved.submitted;
       const isLockedByPrereq = !hasMateri;
-      const readOnlyAttr = (isReadOnly || isSubmitted || isLockedByPrereq) ? 'disabled' : '';
+      const readOnlyAttr = isLockedByPrereq ? 'disabled' : '';
 
       mainEl.innerHTML = `
         ${isLockedByPrereq ? `
