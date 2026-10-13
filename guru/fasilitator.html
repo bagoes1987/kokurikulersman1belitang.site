@@ -407,6 +407,11 @@
           <div id="modalGradingPhotoContainer" class="flex flex-col gap-1.5">
             <!-- Dynamically populated -->
           </div>
+
+          <!-- Rekomendasi Penilaian Berdasarkan Otentikasi Geotag / Galeri -->
+          <div id="modalGradingStarRecommendation" class="pt-1">
+            <!-- Populated dynamically based on student category & photo geotag status -->
+          </div>
         </div>
 
         <!-- PILIHAN 4 STATUS PENILAIAN (PERSYARATAN UTAMA) -->
@@ -982,9 +987,41 @@
       }
     }
 
+    // FUNGSI REKOMENDASI PENILAIAN OTOMATIS BINTANG 1 VS BINTANG 5
+    function applyStarRecommendation(stars) {
+      if (stars === 1) {
+        document.getElementById('gradeFinancial').value = 60;
+        document.getElementById('gradeCulture').value = 60;
+        document.getElementById('gradeExploration').value = 60;
+        document.getElementById('gradeSTEM').value = 60;
+
+        const radioRevision = document.querySelector('input[name="evalStatusRadio"][value="revision"]');
+        if (radioRevision) radioRevision.checked = true;
+
+        document.getElementById('gradeFeedbackInput').value = 
+          'Rekomendasi Bintang 1 (Penalti Dokumentasi): Foto riset diunggah via Galeri tanpa stempel GPS Geotagging live di lokasi kegiatan. Harap lakukan dokumentasi ulang menggunakan Kamera HP ber-geotag di lokasi riset.';
+
+        FincestemCore.ui.toast('Rekomendasi Bintang 1 (Skor 60 / Status Revision) berhasil diterapkan ke form!', 'warning');
+      } else if (stars === 5) {
+        document.getElementById('gradeFinancial').value = 90;
+        document.getElementById('gradeCulture').value = 90;
+        document.getElementById('gradeExploration').value = 90;
+        document.getElementById('gradeSTEM').value = 90;
+
+        const radioCompleted = document.querySelector('input[name="evalStatusRadio"][value="completed"]');
+        if (radioCompleted) radioCompleted.checked = true;
+
+        document.getElementById('gradeFeedbackInput').value = 
+          'Rekomendasi Bintang 5: Dokumentasi foto kamera ber-geotagging lengkap dan otentik di lapangan. Kerja sama tim dan analisis data sangat baik.';
+
+        FincestemCore.ui.toast('Rekomendasi Bintang 5 (Skor 90 / Status Completed) berhasil diterapkan ke form!', 'success');
+      }
+    }
+
     // FUNGSI INSPEKSI DOKUMENTASI SISWA OLEH FASILITATOR
     function renderGradingPhotos(nisn, dayNum) {
       const container = document.getElementById('modalGradingPhotoContainer');
+      const recContainer = document.getElementById('modalGradingStarRecommendation');
       if (!container) return;
       container.innerHTML = `
         <div class="py-3 flex items-center justify-center gap-2 text-xs text-slate-400">
@@ -992,6 +1029,7 @@
           <span>Memuat foto dokumentasi siswa...</span>
         </div>
       `;
+      if (recContainer) recContainer.innerHTML = '';
 
       let allDocs = [];
       try {
@@ -1008,6 +1046,88 @@
           return matchNisn;
         });
 
+        // Deteksi kategori siswa: Non-Field Trip vs Field Trip
+        let studentZone = '';
+        try {
+          if (FincestemCore.zones && FincestemCore.zones.getStudentZone) {
+            studentZone = FincestemCore.zones.getStudentZone(nisn, assignedClass, '');
+          }
+        } catch(e) {}
+        const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+        const isNonFieldTrip = !isFieldTrip;
+
+        // Klasifikasi foto ber-geotag vs galeri
+        const geotagDocs = studentDocs.filter(p => p.has_geotag == 1 || (p.source === 'camera' && (p.gps_location || p.gps)));
+        const galleryDocs = studentDocs.filter(p => !geotagDocs.includes(p));
+
+        // Render Kotak Rekomendasi Bintang Sistem
+        if (recContainer) {
+          if (studentDocs.length === 0) {
+            recContainer.innerHTML = `
+              <div class="p-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center gap-2 text-xs">
+                <span class="material-symbols-outlined text-slate-500 text-base">info</span>
+                <span class="text-[11px]">Belum ada dokumentasi untuk sesi ini. Rekomendasi status: <strong>Submitted / Menunggu Koreksi</strong>.</span>
+              </div>
+            `;
+          } else if (isNonFieldTrip && geotagDocs.length === 0 && galleryDocs.length > 0) {
+            // SISWA NON-FIELD TRIP HANYA UPLOAD DARI GALERI -> REKOMENDASI BINTANG 1
+            recContainer.innerHTML = `
+              <div class="p-3 rounded-2xl bg-rose-50 border border-rose-300 text-rose-950 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
+                <div class="flex items-start gap-2.5 min-w-0">
+                  <span class="text-2xl shrink-0 leading-none">⭐☆☆☆☆</span>
+                  <div class="flex flex-col min-w-0">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <span class="font-black text-xs text-rose-900">Rekomendasi Sistem: BINTANG 1</span>
+                      <span class="px-1.5 py-0.2 rounded bg-rose-200 text-rose-900 font-black text-[9px] uppercase tracking-wide">Penalti Galeri (Non-Field Trip)</span>
+                    </div>
+                    <span class="text-[10.5px] text-rose-800 leading-tight mt-0.5">
+                      Siswa Non-Field Trip mengunggah foto via Galeri tanpa stempel GPS Geotag live. Rekomendasi nilai: <strong>Bintang 1 / Status Revision</strong>.
+                    </span>
+                  </div>
+                </div>
+                <button type="button" onclick="applyStarRecommendation(1)" class="px-3 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-bold text-xs shrink-0 shadow-xs flex items-center justify-center gap-1 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-sm">star</span>
+                  <span>Terapkan Nilai ⭐1</span>
+                </button>
+              </div>
+            `;
+          } else if (geotagDocs.length > 0) {
+            // ADA FOTO BER-GEOTAG -> REKOMENDASI BINTANG 5
+            recContainer.innerHTML = `
+              <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 shadow-2xs">
+                <div class="flex items-start gap-2.5 min-w-0">
+                  <span class="text-2xl shrink-0 leading-none">⭐⭐⭐⭐⭐</span>
+                  <div class="flex flex-col min-w-0">
+                    <div class="flex items-center gap-1.5 flex-wrap">
+                      <span class="font-black text-xs text-emerald-900">Rekomendasi Sistem: BINTANG 5</span>
+                      <span class="px-1.5 py-0.2 rounded bg-emerald-200 text-emerald-900 font-black text-[9px] uppercase tracking-wide">${isFieldTrip ? 'Field Trip (GPS Aktif)' : 'Geotag Live Valid'}</span>
+                    </div>
+                    <span class="text-[10.5px] text-emerald-800 leading-tight mt-0.5">
+                      ${isFieldTrip 
+                        ? 'Dokumentasi Field Trip terekam dengan GPS satelit di rute perjalanan.' 
+                        : 'Foto Kamera Geotagging live di lokasi riset terverifikasi otentik.'}
+                    </span>
+                  </div>
+                </div>
+                <button type="button" onclick="applyStarRecommendation(5)" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shrink-0 shadow-xs flex items-center justify-center gap-1 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-sm">verified</span>
+                  <span>Terapkan Nilai ⭐5</span>
+                </button>
+              </div>
+            `;
+          } else {
+            // Field trip via galeri
+            recContainer.innerHTML = `
+              <div class="p-2.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 flex items-center justify-between gap-2 text-xs">
+                <div class="flex items-center gap-2">
+                  <span class="text-lg">⭐⭐⭐☆☆</span>
+                  <span class="text-[11px] font-medium text-amber-900">Dokumentasi Field Trip via galeri tanpa GPS langsung. Periksa kesesuaian LKPD.</span>
+                </div>
+              </div>
+            `;
+          }
+        }
+
         if (studentDocs.length === 0) {
           container.innerHTML = `
             <div class="py-3 px-3 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center flex flex-col items-center gap-1">
@@ -1021,7 +1141,7 @@
 
         container.innerHTML = `
           <div class="text-[11px] font-bold text-slate-700 flex items-center justify-between">
-            <span>${studentDocs.length} Foto Dokumentasi Ditemukan</span>
+            <span>${studentDocs.length} Foto Dokumentasi (${geotagDocs.length} Geotag, ${galleryDocs.length} Galeri)</span>
             <span class="text-[10px] text-[#006a61] font-extrabold">Ketuk untuk Inspect (Pinch Zoom)</span>
           </div>
           <div class="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto pr-1">
@@ -1037,7 +1157,9 @@
                     <div class="absolute top-1.5 left-1.5 flex flex-wrap gap-1">
                       ${isGeotag 
                         ? '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-black bg-emerald-600 text-white shadow-xs flex items-center gap-0.5">📍 Kamera Geotag</span>'
-                        : '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-black bg-amber-600 text-white shadow-xs flex items-center gap-0.5">📁 Galeri</span>'}
+                        : (isNonFieldTrip 
+                            ? '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-black bg-rose-600 text-white shadow-xs flex items-center gap-0.5">📁 Galeri (⭐1)</span>'
+                            : '<span class="px-1.5 py-0.5 rounded-md text-[9px] font-black bg-amber-600 text-white shadow-xs flex items-center gap-0.5">📁 Galeri</span>')}
                     </div>
                   </div>
                   <div class="p-1.5 flex flex-col gap-0.5">
@@ -1138,6 +1260,15 @@
           const className = p.class_name || 'Kelas X';
           const safeCaption = ((p.title || 'Dokumentasi') + ' • ' + studentName + ' (' + className + ')').replace(/'/g, "\\'");
 
+          let studentZone = '';
+          try {
+            if (FincestemCore.zones && FincestemCore.zones.getStudentZone && (p.uploaded_by_nisn || p.nisn)) {
+              studentZone = FincestemCore.zones.getStudentZone(p.uploaded_by_nisn || p.nisn, className, '');
+            }
+          } catch(e) {}
+          const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+          const isNonFieldTrip = !isFieldTrip;
+
           const card = document.createElement('div');
           card.className = 'group rounded-2xl overflow-hidden border border-outline-variant/25 bg-surface-container-lowest shadow-2xs hover:shadow-md transition-all cursor-pointer flex flex-col';
           card.onclick = () => FincestemCore.ui.openLightbox(fixedUrl, safeCaption + (isGeotag ? ' [📍 Kamera Geotag]' : ' [📁 Galeri]'));
@@ -1147,7 +1278,9 @@
               <div class="absolute top-2 left-2 flex flex-wrap gap-1">
                 ${isGeotag 
                   ? '<span class="px-2 py-0.5 rounded-lg text-[9.5px] font-black bg-slate-900/90 text-emerald-400 backdrop-blur-xs flex items-center gap-0.5 shadow-xs"><span class="material-symbols-outlined text-[11px]">location_on</span>Kamera Geotag</span>'
-                  : '<span class="px-2 py-0.5 rounded-lg text-[9.5px] font-black bg-slate-900/90 text-amber-300 backdrop-blur-xs flex items-center gap-0.5 shadow-xs"><span class="material-symbols-outlined text-[11px]">photo_library</span>Galeri (No Geotag)</span>'}
+                  : (isNonFieldTrip 
+                      ? '<span class="px-2 py-0.5 rounded-lg text-[9.5px] font-black bg-slate-900/90 text-rose-300 border border-rose-500/30 backdrop-blur-xs flex items-center gap-0.5 shadow-xs"><span class="material-symbols-outlined text-[11px]">warning</span>Galeri (Rekomendasi ⭐1)</span>'
+                      : '<span class="px-2 py-0.5 rounded-lg text-[9.5px] font-black bg-slate-900/90 text-amber-300 backdrop-blur-xs flex items-center gap-0.5 shadow-xs"><span class="material-symbols-outlined text-[11px]">photo_library</span>Galeri (Field Trip)</span>')}
               </div>
             </div>
             <div class="p-2.5 flex flex-col gap-1">
