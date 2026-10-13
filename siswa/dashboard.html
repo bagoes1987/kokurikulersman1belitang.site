@@ -177,7 +177,7 @@
             </span>
             <div class="flex flex-col min-w-0">
               <span class="text-xs text-cyan-200 font-bold leading-tight">Kategori Kegiatan:</span>
-              <span id="userZoneText" class="text-sm font-black text-white tracking-wide uppercase truncate mt-0.5">NON-FIELD TRIP (OKU TIMUR)</span>
+              <span id="userZoneText" class="text-sm font-black text-white tracking-wide uppercase truncate mt-0.5">NON-FIELD TRIP</span>
             </div>
           </div>
           <span id="userZoneBadge" class="px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs">
@@ -656,11 +656,11 @@
       if ((studentZone || '').toUpperCase().includes('LUAR')) {
         zoneBadge.className = 'px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-amber-400 text-slate-950 shrink-0 shadow-xs';
         zoneBadge.textContent = 'FIELD TRIP';
-        zoneText.textContent = 'FIELD TRIP (LUAR OKU TIMUR)';
+        zoneText.textContent = 'FIELD TRIP';
       } else {
         zoneBadge.className = 'px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs';
         zoneBadge.textContent = 'NON-FIELD TRIP';
-        zoneText.textContent = 'NON-FIELD TRIP (OKU TIMUR)';
+        zoneText.textContent = 'NON-FIELD TRIP';
       }
     }
 
