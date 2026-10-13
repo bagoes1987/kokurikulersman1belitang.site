@@ -132,7 +132,7 @@
     <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
       <div class="flex items-center justify-between gap-2">
         <span class="text-xs font-extrabold text-secondary uppercase tracking-wider">Instrumen LKPD Digital</span>
-        <span id="lkpdStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">Draf Lembar Kerja</span>
+        <span id="lkpdStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">Lembar Kerja Peserta Didik</span>
       </div>
       <h2 class="text-lg font-black text-primary leading-tight">
         Pengukuran Sains, Analisis Finansial &amp; Refleksi Budaya Lapangan
@@ -549,8 +549,8 @@
             <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500/15 text-amber-800">
               Field Trip • Day 1 (Financial)
             </span>
-            <span id="ftStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800' : (isSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-amber-100 text-amber-800')}">
-              ${isLockedByPrereq ? 'Terkunci (Belum Resume Modul)' : (isSubmitted ? 'Telah Dikirim / Menunggu Penilaian' : 'Draf Lembar Kerja')}
+            <span id="ftStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800' : (isSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-blue-100 text-blue-800')}">
+              ${isLockedByPrereq ? 'Terkunci (Belum Resume Modul)' : (isSubmitted ? 'Telah Dikirim / Menunggu Penilaian' : 'Lembar Kerja Peserta Didik')}
             </span>
           </div>
           <h2 class="text-lg sm:text-xl font-black text-primary leading-tight">
