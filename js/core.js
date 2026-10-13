@@ -1429,6 +1429,40 @@ const FincestemCore = {
       return foundStatus || 'belum_mulai';
     },
 
+    isDayStudentTasksDone: function(prog, dayNum) {
+      if (!prog) return false;
+      const d = parseInt(dayNum);
+      if (d <= 0) return true;
+      if (this.isDayCompleted(prog, d)) return true;
+
+      if (prog.records && Array.isArray(prog.records)) {
+        if (prog.records.some(r => parseInt(r.day_number) === d && (r.status === 'completed' || r.status === 'submitted' || r.status === 'reviewed'))) {
+          return true;
+        }
+      }
+
+      const tm = prog.task_map || {};
+      if (tm[d + '_refleksi'] || tm[d + '_dokumentasi'] || (tm[d + '_lkpd'] && tm[d + '_asesmen'])) {
+        return true;
+      }
+
+      // Cek localStorage browser
+      try {
+        const u = FincestemCore.auth.getUser() || {};
+        const idList = [u.nisn, u.identifier, u.nis].filter(Boolean);
+        for (const id of idList) {
+          if (localStorage.getItem(`fincestem_refleksi_ft_day${d}_` + id) ||
+              localStorage.getItem(`fincestem_refleksi_day${d}_` + id) ||
+              localStorage.getItem(`fincestem_dok_ft_day${d}_` + id) ||
+              localStorage.getItem(`fincestem_lkpd_ft_day${d}_` + id)) {
+            return true;
+          }
+        }
+      } catch (e) {}
+
+      return false;
+    },
+
     canAccessDay: function(dayNum, prog, daysSchedule) {
       const d = parseInt(dayNum);
       const sched = (daysSchedule || []).find(s => parseInt(s.day_number) === d);
@@ -1457,27 +1491,43 @@ const FincestemCore = {
         }
       } catch (e) {}
 
-      // Day 1 & Day 2 Field Trip: CAN_ACCESS = true
-      if (d === 1 || (d === 2 && isFt)) {
-        const effectiveOpen = isFt ? true : isOpenByAdmin;
+      // 1. SISWA FIELD TRIP:
+      // Guru pembimbing mendampingi langsung di lapangan dan memantau aktivitas secara fisik.
+      // Day 1 & Day 2 otomatis terbuka, dan Day berikutnya langsung terbuka jika tugas mandiri Day sebelumnya selesai.
+      if (isFt) {
+        const prevDone = (d <= 2) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
         return {
-          canAccess: true,
-          canEdit: effectiveOpen,
-          isOpen: effectiveOpen,
-          isPreviousCompleted: true,
-          reason: effectiveOpen ? '' : `Day ${d} ditutup oleh Admin (Hanya Lihat).`
+          canAccess: prevDone,
+          canEdit: prevDone,
+          isOpen: true,
+          isPreviousCompleted: prevDone,
+          reason: prevDone ? '' : `Harap selesaikan seluruh aktivitas pengerjaan pada Day ${d - 1} terlebih dahulu.`
         };
       }
 
-      // Day N (N > 1): CAN_ACCESS_DAY_N = (DAY N-1 == COMPLETED) AND (ADMIN_DAY_N == OPEN)
-      const prevCompleted = this.isDayCompleted(prog, d - 1);
-      if (!prevCompleted) {
+      // 2. SISWA NON-FIELD TRIP:
+      // Day 1: CAN_ACCESS_DAY_1 = (ADMIN_DAY_1 == OPEN)
+      if (d === 1) {
+        return {
+          canAccess: true,
+          canEdit: isOpenByAdmin,
+          isOpen: isOpenByAdmin,
+          isPreviousCompleted: true,
+          reason: isOpenByAdmin ? '' : 'Day 1 ditutup oleh Admin (Hanya Lihat).'
+        };
+      }
+
+      // Day N (N > 1) Non-Field Trip:
+      // Siswa TIDAK PERLU menunggu guru/fasilitator menetapkan status 'Completed'!
+      // Cukup siswa telah menyelesaikan tugas mandiri pada Day N-1 (Modul, LKPD, Asesmen, Foto, dan Refleksi).
+      const prevDone = this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+      if (!prevDone) {
         return {
           canAccess: false,
           canEdit: false,
           isOpen: isOpenByAdmin,
           isPreviousCompleted: false,
-          reason: `Harap selesaikan dan tunggu penetapan status 'Completed' dari Fasilitator pada Day ${d - 1}.`
+          reason: `Harap selesaikan seluruh rangkaian tugas mandiri (Modul, LKPD, Asesmen, Foto, dan Refleksi) pada Day ${d - 1} terlebih dahulu.`
         };
       }
 

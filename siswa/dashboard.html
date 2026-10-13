@@ -653,7 +653,8 @@
       const zoneText = document.getElementById('userZoneText');
       if (!zoneBadge || !zoneText) return;
 
-      if ((studentZone || '').toUpperCase().includes('LUAR')) {
+      const zUpper = (studentZone || '').toUpperCase();
+      if (zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP')) {
         zoneBadge.className = 'px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-amber-400 text-slate-950 shrink-0 shadow-xs';
         zoneBadge.textContent = 'FIELD TRIP';
         zoneText.textContent = 'FIELD TRIP';
@@ -762,47 +763,72 @@
       document.getElementById('statTotalSubmissions').textContent = totalTasks;
 
       // Average score & predicate
-      if (prog.average_score) {
-        document.getElementById('statAverageScore').textContent = prog.average_score;
-        document.getElementById('statPredicate').textContent = `• ${prog.predicate || 'A'}`;
-      } else {
-        document.getElementById('statAverageScore').textContent = '-';
-        document.getElementById('statPredicate').textContent = 'Dalam Proses';
-      }
+      const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
+        : (currentStudent?.zone || 'FINCESTEM OKU TIMUR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
-      // Verification Badge
-      const vBadge = document.getElementById('statVerificationBadge');
-      if (prog.average_score && prog.average_score >= 75) {
-        vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800';
-        vBadge.textContent = 'Terverifikasi';
-      } else if (totalTasks > 0) {
-        vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-amber-100 text-amber-800';
-        vBadge.textContent = 'Menunggu Review';
-      } else {
-        vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-slate-100 text-slate-600';
-        vBadge.textContent = 'Belum Ada';
-      }
+      if (isFieldTrip) {
+        // Siswa Field Trip otomatis Bintang 5 / 100 (Sangat Baik) karena didampingi fisik oleh guru pendamping 24/7
+        document.getElementById('statAverageScore').textContent = '100';
+        document.getElementById('statPredicate').textContent = '• Bintang 5 (A)';
+        const vBadge = document.getElementById('statVerificationBadge');
+        vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-amber-400 text-slate-950 shadow-2xs';
+        vBadge.textContent = '⭐⭐⭐⭐⭐ Bintang 5 Lapangan';
 
-      // Latest facilitator feedback
-      const fb = prog.latest_feedback;
-      if (fb && fb.feedback) {
-        document.getElementById('feedbackFasilName').textContent = fb.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator';
-        document.getElementById('feedbackQuoteText').textContent = `"${fb.feedback}"`;
-        document.getElementById('feedbackDateBadge').textContent = fb.day_number ? `Feedback Day ${fb.day_number}` : 'Evaluasi Terkini';
-
-        // 4 pillars
-        document.getElementById('pillScoreFin').textContent = fb.score_financial !== undefined && fb.score_financial !== null ? fb.score_financial : '90';
-        document.getElementById('pillScoreCul').textContent = fb.score_culture !== undefined && fb.score_culture !== null ? fb.score_culture : '86';
-        document.getElementById('pillScoreExp').textContent = fb.score_exploration !== undefined && fb.score_exploration !== null ? fb.score_exploration : '88';
-        document.getElementById('pillScoreStem').textContent = fb.score_stem !== undefined && fb.score_stem !== null ? fb.score_stem : '90';
+        document.getElementById('feedbackFasilName').textContent = currentStudent?.facilitator_name || 'Tim Guru Pendamping Lapangan';
+        document.getElementById('feedbackQuoteText').textContent = '"Seluruh aktivitas siswa Field Trip dipantau dan didampingi langsung secara fisik oleh Guru Pendamping di lapangan. Penilaian tervalidasi otomatis Bintang 5 (Sangat Baik - 100)!"';
+        document.getElementById('feedbackDateBadge').textContent = 'Didampingi Langsung 24/7';
+        document.getElementById('pillScoreFin').textContent = '100';
+        document.getElementById('pillScoreCul').textContent = '100';
+        document.getElementById('pillScoreExp').textContent = '100';
+        document.getElementById('pillScoreStem').textContent = '100';
       } else {
-        document.getElementById('feedbackFasilName').textContent = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
-        document.getElementById('feedbackQuoteText').textContent = '"Belum ada catatan atau umpan balik dari Fasilitator. Mulai isi lembar kerja dan jurnal harian sesuai jadwal riset Anda."';
-        document.getElementById('feedbackDateBadge').textContent = 'Menunggu Aktivitas';
-        document.getElementById('pillScoreFin').textContent = '-';
-        document.getElementById('pillScoreCul').textContent = '-';
-        document.getElementById('pillScoreExp').textContent = '-';
-        document.getElementById('pillScoreStem').textContent = '-';
+        // Siswa Non-Field Trip
+        if (prog.average_score) {
+          document.getElementById('statAverageScore').textContent = prog.average_score;
+          document.getElementById('statPredicate').textContent = `• ${prog.predicate || 'A'}`;
+        } else {
+          document.getElementById('statAverageScore').textContent = '-';
+          document.getElementById('statPredicate').textContent = 'Dalam Proses';
+        }
+
+        // Verification Badge
+        const vBadge = document.getElementById('statVerificationBadge');
+        if (prog.average_score && prog.average_score >= 75) {
+          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800';
+          vBadge.textContent = 'Terverifikasi';
+        } else if (totalTasks > 0) {
+          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-amber-100 text-amber-800';
+          vBadge.textContent = 'Pra-Evaluasi / Review';
+        } else {
+          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-slate-100 text-slate-600';
+          vBadge.textContent = 'Belum Ada';
+        }
+
+        // Latest facilitator feedback
+        const fb = prog.latest_feedback;
+        if (fb && fb.feedback) {
+          document.getElementById('feedbackFasilName').textContent = fb.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator';
+          document.getElementById('feedbackQuoteText').textContent = `"${fb.feedback}"`;
+          document.getElementById('feedbackDateBadge').textContent = fb.day_number ? `Feedback Day ${fb.day_number}` : 'Evaluasi Terkini';
+
+          // 4 pillars
+          document.getElementById('pillScoreFin').textContent = fb.score_financial !== undefined && fb.score_financial !== null ? fb.score_financial : '90';
+          document.getElementById('pillScoreCul').textContent = fb.score_culture !== undefined && fb.score_culture !== null ? fb.score_culture : '86';
+          document.getElementById('pillScoreExp').textContent = fb.score_exploration !== undefined && fb.score_exploration !== null ? fb.score_exploration : '88';
+          document.getElementById('pillScoreStem').textContent = fb.score_stem !== undefined && fb.score_stem !== null ? fb.score_stem : '90';
+        } else {
+          document.getElementById('feedbackFasilName').textContent = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+          document.getElementById('feedbackQuoteText').textContent = '"Belum ada catatan umpan balik manual dari Fasilitator. Klik tombol Nilai & Catatan pada tiap Hari untuk melihat estimasi rekomendasi bintang sistem."';
+          document.getElementById('feedbackDateBadge').textContent = 'Pra-Evaluasi Sistem';
+          document.getElementById('pillScoreFin').textContent = '-';
+          document.getElementById('pillScoreCul').textContent = '-';
+          document.getElementById('pillScoreExp').textContent = '-';
+          document.getElementById('pillScoreStem').textContent = '-';
+        }
       }
     }
 
@@ -985,6 +1011,201 @@
       return getFTProgressStatus(taskMap, 1);
     }
 
+    /* ========================================================
+       SISTEM AUDIT PRA-EVALUASI NON-FIELD TRIP (BINTANG 1 - 5)
+       Aturan: Foto tanpa Google Tagging / GPS -> Pinalti Bintang 1
+               Refleksi kurang / < 25 kata -> Pinalti Bintang 1
+       ======================================================== */
+    function calculateNonFTDayAudit(dayNum, taskMap, student) {
+      const d = parseInt(dayNum);
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = student ? (student.nisn || student.identifier) : (user.nisn || user.identifier);
+      const cleanNisn = String(nisn || '').trim();
+      const idList = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+
+      // 1. Audit Foto Dokumentasi & Google Tagging (GPS)
+      let docPhoto = null;
+      try {
+        const rawDb = localStorage.getItem('fincestem_db_2026_v1');
+        if (rawDb) {
+          const db = JSON.parse(rawDb);
+          if (db && Array.isArray(db.documentation)) {
+            docPhoto = db.documentation.find(p => {
+              const pDay = parseInt(p.day_number || p.day || 0);
+              const pNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+              return pDay === d && (!cleanNisn || !pNisn || idList.includes(pNisn));
+            });
+            if (!docPhoto) {
+              docPhoto = db.documentation.find(p => parseInt(p.day_number || p.day || 0) === d);
+            }
+          }
+        }
+      } catch (e) {}
+
+      const dokTask = (taskMap && taskMap[d + '_dokumentasi']) || null;
+      let dokLocalFlag = false;
+      for (const id of idList) {
+        if (localStorage.getItem('fincestem_dok_ft_day' + d + '_' + id) || localStorage.getItem('fincestem_dok_day' + d + '_' + id)) {
+          dokLocalFlag = true;
+          break;
+        }
+      }
+
+      const hasPhoto = !!docPhoto || !!dokTask || dokLocalFlag;
+
+      // Deteksi Google Tagging / GPS
+      let hasGeotag = false;
+      let gpsLocation = '';
+      if (docPhoto) {
+        if (docPhoto.has_geotag === 1 || docPhoto.has_geotag === true || docPhoto.source === 'camera') {
+          hasGeotag = true;
+        }
+        if (docPhoto.gps_location && String(docPhoto.gps_location).trim().length > 3) {
+          hasGeotag = true;
+          gpsLocation = String(docPhoto.gps_location).trim();
+        }
+      }
+      if (dokTask && typeof dokTask.content === 'object' && dokTask.content) {
+        if (dokTask.content.has_geotag == 1 || dokTask.content.has_geotag === true) {
+          hasGeotag = true;
+        }
+        if (dokTask.content.gps_location) {
+          gpsLocation = String(dokTask.content.gps_location).trim();
+          hasGeotag = true;
+        }
+      }
+
+      // 2. Audit Jurnal Refleksi Mandiri
+      let reflText = '';
+      const reflTask = (taskMap && taskMap[d + '_refleksi']) || null;
+      if (reflTask) {
+        reflText = typeof reflTask.content === 'string' ? reflTask.content : (reflTask.content?.content || '');
+      }
+      if (!reflText) {
+        for (const id of idList) {
+          try {
+            const rawRefl = localStorage.getItem(`fincestem_refleksi_ft_day${d}_` + id) ||
+                            localStorage.getItem(`fincestem_refleksi_day${d}_` + id);
+            if (rawRefl) {
+              const parsed = JSON.parse(rawRefl);
+              reflText = parsed.content || (typeof parsed === 'string' ? parsed : '');
+              if (reflText) break;
+            }
+          } catch (e) {}
+        }
+      }
+
+      const words = (reflText || '').trim().split(/\s+/).filter(Boolean);
+      const wordCount = reflText ? words.length : 0;
+      const hasRefleksi = wordCount > 0;
+      const isRefleksiValid = wordCount >= 25; // Standar kualitas minimal 25 kata
+
+      // 3. Kelengkapan LKPD & Asesmen
+      let hasLkpd = !!(taskMap && taskMap[d + '_lkpd']);
+      let hasAsesmen = !!(taskMap && taskMap[d + '_asesmen']);
+      if (!hasLkpd) {
+        for (const id of idList) {
+          if (localStorage.getItem(`fincestem_lkpd_ft_day${d}_` + id) || localStorage.getItem(`fincestem_lkpd_day${d}_` + id)) {
+            hasLkpd = true;
+            break;
+          }
+        }
+      }
+      if (!hasAsesmen) {
+        for (const id of idList) {
+          if (localStorage.getItem(`fincestem_asesmen_ft_day${d}_` + id) || localStorage.getItem(`fincestem_asesmen_day${d}_` + id)) {
+            hasAsesmen = true;
+            break;
+          }
+        }
+      }
+
+      // 4. Kalkulasi Rekomendasi Bintang (1 - 5) & Pinalti
+      let recommendedStars = 5;
+      const penalties = [];
+      const passes = [];
+
+      if (!hasPhoto) {
+        penalties.push({
+          item: 'Foto Dokumentasi Belum Diunggah',
+          severity: 'high',
+          desc: 'Belum ada foto kegiatan riset yang diunggah untuk hari ini.'
+        });
+        recommendedStars = 1;
+      } else if (!hasGeotag) {
+        // ATURAN SPESIFIK: Foto tanpa Google Tagging -> Rekomendasi Bintang 1
+        penalties.push({
+          item: 'Foto Tidak Ada Google Tagging / GPS',
+          severity: 'critical',
+          desc: 'Foto tidak terdeteksi koordinat GPS Google Tagging. Sistem merekomendasikan Pinalti Bintang 1.'
+        });
+        recommendedStars = 1;
+      } else {
+        passes.push({
+          item: 'Google Tagging / GPS Terverifikasi',
+          desc: gpsLocation ? `Koordinat: ${gpsLocation}` : 'Metadata stempel Google Tagging GPS valid.'
+        });
+      }
+
+      if (!hasRefleksi) {
+        penalties.push({
+          item: 'Jurnal Refleksi Belum Diisi',
+          severity: 'high',
+          desc: 'Siswa belum mengisi jurnal refleksi mandiri hari ini.'
+        });
+        recommendedStars = 1;
+      } else if (!isRefleksiValid) {
+        // ATURAN SPESIFIK: Refleksi kurang (< 25 kata) -> Rekomendasi Bintang 1
+        penalties.push({
+          item: 'Refleksi Kurang Mendalam (< 25 Kata)',
+          severity: 'critical',
+          desc: `Jurnal refleksi baru berisi ${wordCount} kata (standar minimal 25 kata). Direkomendasikan Pinalti Bintang 1.`
+        });
+        recommendedStars = 1;
+      } else {
+        passes.push({
+          item: 'Jurnal Refleksi Memadai & Mendalam',
+          desc: `Refleksi telah mencakup ${wordCount} kata dengan kedalaman pemahaman baik.`
+        });
+      }
+
+      if (recommendedStars > 1) {
+        if (!hasLkpd || !hasAsesmen) {
+          recommendedStars = 4;
+          penalties.push({
+            item: 'LKPD atau Asesmen Belum Lengkap',
+            severity: 'medium',
+            desc: 'Lengkapi seluruh instrumen lembar kerja dan kuis asesmen untuk meraih rekomendasi Bintang 5 sempurna.'
+          });
+        } else {
+          passes.push({
+            item: 'Semua Instrumen Tugas Lengkap',
+            desc: 'Modul, LKPD, Asesmen, Foto Geotag, dan Refleksi terselesaikan.'
+          });
+          recommendedStars = 5;
+        }
+      }
+
+      const isComplete = hasPhoto && hasRefleksi && hasLkpd && hasAsesmen;
+
+      return {
+        dayNum: d,
+        hasPhoto,
+        hasGeotag,
+        gpsLocation,
+        hasRefleksi,
+        reflText,
+        wordCount,
+        isRefleksiValid,
+        hasLkpd,
+        hasAsesmen,
+        isComplete,
+        recommendedStars,
+        penalties,
+        passes
+      };
+    }
+
     function showStepLockedModal(targetStep, prereqTitle, prereqAction, dayNum) {
       dayNum = dayNum || 1;
       let modal = document.getElementById('modalStepLocked');
@@ -1058,13 +1279,13 @@
           badgeHtml = `
             <span class="px-3 py-1 rounded-xl text-xs font-black bg-rose-100 text-rose-800 flex items-center gap-1.5 shadow-2xs">
               <span class="material-symbols-outlined text-sm">lock</span>
-              Menunggu Day ${dNum - 1} Completed
+              Menunggu Day ${dNum - 1} Selesai
             </span>
           `;
           lockAlertHtml = `
             <div class="px-3.5 py-2.5 rounded-2xl bg-rose-50/95 border border-rose-200/80 flex items-center gap-2.5 text-xs sm:text-sm text-rose-950 font-medium leading-relaxed">
               <span class="material-symbols-outlined text-lg text-rose-600 shrink-0">lock</span>
-              <span>Aktivitas Day ${dNum} terkunci! Harap selesaikan dan tunggu penetapan status <strong>Completed</strong> dari Fasilitator pada Day ${dNum - 1}.</span>
+              <span>Aktivitas Day ${dNum} terkunci! Harap selesaikan seluruh rangkaian 5 tugas mandiri (Modul, LKPD, Asesmen, Foto, dan Refleksi) pada Day ${dNum - 1} terlebih dahulu.</span>
             </div>
           `;
         } else if (!access.isOpen) {
@@ -1196,11 +1417,35 @@
         }
         if (dayRecord && dayRecord.score) {
           dayProgressBadge += `
-            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-1">
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-1 shadow-2xs">
               <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
               Nilai: ${dayRecord.score} (${dayRecord.predicate || 'A'})
             </span>
           `;
+        } else if (isFieldTrip && (hasRefleksi || (isFTDay && ftStatus && ftStatus.hasRefleksi))) {
+          dayProgressBadge += `
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 shadow-2xs">
+              <span class="material-symbols-outlined text-sm text-amber-600">stars</span>
+              ⭐⭐⭐⭐⭐ Bintang 5 Lapangan
+            </span>
+          `;
+        } else if (!isFieldTrip && FincestemCore.progress && FincestemCore.progress.isDayStudentTasksDone(studentProgress, dNum)) {
+          const audit = calculateNonFTDayAudit(dNum, taskMap, currentStudent);
+          if (audit.recommendedStars === 1) {
+            dayProgressBadge += `
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-rose-100 text-rose-900 border border-rose-300 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-rose-600">warning</span>
+                ⭐ Rekomendasi 1 Bintang
+              </span>
+            `;
+          } else {
+            dayProgressBadge += `
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-teal-100 text-teal-900 border border-teal-300 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-teal-600">stars</span>
+                ⭐ Rekomendasi ${audit.recommendedStars} Bintang
+              </span>
+            `;
+          }
         } else if (dayStatus === 'revision') {
           dayProgressBadge += `
             <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300/60 flex items-center gap-1">
@@ -1219,7 +1464,7 @@
           dayProgressBadge += `
             <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 border border-teal-300/60 flex items-center gap-1">
               <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
-              ${(isFTDay && hasRefleksi) ? 'Lengkap • Menunggu Guru' : 'Dalam Proses'}
+              ${(isFTDay && hasRefleksi) ? '⭐⭐⭐⭐⭐ Bintang 5 Lapangan' : 'Dalam Proses'}
             </span>
           `;
         }
@@ -1462,7 +1707,13 @@
                 </span>
                 <div class="flex flex-col text-left min-w-0">
                   <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Nilai &amp; Catatan</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenPenilaian ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenPenilaian ? 'Terkunci (Refleksi Dulu)' : ((isFTDay && hasRefleksi) ? 'Menunggu Review' : 'Feedback Guru')}</span>
+                  <span class="text-[10px] sm:text-xs ${canOpenPenilaian ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${
+                    !canOpenPenilaian 
+                      ? 'Terkunci (Refleksi Dulu)' 
+                      : (isFieldTrip 
+                          ? ((hasRefleksi || (isFTDay && ftStatus && ftStatus.hasRefleksi)) ? '⭐⭐⭐⭐⭐ Bintang 5' : 'Feedback Lapangan')
+                          : ((dayRecord && dayRecord.score) ? 'Telah Dinilai Guru' : (hasRefleksi ? 'Lihat Estimasi Bintang' : 'Feedback Guru')))
+                  }</span>
                 </div>
               </button>
             </div>
@@ -1527,7 +1778,7 @@
       const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
 
       if (!access.canAccess) {
-        FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan dan tunggu penetapan status 'Completed' dari Fasilitator pada Day ${dNum - 1}.`, 'error');
+        FincestemCore.ui.toast(access.reason || `Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan seluruh 5 tugas mandiri pada Day ${dNum - 1} terlebih dahulu.`, 'error');
         return;
       }
 
@@ -2031,54 +2282,281 @@
           `}
         `;
       } else if (type === 'penilaian') {
-        title.textContent = isTrial ? 'Simulasi Feedback & Evaluasi Fasilitator Kokurikuler' : `Penilaian & Catatan Fasilitator - Day ${day.day_number}`;
+        title.textContent = isTrial 
+          ? 'Simulasi Feedback & Evaluasi Fasilitator Kokurikuler' 
+          : (isFieldTrip 
+              ? `Evaluasi & Catatan Pendamping Lapangan - Day ${day.day_number}` 
+              : `Penilaian & Catatan Fasilitator - Day ${day.day_number}`);
         icon.textContent = 'stars';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0';
 
         const records = (studentProgress && studentProgress.records) || [];
         const dayRec = records.find(r => Number(r.day_number) === Number(day.day_number));
 
-        let scoreBox = '';
-        if (dayRec && dayRec.score) {
-          scoreBox = `
-            <div class="flex items-center justify-between p-3.5 rounded-xl bg-white border border-emerald-200">
-              <span class="font-bold text-emerald-950 text-sm">Skor Evaluasi:</span>
-              <span class="text-lg font-black text-emerald-700">${dayRec.score} / 100 (${dayRec.predicate || 'A'})</span>
+        if (isTrial) {
+          body.innerHTML = `
+            <div class="p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col gap-3">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="text-xs sm:text-sm font-bold text-amber-950">Status Evaluasi:</span>
+                <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-amber-200 text-amber-900 uppercase">SIMULASI GLADI BERSIH</span>
+              </div>
+              <div class="flex items-center justify-between p-3.5 rounded-xl bg-white border border-amber-300">
+                <span class="font-bold text-amber-950 text-sm">Skor Simulasi:</span>
+                <span class="text-lg font-black text-amber-700">100 / 100 (Sangat Baik - A)</span>
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <span class="text-xs sm:text-sm font-bold text-amber-950">Catatan Simulasi:</span>
+                <p class="text-sm text-amber-950 leading-relaxed italic bg-white/90 p-3 rounded-xl border border-amber-200 font-medium">
+                  "Selamat! Anda telah mencoba seluruh alur aktivitas FINCESTEM pada sesi Gladi Bersih ini. Siapkan diri dan tim Anda untuk riset lapangan sesungguhnya."
+                </p>
+              </div>
             </div>
           `;
-        } else if (isTrial) {
-          scoreBox = `
-            <div class="flex items-center justify-between p-3.5 rounded-xl bg-white border border-amber-300">
-              <span class="font-bold text-amber-950 text-sm">Skor Simulasi:</span>
-              <span class="text-lg font-black text-amber-700">100 / 100 (Sangat Baik - A)</span>
+        } else if (isFieldTrip) {
+          // ==========================================
+          // CABANG 1: SISWA FIELD TRIP
+          // Otomatis Bintang 5 (100 / Sangat Baik - A)
+          // Terverifikasi Langsung oleh Pendamping Lapangan 24/7
+          // Akses hari berikutnya LANGSUNG TERBUKA
+          // ==========================================
+          const fasilName = currentStudent?.facilitator_name || 'Tim Guru Pendamping Field Trip SMAN 1 Belitang';
+          body.innerHTML = `
+            <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/10 via-teal-500/10 to-emerald-500/10 border border-amber-300 flex flex-col gap-4">
+              <!-- Header Status Otomatis -->
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-amber-600 text-lg">verified</span>
+                  Status Evaluasi Field Trip:
+                </span>
+                <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-400 text-slate-950 uppercase tracking-wide shadow-2xs">
+                  ⭐⭐⭐⭐⭐ BINTANG 5 LAPANGAN
+                </span>
+              </div>
+
+              <!-- Big Star Box -->
+              <div class="p-4 rounded-2xl bg-white border border-amber-200/80 shadow-xs flex flex-col items-center justify-center text-center gap-2">
+                <div class="text-2xl sm:text-3xl tracking-widest text-amber-500 font-black">
+                  ⭐⭐⭐⭐⭐
+                </div>
+                <div class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
+                  Nilai: 100 / 100 <span class="text-amber-600 text-base font-extrabold">(Sangat Baik - A)</span>
+                </div>
+                <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
+                  ✓ Terverifikasi Otomatis oleh Guru Pendamping Lapangan 24/7
+                </span>
+              </div>
+
+              <!-- Keterangan Kebijakan Field Trip -->
+              <div class="p-3.5 rounded-2xl bg-white/90 border border-amber-200/60 flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <div class="font-extrabold text-amber-950 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-amber-600 text-base">info</span>
+                  <span>Kebijakan Pendampingan Lapangan:</span>
+                </div>
+                <p class="leading-relaxed">
+                  Untuk peserta <strong>Field Trip</strong>, kegiatan dipandu dan dipantau langsung secara fisik oleh Guru Pembimbing serta Tim Fasilitator sepanjang perjalanan. Begitu Anda menyelesaikan seluruh rangkaian 5 tugas harian (Modul, LKPD, Asesmen, Foto, dan Refleksi), sistem secara otomatis menetapkan predikat <strong>Bintang 5 Lapangan</strong> dan akses kegiatan <strong>Day berikutnya LANGSUNG TERBUKA</strong> tanpa perlu menunggu input manual guru.
+                </p>
+              </div>
+
+              <!-- Pilar Penilaian Lengkap -->
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                  <span class="block text-slate-500 font-bold text-[11px]">Sains &amp; Lingkungan</span>
+                  <span class="text-base font-black text-emerald-600">100 (A)</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                  <span class="block text-slate-500 font-bold text-[11px]">Teknologi Digital</span>
+                  <span class="text-base font-black text-emerald-600">100 (A)</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                  <span class="block text-slate-500 font-bold text-[11px]">Literasi Finansial</span>
+                  <span class="text-base font-black text-emerald-600">100 (A)</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                  <span class="block text-slate-500 font-bold text-[11px]">Budaya &amp; Karakter</span>
+                  <span class="text-base font-black text-emerald-600">100 (A)</span>
+                </div>
+              </div>
+
+              <!-- Footer Info Pendamping -->
+              <div class="flex items-center justify-between text-xs text-slate-600 font-medium pt-1 border-t border-amber-200/60">
+                <span>Pendamping Lapangan: <strong>${fasilName}</strong></span>
+                <span class="text-emerald-700 font-bold">Akses Day Berikutnya: Terbuka Otomatis ✓</span>
+              </div>
             </div>
           `;
+        } else {
+          // ==========================================
+          // CABANG 2: SISWA NON-FIELD TRIP (OKU TIMUR)
+          // Jika sudah dinilai -> Tampilkan Nilai Resmi Guru
+          // Jika belum dinilai -> Tampilkan Rekomendasi Bintang Sistem (Pra-Evaluasi)
+          //   Pinalti Foto tanpa Google Tagging -> Rekomendasi Bintang 1
+          //   Pinalti Refleksi kurang / < 25 kata -> Rekomendasi Bintang 1
+          // ==========================================
+          const isGradedByTeacher = dayRec && (dayRec.score !== undefined && dayRec.score !== null && dayRec.score !== '');
+
+          if (isGradedByTeacher) {
+            const scoreNum = parseFloat(dayRec.score);
+            const starsCount = Math.max(1, Math.min(5, Math.round(scoreNum / 20)));
+            body.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col gap-3.5">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="text-xs sm:text-sm font-bold text-emerald-950 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-emerald-600 text-lg">verified</span>
+                    Status Evaluasi Fasilitator:
+                  </span>
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-emerald-200 text-emerald-900 uppercase">
+                    TELAH DINILAI RESMI
+                  </span>
+                </div>
+
+                <!-- Score Box -->
+                <div class="p-4 rounded-2xl bg-white border border-emerald-200/80 shadow-xs flex flex-col items-center justify-center text-center gap-1.5">
+                  <div class="text-2xl text-amber-500 font-black tracking-widest">
+                    ${'⭐'.repeat(starsCount)}${'☆'.repeat(5 - starsCount)}
+                  </div>
+                  <div class="text-xl sm:text-2xl font-black text-emerald-800">
+                    Skor: ${dayRec.score} / 100 <span class="text-sm font-extrabold text-emerald-600">(${dayRec.predicate || 'A'})</span>
+                  </div>
+                </div>
+
+                <!-- Umpan Balik Guru -->
+                <div class="flex flex-col gap-1.5">
+                  <span class="text-xs sm:text-sm font-bold text-emerald-950">Catatan &amp; Umpan Balik Fasilitator:</span>
+                  <p class="text-sm text-emerald-950 leading-relaxed italic bg-white/90 p-3.5 rounded-xl border border-emerald-200/60 font-medium">
+                    "${dayRec.feedback || 'Pertahankan kekompakan tim, kedisiplinan pencatatan data lapangan, dan kualitas dokumentasi autentik di wilayah riset.'}"
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-emerald-800 font-semibold pt-1 border-t border-emerald-200/60">
+                  <span>Dinilai oleh: <strong>${dayRec.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</strong></span>
+                </div>
+              </div>
+            `;
+          } else {
+            // Belum dinilai guru -> Jalankan Pra-Evaluasi Kualitas Otomatis
+            const audit = calculateNonFTDayAudit(day.day_number, taskMap, currentStudent);
+            const isPenalty = audit.recommendedStars === 1;
+
+            body.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl ${isPenalty ? 'bg-rose-50/70 border-rose-300' : 'bg-teal-50/70 border-teal-300'} border flex flex-col gap-4">
+                <!-- Header Pra-Evaluasi -->
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <div class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined ${isPenalty ? 'text-rose-600' : 'text-teal-600'} text-lg">auto_awesome</span>
+                    <span class="text-xs sm:text-sm font-extrabold text-slate-900">Pra-Evaluasi Kualitas (Audit Sistem):</span>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-lg text-xs font-black ${isPenalty ? 'bg-rose-200 text-rose-950 border border-rose-300' : 'bg-teal-200 text-teal-950 border border-teal-300'} uppercase">
+                    BELUM DINILAI FASILITATOR
+                  </span>
+                </div>
+
+                <!-- Big Recommendation Star Box -->
+                <div class="p-4 rounded-2xl bg-white border ${isPenalty ? 'border-rose-200' : 'border-teal-200'} shadow-xs flex flex-col items-center justify-center text-center gap-2">
+                  <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">Estimasi Rekomendasi Penilaian Hari Ini:</span>
+                  <div class="text-2xl sm:text-3xl tracking-widest text-amber-500 font-black">
+                    ${'⭐'.repeat(audit.recommendedStars)}${'☆'.repeat(5 - audit.recommendedStars)}
+                  </div>
+                  <div class="text-lg sm:text-xl font-black ${isPenalty ? 'text-rose-700' : 'text-teal-800'} leading-tight">
+                    Rekomendasi: Bintang ${audit.recommendedStars} / 5
+                  </div>
+                  ${isPenalty ? `
+                    <div class="px-3 py-2 rounded-xl bg-rose-100 text-rose-900 border border-rose-300 text-xs font-bold leading-relaxed max-w-md">
+                      ⚠️ <strong>Peringatan Pinalti:</strong> Pengerjaan Anda belum memenuhi standar kualitas (Google Tagging foto tidak terdeteksi atau kedalaman refleksi kurang dari 25 kata). Anda disarankan memperbaiki foto atau refleksi sebelum Fasilitator memberikan penilaian akhir!
+                    </div>
+                  ` : `
+                    <div class="px-3 py-2 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold leading-relaxed max-w-md">
+                      🎉 <strong>Standar Kualitas Terpenuhi:</strong> Foto dokumentasi ber-Google Tagging dan refleksi Anda memenuhi kualifikasi unggul!
+                    </div>
+                  `}
+                </div>
+
+                <!-- Audit Checklist Rincian -->
+                <div class="flex flex-col gap-2.5 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-2xs">
+                  <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm text-slate-600">checklist</span>
+                    Rincian Audit Standar Pengerjaan:
+                  </span>
+
+                  <!-- 1. Google Tagging Foto -->
+                  <div class="p-2.5 rounded-xl ${audit.hasGeotag ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : (audit.hasPhoto ? 'bg-rose-50 border-rose-300 text-rose-950 ring-1 ring-rose-300' : 'bg-slate-50 border-slate-200 text-slate-700')} border flex flex-col gap-1 text-xs">
+                    <div class="flex items-center justify-between font-extrabold">
+                      <span class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base ${audit.hasGeotag ? 'text-emerald-600' : (audit.hasPhoto ? 'text-rose-600' : 'text-slate-400')}">
+                          ${audit.hasGeotag ? 'check_circle' : (audit.hasPhoto ? 'cancel' : 'radio_button_unchecked')}
+                        </span>
+                        <span>1. Google Tagging &amp; GPS Foto Dokumentasi</span>
+                      </span>
+                      <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${audit.hasGeotag ? 'bg-emerald-200 text-emerald-900' : (audit.hasPhoto ? 'bg-rose-200 text-rose-950 font-black uppercase' : 'bg-slate-200 text-slate-700')}">
+                        ${audit.hasGeotag ? 'LULUS (GPS VALID)' : (audit.hasPhoto ? 'PINALTI ⭐ 1 (TANPA GPS)' : 'BELUM UNGGAH')}
+                      </span>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-slate-600 pl-6">
+                      ${audit.hasGeotag 
+                        ? (audit.gpsLocation ? `Koordinat GPS terdeteksi: <strong>${audit.gpsLocation}</strong>` : 'Metadata Google Tagging dan stempel lokasi GPS terverifikasi.')
+                        : (audit.hasPhoto 
+                            ? '<strong class="text-rose-700">Foto tidak memiliki Google Tagging / titik koordinat GPS!</strong> Segera unggah ulang foto melalui tombol Kamera ber-GPS pada menu Dokumentasi agar tidak terkena nilai Bintang 1 dari Fasilitator.' 
+                            : 'Belum ada foto dokumentasi yang diunggah untuk hari ini.')}
+                    </p>
+                  </div>
+
+                  <!-- 2. Kedalaman Refleksi Mandiri -->
+                  <div class="p-2.5 rounded-xl ${audit.isRefleksiValid ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : (audit.hasRefleksi ? 'bg-rose-50 border-rose-300 text-rose-950 ring-1 ring-rose-300' : 'bg-slate-50 border-slate-200 text-slate-700')} border flex flex-col gap-1 text-xs">
+                    <div class="flex items-center justify-between font-extrabold">
+                      <span class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base ${audit.isRefleksiValid ? 'text-emerald-600' : (audit.hasRefleksi ? 'text-rose-600' : 'text-slate-400')}">
+                          ${audit.isRefleksiValid ? 'check_circle' : (audit.hasRefleksi ? 'cancel' : 'radio_button_unchecked')}
+                        </span>
+                        <span>2. Kedalaman Jurnal Refleksi Mandiri</span>
+                      </span>
+                      <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${audit.isRefleksiValid ? 'bg-emerald-200 text-emerald-900' : (audit.hasRefleksi ? 'bg-rose-200 text-rose-950 font-black uppercase' : 'bg-slate-200 text-slate-700')}">
+                        ${audit.isRefleksiValid ? `LULUS (${audit.wordCount} KATA)` : (audit.hasRefleksi ? `PINALTI ⭐ 1 (${audit.wordCount}/25 KATA)` : 'BELUM DIISI')}
+                      </span>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-slate-600 pl-6">
+                      ${audit.isRefleksiValid 
+                        ? `Jurnal refleksi telah memuat ${audit.wordCount} kata (standar minimal 25 kata). Kedalaman analisis sangat baik.` 
+                        : (audit.hasRefleksi 
+                            ? `<strong class="text-rose-700">Refleksi terlalu singkat (${audit.wordCount} kata dari minimal 25 kata)!</strong> Uraikan pengalaman, kendala, dan pelajaran bermakna hari ini secara lebih mendalam agar rekomendasi bintang meningkat.` 
+                            : 'Siswa belum mengisi jurnal refleksi harian.')}
+                    </p>
+                  </div>
+
+                  <!-- 3. Kelengkapan LKPD & Asesmen -->
+                  <div class="p-2.5 rounded-xl ${audit.hasLkpd && audit.hasAsesmen ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-700'} border flex items-center justify-between text-xs font-semibold">
+                    <span class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-base ${audit.hasLkpd && audit.hasAsesmen ? 'text-emerald-600' : 'text-slate-400'}">
+                        ${audit.hasLkpd && audit.hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}
+                      </span>
+                      <span>3. Lembar Kerja LKPD &amp; Asesmen Kuis</span>
+                    </span>
+                    <span class="text-[11px] ${audit.hasLkpd && audit.hasAsesmen ? 'text-emerald-700 font-bold' : 'text-slate-500'}">
+                      ${audit.hasLkpd && audit.hasAsesmen ? 'Lengkap Terkirim ✓' : (audit.hasLkpd ? 'Asesmen Belum' : (audit.hasAsesmen ? 'LKPD Belum' : 'Belum Terkirim'))}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Info Akses Hari Berikutnya Sudah Terbuka -->
+                <div class="p-3.5 rounded-2xl bg-white border border-teal-200/80 flex items-start gap-2.5 text-xs text-slate-700 leading-relaxed shadow-2xs">
+                  <span class="material-symbols-outlined text-teal-600 text-xl shrink-0 mt-0.5">lock_open</span>
+                  <div class="flex flex-col gap-1">
+                    <span class="font-extrabold text-teal-950">Akses Hari Berikutnya Sudah Dapat Dikerjakan!</span>
+                    <p>
+                      Sesuai aturan terbaru FINCESTEM, Anda <strong>TIDAK PERLU MENUNGGU</strong> Fasilitator menilai untuk membuka Day berikutnya. Cukup selesaikan ke-5 tugas di Day ini, hari berikutnya langsung terbuka.
+                    </p>
+                    <p class="text-slate-500 italic mt-0.5">
+                      Tip: Anda masih dapat memperbarui Foto Dokumentasi atau Jurnal Refleksi kapan saja sebelum Fasilitator mengunci nilai akhir.
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Fasilitator Pendamping Info -->
+                <div class="flex items-center justify-between text-xs text-slate-500 font-medium pt-1 border-t border-slate-200/60">
+                  <span>Fasilitator Kelas: <strong>${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</strong></span>
+                </div>
+              </div>
+            `;
+          }
         }
-
-        const noteText = (dayRec && dayRec.feedback) 
-          ? dayRec.feedback 
-          : (isTrial 
-              ? 'Selamat! Anda telah mencoba seluruh menu aktivitas FINCESTEM pada sesi Gladi Bersih ini. Siapkan diri dan tim Anda untuk riset lapangan sesungguhnya.' 
-              : 'Pertahankan kekompakan tim, kedisiplinan pencatatan data lapangan, dan kualitas dokumentasi autentik di wilayah riset.');
-
-        const evalStatusLabel = (dayRec && dayRec.status) ? dayRec.status.toUpperCase() : (dayRec ? 'TELAH DINILAI' : 'BELUM DINILAI');
-
-        body.innerHTML = `
-          <div class="p-4 sm:p-5 rounded-2xl bg-emerald-50 border border-emerald-100 flex flex-col gap-3">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <span class="text-xs sm:text-sm font-bold text-emerald-900">Status Evaluasi Fasilitator:</span>
-              <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-emerald-200 text-emerald-900 uppercase">${evalStatusLabel}</span>
-            </div>
-            ${scoreBox}
-            <div class="flex flex-col gap-1.5">
-              <span class="text-xs sm:text-sm font-bold text-emerald-950">Catatan &amp; Umpan Balik:</span>
-              <p class="text-sm text-emerald-950 leading-relaxed italic bg-white/90 p-3 rounded-xl border border-emerald-200/60 font-medium">
-                "${noteText}"
-              </p>
-            </div>
-            <span class="text-xs text-emerald-800 font-semibold mt-0.5">Oleh: ${dayRec?.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</span>
-          </div>
-        `;
       }
 
       modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -2273,14 +2751,28 @@
       const modal = document.getElementById('modalFeedbackHistory');
       const prog = studentProgress || FincestemCore.progress.getDefaultProgress(currentStudent?.nisn);
 
-      document.getElementById('modalRecapPredicate').textContent = prog.predicate || 'Sangat Baik (A)';
-      document.getElementById('modalRecapScore').textContent = prog.average_score || '88.5';
-      document.getElementById('modalRecapFasil').textContent = `Dinilai oleh: ${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}`;
+      const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
+        : (currentStudent?.zone || 'FINCESTEM OKU TIMUR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
+      if (isFieldTrip) {
+        document.getElementById('modalRecapPredicate').textContent = '⭐⭐⭐⭐⭐ Bintang 5 (A)';
+        document.getElementById('modalRecapScore').textContent = '100';
+        document.getElementById('modalRecapFasil').textContent = `Pendamping Langsung: ${currentStudent?.facilitator_name || 'Tim Guru Pendamping Field Trip'}`;
+      } else {
+        document.getElementById('modalRecapPredicate').textContent = prog.predicate || 'Dalam Proses';
+        document.getElementById('modalRecapScore').textContent = prog.average_score || '-';
+        document.getElementById('modalRecapFasil').textContent = `Fasilitator: ${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}`;
+      }
 
       const listContainer = document.getElementById('modalRecapDaysList');
       listContainer.innerHTML = '';
 
       const records = prog.records || [];
+      const taskMap = prog.task_map || {};
 
       // Loop 7 hari
       for (let i = 1; i <= 7; i++) {
@@ -2291,18 +2783,45 @@
         const row = document.createElement('div');
         row.className = 'p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2.5';
 
-        let scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Belum ada penilaian</span>';
-        if (rec && rec.score) {
-          scoreHtml = `
-            <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
-              Nilai: ${rec.score} (${rec.predicate || 'A'})
-            </span>
-          `;
-        }
+        let scoreHtml = '';
+        let note = '';
 
-        const note = rec && rec.feedback 
-          ? rec.feedback 
-          : (i <= 5 ? 'Aktivitas lapangan telah diverifikasi oleh tim fasilitator kokurikuler.' : 'Menunggu pelaksanaan jadwal resmi.');
+        if (isFieldTrip) {
+          const isDone = FincestemCore.progress.isDayStudentTasksDone(prog, i);
+          if (isDone || (i <= 2)) {
+            scoreHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300">
+                ⭐⭐⭐⭐⭐ 100 (A) • Terverifikasi Lapangan
+              </span>
+            `;
+            note = 'Aktivitas didampingi dan dipantau langsung oleh guru pendamping sepanjang kegiatan. Nilai otomatis Bintang 5.';
+          } else {
+            scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Menunggu Pengerjaan</span>';
+            note = 'Selesaikan 5 aktivitas harian untuk memperoleh verifikasi otomatis Bintang 5.';
+          }
+        } else {
+          if (rec && rec.score) {
+            scoreHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+                Nilai: ${rec.score} (${rec.predicate || 'A'})
+              </span>
+            `;
+            note = rec.feedback || 'Aktivitas lapangan telah diverifikasi oleh tim fasilitator kokurikuler.';
+          } else if (FincestemCore.progress && FincestemCore.progress.isDayStudentTasksDone(prog, i)) {
+            const audit = calculateNonFTDayAudit(i, taskMap, currentStudent);
+            scoreHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black ${audit.recommendedStars === 1 ? 'bg-rose-100 text-rose-900 border border-rose-300' : 'bg-teal-100 text-teal-900 border border-teal-300'}">
+                Estimasi Sistem: ${'⭐'.repeat(audit.recommendedStars)} (${audit.recommendedStars}/5 Bintang)
+              </span>
+            `;
+            note = audit.recommendedStars === 1 
+              ? 'Peringatan: Dokumentasi atau refleksi belum memenuhi standar minimum (Google Tagging GPS/panjang refleksi minimal 25 kata). Perbaiki sebelum dinilai Fasilitator!' 
+              : 'Standar kualitas terpenuhi dengan baik. Menunggu konfirmasi penilaian akhir Fasilitator.';
+          } else {
+            scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Belum ada pengerjaan / penilaian</span>';
+            note = 'Silakan selesaikan seluruh lembar kerja dan jurnal harian sesuai jadwal riset.';
+          }
+        }
 
         row.innerHTML = `
           <div class="flex items-center justify-between gap-2 flex-wrap">
