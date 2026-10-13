@@ -410,13 +410,23 @@
               const taskMap = (prog && prog.task_map) || {};
               let hasAsesmen = !!taskMap['1_asesmen'];
               if (!hasAsesmen) {
-                try {
-                  const cleanNisn = String(nisn).trim();
-                  const unpadded = cleanNisn.replace(/^0+/, '');
-                  const ask = localStorage.getItem('fincestem_asesmen_ft_day1_' + cleanNisn) ||
-                              localStorage.getItem('fincestem_asesmen_ft_day1_' + unpadded);
-                  if (ask && JSON.parse(ask).submitted) hasAsesmen = true;
-                } catch(e) {}
+                const ids = [nisn, String(nisn).trim(), String(nisn).trim().replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+                for (const id of ids) {
+                  try {
+                    const ask = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
+                    if (ask) {
+                      try {
+                        const parsed = JSON.parse(ask);
+                        if (parsed && (parsed.submitted || parsed.score !== undefined || parsed.answers)) {
+                          hasAsesmen = true;
+                          break;
+                        }
+                      } catch(e) {
+                        if (ask.trim().length > 5) { hasAsesmen = true; break; }
+                      }
+                    }
+                  } catch(e) {}
+                }
               }
               if (!hasAsesmen) {
                 FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day 1 sebelum mengunggah Dokumentasi!', 'warning');
@@ -461,7 +471,8 @@
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
         ? FincestemCore.zones.getStudentZone(user.nisn || user.identifier, user.class || user.class_name, user.zone)
         : (user.zone || 'FINCESTEM OKU TIMUR');
-      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       return {
         isFieldTrip: isFieldTrip,
         isNonFieldTrip: !isFieldTrip,

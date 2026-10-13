@@ -838,6 +838,189 @@
       }
     }
 
+    /* ========================================================
+       HELPER IDENTIFIER & ALUR BERURUTAN DAY 1 FIELD TRIP
+       ======================================================== */
+    function getStudentStorageIdentifiers() {
+      const ids = new Set();
+      const u = FincestemCore.auth.getUser() || {};
+      const s = currentStudent || u;
+      [u.nisn, u.identifier, u.nis, s.nisn, s.identifier, s.nis].forEach(val => {
+        if (val) {
+          const str = String(val).trim();
+          if (str && str !== '-') {
+            ids.add(str);
+            const unp = str.replace(/^0+/, '');
+            if (unp) ids.add(unp);
+            if (unp.length === 9) ids.add('0' + unp);
+            if (unp.length === 8) ids.add('00' + unp);
+          }
+        }
+      });
+      return Array.from(ids);
+    }
+
+    function getFTDay1ProgressStatus(taskMap) {
+      taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
+      const idList = getStudentStorageIdentifiers();
+
+      let hasMateri = !!taskMap['1_materi'];
+      if (!hasMateri) {
+        for (const id of idList) {
+          try {
+            const raw = localStorage.getItem('fincestem_materi_ft_day1_' + id);
+            if (raw) {
+              const p = JSON.parse(raw);
+              if (p && (p.conclusion || p.text || p.content || p.summary)) {
+                hasMateri = true;
+                break;
+              }
+            }
+          } catch(e) {}
+        }
+      }
+
+      let hasLkpd = !!taskMap['1_lkpd'];
+      if (!hasLkpd) {
+        for (const id of idList) {
+          try {
+            const raw = localStorage.getItem('fincestem_lkpd_ft_day1_' + id);
+            if (raw) {
+              const p = JSON.parse(raw);
+              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined)) {
+                hasLkpd = true;
+                break;
+              }
+            }
+          } catch(e) {}
+        }
+      }
+
+      let hasAsesmen = !!taskMap['1_asesmen'];
+      if (!hasAsesmen) {
+        for (const id of idList) {
+          try {
+            const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
+            if (raw) {
+              try {
+                const p = JSON.parse(raw);
+                if (p && (p.submitted || p.score !== undefined || p.answers)) {
+                  hasAsesmen = true;
+                  break;
+                }
+              } catch(e) {
+                if (raw.trim().length > 5) {
+                  hasAsesmen = true;
+                  break;
+                }
+              }
+            }
+          } catch(e) {}
+        }
+      }
+
+      let hasDok = !!taskMap['1_dokumentasi'];
+      if (!hasDok) {
+        for (const id of idList) {
+          try {
+            if (localStorage.getItem('fincestem_dok_ft_day1_' + id) === 'true') {
+              hasDok = true;
+              break;
+            }
+          } catch(e) {}
+        }
+        if (!hasDok) {
+          try {
+            const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+            if (dbStr) {
+              const db = JSON.parse(dbStr);
+              if (Array.isArray(db.documentation)) {
+                hasDok = db.documentation.some(p => {
+                  const docDay = Number(p.day || p.day_number || 0);
+                  const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+                  return docDay === 1 && idList.includes(docNisn);
+                });
+              }
+            }
+          } catch(e) {}
+        }
+      }
+
+      let hasRefleksi = !!taskMap['1_refleksi'];
+      if (!hasRefleksi) {
+        for (const id of idList) {
+          try {
+            const raw = localStorage.getItem('fincestem_refleksi_ft_day1_' + id);
+            if (raw) {
+              hasRefleksi = true;
+              break;
+            }
+          } catch(e) {}
+        }
+      }
+
+      // Cascading logic berurutan mutlak
+      let canLkpd = hasMateri;
+      let canAsesmen = hasMateri && hasLkpd;
+      let canDok = hasMateri && hasLkpd && hasAsesmen;
+      let canRefleksi = hasMateri && hasLkpd && hasAsesmen && hasDok;
+      let canPenilaian = hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi;
+
+      return {
+        hasMateri,
+        hasLkpd: hasLkpd && hasMateri,
+        hasAsesmen: hasAsesmen && hasLkpd && hasMateri,
+        hasDok: hasDok && hasAsesmen && hasLkpd && hasMateri,
+        hasRefleksi: hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri,
+        canLkpd,
+        canAsesmen,
+        canDok,
+        canRefleksi,
+        canPenilaian
+      };
+    }
+
+    function showStepLockedModal(targetStep, prereqTitle, prereqAction) {
+      let modal = document.getElementById('modalStepLocked');
+      if (!modal) {
+        modal = document.createElement('div');
+        modal.id = 'modalStepLocked';
+        modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-200';
+        document.body.appendChild(modal);
+      }
+
+      modal.innerHTML = `
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 flex flex-col gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-2xl">lock</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xs font-black uppercase text-amber-700 tracking-wider">Aktivitas Berurutan Day 1</span>
+              <h3 class="text-base sm:text-lg font-black text-slate-900 leading-snug">${targetStep} Masih Terkunci</h3>
+            </div>
+          </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            Sesuai panduan kegiatan Field Trip Day 1, Anda harus menyelesaikan <strong>${prereqTitle}</strong> terlebih dahulu sebelum dapat membuka menu ini.
+          </p>
+          <div class="flex flex-col gap-2 pt-2">
+            <button id="btnLockedGoPrereq" type="button" class="w-full py-3.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-lg">play_arrow</span>
+              <span>Buka ${prereqTitle} Sekarang</span>
+            </button>
+            <button type="button" onclick="document.getElementById('modalStepLocked').remove()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer transition-all">
+              Tutup
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('btnLockedGoPrereq').onclick = function() {
+        modal.remove();
+        if (prereqAction) prereqAction();
+      };
+    }
+
     function renderDaysSchedule(days) {
       const container = document.getElementById('scheduleDaysContainer');
       container.innerHTML = '';
@@ -963,91 +1146,18 @@
         const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
           ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
           : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
-        const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+        const zUpper = (studentZone || '').toUpperCase();
+        const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
         const isFTDay1 = (dNum === 1 && isFieldTrip);
+        const ftStatus = isFTDay1 ? getFTDay1ProgressStatus(taskMap) : null;
 
         // Cek status pengerjaan hari ini
         const dayRecord = records.find(r => Number(r.day_number) === dNum);
-        let hasMateri = !!taskMap[dNum + '_materi'];
-        let hasLkpd = !!taskMap[dNum + '_lkpd'];
-        let hasAsesmen = !!taskMap[dNum + '_asesmen'];
-        let hasRefleksi = !!taskMap[dNum + '_refleksi'];
-        let hasDok = !!taskMap[dNum + '_dokumentasi'];
-
-        // Fallback pengecekan lokal khusus Day 1 Field Trip jika belum sinkron penuh
-        if (isFTDay1) {
-          const cleanNisn = String(studentNisn).trim();
-          const unpadded = cleanNisn.replace(/^0+/, '');
-
-          if (!hasMateri) {
-            try {
-              const mat = localStorage.getItem('fincestem_materi_ft_day1_' + cleanNisn) ||
-                          localStorage.getItem('fincestem_materi_ft_day1_' + unpadded);
-              if (mat && JSON.parse(mat).conclusion) hasMateri = true;
-            } catch(e) {}
-          }
-          if (!hasLkpd) {
-            try {
-              const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + cleanNisn) ||
-                         localStorage.getItem('fincestem_lkpd_ft_day1_' + unpadded);
-              if (lk && JSON.parse(lk).submitted) hasLkpd = true;
-            } catch(e) {}
-          }
-          if (!hasAsesmen) {
-            try {
-              const ask = localStorage.getItem('fincestem_asesmen_ft_day1_' + cleanNisn) ||
-                          localStorage.getItem('fincestem_asesmen_ft_day1_' + unpadded);
-              if (ask && JSON.parse(ask).submitted) hasAsesmen = true;
-            } catch(e) {}
-          }
-          if (!hasDok) {
-            try {
-              const dokFlag = localStorage.getItem('fincestem_dok_ft_day1_' + cleanNisn) ||
-                              localStorage.getItem('fincestem_dok_ft_day1_' + unpadded);
-              if (dokFlag === 'true') {
-                hasDok = true;
-              } else {
-                const dbStr = localStorage.getItem('fincestem_db_2026_v1');
-                if (dbStr) {
-                  const db = JSON.parse(dbStr);
-                  if (Array.isArray(db.documentation)) {
-                    hasDok = db.documentation.some(p => {
-                      const docDay = Number(p.day || p.day_number || 0);
-                      const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
-                      const docUnpadded = docNisn.replace(/^0+/, '');
-                      return docDay === 1 && (docNisn === cleanNisn || docUnpadded === unpadded);
-                    });
-                  }
-                }
-              }
-            } catch(e) {}
-          }
-          if (!hasRefleksi) {
-            try {
-              const ref = localStorage.getItem('fincestem_refleksi_ft_day1_' + cleanNisn) ||
-                          localStorage.getItem('fincestem_refleksi_ft_day1_' + unpadded);
-              if (ref) hasRefleksi = true;
-            } catch(e) {}
-          }
-
-          // ATURAN BERURUTAN MUTLAK (STRICT CASCADE):
-          // Modul -> LKPD -> Asesmen -> Dokumentasi -> Refleksi -> Penilaian
-          if (!hasMateri) {
-            hasLkpd = false;
-            hasAsesmen = false;
-            hasDok = false;
-            hasRefleksi = false;
-          } else if (!hasLkpd) {
-            hasAsesmen = false;
-            hasDok = false;
-            hasRefleksi = false;
-          } else if (!hasAsesmen) {
-            hasDok = false;
-            hasRefleksi = false;
-          } else if (!hasDok) {
-            hasRefleksi = false;
-          }
-        }
+        let hasMateri = isFTDay1 ? ftStatus.hasMateri : !!taskMap[dNum + '_materi'];
+        let hasLkpd = isFTDay1 ? ftStatus.hasLkpd : !!taskMap[dNum + '_lkpd'];
+        let hasAsesmen = isFTDay1 ? ftStatus.hasAsesmen : !!taskMap[dNum + '_asesmen'];
+        let hasDok = isFTDay1 ? ftStatus.hasDok : !!taskMap[dNum + '_dokumentasi'];
+        let hasRefleksi = isFTDay1 ? ftStatus.hasRefleksi : !!taskMap[dNum + '_refleksi'];
 
         let dayProgressBadge = '';
         if (isTrial) {
@@ -1143,11 +1253,11 @@
         // Kontrol Tombol Berjenjang Khusus Day 1 Field Trip:
         // Modul (1) -> LKPD (2) -> Asesmen (3) -> Dokumentasi (4) -> Refleksi (5) -> Penilaian (6)
         const canOpenMateri = canInteract;
-        const canOpenLkpd = canInteract && (!isFTDay1 || hasMateri);
-        const canOpenAsesmen = canInteract && (!isFTDay1 || (hasMateri && hasLkpd));
-        const canOpenDok = canInteract && (!isFTDay1 || (hasMateri && hasLkpd && hasAsesmen));
-        const canOpenRefleksi = canInteract && (!isFTDay1 || (hasMateri && hasLkpd && hasAsesmen && hasDok));
-        const canOpenPenilaian = canInteract && (!isFTDay1 || (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi));
+        const canOpenLkpd = canInteract && (!isFTDay1 || ftStatus.canLkpd);
+        const canOpenAsesmen = canInteract && (!isFTDay1 || ftStatus.canAsesmen);
+        const canOpenDok = canInteract && (!isFTDay1 || ftStatus.canDok);
+        const canOpenRefleksi = canInteract && (!isFTDay1 || ftStatus.canRefleksi);
+        const canOpenPenilaian = canInteract && (!isFTDay1 || ftStatus.canPenilaian);
 
         const materiBtnClass = canOpenMateri ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
         const materiIconClass = canOpenMateri ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500';
@@ -1399,103 +1509,55 @@
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
         ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
         : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
-      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay1 = (dNum === 1 && isFieldTrip);
 
       // VALIDASI ALUR BERURUTAN KHUSUS DAY 1 FIELD TRIP
       if (isFTDay1) {
-        const cleanNisn = String(studentNisn).trim();
-        const unpadded = cleanNisn.replace(/^0+/, '');
+        const ftStatus = getFTDay1ProgressStatus();
 
-        const taskMap = (studentProgress && studentProgress.task_map) || {};
-        let hasMateri = !!taskMap['1_materi'];
-        if (!hasMateri) {
-          try {
-            const mat = localStorage.getItem('fincestem_materi_ft_day1_' + cleanNisn) ||
-                        localStorage.getItem('fincestem_materi_ft_day1_' + unpadded);
-            if (mat && JSON.parse(mat).conclusion) hasMateri = true;
-          } catch(e) {}
-        }
-
-        let hasLkpd = !!taskMap['1_lkpd'];
-        if (!hasLkpd) {
-          try {
-            const lk = localStorage.getItem('fincestem_lkpd_ft_day1_' + cleanNisn) ||
-                       localStorage.getItem('fincestem_lkpd_ft_day1_' + unpadded);
-            if (lk && JSON.parse(lk).submitted) hasLkpd = true;
-          } catch(e) {}
-        }
-
-        let hasAsesmen = !!taskMap['1_asesmen'];
-        if (!hasAsesmen) {
-          try {
-            const ask = localStorage.getItem('fincestem_asesmen_ft_day1_' + cleanNisn) ||
-                        localStorage.getItem('fincestem_asesmen_ft_day1_' + unpadded);
-            if (ask && JSON.parse(ask).submitted) hasAsesmen = true;
-          } catch(e) {}
-        }
-
-        let hasDok = !!taskMap['1_dokumentasi'];
-        if (!hasDok) {
-          try {
-            const dokFlag = localStorage.getItem('fincestem_dok_ft_day1_' + cleanNisn) ||
-                            localStorage.getItem('fincestem_dok_ft_day1_' + unpadded);
-            if (dokFlag === 'true') {
-              hasDok = true;
-            } else {
-              const dbStr = localStorage.getItem('fincestem_db_2026_v1');
-              if (dbStr) {
-                const db = JSON.parse(dbStr);
-                if (Array.isArray(db.documentation)) {
-                  hasDok = db.documentation.some(p => {
-                    const docDay = Number(p.day || p.day_number || 0);
-                    const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
-                    const docUnpadded = docNisn.replace(/^0+/, '');
-                    return docDay === 1 && (docNisn === cleanNisn || docUnpadded === unpadded);
-                  });
-                }
-              }
-            }
-          } catch(e) {}
-        }
-
-        let hasRefleksi = !!taskMap['1_refleksi'];
-        if (!hasRefleksi) {
-          try {
-            const ref = localStorage.getItem('fincestem_refleksi_ft_day1_' + cleanNisn) ||
-                        localStorage.getItem('fincestem_refleksi_ft_day1_' + unpadded);
-            if (ref) hasRefleksi = true;
-          } catch(e) {}
-        }
-
-        // Tahap 2 (LKPD) butuh Modul
-        if (type === 'lkpd' && !hasMateri) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib membaca Modul Belajar dan mengisi resume kesimpulan sebelum membuka LKPD!', 'warning');
-          setTimeout(() => { window.location.href = 'materi.html?day=1'; }, 1000);
+        // Tahap 2: LKPD butuh Modul
+        if (type === 'lkpd' && !ftStatus.canLkpd) {
+          showStepLockedModal('LKPD Digital', 'Tahap 1: Modul Belajar & Resume', () => { window.location.href = 'materi.html?day=1'; });
           return;
         }
 
-        // Tahap 3 (Asesmen) butuh Modul & LKPD
-        if (type === 'asesmen' && (!hasMateri || !hasLkpd)) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan & mengirimkan LKPD terlebih dahulu sebelum mengerjakan Asesmen!', 'warning');
+        // Tahap 3: Asesmen butuh Modul & LKPD
+        if (type === 'asesmen' && !ftStatus.canAsesmen) {
+          if (!ftStatus.hasMateri) {
+            showStepLockedModal('Kuis Asesmen', 'Tahap 1: Modul Belajar & Resume', () => { window.location.href = 'materi.html?day=1'; });
+          } else {
+            showStepLockedModal('Kuis Asesmen', 'Tahap 2: Lembar Kerja (LKPD)', () => { window.location.href = 'lkpd.html?day=1'; });
+          }
           return;
         }
 
-        // Tahap 4 (Dokumentasi) butuh Modul, LKPD & Asesmen
-        if (type === 'dokumentasi' && (!hasMateri || !hasLkpd || !hasAsesmen)) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen terlebih dahulu sebelum mengunggah foto Dokumentasi!', 'warning');
+        // Tahap 4: Dokumentasi butuh Modul, LKPD & Asesmen
+        if (type === 'dokumentasi' && !ftStatus.canDok) {
+          if (!ftStatus.hasMateri) {
+            showStepLockedModal('Dokumentasi Foto', 'Tahap 1: Modul Belajar & Resume', () => { window.location.href = 'materi.html?day=1'; });
+          } else if (!ftStatus.hasLkpd) {
+            showStepLockedModal('Dokumentasi Foto', 'Tahap 2: Lembar Kerja (LKPD)', () => { window.location.href = 'lkpd.html?day=1'; });
+          } else {
+            showStepLockedModal('Dokumentasi Foto', 'Tahap 3: Kuis Asesmen Finansial', () => { handleActivityClick(1, 'asesmen'); });
+          }
           return;
         }
 
-        // Tahap 5 (Refleksi) butuh Modul, LKPD, Asesmen & Dokumentasi
-        if (type === 'refleksi' && (!hasMateri || !hasLkpd || !hasAsesmen || !hasDok)) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib mengunggah foto Dokumentasi kegiatan hari ini terlebih dahulu sebelum mengisi Jurnal Refleksi!', 'warning');
+        // Tahap 5: Refleksi butuh Modul, LKPD, Asesmen & Dokumentasi
+        if (type === 'refleksi' && !ftStatus.canRefleksi) {
+          if (!ftStatus.canDok) {
+            showStepLockedModal('Jurnal Refleksi', 'Tahap 3: Kuis Asesmen Finansial', () => { handleActivityClick(1, 'asesmen'); });
+          } else {
+            showStepLockedModal('Jurnal Refleksi', 'Tahap 4: Dokumentasi Foto Kegiatan', () => { window.location.href = 'dokumentasi.html?day=1'; });
+          }
           return;
         }
 
-        // Tahap 6 (Penilaian) butuh Refleksi selesai
-        if (type === 'penilaian' && (!hasMateri || !hasLkpd || !hasAsesmen || !hasDok || !hasRefleksi)) {
-          FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan seluruh rangkaian tahapan hingga Jurnal Refleksi terlebih dahulu!', 'warning');
+        // Tahap 6: Penilaian butuh Refleksi selesai
+        if (type === 'penilaian' && !ftStatus.canPenilaian) {
+          showStepLockedModal('Nilai & Feedback Guru', 'Tahap 5: Jurnal Refleksi Mandiri', () => { handleActivityClick(1, 'refleksi'); });
           return;
         }
       }
@@ -1560,11 +1622,11 @@
 
       const currentUser = FincestemCore.auth.getUser() || {};
       const cleanNisn = String(currentUser.nisn || currentUser.identifier || '').trim();
-      const unpadded = cleanNisn.replace(/^0+/, '');
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
         ? FincestemCore.zones.getStudentZone(cleanNisn, currentUser.class || currentUser.class_name, currentUser.zone)
         : (currentUser.zone || 'FINCESTEM OKU TIMUR');
-      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
 
       if (type === 'asesmen') {
@@ -1574,11 +1636,19 @@
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
 
           let ftAsesmen = null;
-          try {
-            const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + cleanNisn) ||
-                        localStorage.getItem('fincestem_asesmen_ft_day1_' + unpadded);
-            if (raw) ftAsesmen = JSON.parse(raw);
-          } catch(e) {}
+          const idList = getStudentStorageIdentifiers();
+          for (const id of idList) {
+            try {
+              const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
+              if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && (parsed.submitted || parsed.score !== undefined)) {
+                  ftAsesmen = parsed;
+                  break;
+                }
+              }
+            } catch(e) {}
+          }
 
           const isSubmitted = ftAsesmen && ftAsesmen.submitted;
           const score = ftAsesmen ? (ftAsesmen.score ?? 100) : 0;
@@ -1835,11 +1905,11 @@
       // Deteksi siswa Field Trip Day 1
       const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
       const cleanNisn = String(studentNisn).trim();
-      const unpadded = cleanNisn.replace(/^0+/, '');
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
         ? FincestemCore.zones.getStudentZone(cleanNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
         : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
-      const isFieldTrip = (studentZone || '').toUpperCase().includes('LUAR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay1 = isFieldTrip && Number(dayNumber) === 1;
 
       let note = '';
@@ -1873,12 +1943,16 @@
           submitted_at: new Date().toISOString()
         };
 
-        localStorage.setItem('fincestem_asesmen_ft_day1_' + cleanNisn, JSON.stringify(asesmenPayload));
-        if (unpadded !== cleanNisn) {
-          localStorage.setItem('fincestem_asesmen_ft_day1_' + unpadded, JSON.stringify(asesmenPayload));
-        }
+        const idList = getStudentStorageIdentifiers();
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_asesmen_ft_day1_' + id, JSON.stringify(asesmenPayload));
+        });
 
         note = `Skor Asesmen Day 1: ${totalScore}/100 (${correctCount}/5 Benar). Kunci Jawaban: Q1=${q1}, Q2=${q2}, Q3=${q3}, Q4=${q4}, Q5=${q5}`;
+
+        if (studentProgress && studentProgress.task_map) {
+          studentProgress.task_map['1_asesmen'] = { status: 'submitted', content: note };
+        }
 
         FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
           FincestemCore.ui.toast(`Asesmen Day 1 Selesai! Skor Anda: ${totalScore}/100. Tahap 4 (Dokumentasi Foto) sekarang telah terbuka.`, 'success');
@@ -1902,9 +1976,12 @@
           content: note,
           submitted_at: new Date().toISOString()
         };
-        localStorage.setItem('fincestem_refleksi_ft_day1_' + cleanNisn, JSON.stringify(refleksiPayload));
-        if (unpadded !== cleanNisn) {
-          localStorage.setItem('fincestem_refleksi_ft_day1_' + unpadded, JSON.stringify(refleksiPayload));
+        const idList = getStudentStorageIdentifiers();
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_refleksi_ft_day1_' + id, JSON.stringify(refleksiPayload));
+        });
+        if (studentProgress && studentProgress.task_map) {
+          studentProgress.task_map['1_refleksi'] = { status: 'submitted', content: note };
         }
       } else {
         const noteInput = document.getElementById('txtRefleksiNote');
