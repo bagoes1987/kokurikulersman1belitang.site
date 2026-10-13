@@ -871,13 +871,7 @@ const FincestemCore = {
       if (!nisn) return defaultZone || 'FINCESTEM OKU TIMUR';
       const cleanNisn = String(nisn).trim();
 
-      // 1. Cek penyimpanan lokal individual
-      try {
-        const stored = localStorage.getItem('fincestem_student_zone_' + cleanNisn);
-        if (stored) return stored;
-      } catch (e) {}
-
-      // 2. Cek peta sinkronisasi server yang tersimpan di browser
+      // 1. Cek peta sinkronisasi server yang tersimpan di browser
       try {
         const mapStr = localStorage.getItem('fincestem_student_zones_map');
         if (mapStr) {
@@ -886,11 +880,17 @@ const FincestemCore = {
         }
       } catch (e) {}
 
-      // 3. Cek master list di memori jika ada atribut zone
+      // 2. Cek master list resmi di memori (Daftar Peserta Excel)
       if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
         const found = window.FincestemMasterStudents.find(s => String(s.nisn).trim() === cleanNisn || String(s.nis).trim() === cleanNisn);
         if (found && found.zone) return found.zone;
       }
+
+      // 3. Cek penyimpanan lokal individual
+      try {
+        const stored = localStorage.getItem('fincestem_student_zone_' + cleanNisn);
+        if (stored) return stored;
+      } catch (e) {}
 
       // 4. Cek pengaturan zona kelas
       if (className) {

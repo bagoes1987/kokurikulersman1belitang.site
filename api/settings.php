@@ -111,6 +111,72 @@ function ensureRoleTables($pdo) {
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
         ");
     } catch (Exception $e) {}
+
+    // Auto-sync Peserta Field Trip dari file resmi field_trip_students.json (455 Siswa)
+    try {
+        $ftFile = __DIR__ . '/../field_trip_students.json';
+        if (file_exists($ftFile)) {
+            $ftMtime = (int)filemtime($ftFile);
+            $lastMtime = null;
+            try {
+                $stmtChk = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'field_trip_sync_mtime' LIMIT 1");
+                $stmtChk->execute();
+                $lastMtime = $stmtChk->fetchColumn();
+            } catch (Exception $eN) {}
+
+            if ($lastMtime === false || $lastMtime === null || (int)$lastMtime < $ftMtime) {
+                $rawFt = file_get_contents($ftFile);
+                $ftStudents = json_decode($rawFt, true);
+                if (is_array($ftStudents) && count($ftStudents) > 0) {
+                    $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM OKU TIMUR' WHERE `role` = 'siswa'");
+                    $pdo->exec("DELETE FROM `student_custom_zones`");
+
+                    $nisList = [];
+                    $nisnList = [];
+                    foreach ($ftStudents as $st) {
+                        if (!empty($st['nis'])) $nisList[] = "'" . addslashes(trim($st['nis'])) . "'";
+                        if (!empty($st['nisn'])) $nisnList[] = "'" . addslashes(trim($st['nisn'])) . "'";
+                    }
+
+                    if (!empty($nisList)) {
+                        $chunks = array_chunk($nisList, 100);
+                        foreach ($chunks as $chunk) {
+                            $inNis = implode(',', $chunk);
+                            $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `role` = 'siswa' AND `nis` IN ($inNis)");
+                        }
+                    }
+                    if (!empty($nisnList)) {
+                        $chunks = array_chunk($nisnList, 100);
+                        foreach ($chunks as $chunk) {
+                            $inNisn = implode(',', $chunk);
+                            $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `role` = 'siswa' AND `identifier` IN ($inNisn)");
+                        }
+                    }
+
+                    $insertValues = [];
+                    foreach ($ftStudents as $st) {
+                        $n = addslashes(trim($st['nisn']));
+                        if ($n) {
+                            $insertValues[] = "('$n', 'FINCESTEM LUAR OKU TIMUR')";
+                        }
+                    }
+                    if (!empty($insertValues)) {
+                        $chunks = array_chunk($insertValues, 100);
+                        foreach ($chunks as $chunk) {
+                            $valSql = implode(',', $chunk);
+                            $pdo->exec("INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES $valSql ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`)");
+                        }
+                    }
+
+                    try {
+                        $pdo->exec("CREATE TABLE IF NOT EXISTS `app_settings` (`key_name` VARCHAR(50) PRIMARY KEY, `value` TEXT, `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
+                        $stmtSave = $pdo->prepare("REPLACE INTO `app_settings` (`key_name`, `value`) VALUES ('field_trip_sync_mtime', :m)");
+                        $stmtSave->execute([':m' => (string)$ftMtime]);
+                    } catch (Exception $eS) {}
+                }
+            }
+        }
+    } catch (Exception $eFt) {}
 }
 
 if ($method === 'GET') {
@@ -120,6 +186,75 @@ if ($method === 'GET') {
     try {
         $pdo = getDB();
         ensureRoleTables($pdo);
+
+        // Aksi eksplisit untuk sinkronisasi peserta Field Trip dari Excel (455 Siswa)
+        if ($action === 'sync_field_trip_excel') {
+            $ftFile = __DIR__ . '/../field_trip_students.json';
+            if (!file_exists($ftFile)) {
+                jsonResponse(false, 'Berkas data field_trip_students.json tidak ditemukan!', null, 404);
+            }
+            $rawFt = file_get_contents($ftFile);
+            $ftStudents = json_decode($rawFt, true);
+            if (!is_array($ftStudents) || empty($ftStudents)) {
+                jsonResponse(false, 'Format data field_trip_students.json tidak valid!', null, 500);
+            }
+
+            // 1. Reset semua siswa ke status Non-Field Trip (OKU TIMUR)
+            $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM OKU TIMUR' WHERE `role` = 'siswa'");
+            $pdo->exec("DELETE FROM `student_custom_zones`");
+
+            // 2. Kumpulkan NIS & NISN Field Trip
+            $nisList = [];
+            $nisnList = [];
+            foreach ($ftStudents as $st) {
+                if (!empty($st['nis'])) $nisList[] = "'" . addslashes(trim($st['nis'])) . "'";
+                if (!empty($st['nisn'])) $nisnList[] = "'" . addslashes(trim($st['nisn'])) . "'";
+            }
+
+            if (!empty($nisList)) {
+                $chunks = array_chunk($nisList, 100);
+                foreach ($chunks as $chunk) {
+                    $inNis = implode(',', $chunk);
+                    $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `role` = 'siswa' AND `nis` IN ($inNis)");
+                }
+            }
+            if (!empty($nisnList)) {
+                $chunks = array_chunk($nisnList, 100);
+                foreach ($chunks as $chunk) {
+                    $inNisn = implode(',', $chunk);
+                    $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `role` = 'siswa' AND `identifier` IN ($inNisn)");
+                }
+            }
+
+            // 3. Masukkan ke student_custom_zones
+            $insertValues = [];
+            foreach ($ftStudents as $st) {
+                $n = addslashes(trim($st['nisn']));
+                if ($n) {
+                    $insertValues[] = "('$n', 'FINCESTEM LUAR OKU TIMUR')";
+                }
+            }
+            if (!empty($insertValues)) {
+                $chunks = array_chunk($insertValues, 100);
+                foreach ($chunks as $chunk) {
+                    $valSql = implode(',', $chunk);
+                    $pdo->exec("INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES $valSql ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`)");
+                }
+            }
+
+            try {
+                $pdo->exec("CREATE TABLE IF NOT EXISTS `app_settings` (`key_name` VARCHAR(50) PRIMARY KEY, `value` TEXT, `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)");
+                $stmtSave = $pdo->prepare("REPLACE INTO `app_settings` (`key_name`, `value`) VALUES ('field_trip_sync_mtime', :m)");
+                $stmtSave->execute([':m' => (string)filemtime($ftFile)]);
+            } catch (Exception $eS) {}
+
+            $counts = $pdo->query("SELECT `zone`, COUNT(*) AS cnt FROM `users` WHERE `role` = 'siswa' GROUP BY `zone`")->fetchAll(PDO::FETCH_KEY_PAIR);
+
+            jsonResponse(true, "Sinkronisasi berhasil! Sebanyak " . count($ftStudents) . " siswa resmi ditetapkan sebagai Peserta Field Trip (Luar OKU Timur).", [
+                'field_trip_count' => count($ftStudents),
+                'database_counts'  => $counts
+            ]);
+        }
 
         // Jika diminta data siswa tunggal
         if ($action === 'get_student' && $nisn) {

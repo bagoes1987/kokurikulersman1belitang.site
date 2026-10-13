@@ -1,0 +1,4097 @@
+[
+  {
+    "no": 1,
+    "nama": "SATRIA MASGRAY",
+    "kelas": "KELAS XI.8",
+    "gender": "L",
+    "nis": "14539",
+    "nisn": "0087801368",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 2,
+    "nama": "ALFINDRA",
+    "kelas": "KELAS XI.1",
+    "gender": "L",
+    "nis": "14213",
+    "nisn": "0099891698",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 3,
+    "nama": "FIRZATULLAH NAUPAL HERLIAN",
+    "kelas": "KELAS XI.8",
+    "gender": "L",
+    "nis": "14330",
+    "nisn": "0105269488",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 4,
+    "nama": "SANDRA KASIH",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14537",
+    "nisn": "0102060812",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 5,
+    "nama": "INENZA FARADISTY",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14363",
+    "nisn": "0091768635",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 6,
+    "nama": "RAHTU AQASHYA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14505",
+    "nisn": "0107235696",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 7,
+    "nama": "DINI ANGGRAINI",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14294",
+    "nisn": "0107191678",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 8,
+    "nama": "LIVIA RAMADHANI",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14401",
+    "nisn": "0109213898",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 9,
+    "nama": "ANINDA AZIZATUN NISA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14233",
+    "nisn": "0107508712",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 10,
+    "nama": "THESYA FAJRIYAH",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14563",
+    "nisn": "0105645331",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 11,
+    "nama": "DINDA AULYA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14293",
+    "nisn": "0104833308",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 12,
+    "nama": "NABILLA",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14850",
+    "nisn": "0112550797",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 13,
+    "nama": "ZAFIRA ANAFIKA",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14582",
+    "nisn": "0106026658",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 14,
+    "nama": "CITRA PRISSILYA SUPRAPTO",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14276",
+    "nisn": "0106494497",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 15,
+    "nama": "SARAH AULIAUL KHUSNA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14538",
+    "nisn": "3106802486",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 16,
+    "nama": "CINDI DWI DESTALIA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14274",
+    "nisn": "0098489385",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 17,
+    "nama": "TALITA ZHAFIRA AZKA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14560",
+    "nisn": "0103928746",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 18,
+    "nama": "QUEENNISSA AZZYZY",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14493",
+    "nisn": "0103093930",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 19,
+    "nama": "DINDA APRILIA",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14292",
+    "nisn": "0102399517",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 20,
+    "nama": "APRILIA SAPUTRI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14240",
+    "nisn": "0105902580",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 21,
+    "nama": "AUFA AZELIA MUSYAFA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14251",
+    "nisn": "0109219651",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 22,
+    "nama": "VITIA PRATIWI",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14570",
+    "nisn": "3105555464",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 23,
+    "nama": "ANINDYA FAIZA AS SYAKHIRA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14235",
+    "nisn": "0102553441",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 24,
+    "nama": "HAFIZ RAMADHAN ALFARO",
+    "kelas": "KELAS XI.2",
+    "gender": "L",
+    "nis": "14347",
+    "nisn": "0107617745",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 25,
+    "nama": "REHAN ARGA PRATAMA",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14514",
+    "nisn": "0106551619",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 26,
+    "nama": "NOVA ZULIA AZZAHRA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14479",
+    "nisn": "0101106613",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 27,
+    "nama": "KIRANI ENDA JELITA",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14394",
+    "nisn": "0109370482",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 28,
+    "nama": "MANDA ARISTIA",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14423",
+    "nisn": "0105859788",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 29,
+    "nama": "LUTFYA NENSHI ARENTA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14407",
+    "nisn": "0102058806",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 30,
+    "nama": "FELICIA ASTANIA MELANI",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14324",
+    "nisn": "0101253605",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 31,
+    "nama": "VIONA MELDIANA RESTY",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14569",
+    "nisn": "0102004852",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 32,
+    "nama": "ECA FEBRIANTI",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14300",
+    "nisn": "0104056392",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 33,
+    "nama": "HANA AJENG SETYANINGTYAS",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14349",
+    "nisn": "0108508128",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 34,
+    "nama": "SHASA SETIA NINGSIH",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14543",
+    "nisn": "0108049840",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 35,
+    "nama": "KHASANAH",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14391",
+    "nisn": "0101614875",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 36,
+    "nama": "DWITA NEISYA PUTRI",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14299",
+    "nisn": "0105118269",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 37,
+    "nama": "CITRA SELVILYA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14277",
+    "nisn": "0106285676",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 38,
+    "nama": "NYOMAN TRIYANI",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14484",
+    "nisn": "0101428856",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 39,
+    "nama": "NURIKA PERMATA HADI",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14482",
+    "nisn": "0104100445",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 40,
+    "nama": "KESYA SALSABILLA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14381",
+    "nisn": "0103049282",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 41,
+    "nama": "BRIGITA OLIVIA",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14268",
+    "nisn": "0103171985",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 42,
+    "nama": "GEREN ANGGI SAPUTRI",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14341",
+    "nisn": "0092211293",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 43,
+    "nama": "SYAFARA NAZELA AZAHRA",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14554",
+    "nisn": "0092571747",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 44,
+    "nama": "RINTAN FEBRIYANTIKA",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14987",
+    "nisn": "0102496272",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 45,
+    "nama": "MAYVIA SEKAR AYUDIA",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14428",
+    "nisn": "0103066844",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 46,
+    "nama": "INDAH HIDAYATUL NAJZWA",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14360",
+    "nisn": "0107396502",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 47,
+    "nama": "DENA SWARA KISHAN",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14282",
+    "nisn": "0099923815",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 48,
+    "nama": "ZULFI ZUMALA MALIKA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14592",
+    "nisn": "3104485524",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 49,
+    "nama": "KHAILA FHATARANI",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14386",
+    "nisn": "0104016823",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 50,
+    "nama": "FAHIRA TALITA LUTFI",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14312",
+    "nisn": "0103410648",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 51,
+    "nama": "FEBYOLA KURNIA AYU RAHMADHANI",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14322",
+    "nisn": "0104189876",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 52,
+    "nama": "ANDINI GHEA SANTOSO",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14229",
+    "nisn": "0107197713",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 53,
+    "nama": "AMBAR APRILIANA",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14223",
+    "nisn": "0104145663",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 54,
+    "nama": "DIAH AYU ANINGSIH",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14289",
+    "nisn": "0104886963",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 55,
+    "nama": "YULIA WULAN DARI",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14580",
+    "nisn": "0099124932",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 56,
+    "nama": "LUTHFIA RIZKY RAMADHANI",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14408",
+    "nisn": "0101254851",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 57,
+    "nama": "NABILA FEBYANA SARI",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14451",
+    "nisn": "0102262683",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 58,
+    "nama": "SULLISTYA DEWI AR RUUM",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14551",
+    "nisn": "0093605913",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 59,
+    "nama": "ABDUN MUFID FARIDWAN",
+    "kelas": "KELAS XI.4",
+    "gender": "L",
+    "nis": "14203",
+    "nisn": "0092614450",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 60,
+    "nama": "RAFI FAITH ALVARO",
+    "kelas": "KELAS XI.8",
+    "gender": "L",
+    "nis": "14501",
+    "nisn": "0107818355",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 61,
+    "nama": "MONA ANGELINA",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14436",
+    "nisn": "0096944475",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 62,
+    "nama": "WILDAN ANDIKA AL-FATIH",
+    "kelas": "KELAS X.6",
+    "gender": "L",
+    "nis": "14964",
+    "nisn": "0118184597",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 63,
+    "nama": "ARIS KISNIRA WIBOWO",
+    "kelas": "KELAS X.3",
+    "gender": "L",
+    "nis": "14653",
+    "nisn": "0116200106",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 64,
+    "nama": "NAEVA NIRO AZZAHRA",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14855",
+    "nisn": "0118766980",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 65,
+    "nama": "SYAFANA INFANTRIANI MUKHLIS",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14941",
+    "nisn": "0112988123",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 66,
+    "nama": "DAFFA TARUNA WIJAYA",
+    "kelas": "KELAS X.3",
+    "gender": "L",
+    "nis": "14684",
+    "nisn": "0112857568",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 67,
+    "nama": "THORIQ VARIANSYAH",
+    "kelas": "KELAS X.6",
+    "gender": "L",
+    "nis": "14951",
+    "nisn": "0106222409",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 68,
+    "nama": "M FARRAS",
+    "kelas": "KELAS XI.4",
+    "gender": "L",
+    "nis": "14411",
+    "nisn": "0089108252",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 69,
+    "nama": "WAYAN TEGAR BAGUS KAMAWA",
+    "kelas": "KELAS XI.4",
+    "gender": "L",
+    "nis": "14572",
+    "nisn": "0105888621",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 70,
+    "nama": "MUHAMMAD FADHIL AZHAR",
+    "kelas": "KELAS XI.4",
+    "gender": "L",
+    "nis": "14443",
+    "nisn": "0107083037",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 71,
+    "nama": "AHMADINEJAD AL GUNTARA",
+    "kelas": "KELAS XI.4",
+    "gender": "L",
+    "nis": "14210",
+    "nisn": "0107108840",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 72,
+    "nama": "ALVINO",
+    "kelas": "KELAS XII.1",
+    "gender": "L",
+    "nis": "13817",
+    "nisn": "0095838613",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 73,
+    "nama": "KEVYN PRATAMA",
+    "kelas": "KELAS XI.4",
+    "gender": "L",
+    "nis": "14596",
+    "nisn": "0105540265",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 74,
+    "nama": "INTAN DWIANDIRA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14364",
+    "nisn": "3108012404",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 75,
+    "nama": "MARITIS NAENI",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14426",
+    "nisn": "0105871741",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 76,
+    "nama": "LUCITA SABRINA SAKHI",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14404",
+    "nisn": "0102884471",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 77,
+    "nama": "LETISA OLIVIA",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14398",
+    "nisn": "0109311675",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 78,
+    "nama": "AYU ANGGRAINI RAMADANI",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14262",
+    "nisn": "0105046099",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 79,
+    "nama": "RENDY FIRMANSYAH",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14515",
+    "nisn": "0101542598",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 80,
+    "nama": "RAFA ILYASA",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14497",
+    "nisn": "0101006595",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 81,
+    "nama": "TIARA SALSABILA",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14566",
+    "nisn": "0095632659",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 82,
+    "nama": "KAYLAH ALWINA KHAIRUNNISA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14379",
+    "nisn": "0103759499",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 83,
+    "nama": "HANIFAH SYAKIRA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14351",
+    "nisn": "0101787765",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 84,
+    "nama": "AHMAD YUDA PUTRA HANSA",
+    "kelas": "KELAS XI.8",
+    "gender": "L",
+    "nis": "14209",
+    "nisn": "0091457376",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 85,
+    "nama": "I WAYAN AAN NARDAVA",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14357",
+    "nisn": "0099899650",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 86,
+    "nama": "RAYYAN DZAKI",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14511",
+    "nisn": "0106438196",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 87,
+    "nama": "ZALFA MULIDIA RAHMA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14586",
+    "nisn": "0101531946",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 88,
+    "nama": "REVALDO TOFANIO",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14519",
+    "nisn": "0104368077",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 89,
+    "nama": "HABIB MUSTOFA AMU",
+    "kelas": "KELAS XI.3",
+    "gender": "L",
+    "nis": "14345",
+    "nisn": "0099953544",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 90,
+    "nama": "MARIA LUVERNA",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14425",
+    "nisn": "0104073049",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 91,
+    "nama": "ANNA HUSNUL AZZAHRA",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14238",
+    "nisn": "0091625596",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 92,
+    "nama": "RIFQI ARYANDINATA",
+    "kelas": "KELAS XI.5",
+    "gender": "L",
+    "nis": "14526",
+    "nisn": "0102732317",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 93,
+    "nama": "MUHAMMAD SAPUTRA",
+    "kelas": "KELAS XI.5",
+    "gender": "L",
+    "nis": "14448",
+    "nisn": "0094989489",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 94,
+    "nama": "GEISHA HANIZ EVERLYN",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14340",
+    "nisn": "0105816077",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 95,
+    "nama": "HABIB ABDILLAH",
+    "kelas": "KELAS XI.3",
+    "gender": "L",
+    "nis": "14344",
+    "nisn": "0105888268",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 96,
+    "nama": "REZHA BIMA ANGGARA",
+    "kelas": "KELAS XI.2",
+    "gender": "L",
+    "nis": "14523",
+    "nisn": "0093091268",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 97,
+    "nama": "PRITA EKA SAPUTRI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14491",
+    "nisn": "0092631789",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 98,
+    "nama": "ZAN FATIMA AL -ZAHRA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14588",
+    "nisn": "0109734411",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 99,
+    "nama": "LUCI NURYENITA",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14402",
+    "nisn": "0106570799",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 100,
+    "nama": "MUHAMMAD FIRZA ARSYI SYAKBANI",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14444",
+    "nisn": "0107699003",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 101,
+    "nama": "NOVITA KARISMA PUTRI",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14481",
+    "nisn": "0097560021",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 102,
+    "nama": "ILMIRA CAHYA SALSABILA",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14358",
+    "nisn": "0101266935",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 103,
+    "nama": "NINDY AZHAR OCKTA VIANY",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14477",
+    "nisn": "0104832529",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 104,
+    "nama": "AULIA NISA PUTRI BALQIS",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14252",
+    "nisn": "0101879708",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 105,
+    "nama": "KHANSA ZUHRA HERDANI",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14389",
+    "nisn": "0101344284",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 106,
+    "nama": "LINA TINA TALINA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14399",
+    "nisn": "0104477601",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 107,
+    "nama": "AULIA PRADISTA RAHMANISA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14253",
+    "nisn": "0103963160",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 108,
+    "nama": "ABELIA HENDINA RAMADHANI",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14204",
+    "nisn": "0108503789",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 109,
+    "nama": "KANAYA AMIRA GHAIDA ALFA",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14376",
+    "nisn": "0104345834",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 110,
+    "nama": "MEICHA ARYA PUTRI TWOVOMA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14430",
+    "nisn": "0101910570",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 111,
+    "nama": "ILUH CYLLVIA PUTRI RIKWAN",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14359",
+    "nisn": "0108145129",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 112,
+    "nama": "ANIS MAYLANI",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14236",
+    "nisn": "0102802131",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 113,
+    "nama": "VANISA AHMAT SAFITRI",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14567",
+    "nisn": "0106975192",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 114,
+    "nama": "CLAURA MARISHA BELLA",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14279",
+    "nisn": "0096304352",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 115,
+    "nama": "GALIH DUTA OBAMA",
+    "kelas": "KELAS XI.5",
+    "gender": "L",
+    "nis": "14336",
+    "nisn": "0104495033",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 116,
+    "nama": "YOGA AGUNG PRADANA",
+    "kelas": "KELAS XI.5",
+    "gender": "L",
+    "nis": "14578",
+    "nisn": "0107075319",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 117,
+    "nama": "WENI ALTA ARISTI",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14573",
+    "nisn": "0105249577",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 118,
+    "nama": "ARINDA RAHMA FERNANDA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14244",
+    "nisn": "0103480674",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 119,
+    "nama": "MADE VALEN NAVITA ASIH",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14420",
+    "nisn": "0093575295",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 120,
+    "nama": "KEYSA RAHMADANI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14385",
+    "nisn": "3102574250",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 121,
+    "nama": "WESTLY DHEA AGESTI",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14574",
+    "nisn": "0101103087",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 122,
+    "nama": "NIKITA ANDELARA",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14475",
+    "nisn": "0102914053",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 123,
+    "nama": "KETUT RADA RENATA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14383",
+    "nisn": "0105461099",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 124,
+    "nama": "REVI INDAYANI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14520",
+    "nisn": "0106674569",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 125,
+    "nama": "NIKITA SARI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14476",
+    "nisn": "0093164228",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 126,
+    "nama": "FAIZATUL FADILAH",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14316",
+    "nisn": "0109680562",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 127,
+    "nama": "DESVITA AVERELIA KINANTI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14286",
+    "nisn": "0105382155",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 128,
+    "nama": "MELDA JUNIA PUTRI",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14433",
+    "nisn": "0107070041",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 129,
+    "nama": "RHAKSEL RIGEN FIRNANDO",
+    "kelas": "KELAS XI.3",
+    "gender": "L",
+    "nis": "14524",
+    "nisn": "0107490577",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 130,
+    "nama": "M ZHAKI EGIAN GANTARI",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14416",
+    "nisn": "0106861491",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 131,
+    "nama": "FITRIA ANJELITA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14331",
+    "nisn": "0104819332",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 132,
+    "nama": "SYIFA AYU RAHMA",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14558",
+    "nisn": "3094565969",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 133,
+    "nama": "QIRANI AZAHRA",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14492",
+    "nisn": "0096678049",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 134,
+    "nama": "M REGINALD PADABI",
+    "kelas": "KELAS XI.1",
+    "gender": "L",
+    "nis": "14415",
+    "nisn": "0107109918",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 135,
+    "nama": "MUTIARA RAMADHANI",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14849",
+    "nisn": "0109239435",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 136,
+    "nama": "VERNANDO TRI ANJAYA",
+    "kelas": "KELAS XI.6",
+    "gender": "L",
+    "nis": "14568",
+    "nisn": "0099318053",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 137,
+    "nama": "RASYID AKBAR",
+    "kelas": "KELAS XI.1",
+    "gender": "L",
+    "nis": "14507",
+    "nisn": "0097817347",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 138,
+    "nama": "MEISYA AULIA SARI",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14432",
+    "nisn": "3103971574",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 139,
+    "nama": "RADITYA LUTFIO SANJAYA",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14495",
+    "nisn": "0107272823",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 140,
+    "nama": "M HAFIZ ALDZIKRI",
+    "kelas": "KELAS XI.3",
+    "gender": "L",
+    "nis": "14413",
+    "nisn": "0106010447",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 141,
+    "nama": "YUSRIL REZA RAHMAT DANI",
+    "kelas": "KELAS XI.8",
+    "gender": "L",
+    "nis": "14581",
+    "nisn": "0105620708",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 142,
+    "nama": "FADHIL IZZA GHASSANI",
+    "kelas": "KELAS XI.2",
+    "gender": "L",
+    "nis": "14309",
+    "nisn": "0101618075",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 143,
+    "nama": "MUHAMMAD SYARIF AR RAHMAN",
+    "kelas": "KELAS XI.5",
+    "gender": "L",
+    "nis": "14449",
+    "nisn": "0107847155",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 144,
+    "nama": "ELPI MEILINSI AMELDA",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14302",
+    "nisn": "0106437259",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 145,
+    "nama": "MILLO PUTRIANSYAH",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14434",
+    "nisn": "0105830530",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 146,
+    "nama": "REGINA DESWITA",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14513",
+    "nisn": "0091158611",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 147,
+    "nama": "FIANNA AZZAHRA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14326",
+    "nisn": "0103543639",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 148,
+    "nama": "AFIFA RAMADHANI WINAS",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14205",
+    "nisn": "0104215063",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 149,
+    "nama": "FARIS ALFARIZI IRDO",
+    "kelas": "KELAS XI.6",
+    "gender": "L",
+    "nis": "14320",
+    "nisn": "0104147477",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 150,
+    "nama": "ARUMI DWI SETIA",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14247",
+    "nisn": "0101235052",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 151,
+    "nama": "LINGGAR RESTI AULIA",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14400",
+    "nisn": "0094573652",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 152,
+    "nama": "ETSUKO SHIOMI",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14306",
+    "nisn": "0106200291",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 153,
+    "nama": "M FATAHUL ARIF SANI",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14412",
+    "nisn": "0109014602",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 154,
+    "nama": "SHIFA AYU SYALSABILA PH",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14545",
+    "nisn": "0097362155",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 155,
+    "nama": "ZULFA HALIMATUS SANGADAH",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14590",
+    "nisn": "0094542859",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 156,
+    "nama": "THOMAS PAMUNGKAS",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14564",
+    "nisn": "0094565762",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 157,
+    "nama": "DAVA RIZKI RAMADAN",
+    "kelas": "KELAS XI.8",
+    "gender": "L",
+    "nis": "14280",
+    "nisn": "0101081188",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 158,
+    "nama": "NAZUWA AURA RISKI",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14470",
+    "nisn": "0101906471",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 159,
+    "nama": "KAYLA NUR ISLAMI",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14377",
+    "nisn": "0107265063",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 160,
+    "nama": "JOHANES CAHYO SOPHIANDI",
+    "kelas": "KELAS XI.1",
+    "gender": "L",
+    "nis": "14370",
+    "nisn": "0092851162",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 161,
+    "nama": "SAMUEL FIANDI PUTRA",
+    "kelas": "KELAS XI.1",
+    "gender": "L",
+    "nis": "14536",
+    "nisn": "0097723811",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 162,
+    "nama": "MAHADHIKA AGFAR SEPTIAN",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14421",
+    "nisn": "0103936705",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 163,
+    "nama": "DHAVA AL-HAFIS",
+    "kelas": "KELAS XI.1",
+    "gender": "L",
+    "nis": "14288",
+    "nisn": "0109343601",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 164,
+    "nama": "SYAKIRA DAVIYANA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14555",
+    "nisn": "0099058962",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 165,
+    "nama": "FADILA NURHAMMA ARINI",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14311",
+    "nisn": "3101867900",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 166,
+    "nama": "KHANSA TABINA IRAWAN",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14388",
+    "nisn": "0093318349",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 167,
+    "nama": "KHANZA IMARA KUSUMA PUTRI",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14390",
+    "nisn": "0102808642",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 168,
+    "nama": "TALITHA AZZAHRA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14561",
+    "nisn": "0101934660",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 169,
+    "nama": "MARTNAEIMA AL-KHAILIL BIERDHA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14427",
+    "nisn": "0104624485",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 170,
+    "nama": "FLOWERENCIA EXSAVIO DUTRA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14332",
+    "nisn": "0107998715",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 171,
+    "nama": "ZAHWA RAMADHANI",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14584",
+    "nisn": "0103033033",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 172,
+    "nama": "RAULI SITIO",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14509",
+    "nisn": "0108320650",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 173,
+    "nama": "BUNGA LESTARI",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14269",
+    "nisn": "0106850680",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 174,
+    "nama": "RIZDA GALUH OCTARIZMA",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14529",
+    "nisn": "0098195402",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 175,
+    "nama": "ALVINO WIJAYA",
+    "kelas": "KELAS XI.1",
+    "gender": "L",
+    "nis": "14222",
+    "nisn": "0108194346",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 176,
+    "nama": "MUHAMMAD ADHANNIE MEIKKHO ANANTHAKA CASYANOVVA",
+    "kelas": "KELAS XI.6",
+    "gender": "L",
+    "nis": "14439",
+    "nisn": "0101444842",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 177,
+    "nama": "AREL ARDIANSYAH",
+    "kelas": "KELAS XI.6",
+    "gender": "L",
+    "nis": "14242",
+    "nisn": "0109957704",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 178,
+    "nama": "NARADZAKY ARHAB PRAMUDYA HUSODO",
+    "kelas": "KELAS XI.6",
+    "gender": "L",
+    "nis": "14462",
+    "nisn": "0106281633",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 179,
+    "nama": "NAFEEZA AYU NARESWARI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14460",
+    "nisn": "0103534465",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 180,
+    "nama": "QUINSHA ABELYANSI",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14494",
+    "nisn": "0092924710",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 181,
+    "nama": "RESTI MARSALITA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14516",
+    "nisn": "0101776024",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 182,
+    "nama": "NABILA ZALFA SALSABINA",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14454",
+    "nisn": "0095203328",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 183,
+    "nama": "NAVISA AULIA PUTRI",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14467",
+    "nisn": "0094415993",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 184,
+    "nama": "ZALMA NELI SETIANI",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14587",
+    "nisn": "0109515276",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 185,
+    "nama": "HANNI LALITA ZAHRA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14352",
+    "nisn": "0109726164",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 186,
+    "nama": "SAFA MAULIDIA",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14534",
+    "nisn": "0104535323",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 187,
+    "nama": "FIKHEL PRAWIRA IRAWAN",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14329",
+    "nisn": "0099231263",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 188,
+    "nama": "DEWA SATRIA",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14287",
+    "nisn": "3105633433",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 189,
+    "nama": "DIAH AYU PERTIWI",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14290",
+    "nisn": "0091792242",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 190,
+    "nama": "NADIRA SAKHI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14457",
+    "nisn": "0107056467",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 191,
+    "nama": "ANISA LATIFAH",
+    "kelas": "KELAS XI.10",
+    "gender": "P",
+    "nis": "14237",
+    "nisn": "0106676788",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 192,
+    "nama": "NASHIFA AZZAHRA",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14463",
+    "nisn": "0097623391",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 193,
+    "nama": "JUWITA NAVA ARDILA",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14372",
+    "nisn": "0098759122",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 194,
+    "nama": "ARNAILA AZZAHRA",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14245",
+    "nisn": "0104490374",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 195,
+    "nama": "ALIFA SALWA NURDIANA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14214",
+    "nisn": "0103377527",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 196,
+    "nama": "RORO NISAKARA MILANGKONI",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14531",
+    "nisn": "0101363597",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 197,
+    "nama": "CASMIRA ERNES SUSANTO",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14271",
+    "nisn": "0101009794",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 198,
+    "nama": "ALVINA AZZAHRA",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14219",
+    "nisn": "3102480425",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 199,
+    "nama": "NIKEISYA ANINDYA PRAYITNO",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14474",
+    "nisn": "0107589945",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 200,
+    "nama": "AULIA ZALFA",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14255",
+    "nisn": "0105112621",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 201,
+    "nama": "INDAH MONICA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14361",
+    "nisn": "0104352177",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 202,
+    "nama": "SALMA ABELYA ASTRIE",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14535",
+    "nisn": "0093267950",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 203,
+    "nama": "ARTHA DWI AGUSTINA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14246",
+    "nisn": "0092600477",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 204,
+    "nama": "ANINDITA RAFIFAH",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14234",
+    "nisn": "0107840583",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 205,
+    "nama": "AURA AULIA AZKALINA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14258",
+    "nisn": "0106712058",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 206,
+    "nama": "RAISYA DEA RAMADHANI",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14506",
+    "nisn": "0102912939",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 207,
+    "nama": "AQUINA IRSYADIVA HANIF",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14241",
+    "nisn": "0091687272",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 208,
+    "nama": "LETIA BILBINA BR SITEPU",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14397",
+    "nisn": "0102678335",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 209,
+    "nama": "SYIFFA ALZENA ZAHIRA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14559",
+    "nisn": "0104950327",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 210,
+    "nama": "PERCHA LIANDHANI",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14489",
+    "nisn": "0095157033",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 211,
+    "nama": "AGITA WAHYU PUTRI",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14206",
+    "nisn": "0103132350",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 212,
+    "nama": "ZULFA SYAROF ANAJOLI",
+    "kelas": "KELAS XI.11",
+    "gender": "P",
+    "nis": "14591",
+    "nisn": "0104478960",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 213,
+    "nama": "RIZKI BIMA PRASETIA",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14530",
+    "nisn": "0093567436",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 214,
+    "nama": "IZZAAHMADA RIFKY SAEFULLAH",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14367",
+    "nisn": "0097821787",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 215,
+    "nama": "EUNIQUE SHALOMITHA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14307",
+    "nisn": "0105579582",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 216,
+    "nama": "ANDIKA RASENDRYA RAMADHAN",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14228",
+    "nisn": "0109778641",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 217,
+    "nama": "ANDYKA TEDY SETIAWAN",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14230",
+    "nisn": "0106905944",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 218,
+    "nama": "MUHAMMAD ALIF FAUZAN",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14440",
+    "nisn": "0091921101",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 219,
+    "nama": "RAFAEL KIANO ADITYA",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14498",
+    "nisn": "0107128882",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 220,
+    "nama": "KHAIRUL DAFFA",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14387",
+    "nisn": "0108799315",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 221,
+    "nama": "FADHIL HEPI ARKANA",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14308",
+    "nisn": "0106003100",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 222,
+    "nama": "FEBRIYAN NURSALAM",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14321",
+    "nisn": "0108039532",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 223,
+    "nama": "HERLIAN VALENTINO DZAKI",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14355",
+    "nisn": "0102174436",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 224,
+    "nama": "RAFA HIDAYAT",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14496",
+    "nisn": "0108601776",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 225,
+    "nama": "FADIRA DION PRATAMA",
+    "kelas": "KELAS X.3",
+    "gender": "L",
+    "nis": "14727",
+    "nisn": "0112374233",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 226,
+    "nama": "RAHMAD ALFATIH",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14503",
+    "nisn": "0093988492",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 227,
+    "nama": "MUHAMMAD RAIHAN AZHAR",
+    "kelas": "KELAS X.3",
+    "gender": "L",
+    "nis": "14846",
+    "nisn": "0102214096",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 228,
+    "nama": "M QAYS FALIH",
+    "kelas": "KELAS X.3",
+    "gender": "L",
+    "nis": "14816",
+    "nisn": "3115660418",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 229,
+    "nama": "RAYHAN KODJA ASSAFAH",
+    "kelas": "KELAS XI.1",
+    "gender": "L",
+    "nis": "14510",
+    "nisn": "0106853142",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 230,
+    "nama": "SRIKANDI RAJATARANGGINI",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14937",
+    "nisn": "0118657484",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 231,
+    "nama": "ANINDHI ETA RATU ALAM",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14635",
+    "nisn": "3116050295",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 232,
+    "nama": "ERGY AZZAM RAMADHAN",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14989",
+    "nisn": "0095285018",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 233,
+    "nama": "ARVA AZURA UTAMA",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14249",
+    "nisn": "0108146195",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 234,
+    "nama": "DIKA PRATAMA NDUHRIANA",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14595",
+    "nisn": "0105142206",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 235,
+    "nama": "ALVIN EFENDI",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14218",
+    "nisn": "0094695120",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 236,
+    "nama": "GALAXI RAZZAQ ANANTA",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14335",
+    "nisn": "0106117324",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 237,
+    "nama": "SEPTA RAMADHAN",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14540",
+    "nisn": "0108177586",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 238,
+    "nama": "HAA'URA ARMARUNI",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14343",
+    "nisn": "0093990423",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 239,
+    "nama": "AULIA ZAHRA",
+    "kelas": "KELAS XII.1",
+    "gender": "P",
+    "nis": "13856",
+    "nisn": "0098931530",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 240,
+    "nama": "DISA AULIYA SHAFA",
+    "kelas": "KELAS XI.9",
+    "gender": "P",
+    "nis": "14296",
+    "nisn": "0109013049",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 241,
+    "nama": "REGA ALDO SAIMONA",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14512",
+    "nisn": "3107816282",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 242,
+    "nama": "NAZWA KIRENINA",
+    "kelas": "KELAS XII.3",
+    "gender": "P",
+    "nis": "14051",
+    "nisn": "0093986006",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 243,
+    "nama": "KARINA",
+    "kelas": "KELAS XII.3",
+    "gender": "P",
+    "nis": "13981",
+    "nisn": "0093789100",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 244,
+    "nama": "DINA HARIA AZAHRA",
+    "kelas": "KELAS XII.4",
+    "gender": "P",
+    "nis": "13910",
+    "nisn": "0099034152",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 245,
+    "nama": "EARLENE QURATUAIN",
+    "kelas": "KELAS X.2",
+    "gender": "P",
+    "nis": "14714",
+    "nisn": "0104320281",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 246,
+    "nama": "ADIEN AYU SAFITRI",
+    "kelas": "KELAS X.2",
+    "gender": "P",
+    "nis": "14607",
+    "nisn": "0119973632",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 247,
+    "nama": "FEKI DWI ATMOKO",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14323",
+    "nisn": "0093794892",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 248,
+    "nama": "HELGA DIMA ALANZA",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14353",
+    "nisn": "0106932671",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 249,
+    "nama": "LUNA AFRILIA",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14405",
+    "nisn": "0102946000",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 250,
+    "nama": "WILDA KHOIRUNNISA",
+    "kelas": "KELAS XI.7",
+    "gender": "P",
+    "nis": "14575",
+    "nisn": "0105436000",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 251,
+    "nama": "ARINDA FURI TAMA",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14652",
+    "nisn": "0116861461",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 252,
+    "nama": "ELDA AYU ENDIRA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14301",
+    "nisn": "0094936293",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 253,
+    "nama": "OLYVIA KHUSTIANI",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14488",
+    "nisn": "0106480304",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 254,
+    "nama": "FERDY DAVA ADITYA",
+    "kelas": "KELAS XI.2",
+    "gender": "L",
+    "nis": "14325",
+    "nisn": "0109970132",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 255,
+    "nama": "FADHIL RAFA AL GHAZI",
+    "kelas": "KELAS XI.2",
+    "gender": "L",
+    "nis": "14310",
+    "nisn": "0104314998",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 256,
+    "nama": "OKY LACHESAR PUTRA",
+    "kelas": "KELAS XI.8",
+    "gender": "L",
+    "nis": "14486",
+    "nisn": "0107025455",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 257,
+    "nama": "I MADE OKAN",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14356",
+    "nisn": "0099258000",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 258,
+    "nama": "MUHAMAD AGUNG DWI ALFAHRI",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14437",
+    "nisn": "0105418411",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 259,
+    "nama": "FAREL FITRIANSYAH",
+    "kelas": "KELAS X.5",
+    "gender": "L",
+    "nis": "14735",
+    "nisn": "0117560972",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 260,
+    "nama": "NAJWA SALWATUL AISY",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14461",
+    "nisn": "0104704664",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 261,
+    "nama": "HENI NURWAHYUNI",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14354",
+    "nisn": "0103901157",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 262,
+    "nama": "ALVINO FERNANDO",
+    "kelas": "KELAS XI.6",
+    "gender": "L",
+    "nis": "14220",
+    "nisn": "0104859050",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 263,
+    "nama": "REYMON ALINSKE",
+    "kelas": "KELAS XI.2",
+    "gender": "L",
+    "nis": "14521",
+    "nisn": "0107335390",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 264,
+    "nama": "AULIA TRISNA DAMARA",
+    "kelas": "KELAS XI.6",
+    "gender": "P",
+    "nis": "14254",
+    "nisn": "0095970510",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 265,
+    "nama": "M DHIAZ AKBAR NATANEGARA",
+    "kelas": "KELAS XII.3",
+    "gender": "L",
+    "nis": "13998",
+    "nisn": "3082127513",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 266,
+    "nama": "REZA SAPUTRA",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14522",
+    "nisn": "0092978323",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 267,
+    "nama": "ABDUL RAHMAN",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14202",
+    "nisn": "0103736811",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 268,
+    "nama": "NYOMAN SUGIHANA",
+    "kelas": "KELAS XI.6",
+    "gender": "L",
+    "nis": "14483",
+    "nisn": "0107190126",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 269,
+    "nama": "AULIA ZAZKIA",
+    "kelas": "KELAS XI.3",
+    "gender": "P",
+    "nis": "14256",
+    "nisn": "0107994048",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 270,
+    "nama": "ZAKIA AZ ZAHRO HS",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14976",
+    "nisn": "0114482227",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 271,
+    "nama": "FUTRI REGINA",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14746",
+    "nisn": "0115004708",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 272,
+    "nama": "ZIVANYA YOSIYANZA WIYOKO",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14985",
+    "nisn": "0113274704",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 273,
+    "nama": "KHANSA FREDERICA",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14801",
+    "nisn": "0117919146",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 274,
+    "nama": "SELVIA RAHMADANI",
+    "kelas": "KELAS XII.2",
+    "gender": "P",
+    "nis": "14119",
+    "nisn": "0083555356",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 275,
+    "nama": "DERRY FEBRIANSYAH",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14283",
+    "nisn": "0106303569",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 276,
+    "nama": "RAFAEL SIMAMORA",
+    "kelas": "KELAS XI.4",
+    "gender": "L",
+    "nis": "14499",
+    "nisn": "0091791848",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 277,
+    "nama": "AUREL NOVARIZA ANDITA",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14259",
+    "nisn": "0093760489",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 278,
+    "nama": "WAYAN FAREL SADEWA",
+    "kelas": "KELAS XII.3",
+    "gender": "L",
+    "nis": "14201",
+    "nisn": "0092189528",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 279,
+    "nama": "MUHAMMAD LUCKY HARIF RAMADHAN",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14447",
+    "nisn": "0106160703",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 280,
+    "nama": "KENIA MIRZA",
+    "kelas": "KELAS XI.4",
+    "gender": "P",
+    "nis": "14380",
+    "nisn": "0107203393",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 281,
+    "nama": "SEPIA RAMADANI",
+    "kelas": "KELAS XII.4",
+    "gender": "P",
+    "nis": "14120",
+    "nisn": "0088848795",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 282,
+    "nama": "HAFIZZAH NUR AISIYAH",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "13957",
+    "nisn": "0094875189",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 283,
+    "nama": "ANTONIUS RADIT VANESA",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14600",
+    "nisn": "0099629406",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 284,
+    "nama": "INDIRA CLAUDIA KIRANA",
+    "kelas": "KELAS X.6",
+    "gender": "P",
+    "nis": "14775",
+    "nisn": "0117085032",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 285,
+    "nama": "INGGAR FELIZA",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14778",
+    "nisn": "0104739346",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 286,
+    "nama": "OLIVIA MAHARANI NUR",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14885",
+    "nisn": "0105407877",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 287,
+    "nama": "YOULHA ASIFHA CHENDRI",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14966",
+    "nisn": "0113702059",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 288,
+    "nama": "KHOIRUNNISA",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14802",
+    "nisn": "0114306286",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 289,
+    "nama": "CHELSI OLIVIA",
+    "kelas": "KELAS XII.6",
+    "gender": "P",
+    "nis": "14194",
+    "nisn": "0083198599",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 290,
+    "nama": "AMIN AL KANSA",
+    "kelas": "KELAS XI.5",
+    "gender": "L",
+    "nis": "14225",
+    "nisn": "0091790323",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 291,
+    "nama": "ESQY ENJELISA",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14722",
+    "nisn": "0105252512",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 292,
+    "nama": "RASYA AULIA AZ-ZAHRA",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14902",
+    "nisn": "0108309998",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 293,
+    "nama": "INDAH APRILIYANI",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14773",
+    "nisn": "0119687315",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 294,
+    "nama": "ARTA CHIARA FELISHA",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14656",
+    "nisn": "0118174394",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 295,
+    "nama": "ZIFVANA LETISYA PUTRI WIBOWO",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14982",
+    "nisn": "0115707922",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 296,
+    "nama": "JIHAN AKHIFA NAILA",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14788",
+    "nisn": "0104066586",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 297,
+    "nama": "NOVALDI BIMA PERMADANI",
+    "kelas": "KELAS XII.2",
+    "gender": "L",
+    "nis": "14061",
+    "nisn": "0086685899",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 298,
+    "nama": "CORNELIUS MICHAEL AURYAN",
+    "kelas": "KELAS XII.2",
+    "gender": "L",
+    "nis": "13886",
+    "nisn": "0086262354",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 299,
+    "nama": "RAFI RAHMAWAN",
+    "kelas": "KELAS XII.1",
+    "gender": "L",
+    "nis": "14076",
+    "nisn": "0087783321",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 300,
+    "nama": "DINI AULIA RAHMA",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14710",
+    "nisn": "0116470230",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 301,
+    "nama": "ALDERA LION FAIHA",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14622",
+    "nisn": "0117152490",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 302,
+    "nama": "YURIKE KEYLILA PUTRI",
+    "kelas": "KELAS XII.5",
+    "gender": "P",
+    "nis": "14173",
+    "nisn": "0083102227",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 303,
+    "nama": "ANDI FIKURNIYAWAN",
+    "kelas": "KELAS X.7",
+    "gender": "L",
+    "nis": "14632",
+    "nisn": "0119212186",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 304,
+    "nama": "FRISCO RAMADANI",
+    "kelas": "KELAS X.7",
+    "gender": "L",
+    "nis": "14745",
+    "nisn": "0096200004",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 305,
+    "nama": "MARSHELLA ADI PUTRI",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14825",
+    "nisn": "0111120072",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 306,
+    "nama": "SAFIRA ADISTYA PUTRI",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14923",
+    "nisn": "0119280276",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 307,
+    "nama": "NI WAYAN WIDANI",
+    "kelas": "KELAS XII.6",
+    "gender": "P",
+    "nis": "14056",
+    "nisn": "0089925999",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 308,
+    "nama": "RAHMAT PRAYOGO",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14504",
+    "nisn": "0095474180",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 309,
+    "nama": "REKY TEGAR PERMANA",
+    "kelas": "KELAS XII.3",
+    "gender": "L",
+    "nis": "14089",
+    "nisn": "0094607096",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 310,
+    "nama": "MUHAMAD ALDO ALDZIKRI",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14438",
+    "nisn": "0106025380",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 311,
+    "nama": "MALA KURNIA",
+    "kelas": "KELAS X.1",
+    "gender": "P",
+    "nis": "14823",
+    "nisn": "0106441551",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 312,
+    "nama": "MIKHA SEPTIANA PUTRI",
+    "kelas": "KELAS X.1",
+    "gender": "P",
+    "nis": "14832",
+    "nisn": "0111913129",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 313,
+    "nama": "DARREN ABIL CAPPOLO",
+    "kelas": "KELAS X.10",
+    "gender": "L",
+    "nis": "14687",
+    "nisn": "0116115434",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 314,
+    "nama": "WAHYU FAHRI HIDAYAT",
+    "kelas": "KELAS X.8",
+    "gender": "L",
+    "nis": "14959",
+    "nisn": "0106377321",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 315,
+    "nama": "AKBAR HARIS AL FIAN",
+    "kelas": "KELAS X.10",
+    "gender": "L",
+    "nis": "14619",
+    "nisn": "0119297984",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 316,
+    "nama": "ASIFA CLARA HERNANDEZ",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14658",
+    "nisn": "0111137685",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 317,
+    "nama": "AQHILA PUTRI GANDARI",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14643",
+    "nisn": "0102017937",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 318,
+    "nama": "ZAHIRA ADARA BARQIE",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14971",
+    "nisn": "0116863195",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 319,
+    "nama": "REISYA ARKA NADIRA",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14907",
+    "nisn": "0115401014",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 320,
+    "nama": "NUR KHOLIS",
+    "kelas": "KELAS X.9",
+    "gender": "L",
+    "nis": "14880",
+    "nisn": "0117978744",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 321,
+    "nama": "M RAIS NAUFAL",
+    "kelas": "KELAS X.6",
+    "gender": "L",
+    "nis": "14817",
+    "nisn": "0113531929",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 322,
+    "nama": "ADAM PATRA PRADANA",
+    "kelas": "KELAS X.6",
+    "gender": "L",
+    "nis": "14603",
+    "nisn": "0111075325",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 323,
+    "nama": "ZAKY FARHAN",
+    "kelas": "KELAS X.10",
+    "gender": "L",
+    "nis": "14977",
+    "nisn": "0116989026",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 324,
+    "nama": "TESA MONIKA MEI SIHOMBING",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14949",
+    "nisn": "0113124856",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 325,
+    "nama": "FAIHA ZIA HUMAIRA",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14728",
+    "nisn": "0112134296",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 326,
+    "nama": "KEYSA AMANDA DICHA",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14799",
+    "nisn": "0114792787",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 327,
+    "nama": "NI NYOMA MULIA SARI",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14872",
+    "nisn": "0115457210",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 328,
+    "nama": "M ILHAM",
+    "kelas": "KELAS XI.9",
+    "gender": "L",
+    "nis": "14414",
+    "nisn": "0107623821",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 329,
+    "nama": "NATHANAEL AGNI PUTRA",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14466",
+    "nisn": "0104121433",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 330,
+    "nama": "AYU PUSPITA SARI",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "13865",
+    "nisn": "0081769924",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 331,
+    "nama": "RISTY ANGGRAINI",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "14106",
+    "nisn": "0087605867",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 332,
+    "nama": "WAN PERLI",
+    "kelas": "KELAS X.9",
+    "gender": "L",
+    "nis": "14960",
+    "nisn": "0118141109",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 333,
+    "nama": "GARIZA NUR ALTIFA",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "13950",
+    "nisn": "0095171867",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 334,
+    "nama": "AURA PALENTINA",
+    "kelas": "KELAS X.7",
+    "gender": "P",
+    "nis": "14664",
+    "nisn": "0118630738",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 335,
+    "nama": "LENI CLAUDYA AZZAHRA",
+    "kelas": "KELAS X.3",
+    "gender": "P",
+    "nis": "14808",
+    "nisn": "0112963735",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 336,
+    "nama": "MUHAMMAD ELIYANSYAH",
+    "kelas": "KELAS XI.4",
+    "gender": "L",
+    "nis": "14442",
+    "nisn": "0106255992",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 337,
+    "nama": "PUTRI SAFIRA",
+    "kelas": "KELAS X.7",
+    "gender": "P",
+    "nis": "14892",
+    "nisn": "0112504280",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 338,
+    "nama": "VIRA KUMALA PUTRI",
+    "kelas": "KELAS X.7",
+    "gender": "P",
+    "nis": "14958",
+    "nisn": "0117780004",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 339,
+    "nama": "ATHIRA DWI SYAWALIA",
+    "kelas": "KELAS XII.7",
+    "gender": "P",
+    "nis": "13850",
+    "nisn": "0085807539",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 340,
+    "nama": "THALITA ARIF",
+    "kelas": "KELAS XII.3",
+    "gender": "P",
+    "nis": "14145",
+    "nisn": "0096467365",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 341,
+    "nama": "NOPIA MELINDA PUTRI",
+    "kelas": "KELAS XII.6",
+    "gender": "P",
+    "nis": "14060",
+    "nisn": "0083536269",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 342,
+    "nama": "SALSHA BILLA",
+    "kelas": "KELAS XII.5",
+    "gender": "P",
+    "nis": "14112",
+    "nisn": "0093667425",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 343,
+    "nama": "ARGHIL MARSHI FAJARAHMAN",
+    "kelas": "KELAS X.9",
+    "gender": "L",
+    "nis": "14648",
+    "nisn": "0119511602",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 344,
+    "nama": "CINTA ANINDIA",
+    "kelas": "KELAS X.5",
+    "gender": "P",
+    "nis": "14677",
+    "nisn": "0112931497",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 345,
+    "nama": "DAFFA ABIDIKTAMA",
+    "kelas": "KELAS X.5",
+    "gender": "L",
+    "nis": "14683",
+    "nisn": "0119811550",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 346,
+    "nama": "AHMAD NUR SHODIQ",
+    "kelas": "KELAS X.5",
+    "gender": "L",
+    "nis": "14614",
+    "nisn": "0112376565",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 347,
+    "nama": "MARTHANIA QHOIRUNISA",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14827",
+    "nisn": "0179446696",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 348,
+    "nama": "NESYA ARTIKA SARI",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14868",
+    "nisn": "0113696451",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 349,
+    "nama": "FARA AULYA",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14734",
+    "nisn": "0116218478",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 350,
+    "nama": "RESTU SAILENDRA",
+    "kelas": "KELAS X.10",
+    "gender": "L",
+    "nis": "14909",
+    "nisn": "0119306824",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 351,
+    "nama": "KHANZA DIAH PARAMITA",
+    "kelas": "KELAS XII.11",
+    "gender": "P",
+    "nis": "13990",
+    "nisn": "167990087330999",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 352,
+    "nama": "AFTIRA ISMALA PUTRI",
+    "kelas": "KELAS XII.11",
+    "gender": "P",
+    "nis": "13802",
+    "nisn": "0085963648",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 353,
+    "nama": "FLORA DZASKIA FEBRITASARI",
+    "kelas": "KELAS XII.6",
+    "gender": "P",
+    "nis": "14190",
+    "nisn": "0091420226",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 354,
+    "nama": "TIO PRATAMA",
+    "kelas": "KELAS XII.11",
+    "gender": "L",
+    "nis": "14150",
+    "nisn": "0083416546",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 355,
+    "nama": "ANANDA PUTRA PRATAMA",
+    "kelas": "KELAS XII.1",
+    "gender": "L",
+    "nis": "13825",
+    "nisn": "0091517625",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 356,
+    "nama": "ARCHIELLO RADITHYA ADHITAMA",
+    "kelas": "KELAS X.11",
+    "gender": "L",
+    "nis": "14647",
+    "nisn": "0112971656",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 357,
+    "nama": "FEBRIANI SAPUTRI",
+    "kelas": "KELAS XII.9",
+    "gender": "P",
+    "nis": "13938",
+    "nisn": "0094959766",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 358,
+    "nama": "PUTRI AULIA",
+    "kelas": "KELAS XII.9",
+    "gender": "P",
+    "nis": "14071",
+    "nisn": "0085116894",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 359,
+    "nama": "KADEK SAVA CINDO VANGONTINA",
+    "kelas": "KELAS XI.2",
+    "gender": "P",
+    "nis": "14374",
+    "nisn": "0092887514",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 360,
+    "nama": "NI MADE WIDYASTIKA",
+    "kelas": "KELAS X.7",
+    "gender": "P",
+    "nis": "14871",
+    "nisn": "0115502659",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 361,
+    "nama": "LAILALIKA ZAHIRA",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14806",
+    "nisn": "0106084222",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 362,
+    "nama": "AURINE CHESA BIL QISTHY",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14666",
+    "nisn": "0117426216",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 363,
+    "nama": "IRBAH NURI MUFIDA",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14782",
+    "nisn": "0111754010",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 364,
+    "nama": "RETA GUSTINA",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14911",
+    "nisn": "0105772215",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 365,
+    "nama": "AUDI TIA SASTRA NADIA",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14661",
+    "nisn": "0102640396",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 366,
+    "nama": "AZEL KURNIA PUTRI",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14668",
+    "nisn": "0106248909",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 367,
+    "nama": "ADELIA",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14604",
+    "nisn": "0114377772",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 368,
+    "nama": "SYAKIRA JIHANA ZULFA",
+    "kelas": "KELAS X.10",
+    "gender": "P",
+    "nis": "14943",
+    "nisn": "0111801553",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 369,
+    "nama": "GILANG RESTU PANGHURIAN",
+    "kelas": "KELAS X.7",
+    "gender": "L",
+    "nis": "14754",
+    "nisn": "0105650574",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 370,
+    "nama": "JULIA PUSPASARI",
+    "kelas": "KELAS X.7",
+    "gender": "P",
+    "nis": "14789",
+    "nisn": "0118736312",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 371,
+    "nama": "M ZIYAD FERDAN",
+    "kelas": "KELAS X.7",
+    "gender": "L",
+    "nis": "14820",
+    "nisn": "0115659174",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 372,
+    "nama": "RAFA MAULANA",
+    "kelas": "KELAS X.7",
+    "gender": "L",
+    "nis": "14896",
+    "nisn": "0116199519",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 373,
+    "nama": "MUHAMMAD FAHRI ELSHIRAZY",
+    "kelas": "KELAS X.7",
+    "gender": "L",
+    "nis": "14840",
+    "nisn": "0118896054",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 374,
+    "nama": "DAVIN KHALFANI",
+    "kelas": "KELAS X.6",
+    "gender": "L",
+    "nis": "14688",
+    "nisn": "0116846806",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 375,
+    "nama": "MUHAMMAD NGALI SAJIDIN",
+    "kelas": "KELAS X.3",
+    "gender": "L",
+    "nis": "14845",
+    "nisn": "0118692818",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 376,
+    "nama": "FATHAN AZNA FAZA MALIKA",
+    "kelas": "KELAS X.5",
+    "gender": "L",
+    "nis": "14736",
+    "nisn": "0115023561",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 377,
+    "nama": "NEVIA ZULVI",
+    "kelas": "KELAS X.5",
+    "gender": "P",
+    "nis": "14869",
+    "nisn": "0101097616",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 378,
+    "nama": "ADINDA LESTARI",
+    "kelas": "KELAS X.5",
+    "gender": "P",
+    "nis": "14608",
+    "nisn": "0129245795",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 379,
+    "nama": "MUHAMMAD HIROKI HAMDA PUTRA",
+    "kelas": "KELAS XI.5",
+    "gender": "L",
+    "nis": "14446",
+    "nisn": "0103433891",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 380,
+    "nama": "AGISTA DAMAYANTI",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14611",
+    "nisn": "0101981326",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 381,
+    "nama": "AURA FADILA",
+    "kelas": "KELAS X.2",
+    "gender": "P",
+    "nis": "14663",
+    "nisn": "0114865487",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 382,
+    "nama": "NAURA ANINDYA",
+    "kelas": "KELAS X.2",
+    "gender": "P",
+    "nis": "14861",
+    "nisn": "0112199421",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 383,
+    "nama": "AFNAN GHANI HEFI SAMARA",
+    "kelas": "KELAS XI.5",
+    "gender": "L",
+    "nis": "14601",
+    "nisn": "3094242272",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 384,
+    "nama": "ANNISA KUSUMA PUTRI",
+    "kelas": "KELAS X.2",
+    "gender": "P",
+    "nis": "14637",
+    "nisn": "0118296203",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 385,
+    "nama": "AMELIA AYU MAHARANI",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14628",
+    "nisn": "0116344884",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 386,
+    "nama": "ZEVARA DINDA AGHATA",
+    "kelas": "KELAS X.6",
+    "gender": "P",
+    "nis": "14981",
+    "nisn": "0099390097",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 387,
+    "nama": "PEGY NURKHARISMA",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14888",
+    "nisn": "0116717114",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 388,
+    "nama": "NESA AURELYCA ANGELA",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14867",
+    "nisn": "0112685189",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 389,
+    "nama": "DINDA ANGGRAINI",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14705",
+    "nisn": "0112222019",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 390,
+    "nama": "M RIZKY NUR RAHMAN",
+    "kelas": "KELAS X.8",
+    "gender": "L",
+    "nis": "14819",
+    "nisn": "0103871799",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 391,
+    "nama": "FAITH HAIDAR DZAKY",
+    "kelas": "KELAS X.8",
+    "gender": "L",
+    "nis": "14730",
+    "nisn": "0175683832",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 392,
+    "nama": "RIZKY REZA AGASTA",
+    "kelas": "KELAS X.8",
+    "gender": "L",
+    "nis": "14921",
+    "nisn": "0118197047",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 393,
+    "nama": "FLOURENCHIA ANGGELINA JOSI",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14744",
+    "nisn": "0115601082",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 394,
+    "nama": "GADIS ZAKIA RAFIFAH",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14749",
+    "nisn": "0119872146",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 395,
+    "nama": "INTAN GALIH RAMADANI",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14365",
+    "nisn": "0065649468",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 396,
+    "nama": "NAYLA SALAMAH",
+    "kelas": "KELAS X.1",
+    "gender": "P",
+    "nis": "14864",
+    "nisn": "0115526903",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 397,
+    "nama": "GEBRINA MAESA AYU",
+    "kelas": "KELAS X.1",
+    "gender": "P",
+    "nis": "14750",
+    "nisn": "0113393520",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 398,
+    "nama": "SYAFA AULIA",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14940",
+    "nisn": "0116054094",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 399,
+    "nama": "RAFA NAUFAL RAMADHAN",
+    "kelas": "KELAS XII.5",
+    "gender": "L",
+    "nis": "14075",
+    "nisn": "0098669071",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 400,
+    "nama": "NADIA NURHARTANTI",
+    "kelas": "KELAS X.5",
+    "gender": "P",
+    "nis": "14851",
+    "nisn": "0117838136",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 401,
+    "nama": "ADYA AKAIZA ATHALA",
+    "kelas": "KELAS X.11",
+    "gender": "L",
+    "nis": "14610",
+    "nisn": "0119134038",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 402,
+    "nama": "BILQIS HAFIZHAH",
+    "kelas": "KELAS XII.2",
+    "gender": "P",
+    "nis": "13872",
+    "nisn": "0082174765",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 403,
+    "nama": "ROYAN MAULANA",
+    "kelas": "KELAS X.4",
+    "gender": "L",
+    "nis": "14922",
+    "nisn": "3105533980",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 404,
+    "nama": "CIKHA DEWI KARTIKA",
+    "kelas": "KELAS XII.1",
+    "gender": "P",
+    "nis": "13885",
+    "nisn": "0099025935",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 405,
+    "nama": "RAHMA AULIA",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14898",
+    "nisn": "0116227762",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 406,
+    "nama": "IMELDA GREYTISA",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14772",
+    "nisn": "0112806121",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 407,
+    "nama": "G FEBIOLA WILANTI",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14747",
+    "nisn": "0116857405",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 408,
+    "nama": "GENDIS KAMARATIH",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14751",
+    "nisn": "0111474178",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 409,
+    "nama": "ARNI PUTRI BARARA",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14655",
+    "nisn": "0114475159",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 410,
+    "nama": "YOSI OKTA ANGRAINI",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14967",
+    "nisn": "0107921201",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 411,
+    "nama": "AHMAD RISQI AR-RAFFI",
+    "kelas": "KELAS X.10",
+    "gender": "L",
+    "nis": "14615",
+    "nisn": "0119384396",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 412,
+    "nama": "MUHAMMAD HAIKAL DINARSYAH",
+    "kelas": "KELAS X.1",
+    "gender": "L",
+    "nis": "14842",
+    "nisn": "0115499424",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 413,
+    "nama": "KEVIN IBRAHIM",
+    "kelas": "KELAS X.10",
+    "gender": "L",
+    "nis": "14797",
+    "nisn": "0113907017",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 414,
+    "nama": "ROSALIA INTAN OKTARINA",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14532",
+    "nisn": "0102994294",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 415,
+    "nama": "M.FADHIL RAMLI",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14418",
+    "nisn": "3105533980",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 416,
+    "nama": "WISNU FATHUR KURNIAWAN",
+    "kelas": "KELAS XI.6",
+    "gender": "L",
+    "nis": "14577",
+    "nisn": "0105294299",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 417,
+    "nama": "PRINCESS AURELYA SWEETY",
+    "kelas": "KELAS XI.8",
+    "gender": "P",
+    "nis": "14490",
+    "nisn": "0103928609",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 418,
+    "nama": "ZIAN UMAYMAH",
+    "kelas": "KELAS XI.1",
+    "gender": "P",
+    "nis": "14589",
+    "nisn": "0116742322",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 419,
+    "nama": "DANISH EVANSYAH OKTAFIAN",
+    "kelas": "KELAS X.4",
+    "gender": "L",
+    "nis": "14685",
+    "nisn": "0103567047",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 420,
+    "nama": "STEFANI LAURA NATALIA",
+    "kelas": "KELAS XI.5",
+    "gender": "P",
+    "nis": "14549",
+    "nisn": "0096303167",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 421,
+    "nama": "KETUT ASEP SAPUTRA",
+    "kelas": "KELAS XI.10",
+    "gender": "L",
+    "nis": "14382",
+    "nisn": "0099354647",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 422,
+    "nama": "GERVASIUS GILANG NUGROHO",
+    "kelas": "KELAS XI.7",
+    "gender": "L",
+    "nis": "14342",
+    "nisn": "0104912677",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 423,
+    "nama": "NILUH SUCI CINTA DEWI",
+    "kelas": "KELAS XII.4",
+    "gender": "P",
+    "nis": "14058",
+    "nisn": "0082365904",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 424,
+    "nama": "ACHMAD ALFINO AFFANDI",
+    "kelas": "KELAS XII.3",
+    "gender": "L",
+    "nis": "13794",
+    "nisn": "0097611518",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 425,
+    "nama": "ELSA AMELIA LUTHFIAH",
+    "kelas": "KELAS XII.3",
+    "gender": "P",
+    "nis": "13921",
+    "nisn": "0081205952",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 426,
+    "nama": "ISNA NUR KHOIRIYAH",
+    "kelas": "KELAS XII.3",
+    "gender": "P",
+    "nis": "13967",
+    "nisn": "0099364164",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 427,
+    "nama": "JIHAN NATASYA PUTRI",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "13973",
+    "nisn": "0087268757",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 428,
+    "nama": "GUSTI AYU KETUT FITRIYANA",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "13956",
+    "nisn": "0087220818",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 429,
+    "nama": "FATIMAH AZZAHRA GHAIDA ANI",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "13935",
+    "nisn": "0083661599",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 430,
+    "nama": "ZAFIRA FAIRUS AURELLIA RAMADHANI",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "14176",
+    "nisn": "3085321380",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 431,
+    "nama": "DHEA ANANDA RAMADHANI",
+    "kelas": "KELAS XII.8",
+    "gender": "P",
+    "nis": "13902",
+    "nisn": "0087499149",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 432,
+    "nama": "CALLISTA THEO VANDOCO",
+    "kelas": "KELAS XII.1",
+    "gender": "P",
+    "nis": "13876",
+    "nisn": "0098390990",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 433,
+    "nama": "ALBAMI KURNIA AGEN RATU",
+    "kelas": "KELAS XII.1",
+    "gender": "P",
+    "nis": "13814",
+    "nisn": "0098432358",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 434,
+    "nama": "RADYA NAURA SYAFA",
+    "kelas": "KELAS XII.6",
+    "gender": "P",
+    "nis": "14074",
+    "nisn": "0095195730",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 435,
+    "nama": "SASKIA ANDARA FEBI",
+    "kelas": "KELAS XII.1",
+    "gender": "P",
+    "nis": "14115",
+    "nisn": "0093145722",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 436,
+    "nama": "SILASTRI",
+    "kelas": "KELAS XII.7",
+    "gender": "P",
+    "nis": "14133",
+    "nisn": "0093683402",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 437,
+    "nama": "CLARISSA PUTRI MAHARANI",
+    "kelas": "KELAS X.7",
+    "gender": "P",
+    "nis": "14681",
+    "nisn": "0116507661",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 438,
+    "nama": "APTA DARREL FIKRI",
+    "kelas": "KELAS X.11",
+    "gender": "L",
+    "nis": "14642",
+    "nisn": "0112056797",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 439,
+    "nama": "ARBI ALHAFIZ",
+    "kelas": "KELAS X.11",
+    "gender": "L",
+    "nis": "14646",
+    "nisn": "0119564533",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 440,
+    "nama": "ZAHRA AULIA",
+    "kelas": "KELAS X.9",
+    "gender": "P",
+    "nis": "14973",
+    "nisn": "0113396227",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 441,
+    "nama": "WAYAN MELY YANI",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14962",
+    "nisn": "0102290053",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 442,
+    "nama": "TRISCILIA AYU ANDINI",
+    "kelas": "KELAS X.8",
+    "gender": "P",
+    "nis": "14953",
+    "nisn": "3104606709",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 443,
+    "nama": "RISKA DEVIANA PUTRI",
+    "kelas": "KELAS X.4",
+    "gender": "P",
+    "nis": "14919",
+    "nisn": "0113669105",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 444,
+    "nama": "EKA SRIWIJAYANTI",
+    "kelas": "KELAS X.6",
+    "gender": "P",
+    "nis": "14715",
+    "nisn": "3107902511",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 445,
+    "nama": "AL FADDILAH RIZKY",
+    "kelas": "KELAS X.9",
+    "gender": "L",
+    "nis": "14620",
+    "nisn": "0101638288",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 446,
+    "nama": "LUTHFIA ZAHRA YULFIANT",
+    "kelas": "KELAS X.6",
+    "gender": "P",
+    "nis": "14810",
+    "nisn": "1115533080",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 447,
+    "nama": "DHIA SALSABILA",
+    "kelas": "KELAS X.6",
+    "gender": "P",
+    "nis": "14701",
+    "nisn": "0119117523",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 448,
+    "nama": "MARCELLIO WIDANA PUTRA",
+    "kelas": "KELAS XI.11",
+    "gender": "L",
+    "nis": "14424",
+    "nisn": "0102952507",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 449,
+    "nama": "GILI ARZAKI MAHAMERU",
+    "kelas": "KELAS X.1",
+    "gender": "L",
+    "nis": "14755",
+    "nisn": "0116083285",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 450,
+    "nama": "ANDIKA REFAN SAPUTRA",
+    "kelas": "KELAS X.9",
+    "gender": "L",
+    "nis": "14633",
+    "nisn": "0117479876",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 451,
+    "nama": "FELLY LIVIANA CHERLISA",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14740",
+    "nisn": "0119541837",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 452,
+    "nama": "FILZA IKLIMA",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14741",
+    "nisn": "0115608463",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 453,
+    "nama": "DINDA KHUMAIROTUZZAHROH",
+    "kelas": "KELAS X.11",
+    "gender": "P",
+    "nis": "14708",
+    "nisn": "0117106787",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 454,
+    "nama": "RESTA SELA ANDINI",
+    "kelas": "KELAS XII.4",
+    "gender": "P",
+    "nis": "14095",
+    "nisn": "0082833092",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  },
+  {
+    "no": 455,
+    "nama": "RAFIF KHALFANI SANJAYA",
+    "kelas": "KELAS XI.8",
+    "gender": "L",
+    "nis": "14502",
+    "nisn": "0105863844",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
+  }
+]

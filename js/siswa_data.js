@@ -1,6 +1,7 @@
 /**
  * Data Master Siswa SMAN 1 Belitang 2026/2027
  * Total: 1165 Siswa (Kelas X, XI, XII)
+ * Status: 455 Peserta Field Trip (Luar OKU Timur), 710 Peserta Non-Field Trip (OKU Timur)
  */
 window.FincestemMasterStudents = [
   {
@@ -18,7 +19,8 @@ window.FincestemMasterStudents = [
     "ayah": "SLAMET WIDODO",
     "ibu": "CAHYANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -35,7 +37,8 @@ window.FincestemMasterStudents = [
     "ayah": "TIO SAPUTRA",
     "ibu": "ROSIDAH",
     "asal_sekolah": "SMP NEGERI 02 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -52,7 +55,8 @@ window.FincestemMasterStudents = [
     "ayah": "TEGUH IMAN SANTOSO",
     "ibu": "ASLAMIYAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -69,7 +73,8 @@ window.FincestemMasterStudents = [
     "ayah": "KADEK SUWARDIKA",
     "ibu": "WAYAN NILA NANDA PUTRI",
     "asal_sekolah": "SMP NEGERI 3 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -86,7 +91,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKADI",
     "ibu": "DEWI LINAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -103,7 +109,8 @@ window.FincestemMasterStudents = [
     "ayah": "INDRIA MAHARSIH",
     "ibu": "SITI JULAIHA",
     "asal_sekolah": "SMPN 1 BELITANG II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -120,7 +127,8 @@ window.FincestemMasterStudents = [
     "ayah": "DONI PRAYITNO",
     "ibu": "RITA MAYASARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -137,7 +145,8 @@ window.FincestemMasterStudents = [
     "ayah": "DIDIK HIDAYAT",
     "ibu": "TRI RAHAYU",
     "asal_sekolah": "MTS AL HIDAYA RAWABENING",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -154,7 +163,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADI YUSUF",
     "ibu": "RISKA PUSPITA SARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG OKU TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -171,7 +181,8 @@ window.FincestemMasterStudents = [
     "ayah": "M SARIFUDIN",
     "ibu": "LISTIYARINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -188,7 +199,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI SANDRIYA",
     "ibu": "LADY ASTRIYANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -205,7 +217,8 @@ window.FincestemMasterStudents = [
     "ayah": "MULYONO",
     "ibu": "RITAWATI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -222,7 +235,8 @@ window.FincestemMasterStudents = [
     "ayah": "KIKI SUSILO",
     "ibu": "DINA SANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -239,7 +253,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI CHANDRA WIJAYA",
     "ibu": "HERA ANGGRES LENI",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -256,7 +271,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURYONO",
     "ibu": "MUYATUN",
     "asal_sekolah": "MTS NURUL A'LA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -273,7 +289,8 @@ window.FincestemMasterStudents = [
     "ayah": "HUSNI",
     "ibu": "NIKI ASTRIA",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -290,7 +307,8 @@ window.FincestemMasterStudents = [
     "ayah": "A'AN SAPUTRA",
     "ibu": "AGUSTINA SARI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -307,7 +325,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD FATONI",
     "ibu": "YESI RUSMANTO",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -324,7 +343,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERI KUSWANTO",
     "ibu": "SUPINI",
     "asal_sekolah": "SMP NEGERI 1 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -341,7 +361,8 @@ window.FincestemMasterStudents = [
     "ayah": "FIRMANSYAH",
     "ibu": "MERI ASMARA",
     "asal_sekolah": "SMP 02 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -358,7 +379,8 @@ window.FincestemMasterStudents = [
     "ayah": "WALDIYONO",
     "ibu": "SUPRIHATIN",
     "asal_sekolah": "SMP NEGERI 1 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -375,7 +397,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIBUT RIYANTO",
     "ibu": "SRI ASTUTI",
     "asal_sekolah": "SMP MUHAMMADIYAH 2 TAWANG REJO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -392,7 +415,8 @@ window.FincestemMasterStudents = [
     "ayah": "SYAMSU RIZAL",
     "ibu": "SHELLA ADITYANI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -409,7 +433,8 @@ window.FincestemMasterStudents = [
     "ayah": "PONIJAN",
     "ibu": "SUKISAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -426,7 +451,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHFIDIN",
     "ibu": "ISROYANAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -443,7 +469,8 @@ window.FincestemMasterStudents = [
     "ayah": "GIRI",
     "ibu": "ELINA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -460,7 +487,8 @@ window.FincestemMasterStudents = [
     "ayah": "FRANDY ARITONANG",
     "ibu": "ITA ROYANI HALOHO",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -477,7 +505,8 @@ window.FincestemMasterStudents = [
     "ayah": "DWI HARTONO",
     "ibu": "SUMASTUTI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -494,7 +523,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAHROMAN",
     "ibu": "SUSI LAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -511,7 +541,8 @@ window.FincestemMasterStudents = [
     "ayah": "ENDRO",
     "ibu": "MIA SUGIARTI",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -528,7 +559,8 @@ window.FincestemMasterStudents = [
     "ayah": "RISWANTO",
     "ibu": "SITI PURWANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -545,7 +577,8 @@ window.FincestemMasterStudents = [
     "ayah": "BURHAN",
     "ibu": "LARASATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -562,7 +595,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMARUN SEBTO",
     "ibu": "SITI MARHAMAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -579,7 +613,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARWAN",
     "ibu": "ERITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -596,7 +631,8 @@ window.FincestemMasterStudents = [
     "ayah": "KARMAN",
     "ibu": "YULIANA",
     "asal_sekolah": "SMP NEGERI 01 SEMENDAWAI SUKU III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -613,7 +649,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIYANTO",
     "ibu": "ANITA FURBA NEGARA",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -630,7 +667,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD YANI",
     "ibu": "DIAN SITI MUTOYANA",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJO WINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -647,7 +685,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURAT",
     "ibu": "MARTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -664,7 +703,8 @@ window.FincestemMasterStudents = [
     "ayah": "SISWANTO",
     "ibu": "EKA YULIANA",
     "asal_sekolah": "SMP NGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -681,7 +721,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI SAPUTRO",
     "ibu": "EMI RITA SUHARTI NINGSIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -698,7 +739,8 @@ window.FincestemMasterStudents = [
     "ayah": "TURIMAN",
     "ibu": "SIYAMI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -715,7 +757,8 @@ window.FincestemMasterStudents = [
     "ayah": "PANGAT",
     "ibu": "TRI WANUDYAWATI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -732,7 +775,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAIDI",
     "ibu": "YETI MARLINA",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -749,7 +793,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMAD ARIFIN",
     "ibu": "TRI KHASANAH",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -766,7 +811,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURANTO",
     "ibu": "RONIAH",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -783,7 +829,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUNI",
     "ibu": "DESTIA RINI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -800,7 +847,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUBI RIANTO",
     "ibu": "SRI HAYATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -817,7 +865,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI SYARIFUDIN",
     "ibu": "IIS KURNIAWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -834,7 +883,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAIAN SIMANJUNTAK",
     "ibu": "J DELIMA SILALAHI",
     "asal_sekolah": "SMP NEGERI 3 MESUJI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -851,7 +901,8 @@ window.FincestemMasterStudents = [
     "ayah": "AMBROSIUS SUPRIADI",
     "ibu": "THERESIA WIDYANINGSIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -868,7 +919,8 @@ window.FincestemMasterStudents = [
     "ayah": "WASIS",
     "ibu": "SWARNINGSIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -885,7 +937,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZULHAM EFFENDY",
     "ibu": "SICILIA GANDASARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -902,7 +955,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI",
     "ibu": "RENI LUSI YANTI",
     "asal_sekolah": "SMP PG KOMERING",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -919,7 +973,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPADI",
     "ibu": "SUWARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -936,7 +991,8 @@ window.FincestemMasterStudents = [
     "ayah": "NRIMAKA",
     "ibu": "MUSHTOFIA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -953,7 +1009,8 @@ window.FincestemMasterStudents = [
     "ayah": "NYOMAN HERI SAPUTRA",
     "ibu": "WAYAN YUNITA",
     "asal_sekolah": "SMP NEGERI 1 BUAY BAHUGA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -970,7 +1027,8 @@ window.FincestemMasterStudents = [
     "ayah": "BILTER SIANTURI",
     "ibu": "HOTMA ARITONANG",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -987,7 +1045,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SETIAWAN",
     "ibu": "PAMUJIASIH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -1004,7 +1063,8 @@ window.FincestemMasterStudents = [
     "ayah": "PUGUH HANDOYO",
     "ibu": "TRI WIDI ASTUTI",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -1021,7 +1081,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAULI NURYANTO",
     "ibu": "UTAMI DEWI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -1038,7 +1099,8 @@ window.FincestemMasterStudents = [
     "ayah": "NUR SULAIMAN",
     "ibu": "LINDA MARLIYA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -1055,7 +1117,8 @@ window.FincestemMasterStudents = [
     "ayah": "I WAYAN LOSMANTA",
     "ibu": "WAYAN WASTRI",
     "asal_sekolah": "SMP NEGERI 3 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -1072,7 +1135,8 @@ window.FincestemMasterStudents = [
     "ayah": "ABDUL RONI",
     "ibu": "ANITA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -1089,7 +1153,8 @@ window.FincestemMasterStudents = [
     "ayah": "WINARTO",
     "ibu": "YENNI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -1106,7 +1171,8 @@ window.FincestemMasterStudents = [
     "ayah": "EPI YANTO ZA",
     "ibu": "KETUT SUNANTRI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -1123,7 +1189,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKHSAN MAKIN",
     "ibu": "LINA INDRA YANI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -1140,7 +1207,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIANTO",
     "ibu": "NUR AZIZAH",
     "asal_sekolah": "SMPIT QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -1157,7 +1225,8 @@ window.FincestemMasterStudents = [
     "ayah": "M SOBIRIN",
     "ibu": "HINDUN TAHMIDAH",
     "asal_sekolah": "SMPIT QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -1174,7 +1243,8 @@ window.FincestemMasterStudents = [
     "ayah": "FERNANDA",
     "ibu": "RISMAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -1191,7 +1261,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROMADHONA CATUR LAKSONO",
     "ibu": "NGATINAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -1208,7 +1279,8 @@ window.FincestemMasterStudents = [
     "ayah": "HEREPA CANDRA",
     "ibu": "AISYAH RISZA SARI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -1225,7 +1297,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO WAHYUDI",
     "ibu": "MUNIR NURAINI",
     "asal_sekolah": "SMP NEGERI 02 MADANG SUKU 1",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -1242,7 +1315,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKISNO",
     "ibu": "NIKE HERAWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -1259,7 +1333,8 @@ window.FincestemMasterStudents = [
     "ayah": "NANANG BUDI WINARNO",
     "ibu": "HARTINI",
     "asal_sekolah": "SMP DIPONEGORO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -1276,7 +1351,8 @@ window.FincestemMasterStudents = [
     "ayah": "BENNY HARTAWAN",
     "ibu": "RUSMIATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -1293,7 +1369,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDI IRAWAN",
     "ibu": "YULIATIN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -1310,7 +1387,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDI UTOMO",
     "ibu": "ITA YULIKA SARI",
     "asal_sekolah": "SMPN 52 SATAP OKU",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -1327,7 +1405,8 @@ window.FincestemMasterStudents = [
     "ayah": "PUJA KUSUMA",
     "ibu": "RIKA NURYANA",
     "asal_sekolah": "SMP NEGRI 1 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -1344,7 +1423,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARDANI",
     "ibu": "TRI ANGGRAINI KUSUMANING ASTUTI",
     "asal_sekolah": "SMP NEGERI 19 PALEMBANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -1361,7 +1441,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKMAN ANWAR",
     "ibu": "MASNIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -1378,7 +1459,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOMI MENSANA",
     "ibu": "AMINAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -1395,7 +1477,8 @@ window.FincestemMasterStudents = [
     "ayah": "KHOIRUL ANAM",
     "ibu": "DEWI MARLINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -1412,7 +1495,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDRAJAT SWANTORO",
     "ibu": "APRI LIA RAHAYU",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -1429,7 +1513,8 @@ window.FincestemMasterStudents = [
     "ayah": "RATIMAN",
     "ibu": "ANITA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -1446,7 +1531,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUWANTO",
     "ibu": "SUJIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -1463,7 +1549,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUDIANTO",
     "ibu": "AGUS RINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -1480,7 +1567,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIFUDDIN PUTRA",
     "ibu": "YULIANTI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -1497,7 +1585,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMAD SARIF",
     "ibu": "RIYA ANITA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -1514,7 +1603,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHYUDI",
     "ibu": "YULIANA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -1531,7 +1621,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARPAWI",
     "ibu": "EMZI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -1548,7 +1639,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOPAN JEKI",
     "ibu": "KRISTIANI",
     "asal_sekolah": "SMP NEGERI 1 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -1565,7 +1657,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRAPTO",
     "ibu": "SRI MURNIASIH",
     "asal_sekolah": "MTS DARUL ULUM KARANGSARI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -1582,7 +1675,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARTONO",
     "ibu": "KRISTINA TRIHARYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -1599,7 +1693,8 @@ window.FincestemMasterStudents = [
     "ayah": "JALIL",
     "ibu": "ROJIAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -1616,7 +1711,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAWABI",
     "ibu": "ASTUTI",
     "asal_sekolah": "SMP NEGERI 02 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -1633,7 +1729,8 @@ window.FincestemMasterStudents = [
     "ayah": "AFERIYANTO",
     "ibu": "LAILA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -1650,7 +1747,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUJENI",
     "ibu": "WIRANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -1667,7 +1765,8 @@ window.FincestemMasterStudents = [
     "ayah": "NAZAR EFENDI",
     "ibu": "ARDIAN WAHYUNI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -1684,7 +1783,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAYAN LINGGA",
     "ibu": "KETUT SUNARTI",
     "asal_sekolah": "SMP N 02 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -1701,7 +1801,8 @@ window.FincestemMasterStudents = [
     "ayah": "GUNAWAN",
     "ibu": "PITRI ANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -1718,7 +1819,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERWAN",
     "ibu": "LIK ANAH",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -1735,7 +1837,8 @@ window.FincestemMasterStudents = [
     "ayah": "NARDIANTO",
     "ibu": "SUTIYAH",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -1752,7 +1855,8 @@ window.FincestemMasterStudents = [
     "ayah": "M. MUKHLIS",
     "ibu": "KUSMIYATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -1769,7 +1873,8 @@ window.FincestemMasterStudents = [
     "ayah": "IIS MUSAFAT",
     "ibu": "MERTA SEJAHTERA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -1786,7 +1891,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRI HARYANTO",
     "ibu": "TITIN SRIYANTI",
     "asal_sekolah": "SMP MUHAMMADIYAH 2 TAWANG REJO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -1803,7 +1909,8 @@ window.FincestemMasterStudents = [
     "ayah": "YOKO",
     "ibu": "ARUM PANDHINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -1820,7 +1927,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIKI IRAWAN",
     "ibu": "LIDYA LIYANTI",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -1837,7 +1945,8 @@ window.FincestemMasterStudents = [
     "ayah": "LEO MALSEN",
     "ibu": "IMELDA FEBRINITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -1854,7 +1963,8 @@ window.FincestemMasterStudents = [
     "ayah": "HEXA APRILIZA",
     "ibu": "MARDIANA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -1871,7 +1981,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGAM RIYANTO",
     "ibu": "EPRIANI AGUSTINA",
     "asal_sekolah": "SMPIT QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -1888,7 +1999,8 @@ window.FincestemMasterStudents = [
     "ayah": "AMRI ROZI",
     "ibu": "ROSMAYANTI",
     "asal_sekolah": "SMP MUHAMMADIYAH 1 RAWABENING",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -1905,7 +2017,8 @@ window.FincestemMasterStudents = [
     "ayah": "INDRA",
     "ibu": "YULIANTI KURNIAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -1922,7 +2035,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARTO",
     "ibu": "LINA WATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -1939,7 +2053,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARI IRAWAN",
     "ibu": "SAILA YUSTRI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -1956,7 +2071,8 @@ window.FincestemMasterStudents = [
     "ayah": "RAJIMIN",
     "ibu": "ZULAIHA",
     "asal_sekolah": "SMP NEGERI 02 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -1973,7 +2089,8 @@ window.FincestemMasterStudents = [
     "ayah": "LEO WIDARTO",
     "ibu": "MARGARET SETIOWATI",
     "asal_sekolah": "SMP CHARITAS 04",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -1990,7 +2107,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOKO PATMONO",
     "ibu": "AINUN JARIYAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -2007,7 +2125,8 @@ window.FincestemMasterStudents = [
     "ayah": "NYOMAN ARTO",
     "ibu": "I NENGAH RUSTINI",
     "asal_sekolah": "SMP NEGERI 02 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -2024,7 +2143,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARIDI",
     "ibu": "NANI GANITA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -2041,7 +2161,8 @@ window.FincestemMasterStudents = [
     "ayah": "IRAWANSA",
     "ibu": "LILIS IRMAYANTI",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -2058,7 +2179,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUM'AT TIKNO",
     "ibu": "EVANA SUSANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -2075,7 +2197,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURWANTO",
     "ibu": "HARTINAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -2092,7 +2215,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI GUSMARA",
     "ibu": "ANITA TURISIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -2109,7 +2233,8 @@ window.FincestemMasterStudents = [
     "ayah": "MULWANI",
     "ibu": "JAURAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -2126,7 +2251,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARPAN",
     "ibu": "NINGSIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -2143,7 +2269,8 @@ window.FincestemMasterStudents = [
     "ayah": "SABAT SUPRIYADI",
     "ibu": "CHATARINA INDRAYANI",
     "asal_sekolah": "SMP CHARITAS 03 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -2160,7 +2287,8 @@ window.FincestemMasterStudents = [
     "ayah": "SISWADI",
     "ibu": "MISDIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -2177,7 +2305,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARDIONO",
     "ibu": "RISA ANALIA",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -2194,7 +2323,8 @@ window.FincestemMasterStudents = [
     "ayah": "DARWIN",
     "ibu": "INDANA",
     "asal_sekolah": "SMP NEGERI 1 BUAY PEMUKA BANGSA RAJA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -2211,7 +2341,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAMSUL BAHRI",
     "ibu": "LENI SUSTINA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -2228,7 +2359,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAMSUDIN",
     "ibu": "SALMAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -2245,7 +2377,8 @@ window.FincestemMasterStudents = [
     "ayah": "MIFTA",
     "ibu": "EKA SUSANTI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -2262,7 +2395,8 @@ window.FincestemMasterStudents = [
     "ayah": "SOPUAN NATAR MASHUR",
     "ibu": "TRIMARYUNI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -2279,7 +2413,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUSIANTO",
     "ibu": "SUMARNI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -2296,7 +2431,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAWAN",
     "ibu": "NELI WATI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -2313,7 +2449,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISMANAN",
     "ibu": "ANA NURJANAH",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -2330,7 +2467,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUNI ERIANTO",
     "ibu": "FITRIA KUSUMASTUTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -2347,7 +2485,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIYADI",
     "ibu": "JULAIHA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -2364,7 +2503,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO MULYONO",
     "ibu": "SURANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -2381,7 +2521,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIMIN",
     "ibu": "TUGINEM",
     "asal_sekolah": "SMP NEGRI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -2398,7 +2539,8 @@ window.FincestemMasterStudents = [
     "ayah": "FERDINAN ARJULI",
     "ibu": "DESIANA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -2415,7 +2557,8 @@ window.FincestemMasterStudents = [
     "ayah": "NAZIRUDIN",
     "ibu": "KHONANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -2432,7 +2575,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG IRAWAN",
     "ibu": "ERLYSA IVANA A.",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -2449,7 +2593,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIYANTO",
     "ibu": "SITI MUSLIMAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -2466,7 +2611,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANGGA GALIH GUMILANG",
     "ibu": "LINDA ASTUTI",
     "asal_sekolah": "MTSS MUQIMUS SUNNAH PALEMBANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -2483,7 +2629,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS MISANTO",
     "ibu": "ANA CAVORINA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -2500,7 +2647,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI SAPUTRA",
     "ibu": "YULIANI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -2517,7 +2665,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIYANTO",
     "ibu": "ANI PUJI ASTUTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -2534,7 +2683,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIKA SUPANDRI",
     "ibu": "EMA YUSTIANINGSIH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -2551,7 +2701,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI",
     "ibu": "ARIANITA WULANDARI",
     "asal_sekolah": "SMP YP YAIQLI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -2568,7 +2719,8 @@ window.FincestemMasterStudents = [
     "ayah": "DIDIK BASUKI",
     "ibu": "NANIK SAMIATI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -2585,7 +2737,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG SUYANTO",
     "ibu": "SRI MURNIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -2602,7 +2755,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRIMAN",
     "ibu": "ASMIYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -2619,7 +2773,8 @@ window.FincestemMasterStudents = [
     "ayah": "IQBAL WAHYUDI",
     "ibu": "EKA SUSANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -2636,7 +2791,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERLAN",
     "ibu": "LIA ROSITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -2653,7 +2809,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARTO",
     "ibu": "UMY DAYATI",
     "asal_sekolah": "SMPN 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -2670,7 +2827,8 @@ window.FincestemMasterStudents = [
     "ayah": "I GUSTI PUTU OKO WIJAYA",
     "ibu": "I MADE NONI",
     "asal_sekolah": "SMP NEGERI 02 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -2687,7 +2845,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERMAN",
     "ibu": "SITI HASANAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -2704,7 +2863,8 @@ window.FincestemMasterStudents = [
     "ayah": "SYAIFUL BAHRI",
     "ibu": "SITI AMINAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -2721,7 +2881,8 @@ window.FincestemMasterStudents = [
     "ayah": "MASHURI",
     "ibu": "EKO LUSIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -2738,7 +2899,8 @@ window.FincestemMasterStudents = [
     "ayah": "SANDRO GUSTIAN",
     "ibu": "SANTI SEPTIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -2755,7 +2917,8 @@ window.FincestemMasterStudents = [
     "ayah": "HOLIL ARIADINAATA",
     "ibu": "ROSMINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -2772,7 +2935,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARTONO",
     "ibu": "NURSIYAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -2789,7 +2953,8 @@ window.FincestemMasterStudents = [
     "ayah": "WIDYO PRIANTO",
     "ibu": "DEWI SUPRIYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -2806,7 +2971,8 @@ window.FincestemMasterStudents = [
     "ayah": "BOSTON SIDAURUK",
     "ibu": "DIANA NATALIA",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -2823,7 +2989,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUWANTO",
     "ibu": "PURWANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -2840,7 +3007,8 @@ window.FincestemMasterStudents = [
     "ayah": "RAHMAT HIDAYAT",
     "ibu": "SITI ISROMAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -2857,7 +3025,8 @@ window.FincestemMasterStudents = [
     "ayah": "ICAN OCTAVIANSYAH BALYA",
     "ibu": "DEVI RUSPRIANA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -2874,7 +3043,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANIDAR",
     "ibu": "SUSTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -2891,7 +3061,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRIYONO",
     "ibu": "KUSUMAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -2908,7 +3079,8 @@ window.FincestemMasterStudents = [
     "ayah": "YAYAN SUDRIYANTO",
     "ibu": "KARTINI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG OKU TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -2925,7 +3097,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERI BERTUS ELI",
     "ibu": "APRIA NGATINI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -2942,7 +3115,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOTOK WIJANARKO",
     "ibu": "NOVA KRISTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -2959,7 +3133,8 @@ window.FincestemMasterStudents = [
     "ayah": "NURDIN",
     "ibu": "KARMILAH",
     "asal_sekolah": "SMPN 5 LALAN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -2976,7 +3151,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUROTO",
     "ibu": "LIS SETIOWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -2993,7 +3169,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAIFUL BAHRI",
     "ibu": "DESI ASNI NOVA",
     "asal_sekolah": "MTS ISLAMIYAH SUMBER MULYO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -3010,7 +3187,8 @@ window.FincestemMasterStudents = [
     "ayah": "JONI ISKANDAR",
     "ibu": "EMA SURJANA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -3027,7 +3205,8 @@ window.FincestemMasterStudents = [
     "ayah": "SELMAN",
     "ibu": "ALDERA YUNIZA",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -3044,7 +3223,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUHARJITO",
     "ibu": "SUDARWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -3061,7 +3241,8 @@ window.FincestemMasterStudents = [
     "ayah": "MACHYONO",
     "ibu": "KURNIA RETNOWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -3078,7 +3259,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUJADI",
     "ibu": "ROKHMIYATI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -3095,7 +3277,8 @@ window.FincestemMasterStudents = [
     "ayah": "MEDY IRAWAN",
     "ibu": "NUZULIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -3112,7 +3295,8 @@ window.FincestemMasterStudents = [
     "ayah": "YOVI ARTIANTO",
     "ibu": "BERTI NOVITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -3129,7 +3313,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEWIS TARMISI",
     "ibu": "NILAYANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -3146,7 +3331,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD FAUZI",
     "ibu": "DESI ANDRYANI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -3163,7 +3349,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI SANTOSO",
     "ibu": "HERLIN SUSANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -3180,7 +3367,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERI SUTANTO",
     "ibu": "SUHARTINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -3197,7 +3385,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUYUD KARDHI SUHANA",
     "ibu": "HELDA SELVI LESTARI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -3214,7 +3403,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUMAIN",
     "ibu": "APRIYANA",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -3231,7 +3421,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURWANTO",
     "ibu": "JUMAINI",
     "asal_sekolah": "SMPIT QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -3248,7 +3439,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURNAMA",
     "ibu": "SUJININGSIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -3265,7 +3457,8 @@ window.FincestemMasterStudents = [
     "ayah": "HASAN MASRUR",
     "ibu": "SITI MASRUROH",
     "asal_sekolah": "SMP IT AT TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -3282,7 +3475,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI YULFIANTORO",
     "ibu": "SISKA MIRAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -3299,7 +3493,8 @@ window.FincestemMasterStudents = [
     "ayah": "DARMADI",
     "ibu": "NEPI JULITA",
     "asal_sekolah": "SMP NEGERI 1 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -3316,7 +3511,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUDASIR",
     "ibu": "SARINTEN",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -3333,7 +3529,8 @@ window.FincestemMasterStudents = [
     "ayah": "SYAHMAL",
     "ibu": "ENA SULYANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -3350,7 +3547,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUS RIZAL",
     "ibu": "DENI MARSA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -3367,7 +3565,8 @@ window.FincestemMasterStudents = [
     "ayah": "PUTRA JUNIAWAN",
     "ibu": "MARYA SUSANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -3384,7 +3583,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIHONO",
     "ibu": "HARTIKA",
     "asal_sekolah": "SMP NEGERI 1 BUAY BAHUGA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -3401,7 +3601,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTARNO",
     "ibu": "TURMIATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -3418,7 +3619,8 @@ window.FincestemMasterStudents = [
     "ayah": "SRIYANTO",
     "ibu": "SRIYANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -3435,7 +3637,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUSENO",
     "ibu": "AMSIAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -3452,7 +3655,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKARLI",
     "ibu": "SUPRIYANTI",
     "asal_sekolah": "SMP NEGERI 4 MESUJI MAKMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -3469,7 +3673,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDIONO",
     "ibu": "MISINAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -3486,7 +3691,8 @@ window.FincestemMasterStudents = [
     "ayah": "INDRA JAYA",
     "ibu": "ROZA LENA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -3503,7 +3709,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKISNO",
     "ibu": "NENI IRIYANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -3520,7 +3727,8 @@ window.FincestemMasterStudents = [
     "ayah": "LEGITO",
     "ibu": "SULASTRI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -3537,7 +3745,8 @@ window.FincestemMasterStudents = [
     "ayah": "BACHTARUDDIN JUSUF HELMY",
     "ibu": "DESI ARISANDI",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -3554,7 +3763,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI MISWANTO",
     "ibu": "EKA SULISTRIANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -3571,7 +3781,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUMIRAN",
     "ibu": "NGATINI",
     "asal_sekolah": "MTS ISLAMIYAH SUMBERMULYO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -3588,7 +3799,8 @@ window.FincestemMasterStudents = [
     "ayah": "HOIRUL",
     "ibu": "SUTRIK ASMAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -3605,7 +3817,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUMADI",
     "ibu": "DEWI SETYANINGSIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -3622,7 +3835,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANANG WALUYO",
     "ibu": "KASINEM",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -3639,7 +3853,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHYUDI",
     "ibu": "JINEM",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -3656,7 +3871,8 @@ window.FincestemMasterStudents = [
     "ayah": "RINTO",
     "ibu": "HALIA",
     "asal_sekolah": "SMP N 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -3673,7 +3889,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISKANDAR",
     "ibu": "SITI ROAIDAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -3690,7 +3907,8 @@ window.FincestemMasterStudents = [
     "ayah": "JAMALUDIN",
     "ibu": "EKA YULIANA",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -3707,7 +3925,8 @@ window.FincestemMasterStudents = [
     "ayah": "OMRIN",
     "ibu": "RIRIN ANDRIATI",
     "asal_sekolah": "SMPN 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -3724,7 +3943,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANTONIUS SLAMET",
     "ibu": "MARGARETTA ANNA INDRIYANI",
     "asal_sekolah": "SMP NEGERI 1 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -3741,7 +3961,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SANTOSO",
     "ibu": "MASITOH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -3758,7 +3979,8 @@ window.FincestemMasterStudents = [
     "ayah": "SULISTIONO",
     "ibu": "PAENEM",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -3775,7 +3997,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUGIYONO",
     "ibu": "SUKINEM",
     "asal_sekolah": "SMP NEGERI 02 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -3792,7 +4015,8 @@ window.FincestemMasterStudents = [
     "ayah": "PILIPUS JUMIRAN",
     "ibu": "RITA SUNARSIH",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -3809,7 +4033,8 @@ window.FincestemMasterStudents = [
     "ayah": "FAISAL",
     "ibu": "ERNI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -3826,7 +4051,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERI FISCO",
     "ibu": "DWI AFRIANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -3843,7 +4069,8 @@ window.FincestemMasterStudents = [
     "ayah": "MIFTAH",
     "ibu": "LINA",
     "asal_sekolah": "SMP NEGERI 4 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -3860,7 +4087,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI SUBROTO",
     "ibu": "DWI SURYANI",
     "asal_sekolah": "SMP MUHAMMADIYAH 02 KARANG TENGAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -3877,7 +4105,8 @@ window.FincestemMasterStudents = [
     "ayah": "GUNADI",
     "ibu": "ELIYA AGUSTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -3894,7 +4123,8 @@ window.FincestemMasterStudents = [
     "ayah": "BENGET NAPITUPULU",
     "ibu": "ELFRIDA LIDYAWATI SIHOMBING",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -3911,7 +4141,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDY PERMANA",
     "ibu": "SHERLY YUNITA SARI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -3928,7 +4159,8 @@ window.FincestemMasterStudents = [
     "ayah": "CIK WAN",
     "ibu": "YANTI",
     "asal_sekolah": "UPT SMP NEGERI 1 BUAY BAHUGA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -3945,7 +4177,8 @@ window.FincestemMasterStudents = [
     "ayah": "GOPUR SUGIANTO",
     "ibu": "EKA ERMAWATI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -3962,7 +4195,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI CANDRA",
     "ibu": "RITA AGUSTINA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -3979,7 +4213,8 @@ window.FincestemMasterStudents = [
     "ayah": "ABDUL RAHMAN SARMAI",
     "ibu": "YULI ARDIANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -3996,7 +4231,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMAD HUSEIN EFFENDI",
     "ibu": "SHINTA UJIANTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -4013,7 +4249,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAPRUDIN IRAWAN",
     "ibu": "HENSI APRILLISA",
     "asal_sekolah": "SMP IT ATTAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -4030,7 +4267,8 @@ window.FincestemMasterStudents = [
     "ayah": "I KETUT MUDITA",
     "ibu": "KADEK ANGGRENI",
     "asal_sekolah": "SMP NEGERI 2 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -4047,7 +4285,8 @@ window.FincestemMasterStudents = [
     "ayah": "TAUFIQURROHMAN",
     "ibu": "MEILIRIN SAHPUTRI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -4064,7 +4303,8 @@ window.FincestemMasterStudents = [
     "ayah": "WARISNO",
     "ibu": "KARSILAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -4081,7 +4321,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARULI SINAGA",
     "ibu": "MASDINA BR TOHANG",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -4098,7 +4339,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZULKIFLI",
     "ibu": "EPRI SULISTIANI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -4115,7 +4357,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDI TRI YULIANTO",
     "ibu": "META MARLENA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -4132,7 +4375,8 @@ window.FincestemMasterStudents = [
     "ayah": "HAMDANI",
     "ibu": "DESY SUSANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -4149,7 +4393,8 @@ window.FincestemMasterStudents = [
     "ayah": "MOH HENDRIYANTO",
     "ibu": "NGAT THHINI SUDARTO",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -4166,7 +4411,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARYANTO",
     "ibu": "SRI LESTARININGSIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -4183,7 +4429,8 @@ window.FincestemMasterStudents = [
     "ayah": "SLAMET RIADI",
     "ibu": "BANIAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -4200,7 +4447,8 @@ window.FincestemMasterStudents = [
     "ayah": "M YUSUP",
     "ibu": "YULISA ANOVA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -4217,7 +4465,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENGKI",
     "ibu": "NURUL SUSANTI",
     "asal_sekolah": "SMP NEGERI 2 MADANG SUKU 1",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -4234,7 +4483,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURIADI",
     "ibu": "DITA NOVARIANAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -4251,7 +4501,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAJIAT",
     "ibu": "ROHIBAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -4268,7 +4519,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS ZAINI",
     "ibu": "MAISAROH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -4285,7 +4537,8 @@ window.FincestemMasterStudents = [
     "ayah": "DIDIK HERNAWAN",
     "ibu": "YENI WIJAYANTI",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -4302,7 +4555,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARDI (ALM)",
     "ibu": "SITI NURMA MUDA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -4319,7 +4573,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDI SANTOSO",
     "ibu": "FETI PUJIANI",
     "asal_sekolah": "SMP NEGERI 02 MADANG SUKU I",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -4336,7 +4591,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOHANSAH",
     "ibu": "LUSIYANA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -4353,7 +4609,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRO WINARNO",
     "ibu": "INDRI NILASARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -4370,7 +4627,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARNO",
     "ibu": "WIDIA NARMI",
     "asal_sekolah": "UPT SMP NEGERI 1 BUAY BAHUGA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -4387,7 +4645,8 @@ window.FincestemMasterStudents = [
     "ayah": "DARYAN",
     "ibu": "EMI LIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -4404,7 +4663,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRIYONO",
     "ibu": "EVI NURLAILA",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -4421,7 +4681,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDRI WINARTO",
     "ibu": "AFRI ALIANCE",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -4438,7 +4699,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOTOK WIDIHARTO",
     "ibu": "TETY KRISTINAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -4455,7 +4717,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI HASMAL",
     "ibu": "EVA DIANA",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -4472,7 +4735,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURWANTO",
     "ibu": "DEWI ANDRAYANI",
     "asal_sekolah": "SMP NEGERI O1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -4489,7 +4753,8 @@ window.FincestemMasterStudents = [
     "ayah": "LUKI ANDRI",
     "ibu": "DEDE SOLEHA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -4506,7 +4771,8 @@ window.FincestemMasterStudents = [
     "ayah": "SOBARI",
     "ibu": "SITI LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -4523,7 +4789,8 @@ window.FincestemMasterStudents = [
     "ayah": "S0BRI",
     "ibu": "SANTI",
     "asal_sekolah": "SMP NEGRI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -4540,7 +4807,8 @@ window.FincestemMasterStudents = [
     "ayah": "LA HAULI",
     "ibu": "MASRIPAH",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -4557,7 +4825,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROKANI",
     "ibu": "ARIS SUGIHARTI",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -4574,7 +4843,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD SAHRONI",
     "ibu": "MISTIANI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -4591,7 +4861,8 @@ window.FincestemMasterStudents = [
     "ayah": "FERY ARDIANTO",
     "ibu": "EKA KURNIATI",
     "asal_sekolah": "SMPIT QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -4608,7 +4879,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMADI",
     "ibu": "SRI WAHYUNI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -4625,7 +4897,8 @@ window.FincestemMasterStudents = [
     "ayah": "BRONI",
     "ibu": "SARIATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -4642,7 +4915,8 @@ window.FincestemMasterStudents = [
     "ayah": "MISBAHUL MUNIR",
     "ibu": "LULUT TRISNOWATI",
     "asal_sekolah": "SMP NEGRI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -4659,7 +4933,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS",
     "ibu": "ERMIATI",
     "asal_sekolah": "SMP NEGERI 1 BLITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -4676,7 +4951,8 @@ window.FincestemMasterStudents = [
     "ayah": "KETUT ZAENUDIN",
     "ibu": "WAYAN SENIATI",
     "asal_sekolah": "SMP NEGERI 1 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -4693,7 +4969,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUWARNI",
     "ibu": "WIKA YANDI ASTETY",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -4710,7 +4987,8 @@ window.FincestemMasterStudents = [
     "ayah": "WIYOSO",
     "ibu": "RINI SETIOWATI",
     "asal_sekolah": "SMP 03 BMR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -4727,7 +5005,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG UTOYO",
     "ibu": "SUPRIYATIN",
     "asal_sekolah": "SMP IT AT TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -4744,7 +5023,8 @@ window.FincestemMasterStudents = [
     "ayah": "DONI ANSYAH",
     "ibu": "YANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -4761,7 +5041,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAGUS PANCA WIRATAMA",
     "ibu": "ERIKA DWI SANDRA",
     "asal_sekolah": "SMP IT QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -4778,7 +5059,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERDISTANTO",
     "ibu": "HENY WIJININGSIH",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -4795,7 +5077,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTARNO",
     "ibu": "LINTARSIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -4812,7 +5095,8 @@ window.FincestemMasterStudents = [
     "ayah": "DENI SUSILO",
     "ibu": "YUSTINA ARI ERNAWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -4829,7 +5113,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARJITO",
     "ibu": "NURMA YUNITA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -4846,7 +5131,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERWAN",
     "ibu": "RIA HANDAYANI",
     "asal_sekolah": "SMP N 1 MADANG SUKU 2",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -4863,7 +5149,8 @@ window.FincestemMasterStudents = [
     "ayah": "JAINUDIN",
     "ibu": "FARMA NARA CHINDAGA",
     "asal_sekolah": "SMPN 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -4880,7 +5167,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARIFUDIN",
     "ibu": "RAHYUNI",
     "asal_sekolah": "SMP NEGERI02 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -4897,7 +5185,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUKTIONO",
     "ibu": "NGANTISIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -4914,7 +5203,8 @@ window.FincestemMasterStudents = [
     "ayah": "NGADIYO",
     "ibu": "MURNIASIH",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -4931,7 +5221,8 @@ window.FincestemMasterStudents = [
     "ayah": "RONY AKBAR",
     "ibu": "LIRA CHINTIANA",
     "asal_sekolah": "SMP ISLAM TERPADU AL FURQON PALEMBANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -4948,7 +5239,8 @@ window.FincestemMasterStudents = [
     "ayah": "GUSTI SAPUTRA",
     "ibu": "TIA WINDRI ASTUTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -4965,7 +5257,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUJIONO",
     "ibu": "MARDIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -4982,7 +5275,8 @@ window.FincestemMasterStudents = [
     "ayah": "NURWANTO",
     "ibu": "AYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -4999,7 +5293,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS NURDIYANTO",
     "ibu": "ISTIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -5016,7 +5311,8 @@ window.FincestemMasterStudents = [
     "ayah": "PRIHADI",
     "ibu": "TITIN EKARIA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG 2",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -5033,7 +5329,8 @@ window.FincestemMasterStudents = [
     "ayah": "SULISTIO",
     "ibu": "YENI IMAYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -5050,7 +5347,8 @@ window.FincestemMasterStudents = [
     "ayah": "LUDIN MARHATA",
     "ibu": "WIJI LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -5067,7 +5365,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOTO RIYADI",
     "ibu": "ANTONIA RARIK MARLINA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -5084,7 +5383,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARDI",
     "ibu": "DEWI LIAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -5101,7 +5401,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISKANDARIAN",
     "ibu": "RINA NURAIN",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -5118,7 +5419,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIZAL ASHARI",
     "ibu": "RIA SAPITRI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -5135,7 +5437,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRIKUS SUPARMIN",
     "ibu": "CAECILIA SUPARYANTI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -5152,7 +5455,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIARTO",
     "ibu": "SURATMI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -5169,7 +5473,8 @@ window.FincestemMasterStudents = [
     "ayah": "I MADE CANDRA",
     "ibu": "NI MADE SUKERMI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -5186,7 +5491,8 @@ window.FincestemMasterStudents = [
     "ayah": "A MUDHOFARUDIN",
     "ibu": "MELI KASIANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -5203,7 +5509,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUJAN",
     "ibu": "SITI AMINATUN",
     "asal_sekolah": "SMP MUHAMMADIYAH 02 KARANG TENGAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -5220,7 +5527,8 @@ window.FincestemMasterStudents = [
     "ayah": "BASIRUN",
     "ibu": "SRI MULYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -5237,7 +5545,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIANTO",
     "ibu": "SUTINI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -5254,7 +5563,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD BARDOWI",
     "ibu": "METI IRAWATI",
     "asal_sekolah": "SMP NEGERI 1 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -5271,7 +5581,8 @@ window.FincestemMasterStudents = [
     "ayah": "FAUZAN AZIMAN",
     "ibu": "RENI ANGGRAINI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -5288,7 +5599,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARIYONO",
     "ibu": "YUNITQA",
     "asal_sekolah": "SMP N 2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -5305,7 +5617,8 @@ window.FincestemMasterStudents = [
     "ayah": "MISRIYANTO",
     "ibu": "EMIRIYATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -5322,7 +5635,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIFIN LINTONG SIHOMBING",
     "ibu": "RISMA SIAGIAN",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -5339,7 +5653,8 @@ window.FincestemMasterStudents = [
     "ayah": "PRIYADI",
     "ibu": "YULIANTI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 35,
@@ -5356,7 +5671,8 @@ window.FincestemMasterStudents = [
     "ayah": "INDRA DONI SAPUTRA",
     "ibu": "MESI PURNAMA SARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -5373,7 +5689,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROMZA",
     "ibu": "MELIANA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -5390,7 +5707,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURYA DARMA",
     "ibu": "SA'IMAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -5407,7 +5725,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSTON SAKUR",
     "ibu": "DELIMA WIJAYA",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -5424,7 +5743,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SALIM",
     "ibu": "RUSMIATI",
     "asal_sekolah": "MTS MAMBAUL ULUM",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -5441,7 +5761,8 @@ window.FincestemMasterStudents = [
     "ayah": "SISWANTO",
     "ibu": "EKA UTAMI NINGSIH",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -5458,7 +5779,8 @@ window.FincestemMasterStudents = [
     "ayah": "RAHMAT HIDAYAT",
     "ibu": "TRI MARYANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -5475,7 +5797,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI IRAWAN",
     "ibu": "ELYATI",
     "asal_sekolah": "SMPN 04 MADANG SUKU I",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -5492,7 +5815,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI HARTONO",
     "ibu": "INDRAWATI",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -5509,7 +5833,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDRI ALBERTO",
     "ibu": "DESMARENI OFIYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -5526,7 +5851,8 @@ window.FincestemMasterStudents = [
     "ayah": "FEBRI CAPPOLO",
     "ibu": "LANOVA MAIJENI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -5543,7 +5869,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARI WIDODO",
     "ibu": "HARNI VIKA LESTARI",
     "asal_sekolah": "SMP NEGERI 1 MESUJI MAKMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -5560,7 +5887,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUJIYANTO",
     "ibu": "MARIYEM",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -5577,7 +5905,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANTON PEBERIANTO",
     "ibu": "SULASTRI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -5594,7 +5923,8 @@ window.FincestemMasterStudents = [
     "ayah": "BENGET NAPITUPULU",
     "ibu": "ELFRIDA LIDYAWATI SIHOMBING",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -5611,7 +5941,8 @@ window.FincestemMasterStudents = [
     "ayah": "NUR MUHAMMAD",
     "ibu": "ROMIYATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -5628,7 +5959,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDARMAJI",
     "ibu": "ROMIATUN",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -5645,7 +5977,8 @@ window.FincestemMasterStudents = [
     "ayah": "MALINO S.ST",
     "ibu": "DINA SARTIKA, AMF",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -5662,7 +5995,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDIALIS SUGESTI",
     "ibu": "LISARIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -5679,7 +6013,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUJARWO AL FAJRI",
     "ibu": "MEGAWATI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -5696,7 +6031,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARNO",
     "ibu": "AGUSTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -5713,7 +6049,8 @@ window.FincestemMasterStudents = [
     "ayah": "ELI IBNU SOLEH",
     "ibu": "SUNARNI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -5730,7 +6067,8 @@ window.FincestemMasterStudents = [
     "ayah": "GUSMARA",
     "ibu": "SULARMI",
     "asal_sekolah": "AMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -5747,7 +6085,8 @@ window.FincestemMasterStudents = [
     "ayah": "NURYANTO",
     "ibu": "YULI NURSIMAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -5764,7 +6103,8 @@ window.FincestemMasterStudents = [
     "ayah": "MERKOPOLO",
     "ibu": "ENWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -5781,7 +6121,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIFIN",
     "ibu": "SITI RIA SARI",
     "asal_sekolah": "MTS AL HIDAYAH RAWABENING",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -5798,7 +6139,8 @@ window.FincestemMasterStudents = [
     "ayah": "HASANNUDIN",
     "ibu": "ERNA HARIYANTI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -5815,7 +6157,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURANTO",
     "ibu": "SURATMI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -5832,7 +6175,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTARTO",
     "ibu": "SURATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -5849,7 +6193,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD HAPRIADI",
     "ibu": "ROSITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -5866,7 +6211,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERIK PURWANDOKO",
     "ibu": "IPMAWATI NUR SARPINTIKA",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -5883,7 +6229,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI GUNAWAN",
     "ibu": "MELDA MANALU",
     "asal_sekolah": "SMP CHARITAS 02 MOJOSARI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -5900,7 +6247,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI PRAMADITIAWAN",
     "ibu": "EFRIDAYANTI, S.E.",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -5917,7 +6265,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI SURAHMAN",
     "ibu": "MUSIK KARANI",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -5934,7 +6283,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUHARTO",
     "ibu": "SISKA PUTRI SETIAWATI",
     "asal_sekolah": "SMP MUHAMMADIYAH 02 KARANG TENGAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -5951,7 +6301,8 @@ window.FincestemMasterStudents = [
     "ayah": "SYAIFUL BACHRI,S.H",
     "ibu": "WAHYUNINGSIH",
     "asal_sekolah": "MTS TERPADU USHULUDDIN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -5968,7 +6319,8 @@ window.FincestemMasterStudents = [
     "ayah": "NEDDWIN SAPUTRA",
     "ibu": "SELVIA WENTINA",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -5985,7 +6337,8 @@ window.FincestemMasterStudents = [
     "ayah": "EFRIZAL",
     "ibu": "REKA AMALIA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -6002,7 +6355,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALBERT COLEONARDO",
     "ibu": "RAMADAYANTI NAFSAH AGUSTINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -6019,7 +6373,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADI WAHYONO",
     "ibu": "SUJIATUN",
     "asal_sekolah": "SMP NEGERI 1 BUAT MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -6036,7 +6391,8 @@ window.FincestemMasterStudents = [
     "ayah": "FIKRI",
     "ibu": "RIRIN MIRNAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -6053,7 +6409,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOKO RIADI",
     "ibu": "FATIMAH",
     "asal_sekolah": "SMP MUHAMMADIYAH 3 TRIYOSO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -6070,7 +6427,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALEXANDER YESNA ARIS SEPTIADI",
     "ibu": "AGUSTINAH",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -6087,7 +6445,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGINO",
     "ibu": "NGATINI",
     "asal_sekolah": "SMP NEGERI 3 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -6104,7 +6463,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARDO RANADIA",
     "ibu": "LIND OCTAVIANI IRAWAN",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -6121,7 +6481,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMMAD AKIL",
     "ibu": "ERNA WATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -6138,7 +6499,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEFRI YANSYAH",
     "ibu": "FARIDA ARYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -6155,7 +6517,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZAINUR RAHMAN",
     "ibu": "SUPREHATIN",
     "asal_sekolah": "MTS MURTAFA AL-MUKARROMA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -6172,7 +6535,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIYANTO",
     "ibu": "DIAN ELLISA",
     "asal_sekolah": "SMPN 01 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -6189,7 +6553,8 @@ window.FincestemMasterStudents = [
     "ayah": "BISTON NALDI SITANGGANG",
     "ibu": "MARGARETHA IRWANTI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -6206,7 +6571,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRIYANTO",
     "ibu": "RISNAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -6223,7 +6589,8 @@ window.FincestemMasterStudents = [
     "ayah": "KASIONO",
     "ibu": "SOPIYANA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -6240,7 +6607,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRIYANTO",
     "ibu": "DEKA YANTHY",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -6257,7 +6625,8 @@ window.FincestemMasterStudents = [
     "ayah": "OKTA RUDIWIJAYA",
     "ibu": "RESTU MARLINA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -6274,7 +6643,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIYANTO",
     "ibu": "SURYANI",
     "asal_sekolah": "SMP NEGERI 02 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -6291,7 +6661,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUKIMAN",
     "ibu": "PANYE SULASIH",
     "asal_sekolah": "SMPN 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -6308,7 +6679,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALIMUDIN SAPUTRA",
     "ibu": "ANITA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -6325,7 +6697,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIYANTO",
     "ibu": "MURNIATI",
     "asal_sekolah": "SMP MUHAMMADIYAH 02 KARANG TENGAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -6342,7 +6715,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUJAIDI",
     "ibu": "KAMIJEM",
     "asal_sekolah": "SMP NEGERI 1 MESUJI MAKMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -6359,7 +6733,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SUPRAPTO",
     "ibu": "YUSTINA SARI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -6376,7 +6751,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALFIAN",
     "ibu": "RINA ANITA LAILA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -6393,7 +6769,8 @@ window.FincestemMasterStudents = [
     "ayah": "GUNTUR",
     "ibu": "RIMA MARINI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -6410,7 +6787,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTRISNO",
     "ibu": "SURYANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -6427,7 +6805,8 @@ window.FincestemMasterStudents = [
     "ayah": "NURJALI",
     "ibu": "FAJRIYANI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -6444,7 +6823,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDI SUSANTO",
     "ibu": "TUKIRAH",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -6461,7 +6841,8 @@ window.FincestemMasterStudents = [
     "ayah": "SYEH ZAINUDDIN",
     "ibu": "IDAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -6478,7 +6859,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG WIJAKMOKO",
     "ibu": "DIANA LAYOEN ANGGRASARI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -6495,7 +6877,8 @@ window.FincestemMasterStudents = [
     "ayah": "KETUT SUKRAWE",
     "ibu": "KADEK AYU",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -6512,7 +6895,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI",
     "ibu": "JUNAICE",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -6529,7 +6913,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMMAD UMAR",
     "ibu": "PUJI HARTINI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -6546,7 +6931,8 @@ window.FincestemMasterStudents = [
     "ayah": "RAHAYU SUCIPTO WIBOWO",
     "ibu": "MISMARYATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -6563,7 +6949,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRIYONO",
     "ibu": "HERLITA EFLISTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -6580,7 +6967,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHYUDIN",
     "ibu": "HILYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -6597,7 +6985,8 @@ window.FincestemMasterStudents = [
     "ayah": "EFTOR HASDIAN",
     "ibu": "YULI INDRAWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -6614,7 +7003,8 @@ window.FincestemMasterStudents = [
     "ayah": "PUSRI HARDINI",
     "ibu": "WIJI LESTARI",
     "asal_sekolah": "SMP 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -6631,7 +7021,8 @@ window.FincestemMasterStudents = [
     "ayah": "RONI ALDRI",
     "ibu": "YENI AGUSTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -6648,7 +7039,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSTRIANTO",
     "ibu": "SITI SAMSIYAH",
     "asal_sekolah": "SMP MUHAMMADIYAH 02 KARANG TENGAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -6665,7 +7057,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERMAN SAWIRAN",
     "ibu": "YULIA PUTRI NENTIS",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -6682,7 +7075,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI PURWANTO",
     "ibu": "SOLEK HATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -6699,7 +7093,8 @@ window.FincestemMasterStudents = [
     "ayah": "WANTORO",
     "ibu": "SUPINAH",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -6716,7 +7111,8 @@ window.FincestemMasterStudents = [
     "ayah": "YOEL KUSNAEDI",
     "ibu": "KEZIA LIA KASIYANI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -6733,7 +7129,8 @@ window.FincestemMasterStudents = [
     "ayah": "HAILI",
     "ibu": "ALFIAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -6750,7 +7147,8 @@ window.FincestemMasterStudents = [
     "ayah": "WIDARTO",
     "ibu": "RUSMIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -6767,7 +7165,8 @@ window.FincestemMasterStudents = [
     "ayah": "FAIS JADI",
     "ibu": "DWI ASTUTI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -6784,7 +7183,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURKON",
     "ibu": "SUSANTI",
     "asal_sekolah": "SMP NEGERI 01 BUAY PEMUKA BANGSA JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -6801,7 +7201,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SUPARDI",
     "ibu": "RAHAYU",
     "asal_sekolah": "SMP CHARITAS 04",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -6818,7 +7219,8 @@ window.FincestemMasterStudents = [
     "ayah": "SYAFFARUDDIN AZA",
     "ibu": "NURMALIA YUNITA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -6835,7 +7237,8 @@ window.FincestemMasterStudents = [
     "ayah": "NYOMAN SUTAME",
     "ibu": "NYOMAN RUSMA YANTI",
     "asal_sekolah": "SMP PEMUKA SAKTI MANISINDAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -6852,7 +7255,8 @@ window.FincestemMasterStudents = [
     "ayah": "IPTU ALEXANDRA",
     "ibu": "ENGGI ANDRAINI, S.SOS.",
     "asal_sekolah": "SMP NEGERI 1 CIKARANG UTARA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -6869,7 +7273,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUYONO",
     "ibu": "SITI KHOLIFAH",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -6886,7 +7291,8 @@ window.FincestemMasterStudents = [
     "ayah": "KUSWIYANTO",
     "ibu": "SUMIARSIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -6903,7 +7309,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAHAK",
     "ibu": "ERI RUSMIATI",
     "asal_sekolah": "SMP MUHAMMADIYAH 1 RAWABENING",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -6920,7 +7327,8 @@ window.FincestemMasterStudents = [
     "ayah": "JURAID",
     "ibu": "MARWATI",
     "asal_sekolah": "SMPN 1 MESUJI MAKMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -6937,7 +7345,8 @@ window.FincestemMasterStudents = [
     "ayah": "ICAN LESMANA",
     "ibu": "TEJI PURWANI DARMASTUTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -6954,7 +7363,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRA KURNIAWAN",
     "ibu": "FITRI SUNDARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -6971,7 +7381,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDI WARDOYO",
     "ibu": "SUPRIHATI",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -6988,7 +7399,8 @@ window.FincestemMasterStudents = [
     "ayah": "FITRIADI SOFYAN",
     "ibu": "ANDIKA MARVIANTI IRAWAN",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -7005,7 +7417,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARJO",
     "ibu": "SITI MARYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -7022,7 +7435,8 @@ window.FincestemMasterStudents = [
     "ayah": "DAVID BRON",
     "ibu": "MARLIYANNA",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -7039,7 +7453,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALIYANSYAH",
     "ibu": "LIA HERLIANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -7056,7 +7471,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIYADI",
     "ibu": "NURMALIYATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -7073,7 +7489,8 @@ window.FincestemMasterStudents = [
     "ayah": "MANTO",
     "ibu": "HERLINA DEWI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -7090,7 +7507,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD",
     "ibu": "MARWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -7107,7 +7525,8 @@ window.FincestemMasterStudents = [
     "ayah": "GIYARNO",
     "ibu": "MARTINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -7124,7 +7543,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI",
     "ibu": "NENCY KRISTINA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -7141,7 +7561,8 @@ window.FincestemMasterStudents = [
     "ayah": "M. YUSUF",
     "ibu": "MARLINA WATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -7158,7 +7579,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO BINTORO",
     "ibu": "YUNI MARYANA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -7175,7 +7597,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUWARDI",
     "ibu": "SRI PURWANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -7192,7 +7615,8 @@ window.FincestemMasterStudents = [
     "ayah": "INDRA WANTO",
     "ibu": "SUMIATI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -7209,7 +7633,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAMSUDIN",
     "ibu": "RINA",
     "asal_sekolah": "SMP NEGRI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -7226,7 +7651,8 @@ window.FincestemMasterStudents = [
     "ayah": "KHAIRUL HANIF",
     "ibu": "MARDIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -7243,7 +7669,8 @@ window.FincestemMasterStudents = [
     "ayah": "MACHYONO",
     "ibu": "KURNIA RETNOWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -7260,7 +7687,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAJIR",
     "ibu": "METY HANDAYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -7277,7 +7705,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIYADI",
     "ibu": "FITA HENDRIYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -7294,7 +7723,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDARMANTO",
     "ibu": "DEWI SUSANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -7311,7 +7741,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISTIONO",
     "ibu": "SITI MASNIYAH",
     "asal_sekolah": "SMP MUHAMMADIYAH 03 TRIYOSO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -7328,7 +7759,8 @@ window.FincestemMasterStudents = [
     "ayah": "TEGUH",
     "ibu": "SUYANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -7345,7 +7777,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNADI",
     "ibu": "SRI HARTATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -7362,7 +7795,8 @@ window.FincestemMasterStudents = [
     "ayah": "C. EVA DIAN WIDIATMOKO",
     "ibu": "IKA KUSUMA DEWI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -7379,7 +7813,8 @@ window.FincestemMasterStudents = [
     "ayah": "MORIS ARTAZA LOVA",
     "ibu": "NENI RATNA SARI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -7396,7 +7831,8 @@ window.FincestemMasterStudents = [
     "ayah": "YADI",
     "ibu": "MU'MINAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -7413,7 +7849,8 @@ window.FincestemMasterStudents = [
     "ayah": "SYEH ANDI",
     "ibu": "RUSDIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -7430,7 +7867,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDI EFENDI",
     "ibu": "ENDANG ERINA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -7447,7 +7885,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMAD NASIR",
     "ibu": "TUTI NUR AINI",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -7464,7 +7903,8 @@ window.FincestemMasterStudents = [
     "ayah": "SULISTIO WIDODO",
     "ibu": "NUR AINI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -7481,7 +7921,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAYAN SUDARNO",
     "ibu": "NYOMAN RUSTIANI",
     "asal_sekolah": "SMP NEGERI 02 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -7498,7 +7939,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERMAN ANKAS",
     "ibu": "DIAN LISTIYANI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -7515,7 +7957,8 @@ window.FincestemMasterStudents = [
     "ayah": "DOTO SISWOYO",
     "ibu": "ANI SRIWASTINI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -7532,7 +7975,8 @@ window.FincestemMasterStudents = [
     "ayah": "WIDODO",
     "ibu": "PONIJAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -7549,7 +7993,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS WAHYUDI",
     "ibu": "DARTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -7566,7 +8011,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAISON",
     "ibu": "YENI YEYEN DILA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -7583,7 +8029,8 @@ window.FincestemMasterStudents = [
     "ayah": "MATIUS MARYADI",
     "ibu": "MAGDALENA RUBIYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -7600,7 +8047,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSLI",
     "ibu": "MISNAR",
     "asal_sekolah": "SMP NEGERI 7 MESUJI MAKMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -7617,7 +8065,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOHIRIN",
     "ibu": "BADRIYAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -7634,7 +8083,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTIYONO",
     "ibu": "FARIDA",
     "asal_sekolah": "SMP CIPTA KARYA BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -7651,7 +8101,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIJAL FATHONI",
     "ibu": "INKE MARIS",
     "asal_sekolah": "MADRASAH TSANAWIYAH SATU ATAP TANJUNG KEMUNING FILIAL MTS NEGERI 1 OKU TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -7668,7 +8119,8 @@ window.FincestemMasterStudents = [
     "ayah": "PRIADI SITIO",
     "ibu": "MELINDAWATI BR SIHALOHO",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -7685,7 +8137,8 @@ window.FincestemMasterStudents = [
     "ayah": "TABRONI",
     "ibu": "IDA ROYANI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -7702,7 +8155,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHTAROM",
     "ibu": "MARIYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -7719,7 +8173,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROMZI SAID",
     "ibu": "SRI FATMAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -7736,7 +8191,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURATNO",
     "ibu": "SUMINAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -7753,7 +8209,8 @@ window.FincestemMasterStudents = [
     "ayah": "EPENDI",
     "ibu": "MIFTA HUSNA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -7770,7 +8227,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARDI",
     "ibu": "SARILAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -7787,7 +8245,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURYANTO",
     "ibu": "ELMAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -7804,7 +8263,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAIKONI",
     "ibu": "SUNDARI EKOWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -7821,7 +8281,8 @@ window.FincestemMasterStudents = [
     "ayah": "MISBAHUL FALAH",
     "ibu": "YULI SAKURA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -7838,7 +8299,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADI CANDRA",
     "ibu": "VENTY DELI ROYA MARSA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -7855,7 +8317,8 @@ window.FincestemMasterStudents = [
     "ayah": "GUNO YITNO",
     "ibu": "SUSILAWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -7872,7 +8335,8 @@ window.FincestemMasterStudents = [
     "ayah": "KRISWANTO",
     "ibu": "LAILATUL QOMARIAH",
     "asal_sekolah": "SMP ISLAM AL-AZHAR OKU TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -7889,7 +8353,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKIRNO",
     "ibu": "NETIN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -7906,7 +8371,8 @@ window.FincestemMasterStudents = [
     "ayah": "IMAM SUMANTRI",
     "ibu": "TRI SUGESTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -7923,7 +8389,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTOMO",
     "ibu": "SIANI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -7940,7 +8407,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOTO SUTIKNO",
     "ibu": "VERA LISTIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -7957,7 +8425,8 @@ window.FincestemMasterStudents = [
     "ayah": "ASEF",
     "ibu": "ERI ANISAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -7974,7 +8443,8 @@ window.FincestemMasterStudents = [
     "ayah": "HAMDAN",
     "ibu": "LILIS SURYANI",
     "asal_sekolah": "SMP NEGERI 1 BMR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -7991,7 +8461,8 @@ window.FincestemMasterStudents = [
     "ayah": "KAT WANTO",
     "ibu": "PUJI RAHAYU",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -8008,7 +8479,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAIFAN KARJIYO",
     "ibu": "ANI SARTINI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -8025,7 +8497,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDRIAS",
     "ibu": "MUKNI FATIMAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -8042,7 +8515,8 @@ window.FincestemMasterStudents = [
     "ayah": "PARJIYONO",
     "ibu": "FERIDA OKTU PRI HANDARI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -8059,7 +8533,8 @@ window.FincestemMasterStudents = [
     "ayah": "MADE RIKWAN",
     "ibu": "NI KETUT DARMAWI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG 3",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -8076,7 +8551,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUWARDI",
     "ibu": "SURATMI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -8093,7 +8569,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTARNO",
     "ibu": "OKVALIA",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -8110,7 +8587,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG IRAWAN",
     "ibu": "NIA KURNIA ADI PUTRI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -8127,7 +8605,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMAD MADUN",
     "ibu": "LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -8144,7 +8623,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERI SUMANTO",
     "ibu": "ZAENAB",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -8161,7 +8641,8 @@ window.FincestemMasterStudents = [
     "ayah": "BERNI",
     "ibu": "IDA ZURAIDA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -8178,7 +8659,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPONO",
     "ibu": "MARYANI ROSITA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -8195,7 +8677,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRA PRANYOTO",
     "ibu": "MAYLISA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -8212,7 +8695,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARYO",
     "ibu": "LUSI ATMAJAWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -8229,7 +8713,8 @@ window.FincestemMasterStudents = [
     "ayah": "DIDIK SUSANTO",
     "ibu": "YUNIARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -8246,7 +8731,8 @@ window.FincestemMasterStudents = [
     "ayah": "MURTASIP",
     "ibu": "TUMINEM",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -8263,7 +8749,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISKANDAR",
     "ibu": "DWI INDARTI",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -8280,7 +8767,8 @@ window.FincestemMasterStudents = [
     "ayah": "KHUSAINI",
     "ibu": "SURATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -8297,7 +8785,8 @@ window.FincestemMasterStudents = [
     "ayah": "RAHMAD PRIYADI",
     "ibu": "SHINTA DEWI PATRIOTIKA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -8314,7 +8803,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISMAIL",
     "ibu": "UMI JUMIDAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -8331,7 +8821,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERMANSYAH",
     "ibu": "HERAWATI",
     "asal_sekolah": "SMP NEGERI 1 SEMENDAWAI BARAT",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -8348,7 +8839,8 @@ window.FincestemMasterStudents = [
     "ayah": "AMRI",
     "ibu": "ELVI ROSYANA",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -8365,7 +8857,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALEX SUSANTO",
     "ibu": "YUNIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -8382,7 +8875,8 @@ window.FincestemMasterStudents = [
     "ayah": "GINANJAR",
     "ibu": "MARIYAH",
     "asal_sekolah": "SMP NEGERI 01 SEMENDAWAI SUKU IIII",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 36,
@@ -8399,7 +8893,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRAPTO",
     "ibu": "EVA SUFITRI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -8416,7 +8911,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROHMAN",
     "ibu": "SRI ASIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -8433,7 +8929,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIS NICO",
     "ibu": "WIKA TRIANI",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -8450,7 +8947,8 @@ window.FincestemMasterStudents = [
     "ayah": "REGEN AKINO",
     "ibu": "META IRAWANTIKA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -8467,7 +8965,8 @@ window.FincestemMasterStudents = [
     "ayah": "IIS RIYADI",
     "ibu": "SULAN NINGSIH",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -8484,7 +8983,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUNG DWIJO SANTOSO",
     "ibu": "OCTA WULANDARI",
     "asal_sekolah": "SMPN 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -8501,7 +9001,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISKANDAR S.H.",
     "ibu": "ROSMERY FAJARSARI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -8518,7 +9019,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI CHANDRA WIJAYA",
     "ibu": "HERA ANGGREK LENI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -8535,7 +9037,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERYVAN NAZANADA",
     "ibu": "DESY MARETA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -8552,7 +9055,8 @@ window.FincestemMasterStudents = [
     "ayah": "DANI SETYA KURNIAWAN",
     "ibu": "GIWIN KIATYANITHA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -8569,7 +9073,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUSUP IRWAN",
     "ibu": "THERESIA SUPRIHATIN",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -8586,7 +9091,8 @@ window.FincestemMasterStudents = [
     "ayah": "DANIAL",
     "ibu": "MARAYANTI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -8603,7 +9109,8 @@ window.FincestemMasterStudents = [
     "ayah": "DENY SEFTIYAN PASERA",
     "ibu": "LIYA FRAMITA SAKTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -8620,7 +9127,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDIONO",
     "ibu": "MASRIYAH",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -8637,7 +9145,8 @@ window.FincestemMasterStudents = [
     "ayah": "KOMARI",
     "ibu": "VEPI INDAH HERLINA",
     "asal_sekolah": "SMP MUHAMMADIYAH AHMAD DAHLAN METRO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -8654,7 +9163,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALING SASMITO",
     "ibu": "TRI WINARNI",
     "asal_sekolah": "SMP ISLAM AL-AZHAR OKU TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -8671,7 +9181,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIYANTO",
     "ibu": "MEGAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -8688,7 +9199,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUKIMAN",
     "ibu": "FATIMAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -8705,7 +9217,8 @@ window.FincestemMasterStudents = [
     "ayah": "",
     "ibu": "",
     "asal_sekolah": "",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -8722,7 +9235,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOKO SURONO",
     "ibu": "TETI LIANA",
     "asal_sekolah": "SMP ISLAM AL-FAHD",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -8739,7 +9253,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSLI",
     "ibu": "SUMI APRIYANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -8756,7 +9271,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURATMAN",
     "ibu": "EPI SUSIYANINGSIH",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -8773,7 +9289,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIADI",
     "ibu": "SUMI EKAWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG KABUPATEN OKU TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -8790,7 +9307,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAIMUN",
     "ibu": "CATMIATI",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -8807,7 +9325,8 @@ window.FincestemMasterStudents = [
     "ayah": "SOLIHIN",
     "ibu": "ELYA JANNATI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -8824,7 +9343,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUDI HARRI SANDY",
     "ibu": "DWI RAHAYU",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -8841,7 +9361,8 @@ window.FincestemMasterStudents = [
     "ayah": "M SHOLEH IBRAHIM",
     "ibu": "FITRI APRIANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -8858,7 +9379,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAMIKAN",
     "ibu": "ROMAYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -8875,7 +9397,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUMARDON",
     "ibu": "YUNITA SARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -8892,7 +9415,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKRI JAMAL",
     "ibu": "MURYATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -8909,7 +9433,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAKMUR SIMAMORA",
     "ibu": "SALFIA HANIKA ARITONANG",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -8926,7 +9451,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI SUMARWAN",
     "ibu": "DEBI LINDAWATI",
     "asal_sekolah": "SMP CHARITAS 02 MOJOSARI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -8943,7 +9469,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI RENALDI",
     "ibu": "INNISAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -8960,7 +9487,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMMAD ABDUL KHOLIK",
     "ibu": "FIORA SUPARTNI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -8977,7 +9505,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIARTO",
     "ibu": "SRI HANDAYANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 35,
@@ -8994,7 +9523,8 @@ window.FincestemMasterStudents = [
     "ayah": "NYOMAN SUDARTE",
     "ibu": "NI NENGAH SULASTRI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -9011,7 +9541,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUSLICH",
     "ibu": "YULIANA BUDIANTI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -9028,7 +9559,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDARNO",
     "ibu": "",
     "asal_sekolah": "MTs. TAKWA GUMAWANG BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -9045,7 +9577,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANIS DIANTO",
     "ibu": "MELI FEBIANI",
     "asal_sekolah": "UPT SMP NEGERI 2 BAHUGA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -9062,7 +9595,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPODO NAYOKO",
     "ibu": "TRI ANITA",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -9079,7 +9613,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARSUDI",
     "ibu": "SURANI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG 3",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -9096,7 +9631,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZULWIRDAM",
     "ibu": "YULI ERTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -9113,7 +9649,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERU WAHYUDI",
     "ibu": "DALIYEM",
     "asal_sekolah": "SMP MUHAMMADIYAH 02 KARANG TENGAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -9130,7 +9667,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERWANI",
     "ibu": "MEIJUN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -9147,7 +9685,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTRISNO",
     "ibu": "KASINEM",
     "asal_sekolah": "SMP NU BUMIRAHAYU",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -9164,7 +9703,8 @@ window.FincestemMasterStudents = [
     "ayah": "AJAT SUDRAJAD",
     "ibu": "NARNI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -9181,7 +9721,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMMAD",
     "ibu": "ELDA RIANTI",
     "asal_sekolah": "SMP PG KOMERING",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -9198,7 +9739,8 @@ window.FincestemMasterStudents = [
     "ayah": "M.MISBAHUDIN",
     "ibu": "DEVI SETIA UTAMI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -9215,7 +9757,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZAENAL ARIFIN",
     "ibu": "LENAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -9232,7 +9775,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUHERMAN",
     "ibu": "DWI YUNIS ESTIANA",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -9249,7 +9793,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTRISNO",
     "ibu": "NURKARIMA ARSIH",
     "asal_sekolah": "SMP MUHAMMADIYAH 02 KARANG TENGAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -9266,7 +9811,8 @@ window.FincestemMasterStudents = [
     "ayah": "AL ISA",
     "ibu": "NURMAWATI",
     "asal_sekolah": "SMP NEGERI 1 BUAY BAHUGA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -9283,7 +9829,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAYAN RAMAN WINAYA",
     "ibu": "WAYAN LINDA SOVIANA",
     "asal_sekolah": "SMP CIPTA KARYA BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -9300,7 +9847,8 @@ window.FincestemMasterStudents = [
     "ayah": "NARMIN",
     "ibu": "SITI JUARIAH",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -9317,7 +9865,8 @@ window.FincestemMasterStudents = [
     "ayah": "HAMDI SANTOSO",
     "ibu": "DODA PURNAMASARI",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -9334,7 +9883,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARI SANTOSO",
     "ibu": "NANI SUMARYANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -9351,7 +9901,8 @@ window.FincestemMasterStudents = [
     "ayah": "EFRI JHONI",
     "ibu": "MERY MARLINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -9368,7 +9919,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOKO TRIWAHYUDI",
     "ibu": "ERVINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -9385,7 +9937,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARWONO",
     "ibu": "MISNAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -9402,7 +9955,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUH AGENG WARASTO",
     "ibu": "SUSIYANTI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -9419,7 +9973,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAHRIN",
     "ibu": "MARLINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -9436,7 +9991,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIF RUSMAN",
     "ibu": "SUKARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -9453,7 +10009,8 @@ window.FincestemMasterStudents = [
     "ayah": "DERU EDI SAPUTRA",
     "ibu": "AUJUS MARLENTINA",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -9470,7 +10027,8 @@ window.FincestemMasterStudents = [
     "ayah": "KASIRAN",
     "ibu": "BADRIYAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -9487,7 +10045,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDRIAWAN",
     "ibu": "RATNA DEWI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MULYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -9504,7 +10063,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADI RIYANTO",
     "ibu": "KUSMINI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -9521,7 +10081,8 @@ window.FincestemMasterStudents = [
     "ayah": "KASNO",
     "ibu": "ROPI'AH",
     "asal_sekolah": "SMP NEGERI 3 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -9538,7 +10099,8 @@ window.FincestemMasterStudents = [
     "ayah": "SOETRIS B",
     "ibu": "ARNI ASNINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -9555,7 +10117,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURYADI",
     "ibu": "RENA ATINA",
     "asal_sekolah": "SMP N 1 PENUKAL",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -9572,7 +10135,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIANTO",
     "ibu": "MURGIYANTI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -9589,7 +10153,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDIONO",
     "ibu": "SUPATMI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 35,
@@ -9606,7 +10171,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURNOMO SIDIK",
     "ibu": "HERNANI",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -9623,7 +10189,8 @@ window.FincestemMasterStudents = [
     "ayah": "PUJIANTO",
     "ibu": "ZAKIAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -9640,7 +10207,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI",
     "ibu": "LENI MARLINA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -9657,7 +10225,8 @@ window.FincestemMasterStudents = [
     "ayah": "WINARNO",
     "ibu": "WIDI ASTUTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -9674,7 +10243,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAMUJI",
     "ibu": "DWI ASMOROWATI",
     "asal_sekolah": "MTS DARUL ULUM KARANGSARI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -9691,7 +10261,8 @@ window.FincestemMasterStudents = [
     "ayah": "PRANOTO",
     "ibu": "ARNI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -9708,7 +10279,8 @@ window.FincestemMasterStudents = [
     "ayah": "DARYONO",
     "ibu": "AYOWIE KHAYESA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -9725,7 +10297,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUDI ENDRI",
     "ibu": "RATNA JUWITA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -9742,7 +10315,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD ARIEF",
     "ibu": "OKTAVIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -9759,7 +10333,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAHRUDDIN",
     "ibu": "NURAHAYU NINGSIH",
     "asal_sekolah": "SMP NEGERI 1 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -9776,7 +10351,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUMADI",
     "ibu": "DEKA IRIANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -9793,7 +10369,8 @@ window.FincestemMasterStudents = [
     "ayah": "IRAWAN",
     "ibu": "NURHAMDANAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -9810,7 +10387,8 @@ window.FincestemMasterStudents = [
     "ayah": "SLAMET",
     "ibu": "NURAINI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -9827,7 +10405,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG IRAWAN",
     "ibu": "ENDANG SRI PAMULASIH",
     "asal_sekolah": "MTSS ISTIQLAL",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -9844,7 +10423,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTIONO",
     "ibu": "YANTI",
     "asal_sekolah": "MTS SWASTA FUTUHIYYAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -9861,7 +10441,8 @@ window.FincestemMasterStudents = [
     "ayah": "PIHRIN",
     "ibu": "AMSRI MURNI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -9878,7 +10459,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERWAN",
     "ibu": "TITIN SUMARNI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -9895,7 +10477,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKA RIYANTO",
     "ibu": "SUSI INDRAYANI",
     "asal_sekolah": "SMA NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -9912,7 +10495,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI SETIAWAN",
     "ibu": "TRIANA HERAWATI",
     "asal_sekolah": "MTS DARUL ULUM KARANG SARI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -9929,7 +10513,8 @@ window.FincestemMasterStudents = [
     "ayah": "BADRIANSYAH",
     "ibu": "ANITA FRESICALIA",
     "asal_sekolah": "SMP N 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -9946,7 +10531,8 @@ window.FincestemMasterStudents = [
     "ayah": "FUSEN",
     "ibu": "NANIK SUSILOWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -9963,7 +10549,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERMAN",
     "ibu": "ROLIYAH",
     "asal_sekolah": "MTSS DARUL ULUM",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -9980,7 +10567,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO DAVID PRATAMA",
     "ibu": "LILIK LIMARYAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -9997,7 +10585,8 @@ window.FincestemMasterStudents = [
     "ayah": "HADI ISMANTO",
     "ibu": "WARSINI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -10014,7 +10603,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRI KUSBIANTORO",
     "ibu": "ALNA DEWI",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -10031,7 +10621,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUWONDO",
     "ibu": "LATIFAH LAILA SUHAT",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -10048,7 +10639,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDIRO HUSODO",
     "ibu": "SUMARNI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -10065,7 +10657,8 @@ window.FincestemMasterStudents = [
     "ayah": "NYOMAN SUDAYE",
     "ibu": "MADE MORTINAH",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -10082,7 +10675,8 @@ window.FincestemMasterStudents = [
     "ayah": "JIMMY OCTAVIANUS",
     "ibu": "SUNIATI PUTRI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -10099,7 +10693,8 @@ window.FincestemMasterStudents = [
     "ayah": "HER WINTORO",
     "ibu": "RUSMALA DEWI",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -10116,7 +10711,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIANTO",
     "ibu": "SRI PURWANI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -10133,7 +10729,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALI USMAN",
     "ibu": "EVI ASTUTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -10150,7 +10747,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUWARDI",
     "ibu": "ELI SUSANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -10167,7 +10765,8 @@ window.FincestemMasterStudents = [
     "ayah": "MASRIN DIANA",
     "ibu": "HUDAIDAH",
     "asal_sekolah": "SMP NEGRI2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -10184,7 +10783,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTARJO",
     "ibu": "SUPRAPTI",
     "asal_sekolah": "SMP NEGRI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -10201,7 +10801,8 @@ window.FincestemMasterStudents = [
     "ayah": "ACHMAD ZAENI",
     "ibu": "EKA PRATIWI",
     "asal_sekolah": "MTS NURUL QOMAR TAWANGREJO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 35,
@@ -10218,7 +10819,8 @@ window.FincestemMasterStudents = [
     "ayah": "NGADIMAN",
     "ibu": "DARIYANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -10235,7 +10837,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMMAD MALIK",
     "ibu": "SEPTIANA SARI",
     "asal_sekolah": "MTSS DARUSSALAM",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -10252,7 +10855,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALIPATAN",
     "ibu": "KARMILAYANA",
     "asal_sekolah": "SMP NEGERI 04 MADANG SUKU I",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -10269,7 +10873,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUMITRO",
     "ibu": "SUSILOWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -10286,7 +10891,8 @@ window.FincestemMasterStudents = [
     "ayah": "NURHUDIN",
     "ibu": "VIVI ERITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -10303,7 +10909,8 @@ window.FincestemMasterStudents = [
     "ayah": "PONIDI",
     "ibu": "MIARTI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -10320,7 +10927,8 @@ window.FincestemMasterStudents = [
     "ayah": "PARJI",
     "ibu": "HARYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -10337,7 +10945,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARDES CAHYA UTAMA",
     "ibu": "IMAS MASMILAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -10354,7 +10963,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDIONO",
     "ibu": "SUMIATI",
     "asal_sekolah": "MTSS NURUL QOMAR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -10371,7 +10981,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRAPTO",
     "ibu": "SRI ASTUTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -10388,7 +10999,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARI SUSANTO",
     "ibu": "DEWI SARTIKA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -10405,7 +11017,8 @@ window.FincestemMasterStudents = [
     "ayah": "",
     "ibu": "",
     "asal_sekolah": "",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -10422,7 +11035,8 @@ window.FincestemMasterStudents = [
     "ayah": "NUR SALAMUN",
     "ibu": "WIJARIAH",
     "asal_sekolah": "MADRASAH TSANAWIYAH (MTS) DARUL FALAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -10439,7 +11053,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUMARYONO",
     "ibu": "TUGIYAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -10456,7 +11071,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRY",
     "ibu": "ESTER FRIDHA ROSWITA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -10473,7 +11089,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAFIK IRAWAN",
     "ibu": "NEMIL DESILIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -10490,7 +11107,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUJIONO",
     "ibu": "MIZANA",
     "asal_sekolah": "SMPN 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -10507,7 +11125,8 @@ window.FincestemMasterStudents = [
     "ayah": "YOHANES INAN NUGROHO",
     "ibu": "FREDERICA RURIT MURTIDININGRUM",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -10524,7 +11143,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSMAN S.E",
     "ibu": "TUTI SUNDARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG OKU TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -10541,7 +11161,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDI HERMANTO",
     "ibu": "MAYA RISTAYANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -10558,7 +11179,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTRISNO P",
     "ibu": "SARTINI K",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -10575,7 +11197,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDI IRAWAN",
     "ibu": "ARIDAWATI",
     "asal_sekolah": "SMPN 02 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -10592,7 +11215,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARDA ARIANTO",
     "ibu": "ENI ANJARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -10609,7 +11233,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO YULIANTO",
     "ibu": "KUSWITA",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -10626,7 +11251,8 @@ window.FincestemMasterStudents = [
     "ayah": "LUKMAN",
     "ibu": "ERNAWATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -10643,7 +11269,8 @@ window.FincestemMasterStudents = [
     "ayah": "ENDRAYANTO",
     "ibu": "SRIYANAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -10660,7 +11287,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUNG SUKOTRIONO",
     "ibu": "MUM FARIDA",
     "asal_sekolah": "SMP PGRI PEMATANG JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -10677,7 +11305,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURIANI",
     "ibu": "SURIANI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -10694,7 +11323,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRIYANTO",
     "ibu": "DEVI VALENTINA",
     "asal_sekolah": "SMP NEGERI 01 BEITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -10711,7 +11341,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDARYANTO",
     "ibu": "SARMINI",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -10728,7 +11359,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOKO PRAYITNO",
     "ibu": "YELIANA PAMUNGKASIH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -10745,7 +11377,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO KURNIAWAN",
     "ibu": "CRISTIANA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -10762,7 +11395,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIARTO",
     "ibu": "ARIE SABELLA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -10779,7 +11413,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDI SUSANTO",
     "ibu": "PEBRI YANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -10796,7 +11431,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTRISNO",
     "ibu": "MARIYAH",
     "asal_sekolah": "SMP MUHAMMADIYAH 03 TRIYOSO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -10813,7 +11449,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPARDI",
     "ibu": "WINARNI",
     "asal_sekolah": "SMP NEGERI 3 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -10830,7 +11467,8 @@ window.FincestemMasterStudents = [
     "ayah": "HELMI",
     "ibu": "ASTI NAYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -10847,7 +11485,8 @@ window.FincestemMasterStudents = [
     "ayah": "SRI HANDONO",
     "ibu": "RIKA SASMITA",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -10864,7 +11503,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERIYADI",
     "ibu": "APRIANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -10881,7 +11521,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUBANDI",
     "ibu": "YULIANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -10898,7 +11539,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SALIM",
     "ibu": "SITI JUMIRAH",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -10915,7 +11557,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANTONIUS DARYONO",
     "ibu": "SUSI",
     "asal_sekolah": "SMP DIPONEGORO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -10932,7 +11575,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNGADI",
     "ibu": "TRIANI",
     "asal_sekolah": "SMP CIPTA KARYA BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -10949,7 +11593,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALI IMRON",
     "ibu": "ARIE ARTHA DESI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -10966,7 +11611,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMADI",
     "ibu": "YELLI SUSIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -10983,7 +11629,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUDDY PURWITO",
     "ibu": "MUSLIMAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -11000,7 +11647,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAYU",
     "ibu": "SUKARTINI",
     "asal_sekolah": "SMP ISLAM TERPADU UNGGULAN INDONESIA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -11017,7 +11665,8 @@ window.FincestemMasterStudents = [
     "ayah": "MISWANTO",
     "ibu": "MERLI ATIKA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -11034,7 +11683,8 @@ window.FincestemMasterStudents = [
     "ayah": "FADLAN MAHMUDAN",
     "ibu": "DOSIKA SCORPIONDA",
     "asal_sekolah": "SMP IT AT-TAQWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -11051,7 +11701,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERMANSYAH",
     "ibu": "ROSMALINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -11068,7 +11719,8 @@ window.FincestemMasterStudents = [
     "ayah": "TARMIZI",
     "ibu": "MURLINA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -11085,7 +11737,8 @@ window.FincestemMasterStudents = [
     "ayah": "MADE BUDIASE",
     "ibu": "KETUT LINA LIANA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -11102,7 +11755,8 @@ window.FincestemMasterStudents = [
     "ayah": "WASIS",
     "ibu": "YAYUK UTAMI",
     "asal_sekolah": "SMP DIPONEGORO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -11119,7 +11773,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARRY DARMADI",
     "ibu": "SRI WATI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -11136,7 +11791,8 @@ window.FincestemMasterStudents = [
     "ayah": "PUJI WIBOWO",
     "ibu": "SITI NURHAYATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -11153,7 +11809,8 @@ window.FincestemMasterStudents = [
     "ayah": "JAMAHIR",
     "ibu": "KASIRAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -11170,7 +11827,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUYITNO",
     "ibu": "NOVITA YULISTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -11187,7 +11845,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAYAN RAGE",
     "ibu": "NYOMAN SULASTRI",
     "asal_sekolah": "SMP NEGRI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -11204,7 +11863,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURNOMO",
     "ibu": "SUTIAH",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -11221,7 +11881,8 @@ window.FincestemMasterStudents = [
     "ayah": "MERYANTO",
     "ibu": "NOVI SUSANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -11238,7 +11899,8 @@ window.FincestemMasterStudents = [
     "ayah": "NUKMAN",
     "ibu": "YUSROH",
     "asal_sekolah": "SMP NEGERI 01 BUAY PEMUKA BANGSA RAJA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -11255,7 +11917,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHYUDIN",
     "ibu": "KARSINI",
     "asal_sekolah": "SMP N 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -11272,7 +11935,8 @@ window.FincestemMasterStudents = [
     "ayah": "JEMARI",
     "ibu": "SITI KHOTIJAH",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -11289,7 +11953,8 @@ window.FincestemMasterStudents = [
     "ayah": "TAUFIK HIDAYATH",
     "ibu": "VERANIKA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -11306,7 +11971,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI CAHYA SANJAYA",
     "ibu": "NUR ASIH",
     "asal_sekolah": "SMP NEGERI 1BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -11323,7 +11989,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISPURWANTO",
     "ibu": "SITI SURAHMI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -11340,7 +12007,8 @@ window.FincestemMasterStudents = [
     "ayah": "WELYANI",
     "ibu": "FLORENTINA EKA FEBRIYANTI",
     "asal_sekolah": "SMP CHARITAS 04",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -11357,7 +12025,8 @@ window.FincestemMasterStudents = [
     "ayah": "DINA MASYUSINSH",
     "ibu": "WINI ANGGRAENI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -11374,7 +12043,8 @@ window.FincestemMasterStudents = [
     "ayah": "MEDIANSYAH",
     "ibu": "KAMARETA ANTIANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -11391,7 +12061,8 @@ window.FincestemMasterStudents = [
     "ayah": "N PAIJAN",
     "ibu": "T HENDRI ASTUTI",
     "asal_sekolah": "SMP CHARITAS 02 MOJOSARI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 35,
@@ -11408,7 +12079,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISMORIADI",
     "ibu": "TUSILAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -11425,7 +12097,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIYONO KUKUH WIBOWO",
     "ibu": "USIYEM",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -11442,7 +12115,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO WAHYUDI",
     "ibu": "RIRIN OCTARINA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -11459,7 +12133,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIF BUDIMAN",
     "ibu": "NANIK MAPRILIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -11476,7 +12151,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDY TRIYANTORO",
     "ibu": "EFITRIA ESTIRIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -11493,7 +12169,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG SUSANTO",
     "ibu": "RINAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -11510,7 +12187,8 @@ window.FincestemMasterStudents = [
     "ayah": "MESDIONO",
     "ibu": "SUMIRAH",
     "asal_sekolah": "SMP MUHAMMADIYAH 02 KARANG TENGAH",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -11527,7 +12205,8 @@ window.FincestemMasterStudents = [
     "ayah": "NOPI HADI",
     "ibu": "ESTI MAITINA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -11544,7 +12223,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDI SANTOSO",
     "ibu": "DWI HASTUTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -11561,7 +12241,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRIX",
     "ibu": "POMPI LIANA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -11578,7 +12259,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZUHARUN",
     "ibu": "LASMANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -11595,7 +12277,8 @@ window.FincestemMasterStudents = [
     "ayah": "MADE SARTIKA",
     "ibu": "MADE AGUSTINA",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -11612,7 +12295,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKIRMAN",
     "ibu": "NURWIDAYANI",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -11629,7 +12313,8 @@ window.FincestemMasterStudents = [
     "ayah": "H RIFKY SAEFULLAH",
     "ibu": "JONA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -11646,7 +12331,8 @@ window.FincestemMasterStudents = [
     "ayah": "DENNY DESTRIAN",
     "ibu": "AGUSTINA DWI MAHARDIKA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -11663,7 +12349,8 @@ window.FincestemMasterStudents = [
     "ayah": "MADE SUWITRE",
     "ibu": "NYOMAN SUCI",
     "asal_sekolah": "SMP NEGERI 1 BUAY BAHUGA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -11680,7 +12367,8 @@ window.FincestemMasterStudents = [
     "ayah": "SALEM",
     "ibu": "LASIRAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -11697,7 +12385,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPARJO",
     "ibu": "SUSI SUSANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -11714,7 +12403,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIDIYONO",
     "ibu": "TATIK TURSILAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -11731,7 +12421,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIARTO",
     "ibu": "TRISIH TRINANTI",
     "asal_sekolah": "SMP NEGERI 5 MADANG SUKU 1",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -11748,7 +12439,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUNTASIR",
     "ibu": "SITI ROHANA",
     "asal_sekolah": "SMP MUHAMMADIYAH 03 TRIYOSO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -11765,7 +12457,8 @@ window.FincestemMasterStudents = [
     "ayah": "MOH. IQBAL TRIHIDAYAT",
     "ibu": "ROHENDAH RESNAWATI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -11782,7 +12475,8 @@ window.FincestemMasterStudents = [
     "ayah": "FELKY WIJAYA",
     "ibu": "YESI JUNI ANDRITA",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -11799,7 +12493,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SARDI",
     "ibu": "TRIMAH LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -11816,7 +12511,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARTANTO",
     "ibu": "YAMTINI",
     "asal_sekolah": "SMP NEGERI 3 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -11833,7 +12529,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARMAN",
     "ibu": "DESI DAMAYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -11850,7 +12547,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUMALI",
     "ibu": "RUDIAWATI",
     "asal_sekolah": "SMP NEGERI 01 SEMENDAWAI SUKU III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -11867,7 +12565,8 @@ window.FincestemMasterStudents = [
     "ayah": "NENGAH MULYADI",
     "ibu": "NENGAH MURYANI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -11884,7 +12583,8 @@ window.FincestemMasterStudents = [
     "ayah": "SRIYANTO",
     "ibu": "SRIYATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -11901,7 +12601,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARWANI",
     "ibu": "MARIUN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -11918,7 +12619,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARYONO",
     "ibu": "SUPRIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -11935,7 +12637,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO BUDI HARTONO",
     "ibu": "DINA FINATALIA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -11952,7 +12655,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARIYANTO",
     "ibu": "SUPARWATI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -11969,7 +12673,8 @@ window.FincestemMasterStudents = [
     "ayah": "SLAMET HARDUKON",
     "ibu": "RENE DOMINIKE",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -11986,7 +12691,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS WINARSO",
     "ibu": "DESI SARTIKA",
     "asal_sekolah": "SMP NEGERI 1 MESUJI MAKMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -12003,7 +12709,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUMADI",
     "ibu": "SRI LESTARI",
     "asal_sekolah": "SMP NEGERI 4 LEMPUING JAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -12020,7 +12727,8 @@ window.FincestemMasterStudents = [
     "ayah": "APRIN NIZAR",
     "ibu": "APRI YANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -12037,7 +12745,8 @@ window.FincestemMasterStudents = [
     "ayah": "LAMIDIN",
     "ibu": "SEMIYATI",
     "asal_sekolah": "MTS YPI DARUL HUDA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -12054,7 +12763,8 @@ window.FincestemMasterStudents = [
     "ayah": "MATIUS SUMARNO",
     "ibu": "SUSILAWATI",
     "asal_sekolah": "SMP DIPONEGORO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -12071,7 +12781,8 @@ window.FincestemMasterStudents = [
     "ayah": "MEI SUSANTO",
     "ibu": "WARSINI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -12088,7 +12799,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALBET ZAHRONI",
     "ibu": "DEWI MUNIJAH",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -12105,7 +12817,8 @@ window.FincestemMasterStudents = [
     "ayah": "WIDIARTO",
     "ibu": "RUSMINI",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -12122,7 +12835,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERWAN SYAHRUL",
     "ibu": "DELIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -12139,7 +12853,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROHDI",
     "ibu": "RINAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -12156,7 +12871,8 @@ window.FincestemMasterStudents = [
     "ayah": "PUTU WISMAYA",
     "ibu": "MADE TRI RAHAYU",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -12173,7 +12889,8 @@ window.FincestemMasterStudents = [
     "ayah": "DADANG SAPUTRA",
     "ibu": "MARNITA",
     "asal_sekolah": "SMP NEGRI 2 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -12190,7 +12907,8 @@ window.FincestemMasterStudents = [
     "ayah": "IKETUT BUDIYASA",
     "ibu": "ELIYA KRISTIYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG 2",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -12207,7 +12925,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAIMAN",
     "ibu": "KALIMAH",
     "asal_sekolah": "SMP MUHAMMADIYAH 03 TRIYOSO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -12224,7 +12943,8 @@ window.FincestemMasterStudents = [
     "ayah": "MADE ANOM",
     "ibu": "NYOMAN SRI SUSANTI",
     "asal_sekolah": "SMP NEGERI 02 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -12241,7 +12961,8 @@ window.FincestemMasterStudents = [
     "ayah": "HAMBALI",
     "ibu": "FITRI ASTUTI, S.PD., M.PD",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -12258,7 +12979,8 @@ window.FincestemMasterStudents = [
     "ayah": "NENGAH GENDRO",
     "ibu": "NENGAH MERTIYASIH",
     "asal_sekolah": "SMP NEGERI 02 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -12275,7 +12997,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAHRUL",
     "ibu": "DARYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -12292,7 +13015,8 @@ window.FincestemMasterStudents = [
     "ayah": "AMIN HIDAYAT",
     "ibu": "DEWI DAMAYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -12309,7 +13033,8 @@ window.FincestemMasterStudents = [
     "ayah": "APRISANDI",
     "ibu": "FENI SUDIAR AGUSTINA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -12326,7 +13051,8 @@ window.FincestemMasterStudents = [
     "ayah": "GESVETO",
     "ibu": "DIAN YULIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -12343,7 +13069,8 @@ window.FincestemMasterStudents = [
     "ayah": "HAIRIL RAMLI",
     "ibu": "FITRIA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -12360,7 +13087,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRIYANTO",
     "ibu": "PARTINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -12377,7 +13105,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAMSURI",
     "ibu": "SRI WAHYUNI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -12394,7 +13123,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARNO",
     "ibu": "SINARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -12411,7 +13141,8 @@ window.FincestemMasterStudents = [
     "ayah": "NYOMAN FEBRO SUSANTO",
     "ibu": "NYOMAN TRIA",
     "asal_sekolah": "SMP NEGERI 1 BUAY BAHUGA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -12428,7 +13159,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAERON HADI ALMU'ARIF",
     "ibu": "NURUL HIDAYATI",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -12445,7 +13177,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIONO",
     "ibu": "IKA INDRIYANI",
     "asal_sekolah": "SMP NEGERI 1 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -12462,7 +13195,8 @@ window.FincestemMasterStudents = [
     "ayah": "BENI QURNIAWAN",
     "ibu": "MELY SHANTY",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -12479,7 +13213,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTOMO",
     "ibu": "YULIANI",
     "asal_sekolah": "SMP N 01 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -12496,7 +13231,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUNGKUS",
     "ibu": "RUSMAWATI",
     "asal_sekolah": "SMPN 02 MADANG SUKU II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -12513,7 +13249,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERU SAPUTRA",
     "ibu": "ADINDA CITRA DEWI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG II",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -12530,7 +13267,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKA BUDIANTO",
     "ibu": "ESIH SUKAESIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -12547,7 +13285,8 @@ window.FincestemMasterStudents = [
     "ayah": "KHAIRIL ANWAR",
     "ibu": "ERMAWATI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 33,
@@ -12564,7 +13303,8 @@ window.FincestemMasterStudents = [
     "ayah": "",
     "ibu": "",
     "asal_sekolah": "",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -12581,7 +13321,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUMARI",
     "ibu": "SURMIATI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 35,
@@ -12598,7 +13339,8 @@ window.FincestemMasterStudents = [
     "ayah": "IMAM MA'RUF",
     "ibu": "DWI DAYANI",
     "asal_sekolah": "MTs. NU SUMBER AGUNG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -12615,7 +13357,8 @@ window.FincestemMasterStudents = [
     "ayah": "BURHANUDDIN",
     "ibu": "AINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -12632,7 +13375,8 @@ window.FincestemMasterStudents = [
     "ayah": "BEJO",
     "ibu": "PARNIATUN",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -12649,7 +13393,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUSYANTO",
     "ibu": "NURJANAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -12666,7 +13411,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARDI SETIAWAN",
     "ibu": "SUHARTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 5,
@@ -12683,7 +13429,8 @@ window.FincestemMasterStudents = [
     "ayah": "TEDDY ALBERRETO",
     "ibu": "GESTRI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -12700,7 +13447,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERWANI",
     "ibu": "MEIJUN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -12717,7 +13465,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROZALI",
     "ibu": "ELSA GITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -12734,7 +13483,8 @@ window.FincestemMasterStudents = [
     "ayah": "DENYU KISHAN",
     "ibu": "ERNAWATI",
     "asal_sekolah": "SMP MUHAMMADIYAH 03 TRIYOSO",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -12751,7 +13501,8 @@ window.FincestemMasterStudents = [
     "ayah": "FEBRI TRI ANTORO",
     "ibu": "EVIE NURMAINY",
     "asal_sekolah": "MTs. YPI DARUL HUDA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 10,
@@ -12768,7 +13519,8 @@ window.FincestemMasterStudents = [
     "ayah": "JADI AMAN SITEPU",
     "ibu": "ROSDA MELIATY BR RAJAGUKGUK",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -12785,7 +13537,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SUCIPTO, S.K.M.",
     "ibu": "RIANI, S.K.M.",
     "asal_sekolah": "MADRASAH TSANAWIYAH ISTIQLAL BELITANG OKU TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 12,
@@ -12802,7 +13555,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUAIBIT",
     "ibu": "DESRI ISNIARTI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -12819,7 +13573,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHYUDI",
     "ibu": "SULISMAH",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 14,
@@ -12836,7 +13591,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDI IRAWAN",
     "ibu": "ANA RUSMAYA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -12853,7 +13609,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDARMO",
     "ibu": "SUPRIHATIN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -12870,7 +13627,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARWANI",
     "ibu": "ROMI OKPRIHATINA",
     "asal_sekolah": "MADRASAH TSANAWIYAH (MTS) JAYA BAKTI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -12887,7 +13645,8 @@ window.FincestemMasterStudents = [
     "ayah": "ABDI HANDRIYANTO",
     "ibu": "FADELA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -12904,7 +13663,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALEX ISKANDAR",
     "ibu": "WENI YENI MERTA",
     "asal_sekolah": "SMP ISLAM TERPADU URRATAA'YUN",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -12921,7 +13681,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUM MIYONO",
     "ibu": "SIH TENANGNINGATI",
     "asal_sekolah": "SMP MARDI WACANA SUMBER ASRI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 20,
@@ -12938,7 +13699,8 @@ window.FincestemMasterStudents = [
     "ayah": "KADEK SUARDIKA",
     "ibu": "NI NENGAH RATNI",
     "asal_sekolah": "SMP NEGRI 02 SEMENDAWAI TIMUR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 21,
@@ -12955,7 +13717,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRIK SANJAYA",
     "ibu": "META OKTARIA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -12972,7 +13735,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUKRIADI",
     "ibu": "DIAN IKA KUMALASARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -12989,7 +13753,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRIK SAIMONA",
     "ibu": "KRISTIANI",
     "asal_sekolah": "MTSS NURUL QOMAR",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -13006,7 +13771,8 @@ window.FincestemMasterStudents = [
     "ayah": "HUDI HARTONO",
     "ibu": "LINCE APRILIA",
     "asal_sekolah": "SMP NEGERI 3 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 25,
@@ -13023,7 +13789,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARI NEPTURIA MERLI S.T",
     "ibu": "ATIKA TRIE APRITA S.E",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -13040,7 +13807,8 @@ window.FincestemMasterStudents = [
     "ayah": "WINARNO",
     "ibu": "IIN ISNAWATI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -13057,7 +13825,8 @@ window.FincestemMasterStudents = [
     "ayah": "ASRIL",
     "ibu": "HERAWATI",
     "asal_sekolah": "SMPN 02 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -13074,7 +13843,8 @@ window.FincestemMasterStudents = [
     "ayah": "GUNTUR ALAMSYAH",
     "ibu": "HERLINA",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -13091,7 +13861,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARTEN YANSEN",
     "ibu": "KUSNIAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -13108,7 +13879,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAMIJO",
     "ibu": "PARINAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -13125,7 +13897,8 @@ window.FincestemMasterStudents = [
     "ayah": "THONY MULYONO",
     "ibu": "WIDYA RESTUTI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -13142,7 +13915,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUMARDI",
     "ibu": "ASNI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -13159,7 +13933,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEDI SUJATMOKO",
     "ibu": "MURDIANA",
     "asal_sekolah": "SMP NEGERI 3 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -13176,7 +13951,8 @@ window.FincestemMasterStudents = [
     "ayah": "JONI BRESNEF",
     "ibu": "YULI EKA ARBA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 1,
@@ -13193,7 +13969,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALI SUKUR",
     "ibu": "PARIDA",
     "asal_sekolah": "SMP NEGERI 1 BUAY BAHUGA",
-    "hp": "85758332269"
+    "hp": "85758332269",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -13210,7 +13987,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURATMIN",
     "ibu": "EVI RAHAYU",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82176201223"
+    "hp": "82176201223",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -13227,7 +14005,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANTON HARYANTO",
     "ibu": "DEWI SUSIANA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "82175055155"
+    "hp": "82175055155",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 4,
@@ -13244,7 +14023,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI EFENDI",
     "ibu": "ENDANG",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "81271002439"
+    "hp": "81271002439",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -13261,7 +14041,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURBA SANTIKA",
     "ibu": "EKA CHRISTINAWATI",
     "asal_sekolah": "SMPSMP NEGERI 1 BELITANG",
-    "hp": "85609101807"
+    "hp": "85609101807",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -13278,7 +14059,8 @@ window.FincestemMasterStudents = [
     "ayah": "LATIF RAIS",
     "ibu": "MUJIASIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "85758507486"
+    "hp": "85758507486",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 7,
@@ -13295,7 +14077,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAHRUL ROSIDI",
     "ibu": "DEWI SETIARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82393115008"
+    "hp": "82393115008",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -13312,7 +14095,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERICK VANDOCO",
     "ibu": "TUTI FEBRIANI",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG",
-    "hp": "81279953794"
+    "hp": "81279953794",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 9,
@@ -13329,7 +14113,8 @@ window.FincestemMasterStudents = [
     "ayah": "KAMARI",
     "ibu": "SITI JAIMAH",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "85769778868"
+    "hp": "85769778868",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -13346,7 +14131,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUDI ARIFIN",
     "ibu": "MARYATI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": "85788900721"
+    "hp": "85788900721",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -13363,7 +14149,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROZALI",
     "ibu": "EVI SUSANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81261287297"
+    "hp": "81261287297",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -13380,7 +14167,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARIMAN",
     "ibu": "WIWIK ROYANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "85841252531"
+    "hp": "85841252531",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -13397,7 +14185,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI MARWOTO",
     "ibu": "EVRI HASTUTI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "81326543469"
+    "hp": "81326543469",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -13414,7 +14203,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNANDAR",
     "ibu": "SUSIANA",
     "asal_sekolah": "SMP NU YOSOWINANGUN",
-    "hp": "85840501296"
+    "hp": "85840501296",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -13431,7 +14221,8 @@ window.FincestemMasterStudents = [
     "ayah": "EFRI EFENDI",
     "ibu": "VERAWATI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": "81396911901"
+    "hp": "81396911901",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -13448,7 +14239,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRI BUDI HANDOKO",
     "ibu": "SUMIYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81273750732"
+    "hp": "81273750732",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -13465,7 +14257,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZAINUDIN",
     "ibu": "SUPINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85267134073"
+    "hp": "85267134073",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -13482,7 +14275,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERI SUSILO",
     "ibu": "SRI MURTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82372554647"
+    "hp": "82372554647",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -13499,7 +14293,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHDIR SAHIL",
     "ibu": "EMILIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81271655501"
+    "hp": "81271655501",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -13516,7 +14311,8 @@ window.FincestemMasterStudents = [
     "ayah": "HADI PRANOTO",
     "ibu": "ERNAWATI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "81243071582"
+    "hp": "81243071582",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -13533,7 +14329,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS SALIM",
     "ibu": "NURHAYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG OKU TIMUR",
-    "hp": "85266283343"
+    "hp": "85266283343",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -13550,7 +14347,8 @@ window.FincestemMasterStudents = [
     "ayah": "ABU SAID",
     "ibu": "HUSNA DEWI",
     "asal_sekolah": "SMPN 2 BELITANG",
-    "hp": "83141048011"
+    "hp": "83141048011",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -13567,7 +14365,8 @@ window.FincestemMasterStudents = [
     "ayah": "NAZAR EFENDI",
     "ibu": "ARDIAN WAHYUNI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "89646352272"
+    "hp": "89646352272",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -13584,7 +14383,8 @@ window.FincestemMasterStudents = [
     "ayah": "MISKAMTO",
     "ibu": "RUPINI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MULYA",
-    "hp": "0857-5836-2504"
+    "hp": "0857-5836-2504",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -13601,7 +14401,8 @@ window.FincestemMasterStudents = [
     "ayah": "ASRIZAL",
     "ibu": "ANA MARYANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85947293735"
+    "hp": "85947293735",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -13618,7 +14419,8 @@ window.FincestemMasterStudents = [
     "ayah": "RAHMANTO",
     "ibu": "DWI RIYANI",
     "asal_sekolah": "SMP MUHAMMADIYAH 2 KARANG TENGAH",
-    "hp": "81936725908"
+    "hp": "81936725908",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -13635,7 +14437,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANIDAR",
     "ibu": "SUSTINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82175210029"
+    "hp": "82175210029",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -13652,7 +14455,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURATMAN",
     "ibu": "FATIMAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "89508640985"
+    "hp": "89508640985",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -13669,7 +14473,8 @@ window.FincestemMasterStudents = [
     "ayah": "JULI YANTO",
     "ibu": "ELVINA ROSA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG OKU TIMUR",
-    "hp": "85896131776"
+    "hp": "85896131776",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -13686,7 +14491,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISMANTO",
     "ibu": "MONALISA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85758368042"
+    "hp": "85758368042",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -13703,7 +14509,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENGKY FIRMANSYAH",
     "ibu": "RINAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87789440789"
+    "hp": "87789440789",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -13720,7 +14527,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRIYONO",
     "ibu": "ENI MARTA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85709969125"
+    "hp": "85709969125",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -13737,7 +14545,8 @@ window.FincestemMasterStudents = [
     "ayah": "JONS HERRY",
     "ibu": "SUPARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85955127704"
+    "hp": "85955127704",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -13754,7 +14563,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRI SAPUTRO",
     "ibu": "SITI FATIMAH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": "83165225404"
+    "hp": "83165225404",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -13771,7 +14581,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAULUS SUPARMAN",
     "ibu": "IIN HAINURROSIDAH",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "85609349823"
+    "hp": "85609349823",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 36,
@@ -13788,7 +14599,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRO WINARNO",
     "ibu": "INDRI NILASARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85789561750"
+    "hp": "85789561750",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -13805,7 +14617,8 @@ window.FincestemMasterStudents = [
     "ayah": "AL IDRUS",
     "ibu": "RUSTATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87789337185"
+    "hp": "87789337185",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -13822,7 +14635,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAHARUDIN",
     "ibu": "LIA LAVENIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85783422494"
+    "hp": "85783422494",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -13839,7 +14653,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD THAUFIQ",
     "ibu": "SUMIYEM",
     "asal_sekolah": "SMP NEGERI 02 MADANG SUKU II",
-    "hp": "81264511245"
+    "hp": "81264511245",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -13856,7 +14671,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHID MUNIR",
     "ibu": "IRAWATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "85758190950"
+    "hp": "85758190950",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -13873,7 +14689,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKIRNO",
     "ibu": "DWI SUSILAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81934350542"
+    "hp": "81934350542",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -13890,7 +14707,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADI RIYANTO",
     "ibu": "QOMARIYAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MULYA",
-    "hp": "85783080442"
+    "hp": "85783080442",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -13907,7 +14725,8 @@ window.FincestemMasterStudents = [
     "ayah": "KARYANTO",
     "ibu": "HERA WATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82372359917"
+    "hp": "82372359917",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 8,
@@ -13924,7 +14743,8 @@ window.FincestemMasterStudents = [
     "ayah": "UDI WASONO",
     "ibu": "YUNIARSI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "81632282274"
+    "hp": "81632282274",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -13941,7 +14761,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISKANDAR",
     "ibu": "EPIYANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "88269550510"
+    "hp": "88269550510",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -13958,7 +14779,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARIYANTO",
     "ibu": "ANASTASIA DINAWATI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "82269039644"
+    "hp": "82269039644",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -13975,7 +14797,8 @@ window.FincestemMasterStudents = [
     "ayah": "AMINUDDIN",
     "ibu": "YULI AASTUTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "85273365911"
+    "hp": "85273365911",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -13992,7 +14815,8 @@ window.FincestemMasterStudents = [
     "ayah": "JONI NASRIN",
     "ibu": "LILIS FATMAWATI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": "85832401727"
+    "hp": "85832401727",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -14009,7 +14833,8 @@ window.FincestemMasterStudents = [
     "ayah": "M.FAHRUDDIN",
     "ibu": "DEFI YUSNELI",
     "asal_sekolah": "MTS ISLAMIYAH WONOREJO",
-    "hp": "81997463663"
+    "hp": "81997463663",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -14026,7 +14851,8 @@ window.FincestemMasterStudents = [
     "ayah": "KETUT PUTRA",
     "ibu": "WAYAN SUMARIANI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG II",
-    "hp": "81368142384"
+    "hp": "81368142384",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -14043,7 +14869,8 @@ window.FincestemMasterStudents = [
     "ayah": "NYOMAN ASTAWA",
     "ibu": "KOMANG AYU SUPADMI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85269113075"
+    "hp": "85269113075",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -14060,7 +14887,8 @@ window.FincestemMasterStudents = [
     "ayah": "EMAS MUHAJI",
     "ibu": "RENI ATIKA",
     "asal_sekolah": "SMP IT QURRATA A'YUN",
-    "hp": "85788733396"
+    "hp": "85788733396",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -14077,7 +14905,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUHARTONO",
     "ibu": "LENI MAGDALENA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": "85788005175"
+    "hp": "85788005175",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -14094,7 +14923,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGITO",
     "ibu": "YEKTI UTAMI",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": "85709426357"
+    "hp": "85709426357",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -14111,7 +14941,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUMARDI",
     "ibu": "SITI NURHAYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85758769099"
+    "hp": "85758769099",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -14128,7 +14959,8 @@ window.FincestemMasterStudents = [
     "ayah": "WELLIYANTO",
     "ibu": "MASLINDA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "82287253159"
+    "hp": "82287253159",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -14145,7 +14977,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARPANI",
     "ibu": "BADRIAH",
     "asal_sekolah": "SMP SAINS QUR'AN AL MUTTAQIN",
-    "hp": "85764449344"
+    "hp": "85764449344",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -14162,7 +14995,8 @@ window.FincestemMasterStudents = [
     "ayah": "APRI WAHYUDI",
     "ibu": "ASMAWATI",
     "asal_sekolah": "MTSS DARUL ULUM",
-    "hp": "85758237825"
+    "hp": "85758237825",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -14179,7 +15013,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUBANI REJO",
     "ibu": "WULAN SARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85840438979"
+    "hp": "85840438979",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -14196,7 +15031,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUMARNO",
     "ibu": "TRI MULYANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG III",
-    "hp": "85788741109"
+    "hp": "85788741109",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -14213,7 +15049,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURATMAN",
     "ibu": "MARYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85367380234"
+    "hp": "85367380234",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -14230,7 +15067,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI SUYITNO",
     "ibu": "SUYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85764906259"
+    "hp": "85764906259",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -14247,7 +15085,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARYADI",
     "ibu": "LINA LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG OKU TIMUR",
-    "hp": "85709959872"
+    "hp": "85709959872",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 28,
@@ -14264,7 +15103,8 @@ window.FincestemMasterStudents = [
     "ayah": "BARUSMAN",
     "ibu": "KURNIA SARI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85268120262"
+    "hp": "85268120262",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -14281,7 +15121,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOKO NOVI",
     "ibu": "YETI AGUSTA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "85769317151"
+    "hp": "85769317151",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -14298,7 +15139,8 @@ window.FincestemMasterStudents = [
     "ayah": "WIDIYATSONO",
     "ibu": "TRI WIDAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG II",
-    "hp": "81377848262"
+    "hp": "81377848262",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -14315,7 +15157,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOKO LISTOYO",
     "ibu": "SUDARTI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": "87789746420"
+    "hp": "87789746420",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -14332,7 +15175,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKUR",
     "ibu": "KIPTIAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MULYA",
-    "hp": "83168227952"
+    "hp": "83168227952",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -14349,7 +15193,8 @@ window.FincestemMasterStudents = [
     "ayah": "JONS HERRY",
     "ibu": "SUPARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87749603316"
+    "hp": "87749603316",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -14366,7 +15211,8 @@ window.FincestemMasterStudents = [
     "ayah": "TAMRIN ANDRIANSAH",
     "ibu": "LIA TRIYANI",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": "82281842571"
+    "hp": "82281842571",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -14383,7 +15229,8 @@ window.FincestemMasterStudents = [
     "ayah": "JONI HENDRA",
     "ibu": "KRISTIANTI",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": "81278774203"
+    "hp": "81278774203",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 36,
@@ -14400,7 +15247,8 @@ window.FincestemMasterStudents = [
     "ayah": "EMBINA BAKTI",
     "ibu": "ERLIS",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81273127355"
+    "hp": "81273127355",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -14417,7 +15265,8 @@ window.FincestemMasterStudents = [
     "ayah": "ABDILLAH HAKIM",
     "ibu": "CUCU INDAH OKTARIANI",
     "asal_sekolah": "SMP MUHAMMADIYAH",
-    "hp": "85695944516"
+    "hp": "85695944516",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 2,
@@ -14434,7 +15283,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDY WIDODO",
     "ibu": "TINI AGUSTINA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "85788363147"
+    "hp": "85788363147",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -14451,7 +15301,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTARMAN",
     "ibu": "ESTIK WIDAYATMI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "896328868730"
+    "hp": "896328868730",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -14468,7 +15319,8 @@ window.FincestemMasterStudents = [
     "ayah": "NOPRIATO",
     "ibu": "FAINSA DIYAH ANGGRAENI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82280312900"
+    "hp": "82280312900",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -14485,7 +15337,8 @@ window.FincestemMasterStudents = [
     "ayah": "WARIS",
     "ibu": "MUHWARTI",
     "asal_sekolah": "SMP MUHAMADIYAH HARJO WINANGUN",
-    "hp": "85809668992"
+    "hp": "85809668992",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -14502,7 +15355,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRI HARIANTO",
     "ibu": "SITI FATIMAH",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "85783693700"
+    "hp": "85783693700",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -14519,7 +15373,8 @@ window.FincestemMasterStudents = [
     "ayah": "BILTER SIANTURI",
     "ibu": "HOTMA ARITONANG",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85624263599"
+    "hp": "85624263599",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -14536,7 +15391,8 @@ window.FincestemMasterStudents = [
     "ayah": "FERIYANTO",
     "ibu": "ELI RUSMIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85769896109"
+    "hp": "85769896109",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -14553,7 +15409,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUGIYANTO",
     "ibu": "MINATI",
     "asal_sekolah": "SMP NEGERI 2 MADANG SUKU II",
-    "hp": "83839276884"
+    "hp": "83839276884",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -14570,7 +15427,8 @@ window.FincestemMasterStudents = [
     "ayah": "MULYADI",
     "ibu": "SRI NINGSIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85961523121"
+    "hp": "85961523121",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -14587,7 +15445,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAPTO ARIZAL",
     "ibu": "IKA FERAWATI",
     "asal_sekolah": "MTS ISLAMIYAH SUMBER MULYO",
-    "hp": "85764142168"
+    "hp": "85764142168",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -14604,7 +15463,8 @@ window.FincestemMasterStudents = [
     "ayah": "APRIADI",
     "ibu": "RAHMA DAHLIA",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": "895347896899"
+    "hp": "895347896899",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -14621,7 +15481,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIF NURRAHMAN SUBARKAH",
     "ibu": "ELIYANA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "85838180169"
+    "hp": "85838180169",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -14638,7 +15499,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUSUF",
     "ibu": "TUSRINAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85709916301"
+    "hp": "85709916301",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -14655,7 +15517,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRO RISWAN EFFENDI",
     "ibu": "KHOMSIAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82210751440"
+    "hp": "82210751440",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -14672,7 +15535,8 @@ window.FincestemMasterStudents = [
     "ayah": "DWI SISWANTO",
     "ibu": "TUTI HENDRI YANTI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "82372183472"
+    "hp": "82372183472",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -14689,7 +15553,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRIYONO",
     "ibu": "SITI NURAINI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG III",
-    "hp": "85758326394"
+    "hp": "85758326394",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -14706,7 +15571,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAHRIN",
     "ibu": "ERIKA",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": "82186728639"
+    "hp": "82186728639",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 19,
@@ -14723,7 +15589,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI HUMANSYAH",
     "ibu": "MERI RAHMA YANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85609417045"
+    "hp": "85609417045",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -14740,7 +15607,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPADI DA",
     "ibu": "RUKIYAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85789627782"
+    "hp": "85789627782",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -14757,7 +15625,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADI NURFAJAR SUBARYANTO",
     "ibu": "NOVA VAULINA",
     "asal_sekolah": "MTSS YPI DARUL HUDA",
-    "hp": "81532691066"
+    "hp": "81532691066",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -14774,7 +15643,8 @@ window.FincestemMasterStudents = [
     "ayah": "YUNI HARYANTO, S.ST.,M.M",
     "ibu": "NUR FARIJAH. S.E",
     "asal_sekolah": "MTS ISLAMIYAH SUMBER MULYO",
-    "hp": "82217777030"
+    "hp": "82217777030",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -14791,7 +15661,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUGIYONO",
     "ibu": "TUTI RIANA DEWI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "85709361745"
+    "hp": "85709361745",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -14808,7 +15679,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSMAN",
     "ibu": "SUSMIDA KARTINI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "85817205981"
+    "hp": "85817205981",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -14825,7 +15697,8 @@ window.FincestemMasterStudents = [
     "ayah": "MERKOPOLO",
     "ibu": "ENWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81273750561"
+    "hp": "81273750561",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 26,
@@ -14842,7 +15715,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERI WIJAYANTO",
     "ibu": "HEPPY ARTIKA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "89510037075"
+    "hp": "89510037075",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -14859,7 +15733,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUEB EFENDI",
     "ibu": "NURYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81377962207"
+    "hp": "81377962207",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -14876,7 +15751,8 @@ window.FincestemMasterStudents = [
     "ayah": "IMAM MUSTOFA",
     "ibu": "SRI SUNARNI",
     "asal_sekolah": "SMP PG KOMERING",
-    "hp": "82210485624"
+    "hp": "82210485624",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -14893,7 +15769,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARTONO",
     "ibu": "SITI QOMARIYAH",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": "81377730308"
+    "hp": "81377730308",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -14910,7 +15787,8 @@ window.FincestemMasterStudents = [
     "ayah": "MADANI",
     "ibu": "DESMAWATI",
     "asal_sekolah": "SMP N 1 BELITANG",
-    "hp": "89508003068"
+    "hp": "89508003068",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -14927,7 +15805,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMMAD ARIF, ST",
     "ibu": "ERMA SUGIANA,S.TR.KEB, BDN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82280317624"
+    "hp": "82280317624",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -14944,7 +15823,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAESUN",
     "ibu": "SARIKEM",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "87727738767"
+    "hp": "87727738767",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -14961,7 +15841,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAYAN AGUS AR",
     "ibu": "",
     "asal_sekolah": "SMP",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -14978,7 +15859,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKRIYANTO",
     "ibu": "PARTINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "89658828978"
+    "hp": "89658828978",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -14995,7 +15877,8 @@ window.FincestemMasterStudents = [
     "ayah": "SADALI",
     "ibu": "MISWANTI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "85664321726"
+    "hp": "85664321726",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -15012,7 +15895,8 @@ window.FincestemMasterStudents = [
     "ayah": "KASWAN",
     "ibu": "ALBINA PUJIATI",
     "asal_sekolah": "SMP CHARITAS 02 MOJOSARI",
-    "hp": "85664768627"
+    "hp": "85664768627",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -15029,7 +15913,8 @@ window.FincestemMasterStudents = [
     "ayah": "AL HAFIS",
     "ibu": "MONARISKA",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": "82371015550"
+    "hp": "82371015550",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -15046,7 +15931,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAIJAN KUSUMO",
     "ibu": "SUMINI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85862782506"
+    "hp": "85862782506",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -15063,7 +15949,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAGIRAN",
     "ibu": "SRI LESTARI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": "85783028054"
+    "hp": "85783028054",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -15080,7 +15967,8 @@ window.FincestemMasterStudents = [
     "ayah": "TINO ANGGORO",
     "ibu": "SURATMI",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": "85896134425"
+    "hp": "85896134425",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -15097,7 +15985,8 @@ window.FincestemMasterStudents = [
     "ayah": "IMAM NASORI",
     "ibu": "MEGAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "83801373228"
+    "hp": "83801373228",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -15114,7 +16003,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUDI KRISTIAN",
     "ibu": "SURYA NINGSIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81770657395"
+    "hp": "81770657395",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -15131,7 +16021,8 @@ window.FincestemMasterStudents = [
     "ayah": "PRANOTO",
     "ibu": "SRI LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85609415954"
+    "hp": "85609415954",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -15148,7 +16039,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARTO",
     "ibu": "AISAH",
     "asal_sekolah": "SPM WUSTHA KULLIYATUL MU'ALLIMIN AL-ISLAMIYAH",
-    "hp": "82371532775"
+    "hp": "82371532775",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -15165,7 +16057,8 @@ window.FincestemMasterStudents = [
     "ayah": "NUR HAKIM",
     "ibu": "RIA TUSMIATIN",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85694345557"
+    "hp": "85694345557",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -15182,7 +16075,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTOPO",
     "ibu": "SITI ROBIKAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG III",
-    "hp": "85709292360"
+    "hp": "85709292360",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -15199,7 +16093,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURYONO",
     "ibu": "MISWANTI",
     "asal_sekolah": "SMPN 1 BMR",
-    "hp": "85841165729"
+    "hp": "85841165729",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -15216,7 +16111,8 @@ window.FincestemMasterStudents = [
     "ayah": "HENDRO SAIFUDIN",
     "ibu": "SITI WAHYUNI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85724880554"
+    "hp": "85724880554",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -15233,7 +16129,8 @@ window.FincestemMasterStudents = [
     "ayah": "ELIASAR YULI ANGGORO",
     "ibu": "ALBERTHA WIWIN RAHMIATI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "85709414961"
+    "hp": "85709414961",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -15250,7 +16147,8 @@ window.FincestemMasterStudents = [
     "ayah": "M. SAPRIN",
     "ibu": "MUZAYANAH",
     "asal_sekolah": "SMP MUHAMMADIYAH 1 RAWABENING",
-    "hp": "82185489378"
+    "hp": "82185489378",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -15267,7 +16165,8 @@ window.FincestemMasterStudents = [
     "ayah": "FITRA DINATA",
     "ibu": "FRANSISKA",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "82375368301"
+    "hp": "82375368301",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -15284,7 +16183,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARYANTO",
     "ibu": "NURJANAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85758781030"
+    "hp": "85758781030",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -15301,7 +16201,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERI SUSANTO",
     "ibu": "TRI WAHYUNI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85809341157"
+    "hp": "85809341157",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -15318,7 +16219,8 @@ window.FincestemMasterStudents = [
     "ayah": "ABDUL MALIK",
     "ibu": "MEMUDIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85846221337"
+    "hp": "85846221337",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -15335,7 +16237,8 @@ window.FincestemMasterStudents = [
     "ayah": "JACKY TANJUNG",
     "ibu": "DEWI SUSANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "895-3478-96806"
+    "hp": "895-3478-96806",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -15352,7 +16255,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUJIANTO",
     "ibu": "SITI ERLINAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "81368231067"
+    "hp": "81368231067",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -15369,7 +16273,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTRISNO",
     "ibu": "NURYATI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "8877131121"
+    "hp": "8877131121",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -15386,7 +16291,8 @@ window.FincestemMasterStudents = [
     "ayah": "KOMARUDIN",
     "ibu": "SRI ASTUTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "82277680374"
+    "hp": "82277680374",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -15403,7 +16309,8 @@ window.FincestemMasterStudents = [
     "ayah": "MULYADI",
     "ibu": "ERNA",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": "82175957234"
+    "hp": "82175957234",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -15420,7 +16327,8 @@ window.FincestemMasterStudents = [
     "ayah": "BASMAR",
     "ibu": "ROYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85709310841"
+    "hp": "85709310841",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -15437,7 +16345,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUDI SUMANTO",
     "ibu": "SUPRAPTINI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "82178259216"
+    "hp": "82178259216",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -15454,7 +16363,8 @@ window.FincestemMasterStudents = [
     "ayah": "MIRTA HERIYA",
     "ibu": "LIA ASTAU RINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85839367096"
+    "hp": "85839367096",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -15471,7 +16381,8 @@ window.FincestemMasterStudents = [
     "ayah": "KETUT DARMAWAN",
     "ibu": "KADEK YUNI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG II",
-    "hp": "85789740514"
+    "hp": "85789740514",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -15488,7 +16399,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAHADI",
     "ibu": "HENI PURWANINGSIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG JAYA",
-    "hp": "82269259445"
+    "hp": "82269259445",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -15505,7 +16417,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUNAIDI",
     "ibu": "TUTI MALINDA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG JAYA",
-    "hp": "85298722159"
+    "hp": "85298722159",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 31,
@@ -15522,7 +16435,8 @@ window.FincestemMasterStudents = [
     "ayah": "JAUHAR RAHMAT",
     "ibu": "ENNY NURMISAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82175317511"
+    "hp": "82175317511",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -15539,7 +16453,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUYANTO",
     "ibu": "ANA ANGGRAINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG 2",
-    "hp": "85758737461"
+    "hp": "85758737461",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -15556,7 +16471,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAGINO",
     "ibu": "SUPRIYATUN",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": "85768401952"
+    "hp": "85768401952",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -15573,7 +16489,8 @@ window.FincestemMasterStudents = [
     "ayah": "SATRI HANZAH",
     "ibu": "MARWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85758359914"
+    "hp": "85758359914",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -15590,7 +16507,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOMI SOPYAN",
     "ibu": "NINA PANDESTIN",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": "81368355908"
+    "hp": "81368355908",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -15607,7 +16525,8 @@ window.FincestemMasterStudents = [
     "ayah": "MASHUDI",
     "ibu": "ROMILAH",
     "asal_sekolah": "SMP TERPADU NURUL HUDA TANAH MERAH",
-    "hp": "85664758298"
+    "hp": "85664758298",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -15624,7 +16543,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAHLAN",
     "ibu": "WATINA",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": "82162074756"
+    "hp": "82162074756",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -15641,7 +16561,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIFUL IHWAN",
     "ibu": "IDA NOVIA WARDANI",
     "asal_sekolah": "MTS ISLAMIYAH WONOREJO",
-    "hp": "82181899250"
+    "hp": "82181899250",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -15658,7 +16579,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUH IRFAN JAUHARI",
     "ibu": "NAZLAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85382821742"
+    "hp": "85382821742",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -15675,7 +16597,8 @@ window.FincestemMasterStudents = [
     "ayah": "KHOLIK",
     "ibu": "KRISTINA WIJAYA",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "85951482160"
+    "hp": "85951482160",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -15692,7 +16615,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSDI MAJID",
     "ibu": "",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -15709,7 +16633,8 @@ window.FincestemMasterStudents = [
     "ayah": "MALIKI",
     "ibu": "TRIYANA YUMARLENI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG JAYA",
-    "hp": "895393256565"
+    "hp": "895393256565",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -15726,7 +16651,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURYANTO",
     "ibu": "ZUHROH",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": "82279447879"
+    "hp": "82279447879",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -15743,7 +16669,8 @@ window.FincestemMasterStudents = [
     "ayah": "PENO WIBOWO",
     "ibu": "WIDAYEM",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": "87847263753"
+    "hp": "87847263753",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -15760,7 +16687,8 @@ window.FincestemMasterStudents = [
     "ayah": "SYAMSUDDIN",
     "ibu": "LILIS STYOWATI NINGSIH",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "82179561066"
+    "hp": "82179561066",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -15777,7 +16705,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG SUTRISNO",
     "ibu": "DEWI APRIYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85961527053"
+    "hp": "85961527053",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -15794,7 +16723,8 @@ window.FincestemMasterStudents = [
     "ayah": "ASMORO HADI",
     "ibu": "SRI HANDAYANI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "83181640100"
+    "hp": "83181640100",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -15811,7 +16741,8 @@ window.FincestemMasterStudents = [
     "ayah": "EKO JUNIYANTO",
     "ibu": "EKA FITRI LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "83838587783"
+    "hp": "83838587783",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -15828,7 +16759,8 @@ window.FincestemMasterStudents = [
     "ayah": "MIFTAKUL H UDI",
     "ibu": "RISKA JUNIANTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "85380705449"
+    "hp": "85380705449",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -15845,7 +16777,8 @@ window.FincestemMasterStudents = [
     "ayah": "HUSEN CANDRA",
     "ibu": "ROSDIANA",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": "82378916955"
+    "hp": "82378916955",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -15862,7 +16795,8 @@ window.FincestemMasterStudents = [
     "ayah": "LATIF AMRILLAH",
     "ibu": "SEPTIYANA PUTRI",
     "asal_sekolah": "SMP MUHAMMADIYAH 1 RAWABENING",
-    "hp": "8"
+    "hp": "8",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -15879,7 +16813,8 @@ window.FincestemMasterStudents = [
     "ayah": "UMAIDI",
     "ibu": "SUHELMI",
     "asal_sekolah": "SMPN 1 BMT",
-    "hp": "85840607633"
+    "hp": "85840607633",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -15896,7 +16831,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAYAN SUNEDI",
     "ibu": "WAYAN SITI RAHAYU",
     "asal_sekolah": "SMP NEGERI 1 BELITANG II",
-    "hp": "82375366364"
+    "hp": "82375366364",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -15913,7 +16849,8 @@ window.FincestemMasterStudents = [
     "ayah": "SISWANTO",
     "ibu": "SUWARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85709119067"
+    "hp": "85709119067",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -15930,7 +16867,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAIFURAHIM",
     "ibu": "NURHAYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82259231874"
+    "hp": "82259231874",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -15947,7 +16885,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDI ADI",
     "ibu": "DESI TRI SETIYANINGSIH",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "85846213282"
+    "hp": "85846213282",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -15964,7 +16903,8 @@ window.FincestemMasterStudents = [
     "ayah": "LAMTIMBUL NIDA MARBUN",
     "ibu": "RAMAULY SIREGAR",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "81347279278"
+    "hp": "81347279278",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -15981,7 +16921,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIYADI",
     "ibu": "ROSMIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "8953457227772"
+    "hp": "8953457227772",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -15998,7 +16939,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIYAN MAMORA",
     "ibu": "HERDIATI OKTARINA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG KABUPATEN OKU TIMUR",
-    "hp": "85664789536"
+    "hp": "85664789536",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -16015,7 +16957,8 @@ window.FincestemMasterStudents = [
     "ayah": "ACHMAT FIKRI",
     "ibu": "QURROTA A'YUNIN RUSAL",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": "82278789631"
+    "hp": "82278789631",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -16032,7 +16975,8 @@ window.FincestemMasterStudents = [
     "ayah": "TAUFIK",
     "ibu": "CATUR SUHARYATI",
     "asal_sekolah": "SMP NEGERI 4 MESUJI MAKMUR",
-    "hp": "83822892331"
+    "hp": "83822892331",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -16049,7 +16993,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI AZIZ",
     "ibu": "SITI MUHROTUN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85788366311"
+    "hp": "85788366311",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -16066,7 +17011,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUSLIM",
     "ibu": "ERMA HERA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81369205572"
+    "hp": "81369205572",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 29,
@@ -16083,7 +17029,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDIP",
     "ibu": "PURWANTI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "85609023057"
+    "hp": "85609023057",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -16100,7 +17047,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURWADI",
     "ibu": "RENI SUSILOWATI",
     "asal_sekolah": "SMP TERPADU PONDOK PESANTREN NURUL HUDA",
-    "hp": "88272483515"
+    "hp": "88272483515",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -16117,7 +17065,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADIAN RASUANTO",
     "ibu": "EKO SUCI RAHAYU",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85366057978"
+    "hp": "85366057978",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -16134,7 +17083,8 @@ window.FincestemMasterStudents = [
     "ayah": "DIDIK SUWANTO",
     "ibu": "PUJI ASTUTI",
     "asal_sekolah": "SMP NEGERI 02 BUAY MADANG TIMUR",
-    "hp": "83143414697"
+    "hp": "83143414697",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -16151,7 +17101,8 @@ window.FincestemMasterStudents = [
     "ayah": "LESTARI",
     "ibu": "LESTARI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG MULYA",
-    "hp": "85838178741"
+    "hp": "85838178741",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 34,
@@ -16168,7 +17119,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMAD DAHLAN",
     "ibu": "DEWI ASTUTI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG III",
-    "hp": "85766891718"
+    "hp": "85766891718",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -16185,7 +17137,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTRISNO",
     "ibu": "RUSMIYATUN",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87899889990"
+    "hp": "87899889990",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 36,
@@ -16202,7 +17155,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUMARTONO",
     "ibu": "HIDAYATUN NAFIAH",
     "asal_sekolah": "SMP N01 BUAY MADANG TIMUR",
-    "hp": "81515743235"
+    "hp": "81515743235",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -16219,7 +17173,8 @@ window.FincestemMasterStudents = [
     "ayah": "ISWADI",
     "ibu": "EVIT VITRIA",
     "asal_sekolah": "SMP NEGERI 01 MADANG SUKU II",
-    "hp": "81278707980"
+    "hp": "81278707980",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -16236,7 +17191,8 @@ window.FincestemMasterStudents = [
     "ayah": "IKHSAN",
     "ibu": "HAYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85764907080"
+    "hp": "85764907080",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -16253,7 +17209,8 @@ window.FincestemMasterStudents = [
     "ayah": "FETRIAL",
     "ibu": "ERNI HOTITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82281286182"
+    "hp": "82281286182",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -16270,7 +17227,8 @@ window.FincestemMasterStudents = [
     "ayah": "DRS SUHARDI., MM",
     "ibu": "FODIYATIN",
     "asal_sekolah": "SMP NEGERI 1 BUAY MADANG TIMUR",
-    "hp": "81373693480"
+    "hp": "81373693480",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -16287,7 +17245,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOHAN",
     "ibu": "YULIA ASNATI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -16304,7 +17263,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAKRI BUDI KURNIAWAN",
     "ibu": "WIWIK PURWANTI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85732525053"
+    "hp": "85732525053",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -16321,7 +17281,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROMI SAPUTRA",
     "ibu": "MARLINA",
     "asal_sekolah": "MTSN 1 PALEMBANG",
-    "hp": "85758466048"
+    "hp": "85758466048",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -16338,7 +17299,8 @@ window.FincestemMasterStudents = [
     "ayah": "DEKKY ORTEGA",
     "ibu": "NURJANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87894230588"
+    "hp": "87894230588",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -16355,7 +17317,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARKUAT",
     "ibu": "LASI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MULYA",
-    "hp": "85764142172"
+    "hp": "85764142172",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -16372,7 +17335,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUDIYONO",
     "ibu": "BAROKATI",
     "asal_sekolah": "MTS SWASTA JAYA BAKTI",
-    "hp": "81377784938"
+    "hp": "81377784938",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -16389,7 +17353,8 @@ window.FincestemMasterStudents = [
     "ayah": "SIRUL SAMOSIR",
     "ibu": "KARTINI SITANGGANG",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85658328325"
+    "hp": "85658328325",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -16406,7 +17371,8 @@ window.FincestemMasterStudents = [
     "ayah": "BASUKI",
     "ibu": "YENI RAHMAWATI",
     "asal_sekolah": "SMP ISLAM AL-FAHD PALEMBANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -16423,7 +17389,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARDIYANTO",
     "ibu": "MARITA",
     "asal_sekolah": "SMP DIPONEGORO",
-    "hp": "81279306107"
+    "hp": "81279306107",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -16440,7 +17407,8 @@ window.FincestemMasterStudents = [
     "ayah": "SIGIT ARIWIBOWO",
     "ibu": "FITRI NURHASANAH S",
     "asal_sekolah": "SMP MUHAMMADIYAH 2 KARANG TENGAH",
-    "hp": "81272516589"
+    "hp": "81272516589",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -16457,7 +17425,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALEXANDER SUMADI",
     "ibu": "MARIA SUHESTI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "85788741113"
+    "hp": "85788741113",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -16474,7 +17443,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUMARYANTO",
     "ibu": "EVI WINARTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81271161932"
+    "hp": "81271161932",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -16491,7 +17461,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDY SUJOKO",
     "ibu": "ASMAWATI",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": "85218880074"
+    "hp": "85218880074",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -16508,7 +17479,8 @@ window.FincestemMasterStudents = [
     "ayah": "YOHANES SIGIT CAHYONO",
     "ibu": "ELSA SANDIANA APRIANI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "81532740930"
+    "hp": "81532740930",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -16525,7 +17497,8 @@ window.FincestemMasterStudents = [
     "ayah": "NEHRU",
     "ibu": "DESTI ANDRIANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85783067125"
+    "hp": "85783067125",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -16542,7 +17515,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARI SUSANTO",
     "ibu": "NURUL HIDAYATI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "82377810505"
+    "hp": "82377810505",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -16559,7 +17533,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS REDI WINTORO",
     "ibu": "NETA MARGIANA",
     "asal_sekolah": "SMP NEGERI 03 BELITANG MADANG RAYA",
-    "hp": "85669830608"
+    "hp": "85669830608",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -16576,7 +17551,8 @@ window.FincestemMasterStudents = [
     "ayah": "KOMANG SUMERTA",
     "ibu": "WAYAN YASTI",
     "asal_sekolah": "SMP NEGERI 2 SEMENDAWAI TIMUR",
-    "hp": "85769394371"
+    "hp": "85769394371",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 23,
@@ -16593,7 +17569,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNENDAR",
     "ibu": "DARIYATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "87860470763"
+    "hp": "87860470763",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -16610,7 +17587,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUGIONO",
     "ibu": "DALIYAH",
     "asal_sekolah": "SMP NEGERI 2 SEMENDAWAI TIMUR",
-    "hp": "85380900849"
+    "hp": "85380900849",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -16627,7 +17605,8 @@ window.FincestemMasterStudents = [
     "ayah": "A'AN SAPUTRA",
     "ibu": "AGUSTINA SARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81271168815"
+    "hp": "81271168815",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -16644,7 +17623,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZULIANTO",
     "ibu": "KUSTIN MUJI ASIH",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "85939234595"
+    "hp": "85939234595",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 27,
@@ -16661,7 +17641,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHFENDI",
     "ibu": "SUNARYATI",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": "82182497069"
+    "hp": "82182497069",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -16678,7 +17659,8 @@ window.FincestemMasterStudents = [
     "ayah": "NANANG ANTO'ANI",
     "ibu": "LENAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85783259703"
+    "hp": "85783259703",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -16695,7 +17677,8 @@ window.FincestemMasterStudents = [
     "ayah": "AHMADI",
     "ibu": "MASLENA",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85609302133"
+    "hp": "85609302133",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -16712,7 +17695,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDY KUSTANTO",
     "ibu": "EKA HARI SUPRIANI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": "81440002576"
+    "hp": "81440002576",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -16729,7 +17713,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOKO PURWONO",
     "ibu": "LIA KURNIATI",
     "asal_sekolah": "SMP SAINS QURAN AL MUTTAQIN",
-    "hp": "81272058838"
+    "hp": "81272058838",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -16746,7 +17731,8 @@ window.FincestemMasterStudents = [
     "ayah": "SASTRA WANSYAH",
     "ibu": "FENI BETA DENNISSA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85609029620"
+    "hp": "85609029620",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -16763,7 +17749,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERWAN APRIANTO",
     "ibu": "WIWIK WIJAYANTI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "81373977113"
+    "hp": "81373977113",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -16780,7 +17767,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAYAN RUSMANTO",
     "ibu": "FENY PUTRI TAMAR",
     "asal_sekolah": "SMP NEGRI 1 BELITANG",
-    "hp": "85377474738"
+    "hp": "85377474738",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -16797,7 +17785,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUYANTO",
     "ibu": "NURHAYATI",
     "asal_sekolah": "SMP NEGERI 01 BUAY MADANG TIMUR",
-    "hp": "85881329021"
+    "hp": "85881329021",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 36,
@@ -16814,7 +17803,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIS AGUSTIN",
     "ibu": "PARIDA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85809930381"
+    "hp": "85809930381",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -16831,7 +17821,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAYAN MURTE",
     "ibu": "WAYAN SULISYANINGSIH",
     "asal_sekolah": "SMP NEGERI 1 BUAY BAHUGA",
-    "hp": "85768953660"
+    "hp": "85768953660",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -16848,7 +17839,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDI ARTO",
     "ibu": "MAGDALENA SUDARSIH",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "85874004056"
+    "hp": "85874004056",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -16865,7 +17857,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAUJAN",
     "ibu": "NGATIYEM",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87769310481"
+    "hp": "87769310481",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -16882,7 +17875,8 @@ window.FincestemMasterStudents = [
     "ayah": "SOBRI",
     "ibu": "DIANA",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "81369233168"
+    "hp": "81369233168",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -16899,7 +17893,8 @@ window.FincestemMasterStudents = [
     "ayah": "FERI MULYADI",
     "ibu": "LENI MARLINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81273613268"
+    "hp": "81273613268",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -16916,7 +17911,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALIP ROHMAT",
     "ibu": "KASMIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81274512735"
+    "hp": "81274512735",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -16933,7 +17929,8 @@ window.FincestemMasterStudents = [
     "ayah": "IMJON",
     "ibu": "IDA ROYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "83192128824"
+    "hp": "83192128824",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -16950,7 +17947,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUDI SUSANTO",
     "ibu": "EMA SUSANTI",
     "asal_sekolah": "MTS DARUL ULUM KARANG SARI",
-    "hp": "85280564470"
+    "hp": "85280564470",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -16967,7 +17965,8 @@ window.FincestemMasterStudents = [
     "ayah": "PURWANTO",
     "ibu": "TRI INDRANINGSIH",
     "asal_sekolah": "SMPN 1 BELITANG",
-    "hp": "81273736229"
+    "hp": "81273736229",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -16984,7 +17983,8 @@ window.FincestemMasterStudents = [
     "ayah": "EXNASIUS TRINUGROHO",
     "ibu": "SUMARLIYAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "81366794979"
+    "hp": "81366794979",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -17001,7 +18001,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHYUDI TOMO",
     "ibu": "TEPUNG ING TYAS",
     "asal_sekolah": "SMP CHARITAS 03 BUAY MADANG TIMUR",
-    "hp": "85809077580"
+    "hp": "85809077580",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -17018,7 +18019,8 @@ window.FincestemMasterStudents = [
     "ayah": "EFENDI",
     "ibu": "SUGIANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81271174309"
+    "hp": "81271174309",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -17035,7 +18037,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKAMTO",
     "ibu": "YEPI HERLINA",
     "asal_sekolah": "SPM WUSTHA KULLIYATUL MU'ALLIMIN AL-ISLAMIYAH",
-    "hp": "85783340884"
+    "hp": "85783340884",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -17052,7 +18055,8 @@ window.FincestemMasterStudents = [
     "ayah": "KETUT JERO",
     "ibu": "MADE SUDARNI",
     "asal_sekolah": "SMP CHARITAS 03 BUAY MADANG TIMUR",
-    "hp": "85768715182"
+    "hp": "85768715182",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -17069,7 +18073,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIANTO",
     "ibu": "TITIS ESTU WIGATI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": "82281286667"
+    "hp": "82281286667",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -17086,7 +18091,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDIYANTO",
     "ibu": "LISTIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85217772544"
+    "hp": "85217772544",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -17103,7 +18109,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUJADI",
     "ibu": "NENI SUTARI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85783226615"
+    "hp": "85783226615",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -17120,7 +18127,8 @@ window.FincestemMasterStudents = [
     "ayah": "FERIANTO",
     "ibu": "SRI NURHASANTI",
     "asal_sekolah": "PONDOK PESANTREN NURUSSALAM SIDOGEDE",
-    "hp": "85768136982"
+    "hp": "85768136982",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -17137,7 +18145,8 @@ window.FincestemMasterStudents = [
     "ayah": "EVAN CANDRA",
     "ibu": "LINA MIRWATY",
     "asal_sekolah": "SMP PLUS ISLAM AL-FAHD",
-    "hp": "82185481387"
+    "hp": "82185481387",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -17154,7 +18163,8 @@ window.FincestemMasterStudents = [
     "ayah": "WELIADI",
     "ibu": "DINA GUSLINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85939290421"
+    "hp": "85939290421",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -17171,7 +18181,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZAMRI",
     "ibu": "LIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85768206546"
+    "hp": "85768206546",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -17188,7 +18199,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZASLI RAIS",
     "ibu": "VERAWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82178057277"
+    "hp": "82178057277",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -17205,7 +18217,8 @@ window.FincestemMasterStudents = [
     "ayah": "ROSIKIN",
     "ibu": "RUKIWEN",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "81916892499"
+    "hp": "81916892499",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -17222,7 +18235,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHID EKA SAPUTRA",
     "ibu": "RINA SARI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "8586541745"
+    "hp": "8586541745",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -17239,7 +18253,8 @@ window.FincestemMasterStudents = [
     "ayah": "IRHAM",
     "ibu": "SASNIWATI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85838822048"
+    "hp": "85838822048",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -17256,7 +18271,8 @@ window.FincestemMasterStudents = [
     "ayah": "RHOMA WIJAYA",
     "ibu": "ANISAH",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "82179407347"
+    "hp": "82179407347",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -17273,7 +18289,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUADI",
     "ibu": "SITI KHOTIJAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87851030302"
+    "hp": "87851030302",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -17290,7 +18307,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANTOYANI",
     "ibu": "WIKA",
     "asal_sekolah": "SMP NEGRI 2 BUAY MADANG TIMUR",
-    "hp": "82178792134"
+    "hp": "82178792134",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -17307,7 +18325,8 @@ window.FincestemMasterStudents = [
     "ayah": "WANTORO",
     "ibu": "RISMALA",
     "asal_sekolah": "SMP NEGRI 02 BELITANG",
-    "hp": "87819248157"
+    "hp": "87819248157",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -17324,7 +18343,8 @@ window.FincestemMasterStudents = [
     "ayah": "DONI SAPUTRA",
     "ibu": "MARLINA",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "85891292861"
+    "hp": "85891292861",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -17341,7 +18361,8 @@ window.FincestemMasterStudents = [
     "ayah": "DARSONO",
     "ibu": "UMI KUSTINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82286186535"
+    "hp": "82286186535",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -17358,7 +18379,8 @@ window.FincestemMasterStudents = [
     "ayah": "YOSUA CHANDRA KURNIAWAN",
     "ibu": "YOHANAH FEBRIANTI",
     "asal_sekolah": "SMP NEGERI 3 LEMPUING",
-    "hp": "81396905580"
+    "hp": "81396905580",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -17375,7 +18397,8 @@ window.FincestemMasterStudents = [
     "ayah": "BAMBANG UTOYO",
     "ibu": "SUPRIYATIN",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85709590047"
+    "hp": "85709590047",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -17392,7 +18415,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALEX SUSANTO",
     "ibu": "NUMALENA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "87778170741"
+    "hp": "87778170741",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -17409,7 +18433,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGENG",
     "ibu": "APRILIANA",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "87710967206"
+    "hp": "87710967206",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -17426,7 +18451,8 @@ window.FincestemMasterStudents = [
     "ayah": "NURSALIM",
     "ibu": "KALIMAH",
     "asal_sekolah": "SMP DIPONEGORO",
-    "hp": "85230161397"
+    "hp": "85230161397",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -17443,7 +18469,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUKASDI",
     "ibu": "NURBAYA SYAM DG SINGARA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "82371818234"
+    "hp": "82371818234",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -17460,7 +18487,8 @@ window.FincestemMasterStudents = [
     "ayah": "DARWIN",
     "ibu": "YANITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85366450794"
+    "hp": "85366450794",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -17477,7 +18505,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAGIYO",
     "ibu": "MARIYAM",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85768841107"
+    "hp": "85768841107",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 6,
@@ -17494,7 +18523,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIES MUNANDAR",
     "ibu": "SELINA TESVINA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": "85609087028"
+    "hp": "85609087028",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -17511,7 +18541,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSNADI",
     "ibu": "SUMYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85709833089"
+    "hp": "85709833089",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -17528,7 +18559,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALFONSIUS ISWADI",
     "ibu": "SUSANA SRI RAHAYU",
     "asal_sekolah": "SMP CHARITAS 03 BUAY MADANG TIMUR",
-    "hp": "85758373411"
+    "hp": "85758373411",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -17545,7 +18577,8 @@ window.FincestemMasterStudents = [
     "ayah": "DERI MARADESA",
     "ibu": "RUSMINAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG JAYA",
-    "hp": "82184378323"
+    "hp": "82184378323",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -17562,7 +18595,8 @@ window.FincestemMasterStudents = [
     "ayah": "MINARNO",
     "ibu": "DWI MARIYAM",
     "asal_sekolah": "SMP MUHAMMADIYAH 2 KARANG TENGAH",
-    "hp": "81367405296"
+    "hp": "81367405296",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,
@@ -17579,7 +18613,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIZA ARIANTO",
     "ibu": "EMA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85788000790"
+    "hp": "85788000790",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -17596,7 +18631,8 @@ window.FincestemMasterStudents = [
     "ayah": "YENWAR",
     "ibu": "SARJIYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81373511967"
+    "hp": "81373511967",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -17613,7 +18649,8 @@ window.FincestemMasterStudents = [
     "ayah": "M PARID",
     "ibu": "SUMARMI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85266719377"
+    "hp": "85266719377",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -17630,7 +18667,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRATIKNO",
     "ibu": "SURATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG OKU TIMUR",
-    "hp": "81273124199"
+    "hp": "81273124199",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 15,
@@ -17647,7 +18685,8 @@ window.FincestemMasterStudents = [
     "ayah": "I GUSTI PUTU OKO WIJAYA",
     "ibu": "I MADE NONI",
     "asal_sekolah": "SMP NEGERI 2 SEMENDAWAI TIMUR",
-    "hp": "85279753481"
+    "hp": "85279753481",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 16,
@@ -17664,7 +18703,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUH ALI SADIKIN",
     "ibu": "SRI HANDAYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85951805199"
+    "hp": "85951805199",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 17,
@@ -17681,7 +18721,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIAWAN",
     "ibu": "SULISTINA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85669836085"
+    "hp": "85669836085",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 18,
@@ -17698,7 +18739,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAKARIAS MANURUNG",
     "ibu": "PASTI LASROHA SITOHANG",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "81958001289"
+    "hp": "81958001289",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -17715,7 +18757,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAHRUL IRAWAN",
     "ibu": "IRAWATI",
     "asal_sekolah": "SMP - IT QURRATA A'YUN OKU TIMUR",
-    "hp": "8776633486"
+    "hp": "8776633486",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -17732,7 +18775,8 @@ window.FincestemMasterStudents = [
     "ayah": "BERTA YUDHA",
     "ibu": "YOSI DWI JAYANTI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85267689163"
+    "hp": "85267689163",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -17749,7 +18793,8 @@ window.FincestemMasterStudents = [
     "ayah": "HERWIN",
     "ibu": "HELDA SUSANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82175259228"
+    "hp": "82175259228",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -17766,7 +18811,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERIYANTO",
     "ibu": "ROBNIYASIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "895404343471"
+    "hp": "895404343471",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -17783,7 +18829,8 @@ window.FincestemMasterStudents = [
     "ayah": "LASAHI RIZAL",
     "ibu": "SUSI SUKAISIH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85769307463"
+    "hp": "85769307463",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -17800,7 +18847,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARI",
     "ibu": "RINA LESTARI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG MADANG RAYA",
-    "hp": "85298597149"
+    "hp": "85298597149",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -17817,7 +18865,8 @@ window.FincestemMasterStudents = [
     "ayah": "WITANTO",
     "ibu": "IDA LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81990537997"
+    "hp": "81990537997",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -17834,7 +18883,8 @@ window.FincestemMasterStudents = [
     "ayah": "IRMAN",
     "ibu": "ENITA",
     "asal_sekolah": "WIRASWASTA",
-    "hp": "SMP NEGERI 1 BELITANG"
+    "hp": "SMP NEGERI 1 BELITANG",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -17851,7 +18901,8 @@ window.FincestemMasterStudents = [
     "ayah": "A. AFRIYANTO",
     "ibu": "SARINAH",
     "asal_sekolah": "SMP NEGERI 3 SEMENDAWAI SUKU III",
-    "hp": "81367403387"
+    "hp": "81367403387",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -17868,7 +18919,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUDIANSYAH",
     "ibu": "NUNIK APRILIANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85939234584"
+    "hp": "85939234584",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -17885,7 +18937,8 @@ window.FincestemMasterStudents = [
     "ayah": "KATIJAN",
     "ibu": "TUKINEM",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "85766891951"
+    "hp": "85766891951",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 30,
@@ -17902,7 +18955,8 @@ window.FincestemMasterStudents = [
     "ayah": "NGADIMIN",
     "ibu": "SITI AISYAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85730412125"
+    "hp": "85730412125",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -17919,7 +18973,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANAS KURNIAWAN",
     "ibu": "CITRA AGRINA",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": "82385555985"
+    "hp": "82385555985",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -17936,7 +18991,8 @@ window.FincestemMasterStudents = [
     "ayah": "PARNUN",
     "ibu": "SRIYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85731611894"
+    "hp": "85731611894",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -17953,7 +19009,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARIADI",
     "ibu": "SITI MUNAWAROH",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG TIMUR",
-    "hp": "895327660661"
+    "hp": "895327660661",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -17970,7 +19027,8 @@ window.FincestemMasterStudents = [
     "ayah": "KUSYIONO",
     "ibu": "TOIFANA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "87811831330"
+    "hp": "87811831330",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -17987,7 +19045,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARDIYONO",
     "ibu": "UMIYATI",
     "asal_sekolah": "SMP NEGERI 4 WAY TUBA - WAY KANAN",
-    "hp": "81271769722"
+    "hp": "81271769722",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 36,
@@ -18004,7 +19063,8 @@ window.FincestemMasterStudents = [
     "ayah": "YULI SUSANTO",
     "ibu": "EVA SUSANTI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85758043356"
+    "hp": "85758043356",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -18021,7 +19081,8 @@ window.FincestemMasterStudents = [
     "ayah": "UNTUNG SUTRISNO",
     "ibu": "ROKANI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "81952514354"
+    "hp": "81952514354",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -18038,7 +19099,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIDO ANSORI",
     "ibu": "ROMLAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85709119062"
+    "hp": "85709119062",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -18055,7 +19117,8 @@ window.FincestemMasterStudents = [
     "ayah": "M IKBAL",
     "ibu": "FARIDA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85783068965"
+    "hp": "85783068965",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -18072,7 +19135,8 @@ window.FincestemMasterStudents = [
     "ayah": "DADANG AHMARSYAH",
     "ibu": "DEVI APRIANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "89620620030"
+    "hp": "89620620030",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -18089,7 +19153,8 @@ window.FincestemMasterStudents = [
     "ayah": "KOMARUDDIN",
     "ibu": "YULI ANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "83170730915"
+    "hp": "83170730915",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -18106,7 +19171,8 @@ window.FincestemMasterStudents = [
     "ayah": "DWI BASUKI",
     "ibu": "LENI ASTUTI WIDIANINGSIH",
     "asal_sekolah": "SMP MUHAMMADIYAH HARJOWINANGUN",
-    "hp": "85779645604"
+    "hp": "85779645604",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -18123,7 +19189,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADI SAPUTRA",
     "ibu": "MARTININGSIH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87872195327"
+    "hp": "87872195327",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -18140,7 +19207,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARTONO",
     "ibu": "ENDRIYANI",
     "asal_sekolah": "SMP NEGERI I BELITANG",
-    "hp": "85783760892"
+    "hp": "85783760892",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -18157,7 +19225,8 @@ window.FincestemMasterStudents = [
     "ayah": "SIDIK",
     "ibu": "PURWANTI",
     "asal_sekolah": "SMP MUHAMMADIYAH 03 TRIYOSO",
-    "hp": "82279060828"
+    "hp": "82279060828",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -18174,7 +19243,8 @@ window.FincestemMasterStudents = [
     "ayah": "ADING",
     "ibu": "ELIS",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85838232155"
+    "hp": "85838232155",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -18191,7 +19261,8 @@ window.FincestemMasterStudents = [
     "ayah": "JALALUDIN SUYUTI",
     "ibu": "ARYANI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85974854270"
+    "hp": "85974854270",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -18208,7 +19279,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARSUB",
     "ibu": "JAMIRAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85780579518"
+    "hp": "85780579518",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 13,
@@ -18225,7 +19297,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUJIANTO",
     "ibu": "SUJIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81329962640"
+    "hp": "81329962640",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -18242,7 +19315,8 @@ window.FincestemMasterStudents = [
     "ayah": "AWAN",
     "ibu": "FITRI AINI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "83132259659"
+    "hp": "83132259659",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -18259,7 +19333,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALFAN OKTA PUTRA",
     "ibu": "MARYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82282925757"
+    "hp": "82282925757",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -18276,7 +19351,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZAINAL ABIDIN",
     "ibu": "SRI AMBARWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -18293,7 +19369,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTIONO",
     "ibu": "SITI SANIAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85609344672"
+    "hp": "85609344672",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -18310,7 +19387,8 @@ window.FincestemMasterStudents = [
     "ayah": "RICHIA FADELI",
     "ibu": "ASRIDAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "88287060557"
+    "hp": "88287060557",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -18327,7 +19405,8 @@ window.FincestemMasterStudents = [
     "ayah": "FEBRIADI",
     "ibu": "RUSMALA DEWI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "81574242834"
+    "hp": "81574242834",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -18344,7 +19423,8 @@ window.FincestemMasterStudents = [
     "ayah": "CHAIRIL ANWAR",
     "ibu": "ZUBAIDAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG SUKU 1",
-    "hp": "81367614930"
+    "hp": "81367614930",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -18361,7 +19441,8 @@ window.FincestemMasterStudents = [
     "ayah": "JOEDI KRISWORO",
     "ibu": "NANIK SUDARSANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85724430230"
+    "hp": "85724430230",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -18378,7 +19459,8 @@ window.FincestemMasterStudents = [
     "ayah": "BUDI KURNIAWAN",
     "ibu": "LINA SULISTIAWATI",
     "asal_sekolah": "MTS ISLAMIYAH SUMBER MULYO",
-    "hp": "85768428546"
+    "hp": "85768428546",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -18395,7 +19477,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTARTO",
     "ibu": "NITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85709115754"
+    "hp": "85709115754",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 24,
@@ -18412,7 +19495,8 @@ window.FincestemMasterStudents = [
     "ayah": "DENSA SAPUTRA",
     "ibu": "TINA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "83175766491"
+    "hp": "83175766491",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -18429,7 +19513,8 @@ window.FincestemMasterStudents = [
     "ayah": "SURATMIN",
     "ibu": "MEINARWATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85871039460"
+    "hp": "85871039460",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -18446,7 +19531,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUHENDRO",
     "ibu": "RUSMIATI",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "85706520863"
+    "hp": "85706520863",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -18463,7 +19549,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARTONO",
     "ibu": "RUPIYAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85380586710"
+    "hp": "85380586710",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -18480,7 +19567,8 @@ window.FincestemMasterStudents = [
     "ayah": "DANI",
     "ibu": "ANITA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "7354505016"
+    "hp": "7354505016",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -18497,7 +19585,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARDI MINARNO",
     "ibu": "OKTI NURHIDAYATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85789956683"
+    "hp": "85789956683",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -18514,7 +19603,8 @@ window.FincestemMasterStudents = [
     "ayah": "RONALD ROBIN SIHOMBING",
     "ibu": "YESIETIN NOVALINA SIMANGKALIT",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "85709078246"
+    "hp": "85709078246",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -18531,7 +19621,8 @@ window.FincestemMasterStudents = [
     "ayah": "PARDIN",
     "ibu": "WELAS",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85693408019"
+    "hp": "85693408019",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -18548,7 +19639,8 @@ window.FincestemMasterStudents = [
     "ayah": "FIRDAUS",
     "ibu": "RISNAWATI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "82190322025"
+    "hp": "82190322025",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -18565,7 +19657,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUNAIDI",
     "ibu": "ELIZONA",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": "85323932705"
+    "hp": "85323932705",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -18582,7 +19675,8 @@ window.FincestemMasterStudents = [
     "ayah": "TURIMAN",
     "ibu": "SIH SETIANINGRUM",
     "asal_sekolah": "SMP MARDI WACANA SUMBER ASRI",
-    "hp": "82180019350"
+    "hp": "82180019350",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -18599,7 +19693,8 @@ window.FincestemMasterStudents = [
     "ayah": "NURUL HUDA",
     "ibu": "LISMA APRIYANI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85768212236"
+    "hp": "85768212236",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 36,
@@ -18616,7 +19711,8 @@ window.FincestemMasterStudents = [
     "ayah": "ELI RUSTAM",
     "ibu": "NIKA PERMATA",
     "asal_sekolah": "SMP YP YAIQLI",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -18633,7 +19729,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAHLAN",
     "ibu": "WATINA",
     "asal_sekolah": "SMP NEGERI 2 BUAY MADANG",
-    "hp": "82162074756"
+    "hp": "82162074756",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -18650,7 +19747,8 @@ window.FincestemMasterStudents = [
     "ayah": "ENDRAYANTO",
     "ibu": "SRIYANAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "83159148140"
+    "hp": "83159148140",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 3,
@@ -18667,7 +19765,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAWARDI",
     "ibu": "ARI ASTUTI",
     "asal_sekolah": "SMP MUHAMADIYAH 03 TRIYOSO",
-    "hp": "82280669003"
+    "hp": "82280669003",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -18684,7 +19783,8 @@ window.FincestemMasterStudents = [
     "ayah": "YULKASMIR",
     "ibu": "DESSY MADIA MARLENA",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "83181841370"
+    "hp": "83181841370",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -18701,7 +19801,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAULANA",
     "ibu": "NURHANA FETALIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87710967296"
+    "hp": "87710967296",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -18718,7 +19819,8 @@ window.FincestemMasterStudents = [
     "ayah": "ACHMAD BAILANI",
     "ibu": "RIA RUMANTI",
     "asal_sekolah": "SMP NEGERI 1 BELTANG",
-    "hp": "85769506083"
+    "hp": "85769506083",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -18735,7 +19837,8 @@ window.FincestemMasterStudents = [
     "ayah": "SISWANTORO",
     "ibu": "MELIYANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85377474933"
+    "hp": "85377474933",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -18752,7 +19855,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANTON BUDIARTO",
     "ibu": "RUSMIYATI",
     "asal_sekolah": "MTS DARUL ULUM KARANG SARI",
-    "hp": "85664304101"
+    "hp": "85664304101",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -18769,7 +19873,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUPRIYADI",
     "ibu": "MARSIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81314444946"
+    "hp": "81314444946",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -18786,7 +19891,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUHARYONO",
     "ibu": "HEMI WINARSIH",
     "asal_sekolah": "SMP MUHAMMADIYAH 2 KARANG TENGAH",
-    "hp": "85609659660"
+    "hp": "85609659660",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -18803,7 +19909,8 @@ window.FincestemMasterStudents = [
     "ayah": "ALWI",
     "ibu": "LENA SUSIYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81368150885"
+    "hp": "81368150885",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -18820,7 +19927,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUTRISNO",
     "ibu": "MIKARYATINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "87893136226"
+    "hp": "87893136226",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -18837,7 +19945,8 @@ window.FincestemMasterStudents = [
     "ayah": "JUNAIDI",
     "ibu": "SUPRIHATIN",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85789464417"
+    "hp": "85789464417",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -18854,7 +19963,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUGIONO",
     "ibu": "SRI WAHYUNI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "85758483900"
+    "hp": "85758483900",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -18871,7 +19981,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIS MANANDAR",
     "ibu": "PERA LIDIA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82176292919"
+    "hp": "82176292919",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -18888,7 +19999,8 @@ window.FincestemMasterStudents = [
     "ayah": "TUKIRAN",
     "ibu": "SARIYEM",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "85783416863"
+    "hp": "85783416863",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -18905,7 +20017,8 @@ window.FincestemMasterStudents = [
     "ayah": "CANDRA DIANSYAH",
     "ibu": "APRILIA ROSNIDA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82292922172"
+    "hp": "82292922172",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -18922,7 +20035,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSTAM AFANDI",
     "ibu": "ERNI FITRI LESTARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG GUMAWANG",
-    "hp": "85892817294"
+    "hp": "85892817294",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -18939,7 +20053,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNG LIE MIEN",
     "ibu": "ROHANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81541498752"
+    "hp": "81541498752",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -18956,7 +20071,8 @@ window.FincestemMasterStudents = [
     "ayah": "TRI PRASETYO",
     "ibu": "MARGARETA SABETI",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "85895390758"
+    "hp": "85895390758",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -18973,7 +20089,8 @@ window.FincestemMasterStudents = [
     "ayah": "SIGIT ARIWIBOWO",
     "ibu": "FITRI NURHASANAH S",
     "asal_sekolah": "SMP MUHAMMADIYAH 2 KARANG TENGAH",
-    "hp": "81272516589"
+    "hp": "81272516589",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 22,
@@ -18990,7 +20107,8 @@ window.FincestemMasterStudents = [
     "ayah": "ERWANTORO",
     "ibu": "HENI ASTUTI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG MADANG RAYA",
-    "hp": "85768077591"
+    "hp": "85768077591",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -19007,7 +20125,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHRODIN",
     "ibu": "YENI LINDASARI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -19024,7 +20143,8 @@ window.FincestemMasterStudents = [
     "ayah": "STEPANUS TRI NUGROHO",
     "ibu": "MM SUWARTI SRI WAHYUNING",
     "asal_sekolah": "SMP CHARITAS 01 BELITANG",
-    "hp": "85960875661"
+    "hp": "85960875661",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -19041,7 +20161,8 @@ window.FincestemMasterStudents = [
     "ayah": "MULYANTO",
     "ibu": "RAKISAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85758016673"
+    "hp": "85758016673",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -19058,7 +20179,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIO SAGITA",
     "ibu": "APRI YANTI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": "85269343652"
+    "hp": "85269343652",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -19075,7 +20197,8 @@ window.FincestemMasterStudents = [
     "ayah": "ANDI",
     "ibu": "LENI SAFITRI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85785604379"
+    "hp": "85785604379",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -19092,7 +20215,8 @@ window.FincestemMasterStudents = [
     "ayah": "RINALDI",
     "ibu": "MARLENA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "895346870303"
+    "hp": "895346870303",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -19109,7 +20233,8 @@ window.FincestemMasterStudents = [
     "ayah": "SARMILI",
     "ibu": "DIANA MARITA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "85269733492"
+    "hp": "85269733492",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -19126,7 +20251,8 @@ window.FincestemMasterStudents = [
     "ayah": "BOIMAN",
     "ibu": "RATINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG GUMAWANG OKU TIMUR",
-    "hp": "87856240507"
+    "hp": "87856240507",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -19143,7 +20269,8 @@ window.FincestemMasterStudents = [
     "ayah": "TEJO WAHYONO",
     "ibu": "SITI JUMIANAH",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "85609077605"
+    "hp": "85609077605",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 32,
@@ -19160,7 +20287,8 @@ window.FincestemMasterStudents = [
     "ayah": "PAHRUL",
     "ibu": "",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -19177,7 +20305,8 @@ window.FincestemMasterStudents = [
     "ayah": "RIYANTO",
     "ibu": "MURNIATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82127080223"
+    "hp": "82127080223",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -19194,7 +20323,8 @@ window.FincestemMasterStudents = [
     "ayah": "TONU RIZAL",
     "ibu": "ELIZA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "87793476651"
+    "hp": "87793476651",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -19211,7 +20341,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUJONO",
     "ibu": "MUNTAMAH",
     "asal_sekolah": "SMP NEGRI 1 MESUJI MAKMUR",
-    "hp": "85783990357"
+    "hp": "85783990357",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 1,
@@ -19228,7 +20359,8 @@ window.FincestemMasterStudents = [
     "ayah": "BERTA YUDHA",
     "ibu": "YOSI DWI JAYANTI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85267689163"
+    "hp": "85267689163",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 2,
@@ -19245,7 +20377,8 @@ window.FincestemMasterStudents = [
     "ayah": "AFGAN ISMED SINWANI",
     "ibu": "RESTIANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81230131264"
+    "hp": "81230131264",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 3,
@@ -19262,7 +20395,8 @@ window.FincestemMasterStudents = [
     "ayah": "ZULKARNAIN SARMAI",
     "ibu": "DEWI SETIANI",
     "asal_sekolah": "MTS TAKWA GUMAWANG",
-    "hp": "85789241827"
+    "hp": "85789241827",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 4,
@@ -19279,7 +20413,8 @@ window.FincestemMasterStudents = [
     "ayah": "SAMIDIN",
     "ibu": "SULASMI",
     "asal_sekolah": "SMP CHARITAS 02 MOJOSARI",
-    "hp": "85768208735"
+    "hp": "85768208735",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 5,
@@ -19296,7 +20431,8 @@ window.FincestemMasterStudents = [
     "ayah": "MUHAMMAD HERI",
     "ibu": "ROSMAWATI",
     "asal_sekolah": "SMP NEGERI 4 MADANG SUKU 1",
-    "hp": "85268745339"
+    "hp": "85268745339",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 6,
@@ -19313,7 +20449,8 @@ window.FincestemMasterStudents = [
     "ayah": "OKTA RUDIWIJAYA",
     "ibu": "RESTU MARLINA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "895408630200"
+    "hp": "895408630200",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 7,
@@ -19330,7 +20467,8 @@ window.FincestemMasterStudents = [
     "ayah": "NURHOLIS",
     "ibu": "YUNI RUSMALINAH",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "87722967979"
+    "hp": "87722967979",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 8,
@@ -19347,7 +20485,8 @@ window.FincestemMasterStudents = [
     "ayah": "WAHYUDI SANJAYA",
     "ibu": "KHUSUSIYAH",
     "asal_sekolah": "SMP NEGERI 1 LEMPUING JAYA",
-    "hp": "85766696247"
+    "hp": "85766696247",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 9,
@@ -19364,7 +20503,8 @@ window.FincestemMasterStudents = [
     "ayah": "SIGIT HARYO YUDANTO",
     "ibu": "JENI YUSWATI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "88297239153"
+    "hp": "88297239153",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 10,
@@ -19381,7 +20521,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIANTO",
     "ibu": "NURLAILAWATI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA AYUN",
-    "hp": "85609328884"
+    "hp": "85609328884",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 11,
@@ -19398,7 +20539,8 @@ window.FincestemMasterStudents = [
     "ayah": "MAHMUDI",
     "ibu": "SRI WAHYUNI",
     "asal_sekolah": "SMP NEGERI 1 SEMENDAWAI TIMUR",
-    "hp": "85846221827"
+    "hp": "85846221827",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 12,
@@ -19415,7 +20557,8 @@ window.FincestemMasterStudents = [
     "ayah": "SLAMET SETIO",
     "ibu": "SEPTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85861344166"
+    "hp": "85861344166",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 13,
@@ -19432,7 +20575,8 @@ window.FincestemMasterStudents = [
     "ayah": "S. SIHOMBING",
     "ibu": "HENNY MANGINAK TUA BR TURNIP",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "81374980044"
+    "hp": "81374980044",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 14,
@@ -19449,7 +20593,8 @@ window.FincestemMasterStudents = [
     "ayah": "AGUS WANTO",
     "ibu": "",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 15,
@@ -19466,7 +20611,8 @@ window.FincestemMasterStudents = [
     "ayah": "IYON SIH MIRMO, S.SI",
     "ibu": "YULITA WATINI, SE",
     "asal_sekolah": "SMP NEGERI 01 BELITANG",
-    "hp": "85783473797"
+    "hp": "85783473797",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 16,
@@ -19483,7 +20629,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARI IRAWAN",
     "ibu": "SAILA YUSTRI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81216646585"
+    "hp": "81216646585",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 17,
@@ -19500,7 +20647,8 @@ window.FincestemMasterStudents = [
     "ayah": "SANDRA DARMA BAKTI",
     "ibu": "POPPY SANDRA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": ""
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 18,
@@ -19517,7 +20665,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARTO",
     "ibu": "KATARINA HERLIANTI",
     "asal_sekolah": "SMP ISLAM TERPADU QURRATA A'YUN",
-    "hp": "85841153161"
+    "hp": "85841153161",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 19,
@@ -19534,7 +20683,8 @@ window.FincestemMasterStudents = [
     "ayah": "TOTOK MASRIANTO",
     "ibu": "ERNAWATI",
     "asal_sekolah": "MTSS ISLAMIYAH",
-    "hp": "87895455982"
+    "hp": "87895455982",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 20,
@@ -19551,7 +20701,8 @@ window.FincestemMasterStudents = [
     "ayah": "RUSMAN",
     "ibu": "RIA ARMILA",
     "asal_sekolah": "SMP NEGERI 02 BELITANG",
-    "hp": "895408677123"
+    "hp": "895408677123",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 21,
@@ -19568,7 +20719,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI SUYATNO",
     "ibu": "EVA DAMAYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85609019148"
+    "hp": "85609019148",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 22,
@@ -19585,7 +20737,8 @@ window.FincestemMasterStudents = [
     "ayah": "RAHMAT SALEH",
     "ibu": "LISA APRIYANI",
     "asal_sekolah": "SMP CIPTA KARYA",
-    "hp": "85658913043"
+    "hp": "85658913043",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 23,
@@ -19602,7 +20755,8 @@ window.FincestemMasterStudents = [
     "ayah": "FERRY IRAWAN",
     "ibu": "LASTRI",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "81377767274"
+    "hp": "81377767274",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 24,
@@ -19619,7 +20773,8 @@ window.FincestemMasterStudents = [
     "ayah": "SOBIRIN",
     "ibu": "UMI SALAMAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81540936422"
+    "hp": "81540936422",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 25,
@@ -19636,7 +20791,8 @@ window.FincestemMasterStudents = [
     "ayah": "M. YUSUF",
     "ibu": "ISMIYATI",
     "asal_sekolah": "SMP NEGERI 01 BELITANG MADANG RAYA",
-    "hp": "81377793212"
+    "hp": "81377793212",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 26,
@@ -19653,7 +20809,8 @@ window.FincestemMasterStudents = [
     "ayah": "SUNARDI",
     "ibu": "AYU RAHAYU",
     "asal_sekolah": "SMP NEGERI 2 BELITANG JAYA",
-    "hp": "85789933099"
+    "hp": "85789933099",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 27,
@@ -19670,7 +20827,8 @@ window.FincestemMasterStudents = [
     "ayah": "PARTAMA",
     "ibu": "DINA ISMIATI",
     "asal_sekolah": "MTS SWASTA DARUL ULUM",
-    "hp": "89504890440"
+    "hp": "89504890440",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 28,
@@ -19687,7 +20845,8 @@ window.FincestemMasterStudents = [
     "ayah": "IMAM",
     "ibu": "JUAIRIAH",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "8989207848"
+    "hp": "8989207848",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 29,
@@ -19704,7 +20863,8 @@ window.FincestemMasterStudents = [
     "ayah": "DWI PRAMONO",
     "ibu": "ARUM SUMAWATI",
     "asal_sekolah": "SMPN 02 BELITANG",
-    "hp": "85788260976"
+    "hp": "85788260976",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 30,
@@ -19721,7 +20881,8 @@ window.FincestemMasterStudents = [
     "ayah": "HARTO",
     "ibu": "TUTIK NIRWANA",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "82311740882"
+    "hp": "82311740882",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 31,
@@ -19738,7 +20899,8 @@ window.FincestemMasterStudents = [
     "ayah": "MARWANTO",
     "ibu": "ERNA DANATI",
     "asal_sekolah": "SMP NEGERI 1 MESUJI MAKMUR",
-    "hp": "85789590759"
+    "hp": "85789590759",
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 32,
@@ -19755,7 +20917,8 @@ window.FincestemMasterStudents = [
     "ayah": "KUSNADI",
     "ibu": "SUTARMI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "81373053777"
+    "hp": "81373053777",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 33,
@@ -19772,7 +20935,8 @@ window.FincestemMasterStudents = [
     "ayah": "ARIFIN AZIS",
     "ibu": "AGUSTINA",
     "asal_sekolah": "SMP NEGERI 2 BELITANG",
-    "hp": "895393096200"
+    "hp": "895393096200",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 34,
@@ -19789,7 +20953,8 @@ window.FincestemMasterStudents = [
     "ayah": "EDI SUSANTO",
     "ibu": "SUNAINI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG MADANG RAYA",
-    "hp": "85783235825"
+    "hp": "85783235825",
+    "zone": "FINCESTEM OKU TIMUR"
   },
   {
     "no": 35,
@@ -19806,6 +20971,7 @@ window.FincestemMasterStudents = [
     "ayah": "ANDRI",
     "ibu": "WENI WIYANTI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
-    "hp": "85885959318"
+    "hp": "85885959318",
+    "zone": "FINCESTEM OKU TIMUR"
   }
 ];
