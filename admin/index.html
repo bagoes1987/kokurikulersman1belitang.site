@@ -880,18 +880,18 @@
           <div class="p-4 rounded-3xl bg-emerald-50 border border-emerald-200/70 flex flex-col gap-1">
             <div class="flex items-center gap-1.5 text-emerald-800">
               <span class="material-symbols-outlined text-lg">explore</span>
-              <span class="text-xs font-bold uppercase">FINCESTEM OKU TIMUR</span>
+              <span class="text-xs font-bold uppercase">NON-FIELD TRIP (OKU TIMUR)</span>
             </div>
             <span id="countZoneOkuTimur" class="text-xl font-black text-emerald-700 mt-1">386 Siswa</span>
-            <span class="text-[10.5px] text-emerald-800/80">Zona riset wilayah lokal Kab. OKU Timur</span>
+            <span class="text-[10.5px] text-emerald-800/80">Kegiatan riset lokal Kab. OKU Timur (Non-Field Trip)</span>
           </div>
           <div class="p-4 rounded-3xl bg-amber-50 border border-amber-200/70 flex flex-col gap-1">
             <div class="flex items-center gap-1.5 text-amber-800">
               <span class="material-symbols-outlined text-lg">travel_explore</span>
-              <span class="text-xs font-bold uppercase">FINCESTEM LUAR OKU TIMUR</span>
+              <span class="text-xs font-bold uppercase">FIELD TRIP (LUAR OKU TIMUR)</span>
             </div>
             <span id="countZoneLuarOkuTimur" class="text-xl font-black text-amber-700 mt-1">779 Siswa</span>
-            <span class="text-[10.5px] text-amber-800/80">Zona riset ekspedisi luar kabupaten</span>
+            <span class="text-[10.5px] text-amber-800/80">Kegiatan ekspedisi luar kabupaten (Field Trip)</span>
           </div>
         </div>
 
@@ -902,14 +902,14 @@
               <span class="material-symbols-outlined text-lg">person_search</span>
             </div>
             <div>
-              <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Atur Zona Khusus Per Nama Siswa (Individu)</h4>
-              <p class="text-[11px] text-on-surface-variant">Cari siswa untuk mengubah zona secara spesifik tanpa mengubah rombelnya.</p>
+              <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Atur Kategori Khusus Per Nama Siswa (Individu)</h4>
+              <p class="text-[11px] text-on-surface-variant">Cari siswa untuk mengubah kategori kegiatan (Field Trip / Non-Field Trip) secara spesifik.</p>
             </div>
           </div>
 
           <div class="relative flex items-center">
             <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-base">search</span>
-            <input id="adminSearchStudentZone" type="text" oninput="handleSearchStudentForZone()" placeholder="Ketik nama siswa atau NISN untuk ubah zona..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-outline-variant/40 text-xs font-medium outline-none focus:border-[#0875D1] focus:ring-2 focus:ring-[#0875D1]/20">
+            <input id="adminSearchStudentZone" type="text" oninput="handleSearchStudentForZone()" placeholder="Ketik nama siswa atau NISN untuk ubah kategori..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-outline-variant/40 text-xs font-medium outline-none focus:border-[#0875D1] focus:ring-2 focus:ring-[#0875D1]/20">
           </div>
 
           <div id="zoneStudentSearchResults" class="flex flex-col gap-2 max-h-60 overflow-y-auto">
@@ -919,26 +919,26 @@
 
         <!-- AKSI MASSAL CEPAT (BULK SET) -->
         <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-          <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Aksi Cepat Pembagian Zona Massal</h4>
+          <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Aksi Cepat Pembagian Kategori Massal</h4>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
             <button onclick="setGradeZoneBulk('X', 'FINCESTEM OKU TIMUR')" class="p-3 rounded-2xl bg-slate-50 hover:bg-emerald-50 hover:border-emerald-200 border border-slate-200 flex flex-col gap-1 text-left transition-all cursor-pointer">
-              <span class="font-bold text-slate-800">Semua Kelas X &rarr; OKU Timur</span>
-              <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas X ke zona lokal</span>
+              <span class="font-bold text-slate-800">Semua Kelas X &rarr; Non-Field Trip</span>
+              <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas X ke kegiatan lokal OKU Timur</span>
             </button>
             <button onclick="setGradeZoneBulk('XI', 'FINCESTEM LUAR OKU TIMUR')" class="p-3 rounded-2xl bg-slate-50 hover:bg-amber-50 hover:border-amber-200 border border-slate-200 flex flex-col gap-1 text-left transition-all cursor-pointer">
-              <span class="font-bold text-slate-800">Semua Kelas XI &rarr; Luar OKU</span>
-              <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas XI ke luar daerah</span>
+              <span class="font-bold text-slate-800">Semua Kelas XI &rarr; Field Trip</span>
+              <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas XI ke kegiatan ekspedisi luar daerah</span>
             </button>
             <button onclick="setGradeZoneBulk('XII', 'FINCESTEM LUAR OKU TIMUR')" class="p-3 rounded-2xl bg-slate-50 hover:bg-amber-50 hover:border-amber-200 border border-slate-200 flex flex-col gap-1 text-left transition-all cursor-pointer">
-              <span class="font-bold text-slate-800">Semua Kelas XII &rarr; Luar OKU</span>
-              <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas XII ke luar daerah</span>
+              <span class="font-bold text-slate-800">Semua Kelas XII &rarr; Field Trip</span>
+              <span class="text-[10.5px] text-slate-500">Atur 11 rombel Kelas XII ke kegiatan ekspedisi luar daerah</span>
             </button>
           </div>
         </div>
 
         <!-- FORM PENGATURAN PER ROMBEL -->
         <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5 text-xs">
-          <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Form Pengaturan Zona per Rombel</h4>
+          <h4 class="font-bold text-xs text-on-surface uppercase tracking-wider">Form Pengaturan Kategori per Rombel</h4>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label class="block font-bold text-on-surface mb-1">Pilih Rombongan Belajar (Rombel)</label>
@@ -947,10 +947,10 @@
               </select>
             </div>
             <div>
-              <label class="block font-bold text-on-surface mb-1">Zona Riset Kokurikuler</label>
+              <label class="block font-bold text-on-surface mb-1">Kategori Kegiatan Kokurikuler</label>
               <select id="zoneSelectTargetZone" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 font-bold bg-surface-container-lowest outline-none text-on-surface">
-                <option value="FINCESTEM OKU TIMUR">FINCESTEM OKU TIMUR (Zona Lokal)</option>
-                <option value="FINCESTEM LUAR OKU TIMUR">FINCESTEM LUAR OKU TIMUR (Zona Ekspedisi Luar)</option>
+                <option value="FINCESTEM OKU TIMUR">NON-FIELD TRIP (OKU Timur)</option>
+                <option value="FINCESTEM LUAR OKU TIMUR">FIELD TRIP (Luar OKU Timur)</option>
               </select>
             </div>
           </div>
@@ -1425,16 +1425,16 @@
             </span>
           </div>
           <p class="text-[11px] text-amber-900/80 leading-tight">
-            Ubah zona riset untuk siswa ini secara individu. Pengaturan ini akan tersimpan permanen di database.
+            Ubah kategori kegiatan untuk siswa ini secara individu. Pengaturan ini akan tersimpan permanen di database.
           </p>
           <div class="grid grid-cols-2 gap-2 mt-1">
             <button type="button" id="btnModalZoneOku" onclick="selectModalStudentZone('FINCESTEM OKU TIMUR')" class="py-2 px-2.5 rounded-xl border font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer bg-white text-emerald-800 border-emerald-300 shadow-2xs">
               <span class="material-symbols-outlined text-sm text-emerald-600">explore</span>
-              <span class="truncate">OKU TIMUR</span>
+              <span class="truncate">NON-FIELD TRIP</span>
             </button>
             <button type="button" id="btnModalZoneLuar" onclick="selectModalStudentZone('FINCESTEM LUAR OKU TIMUR')" class="py-2 px-2.5 rounded-xl border font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer bg-slate-50 text-slate-600 border-slate-200 hover:bg-amber-50">
               <span class="material-symbols-outlined text-sm text-amber-600">travel_explore</span>
-              <span class="truncate">LUAR OKU TIMUR</span>
+              <span class="truncate">FIELD TRIP</span>
             </button>
           </div>
         </div>
@@ -3580,10 +3580,10 @@
           </div>
           <div class="flex items-center gap-1.5 shrink-0">
             <button onclick="setStudentZoneFromTab('${s.nisn}', 'FINCESTEM OKU TIMUR')" class="px-2 py-1 rounded-lg text-[10px] font-bold ${!isLuar ? 'bg-emerald-600 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-emerald-50'} cursor-pointer transition-all">
-              OKU TIMUR
+              NON-FIELD TRIP
             </button>
             <button onclick="setStudentZoneFromTab('${s.nisn}', 'FINCESTEM LUAR OKU TIMUR')" class="px-2 py-1 rounded-lg text-[10px] font-bold ${isLuar ? 'bg-amber-600 text-white shadow-2xs' : 'bg-slate-100 text-slate-600 hover:bg-amber-50'} cursor-pointer transition-all">
-              LUAR OKU
+              FIELD TRIP
             </button>
           </div>
         `;
