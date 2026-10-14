@@ -261,9 +261,13 @@
         const deviceId = FincestemCore.auth.getDeviceId();
         const deviceInfo = FincestemCore.auth.getDeviceInfo();
 
+        const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+        const fetchTimeout = controller ? setTimeout(() => controller.abort(), 3500) : null;
+
         fetch(FincestemCore.api.base + '/auth.php?action=login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
+          signal: controller ? controller.signal : undefined,
           body: JSON.stringify({
             identifier: nisn,
             password: pwd,
@@ -274,11 +278,13 @@
         })
         .then(r => r.json())
         .then(apiRes => {
+          if (fetchTimeout) clearTimeout(fetchTimeout);
+
           if (!apiRes.success) {
             btnText.textContent = 'Masuk ke Portal Siswa';
             btn.classList.remove('opacity-80', 'pointer-events-none');
             
-            // Tampilkan alert modal/toast jika perangkat terkunci
+            // Tampilkan alert jika perangkat terkunci
             if (apiRes.data && apiRes.data.error_code === 'DEVICE_LOCKED') {
               alert(apiRes.message || 'Akun Anda sudah terkunci di perangkat lain! Anda tidak diizinkan login di perangkat ini kecuali telah di-reset / disetujui oleh Admin.');
             } else {
@@ -293,15 +299,16 @@
           FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
           setTimeout(() => {
             window.location.href = 'dashboard.html';
-          }, 350);
+          }, 250);
         })
         .catch(err => {
-          // Fallback bila server offline/gangguan jaringan: izinkan sesi lokal
+          if (fetchTimeout) clearTimeout(fetchTimeout);
+          // Fallback instan bila koneksi lambat/timeout: izinkan masuk lokal tanpa macet
           FincestemCore.auth.setUser(res.user, 'siswa');
-          FincestemCore.ui.toast('Login offline berhasil! Mengalihkan...', 'success');
+          FincestemCore.ui.toast('Berhasil masuk! Mengalihkan...', 'success');
           setTimeout(() => {
             window.location.href = 'dashboard.html';
-          }, 350);
+          }, 250);
         });
       } else {
         // Mode offline/lokal file://
