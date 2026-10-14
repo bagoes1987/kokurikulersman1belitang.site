@@ -164,10 +164,135 @@ if ($action === 'login') {
         'routeStatus'      => $groupInfo ? $groupInfo['route_status'] : null
     ];
 
+    // SINGLE DEVICE LOCK KHUSUS SISWA
+    if ($user['role'] === 'siswa') {
+        $deviceId   = trim($input['device_id'] ?? '');
+        $deviceInfo = trim($input['device_info'] ?? '');
+
+        // Jika tabel belum memiliki kolom device_id, buat otomatis
+        try {
+            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_id` VARCHAR(100) DEFAULT NULL AFTER `zone`");
+            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_info` VARCHAR(255) DEFAULT NULL AFTER `device_id`");
+            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_locked_at` DATETIME DEFAULT NULL AFTER `device_info`");
+        } catch (Exception $eDev) {}
+
+        $currentDbDeviceId = $user['device_id'] ?? null;
+        $currentDbDeviceInfo = $user['device_info'] ?? null;
+
+        if ($deviceId) {
+            if (empty($currentDbDeviceId)) {
+                // Perangkat pertama kali login -> Kunci ke perangkat ini
+                $stmtLock = $pdo->prepare("UPDATE `users` SET `device_id` = :did, `device_info` = :dinfo, `device_locked_at` = NOW() WHERE `id` = :uid");
+                $stmtLock->execute([
+                    ':did'   => $deviceId,
+                    ':dinfo' => $deviceInfo ?: 'Perangkat Web Browser',
+                    ':uid'   => $user['id']
+                ]);
+            } elseif ($currentDbDeviceId !== $deviceId) {
+                // Mencoba login di perangkat kedua yang berbeda -> TOLAK LOGIN
+                $lockedInfo = $currentDbDeviceInfo ? " ({$currentDbDeviceInfo})" : "";
+                jsonResponse(
+                    false,
+                    "Akun Anda sudah terkunci di perangkat lain{$lockedInfo}! Anda tidak diizinkan login di perangkat ini kecuali telah di-reset / disetujui oleh Admin.",
+                    [
+                        'error_code'     => 'DEVICE_LOCKED',
+                        'locked_device'  => $currentDbDeviceInfo ?: 'Perangkat Sebelumnya',
+                        'student_name'   => $user['name'],
+                        'student_nisn'   => $user['identifier']
+                    ],
+                    403
+                );
+            }
+        }
+    }
+
     jsonResponse(true, 'Login berhasil! Selamat datang, ' . $user['name'], [
         'user'  => $userData,
         'token' => bin2hex(random_bytes(16))
     ]);
+}
+
+// AKSI ADMIN: Reset Kunci Device Siswa
+if ($action === 'reset_device') {
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+        jsonResponse(false, 'Metode HTTP harus POST', null, 405);
+    }
+
+    $input = getJsonInput();
+    if (empty($input)) {
+        $input = $_POST;
+    }
+
+    $nisn = trim($input['nisn'] ?? $input['identifier'] ?? '');
+    $mode = trim($input['mode'] ?? 'single'); // 'single' atau 'all'
+
+    $pdo = getDB();
+
+    // Pastikan kolom ada
+    try {
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_id` VARCHAR(100) DEFAULT NULL AFTER `zone`");
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_info` VARCHAR(255) DEFAULT NULL AFTER `device_id`");
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_locked_at` DATETIME DEFAULT NULL AFTER `device_info`");
+    } catch (Exception $eDev) {}
+
+    if ($mode === 'all') {
+        $stmtResetAll = $pdo->prepare("UPDATE `users` SET `device_id` = NULL, `device_info` = NULL, `device_locked_at` = NULL WHERE `role` = 'siswa'");
+        $stmtResetAll->execute();
+        jsonResponse(true, 'Kunci perangkat seluruh siswa berhasil di-reset. Semua siswa kini dapat login di perangkat baru.');
+    }
+
+    if (!$nisn) {
+        jsonResponse(false, 'NISN siswa target reset wajib diisi!', null, 400);
+    }
+
+    $cleanId = preg_replace('/\D/', '', $nisn);
+    $paddedId = (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) ? str_pad($cleanId, 10, '0', STR_PAD_LEFT) : $nisn;
+
+    $stmtReset = $pdo->prepare("
+        UPDATE `users` 
+        SET `device_id` = NULL, `device_info` = NULL, `device_locked_at` = NULL 
+        WHERE (`identifier` = :id OR `identifier` = :padded OR `nis` = :nis) AND `role` = 'siswa'
+    ");
+    $stmtReset->execute([':id' => $nisn, ':padded' => $paddedId, ':nis' => $nisn]);
+
+    jsonResponse(true, "Kunci perangkat siswa (NISN {$nisn}) berhasil di-reset! Siswa sekarang dapat login di perangkat baru.");
+}
+
+// AKSI CEK STATUS DEVICE SISWA
+if ($action === 'get_device_status') {
+    $nisn = trim($_GET['nisn'] ?? '');
+    if (!$nisn) {
+        jsonResponse(false, 'NISN siswa wajib diisi!', null, 400);
+    }
+
+    $pdo = getDB();
+    $cleanId = preg_replace('/\D/', '', $nisn);
+    $paddedId = (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) ? str_pad($cleanId, 10, '0', STR_PAD_LEFT) : $nisn;
+
+    try {
+        $stmt = $pdo->prepare("
+            SELECT `identifier`, `name`, `device_id`, `device_info`, `device_locked_at` 
+            FROM `users` 
+            WHERE (`identifier` = :id OR `identifier` = :padded OR `nis` = :nis) AND `role` = 'siswa' 
+            LIMIT 1
+        ");
+        $stmt->execute([':id' => $nisn, ':padded' => $paddedId, ':nis' => $nisn]);
+        $row = $stmt->fetch();
+
+        if ($row) {
+            $isLocked = !empty($row['device_id']);
+            jsonResponse(true, 'Status perangkat siswa berhasil dimuat', [
+                'nisn'             => $row['identifier'],
+                'name'             => $row['name'],
+                'is_locked'        => $isLocked,
+                'device_id'        => $row['device_id'],
+                'device_info'      => $row['device_info'] ?: ($isLocked ? 'Perangkat Terdaftar' : 'Belum Terkunci'),
+                'device_locked_at' => $row['device_locked_at']
+            ]);
+        }
+    } catch (Exception $e) {}
+
+    jsonResponse(false, 'Data siswa tidak ditemukan', null, 404);
 }
 
 jsonResponse(false, 'Aksi tidak dikenali', null, 400);

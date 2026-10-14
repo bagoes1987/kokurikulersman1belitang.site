@@ -244,24 +244,73 @@
         return;
       }
 
-      btnText.textContent = 'Memverifikasi Data...';
+      btnText.textContent = 'Memverifikasi Perangkat & Akun...';
       btn.classList.add('opacity-80', 'pointer-events-none');
 
-      setTimeout(() => {
-        const res = FincestemCore.auth.validateLogin(nisn, pwd, 'siswa');
-        if (!res.success) {
-          btnText.textContent = 'Masuk ke Portal Siswa';
-          btn.classList.remove('opacity-80', 'pointer-events-none');
-          FincestemCore.ui.toast(res.message, 'error');
-          return;
-        }
+      // Validasi lokal terlebih dahulu (kredensial NISN/NIS)
+      const res = FincestemCore.auth.validateLogin(nisn, pwd, 'siswa');
+      if (!res.success) {
+        btnText.textContent = 'Masuk ke Portal Siswa';
+        btn.classList.remove('opacity-80', 'pointer-events-none');
+        FincestemCore.ui.toast(res.message, 'error');
+        return;
+      }
 
+      // Jika terhubung ke server (HTTP/HTTPS), lakukan validasi Single Device Lock
+      if (window.location.protocol.startsWith('http')) {
+        const deviceId = FincestemCore.auth.getDeviceId();
+        const deviceInfo = FincestemCore.auth.getDeviceInfo();
+
+        fetch(FincestemCore.api.base + '/auth.php?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            identifier: nisn,
+            password: pwd,
+            role: 'siswa',
+            device_id: deviceId,
+            device_info: deviceInfo
+          })
+        })
+        .then(r => r.json())
+        .then(apiRes => {
+          if (!apiRes.success) {
+            btnText.textContent = 'Masuk ke Portal Siswa';
+            btn.classList.remove('opacity-80', 'pointer-events-none');
+            
+            // Tampilkan alert modal/toast jika perangkat terkunci
+            if (apiRes.data && apiRes.data.error_code === 'DEVICE_LOCKED') {
+              alert(apiRes.message || 'Akun Anda sudah terkunci di perangkat lain! Anda tidak diizinkan login di perangkat ini kecuali telah di-reset / disetujui oleh Admin.');
+            } else {
+              FincestemCore.ui.toast(apiRes.message || 'Gagal masuk akun', 'error');
+            }
+            return;
+          }
+
+          // Sinkronkan data profil dari respon server jika ada
+          const finalUser = (apiRes.data && apiRes.data.user) ? Object.assign(res.user, apiRes.data.user) : res.user;
+          FincestemCore.auth.setUser(finalUser, 'siswa');
+          FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 350);
+        })
+        .catch(err => {
+          // Fallback bila server offline/gangguan jaringan: izinkan sesi lokal
+          FincestemCore.auth.setUser(res.user, 'siswa');
+          FincestemCore.ui.toast('Login offline berhasil! Mengalihkan...', 'success');
+          setTimeout(() => {
+            window.location.href = 'dashboard.html';
+          }, 350);
+        });
+      } else {
+        // Mode offline/lokal file://
         FincestemCore.auth.setUser(res.user, 'siswa');
         FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
         setTimeout(() => {
           window.location.href = 'dashboard.html';
-        }, 400);
-      }, 400);
+        }, 350);
+      }
     }
   </script>
 </body>

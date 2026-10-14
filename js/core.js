@@ -238,6 +238,79 @@ const FincestemCore = {
 
       return { success: false, message: 'Peran pengguna tidak valid.' };
     },
+    getDeviceId: function() {
+      let did = localStorage.getItem('fincestem_device_id');
+      if (!did) {
+        // Generate persistent UUID for this device/browser
+        did = 'dev_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
+        localStorage.setItem('fincestem_device_id', did);
+      }
+      return did;
+    },
+    getDeviceInfo: function() {
+      const ua = navigator.userAgent || '';
+      let os = 'Unknown OS';
+      if (/android/i.test(ua)) os = 'Android';
+      else if (/iphone|ipad|ipod/i.test(ua)) os = 'iOS (iPhone/iPad)';
+      else if (/windows/i.test(ua)) os = 'Windows PC';
+      else if (/macintosh|mac os x/i.test(ua)) os = 'Mac';
+      else if (/linux/i.test(ua)) os = 'Linux';
+
+      let browser = 'Browser';
+      if (/chrome|crios/i.test(ua) && !/edge|edg|opr/i.test(ua)) browser = 'Chrome';
+      else if (/safari/i.test(ua) && !/chrome|crios/i.test(ua)) browser = 'Safari';
+      else if (/firefox|fxios/i.test(ua)) browser = 'Firefox';
+      else if (/edg/i.test(ua)) browser = 'Edge';
+      else if (/opera|opr/i.test(ua)) browser = 'Opera';
+
+      return `${browser} di ${os}`;
+    },
+    getStudentDeviceStatus: function(nisn, callback) {
+      if (!nisn) {
+        if (callback) callback({ success: false, message: 'NISN wajib diisi' });
+        return;
+      }
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/auth.php?action=get_device_status&nisn=' + encodeURIComponent(nisn))
+          .then(r => r.json())
+          .then(res => { if (callback) callback(res); })
+          .catch(() => { if (callback) callback({ success: false, message: 'Gagal menghubungi server' }); });
+      } else {
+        if (callback) callback({ success: true, data: { is_locked: false, device_info: 'Lokal' } });
+      }
+    },
+    resetStudentDevice: function(nisn, callback) {
+      if (!nisn) {
+        if (callback) callback({ success: false, message: 'NISN wajib diisi' });
+        return;
+      }
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/auth.php?action=reset_device', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nisn: String(nisn).trim(), mode: 'single' })
+        })
+          .then(r => r.json())
+          .then(res => { if (callback) callback(res); })
+          .catch(err => { if (callback) callback({ success: false, message: err.message || 'Gagal reset perangkat' }); });
+      } else {
+        if (callback) callback({ success: true, message: 'Kunci perangkat siswa berhasil di-reset (mode lokal).' });
+      }
+    },
+    resetAllStudentDevices: function(callback) {
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/auth.php?action=reset_device', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode: 'all' })
+        })
+          .then(r => r.json())
+          .then(res => { if (callback) callback(res); })
+          .catch(err => { if (callback) callback({ success: false, message: err.message || 'Gagal reset perangkat massal' }); });
+      } else {
+        if (callback) callback({ success: true, message: 'Seluruh kunci perangkat berhasil di-reset (mode lokal).' });
+      }
+    },
     logout: function(redirectUrl) {
       localStorage.removeItem('fincestem_auth');
       localStorage.removeItem('fincestem_role');

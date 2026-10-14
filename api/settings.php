@@ -26,6 +26,12 @@ function ensureRoleTables($pdo) {
     } catch (Exception $e) {}
 
     try {
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_id` VARCHAR(100) DEFAULT NULL AFTER `zone`");
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_info` VARCHAR(255) DEFAULT NULL AFTER `device_id`");
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_locked_at` DATETIME DEFAULT NULL AFTER `device_info`");
+    } catch (Exception $eDev) {}
+
+    try {
         $pdo->exec("
             CREATE TABLE IF NOT EXISTS `student_custom_zones` (
                 `nisn` VARCHAR(50) PRIMARY KEY,
