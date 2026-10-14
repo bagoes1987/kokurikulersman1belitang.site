@@ -3247,6 +3247,23 @@
       const allWarnDesc = document.getElementById('resetAllWarningDesc');
       const singleSub = document.getElementById('resetSingleSubtext');
 
+      const allList = window.FincestemMasterStudents || [];
+      const ftCount = allList.filter(s => {
+        const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+          : (s.zone || 'FINCESTEM OKU TIMUR');
+        const zu = String(z).toUpperCase();
+        return zu.includes('LUAR') || zu.includes('FIELD') || zu.includes('TRIP');
+      }).length;
+      const nonFtCount = allList.length - ftCount;
+
+      if (btnFt) {
+        btnFt.innerHTML = `<span class="material-symbols-outlined text-base">directions_bus</span><span>🚌 Siswa Field Trip (${ftCount})</span>`;
+      }
+      if (btnNonFt) {
+        btnNonFt.innerHTML = `<span class="material-symbols-outlined text-base">school</span><span>🏫 Siswa Non-Field Trip (${nonFtCount})</span>`;
+      }
+
       if (cat === 'field_trip') {
         if (btnFt) {
           btnFt.className = 'py-2.5 px-3 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs bg-amber-500 text-white cursor-pointer';
@@ -3254,11 +3271,11 @@
         if (btnNonFt) {
           btnNonFt.className = 'py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all text-slate-700 hover:text-slate-900 hover:bg-white/60 cursor-pointer';
         }
-        if (allTitle) allTitle.textContent = 'Semua Siswa Field Trip Sekaligus (455 Siswa)';
-        if (allSub) allSub.textContent = 'Hanya mereset 455 peserta Field Trip, peserta Non-Field Trip terlindungi';
-        if (allWarnTitle) allWarnTitle.textContent = 'Target Masal Aktif: Seluruh 455 Siswa Field Trip';
-        if (allWarnDesc) allWarnDesc.textContent = 'Tindakan reset masal akan diterapkan hanya pada 455 siswa kelompok Field Trip. Data 710 siswa Non-Field Trip tetap aman 100%.';
-        if (singleSub) singleSub.textContent = 'Pilih satu siswa dari daftar 455 peserta Field Trip';
+        if (allTitle) allTitle.textContent = `Semua Siswa Field Trip Sekaligus (${ftCount} Siswa)`;
+        if (allSub) allSub.textContent = `Hanya mereset ${ftCount} peserta Field Trip, peserta Non-Field Trip terlindungi`;
+        if (allWarnTitle) allWarnTitle.textContent = `Target Masal Aktif: Seluruh ${ftCount} Siswa Field Trip`;
+        if (allWarnDesc) allWarnDesc.textContent = `Tindakan reset masal akan diterapkan hanya pada ${ftCount} siswa kelompok Field Trip. Data ${nonFtCount} siswa Non-Field Trip tetap aman 100%.`;
+        if (singleSub) singleSub.textContent = `Pilih satu siswa dari daftar ${ftCount} peserta Field Trip`;
       } else {
         if (btnFt) {
           btnFt.className = 'py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all text-slate-700 hover:text-slate-900 hover:bg-white/60 cursor-pointer';
@@ -3266,11 +3283,11 @@
         if (btnNonFt) {
           btnNonFt.className = 'py-2.5 px-3 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs bg-teal-600 text-white cursor-pointer';
         }
-        if (allTitle) allTitle.textContent = 'Semua Siswa Non-Field Trip Sekaligus (710 Siswa)';
-        if (allSub) allSub.textContent = 'Hanya mereset 710 peserta Non-Field Trip, peserta Field Trip terlindungi';
-        if (allWarnTitle) allWarnTitle.textContent = 'Target Masal Aktif: Seluruh 710 Siswa Non-Field Trip';
-        if (allWarnDesc) allWarnDesc.textContent = 'Tindakan reset masal akan diterapkan hanya pada 710 siswa kelompok Non-Field Trip OKU Timur. Data 455 siswa Field Trip tetap aman 100%.';
-        if (singleSub) singleSub.textContent = 'Pilih satu siswa dari daftar 710 peserta Non-Field Trip';
+        if (allTitle) allTitle.textContent = `Semua Siswa Non-Field Trip Sekaligus (${nonFtCount} Siswa)`;
+        if (allSub) allSub.textContent = `Hanya mereset ${nonFtCount} peserta Non-Field Trip, peserta Field Trip terlindungi`;
+        if (allWarnTitle) allWarnTitle.textContent = `Target Masal Aktif: Seluruh ${nonFtCount} Siswa Non-Field Trip`;
+        if (allWarnDesc) allWarnDesc.textContent = `Tindakan reset masal akan diterapkan hanya pada ${nonFtCount} siswa kelompok Non-Field Trip OKU Timur. Data ${ftCount} siswa Field Trip tetap aman 100%.`;
+        if (singleSub) singleSub.textContent = `Pilih satu siswa dari daftar ${nonFtCount} peserta Non-Field Trip`;
       }
 
       populateResetClassOptions();
@@ -3295,7 +3312,7 @@
       const filteredList = getFilteredResetStudents();
       const rombels = FincestemCore.sortClasses([...new Set(filteredList.map(s => s.class))].filter(Boolean));
 
-      const groupLabel = currentResetGroupCategory === 'field_trip' ? 'Field Trip (455 Siswa)' : 'Non-Field Trip (710 Siswa)';
+      const groupLabel = currentResetGroupCategory === 'field_trip' ? `Field Trip (${filteredList.length} Siswa)` : `Non-Field Trip (${filteredList.length} Siswa)`;
       select.innerHTML = `<option value="">-- Semua Rombel ${groupLabel} --</option>`;
       rombels.forEach(r => {
         const opt = document.createElement('option');
@@ -3838,8 +3855,9 @@
       if (!FincestemCore.zones) return;
       FincestemCore.zones.setStudentZone(nisn, newZone, function(res) {
         renderAdminStudentList();
+        if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
         const shortName = newZone.includes('LUAR') ? 'FIELD TRIP' : 'NON-FIELD TRIP';
-        FincestemCore.ui.toast(`Kategori siswa ${nisn} berhasil diubah ke ${shortName}!`, 'success');
+        FincestemCore.ui.toast(`Kategori siswa ${nisn} berhasil diubah ke ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
     }
 
@@ -3980,8 +3998,9 @@
       FincestemCore.zones.setStudentZone(currentModalNisn, targetZone, function(res) {
         updateModalZoneButtonsUI(targetZone);
         renderAdminStudentList();
+        if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
         const shortName = targetZone.includes('LUAR') ? 'LUAR OKU TIMUR' : 'OKU TIMUR';
-        FincestemCore.ui.toast(`Zona siswa berhasil diperbarui menjadi ${shortName}!`, 'success');
+        FincestemCore.ui.toast(`Zona siswa berhasil diperbarui menjadi ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
     }
 
@@ -4053,8 +4072,9 @@
       FincestemCore.zones.setStudentZone(nisn, targetZone, function(res) {
         handleSearchStudentForZone();
         renderAdminStudentList();
+        if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
         const shortName = targetZone.includes('LUAR') ? 'LUAR OKU TIMUR' : 'OKU TIMUR';
-        FincestemCore.ui.toast(`Zona siswa ${nisn} berhasil diubah ke ${shortName}!`, 'success');
+        FincestemCore.ui.toast(`Zona siswa ${nisn} berhasil diubah ke ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
     }
 
@@ -5436,8 +5456,20 @@
           return sClass === normTarget;
         });
 
-        const ftStudents = studentsInClass.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
-        const nonFtStudents = studentsInClass.filter(s => s.zone !== 'FINCESTEM LUAR OKU TIMUR' && !s.is_field_trip);
+        const ftStudents = studentsInClass.filter(s => {
+          const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+            ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+            : (s.zone || 'FINCESTEM OKU TIMUR');
+          const zUpper = String(z).toUpperCase();
+          return zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+        });
+        const nonFtStudents = studentsInClass.filter(s => {
+          const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+            ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+            : (s.zone || 'FINCESTEM OKU TIMUR');
+          const zUpper = String(z).toUpperCase();
+          return !(zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP'));
+        });
 
         const level = clsName.includes('KELAS X.') ? 'X' : (clsName.includes('KELAS XI.') ? 'XI' : 'XII');
         grandTotalFT += ftStudents.length;

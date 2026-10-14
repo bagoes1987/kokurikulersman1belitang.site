@@ -700,6 +700,75 @@
       }
     }
 
+    function fetchAreaAddress(lat, lng, callback) {
+      // Caching lokal koordinat agar tidak request berulang
+      const cacheKey = 'fincestem_geo_' + lat.toFixed(4) + '_' + lng.toFixed(4);
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        if (callback) callback(cached);
+        return;
+      }
+
+      // Reverse geocoding via OpenStreetMap Nominatim (Gratis, akurat nama kelurahan/desa, kecamatan, kabupaten, provinsi)
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=id`;
+      
+      const ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+      const timeoutId = ctrl ? setTimeout(() => ctrl.abort(), 4000) : null;
+
+      fetch(url, {
+        headers: { 'Accept': 'application/json' },
+        signal: ctrl ? ctrl.signal : undefined
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (timeoutId) clearTimeout(timeoutId);
+        if (data && data.address) {
+          const addr = data.address;
+          const desa = addr.village || addr.suburb || addr.neighbourhood || addr.hamlet || addr.quarter || addr.town || '';
+          const kec = addr.municipality || addr.city_district || addr.subdistrict || '';
+          const kab = addr.city || addr.county || addr.regency || '';
+          const prov = addr.state || addr.province || '';
+
+          const parts = [];
+          if (desa) parts.push(desa);
+          if (kec) parts.push('Kec. ' + kec.replace(/^Kecamatan\s+/i, ''));
+          if (kab) parts.push(kab.replace(/^(Kabupaten|Kota)\s+/i, 'Kab. '));
+          if (prov) parts.push(prov);
+
+          const fullText = parts.length > 0 ? parts.join(', ') : (data.display_name ? data.display_name.split(',').slice(0, 3).join(',') : 'Belitang, OKU Timur, Sumatera Selatan');
+          try { localStorage.setItem(cacheKey, fullText); } catch(e) {}
+          if (callback) callback(fullText);
+        } else {
+          fallbackAddress(lat, lng, callback);
+        }
+      })
+      .catch(() => {
+        if (timeoutId) clearTimeout(timeoutId);
+        fallbackAddress(lat, lng, callback);
+      });
+    }
+
+    function fallbackAddress(lat, lng, callback) {
+      // Heuristik cerdas rute Field Trip & OKU Timur
+      let loc = 'Belitang, Kab. OKU Timur, Sumatera Selatan';
+      if (lat >= -4.5 && lat <= -3.8 && lng >= 104.3 && lng <= 105.0) {
+        loc = 'Belitang, Kab. OKU Timur, Sumatera Selatan';
+      } else if (lat >= -7.1 && lat <= -6.8 && lng >= 110.2 && lng <= 110.6) {
+        loc = 'Semarang, Kota Semarang, Jawa Tengah';
+      } else if (lat >= -8.1 && lat <= -7.8 && lng >= 112.4 && lng <= 112.8) {
+        loc = 'Kota Batu / Malang, Jawa Timur';
+      } else if (lat >= -8.1 && lat <= -7.7 && lng >= 112.8 && lng <= 113.2) {
+        loc = 'Kawasan Bromo Tengger, Kab. Probolinggo, Jawa Timur';
+      } else if (lat >= -8.1 && lat <= -7.6 && lng >= 110.2 && lng <= 110.6) {
+        loc = 'Kota Yogyakarta, D.I. Yogyakarta';
+      } else if (lat >= -8.3 && lat <= -7.9 && lng >= 110.5 && lng <= 110.8) {
+        loc = 'Pantai Drini, Kab. Gunungkidul, D.I. Yogyakarta';
+      } else if (lat >= -6.1 && lat <= -5.7 && lng >= 105.8 && lng <= 106.2) {
+        loc = 'Bakauheni / Selat Sunda, Kab. Lampung Selatan, Lampung';
+      }
+      if (callback) callback(loc);
+    }
+
     function requestGPSCoordinates(forceToast = false) {
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
@@ -721,14 +790,22 @@
             lat: pos.coords.latitude,
             lng: pos.coords.longitude,
             accuracy: Math.round(pos.coords.accuracy || 10),
-            isFallback: false
+            isFallback: false,
+            address: 'Mendeteksi wilayah...'
           };
           if (icon) icon.className = 'material-symbols-outlined text-lg';
           if (iconBox) {
             iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
           }
           if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
-          if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m (SMAN 1 Belitang & Sekitarnya)`;
+          if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m`;
+
+          // Cari nama daerah, kecamatan, kabupaten, provinsi
+          fetchAreaAddress(currentGPS.lat, currentGPS.lng, function(addrText) {
+            if (currentGPS) currentGPS.address = addrText;
+            if (sub) sub.textContent = `📍 ${addrText} (±${currentGPS.accuracy}m)`;
+          });
+
           const helpGuide = document.getElementById('gpsHelpGuide');
           if (helpGuide) helpGuide.classList.add('hidden');
           if (forceToast) FincestemCore.ui.toast('GPS berhasil dikunci: ' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5), 'success');
@@ -755,7 +832,8 @@
         lat: -4.135240,
         lng: 104.624890,
         accuracy: 15,
-        isFallback: true
+        isFallback: true,
+        address: 'Belitang, Kab. OKU Timur, Sumatera Selatan'
       };
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
@@ -767,7 +845,7 @@
         iconBox.className = 'w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0';
       }
       if (title) title.textContent = `📍 GPS Referensi: -4.13524°, 104.62489°`;
-      if (sub) sub.textContent = msg || 'Koordinat referensi SMAN 1 Belitang (OKU Timur)';
+      if (sub) sub.textContent = msg ? `${msg} • Belitang, Kab. OKU Timur, Sumatera Selatan` : 'Belitang, Kab. OKU Timur, Sumatera Selatan';
     }
 
     function roundRectHelper(ctx, x, y, w, h, r) {
@@ -998,17 +1076,19 @@
         ctx.fillText('Kokurikuler2026_SMAN1 Belitang_Fincestem', textX, curY);
         curY += l1Size + lineGap;
 
-        // Baris 2: Subtitle Riset (Cyan Kontras Tinggi)
+        // Baris 2: Day Siswa & Nama Daerah, Kabupaten, Provinsi
+        const dayLabel = studentInfo.day !== undefined ? (studentInfo.day === 0 ? 'Day 0 (Simulasi)' : `Day ${studentInfo.day}`) : 'Day 1';
+        const areaLabel = (gps && gps.address) ? gps.address : 'Belitang, Kab. OKU Timur, Sumatera Selatan';
         ctx.font = `bold ${l2Size}px system-ui, sans-serif`;
         ctx.fillStyle = '#38bdf8'; // Sky Cyan
         ctx.shadowBlur = 4;
-        ctx.fillText('Riset Lapangan FINCESTEM • Belitang, OKU Timur', textX, curY);
+        ctx.fillText(`📍 ${dayLabel} • ${areaLabel}`, textX, curY);
         curY += l2Size + lineGap;
 
         // Baris 3: Koordinat GPS, Akurasi Satelit & Lokasi Lapangan
         ctx.font = `bold ${l3Size}px "Plus Jakarta Sans", monospace, sans-serif`;
         ctx.fillStyle = '#ffffff';
-        const coordText = `📍 Lat: ${gps.lat.toFixed(6)}°, Long: ${gps.lng.toFixed(6)}° (±${gps.accuracy}m)`;
+        const coordText = `🌐 Lat: ${gps.lat.toFixed(6)}°, Long: ${gps.lng.toFixed(6)}° (±${gps.accuracy}m)`;
         ctx.fillText(coordText, textX, curY);
         curY += l3Size + lineGap;
 
@@ -1179,12 +1259,16 @@
               applyFallbackGPS();
             }
 
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentDayNum = urlParams.has('day') ? parseInt(urlParams.get('day')) : 1;
+
             const user = FincestemCore.auth.getUser() || {};
             const studentInfo = {
               name: user.name || 'Siswa SMAN 1 Belitang',
               nisn: user.nisn || user.identifier || '-',
               group: user.group || 'Kelompok Riset',
-              class_name: user.class_name || user.class || 'Fase E'
+              class_name: user.class_name || user.class || 'Fase E',
+              day: currentDayNum
             };
 
             renderGeotaggedWatermark(img, currentGPS, studentInfo, function(watermarkedDataUrl) {
