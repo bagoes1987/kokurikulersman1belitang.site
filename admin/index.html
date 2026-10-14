@@ -1161,23 +1161,39 @@
       <!-- KARTU KONTROL RESET MODULAR -->
       <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
         
-        <!-- STEP 1: PILIH TARGET SISWA -->
-        <div class="flex flex-col gap-2">
-          <span class="text-xs font-black uppercase text-slate-400 tracking-wider">Langkah 1: Target Pengguna</span>
+        <!-- STEP 1: PILIH KELOMPOK KEGIATAN & TARGET SISWA -->
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="text-xs font-black uppercase text-slate-400 tracking-wider">Langkah 1: Kategori &amp; Target Siswa</span>
+            <span class="text-[11px] font-bold text-slate-500">Pilih kelompok peserta agar tidak salah mereset</span>
+          </div>
+
+          <!-- SEGMENTED TABS: FIELD TRIP VS NON-FIELD TRIP -->
+          <div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-slate-100 border border-slate-200">
+            <button type="button" id="btnResetGroup_ft" onclick="switchResetGroupCategory('field_trip')" class="py-2.5 px-3 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs bg-amber-500 text-white cursor-pointer">
+              <span class="material-symbols-outlined text-base">directions_bus</span>
+              <span>🚌 Siswa Field Trip (455)</span>
+            </button>
+            <button type="button" id="btnResetGroup_non_ft" onclick="switchResetGroupCategory('non_field_trip')" class="py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all text-slate-700 hover:text-slate-900 hover:bg-white/60 cursor-pointer">
+              <span class="material-symbols-outlined text-base">school</span>
+              <span>🏫 Siswa Non-Field Trip (710)</span>
+            </button>
+          </div>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <label class="p-3 rounded-2xl border flex items-center gap-2.5 cursor-pointer transition-all has-[:checked]:border-[#0875D1] has-[:checked]:bg-blue-50/50 has-[:checked]:ring-1 has-[:checked]:ring-[#0875D1]">
               <input type="radio" name="resetTargetRadio" id="targetRadioSingle" value="single" checked onchange="switchResetTargetMode('single')" class="text-[#0875D1] focus:ring-0">
               <div class="flex flex-col">
                 <span class="text-xs sm:text-sm font-extrabold text-slate-800">Siswa Tertentu (Pilih Siswa)</span>
-                <span class="text-[11px] text-slate-500">Pilih satu siswa yang ingin dibersihkan datanya</span>
+                <span class="text-[11px] text-slate-500" id="resetSingleSubtext">Pilih satu siswa dari rombongan aktif</span>
               </div>
             </label>
 
             <label class="p-3 rounded-2xl border flex items-center gap-2.5 cursor-pointer transition-all has-[:checked]:border-red-500 has-[:checked]:bg-red-50/50 has-[:checked]:ring-1 has-[:checked]:ring-red-500">
               <input type="radio" name="resetTargetRadio" id="targetRadioAll" value="all" onchange="switchResetTargetMode('all')" class="text-red-600 focus:ring-0">
               <div class="flex flex-col">
-                <span class="text-xs sm:text-sm font-extrabold text-slate-800">Semua Siswa Sekaligus (1.165 Siswa)</span>
-                <span class="text-[11px] text-slate-500">Tindakan masal untuk seluruh peserta didik</span>
+                <span class="text-xs sm:text-sm font-extrabold text-slate-800" id="resetAllTitleText">Semua Siswa Field Trip Sekaligus</span>
+                <span class="text-[11px] text-slate-500" id="resetAllSubtext">Reset masal khusus untuk kelompok kategori yang aktif</span>
               </div>
             </label>
           </div>
@@ -1242,9 +1258,9 @@
         <div id="resetAllStudentsWarning" class="hidden p-3.5 rounded-2xl bg-red-50 border border-red-200 text-xs text-red-950 flex flex-col gap-1">
           <div class="flex items-center gap-1.5 font-bold text-red-900">
             <span class="material-symbols-outlined text-base text-red-600">warning</span>
-            <span>Target Masal Aktif: Seluruh 1.165 Siswa</span>
+            <span id="resetAllWarningTitle">Target Masal Aktif: Seluruh Siswa Field Trip (455 Peserta Didik)</span>
           </div>
-          <p class="leading-relaxed">Tindakan reset akan diterapkan ke seluruh rombongan belajar dan semua peserta didik. Perhatikan pilihan cakupan hari dan komponen yang Anda pilih di bawah.</p>
+          <p id="resetAllWarningDesc" class="leading-relaxed">Tindakan reset akan diterapkan ke seluruh peserta dalam kelompok ini. Perhatikan pilihan cakupan hari dan komponen yang Anda pilih di bawah.</p>
         </div>
 
         <!-- STEP 2: PILIH CAKUPAN HARI (SCOPE) -->
@@ -1270,7 +1286,7 @@
                   <span class="material-symbols-outlined text-sm text-[#0875D1]">date_range</span>
                   <span>Semua Hari (Day 0 s.d. Day 7)</span>
                 </span>
-                <span class="text-[11px] text-slate-500">Mereset data seluruh hari kegiatan secara menyeluruh</span>
+                <span class="text-[11px] text-slate-500">Mereset data seluruh hari kegiatan secara menyeluruh sampai bersih 100%</span>
               </div>
             </label>
           </div>
@@ -1281,13 +1297,21 @@
           <div class="flex items-center justify-between flex-wrap gap-1">
             <span class="text-xs font-black uppercase text-slate-400 tracking-wider">Langkah 3: Pilih Menu / Komponen yang Direset</span>
             <div class="flex items-center gap-2 text-xs">
-              <button type="button" onclick="setAllResetComponents(true)" class="text-[#0875D1] hover:underline font-bold text-[11px] cursor-pointer">Centang Semua</button>
+              <button type="button" onclick="setAllResetComponents(true)" class="text-[#0875D1] hover:underline font-bold text-[11px] cursor-pointer">Centang Semua (100% Bersih)</button>
               <span>&bull;</span>
               <button type="button" onclick="setTaskOnlyResetComponents()" class="text-[#0875D1] hover:underline font-bold text-[11px] cursor-pointer">Hanya LKPD &amp; Kuis</button>
             </div>
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <label class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 cursor-pointer hover:bg-amber-50/50">
+              <input type="checkbox" id="chkResetMateri" checked class="rounded border-slate-300 text-amber-600 focus:ring-0">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-base text-amber-600">menu_book</span>
+                <span class="font-bold text-slate-800">Modul Materi &amp; Resume Pemahaman</span>
+              </div>
+            </label>
+
             <label class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 cursor-pointer hover:bg-teal-50/50">
               <input type="checkbox" id="chkResetLkpd" checked class="rounded border-slate-300 text-teal-600 focus:ring-0">
               <div class="flex items-center gap-2">
@@ -1320,11 +1344,11 @@
               </div>
             </label>
 
-            <label id="boxResetFotoProfil" class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 cursor-pointer hover:bg-amber-50/50 sm:col-span-2">
+            <label id="boxResetFotoProfil" class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center gap-2.5 cursor-pointer hover:bg-amber-50/50">
               <input type="checkbox" id="chkResetFotoProfil" class="rounded border-slate-300 text-amber-600 focus:ring-0">
               <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-base text-amber-600">account_circle</span>
-                <span class="font-bold text-slate-800">Foto Profil Akun Siswa (Avatar Dikosongkan Kembali ke Bawaan)</span>
+                <span class="font-bold text-slate-800">Foto Profil Akun Siswa</span>
               </div>
             </label>
           </div>
@@ -3162,18 +3186,72 @@
        ======================================================== */
     let resetSelectedStudentNisn = null;
 
+    let currentResetGroupCategory = 'field_trip'; // 'field_trip' | 'non_field_trip'
+
     function initAdminResetView() {
+      switchResetGroupCategory(currentResetGroupCategory);
+    }
+
+    function switchResetGroupCategory(cat) {
+      currentResetGroupCategory = cat;
+      const btnFt = document.getElementById('btnResetGroup_ft');
+      const btnNonFt = document.getElementById('btnResetGroup_non_ft');
+      const allTitle = document.getElementById('resetAllTitleText');
+      const allSub = document.getElementById('resetAllSubtext');
+      const allWarnTitle = document.getElementById('resetAllWarningTitle');
+      const allWarnDesc = document.getElementById('resetAllWarningDesc');
+      const singleSub = document.getElementById('resetSingleSubtext');
+
+      if (cat === 'field_trip') {
+        if (btnFt) {
+          btnFt.className = 'py-2.5 px-3 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs bg-amber-500 text-white cursor-pointer';
+        }
+        if (btnNonFt) {
+          btnNonFt.className = 'py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all text-slate-700 hover:text-slate-900 hover:bg-white/60 cursor-pointer';
+        }
+        if (allTitle) allTitle.textContent = 'Semua Siswa Field Trip Sekaligus (455 Siswa)';
+        if (allSub) allSub.textContent = 'Hanya mereset 455 peserta Field Trip, peserta Non-Field Trip terlindungi';
+        if (allWarnTitle) allWarnTitle.textContent = 'Target Masal Aktif: Seluruh 455 Siswa Field Trip';
+        if (allWarnDesc) allWarnDesc.textContent = 'Tindakan reset masal akan diterapkan hanya pada 455 siswa kelompok Field Trip. Data 710 siswa Non-Field Trip tetap aman 100%.';
+        if (singleSub) singleSub.textContent = 'Pilih satu siswa dari daftar 455 peserta Field Trip';
+      } else {
+        if (btnFt) {
+          btnFt.className = 'py-2.5 px-3 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all text-slate-700 hover:text-slate-900 hover:bg-white/60 cursor-pointer';
+        }
+        if (btnNonFt) {
+          btnNonFt.className = 'py-2.5 px-3 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs bg-teal-600 text-white cursor-pointer';
+        }
+        if (allTitle) allTitle.textContent = 'Semua Siswa Non-Field Trip Sekaligus (710 Siswa)';
+        if (allSub) allSub.textContent = 'Hanya mereset 710 peserta Non-Field Trip, peserta Field Trip terlindungi';
+        if (allWarnTitle) allWarnTitle.textContent = 'Target Masal Aktif: Seluruh 710 Siswa Non-Field Trip';
+        if (allWarnDesc) allWarnDesc.textContent = 'Tindakan reset masal akan diterapkan hanya pada 710 siswa kelompok Non-Field Trip OKU Timur. Data 455 siswa Field Trip tetap aman 100%.';
+        if (singleSub) singleSub.textContent = 'Pilih satu siswa dari daftar 710 peserta Non-Field Trip';
+      }
+
       populateResetClassOptions();
       handleResetClassChange();
+    }
+
+    function getFilteredResetStudents() {
+      const list = window.FincestemMasterStudents || [];
+      return list.filter(s => {
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+          : (s.zone || 'FINCESTEM OKU TIMUR');
+        const zUpper = String(studentZone || '').toUpperCase();
+        const isFT = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+        return currentResetGroupCategory === 'field_trip' ? isFT : !isFT;
+      });
     }
 
     function populateResetClassOptions() {
       const select = document.getElementById('resetSelectClass');
       if (!select) return;
-      const list = window.FincestemMasterStudents || [];
-      const rombels = FincestemCore.sortClasses([...new Set(list.map(s => s.class))].filter(Boolean));
+      const filteredList = getFilteredResetStudents();
+      const rombels = FincestemCore.sortClasses([...new Set(filteredList.map(s => s.class))].filter(Boolean));
 
-      select.innerHTML = '<option value="">-- Semua Rombel (1.165 Siswa) --</option>';
+      const groupLabel = currentResetGroupCategory === 'field_trip' ? 'Field Trip (455 Siswa)' : 'Non-Field Trip (710 Siswa)';
+      select.innerHTML = `<option value="">-- Semua Rombel ${groupLabel} --</option>`;
       rombels.forEach(r => {
         const opt = document.createElement('option');
         opt.value = r;
@@ -3188,12 +3266,13 @@
       if (!studentSelect) return;
 
       const selectedClass = classSelect ? classSelect.value : '';
-      const list = window.FincestemMasterStudents || [];
+      const list = getFilteredResetStudents();
       const filtered = selectedClass 
         ? list.filter(s => s.class === selectedClass)
         : list;
 
-      studentSelect.innerHTML = '<option value="">-- Pilih Siswa (' + filtered.length + ' Siswa) --</option>';
+      const groupLabel = currentResetGroupCategory === 'field_trip' ? 'Field Trip' : 'Non-Field Trip';
+      studentSelect.innerHTML = `<option value="">-- Pilih Siswa ${groupLabel} (${filtered.length} Siswa) --</option>`;
       filtered.sort((a, b) => a.nama.localeCompare(b.nama)).forEach(s => {
         const opt = document.createElement('option');
         opt.value = s.nisn;
@@ -3224,8 +3303,15 @@
       const s = list.find(item => String(item.nisn).trim() === String(nisn).trim());
       if (!s) return;
 
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+        : (s.zone || 'FINCESTEM OKU TIMUR');
+      const zUpper = String(studentZone || '').toUpperCase();
+      const isFT = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+      const catBadge = isFT ? '🚌 FIELD TRIP' : '🏫 NON-FIELD TRIP';
+
       document.getElementById('resetCardStudentName').textContent = s.nama;
-      document.getElementById('resetCardStudentMeta').textContent = `NISN: ${s.nisn} • ${s.class} • ${s.gender === 'L' ? 'Laki-Laki' : 'Perempuan'}`;
+      document.getElementById('resetCardStudentMeta').textContent = `NISN: ${s.nisn} • ${s.class} • ${catBadge}`;
 
       // Tampilkan foto profil di kartu reset jika ada
       const studentPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(s.nisn)) || s.photo_url;
@@ -3299,18 +3385,20 @@
     }
 
     function setAllResetComponents(checked) {
-      ['chkResetLkpd', 'chkResetAsesmen', 'chkResetRefleksi', 'chkResetDokumentasi', 'chkResetFotoProfil'].forEach(id => {
+      ['chkResetMateri', 'chkResetLkpd', 'chkResetAsesmen', 'chkResetRefleksi', 'chkResetDokumentasi', 'chkResetFotoProfil'].forEach(id => {
         const el = document.getElementById(id);
         if (el && !el.disabled) el.checked = !!checked;
       });
     }
 
     function setTaskOnlyResetComponents() {
+      const materi = document.getElementById('chkResetMateri');
       const lkpd = document.getElementById('chkResetLkpd');
       const asesmen = document.getElementById('chkResetAsesmen');
       const refleksi = document.getElementById('chkResetRefleksi');
       const dok = document.getElementById('chkResetDokumentasi');
       const photo = document.getElementById('chkResetFotoProfil');
+      if (materi) materi.checked = true;
       if (lkpd) lkpd.checked = true;
       if (asesmen) asesmen.checked = true;
       if (refleksi) refleksi.checked = false;
@@ -3337,6 +3425,7 @@
       let scope = 'trial_only';
       let targetDay = 0;
       let comp = {
+        materi: true,
         lkpd: true,
         asesmen: true,
         refleksi: true,
@@ -3348,6 +3437,7 @@
         scope = 'trial_only';
         targetDay = 0;
         comp = {
+          materi: true,
           lkpd: true,
           asesmen: true,
           refleksi: true,
@@ -3358,6 +3448,7 @@
         scope = 'all_days';
         targetDay = -1;
         comp = {
+          materi: true,
           lkpd: true,
           asesmen: true,
           refleksi: true,
@@ -3369,6 +3460,7 @@
         scope = isTrialScope ? 'trial_only' : 'all_days';
         targetDay = isTrialScope ? 0 : -1;
         comp = {
+          materi: !!document.getElementById('chkResetMateri')?.checked,
           lkpd: !!document.getElementById('chkResetLkpd')?.checked,
           asesmen: !!document.getElementById('chkResetAsesmen')?.checked,
           refleksi: !!document.getElementById('chkResetRefleksi')?.checked,
@@ -3378,6 +3470,7 @@
       }
 
       const activeComps = [];
+      if (comp.materi) activeComps.push('Modul Materi/Resume');
       if (comp.lkpd) activeComps.push('LKPD');
       if (comp.asesmen) activeComps.push('Asesmen/Kuis');
       if (comp.refleksi) activeComps.push('Refleksi');
@@ -3389,13 +3482,15 @@
         return;
       }
 
-      const scopeText = (scope === 'trial_only' || targetDay === 0) ? 'Khusus Day Uji Coba (Day 0: Gladi Bersih)' : 'Semua Hari (Day 0 - Day 7)';
-      const targetText = isSingle ? `Siswa "${targetStudentName}" (NISN: ${resetSelectedStudentNisn})` : 'SEMUA SISWA (1.165 Peserta Didik)';
+      const scopeText = (scope === 'trial_only' || targetDay === 0) ? 'Khusus Day Uji Coba (Day 0: Gladi Bersih)' : 'Semua Hari (Day 0 - Day 7 Sampai Bersih Total)';
+      const groupLabel = currentResetGroupCategory === 'field_trip' ? 'Siswa Field Trip (455 Peserta)' : 'Siswa Non-Field Trip (710 Peserta)';
+      const targetText = isSingle ? `Siswa "${targetStudentName}" (NISN: ${resetSelectedStudentNisn})` : `SELURUH ${groupLabel.toUpperCase()}`;
 
       const confirmMsg = `KONFIRMASI RESET DATA:\n\n` +
         `• Target: ${targetText}\n` +
         `• Cakupan: ${scopeText}\n` +
         `• Komponen Direset: ${activeComps.join(', ')}\n\n` +
+        `Data akan dibersihkan sampai bersih total (termasuk resume pemahaman modul, jawaban, kuis, dan cache lokal).\n\n` +
         `Apakah Anda yakin ingin melanjutkan tindakan reset ini?`;
 
       if (!confirm(confirmMsg)) return;
@@ -3410,17 +3505,41 @@
 
       if (isSingle) {
         FincestemCore.progress.resetStudent(resetSelectedStudentNisn, resetOptions, function(res) {
-          FincestemCore.ui.toast(res.message || 'Data siswa berhasil di-reset sesuai pilihan!', 'success');
+          FincestemCore.ui.toast(res.message || 'Data siswa berhasil di-reset sampai bersih total!', 'success');
           if (comp.foto_profil && targetStudentObj) targetStudentObj.photo_url = '';
           handleResetStudentSelected();
           if (comp.dokumentasi) renderAdminGallery();
         });
       } else {
-        FincestemCore.progress.resetAllStudents(resetOptions, function(res) {
-          FincestemCore.ui.toast(res.message || 'Seluruh data siswa berhasil di-reset sesuai pilihan!', 'success');
-          if (resetSelectedStudentNisn) handleResetStudentSelected();
-          if (comp.dokumentasi) renderAdminGallery();
-        });
+        // Reset masal khusus siswa dalam kategori aktif
+        const studentsInGroup = getFilteredResetStudents();
+        const nisnList = studentsInGroup.map(s => String(s.nisn).trim());
+        
+        // Eksekusi per-siswa untuk grup aktif agar tidak mengenai grup lainnya
+        let completed = 0;
+        const total = nisnList.length;
+        if (total === 0) {
+          FincestemCore.ui.toast('Tidak ada siswa dalam kategori ini.', 'warning');
+          return;
+        }
+
+        FincestemCore.ui.toast(`Memproses reset masal untuk ${total} siswa...`, 'info');
+        
+        let idx = 0;
+        function processNext() {
+          if (idx >= total) {
+            FincestemCore.ui.toast(`Reset masal selesai! Sebanyak ${total} data siswa ${groupLabel} berhasil dibersihkan.`, 'success');
+            if (resetSelectedStudentNisn) handleResetStudentSelected();
+            if (comp.dokumentasi) renderAdminGallery();
+            return;
+          }
+          const currNisn = nisnList[idx++];
+          FincestemCore.progress.resetStudent(currNisn, resetOptions, () => {
+            completed++;
+            processNext();
+          });
+        }
+        processNext();
       }
     }
 

@@ -1131,6 +1131,26 @@
         }
       }
 
+      // Deteksi & Validasi Google Tagging GPS Lokasi OKU Timur
+      let isInsideOKUTimur = true;
+      let parsedLat = null;
+      let parsedLng = null;
+      if (gpsLocation) {
+        const coordMatch = gpsLocation.match(/(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/);
+        if (coordMatch) {
+          parsedLat = parseFloat(coordMatch[1]);
+          parsedLng = parseFloat(coordMatch[2]);
+          // Bounding Box Wilayah OKU Timur: Lat: -4.50 s.d. -3.55, Lng: 104.20 s.d. 105.20
+          const okutMinLat = -4.55;
+          const okutMaxLat = -3.50;
+          const okutMinLng = 104.15;
+          const okutMaxLng = 105.25;
+          if (parsedLat < okutMinLat || parsedLat > okutMaxLat || parsedLng < okutMinLng || parsedLng > okutMaxLng) {
+            isInsideOKUTimur = false;
+          }
+        }
+      }
+
       // 4. Kalkulasi Rekomendasi Bintang (1 - 5) & Pinalti
       let recommendedStars = 5;
       const penalties = [];
@@ -1148,13 +1168,21 @@
         penalties.push({
           item: 'Foto Tidak Ada Google Tagging / GPS',
           severity: 'critical',
-          desc: 'Foto tidak terdeteksi koordinat GPS Google Tagging. Sistem merekomendasikan Pinalti Bintang 1.'
+          desc: 'Foto tidak terdeteksi koordinat GPS Google Tagging. Sistem otomatis memberikan Rekomendasi Bintang 1 (⭐☆☆☆☆).'
+        });
+        recommendedStars = 1;
+      } else if (!isInsideOKUTimur) {
+        // ATURAN SPESIFIK: Terdeteksi di luar OKU Timur -> Rekomendasi Bintang 1
+        penalties.push({
+          item: 'Koordinat GPS di Luar OKU Timur',
+          severity: 'critical',
+          desc: `Titik GPS (${gpsLocation}) terdeteksi di luar wilayah Kabupaten OKU Timur. Peserta Non-Field Trip wajib berkegiatan di wilayah OKU Timur. Sistem otomatis memberikan Rekomendasi Bintang 1 (⭐☆☆☆☆).`
         });
         recommendedStars = 1;
       } else {
         passes.push({
-          item: 'Google Tagging / GPS Terverifikasi',
-          desc: gpsLocation ? `Koordinat: ${gpsLocation}` : 'Metadata stempel Google Tagging GPS valid.'
+          item: 'Google Tagging / GPS OKU Timur Valid',
+          desc: gpsLocation ? `Titik riset terverifikasi di wilayah OKU Timur (${gpsLocation})` : 'Metadata stempel Google Tagging GPS valid di zona riset.'
         });
       }
 

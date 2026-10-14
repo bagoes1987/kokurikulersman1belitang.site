@@ -43,6 +43,15 @@
       .pt-safe {
         padding-top: env(safe-area-inset-top, 0px);
       }
+      .text-justify {
+        text-align: justify;
+        text-justify: inter-word;
+        hyphens: auto;
+      }
+      .card-readable {
+        letter-spacing: -0.01em;
+        line-height: 1.65;
+      }
     }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -350,10 +359,10 @@
             <div class="w-10 h-10 rounded-2xl bg-amber-500/15 text-amber-700 flex items-center justify-center font-black text-base shrink-0">1</div>
             <h3 class="font-extrabold text-base text-on-surface">Mindset Finansial: Hari Pertama Bukan Ajang Boros</h3>
           </div>
-          <p class="text-sm text-on-surface-variant leading-relaxed">
+          <p class="text-sm text-on-surface-variant leading-relaxed text-justify card-readable">
             Perjalanan 7 hari melintasi 5 kota (Semarang, Batu, Bromo, Yogyakarta) adalah perjalanan panjang. Godaan terbesar di Hari Pertama adalah rasa lapar mata (<em>impulse buying</em>) saat bus berhenti di rest area jalan tol atau saat berada di atas kapal ferry.
           </p>
-          <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-xs sm:text-sm text-amber-950 flex flex-col gap-1 leading-relaxed">
+          <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-xs sm:text-sm text-amber-950 flex flex-col gap-1 leading-relaxed text-justify">
             <strong>💡 Ingat Prinsip Utama:</strong>
             <span>Makan utama 3 kali sehari sudah disiapkan biro perjalanan. Uang saku yang Anda bawa bukan untuk membeli makanan berat tambahan, melainkan untuk bekal darurat, oleh-oleh keluarga, dan tabungan sisa.</span>
           </div>
@@ -368,22 +377,22 @@
 
           <!-- Pengertian Konseptual -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
-            <div class="p-4 rounded-2xl bg-emerald-50/90 border border-emerald-200/90 text-emerald-950 flex flex-col gap-1.5">
+            <div class="p-4 rounded-2xl bg-emerald-50/90 border border-emerald-200/90 text-emerald-950 flex flex-col gap-1.5 shadow-2xs">
               <span class="font-black text-emerald-800 text-sm flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-lg text-emerald-600">verified</span>
                 Pengertian Kebutuhan (Needs)
               </span>
-              <p class="leading-relaxed text-emerald-900/90 text-xs">
+              <p class="leading-relaxed text-emerald-900/90 text-xs text-justify card-readable">
                 Segala hal <strong>esensial dan mutlak diperlukan</strong> untuk kelangsungan hidup, kesehatan jasmani, keselamatan diri, serta kelancaran proses belajar/tugas. Jika kebutuhan ini tidak terpenuhi, akan timbul dampak negatif fatal atau mengganggu aktivitas pokok (misalnya: sakit, dehidrasi, kelaparan, atau terisolasi komunikasi).
               </p>
             </div>
 
-            <div class="p-4 rounded-2xl bg-rose-50/90 border border-rose-200/90 text-rose-950 flex flex-col gap-1.5">
+            <div class="p-4 rounded-2xl bg-rose-50/90 border border-rose-200/90 text-rose-950 flex flex-col gap-1.5 shadow-2xs">
               <span class="font-black text-rose-800 text-sm flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-lg text-rose-600">do_not_disturb_on</span>
                 Pengertian Keinginan (Wants)
               </span>
-              <p class="leading-relaxed text-rose-900/90 text-xs">
+              <p class="leading-relaxed text-rose-900/90 text-xs text-justify card-readable">
                 Segala hasrat, preferensi selera pribadi, atau dorongan emosional tambahan yang sifatnya <strong>memuaskan kesenangan sesaat, gengsi pergaulan, atau tren</strong>. Jika keinginan ini tidak terpenuhi, kelangsungan hidup, kesehatan, dan keberhasilan kegiatan belajar tetap berlangsung aman dan normal tanpa gangguan berarti.
               </p>
             </div>
@@ -562,21 +571,55 @@
         if (stored) saved = JSON.parse(stored);
       } catch (e) {}
 
-      // Jika belum ada di local key, periksa task_map
-      if (!saved && FincestemCore.progress) {
+      if (saved && saved.conclusion) {
+        applyMateriConclusionState(saved.conclusion, saved.savedAt);
+      }
+
+      // Selalu verifikasi status server: jika server sudah di-reset (tidak ada '1_materi'), bersihkan local state
+      if (FincestemCore.progress) {
         FincestemCore.progress.getStudentProgress(nisn, function(prog) {
-          if (prog && prog.task_map && prog.task_map['1_materi']) {
-            const task = prog.task_map['1_materi'];
-            const content = typeof task.content === 'object' ? (task.content.conclusion || '') : (task.content || '');
-            if (content) {
-              applyMateriConclusionState(content, task.submitted_at || 'Tersimpan di server');
+          if (prog && prog.task_map) {
+            if (prog.task_map['1_materi']) {
+              const task = prog.task_map['1_materi'];
+              const content = typeof task.content === 'object' ? (task.content.conclusion || '') : (task.content || '');
+              if (content) {
+                applyMateriConclusionState(content, task.submitted_at || 'Tersimpan di server');
+              }
+            } else {
+              // Server kosong / baru saja di-reset oleh Admin!
+              try {
+                localStorage.removeItem('fincestem_materi_ft_day1_' + nisn);
+              } catch (e) {}
+              const txtArea = document.getElementById('ftMateriConclusion');
+              if (txtArea) txtArea.value = '';
+              const badge = document.getElementById('ftMateriStatusBadge');
+              if (badge) {
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+                badge.textContent = 'Wajib Disimpan (Tahap 1)';
+              }
+              const savedTimeEl = document.getElementById('ftMateriSavedTime');
+              if (savedTimeEl) savedTimeEl.textContent = 'Belum disimpan';
+              const btnSaveText = document.getElementById('btnSaveMateriText');
+              if (btnSaveText) btnSaveText.textContent = 'Simpan Kesimpulan & Buka LKPD';
+              const lockIcon = document.getElementById('ftLkpdLockIcon');
+              if (lockIcon) {
+                lockIcon.textContent = 'lock';
+                lockIcon.className = 'material-symbols-outlined text-amber-200 text-xl';
+              }
+              const lockTitle = document.getElementById('ftLkpdLockTitle');
+              if (lockTitle) lockTitle.textContent = 'Tahap 2: LKPD Budgeting Day 1';
+              const lockDesc = document.getElementById('ftLkpdLockDesc');
+              if (lockDesc) lockDesc.textContent = 'Selesaikan dan simpan kesimpulan modul di atas terlebih dahulu untuk membuka akses LKPD.';
+              const btnGo = document.getElementById('btnGoToLkpd');
+              if (btnGo) {
+                btnGo.className = 'px-5 py-3 rounded-2xl bg-white/40 text-white font-black text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-not-allowed opacity-60';
+                btnGo.onclick = function() { handleGoToLkpd(); };
+              }
+              const btnGoText = document.getElementById('btnGoToLkpdText');
+              if (btnGoText) btnGoText.textContent = 'LKPD Terkunci';
             }
           }
         });
-      }
-
-      if (saved && saved.conclusion) {
-        applyMateriConclusionState(saved.conclusion, saved.savedAt);
       }
     }
 
@@ -771,26 +814,26 @@
           </div>
 
           <!-- Poin 1.1 -->
-          <div class="p-4 rounded-2xl bg-blue-50/60 border border-blue-200/80 flex flex-col gap-2">
+          <div class="p-4 rounded-2xl bg-blue-50/60 border border-blue-200/80 flex flex-col gap-2 shadow-2xs">
             <h4 class="font-black text-sm text-blue-950 flex items-center gap-1.5">
               <span class="material-symbols-outlined text-base text-blue-700">stars</span>
               <span>1. Kawah Candradimuka Perwira Kepolisian</span>
             </h4>
-            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify card-readable">
               Akademi Kepolisian (AKPOL) yang berlokasi di Candi Baru, Semarang, merupakan unsur pelaksana pendidikan pembentukan perwira Polri tingkat sarjana terapan kepolisian. Di tempat inilah calon-calon pemimpin Polri dari seluruh penjuru tanah air ditempa fisik, mental, intelektual, dan integritas moralnya selama 4 tahun pendidikan.
             </p>
           </div>
 
           <!-- Poin 1.2 -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2 shadow-2xs">
             <h4 class="font-black text-sm text-slate-900 flex items-center gap-1.5">
               <span class="material-symbols-outlined text-base text-blue-600">schedule</span>
               <span>2. Nilai Kedisiplinan &amp; Manajemen Waktu Taruna</span>
             </h4>
-            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify card-readable">
               Kehidupan taruna AKPOL diatur dengan standar presisi waktu yang sangat ketat (*military time management*):
             </p>
-            <ul class="list-disc list-inside text-xs sm:text-sm text-slate-700 space-y-1 pl-1">
+            <ul class="list-disc list-inside text-xs sm:text-sm text-slate-700 space-y-1 pl-1 text-justify card-readable">
               <li><strong>Ketepatan Waktu:</strong> Bangun pagi pukul 04.00, ibadah, olahraga pagi, kerapian seragam tanpa cela, hingga jam malam.</li>
               <li><strong>Etika &amp; Doktrin Moral:</strong> Berpedoman pada <em>Tribrata</em> (tiga janji pengabdian) dan <em>Catur Prasetya</em> (empat ikrar kehormatan insan Bhayangkara).</li>
               <li><strong>Baris-Berbaris &amp; Kekompakan:</strong> Melatih keselarasan gerak, rasa kebersamaan, dan kepatuhan terhadap perintah pimpinan demi menjaga kehormatan korps.</li>
@@ -798,12 +841,12 @@
           </div>
 
           <!-- Poin 1.3 -->
-          <div class="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-200/80 flex flex-col gap-2">
+          <div class="p-4 rounded-2xl bg-indigo-50/60 border border-indigo-200/80 flex flex-col gap-2 shadow-2xs">
             <h4 class="font-black text-sm text-indigo-950 flex items-center gap-1.5">
               <span class="material-symbols-outlined text-base text-indigo-600">school</span>
               <span>3. Wawasan Studi Lanjut &amp; Seleksi Kedinasan</span>
             </h4>
-            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify card-readable">
               Bagi siswa SMA, kunjungan ke AKPOL memberikan motivasi nyata bahwa menjadi perwira membutuhkan persiapan holistik sejak dini: prestasi akademik, kesehatan jasmani, kemampuan psikotes, integritas bebas suap (prinsip <em>BETAH</em>: Bersih, Transparan, Akuntabel, dan Humanis), serta rekam jejak kepribadian yang luhur.
             </p>
           </div>
@@ -822,26 +865,26 @@
           </div>
 
           <!-- Poin 2.1 -->
-          <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 flex flex-col gap-2">
+          <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200/80 flex flex-col gap-2 shadow-2xs">
             <h4 class="font-black text-sm text-amber-950 flex items-center gap-1.5">
               <span class="material-symbols-outlined text-base text-amber-700">train</span>
               <span>1. Kantor Pusat NIS &amp; Tonggak Kereta Api Indonesia</span>
             </h4>
-            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify card-readable">
               Gedung Lawang Sewu dirancang oleh arsitek Belanda ternama Prof. Jakob F. Klinkhamer dan B.J. Ouëndag, mulai dibangun tahun 1904 sebagai kantor administrasi pusat perusahaan kereta api pertama di Hindia Belanda, yaitu <em>Nederlandsch-Indische Spoorweg Maatschappij</em> (NIS). Kehadirannya menandai era modernisasi transportasi logistik dan hasil bumi di Pulau Jawa.
             </p>
           </div>
 
           <!-- Poin 2.2 -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2 shadow-2xs">
             <h4 class="font-black text-sm text-slate-900 flex items-center gap-1.5">
               <span class="material-symbols-outlined text-base text-amber-600">thermostat</span>
               <span>2. STEM Arsitektur: Pendinginan Pasif Alami Tanpa AC</span>
             </h4>
-            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify card-readable">
               Meskipun dikunjungi pada terik siang hari (13.00 WIB), ruangan Lawang Sewu tetap terasa teduh berkat kecerdasan rekayasa fisika bangunan kolonial tropis:
             </p>
-            <ul class="list-disc list-inside text-xs sm:text-sm text-slate-700 space-y-1.5 pl-1">
+            <ul class="list-disc list-inside text-xs sm:text-sm text-slate-700 space-y-1.5 pl-1 text-justify card-readable">
               <li><strong>Sistem Ventilasi Silang (Cross-Ventilation):</strong> Pintu dan jendela berdaun ganda yang sangat banyak (terdapat 429 pintu dan ribuan daun jendela/bouvenlicht) dirancang berhadapan lurus agar angin mengalir bebas tanpa hambatan.</li>
               <li><strong>Plafon Sangat Tinggi &amp; Dinding Tebal:</strong> Langit-langit setinggi lebih dari 4 meter menciptakan ruang udara panas naik ke atas (*efek cerobong alami*), sementara ketebalan dinding bata meredam penyerapan panas matahari siang.</li>
               <li><strong>Ruang Bawah Tanah Penyejuk (Cooling Basement):</strong> Lorong bawah tanah yang dahulunya dialiri air berfungsi sebagai penyejuk termal alami sebelum udara didistribusikan ke lantai atas.</li>
@@ -850,12 +893,12 @@
           </div>
 
           <!-- Poin 2.3 -->
-          <div class="p-4 rounded-2xl bg-rose-50/60 border border-rose-200/80 flex flex-col gap-2">
+          <div class="p-4 rounded-2xl bg-rose-50/60 border border-rose-200/80 flex flex-col gap-2 shadow-2xs">
             <h4 class="font-black text-sm text-rose-950 flex items-center gap-1.5">
               <span class="material-symbols-outlined text-base text-rose-600">flag</span>
               <span>3. Saksi Heroik: Pertempuran Lima Hari di Semarang</span>
             </h4>
-            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify card-readable">
               Pada tanggal 14 s.d. 19 Oktober 1945, gedung Lawang Sewu menjadi benteng pertempuran sengit antara pemuda Angkatan Muda Kereta Api (AMKA) melawan pasukan tentara Jepang Kidō Butai. Banyak pemuda gugur demi mempertahankan kedaulatan kemerdekaan Indonesia, yang kini diabadikan melalui monumen Tugu Muda di seberang gedung.
             </p>
           </div>
@@ -971,20 +1014,53 @@
         if (stored) saved = JSON.parse(stored);
       } catch (e) {}
 
-      if (!saved && FincestemCore.progress) {
+      if (saved && saved.conclusion) {
+        applyMateriConclusionStateDay2(saved.conclusion, saved.savedAt);
+      }
+
+      if (FincestemCore.progress) {
         FincestemCore.progress.getStudentProgress(nisn, function(prog) {
-          if (prog && prog.task_map && prog.task_map['2_materi']) {
-            const task = prog.task_map['2_materi'];
-            const content = typeof task.content === 'object' ? (task.content.conclusion || '') : (task.content || '');
-            if (content) {
-              applyMateriConclusionStateDay2(content, task.submitted_at || 'Tersimpan di server');
+          if (prog && prog.task_map) {
+            if (prog.task_map['2_materi']) {
+              const task = prog.task_map['2_materi'];
+              const content = typeof task.content === 'object' ? (task.content.conclusion || '') : (task.content || '');
+              if (content) {
+                applyMateriConclusionStateDay2(content, task.submitted_at || 'Tersimpan di server');
+              }
+            } else {
+              try {
+                localStorage.removeItem('fincestem_materi_ft_day2_' + nisn);
+              } catch (e) {}
+              const txtArea = document.getElementById('ftMateriConclusionDay2');
+              if (txtArea) txtArea.value = '';
+              const badge = document.getElementById('ftMateriStatusBadgeDay2');
+              if (badge) {
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+                badge.textContent = 'Wajib Disimpan (Tahap 1)';
+              }
+              const savedTimeEl = document.getElementById('ftMateriSavedTimeDay2');
+              if (savedTimeEl) savedTimeEl.textContent = 'Belum disimpan';
+              const btnSaveText = document.getElementById('btnSaveMateriTextDay2');
+              if (btnSaveText) btnSaveText.textContent = 'Simpan Kesimpulan & Buka LKPD';
+              const lockIcon = document.getElementById('ftLkpdLockIconDay2');
+              if (lockIcon) {
+                lockIcon.textContent = 'lock';
+                lockIcon.className = 'material-symbols-outlined text-amber-200 text-xl';
+              }
+              const lockTitle = document.getElementById('ftLkpdLockTitleDay2');
+              if (lockTitle) lockTitle.textContent = 'Tahap 2: LKPD Digital Day 2';
+              const lockDesc = document.getElementById('ftLkpdLockDescDay2');
+              if (lockDesc) lockDesc.textContent = 'Selesaikan dan simpan kesimpulan modul di atas terlebih dahulu untuk membuka akses LKPD.';
+              const btnGo = document.getElementById('btnGoToLkpdDay2');
+              if (btnGo) {
+                btnGo.className = 'px-5 py-3 rounded-2xl bg-white/40 text-white font-black text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-not-allowed opacity-60';
+                btnGo.onclick = function() { handleGoToLkpdDay2(); };
+              }
+              const btnGoText = document.getElementById('btnGoToLkpdTextDay2');
+              if (btnGoText) btnGoText.textContent = 'LKPD Terkunci';
             }
           }
         });
-      }
-
-      if (saved && saved.conclusion) {
-        applyMateriConclusionStateDay2(saved.conclusion, saved.savedAt);
       }
     }
 
@@ -1259,6 +1335,68 @@
           </button>
         </div>
       `;
+
+      checkInitialMateriConclusionGeneric(dayNum);
+    }
+
+    function checkInitialMateriConclusionGeneric(dayNum) {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      let saved = null;
+      try {
+        const stored = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + nisn);
+        if (stored) saved = JSON.parse(stored);
+      } catch (e) {}
+
+      if (saved && saved.conclusion) {
+        applyMateriConclusionStateGeneric(dayNum, saved.conclusion, saved.savedAt);
+      }
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+          if (prog && prog.task_map) {
+            const taskKey = dayNum + '_materi';
+            if (prog.task_map[taskKey]) {
+              const task = prog.task_map[taskKey];
+              const content = typeof task.content === 'object' ? (task.content.conclusion || '') : (task.content || '');
+              if (content) {
+                applyMateriConclusionStateGeneric(dayNum, content, task.submitted_at || 'Tersimpan di server');
+              }
+            } else {
+              try {
+                localStorage.removeItem(`fincestem_materi_ft_day${dayNum}_` + nisn);
+              } catch (e) {}
+              const txtArea = document.getElementById('ftMateriConclusionGeneric');
+              if (txtArea) txtArea.value = '';
+              const badge = document.getElementById('ftMateriStatusBadgeGeneric');
+              if (badge) {
+                badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+                badge.textContent = 'Wajib Disimpan (Tahap 1)';
+              }
+              const savedTimeEl = document.getElementById('ftMateriSavedTimeGeneric');
+              if (savedTimeEl) savedTimeEl.textContent = 'Belum disimpan';
+              const btnSaveText = document.getElementById('btnSaveMateriTextGeneric');
+              if (btnSaveText) btnSaveText.textContent = 'Simpan Kesimpulan & Buka LKPD';
+              const lockIcon = document.getElementById('ftLkpdLockIconGeneric');
+              if (lockIcon) {
+                lockIcon.textContent = 'lock';
+                lockIcon.className = 'material-symbols-outlined text-amber-200 text-xl';
+              }
+              const lockTitle = document.getElementById('ftLkpdLockTitleGeneric');
+              if (lockTitle) lockTitle.textContent = `Tahap 2: LKPD Digital Day ${dayNum}`;
+              const lockDesc = document.getElementById('ftLkpdLockDescGeneric');
+              if (lockDesc) lockDesc.textContent = 'Simpan kesimpulan modul di atas untuk membuka LKPD Digital ini.';
+              const btnGo = document.getElementById('btnGoToLkpdGeneric');
+              if (btnGo) {
+                btnGo.className = 'w-full sm:w-auto px-5 py-3 rounded-2xl bg-white/20 text-white hover:bg-white/30 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer';
+                btnGo.onclick = function() { handleGoToLkpdGeneric(dayNum); };
+              }
+              const btnGoText = document.getElementById('btnGoToLkpdTextGeneric');
+              if (btnGoText) btnGoText.textContent = 'LKPD Masih Terkunci';
+            }
+          }
+        });
+      }
     }
 
     function saveMateriConclusionGeneric(dayNum) {

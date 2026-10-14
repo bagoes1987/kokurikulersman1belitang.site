@@ -270,6 +270,7 @@ if ($method === 'POST') {
             }
 
             $comp = $input['components'] ?? [
+                'materi'      => true,
                 'lkpd'        => true,
                 'asesmen'     => true,
                 'refleksi'    => true,
@@ -277,6 +278,7 @@ if ($method === 'POST') {
                 'foto_profil' => ($scope !== 'trial_only')
             ];
 
+            $resetMateri = !empty($comp['materi']);
             $resetLkpd = !empty($comp['lkpd']);
             $resetAsesmen = !empty($comp['asesmen']);
             $resetRefleksi = !empty($comp['refleksi']);
@@ -285,6 +287,7 @@ if ($method === 'POST') {
 
             // 1. Hapus dari student_progress_eval sesuai filter komponen & hari
             $taskTypes = [];
+            if ($resetMateri) $taskTypes[] = "'materi'";
             if ($resetLkpd) $taskTypes[] = "'lkpd'";
             if ($resetAsesmen) $taskTypes[] = "'asesmen'";
             if ($resetRefleksi) $taskTypes[] = "'refleksi'";
@@ -403,6 +406,7 @@ if ($method === 'POST') {
             }
 
             $comp = $input['components'] ?? [
+                'materi'      => true,
                 'lkpd'        => true,
                 'asesmen'     => true,
                 'refleksi'    => true,
@@ -410,6 +414,7 @@ if ($method === 'POST') {
                 'foto_profil' => ($scope !== 'trial_only')
             ];
 
+            $resetMateri = !empty($comp['materi']);
             $resetLkpd = !empty($comp['lkpd']);
             $resetAsesmen = !empty($comp['asesmen']);
             $resetRefleksi = !empty($comp['refleksi']);
@@ -418,6 +423,7 @@ if ($method === 'POST') {
 
             // 1. student_progress_eval
             $taskTypes = [];
+            if ($resetMateri) $taskTypes[] = "'materi'";
             if ($resetLkpd) $taskTypes[] = "'lkpd'";
             if ($resetAsesmen) $taskTypes[] = "'asesmen'";
             if ($resetRefleksi) $taskTypes[] = "'refleksi'";

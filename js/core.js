@@ -1259,6 +1259,7 @@ const FincestemCore = {
       const scope = opts.scope || 'all_days';
       const targetDay = (opts.target_day !== undefined) ? parseInt(opts.target_day) : (scope === 'trial_only' ? 0 : -1);
       const comp = opts.components || {
+        materi: true,
         lkpd: true,
         asesmen: true,
         refleksi: true,
@@ -1286,7 +1287,9 @@ const FincestemCore = {
         const storedProg = localStorage.getItem(progKey);
         if (storedProg) {
           const p = JSON.parse(storedProg);
-          if (p.task_map) {
+          if (scope === 'all_days' && comp.materi && comp.lkpd && comp.asesmen && comp.refleksi && comp.dokumentasi) {
+            localStorage.removeItem(progKey);
+          } else if (p.task_map) {
             Object.keys(p.task_map).forEach(k => {
               const parts = k.split('_');
               const dNum = parseInt(parts[0]);
@@ -1294,6 +1297,7 @@ const FincestemCore = {
 
               const matchesDay = (targetDay === -1) || (targetDay === dNum);
               let matchesComp = false;
+              if (tType === 'materi' && comp.materi) matchesComp = true;
               if (tType === 'lkpd' && comp.lkpd) matchesComp = true;
               if (tType === 'asesmen' && comp.asesmen) matchesComp = true;
               if (tType === 'refleksi' && comp.refleksi) matchesComp = true;
@@ -1314,9 +1318,31 @@ const FincestemCore = {
           }
         }
 
-        if (comp.lkpd && scope === 'all_days') {
-          localStorage.removeItem('fincestem_lkpd_' + cleanNisn);
-        }
+        // Purge individual day task keys for this student
+        const dayList = (targetDay === 0) ? [0] : ((targetDay > 0) ? [targetDay] : [0, 1, 2, 3, 4, 5, 6, 7]);
+        dayList.forEach(d => {
+          if (comp.materi) {
+            localStorage.removeItem(`fincestem_materi_ft_day${d}_` + cleanNisn);
+            localStorage.removeItem(`fincestem_materi_day${d}_` + cleanNisn);
+          }
+          if (comp.lkpd) {
+            localStorage.removeItem(`fincestem_lkpd_ft_day${d}_` + cleanNisn);
+            localStorage.removeItem(`fincestem_lkpd_day${d}_` + cleanNisn);
+            localStorage.removeItem('fincestem_lkpd_' + cleanNisn);
+          }
+          if (comp.asesmen) {
+            localStorage.removeItem(`fincestem_asesmen_ft_day${d}_` + cleanNisn);
+            localStorage.removeItem(`fincestem_asesmen_day${d}_` + cleanNisn);
+          }
+          if (comp.dokumentasi) {
+            localStorage.removeItem(`fincestem_dok_ft_day${d}_` + cleanNisn);
+            localStorage.removeItem(`fincestem_dok_day${d}_` + cleanNisn);
+          }
+          if (comp.refleksi) {
+            localStorage.removeItem(`fincestem_refleksi_ft_day${d}_` + cleanNisn);
+            localStorage.removeItem(`fincestem_refleksi_day${d}_` + cleanNisn);
+          }
+        });
 
         if (comp.dokumentasi) {
           const stored = localStorage.getItem('fincestem_db_2026_v1');
@@ -1378,6 +1404,7 @@ const FincestemCore = {
       const scope = opts.scope || 'all_days';
       const targetDay = (opts.target_day !== undefined) ? parseInt(opts.target_day) : (scope === 'trial_only' ? 0 : -1);
       const comp = opts.components || {
+        materi: true,
         lkpd: true,
         asesmen: true,
         refleksi: true,
@@ -1411,7 +1438,7 @@ const FincestemCore = {
             const stored = localStorage.getItem(k);
             if (stored) {
               const p = JSON.parse(stored);
-              if (scope === 'all_days' && comp.lkpd && comp.asesmen && comp.refleksi && comp.dokumentasi) {
+              if (scope === 'all_days' && comp.materi && comp.lkpd && comp.asesmen && comp.refleksi && comp.dokumentasi) {
                 localStorage.removeItem(k);
               } else if (p.task_map) {
                 Object.keys(p.task_map).forEach(tk => {
@@ -1421,6 +1448,7 @@ const FincestemCore = {
 
                   const matchesDay = (targetDay === -1) || (targetDay === dNum);
                   let matchesComp = false;
+                  if (tType === 'materi' && comp.materi) matchesComp = true;
                   if (tType === 'lkpd' && comp.lkpd) matchesComp = true;
                   if (tType === 'asesmen' && comp.asesmen) matchesComp = true;
                   if (tType === 'refleksi' && comp.refleksi) matchesComp = true;
@@ -1443,14 +1471,28 @@ const FincestemCore = {
           }
         }
 
-        if (comp.lkpd && scope === 'all_days') {
-          const lkpdKeys = [];
-          for (let i = 0; i < localStorage.length; i++) {
-            const k = localStorage.key(i);
-            if (k && k.startsWith('fincestem_lkpd_')) lkpdKeys.push(k);
+        // Clean all day keys across students
+        const allTaskKeysToRemove = [];
+        for (let i = 0; i < localStorage.length; i++) {
+          const k = localStorage.key(i);
+          if (!k) continue;
+          if (comp.materi && (k.startsWith('fincestem_materi_ft_day') || k.startsWith('fincestem_materi_day'))) {
+            if (targetDay === -1 || k.includes('_day' + targetDay + '_')) allTaskKeysToRemove.push(k);
           }
-          lkpdKeys.forEach(k => localStorage.removeItem(k));
+          if (comp.lkpd && (k.startsWith('fincestem_lkpd_ft_day') || k.startsWith('fincestem_lkpd_day') || k.startsWith('fincestem_lkpd_'))) {
+            if (targetDay === -1 || k.includes('_day' + targetDay + '_')) allTaskKeysToRemove.push(k);
+          }
+          if (comp.asesmen && (k.startsWith('fincestem_asesmen_ft_day') || k.startsWith('fincestem_asesmen_day'))) {
+            if (targetDay === -1 || k.includes('_day' + targetDay + '_')) allTaskKeysToRemove.push(k);
+          }
+          if (comp.dokumentasi && (k.startsWith('fincestem_dok_ft_day') || k.startsWith('fincestem_dok_day'))) {
+            if (targetDay === -1 || k.includes('_day' + targetDay + '_')) allTaskKeysToRemove.push(k);
+          }
+          if (comp.refleksi && (k.startsWith('fincestem_refleksi_ft_day') || k.startsWith('fincestem_refleksi_day'))) {
+            if (targetDay === -1 || k.includes('_day' + targetDay + '_')) allTaskKeysToRemove.push(k);
+          }
         }
+        allTaskKeysToRemove.forEach(k => localStorage.removeItem(k));
 
         if (comp.dokumentasi) {
           const stored = localStorage.getItem('fincestem_db_2026_v1');
