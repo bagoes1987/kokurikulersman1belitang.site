@@ -258,8 +258,33 @@ const FincestemCore = {
         os = 'Android';
         // Ekstrak model Android dari UA (misal: "SM-A546E", "Redmi Note 12", "CPH2343", "Infinix X6833B")
         const androidMatch = ua.match(/Android\s+[\d\.]+;\s*([^;)]+)\s*Build/i) || ua.match(/Android\s+[\d\.]+;\s*([^;)]+)/i);
-        if (androidMatch && androidMatch[1]) {
-          phoneModel = androidMatch[1].trim();
+        let rawModel = (androidMatch && androidMatch[1]) ? androidMatch[1].trim() : '';
+
+        // Deteksi User-Agent Reduction di Chrome baru (sering disingkat jadi "K" saja)
+        if (!rawModel || rawModel === 'K' || rawModel.length <= 1) {
+          // Coba cari pola merek umum di seluruh string UA jika ada
+          if (/samsung/i.test(ua) || /SM-[A-Z0-9]+/i.test(ua)) {
+            const sm = ua.match(/SM-[A-Z0-9]+/i);
+            rawModel = sm ? ('Samsung ' + sm[0]) : 'Samsung Galaxy';
+          } else if (/redmi/i.test(ua)) {
+            rawModel = 'Xiaomi Redmi';
+          } else if (/xiaomi|poco/i.test(ua)) {
+            rawModel = 'Xiaomi / POCO';
+          } else if (/oppo|cph[0-9]+/i.test(ua)) {
+            rawModel = 'OPPO Smartphone';
+          } else if (/vivo/i.test(ua)) {
+            rawModel = 'Vivo Smartphone';
+          } else if (/realme|rmx[0-9]+/i.test(ua)) {
+            rawModel = 'Realme Smartphone';
+          } else if (/infinix/i.test(ua)) {
+            rawModel = 'Infinix Smartphone';
+          } else {
+            rawModel = 'HP Android';
+          }
+        }
+
+        if (rawModel) {
+          phoneModel = rawModel;
           // Rapikan merek umum
           if (/samsung/i.test(phoneModel) || /SM-/i.test(phoneModel)) phoneModel = 'Samsung ' + phoneModel.replace(/^samsung\s*/i, '');
           else if (/redmi/i.test(phoneModel)) phoneModel = 'Xiaomi Redmi ' + phoneModel.replace(/^redmi\s*/i, '');
@@ -271,7 +296,7 @@ const FincestemCore = {
           else if (/tecno/i.test(phoneModel)) phoneModel = 'Tecno ' + phoneModel.replace(/^tecno\s*/i, '');
           else if (/itel/i.test(phoneModel)) phoneModel = 'Itel ' + phoneModel.replace(/^itel\s*/i, '');
         } else {
-          phoneModel = 'Smartphone Android';
+          phoneModel = 'HP Android';
         }
       } else if (/iphone/i.test(ua)) {
         os = 'iOS';
@@ -309,6 +334,37 @@ const FincestemCore = {
         return `${phoneModel} (${browser})`;
       }
       return `${browser} di ${os}`;
+    },
+    getDeviceInfoAsync: function(callback) {
+      const syncInfo = this.getDeviceInfo();
+      if (navigator.userAgentData && typeof navigator.userAgentData.getHighEntropyValues === 'function') {
+        navigator.userAgentData.getHighEntropyValues(['model', 'platform', 'platformVersion'])
+          .then(data => {
+            let model = (data.model || '').trim();
+            const platform = (data.platform || '').trim();
+            if (model && model !== 'K') {
+              // Bersihkan nama model
+              if (/SM-/i.test(model) || /samsung/i.test(model)) model = 'Samsung ' + model.replace(/^samsung\s*/i, '');
+              else if (/redmi/i.test(model)) model = 'Xiaomi Redmi ' + model.replace(/^redmi\s*/i, '');
+              else if (/CPH/i.test(model) || /oppo/i.test(model)) model = 'OPPO ' + model.replace(/^oppo\s*/i, '');
+              else if (/vivo|V2/i.test(model)) model = 'Vivo ' + model.replace(/^vivo\s*/i, '');
+              else if (/RMX/i.test(model) || /realme/i.test(model)) model = 'Realme ' + model.replace(/^realme\s*/i, '');
+              else if (/infinix/i.test(model)) model = 'Infinix ' + model.replace(/^infinix\s*/i, '');
+              
+              // Ekstrak browser dari syncInfo
+              const bMatch = syncInfo.match(/\(([^)]+)\)/);
+              const bName = bMatch ? bMatch[1] : 'Browser';
+              if (callback) callback(`${model} (${bName})`);
+              return;
+            }
+            if (callback) callback(syncInfo);
+          })
+          .catch(() => {
+            if (callback) callback(syncInfo);
+          });
+      } else {
+        if (callback) callback(syncInfo);
+      }
     },
     getStudentDeviceStatus: function(nisn, callback) {
       if (!nisn) {
