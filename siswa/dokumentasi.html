@@ -402,7 +402,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js"></script>
+  <script src="../js/core.js?v=20261014_v4"></script>
   <script>
     let currentFilter = 'all';
     let selectedPhotoBase64 = null;
@@ -702,11 +702,14 @@
 
     function fetchAreaAddress(lat, lng, callback) {
       // Caching lokal koordinat agar tidak request berulang
-      const cacheKey = 'fincestem_geo_' + lat.toFixed(4) + '_' + lng.toFixed(4);
+      const cacheKey = 'fincestem_geo_obj_' + lat.toFixed(4) + '_' + lng.toFixed(4);
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
-        if (callback) callback(cached);
-        return;
+        try {
+          const parsed = JSON.parse(cached);
+          if (callback) callback(parsed);
+          return;
+        } catch(e) {}
       }
 
       // Reverse geocoding via OpenStreetMap Nominatim (Gratis, akurat nama kelurahan/desa, kecamatan, kabupaten, provinsi)
@@ -729,15 +732,22 @@
           const kab = addr.city || addr.county || addr.regency || '';
           const prov = addr.state || addr.province || '';
 
-          const parts = [];
-          if (desa) parts.push(desa);
-          if (kec) parts.push('Kec. ' + kec.replace(/^Kecamatan\s+/i, ''));
-          if (kab) parts.push(kab.replace(/^(Kabupaten|Kota)\s+/i, 'Kab. '));
-          if (prov) parts.push(prov);
+          const locPart1 = [desa, kec ? ('Kec. ' + kec.replace(/^Kecamatan\s+/i, '')) : ''].filter(Boolean).join(', ') || 'Belitang';
+          const locPart2 = [kab ? kab.replace(/^(Kabupaten|Kota)\s+/i, 'Kab. ') : 'Kab. OKU Timur', prov || 'Sumatera Selatan'].filter(Boolean).join(', ');
+          const fullText = locPart1 + ', ' + locPart2;
 
-          const fullText = parts.length > 0 ? parts.join(', ') : (data.display_name ? data.display_name.split(',').slice(0, 3).join(',') : 'Belitang, OKU Timur, Sumatera Selatan');
-          try { localStorage.setItem(cacheKey, fullText); } catch(e) {}
-          if (callback) callback(fullText);
+          const addrObj = {
+            desa: desa || 'Belitang',
+            kec: kec ? ('Kec. ' + kec.replace(/^Kecamatan\s+/i, '')) : '',
+            kab: kab ? kab.replace(/^(Kabupaten|Kota)\s+/i, 'Kab. ') : 'Kab. OKU Timur',
+            prov: prov || 'Sumatera Selatan',
+            line1: locPart1,
+            line2: locPart2,
+            fullText: fullText
+          };
+
+          try { localStorage.setItem(cacheKey, JSON.stringify(addrObj)); } catch(e) {}
+          if (callback) callback(addrObj);
         } else {
           fallbackAddress(lat, lng, callback);
         }
@@ -750,23 +760,88 @@
 
     function fallbackAddress(lat, lng, callback) {
       // Heuristik cerdas rute Field Trip & OKU Timur
-      let loc = 'Belitang, Kab. OKU Timur, Sumatera Selatan';
+      let addrObj = {
+        desa: 'Belitang',
+        kec: 'Kec. Belitang',
+        kab: 'Kab. OKU Timur',
+        prov: 'Sumatera Selatan',
+        line1: 'Belitang, Kec. Belitang',
+        line2: 'Kab. OKU Timur, Sumatera Selatan',
+        fullText: 'Belitang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+      };
+
       if (lat >= -4.5 && lat <= -3.8 && lng >= 104.3 && lng <= 105.0) {
-        loc = 'Belitang, Kab. OKU Timur, Sumatera Selatan';
+        addrObj = {
+          desa: 'Belitang',
+          kec: 'Kec. Belitang',
+          kab: 'Kab. OKU Timur',
+          prov: 'Sumatera Selatan',
+          line1: 'Belitang, Kec. Belitang',
+          line2: 'Kab. OKU Timur, Sumatera Selatan',
+          fullText: 'Belitang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+        };
       } else if (lat >= -7.1 && lat <= -6.8 && lng >= 110.2 && lng <= 110.6) {
-        loc = 'Semarang, Kota Semarang, Jawa Tengah';
+        addrObj = {
+          desa: 'Kawasan Simpang Lima',
+          kec: 'Kec. Semarang Tengah',
+          kab: 'Kota Semarang',
+          prov: 'Jawa Tengah',
+          line1: 'Simpang Lima, Kec. Semarang Tengah',
+          line2: 'Kota Semarang, Jawa Tengah',
+          fullText: 'Simpang Lima, Kec. Semarang Tengah, Kota Semarang, Jawa Tengah'
+        };
       } else if (lat >= -8.1 && lat <= -7.8 && lng >= 112.4 && lng <= 112.8) {
-        loc = 'Kota Batu / Malang, Jawa Timur';
+        addrObj = {
+          desa: 'Kawasan Riset Batu',
+          kec: 'Kec. Batu',
+          kab: 'Kota Batu',
+          prov: 'Jawa Timur',
+          line1: 'Kawasan Wisata, Kec. Batu',
+          line2: 'Kota Batu / Malang, Jawa Timur',
+          fullText: 'Kawasan Wisata, Kec. Batu, Kota Batu / Malang, Jawa Timur'
+        };
       } else if (lat >= -8.1 && lat <= -7.7 && lng >= 112.8 && lng <= 113.2) {
-        loc = 'Kawasan Bromo Tengger, Kab. Probolinggo, Jawa Timur';
+        addrObj = {
+          desa: 'Bromo Tengger',
+          kec: 'Kec. Sukapura',
+          kab: 'Kab. Probolinggo',
+          prov: 'Jawa Timur',
+          line1: 'Taman Nasional Bromo, Kec. Sukapura',
+          line2: 'Kab. Probolinggo, Jawa Timur',
+          fullText: 'Taman Nasional Bromo, Kec. Sukapura, Kab. Probolinggo, Jawa Timur'
+        };
       } else if (lat >= -8.1 && lat <= -7.6 && lng >= 110.2 && lng <= 110.6) {
-        loc = 'Kota Yogyakarta, D.I. Yogyakarta';
+        addrObj = {
+          desa: 'Malioboro',
+          kec: 'Kec. Danurejan',
+          kab: 'Kota Yogyakarta',
+          prov: 'D.I. Yogyakarta',
+          line1: 'Malioboro, Kec. Danurejan',
+          line2: 'Kota Yogyakarta, D.I. Yogyakarta',
+          fullText: 'Malioboro, Kec. Danurejan, Kota Yogyakarta, D.I. Yogyakarta'
+        };
       } else if (lat >= -8.3 && lat <= -7.9 && lng >= 110.5 && lng <= 110.8) {
-        loc = 'Pantai Drini, Kab. Gunungkidul, D.I. Yogyakarta';
+        addrObj = {
+          desa: 'Pantai Drini',
+          kec: 'Kec. Tanjungsari',
+          kab: 'Kab. Gunungkidul',
+          prov: 'D.I. Yogyakarta',
+          line1: 'Pantai Drini, Kec. Tanjungsari',
+          line2: 'Kab. Gunungkidul, D.I. Yogyakarta',
+          fullText: 'Pantai Drini, Kec. Tanjungsari, Kab. Gunungkidul, D.I. Yogyakarta'
+        };
       } else if (lat >= -6.1 && lat <= -5.7 && lng >= 105.8 && lng <= 106.2) {
-        loc = 'Bakauheni / Selat Sunda, Kab. Lampung Selatan, Lampung';
+        addrObj = {
+          desa: 'Pelabuhan Bakauheni',
+          kec: 'Kec. Bakauheni',
+          kab: 'Kab. Lampung Selatan',
+          prov: 'Lampung',
+          line1: 'Pelabuhan Bakauheni, Kec. Bakauheni',
+          line2: 'Kab. Lampung Selatan, Lampung',
+          fullText: 'Pelabuhan Bakauheni, Kec. Bakauheni, Kab. Lampung Selatan, Lampung'
+        };
       }
-      if (callback) callback(loc);
+      if (callback) callback(addrObj);
     }
 
     function requestGPSCoordinates(forceToast = false) {
@@ -801,9 +876,13 @@
           if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m`;
 
           // Cari nama daerah, kecamatan, kabupaten, provinsi
-          fetchAreaAddress(currentGPS.lat, currentGPS.lng, function(addrText) {
-            if (currentGPS) currentGPS.address = addrText;
-            if (sub) sub.textContent = `📍 ${addrText} (±${currentGPS.accuracy}m)`;
+          fetchAreaAddress(currentGPS.lat, currentGPS.lng, function(addrObj) {
+            if (currentGPS) {
+              currentGPS.address = addrObj;
+              currentGPS.addressText = addrObj.fullText || addrObj;
+            }
+            const disp = addrObj.fullText || addrObj;
+            if (sub) sub.textContent = `📍 ${disp} (±${currentGPS.accuracy}m)`;
           });
 
           const helpGuide = document.getElementById('gpsHelpGuide');
@@ -833,7 +912,16 @@
         lng: 104.624890,
         accuracy: 15,
         isFallback: true,
-        address: 'Belitang, Kab. OKU Timur, Sumatera Selatan'
+        address: {
+          desa: 'Belitang',
+          kec: 'Kec. Belitang',
+          kab: 'Kab. OKU Timur',
+          prov: 'Sumatera Selatan',
+          line1: 'Belitang, Kec. Belitang',
+          line2: 'Kab. OKU Timur, Sumatera Selatan',
+          fullText: 'Belitang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+        },
+        addressText: 'Belitang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
       };
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
@@ -1024,20 +1112,21 @@
 
       // 3. Hitung Proporsi Font & Jarak Ketikan Spasi (Rapat, Tebal & Berukuran Besar Terbaca)
       const scaleRef = Math.max(w, 800);
-      const l1Size = Math.max(20, Math.round(scaleRef * 0.026)); // Judul Utama: 31px pada 1200w
-      const l2Size = Math.max(16, Math.round(scaleRef * 0.019)); // Subtitle: 23px pada 1200w
-      const l3Size = Math.max(16, Math.round(scaleRef * 0.019)); // Koordinat GPS: 23px pada 1200w
-      const l4Size = Math.max(16, Math.round(scaleRef * 0.019)); // Hari, Tanggal, Jam WIB: 23px pada 1200w
-      const l5Size = Math.max(15, Math.round(scaleRef * 0.018)); // Identitas Siswa & Rombel: 22px pada 1200w
+      const l1Size = Math.max(20, Math.round(scaleRef * 0.024)); // Judul Header
+      const lLoc1Size = Math.max(17, Math.round(scaleRef * 0.020)); // Baris Lokasi 1: Day & Desa/Kecamatan (Tebal & Kontras)
+      const lLoc2Size = Math.max(16, Math.round(scaleRef * 0.019)); // Baris Lokasi 2: Kabupaten & Provinsi (Jelas Terbaca untuk Guru)
+      const lGpsSize = Math.max(15, Math.round(scaleRef * 0.017));  // Koordinat GPS
+      const lTimeSize = Math.max(15, Math.round(scaleRef * 0.017)); // Waktu & Tanggal
+      const lUserSize = Math.max(15, Math.round(scaleRef * 0.017)); // Identitas Siswa
 
-      // Spasi antar baris ketikan dibuat rapat & proporsional (8px - 11px)
-      const lineGap = Math.max(6, Math.round(scaleRef * 0.007));
-      const totalTextH = l1Size + l2Size + l3Size + l4Size + l5Size + (lineGap * 4);
+      // Spasi antar baris ketikan dibuat rapat & proporsional
+      const lineGap = Math.max(6, Math.round(scaleRef * 0.006));
+      const totalTextH = l1Size + lLoc1Size + lLoc2Size + lGpsSize + lTimeSize + lUserSize + (lineGap * 5);
 
       // Ukuran Banner & Minimap
       const pad = Math.max(14, Math.round(scaleRef * 0.016));
       const mapH = totalTextH;
-      const mapW = Math.round(mapH * 1.16);
+      const mapW = Math.round(mapH * 1.15);
       const bannerHeight = totalTextH + (pad * 2);
       const bannerY = h - bannerHeight;
 
@@ -1068,7 +1157,7 @@
 
         let curY = textStartY;
 
-        // Baris 1: Judul Utama Permintaan User (Besar & Tebal)
+        // Baris 1: Judul Utama Program
         ctx.font = `900 ${l1Size}px "Plus Jakarta Sans", system-ui, sans-serif`;
         ctx.fillStyle = '#fbbf24'; // Amber Gold
         ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
@@ -1076,33 +1165,62 @@
         ctx.fillText('Kokurikuler2026_SMAN1 Belitang_Fincestem', textX, curY);
         curY += l1Size + lineGap;
 
-        // Baris 2: Day Siswa & Nama Daerah, Kabupaten, Provinsi
+        // Persiapkan data alamat 2 baris (Desa/Kecamatan lalu Kabupaten/Provinsi)
         const dayLabel = studentInfo.day !== undefined ? (studentInfo.day === 0 ? 'Day 0 (Simulasi)' : `Day ${studentInfo.day}`) : 'Day 1';
-        const areaLabel = (gps && gps.address) ? gps.address : 'Belitang, Kab. OKU Timur, Sumatera Selatan';
-        ctx.font = `bold ${l2Size}px system-ui, sans-serif`;
-        ctx.fillStyle = '#38bdf8'; // Sky Cyan
-        ctx.shadowBlur = 4;
-        ctx.fillText(`📍 ${dayLabel} • ${areaLabel}`, textX, curY);
-        curY += l2Size + lineGap;
+        let locLine1 = 'Belitang, Kec. Belitang';
+        let locLine2 = 'Kab. OKU Timur, Sumatera Selatan';
 
-        // Baris 3: Koordinat GPS, Akurasi Satelit & Lokasi Lapangan
-        ctx.font = `bold ${l3Size}px "Plus Jakarta Sans", monospace, sans-serif`;
+        if (gps && gps.address) {
+          if (typeof gps.address === 'object') {
+            locLine1 = gps.address.line1 || 'Belitang, Kec. Belitang';
+            locLine2 = gps.address.line2 || 'Kab. OKU Timur, Sumatera Selatan';
+          } else if (typeof gps.address === 'string') {
+            const rawParts = gps.address.split(',').map(s => s.trim()).filter(Boolean);
+            if (rawParts.length >= 3) {
+              locLine1 = rawParts.slice(0, 2).join(', ');
+              locLine2 = rawParts.slice(2).join(', ');
+            } else if (rawParts.length === 2) {
+              locLine1 = rawParts[0];
+              locLine2 = rawParts[1];
+            } else {
+              locLine1 = gps.address;
+              locLine2 = 'Kab. OKU Timur, Sumatera Selatan';
+            }
+          }
+        }
+
+        // Baris 2: 📍 Day [X] • [Nama Desa/Kecamatan],
+        ctx.font = `bold ${lLoc1Size}px system-ui, sans-serif`;
+        ctx.fillStyle = '#38bdf8'; // Sky Cyan Terang
+        ctx.shadowBlur = 4;
+        ctx.fillText(`📍 ${dayLabel} • ${locLine1},`, textX, curY);
+        curY += lLoc1Size + lineGap;
+
+        // Baris 3: [Nama Kabupaten/Kota], [Nama Provinsi] (Kuning Terang / Neon agar jelas dibaca Guru)
+        ctx.font = `900 ${lLoc2Size}px system-ui, sans-serif`;
+        ctx.fillStyle = '#fde047'; // Bright Yellow Neon agar langsung terlihat daerahnya OKU Timur atau Luar OKU Timur
+        ctx.shadowBlur = 4;
+        ctx.fillText(`   ${locLine2}`, textX, curY);
+        curY += lLoc2Size + lineGap;
+
+        // Baris 4: Koordinat GPS, Akurasi Satelit
+        ctx.font = `bold ${lGpsSize}px "Plus Jakarta Sans", monospace, sans-serif`;
         ctx.fillStyle = '#ffffff';
         const coordText = `🌐 Lat: ${gps.lat.toFixed(6)}°, Long: ${gps.lng.toFixed(6)}° (±${gps.accuracy}m)`;
         ctx.fillText(coordText, textX, curY);
-        curY += l3Size + lineGap;
+        curY += lGpsSize + lineGap;
 
-        // Baris 4: Hari, Tanggal, Jam, Menit, Detik (WIB)
+        // Baris 5: Hari, Tanggal, Jam, Menit, Detik (WIB)
         const now = new Date();
         const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
         const timeFormatted = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':') + ' WIB';
-        ctx.font = `bold ${l4Size}px system-ui, sans-serif`;
+        ctx.font = `bold ${lTimeSize}px system-ui, sans-serif`;
         ctx.fillStyle = '#4ade80'; // Emerald Green
         ctx.fillText(`⏰ ${dateStr} • ${timeFormatted}`, textX, curY);
-        curY += l4Size + lineGap;
+        curY += lTimeSize + lineGap;
 
-        // Baris 5: Identitas Siswa & Kelompok
-        ctx.font = `bold ${l5Size}px system-ui, sans-serif`;
+        // Baris 6: Identitas Siswa & Rombel
+        ctx.font = `bold ${lUserSize}px system-ui, sans-serif`;
         ctx.fillStyle = '#e2e8f0'; // Slate 200
         ctx.fillText(`👤 ${studentInfo.name} (${studentInfo.nisn}) • ${studentInfo.class_name}`, textX, curY);
 
