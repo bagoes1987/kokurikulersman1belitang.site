@@ -493,18 +493,43 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js"></script>
-  <script src="../js/core.js"></script>
+  <script src="../js/siswa_data.js?v=20261014_v3"></script>
+  <script src="../js/core.js?v=20261014_v3"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
     let studentProgress = null;
     let isBiodataExpanded = false;
 
+    // Verifikasi Sesi Device Aktif (Otomatis Logout jika login di HP/Laptop lain)
+    function checkDeviceActiveSession() {
+      if (!FincestemCore.auth.isLoggedIn()) return;
+      FincestemCore.auth.checkSession(function(res) {
+        if (!res.success && res.data && res.data.kicked) {
+          const newDev = res.data.new_device || 'Perangkat Lain';
+          alert('⚠️ PERHATIAN:\nAkun Anda telah login di perangkat lain (' + newDev + ').\n\nSesi pada perangkat ini telah dinonaktifkan otomatis demi keamanan akun.');
+          localStorage.removeItem('fincestem_auth');
+          localStorage.removeItem('fincestem_role');
+          localStorage.removeItem('fincestem_user');
+          window.location.replace('index.html');
+        }
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      checkDeviceActiveSession();
       loadStudentProfile();
       loadDaysSchedule();
       loadStudentProgress();
+
+      // Cek berkala setiap 25 detik dan saat aplikasi kembali dibuka dari background
+      setInterval(checkDeviceActiveSession, 25000);
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          checkDeviceActiveSession();
+        }
+      });
+      window.addEventListener('focus', checkDeviceActiveSession);
     });
 
     function renderStaffVerticalList(containerId, namesString, defaultName) {

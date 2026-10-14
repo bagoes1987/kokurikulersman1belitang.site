@@ -258,6 +258,39 @@ if ($action === 'reset_device') {
     jsonResponse(true, "Kunci perangkat siswa (NISN {$nisn}) berhasil di-reset! Siswa sekarang dapat login di perangkat baru.");
 }
 
+// AKSI VERIFIKASI SESI PERANGKAT AKTIF (REMOTE AUTO-LOGOUT)
+if ($action === 'check_session') {
+    $nisn     = trim($_GET['nisn'] ?? '');
+    $deviceId = trim($_GET['device_id'] ?? '');
+
+    if (!$nisn || !$deviceId) {
+        jsonResponse(true, 'OK', ['valid' => true]);
+    }
+
+    $pdo = getDB();
+    $cleanId = preg_replace('/\D/', '', $nisn);
+    $paddedId = (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) ? str_pad($cleanId, 10, '0', STR_PAD_LEFT) : $nisn;
+
+    try {
+        $stmt = $pdo->prepare("SELECT `device_id`, `device_info` FROM `users` WHERE (`identifier` = :id OR `identifier` = :padded OR `nis` = :nis) AND `role` = 'siswa' LIMIT 1");
+        $stmt->execute([':id' => $nisn, ':padded' => $paddedId, ':nis' => $nisn]);
+        $row = $stmt->fetch();
+
+        if ($row) {
+            $currentDbDev = $row['device_id'];
+            // Jika ada device_id di database dan TIDAK SAMA dengan device ini -> HP/device ini harus di-LOGOUT!
+            if (!empty($currentDbDev) && $currentDbDev !== $deviceId) {
+                jsonResponse(false, 'Akun Anda telah login di perangkat lain (' . ($row['device_info'] ?: 'Perangkat Baru') . '). Sesi pada perangkat ini telah dinonaktifkan.', [
+                    'kicked'       => true,
+                    'new_device'   => $row['device_info'] ?: 'Perangkat Baru'
+                ], 403);
+            }
+        }
+    } catch (Exception $e) {}
+
+    jsonResponse(true, 'Sesi aktif dan valid', ['valid' => true]);
+}
+
 // AKSI CEK STATUS DEVICE SISWA
 if ($action === 'get_device_status') {
     $nisn = trim($_GET['nisn'] ?? '');

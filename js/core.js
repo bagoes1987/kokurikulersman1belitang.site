@@ -249,20 +249,65 @@ const FincestemCore = {
     },
     getDeviceInfo: function() {
       const ua = navigator.userAgent || '';
-      let os = 'Unknown OS';
-      if (/android/i.test(ua)) os = 'Android';
-      else if (/iphone|ipad|ipod/i.test(ua)) os = 'iOS (iPhone/iPad)';
-      else if (/windows/i.test(ua)) os = 'Windows PC';
-      else if (/macintosh|mac os x/i.test(ua)) os = 'Mac';
-      else if (/linux/i.test(ua)) os = 'Linux';
+      
+      // 1. Deteksi Sistem Operasi & Model HP
+      let os = 'Perangkat';
+      let phoneModel = '';
 
+      if (/android/i.test(ua)) {
+        os = 'Android';
+        // Ekstrak model Android dari UA (misal: "SM-A546E", "Redmi Note 12", "CPH2343", "Infinix X6833B")
+        const androidMatch = ua.match(/Android\s+[\d\.]+;\s*([^;)]+)\s*Build/i) || ua.match(/Android\s+[\d\.]+;\s*([^;)]+)/i);
+        if (androidMatch && androidMatch[1]) {
+          phoneModel = androidMatch[1].trim();
+          // Rapikan merek umum
+          if (/samsung/i.test(phoneModel) || /SM-/i.test(phoneModel)) phoneModel = 'Samsung ' + phoneModel.replace(/^samsung\s*/i, '');
+          else if (/redmi/i.test(phoneModel)) phoneModel = 'Xiaomi Redmi ' + phoneModel.replace(/^redmi\s*/i, '');
+          else if (/m2\d+|2\d+/i.test(phoneModel)) phoneModel = 'Xiaomi ' + phoneModel;
+          else if (/cph\d+/i.test(phoneModel) || /oppo/i.test(phoneModel)) phoneModel = 'OPPO ' + phoneModel.replace(/^oppo\s*/i, '');
+          else if (/v2\d+|vivo/i.test(phoneModel)) phoneModel = 'Vivo ' + phoneModel.replace(/^vivo\s*/i, '');
+          else if (/rmx\d+|realme/i.test(phoneModel)) phoneModel = 'Realme ' + phoneModel.replace(/^realme\s*/i, '');
+          else if (/infinix/i.test(phoneModel)) phoneModel = 'Infinix ' + phoneModel.replace(/^infinix\s*/i, '');
+          else if (/tecno/i.test(phoneModel)) phoneModel = 'Tecno ' + phoneModel.replace(/^tecno\s*/i, '');
+          else if (/itel/i.test(phoneModel)) phoneModel = 'Itel ' + phoneModel.replace(/^itel\s*/i, '');
+        } else {
+          phoneModel = 'Smartphone Android';
+        }
+      } else if (/iphone/i.test(ua)) {
+        os = 'iOS';
+        phoneModel = 'Apple iPhone';
+      } else if (/ipad/i.test(ua)) {
+        os = 'iPadOS';
+        phoneModel = 'Apple iPad';
+      } else if (/windows nt 10/i.test(ua)) {
+        os = 'Windows 10/11';
+        phoneModel = 'Laptop / PC';
+      } else if (/windows/i.test(ua)) {
+        os = 'Windows PC';
+        phoneModel = 'Laptop / PC';
+      } else if (/macintosh|mac os x/i.test(ua)) {
+        os = 'macOS';
+        phoneModel = 'Apple MacBook / Mac';
+      } else if (/linux/i.test(ua)) {
+        os = 'Linux';
+        phoneModel = 'Komputer Linux';
+      }
+
+      // 2. Deteksi Aplikasi Browser
       let browser = 'Browser';
-      if (/chrome|crios/i.test(ua) && !/edge|edg|opr/i.test(ua)) browser = 'Chrome';
-      else if (/safari/i.test(ua) && !/chrome|crios/i.test(ua)) browser = 'Safari';
-      else if (/firefox|fxios/i.test(ua)) browser = 'Firefox';
-      else if (/edg/i.test(ua)) browser = 'Edge';
-      else if (/opera|opr/i.test(ua)) browser = 'Opera';
+      if (/edg/i.test(ua)) browser = 'Microsoft Edge';
+      else if (/samsungbrowser/i.test(ua)) browser = 'Samsung Internet';
+      else if (/opr|opera/i.test(ua)) browser = 'Opera';
+      else if (/miuibrowser/i.test(ua)) browser = 'Mi Browser';
+      else if (/crios/i.test(ua)) browser = 'Google Chrome iOS';
+      else if (/fxios/i.test(ua)) browser = 'Firefox iOS';
+      else if (/chrome/i.test(ua) && !/edg/i.test(ua)) browser = 'Google Chrome';
+      else if (/safari/i.test(ua) && !/chrome/i.test(ua)) browser = 'Safari';
+      else if (/firefox/i.test(ua)) browser = 'Mozilla Firefox';
 
+      if (phoneModel) {
+        return `${phoneModel} (${browser})`;
+      }
       return `${browser} di ${os}`;
     },
     getStudentDeviceStatus: function(nisn, callback) {
@@ -309,6 +354,33 @@ const FincestemCore = {
           .catch(err => { if (callback) callback({ success: false, message: err.message || 'Gagal reset perangkat massal' }); });
       } else {
         if (callback) callback({ success: true, message: 'Seluruh kunci perangkat berhasil di-reset (mode lokal).' });
+      }
+    },
+    checkSession: function(callback) {
+      const user = this.getUser();
+      const role = this.getRole();
+      if (!user || role !== 'siswa') {
+        if (callback) callback({ success: true, valid: true });
+        return;
+      }
+      const nisn = user.nisn || user.identifier;
+      const deviceId = this.getDeviceId();
+      if (!nisn || !deviceId) {
+        if (callback) callback({ success: true, valid: true });
+        return;
+      }
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/auth.php?action=check_session&nisn=' + encodeURIComponent(nisn) + '&device_id=' + encodeURIComponent(deviceId))
+          .then(r => r.json())
+          .then(res => {
+            if (callback) callback(res);
+          })
+          .catch(() => {
+            // Jika koneksi timeout/error network, jangan keluarkan siswa agar tidak mengganggu offline
+            if (callback) callback({ success: true, valid: true });
+          });
+      } else {
+        if (callback) callback({ success: true, valid: true });
       }
     },
     logout: function(redirectUrl) {
