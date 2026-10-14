@@ -13,6 +13,14 @@ header('Expires: 0');
 $method = $_SERVER['REQUEST_METHOD'];
 
 function ensureRoleTables($pdo) {
+    static $checked = false;
+    if ($checked) return;
+    $lockFile = sys_get_temp_dir() . '/fincestem_tables_v2.lock';
+    if (file_exists($lockFile) && (time() - filemtime($lockFile) < 3600)) {
+        $checked = true;
+        return;
+    }
+
     try {
         $pdo->exec("ALTER TABLE `users` ADD COLUMN `zone` VARCHAR(50) DEFAULT 'FINCESTEM OKU TIMUR' AFTER `photo_url`");
     } catch (Exception $e) {}
@@ -189,6 +197,9 @@ function ensureRoleTables($pdo) {
             }
         }
     } catch (Exception $eFt) {}
+
+    @touch($lockFile);
+    $checked = true;
 }
 
 if ($method === 'GET') {

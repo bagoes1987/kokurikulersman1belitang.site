@@ -11,3 +11,8 @@ scratch/
 database cpanel fincestem.txt
 *.zip
 *.xlsx
+*.xls
+*.pdf
+*.backup.*
+*.bak
+import_siswa.sql

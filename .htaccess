@@ -1,5 +1,5 @@
-# FINCESTEM 2026 - Apache Configuration
-# SMAN 1 BELITANG
+# FINCESTEM 2026 - Apache High-Concurrency Performance Configuration
+# SMAN 1 BELITANG - Optimized for 1,500+ Concurrent Users
 
 Options -Indexes
 
@@ -11,11 +11,62 @@ DirectoryIndex index.html index.php
     RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
+# 1. GZIP / DEFLATE COMPRESSION (Reduces payload size up to 85% for 1,500 users)
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# 2. BROWSER CACHING (Saves massive server bandwidth when 1,500 students navigate simultaneously)
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access plus 1 day"
+
+    # Images
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/jpg "access plus 30 days"
+    ExpiresByType image/png "access plus 30 days"
+    ExpiresByType image/gif "access plus 30 days"
+    ExpiresByType image/webp "access plus 30 days"
+    ExpiresByType image/svg+xml "access plus 30 days"
+    ExpiresByType image/x-icon "access plus 30 days"
+
+    # CSS & JavaScript
+    ExpiresByType text/css "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+    ExpiresByType application/x-javascript "access plus 7 days"
+
+    # Fonts
+    ExpiresByType font/ttf "access plus 30 days"
+    ExpiresByType font/woff "access plus 30 days"
+    ExpiresByType font/woff2 "access plus 30 days"
+
+    # HTML & API JSON (Always revalidate for dynamic realtime responses)
+    ExpiresByType text/html "access plus 0 seconds"
+    ExpiresByType application/json "access plus 0 seconds"
+</IfModule>
+
+# 3. HTTP HEADERS & SECURITY
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
+    
+    # Enable Keep-Alive to maintain persistent TCP connections for 1,500 users
+    Header set Connection keep-alive
 </IfModule>
 
-<FilesMatch "\.(sql|env|log)$">
+# 4. BLOCK ACCESS TO SENSITIVE SERVER FILES
+<FilesMatch "\.(sql|env|log|bak|backup)$">
     Require all denied
 </FilesMatch>

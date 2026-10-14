@@ -16,6 +16,14 @@ $method = $_SERVER['REQUEST_METHOD'];
  * Pastikan tabel day_schedules dan day_schedules_field_trip ada dan memiliki data awal
  */
 function ensureDaySchedulesTable($pdo) {
+    static $checked = false;
+    if ($checked) return;
+    $lockFile = sys_get_temp_dir() . '/fincestem_schedules_table.lock';
+    if (file_exists($lockFile) && (time() - filemtime($lockFile) < 3600)) {
+        $checked = true;
+        return;
+    }
+
     try {
         // 1. Tabel Jadwal Non-Field Trip (Reguler OKU Timur)
         $pdo->exec("
@@ -96,6 +104,9 @@ function ensureDaySchedulesTable($pdo) {
     } catch (Exception $e) {
         // Fallback jika ada batasan izin di cPanel
     }
+
+    @touch($lockFile);
+    $checked = true;
 }
 
 if ($method === 'GET') {

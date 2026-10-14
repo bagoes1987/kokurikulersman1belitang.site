@@ -9,6 +9,14 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 // Pastikan tabel student_progress_eval ada
 function ensureProgressTable($pdo) {
+    static $checked = false;
+    if ($checked) return;
+    $lockFile = sys_get_temp_dir() . '/fincestem_progress_table.lock';
+    if (file_exists($lockFile) && (time() - filemtime($lockFile) < 3600)) {
+        $checked = true;
+        return;
+    }
+
     $sql = "
     CREATE TABLE IF NOT EXISTS `student_progress_eval` (
       `id` INT AUTO_INCREMENT PRIMARY KEY,
@@ -35,6 +43,9 @@ function ensureProgressTable($pdo) {
         $pdo->exec($sql);
         $pdo->exec("ALTER TABLE `student_progress_eval` MODIFY COLUMN `status` VARCHAR(50) NOT NULL DEFAULT 'submitted'");
     } catch (Exception $e) {}
+
+    @touch($lockFile);
+    $checked = true;
 }
 
 if ($method === 'GET') {
