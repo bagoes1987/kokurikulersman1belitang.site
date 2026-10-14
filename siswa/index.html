@@ -262,39 +262,46 @@
       // 2. Jika online, daftarkan / validasi Single Device Lock
       if (window.location.protocol.startsWith('http')) {
         const deviceId = FincestemCore.auth.getDeviceId();
-        FincestemCore.auth.getDeviceInfoAsync(function(deviceInfo) {
-          fetch(FincestemCore.api.base + '/auth.php?action=login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              identifier: nisn,
-              password: pwd,
-              role: 'siswa',
-              device_id: deviceId,
-              device_info: deviceInfo
-            })
+        const deviceInfo = FincestemCore.auth.getDeviceInfo();
+
+        // Gunakan timeout 4 detik agar HP tidak pernah macet/hang jika koneksi lambat
+        const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+        const fetchTimeout = controller ? setTimeout(() => controller.abort(), 4000) : null;
+
+        fetch(FincestemCore.api.base + '/auth.php?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          signal: controller ? controller.signal : undefined,
+          body: JSON.stringify({
+            identifier: nisn,
+            password: pwd,
+            role: 'siswa',
+            device_id: deviceId,
+            device_info: deviceInfo
           })
-          .then(r => r.json())
-          .then(apiRes => {
-            if (!apiRes.success && apiRes.data && apiRes.data.error_code === 'DEVICE_LOCKED') {
-              // Jika perangkat terkunci di HP lain, batalkan sesi dan tolak
-              localStorage.removeItem('fincestem_auth');
-              localStorage.removeItem('fincestem_user');
-              localStorage.removeItem('fincestem_role');
-              btnText.textContent = 'Masuk ke Portal Siswa';
-              btn.classList.remove('opacity-80', 'pointer-events-none');
-              alert(apiRes.message || 'Akun Anda sudah terkunci di perangkat lain! Anda tidak diizinkan login di perangkat ini kecuali telah di-reset / disetujui oleh Admin.');
-            } else {
-              // Berhasil atau diizinkan
-              FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
-              window.location.href = 'dashboard.html';
-            }
-          })
-          .catch(() => {
-            // Jika koneksi server lambat / offline, tetap langsung alihkan ke dashboard
+        })
+        .then(r => r.json())
+        .then(apiRes => {
+          if (fetchTimeout) clearTimeout(fetchTimeout);
+          if (!apiRes.success && apiRes.data && apiRes.data.error_code === 'DEVICE_LOCKED') {
+            // Jika perangkat terkunci di HP lain, batalkan sesi dan tolak
+            localStorage.removeItem('fincestem_auth');
+            localStorage.removeItem('fincestem_user');
+            localStorage.removeItem('fincestem_role');
+            btnText.textContent = 'Masuk ke Portal Siswa';
+            btn.classList.remove('opacity-80', 'pointer-events-none');
+            alert(apiRes.message || 'Akun Anda sudah terkunci di perangkat lain! Anda tidak diizinkan login di perangkat ini kecuali telah di-reset / disetujui oleh Admin.');
+          } else {
+            // Berhasil login
             FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
-            window.location.href = 'dashboard.html';
-          });
+            window.location.replace('dashboard.html');
+          }
+        })
+        .catch(() => {
+          if (fetchTimeout) clearTimeout(fetchTimeout);
+          // Jika server lambat atau offline, tetap alihkan ke dashboard
+          FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
+          window.location.replace('dashboard.html');
         });
       } else {
         // Mode offline/lokal file://

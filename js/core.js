@@ -260,9 +260,8 @@ const FincestemCore = {
         const androidMatch = ua.match(/Android\s+[\d\.]+;\s*([^;)]+)\s*Build/i) || ua.match(/Android\s+[\d\.]+;\s*([^;)]+)/i);
         let rawModel = (androidMatch && androidMatch[1]) ? androidMatch[1].trim() : '';
 
-        // Deteksi User-Agent Reduction di Chrome baru (sering disingkat jadi "K" saja)
+        // Deteksi User-Agent Reduction di Chrome Android baru (sering disingkat jadi "K" saja)
         if (!rawModel || rawModel === 'K' || rawModel.length <= 1) {
-          // Coba cari pola merek umum di seluruh string UA jika ada
           if (/samsung/i.test(ua) || /SM-[A-Z0-9]+/i.test(ua)) {
             const sm = ua.match(/SM-[A-Z0-9]+/i);
             rawModel = sm ? ('Samsung ' + sm[0]) : 'Samsung Galaxy';
@@ -285,7 +284,6 @@ const FincestemCore = {
 
         if (rawModel) {
           phoneModel = rawModel;
-          // Rapikan merek umum
           if (/samsung/i.test(phoneModel) || /SM-/i.test(phoneModel)) phoneModel = 'Samsung ' + phoneModel.replace(/^samsung\s*/i, '');
           else if (/redmi/i.test(phoneModel)) phoneModel = 'Xiaomi Redmi ' + phoneModel.replace(/^redmi\s*/i, '');
           else if (/m2\d+|2\d+/i.test(phoneModel)) phoneModel = 'Xiaomi ' + phoneModel;
@@ -334,37 +332,6 @@ const FincestemCore = {
         return `${phoneModel} (${browser})`;
       }
       return `${browser} di ${os}`;
-    },
-    getDeviceInfoAsync: function(callback) {
-      const syncInfo = this.getDeviceInfo();
-      if (navigator.userAgentData && typeof navigator.userAgentData.getHighEntropyValues === 'function') {
-        navigator.userAgentData.getHighEntropyValues(['model', 'platform', 'platformVersion'])
-          .then(data => {
-            let model = (data.model || '').trim();
-            const platform = (data.platform || '').trim();
-            if (model && model !== 'K') {
-              // Bersihkan nama model
-              if (/SM-/i.test(model) || /samsung/i.test(model)) model = 'Samsung ' + model.replace(/^samsung\s*/i, '');
-              else if (/redmi/i.test(model)) model = 'Xiaomi Redmi ' + model.replace(/^redmi\s*/i, '');
-              else if (/CPH/i.test(model) || /oppo/i.test(model)) model = 'OPPO ' + model.replace(/^oppo\s*/i, '');
-              else if (/vivo|V2/i.test(model)) model = 'Vivo ' + model.replace(/^vivo\s*/i, '');
-              else if (/RMX/i.test(model) || /realme/i.test(model)) model = 'Realme ' + model.replace(/^realme\s*/i, '');
-              else if (/infinix/i.test(model)) model = 'Infinix ' + model.replace(/^infinix\s*/i, '');
-              
-              // Ekstrak browser dari syncInfo
-              const bMatch = syncInfo.match(/\(([^)]+)\)/);
-              const bName = bMatch ? bMatch[1] : 'Browser';
-              if (callback) callback(`${model} (${bName})`);
-              return;
-            }
-            if (callback) callback(syncInfo);
-          })
-          .catch(() => {
-            if (callback) callback(syncInfo);
-          });
-      } else {
-        if (callback) callback(syncInfo);
-      }
     },
     getStudentDeviceStatus: function(nisn, callback) {
       if (!nisn) {

@@ -169,26 +169,42 @@ if ($action === 'login') {
         $deviceId   = trim($input['device_id'] ?? '');
         $deviceInfo = trim($input['device_info'] ?? '');
 
-        // Jika tabel belum memiliki kolom device_id, buat otomatis
-        try {
-            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_id` VARCHAR(100) DEFAULT NULL AFTER `zone`");
-            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_info` VARCHAR(255) DEFAULT NULL AFTER `device_id`");
-            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_locked_at` DATETIME DEFAULT NULL AFTER `device_info`");
-        } catch (Exception $eDev) {}
-
         $currentDbDeviceId = $user['device_id'] ?? null;
         $currentDbDeviceInfo = $user['device_info'] ?? null;
 
         if ($deviceId) {
             if (empty($currentDbDeviceId)) {
                 // Perangkat pertama kali login -> Kunci ke perangkat ini
-                $stmtLock = $pdo->prepare("UPDATE `users` SET `device_id` = :did, `device_info` = :dinfo, `device_locked_at` = NOW() WHERE `id` = :uid");
-                $stmtLock->execute([
-                    ':did'   => $deviceId,
-                    ':dinfo' => $deviceInfo ?: 'Perangkat Web Browser',
-                    ':uid'   => $user['id']
-                ]);
-            } elseif ($currentDbDeviceId !== $deviceId) {
+                try {
+                    $stmtLock = $pdo->prepare("UPDATE `users` SET `device_id` = :did, `device_info` = :dinfo, `device_locked_at` = NOW() WHERE `id` = :uid");
+                    $stmtLock->execute([
+                        ':did'   => $deviceId,
+                        ':dinfo' => $deviceInfo ?: 'HP Android (Google Chrome)',
+                        ':uid'   => $user['id']
+                    ]);
+                } catch (Exception $eLock) {
+                    // Jika kolom belum ada di database, buat kolom lalu simpan
+                    try {
+                        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_id` VARCHAR(100) DEFAULT NULL AFTER `zone`");
+                        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_info` VARCHAR(255) DEFAULT NULL AFTER `device_id`");
+                        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_locked_at` DATETIME DEFAULT NULL AFTER `device_info`");
+                        $stmtLock = $pdo->prepare("UPDATE `users` SET `device_id` = :did, `device_info` = :dinfo, `device_locked_at` = NOW() WHERE `id` = :uid");
+                        $stmtLock->execute([
+                            ':did'   => $deviceId,
+                            ':dinfo' => $deviceInfo ?: 'HP Android (Google Chrome)',
+                            ':uid'   => $user['id']
+                        ]);
+                    } catch (Exception $e2) {}
+                }
+            } elseif ($currentDbDeviceId === $deviceId) {
+                // Perangkat sama -> Perbarui device_info jika sebelumnya masih generik (misal 'K')
+                if ($deviceInfo && (!str_contains($currentDbDeviceInfo, ' ') || $currentDbDeviceInfo === 'K (Google Chrome)')) {
+                    try {
+                        $stmtUp = $pdo->prepare("UPDATE `users` SET `device_info` = :dinfo WHERE `id` = :uid");
+                        $stmtUp->execute([':dinfo' => $deviceInfo, ':uid' => $user['id']]);
+                    } catch (Exception $eUp) {}
+                }
+            } else {
                 // Mencoba login di perangkat kedua yang berbeda -> TOLAK LOGIN
                 $lockedInfo = $currentDbDeviceInfo ? " ({$currentDbDeviceInfo})" : "";
                 jsonResponse(
