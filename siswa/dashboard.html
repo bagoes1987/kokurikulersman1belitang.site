@@ -490,8 +490,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261015_lock_fixed"></script>
-  <script src="../js/core.js?v=20261015_lock_fixed"></script>
+  <script src="../js/siswa_data.js?v=20261015_priority_v2"></script>
+  <script src="../js/core.js?v=20261015_priority_v2"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -1352,23 +1352,9 @@
         let badgeHtml = '';
         let lockAlertHtml = '';
 
-        if (!access.isPreviousCompleted) {
-          borderClass = 'border-rose-200/80 shadow-xs opacity-90';
-          bgClass = 'bg-rose-50/20';
-          dayIconBg = 'bg-slate-300 text-slate-500';
-          badgeHtml = `
-            <span class="px-3 py-1 rounded-xl text-xs font-black bg-rose-100 text-rose-800 flex items-center gap-1.5 shadow-2xs">
-              <span class="material-symbols-outlined text-sm">lock</span>
-              Menunggu Day ${dNum - 1} Selesai
-            </span>
-          `;
-          lockAlertHtml = `
-            <div class="px-3.5 py-2.5 rounded-2xl bg-rose-50/95 border border-rose-200/80 flex items-center gap-2.5 text-xs sm:text-sm text-rose-950 font-medium leading-relaxed">
-              <span class="material-symbols-outlined text-lg text-rose-600 shrink-0">lock</span>
-              <span>Aktivitas Day ${dNum} terkunci! Harap selesaikan seluruh rangkaian 5 tugas mandiri (Modul, LKPD, Asesmen, Foto, dan Refleksi) pada Day ${dNum - 1} terlebih dahulu.</span>
-            </div>
-          `;
-        } else if (!access.isOpen) {
+        // Prioritas 1: Jika Jadwal belum dibuka / di masa depan / ditutup Admin,
+        // pesan UTAMA adalah jadwal resmi (Akan dibuka tanggal ..., dsb), BUKAN menunggu tugas selesai.
+        if (!access.isOpen) {
           const isUpcoming = (d.status_code === 'UPCOMING');
           const isExpired = (d.status_code === 'EXPIRED');
           borderClass = 'border-slate-200/80 shadow-xs opacity-95';
@@ -1415,6 +1401,23 @@
               </div>
             `;
           }
+        } else if (!access.isPreviousCompleted) {
+          // Prioritas 2: Jadwal hari ini SUDAH BUKA (hari H), tetapi siswa belum menuntaskan Day sebelumnya
+          borderClass = 'border-rose-200/80 shadow-xs opacity-90';
+          bgClass = 'bg-rose-50/20';
+          dayIconBg = 'bg-slate-300 text-slate-500';
+          badgeHtml = `
+            <span class="px-3 py-1 rounded-xl text-xs font-black bg-rose-100 text-rose-800 flex items-center gap-1.5 shadow-2xs">
+              <span class="material-symbols-outlined text-sm">lock</span>
+              Menunggu Day ${dNum - 1} Selesai
+            </span>
+          `;
+          lockAlertHtml = `
+            <div class="px-3.5 py-2.5 rounded-2xl bg-rose-50/95 border border-rose-200/80 flex items-center gap-2.5 text-xs sm:text-sm text-rose-950 font-medium leading-relaxed">
+              <span class="material-symbols-outlined text-lg text-rose-600 shrink-0">lock</span>
+              <span>Aktivitas Day ${dNum} terkunci! Harap selesaikan seluruh rangkaian tugas pada Day ${dNum - 1} terlebih dahulu.</span>
+            </div>
+          `;
         } else {
           if (isTrial) {
             borderClass = 'border-amber-400/80 shadow-sm ring-2 ring-amber-400/25';
