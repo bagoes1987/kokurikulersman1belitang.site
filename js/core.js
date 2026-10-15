@@ -1157,6 +1157,99 @@ const FincestemCore = {
       } else {
         if (callback) callback({ success: true, local: true, day_number: num, is_active: actNum, category: cat });
       }
+    },
+
+    // Buka semua hari (Day 1 s.d. Day 7) serentak untuk admin tes langsung di HP
+    openAllDays: function(category, callback) {
+      const self = this;
+      const cat = category || 'field_trip';
+      const storageKey = 'fincestem_schedules_' + cat;
+
+      let days = [];
+      try {
+        const stored = localStorage.getItem(storageKey) || (cat === 'non_field_trip' ? localStorage.getItem('fincestem_schedules') : null);
+        days = stored ? JSON.parse(stored) : (cat === 'field_trip' ? self.getFieldTripDefaults() : self.getDefaults());
+      } catch (e) {
+        days = (cat === 'field_trip' ? self.getFieldTripDefaults() : self.getDefaults());
+      }
+
+      days.forEach(d => {
+        if (Number(d.day_number) >= 1 && Number(d.day_number) <= 7) {
+          d.is_active = 1;
+          d.auto_schedule = 0; // Manual terbuka bypass jam/tanggal
+          d.is_open = true;
+          d.status_code = 'OPEN';
+          d.status_label = 'Terbuka (Manual Admin)';
+        }
+      });
+
+      const evaluated = self.evaluateScheduleList(days);
+      localStorage.setItem(storageKey, JSON.stringify(evaluated));
+      if (cat === 'non_field_trip') {
+        localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
+      }
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'open_all_days', category: cat })
+        })
+        .then(r => r.json())
+        .then(res => { if (callback) callback(res); })
+        .catch(() => { if (callback) callback({ success: true, local: true, category: cat }); });
+      } else {
+        if (callback) callback({ success: true, local: true, category: cat });
+      }
+    },
+
+    // Kembalikan ke jadwal resmi asli (09 - 15 November 2026, 07:00 - 18:00 WIB)
+    resetOfficialSchedule: function(category, callback) {
+      const self = this;
+      const cat = category || 'field_trip';
+      const storageKey = 'fincestem_schedules_' + cat;
+
+      const officialDates = [
+        '2026-11-09',
+        '2026-11-10',
+        '2026-11-11',
+        '2026-11-12',
+        '2026-11-13',
+        '2026-11-14',
+        '2026-11-15'
+      ];
+
+      let days = (cat === 'field_trip' ? self.getFieldTripDefaults() : self.getDefaults());
+
+      days.forEach(d => {
+        const dNum = Number(d.day_number);
+        if (dNum >= 1 && dNum <= 7) {
+          d.date = officialDates[dNum - 1] || '2026-11-09';
+          d.start_time = '07:00';
+          d.end_time = '18:00';
+          d.is_active = 1;
+          d.auto_schedule = 1; // Ketat otomatis sesuai jam dan tanggal
+        }
+      });
+
+      const evaluated = self.evaluateScheduleList(days);
+      localStorage.setItem(storageKey, JSON.stringify(evaluated));
+      if (cat === 'non_field_trip') {
+        localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
+      }
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'reset_official_schedule', category: cat })
+        })
+        .then(r => r.json())
+        .then(res => { if (callback) callback(res); })
+        .catch(() => { if (callback) callback({ success: true, local: true, category: cat }); });
+      } else {
+        if (callback) callback({ success: true, local: true, category: cat });
+      }
     }
   },
 

@@ -690,21 +690,24 @@
       </div>
 
       <!-- HEADER & CONTROLS -->
-      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-        <div class="flex items-center justify-between flex-wrap gap-2">
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+        <div class="flex items-center justify-between flex-wrap gap-2.5">
           <div>
             <h3 id="adminScheduleHeaderTitle" class="font-bold text-sm text-on-surface">Manajemen Jadwal Field Trip (Day 1 - 7)</h3>
             <p id="adminScheduleHeaderDesc" class="text-[11px] text-on-surface-variant">Atur tanggal, jam buka/tutup, dan status aktif harian siswa Field Trip secara independen.</p>
           </div>
-          <div class="flex items-center gap-2">
-            <button onclick="setAllDaysStatus(true)" class="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center gap-1 cursor-pointer transition-all">
-              <span class="material-symbols-outlined text-sm">lock_open</span> Buka Semua
+          <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" onclick="handleMasterOpenAllDays()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-98 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-xs cursor-pointer transition-all border border-amber-400" title="Klik untuk membuka serentak seluruh Day 1 s.d. Day 7 agar bisa langsung dicoba di HP">
+              <span class="material-symbols-outlined text-sm">lock_open</span>
+              <span>Buka Semua Hari (Untuk Coba di HP)</span>
             </button>
-            <button onclick="setAllDaysStatus(false)" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 cursor-pointer transition-all">
-              <span class="material-symbols-outlined text-sm">lock</span> Kunci Semua
+            <button type="button" onclick="handleMasterResetOfficialSchedule()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-98 text-white font-black text-xs flex items-center gap-1.5 shadow-xs cursor-pointer transition-all border border-emerald-500" title="Kembalikan tanggal dan jam ke jadwal resmi asli (09-15 November 2026, 07:00 - 18:00 WIB)">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+              <span>Kembalikan ke Jadwal Resmi (09 - 15 Nov)</span>
             </button>
-            <button onclick="saveAllScheduleChanges()" class="px-3 py-1.5 rounded-xl bg-[#0875D1] hover:bg-[#02569b] text-white font-bold text-xs flex items-center gap-1 shadow-xs cursor-pointer transition-all">
-              <span class="material-symbols-outlined text-sm">save</span> Simpan Jadwal
+            <button onclick="saveAllScheduleChanges()" class="px-3 py-2 rounded-xl bg-[#0875D1] hover:bg-[#02569b] text-white font-bold text-xs flex items-center gap-1 shadow-xs cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-sm">save</span>
+              <span>Simpan Perubahan</span>
             </button>
           </div>
         </div>
@@ -2291,7 +2294,7 @@
 
   <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
   <script src="../js/guru_data.js?v=20261015_ft_full"></script>
-  <script src="../js/core.js?v=20261015_ft_full"></script>
+  <script src="../js/core.js?v=20261015_master_sched_v1"></script>
   <script>
     let adminCurrentGrade = 'ALL';
     let adminSearchQuery = '';
@@ -4660,6 +4663,40 @@
       FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
         FincestemCore.ui.toast(`Seluruh hari (${catLabel}) berhasil diatur menjadi ${isOpen ? 'TERBUKA' : 'TERKUNCI PAKSA'}!`, 'info');
       }, cat);
+    }
+
+    // Handler Master Tombol 1: Buka Semua Jadwal Utama D1-D7 untuk Coba di HP
+    function handleMasterOpenAllDays() {
+      const cat = currentAdminScheduleCategory || 'field_trip';
+      const catLabel = (cat === 'field_trip') ? 'Field Trip' : 'Non-Field Trip';
+
+      if (!confirm(`Konfirmasi Buka Semua Hari (${catLabel}):\n\nSeluruh Day 1 sampai Day 7 akan langsung DIBUKA SERENTAK di HP siswa dan admin untuk keperluan uji coba/pengecekan sistem.\n\nLanjutkan?`)) {
+        return;
+      }
+
+      FincestemCore.ui.toast('Sedang membuka seluruh hari...', 'info');
+
+      FincestemCore.schedule.openAllDays(cat, function(res) {
+        FincestemCore.ui.toast(`Berhasil! Seluruh Day 1 s.d. Day 7 (${catLabel}) sekarang TELAH DIBUKA. Silakan buka HP Anda untuk mencoba pengerjaan tugas.`, 'success');
+        renderAdminScheduleView();
+      });
+    }
+
+    // Handler Master Tombol 2: Kembalikan ke Jadwal Resmi (09 - 15 Nov, 07:00 - 18:00 WIB)
+    function handleMasterResetOfficialSchedule() {
+      const cat = currentAdminScheduleCategory || 'field_trip';
+      const catLabel = (cat === 'field_trip') ? 'Field Trip' : 'Non-Field Trip';
+
+      if (!confirm(`Konfirmasi Kembalikan ke Jadwal Resmi (${catLabel}):\n\nSeluruh Day 1 sampai Day 7 akan DIKUNCI KEMBALI dan berjalan otomatis sesuai tanggal asli:\n• Dimulai: Senin, 09 November 2026\n• Selesai: Minggu, 15 November 2026\n• Jam Buka: 07.00 WIB\n• Jam Tutup: 18.00 WIB\n\nLanjutkan pemulihan?`)) {
+        return;
+      }
+
+      FincestemCore.ui.toast('Sedang memulihkan jadwal resmi...', 'info');
+
+      FincestemCore.schedule.resetOfficialSchedule(cat, function(res) {
+        FincestemCore.ui.toast(`Sukses! Jadwal (${catLabel}) telah dikembalikan ke Jadwal Resmi (09 - 15 November 2026, 07.00 - 18.00 WIB).`, 'success');
+        renderAdminScheduleView();
+      });
     }
 
     /* ========================================================

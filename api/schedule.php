@@ -240,6 +240,65 @@ if ($method === 'POST') {
     $category = strtolower(trim($input['category'] ?? 'non_field_trip'));
     $tableName = ($category === 'field_trip') ? 'day_schedules_field_trip' : 'day_schedules';
 
+    // AKSI MASTER 1: BUKA SEMUA HARI DAY 1 - 7 (UNTUK ADMIN TES & COBA LANGSUNG DI HP)
+    if ($action === 'open_all_days') {
+        try {
+            $pdo = getDB();
+            ensureDaySchedulesTable($pdo);
+            // Set is_active = 1 dan auto_schedule = 0 agar sistem bypass tanggal/jam dan langsung TERBUKA
+            $pdo->exec("UPDATE `{$tableName}` SET `is_active` = 1, `auto_schedule` = 0 WHERE `day_number` >= 1 AND `day_number` <= 7");
+
+            jsonResponse(true, 'Semua Jadwal Utama Day 1 s.d. Day 7 (' . ($category === 'field_trip' ? 'Field Trip' : 'Non-Field Trip') . ') berhasil DIBUKA SERENTAK! Seluruh menu di HP siswa dan admin langsung dapat dicoba sekarang.', [
+                'category' => $category,
+                'status'   => 'ALL_OPEN'
+            ]);
+        } catch (Exception $e) {
+            jsonResponse(false, 'Gagal membuka jadwal: ' . $e->getMessage(), null, 500);
+        }
+    }
+
+    // AKSI MASTER 2: KEMBALIKAN KE JADWAL ASLI (09 - 15 NOVEMBER 2026, 07:00 - 18:00 WIB)
+    if ($action === 'reset_official_schedule') {
+        try {
+            $pdo = getDB();
+            ensureDaySchedulesTable($pdo);
+
+            $officialDates = [
+                1 => '2026-11-09',
+                2 => '2026-11-10',
+                3 => '2026-11-11',
+                4 => '2026-11-12',
+                5 => '2026-11-13',
+                6 => '2026-11-14',
+                7 => '2026-11-15'
+            ];
+
+            $stmtUpdate = $pdo->prepare("
+                UPDATE `{$tableName}` 
+                SET `date` = :dDate, 
+                    `start_time` = '07:00:00', 
+                    `end_time` = '18:00:00', 
+                    `is_active` = 1, 
+                    `auto_schedule` = 1 
+                WHERE `day_number` = :day
+            ");
+
+            foreach ($officialDates as $dayNum => $dateStr) {
+                $stmtUpdate->execute([
+                    ':dDate' => $dateStr,
+                    ':day'   => $dayNum
+                ]);
+            }
+
+            jsonResponse(true, 'Pengaturan jadwal (' . ($category === 'field_trip' ? 'Field Trip' : 'Non-Field Trip') . ') berhasil DIKEMBALIKAN KE JADWAL RESMI! Pelaksanaan resmi terkunci pada 09 - 15 November 2026, dibuka pukul 07.00 dan ditutup pukul 18.00 WIB setiap harinya.', [
+                'category' => $category,
+                'status'   => 'OFFICIAL_RESET'
+            ]);
+        } catch (Exception $e) {
+            jsonResponse(false, 'Gagal mengembalikan jadwal resmi: ' . $e->getMessage(), null, 500);
+        }
+    }
+
     // AKSI KHUSUS: Toggle sakelar Day Uji Coba (Aktifkan / Nonaktifkan / Sembunyikan)
     if ($action === 'toggle_trial_day') {
         $isActive = isset($input['is_active']) ? (int)$input['is_active'] : 0;
