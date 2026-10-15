@@ -1696,19 +1696,18 @@
                     </span>
                   </div>
 
-                  <!-- Baris Rute Horizontal (Pills / Chips) -->
-                  <div class="p-2.5 sm:p-3 rounded-xl bg-amber-50/70 border border-amber-200/90 flex flex-col gap-2">
-                    ${(ftConfig.route_lines && ftConfig.route_lines.length > 0 ? ftConfig.route_lines : [ftConfig.route.split(' → ')]).map((lineArr) => `
-                      <div class="flex items-center gap-1.5 flex-wrap text-[11px] sm:text-xs">
-                        ${lineArr.map((stop, sIdx) => `
-                          <span class="inline-flex items-center gap-1 font-bold text-slate-800 bg-white px-2.5 py-1 rounded-lg border border-amber-200/90 shadow-2xs">
-                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
-                            <span>${stop}</span>
-                          </span>
-                          ${sIdx < lineArr.length - 1 ? '<span class="text-amber-500 font-black text-xs px-0.5">➔</span>' : ''}
-                        `).join('')}
-                      </div>
-                    `).join('')}
+                  <!-- Baris Rute Horizontal Mengalir (Pills / Chips Rapat & Hemat Tempat) -->
+                  <div class="p-2.5 sm:p-3 rounded-xl bg-amber-50/70 border border-amber-200/90 flex flex-wrap items-center gap-1.5 text-[11px] sm:text-xs">
+                    ${(function() {
+                      const stops = ftConfig.route ? ftConfig.route.split(' → ') : (ftConfig.route_lines ? ftConfig.route_lines.flat() : []);
+                      return stops.map((stop, sIdx) => `
+                        <span class="inline-flex items-center gap-1.5 font-bold text-slate-800 bg-white px-2.5 py-1 rounded-lg border border-amber-200/90 shadow-2xs">
+                          <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
+                          <span>${stop}</span>
+                        </span>
+                        ${sIdx < stops.length - 1 ? '<span class="text-amber-500 font-black text-xs px-0.5">➔</span>' : ''}
+                      `).join('');
+                    })()}
                   </div>
                 </div>
 
