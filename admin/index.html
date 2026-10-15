@@ -5116,6 +5116,7 @@
       FincestemCore.assignments.saveCoordinatorClasses(teacherUser, teacherName, checkedClasses, function(res) {
         FincestemCore.ui.toast(`Penugasan ${checkedClasses.length} rombel untuk Koordinator ${teacherName} berhasil disimpan!`, 'success');
         renderAdminCoordinatorView();
+        if (typeof renderAdminMatrixView === 'function') renderAdminMatrixView();
       });
     }
 
@@ -5379,6 +5380,7 @@
         FincestemCore.assignments.removeCoordinator(teacherUser, '', function() {
           FincestemCore.ui.toast(`Penugasan koordinator untuk ${teacherName} berhasil dicabut.`, 'success');
           renderAdminCoordinatorView();
+          if (typeof renderAdminMatrixView === 'function') renderAdminMatrixView();
         });
       }
     }
@@ -5503,6 +5505,7 @@
         FincestemCore.ui.toast(`Guru ${teacherName} berhasil ditugaskan sebagai Fasilitator pada ${targetClass}!`, 'success');
         selTeacher.value = '';
         onAdminFasilClassChanged();
+        if (typeof renderAdminMatrixView === 'function') renderAdminMatrixView();
       });
     }
 
@@ -5511,6 +5514,7 @@
         FincestemCore.assignments.removeFacilitator(teacherUser, className, function() {
           FincestemCore.ui.toast('Penugasan fasilitator berhasil dicabut.', 'success');
           onAdminFasilClassChanged();
+          if (typeof renderAdminMatrixView === 'function') renderAdminMatrixView();
         });
       }
     }
