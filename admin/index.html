@@ -4391,9 +4391,8 @@
                   ${(ftCfg && ftCfg.sessions) ? ftCfg.sessions.length : 0} Agenda Utama
                 </span>
               </div>
-              ${routeLines.map((lineArr, lIdx) => `
+              ${routeLines.map((lineArr) => `
                 <div class="flex items-center gap-1.5 flex-wrap text-[11px]">
-                  <span class="px-1.5 py-0.5 rounded bg-amber-200/90 text-amber-950 font-black text-[9px] uppercase tracking-wider shrink-0">Jalur ${lIdx + 1}</span>
                   ${lineArr.map((stop, sIdx) => `
                     <span class="inline-flex items-center gap-1 font-semibold text-slate-800 bg-white px-2 py-0.5 rounded-md border border-amber-200 shadow-2xs">
                       <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
