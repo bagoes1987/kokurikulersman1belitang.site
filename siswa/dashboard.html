@@ -114,7 +114,7 @@
   <header class="sticky top-0 w-full z-40 bg-white/90 backdrop-blur-xl border-b border-outline-variant/30">
     <div class="h-16 px-4 flex items-center justify-between max-w-xl mx-auto w-full">
       <div class="flex items-center gap-3">
-        <a href="../" class="w-10 h-10 rounded-2xl bg-surface-container flex items-center justify-center p-1 border border-outline-variant/30 shrink-0">
+        <a href="../" class="w-10 h-12 flex items-center justify-center p-0 shrink-0 drop-shadow-xs">
           <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
         </a>
         <div class="flex flex-col">
@@ -169,18 +169,15 @@
           </div>
         </div>
 
-        <!-- Row 2: Dedicated Zone Banner (Jelas, Tebal & Nyaman Dibaca di HP) -->
+        <!-- Row 2: Dedicated Zone Banner (Jelas, Tidak Dobel Tulisan) -->
         <div class="flex items-center justify-between p-3 rounded-2xl bg-black/25 backdrop-blur-xs border border-white/20 gap-3">
           <div class="flex items-center gap-2.5 min-w-0">
             <span class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center text-white shrink-0">
               <span class="material-symbols-outlined text-base">explore</span>
             </span>
-            <div class="flex flex-col min-w-0">
-              <span class="text-xs text-cyan-200 font-bold leading-tight">Kategori Kegiatan:</span>
-              <span id="userZoneText" class="text-sm font-black text-white tracking-wide uppercase truncate mt-0.5">NON-FIELD TRIP</span>
-            </div>
+            <span class="text-xs sm:text-sm text-cyan-200 font-bold leading-tight">Kategori Kegiatan</span>
           </div>
-          <span id="userZoneBadge" class="px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs">
+          <span id="userZoneBadge" class="px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-cyan-400 text-slate-950 shrink-0 shadow-sm border border-cyan-300">
             NON-FIELD TRIP
           </span>
         </div>
@@ -676,17 +673,17 @@
     function renderStudentZoneUI(studentZone) {
       const zoneBadge = document.getElementById('userZoneBadge');
       const zoneText = document.getElementById('userZoneText');
-      if (!zoneBadge || !zoneText) return;
+      if (!zoneBadge) return;
 
       const zUpper = (studentZone || '').toUpperCase();
       if (zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP')) {
-        zoneBadge.className = 'px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-amber-400 text-slate-950 shrink-0 shadow-xs';
+        zoneBadge.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-amber-400 text-slate-950 shrink-0 shadow-sm border border-amber-300';
         zoneBadge.textContent = 'FIELD TRIP';
-        zoneText.textContent = 'FIELD TRIP';
+        if (zoneText) zoneText.textContent = 'FIELD TRIP';
       } else {
-        zoneBadge.className = 'px-3 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-400 text-slate-950 shrink-0 shadow-xs';
+        zoneBadge.className = 'px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-black uppercase tracking-wider bg-cyan-400 text-slate-950 shrink-0 shadow-sm border border-cyan-300';
         zoneBadge.textContent = 'NON-FIELD TRIP';
-        zoneText.textContent = 'NON-FIELD TRIP';
+        if (zoneText) zoneText.textContent = 'NON-FIELD TRIP';
       }
     }
 
