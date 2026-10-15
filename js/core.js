@@ -2079,7 +2079,7 @@ const FincestemCore = {
       // 1. SISWA FIELD TRIP:
       // Harus memenuhi: (1) Jadwal Day ini terbuka oleh Admin/Tanggal (isOpenByAdmin), dan (2) Day sebelumnya selesai
       if (isFt) {
-        const prevDone = (d <= 2) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+        const prevDone = (d <= 1) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
         const canOpen = isOpenByAdmin && prevDone;
         return {
           canAccess: canOpen,
