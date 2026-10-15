@@ -170,11 +170,11 @@
             </button>
             <button id="btnTabAdm_teachers" onclick="switchAdmTab('teachers')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
               <span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-cyan-400">badge</span>
-              <span class="flex-1 truncate">Data Guru &amp; Pembina (116)</span>
+              <span class="flex-1 truncate">Data Guru (116)</span>
             </button>
             <button id="btnTabAdm_zones" onclick="switchAdmTab('zones')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
               <span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-cyan-400">assignment_ind</span>
-              <span class="flex-1 truncate">Penugasan Pembina &amp; Zona</span>
+              <span class="flex-1 truncate">Data Koordinator &amp; Fasilitator</span>
             </button>
           </div>
         </div>
@@ -694,21 +694,76 @@
 
       <!-- SUB-NAVIGASI SEGMENTED CONTROL -->
       <div class="bg-surface-container-lowest p-1.5 rounded-2xl border border-outline-variant/30 flex items-center gap-1 shadow-2xs">
-        <button id="btnSubTab_coord" onclick="switchPenugasanSubTab('coord')" class="flex-1 py-2 px-3 text-center text-xs font-bold rounded-xl transition-all cursor-pointer bg-[#0875D1] text-white shadow-xs">
-          Koordinator Kelas
+        <button id="btnSubTab_matrix" onclick="switchPenugasanSubTab('matrix')" class="flex-1 py-2 px-2.5 text-center text-xs font-bold rounded-xl transition-all cursor-pointer bg-[#0875D1] text-white shadow-xs flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">badge</span>
+          <span>Rekap Akun &amp; Kelas</span>
         </button>
-        <button id="btnSubTab_fasil" onclick="switchPenugasanSubTab('fasil')" class="flex-1 py-2 px-3 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer">
-          Fasilitator Kelas
+        <button id="btnSubTab_coord" onclick="switchPenugasanSubTab('coord')" class="flex-1 py-2 px-2.5 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">manage_accounts</span>
+          <span>Penugasan Koordinator</span>
         </button>
-        <button id="btnSubTab_zones" onclick="switchPenugasanSubTab('zones')" class="flex-1 py-2 px-3 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer">
-          Pembagian Zona Riset
+        <button id="btnSubTab_fasil" onclick="switchPenugasanSubTab('fasil')" class="flex-1 py-2 px-2.5 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">co_present</span>
+          <span>Penugasan Fasilitator</span>
         </button>
+        <button id="btnSubTab_zones" onclick="switchPenugasanSubTab('zones')" class="flex-1 py-2 px-2.5 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center gap-1.5">
+          <span class="material-symbols-outlined text-sm">explore</span>
+          <span>Zona Riset</span>
+        </button>
+      </div>
+
+      <!-- ========================================================
+           SUBPANEL 0: MATRIX REKAP KOORDINATOR & FASILITATOR PER ROMBEL
+           (DILENGKAPI USERNAME, PASSWORD, SALIN & WHATSAPP)
+           ======================================================== -->
+      <div id="subpanelAdminMatrix" class="flex flex-col gap-3">
+        <!-- HEADER KARTU MATRIX -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#0875D1] to-teal-500 text-white flex items-center justify-center shrink-0 shadow-md">
+                <span class="material-symbols-outlined text-2xl">badge</span>
+              </div>
+              <div>
+                <h4 class="font-extrabold text-sm sm:text-base text-on-surface">Data Koordinator &amp; Fasilitator per Rombel</h4>
+                <p class="text-[11px] text-on-surface-variant">Memudahkan memantau pembina tiap rombel (33 Rombel) beserta akun login (Username &amp; Password)</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button onclick="copyAllPembinaAccounts()" class="py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 text-[#0875D1] border border-blue-200 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs" title="Salin Akun Seluruh Pembina">
+                <span class="material-symbols-outlined text-sm">content_copy</span>
+                <span>Salin Semua Akun</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KONTROL PENCARIAN & FILTER TINGKAT -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20">
+            <!-- Search Input -->
+            <div class="relative flex-1 flex items-center">
+              <span class="material-symbols-outlined absolute left-3 text-on-surface-variant text-base">search</span>
+              <input id="searchMatrixPembina" type="text" oninput="onMatrixFilterChanged()" placeholder="Cari nama guru, rombel, username (cth: X.1, Budi, siti)..." class="w-full pl-9 pr-3 py-2 rounded-xl border border-outline-variant/40 bg-white text-xs font-medium outline-none focus:border-[#0875D1] transition-all">
+            </div>
+            <!-- Filter Jenjang Tabs -->
+            <div class="flex items-center gap-1 bg-white p-1 rounded-xl border border-outline-variant/30 shadow-2xs shrink-0 overflow-x-auto no-scrollbar">
+              <button type="button" onclick="setMatrixGradeFilter('ALL')" id="btnMatrixFilter_ALL" class="px-2.5 py-1 rounded-lg font-bold text-[11px] bg-[#0875D1] text-white shadow-2xs transition-all cursor-pointer">Semua (33)</button>
+              <button type="button" onclick="setMatrixGradeFilter('X')" id="btnMatrixFilter_X" class="px-2.5 py-1 rounded-lg font-semibold text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-slate-100 transition-all cursor-pointer">Kelas X</button>
+              <button type="button" onclick="setMatrixGradeFilter('XI')" id="btnMatrixFilter_XI" class="px-2.5 py-1 rounded-lg font-semibold text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-slate-100 transition-all cursor-pointer">Kelas XI</button>
+              <button type="button" onclick="setMatrixGradeFilter('XII')" id="btnMatrixFilter_XII" class="px-2.5 py-1 rounded-lg font-semibold text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-slate-100 transition-all cursor-pointer">Kelas XII</button>
+            </div>
+          </div>
+
+          <!-- CONTAINER DAFTAR MATRIX PER ROMBEL -->
+          <div id="containerMatrixPembinaList" class="flex flex-col gap-3">
+            <!-- Diisi secara dinamis oleh JavaScript -->
+          </div>
+        </div>
       </div>
 
       <!-- ========================================================
            SUBPANEL 1: PENUGASAN KOORDINATOR KELAS (MANY-TO-MANY)
            ======================================================== -->
-      <div id="subpanelAdminCoord" class="flex flex-col gap-3">
+      <div id="subpanelAdminCoord" class="hidden flex flex-col gap-3">
         <!-- FORM PENUGASAN KOORDINATOR -->
         <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
           <div class="flex items-center gap-3">
@@ -2198,6 +2253,13 @@
             renderAdminStudentList();
           });
         }
+        if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
+          FincestemCore.assignments.getAssignments(function() {
+            if (typeof renderAdminMatrixView === 'function' && currentPenugasanSubTab === 'matrix') {
+              renderAdminMatrixView();
+            }
+          });
+        }
       } else {
         if (layoutWrapper) layoutWrapper.classList.add('hidden');
         if (loginSec) loginSec.classList.remove('hidden');
@@ -2287,8 +2349,8 @@
 
     const ADM_TAB_NAMES = {
       users: 'Data Siswa (1.165)',
-      teachers: 'Data Guru & Pembina (116)',
-      zones: 'Penugasan Pembina & Zona',
+      teachers: 'Data Guru (116)',
+      zones: 'Data Koordinator & Fasilitator',
       schedule: 'Jadwal Day 1 - 7',
       rekap: 'Rekap Field Trip (455)',
       gallery: 'Galeri Foto Riset',
@@ -2335,6 +2397,13 @@
       if (tab === 'schedule') renderAdminScheduleView();
       if (tab === 'zones') {
         initPenugasanPembina();
+        if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
+          FincestemCore.assignments.getAssignments(function() {
+            if (currentPenugasanSubTab === 'matrix') renderAdminMatrixView();
+            else if (currentPenugasanSubTab === 'coord') renderAdminCoordinatorView();
+            else if (currentPenugasanSubTab === 'fasil') renderAdminFacilitatorView();
+          });
+        }
         if (FincestemCore.zones && FincestemCore.zones.syncZones) {
           FincestemCore.zones.syncZones(function() {
             if (currentPenugasanSubTab === 'zones') renderAdminZonesView();
@@ -4545,13 +4614,15 @@
     }
 
     /* ========================================================
-       PENUGASAN KOORDINATOR & FASILITATOR SERTA ZONA RISET
+       DATA KOORDINATOR & FASILITATOR SERTA ZONA RISET
        ======================================================== */
-    let currentPenugasanSubTab = 'coord';
+    let currentPenugasanSubTab = 'matrix';
+    let matrixGradeFilter = 'ALL';
+    let matrixSearchQuery = '';
 
     function switchPenugasanSubTab(tab) {
       currentPenugasanSubTab = tab;
-      ['coord', 'fasil', 'zones'].forEach(t => {
+      ['matrix', 'coord', 'fasil', 'zones'].forEach(t => {
         const panel = document.getElementById('subpanelAdmin' + t.charAt(0).toUpperCase() + t.slice(1));
         const btn = document.getElementById('btnSubTab_' + t);
         if (panel) {
@@ -4560,16 +4631,13 @@
         }
         if (btn) {
           if (t === tab) {
-            btn.className = t === 'coord' 
-              ? 'flex-1 py-2 px-3 text-center text-xs font-bold rounded-xl transition-all cursor-pointer bg-[#0875D1] text-white shadow-xs'
-              : (t === 'fasil'
-                ? 'flex-1 py-2 px-3 text-center text-xs font-bold rounded-xl transition-all cursor-pointer bg-[#006a61] text-white shadow-xs'
-                : 'flex-1 py-2 px-3 text-center text-xs font-bold rounded-xl transition-all cursor-pointer bg-emerald-700 text-white shadow-xs');
+            btn.className = 'flex-1 py-2 px-2.5 text-center text-xs font-bold rounded-xl transition-all cursor-pointer bg-[#0875D1] text-white shadow-xs flex items-center justify-center gap-1.5';
           } else {
-            btn.className = 'flex-1 py-2 px-3 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer';
+            btn.className = 'flex-1 py-2 px-2.5 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center gap-1.5';
           }
         }
       });
+      if (tab === 'matrix') renderAdminMatrixView();
       if (tab === 'coord') renderAdminCoordinatorView();
       if (tab === 'fasil') renderAdminFacilitatorView();
       if (tab === 'zones') renderAdminZonesView();
@@ -4577,6 +4645,357 @@
 
     function initPenugasanPembina() {
       switchPenugasanSubTab(currentPenugasanSubTab);
+    }
+
+    function setMatrixGradeFilter(grade) {
+      matrixGradeFilter = grade;
+      ['ALL', 'X', 'XI', 'XII'].forEach(g => {
+        const btn = document.getElementById('btnMatrixFilter_' + g);
+        if (btn) {
+          if (g === grade) {
+            btn.className = 'px-2.5 py-1 rounded-lg font-bold text-[11px] bg-[#0875D1] text-white shadow-2xs transition-all cursor-pointer';
+          } else {
+            btn.className = 'px-2.5 py-1 rounded-lg font-semibold text-[11px] text-on-surface-variant hover:text-on-surface hover:bg-slate-100 transition-all cursor-pointer';
+          }
+        }
+      });
+      renderAdminMatrixView();
+    }
+
+    function onMatrixFilterChanged() {
+      const input = document.getElementById('searchMatrixPembina');
+      matrixSearchQuery = input ? input.value.trim().toLowerCase() : '';
+      renderAdminMatrixView();
+    }
+
+    function toggleMatrixPwd(elementId, realPassword) {
+      const span = document.getElementById(elementId);
+      const icon = document.getElementById('eye_' + elementId);
+      if (!span) return;
+      if (span.textContent === '••••••••') {
+        span.textContent = realPassword;
+        if (icon) icon.textContent = 'visibility_off';
+      } else {
+        span.textContent = '••••••••';
+        if (icon) icon.textContent = 'visibility';
+      }
+    }
+
+    function copyMatrixCredentials(username, password, name, role, className) {
+      const text = `Akses Login Portal Guru FINCESTEM SMAN 1 Belitang:\n` +
+        `• Nama: ${name}\n` +
+        `• Peran: ${role} (${className})\n` +
+        `• Username: ${username}\n` +
+        `• Password: ${password}\n` +
+        `• Login Portal: https://kokurikulersman1belitang.site/guru/`;
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          FincestemCore.ui.toast(`Akun login ${name} berhasil disalin!`, 'success');
+        });
+      } else {
+        FincestemCore.ui.toast(`Kredensial: User: ${username} | Pass: ${password}`, 'info');
+      }
+    }
+
+    function shareMatrixWA(username, password, name, role, className) {
+      const text = `*AKSES LOGIN PORTAL GURU FINCESTEM SMAN 1 BELITANG*\n\n` +
+        `Halo Bapak/Ibu *${name}*,\n` +
+        `Berikut adalah akun akses Anda sebagai *${role}* (${className}):\n\n` +
+        `🔑 *Username*: \`${username}\`\n` +
+        `🔒 *Password*: \`${password}\`\n\n` +
+        `🌐 *Link Login Portal Guru*:\nhttps://kokurikulersman1belitang.site/guru/\n\n` +
+        `_Simpan pesan ini dengan baik untuk kemudahan pendampingan kokurikuler._`;
+      const url = 'https://api.whatsapp.com/send?text=' + encodeURIComponent(text);
+      window.open(url, '_blank');
+    }
+
+    function copyAllPembinaAccounts() {
+      const classes = FincestemCore.assignments ? FincestemCore.assignments.getAllClasses() : [];
+      const teachers = window.FincestemMasterTeachers || [];
+      const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : { coordinators: [], facilitators: [] };
+
+      let text = `DAFTAR AKUN KOORDINATOR & FASILITATOR SMAN 1 BELITANG 2026\n\n`;
+      classes.forEach((cls, idx) => {
+        const norm = (cls || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        const coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+        const fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+
+        text += `[${cls}]\n`;
+        // Koordinator
+        if (coordMatches.length > 0) {
+          coordMatches.forEach(c => {
+            const t = teachers.find(x => x.username === c.teacher_username || x.nip === c.teacher_username || x.nama_guru === c.teacher_name);
+            const u = t ? t.username : c.teacher_username;
+            const p = t ? t.password : '-';
+            text += `  • Koordinator: ${c.teacher_name || c.teacher_username} | User: ${u} | Pass: ${p}\n`;
+          });
+        } else {
+          text += `  • Koordinator: (Belum ditetapkan)\n`;
+        }
+        // Fasilitator
+        if (fasilMatches.length > 0) {
+          fasilMatches.forEach(f => {
+            const t = teachers.find(x => x.username === f.teacher_username || x.nip === f.teacher_username || x.nama_guru === f.teacher_name);
+            const u = t ? t.username : f.teacher_username;
+            const p = t ? t.password : '-';
+            text += `  • Fasilitator: ${f.teacher_name || f.teacher_username} | User: ${u} | Pass: ${p}\n`;
+          });
+        } else {
+          text += `  • Fasilitator: (Belum ada fasilitator)\n`;
+        }
+        text += `\n`;
+      });
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          FincestemCore.ui.toast('Seluruh daftar akun Koordinator & Fasilitator 33 Rombel berhasil disalin!', 'success');
+        });
+      } else {
+        FincestemCore.ui.toast('Data akun berhasil diproses.', 'info');
+      }
+    }
+
+    function renderAdminMatrixView() {
+      const container = document.getElementById('containerMatrixPembinaList');
+      if (!container) return;
+      container.innerHTML = '';
+
+      let classes = FincestemCore.assignments ? FincestemCore.assignments.getAllClasses() : [];
+      const teachers = window.FincestemMasterTeachers || [];
+      const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : { coordinators: [], facilitators: [] };
+      const allStudents = window.FincestemMasterStudents || [];
+
+      // Filter Tingkat Kelas (ALL, X, XI, XII)
+      if (matrixGradeFilter !== 'ALL') {
+        classes = classes.filter(cls => cls.includes(' ' + matrixGradeFilter + '.') || cls.startsWith(matrixGradeFilter + '.'));
+      }
+
+      // Filter Pencarian
+      const q = matrixSearchQuery;
+      let matchedClasses = classes;
+      if (q) {
+        matchedClasses = classes.filter(cls => {
+          const norm = (cls || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+          const clsMatch = cls.toLowerCase().includes(q);
+          const coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+          const fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+          const coordMatch = coordMatches.some(c => (c.teacher_name || c.teacher_username || '').toLowerCase().includes(q));
+          const fasilMatch = fasilMatches.some(f => (f.teacher_name || f.teacher_username || '').toLowerCase().includes(q));
+          return clsMatch || coordMatch || fasilMatch;
+        });
+      }
+
+      if (matchedClasses.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 px-4 rounded-3xl bg-slate-50 border border-slate-200/80 text-center flex flex-col items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-4xl text-slate-300">search_off</span>
+            <p class="font-extrabold text-xs text-slate-700">Tidak ada rombel yang sesuai dengan filter atau pencarian</p>
+            <p class="text-[11px] text-slate-400">Silakan ubah kata kunci pencarian nama guru atau pilih tab kelas lain.</p>
+          </div>
+        `;
+        return;
+      }
+
+      matchedClasses.forEach((cls, idx) => {
+        const norm = (cls || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        const gradeLevel = cls.includes(' XII.') ? 'XII' : (cls.includes(' XI.') ? 'XI' : 'X');
+        const countInClass = allStudents.filter(s => (s.class || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm).length;
+
+        let badgeHeaderColor = 'bg-blue-50 text-[#0875D1] border-blue-200';
+        let gradeBorder = 'border-blue-200/80';
+        if (gradeLevel === 'XI') {
+          badgeHeaderColor = 'bg-teal-50 text-[#006a61] border-teal-200';
+          gradeBorder = 'border-teal-200/80';
+        } else if (gradeLevel === 'XII') {
+          badgeHeaderColor = 'bg-purple-50 text-[#7c3aed] border-purple-200';
+          gradeBorder = 'border-purple-200/80';
+        }
+
+        const coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+        const fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+
+        // Render Kartu Koordinator
+        let coordItemsHtml = '';
+        if (coordMatches.length > 0) {
+          coordItemsHtml = coordMatches.map(c => {
+            const t = teachers.find(x => x.username === c.teacher_username || x.nip === c.teacher_username || x.nama_guru === c.teacher_name);
+            const u = t ? t.username : c.teacher_username;
+            const p = (t && t.password) ? t.password : '123456';
+            const safeId = 'pwd_c_' + (u || '').replace(/[^a-zA-Z0-9]/g, '_') + '_' + idx;
+            const escapedName = (c.teacher_name || c.teacher_username || '').replace(/'/g, "\\'");
+            const subTitle = t ? `${t.kode_guru ? '[' + t.kode_guru + '] ' : ''}${t.mata_pelajaran || ''}` : '';
+
+            return `
+              <div class="p-3 rounded-2xl bg-white border border-blue-100 shadow-2xs flex flex-col justify-between gap-2.5">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-8 h-8 rounded-xl bg-blue-100 text-[#0875D1] flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-base">manage_accounts</span>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                      <span class="font-extrabold text-xs text-slate-900 truncate leading-snug">${c.teacher_name || c.teacher_username}</span>
+                      <span class="text-[10px] text-blue-700 font-semibold truncate">${subTitle || 'Koordinator Kelas'}</span>
+                    </div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-blue-50 text-[#0875D1] border border-blue-200 shrink-0">KOORD</span>
+                </div>
+                <!-- Box Akun Login -->
+                <div class="p-2 rounded-xl bg-slate-50 border border-slate-200/70 flex items-center justify-between gap-2 text-xs">
+                  <div class="flex flex-col min-w-0">
+                    <div class="flex items-center gap-1.5 text-[11px]">
+                      <span class="text-[10px] text-slate-400 font-semibold">User:</span>
+                      <strong class="font-mono text-slate-800 truncate">${u}</strong>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-[11px] mt-0.5">
+                      <span class="text-[10px] text-slate-400 font-semibold">Pass:</span>
+                      <span id="${safeId}" class="font-mono text-slate-700">••••••••</span>
+                      <button type="button" onclick="toggleMatrixPwd('${safeId}', '${p.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                        <span id="eye_${safeId}" class="material-symbols-outlined text-xs">visibility</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1 shrink-0">
+                    <button onclick="copyMatrixCredentials('${u}', '${p}', '${escapedName}', 'Koordinator', '${cls}')" class="px-2 py-1 rounded-lg bg-white hover:bg-blue-50 text-[#0875D1] border border-slate-200 text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-2xs" title="Salin Akun">
+                      <span class="material-symbols-outlined text-xs">content_copy</span>
+                      <span>Salin</span>
+                    </button>
+                    <button onclick="shareMatrixWA('${u}', '${p}', '${escapedName}', 'Koordinator', '${cls}')" class="px-2 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer" title="Kirim Akun via WA">
+                      <span class="material-symbols-outlined text-xs">share</span>
+                      <span>WA</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        } else {
+          coordItemsHtml = `
+            <div class="p-4 rounded-2xl bg-white/70 border border-dashed border-slate-300 text-center flex flex-col items-center justify-center gap-1">
+              <span class="text-xs text-slate-400 italic">Belum ada Koordinator Kelas</span>
+              <button onclick="switchPenugasanSubTab('coord'); editAdminCoordForClass('${cls}')" class="mt-1 px-2.5 py-1 rounded-lg bg-blue-50 text-[#0875D1] hover:bg-blue-100 font-bold text-[10.5px] cursor-pointer">
+                + Tugaskan Koordinator
+              </button>
+            </div>
+          `;
+        }
+
+        // Render Kartu Fasilitator
+        let fasilItemsHtml = '';
+        if (fasilMatches.length > 0) {
+          fasilItemsHtml = fasilMatches.map((f, fIdx) => {
+            const t = teachers.find(x => x.username === f.teacher_username || x.nip === f.teacher_username || x.nama_guru === f.teacher_name);
+            const u = t ? t.username : f.teacher_username;
+            const p = (t && t.password) ? t.password : '123456';
+            const safeId = 'pwd_f_' + (u || '').replace(/[^a-zA-Z0-9]/g, '_') + '_' + idx + '_' + fIdx;
+            const escapedName = (f.teacher_name || f.teacher_username || '').replace(/'/g, "\\'");
+            const subTitle = t ? `${t.kode_guru ? '[' + t.kode_guru + '] ' : ''}${t.mata_pelajaran || ''}` : '';
+
+            return `
+              <div class="p-3 rounded-2xl bg-white border border-teal-100 shadow-2xs flex flex-col justify-between gap-2.5">
+                <div class="flex items-start justify-between gap-2">
+                  <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-8 h-8 rounded-xl bg-teal-100 text-[#006a61] flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-base">co_present</span>
+                    </div>
+                    <div class="flex flex-col min-w-0">
+                      <span class="font-extrabold text-xs text-slate-900 truncate leading-snug">${f.teacher_name || f.teacher_username}</span>
+                      <span class="text-[10px] text-teal-700 font-semibold truncate">${subTitle || 'Fasilitator Kelas'}</span>
+                    </div>
+                  </div>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-teal-50 text-[#006a61] border border-teal-200 shrink-0">FASIL</span>
+                </div>
+                <!-- Box Akun Login -->
+                <div class="p-2 rounded-xl bg-slate-50 border border-slate-200/70 flex items-center justify-between gap-2 text-xs">
+                  <div class="flex flex-col min-w-0">
+                    <div class="flex items-center gap-1.5 text-[11px]">
+                      <span class="text-[10px] text-slate-400 font-semibold">User:</span>
+                      <strong class="font-mono text-slate-800 truncate">${u}</strong>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-[11px] mt-0.5">
+                      <span class="text-[10px] text-slate-400 font-semibold">Pass:</span>
+                      <span id="${safeId}" class="font-mono text-slate-700">••••••••</span>
+                      <button type="button" onclick="toggleMatrixPwd('${safeId}', '${p.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+                        <span id="eye_${safeId}" class="material-symbols-outlined text-xs">visibility</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-1 shrink-0">
+                    <button onclick="copyMatrixCredentials('${u}', '${p}', '${escapedName}', 'Fasilitator', '${cls}')" class="px-2 py-1 rounded-lg bg-white hover:bg-teal-50 text-[#006a61] border border-slate-200 text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer shadow-2xs" title="Salin Akun">
+                      <span class="material-symbols-outlined text-xs">content_copy</span>
+                      <span>Salin</span>
+                    </button>
+                    <button onclick="shareMatrixWA('${u}', '${p}', '${escapedName}', 'Fasilitator', '${cls}')" class="px-2 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 text-[10.5px] font-bold flex items-center gap-1 transition-all cursor-pointer" title="Kirim Akun via WA">
+                      <span class="material-symbols-outlined text-xs">share</span>
+                      <span>WA</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        } else {
+          fasilItemsHtml = `
+            <div class="p-4 rounded-2xl bg-white/70 border border-dashed border-slate-300 text-center flex flex-col items-center justify-center gap-1">
+              <span class="text-xs text-slate-400 italic">Belum ada Fasilitator Kelas</span>
+              <button onclick="switchPenugasanSubTab('fasil'); editAdminFasilForClass('${cls}')" class="mt-1 px-2.5 py-1 rounded-lg bg-teal-50 text-[#006a61] hover:bg-teal-100 font-bold text-[10.5px] cursor-pointer">
+                + Tugaskan Fasilitator
+              </button>
+            </div>
+          `;
+        }
+
+        const rombelCard = document.createElement('div');
+        rombelCard.className = `p-4 sm:p-5 rounded-3xl bg-slate-50/90 border ${gradeBorder} shadow-2xs flex flex-col gap-3.5`;
+        rombelCard.innerHTML = `
+          <!-- Baris Header Rombel -->
+          <div class="flex items-center justify-between pb-3 border-b border-slate-200/80 flex-wrap gap-2">
+            <div class="flex items-center gap-2.5">
+              <span class="px-3 py-1 rounded-xl font-black text-xs sm:text-sm border ${badgeHeaderColor}">${cls}</span>
+              <span class="text-xs font-bold text-slate-600">${countInClass} Siswa Terdata</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="switchPenugasanSubTab('coord'); editAdminCoordForClass('${cls}')" class="px-2.5 py-1 rounded-xl bg-white hover:bg-blue-50 text-[#0875D1] border border-blue-200 text-[11px] font-bold transition-all cursor-pointer">
+                Kelola Koordinator
+              </button>
+              <button onclick="switchPenugasanSubTab('fasil'); editAdminFasilForClass('${cls}')" class="px-2.5 py-1 rounded-xl bg-white hover:bg-teal-50 text-[#006a61] border border-teal-200 text-[11px] font-bold transition-all cursor-pointer">
+                Kelola Fasilitator
+              </button>
+            </div>
+          </div>
+
+          <!-- Grid 2 Kolom: Koordinator & Fasilitator -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+            <!-- Kolom Kiri: Koordinator -->
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center justify-between text-xs font-extrabold text-blue-900">
+                <span class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-[#0875D1]">manage_accounts</span>
+                  <span>Koordinator Pendamping:</span>
+                </span>
+                <span class="text-[10.5px] font-bold text-blue-600">${coordMatches.length} Guru</span>
+              </div>
+              <div class="flex flex-col gap-2">
+                ${coordItemsHtml}
+              </div>
+            </div>
+
+            <!-- Kolom Kanan: Fasilitator -->
+            <div class="flex flex-col gap-2">
+              <div class="flex items-center justify-between text-xs font-extrabold text-teal-900">
+                <span class="flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-[#006a61]">co_present</span>
+                  <span>Fasilitator Pendamping:</span>
+                </span>
+                <span class="text-[10.5px] font-bold text-teal-600">${fasilMatches.length} Guru</span>
+              </div>
+              <div class="flex flex-col gap-2">
+                ${fasilItemsHtml}
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(rombelCard);
+      });
     }
 
     // A. KOORDINATOR KELAS (MANY-TO-MANY)
