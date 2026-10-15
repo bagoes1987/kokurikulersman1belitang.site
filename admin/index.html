@@ -147,7 +147,7 @@
       }
       @page {
         size: 215mm 330mm; /* Folio / F4 */
-        margin: 8mm 6mm;
+        margin: 5mm 5mm;
       }
       .page-break-card {
         page-break-after: always;
@@ -1184,7 +1184,7 @@
               <div class="flex items-center gap-2 flex-wrap">
                 <h3 class="text-base sm:text-lg font-black text-slate-900 leading-tight">Cetak Kartu Login Siswa FINCESTEM</h3>
                 <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10.5px] shadow-2xs">
-                  Format Folio / F4 (8 Kartu / Lembar)
+                  Format Folio / F4 (10 Kartu / Lembar)
                 </span>
               </div>
               <p class="text-xs text-slate-600 mt-1">
@@ -6755,8 +6755,8 @@
         return;
       }
 
-      // Batasi preview di browser max 36 kartu agar tetap super ringan dan cepat
-      const previewLimit = 36;
+      // Batasi preview di browser max 30 kartu agar tetap super ringan dan cepat
+      const previewLimit = 30;
       const displayList = filtered.slice(0, previewLimit);
 
       let html = '';
@@ -6766,59 +6766,61 @@
         const password = s.nis || '-';
 
         html += `
-          <div class="bg-white rounded-2xl p-3.5 border-2 border-slate-800 shadow-sm flex flex-col justify-between text-slate-900 text-xs relative overflow-hidden">
-            <!-- Kop Kartu -->
-            <div class="flex items-center gap-2 pb-2 border-b-2 border-slate-800">
-              <img src="../logo%20smansa%20png.png" class="w-7 h-8 object-contain shrink-0" onerror="this.src='../LOGO SMAN1 BELITANG.png'">
+          <div class="bg-white rounded-2xl p-3 border-2 border-slate-800 shadow-sm flex flex-col justify-between text-slate-900 text-xs relative overflow-hidden">
+            <!-- Kop Kartu (Rata Tengah) -->
+            <div class="flex items-center justify-center gap-2 pb-1.5 border-b-2 border-slate-800 text-center">
+              <img src="../logo%20smansa%20png.png" class="w-6 h-7 object-contain shrink-0" onerror="this.src='../LOGO SMAN1 BELITANG.png'">
               <div class="flex flex-col min-w-0 leading-tight">
-                <span class="font-black text-[11px] uppercase tracking-wide truncate text-[#0875D1]">Kartu Login Siswa</span>
-                <span class="text-[9.5px] font-bold text-slate-700 truncate">Kokurikuler SMAN 1 Belitang</span>
+                <span class="font-black text-[11px] uppercase tracking-wide text-[#0875D1]">Kartu Login</span>
+                <span class="text-[9.5px] font-bold text-slate-800">Kegiatan Kokurikuler SMAN 1 Belitang</span>
                 <span class="text-[8.5px] font-semibold text-slate-500">Tahun Pelajaran 2026/2027</span>
               </div>
             </div>
 
-            <!-- Identitas Siswa -->
-            <div class="py-2 flex flex-col gap-1 border-b border-dashed border-slate-300 text-[10.5px]">
-              <div class="flex items-start gap-1">
-                <span class="w-16 font-semibold text-slate-500 shrink-0">Nama Siswa</span>
-                <span class="font-bold text-slate-900 leading-tight break-words flex-1">: ${s.nama}</span>
-              </div>
-              <div class="flex items-center gap-1">
-                <span class="w-16 font-semibold text-slate-500 shrink-0">Kelas</span>
-                <span class="font-extrabold text-blue-900">: ${s.class}</span>
-              </div>
+            <!-- Identitas Siswa & Kredensial (Tabel Rapi dengan Titik Dua Lurus Sempurna) -->
+            <div class="py-1.5 border-b border-dashed border-slate-300">
+              <table class="w-full text-[10.5px] leading-tight">
+                <tbody>
+                  <tr>
+                    <td class="w-20 font-semibold text-slate-600 py-0.5">Nama Siswa</td>
+                    <td class="w-3 text-center font-bold text-slate-700 py-0.5">:</td>
+                    <td class="font-bold text-slate-900 uppercase break-words py-0.5">${s.nama}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold text-slate-600 py-0.5">Kelas</td>
+                    <td class="text-center font-bold text-slate-700 py-0.5">:</td>
+                    <td class="font-black text-blue-900 py-0.5">${s.class}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold text-slate-600 py-0.5">Username</td>
+                    <td class="text-center font-bold text-slate-700 py-0.5">:</td>
+                    <td class="font-mono font-black text-slate-900 py-0.5">${username}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold text-slate-600 py-0.5">Password</td>
+                    <td class="text-center font-bold text-slate-700 py-0.5">:</td>
+                    <td class="font-mono font-black text-slate-900 py-0.5">${password}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold text-slate-600 py-0.5">Koordinator</td>
+                    <td class="text-center font-bold text-slate-700 py-0.5">:</td>
+                    <td class="font-bold text-slate-800 py-0.5">${staff.coordinator}</td>
+                  </tr>
+                  <tr>
+                    <td class="font-semibold text-slate-600 py-0.5 align-top">Fasilitator</td>
+                    <td class="text-center font-bold text-slate-700 py-0.5 align-top">:</td>
+                    <td class="font-bold text-slate-800 py-0.5">
+                      <div>1. ${staff.facilitator1}</div>
+                      <div>2. ${staff.facilitator2}</div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <!-- Kotak Kredensial Login -->
-            <div class="my-2 p-2 rounded-xl bg-slate-50 border border-slate-300 flex flex-col gap-1 text-[10.5px]">
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-slate-600">Username</span>
-                <span class="font-mono font-black text-slate-900 bg-white px-1.5 py-0.5 rounded border border-slate-200">: ${username}</span>
-              </div>
-              <div class="flex items-center justify-between">
-                <span class="font-bold text-slate-600">Password</span>
-                <span class="font-mono font-black text-slate-900 bg-white px-1.5 py-0.5 rounded border border-slate-200">: ${password}</span>
-              </div>
-            </div>
-
-            <!-- Data Pendamping (Koordinator & Fasil) -->
-            <div class="pt-1 flex flex-col gap-0.5 text-[9.5px] text-slate-700">
-              <div class="truncate">
-                <span class="font-semibold text-slate-500">Koordinator :</span>
-                <span class="font-bold text-slate-800">${staff.coordinator}</span>
-              </div>
-              <div>
-                <span class="font-semibold text-slate-500">Fasilitator :</span>
-                <div class="pl-2 font-bold text-slate-800 leading-tight">
-                  1. ${staff.facilitator1}<br>
-                  2. ${staff.facilitator2}
-                </div>
-              </div>
-            </div>
-
-            <!-- Footer URL -->
-            <div class="mt-2 pt-1.5 border-t border-slate-200 text-center text-[8.5px] font-semibold text-slate-400">
-              Portal: kokurikulersman1belitang.site/siswa/
+            <!-- Footer Website -->
+            <div class="pt-1 text-center text-[9px] font-semibold text-slate-500">
+              Alamat Website: <a href="https://kokurikulersman1belitang.site/" target="_blank" class="text-[#0875D1] underline">https://kokurikulersman1belitang.site/</a>
             </div>
           </div>
         `;
@@ -6826,7 +6828,7 @@
 
       if (filtered.length > previewLimit) {
         html += `
-          <div class="col-span-full py-4 text-center text-xs font-bold text-slate-500 bg-slate-100 rounded-2xl border border-slate-200">
+          <div class="col-span-full py-3 text-center text-xs font-bold text-slate-500 bg-slate-100 rounded-2xl border border-slate-200">
             Menampilkan ${previewLimit} kartu preview di layar. Seluruh <strong>${filtered.length} kartu</strong> akan tercetak lengkap saat Anda klik tombol "Cetak / Simpan PDF".
           </div>
         `;
@@ -6835,7 +6837,7 @@
       previewContainer.innerHTML = html;
     }
 
-    // Fungsi Cetak / Simpan PDF (Grid 2 Kolom x 4 Baris = 8 Kartu per Lembar Folio/F4)
+    // Fungsi Cetak / Simpan PDF (Grid 2 Kolom x 5 Baris = 10 Kartu per Lembar Folio/F4)
     function printStudentCards() {
       const allStudents = window.FincestemMasterStudents || [];
       const printContainer = document.getElementById('printAreaCards');
@@ -6869,8 +6871,8 @@
         return;
       }
 
-      // Susun per lembar (8 kartu per halaman)
-      const CARDS_PER_PAGE = 8;
+      // Susun per lembar (10 kartu per halaman: 2 kolom x 5 baris)
+      const CARDS_PER_PAGE = 10;
       let pagesHtml = '';
 
       for (let i = 0; i < filtered.length; i += CARDS_PER_PAGE) {
@@ -6878,67 +6880,69 @@
         const isLastPage = (i + CARDS_PER_PAGE) >= filtered.length;
 
         pagesHtml += `
-          <div class="print-page ${!isLastPage ? 'page-break-card' : ''}" style="width: 100%; box-sizing: border-box; padding: 2mm 0; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: minmax(68mm, auto); gap: 4mm;">
-            ${pageCards.map((s, cIdx) => {
+          <div class="print-page ${!isLastPage ? 'page-break-card' : ''}" style="width: 100%; box-sizing: border-box; padding: 1mm 0; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: minmax(59mm, auto); gap: 2.5mm 3.5mm;">
+            ${pageCards.map((s) => {
               const staff = getRombelStaffInfo(s.class);
               const username = s.nisn || '-';
               const password = s.nis || '-';
 
               return `
-                <div style="border: 1.5px solid #0f172a; border-radius: 8px; padding: 7px 9px; box-sizing: border-box; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between; font-family: Arial, sans-serif; height: 69mm; overflow: hidden; page-break-inside: avoid;">
+                <div style="border: 1.2px solid #0f172a; border-radius: 6px; padding: 5px 7px; box-sizing: border-box; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between; font-family: Arial, sans-serif; height: 59.5mm; overflow: hidden; page-break-inside: avoid;">
                   
-                  <!-- Kop Header Kartu -->
-                  <div style="display: flex; align-items: center; gap: 7px; border-bottom: 1.5px solid #0f172a; padding-bottom: 4px;">
-                    <img src="../logo%20smansa%20png.png" style="width: 26px; height: 32px; object-fit: contain;" onerror="this.src='../LOGO SMAN1 BELITANG.png'">
-                    <div style="line-height: 1.15; flex: 1;">
-                      <div style="font-size: 11px; font-weight: 900; color: #0875D1; text-transform: uppercase;">KARTU LOGIN SISWA</div>
-                      <div style="font-size: 9.5px; font-weight: bold; color: #1e293b;">Kegiatan Kokurikuler SMAN 1 Belitang</div>
-                      <div style="font-size: 8.5px; color: #475569; font-weight: 600;">Tahun Pelajaran 2026/2027</div>
+                  <!-- Kop Header Kartu (Rata Tengah) -->
+                  <div style="display: flex; align-items: center; justify-content: center; gap: 6px; border-bottom: 1.2px solid #0f172a; padding-bottom: 3px; text-align: center;">
+                    <img src="../logo%20smansa%20png.png" style="width: 22px; height: 27px; object-fit: contain;" onerror="this.src='../LOGO SMAN1 BELITANG.png'">
+                    <div style="line-height: 1.15;">
+                      <div style="font-size: 10px; font-weight: 900; color: #0875D1; text-transform: uppercase; letter-spacing: 0.3px;">KARTU LOGIN</div>
+                      <div style="font-size: 8.5px; font-weight: bold; color: #0f172a;">Kegiatan Kokurikuler SMAN 1 Belitang</div>
+                      <div style="font-size: 7.5px; color: #475569; font-weight: 600;">Tahun Pelajaran 2026/2027</div>
                     </div>
                   </div>
 
-                  <!-- Identitas Siswa -->
-                  <div style="padding: 3px 0; border-bottom: 1px dashed #94a3b8; font-size: 10px; line-height: 1.25;">
-                    <div style="display: flex;">
-                      <span style="width: 68px; color: #475569; font-weight: 600;">Nama Siswa</span>
-                      <span style="font-weight: 800; color: #0f172a; flex: 1; text-transform: uppercase;">: ${s.nama}</span>
-                    </div>
-                    <div style="display: flex; margin-top: 1.5px;">
-                      <span style="width: 68px; color: #475569; font-weight: 600;">Kelas</span>
-                      <span style="font-weight: 800; color: #0875D1;">: ${s.class}</span>
-                    </div>
+                  <!-- Identitas & Kredensial Siswa (Tabel Titik Dua Lurus Sempurna & Rapi Rata Kanan-Kiri) -->
+                  <div style="padding: 2.5px 0; border-bottom: 1px dashed #94a3b8; font-size: 8.5px; line-height: 1.2;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                      <tbody>
+                        <tr>
+                          <td style="width: 58px; color: #475569; font-weight: 600; padding: 1px 0; white-space: nowrap;">Nama Siswa</td>
+                          <td style="width: 8px; text-align: center; font-weight: bold; color: #0f172a; padding: 1px 0;">:</td>
+                          <td style="font-weight: 800; color: #0f172a; text-transform: uppercase; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${s.nama}</td>
+                        </tr>
+                        <tr>
+                          <td style="color: #475569; font-weight: 600; padding: 1px 0;">Kelas</td>
+                          <td style="text-align: center; font-weight: bold; color: #0f172a; padding: 1px 0;">:</td>
+                          <td style="font-weight: 800; color: #0875D1; padding: 1px 0;">${s.class}</td>
+                        </tr>
+                        <tr>
+                          <td style="color: #475569; font-weight: 600; padding: 1px 0;">Username</td>
+                          <td style="text-align: center; font-weight: bold; color: #0f172a; padding: 1px 0;">:</td>
+                          <td style="font-family: monospace; font-weight: 900; color: #0f172a; padding: 1px 0;">${username}</td>
+                        </tr>
+                        <tr>
+                          <td style="color: #475569; font-weight: 600; padding: 1px 0;">Password</td>
+                          <td style="text-align: center; font-weight: bold; color: #0f172a; padding: 1px 0;">:</td>
+                          <td style="font-family: monospace; font-weight: 900; color: #0f172a; padding: 1px 0;">${password}</td>
+                        </tr>
+                        <tr>
+                          <td style="color: #475569; font-weight: 600; padding: 1px 0;">Koordinator</td>
+                          <td style="text-align: center; font-weight: bold; color: #0f172a; padding: 1px 0;">:</td>
+                          <td style="font-weight: 700; color: #0f172a; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${staff.coordinator}</td>
+                        </tr>
+                        <tr>
+                          <td style="color: #475569; font-weight: 600; padding: 1px 0; vertical-align: top;">Fasilitator</td>
+                          <td style="text-align: center; font-weight: bold; color: #0f172a; padding: 1px 0; vertical-align: top;">:</td>
+                          <td style="font-weight: 700; color: #0f172a; padding: 1px 0;">
+                            <div>1. ${staff.facilitator1}</div>
+                            <div>2. ${staff.facilitator2}</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
 
-                  <!-- Kredensial Login (Kotak Kontras) -->
-                  <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 5px; padding: 4px 6px; font-size: 10px; line-height: 1.25; margin: 3px 0;">
-                    <div style="display: flex; justify-content: space-between;">
-                      <span style="color: #334155; font-weight: 700;">Username</span>
-                      <span style="font-family: monospace; font-weight: 900; color: #0f172a;">: ${username}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-top: 1.5px;">
-                      <span style="color: #334155; font-weight: 700;">Password</span>
-                      <span style="font-family: monospace; font-weight: 900; color: #0f172a;">: ${password}</span>
-                    </div>
-                  </div>
-
-                  <!-- Pendamping (Koordinator & Fasil) -->
-                  <div style="font-size: 8.5px; color: #334155; line-height: 1.2;">
-                    <div>
-                      <span style="color: #64748b; font-weight: 600;">Koordinator :</span>
-                      <span style="font-weight: 700; color: #0f172a;">${staff.coordinator}</span>
-                    </div>
-                    <div style="margin-top: 1.5px;">
-                      <span style="color: #64748b; font-weight: 600;">Fasilitator :</span>
-                      <div style="padding-left: 8px; font-weight: 700; color: #0f172a;">
-                        1. ${staff.facilitator1}<br>
-                        2. ${staff.facilitator2}
-                      </div>
-                    </div>
-                  </div>
-
-                  <!-- Footer URL Portal -->
-                  <div style="border-top: 1px solid #e2e8f0; padding-top: 2px; text-align: center; font-size: 7.5px; color: #64748b; font-weight: 600;">
-                    Portal: https://kokurikulersman1belitang.site/siswa/
+                  <!-- Footer Alamat Website -->
+                  <div style="padding-top: 1.5px; text-align: center; font-size: 7px; color: #475569; font-weight: 600;">
+                    Alamat Website: <span style="color: #0875D1; font-weight: 700;">https://kokurikulersman1belitang.site/</span>
                   </div>
                 </div>
               `;
@@ -6949,8 +6953,16 @@
 
       printContainer.innerHTML = pagesHtml;
 
-      // Buka Print Dialog
+      // Set document.title agar nama file saat download / Save as PDF otomatis "Kartu Login Kokurikuler 2026"
+      const prevTitle = document.title;
+      document.title = "Kartu Login Kokurikuler 2026";
+
       window.print();
+
+      // Kembalikan title asli setelah dialog print ditutup
+      setTimeout(function() {
+        document.title = prevTitle;
+      }, 1000);
     }
   </script>
 </body>
