@@ -263,7 +263,7 @@
     </div>
   </main>
 
-  <script src="../js/core.js"></script>
+  <script src="../js/core.js?v=20261015_lock_fixed"></script>
   <script>
     let activeUser = null;
 
@@ -307,30 +307,30 @@
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
-      // TAMPILKAN LKPD FIELD TRIP DAY 1 SEGERA (TERPISAH DARI PENUTUPAN JADWAL REGULER)
-      if (isFieldTrip && dayNum === 1) {
-        renderFieldTripDay1LKPD(false);
-        return;
-      }
-      // TAMPILKAN LKPD FIELD TRIP DAY 2
-      if (isFieldTrip && dayNum === 2) {
-        renderFieldTripDay2LKPD(false);
-        return;
-      }
-      // TAMPILKAN LKPD FIELD TRIP DAY 3 S.D. 7
-      if (isFieldTrip && dayNum >= 3 && dayNum <= 7) {
-        renderFieldTripGenericLKPD(dayNum, false);
-        return;
-      }
-
       FincestemCore.schedule.getSchedule(function(days) {
         FincestemCore.progress.getStudentProgress(nisn, function(prog) {
           const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
+
           if (!access.canAccess) {
-            FincestemCore.ui.toast(`Aktivitas Day ${dayNum} belum dapat diakses! Harap tunggu penetapan status 'Completed' dari Fasilitator pada Day ${dayNum - 1}.`, 'error');
+            const reasonMsg = access.reason || `Aktivitas Day ${dayNum} belum dapat diakses saat ini.`;
+            FincestemCore.ui.toast(reasonMsg, 'error');
             setTimeout(() => {
               window.location.replace('dashboard.html');
-            }, 1200);
+            }, 1500);
+            return;
+          }
+
+          // TAMPILKAN LKPD KHUSUS FIELD TRIP JIKA JADWAL TERBUKA
+          if (isFieldTrip && dayNum === 1) {
+            renderFieldTripDay1LKPD(!access.canEdit || isReadOnlyUrl);
+            return;
+          }
+          if (isFieldTrip && dayNum === 2) {
+            renderFieldTripDay2LKPD(!access.canEdit || isReadOnlyUrl);
+            return;
+          }
+          if (isFieldTrip && dayNum >= 3 && dayNum <= 7) {
+            renderFieldTripGenericLKPD(dayNum, !access.canEdit || isReadOnlyUrl);
             return;
           }
 

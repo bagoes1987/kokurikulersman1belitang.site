@@ -490,8 +490,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261015_ft_sync_v3"></script>
-  <script src="../js/core.js?v=20261015_ft_sync_v3"></script>
+  <script src="../js/siswa_data.js?v=20261015_lock_fixed"></script>
+  <script src="../js/core.js?v=20261015_lock_fixed"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -1369,21 +1369,52 @@
             </div>
           `;
         } else if (!access.isOpen) {
+          const isUpcoming = (d.status_code === 'UPCOMING');
+          const isExpired = (d.status_code === 'EXPIRED');
           borderClass = 'border-slate-200/80 shadow-xs opacity-95';
           bgClass = 'bg-slate-50/70';
           dayIconBg = 'bg-slate-300 text-slate-600';
-          badgeHtml = `
-            <span class="px-3 py-1 rounded-xl text-xs font-black bg-slate-200 text-slate-600 flex items-center gap-1.5 shadow-2xs">
-              <span class="material-symbols-outlined text-sm">lock</span>
-              Ditutup Admin (Read-Only)
-            </span>
-          `;
-          lockAlertHtml = `
-            <div class="px-3.5 py-2.5 rounded-2xl bg-amber-50/95 border border-amber-200/80 flex items-center gap-2.5 text-xs sm:text-sm text-amber-950 font-medium leading-relaxed">
-              <span class="material-symbols-outlined text-lg text-amber-600 shrink-0">lock_clock</span>
-              <span>Aktivitas Day ${dNum} ditutup oleh Admin (Hanya Lihat). Anda tetap dapat membaca materi dan melihat rekap tugas yang telah dikirim.</span>
-            </div>
-          `;
+
+          if (isUpcoming) {
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-blue-100 text-blue-900 border border-blue-200 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-blue-700">event</span>
+                ${d.status_label || 'Akan Dibuka Sesuai Jadwal'}
+              </span>
+            `;
+            lockAlertHtml = `
+              <div class="px-3.5 py-2.5 rounded-2xl bg-blue-50/90 border border-blue-200 flex items-center gap-2.5 text-xs sm:text-sm text-blue-950 font-medium leading-relaxed">
+                <span class="material-symbols-outlined text-lg text-blue-600 shrink-0">calendar_month</span>
+                <span>${d.status_label || 'Aktivitas Day ' + dNum + ' belum dimulai. Terbuka otomatis pada tanggal ' + cardDate + ' pukul 07.00 WIB.'}</span>
+              </div>
+            `;
+          } else if (isExpired) {
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-rose-100 text-rose-900 border border-rose-200 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-rose-700">history_toggle_off</span>
+                Telah Berakhir
+              </span>
+            `;
+            lockAlertHtml = `
+              <div class="px-3.5 py-2.5 rounded-2xl bg-rose-50/90 border border-rose-200 flex items-center gap-2.5 text-xs sm:text-sm text-rose-950 font-medium leading-relaxed">
+                <span class="material-symbols-outlined text-lg text-rose-600 shrink-0">lock</span>
+                <span>Waktu pelaksanaan Day ${dNum} telah berakhir (Mode Hanya Lihat).</span>
+              </div>
+            `;
+          } else {
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-slate-200 text-slate-600 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm">lock</span>
+                Ditutup Admin (Read-Only)
+              </span>
+            `;
+            lockAlertHtml = `
+              <div class="px-3.5 py-2.5 rounded-2xl bg-amber-50/95 border border-amber-200/80 flex items-center gap-2.5 text-xs sm:text-sm text-amber-950 font-medium leading-relaxed">
+                <span class="material-symbols-outlined text-lg text-amber-600 shrink-0">lock_clock</span>
+                <span>Aktivitas Day ${dNum} ditutup oleh Admin (Hanya Lihat). Anda tetap dapat membaca materi dan melihat rekap tugas yang telah dikirim.</span>
+              </div>
+            `;
+          }
         } else {
           if (isTrial) {
             borderClass = 'border-amber-400/80 shadow-sm ring-2 ring-amber-400/25';

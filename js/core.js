@@ -978,7 +978,7 @@ const FincestemCore = {
           start_time: tm.start,
           end_time: tm.end,
           is_active: 1,
-          auto_schedule: 0,
+          auto_schedule: 1,
           route: c.route || '',
           description: c.description || ''
         });
@@ -2077,16 +2077,18 @@ const FincestemCore = {
       } catch (e) {}
 
       // 1. SISWA FIELD TRIP:
-      // Guru pembimbing mendampingi langsung di lapangan dan memantau aktivitas secara fisik.
-      // Day 1 & Day 2 otomatis terbuka, dan Day berikutnya langsung terbuka jika tugas mandiri Day sebelumnya selesai.
+      // Harus memenuhi: (1) Jadwal Day ini terbuka oleh Admin/Tanggal (isOpenByAdmin), dan (2) Day sebelumnya selesai
       if (isFt) {
         const prevDone = (d <= 2) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+        const canOpen = isOpenByAdmin && prevDone;
         return {
-          canAccess: prevDone,
-          canEdit: prevDone,
-          isOpen: true,
+          canAccess: canOpen,
+          canEdit: canOpen,
+          isOpen: isOpenByAdmin,
           isPreviousCompleted: prevDone,
-          reason: prevDone ? '' : `Harap selesaikan seluruh aktivitas pengerjaan pada Day ${d - 1} terlebih dahulu.`
+          reason: !isOpenByAdmin 
+            ? (sched ? sched.status_label : 'Aktivitas Day ' + d + ' belum dibuka sesuai jadwal resmi.') 
+            : (prevDone ? '' : `Harap selesaikan seluruh aktivitas pengerjaan pada Day ${d - 1} terlebih dahulu.`)
         };
       }
 
@@ -2094,17 +2096,18 @@ const FincestemCore = {
       // Day 1: CAN_ACCESS_DAY_1 = (ADMIN_DAY_1 == OPEN)
       if (d === 1) {
         return {
-          canAccess: true,
+          canAccess: isOpenByAdmin,
           canEdit: isOpenByAdmin,
           isOpen: isOpenByAdmin,
           isPreviousCompleted: true,
-          reason: isOpenByAdmin ? '' : 'Day 1 ditutup oleh Admin (Hanya Lihat).'
+          reason: isOpenByAdmin ? '' : (sched ? sched.status_label : 'Day 1 ditutup oleh Admin (Hanya Lihat).')
         };
       }
 
       // Day N (N > 1) Non-Field Trip:
       // Siswa TIDAK PERLU menunggu guru/fasilitator menetapkan status 'Completed'!
-      // Cukup siswa telah menyelesaikan tugas mandiri pada Day N-1 (Modul, LKPD, Asesmen, Foto, dan Refleksi).
+      // Cukup siswa telah menyelesaikan tugas mandiri pada Day N-1 (Modul, LKPD, Asesmen, Foto, dan Refleksi)
+      // DAN jadwal Day ini harus terbuka (isOpenByAdmin).
       const prevDone = this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
       if (!prevDone) {
         return {
@@ -2117,11 +2120,11 @@ const FincestemCore = {
       }
 
       return {
-        canAccess: true,
+        canAccess: isOpenByAdmin,
         canEdit: isOpenByAdmin,
         isOpen: isOpenByAdmin,
         isPreviousCompleted: true,
-        reason: isOpenByAdmin ? '' : `Day ${d} ditutup oleh Admin (Hanya Lihat).`
+        reason: isOpenByAdmin ? '' : (sched ? sched.status_label : `Day ${d} ditutup oleh Admin (Hanya Lihat).`)
       };
     }
   },
