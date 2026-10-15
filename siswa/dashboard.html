@@ -1681,41 +1681,68 @@
             </div>
 
             ${ftConfig ? `
-              <!-- JADWAL & RUTE PERJALANAN RIIL FIELD TRIP (SESI DEMI SESI PER JAM) -->
-              <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-white border border-amber-300/80 flex flex-col gap-2.5 shadow-2xs">
-                <div class="flex items-start justify-between gap-2 flex-wrap">
-                  <div class="flex flex-col min-w-0 flex-1">
+              <!-- JADWAL & RUTE PERJALANAN RIIL FIELD TRIP -->
+              <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-amber-500/10 via-amber-500/5 to-white border border-amber-300/80 flex flex-col gap-3 shadow-2xs">
+                
+                <!-- Rute Perjalanan Resmi (Format 2-3 Baris Horizontal Bersih & Rapi) -->
+                <div class="flex flex-col gap-2">
+                  <div class="flex items-center justify-between gap-2">
                     <div class="flex items-center gap-1.5 font-black text-amber-950 text-xs sm:text-sm">
                       <span class="material-symbols-outlined text-base text-amber-600">alt_route</span>
-                      <span>Rute Perjalanan Resmi:</span>
+                      <span>Rute Perjalanan Resmi (Etape Jalur):</span>
                     </div>
-                    <span class="text-xs text-amber-900 font-bold mt-0.5 leading-snug break-words">${ftConfig.route}</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10.5px] shadow-2xs whitespace-nowrap">
+                      ${ftConfig.sessions.length} Agenda Utama
+                    </span>
                   </div>
-                  <span class="px-2.5 py-1 rounded-xl bg-amber-400 text-slate-950 font-black text-[11px] shadow-2xs whitespace-nowrap">
-                    ${ftConfig.sessions.length} Sesi Kegiatan
-                  </span>
+
+                  <!-- Baris Rute Horizontal (Pills / Chips) -->
+                  <div class="p-2.5 sm:p-3 rounded-xl bg-amber-50/70 border border-amber-200/90 flex flex-col gap-1.5">
+                    ${(ftConfig.route_lines && ftConfig.route_lines.length > 0 ? ftConfig.route_lines : [ftConfig.route.split(' → ')]).map((lineArr, lineIdx) => `
+                      <div class="flex items-center gap-1.5 flex-wrap text-[11px] sm:text-xs">
+                        <span class="px-1.5 py-0.5 rounded bg-amber-200/80 text-amber-950 font-extrabold text-[9.5px] uppercase tracking-wider shrink-0">Jalur ${lineIdx + 1}</span>
+                        ${lineArr.map((stop, sIdx) => `
+                          <span class="inline-flex items-center gap-1 font-bold text-slate-800 bg-white px-2 py-0.5 rounded-md border border-amber-200/80 shadow-2xs">
+                            <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+                            <span>${stop}</span>
+                          </span>
+                          ${sIdx < lineArr.length - 1 ? '<span class="text-amber-500 font-black text-xs">➔</span>' : ''}
+                        `).join('')}
+                      </div>
+                    `).join('')}
+                  </div>
                 </div>
 
-                <!-- Rangkaian Sesi per Jam (Timeline) -->
-                <div class="flex flex-col gap-1.5 pt-2 border-t border-amber-200/70">
-                  <span class="text-[11px] font-extrabold uppercase tracking-wider text-amber-900 flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm text-amber-700">schedule</span>
-                    Jadwal Rangkaian Kegiatan Sesi demi Sesi:
-                  </span>
-                  <div class="grid grid-cols-1 gap-1.5">
+                <!-- Rangkaian Agenda Utama (Grid 2 Kolom Kompak - Tidak Memanjang ke Bawah) -->
+                <div class="flex flex-col gap-2 pt-2 border-t border-amber-200/70">
+                  <div class="flex items-center justify-between">
+                    <span class="text-[11px] font-black uppercase tracking-wider text-amber-950 flex items-center gap-1">
+                      <span class="material-symbols-outlined text-sm text-amber-700">event_note</span>
+                      Agenda Kegiatan Utama:
+                    </span>
+                    <span class="text-[10px] text-amber-800 font-semibold bg-amber-100/60 px-2 py-0.5 rounded-md">
+                      📅 ${ftConfig.date_formatted}
+                    </span>
+                  </div>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                     ${ftConfig.sessions.map((sess) => `
-                      <div class="p-2.5 rounded-xl bg-white/95 border border-amber-200/80 shadow-2xs flex items-start gap-2.5">
-                        <span class="px-2 py-1 rounded-lg bg-amber-100 text-amber-950 font-black text-[10.5px] whitespace-nowrap shrink-0 mt-0.5 border border-amber-300 flex items-center gap-1">
-                          <span class="material-symbols-outlined text-xs text-amber-700">${sess.icon || 'schedule'}</span>
-                          <span>${sess.time}</span>
-                        </span>
-                        <div class="flex flex-col min-w-0 flex-1">
-                          <div class="flex items-center gap-1.5 flex-wrap">
-                            <span class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">${sess.title}</span>
-                            <span class="text-[10px] sm:text-[11px] font-bold text-amber-800 bg-amber-50 px-2 py-0.2 rounded-md border border-amber-200">📍 ${sess.location}</span>
+                      <div class="p-2.5 rounded-xl bg-white/95 border border-amber-200/90 shadow-2xs flex items-center justify-between gap-2.5 hover:border-amber-400 transition-all">
+                        <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                          <span class="w-8 h-8 rounded-lg bg-amber-500/15 text-amber-900 border border-amber-300/80 flex items-center justify-center shrink-0">
+                            <span class="material-symbols-outlined text-base text-amber-700">${sess.icon || 'schedule'}</span>
+                          </span>
+                          <div class="flex flex-col min-w-0 flex-1">
+                            <span class="font-bold text-xs text-slate-900 leading-snug line-clamp-2">${sess.title}</span>
+                            <span class="text-[10.5px] font-medium text-slate-500 truncate flex items-center gap-0.5 mt-0.5">
+                              <span class="material-symbols-outlined text-xs text-amber-600">pin_drop</span>
+                              <span>${sess.location}</span>
+                            </span>
                           </div>
-                          <p class="text-[11px] sm:text-xs text-slate-600 leading-relaxed mt-0.5">${sess.desc}</p>
                         </div>
+                        <span class="px-2 py-1 rounded-lg bg-amber-100/80 text-amber-950 font-black text-[10px] sm:text-[10.5px] border border-amber-300 shrink-0 whitespace-nowrap self-start">
+                          ${sess.time}
+                        </span>
                       </div>
                     `).join('')}
                   </div>

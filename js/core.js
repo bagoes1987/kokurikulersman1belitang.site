@@ -724,134 +724,141 @@ const FincestemCore = {
         theme: 'Perjalanan Darat, Penyeberangan Selat Sunda & Manajemen Logistik Finansial',
         date_formatted: 'Senin, 09 November 2026',
         time_range: '07.00 - 23.59 WIB',
-        route: 'SMAN 1 Belitang → Pelabuhan Bakauheni → Kapal Ferry Selat Sunda → Merak → Tol Trans-Jawa → Transit Semarang',
-        description: 'Perjalanan rombongan bus dari Belitang menuju Pelabuhan Bakauheni, penyeberangan kapal ferry Selat Sunda ke Merak, lanjut melintasi Tol Trans-Jawa via Cirebon menuju transit Semarang.',
+        route_lines: [
+          ['SMAN 1 Belitang', 'Pelabuhan Bakauheni', 'Ferry Selat Sunda'],
+          ['Pelabuhan Merak', 'Tol Trans-Jawa', 'Semarang']
+        ],
+        route: 'SMAN 1 Belitang → Pelabuhan Bakauheni → Ferry Selat Sunda → Pelabuhan Merak → Tol Trans-Jawa → Semarang',
+        description: 'Pelepasan resmi rombongan bus dari Belitang menuju Semarang, penyeberangan Selat Sunda dari Bakauheni ke Merak, serta perjalanan malam via Tol Trans-Jawa.',
         sessions: [
-          { time: '07.00 WIB', title: 'Keberangkatan Rombongan Bus', location: 'SMAN 1 Belitang', desc: 'Pelepasan resmi rombongan siswa Field Trip menuju Pelabuhan Bakauheni Lampung.', icon: 'directions_bus' },
-          { time: '12.00 – 13.00 WIB', title: 'Istirahat & Makan Siang', location: 'Restoran Lokal Lintas Sumatera', desc: 'Ishoma dan makan siang bersama di restoran lokal perjalanan.', icon: 'restaurant' },
-          { time: '13.00 – 17.30 WIB', title: 'Penyeberangan Selat Sunda', location: 'Pelabuhan Bakauheni → Merak', desc: 'Rombongan menyeberangi Selat Sunda dengan kapal ferry ekspres dari Pulau Sumatera ke Pulau Jawa.', icon: 'directions_boat' },
-          { time: '18.00 – 19.30 WIB', title: 'Istirahat & Makan Malam', location: 'Restoran Lokal Merak/Cilegon', desc: 'Makan malam bersama dan persiapan perjalanan malam melintasi Tol Trans-Jawa.', icon: 'restaurant' },
-          { time: '19.30 – 23.59 WIB', title: 'Perjalanan Tol Trans-Jawa Menuju Semarang', location: 'Tol Trans-Jawa (Cirebon, Brebes, Batang)', desc: 'Perjalanan darat via Tol Trans-Jawa menuju Semarang dan bermalam di perjalanan bus.', icon: 'night_shelter' }
+          { time: '07.00 WIB', title: 'Keberangkatan Rombongan Bus dari Belitang Menuju Semarang', location: 'SMAN 1 Belitang', icon: 'directions_bus' },
+          { time: '13.00 – 17.30 WIB', title: 'Penyeberangan Selat Sunda (Bakauheni – Merak)', location: 'Pelabuhan Bakauheni → Merak', icon: 'directions_boat' },
+          { time: '19.30 – 23.59 WIB', title: 'Perjalanan Tol Trans-Jawa Menuju Semarang', location: 'Tol Trans-Jawa Menuju Semarang', icon: 'night_shelter' }
         ],
         refl_title: 'Jurnal Refleksi Hari Pertama (Belitang → Semarang)',
         refl_prompt: 'Ceritakan pengalaman Anda di hari pertama perjalanan ini: momen berpamitan di sekolah, pengalaman menyeberangi Selat Sunda dengan kapal ferry, kebersamaan di dalam bus bersama teman, serta bagaimana komitmen Anda dalam menjaga dan mengelola uang saku selama 7 hari perjalanan ke depan.'
       },
       2: {
         day_number: 2,
-        title: 'Day 2: AKPOL Semarang, Lawang Sewu → Malang',
+        title: 'Day 2: Kunjungan AKPOL Semarang, Lawang Sewu → Malang',
         theme: 'Karakter Disiplin AKPOL, Heritage Lawang Sewu & Perjalanan Malang',
         date_formatted: 'Selasa, 10 November 2026',
-        time_range: '04.30 - 20.30 WIB',
-        route: 'Transit Semarang → AKPOL Semarang → Lawang Sewu → Tol Trans-Jawa → Hotel Kota Malang',
-        description: 'Transit di Semarang, sarapan pagi, kunjungan edukatif kedisiplinan dan kepemimpinan taruna di AKPOL Semarang, makan siang, eksplorasi sejarah dan sains arsitektur Lawang Sewu, dan perjalanan darat menuju hotel di Malang.',
+        time_range: '09.00 - 20.30 WIB',
+        route_lines: [
+          ['Semarang', 'AKPOL Semarang'],
+          ['Lawang Sewu', 'Tol Trans-Jawa', 'Malang']
+        ],
+        route: 'Semarang → AKPOL Semarang → Lawang Sewu → Tol Trans-Jawa → Malang',
+        description: 'Kunjungan edukatif kedisiplinan dan kepemimpinan taruna di AKPOL Semarang, observasi cagar budaya Lawang Sewu, dan perjalanan darat menuju hotel di Malang.',
         sessions: [
-          { time: '04.30 – 05.00 WIB', title: 'Transit Tiba di Semarang', location: 'Restoran Lokal Transit Semarang', desc: 'Bersih diri, mandi, salat subuh, dan persiapan awal sebelum kegiatan.', icon: 'wc' },
-          { time: '05.00 – 07.00 WIB', title: 'Sarapan Pagi Bersama', location: 'Restoran Transit Semarang', desc: 'Sarapan pagi bergizi bersama seluruh rombongan bus di Semarang.', icon: 'restaurant' },
-          { time: '07.00 – 08.00 WIB', title: 'Persiapan Kunjungan Edukasi', location: 'Semarang', desc: 'Briefing kelompok, pemakaian seragam resmi, dan cek kelengkapan instrumen riset.', icon: 'groups' },
-          { time: '09.00 – 12.00 WIB', title: 'Kunjungan Edukatif AKPOL Semarang', location: 'Akademi Kepolisian (AKPOL) Semarang', desc: 'Observasi kawah candradimuka perwira Polri, kedisiplinan taruna, dan etika kepemimpinan.', icon: 'local_police' },
-          { time: '12.00 – 12.30 WIB', title: 'Makan Siang Bersama', location: 'Restoran Lokal Semarang', desc: 'Istirahat, salat zuhur, dan santap siang khas kota Semarang.', icon: 'restaurant' },
-          { time: '13.00 – 14.30 WIB', title: 'Kunjungan Cagar Budaya Lawang Sewu', location: 'Lawang Sewu Semarang', desc: 'Wisata sejarah perkeretaapian NIS 1904, heroisme AMKA, dan sains ventilasi silang alami.', icon: 'museum' },
-          { time: '14.30 – 20.30 WIB', title: 'Perjalanan Menuju Malang', location: 'Tol Trans-Jawa (Jateng → Jatim)', desc: 'Perjalanan darat melintasi Tol Trans-Jawa via Boyolali, Solo, Ngawi, Kertosono menuju Malang.', icon: 'directions_bus' },
-          { time: '20.30 s.d. Selesai', title: 'Check-in Hotel Malang & Istirahat', location: 'Hotel Kota Malang', desc: 'Check-in kamar, makan malam, pembagian kunci, istirahat dan persiapan Day 3.', icon: 'hotel' }
+          { time: '09.00 – 12.00 WIB', title: 'Kunjungan ke AKPOL Semarang', location: 'AKPOL Semarang', icon: 'local_police' },
+          { time: '13.00 – 14.30 WIB', title: 'Kunjungan ke Lawang Sewu', location: 'Lawang Sewu, Semarang', icon: 'museum' },
+          { time: '14.30 – 20.30 WIB', title: 'Perjalanan Menuju Malang', location: 'Perjalanan menuju Malang', icon: 'directions_bus' }
         ],
         refl_title: 'Jurnal Refleksi Hari Kedua (AKPOL, Lawang Sewu → Malang)',
         refl_prompt: 'Refleksikan apa yang Anda rasakan dan pelajari hari ini: (1) Inspirasi kedisiplinan dan kepemimpinan taruna AKPOL Semarang bagi masa depan Anda, (2) Kekaguman sains arsitektur pasif Lawang Sewu dan heroisme pemuda AMKA, serta (3) Kebiasaan Anda dalam mengendalikan pengeluaran uang saku selama perjalanan panjang menuju hotel di Malang.'
       },
       3: {
         day_number: 3,
-        title: 'Day 3: Agrikultur Petik Apel, Jatim Park 1 → Bromo',
+        title: 'Day 3: Wisata Petik Apel, Jatim Park 1, Museum Angkut → Bromo',
         theme: 'Agrikultur Hortikultura, STEM Sains Jatim Park 1 & Transportasi Museum Angkut',
         date_formatted: 'Rabu, 11 November 2026',
-        time_range: '06.00 - 23.59 WIB',
-        route: 'Hotel Kota Batu → Kebun Apel Agro Rakyat → Jatim Park 1 → Museum Angkut Movie Star → Transit Bromo',
-        description: 'Wisata edukasi petik apel langsung di kebun petani Batu, eksplorasi sains terapan dan fisika di Jatim Park 1, observasi sejarah transportasi dunia di Museum Angkut, dan perjalanan malam menuju Gunung Bromo.',
+        time_range: '08.00 - 23.59 WIB',
+        route_lines: [
+          ['Kota Batu', 'Wisata Petik Apel', 'Jatim Park 1'],
+          ['Museum Angkut', 'Perjalanan Menuju Bromo']
+        ],
+        route: 'Kota Batu → Wisata Petik Apel → Jatim Park 1 → Museum Angkut → Bromo',
+        description: 'Wisata edukasi petik apel di kebun Batu, eksplorasi sains interaktif di Jatim Park 1, observasi sejarah transportasi di Museum Angkut, dan perjalanan malam menuju kawasan Bromo.',
         sessions: [
-          { time: '06.00 – 07.30 WIB', title: 'Sarapan Pagi & Check-out Hotel', location: 'Hotel Kota Batu', desc: 'Sarapan pagi, pengemasan koper/barang, check-out hotel, dan persiapan perjalanan eksplorasi.', icon: 'hotel' },
-          { time: '08.00 – 10.30 WIB', title: 'Wisata Edukatif Petik Apel Batu', location: 'Perkebunan Apel Agro Rakyat Kota Batu', desc: 'Eksplorasi budidaya hortikultura apel Malang, sains tanah vulkanik, dan petik buah apel segar langsung di kebun petani.', icon: 'eco' },
-          { time: '11.00 – 12.00 WIB', title: 'Istirahat & Makan Siang', location: 'Restoran Lokal Kota Batu', desc: 'Ishoma dan santap siang bersama rombongan di kawasan wisata Batu.', icon: 'restaurant' },
-          { time: '13.00 – 15.30 WIB', title: 'Kunjungan Edukasi Sains Jatim Park 1', location: 'Jatim Park 1 Kota Batu', desc: 'Eksplorasi galeri sains fisika terapan, biologi, teknologi terapan nusantara, dan wahana edukatif.', icon: 'science' },
-          { time: '15.45 – 18.30 WIB', title: 'Kunjungan Museum Angkut & Movie Star', location: 'Museum Angkut Kota Batu', desc: 'Eksplorasi zona sejarah evolusi transportasi dunia tradisional hingga modern dan replika tata kota global.', icon: 'commute' },
-          { time: '18.45 – 20.00 WIB', title: 'Makan Malam Bersama', location: 'Restoran Lokal Kota Batu/Malang', desc: 'Makan malam rombongan dan briefing teknis persiapan ekspedisi fajar ke Gunung Bromo.', icon: 'restaurant' },
-          { time: '20.00 – 23.59 WIB', title: 'Perjalanan Bus Menuju Kawasan Bromo', location: 'Batu/Malang → Sukapura Probolinggo', desc: 'Rombongan bus meluncur menuju titik transit Bromo untuk persiapan ekspedisi jeep dini hari.', icon: 'directions_bus' }
+          { time: '08.00 – 10.30 WIB', title: 'Wisata Petik Apel', location: 'Batu', icon: 'eco' },
+          { time: '13.00 – 15.30 WIB', title: 'Kunjungan Wisata Edukasi Jatim Park 1', location: 'Jatim Park 1', icon: 'science' },
+          { time: '15.45 – 18.30 WIB', title: 'Kunjungan Wisata Edukasi Museum Angkut', location: 'Museum Angkut', icon: 'commute' },
+          { time: '20.00 – Selesai', title: 'Perjalanan Menuju Bromo', location: 'Batu – Bromo', icon: 'directions_bus' }
         ],
         refl_title: 'Jurnal Refleksi Hari Ketiga (Petik Apel, Jatim Park 1 & Museum Angkut)',
         refl_prompt: 'Ceritakan pengalaman Anda di hari ketiga: keseruan memetik apel segar di kebun petani Batu, wawasan sains fisika terapan di Jatim Park 1, kekaguman melihat evolusi transportasi di Museum Angkut, serta bagaimana Anda mempersiapkan fisik menghadapi ekspedisi dini hari ke Gunung Bromo!'
       },
       4: {
         day_number: 4,
-        title: 'Day 4: Sunrise Bromo, Lautan Pasir → Yogyakarta',
+        title: 'Day 4: Wisata Gunung Bromo → Yogyakarta',
         theme: 'Vulkanologi, Geologi Kaldera Tengger, Budaya Bromo & Perjalanan Yogyakarta',
         date_formatted: 'Kamis, 12 November 2026',
-        time_range: '03.30 - 22.00 WIB',
-        route: 'Transit Bromo → Armada Jeep 4x4 → Sunrise Penanjakan → Pasir Berbisik → Bukit Teletubbies → Kawah Bromo → Tol Trans-Jawa → Hotel Yogyakarta',
-        description: 'Ekspedisi dini hari naik armada Jeep 4x4 menyaksikan golden sunrise di Penanjakan Bromo, eksplorasi Pasir Berbisik dan Padang Savana, trekking kawah aktif Bromo & Pura Poten Suku Tengger, lanjut perjalanan darat menuju Yogyakarta.',
+        time_range: '03.30 - 18.30 WIB',
+        route_lines: [
+          ['Transit Bromo', 'Jeep 4x4', 'Sunrise Bromo'],
+          ['Pasir Berbisik', 'Kawah Bromo', 'Sukapura'],
+          ['Tol Trans-Jawa', 'Yogyakarta']
+        ],
+        route: 'Transit Bromo → Jeep 4x4 → Sunrise Bromo → Pasir Berbisik → Kawah Bromo → Sukapura → Yogyakarta',
+        description: 'Ekspedisi Jeep 4x4 menyaksikan sunrise Gunung Bromo, menjelajahi Pasir Berbisik dan Kawah Bromo, dilanjutkan perjalanan menuju Yogyakarta.',
         sessions: [
-          { time: '03.30 – 04.30 WIB', title: 'Tiba di Transit Bromo & Naik Jeep 4x4', location: 'Pos Transit Sukapura / Tosari', desc: 'Perpindahan rombongan dari bus pariwisata ke armada Jeep 4x4 untuk menanjak ke kaldera Bromo.', icon: 'airport_shuttle' },
-          { time: '04.30 – 05.30 WIB', title: 'Menikmati Golden Sunrise Penanjakan', location: 'Puncak Penanjakan Bromo', desc: 'Observasi fenomena spektakuler matahari terbit berlatar panorama Gunung Bromo, Batok, dan Semeru.', icon: 'wb_sunny' },
-          { time: '06.00 – 07.00 WIB', title: 'Eksplorasi Fenomena Pasir Berbisik', location: 'Lautan Pasir Berbisik Bromo', desc: 'Kajian geologi vulkanologi pasir kaldera aktif dan fenomena desau angin pasir Bromo.', icon: 'grain' },
-          { time: '07.15 – 08.15 WIB', title: 'Sarapan Bersama di Bukit Teletubbies', location: 'Padang Savana Kaldera Bromo', desc: 'Sarapan pagi bersama di hamparan padang rumput hijau savana kaldera Bromo.', icon: 'restaurant' },
-          { time: '08.30 – 10.00 WIB', title: 'Trekking Kawah Bromo & Pura Tengger', location: 'Kawah Aktif Bromo & Pura Luhur Poten', desc: 'Observasi kawah aktif belerang Bromo dan adat istiadat kearifan lokal Suku Tengger.', icon: 'volcano' },
-          { time: '10.00 – 12.30 WIB', title: 'Turun ke Sukapura & Bersih Diri', location: 'Sukapura Probolinggo', desc: 'Kembali dari kaldera pasir ke pos bus, mandi/bersih diri, dan bersiap naik bus pariwisata.', icon: 'wc' },
-          { time: '13.00 – 14.00 WIB', title: 'Istirahat & Makan Siang', location: 'Restoran Lokal Jalur Tol', desc: 'Makan siang bersama dan istirahat sejenak sebelum melintasi tol Jawa Timur ke Jawa Tengah.', icon: 'restaurant' },
-          { time: '14.00 – 18.30 WIB', title: 'Perjalanan Tol Menuju Yogyakarta', location: 'Tol Trans-Jawa (Probolinggo → Jogja)', desc: 'Perjalanan darat rombongan bus menuju Daerah Istimewa Yogyakarta via Tol Trans-Jawa.', icon: 'directions_bus' },
-          { time: '18.30 s.d. Selesai', title: 'Check-in Hotel Yogyakarta & Makan Malam', location: 'Hotel Kota Yogyakarta', desc: 'Check-in hotel Jogja, makan malam rombongan, istirahat dan free program.', icon: 'hotel' }
+          { time: '03.30 – 04.30 WIB', title: 'Persiapan dan Perpindahan ke Jeep', location: 'Transit Bromo', icon: 'airport_shuttle' },
+          { time: '04.30 – 05.30 WIB', title: 'Menikmati Matahari Terbit (Sunrise)', location: 'Gunung Bromo', icon: 'wb_sunny' },
+          { time: '06.00 – 07.00 WIB', title: 'Kunjungan Wisata Pasir Berbisik', location: 'Pasir Berbisik', icon: 'grain' },
+          { time: '08.30 – 10.00 WIB', title: 'Kunjungan Wisata Kawah Bromo', location: 'Kawah Bromo', icon: 'volcano' },
+          { time: '10.00 – 12.00 WIB', title: 'Perjalanan Turun Menuju Sukapura', location: 'Sukapura', icon: 'directions_bus' },
+          { time: '14.00 – 18.30 WIB', title: 'Perjalanan Menuju Yogyakarta', location: 'Sukapura – Yogyakarta', icon: 'directions_bus' }
         ],
         refl_title: 'Jurnal Refleksi Hari Keempat (Ekspedisi Bromo → Yogyakarta)',
         refl_prompt: 'Ceritakan pengalaman Anda di hari keempat: momen takjub menembus dinginnya malam dengan armada jeep menuju sunrise Penanjakan Bromo, sensasi melintasi Pasir Berbisik dan Padang Savana, trekking menuju kawah aktif Bromo, kekaguman adat Suku Tengger, serta perjalanan panjang menuju kota istimewa Yogyakarta!'
       },
       5: {
         day_number: 5,
-        title: 'Day 5: Candi Prambanan, Praktik Membatik & Kampus UNY',
+        title: 'Day 5: Wisata Edukasi Yogyakarta (Prambanan, Batik, UNY)',
         theme: 'Heritage Candi Prambanan, Seni Kriya Batik Tradisional & Wawasan Akademik UNY',
         date_formatted: 'Jumat, 13 November 2026',
-        time_range: '06.00 - 21.30 WIB',
-        route: 'Hotel Yogyakarta → Candi Prambanan → Sentra Batik Benang Ratu → Restoran Lokal → Kampus UNY → Hotel / Malioboro',
-        description: 'Wisata cagar budaya mahakarya arsitektur Candi Hindu Prambanan, praktik langsung seni membatik menggunakan canting di Batik Benang Ratu, kunjungan akademik ke Universitas Negeri Yogyakarta (UNY), dan wisata budaya Malioboro.',
+        time_range: '07.30 - 17.30 WIB',
+        route_lines: [
+          ['Yogyakarta', 'Candi Prambanan', 'Batik Benang Ratu'],
+          ['Universitas Negeri Yogyakarta (UNY)', 'Yogyakarta']
+        ],
+        route: 'Yogyakarta → Candi Prambanan → Batik Benang Ratu → Universitas Negeri Yogyakarta (UNY) → Hotel Yogyakarta',
+        description: 'Wisata cagar budaya Candi Prambanan, praktik belajar membatik di Batik Benang Ratu, dan kunjungan akademik ke Universitas Negeri Yogyakarta (UNY).',
         sessions: [
-          { time: '06.00 – 07.00 WIB', title: 'Sarapan Pagi di Hotel', location: 'Hotel Yogyakarta', desc: 'Sarapan pagi bersama di resto hotel dan persiapan keberangkatan tur edukasi Jogja.', icon: 'restaurant' },
-          { time: '07.30 – 10.00 WIB', title: 'Kunjungan Cagar Budaya Candi Prambanan', location: 'Kompleks Candi Prambanan', desc: 'Wisata edukasi sejarah abad ke-9, sains arsitektur batu andesit, dan relief epos Ramayana.', icon: 'temple_hindu' },
-          { time: '10.30 – 13.00 WIB', title: 'Praktik Belajar Membatik Tradisional', location: 'Sentra Batik Benang Ratu Jogja', desc: 'Praktik langsung mencanting malam panas, pola motif batik nusantara, dan proses pewarnaan kain.', icon: 'palette' },
-          { time: '13.15 – 14.15 WIB', title: 'Istirahat & Makan Siang', location: 'Restoran Lokal Yogyakarta', desc: 'Ishoma salat Jumat / salat zuhur dan makan siang khas kuliner Yogyakarta.', icon: 'restaurant' },
-          { time: '15.00 – 17.30 WIB', title: 'Kunjungan Edukatif Kampus UNY', location: 'Universitas Negeri Yogyakarta (UNY)', desc: 'Wawasan perguruan tinggi negeri, sosialisasi program studi, atmosfer akademik, dan jalur SNBP/SNBT.', icon: 'school' },
-          { time: '18.00 – 19.30 WIB', title: 'Kembali ke Hotel & Makan Malam', location: 'Hotel Yogyakarta', desc: 'Kembali ke hotel, bersih diri, dan santap malam bersama rombongan.', icon: 'restaurant' },
-          { time: '19.30 – 21.30 WIB', title: 'Edukasi Budaya Kawasan Malioboro', location: 'Kawasan Malioboro & Titik Nol Jogja', desc: 'Free program: menikmati denyut budaya, seni jalanan, dan interaksi publik di Malioboro Jogja.', icon: 'storefront' }
+          { time: '07.30 – 10.00 WIB', title: 'Kunjungan Wisata Edukasi Candi Prambanan', location: 'Candi Prambanan', icon: 'temple_hindu' },
+          { time: '10.30 – 13.00 WIB', title: 'Belajar Membatik', location: 'Batik Benang Ratu', icon: 'palette' },
+          { time: '15.00 – 17.30 WIB', title: 'Kunjungan Edukatif Universitas Negeri Yogyakarta (UNY)', location: 'Universitas Negeri Yogyakarta (UNY)', icon: 'school' }
         ],
         refl_title: 'Jurnal Refleksi Hari Kelima (Candi Prambanan, Membatik & UNY)',
         refl_prompt: 'Refleksikan apa yang Anda peroleh hari ini: (1) Kekaguman mahakarya arsitektur batu dan relief Candi Prambanan, (2) Pengalaman tangan Anda sendiri mencanting malam panas di Batik Benang Ratu, (3) Inspirasi akademik saat mengunjungi kampus UNY, serta (4) Dinamika interaksi sosial budaya di Malioboro!'
       },
       6: {
         day_number: 6,
-        title: 'Day 6: Industri Pabrik Bakpia, Bahari Pantai Drini → Belitang',
-        theme: 'Analisis Industri Pangan Pabrik Bakpia, Ekosistem Laut Pantai Drini & Perjalanan Pulang',
+        title: 'Day 6: Pabrik Bakpia, Pantai Drini, Drini Park → Belitang',
+        theme: 'Analisis Industri Pangan Pabrik Bakpia, Ekosistem Bahari Pantai Drini & Perjalanan Pulang',
         date_formatted: 'Sabtu, 14 November 2026',
-        time_range: '06.30 - 23.59 WIB',
-        route: 'Hotel Yogyakarta → Pabrik Bakpia Khas Jogja → Pantai Drini Gunungkidul → Drini Park → Perjalanan Pulang ke Belitang',
-        description: 'Observasi proses manufaktur industri kuliner oleh-oleh di Pabrik Bakpia Jogja, eksplorasi sains bahari dan keindahan tebing karst di Pantai Drini & Drini Park Gunungkidul, serta perjalanan rombongan kembali menuju Belitang OKU Timur.',
+        time_range: '07.30 - 23.59 WIB',
+        route_lines: [
+          ['Yogyakarta', 'Pabrik Bakpia Jogja', 'Pantai Drini'],
+          ['Drini Park', 'Perjalanan Pulang Belitang']
+        ],
+        route: 'Yogyakarta → Pabrik Bakpia Jogja → Pantai Drini → Drini Park → Perjalanan Pulang Belitang',
+        description: 'Kunjungan wisata industri ke Pabrik Bakpia Jogja, observasi keindahan bahari Pantai Drini & Drini Park Gunungkidul, serta perjalanan pulang menuju Belitang.',
         sessions: [
-          { time: '06.30 – 07.30 WIB', title: 'Sarapan & Check-out Hotel Jogja', location: 'Hotel Yogyakarta', desc: 'Sarapan pagi, pengemasan bagasi koper, check-out hotel, dan persiapan etape pulang.', icon: 'hotel' },
-          { time: '07.30 – 09.00 WIB', title: 'Kunjungan Industri Pabrik Bakpia Jogja', location: 'Sentra Pabrik Bakpia Pathok Jogja', desc: 'Observasi lini produksi adonan, proses pemanggangan oven, rantai pasok, dan belanja oleh-oleh keluarga.', icon: 'bakery_dining' },
-          { time: '10.30 – 13.00 WIB', title: 'Eksplorasi Sains Bahari Pantai Drini', location: 'Pantai Drini Gunungkidul', desc: 'Studi ekosistem biota karang pesisir selatan, morfologi pulau karang kecil, dan konservasi pesisir.', icon: 'beach_access' },
-          { time: '13.00 – 14.00 WIB', title: 'Istirahat & Makan Siang Pantai', location: 'Restoran Lokal Pesisir Drini', desc: 'Santap siang bersama rombongan dengan menu kuliner pesisir dan kelapa muda.', icon: 'restaurant' },
-          { time: '14.15 – 16.30 WIB', title: 'Kunjungan Edukasi Wisata Drini Park', location: 'Drini Park Gunungkidul', desc: 'Menikmati panorama samudra dari atas tebing, tata kelola pariwisata modern bahari.', icon: 'attractions' },
-          { time: '18.30 – 19.30 WIB', title: 'Makan Malam Terakhir di Jawa', location: 'Restoran Lokal Perjalanan', desc: 'Santap malam rombongan bus sebelum masuk gerbang Tol Trans-Jawa menuju pelabuhan.', icon: 'restaurant' },
-          { time: '19.30 – 23.59 WIB', title: 'Perjalanan Pulang Menuju Belitang', location: 'Tol Trans-Jawa → Pelabuhan Merak', desc: 'Perjalanan rombongan bus melintasi Tol Trans-Jawa menuju Pelabuhan Merak Banten (bermalam di jalan).', icon: 'directions_bus' }
+          { time: '07.30 – 09.00 WIB', title: 'Kunjungan Wisata Edukasi Bakpia', location: 'Pabrik Bakpia Jogja', icon: 'bakery_dining' },
+          { time: '10.30 – 13.00 WIB', title: 'Kunjungan Wisata Pantai Drini', location: 'Pantai Drini', icon: 'beach_access' },
+          { time: '14.15 – 16.30 WIB', title: 'Kunjungan Wisata Drini Park', location: 'Drini Park', icon: 'attractions' },
+          { time: '19.30 – Selesai', title: 'Perjalanan Pulang Menuju Belitang', location: 'Yogyakarta – Belitang', icon: 'directions_bus' }
         ],
         refl_title: 'Jurnal Refleksi Hari Keenam (Pabrik Bakpia, Pantai Drini & Perjalanan Pulang)',
         refl_prompt: 'Ceritakan pengalaman Anda di hari keenam: wawasan industri kreatif dan manajemen biaya di Pabrik Bakpia Jogja, keindahan sains ekosistem bahari dan tebing karst di Pantai Drini & Drini Park, serta persiapan perjalanan darat kembali menuju kampung halaman Belitang!'
       },
       7: {
         day_number: 7,
-        title: 'Day 7: Penyeberangan Selat Sunda & Tiba di Belitang',
-        theme: 'Etape Terakhir Sumatera, Evaluasi Ekspedisi & Penyambutan SMAN 1 Belitang',
+        title: 'Day 7: Etape Terakhir & Tiba di SMAN 1 Belitang',
+        theme: 'Etape Terakhir Sumatera, Evaluasi Ekspedisi & Tiba di SMAN 1 Belitang',
         date_formatted: 'Minggu, 15 November 2026',
-        time_range: '05.00 - 14.00 WIB',
-        route: 'Pelabuhan Merak → Kapal Ferry Selat Sunda → Bakauheni → Tol Trans-Sumatera → SMAN 1 Belitang',
-        description: 'Penyeberangan kembali Selat Sunda dari Merak ke Bakauheni, melintasi Tol Trans-Sumatera menuju OKU Timur, kedatangan rombongan di SMAN 1 Belitang, dan penutupan resmi seluruh kegiatan kokurikuler.',
+        time_range: '08.00 - 14.00 WIB',
+        route_lines: [
+          ['Tol Trans-Jawa / Merak', 'Ferry Selat Sunda'],
+          ['Bakauheni / Trans-Sumatera', 'SMAN 1 Belitang']
+        ],
+        route: 'Tol Trans-Jawa / Merak → Ferry Selat Sunda → Bakauheni / Trans-Sumatera → SMAN 1 Belitang',
+        description: 'Perjalanan etape terakhir melintasi Tol Trans-Sumatera menuju Belitang dan tiba di titik penjemputan SMAN 1 Belitang.',
         sessions: [
-          { time: '05.00 – 07.30 WIB', title: 'Transit Pagi, Mandi & Sarapan', location: 'Restoran Lokal Lintas Sumatera', desc: 'Transit bersih diri, mandi pagi, salat subuh, dan sarapan bersama rombongan.', icon: 'wc' },
-          { time: '07.30 – 11.30 WIB', title: 'Perjalanan Etape Terakhir Bus', location: 'Tol Trans-Sumatera → OKU Timur', desc: 'Perjalanan darat rombongan bus melintasi Kayu Agung / Menggala menuju Kecamatan Belitang.', icon: 'directions_bus' },
-          { time: '11.30 – 13.00 WIB', title: 'Tiba di Kampus SMAN 1 Belitang', location: 'SMAN 1 Belitang (Titik Jemput)', desc: 'Rombongan siswa tiba dengan selamat di sekolah, disambut hangat oleh pihak sekolah dan orang tua.', icon: 'home' },
-          { time: '13.00 s.d. Selesai', title: 'Sayonara & Penutupan Ekspedisi', location: 'SMAN 1 Belitang', desc: 'Penutupan resmi ekspedisi Field Trip FINCESTEM 2026, doa bersama, dan penyelesaian jurnal akhir.', icon: 'verified' }
+          { time: '08.00 – 12.00 WIB', title: 'Perjalanan Menuju Belitang', location: 'Tol Trans-Sumatera → OKU Timur', icon: 'directions_bus' },
+          { time: 'Siang s.d. Selesai', title: 'Tiba di Titik Penjemputan & Penutupan', location: 'SMAN 1 Belitang', icon: 'home' }
         ],
         refl_title: 'Jurnal Refleksi Penutup (7 Hari Ekspedisi Field Trip)',
         refl_prompt: 'Tuliskan refleksi penutup komprehensif Anda setelah menjalani 7 hari ekspedisi Field Trip FINCESTEM: perubahan cara pandang Anda dalam mengelola finansial, nilai kedisiplinan dan kerja sama kelompok yang dipelajari, serta kenangan paling berharga yang akan Anda bawa selamanya!'
