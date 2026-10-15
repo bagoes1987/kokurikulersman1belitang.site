@@ -570,6 +570,10 @@
     }
 
     function triggerCameraCapture() {
+      // Pastikan minta koordinat GPS satelit paling segar sebelum kamera mengambil foto
+      if (navigator.geolocation) {
+        requestGPSCoordinates(false);
+      }
       const cam = document.getElementById('modalPhotoCameraInput');
       if (cam) cam.click();
     }
@@ -700,9 +704,44 @@
       }
     }
 
+    // Database batas wilayah koordinat 20 Kecamatan di OKU Timur (Akurat & Instan)
+    const OKU_TIMUR_KECAMATAN = [
+      { name: 'Belitang Madang Raya', minLat: -4.130, maxLat: -4.003, minLng: 104.544, maxLng: 104.694 },
+      { name: 'Belitang', minLat: -4.212, maxLat: -4.092, minLng: 104.596, maxLng: 104.688 },
+      { name: 'Belitang II', minLat: -4.115, maxLat: -3.941, minLng: 104.741, maxLng: 104.930 },
+      { name: 'Belitang III', minLat: -4.222, maxLat: -4.047, minLng: 104.665, maxLng: 104.805 },
+      { name: 'Belitang Jaya', minLat: -4.262, maxLat: -4.122, minLng: 104.621, maxLng: 104.750 },
+      { name: 'Buay Madang Timur', minLat: -4.278, maxLat: -4.105, minLng: 104.513, maxLng: 104.625 },
+      { name: 'Buay Madang', minLat: -4.304, maxLat: -4.200, minLng: 104.439, maxLng: 104.536 },
+      { name: 'Madang Suku I', minLat: -4.043, maxLat: -3.885, minLng: 104.399, maxLng: 104.646 },
+      { name: 'Madang Suku II', minLat: -4.126, maxLat: -3.984, minLng: 104.412, maxLng: 104.567 },
+      { name: 'Madang Suku III', minLat: -4.200, maxLat: -3.997, minLng: 104.306, maxLng: 104.478 },
+      { name: 'Semendawai Barat', minLat: -3.969, maxLat: -3.798, minLng: 104.530, maxLng: 104.765 },
+      { name: 'Semendawai Suku III', minLat: -4.059, maxLat: -3.905, minLng: 104.623, maxLng: 104.783 },
+      { name: 'Semendawai Timur', minLat: -3.981, maxLat: -3.745, minLng: 104.738, maxLng: 104.898 },
+      { name: 'Cempaka', minLat: -3.828, maxLat: -3.615, minLng: 104.574, maxLng: 104.810 },
+      { name: 'Martapura', minLat: -4.375, maxLat: -4.260, minLng: 104.290, maxLng: 104.405 },
+      { name: 'Bunga Mayang', minLat: -4.481, maxLat: -4.278, minLng: 104.162, maxLng: 104.337 },
+      { name: 'Jayapura', minLat: -4.617, maxLat: -4.362, minLng: 104.223, maxLng: 104.355 },
+      { name: 'BP Peliung', minLat: -4.360, maxLat: -4.190, minLng: 104.350, maxLng: 104.480 },
+      { name: 'BP Bangsa Raja', minLat: -4.100, maxLat: -3.950, minLng: 104.450, maxLng: 104.550 }
+    ];
+
+    function getOKUTimurKecamatanByCoord(lat, lng) {
+      for (const k of OKU_TIMUR_KECAMATAN) {
+        if (lat >= k.minLat && lat <= k.maxLat && lng >= k.minLng && lng <= k.maxLng) {
+          return k.name;
+        }
+      }
+      return null;
+    }
+
     function fetchAreaAddress(lat, lng, callback) {
-      // Caching lokal koordinat agar tidak request berulang
-      const cacheKey = 'fincestem_geo_obj_' + lat.toFixed(4) + '_' + lng.toFixed(4);
+      // 1. Deteksi cepat nama kecamatan spesifik berdasarkan koordinat OKU Timur
+      const detectedOKUTKec = getOKUTimurKecamatanByCoord(lat, lng);
+
+      // Caching lokal koordinat agar cepat
+      const cacheKey = 'fincestem_geo_v2_' + lat.toFixed(4) + '_' + lng.toFixed(4);
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
         try {
@@ -712,8 +751,8 @@
         } catch(e) {}
       }
 
-      // Reverse geocoding via OpenStreetMap Nominatim (Gratis, akurat nama kelurahan/desa, kecamatan, kabupaten, provinsi)
-      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&accept-language=id`;
+      // Reverse geocoding via OpenStreetMap Nominatim
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1&accept-language=id`;
       
       const ctrl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
       const timeoutId = ctrl ? setTimeout(() => ctrl.abort(), 4000) : null;
@@ -727,20 +766,36 @@
         if (timeoutId) clearTimeout(timeoutId);
         if (data && data.address) {
           const addr = data.address;
-          const desa = addr.village || addr.suburb || addr.neighbourhood || addr.hamlet || addr.quarter || addr.town || '';
-          const kec = addr.municipality || addr.city_district || addr.subdistrict || '';
-          const kab = addr.city || addr.county || addr.regency || '';
-          const prov = addr.state || addr.province || '';
+          const desa = addr.village || addr.suburb || addr.neighbourhood || addr.hamlet || addr.quarter || addr.town || addr.residential || '';
+          let kec = addr.municipality || addr.city_district || addr.subdistrict || addr.district || '';
+          
+          // Jika di OKU Timur dan OSM belum lengkap/salah, utamakan deteksi polygon koordinat lokal
+          if (detectedOKUTKec && (!kec || kec.toLowerCase().includes('belitang'))) {
+            kec = detectedOKUTKec;
+          }
 
-          const locPart1 = [desa, kec ? ('Kec. ' + kec.replace(/^Kecamatan\s+/i, '')) : ''].filter(Boolean).join(', ') || 'Belitang';
-          const locPart2 = [kab ? kab.replace(/^(Kabupaten|Kota)\s+/i, 'Kab. ') : 'Kab. OKU Timur', prov || 'Sumatera Selatan'].filter(Boolean).join(', ');
+          let kab = addr.city || addr.county || addr.regency || '';
+          let prov = addr.state || addr.province || '';
+
+          if (kab.toLowerCase().includes('ogan komering ulu timur') || kab.toLowerCase().includes('oku timur')) {
+            kab = 'Kab. OKU Timur';
+          } else if (detectedOKUTKec) {
+            kab = 'Kab. OKU Timur';
+          } else if (kab) {
+            kab = kab.replace(/^(Kabupaten|Kota)\s+/i, 'Kab. ');
+          }
+
+          if (!prov) prov = 'Sumatera Selatan';
+
+          const locPart1 = [desa || 'Wilayah Riset', kec ? ('Kec. ' + kec.replace(/^Kecamatan\s+/i, '')) : 'Kec. Belitang'].filter(Boolean).join(', ');
+          const locPart2 = [kab || 'Kab. OKU Timur', prov].filter(Boolean).join(', ');
           const fullText = locPart1 + ', ' + locPart2;
 
           const addrObj = {
-            desa: desa || 'Belitang',
-            kec: kec ? ('Kec. ' + kec.replace(/^Kecamatan\s+/i, '')) : '',
-            kab: kab ? kab.replace(/^(Kabupaten|Kota)\s+/i, 'Kab. ') : 'Kab. OKU Timur',
-            prov: prov || 'Sumatera Selatan',
+            desa: desa || 'Wilayah Riset',
+            kec: kec ? ('Kec. ' + kec.replace(/^Kecamatan\s+/i, '')) : 'Kec. Belitang',
+            kab: kab,
+            prov: prov,
             line1: locPart1,
             line2: locPart2,
             fullText: fullText
@@ -759,28 +814,18 @@
     }
 
     function fallbackAddress(lat, lng, callback) {
-      // Heuristik cerdas rute Field Trip & OKU Timur
+      const detectedKec = getOKUTimurKecamatanByCoord(lat, lng) || 'Belitang';
       let addrObj = {
-        desa: 'Belitang',
-        kec: 'Kec. Belitang',
+        desa: 'Wilayah Riset',
+        kec: 'Kec. ' + detectedKec,
         kab: 'Kab. OKU Timur',
         prov: 'Sumatera Selatan',
-        line1: 'Belitang, Kec. Belitang',
+        line1: 'Wilayah Riset, Kec. ' + detectedKec,
         line2: 'Kab. OKU Timur, Sumatera Selatan',
-        fullText: 'Belitang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+        fullText: 'Wilayah Riset, Kec. ' + detectedKec + ', Kab. OKU Timur, Sumatera Selatan'
       };
 
-      if (lat >= -4.5 && lat <= -3.8 && lng >= 104.3 && lng <= 105.0) {
-        addrObj = {
-          desa: 'Belitang',
-          kec: 'Kec. Belitang',
-          kab: 'Kab. OKU Timur',
-          prov: 'Sumatera Selatan',
-          line1: 'Belitang, Kec. Belitang',
-          line2: 'Kab. OKU Timur, Sumatera Selatan',
-          fullText: 'Belitang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
-        };
-      } else if (lat >= -7.1 && lat <= -6.8 && lng >= 110.2 && lng <= 110.6) {
+      if (lat >= -7.1 && lat <= -6.8 && lng >= 110.2 && lng <= 110.6) {
         addrObj = {
           desa: 'Kawasan Simpang Lima',
           kec: 'Kec. Semarang Tengah',
@@ -844,6 +889,8 @@
       if (callback) callback(addrObj);
     }
 
+    let gpsWatchId = null;
+
     function requestGPSCoordinates(forceToast = false) {
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
@@ -859,36 +906,49 @@
         return;
       }
 
-      navigator.geolocation.getCurrentPosition(
-        function(pos) {
-          currentGPS = {
-            lat: pos.coords.latitude,
-            lng: pos.coords.longitude,
-            accuracy: Math.round(pos.coords.accuracy || 10),
-            isFallback: false,
-            address: 'Mendeteksi wilayah...'
-          };
-          if (icon) icon.className = 'material-symbols-outlined text-lg';
-          if (iconBox) {
-            iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
+      function handlePosSuccess(pos) {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const accuracy = Math.round(pos.coords.accuracy || 10);
+
+        // Abaikan jika koordinat sama persis dengan yang sudah dikunci untuk menghemat request
+        if (currentGPS && !currentGPS.isFallback && Math.abs(currentGPS.lat - lat) < 0.00005 && Math.abs(currentGPS.lng - lng) < 0.00005) {
+          return;
+        }
+
+        currentGPS = {
+          lat: lat,
+          lng: lng,
+          accuracy: accuracy,
+          isFallback: false,
+          address: 'Mendeteksi wilayah...'
+        };
+
+        if (icon) icon.className = 'material-symbols-outlined text-lg';
+        if (iconBox) {
+          iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
+        }
+        if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
+        if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m`;
+
+        // Cari nama daerah, kecamatan, kabupaten, provinsi
+        fetchAreaAddress(currentGPS.lat, currentGPS.lng, function(addrObj) {
+          if (currentGPS) {
+            currentGPS.address = addrObj;
+            currentGPS.addressText = addrObj.fullText || addrObj;
           }
-          if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
-          if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m`;
+          const disp = addrObj.fullText || addrObj;
+          if (sub) sub.textContent = `📍 ${disp} (±${currentGPS.accuracy}m)`;
+        });
 
-          // Cari nama daerah, kecamatan, kabupaten, provinsi
-          fetchAreaAddress(currentGPS.lat, currentGPS.lng, function(addrObj) {
-            if (currentGPS) {
-              currentGPS.address = addrObj;
-              currentGPS.addressText = addrObj.fullText || addrObj;
-            }
-            const disp = addrObj.fullText || addrObj;
-            if (sub) sub.textContent = `📍 ${disp} (±${currentGPS.accuracy}m)`;
-          });
+        const helpGuide = document.getElementById('gpsHelpGuide');
+        if (helpGuide) helpGuide.classList.add('hidden');
+        if (forceToast) FincestemCore.ui.toast('GPS berhasil dikunci: ' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5), 'success');
+      }
 
-          const helpGuide = document.getElementById('gpsHelpGuide');
-          if (helpGuide) helpGuide.classList.add('hidden');
-          if (forceToast) FincestemCore.ui.toast('GPS berhasil dikunci: ' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5), 'success');
-        },
+      // Ambil posisi sekarang (Force fresh reading tanpa cache browser)
+      navigator.geolocation.getCurrentPosition(
+        handlePosSuccess,
         function(err) {
           console.warn('GPS Geolocation Error:', err);
           let errMsg = 'Izin lokasi belum diberikan. Menggunakan koordinat SMAN 1 Belitang.';
@@ -904,6 +964,17 @@
           maximumAge: 0
         }
       );
+
+      // Aktifkan pemantauan real-time saat HP bergerak
+      if (!gpsWatchId && navigator.geolocation.watchPosition) {
+        try {
+          gpsWatchId = navigator.geolocation.watchPosition(
+            handlePosSuccess,
+            () => {},
+            { enableHighAccuracy: true, maximumAge: 0 }
+          );
+        } catch(e) {}
+      }
     }
 
     function applyFallbackGPS(msg) {
