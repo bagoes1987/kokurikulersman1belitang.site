@@ -490,8 +490,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261015_priority_v2"></script>
-  <script src="../js/core.js?v=20261015_priority_v2"></script>
+  <script src="../js/siswa_data.js?v=20261015_day2_lock_v5"></script>
+  <script src="../js/core.js?v=20261015_day2_lock_v5"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -1340,8 +1340,44 @@
         const isTrial = (dNum === 0);
         const isExpanded = (expandedDayNumber === dNum);
 
+        // Deteksi Siswa Field Trip vs Non-Field Trip
+        const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
+          : (currentStudent ? currentStudent.zone : 'FINCESTEM OKU TIMUR');
+        const zUpper = (studentZone || '').toUpperCase();
+        const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+        const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
+        const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
+        const ftConfig = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
+
+        // Metadata Tampilan:
+        // Jika Siswa Field Trip -> Gunakan konfigurasi Day 1 s.d. 7 khusus Field Trip
+        // Jika Siswa Non-Field Trip -> Gunakan data bawaan OKU Timur dari database (d.title, d.theme, d.description, dll)
+        let cardTitle = d.title;
+        let cardTheme = d.theme || '';
+        let cardDate = d.date_formatted || d.date;
+        let cardTime = `${d.start_time} - ${d.end_time} WIB`;
+        let cardDesc = d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.';
+
+        if (ftConfig) {
+          cardTitle = ftConfig.title;
+          cardTheme = ftConfig.theme;
+          cardDate = ftConfig.date_formatted;
+          cardTime = ftConfig.time_range;
+          cardDesc = ftConfig.description;
+        }
+
+        // Cek status pengerjaan hari ini
+        const dayRecord = records.find(r => Number(r.day_number) === dNum);
+        let hasMateri = isFTDay ? ftStatus.hasMateri : !!taskMap[dNum + '_materi'];
+        let hasLkpd = isFTDay ? ftStatus.hasLkpd : !!taskMap[dNum + '_lkpd'];
+        let hasAsesmen = isFTDay ? ftStatus.hasAsesmen : !!taskMap[dNum + '_asesmen'];
+        let hasDok = isFTDay ? ftStatus.hasDok : !!taskMap[dNum + '_dokumentasi'];
+        let hasRefleksi = isFTDay ? ftStatus.hasRefleksi : !!taskMap[dNum + '_refleksi'];
+
         // Validasi Akses Bertingkat (4-Role Rule):
-        // Day N (N > 1) mensyaratkan Day N-1 berstatus Completed
+        // Day N (N > 1) mensyaratkan Day N-1 berstatus Selesai
         // Dan Day N harus dibuka (is_open) oleh Admin
         const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, days);
         const dayStatus = FincestemCore.progress.getDayStatus(studentProgress, dNum);
@@ -1402,7 +1438,7 @@
             `;
           }
         } else if (!access.isPreviousCompleted) {
-          // Prioritas 2: Jadwal hari ini SUDAH BUKA (hari H), tetapi siswa belum menuntaskan Day sebelumnya
+          // Prioritas 2: Jadwal hari ini SUDAH BUKA (hari H atau Uji Coba Semua Hari Aktif), tetapi siswa belum menuntaskan Day sebelumnya
           borderClass = 'border-rose-200/80 shadow-xs opacity-90';
           bgClass = 'bg-rose-50/20';
           dayIconBg = 'bg-slate-300 text-slate-500';
@@ -1415,7 +1451,7 @@
           lockAlertHtml = `
             <div class="px-3.5 py-2.5 rounded-2xl bg-rose-50/95 border border-rose-200/80 flex items-center gap-2.5 text-xs sm:text-sm text-rose-950 font-medium leading-relaxed">
               <span class="material-symbols-outlined text-lg text-rose-600 shrink-0">lock</span>
-              <span>Aktivitas Day ${dNum} terkunci! Harap selesaikan seluruh rangkaian tugas pada Day ${dNum - 1} terlebih dahulu.</span>
+              <span>Aktivitas Day ${dNum} terkunci! Harap selesaikan seluruh 5 rangkaian tugas pada Day ${dNum - 1} terlebih dahulu (Modul, LKPD, Asesmen, Foto, dan Refleksi).</span>
             </div>
           `;
         } else {
@@ -1481,42 +1517,6 @@
             `;
           }
         }
-
-        // Deteksi Siswa Field Trip vs Non-Field Trip
-        const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
-        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-          ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
-          : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
-        const zUpper = (studentZone || '').toUpperCase();
-        const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-        const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
-        const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
-        const ftConfig = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
-
-        // Metadata Tampilan:
-        // Jika Siswa Field Trip -> Gunakan konfigurasi Day 1 s.d. 7 khusus Field Trip
-        // Jika Siswa Non-Field Trip -> Gunakan data bawaan OKU Timur dari database (d.title, d.theme, d.description, dll)
-        let cardTitle = d.title;
-        let cardTheme = d.theme || '';
-        let cardDate = d.date_formatted || d.date;
-        let cardTime = `${d.start_time} - ${d.end_time} WIB`;
-        let cardDesc = d.description || 'Lakukan investigasi terpadu dan selesaikan lembar kerja serta refleksi hari ini.';
-
-        if (ftConfig) {
-          cardTitle = ftConfig.title;
-          cardTheme = ftConfig.theme;
-          cardDate = ftConfig.date_formatted;
-          cardTime = ftConfig.time_range;
-          cardDesc = ftConfig.description;
-        }
-
-        // Cek status pengerjaan hari ini
-        const dayRecord = records.find(r => Number(r.day_number) === dNum);
-        let hasMateri = isFTDay ? ftStatus.hasMateri : !!taskMap[dNum + '_materi'];
-        let hasLkpd = isFTDay ? ftStatus.hasLkpd : !!taskMap[dNum + '_lkpd'];
-        let hasAsesmen = isFTDay ? ftStatus.hasAsesmen : !!taskMap[dNum + '_asesmen'];
-        let hasDok = isFTDay ? ftStatus.hasDok : !!taskMap[dNum + '_dokumentasi'];
-        let hasRefleksi = isFTDay ? ftStatus.hasRefleksi : !!taskMap[dNum + '_refleksi'];
 
         let dayProgressBadge = '';
         if (isTrial) {

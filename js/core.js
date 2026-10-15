@@ -2027,20 +2027,30 @@ const FincestemCore = {
       }
 
       const tm = prog.task_map || {};
-      if (tm[d + '_refleksi'] || tm[d + '_dokumentasi'] || (tm[d + '_lkpd'] && tm[d + '_asesmen'])) {
+      // Refleksi adalah tahap ke-5 (tahap terakhir siswa sebelum penilaian guru/otomatis)
+      if (tm[d + '_refleksi']) {
+        return true;
+      }
+      if (tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi']) {
         return true;
       }
 
-      // Cek localStorage browser
+      // Cek localStorage browser untuk data yang tersimpan valid (bukan draft kosong)
       try {
         const u = FincestemCore.auth.getUser() || {};
         const idList = [u.nisn, u.identifier, u.nis].filter(Boolean);
         for (const id of idList) {
-          if (localStorage.getItem(`fincestem_refleksi_ft_day${d}_` + id) ||
-              localStorage.getItem(`fincestem_refleksi_day${d}_` + id) ||
-              localStorage.getItem(`fincestem_dok_ft_day${d}_` + id) ||
-              localStorage.getItem(`fincestem_lkpd_ft_day${d}_` + id)) {
-            return true;
+          // Refleksi valid
+          const reflFt = localStorage.getItem(`fincestem_refleksi_ft_day${d}_` + id);
+          const reflNonFt = localStorage.getItem(`fincestem_refleksi_day${d}_` + id);
+          if (reflFt || reflNonFt) {
+            const raw = reflFt || reflNonFt;
+            try {
+              const p = JSON.parse(raw);
+              if (p && (p.content || (typeof p === 'string' && p.trim().length > 10))) return true;
+            } catch (err) {
+              if (raw && raw.trim().length > 10) return true;
+            }
           }
         }
       } catch (e) {}
