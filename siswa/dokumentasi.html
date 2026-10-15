@@ -1313,16 +1313,19 @@
           }
         }
 
-        // Baris 2: 📍 Day [X] • [Nama Desa/Kecamatan],
+        // Baris 2 & 3: Format Lokasi 2 Baris dengan 1 WARNA YANG SAMA (Bright Amber-Yellow / Emas Terang Terbaca)
+        const locColor = '#fde047'; // 1 warna yang sama untuk Baris 1 & Baris 2
+
+        // Baris 2 (Lokasi Baris 1): 📍 Day [X] • [Nama Desa / Kelurahan], [Kecamatan],
         ctx.font = `bold ${lLoc1Size}px system-ui, sans-serif`;
-        ctx.fillStyle = '#38bdf8'; // Sky Cyan Terang
+        ctx.fillStyle = locColor;
         ctx.shadowBlur = 4;
         ctx.fillText(`📍 ${dayLabel} • ${locLine1},`, textX, curY);
         curY += lLoc1Size + lineGap;
 
-        // Baris 3: [Nama Kabupaten/Kota], [Nama Provinsi] (Kuning Terang / Neon agar jelas dibaca Guru)
-        ctx.font = `900 ${lLoc2Size}px system-ui, sans-serif`;
-        ctx.fillStyle = '#fde047'; // Bright Yellow Neon agar langsung terlihat daerahnya OKU Timur atau Luar OKU Timur
+        // Baris 3 (Lokasi Baris 2): [Nama Kabupaten / Kota], [Nama Provinsi] (Warna sama persis dengan Baris 1)
+        ctx.font = `bold ${lLoc2Size}px system-ui, sans-serif`;
+        ctx.fillStyle = locColor;
         ctx.shadowBlur = 4;
         ctx.fillText(`   ${locLine2}`, textX, curY);
         curY += lLoc2Size + lineGap;
