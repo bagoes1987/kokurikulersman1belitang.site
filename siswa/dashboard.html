@@ -490,8 +490,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261015_tisu_v1"></script>
-  <script src="../js/core.js?v=20261015_tisu_v1"></script>
+  <script src="../js/siswa_data.js?v=20261015_ft_sync_v3"></script>
+  <script src="../js/core.js?v=20261015_ft_sync_v3"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -596,9 +596,26 @@
         FincestemCore.zones.syncZones(function() {
           const freshZone = FincestemCore.zones.getStudentZone(s.nisn || s.identifier, s.class || s.class_name, studentZone);
           if (freshZone && freshZone !== studentZone) {
+            const oldUpper = (studentZone || '').toUpperCase();
+            const newUpper = (freshZone || '').toUpperCase();
+            const wasFieldTrip = oldUpper.includes('LUAR') || oldUpper.includes('FIELD') || oldUpper.includes('TRIP');
+            const nowFieldTrip = newUpper.includes('LUAR') || newUpper.includes('FIELD') || newUpper.includes('TRIP');
+
             studentZone = freshZone;
             renderStudentZoneUI(freshZone);
             if (currentStudent) currentStudent.zone = freshZone;
+
+            // Perbarui juga data di sesi auth lokal
+            if (user) {
+              user.zone = freshZone;
+              FincestemCore.auth.setUser(user, 'siswa');
+            }
+
+            // Jika status kategori berubah antara Field Trip dan Non-Field Trip, re-render jadwal & progres seketika!
+            if (wasFieldTrip !== nowFieldTrip || !daysSchedule || daysSchedule.length === 0) {
+              loadDaysSchedule();
+              loadStudentProgress();
+            }
           }
         });
       }

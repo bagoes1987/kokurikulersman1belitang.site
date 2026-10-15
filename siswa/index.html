@@ -190,8 +190,8 @@
     </div>
   </main>
 
-  <script src="../js/siswa_data.js?v=20261014_v3"></script>
-  <script src="../js/core.js?v=20261014_v3"></script>
+  <script src="../js/siswa_data.js?v=20261015_ft_sync_v3"></script>
+  <script src="../js/core.js?v=20261015_ft_sync_v3"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       if (FincestemCore.auth.isLoggedIn() && FincestemCore.auth.getRole() === 'siswa') {
@@ -292,7 +292,17 @@
             btn.classList.remove('opacity-80', 'pointer-events-none');
             alert(apiRes.message || 'Akun Anda sudah terkunci di perangkat lain! Anda tidak diizinkan login di perangkat ini kecuali telah di-reset / disetujui oleh Admin.');
           } else {
-            // Berhasil login
+            // Berhasil login: Simpan data profil & zona termutakhir dari server jika tersedia
+            if (apiRes && apiRes.data && apiRes.data.user) {
+              const serverUser = Object.assign({}, res.user, apiRes.data.user);
+              if (serverUser.zone) {
+                const sNisn = String(serverUser.nisn || serverUser.identifier || '').trim();
+                if (sNisn) {
+                  try { localStorage.setItem('fincestem_student_zone_' + sNisn, serverUser.zone); } catch (e) {}
+                }
+              }
+              FincestemCore.auth.setUser(serverUser, 'siswa');
+            }
             FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
             window.location.replace('dashboard.html');
           }

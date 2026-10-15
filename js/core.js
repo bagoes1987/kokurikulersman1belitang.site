@@ -1263,13 +1263,21 @@ const FincestemCore = {
               const uNisn = String(u.nisn || '').trim();
               const uId = String(u.identifier || '').trim();
               const uNis = String(u.nis || '').trim();
+              const rawDigits = (uNisn || uId).replace(/\D/g, '');
+              const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : '';
+              const unpaddedNisn = rawDigits.replace(/^0+/, '');
+
               const szMap = data.data.student_zones || {};
-              const freshZone = szMap[uNisn] || szMap[uId] || szMap[uNis] || null;
+              const freshZone = szMap[uNisn] || szMap[uId] || szMap[uNis] || 
+                                (paddedNisn ? szMap[paddedNisn] : null) || 
+                                (unpaddedNisn ? szMap[unpaddedNisn] : null) || null;
               if (freshZone) {
                 u.zone = freshZone;
                 if (uNisn) try { localStorage.setItem('fincestem_student_zone_' + uNisn, freshZone); } catch (e) {}
                 if (uId) try { localStorage.setItem('fincestem_student_zone_' + uId, freshZone); } catch (e) {}
                 if (uNis) try { localStorage.setItem('fincestem_student_zone_' + uNis, freshZone); } catch (e) {}
+                if (paddedNisn) try { localStorage.setItem('fincestem_student_zone_' + paddedNisn, freshZone); } catch (e) {}
+                if (unpaddedNisn) try { localStorage.setItem('fincestem_student_zone_' + unpaddedNisn, freshZone); } catch (e) {}
                 FincestemCore.auth.setUser(u, u.role || 'siswa');
               }
             }
@@ -1287,29 +1295,54 @@ const FincestemCore = {
     getStudentZone: function(nisn, className, defaultZone) {
       if (!nisn) return defaultZone || 'FINCESTEM OKU TIMUR';
       const cleanNisn = String(nisn).trim();
+      const rawDigits = cleanNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
 
-      // 1. Cek peta sinkronisasi server yang tersimpan di browser
+      // 1. Cek peta sinkronisasi server yang tersimpan di browser (Prioritas Tertinggi: Hasil input Admin)
       try {
         const mapStr = localStorage.getItem('fincestem_student_zones_map');
         if (mapStr) {
           const map = JSON.parse(mapStr);
-          if (map && map[cleanNisn]) return map[cleanNisn];
+          if (map) {
+            const z = map[cleanNisn] || map[paddedNisn] || (unpaddedNisn ? map[unpaddedNisn] : null);
+            if (z) return z;
+          }
         }
       } catch (e) {}
 
-      // 2. Cek master list resmi di memori (Daftar Peserta Excel)
-      if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
-        const found = window.FincestemMasterStudents.find(s => String(s.nisn).trim() === cleanNisn || String(s.nis).trim() === cleanNisn);
-        if (found && found.zone) return found.zone;
-      }
-
-      // 3. Cek penyimpanan lokal individual
+      // 2. Cek penyimpanan lokal individual per siswa
       try {
-        const stored = localStorage.getItem('fincestem_student_zone_' + cleanNisn);
+        const stored = localStorage.getItem('fincestem_student_zone_' + cleanNisn) ||
+                       localStorage.getItem('fincestem_student_zone_' + paddedNisn) ||
+                       (unpaddedNisn ? localStorage.getItem('fincestem_student_zone_' + unpaddedNisn) : null);
         if (stored) return stored;
       } catch (e) {}
 
-      // 4. Cek pengaturan zona kelas
+      // 3. Cek user session aktif di browser jika cocok
+      try {
+        const u = FincestemCore.auth.getUser();
+        if (u && u.zone) {
+          const uN = String(u.nisn || u.identifier || '').trim();
+          const uNis = String(u.nis || '').trim();
+          if (uN === cleanNisn || uN === paddedNisn || uNis === cleanNisn || (unpaddedNisn && uN === unpaddedNisn)) {
+            return u.zone;
+          }
+        }
+      } catch (e) {}
+
+      // 4. Cek master list resmi di memori (Daftar Peserta Excel)
+      if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+        const found = window.FincestemMasterStudents.find(s => 
+          String(s.nisn).trim() === cleanNisn || 
+          String(s.nisn).trim() === paddedNisn || 
+          String(s.nis).trim() === cleanNisn ||
+          (unpaddedNisn && String(s.nisn).trim().replace(/^0+/, '') === unpaddedNisn)
+        );
+        if (found && found.zone) return found.zone;
+      }
+
+      // 5. Cek pengaturan zona kelas
       if (className) {
         const classInfo = this.getClassInfo(className);
         if (classInfo && classInfo.zone) return classInfo.zone;

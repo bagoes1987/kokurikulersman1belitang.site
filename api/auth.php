@@ -134,6 +134,19 @@ if ($action === 'login') {
         $fasilName = 'Tim Fasilitator SMAN 1 Belitang';
     }
 
+    // Periksa apakah ada override zona khusus dari admin di tabel student_custom_zones
+    $studentZone = !empty($user['zone']) ? $user['zone'] : 'FINCESTEM OKU TIMUR';
+    if ($user['role'] === 'siswa') {
+        try {
+            $zStmt = $pdo->prepare("SELECT `zone` FROM `student_custom_zones` WHERE `nisn` = :n1 OR `nisn` = :n2 LIMIT 1");
+            $zStmt->execute([':n1' => $user['identifier'], ':n2' => $user['nis'] ?? '']);
+            $customZone = $zStmt->fetchColumn();
+            if ($customZone) {
+                $studentZone = $customZone;
+            }
+        } catch (Exception $eZ) {}
+    }
+
     // Siapkan data user publik yang aman (tanpa password_hash)
     $userData = [
         'id'               => (int)$user['id'],
@@ -146,7 +159,7 @@ if ($action === 'login') {
         'class'            => $user['class_name'] ?? '',
         'gender'           => $user['gender'] ?? '',
         'photo_url'        => $user['photo_url'] ?? null,
-        'zone'             => !empty($user['zone']) ? $user['zone'] : 'FINCESTEM OKU TIMUR',
+        'zone'             => $studentZone,
         'coordinator_name' => $coordName,
         'facilitator_name' => $fasilName,
         'agama'            => $user['agama'] ?? '',

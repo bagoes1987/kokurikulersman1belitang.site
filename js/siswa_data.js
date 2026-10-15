@@ -6482,7 +6482,7 @@ window.FincestemMasterStudents = [
     "ibu": "ERNA WATI",
     "asal_sekolah": "SMP NEGERI 1 BELITANG",
     "hp": "",
-    "zone": "FINCESTEM OKU TIMUR"
+    "zone": "FINCESTEM LUAR OKU TIMUR"
   },
   {
     "no": 11,

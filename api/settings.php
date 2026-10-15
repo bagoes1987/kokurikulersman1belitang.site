@@ -143,7 +143,8 @@ function ensureRoleTables($pdo) {
                 $ftStudents = json_decode($rawFt, true);
                 if (is_array($ftStudents) && count($ftStudents) > 0) {
                     $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM OKU TIMUR' WHERE `role` = 'siswa'");
-                    $pdo->exec("DELETE FROM `student_custom_zones`");
+                    // JANGAN DELETE student_custom_zones agar perubahan manual admin tidak terhapus!
+                    // Siswa di tabel student_custom_zones akan tetap mempertahankan zona yang diubah admin.
 
                     $nisList = [];
                     $nisnList = [];
@@ -617,8 +618,17 @@ if ($method === 'GET') {
             ");
             while ($row = $stmtStudents->fetch()) {
                 $z = trim($row['zone']);
-                if (!empty($row['identifier'])) $studentZones[trim($row['identifier'])] = $z;
-                if (!empty($row['nis'])) $studentZones[trim($row['nis'])] = $z;
+                $id = trim($row['identifier'] ?? '');
+                $nis = trim($row['nis'] ?? '');
+                if ($id) {
+                    $studentZones[$id] = $z;
+                    $cleanId = preg_replace('/\D/', '', $id);
+                    if (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) {
+                        $studentZones[str_pad($cleanId, 10, '0', STR_PAD_LEFT)] = $z;
+                        $studentZones[ltrim($cleanId, '0')] = $z;
+                    }
+                }
+                if ($nis) $studentZones[$nis] = $z;
             }
         } catch (Exception $e) {}
 
@@ -626,7 +636,14 @@ if ($method === 'GET') {
             $stmtCust = $pdo->query("SELECT `nisn`, `zone` FROM `student_custom_zones`");
             while ($r = $stmtCust->fetch()) {
                 if (!empty($r['nisn']) && !empty($r['zone'])) {
-                    $studentZones[trim($r['nisn'])] = trim($r['zone']);
+                    $n = trim($r['nisn']);
+                    $z = trim($r['zone']);
+                    $studentZones[$n] = $z;
+                    $cleanN = preg_replace('/\D/', '', $n);
+                    if (strlen($cleanN) >= 8 && strlen($cleanN) <= 10) {
+                        $studentZones[str_pad($cleanN, 10, '0', STR_PAD_LEFT)] = $z;
+                        $studentZones[ltrim($cleanN, '0')] = $z;
+                    }
                 }
             }
         } catch (Exception $e) {}
@@ -975,22 +992,39 @@ if ($method === 'POST') {
                 jsonResponse(false, 'NISN / Pengenal siswa wajib diisi!', null, 400);
             }
 
+            // Cari variasi NISN (padded 10 digit, tanpa 0 di depan) dan nomor NIS
+            $cleanDigits = preg_replace('/\D/', '', $nisn);
+            $paddedNisn = (strlen($cleanDigits) >= 8 && strlen($cleanDigits) <= 10) ? str_pad($cleanDigits, 10, '0', STR_PAD_LEFT) : $nisn;
+            $unpaddedNisn = ltrim($cleanDigits, '0');
+
             // 1. Simpan di tabel users
             $stmt = $pdo->prepare("
                 UPDATE `users` 
                 SET `zone` = :z 
-                WHERE (`identifier` = :nisn1 OR `nis` = :nisn2) AND `role` = 'siswa'
+                WHERE (`identifier` = :nisn1 OR `identifier` = :padded OR `identifier` = :unpadded OR `nis` = :nisn2) AND `role` = 'siswa'
             ");
-            $stmt->execute([':z' => $zone, ':nisn1' => $nisn, ':nisn2' => $nisn]);
+            $stmt->execute([
+                ':z'        => $zone,
+                ':nisn1'    => $nisn,
+                ':padded'   => $paddedNisn,
+                ':unpadded' => $unpaddedNisn,
+                ':nisn2'    => $nisn
+            ]);
             $count = $stmt->rowCount();
 
-            // 2. Simpan juga di tabel persisten student_custom_zones
+            // 2. Simpan juga di tabel persisten student_custom_zones untuk kedua format (asli & padded)
             try {
                 $stmtCust = $pdo->prepare("
                     INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES (:nisn, :z)
                     ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`), `updated_at` = CURRENT_TIMESTAMP
                 ");
                 $stmtCust->execute([':nisn' => $nisn, ':z' => $zone]);
+                if ($paddedNisn !== $nisn) {
+                    $stmtCust->execute([':nisn' => $paddedNisn, ':z' => $zone]);
+                }
+                if ($unpaddedNisn && $unpaddedNisn !== $nisn) {
+                    $stmtCust->execute([':nisn' => $unpaddedNisn, ':z' => $zone]);
+                }
             } catch (Exception $e2) {}
 
             jsonResponse(true, "Zona untuk siswa {$nisn} berhasil diperbarui menjadi '{$zone}'.", [
