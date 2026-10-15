@@ -6957,9 +6957,20 @@
 
       printContainer.innerHTML = pagesHtml;
 
-      // Set document.title agar nama file saat download / Save as PDF otomatis "Kartu Login Kokurikuler 2026"
+      // Set document.title agar nama file saat download / Save as PDF otomatis sesuai filter yang dipilih
       const prevTitle = document.title;
-      document.title = "Kartu Login Kokurikuler 2026";
+      let pdfSuffix = 'Semua Kelas';
+      if (cardsRombelFilter && cardsRombelFilter !== 'ALL') {
+        pdfSuffix = cardsRombelFilter;
+      } else if (cardsGradeFilter === 'X') {
+        pdfSuffix = 'Kelas X';
+      } else if (cardsGradeFilter === 'XI') {
+        pdfSuffix = 'Kelas XI';
+      } else if (cardsGradeFilter === 'XII') {
+        pdfSuffix = 'Kelas XII';
+      }
+
+      document.title = `Kartu Login Kokurikuler 2026_${pdfSuffix}`;
 
       window.print();
 
