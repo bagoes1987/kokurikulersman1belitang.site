@@ -2659,42 +2659,86 @@
                     </div>
                   </div>
 
-                  <!-- Rangkaian Agenda Utama (Grid 2 Kolom Kompak) -->
-                  <div class="flex flex-col gap-2 pt-2 border-t border-amber-200/70">
-                    <div class="flex items-center justify-between">
-                      <span class="text-[11px] font-black uppercase tracking-wider text-amber-950 flex items-center gap-1">
-                        <span class="material-symbols-outlined text-sm text-amber-700">event_note</span>
+                  <!-- Rangkaian Agenda Utama (Model Desain Day 2: Rapi & Terbaca) -->
+                  <div class="flex flex-col gap-2.5 pt-2 border-t border-amber-200/70">
+                    <div class="flex items-center justify-between flex-wrap gap-2">
+                      <span class="text-xs font-black uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base text-amber-700">event_note</span>
                         Agenda Kegiatan Sesi demi Sesi:
                       </span>
-                      <span class="text-[10px] text-amber-800 font-semibold bg-amber-100/60 px-2 py-0.5 rounded-md">
-                        📅 ${ftConfig.date_formatted}
-                      </span>
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-xs text-amber-900 font-bold bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300">
+                          📅 ${ftConfig.date_formatted}
+                        </span>
+                        <span class="text-xs font-black text-amber-950 bg-white px-2 py-0.5 rounded-full border border-amber-300">
+                          ${ftConfig.sessions.length} Agenda
+                        </span>
+                      </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                      ${ftConfig.sessions.map((sess) => `
-                        <div class="p-3 rounded-xl bg-white/95 border border-amber-200/90 shadow-2xs flex flex-col gap-2 hover:border-amber-400 transition-all">
-                          <!-- Baris Atas: Jam & Badge Ikon -->
-                          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-1.5">
-                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-100/90 text-amber-950 font-black text-[11px] border border-amber-300 shadow-2xs">
-                              <span class="material-symbols-outlined text-xs text-amber-700">schedule</span>
-                              <span>${sess.time}</span>
-                            </span>
-                            <span class="w-7 h-7 rounded-lg bg-amber-500/15 text-amber-900 border border-amber-300/80 flex items-center justify-center shrink-0">
-                              <span class="material-symbols-outlined text-sm text-amber-700">${sess.icon || 'event'}</span>
-                            </span>
-                          </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5">
+                      ${ftConfig.sessions.map((sess, sIdx) => {
+                        const hl = sess.highlight || 'default';
+                        let cardStyle = 'bg-white/95 border-amber-200/90 text-slate-800 hover:border-amber-400';
+                        let iconWrap = 'w-8 h-8 rounded-xl bg-amber-500/15 text-amber-800 flex items-center justify-center shrink-0 border border-amber-300/80 shadow-2xs';
+                        let timeBadge = 'bg-amber-100/90 text-amber-950 border-amber-300';
 
-                          <!-- Baris Bawah: Judul Kegiatan Utuh & Lokasi Utuh -->
-                          <div class="flex flex-col gap-1 min-w-0">
-                            <span class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug break-words">${sess.title}</span>
-                            <div class="flex items-start gap-1 text-[11px] text-amber-900/90 font-medium break-words mt-0.5">
-                              <span class="material-symbols-outlined text-xs text-amber-600 shrink-0 mt-0.5">pin_drop</span>
-                              <span class="leading-snug">${sess.location}</span>
+                        if (hl === 'blue') {
+                          cardStyle = 'bg-blue-50/95 border-blue-200 text-blue-950 hover:border-blue-400';
+                          iconWrap = 'w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs';
+                          timeBadge = 'bg-white text-blue-900 border-blue-200';
+                        } else if (hl === 'amber') {
+                          cardStyle = 'bg-amber-50/95 border-amber-200 text-amber-950 hover:border-amber-400';
+                          iconWrap = 'w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-2xs';
+                          timeBadge = 'bg-white text-amber-900 border-amber-300';
+                        } else if (hl === 'emerald') {
+                          cardStyle = 'bg-emerald-50/95 border-emerald-200 text-emerald-950 hover:border-emerald-400';
+                          iconWrap = 'w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-2xs';
+                          timeBadge = 'bg-white text-emerald-900 border-emerald-200';
+                        } else if (hl === 'purple') {
+                          cardStyle = 'bg-purple-50/95 border-purple-200 text-purple-950 hover:border-purple-400';
+                          iconWrap = 'w-8 h-8 rounded-xl bg-purple-600 text-white flex items-center justify-center shrink-0 shadow-2xs';
+                          timeBadge = 'bg-white text-purple-900 border-purple-200';
+                        } else if (hl === 'cyan' || hl === 'teal') {
+                          cardStyle = 'bg-teal-50/95 border-teal-200 text-teal-950 hover:border-teal-400';
+                          iconWrap = 'w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-2xs';
+                          timeBadge = 'bg-white text-teal-900 border-teal-200';
+                        } else if (hl === 'red' || hl === 'orange') {
+                          cardStyle = 'bg-rose-50/95 border-rose-200 text-rose-950 hover:border-rose-400';
+                          iconWrap = 'w-8 h-8 rounded-xl bg-rose-600 text-white flex items-center justify-center shrink-0 shadow-2xs';
+                          timeBadge = 'bg-white text-rose-900 border-rose-200';
+                        } else if (hl === 'indigo') {
+                          cardStyle = 'bg-indigo-50/95 border-indigo-200 text-indigo-950 hover:border-indigo-400';
+                          iconWrap = 'w-8 h-8 rounded-xl bg-indigo-600 text-white flex items-center justify-center shrink-0 shadow-2xs';
+                          timeBadge = 'bg-white text-indigo-900 border-indigo-200';
+                        } else if (hl === 'primary') {
+                          cardStyle = 'bg-primary/5 border-primary/25 text-slate-900 hover:border-primary';
+                          iconWrap = 'w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center shrink-0 shadow-2xs';
+                          timeBadge = 'bg-white text-primary border-primary/25';
+                        }
+
+                        return `
+                          <div class="p-3 sm:p-3.5 rounded-2xl ${cardStyle} border shadow-2xs transition-all flex items-center justify-between gap-3">
+                            <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-1">
+                              <span class="${iconWrap}">
+                                <span class="material-symbols-outlined text-base">${sess.icon || 'event'}</span>
+                              </span>
+                              <div class="flex flex-col min-w-0">
+                                <span class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug break-words">${sIdx + 1}. ${sess.title}</span>
+                                ${sess.location ? `
+                                  <div class="flex items-center gap-1 text-[11px] sm:text-xs text-slate-600 font-medium truncate mt-0.5">
+                                    <span class="material-symbols-outlined text-[13px] text-amber-700 shrink-0">pin_drop</span>
+                                    <span class="truncate">${sess.location}</span>
+                                  </div>
+                                ` : ''}
+                              </div>
                             </div>
+                            <span class="shrink-0 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl ${timeBadge} font-black text-xs sm:text-sm border shadow-2xs whitespace-nowrap">
+                              ${sess.time}
+                            </span>
                           </div>
-                        </div>
-                      `).join('')}
+                        `;
+                      }).join('')}
                     </div>
                   </div>
                 </div>
