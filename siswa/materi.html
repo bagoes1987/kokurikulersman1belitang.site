@@ -289,6 +289,22 @@
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
+      // Proteksi Alur Berurutan: Day N (N > 1) mewajibkan Day N-1 selesai
+      if (dayNum > 1 && FincestemCore.progress) {
+        FincestemCore.progress.getStudentProgress(user.nisn || user.identifier, function(prog) {
+          FincestemCore.schedule.getSchedule(function(days) {
+            const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
+            if (!access.canAccess) {
+              const reasonMsg = access.reason || `Aktivitas Day ${dayNum} belum dapat diakses! Selesaikan seluruh tugas Day ${dayNum - 1} terlebih dahulu.`;
+              FincestemCore.ui.toast(reasonMsg, 'error');
+              setTimeout(() => {
+                window.location.replace('dashboard.html');
+              }, 1200);
+            }
+          });
+        });
+      }
+
       const mainEl = document.querySelector('main');
 
       // TAMPILKAN MODUL BELAJAR DAY 1 FIELD TRIP

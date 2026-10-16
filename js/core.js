@@ -2048,17 +2048,23 @@ const FincestemCore = {
       if (d <= 0) return true;
       if (this.isDayCompleted(prog, d)) return true;
 
+      // Cek record evaluasi resmi fasilitator
       if (prog.records && Array.isArray(prog.records)) {
-        if (prog.records.some(r => parseInt(r.day_number) === d && (r.status === 'completed' || r.status === 'submitted' || r.status === 'reviewed'))) {
+        if (prog.records.some(r => parseInt(r.day_number) === d && (r.status === 'completed' || (r.task_type === 'general' && r.status === 'reviewed')))) {
+          return true;
+        }
+        // Refleksi adalah tahap ke-5 (tahap terakhir siswa sebelum penilaian guru/otomatis)
+        if (prog.records.some(r => parseInt(r.day_number) === d && r.task_type === 'refleksi' && (r.status === 'submitted' || r.status === 'completed'))) {
           return true;
         }
       }
 
       const tm = prog.task_map || {};
-      // Refleksi adalah tahap ke-5 (tahap terakhir siswa sebelum penilaian guru/otomatis)
-      if (tm[d + '_refleksi']) {
+      // Refleksi adalah tahap ke-5 (tahap terakhir siswa)
+      if (tm[d + '_refleksi'] && (tm[d + '_refleksi'].status === 'submitted' || tm[d + '_refleksi'].status === 'completed')) {
         return true;
       }
+      // Atau jika 3 instrumen inti (LKPD, Asesmen, dan Foto Dokumentasi) lengkap terkirim
       if (tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi']) {
         return true;
       }
