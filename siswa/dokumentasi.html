@@ -2285,138 +2285,148 @@
     }
 
     function submitNewPhoto() {
-      const user = FincestemCore.auth.getUser();
-      const desc = document.getElementById('modalPhotoDesc').value.trim();
-
-      if (!selectedPhotoBase64) {
-        FincestemCore.ui.toast('Silakan ambil foto dengan kamera atau pilih berkas foto terlebih dahulu!', 'error');
-        return;
-      }
-
-      closePhotoInspectModal();
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const dayParam = urlParams.get('day');
-      const docDayNum = dayParam ? parseInt(dayParam) : 1;
-      const actConfig = getDayActivityConfig(docDayNum);
-
-      let pillar = (document.getElementById('modalPillarSelect') ? document.getElementById('modalPillarSelect').value : '') || actConfig.defaultPillar || 'STEM';
-
-      // Deteksi pilar otomatis dari kata kunci keterangan foto siswa jika ada
-      const descLower = desc.toLowerCase();
-      if (descLower.includes('harga') || descLower.includes('biaya') || descLower.includes('uang') || descLower.includes('pasar') || descLower.includes('modal') || descLower.includes('tiket') || descLower.includes('ongkos') || descLower.includes('ekonomi')) {
-        pillar = 'Financial';
-      } else if (descLower.includes('budaya') || descLower.includes('candi') || descLower.includes('batik') || descLower.includes('sejarah') || descLower.includes('adat') || descLower.includes('tengger') || descLower.includes('lawang sewu') || descLower.includes('prambanan') || descLower.includes('tradisi')) {
-        pillar = 'Culture';
-      } else if (descLower.includes('alam') || descLower.includes('bromo') || descLower.includes('pantai') || descLower.includes('drini') || descLower.includes('rute') || descLower.includes('jeep') || descLower.includes('laut') || descLower.includes('kawah') || descLower.includes('savana') || descLower.includes('transportasi') || descLower.includes('bakauheni') || descLower.includes('merak') || descLower.includes('akpol')) {
-        pillar = 'Exploration';
-      } else if (descLower.includes('sains') || descLower.includes('alat') || descLower.includes('mesin') || descLower.includes('uji') || descLower.includes('sampel') || descLower.includes('air') || descLower.includes('apel') || descLower.includes('fisika') || descLower.includes('kimia') || descLower.includes('tol') || descLower.includes('gps') || descLower.includes('laboratorium')) {
-        pillar = 'STEM';
-      }
-
-      // Format nama file & judul otomatis menyesuaikan kegiatan Day itu
-      const timeStampStr = Date.now();
-      const fileNameGenerated = `Foto_Day${docDayNum}_${actConfig.fileSlug}_${pillar}_${timeStampStr}.jpg`;
-      const cleanTitle = desc ? (desc.length > 55 ? desc.slice(0, 52) + '...' : desc) : `${actConfig.title} (${pillar})`;
-
-      const studentNisn = user ? (user.nisn || user.identifier || '') : '';
-      const isGeotagged = (selectedPhotoSource === 'camera' && selectedPhotoHasGeotag);
-      const gpsCoordStr = (isGeotagged && currentGPS) ? (currentGPS.lat.toFixed(6) + ', ' + currentGPS.lng.toFixed(6)) : '';
-
-      const newPhoto = {
-        id: 'doc-' + Date.now(),
-        day: docDayNum,
-        day_number: docDayNum,
-        title: cleanTitle,
-        description: desc,
-        file_name: fileNameGenerated,
-        fileName: fileNameGenerated,
-        pillar: pillar,
-        category: pillar,
-        url: selectedPhotoBase64,
-        author: user ? (user.group || user.name) : 'Siswa',
-        nisn: studentNisn,
-        author_nisn: studentNisn,
-        source: selectedPhotoSource,
-        has_geotag: isGeotagged ? 1 : 0,
-        gps_location: gpsCoordStr,
-        date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
-      };
-
       try {
-        let db = {};
-        const stored = localStorage.getItem('fincestem_db_2026_v1');
-        if (stored) db = JSON.parse(stored);
-        if (!Array.isArray(db.documentation)) db.documentation = [];
-        db.documentation.unshift(newPhoto);
-        localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+        const user = FincestemCore.auth.getUser();
+        const descEl = document.getElementById('modalPhotoDesc');
+        const desc = descEl ? descEl.value.trim() : '';
 
-        const cleanNisn = String(studentNisn).trim();
-        const idList = [studentNisn, cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
-        idList.forEach(id => {
-          localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + id, 'true');
-        });
-      } catch (e) {
-        console.error(e);
-      }
+        if (!selectedPhotoBase64) {
+          FincestemCore.ui.toast('Silakan ambil foto dengan kamera atau pilih berkas foto terlebih dahulu!', 'error');
+          return;
+        }
 
-      // Sinkronkan ke database server cPanel jika online
-      if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/dokumentasi.php?action=add', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            group_id: user ? (user.groupId || 0) : 0,
-            title: title,
-            caption: desc,
-            media_type: 'foto',
-            file_url: selectedPhotoBase64,
-            source: selectedPhotoSource,
-            has_geotag: isGeotagged ? 1 : 0,
-            gps_location: gpsCoordStr,
-            uploaded_by: studentNisn
-          })
-        }).catch(err => console.warn('Sync dokumentasi error:', err));
-      }
+        closePhotoInspectModal();
 
-      // Catat ke progres siswa untuk sinkronisasi aktivitas berurutan
-      if (FincestemCore.progress && studentNisn) {
-        FincestemCore.progress.submitTask(studentNisn, docDayNum, 'dokumentasi', {
-          photoId: newPhoto.id,
+        const urlParams = new URLSearchParams(window.location.search);
+        const dayParam = urlParams.get('day');
+        const docDayNum = dayParam ? parseInt(dayParam) : 1;
+        const actConfig = getDayActivityConfig(docDayNum);
+
+        let pillar = (document.getElementById('modalPillarSelect') ? document.getElementById('modalPillarSelect').value : '') || actConfig.defaultPillar || 'STEM';
+
+        // Deteksi pilar otomatis dari kata kunci keterangan foto siswa jika ada
+        const descLower = desc.toLowerCase();
+        if (descLower.includes('harga') || descLower.includes('biaya') || descLower.includes('uang') || descLower.includes('pasar') || descLower.includes('modal') || descLower.includes('tiket') || descLower.includes('ongkos') || descLower.includes('ekonomi')) {
+          pillar = 'Financial';
+        } else if (descLower.includes('budaya') || descLower.includes('candi') || descLower.includes('batik') || descLower.includes('sejarah') || descLower.includes('adat') || descLower.includes('tengger') || descLower.includes('lawang sewu') || descLower.includes('prambanan') || descLower.includes('tradisi')) {
+          pillar = 'Culture';
+        } else if (descLower.includes('alam') || descLower.includes('bromo') || descLower.includes('pantai') || descLower.includes('drini') || descLower.includes('rute') || descLower.includes('jeep') || descLower.includes('laut') || descLower.includes('kawah') || descLower.includes('savana') || descLower.includes('transportasi') || descLower.includes('bakauheni') || descLower.includes('merak') || descLower.includes('akpol')) {
+          pillar = 'Exploration';
+        } else if (descLower.includes('sains') || descLower.includes('alat') || descLower.includes('mesin') || descLower.includes('uji') || descLower.includes('sampel') || descLower.includes('air') || descLower.includes('apel') || descLower.includes('fisika') || descLower.includes('kimia') || descLower.includes('tol') || descLower.includes('gps') || descLower.includes('laboratorium')) {
+          pillar = 'STEM';
+        }
+
+        // Format nama file & judul otomatis menyesuaikan kegiatan Day itu
+        const timeStampStr = Date.now();
+        const fileNameGenerated = `Foto_Day${docDayNum}_${actConfig.fileSlug}_${pillar}_${timeStampStr}.jpg`;
+        const cleanTitle = desc ? (desc.length > 55 ? desc.slice(0, 52) + '...' : desc) : `${actConfig.title} (${pillar})`;
+        const title = cleanTitle;
+
+        const studentNisn = user ? (user.nisn || user.identifier || '') : '';
+        const isGeotagged = (selectedPhotoSource === 'camera' && selectedPhotoHasGeotag);
+        const gpsCoordStr = (isGeotagged && currentGPS) ? (currentGPS.lat.toFixed(6) + ', ' + currentGPS.lng.toFixed(6)) : '';
+
+        const newPhoto = {
+          id: 'doc-' + Date.now(),
+          day: docDayNum,
+          day_number: docDayNum,
           title: title,
-          has_geotag: newPhoto.has_geotag,
-          date: newPhoto.date
-        });
-      }
+          description: desc,
+          file_name: fileNameGenerated,
+          fileName: fileNameGenerated,
+          pillar: pillar,
+          category: pillar,
+          url: selectedPhotoBase64,
+          author: user ? (user.group || user.name) : 'Siswa',
+          nisn: studentNisn,
+          author_nisn: studentNisn,
+          source: selectedPhotoSource,
+          has_geotag: isGeotagged ? 1 : 0,
+          gps_location: gpsCoordStr,
+          date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
+        };
 
-      toggleUploadModal(false);
-      const titleEl = document.getElementById('modalPhotoTitle');
-      if (titleEl) titleEl.value = '';
-      const descEl = document.getElementById('modalPhotoDesc');
-      if (descEl) descEl.value = '';
-      const camInput = document.getElementById('modalPhotoCameraInput');
-      if (camInput) camInput.value = '';
-      const fileInput = document.getElementById('modalPhotoFileInput');
-      if (fileInput) fileInput.value = '';
-      const prevCard = document.getElementById('uploadPreviewCard');
-      if (prevCard) prevCard.classList.add('hidden');
-      const prevImg = document.getElementById('uploadPreviewImg');
-      if (prevImg) prevImg.src = '';
-      const stampBox = document.getElementById('stampLoadingBox');
-      if (stampBox) stampBox.classList.add('hidden');
-      const actContainer = document.getElementById('uploadActionsContainer');
-      if (actContainer) actContainer.classList.remove('hidden');
-      selectedPhotoBase64 = null;
+        try {
+          let db = {};
+          const stored = localStorage.getItem('fincestem_db_2026_v1');
+          if (stored) db = JSON.parse(stored);
+          if (!Array.isArray(db.documentation)) db.documentation = [];
+          db.documentation.unshift(newPhoto);
+          localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
 
-      FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
-      renderPhotos();
+          const cleanNisn = String(studentNisn).trim();
+          const idList = [studentNisn, cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+          idList.forEach(id => {
+            localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + id, 'true');
+          });
+        } catch (e) {
+          console.error('Save to local storage error:', e);
+        }
 
-      // Untuk Siswa Field Trip (Day 1 s.d. 7), munculkan modal navigasi ke Tahap 5: Refleksi
-      const cat = getStudentCategoryInfo();
-      if (cat.isFieldTrip && (docDayNum >= 1 && docDayNum <= 7)) {
-        setTimeout(() => {
-          showFtDokSuccessModal(docDayNum);
-        }, 350);
+        // Sinkronkan ke database server cPanel jika online
+        if (window.location.protocol.startsWith('http')) {
+          fetch(FincestemCore.api.base + '/dokumentasi.php?action=add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              group_id: user ? (user.groupId || 0) : 0,
+              title: title,
+              caption: desc,
+              media_type: 'foto',
+              file_url: selectedPhotoBase64,
+              source: selectedPhotoSource,
+              has_geotag: isGeotagged ? 1 : 0,
+              gps_location: gpsCoordStr,
+              uploaded_by: studentNisn
+            })
+          }).catch(err => console.warn('Sync dokumentasi error:', err));
+        }
+
+        // Catat ke progres siswa untuk sinkronisasi aktivitas berurutan
+        if (FincestemCore.progress && studentNisn) {
+          try {
+            FincestemCore.progress.submitTask(studentNisn, docDayNum, 'dokumentasi', {
+              photoId: newPhoto.id,
+              title: title,
+              has_geotag: newPhoto.has_geotag,
+              date: newPhoto.date
+            });
+          } catch(e) {
+            console.warn('submitTask error:', e);
+          }
+        }
+
+        toggleUploadModal(false);
+        const titleEl = document.getElementById('modalPhotoTitle');
+        if (titleEl) titleEl.value = '';
+        if (descEl) descEl.value = '';
+        const camInput = document.getElementById('modalPhotoCameraInput');
+        if (camInput) camInput.value = '';
+        const fileInput = document.getElementById('modalPhotoFileInput');
+        if (fileInput) fileInput.value = '';
+        const prevCard = document.getElementById('uploadPreviewCard');
+        if (prevCard) prevCard.classList.add('hidden');
+        const prevImg = document.getElementById('uploadPreviewImg');
+        if (prevImg) prevImg.src = '';
+        const stampBox = document.getElementById('stampLoadingBox');
+        if (stampBox) stampBox.classList.add('hidden');
+        const actContainer = document.getElementById('uploadActionsContainer');
+        if (actContainer) actContainer.classList.remove('hidden');
+        selectedPhotoBase64 = null;
+
+        FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
+        renderPhotos();
+
+        // Untuk Siswa Field Trip (Day 1 s.d. 7), munculkan modal navigasi ke Tahap 5: Refleksi
+        const cat = getStudentCategoryInfo();
+        if (cat.isFieldTrip && (docDayNum >= 1 && docDayNum <= 7)) {
+          setTimeout(() => {
+            showFtDokSuccessModal(docDayNum);
+          }, 350);
+        }
+      } catch (err) {
+        console.error('submitNewPhoto error:', err);
+        FincestemCore.ui.toast('Gagal mengunggah foto: ' + (err.message || 'Terjadi kesalahan sistem'), 'error');
       }
     }
 
