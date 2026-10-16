@@ -18,10 +18,12 @@ $method = $_SERVER['REQUEST_METHOD'];
 function ensureDaySchedulesTable($pdo) {
     static $checked = false;
     if ($checked) return;
+    $checked = true;
+
+    // Bersihkan file lock usang jika pernah ada agar tidak menghalangi pengecekan Day 0
     $lockFile = sys_get_temp_dir() . '/fincestem_schedules_table.lock';
-    if (file_exists($lockFile) && (time() - filemtime($lockFile) < 3600)) {
-        $checked = true;
-        return;
+    if (file_exists($lockFile)) {
+        @unlink($lockFile);
     }
 
     try {
@@ -46,9 +48,11 @@ function ensureDaySchedulesTable($pdo) {
         ");
 
         $cnt = (int)$pdo->query("SELECT COUNT(*) FROM `day_schedules`")->fetchColumn();
+        $today = date('Y-m-d');
         if ($cnt === 0) {
             $pdo->exec("
                 INSERT INTO `day_schedules` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `description`) VALUES
+                (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.'),
                 (1, 'Day 1: Orientasi & Pembekalan Riset', 'Pembekalan STEM & Etika Riset Lapangan', '2026-11-09', '07:00:00', '18:00:00', 1, 1, 'Pengenalan instrumen observasi, sosialisasi modul kokurikuler, dan konsolidasi tim ekspedisi.'),
                 (2, 'Day 2: Eksplorasi Sains & Ekosistem Irigasi', 'STEM Sains & Konservasi Lingkungan Belitang', '2026-11-10', '07:00:00', '18:00:00', 0, 1, 'Pengambilan sampel kualitas air saluran irigasi, identifikasi flora-fauna sawah pasang surut.'),
                 (3, 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan', 'Teknologi Pertanian Modern & Mekanisasi', '2026-11-11', '07:00:00', '18:00:00', 0, 1, 'Observasi mekanisasi pengolahan pascapanen, pengoperasian sensor lingkungan dan dokumentasi teknologi.'),
@@ -57,14 +61,14 @@ function ensureDaySchedulesTable($pdo) {
                 (6, 'Day 6: Sintesis Data & Penyusunan Instrumen LKPD', 'Data Science & Penyusunan Laporan Proyek', '2026-11-14', '07:00:00', '18:00:00', 0, 1, 'Pengolahan data statistik hasil observasi 4 pilar, input laporan akhir, dan upload berkas LKPD.'),
                 (7, 'Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi', 'Diseminasi Temuan & Refleksi Kokurikuler', '2026-11-15', '07:00:00', '20:00:00', 0, 1, 'Pameran poster riset, presentasi di depan dewan penguji dan fasilitator, serta pengisian lembar refleksi mandiri.')
             ");
-        }
-        $cnt0 = (int)$pdo->query("SELECT COUNT(*) FROM `day_schedules` WHERE `day_number` = 0")->fetchColumn();
-        if ($cnt0 === 0) {
-            $today = date('Y-m-d');
-            $pdo->exec("
-                INSERT INTO `day_schedules` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `description`) VALUES
-                (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.')
-            ");
+        } else {
+            $cnt0 = (int)$pdo->query("SELECT COUNT(*) FROM `day_schedules` WHERE `day_number` = 0")->fetchColumn();
+            if ($cnt0 === 0) {
+                $pdo->exec("
+                    INSERT INTO `day_schedules` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `description`) VALUES
+                    (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.')
+                ");
+            }
         }
 
         // 2. Tabel Jadwal Field Trip (Ekspedisi Luar 2026)
@@ -92,6 +96,7 @@ function ensureDaySchedulesTable($pdo) {
         if ($cntFt === 0) {
             $pdo->exec("
                 INSERT INTO `day_schedules_field_trip` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `route`, `description`) VALUES
+                (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip', 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.'),
                 (1, 'Day 1: Keberangkatan Belitang → Semarang', 'Perjalanan Darat, Penyeberangan Selat Sunda & Manajemen Logistik Finansial', '2026-11-09', '07:00:00', '23:59:00', 1, 0, 'SMAN 1 Belitang → Pelabuhan Bakauheni → Kapal Ferry Selat Sunda → Merak → Tol Trans-Jawa → Transit Semarang', 'Perjalanan rombongan bus dari Belitang menuju Pelabuhan Bakauheni, penyeberangan kapal ferry Selat Sunda ke Merak, lanjut melintasi Tol Trans-Jawa via Cirebon menuju transit Semarang.'),
                 (2, 'Day 2: AKPOL Semarang, Lawang Sewu → Malang', 'Kedisiplinan Taruna AKPOL, Sains Arsitektur Lawang Sewu & Etape Menuju Malang', '2026-11-10', '04:30:00', '20:30:00', 1, 0, 'Transit Semarang → AKPOL Semarang → Lawang Sewu → Tol Trans-Jawa → Hotel Kota Malang', 'Transit bersih diri di Semarang, kunjungan edukasi kedisiplinan di Akademi Kepolisian (AKPOL), eksplorasi sains arsitektur pasif Lawang Sewu, dan perjalanan tol menuju Kota Malang.'),
                 (3, 'Day 3: Wisata Petik Apel Batu, Jatim Park 1 & Museum Angkut', 'Sains Hortikultura Apel Batu, Fisika Terapan Jatim Park 1 & Sejarah Transportasi', '2026-11-11', '07:00:00', '23:30:00', 1, 0, 'Hotel Malang → Agrowisata Petik Apel Batu → Jatim Park 1 → Museum Angkut → Transit Bromo', 'Eksplorasi sains hortikultura di kebun apel Kota Batu, wahana sains & teknologi terapan di Jatim Park 1, pembelajaran sejarah otomotif di Museum Angkut, serta perjalanan menuju transit Gunung Bromo.'),
@@ -100,21 +105,18 @@ function ensureDaySchedulesTable($pdo) {
                 (6, 'Day 6: Industri Pabrik Bakpia, Bahari Pantai Drini → Belitang', 'Analisis Industri Pangan Bakpia, Sains Bahari Pantai Drini & Perjalanan Pulang', '2026-11-14', '06:30:00', '23:59:00', 1, 0, 'Hotel Yogyakarta → Pabrik Bakpia Khas Jogja → Pantai Drini Gunungkidul → Drini Park → Perjalanan Pulang ke Belitang', 'Observasi proses manufaktur industri kuliner oleh-oleh di Pabrik Bakpia Jogja, eksplorasi sains bahari dan keindahan tebing karst di Pantai Drini & Drini Park Gunungkidul, serta perjalanan rombongan kembali menuju Belitang OKU Timur.'),
                 (7, 'Day 7: Penyeberangan Selat Sunda & Tiba di Belitang', 'Etape Terakhir Sumatera, Evaluasi Ekspedisi & Penyambutan SMAN 1 Belitang', '2026-11-15', '05:00:00', '14:00:00', 1, 0, 'Pelabuhan Merak → Kapal Ferry Selat Sunda → Bakauheni → Tol Trans-Sumatera → SMAN 1 Belitang', 'Penyeberangan kembali Selat Sunda dari Merak ke Bakauheni, melintasi Tol Trans-Sumatera menuju OKU Timur, kedatangan rombongan di SMAN 1 Belitang, dan penutupan resmi seluruh kegiatan kokurikuler.')
             ");
-        }
-        $cntFt0 = (int)$pdo->query("SELECT COUNT(*) FROM `day_schedules_field_trip` WHERE `day_number` = 0")->fetchColumn();
-        if ($cntFt0 === 0) {
-            $today = date('Y-m-d');
-            $pdo->exec("
-                INSERT INTO `day_schedules_field_trip` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `route`, `description`) VALUES
-                (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip', 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.')
-            ");
+        } else {
+            $cntFt0 = (int)$pdo->query("SELECT COUNT(*) FROM `day_schedules_field_trip` WHERE `day_number` = 0")->fetchColumn();
+            if ($cntFt0 === 0) {
+                $pdo->exec("
+                    INSERT INTO `day_schedules_field_trip` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `route`, `description`) VALUES
+                    (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip', 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.')
+                ");
+            }
         }
     } catch (Exception $e) {
         // Fallback jika ada batasan izin di cPanel
     }
-
-    @touch($lockFile);
-    $checked = true;
 }
 
 if ($method === 'GET') {
@@ -136,8 +138,10 @@ if ($method === 'GET') {
     }
 
     if (empty($rows)) {
+        $today = date('Y-m-d');
         if ($category === 'field_trip') {
             $rows = [
+                ['day_number' => 0, 'title' => 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'theme' => 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', 'date' => $today, 'start_time' => '06:00:00', 'end_time' => '23:59:00', 'is_active' => 1, 'auto_schedule' => 0, 'route' => 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip', 'description' => 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.'],
                 ['day_number' => 1, 'title' => 'Day 1: Keberangkatan Belitang → Semarang', 'theme' => 'Perjalanan Darat, Penyeberangan Selat Sunda & Manajemen Logistik Finansial', 'date' => '2026-11-09', 'start_time' => '07:00:00', 'end_time' => '23:59:00', 'is_active' => 1, 'auto_schedule' => 0, 'route' => 'SMAN 1 Belitang → Bakauheni → Ferry Selat Sunda → Merak → Tol Trans-Jawa → Semarang', 'description' => 'Perjalanan rombongan bus dari Belitang menuju Pelabuhan Bakauheni, penyeberangan kapal ferry Selat Sunda ke Merak, lanjut melintasi Tol Trans-Jawa via Cirebon menuju transit Semarang.'],
                 ['day_number' => 2, 'title' => 'Day 2: AKPOL Semarang, Lawang Sewu → Malang', 'theme' => 'Kedisiplinan Taruna AKPOL, Sains Arsitektur Lawang Sewu & Etape Menuju Malang', 'date' => '2026-11-10', 'start_time' => '04:30:00', 'end_time' => '20:30:00', 'is_active' => 1, 'auto_schedule' => 0, 'route' => 'Transit Semarang → AKPOL Semarang → Lawang Sewu → Tol Menuju Malang', 'description' => 'Transit bersih diri di Semarang, kunjungan edukasi kedisiplinan di Akademi Kepolisian (AKPOL), eksplorasi sains arsitektur pasif Lawang Sewu, dan perjalanan tol menuju Kota Malang.'],
                 ['day_number' => 3, 'title' => 'Day 3: Wisata Petik Apel Batu, Jatim Park 1 & Museum Angkut', 'theme' => 'Sains Hortikultura Apel Batu, Fisika Terapan Jatim Park 1 & Sejarah Transportasi', 'date' => '2026-11-11', 'start_time' => '07:00:00', 'end_time' => '23:30:00', 'is_active' => 1, 'auto_schedule' => 0, 'route' => 'Malang → Petik Apel Batu → Jatim Park 1 → Museum Angkut → Transit Bromo', 'description' => 'Eksplorasi sains hortikultura di kebun apel Kota Batu, wahana sains & teknologi terapan di Jatim Park 1, pembelajaran sejarah otomotif di Museum Angkut, serta perjalanan menuju transit Gunung Bromo.'],
@@ -147,7 +151,6 @@ if ($method === 'GET') {
                 ['day_number' => 7, 'title' => 'Day 7: Penyeberangan Selat Sunda & Tiba di Belitang', 'theme' => 'Etape Terakhir Sumatera, Evaluasi Ekspedisi & Penyambutan SMAN 1 Belitang', 'date' => '2026-11-15', 'start_time' => '05:00:00', 'end_time' => '14:00:00', 'is_active' => 1, 'auto_schedule' => 0, 'route' => 'Merak → Ferry Selat Sunda → Bakauheni → Tol Trans-Sumatera → SMAN 1 Belitang', 'description' => 'Penyeberangan kembali Selat Sunda dari Merak ke Bakauheni, melintasi Tol Trans-Sumatera menuju OKU Timur, kedatangan rombongan di SMAN 1 Belitang, dan penutupan resmi seluruh kegiatan kokurikuler.']
             ];
         } else {
-            $today = date('Y-m-d');
             $rows = [
                 ['day_number' => 0, 'title' => 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'theme' => 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', 'date' => $today, 'start_time' => '06:00:00', 'end_time' => '23:59:00', 'is_active' => 1, 'auto_schedule' => 0, 'description' => 'Sesi uji coba dan orientasi teknis seluruh fitur aplikasi FINCESTEM sebelum pelaksanaan asli.'],
                 ['day_number' => 1, 'title' => 'Day 1: Orientasi & Pembekalan Riset', 'theme' => 'Pembekalan STEM & Etika Riset Lapangan', 'date' => '2026-11-09', 'start_time' => '07:00:00', 'end_time' => '18:00:00', 'is_active' => 1, 'auto_schedule' => 1, 'description' => 'Sosialisasi instrumen riset dan konsolidasi tim.'],
@@ -159,6 +162,48 @@ if ($method === 'GET') {
                 ['day_number' => 7, 'title' => 'Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi', 'theme' => 'Diseminasi Temuan & Refleksi Kokurikuler', 'date' => '2026-11-15', 'start_time' => '07:00:00', 'end_time' => '20:00:00', 'is_active' => 0, 'auto_schedule' => 1, 'description' => 'Pameran poster riset, presentasi di depan dewan penguji dan fasilitator, serta pengisian lembar refleksi mandiri.']
             ];
         }
+    }
+
+    // JAMINAN MUTLAK: Pastikan Day 0 selalu ada di $rows
+    $hasDay0 = false;
+    foreach ($rows as $r) {
+        if ((int)$r['day_number'] === 0) {
+            $hasDay0 = true;
+            break;
+        }
+    }
+    if (!$hasDay0) {
+        $today = date('Y-m-d');
+        $desc0 = ($category === 'field_trip')
+            ? 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.'
+            : 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.';
+        $route0 = ($category === 'field_trip') ? 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip' : '';
+        
+        $day0Row = [
+            'id'            => 0,
+            'day_number'    => 0,
+            'title'         => 'Day 0: Simulasi & Gladi Bersih FINCESTEM',
+            'theme'         => 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi',
+            'date'          => $today,
+            'start_time'    => '06:00:00',
+            'end_time'      => '23:59:00',
+            'is_active'     => 1,
+            'auto_schedule' => 0,
+            'route'         => $route0,
+            'description'   => $desc0
+        ];
+
+        try {
+            if (isset($pdo) && $pdo) {
+                if ($category === 'field_trip') {
+                    $pdo->exec("INSERT IGNORE INTO `day_schedules_field_trip` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `route`, `description`) VALUES (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, '{$route0}', '{$desc0}')");
+                } else {
+                    $pdo->exec("INSERT IGNORE INTO `day_schedules` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `description`) VALUES (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, '{$desc0}')");
+                }
+            }
+        } catch (Exception $eIns0) {}
+
+        array_unshift($rows, $day0Row);
     }
 
     $days = [];
@@ -310,13 +355,27 @@ if ($method === 'POST') {
     // AKSI KHUSUS: Toggle sakelar Day Uji Coba (Aktifkan / Nonaktifkan / Sembunyikan)
     if ($action === 'toggle_trial_day') {
         $isActive = isset($input['is_active']) ? (int)$input['is_active'] : 0;
+        $today = date('Y-m-d');
         try {
             $pdo = getDB();
-            $stmt = $pdo->prepare("UPDATE `day_schedules` SET `is_active` = :act WHERE `day_number` = 0");
-            $stmt->execute([':act' => $isActive]);
+            ensureDaySchedulesTable($pdo);
+
+            // 1. Non-Field Trip
+            $stmt = $pdo->prepare("
+                INSERT INTO `day_schedules` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `description`)
+                VALUES (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', :dToday, '06:00:00', '23:59:00', :act, 0, 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.')
+                ON DUPLICATE KEY UPDATE `is_active` = :act2
+            ");
+            $stmt->execute([':dToday' => $today, ':act' => $isActive, ':act2' => $isActive]);
+
+            // 2. Field Trip
             try {
-                $stmtFt = $pdo->prepare("UPDATE `day_schedules_field_trip` SET `is_active` = :act WHERE `day_number` = 0");
-                $stmtFt->execute([':act' => $isActive]);
+                $stmtFt = $pdo->prepare("
+                    INSERT INTO `day_schedules_field_trip` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `route`, `description`)
+                    VALUES (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', :dToday, '06:00:00', '23:59:00', :act, 0, 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip', 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.')
+                    ON DUPLICATE KEY UPDATE `is_active` = :act2
+                ");
+                $stmtFt->execute([':dToday' => $today, ':act' => $isActive, ':act2' => $isActive]);
             } catch (Exception $eFt) {}
 
             jsonResponse(true, 'Status Day Uji Coba berhasil diubah menjadi ' . ($isActive ? 'AKTIF (Tampil di Siswa & Guru)' : 'NONAKTIF (Disembunyikan)'), [

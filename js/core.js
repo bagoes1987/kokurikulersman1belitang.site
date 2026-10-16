@@ -1044,7 +1044,15 @@ const FincestemCore = {
           .then(r => r.json())
           .then(data => {
             if (data && data.success && data.data && Array.isArray(data.data.days)) {
-              const evaluated = self.evaluateScheduleList(data.data.days, data.data.server_time);
+              let daysList = data.data.days;
+              // Jaminan Mutlak: Jika server mengembalikan daftar tanpa Day 0, sisipkan konfigurasi default Day 0
+              if (!daysList.some(d => Number(d.day_number) === 0)) {
+                const def0 = (cat === 'field_trip' ? self.getFieldTripDefaults() : self.getDefaults()).find(x => Number(x.day_number) === 0);
+                if (def0) {
+                  daysList.unshift(def0);
+                }
+              }
+              const evaluated = self.evaluateScheduleList(daysList, data.data.server_time);
               localStorage.setItem(storageKey, JSON.stringify(evaluated));
               if (cat === 'non_field_trip') {
                 localStorage.setItem('fincestem_schedules', JSON.stringify(evaluated));
@@ -1067,7 +1075,13 @@ const FincestemCore = {
           const storageKey = 'fincestem_schedules_' + cat;
           const stored = localStorage.getItem(storageKey);
           let days = stored ? JSON.parse(stored) : (cat === 'field_trip' ? this.getFieldTripDefaults() : this.getDefaults());
-          const d0 = days.find(x => Number(x.day_number) === 0);
+          let d0 = days.find(x => Number(x.day_number) === 0);
+          if (!d0) {
+            d0 = (cat === 'field_trip' ? this.getFieldTripDefaults() : this.getDefaults()).find(x => Number(x.day_number) === 0);
+            if (d0) {
+              days.unshift(d0);
+            }
+          }
           if (d0) {
             d0.is_active = actNum;
             d0.is_open = (actNum === 1);
@@ -1106,8 +1120,12 @@ const FincestemCore = {
       try {
         const stored = localStorage.getItem(storageKey) || (cat === 'non_field_trip' ? localStorage.getItem('fincestem_schedules') : null);
         if (stored) {
-          const parsed = JSON.parse(stored);
+          let parsed = JSON.parse(stored);
           if (Array.isArray(parsed) && parsed.length >= 7) {
+            if (!parsed.some(d => Number(d.day_number) === 0)) {
+              const def0 = (cat === 'field_trip' ? this.getFieldTripDefaults() : this.getDefaults()).find(x => Number(x.day_number) === 0);
+              if (def0) parsed.unshift(def0);
+            }
             const evaluated = self.evaluateScheduleList(parsed);
             localStorage.setItem(storageKey, JSON.stringify(evaluated));
             if (callback) callback(evaluated, new Date().toISOString(), cat);

@@ -744,11 +744,11 @@
         </div>
       </div>
 
-      <!-- SAKELAR KONTROL DAY UJI COBA (GLADI BERSIH - HANYA MUNCUL DI SUB-TAB NON-FIELD TRIP) -->
-      <div id="boxAdminTrialDay" class="hidden bg-gradient-to-br from-blue-500/10 via-blue-50 to-indigo-50/40 rounded-3xl p-5 border border-blue-200 shadow-sm flex flex-col gap-3">
+      <!-- SAKELAR KONTROL DAY UJI COBA (GLADI BERSIH - BERLAKU UNTUK FIELD TRIP & NON-FIELD TRIP) -->
+      <div id="boxAdminTrialDay" class="bg-gradient-to-br from-amber-500/10 via-amber-50 to-blue-50/40 rounded-3xl p-5 border border-amber-300/80 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between flex-wrap gap-3">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-11 h-11 rounded-2xl bg-[#0875D1] text-white flex items-center justify-center shrink-0 shadow-xs">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 font-black flex items-center justify-center shrink-0 shadow-xs">
               <span class="material-symbols-outlined text-2xl">model_training</span>
             </div>
             <div class="min-w-0">
@@ -757,7 +757,7 @@
                 <span id="badgeTrialStatus" class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs">AKTIF</span>
               </div>
               <p class="text-xs text-slate-600 mt-0.5 leading-relaxed font-medium">
-                Sesi simulasi orientasi sistem bagi peserta didik Non-Field Trip sebelum pelaksanaan riil.
+                Sesi simulasi orientasi sistem bagi seluruh peserta didik (Field Trip &amp; Non-Field Trip) sebelum pelaksanaan riil.
               </p>
             </div>
           </div>
@@ -4885,18 +4885,18 @@
         if (btnNonFt) {
           btnNonFt.className = 'flex-1 py-2.5 px-3 text-center text-xs font-semibold rounded-xl text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer flex items-center justify-center gap-2';
         }
-        if (boxTrial) boxTrial.classList.add('hidden');
+        if (boxTrial) boxTrial.classList.remove('hidden');
         if (bannerFt) bannerFt.classList.remove('hidden');
         if (cardFTGrading) cardFTGrading.classList.remove('hidden');
         initAdminFTGradingRules();
 
-        if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal & Penilaian Field Trip (Day 1 - 7)';
+        if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal & Penilaian Field Trip (Day 0 - 7)';
         if (hdrDesc) hdrDesc.textContent = 'Ekspedisi Luar 2026: Belitang → Semarang → Malang → Bromo → Yogyakarta (455 Siswa). Atur tanggal, jam batas penilaian, dan status aktif harian.';
         if (infoNotice) {
           infoNotice.className = 'p-3 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center gap-2 text-xs text-amber-950';
           infoNotice.innerHTML = `
             <span class="material-symbols-outlined text-amber-600 text-base shrink-0">directions_bus</span>
-            <span>Jadwal Field Trip 7 Hari terhubung langsung dengan rute resmi dan penilaian tervalidasi otomatis Bintang 5 di portal siswa.</span>
+            <span>Jadwal Field Trip 7 Hari &amp; Day 0 Simulasi terhubung langsung dengan rute resmi dan penilaian tervalidasi otomatis Bintang 5 di portal siswa.</span>
           `;
         }
       } else {
@@ -4941,7 +4941,7 @@
       FincestemCore.schedule.toggleTrialDay(isActive, function(res) {
         FincestemCore.ui.toast(
           isActive 
-            ? 'Day Uji Coba (Gladi Bersih) berhasil DIAKTIFKAN & muncul di portal siswa!' 
+            ? 'Day Uji Coba (Gladi Bersih) berhasil DIAKTIFKAN untuk Field Trip & Non-Field Trip!' 
             : 'Day Uji Coba berhasil DINONAKTIFKAN & disembunyikan dari siswa/guru.',
           isActive ? 'success' : 'info'
         );
@@ -4961,25 +4961,23 @@
         adminScheduleList = days;
         container.innerHTML = '';
 
-        // Sinkronkan Sakelar Master Day Uji Coba (Day 0) hanya jika non_field_trip
-        if (!isFT) {
-          const d0 = days.find(x => Number(x.day_number) === 0);
-          const isTrialActive = d0 ? (Number(d0.is_active) === 1) : false;
-          const chkMaster = document.getElementById('chkMasterTrialDay');
-          const badgeMaster = document.getElementById('badgeTrialStatus');
-          const textMaster = document.getElementById('textTrialExplain');
-          if (chkMaster) chkMaster.checked = isTrialActive;
-          if (badgeMaster) {
-            badgeMaster.textContent = isTrialActive ? 'AKTIF' : 'NONAKTIF';
-            badgeMaster.className = isTrialActive 
-              ? 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs' 
-              : 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs';
-          }
-          if (textMaster) {
-            textMaster.innerHTML = isTrialActive 
-              ? 'Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan simulasi. Matikan sakelar ini saat kegiatan resmi dimulai.' 
-              : 'Saat <strong>NONAKTIF</strong>, Day 0 disembunyikan sepenuhnya dari peserta didik &amp; fasilitator sehingga tidak mengganggu kegiatan resmi.';
-          }
+        // Sinkronkan Sakelar Master Day Uji Coba (Day 0) untuk kedua kategori (Field Trip & Non-Field Trip)
+        const d0 = days.find(x => Number(x.day_number) === 0);
+        const isTrialActive = d0 ? (Number(d0.is_active) === 1) : false;
+        const chkMaster = document.getElementById('chkMasterTrialDay');
+        const badgeMaster = document.getElementById('badgeTrialStatus');
+        const textMaster = document.getElementById('textTrialExplain');
+        if (chkMaster) chkMaster.checked = isTrialActive;
+        if (badgeMaster) {
+          badgeMaster.textContent = isTrialActive ? 'AKTIF' : 'NONAKTIF';
+          badgeMaster.className = isTrialActive 
+            ? 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs' 
+            : 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs';
+        }
+        if (textMaster) {
+          textMaster.innerHTML = isTrialActive 
+            ? 'Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan simulasi. Matikan sakelar ini saat kegiatan resmi dimulai.' 
+            : 'Saat <strong>NONAKTIF</strong>, Day 0 disembunyikan sepenuhnya dari peserta didik &amp; fasilitator sehingga tidak mengganggu kegiatan resmi.';
         }
 
         days.forEach(d => {

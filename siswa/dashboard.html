@@ -2125,6 +2125,13 @@
       const container = document.getElementById('scheduleDaysContainer');
       container.innerHTML = '';
 
+      // UX Unggulan: Jika Day 0 aktif dan Day 1 belum dimulai (UPCOMING), buka Day 0 secara default agar siswa langsung mencoba gladi bersih
+      const d0Obj = days.find(x => Number(x.day_number) === 0);
+      const d1Obj = days.find(x => Number(x.day_number) === 1);
+      if (d0Obj && Number(d0Obj.is_active) === 1 && d1Obj && d1Obj.status_code === 'UPCOMING' && expandedDayNumber === 1) {
+        expandedDayNumber = 0;
+      }
+
       const taskMap = (studentProgress && studentProgress.task_map) || {};
       const records = (studentProgress && studentProgress.records) || [];
 
@@ -2627,10 +2634,12 @@
             <div class="p-3 sm:p-3.5 rounded-2xl ${isFieldTrip ? 'bg-amber-50/90 border-amber-200/80 text-amber-950' : 'bg-teal-50/90 border-teal-200/80 text-teal-950'} border text-xs flex flex-col gap-1 leading-relaxed">
               <span class="font-extrabold flex items-center gap-1.5 ${isFieldTrip ? 'text-amber-900' : 'text-teal-900'}">
                 <span class="material-symbols-outlined text-sm ${isFieldTrip ? 'text-amber-700' : 'text-teal-700'}">playlist_play</span>
-                Alur Pengerjaan Wajib Berurutan Day ${dNum}:
+                ${isTrial ? 'Alur Uji Coba &amp; Simulasi FINCESTEM:' : `Alur Pengerjaan Wajib Berurutan Day ${dNum}:`}
               </span>
               <span class="text-[11px] sm:text-xs ${isFieldTrip ? 'text-amber-900/90' : 'text-teal-900/90'} leading-relaxed font-medium">
-                <strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.
+                ${isTrial 
+                  ? 'Bebas mencoba seluruh 5 instrumen latihan (Modul, LKPD Uji Coba, Kuis Latihan, Unggah Foto, dan Refleksi) sebelum pelaksanaan kegiatan sesungguhnya.' 
+                  : '<strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.'}
               </span>
             </div>
 
@@ -2737,7 +2746,7 @@
             <!-- Tombol Tutup Rincian -->
             <div class="flex justify-center pt-1">
               <button type="button" onclick="toggleDayAccordion(${dNum})" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs sm:text-sm font-bold flex items-center gap-1.5 transition-all cursor-pointer">
-                <span>Tutup Rincian Day ${dNum}</span>
+                <span>Tutup Rincian ${isTrial ? 'Simulasi (Gladi Bersih)' : ('Day ' + dNum)}</span>
                 <span class="material-symbols-outlined text-sm">expand_less</span>
               </button>
             </div>
