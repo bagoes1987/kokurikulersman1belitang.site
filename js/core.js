@@ -1514,9 +1514,14 @@ const FincestemCore = {
 
       const self = this;
       if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/progress.php?nisn=' + encodeURIComponent(nisn))
+        const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+        const timer = controller ? setTimeout(() => controller.abort(), 4000) : null;
+        fetch(FincestemCore.api.base + '/progress.php?nisn=' + encodeURIComponent(nisn), {
+          signal: controller ? controller.signal : undefined
+        })
           .then(r => r.json())
           .then(res => {
+            if (timer) clearTimeout(timer);
             if (res && res.success && res.data) {
               localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(res.data));
               if (callback) callback(res.data);
@@ -1525,6 +1530,7 @@ const FincestemCore = {
             }
           })
           .catch(() => {
+            if (timer) clearTimeout(timer);
             self.getLocalProgress(nisn, callback);
           });
       } else {
@@ -1858,7 +1864,9 @@ const FincestemCore = {
     },
 
     submitTask: function(nisn, dayNumber, taskType, content, callback) {
-      this.getStudentProgress(nisn, function(prog) {
+      const self = this;
+      this.getLocalProgress(nisn, function(prog) {
+        if (!prog) prog = self.getDefaultProgress(nisn);
         if (!prog.task_map) prog.task_map = {};
         prog.task_map[dayNumber + '_' + taskType] = { status: 'submitted', content: content };
 
@@ -1876,12 +1884,27 @@ const FincestemCore = {
         prog.completed_days = completedDaysSet.size;
         prog.percentage = Math.min(100, Math.round((prog.completed_days / 7) * 100));
 
-        localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));
+        try {
+          localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));
+        } catch (e) {}
 
+        // 1. Panggil callback seketika (Optimistic UI) agar tombol tidak muter-muter di HP siswa
+        if (callback) {
+          try {
+            callback({ success: true, progress: prog });
+          } catch (cbErr) {
+            console.warn('submitTask callback warning:', cbErr);
+          }
+        }
+
+        // 2. Sinkronisasi ke MySQL server secara background (aman & asynchronous)
         if (window.location.protocol.startsWith('http')) {
+          const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+          const timer = controller ? setTimeout(() => controller.abort(), 6000) : null;
           fetch(FincestemCore.api.base + '/progress.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            signal: controller ? controller.signal : undefined,
             body: JSON.stringify({
               action: 'submit_task',
               student_nisn: nisn,
@@ -1890,10 +1913,15 @@ const FincestemCore = {
               content: content,
               status: 'submitted'
             })
-          }).catch(() => {});
+          })
+          .then(r => r.json())
+          .then(() => {
+            if (timer) clearTimeout(timer);
+          })
+          .catch(() => {
+            if (timer) clearTimeout(timer);
+          });
         }
-
-        if (callback) callback({ success: true, progress: prog });
       });
     },
 
@@ -2173,6 +2201,26 @@ const FincestemCore = {
         toastEl.classList.remove('translate-y-0', 'opacity-100');
         toastEl.classList.add('translate-y-12', 'opacity-0', 'pointer-events-none');
       }, 3000);
+    },
+
+    setBtnLoading: function(btn, isLoading, loadingText, defaultText, defaultIcon) {
+      if (!btn) return;
+      if (typeof btn === 'string') btn = document.getElementById(btn);
+      if (!btn) return;
+
+      if (isLoading) {
+        if (!btn._origHtml) btn._origHtml = btn.innerHTML;
+        btn.classList.add('pointer-events-none', 'opacity-80');
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>' + (loadingText || 'Menyimpan...') + '</span>';
+      } else {
+        btn.classList.remove('pointer-events-none', 'opacity-80');
+        if (defaultText) {
+          const icon = defaultIcon || 'task_alt';
+          btn.innerHTML = '<span class="material-symbols-outlined text-lg">' + icon + '</span><span>' + defaultText + '</span>';
+        } else if (btn._origHtml) {
+          btn.innerHTML = btn._origHtml;
+        }
+      }
     },
 
     attachPinchZoom: function(containerEl, imgEl, options) {
@@ -3062,6 +3110,48 @@ window.FincestemCore = FincestemCore;
       }
     }
   } catch (e) {}
+})();
+
+// Global Crash & Error Telemetry Logger (Auto-detects issues from 1,500 students silently)
+(function() {
+  if (typeof window === 'undefined') return;
+  let lastReported = 0;
+  function reportError(msg, url, line, col, err) {
+    // Hindari spam jika error berulang dalam 5 detik
+    const now = Date.now();
+    if (now - lastReported < 5000) return;
+    lastReported = now;
+
+    try {
+      const user = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser) ? FincestemCore.auth.getUser() : {};
+      const payload = {
+        action: 'log',
+        user_identifier: user.nisn || user.identifier || user.username || 'guest',
+        role: (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getRole) ? FincestemCore.auth.getRole() : 'siswa',
+        page: window.location.pathname + window.location.search,
+        error_message: String(msg || 'Unknown error'),
+        error_stack: (err && err.stack) ? String(err.stack) : `Line ${line || 0}:${col || 0} in ${url || ''}`,
+        device_info: `${navigator.platform || ''} | ${window.innerWidth}x${window.innerHeight}`
+      };
+
+      if (window.location.protocol.startsWith('http')) {
+        const base = (window.FincestemCore && FincestemCore.api && FincestemCore.api.base) ? FincestemCore.api.base : '../api';
+        fetch(base + '/telemetry.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(function() {});
+      }
+    } catch (e) {}
+  }
+
+  window.addEventListener('error', function(e) {
+    reportError(e.message, e.filename, e.lineno, e.colno, e.error);
+  });
+  window.addEventListener('unhandledrejection', function(e) {
+    const reason = e.reason || {};
+    reportError(reason.message || 'Unhandled Promise Rejection', '', 0, 0, reason);
+  });
 })();
 
 if (typeof window !== 'undefined') {

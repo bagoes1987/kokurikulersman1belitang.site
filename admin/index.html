@@ -1704,6 +1704,43 @@
         </div>
       </div>
 
+      <!-- KARTU LOG KENDALA HP SISWA (REAL-TIME TELEMETRY 1.500 USER) -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-sky-300 shadow-sm flex flex-col gap-3.5">
+        <div class="flex items-start justify-between gap-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-sky-100 text-sky-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-xl">phonelink_setup</span>
+            </div>
+            <div>
+              <h3 class="font-bold text-sm text-on-surface flex items-center gap-1.5">
+                <span>Log Kendala Klien (Telemetry HP Siswa)</span>
+                <span id="telemetryLogsCountBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-sky-100 text-sky-800">0 Kendala</span>
+              </h3>
+              <p class="text-xs text-on-surface-variant">
+                Laporan crash atau eror JavaScript otomatis dari 1.500 browser HP siswa tanpa repot mencari satu per satu.
+              </p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button onclick="loadTelemetryLogs()" class="px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-xs font-bold text-sky-800 flex items-center gap-1 cursor-pointer transition-all border border-sky-200" title="Muat ulang log kendala">
+              <span class="material-symbols-outlined text-sm">refresh</span>
+              <span class="hidden sm:inline">Refresh</span>
+            </button>
+            <button onclick="clearTelemetryLogs()" class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-xs font-bold text-rose-700 flex items-center gap-1 cursor-pointer transition-all border border-rose-200" title="Bersihkan riwayat eror">
+              <span class="material-symbols-outlined text-sm">delete_sweep</span>
+              <span class="hidden sm:inline">Bersihkan</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="telemetryLogsContainer" class="flex flex-col gap-2 min-h-[80px]">
+          <div class="py-6 text-center text-xs text-on-surface-variant flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined animate-spin text-base">progress_activity</span>
+            <span>Memuat log kendala klien...</span>
+          </div>
+        </div>
+      </div>
+
       <!-- KARTU RESET PERANGKAT SISWA (SINGLE DEVICE LOCK) -->
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-amber-300 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between">
@@ -2526,6 +2563,7 @@
       if (tab === 'rekap') initAdminRekapView();
       if (tab === 'reset') initAdminResetView();
       if (tab === 'gallery') renderAdminGallery();
+      if (tab === 'backup') loadTelemetryLogs();
     }
 
     let adminPhotoFilterCurrent = 'all';
@@ -6052,6 +6090,87 @@
         btn.disabled = false;
         btn.classList.remove('opacity-50', 'cursor-not-allowed');
         btn.innerHTML = '<span class="material-symbols-outlined text-base">rocket_launch</span> Tarik & Terapkan Pembaruan Sekarang (1-Klik)';
+      }
+    }
+
+    /* ========================================================
+       MODUL TELEMETRY LOGS (MONITORING KENDALA HP 1.500 SISWA)
+       ======================================================== */
+    async function loadTelemetryLogs() {
+      const container = document.getElementById('telemetryLogsContainer');
+      const countBadge = document.getElementById('telemetryLogsCountBadge');
+      if (!container) return;
+      
+      container.innerHTML = '<div class="py-6 text-center text-xs text-on-surface-variant flex items-center justify-center gap-2"><span class="material-symbols-outlined animate-spin text-base">progress_activity</span> Memuat log kendala klien...</div>';
+      
+      try {
+        const res = await fetch('../api/telemetry.php?action=list');
+        const json = await res.json();
+        if (json.success && Array.isArray(json.data)) {
+          const logs = json.data;
+          if (countBadge) countBadge.textContent = logs.length + ' Kendala Terdeteksi';
+          
+          if (logs.length === 0) {
+            container.innerHTML = `
+              <div class="py-6 text-center flex flex-col items-center justify-center gap-1.5 text-emerald-700 bg-emerald-50/60 rounded-2xl border border-emerald-200/50 p-4">
+                <span class="material-symbols-outlined text-2xl text-emerald-600">verified</span>
+                <span class="text-xs font-bold">Kondisi Sistem Prima (Zero Error)</span>
+                <span class="text-[11px] text-emerald-600/80">Belum ada kendala atau crash yang dilaporkan dari 1.500 perangkat klien.</span>
+              </div>`;
+            return;
+          }
+          
+          let html = '<div class="flex flex-col gap-2 max-h-[420px] overflow-y-auto pr-1">';
+          logs.forEach(log => {
+            const isError = log.error_type === 'js_error' || log.error_type === 'promise_rejection';
+            const badgeColor = isError ? 'bg-rose-100 text-rose-700 border-rose-200' : 'bg-amber-100 text-amber-700 border-amber-200';
+            const timeStr = log.created_at || '-';
+            const userStr = log.user_identifier ? (log.user_identifier + ' (' + (log.user_role || 'siswa') + ')') : 'Pengunjung Tamu';
+            const cleanMsg = (log.error_message || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const cleanStack = (log.error_stack || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const cleanUrl = (log.page_url || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            const cleanDevice = (log.device_info || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            
+            html += `
+              <div class="p-3 rounded-2xl bg-white border border-slate-200/80 shadow-2xs flex flex-col gap-1.5 text-xs">
+                <div class="flex items-center justify-between flex-wrap gap-1">
+                  <div class="flex items-center gap-1.5">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${log.error_type}</span>
+                    <span class="font-bold text-slate-800">${userStr}</span>
+                  </div>
+                  <span class="text-[10px] text-slate-400 font-mono">${timeStr}</span>
+                </div>
+                <div class="font-bold text-rose-700 text-xs break-all">${cleanMsg}</div>
+                ${cleanStack ? `<div class="bg-slate-900 text-slate-200 font-mono text-[10px] p-2 rounded-xl overflow-x-auto whitespace-pre-wrap">${cleanStack}</div>` : ''}
+                <div class="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-100 flex-wrap gap-1">
+                  <span class="truncate max-w-[280px]" title="${cleanUrl}">📍 ${cleanUrl}</span>
+                  <span class="truncate max-w-[280px]" title="${cleanDevice}">📱 ${cleanDevice}</span>
+                </div>
+              </div>`;
+          });
+          html += '</div>';
+          container.innerHTML = html;
+        } else {
+          container.innerHTML = `<div class="p-3 text-xs text-rose-600 bg-rose-50 rounded-xl">Gagal memuat log: ${json.message || 'Unknown error'}</div>`;
+        }
+      } catch (e) {
+        container.innerHTML = `<div class="p-3 text-xs text-rose-600 bg-rose-50 rounded-xl">Gagal koneksi ke server: ${e.message}</div>`;
+      }
+    }
+
+    async function clearTelemetryLogs() {
+      if (!confirm('Apakah Anda yakin ingin menghapus seluruh riwayat kendala HP siswa ini?')) return;
+      try {
+        const res = await fetch('../api/telemetry.php?action=clear');
+        const json = await res.json();
+        if (json.success) {
+          FincestemCore.ui.toast(json.message, 'success');
+          loadTelemetryLogs();
+        } else {
+          FincestemCore.ui.toast(json.message || 'Gagal membersihkan log', 'error');
+        }
+      } catch (e) {
+        FincestemCore.ui.toast(e.message, 'error');
       }
     }
 

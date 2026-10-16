@@ -681,9 +681,8 @@
       }
 
       const saveBtn = document.getElementById('btnSaveMateriConclusion');
-      if (saveBtn) {
-        saveBtn.classList.add('pointer-events-none', 'opacity-80');
-        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan...</span>';
+      if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+        FincestemCore.ui.setBtnLoading(saveBtn, true, 'Menyimpan...');
       }
 
       const record = {
@@ -695,13 +694,19 @@
         localStorage.setItem('fincestem_materi_ft_day1_' + nisn, JSON.stringify(record));
       } catch (e) {}
 
+      applyMateriConclusionState(text, record.savedAt);
+
       if (FincestemCore.progress) {
         FincestemCore.progress.submitTask(nisn, 1, 'materi', record, function() {
-          applyMateriConclusionState(text, record.savedAt);
+          if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+            FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'task_alt');
+          }
           FincestemCore.ui.toast('Kesimpulan modul berhasil disimpan! Akses ke LKPD Day 1 sekarang telah terbuka.', 'success');
         });
       } else {
-        applyMateriConclusionState(text, record.savedAt);
+        if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+          FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'task_alt');
+        }
         FincestemCore.ui.toast('Kesimpulan modul berhasil disimpan! Akses ke LKPD Day 1 sekarang telah terbuka.', 'success');
       }
     }
@@ -1121,9 +1126,8 @@
       }
 
       const saveBtn = document.getElementById('btnSaveMateriConclusionDay2');
-      if (saveBtn) {
-        saveBtn.classList.add('pointer-events-none', 'opacity-80');
-        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan...</span>';
+      if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+        FincestemCore.ui.setBtnLoading(saveBtn, true, 'Menyimpan...');
       }
 
       const record = {
@@ -1135,13 +1139,19 @@
         localStorage.setItem('fincestem_materi_ft_day2_' + nisn, JSON.stringify(record));
       } catch (e) {}
 
+      applyMateriConclusionStateDay2(text, record.savedAt);
+
       if (FincestemCore.progress) {
         FincestemCore.progress.submitTask(nisn, 2, 'materi', record, function() {
-          applyMateriConclusionStateDay2(text, record.savedAt);
+          if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+            FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'save');
+          }
           FincestemCore.ui.toast('Kesimpulan modul Day 2 berhasil disimpan! Akses ke LKPD Day 2 sekarang telah terbuka.', 'success');
         });
       } else {
-        applyMateriConclusionStateDay2(text, record.savedAt);
+        if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+          FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'save');
+        }
         FincestemCore.ui.toast('Kesimpulan modul Day 2 berhasil disimpan! Akses ke LKPD Day 2 sekarang telah terbuka.', 'success');
       }
     }
@@ -1412,9 +1422,8 @@
       }
 
       const saveBtn = document.getElementById('btnSaveMateriConclusionGeneric');
-      if (saveBtn) {
-        saveBtn.classList.add('pointer-events-none', 'opacity-80');
-        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan...</span>';
+      if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+        FincestemCore.ui.setBtnLoading(saveBtn, true, 'Menyimpan...');
       }
 
       const record = {
@@ -1426,21 +1435,19 @@
         localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + nisn, JSON.stringify(record));
       } catch (e) {}
 
+      applyMateriConclusionStateGeneric(dayNum, text, record.savedAt);
+
       if (FincestemCore.progress) {
         FincestemCore.progress.submitTask(nisn, dayNum, 'materi', record, function() {
-          if (saveBtn) {
-            saveBtn.classList.remove('pointer-events-none', 'opacity-80');
-            saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">save</span><span>Perbarui Kesimpulan Modul</span>';
+          if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+            FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'save');
           }
-          applyMateriConclusionStateGeneric(dayNum, text, record.savedAt);
           FincestemCore.ui.toast(`Kesimpulan modul Day ${dayNum} berhasil disimpan! Akses ke LKPD Day ${dayNum} sekarang telah terbuka.`, 'success');
         });
       } else {
-        if (saveBtn) {
-          saveBtn.classList.remove('pointer-events-none', 'opacity-80');
-          saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">save</span><span>Perbarui Kesimpulan Modul</span>';
+        if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+          FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'save');
         }
-        applyMateriConclusionStateGeneric(dayNum, text, record.savedAt);
         FincestemCore.ui.toast(`Kesimpulan modul Day ${dayNum} berhasil disimpan! Akses ke LKPD Day ${dayNum} sekarang telah terbuka.`, 'success');
       }
     }
