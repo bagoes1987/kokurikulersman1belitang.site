@@ -1357,6 +1357,16 @@ const FincestemCore = {
               localStorage.setItem('fincestem_class_settings', JSON.stringify(classMap));
             }
 
+            if (data.data.location_exemptions) {
+              localStorage.setItem('fincestem_location_exemptions_map', JSON.stringify(data.data.location_exemptions));
+            }
+            if (data.data.ft_grading_rules) {
+              localStorage.setItem('fincestem_ft_grading_rules', JSON.stringify(data.data.ft_grading_rules));
+            }
+            if (data.data.emergency_grading) {
+              localStorage.setItem('fincestem_emergency_grading', JSON.stringify(data.data.emergency_grading));
+            }
+
             // 3. Jika user aktif adalah siswa, pastikan zona sesinya sinkron dengan data server
             const u = FincestemCore.auth.getUser();
             if (u && (u.role === 'siswa' || !u.role)) {
@@ -1586,6 +1596,188 @@ const FincestemCore = {
         });
       } else {
         if (callback) callback({ success: true, localOnly: true, is_location_exempt: !!targetExempt });
+      }
+    },
+
+    getFTGradingRules: function() {
+      try {
+        const raw = localStorage.getItem('fincestem_ft_grading_rules');
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      const def = {};
+      for (let d = 1; d <= 7; d++) {
+        def[d] = { day_number: d, cutoff_perfect: '16:00', cutoff_bintang5: '21:00', cutoff_bintang4: '23:59' };
+      }
+      return def;
+    },
+
+    updateFTGradingRule: function(dayNum, cutoffPerfect, cutoffB5, cutoffB4, applyToAll, callback) {
+      cutoffPerfect = cutoffPerfect || '16:00';
+      cutoffB5 = cutoffB5 || '21:00';
+      cutoffB4 = cutoffB4 || '23:59';
+      
+      let rules = this.getFTGradingRules();
+      if (applyToAll || dayNum === 0) {
+        for (let d = 1; d <= 7; d++) {
+          rules[d] = { day_number: d, cutoff_perfect: cutoffPerfect, cutoff_bintang5: cutoffB5, cutoff_bintang4: cutoffB4 };
+        }
+      } else {
+        rules[dayNum] = { day_number: dayNum, cutoff_perfect: cutoffPerfect, cutoff_bintang5: cutoffB5, cutoff_bintang4: cutoffB4 };
+      }
+      try {
+        localStorage.setItem('fincestem_ft_grading_rules', JSON.stringify(rules));
+      } catch (e) {}
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'update_ft_grading_rules',
+            day_number: dayNum,
+            cutoff_perfect: cutoffPerfect,
+            cutoff_bintang5: cutoffB5,
+            cutoff_bintang4: cutoffB4,
+            apply_to_all: !!applyToAll
+          })
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (callback) callback(res.success, res);
+        })
+        .catch(() => {
+          if (callback) callback(true, { success: true });
+        });
+      } else {
+        if (callback) callback(true, { success: true });
+      }
+    },
+
+    getStudentEmergencyGrading: function(nisn, dayNum) {
+      if (!nisn) return null;
+      const cleanNisn = String(nisn).trim();
+      const rawDigits = cleanNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+      const d = parseInt(dayNum) || 1;
+
+      try {
+        const raw = localStorage.getItem('fincestem_emergency_grading');
+        if (raw) {
+          const map = JSON.parse(raw);
+          if (map) {
+            const found = map[`${cleanNisn}_${d}`] || map[`${paddedNisn}_${d}`] || (unpaddedNisn && map[`${unpaddedNisn}_${d}`]);
+            if (found) return found;
+          }
+        }
+      } catch (e) {}
+
+      try {
+        const item = localStorage.getItem(`fincestem_em_grade_${cleanNisn}_${d}`) ||
+                     localStorage.getItem(`fincestem_em_grade_${paddedNisn}_${d}`) ||
+                     (unpaddedNisn && localStorage.getItem(`fincestem_em_grade_${unpaddedNisn}_${d}`));
+        if (item) return JSON.parse(item);
+      } catch (e) {}
+
+      return null;
+    },
+
+    saveStudentEmergencyGrading: function(nisn, dayNum, score, stars, reason, callback) {
+      if (!nisn) return;
+      const cleanNisn = String(nisn).trim();
+      const rawDigits = cleanNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+      const d = parseInt(dayNum) || 1;
+      const sc = parseFloat(score);
+      const st = parseInt(stars) || (sc >= 95 ? 5 : 4);
+      reason = reason || 'Dispensasi Darurat Lapangan (Kebijakan Admin)';
+
+      const record = {
+        nisn: cleanNisn,
+        day_number: d,
+        score: sc,
+        stars: st,
+        reason: reason,
+        approved_by: 'admin',
+        updated_at: new Date().toISOString()
+      };
+
+      try {
+        let map = {};
+        const raw = localStorage.getItem('fincestem_emergency_grading');
+        if (raw) map = JSON.parse(raw) || {};
+        map[`${cleanNisn}_${d}`] = record;
+        map[`${paddedNisn}_${d}`] = record;
+        if (unpaddedNisn) map[`${unpaddedNisn}_${d}`] = record;
+        localStorage.setItem('fincestem_emergency_grading', JSON.stringify(map));
+        localStorage.setItem(`fincestem_em_grade_${cleanNisn}_${d}`, JSON.stringify(record));
+      } catch (e) {}
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'save_student_emergency_grading',
+            nisn: cleanNisn,
+            day_number: d,
+            score: sc,
+            stars: st,
+            reason: reason,
+            approved_by: 'admin'
+          })
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (callback) callback(res.success, res);
+        })
+        .catch(() => {
+          if (callback) callback(true, { success: true });
+        });
+      } else {
+        if (callback) callback(true, { success: true });
+      }
+    },
+
+    deleteStudentEmergencyGrading: function(nisn, dayNum, callback) {
+      if (!nisn) return;
+      const cleanNisn = String(nisn).trim();
+      const rawDigits = cleanNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+      const d = parseInt(dayNum) || 0;
+
+      try {
+        let map = {};
+        const raw = localStorage.getItem('fincestem_emergency_grading');
+        if (raw) map = JSON.parse(raw) || {};
+        delete map[`${cleanNisn}_${d}`];
+        delete map[`${paddedNisn}_${d}`];
+        if (unpaddedNisn) delete map[`${unpaddedNisn}_${d}`];
+        localStorage.setItem('fincestem_emergency_grading', JSON.stringify(map));
+        localStorage.removeItem(`fincestem_em_grade_${cleanNisn}_${d}`);
+      } catch (e) {}
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'delete_student_emergency_grading',
+            nisn: cleanNisn,
+            day_number: d
+          })
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (callback) callback(res.success);
+        })
+        .catch(() => {
+          if (callback) callback(true);
+        });
+      } else {
+        if (callback) callback(true);
       }
     }
   },
@@ -2255,6 +2447,154 @@ const FincestemCore = {
         isOpen: isOpenByAdmin,
         isPreviousCompleted: true,
         reason: isOpenByAdmin ? '' : (sched ? sched.status_label : `Day ${d} ditutup oleh Admin (Hanya Lihat).`)
+      };
+    },
+
+    calculateFieldTripScore: function(dayNum, submitTime, studentNisn) {
+      const d = parseInt(dayNum) || 1;
+      const cleanNisn = String(studentNisn || '').trim();
+
+      // 1. Cek Koreksi Darurat Admin (Emergency Manual Override)
+      const emergency = (FincestemCore.zones && FincestemCore.zones.getStudentEmergencyGrading) 
+        ? FincestemCore.zones.getStudentEmergencyGrading(cleanNisn, d) 
+        : null;
+      if (emergency) {
+        const sc = parseFloat(emergency.score);
+        const st = parseInt(emergency.stars) || (sc >= 95 ? 5 : 4);
+        return {
+          day_number: d,
+          score: sc,
+          stars: st,
+          star_label: st === 5 ? '⭐⭐⭐⭐⭐ Bintang 5' : '⭐⭐⭐⭐☆ Bintang 4',
+          predicate: sc >= 95 ? 'Sangat Baik (A)' : (sc >= 88 ? 'Baik (B+)' : (sc >= 75 ? 'Baik (B)' : 'Cukup (C)')),
+          is_emergency_override: true,
+          reason: emergency.reason || 'Dispensasi Darurat Lapangan (Kebijakan Admin)',
+          approved_by: emergency.approved_by || 'admin',
+          cutoff_perfect: '16:00',
+          time_formatted: 'Koreksi Admin'
+        };
+      }
+
+      // 2. Ambil Aturan Jam Batas Day Ini
+      const rules = (FincestemCore.zones && FincestemCore.zones.getFTGradingRules) ? FincestemCore.zones.getFTGradingRules() : {};
+      const dayRule = rules[d] || { cutoff_perfect: '16:00', cutoff_bintang5: '21:00', cutoff_bintang4: '23:59' };
+      const cutoffPerfect = dayRule.cutoff_perfect || '16:00';
+      const cutoffB5 = dayRule.cutoff_bintang5 || '21:00';
+      const cutoffB4 = dayRule.cutoff_bintang4 || '23:59';
+
+      // 3. Parse Jam & Menit Pengumpulan Siswa (WIB)
+      let subHour = 12;
+      let subMinute = 0;
+      let subFormatted = '12:00 WIB';
+
+      if (submitTime) {
+        if (typeof submitTime === 'string') {
+          const matchTime = submitTime.match(/(\d{1,2})[:.](\d{2})/);
+          if (matchTime) {
+            subHour = parseInt(matchTime[1]);
+            subMinute = parseInt(matchTime[2]);
+            subFormatted = `${String(subHour).padStart(2, '0')}:${String(subMinute).padStart(2, '0')} WIB`;
+          } else {
+            const dt = new Date(submitTime);
+            if (!isNaN(dt.getTime())) {
+              const utc = dt.getTime() + (dt.getTimezoneOffset() * 60000);
+              const wibDt = new Date(utc + (3600000 * 7));
+              subHour = wibDt.getHours();
+              subMinute = wibDt.getMinutes();
+              subFormatted = `${String(subHour).padStart(2, '0')}:${String(subMinute).padStart(2, '0')} WIB`;
+            }
+          }
+        } else if (submitTime instanceof Date) {
+          const utc = submitTime.getTime() + (submitTime.getTimezoneOffset() * 60000);
+          const wibDt = new Date(utc + (3600000 * 7));
+          subHour = wibDt.getHours();
+          subMinute = wibDt.getMinutes();
+          subFormatted = `${String(subHour).padStart(2, '0')}:${String(subMinute).padStart(2, '0')} WIB`;
+        }
+      } else {
+        const now = new Date();
+        const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+        const wibNow = new Date(utc + (3600000 * 7));
+        subHour = wibNow.getHours();
+        subMinute = wibNow.getMinutes();
+        subFormatted = `${String(subHour).padStart(2, '0')}:${String(subMinute).padStart(2, '0')} WIB`;
+      }
+
+      const subTotalMinutes = (subHour * 60) + subMinute;
+
+      const pParts = cutoffPerfect.split(':');
+      const perfectMinutes = (parseInt(pParts[0]) * 60) + (parseInt(pParts[1] || 0));
+
+      const b5Parts = cutoffB5.split(':');
+      const b5Minutes = (parseInt(b5Parts[0]) * 60) + (parseInt(b5Parts[1] || 0));
+
+      // SKEMA PENILAIAN RESMI FIELD TRIP:
+      // A. Pukul 07.00 s.d. Batas Sempurna (Default 16.00 WIB) -> Nilai 100, Bintang 5
+      if (subTotalMinutes <= perfectMinutes) {
+        return {
+          day_number: d,
+          score: 100,
+          stars: 5,
+          star_label: '⭐⭐⭐⭐⭐ Bintang 5',
+          predicate: 'Sangat Baik (A)',
+          is_emergency_override: false,
+          reason: 'Tuntas di Jam Kunjungan Resmi Lapangan',
+          cutoff_perfect: cutoffPerfect,
+          time_formatted: subFormatted
+        };
+      }
+
+      // B. Setelah Jam Kunjungan s.d. 21.00 WIB -> Bintang 5, Nilai 95 s.d. 99 (Turun 1 poin per jam)
+      if (subTotalMinutes <= b5Minutes) {
+        const diffHours = Math.floor((subTotalMinutes - perfectMinutes - 1) / 60);
+        const score = Math.max(95, 99 - diffHours);
+        return {
+          day_number: d,
+          score: score,
+          stars: 5,
+          star_label: '⭐⭐⭐⭐⭐ Bintang 5',
+          predicate: 'Sangat Baik (A)',
+          is_emergency_override: false,
+          reason: 'Tuntas Sore / Petang Hari di Perjalanan',
+          cutoff_perfect: cutoffPerfect,
+          time_formatted: subFormatted
+        };
+      }
+
+      // C. Pukul 21.01 s.d. 24.00 WIB -> Bintang 4, Nilai 90 s.d. 94
+      if (subTotalMinutes <= 1440) {
+        let score = 90;
+        if (subTotalMinutes <= 1320) {
+          score = (subMinute <= 30) ? 94 : 93;
+        } else if (subTotalMinutes <= 1380) {
+          score = (subMinute <= 30) ? 92 : 91;
+        } else {
+          score = 90;
+        }
+        return {
+          day_number: d,
+          score: score,
+          stars: 4,
+          star_label: '⭐⭐⭐⭐☆ Bintang 4',
+          predicate: 'Baik (B+)',
+          is_emergency_override: false,
+          reason: 'Tuntas Larut Malam di Kamar Hotel / Penginapan',
+          cutoff_perfect: cutoffPerfect,
+          time_formatted: subFormatted
+        };
+      }
+
+      // D. Lewat 24.00 WIB / Besoknya -> Bintang 4, Nilai 85
+      return {
+        day_number: d,
+        score: 85,
+        stars: 4,
+        star_label: '⭐⭐⭐⭐☆ Bintang 4',
+        predicate: 'Baik (B+)',
+        is_emergency_override: false,
+        reason: 'Toleransi Pengumpulan Hari Berikutnya',
+        cutoff_perfect: cutoffPerfect,
+        time_formatted: subFormatted
       };
     }
   },

@@ -54,6 +54,51 @@ function ensureRoleTables($pdo) {
         ");
     } catch (Exception $eEx) {}
 
+    // Tabel Pengaturan Jam Batas Penilaian Field Trip Day 1 s.d. Day 7
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `field_trip_grading_rules` (
+                `day_number` INT PRIMARY KEY,
+                `cutoff_perfect` TIME NOT NULL DEFAULT '16:00:00',
+                `cutoff_bintang5` TIME NOT NULL DEFAULT '21:00:00',
+                `cutoff_bintang4` TIME NOT NULL DEFAULT '23:59:59',
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+        $cntR = (int)$pdo->query("SELECT COUNT(*) FROM `field_trip_grading_rules`")->fetchColumn();
+        if ($cntR === 0) {
+            $pdo->exec("
+                INSERT INTO `field_trip_grading_rules` (`day_number`, `cutoff_perfect`, `cutoff_bintang5`, `cutoff_bintang4`) VALUES
+                (1, '16:00:00', '21:00:00', '23:59:59'),
+                (2, '16:00:00', '21:00:00', '23:59:59'),
+                (3, '16:00:00', '21:00:00', '23:59:59'),
+                (4, '16:00:00', '21:00:00', '23:59:59'),
+                (5, '16:00:00', '21:00:00', '23:59:59'),
+                (6, '16:00:00', '21:00:00', '23:59:59'),
+                (7, '16:00:00', '21:00:00', '23:59:59')
+            ");
+        }
+    } catch (Exception $eFtRules) {}
+
+    // Tabel Koreksi Darurat Penilaian Siswa Field Trip (Emergency Manual Override)
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `student_emergency_grading` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `nisn` VARCHAR(50) NOT NULL,
+                `day_number` INT NOT NULL,
+                `score` DECIMAL(5,2) NOT NULL,
+                `stars` INT NOT NULL DEFAULT 5,
+                `reason` VARCHAR(255) DEFAULT 'Dispensasi Darurat Lapangan',
+                `approved_by` VARCHAR(100) DEFAULT 'admin',
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                UNIQUE KEY `uniq_nisn_day` (`nisn`, `day_number`),
+                INDEX `idx_em_nisn` (`nisn`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+    } catch (Exception $eEmGrad) {}
+
     // Tabel penugasan Koordinator (Banyak kelas per Koordinator / Many-to-Many)
     try {
         $pdo->exec("
@@ -686,13 +731,54 @@ if ($method === 'GET') {
             }
         } catch (Exception $e) {}
 
-        jsonResponse(true, 'Data pengaturan zona & penugasan pembina berhasil dimuat', [
+        // 6. Pengaturan Waktu Penilaian Field Trip Day 1 - 7
+        $ftGradingRules = [];
+        try {
+            $stmtRules = $pdo->query("SELECT `day_number`, `cutoff_perfect`, `cutoff_bintang5`, `cutoff_bintang4` FROM `field_trip_grading_rules` ORDER BY `day_number` ASC");
+            while ($r = $stmtRules->fetch()) {
+                $d = (int)$r['day_number'];
+                $ftGradingRules[$d] = [
+                    'day_number'      => $d,
+                    'cutoff_perfect'  => substr($r['cutoff_perfect'], 0, 5),
+                    'cutoff_bintang5' => substr($r['cutoff_bintang5'], 0, 5),
+                    'cutoff_bintang4' => substr($r['cutoff_bintang4'], 0, 5)
+                ];
+            }
+        } catch (Exception $e) {}
+
+        // 7. Koreksi Darurat Penilaian Siswa Field Trip (Emergency Manual Override)
+        $emergencyGrading = [];
+        try {
+            $stmtEm = $pdo->query("SELECT `nisn`, `day_number`, `score`, `stars`, `reason`, `approved_by` FROM `student_emergency_grading`");
+            while ($r = $stmtEm->fetch()) {
+                $n = trim($r['nisn']);
+                $d = (int)$r['day_number'];
+                $item = [
+                    'nisn'        => $n,
+                    'day_number'  => $d,
+                    'score'       => (float)$r['score'],
+                    'stars'       => (int)$r['stars'],
+                    'reason'      => $r['reason'],
+                    'approved_by' => $r['approved_by']
+                ];
+                $emergencyGrading["{$n}_{$d}"] = $item;
+                $cleanN = preg_replace('/\D/', '', $n);
+                if (strlen($cleanN) >= 8 && strlen($cleanN) <= 10) {
+                    $emergencyGrading[str_pad($cleanN, 10, '0', STR_PAD_LEFT) . "_{$d}"] = $item;
+                    $emergencyGrading[ltrim($cleanN, '0') . "_{$d}"] = $item;
+                }
+            }
+        } catch (Exception $e) {}
+
+        jsonResponse(true, 'Data pengaturan zona, penugasan pembina & penilaian berhasil dimuat', [
             'classes'              => $classes,
             'zone_counts'          => $zoneCounts,
             'student_zones'        => $studentZones,
             'location_exemptions'  => $locationExemptions,
             'coordinators'         => $coordinators,
-            'facilitators'         => $facilitators
+            'facilitators'         => $facilitators,
+            'ft_grading_rules'     => $ftGradingRules,
+            'emergency_grading'    => $emergencyGrading
         ]);
     } catch (Exception $e) {
         jsonResponse(false, 'Gagal mengambil data pengaturan: ' . $e->getMessage(), null, 500);
@@ -1230,6 +1316,113 @@ if ($method === 'POST') {
             }
 
             jsonResponse(true, "Data guru berhasil dihapus dari sistem.");
+        }
+
+        // L. PENGATURAN JAM BATAS PENILAIAN FIELD TRIP (DAY 1 - 7)
+        if ($action === 'update_ft_grading_rules') {
+            $dayNum = isset($input['day_number']) ? (int)$input['day_number'] : 0;
+            $cutoffPerf = trim($input['cutoff_perfect'] ?? '16:00:00');
+            $cutoffB5   = trim($input['cutoff_bintang5'] ?? '21:00:00');
+            $cutoffB4   = trim($input['cutoff_bintang4'] ?? '23:59:59');
+            $applyAll   = !empty($input['apply_to_all']) || ($dayNum === 0);
+
+            if (strlen($cutoffPerf) === 5) $cutoffPerf .= ':00';
+            if (strlen($cutoffB5) === 5) $cutoffB5 .= ':00';
+            if (strlen($cutoffB4) === 5) $cutoffB4 .= ':00';
+
+            if ($applyAll) {
+                for ($d = 1; $d <= 7; $d++) {
+                    $stmt = $pdo->prepare("
+                        INSERT INTO `field_trip_grading_rules` (`day_number`, `cutoff_perfect`, `cutoff_bintang5`, `cutoff_bintang4`)
+                        VALUES (:d, :p, :b5, :b4)
+                        ON DUPLICATE KEY UPDATE
+                            `cutoff_perfect` = VALUES(`cutoff_perfect`),
+                            `cutoff_bintang5` = VALUES(`cutoff_bintang5`),
+                            `cutoff_bintang4` = VALUES(`cutoff_bintang4`),
+                            `updated_at` = NOW()
+                    ");
+                    $stmt->execute([':d' => $d, ':p' => $cutoffPerf, ':b5' => $cutoffB5, ':b4' => $cutoffB4]);
+                }
+                jsonResponse(true, "Jam batas penilaian Field Trip berhasil diperbarui untuk SELURUH Day 1 s.d. Day 7 (Batas Nilai 100: " . substr($cutoffPerf, 0, 5) . " WIB).", [
+                    'applied_to'      => 'all_days',
+                    'cutoff_perfect'  => substr($cutoffPerf, 0, 5),
+                    'cutoff_bintang5' => substr($cutoffB5, 0, 5),
+                    'cutoff_bintang4' => substr($cutoffB4, 0, 5)
+                ]);
+            } else {
+                $stmt = $pdo->prepare("
+                    INSERT INTO `field_trip_grading_rules` (`day_number`, `cutoff_perfect`, `cutoff_bintang5`, `cutoff_bintang4`)
+                    VALUES (:d, :p, :b5, :b4)
+                    ON DUPLICATE KEY UPDATE
+                        `cutoff_perfect` = VALUES(`cutoff_perfect`),
+                        `cutoff_bintang5` = VALUES(`cutoff_bintang5`),
+                        `cutoff_bintang4` = VALUES(`cutoff_bintang4`),
+                        `updated_at` = NOW()
+                ");
+                $stmt->execute([':d' => $dayNum, ':p' => $cutoffPerf, ':b5' => $cutoffB5, ':b4' => $cutoffB4]);
+                jsonResponse(true, "Jam batas penilaian Day {$dayNum} berhasil diperbarui (Batas Nilai 100: " . substr($cutoffPerf, 0, 5) . " WIB).", [
+                    'day_number'      => $dayNum,
+                    'cutoff_perfect'  => substr($cutoffPerf, 0, 5),
+                    'cutoff_bintang5' => substr($cutoffB5, 0, 5),
+                    'cutoff_bintang4' => substr($cutoffB4, 0, 5)
+                ]);
+            }
+        }
+
+        // M. KOREKSI DARURAT PENILAIAN SISWA FIELD TRIP (EMERGENCY MANUAL OVERRIDE)
+        if ($action === 'save_student_emergency_grading') {
+            $nisn = trim($input['nisn'] ?? '');
+            $dayNum = (int)($input['day_number'] ?? 1);
+            $score = isset($input['score']) ? (float)$input['score'] : 100.0;
+            $stars = isset($input['stars']) ? (int)$input['stars'] : ($score >= 95 ? 5 : 4);
+            $reason = trim($input['reason'] ?? 'Dispensasi Darurat Lapangan');
+            $approvedBy = trim($input['approved_by'] ?? 'admin');
+
+            if (!$nisn || $dayNum < 1 || $dayNum > 7) {
+                jsonResponse(false, 'NISN dan Day Number (1-7) wajib diisi valid!', null, 400);
+            }
+
+            $stmt = $pdo->prepare("
+                INSERT INTO `student_emergency_grading` (`nisn`, `day_number`, `score`, `stars`, `reason`, `approved_by`)
+                VALUES (:n, :d, :sc, :st, :r, :a)
+                ON DUPLICATE KEY UPDATE
+                    `score` = VALUES(`score`),
+                    `stars` = VALUES(`stars`),
+                    `reason` = VALUES(`reason`),
+                    `approved_by` = VALUES(`approved_by`),
+                    `updated_at` = NOW()
+            ");
+            $stmt->execute([
+                ':n'  => $nisn,
+                ':d'  => $dayNum,
+                ':sc' => $score,
+                ':st' => $stars,
+                ':r'  => $reason,
+                ':a'  => $approvedBy
+            ]);
+
+            jsonResponse(true, "Koreksi darurat Day {$dayNum} untuk siswa {$nisn} berhasil disimpan (Nilai: {$score}, Bintang: {$stars}).", [
+                'nisn'        => $nisn,
+                'day_number'  => $dayNum,
+                'score'       => $score,
+                'stars'       => $stars,
+                'reason'      => $reason,
+                'approved_by' => $approvedBy
+            ]);
+        }
+
+        // N. HAPUS KOREKSI DARURAT (KEMBALI KE HITUNGAN OTOMATIS WAKTU)
+        if ($action === 'delete_student_emergency_grading') {
+            $nisn = trim($input['nisn'] ?? '');
+            $dayNum = (int)($input['day_number'] ?? 0);
+            if ($dayNum > 0) {
+                $stmt = $pdo->prepare("DELETE FROM `student_emergency_grading` WHERE `nisn` = :n AND `day_number` = :d");
+                $stmt->execute([':n' => $nisn, ':d' => $dayNum]);
+            } else {
+                $stmt = $pdo->prepare("DELETE FROM `student_emergency_grading` WHERE `nisn` = :n");
+                $stmt->execute([':n' => $nisn]);
+            }
+            jsonResponse(true, "Koreksi darurat berhasil dihapus. Penilaian Day {$dayNum} dikembalikan ke kalkulasi waktu otomatis.");
         }
 
         jsonResponse(false, 'Aksi tidak valid', null, 400);

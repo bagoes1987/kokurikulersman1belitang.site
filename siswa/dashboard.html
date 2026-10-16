@@ -967,6 +967,29 @@
       return Array.from(ids);
     }
 
+    function getFTSubmitTime(dayNum, taskMap) {
+      dayNum = Number(dayNum) || 1;
+      taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
+      const t = taskMap[dayNum + '_refleksi'];
+      if (t && (t.submitted_at || t.created_at || t.timestamp)) {
+        return t.submitted_at || t.created_at || t.timestamp;
+      }
+      const idList = getStudentStorageIdentifiers();
+      for (const id of idList) {
+        try {
+          const raw = localStorage.getItem(`fincestem_refleksi_ft_day${dayNum}_` + id) ||
+                      localStorage.getItem(`fincestem_refleksi_day${dayNum}_` + id);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && (parsed.submitted_at || parsed.created_at || parsed.time)) {
+              return parsed.submitted_at || parsed.created_at || parsed.time;
+            }
+          }
+        } catch(e) {}
+      }
+      return null;
+    }
+
     function getFTProgressStatus(taskMap, dayNum) {
       dayNum = Number(dayNum) || 1;
       taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
@@ -1583,10 +1606,13 @@
             </span>
           `;
         } else if (isFieldTrip && (hasRefleksi || (isFTDay && ftStatus && ftStatus.hasRefleksi))) {
+          const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
+          const starsText = ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆';
+          const starBadgeColor = ftScore.stars === 5 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-teal-100 text-teal-900 border-teal-300';
           dayProgressBadge += `
-            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 shadow-2xs">
+            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black ${starBadgeColor} border flex items-center gap-1 shadow-2xs">
               <span class="material-symbols-outlined text-sm text-amber-600">stars</span>
-              ⭐⭐⭐⭐⭐ Bintang 5 Lapangan
+              ${starsText} Nilai: ${ftScore.score}
             </span>
           `;
         } else if (!isFieldTrip && FincestemCore.progress && FincestemCore.progress.isDayStudentTasksDone(studentProgress, dNum)) {
@@ -1621,10 +1647,15 @@
             </span>
           `;
         } else if (dayStatus === 'submitted' || hasLkpd || hasAsesmen || hasRefleksi || hasDok || (isFTDay && hasMateri)) {
+          let ftSubLabel = 'Dalam Proses';
+          if (isFTDay && hasRefleksi) {
+            const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
+            ftSubLabel = `${ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆'} Nilai: ${ftScore.score}`;
+          }
           dayProgressBadge += `
             <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 border border-teal-300/60 flex items-center gap-1">
               <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
-              ${(isFTDay && hasRefleksi) ? '⭐⭐⭐⭐⭐ Bintang 5 Lapangan' : 'Dalam Proses'}
+              ${ftSubLabel}
             </span>
           `;
         }
@@ -1968,7 +1999,12 @@
                       !canOpenPenilaian 
                         ? 'Terkunci' 
                         : (isFieldTrip 
-                            ? ((hasRefleksi || (dayRecord && dayRecord.score)) ? '⭐⭐⭐⭐⭐ Bintang 5' : 'Feedback Lapangan')
+                            ? ((hasRefleksi || (dayRecord && dayRecord.score))
+                                ? (function() {
+                                    const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
+                                    return `${ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆'} Nilai: ${ftScore.score}`;
+                                  })()
+                                : 'Feedback Lapangan')
                             : ((dayRecord && dayRecord.score) ? `✓ Nilai: ${dayRecord.score}` : 'Menunggu Fasil'))
                     }</span>
                   </div>
@@ -2555,12 +2591,15 @@
         } else if (isFieldTrip) {
           // ==========================================
           // CABANG 1: SISWA FIELD TRIP
-          // Otomatis Bintang 5 per hari jika tugas & refleksi hari ini sudah diisi!
+          // Otomatis Bintang 5 atau 4 dengan perhitungan poin berdasarkan kecepatan pengumpulan / emergency override
           // ==========================================
           const isDayDone = FincestemCore.progress.isDayStudentTasksDone(studentProgress, day.day_number);
           const fasilName = currentStudent?.facilitator_name || 'Tim Guru Pendamping Field Trip SMAN 1 Belitang';
+          const ftSubmitTime = getFTSubmitTime(day.day_number, taskMap);
+          const ftScore = FincestemCore.progress.calculateFieldTripScore(day.day_number, ftSubmitTime, cleanNisn);
 
           if (isDayDone) {
+            const starsText = ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆';
             body.innerHTML = `
               <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/10 via-teal-500/10 to-emerald-500/10 border border-amber-300 flex flex-col gap-4">
                 <!-- Header Status Otomatis -->
@@ -2569,32 +2608,44 @@
                     <span class="material-symbols-outlined text-amber-600 text-lg">verified</span>
                     Status Evaluasi Field Trip Day ${day.day_number}:
                   </span>
-                  <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-400 text-slate-950 uppercase tracking-wide shadow-2xs">
-                    ⭐⭐⭐⭐⭐ BINTANG 5 LAPANGAN
+                  <span class="px-3 py-1 rounded-xl text-xs font-black ${ftScore.stars === 5 ? 'bg-amber-400 text-slate-950' : 'bg-teal-400 text-slate-950'} uppercase tracking-wide shadow-2xs">
+                    ${starsText} ${ftScore.stars === 5 ? 'BINTANG 5' : 'BINTANG 4'}
                   </span>
                 </div>
 
                 <!-- Big Star Box -->
                 <div class="p-4 rounded-2xl bg-white border border-amber-200/80 shadow-xs flex flex-col items-center justify-center text-center gap-2">
                   <div class="text-2xl sm:text-3xl tracking-widest text-amber-500 font-black">
-                    ⭐⭐⭐⭐⭐
+                    ${starsText}
                   </div>
                   <div class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                    Nilai: 100 / 100 <span class="text-amber-600 text-base font-extrabold">(Sangat Baik - A)</span>
+                    Nilai: ${ftScore.score} / 100 <span class="text-amber-600 text-base font-extrabold">(${ftScore.predicate})</span>
                   </div>
-                  <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
-                    ✓ Otomatis Bintang 5 (Tugas &amp; Jurnal Refleksi Day ${day.day_number} Selesai)
-                  </span>
+                  <div class="flex flex-col items-center gap-1">
+                    <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
+                      ✓ ${ftScore.is_emergency_override ? '⚡ Koreksi Kebijakan Darurat Admin' : `Waktu Selesai: ${ftScore.time_formatted}`}
+                    </span>
+                    <span class="text-[11px] text-slate-500 font-medium">
+                      ${ftScore.reason}
+                    </span>
+                  </div>
                 </div>
 
-                <!-- Keterangan Kebijakan Field Trip -->
+                <!-- Rincian Parameter Waktu & Jam Batas -->
                 <div class="p-3.5 rounded-2xl bg-white/90 border border-amber-200/60 flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
-                  <div class="font-extrabold text-amber-950 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-amber-600 text-base">info</span>
-                    <span>Evaluasi Harian Lapangan:</span>
+                  <div class="font-extrabold text-amber-950 flex items-center justify-between gap-2 flex-wrap">
+                    <span class="flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-amber-600 text-base">schedule</span>
+                      <span>Parameter Waktu Penilaian Lapangan Day ${day.day_number}:</span>
+                    </span>
+                    <span class="px-2 py-0.5 rounded-md bg-amber-100 text-amber-900 text-[11px] font-bold">
+                      Batas Nilai 100: ${ftScore.cutoff_perfect || '16:00'} WIB
+                    </span>
                   </div>
-                  <p class="leading-relaxed">
-                    Selamat! Anda telah menyelesaikan seluruh rangkaian tugas harian dan jurnal refleksi untuk <strong>Day ${day.day_number}</strong>. Siswa Field Trip otomatis memperoleh predikat <strong>Bintang 5 Lapangan (100)</strong> untuk hari ini tanpa menunggu penilaian manual guru.
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    ${ftScore.is_emergency_override 
+                      ? `<strong class="text-emerald-700">Koreksi Khusus:</strong> Nilai siswa disetujui langsung oleh Admin (${ftScore.reason}).`
+                      : `Siswa Field Trip dinilai otomatis berdasarkan waktu penyelesaian seluruh tahapan riset. Jam kunjungan resmi s.d. <strong>${ftScore.cutoff_perfect || '16:00'} WIB</strong> bernilai <strong>100</strong> (⭐⭐⭐⭐⭐), disusul rentang sore-malam (99–95), dan larut malam (⭐⭐⭐⭐☆).`}
                   </p>
                 </div>
 
@@ -2602,19 +2653,19 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
                   <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <span class="block text-slate-500 font-bold text-[11px]">Sains &amp; Lingkungan</span>
-                    <span class="text-base font-black text-emerald-600">100 (A)</span>
+                    <span class="text-base font-black text-emerald-600">${ftScore.score} (${ftScore.stars === 5 ? 'A' : 'B+'})</span>
                   </div>
                   <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <span class="block text-slate-500 font-bold text-[11px]">Teknologi Digital</span>
-                    <span class="text-base font-black text-emerald-600">100 (A)</span>
+                    <span class="text-base font-black text-emerald-600">${ftScore.score} (${ftScore.stars === 5 ? 'A' : 'B+'})</span>
                   </div>
                   <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <span class="block text-slate-500 font-bold text-[11px]">Literasi Finansial</span>
-                    <span class="text-base font-black text-emerald-600">100 (A)</span>
+                    <span class="text-base font-black text-emerald-600">${ftScore.score} (${ftScore.stars === 5 ? 'A' : 'B+'})</span>
                   </div>
                   <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <span class="block text-slate-500 font-bold text-[11px]">Budaya &amp; Karakter</span>
-                    <span class="text-base font-black text-emerald-600">100 (A)</span>
+                    <span class="text-base font-black text-emerald-600">${ftScore.score} (${ftScore.stars === 5 ? 'A' : 'B+'})</span>
                   </div>
                 </div>
 
@@ -2642,10 +2693,10 @@
                     ☆☆☆☆☆
                   </div>
                   <div class="text-base sm:text-lg font-bold text-slate-700 leading-tight">
-                    Bintang 5 Lapangan Otomatis Terbuka Setelah Refleksi
+                    Penilaian Otomatis Terbuka Setelah Refleksi Dikirim
                   </div>
                   <p class="text-xs text-slate-500 max-w-md">
-                    Nilai Bintang 5 harian akan otomatis diberikan setelah Anda menyelesaikan seluruh rangkaian tugas Day ${day.day_number} termasuk <strong>Jurnal Refleksi Mandiri</strong>.
+                    Nilai dan bintang harian akan otomatis terkalkulasi saat Anda menyelesaikan seluruh rangkaian tugas Day ${day.day_number} termasuk <strong>Jurnal Refleksi Mandiri</strong> (Pukul 07.00 - ${ftScore.cutoff_perfect || '16:00'} WIB meraih Bintang 5 Nilai 100).
                   </p>
                 </div>
                 <div class="flex items-center justify-between text-xs text-slate-600 font-medium pt-1 border-t border-slate-200">
@@ -3063,15 +3114,19 @@
         if (isFieldTrip) {
           const isDone = FincestemCore.progress.isDayStudentTasksDone(prog, i);
           if (isDone) {
+            const ftScore = FincestemCore.progress.calculateFieldTripScore(i, getFTSubmitTime(i, taskMap), studentNisn);
+            const starsText = ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆';
             scoreHtml = `
-              <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300">
-                ⭐⭐⭐⭐⭐ 100 (A) • Terverifikasi Lapangan
+              <span class="px-3 py-1 rounded-xl text-xs font-black ${ftScore.stars === 5 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-teal-100 text-teal-900 border-teal-300'} border">
+                ${starsText} Nilai: ${ftScore.score} (${ftScore.predicate})
               </span>
             `;
-            note = `Aktivitas Day ${i} dan jurnal refleksi telah selesai. Nilai otomatis Bintang 5 Lapangan.`;
+            note = ftScore.is_emergency_override
+              ? `Koreksi Khusus Kebijakan Admin: ${ftScore.reason}`
+              : `Aktivitas Day ${i} selesai pada ${ftScore.time_formatted}. ${ftScore.reason}.`;
           } else {
             scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Menunggu Pengerjaan</span>';
-            note = `Selesaikan seluruh aktivitas dan jurnal refleksi Day ${i} untuk memperoleh verifikasi otomatis Bintang 5.`;
+            note = `Selesaikan seluruh aktivitas dan jurnal refleksi Day ${i} untuk memperoleh verifikasi otomatis nilai lapangan.`;
           }
         } else {
           if (rec && rec.score) {

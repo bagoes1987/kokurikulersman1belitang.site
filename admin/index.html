@@ -655,6 +655,95 @@
         </div>
       </div>
 
+      <!-- CARD PENGATURAN JAM BATAS PENILAIAN FIELD TRIP (DAY 1 - 7) -->
+      <div id="cardAdminFTGradingRules" class="bg-gradient-to-br from-amber-500/10 via-amber-50 to-orange-50/30 rounded-3xl p-5 border border-amber-300/90 shadow-sm flex flex-col gap-3.5">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-3">
+            <div class="w-11 h-11 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center shrink-0 shadow-xs">
+              <span class="material-symbols-outlined text-2xl font-black">timer</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <h4 class="font-extrabold text-sm sm:text-base text-slate-900 leading-snug">Kendali Jam Batas Penilaian Otomatis Field Trip</h4>
+                <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-200 text-slate-950 border border-amber-400">PENGENDALI MASAL</span>
+              </div>
+              <p class="text-xs text-amber-950/80 mt-0.5 font-medium">
+                Atur toleransi jam pengumpulan Day 1 s.d. 7 jika terjadi pengunduran jadwal/bus terlambat di perjalanan. Sekali klik berlaku untuk seluruh rombongan!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rangkuman Rumus Waktu -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+          <div class="p-3 rounded-2xl bg-white/95 border border-amber-200 shadow-2xs flex flex-col gap-1">
+            <span class="text-slate-500 font-bold text-[11px] flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Batas Sempurna (100)
+            </span>
+            <span class="font-extrabold text-sm text-slate-900">07:00 s.d. <span id="lblRuleCutoffPerfect" class="text-emerald-700">16:00 WIB</span></span>
+            <span class="text-[10px] text-slate-500">Bintang 5 Penuh (Jam Kunjungan Resmi)</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-white/95 border border-amber-200 shadow-2xs flex flex-col gap-1">
+            <span class="text-slate-500 font-bold text-[11px] flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              Batas Bintang 5 (99 - 95)
+            </span>
+            <span class="font-extrabold text-sm text-slate-900">16:01 s.d. <span id="lblRuleCutoffB5" class="text-amber-700">21:00 WIB</span></span>
+            <span class="text-[10px] text-slate-500">Sore di bus, hotel &amp; makan malam</span>
+          </div>
+
+          <div class="p-3 rounded-2xl bg-white/95 border border-amber-200 shadow-2xs flex flex-col gap-1">
+            <span class="text-slate-500 font-bold text-[11px] flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+              Batas Bintang 4 (94 - 85)
+            </span>
+            <span class="font-extrabold text-sm text-slate-900">21:01 s.d. <span id="lblRuleCutoffB4" class="text-teal-700">23:59 WIB</span></span>
+            <span class="text-[10px] text-slate-500">Malam istirahat &amp; toleransi esoknya (85)</span>
+          </div>
+        </div>
+
+        <!-- Form Pengubah Jam Cepat -->
+        <div class="p-3.5 rounded-2xl bg-white/90 border border-amber-300/80 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-3 flex-wrap flex-1">
+            <div class="flex items-center gap-1.5">
+              <label for="selRuleTargetDay" class="font-bold text-slate-800">Target Hari:</label>
+              <select id="selRuleTargetDay" onchange="onAdminSelectFTGradingDay(this.value)" class="py-1.5 px-2.5 rounded-xl border border-slate-300 font-bold text-slate-800 bg-white shadow-2xs">
+                <option value="0">⭐ Semua Hari (Day 1 s.d. 7 Sekaligus)</option>
+                <option value="1">Day 1 (Perjalanan Belitang - Semarang)</option>
+                <option value="2">Day 2 (AKPOL &amp; Lawang Sewu)</option>
+                <option value="3">Day 3 (Jatim Park 3 &amp; Malang)</option>
+                <option value="4">Day 4 (Sunrise Bromo &amp; Jeep)</option>
+                <option value="5">Day 5 (Riset UGM &amp; Malioboro)</option>
+                <option value="6">Day 6 (Candi Borobudur &amp; Sleman)</option>
+                <option value="7">Day 7 (Tiba Kembali di SMANSA)</option>
+              </select>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <label for="inpRuleCutoffPerfect" class="font-bold text-slate-800">Batas Nilai 100:</label>
+              <input type="time" id="inpRuleCutoffPerfect" value="16:00" class="py-1.5 px-2.5 rounded-xl border border-slate-300 font-extrabold text-slate-900 bg-white shadow-2xs">
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <label for="inpRuleCutoffB5" class="font-bold text-slate-800">Batas Bintang 5:</label>
+              <input type="time" id="inpRuleCutoffB5" value="21:00" class="py-1.5 px-2.5 rounded-xl border border-slate-300 font-extrabold text-slate-900 bg-white shadow-2xs">
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="saveAdminFTGradingRuleChange()" class="py-2.5 px-4 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-98 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-xs cursor-pointer transition-all border border-amber-400">
+              <span class="material-symbols-outlined text-sm">bolt</span>
+              <span>Terapkan Jam Baru</span>
+            </button>
+            <button type="button" onclick="resetAdminFTGradingRuleDefault()" class="py-2.5 px-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer" title="Reset ke Default (16:00 &amp; 21:00)">
+              Reset Default
+            </button>
+          </div>
+        </div>
+      </div>
+
       <!-- SAKELAR KONTROL DAY UJI COBA (GLADI BERSIH - HANYA MUNCUL DI SUB-TAB NON-FIELD TRIP) -->
       <div id="boxAdminTrialDay" class="hidden bg-gradient-to-br from-blue-500/10 via-blue-50 to-indigo-50/40 rounded-3xl p-5 border border-blue-200 shadow-sm flex flex-col gap-3">
         <div class="flex items-center justify-between flex-wrap gap-3">
@@ -1979,6 +2068,79 @@
           </div>
         </div>
 
+        <!-- KOREKSI NILAI DARURAT FIELD TRIP (EMERGENCY OVERRIDE MANUAL ADMIN) -->
+        <div id="modalStudentEmergencyGradingContainer" class="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-300/80 flex flex-col gap-2.5 text-xs">
+          <div class="flex items-center justify-between flex-wrap gap-1">
+            <span class="font-extrabold text-amber-950 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-amber-700">bolt</span>
+              <span>Koreksi Nilai Darurat Field Trip (Per Siswa):</span>
+            </span>
+            <span id="modalStudentEmergencyBadge" class="text-[10px] font-black uppercase bg-white px-2 py-0.5 rounded-md border border-amber-300 shadow-2xs">
+              OTOMATIS (WAKTU PENGUMPULAN)
+            </span>
+          </div>
+          <p class="text-[11px] text-amber-900/80 leading-tight">
+            Gunakan opsi ini hanya jika siswa mengalami kondisi darurat lapangan (HP rusak, sakit di bus, kendala sinyal). Admin dapat menetapkan nilai &amp; bintang tertentu untuk hari tertentu.
+          </p>
+
+          <!-- Status Rangkuman Hari 1 s.d. 7 Siswa Ini -->
+          <div id="modalStudentEmergencyDaysGrid" class="grid grid-cols-7 gap-1 py-1 text-center">
+            <!-- Rendered by JS: Day 1..7 chips with score & stars -->
+          </div>
+
+          <!-- Form Koreksi Darurat (Accordion / Toggle) -->
+          <div id="modalStudentEmergencyForm" class="hidden p-3 rounded-xl bg-white border border-amber-300 flex flex-col gap-2.5">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+              <span class="font-black text-slate-800 text-[11px]">Form Input Koreksi Darurat</span>
+              <button type="button" onclick="toggleStudentEmergencyForm(false)" class="text-slate-400 hover:text-slate-700 text-xs font-bold cursor-pointer">Tutup</button>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold text-slate-600">Pilih Hari:</label>
+                <select id="selEmgDay" onchange="onAdminSelectModalEmgDay(this.value)" class="p-1.5 rounded-lg border border-slate-300 text-xs font-bold bg-white">
+                  <option value="1">Day 1</option>
+                  <option value="2">Day 2</option>
+                  <option value="3">Day 3</option>
+                  <option value="4">Day 4</option>
+                  <option value="5">Day 5</option>
+                  <option value="6">Day 6</option>
+                  <option value="7">Day 7</option>
+                </select>
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold text-slate-600">Koreksi Nilai:</label>
+                <input type="number" id="inpEmgScore" min="50" max="100" value="100" class="p-1.5 rounded-lg border border-slate-300 text-xs font-extrabold text-slate-900 bg-white">
+              </div>
+              <div class="flex flex-col gap-1">
+                <label class="text-[10px] font-bold text-slate-600">Bintang:</label>
+                <select id="selEmgStars" class="p-1.5 rounded-lg border border-slate-300 text-xs font-bold bg-white">
+                  <option value="5">⭐⭐⭐⭐⭐ Bintang 5</option>
+                  <option value="4">⭐⭐⭐⭐☆ Bintang 4</option>
+                </select>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <label class="text-[10px] font-bold text-slate-600">Alasan Koreksi Kebijakan:</label>
+              <input type="text" id="inpEmgReason" placeholder="Misal: HP siswa drop/rusak di perjalanan, tugas diverifikasi langsung oleh pembina bus" class="p-1.5 rounded-lg border border-slate-300 text-xs text-slate-800 bg-white">
+            </div>
+            <div class="flex items-center gap-2 pt-1">
+              <button type="button" onclick="submitModalStudentEmergencyGrading()" class="flex-1 py-2 px-3 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1 shadow-2xs cursor-pointer">
+                <span class="material-symbols-outlined text-sm">save</span>
+                <span>Simpan Koreksi Nilai</span>
+              </button>
+              <button type="button" onclick="deleteModalStudentEmergencyGrading()" class="py-2 px-3 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold text-xs flex items-center justify-center gap-1 cursor-pointer" title="Hapus koreksi dan kembalikan ke hitungan waktu normal">
+                <span class="material-symbols-outlined text-sm">restart_alt</span>
+                <span>Reset Otomatis</span>
+              </button>
+            </div>
+          </div>
+
+          <button type="button" id="btnOpenStudentEmergencyForm" onclick="toggleStudentEmergencyForm(true)" class="w-full py-2 px-3 rounded-xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer">
+            <span class="material-symbols-outlined text-sm">bolt</span>
+            <span>⚡ Buka Form Koreksi Nilai Darurat Siswa Ini</span>
+          </button>
+        </div>
+
         <!-- KONTROL PENGUNCIAN PERANGKAT (SINGLE DEVICE LOCK) -->
         <div class="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-200 flex flex-col gap-2.5 text-xs">
           <div class="flex items-center justify-between">
@@ -2566,7 +2728,12 @@
 
       if (tab === 'teachers') initAdminTeacherModule();
       if (tab === 'cards') initAdminCardsView();
-      if (tab === 'schedule') renderAdminScheduleView();
+      if (tab === 'schedule') {
+        renderAdminScheduleView();
+        if (currentAdminScheduleCategory === 'field_trip' && typeof initAdminFTGradingRules === 'function') {
+          initAdminFTGradingRules();
+        }
+      }
       if (tab === 'zones') {
         initPenugasanPembina();
         if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
@@ -4339,11 +4506,21 @@
       const btnLuar = document.getElementById('btnModalZoneLuar');
       const exContainer = document.getElementById('modalStudentExemptionContainer');
 
+      const emgContainer = document.getElementById('modalStudentEmergencyGradingContainer');
       if (exContainer) {
         if (isLuar) {
           exContainer.classList.add('hidden');
         } else {
           exContainer.classList.remove('hidden');
+        }
+      }
+
+      if (emgContainer) {
+        if (isLuar) {
+          emgContainer.classList.remove('hidden');
+          renderModalStudentEmergencyOverview(currentModalNisn);
+        } else {
+          emgContainer.classList.add('hidden');
         }
       }
 
@@ -4399,6 +4576,138 @@
         } else {
           FincestemCore.ui.toast(`Izin domisili luar OKU Timur untuk siswa ${currentModalNisn} DINONAKTIFKAN.`, 'info');
         }
+      });
+    }
+
+    /* ========================================================
+       KOREKSI NILAI DARURAT FIELD TRIP (EMERGENCY MANUAL OVERRIDE)
+       ======================================================== */
+    function renderModalStudentEmergencyOverview(nisn) {
+      const grid = document.getElementById('modalStudentEmergencyDaysGrid');
+      const badge = document.getElementById('modalStudentEmergencyBadge');
+      if (!grid) return;
+      grid.innerHTML = '';
+
+      let hasAnyOverride = false;
+      const cleanNisn = String(nisn || '').trim();
+
+      for (let d = 1; d <= 7; d++) {
+        const emg = (FincestemCore.zones && FincestemCore.zones.getStudentEmergencyGrading) 
+          ? FincestemCore.zones.getStudentEmergencyGrading(cleanNisn, d) 
+          : null;
+
+        const col = document.createElement('div');
+        col.className = 'flex flex-col items-center justify-center p-1.5 rounded-xl border transition-all cursor-pointer';
+
+        if (emg) {
+          hasAnyOverride = true;
+          col.className += ' bg-amber-100/90 border-amber-400 text-amber-950 font-black shadow-2xs ring-1 ring-amber-400';
+          col.innerHTML = `
+            <span class="text-[9.5px] uppercase tracking-wider">D${d} ⚡</span>
+            <span class="text-xs font-black">${emg.score}</span>
+            <span class="text-[8px]">${emg.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆'}</span>
+          `;
+          col.title = `Koreksi Darurat: Nilai ${emg.score} (${emg.stars} Bintang). Alasan: ${emg.reason || '-'}. Klik untuk edit.`;
+        } else {
+          col.className += ' bg-white border-slate-200 text-slate-700 hover:border-amber-300';
+          col.innerHTML = `
+            <span class="text-[9.5px] font-bold text-slate-400">D${d}</span>
+            <span class="text-xs font-bold text-slate-600">Auto</span>
+            <span class="text-[8px] text-slate-400">Waktu</span>
+          `;
+          col.title = `Day ${d}: Hitungan otomatis jam pengumpulan. Klik untuk koreksi darurat.`;
+        }
+
+        col.onclick = function() {
+          toggleStudentEmergencyForm(true);
+          const selDay = document.getElementById('selEmgDay');
+          if (selDay) {
+            selDay.value = d;
+            onAdminSelectModalEmgDay(d);
+          }
+        };
+
+        grid.appendChild(col);
+      }
+
+      if (badge) {
+        if (hasAnyOverride) {
+          badge.textContent = '⚡ KOREKSI DARURAT AKTIF';
+          badge.className = 'text-[10px] font-black uppercase bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md border border-amber-500 shadow-2xs';
+        } else {
+          badge.textContent = 'OTOMATIS (WAKTU PENGUMPULAN)';
+          badge.className = 'text-[10px] font-black uppercase bg-white px-2 py-0.5 rounded-md border border-amber-300 shadow-2xs text-slate-700';
+        }
+      }
+    }
+
+    function toggleStudentEmergencyForm(show) {
+      const form = document.getElementById('modalStudentEmergencyForm');
+      const btnOpen = document.getElementById('btnOpenStudentEmergencyForm');
+      if (!form) return;
+      if (show) {
+        form.classList.remove('hidden');
+        if (btnOpen) btnOpen.classList.add('hidden');
+        const selDay = document.getElementById('selEmgDay');
+        if (selDay) onAdminSelectModalEmgDay(selDay.value);
+      } else {
+        form.classList.add('hidden');
+        if (btnOpen) btnOpen.classList.remove('hidden');
+      }
+    }
+
+    function onAdminSelectModalEmgDay(dayVal) {
+      const d = parseInt(dayVal) || 1;
+      const cleanNisn = String(currentModalNisn || '').trim();
+      const emg = (FincestemCore.zones && FincestemCore.zones.getStudentEmergencyGrading)
+        ? FincestemCore.zones.getStudentEmergencyGrading(cleanNisn, d)
+        : null;
+
+      const inpScore = document.getElementById('inpEmgScore');
+      const selStars = document.getElementById('selEmgStars');
+      const inpReason = document.getElementById('inpEmgReason');
+
+      if (emg) {
+        if (inpScore) inpScore.value = emg.score;
+        if (selStars) selStars.value = emg.stars;
+        if (inpReason) inpReason.value = emg.reason || '';
+      } else {
+        if (inpScore) inpScore.value = 100;
+        if (selStars) selStars.value = 5;
+        if (inpReason) inpReason.value = '';
+      }
+    }
+
+    function submitModalStudentEmergencyGrading() {
+      if (!currentModalNisn) return;
+      const selDay = document.getElementById('selEmgDay');
+      const inpScore = document.getElementById('inpEmgScore');
+      const selStars = document.getElementById('selEmgStars');
+      const inpReason = document.getElementById('inpEmgReason');
+
+      const d = parseInt(selDay?.value) || 1;
+      const score = parseFloat(inpScore?.value) || 100;
+      const stars = parseInt(selStars?.value) || 5;
+      const reason = (inpReason?.value || '').trim() || 'Dispensasi Darurat Lapangan (Kebijakan Admin)';
+
+      FincestemCore.zones.saveStudentEmergencyGrading(currentModalNisn, d, score, stars, reason, function(ok) {
+        renderModalStudentEmergencyOverview(currentModalNisn);
+        toggleStudentEmergencyForm(false);
+        FincestemCore.ui.toast(`Koreksi darurat Day ${d} untuk siswa ${currentModalNisn} berhasil disimpan (Nilai: ${score}, Bintang: ${stars})!`, 'success');
+      });
+    }
+
+    function deleteModalStudentEmergencyGrading() {
+      if (!currentModalNisn) return;
+      const selDay = document.getElementById('selEmgDay');
+      const d = parseInt(selDay?.value) || 1;
+
+      if (!confirm(`Kembalikan penilaian Day ${d} untuk siswa ${currentModalNisn} ke perhitungan otomatis jam pengumpulan?`)) return;
+
+      FincestemCore.zones.deleteStudentEmergencyGrading(currentModalNisn, d, function(ok) {
+        renderModalStudentEmergencyOverview(currentModalNisn);
+        toggleStudentEmergencyForm(false);
+        FincestemCore.ui.toast(`Koreksi darurat Day ${d} dihapus. Penilaian siswa kembali otomatis berdasarkan jam pengumpulan.`, 'info');
       });
     }
 
@@ -4493,6 +4802,70 @@
     let adminScheduleList = [];
     let currentAdminScheduleCategory = 'field_trip';
 
+    /* ========================================================
+       KENDALI JAM BATAS PENILAIAN FIELD TRIP (DAY 1 S.D. 7)
+       ======================================================== */
+    function initAdminFTGradingRules() {
+      const rules = (FincestemCore.zones && FincestemCore.zones.getFTGradingRules) ? FincestemCore.zones.getFTGradingRules() : {};
+      const selDay = document.getElementById('selRuleTargetDay');
+      const dayVal = selDay ? parseInt(selDay.value) || 0 : 0;
+      const rule = (dayVal > 0 && rules[dayVal]) ? rules[dayVal] : (rules[1] || { cutoff_perfect: '16:00', cutoff_bintang5: '21:00', cutoff_bintang4: '23:59' });
+
+      const inpPerfect = document.getElementById('inpRuleCutoffPerfect');
+      const inpB5 = document.getElementById('inpRuleCutoffB5');
+      const lblPerfect = document.getElementById('lblRuleCutoffPerfect');
+      const lblB5 = document.getElementById('lblRuleCutoffB5');
+      const lblB4 = document.getElementById('lblRuleCutoffB4');
+
+      if (inpPerfect) inpPerfect.value = rule.cutoff_perfect ? rule.cutoff_perfect.substring(0, 5) : '16:00';
+      if (inpB5) inpB5.value = rule.cutoff_bintang5 ? rule.cutoff_bintang5.substring(0, 5) : '21:00';
+      if (lblPerfect) lblPerfect.textContent = (rule.cutoff_perfect ? rule.cutoff_perfect.substring(0, 5) : '16:00') + ' WIB';
+      if (lblB5) lblB5.textContent = (rule.cutoff_bintang5 ? rule.cutoff_bintang5.substring(0, 5) : '21:00') + ' WIB';
+      if (lblB4) lblB4.textContent = (rule.cutoff_bintang4 ? rule.cutoff_bintang4.substring(0, 5) : '23:59') + ' WIB';
+    }
+
+    function onAdminSelectFTGradingDay(dayVal) {
+      const d = parseInt(dayVal) || 0;
+      const rules = (FincestemCore.zones && FincestemCore.zones.getFTGradingRules) ? FincestemCore.zones.getFTGradingRules() : {};
+      const targetRule = (d > 0 && rules[d]) ? rules[d] : (rules[1] || { cutoff_perfect: '16:00', cutoff_bintang5: '21:00', cutoff_bintang4: '23:59' });
+
+      const inpPerfect = document.getElementById('inpRuleCutoffPerfect');
+      const inpB5 = document.getElementById('inpRuleCutoffB5');
+      const lblPerfect = document.getElementById('lblRuleCutoffPerfect');
+      const lblB5 = document.getElementById('lblRuleCutoffB5');
+
+      if (inpPerfect) inpPerfect.value = targetRule.cutoff_perfect ? targetRule.cutoff_perfect.substring(0, 5) : '16:00';
+      if (inpB5) inpB5.value = targetRule.cutoff_bintang5 ? targetRule.cutoff_bintang5.substring(0, 5) : '21:00';
+      if (lblPerfect) lblPerfect.textContent = (targetRule.cutoff_perfect ? targetRule.cutoff_perfect.substring(0, 5) : '16:00') + ' WIB';
+      if (lblB5) lblB5.textContent = (targetRule.cutoff_bintang5 ? targetRule.cutoff_bintang5.substring(0, 5) : '21:00') + ' WIB';
+    }
+
+    function saveAdminFTGradingRuleChange() {
+      const selDay = document.getElementById('selRuleTargetDay');
+      const dayVal = selDay ? parseInt(selDay.value) || 0 : 0;
+      const inpPerfect = document.getElementById('inpRuleCutoffPerfect');
+      const inpB5 = document.getElementById('inpRuleCutoffB5');
+
+      const cutoffPerfect = inpPerfect ? inpPerfect.value : '16:00';
+      const cutoffB5 = inpB5 ? inpB5.value : '21:00';
+      const cutoffB4 = '23:59';
+      const applyToAll = (dayVal === 0);
+
+      FincestemCore.zones.updateFTGradingRule(dayVal, cutoffPerfect, cutoffB5, cutoffB4, applyToAll, function(ok) {
+        initAdminFTGradingRules();
+        const targetLabel = applyToAll ? 'Semua Hari (Day 1 s.d. 7)' : `Day ${dayVal}`;
+        FincestemCore.ui.toast(`Jam batas penilaian Field Trip untuk ${targetLabel} berhasil diperbarui (Batas Nilai 100: ${cutoffPerfect} WIB)! Seluruh siswa otomatis terlindungi dengan aturan baru.`, 'success');
+      });
+    }
+
+    function resetAdminFTGradingRuleDefault() {
+      if (!confirm('Kembalikan aturan jam batas penilaian Field Trip ke default resmi (07:00 - 16:00 WIB Nilai 100, 16:01 - 21:00 WIB Bintang 5)?')) return;
+      FincestemCore.zones.updateFTGradingRule(0, '16:00', '21:00', '23:59', true, function() {
+        initAdminFTGradingRules();
+        FincestemCore.ui.toast('Jam batas penilaian Field Trip dikembalikan ke default resmi (16:00 & 21:00 WIB) untuk seluruh hari.', 'success');
+      });
+    }
+
     function switchAdminScheduleCategory(category) {
       currentAdminScheduleCategory = category;
 
@@ -4500,6 +4873,7 @@
       const btnNonFt = document.getElementById('btnSchedSubTab_nonft');
       const boxTrial = document.getElementById('boxAdminTrialDay');
       const bannerFt = document.getElementById('bannerAdminFieldTripInfo');
+      const cardFTGrading = document.getElementById('cardAdminFTGradingRules');
       const hdrTitle = document.getElementById('adminScheduleHeaderTitle');
       const hdrDesc = document.getElementById('adminScheduleHeaderDesc');
       const infoNotice = document.getElementById('adminScheduleInfoNotice');
@@ -4513,6 +4887,9 @@
         }
         if (boxTrial) boxTrial.classList.add('hidden');
         if (bannerFt) bannerFt.classList.remove('hidden');
+        if (cardFTGrading) cardFTGrading.classList.remove('hidden');
+        initAdminFTGradingRules();
+
         if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal Field Trip (Day 1 - 7)';
         if (hdrDesc) hdrDesc.textContent = 'Ekspedisi Luar 2026: Belitang → Semarang → Malang → Bromo → Yogyakarta (455 Siswa). Atur tanggal, jam, dan status buka/tutup harian.';
         if (infoNotice) {
@@ -4531,6 +4908,7 @@
         }
         if (boxTrial) boxTrial.classList.remove('hidden');
         if (bannerFt) bannerFt.classList.add('hidden');
+        if (cardFTGrading) cardFTGrading.classList.add('hidden');
         if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal Non-Field Trip (OKU Timur)';
         if (hdrDesc) hdrDesc.textContent = 'Riset Lapangan OKU Timur (710 Siswa). Atur tanggal, jam buka/tutup, dan status aktif harian siswa.';
         if (infoNotice) {
