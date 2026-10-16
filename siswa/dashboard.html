@@ -291,52 +291,119 @@
         </div>
       </div>
 
-      <!-- Progress Bar Visual Sederhana & Bersih (Tanpa Kotak Redundan) -->
-      <div class="flex flex-col gap-1.5">
-        <div class="flex justify-between items-center text-xs sm:text-sm font-bold text-slate-700">
-          <span class="flex items-center gap-1.5 text-slate-600">
-            <span class="material-symbols-outlined text-sm text-primary">event_available</span>
-            Progres Belajar 7 Hari
-          </span>
-          <span id="progressDaysCompletedText" class="text-primary font-black">0 / 7 Hari Terpenuhi</span>
-        </div>
-        <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/70">
-          <div id="progressBarFill" class="h-full bg-gradient-to-r from-[#08A7B5] via-teal-500 to-emerald-500 rounded-full transition-all duration-700 ease-out" style="width: 0%;"></div>
-        </div>
-      </div>
-
       <!-- KARTU KHUSUS: KATEGORI & NILAI RAPOR FINCESTEM 2026 (MODEL ACCORDION BUKA/TUTUP) -->
       <div id="facilitatorFeedbackCard" class="p-3.5 sm:p-4 rounded-3xl bg-white border border-slate-200/90 shadow-sm flex flex-col gap-2.5 transition-all">
         <!-- Header Accordion Trigger (Bisa diklik untuk buka/tutup lipatan) -->
-        <div class="flex items-center justify-between gap-2.5 flex-wrap cursor-pointer select-none group" onclick="toggleReportCardAccordion()">
-          <div class="flex items-center gap-2.5 min-w-0">
-            <div id="reportCardHeaderIcon" class="w-9 h-9 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 border border-amber-500/20 shadow-2xs group-hover:scale-105 transition-transform">
+        <div class="flex flex-col gap-2.5 cursor-pointer select-none group" onclick="toggleReportCardAccordion()">
+          <!-- Baris 1: Ikon + Judul Lengkap (Wrap Bebas, Tidak Terpotong) -->
+          <div class="flex items-start gap-2.5 min-w-0 w-full">
+            <div id="reportCardHeaderIcon" class="w-9 h-9 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center shrink-0 border border-amber-500/20 shadow-2xs group-hover:scale-105 transition-transform mt-0.5">
               <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
             </div>
-            <div class="flex flex-col min-w-0">
-              <h3 class="text-xs sm:text-sm font-extrabold text-slate-800 leading-tight truncate">
+            <div class="flex flex-col min-w-0 flex-1">
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-800 leading-snug break-words whitespace-normal">
                 Kategori Nilai Rapor Kegiatan Kokurikuler 2026 Tema "FINCESTEM"
               </h3>
-              <span id="reportCardSubTitle" class="text-[11px] sm:text-xs text-slate-500 font-medium truncate mt-0.5">
+              <span id="reportCardSubTitle" class="text-[11px] sm:text-xs text-slate-500 font-medium break-words whitespace-normal mt-0.5">
                 Field Trip • Panduan Ambang Batas Predikat Rapor
               </span>
             </div>
           </div>
-          <div class="flex items-center gap-1.5 shrink-0">
+
+          <!-- Baris 2: Badge Progres & Tombol Buka/Tutup -->
+          <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-100/70">
             <span id="reportCardStatusBadge" class="text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-300 flex items-center gap-1 shadow-2xs">
               <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
               <span>Progres: 0 / 7 Hari</span>
             </span>
-            <button type="button" onclick="event.stopPropagation(); toggleReportCardAccordion();" class="px-2.5 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition-all shadow-2xs cursor-pointer">
+            <button type="button" onclick="event.stopPropagation(); toggleReportCardAccordion();" class="px-3 py-1 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1 transition-all shadow-2xs cursor-pointer">
               <span id="reportAccordionIcon" class="material-symbols-outlined text-base">expand_more</span>
               <span id="reportAccordionLabel">Buka</span>
             </button>
           </div>
         </div>
 
-        <!-- Dynamic Body Container (Accordion Content - Tersembunyi secara Default) -->
+        <!-- Dynamic Body Container (Accordion Content - Pre-rendered Matriks Buka/Tutup) -->
         <div id="reportCardDynamicBody" class="hidden flex flex-col gap-3 pt-2 border-t border-slate-100">
-          <!-- Rendered via JavaScript renderKokurikulerReportCard() -->
+          <!-- Bar Ringkasan Progres & Bintang Sementara -->
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 p-3 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div class="flex flex-col">
+              <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Bintang Terkumpul</span>
+              <span id="reportCardStarCount" class="text-sm sm:text-base font-black text-amber-600 mt-0.5 flex items-center gap-1">
+                <span>⭐</span> <span>0</span> <span class="text-xs text-slate-400 font-bold">/ 35</span>
+              </span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Nilai Rata-Rata</span>
+              <span id="reportCardAvgScore" class="text-sm sm:text-base font-black text-slate-800 mt-0.5">-</span>
+            </div>
+            <div class="col-span-2 sm:col-span-1 flex flex-col">
+              <span class="text-[10px] font-bold uppercase text-slate-500 tracking-wider">Status Kelengkapan</span>
+              <span id="reportCardDaysRemaining" class="text-xs font-extrabold text-emerald-700 mt-0.5 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">pending_actions</span>
+                <span>7 Hari Tersisa</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- 3 Kartu Matriks Ambang Batas Kategori Nilai Akhir -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+            <!-- 1. MAHIR -->
+            <div class="p-3 rounded-2xl bg-gradient-to-b from-amber-50/90 to-amber-100/50 border border-amber-300 flex flex-col gap-1 shadow-2xs">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-[13px] font-black text-amber-950 flex items-center gap-1">
+                  <span>🏆</span> MAHIR
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-200 text-amber-950 border border-amber-300">
+                  30 – 35 ⭐
+                </span>
+              </div>
+              <span class="text-[11px] font-bold text-amber-800">Nilai Rata-rata: ≥ 85.0</span>
+              <p class="text-[11.5px] text-amber-950/85 leading-relaxed text-justify mt-0.5">
+                Penguasaan sangat tinggi, konsisten, mandiri, dan inovatif dalam seluruh pilar FINCESTEM.
+              </p>
+            </div>
+
+            <!-- 2. CAKAP -->
+            <div class="p-3 rounded-2xl bg-gradient-to-b from-emerald-50/90 to-emerald-100/50 border border-emerald-300 flex flex-col gap-1 shadow-2xs">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-[13px] font-black text-emerald-950 flex items-center gap-1">
+                  <span>🌟</span> CAKAP
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-200 text-emerald-950 border border-emerald-300">
+                  21 – 29 ⭐
+                </span>
+              </div>
+              <span class="text-[11px] font-bold text-emerald-800">Nilai Rata-rata: 70.0 – 84.9</span>
+              <p class="text-[11.5px] text-emerald-950/85 leading-relaxed text-justify mt-0.5">
+                Mampu menerapkan kompetensi FINCESTEM secara mandiri dan baik dengan performa stabil.
+              </p>
+            </div>
+
+            <!-- 3. BERKEMBANG -->
+            <div class="p-3 rounded-2xl bg-gradient-to-b from-blue-50/90 to-blue-100/50 border border-blue-300 flex flex-col gap-1 shadow-2xs">
+              <div class="flex items-center justify-between">
+                <span class="text-xs sm:text-[13px] font-black text-blue-950 flex items-center gap-1">
+                  <span>🌱</span> BERKEMBANG
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-200 text-blue-950 border border-blue-300">
+                  ≤ 20 ⭐
+                </span>
+              </div>
+              <span class="text-[11px] font-bold text-blue-800">Nilai Rata-rata: &lt; 70.0</span>
+              <p class="text-[11.5px] text-blue-950/85 leading-relaxed text-justify mt-0.5">
+                Kemampuan mulai terbentuk, terdapat tugas yang belum optimal atau masih memerlukan bimbingan.
+              </p>
+            </div>
+          </div>
+
+          <!-- Catatan Edukatif Spesifik Sesuai Jalur (Rata Kanan Kiri) -->
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-primary text-xl shrink-0 mt-0.5">info</span>
+            <p id="reportCardEducationGuide" class="text-[12px] sm:text-[12.5px] text-slate-700 leading-relaxed text-justify">
+              <strong>Petunjuk Field Trip:</strong> Predikat resmi dan narasi capaian rapor akhir akan dikalkulasikan secara otomatis oleh sistem setelah seluruh instrumen Day 1 hingga Day 7 tuntas diselesaikan sesuai batas waktu kunjungan dan toleransi perjalanan.
+            </p>
+          </div>
         </div>
 
         <!-- Bottom Action Bar (Muncul saat Accordion Terbuka) -->
@@ -1170,17 +1237,25 @@
       const label = document.getElementById('reportAccordionLabel');
       if (!body) return;
 
-      const isHidden = body.classList.contains('hidden');
+      const isHidden = body.classList.contains('hidden') || body.style.display === 'none';
       const shouldOpen = (forceOpen !== undefined) ? forceOpen : isHidden;
 
       if (shouldOpen) {
         body.classList.remove('hidden');
-        if (footer) footer.classList.remove('hidden');
+        body.style.display = 'flex';
+        if (footer) {
+          footer.classList.remove('hidden');
+          footer.style.display = 'flex';
+        }
         if (icon) icon.textContent = 'expand_less';
         if (label) label.textContent = 'Tutup';
       } else {
         body.classList.add('hidden');
-        if (footer) footer.classList.add('hidden');
+        body.style.display = 'none';
+        if (footer) {
+          footer.classList.add('hidden');
+          footer.style.display = 'none';
+        }
         if (icon) icon.textContent = 'expand_more';
         if (label) label.textContent = 'Buka';
       }
