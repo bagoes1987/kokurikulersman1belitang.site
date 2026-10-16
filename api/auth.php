@@ -174,7 +174,8 @@ if ($action === 'login') {
         'group'            => $groupInfo ? $groupInfo['name'] : 'Belum Terdaftar Kelompok',
         'groupId'          => $groupInfo ? (int)$groupInfo['id'] : null,
         'groupRole'        => $groupInfo ? $groupInfo['role_in_group'] : 'Anggota',
-        'routeStatus'      => $groupInfo ? $groupInfo['route_status'] : null
+        'routeStatus'      => $groupInfo ? $groupInfo['route_status'] : null,
+        'reset_at'         => $user['reset_at'] ?? null
     ];
 
     // SINGLE DEVICE LOCK KHUSUS SISWA

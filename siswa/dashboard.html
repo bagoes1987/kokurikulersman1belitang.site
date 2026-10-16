@@ -2965,18 +2965,21 @@
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
 
           let ftAsesmen = null;
-          const idList = getStudentStorageIdentifiers();
-          for (const id of idList) {
-            try {
-              const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
-              if (raw) {
-                const parsed = JSON.parse(raw);
-                if (parsed && (parsed.submitted || parsed.answers || parsed.score !== undefined)) {
-                  ftAsesmen = parsed;
-                  break;
+          const hasServerAsesmen1 = taskMap && !!taskMap['1_asesmen'];
+          if (hasServerAsesmen1) {
+            const idList = getStudentStorageIdentifiers();
+            for (const id of idList) {
+              try {
+                const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
+                if (raw) {
+                  const parsed = JSON.parse(raw);
+                  if (parsed && (parsed.submitted || parsed.answers || parsed.score !== undefined)) {
+                    ftAsesmen = parsed;
+                    break;
+                  }
                 }
-              }
-            } catch(e) {}
+              } catch(e) {}
+            }
           }
 
           const isSubmitted = ftAsesmen && ftAsesmen.submitted;
@@ -3080,18 +3083,21 @@
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
 
           let ftAsesmen = null;
-          const idList = getStudentStorageIdentifiers();
-          for (const id of idList) {
-            try {
-              const raw = localStorage.getItem('fincestem_asesmen_ft_day2_' + id);
-              if (raw) {
-                const parsed = JSON.parse(raw);
-                if (parsed && (parsed.submitted || parsed.score !== undefined)) {
-                  ftAsesmen = parsed;
-                  break;
+          const hasServerAsesmen2 = taskMap && !!taskMap['2_asesmen'];
+          if (hasServerAsesmen2) {
+            const idList = getStudentStorageIdentifiers();
+            for (const id of idList) {
+              try {
+                const raw = localStorage.getItem('fincestem_asesmen_ft_day2_' + id);
+                if (raw) {
+                  const parsed = JSON.parse(raw);
+                  if (parsed && (parsed.submitted || parsed.score !== undefined)) {
+                    ftAsesmen = parsed;
+                    break;
+                  }
                 }
-              }
-            } catch(e) {}
+              } catch(e) {}
+            }
           }
 
           const isSubmitted = ftAsesmen && ftAsesmen.submitted;

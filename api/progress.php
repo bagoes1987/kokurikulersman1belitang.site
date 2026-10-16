@@ -7,11 +7,11 @@ require_once __DIR__ . '/db.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Pastikan tabel student_progress_eval ada
+// Pastikan tabel student_progress_eval dan tabel sinkronisasi reset ada
 function ensureProgressTable($pdo) {
     static $checked = false;
     if ($checked) return;
-    $lockFile = sys_get_temp_dir() . '/fincestem_progress_table.lock';
+    $lockFile = sys_get_temp_dir() . '/fincestem_progress_table_v3.lock';
     if (file_exists($lockFile) && (time() - filemtime($lockFile) < 3600)) {
         $checked = true;
         return;
@@ -44,6 +44,33 @@ function ensureProgressTable($pdo) {
         $pdo->exec("ALTER TABLE `student_progress_eval` MODIFY COLUMN `status` VARCHAR(50) NOT NULL DEFAULT 'submitted'");
     } catch (Exception $e) {}
 
+    try {
+        $pdo->exec("ALTER TABLE `users` ADD COLUMN `reset_at` DATETIME DEFAULT NULL");
+    } catch (Exception $e) {}
+
+    try {
+        $pdo->exec("
+        CREATE TABLE IF NOT EXISTS `student_reset_meta` (
+          `nisn` VARCHAR(50) PRIMARY KEY,
+          `scope` VARCHAR(50) NOT NULL DEFAULT 'all_days',
+          `target_day` INT NOT NULL DEFAULT -1,
+          `components` TEXT DEFAULT NULL,
+          `reset_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          INDEX `idx_reset_at` (`reset_at`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ");
+    } catch (Exception $e) {}
+
+    try {
+        $pdo->exec("
+        CREATE TABLE IF NOT EXISTS `app_system_meta` (
+          `meta_key` VARCHAR(100) PRIMARY KEY,
+          `meta_value` TEXT DEFAULT NULL,
+          `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ");
+    } catch (Exception $e) {}
+
     @touch($lockFile);
     $checked = true;
 }
@@ -57,6 +84,76 @@ if ($method === 'GET') {
         ensureProgressTable($pdo);
 
         if ($nisn) {
+            // Ambil data reset_at termutakhir (spesifik siswa atau global reset)
+            $resetInfo = null;
+            try {
+                $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
+                $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
+
+                // 1. Cek student_reset_meta
+                $stmtReset = $pdo->prepare("
+                    SELECT `scope`, `target_day`, `components`, `reset_at` 
+                    FROM `student_reset_meta` 
+                    WHERE `nisn` = :n1 OR `nisn` = :n2 OR `nisn` = :n3 
+                    ORDER BY `reset_at` DESC LIMIT 1
+                ");
+                $stmtReset->execute([':n1' => $nisn, ':n2' => $cleanNisn, ':n3' => $padded]);
+                $rMeta = $stmtReset->fetch();
+
+                // 2. Cek app_system_meta (global_reset)
+                $stmtGlobal = $pdo->prepare("SELECT `meta_value`, `updated_at` FROM `app_system_meta` WHERE `meta_key` = 'global_reset' LIMIT 1");
+                $stmtGlobal->execute();
+                $gMeta = $stmtGlobal->fetch();
+
+                // 3. Cek users table reset_at
+                $stmtUserReset = $pdo->prepare("SELECT `reset_at` FROM `users` WHERE `identifier` = :n1 OR `identifier` = :n2 OR `nis` = :n3 LIMIT 1");
+                $stmtUserReset->execute([':n1' => $nisn, ':n2' => $padded, ':n3' => $cleanNisn]);
+                $uReset = $stmtUserReset->fetch();
+
+                $latestResetTime = null;
+                $effectiveReset = null;
+
+                if ($rMeta && !empty($rMeta['reset_at'])) {
+                    $latestResetTime = strtotime($rMeta['reset_at']);
+                    $compDecoded = !empty($rMeta['components']) ? json_decode($rMeta['components'], true) : null;
+                    $effectiveReset = [
+                        'reset_at'   => $rMeta['reset_at'],
+                        'scope'      => $rMeta['scope'] ?? 'all_days',
+                        'target_day' => (int)($rMeta['target_day'] ?? -1),
+                        'components' => $compDecoded
+                    ];
+                }
+
+                if ($gMeta && !empty($gMeta['updated_at'])) {
+                    $gTime = strtotime($gMeta['updated_at']);
+                    if ($latestResetTime === null || $gTime > $latestResetTime) {
+                        $latestResetTime = $gTime;
+                        $gParsed = json_decode($gMeta['meta_value'] ?? '{}', true) ?: [];
+                        $effectiveReset = [
+                            'reset_at'   => $gMeta['updated_at'],
+                            'scope'      => $gParsed['scope'] ?? 'all_days',
+                            'target_day' => (int)($gParsed['target_day'] ?? -1),
+                            'components' => $gParsed['components'] ?? null
+                        ];
+                    }
+                }
+
+                if ($uReset && !empty($uReset['reset_at'])) {
+                    $uTime = strtotime($uReset['reset_at']);
+                    if ($latestResetTime === null || $uTime > $latestResetTime) {
+                        $latestResetTime = $uTime;
+                        $effectiveReset = [
+                            'reset_at'   => $uReset['reset_at'],
+                            'scope'      => 'all_days',
+                            'target_day' => -1,
+                            'components' => null
+                        ];
+                    }
+                }
+
+                $resetInfo = $effectiveReset;
+            } catch (Exception $eReset) {}
+
             $stmt = $pdo->prepare("
                 SELECT * FROM `student_progress_eval` 
                 WHERE `student_nisn` = :nisn 
@@ -111,7 +208,8 @@ if ($method === 'GET') {
                 'predicate'       => $predicate,
                 'latest_feedback' => $latestFeedback,
                 'records'         => $records,
-                'task_map'        => $taskMap
+                'task_map'        => $taskMap,
+                'reset_info'      => $resetInfo
             ]);
         } elseif ($className) {
             $stmt = $pdo->prepare("
@@ -398,13 +496,39 @@ if ($method === 'POST') {
                 } catch (Exception $e) {}
             }
 
+            // 5. Catat timestamp reset agar device/browser siswa langsung mendeteksi dan membersihkan cache lokal
+            $nowStr = date('Y-m-d H:i:s');
+            try {
+                $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
+                $stmtMeta = $pdo->prepare("
+                    INSERT INTO `student_reset_meta` (`nisn`, `scope`, `target_day`, `components`, `reset_at`)
+                    VALUES (:nisn, :scope, :tday, :comp, :now)
+                    ON DUPLICATE KEY UPDATE 
+                        `scope` = VALUES(`scope`),
+                        `target_day` = VALUES(`target_day`),
+                        `components` = VALUES(`components`),
+                        `reset_at` = VALUES(`reset_at`)
+                ");
+                $stmtMeta->execute([
+                    ':nisn'  => $cleanNisn ?: $nisn,
+                    ':scope' => $scope,
+                    ':tday'  => $targetDay,
+                    ':comp'  => json_encode($comp),
+                    ':now'   => $nowStr
+                ]);
+
+                $stmtUReset = $pdo->prepare("UPDATE `users` SET `reset_at` = :now WHERE `identifier` = :id OR `identifier` = :clean OR `nis` = :nis");
+                $stmtUReset->execute([':now' => $nowStr, ':id' => $nisn, ':clean' => $cleanNisn, ':nis' => $nisn]);
+            } catch (Exception $eMeta) {}
+
             $scopeMsg = $targetDay === 0 ? "khusus Day Uji Coba (Day 0)" : ($targetDay > 0 ? "Day {$targetDay}" : "seluruh hari");
             jsonResponse(true, "Data siswa (NISN {$nisn}) {$scopeMsg} berhasil di-reset sesuai pilihan komponen!", [
                 'student_nisn'    => $nisn,
                 'scope'           => $scope,
                 'target_day'      => $targetDay,
                 'deleted_records' => $deletedEval,
-                'deleted_photo'   => $deletedPhoto
+                'deleted_photo'   => $deletedPhoto,
+                'reset_at'        => $nowStr
             ]);
         }
 
@@ -506,8 +630,33 @@ if ($method === 'POST') {
                 } catch (Exception $e) {}
             }
 
+            // 5. Catat timestamp reset global agar seluruh perangkat siswa mendeteksi dan membersihkan cache lokal
+            $nowStr = date('Y-m-d H:i:s');
+            try {
+                $gVal = json_encode([
+                    'reset_at'   => $nowStr,
+                    'scope'      => $scope,
+                    'target_day' => $targetDay,
+                    'components' => $comp
+                ]);
+                $stmtG = $pdo->prepare("
+                    INSERT INTO `app_system_meta` (`meta_key`, `meta_value`, `updated_at`)
+                    VALUES ('global_reset', :val, :now)
+                    ON DUPLICATE KEY UPDATE 
+                        `meta_value` = VALUES(`meta_value`),
+                        `updated_at` = VALUES(`updated_at`)
+                ");
+                $stmtG->execute([':val' => $gVal, ':now' => $nowStr]);
+
+                $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `role` = 'siswa' OR `role` IS NULL");
+            } catch (Exception $eMeta) {}
+
             $scopeMsg = $targetDay === 0 ? "khusus Day Uji Coba (Day 0)" : ($targetDay > 0 ? "Day {$targetDay}" : "seluruh hari");
-            jsonResponse(true, "Seluruh data pengerjaan siswa ({$scopeMsg}) berhasil dibersihkan sesuai pilihan komponen!");
+            jsonResponse(true, "Seluruh data pengerjaan siswa ({$scopeMsg}) berhasil dibersihkan sesuai pilihan komponen!", [
+                'scope'      => $scope,
+                'target_day' => $targetDay,
+                'reset_at'   => $nowStr
+            ]);
         }
 
         jsonResponse(false, 'Aksi tidak dikenali', null, 400);

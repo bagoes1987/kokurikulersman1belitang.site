@@ -1839,6 +1839,164 @@ const FincestemCore = {
 
   // Modul Pelacakan Progres Pengerjaan Siswa & Evaluasi Fasilitator
   progress: {
+    // Fungsi Pembersihan Storage Lokal Siswa (Reset 100% Bersih di Sisi Browser/HP Siswa)
+    purgeStudentLocalStorage: function(nisn, options) {
+      options = options || {};
+      const rawNisn = String(nisn || '').trim();
+      const cleanNisn = rawNisn.replace(/[^A-Za-z0-9]/g, '');
+      if (!cleanNisn) return;
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = (cleanNisn.length >= 8 && cleanNisn.length <= 10) ? cleanNisn.padStart(10, '0') : cleanNisn;
+      const targetDay = (options.target_day !== undefined) ? parseInt(options.target_day) : -1;
+      const scope = options.scope || (targetDay === 0 ? 'trial_only' : (targetDay > 0 ? ('day_' + targetDay) : 'all_days'));
+      const comp = options.components || {
+        materi: true,
+        lkpd: true,
+        asesmen: true,
+        refleksi: true,
+        dokumentasi: true,
+        foto_profil: (scope !== 'trial_only')
+      };
+
+      const idVariations = Array.from(new Set([cleanNisn, unpadded, padded, '0' + unpadded, rawNisn])).filter(Boolean);
+      const days = (targetDay === 0) ? [0] : ((targetDay > 0) ? [targetDay] : [0, 1, 2, 3, 4, 5, 6, 7]);
+
+      try {
+        // 1. Bersihkan foto profil jika dipilih
+        if (comp.foto_profil && scope !== 'trial_only') {
+          idVariations.forEach(id => localStorage.removeItem('fincestem_photo_' + id));
+          const u = FincestemCore.auth.getUser();
+          if (u && idVariations.some(id => String(u.nisn || u.identifier || '').trim() === id)) {
+            u.photo_url = '';
+            FincestemCore.auth.setUser(u, u.role || 'siswa');
+          }
+          if (window.FincestemMasterStudents) {
+            const s = window.FincestemMasterStudents.find(x => idVariations.some(id => String(x.nisn || x.nis).trim() === id));
+            if (s) s.photo_url = '';
+          }
+        }
+
+        // 2. Bersihkan kunci spesifik per-hari untuk seluruh variasi ID
+        days.forEach(d => {
+          idVariations.forEach(id => {
+            if (comp.materi) {
+              localStorage.removeItem(`fincestem_materi_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_materi_day${d}_` + id);
+            }
+            if (comp.lkpd) {
+              localStorage.removeItem(`fincestem_lkpd_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_lkpd_day${d}_` + id);
+            }
+            if (comp.asesmen) {
+              localStorage.removeItem(`fincestem_asesmen_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_asesmen_day${d}_` + id);
+            }
+            if (comp.dokumentasi) {
+              localStorage.removeItem(`fincestem_dok_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_dok_day${d}_` + id);
+            }
+            if (comp.refleksi) {
+              localStorage.removeItem(`fincestem_refleksi_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_refleksi_day${d}_` + id);
+            }
+          });
+        });
+
+        // 3. Bersihkan kunci umum LKPD
+        if (comp.lkpd && targetDay <= 0) {
+          idVariations.forEach(id => localStorage.removeItem('fincestem_lkpd_' + id));
+        }
+
+        // 4. Scanning dinamis seluruh localStorage untuk kunci yang berhubungan dengan siswa ini
+        for (let i = localStorage.length - 1; i >= 0; i--) {
+          const k = localStorage.key(i);
+          if (!k) continue;
+          const matchesStudent = idVariations.some(id => id.length >= 4 && k.includes(id));
+          if (!matchesStudent) continue;
+
+          let shouldRemove = false;
+          if (comp.materi && k.includes('materi')) shouldRemove = true;
+          if (comp.lkpd && k.includes('lkpd')) shouldRemove = true;
+          if (comp.asesmen && k.includes('asesmen')) shouldRemove = true;
+          if (comp.refleksi && k.includes('refleksi')) shouldRemove = true;
+          if (comp.dokumentasi && k.includes('dok')) shouldRemove = true;
+
+          if (shouldRemove && targetDay >= 0) {
+            const m = k.match(/day(\d+)/i);
+            if (m && parseInt(m[1]) !== targetDay) {
+              shouldRemove = false;
+            }
+          }
+
+          if (shouldRemove) {
+            localStorage.removeItem(k);
+          }
+        }
+
+        // 5. Bersihkan entri dokumentasi & LKPD di fincestem_db_2026_v1
+        const storedDb = localStorage.getItem('fincestem_db_2026_v1');
+        if (storedDb) {
+          try {
+            const db = JSON.parse(storedDb);
+            if (comp.dokumentasi && Array.isArray(db.documentation)) {
+              db.documentation = db.documentation.filter(d => {
+                const dNisn = String(d.nisn || d.author_nisn || d.uploaded_by || '').trim();
+                const isStudent = idVariations.some(id => dNisn === id || String(d.author || '').toLowerCase().includes(id.toLowerCase()));
+                if (!isStudent) return true;
+                if (targetDay > 0) return !(d.day == targetDay || d.day_number == targetDay);
+                return false;
+              });
+            }
+            if (comp.lkpd && Array.isArray(db.lkpd)) {
+              db.lkpd = db.lkpd.filter(d => {
+                const dNisn = String(d.nisn || d.author_nisn || '').trim();
+                const isStudent = idVariations.some(id => dNisn === id);
+                if (!isStudent) return true;
+                if (targetDay > 0) return !(d.day == targetDay || d.day_number == targetDay);
+                return false;
+              });
+            }
+            localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+          } catch (eDb) {}
+        }
+
+        // 6. Reset atau sesuaikan fincestem_progress_<nisn>
+        idVariations.forEach(id => {
+          const progKey = 'fincestem_progress_' + id;
+          if (targetDay < 0 && scope === 'all_days') {
+            localStorage.removeItem(progKey);
+          } else {
+            const storedProg = localStorage.getItem(progKey);
+            if (storedProg) {
+              try {
+                const p = JSON.parse(storedProg);
+                if (p && p.task_map) {
+                  Object.keys(p.task_map).forEach(tk => {
+                    const parts = tk.split('_');
+                    const d = parseInt(parts[0]);
+                    const type = parts.slice(1).join('_');
+                    if ((targetDay < 0 || targetDay === d) && comp[type]) {
+                      delete p.task_map[tk];
+                    }
+                  });
+                  let daysSet = new Set();
+                  Object.keys(p.task_map).forEach(tk => {
+                    const d = parseInt(tk.split('_')[0]);
+                    if (d && d >= 1 && d <= 7 && p.task_map[tk].status === 'completed') daysSet.add(d);
+                  });
+                  p.completed_days = daysSet.size;
+                  p.percentage = Math.min(100, Math.round((p.completed_days / 7) * 100));
+                  localStorage.setItem(progKey, JSON.stringify(p));
+                }
+              } catch (ePr) {}
+            }
+          }
+        });
+      } catch (e) {
+        console.warn('purgeStudentLocalStorage error:', e);
+      }
+    },
+
     getStudentProgress: function(nisn, callback) {
       if (!nisn) {
         if (callback) callback(this.getDefaultProgress(''));
@@ -1856,6 +2014,44 @@ const FincestemCore = {
           .then(res => {
             if (timer) clearTimeout(timer);
             if (res && res.success && res.data) {
+              const cleanNisn = String(nisn || '').replace(/[^A-Za-z0-9]/g, '');
+              const resetInfo = res.data.reset_info;
+              const serverResetAt = resetInfo && resetInfo.reset_at ? resetInfo.reset_at : null;
+              const clientLastReset = localStorage.getItem('fincestem_client_reset_' + cleanNisn);
+
+              let shouldPurge = false;
+              if (serverResetAt) {
+                if (!clientLastReset || new Date(serverResetAt).getTime() > new Date(clientLastReset).getTime()) {
+                  shouldPurge = true;
+                }
+              }
+
+              // Extra safeguard: jika progres server 0 (records kosong dan task_map kosong)
+              // tapi di storage lokal masih ada sisa pengisian, otomatis sinkronkan dengan reset
+              const recordsCount = Array.isArray(res.data.records) ? res.data.records.length : 0;
+              const taskMapCount = res.data.task_map ? Object.keys(res.data.task_map).length : 0;
+              if (recordsCount === 0 && taskMapCount === 0 && (res.data.completed_days === 0 || !res.data.completed_days)) {
+                const sampleKeys = [
+                  'fincestem_lkpd_ft_day1_' + cleanNisn,
+                  'fincestem_lkpd_ft_day2_' + cleanNisn,
+                  'fincestem_asesmen_ft_day1_' + cleanNisn,
+                  'fincestem_asesmen_ft_day2_' + cleanNisn,
+                  'fincestem_materi_ft_day1_' + cleanNisn
+                ];
+                if (sampleKeys.some(k => !!localStorage.getItem(k))) {
+                  shouldPurge = true;
+                }
+              }
+
+              if (shouldPurge) {
+                self.purgeStudentLocalStorage(cleanNisn, resetInfo || { scope: 'all_days', target_day: -1 });
+                if (serverResetAt) {
+                  localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
+                } else {
+                  localStorage.setItem('fincestem_client_reset_' + cleanNisn, new Date().toISOString());
+                }
+              }
+
               localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(res.data));
               if (callback) callback(res.data);
             } else {
@@ -1925,105 +2121,8 @@ const FincestemCore = {
         foto_profil: (scope !== 'trial_only')
       };
 
-      // Selective localStorage purging
-      try {
-        if (comp.foto_profil && scope !== 'trial_only') {
-          localStorage.removeItem('fincestem_photo_' + cleanNisn);
-          const u = FincestemCore.auth.getUser();
-          if (u && (String(u.nisn).trim() === cleanNisn || String(u.identifier).trim() === cleanNisn)) {
-            u.photo_url = '';
-            FincestemCore.auth.setUser(u, u.role || 'siswa');
-          }
-          if (window.FincestemMasterStudents) {
-            const s = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === cleanNisn || String(x.nis).trim() === cleanNisn);
-            if (s) s.photo_url = '';
-          }
-        }
-
-        // Filter progress in localStorage
-        const progKey = 'fincestem_progress_' + cleanNisn;
-        const storedProg = localStorage.getItem(progKey);
-        if (storedProg) {
-          const p = JSON.parse(storedProg);
-          if (scope === 'all_days' && comp.materi && comp.lkpd && comp.asesmen && comp.refleksi && comp.dokumentasi) {
-            localStorage.removeItem(progKey);
-          } else if (p.task_map) {
-            Object.keys(p.task_map).forEach(k => {
-              const parts = k.split('_');
-              const dNum = parseInt(parts[0]);
-              const tType = parts.slice(1).join('_');
-
-              const matchesDay = (targetDay === -1) || (targetDay === dNum);
-              let matchesComp = false;
-              if (tType === 'materi' && comp.materi) matchesComp = true;
-              if (tType === 'lkpd' && comp.lkpd) matchesComp = true;
-              if (tType === 'asesmen' && comp.asesmen) matchesComp = true;
-              if (tType === 'refleksi' && comp.refleksi) matchesComp = true;
-              if (tType === 'dokumentasi' && comp.dokumentasi) matchesComp = true;
-
-              if (matchesDay && matchesComp) {
-                delete p.task_map[k];
-              }
-            });
-            let daysSet = new Set();
-            Object.keys(p.task_map).forEach(k => {
-              const d = parseInt(k.split('_')[0]);
-              if (d && d >= 1 && d <= 7) daysSet.add(d);
-            });
-            p.completed_days = daysSet.size;
-            p.percentage = Math.min(100, Math.round((p.completed_days / 7) * 100));
-            localStorage.setItem(progKey, JSON.stringify(p));
-          }
-        }
-
-        // Purge individual day task keys for this student
-        const dayList = (targetDay === 0) ? [0] : ((targetDay > 0) ? [targetDay] : [0, 1, 2, 3, 4, 5, 6, 7]);
-        dayList.forEach(d => {
-          if (comp.materi) {
-            localStorage.removeItem(`fincestem_materi_ft_day${d}_` + cleanNisn);
-            localStorage.removeItem(`fincestem_materi_day${d}_` + cleanNisn);
-          }
-          if (comp.lkpd) {
-            localStorage.removeItem(`fincestem_lkpd_ft_day${d}_` + cleanNisn);
-            localStorage.removeItem(`fincestem_lkpd_day${d}_` + cleanNisn);
-            localStorage.removeItem('fincestem_lkpd_' + cleanNisn);
-          }
-          if (comp.asesmen) {
-            localStorage.removeItem(`fincestem_asesmen_ft_day${d}_` + cleanNisn);
-            localStorage.removeItem(`fincestem_asesmen_day${d}_` + cleanNisn);
-          }
-          if (comp.dokumentasi) {
-            localStorage.removeItem(`fincestem_dok_ft_day${d}_` + cleanNisn);
-            localStorage.removeItem(`fincestem_dok_day${d}_` + cleanNisn);
-          }
-          if (comp.refleksi) {
-            localStorage.removeItem(`fincestem_refleksi_ft_day${d}_` + cleanNisn);
-            localStorage.removeItem(`fincestem_refleksi_day${d}_` + cleanNisn);
-          }
-        });
-
-        if (comp.dokumentasi) {
-          const stored = localStorage.getItem('fincestem_db_2026_v1');
-          if (stored) {
-            const db = JSON.parse(stored);
-            if (Array.isArray(db.documentation)) {
-              db.documentation = db.documentation.filter(d => {
-                const dNisn = String(d.nisn || d.author_nisn || '').trim();
-                const isStudent = (dNisn === cleanNisn || String(d.author || '').toLowerCase().includes(cleanNisn));
-                if (!isStudent) return true;
-                if (targetDay > 0) {
-                  return !(d.title && d.title.includes('Day ' + targetDay));
-                }
-                // Jika targetDay === 0 (Uji Coba) atau all_days, bersihkan dokumentasi siswa ini
-                return false;
-              });
-              localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
-            }
-          }
-        }
-      } catch (e) {
-        console.warn('Gagal membersihkan cache lokal:', e);
-      }
+      // Bersihkan seluruh cache & file di storage lokal perangkat
+      this.purgeStudentLocalStorage(cleanNisn, { scope: scope, target_day: targetDay, components: comp });
 
       // Reset di server cPanel
       if (window.location.protocol.startsWith('http')) {
