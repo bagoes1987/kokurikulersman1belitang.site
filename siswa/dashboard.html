@@ -630,24 +630,63 @@
         </div>
       </div>
 
-      <!-- 3. Kedisiplinan Waktu Pengumpulan -->
+      <!-- 3. Kedisiplinan Waktu Pengumpulan Harian -->
       <div class="flex flex-col gap-2">
         <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
           <span class="material-symbols-outlined text-blue-600 text-sm">schedule</span>
-          3. Kedisiplinan Waktu Pengumpulan Harian
+          3. Kedisiplinan Waktu Pengumpulan Harian &amp; Skema Skor
         </span>
-        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs flex flex-col gap-2">
-          <div class="flex items-start gap-2">
-            <span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 font-extrabold text-[11px] shrink-0">s.d. 21.00 WIB</span>
-            <p class="text-slate-600 leading-relaxed">Pengumpulan tepat waktu di hari kegiatan. Berpeluang meraih nilai maksimal penuh rentang <strong>90 – 100 (Sangat Baik)</strong>.</p>
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs flex flex-col gap-2.5">
+          <!-- Tier 1: Jam Kunjungan / Riset Utama -->
+          <div class="flex items-start gap-2.5">
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 font-black text-xs shrink-0 whitespace-nowrap">
+              07.00 – 16.00 WIB
+            </span>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-emerald-950">Skor 100 · ⭐⭐⭐⭐⭐ Sangat Baik</span>
+              <p class="text-slate-600 leading-relaxed text-[11px]">
+                Tuntas pada jam kunjungan lapangan / riset resmi. Memperoleh nilai sempurna <strong>100</strong>. <em>(Jam batas 16.00 WIB dapat disesuaikan panitia per hari kegiatan).</em>
+              </p>
+            </div>
           </div>
-          <div class="flex items-start gap-2 border-t border-slate-200/60 pt-2">
-            <span class="px-2 py-0.5 rounded-md bg-teal-100 text-teal-900 font-extrabold text-[11px] shrink-0">21.01 – 24.00 WIB</span>
-            <p class="text-slate-600 leading-relaxed">Batas toleransi pengerjaan malam hari. Penyesuaian ke rentang <strong>80 – 89 (Baik)</strong>.</p>
+
+          <!-- Tier 2: Sore s.d. Petang -->
+          <div class="flex items-start gap-2.5 border-t border-slate-200/60 pt-2.5">
+            <span class="px-2.5 py-1 rounded-lg bg-teal-100 text-teal-900 font-black text-xs shrink-0 whitespace-nowrap">
+              16.01 – 21.00 WIB
+            </span>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-teal-950">Skor 99 – 95 · ⭐⭐⭐⭐⭐ Sangat Baik</span>
+              <p class="text-slate-600 leading-relaxed text-[11px]">
+                Tuntas sore / petang hari di perjalanan. Tetap berpredikat <strong>Sangat Baik</strong> dengan penyesuaian 1 poin per jam (skor 99 turun bertahap hingga batas minimal 95).
+              </p>
+            </div>
           </div>
-          <div class="flex items-start gap-2 border-t border-slate-200/60 pt-2">
-            <span class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-900 font-extrabold text-[11px] shrink-0">Hari Berikutnya</span>
-            <p class="text-slate-600 leading-relaxed">Toleransi susulan pengerjaan di hari berikutnya. Penyesuaian ke rentang <strong>70 – 79 (Cukup)</strong>.</p>
+
+          <!-- Tier 3: Larut Malam -->
+          <div class="flex items-start gap-2.5 border-t border-slate-200/60 pt-2.5">
+            <span class="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 font-black text-xs shrink-0 whitespace-nowrap">
+              21.01 – 24.00 WIB
+            </span>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-amber-950">Skor 94 – 90 · ⭐⭐⭐⭐☆ Baik</span>
+              <p class="text-slate-600 leading-relaxed text-[11px]">
+                Toleransi pengerjaan malam hari saat istirahat di hotel / rumah. Berpredikat <strong>Baik</strong> dengan rentang skor 90 s.d. 94.
+              </p>
+            </div>
+          </div>
+
+          <!-- Tier 4: Hari Berikutnya -->
+          <div class="flex items-start gap-2.5 border-t border-slate-200/60 pt-2.5">
+            <span class="px-2.5 py-1 rounded-lg bg-blue-100 text-blue-900 font-black text-xs shrink-0 whitespace-nowrap">
+              Lewat 24.00 WIB
+            </span>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-blue-950">Skor 85 · ⭐⭐⭐⭐☆ Baik</span>
+              <p class="text-slate-600 leading-relaxed text-[11px]">
+                Toleransi pengumpulan susulan keesokan harinya. Memperoleh skor <strong>85</strong> berpredikat <strong>Baik</strong>.
+              </p>
+            </div>
           </div>
         </div>
       </div>
