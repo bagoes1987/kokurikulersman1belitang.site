@@ -268,20 +268,26 @@
 
     <!-- 2.5 PROGRES PENGERJAAN SISWA & EVALUASI FASILITATOR (JELAS & NYAMAN DI HP) -->
     <div class="bg-white rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
-      <!-- Header Progres -->
+      <!-- Header Progres & Panduan Penilaian -->
       <div class="flex items-center justify-between gap-2 flex-wrap">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-2xl bg-cyan-50 text-[#08A7B5] flex items-center justify-center shrink-0">
             <span class="material-symbols-outlined text-2xl">analytics</span>
           </div>
           <div>
-            <h3 class="font-extrabold text-base text-slate-800 leading-tight">Progres Riset &amp; Capaian Belajar</h3>
-            <span class="text-xs sm:text-sm text-slate-500 font-medium">Pelacakan tugas &amp; verifikasi Fasilitator Kokurikuler</span>
+            <h3 class="font-extrabold text-base text-slate-800 leading-tight">Capaian Kokurikuler &amp; Panduan Penilaian</h3>
+            <span class="text-xs sm:text-sm text-slate-500 font-medium">Pelacakan progres harian, evaluasi 4 pilar &amp; transparansi rubrik penilaian</span>
           </div>
         </div>
-        <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-teal-50 border border-teal-200/70 text-teal-900">
-          <span id="progressPercentBadge" class="text-base sm:text-lg font-black">0%</span>
-          <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Selesai</span>
+        <div class="flex items-center gap-2 flex-wrap">
+          <button type="button" onclick="openRubrikModal()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-xs font-bold transition shadow-2xs cursor-pointer">
+            <span class="material-symbols-outlined text-base text-amber-600">help</span>
+            <span>Panduan Penilaian</span>
+          </button>
+          <div class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-2xl bg-teal-50 border border-teal-200/70 text-teal-900">
+            <span id="progressPercentBadge" class="text-base sm:text-lg font-black">0%</span>
+            <span class="text-xs font-bold uppercase tracking-wider text-teal-700">Selesai</span>
+          </div>
         </div>
       </div>
 
@@ -485,6 +491,182 @@
       <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
         <button onclick="closeFeedbackHistoryModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-all cursor-pointer">
           Tutup Rekapitulasi
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL PANDUAN & RUBRIK PENILAIAN RESMI (SETARA FIELD TRIP & NON-FIELD TRIP) -->
+  <div id="modalRubrikPenilaian" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-white rounded-3xl max-w-2xl w-full p-5 sm:p-6 shadow-2xl flex flex-col gap-4 max-h-[88vh] overflow-y-auto">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">menu_book</span>
+          </div>
+          <div>
+            <h4 class="text-base font-extrabold text-slate-800">Panduan &amp; Rubrik Penilaian Kokurikuler</h4>
+            <span class="text-xs text-slate-500 font-medium">Standar capaian, 4 pilar, dan transparansi penilaian riset</span>
+          </div>
+        </div>
+        <button onclick="closeRubrikModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 cursor-pointer">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+      </div>
+
+      <!-- Prinsip Tanpa KKM Banner -->
+      <div class="p-4 rounded-2xl bg-gradient-to-r from-teal-700 via-teal-800 to-emerald-800 text-white flex flex-col gap-1.5 shadow-xs">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-amber-300 text-lg">verified</span>
+          <span class="text-xs font-black uppercase tracking-wider text-amber-200">Prinsip Asesmen Kokurikuler FINCESTEM</span>
+        </div>
+        <p class="text-xs sm:text-sm text-teal-50 leading-relaxed font-medium">
+          Penilaian kokurikuler berfokus pada perkembangan karakter, keterlibatan aktif, dan kualitas autentik proses riset (Kurikulum Merdeka). <strong>Tidak ada batas KKM / kelulusan</strong>, melainkan murni mengukur kualitas ketercapaian kompetensi harian siswa.
+        </p>
+      </div>
+
+      <!-- 1. Skala Bintang & Predikat Resmi -->
+      <div class="flex flex-col gap-2">
+        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-amber-500 text-sm">stars</span>
+          1. Skala Capaian &amp; Predikat Resmi
+        </span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+          <!-- Bintang 5 -->
+          <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-black text-amber-900 text-sm">⭐⭐⭐⭐⭐ Bintang 5</span>
+              <span class="text-amber-700 font-bold">Sangat Baik</span>
+              <span class="text-[11px] text-slate-500 mt-0.5">Seluruh instrumen tuntas &amp; tepat waktu</span>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-amber-900">90 – 100</span>
+              <span class="block text-[10px] text-amber-600 font-semibold">Skor Acuan: 95</span>
+            </div>
+          </div>
+          <!-- Bintang 4 -->
+          <div class="p-3 rounded-2xl bg-teal-50/70 border border-teal-200 flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-black text-teal-900 text-sm">⭐⭐⭐⭐☆ Bintang 4</span>
+              <span class="text-teal-700 font-bold">Baik</span>
+              <span class="text-[11px] text-slate-500 mt-0.5">Tugas lengkap, toleransi pengumpulan malam</span>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-teal-900">80 – 89</span>
+              <span class="block text-[10px] text-teal-600 font-semibold">Skor Acuan: 85</span>
+            </div>
+          </div>
+          <!-- Bintang 3 -->
+          <div class="p-3 rounded-2xl bg-blue-50/70 border border-blue-200 flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-black text-blue-900 text-sm">⭐⭐⭐☆☆ Bintang 3</span>
+              <span class="text-blue-700 font-bold">Cukup</span>
+              <span class="text-[11px] text-slate-500 mt-0.5">Tugas pokok terselesaikan secara umum</span>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-blue-900">70 – 79</span>
+              <span class="block text-[10px] text-blue-600 font-semibold">Skor Acuan: 75</span>
+            </div>
+          </div>
+          <!-- Bintang 2 -->
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="font-black text-slate-800 text-sm">⭐⭐☆☆☆ Bintang 2</span>
+              <span class="text-slate-600 font-bold">Kurang</span>
+              <span class="text-[11px] text-slate-500 mt-0.5">Hanya menyelesaikan sebagian instrumen</span>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-slate-800">60 – 69</span>
+              <span class="block text-[10px] text-slate-500 font-semibold">Skor Acuan: 65</span>
+            </div>
+          </div>
+          <!-- Bintang 1 (Full Width) -->
+          <div class="p-3 rounded-2xl bg-rose-50/70 border border-rose-200 flex items-center justify-between sm:col-span-2">
+            <div class="flex flex-col">
+              <span class="font-black text-rose-900 text-sm">⭐☆☆☆☆ Bintang 1</span>
+              <span class="text-rose-700 font-bold">Sangat Kurang</span>
+              <span class="text-[11px] text-slate-500 mt-0.5">Tidak mengunggah tugas atau data tidak valid / tanpa stempel GPS</span>
+            </div>
+            <div class="text-right">
+              <span class="text-base font-black text-rose-900">0 – 59</span>
+              <span class="block text-[10px] text-rose-600 font-semibold">Skor Acuan: 50</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Rincian 4 Komponen Poin Harian (Maks. 100 Poin) -->
+      <div class="flex flex-col gap-2">
+        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-teal-600 text-sm">calculate</span>
+          2. Rincian 4 Komponen Poin Harian (Total Maksimal 100 Poin)
+        </span>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-between gap-1 shadow-2xs">
+            <span class="material-symbols-outlined text-blue-600 text-xl">description</span>
+            <span class="font-bold text-slate-700">1. Lembar Kerja (LKPD)</span>
+            <span class="text-base font-black text-blue-700">Maks. 35 Poin</span>
+            <span class="text-[10px] text-slate-500">Kelengkapan analisis</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-between gap-1 shadow-2xs">
+            <span class="material-symbols-outlined text-purple-600 text-xl">quiz</span>
+            <span class="font-bold text-slate-700">2. Kuis Asesmen</span>
+            <span class="text-base font-black text-purple-700">Maks. 25 Poin</span>
+            <span class="text-[10px] text-slate-500">Pemahaman materi</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-between gap-1 shadow-2xs">
+            <span class="material-symbols-outlined text-emerald-600 text-xl">photo_camera</span>
+            <span class="font-bold text-slate-700">3. Foto &amp; Geotag GPS</span>
+            <span class="text-base font-black text-emerald-700">Maks. 20 Poin</span>
+            <span class="text-[10px] text-slate-500">Dokumentasi otentik</span>
+          </div>
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col items-center justify-between gap-1 shadow-2xs">
+            <span class="material-symbols-outlined text-amber-600 text-xl">edit_note</span>
+            <span class="font-bold text-slate-700">4. Jurnal Refleksi</span>
+            <span class="text-base font-black text-amber-700">Maks. 20 Poin</span>
+            <span class="text-[10px] text-slate-500">Min. 25 kata reflektif</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Kedisiplinan Waktu Pengumpulan -->
+      <div class="flex flex-col gap-2">
+        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-blue-600 text-sm">schedule</span>
+          3. Kedisiplinan Waktu Pengumpulan Harian
+        </span>
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs flex flex-col gap-2">
+          <div class="flex items-start gap-2">
+            <span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 font-extrabold text-[11px] shrink-0">s.d. 21.00 WIB</span>
+            <p class="text-slate-600 leading-relaxed">Pengumpulan tepat waktu di hari kegiatan. Berpeluang meraih nilai maksimal penuh rentang <strong>90 – 100 (Sangat Baik)</strong>.</p>
+          </div>
+          <div class="flex items-start gap-2 border-t border-slate-200/60 pt-2">
+            <span class="px-2 py-0.5 rounded-md bg-teal-100 text-teal-900 font-extrabold text-[11px] shrink-0">21.01 – 24.00 WIB</span>
+            <p class="text-slate-600 leading-relaxed">Batas toleransi pengerjaan malam hari. Penyesuaian ke rentang <strong>80 – 89 (Baik)</strong>.</p>
+          </div>
+          <div class="flex items-start gap-2 border-t border-slate-200/60 pt-2">
+            <span class="px-2 py-0.5 rounded-md bg-blue-100 text-blue-900 font-extrabold text-[11px] shrink-0">Hari Berikutnya</span>
+            <p class="text-slate-600 leading-relaxed">Toleransi susulan pengerjaan di hari berikutnya. Penyesuaian ke rentang <strong>70 – 79 (Cukup)</strong>.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Verifikasi Fasilitator -->
+      <div class="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200/80 text-xs flex items-start gap-2.5">
+        <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">info</span>
+        <div class="flex flex-col gap-1">
+          <span class="font-extrabold text-amber-950">Transparansi Penilaian Fasilitator</span>
+          <p class="text-slate-700 leading-relaxed">
+            Skor yang tertera di sistem merupakan <strong>estimasi rekomendasi otomatis</strong> berdasarkan kelengkapan berkas dan ketepatan waktu. Guru Fasilitator memiliki wewenang penuh untuk memeriksa kedalaman jawaban serta menyesuaikan nilai akhir dan catatan apresiasi.
+          </p>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
+        <button onclick="closeRubrikModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-all cursor-pointer">
+          Tutup Panduan
         </button>
       </div>
     </div>
@@ -814,7 +996,7 @@
         // 1. Nilai rata-rata & status nilai kosong/belum ada dulu, diambil dari penilaian guru jika sudah ada
         if (prog.average_score) {
           document.getElementById('statAverageScore').textContent = prog.average_score;
-          document.getElementById('statPredicate').textContent = `• ${prog.predicate || 'Bintang 5 (A)'}`;
+          document.getElementById('statPredicate').textContent = `• ${prog.predicate || 'Sangat Baik'}`;
           const vBadge = document.getElementById('statVerificationBadge');
           vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800 shadow-2xs';
           vBadge.textContent = 'Terverifikasi Guru';
@@ -2619,11 +2801,11 @@
                     ${starsText}
                   </div>
                   <div class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-                    Nilai: ${ftScore.score} / 100 <span class="text-amber-600 text-base font-extrabold">(${ftScore.predicate})</span>
+                    Nilai: ${ftScore.score} / 100 <span class="text-amber-700 text-base font-extrabold">· ${ftScore.predicate}</span>
                   </div>
                   <div class="flex flex-col items-center gap-1">
                     <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
-                      ✓ ${ftScore.is_emergency_override ? '⚡ Koreksi Kebijakan Darurat Admin' : `Waktu Selesai: ${ftScore.time_formatted}`}
+                      ✓ ${ftScore.is_emergency_override ? '⚡ Koreksi Khusus Admin' : `Waktu Selesai: ${ftScore.time_formatted}`}
                     </span>
                     <span class="text-[11px] text-slate-500 font-medium">
                       ${ftScore.reason}
@@ -2644,8 +2826,8 @@
                   </div>
                   <p class="text-xs text-slate-600 leading-relaxed">
                     ${ftScore.is_emergency_override 
-                      ? `<strong class="text-emerald-700">Koreksi Khusus:</strong> Nilai siswa disetujui langsung oleh Admin (${ftScore.reason}).`
-                      : `Siswa Field Trip dinilai otomatis berdasarkan waktu penyelesaian seluruh tahapan riset. Jam kunjungan resmi s.d. <strong>${ftScore.cutoff_perfect || '16:00'} WIB</strong> bernilai <strong>100</strong> (⭐⭐⭐⭐⭐), disusul rentang sore-malam (99–95), dan larut malam (⭐⭐⭐⭐☆).`}
+                      ? `<strong class="text-emerald-700">Koreksi Khusus:</strong> Nilai disetujui langsung oleh Admin (${ftScore.reason}).`
+                      : `Penilaian otomatis berbasis waktu pengumpulan: Jam batas kunjungan s.d. <strong>${ftScore.cutoff_perfect || '16:00'} WIB</strong> bernilai <strong>100</strong> (⭐⭐⭐⭐⭐ Sangat Baik), disusul rentang sore-malam (99–95), dan larut malam (⭐⭐⭐⭐☆ Baik).`}
                   </p>
                 </div>
 
@@ -2653,19 +2835,19 @@
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
                   <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <span class="block text-slate-500 font-bold text-[11px]">Sains &amp; Lingkungan</span>
-                    <span class="text-base font-black text-emerald-600">${ftScore.score} (${ftScore.stars === 5 ? 'A' : 'B+'})</span>
+                    <span class="text-base font-black text-emerald-600">${ftScore.score}</span>
                   </div>
                   <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <span class="block text-slate-500 font-bold text-[11px]">Teknologi Digital</span>
-                    <span class="text-base font-black text-emerald-600">${ftScore.score} (${ftScore.stars === 5 ? 'A' : 'B+'})</span>
+                    <span class="text-base font-black text-emerald-600">${ftScore.score}</span>
                   </div>
                   <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <span class="block text-slate-500 font-bold text-[11px]">Literasi Finansial</span>
-                    <span class="text-base font-black text-emerald-600">${ftScore.score} (${ftScore.stars === 5 ? 'A' : 'B+'})</span>
+                    <span class="text-base font-black text-emerald-600">${ftScore.score}</span>
                   </div>
                   <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
                     <span class="block text-slate-500 font-bold text-[11px]">Budaya &amp; Karakter</span>
-                    <span class="text-base font-black text-emerald-600">${ftScore.score} (${ftScore.stars === 5 ? 'A' : 'B+'})</span>
+                    <span class="text-base font-black text-emerald-600">${ftScore.score}</span>
                   </div>
                 </div>
 
@@ -2758,6 +2940,8 @@
             // Belum dinilai guru -> Jalankan Pra-Evaluasi Kualitas Otomatis
             const audit = calculateNonFTDayAudit(day.day_number, taskMap, currentStudent);
             const isPenalty = audit.recommendedStars === 1;
+            const auditPred = audit.recommendedStars === 5 ? 'Sangat Baik' : (audit.recommendedStars === 4 ? 'Baik' : (audit.recommendedStars === 3 ? 'Cukup' : (audit.recommendedStars === 2 ? 'Kurang' : 'Sangat Kurang')));
+            const auditScore = audit.recommendedStars === 5 ? 95 : (audit.recommendedStars === 4 ? 85 : (audit.recommendedStars === 3 ? 75 : (audit.recommendedStars === 2 ? 65 : 50)));
 
             body.innerHTML = `
               <div class="p-4 sm:p-5 rounded-3xl ${isPenalty ? 'bg-rose-50/70 border-rose-300' : 'bg-teal-50/70 border-teal-300'} border flex flex-col gap-4">
@@ -2779,11 +2963,11 @@
                     ${'⭐'.repeat(audit.recommendedStars)}${'☆'.repeat(5 - audit.recommendedStars)}
                   </div>
                   <div class="text-lg sm:text-xl font-black ${isPenalty ? 'text-rose-700' : 'text-teal-800'} leading-tight">
-                    Rekomendasi: Bintang ${audit.recommendedStars} / 5
+                    Rekomendasi: Bintang ${audit.recommendedStars} / 5 <span class="text-sm font-extrabold text-slate-700">· ${auditPred} (${auditScore})</span>
                   </div>
                   ${isPenalty ? `
                     <div class="px-3 py-2 rounded-xl bg-rose-100 text-rose-900 border border-rose-300 text-xs font-bold leading-relaxed max-w-md">
-                      ⚠️ <strong>Peringatan Pinalti:</strong> Pengerjaan Anda belum memenuhi standar kualitas (Google Tagging foto tidak terdeteksi atau kedalaman refleksi kurang dari 25 kata). Anda disarankan memperbaiki foto atau refleksi sebelum Fasilitator memberikan penilaian akhir!
+                      ⚠️ <strong>Peringatan Kualitas:</strong> Pengerjaan Anda belum memenuhi standar (Google Tagging foto tidak terdeteksi atau kedalaman refleksi kurang dari 25 kata). Anda disarankan memperbaiki foto atau refleksi sebelum Fasilitator memberikan penilaian akhir!
                     </div>
                   ` : `
                     <div class="px-3 py-2 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold leading-relaxed max-w-md">
@@ -2809,7 +2993,7 @@
                         <span>1. Google Tagging &amp; GPS Foto Dokumentasi</span>
                       </span>
                       <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${audit.hasGeotag ? 'bg-emerald-200 text-emerald-900' : (audit.hasPhoto ? 'bg-rose-200 text-rose-950 font-black uppercase' : 'bg-slate-200 text-slate-700')}">
-                        ${audit.hasGeotag ? 'LULUS (GPS VALID)' : (audit.hasPhoto ? 'PINALTI ⭐ 1 (TANPA GPS)' : 'BELUM UNGGAH')}
+                        ${audit.hasGeotag ? 'VALID (GPS TERDETEKSI)' : (audit.hasPhoto ? 'PINALTI ⭐ 1 (TANPA GPS)' : 'BELUM UNGGAH')}
                       </span>
                     </div>
                     <p class="text-[11px] leading-relaxed text-slate-600 pl-6">
@@ -2831,7 +3015,7 @@
                         <span>2. Kedalaman Jurnal Refleksi Mandiri</span>
                       </span>
                       <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${audit.isRefleksiValid ? 'bg-emerald-200 text-emerald-900' : (audit.hasRefleksi ? 'bg-rose-200 text-rose-950 font-black uppercase' : 'bg-slate-200 text-slate-700')}">
-                        ${audit.isRefleksiValid ? `LULUS (${audit.wordCount} KATA)` : (audit.hasRefleksi ? `PINALTI ⭐ 1 (${audit.wordCount}/25 KATA)` : 'BELUM DIISI')}
+                        ${audit.isRefleksiValid ? `MEMADAI (${audit.wordCount} KATA)` : (audit.hasRefleksi ? `KURANG (${audit.wordCount}/25 KATA)` : 'BELUM DIISI')}
                       </span>
                     </div>
                     <p class="text-[11px] leading-relaxed text-slate-600 pl-6">
@@ -3065,6 +3249,23 @@
     }
 
     /* ========================================================
+       MODAL PANDUAN & RUBRIK PENILAIAN RESMI
+       ======================================================== */
+    function openRubrikModal() {
+      const modal = document.getElementById('modalRubrikPenilaian');
+      if (modal) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    function closeRubrikModal() {
+      const modal = document.getElementById('modalRubrikPenilaian');
+      if (modal) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+      }
+    }
+
+    /* ========================================================
        MODAL REKAPITULASI NILAI & FEEDBACK LENGKAP
        ======================================================== */
     function openFeedbackHistoryModal() {
@@ -3080,7 +3281,7 @@
 
       if (isFieldTrip) {
         if (prog.average_score) {
-          document.getElementById('modalRecapPredicate').textContent = `• ${prog.predicate || 'Bintang 5 (A)'}`;
+          document.getElementById('modalRecapPredicate').textContent = `• ${prog.predicate || 'Sangat Baik'}`;
           document.getElementById('modalRecapScore').textContent = prog.average_score;
         } else {
           document.getElementById('modalRecapPredicate').textContent = 'Belum Dinilai Guru';
@@ -3118,7 +3319,7 @@
             const starsText = ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆';
             scoreHtml = `
               <span class="px-3 py-1 rounded-xl text-xs font-black ${ftScore.stars === 5 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-teal-100 text-teal-900 border-teal-300'} border">
-                ${starsText} Nilai: ${ftScore.score} (${ftScore.predicate})
+                ${starsText} Nilai: ${ftScore.score} · ${ftScore.predicate}
               </span>
             `;
             note = ftScore.is_emergency_override
@@ -3132,15 +3333,17 @@
           if (rec && rec.score) {
             scoreHtml = `
               <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
-                Nilai: ${rec.score} (${rec.predicate || 'A'})
+                Nilai: ${rec.score} · ${rec.predicate || 'Sangat Baik'}
               </span>
             `;
             note = rec.feedback || 'Aktivitas lapangan telah diverifikasi oleh tim fasilitator kokurikuler.';
           } else if (FincestemCore.progress && FincestemCore.progress.isDayStudentTasksDone(prog, i)) {
             const audit = calculateNonFTDayAudit(i, taskMap, currentStudent);
+            const auditPred = audit.recommendedStars === 5 ? 'Sangat Baik' : (audit.recommendedStars === 4 ? 'Baik' : (audit.recommendedStars === 3 ? 'Cukup' : (audit.recommendedStars === 2 ? 'Kurang' : 'Sangat Kurang')));
+            const auditScore = audit.recommendedStars === 5 ? 95 : (audit.recommendedStars === 4 ? 85 : (audit.recommendedStars === 3 ? 75 : (audit.recommendedStars === 2 ? 65 : 50)));
             scoreHtml = `
               <span class="px-3 py-1 rounded-xl text-xs font-black ${audit.recommendedStars === 1 ? 'bg-rose-100 text-rose-900 border border-rose-300' : 'bg-teal-100 text-teal-900 border border-teal-300'}">
-                Estimasi Sistem: ${'⭐'.repeat(audit.recommendedStars)} (${audit.recommendedStars}/5 Bintang)
+                Estimasi Sistem: ${'⭐'.repeat(audit.recommendedStars)} · ${auditPred} (${auditScore})
               </span>
             `;
             note = audit.recommendedStars === 1 

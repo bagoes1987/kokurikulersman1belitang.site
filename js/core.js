@@ -2208,10 +2208,11 @@ const FincestemCore = {
         const score = (evalData.score !== undefined && evalData.score !== null && evalData.score !== '') ? parseFloat(evalData.score) : null;
         let predicate = evalData.predicate;
         if (score !== null && !predicate) {
-          if (score >= 88) predicate = 'Sangat Baik (A)';
-          else if (score >= 75) predicate = 'Baik (B)';
-          else if (score >= 65) predicate = 'Cukup (C)';
-          else predicate = 'Perlu Bimbingan (D)';
+          if (score >= 90) predicate = 'Sangat Baik';
+          else if (score >= 80) predicate = 'Baik';
+          else if (score >= 70) predicate = 'Cukup';
+          else if (score >= 60) predicate = 'Kurang';
+          else predicate = 'Sangat Kurang';
         }
 
         const rawStatus = (evalData.status || '').toLowerCase();
@@ -2267,10 +2268,11 @@ const FincestemCore = {
         const scoreList = prog.records.filter(r => r.score > 0).map(r => r.score);
         if (scoreList.length > 0) {
           prog.average_score = Math.round((scoreList.reduce((a, b) => a + b, 0) / scoreList.length) * 10) / 10;
-          if (prog.average_score >= 88) prog.predicate = 'Sangat Baik (A)';
-          else if (prog.average_score >= 75) prog.predicate = 'Baik (B)';
-          else if (prog.average_score >= 65) prog.predicate = 'Cukup (C)';
-          else prog.predicate = 'Perlu Bimbingan (D)';
+          if (prog.average_score >= 90) prog.predicate = 'Sangat Baik';
+          else if (prog.average_score >= 80) prog.predicate = 'Baik';
+          else if (prog.average_score >= 70) prog.predicate = 'Cukup';
+          else if (prog.average_score >= 60) prog.predicate = 'Kurang';
+          else prog.predicate = 'Sangat Kurang';
         }
 
         localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));
@@ -2460,15 +2462,15 @@ const FincestemCore = {
         : null;
       if (emergency) {
         const sc = parseFloat(emergency.score);
-        const st = parseInt(emergency.stars) || (sc >= 95 ? 5 : 4);
+        const st = parseInt(emergency.stars) || (sc >= 90 ? 5 : 4);
         return {
           day_number: d,
           score: sc,
           stars: st,
           star_label: st === 5 ? '⭐⭐⭐⭐⭐ Bintang 5' : '⭐⭐⭐⭐☆ Bintang 4',
-          predicate: sc >= 95 ? 'Sangat Baik (A)' : (sc >= 88 ? 'Baik (B+)' : (sc >= 75 ? 'Baik (B)' : 'Cukup (C)')),
+          predicate: sc >= 90 ? 'Sangat Baik' : (sc >= 80 ? 'Baik' : (sc >= 70 ? 'Cukup' : (sc >= 60 ? 'Kurang' : 'Sangat Kurang'))),
           is_emergency_override: true,
-          reason: emergency.reason || 'Dispensasi Darurat Lapangan (Kebijakan Admin)',
+          reason: emergency.reason || 'Dispensasi Khusus (Kebijakan Admin)',
           approved_by: emergency.approved_by || 'admin',
           cutoff_perfect: '16:00',
           time_formatted: 'Koreksi Admin'
@@ -2528,17 +2530,17 @@ const FincestemCore = {
       const b5Parts = cutoffB5.split(':');
       const b5Minutes = (parseInt(b5Parts[0]) * 60) + (parseInt(b5Parts[1] || 0));
 
-      // SKEMA PENILAIAN RESMI FIELD TRIP:
-      // A. Pukul 07.00 s.d. Batas Sempurna (Default 16.00 WIB) -> Nilai 100, Bintang 5
+      // SKEMA PENILAIAN RESMI:
+      // A. Pukul 07.00 s.d. Batas Sempurna -> Nilai 100, Bintang 5
       if (subTotalMinutes <= perfectMinutes) {
         return {
           day_number: d,
           score: 100,
           stars: 5,
           star_label: '⭐⭐⭐⭐⭐ Bintang 5',
-          predicate: 'Sangat Baik (A)',
+          predicate: 'Sangat Baik',
           is_emergency_override: false,
-          reason: 'Tuntas di Jam Kunjungan Resmi Lapangan',
+          reason: 'Tuntas sebelum batas waktu kunjungan',
           cutoff_perfect: cutoffPerfect,
           time_formatted: subFormatted
         };
@@ -2553,9 +2555,9 @@ const FincestemCore = {
           score: score,
           stars: 5,
           star_label: '⭐⭐⭐⭐⭐ Bintang 5',
-          predicate: 'Sangat Baik (A)',
+          predicate: 'Sangat Baik',
           is_emergency_override: false,
-          reason: 'Tuntas Sore / Petang Hari di Perjalanan',
+          reason: 'Tuntas sore / petang hari',
           cutoff_perfect: cutoffPerfect,
           time_formatted: subFormatted
         };
@@ -2576,9 +2578,9 @@ const FincestemCore = {
           score: score,
           stars: 4,
           star_label: '⭐⭐⭐⭐☆ Bintang 4',
-          predicate: 'Baik (B+)',
+          predicate: 'Baik',
           is_emergency_override: false,
-          reason: 'Tuntas Larut Malam di Kamar Hotel / Penginapan',
+          reason: 'Tuntas malam hari',
           cutoff_perfect: cutoffPerfect,
           time_formatted: subFormatted
         };
@@ -2590,9 +2592,9 @@ const FincestemCore = {
         score: 85,
         stars: 4,
         star_label: '⭐⭐⭐⭐☆ Bintang 4',
-        predicate: 'Baik (B+)',
+        predicate: 'Baik',
         is_emergency_override: false,
-        reason: 'Toleransi Pengumpulan Hari Berikutnya',
+        reason: 'Pengumpulan hari berikutnya',
         cutoff_perfect: cutoffPerfect,
         time_formatted: subFormatted
       };

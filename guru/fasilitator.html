@@ -635,7 +635,7 @@
 
         <div>
           <label class="block font-bold text-on-surface mb-1">Predikat Capaian Dimensi Profil:</label>
-          <input id="inputFinalPredicate" type="text" readonly value="Sangat Baik (A)" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-outline-variant/30 text-xs font-bold text-slate-700 outline-none">
+          <input id="inputFinalPredicate" type="text" readonly value="Sangat Baik" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-outline-variant/30 text-xs font-bold text-slate-700 outline-none">
         </div>
 
         <div>
@@ -1118,11 +1118,12 @@
 
     function onFinalScoreInput(val) {
       const num = parseFloat(val) || 0;
-      let pred = 'Sangat Baik (A)';
-      if (num >= 88) pred = 'Sangat Baik (A)';
-      else if (num >= 75) pred = 'Baik (B)';
-      else if (num >= 65) pred = 'Cukup (C)';
-      else pred = 'Perlu Bimbingan (D)';
+      let pred = 'Sangat Baik';
+      if (num >= 90) pred = 'Sangat Baik';
+      else if (num >= 80) pred = 'Baik';
+      else if (num >= 70) pred = 'Cukup';
+      else if (num >= 60) pred = 'Kurang';
+      else pred = 'Sangat Kurang';
       document.getElementById('inputFinalPredicate').value = pred;
     }
 
