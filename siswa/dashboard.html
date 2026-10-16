@@ -1943,13 +1943,17 @@
         if (coordMatch) {
           parsedLat = parseFloat(coordMatch[1]);
           parsedLng = parseFloat(coordMatch[2]);
-          // Bounding Box Wilayah OKU Timur: Lat: -4.50 s.d. -3.55, Lng: 104.20 s.d. 105.20
-          const okutMinLat = -4.55;
-          const okutMaxLat = -3.50;
-          const okutMinLng = 104.15;
-          const okutMaxLng = 105.25;
-          if (parsedLat < okutMinLat || parsedLat > okutMaxLat || parsedLng < okutMinLng || parsedLng > okutMaxLng) {
-            isInsideOKUTimur = false;
+          // Validasi Poligon Resmi Batas Wilayah OKU Timur
+          if (window.FincestemCore && FincestemCore.geo && FincestemCore.geo.isInsideOKUTimur) {
+            isInsideOKUTimur = FincestemCore.geo.isInsideOKUTimur(parsedLat, parsedLng);
+          } else {
+            const okutMinLat = -4.55;
+            const okutMaxLat = -3.50;
+            const okutMinLng = 104.15;
+            const okutMaxLng = 105.25;
+            if (parsedLat < okutMinLat || parsedLat > okutMaxLat || parsedLng < okutMinLng || parsedLng > okutMaxLng) {
+              isInsideOKUTimur = false;
+            }
           }
         }
       }
