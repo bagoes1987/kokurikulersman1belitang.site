@@ -1094,6 +1094,7 @@
     function renderStudentProgressView(prog) {
       if (!prog) return;
 
+      const pct = prog.percentage || 0;
       const pctBadge = document.getElementById('progressPercentBadge');
       if (pctBadge) pctBadge.textContent = pct + '%';
       const pFill = document.getElementById('progressBarFill');
@@ -2157,10 +2158,13 @@
         const isExpanded = (expandedDayNumber === dNum);
 
         // Deteksi Siswa Field Trip vs Non-Field Trip
-        const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+        const u = FincestemCore.auth.getUser() || {};
+        const stu = currentStudent || u;
+        const studentNisn = stu.nisn || stu.identifier || '';
+        const studentClass = stu.class || stu.class_name || '';
         const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-          ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
-          : (currentStudent ? currentStudent.zone : 'FINCESTEM OKU TIMUR');
+          ? FincestemCore.zones.getStudentZone(studentNisn, studentClass, stu.zone)
+          : (stu.zone || 'FINCESTEM OKU TIMUR');
         const zUpper = (studentZone || '').toUpperCase();
         const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
         const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
@@ -2849,10 +2853,13 @@
       }
 
       // Deteksi Kategori Siswa (Field Trip vs Non-Field Trip)
-      const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+      const u = FincestemCore.auth.getUser() || {};
+      const stu = currentStudent || u;
+      const studentNisn = stu.nisn || stu.identifier || '';
+      const studentClass = stu.class || stu.class_name || '';
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
-        : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
+        ? FincestemCore.zones.getStudentZone(studentNisn, studentClass, stu.zone)
+        : (stu.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
@@ -3676,11 +3683,14 @@
       }
 
       // Deteksi siswa Field Trip Day 1 & Day 2
-      const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
+      const u = FincestemCore.auth.getUser() || {};
+      const stu = currentStudent || u;
+      const studentNisn = stu.nisn || stu.identifier || '';
       const cleanNisn = String(studentNisn).trim();
+      const studentClass = stu.class || stu.class_name || '';
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(cleanNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
-        : (currentStudent.zone || 'FINCESTEM OKU TIMUR');
+        ? FincestemCore.zones.getStudentZone(cleanNisn, studentClass, stu.zone)
+        : (stu.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay1 = isFieldTrip && Number(dayNumber) === 1;
@@ -3886,10 +3896,13 @@
       const modal = document.getElementById('modalFeedbackHistory');
       const prog = studentProgress || FincestemCore.progress.getDefaultProgress(currentStudent?.nisn);
 
-      const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+      const u = FincestemCore.auth.getUser() || {};
+      const stu = currentStudent || u;
+      const studentNisn = stu.nisn || stu.identifier || '';
+      const studentClass = stu.class || stu.class_name || '';
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent.class || currentStudent.class_name, currentStudent.zone)
-        : (currentStudent?.zone || 'FINCESTEM OKU TIMUR');
+        ? FincestemCore.zones.getStudentZone(studentNisn, studentClass, stu.zone)
+        : (stu.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
