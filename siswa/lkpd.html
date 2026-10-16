@@ -406,10 +406,41 @@
           document.getElementById('scoreExp').textContent = grp.scores.exploration || '-';
           document.getElementById('scoreStem').textContent = grp.scores.stem || '-';
           document.getElementById('teacherFeedback').textContent = '"' + (grp.feedback || '') + '"';
+
+          document.querySelectorAll('input, textarea').forEach(el => {
+            el.setAttribute('disabled', 'disabled');
+            el.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-600');
+          });
+          const saveBtn = document.getElementById('saveLkpdBtn');
+          if (saveBtn) saveBtn.classList.add('hidden');
         } else if (grp.lkpdSubmitted) {
-          statusBadge.textContent = 'Menunggu Penilaian';
-          statusBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800';
+          statusBadge.textContent = '🔒 Telah Dikirim & Terkunci';
+          statusBadge.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-100 text-teal-800 border border-teal-300';
           gradeBox.classList.add('hidden');
+
+          document.querySelectorAll('input, textarea').forEach(el => {
+            el.setAttribute('disabled', 'disabled');
+            el.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-600');
+          });
+          const dropzone = document.getElementById('dropzoneBox');
+          if (dropzone) dropzone.classList.add('pointer-events-none', 'opacity-60');
+
+          const saveBtn = document.getElementById('saveLkpdBtn');
+          if (saveBtn) {
+            saveBtn.outerHTML = `
+              <div class="w-full p-4 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs mt-2">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-xl">lock</span>
+                  </div>
+                  <div>
+                    <span class="text-xs font-black uppercase text-teal-800 tracking-wider">Status: Telah Dikirim &amp; Terkunci</span>
+                    <p class="text-xs text-slate-700 font-medium">Laporan LKPD telah dikirim ke fasilitator. Untuk mencegah perubahan data, formulir terkunci. Jika memerlukan perbaikan, hubungi Fasilitator atau Koordinator Anda.</p>
+                  </div>
+                </div>
+              </div>
+            `;
+          }
         }
       } catch (e) {}
     }
@@ -574,7 +605,8 @@
 
       const isSubmitted = saved && saved.submitted;
       const isLockedByPrereq = !hasMateri;
-      const readOnlyAttr = isLockedByPrereq ? 'disabled' : '';
+      const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+      const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
       mainEl.innerHTML = `
         ${isLockedByPrereq ? `
@@ -608,8 +640,8 @@
             <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-500/15 text-amber-800">
               Field Trip • Day 1 (Financial)
             </span>
-            <span id="ftStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800' : (isSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-blue-100 text-blue-800')}">
-              ${isLockedByPrereq ? 'Terkunci (Belum Resume Modul)' : (isSubmitted ? 'Telah Dikirim / Menunggu Penilaian' : 'Lembar Kerja Peserta Didik')}
+            <span id="ftStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800' : (isSubmitted ? 'bg-teal-100 text-teal-800 border border-teal-300' : 'bg-blue-100 text-blue-800')}">
+              ${isLockedByPrereq ? 'Terkunci (Belum Resume Modul)' : (isSubmitted ? '🔒 Telah Dikirim & Terkunci' : 'Lembar Kerja Peserta Didik')}
             </span>
           </div>
           <h2 class="text-lg sm:text-xl font-black text-primary leading-tight">
@@ -909,7 +941,25 @@
         </div>
 
         <!-- TOMBOL SIMPAN & KIRIM LKPD DAY 1 -->
-        ${isReadOnly ? '' : `
+        ${isSubmitted ? `
+          <div class="pt-2">
+            <div class="p-4 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-xl">lock</span>
+                </div>
+                <div>
+                  <span class="text-xs font-black uppercase text-teal-800 tracking-wider">Status: Telah Dikirim &amp; Terkunci</span>
+                  <p class="text-xs sm:text-sm text-slate-700 font-medium">Laporan LKPD Day 1 Anda telah dikumpulkan. Formulir dikunci untuk menjaga integritas data. Hubungi Fasilitator atau Koordinator jika memerlukan izin perbaikan.</p>
+                </div>
+              </div>
+              <a href="dashboard.html?day=1&task=asesmen" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 text-white font-extrabold text-xs whitespace-nowrap flex items-center justify-center gap-1.5 shadow-xs transition-all shrink-0">
+                <span>Lanjut ke Asesmen</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        ` : (isReadOnly ? '' : `
           <div class="pt-2">
             ${isLockedByPrereq ? `
               <a href="materi.html?day=1" class="w-full py-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
@@ -919,11 +969,11 @@
             ` : `
               <button id="saveFtLkpdBtn" type="button" onclick="saveAndSubmitFtDay1LKPD()" class="w-full py-4 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
                 <span class="material-symbols-outlined text-xl">send</span>
-                <span>${isSubmitted ? 'Perbarui Laporan LKPD Day 1' : 'Simpan &amp; Kirim LKPD Day 1'}</span>
+                <span>Simpan &amp; Kirim LKPD Day 1</span>
               </button>
             `}
           </div>
-        `}
+        `)}
 
         <!-- MODAL KONFIRMASI TAHAP BERIKUTNYA (ASESMEN ATAU KEMBALI KE DAY 1) -->
         <div id="modalLkpdFtSuccess" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none">
@@ -1275,7 +1325,8 @@
 
       const isSubmitted = saved && saved.submitted;
       const isLockedByPrereq = !hasMateriDay2;
-      const readOnlyAttr = isLockedByPrereq ? 'disabled' : '';
+      const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+      const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
       mainEl.innerHTML = `
         ${isLockedByPrereq ? `
@@ -1482,17 +1533,26 @@
             <span>Kembali ke Day 2</span>
           </a>
 
-          ${!isLockedByPrereq ? `
+          ${isSubmitted ? `
+            <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
+              <span class="material-symbols-outlined text-teal-600">lock</span>
+              <span>LKPD Day 2 Telah Dikirim &amp; Terkunci</span>
+            </div>
+            <a href="dashboard.html?day=2&task=asesmen" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-teal-700 hover:bg-teal-800 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
+              <span>Lanjut ke Asesmen Day 2</span>
+              <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </a>
+          ` : (!isLockedByPrereq ? `
             <button id="saveFtLkpdDay2Btn" onclick="saveFieldTripDay2LKPD()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
               <span class="material-symbols-outlined text-lg">save</span>
-              <span>${isSubmitted ? 'Perbarui Lembar Kerja Day 2' : 'Simpan Lembar Kerja Peserta Didik'}</span>
+              <span>Simpan Lembar Kerja Peserta Didik</span>
             </button>
           ` : `
             <button disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm cursor-not-allowed flex items-center justify-center gap-2">
               <span class="material-symbols-outlined text-base">lock</span>
               <span>Selesaikan Modul Day 2 Terlebih Dahulu</span>
             </button>
-          `}
+          `)}
         </div>
 
         <!-- MODAL KONFIRMASI TAHAP BERIKUTNYA DAY 2 -->
@@ -1741,7 +1801,8 @@
 
       const isSubmitted = saved && saved.submitted;
       const isLockedByPrereq = !hasMateri;
-      const readOnlyAttr = isLockedByPrereq ? 'disabled' : '';
+      const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+      const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
       mainEl.innerHTML = `
         ${isLockedByPrereq ? `
@@ -1898,10 +1959,21 @@
             <span class="material-symbols-outlined text-lg">arrow_back</span>
             <span>Kembali ke Beranda</span>
           </a>
-          <button id="saveFtLkpdGenBtn" type="button" onclick="saveFieldTripGenericLKPD(${dayNum})" ${readOnlyAttr} class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${isLockedByPrereq ? 'opacity-50 pointer-events-none' : ''}">
-            <span class="material-symbols-outlined text-lg">save</span>
-            <span>Simpan &amp; Kirim LKPD Day ${dayNum}</span>
-          </button>
+          ${isSubmitted ? `
+            <div class="flex items-center gap-2 p-3.5 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm">
+              <span class="material-symbols-outlined text-teal-600">lock</span>
+              <span>LKPD Day ${dayNum} Telah Dikirim &amp; Terkunci</span>
+            </div>
+            <a href="dashboard.html?day=${dayNum}&task=asesmen" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-teal-700 hover:bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2">
+              <span>Lanjut ke Asesmen Day ${dayNum}</span>
+              <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </a>
+          ` : `
+            <button id="saveFtLkpdGenBtn" type="button" onclick="saveFieldTripGenericLKPD(${dayNum})" ${readOnlyAttr} class="w-full sm:w-auto px-8 py-3.5 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer ${isLockedByPrereq ? 'opacity-50 pointer-events-none' : ''}">
+              <span class="material-symbols-outlined text-lg">save</span>
+              <span>Simpan &amp; Kirim LKPD Day ${dayNum}</span>
+            </button>
+          `}
         </div>
 
         <!-- MODAL SUKSES PENGIRIMAN LKPD -->

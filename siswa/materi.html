@@ -684,20 +684,25 @@
       const btnGo = document.getElementById('btnGoToLkpd');
       const btnGoText = document.getElementById('btnGoToLkpdText');
 
-      if (txtArea) txtArea.value = text;
+      if (txtArea) {
+        txtArea.value = text;
+        txtArea.setAttribute('disabled', 'disabled');
+        txtArea.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-600');
+      }
       if (badge) {
-        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800';
-        badge.textContent = 'Kesimpulan Telah Disimpan';
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800 border border-teal-300';
+        badge.textContent = '🔒 Kesimpulan Disimpan & Terkunci';
       }
       if (savedTimeEl) {
         const dtStr = savedAt ? new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB' : 'Tersimpan';
         savedTimeEl.textContent = `Tersimpan pada ${dtStr}`;
       }
       if (saveBtn) {
-        saveBtn.classList.remove('pointer-events-none', 'opacity-80');
-        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">task_alt</span><span id="btnSaveMateriText">Perbarui Kesimpulan Modul</span>';
+        saveBtn.classList.add('pointer-events-none', 'opacity-70');
+        saveBtn.classList.remove('hover:bg-[#004f48]', 'cursor-pointer');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Kesimpulan Telah Terkunci</span>';
       } else if (btnSaveText) {
-        btnSaveText.textContent = 'Perbarui Kesimpulan Modul';
+        btnSaveText.textContent = 'Kesimpulan Telah Terkunci';
       }
 
       // Aktifkan Akses ke LKPD
@@ -1140,20 +1145,25 @@
       const btnGo = document.getElementById('btnGoToLkpdDay2');
       const btnGoText = document.getElementById('btnGoToLkpdTextDay2');
 
-      if (txtArea) txtArea.value = text;
+      if (txtArea) {
+        txtArea.value = text;
+        txtArea.setAttribute('disabled', 'disabled');
+        txtArea.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-600');
+      }
       if (badge) {
-        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800';
-        badge.textContent = 'Kesimpulan Telah Disimpan';
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800 border border-teal-300';
+        badge.textContent = '🔒 Kesimpulan Disimpan & Terkunci';
       }
       if (savedTimeEl) {
         const dtStr = savedAt ? new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB' : 'Tersimpan';
         savedTimeEl.textContent = `Tersimpan pada ${dtStr}`;
       }
       if (saveBtn) {
-        saveBtn.classList.remove('pointer-events-none', 'opacity-80');
-        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">task_alt</span><span id="btnSaveMateriTextDay2">Perbarui Kesimpulan Modul</span>';
+        saveBtn.classList.add('pointer-events-none', 'opacity-70');
+        saveBtn.classList.remove('hover:bg-[#004f48]', 'cursor-pointer');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Kesimpulan Telah Terkunci</span>';
       } else if (btnSaveText) {
-        btnSaveText.textContent = 'Perbarui Kesimpulan Modul';
+        btnSaveText.textContent = 'Kesimpulan Telah Terkunci';
       }
 
       // Aktifkan Akses ke LKPD Day 2
@@ -1523,7 +1533,6 @@
     function applyMateriConclusionStateGeneric(dayNum, text, savedAt) {
       text = sanitizeConclusionText(text);
       const txtArea = document.getElementById('ftMateriConclusionGeneric');
-      if (txtArea) txtArea.value = text;
       const badge = document.getElementById('ftMateriStatusBadgeGeneric');
       const savedTimeEl = document.getElementById('ftMateriSavedTimeGeneric');
       const lockIcon = document.getElementById('ftLkpdLockIconGeneric');
@@ -1532,9 +1541,20 @@
       const btnGo = document.getElementById('btnGoToLkpdGeneric');
       const btnGoText = document.getElementById('btnGoToLkpdTextGeneric');
 
+      if (txtArea) {
+        txtArea.value = text;
+        txtArea.setAttribute('disabled', 'disabled');
+        txtArea.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-600');
+      }
+      const saveBtn = document.getElementById('btnSaveMateriConclusionGeneric');
+      if (saveBtn) {
+        saveBtn.classList.add('pointer-events-none', 'opacity-70');
+        saveBtn.classList.remove('hover:bg-teal-700', 'cursor-pointer');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Kesimpulan Telah Terkunci</span>';
+      }
       if (badge) {
-        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800';
-        badge.textContent = 'Kesimpulan Telah Disimpan';
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800 border border-teal-300';
+        badge.textContent = '🔒 Kesimpulan Disimpan & Terkunci';
       }
       if (savedTimeEl) {
         const dtStr = savedAt ? new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB' : 'Tersimpan';

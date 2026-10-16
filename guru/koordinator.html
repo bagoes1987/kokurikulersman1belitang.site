@@ -436,6 +436,103 @@
         </button>
       </div>
     </div>
+  <!-- MODAL BUKA KUNCI / RESET TUGAS SISWA (KOORDINATOR) -->
+  <div id="modalKoordUnlock" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none">
+    <div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-outline-variant/30 flex flex-col gap-4 max-h-[90vh] overflow-y-auto no-scrollbar">
+      <div class="flex items-center justify-between border-b border-surface-container pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-orange-100 text-[#F15A24] flex items-center justify-center shrink-0 shadow-2xs">
+            <span class="material-symbols-outlined text-xl">lock_open</span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-base text-on-surface leading-tight">Buka Kunci Tugas Siswa</h3>
+            <span class="text-xs text-[#F15A24] font-bold">Portal Koordinator (Bantuan Lintas Kelas)</span>
+          </div>
+        </div>
+        <button onclick="closeKoordUnlockModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container cursor-pointer">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+
+      <!-- Detail Siswa Target -->
+      <div class="p-3.5 rounded-2xl bg-orange-50/70 border border-orange-200/80 flex flex-col gap-1">
+        <span class="text-[11px] font-bold text-orange-900 uppercase tracking-wider">Siswa Target Buka Kunci:</span>
+        <h4 id="koordUnlockStudentName" class="text-sm font-black text-slate-900 truncate">-</h4>
+        <span id="koordUnlockStudentMeta" class="text-xs text-slate-600 font-medium">NISN: - • Kelas -</span>
+        <input type="hidden" id="koordUnlockTargetNisn" value="">
+      </div>
+
+      <!-- Pilih Hari Pelaksanaan -->
+      <div class="flex flex-col gap-1.5 text-xs">
+        <label class="font-bold text-on-surface">Pilih Hari Pengerjaan yang Ingin Dibuka:</label>
+        <select id="koordUnlockTargetDay" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-bold bg-white text-on-surface outline-none focus:border-[#F15A24]">
+          <option value="1">Day 1 - Keberangkatan &amp; Budgeting Finansial</option>
+          <option value="2">Day 2 - AKPOL Semarang &amp; Lawang Sewu</option>
+          <option value="3">Day 3 - Eksplorasi Sains &amp; Agro Pertanian Batu</option>
+          <option value="4">Day 4 - Gunung Bromo &amp; Budaya Tengger</option>
+          <option value="5">Day 5 - Heritage Yogyakarta &amp; Malioboro</option>
+          <option value="6">Day 6 - Candi Prambanan &amp; Keraton Yogyakarta</option>
+          <option value="7">Day 7 - Evaluasi Akhir &amp; Perjalanan Pulang</option>
+          <option value="0">Day 0 - Gladi Bersih (Simulasi)</option>
+        </select>
+      </div>
+
+      <!-- Centang Komponen Tugas yang Diizinkan Diperbaiki -->
+      <div class="flex flex-col gap-2 text-xs">
+        <label class="font-bold text-on-surface">Centang Tugas yang Diizinkan Diperbaiki / Diulang:</label>
+        <div class="space-y-1.5 p-3 rounded-2xl bg-surface-container-low border border-outline-variant/20">
+          <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
+            <input type="checkbox" id="koordUnlockCompLkpd" checked class="w-4 h-4 rounded text-[#F15A24] focus:ring-0">
+            <div class="flex flex-col">
+              <span class="font-bold text-on-surface text-xs">Lembar Kerja Peserta Didik (LKPD)</span>
+              <span class="text-[10.5px] text-on-surface-variant">Buka isian observasi, budgeting uang saku, dan analisis lapangan</span>
+            </div>
+          </label>
+          <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
+            <input type="checkbox" id="koordUnlockCompRefleksi" checked class="w-4 h-4 rounded text-[#F15A24] focus:ring-0">
+            <div class="flex flex-col">
+              <span class="font-bold text-on-surface text-xs">Jurnal Refleksi Mandiri (Tahap 5)</span>
+              <span class="text-[10.5px] text-on-surface-variant">Buka isian catatan refleksi harian siswa di dashboard</span>
+            </div>
+          </label>
+          <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
+            <input type="checkbox" id="koordUnlockCompMateri" checked class="w-4 h-4 rounded text-[#F15A24] focus:ring-0">
+            <div class="flex flex-col">
+              <span class="font-bold text-on-surface text-xs">Resume / Kesimpulan Modul Belajar (Tahap 1)</span>
+              <span class="text-[10.5px] text-on-surface-variant">Buka isian pemahaman modul di halaman materi</span>
+            </div>
+          </label>
+          <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
+            <input type="checkbox" id="koordUnlockCompAsesmen" class="w-4 h-4 rounded text-[#F15A24] focus:ring-0">
+            <div class="flex flex-col">
+              <span class="font-bold text-on-surface text-xs">Kuis Asesmen Harian (Tahap 3)</span>
+              <span class="text-[10.5px] text-on-surface-variant">Reset jawaban kuis asesmen pilihan ganda/esai</span>
+            </div>
+          </label>
+          <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
+            <input type="checkbox" id="koordUnlockCompFoto" class="w-4 h-4 rounded text-[#F15A24] focus:ring-0">
+            <div class="flex flex-col">
+              <span class="font-bold text-rose-800 text-xs">Izin Unggah Susulan / Reset Foto Dokumentasi</span>
+              <span class="text-[10.5px] text-rose-600">Dispensasi khusus jika foto salah/blur atau jadwal sudah tertutup</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <div class="p-3 rounded-xl bg-orange-500/10 border border-orange-300 text-orange-950 text-[11px] leading-relaxed">
+        ℹ️ <strong>Peran Koordinator:</strong> Anda dapat membuka kunci tugas siswa dari kelas mana pun yang Anda koordinasikan jika fasilitator kelas terkait sedang berhalangan. Tugas akan <strong>otomatis terkunci kembali</strong> saat siswa mengumpulkan perbaikan.
+      </div>
+
+      <div class="flex items-center gap-2 pt-1 border-t border-surface-container">
+        <button type="button" onclick="closeKoordUnlockModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all cursor-pointer">
+          Batal
+        </button>
+        <button id="btnSubmitKoordUnlock" type="button" onclick="submitKoordUnlock()" class="flex-1 py-2.5 rounded-xl bg-[#F15A24] hover:bg-[#c73e0c] text-white font-black text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer">
+          <span class="material-symbols-outlined text-sm">lock_open</span>
+          <span>Buka Kunci Tugas</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <script src="../js/siswa_data.js"></script>
@@ -771,6 +868,14 @@
               <span class="font-bold text-[#F15A24]">${stu.completed_days || 0}/7 Hari (${stu.percentage || 0}%)</span>
             </div>
             <div>${finalGradeBadge}</div>
+          </div>
+
+          <!-- Tombol Buka Kunci Koordinator -->
+          <div class="flex items-center justify-end pt-0.5">
+            <button onclick="openKoordUnlockModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name}')" class="py-1.5 px-3 rounded-xl bg-orange-50 hover:bg-orange-100 text-orange-950 border border-orange-300 font-bold text-xs flex items-center gap-1.5 transition-all shadow-2xs cursor-pointer">
+              <span class="material-symbols-outlined text-sm text-[#F15A24]">lock_open</span>
+              <span>Buka Kunci Tugas (Bantuan Koordinator)</span>
+            </button>
           </div>
         `;
         container.appendChild(card);
@@ -1114,6 +1219,87 @@
       } else {
         displayPhotos(localDocs);
       }
+    }
+
+    // ==========================================
+    // MODUL BUKA KUNCI / RESET TUGAS SISWA (KOORDINATOR)
+    // ==========================================
+    function openKoordUnlockModal(targetNisn, studentName, studentMeta, targetDay) {
+      document.getElementById('koordUnlockTargetNisn').value = targetNisn;
+      document.getElementById('koordUnlockStudentName').textContent = studentName || 'Siswa';
+      document.getElementById('koordUnlockStudentMeta').textContent = studentMeta ? ('NISN: ' + targetNisn + ' • ' + studentMeta) : ('NISN: ' + targetNisn);
+      if (targetDay !== undefined && targetDay !== null) {
+        document.getElementById('koordUnlockTargetDay').value = String(targetDay);
+      }
+      document.getElementById('koordUnlockCompLkpd').checked = true;
+      document.getElementById('koordUnlockCompRefleksi').checked = true;
+      document.getElementById('koordUnlockCompMateri').checked = true;
+      document.getElementById('koordUnlockCompAsesmen').checked = false;
+      document.getElementById('koordUnlockCompFoto').checked = false;
+
+      const modal = document.getElementById('modalKoordUnlock');
+      if (modal) modal.classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function closeKoordUnlockModal() {
+      const modal = document.getElementById('modalKoordUnlock');
+      if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function submitKoordUnlock() {
+      const nisn = document.getElementById('koordUnlockTargetNisn').value;
+      const studentName = document.getElementById('koordUnlockStudentName').textContent;
+      if (!nisn) {
+        FincestemCore.ui.toast('NISN target tidak valid!', 'error');
+        return;
+      }
+      const day = parseInt(document.getElementById('koordUnlockTargetDay').value);
+      const dayVal = isNaN(day) ? 1 : day;
+
+      const compLkpd = document.getElementById('koordUnlockCompLkpd').checked;
+      const compRefleksi = document.getElementById('koordUnlockCompRefleksi').checked;
+      const compMateri = document.getElementById('koordUnlockCompMateri').checked;
+      const compAsesmen = document.getElementById('koordUnlockCompAsesmen').checked;
+      const compFoto = document.getElementById('koordUnlockCompFoto').checked;
+
+      if (!compLkpd && !compRefleksi && !compMateri && !compAsesmen && !compFoto) {
+        FincestemCore.ui.toast('Pilih minimal satu komponen tugas yang ingin dibuka kuncinya!', 'warning');
+        return;
+      }
+
+      const dayLabel = dayVal === 0 ? 'Day 0 (Simulasi)' : 'Day ' + dayVal;
+      if (!confirm(`Konfirmasi Buka Kunci (Koordinator):\n\nApakah Anda yakin ingin membuka kunci pengerjaan ${dayLabel} untuk siswa "${studentName}" (NISN: ${nisn})?\n\nSetelah dibuka, siswa dapat mengedit kembali jawaban tugasnya di HP mereka.`)) {
+        return;
+      }
+
+      const btn = document.getElementById('btnSubmitKoordUnlock');
+      if (btn) {
+        btn.classList.add('pointer-events-none', 'opacity-70');
+        btn.innerHTML = '<span class="material-symbols-outlined text-sm animate-spin">refresh</span><span>Membuka Kunci...</span>';
+      }
+
+      const unlockOptions = {
+        scope: (dayVal === 0) ? 'trial_only' : 'day_x',
+        target_day: dayVal,
+        components: {
+          materi: compMateri,
+          lkpd: compLkpd,
+          asesmen: compAsesmen,
+          refleksi: compRefleksi,
+          dokumentasi: compFoto,
+          foto_profil: false
+        }
+      };
+
+      FincestemCore.progress.resetStudent(nisn, unlockOptions, function(res) {
+        if (btn) {
+          btn.classList.remove('pointer-events-none', 'opacity-70');
+          btn.innerHTML = '<span class="material-symbols-outlined text-sm">lock_open</span><span>Buka Kunci Tugas</span>';
+        }
+        closeKoordUnlockModal();
+        FincestemCore.ui.toast(`Tugas ${dayLabel} untuk siswa ${studentName} berhasil dibuka kuncinya oleh Koordinator! Siswa kini dapat mengedit ulang jawabannya.`, 'success');
+        loadCoordinatorPortalData();
+      });
     }
   </script>
 </body>
