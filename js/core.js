@@ -716,8 +716,25 @@ const FincestemCore = {
       ];
     },
 
-    // Master Jadwal Resmi Ekspedisi Field Trip (Day 1 s.d. Day 7) Sesuai Rute & Itinerary
+    // Master Jadwal Resmi Ekspedisi Field Trip (Day 0 s.d. Day 7) Sesuai Rute & Itinerary
     fieldTripDaysConfig: {
+      0: {
+        day_number: 0,
+        title: 'DAY 0: SIMULASI & GLADI BERSIH FINCESTEM',
+        theme: 'Orientasi Sistem, Uji Coba LKPD, Asesmen & Unggah Dokumentasi',
+        date_formatted: 'Hari Ini (Simulasi)',
+        time_range: '06.00 - 23.59 WIB',
+        route_lines: [
+          ['Persiapan Mandiri', 'Simulasi Aplikasi FINCESTEM']
+        ],
+        route: 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip',
+        description: 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.',
+        sessions: [
+          { time: '06.00 - 23.59 WIB', title: 'Simulasi Pengisian LKPD & Kuis Asesmen', location: 'Aplikasi FINCESTEM', icon: 'fact_check' }
+        ],
+        refl_title: 'Jurnal Refleksi Simulasi (Gladi Bersih)',
+        refl_prompt: 'Tuliskan pengalaman Anda dalam mencoba fitur aplikasi FINCESTEM hari ini: apa saja yang sudah Anda pahami mengenai tata cara pengisian LKPD, asesmen, dan jurnal perjalanan selama ekspedisi lapangan?'
+      },
       1: {
         day_number: 1,
         title: 'HARI KE-1: BELITANG – SEMARANG',
@@ -966,6 +983,21 @@ const FincestemCore = {
         { start: '05:00', end: '14:00' }
       ];
       const list = [];
+      const today = new Date().toISOString().split('T')[0];
+      const d0 = configs[0] || {};
+      list.push({
+        day_number: 0,
+        title: d0.title || 'Day 0: Simulasi & Gladi Bersih FINCESTEM',
+        theme: d0.theme || 'Orientasi Sistem, Pengisian LKPD, Asesmen & Unggah Dokumentasi',
+        date: today,
+        date_formatted: 'Hari Ini (Simulasi)',
+        start_time: '06:00',
+        end_time: '23:59',
+        is_active: 1,
+        auto_schedule: 0,
+        route: d0.route || 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip',
+        description: d0.description || 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.'
+      });
       for (let i = 1; i <= 7; i++) {
         const c = configs[i] || {};
         const tm = times[i - 1] || { start: '07:00', end: '23:59' };
@@ -1031,17 +1063,22 @@ const FincestemCore = {
     toggleTrialDay: function(isActive, callback) {
       const actNum = isActive ? 1 : 0;
       try {
-        const stored = localStorage.getItem('fincestem_schedules_non_field_trip') || localStorage.getItem('fincestem_schedules');
-        let days = stored ? JSON.parse(stored) : this.getDefaults();
-        const d0 = days.find(x => Number(x.day_number) === 0);
-        if (d0) {
-          d0.is_active = actNum;
-          d0.is_open = (actNum === 1);
-          d0.status_code = (actNum === 1) ? 'OPEN' : 'MANUAL_CLOSED';
-          d0.status_label = (actNum === 1) ? 'Aktivitas Sedang Dibuka' : 'Ditutup Manual oleh Admin';
-        }
-        localStorage.setItem('fincestem_schedules_non_field_trip', JSON.stringify(days));
-        localStorage.setItem('fincestem_schedules', JSON.stringify(days));
+        ['non_field_trip', 'field_trip'].forEach(cat => {
+          const storageKey = 'fincestem_schedules_' + cat;
+          const stored = localStorage.getItem(storageKey);
+          let days = stored ? JSON.parse(stored) : (cat === 'field_trip' ? this.getFieldTripDefaults() : this.getDefaults());
+          const d0 = days.find(x => Number(x.day_number) === 0);
+          if (d0) {
+            d0.is_active = actNum;
+            d0.is_open = (actNum === 1);
+            d0.status_code = (actNum === 1) ? 'OPEN' : 'MANUAL_CLOSED';
+            d0.status_label = (actNum === 1) ? 'Aktivitas Sedang Dibuka' : 'Ditutup Manual oleh Admin';
+          }
+          localStorage.setItem(storageKey, JSON.stringify(days));
+          if (cat === 'non_field_trip') {
+            localStorage.setItem('fincestem_schedules', JSON.stringify(days));
+          }
+        });
       } catch (e) {}
 
       if (window.location.protocol.startsWith('http')) {
@@ -1050,7 +1087,7 @@ const FincestemCore = {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'toggle_trial_day',
-            category: 'non_field_trip',
+            category: 'all',
             is_active: actNum
           })
         })

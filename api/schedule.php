@@ -101,6 +101,14 @@ function ensureDaySchedulesTable($pdo) {
                 (7, 'Day 7: Penyeberangan Selat Sunda & Tiba di Belitang', 'Etape Terakhir Sumatera, Evaluasi Ekspedisi & Penyambutan SMAN 1 Belitang', '2026-11-15', '05:00:00', '14:00:00', 1, 0, 'Pelabuhan Merak → Kapal Ferry Selat Sunda → Bakauheni → Tol Trans-Sumatera → SMAN 1 Belitang', 'Penyeberangan kembali Selat Sunda dari Merak ke Bakauheni, melintasi Tol Trans-Sumatera menuju OKU Timur, kedatangan rombongan di SMAN 1 Belitang, dan penutupan resmi seluruh kegiatan kokurikuler.')
             ");
         }
+        $cntFt0 = (int)$pdo->query("SELECT COUNT(*) FROM `day_schedules_field_trip` WHERE `day_number` = 0")->fetchColumn();
+        if ($cntFt0 === 0) {
+            $today = date('Y-m-d');
+            $pdo->exec("
+                INSERT INTO `day_schedules_field_trip` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `route`, `description`) VALUES
+                (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Uji Coba Mandiri • Persiapan Pra-Keberangkatan Field Trip', 'Sesi simulasi dan uji coba teknis bagi seluruh peserta didik Field Trip untuk mempelajari alur pengisian instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mencoba unggah dokumentasi foto sebelum keberangkatan riil.')
+            ");
+        }
     } catch (Exception $e) {
         // Fallback jika ada batasan izin di cPanel
     }
@@ -304,9 +312,12 @@ if ($method === 'POST') {
         $isActive = isset($input['is_active']) ? (int)$input['is_active'] : 0;
         try {
             $pdo = getDB();
-            ensureDaySchedulesTable($pdo);
             $stmt = $pdo->prepare("UPDATE `day_schedules` SET `is_active` = :act WHERE `day_number` = 0");
             $stmt->execute([':act' => $isActive]);
+            try {
+                $stmtFt = $pdo->prepare("UPDATE `day_schedules_field_trip` SET `is_active` = :act WHERE `day_number` = 0");
+                $stmtFt->execute([':act' => $isActive]);
+            } catch (Exception $eFt) {}
 
             jsonResponse(true, 'Status Day Uji Coba berhasil diubah menjadi ' . ($isActive ? 'AKTIF (Tampil di Siswa & Guru)' : 'NONAKTIF (Disembunyikan)'), [
                 'day_number' => 0,
