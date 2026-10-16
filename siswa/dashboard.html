@@ -1668,12 +1668,8 @@
       taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
       const idList = getStudentStorageIdentifiers();
 
-      // Jika data server sudah diterima dan menyatakan 0 tugas (telah di-reset oleh admin),
-      // data server adalah sumber kebenaran (Source of Truth), jangan ambil sisa draft lokal!
-      const isServerEmpty = (studentProgress && Array.isArray(studentProgress.records) && studentProgress.records.length === 0 && Object.keys(taskMap).length === 0);
-
       let hasMateri = !!taskMap[dayNum + '_materi'];
-      if (!hasMateri && !isServerEmpty) {
+      if (!hasMateri) {
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id) ||
@@ -1690,7 +1686,7 @@
       }
 
       let hasLkpd = !!taskMap[dayNum + '_lkpd'];
-      if (!hasLkpd && !isServerEmpty) {
+      if (!hasLkpd) {
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
@@ -1707,7 +1703,7 @@
       }
 
       let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
-      if (!hasAsesmen && !isServerEmpty) {
+      if (!hasAsesmen) {
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
@@ -1731,7 +1727,7 @@
       }
 
       let hasDok = !!taskMap[dayNum + '_dokumentasi'];
-      if (!hasDok && !isServerEmpty) {
+      if (!hasDok) {
         for (const id of idList) {
           try {
             if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true' ||
@@ -1759,7 +1755,7 @@
       }
 
       let hasRefleksi = !!taskMap[dayNum + '_refleksi'];
-      if (!hasRefleksi && !isServerEmpty) {
+      if (!hasRefleksi) {
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_refleksi_ft_day${dayNum}_` + id) ||
@@ -2985,21 +2981,18 @@
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
 
           let ftAsesmen = null;
-          const hasServerAsesmen1 = taskMap && !!taskMap['1_asesmen'];
-          if (hasServerAsesmen1) {
-            const idList = getStudentStorageIdentifiers();
-            for (const id of idList) {
-              try {
-                const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
-                if (raw) {
-                  const parsed = JSON.parse(raw);
-                  if (parsed && (parsed.submitted || parsed.answers || parsed.score !== undefined)) {
-                    ftAsesmen = parsed;
-                    break;
-                  }
+          const idList = getStudentStorageIdentifiers();
+          for (const id of idList) {
+            try {
+              const raw = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
+              if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && (parsed.submitted || parsed.answers || parsed.score !== undefined)) {
+                  ftAsesmen = parsed;
+                  break;
                 }
-              } catch(e) {}
-            }
+              }
+            } catch(e) {}
           }
 
           const isSubmitted = ftAsesmen && ftAsesmen.submitted;

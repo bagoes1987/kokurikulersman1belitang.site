@@ -92,13 +92,14 @@ if ($method === 'GET') {
                 $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
                 $allIds = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
 
-                // Dapatkan NIS dan zona siswa dari tabel users jika ada
+                // Dapatkan NIS, NISN dan zona siswa dari tabel users jika ada
                 $studentZone = '';
                 $inIdsSql = "'" . implode("','", array_map('addslashes', $allIds)) . "'";
-                $uStmt = $pdo->query("SELECT `zone`, `reset_at`, `nis` FROM `users` WHERE `identifier` IN ($inIdsSql) OR `nis` IN ($inIdsSql) LIMIT 1");
+                $uStmt = $pdo->query("SELECT `identifier`, `zone`, `reset_at`, `nis` FROM `users` WHERE `identifier` IN ($inIdsSql) OR `nis` IN ($inIdsSql) LIMIT 1");
                 $uRow = $uStmt ? $uStmt->fetch() : null;
                 if ($uRow) {
                     $studentZone = $uRow['zone'] ?? '';
+                    if (!empty($uRow['identifier'])) $allIds[] = $uRow['identifier'];
                     if (!empty($uRow['nis'])) $allIds[] = $uRow['nis'];
                 }
                 $allIds = array_values(array_unique(array_filter($allIds)));
@@ -174,7 +175,7 @@ if ($method === 'GET') {
             $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
             $unpadded = ltrim($cleanNisn, '0');
             $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
-            $allNisns = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
+            $allNisns = array_values(array_unique(array_filter(array_merge($allIds ?? [], [$nisn, $cleanNisn, $unpadded, $padded]))));
             $inNisns = "'" . implode("','", array_map('addslashes', $allNisns)) . "'";
 
             $stmt = $pdo->prepare("
@@ -286,6 +287,16 @@ if ($method === 'POST') {
                 jsonResponse(false, 'NISN siswa wajib diisi!', null, 400);
             }
 
+            // Normalisasi identitas siswa ke identifier utama (NISN)
+            $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
+            $unpadded = ltrim($cleanNisn, '0');
+            $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
+            $allCheckIds = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
+            $inCheckSql = "'" . implode("','", array_map('addslashes', $allCheckIds)) . "'";
+            $uStmt = $pdo->query("SELECT `identifier` FROM `users` WHERE `identifier` IN ($inCheckSql) OR `nis` IN ($inCheckSql) LIMIT 1");
+            $uRow = $uStmt ? $uStmt->fetch() : null;
+            $canonicalNisn = ($uRow && !empty($uRow['identifier'])) ? $uRow['identifier'] : $nisn;
+
             $stmt = $pdo->prepare("
                 INSERT INTO `student_progress_eval` 
                     (`student_nisn`, `day_number`, `task_type`, `content`, `status`, `updated_at`)
@@ -297,7 +308,7 @@ if ($method === 'POST') {
                     `updated_at` = NOW()
             ");
             $stmt->execute([
-                ':nisn' => $nisn,
+                ':nisn' => $canonicalNisn,
                 ':d'    => $dayNum,
                 ':t'    => $taskType,
                 ':c'    => $content,

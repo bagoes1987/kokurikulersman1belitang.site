@@ -636,11 +636,7 @@
               if (content) {
                 applyMateriConclusionState(content, task.submitted_at || 'Tersimpan di server');
               }
-            } else {
-              // Server kosong / baru saja di-reset oleh Admin!
-              try {
-                idVars.forEach(id => localStorage.removeItem('fincestem_materi_ft_day1_' + id));
-              } catch (e) {}
+            } else if (!saved) {
               const txtArea = document.getElementById('ftMateriConclusion');
               if (txtArea) txtArea.value = '';
               const badge = document.getElementById('ftMateriStatusBadge');
@@ -1097,10 +1093,7 @@
               if (content) {
                 applyMateriConclusionStateDay2(content, task.submitted_at || 'Tersimpan di server');
               }
-            } else {
-              try {
-                idVars.forEach(id => localStorage.removeItem('fincestem_materi_ft_day2_' + id));
-              } catch (e) {}
+            } else if (!saved) {
               const txtArea = document.getElementById('ftMateriConclusionDay2');
               if (txtArea) txtArea.value = '';
               const badge = document.getElementById('ftMateriStatusBadgeDay2');
@@ -1451,10 +1444,7 @@
               if (content) {
                 applyMateriConclusionStateGeneric(dayNum, content, task.submitted_at || 'Tersimpan di server');
               }
-            } else {
-              try {
-                idVars.forEach(id => localStorage.removeItem(`fincestem_materi_ft_day${dayNum}_` + id));
-              } catch (e) {}
+            } else if (!saved) {
               const txtArea = document.getElementById('ftMateriConclusionGeneric');
               if (txtArea) txtArea.value = '';
               const badge = document.getElementById('ftMateriStatusBadgeGeneric');

@@ -2059,21 +2059,9 @@ const FincestemCore = {
                 }
               }
 
-              // Extra safeguard: jika progres server 0 (records kosong dan task_map kosong)
-              // tapi di storage lokal masih ada sisa pengisian, otomatis sinkronkan dengan reset
-              const recordsCount = Array.isArray(res.data.records) ? res.data.records.length : 0;
-              const taskMapCount = res.data.task_map ? Object.keys(res.data.task_map).length : 0;
-              if (recordsCount === 0 && taskMapCount === 0 && (res.data.completed_days === 0 || !res.data.completed_days)) {
-                shouldPurge = true;
-              }
-
               if (shouldPurge) {
                 self.purgeStudentLocalStorage(cleanNisn, resetInfo || { scope: 'all_days', target_day: -1 });
-                if (serverResetAt) {
-                  localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
-                } else {
-                  localStorage.setItem('fincestem_client_reset_' + cleanNisn, new Date().toISOString());
-                }
+                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt || new Date().toISOString());
                 const u = FincestemCore.auth.getUser();
                 if (u && (cleanNisn.includes(String(u.nisn || u.identifier).replace(/\D/g, '')))) {
                   u.photo_url = '';
@@ -2097,14 +2085,21 @@ const FincestemCore = {
     },
 
     getLocalProgress: function(nisn, callback) {
-      try {
-        const stored = localStorage.getItem('fincestem_progress_' + nisn);
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (callback) callback(parsed);
-          return;
-        }
-      } catch (e) {}
+      const cleanNisn = String(nisn || '').replace(/[^A-Za-z0-9]/g, '');
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = (cleanNisn.length >= 8 && cleanNisn.length <= 10) ? cleanNisn.padStart(10, '0') : cleanNisn;
+      const idVars = Array.from(new Set([nisn, cleanNisn, unpadded, padded])).filter(Boolean);
+
+      for (const id of idVars) {
+        try {
+          const stored = localStorage.getItem('fincestem_progress_' + id);
+          if (stored) {
+            const parsed = JSON.parse(stored);
+            if (callback) callback(parsed);
+            return;
+          }
+        } catch (e) {}
+      }
 
       const def = this.getDefaultProgress(nisn);
       if (callback) callback(def);
@@ -2396,9 +2391,15 @@ const FincestemCore = {
         prog.completed_days = completedDaysSet.size;
         prog.percentage = Math.min(100, Math.round((prog.completed_days / 7) * 100));
 
-        try {
-          localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));
-        } catch (e) {}
+        const cleanNisn = String(nisn || '').replace(/[^A-Za-z0-9]/g, '');
+        const unpadded = cleanNisn.replace(/^0+/, '');
+        const padded = (cleanNisn.length >= 8 && cleanNisn.length <= 10) ? cleanNisn.padStart(10, '0') : cleanNisn;
+        const idVars = Array.from(new Set([nisn, cleanNisn, unpadded, padded])).filter(Boolean);
+        idVars.forEach(id => {
+          try {
+            localStorage.setItem('fincestem_progress_' + id, JSON.stringify(prog));
+          } catch (e) {}
+        });
 
         // 1. Panggil callback seketika (Optimistic UI) agar tombol tidak muter-muter di HP siswa
         if (callback) {

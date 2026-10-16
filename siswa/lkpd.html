@@ -551,15 +551,6 @@
         }
       } catch (e) {}
 
-      // Jika pengerjaan Day 1 LKPD belum ada di server (misalnya baru di-reset oleh admin),
-      // buang sisa draft lokal agar formulir bersih 100% dari awal
-      if (window.currentStudentProgress && window.currentStudentProgress.task_map && !window.currentStudentProgress.task_map['1_lkpd']) {
-        saved = null;
-        try {
-          idVars.forEach(id => localStorage.removeItem('fincestem_lkpd_ft_day1_' + id));
-        } catch (e) {}
-      }
-
       // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan
       let hasMateri = false;
       try {
@@ -1250,15 +1241,6 @@
         }
       } catch (e) {}
 
-      // Jika pengerjaan Day 2 LKPD belum ada di server (misalnya baru di-reset oleh admin),
-      // buang sisa draft lokal agar formulir bersih 100% dari awal
-      if (window.currentStudentProgress && window.currentStudentProgress.task_map && !window.currentStudentProgress.task_map['2_lkpd']) {
-        saved = null;
-        try {
-          idVars.forEach(id => localStorage.removeItem('fincestem_lkpd_ft_day2_' + id));
-        } catch (e) {}
-      }
-
       // Ambil data Day 1 untuk saldo awal default
       let day1Remaining = 0;
       try {
@@ -1736,15 +1718,6 @@
           }
         }
       } catch (e) {}
-
-      // Jika pengerjaan Day X LKPD belum ada di server (misalnya baru di-reset oleh admin),
-      // buang sisa draft lokal agar formulir bersih 100% dari awal
-      if (window.currentStudentProgress && window.currentStudentProgress.task_map && !window.currentStudentProgress.task_map[`${dayNum}_lkpd`]) {
-        saved = null;
-        try {
-          idVars.forEach(id => localStorage.removeItem(`fincestem_lkpd_ft_day${dayNum}_` + id));
-        } catch (e) {}
-      }
 
       // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan Day X
       let hasMateri = false;
