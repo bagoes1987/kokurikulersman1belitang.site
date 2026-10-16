@@ -976,7 +976,8 @@
       if (!hasMateri) {
         for (const id of idList) {
           try {
-            const raw = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id);
+            const raw = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id) ||
+                        localStorage.getItem(`fincestem_materi_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
               if (p && (p.conclusion || p.text || p.content || p.summary)) {
@@ -992,10 +993,11 @@
       if (!hasLkpd) {
         for (const id of idList) {
           try {
-            const raw = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id);
+            const raw = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
+                        localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
-              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined)) {
+              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined || p.answers || p.content)) {
                 hasLkpd = true;
                 break;
               }
@@ -1008,7 +1010,8 @@
       if (!hasAsesmen) {
         for (const id of idList) {
           try {
-            const raw = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id);
+            const raw = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
+                        localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + id);
             if (raw) {
               try {
                 const p = JSON.parse(raw);
@@ -1031,7 +1034,8 @@
       if (!hasDok) {
         for (const id of idList) {
           try {
-            if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true') {
+            if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true' ||
+                localStorage.getItem(`fincestem_dok_day${dayNum}_` + id) === 'true') {
               hasDok = true;
               break;
             }
@@ -1046,7 +1050,7 @@
                 hasDok = db.documentation.some(p => {
                   const docDay = Number(p.day || p.day_number || 0);
                   const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
-                  return docDay === dayNum && idList.includes(docNisn);
+                  return docDay === dayNum && (!docNisn || idList.includes(docNisn));
                 });
               }
             }
@@ -1058,7 +1062,8 @@
       if (!hasRefleksi) {
         for (const id of idList) {
           try {
-            const raw = localStorage.getItem(`fincestem_refleksi_ft_day${dayNum}_` + id);
+            const raw = localStorage.getItem(`fincestem_refleksi_ft_day${dayNum}_` + id) ||
+                        localStorage.getItem(`fincestem_refleksi_day${dayNum}_` + id);
             if (raw) {
               hasRefleksi = true;
               break;
@@ -1350,7 +1355,7 @@
             </div>
           </div>
           <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-            Sesuai panduan kegiatan Field Trip Day ${dayNum}, Anda harus menyelesaikan <strong>${prereqTitle}</strong> terlebih dahulu sebelum dapat membuka menu ini.
+            Sesuai alur pengerjaan berurutan Day ${dayNum}, Anda harus menyelesaikan <strong>${prereqTitle}</strong> terlebih dahulu sebelum dapat membuka menu ini.
           </p>
           <div class="flex flex-col gap-2 pt-2">
             <button id="btnLockedGoPrereq" type="button" class="w-full py-3.5 px-4 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all">
@@ -1624,85 +1629,87 @@
           `;
         }
 
-        // Mini checkmarks aktivitas
-        let miniChecks = '';
-        if (isFTDay) {
-          miniChecks = `
-            <div class="grid grid-cols-2 sm:grid-cols-5 gap-1.5 text-xs text-slate-600 font-semibold w-full">
-              <span class="px-2 py-1.5 rounded-xl ${hasMateri ? 'text-amber-950 bg-amber-100/90 font-bold border border-amber-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasMateri ? 'text-amber-700' : 'text-slate-400'}">${hasMateri ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>1. Modul</span>
-              </span>
-              <span class="px-2 py-1.5 rounded-xl ${hasLkpd ? 'text-teal-950 bg-teal-100/90 font-bold border border-teal-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasLkpd ? 'text-teal-700' : 'text-slate-400'}">${hasLkpd ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>2. LKPD</span>
-              </span>
-              <span class="px-2 py-1.5 rounded-xl ${hasAsesmen ? 'text-blue-950 bg-blue-100/90 font-bold border border-blue-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasAsesmen ? 'text-blue-700' : 'text-slate-400'}">${hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>3. Asesmen</span>
-              </span>
-              <span class="px-2 py-1.5 rounded-xl ${hasDok ? 'text-pink-950 bg-pink-100/90 font-bold border border-pink-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasDok ? 'text-pink-700' : 'text-slate-400'}">${hasDok ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>4. Foto</span>
-              </span>
-              <span class="col-span-2 sm:col-span-1 px-2 py-1.5 rounded-xl ${hasRefleksi ? 'text-purple-950 bg-purple-100/90 font-bold border border-purple-300' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasRefleksi ? 'text-purple-700' : 'text-slate-400'}">${hasRefleksi ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>5. Refleksi</span>
-              </span>
-            </div>
-          `;
-        } else {
-          miniChecks = `
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-xs text-slate-600 font-semibold w-full">
-              <span class="px-2.5 py-1.5 rounded-xl ${hasLkpd ? 'text-teal-900 bg-teal-100/90 font-bold border border-teal-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasLkpd ? 'text-teal-700' : 'text-slate-400'}">${hasLkpd ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>LKPD</span>
-              </span>
-              <span class="px-2.5 py-1.5 rounded-xl ${hasAsesmen ? 'text-blue-900 bg-blue-100/90 font-bold border border-blue-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasAsesmen ? 'text-blue-700' : 'text-slate-400'}">${hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>Asesmen</span>
-              </span>
-              <span class="px-2.5 py-1.5 rounded-xl ${hasDok ? 'text-pink-900 bg-pink-100/90 font-bold border border-pink-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasDok ? 'text-pink-700' : 'text-slate-400'}">${hasDok ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>Foto</span>
-              </span>
-              <span class="px-2.5 py-1.5 rounded-xl ${hasRefleksi ? 'text-purple-900 bg-purple-100/90 font-bold border border-purple-200' : 'bg-white/80 border border-slate-200/60'} flex items-center gap-1.5 justify-center">
-                <span class="material-symbols-outlined text-sm ${hasRefleksi ? 'text-purple-700' : 'text-slate-400'}">${hasRefleksi ? 'check_circle' : 'radio_button_unchecked'}</span>
-                <span>Refleksi</span>
-              </span>
-            </div>
-          `;
-        }
-
         const canInteract = access.canAccess;
         const canEdit = access.canEdit;
 
-        // Kontrol Tombol Berjenjang Khusus Field Trip (Day 1 & Day 2):
-        // Modul (1) -> LKPD (2) -> Asesmen (3) -> Dokumentasi (4) -> Refleksi (5) -> Penilaian (6)
+        // Sinkronisasi status alur pengerjaan berurutan Day 1 s.d. Day 7
+        const dayProg = (dNum >= 1 && dNum <= 7) ? getFTProgressStatus(taskMap, dNum) : null;
+        if (dayProg) {
+          hasMateri = dayProg.hasMateri;
+          hasLkpd = dayProg.hasLkpd;
+          hasAsesmen = dayProg.hasAsesmen;
+          hasDok = dayProg.hasDok;
+          hasRefleksi = dayProg.hasRefleksi;
+        }
+
+        // Kontrol Tombol Berjenjang (Day 1 s.d. Day 7):
+        // 1. Modul -> 2. LKPD -> 3. Asesmen -> 4. Dokumentasi -> 5. Refleksi -> 6. Penilaian Fasilitator -> 7. Buka Day Berikutnya
         const canOpenMateri = canInteract;
-        const canOpenLkpd = canInteract && (!isFTDay || ftStatus.canLkpd);
-        const canOpenAsesmen = canInteract && (!isFTDay || ftStatus.canAsesmen);
-        const canOpenDok = canInteract && (!isFTDay || ftStatus.canDok);
-        const canOpenRefleksi = canInteract && (!isFTDay || ftStatus.canRefleksi);
-        const canOpenPenilaian = canInteract && (!isFTDay || ftStatus.canPenilaian);
+        const canOpenLkpd = canInteract && (!dayProg || dayProg.canLkpd);
+        const canOpenAsesmen = canInteract && (!dayProg || dayProg.canAsesmen);
+        const canOpenDok = canInteract && (!dayProg || dayProg.canDok);
+        const canOpenRefleksi = canInteract && (!dayProg || dayProg.canRefleksi);
+        const canOpenPenilaian = canInteract && (!dayProg || dayProg.canPenilaian);
 
-        const materiBtnClass = canOpenMateri ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const materiIconClass = canOpenMateri ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500';
+        const hasPenilaian = isFieldTrip 
+          ? (hasRefleksi || (dayRecord && dayRecord.score)) 
+          : !!(dayRecord && dayRecord.score);
 
-        const lkpdBtnClass = canOpenLkpd ? (canEdit ? 'bg-teal-50 hover:bg-teal-100 text-teal-950 border border-teal-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const lkpdIconClass = canOpenLkpd ? (canEdit ? 'bg-teal-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+        const getCheckBadge = (isDone, isOpen) => {
+          if (isDone) {
+            return `<span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 ml-auto shadow-2xs" title="Selesai"><span class="material-symbols-outlined text-sm font-black">check</span></span>`;
+          }
+          if (isOpen) {
+            return `<span class="w-6 h-6 rounded-full border border-teal-400/80 bg-teal-50 text-teal-600 flex items-center justify-center shrink-0 ml-auto" title="Siap Dikerjakan"><span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span></span>`;
+          }
+          return `<span class="w-6 h-6 rounded-full bg-slate-200/70 text-slate-400 flex items-center justify-center shrink-0 ml-auto" title="Terkunci"><span class="material-symbols-outlined text-xs">lock</span></span>`;
+        };
 
-        const asesmenBtnClass = canOpenAsesmen ? (canEdit ? 'bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const asesmenIconClass = canOpenAsesmen ? (canEdit ? 'bg-blue-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+        const materiBtnClass = hasMateri 
+          ? 'bg-emerald-50/90 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-2xs cursor-pointer' 
+          : (canOpenMateri ? 'bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-80');
+        const materiIconClass = hasMateri 
+          ? 'bg-emerald-600 text-white' 
+          : (canOpenMateri ? 'bg-amber-500 text-white' : 'bg-slate-300 text-slate-500');
 
-        const dokBtnClass = canOpenDok ? (canEdit ? 'bg-pink-50 hover:bg-pink-100 text-pink-950 border border-pink-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const dokIconClass = canOpenDok ? (canEdit ? 'bg-pink-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+        const lkpdBtnClass = hasLkpd 
+          ? 'bg-emerald-50/90 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-2xs cursor-pointer' 
+          : (canOpenLkpd ? (canEdit ? 'bg-teal-50 hover:bg-teal-100 text-teal-950 border border-teal-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-80');
+        const lkpdIconClass = hasLkpd 
+          ? 'bg-emerald-600 text-white' 
+          : (canOpenLkpd ? (canEdit ? 'bg-teal-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500');
 
-        const refleksiBtnClass = canOpenRefleksi ? (canEdit ? 'bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const refleksiIconClass = canOpenRefleksi ? (canEdit ? 'bg-purple-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500';
+        const asesmenBtnClass = hasAsesmen 
+          ? 'bg-emerald-50/90 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-2xs cursor-pointer' 
+          : (canOpenAsesmen ? (canEdit ? 'bg-blue-50 hover:bg-blue-100 text-blue-950 border border-blue-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-80');
+        const asesmenIconClass = hasAsesmen 
+          ? 'bg-emerald-600 text-white' 
+          : (canOpenAsesmen ? (canEdit ? 'bg-blue-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500');
 
-        const nilaiBtnClass = canOpenPenilaian ? 'bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200/80 cursor-pointer' : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed';
-        const nilaiIconClass = canOpenPenilaian ? 'bg-emerald-600 text-white' : 'bg-slate-300 text-slate-500';
+        const dokBtnClass = hasDok 
+          ? 'bg-emerald-50/90 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-2xs cursor-pointer' 
+          : (canOpenDok ? (canEdit ? 'bg-pink-50 hover:bg-pink-100 text-pink-950 border border-pink-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-80');
+        const dokIconClass = hasDok 
+          ? 'bg-emerald-600 text-white' 
+          : (canOpenDok ? (canEdit ? 'bg-pink-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500');
+
+        const refleksiBtnClass = hasRefleksi 
+          ? 'bg-emerald-50/90 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-2xs cursor-pointer' 
+          : (canOpenRefleksi ? (canEdit ? 'bg-purple-50 hover:bg-purple-100 text-purple-950 border border-purple-200/80 cursor-pointer' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer') : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-80');
+        const refleksiIconClass = hasRefleksi 
+          ? 'bg-emerald-600 text-white' 
+          : (canOpenRefleksi ? (canEdit ? 'bg-purple-600 text-white' : 'bg-slate-500 text-white') : 'bg-slate-300 text-slate-500');
+
+        const nilaiBtnClass = canOpenPenilaian 
+          ? (hasPenilaian
+              ? (isFieldTrip ? 'bg-amber-100/90 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-2xs cursor-pointer' : 'bg-emerald-50/90 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-2xs cursor-pointer')
+              : 'bg-teal-50 hover:bg-teal-100 text-teal-950 border border-teal-200/80 shadow-2xs cursor-pointer') 
+          : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-80';
+        const nilaiIconClass = canOpenPenilaian 
+          ? (hasPenilaian
+              ? (isFieldTrip ? 'bg-amber-500 text-slate-950' : 'bg-emerald-600 text-white') 
+              : 'bg-teal-600 text-white') 
+          : 'bg-slate-300 text-slate-500';
 
         const card = document.createElement('div');
         card.id = 'dayCard_' + dNum;
@@ -1862,100 +1869,111 @@
                 </div>
               </div>
 
-              <!-- ALUR BERURUTAN KHUSUS DAY ${dNum} FIELD TRIP -->
-              <div class="p-3 rounded-2xl bg-amber-50/90 border border-amber-200/80 text-amber-950 text-xs flex flex-col gap-1 leading-relaxed">
-                <span class="font-extrabold flex items-center gap-1 text-amber-900">
-                  <span class="material-symbols-outlined text-sm text-amber-700">playlist_play</span>
-                  Alur Pengerjaan Wajib Berurutan Day ${dNum}:
-                </span>
-                <span class="text-[11px] text-amber-900/90">
-                  <strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Foto Dokumentasi</strong> &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Bintang 5 Otomatis</strong>.
-                </span>
-              </div>
             ` : ''}
 
-            <!-- Mini Checklist -->
-            <div class="flex flex-col gap-2 bg-teal-50/50 p-3 rounded-2xl border border-teal-100/80">
-              <span class="text-xs font-bold text-teal-950 flex items-center gap-1">
-                <span class="material-symbols-outlined text-sm text-teal-600">playlist_add_check</span> Checklist Pengerjaan:
+            <!-- ALUR PENGERJAAN HARIAN BERURUTAN (DAY ${dNum}) -->
+            <div class="p-3 sm:p-3.5 rounded-2xl ${isFieldTrip ? 'bg-amber-50/90 border-amber-200/80 text-amber-950' : 'bg-teal-50/90 border-teal-200/80 text-teal-950'} border text-xs flex flex-col gap-1 leading-relaxed">
+              <span class="font-extrabold flex items-center gap-1.5 ${isFieldTrip ? 'text-amber-900' : 'text-teal-900'}">
+                <span class="material-symbols-outlined text-sm ${isFieldTrip ? 'text-amber-700' : 'text-teal-700'}">playlist_play</span>
+                Alur Pengerjaan Wajib Berurutan Day ${dNum}:
               </span>
-              ${miniChecks}
+              <span class="text-[11px] sm:text-xs ${isFieldTrip ? 'text-amber-900/90' : 'text-teal-900/90'} leading-relaxed font-medium">
+                <strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.
+              </span>
             </div>
 
             ${lockAlertHtml}
 
-            <!-- 6 Tombol Aktivitas Utama (Berurutan Simetris) -->
+            <!-- 6 Tombol Aktivitas Utama (Berurutan Simetris dengan Status Ceklis Terpadu) -->
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 pt-1">
               <!-- 1. MODUL BELAJAR -->
-              <button onclick="handleActivityClick(${dNum}, 'materi')" class="p-2.5 sm:p-3 rounded-2xl ${materiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
-                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${materiIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">menu_book</span>
-                </span>
-                <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Modul Belajar</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenMateri ? 'text-amber-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${(isFTDay && hasMateri) ? 'Resume Tersimpan' : 'Materi Eksplor'}</span>
+              <button onclick="handleActivityClick(${dNum}, 'materi')" class="p-2.5 sm:p-3 rounded-2xl ${materiBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${materiIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">menu_book</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">1. Modul Belajar</span>
+                    <span class="text-[10px] sm:text-xs ${hasMateri ? 'text-emerald-700 font-bold' : (canOpenMateri ? 'text-amber-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasMateri ? '✓ Resume Selesai' : 'Baca &amp; Resume'}</span>
+                  </div>
                 </div>
+                ${getCheckBadge(hasMateri, canOpenMateri)}
               </button>
 
               <!-- 2. LKPD DIGITAL -->
-              <button onclick="handleActivityClick(${dNum}, 'lkpd')" class="p-2.5 sm:p-3 rounded-2xl ${lkpdBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
-                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${lkpdIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenLkpd ? 'lock' : 'edit_document'}</span>
-                </span>
-                <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">LKPD Digital</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenLkpd ? 'text-teal-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenLkpd ? 'Terkunci (Baca Modul)' : (hasLkpd ? 'Sudah Dikirim' : 'Lembar Kerja')}</span>
+              <button onclick="handleActivityClick(${dNum}, 'lkpd')" class="p-2.5 sm:p-3 rounded-2xl ${lkpdBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${lkpdIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenLkpd ? 'lock' : 'edit_document'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">2. LKPD Digital</span>
+                    <span class="text-[10px] sm:text-xs ${hasLkpd ? 'text-emerald-700 font-bold' : (canOpenLkpd ? 'text-teal-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasLkpd ? '✓ LKPD Terkirim' : (canOpenLkpd ? 'Isi Lembar Kerja' : 'Terkunci')}</span>
+                  </div>
                 </div>
+                ${getCheckBadge(hasLkpd, canOpenLkpd)}
               </button>
 
               <!-- 3. ASESMEN -->
-              <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 sm:p-3 rounded-2xl ${asesmenBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
-                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${asesmenIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenAsesmen ? 'lock' : 'fact_check'}</span>
-                </span>
-                <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Asesmen</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenAsesmen ? 'text-blue-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenAsesmen ? 'Terkunci (Isi LKPD)' : (hasAsesmen ? 'Sudah Dikirim' : 'Uji Pemahaman')}</span>
+              <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 sm:p-3 rounded-2xl ${asesmenBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${asesmenIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenAsesmen ? 'lock' : 'fact_check'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">3. Asesmen</span>
+                    <span class="text-[10px] sm:text-xs ${hasAsesmen ? 'text-emerald-700 font-bold' : (canOpenAsesmen ? 'text-blue-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasAsesmen ? '✓ Kuis Terkirim' : (canOpenAsesmen ? 'Kerjakan Kuis' : 'Terkunci')}</span>
+                  </div>
                 </div>
+                ${getCheckBadge(hasAsesmen, canOpenAsesmen)}
               </button>
 
               <!-- 4. DOKUMENTASI FOTO -->
-              <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 sm:p-3 rounded-2xl ${dokBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
-                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${dokIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenDok ? 'lock' : 'photo_camera'}</span>
-                </span>
-                <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Dokumentasi</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenDok ? 'text-pink-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenDok ? 'Terkunci (Asesmen Dulu)' : (hasDok ? 'Foto Terunggah' : 'Foto/Video')}</span>
+              <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 sm:p-3 rounded-2xl ${dokBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${dokIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenDok ? 'lock' : 'photo_camera'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">4. Dokumentasi</span>
+                    <span class="text-[10px] sm:text-xs ${hasDok ? 'text-emerald-700 font-bold' : (canOpenDok ? 'text-pink-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasDok ? '✓ Foto Terunggah' : (canOpenDok ? 'Unggah Foto' : 'Terkunci')}</span>
+                  </div>
                 </div>
+                ${getCheckBadge(hasDok, canOpenDok)}
               </button>
 
               <!-- 5. REFLEKSI -->
-              <button onclick="handleActivityClick(${dNum}, 'refleksi')" class="p-2.5 sm:p-3 rounded-2xl ${refleksiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
-                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${refleksiIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenRefleksi ? 'lock' : 'psychology'}</span>
-                </span>
-                <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Refleksi</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenRefleksi ? 'text-purple-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${!canOpenRefleksi ? 'Terkunci (Foto Dulu)' : (hasRefleksi ? 'Jurnal Selesai' : 'Jurnal Mandiri')}</span>
+              <button onclick="handleActivityClick(${dNum}, 'refleksi')" class="p-2.5 sm:p-3 rounded-2xl ${refleksiBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${refleksiIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenRefleksi ? 'lock' : 'psychology'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">5. Refleksi</span>
+                    <span class="text-[10px] sm:text-xs ${hasRefleksi ? 'text-emerald-700 font-bold' : (canOpenRefleksi ? 'text-purple-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasRefleksi ? '✓ Jurnal Selesai' : (canOpenRefleksi ? 'Jurnal Mandiri' : 'Terkunci')}</span>
+                  </div>
                 </div>
+                ${getCheckBadge(hasRefleksi, canOpenRefleksi)}
               </button>
 
-              <!-- 6. NILAI & CATATAN GURU -->
-              <button onclick="handleActivityClick(${dNum}, 'penilaian')" class="p-2.5 sm:p-3 rounded-2xl ${nilaiBtnClass} flex items-center gap-2 sm:gap-2.5 transition-all shadow-2xs min-w-0">
-                <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${nilaiIconClass} flex items-center justify-center shrink-0">
-                  <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenPenilaian ? 'lock' : 'stars'}</span>
-                </span>
-                <div class="flex flex-col text-left min-w-0">
-                  <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">Nilai &amp; Catatan</span>
-                  <span class="text-[10px] sm:text-xs ${canOpenPenilaian ? 'text-emerald-800' : 'text-slate-400'} leading-tight mt-0.5 truncate">${
-                    !canOpenPenilaian 
-                      ? 'Terkunci (Refleksi Dulu)' 
-                      : (isFieldTrip 
-                          ? ((hasRefleksi || (isFTDay && ftStatus && ftStatus.hasRefleksi)) ? '⭐⭐⭐⭐⭐ Bintang 5' : 'Feedback Lapangan')
-                          : ((dayRecord && dayRecord.score) ? 'Telah Dinilai Guru' : (hasRefleksi ? 'Menunggu Nilai Fasil' : 'Feedback Guru')))
-                  }</span>
+              <!-- 6. PENILAIAN FASILITATOR -->
+              <button onclick="handleActivityClick(${dNum}, 'penilaian')" class="p-2.5 sm:p-3 rounded-2xl ${nilaiBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${nilaiIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenPenilaian ? 'lock' : 'stars'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">6. Penilaian Fasil</span>
+                    <span class="text-[10px] sm:text-xs ${hasPenilaian ? (isFieldTrip ? 'text-amber-950 font-bold' : 'text-emerald-800 font-bold') : (canOpenPenilaian ? 'text-teal-800 font-medium' : 'text-slate-400')} leading-tight mt-0.5 truncate">${
+                      !canOpenPenilaian 
+                        ? 'Terkunci' 
+                        : (isFieldTrip 
+                            ? ((hasRefleksi || (dayRecord && dayRecord.score)) ? '⭐⭐⭐⭐⭐ Bintang 5' : 'Feedback Lapangan')
+                            : ((dayRecord && dayRecord.score) ? `✓ Nilai: ${dayRecord.score}` : 'Menunggu Fasil'))
+                    }</span>
+                  </div>
                 </div>
+                ${getCheckBadge(hasPenilaian, canOpenPenilaian)}
               </button>
             </div>
 
@@ -2057,19 +2075,19 @@
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
 
-      // VALIDASI ALUR BERURUTAN KHUSUS FIELD TRIP (DAY 1 S.D. 7)
-      if (isFTDay) {
-        const ftStatus = getFTProgressStatus(null, dNum);
+      // VALIDASI ALUR BERURUTAN (DAY 1 S.D. 7) UNTUK SEMUA SISWA (FIELD TRIP MAUPUN NON-FIELD TRIP)
+      if (dNum >= 1 && dNum <= 7) {
+        const progStatus = getFTProgressStatus(null, dNum);
 
         // Tahap 2: LKPD butuh Modul
-        if (type === 'lkpd' && !ftStatus.canLkpd) {
+        if (type === 'lkpd' && !progStatus.canLkpd) {
           showStepLockedModal('LKPD Digital', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
           return;
         }
 
         // Tahap 3: Asesmen butuh Modul & LKPD
-        if (type === 'asesmen' && !ftStatus.canAsesmen) {
-          if (!ftStatus.hasMateri) {
+        if (type === 'asesmen' && !progStatus.canAsesmen) {
+          if (!progStatus.hasMateri) {
             showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
           } else {
             showStepLockedModal('Kuis Asesmen', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
@@ -2078,10 +2096,10 @@
         }
 
         // Tahap 4: Dokumentasi butuh Modul, LKPD & Asesmen
-        if (type === 'dokumentasi' && !ftStatus.canDok) {
-          if (!ftStatus.hasMateri) {
+        if (type === 'dokumentasi' && !progStatus.canDok) {
+          if (!progStatus.hasMateri) {
             showStepLockedModal('Dokumentasi Foto', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
-          } else if (!ftStatus.hasLkpd) {
+          } else if (!progStatus.hasLkpd) {
             showStepLockedModal('Dokumentasi Foto', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
           } else {
             showStepLockedModal('Dokumentasi Foto', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
@@ -2090,8 +2108,8 @@
         }
 
         // Tahap 5: Refleksi butuh Modul, LKPD, Asesmen & Dokumentasi
-        if (type === 'refleksi' && !ftStatus.canRefleksi) {
-          if (!ftStatus.canDok) {
+        if (type === 'refleksi' && !progStatus.canRefleksi) {
+          if (!progStatus.canDok) {
             showStepLockedModal('Jurnal Refleksi', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
           } else {
             showStepLockedModal('Jurnal Refleksi', `Tahap 4: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
@@ -2100,7 +2118,7 @@
         }
 
         // Tahap 6: Penilaian butuh Refleksi selesai
-        if (type === 'penilaian' && !ftStatus.canPenilaian) {
+        if (type === 'penilaian' && !progStatus.canPenilaian) {
           showStepLockedModal('Nilai & Feedback Guru', `Tahap 5: Jurnal Refleksi Mandiri Day ${dNum}`, () => { handleActivityClick(dNum, 'refleksi'); }, dNum);
           return;
         }
