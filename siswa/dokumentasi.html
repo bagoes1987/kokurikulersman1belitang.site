@@ -119,7 +119,7 @@
         </a>
         <div class="flex flex-col">
           <span class="text-xs text-[#08A7B5] font-extrabold uppercase tracking-wider leading-tight">Portal Siswa</span>
-          <span class="text-base font-extrabold text-on-surface leading-tight">Galeri &amp; Jurnal Dokumentasi</span>
+          <span class="text-base font-extrabold text-on-surface leading-tight">Galeri Foto</span>
         </div>
       </div>
       <button onclick="toggleUploadModal(true)" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-primary text-white font-bold text-xs sm:text-sm shadow-xs hover:bg-primary/90 transition-all cursor-pointer">
@@ -134,10 +134,10 @@
 
     <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-2.5">
       <div class="flex items-center justify-between gap-2">
-        <h2 class="font-black text-lg text-primary">Jurnal Foto Kegiatan Riset</h2>
+        <h2 id="docPageTitle" class="font-black text-lg text-primary">Jurnal Foto Kegiatan Riset</h2>
         <span id="docCountBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container text-on-surface-variant">0 Foto Tersimpan</span>
       </div>
-      <p class="text-sm text-on-surface-variant leading-relaxed font-medium">
+      <p id="docPageDesc" class="text-sm text-on-surface-variant leading-relaxed font-medium">
         Setiap kelompok wajib mengunggah bukti foto lapangan pada tiap pilar kegiatan sebagai komponen portofolio penilaian kokurikuler.
       </p>
     </div>
@@ -177,24 +177,13 @@
 
       <!-- Area Formulir yang BISA DI-SCROLL LANCAR DI HP -->
       <div class="flex-1 overflow-y-auto overscroll-contain py-3.5 space-y-3.5 pr-1">
-        <div>
-          <label class="block text-sm font-bold text-on-surface mb-1.5">Pilar Kegiatan</label>
-          <select id="modalPillarSelect" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary outline-none transition-all">
-            <option value="STEM">Pilar 04 - STEM (Uji Kualitas / Alat Sains)</option>
-            <option value="Financial">Pilar 01 - Financial (Wawancara Pasar / Gabah)</option>
-            <option value="Culture">Pilar 02 - Culture (Sejarah / Kearifan Lokal)</option>
-            <option value="Exploration">Pilar 03 - Exploration (Navigasi / Ekosistem DAS)</option>
-          </select>
-        </div>
+        <!-- Input Tersembunyi Pilar & Judul Otomatis (Mengikuti Materi Day) -->
+        <input id="modalPillarSelect" type="hidden" value="STEM">
+        <input id="modalPhotoTitle" type="hidden" value="">
 
         <div>
-          <label class="block text-sm font-bold text-on-surface mb-1.5">Judul / Aktivitas Foto</label>
-          <input id="modalPhotoTitle" type="text" placeholder="Contoh: Pengambilan Sampel Air di Saluran Irigasi" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary outline-none transition-all placeholder:text-slate-400">
-        </div>
-
-        <div>
-          <label class="block text-sm font-bold text-on-surface mb-1.5">Keterangan / Refleksi Singkat</label>
-          <textarea id="modalPhotoDesc" rows="3" placeholder="Tuliskan catatan singkat pengamatan lapangan..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400 leading-relaxed"></textarea>
+          <label class="block text-sm font-bold text-on-surface mb-1.5">Keterangan Foto</label>
+          <textarea id="modalPhotoDesc" rows="3" placeholder="Tuliskan keterangan foto anda ini..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400 leading-relaxed"></textarea>
         </div>
 
         <!-- Status GPS Geotag Lapangan -->
@@ -279,17 +268,6 @@
                 </button>
               </div>
 
-              <!-- Bar Informasi Sentuh Bawah & Tombol Buka Layar Penuh -->
-              <div class="absolute bottom-2.5 inset-x-2.5 pointer-events-none flex items-center justify-between z-10">
-                <span class="text-[10px] font-bold text-white/95 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/15 flex items-center gap-1 shadow-sm">
-                  <span class="material-symbols-outlined text-xs text-amber-300">pinch</span>
-                  <span>Cubit 2 jari / Ketuk 2x untuk zoom</span>
-                </span>
-                <button type="button" onclick="viewPhotoFullscreen()" class="pointer-events-auto px-2.5 py-1 rounded-lg bg-primary hover:bg-primary/90 text-white text-[11px] font-bold shadow-md flex items-center gap-1 backdrop-blur-xs cursor-pointer active:scale-95 transition-all">
-                  <span class="material-symbols-outlined text-xs">fullscreen</span>
-                  <span>Layar Penuh</span>
-                </button>
-              </div>
             </div>
 
             <!-- Bar Aksi Pratinjau (Tertata Rapi Horizontal Tanpa Tumpuk) -->
@@ -418,6 +396,251 @@
     let selectedPhotoBase64 = null;
     let currentGPS = null;
 
+    // Master Konfigurasi Materi, Tema & Nama File Day 0 s.d. Day 7
+    const DAY_ACTIVITIES_CONFIG = {
+      fieldTrip: {
+        0: {
+          title: 'Simulasi & Gladi Bersih FINCESTEM',
+          theme: 'Orientasi Sistem, Uji Coba LKPD, Asesmen & Unggah Dokumentasi',
+          defaultPillar: 'STEM',
+          fileSlug: 'Simulasi_Gladi_Bersih',
+          pillars: {
+            STEM: 'STEM (Navigasi Sistem)',
+            Financial: 'Financial (Simulasi Uang Saku)',
+            Culture: 'Culture (Tata Tertib & Etika)',
+            Exploration: 'Exploration (Uji Coba Geotag)'
+          }
+        },
+        1: {
+          title: 'Belitang – Semarang (Perjalanan Darat)',
+          theme: 'Rute Belitang, Bakauheni, Merak, Tol Trans-Jawa menuju Semarang',
+          defaultPillar: 'Financial',
+          fileSlug: 'Belitang_Semarang_Perjalanan',
+          pillars: {
+            STEM: 'STEM (Navigasi Tol Trans-Jawa)',
+            Financial: 'Financial (Manajemen Uang Saku)',
+            Culture: 'Culture (Etika & Kebersamaan)',
+            Exploration: 'Exploration (Bakauheni-Merak)'
+          }
+        },
+        2: {
+          title: 'Semarang – Malang (AKPOL & Lawang Sewu)',
+          theme: 'Kunjungan AKPOL Semarang, Lawang Sewu & Perjalanan Menuju Malang',
+          defaultPillar: 'Culture',
+          fileSlug: 'AKPOL_LawangSewu_Malang',
+          pillars: {
+            STEM: 'STEM (Arsitektur Lawang Sewu)',
+            Financial: 'Financial (Manajemen Biaya Malang)',
+            Culture: 'Culture (Sejarah AMKA Lawang Sewu)',
+            Exploration: 'Exploration (Kunjungan AKPOL Semarang)'
+          }
+        },
+        3: {
+          title: 'Wisata Edukasi Batu – Bromo',
+          theme: 'Petik Apel Batu, Jatim Park 1, Museum Angkut menuju Bromo',
+          defaultPillar: 'STEM',
+          fileSlug: 'PetikApel_JatimPark_MuseumAngkut',
+          pillars: {
+            STEM: 'STEM (Sains Apel & Fisika Jatim Park)',
+            Financial: 'Financial (Wirausaha Petik Apel & Tiket)',
+            Culture: 'Culture (Kearifan Wisata Kota Batu)',
+            Exploration: 'Exploration (Transportasi Museum Angkut)'
+          }
+        },
+        4: {
+          title: 'Wisata Gunung Bromo – Yogyakarta',
+          theme: 'Sunrise Penanjakan, Pasir Berbisik, Savana, Kawah Bromo menuju Yogyakarta',
+          defaultPillar: 'Exploration',
+          fileSlug: 'GunungBromo_Yogyakarta',
+          pillars: {
+            STEM: 'STEM (Geomorfologi Kaldera & Savana)',
+            Financial: 'Financial (Logistik Jeep Bromo)',
+            Culture: 'Culture (Adat & Kearifan Suku Tengger)',
+            Exploration: 'Exploration (Vulkanologi Kawah Bromo)'
+          }
+        },
+        5: {
+          title: 'Wisata Edukasi Yogyakarta',
+          theme: 'Candi Prambanan, Belajar Membatik, UNY & Free Program',
+          defaultPillar: 'Culture',
+          fileSlug: 'Prambanan_Membatik_UNY',
+          pillars: {
+            STEM: 'STEM (Sains Kampus UNY & Malam Batik)',
+            Financial: 'Financial (Ekonomi Batik & Pasar)',
+            Culture: 'Culture (Prambanan & Belajar Membatik)',
+            Exploration: 'Exploration (Sosio-Kultural Yogyakarta)'
+          }
+        },
+        6: {
+          title: 'Yogyakarta – Belitang (Pabrik Bakpia & Pantai Drini)',
+          theme: 'Pabrik Bakpia Jogja, Pantai Drini, Drini Park & Perjalanan Pulang',
+          defaultPillar: 'Financial',
+          fileSlug: 'Bakpia_PantaiDrini_Belitang',
+          pillars: {
+            STEM: 'STEM (Sains Pesisir Pantai Drini)',
+            Financial: 'Financial (Industri Pabrik Bakpia)',
+            Culture: 'Culture (Kuliner Budaya Khas Jogja)',
+            Exploration: 'Exploration (Geomorfologi Drini Park)'
+          }
+        },
+        7: {
+          title: 'Tiba di SMAN 1 Belitang',
+          theme: 'Transit Restoran Tol Sumatera, Evaluasi Perjalanan & Tiba di Belitang',
+          defaultPillar: 'Exploration',
+          fileSlug: 'Tiba_SMAN1_Belitang',
+          pillars: {
+            STEM: 'STEM (Portofolio Data Dokumentasi)',
+            Financial: 'Financial (Rekapitulasi Anggaran)',
+            Culture: 'Culture (Karakter & Kebersamaan Tim)',
+            Exploration: 'Exploration (Refleksi Ekspedisi Lapangan)'
+          }
+        }
+      },
+      nonFieldTrip: {
+        0: {
+          title: 'Simulasi & Gladi Bersih FINCESTEM',
+          theme: 'Orientasi Sistem, Uji Coba LKPD, Asesmen & Unggah Dokumentasi',
+          defaultPillar: 'STEM',
+          fileSlug: 'Simulasi_Gladi_Bersih',
+          pillars: {
+            STEM: 'STEM (Uji Coba Sensor GPS)',
+            Financial: 'Financial (Simulasi Biaya Riset)',
+            Culture: 'Culture (Tata Tertib Sekolah)',
+            Exploration: 'Exploration (Orientasi Sekolah)'
+          }
+        },
+        1: {
+          title: 'Day 1: Orientasi & Pembekalan Riset',
+          theme: 'Pembekalan STEM & Etika Riset Lapangan SMAN 1 Belitang',
+          defaultPillar: 'STEM',
+          fileSlug: 'Orientasi_Pembekalan_Riset',
+          pillars: {
+            STEM: 'STEM (Instrumen Observasi Lapangan)',
+            Financial: 'Financial (Rencana Anggaran Mandiri)',
+            Culture: 'Culture (Etika & Izin Riset Lapangan)',
+            Exploration: 'Exploration (Pemetaan Rute Riset)'
+          }
+        },
+        2: {
+          title: 'Day 2: Eksplorasi Sains & Ekosistem Irigasi',
+          theme: 'STEM Sains & Konservasi Lingkungan Saluran Irigasi Belitang',
+          defaultPillar: 'STEM',
+          fileSlug: 'Sains_Ekosistem_Irigasi',
+          pillars: {
+            STEM: 'STEM (Uji Kualitas Air Saluran Irigasi)',
+            Financial: 'Financial (Dampak Ekonomi Irigasi Padi)',
+            Culture: 'Culture (Kearifan Pengairan Pertanian)',
+            Exploration: 'Exploration (Ekosistem Sawah Irigasi)'
+          }
+        },
+        3: {
+          title: 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan',
+          theme: 'Teknologi Pertanian Modern & Mekanisasi Pengolahan Tanah Belitang',
+          defaultPillar: 'STEM',
+          fileSlug: 'Teknologi_Pertanian_Modern',
+          pillars: {
+            STEM: 'STEM (Mekanisasi Mesin Padi)',
+            Financial: 'Financial (Analisis Efisiensi Biaya Mesin)',
+            Culture: 'Culture (Modernisasi Alat Tradisional)',
+            Exploration: 'Exploration (Pengering Gabah & Penggilingan)'
+          }
+        },
+        4: {
+          title: 'Day 4: Literasi Finansial & Rantai Pasok Pangan',
+          theme: 'Financial Literacy & Ekonomi Agrikultur Pasar Komoditas Belitang',
+          defaultPillar: 'Financial',
+          fileSlug: 'Literasi_Finansial_Pasar',
+          pillars: {
+            STEM: 'STEM (Standar Mutu Beras Komersial)',
+            Financial: 'Financial (Wawancara Pasar & Gabah)',
+            Culture: 'Culture (Tawar-Menawar Multikultural)',
+            Exploration: 'Exploration (Rantai Distribusi Beras)'
+          }
+        },
+        5: {
+          title: 'Day 5: Eksplorasi Budaya & Etnosains Nusantara',
+          theme: 'Culture & Kearifan Lokal Komunitas Multikultural Belitang',
+          defaultPillar: 'Culture',
+          fileSlug: 'Budaya_Etnosains_Belitang',
+          pillars: {
+            STEM: 'STEM (Etnosains Pangan Tradisional)',
+            Financial: 'Financial (Potensi Kerajinan Budaya)',
+            Culture: 'Culture (Kajian Adat & Lumbung Desa)',
+            Exploration: 'Exploration (Dokumentasi Seni Tradisi)'
+          }
+        },
+        6: {
+          title: 'Day 6: Sintesis Data & Penyusunan Instrumen LKPD',
+          theme: 'Data Science & Penyusunan Laporan Proyek Kokurikuler',
+          defaultPillar: 'STEM',
+          fileSlug: 'Sintesis_Data_LKPD',
+          pillars: {
+            STEM: 'STEM (Grafik & Analisis Data Riset)',
+            Financial: 'Financial (Laporan Neraca Biaya Proyek)',
+            Culture: 'Culture (Refleksi Gotong Royong)',
+            Exploration: 'Exploration (Portofolio Bukti Observasi)'
+          }
+        },
+        7: {
+          title: 'Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi',
+          theme: 'Diseminasi Temuan Riset & Refleksi Kokurikuler FINCESTEM',
+          defaultPillar: 'Exploration',
+          fileSlug: 'Gelar_Karya_Ilmiah',
+          pillars: {
+            STEM: 'STEM (Presentasi Ilmiah Dewan Penguji)',
+            Financial: 'Financial (Evaluasi Efektivitas Riset)',
+            Culture: 'Culture (Refleksi Profil Pelajar Pancasila)',
+            Exploration: 'Exploration (Pameran Stand Poster Riset)'
+          }
+        }
+      }
+    };
+
+    function getDayActivityConfig(dayNum) {
+      const cat = getStudentCategoryInfo();
+      const groupKey = cat.isFieldTrip ? 'fieldTrip' : 'nonFieldTrip';
+      const cfgGroup = DAY_ACTIVITIES_CONFIG[groupKey] || DAY_ACTIVITIES_CONFIG.fieldTrip;
+      const d = (dayNum !== undefined && dayNum !== null) ? parseInt(dayNum) : 1;
+      return cfgGroup[d] || cfgGroup[1];
+    }
+
+    function setupDayContext(dayNum) {
+      const actConfig = getDayActivityConfig(dayNum);
+      const cat = getStudentCategoryInfo();
+
+      // Perbarui Judul & Deskripsi Halaman Sesuai Materi Hari Itu
+      const titleEl = document.getElementById('docPageTitle');
+      if (titleEl) titleEl.textContent = 'Jurnal Foto Kegiatan Riset';
+
+      const descEl = document.getElementById('docPageDesc');
+      if (descEl && actConfig) {
+        const dayBadge = (dayNum === 0) ? 'DAY 0 • SIMULASI' : `DAY ${dayNum} • ${cat.isFieldTrip ? 'FIELD TRIP' : 'NON-FIELD TRIP'}`;
+        descEl.innerHTML = `
+          <span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-primary/10 text-primary mb-1">${dayBadge}</span>
+          <br><strong class="text-on-surface text-sm sm:text-base">${actConfig.title}</strong>
+          <br><span class="text-xs text-slate-500">${actConfig.theme}</span>
+        `;
+      }
+
+      // Perbarui Tombol Filter Pilar Sesuai Materi Hari Itu
+      if (actConfig && actConfig.pillars) {
+        const btnStem = document.querySelector('button[onclick="filterPhotos(\'STEM\')"]');
+        if (btnStem) btnStem.textContent = actConfig.pillars.STEM || 'STEM';
+        const btnFin = document.querySelector('button[onclick="filterPhotos(\'Financial\')"]');
+        if (btnFin) btnFin.textContent = actConfig.pillars.Financial || 'Financial';
+        const btnCul = document.querySelector('button[onclick="filterPhotos(\'Culture\')"]');
+        if (btnCul) btnCul.textContent = actConfig.pillars.Culture || 'Culture';
+        const btnExp = document.querySelector('button[onclick="filterPhotos(\'Exploration\')"]');
+        if (btnExp) btnExp.textContent = actConfig.pillars.Exploration || 'Exploration';
+      }
+
+      // Default hidden pillar select
+      const pillarInput = document.getElementById('modalPillarSelect');
+      if (pillarInput && actConfig) {
+        pillarInput.value = actConfig.defaultPillar || 'STEM';
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       const user = FincestemCore.auth.getUser();
       if (!user) {
@@ -502,6 +725,9 @@
           });
         });
       }
+
+      const activeDay = dayParam ? parseInt(dayParam) : 1;
+      setupDayContext(activeDay);
 
       renderPhotos();
       syncDocumentationFromServer(function() {
@@ -1272,8 +1498,8 @@
           const disp = addrObj.fullText || addrObj;
           const statusTag = isInsideOKUTimur(currentGPS.lat, currentGPS.lng)
             ? '🟢 DALAM WILAYAH OKU TIMUR'
-            : '🔵 LUAR WILAYAH OKU TIMUR';
-          if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-blue-500/20 text-blue-700'}">${statusTag}</span>`;
+            : '🔴 LUAR WILAYAH OKU TIMUR';
+          if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
         });
 
         const helpGuide = document.getElementById('gpsHelpGuide');
@@ -1988,6 +2214,7 @@
           <div class="p-3 flex flex-col gap-1.5">
             <h4 class="font-extrabold text-sm text-on-surface line-clamp-1 leading-snug">${photo.title}</h4>
             <p class="text-xs sm:text-sm text-on-surface-variant line-clamp-2 leading-relaxed font-normal">${photo.description || photo.caption || ''}</p>
+            ${photo.file_name ? `<span class="text-[9.5px] font-mono text-slate-400 truncate max-w-full block">📄 ${photo.file_name}</span>` : ''}
             <div class="flex items-center justify-between text-xs text-slate-500 font-semibold mt-0.5">
               <span>${photo.date || '-'}</span>
               ${isGeotag && photo.gps_location 
@@ -2059,37 +2286,51 @@
 
     function submitNewPhoto() {
       const user = FincestemCore.auth.getUser();
-      const titleInput = document.getElementById('modalPhotoTitle');
-      let title = titleInput ? titleInput.value.trim() : '';
       const desc = document.getElementById('modalPhotoDesc').value.trim();
-      const pillar = document.getElementById('modalPillarSelect').value;
 
       if (!selectedPhotoBase64) {
         FincestemCore.ui.toast('Silakan ambil foto dengan kamera atau pilih berkas foto terlebih dahulu!', 'error');
         return;
       }
 
-      if (!title) {
-        title = `Riset Lapangan ${pillar || 'FINCESTEM'} - SMAN 1 Belitang`;
-        if (titleInput) titleInput.value = title;
+      closePhotoInspectModal();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const dayParam = urlParams.get('day');
+      const docDayNum = dayParam ? parseInt(dayParam) : 1;
+      const actConfig = getDayActivityConfig(docDayNum);
+
+      let pillar = (document.getElementById('modalPillarSelect') ? document.getElementById('modalPillarSelect').value : '') || actConfig.defaultPillar || 'STEM';
+
+      // Deteksi pilar otomatis dari kata kunci keterangan foto siswa jika ada
+      const descLower = desc.toLowerCase();
+      if (descLower.includes('harga') || descLower.includes('biaya') || descLower.includes('uang') || descLower.includes('pasar') || descLower.includes('modal') || descLower.includes('tiket') || descLower.includes('ongkos') || descLower.includes('ekonomi')) {
+        pillar = 'Financial';
+      } else if (descLower.includes('budaya') || descLower.includes('candi') || descLower.includes('batik') || descLower.includes('sejarah') || descLower.includes('adat') || descLower.includes('tengger') || descLower.includes('lawang sewu') || descLower.includes('prambanan') || descLower.includes('tradisi')) {
+        pillar = 'Culture';
+      } else if (descLower.includes('alam') || descLower.includes('bromo') || descLower.includes('pantai') || descLower.includes('drini') || descLower.includes('rute') || descLower.includes('jeep') || descLower.includes('laut') || descLower.includes('kawah') || descLower.includes('savana') || descLower.includes('transportasi') || descLower.includes('bakauheni') || descLower.includes('merak') || descLower.includes('akpol')) {
+        pillar = 'Exploration';
+      } else if (descLower.includes('sains') || descLower.includes('alat') || descLower.includes('mesin') || descLower.includes('uji') || descLower.includes('sampel') || descLower.includes('air') || descLower.includes('apel') || descLower.includes('fisika') || descLower.includes('kimia') || descLower.includes('tol') || descLower.includes('gps') || descLower.includes('laboratorium')) {
+        pillar = 'STEM';
       }
 
-      closePhotoInspectModal();
+      // Format nama file & judul otomatis menyesuaikan kegiatan Day itu
+      const timeStampStr = Date.now();
+      const fileNameGenerated = `Foto_Day${docDayNum}_${actConfig.fileSlug}_${pillar}_${timeStampStr}.jpg`;
+      const cleanTitle = desc ? (desc.length > 55 ? desc.slice(0, 52) + '...' : desc) : `${actConfig.title} (${pillar})`;
 
       const studentNisn = user ? (user.nisn || user.identifier || '') : '';
       const isGeotagged = (selectedPhotoSource === 'camera' && selectedPhotoHasGeotag);
       const gpsCoordStr = (isGeotagged && currentGPS) ? (currentGPS.lat.toFixed(6) + ', ' + currentGPS.lng.toFixed(6)) : '';
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const dayParam = urlParams.get('day');
-      const docDayNum = dayParam ? parseInt(dayParam) : 1;
-
       const newPhoto = {
         id: 'doc-' + Date.now(),
         day: docDayNum,
         day_number: docDayNum,
-        title: title,
+        title: cleanTitle,
         description: desc,
+        file_name: fileNameGenerated,
+        fileName: fileNameGenerated,
         pillar: pillar,
         category: pillar,
         url: selectedPhotoBase64,
