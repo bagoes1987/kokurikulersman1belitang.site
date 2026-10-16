@@ -406,15 +406,12 @@
           </div>
         </div>
 
-        <!-- Bottom Action Bar (Muncul saat Accordion Terbuka) -->
-        <div id="reportCardFooterRow" class="hidden pt-2 flex items-center justify-between gap-2 border-t border-slate-100 flex-wrap">
-          <span id="reportCardFasilFooter" class="text-[11.5px] text-slate-500 font-medium flex items-center gap-1">
-            <span class="material-symbols-outlined text-sm text-slate-400">person</span>
-            <span id="feedbackFasilName">Tim Fasilitator SMAN 1 Belitang</span>
-          </span>
-          <button onclick="openFeedbackHistoryModal()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer">
-            <span class="material-symbols-outlined text-sm">bar_chart</span>
-            <span>Rincian Nilai 7 Hari</span>
+        <!-- Tombol Aksi Bawah: Tutup Panduan & Langsung Menuju Day 1 (Muncul saat Accordion Terbuka) -->
+        <div id="reportCardFooterRow" class="hidden pt-3 border-t border-slate-100 flex items-center justify-center">
+          <button type="button" onclick="closeReportCardAndScrollToDay1()" class="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-[#08A7B5] to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">expand_less</span>
+            <span>Tutup Panduan &amp; Lanjut ke Day 1</span>
+            <span class="material-symbols-outlined text-base">arrow_downward</span>
           </button>
         </div>
       </div>
@@ -1259,6 +1256,16 @@
         if (icon) icon.textContent = 'expand_more';
         if (label) label.textContent = 'Buka';
       }
+    }
+
+    function closeReportCardAndScrollToDay1() {
+      toggleReportCardAccordion(false);
+      setTimeout(() => {
+        const dayContainer = document.getElementById('scheduleDaysContainer') || document.getElementById('dayCard_1');
+        if (dayContainer) {
+          dayContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 60);
     }
 
     function renderKokurikulerReportCard(prog, meta) {
