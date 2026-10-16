@@ -631,59 +631,121 @@
       </div>
 
       <!-- 3. Kedisiplinan Waktu Pengumpulan Harian -->
-      <div class="flex flex-col gap-2">
-        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
-          <span class="material-symbols-outlined text-blue-600 text-sm">schedule</span>
-          3. Kedisiplinan Waktu Pengumpulan Harian &amp; Skema Skor
-        </span>
-        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs flex flex-col gap-2.5">
+      <div class="flex flex-col gap-2.5">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-blue-600 text-sm">schedule</span>
+            3. Kedisiplinan Waktu Pengumpulan Harian &amp; Skema Skor
+          </span>
+          <!-- Tab Switcher Zona -->
+          <div class="inline-flex p-1 rounded-xl bg-slate-100 border border-slate-200 text-xs font-bold">
+            <button type="button" id="tabBtnNonFT" onclick="switchRubrikTab('nonft')" class="px-3 py-1 rounded-lg transition-all cursor-pointer">
+              📍 Non-Field Trip (OKU Timur)
+            </button>
+            <button type="button" id="tabBtnFT" onclick="switchRubrikTab('ft')" class="px-3 py-1 rounded-lg transition-all cursor-pointer">
+              🚌 Field Trip (Luar Daerah)
+            </button>
+          </div>
+        </div>
+
+        <!-- Konten Khusus Non-Field Trip (OKU Timur) -->
+        <div id="rubrikContentNonFT" class="p-3.5 rounded-2xl bg-teal-50/60 border border-teal-200 text-xs flex flex-col gap-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-extrabold text-teal-950 flex items-center gap-1">
+              <span class="material-symbols-outlined text-teal-700 text-base">home_pin</span>
+              Aturan Waktu Riset Mandiri / Sekolah (OKU Timur):
+            </span>
+            <span class="px-2 py-0.5 rounded-md bg-teal-200 text-teal-950 font-black text-[10px] uppercase">
+              Tanpa Toleransi Malam
+            </span>
+          </div>
+
+          <!-- Tier 1: Tepat Waktu (07.00 - 18.00 WIB) -->
+          <div class="p-3 rounded-xl bg-white border border-teal-200 flex items-start gap-2.5 shadow-2xs">
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 font-black text-xs shrink-0 whitespace-nowrap">
+              07.00 – 18.00 WIB
+            </span>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-emerald-950">Skor 90 – 100 · ⭐⭐⭐⭐⭐ Sangat Baik</span>
+              <p class="text-slate-600 leading-relaxed text-[11px] mt-0.5">
+                Jam riset resmi harian di sekolah / lingkungan tempat tinggal. Seluruh instrumen (LKPD, Kuis, Foto GPS OKU Timur, Refleksi minimal 25 kata) wajib diunggah sebelum pukul <strong>18.00 WIB</strong> untuk meraih rekomendasi nilai <strong>Sangat Baik</strong> (skor acuan: 95).
+              </p>
+            </div>
+          </div>
+
+          <!-- Tier 2: Terlambat / Lewat 18.00 WIB -->
+          <div class="p-3 rounded-xl bg-white border border-amber-200 flex items-start gap-2.5 shadow-2xs">
+            <span class="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 font-black text-xs shrink-0 whitespace-nowrap">
+              Lewat 18.00 WIB
+            </span>
+            <div class="flex flex-col">
+              <span class="font-extrabold text-amber-950">Skor Maks. 70 – 75 · ⭐⭐⭐☆☆ Cukup</span>
+              <p class="text-slate-600 leading-relaxed text-[11px] mt-0.5">
+                <strong>Pinalti Keterlambatan Harian:</strong> Riset mandiri lokal tidak memberlakukan toleransi pengerjaan malam hari. Pengumpulan setelah jam 18.00 WIB otomatis terkunci dari predikat Bintang 5 dan maksimal memperoleh predikat <strong>Cukup</strong>.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Konten Khusus Field Trip (Luar Daerah) -->
+        <div id="rubrikContentFT" class="hidden p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200 text-xs flex flex-col gap-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-extrabold text-amber-950 flex items-center gap-1">
+              <span class="material-symbols-outlined text-amber-700 text-base">directions_bus</span>
+              Aturan Waktu Kunjungan Lapangan (Field Trip):
+            </span>
+            <span class="px-2 py-0.5 rounded-md bg-amber-200 text-amber-950 font-black text-[10px] uppercase">
+              Toleransi Bertahap Perjalanan
+            </span>
+          </div>
+
           <!-- Tier 1: Jam Kunjungan / Riset Utama -->
-          <div class="flex items-start gap-2.5">
+          <div class="p-3 rounded-xl bg-white border border-amber-200 flex items-start gap-2.5 shadow-2xs">
             <span class="px-2.5 py-1 rounded-lg bg-emerald-100 text-emerald-900 font-black text-xs shrink-0 whitespace-nowrap">
               07.00 – 16.00 WIB
             </span>
             <div class="flex flex-col">
               <span class="font-extrabold text-emerald-950">Skor 100 · ⭐⭐⭐⭐⭐ Sangat Baik</span>
-              <p class="text-slate-600 leading-relaxed text-[11px]">
+              <p class="text-slate-600 leading-relaxed text-[11px] mt-0.5">
                 Tuntas pada jam kunjungan lapangan / riset resmi. Memperoleh nilai sempurna <strong>100</strong>. <em>(Jam batas 16.00 WIB dapat disesuaikan panitia per hari kegiatan).</em>
               </p>
             </div>
           </div>
 
           <!-- Tier 2: Sore s.d. Petang -->
-          <div class="flex items-start gap-2.5 border-t border-slate-200/60 pt-2.5">
+          <div class="p-3 rounded-xl bg-white border border-amber-200 flex items-start gap-2.5 shadow-2xs">
             <span class="px-2.5 py-1 rounded-lg bg-teal-100 text-teal-900 font-black text-xs shrink-0 whitespace-nowrap">
               16.01 – 21.00 WIB
             </span>
             <div class="flex flex-col">
               <span class="font-extrabold text-teal-950">Skor 99 – 95 · ⭐⭐⭐⭐⭐ Sangat Baik</span>
-              <p class="text-slate-600 leading-relaxed text-[11px]">
-                Tuntas sore / petang hari di perjalanan. Tetap berpredikat <strong>Sangat Baik</strong> dengan penyesuaian 1 poin per jam (skor 99 turun bertahap hingga batas minimal 95).
+              <p class="text-slate-600 leading-relaxed text-[11px] mt-0.5">
+                Tuntas sore / petang hari di perjalanan bus. Tetap berpredikat <strong>Sangat Baik</strong> dengan penyesuaian 1 poin per jam (skor 99 turun bertahap hingga batas minimal 95).
               </p>
             </div>
           </div>
 
           <!-- Tier 3: Larut Malam -->
-          <div class="flex items-start gap-2.5 border-t border-slate-200/60 pt-2.5">
+          <div class="p-3 rounded-xl bg-white border border-amber-200 flex items-start gap-2.5 shadow-2xs">
             <span class="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-900 font-black text-xs shrink-0 whitespace-nowrap">
               21.01 – 24.00 WIB
             </span>
             <div class="flex flex-col">
               <span class="font-extrabold text-amber-950">Skor 94 – 90 · ⭐⭐⭐⭐☆ Baik</span>
-              <p class="text-slate-600 leading-relaxed text-[11px]">
-                Toleransi pengerjaan malam hari saat istirahat di hotel / rumah. Berpredikat <strong>Baik</strong> dengan rentang skor 90 s.d. 94.
+              <p class="text-slate-600 leading-relaxed text-[11px] mt-0.5">
+                Toleransi pengerjaan malam hari saat istirahat di hotel. Berpredikat <strong>Baik</strong> dengan rentang skor 90 s.d. 94.
               </p>
             </div>
           </div>
 
           <!-- Tier 4: Hari Berikutnya -->
-          <div class="flex items-start gap-2.5 border-t border-slate-200/60 pt-2.5">
+          <div class="p-3 rounded-xl bg-white border border-amber-200 flex items-start gap-2.5 shadow-2xs">
             <span class="px-2.5 py-1 rounded-lg bg-blue-100 text-blue-900 font-black text-xs shrink-0 whitespace-nowrap">
               Lewat 24.00 WIB
             </span>
             <div class="flex flex-col">
               <span class="font-extrabold text-blue-950">Skor 85 · ⭐⭐⭐⭐☆ Baik</span>
-              <p class="text-slate-600 leading-relaxed text-[11px]">
+              <p class="text-slate-600 leading-relaxed text-[11px] mt-0.5">
                 Toleransi pengumpulan susulan keesokan harinya. Memperoleh skor <strong>85</strong> berpredikat <strong>Baik</strong>.
               </p>
             </div>
@@ -1557,7 +1619,68 @@
         }
       }
 
+      // 4. Audit Kedisiplinan Waktu Pengumpulan Non-Field Trip (Batas 18.00 WIB)
+      const subTime = getFTSubmitTime(d, taskMap);
+      let subHour = null;
+      let subMinute = null;
+      let subFormatted = '12:00 WIB';
+      let isTimeLate = false;
+      let hasSubmitTime = false;
+
+      if (subTime) {
+        hasSubmitTime = true;
+        if (typeof subTime === 'string') {
+          const matchTime = subTime.match(/(\d{1,2})[:.](\d{2})/);
+          if (matchTime) {
+            subHour = parseInt(matchTime[1]);
+            subMinute = parseInt(matchTime[2]);
+            subFormatted = `${String(subHour).padStart(2, '0')}:${String(subMinute).padStart(2, '0')} WIB`;
+          } else {
+            const dt = new Date(subTime);
+            if (!isNaN(dt.getTime())) {
+              const utc = dt.getTime() + (dt.getTimezoneOffset() * 60000);
+              const wibDt = new Date(utc + (3600000 * 7));
+              subHour = wibDt.getHours();
+              subMinute = wibDt.getMinutes();
+              subFormatted = `${String(subHour).padStart(2, '0')}:${String(subMinute).padStart(2, '0')} WIB`;
+            }
+          }
+        } else if (subTime instanceof Date) {
+          const utc = subTime.getTime() + (subTime.getTimezoneOffset() * 60000);
+          const wibDt = new Date(utc + (3600000 * 7));
+          subHour = wibDt.getHours();
+          subMinute = wibDt.getMinutes();
+          subFormatted = `${String(subHour).padStart(2, '0')}:${String(subMinute).padStart(2, '0')} WIB`;
+        }
+      }
+
+      if (subHour !== null) {
+        const totalSubMinutes = (subHour * 60) + subMinute;
+        // Batas Riset Mandiri OKU Timur: Pukul 18.00 WIB (18 * 60 = 1080 menit)
+        if (totalSubMinutes > 1080) {
+          isTimeLate = true;
+        }
+      }
+
       const isComplete = hasPhoto && hasRefleksi && hasLkpd && hasAsesmen;
+
+      if (isComplete && hasSubmitTime) {
+        if (isTimeLate) {
+          penalties.push({
+            item: 'Keterlambatan Batas Waktu 18.00 WIB',
+            severity: 'high',
+            desc: `Tugas dikirimkan pukul ${subFormatted} (melewati batas waktu 18.00 WIB). Kegiatan riset mandiri tidak memiliki toleransi malam hari, rekomendasi bintang dibatasi maksimal Bintang 3 (Cukup).`
+          });
+          if (recommendedStars > 3) {
+            recommendedStars = 3;
+          }
+        } else {
+          passes.push({
+            item: 'Kedisiplinan Waktu Terpenuhi (< 18.00 WIB)',
+            desc: `Tugas dituntaskan pukul ${subFormatted} sebelum batas waktu harian 18.00 WIB.`
+          });
+        }
+      }
 
       return {
         dayNum: d,
@@ -1573,7 +1696,10 @@
         isComplete,
         recommendedStars,
         penalties,
-        passes
+        passes,
+        hasSubmitTime,
+        subFormatted,
+        isTimeLate
       };
     }
 
@@ -3008,11 +3134,15 @@
                     <div class="px-3 py-2 rounded-xl bg-rose-100 text-rose-900 border border-rose-300 text-xs font-bold leading-relaxed max-w-md">
                       ⚠️ <strong>Peringatan Kualitas:</strong> Pengerjaan Anda belum memenuhi standar (Google Tagging foto tidak terdeteksi atau kedalaman refleksi kurang dari 25 kata). Anda disarankan memperbaiki foto atau refleksi sebelum Fasilitator memberikan penilaian akhir!
                     </div>
+                  ` : (audit.isTimeLate ? `
+                    <div class="px-3 py-2 rounded-xl bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold leading-relaxed max-w-md">
+                      ⏱️ <strong>Pinalti Keterlambatan Waktu:</strong> Tugas dikirimkan pukul ${audit.subFormatted} (melewati batas waktu 18.00 WIB). Riset mandiri tidak memberlakukan toleransi pengerjaan malam hari sehingga rekomendasi dibatasi maksimal Bintang 3 (Cukup).
+                    </div>
                   ` : `
                     <div class="px-3 py-2 rounded-xl bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-bold leading-relaxed max-w-md">
-                      🎉 <strong>Standar Kualitas Terpenuhi:</strong> Foto dokumentasi ber-Google Tagging dan refleksi Anda memenuhi kualifikasi unggul!
+                      🎉 <strong>Standar Kualitas &amp; Kedisiplinan Terpenuhi:</strong> Tugas tuntas tepat waktu (< 18.00 WIB), foto ber-GPS OKU Timur dan refleksi memadai!
                     </div>
-                  `}
+                  `)}
                 </div>
 
                 <!-- Audit Checklist Rincian -->
@@ -3022,14 +3152,36 @@
                     Rincian Audit Standar Pengerjaan:
                   </span>
 
-                  <!-- 1. Google Tagging Foto -->
+                  <!-- 1. Kedisiplinan Waktu Pengumpulan Harian -->
+                  <div class="p-2.5 rounded-xl ${audit.hasSubmitTime ? (audit.isTimeLate ? 'bg-amber-50 border-amber-300 text-amber-950' : 'bg-emerald-50 border-emerald-200 text-emerald-950') : 'bg-slate-50 border-slate-200 text-slate-700'} border flex flex-col gap-1 text-xs">
+                    <div class="flex items-center justify-between font-extrabold">
+                      <span class="flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base ${audit.hasSubmitTime ? (audit.isTimeLate ? 'text-amber-600' : 'text-emerald-600') : 'text-slate-400'}">
+                          ${audit.hasSubmitTime ? (audit.isTimeLate ? 'warning' : 'check_circle') : 'schedule'}
+                        </span>
+                        <span>1. Waktu Pengumpulan Harian (Batas 18.00 WIB)</span>
+                      </span>
+                      <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${audit.hasSubmitTime ? (audit.isTimeLate ? 'bg-amber-200 text-amber-950' : 'bg-emerald-200 text-emerald-900') : 'bg-slate-200 text-slate-700'}">
+                        ${audit.hasSubmitTime ? (audit.isTimeLate ? `TERLAMBAT (${audit.subFormatted})` : `TEPAT WAKTU (${audit.subFormatted})`) : 'BATAS 18.00 WIB'}
+                      </span>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-slate-600 pl-6">
+                      ${audit.hasSubmitTime 
+                        ? (audit.isTimeLate 
+                            ? `<strong class="text-amber-800">Tuntas pukul ${audit.subFormatted} (lewat 18.00 WIB).</strong> Kegiatan riset mandiri tidak memberlakukan pengerjaan malam hari sehingga terkena penyesuaian skor kedisiplinan waktu.` 
+                            : `Tuntas tepat waktu pada pukul <strong>${audit.subFormatted}</strong> (sebelum batas 18.00 WIB).`) 
+                        : 'Seluruh tahapan harian wajib dikirimkan sebelum pukul 18.00 WIB di hari kegiatan.'}
+                    </p>
+                  </div>
+
+                  <!-- 2. Google Tagging Foto -->
                   <div class="p-2.5 rounded-xl ${audit.hasGeotag ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : (audit.hasPhoto ? 'bg-rose-50 border-rose-300 text-rose-950 ring-1 ring-rose-300' : 'bg-slate-50 border-slate-200 text-slate-700')} border flex flex-col gap-1 text-xs">
                     <div class="flex items-center justify-between font-extrabold">
                       <span class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-base ${audit.hasGeotag ? 'text-emerald-600' : (audit.hasPhoto ? 'text-rose-600' : 'text-slate-400')}">
                           ${audit.hasGeotag ? 'check_circle' : (audit.hasPhoto ? 'cancel' : 'radio_button_unchecked')}
                         </span>
-                        <span>1. Google Tagging &amp; GPS Foto Dokumentasi</span>
+                        <span>2. Google Tagging &amp; GPS Foto Dokumentasi</span>
                       </span>
                       <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${audit.hasGeotag ? 'bg-emerald-200 text-emerald-900' : (audit.hasPhoto ? 'bg-rose-200 text-rose-950 font-black uppercase' : 'bg-slate-200 text-slate-700')}">
                         ${audit.hasGeotag ? 'VALID (GPS TERDETEKSI)' : (audit.hasPhoto ? 'PINALTI ⭐ 1 (TANPA GPS)' : 'BELUM UNGGAH')}
@@ -3044,14 +3196,14 @@
                     </p>
                   </div>
 
-                  <!-- 2. Kedalaman Refleksi Mandiri -->
+                  <!-- 3. Kedalaman Refleksi Mandiri -->
                   <div class="p-2.5 rounded-xl ${audit.isRefleksiValid ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : (audit.hasRefleksi ? 'bg-rose-50 border-rose-300 text-rose-950 ring-1 ring-rose-300' : 'bg-slate-50 border-slate-200 text-slate-700')} border flex flex-col gap-1 text-xs">
                     <div class="flex items-center justify-between font-extrabold">
                       <span class="flex items-center gap-1.5">
                         <span class="material-symbols-outlined text-base ${audit.isRefleksiValid ? 'text-emerald-600' : (audit.hasRefleksi ? 'text-rose-600' : 'text-slate-400')}">
                           ${audit.isRefleksiValid ? 'check_circle' : (audit.hasRefleksi ? 'cancel' : 'radio_button_unchecked')}
                         </span>
-                        <span>2. Kedalaman Jurnal Refleksi Mandiri</span>
+                        <span>3. Kedalaman Jurnal Refleksi Mandiri</span>
                       </span>
                       <span class="px-2 py-0.5 rounded-md text-[10px] font-black ${audit.isRefleksiValid ? 'bg-emerald-200 text-emerald-900' : (audit.hasRefleksi ? 'bg-rose-200 text-rose-950 font-black uppercase' : 'bg-slate-200 text-slate-700')}">
                         ${audit.isRefleksiValid ? `MEMADAI (${audit.wordCount} KATA)` : (audit.hasRefleksi ? `KURANG (${audit.wordCount}/25 KATA)` : 'BELUM DIISI')}
@@ -3066,13 +3218,13 @@
                     </p>
                   </div>
 
-                  <!-- 3. Kelengkapan LKPD & Asesmen -->
+                  <!-- 4. Kelengkapan LKPD & Asesmen -->
                   <div class="p-2.5 rounded-xl ${audit.hasLkpd && audit.hasAsesmen ? 'bg-emerald-50 border-emerald-200 text-emerald-950' : 'bg-slate-50 border-slate-200 text-slate-700'} border flex items-center justify-between text-xs font-semibold">
                     <span class="flex items-center gap-1.5">
                       <span class="material-symbols-outlined text-base ${audit.hasLkpd && audit.hasAsesmen ? 'text-emerald-600' : 'text-slate-400'}">
                         ${audit.hasLkpd && audit.hasAsesmen ? 'check_circle' : 'radio_button_unchecked'}
                       </span>
-                      <span>3. Lembar Kerja LKPD &amp; Asesmen Kuis</span>
+                      <span>4. Lembar Kerja LKPD &amp; Asesmen Kuis</span>
                     </span>
                     <span class="text-[11px] ${audit.hasLkpd && audit.hasAsesmen ? 'text-emerald-700 font-bold' : 'text-slate-500'}">
                       ${audit.hasLkpd && audit.hasAsesmen ? 'Lengkap Terkirim ✓' : (audit.hasLkpd ? 'Asesmen Belum' : (audit.hasAsesmen ? 'LKPD Belum' : 'Belum Terkirim'))}
@@ -3290,11 +3442,41 @@
     /* ========================================================
        MODAL PANDUAN & RUBRIK PENILAIAN RESMI
        ======================================================== */
-    function openRubrikModal() {
-      const modal = document.getElementById('modalRubrikPenilaian');
-      if (modal) {
-        modal.classList.remove('opacity-0', 'pointer-events-none');
+    function switchRubrikTab(tab) {
+      const btnNonFT = document.getElementById('tabBtnNonFT');
+      const btnFT = document.getElementById('tabBtnFT');
+      const contentNonFT = document.getElementById('rubrikContentNonFT');
+      const contentFT = document.getElementById('rubrikContentFT');
+      if (!btnNonFT || !btnFT || !contentNonFT || !contentFT) return;
+
+      if (tab === 'ft') {
+        contentFT.classList.remove('hidden');
+        contentNonFT.classList.add('hidden');
+        btnFT.className = 'px-3 py-1 rounded-lg transition-all cursor-pointer bg-amber-500 text-white shadow-xs';
+        btnNonFT.className = 'px-3 py-1 rounded-lg transition-all cursor-pointer text-slate-600 hover:text-slate-900';
+      } else {
+        contentNonFT.classList.remove('hidden');
+        contentFT.classList.add('hidden');
+        btnNonFT.className = 'px-3 py-1 rounded-lg transition-all cursor-pointer bg-teal-600 text-white shadow-xs';
+        btnFT.className = 'px-3 py-1 rounded-lg transition-all cursor-pointer text-slate-600 hover:text-slate-900';
       }
+    }
+
+    function openRubrikModal(zoneTab) {
+      const modal = document.getElementById('modalRubrikPenilaian');
+      if (!modal) return;
+
+      const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent?.class || currentStudent?.class_name, currentStudent?.zone)
+        : (currentStudent?.zone || 'FINCESTEM OKU TIMUR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
+      const targetTab = zoneTab || (isFieldTrip ? 'ft' : 'nonft');
+      switchRubrikTab(targetTab);
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
     }
 
     function closeRubrikModal() {
@@ -3387,7 +3569,9 @@
             `;
             note = audit.recommendedStars === 1 
               ? 'Peringatan: Dokumentasi atau refleksi belum memenuhi standar minimum (Google Tagging GPS/panjang refleksi minimal 25 kata). Perbaiki sebelum dinilai Fasilitator!' 
-              : 'Standar kualitas terpenuhi dengan baik. Menunggu konfirmasi penilaian akhir Fasilitator.';
+              : (audit.isTimeLate 
+                  ? `Peringatan Waktu: Pengumpulan tuntas pukul ${audit.subFormatted} (melewati batas 18.00 WIB). Terkena penyesuaian pinalti kedisiplinan riset mandiri.` 
+                  : 'Standar kualitas dan kedisiplinan terpenuhi dengan baik. Menunggu konfirmasi penilaian akhir Fasilitator.');
           } else {
             scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Belum ada pengerjaan / penilaian</span>';
             note = 'Silakan selesaikan seluruh lembar kerja dan jurnal harian sesuai jadwal riset.';
