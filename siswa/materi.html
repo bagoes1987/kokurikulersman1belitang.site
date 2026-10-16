@@ -273,7 +273,8 @@
     </div>
   </main>
 
-  <script src="../js/core.js"></script>
+  <script src="../js/siswa_data.js?v=20261016_materi_save_fix"></script>
+  <script src="../js/core.js?v=20261016_materi_save_fix"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -628,6 +629,7 @@
       const badge = document.getElementById('ftMateriStatusBadge');
       const savedTimeEl = document.getElementById('ftMateriSavedTime');
       const btnSaveText = document.getElementById('btnSaveMateriText');
+      const saveBtn = document.getElementById('btnSaveMateriConclusion');
       const lkpdBox = document.getElementById('ftLkpdAccessBox');
       const lockIcon = document.getElementById('ftLkpdLockIcon');
       const lockTitle = document.getElementById('ftLkpdLockTitle');
@@ -644,7 +646,12 @@
         const dtStr = savedAt ? new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB' : 'Tersimpan';
         savedTimeEl.textContent = `Tersimpan pada ${dtStr}`;
       }
-      if (btnSaveText) btnSaveText.textContent = 'Perbarui Kesimpulan Modul';
+      if (saveBtn) {
+        saveBtn.classList.remove('pointer-events-none', 'opacity-80');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">task_alt</span><span id="btnSaveMateriText">Perbarui Kesimpulan Modul</span>';
+      } else if (btnSaveText) {
+        btnSaveText.textContent = 'Perbarui Kesimpulan Modul';
+      }
 
       // Aktifkan Akses ke LKPD
       if (lockIcon) {
@@ -690,16 +697,10 @@
 
       if (FincestemCore.progress) {
         FincestemCore.progress.submitTask(nisn, 1, 'materi', record, function() {
-          if (saveBtn) {
-            saveBtn.classList.remove('pointer-events-none', 'opacity-80');
-          }
           applyMateriConclusionState(text, record.savedAt);
           FincestemCore.ui.toast('Kesimpulan modul berhasil disimpan! Akses ke LKPD Day 1 sekarang telah terbuka.', 'success');
         });
       } else {
-        if (saveBtn) {
-          saveBtn.classList.remove('pointer-events-none', 'opacity-80');
-        }
         applyMateriConclusionState(text, record.savedAt);
         FincestemCore.ui.toast('Kesimpulan modul berhasil disimpan! Akses ke LKPD Day 1 sekarang telah terbuka.', 'success');
       }
@@ -1069,6 +1070,7 @@
       const badge = document.getElementById('ftMateriStatusBadgeDay2');
       const savedTimeEl = document.getElementById('ftMateriSavedTimeDay2');
       const btnSaveText = document.getElementById('btnSaveMateriTextDay2');
+      const saveBtn = document.getElementById('btnSaveMateriConclusionDay2');
       const lockIcon = document.getElementById('ftLkpdLockIconDay2');
       const lockTitle = document.getElementById('ftLkpdLockTitleDay2');
       const lockDesc = document.getElementById('ftLkpdLockDescDay2');
@@ -1084,7 +1086,12 @@
         const dtStr = savedAt ? new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB' : 'Tersimpan';
         savedTimeEl.textContent = `Tersimpan pada ${dtStr}`;
       }
-      if (btnSaveText) btnSaveText.textContent = 'Perbarui Kesimpulan Modul';
+      if (saveBtn) {
+        saveBtn.classList.remove('pointer-events-none', 'opacity-80');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">task_alt</span><span id="btnSaveMateriTextDay2">Perbarui Kesimpulan Modul</span>';
+      } else if (btnSaveText) {
+        btnSaveText.textContent = 'Perbarui Kesimpulan Modul';
+      }
 
       // Aktifkan Akses ke LKPD Day 2
       if (lockIcon) {
@@ -1130,16 +1137,10 @@
 
       if (FincestemCore.progress) {
         FincestemCore.progress.submitTask(nisn, 2, 'materi', record, function() {
-          if (saveBtn) {
-            saveBtn.classList.remove('pointer-events-none', 'opacity-80');
-          }
           applyMateriConclusionStateDay2(text, record.savedAt);
           FincestemCore.ui.toast('Kesimpulan modul Day 2 berhasil disimpan! Akses ke LKPD Day 2 sekarang telah terbuka.', 'success');
         });
       } else {
-        if (saveBtn) {
-          saveBtn.classList.remove('pointer-events-none', 'opacity-80');
-        }
         applyMateriConclusionStateDay2(text, record.savedAt);
         FincestemCore.ui.toast('Kesimpulan modul Day 2 berhasil disimpan! Akses ke LKPD Day 2 sekarang telah terbuka.', 'success');
       }
