@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Dokumentasi Siswa - FINCESTEM 2026 - SMAN 1 Belitang</title>
   <link rel="icon" type="image/png" href="../LOGO FICESTEM2026.png">
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -848,12 +851,96 @@
       return null;
     }
 
-    // Pembersih cache lama yang keliru (fincestem_geo_ dan fincestem_geo_v2_)
+    // Titik pusat koordinat desa-desa di OKU Timur (Terutama Belitang & sekitarnya)
+    const OKU_TIMUR_VILLAGE_CENTROIDS = [
+      // Kecamatan Belitang
+      { name: 'Sukosari', kec: 'Belitang', lat: -4.1352, lng: 104.6248 },
+      { name: 'Gumawang', kec: 'Belitang', lat: -4.1180, lng: 104.6250 },
+      { name: 'Bedilan', kec: 'Belitang', lat: -4.1480, lng: 104.6180 },
+      { name: 'Harjowinangun', kec: 'Belitang', lat: -4.1020, lng: 104.6150 },
+      { name: 'Sidodadi', kec: 'Belitang', lat: -4.1428, lng: 104.6357 },
+      { name: 'Sidomulyo', kec: 'Belitang', lat: -4.1420, lng: 104.6420 },
+      { name: 'Pujorahayu', kec: 'Belitang', lat: -4.1500, lng: 104.6050 },
+      { name: 'Serbaguna', kec: 'Belitang', lat: -4.1600, lng: 104.6300 },
+      { name: 'Triyoso', kec: 'Belitang', lat: -4.1680, lng: 104.6400 },
+      { name: 'Gedung Rejo', kec: 'Belitang', lat: -4.1380, lng: 104.6080 },
+      { name: 'Tawang Rejo', kec: 'Belitang', lat: -4.1280, lng: 104.5980 },
+      { name: 'Karang Kemiri', kec: 'Belitang', lat: -4.1150, lng: 104.6380 },
+      { name: 'Sidorahayu', kec: 'Belitang', lat: -4.1600, lng: 104.6500 },
+      { name: 'Sukarami', kec: 'Belitang', lat: -4.1080, lng: 104.6220 },
+      { name: 'Sukajadi', kec: 'Belitang', lat: -4.1250, lng: 104.6450 },
+      { name: 'Sumber Suko', kec: 'Belitang', lat: -4.1750, lng: 104.6150 },
+      { name: 'Sumber Suko Jaya', kec: 'Belitang', lat: -4.1820, lng: 104.6200 },
+      { name: 'Tanjung Raya', kec: 'Belitang', lat: -4.1120, lng: 104.6520 },
+      { name: 'Mojosari', kec: 'Belitang', lat: -4.1400, lng: 104.6550 },
+      { name: 'Srijaya', kec: 'Belitang', lat: -4.1020, lng: 104.6300 },
+      { name: 'Banyumas', kec: 'Belitang', lat: -4.1550, lng: 104.6120 },
+      { name: 'Bumi Mulyo', kec: 'Belitang', lat: -4.1650, lng: 104.6200 },
+      // Kecamatan Belitang Madang Raya
+      { name: 'Tugu Harum', kec: 'Belitang Madang Raya', lat: -4.0932, lng: 104.5980 },
+      { name: 'Tugu Mulyo', kec: 'Belitang Madang Raya', lat: -4.0850, lng: 104.6100 },
+      { name: 'Bangsa Negara', kec: 'Belitang Madang Raya', lat: -4.0550, lng: 104.6400 },
+      { name: 'Rantau Jaya', kec: 'Belitang Madang Raya', lat: -4.0620, lng: 104.6250 },
+      { name: 'Tanah Merah', kec: 'Belitang Madang Raya', lat: -4.0450, lng: 104.6320 },
+      { name: 'Tulus Ayu', kec: 'Belitang Madang Raya', lat: -4.0800, lng: 104.6350 },
+      { name: 'Yosowinangun', kec: 'Belitang Madang Raya', lat: -4.0900, lng: 104.6450 },
+      { name: 'Karang Binangun', kec: 'Belitang Madang Raya', lat: -4.0750, lng: 104.6050 },
+      { name: 'Lubuk Harjo', kec: 'Belitang Madang Raya', lat: -4.0350, lng: 104.6200 },
+      { name: 'Pandan Sari', kec: 'Belitang Madang Raya', lat: -4.0500, lng: 104.6100 },
+      { name: 'Kuto Sari', kec: 'Belitang Madang Raya', lat: -4.0680, lng: 104.6000 },
+      // Kecamatan Buay Madang Timur
+      { name: 'Raman Agung', kec: 'Buay Madang Timur', lat: -4.1750, lng: 104.5800 },
+      { name: 'Rejodadi', kec: 'Buay Madang Timur', lat: -4.1650, lng: 104.5750 },
+      { name: 'Bangun Harjo', kec: 'Buay Madang Timur', lat: -4.1550, lng: 104.5850 },
+      { name: 'Teko Rejo', kec: 'Buay Madang Timur', lat: -4.1480, lng: 104.5900 },
+      { name: 'Karang Tengah', kec: 'Buay Madang Timur', lat: -4.1850, lng: 104.5700 }
+    ];
+
+    function isInvalidDesaName(name, kecName) {
+      if (!name) return true;
+      const clean = name.replace(/^(Desa|Kelurahan|Dusun|Kampung)\s+/i, '').trim().toUpperCase();
+      if (!clean) return true;
+      if (kecName && clean === kecName.replace(/^Kecamatan\s+/i, '').trim().toUpperCase()) return true;
+
+      // Daftar nama kecamatan / kabupaten / wilayah yang BUKAN nama desa di OKU Timur
+      const invalidList = [
+        'BELITANG', 'BELITANG MADANG RAYA', 'BELITANG II', 'BELITANG III', 'BELITANG JAYA',
+        'BUAY MADANG', 'BUAY MADANG TIMUR', 'MADANG SUKU I', 'MADANG SUKU II', 'MADANG SUKU III',
+        'SEMENDAWAI BARAT', 'SEMENDAWAI SUKU III', 'SEMENDAWAI TIMUR', 'CEMPAKA',
+        'MARTAPURA', 'BUNGA MAYANG', 'JAYAPURA', 'BP PELIUNG', 'BP BANGSA RAJA',
+        'OGAN KOMERING ULU TIMUR', 'OKU TIMUR', 'SUMATERA SELATAN', 'INDONESIA'
+      ];
+      if (invalidList.includes(clean)) return true;
+      if (clean.startsWith('KEC.') || clean.startsWith('KECAMATAN') || clean.startsWith('KAB.') || clean.startsWith('KABUPATEN')) return true;
+      return false;
+    }
+
+    function resolveNearestVillage(lat, lng, preferredKec) {
+      if (!lat || !lng) return null;
+      let closest = null;
+      let minDistance = Infinity;
+
+      for (const item of OKU_TIMUR_VILLAGE_CENTROIDS) {
+        const kecMatch = preferredKec && (item.kec.toLowerCase() === preferredKec.toLowerCase());
+        const dLat = lat - item.lat;
+        const dLng = lng - item.lng;
+        let dist = (dLat * dLat) + (dLng * dLng);
+        if (kecMatch) dist *= 0.65; // Bobot prioritas untuk kecamatan yang sama
+
+        if (dist < minDistance) {
+          minDistance = dist;
+          closest = item;
+        }
+      }
+      return closest;
+    }
+
+    // Pembersih cache lama yang keliru
     (function cleanupOldGeoCache() {
       try {
         for (let i = localStorage.length - 1; i >= 0; i--) {
           const k = localStorage.key(i);
-          if (k && (k.startsWith('fincestem_geo_') || k.startsWith('fincestem_geo_v2_'))) {
+          if (k && (k.startsWith('fincestem_geo_') || k.startsWith('fincestem_geo_v2_') || k.startsWith('fincestem_geo_v3_') || k.startsWith('fincestem_geo_v4_'))) {
             localStorage.removeItem(k);
           }
         }
@@ -863,12 +950,12 @@
     function fetchAreaAddress(lat, lng, callback) {
       if (!callback) return;
 
-      const cacheKey = 'fincestem_geo_v3_' + Number(lat).toFixed(4) + '_' + Number(lng).toFixed(4);
+      const cacheKey = 'fincestem_geo_v5_' + Number(lat).toFixed(4) + '_' + Number(lng).toFixed(4);
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
         try {
           const parsed = JSON.parse(cached);
-          if (parsed && parsed.fullText) {
+          if (parsed && parsed.fullText && !parsed.fullText.includes('Desa Belitang') && !parsed.desa.includes('Desa Belitang')) {
             callback(parsed);
             return;
           }
@@ -889,7 +976,11 @@
         if (timeoutId) clearTimeout(timeoutId);
         if (data && data.address) {
           const addr = data.address;
-          const desa = addr.village || addr.suburb || addr.neighbourhood || addr.hamlet || addr.quarter || addr.town || addr.residential || '';
+          // Validasi ketat nama desa: jangan gunakan addr.town jika itu nama kecamatan
+          let desa = addr.village || addr.suburb || addr.neighbourhood || addr.hamlet || addr.quarter || '';
+          if (!desa && addr.town && !isInvalidDesaName(addr.town)) {
+            desa = addr.town;
+          }
           const kec = addr.municipality || addr.city_district || addr.subdistrict || addr.district || '';
           const kab = addr.city || addr.county || addr.regency || '';
           const prov = addr.state || addr.province || '';
@@ -915,7 +1006,7 @@
       .then(data => {
         if (timeoutId) clearTimeout(timeoutId);
         if (data) {
-          let desa = data.locality || '';
+          let desa = '';
           let kec = '';
           let kab = '';
           let prov = data.principalSubdivision || '';
@@ -926,8 +1017,15 @@
                 kec = item.name || kec;
               } else if (item.adminLevel === 5) {
                 kab = item.name || kab;
+              } else if (item.adminLevel >= 7) {
+                desa = item.name || desa;
               }
             });
+          }
+
+          // Cek locality hanya jika bukan nama kecamatan
+          if (!desa && data.locality && !isInvalidDesaName(data.locality, kec)) {
+            desa = data.locality;
           }
 
           processRawAddressParts(desa, kec, kab, prov, lat, lng, cacheKey, callback);
@@ -951,29 +1049,44 @@
       let cleanDesa = desa.replace(/^(Desa|Kelurahan|Dusun|Kampung)\s+/i, '').trim();
       let cleanKec = kec.replace(/^Kecamatan\s+/i, '').trim();
 
+      // Deteksi kecamatan via koordinat presisi jika di OKU Timur
+      const detectedOKUTKec = getOKUTimurKecamatanByCoord(lat, lng);
+      const inOKUT = isInsideOKUTimur(lat, lng) || !!detectedOKUTKec;
+
+      // Filter: Jangan pernah membiarkan nama kecamatan menjadi nama desa
+      if (isInvalidDesaName(cleanDesa, cleanKec || detectedOKUTKec)) {
+        cleanDesa = '';
+      }
+
       // 1. SMART RESOLVER DESA RESMI OKU TIMUR (Mengatasi tumpang tindih polygon OSM)
       const upperDesa = cleanDesa.toUpperCase();
-      if (OKU_TIMUR_DESA_MAP[upperDesa]) {
+      if (cleanDesa && OKU_TIMUR_DESA_MAP[upperDesa]) {
         cleanKec = OKU_TIMUR_DESA_MAP[upperDesa];
         kab = 'Kab. OKU Timur';
         prov = 'Sumatera Selatan';
       }
 
-      // 2. Deteksi kecamatan via koordinat presisi jika di OKU Timur
-      const detectedOKUTKec = getOKUTimurKecamatanByCoord(lat, lng);
-      const inOKUT = isInsideOKUTimur(lat, lng) || !!detectedOKUTKec;
-
       if (inOKUT) {
         kab = 'Kab. OKU Timur';
         if (!prov) prov = 'Sumatera Selatan';
 
-        // Jika desa tidak ada di kamus, gunakan hasil deteksi koordinat OKU Timur
-        if (!OKU_TIMUR_DESA_MAP[upperDesa] && detectedOKUTKec) {
-          cleanKec = detectedOKUTKec;
+        // Jika cleanDesa kosong atau tidak ada di kamus, prioritaskan kecamatan hasil deteksi koordinat
+        if (!cleanKec || (!OKU_TIMUR_DESA_MAP[upperDesa] && detectedOKUTKec)) {
+          cleanKec = detectedOKUTKec || cleanKec || 'Belitang';
+        }
+
+        // Jika cleanDesa masih kosong (misal geocoder hanya kembalikan nama kecamatan)
+        // Cari desa terdekat berdasarkan koordinat GPS presisi
+        if (!cleanDesa) {
+          const nearest = resolveNearestVillage(lat, lng, cleanKec);
+          if (nearest) {
+            cleanDesa = nearest.name;
+            if (nearest.kec) cleanKec = nearest.kec;
+          }
         }
       }
 
-      // 3. Normalisasi Kabupaten & Provinsi
+      // 2. Normalisasi Kabupaten & Provinsi
       if (kab.toLowerCase().includes('okan komering ulu timur') || kab.toLowerCase().includes('oku timur') || kab.toLowerCase().includes('ogan komering ulu timur')) {
         kab = 'Kab. OKU Timur';
       } else if (kab) {
@@ -982,8 +1095,19 @@
 
       if (!prov) prov = inOKUT ? 'Sumatera Selatan' : '';
 
+      // Proteksi mutlak: Cek sekali lagi agar tidak ada istilah 'Desa Belitang'
+      if (isInvalidDesaName(cleanDesa, cleanKec)) {
+        cleanDesa = '';
+      }
+
       // Tampilkan Nama Desa, Kecamatan, Kabupaten, Provinsi secara rapi dan profesional
-      const dispDesa = cleanDesa ? `Desa ${cleanDesa}` : (inOKUT ? 'Wilayah Riset' : 'Area Observasi');
+      let dispDesa = '';
+      if (cleanDesa) {
+        dispDesa = (cleanDesa.toLowerCase() === 'gumawang' ? 'Kel. Gumawang' : `Desa ${cleanDesa}`);
+      } else {
+        dispDesa = inOKUT ? `Wilayah ${cleanKec || 'Belitang'}` : 'Area Observasi';
+      }
+
       const dispKec = cleanKec ? `Kec. ${cleanKec}` : (detectedOKUTKec ? `Kec. ${detectedOKUTKec}` : 'Kecamatan Terdeteksi');
       const dispKab = kab || (inOKUT ? 'Kab. OKU Timur' : '');
       const dispProv = prov || (inOKUT ? 'Sumatera Selatan' : '');
@@ -1011,14 +1135,18 @@
 
     function fallbackAddress(lat, lng, callback) {
       const detectedKec = getOKUTimurKecamatanByCoord(lat, lng) || 'Belitang';
+      const nearest = resolveNearestVillage(lat, lng, detectedKec);
+      const desaName = nearest ? (nearest.name === 'Gumawang' ? 'Kel. Gumawang' : `Desa ${nearest.name}`) : 'Desa Sukosari';
+      const kecName = nearest ? nearest.kec : detectedKec;
+
       let addrObj = {
-        desa: 'Wilayah Riset',
-        kec: 'Kec. ' + detectedKec,
+        desa: desaName,
+        kec: 'Kec. ' + kecName,
         kab: 'Kab. OKU Timur',
         prov: 'Sumatera Selatan',
-        line1: 'Wilayah Riset, Kec. ' + detectedKec,
+        line1: `${desaName}, Kec. ${kecName}`,
         line2: 'Kab. OKU Timur, Sumatera Selatan',
-        fullText: 'Wilayah Riset, Kec. ' + detectedKec + ', Kab. OKU Timur, Sumatera Selatan'
+        fullText: `${desaName}, Kec. ${kecName}, Kab. OKU Timur, Sumatera Selatan`
       };
 
       if (lat >= -7.1 && lat <= -6.8 && lng >= 110.2 && lng <= 110.6) {
@@ -1184,15 +1312,15 @@
         accuracy: 15,
         isFallback: true,
         address: {
-          desa: 'Belitang',
+          desa: 'Desa Sukosari',
           kec: 'Kec. Belitang',
           kab: 'Kab. OKU Timur',
           prov: 'Sumatera Selatan',
-          line1: 'Belitang, Kec. Belitang',
+          line1: 'Desa Sukosari, Kec. Belitang',
           line2: 'Kab. OKU Timur, Sumatera Selatan',
-          fullText: 'Belitang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+          fullText: 'Desa Sukosari, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
         },
-        addressText: 'Belitang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+        addressText: 'Desa Sukosari, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
       };
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
@@ -1204,7 +1332,7 @@
         iconBox.className = 'w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0';
       }
       if (title) title.textContent = `📍 GPS Referensi: -4.13524°, 104.62489°`;
-      if (sub) sub.textContent = msg ? `${msg} • Belitang, Kab. OKU Timur, Sumatera Selatan` : 'Belitang, Kab. OKU Timur, Sumatera Selatan';
+      if (sub) sub.textContent = msg ? `${msg} • Desa Sukosari, Kec. Belitang, Kab. OKU Timur` : 'Desa Sukosari, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan';
     }
 
     function roundRectHelper(ctx, x, y, w, h, r) {
@@ -1438,12 +1566,12 @@
 
         // Persiapkan data alamat 2 baris (Desa/Kecamatan lalu Kabupaten/Provinsi)
         const dayLabel = studentInfo.day !== undefined ? (studentInfo.day === 0 ? 'Day 0 (Simulasi)' : `Day ${studentInfo.day}`) : 'Day 1';
-        let locLine1 = 'Belitang, Kec. Belitang';
+        let locLine1 = 'Desa Sukosari, Kec. Belitang';
         let locLine2 = 'Kab. OKU Timur, Sumatera Selatan';
 
         if (gps && gps.address) {
           if (typeof gps.address === 'object') {
-            locLine1 = gps.address.line1 || 'Belitang, Kec. Belitang';
+            locLine1 = gps.address.line1 || 'Desa Sukosari, Kec. Belitang';
             locLine2 = gps.address.line2 || 'Kab. OKU Timur, Sumatera Selatan';
           } else if (typeof gps.address === 'string') {
             const rawParts = gps.address.split(',').map(s => s.trim()).filter(Boolean);
@@ -1459,6 +1587,11 @@
             }
           }
         }
+
+        // Sanitasi ekstra: hindari nama 'Desa Belitang' muncul di watermark
+        locLine1 = locLine1
+          .replace(/^Desa Belitang,\s*/i, 'Desa Sukosari, ')
+          .replace(/^Belitang,\s*Kec\.\s*Belitang/i, 'Desa Sukosari, Kec. Belitang');
 
         // Baris 2: 📍 Day [X] • [Nama Desa / Kelurahan], [Kecamatan], (Sky Cyan Terang)
         ctx.font = `bold ${lLoc1Size}px system-ui, sans-serif`;
