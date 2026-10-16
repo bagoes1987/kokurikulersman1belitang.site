@@ -862,42 +862,42 @@
           document.getElementById('statPredicate').textContent = `• ${prog.predicate || 'A'}`;
         } else {
           document.getElementById('statAverageScore').textContent = '-';
-          document.getElementById('statPredicate').textContent = 'Dalam Proses';
+          document.getElementById('statPredicate').textContent = 'Belum Dinilai Guru';
         }
 
         // Verification Badge
         const vBadge = document.getElementById('statVerificationBadge');
         if (prog.average_score && prog.average_score >= 75) {
-          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800';
+          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800 shadow-2xs';
           vBadge.textContent = 'Terverifikasi';
-        } else if (totalTasks > 0) {
-          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-amber-100 text-amber-800';
-          vBadge.textContent = 'Pra-Evaluasi / Review';
+        } else if (prog.average_score) {
+          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-amber-100 text-amber-800 shadow-2xs';
+          vBadge.textContent = 'Dinilai Guru';
         } else {
-          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-slate-100 text-slate-600';
-          vBadge.textContent = 'Belum Ada';
+          vBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-slate-100 text-slate-600 shadow-2xs';
+          vBadge.textContent = 'Belum Ada Nilai';
         }
 
         // Latest facilitator feedback
         const fb = prog.latest_feedback;
         if (fb && fb.feedback) {
-          document.getElementById('feedbackFasilName').textContent = fb.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator';
+          document.getElementById('feedbackFasilName').textContent = fb.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
           document.getElementById('feedbackQuoteText').textContent = `"${fb.feedback}"`;
           document.getElementById('feedbackDateBadge').textContent = fb.day_number ? `Feedback Day ${fb.day_number}` : 'Evaluasi Terkini';
 
           // 4 pillars
-          document.getElementById('pillScoreFin').textContent = fb.score_financial !== undefined && fb.score_financial !== null ? fb.score_financial : '90';
-          document.getElementById('pillScoreCul').textContent = fb.score_culture !== undefined && fb.score_culture !== null ? fb.score_culture : '86';
-          document.getElementById('pillScoreExp').textContent = fb.score_exploration !== undefined && fb.score_exploration !== null ? fb.score_exploration : '88';
-          document.getElementById('pillScoreStem').textContent = fb.score_stem !== undefined && fb.score_stem !== null ? fb.score_stem : '90';
+          document.getElementById('pillScoreFin').textContent = fb.score_financial !== undefined && fb.score_financial !== null ? fb.score_financial : '0';
+          document.getElementById('pillScoreCul').textContent = fb.score_culture !== undefined && fb.score_culture !== null ? fb.score_culture : '0';
+          document.getElementById('pillScoreExp').textContent = fb.score_exploration !== undefined && fb.score_exploration !== null ? fb.score_exploration : '0';
+          document.getElementById('pillScoreStem').textContent = fb.score_stem !== undefined && fb.score_stem !== null ? fb.score_stem : '0';
         } else {
           document.getElementById('feedbackFasilName').textContent = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
-          document.getElementById('feedbackQuoteText').textContent = '"Belum ada catatan umpan balik manual dari Fasilitator. Klik tombol Nilai & Catatan pada tiap Hari untuk melihat estimasi rekomendasi bintang sistem."';
-          document.getElementById('feedbackDateBadge').textContent = 'Pra-Evaluasi Sistem';
-          document.getElementById('pillScoreFin').textContent = '-';
-          document.getElementById('pillScoreCul').textContent = '-';
-          document.getElementById('pillScoreExp').textContent = '-';
-          document.getElementById('pillScoreStem').textContent = '-';
+          document.getElementById('feedbackQuoteText').textContent = '"Catatan dan umpan balik kumulatif 4 pilar akan diberikan oleh guru fasilitator setelah seluruh tahapan Day 1 s.d. Day 7 diselesaikan."';
+          document.getElementById('feedbackDateBadge').textContent = 'Menunggu Day 7';
+          document.getElementById('pillScoreFin').textContent = '0';
+          document.getElementById('pillScoreCul').textContent = '0';
+          document.getElementById('pillScoreExp').textContent = '0';
+          document.getElementById('pillScoreStem').textContent = '0';
         }
       }
     }
@@ -1242,13 +1242,26 @@
         });
         recommendedStars = 1;
       } else if (!isInsideOKUTimur) {
-        // ATURAN SPESIFIK: Terdeteksi di luar OKU Timur -> Rekomendasi Bintang 1
-        penalties.push({
-          item: 'Koordinat GPS di Luar OKU Timur',
-          severity: 'critical',
-          desc: `Titik GPS (${gpsLocation}) terdeteksi di luar wilayah Kabupaten OKU Timur. Peserta Non-Field Trip wajib berkegiatan di wilayah OKU Timur. Sistem otomatis memberikan Rekomendasi Bintang 1 (⭐☆☆☆☆).`
-        });
-        recommendedStars = 1;
+        // Cek apakah siswa memiliki izin dispensasi domisili luar OKU Timur dari Admin
+        const isLocExempt = (FincestemCore.zones && FincestemCore.zones.isLocationExempt)
+          ? (FincestemCore.zones.isLocationExempt(cleanNisn) || FincestemCore.zones.isLocationExempt(user.nis) || FincestemCore.zones.isLocationExempt(user.identifier))
+          : !!(student?.is_location_exempt || user?.is_location_exempt);
+
+        if (isLocExempt) {
+          // DISPENSASI ADMIN: Siswa tinggal di luar OKU Timur atas izin Admin -> BEBAS PINALTI!
+          passes.push({
+            item: 'Dispensasi Domisili Luar OKU Timur (Resmi Admin)',
+            desc: `Titik GPS (${gpsLocation}) berada di luar batas OKU Timur, namun siswa memiliki Izin Dispensasi Domisili resmi dari Admin Sekolah. Rekomendasi Bintang dihitung normal (Bebas Pinalti).`
+          });
+        } else {
+          // ATURAN SPESIFIK: Terdeteksi di luar OKU Timur tanpa izin admin -> Rekomendasi Bintang 1
+          penalties.push({
+            item: 'Koordinat GPS di Luar OKU Timur',
+            severity: 'critical',
+            desc: `Titik GPS (${gpsLocation}) terdeteksi di luar wilayah Kabupaten OKU Timur. Siswa belum memiliki izin dispensasi domisili dari Admin. Sistem otomatis memberikan Rekomendasi Bintang 1 (⭐☆☆☆☆).`
+          });
+          recommendedStars = 1;
+        }
       } else {
         passes.push({
           item: 'Google Tagging / GPS OKU Timur Valid',
@@ -1940,7 +1953,7 @@
                       ? 'Terkunci (Refleksi Dulu)' 
                       : (isFieldTrip 
                           ? ((hasRefleksi || (isFTDay && ftStatus && ftStatus.hasRefleksi)) ? '⭐⭐⭐⭐⭐ Bintang 5' : 'Feedback Lapangan')
-                          : ((dayRecord && dayRecord.score) ? 'Telah Dinilai Guru' : (hasRefleksi ? 'Lihat Estimasi Bintang' : 'Feedback Guru')))
+                          : ((dayRecord && dayRecord.score) ? 'Telah Dinilai Guru' : (hasRefleksi ? 'Menunggu Nilai Fasil' : 'Feedback Guru')))
                   }</span>
                 </div>
               </button>

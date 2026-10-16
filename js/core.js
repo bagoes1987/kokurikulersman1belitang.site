@@ -1330,6 +1330,13 @@ const FincestemCore = {
               } catch (e) {}
             }
 
+            // 1.b. Simpan pemetaan izin dispensasi domisili luar OKU Timur per siswa
+            if (data.data.location_exemptions && typeof data.data.location_exemptions === 'object') {
+              try {
+                localStorage.setItem('fincestem_location_exemptions_map', JSON.stringify(data.data.location_exemptions));
+              } catch (e) {}
+            }
+
             // 2. Simpan pengaturan kelas jika ada
             if (Array.isArray(data.data.classes)) {
               let classMap = {};
@@ -1500,6 +1507,85 @@ const FincestemCore = {
         });
       } else {
         if (callback) callback({ success: true, local: true, zone: zone });
+      }
+    },
+
+    isLocationExempt: function(nisn) {
+      if (!nisn) return false;
+      const cleanNisn = String(nisn).trim();
+      const rawDigits = cleanNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+
+      try {
+        const mapStr = localStorage.getItem('fincestem_location_exemptions_map');
+        if (mapStr) {
+          const map = JSON.parse(mapStr);
+          if (map) {
+            if (map[cleanNisn] || map[paddedNisn] || (unpaddedNisn && map[unpaddedNisn])) return true;
+          }
+        }
+      } catch (e) {}
+
+      // Fallback check local individual flag
+      try {
+        if (localStorage.getItem('fincestem_loc_exempt_' + cleanNisn) === '1' ||
+            localStorage.getItem('fincestem_loc_exempt_' + paddedNisn) === '1' ||
+            (unpaddedNisn && localStorage.getItem('fincestem_loc_exempt_' + unpaddedNisn) === '1')) {
+          return true;
+        }
+      } catch (e) {}
+
+      return false;
+    },
+
+    toggleLocationExemption: function(nisn, targetExempt, callback) {
+      if (!nisn) return;
+      const cleanNisn = String(nisn).trim();
+      const rawDigits = cleanNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+
+      // Update local optimistic immediately
+      let map = {};
+      try {
+        const mapStr = localStorage.getItem('fincestem_location_exemptions_map');
+        if (mapStr) map = JSON.parse(mapStr) || {};
+      } catch (e) {}
+
+      if (targetExempt) {
+        map[cleanNisn] = 1;
+        map[paddedNisn] = 1;
+        if (unpaddedNisn) map[unpaddedNisn] = 1;
+        try { localStorage.setItem('fincestem_loc_exempt_' + cleanNisn, '1'); } catch (e) {}
+      } else {
+        delete map[cleanNisn];
+        delete map[paddedNisn];
+        if (unpaddedNisn) delete map[unpaddedNisn];
+        try { localStorage.removeItem('fincestem_loc_exempt_' + cleanNisn); } catch (e) {}
+      }
+      try { localStorage.setItem('fincestem_location_exemptions_map', JSON.stringify(map)); } catch (e) {}
+
+      // Kirim sinkronisasi ke backend cPanel
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'toggle_location_exemption',
+            nisn: cleanNisn,
+            exempt: targetExempt ? 1 : 0
+          })
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (callback) callback(res);
+        })
+        .catch(() => {
+          if (callback) callback({ success: true, localOnly: true, is_location_exempt: !!targetExempt });
+        });
+      } else {
+        if (callback) callback({ success: true, localOnly: true, is_location_exempt: !!targetExempt });
       }
     }
   },

@@ -41,6 +41,19 @@ function ensureRoleTables($pdo) {
         ");
     } catch (Exception $e) {}
 
+    // Tabel Dispensasi Domisili Siswa Luar OKU Timur (Whitelist Admin Bebas Pinalti Bintang 1)
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `student_location_exemptions` (
+                `nisn` VARCHAR(50) PRIMARY KEY,
+                `reason` VARCHAR(255) DEFAULT 'Domisili Luar OKU Timur',
+                `approved_by` VARCHAR(100) DEFAULT 'admin',
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+    } catch (Exception $eEx) {}
+
     // Tabel penugasan Koordinator (Banyak kelas per Koordinator / Many-to-Many)
     try {
         $pdo->exec("
@@ -656,12 +669,30 @@ if ($method === 'GET') {
             $facilitators = $pdo->query("SELECT * FROM `class_facilitators` ORDER BY `class_name` ASC")->fetchAll();
         } catch (Exception $e) {}
 
+        // 5. Dispensasi Domisili Luar OKU Timur (Whitelist Admin)
+        $locationExemptions = [];
+        try {
+            $stmtEx = $pdo->query("SELECT `nisn` FROM `student_location_exemptions`");
+            while ($r = $stmtEx->fetch()) {
+                $n = trim($r['nisn']);
+                if ($n) {
+                    $locationExemptions[$n] = 1;
+                    $cleanN = preg_replace('/\D/', '', $n);
+                    if (strlen($cleanN) >= 8 && strlen($cleanN) <= 10) {
+                        $locationExemptions[str_pad($cleanN, 10, '0', STR_PAD_LEFT)] = 1;
+                        $locationExemptions[ltrim($cleanN, '0')] = 1;
+                    }
+                }
+            }
+        } catch (Exception $e) {}
+
         jsonResponse(true, 'Data pengaturan zona & penugasan pembina berhasil dimuat', [
-            'classes'          => $classes,
-            'zone_counts'      => $zoneCounts,
-            'student_zones'    => $studentZones,
-            'coordinators'     => $coordinators,
-            'facilitators'     => $facilitators
+            'classes'              => $classes,
+            'zone_counts'          => $zoneCounts,
+            'student_zones'        => $studentZones,
+            'location_exemptions'  => $locationExemptions,
+            'coordinators'         => $coordinators,
+            'facilitators'         => $facilitators
         ]);
     } catch (Exception $e) {
         jsonResponse(false, 'Gagal mengambil data pengaturan: ' . $e->getMessage(), null, 500);
@@ -1031,6 +1062,52 @@ if ($method === 'POST') {
                 'nisn' => $nisn,
                 'zone' => $zone,
                 'affected_rows' => $count
+            ]);
+        }
+
+        // I.2. DISPENSASI DOMISILI LUAR OKU TIMUR (ADMIN WHITELIST BEBAS PINALTI BINTANG 1)
+        if ($action === 'toggle_location_exemption') {
+            $nisn = trim($input['nisn'] ?? '');
+            if (!$nisn) {
+                jsonResponse(false, 'NISN siswa wajib disertakan!', null, 400);
+            }
+            $cleanNisn = preg_replace('/\D/', '', $nisn);
+            $paddedNisn = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $nisn;
+            $unpaddedNisn = ltrim($cleanNisn, '0');
+
+            // Cek apakah saat ini sudah berstatus dispensasi
+            $stmtChk = $pdo->prepare("SELECT COUNT(*) FROM `student_location_exemptions` WHERE `nisn` IN (:n, :p, :u)");
+            $stmtChk->execute([':n' => $nisn, ':p' => $paddedNisn, ':u' => $unpaddedNisn ?: $nisn]);
+            $exists = $stmtChk->fetchColumn() > 0;
+
+            // Target state
+            $targetState = isset($input['exempt']) ? (bool)$input['exempt'] : !$exists;
+
+            if ($targetState) {
+                $stmtIns = $pdo->prepare("
+                    INSERT INTO `student_location_exemptions` (`nisn`, `approved_by`)
+                    VALUES (:n, 'admin')
+                    ON DUPLICATE KEY UPDATE `updated_at` = CURRENT_TIMESTAMP
+                ");
+                $stmtIns->execute([':n' => $nisn]);
+                if ($paddedNisn !== $nisn) {
+                    $stmtIns->execute([':n' => $paddedNisn]);
+                }
+                if ($unpaddedNisn && $unpaddedNisn !== $nisn) {
+                    $stmtIns->execute([':n' => $unpaddedNisn]);
+                }
+                $isExempt = true;
+                $msg = "Izin dispensasi domisili luar OKU Timur untuk siswa {$nisn} berhasil DIAKTIFKAN (Bebas Pinalti Bintang 1).";
+            } else {
+                $stmtDel = $pdo->prepare("DELETE FROM `student_location_exemptions` WHERE `nisn` IN (:n, :p, :u)");
+                $stmtDel->execute([':n' => $nisn, ':p' => $paddedNisn, ':u' => $unpaddedNisn ?: $nisn]);
+                $isExempt = false;
+                $msg = "Izin dispensasi domisili luar OKU Timur untuk siswa {$nisn} berhasil DINONAKTIFKAN.";
+            }
+
+            jsonResponse(true, $msg, [
+                'nisn' => $nisn,
+                'is_location_exempt' => $isExempt
             ]);
         }
 
