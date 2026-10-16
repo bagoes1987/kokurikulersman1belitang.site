@@ -217,7 +217,7 @@
           <div class="space-y-1">
             <button id="btnTabAdm_schedule" onclick="switchAdmTab('schedule')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
               <span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-amber-400">calendar_month</span>
-              <span class="flex-1 truncate">Jadwal Day 1 - 7</span>
+              <span class="flex-1 truncate">Jadwal &amp; Penilaian</span>
             </button>
             <button id="btnTabAdm_rekap" onclick="switchAdmTab('rekap')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
               <span class="material-symbols-outlined text-lg text-amber-400 group-hover:text-amber-300">travel_explore</span>
@@ -782,7 +782,7 @@
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
         <div class="flex items-center justify-between flex-wrap gap-2.5">
           <div>
-            <h3 id="adminScheduleHeaderTitle" class="font-bold text-sm text-on-surface">Manajemen Jadwal Field Trip (Day 1 - 7)</h3>
+            <h3 id="adminScheduleHeaderTitle" class="font-bold text-sm text-on-surface">Manajemen Jadwal &amp; Penilaian Field Trip (Day 1 - 7)</h3>
             <p id="adminScheduleHeaderDesc" class="text-[11px] text-on-surface-variant">Atur tanggal, jam buka/tutup, dan status aktif harian siswa Field Trip secara independen.</p>
           </div>
           <div class="flex items-center gap-2 flex-wrap">
@@ -2684,7 +2684,7 @@
       teachers: 'Data Guru (116)',
       zones: 'Data Koordinator & Fasilitator',
       cards: 'Cetak Kartu Login Siswa (Folio/F4/HVS)',
-      schedule: 'Jadwal Day 1 - 7',
+      schedule: 'Jadwal & Penilaian (Day 1 - 7)',
       rekap: 'Rekap Field Trip (455)',
       gallery: 'Galeri Foto Riset',
       config: 'Konfigurasi Sistem',
@@ -4890,8 +4890,8 @@
         if (cardFTGrading) cardFTGrading.classList.remove('hidden');
         initAdminFTGradingRules();
 
-        if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal Field Trip (Day 1 - 7)';
-        if (hdrDesc) hdrDesc.textContent = 'Ekspedisi Luar 2026: Belitang → Semarang → Malang → Bromo → Yogyakarta (455 Siswa). Atur tanggal, jam, dan status buka/tutup harian.';
+        if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal & Penilaian Field Trip (Day 1 - 7)';
+        if (hdrDesc) hdrDesc.textContent = 'Ekspedisi Luar 2026: Belitang → Semarang → Malang → Bromo → Yogyakarta (455 Siswa). Atur tanggal, jam batas penilaian, dan status aktif harian.';
         if (infoNotice) {
           infoNotice.className = 'p-3 rounded-2xl bg-amber-50/70 border border-amber-200 flex items-center gap-2 text-xs text-amber-950';
           infoNotice.innerHTML = `
@@ -4909,7 +4909,7 @@
         if (boxTrial) boxTrial.classList.remove('hidden');
         if (bannerFt) bannerFt.classList.add('hidden');
         if (cardFTGrading) cardFTGrading.classList.add('hidden');
-        if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal Non-Field Trip (OKU Timur)';
+        if (hdrTitle) hdrTitle.textContent = 'Manajemen Jadwal & Penilaian Non-Field Trip (OKU Timur)';
         if (hdrDesc) hdrDesc.textContent = 'Riset Lapangan OKU Timur (710 Siswa). Atur tanggal, jam buka/tutup, dan status aktif harian siswa.';
         if (infoNotice) {
           infoNotice.className = 'p-3 rounded-2xl bg-blue-50/60 border border-blue-100 flex items-center gap-2 text-xs text-blue-900';
