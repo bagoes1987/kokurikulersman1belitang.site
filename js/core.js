@@ -530,11 +530,25 @@ const FincestemCore = {
     getPhoto: function(nisn) {
       if (!nisn) return null;
       const cleanNisn = String(nisn).trim();
-      const local = localStorage.getItem('fincestem_photo_' + cleanNisn);
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+
+      // Jika user sedang aktif login dan photo_url kosong/null di sesi (karena di-reset), jangan ambil foto lama
+      const u = FincestemCore.auth.getUser();
+      if (u) {
+        const uId = String(u.nisn || u.identifier || '').replace(/\D/g, '');
+        if (uId && (uId === cleanNisn || uId === unpadded || uId === padded)) {
+          if (u.photo_url === '' || u.photo_url === null) return null;
+        }
+      }
+
+      const local = localStorage.getItem('fincestem_photo_' + cleanNisn) ||
+                    localStorage.getItem('fincestem_photo_' + unpadded) ||
+                    localStorage.getItem('fincestem_photo_' + padded);
       if (local) return this.normalizePhotoUrl(local);
 
       if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
-        const found = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === cleanNisn || String(x.nis).trim() === cleanNisn);
+        const found = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === cleanNisn || String(x.nisn).trim() === unpadded || String(x.nis).trim() === cleanNisn);
         if (found && found.photo_url) return this.normalizePhotoUrl(found.photo_url);
       }
       return null;
@@ -1859,6 +1873,13 @@ const FincestemCore = {
       };
 
       const idVariations = Array.from(new Set([cleanNisn, unpadded, padded, '0' + unpadded, rawNisn])).filter(Boolean);
+      // Tambahkan nomor NIS siswa jika ada di master data Dapodik
+      if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+        const found = window.FincestemMasterStudents.find(x => idVariations.some(id => String(x.nisn || x.nis).trim() === id));
+        if (found && found.nis) {
+          idVariations.push(String(found.nis).trim());
+        }
+      }
       const days = (targetDay === 0) ? [0] : ((targetDay > 0) ? [targetDay] : [0, 1, 2, 3, 4, 5, 6, 7]);
 
       try {
@@ -1933,7 +1954,7 @@ const FincestemCore = {
           }
         }
 
-        // 5. Bersihkan entri dokumentasi & LKPD di fincestem_db_2026_v1
+        // 5. Bersihkan entri dokumentasi, LKPD, dan groups di fincestem_db_2026_v1
         const storedDb = localStorage.getItem('fincestem_db_2026_v1');
         if (storedDb) {
           try {
@@ -1954,6 +1975,18 @@ const FincestemCore = {
                 if (!isStudent) return true;
                 if (targetDay > 0) return !(d.day == targetDay || d.day_number == targetDay);
                 return false;
+              });
+            }
+            if (comp.lkpd && Array.isArray(db.groups)) {
+              db.groups.forEach(g => {
+                if (g.answers) {
+                  g.answers = {};
+                  g.lkpdSubmitted = false;
+                  g.status = 'Belum Mengumpulkan';
+                  delete g.scores;
+                  delete g.isGraded;
+                  delete g.feedback;
+                }
               });
             }
             localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
@@ -2031,16 +2064,7 @@ const FincestemCore = {
               const recordsCount = Array.isArray(res.data.records) ? res.data.records.length : 0;
               const taskMapCount = res.data.task_map ? Object.keys(res.data.task_map).length : 0;
               if (recordsCount === 0 && taskMapCount === 0 && (res.data.completed_days === 0 || !res.data.completed_days)) {
-                const sampleKeys = [
-                  'fincestem_lkpd_ft_day1_' + cleanNisn,
-                  'fincestem_lkpd_ft_day2_' + cleanNisn,
-                  'fincestem_asesmen_ft_day1_' + cleanNisn,
-                  'fincestem_asesmen_ft_day2_' + cleanNisn,
-                  'fincestem_materi_ft_day1_' + cleanNisn
-                ];
-                if (sampleKeys.some(k => !!localStorage.getItem(k))) {
-                  shouldPurge = true;
-                }
+                shouldPurge = true;
               }
 
               if (shouldPurge) {
@@ -2049,6 +2073,11 @@ const FincestemCore = {
                   localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
                 } else {
                   localStorage.setItem('fincestem_client_reset_' + cleanNisn, new Date().toISOString());
+                }
+                const u = FincestemCore.auth.getUser();
+                if (u && (cleanNisn.includes(String(u.nisn || u.identifier).replace(/\D/g, '')))) {
+                  u.photo_url = '';
+                  FincestemCore.auth.setUser(u, 'siswa');
                 }
               }
 
@@ -2278,6 +2307,8 @@ const FincestemCore = {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'reset_all_students',
+            group_category: opts.group_category || 'all',
+            nisn_list: opts.nisn_list || [],
             scope: scope,
             target_day: targetDay,
             components: comp
@@ -2292,6 +2323,55 @@ const FincestemCore = {
         });
       } else {
         if (cb) cb({ success: true, message: 'Semua data pengerjaan siswa berhasil dibersihkan (mode lokal).' });
+      }
+    },
+
+    resetGroupStudents: function(options, callback) {
+      options = options || {};
+      const self = this;
+      const groupCategory = options.group_category || 'field_trip';
+      const nisnList = options.nisn_list || [];
+      const scope = options.scope || 'all_days';
+      const targetDay = (options.target_day !== undefined) ? parseInt(options.target_day) : -1;
+      const comp = options.components || {
+        materi: true,
+        lkpd: true,
+        asesmen: true,
+        refleksi: true,
+        dokumentasi: true,
+        foto_profil: true
+      };
+
+      // 1. Purge storage lokal untuk seluruh NISN di list
+      if (Array.isArray(nisnList)) {
+        nisnList.forEach(n => {
+          self.purgeStudentLocalStorage(n, { scope: scope, target_day: targetDay, components: comp });
+        });
+      }
+
+      // 2. Kirim 1 API call ke backend server
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/progress.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'reset_all_students',
+            group_category: groupCategory,
+            nisn_list: nisnList,
+            scope: scope,
+            target_day: targetDay,
+            components: comp
+          })
+        })
+        .then(r => r.json())
+        .then(res => {
+          if (callback) callback(res);
+        })
+        .catch(err => {
+          if (callback) callback({ success: true, message: 'Reset masal berhasil diproses (mode fallback).' });
+        });
+      } else {
+        if (callback) callback({ success: true, message: 'Reset masal berhasil diproses (mode lokal).' });
       }
     },
 

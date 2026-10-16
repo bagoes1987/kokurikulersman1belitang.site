@@ -603,10 +603,20 @@
     function checkInitialMateriConclusion() {
       const user = FincestemCore.auth.getUser() || {};
       const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, nisn])).filter(Boolean);
+
       let saved = null;
       try {
-        const stored = localStorage.getItem('fincestem_materi_ft_day1_' + nisn);
-        if (stored) saved = JSON.parse(stored);
+        for (const id of idVars) {
+          const stored = localStorage.getItem('fincestem_materi_ft_day1_' + id);
+          if (stored) {
+            saved = JSON.parse(stored);
+            break;
+          }
+        }
       } catch (e) {}
 
       if (saved) {
@@ -629,7 +639,7 @@
             } else {
               // Server kosong / baru saja di-reset oleh Admin!
               try {
-                localStorage.removeItem('fincestem_materi_ft_day1_' + nisn);
+                idVars.forEach(id => localStorage.removeItem('fincestem_materi_ft_day1_' + id));
               } catch (e) {}
               const txtArea = document.getElementById('ftMateriConclusion');
               if (txtArea) txtArea.value = '';
@@ -1055,10 +1065,20 @@
     function checkInitialMateriConclusionDay2() {
       const user = FincestemCore.auth.getUser() || {};
       const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, nisn])).filter(Boolean);
+
       let saved = null;
       try {
-        const stored = localStorage.getItem('fincestem_materi_ft_day2_' + nisn);
-        if (stored) saved = JSON.parse(stored);
+        for (const id of idVars) {
+          const stored = localStorage.getItem('fincestem_materi_ft_day2_' + id);
+          if (stored) {
+            saved = JSON.parse(stored);
+            break;
+          }
+        }
       } catch (e) {}
 
       if (saved) {
@@ -1079,7 +1099,7 @@
               }
             } else {
               try {
-                localStorage.removeItem('fincestem_materi_ft_day2_' + nisn);
+                idVars.forEach(id => localStorage.removeItem('fincestem_materi_ft_day2_' + id));
               } catch (e) {}
               const txtArea = document.getElementById('ftMateriConclusionDay2');
               if (txtArea) txtArea.value = '';
@@ -1398,10 +1418,20 @@
     function checkInitialMateriConclusionGeneric(dayNum) {
       const user = FincestemCore.auth.getUser() || {};
       const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, nisn])).filter(Boolean);
+
       let saved = null;
       try {
-        const stored = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + nisn);
-        if (stored) saved = JSON.parse(stored);
+        for (const id of idVars) {
+          const stored = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id);
+          if (stored) {
+            saved = JSON.parse(stored);
+            break;
+          }
+        }
       } catch (e) {}
 
       if (saved) {
@@ -1423,7 +1453,7 @@
               }
             } else {
               try {
-                localStorage.removeItem(`fincestem_materi_ft_day${dayNum}_` + nisn);
+                idVars.forEach(id => localStorage.removeItem(`fincestem_materi_ft_day${dayNum}_` + id));
               } catch (e) {}
               const txtArea = document.getElementById('ftMateriConclusionGeneric');
               if (txtArea) txtArea.value = '';

@@ -84,31 +84,46 @@ if ($method === 'GET') {
         ensureProgressTable($pdo);
 
         if ($nisn) {
-            // Ambil data reset_at termutakhir (spesifik siswa atau global reset)
+            // Ambil data reset_at termutakhir (spesifik siswa atau grup/global reset)
             $resetInfo = null;
             try {
                 $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
+                $unpadded = ltrim($cleanNisn, '0');
                 $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
+                $allIds = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
+
+                // Dapatkan NIS dan zona siswa dari tabel users jika ada
+                $studentZone = '';
+                $inIdsSql = "'" . implode("','", array_map('addslashes', $allIds)) . "'";
+                $uStmt = $pdo->query("SELECT `zone`, `reset_at`, `nis` FROM `users` WHERE `identifier` IN ($inIdsSql) OR `nis` IN ($inIdsSql) LIMIT 1");
+                $uRow = $uStmt ? $uStmt->fetch() : null;
+                if ($uRow) {
+                    $studentZone = $uRow['zone'] ?? '';
+                    if (!empty($uRow['nis'])) $allIds[] = $uRow['nis'];
+                }
+                $allIds = array_values(array_unique(array_filter($allIds)));
+                $inIdsSql = "'" . implode("','", array_map('addslashes', $allIds)) . "'";
+                $isFieldTrip = (stripos($studentZone, 'LUAR') !== false || stripos($studentZone, 'FIELD') !== false);
 
                 // 1. Cek student_reset_meta
-                $stmtReset = $pdo->prepare("
+                $stmtReset = $pdo->query("
                     SELECT `scope`, `target_day`, `components`, `reset_at` 
                     FROM `student_reset_meta` 
-                    WHERE `nisn` = :n1 OR `nisn` = :n2 OR `nisn` = :n3 
+                    WHERE `nisn` IN ($inIdsSql) 
                     ORDER BY `reset_at` DESC LIMIT 1
                 ");
-                $stmtReset->execute([':n1' => $nisn, ':n2' => $cleanNisn, ':n3' => $padded]);
-                $rMeta = $stmtReset->fetch();
+                $rMeta = $stmtReset ? $stmtReset->fetch() : null;
 
-                // 2. Cek app_system_meta (global_reset)
-                $stmtGlobal = $pdo->prepare("SELECT `meta_value`, `updated_at` FROM `app_system_meta` WHERE `meta_key` = 'global_reset' LIMIT 1");
-                $stmtGlobal->execute();
-                $gMeta = $stmtGlobal->fetch();
-
-                // 3. Cek users table reset_at
-                $stmtUserReset = $pdo->prepare("SELECT `reset_at` FROM `users` WHERE `identifier` = :n1 OR `identifier` = :n2 OR `nis` = :n3 LIMIT 1");
-                $stmtUserReset->execute([':n1' => $nisn, ':n2' => $padded, ':n3' => $cleanNisn]);
-                $uReset = $stmtUserReset->fetch();
+                // 2. Cek app_system_meta (global_reset, field_trip_reset, non_field_trip_reset)
+                $metaCheckKeys = ["'global_reset'"];
+                if ($isFieldTrip) {
+                    $metaCheckKeys[] = "'field_trip_reset'";
+                } else {
+                    $metaCheckKeys[] = "'non_field_trip_reset'";
+                }
+                $inMetaKeys = implode(',', $metaCheckKeys);
+                $stmtGlobal = $pdo->query("SELECT `meta_key`, `meta_value`, `updated_at` FROM `app_system_meta` WHERE `meta_key` IN ($inMetaKeys) ORDER BY `updated_at` DESC");
+                $gMetas = $stmtGlobal ? $stmtGlobal->fetchAll() : [];
 
                 $latestResetTime = null;
                 $effectiveReset = null;
@@ -124,26 +139,28 @@ if ($method === 'GET') {
                     ];
                 }
 
-                if ($gMeta && !empty($gMeta['updated_at'])) {
-                    $gTime = strtotime($gMeta['updated_at']);
-                    if ($latestResetTime === null || $gTime > $latestResetTime) {
-                        $latestResetTime = $gTime;
-                        $gParsed = json_decode($gMeta['meta_value'] ?? '{}', true) ?: [];
-                        $effectiveReset = [
-                            'reset_at'   => $gMeta['updated_at'],
-                            'scope'      => $gParsed['scope'] ?? 'all_days',
-                            'target_day' => (int)($gParsed['target_day'] ?? -1),
-                            'components' => $gParsed['components'] ?? null
-                        ];
+                foreach ($gMetas as $gMeta) {
+                    if (!empty($gMeta['updated_at'])) {
+                        $gTime = strtotime($gMeta['updated_at']);
+                        if ($latestResetTime === null || $gTime > $latestResetTime) {
+                            $latestResetTime = $gTime;
+                            $gParsed = json_decode($gMeta['meta_value'] ?? '{}', true) ?: [];
+                            $effectiveReset = [
+                                'reset_at'   => $gMeta['updated_at'],
+                                'scope'      => $gParsed['scope'] ?? 'all_days',
+                                'target_day' => (int)($gParsed['target_day'] ?? -1),
+                                'components' => $gParsed['components'] ?? null
+                            ];
+                        }
                     }
                 }
 
-                if ($uReset && !empty($uReset['reset_at'])) {
-                    $uTime = strtotime($uReset['reset_at']);
+                if ($uRow && !empty($uRow['reset_at'])) {
+                    $uTime = strtotime($uRow['reset_at']);
                     if ($latestResetTime === null || $uTime > $latestResetTime) {
                         $latestResetTime = $uTime;
                         $effectiveReset = [
-                            'reset_at'   => $uReset['reset_at'],
+                            'reset_at'   => $uRow['reset_at'],
                             'scope'      => 'all_days',
                             'target_day' => -1,
                             'components' => null
@@ -154,12 +171,18 @@ if ($method === 'GET') {
                 $resetInfo = $effectiveReset;
             } catch (Exception $eReset) {}
 
+            $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
+            $unpadded = ltrim($cleanNisn, '0');
+            $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
+            $allNisns = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
+            $inNisns = "'" . implode("','", array_map('addslashes', $allNisns)) . "'";
+
             $stmt = $pdo->prepare("
                 SELECT * FROM `student_progress_eval` 
-                WHERE `student_nisn` = :nisn 
+                WHERE `student_nisn` IN ($inNisns)
                 ORDER BY `day_number` ASC, `updated_at` DESC
             ");
-            $stmt->execute([':nisn' => $nisn]);
+            $stmt->execute();
             $records = $stmt->fetchAll();
 
             $completedDays = [];
@@ -394,6 +417,26 @@ if ($method === 'POST') {
             $resetDok = !empty($comp['dokumentasi']);
             $resetPhoto = !empty($comp['foto_profil']);
 
+            // Identifikasi seluruh variasi ID siswa (padded, unpadded, NIS)
+            $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
+            $unpadded = ltrim($cleanNisn, '0');
+            $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
+            $allIds = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
+
+            try {
+                $inTemp = "'" . implode("','", array_map('addslashes', $allIds)) . "'";
+                $uFind = $pdo->query("SELECT `identifier`, `nis`, `photo_url` FROM `users` WHERE `identifier` IN ($inTemp) OR `nis` IN ($inTemp)");
+                if ($uFind) {
+                    while ($ur = $uFind->fetch()) {
+                        if (!empty($ur['identifier'])) $allIds[] = $ur['identifier'];
+                        if (!empty($ur['nis'])) $allIds[] = $ur['nis'];
+                    }
+                }
+                $allIds = array_values(array_unique(array_filter($allIds)));
+            } catch (Exception $eU) {}
+
+            $inIds = "'" . implode("','", array_map('addslashes', $allIds)) . "'";
+
             // 1. Hapus dari student_progress_eval sesuai filter komponen & hari
             $taskTypes = [];
             if ($resetMateri) $taskTypes[] = "'materi'";
@@ -406,27 +449,23 @@ if ($method === 'POST') {
             if (!empty($taskTypes)) {
                 $typeSql = implode(',', $taskTypes);
                 if ($targetDay >= 0) {
-                    $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` = :nisn AND `day_number` = :day AND `task_type` IN ($typeSql)");
-                    $stmt->execute([':nisn' => $nisn, ':day' => $targetDay]);
+                    $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `day_number` = :day AND `task_type` IN ($typeSql)");
+                    $stmt->execute([':day' => $targetDay]);
                 } else {
-                    $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` = :nisn AND `task_type` IN ($typeSql)");
-                    $stmt->execute([':nisn' => $nisn]);
+                    $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `task_type` IN ($typeSql)");
                 }
-                $deletedEval = $stmt->rowCount();
             }
 
             // 2. Hapus pengumpulan LKPD siswa jika opsi LKPD dicentang
             if ($resetLkpd) {
                 try {
                     if ($targetDay === 0) {
-                        $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` = :nisn AND (`title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `title` LIKE '%Gladi%')");
-                        $stmtLkpd->execute([':nisn' => $nisn]);
+                        $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inIds) AND (`title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `title` LIKE '%Gladi%')");
                     } elseif ($targetDay > 0) {
-                        $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` = :nisn AND `title` LIKE :dtit");
-                        $stmtLkpd->execute([':nisn' => $nisn, ':dtit' => "%Day {$targetDay}%"]);
+                        $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inIds) AND `title` LIKE :dtit");
+                        $stmtLkpd->execute([':dtit' => "%Day {$targetDay}%"]);
                     } else {
-                        $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` = :nisn");
-                        $stmtLkpd->execute([':nisn' => $nisn]);
+                        $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inIds)");
                     }
                 } catch (Exception $e) {}
             }
@@ -435,45 +474,47 @@ if ($method === 'POST') {
             $deletedPhoto = false;
             if ($resetPhoto) {
                 try {
-                    $stmtPhoto = $pdo->prepare("SELECT `photo_url` FROM `users` WHERE `identifier` = :id OR `nis` = :nis LIMIT 1");
-                    $stmtPhoto->execute([':id' => $nisn, ':nis' => $nisn]);
-                    $userRow = $stmtPhoto->fetch();
-                    if ($userRow && !empty($userRow['photo_url'])) {
-                        $photoFile = BASE_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'foto' . DIRECTORY_SEPARATOR . basename($userRow['photo_url']);
-                        if (file_exists($photoFile) && is_file($photoFile)) {
-                            @unlink($photoFile);
-                            $deletedPhoto = true;
-                        }
-                    }
-
-                    $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
-                    if ($cleanNisn) {
-                        $pattern = BASE_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'foto' . DIRECTORY_SEPARATOR . 'foto_' . $cleanNisn . '_*.*';
-                        $matchedFiles = glob($pattern);
-                        if ($matchedFiles) {
-                            foreach ($matchedFiles as $f) {
-                                if (is_file($f)) {
-                                    @unlink($f);
+                    $stmtPhoto = $pdo->query("SELECT `photo_url` FROM `users` WHERE `identifier` IN ($inIds) OR `nis` IN ($inIds)");
+                    if ($stmtPhoto) {
+                        while ($userRow = $stmtPhoto->fetch()) {
+                            if (!empty($userRow['photo_url'])) {
+                                $photoFile = BASE_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'foto' . DIRECTORY_SEPARATOR . basename($userRow['photo_url']);
+                                if (file_exists($photoFile) && is_file($photoFile)) {
+                                    @unlink($photoFile);
                                     $deletedPhoto = true;
                                 }
                             }
                         }
                     }
 
-                    $stmtResetPhoto = $pdo->prepare("UPDATE `users` SET `photo_url` = NULL WHERE `identifier` = :id OR `nis` = :nis");
-                    $stmtResetPhoto->execute([':id' => $nisn, ':nis' => $nisn]);
+                    foreach ([$cleanNisn, $unpadded, $padded] as $cid) {
+                        if ($cid) {
+                            $pattern = BASE_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'foto' . DIRECTORY_SEPARATOR . 'foto_' . $cid . '_*.*';
+                            $matchedFiles = glob($pattern);
+                            if ($matchedFiles) {
+                                foreach ($matchedFiles as $f) {
+                                    if (is_file($f)) {
+                                        @unlink($f);
+                                        $deletedPhoto = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    $pdo->exec("UPDATE `users` SET `photo_url` = NULL WHERE `identifier` IN ($inIds) OR `nis` IN ($inIds)");
                 } catch (Exception $e) {}
             }
 
             // 4. Hapus foto dokumentasi jika opsi dokumentasi dicentang
             if ($resetDok) {
                 try {
-                    $docQuery = "SELECT `id`, `file_url` FROM `dokumentasi_media` WHERE `uploaded_by_nisn` = :nisn";
+                    $docQuery = "SELECT `id`, `file_url` FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inIds)";
                     if ($targetDay > 0) {
                         $docQuery .= " AND (`title` LIKE :dtit OR `caption` LIKE :dtit)";
                     }
                     $stmtDocFind = $pdo->prepare($docQuery);
-                    $docParams = [':nisn' => $nisn];
+                    $docParams = [];
                     if ($targetDay > 0) $docParams[':dtit'] = "%Day {$targetDay}%";
                     $stmtDocFind->execute($docParams);
                     $docs = $stmtDocFind->fetchAll();
@@ -486,12 +527,10 @@ if ($method === 'POST') {
                     }
 
                     if ($targetDay > 0) {
-                        $stmtDoc = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` = :nisn AND (`title` LIKE :dtit OR `caption` LIKE :dtit)");
-                        $stmtDoc->execute([':nisn' => $nisn, ':dtit' => "%Day {$targetDay}%"]);
+                        $stmtDoc = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inIds) AND (`title` LIKE :dtit OR `caption` LIKE :dtit)");
+                        $stmtDoc->execute([':dtit' => "%Day {$targetDay}%"]);
                     } else {
-                        // Reset Day 0 / Uji Coba atau Semua Hari: hapus semua dokumentasi uji coba siswa ini
-                        $stmtDoc = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` = :nisn");
-                        $stmtDoc->execute([':nisn' => $nisn]);
+                        $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inIds)");
                     }
                 } catch (Exception $e) {}
             }
@@ -499,7 +538,6 @@ if ($method === 'POST') {
             // 5. Catat timestamp reset agar device/browser siswa langsung mendeteksi dan membersihkan cache lokal
             $nowStr = date('Y-m-d H:i:s');
             try {
-                $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
                 $stmtMeta = $pdo->prepare("
                     INSERT INTO `student_reset_meta` (`nisn`, `scope`, `target_day`, `components`, `reset_at`)
                     VALUES (:nisn, :scope, :tday, :comp, :now)
@@ -509,20 +547,22 @@ if ($method === 'POST') {
                         `components` = VALUES(`components`),
                         `reset_at` = VALUES(`reset_at`)
                 ");
-                $stmtMeta->execute([
-                    ':nisn'  => $cleanNisn ?: $nisn,
-                    ':scope' => $scope,
-                    ':tday'  => $targetDay,
-                    ':comp'  => json_encode($comp),
-                    ':now'   => $nowStr
-                ]);
 
-                $stmtUReset = $pdo->prepare("UPDATE `users` SET `reset_at` = :now WHERE `identifier` = :id OR `identifier` = :clean OR `nis` = :nis");
-                $stmtUReset->execute([':now' => $nowStr, ':id' => $nisn, ':clean' => $cleanNisn, ':nis' => $nisn]);
+                foreach ($allIds as $sid) {
+                    $stmtMeta->execute([
+                        ':nisn'  => $sid,
+                        ':scope' => $scope,
+                        ':tday'  => $targetDay,
+                        ':comp'  => json_encode($comp),
+                        ':now'   => $nowStr
+                    ]);
+                }
+
+                $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `identifier` IN ($inIds) OR `nis` IN ($inIds)");
             } catch (Exception $eMeta) {}
 
             $scopeMsg = $targetDay === 0 ? "khusus Day Uji Coba (Day 0)" : ($targetDay > 0 ? "Day {$targetDay}" : "seluruh hari");
-            jsonResponse(true, "Data siswa (NISN {$nisn}) {$scopeMsg} berhasil di-reset sesuai pilihan komponen!", [
+            jsonResponse(true, "Data siswa (NISN {$nisn}) {$scopeMsg} berhasil di-reset sampai bersih total!", [
                 'student_nisn'    => $nisn,
                 'scope'           => $scope,
                 'target_day'      => $targetDay,
@@ -532,13 +572,17 @@ if ($method === 'POST') {
             ]);
         }
 
-        // D. Reset MASSAL (semua siswa sekaligus: per-menu, per-hari, atau total)
-        if ($action === 'reset_all_students') {
+        // D. Reset MASSAL (semua siswa sekaligus: grup Field Trip, Non-Field Trip, atau Total)
+        if ($action === 'reset_all_students' || $action === 'reset_group_students') {
             $scope = $input['scope'] ?? 'all_days';
             $targetDay = isset($input['target_day']) ? (int)$input['target_day'] : -1;
             if ($scope === 'trial_only') {
                 $targetDay = 0;
             }
+
+            $groupCategory = trim($input['group_category'] ?? $input['group'] ?? 'all');
+            $nisnList = $input['nisn_list'] ?? [];
+            if (!is_array($nisnList)) $nisnList = [];
 
             $comp = $input['components'] ?? [
                 'materi'      => true,
@@ -556,7 +600,6 @@ if ($method === 'POST') {
             $resetDok = !empty($comp['dokumentasi']);
             $resetPhoto = !empty($comp['foto_profil']);
 
-            // 1. student_progress_eval
             $taskTypes = [];
             if ($resetMateri) $taskTypes[] = "'materi'";
             if ($resetLkpd) $taskTypes[] = "'lkpd'";
@@ -564,99 +607,256 @@ if ($method === 'POST') {
             if ($resetRefleksi) $taskTypes[] = "'refleksi'";
             if ($resetDok) $taskTypes[] = "'dokumentasi'";
 
-            if (!empty($taskTypes)) {
-                $typeSql = implode(',', $taskTypes);
-                if ($targetDay >= 0) {
-                    $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `day_number` = :day AND `task_type` IN ($typeSql)");
-                    $stmt->execute([':day' => $targetDay]);
-                } else {
-                    $pdo->exec("DELETE FROM `student_progress_eval` WHERE `task_type` IN ($typeSql)");
-                }
-            }
-
-            // 2. lkpd_submissions
-            if ($resetLkpd) {
-                try {
-                    if ($targetDay === 0) {
-                        $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `title` LIKE '%Gladi%'");
-                    } elseif ($targetDay > 0) {
-                        $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `title` LIKE :dtit");
-                        $stmtLkpd->execute([':dtit' => "%Day {$targetDay}%"]);
-                    } else {
-                        $pdo->exec("DELETE FROM `lkpd_submissions`");
-                    }
-                } catch (Exception $e) {}
-            }
-
-            // 3. Foto profil
-            if ($resetPhoto) {
-                try {
-                    $pdo->exec("UPDATE `users` SET `photo_url` = NULL WHERE `role` = 'siswa' OR `role` IS NULL");
-                    $fotoDir = BASE_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'foto';
-                    if (is_dir($fotoDir)) {
-                        $files = glob($fotoDir . DIRECTORY_SEPARATOR . 'foto_*.*');
-                        if ($files) {
-                            foreach ($files as $f) {
-                                if (is_file($f)) @unlink($f);
-                            }
-                        }
-                    }
-                } catch (Exception $e) {}
-            }
-
-            // 4. Dokumentasi media
-            if ($resetDok) {
-                try {
-                    $whereDocs = "";
-                    if ($targetDay > 0) {
-                        $whereDocs = " WHERE `title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%'";
-                    }
-                    // Jika $targetDay === 0 (Uji Coba) atau $targetDay === -1 (Total), bersihkan seluruh foto dokumentasi
-                    $stmtAllDocs = $pdo->query("SELECT `file_url` FROM `dokumentasi_media`" . $whereDocs);
-                    if ($stmtAllDocs) {
-                        while ($d = $stmtAllDocs->fetch()) {
-                            if (!empty($d['file_url']) && strpos($d['file_url'], 'data:image') === false) {
-                                $docRel = ltrim(str_replace(['../', '..\\'], '', $d['file_url']), '/\\');
-                                $docPath = BASE_DIR . DIRECTORY_SEPARATOR . $docRel;
-                                if (file_exists($docPath) && is_file($docPath)) @unlink($docPath);
-                            }
-                        }
-                    }
-                    if ($targetDay > 0) {
-                        $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%'");
-                    } else {
-                        $pdo->exec("DELETE FROM `dokumentasi_media`");
-                    }
-                } catch (Exception $e) {}
-            }
-
-            // 5. Catat timestamp reset global agar seluruh perangkat siswa mendeteksi dan membersihkan cache lokal
             $nowStr = date('Y-m-d H:i:s');
-            try {
+            $isGroupSpecific = ($groupCategory === 'field_trip' || $groupCategory === 'non_field_trip' || !empty($nisnList));
+
+            if ($isGroupSpecific) {
+                // Kumpulkan seluruh target identifier untuk grup ini
+                $targetIds = [];
+                foreach ($nisnList as $n) {
+                    $c = preg_replace('/[^A-Za-z0-9]/', '', (string)$n);
+                    if ($c) {
+                        $targetIds[] = $c;
+                        $targetIds[] = ltrim($c, '0');
+                        if (strlen($c) >= 8 && strlen($c) <= 10) $targetIds[] = str_pad($c, 10, '0', STR_PAD_LEFT);
+                    }
+                }
+
+                // Tambahkan dari tabel users berdasarkan kategori zona
+                try {
+                    $zoneSql = "";
+                    if ($groupCategory === 'field_trip') {
+                        $zoneSql = " AND (`zone` LIKE '%LUAR%' OR `zone` LIKE '%FIELD%' OR `zone` LIKE '%TRIP%')";
+                    } elseif ($groupCategory === 'non_field_trip') {
+                        $zoneSql = " AND NOT (`zone` LIKE '%LUAR%' OR `zone` LIKE '%FIELD%' OR `zone` LIKE '%TRIP%')";
+                    }
+                    $uStmt = $pdo->query("SELECT `identifier`, `nis`, `photo_url` FROM `users` WHERE (`role` = 'siswa' OR `role` IS NULL){$zoneSql}");
+                    if ($uStmt) {
+                        while ($ur = $uStmt->fetch()) {
+                            if (!empty($ur['identifier'])) {
+                                $targetIds[] = $ur['identifier'];
+                                $c = preg_replace('/[^A-Za-z0-9]/', '', $ur['identifier']);
+                                if ($c) {
+                                    $targetIds[] = $c;
+                                    $targetIds[] = ltrim($c, '0');
+                                }
+                            }
+                            if (!empty($ur['nis'])) $targetIds[] = $ur['nis'];
+                        }
+                    }
+                } catch (Exception $eU) {}
+
+                $targetIds = array_values(array_unique(array_filter($targetIds)));
+
+                // Eksekusi per-chunk (500 per batch) untuk stabilitas SQL query
+                $chunks = array_chunk($targetIds, 400);
+                foreach ($chunks as $chunk) {
+                    $inSql = "'" . implode("','", array_map('addslashes', $chunk)) . "'";
+
+                    // 1. student_progress_eval
+                    if (!empty($taskTypes)) {
+                        $typeSql = implode(',', $taskTypes);
+                        if ($targetDay >= 0) {
+                            $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inSql) AND `day_number` = :day AND `task_type` IN ($typeSql)");
+                            $stmt->execute([':day' => $targetDay]);
+                        } else {
+                            $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inSql) AND `task_type` IN ($typeSql)");
+                        }
+                    }
+
+                    // 2. lkpd_submissions
+                    if ($resetLkpd) {
+                        if ($targetDay === 0) {
+                            $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inSql) AND (`title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `title` LIKE '%Gladi%')");
+                        } elseif ($targetDay > 0) {
+                            $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inSql) AND `title` LIKE :dtit");
+                            $stmtLkpd->execute([':dtit' => "%Day {$targetDay}%"]);
+                        } else {
+                            $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inSql)");
+                        }
+                    }
+
+                    // 3. Foto profil
+                    if ($resetPhoto) {
+                        $stmtPhoto = $pdo->query("SELECT `photo_url` FROM `users` WHERE `identifier` IN ($inSql) OR `nis` IN ($inSql)");
+                        if ($stmtPhoto) {
+                            while ($userRow = $stmtPhoto->fetch()) {
+                                if (!empty($userRow['photo_url'])) {
+                                    $photoFile = BASE_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'foto' . DIRECTORY_SEPARATOR . basename($userRow['photo_url']);
+                                    if (file_exists($photoFile) && is_file($photoFile)) @unlink($photoFile);
+                                }
+                            }
+                        }
+                        $pdo->exec("UPDATE `users` SET `photo_url` = NULL WHERE `identifier` IN ($inSql) OR `nis` IN ($inSql)");
+                    }
+
+                    // 4. Dokumentasi media
+                    if ($resetDok) {
+                        $docQuery = "SELECT `id`, `file_url` FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inSql)";
+                        if ($targetDay > 0) $docQuery .= " AND (`title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%')";
+                        $stmtDocFind = $pdo->query($docQuery);
+                        if ($stmtDocFind) {
+                            while ($d = $stmtDocFind->fetch()) {
+                                if (!empty($d['file_url']) && strpos($d['file_url'], 'data:image') === false) {
+                                    $docRel = ltrim(str_replace(['../', '..\\'], '', $d['file_url']), '/\\');
+                                    $docPath = BASE_DIR . DIRECTORY_SEPARATOR . $docRel;
+                                    if (file_exists($docPath) && is_file($docPath)) @unlink($docPath);
+                                }
+                            }
+                        }
+                        if ($targetDay > 0) {
+                            $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inSql) AND (`title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%')");
+                        } else {
+                            $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inSql)");
+                        }
+                    }
+
+                    // 5. Update users.reset_at
+                    $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `identifier` IN ($inSql) OR `nis` IN ($inSql)");
+
+                    // 6. Catat ke student_reset_meta
+                    $stmtMeta = $pdo->prepare("
+                        INSERT INTO `student_reset_meta` (`nisn`, `scope`, `target_day`, `components`, `reset_at`)
+                        VALUES (:nisn, :scope, :tday, :comp, :now)
+                        ON DUPLICATE KEY UPDATE 
+                            `scope` = VALUES(`scope`),
+                            `target_day` = VALUES(`target_day`),
+                            `components` = VALUES(`components`),
+                            `reset_at` = VALUES(`reset_at`)
+                    ");
+                    foreach ($chunk as $sid) {
+                        $stmtMeta->execute([
+                            ':nisn'  => $sid,
+                            ':scope' => $scope,
+                            ':tday'  => $targetDay,
+                            ':comp'  => json_encode($comp),
+                            ':now'   => $nowStr
+                        ]);
+                    }
+                }
+
+                // Catat flag grup ke app_system_meta
+                $metaKey = ($groupCategory === 'field_trip') ? 'field_trip_reset' : 'non_field_trip_reset';
                 $gVal = json_encode([
-                    'reset_at'   => $nowStr,
-                    'scope'      => $scope,
-                    'target_day' => $targetDay,
-                    'components' => $comp
+                    'reset_at'       => $nowStr,
+                    'group_category' => $groupCategory,
+                    'scope'          => $scope,
+                    'target_day'     => $targetDay,
+                    'components'     => $comp
                 ]);
                 $stmtG = $pdo->prepare("
                     INSERT INTO `app_system_meta` (`meta_key`, `meta_value`, `updated_at`)
-                    VALUES ('global_reset', :val, :now)
+                    VALUES (:mkey, :val, :now)
                     ON DUPLICATE KEY UPDATE 
                         `meta_value` = VALUES(`meta_value`),
                         `updated_at` = VALUES(`updated_at`)
                 ");
-                $stmtG->execute([':val' => $gVal, ':now' => $nowStr]);
+                $stmtG->execute([':mkey' => $metaKey, ':val' => $gVal, ':now' => $nowStr]);
 
-                $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `role` = 'siswa' OR `role` IS NULL");
-            } catch (Exception $eMeta) {}
+                $groupLabel = ($groupCategory === 'field_trip') ? 'Siswa Field Trip' : 'Siswa Non-Field Trip';
+                $scopeMsg = $targetDay === 0 ? "khusus Day Uji Coba (Day 0)" : ($targetDay > 0 ? "Day {$targetDay}" : "seluruh hari");
+                jsonResponse(true, "Seluruh data {$groupLabel} ({$scopeMsg}) berhasil di-reset sampai bersih total!", [
+                    'group_category' => $groupCategory,
+                    'scope'          => $scope,
+                    'target_day'     => $targetDay,
+                    'reset_at'       => $nowStr,
+                    'target_count'   => count($targetIds)
+                ]);
+            } else {
+                // RESET TOTAL SELURUH SISWA (GLOBAL)
+                // 1. student_progress_eval
+                if (!empty($taskTypes)) {
+                    $typeSql = implode(',', $taskTypes);
+                    if ($targetDay >= 0) {
+                        $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `day_number` = :day AND `task_type` IN ($typeSql)");
+                        $stmt->execute([':day' => $targetDay]);
+                    } else {
+                        $pdo->exec("DELETE FROM `student_progress_eval` WHERE `task_type` IN ($typeSql)");
+                    }
+                }
 
-            $scopeMsg = $targetDay === 0 ? "khusus Day Uji Coba (Day 0)" : ($targetDay > 0 ? "Day {$targetDay}" : "seluruh hari");
-            jsonResponse(true, "Seluruh data pengerjaan siswa ({$scopeMsg}) berhasil dibersihkan sesuai pilihan komponen!", [
-                'scope'      => $scope,
-                'target_day' => $targetDay,
-                'reset_at'   => $nowStr
-            ]);
+                // 2. lkpd_submissions
+                if ($resetLkpd) {
+                    try {
+                        if ($targetDay === 0) {
+                            $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `title` LIKE '%Gladi%'");
+                        } elseif ($targetDay > 0) {
+                            $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `title` LIKE :dtit");
+                            $stmtLkpd->execute([':dtit' => "%Day {$targetDay}%"]);
+                        } else {
+                            $pdo->exec("DELETE FROM `lkpd_submissions`");
+                        }
+                    } catch (Exception $e) {}
+                }
+
+                // 3. Foto profil
+                if ($resetPhoto) {
+                    try {
+                        $pdo->exec("UPDATE `users` SET `photo_url` = NULL WHERE `role` = 'siswa' OR `role` IS NULL");
+                        $fotoDir = BASE_DIR . DIRECTORY_SEPARATOR . 'uploads' . DIRECTORY_SEPARATOR . 'foto';
+                        if (is_dir($fotoDir)) {
+                            $files = glob($fotoDir . DIRECTORY_SEPARATOR . 'foto_*.*');
+                            if ($files) {
+                                foreach ($files as $f) {
+                                    if (is_file($f)) @unlink($f);
+                                }
+                            }
+                        }
+                    } catch (Exception $e) {}
+                }
+
+                // 4. Dokumentasi media
+                if ($resetDok) {
+                    try {
+                        $whereDocs = "";
+                        if ($targetDay > 0) {
+                            $whereDocs = " WHERE `title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%'";
+                        }
+                        $stmtAllDocs = $pdo->query("SELECT `file_url` FROM `dokumentasi_media`" . $whereDocs);
+                        if ($stmtAllDocs) {
+                            while ($d = $stmtAllDocs->fetch()) {
+                                if (!empty($d['file_url']) && strpos($d['file_url'], 'data:image') === false) {
+                                    $docRel = ltrim(str_replace(['../', '..\\'], '', $d['file_url']), '/\\');
+                                    $docPath = BASE_DIR . DIRECTORY_SEPARATOR . $docRel;
+                                    if (file_exists($docPath) && is_file($docPath)) @unlink($docPath);
+                                }
+                            }
+                        }
+                        if ($targetDay > 0) {
+                            $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%'");
+                        } else {
+                            $pdo->exec("DELETE FROM `dokumentasi_media`");
+                        }
+                    } catch (Exception $e) {}
+                }
+
+                // 5. Catat timestamp reset global agar seluruh perangkat siswa mendeteksi dan membersihkan cache lokal
+                try {
+                    $gVal = json_encode([
+                        'reset_at'   => $nowStr,
+                        'scope'      => $scope,
+                        'target_day' => $targetDay,
+                        'components' => $comp
+                    ]);
+                    $stmtG = $pdo->prepare("
+                        INSERT INTO `app_system_meta` (`meta_key`, `meta_value`, `updated_at`)
+                        VALUES ('global_reset', :val, :now)
+                        ON DUPLICATE KEY UPDATE 
+                            `meta_value` = VALUES(`meta_value`),
+                            `updated_at` = VALUES(`updated_at`)
+                    ");
+                    $stmtG->execute([':val' => $gVal, ':now' => $nowStr]);
+
+                    $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `role` = 'siswa' OR `role` IS NULL");
+                } catch (Exception $eMeta) {}
+
+                $scopeMsg = $targetDay === 0 ? "khusus Day Uji Coba (Day 0)" : ($targetDay > 0 ? "Day {$targetDay}" : "seluruh hari");
+                jsonResponse(true, "Seluruh data pengerjaan siswa ({$scopeMsg}) berhasil dibersihkan sesuai pilihan komponen!", [
+                    'scope'      => $scope,
+                    'target_day' => $targetDay,
+                    'reset_at'   => $nowStr
+                ]);
+            }
         }
 
         jsonResponse(false, 'Aksi tidak dikenali', null, 400);

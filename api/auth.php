@@ -147,6 +147,39 @@ if ($action === 'login') {
         } catch (Exception $eZ) {}
     }
 
+    // Hitung reset_at termutakhir (spesifik siswa atau grup/global reset)
+    $effectiveResetAt = $user['reset_at'] ?? null;
+    try {
+        $cleanId = preg_replace('/[^A-Za-z0-9]/', '', (string)$user['identifier']);
+        $unpId = ltrim($cleanId, '0');
+        $padId = (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) ? str_pad($cleanId, 10, '0', STR_PAD_LEFT) : $cleanId;
+        $uIds = array_values(array_unique(array_filter([$user['identifier'], $cleanId, $unpId, $padId, $user['nis'] ?? null])));
+        $inU = "'" . implode("','", array_map('addslashes', $uIds)) . "'";
+
+        // 1. Cek student_reset_meta
+        $stmtMeta = $pdo->query("SELECT `reset_at` FROM `student_reset_meta` WHERE `nisn` IN ($inU) ORDER BY `reset_at` DESC LIMIT 1");
+        $metaRow = $stmtMeta ? $stmtMeta->fetch() : null;
+        if ($metaRow && !empty($metaRow['reset_at'])) {
+            if (!$effectiveResetAt || strtotime($metaRow['reset_at']) > strtotime($effectiveResetAt)) {
+                $effectiveResetAt = $metaRow['reset_at'];
+            }
+        }
+
+        // 2. Cek app_system_meta (field_trip_reset, non_field_trip_reset, global_reset)
+        $isFT = (stripos($studentZone, 'LUAR') !== false || stripos($studentZone, 'FIELD') !== false);
+        $metaKeys = ["'global_reset'"];
+        if ($isFT) $metaKeys[] = "'field_trip_reset'";
+        else $metaKeys[] = "'non_field_trip_reset'";
+        $inM = implode(',', $metaKeys);
+        $stmtSys = $pdo->query("SELECT `updated_at` FROM `app_system_meta` WHERE `meta_key` IN ($inM) ORDER BY `updated_at` DESC LIMIT 1");
+        $sysRow = $stmtSys ? $stmtSys->fetch() : null;
+        if ($sysRow && !empty($sysRow['updated_at'])) {
+            if (!$effectiveResetAt || strtotime($sysRow['updated_at']) > strtotime($effectiveResetAt)) {
+                $effectiveResetAt = $sysRow['updated_at'];
+            }
+        }
+    } catch (Exception $eR) {}
+
     // Siapkan data user publik yang aman (tanpa password_hash)
     $userData = [
         'id'               => (int)$user['id'],
@@ -175,7 +208,7 @@ if ($action === 'login') {
         'groupId'          => $groupInfo ? (int)$groupInfo['id'] : null,
         'groupRole'        => $groupInfo ? $groupInfo['role_in_group'] : 'Anggota',
         'routeStatus'      => $groupInfo ? $groupInfo['route_status'] : null,
-        'reset_at'         => $user['reset_at'] ?? null
+        'reset_at'         => $effectiveResetAt
     ];
 
     // SINGLE DEVICE LOCK KHUSUS SISWA

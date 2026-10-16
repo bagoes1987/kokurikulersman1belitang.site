@@ -536,10 +536,19 @@
         : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
       // Ambil simpanan sebelumnya jika ada
-      let saved = null;
+      const cleanNisn = String(studentNisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
+
       try {
-        const stored = localStorage.getItem('fincestem_lkpd_ft_day1_' + studentNisn);
-        if (stored) saved = JSON.parse(stored);
+        for (const id of idVars) {
+          const stored = localStorage.getItem('fincestem_lkpd_ft_day1_' + id);
+          if (stored) {
+            saved = JSON.parse(stored);
+            break;
+          }
+        }
       } catch (e) {}
 
       // Jika pengerjaan Day 1 LKPD belum ada di server (misalnya baru di-reset oleh admin),
@@ -547,7 +556,7 @@
       if (window.currentStudentProgress && window.currentStudentProgress.task_map && !window.currentStudentProgress.task_map['1_lkpd']) {
         saved = null;
         try {
-          localStorage.removeItem('fincestem_lkpd_ft_day1_' + studentNisn);
+          idVars.forEach(id => localStorage.removeItem('fincestem_lkpd_ft_day1_' + id));
         } catch (e) {}
       }
 
@@ -1225,11 +1234,20 @@
         ? FincestemCore.assignments.getClassFacilitator(studentClass)
         : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
-      // Ambil simpanan sebelumnya jika ada
+      const cleanNisn = String(studentNisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
+
       let saved = null;
       try {
-        const stored = localStorage.getItem('fincestem_lkpd_ft_day2_' + studentNisn);
-        if (stored) saved = JSON.parse(stored);
+        for (const id of idVars) {
+          const stored = localStorage.getItem('fincestem_lkpd_ft_day2_' + id);
+          if (stored) {
+            saved = JSON.parse(stored);
+            break;
+          }
+        }
       } catch (e) {}
 
       // Jika pengerjaan Day 2 LKPD belum ada di server (misalnya baru di-reset oleh admin),
@@ -1237,7 +1255,7 @@
       if (window.currentStudentProgress && window.currentStudentProgress.task_map && !window.currentStudentProgress.task_map['2_lkpd']) {
         saved = null;
         try {
-          localStorage.removeItem('fincestem_lkpd_ft_day2_' + studentNisn);
+          idVars.forEach(id => localStorage.removeItem('fincestem_lkpd_ft_day2_' + id));
         } catch (e) {}
       }
 
@@ -1702,11 +1720,21 @@
         ? FincestemCore.assignments.getClassFacilitator(studentClass)
         : (activeUser.facilitator_name || 'Tim Guru Pendamping Field Trip');
 
+      const cleanNisn = String(studentNisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
+
       // Ambil data yang tersimpan sebelumnya
       let saved = null;
       try {
-        const stored = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + studentNisn);
-        if (stored) saved = JSON.parse(stored);
+        for (const id of idVars) {
+          const stored = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id);
+          if (stored) {
+            saved = JSON.parse(stored);
+            break;
+          }
+        }
       } catch (e) {}
 
       // Jika pengerjaan Day X LKPD belum ada di server (misalnya baru di-reset oleh admin),
@@ -1714,7 +1742,7 @@
       if (window.currentStudentProgress && window.currentStudentProgress.task_map && !window.currentStudentProgress.task_map[`${dayNum}_lkpd`]) {
         saved = null;
         try {
-          localStorage.removeItem(`fincestem_lkpd_ft_day${dayNum}_` + studentNisn);
+          idVars.forEach(id => localStorage.removeItem(`fincestem_lkpd_ft_day${dayNum}_` + id));
         } catch (e) {}
       }
 

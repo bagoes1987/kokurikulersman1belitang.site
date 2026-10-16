@@ -1007,13 +1007,20 @@
     function renderProfilePhoto(nisn, customUrl) {
       const img = document.getElementById('userPhotoImg');
       const fallback = document.getElementById('userPhotoFallback');
-      const savedPhoto = customUrl || (FincestemCore.profile && FincestemCore.profile.getPhoto(nisn));
+      
+      let savedPhoto = null;
+      if (customUrl !== undefined && customUrl !== null) {
+        savedPhoto = customUrl ? (FincestemCore.profile ? FincestemCore.profile.normalizePhotoUrl(customUrl) : customUrl) : null;
+      } else {
+        savedPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(nisn));
+      }
 
       if (savedPhoto) {
         img.src = savedPhoto;
         img.classList.remove('hidden');
         fallback.classList.add('hidden');
       } else {
+        img.src = '';
         img.classList.add('hidden');
         fallback.classList.remove('hidden');
       }
@@ -1068,6 +1075,15 @@
 
       FincestemCore.progress.getStudentProgress(nisn, function(prog) {
         studentProgress = prog;
+
+        // Jika server ter-reset atau user tidak punya foto, pastikan foto profil sinkron (default person)
+        if (prog && prog.reset_info && prog.reset_info.reset_at) {
+          const u = FincestemCore.auth.getUser();
+          if (u && !u.photo_url) {
+            renderProfilePhoto(nisn, '');
+          }
+        }
+
         renderStudentProgressView(prog);
         if (daysSchedule.length > 0) {
           renderDaysSchedule(daysSchedule);
@@ -1652,8 +1668,12 @@
       taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
       const idList = getStudentStorageIdentifiers();
 
+      // Jika data server sudah diterima dan menyatakan 0 tugas (telah di-reset oleh admin),
+      // data server adalah sumber kebenaran (Source of Truth), jangan ambil sisa draft lokal!
+      const isServerEmpty = (studentProgress && Array.isArray(studentProgress.records) && studentProgress.records.length === 0 && Object.keys(taskMap).length === 0);
+
       let hasMateri = !!taskMap[dayNum + '_materi'];
-      if (!hasMateri) {
+      if (!hasMateri && !isServerEmpty) {
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id) ||
@@ -1670,7 +1690,7 @@
       }
 
       let hasLkpd = !!taskMap[dayNum + '_lkpd'];
-      if (!hasLkpd) {
+      if (!hasLkpd && !isServerEmpty) {
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
@@ -1687,7 +1707,7 @@
       }
 
       let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
-      if (!hasAsesmen) {
+      if (!hasAsesmen && !isServerEmpty) {
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
@@ -1711,7 +1731,7 @@
       }
 
       let hasDok = !!taskMap[dayNum + '_dokumentasi'];
-      if (!hasDok) {
+      if (!hasDok && !isServerEmpty) {
         for (const id of idList) {
           try {
             if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true' ||
@@ -1739,7 +1759,7 @@
       }
 
       let hasRefleksi = !!taskMap[dayNum + '_refleksi'];
-      if (!hasRefleksi) {
+      if (!hasRefleksi && !isServerEmpty) {
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_refleksi_ft_day${dayNum}_` + id) ||

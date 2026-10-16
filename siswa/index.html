@@ -295,12 +295,40 @@
             // Berhasil login: Simpan data profil & zona termutakhir dari server jika tersedia
             if (apiRes && apiRes.data && apiRes.data.user) {
               const serverUser = Object.assign({}, res.user, apiRes.data.user);
-              if (serverUser.zone) {
-                const sNisn = String(serverUser.nisn || serverUser.identifier || '').trim();
-                if (sNisn) {
-                  try { localStorage.setItem('fincestem_student_zone_' + sNisn, serverUser.zone); } catch (e) {}
-                }
+              const sNisn = String(serverUser.nisn || serverUser.identifier || '').trim();
+              const cleanNisn = sNisn.replace(/\D/g, '');
+              const unpadded = cleanNisn.replace(/^0+/, '');
+              const padded = cleanNisn.padStart(10, '0');
+              const sNis = String(serverUser.nis || '').trim();
+              const idVars = Array.from(new Set([cleanNisn, unpadded, padded, sNis, sNisn])).filter(Boolean);
+
+              if (serverUser.zone && sNisn) {
+                try { localStorage.setItem('fincestem_student_zone_' + sNisn, serverUser.zone); } catch (e) {}
               }
+
+              // Deteksi Reset dari Server:
+              const clientReset = localStorage.getItem('fincestem_client_reset_' + cleanNisn);
+              const serverResetAt = serverUser.reset_at;
+              const isResetNewer = serverResetAt && (!clientReset || new Date(serverResetAt).getTime() > new Date(clientReset).getTime());
+
+              if (isResetNewer) {
+                // Eksekusi pembersihan total storage siswa di perangkat ini
+                FincestemCore.progress.purgeStudentLocalStorage(cleanNisn, { scope: 'all_days', target_day: -1 });
+                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
+                serverUser.photo_url = '';
+              }
+
+              // JIKA FOTO PROFIL KOSONG DARI SERVER (Karena di-reset admin / belum pernah upload):
+              // Pastikan seluruh kunci cache foto lama di HP terhapus bersih!
+              if (!serverUser.photo_url) {
+                idVars.forEach(id => {
+                  try {
+                    localStorage.removeItem('fincestem_photo_' + id);
+                  } catch (e) {}
+                });
+                serverUser.photo_url = '';
+              }
+
               FincestemCore.auth.setUser(serverUser, 'siswa');
             }
             FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');

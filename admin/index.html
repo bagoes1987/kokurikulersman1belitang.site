@@ -4057,35 +4057,35 @@
           if (comp.dokumentasi) renderAdminGallery();
         });
       } else {
-        // Reset masal khusus siswa dalam kategori aktif
+        // Reset masal khusus siswa dalam kategori aktif (Field Trip / Non-Field Trip)
         const studentsInGroup = getFilteredResetStudents();
         const nisnList = studentsInGroup.map(s => String(s.nisn).trim());
-        
-        // Eksekusi per-siswa untuk grup aktif agar tidak mengenai grup lainnya
-        let completed = 0;
         const total = nisnList.length;
         if (total === 0) {
           FincestemCore.ui.toast('Tidak ada siswa dalam kategori ini.', 'warning');
           return;
         }
 
-        FincestemCore.ui.toast(`Memproses reset masal untuk ${total} siswa...`, 'info');
-        
-        let idx = 0;
-        function processNext() {
-          if (idx >= total) {
-            FincestemCore.ui.toast(`Reset masal selesai! Sebanyak ${total} data siswa ${groupLabel} berhasil dibersihkan.`, 'success');
+        FincestemCore.ui.toast(`Sedang memproses reset masal untuk ${total} siswa...`, 'info');
+
+        FincestemCore.progress.resetGroupStudents({
+          group_category: currentResetGroupCategory,
+          nisn_list: nisnList,
+          scope: scope,
+          target_day: targetDay,
+          components: comp
+        }, function(res) {
+          if (res && res.success) {
+            FincestemCore.ui.toast(res.message || `Reset masal selesai! Sebanyak ${total} data siswa ${groupLabel} berhasil dibersihkan total.`, 'success');
+            if (comp.foto_profil) {
+              studentsInGroup.forEach(s => { s.photo_url = ''; });
+            }
             if (resetSelectedStudentNisn) handleResetStudentSelected();
             if (comp.dokumentasi) renderAdminGallery();
-            return;
+          } else {
+            FincestemCore.ui.toast((res && res.message) || 'Terjadi kendala saat memproses reset data.', 'error');
           }
-          const currNisn = nisnList[idx++];
-          FincestemCore.progress.resetStudent(currNisn, resetOptions, () => {
-            completed++;
-            processNext();
-          });
-        }
-        processNext();
+        });
       }
     }
 
