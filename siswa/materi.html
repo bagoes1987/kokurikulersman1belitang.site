@@ -563,6 +563,27 @@
       checkInitialMateriConclusion();
     }
 
+    // Helper untuk mengekstrak teks kesimpulan bersih jika tersimpan dalam format objek atau string JSON
+    function sanitizeConclusionText(val) {
+      if (!val) return '';
+      if (typeof val === 'object') {
+        return sanitizeConclusionText(val.conclusion || val.text || '');
+      }
+      if (typeof val === 'string') {
+        const trimmed = val.trim();
+        if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
+          try {
+            const parsed = JSON.parse(trimmed);
+            if (parsed && typeof parsed === 'object') {
+              return sanitizeConclusionText(parsed.conclusion || parsed.text || '');
+            }
+          } catch (e) {}
+        }
+        return val;
+      }
+      return String(val);
+    }
+
     function checkInitialMateriConclusion() {
       const user = FincestemCore.auth.getUser() || {};
       const nisn = user.nisn || user.identifier || '';
@@ -572,8 +593,11 @@
         if (stored) saved = JSON.parse(stored);
       } catch (e) {}
 
-      if (saved && saved.conclusion) {
-        applyMateriConclusionState(saved.conclusion, saved.savedAt);
+      if (saved) {
+        const cleanSaved = sanitizeConclusionText(saved.conclusion || saved);
+        if (cleanSaved) {
+          applyMateriConclusionState(cleanSaved, saved.savedAt);
+        }
       }
 
       // Selalu verifikasi status server: jika server sudah di-reset (tidak ada '1_materi'), bersihkan local state
@@ -582,7 +606,7 @@
           if (prog && prog.task_map) {
             if (prog.task_map['1_materi']) {
               const task = prog.task_map['1_materi'];
-              const content = typeof task.content === 'object' ? (task.content.conclusion || '') : (task.content || '');
+              const content = sanitizeConclusionText(task.content);
               if (content) {
                 applyMateriConclusionState(content, task.submitted_at || 'Tersimpan di server');
               }
@@ -625,6 +649,7 @@
     }
 
     function applyMateriConclusionState(text, savedAt) {
+      text = sanitizeConclusionText(text);
       const txtArea = document.getElementById('ftMateriConclusion');
       const badge = document.getElementById('ftMateriStatusBadge');
       const savedTimeEl = document.getElementById('ftMateriSavedTime');
@@ -1020,8 +1045,11 @@
         if (stored) saved = JSON.parse(stored);
       } catch (e) {}
 
-      if (saved && saved.conclusion) {
-        applyMateriConclusionStateDay2(saved.conclusion, saved.savedAt);
+      if (saved) {
+        const cleanSaved = sanitizeConclusionText(saved.conclusion || saved);
+        if (cleanSaved) {
+          applyMateriConclusionStateDay2(cleanSaved, saved.savedAt);
+        }
       }
 
       if (FincestemCore.progress) {
@@ -1029,7 +1057,7 @@
           if (prog && prog.task_map) {
             if (prog.task_map['2_materi']) {
               const task = prog.task_map['2_materi'];
-              const content = typeof task.content === 'object' ? (task.content.conclusion || '') : (task.content || '');
+              const content = sanitizeConclusionText(task.content);
               if (content) {
                 applyMateriConclusionStateDay2(content, task.submitted_at || 'Tersimpan di server');
               }
@@ -1071,6 +1099,7 @@
     }
 
     function applyMateriConclusionStateDay2(text, savedAt) {
+      text = sanitizeConclusionText(text);
       const txtArea = document.getElementById('ftMateriConclusionDay2');
       const badge = document.getElementById('ftMateriStatusBadgeDay2');
       const savedTimeEl = document.getElementById('ftMateriSavedTimeDay2');
@@ -1359,8 +1388,11 @@
         if (stored) saved = JSON.parse(stored);
       } catch (e) {}
 
-      if (saved && saved.conclusion) {
-        applyMateriConclusionStateGeneric(dayNum, saved.conclusion, saved.savedAt);
+      if (saved) {
+        const cleanSaved = sanitizeConclusionText(saved.conclusion || saved);
+        if (cleanSaved) {
+          applyMateriConclusionStateGeneric(dayNum, cleanSaved, saved.savedAt);
+        }
       }
 
       if (FincestemCore.progress) {
@@ -1369,7 +1401,7 @@
             const taskKey = dayNum + '_materi';
             if (prog.task_map[taskKey]) {
               const task = prog.task_map[taskKey];
-              const content = typeof task.content === 'object' ? (task.content.conclusion || '') : (task.content || '');
+              const content = sanitizeConclusionText(task.content);
               if (content) {
                 applyMateriConclusionStateGeneric(dayNum, content, task.submitted_at || 'Tersimpan di server');
               }
@@ -1453,6 +1485,9 @@
     }
 
     function applyMateriConclusionStateGeneric(dayNum, text, savedAt) {
+      text = sanitizeConclusionText(text);
+      const txtArea = document.getElementById('ftMateriConclusionGeneric');
+      if (txtArea) txtArea.value = text;
       const badge = document.getElementById('ftMateriStatusBadgeGeneric');
       const savedTimeEl = document.getElementById('ftMateriSavedTimeGeneric');
       const lockIcon = document.getElementById('ftLkpdLockIconGeneric');
