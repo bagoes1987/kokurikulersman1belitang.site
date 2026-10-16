@@ -190,8 +190,8 @@
     </div>
   </main>
 
-  <script src="../js/siswa_data.js?v=20261015_day2_lock_v5"></script>
-  <script src="../js/core.js?v=20261015_day2_lock_v5"></script>
+  <script src="../js/siswa_data.js?v=20261016_refresh_v7"></script>
+  <script src="../js/core.js?v=20261016_refresh_v7"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       if (FincestemCore.auth.isLoggedIn() && FincestemCore.auth.getRole() === 'siswa') {
@@ -332,19 +332,19 @@
               FincestemCore.auth.setUser(serverUser, 'siswa');
             }
             FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
-            window.location.replace('dashboard.html');
+            window.location.replace('dashboard.html?_v=' + Date.now());
           }
         })
         .catch(() => {
           if (fetchTimeout) clearTimeout(fetchTimeout);
           // Jika server lambat atau offline, tetap alihkan ke dashboard
           FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
-          window.location.replace('dashboard.html');
+          window.location.replace('dashboard.html?_v=' + Date.now());
         });
       } else {
         // Mode offline/lokal file://
         FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
-        window.location.href = 'dashboard.html';
+        window.location.href = 'dashboard.html?_v=' + Date.now();
       }
     }
   </script>

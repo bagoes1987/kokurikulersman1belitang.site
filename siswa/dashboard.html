@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Dashboard Siswa - FINCESTEM 2026 - SMAN 1 Belitang</title>
   <link rel="icon" type="image/png" href="../LOGO FICESTEM2026.png">
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -790,8 +793,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261015_day2_lock_v5"></script>
-  <script src="../js/core.js?v=20261015_day2_lock_v5"></script>
+  <script src="../js/siswa_data.js?v=20261016_refresh_v7"></script>
+  <script src="../js/core.js?v=20261016_refresh_v7"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -1591,9 +1594,31 @@
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const cat = isFieldTrip ? 'field_trip' : 'non_field_trip';
 
+      // 1. Tampilkan seketika dari cache atau konfigurasi default agar HP siswa TIDAK PERNAH KOSONG saat reload/koneksi lambat
+      if (!daysSchedule || daysSchedule.length === 0) {
+        try {
+          const cached = localStorage.getItem('fincestem_schedules_' + cat);
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              daysSchedule = parsed;
+              renderDaysSchedule(parsed);
+            }
+          }
+        } catch (e) {}
+        if (!daysSchedule || daysSchedule.length === 0) {
+          const defs = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
+          daysSchedule = defs;
+          renderDaysSchedule(defs);
+        }
+      }
+
+      // 2. Sinkronkan jadwal resmi terbaru dari server
       FincestemCore.schedule.getSchedule(function(days, serverTime) {
-        daysSchedule = days;
-        renderDaysSchedule(days);
+        if (Array.isArray(days) && days.length > 0) {
+          daysSchedule = days;
+          renderDaysSchedule(days);
+        }
       }, cat);
     }
 
@@ -1645,8 +1670,13 @@
       dayNum = Number(dayNum) || 1;
       taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
       const t = taskMap[dayNum + '_refleksi'];
-      if (t && (t.submitted_at || t.created_at || t.timestamp)) {
-        return t.submitted_at || t.created_at || t.timestamp;
+      if (t && (t.submitted_at || t.created_at || t.updated_at || t.timestamp)) {
+        return t.submitted_at || t.created_at || t.updated_at || t.timestamp;
+      }
+      const records = (studentProgress && studentProgress.records) || [];
+      const rec = records.find(r => Number(r.day_number) === dayNum && r.task_type === 'refleksi');
+      if (rec && (rec.updated_at || rec.created_at)) {
+        return rec.updated_at || rec.created_at;
       }
       const idList = getStudentStorageIdentifiers();
       for (const id of idList) {
@@ -1667,9 +1697,10 @@
     function getFTProgressStatus(taskMap, dayNum) {
       dayNum = Number(dayNum) || 1;
       taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
+      const records = (studentProgress && studentProgress.records) || [];
       const idList = getStudentStorageIdentifiers();
 
-      let hasMateri = !!taskMap[dayNum + '_materi'];
+      let hasMateri = !!taskMap[dayNum + '_materi'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'materi');
       if (!hasMateri) {
         for (const id of idList) {
           try {
@@ -1686,7 +1717,7 @@
         }
       }
 
-      let hasLkpd = !!taskMap[dayNum + '_lkpd'];
+      let hasLkpd = !!taskMap[dayNum + '_lkpd'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'lkpd');
       if (!hasLkpd) {
         for (const id of idList) {
           try {
@@ -1703,7 +1734,7 @@
         }
       }
 
-      let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
+      let hasAsesmen = !!taskMap[dayNum + '_asesmen'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'asesmen');
       if (!hasAsesmen) {
         for (const id of idList) {
           try {
@@ -1727,7 +1758,7 @@
         }
       }
 
-      let hasDok = !!taskMap[dayNum + '_dokumentasi'];
+      let hasDok = !!taskMap[dayNum + '_dokumentasi'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'dokumentasi');
       if (!hasDok) {
         for (const id of idList) {
           try {
@@ -1755,7 +1786,7 @@
         }
       }
 
-      let hasRefleksi = !!taskMap[dayNum + '_refleksi'];
+      let hasRefleksi = !!taskMap[dayNum + '_refleksi'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'refleksi');
       if (!hasRefleksi) {
         for (const id of idList) {
           try {
@@ -2140,6 +2171,22 @@
 
     function renderDaysSchedule(days) {
       const container = document.getElementById('scheduleDaysContainer');
+      if (!container) return;
+
+      const u = FincestemCore.auth.getUser() || {};
+      const stu = currentStudent || u;
+      const studentNisn = stu.nisn || stu.identifier || '';
+      const studentClass = stu.class || stu.class_name || '';
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(studentNisn, studentClass, stu.zone)
+        : (stu.zone || 'FINCESTEM OKU TIMUR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
+      if (!days || !Array.isArray(days) || days.length === 0) {
+        days = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
+      }
+
       container.innerHTML = '';
 
       // UX Unggulan: Jika Day 0 aktif dan Day 1 belum dimulai (UPCOMING), buka Day 0 secara default agar siswa langsung mencoba gladi bersih
@@ -2153,9 +2200,10 @@
       const records = (studentProgress && studentProgress.records) || [];
 
       days.forEach(d => {
-        const dNum = Number(d.day_number);
-        const isTrial = (dNum === 0);
-        const isExpanded = (expandedDayNumber === dNum);
+        try {
+          const dNum = Number(d.day_number);
+          const isTrial = (dNum === 0);
+          const isExpanded = (expandedDayNumber === dNum);
 
         // Deteksi Siswa Field Trip vs Non-Field Trip
         const u = FincestemCore.auth.getUser() || {};
@@ -2774,7 +2822,33 @@
         `;
 
         container.appendChild(card);
+        } catch (cardError) {
+          console.error('[FINCESTEM] Gagal merender kartu Day ' + (d && d.day_number), cardError);
+        }
       });
+
+      // GARANSI MUTLAK: Jika karena kendala parsing/data container masih kosong, isi dengan fallback default
+      const hasCards = (container.children && container.children.length > 0) || (container.childElementCount > 0) || (container.innerHTML && container.innerHTML.includes('dayCard_'));
+      if (!hasCards) {
+        console.warn('[FINCESTEM] scheduleDaysContainer kosong, merender kartu jadwal darurat');
+        const fallbackDays = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
+        fallbackDays.forEach(fd => {
+          const fCard = document.createElement('div');
+          fCard.id = 'dayCard_' + fd.day_number;
+          fCard.className = 'p-4 sm:p-5 rounded-3xl bg-white border border-slate-200/80 flex items-center justify-between gap-3 shadow-xs';
+          fCard.innerHTML = `
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-teal-600 text-white font-black flex items-center justify-center">${fd.day_number}</span>
+              <div>
+                <h4 class="font-extrabold text-slate-800 text-sm sm:text-base">${fd.title}</h4>
+                <p class="text-xs text-slate-500">${fd.date_formatted || fd.date} • ${fd.start_time} - ${fd.end_time} WIB</p>
+              </div>
+            </div>
+            <button onclick="window.location.reload()" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Refresh</button>
+          `;
+          container.appendChild(fCard);
+        });
+      }
 
       checkUrlAction();
     }
