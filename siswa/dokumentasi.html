@@ -1104,12 +1104,18 @@
       // Tampilkan Nama Desa, Kecamatan, Kabupaten, Provinsi secara rapi dan profesional
       let dispDesa = '';
       if (cleanDesa) {
-        dispDesa = (cleanDesa.toLowerCase() === 'gumawang' ? 'Kel. Gumawang' : `Desa ${cleanDesa}`);
+        if (!inOKUT) {
+          dispDesa = cleanDesa;
+        } else if (cleanDesa.toLowerCase() === 'gumawang') {
+          dispDesa = 'Kel. Gumawang';
+        } else {
+          dispDesa = `Desa ${cleanDesa}`;
+        }
       } else {
         dispDesa = inOKUT ? `Wilayah ${cleanKec || 'Belitang'}` : 'Area Observasi';
       }
 
-      const dispKec = cleanKec ? `Kec. ${cleanKec}` : (detectedOKUTKec ? `Kec. ${detectedOKUTKec}` : 'Kecamatan Terdeteksi');
+      const dispKec = cleanKec ? (cleanKec.startsWith('Kec.') ? cleanKec : `Kec. ${cleanKec}`) : (detectedOKUTKec ? `Kec. ${detectedOKUTKec}` : (inOKUT ? 'Kecamatan Terdeteksi' : ''));
       const dispKab = kab || (inOKUT ? 'Kab. OKU Timur' : '');
       const dispProv = prov || (inOKUT ? 'Sumatera Selatan' : '');
 
