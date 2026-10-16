@@ -208,16 +208,10 @@
               <p id="gpsStatusSub" class="text-[11px] text-slate-500 truncate">Izinkan akses lokasi browser/HP untuk geotagging otomatis</p>
             </div>
           </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <button type="button" onclick="openManualDesaModal()" class="px-2.5 py-1.5 rounded-lg bg-blue-500/15 hover:bg-blue-500/25 text-blue-700 dark:text-blue-300 text-[11px] font-bold flex items-center gap-1 transition-all cursor-pointer border border-blue-500/30" title="Sesuaikan nama desa jika deteksi satelit meleset">
-              <span class="material-symbols-outlined text-sm">edit_location</span>
-              <span>Pilih Desa</span>
-            </button>
-            <button type="button" onclick="requestGPSCoordinates(true)" class="px-2.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container text-[11px] font-bold text-on-surface flex items-center gap-1 transition-all cursor-pointer" title="Perbarui titik sinyal satelit GPS">
-              <span class="material-symbols-outlined text-sm">refresh</span>
-              <span>Ulang</span>
-            </button>
-          </div>
+          <button type="button" onclick="requestGPSCoordinates(true)" class="px-2.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container text-[11px] font-bold text-on-surface shrink-0 flex items-center gap-1 transition-all cursor-pointer" title="Perbarui titik sinyal satelit GPS">
+            <span class="material-symbols-outlined text-sm">refresh</span>
+            <span>Ulang</span>
+          </button>
         </div>
 
         <!-- Panduan Izin Lokasi Bahasa Indonesia -->
@@ -388,48 +382,6 @@
         </button>
       </div>
     </div>
-  <!-- MODAL PILIH NAMA DESA SECARA MANUAL (KOREKSI CEPAT GPS) -->
-  <div id="manualDesaModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-2 sm:p-4 transition-all duration-300 opacity-0 pointer-events-none">
-    <div class="bg-surface-container-lowest rounded-3xl p-5 max-w-md w-full shadow-2xl flex flex-col gap-3 border border-outline-variant/30 max-h-[85vh] animate-in fade-in zoom-in-95 duration-200">
-      <div class="flex items-center justify-between pb-2 border-b border-outline-variant/30">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-xl bg-blue-500/15 text-blue-600 flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-lg">edit_location</span>
-          </div>
-          <div>
-            <h3 class="font-extrabold text-sm text-on-surface">Pilih Nama Desa / Kelurahan</h3>
-            <p class="text-[11px] text-slate-500">Sesuaikan dengan posisi riil rumah / lokasi Anda</p>
-          </div>
-        </div>
-        <button type="button" onclick="closeManualDesaModal()" class="w-7 h-7 rounded-full bg-surface-container hover:bg-surface-container-high flex items-center justify-center text-slate-500 cursor-pointer">
-          <span class="material-symbols-outlined text-base">close</span>
-        </button>
-      </div>
-
-      <!-- Kotak Pencarian Desa -->
-      <div class="relative">
-        <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
-        <input id="inputSearchDesa" type="text" oninput="filterDesaList(this.value)" placeholder="Ketik nama desa (cth: Bedilan, Gumawang)..." class="w-full pl-9 pr-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-xs font-semibold focus:border-primary outline-none">
-      </div>
-
-      <!-- Tab Kecamatan Filter -->
-      <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
-        <button type="button" id="tabKecBelitang" onclick="switchDesaKecFilter('Belitang')" class="px-3 py-1 rounded-lg bg-primary text-white font-bold text-[11px] cursor-pointer whitespace-nowrap">Kec. Belitang</button>
-        <button type="button" id="tabKecBMR" onclick="switchDesaKecFilter('Belitang Madang Raya')" class="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold text-[11px] cursor-pointer whitespace-nowrap">Kec. BMR</button>
-        <button type="button" id="tabKecSemua" onclick="switchDesaKecFilter('ALL')" class="px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold text-[11px] cursor-pointer whitespace-nowrap">Semua</button>
-      </div>
-
-      <!-- Daftar Desa (Scrollable) -->
-      <div class="flex flex-col gap-1 overflow-y-auto max-h-[48vh] pr-1" id="desaSelectionList">
-        <!-- Rendered by JS -->
-      </div>
-
-      <div class="pt-2 border-t border-outline-variant/20 flex justify-between items-center text-[11px] text-slate-400">
-        <span>Klik salah satu nama desa di atas untuk memilih</span>
-        <button type="button" onclick="closeManualDesaModal()" class="px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-bold text-xs cursor-pointer">Tutup</button>
-      </div>
-    </div>
-  </div>
 
   <!-- MODAL SUKSES DOKUMENTASI FIELD TRIP (DAY 1 S.D. 7) -->
   <div id="ftDokSuccessModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
@@ -989,7 +941,7 @@
       try {
         for (let i = localStorage.length - 1; i >= 0; i--) {
           const k = localStorage.key(i);
-          if (k && (k.startsWith('fincestem_geo_') || k.startsWith('fincestem_geo_v2_') || k.startsWith('fincestem_geo_v3_') || k.startsWith('fincestem_geo_v4_') || k.startsWith('fincestem_geo_v5_') || k.startsWith('fincestem_geo_v6_'))) {
+          if (k && k.startsWith('fincestem_geo_') && !k.startsWith('fincestem_geo_v8_')) {
             localStorage.removeItem(k);
           }
         }
@@ -999,7 +951,7 @@
     function fetchAreaAddress(lat, lng, callback) {
       if (!callback) return;
 
-      const cacheKey = 'fincestem_geo_v7_' + Number(lat).toFixed(4) + '_' + Number(lng).toFixed(4);
+      const cacheKey = 'fincestem_geo_v8_' + Number(lat).toFixed(4) + '_' + Number(lng).toFixed(4);
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
         try {
@@ -1382,194 +1334,6 @@
       }
       if (title) title.textContent = `📍 GPS Referensi: -4.13524°, 104.62489°`;
       if (sub) sub.textContent = msg ? `${msg} • Desa Sukosari, Kec. Belitang, Kab. OKU Timur` : 'Desa Sukosari, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan';
-    }
-
-    // Daftar Pilihan Desa untuk Koreksi Manual Siswa / Guru
-    const MANUAL_DESA_OPTIONS = [
-      // Kecamatan Belitang
-      { name: 'Bedilan', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang (BK 8 / Budiharjo)' },
-      { name: 'Gumawang', type: 'Kelurahan', kec: 'Belitang', info: 'Kec. Belitang (Pusat Belitang / Simpang 4)' },
-      { name: 'Sukosari', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang (Lokasi SMAN 1 Belitang / RSUD)' },
-      { name: 'Harjowinangun', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Karang Kemiri', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sidodadi', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sidomulyo', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Pujorahayu', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Serbaguna', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Triyoso', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Gedung Rejo', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Tawang Rejo', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Tanjung Raya', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sukarami', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sukajadi', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sumber Suko', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sumber Suko Jaya', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Mojosari', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Srijaya', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Serikat Jaya', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Banyumas', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Bumi Mulyo', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sidomukti', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sidomakmur', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      { name: 'Sidorahayu', type: 'Desa', kec: 'Belitang', info: 'Kec. Belitang' },
-      // Kecamatan Belitang Madang Raya
-      { name: 'Tugu Harum', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Tugu Mulyo', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Bangsa Negara', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Rantau Jaya', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Tanah Merah', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Tulus Ayu', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Yosowinangun', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Karang Binangun', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Lubuk Harjo', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Pandan Sari', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' },
-      { name: 'Kuto Sari', type: 'Desa', kec: 'Belitang Madang Raya', info: 'Kec. Belitang Madang Raya' }
-    ];
-
-    let currentDesaFilterKec = 'Belitang';
-    let lastLoadedCameraImg = null;
-
-    function openManualDesaModal() {
-      const modal = document.getElementById('manualDesaModal');
-      if (!modal) return;
-      renderDesaSelectionItems('');
-      modal.classList.remove('opacity-0', 'pointer-events-none');
-      const input = document.getElementById('inputSearchDesa');
-      if (input) {
-        input.value = '';
-        setTimeout(() => input.focus(), 150);
-      }
-    }
-
-    function closeManualDesaModal() {
-      const modal = document.getElementById('manualDesaModal');
-      if (modal) modal.classList.add('opacity-0', 'pointer-events-none');
-    }
-
-    function switchDesaKecFilter(kec) {
-      currentDesaFilterKec = kec;
-      const bBel = document.getElementById('tabKecBelitang');
-      const bBmr = document.getElementById('tabKecBMR');
-      const bAll = document.getElementById('tabKecSemua');
-
-      if (bBel) bBel.className = kec === 'Belitang' ? 'px-3 py-1 rounded-lg bg-primary text-white font-bold text-[11px] cursor-pointer whitespace-nowrap' : 'px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold text-[11px] cursor-pointer whitespace-nowrap';
-      if (bBmr) bBmr.className = kec === 'Belitang Madang Raya' ? 'px-3 py-1 rounded-lg bg-primary text-white font-bold text-[11px] cursor-pointer whitespace-nowrap' : 'px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold text-[11px] cursor-pointer whitespace-nowrap';
-      if (bAll) bAll.className = kec === 'ALL' ? 'px-3 py-1 rounded-lg bg-primary text-white font-bold text-[11px] cursor-pointer whitespace-nowrap' : 'px-3 py-1 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold text-[11px] cursor-pointer whitespace-nowrap';
-
-      const input = document.getElementById('inputSearchDesa');
-      renderDesaSelectionItems(input ? input.value : '');
-    }
-
-    function filterDesaList(query) {
-      renderDesaSelectionItems(query);
-    }
-
-    function renderDesaSelectionItems(query) {
-      const container = document.getElementById('desaSelectionList');
-      if (!container) return;
-
-      const q = String(query || '').trim().toLowerCase();
-      const filtered = MANUAL_DESA_OPTIONS.filter(item => {
-        const matchKec = currentDesaFilterKec === 'ALL' || item.kec === currentDesaFilterKec;
-        const matchQ = !q || item.name.toLowerCase().includes(q) || item.kec.toLowerCase().includes(q) || (item.info && item.info.toLowerCase().includes(q));
-        return matchKec && matchQ;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="p-6 text-center text-slate-400 text-xs">
-            <span class="material-symbols-outlined text-2xl text-slate-300 mb-1">location_off</span>
-            <p>Tidak ditemukan nama desa dengan kata kunci tersebut.</p>
-          </div>
-        `;
-        return;
-      }
-
-      const curDesa = currentGPS && currentGPS.address && typeof currentGPS.address === 'object' ? currentGPS.address.desa : '';
-
-      container.innerHTML = filtered.map(item => {
-        const fullDesa = item.type === 'Kelurahan' ? `Kel. ${item.name}` : `Desa ${item.name}`;
-        const isSelected = curDesa && curDesa.toLowerCase().includes(item.name.toLowerCase());
-        return `
-          <button type="button" onclick="selectManualDesa('${item.name}', '${item.kec}', '${item.type}')" class="w-full text-left p-2.5 rounded-xl border ${isSelected ? 'border-primary bg-primary/10 text-primary font-black' : 'border-outline-variant/30 bg-surface-container-lowest hover:bg-surface-container text-on-surface font-medium'} flex items-center justify-between gap-2 transition-all cursor-pointer">
-            <div class="min-w-0">
-              <div class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm ${isSelected ? 'text-primary' : 'text-slate-400'}">pin_drop</span>
-                <span class="text-xs font-bold truncate">${fullDesa}</span>
-                <span class="text-[10px] px-1.5 py-0.5 rounded-full ${item.kec === 'Belitang' ? 'bg-emerald-500/15 text-emerald-700' : 'bg-blue-500/15 text-blue-700'} font-semibold">${item.kec}</span>
-              </div>
-              <p class="text-[10px] text-slate-400 pl-5 truncate">${item.info || ''}</p>
-            </div>
-            ${isSelected ? '<span class="material-symbols-outlined text-base text-primary shrink-0">check_circle</span>' : '<span class="material-symbols-outlined text-base text-slate-300 shrink-0">chevron_right</span>'}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function selectManualDesa(desaName, kecName, type = 'Desa') {
-      if (!currentGPS) {
-        applyFallbackGPS();
-      }
-      const cleanD = desaName.replace(/^(Desa|Kelurahan|Kel\.|Dusun)\s+/i, '').trim();
-      const dispD = (type === 'Kelurahan' || cleanD.toLowerCase() === 'gumawang') ? `Kel. ${cleanD}` : `Desa ${cleanD}`;
-      const dispK = `Kec. ${kecName}`;
-      const kab = 'Kab. OKU Timur';
-      const prov = 'Sumatera Selatan';
-
-      const newAddr = {
-        desa: dispD,
-        kec: dispK,
-        kab: kab,
-        prov: prov,
-        line1: `${dispD}, ${dispK}`,
-        line2: `${kab}, ${prov}`,
-        fullText: `${dispD}, ${dispK}, ${kab}, ${prov}`
-      };
-
-      currentGPS.address = newAddr;
-      currentGPS.addressText = newAddr.fullText;
-      currentGPS.manualDesa = cleanD;
-
-      // Simpan di cache koordinat saat ini
-      const cacheKey = 'fincestem_geo_v7_' + Number(currentGPS.lat).toFixed(4) + '_' + Number(currentGPS.lng).toFixed(4);
-      try {
-        localStorage.setItem(cacheKey, JSON.stringify(newAddr));
-        localStorage.setItem('fincestem_locked_desa', JSON.stringify({ desa: cleanD, kec: kecName, type: type }));
-      } catch(e) {}
-
-      // Perbarui tampilan status GPS di layar
-      const sub = document.getElementById('gpsStatusSub');
-      if (sub) {
-        const statusTag = '🟢 DALAM WILAYAH OKU TIMUR (KOREKSI MANUAL)';
-        sub.innerHTML = `📍 <strong>${newAddr.fullText}</strong> (±${currentGPS.accuracy || 10}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-700">${statusTag}</span>`;
-      }
-
-      // Jika sudah ada foto kamera yang diproses, perbarui stempel geotag di foto seketika!
-      if (lastLoadedCameraImg) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const currentDayNum = urlParams.has('day') ? parseInt(urlParams.get('day')) : 1;
-        const user = FincestemCore.auth.getUser() || {};
-        const studentInfo = {
-          name: user.name || 'Siswa SMAN 1 Belitang',
-          nisn: user.nisn || user.identifier || '-',
-          group: user.group || 'Kelompok Riset',
-          class_name: user.class_name || user.class || 'Fase E',
-          day: currentDayNum
-        };
-
-        renderGeotaggedWatermark(lastLoadedCameraImg, currentGPS, studentInfo, function(watermarkedDataUrl) {
-          selectedPhotoBase64 = watermarkedDataUrl;
-          const previewImg = document.getElementById('uploadPreviewImg');
-          if (previewImg) previewImg.src = watermarkedDataUrl;
-          const previewMeta = document.getElementById('previewPhotoMeta');
-          if (previewMeta) {
-            previewMeta.textContent = `📍 Kamera HP • ${dispD}, ${dispK} • ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB`;
-          }
-        });
-      }
-
-      closeManualDesaModal();
-      FincestemCore.ui.toast(`Lokasi disetel ke: ${dispD}, ${dispK}`, 'success');
     }
 
     function roundRectHelper(ctx, x, y, w, h, r) {
@@ -2013,7 +1777,6 @@
         const img = new Image();
         img.onload = function() {
           if (source === 'camera') {
-            lastLoadedCameraImg = img;
             // FOTO KAMERA HP: bubuhkan stempel Geotag + Radar Peta + Waktu Detik Otentik
             if (!currentGPS) {
               applyFallbackGPS();
