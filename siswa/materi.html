@@ -352,88 +352,132 @@
       });
     });
 
-    // Helper Render Kartu Jadwal Itinerary Field Trip Resmi (Format Sesuai Day 2, Tipografi Bersih & Terbaca Sempurna)
-    // Helper Render Kartu Jadwal Itinerary Field Trip Resmi (PERSIS MODEL ASLI DAY 2 YANG DISUKAI USER)
+    // Helper Render Kartu Jadwal Itinerary Field Trip Resmi (Format Persis Sesuai Day 2, Warna Kondisi Lapangan & Ikon Representatif)
     function renderFieldTripScheduleCard(dayNum) {
       const ftCfg = (window.FincestemCore && FincestemCore.schedule && FincestemCore.schedule.getFieldTripDayConfig) 
         ? FincestemCore.schedule.getFieldTripDayConfig(dayNum) 
         : null;
       if (!ftCfg || !ftCfg.sessions || !ftCfg.sessions.length) return '';
 
-      // Pemetaan highlight persis sesuai gaya warna Day 2
-      const getHighlightClass = (hl) => {
+      // Pemetaan gaya & warna sesuai kondisi nyata di lapangan (Field-Condition Palette)
+      const getFieldStyle = (hl, defaultIcon) => {
         switch (hl) {
-          case 'blue':
+          case 'blue': // Akademi Kepolisian & Perguruan Tinggi (AKPOL, Kampus UGM/UNY)
             return {
               box: 'p-2.5 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-between font-bold text-blue-900 shadow-2xs',
-              icon: 'military_tech',
-              iconColor: 'text-blue-600'
+              icon: defaultIcon || 'military_tech',
+              iconColor: 'text-blue-600',
+              timeColor: 'text-blue-700/90 font-semibold'
             };
-          case 'amber':
+          case 'amber': // Heritage, Budaya, Cagar Budaya, Sunrise & UMKM (Lawang Sewu, Sunrise Bromo, Malioboro, Pabrik Bakpia)
             return {
-              box: 'p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between font-bold text-amber-900 shadow-2xs',
-              icon: 'account_balance',
-              iconColor: 'text-amber-600'
+              box: 'p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between font-bold text-amber-950 shadow-2xs',
+              icon: defaultIcon || 'account_balance',
+              iconColor: 'text-amber-600',
+              timeColor: 'text-amber-800/90 font-semibold'
             };
-          case 'indigo':
+          case 'indigo': // Perjalanan Bus Antarkota & Tol Trans-Jawa / Tol Trans-Sumatera
             return {
               box: 'p-2.5 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-between font-bold text-indigo-900 shadow-2xs',
-              icon: 'directions_bus',
-              iconColor: 'text-indigo-600'
+              icon: defaultIcon || 'directions_bus',
+              iconColor: 'text-indigo-600',
+              timeColor: 'text-indigo-700/90 font-semibold'
             };
-          case 'emerald':
+          case 'emerald': // Agribisnis Perkebunan, Hotel Istirahat & Kepulangan Sekolah (Petik Apel, Hotel, SMAN 1 Belitang)
             return {
-              box: 'p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between font-bold text-emerald-900 shadow-2xs',
-              icon: 'hotel',
-              iconColor: 'text-emerald-600'
+              box: 'p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between font-bold text-emerald-950 shadow-2xs',
+              icon: defaultIcon || 'hotel',
+              iconColor: 'text-emerald-600',
+              timeColor: 'text-emerald-800/90 font-semibold'
             };
-          case 'purple':
+          case 'purple': // Sains Eksperimen & Candi Sejarah Megah (Jatim Park 1, Candi Prambanan)
             return {
-              box: 'p-2.5 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between font-bold text-purple-900 shadow-2xs',
-              icon: 'science',
-              iconColor: 'text-purple-600'
+              box: 'p-2.5 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-between font-bold text-purple-950 shadow-2xs',
+              icon: defaultIcon || 'science',
+              iconColor: 'text-purple-600',
+              timeColor: 'text-purple-800/90 font-semibold'
             };
-          case 'teal':
-          case 'cyan':
+          case 'teal': // Perairan, Penyeberangan Ferry & Wahana Air (Selat Sunda, Drini Park)
             return {
-              box: 'p-2.5 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-between font-bold text-teal-900 shadow-2xs',
-              icon: 'attractions',
-              iconColor: 'text-teal-600'
+              box: 'p-2.5 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-between font-bold text-teal-950 shadow-2xs',
+              icon: defaultIcon || 'directions_boat',
+              iconColor: 'text-teal-600',
+              timeColor: 'text-teal-800/90 font-semibold'
+            };
+          case 'cyan': // Pantai & Pesisir Samudra Selatan (Pantai Drini)
+            return {
+              box: 'p-2.5 rounded-xl bg-cyan-50 border border-cyan-200 flex items-center justify-between font-bold text-cyan-950 shadow-2xs',
+              icon: defaultIcon || 'beach_access',
+              iconColor: 'text-cyan-600',
+              timeColor: 'text-cyan-800/90 font-semibold'
             };
           case 'rose':
-          case 'red':
+          case 'red': // Gunung Berapi Aktif, Kaldera & Kawah Belerang (Kawah Bromo)
             return {
-              box: 'p-2.5 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-between font-bold text-rose-900 shadow-2xs',
-              icon: 'volcano',
-              iconColor: 'text-rose-600'
+              box: 'p-2.5 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-between font-bold text-rose-950 shadow-2xs',
+              icon: defaultIcon || 'volcano',
+              iconColor: 'text-rose-600',
+              timeColor: 'text-rose-800/90 font-semibold'
             };
+          case 'orange': // Momen Makan Bersama (Sarapan, Makan Siang, Makan Malam)
+            return {
+              box: 'p-2.5 rounded-xl bg-orange-50 border border-orange-200 flex items-center justify-between font-bold text-orange-950 shadow-2xs',
+              icon: defaultIcon || 'lunch_dining',
+              iconColor: 'text-orange-600',
+              timeColor: 'text-orange-800/90 font-semibold'
+            };
+          case 'lime': // Padang Rumput Alami & Savana (Savana Bromo)
+            return {
+              box: 'p-2.5 rounded-xl bg-lime-50 border border-lime-200 flex items-center justify-between font-bold text-lime-950 shadow-2xs',
+              icon: defaultIcon || 'grass',
+              iconColor: 'text-lime-700',
+              timeColor: 'text-lime-800/90 font-semibold'
+            };
+          case 'yellow': // Hamparan Lautan Pasir Vulkanik (Pasir Berbisik)
+            return {
+              box: 'p-2.5 rounded-xl bg-yellow-50 border border-yellow-200 flex items-center justify-between font-bold text-yellow-950 shadow-2xs',
+              icon: defaultIcon || 'grain',
+              iconColor: 'text-yellow-600',
+              timeColor: 'text-yellow-800/90 font-semibold'
+            };
+          case 'sky': // Rekayasa Transportasi & Koordinasi Rombongan (Museum Angkut, Persiapan)
+            return {
+              box: 'p-2.5 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-between font-bold text-sky-950 shadow-2xs',
+              icon: defaultIcon || 'commute',
+              iconColor: 'text-sky-600',
+              timeColor: 'text-sky-800/90 font-semibold'
+            };
+          case 'stone': // Armada Jeep Offroad 4x4 Kaldera Bromo
+            return {
+              box: 'p-2.5 rounded-xl bg-stone-100 border border-stone-300 flex items-center justify-between font-bold text-stone-900 shadow-2xs',
+              icon: defaultIcon || 'airport_shuttle',
+              iconColor: 'text-stone-600',
+              timeColor: 'text-stone-700 font-semibold'
+            };
+          case 'slate': // Transit Segar, Mandi & Rehat Rest Area
           default:
-            return null;
+            return {
+              box: 'p-2.5 rounded-xl bg-slate-100/90 border border-slate-200 flex items-center justify-between font-bold text-slate-800 shadow-2xs',
+              icon: defaultIcon || 'schedule',
+              iconColor: 'text-slate-500',
+              timeColor: 'text-slate-600 font-semibold'
+            };
         }
       };
 
       const itemsHtml = ftCfg.sessions.map((sess, idx) => {
-        const hlStyle = sess.highlight && sess.highlight !== 'default' ? getHighlightClass(sess.highlight) : null;
+        const style = getFieldStyle(sess.highlight, sess.icon);
+        const iconName = sess.icon || style.icon;
 
-        if (hlStyle) {
-          const iconName = sess.icon || hlStyle.icon;
-          return `
-            <div class="${hlStyle.box}">
-              <span class="flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm ${hlStyle.iconColor}">${iconName}</span>
-                <span>${idx + 1}. ${sess.title}</span>
-              </span>
-              <span>${sess.time}</span>
-            </div>
-          `;
-        } else {
-          return `
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-              <span class="font-bold text-slate-700">${idx + 1}. ${sess.title}</span>
-              <span class="font-semibold text-slate-500">${sess.time}</span>
-            </div>
-          `;
-        }
+        return `
+          <div class="${style.box}">
+            <span class="flex items-center gap-1.5 min-w-0 pr-2">
+              <span class="material-symbols-outlined text-sm ${style.iconColor} shrink-0">${iconName}</span>
+              <span class="truncate">${idx + 1}. ${sess.title}</span>
+            </span>
+            <span class="${style.timeColor} shrink-0 text-xs">${sess.time}</span>
+          </div>
+        `;
       }).join('');
 
       return `
@@ -917,50 +961,7 @@
           </div>
         </div>
 
-        <!-- JADWAL ITINERARY CARD (8 SESI SESUAI TABEL RESMI) -->
-        <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2 text-indigo-900 font-extrabold text-sm sm:text-base">
-              <span class="material-symbols-outlined text-lg text-indigo-600">event_note</span>
-              <span>Jadwal Kegiatan Resmi Day 2</span>
-            </div>
-            <span class="text-xs font-bold text-slate-500">Selasa, 10 Nov 2026</span>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-              <span class="font-bold text-slate-700">1. Transit di Semarang</span>
-              <span class="font-semibold text-slate-500">04.30 – 05.00</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-              <span class="font-bold text-slate-700">2. Sarapan Pagi</span>
-              <span class="font-semibold text-slate-500">05.00 – 07.00</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-              <span class="font-bold text-slate-700">3. Persiapan Kunjungan</span>
-              <span class="font-semibold text-slate-500">07.00 – 08.00</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-between font-bold text-blue-900 shadow-2xs">
-              <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-blue-600">military_tech</span>4. Kunjungan Ke Akpol</span>
-              <span>09.00 – 12.00</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between">
-              <span class="font-bold text-slate-700">5. Makan Siang</span>
-              <span class="font-semibold text-slate-500">12.00 – 12.30</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-between font-bold text-amber-900 shadow-2xs">
-              <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-amber-600">account_balance</span>6. Kunjungan Lawang Sewu</span>
-              <span>13.00 – 14.30</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-between font-bold text-indigo-900 shadow-2xs">
-              <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-indigo-600">directions_bus</span>7. Perjalanan ke Malang</span>
-              <span>14.30 – 20.30</span>
-            </div>
-            <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-between font-bold text-emerald-900 shadow-2xs">
-              <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-emerald-600">hotel</span>8. Cek in Hotel Malang</span>
-              <span>20.30 – Selesai</span>
-            </div>
-          </div>
-        </div>
+        ${renderFieldTripScheduleCard(2)}
 
         <!-- MATERI 1: AKADEMI KEPOLISIAN (AKPOL) SEMARANG -->
         <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
