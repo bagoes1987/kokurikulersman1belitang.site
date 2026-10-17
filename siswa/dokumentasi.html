@@ -2161,12 +2161,47 @@
       reader.readAsDataURL(file);
     }
 
+    function getPhotoDay(p) {
+      if (!p) return 1;
+      if (p.day !== undefined && p.day !== null && p.day !== '') {
+        const d = parseInt(p.day);
+        if (!isNaN(d) && d >= 0) return d;
+      }
+      if (p.day_number !== undefined && p.day_number !== null && p.day_number !== '') {
+        const d = parseInt(p.day_number);
+        if (!isNaN(d) && d >= 0) return d;
+      }
+      const combined = `${p.file_name || ''} ${p.fileName || ''} ${p.title || ''} ${p.description || ''} ${p.caption || ''} ${p.url || ''}`.toLowerCase();
+      const matchDay = combined.match(/day[_\-\s]*([0-7])/i);
+      if (matchDay) return parseInt(matchDay[1]);
+      if (combined.includes('akpol') || combined.includes('lawang sewu') || combined.includes('semarang')) return 2;
+      if (combined.includes('bromo') || combined.includes('penanjakan') || combined.includes('pasir berbisik')) return 3;
+      if (combined.includes('malang') || combined.includes('apel') || combined.includes('kusuma') || combined.includes('brawijaya')) return 4;
+      if (combined.includes('jogja') || combined.includes('yogyakarta') || combined.includes('malioboro') || combined.includes('ugm')) return 5;
+      if (combined.includes('pantai') || combined.includes('drini') || combined.includes('karst') || combined.includes('gunungkidul')) return 6;
+      if (combined.includes('bakpia') || combined.includes('oleh-oleh') || combined.includes('pulang')) return 7;
+      if (combined.includes('gladi') || combined.includes('simulasi')) return 0;
+      return 1;
+    }
+
     function getDocumentationList() {
       try {
         const stored = localStorage.getItem('fincestem_db_2026_v1');
         if (stored) {
           const db = JSON.parse(stored);
           if (Array.isArray(db.documentation)) {
+            let changed = false;
+            db.documentation.forEach(p => {
+              const properDay = getPhotoDay(p);
+              if (p.day !== properDay || p.day_number !== properDay) {
+                p.day = properDay;
+                p.day_number = properDay;
+                changed = true;
+              }
+            });
+            if (changed) {
+              try { localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db)); } catch(e) {}
+            }
             return db.documentation;
           }
         }
@@ -2184,24 +2219,32 @@
                 let db = {};
                 const stored = localStorage.getItem('fincestem_db_2026_v1');
                 if (stored) db = JSON.parse(stored);
-                const serverDocs = res.data.map(d => ({
-                  id: 'doc-srv-' + d.id,
-                  title: d.title,
-                  description: d.caption,
-                  pillar: d.pillar || 'FINCESTEM',
-                  category: d.pillar || 'FINCESTEM',
-                  url: (d.file_url.startsWith('http') || d.file_url.startsWith('data:')) ? d.file_url : ('../' + d.file_url),
-                  author: d.student_name || d.group_name || d.uploaded_by_nisn || 'Siswa',
-                  nisn: d.uploaded_by_nisn,
-                  source: d.source || (d.gps_location ? 'camera' : 'gallery'),
-                  has_geotag: (d.has_geotag == 1 || (d.gps_location && d.source !== 'gallery')) ? 1 : 0,
-                  gps_location: d.gps_location || '',
-                  date: d.created_at || '-'
-                }));
+                const serverDocs = res.data.map(d => {
+                  const docDay = getPhotoDay(d);
+                  return {
+                    id: 'doc-srv-' + d.id,
+                    day: docDay,
+                    day_number: docDay,
+                    title: d.title,
+                    description: d.caption,
+                    pillar: d.pillar || 'FINCESTEM',
+                    category: d.pillar || 'FINCESTEM',
+                    url: (d.file_url.startsWith('http') || d.file_url.startsWith('data:')) ? d.file_url : ('../' + d.file_url),
+                    author: d.student_name || d.group_name || d.uploaded_by_nisn || 'Siswa',
+                    nisn: d.uploaded_by_nisn,
+                    source: d.source || (d.gps_location ? 'camera' : 'gallery'),
+                    has_geotag: (d.has_geotag == 1 || (d.gps_location && d.source !== 'gallery')) ? 1 : 0,
+                    gps_location: d.gps_location || '',
+                    date: d.created_at || '-'
+                  };
+                });
 
-                // Ketika terhubung online ke server, daftar foto dari server MySQL adalah sumber data resmi.
-                // Jika admin telah mereset/menghapus foto di server, browser siswa langsung menyelaraskan cache.
-                db.documentation = serverDocs;
+                // Gabungkan foto server dengan foto lokal (misal base64 yang baru diunggah dan belum tersinkronisasi)
+                const existing = Array.isArray(db.documentation) ? db.documentation : [];
+                const serverUrls = new Set(serverDocs.map(s => s.url));
+                const localOnly = existing.filter(p => !String(p.id).startsWith('doc-srv-') && !serverUrls.has(p.url));
+
+                db.documentation = [...localOnly, ...serverDocs];
                 localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
               } catch(e) {}
             }
@@ -2376,7 +2419,7 @@
       const countMap = { total: list.length };
       for (let i = 0; i <= 7; i++) countMap[i] = 0;
       list.forEach(p => {
-        const d = (p.day !== undefined && p.day !== null && p.day !== '') ? parseInt(p.day) : (parseInt(p.day_number) || 1);
+        const d = getPhotoDay(p);
         if (countMap[d] !== undefined) countMap[d]++;
         else countMap[d] = 1;
       });
@@ -2440,22 +2483,13 @@
       if (activeDay !== null) {
         if (currentGalleryTab === 'current') {
           // Hanya foto Day yang sedang aktif
-          filtered = list.filter(p => {
-            const d = (p.day !== undefined && p.day !== null && p.day !== '') ? parseInt(p.day) : (parseInt(p.day_number) || 1);
-            return d === activeDay;
-          });
+          filtered = list.filter(p => getPhotoDay(p) === activeDay);
         } else if (currentGalleryDayFilter !== null) {
           // Sedang memilih tab sub-hari di Galeri Utama
-          filtered = list.filter(p => {
-            const d = (p.day !== undefined && p.day !== null && p.day !== '') ? parseInt(p.day) : (parseInt(p.day_number) || 1);
-            return d === currentGalleryDayFilter;
-          });
+          filtered = list.filter(p => getPhotoDay(p) === currentGalleryDayFilter);
         }
       } else if (currentGalleryDayFilter !== null) {
-        filtered = list.filter(p => {
-          const d = (p.day !== undefined && p.day !== null && p.day !== '') ? parseInt(p.day) : (parseInt(p.day_number) || 1);
-          return d === currentGalleryDayFilter;
-        });
+        filtered = list.filter(p => getPhotoDay(p) === currentGalleryDayFilter);
       }
 
       // Update badge jumlah foto
@@ -2502,9 +2536,7 @@
       const studentNisn = currentUser ? (currentUser.nisn || currentUser.identifier || '') : '';
 
       filtered.forEach(photo => {
-        const photoDayNum = (photo.day !== undefined && photo.day !== null && photo.day !== '') 
-          ? photo.day 
-          : (photo.day_number || 1);
+        const photoDayNum = getPhotoDay(photo);
 
         const isGeotag = (photo.has_geotag === 1 || photo.has_geotag === true || (photo.source === 'camera' && (photo.gps_location || photo.gps)));
         const isCanDelete = !window.isDayReadOnlyMode;
@@ -2697,6 +2729,8 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               group_id: user ? (user.groupId || 0) : 0,
+              day: docDayNum,
+              day_number: docDayNum,
               title: title,
               caption: desc,
               media_type: 'foto',
@@ -2766,6 +2800,7 @@
         selectedPhotoBase64 = null;
 
         FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
+        currentGalleryTab = 'current';
         renderPhotos();
         renderSessionActionCard(docDayNum);
 

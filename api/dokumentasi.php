@@ -57,7 +57,7 @@ if ($action === 'list') {
     $stmt->execute($params);
     $rows = $stmt->fetchAll();
 
-    // Pastikan field source dan has_geotag konsisten di setiap row
+    // Pastikan field source, has_geotag, dan day konsisten di setiap row
     $media = array_map(function($r) {
         $src = !empty($r['source']) ? $r['source'] : (!empty($r['gps_location']) ? 'camera' : 'gallery');
         $hasGps = (isset($r['has_geotag']) && $r['has_geotag'] !== null) 
@@ -65,6 +65,30 @@ if ($action === 'list') {
             : (($src === 'camera' && !empty($r['gps_location'])) ? 1 : 0);
         $r['source'] = $src;
         $r['has_geotag'] = $hasGps;
+
+        $dayNum = !empty($r['day']) ? (int)$r['day'] : 0;
+        if ($dayNum <= 0) {
+            $txt = ($r['title'] ?? '') . ' ' . ($r['caption'] ?? '') . ' ' . ($r['file_url'] ?? '');
+            if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
+                $dayNum = (int)$m[1];
+            } else if (stripos($txt, 'akpol') !== false || stripos($txt, 'lawang sewu') !== false || stripos($txt, 'semarang') !== false) {
+                $dayNum = 2;
+            } else if (stripos($txt, 'bromo') !== false) {
+                $dayNum = 3;
+            } else if (stripos($txt, 'malang') !== false || stripos($txt, 'apel') !== false) {
+                $dayNum = 4;
+            } else if (stripos($txt, 'jogja') !== false || stripos($txt, 'malioboro') !== false) {
+                $dayNum = 5;
+            } else if (stripos($txt, 'drini') !== false || stripos($txt, 'pantai') !== false) {
+                $dayNum = 6;
+            } else if (stripos($txt, 'bakpia') !== false) {
+                $dayNum = 7;
+            } else {
+                $dayNum = 1;
+            }
+        }
+        $r['day'] = $dayNum;
+        $r['day_number'] = $dayNum;
         return $r;
     }, $rows);
 
@@ -91,6 +115,28 @@ if ($action === 'add') {
         $gpsLocation = ''; // Galeri tidak memiliki geotag
     }
     $uploadedBy  = trim($input['uploaded_by'] ?? '');
+
+    $day = (int)($input['day'] ?? $input['day_number'] ?? 0);
+    if ($day <= 0) {
+        $txt = $title . ' ' . $caption . ' ' . $fileUrl;
+        if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
+            $day = (int)$m[1];
+        } else if (stripos($txt, 'akpol') !== false || stripos($txt, 'lawang sewu') !== false) {
+            $day = 2;
+        } else if (stripos($txt, 'bromo') !== false) {
+            $day = 3;
+        } else if (stripos($txt, 'malang') !== false || stripos($txt, 'apel') !== false) {
+            $day = 4;
+        } else if (stripos($txt, 'jogja') !== false || stripos($txt, 'malioboro') !== false) {
+            $day = 5;
+        } else if (stripos($txt, 'drini') !== false || stripos($txt, 'pantai') !== false) {
+            $day = 6;
+        } else if (stripos($txt, 'bakpia') !== false) {
+            $day = 7;
+        } else {
+            $day = 1;
+        }
+    }
 
     if (!$fileUrl) {
         jsonResponse(false, 'File Media wajib disertakan!');
@@ -125,8 +171,9 @@ if ($action === 'add') {
         }
     }
 
-    // Cek kolom source & has_geotag pada tabel dokumentasi_media (auto-migration aman)
+    // Cek kolom source, has_geotag, dan day pada tabel dokumentasi_media (auto-migration aman)
     $hasNewCols = false;
+    $hasDayCol = false;
     try {
         $cols = $pdo->query("SHOW COLUMNS FROM `dokumentasi_media` LIKE 'has_geotag'")->fetchAll();
         if (empty($cols)) {
@@ -137,7 +184,34 @@ if ($action === 'add') {
         $hasNewCols = false;
     }
 
-    if ($hasNewCols) {
+    try {
+        $colsDay = $pdo->query("SHOW COLUMNS FROM `dokumentasi_media` LIKE 'day'")->fetchAll();
+        if (empty($colsDay)) {
+            $pdo->exec("ALTER TABLE `dokumentasi_media` ADD COLUMN `day` INT DEFAULT 1");
+        }
+        $hasDayCol = true;
+    } catch (Exception $e) {
+        $hasDayCol = false;
+    }
+
+    if ($hasNewCols && $hasDayCol) {
+        $stmt = $pdo->prepare("
+            INSERT INTO `dokumentasi_media` (`group_id`, `title`, `caption`, `media_type`, `file_url`, `gps_location`, `uploaded_by_nisn`, `source`, `has_geotag`, `day`)
+            VALUES (:gid, :t, :cap, :mt, :fu, :gps, :ub, :src, :hg, :day)
+        ");
+        $stmt->execute([
+            ':gid' => $groupId,
+            ':t'   => $title,
+            ':cap' => $caption,
+            ':mt'  => $mediaType,
+            ':fu'  => $fileUrl,
+            ':gps' => $gpsLocation,
+            ':ub'  => $uploadedBy,
+            ':src' => $source,
+            ':hg'  => $hasGeotag,
+            ':day' => $day
+        ]);
+    } else if ($hasNewCols) {
         $stmt = $pdo->prepare("
             INSERT INTO `dokumentasi_media` (`group_id`, `title`, `caption`, `media_type`, `file_url`, `gps_location`, `uploaded_by_nisn`, `source`, `has_geotag`)
             VALUES (:gid, :t, :cap, :mt, :fu, :gps, :ub, :src, :hg)
@@ -169,7 +243,7 @@ if ($action === 'add') {
         ]);
     }
 
-    jsonResponse(true, 'Dokumentasi riset berhasil diunggah!', ['id' => (int)$pdo->lastInsertId(), 'file_url' => $fileUrl]);
+    jsonResponse(true, 'Dokumentasi riset berhasil diunggah!', ['id' => (int)$pdo->lastInsertId(), 'file_url' => $fileUrl, 'day' => $day]);
 }
 
 if ($action === 'delete') {
