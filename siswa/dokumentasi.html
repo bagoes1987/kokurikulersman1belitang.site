@@ -144,6 +144,10 @@
 
 
     <!-- PHOTO GRID -->
+    <!-- KARTU AKSI TUGAS UNGGAH FOTO SPESIFIK HARI & SESI (MENCOLOK & MUDAH DI HP) -->
+    <div id="sessionActionCard" class="flex flex-col gap-3"></div>
+
+    <!-- PHOTO GRID -->
     <div id="photoGrid" class="grid grid-cols-2 gap-3">
       <!-- Synced dynamically by JavaScript -->
     </div>
@@ -787,6 +791,7 @@
 
       const activeDay = dayParam ? parseInt(dayParam) : 1;
       setupDayContext(activeDay);
+      renderSessionActionCard(activeDay);
 
       renderPhotos();
       syncDocumentationFromServer(function() {
@@ -2204,6 +2209,167 @@
       }
     }
 
+    function renderSessionActionCard(dayNum) {
+      const container = document.getElementById('sessionActionCard');
+      if (!container) return;
+      container.innerHTML = '';
+
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+      const cat = getStudentCategoryInfo();
+      const urlParams = new URLSearchParams(window.location.search);
+      const sesiParam = urlParams.get('sesi');
+
+      if (window.isDayReadOnlyMode) {
+        const fab = document.getElementById('fabUploadBtn');
+        if (fab) fab.classList.add('hidden');
+        return;
+      }
+
+      if (cat.isFieldTrip && Number(dayNum) === 2) {
+        let hasDokAkpol = false;
+        let hasDokLawang = false;
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true') hasDokAkpol = true;
+          if (localStorage.getItem('fincestem_dok_ft_day2_lawang_' + id) === 'true') hasDokLawang = true;
+        }
+
+        const isSesi2 = (sesiParam === '2') || (!sesiParam && hasDokAkpol);
+
+        if (!isSesi2) {
+          // ==============================
+          // SESI 1: KUNJUNGAN AKPOL
+          // ==============================
+          if (hasDokAkpol) {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-blue-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
+                    SESI 1 SELESAI (+2 ⭐)
+                  </span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Dokumentasi AKPOL Berhasil Diunggah!</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Bukti foto kunjungan Akademi Kepolisian Semarang telah tersimpan (+2 Bintang). Anda dapat melanjutkan ke Sesi 2 (Materi Lawang Sewu) atau menambah foto AKPOL lainnya.
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="materi.html?day=2&sesi=2" class="flex-1 py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-xl">menu_book</span>
+                    <span>Lanjut ke Sesi 2: Materi Lawang Sewu &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-blue-900 border border-blue-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto AKPOL</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    SESI 1 • KUNJUNGAN AKPOL
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-400 text-slate-900">
+                    Reward: +2 ⭐
+                  </span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto AKPOL Semarang</h3>
+                  <p class="text-xs sm:text-sm text-blue-100 leading-relaxed mt-1">
+                    Ambil foto dokumentasi kegiatan kelompok Anda selama berada di Kampus AKPOL (bersama regu/fasilitator/ikon kampus AKPOL) untuk membuka Sesi 2 (Lawang Sewu).
+                  </p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-blue-50 text-blue-800 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-blue-700">photo_camera</span>
+                  <span>Ambil / Unggah Foto AKPOL Sekarang (+2 ⭐)</span>
+                </button>
+              </div>
+            `;
+          }
+        } else {
+          // ==============================
+          // SESI 2: CAGAR BUDAYA LAWANG SEWU
+          // ==============================
+          if (hasDokLawang) {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-amber-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
+                    SESI 2 SELESAI (+2 ⭐)
+                  </span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Dokumentasi Lawang Sewu Berhasil Diunggah!</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Dua sesi kunjungan lapangan Day 2 telah lengkap (+4 Bintang). Silakan tuntaskan Jurnal Refleksi (+1 ⭐) untuk meraih total 5 Bintang penuh hari ini!
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="dashboard.html?day=2&task=refleksi" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-xl">psychology</span>
+                    <span>Lanjut ke Jurnal Refleksi Day 2 (+1 ⭐) &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-amber-900 border border-amber-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Lawang Sewu</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-600 to-orange-700 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    SESI 2 • LAWANG SEWU
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-300 text-slate-900">
+                    Reward: +2 ⭐
+                  </span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Lawang Sewu</h3>
+                  <p class="text-xs sm:text-sm text-amber-100 leading-relaxed mt-1">
+                    Ambil foto dokumentasi kegiatan kelompok Anda di Cagar Budaya Lawang Sewu (arsitektur tropis NISM, kaca patri Schouten, atau bersama tim riset).
+                  </p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-amber-50 text-amber-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-amber-700">photo_camera</span>
+                  <span>Ambil / Unggah Foto Lawang Sewu Sekarang (+2 ⭐)</span>
+                </button>
+              </div>
+            `;
+          }
+        }
+      } else {
+        // HARI LAINNYA
+        container.innerHTML = `
+          <div class="p-4 sm:p-5 rounded-3xl bg-surface-container-lowest border-2 border-primary/40 flex items-center justify-between gap-3 shadow-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-2xl">photo_camera</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="font-black text-xs sm:text-sm text-on-surface">Dokumentasi Foto Day ${dayNum}</span>
+                <span class="text-[11px] text-slate-500">Unggah bukti foto kegiatan lapangan kelompok Anda hari ini</span>
+              </div>
+            </div>
+            <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-xl bg-primary text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm hover:bg-primary/90 transition-all cursor-pointer shrink-0">
+              <span class="material-symbols-outlined text-base">add_a_photo</span>
+              <span>Ambil Foto</span>
+            </button>
+          </div>
+        `;
+      }
+    }
+
     function renderPhotos() {
       const list = getDocumentationList();
       const grid = document.getElementById('photoGrid');
@@ -2497,6 +2663,7 @@
 
         FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
         renderPhotos();
+        renderSessionActionCard(docDayNum);
 
         // Untuk Siswa Field Trip (Day 1 s.d. 7), munculkan modal navigasi ke Tahap 5: Refleksi
         const cat = getStudentCategoryInfo();
@@ -2584,5 +2751,9 @@
       }
     }
   </script>
+  <!-- FLOATING ACTION BUTTON (FAB) AKSES CEPAT KAMERA / UNGGAH FOTO DI HP -->
+  <button id="fabUploadBtn" onclick="toggleUploadModal(true)" class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer group" title="Ambil / Unggah Foto Lapangan">
+    <span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">add_a_photo</span>
+  </button>
 </body>
 </html>
