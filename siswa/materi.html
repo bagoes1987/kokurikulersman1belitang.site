@@ -947,6 +947,32 @@
         currentD2Session = 1;
       }
 
+      // TAB NAVIGASI KUNJUNGAN DAY 2 (INTERAKTIF & BEBAS BERPINDAH BOLAK-BALIK)
+      const tabNavHtml = `
+        <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-2 gap-1.5">
+          <!-- TAB 1: KAMPUS AKPOL -->
+          <button type="button" onclick="switchD2Session(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD2Session === 1 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
+            <span class="material-symbols-outlined text-base ${currentD2Session === 1 ? 'text-amber-300' : 'text-blue-600'}">military_tech</span>
+            <span class="truncate">Sesi 1: Kampus AKPOL</span>
+            ${currentD2Session === 1 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
+
+          <!-- TAB 2: LAWANG SEWU -->
+          ${isFotoAkpolDone ? `
+            <button type="button" onclick="switchD2Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD2Session === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300'}">
+              <span class="material-symbols-outlined text-base ${currentD2Session === 2 ? 'text-amber-200' : 'text-amber-700'}">account_balance</span>
+              <span class="truncate">Sesi 2: Lawang Sewu</span>
+              ${currentD2Session === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+            </button>
+          ` : `
+            <button type="button" onclick="switchD2Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" title="Sesi 2 terbuka setelah Foto AKPOL diunggah">
+              <span class="material-symbols-outlined text-base text-slate-400">lock</span>
+              <span class="truncate">Sesi 2: Lawang Sewu</span>
+            </button>
+          `}
+        </div>
+      `;
+
       // Banner & Sub-navigasi Eksklusif Sesuai Sesi Aktif
       let headerHtml = '';
       if (currentD2Session === 2) {
@@ -981,16 +1007,9 @@
             </div>
           </div>
 
-          <!-- SUB-NAVIGASI SESI 2 (BEBAS DARI KONTEN AKPOL) -->
-          <div class="flex items-center justify-between gap-2 p-2 rounded-2xl bg-amber-50/80 border border-amber-200 shadow-2xs">
-            <button type="button" onclick="switchD2Session(1)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100 text-amber-950 text-xs font-extrabold border border-amber-300 shadow-xs transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Kembali ke Modul AKPOL (Sesi 1)</span>
-            </button>
-            <span class="text-[11px] font-extrabold text-amber-900 px-2.5 py-1 bg-amber-200/70 rounded-lg">
-              Sesi 2 Aktif: Cagar Budaya Lawang Sewu
-            </span>
           </div>
+
+          ${tabNavHtml}
         `;
       } else {
         headerHtml = `
@@ -1024,22 +1043,7 @@
             </div>
           </div>
 
-          <!-- SUB-NAVIGASI SESI 1 -->
-          <div class="flex items-center justify-between gap-2 p-2 rounded-2xl bg-blue-50/80 border border-blue-200 shadow-2xs">
-            <span class="text-[11px] font-extrabold text-blue-900 px-2.5 py-1 bg-blue-100 rounded-lg">
-              Sesi 1 Aktif: Kampus AKPOL
-            </span>
-            ${isFotoAkpolDone ? `
-              <button type="button" onclick="switchD2Session(2)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-extrabold shadow-xs transition-all cursor-pointer">
-                <span>Buka Materi Lawang Sewu (Sesi 2)</span>
-                <span class="material-symbols-outlined text-base">arrow_forward</span>
-              </button>
-            ` : `
-              <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs">lock</span> Sesi 2 terbuka setelah foto AKPOL diunggah
-              </span>
-            `}
-          </div>
+          ${tabNavHtml}
         `;
       }
 
@@ -1554,9 +1558,23 @@
     function checkIsFotoAkpolDone(nisn) {
       try {
         const user = FincestemCore.auth.getUser() || {};
-        const ids = [nisn, String(nisn).trim(), String(nisn).replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+        const cleanNisn = String(nisn || user.nisn || user.identifier || '').trim();
+        const ids = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+
+        // Jika progres siswa Day 2 sudah selesai secara keseluruhan
+        if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
+          const prog = FincestemCore.progress.getStudentProgress(cleanNisn);
+          if (prog && FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, 2)) {
+            return true;
+          }
+        }
+
         for (const id of ids) {
           if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') return true;
+          if (localStorage.getItem(`fincestem_lkpd_ft_day2_lawangsewu_${id}`)) return true;
+          if (localStorage.getItem(`fincestem_lkpd_lawang_saved_${id}`) === 'true') return true;
+          if (localStorage.getItem(`fincestem_materi_ft_day2_lawangsewu_${id}`)) return true;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_lawang_${id}`) === 'true') return true;
         }
         // Cek juga dari database foto umum jika pilar Exploration / deskripsi mengandung akpol
         const dbStr = localStorage.getItem('fincestem_db_2026_v1');

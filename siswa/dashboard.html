@@ -3058,6 +3058,51 @@
       openDayActivityModal(day, type, false);
     }
 
+    function formatFacilitatorDisplay(rawName) {
+      if (!rawName) return '<span class="font-extrabold text-slate-900">Tim Fasilitator SMAN 1 Belitang</span>';
+      const text = String(rawName).trim();
+      if (!text || text === 'Tim Fasilitator SMAN 1 Belitang' || text === 'Tim Guru Pendamping Field Trip' || text === 'Tim Fasilitator') {
+        return '<span class="font-extrabold text-slate-900">Tim Fasilitator SMAN 1 Belitang</span>';
+      }
+
+      // Deteksi pemisah jika terdiri dari 2 fasilitator atau lebih
+      let parts = [];
+      if (text.includes('\n')) {
+        parts = text.split('\n');
+      } else if (text.includes(' / ')) {
+        parts = text.split(' / ');
+      } else if (text.includes(' & ')) {
+        parts = text.split(' & ');
+      } else if (text.toLowerCase().includes(' dan ')) {
+        parts = text.split(/ dan /i);
+      } else if (text.includes(';')) {
+        parts = text.split(';');
+      } else if (text.includes('/') && !text.includes('http')) {
+        parts = text.split('/');
+      }
+
+      parts = parts.map(p => p.trim()).filter(Boolean);
+      // Bersihkan penomoran awal yang mungkin sudah ada di data (misal "1. ", "2. ")
+      parts = parts.map(p => p.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+
+      if (parts.length > 1) {
+        // Susun ke bawah bernomor rapi
+        return `
+          <div class="flex flex-col gap-1 mt-1 text-left w-full">
+            ${parts.map((p, idx) => `
+              <div class="flex items-start gap-1.5 leading-snug">
+                <span class="font-black text-amber-700 shrink-0 text-xs">${idx + 1}.</span>
+                <span class="font-bold text-slate-900 text-xs sm:text-sm">${p}</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Jika 1 nama fasilitator: 1 baris rapi nama dan gelar
+      return `<strong class="font-extrabold text-slate-900 text-xs sm:text-sm leading-snug">${text}</strong>`;
+    }
+
     function openDayActivityModal(day, type, isReadOnly) {
       const modal = document.getElementById('modalDayActivity');
       const title = document.getElementById('modalActTitle');
@@ -3485,9 +3530,12 @@
                 </div>
 
                 <!-- Footer Info Fasilitator -->
-                <div class="flex items-center justify-between text-xs text-slate-600 font-medium pt-1 border-t border-amber-200/60">
-                  <span>Fasilitator: <strong>${fasilName}</strong></span>
-                  <span class="text-emerald-700 font-bold">Status Day ${day.day_number}: Tuntas ✓</span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-amber-200/60">
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Fasilitator:</span>
+                    ${formatFacilitatorDisplay(fasilName)}
+                  </div>
+                  <span class="text-emerald-700 font-bold self-start sm:self-auto shrink-0 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Status Day ${day.day_number}: Tuntas ✓</span>
                 </div>
               </div>
             `;
@@ -3514,9 +3562,12 @@
                     Nilai dan bintang harian akan otomatis terkalkulasi saat Anda menyelesaikan seluruh rangkaian tugas Day ${day.day_number} termasuk <strong>Jurnal Refleksi Mandiri</strong> (Pukul 07.00 - ${ftScore.cutoff_perfect || '16:00'} WIB meraih Bintang 5 Nilai 100).
                   </p>
                 </div>
-                <div class="flex items-center justify-between text-xs text-slate-600 font-medium pt-1 border-t border-slate-200">
-                  <span>Fasilitator: <strong>${fasilName}</strong></span>
-                  <span class="text-amber-700 font-bold">Harap Isi Refleksi Terlebih Dahulu</span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-slate-200">
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Fasilitator:</span>
+                    ${formatFacilitatorDisplay(fasilName)}
+                  </div>
+                  <span class="text-amber-700 font-bold self-start sm:self-auto shrink-0 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">Harap Isi Refleksi Terlebih Dahulu</span>
                 </div>
               </div>
             `;
@@ -3564,8 +3615,11 @@
                   </p>
                 </div>
 
-                <div class="flex items-center justify-between text-xs text-emerald-800 font-semibold pt-1 border-t border-emerald-200/60">
-                  <span>Dinilai oleh: <strong>${dayRec.facilitator_name || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</strong></span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200/60">
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
+                    ${formatFacilitatorDisplay(dayRec.facilitator_name || currentStudent?.facilitator_name)}
+                  </div>
                 </div>
               </div>
             `;
@@ -3715,8 +3769,11 @@
                 </div>
 
                 <!-- Fasilitator Info -->
-                <div class="flex items-center justify-between text-xs text-slate-500 font-medium pt-1 border-t border-slate-200/60">
-                  <span>Fasilitator Kelas: <strong>${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</strong></span>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500 font-medium pt-2 border-t border-slate-200/60">
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Fasilitator Kelas:</span>
+                    ${formatFacilitatorDisplay(currentStudent?.facilitator_name)}
+                  </div>
                 </div>
               </div>
             `;
@@ -3952,11 +4009,35 @@
           document.getElementById('modalRecapPredicate').textContent = 'Belum Dinilai Guru';
           document.getElementById('modalRecapScore').textContent = '-';
         }
-        document.getElementById('modalRecapFasil').textContent = `Fasilitator: ${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}`;
+        const recapFasilRaw = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+        let rParts = [];
+        if (recapFasilRaw.includes('\n')) rParts = recapFasilRaw.split('\n');
+        else if (recapFasilRaw.includes(' / ')) rParts = recapFasilRaw.split(' / ');
+        else if (recapFasilRaw.includes(' & ')) rParts = recapFasilRaw.split(' & ');
+        else if (recapFasilRaw.toLowerCase().includes(' dan ')) rParts = recapFasilRaw.split(/ dan /i);
+        else if (recapFasilRaw.includes(';')) rParts = recapFasilRaw.split(';');
+        rParts = rParts.map(p => p.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+        const recapFasilHtml = rParts.length > 1
+          ? `Fasilitator:<br>` + rParts.map((p, i) => `${i + 1}. ${p}`).join('<br>')
+          : `Fasilitator: ${recapFasilRaw}`;
+        const recapFasilEl = document.getElementById('modalRecapFasil');
+        if (recapFasilEl) recapFasilEl.innerHTML = recapFasilHtml;
       } else {
         document.getElementById('modalRecapPredicate').textContent = prog.predicate || 'Dalam Proses';
         document.getElementById('modalRecapScore').textContent = prog.average_score || '-';
-        document.getElementById('modalRecapFasil').textContent = `Fasilitator: ${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}`;
+        const recapFasilRaw = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+        let rParts = [];
+        if (recapFasilRaw.includes('\n')) rParts = recapFasilRaw.split('\n');
+        else if (recapFasilRaw.includes(' / ')) rParts = recapFasilRaw.split(' / ');
+        else if (recapFasilRaw.includes(' & ')) rParts = recapFasilRaw.split(' & ');
+        else if (recapFasilRaw.toLowerCase().includes(' dan ')) rParts = recapFasilRaw.split(/ dan /i);
+        else if (recapFasilRaw.includes(';')) rParts = recapFasilRaw.split(';');
+        rParts = rParts.map(p => p.replace(/^\d+[\.\)]\s*/, '').trim()).filter(Boolean);
+        const recapFasilHtml = rParts.length > 1
+          ? `Fasilitator:<br>` + rParts.map((p, i) => `${i + 1}. ${p}`).join('<br>')
+          : `Fasilitator: ${recapFasilRaw}`;
+        const recapFasilEl = document.getElementById('modalRecapFasil');
+        if (recapFasilEl) recapFasilEl.innerHTML = recapFasilHtml;
       }
 
       const listContainer = document.getElementById('modalRecapDaysList');
