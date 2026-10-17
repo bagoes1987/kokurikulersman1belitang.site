@@ -2741,7 +2741,7 @@
                 ${isTrial 
                   ? 'Bebas mencoba seluruh 5 instrumen latihan (Modul, LKPD Uji Coba, Kuis Latihan, Unggah Foto, dan Refleksi) sebelum pelaksanaan kegiatan sesungguhnya.' 
                   : ((isFTDay && dNum === 2)
-                    ? '<strong>Sesi 1:</strong> Modul &amp; LKPD AKPOL &rarr; Foto AKPOL (+2 ⭐) &rarr; <strong>Sesi 2:</strong> Modul &amp; LKPD Lawang Sewu &rarr; Foto Lawang Sewu (+2 ⭐) &rarr; <strong>Refleksi Day 2:</strong> (+1 ⭐) &rarr; Total 5 ⭐ Sempurna.'
+                    ? '<strong>Sesi 1:</strong> Modul &amp; LKPD AKPOL &rarr; Unggah Dokumentasi AKPOL &rarr; <strong>Sesi 2:</strong> Modul &amp; LKPD Lawang Sewu &rarr; Unggah Dokumentasi Lawang Sewu &rarr; <strong>Tahap Akhir:</strong> Jurnal Refleksi Day 2.'
                     : '<strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.')}
               </span>
             </div>
@@ -3292,7 +3292,7 @@
               ${(hasAkpolDok && hasLawangDok) ? `
                 <a href="dashboard.html?day=2&task=refleksi" onclick="closeDayActivityModal()" class="flex-1 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all">
                   <span class="material-symbols-outlined text-lg">psychology</span>
-                  <span>Lanjut ke Refleksi Day 2 (+1 ⭐)</span>
+                  <span>Lanjut ke Jurnal Refleksi Day 2</span>
                 </a>
               ` : `
                 <a href="dokumentasi.html?day=2" onclick="closeDayActivityModal()" class="flex-1 py-3 px-4 rounded-xl bg-pink-600 hover:bg-pink-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all">
