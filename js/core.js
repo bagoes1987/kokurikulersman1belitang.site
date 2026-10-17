@@ -793,8 +793,8 @@ const FincestemCore = {
           { time: '14.30 – 20.30', title: 'Perjalanan ke Malang', location: 'Semarang – Malang', icon: 'directions_bus', highlight: 'indigo' },
           { time: '20.30 – Selesai', title: 'Cek in Hotel Malang', location: 'Hotel Malang', icon: 'hotel', highlight: 'emerald' }
         ],
-        refl_title: 'Jurnal Refleksi Hari Kedua (AKPOL, Lawang Sewu → Malang)',
-        refl_prompt: 'Refleksikan apa yang Anda rasakan dan pelajari hari ini: (1) Inspirasi kedisiplinan dan kepemimpinan taruna AKPOL Semarang bagi masa depan Anda, (2) Kekaguman sains arsitektur pasif Lawang Sewu dan heroisme pemuda AMKA, serta (3) Kebiasaan Anda dalam mengendalikan pengeluaran uang saku selama perjalanan panjang menuju hotel di Malang.'
+        refl_title: 'Jurnal Refleksi Hari Kedua (AKPOL & Lawang Sewu Semarang)',
+        refl_prompt: 'Refleksikan apa yang Anda rasakan dan pelajari hari ini: (1) Makna disiplin, etika kepemimpinan, dan integritas yang Anda pelajari dari Akademi Kepolisian (AKPOL), (2) Kekaguman terhadap kearifan rekayasa teknologi arsitektur kuno dan heroisme pemuda AMKA di Lawang Sewu, serta (3) Bagaimana kedua nilai luhur ini menginspirasi karakter Anda sebagai generasi muda penerus bangsa.'
       },
       3: {
         day_number: 3,

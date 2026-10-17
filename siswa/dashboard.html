@@ -1704,6 +1704,14 @@
       if (!hasMateri) {
         for (const id of idList) {
           try {
+            if (dayNum === 2) {
+              const concAkpol = localStorage.getItem('fincestem_materi_conclusion_ft_day2_akpol_' + id);
+              const concLawang = localStorage.getItem('fincestem_materi_conclusion_ft_day2_lawang_' + id);
+              if (concAkpol || concLawang) {
+                hasMateri = true;
+                break;
+              }
+            }
             const raw = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_materi_day${dayNum}_` + id);
             if (raw) {
@@ -1721,6 +1729,14 @@
       if (!hasLkpd) {
         for (const id of idList) {
           try {
+            if (dayNum === 2) {
+              const lkpdAkpolSaved = localStorage.getItem('fincestem_lkpd_akpol_saved_' + id) === 'true' || !!localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + id);
+              const lkpdLawangSaved = localStorage.getItem('fincestem_lkpd_lawang_saved_' + id) === 'true' || !!localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + id);
+              if (lkpdAkpolSaved || lkpdLawangSaved) {
+                hasLkpd = true;
+                break;
+              }
+            }
             const raw = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + id);
             if (raw) {
@@ -1736,25 +1752,30 @@
 
       let hasAsesmen = !!taskMap[dayNum + '_asesmen'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'asesmen');
       if (!hasAsesmen) {
-        for (const id of idList) {
-          try {
-            const raw = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
-                        localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + id);
-            if (raw) {
-              try {
-                const p = JSON.parse(raw);
-                if (p && (p.submitted || p.score !== undefined || p.answers)) {
-                  hasAsesmen = true;
-                  break;
-                }
-              } catch(e) {
-                if (raw.trim().length > 5) {
-                  hasAsesmen = true;
-                  break;
+        // Khusus Day 2 Field Trip: Asesmen terintegrasi dalam LKPD Esai AKPOL & Lawang Sewu
+        if (dayNum === 2 && hasLkpd) {
+          hasAsesmen = true;
+        } else {
+          for (const id of idList) {
+            try {
+              const raw = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
+                          localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + id);
+              if (raw) {
+                try {
+                  const p = JSON.parse(raw);
+                  if (p && (p.submitted || p.score !== undefined || p.answers)) {
+                    hasAsesmen = true;
+                    break;
+                  }
+                } catch(e) {
+                  if (raw.trim().length > 5) {
+                    hasAsesmen = true;
+                    break;
+                  }
                 }
               }
-            }
-          } catch(e) {}
+            } catch(e) {}
+          }
         }
       }
 
@@ -1762,6 +1783,14 @@
       if (!hasDok) {
         for (const id of idList) {
           try {
+            if (dayNum === 2) {
+              const dokAkpol = localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true';
+              const dokLawang = localStorage.getItem('fincestem_dok_ft_day2_lawang_' + id) === 'true';
+              if (dokAkpol || dokLawang) {
+                hasDok = true;
+                break;
+              }
+            }
             if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true' ||
                 localStorage.getItem(`fincestem_dok_day${dayNum}_` + id) === 'true') {
               hasDok = true;
@@ -2711,7 +2740,9 @@
               <span class="text-[11px] sm:text-xs ${isFieldTrip ? 'text-amber-900/90' : 'text-teal-900/90'} leading-relaxed font-medium">
                 ${isTrial 
                   ? 'Bebas mencoba seluruh 5 instrumen latihan (Modul, LKPD Uji Coba, Kuis Latihan, Unggah Foto, dan Refleksi) sebelum pelaksanaan kegiatan sesungguhnya.' 
-                  : '<strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.'}
+                  : ((isFTDay && dNum === 2)
+                    ? '<strong>Sesi 1:</strong> Modul &amp; LKPD AKPOL &rarr; Foto AKPOL (+2 ⭐) &rarr; <strong>Sesi 2:</strong> Modul &amp; LKPD Lawang Sewu &rarr; Foto Lawang Sewu (+2 ⭐) &rarr; <strong>Refleksi Day 2:</strong> (+1 ⭐) &rarr; Total 5 ⭐ Sempurna.'
+                    : '<strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.')}
               </span>
             </div>
 
@@ -3178,159 +3209,101 @@
             `)}
           `;
         } else if (isFTDay2) {
-          title.textContent = 'Asesmen Day 2 (AKPOL Semarang, Lawang Sewu & Malang)';
+          title.textContent = 'Asesmen Day 2 (AKPOL & Lawang Sewu)';
           icon.textContent = 'fact_check';
-          iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0';
 
-          let ftAsesmen = null;
-          const hasServerAsesmen2 = taskMap && !!taskMap['2_asesmen'];
-          if (hasServerAsesmen2) {
-            const idList = getStudentStorageIdentifiers();
-            for (const id of idList) {
-              try {
-                const raw = localStorage.getItem('fincestem_asesmen_ft_day2_' + id);
-                if (raw) {
-                  const parsed = JSON.parse(raw);
-                  if (parsed && (parsed.submitted || parsed.score !== undefined)) {
-                    ftAsesmen = parsed;
-                    break;
-                  }
-                }
-              } catch(e) {}
-            }
-          }
+          const idList = getStudentStorageIdentifiers();
+          let hasAkpolLkpd = false;
+          let hasLawangLkpd = false;
+          let hasAkpolDok = false;
+          let hasLawangDok = false;
 
-          const isSubmitted = ftAsesmen && ftAsesmen.submitted;
-          const score = ftAsesmen ? (ftAsesmen.score ?? 100) : 0;
-          const savedAnswers = (ftAsesmen && ftAsesmen.answers) || {};
-          const isModalReadOnly = isReadOnly || isSubmitted;
-          const fieldDisabled = isModalReadOnly ? 'disabled' : '';
-
-          const questions = [
-            {
-              id: 1,
-              text: '1. Akademi Kepolisian (AKPOL) Semarang merupakan lembaga pendidikan tinggi kedinasan yang mendidik dan mencetak calon perwira Polri berpangkat Inspektur Polisi Dua (Ipda) dengan gelar akademik resmi...',
-              options: [
-                { key: 'A', text: 'Sarjana Hukum Pidana (S.H.)' },
-                { key: 'B', text: 'Sarjana Terapan Kepolisian (S.Tr.K.)' },
-                { key: 'C', text: 'Sarjana Ilmu Komunikasi (S.I.Kom.)' },
-                { key: 'D', text: 'Sarjana Sains Kepolisian (S.Si.)' }
-              ]
-            },
-            {
-              id: 2,
-              text: '2. Dalam membentuk karakter disiplin ketat, kepemimpinan, dan etika profesi, para taruna AKPOL Semarang berpedoman pada doktrin utama yaitu...',
-              options: [
-                { key: 'A', text: 'Tribrata dan Catur Prasetya' },
-                { key: 'B', text: 'Dasadharma dan Tri Satya' },
-                { key: 'C', text: 'Sumpah Pemuda dan Sapta Marga' },
-                { key: 'D', text: 'Tri Dharma Perguruan Tinggi' }
-              ]
-            },
-            {
-              id: 3,
-              text: '3. Gedung bersejarah Lawang Sewu di Kota Semarang yang mulai dibangun tahun 1904 awalnya berfungsi sebagai kantor pusat...',
-              options: [
-                { key: 'A', text: 'Bank Sentral De Javasche Bank Semarang' },
-                { key: 'B', text: 'Kantor Otoritas Pelabuhan Tanjung Emas' },
-                { key: 'C', text: 'Perusahaan Kereta Api Swasta Hindia Belanda (NIS / Nederlandsch-Indische Spoorweg Maatschappij)' },
-                { key: 'D', text: 'Benteng Pertahanan Militer Belanda' }
-              ]
-            },
-            {
-              id: 4,
-              text: '4. Ruangan di dalam gedung Lawang Sewu tetap terasa sejuk secara alami tanpa AC modern karena menerapkan prinsip sains arsitektur pasif, yaitu...',
-              options: [
-                { key: 'A', text: 'Ventilasi silang (cross-ventilation) ribuan pintu/jendela louvre kayu, plafon tinggi > 4 meter, dan lorong penyejuk bawah tanah' },
-                { key: 'B', text: 'Dinding kaca tebal kedap udara yang menahan panas matahari' },
-                { key: 'C', text: 'Pemasangan ratusan unit pendingin ruangan tenaga generator' },
-                { key: 'D', text: 'Pengering udara mekanik bertenaga uap batu bara' }
-              ]
-            },
-            {
-              id: 5,
-              text: '5. Selama menempuh perjalanan darat 6 jam dari Semarang menuju Malang melintasi Tol Trans-Jawa, tindakan bijak siswa dalam mengelola uang saku harian adalah...',
-              options: [
-                { key: 'A', text: 'Membeli perhiasan mewah di gerai rest area tol' },
-                { key: 'B', text: 'Membeli banyak makanan camilan tanpa mencatat pengeluaran di buku kas' },
-                { key: 'C', text: 'Meminjam uang teman untuk berbelanja di minimarket rest area' },
-                { key: 'D', text: 'Mengutamakan kebutuhan esensial (minum/toilet), menahan jajan impulsif, dan mencatat pengeluaran di Buku Kas Harian LKPD' }
-              ]
-            }
-          ];
-
-          let qHtml = questions.map((q) => {
-            const chosen = savedAnswers['q' + q.id] || '';
-            const optsHtml = q.options.map(opt => {
-              const isChecked = chosen === opt.key ? 'checked' : '';
-              return `
-                <label class="p-2.5 rounded-xl border ${isChecked ? 'border-blue-500 bg-blue-50/60 font-semibold' : 'border-slate-200 hover:bg-slate-50'} flex items-start gap-2.5 cursor-pointer text-xs sm:text-sm text-slate-800 transition-colors">
-                  <input type="radio" name="ftAsesmenDay2Q${q.id}" value="${opt.key}" ${isChecked} ${fieldDisabled} class="mt-0.5 text-blue-600 focus:ring-0">
-                  <span class="leading-relaxed"><strong>${opt.key}.</strong> ${opt.text}</span>
-                </label>
-              `;
-            }).join('');
-
-            return `
-              <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col gap-2">
-                <span class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">${q.text}</span>
-                <div class="flex flex-col gap-1.5 pt-1">
-                  ${optsHtml}
-                </div>
-              </div>
-            `;
-          }).join('');
-
-          let statusBanner = '';
-          if (isSubmitted) {
-            statusBanner = `
-              <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between gap-2 flex-wrap">
-                <div class="flex items-center gap-2">
-                  <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
-                  <div class="flex flex-col">
-                    <span class="font-black text-xs sm:text-sm text-emerald-950">Asesmen Day 2 Selesai!</span>
-                    <span class="text-[11px] text-emerald-700">Tahap 4 (Dokumentasi Foto) telah terbuka.</span>
-                  </div>
-                </div>
-                <div class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-black text-xs sm:text-sm shadow-2xs">
-                  Skor: ${score} / 100
-                </div>
-              </div>
-            `;
+          for (const id of idList) {
+            if (localStorage.getItem('fincestem_lkpd_akpol_saved_' + id) === 'true' || localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + id)) hasAkpolLkpd = true;
+            if (localStorage.getItem('fincestem_lkpd_lawang_saved_' + id) === 'true' || localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + id)) hasLawangLkpd = true;
+            if (localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true') hasAkpolDok = true;
+            if (localStorage.getItem('fincestem_dok_ft_day2_lawang_' + id) === 'true') hasLawangDok = true;
           }
 
           body.innerHTML = `
-            <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-100 flex flex-col gap-1 text-slate-800">
-              <span class="font-bold text-sm text-blue-900">Uji Pemahaman Materi Day 2 (5 Soal Pilihan Ganda)</span>
-              <p class="text-xs sm:text-sm leading-relaxed text-slate-600">
-                Pilihlah salah satu jawaban yang paling tepat berdasarkan materi Kunjungan AKPOL, Lawang Sewu, dan Perjalanan Tol Malang yang telah Anda pelajari pada Modul Day 2.
+            <div class="p-4 rounded-3xl bg-amber-50/80 border border-amber-200/80 flex flex-col gap-2">
+              <div class="flex items-center gap-2 text-amber-900 font-black text-sm sm:text-base">
+                <span class="material-symbols-outlined text-amber-600 text-xl">stars</span>
+                <span>Asesmen Pemahaman Terintegrasi LKPD (10 Soal Esai)</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Pada kegiatan Day 2, instrumen asesmen pemahaman telah diintegrasikan langsung ke dalam <strong>10 Soal Esai Riset Mandiri</strong> pada LKPD Digital (5 Soal Kunjungan AKPOL &amp; 5 Soal Cagar Budaya Lawang Sewu).
               </p>
             </div>
 
-            ${statusBanner}
+            <!-- STATUS 2 SESI PENGERJAAN -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <!-- Sesi 1: AKPOL -->
+              <div class="p-4 rounded-2xl border ${hasAkpolLkpd ? 'border-emerald-300 bg-emerald-50/50' : 'border-slate-200 bg-white'} flex flex-col justify-between gap-3 shadow-2xs">
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider ${hasAkpolLkpd ? 'bg-emerald-600 text-white' : 'bg-amber-100 text-amber-800'}">
+                      Sesi 1 • AKPOL
+                    </span>
+                    <span class="material-symbols-outlined text-lg ${hasAkpolLkpd ? 'text-emerald-600' : 'text-slate-400'}">
+                      ${hasAkpolLkpd ? 'check_circle' : 'radio_button_unchecked'}
+                    </span>
+                  </div>
+                  <strong class="text-xs sm:text-sm text-slate-900">LKPD Kunjungan AKPOL</strong>
+                  <p class="text-[11px] text-slate-600 leading-snug">5 Soal Esai: Visi AKPOL, Kepanjangan &amp; Status, Kepangkatan Taruna (Perkap 21/2010), Gubernur &amp; Wagub, serta 5 Fasilitas Utama.</p>
+                </div>
+                <div class="flex items-center justify-between pt-1 border-t border-slate-100">
+                  <span class="text-[11px] font-bold ${hasAkpolLkpd ? 'text-emerald-700' : 'text-amber-800'}">
+                    ${hasAkpolLkpd ? '✓ Selesai Terkirim' : 'Belum Dikerjakan'}
+                  </span>
+                  <a href="lkpd.html?day=2&sesi=1" onclick="closeDayActivityModal()" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs transition-all shadow-xs">
+                    ${hasAkpolLkpd ? 'Lihat LKPD' : 'Buka LKPD'}
+                  </a>
+                </div>
+              </div>
 
-            <div class="flex flex-col gap-3">
-              ${qHtml}
+              <!-- Sesi 2: Lawang Sewu -->
+              <div class="p-4 rounded-2xl border ${hasLawangLkpd ? 'border-emerald-300 bg-emerald-50/50' : 'border-slate-200 bg-white'} flex flex-col justify-between gap-3 shadow-2xs">
+                <div class="flex flex-col gap-1.5">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider ${hasLawangLkpd ? 'bg-emerald-600 text-white' : 'bg-amber-100 text-amber-800'}">
+                      Sesi 2 • Lawang Sewu
+                    </span>
+                    <span class="material-symbols-outlined text-lg ${hasLawangLkpd ? 'text-emerald-600' : 'text-slate-400'}">
+                      ${hasLawangLkpd ? 'check_circle' : 'radio_button_unchecked'}
+                    </span>
+                  </div>
+                  <strong class="text-xs sm:text-sm text-slate-900">LKPD Lawang Sewu</strong>
+                  <p class="text-[11px] text-slate-600 leading-snug">5 Soal Esai: Kantor Pusat NISM, Etimologi 1000 Pintu vs 928 Pintu Fisik, Arsitek Klinkhamer &amp; Citroen, Rekayasa Fisika Bangunan Tropis, serta Heroisme AMKA.</p>
+                </div>
+                <div class="flex items-center justify-between pt-1 border-t border-slate-100">
+                  <span class="text-[11px] font-bold ${hasLawangLkpd ? 'text-emerald-700' : 'text-amber-800'}">
+                    ${hasLawangLkpd ? '✓ Selesai Terkirim' : (hasAkpolDok ? 'Siap Dikerjakan' : 'Terkunci')}
+                  </span>
+                  <a href="lkpd.html?day=2&sesi=2" onclick="closeDayActivityModal()" class="px-3 py-1.5 rounded-xl ${hasAkpolDok ? 'bg-amber-600 hover:bg-amber-700 text-white' : 'bg-slate-200 text-slate-500 cursor-not-allowed'} font-extrabold text-xs transition-all shadow-xs">
+                    ${hasLawangLkpd ? 'Lihat LKPD' : 'Buka LKPD'}
+                  </a>
+                </div>
+              </div>
             </div>
 
-            ${isSubmitted ? `
-              <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=2';" class="flex-1 py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+            <div class="flex flex-col sm:flex-row gap-2 pt-2">
+              ${(hasAkpolDok && hasLawangDok) ? `
+                <a href="dashboard.html?day=2&task=refleksi" onclick="closeDayActivityModal()" class="flex-1 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all">
+                  <span class="material-symbols-outlined text-lg">psychology</span>
+                  <span>Lanjut ke Refleksi Day 2 (+1 ⭐)</span>
+                </a>
+              ` : `
+                <a href="dokumentasi.html?day=2" onclick="closeDayActivityModal()" class="flex-1 py-3 px-4 rounded-xl bg-pink-600 hover:bg-pink-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all">
                   <span class="material-symbols-outlined text-lg">photo_camera</span>
-                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
-                </button>
-                <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
-                  Tutup
-                </button>
-              </div>
-            ` : (readOnlyBanner ? readOnlyBanner : `
-              <div class="pt-2">
-                <button type="button" onclick="saveStudentNote(2, 'asesmen')" class="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
-                  <span class="material-symbols-outlined text-lg">send</span>
-                  <span>Kirim Jawaban Asesmen Day 2 &amp; Buka Dokumentasi</span>
-                </button>
-              </div>
-            `)}
+                  <span>Menuju Dokumentasi Foto Lapangan</span>
+                </a>
+              `}
+              <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm transition-all cursor-pointer">
+                Tutup
+              </button>
+            </div>
           `;
         } else {
           title.textContent = isTrial ? 'Asesmen Simulasi (Gladi Bersih)' : `Asesmen Pemahaman - Day ${day.day_number}`;
@@ -3828,48 +3801,27 @@
         closeDayActivityModal();
         return;
       } else if (type === 'asesmen' && isFTDay2) {
-        const q1 = document.querySelector('input[name="ftAsesmenDay2Q1"]:checked')?.value;
-        const q2 = document.querySelector('input[name="ftAsesmenDay2Q2"]:checked')?.value;
-        const q3 = document.querySelector('input[name="ftAsesmenDay2Q3"]:checked')?.value;
-        const q4 = document.querySelector('input[name="ftAsesmenDay2Q4"]:checked')?.value;
-        const q5 = document.querySelector('input[name="ftAsesmenDay2Q5"]:checked')?.value;
-
-        if (!q1 || !q2 || !q3 || !q4 || !q5) {
-          FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan asesmen pilihan ganda Day 2!', 'warning');
-          return;
-        }
-
-        // Kunci Jawaban Day 2: 1:B (S.Tr.K), 2:A (Tribrata & Catur Prasetya), 3:C (NIS 1904), 4:A (Cross-ventilation), 5:D (Kebutuhan & Buku Kas)
-        const keys = { q1: 'B', q2: 'A', q3: 'C', q4: 'A', q5: 'D' };
-        const answers = { q1, q2, q3, q4, q5 };
-        let correctCount = 0;
-        for (let i = 1; i <= 5; i++) {
-          if (answers['q' + i] === keys['q' + i]) correctCount++;
-        }
-        const totalScore = correctCount * 20;
-
+        const idList = getStudentStorageIdentifiers();
         const asesmenPayload = {
           submitted: true,
-          score: totalScore,
-          correctCount: correctCount,
-          totalQuestions: 5,
-          answers: answers,
+          score: 100,
+          totalQuestions: 10,
+          content: 'Asesmen Day 2 terintegrasi dalam 10 Soal Esai LKPD (AKPOL & Lawang Sewu)',
           submitted_at: new Date().toISOString()
         };
 
-        const idList = getStudentStorageIdentifiers();
         idList.forEach(id => {
           localStorage.setItem('fincestem_asesmen_ft_day2_' + id, JSON.stringify(asesmenPayload));
         });
 
-        note = `Skor Asesmen Day 2: ${totalScore}/100 (${correctCount}/5 Benar). Kunci Jawaban: Q1=${q1}, Q2=${q2}, Q3=${q3}, Q4=${q4}, Q5=${q5}`;
+        note = 'Asesmen Pemahaman Day 2 tervalidasi melalui 10 Soal Esai LKPD Digital.';
 
         if (studentProgress && studentProgress.task_map) {
           studentProgress.task_map['2_asesmen'] = { status: 'submitted', content: note };
         }
 
         FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
-          FincestemCore.ui.toast(`Asesmen Day 2 Selesai! Skor Anda: ${totalScore}/100. Tahap 4 (Dokumentasi Foto) sekarang telah terbuka.`, 'success');
+          FincestemCore.ui.toast('Asesmen Day 2 berhasil diverifikasi dari LKPD Digital!', 'success');
           loadStudentProgress();
         });
 

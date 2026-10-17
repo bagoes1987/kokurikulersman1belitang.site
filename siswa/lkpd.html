@@ -1264,6 +1264,8 @@
     // ==========================================
     // MODUL LKPD KHUSUS FIELD TRIP DAY 2
     // ==========================================
+    let currentD2LkpdSession = 1;
+
     function renderFieldTripDay2LKPD(isReadOnly) {
       const mainEl = document.querySelector('main');
       if (!mainEl) return;
@@ -1274,86 +1276,57 @@
       const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
         ? FincestemCore.assignments.getClassFacilitator(studentClass)
         : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
-
       const cleanNisn = String(studentNisn).trim();
-      const unpadded = cleanNisn.replace(/^0+/, '');
-      const padded = cleanNisn.padStart(10, '0');
-      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
 
-      let saved = null;
+      const urlParams = new URLSearchParams(window.location.search);
+      const reqSesi = parseInt(urlParams.get('sesi')) || 1;
+
+      // 1. Cek prasyarat Sesi 1 (Resume AKPOL)
+      let hasResumeAkpol = false;
       try {
-        for (const id of idVars) {
-          const stored = localStorage.getItem('fincestem_lkpd_ft_day2_' + id);
-          if (stored) {
-            saved = JSON.parse(stored);
-            break;
-          }
-        }
+        const rawA = localStorage.getItem('fincestem_materi_ft_day2_akpol_' + cleanNisn) || localStorage.getItem('fincestem_materi_ft_day2_' + cleanNisn);
+        if (rawA) hasResumeAkpol = true;
       } catch (e) {}
 
-      // Ambil data Day 1 untuk saldo awal default
-      let day1Remaining = 0;
+      // 2. Cek prasyarat Sesi 2 (Foto AKPOL & Resume Lawang Sewu)
+      let hasFotoAkpol = false;
       try {
-        const d1Stored = localStorage.getItem('fincestem_lkpd_ft_day1_' + studentNisn);
-        if (d1Stored) {
-          const d1 = JSON.parse(d1Stored);
-          if (d1 && d1.totalSaku) {
-            day1Remaining = Math.max(0, (d1.totalSaku || 0) - (d1.d1 || 0));
-          }
-        }
-      } catch(e) {}
-
-      // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan Day 2
-      let hasMateriDay2 = false;
-      try {
-        const cleanNisn = String(studentNisn).trim();
+        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${cleanNisn}`) === 'true') hasFotoAkpol = true;
         const unpadded = cleanNisn.replace(/^0+/, '');
-        const localMateri = localStorage.getItem('fincestem_materi_ft_day2_' + cleanNisn) ||
-                            localStorage.getItem('fincestem_materi_ft_day2_' + unpadded) ||
-                            localStorage.getItem('fincestem_materi_ft_day2_' + ('0' + unpadded));
-        if (localMateri) {
-          const parsed = JSON.parse(localMateri);
-          if (parsed && (parsed.conclusion || parsed.text || parsed.content)) {
-            hasMateriDay2 = true;
-          }
-        }
+        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${unpadded}`) === 'true') hasFotoAkpol = true;
       } catch (e) {}
 
-      if (saved && (saved.akpolQ1 || saved.submitted || saved.expJajan !== undefined)) {
-        hasMateriDay2 = true;
+      let hasResumeLawang = false;
+      try {
+        const rawL = localStorage.getItem('fincestem_materi_ft_day2_lawang_' + cleanNisn);
+        if (rawL) hasResumeLawang = true;
+      } catch (e) {}
+
+      // Tentukan sesi aktif
+      if (reqSesi === 2 && hasFotoAkpol) {
+        currentD2LkpdSession = 2;
+      } else {
+        currentD2LkpdSession = 1;
       }
 
-      const isSubmitted = saved && saved.submitted;
-      const isLockedByPrereq = !hasMateriDay2;
-      const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
-      const readOnlyAttr = isFormLocked ? 'disabled' : '';
+      // Ambil data tersimpan untuk Sesi 1 (AKPOL)
+      let savedAkpol = null;
+      try {
+        const rawAkpol = localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_ft_day2_' + cleanNisn);
+        if (rawAkpol) savedAkpol = JSON.parse(rawAkpol);
+      } catch (e) {}
+
+      // Ambil data tersimpan untuk Sesi 2 (Lawang Sewu)
+      let savedLawang = null;
+      try {
+        const rawLawang = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn);
+        if (rawLawang) savedLawang = JSON.parse(rawLawang);
+      } catch (e) {}
+
+      const isAkpolSubmitted = savedAkpol && savedAkpol.submitted;
+      const isLawangSubmitted = savedLawang && savedLawang.submitted;
 
       mainEl.innerHTML = `
-        ${isLockedByPrereq ? `
-          <!-- BANNER PERINGATAN PRASYARAT BERJENJANG -->
-          <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm animate-pulse-once">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                <span class="material-symbols-outlined text-2xl">lock</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
-                <h3 class="text-base font-extrabold text-amber-950">LKPD Day 2 Masih Terkunci!</h3>
-              </div>
-            </div>
-            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-              Anda belum membaca <strong>Modul Belajar Day 2 (AKPOL Semarang &amp; Lawang Sewu)</strong> atau belum menyimpan kesimpulan pemahaman di bagian bawah modul.
-            </p>
-            <div class="pt-1">
-              <a href="materi.html?day=2" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-all">
-                <span class="material-symbols-outlined text-base">menu_book</span>
-                <span>Buka Modul Belajar Day 2 Sekarang</span>
-                <span class="material-symbols-outlined text-sm">arrow_forward</span>
-              </a>
-            </div>
-          </div>
-        ` : ''}
-
         <!-- HEADER IDENTITAS RESMI LKPD DAY 2 -->
         <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3">
           <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -1362,11 +1335,11 @@
                 Field Trip • Day 2
               </span>
               <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-400 text-amber-950">
-                Resmi LKPD
+                Instrumen Esai Lapangan
               </span>
             </div>
-            <span id="ftD2StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}">
-              ${isSubmitted ? 'Telah Dikirim / Menunggu Penilaian' : 'Draft Lembar Kerja'}
+            <span id="ftD2StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${currentD2LkpdSession === 1 ? (isAkpolSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white') : (isLawangSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white')}">
+              ${currentD2LkpdSession === 1 ? (isAkpolSubmitted ? 'LKPD AKPOL Terkirim' : 'Draft LKPD AKPOL') : (isLawangSubmitted ? 'LKPD Lawang Sewu Terkirim' : 'Draft LKPD Lawang Sewu')}
             </span>
           </div>
 
@@ -1375,7 +1348,7 @@
               Lembar Kerja Peserta Didik (LKPD) Day 2
             </h2>
             <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium mt-0.5">
-              Observasi Karakter Disiplin AKPOL, Sains Arsitektur Lawang Sewu &amp; Buku Kas Hari Ke-2
+              Evaluasi Pemahaman Lapangan: Kunjungan AKPOL Semarang &amp; Sains Cagar Budaya Lawang Sewu
             </p>
           </div>
 
@@ -1400,346 +1373,506 @@
           </div>
         </div>
 
-        <!-- BAGIAN 1: OBSERVASI AKADEMI KEPOLISIAN (AKPOL) SEMARANG -->
-        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
-              <span class="material-symbols-outlined text-xl">military_tech</span>
-            </div>
-            <div>
-              <span class="text-xs uppercase font-extrabold text-blue-700 tracking-wider">Bagian A • Kunjungan Pagi (09.00 - 12.00)</span>
-              <h3 class="font-extrabold text-base sm:text-lg text-slate-900 leading-snug">Observasi Karakter &amp; Disiplin AKPOL Semarang</h3>
-            </div>
-          </div>
+        <!-- TAB NAVIGASI SESI LKPD DAY 2 -->
+        <div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-surface-container-high border border-outline-variant/30 shadow-2xs">
+          <!-- TAB SESI 1: LKPD AKPOL -->
+          <button type="button" onclick="switchD2LkpdSession(1)" id="btnTabLkpdD2S1" class="py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${currentD2LkpdSession === 1 ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:bg-white/60'}">
+            <span class="material-symbols-outlined text-base">military_tech</span>
+            <span>LKPD AKPOL (5 Soal)</span>
+            ${isAkpolSubmitted ? '<span class="text-emerald-300 font-bold text-xs">✓</span>' : ''}
+          </button>
 
-          <!-- Pertanyaan 1 -->
-          <div class="p-4 rounded-2xl bg-blue-50/50 border border-blue-200/80 flex flex-col gap-2">
-            <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
-              1. Tuliskan 3 sikap kedisiplinan taruna AKPOL yang paling menginspirasi Anda dan bagaimana cara Anda menerapkannya dalam kehidupan sehari-hari di SMAN 1 Belitang:
-            </label>
-            <textarea id="ftD2AkpolQ1" rows="3" ${readOnlyAttr} placeholder="Contoh: (1) Kedisiplinan bangun pagi pukul 04.00, (2) Kerapian pakaian dan kepatuhan aturan sekolah, (3) Sikap saling menghargai dan kerja sama antar teman..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${saved ? (saved.akpolQ1 || '') : ''}</textarea>
-          </div>
-
-          <!-- Pertanyaan 2 -->
-          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
-            <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
-              2. Mengapa doktrin moral <em>Tribrata</em> dan <em>Catur Prasetya</em> sangat krusial bagi calon perwira kepolisian dalam melayani masyarakat?
-            </label>
-            <textarea id="ftD2AkpolQ2" rows="3" ${readOnlyAttr} placeholder="Jelaskan pemahaman Anda mengenai pentingnya integritas, kejujuran, dan pengabdian tulus tanpa pamrih..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${saved ? (saved.akpolQ2 || '') : ''}</textarea>
-          </div>
+          <!-- TAB SESI 2: LKPD LAWANG SEWU -->
+          <button type="button" onclick="switchD2LkpdSession(2)" id="btnTabLkpdD2S2" class="py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${currentD2LkpdSession === 2 ? 'bg-amber-600 text-white shadow-xs' : (hasFotoAkpol ? 'text-slate-700 hover:bg-white/60' : 'text-slate-400 opacity-80')}">
+            <span class="material-symbols-outlined text-base">${hasFotoAkpol ? 'account_balance' : 'lock'}</span>
+            <span>LKPD Lawang Sewu (5 Soal)</span>
+            ${isLawangSubmitted ? '<span class="text-emerald-300 font-bold text-xs">✓</span>' : ''}
+          </button>
         </div>
 
-        <!-- BAGIAN 2: ANALISIS SAINS ARSITEKTUR & SEJARAH LAWANG SEWU -->
-        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-md">
-              <span class="material-symbols-outlined text-xl">account_balance</span>
-            </div>
-            <div>
-              <span class="text-xs uppercase font-extrabold text-amber-700 tracking-wider">Bagian B • Kunjungan Siang (13.00 - 14.30)</span>
-              <h3 class="font-extrabold text-base sm:text-lg text-slate-900 leading-snug">Sains Arsitektur Pasif &amp; Sejarah Lawang Sewu</h3>
-            </div>
-          </div>
-
-          <!-- Pertanyaan 3 -->
-          <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/80 flex flex-col gap-2">
-            <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
-              3. Berdasarkan pengamatan langsung Anda di lokasi, mengapa ruangan Lawang Sewu tetap sejuk di siang hari tanpa pendingin ruangan (AC)? Jelaskan prinsip kerja ventilasi silang (*cross-ventilation*):
-            </label>
-            <textarea id="ftD2LawangQ1" rows="3" ${readOnlyAttr} placeholder="Jelaskan pengaruh ribuan pintu/jendela berhadapan lurus, ketinggian plafon lebih dari 4 meter yang membuang udara panas, serta lorong penyejuk bawah tanah..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${saved ? (saved.lawangQ1 || '') : ''}</textarea>
-          </div>
-
-          <!-- Pertanyaan 4 -->
-          <div class="p-4 rounded-2xl bg-rose-50/50 border border-rose-200/80 flex flex-col gap-2">
-            <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
-              4. Nilai perjuangan apa yang dapat Anda petik dari pemuda Angkatan Muda Kereta Api (AMKA) dalam Pertempuran Lima Hari di Semarang?
-            </label>
-            <textarea id="ftD2LawangQ2" rows="3" ${readOnlyAttr} placeholder="Tuliskan hikmah keberanian, cinta tanah air, dan persatuan pemuda dalam menjaga aset bangsa..." class="w-full p-3 rounded-xl border border-rose-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-rose-500/20 leading-relaxed font-medium">${saved ? (saved.lawangQ2 || '') : ''}</textarea>
-          </div>
-        </div>
-
-        <!-- BAGIAN 3: BUKU KAS HARIAN & EVALUASI FINANSIAL DAY 2 (SEMARANG -> MALANG) -->
-        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
-          <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-md">
-              <span class="material-symbols-outlined text-xl">savings</span>
-            </div>
-            <div>
-              <span class="text-xs uppercase font-extrabold text-emerald-700 tracking-wider">Bagian C • Literasi Finansial Lapangan</span>
-              <h3 class="font-extrabold text-base sm:text-lg text-slate-900 leading-snug">Buku Kas Day 2 &amp; Evaluasi Uang Saku</h3>
-            </div>
-          </div>
-
-          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-            Catat pengeluaran riil uang saku Anda hari ini selama beraktivitas di Semarang dan di perjalanan tol Trans-Jawa menuju Kota Malang. Seluruh angka otomatis terbaca titik ribuan.
-          </p>
-
-          <!-- Input Tabel Pengeluaran Day 2 -->
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm">
-            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5">
-              <label class="font-bold text-slate-700">Saldo Uang Saku Awal Day 2 (Rp):</label>
-              <input type="text" id="ftD2SaldoAwal" ${readOnlyAttr} oninput="formatRupiahInput(this); calculateDay2Finances();" value="${formatNumberId(saved ? saved.saldoAwal : (day1Remaining || 500000))}" placeholder="Contoh: 500.000" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white font-black text-slate-900 outline-none focus:border-emerald-600 text-sm">
-              <span class="text-[10px] text-slate-400">Diambil dari sisa uang saku setelah Day 1</span>
-            </div>
-
-            <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex flex-col gap-1.5">
-              <label class="font-bold text-amber-950">1. Jajan / Makanan Rest Area Tol (Rp):</label>
-              <input type="text" id="ftD2ExpJajan" ${readOnlyAttr} oninput="formatRupiahInput(this); calculateDay2Finances();" value="${formatNumberId(saved ? saved.expJajan : 35000)}" placeholder="Contoh: 35.000" class="w-full px-3 py-2 rounded-xl border border-amber-300 bg-white font-bold text-slate-900 outline-none focus:border-amber-600 text-sm">
-              <span class="text-[10px] text-amber-800">Camilan/minuman selama perjalanan</span>
-            </div>
-
-            <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 flex flex-col gap-1.5">
-              <label class="font-bold text-blue-950">2. Cenderamata / Suvenir Semarang (Rp):</label>
-              <input type="text" id="ftD2ExpSuvenir" ${readOnlyAttr} oninput="formatRupiahInput(this); calculateDay2Finances();" value="${formatNumberId(saved ? saved.expSuvenir : 25000)}" placeholder="Contoh: 25.000" class="w-full px-3 py-2 rounded-xl border border-blue-300 bg-white font-bold text-slate-900 outline-none focus:border-blue-600 text-sm">
-              <span class="text-[10px] text-blue-800">Gantungan kunci/stiker Lawang Sewu/AKPOL</span>
-            </div>
-
-            <div class="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200 flex flex-col gap-1.5">
-              <label class="font-bold text-rose-950">3. Kebutuhan Darurat / Obat / Lainnya (Rp):</label>
-              <input type="text" id="ftD2ExpLain" ${readOnlyAttr} oninput="formatRupiahInput(this); calculateDay2Finances();" value="${formatNumberId(saved ? saved.expLain : 0)}" placeholder="Contoh: 0" class="w-full px-3 py-2 rounded-xl border border-rose-300 bg-white font-bold text-slate-900 outline-none focus:border-rose-600 text-sm">
-              <span class="text-[10px] text-rose-800">Obat anti mabuk / pulsa / jasa toilet</span>
-            </div>
-          </div>
-
-          <!-- KARTU HASIL KALKULASI FINANSIAL DAY 2 -->
-          <div class="p-4 rounded-2xl bg-gradient-to-r from-emerald-500/15 via-teal-500/10 to-transparent border border-emerald-300/80 flex flex-col gap-2.5">
-            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-              <div class="p-2.5 rounded-xl bg-white/80 border border-emerald-200 shadow-2xs flex flex-col">
-                <span class="text-[11px] font-bold text-slate-600">Total Belanja Hari Ini:</span>
-                <span id="ftD2DispTotalExp" class="text-base font-black text-rose-600 mt-0.5">Rp 0</span>
+        <!-- ========================================== -->
+        <!-- KONTEN SESI 1: LKPD AKPOL (5 SOAL ESAI) -->
+        <!-- ========================================== -->
+        <div id="contentLkpdD2S1" class="${currentD2LkpdSession === 1 ? 'flex' : 'hidden'} flex-col gap-4">
+          ${!hasResumeAkpol ? `
+            <div class="p-5 sm:p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">lock</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Prasyarat Belum Terpenuhi</span>
+                  <h3 class="text-base sm:text-lg font-black text-amber-950">LKPD AKPOL Masih Terkunci!</h3>
+                </div>
               </div>
-              <div class="p-2.5 rounded-xl bg-white/80 border border-emerald-200 shadow-2xs flex flex-col">
-                <span class="text-[11px] font-bold text-slate-600">Sisa Saldo untuk Malang:</span>
-                <span id="ftD2DispSisaSaldo" class="text-base font-black text-emerald-600 mt-0.5">Rp 0</span>
-              </div>
-              <div class="col-span-2 sm:col-span-1 p-2.5 rounded-xl bg-white/80 border border-emerald-200 shadow-2xs flex flex-col">
-                <span class="text-[11px] font-bold text-slate-600">Status Kesehatan Kas:</span>
-                <span id="ftD2DispDiagnosis" class="text-xs font-black text-emerald-700 mt-0.5">Sangat Sehat ✅</span>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Anda belum membaca modul materi AKPOL atau belum menyimpan kesimpulan pemahaman materi AKPOL.
+              </p>
+              <div class="pt-1">
+                <a href="materi.html?day=2&sesi=1" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-all">
+                  <span class="material-symbols-outlined text-base">menu_book</span>
+                  <span>Buka &amp; Simpan Resume Modul AKPOL</span>
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
               </div>
             </div>
+          ` : ''}
 
-            <!-- Komitmen Penghematan -->
-            <div class="flex flex-col gap-1 pt-1">
-              <label class="text-xs font-bold text-slate-800">Komitmen Pengendalian Uang Saku Anda untuk Hari Esok di Malang:</label>
-              <input type="text" id="ftD2Komitmen" ${readOnlyAttr} value="${saved ? (saved.komitmen || '') : 'Saya berkomitmen menahan jajan berlebih agar pos belanja apel dan oleh-oleh keluarga di Jogja tetap aman.'}" placeholder="Tuliskan komitmen finansial Anda..." class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm font-medium outline-none focus:border-emerald-600">
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-blue-200/80 shadow-xs flex flex-col gap-4">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                  <span class="material-symbols-outlined text-xl">military_tech</span>
+                </div>
+                <div>
+                  <span class="text-xs uppercase font-extrabold text-blue-700 tracking-wider">Sesi 1 • Kunjungan Pagi (09.00 – 12.00)</span>
+                  <h3 class="font-extrabold text-base sm:text-lg text-slate-900 leading-snug">5 Soal Esai Pemahaman AKPOL Semarang</h3>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-black bg-blue-100 text-blue-800">Bobot: 25 Poin</span>
+            </div>
+
+            <!-- Soal 1: Visi AKPOL -->
+            <div class="p-4 rounded-2xl bg-blue-50/50 border border-blue-200/80 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                1. Tuliskan rumusan Visi Akademi Kepolisian (AKPOL) yang menjadi cita-cita utama dalam pembentukan perwira Polri:
+              </label>
+              <textarea id="d2AkpolQ1" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan rumusan visi AKPOL secara lengkap..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q1 || '') : ''}</textarea>
+            </div>
+
+            <!-- Soal 2: Kepanjangan & Status AKPOL -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                2. Apa kepanjangan dari singkatan AKPOL, berada di bawah naungan lembaga polri apa, serta di kota mana kampus pusatnya berada?
+              </label>
+              <textarea id="d2AkpolQ2" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan kepanjangan, lembaga penaung (Lemdiklat Polri), dan kota lokasinya..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q2 || '') : ''}</textarea>
+            </div>
+
+            <!-- Soal 3: Tingkatan Kepangkatan Taruna (Perkap 21/2010) -->
+            <div class="p-4 rounded-2xl bg-blue-50/50 border border-blue-200/80 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                3. Berdasarkan Peraturan Kapolri (Perkap) No. 21 Tahun 2010, sebutkan secara urut 4 tingkatan kepangkatan Taruna AKPOL dari tingkat I (awal masuk) sampai dengan tingkat IV (kelulusan):
+              </label>
+              <textarea id="d2AkpolQ3" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan urutan pangkat: Bharatutar, Brigdatar, Brigtutar, Brigtar, serta pangkat saat dilantik kelulusan..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q3 || '') : ''}</textarea>
+            </div>
+
+            <!-- Soal 4: Nama Gubernur & Wagub AKPOL -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                4. Sebutkan nama lengkap beserta pangkat dan gelar resmi dari Gubernur AKPOL dan Wakil Gubernur AKPOL yang saat ini memimpin Akademi Kepolisian:
+              </label>
+              <textarea id="d2AkpolQ4" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan nama lengkap Gubernur dan Wagub beserta pangkat jenderal dan gelar..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q4 || '') : ''}</textarea>
+            </div>
+
+            <!-- Soal 5: 5 Fasilitas Utama Kampus AKPOL -->
+            <div class="p-4 rounded-2xl bg-blue-50/50 border border-blue-200/80 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                5. Sebutkan dan jelaskan fungsi dari minimal 5 Fasilitas Utama yang terdapat di lingkungan Kampus Akademi Kepolisian (dari 9 fasilitas resmi web akpol.ac.id):
+              </label>
+              <textarea id="d2AkpolQ5" rows="4" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Sebutkan minimal 5 fasilitas (contoh: Smart Classroom, Lab Bahasa, Lab Cyber Crime, Kolam Renang Standar Internasional, Gedung Catur Prasetya, dsb.) beserta fungsinya..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q5 || '') : ''}</textarea>
             </div>
           </div>
-        </div>
 
-        <!-- TOMBOL SIMPAN & SUBMIT LKPD DAY 2 -->
-        <div class="p-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
-          <a href="dashboard.html?day=2" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all text-center">
-            <span class="material-symbols-outlined text-base">arrow_back</span>
-            <span>Kembali ke Day 2</span>
-          </a>
-
-          ${isSubmitted ? `
-            <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
-              <span class="material-symbols-outlined text-teal-600">lock</span>
-              <span>LKPD Day 2 Telah Dikirim &amp; Terkunci</span>
-            </div>
-            <a href="dashboard.html?day=2&task=asesmen" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-teal-700 hover:bg-teal-800 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
-              <span>Lanjut ke Asesmen Day 2</span>
-              <span class="material-symbols-outlined text-base">arrow_forward</span>
+          <!-- TOMBOL SIMPAN LKPD AKPOL -->
+          <div class="p-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+            <a href="materi.html?day=2&sesi=1" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all text-center">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Kembali ke Modul AKPOL</span>
             </a>
-          ` : (!isLockedByPrereq ? `
-            <button id="saveFtLkpdDay2Btn" onclick="saveFieldTripDay2LKPD()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-              <span class="material-symbols-outlined text-lg">save</span>
-              <span>Simpan Lembar Kerja Peserta Didik</span>
-            </button>
-          ` : `
-            <button disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm cursor-not-allowed flex items-center justify-center gap-2">
-              <span class="material-symbols-outlined text-base">lock</span>
-              <span>Selesaikan Modul Day 2 Terlebih Dahulu</span>
-            </button>
-          `)}
+
+            ${isAkpolSubmitted ? `
+              <div class="p-3 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-teal-600">lock</span>
+                <span>LKPD AKPOL Telah Dikirim &amp; Terkunci</span>
+              </div>
+              <a href="dokumentasi.html?day=2&sesi=1" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
+                <span class="material-symbols-outlined text-base">photo_camera</span>
+                <span>Lanjut ke Foto Dokumentasi AKPOL</span>
+              </a>
+            ` : (hasResumeAkpol ? `
+              <button id="btnSaveLkpdAkpol" onclick="saveLkpdAkpol()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <span class="material-symbols-outlined text-lg">save</span>
+                <span>Simpan LKPD AKPOL &amp; Lanjut ke Foto</span>
+              </button>
+            ` : `
+              <button disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm cursor-not-allowed flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-base">lock</span>
+                <span>Selesaikan Modul AKPOL Terlebih Dahulu</span>
+              </button>
+            `)}
+          </div>
         </div>
 
-        <!-- MODAL KONFIRMASI TAHAP BERIKUTNYA DAY 2 -->
-        <div id="modalLkpdFtDay2Success" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none">
+        <!-- ========================================== -->
+        <!-- KONTEN SESI 2: LKPD LAWANG SEWU (5 SOAL ESAI) -->
+        <!-- ========================================== -->
+        <div id="contentLkpdD2S2" class="${currentD2LkpdSession === 2 ? 'flex' : 'hidden'} flex-col gap-4">
+          ${!hasFotoAkpol ? `
+            <div class="p-5 sm:p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">lock</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
+                  <h3 class="text-base sm:text-lg font-black text-amber-950">LKPD Lawang Sewu Masih Terkunci!</h3>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Anda harus menyelesaikan seluruh rangkaian <strong>Sesi 1 (LKPD AKPOL &amp; Upload Foto Dokumentasi AKPOL)</strong> terlebih dahulu sebelum mengerjakan LKPD Lawang Sewu.
+              </p>
+              <div class="flex items-center gap-2 pt-1 flex-wrap">
+                <button type="button" onclick="switchD2LkpdSession(1)" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-base">arrow_back</span>
+                  <span>Buka LKPD AKPOL</span>
+                </button>
+                <a href="dokumentasi.html?day=2&sesi=1" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Unggah Foto AKPOL</span>
+                </a>
+              </div>
+            </div>
+          ` : (!hasResumeLawang ? `
+            <div class="p-5 sm:p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">lock</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Prasyarat Modul Sesi 2</span>
+                  <h3 class="text-base sm:text-lg font-black text-amber-950">Resume Modul Lawang Sewu Belum Disimpan!</h3>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Anda wajib membaca modul Lawang Sewu dan menyimpan kesimpulan pemahaman materi Lawang Sewu terlebih dahulu.
+              </p>
+              <div class="pt-1">
+                <a href="materi.html?day=2&sesi=2" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-all">
+                  <span class="material-symbols-outlined text-base">menu_book</span>
+                  <span>Buka &amp; Simpan Resume Lawang Sewu</span>
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+          ` : '')}
+
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-amber-200/80 shadow-xs flex flex-col gap-4">
+            <div class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-md">
+                  <span class="material-symbols-outlined text-xl">account_balance</span>
+                </div>
+                <div>
+                  <span class="text-xs uppercase font-extrabold text-amber-700 tracking-wider">Sesi 2 • Kunjungan Siang (13.00 – 14.30)</span>
+                  <h3 class="font-extrabold text-base sm:text-lg text-slate-900 leading-snug">5 Soal Esai Cagar Budaya Lawang Sewu</h3>
+                </div>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900">Bobot: 25 Poin</span>
+            </div>
+
+            <!-- Soal 1: Kepanjangan NISM & Fungsi Awal -->
+            <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/80 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                1. Apa kepanjangan dari NISM, dan apa fungsi utama gedung Lawang Sewu saat pertama kali dibangun pada masa Hindia Belanda?
+              </label>
+              <textarea id="d2LawangQ1" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Tuliskan kepanjangan NISM dan perannya sebagai kantor pusat perkeretaapian..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q1 || '') : ''}</textarea>
+            </div>
+
+            <!-- Soal 2: Etimologi & Fakta Jumlah Pintu -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                2. Mengapa masyarakat Semarang menyebut gedung ini "Lawang Sewu" (Seribu Pintu), dan berapa jumlah daun pintu fisik yang sebenarnya berdasarkan data sejarah arsitektur?
+              </label>
+              <textarea id="d2LawangQ2" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Jelaskan alasan sebutan Lawang Sewu dan jumlah fisik pintu sebenarnya (928 bidang pintu)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q2 || '') : ''}</textarea>
+            </div>
+
+            <!-- Soal 3: Arsitek & Gaya Nieuwe Indische Bouwstijl -->
+            <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/80 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                3. Sebutkan nama arsitek perancang gedung Lawang Sewu serta gaya arsitektur khas yang diterapkannya:
+              </label>
+              <textarea id="d2LawangQ3" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Tuliskan arsitek (Prof. Jacob F. Klinkhamer & B.J. Ouëndag) serta gaya Nieuwe Indische Bouwstijl..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q3 || '') : ''}</textarea>
+            </div>
+
+            <!-- Soal 4: STEM Fisika Bangunan Tropis -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                4. Bagaimana para perancang Lawang Sewu menyiasati iklim panas Kota Semarang agar gedung tetap sejuk alami tanpa AC? Jelaskan minimal 2 rekayasa fisik bangunannya:
+              </label>
+              <textarea id="d2LawangQ4" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Jelaskan prinsip ventilasi silang, plafon tinggi > 4 meter, atau ruang bawah tanah penampung air..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q4 || '') : ''}</textarea>
+            </div>
+
+            <!-- Soal 5: Heroisme Pertempuran Lima Hari AMKA -->
+            <div class="p-4 rounded-2xl bg-amber-50/50 border border-amber-200/80 flex flex-col gap-2">
+              <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
+                5. Jelaskan peristiwa bersejarah yang pernah terjadi di Lawang Sewu pada bulan Oktober 1945 dan organisasi pemuda apa yang berjuang mempertahankan gedung tersebut:
+              </label>
+              <textarea id="d2LawangQ5" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Jelaskan Pertempuran Lima Hari di Semarang melawan Kidō Butai dan perjuangan pemuda AMKA..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q5 || '') : ''}</textarea>
+            </div>
+          </div>
+
+          <!-- TOMBOL SIMPAN LKPD LAWANG SEWU -->
+          <div class="p-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
+            <a href="materi.html?day=2&sesi=2" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all text-center">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Kembali ke Modul Lawang Sewu</span>
+            </a>
+
+            ${isLawangSubmitted ? `
+              <div class="p-3 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
+                <span class="material-symbols-outlined text-teal-600">lock</span>
+                <span>LKPD Lawang Sewu Telah Dikirim &amp; Terkunci</span>
+              </div>
+              <a href="dokumentasi.html?day=2&sesi=2" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
+                <span class="material-symbols-outlined text-base">photo_camera</span>
+                <span>Lanjut ke Foto Dokumentasi Lawang Sewu</span>
+              </a>
+            ` : (hasFotoAkpol && hasResumeLawang ? `
+              <button id="btnSaveLkpdLawang" onclick="saveLkpdLawang()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <span class="material-symbols-outlined text-lg">save</span>
+                <span>Simpan LKPD Lawang Sewu &amp; Lanjut ke Foto</span>
+              </button>
+            ` : `
+              <button disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm cursor-not-allowed flex items-center justify-center gap-2">
+                <span class="material-symbols-outlined text-base">lock</span>
+                <span>Tuntaskan Sesi 1 &amp; Modul Lawang Sewu Terlebih Dahulu</span>
+              </button>
+            `)}
+          </div>
+        </div>
+
+        <!-- MODAL NOTIFIKASI BERHASIL DISIMPAN DAY 2 -->
+        <div id="modalD2LkpdSuccess" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none">
           <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 flex flex-col gap-4 transform transition-all duration-300 scale-95">
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
+              <div id="modalD2IconBox" class="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md">
                 <span class="material-symbols-outlined text-2xl">check_circle</span>
               </div>
               <div class="flex flex-col">
-                <span class="text-xs font-black uppercase text-blue-700 tracking-wider">Tahap 2 Selesai</span>
-                <h3 class="text-base sm:text-lg font-black text-slate-900 leading-snug">LKPD Day 2 Berhasil Disimpan!</h3>
+                <span id="modalD2Subtitle" class="text-xs font-black uppercase text-blue-700 tracking-wider">LKPD Berhasil Disimpan</span>
+                <h3 id="modalD2Title" class="text-base sm:text-lg font-black text-slate-900 leading-snug">LKPD AKPOL Tersimpan!</h3>
               </div>
             </div>
 
-            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
-              Data observasi AKPOL, analisis Lawang Sewu, dan buku kas Day 2 Anda telah tersimpan. Silakan pilih langkah yang ingin Anda lakukan selanjutnya:
+            <p id="modalD2Desc" class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+              Jawaban esai Anda telah tersimpan dengan aman di server. Langkah berikutnya adalah mengambil foto geotag di lokasi kunjungan.
             </p>
 
             <div class="flex flex-col gap-2.5 pt-2">
-              <!-- Opsi 1: Lanjut ke Asesmen Day 2 -->
-              <a href="dashboard.html?day=2&task=asesmen" class="w-full py-3.5 px-4 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center">
-                <span class="material-symbols-outlined text-xl">fact_check</span>
-                <span>Lanjut ke Asesmen Day 2 (Tahap 3)</span>
+              <a id="modalD2NextBtn" href="dokumentasi.html?day=2&sesi=1" class="w-full py-3.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                <span class="material-symbols-outlined text-xl">photo_camera</span>
+                <span id="modalD2NextText">Lanjut ke Foto Dokumentasi AKPOL</span>
                 <span class="material-symbols-outlined text-lg">arrow_forward</span>
               </a>
-
-              <!-- Opsi 2: Kembali ke Halaman Day 2 -->
-              <a href="dashboard.html?day=2" class="w-full py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all text-center">
-                <span class="material-symbols-outlined text-lg">home</span>
-                <span>Kembali ke Halaman Day 2</span>
-              </a>
-
-              <!-- Opsi 3: Tetap di LKPD -->
-              <button type="button" onclick="closeFtLkpdDay2Modal()" class="w-full py-2 text-xs font-semibold text-slate-400 hover:text-slate-600 transition-colors cursor-pointer">
-                Tetap di Lembar Kerja Ini
+              <button type="button" onclick="closeD2LkpdSuccessModal()" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all text-center cursor-pointer">
+                Tutup Jendela Ini
               </button>
             </div>
           </div>
         </div>
-
-        <!-- Copyright Footer -->
-        <div class="text-center pt-2 pb-4">
-          <p class="font-label-sm text-label-sm text-outline text-xs">
-            &copy; 2026 Kurikulum SMAN 1 Belitang
-          </p>
-        </div>
       `;
-
-      calculateDay2Finances();
     }
 
-    function calculateDay2Finances() {
-      const saldoAwal = parseRupiah(document.getElementById('ftD2SaldoAwal') ? document.getElementById('ftD2SaldoAwal').value : 0);
-      const expJajan = parseRupiah(document.getElementById('ftD2ExpJajan') ? document.getElementById('ftD2ExpJajan').value : 0);
-      const expSuvenir = parseRupiah(document.getElementById('ftD2ExpSuvenir') ? document.getElementById('ftD2ExpSuvenir').value : 0);
-      const expLain = parseRupiah(document.getElementById('ftD2ExpLain') ? document.getElementById('ftD2ExpLain').value : 0);
-
-      const totalExp = expJajan + expSuvenir + expLain;
-      const sisaSaldo = saldoAwal - totalExp;
-
-      const elTotalExp = document.getElementById('ftD2DispTotalExp');
-      const elSisaSaldo = document.getElementById('ftD2DispSisaSaldo');
-      const elDiagnosis = document.getElementById('ftD2DispDiagnosis');
-
-      if (elTotalExp) elTotalExp.textContent = 'Rp ' + totalExp.toLocaleString('id-ID');
-      if (elSisaSaldo) {
-        elSisaSaldo.textContent = 'Rp ' + sisaSaldo.toLocaleString('id-ID');
-        elSisaSaldo.className = sisaSaldo < 0 ? 'text-base font-black text-rose-600 mt-0.5' : 'text-base font-black text-emerald-600 mt-0.5';
-      }
-
-      if (elDiagnosis) {
-        if (saldoAwal > 0) {
-          const rasio = totalExp / saldoAwal;
-          if (rasio <= 0.25) {
-            elDiagnosis.textContent = 'Sangat Sehat ✅ (Pengeluaran Terkendali)';
-            elDiagnosis.className = 'text-xs font-black text-emerald-700 mt-0.5';
-          } else if (rasio <= 0.5) {
-            elDiagnosis.textContent = 'Cukup Sehat ⚠️ (Jaga Sisa Kas)';
-            elDiagnosis.className = 'text-xs font-black text-amber-700 mt-0.5';
-          } else {
-            elDiagnosis.textContent = 'Boros 🚨 (Kurangi Jajan Non-Esensial)';
-            elDiagnosis.className = 'text-xs font-black text-rose-700 mt-0.5';
-          }
-        } else {
-          elDiagnosis.textContent = 'Belum Ada Anggaran';
-          elDiagnosis.className = 'text-xs font-bold text-slate-500 mt-0.5';
-        }
-      }
-    }
-
-    function saveFieldTripDay2LKPD() {
+    function switchD2LkpdSession(sesi) {
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
-      const akpolQ1 = (document.getElementById('ftD2AkpolQ1') ? document.getElementById('ftD2AkpolQ1').value : '').trim();
-      const akpolQ2 = (document.getElementById('ftD2AkpolQ2') ? document.getElementById('ftD2AkpolQ2').value : '').trim();
-      const lawangQ1 = (document.getElementById('ftD2LawangQ1') ? document.getElementById('ftD2LawangQ1').value : '').trim();
-      const lawangQ2 = (document.getElementById('ftD2LawangQ2') ? document.getElementById('ftD2LawangQ2').value : '').trim();
+      const cleanNisn = String(studentNisn).trim();
 
-      if (!akpolQ1 || !lawangQ1) {
-        FincestemCore.ui.toast('Harap isi jawaban observasi AKPOL dan Lawang Sewu sebelum menyimpan lembar kerja!', 'warning');
+      let hasFotoAkpol = false;
+      try {
+        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${cleanNisn}`) === 'true') hasFotoAkpol = true;
+        const unpadded = cleanNisn.replace(/^0+/, '');
+        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${unpadded}`) === 'true') hasFotoAkpol = true;
+      } catch (e) {}
+
+      if (sesi === 2 && !hasFotoAkpol) {
+        FincestemCore.ui.toast('LKPD Lawang Sewu masih terkunci! Anda wajib menyelesaikan pengunggahan Foto Dokumentasi AKPOL terlebih dahulu.', 'warning');
         return;
       }
 
-      const saldoAwal = parseRupiah(document.getElementById('ftD2SaldoAwal') ? document.getElementById('ftD2SaldoAwal').value : 0);
-      const expJajan = parseRupiah(document.getElementById('ftD2ExpJajan') ? document.getElementById('ftD2ExpJajan').value : 0);
-      const expSuvenir = parseRupiah(document.getElementById('ftD2ExpSuvenir') ? document.getElementById('ftD2ExpSuvenir').value : 0);
-      const expLain = parseRupiah(document.getElementById('ftD2ExpLain') ? document.getElementById('ftD2ExpLain').value : 0);
-      const komitmen = (document.getElementById('ftD2Komitmen') ? document.getElementById('ftD2Komitmen').value : '').trim();
-      const totalExp = expJajan + expSuvenir + expLain;
-      const sisaSaldo = saldoAwal - totalExp;
+      currentD2LkpdSession = sesi;
+      const c1 = document.getElementById('contentLkpdD2S1');
+      const c2 = document.getElementById('contentLkpdD2S2');
+      const b1 = document.getElementById('btnTabLkpdD2S1');
+      const b2 = document.getElementById('btnTabLkpdD2S2');
+      const badge = document.getElementById('ftD2StatusBadge');
+
+      if (sesi === 1) {
+        if (c1) { c1.classList.remove('hidden'); c1.classList.add('flex'); }
+        if (c2) { c2.classList.add('hidden'); c2.classList.remove('flex'); }
+        if (b1) { b1.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer bg-blue-600 text-white shadow-xs'; }
+        if (b2) { b2.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-700 hover:bg-white/60'; }
+        if (badge) {
+          const raw = localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + cleanNisn);
+          badge.textContent = raw ? 'LKPD AKPOL Terkirim' : 'Draft LKPD AKPOL';
+          badge.className = `px-3 py-1 rounded-full text-xs font-bold ${raw ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}`;
+        }
+      } else {
+        if (c2) { c2.classList.remove('hidden'); c2.classList.add('flex'); }
+        if (c1) { c1.classList.add('hidden'); c1.classList.remove('flex'); }
+        if (b2) { b2.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer bg-amber-600 text-white shadow-xs'; }
+        if (b1) { b1.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-700 hover:bg-white/60'; }
+        if (badge) {
+          const raw = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn);
+          badge.textContent = raw ? 'LKPD Lawang Sewu Terkirim' : 'Draft LKPD Lawang Sewu';
+          badge.className = `px-3 py-1 rounded-full text-xs font-bold ${raw ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}`;
+        }
+      }
+      window.scrollTo({ top: 220, behavior: 'smooth' });
+    }
+
+    function saveLkpdAkpol() {
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const cleanNisn = String(studentNisn).trim();
+      const q1 = (document.getElementById('d2AkpolQ1') ? document.getElementById('d2AkpolQ1').value : '').trim();
+      const q2 = (document.getElementById('d2AkpolQ2') ? document.getElementById('d2AkpolQ2').value : '').trim();
+      const q3 = (document.getElementById('d2AkpolQ3') ? document.getElementById('d2AkpolQ3').value : '').trim();
+      const q4 = (document.getElementById('d2AkpolQ4') ? document.getElementById('d2AkpolQ4').value : '').trim();
+      const q5 = (document.getElementById('d2AkpolQ5') ? document.getElementById('d2AkpolQ5').value : '').trim();
+
+      if (!q1 || !q2 || !q3 || !q4 || !q5) {
+        FincestemCore.ui.toast('Harap lengkapi seluruh 5 butir soal esai LKPD AKPOL sebelum menyimpan!', 'warning');
+        return;
+      }
 
       const payload = {
         day: 2,
-        akpolQ1: akpolQ1,
-        akpolQ2: akpolQ2,
-        lawangQ1: lawangQ1,
-        lawangQ2: lawangQ2,
-        saldoAwal: saldoAwal,
-        expJajan: expJajan,
-        expSuvenir: expSuvenir,
-        expLain: expLain,
-        totalExp: totalExp,
-        sisaSaldo: sisaSaldo,
-        komitmen: komitmen,
+        session: 'akpol',
+        q1: q1,
+        q2: q2,
+        q3: q3,
+        q4: q4,
+        q5: q5,
         submitted: true,
         submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
       };
 
-      const btn = document.getElementById('saveFtLkpdDay2Btn');
+      const btn = document.getElementById('btnSaveLkpdAkpol');
       if (btn) {
-        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan Lembar Kerja...</span>';
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan LKPD AKPOL...</span>';
         btn.classList.add('pointer-events-none', 'opacity-80');
       }
 
       setTimeout(() => {
         try {
-          localStorage.setItem('fincestem_lkpd_ft_day2_' + studentNisn, JSON.stringify(payload));
-        } catch(e) {}
+          localStorage.setItem('fincestem_lkpd_ft_day2_akpol_' + cleanNisn, JSON.stringify(payload));
+          localStorage.setItem('fincestem_lkpd_ft_day2_' + cleanNisn, JSON.stringify(payload));
+        } catch (e) {}
 
-        if (FincestemCore.progress && studentNisn) {
-          FincestemCore.progress.submitTask(studentNisn, 2, 'lkpd', payload);
+        if (FincestemCore.progress && cleanNisn) {
+          FincestemCore.progress.submitTask(cleanNisn, 2, 'lkpd', payload);
         }
 
-        if (btn) {
-          btn.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Lembar Kerja Berhasil Disimpan</span>';
-          btn.classList.remove('pointer-events-none', 'opacity-80');
+        FincestemCore.ui.toast('LKPD AKPOL berhasil disimpan! Silakan lanjut mengunggah foto geotag AKPOL.', 'success');
+
+        // Buka modal sukses
+        const modal = document.getElementById('modalD2LkpdSuccess');
+        const iconBox = document.getElementById('modalD2IconBox');
+        const sub = document.getElementById('modalD2Subtitle');
+        const tit = document.getElementById('modalD2Title');
+        const desc = document.getElementById('modalD2Desc');
+        const nextBtn = document.getElementById('modalD2NextBtn');
+        const nextText = document.getElementById('modalD2NextText');
+
+        if (modal) {
+          if (iconBox) iconBox.className = 'w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md';
+          if (sub) { sub.textContent = 'Sesi 1 Tuntas'; sub.className = 'text-xs font-black uppercase text-blue-700 tracking-wider'; }
+          if (tit) tit.textContent = 'LKPD AKPOL Berhasil Disimpan!';
+          if (desc) desc.textContent = 'Kelima jawaban esai Anda telah tersimpan di server. Lanjutkan mengambil dan mengunggah Foto Dokumentasi Geotag AKPOL.';
+          if (nextBtn) {
+            nextBtn.href = 'dokumentasi.html?day=2&sesi=1';
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center';
+          }
+          if (nextText) nextText.textContent = 'Lanjut ke Foto Dokumentasi AKPOL';
+
+          modal.classList.remove('opacity-0', 'pointer-events-none');
+          modal.classList.add('opacity-100');
+          const inner = modal.querySelector('div');
+          if (inner) { inner.classList.remove('scale-95'); inner.classList.add('scale-100'); }
         }
-
-        const statusBadge = document.getElementById('ftD2StatusBadge');
-        if (statusBadge) {
-          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800';
-          statusBadge.textContent = 'Telah Dikirim / Menunggu Penilaian';
-        }
-
-        FincestemCore.ui.toast('LKPD Day 2 Field Trip berhasil disimpan!', 'success');
-
-        setTimeout(() => {
-          showFtLkpdDay2SuccessModal();
-        }, 300);
-      }, 500);
+      }, 400);
     }
 
-    function showFtLkpdDay2SuccessModal() {
-      const modal = document.getElementById('modalLkpdFtDay2Success');
-      if (!modal) return;
-      modal.classList.remove('opacity-0', 'pointer-events-none');
-      modal.classList.add('opacity-100');
-      const inner = modal.querySelector('div');
-      if (inner) {
-        inner.classList.remove('scale-95');
-        inner.classList.add('scale-100');
+    function saveLkpdLawang() {
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const cleanNisn = String(studentNisn).trim();
+      const q1 = (document.getElementById('d2LawangQ1') ? document.getElementById('d2LawangQ1').value : '').trim();
+      const q2 = (document.getElementById('d2LawangQ2') ? document.getElementById('d2LawangQ2').value : '').trim();
+      const q3 = (document.getElementById('d2LawangQ3') ? document.getElementById('d2LawangQ3').value : '').trim();
+      const q4 = (document.getElementById('d2LawangQ4') ? document.getElementById('d2LawangQ4').value : '').trim();
+      const q5 = (document.getElementById('d2LawangQ5') ? document.getElementById('d2LawangQ5').value : '').trim();
+
+      if (!q1 || !q2 || !q3 || !q4 || !q5) {
+        FincestemCore.ui.toast('Harap lengkapi seluruh 5 butir soal esai LKPD Lawang Sewu sebelum menyimpan!', 'warning');
+        return;
       }
+
+      const payload = {
+        day: 2,
+        session: 'lawang_sewu',
+        q1: q1,
+        q2: q2,
+        q3: q3,
+        q4: q4,
+        q5: q5,
+        submitted: true,
+        submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
+      };
+
+      const btn = document.getElementById('btnSaveLkpdLawang');
+      if (btn) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan LKPD Lawang Sewu...</span>';
+        btn.classList.add('pointer-events-none', 'opacity-80');
+      }
+
+      setTimeout(() => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn, JSON.stringify(payload));
+        } catch (e) {}
+
+        if (FincestemCore.progress && cleanNisn) {
+          FincestemCore.progress.submitTask(cleanNisn, 2, 'lkpd_lawang', payload);
+        }
+
+        FincestemCore.ui.toast('LKPD Lawang Sewu berhasil disimpan! Silakan lanjut mengunggah foto geotag Lawang Sewu.', 'success');
+
+        // Buka modal sukses
+        const modal = document.getElementById('modalD2LkpdSuccess');
+        const iconBox = document.getElementById('modalD2IconBox');
+        const sub = document.getElementById('modalD2Subtitle');
+        const tit = document.getElementById('modalD2Title');
+        const desc = document.getElementById('modalD2Desc');
+        const nextBtn = document.getElementById('modalD2NextBtn');
+        const nextText = document.getElementById('modalD2NextText');
+
+        if (modal) {
+          if (iconBox) iconBox.className = 'w-12 h-12 rounded-2xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-md';
+          if (sub) { sub.textContent = 'Sesi 2 Tuntas'; sub.className = 'text-xs font-black uppercase text-amber-700 tracking-wider'; }
+          if (tit) tit.textContent = 'LKPD Lawang Sewu Berhasil Disimpan!';
+          if (desc) desc.textContent = 'Seluruh jawaban esai Lawang Sewu telah tersimpan. Langkah berikutnya adalah mengambil foto geotag di fasad Lawang Sewu.';
+          if (nextBtn) {
+            nextBtn.href = 'dokumentasi.html?day=2&sesi=2';
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center';
+          }
+          if (nextText) nextText.textContent = 'Lanjut ke Foto Dokumentasi Lawang Sewu';
+
+          modal.classList.remove('opacity-0', 'pointer-events-none');
+          modal.classList.add('opacity-100');
+          const inner = modal.querySelector('div');
+          if (inner) { inner.classList.remove('scale-95'); inner.classList.add('scale-100'); }
+        }
+      }, 400);
     }
 
-    function closeFtLkpdDay2Modal() {
-      const modal = document.getElementById('modalLkpdFtDay2Success');
+    function closeD2LkpdSuccessModal() {
+      const modal = document.getElementById('modalD2LkpdSuccess');
       if (!modal) return;
       modal.classList.remove('opacity-100');
       modal.classList.add('opacity-0', 'pointer-events-none');
       const inner = modal.querySelector('div');
-      if (inner) {
-        inner.classList.remove('scale-100');
-        inner.classList.add('scale-95');
-      }
+      if (inner) { inner.classList.remove('scale-100'); inner.classList.add('scale-95'); }
     }
 
-    // ==========================================
+
     // MODUL LKPD KHUSUS FIELD TRIP DAY 3 S.D. 7
     // ==========================================
     function renderFieldTripGenericLKPD(dayNum, isReadOnly) {

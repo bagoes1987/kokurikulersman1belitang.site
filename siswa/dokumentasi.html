@@ -606,11 +606,40 @@
 
       const descEl = document.getElementById('docPageDesc');
       if (descEl && actConfig) {
-        const dayBadge = (dayNum === 0) ? 'DAY 0 • SIMULASI' : `DAY ${dayNum} • ${cat.isFieldTrip ? 'FIELD TRIP' : 'NON-FIELD TRIP'}`;
+        let dayBadge = (dayNum === 0) ? 'DAY 0 • SIMULASI' : `DAY ${dayNum} • ${cat.isFieldTrip ? 'FIELD TRIP' : 'NON-FIELD TRIP'}`;
+        let subTitle = actConfig.title;
+        let subTheme = actConfig.theme;
+
+        // Penyesuaian khusus Day 2 Field Trip (2 Sesi Kunjungan: AKPOL & Lawang Sewu)
+        if (cat.isFieldTrip && Number(dayNum) === 2) {
+          const user = FincestemCore.auth.getUser() || {};
+          const nisn = user.nisn || user.identifier || '';
+          const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+          const urlParams = new URLSearchParams(window.location.search);
+          const sesiParam = urlParams.get('sesi');
+          let hasDokAkpol = false;
+          for (const id of ids) {
+            if (localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true') {
+              hasDokAkpol = true;
+              break;
+            }
+          }
+          const isSesi2 = (sesiParam === '2') || (!sesiParam && hasDokAkpol);
+          if (isSesi2) {
+            dayBadge = 'DAY 2 • SESI 2: CAGAR BUDAYA LAWANG SEWU';
+            subTitle = 'Dokumentasi Kunjungan Lawang Sewu (+2 ⭐)';
+            subTheme = 'Arsitektur Tropis NISM, Kaca Patri Schouten & Sejarah Heroik AMKA';
+          } else {
+            dayBadge = 'DAY 2 • SESI 1: KAMPUS AKPOL SEMARANG';
+            subTitle = 'Dokumentasi Kunjungan AKPOL Semarang (+2 ⭐)';
+            subTheme = 'Kampus Akademi Kepolisian, Fasilitas Resmi & Kepemimpinan Taruna Bhayangkara';
+          }
+        }
+
         descEl.innerHTML = `
           <span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-primary/10 text-primary mb-1">${dayBadge}</span>
-          <br><strong class="text-on-surface text-sm sm:text-base">${actConfig.title}</strong>
-          <br><span class="text-xs text-slate-500">${actConfig.theme}</span>
+          <br><strong class="text-on-surface text-sm sm:text-base">${subTitle}</strong>
+          <br><span class="text-xs text-slate-500">${subTheme}</span>
         `;
       }
       // Default hidden pillar select
@@ -645,36 +674,86 @@
               return;
             }
 
-            // Validasi alur berurutan khusus Day 1 s.d. 7 Field Trip: Asesmen wajib selesai dulu!
+            // Validasi alur berurutan khusus Day 1 s.d. 7 Field Trip
             const studentCategory = getStudentCategoryInfo();
             if (studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
-              const taskMap = (prog && prog.task_map) || {};
-              let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
-              if (!hasAsesmen) {
-                const ids = [nisn, String(nisn).trim(), String(nisn).trim().replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+              const ids = [nisn, String(nisn).trim(), String(nisn).trim().replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+
+              if (dayNum === 2) {
+                // Khusus Day 2: Alur 2 Sesi Berurutan
+                const urlParams = new URLSearchParams(window.location.search);
+                const sesiParam = urlParams.get('sesi');
+                let hasDokAkpol = false;
                 for (const id of ids) {
-                  try {
-                    const ask = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id);
-                    if (ask) {
-                      try {
-                        const parsed = JSON.parse(ask);
-                        if (parsed && (parsed.submitted || parsed.score !== undefined || parsed.answers)) {
-                          hasAsesmen = true;
-                          break;
-                        }
-                      } catch(e) {
-                        if (ask.trim().length > 5) { hasAsesmen = true; break; }
-                      }
-                    }
-                  } catch(e) {}
+                  if (localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true') {
+                    hasDokAkpol = true;
+                    break;
+                  }
                 }
-              }
-              if (!hasAsesmen) {
-                FincestemCore.ui.toast(`Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day ${dayNum} sebelum mengunggah Dokumentasi!`, 'warning');
-                setTimeout(() => {
-                  window.location.replace(`dashboard.html?day=${dayNum}&task=asesmen`);
-                }, 1200);
-                return;
+                const isSesi2 = (sesiParam === '2') || (!sesiParam && hasDokAkpol);
+
+                if (isSesi2) {
+                  // Sesi 2: Dokumentasi Lawang Sewu memerlukan LKPD Lawang Sewu tuntas
+                  let hasLkpdLawang = false;
+                  for (const id of ids) {
+                    if (localStorage.getItem('fincestem_lkpd_lawang_saved_' + id) === 'true' || localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + id)) {
+                      hasLkpdLawang = true;
+                      break;
+                    }
+                  }
+                  if (!hasLkpdLawang) {
+                    FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan LKPD Lawang Sewu (5 Soal Esai) sebelum mengunggah Dokumentasi Sesi 2!', 'warning');
+                    setTimeout(() => {
+                      window.location.replace('lkpd.html?day=2&sesi=2');
+                    }, 1200);
+                    return;
+                  }
+                } else {
+                  // Sesi 1: Dokumentasi AKPOL memerlukan LKPD AKPOL tuntas
+                  let hasLkpdAkpol = false;
+                  for (const id of ids) {
+                    if (localStorage.getItem('fincestem_lkpd_akpol_saved_' + id) === 'true' || localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + id)) {
+                      hasLkpdAkpol = true;
+                      break;
+                    }
+                  }
+                  if (!hasLkpdAkpol) {
+                    FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan LKPD AKPOL (5 Soal Esai) sebelum mengunggah Dokumentasi Sesi 1!', 'warning');
+                    setTimeout(() => {
+                      window.location.replace('lkpd.html?day=2&sesi=1');
+                    }, 1200);
+                    return;
+                  }
+                }
+              } else {
+                // Hari lainnya: Asesmen wajib selesai dulu
+                const taskMap = (prog && prog.task_map) || {};
+                let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
+                if (!hasAsesmen) {
+                  for (const id of ids) {
+                    try {
+                      const ask = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id);
+                      if (ask) {
+                        try {
+                          const parsed = JSON.parse(ask);
+                          if (parsed && (parsed.submitted || parsed.score !== undefined || parsed.answers)) {
+                            hasAsesmen = true;
+                            break;
+                          }
+                        } catch(e) {
+                          if (ask.trim().length > 5) { hasAsesmen = true; break; }
+                        }
+                      }
+                    } catch(e) {}
+                  }
+                }
+                if (!hasAsesmen) {
+                  FincestemCore.ui.toast(`Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day ${dayNum} sebelum mengunggah Dokumentasi!`, 'warning');
+                  setTimeout(() => {
+                    window.location.replace(`dashboard.html?day=${dayNum}&task=asesmen`);
+                  }, 1200);
+                  return;
+                }
               }
             }
             let canEdit = access.canEdit;
@@ -2360,6 +2439,30 @@
           }).catch(err => console.warn('Sync dokumentasi error:', err));
         }
 
+        // Simpan flag sesi khusus Day 2 Field Trip
+        const cat = getStudentCategoryInfo();
+        if (cat.isFieldTrip && docDayNum === 2) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const sesiParam = urlParams.get('sesi');
+          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          let hasDokAkpol = false;
+          for (const id of ids) {
+            if (localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true') {
+              hasDokAkpol = true;
+              break;
+            }
+          }
+          const isSesi2 = (sesiParam === '2') || (!sesiParam && hasDokAkpol);
+          for (const id of ids) {
+            if (isSesi2) {
+              localStorage.setItem('fincestem_dok_ft_day2_lawang_' + id, 'true');
+              localStorage.setItem('fincestem_dok_ft_day2_' + id, 'true');
+            } else {
+              localStorage.setItem('fincestem_dok_ft_day2_akpol_' + id, 'true');
+            }
+          }
+        }
+
         // Catat ke progres siswa untuk sinkronisasi aktivitas berurutan
         if (FincestemCore.progress && studentNisn) {
           try {
@@ -2411,13 +2514,61 @@
     function showFtDokSuccessModal(dayNum) {
       dayNum = dayNum || 1;
       const subtitle = document.getElementById('ftDokSuccessSubtitle');
-      if (subtitle) {
-        subtitle.textContent = `Bukti foto lapangan Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:`;
-      }
       const nextBtn = document.getElementById('btnFtDokNextRefleksi');
-      if (nextBtn) {
-        nextBtn.href = `dashboard.html?day=${dayNum}&task=refleksi`;
+      const nextBtnText = document.getElementById('btnFtDokNextText');
+      const cat = getStudentCategoryInfo();
+
+      if (cat.isFieldTrip && dayNum === 2) {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = user.nisn || user.identifier || '';
+        const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+        const urlParams = new URLSearchParams(window.location.search);
+        const sesiParam = urlParams.get('sesi');
+        let hasDokAkpol = false;
+        let hasDokLawang = false;
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true') hasDokAkpol = true;
+          if (localStorage.getItem('fincestem_dok_ft_day2_lawang_' + id) === 'true') hasDokLawang = true;
+        }
+
+        // Jika foto Lawang Sewu baru saja diunggah atau sesi 2
+        if (hasDokLawang || sesiParam === '2') {
+          if (subtitle) {
+            subtitle.innerHTML = `<strong>Dokumentasi Lawang Sewu Berhasil Diunggah! (+2 ⭐)</strong><br><span class="text-slate-600 mt-1 inline-block">Luar biasa! Dua sesi kunjungan lapangan Day 2 (AKPOL &amp; Lawang Sewu) telah lengkap. Silakan tuntaskan Jurnal Refleksi (+1 ⭐) untuk meraih total 5 Bintang penuh hari ini!</span>`;
+          }
+          if (nextBtn) {
+            nextBtn.href = `dashboard.html?day=2&task=refleksi`;
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+          }
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Lanjut ke Refleksi Day 2 (Tahap 5 • +1 ⭐)';
+          }
+        } else {
+          // Sesi 1 AKPOL baru saja diunggah
+          if (subtitle) {
+            subtitle.innerHTML = `<strong>Dokumentasi AKPOL Berhasil Diunggah! (+2 ⭐)</strong><br><span class="text-slate-600 mt-1 inline-block">Hebat! Bukti foto kunjungan Akademi Kepolisian Semarang telah tersimpan. Selamat, Anda meraih 2 Bintang! Silakan melangkah ke Sesi 2: Kunjungan Cagar Budaya Lawang Sewu.</span>`;
+          }
+          if (nextBtn) {
+            nextBtn.href = `materi.html?day=2&sesi=2`;
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+          }
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Lanjut ke Sesi 2: Materi Lawang Sewu';
+          }
+        }
+      } else {
+        if (subtitle) {
+          subtitle.textContent = `Bukti foto lapangan Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:`;
+        }
+        if (nextBtn) {
+          nextBtn.href = `dashboard.html?day=${dayNum}&task=refleksi`;
+          nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+        }
+        if (nextBtnText) {
+          nextBtnText.textContent = 'Lanjut ke Refleksi Mandiri (Tahap 5)';
+        }
       }
+
       const modal = document.getElementById('ftDokSuccessModal');
       if (modal) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
