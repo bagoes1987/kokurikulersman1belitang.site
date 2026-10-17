@@ -2666,7 +2666,6 @@
         renderSessionActionCard(docDayNum);
 
         // Untuk Siswa Field Trip (Day 1 s.d. 7), munculkan modal navigasi ke Tahap 5: Refleksi
-        const cat = getStudentCategoryInfo();
         if (cat.isFieldTrip && (docDayNum >= 1 && docDayNum <= 7)) {
           setTimeout(() => {
             showFtDokSuccessModal(docDayNum);
