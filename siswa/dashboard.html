@@ -1301,7 +1301,7 @@
       const fasilFooterEl = document.getElementById('feedbackFasilName');
 
       if (fasilFooterEl) {
-        fasilFooterEl.textContent = (prog.latest_feedback && prog.latest_feedback.facilitator_name) || currentStudent?.facilitator_name || (isFieldTrip ? 'Tim Pendamping Lapangan Field Trip' : 'Tim Fasilitator SMAN 1 Belitang');
+        fasilFooterEl.textContent = (prog.latest_feedback && prog.latest_feedback.facilitator_name) || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
       }
 
       if (!allDaysDone) {
@@ -3377,9 +3377,7 @@
       } else if (type === 'penilaian') {
         title.textContent = isTrial 
           ? 'Simulasi Feedback & Evaluasi Fasilitator Kokurikuler' 
-          : (isFieldTrip 
-              ? `Evaluasi & Catatan Pendamping Lapangan - Day ${day.day_number}` 
-              : `Penilaian & Catatan Fasilitator - Day ${day.day_number}`);
+          : 'Penilaian Fasilitator';
         icon.textContent = 'stars';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0';
 
@@ -3411,7 +3409,7 @@
           // Otomatis Bintang 5 atau 4 dengan perhitungan poin berdasarkan kecepatan pengumpulan / emergency override
           // ==========================================
           const isDayDone = FincestemCore.progress.isDayStudentTasksDone(studentProgress, day.day_number);
-          const fasilName = currentStudent?.facilitator_name || 'Tim Guru Pendamping Field Trip SMAN 1 Belitang';
+          const fasilName = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
           const ftSubmitTime = getFTSubmitTime(day.day_number, taskMap);
           const ftScore = FincestemCore.progress.calculateFieldTripScore(day.day_number, ftSubmitTime, cleanNisn);
 
@@ -3486,9 +3484,9 @@
                   </div>
                 </div>
 
-                <!-- Footer Info Pendamping -->
+                <!-- Footer Info Fasilitator -->
                 <div class="flex items-center justify-between text-xs text-slate-600 font-medium pt-1 border-t border-amber-200/60">
-                  <span>Pendamping Lapangan: <strong>${fasilName}</strong></span>
+                  <span>Fasilitator: <strong>${fasilName}</strong></span>
                   <span class="text-emerald-700 font-bold">Status Day ${day.day_number}: Tuntas ✓</span>
                 </div>
               </div>
@@ -3517,7 +3515,7 @@
                   </p>
                 </div>
                 <div class="flex items-center justify-between text-xs text-slate-600 font-medium pt-1 border-t border-slate-200">
-                  <span>Pendamping Lapangan: <strong>${fasilName}</strong></span>
+                  <span>Fasilitator: <strong>${fasilName}</strong></span>
                   <span class="text-amber-700 font-bold">Harap Isi Refleksi Terlebih Dahulu</span>
                 </div>
               </div>
@@ -3716,7 +3714,7 @@
                   </div>
                 </div>
 
-                <!-- Fasilitator Pendamping Info -->
+                <!-- Fasilitator Info -->
                 <div class="flex items-center justify-between text-xs text-slate-500 font-medium pt-1 border-t border-slate-200/60">
                   <span>Fasilitator Kelas: <strong>${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}</strong></span>
                 </div>
@@ -3954,7 +3952,7 @@
           document.getElementById('modalRecapPredicate').textContent = 'Belum Dinilai Guru';
           document.getElementById('modalRecapScore').textContent = '-';
         }
-        document.getElementById('modalRecapFasil').textContent = `Pendamping: ${currentStudent?.facilitator_name || 'Tim Guru Pendamping Field Trip'}`;
+        document.getElementById('modalRecapFasil').textContent = `Fasilitator: ${currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'}`;
       } else {
         document.getElementById('modalRecapPredicate').textContent = prog.predicate || 'Dalam Proses';
         document.getElementById('modalRecapScore').textContent = prog.average_score || '-';

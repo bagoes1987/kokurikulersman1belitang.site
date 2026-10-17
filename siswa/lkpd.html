@@ -1374,7 +1374,7 @@
                 <span class="font-extrabold truncate text-white">${studentClass}</span>
               </div>
               <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-                <span class="text-amber-200 text-[10px] font-medium">Fasilitator Pendamping</span>
+                <span class="text-amber-200 text-[10px] font-medium">Fasilitator</span>
                 <span class="font-extrabold truncate text-white">${fasilName}</span>
               </div>
             </div>
@@ -1433,7 +1433,7 @@
                 <span class="font-extrabold truncate text-white">${studentClass}</span>
               </div>
               <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-                <span class="text-blue-200 text-[10px] font-medium">Fasilitator Pendamping</span>
+                <span class="text-blue-200 text-[10px] font-medium">Fasilitator</span>
                 <span class="font-extrabold truncate text-white">${fasilName}</span>
               </div>
             </div>
@@ -1953,7 +1953,7 @@
       const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
       const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
         ? FincestemCore.assignments.getClassFacilitator(studentClass)
-        : (activeUser.facilitator_name || 'Tim Guru Pendamping Field Trip');
+        : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
       const cleanNisn = String(studentNisn).trim();
       const unpadded = cleanNisn.replace(/^0+/, '');
@@ -2069,7 +2069,7 @@
               <span class="font-bold text-white truncate block">${studentClass}</span>
             </div>
             <div>
-              <span class="text-teal-200 block text-[10px] uppercase font-bold">Guru Pendamping</span>
+              <span class="text-teal-200 block text-[10px] uppercase font-bold">Fasilitator</span>
               <span class="font-bold text-white truncate block">${fasilName}</span>
             </div>
           </div>
