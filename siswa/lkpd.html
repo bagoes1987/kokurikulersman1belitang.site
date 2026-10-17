@@ -126,7 +126,7 @@
   </header>
 
   <!-- MAIN LKPD CONTENT -->
-  <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
+  <main id="mainContentArea" class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
 
     <!-- IDENTITAS TUGAS & STATUS BANNER -->
     <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
@@ -1340,22 +1340,6 @@
         if (rawL) hasResumeLawang = true;
       } catch (e) {}
 
-      // Tentukan sesi aktif
-      if (targetSesi !== undefined && targetSesi !== null) {
-        currentD2LkpdSession = (Number(targetSesi) === 2 && hasFotoAkpol) ? 2 : 1;
-      } else {
-        const reqSesi = parseInt(urlParams.get('sesi'));
-        if (reqSesi === 2 && hasFotoAkpol) {
-          currentD2LkpdSession = 2;
-        } else if (reqSesi === 1) {
-          currentD2LkpdSession = 1;
-        } else if (currentD2LkpdSession === 2 && hasFotoAkpol) {
-          currentD2LkpdSession = 2;
-        } else {
-          currentD2LkpdSession = 1;
-        }
-      }
-
       // Ambil data tersimpan untuk Sesi 1 (AKPOL)
       let savedAkpol = null;
       try {
@@ -1370,8 +1354,20 @@
         if (rawLawang) savedLawang = JSON.parse(rawLawang);
       } catch (e) {}
 
-      const isAkpolSubmitted = savedAkpol && savedAkpol.submitted;
-      const isLawangSubmitted = savedLawang && savedLawang.submitted;
+      const isAkpolSubmitted = savedAkpol && (savedAkpol.submitted || savedAkpol.savedAt);
+      const isLawangSubmitted = savedLawang && (savedLawang.submitted || savedLawang.savedAt);
+
+      // Tentukan sesi aktif
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD2LkpdSession = Number(targetSesi);
+      } else {
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2 || currentD2LkpdSession === 2) {
+          currentD2LkpdSession = 2;
+        } else {
+          currentD2LkpdSession = 1;
+        }
+      }
 
       // TAB NAVIGASI LKPD DAY 2 (INTERAKTIF & BEBAS BERPINDAH BOLAK-BALIK)
       const tabNavHtml = `
@@ -1384,18 +1380,11 @@
           </button>
 
           <!-- TAB 2: LKPD LAWANG SEWU -->
-          ${hasFotoAkpol ? `
-            <button type="button" onclick="switchD2LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD2LkpdSession === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300'}">
-              <span class="material-symbols-outlined text-base ${currentD2LkpdSession === 2 ? 'text-amber-200' : 'text-amber-700'}">account_balance</span>
-              <span class="truncate">Sesi 2: LKPD Lawang Sewu</span>
-              ${currentD2LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
-            </button>
-          ` : `
-            <button type="button" onclick="switchD2LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" title="Sesi 2 terbuka setelah Foto AKPOL diunggah">
-              <span class="material-symbols-outlined text-base text-slate-400">lock</span>
-              <span class="truncate">Sesi 2: LKPD Lawang Sewu</span>
-            </button>
-          `}
+          <button type="button" onclick="switchD2LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD2LkpdSession === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300'}">
+            <span class="material-symbols-outlined text-base ${currentD2LkpdSession === 2 ? 'text-amber-200' : 'text-amber-700'}">account_balance</span>
+            <span class="truncate">Sesi 2: LKPD Lawang Sewu</span>
+            ${currentD2LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
         </div>
       `;
 
@@ -1792,61 +1781,7 @@
     }
 
     function switchD2LkpdSession(sesi) {
-      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
-      const cleanNisn = String(studentNisn).trim();
-
-      let hasFotoAkpol = false;
-      try {
-        const ids = [
-          cleanNisn,
-          cleanNisn.replace(/^0+/, ''),
-          cleanNisn.padStart(10, '0'),
-          activeUser.nis,
-          activeUser.identifier,
-          activeUser.username
-        ].filter(Boolean);
-
-        if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
-          const prog = FincestemCore.progress.getStudentProgress(cleanNisn);
-          if (prog) {
-            if (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, 2)) {
-              hasFotoAkpol = true;
-            }
-            const tm = prog.task_map || {};
-            if (tm['2_dokumentasi'] && (tm['2_dokumentasi'].status === 'completed' || tm['2_dokumentasi'].status === 'submitted')) hasFotoAkpol = true;
-            if (tm['2_refleksi'] && (tm['2_refleksi'].status === 'completed' || tm['2_refleksi'].status === 'submitted')) hasFotoAkpol = true;
-          }
-        }
-        for (const id of ids) {
-          if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') hasFotoAkpol = true;
-          if (localStorage.getItem(`fincestem_dok_ft_day2_${id}`) === 'true') hasFotoAkpol = true;
-          if (localStorage.getItem(`fincestem_dok_ft_day2_lawang_${id}`) === 'true') hasFotoAkpol = true;
-          if (localStorage.getItem(`fincestem_lkpd_ft_day2_lawang_${id}`) || localStorage.getItem(`fincestem_lkpd_lawang_saved_${id}`) === 'true') hasFotoAkpol = true;
-          if (localStorage.getItem(`fincestem_materi_ft_day2_lawang_${id}`)) hasFotoAkpol = true;
-          if (localStorage.getItem(`fincestem_refl_ft_day2_${id}`)) hasFotoAkpol = true;
-        }
-
-        const dbStr = localStorage.getItem('fincestem_db_2026_v1');
-        if (dbStr) {
-          const db = JSON.parse(dbStr);
-          if (Array.isArray(db.documentation)) {
-            const hasD2Photo = db.documentation.some(p => {
-              const docDay = Number(p.day || p.day_number || 0);
-              const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
-              const matchId = ids.includes(docNisn) || ids.includes(docNisn.replace(/^0+/, ''));
-              return docDay === 2 && matchId;
-            });
-            if (hasD2Photo) hasFotoAkpol = true;
-          }
-        }
-      } catch (e) {}
-
-      if (sesi === 2 && !hasFotoAkpol) {
-        FincestemCore.ui.toast('LKPD Lawang Sewu masih terkunci! Anda wajib menyelesaikan pengunggahan Foto Dokumentasi AKPOL terlebih dahulu.', 'warning');
-        return;
-      }
-
-      currentD2LkpdSession = sesi;
+      currentD2LkpdSession = Number(sesi);
       try {
         const url = new URL(window.location.href);
         url.searchParams.set('sesi', String(sesi));

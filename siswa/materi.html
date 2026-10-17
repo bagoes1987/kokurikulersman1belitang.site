@@ -136,7 +136,7 @@
   </header>
 
   <!-- MAIN CONTENT -->
-  <main class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
+  <main id="mainContentArea" class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
 
     <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm">
       <h2 class="font-black text-lg text-primary mb-1.5">Kurikulum Kokurikuler 4 Pilar</h2>
@@ -940,15 +940,11 @@
       const isFotoAkpolDone = checkIsFotoAkpolDone(cleanNisn);
 
       if (targetSesi !== undefined && targetSesi !== null) {
-        currentD2Session = (Number(targetSesi) === 2 && isFotoAkpolDone) ? 2 : 1;
+        currentD2Session = Number(targetSesi);
       } else {
         const urlParams = new URLSearchParams(window.location.search);
         const reqSesi = parseInt(urlParams.get('sesi'));
-        if (reqSesi === 2 && isFotoAkpolDone) {
-          currentD2Session = 2;
-        } else if (reqSesi === 1) {
-          currentD2Session = 1;
-        } else if (currentD2Session === 2 && isFotoAkpolDone) {
+        if (reqSesi === 2 || currentD2Session === 2) {
           currentD2Session = 2;
         } else {
           currentD2Session = 1;
@@ -966,18 +962,11 @@
           </button>
 
           <!-- TAB 2: LAWANG SEWU -->
-          ${isFotoAkpolDone ? `
-            <button type="button" onclick="switchD2Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD2Session === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300'}">
-              <span class="material-symbols-outlined text-base ${currentD2Session === 2 ? 'text-amber-200' : 'text-amber-700'}">account_balance</span>
-              <span class="truncate">Sesi 2: Lawang Sewu</span>
-              ${currentD2Session === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
-            </button>
-          ` : `
-            <button type="button" onclick="switchD2Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" title="Sesi 2 terbuka setelah Foto AKPOL diunggah">
-              <span class="material-symbols-outlined text-base text-slate-400">lock</span>
-              <span class="truncate">Sesi 2: Lawang Sewu</span>
-            </button>
-          `}
+          <button type="button" onclick="switchD2Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD2Session === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300'}">
+            <span class="material-symbols-outlined text-base ${currentD2Session === 2 ? 'text-amber-200' : 'text-amber-700'}">account_balance</span>
+            <span class="truncate">Sesi 2: Lawang Sewu</span>
+            ${currentD2Session === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
         </div>
       `;
 
@@ -1361,35 +1350,8 @@
         ` : `
         <!-- CONTAINER KONTEN SESI 2 (LAWANG SEWU) -->
         <div id="containerD2Sesi2" class="flex flex-col gap-4">
-          ${!isFotoAkpolDone ? `
-            <!-- BANNER TERKUNCI SESI 2 (HARUS TUNTASKAN FOTO AKPOL DULU) -->
-            <div class="p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <span class="material-symbols-outlined text-2xl">lock</span>
-                </div>
-                <div class="flex flex-col">
-                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
-                  <h3 class="text-base sm:text-lg font-black text-amber-950">Sesi 2 (Lawang Sewu) Masih Terkunci!</h3>
-                </div>
-              </div>
-              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                Sesuai alur kunjungan lapangan Day 2, Anda harus menyelesaikan rangkaian <strong>Sesi 1: Kunjungan AKPOL (Modul &rarr; LKPD &rarr; Upload Foto Geotag AKPOL)</strong> terlebih dahulu sebelum membuka materi dan tugas Sesi 2 di Lawang Sewu.
-              </p>
-              <div class="flex items-center gap-2 pt-2 flex-wrap">
-                <button type="button" onclick="switchD2Session(1)" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-xs cursor-pointer">
-                  <span class="material-symbols-outlined text-base">arrow_back</span>
-                  <span>Kembali ke Sesi 1 (AKPOL)</span>
-                </button>
-                <a href="dokumentasi.html?day=2&sesi=1" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all shadow-xs">
-                  <span class="material-symbols-outlined text-base">photo_camera</span>
-                  <span>Unggah Foto AKPOL Sekarang</span>
-                </a>
-              </div>
-            </div>
-          ` : `
-            <!-- MATERI SESI 2: LAWANG SEWU LENGKAP -->
-            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-amber-200/80 shadow-xs flex flex-col gap-4">
+          <!-- MATERI SESI 2: LAWANG SEWU LENGKAP -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-amber-200/80 shadow-xs flex flex-col gap-4">
               <div class="flex items-center gap-3">
                 <div class="w-12 h-12 rounded-2xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-md">
                   <span class="material-symbols-outlined text-2xl">account_balance</span>
@@ -1548,7 +1510,6 @@
                 </a>
               </div>
             </div>
-          `}
         </div>
         `}
 
@@ -1621,24 +1582,14 @@
     }
 
     function switchD2Session(sesi) {
-      const user = FincestemCore.auth.getUser() || {};
-      const nisn = user.nisn || user.identifier || '';
-      const cleanNisn = String(nisn).trim();
-      const isFotoAkpolDone = checkIsFotoAkpolDone(cleanNisn);
-
-      if (sesi === 2 && !isFotoAkpolDone) {
-        FincestemCore.ui.toast('Sesi 2 (Lawang Sewu) masih terkunci! Anda wajib menyelesaikan Sesi 1: Upload Foto Dokumentasi AKPOL terlebih dahulu.', 'warning');
-        return;
-      }
-
-      currentD2Session = sesi;
+      currentD2Session = Number(sesi);
       try {
         const url = new URL(window.location.href);
         url.searchParams.set('sesi', String(sesi));
         window.history.replaceState(null, '', url.toString());
       } catch (e) {}
 
-      const mainEl = document.getElementById('mainContentArea');
+      const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
       if (mainEl) {
         renderDay2FieldTripModule(mainEl, sesi);
       }
