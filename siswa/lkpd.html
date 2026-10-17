@@ -1291,9 +1291,13 @@
       // 2. Cek prasyarat Sesi 2 (Foto AKPOL & Resume Lawang Sewu)
       let hasFotoAkpol = false;
       try {
-        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${cleanNisn}`) === 'true') hasFotoAkpol = true;
-        const unpadded = cleanNisn.replace(/^0+/, '');
-        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${unpadded}`) === 'true') hasFotoAkpol = true;
+        const ids = [cleanNisn, String(cleanNisn).trim(), cleanNisn.replace(/^0+/, ''), activeUser.nis, activeUser.identifier].filter(Boolean);
+        for (const id of ids) {
+          if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') {
+            hasFotoAkpol = true;
+            break;
+          }
+        }
       } catch (e) {}
 
       let hasResumeLawang = false;
@@ -1326,69 +1330,136 @@
       const isAkpolSubmitted = savedAkpol && savedAkpol.submitted;
       const isLawangSubmitted = savedLawang && savedLawang.submitted;
 
-      mainEl.innerHTML = `
-        <!-- HEADER IDENTITAS RESMI LKPD DAY 2 -->
-        <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3">
-          <div class="flex items-center justify-between gap-2 flex-wrap">
-            <div class="flex items-center gap-2">
-              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
-                Field Trip • Day 2
-              </span>
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-400 text-amber-950">
-                Instrumen Esai Lapangan
+      // Header Eksklusif Sesuai Sesi Aktif Day 2
+      let headerHtml = '';
+      if (currentD2LkpdSession === 2) {
+        headerHtml = `
+          <!-- HEADER IDENTITAS RESMI LKPD DAY 2 - SESI 2 (LAWANG SEWU) -->
+          <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
+                  Field Trip • Day 2 • Sesi 2
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-400 text-amber-950">
+                  Instrumen Esai Lapangan
+                </span>
+              </div>
+              <span id="ftD2StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLawangSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}">
+                ${isLawangSubmitted ? 'LKPD Lawang Sewu Terkirim' : 'Draft LKPD Lawang Sewu'}
               </span>
             </div>
-            <span id="ftD2StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${currentD2LkpdSession === 1 ? (isAkpolSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white') : (isLawangSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white')}">
-              ${currentD2LkpdSession === 1 ? (isAkpolSubmitted ? 'LKPD AKPOL Terkirim' : 'Draft LKPD AKPOL') : (isLawangSubmitted ? 'LKPD Lawang Sewu Terkirim' : 'Draft LKPD Lawang Sewu')}
+
+            <div>
+              <h2 class="font-black text-xl sm:text-2xl leading-tight">
+                Lembar Kerja Peserta Didik (LKPD) Lawang Sewu
+              </h2>
+              <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium mt-0.5">
+                Evaluasi Sains Cagar Budaya: Arsitektur Tropis NISM, Kaca Patri Schouten, &amp; Sejarah Perjuangan Heroik AMKA
+              </p>
+            </div>
+
+            <!-- KARTU DATA SISWA & PEMBINA -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-white/15 text-xs">
+              <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+                <span class="text-amber-200 text-[10px] font-medium">Nama Siswa</span>
+                <span class="font-extrabold truncate text-white">${studentName}</span>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+                <span class="text-amber-200 text-[10px] font-medium">NISN / Identitas</span>
+                <span class="font-extrabold truncate text-white">${studentNisn}</span>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+                <span class="text-amber-200 text-[10px] font-medium">Rombel</span>
+                <span class="font-extrabold truncate text-white">${studentClass}</span>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+                <span class="text-amber-200 text-[10px] font-medium">Fasilitator Pendamping</span>
+                <span class="font-extrabold truncate text-white">${fasilName}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUB-NAVIGASI SESI 2 (BEBAS DARI KONTEN AKPOL) -->
+          <div class="flex items-center justify-between gap-2 p-2 rounded-2xl bg-amber-50/80 border border-amber-200 shadow-2xs">
+            <button type="button" onclick="switchD2LkpdSession(1)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100 text-amber-950 text-xs font-extrabold border border-amber-300 shadow-xs transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Kembali ke LKPD AKPOL (Sesi 1)</span>
+            </button>
+            <span class="text-[11px] font-extrabold text-amber-900 px-2.5 py-1 bg-amber-200/70 rounded-lg">
+              Sesi 2 Aktif: LKPD Lawang Sewu
             </span>
           </div>
+        `;
+      } else {
+        headerHtml = `
+          <!-- HEADER IDENTITAS RESMI LKPD DAY 2 - SESI 1 (AKPOL) -->
+          <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <div class="flex items-center gap-2">
+                <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
+                  Field Trip • Day 2 • Sesi 1
+                </span>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-400 text-amber-950">
+                  Instrumen Esai Lapangan
+                </span>
+              </div>
+              <span id="ftD2StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isAkpolSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}">
+                ${isAkpolSubmitted ? 'LKPD AKPOL Terkirim' : 'Draft LKPD AKPOL'}
+              </span>
+            </div>
 
-          <div>
-            <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              Lembar Kerja Peserta Didik (LKPD) Day 2
-            </h2>
-            <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium mt-0.5">
-              Evaluasi Pemahaman Lapangan: Kunjungan AKPOL Semarang &amp; Sains Cagar Budaya Lawang Sewu
-            </p>
+            <div>
+              <h2 class="font-black text-xl sm:text-2xl leading-tight">
+                Lembar Kerja Peserta Didik (LKPD) AKPOL Semarang
+              </h2>
+              <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium mt-0.5">
+                Evaluasi Pemahaman Lapangan: Visi &amp; Misi, Regulasi Perkap 21/2010, Kepangkatan Taruna, serta Sarana Prasarana Kampus AKPOL
+              </p>
+            </div>
+
+            <!-- KARTU DATA SISWA & PEMBINA -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-white/15 text-xs">
+              <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+                <span class="text-blue-200 text-[10px] font-medium">Nama Siswa</span>
+                <span class="font-extrabold truncate text-white">${studentName}</span>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+                <span class="text-blue-200 text-[10px] font-medium">NISN / Identitas</span>
+                <span class="font-extrabold truncate text-white">${studentNisn}</span>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+                <span class="text-blue-200 text-[10px] font-medium">Rombel</span>
+                <span class="font-extrabold truncate text-white">${studentClass}</span>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+                <span class="text-blue-200 text-[10px] font-medium">Fasilitator Pendamping</span>
+                <span class="font-extrabold truncate text-white">${fasilName}</span>
+              </div>
+            </div>
           </div>
 
-          <!-- KARTU DATA SISWA & PEMBINA -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-white/15 text-xs">
-            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-              <span class="text-blue-200 text-[10px] font-medium">Nama Siswa</span>
-              <span class="font-extrabold truncate text-white">${studentName}</span>
-            </div>
-            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-              <span class="text-blue-200 text-[10px] font-medium">NISN / Identitas</span>
-              <span class="font-extrabold truncate text-white">${studentNisn}</span>
-            </div>
-            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-              <span class="text-blue-200 text-[10px] font-medium">Rombel</span>
-              <span class="font-extrabold truncate text-white">${studentClass}</span>
-            </div>
-            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-              <span class="text-blue-200 text-[10px] font-medium">Fasilitator Pendamping</span>
-              <span class="font-extrabold truncate text-white">${fasilName}</span>
-            </div>
+          <!-- SUB-NAVIGASI SESI 1 -->
+          <div class="flex items-center justify-between gap-2 p-2 rounded-2xl bg-blue-50/80 border border-blue-200 shadow-2xs">
+            <span class="text-[11px] font-extrabold text-blue-900 px-2.5 py-1 bg-blue-100 rounded-lg">
+              Sesi 1 Aktif: LKPD AKPOL
+            </span>
+            ${hasFotoAkpol ? `
+              <button type="button" onclick="switchD2LkpdSession(2)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-extrabold shadow-xs transition-all cursor-pointer">
+                <span>Buka LKPD Lawang Sewu (Sesi 2)</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            ` : `
+              <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">lock</span> Sesi 2 terbuka setelah foto AKPOL diunggah
+              </span>
+            `}
           </div>
-        </div>
+        `;
+      }
 
-        <!-- TAB NAVIGASI SESI LKPD DAY 2 -->
-        <div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-surface-container-high border border-outline-variant/30 shadow-2xs">
-          <!-- TAB SESI 1: LKPD AKPOL -->
-          <button type="button" onclick="switchD2LkpdSession(1)" id="btnTabLkpdD2S1" class="py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${currentD2LkpdSession === 1 ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:bg-white/60'}">
-            <span class="material-symbols-outlined text-base">military_tech</span>
-            <span>LKPD AKPOL (5 Soal)</span>
-            ${isAkpolSubmitted ? '<span class="text-emerald-300 font-bold text-xs">✓</span>' : ''}
-          </button>
-
-          <!-- TAB SESI 2: LKPD LAWANG SEWU -->
-          <button type="button" onclick="switchD2LkpdSession(2)" id="btnTabLkpdD2S2" class="py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${currentD2LkpdSession === 2 ? 'bg-amber-600 text-white shadow-xs' : (hasFotoAkpol ? 'text-slate-700 hover:bg-white/60' : 'text-slate-400 opacity-80')}">
-            <span class="material-symbols-outlined text-base">${hasFotoAkpol ? 'account_balance' : 'lock'}</span>
-            <span>LKPD Lawang Sewu (5 Soal)</span>
-            ${isLawangSubmitted ? '<span class="text-emerald-300 font-bold text-xs">✓</span>' : ''}
-          </button>
-        </div>
+      mainEl.innerHTML = `
+        ${headerHtml}
 
         <!-- ========================================== -->
         <!-- KONTEN SESI 1: LKPD AKPOL (5 SOAL ESAI) -->
@@ -1679,9 +1750,13 @@
 
       let hasFotoAkpol = false;
       try {
-        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${cleanNisn}`) === 'true') hasFotoAkpol = true;
-        const unpadded = cleanNisn.replace(/^0+/, '');
-        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${unpadded}`) === 'true') hasFotoAkpol = true;
+        const ids = [cleanNisn, String(cleanNisn).trim(), cleanNisn.replace(/^0+/, ''), activeUser.nis, activeUser.identifier].filter(Boolean);
+        for (const id of ids) {
+          if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') {
+            hasFotoAkpol = true;
+            break;
+          }
+        }
       } catch (e) {}
 
       if (sesi === 2 && !hasFotoAkpol) {
@@ -1690,34 +1765,17 @@
       }
 
       currentD2LkpdSession = sesi;
-      const c1 = document.getElementById('contentLkpdD2S1');
-      const c2 = document.getElementById('contentLkpdD2S2');
-      const b1 = document.getElementById('btnTabLkpdD2S1');
-      const b2 = document.getElementById('btnTabLkpdD2S2');
-      const badge = document.getElementById('ftD2StatusBadge');
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sesi', String(sesi));
+        window.history.pushState(null, '', url.toString());
+      } catch (e) {}
 
-      if (sesi === 1) {
-        if (c1) { c1.classList.remove('hidden'); c1.classList.add('flex'); }
-        if (c2) { c2.classList.add('hidden'); c2.classList.remove('flex'); }
-        if (b1) { b1.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer bg-blue-600 text-white shadow-xs'; }
-        if (b2) { b2.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-700 hover:bg-white/60'; }
-        if (badge) {
-          const raw = localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + cleanNisn);
-          badge.textContent = raw ? 'LKPD AKPOL Terkirim' : 'Draft LKPD AKPOL';
-          badge.className = `px-3 py-1 rounded-full text-xs font-bold ${raw ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}`;
-        }
-      } else {
-        if (c2) { c2.classList.remove('hidden'); c2.classList.add('flex'); }
-        if (c1) { c1.classList.add('hidden'); c1.classList.remove('flex'); }
-        if (b2) { b2.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer bg-amber-600 text-white shadow-xs'; }
-        if (b1) { b1.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-700 hover:bg-white/60'; }
-        if (badge) {
-          const raw = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn);
-          badge.textContent = raw ? 'LKPD Lawang Sewu Terkirim' : 'Draft LKPD Lawang Sewu';
-          badge.className = `px-3 py-1 rounded-full text-xs font-bold ${raw ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}`;
-        }
+      const mainEl = document.getElementById('mainContentArea');
+      if (mainEl) {
+        renderDay2FieldTripLkpd(mainEl);
       }
-      window.scrollTo({ top: 220, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function saveLkpdAkpol() {

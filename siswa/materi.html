@@ -947,55 +947,104 @@
         currentD2Session = 1;
       }
 
+      // Banner & Sub-navigasi Eksklusif Sesuai Sesi Aktif
+      let headerHtml = '';
+      if (currentD2Session === 2) {
+        headerHtml = `
+          <!-- BANNER MODUL FIELD TRIP DAY 2 - SESI 2 (CAGAR BUDAYA LAWANG SEWU) -->
+          <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
+                Field Trip • Day 2 • Sesi 2
+              </span>
+              <span class="text-xs font-bold text-amber-300">Pilar: Culture, STEM &amp; Exploration</span>
+            </div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Eksplorasi Sains &amp; Cagar Budaya Lawang Sewu
+            </h2>
+            <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
+              Studi sains arsitektur tropis ramah iklim Nederlandsch-Indische Spoorweg Maatschappij (NISM), karya seni kaca patri Kraemer-Schouten, nilai sejarah heroik Angkatan Muda Kereta Api (AMKA), serta persiapan perjalanan malam menuju Kota Malang.
+            </p>
+            <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-amber-200 font-semibold flex-wrap">
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">calendar_today</span>
+                <span>Selasa, 10 November 2026</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                <span>13.00 - 15.30 WIB (Kunjungan Sesi 2)</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">location_on</span>
+                <span>Lawang Sewu &rarr; Perjalanan Malang</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- SUB-NAVIGASI SESI 2 (BEBAS DARI KONTEN AKPOL) -->
+          <div class="flex items-center justify-between gap-2 p-2 rounded-2xl bg-amber-50/80 border border-amber-200 shadow-2xs">
+            <button type="button" onclick="switchD2Session(1)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-amber-100 text-amber-950 text-xs font-extrabold border border-amber-300 shadow-xs transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Kembali ke Modul AKPOL (Sesi 1)</span>
+            </button>
+            <span class="text-[11px] font-extrabold text-amber-900 px-2.5 py-1 bg-amber-200/70 rounded-lg">
+              Sesi 2 Aktif: Cagar Budaya Lawang Sewu
+            </span>
+          </div>
+        `;
+      } else {
+        headerHtml = `
+          <!-- BANNER MODUL FIELD TRIP DAY 2 - SESI 1 (AKADEMI KEPOLISIAN) -->
+          <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
+                Field Trip • Day 2 • Sesi 1
+              </span>
+              <span class="text-xs font-bold text-amber-300">Pilar: Character, Discipline &amp; Leadership</span>
+            </div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Akademi Kepolisian (AKPOL) Semarang
+            </h2>
+            <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
+              Pembentukan karakter disiplin, kepemimpinan Bhayangkara, jenjang kepangkatan taruna (Perkap No. 21/2010), dan eksplorasi sarana prasarana resmi Kampus Akademi Kepolisian RI.
+            </p>
+            <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-blue-200 font-semibold flex-wrap">
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">calendar_today</span>
+                <span>Selasa, 10 November 2026</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                <span>09.00 - 12.00 WIB (Kunjungan Pagi)</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">location_on</span>
+                <span>Kampus AKPOL Semarang</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- SUB-NAVIGASI SESI 1 -->
+          <div class="flex items-center justify-between gap-2 p-2 rounded-2xl bg-blue-50/80 border border-blue-200 shadow-2xs">
+            <span class="text-[11px] font-extrabold text-blue-900 px-2.5 py-1 bg-blue-100 rounded-lg">
+              Sesi 1 Aktif: Kampus AKPOL
+            </span>
+            ${isFotoAkpolDone ? `
+              <button type="button" onclick="switchD2Session(2)" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-extrabold shadow-xs transition-all cursor-pointer">
+                <span>Buka Materi Lawang Sewu (Sesi 2)</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            ` : `
+              <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">lock</span> Sesi 2 terbuka setelah foto AKPOL diunggah
+              </span>
+            `}
+          </div>
+        `;
+      }
+
       mainEl.innerHTML = `
-        <!-- BANNER MODUL FIELD TRIP DAY 2 -->
-        <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
-          <div class="flex items-center justify-between gap-2">
-            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
-              Field Trip • Day 2
-            </span>
-            <span class="text-xs font-bold text-amber-300">Pilar: Culture, STEM &amp; Exploration</span>
-          </div>
-          <h2 class="font-black text-xl sm:text-2xl leading-tight">
-            Eksplorasi Kepemimpinan Bhayangkara &amp; Cagar Budaya Lawang Sewu
-          </h2>
-          <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
-            Pembentukan karakter disiplin taruna AKPOL di pagi hari, eksplorasi sejarah dan sains arsitektur Lawang Sewu di siang hari, serta ekspedisi menuju Kota Malang.
-          </p>
-          <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-blue-200 font-semibold flex-wrap">
-            <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
-              <span class="material-symbols-outlined text-sm">calendar_today</span>
-              <span>Selasa, 10 November 2026</span>
-            </span>
-            <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
-              <span class="material-symbols-outlined text-sm">schedule</span>
-              <span>04.30 - 20.30 WIB</span>
-            </span>
-            <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
-              <span class="material-symbols-outlined text-sm">location_on</span>
-              <span>Semarang &rarr; Malang</span>
-            </span>
-          </div>
-        </div>
-
-        ${renderFieldTripScheduleCard(2)}
-
-        <!-- NAVIGASI TAB SESI DAY 2 (AKPOL & LAWANG SEWU) -->
-        <div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-surface-container-high border border-outline-variant/30 shadow-2xs">
-          <!-- TAB SESI 1: AKPOL -->
-          <button type="button" onclick="switchD2Session(1)" id="btnTabD2Sesi1" class="py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${currentD2Session === 1 ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-700 hover:bg-white/60'}">
-            <span class="material-symbols-outlined text-base">military_tech</span>
-            <span>Sesi 1: AKPOL</span>
-            <span class="px-1.5 py-0.2 rounded-full text-[10px] font-black ${currentD2Session === 1 ? 'bg-white/20 text-white' : 'bg-blue-100 text-blue-800'}">Pagi</span>
-          </button>
-
-          <!-- TAB SESI 2: LAWANG SEWU -->
-          <button type="button" onclick="switchD2Session(2)" id="btnTabD2Sesi2" class="py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer ${currentD2Session === 2 ? 'bg-amber-600 text-white shadow-xs' : (isFotoAkpolDone ? 'text-slate-700 hover:bg-white/60' : 'text-slate-400 opacity-80')}">
-            <span class="material-symbols-outlined text-base">${isFotoAkpolDone ? 'account_balance' : 'lock'}</span>
-            <span>Sesi 2: Lawang Sewu</span>
-            <span class="px-1.5 py-0.2 rounded-full text-[10px] font-black ${currentD2Session === 2 ? 'bg-white/20 text-white' : (isFotoAkpolDone ? 'bg-amber-100 text-amber-900' : 'bg-slate-200 text-slate-500')}">Siang</span>
-          </button>
-        </div>
+        ${headerHtml}
 
         <!-- CONTAINER KONTEN SESI 1 (AKPOL) -->
         <div id="containerD2Sesi1" class="${currentD2Session === 1 ? 'flex' : 'hidden'} flex-col gap-4">
@@ -1503,9 +1552,11 @@
 
     function checkIsFotoAkpolDone(nisn) {
       try {
-        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${nisn}`) === 'true') return true;
-        const unpadded = String(nisn).replace(/^0+/, '');
-        if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${unpadded}`) === 'true') return true;
+        const user = FincestemCore.auth.getUser() || {};
+        const ids = [nisn, String(nisn).trim(), String(nisn).replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+        for (const id of ids) {
+          if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') return true;
+        }
         // Cek juga dari database foto umum jika pilar Exploration / deskripsi mengandung akpol
         const dbStr = localStorage.getItem('fincestem_db_2026_v1');
         if (dbStr) {
@@ -1515,7 +1566,8 @@
               const docDay = Number(p.day || p.day_number || 0);
               const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
               const desc = (p.description || p.caption || p.pillar || '').toLowerCase();
-              return docDay === 2 && (docNisn === nisn || docNisn === unpadded) && (desc.includes('akpol') || desc.includes('eksplorasi') || desc.includes('exploration'));
+              const matchId = ids.includes(docNisn) || ids.includes(docNisn.replace(/^0+/, ''));
+              return docDay === 2 && matchId && (desc.includes('akpol') || desc.includes('eksplorasi') || desc.includes('exploration'));
             });
             if (hasAkpolPhoto) return true;
           }
@@ -1536,23 +1588,17 @@
       }
 
       currentD2Session = sesi;
-      const c1 = document.getElementById('containerD2Sesi1');
-      const c2 = document.getElementById('containerD2Sesi2');
-      const b1 = document.getElementById('btnTabD2Sesi1');
-      const b2 = document.getElementById('btnTabD2Sesi2');
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set('sesi', String(sesi));
+        window.history.pushState(null, '', url.toString());
+      } catch (e) {}
 
-      if (sesi === 1) {
-        if (c1) { c1.classList.remove('hidden'); c1.classList.add('flex'); }
-        if (c2) { c2.classList.add('hidden'); c2.classList.remove('flex'); }
-        if (b1) { b1.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer bg-blue-600 text-white shadow-xs'; }
-        if (b2) { b2.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-700 hover:bg-white/60'; }
-      } else {
-        if (c2) { c2.classList.remove('hidden'); c2.classList.add('flex'); }
-        if (c1) { c1.classList.add('hidden'); c1.classList.remove('flex'); }
-        if (b2) { b2.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer bg-amber-600 text-white shadow-xs'; }
-        if (b1) { b1.className = 'py-2.5 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all cursor-pointer text-slate-700 hover:bg-white/60'; }
+      const mainEl = document.getElementById('mainContentArea');
+      if (mainEl) {
+        renderDay2FieldTripModule(mainEl);
       }
-      window.scrollTo({ top: 320, behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function initDay2ModuleListeners(cleanNisn, isFotoAkpolDone) {
