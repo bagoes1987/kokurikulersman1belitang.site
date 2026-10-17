@@ -1266,7 +1266,7 @@
     // ==========================================
     let currentD2LkpdSession = 1;
 
-    function renderFieldTripDay2LKPD(isReadOnly) {
+    function renderFieldTripDay2LKPD(isReadOnly, targetSesi) {
       const mainEl = document.querySelector('main');
       if (!mainEl) return;
 
@@ -1279,7 +1279,6 @@
       const cleanNisn = String(studentNisn).trim();
 
       const urlParams = new URLSearchParams(window.location.search);
-      const reqSesi = parseInt(urlParams.get('sesi')) || 1;
 
       // 1. Cek prasyarat Sesi 1 (Resume AKPOL)
       let hasResumeAkpol = false;
@@ -1291,21 +1290,46 @@
       // 2. Cek prasyarat Sesi 2 (Foto AKPOL & Resume Lawang Sewu)
       let hasFotoAkpol = false;
       try {
-        const ids = [cleanNisn, String(cleanNisn).trim(), cleanNisn.replace(/^0+/, ''), activeUser.nis, activeUser.identifier].filter(Boolean);
+        const ids = [
+          cleanNisn,
+          cleanNisn.replace(/^0+/, ''),
+          cleanNisn.padStart(10, '0'),
+          activeUser.nis,
+          activeUser.identifier,
+          activeUser.username
+        ].filter(Boolean);
+
         if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
           const prog = FincestemCore.progress.getStudentProgress(cleanNisn);
-          if (prog && FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, 2)) {
-            hasFotoAkpol = true;
+          if (prog) {
+            if (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, 2)) {
+              hasFotoAkpol = true;
+            }
+            const tm = prog.task_map || {};
+            if (tm['2_dokumentasi'] && (tm['2_dokumentasi'].status === 'completed' || tm['2_dokumentasi'].status === 'submitted')) hasFotoAkpol = true;
+            if (tm['2_refleksi'] && (tm['2_refleksi'].status === 'completed' || tm['2_refleksi'].status === 'submitted')) hasFotoAkpol = true;
           }
         }
         for (const id of ids) {
-          if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') {
-            hasFotoAkpol = true;
-            break;
-          }
-          if (localStorage.getItem(`fincestem_lkpd_ft_day2_lawang_${id}`) || localStorage.getItem(`fincestem_lkpd_lawang_saved_${id}`) === 'true') {
-            hasFotoAkpol = true;
-            break;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_${id}`) === 'true') hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_lawang_${id}`) === 'true') hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_lkpd_ft_day2_lawang_${id}`) || localStorage.getItem(`fincestem_lkpd_lawang_saved_${id}`) === 'true') hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_materi_ft_day2_lawang_${id}`)) hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_refl_ft_day2_${id}`)) hasFotoAkpol = true;
+        }
+
+        const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+        if (dbStr) {
+          const db = JSON.parse(dbStr);
+          if (Array.isArray(db.documentation)) {
+            const hasD2Photo = db.documentation.some(p => {
+              const docDay = Number(p.day || p.day_number || 0);
+              const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+              const matchId = ids.includes(docNisn) || ids.includes(docNisn.replace(/^0+/, ''));
+              return docDay === 2 && matchId;
+            });
+            if (hasD2Photo) hasFotoAkpol = true;
           }
         }
       } catch (e) {}
@@ -1317,10 +1341,19 @@
       } catch (e) {}
 
       // Tentukan sesi aktif
-      if (reqSesi === 2 && hasFotoAkpol) {
-        currentD2LkpdSession = 2;
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD2LkpdSession = (Number(targetSesi) === 2 && hasFotoAkpol) ? 2 : 1;
       } else {
-        currentD2LkpdSession = 1;
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2 && hasFotoAkpol) {
+          currentD2LkpdSession = 2;
+        } else if (reqSesi === 1) {
+          currentD2LkpdSession = 1;
+        } else if (currentD2LkpdSession === 2 && hasFotoAkpol) {
+          currentD2LkpdSession = 2;
+        } else {
+          currentD2LkpdSession = 1;
+        }
       }
 
       // Ambil data tersimpan untuk Sesi 1 (AKPOL)
@@ -1764,21 +1797,46 @@
 
       let hasFotoAkpol = false;
       try {
-        const ids = [cleanNisn, String(cleanNisn).trim(), cleanNisn.replace(/^0+/, ''), activeUser.nis, activeUser.identifier].filter(Boolean);
+        const ids = [
+          cleanNisn,
+          cleanNisn.replace(/^0+/, ''),
+          cleanNisn.padStart(10, '0'),
+          activeUser.nis,
+          activeUser.identifier,
+          activeUser.username
+        ].filter(Boolean);
+
         if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
           const prog = FincestemCore.progress.getStudentProgress(cleanNisn);
-          if (prog && FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, 2)) {
-            hasFotoAkpol = true;
+          if (prog) {
+            if (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, 2)) {
+              hasFotoAkpol = true;
+            }
+            const tm = prog.task_map || {};
+            if (tm['2_dokumentasi'] && (tm['2_dokumentasi'].status === 'completed' || tm['2_dokumentasi'].status === 'submitted')) hasFotoAkpol = true;
+            if (tm['2_refleksi'] && (tm['2_refleksi'].status === 'completed' || tm['2_refleksi'].status === 'submitted')) hasFotoAkpol = true;
           }
         }
         for (const id of ids) {
-          if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') {
-            hasFotoAkpol = true;
-            break;
-          }
-          if (localStorage.getItem(`fincestem_lkpd_ft_day2_lawang_${id}`) || localStorage.getItem(`fincestem_lkpd_lawang_saved_${id}`) === 'true') {
-            hasFotoAkpol = true;
-            break;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_${id}`) === 'true') hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_lawang_${id}`) === 'true') hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_lkpd_ft_day2_lawang_${id}`) || localStorage.getItem(`fincestem_lkpd_lawang_saved_${id}`) === 'true') hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_materi_ft_day2_lawang_${id}`)) hasFotoAkpol = true;
+          if (localStorage.getItem(`fincestem_refl_ft_day2_${id}`)) hasFotoAkpol = true;
+        }
+
+        const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+        if (dbStr) {
+          const db = JSON.parse(dbStr);
+          if (Array.isArray(db.documentation)) {
+            const hasD2Photo = db.documentation.some(p => {
+              const docDay = Number(p.day || p.day_number || 0);
+              const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+              const matchId = ids.includes(docNisn) || ids.includes(docNisn.replace(/^0+/, ''));
+              return docDay === 2 && matchId;
+            });
+            if (hasD2Photo) hasFotoAkpol = true;
           }
         }
       } catch (e) {}
@@ -1792,13 +1850,10 @@
       try {
         const url = new URL(window.location.href);
         url.searchParams.set('sesi', String(sesi));
-        window.history.pushState(null, '', url.toString());
+        window.history.replaceState(null, '', url.toString());
       } catch (e) {}
 
-      const mainEl = document.getElementById('mainContentArea');
-      if (mainEl) {
-        renderDay2FieldTripLkpd(mainEl);
-      }
+      renderFieldTripDay2LKPD(false, sesi);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 

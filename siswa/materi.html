@@ -931,9 +931,7 @@
     // ==========================================
     let currentD2Session = 1;
 
-    function renderDay2FieldTripModule(mainEl) {
-      const urlParams = new URLSearchParams(window.location.search);
-      const reqSesi = parseInt(urlParams.get('sesi')) || 1;
+    function renderDay2FieldTripModule(mainEl, targetSesi) {
       const user = FincestemCore.auth.getUser() || {};
       const nisn = user.nisn || user.identifier || '';
       const cleanNisn = String(nisn).trim();
@@ -941,10 +939,20 @@
       // Cek status penyelesaian foto AKPOL untuk membuka Sesi 2
       const isFotoAkpolDone = checkIsFotoAkpolDone(cleanNisn);
 
-      if (reqSesi === 2 && isFotoAkpolDone) {
-        currentD2Session = 2;
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD2Session = (Number(targetSesi) === 2 && isFotoAkpolDone) ? 2 : 1;
       } else {
-        currentD2Session = 1;
+        const urlParams = new URLSearchParams(window.location.search);
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2 && isFotoAkpolDone) {
+          currentD2Session = 2;
+        } else if (reqSesi === 1) {
+          currentD2Session = 1;
+        } else if (currentD2Session === 2 && isFotoAkpolDone) {
+          currentD2Session = 2;
+        } else {
+          currentD2Session = 1;
+        }
       }
 
       // TAB NAVIGASI KUNJUNGAN DAY 2 (INTERAKTIF & BEBAS BERPINDAH BOLAK-BALIK)
@@ -1559,36 +1567,53 @@
       try {
         const user = FincestemCore.auth.getUser() || {};
         const cleanNisn = String(nisn || user.nisn || user.identifier || '').trim();
-        const ids = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+        const ids = [
+          cleanNisn,
+          cleanNisn.replace(/^0+/, ''),
+          cleanNisn.padStart(10, '0'),
+          user.nis,
+          user.identifier,
+          user.username
+        ].filter(Boolean);
 
-        // Jika progres siswa Day 2 sudah selesai secara keseluruhan
+        // 1. Cek dari progres siswa (FincestemCore.progress)
         if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
           const prog = FincestemCore.progress.getStudentProgress(cleanNisn);
-          if (prog && FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, 2)) {
-            return true;
+          if (prog) {
+            if (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, 2)) {
+              return true;
+            }
+            const tm = prog.task_map || {};
+            if (tm['2_dokumentasi'] && (tm['2_dokumentasi'].status === 'completed' || tm['2_dokumentasi'].status === 'submitted')) return true;
+            if (tm['2_refleksi'] && (tm['2_refleksi'].status === 'completed' || tm['2_refleksi'].status === 'submitted')) return true;
           }
         }
 
+        // 2. Cek LocalStorage harian
         for (const id of ids) {
           if (localStorage.getItem(`fincestem_dok_ft_day2_akpol_${id}`) === 'true') return true;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_${id}`) === 'true') return true;
+          if (localStorage.getItem(`fincestem_dok_ft_day2_lawang_${id}`) === 'true') return true;
           if (localStorage.getItem(`fincestem_lkpd_ft_day2_lawangsewu_${id}`)) return true;
+          if (localStorage.getItem(`fincestem_lkpd_ft_day2_lawang_${id}`)) return true;
           if (localStorage.getItem(`fincestem_lkpd_lawang_saved_${id}`) === 'true') return true;
           if (localStorage.getItem(`fincestem_materi_ft_day2_lawangsewu_${id}`)) return true;
-          if (localStorage.getItem(`fincestem_dok_ft_day2_lawang_${id}`) === 'true') return true;
+          if (localStorage.getItem(`fincestem_materi_ft_day2_lawang_${id}`)) return true;
+          if (localStorage.getItem(`fincestem_refl_ft_day2_${id}`)) return true;
         }
-        // Cek juga dari database foto umum jika pilar Exploration / deskripsi mengandung akpol
+
+        // 3. Cek database dokumentasi foto umum
         const dbStr = localStorage.getItem('fincestem_db_2026_v1');
         if (dbStr) {
           const db = JSON.parse(dbStr);
           if (Array.isArray(db.documentation)) {
-            const hasAkpolPhoto = db.documentation.some(p => {
+            const hasD2Photo = db.documentation.some(p => {
               const docDay = Number(p.day || p.day_number || 0);
               const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
-              const desc = (p.description || p.caption || p.pillar || '').toLowerCase();
               const matchId = ids.includes(docNisn) || ids.includes(docNisn.replace(/^0+/, ''));
-              return docDay === 2 && matchId && (desc.includes('akpol') || desc.includes('eksplorasi') || desc.includes('exploration'));
+              return docDay === 2 && matchId;
             });
-            if (hasAkpolPhoto) return true;
+            if (hasD2Photo) return true;
           }
         }
       } catch (e) {}
@@ -1610,12 +1635,12 @@
       try {
         const url = new URL(window.location.href);
         url.searchParams.set('sesi', String(sesi));
-        window.history.pushState(null, '', url.toString());
+        window.history.replaceState(null, '', url.toString());
       } catch (e) {}
 
       const mainEl = document.getElementById('mainContentArea');
       if (mainEl) {
-        renderDay2FieldTripModule(mainEl);
+        renderDay2FieldTripModule(mainEl, sesi);
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
