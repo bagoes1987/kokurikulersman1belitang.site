@@ -1461,10 +1461,11 @@
       mainEl.innerHTML = `
         ${headerHtml}
 
+        ${currentD2LkpdSession === 1 ? `
         <!-- ========================================== -->
         <!-- KONTEN SESI 1: LKPD AKPOL (5 SOAL ESAI) -->
         <!-- ========================================== -->
-        <div id="contentLkpdD2S1" class="${currentD2LkpdSession === 1 ? 'flex' : 'hidden'} flex-col gap-4">
+        <div id="contentLkpdD2S1" class="flex flex-col gap-4">
           ${!hasResumeAkpol ? `
             <div class="p-5 sm:p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
               <div class="flex items-center gap-3">
@@ -1573,11 +1574,11 @@
             `)}
           </div>
         </div>
-
+        ` : `
         <!-- ========================================== -->
         <!-- KONTEN SESI 2: LKPD LAWANG SEWU (5 SOAL ESAI) -->
         <!-- ========================================== -->
-        <div id="contentLkpdD2S2" class="${currentD2LkpdSession === 2 ? 'flex' : 'hidden'} flex-col gap-4">
+        <div id="contentLkpdD2S2" class="flex flex-col gap-4">
           ${!hasFotoAkpol ? `
             <div class="p-5 sm:p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
               <div class="flex items-center gap-3">
@@ -1711,6 +1712,7 @@
             `)}
           </div>
         </div>
+        `}
 
         <!-- MODAL NOTIFIKASI BERHASIL DISIMPAN DAY 2 -->
         <div id="modalD2LkpdSuccess" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none">

@@ -1046,8 +1046,9 @@
       mainEl.innerHTML = `
         ${headerHtml}
 
+        ${currentD2Session === 1 ? `
         <!-- CONTAINER KONTEN SESI 1 (AKPOL) -->
-        <div id="containerD2Sesi1" class="${currentD2Session === 1 ? 'flex' : 'hidden'} flex-col gap-4">
+        <div id="containerD2Sesi1" class="flex flex-col gap-4">
           <!-- MATERI SESI 1: AKADEMI KEPOLISIAN (AKPOL) LENGKAP -->
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-blue-200/80 shadow-xs flex flex-col gap-4">
             <div class="flex items-center gap-3">
@@ -1291,9 +1292,8 @@
               </ul>
             </div>
           </div>
-        </div>
 
-        <!-- LEMBAR KESIMPULAN MODUL SESI 1: AKPOL -->
+          <!-- LEMBAR KESIMPULAN MODUL SESI 1: AKPOL -->
           <div class="bg-gradient-to-br from-[#006a61] to-[#004f48] text-white rounded-3xl p-5 sm:p-6 shadow-md flex flex-col gap-4">
             <div class="flex items-start justify-between gap-3">
               <div class="flex items-center gap-3">
@@ -1346,9 +1346,9 @@
             </div>
           </div>
         </div>
-
+        ` : `
         <!-- CONTAINER KONTEN SESI 2 (LAWANG SEWU) -->
-        <div id="containerD2Sesi2" class="${currentD2Session === 2 ? 'flex' : 'hidden'} flex-col gap-4">
+        <div id="containerD2Sesi2" class="flex flex-col gap-4">
           ${!isFotoAkpolDone ? `
             <!-- BANNER TERKUNCI SESI 2 (HARUS TUNTASKAN FOTO AKPOL DULU) -->
             <div class="p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
@@ -1538,6 +1538,7 @@
             </div>
           `}
         </div>
+        `}
 
         <!-- Copyright Footer -->
         <div class="text-center pt-2 pb-4">
