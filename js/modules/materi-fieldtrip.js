@@ -1628,75 +1628,6 @@
         </div>
       `;
 
-      // 2. SUB-NAVIGASI STATUS & PINDAH SESI (FORMAT PERSIS DAY 2 DENGAN PANAH MERAH SCREENSHOT)
-      let subNavHtml = '';
-      if (currentD3Session === 1) {
-        subNavHtml = `
-          <!-- SUB-NAVIGASI SESI 1 (PETIK APEL) -->
-          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-emerald-50/90 border border-emerald-200 shadow-2xs">
-            <span class="text-[11px] sm:text-xs font-extrabold text-emerald-950 px-3 py-1.5 bg-emerald-100 rounded-xl flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-emerald-700">radio_button_checked</span>
-              <span>Sesi 1 Aktif: Kebun Petik Apel Batu</span>
-            </span>
-            ${isS1Done ? `
-              <button type="button" onclick="switchD3Session(2)" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer">
-                <span>Buka Materi Jatim Park 1 (Sesi 2)</span>
-                <span class="material-symbols-outlined text-base">arrow_forward</span>
-              </button>
-            ` : `
-              <span class="text-[11px] text-slate-500 font-bold flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200">
-                <span class="material-symbols-outlined text-xs text-amber-600">lock</span>
-                <span>Sesi 2 terbuka setelah Sesi 1 selesai</span>
-              </span>
-            `}
-          </div>
-        `;
-      } else if (currentD3Session === 2) {
-        subNavHtml = `
-          <!-- SUB-NAVIGASI SESI 2 (JATIM PARK 1) -->
-          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-blue-50/90 border border-blue-200 shadow-2xs">
-            <button type="button" onclick="switchD3Session(1)" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-black border border-slate-300 shadow-2xs transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Sesi 1: Petik Apel</span>
-            </button>
-            <span class="text-[11px] sm:text-xs font-extrabold text-blue-950 px-3 py-1.5 bg-blue-100 rounded-xl flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-blue-700">radio_button_checked</span>
-              <span>Sesi 2 Aktif: Jatim Park 1</span>
-            </span>
-            ${isS2Done ? `
-              <button type="button" onclick="switchD3Session(3)" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer">
-                <span>Buka Materi Museum Angkut (Sesi 3)</span>
-                <span class="material-symbols-outlined text-base">arrow_forward</span>
-              </button>
-            ` : `
-              <span class="text-[11px] text-slate-500 font-bold flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200">
-                <span class="material-symbols-outlined text-xs text-amber-600">lock</span>
-                <span>Sesi 3 terbuka setelah Sesi 2 selesai</span>
-              </span>
-            `}
-          </div>
-        `;
-      } else if (currentD3Session === 3) {
-        subNavHtml = `
-          <!-- SUB-NAVIGASI SESI 3 (MUSEUM ANGKUT) -->
-          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-purple-50/90 border border-purple-200 shadow-2xs">
-            <div class="flex items-center gap-1.5">
-              <button type="button" onclick="switchD3Session(1)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer">
-                <span>Sesi 1</span>
-              </button>
-              <button type="button" onclick="switchD3Session(2)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer">
-                <span class="material-symbols-outlined text-sm">arrow_back</span>
-                <span>Sesi 2</span>
-              </button>
-            </div>
-            <span class="text-[11px] sm:text-xs font-extrabold text-purple-950 px-3 py-1.5 bg-purple-100 rounded-xl flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-purple-700">radio_button_checked</span>
-              <span>Sesi 3 Aktif: Museum Angkut</span>
-            </span>
-          </div>
-        `;
-      }
-
       let headerHtml = '';
       let bodyHtml = '';
 
@@ -2127,7 +2058,6 @@
         <div class="flex flex-col gap-4 sm:gap-5">
           ${renderFieldTripScheduleCard(3)}
           ${tabNavHtml}
-          ${subNavHtml}
           ${headerHtml}
           ${bodyHtml}
         </div>

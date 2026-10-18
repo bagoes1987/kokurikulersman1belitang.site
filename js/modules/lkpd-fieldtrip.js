@@ -1548,81 +1548,11 @@
         </div>
       `;
 
-      // 2. SUB-NAVIGASI STATUS & PINDAH SESI LKPD (FORMAT PERSIS DAY 2)
-      let subNavHtml = '';
-      if (currentD3LkpdSession === 1) {
-        subNavHtml = `
-          <!-- SUB-NAVIGASI SESI 1 (LKPD PETIK APEL) -->
-          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-emerald-50/90 border border-emerald-200 shadow-2xs">
-            <span class="text-[11px] sm:text-xs font-extrabold text-emerald-950 px-3 py-1.5 bg-emerald-100 rounded-xl flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-emerald-700">radio_button_checked</span>
-              <span>Sesi 1 Aktif: LKPD Petik Apel Batu</span>
-            </span>
-            ${isSubmitted ? `
-              <button type="button" onclick="switchD3LkpdSession(2)" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer">
-                <span>Buka LKPD Jatim Park 1 (Sesi 2)</span>
-                <span class="material-symbols-outlined text-base">arrow_forward</span>
-              </button>
-            ` : `
-              <span class="text-[11px] text-slate-500 font-bold flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200">
-                <span class="material-symbols-outlined text-xs text-amber-600">lock</span>
-                <span>Sesi 2 terbuka setelah LKPD Sesi 1 terkirim</span>
-              </span>
-            `}
-          </div>
-        `;
-      } else if (currentD3LkpdSession === 2) {
-        subNavHtml = `
-          <!-- SUB-NAVIGASI SESI 2 (LKPD JATIM PARK 1) -->
-          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-blue-50/90 border border-blue-200 shadow-2xs">
-            <button type="button" onclick="switchD3LkpdSession(1)" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-black border border-slate-300 shadow-2xs transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>LKPD Sesi 1: Petik Apel</span>
-            </button>
-            <span class="text-[11px] sm:text-xs font-extrabold text-blue-950 px-3 py-1.5 bg-blue-100 rounded-xl flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-blue-700">radio_button_checked</span>
-              <span>Sesi 2 Aktif: LKPD Jatim Park 1</span>
-            </span>
-            ${isS2Done ? `
-              <button type="button" onclick="switchD3LkpdSession(3)" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer">
-                <span>Buka LKPD Museum Angkut (Sesi 3)</span>
-                <span class="material-symbols-outlined text-base">arrow_forward</span>
-              </button>
-            ` : `
-              <span class="text-[11px] text-slate-500 font-bold flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200">
-                <span class="material-symbols-outlined text-xs text-amber-600">lock</span>
-                <span>Sesi 3 terbuka setelah LKPD Sesi 2 terkirim</span>
-              </span>
-            `}
-          </div>
-        `;
-      } else if (currentD3LkpdSession === 3) {
-        subNavHtml = `
-          <!-- SUB-NAVIGASI SESI 3 (LKPD MUSEUM ANGKUT) -->
-          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-purple-50/90 border border-purple-200 shadow-2xs">
-            <div class="flex items-center gap-1.5">
-              <button type="button" onclick="switchD3LkpdSession(1)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer">
-                <span>Sesi 1</span>
-              </button>
-              <button type="button" onclick="switchD3LkpdSession(2)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer">
-                <span class="material-symbols-outlined text-sm">arrow_back</span>
-                <span>Sesi 2</span>
-              </button>
-            </div>
-            <span class="text-[11px] sm:text-xs font-extrabold text-purple-950 px-3 py-1.5 bg-purple-100 rounded-xl flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-purple-700">radio_button_checked</span>
-              <span>Sesi 3 Aktif: LKPD Museum Angkut</span>
-            </span>
-          </div>
-        `;
-      }
-
       if (currentD3LkpdSession === 1) {
         // SESI 1: FORM LKPD PETIK APEL BATU
         mainEl.innerHTML = `
           <div class="flex flex-col gap-4 sm:gap-5">
             ${tabNavHtml}
-            ${subNavHtml}
 
             ${isLockedByPrereq ? `
               <!-- BANNER PERINGATAN PRASYARAT MODUL -->
@@ -2008,7 +1938,6 @@
         mainEl.innerHTML = `
           <div class="flex flex-col gap-4 sm:gap-5">
             ${tabNavHtml}
-            ${subNavHtml}
             <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-12">
               <div class="w-14 h-14 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
                 <span class="material-symbols-outlined text-3xl">science</span>
@@ -2033,7 +1962,6 @@
         mainEl.innerHTML = `
           <div class="flex flex-col gap-4 sm:gap-5">
             ${tabNavHtml}
-            ${subNavHtml}
             <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-12">
               <div class="w-14 h-14 rounded-3xl bg-purple-100 text-purple-600 flex items-center justify-center shadow-xs">
                 <span class="material-symbols-outlined text-3xl">directions_car</span>
