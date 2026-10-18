@@ -144,8 +144,8 @@
     </div>
   </main>
 
-  <script src="../js/siswa_data.js?v=20261019_v5"></script>
-  <script src="../js/core.js?v=20261019_v5"></script>
+  <script src="../js/siswa_data.js?v=20261019_v6"></script>
+  <script src="../js/core.js?v=20261019_v6"></script>
   <script>
     window.activeUser = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {
       name: 'Peserta Field Trip',
@@ -157,7 +157,7 @@
     };
     var activeUser = window.activeUser;
   </script>
-  <script src="../js/modules/lkpd-fieldtrip.js?v=20261019_v5"></script>
+  <script src="../js/modules/lkpd-fieldtrip.js?v=20261019_v6"></script>
   <script>
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -166,8 +166,33 @@
 
       const urlParams = new URLSearchParams(window.location.search);
       const rawDay = urlParams.get('day');
-      const dayNum = (rawDay !== null && rawDay !== '') ? parseInt(rawDay) : 3;
+      const dayNum = (rawDay !== null && rawDay !== '') ? parseInt(rawDay) : 1;
       const isReadOnlyUrl = (urlParams.get('readonly') === '1');
+
+      // Proteksi Alur Berurutan Cepat: Day N (N > 1) mewajibkan Day N-1 selesai
+      if (dayNum > 1 && window.FincestemCore && FincestemCore.progress) {
+        let cachedProg = null;
+        try {
+          const rawP = localStorage.getItem('fincestem_progress_' + (activeUser.nisn || activeUser.identifier));
+          if (rawP) cachedProg = JSON.parse(rawP);
+        } catch(e) {}
+        let cachedDays = null;
+        try {
+          const rawD = localStorage.getItem('fincestem_schedules_field_trip');
+          if (rawD) cachedDays = JSON.parse(rawD);
+        } catch(e) {}
+
+        if (cachedProg && cachedDays) {
+          const syncAccess = FincestemCore.progress.canAccessDay(dayNum, cachedProg, cachedDays);
+          if (!syncAccess.canAccess) {
+            FincestemCore.ui.toast(syncAccess.reason || `Aktivitas Day ${dayNum} terkunci! Harap selesaikan Day ${dayNum - 1} terlebih dahulu.`, 'error');
+            setTimeout(() => {
+              window.location.replace('dashboard.html');
+            }, 600);
+            return;
+          }
+        }
+      }
 
       // 1. RENDER INSTAN 0 MILIDETIK (HILANGKAN SPINNER SEKETIKA, FORM LKPD LANGSUNG MUNCUL)
       try {
@@ -192,6 +217,14 @@
             FincestemCore.progress.getStudentProgress(nisn, function(prog) {
               window.currentStudentProgress = prog;
               const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
+              if (!access.canAccess) {
+                const reasonMsg = access.reason || `Aktivitas Day ${dayNum} terkunci! Harap selesaikan Day ${dayNum - 1} terlebih dahulu.`;
+                FincestemCore.ui.toast(reasonMsg, 'error');
+                setTimeout(() => {
+                  window.location.replace('dashboard.html');
+                }, 800);
+                return;
+              }
               if (!access.canEdit || isReadOnlyUrl) {
                 const saveBtns = document.querySelectorAll('#btnSubmitLkpdApel, #saveLkpdBtn, #btnSubmitLkpdD2Akpol, #btnSubmitLkpdD2Lawang');
                 saveBtns.forEach(b => {

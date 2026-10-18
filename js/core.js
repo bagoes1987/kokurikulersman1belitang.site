@@ -2653,7 +2653,20 @@ const FincestemCore = {
       // Cek localStorage browser untuk data yang tersimpan valid (bukan draft kosong)
       try {
         const u = FincestemCore.auth.getUser() || {};
-        const idList = [u.nisn, u.identifier, u.nis].filter(Boolean);
+        const idSet = new Set();
+        [u.nisn, u.identifier, u.nis, u.username].forEach(val => {
+          if (val) {
+            const str = String(val).trim();
+            if (str && str !== '-') {
+              idSet.add(str);
+              const unp = str.replace(/^0+/, '');
+              if (unp) idSet.add(unp);
+              if (unp.length === 9) idSet.add('0' + unp);
+              if (unp.length === 8) idSet.add('00' + unp);
+            }
+          }
+        });
+        const idList = Array.from(idSet);
         for (const id of idList) {
           // Refleksi valid
           const reflFt = localStorage.getItem(`fincestem_refleksi_ft_day${d}_` + id);
@@ -2662,7 +2675,7 @@ const FincestemCore = {
             const raw = reflFt || reflNonFt;
             try {
               const p = JSON.parse(raw);
-              if (p && (p.content || (typeof p === 'string' && p.trim().length > 10))) return true;
+              if (p && (p.submitted || p.content || (typeof p === 'string' && p.trim().length > 10))) return true;
             } catch (err) {
               if (raw && raw.trim().length > 10) return true;
             }
@@ -2704,8 +2717,7 @@ const FincestemCore = {
       // 1. SISWA FIELD TRIP:
       // Harus memenuhi: (1) Jadwal Day ini terbuka oleh Admin/Tanggal (isOpenByAdmin), dan (2) Day sebelumnya selesai
       if (isFt) {
-        const isManualOpen = sched && (Number(sched.auto_schedule) === 0 && Number(sched.is_active) === 1);
-        const prevDone = (d <= 1) || isManualOpen || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+        const prevDone = (d <= 1) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
         const canOpen = isOpenByAdmin && prevDone;
         return {
           canAccess: canOpen,
@@ -2734,8 +2746,7 @@ const FincestemCore = {
       // Siswa TIDAK PERLU menunggu guru/fasilitator menetapkan status 'Completed'!
       // Cukup siswa telah menyelesaikan tugas mandiri pada Day N-1 (Modul, LKPD, Asesmen, Foto, dan Refleksi)
       // DAN jadwal Day ini harus terbuka (isOpenByAdmin).
-      const isManualOpen = sched && (Number(sched.auto_schedule) === 0 && Number(sched.is_active) === 1);
-      const prevDone = (d <= 1) || isManualOpen || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+      const prevDone = (d <= 1) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
       if (!prevDone) {
         return {
           canAccess: false,

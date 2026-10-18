@@ -154,9 +154,9 @@
     </div>
   </main>
 
-  <script src="../js/siswa_data.js?v=20261019_v3"></script>
-  <script src="../js/core.js?v=20261019_v3"></script>
-  <script src="../js/modules/materi-fieldtrip.js?v=20261019_v3"></script>
+  <script src="../js/siswa_data.js?v=20261019_v6"></script>
+  <script src="../js/core.js?v=20261019_v6"></script>
+  <script src="../js/modules/materi-fieldtrip.js?v=20261019_v6"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -173,11 +173,33 @@
 
       // Proteksi Alur Berurutan: Day N (N > 1) mewajibkan Day N-1 selesai
       if (dayNum > 1 && FincestemCore.progress) {
+        let cachedProg = null;
+        try {
+          const rawP = localStorage.getItem('fincestem_progress_' + (user.nisn || user.identifier));
+          if (rawP) cachedProg = JSON.parse(rawP);
+        } catch(e) {}
+        let cachedDays = null;
+        try {
+          const rawD = localStorage.getItem('fincestem_schedules_' + (isFieldTrip ? 'field_trip' : 'non_field_trip'));
+          if (rawD) cachedDays = JSON.parse(rawD);
+        } catch(e) {}
+
+        if (cachedProg && cachedDays) {
+          const syncAccess = FincestemCore.progress.canAccessDay(dayNum, cachedProg, cachedDays);
+          if (!syncAccess.canAccess) {
+            FincestemCore.ui.toast(syncAccess.reason || `Aktivitas Day ${dayNum} belum dapat diakses! Harap selesaikan Day ${dayNum - 1} terlebih dahulu.`, 'error');
+            setTimeout(() => {
+              window.location.replace('dashboard.html');
+            }, 600);
+            return;
+          }
+        }
+
         FincestemCore.progress.getStudentProgress(user.nisn || user.identifier, function(prog) {
           FincestemCore.schedule.getSchedule(function(days) {
             const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
-            if (!access.canAccess && !access.isOpen) {
-              const reasonMsg = access.reason || `Aktivitas Day ${dayNum} belum dapat diakses saat ini.`;
+            if (!access.canAccess) {
+              const reasonMsg = access.reason || `Aktivitas Day ${dayNum} belum dapat diakses saat ini. Harap selesaikan Day ${dayNum - 1} terlebih dahulu.`;
               FincestemCore.ui.toast(reasonMsg, 'error');
               setTimeout(() => {
                 window.location.replace('dashboard.html');
