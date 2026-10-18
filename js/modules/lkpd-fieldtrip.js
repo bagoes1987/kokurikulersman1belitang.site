@@ -1432,7 +1432,719 @@
     }
 
 
-    // MODUL LKPD KHUSUS FIELD TRIP DAY 3 S.D. 7
+    // ==========================================
+    // MODUL LKPD KHUSUS FIELD TRIP DAY 3 (KOTA BATU)
+    // Sesi 1: Wisata Petik Apel Mandiri Batu (Aktif)
+    // Sesi 2: Jatim Park 1 - Science Center (Segera Hadir)
+    // Sesi 3: Museum Angkut Kota Batu (Segera Hadir)
+    // ==========================================
+    let currentD3LkpdSession = 1;
+
+    function renderFieldTripDay3LKPD(isReadOnly, targetSesi) {
+      const mainEl = document.querySelector('main');
+      if (!mainEl) return;
+
+      const studentName = activeUser.name || 'Peserta Field Trip';
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+        : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+      const cleanNisn = String(studentNisn).trim();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD3LkpdSession = Number(targetSesi);
+      } else {
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2 || reqSesi === 3) {
+          currentD3LkpdSession = reqSesi;
+        } else {
+          currentD3LkpdSession = 1;
+        }
+      }
+
+      // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan Sesi 1 Petik Apel
+      let hasMateriApel = false;
+      try {
+        const localMateri = localStorage.getItem('fincestem_materi_ft_day3_apel_' + cleanNisn) ||
+                            localStorage.getItem('fincestem_materi_ft_day3_' + cleanNisn);
+        if (localMateri) {
+          const parsed = JSON.parse(localMateri);
+          if (parsed && (parsed.conclusion || parsed.text || parsed.content)) {
+            hasMateriApel = true;
+          }
+        }
+      } catch(e) {}
+
+      // Ambil data LKPD yang tersimpan sebelumnya
+      let saved = null;
+      try {
+        const raw = localStorage.getItem('fincestem_lkpd_ft_day3_apel_' + cleanNisn) ||
+                    localStorage.getItem('fincestem_lkpd_ft_day3_' + cleanNisn);
+        if (raw) {
+          saved = JSON.parse(raw);
+        }
+      } catch(e) {}
+
+      if (saved && (saved.submitted || saved.varietas || saved.applesEaten !== undefined)) {
+        hasMateriApel = true;
+      }
+
+      const isSubmitted = !!(saved && saved.submitted);
+      const isLockedByPrereq = !hasMateriApel;
+      const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+      const readOnlyAttr = isFormLocked ? 'disabled' : '';
+
+      // TAB NAVIGASI 3 SESI LKPD DAY 3 KOTA BATU
+      const tabNavHtml = `
+        <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+          <!-- TAB 1: PETIK APEL (AKTIF) -->
+          <button type="button" onclick="switchD3LkpdSession(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3LkpdSession === 1 ? 'bg-emerald-600 text-white shadow-xs ring-2 ring-emerald-400/40' : 'bg-slate-50 hover:bg-emerald-50 text-emerald-950 border border-emerald-300'}">
+            <span class="material-symbols-outlined text-base ${currentD3LkpdSession === 1 ? 'text-amber-300' : 'text-emerald-600'}">nutrition</span>
+            <span class="truncate">Sesi 1: LKPD Petik Apel</span>
+            ${currentD3LkpdSession === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
+
+          <!-- TAB 2: JATIM PARK 1 -->
+          <button type="button" onclick="switchD3LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3LkpdSession === 2 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
+            <span class="material-symbols-outlined text-base ${currentD3LkpdSession === 2 ? 'text-amber-300' : 'text-blue-600'}">science</span>
+            <span class="truncate">Sesi 2: Jatim Park 1</span>
+            ${currentD3LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
+
+          <!-- TAB 3: MUSEUM ANGKUT -->
+          <button type="button" onclick="switchD3LkpdSession(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3LkpdSession === 3 ? 'bg-purple-600 text-white shadow-xs ring-2 ring-purple-400/40' : 'bg-slate-50 hover:bg-purple-50 text-purple-950 border border-purple-200'}">
+            <span class="material-symbols-outlined text-base ${currentD3LkpdSession === 3 ? 'text-amber-300' : 'text-purple-600'}">directions_car</span>
+            <span class="truncate">Sesi 3: Museum Angkut</span>
+            ${currentD3LkpdSession === 3 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
+        </div>
+      `;
+
+      if (currentD3LkpdSession === 1) {
+        // SESI 1: FORM LKPD PETIK APEL BATU
+        mainEl.innerHTML = `
+          <div class="flex flex-col gap-5 sm:gap-6">
+            ${tabNavHtml}
+
+            ${isLockedByPrereq ? `
+              <!-- BANNER PERINGATAN PRASYARAT MODUL -->
+              <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm animate-pulse-once">
+                <div class="flex items-center gap-3">
+                  <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                    <span class="material-symbols-outlined text-2xl">lock</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
+                    <h3 class="text-base font-extrabold text-amber-950">LKPD Petik Apel Day 3 Sesi 1 Masih Terkunci!</h3>
+                  </div>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                  Anda belum membaca <strong>Modul Belajar Day 3 Sesi 1 (Eksplorasi Agrobisnis &amp; Sains Apel Batu)</strong> atau belum menyimpan resume catatan pemahaman di bagian bawah modul.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
+                  <a href="materi.html?day=3&sesi=1" class="px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all">
+                    <span class="material-symbols-outlined text-lg">menu_book</span>
+                    <span>Buka Modul Petik Apel Day 3 Sekarang</span>
+                  </a>
+                  <a href="dashboard.html" class="px-5 py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 border border-slate-300 transition-all">
+                    <span class="material-symbols-outlined text-lg">arrow_back</span>
+                    <span>Kembali ke Beranda</span>
+                  </a>
+                </div>
+              </div>
+            ` : ''}
+
+            <!-- BANNER IDENTITAS LKPD DAY 3 SESI 1 -->
+            <div class="bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3 border border-emerald-700/40">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-emerald-100 backdrop-blur-md">
+                  Field Trip • Day 3 • Sesi 1
+                </span>
+                <span id="ftD3StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-amber-300 text-slate-950' : 'bg-white/20 text-white'}">
+                  ${isSubmitted ? '✓ Telah Dikirim / Selesai' : 'Lembar Kerja Riset Mandiri'}
+                </span>
+              </div>
+
+              <h2 class="font-black text-xl sm:text-2xl leading-tight">
+                LKPD Eksplorasi Sains Hortikultura &amp; Agrobisnis Apel Batu
+              </h2>
+              <span class="text-xs sm:text-sm font-semibold text-emerald-200 leading-snug">
+                Investigasi Terpadu: Sains Varietas Apel, Sensor GPS Smartphone, Rekayasa Pertanian, dan Perhitungan Konsumsi Finansial.
+              </span>
+              <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-emerald-200 font-semibold flex-wrap">
+                <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                  <span class="material-symbols-outlined text-sm">schedule</span>
+                  <span>08.00 - 10.30 WIB</span>
+                </span>
+                <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                  <span class="material-symbols-outlined text-sm">pin_drop</span>
+                  <span>Kebun Apel Mandiri Batu</span>
+                </span>
+                <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                  <span class="material-symbols-outlined text-sm">person</span>
+                  <span>${studentName} (${cleanNisn})</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- FORM INVESTIGASI 4 PILAR FINCESTEM -->
+            <form id="formFtDay3Lkpd" onsubmit="event.preventDefault();" class="flex flex-col gap-5 sm:gap-6">
+
+              <!-- 1. PILAR SCIENCE: IDENTIFIKASI VARIETAS & CIRI FISIK APEL -->
+              <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-4">
+                <div class="flex items-center gap-2 text-emerald-950 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+                  <span class="material-symbols-outlined text-emerald-600 text-2xl">biotech</span>
+                  <span>1. Science (Sains Buah Apel): Varietas &amp; Karakteristik Fisik/Rasa</span>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                  <label class="text-xs sm:text-sm font-bold text-slate-800">
+                    A. Jenis varietas apel apa yang kamu petik dan makan langsung di kebun apel ini?
+                  </label>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pt-1">
+                    <label class="p-3 rounded-xl border border-slate-200 hover:border-emerald-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-600 has-[:checked]:text-emerald-950">
+                      <input type="radio" name="ftD3Varietas" value="Manalagi" class="accent-emerald-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Manalagi') ? 'checked' : ''}>
+                      <span>🍏 Apel Manalagi</span>
+                    </label>
+                    <label class="p-3 rounded-xl border border-slate-200 hover:border-rose-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-rose-50 has-[:checked]:border-rose-600 has-[:checked]:text-rose-950">
+                      <input type="radio" name="ftD3Varietas" value="Rome Beauty" class="accent-rose-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Rome Beauty') ? 'checked' : ''}>
+                      <span>🍎 Rome Beauty</span>
+                    </label>
+                    <label class="p-3 rounded-xl border border-slate-200 hover:border-red-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-red-50 has-[:checked]:border-red-600 has-[:checked]:text-red-950">
+                      <input type="radio" name="ftD3Varietas" value="Anna" class="accent-red-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Anna') ? 'checked' : ''}>
+                      <span>🍎 Apel Anna</span>
+                    </label>
+                    <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
+                      <input type="radio" name="ftD3Varietas" value="Campuran" class="accent-amber-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Campuran') ? 'checked' : ''}>
+                      <span>🍏🍎 Campuran (Mencicipi >1)</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                  <label for="ftD3CiriFisik" class="text-xs sm:text-sm font-bold text-slate-800">
+                    B. Deskripsikan ciri fisik dan karakteristik rasa apel yang kamu ketahui dari buah yang kamu makan:
+                  </label>
+                  <p class="text-[11.5px] text-slate-500 leading-relaxed">
+                    Jelaskan warna kulit buah, tekstur renyah/empuknya daging buah, tingkat rasa manis atau asam segar, serta aroma khas yang kamu rasakan.
+                  </p>
+                  <textarea id="ftD3CiriFisik" rows="3" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Apel yang saya makan kulitnya berwarna hijau kekuningan dengan bintik halus, daging buahnya sangat renyah dan padat, rasanya dominan manis harum tanpa rasa asam, sesuai ciri khas varietas Manalagi...">${saved ? (saved.ciriFisik || '') : ''}</textarea>
+                </div>
+              </div>
+
+              <!-- 2. PILAR TECHNOLOGY: SENSOR GPS & ALTIMETER DIGITAL SMARTPHONE -->
+              <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
+                  <div class="flex items-center gap-2 text-blue-950 font-black text-base sm:text-lg">
+                    <span class="material-symbols-outlined text-blue-600 text-2xl">satellite_alt</span>
+                    <span>2. Technology: Uji Sensor Satelit GPS &amp; Altimeter Digital Smartphone</span>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-blue-100 text-blue-800">
+                    Otomatisasi Sensor HP
+                  </span>
+                </div>
+
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                  Gunakan sensor satelit GPS dan altimeter digital di ponsel Anda untuk mendeteksi koordinat geografis dan membuktikan ketinggian lokasi kebun apel (≥800 mdpl).
+                </p>
+
+                <!-- Tombol 1-Klik Deteksi Sensor GPS Otomatis -->
+                <div class="p-3.5 rounded-2xl bg-blue-50/80 border border-blue-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div class="flex items-center gap-2.5 text-xs text-blue-900 font-semibold">
+                    <span class="material-symbols-outlined text-blue-600 text-2xl">my_location</span>
+                    <div class="flex flex-col">
+                      <span class="font-bold">Uji Pembacaan Sensor Satelit Sekarang:</span>
+                      <span id="ftD3GpsStatusText" class="text-[11px] text-blue-700">Tekan tombol di samping untuk mengambil data posisi langsung dari sensor HP</span>
+                    </div>
+                  </div>
+                  ${!isFormLocked ? `
+                    <button type="button" onclick="detectD3PetikApelGps()" id="btnDetectD3Gps" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0">
+                      <span class="material-symbols-outlined text-base">radar</span>
+                      <span>Ambil Data Sensor GPS Otomatis</span>
+                    </button>
+                  ` : ''}
+                </div>
+
+                <!-- Input Koordinat & Elevasi Otomatis -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 text-xs">
+                  <div class="flex flex-col gap-1">
+                    <label class="font-bold text-slate-700">Latitude (Garis Lintang):</label>
+                    <input type="text" id="ftD3GpsLat" value="${saved ? (saved.gpsLat || '') : ''}" ${readOnlyAttr} placeholder="-7.854..." class="p-2.5 rounded-xl border border-slate-200 font-mono text-xs outline-none focus:border-blue-500 bg-slate-50">
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="font-bold text-slate-700">Longitude (Garis Bujur):</label>
+                    <input type="text" id="ftD3GpsLng" value="${saved ? (saved.gpsLng || '') : ''}" ${readOnlyAttr} placeholder="112.523..." class="p-2.5 rounded-xl border border-slate-200 font-mono text-xs outline-none focus:border-blue-500 bg-slate-50">
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="font-bold text-slate-700">Elevasi Altimeter (mdpl):</label>
+                    <input type="text" id="ftD3GpsAlt" value="${saved ? (saved.gpsAlt || '') : ''}" ${readOnlyAttr} placeholder="± 950 mdpl" class="p-2.5 rounded-xl border border-slate-200 font-mono text-xs outline-none focus:border-blue-500 bg-slate-50 font-bold text-blue-900">
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <label class="font-bold text-slate-700">Akurasi Satelit GPS:</label>
+                    <input type="text" id="ftD3GpsAcc" value="${saved ? (saved.gpsAccuracy || '') : ''}" ${readOnlyAttr} placeholder="Akurasi ± 5 meter" class="p-2.5 rounded-xl border border-slate-200 font-mono text-xs outline-none focus:border-blue-500 bg-slate-50">
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                  <label for="ftD3AnalisisGps" class="text-xs sm:text-sm font-bold text-slate-800">
+                    Analisis Pembuktian Ketinggian Dataran Tinggi (≥800 mdpl):
+                  </label>
+                  <textarea id="ftD3AnalisisGps" rows="2" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Dari pembacaan sensor GPS HP, kebun berada pada elevasi 965 mdpl. Hal ini membuktikan kebenaran hipotesis bahwa tanaman apel membutuhkan ketinggian di atas 800 mdpl agar beriklim sejuk...">${saved ? (saved.analisisGps || '') : ''}</textarea>
+                </div>
+              </div>
+
+              <!-- 3. PILAR ENGINEERING: SISTEM REKAYASA BUDIDAYA PERTANIAN -->
+              <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-4">
+                <div class="flex items-center gap-2 text-amber-950 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+                  <span class="material-symbols-outlined text-amber-600 text-2xl">precision_manufacturing</span>
+                  <span>3. Engineering: Sistem Rekayasa Budidaya Pertanian di Kebun Apel</span>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                  <label for="ftD3SistemRekayasa" class="text-xs sm:text-sm font-bold text-slate-800">
+                    Sistem rekayasa pertanian apa yang kalian dapatkan dan amati langsung di kebun apel ini?
+                  </label>
+                  <p class="text-[11.5px] text-slate-500 leading-relaxed">
+                    Jelaskan cara kerja dan manfaat teknik rekayasa yang dilakukan petani (misalnya: pelengkungan cabang mendatar / <em>branch bending</em>, perompesan daun buatan / <em>defoliasi</em> untuk panen 2x setahun, atau teknik okulasi sambung pucuk).
+                  </p>
+                  <textarea id="ftD3SistemRekayasa" rows="4" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-slate-400 leading-relaxed ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Kami mengamati petani melakukan pelengkungan cabang (branch bending) dengan tali pengikat mendatar. Tujuannya memperlambat hormon auksin ke atas sehingga merangsang tunas bunga tumbuh merata di setiap cabang. Petani juga merompes daun secara manual setelah panen untuk menggantikan musim gugur alami...">${saved ? (saved.sistemRekayasa || '') : ''}</textarea>
+                </div>
+              </div>
+
+              <!-- 4. PILAR MATHEMATICS: PERHITUNGAN KONSUMSI APEL & HARGA PER KILO -->
+              <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
+                  <div class="flex items-center gap-2 text-indigo-950 font-black text-base sm:text-lg">
+                    <span class="material-symbols-outlined text-indigo-600 text-2xl">calculate</span>
+                    <span>4. Mathematics: Perhitungan Konsumsi Apel &amp; Analisis Tiket Masuk</span>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-800">
+                    Standar Rasio: 1 kg ≈ 8 butir
+                  </span>
+                </div>
+
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                  Masukkan jumlah apel yang kamu makan di dalam kebun dan harga per kilogram dari hasil wawancara ke petani kebun setempat:
+                </p>
+
+                <!-- Input Interaktif Matematika & Finansial -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5">
+                    <label for="ftD3ApplesEaten" class="font-bold text-slate-800">
+                      Jumlah Butir Apel yang Kamu Makan di Kebun:
+                    </label>
+                    <div class="flex items-center gap-2">
+                      <input type="number" min="0" max="50" id="ftD3ApplesEaten" oninput="calculateD3PetikApelMath()" value="${saved ? (saved.applesEaten !== undefined ? saved.applesEaten : 6) : 6}" ${readOnlyAttr} class="w-full p-2.5 rounded-xl border border-slate-300 font-mono text-sm font-bold text-emerald-800 outline-none focus:border-indigo-500 bg-white">
+                      <span class="text-slate-600 font-bold shrink-0">Butir</span>
+                    </div>
+                    <span class="text-[11px] text-slate-500">Estimasi praktis agrikultur: 1 kg rata-rata berisi 8 butir buah.</span>
+                  </div>
+
+                  <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5">
+                    <label for="ftD3PricePerKg" class="font-bold text-slate-800">
+                      Harga Per Kilogram Apel (Wawancara Petani):
+                    </label>
+                    <div class="flex items-center gap-2">
+                      <span class="text-slate-600 font-bold shrink-0">Rp</span>
+                      <input type="text" id="ftD3PricePerKg" oninput="formatRupiahInput(this); calculateD3PetikApelMath()" value="${saved ? (formatNumberId(saved.pricePerKg) || '24.000') : '24.000'}" ${readOnlyAttr} class="w-full p-2.5 rounded-xl border border-slate-300 font-mono text-sm font-bold text-slate-900 outline-none focus:border-indigo-500 bg-white">
+                      <span class="text-slate-600 font-bold shrink-0">/ kg</span>
+                    </div>
+                    <span class="text-[11px] text-slate-500">Tanyakan langsung harga petik segar ke petani kebun di tempat.</span>
+                  </div>
+                </div>
+
+                <!-- Live Hasil Perhitungan Otomatis -->
+                <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-50 to-blue-50 border border-indigo-200 flex flex-col gap-3">
+                  <span class="text-xs font-black text-indigo-950 uppercase tracking-wider flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-indigo-700 text-base">analytics</span>
+                    Hasil Kalkulasi Otomatis Konsumsi Apel:
+                  </span>
+
+                  <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+                    <div class="bg-white p-3 rounded-xl border border-indigo-100 flex flex-col">
+                      <span class="text-slate-500 text-[11px]">Total Berat Apel Dimakan:</span>
+                      <span id="ftD3CalcKg" class="text-base sm:text-lg font-black text-emerald-700">0,75 kg</span>
+                      <span class="text-[10.5px] text-slate-400">Rumus: butir ÷ 8</span>
+                    </div>
+
+                    <div class="bg-white p-3 rounded-xl border border-indigo-100 flex flex-col">
+                      <span class="text-slate-500 text-[11px]">Nilai Rupiah Buah Dimakan:</span>
+                      <span id="ftD3CalcRupiah" class="text-base sm:text-lg font-black text-blue-900">Rp 18.000</span>
+                      <span class="text-[10.5px] text-slate-400">Rumus: berat (kg) × harga</span>
+                    </div>
+
+                    <div class="bg-white p-3 rounded-xl border border-indigo-100 flex flex-col">
+                      <span class="text-slate-500 text-[11px]">Tiket Masuk Kebun (Makan Sepuasnya):</span>
+                      <span class="text-base sm:text-lg font-black text-slate-900">Rp 25.000</span>
+                      <span class="text-[10.5px] text-slate-400">Per orang di lokasi</span>
+                    </div>
+                  </div>
+
+                  <!-- Status Evaluasi Impas Tiket -->
+                  <div id="ftD3StatusImpasBox" class="p-3 rounded-xl bg-white border border-indigo-300 text-xs flex items-center justify-between gap-2 flex-wrap">
+                    <span id="ftD3StatusImpasText" class="font-extrabold text-indigo-950">
+                      Evaluasi Titik Impas (BEP) Tiket Masuk:
+                    </span>
+                    <span id="ftD3StatusImpasBadge" class="px-2.5 py-1 rounded-lg text-[11px] font-black bg-blue-100 text-blue-900">
+                      Menghitung...
+                    </span>
+                  </div>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                  <label for="ftD3KesimpulanMath" class="text-xs sm:text-sm font-bold text-slate-800">
+                    Kesimpulan Analisis Matematika &amp; Nilai Manfaat Kunjungan:
+                  </label>
+                  <textarea id="ftD3KesimpulanMath" rows="2" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Saya memakan 6 butir apel setara dengan 0,75 kg senilai Rp 18.000. Meskipun nilai buah belum melampaui tiket Rp 25.000, saya mendapatkan nilai edukasi budidaya dan pengalaman memetik langsung yang sangat berharga...">${saved ? (saved.kesimpulanMath || '') : ''}</textarea>
+                </div>
+              </div>
+
+              <!-- TOMBOL AKSI SIMPAN & SUBMIT LKPD -->
+              ${!isFormLocked ? `
+                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                  <button type="button" onclick="saveDay3PetikApelLKPD(false)" class="flex-1 py-3.5 px-4 rounded-2xl bg-white border border-emerald-600 text-emerald-800 hover:bg-emerald-50 font-black text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-lg">save</span>
+                    <span>Simpan Sebagai Draft</span>
+                  </button>
+
+                  <button type="button" onclick="saveDay3PetikApelLKPD(true)" id="btnSubmitD3Lkpd" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm transition-all shadow-md cursor-pointer flex items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-lg">send</span>
+                    <span>Kirim Laporan LKPD Petik Apel</span>
+                  </button>
+                </div>
+              ` : (isSubmitted ? `
+                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3">
+                  <div class="flex items-center gap-2 text-xs font-bold">
+                    <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
+                    <span>LKPD Day 3 Sesi 1 (Petik Apel) telah berhasil dikirimkan pada ${saved ? (saved.submittedAt || '') : 'hari ini'}.</span>
+                  </div>
+                  <a href="dashboard.html" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-xs transition-all flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base">fact_check</span>
+                    <span>Lanjut ke Asesmen Day 3</span>
+                  </a>
+                </div>
+              ` : '')}
+            </form>
+          </div>
+
+          <!-- MODAL NOTIFIKASI SUKSES SUBMIT LKPD DAY 3 SESI 1 -->
+          <div id="modalD3LkpdSuccess" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-200 opacity-0 pointer-events-none">
+            <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 flex flex-col gap-4 transform transition-transform duration-200 scale-95">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-2xl">check_circle</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-black uppercase text-emerald-700 tracking-wider">Tahap 2 Selesai ✓</span>
+                  <h3 class="text-base sm:text-lg font-black text-slate-900 leading-snug">LKPD Petik Apel Berhasil Terkirim!</h3>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                Data observasi varietas buah, pembacaan sensor GPS pegunungan, sistem rekayasa hortikultura, dan perhitungan konsumsi telah dicatat ke sistem.
+              </p>
+              <div class="flex flex-col gap-2 pt-2">
+                <a href="dashboard.html" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                  <span class="material-symbols-outlined text-lg">fact_check</span>
+                  <span>Menuju Asesmen Day 3 (Tahap 3)</span>
+                </a>
+                <button type="button" onclick="closeD3LkpdSuccessModal()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer transition-all">
+                  Tetap di Halaman LKPD
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Jalankan kalkulasi awal matematika
+        setTimeout(() => {
+          calculateD3PetikApelMath();
+        }, 100);
+
+      } else if (currentD3LkpdSession === 2) {
+        // SESI 2: JATIM PARK 1 - PREVIEW
+        mainEl.innerHTML = `
+          <div class="flex flex-col gap-5 sm:gap-6">
+            ${tabNavHtml}
+            <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-12">
+              <div class="w-14 h-14 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
+                <span class="material-symbols-outlined text-3xl">science</span>
+              </div>
+              <h3 class="font-black text-lg sm:text-xl text-slate-900">
+                LKPD Sesi 2: Jawa Timur Park 1 (Science Center)
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed">
+                Lembar kerja eksplorasi fisika terapan, sains interaktif, dan galeri budaya nusantara di Jatim Park 1 akan disiapkan pada tahap perancangan Sesi 2.
+              </p>
+              <div class="pt-2">
+                <button type="button" onclick="switchD3LkpdSession(1)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                  <span class="material-symbols-outlined text-sm">arrow_back</span>
+                  <span>Kembali ke Sesi 1: LKPD Petik Apel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (currentD3LkpdSession === 3) {
+        // SESI 3: MUSEUM ANGKUT - PREVIEW
+        mainEl.innerHTML = `
+          <div class="flex flex-col gap-5 sm:gap-6">
+            ${tabNavHtml}
+            <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-12">
+              <div class="w-14 h-14 rounded-3xl bg-purple-100 text-purple-600 flex items-center justify-center shadow-xs">
+                <span class="material-symbols-outlined text-3xl">directions_car</span>
+              </div>
+              <h3 class="font-black text-lg sm:text-xl text-slate-900">
+                LKPD Sesi 3: Museum Angkut Kota Batu
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed">
+                Lembar kerja investigasi rekayasa alat transportasi dunia dan sejarah peradaban otomotif akan disiapkan pada tahap perancangan Sesi 3.
+              </p>
+              <div class="pt-2">
+                <button type="button" onclick="switchD3LkpdSession(1)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                  <span class="material-symbols-outlined text-sm">arrow_back</span>
+                  <span>Kembali ke Sesi 1: LKPD Petik Apel</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function switchD3LkpdSession(sesi) {
+      currentD3LkpdSession = Number(sesi);
+      const urlParams = new URLSearchParams(window.location.search);
+      const isReadOnly = urlParams.get('mode') === 'view';
+      renderFieldTripDay3LKPD(isReadOnly, currentD3LkpdSession);
+      window.scrollTo({ top: 120, behavior: 'smooth' });
+    }
+
+    function detectD3PetikApelGps() {
+      const statusText = document.getElementById('ftD3GpsStatusText');
+      const btn = document.getElementById('btnDetectD3Gps');
+
+      if (!navigator.geolocation) {
+        FincestemCore.ui.toast('Perangkat Anda tidak mendukung fitur Geolocation GPS.', 'error');
+        return;
+      }
+
+      if (btn) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-base animate-spin">refresh</span><span>Membaca Satelit...</span>';
+        btn.classList.add('pointer-events-none', 'opacity-70');
+      }
+      if (statusText) statusText.textContent = 'Menghubungkan ke chip satelit GPS...';
+
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const lat = position.coords.latitude.toFixed(6);
+          const lng = position.coords.longitude.toFixed(6);
+          const acc = Math.round(position.coords.accuracy || 5);
+          let alt = position.coords.altitude ? Math.round(position.coords.altitude) : null;
+
+          // Jika altitude null (umum di browser mobile), estimasi ketinggian pegunungan Batu
+          if (!alt || isNaN(alt)) {
+            alt = 965; // Ketinggian rata-rata kebun apel di Bumiaji / Tulungrejo Batu
+          }
+
+          const latInput = document.getElementById('ftD3GpsLat');
+          const lngInput = document.getElementById('ftD3GpsLng');
+          const altInput = document.getElementById('ftD3GpsAlt');
+          const accInput = document.getElementById('ftD3GpsAcc');
+
+          if (latInput) latInput.value = lat;
+          if (lngInput) lngInput.value = lng;
+          if (altInput) altInput.value = alt + ' mdpl (Dataran Tinggi)';
+          if (accInput) accInput.value = '± ' + acc + ' meter';
+
+          if (btn) {
+            btn.innerHTML = '<span class="material-symbols-outlined text-base">check</span><span>GPS Terkoneksi</span>';
+            btn.classList.remove('pointer-events-none', 'opacity-70');
+          }
+          if (statusText) statusText.textContent = `✓ Koordinat (${lat}, ${lng}) dan Elevasi ${alt} mdpl berhasil dideteksi!`;
+
+          FincestemCore.ui.toast(`Sensor GPS terhubung! Posisi: ${lat}, ${lng} (${alt} mdpl)`, 'success');
+        },
+        function(error) {
+          // Fallback jika GPS tidak diizinkan atau diuji di desktop
+          const latInput = document.getElementById('ftD3GpsLat');
+          const lngInput = document.getElementById('ftD3GpsLng');
+          const altInput = document.getElementById('ftD3GpsAlt');
+          const accInput = document.getElementById('ftD3GpsAcc');
+
+          if (latInput && !latInput.value) latInput.value = '-7.868214';
+          if (lngInput && !lngInput.value) lngInput.value = '112.527319';
+          if (altInput && !altInput.value) altInput.value = '965 mdpl (Dataran Tinggi)';
+          if (accInput && !accInput.value) accInput.value = '± 5 meter (Akurat)';
+
+          if (btn) {
+            btn.innerHTML = '<span class="material-symbols-outlined text-base">radar</span><span>Ambil Data Sensor GPS Otomatis</span>';
+            btn.classList.remove('pointer-events-none', 'opacity-70');
+          }
+          if (statusText) statusText.textContent = 'Koordinat acuan kebun apel Batu dimuat (Izin GPS belum aktif).';
+          FincestemCore.ui.toast('Koordinat referensi kebun apel Batu (965 mdpl) berhasil disinkronkan.', 'info');
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+      );
+    }
+
+    function calculateD3PetikApelMath() {
+      const eatenInput = document.getElementById('ftD3ApplesEaten');
+      const priceInput = document.getElementById('ftD3PricePerKg');
+      if (!eatenInput || !priceInput) return;
+
+      const apples = Math.max(0, parseInt(eatenInput.value) || 0);
+      const pricePerKg = parseRupiah(priceInput.value) || 24000;
+
+      // Rasio praktis: 1 kg = 8 butir
+      const totalKg = Number((apples / 8).toFixed(2));
+      const totalRupiah = Math.round(totalKg * pricePerKg);
+      const ticketPrice = 25000;
+
+      const kgEl = document.getElementById('ftD3CalcKg');
+      const rupiahEl = document.getElementById('ftD3CalcRupiah');
+      const impasBadge = document.getElementById('ftD3StatusImpasBadge');
+      const impasBox = document.getElementById('ftD3StatusImpasBox');
+
+      if (kgEl) kgEl.textContent = totalKg.toLocaleString('id-ID') + ' kg';
+      if (rupiahEl) rupiahEl.textContent = 'Rp ' + totalRupiah.toLocaleString('id-ID');
+
+      if (impasBadge && impasBox) {
+        if (totalRupiah >= ticketPrice) {
+          const surplus = totalRupiah - ticketPrice;
+          impasBadge.className = 'px-2.5 py-1 rounded-lg text-[11px] font-black bg-emerald-100 text-emerald-950 border border-emerald-300';
+          impasBadge.innerHTML = `🎉 Impas &amp; Surplus Nilai Apel (+Rp ${surplus.toLocaleString('id-ID')})`;
+          impasBox.className = 'p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-xs flex items-center justify-between gap-2 flex-wrap';
+        } else {
+          const gap = ticketPrice - totalRupiah;
+          impasBadge.className = 'px-2.5 py-1 rounded-lg text-[11px] font-black bg-blue-100 text-blue-950 border border-blue-300';
+          impasBadge.innerHTML = `ℹ️ Pengalaman Rekreasi (Konsumsi Rp ${totalRupiah.toLocaleString('id-ID')} dari tiket Rp 25.000)`;
+          impasBox.className = 'p-3 rounded-xl bg-blue-50 border border-blue-300 text-xs flex items-center justify-between gap-2 flex-wrap';
+        }
+      }
+    }
+
+    function saveDay3PetikApelLKPD(isSubmit) {
+      const studentNisn = activeUser.nisn || activeUser.identifier || '';
+      const cleanNisn = String(studentNisn).trim();
+
+      const selectedVarietas = document.querySelector('input[name="ftD3Varietas"]:checked')?.value || '';
+      const ciriFisik = (document.getElementById('ftD3CiriFisik')?.value || '').trim();
+      const gpsLat = (document.getElementById('ftD3GpsLat')?.value || '').trim();
+      const gpsLng = (document.getElementById('ftD3GpsLng')?.value || '').trim();
+      const gpsAlt = (document.getElementById('ftD3GpsAlt')?.value || '').trim();
+      const gpsAccuracy = (document.getElementById('ftD3GpsAcc')?.value || '').trim();
+      const analisisGps = (document.getElementById('ftD3AnalisisGps')?.value || '').trim();
+      const sistemRekayasa = (document.getElementById('ftD3SistemRekayasa')?.value || '').trim();
+      const applesEaten = parseInt(document.getElementById('ftD3ApplesEaten')?.value) || 0;
+      const pricePerKg = parseRupiah(document.getElementById('ftD3PricePerKg')?.value) || 24000;
+      const kesimpulanMath = (document.getElementById('ftD3KesimpulanMath')?.value || '').trim();
+
+      if (isSubmit) {
+        if (!selectedVarietas) {
+          FincestemCore.ui.toast('Pilih salah satu varietas apel yang kamu makan (Bagian 1A)!', 'warning');
+          return;
+        }
+        if (!ciriFisik || ciriFisik.length < 15) {
+          FincestemCore.ui.toast('Tuliskan deskripsi ciri fisik & rasa apel minimal 10-15 kata (Bagian 1B)!', 'warning');
+          document.getElementById('ftD3CiriFisik')?.focus();
+          return;
+        }
+        if (!gpsLat || !gpsLng) {
+          FincestemCore.ui.toast('Tekan tombol Ambil Data Sensor GPS Otomatis (Bagian 2)!', 'warning');
+          return;
+        }
+        if (!sistemRekayasa || sistemRekayasa.length < 20) {
+          FincestemCore.ui.toast('Jelaskan sistem rekayasa pertanian yang kalian amati di kebun apel (Bagian 3)!', 'warning');
+          document.getElementById('ftD3SistemRekayasa')?.focus();
+          return;
+        }
+        if (!kesimpulanMath || kesimpulanMath.length < 15) {
+          FincestemCore.ui.toast('Tuliskan kesimpulan analisis matematika & nilai manfaat tiket (Bagian 4)!', 'warning');
+          document.getElementById('ftD3KesimpulanMath')?.focus();
+          return;
+        }
+      }
+
+      const totalKg = Number((applesEaten / 8).toFixed(2));
+      const totalRupiah = Math.round(totalKg * pricePerKg);
+
+      const payload = {
+        day_number: 3,
+        session: 1,
+        location: 'Kebun Petik Apel Mandiri Batu',
+        varietas: selectedVarietas,
+        ciriFisik: ciriFisik,
+        gpsLat: gpsLat,
+        gpsLng: gpsLng,
+        gpsAlt: gpsAlt,
+        gpsAccuracy: gpsAccuracy,
+        analisisGps: analisisGps,
+        sistemRekayasa: sistemRekayasa,
+        applesEaten: applesEaten,
+        pricePerKg: pricePerKg,
+        totalKg: totalKg,
+        totalRupiah: totalRupiah,
+        kesimpulanMath: kesimpulanMath,
+        submitted: !!isSubmit,
+        submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
+      };
+
+      const btnSubmit = document.getElementById('btnSubmitD3Lkpd');
+      if (btnSubmit && isSubmit) {
+        btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Mengirimkan Laporan...</span>';
+        btnSubmit.classList.add('pointer-events-none', 'opacity-80');
+      }
+
+      setTimeout(() => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day3_apel_' + cleanNisn, JSON.stringify(payload));
+          localStorage.setItem('fincestem_lkpd_ft_day3_' + cleanNisn, JSON.stringify(payload));
+        } catch(e) {}
+
+        if (FincestemCore.progress && cleanNisn) {
+          FincestemCore.progress.submitTask(cleanNisn, 3, 'lkpd', payload);
+        }
+
+        if (isSubmit) {
+          if (btnSubmit) {
+            btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Terkirim</span>';
+            btnSubmit.classList.remove('pointer-events-none', 'opacity-80');
+          }
+          const statusBadge = document.getElementById('ftD3StatusBadge');
+          if (statusBadge) {
+            statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-300 text-slate-950';
+            statusBadge.textContent = '✓ Telah Dikirim / Selesai';
+          }
+          FincestemCore.ui.toast('LKPD Petik Apel Day 3 Sesi 1 berhasil disimpan & dikirim!', 'success');
+          showD3LkpdSuccessModal();
+        } else {
+          FincestemCore.ui.toast('Draft LKPD Petik Apel tersimpan.', 'info');
+        }
+      }, 400);
+    }
+
+    function showD3LkpdSuccessModal() {
+      const modal = document.getElementById('modalD3LkpdSuccess');
+      if (!modal) return;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const inner = modal.querySelector('div');
+      if (inner) { inner.classList.remove('scale-95'); inner.classList.add('scale-100'); }
+    }
+
+    function closeD3LkpdSuccessModal() {
+      const modal = document.getElementById('modalD3LkpdSuccess');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      const inner = modal.querySelector('div');
+      if (inner) { inner.classList.remove('scale-100'); inner.classList.add('scale-95'); }
+    }
+
+    // ==========================================
+    // MODUL LKPD KHUSUS FIELD TRIP DAY 4 S.D. 7
     // ==========================================
     function renderFieldTripGenericLKPD(dayNum, isReadOnly) {
       const mainEl = document.querySelector('main');

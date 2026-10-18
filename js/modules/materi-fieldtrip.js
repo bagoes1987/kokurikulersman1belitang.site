@@ -1493,7 +1493,610 @@
     }
 
     // ==========================================
-    // MODUL BELAJAR KHUSUS FIELD TRIP DAY 3 S.D. 7
+    // MODUL BELAJAR KHUSUS FIELD TRIP DAY 3 (KOTA BATU)
+    // Sesi 1: Kebun Petik Apel Mandiri (Aktif)
+    // Sesi 2: Jatim Park 1 - Science Center (Segera Hadir)
+    // Sesi 3: Museum Angkut Kota Batu (Segera Hadir)
+    // ==========================================
+    let currentD3Session = 1;
+
+    function renderDay3FieldTripModule(mainEl, targetSesi) {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD3Session = Number(targetSesi);
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2 || reqSesi === 3) {
+          currentD3Session = reqSesi;
+        } else {
+          currentD3Session = 1;
+        }
+      }
+
+      // TAB NAVIGASI 3 SESI KUNJUNGAN DAY 3 KOTA BATU
+      const tabNavHtml = `
+        <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+          <!-- TAB 1: KEBUN PETIK APEL (AKTIF) -->
+          <button type="button" onclick="switchD3Session(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3Session === 1 ? 'bg-emerald-600 text-white shadow-xs ring-2 ring-emerald-400/40' : 'bg-slate-50 hover:bg-emerald-50 text-emerald-950 border border-emerald-300'}">
+            <span class="material-symbols-outlined text-base ${currentD3Session === 1 ? 'text-amber-300' : 'text-emerald-600'}">nutrition</span>
+            <span class="truncate">Sesi 1: Petik Apel Batu</span>
+            ${currentD3Session === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
+
+          <!-- TAB 2: JATIM PARK 1 (SCIENCE CENTER) -->
+          <button type="button" onclick="switchD3Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3Session === 2 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
+            <span class="material-symbols-outlined text-base ${currentD3Session === 2 ? 'text-amber-300' : 'text-blue-600'}">science</span>
+            <span class="truncate">Sesi 2: Jatim Park 1</span>
+            ${currentD3Session === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
+
+          <!-- TAB 3: MUSEUM ANGKUT -->
+          <button type="button" onclick="switchD3Session(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3Session === 3 ? 'bg-purple-600 text-white shadow-xs ring-2 ring-purple-400/40' : 'bg-slate-50 hover:bg-purple-50 text-purple-950 border border-purple-200'}">
+            <span class="material-symbols-outlined text-base ${currentD3Session === 3 ? 'text-amber-300' : 'text-purple-600'}">directions_car</span>
+            <span class="truncate">Sesi 3: Museum Angkut</span>
+            ${currentD3Session === 3 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+          </button>
+        </div>
+      `;
+
+      let headerHtml = '';
+      let bodyHtml = '';
+
+      if (currentD3Session === 1) {
+        // SESI 1: WISATA PETIK APEL BATU
+        headerHtml = `
+          <!-- BANNER MODUL FIELD TRIP DAY 3 - SESI 1 (WISATA PETIK APEL BATU) -->
+          <div class="bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5 border border-emerald-700/40">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-emerald-100 backdrop-blur-md">
+                Field Trip • Day 3 • Sesi 1
+              </span>
+              <span class="text-xs font-bold text-amber-300">Pilar: Sains Hortikultura, Sensor GPS &amp; Rekayasa Pertanian</span>
+            </div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Eksplorasi Agrobisnis &amp; Sains Hortikultura Apel Kota Batu
+            </h2>
+            <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-medium">
+              Pelajari sejarah budidaya apel pegunungan, etika pemetikan buah yang benar, agroklimat dataran tinggi (≥800 mdpl), pemanfaatan sensor satelit GPS/altimeter HP, rekayasa pelengkungan cabang &amp; perompesan daun, serta perhitungan konsumsi apel praktis.
+            </p>
+            <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-emerald-200 font-semibold flex-wrap">
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                <span>08.00 - 10.30 WIB</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">pin_drop</span>
+                <span>Kebun Apel Mandiri / Agrowisata Rakyat Batu</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">landscape</span>
+                <span>Elevasi: ±900 - 1.100 mdpl</span>
+              </span>
+            </div>
+          </div>
+        `;
+
+        bodyHtml = `
+          <!-- BAGIAN I: PENGANTAR & PROFIL KEBUN APEL BATU -->
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-emerald-950 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+              <span class="material-symbols-outlined text-emerald-600 text-2xl">history_edu</span>
+              <span>Bagian I: Sejarah, Profil Kebun &amp; Etika Pemetikan Buah</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col gap-2">
+                <span class="font-bold text-emerald-950 flex items-center gap-1.5 text-sm">
+                  <span class="material-symbols-outlined text-emerald-700 text-base">auto_stories</span>
+                  Sejarah Apel di Dataran Tinggi Batu (Sejak 1930)
+                </span>
+                <p>
+                  Tanaman apel pertama kali dibawa dan dibudidayakan di Kota Batu sekitar tahun <strong>1930-an pada era kolonial Belanda</strong>. Kawasan lereng Gunung Panderman, Arjuno, dan Welirang dipilih karena memiliki kesamaan iklim sejuk dengan wilayah subtropis di Eropa. Sejak era 1960-an, budidaya apel bertransformasi menjadi komoditas rakyat kebanggaan Malang Raya hingga Batu dijuluki sebagai <em>"Kota Apel"</em>.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col gap-2">
+                <span class="font-bold text-amber-950 flex items-center gap-1.5 text-sm">
+                  <span class="material-symbols-outlined text-amber-700 text-base">pan_tool</span>
+                  Etika &amp; Teknik Memetik Buah yang Benar
+                </span>
+                <p>
+                  Saat memetik buah apel di kebun, <strong>dilarang menarik buah ke bawah secara paksa</strong>! Cara yang benar secara agronomi:
+                </p>
+                <div class="p-2.5 rounded-xl bg-white border border-amber-300 text-[11.5px] text-amber-950 font-semibold leading-relaxed">
+                  👉 <em>"Pegang buah dengan telapak tangan, dorong sedikit ke atas, lalu putar perlahan 90° hingga tangkai terlepas sendiri dari mata ranting."</em>
+                </div>
+                <p class="text-[11px] text-slate-600 italic">
+                  Tujuan ilmiah: Mencegah patahnya mata tunas generatif yang menempel di cabang. Jika mata tunas patah, ranting tersebut tidak akan mampu menghasilkan bunga dan buah apel pada musim panen berikutnya!
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN II: INVESTIGASI 4 PILAR STEM PERKEBUNAN APEL -->
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
+              <div class="flex items-center gap-2 text-slate-900 font-black text-base sm:text-lg">
+                <span class="material-symbols-outlined text-teal-600 text-2xl">hub</span>
+                <span>Bagian II: Investigasi 4 Pilar FINCESTEM Kebun Apel</span>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-teal-100 text-teal-800">
+                Science • Technology • Engineering • Math
+              </span>
+            </div>
+
+            <!-- 1. SCIENCE (SAINS) -->
+            <div class="p-4 rounded-2xl bg-teal-50/70 border border-teal-200 flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-teal-950 font-extrabold text-sm sm:text-base">
+                <span class="material-symbols-outlined text-teal-700 text-xl">biotech</span>
+                <span>1. Sains Agroklimat &amp; 3 Varietas Apel Unggulan</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Pohon apel membutuhkan agroklimat khusus: ketinggian <strong>≥ 800 s.d. 1.200 mdpl</strong>, suhu rata-rata <strong>16°C – 22°C</strong>, kelembaban udara 75–85%, dan jenis tanah vulkanik Andosol yang kaya bahan organik dari letusan gunung berapi. Selama proses pematangan, sinar matahari memicu fotosintesis aktif yang mengubah cadangan pati menjadi gula alami (glukosa dan fruktosa) sehingga buah menjadi manis dan berair.
+              </p>
+
+              <!-- Karakteristik 3 Varietas Apel -->
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 pt-1 text-xs">
+                <div class="p-3 rounded-xl bg-white border border-emerald-300 flex flex-col gap-1.5 shadow-2xs">
+                  <div class="flex items-center justify-between">
+                    <span class="font-black text-emerald-900 text-sm">🍏 Apel Manalagi</span>
+                    <span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 text-[10px] font-bold">Favorit Manis</span>
+                  </div>
+                  <p class="text-slate-600 text-[11.5px] leading-relaxed">
+                    <strong>Ciri Fisik:</strong> Kulit hijau kekuningan dengan bintik pori putih halus. Bentuk agak bulat.<br>
+                    <strong>Rasa &amp; Tekstur:</strong> Daging buah putih padat, renyah, beraroma sangat harum, rasa manis dominan tanpa asam.
+                  </p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-white border border-rose-300 flex flex-col gap-1.5 shadow-2xs">
+                  <div class="flex items-center justify-between">
+                    <span class="font-black text-rose-900 text-sm">🍎 Rome Beauty</span>
+                    <span class="px-2 py-0.5 rounded-md bg-rose-100 text-rose-800 text-[10px] font-bold">Asam Segar</span>
+                  </div>
+                  <p class="text-slate-600 text-[11.5px] leading-relaxed">
+                    <strong>Ciri Fisik:</strong> Kulit merah semburat hijau di pangkal buah, bentuk bulat agak pipih.<br>
+                    <strong>Rasa &amp; Tekstur:</strong> Daging buah agak renyah berserat, kandungan air tinggi, rasa manis bercampur asam segar. Sangat cocok diolah menjadi sari apel.
+                  </p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-white border border-red-300 flex flex-col gap-1.5 shadow-2xs">
+                  <div class="flex items-center justify-between">
+                    <span class="font-black text-red-900 text-sm">🍎 Apel Anna</span>
+                    <span class="px-2 py-0.5 rounded-md bg-red-100 text-red-800 text-[10px] font-bold">Merona Eksotis</span>
+                  </div>
+                  <p class="text-slate-600 text-[11.5px] leading-relaxed">
+                    <strong>Ciri Fisik:</strong> Kulit merah merona gradasi kuning kehijauan, bentuk agak lonjong dengan lekukan khas.<br>
+                    <strong>Rasa &amp; Tekstur:</strong> Daging buah renyah berair, rasa asam-manis segar seimbang dengan aroma buah yang khas.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. TECHNOLOGY (TEKNOLOGI) -->
+            <div class="p-4 rounded-2xl bg-blue-50/70 border border-blue-200 flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-blue-950 font-extrabold text-sm sm:text-base">
+                <span class="material-symbols-outlined text-blue-700 text-xl">satellite_alt</span>
+                <span>2. Teknologi: Sensor Satelit GPS &amp; Altimeter Digital Smartphone</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Dalam riset lapangan ini, siswa membuktikan kondisi agroklimat kebun apel secara ilmiah menggunakan <strong>chip sensor satelit GNSS/GPS dan barometer altimeter digital</strong> yang tertanam pada perangkat smartphone masing-masing:
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 text-xs text-slate-700">
+                <div class="p-3 rounded-xl bg-white border border-blue-200 flex flex-col gap-1 shadow-2xs">
+                  <span class="font-extrabold text-blue-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-blue-600 text-sm">my_location</span>
+                    Penetapan Koordinat Geografis (Lintang &amp; Bujur)
+                  </span>
+                  <p class="text-[11.5px] text-slate-600 leading-relaxed">
+                    Modul GPS smartphone menangkap sinyal dari minimal 4 satelit navigasi bumi untuk menghitung triangulasi posisi lintang (latitude) dan bujur (longitude) kebun apel dengan akurasi tinggi hingga ±3 meter.
+                  </p>
+                </div>
+                <div class="p-3 rounded-xl bg-white border border-blue-200 flex flex-col gap-1 shadow-2xs">
+                  <span class="font-extrabold text-blue-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-blue-600 text-sm">landscape</span>
+                    Pengukuran Ketinggian Elevasi Altimeter (mdpl)
+                  </span>
+                  <p class="text-[11.5px] text-slate-600 leading-relaxed">
+                    Sensor altimeter membaca ketinggian riil kebun di atas permukaan laut. Siswa mencocokkan hasil sensor untuk membuktikan kebenaran hipotesis sains bahwa kebun apel berada pada elevasi dataran tinggi pegunungan <strong>≥ 800 mdpl</strong>.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. ENGINEERING (REKAYASA BUDIDAYA PERTANIAN) -->
+            <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200 flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-amber-950 font-extrabold text-sm sm:text-base">
+                <span class="material-symbols-outlined text-amber-700 text-xl">precision_manufacturing</span>
+                <span>3. Rekayasa Pertanian: Branch Bending, Perompesan Daun &amp; Okulasi</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Pohon apel aslinya berasal dari negara 4 musim. Agar pohon apel mampu berbunga dan berbuah lebat di iklim tropis Indonesia, petani Kota Batu menerapkan 3 teknik rekayasa hortikultura cerdas:
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs text-slate-700">
+                <div class="p-3 rounded-xl bg-white border border-amber-300 flex flex-col gap-1.5 shadow-2xs">
+                  <span class="font-black text-amber-950 text-xs flex items-center gap-1">
+                    <span class="material-symbols-outlined text-amber-600 text-sm">straighten</span>
+                    Pelengkungan Cabang (Branch Bending)
+                  </span>
+                  <p class="text-[11px] text-slate-600 leading-relaxed">
+                    Cabang primer dilengkungkan mendatar (sudut 60°–90°) menggunakan tali pengikat atau pemberat. Rekayasa ini memperlambat dominasi apikal hormon auksin ke atas, sehingga merangsang mata tunas bunga dan buah tumbuh merata di sepanjang ranting.
+                  </p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-white border border-amber-300 flex flex-col gap-1.5 shadow-2xs">
+                  <span class="font-black text-amber-950 text-xs flex items-center gap-1">
+                    <span class="material-symbols-outlined text-amber-600 text-sm">content_cut</span>
+                    Perompesan Daun (Defoliasi Buatan)
+                  </span>
+                  <p class="text-[11px] text-slate-600 leading-relaxed">
+                    Karena Indonesia tidak memiliki musim gugur alami, petani merontokkan/merompes daun tua secara manual setelah panen. Defoliasi buatan ini memecah masa istirahat (dormansi) tunas, merangsang pembungaan serentak sehingga apel bisa dipanen <strong>2 kali setahun</strong>!
+                  </p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-white border border-amber-300 flex flex-col gap-1.5 shadow-2xs">
+                  <span class="font-black text-amber-950 text-xs flex items-center gap-1">
+                    <span class="material-symbols-outlined text-amber-600 text-sm">join</span>
+                    Sambung Okulasi (Grafting)
+                  </span>
+                  <p class="text-[11px] text-slate-600 leading-relaxed">
+                    Menggabungkan batang bawah (rootstock) varietas liar yang perakarannya kokoh dan tahan penyakit tanah dengan mata tunas batang atas varietas unggul (Manalagi/Rome Beauty) untuk menghasilkan pohon kerdil cepat berbuah.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. MATHEMATICS (MATEMATIKA & FINANSIAL) -->
+            <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-indigo-950 font-extrabold text-sm sm:text-base">
+                <span class="material-symbols-outlined text-indigo-700 text-xl">calculate</span>
+                <span>4. Matematika Praktis: Konversi Butir ke Kilogram &amp; Analisis Tiket Masuk</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Di dalam kebun apel, siswa tidak membawa timbangan duduk. Oleh karena itu, diterapkan estimasi matematika praktis berbasis rata-rata agrikultur:
+              </p>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs text-slate-700">
+                <div class="p-3 rounded-xl bg-white border border-indigo-200 flex flex-col gap-1 shadow-2xs">
+                  <span class="font-extrabold text-indigo-950">Standar Rasio Butir : Kilogram</span>
+                  <p class="text-[11.5px] text-slate-600 leading-relaxed">
+                    Rata-rata <strong>1 kg apel berisi 8 butir buah</strong> ukuran sedang (bobot rata-rata 120–130 gram per butir). Rumus konversi berat:
+                  </p>
+                  <div class="p-1.5 rounded-lg bg-indigo-50 border border-indigo-200 font-mono text-[11px] text-indigo-900 font-bold text-center">
+                    Berat (kg) = Jumlah Butir ÷ 8
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-white border border-indigo-200 flex flex-col gap-1 shadow-2xs">
+                  <span class="font-extrabold text-indigo-950">Wawancara Harga Petani</span>
+                  <p class="text-[11.5px] text-slate-600 leading-relaxed">
+                    Siswa mewawancarai langsung petani pemilik kebun mengenai harga apel petik segar per kilogram (misal berkisar <strong>Rp 20.000 – Rp 25.000 / kg</strong>) untuk dimasukkan ke dalam perhitungan LKPD.
+                  </p>
+                </div>
+
+                <div class="p-3 rounded-xl bg-white border border-indigo-200 flex flex-col gap-1 shadow-2xs">
+                  <span class="font-extrabold text-indigo-950">Analisis Titik Impas Tiket (BEP)</span>
+                  <p class="text-[11.5px] text-slate-600 leading-relaxed">
+                    Tiket masuk kebun berkisar <strong>Rp 25.000 / siswa</strong> (makan apel sepuasnya di kebun). Jika siswa memakan 8 butir apel (1 kg), siswa telah mencapai titik impas (Break-Even Point) dari biaya tiket masuk yang dibayarkan!
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN III: RANGKUMAN KESIMPULAN & PEMBUKAAN LKPD DAY 3 SESI 1 -->
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3 flex-wrap gap-2">
+              <div class="flex items-center gap-2 text-slate-900 font-black text-base sm:text-lg">
+                <span class="material-symbols-outlined text-emerald-600 text-2xl">edit_note</span>
+                <span>Bagian III: Rangkuman Resume &amp; Pembukaan LKPD Petik Apel</span>
+              </div>
+              <span id="ftMateriApelStatusBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                Wajib Disimpan (Tahap 1)
+              </span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              Tuliskan resume pemahaman Anda mengenai prinsip agroklimat kebun apel, teknologi sensor GPS/altimeter HP, dan salah satu teknik rekayasa budidaya (branch bending / defoliasi) yang paling menarik perhatian Anda (minimal 15–20 kata). Resume ini wajib disimpan untuk membuka akses ke LKPD Day 3 Sesi 1.
+            </p>
+
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
+                <label for="ftMateriApelConclusion" class="text-slate-800 font-bold">Resume Catatan Pemahaman Siswa:</label>
+                <span id="ftMateriApelSavedTime" class="text-[11px] text-slate-400">Belum disimpan</span>
+              </div>
+              <textarea id="ftMateriApelConclusion" rows="4" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all placeholder:text-slate-400 leading-relaxed" placeholder="Contoh: Dari pengamatan kebun apel Batu, saya belajar bahwa pohon apel memerlukan suhu sejuk pegunungan (≥800 mdpl) dan tanah vulkanik. Petani melakukan pelengkungan cabang (branch bending) mendatar agar hormon auksin merata sehingga memicu pembungaan serentak di sepanjang ranting..."></textarea>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+              <button id="btnSaveMateriApelConclusion" type="button" onclick="saveDay3PetikApelConclusion()" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <span class="material-symbols-outlined text-lg">task_alt</span>
+                <span id="btnSaveMateriApelText">Simpan Kesimpulan &amp; Buka LKPD Petik Apel</span>
+              </button>
+
+              <button type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="text-xs font-bold text-slate-500 hover:text-slate-800 flex items-center gap-1 transition-all">
+                <span class="material-symbols-outlined text-base">arrow_upward</span>
+                <span>Kembali ke Atas</span>
+              </button>
+            </div>
+
+            <!-- Kartu Akses Terbuka ke LKPD Day 3 Sesi 1 -->
+            <div id="ftLkpdApelAccessBox" class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-800 text-white shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-2">
+              <div class="flex items-start gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center shrink-0">
+                  <span id="ftLkpdApelLockIcon" class="material-symbols-outlined text-amber-200 text-xl">lock</span>
+                </div>
+                <div class="flex flex-col">
+                  <span id="ftLkpdApelLockTitle" class="font-extrabold text-sm sm:text-base leading-snug">
+                    Tahap 2: LKPD Petik Apel Mandiri Day 3
+                  </span>
+                  <p id="ftLkpdApelLockDesc" class="text-xs text-emerald-100/90 leading-relaxed mt-0.5">
+                    Selesaikan dan simpan kesimpulan modul di atas terlebih dahulu untuk membuka akses lembar kerja.
+                  </p>
+                </div>
+              </div>
+              <button id="btnGoToLkpdApel" type="button" onclick="handleGoToLkpdPetikApel()" class="px-5 py-3 rounded-2xl bg-white/40 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-not-allowed opacity-60">
+                <span class="material-symbols-outlined text-base">assignment</span>
+                <span id="btnGoToLkpdApelText">LKPD Terkunci</span>
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (currentD3Session === 2) {
+        // SESI 2: JATIM PARK 1 (SCIENCE CENTER) - PREVIEW
+        headerHtml = `
+          <div class="bg-gradient-to-br from-blue-800 via-indigo-900 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5 border border-blue-700/40">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
+                Field Trip • Day 3 • Sesi 2
+              </span>
+              <span class="text-xs font-bold text-amber-300">Pilar: Science, Physics &amp; Technology Exploration</span>
+            </div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Kunjungan Jawa Timur Park 1 (Science Center)
+            </h2>
+            <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
+              Eksplorasi wahana sains interaktif, galeri etnik nusantara, serta peragaan hukum-hukum fisika dan teknologi terapan di Science Center Jatim Park 1.
+            </p>
+            <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-blue-200 font-semibold flex-wrap">
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                <span>13.00 - 15.30 WIB</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">pin_drop</span>
+                <span>Jawa Timur Park 1, Kota Batu</span>
+              </span>
+            </div>
+          </div>
+        `;
+
+        bodyHtml = `
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-10">
+            <div class="w-14 h-14 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
+              <span class="material-symbols-outlined text-3xl">science</span>
+            </div>
+            <h3 class="font-black text-lg sm:text-xl text-slate-900">
+              Sesi 2: Kunjungan Jatim Park 1 (Science Center)
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed">
+              Konsep modul belajar, lembar kerja LKPD, dan instrumen asesmen Sesi 2 akan disusun bersama setelah Sesi 1 Wisata Petik Apel tuntas disepakati.
+            </p>
+            <div class="flex gap-2 pt-2">
+              <button type="button" onclick="switchD3Session(1)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                <span>Kembali ke Sesi 1: Petik Apel</span>
+              </button>
+            </div>
+          </div>
+        `;
+      } else if (currentD3Session === 3) {
+        // SESI 3: MUSEUM ANGKUT - PREVIEW
+        headerHtml = `
+          <div class="bg-gradient-to-br from-purple-800 via-indigo-950 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5 border border-purple-700/40">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-purple-100 backdrop-blur-md">
+                Field Trip • Day 3 • Sesi 3
+              </span>
+              <span class="text-xs font-bold text-amber-300">Pilar: Engineering, Transportation &amp; World Culture</span>
+            </div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Kunjungan Museum Angkut Kota Batu
+            </h2>
+            <p class="text-xs sm:text-sm text-purple-100/90 leading-relaxed font-medium">
+              Investigasi sejarah revolusi industri alat transportasi dunia, rekayasa otomotif klasik hingga modern, serta zona budaya mancanegara dan Pasar Apung.
+            </p>
+            <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-purple-200 font-semibold flex-wrap">
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                <span>15.45 - 18.30 WIB</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">pin_drop</span>
+                <span>Museum Angkut &amp; Movie Star Studio, Kota Batu</span>
+              </span>
+            </div>
+          </div>
+        `;
+
+        bodyHtml = `
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-10">
+            <div class="w-14 h-14 rounded-3xl bg-purple-100 text-purple-600 flex items-center justify-center shadow-xs">
+              <span class="material-symbols-outlined text-3xl">directions_car</span>
+            </div>
+            <h3 class="font-black text-lg sm:text-xl text-slate-900">
+              Sesi 3: Kunjungan Museum Angkut Kota Batu
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed">
+              Konsep modul belajar, lembar kerja LKPD, dan instrumen asesmen Sesi 3 akan disusun pada tahap berikutnya.
+            </p>
+            <div class="flex gap-2 pt-2">
+              <button type="button" onclick="switchD3Session(1)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                <span>Kembali ke Sesi 1: Petik Apel</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // Gabungkan keseluruhan layout Modul Day 3
+      mainEl.innerHTML = `
+        <div class="flex flex-col gap-5 sm:gap-6">
+          ${renderFieldTripScheduleCard(3)}
+          ${tabNavHtml}
+          ${headerHtml}
+          ${bodyHtml}
+        </div>
+      `;
+
+      // Jika Sesi 1 aktif, pulihkan kesimpulan tersimpan
+      if (currentD3Session === 1) {
+        let savedConclusion = '';
+        let savedAt = '';
+        try {
+          const raw = localStorage.getItem('fincestem_materi_ft_day3_apel_' + cleanNisn) ||
+                      localStorage.getItem('fincestem_materi_ft_day3_' + cleanNisn);
+          if (raw) {
+            const p = JSON.parse(raw);
+            savedConclusion = p.conclusion || p.text || '';
+            savedAt = p.savedAt || '';
+          }
+        } catch(e) {}
+
+        if (savedConclusion) {
+          applyDay3PetikApelConclusionState(savedConclusion, savedAt);
+        }
+      }
+    }
+
+    function switchD3Session(sesi) {
+      currentD3Session = Number(sesi);
+      const mainEl = document.querySelector('main');
+      if (mainEl) {
+        renderDay3FieldTripModule(mainEl, currentD3Session);
+        window.scrollTo({ top: 120, behavior: 'smooth' });
+      }
+    }
+
+    function applyDay3PetikApelConclusionState(text, savedAt) {
+      text = sanitizeConclusionText(text);
+      const txtArea = document.getElementById('ftMateriApelConclusion');
+      const badge = document.getElementById('ftMateriApelStatusBadge');
+      const savedTimeEl = document.getElementById('ftMateriApelSavedTime');
+      const btnSaveText = document.getElementById('btnSaveMateriApelText');
+      const saveBtn = document.getElementById('btnSaveMateriApelConclusion');
+      const lockIcon = document.getElementById('ftLkpdApelLockIcon');
+      const lockTitle = document.getElementById('ftLkpdApelLockTitle');
+      const lockDesc = document.getElementById('ftLkpdApelLockDesc');
+      const btnGo = document.getElementById('btnGoToLkpdApel');
+      const btnGoText = document.getElementById('btnGoToLkpdApelText');
+
+      if (txtArea) {
+        txtArea.value = text;
+        txtArea.setAttribute('readonly', 'readonly');
+        txtArea.classList.add('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+      }
+      if (badge) {
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800';
+        badge.textContent = 'Telah Disimpan & Terkunci (Tahap 1 Selesai)';
+      }
+      if (savedTimeEl) {
+        savedTimeEl.textContent = savedAt ? `Disimpan: ${new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB` : 'Tersimpan';
+      }
+      if (saveBtn) {
+        saveBtn.classList.add('pointer-events-none', 'opacity-70');
+        saveBtn.classList.remove('hover:bg-emerald-700', 'cursor-pointer');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Kesimpulan Telah Terkunci</span>';
+      } else if (btnSaveText) {
+        btnSaveText.textContent = 'Kesimpulan Telah Terkunci';
+      }
+
+      // Aktifkan Akses ke LKPD Petik Apel
+      if (lockIcon) {
+        lockIcon.textContent = 'lock_open';
+        lockIcon.className = 'material-symbols-outlined text-emerald-300 text-xl';
+      }
+      if (lockTitle) lockTitle.textContent = 'Tahap 2 Terbuka: LKPD Petik Apel Day 3 Sesi 1';
+      if (lockDesc) lockDesc.textContent = 'Kesimpulan modul telah tersimpan. Silakan lanjutkan mengerjakan lembar kerja investigasi petik apel.';
+      if (btnGo) {
+        btnGo.className = 'px-5 py-3 rounded-2xl bg-white text-emerald-900 hover:bg-emerald-50 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer';
+        btnGo.onclick = function() {
+          window.location.href = 'lkpd.html?day=3&sesi=1';
+        };
+      }
+      if (btnGoText) btnGoText.textContent = 'Buka LKPD Petik Apel';
+    }
+
+    function saveDay3PetikApelConclusion() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const txtArea = document.getElementById('ftMateriApelConclusion');
+      const text = txtArea ? txtArea.value.trim() : '';
+
+      if (!text || text.length < 30) {
+        FincestemCore.ui.toast('Silakan tuliskan resume pemahaman Anda minimal 15–20 kata sebelum melanjutkan!', 'error');
+        return;
+      }
+
+      const saveBtn = document.getElementById('btnSaveMateriApelConclusion');
+      if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+        FincestemCore.ui.setBtnLoading(saveBtn, true, 'Menyimpan...');
+      }
+
+      const record = {
+        day_number: 3,
+        session: 1,
+        location: 'Kebun Petik Apel Mandiri Batu',
+        conclusion: text,
+        savedAt: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem('fincestem_materi_ft_day3_apel_' + cleanNisn, JSON.stringify(record));
+        localStorage.setItem('fincestem_materi_ft_day3_' + cleanNisn, JSON.stringify(record));
+      } catch(e) {}
+
+      applyDay3PetikApelConclusionState(text, record.savedAt);
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(cleanNisn, 3, 'materi', record, function() {
+          if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+            FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'task_alt');
+          }
+          FincestemCore.ui.toast('Resume Modul Petik Apel berhasil disimpan! LKPD Petik Apel sekarang telah terbuka.', 'success');
+        });
+      } else {
+        if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+          FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'task_alt');
+        }
+        FincestemCore.ui.toast('Resume Modul Petik Apel berhasil disimpan! LKPD Petik Apel sekarang telah terbuka.', 'success');
+      }
+    }
+
+    function handleGoToLkpdPetikApel() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const saved = localStorage.getItem('fincestem_materi_ft_day3_apel_' + cleanNisn) ||
+                    localStorage.getItem('fincestem_materi_ft_day3_' + cleanNisn);
+      if (!saved) {
+        FincestemCore.ui.toast('Anda wajib membaca modul dan menyimpan kesimpulan petik apel sebelum membuka LKPD!', 'warning');
+        const txt = document.getElementById('ftMateriApelConclusion');
+        if (txt) {
+          txt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          txt.focus();
+        }
+        return;
+      }
+      window.location.href = 'lkpd.html?day=3&sesi=1';
+    }
+
+    // ==========================================
+    // MODUL BELAJAR KHUSUS FIELD TRIP DAY 4 S.D. 7
     // ==========================================
     function renderGenericFieldTripModule(mainEl, dayNum) {
       const ftCfg = (FincestemCore.schedule && FincestemCore.schedule.getFieldTripDayConfig) 
