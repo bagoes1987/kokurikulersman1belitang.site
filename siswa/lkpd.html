@@ -144,114 +144,66 @@
     </div>
   </main>
 
-  <script src="../js/siswa_data.js?v=20261019_v3"></script>
-  <script src="../js/core.js?v=20261019_v3"></script>
-  <script src="../js/modules/lkpd-fieldtrip.js?v=20261019_v3"></script>
+  <script src="../js/siswa_data.js?v=20261019_v5"></script>
+  <script src="../js/core.js?v=20261019_v5"></script>
   <script>
-    let activeUser = null;
+    window.activeUser = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {
+      name: 'Peserta Field Trip',
+      class: 'Kelas X',
+      nisn: '0000000000',
+      identifier: '0000000000',
+      role: 'siswa',
+      facilitator_name: 'Tim Fasilitator SMAN 1 Belitang'
+    };
+    var activeUser = window.activeUser;
+  </script>
+  <script src="../js/modules/lkpd-fieldtrip.js?v=20261019_v5"></script>
+  <script>
 
     document.addEventListener('DOMContentLoaded', () => {
-      activeUser = FincestemCore.auth.getUser();
-      if (!activeUser) {
-        window.location.href = 'index.html';
-        return;
-      }
+      window.activeUser = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser;
+      activeUser = window.activeUser;
 
-      // Verifikasi keterbukaan jadwal hari ini
       const urlParams = new URLSearchParams(window.location.search);
       const rawDay = urlParams.get('day');
-      const dayNum = (rawDay !== null && rawDay !== '') ? parseInt(rawDay) : 1;
+      const dayNum = (rawDay !== null && rawDay !== '') ? parseInt(rawDay) : 3;
+      const isReadOnlyUrl = (urlParams.get('readonly') === '1');
 
-      if (dayNum === 0) {
-        const banner = document.createElement('div');
-        banner.className = 'p-4 rounded-3xl bg-amber-500/15 border border-amber-400 text-amber-950 flex items-center gap-3 shadow-xs';
-        banner.innerHTML = `
-          <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-xl">model_training</span>
-          </div>
-          <div class="flex flex-col min-w-0">
-            <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Day 0 • Gladi Bersih</span>
-            <span class="text-sm font-extrabold leading-snug">LKPD Digital Simulasi &amp; Latihan Pengisian</span>
-            <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Formulir ini dapat digunakan untuk mencoba pengisian data observasi dan pengunggahan berkas sebelum pelaksanaan riset sesungguhnya.</p>
-          </div>
-        `;
-        const mainEl = document.querySelector('main');
-        if (mainEl) mainEl.insertBefore(banner, mainEl.firstChild);
+      // 1. RENDER INSTAN 0 MILIDETIK (HILANGKAN SPINNER SEKETIKA, FORM LKPD LANGSUNG MUNCUL)
+      try {
+        if (dayNum === 3) {
+          renderFieldTripDay3LKPD(isReadOnlyUrl);
+        } else if (dayNum === 2) {
+          renderFieldTripDay2LKPD(isReadOnlyUrl);
+        } else if (dayNum === 1) {
+          renderFieldTripDay1LKPD(isReadOnlyUrl);
+        } else if (dayNum >= 4 && dayNum <= 7) {
+          renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
+        }
+      } catch (errRender) {
+        console.error('Error saat render instan LKPD:', errRender);
       }
 
-      const isReadOnlyUrl = (urlParams.get('readonly') === '1');
-      const nisn = activeUser ? (activeUser.nisn || activeUser.identifier) : '';
-      const studentClass = activeUser.class || '';
-
-      // Deteksi Kategori Siswa (Field Trip vs Non-Field Trip)
-      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(nisn, studentClass, activeUser.zone)
-        : (activeUser.zone || 'FINCESTEM OKU TIMUR');
-      const zUpper = (studentZone || '').toUpperCase();
-      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-
-      FincestemCore.schedule.getSchedule(function(days) {
-        FincestemCore.progress.getStudentProgress(nisn, function(prog) {
-          window.currentStudentProgress = prog;
-          const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
-
-          if (!access.canAccess && !access.isOpen) {
-            const reasonMsg = access.reason || `Aktivitas Day ${dayNum} belum dapat diakses saat ini.`;
-            FincestemCore.ui.toast(reasonMsg, 'error');
-            setTimeout(() => {
-              window.location.replace('dashboard.html');
-            }, 1500);
-            return;
-          }
-
-          // TAMPILKAN LKPD KHUSUS SESUAI HARI (DAY 1 S.D. 7)
-          if (dayNum === 3) {
-            renderFieldTripDay3LKPD(!access.canEdit || isReadOnlyUrl);
-            return;
-          }
-          if (dayNum === 2) {
-            renderFieldTripDay2LKPD(!access.canEdit || isReadOnlyUrl);
-            return;
-          }
-          if (dayNum === 1) {
-            renderFieldTripDay1LKPD(!access.canEdit || isReadOnlyUrl);
-            return;
-          }
-          if (dayNum >= 4 && dayNum <= 7) {
-            renderFieldTripGenericLKPD(dayNum, !access.canEdit || isReadOnlyUrl);
-            return;
-          }
-
-          if (!access.canEdit || isReadOnlyUrl) {
-            const saveBtn = document.getElementById('saveLkpdBtn');
-            if (saveBtn) saveBtn.classList.add('hidden');
-
-            const dropzone = document.getElementById('dropzoneBox');
-            if (dropzone) dropzone.classList.add('pointer-events-none', 'opacity-60');
-
-            const inputs = document.querySelectorAll('input, textarea');
-            inputs.forEach(el => {
-              el.setAttribute('disabled', 'disabled');
-              el.classList.add('bg-slate-100', 'cursor-not-allowed');
+      // 2. SINKRONISASI JADWAL DI LATAR BELAKANG (NON-BLOCKING)
+      try {
+        const nisn = activeUser.nisn || activeUser.identifier || '';
+        if (window.FincestemCore && FincestemCore.schedule && FincestemCore.progress) {
+          FincestemCore.schedule.getSchedule(function(days) {
+            FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+              window.currentStudentProgress = prog;
+              const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
+              if (!access.canEdit || isReadOnlyUrl) {
+                const saveBtns = document.querySelectorAll('#btnSubmitLkpdApel, #saveLkpdBtn, #btnSubmitLkpdD2Akpol, #btnSubmitLkpdD2Lawang');
+                saveBtns.forEach(b => {
+                  b.classList.add('opacity-70', 'pointer-events-none');
+                });
+              }
             });
-
-            const roBanner = document.createElement('div');
-            roBanner.className = 'p-4 rounded-3xl bg-amber-500/15 border border-amber-400 text-amber-950 flex items-center gap-3 shadow-xs mb-3';
-            roBanner.innerHTML = `
-              <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-xl">lock_clock</span>
-              </div>
-              <div class="flex flex-col min-w-0">
-                <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Mode Hanya Lihat (Read-Only)</span>
-                <span class="text-sm font-extrabold leading-snug">Jadwal Day ${dayNum} Ditutup oleh Admin</span>
-                <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Anda tetap dapat meninjau data pengamatan yang tersimpan, namun pengiriman atau pembaharuan data baru dinonaktifkan.</p>
-              </div>
-            `;
-            const mainEl = document.querySelector('main');
-            if (mainEl) mainEl.insertBefore(roBanner, mainEl.firstChild);
-          }
-        });
-      });
+          });
+        }
+      } catch (eAsync) {
+        console.warn('Sync background error (non-fatal):', eAsync);
+      }
 
       loadLKPDData();
     });

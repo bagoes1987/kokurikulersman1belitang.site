@@ -1504,8 +1504,8 @@
       }
 
       const isSubmitted = !!(saved && saved.submitted);
-      const isLockedByPrereq = !hasMateriApel;
-      const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+      const isLockedByPrereq = false;
+      const isFormLocked = isReadOnly || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
       // 1. MENU TAB NAVIGASI UTAMA 3 SESI LKPD (DI ATAS)
