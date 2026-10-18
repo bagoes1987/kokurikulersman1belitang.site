@@ -730,6 +730,18 @@ const FincestemCore = {
       ];
     },
 
+    // Rekap Tabel Keseimbangan 4 Pilar (Day 1 s.d. Day 7) untuk Field Trip
+    // Acuan Resmi Penilaian Imbang & Terukur (25% Financial, 25% Culture, 25% Exploration, 25% STEM)
+    fourPillarsBalanceMatrix: {
+      1: { day: 1, pilar: 'FINANCIAL', label: 'Financial (Literasi Keuangan)', weight: '25%', destination: 'Belitang → Tol Trans-Jawa → Semarang', focus: 'Journey Budgeting: Alokasi uang saku 7 hari & pembukuan kas.' },
+      2: { day: 2, pilar: 'CULTURE & STEM', label: 'Culture & STEM', weight: '25%', destination: 'AKPOL Semarang & Lawang Sewu', focus: 'Karakter & Rekayasa: Disiplin Bhayangkara AKPOL & arsitektur pendingin alami Lawang Sewu.' },
+      3: { day: 3, pilar: 'FULL STEM', label: 'Full STEM', weight: '25%', destination: 'Petik Apel, Jatim Park 1 & Museum Angkut', focus: 'Sains & Rekayasa: Fisika terapan Jatim Park 1, teknologi mesin Museum Angkut & agrosains apel.' },
+      4: { day: 4, pilar: 'EXPLORATION & CULTURE', label: 'Exploration & Culture', weight: '25%', destination: 'Wisata Bromo (Kawah, Laut Pasir, Savana)', focus: 'Bentang Alam & Adat: Geologi kaldera vulkanik Bromo & kearifan adat Suku Tengger.' },
+      5: { day: 5, pilar: 'CULTURE & STEM', label: 'Culture & STEM', weight: '25%', destination: 'Prambanan, Praktik Membatik & UNY', focus: 'Seni Kriya & Kimia: Sejarah Prambanan & sains kimiawi sifat hidrofobik lilin malam saat membatik.' },
+      6: { day: 6, pilar: 'EXPLORATION & APPLIED STEM', label: 'Exploration & Applied STEM', weight: '25%', destination: 'Pabrik Bakpia Jogja & Pantai Drini / Drini Park', focus: 'Ekosistem Bahari & Pangan: Observasi karst/pesisir Pantai Drini & teknologi pengolahan pangan bakpia.' },
+      7: { day: 7, pilar: 'FINANCIAL (Reconciliation)', label: 'Financial (Reconciliation)', weight: '25%', destination: 'Perjalanan Pulang → Tiba di SMAN 1 Belitang', focus: 'Audit & Tutup Buku: Rekonsiliasi anggaran uang saku, selisih rencana vs realisasi, & refleksi akhir.' }
+    },
+
     // Master Jadwal Resmi Ekspedisi Field Trip (Day 0 s.d. Day 7) Sesuai Rute & Itinerary
     fieldTripDaysConfig: {
       0: {
