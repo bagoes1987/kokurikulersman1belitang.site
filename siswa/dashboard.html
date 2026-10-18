@@ -784,6 +784,46 @@
         </div>
       </div>
 
+      <!-- 5. Matriks Keseimbangan 4 Pilar Field Trip (25% Fin, 25% Cul, 25% Exp, 25% STEM) -->
+      <div class="flex flex-col gap-2.5">
+        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wider flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-teal-600 text-sm">balance</span>
+          5. Matriks Keseimbangan 4 Pilar (Day 1 s.d. Day 7) — 100% Imbang
+        </span>
+        <div class="p-3.5 rounded-2xl bg-teal-50/60 border border-teal-200 text-xs flex flex-col gap-2">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="font-bold text-teal-950">Setiap pilar memiliki bobot setara 25% (tepat 3 hari per pilar):</span>
+            <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-teal-700 text-white">Adil &amp; Proporsional</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px] pt-1">
+            <div class="p-2.5 rounded-xl bg-white border border-amber-200 flex flex-col gap-0.5">
+              <span class="font-black text-amber-900 flex items-center gap-1">
+                <span>💰 Financial Literacy (25%)</span>
+              </span>
+              <span class="text-slate-600">Day 1 (Budgeting), Day 6 (Pabrik Bakpia/HPP), Day 7 (Audit Kas Akhir).</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-purple-200 flex flex-col gap-0.5">
+              <span class="font-black text-purple-900 flex items-center gap-1">
+                <span>🏛️ Culture &amp; Karakter (25%)</span>
+              </span>
+              <span class="text-slate-600">Day 2 (AKPOL &amp; Lawang Sewu), Day 4 (Suku Tengger), Day 5 (Batik &amp; Candi Prambanan).</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-emerald-200 flex flex-col gap-0.5">
+              <span class="font-black text-emerald-900 flex items-center gap-1">
+                <span>🧭 Exploration (25%)</span>
+              </span>
+              <span class="text-slate-600">Day 4 (Kaldera Bromo), Day 5 (Prambanan &amp; Kampus UNY), Day 6 (Pantai Drini).</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-blue-200 flex flex-col gap-0.5">
+              <span class="font-black text-blue-900 flex items-center gap-1">
+                <span>🔬 STEM (25%)</span>
+              </span>
+              <span class="text-slate-600">Day 2 (Pendingin Lawang Sewu), Day 3 (Full STEM Batu), Day 5 (Kimia Lilin Batik &amp; Geometri).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Modal Footer -->
       <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
         <button onclick="closeRubrikModal()" class="px-5 py-2.5 rounded-xl bg-slate-100 text-slate-700 font-bold text-sm hover:bg-slate-200 transition-all cursor-pointer">
@@ -4103,11 +4143,21 @@
           }
         }
 
+        const mat = (isFieldTrip && FincestemCore.schedule && FincestemCore.schedule.fourPillarsBalanceMatrix)
+          ? FincestemCore.schedule.fourPillarsBalanceMatrix[i]
+          : null;
+        const pilarBadge = mat 
+          ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-black bg-teal-100 text-teal-900 border border-teal-300">🎯 ${mat.pilar} (${mat.weight})</span>`
+          : '';
+
         row.innerHTML = `
           <div class="flex items-center justify-between gap-2 flex-wrap">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <span class="w-7 h-7 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-xs shrink-0">D${i}</span>
-              <h5 class="font-extrabold text-slate-800 text-sm leading-snug">${dayTitle}</h5>
+            <div class="flex flex-col gap-1 min-w-0">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <span class="w-7 h-7 rounded-xl bg-teal-600 text-white flex items-center justify-center font-bold text-xs shrink-0">D${i}</span>
+                <h5 class="font-extrabold text-slate-800 text-sm leading-snug">${dayTitle}</h5>
+              </div>
+              ${pilarBadge ? `<div class="pl-9.5">${pilarBadge}</div>` : ''}
             </div>
             ${scoreHtml}
           </div>

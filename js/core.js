@@ -861,50 +861,51 @@ const FincestemCore = {
       },
       5: {
         day_number: 5,
-        title: 'HARI KE-5: WISATA EDUKASI YOGYAKARTA',
-        theme: 'Pantai Drini, Drini Park, Malioboro & Budaya Yogyakarta',
+        title: 'HARI KE-5: CANDI PRAMBANAN, BATIK & KAMPUS UNY',
+        theme: 'Sains Kimia Lilin Batik, Geometri Candi Prambanan & Orientasi Akademik UNY',
         date_formatted: 'Jumat, 13 November 2026',
         time_range: '06.00 - Selesai WIB',
         route_lines: [
-          ['Hotel', 'Pantai Drini', 'Drini Park'],
-          ['Restoran Lokal', 'Kawasan Malioboro', 'Hotel Yogyakarta']
+          ['Hotel', 'Candi Prambanan', 'Praktik Batik Benang Ratu'],
+          ['Restoran Lokal', 'Kampus UNY', 'Malioboro / Hotel']
         ],
-        route: 'Hotel → Pantai Drini Gunungkidul → Drini Park → Restoran Lokal → Malioboro → Hotel Yogyakarta',
-        description: 'Setelah sarapan pagi di hotel, rombongan melaksanakan kegiatan wisata edukasi ke pesisir Gunungkidul (Pantai Drini dan Drini Park) serta observasi UMKM dan ekonomi kreatif di Malioboro.',
+        route: 'Hotel → Candi Prambanan → Praktik Membatik Benang Ratu → Restoran Lokal → Kampus UNY → Malioboro → Hotel Yogyakarta',
+        description: 'Setelah sarapan pagi di hotel, rombongan mengeksplorasi megastruktur & geometri Candi Prambanan, mempraktikkan sains kimia malam batik di Batik Benang Ratu, makan siang, dilanjutkan orientasi akademik & studi lanjut di Kampus UNY serta menikmati suasana budaya Malioboro.',
         sessions: [
-          { time: '06.00 – 07.30', title: 'Sarapan Pagi di Hotel', location: 'Hotel', icon: 'free_breakfast', highlight: 'orange' },
-          { time: '08.30 – 10.30', title: 'Kunjungan Pantai Drini', location: 'Pantai Drini', icon: 'beach_access', highlight: 'cyan' },
-          { time: '11.00 – 12.00', title: 'Makan Siang', location: 'Restoran Lokal', icon: 'lunch_dining', highlight: 'orange' },
-          { time: '12.30 – 14.30', title: 'Kunjungan Drini Park', location: 'Drini Park', icon: 'attractions', highlight: 'teal' },
-          { time: '15.30 – 17.30', title: 'Observasi UMKM Malioboro', location: 'Malioboro', icon: 'storefront', highlight: 'amber' },
-          { time: '18.00 – Selesai', title: 'Kembali ke Hotel & Makan Malam', location: 'Hotel Yogyakarta', icon: 'hotel', highlight: 'emerald' }
+          { time: '06.00 – 07.30', title: 'Sarapan Pagi di Hotel', location: 'Hotel Yogyakarta', icon: 'free_breakfast', highlight: 'orange' },
+          { time: '08.00 – 10.30', title: 'Megastruktur & Geometri Candi Prambanan', location: 'Candi Prambanan', icon: 'temple_hindu', highlight: 'purple' },
+          { time: '11.00 – 12.45', title: 'Praktik Membatik & Sains Kimia Lilin Malam', location: 'Batik Benang Ratu', icon: 'palette', highlight: 'amber' },
+          { time: '13.00 – 14.00', title: 'Makan Siang', location: 'Restoran Lokal', icon: 'lunch_dining', highlight: 'orange' },
+          { time: '14.30 – 17.00', title: 'Eksplorasi Wawasan Akademik Kampus UNY', location: 'Kampus UNY Yogyakarta', icon: 'school', highlight: 'blue' },
+          { time: '17.30 – 20.30', title: 'Observasi Budaya & Relaksasi Malioboro', location: 'Kawasan Malioboro', icon: 'storefront', highlight: 'amber' },
+          { time: '20.30 – Selesai', title: 'Kembali ke Hotel Yogyakarta & Istirahat', location: 'Hotel Yogyakarta', icon: 'hotel', highlight: 'emerald' }
         ],
-        refl_title: 'Jurnal Refleksi Hari Kelima (Pantai Drini, Drini Park & Malioboro)',
-        refl_prompt: 'Refleksikan apa yang Anda peroleh hari ini: (1) Sains konservasi ekosistem laut dan biota pesisir Pantai Drini, (2) Tata kelola pariwisata modern di Drini Park, (3) Observasi ekonomi kreatif, tawar-menawar, dan interaksi budaya di kawasan Malioboro!'
+        refl_title: 'Jurnal Refleksi Hari Kelima (Prambanan, Batik & Kampus UNY)',
+        refl_prompt: 'Refleksikan apa yang Anda peroleh hari ini: (1) Sains kimiawi sifat hidrofobik lilin malam (wax barrier) dan proses fiksasi pewarna kain batik di Benang Ratu, (2) Kajian struktur simetri geometri dan sejarah relief Candi Prambanan, serta (3) Eksplorasi akademik dan motivasi studi lanjut saat orientasi kampus UNY!'
       },
       6: {
         day_number: 6,
-        title: 'HARI KE-6: YOGYAKARTA – BELITANG',
-        theme: 'Pabrik Bakpia, Kampus UGM/UNY, Candi Prambanan & Pulang',
+        title: 'HARI KE-6: PABRIK BAKPIA, PANTAI DRINI & PULANG',
+        theme: 'Finansial Industri Bakpia, Ekosistem Karst Bahari Pantai Drini & Perjalanan Pulang',
         date_formatted: 'Sabtu, 14 November 2026',
         time_range: '06.30 - Selesai WIB',
         route_lines: [
-          ['Pabrik Bakpia Jogja', 'Kampus UGM / UNY', 'Candi Prambanan'],
+          ['Pabrik Bakpia Jogja', 'Pantai Drini Gunungkidul', 'Drini Park'],
           ['Restoran Lokal', 'Yogyakarta–Belitang']
         ],
-        route: 'Hotel → Pabrik Bakpia Jogja → Kampus UGM / UNY → Candi Prambanan → Restoran Lokal → Perjalanan Belitang',
-        description: 'Setelah sarapan pagi dan check-out hotel, rombongan mengunjungi Pabrik Bakpia, kampus ternama Jogja, dan kemegahan Candi Prambanan. Setelah makan malam, rombongan memulai perjalanan kembali menuju Belitang.',
+        route: 'Hotel → Pabrik Bakpia Jogja → Pantai Drini Gunungkidul → Drini Park → Restoran Lokal → Perjalanan Pulang Belitang',
+        description: 'Setelah sarapan pagi dan check-out hotel, rombongan mengunjungi Pabrik Bakpia Jogja untuk observasi literasi finansial/HPP/omzet dan belanja cerdas, dilanjutkan eksplorasi bentang alam karst & ekosistem bahari Pantai Drini serta Drini Park. Malam hari rombongan bertolak pulang menuju Belitang.',
         sessions: [
           { time: '06.30 – 07.30', title: 'Sarapan & Check-out Hotel', location: 'Hotel Yogyakarta', icon: 'free_breakfast', highlight: 'orange' },
-          { time: '08.00 – 09.30', title: 'Kunjungan Pabrik Bakpia Jogja', location: 'Pabrik Bakpia', icon: 'bakery_dining', highlight: 'amber' },
-          { time: '10.30 – 12.30', title: 'Kunjungan Kampus UGM / UNY', location: 'UGM / UNY', icon: 'school', highlight: 'blue' },
-          { time: '13.00 – 14.00', title: 'Makan Siang', location: 'Restoran Lokal', icon: 'lunch_dining', highlight: 'orange' },
-          { time: '15.00 – 17.30', title: 'Kunjungan Candi Prambanan', location: 'Candi Prambanan', icon: 'temple_hindu', highlight: 'purple' },
+          { time: '08.00 – 10.00', title: 'Literasi Finansial & HPP di Pabrik Bakpia', location: 'Pabrik Bakpia Jogja', icon: 'bakery_dining', highlight: 'amber' },
+          { time: '11.30 – 13.30', title: 'Eksplorasi Ekosistem & Karst Pantai Drini', location: 'Pantai Drini Gunungkidul', icon: 'beach_access', highlight: 'cyan' },
+          { time: '13.30 – 15.00', title: 'Observasi Tata Kelola Wisata Drini Park', location: 'Drini Park Gunungkidul', icon: 'attractions', highlight: 'teal' },
+          { time: '15.30 – 17.00', title: 'Makan Sore & Manajemen Belanja Oleh-Oleh Cerdas', location: 'Pusat Belanja Jogja', icon: 'shopping_bag', highlight: 'amber' },
           { time: '18.00 – 19.30', title: 'Makan Malam', location: 'Restoran Lokal', icon: 'dinner_dining', highlight: 'orange' },
           { time: '19.30 – Selesai', title: 'Perjalanan Pulang Menuju Belitang', location: 'Yogyakarta–Belitang', icon: 'directions_bus', highlight: 'indigo' }
         ],
-        refl_title: 'Jurnal Refleksi Hari Keenam (Pabrik Bakpia, Kampus Jogja, Candi Prambanan & Pulang)',
-        refl_prompt: 'Ceritakan pengalaman Anda di hari keenam: wawasan industri kreatif dan manajemen biaya di Pabrik Bakpia Jogja, motivasi akademik di kampus UGM/UNY, kemegahan arsitektur kuno Candi Prambanan, serta persiapan perjalanan darat kembali menuju kampung halaman Belitang!'
+        refl_title: 'Jurnal Refleksi Hari Keenam (Pabrik Bakpia, Pantai Drini & Perjalanan Pulang)',
+        refl_prompt: 'Ceritakan pengalaman Anda di hari keenam: (1) Analisis rantai pasok, penetapan HPP, margin laba dan omzet di Pabrik Bakpia Jogja, (2) Observasi morfologi batuan karst dan ekosistem bahari Pantai Drini, serta (3) Manajemen belanja oleh-oleh cerdas untuk keluarga berbasis sisa uang saku sebelum bertolak menuju Belitang!'
       },
       7: {
         day_number: 7,
