@@ -1686,43 +1686,70 @@
                   </p>
                 </div>
 
-                <div class="p-4 rounded-2xl bg-teal-50/80 border border-teal-200 flex flex-col gap-2">
-                  <span class="font-black text-teal-950 flex items-center gap-1.5 text-sm">
+                <div class="p-4 rounded-2xl bg-teal-50/80 border border-teal-200 flex flex-col gap-2.5">
+                  <span class="font-black text-teal-950 flex items-center gap-1.5 text-sm border-b border-teal-200/80 pb-1.5">
                     <span class="material-symbols-outlined text-teal-700 text-base">check_circle</span>
-                    Ciri-Ciri Apel yang Masak
+                    CIRI-CIRI APEL YANG MASAK
                   </span>
-                  <ul class="list-disc list-inside space-y-1.5 text-[12px] text-slate-700 font-medium">
-                    <li>Apel yang masak berwarna merah (atau kuning kemerahan).</li>
-                    <li>Jika masih baru dipetik langsung dari pohon, rasanya masih ada rasa asam segar.</li>
-                    <li>Apel akan terasa lebih manis setelah disimpan selama 2–3 hari (terjadi proses respirasi pascapanen alami di mana sisa pati buah terkonversi sempurna menjadi gula alami).</li>
-                  </ul>
+                  <div class="flex flex-col gap-2 pt-0.5">
+                    <div class="flex items-start gap-2.5">
+                      <span class="w-5 h-5 rounded-full bg-teal-200 text-teal-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">1</span>
+                      <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Apel yang masak berwarna merah.</span>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                      <span class="w-5 h-5 rounded-full bg-teal-200 text-teal-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">2</span>
+                      <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Jika masih baru dipetik, rasanya masih ada rasa asam.</span>
+                    </div>
+                    <div class="flex items-start gap-2.5">
+                      <span class="w-5 h-5 rounded-full bg-teal-200 text-teal-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">3</span>
+                      <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Apel akan terasa lebih manis setelah disimpan selama 2–3 hari.</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <!-- Kolom Kanan: PETUNJUK MEMETIK APEL DI KEBUN 8 -->
+              <!-- Kolom Kanan: PETUNJUK MEMETIK APEL -->
               <div class="p-4 sm:p-5 rounded-2xl bg-amber-50/80 border border-amber-200/90 flex flex-col gap-2.5 shadow-2xs">
                 <div class="flex items-center justify-between flex-wrap gap-1 border-b border-amber-200/80 pb-2">
                   <span class="font-black text-amber-950 flex items-center gap-1.5 text-sm sm:text-base">
                     <span class="material-symbols-outlined text-amber-700 text-lg">pan_tool</span>
-                    PETUNJUK MEMETIK APEL DI KEBUN 8
+                    PETUNJUK MEMETIK APEL
                   </span>
                   <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-200/80 text-amber-900 uppercase">
-                    SOP Resmi Kebun
+                    SOP Kebun
                   </span>
                 </div>
 
-                <ol class="list-decimal list-inside text-xs sm:text-[12px] text-slate-700 space-y-2 font-medium leading-relaxed">
-                  <li><strong>Buah yang masak:</strong> Berwarna merah/kuning.</li>
-                  <li><strong>Posisi tangan:</strong> Tangan kiri memegang tangkai apel, tangan kanan memegang buah apel.</li>
-                  <li><strong>Teknik putar:</strong> Buah diputar sampai apel terlepas.</li>
-                  <li><strong>Buah bergerombol:</strong> Apabila buah bergerombol, cara memetiknya cukup diputar saja.</li>
-                  <li><strong>Jangan menarik paksa:</strong> Jangan menarik terlalu kuat atau mematahkan tangkai, karena tangkai diperlukan untuk reproduksi/tumbuhnya buah apel yang baru.</li>
-                  <li><strong>Tanggung jawab bersama:</strong> Jika ada buah yang terjatuh saat pemetikan, mohon kerja samanya untuk diambil dan dimasukkan ke dalam wadah.</li>
-                </ol>
+                <div class="flex flex-col gap-2.5 pt-1">
+                  <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">1</span>
+                    <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Buah yang masak berwarna merah/kuning.</span>
+                  </div>
+                  <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">2</span>
+                    <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Tangan kiri memegang tangkai apel, tangan kanan memegang buah apel.</span>
+                  </div>
+                  <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">3</span>
+                    <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Buah diputar sampai apel terlepas.</span>
+                  </div>
+                  <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">4</span>
+                    <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Apabila buah bergerombol, cara memetiknya cukup diputar saja.</span>
+                  </div>
+                  <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">5</span>
+                    <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Jangan menarik terlalu kuat atau mematahkan tangkai, karena tangkai diperlukan untuk reproduksi apel yang baru.</span>
+                  </div>
+                  <div class="flex items-start gap-2.5">
+                    <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">6</span>
+                    <span class="text-xs sm:text-[12.5px] text-slate-800 font-medium leading-relaxed">Jika ada buah yang terjatuh saat pemetikan, mohon kerja samanya untuk diambil dan dimasukkan ke dalam wadah.</span>
+                  </div>
+                </div>
 
                 <div class="mt-1 p-2 rounded-xl bg-white/90 border border-amber-300 text-[11px] text-amber-900 font-semibold italic flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-amber-600 shrink-0">info</span>
-                  <span>Tangkai buah menyimpan mata tunas generatif. Menjaga tangkai berarti menjaga kelangsungan panen petani!</span>
+                  <span>Tangkai buah diperlukan untuk reproduksi apel baru. Menjaga tangkai berarti menjaga kelangsungan panen kebun!</span>
                 </div>
               </div>
             </div>
