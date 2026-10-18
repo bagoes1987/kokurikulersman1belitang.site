@@ -1453,18 +1453,30 @@
       const cleanNisn = String(studentNisn).trim();
 
       const urlParams = new URLSearchParams(window.location.search);
+      const isS1Done = checkIsD3Sesi1Done(cleanNisn);
+      const isS2Done = checkIsD3Sesi2Done(cleanNisn);
+
       if (targetSesi !== undefined && targetSesi !== null) {
         currentD3LkpdSession = Number(targetSesi);
       } else {
         const reqSesi = parseInt(urlParams.get('sesi'));
-        if (reqSesi === 2 || reqSesi === 3) {
-          currentD3LkpdSession = reqSesi;
+        if ((reqSesi === 2 || currentD3LkpdSession === 2) && isS1Done) {
+          currentD3LkpdSession = 2;
+        } else if ((reqSesi === 3 || currentD3LkpdSession === 3) && isS2Done) {
+          currentD3LkpdSession = 3;
         } else {
           currentD3LkpdSession = 1;
         }
       }
 
-      // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan Sesi 1 Petik Apel
+      // Validasi proteksi sekuensial LKPD
+      if (currentD3LkpdSession === 2 && !isS1Done) {
+        currentD3LkpdSession = 1;
+      } else if (currentD3LkpdSession === 3 && !isS2Done) {
+        currentD3LkpdSession = isS1Done ? 2 : 1;
+      }
+
+      // Verifikasi Prasyarat Modul: Siswa wajib membaca modul & mengisi kesimpulan Sesi 1 Petik Apel
       let hasMateriApel = false;
       try {
         const localMateri = localStorage.getItem('fincestem_materi_ft_day3_apel_' + cleanNisn) ||
@@ -1496,37 +1508,121 @@
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
-      // TAB NAVIGASI 3 SESI LKPD DAY 3 KOTA BATU
+      // 1. MENU TAB NAVIGASI UTAMA 3 SESI LKPD (DI ATAS)
       const tabNavHtml = `
         <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-3 gap-1.5">
-          <!-- TAB 1: PETIK APEL (AKTIF) -->
+          <!-- TAB 1: PETIK APEL (SELALU TERBUKA) -->
           <button type="button" onclick="switchD3LkpdSession(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3LkpdSession === 1 ? 'bg-emerald-600 text-white shadow-xs ring-2 ring-emerald-400/40' : 'bg-slate-50 hover:bg-emerald-50 text-emerald-950 border border-emerald-300'}">
             <span class="material-symbols-outlined text-base ${currentD3LkpdSession === 1 ? 'text-amber-300' : 'text-emerald-600'}">nutrition</span>
             <span class="truncate">Sesi 1: LKPD Petik Apel</span>
-            ${currentD3LkpdSession === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5"></span>' : ''}
+            ${isSubmitted ? '<span class="text-[11px] text-emerald-200 font-bold ml-1">✓</span>' : (currentD3LkpdSession === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5"></span>' : '')}
           </button>
 
-          <!-- TAB 2: JATIM PARK 1 -->
-          <button type="button" onclick="switchD3LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3LkpdSession === 2 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
-            <span class="material-symbols-outlined text-base ${currentD3LkpdSession === 2 ? 'text-amber-300' : 'text-blue-600'}">science</span>
-            <span class="truncate">Sesi 2: Jatim Park 1</span>
-            ${currentD3LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
-          </button>
+          <!-- TAB 2: JATIM PARK 1 (TERKUNCI / TERBUKA JIKA LKPD SESI 1 SELESAI) -->
+          ${isS1Done ? `
+            <button type="button" onclick="switchD3LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3LkpdSession === 2 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
+              <span class="material-symbols-outlined text-base ${currentD3LkpdSession === 2 ? 'text-amber-300' : 'text-blue-600'}">science</span>
+              <span class="truncate">Sesi 2: Jatim Park 1</span>
+              ${isS2Done ? '<span class="text-[11px] text-blue-200 font-bold ml-1">✓</span>' : (currentD3LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : '')}
+            </button>
+          ` : `
+            <button type="button" onclick="handleLockedD3LkpdSessionClick(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" title="Sesi 2 terbuka setelah LKPD Sesi 1 selesai">
+              <span class="material-symbols-outlined text-base text-slate-400">lock</span>
+              <span class="truncate">Sesi 2: Jatim Park 1</span>
+            </button>
+          `}
 
-          <!-- TAB 3: MUSEUM ANGKUT -->
-          <button type="button" onclick="switchD3LkpdSession(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3LkpdSession === 3 ? 'bg-purple-600 text-white shadow-xs ring-2 ring-purple-400/40' : 'bg-slate-50 hover:bg-purple-50 text-purple-950 border border-purple-200'}">
-            <span class="material-symbols-outlined text-base ${currentD3LkpdSession === 3 ? 'text-amber-300' : 'text-purple-600'}">directions_car</span>
-            <span class="truncate">Sesi 3: Museum Angkut</span>
-            ${currentD3LkpdSession === 3 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
-          </button>
+          <!-- TAB 3: MUSEUM ANGKUT (TERKUNCI / TERBUKA JIKA LKPD SESI 2 SELESAI) -->
+          ${isS2Done ? `
+            <button type="button" onclick="switchD3LkpdSession(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3LkpdSession === 3 ? 'bg-purple-600 text-white shadow-xs ring-2 ring-purple-400/40' : 'bg-slate-50 hover:bg-purple-50 text-purple-950 border border-purple-200'}">
+              <span class="material-symbols-outlined text-base ${currentD3LkpdSession === 3 ? 'text-amber-300' : 'text-purple-600'}">directions_car</span>
+              <span class="truncate">Sesi 3: Museum Angkut</span>
+              ${currentD3LkpdSession === 3 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+            </button>
+          ` : `
+            <button type="button" onclick="handleLockedD3LkpdSessionClick(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" title="Sesi 3 terbuka setelah LKPD Sesi 2 selesai">
+              <span class="material-symbols-outlined text-base text-slate-400">lock</span>
+              <span class="truncate">Sesi 3: Museum Angkut</span>
+            </button>
+          `}
         </div>
       `;
+
+      // 2. SUB-NAVIGASI STATUS & PINDAH SESI LKPD (FORMAT PERSIS DAY 2)
+      let subNavHtml = '';
+      if (currentD3LkpdSession === 1) {
+        subNavHtml = `
+          <!-- SUB-NAVIGASI SESI 1 (LKPD PETIK APEL) -->
+          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-emerald-50/90 border border-emerald-200 shadow-2xs">
+            <span class="text-[11px] sm:text-xs font-extrabold text-emerald-950 px-3 py-1.5 bg-emerald-100 rounded-xl flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-emerald-700">radio_button_checked</span>
+              <span>Sesi 1 Aktif: LKPD Petik Apel Batu</span>
+            </span>
+            ${isSubmitted ? `
+              <button type="button" onclick="switchD3LkpdSession(2)" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer">
+                <span>Buka LKPD Jatim Park 1 (Sesi 2)</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            ` : `
+              <span class="text-[11px] text-slate-500 font-bold flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200">
+                <span class="material-symbols-outlined text-xs text-amber-600">lock</span>
+                <span>Sesi 2 terbuka setelah LKPD Sesi 1 terkirim</span>
+              </span>
+            `}
+          </div>
+        `;
+      } else if (currentD3LkpdSession === 2) {
+        subNavHtml = `
+          <!-- SUB-NAVIGASI SESI 2 (LKPD JATIM PARK 1) -->
+          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-blue-50/90 border border-blue-200 shadow-2xs">
+            <button type="button" onclick="switchD3LkpdSession(1)" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-black border border-slate-300 shadow-2xs transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>LKPD Sesi 1: Petik Apel</span>
+            </button>
+            <span class="text-[11px] sm:text-xs font-extrabold text-blue-950 px-3 py-1.5 bg-blue-100 rounded-xl flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-blue-700">radio_button_checked</span>
+              <span>Sesi 2 Aktif: LKPD Jatim Park 1</span>
+            </span>
+            ${isS2Done ? `
+              <button type="button" onclick="switchD3LkpdSession(3)" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer">
+                <span>Buka LKPD Museum Angkut (Sesi 3)</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            ` : `
+              <span class="text-[11px] text-slate-500 font-bold flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200">
+                <span class="material-symbols-outlined text-xs text-amber-600">lock</span>
+                <span>Sesi 3 terbuka setelah LKPD Sesi 2 terkirim</span>
+              </span>
+            `}
+          </div>
+        `;
+      } else if (currentD3LkpdSession === 3) {
+        subNavHtml = `
+          <!-- SUB-NAVIGASI SESI 3 (LKPD MUSEUM ANGKUT) -->
+          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-purple-50/90 border border-purple-200 shadow-2xs">
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="switchD3LkpdSession(1)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer">
+                <span>Sesi 1</span>
+              </button>
+              <button type="button" onclick="switchD3LkpdSession(2)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                <span>Sesi 2</span>
+              </button>
+            </div>
+            <span class="text-[11px] sm:text-xs font-extrabold text-purple-950 px-3 py-1.5 bg-purple-100 rounded-xl flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-purple-700">radio_button_checked</span>
+              <span>Sesi 3 Aktif: LKPD Museum Angkut</span>
+            </span>
+          </div>
+        `;
+      }
 
       if (currentD3LkpdSession === 1) {
         // SESI 1: FORM LKPD PETIK APEL BATU
         mainEl.innerHTML = `
-          <div class="flex flex-col gap-5 sm:gap-6">
+          <div class="flex flex-col gap-4 sm:gap-5">
             ${tabNavHtml}
+            ${subNavHtml}
 
             ${isLockedByPrereq ? `
               <!-- BANNER PERINGATAN PRASYARAT MODUL -->
@@ -1865,8 +1961,9 @@
       } else if (currentD3LkpdSession === 2) {
         // SESI 2: JATIM PARK 1 - PREVIEW
         mainEl.innerHTML = `
-          <div class="flex flex-col gap-5 sm:gap-6">
+          <div class="flex flex-col gap-4 sm:gap-5">
             ${tabNavHtml}
+            ${subNavHtml}
             <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-12">
               <div class="w-14 h-14 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
                 <span class="material-symbols-outlined text-3xl">science</span>
@@ -1889,8 +1986,9 @@
       } else if (currentD3LkpdSession === 3) {
         // SESI 3: MUSEUM ANGKUT - PREVIEW
         mainEl.innerHTML = `
-          <div class="flex flex-col gap-5 sm:gap-6">
+          <div class="flex flex-col gap-4 sm:gap-5">
             ${tabNavHtml}
+            ${subNavHtml}
             <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-12">
               <div class="w-14 h-14 rounded-3xl bg-purple-100 text-purple-600 flex items-center justify-center shadow-xs">
                 <span class="material-symbols-outlined text-3xl">directions_car</span>
@@ -1914,14 +2012,37 @@
     }
 
     function switchD3LkpdSession(sesi) {
-      currentD3LkpdSession = Number(sesi);
+      const studentNisn = activeUser.nisn || activeUser.identifier || '';
+      const cleanNisn = String(studentNisn).trim();
+      const isS1Done = checkIsD3Sesi1Done(cleanNisn);
+      const isS2Done = checkIsD3Sesi2Done(cleanNisn);
+
+      const target = Number(sesi);
+      if (target === 2 && !isS1Done) {
+        FincestemCore.ui.toast('Sesi 2 (Jatim Park 1) masih terkunci! Anda wajib menyelesaikan dan mengirimkan LKPD Sesi 1 terlebih dahulu.', 'warning');
+        return;
+      }
+      if (target === 3 && !isS2Done) {
+        FincestemCore.ui.toast('Sesi 3 (Museum Angkut) masih terkunci! Anda wajib menyelesaikan LKPD Sesi 2 terlebih dahulu.', 'warning');
+        return;
+      }
+
+      currentD3LkpdSession = target;
       const urlParams = new URLSearchParams(window.location.search);
       const isReadOnly = urlParams.get('mode') === 'view';
       renderFieldTripDay3LKPD(isReadOnly, currentD3LkpdSession);
       window.scrollTo({ top: 120, behavior: 'smooth' });
     }
 
-    function detectD3PetikApelGps() {
+    function handleLockedD3LkpdSessionClick(sesi) {
+      if (sesi === 2) {
+        FincestemCore.ui.toast('LKPD Sesi 2 (Jatim Park 1) masih terkunci! Selesaikan dan kirimkan LKPD Sesi 1 Petik Apel terlebih dahulu.', 'warning');
+      } else if (sesi === 3) {
+        FincestemCore.ui.toast('LKPD Sesi 3 (Museum Angkut) masih terkunci! Selesaikan LKPD Sesi 2 Jatim Park 1 terlebih dahulu.', 'warning');
+      }
+    }
+
+        function detectD3PetikApelGps() {
       const statusText = document.getElementById('ftD3GpsStatusText');
       const btn = document.getElementById('btnDetectD3Gps');
 

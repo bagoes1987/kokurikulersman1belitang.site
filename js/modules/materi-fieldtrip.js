@@ -1494,54 +1494,208 @@
 
     // ==========================================
     // MODUL BELAJAR KHUSUS FIELD TRIP DAY 3 (KOTA BATU)
-    // Sesi 1: Kebun Petik Apel Mandiri (Aktif)
-    // Sesi 2: Jatim Park 1 - Science Center (Segera Hadir)
-    // Sesi 3: Museum Angkut Kota Batu (Segera Hadir)
+    // Sesi 1: Kebun Petik Apel Mandiri (Pagi)
+    // Sesi 2: Jatim Park 1 - Science Center (Siang)
+    // Sesi 3: Museum Angkut Kota Batu (Sore)
     // ==========================================
     let currentD3Session = 1;
+
+    function checkIsD3Sesi1Done(cleanNisn) {
+      try {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier, user.username].filter(Boolean);
+
+        for (const id of ids) {
+          // 1. Cek LKPD Petik Apel (disubmit atau tersimpan)
+          const lkpdRaw = localStorage.getItem('fincestem_lkpd_ft_day3_apel_' + id) || localStorage.getItem('fincestem_lkpd_ft_day3_' + id);
+          if (lkpdRaw) {
+            try {
+              const p = JSON.parse(lkpdRaw);
+              if (p && (p.submitted || p.varietas || p.applesEaten !== undefined)) return true;
+            } catch(e) {}
+          }
+          // 2. Cek Asesmen Day 3
+          const asesmenRaw = localStorage.getItem('fincestem_asesmen_ft_day3_' + id);
+          if (asesmenRaw) return true;
+          // 3. Cek Kesimpulan Modul Petik Apel
+          const materiRaw = localStorage.getItem('fincestem_materi_ft_day3_apel_' + id);
+          if (materiRaw) {
+            try {
+              const p = JSON.parse(materiRaw);
+              if (p && (p.conclusion || p.text)) return true;
+            } catch(e) {}
+          }
+        }
+
+        if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
+          const prog = FincestemCore.progress.getStudentProgress(nisn);
+          if (prog && prog.task_map) {
+            if (prog.task_map['3_lkpd'] || prog.task_map['3_materi'] || prog.task_map['3_asesmen']) return true;
+          }
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function checkIsD3Sesi2Done(cleanNisn) {
+      try {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier, user.username].filter(Boolean);
+
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_lkpd_ft_day3_jtp1_' + id)) return true;
+          if (localStorage.getItem('fincestem_materi_ft_day3_jtp1_' + id)) return true;
+        }
+
+        if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
+          const prog = FincestemCore.progress.getStudentProgress(nisn);
+          if (prog && prog.task_map) {
+            if (prog.task_map['3_lkpd_jtp1'] || prog.task_map['3_materi_jtp1']) return true;
+          }
+        }
+      } catch(e) {}
+      return false;
+    }
 
     function renderDay3FieldTripModule(mainEl, targetSesi) {
       const user = FincestemCore.auth.getUser() || {};
       const nisn = user.nisn || user.identifier || '';
       const cleanNisn = String(nisn).trim();
 
+      const isS1Done = checkIsD3Sesi1Done(cleanNisn);
+      const isS2Done = checkIsD3Sesi2Done(cleanNisn);
+
       if (targetSesi !== undefined && targetSesi !== null) {
         currentD3Session = Number(targetSesi);
       } else {
         const urlParams = new URLSearchParams(window.location.search);
         const reqSesi = parseInt(urlParams.get('sesi'));
-        if (reqSesi === 2 || reqSesi === 3) {
-          currentD3Session = reqSesi;
+        if ((reqSesi === 2 || currentD3Session === 2) && isS1Done) {
+          currentD3Session = 2;
+        } else if ((reqSesi === 3 || currentD3Session === 3) && isS2Done) {
+          currentD3Session = 3;
         } else {
           currentD3Session = 1;
         }
       }
 
-      // TAB NAVIGASI 3 SESI KUNJUNGAN DAY 3 KOTA BATU
+      // Validasi proteksi sekuensial
+      if (currentD3Session === 2 && !isS1Done) {
+        currentD3Session = 1;
+      } else if (currentD3Session === 3 && !isS2Done) {
+        currentD3Session = isS1Done ? 2 : 1;
+      }
+
+      // 1. MENU TAB NAVIGASI UTAMA 3 SESI (DI ATAS)
       const tabNavHtml = `
         <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-3 gap-1.5">
-          <!-- TAB 1: KEBUN PETIK APEL (AKTIF) -->
+          <!-- TAB 1: KEBUN PETIK APEL (SELALU TERBUKA) -->
           <button type="button" onclick="switchD3Session(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3Session === 1 ? 'bg-emerald-600 text-white shadow-xs ring-2 ring-emerald-400/40' : 'bg-slate-50 hover:bg-emerald-50 text-emerald-950 border border-emerald-300'}">
             <span class="material-symbols-outlined text-base ${currentD3Session === 1 ? 'text-amber-300' : 'text-emerald-600'}">nutrition</span>
             <span class="truncate">Sesi 1: Petik Apel Batu</span>
-            ${currentD3Session === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5"></span>' : ''}
+            ${isS1Done ? '<span class="text-[11px] text-emerald-200 font-bold ml-1">✓</span>' : (currentD3Session === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5"></span>' : '')}
           </button>
 
-          <!-- TAB 2: JATIM PARK 1 (SCIENCE CENTER) -->
-          <button type="button" onclick="switchD3Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3Session === 2 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
-            <span class="material-symbols-outlined text-base ${currentD3Session === 2 ? 'text-amber-300' : 'text-blue-600'}">science</span>
-            <span class="truncate">Sesi 2: Jatim Park 1</span>
-            ${currentD3Session === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
-          </button>
+          <!-- TAB 2: JATIM PARK 1 (TERKUNCI / TERBUKA JIKA SESI 1 SELESAI) -->
+          ${isS1Done ? `
+            <button type="button" onclick="switchD3Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3Session === 2 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
+              <span class="material-symbols-outlined text-base ${currentD3Session === 2 ? 'text-amber-300' : 'text-blue-600'}">science</span>
+              <span class="truncate">Sesi 2: Jatim Park 1</span>
+              ${isS2Done ? '<span class="text-[11px] text-blue-200 font-bold ml-1">✓</span>' : (currentD3Session === 2 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : '')}
+            </button>
+          ` : `
+            <button type="button" onclick="handleLockedD3SessionClick(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" title="Sesi 2 terbuka setelah Sesi 1 Petik Apel selesai">
+              <span class="material-symbols-outlined text-base text-slate-400">lock</span>
+              <span class="truncate">Sesi 2: Jatim Park 1</span>
+            </button>
+          `}
 
-          <!-- TAB 3: MUSEUM ANGKUT -->
-          <button type="button" onclick="switchD3Session(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3Session === 3 ? 'bg-purple-600 text-white shadow-xs ring-2 ring-purple-400/40' : 'bg-slate-50 hover:bg-purple-50 text-purple-950 border border-purple-200'}">
-            <span class="material-symbols-outlined text-base ${currentD3Session === 3 ? 'text-amber-300' : 'text-purple-600'}">directions_car</span>
-            <span class="truncate">Sesi 3: Museum Angkut</span>
-            ${currentD3Session === 3 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
-          </button>
+          <!-- TAB 3: MUSEUM ANGKUT (TERKUNCI / TERBUKA JIKA SESI 2 SELESAI) -->
+          ${isS2Done ? `
+            <button type="button" onclick="switchD3Session(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD3Session === 3 ? 'bg-purple-600 text-white shadow-xs ring-2 ring-purple-400/40' : 'bg-slate-50 hover:bg-purple-50 text-purple-950 border border-purple-200'}">
+              <span class="material-symbols-outlined text-base ${currentD3Session === 3 ? 'text-amber-300' : 'text-purple-600'}">directions_car</span>
+              <span class="truncate">Sesi 3: Museum Angkut</span>
+              ${currentD3Session === 3 ? '<span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse ml-0.5"></span>' : ''}
+            </button>
+          ` : `
+            <button type="button" onclick="handleLockedD3SessionClick(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-bold bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed" title="Sesi 3 terbuka setelah Sesi 2 Jatim Park 1 selesai">
+              <span class="material-symbols-outlined text-base text-slate-400">lock</span>
+              <span class="truncate">Sesi 3: Museum Angkut</span>
+            </button>
+          `}
         </div>
       `;
+
+      // 2. SUB-NAVIGASI STATUS & PINDAH SESI (FORMAT PERSIS DAY 2 DENGAN PANAH MERAH SCREENSHOT)
+      let subNavHtml = '';
+      if (currentD3Session === 1) {
+        subNavHtml = `
+          <!-- SUB-NAVIGASI SESI 1 (PETIK APEL) -->
+          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-emerald-50/90 border border-emerald-200 shadow-2xs">
+            <span class="text-[11px] sm:text-xs font-extrabold text-emerald-950 px-3 py-1.5 bg-emerald-100 rounded-xl flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-emerald-700">radio_button_checked</span>
+              <span>Sesi 1 Aktif: Kebun Petik Apel Batu</span>
+            </span>
+            ${isS1Done ? `
+              <button type="button" onclick="switchD3Session(2)" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer">
+                <span>Buka Materi Jatim Park 1 (Sesi 2)</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            ` : `
+              <span class="text-[11px] text-slate-500 font-bold flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200">
+                <span class="material-symbols-outlined text-xs text-amber-600">lock</span>
+                <span>Sesi 2 terbuka setelah Sesi 1 selesai</span>
+              </span>
+            `}
+          </div>
+        `;
+      } else if (currentD3Session === 2) {
+        subNavHtml = `
+          <!-- SUB-NAVIGASI SESI 2 (JATIM PARK 1) -->
+          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-blue-50/90 border border-blue-200 shadow-2xs">
+            <button type="button" onclick="switchD3Session(1)" class="inline-flex items-center gap-1 px-3 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-xs font-black border border-slate-300 shadow-2xs transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Sesi 1: Petik Apel</span>
+            </button>
+            <span class="text-[11px] sm:text-xs font-extrabold text-blue-950 px-3 py-1.5 bg-blue-100 rounded-xl flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-blue-700">radio_button_checked</span>
+              <span>Sesi 2 Aktif: Jatim Park 1</span>
+            </span>
+            ${isS2Done ? `
+              <button type="button" onclick="switchD3Session(3)" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white text-xs font-black shadow-xs transition-all cursor-pointer">
+                <span>Buka Materi Museum Angkut (Sesi 3)</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            ` : `
+              <span class="text-[11px] text-slate-500 font-bold flex items-center gap-1 bg-white px-2.5 py-1.5 rounded-xl border border-slate-200">
+                <span class="material-symbols-outlined text-xs text-amber-600">lock</span>
+                <span>Sesi 3 terbuka setelah Sesi 2 selesai</span>
+              </span>
+            `}
+          </div>
+        `;
+      } else if (currentD3Session === 3) {
+        subNavHtml = `
+          <!-- SUB-NAVIGASI SESI 3 (MUSEUM ANGKUT) -->
+          <div class="flex items-center justify-between gap-2 p-2 sm:p-2.5 rounded-2xl bg-purple-50/90 border border-purple-200 shadow-2xs">
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="switchD3Session(1)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer">
+                <span>Sesi 1</span>
+              </button>
+              <button type="button" onclick="switchD3Session(2)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-100 text-slate-700 text-[11px] font-bold border border-slate-300 shadow-2xs transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                <span>Sesi 2</span>
+              </button>
+            </div>
+            <span class="text-[11px] sm:text-xs font-extrabold text-purple-950 px-3 py-1.5 bg-purple-100 rounded-xl flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-purple-700">radio_button_checked</span>
+              <span>Sesi 3 Aktif: Museum Angkut</span>
+            </span>
+          </div>
+        `;
+      }
 
       let headerHtml = '';
       let bodyHtml = '';
@@ -1944,9 +2098,10 @@
 
       // Gabungkan keseluruhan layout Modul Day 3
       mainEl.innerHTML = `
-        <div class="flex flex-col gap-5 sm:gap-6">
+        <div class="flex flex-col gap-4 sm:gap-5">
           ${renderFieldTripScheduleCard(3)}
           ${tabNavHtml}
+          ${subNavHtml}
           ${headerHtml}
           ${bodyHtml}
         </div>
@@ -1973,7 +2128,22 @@
     }
 
     function switchD3Session(sesi) {
-      currentD3Session = Number(sesi);
+      const user = FincestemCore.auth.getUser() || {};
+      const cleanNisn = String(user.nisn || user.identifier || '').trim();
+      const isS1Done = checkIsD3Sesi1Done(cleanNisn);
+      const isS2Done = checkIsD3Sesi2Done(cleanNisn);
+
+      const target = Number(sesi);
+      if (target === 2 && !isS1Done) {
+        FincestemCore.ui.toast('Sesi 2 (Jatim Park 1) masih terkunci! Anda wajib menyelesaikan Sesi 1 Petik Apel terlebih dahulu.', 'warning');
+        return;
+      }
+      if (target === 3 && !isS2Done) {
+        FincestemCore.ui.toast('Sesi 3 (Museum Angkut) masih terkunci! Anda wajib menyelesaikan Sesi 2 Jatim Park 1 terlebih dahulu.', 'warning');
+        return;
+      }
+
+      currentD3Session = target;
       const mainEl = document.querySelector('main');
       if (mainEl) {
         renderDay3FieldTripModule(mainEl, currentD3Session);
@@ -1981,7 +2151,15 @@
       }
     }
 
-    function applyDay3PetikApelConclusionState(text, savedAt) {
+    function handleLockedD3SessionClick(sesi) {
+      if (sesi === 2) {
+        FincestemCore.ui.toast('Sesi 2 (Jatim Park 1) masih terkunci! Selesaikan Modul & LKPD Sesi 1 Petik Apel terlebih dahulu.', 'warning');
+      } else if (sesi === 3) {
+        FincestemCore.ui.toast('Sesi 3 (Museum Angkut) masih terkunci! Selesaikan Sesi 2 Jatim Park 1 terlebih dahulu.', 'warning');
+      }
+    }
+
+        function applyDay3PetikApelConclusionState(text, savedAt) {
       text = sanitizeConclusionText(text);
       const txtArea = document.getElementById('ftMateriApelConclusion');
       const badge = document.getElementById('ftMateriApelStatusBadge');
