@@ -1743,30 +1743,56 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
-              <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col gap-2">
-                <span class="font-bold text-emerald-950 flex items-center gap-1.5 text-sm">
-                  <span class="material-symbols-outlined text-emerald-700 text-base">auto_stories</span>
-                  Sejarah Apel di Dataran Tinggi Batu (Sejak 1930)
-                </span>
-                <p>
-                  Tanaman apel pertama kali dibawa dan dibudidayakan di Kota Batu sekitar tahun <strong>1930-an pada era kolonial Belanda</strong>. Kawasan lereng Gunung Panderman, Arjuno, dan Welirang dipilih karena memiliki kesamaan iklim sejuk dengan wilayah subtropis di Eropa. Sejak era 1960-an, budidaya apel bertransformasi menjadi komoditas rakyat kebanggaan Malang Raya hingga Batu dijuluki sebagai <em>"Kota Apel"</em>.
-                </p>
+              <!-- Kolom Kiri: Sejarah & Ciri Apel Masak -->
+              <div class="flex flex-col gap-3">
+                <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col gap-2">
+                  <span class="font-bold text-emerald-950 flex items-center gap-1.5 text-sm">
+                    <span class="material-symbols-outlined text-emerald-700 text-base">auto_stories</span>
+                    Sejarah Apel di Dataran Tinggi Batu (Sejak 1930)
+                  </span>
+                  <p>
+                    Tanaman apel pertama kali dibawa dan dibudidayakan di Kota Batu sekitar tahun <strong>1930-an pada era kolonial Belanda</strong>. Kawasan lereng Gunung Panderman, Arjuno, dan Welirang dipilih karena memiliki kesamaan iklim sejuk dengan wilayah subtropis di Eropa. Sejak era 1960-an, budidaya apel bertransformasi menjadi komoditas rakyat kebanggaan Malang Raya hingga Batu dijuluki sebagai <em>"Kota Apel"</em>.
+                  </p>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-teal-50/80 border border-teal-200 flex flex-col gap-2">
+                  <span class="font-black text-teal-950 flex items-center gap-1.5 text-sm">
+                    <span class="material-symbols-outlined text-teal-700 text-base">check_circle</span>
+                    Ciri-Ciri Apel yang Masak
+                  </span>
+                  <ul class="list-disc list-inside space-y-1.5 text-[12px] text-slate-700 font-medium">
+                    <li>Apel yang masak berwarna merah (atau kuning kemerahan).</li>
+                    <li>Jika masih baru dipetik langsung dari pohon, rasanya masih ada rasa asam segar.</li>
+                    <li>Apel akan terasa lebih manis setelah disimpan selama 2–3 hari (terjadi proses respirasi pascapanen alami di mana sisa pati buah terkonversi sempurna menjadi gula alami).</li>
+                  </ul>
+                </div>
               </div>
 
-              <div class="p-4 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col gap-2">
-                <span class="font-bold text-amber-950 flex items-center gap-1.5 text-sm">
-                  <span class="material-symbols-outlined text-amber-700 text-base">pan_tool</span>
-                  Etika &amp; Teknik Memetik Buah yang Benar
-                </span>
-                <p>
-                  Saat memetik buah apel di kebun, <strong>dilarang menarik buah ke bawah secara paksa</strong>! Cara yang benar secara agronomi:
-                </p>
-                <div class="p-2.5 rounded-xl bg-white border border-amber-300 text-[11.5px] text-amber-950 font-semibold leading-relaxed">
-                  👉 <em>"Pegang buah dengan telapak tangan, dorong sedikit ke atas, lalu putar perlahan 90° hingga tangkai terlepas sendiri dari mata ranting."</em>
+              <!-- Kolom Kanan: PETUNJUK MEMETIK APEL DI KEBUN 8 -->
+              <div class="p-4 sm:p-5 rounded-2xl bg-amber-50/80 border border-amber-200/90 flex flex-col gap-2.5 shadow-2xs">
+                <div class="flex items-center justify-between flex-wrap gap-1 border-b border-amber-200/80 pb-2">
+                  <span class="font-black text-amber-950 flex items-center gap-1.5 text-sm sm:text-base">
+                    <span class="material-symbols-outlined text-amber-700 text-lg">pan_tool</span>
+                    PETUNJUK MEMETIK APEL DI KEBUN 8
+                  </span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-200/80 text-amber-900 uppercase">
+                    SOP Resmi Kebun
+                  </span>
                 </div>
-                <p class="text-[11px] text-slate-600 italic">
-                  Tujuan ilmiah: Mencegah patahnya mata tunas generatif yang menempel di cabang. Jika mata tunas patah, ranting tersebut tidak akan mampu menghasilkan bunga dan buah apel pada musim panen berikutnya!
-                </p>
+
+                <ol class="list-decimal list-inside text-xs sm:text-[12px] text-slate-700 space-y-2 font-medium leading-relaxed">
+                  <li><strong>Buah yang masak:</strong> Berwarna merah/kuning.</li>
+                  <li><strong>Posisi tangan:</strong> Tangan kiri memegang tangkai apel, tangan kanan memegang buah apel.</li>
+                  <li><strong>Teknik putar:</strong> Buah diputar sampai apel terlepas.</li>
+                  <li><strong>Buah bergerombol:</strong> Apabila buah bergerombol, cara memetiknya cukup diputar saja.</li>
+                  <li><strong>Jangan menarik paksa:</strong> Jangan menarik terlalu kuat atau mematahkan tangkai, karena tangkai diperlukan untuk reproduksi/tumbuhnya buah apel yang baru.</li>
+                  <li><strong>Tanggung jawab bersama:</strong> Jika ada buah yang terjatuh saat pemetikan, mohon kerja samanya untuk diambil dan dimasukkan ke dalam wadah.</li>
+                </ol>
+
+                <div class="mt-1 p-2 rounded-xl bg-white/90 border border-amber-300 text-[11px] text-amber-900 font-semibold italic flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-amber-600 shrink-0">info</span>
+                  <span>Tangkai buah menyimpan mata tunas generatif. Menjaga tangkai berarti menjaga kelangsungan panen petani!</span>
+                </div>
               </div>
             </div>
           </div>
@@ -1926,14 +1952,14 @@
                 <div class="p-3 rounded-xl bg-white border border-indigo-200 flex flex-col gap-1 shadow-2xs">
                   <span class="font-extrabold text-indigo-950">Wawancara Harga Petani</span>
                   <p class="text-[11.5px] text-slate-600 leading-relaxed">
-                    Siswa mewawancarai langsung petani pemilik kebun mengenai harga apel petik segar per kilogram (misal berkisar <strong>Rp 20.000 – Rp 25.000 / kg</strong>) untuk dimasukkan ke dalam perhitungan LKPD.
+                    Siswa mewawancarai langsung petani pemilik kebun mengenai harga apel petik segar per kilogram (berkisar <strong>Rp 35.000 – Rp 40.000 / kg</strong>) untuk dimasukkan ke dalam perhitungan LKPD.
                   </p>
                 </div>
 
                 <div class="p-3 rounded-xl bg-white border border-indigo-200 flex flex-col gap-1 shadow-2xs">
                   <span class="font-extrabold text-indigo-950">Analisis Titik Impas Tiket (BEP)</span>
                   <p class="text-[11.5px] text-slate-600 leading-relaxed">
-                    Tiket masuk kebun berkisar <strong>Rp 25.000 / siswa</strong> (makan apel sepuasnya di kebun). Jika siswa memakan 8 butir apel (1 kg), siswa telah mencapai titik impas (Break-Even Point) dari biaya tiket masuk yang dibayarkan!
+                    Tiket masuk kebun berkisar <strong>Rp 25.000 / siswa</strong> (makan apel sepuasnya di kebun). Dengan harga apel kebun Rp 35.000 – Rp 40.000 / kg, jika siswa memakan 5–6 butir apel (sekitar 0,65 – 0,75 kg bernilai Rp 26.000 – Rp 30.000), siswa sudah mencapai titik impas (Break-Even Point) dari biaya tiket masuk yang dibayarkan!
                   </p>
                 </div>
               </div>

@@ -1685,6 +1685,51 @@
               </div>
             </div>
 
+            <!-- KARTU PETUNJUK MEMETIK APEL DI KEBUN 8 & CIRI APEL MASAK -->
+            <div class="p-4 sm:p-5 rounded-3xl bg-amber-50/90 border border-amber-200/90 shadow-2xs flex flex-col gap-3">
+              <div class="flex items-center justify-between border-b border-amber-200/80 pb-2.5 flex-wrap gap-2">
+                <div class="flex items-center gap-2 text-amber-950 font-black text-sm sm:text-base">
+                  <span class="material-symbols-outlined text-amber-700 text-xl">pan_tool</span>
+                  <span>Petunjuk Memetik Apel di Kebun 8 &amp; Ciri Buah Masak</span>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-200 text-amber-950 uppercase">
+                  Pedoman Lapangan
+                </span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-[12px] text-slate-700">
+                <div class="p-3 rounded-2xl bg-white border border-amber-200 flex flex-col gap-1.5 shadow-2xs">
+                  <strong class="text-amber-950 flex items-center gap-1 font-black">
+                    <span class="material-symbols-outlined text-amber-600 text-base">checklist</span>
+                    6 Aturan Pemetikan di Kebun 8:
+                  </strong>
+                  <ol class="list-decimal list-inside space-y-1 text-slate-700 font-medium">
+                    <li>Buah yang masak berwarna merah/kuning.</li>
+                    <li>Tangan kiri memegang tangkai apel, tangan kanan memegang buah apel.</li>
+                    <li>Buah diputar sampai apel terlepas.</li>
+                    <li>Apabila buah bergerombol, cara memetiknya cukup diputar saja.</li>
+                    <li>Jangan menarik terlalu kuat/mematahkan tangkai (tangkai untuk reproduksi apel baru).</li>
+                    <li>Jika ada buah jatuh saat pemetikan, mohon diambil dan dimasukkan ke wadah.</li>
+                  </ol>
+                </div>
+
+                <div class="p-3 rounded-2xl bg-white border border-emerald-200 flex flex-col gap-1.5 shadow-2xs">
+                  <strong class="text-emerald-950 flex items-center gap-1 font-black">
+                    <span class="material-symbols-outlined text-emerald-600 text-base">verified</span>
+                    Ciri-Ciri Apel yang Masak:
+                  </strong>
+                  <ul class="list-disc list-inside space-y-1.5 text-slate-700 font-medium">
+                    <li>Apel yang masak berwarna merah.</li>
+                    <li>Jika masih baru dipetik, rasanya masih ada rasa asam segar.</li>
+                    <li>Apel akan terasa lebih manis setelah disimpan selama 2–3 hari.</li>
+                  </ul>
+                  <div class="mt-auto p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-900 font-semibold italic">
+                    💡 Perhatikan ciri di atas saat memilih buah apel yang akan kamu petik dan makan di kebun!
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- FORM INVESTIGASI 4 PILAR FINCESTEM -->
             <form id="formFtDay3Lkpd" onsubmit="event.preventDefault();" class="flex flex-col gap-5 sm:gap-6">
 
@@ -1724,9 +1769,9 @@
                     B. Deskripsikan ciri fisik dan karakteristik rasa apel yang kamu ketahui dari buah yang kamu makan:
                   </label>
                   <p class="text-[11.5px] text-slate-500 leading-relaxed">
-                    Jelaskan warna kulit buah, tekstur renyah/empuknya daging buah, tingkat rasa manis atau asam segar, serta aroma khas yang kamu rasakan.
+                    Jelaskan warna kulit buah, tekstur renyah/empuknya daging buah, tingkat rasa manis atau asam segar, serta aroma khas yang kamu rasakan. (Perhatikan ciri apel masak: berwarna merah/kuning, baru dipetik terasa asam segar, dan lebih manis setelah disimpan 2–3 hari).
                   </p>
-                  <textarea id="ftD3CiriFisik" rows="3" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Apel yang saya makan kulitnya berwarna hijau kekuningan dengan bintik halus, daging buahnya sangat renyah dan padat, rasanya dominan manis harum tanpa rasa asam, sesuai ciri khas varietas Manalagi...">${saved ? (saved.ciriFisik || '') : ''}</textarea>
+                  <textarea id="ftD3CiriFisik" rows="3" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Apel yang saya petik kulitnya merah semburat kuning, daging buah renyah berair, rasanya ada asam segar khas baru dipetik dari pohon, sesuai dengan ciri apel yang masak di kebun...">${saved ? (saved.ciriFisik || '') : ''}</textarea>
                 </div>
               </div>
 
@@ -1844,10 +1889,10 @@
                     </label>
                     <div class="flex items-center gap-2">
                       <span class="text-slate-600 font-bold shrink-0">Rp</span>
-                      <input type="text" id="ftD3PricePerKg" oninput="formatRupiahInput(this); calculateD3PetikApelMath()" value="${saved ? (formatNumberId(saved.pricePerKg) || '24.000') : '24.000'}" ${readOnlyAttr} class="w-full p-2.5 rounded-xl border border-slate-300 font-mono text-sm font-bold text-slate-900 outline-none focus:border-indigo-500 bg-white">
+                      <input type="text" id="ftD3PricePerKg" oninput="formatRupiahInput(this); calculateD3PetikApelMath()" value="${saved ? (formatNumberId(saved.pricePerKg) || '35.000') : '35.000'}" ${readOnlyAttr} class="w-full p-2.5 rounded-xl border border-slate-300 font-mono text-sm font-bold text-slate-900 outline-none focus:border-indigo-500 bg-white">
                       <span class="text-slate-600 font-bold shrink-0">/ kg</span>
                     </div>
-                    <span class="text-[11px] text-slate-500">Tanyakan langsung harga petik segar ke petani kebun di tempat.</span>
+                    <span class="text-[11px] text-slate-500">Tanyakan langsung harga petik segar ke petani kebun di tempat (kisaran Rp 35.000 – Rp 40.000 / kg).</span>
                   </div>
                 </div>
 
@@ -1867,7 +1912,7 @@
 
                     <div class="bg-white p-3 rounded-xl border border-indigo-100 flex flex-col">
                       <span class="text-slate-500 text-[11px]">Nilai Rupiah Buah Dimakan:</span>
-                      <span id="ftD3CalcRupiah" class="text-base sm:text-lg font-black text-blue-900">Rp 18.000</span>
+                      <span id="ftD3CalcRupiah" class="text-base sm:text-lg font-black text-blue-900">Rp 26.250</span>
                       <span class="text-[10.5px] text-slate-400">Rumus: berat (kg) × harga</span>
                     </div>
 
@@ -1893,7 +1938,7 @@
                   <label for="ftD3KesimpulanMath" class="text-xs sm:text-sm font-bold text-slate-800">
                     Kesimpulan Analisis Matematika &amp; Nilai Manfaat Kunjungan:
                   </label>
-                  <textarea id="ftD3KesimpulanMath" rows="2" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Saya memakan 6 butir apel setara dengan 0,75 kg senilai Rp 18.000. Meskipun nilai buah belum melampaui tiket Rp 25.000, saya mendapatkan nilai edukasi budidaya dan pengalaman memetik langsung yang sangat berharga...">${saved ? (saved.kesimpulanMath || '') : ''}</textarea>
+                  <textarea id="ftD3KesimpulanMath" rows="2" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Saya memakan 6 butir apel setara dengan 0,75 kg senilai Rp 27.000 (harga Rp 36.000/kg). Nilai buah yang saya nikmati sudah melampaui tiket masuk Rp 25.000 (titik impas tercapai), ditambah wawasan langsung mengenai 6 aturan memetik di Kebun 8 dan ciri apel masak...">${saved ? (saved.kesimpulanMath || '') : ''}</textarea>
                 </div>
               </div>
 
@@ -2116,7 +2161,7 @@
       if (!eatenInput || !priceInput) return;
 
       const apples = Math.max(0, parseInt(eatenInput.value) || 0);
-      const pricePerKg = parseRupiah(priceInput.value) || 24000;
+      const pricePerKg = parseRupiah(priceInput.value) || 35000;
 
       // Rasio praktis: 1 kg = 8 butir
       const totalKg = Number((apples / 8).toFixed(2));
