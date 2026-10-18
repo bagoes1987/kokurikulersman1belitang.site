@@ -13,34 +13,35 @@ Dokumen ini merupakan **acuan standar resmi** pembagian 4 pilar FINCESTEM (*Fina
 | **Day 2** | AKPOL Semarang & Lawang Sewu &rarr; Malang | 🏛️ **CULTURE & STEM** | **Karakter & Rekayasa**: Nilai disiplin & integritas taruna AKPOL serta rekayasa arsitektur pendingin alami gedung Lawang Sewu NISM. |
 | **Day 3** | Wisata Petik Apel Batu, Jatim Park 1 & Museum Angkut | 🔬 **FULL STEM** | **Sains & Rekayasa**: Pembuktian fisika terapan di Jatim Park 1, evolusi rekayasa mesin/transportasi di Museum Angkut, dan agrosains apel Batu. |
 | **Day 4** | Wisata Gunung Bromo (Sunrise Penanjakan, Laut Pasir, Savana, Kawah Bromo) | 🧭 **EXPLORATION & CULTURE** | **Bentang Alam & Adat**: Observasi geomorfologi kaldera vulkanik Bromo & kearifan lokal sosial-budaya masyarakat Suku Tengger. |
-| **Day 5** | Candi Prambanan, Praktik Membatik (Batik Benang Ratu) & Kampus UNY | 🏛️ **CULTURE & STEM** | **Seni Kriya & Kimia**: Sejarah relief Ramayana Prambanan & sains kimiawi sifat hidrofobik lilin malam (*wax barrier*) saat membatik. |
-| **Day 6** | Pabrik Bakpia Jogja & Pantai Drini / Drini Park &rarr; Perjalanan Pulang | 🧭 **EXPLORATION & APPLIED STEM** | **Ekosistem Bahari & Pangan**: Observasi tebing karst/ekosistem pesisir Pantai Drini & bioteknologi pengolahan pangan/HPP industri bakpia. |
+| **Day 5** | Candi Prambanan, Praktik Membatik (Batik Benang Ratu) & Kampus UNY | 🔬🧭 **STEM & EXPLORATION** | **Sains Kimia & Eksplorasi Edukasi**: Sains sifat hidrofobik lilin malam (*wax barrier*)/pewarna batik, geometri Candi Prambanan, serta orientasi akademik & eksplorasi kampus UNY. |
+| **Day 6** | Pabrik Bakpia Jogja & Pantai Drini / Drini Park &rarr; Perjalanan Pulang | 🧭💰 **EXPLORATION & FINANCIAL** | **Bentang Alam Bahari & Finansial Industri**: Observasi tebing karst & biota laut pesisir Pantai Drini, serta analisis omzet, HPP, margin laba pabrik bakpia & simulasi belanja oleh-oleh cerdas. |
 | **Day 7** | Perjalanan Pulang (Tol Trans-Sumatera) &rarr; Tiba di SMAN 1 Belitang | 💰 **FINANCIAL (Reconciliation)** | **Audit & Tutup Buku**: Rekonsiliasi pembukuan uang saku 7 hari (evaluasi selisih rencana vs realisasi belanja) & sintesis refleksi akhir. |
 
 ---
 
-## ⚖️ Distribusi Bobot Penilaian Akhir (100% Imbang)
+## ⚖️ Distribusi Bobot Penilaian Akhir (Simetris 25% : 25% : 25% : 25%)
 
-Setiap pilar memiliki kontribusi merata **25%** terhadap nilai akumulasi kokurikuler siswa:
+Setiap pilar memiliki frekuensi kemunculan tepat **3 kali** (total 12 porsi penilaian), menghasilkan bobot akhir yang **100% adil dan seimbang**:
 
-1. **💰 Financial Literacy (25%)**:
-   - **Day 1**: Perencanaan anggaran awal (*Travel Budget Plan* & Cashflow).
-   - **Day 7**: Audit rekonsiliasi pengeluaran riil, penghematan, dan pelaporan keuangan akhir.
+1. **💰 Financial Literacy (25% — 3 Hari)**:
+   - **Day 1**: Perencanaan alokasi uang saku 7 hari (*Journey Budgeting* & Buku Kas Awal).
+   - **Day 6**: Literasi bisnis & analisis keuangan industri oleh-oleh (perhitungan HPP, omzet harian pabrik bakpia Jogja, & manajemen belanja hemat).
+   - **Day 7**: Audit rekonsiliasi pengeluaran riil, evaluasi surplus/defisit, dan tutup buku kas akhir.
 
-2. **🏛️ Culture & Karakter (25%)**:
-   - **Day 2**: Nilai disiplin Bhayangkara AKPOL & heroisme sejarah AMKA Lawang Sewu.
-   - **Day 4**: Kearifan adat, kesakralan tradisi, dan tata krama masyarakat Suku Tengger Bromo.
-   - **Day 5**: Nilai luhur adiluhung seni membatik dan keagungan sejarah Candi Prambanan.
+2. **🏛️ Culture & Karakter (25% — 3 Hari)**:
+   - **Day 2**: Nilai disiplin Bhayangkara AKPOL & heroisme sejarah Lawang Sewu Semarang.
+   - **Day 4**: Kearifan adat istiadat, tradisi Kasada, dan tata krama sosial Suku Tengger Bromo.
+   - **Day 5**: Filosofi seni kriya batik warisan dunia UNESCO & nilai historis Candi Prambanan.
 
-3. **🧭 Exploration (25%)**:
-   - **Day 4**: Eksplorasi bentang alam ekstrem pegunungan vulkanik aktif Kaldera Tengger Bromo.
-   - **Day 6**: Penjelajahan morfologi batuan karst, biota laut, dan garis pantai selatan Samudera Hindia di Pantai Drini.
+3. **🧭 Exploration (25% — 3 Hari)**:
+   - **Day 4**: Eksplorasi geomorfologi bentang alam ekstrem Kaldera Tengger Bromo (Kawah, Laut Pasir, Savana).
+   - **Day 5**: Eksplorasi cagar budaya megastruktur Candi Prambanan & penjelajahan akademik dunia kampus UNY.
+   - **Day 6**: Penjelajahan morfologi batuan karst, biota laut pasang surut, dan garis pantai selatan di Pantai Drini.
 
-4. **🔬 STEM — Science, Technology, Engineering & Math (25%)**:
-   - **Day 2**: Sains arsitektur pasif dan sirkulasi pendingin alami kolonial Lawang Sewu.
-   - **Day 3**: Full STEM (Fisika terapan Jatim Park 1, teknologi mekanika Museum Angkut, botani apel Batu).
-   - **Day 5**: Sains kimia material tekstil, hidrofobik lilin malam, dan geometri Candi Prambanan.
-   - **Day 6**: Bioteknologi pangan fermentasi bakpia dan kalkulasi efisiensi industri pangan.
+4. **🔬 STEM — Science, Technology, Engineering & Math (25% — 3 Hari)**:
+   - **Day 2**: Rekayasa teknik pendingin pasif alami (*passive cooling architecture*) gedung Lawang Sewu NISM.
+   - **Day 3**: Full Applied STEM (Fisika mekanika terapan Jatim Park 1, rekayasa mesin Museum Angkut, & agrosains apel Batu).
+   - **Day 5**: Sains kimia material tekstil (sifat hidrofobik malam panas batik, fiksasi warna) & kalkulasi simetri geometri Candi Prambanan.
 
 ---
 

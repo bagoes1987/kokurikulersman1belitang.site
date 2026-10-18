@@ -737,8 +737,8 @@ const FincestemCore = {
       2: { day: 2, pilar: 'CULTURE & STEM', label: 'Culture & STEM', weight: '25%', destination: 'AKPOL Semarang & Lawang Sewu', focus: 'Karakter & Rekayasa: Disiplin Bhayangkara AKPOL & arsitektur pendingin alami Lawang Sewu.' },
       3: { day: 3, pilar: 'FULL STEM', label: 'Full STEM', weight: '25%', destination: 'Petik Apel, Jatim Park 1 & Museum Angkut', focus: 'Sains & Rekayasa: Fisika terapan Jatim Park 1, teknologi mesin Museum Angkut & agrosains apel.' },
       4: { day: 4, pilar: 'EXPLORATION & CULTURE', label: 'Exploration & Culture', weight: '25%', destination: 'Wisata Bromo (Kawah, Laut Pasir, Savana)', focus: 'Bentang Alam & Adat: Geologi kaldera vulkanik Bromo & kearifan adat Suku Tengger.' },
-      5: { day: 5, pilar: 'CULTURE & STEM', label: 'Culture & STEM', weight: '25%', destination: 'Prambanan, Praktik Membatik & UNY', focus: 'Seni Kriya & Kimia: Sejarah Prambanan & sains kimiawi sifat hidrofobik lilin malam saat membatik.' },
-      6: { day: 6, pilar: 'EXPLORATION & APPLIED STEM', label: 'Exploration & Applied STEM', weight: '25%', destination: 'Pabrik Bakpia Jogja & Pantai Drini / Drini Park', focus: 'Ekosistem Bahari & Pangan: Observasi karst/pesisir Pantai Drini & teknologi pengolahan pangan bakpia.' },
+      5: { day: 5, pilar: 'STEM & EXPLORATION', label: 'STEM & Exploration', weight: '25%', destination: 'Prambanan, Praktik Membatik & UNY', focus: 'Sains Kimia & Eksplorasi Edukasi: Sifat hidrofobik malam batik, geometri candi & orientasi kampus UNY.' },
+      6: { day: 6, pilar: 'EXPLORATION & FINANCIAL', label: 'Exploration & Financial', weight: '25%', destination: 'Pabrik Bakpia Jogja & Pantai Drini / Drini Park', focus: 'Bentang Alam Bahari & Finansial Industri: Karst Pantai Drini, omzet & HPP pabrik bakpia, serta belanja cerdas.' },
       7: { day: 7, pilar: 'FINANCIAL (Reconciliation)', label: 'Financial (Reconciliation)', weight: '25%', destination: 'Perjalanan Pulang → Tiba di SMAN 1 Belitang', focus: 'Audit & Tutup Buku: Rekonsiliasi anggaran uang saku, selisih rencana vs realisasi, & refleksi akhir.' }
     },
 
