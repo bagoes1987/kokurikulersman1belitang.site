@@ -263,6 +263,7 @@
     </div>
   </main>
 
+  <script src="../js/siswa_data.js?v=20261018"></script>
   <script src="../js/core.js?v=20261015_lock_fixed"></script>
   <script src="../js/modules/lkpd-fieldtrip.js?v=20261018"></script>
   <script>
@@ -322,20 +323,20 @@
             return;
           }
 
-          // TAMPILKAN LKPD KHUSUS FIELD TRIP JIKA JADWAL TERBUKA
-          if (isFieldTrip && dayNum === 1) {
-            renderFieldTripDay1LKPD(!access.canEdit || isReadOnlyUrl);
-            return;
-          }
-          if (isFieldTrip && dayNum === 2) {
-            renderFieldTripDay2LKPD(!access.canEdit || isReadOnlyUrl);
-            return;
-          }
-          if (isFieldTrip && dayNum === 3) {
+          // TAMPILKAN LKPD KHUSUS SESUAI HARI (DAY 1 S.D. 7)
+          if (dayNum === 3) {
             renderFieldTripDay3LKPD(!access.canEdit || isReadOnlyUrl);
             return;
           }
-          if (isFieldTrip && dayNum >= 4 && dayNum <= 7) {
+          if (dayNum === 2) {
+            renderFieldTripDay2LKPD(!access.canEdit || isReadOnlyUrl);
+            return;
+          }
+          if (dayNum === 1) {
+            renderFieldTripDay1LKPD(!access.canEdit || isReadOnlyUrl);
+            return;
+          }
+          if (dayNum >= 4 && dayNum <= 7) {
             renderFieldTripGenericLKPD(dayNum, !access.canEdit || isReadOnlyUrl);
             return;
           }

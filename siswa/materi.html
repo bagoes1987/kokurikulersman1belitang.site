@@ -308,26 +308,26 @@
 
       const mainEl = document.querySelector('main');
 
-      // TAMPILKAN MODUL BELAJAR DAY 1 FIELD TRIP
-      if (isFieldTrip && dayNum === 1 && mainEl) {
-        renderDay1FieldTripModule(mainEl);
-        return;
-      }
-
-      // TAMPILKAN MODUL BELAJAR DAY 2 FIELD TRIP
-      if (isFieldTrip && dayNum === 2 && mainEl) {
-        renderDay2FieldTripModule(mainEl);
-        return;
-      }
-
-      // TAMPILKAN MODUL BELAJAR DAY 3 FIELD TRIP
-      if (isFieldTrip && dayNum === 3 && mainEl) {
+      // TAMPILKAN MODUL BELAJAR SESUAI HARI (DAY 1 S.D. 7)
+      if (dayNum === 3 && mainEl) {
         renderDay3FieldTripModule(mainEl);
         return;
       }
 
+      // TAMPILKAN MODUL BELAJAR DAY 2 FIELD TRIP
+      if (dayNum === 2 && mainEl) {
+        renderDay2FieldTripModule(mainEl);
+        return;
+      }
+
+      // TAMPILKAN MODUL BELAJAR DAY 1 FIELD TRIP
+      if (dayNum === 1 && mainEl) {
+        renderDay1FieldTripModule(mainEl);
+        return;
+      }
+
       // TAMPILKAN MODUL BELAJAR DAY 4 S.D. 7 FIELD TRIP
-      if (isFieldTrip && dayNum >= 4 && dayNum <= 7 && mainEl) {
+      if (dayNum >= 4 && dayNum <= 7 && mainEl) {
         renderGenericFieldTripModule(mainEl, dayNum);
         return;
       }

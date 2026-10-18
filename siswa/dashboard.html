@@ -1647,7 +1647,7 @@
           }
         } catch (e) {}
         if (!daysSchedule || daysSchedule.length === 0) {
-          const defs = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
+          const defs = FincestemCore.schedule.getFieldTripDefaults();
           daysSchedule = defs;
           renderDaysSchedule(defs);
         }
@@ -2257,7 +2257,7 @@
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
       if (!days || !Array.isArray(days) || days.length === 0) {
-        days = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
+        days = FincestemCore.schedule.getFieldTripDefaults();
       }
 
       container.innerHTML = '';
@@ -2288,9 +2288,9 @@
           : (stu.zone || 'FINCESTEM OKU TIMUR');
         const zUpper = (studentZone || '').toUpperCase();
         const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-        const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
+        const isFTDay = (isFieldTrip || dNum <= 3) && (dNum >= 1 && dNum <= 7);
         const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
-        const ftConfig = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
+        const ftConfig = ((isFieldTrip || dNum <= 3) && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
 
         // Metadata Tampilan:
         // Jika Siswa Field Trip -> Gunakan konfigurasi Day 1 s.d. 7 khusus Field Trip
@@ -3174,9 +3174,9 @@
         : (currentUser.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-      const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
-      const isFTDay2 = isFieldTrip && Number(day.day_number) === 2;
-      const isFTDay3 = isFieldTrip && Number(day.day_number) === 3;
+      const isFTDay1 = Number(day.day_number) === 1;
+      const isFTDay2 = Number(day.day_number) === 2;
+      const isFTDay3 = Number(day.day_number) === 3;
 
       if (type === 'asesmen') {
         if (isFTDay1) {
@@ -3585,7 +3585,7 @@
           `;
         }
       } else if (type === 'refleksi') {
-        const ftCfg = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
+        const ftCfg = ((isFieldTrip || Number(day.day_number) <= 3) && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
         title.textContent = isTrial 
           ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' 
           : (ftCfg 

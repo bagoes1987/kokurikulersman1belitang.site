@@ -598,9 +598,9 @@
 
     function getDayActivityConfig(dayNum) {
       const cat = getStudentCategoryInfo();
-      const groupKey = cat.isFieldTrip ? 'fieldTrip' : 'nonFieldTrip';
-      const cfgGroup = DAY_ACTIVITIES_CONFIG[groupKey] || DAY_ACTIVITIES_CONFIG.fieldTrip;
       const d = (dayNum !== undefined && dayNum !== null) ? parseInt(dayNum) : 1;
+      const groupKey = (cat.isFieldTrip || d <= 3) ? 'fieldTrip' : 'nonFieldTrip';
+      const cfgGroup = DAY_ACTIVITIES_CONFIG[groupKey] || DAY_ACTIVITIES_CONFIG.fieldTrip;
       return cfgGroup[d] || cfgGroup[1];
     }
 
