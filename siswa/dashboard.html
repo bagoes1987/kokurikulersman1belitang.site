@@ -833,8 +833,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261016_refresh_v7"></script>
-  <script src="../js/core.js?v=20261016_refresh_v7"></script>
+  <script src="../js/siswa_data.js?v=20261019_v3"></script>
+  <script src="../js/core.js?v=20261019_v3"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -3575,7 +3575,7 @@
             </div>
             <div class="flex flex-col gap-1.5">
               <label class="font-bold text-sm text-slate-800">Catatan Ringkas Hasil Investigasi (Latihan):</label>
-              <textarea id="txtAsesmenNote" ${readOnlyAttr} rows="3" class="w-full p-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="${isTrial ? 'Contoh: Berhasil melakukan uji coba pengukuran pH air dan simulasi pencatatan harga gabah...' : 'Tuliskan temuan penting hari ini...'}">${savedContent}</textarea>
+              <textarea id="txtAsesmenNote" ${readOnlyAttr} rows="3" class="w-full p-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${isReadOnly ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : ''}" placeholder="${isTrial ? 'Contoh: Berhasil melakukan simulasi pengerjaan asesmen dan pencatatan hasil riset...' : 'Tuliskan temuan penting hari ini...'}">${savedContent}</textarea>
             </div>
             ${readOnlyBanner ? readOnlyBanner : `
             <button onclick="saveStudentNote(${day.day_number}, 'asesmen')" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-xs cursor-pointer">

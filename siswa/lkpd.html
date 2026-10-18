@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>Lembar Kerja Siswa (LKPD) - FINCESTEM 2026 - SMAN 1 Belitang</title>
   <link rel="icon" type="image/png" href="../LOGO FICESTEM2026.png">
   <link href="https://fonts.googleapis.com" rel="preconnect">
@@ -127,132 +130,10 @@
 
   <!-- MAIN LKPD CONTENT -->
   <main id="mainContentArea" class="flex-1 flex flex-col max-w-lg mx-auto w-full p-4 gap-4 pb-20">
-
-    <!-- IDENTITAS TUGAS & STATUS BANNER -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-      <div class="flex items-center justify-between gap-2">
-        <span class="text-xs font-extrabold text-secondary uppercase tracking-wider">Instrumen LKPD Digital</span>
-        <span id="lkpdStatusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-blue-100 text-blue-800">Lembar Kerja Peserta Didik</span>
-      </div>
-      <h2 class="text-lg font-black text-primary leading-tight">
-        Pengukuran Sains, Analisis Finansial &amp; Refleksi Budaya Lapangan
-      </h2>
-      <p class="text-sm text-on-surface-variant leading-relaxed">
-        Kelompok: <strong id="lkpdGroupName" class="text-on-surface">Belum Terdaftar Kelompok</strong> • Fasilitator: <strong id="lkpdFacilitatorName" class="text-on-surface">-</strong>
-      </p>
-
-      <!-- Grade Box if evaluated (Hidden by default) -->
-      <div id="gradeBox" class="hidden p-4 rounded-2xl bg-emerald-50 border border-emerald-300/70 flex flex-col gap-2.5">
-        <div class="flex items-center justify-between">
-          <span class="text-sm font-extrabold text-emerald-950">Nilai Evaluasi Fasilitator:</span>
-          <span id="lkpdAverageScore" class="text-lg font-black text-emerald-800">-</span>
-        </div>
-        <div class="grid grid-cols-4 gap-2 text-center text-xs font-bold mt-1">
-          <div class="bg-white/90 p-2 rounded-xl border border-emerald-200">
-            <span class="block text-xs text-emerald-700 font-semibold">Financial</span>
-            <span id="scoreFin" class="text-emerald-900 text-sm font-black">-</span>
-          </div>
-          <div class="bg-white/90 p-2 rounded-xl border border-emerald-200">
-            <span class="block text-xs text-emerald-700 font-semibold">Culture</span>
-            <span id="scoreCul" class="text-emerald-900 text-sm font-black">-</span>
-          </div>
-          <div class="bg-white/90 p-2 rounded-xl border border-emerald-200">
-            <span class="block text-xs text-emerald-700 font-semibold">Exploration</span>
-            <span id="scoreExp" class="text-emerald-900 text-sm font-black">-</span>
-          </div>
-          <div class="bg-white/90 p-2 rounded-xl border border-emerald-200">
-            <span class="block text-xs text-emerald-700 font-semibold">STEM</span>
-            <span id="scoreStem" class="text-emerald-900 text-sm font-black">-</span>
-          </div>
-        </div>
-        <p id="teacherFeedback" class="text-sm text-emerald-950 italic mt-1 leading-relaxed bg-white/70 p-3 rounded-xl border border-emerald-100 font-medium"></p>
-      </div>
-    </div>
-
-    <!-- FORM SECTION 1: STEM INSTRUMENT -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
-      <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
-        <span class="material-symbols-outlined text-xl text-blue-600">science</span>
-        <span>Instrumen 1: Sains Fisika &amp; Kimia Air Saluran</span>
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold text-on-surface mb-1.5">Tingkat Derajat Keasaman (pH Air Irigasi)</label>
-        <input id="inputPh" type="text" placeholder="Contoh: 6.8 (Netral/Optimal)" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400">
-        <span class="text-xs text-on-surface-variant mt-1 block font-medium">Standar baku mutu air pertanian kelas II: pH 6.0 - 8.5</span>
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold text-on-surface mb-1.5">Debit Aliran Air Saluran (m³/detik)</label>
-        <input id="inputDebit" type="text" placeholder="Contoh: 14.2 m³/s" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400">
-        <span class="text-xs text-on-surface-variant mt-1 block font-medium">Rumus: Q = Luas Penampang Basah (A) × Kecepatan Arus (v)</span>
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold text-on-surface mb-1.5">Suhu Permukaan Air Saluran (°C)</label>
-        <input id="inputSuhu" type="text" placeholder="Contoh: 28.5 °C" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all placeholder:text-slate-400">
-      </div>
-    </div>
-
-    <!-- FORM SECTION 2: FINANCIAL INSTRUMENT -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
-      <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
-        <span class="material-symbols-outlined text-xl text-amber-600">payments</span>
-        <span>Instrumen 2: Analisis Rantai Pasok Finansial</span>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <div>
-          <label class="block text-sm font-bold text-on-surface mb-1.5">HPP Gabah Petani / kg</label>
-          <input id="inputHpp" type="text" placeholder="Contoh: Rp 6.200 / kg" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary outline-none transition-all placeholder:text-slate-400">
-        </div>
-        <div>
-          <label class="block text-sm font-bold text-on-surface mb-1.5">Harga Jual GKP / kg</label>
-          <input id="inputHargaJual" type="text" placeholder="Contoh: Rp 7.400 / kg" class="w-full px-4 py-3 rounded-xl border border-outline-variant/50 text-base font-semibold focus:border-primary outline-none transition-all placeholder:text-slate-400">
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold text-on-surface mb-1.5">Analisis Margin &amp; Pembiayaan Usaha Tani</label>
-        <textarea id="inputAnalisisFin" rows="3" placeholder="Tuliskan hasil wawancara terkait marjin pedagang, biaya angkut, dan pembiayaan modal..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base leading-relaxed font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400"></textarea>
-      </div>
-    </div>
-
-    <!-- FORM SECTION 3: CULTURE & REFLECTION -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
-      <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
-        <span class="material-symbols-outlined text-xl text-purple-600">account_balance</span>
-        <span>Instrumen 3: Refleksi Budaya &amp; Guyub Warga</span>
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold text-on-surface mb-1.5">Catatan Tradisi Sambatan / Gotong Royong Pengairan</label>
-        <textarea id="inputBudaya" rows="3" placeholder="Tuliskan catatan kearifan lokal gotong royong pengelolaan air di saluran irigasi..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base leading-relaxed font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400"></textarea>
-      </div>
-
-      <div>
-        <label class="block text-sm font-bold text-on-surface mb-1.5">Kesimpulan Kelompok</label>
-        <textarea id="inputKesimpulan" rows="3" placeholder="Tuliskan kesimpulan akhir hasil penyelidikan lapangan kelompok..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base leading-relaxed font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400"></textarea>
-      </div>
-    </div>
-
-    <!-- FORM SECTION 4: FILE ATTACHMENT -->
-    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
-      <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
-        <span class="material-symbols-outlined text-xl text-teal-600">upload_file</span>
-        <span>Unggah Dokumen Laporan Lengkap (PDF)</span>
-      </div>
-
-      <div id="dropzoneBox" class="border-2 border-dashed border-outline-variant/70 rounded-2xl p-5 text-center flex flex-col items-center justify-center gap-2 bg-surface-container-low/50">
-        <span class="material-symbols-outlined text-4xl text-outline-variant">cloud_upload</span>
-        <span id="attachedFileName" class="text-sm font-bold text-on-surface">Belum ada file dipilih</span>
-        <span class="text-xs text-on-surface-variant font-medium">Pilih atau seret berkas PDF laporan kegiatan ke sini</span>
-      </div>
-
-      <button id="saveLkpdBtn" onclick="saveAndSubmitLKPD()" class="w-full py-4 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-base shadow-md hover:shadow-lg active:scale-98 transition-all flex items-center justify-center gap-2.5 mt-2 cursor-pointer">
-        <span class="material-symbols-outlined text-xl">send</span>
-        <span>Simpan &amp; Kirim Laporan ke Fasilitator</span>
-      </button>
+    <div id="lkpdLoadingState" class="bg-surface-container-lowest rounded-3xl p-8 border border-outline-variant/25 shadow-sm flex flex-col items-center justify-center text-center gap-3 my-auto min-h-[320px]">
+      <div class="w-10 h-10 border-4 border-[#08A7B5] border-t-transparent rounded-full animate-spin"></div>
+      <span class="text-sm font-extrabold text-slate-800">Memuat Lembar Kerja (LKPD) Digital...</span>
+      <p class="text-xs text-slate-500 max-w-xs">Menyiapkan instrumen observasi 4 pilar lapangan FINCESTEM.</p>
     </div>
 
     <!-- Copyright Footer -->
@@ -263,9 +144,9 @@
     </div>
   </main>
 
-  <script src="../js/siswa_data.js?v=20261018"></script>
-  <script src="../js/core.js?v=20261015_lock_fixed"></script>
-  <script src="../js/modules/lkpd-fieldtrip.js?v=20261018"></script>
+  <script src="../js/siswa_data.js?v=20261019_v3"></script>
+  <script src="../js/core.js?v=20261019_v3"></script>
+  <script src="../js/modules/lkpd-fieldtrip.js?v=20261019_v3"></script>
   <script>
     let activeUser = null;
 
@@ -314,7 +195,7 @@
           window.currentStudentProgress = prog;
           const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
 
-          if (!access.canAccess) {
+          if (!access.canAccess && !access.isOpen) {
             const reasonMsg = access.reason || `Aktivitas Day ${dayNum} belum dapat diakses saat ini.`;
             FincestemCore.ui.toast(reasonMsg, 'error');
             setTimeout(() => {

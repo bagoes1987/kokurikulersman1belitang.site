@@ -2704,7 +2704,8 @@ const FincestemCore = {
       // 1. SISWA FIELD TRIP:
       // Harus memenuhi: (1) Jadwal Day ini terbuka oleh Admin/Tanggal (isOpenByAdmin), dan (2) Day sebelumnya selesai
       if (isFt) {
-        const prevDone = (d <= 1) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+        const isManualOpen = sched && (Number(sched.auto_schedule) === 0 && Number(sched.is_active) === 1);
+        const prevDone = (d <= 1) || isManualOpen || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
         const canOpen = isOpenByAdmin && prevDone;
         return {
           canAccess: canOpen,
@@ -2733,7 +2734,8 @@ const FincestemCore = {
       // Siswa TIDAK PERLU menunggu guru/fasilitator menetapkan status 'Completed'!
       // Cukup siswa telah menyelesaikan tugas mandiri pada Day N-1 (Modul, LKPD, Asesmen, Foto, dan Refleksi)
       // DAN jadwal Day ini harus terbuka (isOpenByAdmin).
-      const prevDone = this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+      const isManualOpen = sched && (Number(sched.auto_schedule) === 0 && Number(sched.is_active) === 1);
+      const prevDone = (d <= 1) || isManualOpen || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
       if (!prevDone) {
         return {
           canAccess: false,
