@@ -58,6 +58,7 @@
       const unpadded = cleanNisn.replace(/^0+/, '');
       const padded = cleanNisn.padStart(10, '0');
       const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
+      let saved = null;
 
       try {
         for (const id of idVars) {
@@ -1438,6 +1439,65 @@
     // Sesi 2: Jatim Park 1 - Science Center (Segera Hadir)
     // Sesi 3: Museum Angkut Kota Batu (Segera Hadir)
     // ==========================================
+    function checkIsD3Sesi1Done(cleanNisn) {
+      try {
+        const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+        const nisn = String(cleanNisn || u.nisn || u.identifier || '').trim();
+        const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), u.nis, u.identifier, u.username].filter(Boolean);
+
+        for (const id of ids) {
+          // 1. Cek LKPD Petik Apel (disubmit atau tersimpan)
+          const lkpdRaw = localStorage.getItem('fincestem_lkpd_ft_day3_apel_' + id) || localStorage.getItem('fincestem_lkpd_ft_day3_' + id);
+          if (lkpdRaw) {
+            try {
+              const p = JSON.parse(lkpdRaw);
+              if (p && (p.submitted || p.varietas || p.applesEaten !== undefined)) return true;
+            } catch(e) {}
+          }
+          // 2. Cek Asesmen Day 3
+          const asesmenRaw = localStorage.getItem('fincestem_asesmen_ft_day3_' + id);
+          if (asesmenRaw) return true;
+          // 3. Cek Kesimpulan Modul Petik Apel
+          const materiRaw = localStorage.getItem('fincestem_materi_ft_day3_apel_' + id);
+          if (materiRaw) {
+            try {
+              const p = JSON.parse(materiRaw);
+              if (p && (p.conclusion || p.text)) return true;
+            } catch(e) {}
+          }
+        }
+
+        if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
+          const prog = FincestemCore.progress.getStudentProgress(nisn);
+          if (prog && prog.task_map) {
+            if (prog.task_map['3_lkpd'] || prog.task_map['3_materi'] || prog.task_map['3_asesmen']) return true;
+          }
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function checkIsD3Sesi2Done(cleanNisn) {
+      try {
+        const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+        const nisn = String(cleanNisn || u.nisn || u.identifier || '').trim();
+        const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), u.nis, u.identifier, u.username].filter(Boolean);
+
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_lkpd_ft_day3_jtp1_' + id)) return true;
+          if (localStorage.getItem('fincestem_materi_ft_day3_jtp1_' + id)) return true;
+        }
+
+        if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
+          const prog = FincestemCore.progress.getStudentProgress(nisn);
+          if (prog && prog.task_map) {
+            if (prog.task_map['3_lkpd_jtp1'] || prog.task_map['3_materi_jtp1']) return true;
+          }
+        }
+      } catch(e) {}
+      return false;
+    }
+
     let currentD3LkpdSession = 1;
 
     function renderFieldTripDay3LKPD(isReadOnly, targetSesi) {
