@@ -2199,20 +2199,22 @@
           </div>
         `;
       } else if (currentD3Session === 3) {
-        // SESI 3: MUSEUM ANGKUT - PREVIEW
+        // ==========================================
+        // SESI 3: MUSEUM ANGKUT KOTA BATU (LENGKAP)
+        // ==========================================
         headerHtml = `
           <div class="bg-gradient-to-br from-purple-800 via-indigo-950 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5 border border-purple-700/40">
             <div class="flex items-center justify-between gap-2 flex-wrap">
               <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-purple-100 backdrop-blur-md">
                 Field Trip • Day 3 • Sesi 3
               </span>
-              <span class="text-xs font-bold text-amber-300">Pilar: Engineering, Transportation &amp; World Culture</span>
+              <span class="text-xs font-bold text-amber-300">Pilar Utama: STEM (Engineering &amp; Transportation)</span>
             </div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              Kunjungan Museum Angkut Kota Batu
+              Eksplorasi Sains &amp; Rekayasa Transportasi Museum Angkut
             </h2>
             <p class="text-xs sm:text-sm text-purple-100/90 leading-relaxed font-medium">
-              Investigasi sejarah revolusi industri alat transportasi dunia, rekayasa otomotif klasik hingga modern, serta zona budaya mancanegara dan Pasar Apung.
+              Investigasi sejarah revolusi industri alat transportasi dunia, aerodinamika fluida, evolusi mesin pembakaran hingga mobil listrik, serta rekayasa keselamatan otomotif.
             </p>
             <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-purple-200 font-semibold flex-wrap">
               <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
@@ -2221,28 +2223,215 @@
               </span>
               <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
                 <span class="material-symbols-outlined text-sm">pin_drop</span>
-                <span>Museum Angkut &amp; Movie Star Studio, Kota Batu</span>
+                <span>Museum Angkut Kota Batu</span>
               </span>
             </div>
           </div>
         `;
 
         bodyHtml = `
-          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-10">
-            <div class="w-14 h-14 rounded-3xl bg-purple-100 text-purple-600 flex items-center justify-center shadow-xs">
-              <span class="material-symbols-outlined text-3xl">directions_car</span>
+          <div class="flex flex-col gap-4 sm:gap-5">
+            <!-- 1. SEKILAS MUSEUM ANGKUT -->
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-primary font-black text-base sm:text-lg border-b border-slate-100 pb-2.5">
+                <span class="material-symbols-outlined text-purple-600 text-2xl">museum</span>
+                <span>1. Sekilas Museum Angkut Kota Batu</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Museum Angkut adalah museum transportasi pertama dan terbesar di Asia Tenggara dengan luas lebih dari 3,8 hektar dan menyimpan lebih dari 300 koleksi kendaraan tradisional hingga modern. Di museum ini, siswa diajak mempelajari lompatan peradaban manusia dalam memecahkan tantangan mobilitas jarak dan waktu melalui integrasi sains, teknologi mesin, rekayasa desain, dan matematika (<strong>STEM</strong>).
+              </p>
             </div>
-            <h3 class="font-black text-lg sm:text-xl text-slate-900">
-              Sesi 3: Kunjungan Museum Angkut Kota Batu
-            </h3>
-            <p class="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed">
-              Konsep modul belajar, lembar kerja LKPD, dan instrumen asesmen Sesi 3 akan disusun pada tahap berikutnya.
-            </p>
-            <div class="flex gap-2 pt-2">
-              <button type="button" onclick="switchD3Session(1)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
-                <span class="material-symbols-outlined text-sm">arrow_back</span>
-                <span>Kembali ke Sesi 1: Petik Apel</span>
-              </button>
+
+            <!-- 2. EMPAT ZONA EKSPLORASI UTAMA -->
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+              <div class="flex items-center gap-2 text-primary font-black text-base sm:text-lg border-b border-slate-100 pb-2.5">
+                <span class="material-symbols-outlined text-purple-600 text-2xl">explore</span>
+                <span>2. Empat Zona Eksplorasi Utama di Museum Angkut</span>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-slate-800">
+                <!-- Zona 1: Hall Batavia & Sejarah RI -->
+                <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 flex flex-col gap-1.5">
+                  <div class="flex items-center gap-2 text-purple-950 font-bold text-sm">
+                    <span class="material-symbols-outlined text-purple-700 text-lg">flag</span>
+                    <span>A. Hall Utama &amp; Koleksi Sejarah RI</span>
+                  </div>
+                  <p class="text-[11.5px] text-slate-700 leading-relaxed">
+                    Menampilkan kendaraan bersejarah saksi kemerdekaan bangsa, termasuk <strong>Mobil Kepresidenan Pertama RI (Chrysler Windsor Limousine 1947)</strong> yang digunakan Presiden Ir. Soekarno, serta Helikopter Kepresidenan pertama Bell 47J Si Walet. Siswa dapat mengamati sasis baja kokoh dan rekayasa mesin 6-silinder tangguh di era awal kemerdekaan.
+                  </p>
+                </div>
+
+                <!-- Zona 2: Edukasi & Rekayasa Mesin -->
+                <div class="p-3.5 rounded-2xl bg-blue-50/70 border border-blue-200 flex flex-col gap-1.5">
+                  <div class="flex items-center gap-2 text-blue-950 font-bold text-sm">
+                    <span class="material-symbols-outlined text-blue-700 text-lg">precision_manufacturing</span>
+                    <span>B. Zona Edukasi &amp; Rekayasa Mesin</span>
+                  </div>
+                  <p class="text-[11.5px] text-slate-700 leading-relaxed">
+                    Menyajikan bedah mekanisme ruang bakar mesin: dari mesin uap eksternal (James Watt), mesin pembakaran dalam 4-tak (Internal Combustion Engine), hingga motor listrik modern. Siswa dapat memahami komponen transmisi, poros engkol, dan sistem injeksi bahan bakar elektronik (EFI).
+                  </p>
+                </div>
+
+                <!-- Zona 3: Aviasi & Dirgantara -->
+                <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 flex flex-col gap-1.5">
+                  <div class="flex items-center gap-2 text-sky-950 font-bold text-sm">
+                    <span class="material-symbols-outlined text-sky-700 text-lg">flight</span>
+                    <span>C. Zona Aviasi &amp; Dirgantara (Rooftop)</span>
+                  </div>
+                  <p class="text-[11.5px] text-slate-700 leading-relaxed">
+                    Menampilkan pesawat terbang komersial Boeing 737-200 dan helikopter di lantai atas. Siswa dapat mengamati langsung penampang sayap aerodinamis (airfoil), turbin jet pendorong, dan kokpit instrumen kendali penerbangan.
+                  </p>
+                </div>
+
+                <!-- Zona 4: Mancanegara Broadway & Eropa -->
+                <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex flex-col gap-1.5">
+                  <div class="flex items-center gap-2 text-amber-950 font-bold text-sm">
+                    <span class="material-symbols-outlined text-amber-700 text-lg">directions_car</span>
+                    <span>D. Zona Mancanegara (USA &amp; Eropa)</span>
+                  </div>
+                  <p class="text-[11.5px] text-slate-700 leading-relaxed">
+                    Menampilkan deretan mobil legendaris dunia: <em>Ford Model T (1908)</em> sebagai pionir produksi massal, mobil klasik Amerika era Gangster 1930, mobil balap Italia/Jerman, hingga bus tingkat klasik London, memperlihatkan evolusi bodi kendaraan dunia.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. EMPAT PILAR STEM TRANSPORTASI -->
+            <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+              <div class="flex items-center gap-2 text-primary font-black text-base sm:text-lg border-b border-slate-100 pb-2.5">
+                <span class="material-symbols-outlined text-emerald-600 text-2xl">science</span>
+                <span>3. Empat Pilar STEM dalam Dunia Transportasi</span>
+              </div>
+
+              <div class="space-y-3 text-xs text-slate-800">
+                <!-- Science -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+                  <span class="font-extrabold text-sm text-purple-900 flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-purple-600 text-white font-black text-xs flex items-center justify-center">S</span>
+                    <span>SCIENCE: Aerodinamika Bodi &amp; Gaya Angkat Bernoulli</span>
+                  </span>
+                  <div class="text-[11.5px] text-slate-700 leading-relaxed space-y-1.5">
+                    <p>• <strong>Gaya Hambat Udara (Drag Force):</strong> Mobil era 1920-an berbentuk kotak kaku dengan koefisien drag tinggi (Cd ≈ 0,8) sehingga boros bensin. Mobil modern berevolusi melengkung ramping (streamlined, Cd ≈ 0,28) membelah udara secara laminar, menghemat konsumsi energi lebih dari 30%.</p>
+                    <p>• <strong>Hukum Bernoulli pada Pesawat Boeing 737:</strong> Penampang sayap atas yang melengkung membuat aliran udara bergerak lebih cepat dibanding sisi bawah sayap. Tekanan udara di atas sayap menjadi lebih rendah, menghasilkan gaya angkat (Lift Force) yang menerbangkan pesawat puluhan ton.</p>
+                  </div>
+                </div>
+
+                <!-- Technology -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+                  <span class="font-extrabold text-sm text-blue-900 flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center">T</span>
+                    <span>TECHNOLOGY: Powertrain Mesin Uap, ICE &amp; Mobil Listrik (EV)</span>
+                  </span>
+                  <div class="text-[11.5px] text-slate-700 leading-relaxed space-y-1.5">
+                    <p>• <strong>Evolusi Mesin:</strong> Dari mesin uap eksternal (efisiensi termal rendah ~10%), mesin pembakaran dalam 4-tak (Internal Combustion Engine efisiensi ~25-35%), hingga motor induksi listrik (EV) bertenaga baterai Lithium-Ion dengan efisiensi konversi energi di atas 85% tanpa emisi gas buang langsung.</p>
+                    <p>• <strong>Sensor &amp; ECU:</strong> Transisi dari karburator mekanik konvensional ke injeksi bahan bakar elektronik (EFI) yang dikontrol komputer mesin (Engine Control Unit) secara presisi tinggi.</p>
+                  </div>
+                </div>
+
+                <!-- Engineering -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+                  <span class="font-extrabold text-sm text-emerald-900 flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white font-black text-xs flex items-center justify-center">E</span>
+                    <span>ENGINEERING: Material Sasis Ringan &amp; Crumple Zone</span>
+                  </span>
+                  <div class="text-[11.5px] text-slate-700 leading-relaxed space-y-1.5">
+                    <p>• <strong>Rekayasa Material:</strong> Bodi mobil antik era 1930 menggunakan pelat baja tebal masif yang sangat berat. Mobil modern merekayasa paduan aluminium (alloy) dan serat karbon (carbon fiber) yang berkekuatan tarik tinggi namun 50% lebih ringan.</p>
+                    <p>• <strong>Crumple Zone (Zona Redam Benturan):</strong> Moncong mobil modern sengaja dibuat ringsek saat tabrakan keras. Berdasarkan hukum Impuls (F · Δt = m · Δv), dengan memperpanjang waktu deformasi (Δt), gaya benturan (F) yang dialami penumpang di kabin berkurang drastis sehingga menyelamatkan nyawa.</p>
+                  </div>
+                </div>
+
+                <!-- Mathematics -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+                  <span class="font-extrabold text-sm text-amber-900 flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-amber-600 text-white font-black text-xs flex items-center justify-center">M</span>
+                    <span>MATHEMATICS: Power-to-Weight Ratio &amp; Konsumsi Bahan Bakar</span>
+                  </span>
+                  <div class="text-[11.5px] text-slate-700 leading-relaxed space-y-1.5">
+                    <p>• <strong>Power-to-Weight Ratio (PWR):</strong> Dihitung dengan rumus <code>PWR = Tenaga (HP) / Massa (kg)</code>. Makin tinggi nilai PWR, makin lincah akselerasi mobil dan makin efisien energi yang dibutuhkan untuk memindahkan beban.</p>
+                    <p>• <strong>Perhitungan BBM:</strong> Dihitung dengan rumus <code>Kebutuhan Bensin (Liter) = Jarak Tempuh (km) / Efisiensi (km/liter)</code>.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. PANDUAN TATA TERTIB DI MUSEUM ANGKUT -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-amber-50/80 border border-amber-200 flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-amber-950 font-black text-base sm:text-lg border-b border-amber-200/60 pb-2.5">
+                <span class="material-symbols-outlined text-amber-700 text-2xl">verified_user</span>
+                <span>4. Panduan Etika &amp; Tata Tertib di Museum Angkut</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs text-slate-800">
+                <div class="flex items-start gap-2 bg-white p-3 rounded-xl border border-amber-100">
+                  <span class="material-symbols-outlined text-rose-600 text-lg mt-0.5">do_not_touch</span>
+                  <div>
+                    <strong class="text-amber-950 font-bold block">Jangan Sentuh/Naiki:</strong>
+                    <span>Dilarang memanjat atau melewati batas pembatas (railing) kendaraan koleksi bersejarah.</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 bg-white p-3 rounded-xl border border-amber-100">
+                  <span class="material-symbols-outlined text-blue-600 text-lg mt-0.5">flash_off</span>
+                  <div>
+                    <strong class="text-amber-950 font-bold block">Patuhi Rambu Foto:</strong>
+                    <span>Matikan lampu kilat (flash) kamera pada spot koleksi bertanda khusus untuk melindungi cat antik.</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 bg-white p-3 rounded-xl border border-amber-100">
+                  <span class="material-symbols-outlined text-emerald-600 text-lg mt-0.5">schedule</span>
+                  <div>
+                    <strong class="text-amber-950 font-bold block">Disiplin Waktu Kumpul:</strong>
+                    <span>Perhatikan instruksi jam berkumpul dari Guru Pendamping untuk persiapan keberangkatan menuju Bromo.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. FORM KESIMPULAN / CATATAN REFLEKTIF MODUL MUSEUM ANGKUT -->
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border-2 border-purple-300 shadow-md flex flex-col gap-3.5">
+              <div class="flex items-center justify-between gap-2 flex-wrap border-b border-slate-100 pb-2.5">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-purple-600 text-2xl">rate_review</span>
+                  <h3 class="font-black text-base sm:text-lg text-primary">5. Catatan Reflektif Pemahaman Modul Sesi 3</h3>
+                </div>
+                <span id="ftMateriMuseumStatusBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+                  Belum Mengisi Kesimpulan
+                </span>
+              </div>
+
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                Setelah mempelajari materi modul transportasi di atas, tuliskan resume pemahaman Anda (minimal 15–20 kata) mengenai penerapan konsep STEM pada kendaraan di Museum Angkut (misalnya pemahamanmu tentang bentuk aerodinamika bodi mobil, prinsip gaya angkat Bernoulli pada sayap pesawat, atau fungsi crumple zone bagi keselamatan penumpang):
+              </p>
+
+              <div class="flex flex-col gap-1.5">
+                <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
+                  <label for="ftMateriMuseumConclusion" class="text-slate-800 font-bold">Resume Catatan Pemahaman Siswa:</label>
+                  <span id="ftMateriMuseumSavedTime" class="text-[11px] text-slate-400">Belum disimpan</span>
+                </div>
+                <textarea id="ftMateriMuseumConclusion" rows="4" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400 leading-relaxed" placeholder="Contoh: Dari modul Museum Angkut, saya memahami bahwa bodi mobil modern berevolusi menjadi melengkung aerodinamis untuk mengurangi koefisien hambatan udara (drag force) sehingga hemat bahan bakar. Pada pesawat Boeing 737, gaya angkat tercipta karena perbedaan kecepatan aliran udara di atas dan bawah sayap (Prinsip Bernoulli). Selain itu, rekayasa crumple zone sengaja dibuat ringsek saat tabrakan untuk memperpanjang waktu benturan sehingga meredam gaya impak pada penumpang..."></textarea>
+              </div>
+
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                <button id="btnSaveMateriMuseumConclusion" type="button" onclick="saveDay3MuseumConclusion()" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                  <span class="material-symbols-outlined text-lg">task_alt</span>
+                  <span id="btnSaveMateriMuseumText">Simpan Kesimpulan &amp; Buka LKPD Sesi 3</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- 6. KARTU AKSES LKPD SESI 3 (TERKUNCI / TERBUKA BERDASARKAN KESIMPULAN) -->
+            <div id="ftLkpdMuseumAccessBox" class="bg-gradient-to-r from-purple-800 to-indigo-900 rounded-3xl p-5 text-white shadow-md flex flex-col gap-3 text-center sm:text-left transition-all">
+              <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div>
+                  <div class="flex items-center justify-center sm:justify-start gap-2">
+                    <span id="ftLkpdMuseumLockIcon" class="material-symbols-outlined text-purple-300 text-xl">lock</span>
+                    <h4 id="ftLkpdMuseumLockTitle" class="font-extrabold text-sm sm:text-base text-white">Tahap 2: LKPD Digital Day 3 Sesi 3</h4>
+                  </div>
+                  <p id="ftLkpdMuseumLockDesc" class="text-xs text-purple-200 mt-0.5">Selesaikan dan simpan kesimpulan modul di atas terlebih dahulu untuk membuka akses LKPD.</p>
+                </div>
+                <a id="btnGoToLkpdMuseum" href="javascript:void(0)" onclick="handleGoToLkpdMuseum()" class="px-5 py-3 rounded-2xl bg-white/20 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-not-allowed opacity-60">
+                  <span id="btnGoToLkpdMuseumText">LKPD Masih Terkunci</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </a>
+              </div>
             </div>
           </div>
         `;
@@ -2274,6 +2463,21 @@
 
         if (savedConclusion) {
           applyDay3PetikApelConclusionState(savedConclusion, savedAt);
+        }
+      } else if (currentD3Session === 3) {
+        let savedConclusion = '';
+        let savedAt = '';
+        try {
+          const raw = localStorage.getItem('fincestem_materi_ft_day3_museum_' + cleanNisn);
+          if (raw) {
+            const p = JSON.parse(raw);
+            savedConclusion = p.conclusion || p.text || '';
+            savedAt = p.savedAt || '';
+          }
+        } catch(e) {}
+
+        if (savedConclusion) {
+          applyDay3MuseumConclusionState(savedConclusion, savedAt);
         }
       }
     }
@@ -2776,3 +2980,122 @@
       }, 400);
     }
     window.handleGoToDokumentasiJtp1 = handleGoToDokumentasiJtp1;
+
+    // ==========================================
+    // HANDLERS KESIMPULAN MODUL SESI 3 (MUSEUM ANGKUT)
+    // ==========================================
+    function applyDay3MuseumConclusionState(text, savedAt) {
+      text = sanitizeConclusionText(text);
+      const txtArea = document.getElementById('ftMateriMuseumConclusion');
+      const badge = document.getElementById('ftMateriMuseumStatusBadge');
+      const savedTimeEl = document.getElementById('ftMateriMuseumSavedTime');
+      const btnSaveText = document.getElementById('btnSaveMateriMuseumText');
+      const saveBtn = document.getElementById('btnSaveMateriMuseumConclusion');
+      const lockIcon = document.getElementById('ftLkpdMuseumLockIcon');
+      const lockTitle = document.getElementById('ftLkpdMuseumLockTitle');
+      const lockDesc = document.getElementById('ftLkpdMuseumLockDesc');
+      const btnGo = document.getElementById('btnGoToLkpdMuseum');
+      const btnGoText = document.getElementById('btnGoToLkpdMuseumText');
+
+      if (txtArea) {
+        txtArea.value = text;
+        txtArea.setAttribute('readonly', 'readonly');
+        txtArea.classList.add('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+      }
+      if (badge) {
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800';
+        badge.textContent = 'Telah Disimpan & Terkunci (Tahap 1 Selesai)';
+      }
+      if (savedTimeEl) {
+        savedTimeEl.textContent = savedAt ? `Disimpan: ${new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB` : 'Tersimpan';
+      }
+      if (saveBtn) {
+        saveBtn.classList.add('pointer-events-none', 'opacity-70');
+        saveBtn.classList.remove('hover:bg-purple-700', 'cursor-pointer');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Kesimpulan Telah Terkunci</span>';
+      } else if (btnSaveText) {
+        btnSaveText.textContent = 'Kesimpulan Telah Terkunci';
+      }
+
+      // Aktifkan Akses ke LKPD Museum Angkut
+      if (lockIcon) {
+        lockIcon.textContent = 'lock_open';
+        lockIcon.className = 'material-symbols-outlined text-purple-300 text-xl';
+      }
+      if (lockTitle) lockTitle.textContent = 'Tahap 2 Terbuka: LKPD Museum Angkut Day 3 Sesi 3';
+      if (lockDesc) lockDesc.textContent = 'Kesimpulan modul telah tersimpan. Silakan lanjutkan mengerjakan LKPD investigasi Museum Angkut.';
+      if (btnGo) {
+        btnGo.className = 'px-5 py-3 rounded-2xl bg-white text-purple-950 hover:bg-purple-50 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer';
+        btnGo.onclick = function() {
+          window.location.href = 'lkpd.html?day=3&sesi=3';
+        };
+      }
+      if (btnGoText) btnGoText.textContent = 'Buka LKPD Museum Angkut';
+    }
+
+    function saveDay3MuseumConclusion() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const txtArea = document.getElementById('ftMateriMuseumConclusion');
+      const text = txtArea ? txtArea.value.trim() : '';
+
+      if (!text || text.length < 30) {
+        FincestemCore.ui.toast('Silakan tuliskan resume pemahaman Anda minimal 15–20 kata sebelum melanjutkan!', 'error');
+        return;
+      }
+
+      const saveBtn = document.getElementById('btnSaveMateriMuseumConclusion');
+      if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+        FincestemCore.ui.setBtnLoading(saveBtn, true, 'Menyimpan...');
+      }
+
+      const record = {
+        day_number: 3,
+        session: 3,
+        location: 'Museum Angkut Kota Batu',
+        conclusion: text,
+        savedAt: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem('fincestem_materi_ft_day3_museum_' + cleanNisn, JSON.stringify(record));
+      } catch(e) {}
+
+      applyDay3MuseumConclusionState(text, record.savedAt);
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(cleanNisn, 3, 'materi_museum', record, function() {
+          if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+            FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'task_alt');
+          }
+          FincestemCore.ui.toast('Resume Modul Museum Angkut berhasil disimpan! LKPD Sesi 3 sekarang telah terbuka.', 'success');
+        });
+      } else {
+        if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+          FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'task_alt');
+        }
+        FincestemCore.ui.toast('Resume Modul Museum Angkut berhasil disimpan! LKPD Sesi 3 sekarang telah terbuka.', 'success');
+      }
+    }
+
+    function handleGoToLkpdMuseum() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const saved = localStorage.getItem('fincestem_materi_ft_day3_museum_' + cleanNisn);
+      if (!saved) {
+        FincestemCore.ui.toast('Anda wajib membaca modul dan menyimpan kesimpulan Museum Angkut sebelum membuka LKPD!', 'warning');
+        const txt = document.getElementById('ftMateriMuseumConclusion');
+        if (txt) {
+          txt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          txt.focus();
+        }
+        return;
+      }
+      window.location.href = 'lkpd.html?day=3&sesi=3';
+    }
+
+    window.saveDay3MuseumConclusion = saveDay3MuseumConclusion;
+    window.handleGoToLkpdMuseum = handleGoToLkpdMuseum;
+    window.applyDay3MuseumConclusionState = applyDay3MuseumConclusionState;

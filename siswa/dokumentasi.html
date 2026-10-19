@@ -390,7 +390,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261019_v14"></script>
+  <script src="../js/core.js?v=20261020_v1"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -675,7 +675,7 @@
           } else if (currentSesi === 3) {
             dayBadge = 'DAY 3 • SESI 3: MUSEUM ANGKUT KOTA BATU';
             subTitle = 'Dokumentasi Museum Angkut & Movie Star Studio';
-            subTheme = 'Sejarah Rekayasa Transportasi, Otomotif Klasik & Pasar Apung';
+            subTheme = 'Sejarah Rekayasa Transportasi, Aerodinamika & Otomotif Klasik Dunia';
           } else {
             dayBadge = 'DAY 3 • SESI 1: WISATA PETIK APEL BATU';
             subTitle = 'Dokumentasi Kunjungan Kebun Apel Batu';
@@ -2447,6 +2447,8 @@
         let hasDokMuseum = false;
         let hasRefleksiJatim = false;
         let existingRefleksiJtp1 = '';
+        let hasRefleksiMuseum = false;
+        let existingRefleksiMuseum = '';
         for (const id of ids) {
           if (localStorage.getItem('fincestem_dok_ft_day3_apel_' + id) === 'true') hasDokApel = true;
           if (localStorage.getItem('fincestem_dok_ft_day3_jatim_' + id) === 'true') hasDokJatim = true;
@@ -2455,6 +2457,11 @@
           if (r) {
             hasRefleksiJatim = true;
             existingRefleksiJtp1 = r;
+          }
+          const rm = localStorage.getItem('fincestem_refleksi_ft_d3_sesi3_' + id);
+          if (rm) {
+            hasRefleksiMuseum = true;
+            existingRefleksiMuseum = rm;
           }
         }
 
@@ -2630,48 +2637,107 @@
           }
         } else {
           // SESI 3: MUSEUM ANGKUT
-          if (hasDokMuseum) {
+          if (hasDokMuseum && hasRefleksiMuseum) {
             container.innerHTML = `
-              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-amber-500/10 border-2 border-purple-400 flex flex-col gap-3 shadow-sm">
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-purple-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
                 <div class="flex items-center justify-between gap-2">
-                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-purple-600 text-white shadow-2xs">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
                     SESI 3 SELESAI
                   </span>
-                  <span class="material-symbols-outlined text-purple-600 text-xl">check_circle</span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
                 </div>
                 <div>
-                  <h3 class="font-black text-base sm:text-lg text-slate-900">Foto Dokumentasi Museum Angkut Berhasil Diunggah</h3>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Dokumentasi &amp; Jurnal Refleksi Kendaraan Lengkap</h3>
                   <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
-                    Seluruh 3 sesi kunjungan Day 3 telah selesai didokumentasikan! Silakan lanjutkan ke Asesmen Reflektif Day 3.
+                    Seluruh 3 sesi kunjungan lapangan Day 3 (Petik Apel, Jatim Park 1, dan Museum Angkut) telah lengkap! Silakan lanjutkan ke tahap akhir Evaluasi Asesmen Day 3.
                   </p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2 pt-1">
-                  <a href="asesmen.html?day=3" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                  <a href="dashboard.html?day=3&task=asesmen" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
                     <span class="material-symbols-outlined text-xl">fact_check</span>
                     <span>Lanjut ke Asesmen Day 3 &rarr;</span>
                   </a>
+                  <button type="button" onclick="openModalRefleksiMuseum()" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-purple-900 border border-purple-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">edit_note</span>
+                    <span>Lihat / Edit Refleksi</span>
+                  </button>
                   <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-purple-900 border border-purple-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
                     <span class="material-symbols-outlined text-base">add_a_photo</span>
-                    <span>Tambah Foto Museum Angkut</span>
+                    <span>Tambah Foto Kendaraan</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else if (hasDokMuseum && !hasRefleksiMuseum) {
+            container.innerHTML = `
+              <div id="cardInlineRefleksiMuseum" class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-purple-500/10 via-indigo-500/10 to-pink-500/10 border-2 border-purple-400 flex flex-col gap-3 shadow-md animate-in fade-in duration-200">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-purple-600 text-white shadow-2xs">
+                    TAHAP 3: JURNAL REFLEKSI KENDARAAN PILIHAN
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-xs text-emerald-600">check_circle</span>
+                    <span>Foto Tersimpan</span>
+                  </span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-slate-900 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-purple-600 text-2xl">directions_car</span>
+                    <span>Jurnal Refleksi: Gambarkan &amp; Ceritakan Kendaraan Pilihanmu</span>
+                  </h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Foto dokumentasimu di Museum Angkut sudah berhasil diunggah! Sekarang, gambarkan bentuk fisik kendaraan pilihanmu dan ceritakan alasanmu memilihnya dari sudut pandang rekayasa STEM untuk membuka Asesmen Day 3.
+                  </p>
+                </div>
+
+                <!-- Panduan Cerita Refleksi Kendaraan -->
+                <div class="p-3.5 rounded-2xl bg-white/90 border border-purple-200 text-xs text-purple-950 flex flex-col gap-1.5">
+                  <span class="font-extrabold flex items-center gap-1 text-purple-900">
+                    <span class="material-symbols-outlined text-sm text-purple-600">tips_and_updates</span>
+                    <span>Panduan Menggambarkan &amp; Menceritakan Kendaraan Pilihan:</span>
+                  </span>
+                  <ul class="list-disc list-inside space-y-1 text-slate-700 text-[11.5px] leading-relaxed">
+                    <li><strong>Gambarkan Fisik Kendaraan:</strong> Bagaimana bentuk bodi, warna cat, keunikan lampu, roda, atau kemewahan interior/kokpit kendaraan yang kamu amati langsung?</li>
+                    <li><strong>Ceritakan Daya Tarik STEM:</strong> Mengapa kamu memilih kendaraan ini dibanding ratusan koleksi lainnya? Apa teknologi mesin atau rekayasa sejarah yang paling membuatmu kagum?</li>
+                    <li><strong>Inspirasi Masa Depan:</strong> Apa pelajaran desain atau inovasi teknologi transportasi yang menginspirasimu untuk kendaraan masa depan yang lebih ramah lingkungan?</li>
+                  </ul>
+                </div>
+
+                <!-- Area Input Refleksi Inline -->
+                <div>
+                  <label for="txtInlineRefleksiMuseum" class="block text-xs font-bold text-slate-800 mb-1.5">
+                    Tuliskan Deskripsi &amp; Narasi Reflektif Kendaraan Pilihanmu:
+                  </label>
+                  <textarea id="txtInlineRefleksiMuseum" rows="5" placeholder="Contoh: Kendaraan yang saya pilih adalah Chrysler Windsor 1947 mobil kepresidenan Bung Karno. Secara fisik, bodinya berwarna hitam elegan dengan gril krom tebal yang sangat gagah dan kaca jendela lebar. Saya sangat kagum melihat sasis baja tangguh dan mesin 6-silindernya yang andal di era revolusi kemerdekaan. Kendaraan ini mengajarkan saya bahwa karya rekayasa teknik yang dirawat dengan baik dapat menjadi saksi sejarah peradaban bangsa yang tak ternilai harganya..." class="w-full p-3.5 rounded-2xl border-2 border-purple-300 bg-white text-xs sm:text-sm font-normal focus:border-purple-600 outline-none transition-all placeholder:text-slate-400 leading-relaxed shadow-xs">${existingRefleksiMuseum ? existingRefleksiMuseum.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : ''}</textarea>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <button type="button" onclick="submitInlineRefleksiMuseum()" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-lg">send</span>
+                    <span>Kirim Refleksi &amp; Lanjut ke Asesmen Day 3 &rarr;</span>
+                  </button>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-purple-900 border border-purple-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Kendaraan Lain</span>
                   </button>
                 </div>
               </div>
             `;
           } else {
             container.innerHTML = `
-              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-purple-600 to-pink-700 text-white flex flex-col gap-3 shadow-lg">
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-purple-600 to-indigo-800 text-white flex flex-col gap-3 shadow-lg">
                 <div class="flex items-center justify-between gap-2">
                   <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
-                    SESI 3 • MUSEUM ANGKUT
+                    SESI 3 • MUSEUM ANGKUT KOTA BATU
                   </span>
                 </div>
                 <div>
-                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Museum Angkut Kota Batu</h3>
-                  <p class="text-xs text-purple-100 mt-1">Ambil atau pilih foto kendaraan antik/klasik, zona transportasi, atau pasar apung.</p>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Kendaraan Pilihan di Museum Angkut</h3>
+                  <p class="text-xs text-purple-100 mt-1">Ambil atau pilih foto dirimu/kelompok bersama 1 kendaraan bersejarah yang kamu investigasi untuk LKPD STEM.</p>
                 </div>
                 <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-purple-50 text-purple-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
                   <span class="material-symbols-outlined text-2xl text-purple-700">photo_camera</span>
-                  <span>Unggah Dokumentasi Foto Museum Angkut</span>
+                  <span>Unggah Dokumentasi Foto Kendaraan Pilihan</span>
                 </button>
               </div>
             `;
@@ -3207,6 +3273,31 @@
           if (nextBtnText) {
             nextBtnText.textContent = 'Lanjut ke Refleksi Jatim Park 1';
           }
+        } else if (sesiParam === '3') {
+          if (subtitle) {
+            subtitle.innerHTML = '<strong>Foto Kendaraan Museum Angkut Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Foto bersama kendaraan pilihan telah tersimpan. Silakan lanjutkan dengan menggambarkan dan menceritakan kendaraan pilihanmu pada Jurnal Refleksi di bawah ini.</span>';
+          }
+          if (nextBtn) {
+            nextBtn.href = '#';
+            nextBtn.onclick = function(e) {
+              e.preventDefault();
+              closeFtDokSuccessModal();
+              const card = document.getElementById('cardInlineRefleksiMuseum') || document.getElementById('sessionActionCard');
+              if (card) {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              }
+              const txt = document.getElementById('txtInlineRefleksiMuseum');
+              if (txt) {
+                setTimeout(() => txt.focus(), 300);
+              } else {
+                openModalRefleksiMuseum();
+              }
+            };
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+          }
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Lanjut ke Refleksi Kendaraan Pilihan';
+          }
         }
       } else if (cat.isFieldTrip && dayNum === 2) {
         const user = FincestemCore.auth.getUser() || {};
@@ -3278,6 +3369,46 @@
   <button id="fabUploadBtn" onclick="toggleUploadModal(true)" class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer group" title="Ambil / Unggah Foto Lapangan">
     <span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">add_a_photo</span>
   </button>
+  <!-- MODAL REFLEKSI KHUSUS MUSEUM ANGKUT (DAY 3 SESI 3) -->
+  <div id="modalRefleksiMuseum" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-lg w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-purple-500/15 text-purple-600 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-xl">directions_car</span>
+          </div>
+          <div>
+            <h3 class="font-black text-base text-on-surface">Jurnal Refleksi: Kendaraan Pilihan Museum Angkut</h3>
+            <span class="text-xs text-on-surface-variant font-medium">Gambarkan &amp; Ceritakan Kendaraan Pilihanmu</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeModalRefleksiMuseum()" class="w-8 h-8 rounded-full hover:bg-surface-container flex items-center justify-center text-on-surface-variant cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-purple-50 border border-purple-200 text-xs text-purple-950 flex flex-col gap-1 leading-relaxed">
+        <span class="font-extrabold text-purple-900">Panduan Refleksi Naratif:</span>
+        <span>Gambarkan detail fisik bodi kendaraan yang kamu pilih, ceritakan daya tarik sains/teknologi yang membuatmu memilihnya, dan inspirasi kendaraan masa depan.</span>
+      </div>
+
+      <div>
+        <label for="txtRefleksiMuseum" class="block text-xs font-bold text-on-surface mb-1">Catatan Refleksi Kendaraan Pilihan:</label>
+        <textarea id="txtRefleksiMuseum" rows="5" class="w-full p-3.5 rounded-2xl border border-outline-variant/50 bg-surface text-xs sm:text-sm font-normal focus:border-purple-600 outline-none transition-all placeholder:text-outline-variant leading-relaxed" placeholder="Tuliskan deskripsi fisik dan cerita refleksi kendaraan pilihanmu di sini..."></textarea>
+      </div>
+
+      <div class="flex items-center gap-2 pt-1">
+        <button type="button" onclick="submitRefleksiMuseum()" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-lg">send</span>
+          <span>Simpan Refleksi &amp; Lanjut ke Asesmen &rarr;</span>
+        </button>
+        <button type="button" onclick="closeModalRefleksiMuseum()" class="py-3 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs sm:text-sm transition-all border border-outline-variant/30 text-center cursor-pointer">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL REFLEKSI KHUSUS JATIM PARK 1 (DAY 3 SESI 2) -->
   <div id="modalRefleksiJtp1" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
     <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-lg w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high animate-in fade-in zoom-in-95 duration-200">
@@ -3432,6 +3563,103 @@
     window.closeModalRefleksiJtp1 = closeModalRefleksiJtp1;
     window.submitRefleksiJtp1 = submitRefleksiJtp1;
     window.submitInlineRefleksiJtp1 = submitInlineRefleksiJtp1;
+
+    // ==========================================
+    // HANDLERS REFLEKSI MUSEUM ANGKUT (DAY 3 SESI 3)
+    // ==========================================
+    function openModalRefleksiMuseum() {
+      const modal = document.getElementById('modalRefleksiMuseum');
+      if (!modal) return;
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+      let existing = '';
+      for (const id of ids) {
+        existing = localStorage.getItem('fincestem_refleksi_ft_d3_sesi3_' + id);
+        if (existing) break;
+      }
+      const inlineTxt = document.getElementById('txtInlineRefleksiMuseum');
+      if (inlineTxt && inlineTxt.value) existing = inlineTxt.value;
+      const txt = document.getElementById('txtRefleksiMuseum');
+      if (txt) txt.value = existing || '';
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      modal.style.display = 'flex';
+      modal.style.opacity = '1';
+      modal.style.pointerEvents = 'auto';
+      modal.style.zIndex = '9999';
+    }
+
+    function closeModalRefleksiMuseum() {
+      const modal = document.getElementById('modalRefleksiMuseum');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.style.display = 'none';
+      modal.style.opacity = '0';
+      modal.style.pointerEvents = 'none';
+    }
+
+    function saveAndSubmitRefleksiMuseum(val) {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+
+      for (const id of ids) {
+        localStorage.setItem('fincestem_refleksi_ft_d3_sesi3_' + id, val);
+      }
+
+      if (FincestemCore.progress && nisn) {
+        FincestemCore.progress.submitTask(nisn, 3, 'refleksi_museum', {
+          day: 3,
+          session: 3,
+          reflection: val,
+          savedAt: new Date().toISOString()
+        });
+        if (FincestemCore.progress.syncAllToServer) {
+          FincestemCore.progress.syncAllToServer();
+        }
+      }
+
+      closeModalRefleksiMuseum();
+      FincestemCore.ui.toast('Jurnal Refleksi Kendaraan Museum Angkut berhasil disimpan! Mengarahkan ke Asesmen Day 3...', 'success');
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const dayParam = urlParams.get('day') || 3;
+      renderSessionActionCard(Number(dayParam));
+
+      setTimeout(() => {
+        window.location.href = 'dashboard.html?day=3&task=asesmen';
+      }, 1200);
+    }
+
+    function submitRefleksiMuseum() {
+      const txt = document.getElementById('txtRefleksiMuseum') || document.getElementById('txtInlineRefleksiMuseum');
+      const val = (txt ? txt.value : '').trim();
+      if (!val || val.length < 15) {
+        FincestemCore.ui.toast('Tuliskan cerita refleksi kendaraan pilihanmu minimal beberapa kalimat (10-15 kata)!', 'warning');
+        if (txt) txt.focus();
+        return;
+      }
+      saveAndSubmitRefleksiMuseum(val);
+    }
+
+    function submitInlineRefleksiMuseum() {
+      const txt = document.getElementById('txtInlineRefleksiMuseum') || document.getElementById('txtRefleksiMuseum');
+      const val = (txt ? txt.value : '').trim();
+      if (!val || val.length < 15) {
+        FincestemCore.ui.toast('Tuliskan cerita refleksi kendaraan pilihanmu minimal beberapa kalimat (10-15 kata)!', 'warning');
+        if (txt) txt.focus();
+        return;
+      }
+      saveAndSubmitRefleksiMuseum(val);
+    }
+
+    window.openModalRefleksiMuseum = openModalRefleksiMuseum;
+    window.closeModalRefleksiMuseum = closeModalRefleksiMuseum;
+    window.submitRefleksiMuseum = submitRefleksiMuseum;
+    window.submitInlineRefleksiMuseum = submitInlineRefleksiMuseum;
   </script>
 </body>
 </html>

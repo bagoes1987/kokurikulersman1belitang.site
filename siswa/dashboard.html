@@ -833,8 +833,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261019_v14"></script>
-  <script src="../js/core.js?v=20261019_v14"></script>
+  <script src="../js/siswa_data.js?v=20261020_v1"></script>
+  <script src="../js/core.js?v=20261020_v1"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -3415,9 +3415,9 @@
             </div>
           `;
         } else if (isFTDay3) {
-          title.textContent = 'Asesmen Day 3 (Eksplorasi Kebun Apel Batu)';
+          title.textContent = 'Asesmen Day 3 (Rekayasa STEM Transportasi Museum Angkut)';
           icon.textContent = 'fact_check';
-          iconBox.className = 'w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0';
 
           let ftAsesmen = null;
           const idList = getStudentStorageIdentifiers();
@@ -3441,61 +3441,61 @@
           const questions = [
             {
               id: 'q1',
-              title: '1. Science (Agroklimat Dataran Tinggi Apel)',
-              prompt: 'Tanaman apel di Kota Batu dapat tumbuh subur dan berbuah lebat karena faktor agroklimat lingkungan pegunungan, yaitu...',
+              title: '1. Science (Aerodinamika & Hambatan Udara)',
+              prompt: 'Mengapa mobil modern dirancang dengan bodi ramping melengkung (streamlined) yang menghasilkan koefisien drag rendah (Cd ≈ 0,28), dibandingkan mobil antik era 1920-an yang berbentuk kotak kaku (Cd ≈ 0,8)?',
               options: [
-                { key: 'A', text: 'Ketinggian dataran rendah < 200 mdpl dengan suhu udara panas dan kering' },
-                { key: 'B', text: 'Ketinggian dataran tinggi ≥ 800 mdpl dengan suhu sejuk berkisar 16–22°C dan tanah vulkanik subur' },
-                { key: 'C', text: 'Kelembaban udara sangat kering tanpa membutuhkan curah hujan sepanjang tahun' },
-                { key: 'D', text: 'Suhu udara panas ekstrem di atas 35°C agar kulit apel berwarna merah merona' }
+                { key: 'A', text: 'Agar mobil memiliki bobot lebih berat sehingga tidak mudah tergelincir saat hujan lebat' },
+                { key: 'B', text: 'Mengurangi hambatan aliran udara (aerodynamic drag force) pada kecepatan tinggi sehingga konsumsi bahan bakar jauh lebih hemat dan efisien' },
+                { key: 'C', text: 'Memudahkan pemasangan kaca patri dan ornamen logam berukir pada sisi luar pintu mobil' },
+                { key: 'D', text: 'Meningkatkan tekanan udara di depan mobil agar mesin cepat panas' }
               ],
               correct: 'B'
             },
             {
               id: 'q2',
-              title: '2. Science (Identifikasi Karakteristik Varietas)',
-              prompt: 'Jika kamu memetik dan memakan apel di kebun Batu dengan ciri fisik kulit berwarna hijau muda kekuningan, tekstur renyah padat, beraroma harum segar, dan rasanya manis dominan tanpa asam, maka varietas tersebut adalah...',
+              title: '2. Science (Prinsip Bernoulli & Gaya Angkat Pesawat)',
+              prompt: 'Berdasarkan pengamatan pada sayap pesawat Boeing 737 di Rooftop Museum Angkut, gaya angkat (lift force) yang mengangkat badan pesawat puluhan ton ke udara terjadi karena...',
               options: [
-                { key: 'A', text: 'Apel Manalagi' },
-                { key: 'B', text: 'Apel Rome Beauty' },
-                { key: 'C', text: 'Apel Anna' },
-                { key: 'D', text: 'Apel Fuji Import' }
+                { key: 'A', text: 'Udara di bawah sayap bergerak lebih cepat daripada di atas sayap sehingga tekanan di atas sayap lebih besar' },
+                { key: 'B', text: 'Bentuk penampang melengkung (airfoil) membuat udara di atas sayap bergerak lebih cepat, menghasilkan tekanan udara yang lebih rendah di atas sayap dibanding di bawah sayap (Hukum Bernoulli)' },
+                { key: 'C', text: 'Udara panas yang keluar dari kabin penumpang menekan lantai pesawat ke arah atas' },
+                { key: 'D', text: 'Roda pesawat berputar sangat cepat menghasilkan gaya tolak gravitasi' }
               ],
-              correct: 'A'
+              correct: 'B'
             },
             {
               id: 'q3',
-              title: '3. Technology (Sensor Digital Satelit GPS & Altimeter)',
-              prompt: 'Mengapa teknologi sensor satelit GPS dan altimeter digital pada smartphone penting digunakan dalam riset kebun apel?',
+              title: '3. Technology (Evolusi Powertrain: ICE vs Motor Listrik EV)',
+              prompt: 'Di Zona Edukasi Museum Angkut, siswa mengamati evolusi mesin pembakaran dalam (ICE) menuju motor listrik modern. Keunggulan utama motor listrik dibanding mesin ICE konvensional dari segi konversi energi adalah...',
               options: [
-                { key: 'A', text: 'Untuk menimbang bobot berat buah apel secara nirkabel dari pohon' },
-                { key: 'B', text: 'Untuk membuktikan posisi koordinat geografis dan elevasi dataran tinggi pegunungan (≥ 800 mdpl) secara akurat' },
-                { key: 'C', text: 'Untuk menggoreng apel menjadi keripik renyah di kebun' },
-                { key: 'D', text: 'Untuk mengusir hama serangga dengan gelombang satelit frekuensi tinggi' }
+                { key: 'A', text: 'Mesin ICE membuang lebih sedikit energi panas karena memiliki sistem knalpot pembuangan ganda' },
+                { key: 'B', text: 'Efisiensi konversi energi motor listrik mencapai >85% tanpa emisi gas buang langsung, jauh melampaui efisiensi termal mesin ICE bensin yang hanya berkisar 20–30%' },
+                { key: 'C', text: 'Kendaraan listrik selalu memerlukan transmisi manual bergigi 6 percepatan agar dapat berjalan di tanjakan pegunungan' },
+                { key: 'D', text: 'Baterai kendaraan listrik tidak membutuhkan pengisian daya listrik sama sekali' }
               ],
               correct: 'B'
             },
             {
               id: 'q4',
-              title: '4. Engineering (Rekayasa Pelengkungan Cabang Mendatar)',
-              prompt: 'Petani apel di Kota Batu sengaja melengkungkan cabang pohon secara mendatar (branch bending 60°–90°) dengan tujuan rekayasa...',
+              title: '4. Engineering (Rekayasa Sasis & Crumple Zone Keselamatan)',
+              prompt: 'Berdasarkan konsep fisika impuls (I = F · Δt = Δp), mengapa mobil modern sengaja dirancang memiliki crumple zone (zona deformasi ringsek terencana pada sasis/monocoque depan) saat tabrakan keras?',
               options: [
-                { key: 'A', text: 'Agar pohon tidak cepat tinggi dan daunnya rontok semua' },
-                { key: 'B', text: 'Memperlambat distribusi hormon auksin vertikal sehingga merangsang tunas bunga dan buah tumbuh merata di sepanjang ranting' },
-                { key: 'C', text: 'Menahan buah agar tidak jatuh tersapu angin kencang' },
-                { key: 'D', text: 'Mengubah rasa buah apel yang asam menjadi manis tanpa pupuk' }
+                { key: 'A', text: 'Agar suku cadang bodi depan cepat laku terjual di bengkel reparasi mobil' },
+                { key: 'B', text: 'Memperpanjang durasi waktu tumbukan (Δt) sehingga gaya impak benturan (F) yang diteruskan ke kabin penumpang menjadi jauh lebih kecil' },
+                { key: 'C', text: 'Memastikan mesin terdorong masuk ke dalam kabin untuk menahan pergerakan lutut pengemudi' },
+                { key: 'D', text: 'Membuat kendaraan memantul kembali dengan kecepatan tinggi ke arah berlawanan' }
               ],
               correct: 'B'
             },
             {
               id: 'q5',
-              title: '5. Mathematics (Perhitungan Konsumsi & Finansial)',
-              prompt: 'Seorang siswa memakan 6 butir apel saat berada di dalam kebun wisata. Jika rata-rata 1 kg apel berisi 8 butir dan harga petik segar dari petani adalah Rp 40.000 per kg, berapakah perkiraan berat apel yang dimakan dan nilai nominal rupiahnya?',
+              title: '5. Mathematics (Kalkulasi Konsumsi Bahan Bakar & Finansial)',
+              prompt: 'Sebuah kendaraan klasik di Museum Angkut memiliki rasio konsumsi BBM rata-rata 1 Liter : 8 km. Jika kendaraan tersebut diuji menempuh rute Batu menuju kawasan Bromo sejauh 120 km (PP) dengan harga BBM non-subsidi Rp 12.500 per Liter, berapakah total volume bahan bakar dan estimasi biaya perjalanannya?',
               options: [
-                { key: 'A', text: '0,5 kg setara dengan Rp 20.000' },
-                { key: 'B', text: '0,75 kg setara dengan Rp 30.000' },
-                { key: 'C', text: '1,0 kg setara dengan Rp 40.000' },
-                { key: 'D', text: '1,25 kg setara dengan Rp 50.000' }
+                { key: 'A', text: '10 Liter dengan total biaya Rp 125.000' },
+                { key: 'B', text: '15 Liter dengan total biaya Rp 187.500' },
+                { key: 'C', text: '20 Liter dengan total biaya Rp 250.000' },
+                { key: 'D', text: '25 Liter dengan total biaya Rp 312.500' }
               ],
               correct: 'B'
             }
@@ -3509,15 +3509,15 @@
               let badgeState = '';
               if (isSubmitted) {
                 if (opt.key === q.correct) {
-                  badgeState = '<span class="ml-auto px-2 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-emerald-800">Kunci Benar ✓</span>';
+                  badgeState = '<span class="ml-auto px-2 py-0.5 rounded text-[10px] font-black bg-purple-100 text-purple-800">Kunci Benar ✓</span>';
                 } else if (isChecked && opt.key !== q.correct) {
                   badgeState = '<span class="ml-auto px-2 py-0.5 rounded text-[10px] font-black bg-rose-100 text-rose-800">Jawaban Kamu ✗</span>';
                 }
               }
 
               return `
-                <label class="p-2.5 sm:p-3 rounded-xl border ${isChecked ? (isSubmitted ? (opt.key === q.correct ? 'border-emerald-500 bg-emerald-50/70' : 'border-rose-400 bg-rose-50/70') : 'border-emerald-500 bg-emerald-50/50') : 'border-slate-200 bg-slate-50/60'} hover:bg-emerald-50/40 cursor-pointer flex items-center gap-2.5 text-xs font-semibold text-slate-800 transition-all ${isSubmitted ? 'pointer-events-none' : ''}">
-                  <input type="radio" name="ftD3Mcq_${q.id}" value="${opt.key}" ${isChecked} ${isSubmitted ? 'disabled' : ''} class="accent-emerald-600">
+                <label class="p-2.5 sm:p-3 rounded-xl border ${isChecked ? (isSubmitted ? (opt.key === q.correct ? 'border-purple-500 bg-purple-50/70' : 'border-rose-400 bg-rose-50/70') : 'border-purple-500 bg-purple-50/50') : 'border-slate-200 bg-slate-50/60'} hover:bg-purple-50/40 cursor-pointer flex items-center gap-2.5 text-xs font-semibold text-slate-800 transition-all ${isSubmitted ? 'pointer-events-none' : ''}">
+                  <input type="radio" name="ftD3Mcq_${q.id}" value="${opt.key}" ${isChecked} ${isSubmitted ? 'disabled' : ''} class="accent-purple-600">
                   <span class="font-bold text-slate-900">${opt.key}.</span>
                   <span class="flex-1">${opt.text}</span>
                   ${badgeState}
@@ -3528,7 +3528,7 @@
             qHtml += `
               <div class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col gap-2.5">
                 <div class="flex items-center justify-between gap-1 flex-wrap">
-                  <span class="text-xs font-black text-emerald-950 uppercase tracking-wide">${q.title}</span>
+                  <span class="text-xs font-black text-purple-950 uppercase tracking-wide">${q.title}</span>
                   <span class="text-[11px] font-extrabold text-slate-500">Bobot: 20 Poin</span>
                 </div>
                 <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">${q.prompt}</p>
@@ -3540,10 +3540,10 @@
           });
 
           body.innerHTML = `
-            <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col gap-1 text-slate-800">
-              <span class="font-bold text-sm text-emerald-950">Asesmen Pilihan Ganda STEM Kebun Apel (5 Soal PG)</span>
+            <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 flex flex-col gap-1 text-slate-800">
+              <span class="font-bold text-sm text-purple-950">Asesmen Pilihan Ganda: STEM Transportasi &amp; Rekayasa Otomotif (5 Soal PG)</span>
               <p class="text-xs sm:text-sm leading-relaxed text-slate-600">
-                Jawablah 5 soal pilihan ganda di bawah ini berdasarkan pemahaman sains agroklimat, penggunaan sensor satelit GPS, rekayasa pelengkungan cabang, dan matematika konsumsi buah di kebun.
+                Jawablah 5 soal pilihan ganda di bawah ini berdasarkan pemahaman sains aerodinamika, prinsip Bernoulli pada sayap pesawat, teknologi powertrain kendaraan, rekayasa keselamatan crumple zone, dan kalkulasi konsumsi bahan bakar (STEM Transportasi Museum Angkut).
               </p>
             </div>
 
@@ -4140,7 +4140,7 @@
           return;
         }
 
-        const keys = { q1: 'B', q2: 'A', q3: 'B', q4: 'B', q5: 'B' };
+        const keys = { q1: 'B', q2: 'B', q3: 'B', q4: 'B', q5: 'B' };
         let score = 0;
         if (q1 === keys.q1) score += 20;
         if (q2 === keys.q2) score += 20;
@@ -4163,14 +4163,14 @@
           localStorage.setItem('fincestem_asesmen_ft_day3_' + id, JSON.stringify(asesmenPayload));
         });
 
-        note = `Asesmen PG Day 3 (Skor: ${score}/100):\n1. Agroklimat: ${q1} (${q1 === 'B' ? 'Benar' : 'Salah'})\n2. Varietas Manalagi: ${q2} (${q2 === 'A' ? 'Benar' : 'Salah'})\n3. Sensor GPS: ${q3} (${q3 === 'B' ? 'Benar' : 'Salah'})\n4. Branch Bending: ${q4} (${q4 === 'B' ? 'Benar' : 'Salah'})\n5. Matematika Apel: ${q5} (${q5 === 'B' ? 'Benar' : 'Salah'})`;
+        note = `Asesmen PG Day 3 - STEM Transportasi (Skor: ${score}/100):\n1. Aerodinamika: ${q1} (${q1 === 'B' ? 'Benar' : 'Salah'})\n2. Prinsip Bernoulli: ${q2} (${q2 === 'B' ? 'Benar' : 'Salah'})\n3. Powertrain EV: ${q3} (${q3 === 'B' ? 'Benar' : 'Salah'})\n4. Crumple Zone: ${q4} (${q4 === 'B' ? 'Benar' : 'Salah'})\n5. Matematika BBM: ${q5} (${q5 === 'B' ? 'Benar' : 'Salah'})`;
 
         if (studentProgress && studentProgress.task_map) {
           studentProgress.task_map['3_asesmen'] = { status: 'submitted', content: note };
         }
 
         FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
-          FincestemCore.ui.toast(`Asesmen Day 3 Berhasil Dikirim! Skor Anda: ${score} / 100. Tahap 4 (Dokumentasi) sekarang telah terbuka.`, 'success');
+          FincestemCore.ui.toast(`Asesmen Day 3 Berhasil Dikirim! Skor Anda: ${score} / 100. Evaluasi STEM Transportasi Museum Angkut tuntas.`, 'success');
           loadStudentProgress();
         });
 
