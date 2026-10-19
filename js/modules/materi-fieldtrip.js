@@ -1507,6 +1507,8 @@
         const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier, user.username].filter(Boolean);
 
         for (const id of ids) {
+          // 0. Cek Dokumentasi Petik Apel
+          if (localStorage.getItem("fincestem_dok_ft_day3_apel_" + id) === "true") return true;
           // 1. Cek LKPD Petik Apel (disubmit atau tersimpan)
           const lkpdRaw = localStorage.getItem('fincestem_lkpd_ft_day3_apel_' + id) || localStorage.getItem('fincestem_lkpd_ft_day3_' + id);
           if (lkpdRaw) {
