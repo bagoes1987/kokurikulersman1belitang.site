@@ -70,6 +70,27 @@
         }
       } catch (e) {}
 
+      // Fallback prefill jawaban 5 soal esai dari Asesmen jika belum ada di LKPD
+      if (!saved || !saved.q1) {
+        try {
+          for (const id of idVars) {
+            const rawAs = localStorage.getItem('fincestem_asesmen_ft_day1_' + id);
+            if (rawAs) {
+              const parsedAs = JSON.parse(rawAs);
+              if (parsedAs && parsedAs.answers) {
+                saved = saved || {};
+                saved.q1 = saved.q1 || parsedAs.answers.q1 || '';
+                saved.q2 = saved.q2 || parsedAs.answers.q2 || '';
+                saved.q3 = saved.q3 || parsedAs.answers.q3 || '';
+                saved.q4 = saved.q4 || parsedAs.answers.q4 || '';
+                saved.q5 = saved.q5 || parsedAs.answers.q5 || '';
+                break;
+              }
+            }
+          }
+        } catch (e) {}
+      }
+
       // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan
       let hasMateri = false;
       try {
@@ -313,105 +334,45 @@
           </div>
         </div>
 
-        <!-- BAGIAN 4: SOAL PILIHAN GANDA LITERASI FINANSIAL -->
+        <!-- BAGIAN 4: 5 SOAL ESAI PENGENALAN KRU & PEMBIMBING FIELD TRIP -->
         <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-4">
           <div class="flex items-center gap-2 text-primary font-extrabold text-base border-b border-surface-container pb-2.5">
-            <span class="material-symbols-outlined text-xl text-purple-600">quiz</span>
-            <span>Bagian 4: Soal Analisis Literasi Finansial</span>
+            <span class="material-symbols-outlined text-xl text-purple-600">fact_check</span>
+            <span>Bagian 4: Pengenalan Kru &amp; Pembimbing Field Trip (5 Soal Esai)</span>
           </div>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            Tuliskan jawaban esai singkat berdasarkan informasi dan pengamatan Anda terhadap kru pendukung serta guru pendamping di bus Anda:
+          </p>
 
-          <!-- Soal 1 -->
-          <div class="flex flex-col gap-2 text-xs sm:text-sm">
-            <span class="font-bold text-slate-900">1. Di kapal ferry penyeberangan Selat Sunda, Anda melihat kios camilan mahal padahal baru selesai makan siang rombongan. Keputusan finansial yang paling bijak adalah...</span>
-            <div class="space-y-1.5 text-xs">
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq1" value="A" ${saved?.mcq1 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>A. Membeli banyak camilan mumpung uang saku masih utuh di hari pertama.</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq1" value="B" ${saved?.mcq1 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>B. Menahan diri (mencegah <em>impulse buying</em>) karena makan berikutnya sudah disiapkan biro dan uang saku diprioritaskan untuk oleh-oleh keluarga di hari berikutnya.</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq1" value="C" ${saved?.mcq1 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>C. Meminjam uang teman untuk membeli aksesori kapal ferry.</span>
-              </label>
+          <div class="space-y-3.5">
+            <!-- Soal 1 -->
+            <div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-2">
+              <label for="ftEssayQ1" class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">1. Apa nama Biro perjalanan selama field trip ini?</label>
+              <textarea id="ftEssayQ1" rows="2" ${readOnlyAttr} placeholder="Tuliskan nama biro perjalanan wisata resmi kegiatan ini..." class="w-full p-3 rounded-xl border border-outline-variant/50 text-xs sm:text-sm text-slate-900 leading-relaxed outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all ${isFormLocked ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${saved?.q1 || ''}</textarea>
             </div>
-          </div>
 
-          <!-- Soal 2 -->
-          <div class="flex flex-col gap-2 text-xs sm:text-sm pt-2 border-t border-slate-100">
-            <span class="font-bold text-slate-900">2. Mengapa pos oleh-oleh untuk keluarga (Day 6 di Jogja) dan pos tabungan darurat sebaiknya dialokasikan minimal 60%–70% dari total uang saku?</span>
-            <div class="space-y-1.5 text-xs">
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq2" value="A" ${saved?.mcq2 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>A. Sebagai bentuk bakti membahagiakan orang tua yang telah membiayai perjalanan serta mengantisipasi kebutuhan darurat di perjalanan.</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq2" value="B" ${saved?.mcq2 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>B. Karena harga oleh-oleh di Yogyakarta sangat murah dan tidak bernilai.</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq2" value="C" ${saved?.mcq2 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>C. Agar uang saku habis total tanpa menyisakan saldo saat tiba di rumah.</span>
-              </label>
+            <!-- Soal 2 -->
+            <div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-2">
+              <label for="ftEssayQ2" class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">2. Siapa nama lengkap tour leader di bus anda?</label>
+              <textarea id="ftEssayQ2" rows="2" ${readOnlyAttr} placeholder="Tuliskan nama lengkap tour leader yang memandu di bus Anda..." class="w-full p-3 rounded-xl border border-outline-variant/50 text-xs sm:text-sm text-slate-900 leading-relaxed outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all ${isFormLocked ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${saved?.q2 || ''}</textarea>
             </div>
-          </div>
 
-          <!-- Soal 3 -->
-          <div class="flex flex-col gap-2 text-xs sm:text-sm pt-2 border-t border-slate-100">
-            <span class="font-bold text-slate-900">3. Jika seorang siswa membawa uang saku Rp 700.000, berapa alokasi dana cadangan darurat minimal (20%) yang wajib disimpan terpisah dan tidak boleh disentuh?</span>
-            <div class="space-y-1.5 text-xs">
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq3" value="A" ${saved?.mcq3 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>A. Rp 50.000</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq3" value="B" ${saved?.mcq3 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>B. Rp 140.000</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq3" value="C" ${saved?.mcq3 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>C. Rp 350.000</span>
-              </label>
+            <!-- Soal 3 -->
+            <div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-2">
+              <label for="ftEssayQ3" class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">3. Siapa nama sopir dan kondektur di bus anda?</label>
+              <textarea id="ftEssayQ3" rows="2" ${readOnlyAttr} placeholder="Tuliskan nama driver (sopir) dan co-driver/kondektur bus Anda..." class="w-full p-3 rounded-xl border border-outline-variant/50 text-xs sm:text-sm text-slate-900 leading-relaxed outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all ${isFormLocked ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${saved?.q3 || ''}</textarea>
             </div>
-          </div>
 
-          <!-- Soal 4 -->
-          <div class="flex flex-col gap-2 text-xs sm:text-sm pt-2 border-t border-slate-100">
-            <span class="font-bold text-slate-900">4. Apa dampak negatif paling berbahaya jika siswa membelanjakan lebih dari 60% uang sakunya pada Day 1 dan Day 2?</span>
-            <div class="space-y-1.5 text-xs">
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq4" value="A" ${saved?.mcq4 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>A. Bus pariwisata akan tertunda keberangkatannya.</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq4" value="B" ${saved?.mcq4 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>B. Kehabisan uang saat tiba di Batu dan Yogyakarta sehingga gagal membeli oleh-oleh untuk keluarga dan tidak ada dana darurat.</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq4" value="C" ${saved?.mcq4 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>C. Penginapan hotel akan dibatalkan otomatis.</span>
-              </label>
+            <!-- Soal 4 -->
+            <div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-2">
+              <label for="ftEssayQ4" class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">4. Siapa nama petugas kesehatan kegiatan field trip ini?</label>
+              <textarea id="ftEssayQ4" rows="2" ${readOnlyAttr} placeholder="Tuliskan nama petugas/tenaga medis kesehatan yang mendampingi..." class="w-full p-3 rounded-xl border border-outline-variant/50 text-xs sm:text-sm text-slate-900 leading-relaxed outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all ${isFormLocked ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${saved?.q4 || ''}</textarea>
             </div>
-          </div>
 
-          <!-- Soal 5 -->
-          <div class="flex flex-col gap-2 text-xs sm:text-sm pt-2 border-t border-slate-100">
-            <span class="font-bold text-slate-900">5. Cara paling aman dan bijak dalam mengelola uang tunai selama berada di keramaian objek wisata adalah...</span>
-            <div class="space-y-1.5 text-xs">
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq5" value="A" ${saved?.mcq5 === 'A' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>A. Memegang seluruh lembaran uang di tangan agar mudah membayar.</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq5" value="B" ${saved?.mcq5 === 'B' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>B. Memisahkan uang jajan harian secukupnya di saku depan, dan menyimpan uang simpanan utama di amplop aman di dalam tas ransel.</span>
-              </label>
-              <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                <input type="radio" name="ftMcq5" value="C" ${saved?.mcq5 === 'C' ? 'checked' : ''} ${readOnlyAttr} class="text-primary focus:ring-0">
-                <span>C. Menitipkan seluruh uang saku kepada teman yang baru dikenal.</span>
-              </label>
+            <!-- Soal 5 -->
+            <div class="p-3.5 rounded-2xl bg-surface-container-low border border-outline-variant/25 flex flex-col gap-2">
+              <label for="ftEssayQ5" class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">5. Siapa nama guru pendamping di bus anda?</label>
+              <textarea id="ftEssayQ5" rows="2" ${readOnlyAttr} placeholder="Tuliskan nama bapak/ibu guru pendamping di bus Anda..." class="w-full p-3 rounded-xl border border-outline-variant/50 text-xs sm:text-sm text-slate-900 leading-relaxed outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all ${isFormLocked ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${saved?.q5 || ''}</textarea>
             </div>
           </div>
         </div>
@@ -659,11 +620,17 @@
         }
       }
 
-      const mcq1 = document.querySelector('input[name="ftMcq1"]:checked')?.value || '';
-      const mcq2 = document.querySelector('input[name="ftMcq2"]:checked')?.value || '';
-      const mcq3 = document.querySelector('input[name="ftMcq3"]:checked')?.value || '';
-      const mcq4 = document.querySelector('input[name="ftMcq4"]:checked')?.value || '';
-      const mcq5 = document.querySelector('input[name="ftMcq5"]:checked')?.value || '';
+      const q1 = document.getElementById('ftEssayQ1')?.value.trim() || '';
+      const q2 = document.getElementById('ftEssayQ2')?.value.trim() || '';
+      const q3 = document.getElementById('ftEssayQ3')?.value.trim() || '';
+      const q4 = document.getElementById('ftEssayQ4')?.value.trim() || '';
+      const q5 = document.getElementById('ftEssayQ5')?.value.trim() || '';
+
+      if (!q1 || !q2 || !q3 || !q4 || !q5) {
+        FincestemCore.ui.toast('Harap lengkapi semua 5 jawaban esai pengenalan kru & pembimbing pada Bagian 4!', 'warning');
+        return;
+      }
+
       const commitment = document.getElementById('ftCommitment')?.value.trim() || '';
 
       const diagnosisText = document.getElementById('ftDiagPill')?.textContent || 'Selesai Dianalisis';
@@ -680,11 +647,11 @@
         emergency: emergency,
         totalAllocated: totalAllocated,
         diagnosis: diagnosisText,
-        mcq1: mcq1,
-        mcq2: mcq2,
-        mcq3: mcq3,
-        mcq4: mcq4,
-        mcq5: mcq5,
+        q1: q1,
+        q2: q2,
+        q3: q3,
+        q4: q4,
+        q5: q5,
         commitment: commitment,
         submitted: true,
         submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
@@ -697,9 +664,33 @@
       }
 
       setTimeout(() => {
-        try {
-          localStorage.setItem('fincestem_lkpd_ft_day1_' + studentNisn, JSON.stringify(payload));
+                try {
+          const cleanId = String(studentNisn).trim();
+          const unpaddedId = cleanId.replace(/^0+/, '');
+          const idList = Array.from(new Set([cleanId, unpaddedId, '0' + unpaddedId, studentNisn])).filter(Boolean);
+          idList.forEach(id => {
+            localStorage.setItem('fincestem_lkpd_ft_day1_' + id, JSON.stringify(payload));
+          });
+
+          // Otomatis sinkronkan juga ke Asesmen Day 1 sehingga Tahap 3 Asesmen langsung tuntas
+          const asesmenPayload = {
+            submitted: true,
+            type: 'essay',
+            score: 100,
+            totalQuestions: 5,
+            answers: { q1, q2, q3, q4, q5 },
+            submitted_at: new Date().toISOString()
+          };
+          idList.forEach(id => {
+            localStorage.setItem('fincestem_asesmen_ft_day1_' + id, JSON.stringify(asesmenPayload));
+          });
         } catch(e) {}
+
+        // Sinkronkan ke server progress: LKPD & Asesmen Day 1
+        if (FincestemCore.progress && studentNisn) {
+          const asesmenNote = 'Asesmen Esai Day 1:\n1. Biro: ' + q1 + '\n2. Tour Leader: ' + q2 + '\n3. Sopir & Kondektur: ' + q3 + '\n4. Nakes: ' + q4 + '\n5. Guru Pendamping: ' + q5;
+          FincestemCore.progress.submitTask(studentNisn, 1, 'asesmen', asesmenNote, function() {});
+        }
 
         // Sinkronkan ke modul progres siswa
         if (FincestemCore.progress && studentNisn) {

@@ -833,8 +833,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261019_v6"></script>
-  <script src="../js/core.js?v=20261019_v6"></script>
+  <script src="../js/siswa_data.js?v=20261019_v8"></script>
+  <script src="../js/core.js?v=20261019_v8"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -3199,6 +3199,29 @@
             } catch(e) {}
           }
 
+          if (!ftAsesmen || !ftAsesmen.answers) {
+            for (const id of idList) {
+              try {
+                const rawLk = localStorage.getItem('fincestem_lkpd_ft_day1_' + id);
+                if (rawLk) {
+                  const parsedLk = JSON.parse(rawLk);
+                  if (parsedLk && (parsedLk.q1 || parsedLk.q2 || parsedLk.q3 || parsedLk.q4 || parsedLk.q5)) {
+                    ftAsesmen = ftAsesmen || {};
+                    ftAsesmen.submitted = ftAsesmen.submitted || parsedLk.submitted;
+                    ftAsesmen.answers = ftAsesmen.answers || {
+                      q1: parsedLk.q1 || '',
+                      q2: parsedLk.q2 || '',
+                      q3: parsedLk.q3 || '',
+                      q4: parsedLk.q4 || '',
+                      q5: parsedLk.q5 || ''
+                    };
+                    break;
+                  }
+                }
+              } catch(e) {}
+            }
+          }
+
           const isSubmitted = ftAsesmen && ftAsesmen.submitted;
           const savedAnswers = (ftAsesmen && ftAsesmen.answers) || {};
           const isModalReadOnly = isReadOnly || isSubmitted;
@@ -4055,6 +4078,14 @@
         const idList = getStudentStorageIdentifiers();
         idList.forEach(id => {
           localStorage.setItem('fincestem_asesmen_ft_day1_' + id, JSON.stringify(asesmenPayload));
+          try {
+            const rawLk = localStorage.getItem('fincestem_lkpd_ft_day1_' + id);
+            if (rawLk) {
+              const pLk = JSON.parse(rawLk);
+              pLk.q1 = q1; pLk.q2 = q2; pLk.q3 = q3; pLk.q4 = q4; pLk.q5 = q5;
+              localStorage.setItem('fincestem_lkpd_ft_day1_' + id, JSON.stringify(pLk));
+            }
+          } catch(e) {}
         });
 
         note = `Asesmen Esai Day 1:\n1. Biro: ${q1}\n2. Tour Leader: ${q2}\n3. Sopir & Kondektur: ${q3}\n4. Nakes: ${q4}\n5. Guru Pendamping: ${q5}`;
