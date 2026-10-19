@@ -181,7 +181,7 @@
         <input id="modalPhotoTitle" type="hidden" value="">
 
         <div>
-          <label class="block text-sm font-bold text-on-surface mb-1.5">Keterangan Foto</label>
+          <label id="modalPhotoDescLabel" class="block text-sm font-bold text-on-surface mb-1.5">Keterangan Foto</label>
           <textarea id="modalPhotoDesc" rows="3" placeholder="Tuliskan keterangan foto anda ini..." class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-sm sm:text-base font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400 leading-relaxed"></textarea>
         </div>
 
@@ -389,7 +389,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261019_v11"></script>
+  <script src="../js/core.js?v=20261019_v12"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -888,6 +888,23 @@
 
         // Perbarui panduan ketentuan berdasarkan kategori Non-Field Trip vs Field Trip
         const policyEl = document.getElementById('uploadPolicyNotice');
+        // Label khusus Day 3 Sesi 2 (Refleksi Wisata)
+        try {
+          const uParams = new URLSearchParams(window.location.search);
+          const cDay = parseInt(uParams.get('day')) || 1;
+          const cSesi = uParams.get('sesi');
+          const dLabel = document.getElementById('modalPhotoDescLabel');
+          const dInput = document.getElementById('modalPhotoDesc');
+          const cInfo = getStudentCategoryInfo();
+          if (cInfo.isFieldTrip && Number(cDay) === 3 && cSesi === '2') {
+            if (dLabel) dLabel.innerHTML = '<span class="text-blue-900 font-extrabold flex items-center gap-1.5"><span class="material-symbols-outlined text-base">psychology</span> Refleksi Pengalaman Wisata Jatim Park 1:</span>';
+            if (dInput) dInput.placeholder = 'Ceritakan pengalaman wisatamu: wahana atau zona sains/budaya apa yang paling seru/berkesan, dan bagaimana perasaanmu saat mencobanya bersama teman-teman...';
+          } else {
+            if (dLabel) dLabel.textContent = 'Keterangan Foto';
+            if (dInput) dInput.placeholder = 'Tuliskan keterangan foto anda ini...';
+          }
+        } catch(e) {}
+
         if (policyEl) {
           try {
             const cat = getStudentCategoryInfo();
@@ -2965,6 +2982,14 @@
           for (const id of ids) {
             if (sesiParam === '2') {
               localStorage.setItem('fincestem_dok_ft_day3_jatim_' + id, 'true');
+              if (desc) {
+                localStorage.setItem('fincestem_refleksi_ft_d3_sesi2_' + id, desc);
+              }
+              localStorage.setItem('fincestem_lkpd_ft_day3_jtp1_' + id, JSON.stringify({
+                submitted: true,
+                reflection: desc || 'Wisata Jatim Park 1 Selesai',
+                savedAt: new Date().toISOString()
+              }));
             } else if (sesiParam === '3') {
               localStorage.setItem('fincestem_dok_ft_day3_museum_' + id, 'true');
             } else {
@@ -3080,6 +3105,9 @@
           }
           if (nextBtnText) {
             nextBtnText.textContent = 'Lanjut ke Sesi 3: Materi Museum Angkut';
+          setTimeout(() => {
+            if (nextBtn && nextBtn.href) { window.location.href = nextBtn.href; }
+          }, 1500);
           }
         }
       } else if (cat.isFieldTrip && dayNum === 2) {

@@ -1477,6 +1477,8 @@
         const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), u.nis, u.identifier, u.username].filter(Boolean);
 
         for (const id of ids) {
+          if (localStorage.getItem("fincestem_dok_ft_day3_jatim_" + id) === "true") return true;
+          if (localStorage.getItem("fincestem_refleksi_ft_d3_sesi2_" + id)) return true;
           if (localStorage.getItem('fincestem_lkpd_ft_day3_jtp1_' + id)) return true;
           if (localStorage.getItem('fincestem_materi_ft_day3_jtp1_' + id)) return true;
         }
@@ -1937,25 +1939,56 @@
         }, 100);
 
       } else if (currentD3LkpdSession === 2) {
-        // SESI 2: JATIM PARK 1 - PREVIEW
+        // SESI 2: JATIM PARK 1 - WISATA BEBAS & DOKUMENTASI
         mainEl.innerHTML = `
           <div class="flex flex-col gap-4 sm:gap-5">
             ${tabNavHtml}
-            <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-12">
-              <div class="w-14 h-14 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
-                <span class="material-symbols-outlined text-3xl">science</span>
+
+            <div class="p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 shadow-sm flex flex-col items-center justify-center text-center gap-4 py-12">
+              <div class="w-16 h-16 rounded-3xl bg-blue-600 text-white flex items-center justify-center shadow-md">
+                <span class="material-symbols-outlined text-3xl">attractions</span>
               </div>
-              <h3 class="font-black text-lg sm:text-xl text-slate-900">
-                LKPD Sesi 2: Jawa Timur Park 1 (Science Center)
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed">
-                Lembar kerja eksplorasi fisika terapan, sains interaktif, dan galeri budaya nusantara di Jatim Park 1 akan disiapkan pada tahap perancangan Sesi 2.
-              </p>
-              <div class="pt-2">
-                <button type="button" onclick="switchD3LkpdSession(1)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
-                  <span class="material-symbols-outlined text-sm">arrow_back</span>
-                  <span>Kembali ke Sesi 1: LKPD Petik Apel</span>
-                </button>
+
+              <div class="max-w-md flex flex-col gap-1.5">
+                <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-blue-200 text-blue-900 inline-block mx-auto">
+                  Sesi 2 • Waktu Wisata &amp; Rekreasi Bebas
+                </span>
+                <h3 class="font-black text-xl text-slate-900">
+                  Eksplorasi Murni di Jawa Timur Park 1
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1">
+                  Pada Sesi 2 ini, Anda tidak dibebani oleh lembar kerja tertulis (LKPD) perhitungan matematika. Anda diberikan kebebasan penuh untuk berwisata, mencoba aneka wahana sains interaktif, serta menikmati rekreasi bersama kelompok.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-white border border-blue-200 max-w-md w-full text-left text-xs text-slate-700 flex flex-col gap-2">
+                <div class="font-extrabold text-blue-950 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-blue-600 text-base">checklist</span>
+                  <span>Aktivitas di Sesi 2 Jatim Park 1:</span>
+                </div>
+                <div class="flex items-start gap-2">
+                  <span class="text-emerald-600 font-bold">1.</span>
+                  <span>Mengeksplorasi wahana sains dan budaya nusantara dengan tertib.</span>
+                </div>
+                <div class="flex items-start gap-2">
+                  <span class="text-emerald-600 font-bold">2.</span>
+                  <span>Mengambil 1 foto dokumentasi kegiatan keseruan bersama kelompok.</span>
+                </div>
+                <div class="flex items-start gap-2">
+                  <span class="text-emerald-600 font-bold">3.</span>
+                  <span>Menuliskan refleksi singkat kesan rekreasi di menu Dokumentasi.</span>
+                </div>
+              </div>
+
+              <div class="pt-2 flex flex-col sm:flex-row gap-3 w-full max-w-md justify-center">
+                <a href="dokumentasi.html?day=3&sesi=2" class="flex-1 py-3.5 px-5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center">
+                  <span class="material-symbols-outlined text-lg">photo_camera</span>
+                  <span>Buka Dokumentasi &amp; Refleksi Sesi 2 &rarr;</span>
+                </a>
+                <a href="materi.html?day=3&sesi=2" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs sm:text-sm border border-slate-300 flex items-center justify-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-base">menu_book</span>
+                  <span>Lihat Modul</span>
+                </a>
               </div>
             </div>
           </div>

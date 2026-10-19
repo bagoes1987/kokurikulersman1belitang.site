@@ -1547,6 +1547,8 @@
         const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier, user.username].filter(Boolean);
 
         for (const id of ids) {
+          if (localStorage.getItem("fincestem_dok_ft_day3_jatim_" + id) === "true") return true;
+          if (localStorage.getItem("fincestem_refleksi_ft_d3_sesi2_" + id)) return true;
           if (localStorage.getItem('fincestem_lkpd_ft_day3_jtp1_' + id)) return true;
           if (localStorage.getItem('fincestem_materi_ft_day3_jtp1_' + id)) return true;
         }
@@ -1985,20 +1987,22 @@
           </div>
         `;
       } else if (currentD3Session === 2) {
-        // SESI 2: JATIM PARK 1 (SCIENCE CENTER) - PREVIEW
+        // SESI 2: JATIM PARK 1 (SCIENCE CENTER & REKREASI)
         headerHtml = `
-          <div class="bg-gradient-to-br from-blue-800 via-indigo-900 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5 border border-blue-700/40">
+          <div class="bg-gradient-to-br from-blue-800 via-indigo-900 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3 border border-blue-700/40">
             <div class="flex items-center justify-between gap-2 flex-wrap">
               <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
                 Field Trip • Day 3 • Sesi 2
               </span>
-              <span class="text-xs font-bold text-amber-300">Pilar: Science, Physics &amp; Technology Exploration</span>
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-amber-300 text-slate-950">
+                Pilar: Sains, Budaya Nusantara &amp; Rekreasi Wisata
+              </span>
             </div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              Kunjungan Jawa Timur Park 1 (Science Center)
+              Eksplorasi Edukatif &amp; Wisata Rekreasi Jawa Timur Park 1
             </h2>
             <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
-              Eksplorasi wahana sains interaktif, galeri etnik nusantara, serta peragaan hukum-hukum fisika dan teknologi terapan di Science Center Jatim Park 1.
+              Eksplorasi Mandiri &amp; Wisata Bebas: Peragaan Fisika Science Stadium, Anatomi Manusia, Galeri Etnografi 38 Provinsi, serta Wahana Rekreasi dan Kekompakan Sahabat.
             </p>
             <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-blue-200 font-semibold flex-wrap">
               <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
@@ -2009,26 +2013,190 @@
                 <span class="material-symbols-outlined text-sm">pin_drop</span>
                 <span>Jawa Timur Park 1, Kota Batu</span>
               </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">attractions</span>
+                <span>Wisata Murni (Bebas LKPD Hitungan)</span>
+              </span>
             </div>
           </div>
         `;
 
         bodyHtml = `
-          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col items-center justify-center text-center gap-3 py-10">
-            <div class="w-14 h-14 rounded-3xl bg-blue-100 text-blue-600 flex items-center justify-center shadow-xs">
-              <span class="material-symbols-outlined text-3xl">science</span>
+          <div class="flex flex-col gap-5 sm:gap-6">
+            <!-- PENGANTAR UMUM JATIM PARK 1 -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+              <div class="flex items-center gap-2.5 text-blue-950 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+                <span class="material-symbols-outlined text-blue-600 text-2xl">fort</span>
+                <span>1. Mengenal Jawa Timur Park 1: Pelopor Edu-Tourism Indonesia</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                <strong>Jawa Timur Park 1 (JTP 1)</strong> adalah pelopor taman rekreasi edukatif terpadu modern di Kota Batu yang beroperasi sejak tahun 2001. Mengusung konsep <em>Edu-Tourism</em>, tempat ini dirancang untuk memadukan laboratorium sains interaktif, museum etnografi kebudayaan Indonesia, serta puluhan wahana ketangkasan dan permainan luar ruang dalam satu kawasan yang menyenangkan.
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-xs">
+                <div class="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 flex flex-col gap-1">
+                  <div class="flex items-center gap-1.5 font-black text-blue-950">
+                    <span class="material-symbols-outlined text-blue-600 text-base">science</span>
+                    <span>Science Stadium</span>
+                  </div>
+                  <span class="text-slate-600 text-[11px] leading-snug">Laboratorium peraga hukum fisika, kimia, optik, dan biologi interaktif.</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col gap-1">
+                  <div class="flex items-center gap-1.5 font-black text-amber-950">
+                    <span class="material-symbols-outlined text-amber-600 text-base">diversity_3</span>
+                    <span>Galeri Budaya Etnik</span>
+                  </div>
+                  <span class="text-slate-600 text-[11px] leading-snug">Replika rumah adat, pakaian tradisional, dan artefak 38 provinsi nusantara.</span>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col gap-1">
+                  <div class="flex items-center gap-1.5 font-black text-emerald-950">
+                    <span class="material-symbols-outlined text-emerald-600 text-base">attractions</span>
+                    <span>Amusement &amp; Waterpark</span>
+                  </div>
+                  <span class="text-slate-600 text-[11px] leading-snug">Wahana rekreasi ketangkasan pemacu adrenalin dan kolam renang air pegunungan.</span>
+                </div>
+              </div>
             </div>
-            <h3 class="font-black text-lg sm:text-xl text-slate-900">
-              Sesi 2: Kunjungan Jatim Park 1 (Science Center)
-            </h3>
-            <p class="text-xs sm:text-sm text-slate-600 max-w-md leading-relaxed">
-              Konsep modul belajar, lembar kerja LKPD, dan instrumen asesmen Sesi 2 akan disusun bersama setelah Sesi 1 Wisata Petik Apel tuntas disepakati.
-            </p>
-            <div class="flex gap-2 pt-2">
-              <button type="button" onclick="switchD3Session(1)" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
-                <span class="material-symbols-outlined text-sm">arrow_back</span>
-                <span>Kembali ke Sesi 1: Petik Apel</span>
-              </button>
+
+            <!-- TIGA ZONA UTAMA EKSPLORASI -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-4">
+              <div class="flex items-center gap-2.5 text-blue-950 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+                <span class="material-symbols-outlined text-indigo-600 text-2xl">explore</span>
+                <span>2. Tiga Zona Wisata Edukasi yang Wajib Kamu Kunjungi</span>
+              </div>
+
+              <!-- Zona 1: Science Stadium -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2.5">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center">A</span>
+                    <span>Science Stadium: Menikmati Sains Secara Nyata</span>
+                  </span>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-blue-100 text-blue-900">Pilar STEM</span>
+                </div>
+                <p class="text-xs text-slate-700 leading-relaxed">
+                  Di zona ini, teori-teori fisika dan biologi yang ada di buku pelajaran dapat kamu coba langsung dengan tanganmu sendiri:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 flex items-start gap-2">
+                    <span class="material-symbols-outlined text-blue-600 text-base mt-0.5">bolt</span>
+                    <div>
+                      <strong class="text-slate-900 block font-bold">Listrik Statis &amp; Magnet:</strong>
+                      <span class="text-slate-600">Generator Van de Graaff yang membuat rambut berdiri dan peragaan induksi elektromagnetik.</span>
+                    </div>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 flex items-start gap-2">
+                    <span class="material-symbols-outlined text-blue-600 text-base mt-0.5">cyclone</span>
+                    <div>
+                      <strong class="text-slate-900 block font-bold">Gaya Sentrifugal &amp; Fluida:</strong>
+                      <span class="text-slate-600">Simulator tornado buatan, pipa venturi, dan lintasan gravitasi mekanika gerak.</span>
+                    </div>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 flex items-start gap-2">
+                    <span class="material-symbols-outlined text-blue-600 text-base mt-0.5">visibility</span>
+                    <div>
+                      <strong class="text-slate-900 block font-bold">Ilusi Optika &amp; Resonansi:</strong>
+                      <span class="text-slate-600">Cermin cekung/cembung tak hingga, ruang gravitasi terbalik, dan osilasi bunyi garputala.</span>
+                    </div>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 flex items-start gap-2">
+                    <span class="material-symbols-outlined text-blue-600 text-base mt-0.5">skeleton</span>
+                    <div>
+                      <strong class="text-slate-900 block font-bold">Anatomi Manusia &amp; Geologi:</strong>
+                      <span class="text-slate-600">Replika kerangka tulang, model organ sirkulasi/respirasi, serta diorama gunung api vulkanik Jawa Timur.</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Zona 2: Etnografi Budaya Nusantara -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2.5">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-amber-600 text-white font-black text-xs flex items-center justify-center">B</span>
+                    <span>Galeri Etnografi Budaya: Keliling Nusantara dalam 1 Jam</span>
+                  </span>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-amber-100 text-amber-900">Pilar Culture</span>
+                </div>
+                <p class="text-xs text-slate-700 leading-relaxed">
+                  Menyajikan miniatur Indonesia yang luar biasa kaya. Kamu dapat mengamati secara langsung replika arsitektur rumah adat dari 38 provinsi (seperti Rumah Gadang Minangkabau, Tongkonan Toraja, Joglo Jawa, hingga Honai Papua), pakaian pernikahan adat daerah, dan aneka senjata pusaka nusantara. Ini adalah spot foto budaya terbaik untuk mengabadikan kebanggaan kita pada warisan bangsa!
+                </p>
+              </div>
+
+              <!-- Zona 3: Rekreasi & Ketangkasan -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2.5">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
+                    <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white font-black text-xs flex items-center justify-center">C</span>
+                    <span>Wahana Rekreasi &amp; Melatih Keberanian</span>
+                  </span>
+                  <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-emerald-100 text-emerald-900">Pilar Exploration</span>
+                </div>
+                <p class="text-xs text-slate-700 leading-relaxed">
+                  Bagi yang menyukai tantangan, puluhan wahana menanti untuk dicoba bersama sahabat: <em>Roller Coaster, Flying Tornado, 360° Pendulum, Sky Swinger, Sky Ride</em>, hingga area kolam renang air sejuk pegunungan. Wahana ini menguji nyali, melatih keberanian mengendalikan rasa takut, dan menciptakan momen kebersamaan yang tidak terlupakan seumur hidup!
+                </p>
+              </div>
+            </div>
+
+            <!-- ETIKA WISATAWAN PELAJAR BERADAB -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-amber-50/80 border border-amber-200 flex flex-col gap-3">
+              <div class="flex items-center gap-2 text-amber-950 font-black text-base sm:text-lg border-b border-amber-200/60 pb-2.5">
+                <span class="material-symbols-outlined text-amber-700 text-2xl">verified_user</span>
+                <span>3. Panduan Etika &amp; Keselamatan Pelajar di Jatim Park 1</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-slate-800">
+                <div class="flex items-start gap-2 bg-white p-3 rounded-xl border border-amber-100">
+                  <span class="material-symbols-outlined text-emerald-600 text-lg mt-0.5">delete_outline</span>
+                  <div>
+                    <strong class="text-amber-950 font-bold block">Zero Littering (Jaga Kebersihan):</strong>
+                    <span>Selalu buang bungkus makanan, botol minuman, dan tisu ke tempat sampah yang tersedia.</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 bg-white p-3 rounded-xl border border-amber-100">
+                  <span class="material-symbols-outlined text-blue-600 text-lg mt-0.5">group</span>
+                  <div>
+                    <strong class="text-amber-950 font-bold block">Tertib Antrean:</strong>
+                    <span>Sabar mengantre di setiap wahana permainan. Jangan menyerobot antrean pengunjung lain.</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 bg-white p-3 rounded-xl border border-amber-100">
+                  <span class="material-symbols-outlined text-rose-600 text-lg mt-0.5">health_and_safety</span>
+                  <div>
+                    <strong class="text-amber-950 font-bold block">Patuhi Syarat Wahana:</strong>
+                    <span>Perhatikan batasan tinggi badan dan kondisi kesehatan (jantung/vertigo) sebelum menaiki wahana ekstrem.</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2 bg-white p-3 rounded-xl border border-amber-100">
+                  <span class="material-symbols-outlined text-purple-600 text-lg mt-0.5">schedule</span>
+                  <div>
+                    <strong class="text-amber-950 font-bold block">Tepat Waktu Berkumpul:</strong>
+                    <span>Perhatikan jam kumpul yang ditentukan Tour Leader &amp; Guru Pendamping untuk keberangkatan ke Museum Angkut (Sesi 3).</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- KARTU INFORMASI WISATA MURNI & BEBAS LKPD -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-800 text-white shadow-lg flex flex-col gap-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-white/20 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl text-amber-300">celebration</span>
+                </div>
+                <div>
+                  <span class="text-xs font-black uppercase text-blue-200 tracking-wider">Waktu Rekreasi Bebas</span>
+                  <h3 class="text-lg font-black text-white">Sesi 2 Murni Berwisata &amp; Eksplorasi Seru!</h3>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-blue-100 leading-relaxed">
+                Di Sesi 2 ini, <strong>tidak ada lembar kerja tertulis (LKPD) yang membebani</strong>. Manfaatkan waktu ini sebaik-baiknya untuk menikmati wahana bersama teman-teman!
+                <br>Setelah puas bermain dan berkeliling, cukup unggah <strong>1 foto dokumentasi kegiatan keseruanmu</strong> dan tuliskan <strong>refleksi singkat kesan berwisata</strong> di halaman Dokumentasi.
+              </p>
+
+              <div class="pt-2">
+                <button type="button" onclick="handleGoToDokumentasiJtp1()" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-xl transition-all flex items-center justify-center gap-2 cursor-pointer">
+                  <span class="material-symbols-outlined text-xl">photo_camera</span>
+                  <span>Buka Dokumentasi &amp; Refleksi Rekreasi Sesi 2 &rarr;</span>
+                </button>
+              </div>
             </div>
           </div>
         `;
@@ -2582,4 +2750,31 @@
       }
       window.location.href = `lkpd.html?day=${dayNum}`;
     }
-
+
+    function handleGoToDokumentasiJtp1() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+
+      const record = {
+        day_number: 3,
+        session: 2,
+        location: 'Jawa Timur Park 1, Kota Batu',
+        status: 'read',
+        savedAt: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem('fincestem_materi_ft_day3_jtp1_' + cleanNisn, JSON.stringify(record));
+      } catch(e) {}
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(cleanNisn, 3, 'materi_jtp1', record);
+      }
+
+      FincestemCore.ui.toast('Modul Jatim Park 1 terbaca. Menuju Dokumentasi & Refleksi...', 'success');
+      setTimeout(() => {
+        window.location.href = 'dokumentasi.html?day=3&sesi=2';
+      }, 400);
+    }
+    window.handleGoToDokumentasiJtp1 = handleGoToDokumentasiJtp1;
