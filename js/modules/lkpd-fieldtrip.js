@@ -1666,81 +1666,6 @@
               </div>
             </div>
 
-            <!-- KARTU PETUNJUK MEMETIK APEL & CIRI APEL MASAK -->
-            <div class="p-4 sm:p-5 rounded-3xl bg-amber-50/90 border border-amber-200/90 shadow-2xs flex flex-col gap-3">
-              <div class="flex items-center justify-between border-b border-amber-200/80 pb-2.5 flex-wrap gap-2">
-                <div class="flex items-center gap-2 text-amber-950 font-black text-sm sm:text-base">
-                  <span class="material-symbols-outlined text-amber-700 text-xl">pan_tool</span>
-                  <span>Petunjuk Memetik Apel &amp; Ciri Buah Masak</span>
-                </div>
-                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-200 text-amber-950 uppercase">
-                  Pedoman Lapangan
-                </span>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs sm:text-[12px] text-slate-700">
-                <!-- Kolom Kiri: PETUNJUK MEMETIK APEL (6 Poin) -->
-                <div class="p-3.5 rounded-2xl bg-white border border-amber-200 flex flex-col gap-2 shadow-2xs">
-                  <strong class="text-amber-950 flex items-center gap-1.5 font-black text-xs sm:text-[13px] border-b border-amber-100 pb-1.5">
-                    <span class="material-symbols-outlined text-amber-600 text-base">checklist</span>
-                    PETUNJUK MEMETIK APEL
-                  </strong>
-                  <div class="flex flex-col gap-2 pt-0.5">
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">1</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Buah yang masak berwarna merah/kuning.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">2</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Tangan kiri memegang tangkai apel, tangan kanan memegang buah apel.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">3</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Buah diputar sampai apel terlepas.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">4</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Apabila buah bergerombol, cara memetiknya cukup diputar saja.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">5</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Jangan menarik terlalu kuat atau mematahkan tangkai, karena tangkai diperlukan untuk reproduksi apel yang baru.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-amber-200 text-amber-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">6</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Jika ada buah yang terjatuh saat pemetikan, mohon kerja samanya untuk diambil dan dimasukkan ke dalam wadah.</span>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Kolom Kanan: CIRI-CIRI APEL YANG MASAK (3 Poin) -->
-                <div class="p-3.5 rounded-2xl bg-white border border-emerald-200 flex flex-col gap-2 shadow-2xs">
-                  <strong class="text-emerald-950 flex items-center gap-1.5 font-black text-xs sm:text-[13px] border-b border-emerald-100 pb-1.5">
-                    <span class="material-symbols-outlined text-emerald-600 text-base">verified</span>
-                    CIRI-CIRI APEL YANG MASAK
-                  </strong>
-                  <div class="flex flex-col gap-2 pt-0.5">
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-teal-200 text-teal-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">1</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Apel yang masak berwarna merah.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-teal-200 text-teal-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">2</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Jika masih baru dipetik, rasanya masih ada rasa asam.</span>
-                    </div>
-                    <div class="flex items-start gap-2.5">
-                      <span class="w-5 h-5 rounded-full bg-teal-200 text-teal-900 font-black text-xs flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">3</span>
-                      <span class="text-xs sm:text-[12px] text-slate-800 font-medium leading-relaxed">Apel akan terasa lebih manis setelah disimpan selama 2–3 hari.</span>
-                    </div>
-                  </div>
-                  <div class="mt-auto p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 text-[11px] text-emerald-900 font-semibold italic flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm text-emerald-700 shrink-0">info</span>
-                    <span>Perhatikan ciri di atas saat memilih buah apel yang akan kamu petik dan makan di kebun!</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
             <!-- FORM INVESTIGASI 4 PILAR FINCESTEM -->
             <form id="formFtDay3Lkpd" onsubmit="event.preventDefault();" class="flex flex-col gap-5 sm:gap-6">
 
@@ -1945,12 +1870,7 @@
                   </div>
                 </div>
 
-                <div class="flex flex-col gap-1.5">
-                  <label for="ftD3KesimpulanMath" class="text-xs sm:text-sm font-bold text-slate-800">
-                    Kesimpulan Analisis Matematika &amp; Nilai Manfaat Kunjungan:
-                  </label>
-                  <textarea id="ftD3KesimpulanMath" rows="2" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Saya memakan 6 butir apel setara dengan 0,75 kg senilai Rp 27.000 (harga Rp 36.000/kg). Nilai buah yang saya nikmati sudah melampaui tiket masuk Rp 25.000 (titik impas tercapai), ditambah wawasan langsung mengenai petunjuk memetik apel dan ciri apel masak di kebun...">${saved ? (saved.kesimpulanMath || '') : ''}</textarea>
-                </div>
+                
               </div>
 
               <!-- TOMBOL AKSI SIMPAN & SUBMIT LKPD -->
@@ -2214,7 +2134,7 @@
       const sistemRekayasa = (document.getElementById('ftD3SistemRekayasa')?.value || '').trim();
       const applesEaten = parseInt(document.getElementById('ftD3ApplesEaten')?.value) || 0;
       const pricePerKg = parseRupiah(document.getElementById('ftD3PricePerKg')?.value) || 24000;
-      const kesimpulanMath = (document.getElementById('ftD3KesimpulanMath')?.value || '').trim();
+      
 
       if (isSubmit) {
         if (!selectedVarietas) {
@@ -2235,11 +2155,7 @@
           document.getElementById('ftD3SistemRekayasa')?.focus();
           return;
         }
-        if (!kesimpulanMath || kesimpulanMath.length < 15) {
-          FincestemCore.ui.toast('Tuliskan kesimpulan analisis matematika & nilai manfaat tiket (Bagian 4)!', 'warning');
-          document.getElementById('ftD3KesimpulanMath')?.focus();
-          return;
-        }
+        
       }
 
       const totalKg = Number((applesEaten / 8).toFixed(2));
@@ -2261,7 +2177,7 @@
         pricePerKg: pricePerKg,
         totalKg: totalKg,
         totalRupiah: totalRupiah,
-        kesimpulanMath: kesimpulanMath,
+        kesimpulanMath: '',
         submitted: !!isSubmit,
         submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
       };
