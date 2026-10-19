@@ -1894,9 +1894,9 @@
                     <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
                     <span>LKPD Day 3 Sesi 1 (Petik Apel) telah berhasil dikirimkan pada ${saved ? (saved.submittedAt || '') : 'hari ini'}.</span>
                   </div>
-                  <a href="dashboard.html" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-xs transition-all flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-base">fact_check</span>
-                    <span>Lanjut ke Asesmen Day 3</span>
+                  <a href="dokumentasi.html?day=3&sesi=1" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-xs transition-all flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Lanjut ke Dokumentasi Foto Petik Apel &rarr;</span>
                   </a>
                 </div>
               ` : '')}
@@ -1919,9 +1919,9 @@
                 Data observasi varietas buah, pembacaan sensor GPS pegunungan, sistem rekayasa hortikultura, dan perhitungan konsumsi telah dicatat ke sistem.
               </p>
               <div class="flex flex-col gap-2 pt-2">
-                <a href="dashboard.html" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
-                  <span class="material-symbols-outlined text-lg">fact_check</span>
-                  <span>Menuju Asesmen Day 3 (Tahap 3)</span>
+                <a href="dokumentasi.html?day=3&sesi=1" class="w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center">
+                  <span class="material-symbols-outlined text-lg">photo_camera</span>
+                  <span>Lanjut ke Dokumentasi Foto Petik Apel &rarr;</span>
                 </a>
                 <button type="button" onclick="closeD3LkpdSuccessModal()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer transition-all">
                   Tetap di Halaman LKPD
@@ -2210,8 +2210,11 @@
             statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-300 text-slate-950';
             statusBadge.textContent = '✓ Telah Dikirim / Selesai';
           }
-          FincestemCore.ui.toast('LKPD Petik Apel Day 3 Sesi 1 berhasil disimpan & dikirim!', 'success');
+          FincestemCore.ui.toast('LKPD Petik Apel Day 3 Sesi 1 berhasil dikirim! Mengarahkan ke Dokumentasi Foto...', 'success');
           showD3LkpdSuccessModal();
+          setTimeout(() => {
+            window.location.href = 'dokumentasi.html?day=3&sesi=1';
+          }, 1200);
         } else {
           FincestemCore.ui.toast('Draft LKPD Petik Apel tersimpan.', 'info');
         }

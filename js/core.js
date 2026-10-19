@@ -2594,11 +2594,17 @@ const FincestemCore = {
       if (!prog) return false;
       const d = parseInt(dayNum);
       if (prog.records && Array.isArray(prog.records)) {
-        if (prog.records.some(r => parseInt(r.day_number) === d && r.status === 'completed')) return true;
+        if (prog.records.some(r => parseInt(r.day_number) === d && (r.status === 'completed' || (r.task_type === 'general' && r.status === 'reviewed')))) return true;
       }
       if (prog.task_map) {
-        for (const k in prog.task_map) {
-          if (k.startsWith(d + '_') && prog.task_map[k].status === 'completed') return true;
+        const refl = prog.task_map[d + '_refleksi'];
+        if (refl && (refl.status === 'completed' || refl.status === 'submitted')) return true;
+        if (prog.task_map[d + '_lkpd'] && prog.task_map[d + '_asesmen'] && prog.task_map[d + '_dokumentasi']) {
+          const s1 = prog.task_map[d + '_lkpd'].status;
+          const s2 = prog.task_map[d + '_asesmen'].status;
+          const s3 = prog.task_map[d + '_dokumentasi'].status;
+          const ok = (s) => (s === 'completed' || s === 'submitted');
+          if (ok(s1) && ok(s2) && ok(s3)) return true;
         }
       }
       return false;

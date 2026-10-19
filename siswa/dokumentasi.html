@@ -389,7 +389,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261019_v10"></script>
+  <script src="../js/core.js?v=20261019_v11"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -617,71 +617,6 @@
         let dayBadge = (dayNum === 0) ? 'DAY 0 • SIMULASI' : `DAY ${dayNum} • ${cat.isFieldTrip ? 'FIELD TRIP' : 'NON-FIELD TRIP'}`;
         let subTitle = actConfig.title;
         let subTheme = actConfig.theme;
-
-        // Penyesuaian khusus Day 2 Field Trip (2 Sesi Kunjungan: AKPOL & Lawang Sewu)
-        if (cat.isFieldTrip && Number(dayNum) === 3) {
-        let hasDokApel = false;
-        let hasDokJatim = false;
-        let hasDokMuseum = false;
-        for (const id of ids) {
-          if (localStorage.getItem('fincestem_dok_ft_day3_apel_' + id) === 'true') hasDokApel = true;
-          if (localStorage.getItem('fincestem_dok_ft_day3_jatim_' + id) === 'true') hasDokJatim = true;
-          if (localStorage.getItem('fincestem_dok_ft_day3_museum_' + id) === 'true') hasDokMuseum = true;
-        }
-
-        const isSesi2 = (sesiParam === '2');
-        const isSesi3 = (sesiParam === '3');
-        const isSesi1 = (!isSesi2 && !isSesi3);
-
-        if (isSesi1) {
-          if (hasDokApel) {
-            container.innerHTML = `
-              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-blue-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
-                <div class="flex items-center justify-between gap-2">
-                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
-                    SESI 1 SELESAI
-                  </span>
-                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
-                </div>
-                <div>
-                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Dokumentasi Kebun Apel Berhasil Diunggah</h3>
-                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
-                    Bukti foto kegiatan eksplorasi petik apel di Kota Batu telah tersimpan. Silakan lanjutkan ke Sesi 2 (Materi Jatim Park 1).
-                  </p>
-                </div>
-                <div class="flex flex-col sm:flex-row gap-2 pt-1">
-                  <a href="materi.html?day=3&sesi=2" class="flex-1 py-3.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
-                    <span class="material-symbols-outlined text-xl">menu_book</span>
-                    <span>Lanjut ke Sesi 2: Materi Jatim Park 1 &rarr;</span>
-                  </a>
-                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-emerald-900 border border-emerald-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
-                    <span class="material-symbols-outlined text-base">add_a_photo</span>
-                    <span>Tambah Foto Petik Apel</span>
-                  </button>
-                </div>
-              </div>
-            `;
-          } else {
-            container.innerHTML = `
-              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex flex-col gap-3 shadow-lg">
-                <div class="flex items-center justify-between gap-2">
-                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
-                    SESI 1 • KEBUN PETIK APEL BATU
-                  </span>
-                </div>
-                <div>
-                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Wisata Petik Apel Batu</h3>
-                  <p class="text-xs text-emerald-100 mt-1">Ambil atau pilih foto dokumentasi kegiatan memetik apel langsung dari kebun.</p>
-                </div>
-                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-emerald-50 text-emerald-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
-                  <span class="material-symbols-outlined text-2xl text-emerald-700">photo_camera</span>
-                  <span>Unggah Dokumentasi Foto Petik Apel</span>
-                </button>
-              </div>
-            `;
-          }
-        }
-      }
 
       if (cat.isFieldTrip && Number(dayNum) === 2) {
           const user = FincestemCore.auth.getUser() || {};
@@ -2504,6 +2439,163 @@
             `;
           }
         }
+      } else if (cat.isFieldTrip && Number(dayNum) === 3) {
+        let hasDokApel = false;
+        let hasDokJatim = false;
+        let hasDokMuseum = false;
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day3_apel_' + id) === 'true') hasDokApel = true;
+          if (localStorage.getItem('fincestem_dok_ft_day3_jatim_' + id) === 'true') hasDokJatim = true;
+          if (localStorage.getItem('fincestem_dok_ft_day3_museum_' + id) === 'true') hasDokMuseum = true;
+        }
+
+        const isSesi2 = (sesiParam === '2');
+        const isSesi3 = (sesiParam === '3');
+        const isSesi1 = (!isSesi2 && !isSesi3);
+
+        if (isSesi1) {
+          if (hasDokApel) {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-blue-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
+                    SESI 1 SELESAI
+                  </span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Dokumentasi Kebun Apel Berhasil Diunggah</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Bukti foto kegiatan eksplorasi petik apel di Kota Batu telah tersimpan. Silakan lanjutkan ke Sesi 2 (Materi Jatim Park 1).
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="materi.html?day=3&sesi=2" class="flex-1 py-3.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-xl">menu_book</span>
+                    <span>Lanjut ke Sesi 2: Materi Jatim Park 1 &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-emerald-900 border border-emerald-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Petik Apel</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    SESI 1 • KEBUN PETIK APEL BATU
+                  </span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Wisata Petik Apel Batu</h3>
+                  <p class="text-xs text-emerald-100 mt-1">Ambil atau pilih foto dokumentasi kegiatan memetik apel langsung dari kebun.</p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-emerald-50 text-emerald-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-emerald-700">photo_camera</span>
+                  <span>Unggah Dokumentasi Foto Petik Apel</span>
+                </button>
+              </div>
+            `;
+          }
+        } else if (isSesi2) {
+          if (hasDokJatim) {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white shadow-2xs">
+                    SESI 2 SELESAI
+                  </span>
+                  <span class="material-symbols-outlined text-blue-600 text-xl">check_circle</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-slate-900">Foto Dokumentasi Jatim Park 1 Berhasil Diunggah</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Bukti foto eksplorasi wahana sains telah tersimpan. Silakan lanjutkan ke Sesi 3 (Materi Museum Angkut).
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="materi.html?day=3&sesi=3" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-xl">menu_book</span>
+                    <span>Lanjut ke Sesi 3: Materi Museum Angkut &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-blue-900 border border-blue-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Jatim Park 1</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    SESI 2 • JATIM PARK 1
+                  </span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Jatim Park 1 (Science Center)</h3>
+                  <p class="text-xs text-blue-100 mt-1">Ambil atau pilih foto kegiatan eksplorasi wahana sains fisika terapan atau budaya nusantara.</p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-blue-50 text-blue-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-blue-700">photo_camera</span>
+                  <span>Unggah Dokumentasi Foto Jatim Park 1</span>
+                </button>
+              </div>
+            `;
+          }
+        } else {
+          // SESI 3: MUSEUM ANGKUT
+          if (hasDokMuseum) {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-purple-500/10 via-pink-500/10 to-amber-500/10 border-2 border-purple-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-purple-600 text-white shadow-2xs">
+                    SESI 3 SELESAI
+                  </span>
+                  <span class="material-symbols-outlined text-purple-600 text-xl">check_circle</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-slate-900">Foto Dokumentasi Museum Angkut Berhasil Diunggah</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Seluruh 3 sesi kunjungan Day 3 telah selesai didokumentasikan! Silakan lanjutkan ke Asesmen Reflektif Day 3.
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="asesmen.html?day=3" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-xl">fact_check</span>
+                    <span>Lanjut ke Asesmen Day 3 &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-purple-900 border border-purple-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Museum Angkut</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-purple-600 to-pink-700 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    SESI 3 • MUSEUM ANGKUT
+                  </span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Museum Angkut Kota Batu</h3>
+                  <p class="text-xs text-purple-100 mt-1">Ambil atau pilih foto kendaraan antik/klasik, zona transportasi, atau pasar apung.</p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-purple-50 text-purple-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-purple-700">photo_camera</span>
+                  <span>Unggah Dokumentasi Foto Museum Angkut</span>
+                </button>
+              </div>
+            `;
+          }
+        }
       } else {
         // HARI LAINNYA
         container.innerHTML = `
@@ -2974,6 +3066,9 @@
           }
           if (nextBtnText) {
             nextBtnText.textContent = 'Lanjut ke Sesi 2: Materi Jatim Park 1';
+          setTimeout(() => {
+            if (nextBtn && nextBtn.href) { window.location.href = nextBtn.href; }
+          }, 1500);
           }
         } else if (sesiParam === '2') {
           if (subtitle) {
