@@ -1484,7 +1484,7 @@
         if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
           const prog = FincestemCore.progress.getStudentProgress(nisn);
           if (prog && prog.task_map) {
-            if (prog.task_map['3_lkpd_jtp1'] || prog.task_map['3_materi_jtp1']) return true;
+            if (prog.task_map['3_lkpd_jtp1'] || prog.task_map['3_materi_jtp1'] || prog.task_map['3_refleksi_jtp1']) return true;
           }
         }
       } catch(e) {}
