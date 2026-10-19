@@ -389,7 +389,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261019_v12"></script>
+  <script src="../js/core.js?v=20261019_v13"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -888,22 +888,6 @@
 
         // Perbarui panduan ketentuan berdasarkan kategori Non-Field Trip vs Field Trip
         const policyEl = document.getElementById('uploadPolicyNotice');
-        // Label khusus Day 3 Sesi 2 (Refleksi Wisata)
-        try {
-          const uParams = new URLSearchParams(window.location.search);
-          const cDay = parseInt(uParams.get('day')) || 1;
-          const cSesi = uParams.get('sesi');
-          const dLabel = document.getElementById('modalPhotoDescLabel');
-          const dInput = document.getElementById('modalPhotoDesc');
-          const cInfo = getStudentCategoryInfo();
-          if (cInfo.isFieldTrip && Number(cDay) === 3 && cSesi === '2') {
-            if (dLabel) dLabel.innerHTML = '<span class="text-blue-900 font-extrabold flex items-center gap-1.5"><span class="material-symbols-outlined text-base">psychology</span> Refleksi Pengalaman Wisata Jatim Park 1:</span>';
-            if (dInput) dInput.placeholder = 'Ceritakan pengalaman wisatamu: wahana atau zona sains/budaya apa yang paling seru/berkesan, dan bagaimana perasaanmu saat mencobanya bersama teman-teman...';
-          } else {
-            if (dLabel) dLabel.textContent = 'Keterangan Foto';
-            if (dInput) dInput.placeholder = 'Tuliskan keterangan foto anda ini...';
-          }
-        } catch(e) {}
 
         if (policyEl) {
           try {
@@ -2518,19 +2502,27 @@
             `;
           }
         } else if (isSesi2) {
-          if (hasDokJatim) {
+          let hasRefleksiJatim = false;
+          for (const id of ids) {
+            if (localStorage.getItem('fincestem_refleksi_ft_d3_sesi2_' + id)) {
+              hasRefleksiJatim = true;
+              break;
+            }
+          }
+
+          if (hasDokJatim && hasRefleksiJatim) {
             container.innerHTML = `
-              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-blue-500/10 via-indigo-500/10 to-purple-500/10 border-2 border-blue-400 flex flex-col gap-3 shadow-sm">
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-blue-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
                 <div class="flex items-center justify-between gap-2">
-                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white shadow-2xs">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
                     SESI 2 SELESAI
                   </span>
-                  <span class="material-symbols-outlined text-blue-600 text-xl">check_circle</span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
                 </div>
                 <div>
-                  <h3 class="font-black text-base sm:text-lg text-slate-900">Foto Dokumentasi Jatim Park 1 Berhasil Diunggah</h3>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Dokumentasi &amp; Refleksi Jatim Park 1 Lengkap</h3>
                   <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
-                    Bukti foto eksplorasi wahana sains telah tersimpan. Silakan lanjutkan ke Sesi 3 (Materi Museum Angkut).
+                    Dokumentasi keseruan dan jurnal refleksi rekreasi Jatim Park 1 Anda telah lengkap. Silakan lanjutkan ke Sesi 3 (Materi Museum Angkut).
                   </p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2 pt-1">
@@ -2538,9 +2530,40 @@
                     <span class="material-symbols-outlined text-xl">menu_book</span>
                     <span>Lanjut ke Sesi 3: Materi Museum Angkut &rarr;</span>
                   </a>
+                  <button type="button" onclick="openModalRefleksiJtp1()" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-purple-900 border border-purple-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">edit_note</span>
+                    <span>Lihat / Edit Refleksi</span>
+                  </button>
                   <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-blue-900 border border-blue-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
                     <span class="material-symbols-outlined text-base">add_a_photo</span>
-                    <span>Tambah Foto Jatim Park 1</span>
+                    <span>Tambah Foto</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else if (hasDokJatim && !hasRefleksiJatim) {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-purple-500/10 via-indigo-500/10 to-blue-500/10 border-2 border-purple-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-purple-600 text-white shadow-2xs">
+                    FOTO TERSIMPAN • TAHAP REFLEKSI
+                  </span>
+                  <span class="material-symbols-outlined text-purple-600 text-xl">edit_note</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-slate-900">Foto Jatim Park 1 Berhasil Diunggah!</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Langkah berikutnya: Tuliskan <strong>Jurnal Refleksi Rekreasi Jatim Park 1</strong> untuk menyelesaikan Sesi 2 dan membuka materi Sesi 3 (Museum Angkut).
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <button type="button" onclick="openModalRefleksiJtp1()" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center cursor-pointer">
+                    <span class="material-symbols-outlined text-xl">psychology</span>
+                    <span>Tulis Refleksi Jatim Park 1 Sekarang &rarr;</span>
+                  </button>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-blue-900 border border-blue-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Lain</span>
                   </button>
                 </div>
               </div>
@@ -2982,14 +3005,6 @@
           for (const id of ids) {
             if (sesiParam === '2') {
               localStorage.setItem('fincestem_dok_ft_day3_jatim_' + id, 'true');
-              if (desc) {
-                localStorage.setItem('fincestem_refleksi_ft_d3_sesi2_' + id, desc);
-              }
-              localStorage.setItem('fincestem_lkpd_ft_day3_jtp1_' + id, JSON.stringify({
-                submitted: true,
-                reflection: desc || 'Wisata Jatim Park 1 Selesai',
-                savedAt: new Date().toISOString()
-              }));
             } else if (sesiParam === '3') {
               localStorage.setItem('fincestem_dok_ft_day3_museum_' + id, 'true');
             } else {
@@ -3097,17 +3112,14 @@
           }
         } else if (sesiParam === '2') {
           if (subtitle) {
-            subtitle.innerHTML = '<strong>Dokumentasi Jatim Park 1 Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Foto eksplorasi wahana sains telah tersimpan. Silakan melangkah ke Sesi 3: Museum Angkut.</span>';
+            subtitle.innerHTML = '<strong>Foto Jatim Park 1 Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Foto kegiatan telah tersimpan. Silakan lanjutkan dengan mengisi Jurnal Refleksi Rekreasi Jatim Park 1.</span>';
           }
           if (nextBtn) {
-            nextBtn.href = 'materi.html?day=3&sesi=3';
+            nextBtn.href = '#'; nextBtn.onclick = function(e) { e.preventDefault(); closeFtDokSuccessModal(); openModalRefleksiJtp1(); };
             nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
           }
           if (nextBtnText) {
-            nextBtnText.textContent = 'Lanjut ke Sesi 3: Materi Museum Angkut';
-          setTimeout(() => {
-            if (nextBtn && nextBtn.href) { window.location.href = nextBtn.href; }
-          }, 1500);
+            nextBtnText.textContent = 'Lanjut ke Refleksi Jatim Park 1';
           }
         }
       } else if (cat.isFieldTrip && dayNum === 2) {
@@ -3180,5 +3192,122 @@
   <button id="fabUploadBtn" onclick="toggleUploadModal(true)" class="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all cursor-pointer group" title="Ambil / Unggah Foto Lapangan">
     <span class="material-symbols-outlined text-2xl group-hover:rotate-12 transition-transform">add_a_photo</span>
   </button>
+  <!-- MODAL REFLEKSI KHUSUS JATIM PARK 1 (DAY 3 SESI 2) -->
+  <div id="modalRefleksiJtp1" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-lg w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high animate-in fade-in zoom-in-95 duration-200">
+      <div class="flex items-center justify-between border-b border-outline-variant/30 pb-3">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-purple-500/15 text-purple-600 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-2xl">psychology</span>
+          </div>
+          <div>
+            <span class="text-[10px] font-black uppercase tracking-wider text-purple-700 bg-purple-100 px-2 py-0.5 rounded-md">Tahap Refleksi Wisata</span>
+            <h3 class="font-black text-base sm:text-lg text-primary">Jurnal Refleksi: Jatim Park 1</h3>
+          </div>
+        </div>
+        <button type="button" onclick="closeModalRefleksiJtp1()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container cursor-pointer">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+      </div>
+
+      <!-- Panduan Refleksi -->
+      <div class="p-3.5 rounded-2xl bg-blue-50 border border-blue-200 text-xs text-blue-950 flex flex-col gap-1.5">
+        <span class="font-bold flex items-center gap-1 text-blue-900">
+          <span class="material-symbols-outlined text-base text-blue-600">help</span>
+          <span>Panduan Cerita Refleksi:</span>
+        </span>
+        <ul class="list-disc list-inside space-y-1 text-slate-700 text-[11.5px] leading-relaxed">
+          <li>Wahana sains, budaya, atau rekreasi apa yang paling seru/berkesan buat kamu?</li>
+          <li>Bagaimana perasaanmu saat mengeksplorasinya bersama teman-teman satu kelompok?</li>
+        </ul>
+      </div>
+
+      <div>
+        <label for="txtRefleksiJtp1" class="block text-xs sm:text-sm font-bold text-on-surface mb-1.5">
+          Tuliskan Catatan &amp; Kesan Pengalaman Wisatamu:
+        </label>
+        <textarea id="txtRefleksiJtp1" rows="4" placeholder="Ceritakan pengalaman wisatamu di sini (contoh: Hari ini saya sangat senang bisa mencoba generator Van de Graaff di Science Center dan menaiki roller coaster bersama teman-teman kelompok. Pengalaman ini melatih keberanian saya dan mempererat kebersamaan...)" class="w-full p-3.5 rounded-xl border border-outline-variant/50 text-xs sm:text-sm font-normal focus:border-primary outline-none transition-all placeholder:text-slate-400 leading-relaxed"></textarea>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-2 pt-2">
+        <button type="button" onclick="submitRefleksiJtp1()" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-lg">send</span>
+          <span>Kirim Refleksi &amp; Lanjut ke Sesi 3 &rarr;</span>
+        </button>
+        <button type="button" onclick="closeModalRefleksiJtp1()" class="py-3 px-4 rounded-2xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs sm:text-sm transition-all border border-outline-variant/30 text-center cursor-pointer">
+          Nanti Dulu
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModalRefleksiJtp1() {
+      const modal = document.getElementById('modalRefleksiJtp1');
+      if (!modal) return;
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+      let existing = '';
+      for (const id of ids) {
+        existing = localStorage.getItem('fincestem_refleksi_ft_d3_sesi2_' + id);
+        if (existing) break;
+      }
+      const txt = document.getElementById('txtRefleksiJtp1');
+      if (txt && existing) txt.value = existing;
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+    }
+
+    function closeModalRefleksiJtp1() {
+      const modal = document.getElementById('modalRefleksiJtp1');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+    }
+
+    function submitRefleksiJtp1() {
+      const txt = document.getElementById('txtRefleksiJtp1');
+      const val = (txt ? txt.value : '').trim();
+      if (!val || val.length < 15) {
+        FincestemCore.ui.toast('Tuliskan cerita refleksi pengalaman wisatamu minimal beberapa kalimat (10-15 kata)!', 'warning');
+        if (txt) txt.focus();
+        return;
+      }
+
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+
+      for (const id of ids) {
+        localStorage.setItem('fincestem_refleksi_ft_d3_sesi2_' + id, val);
+        localStorage.setItem('fincestem_lkpd_ft_day3_jtp1_' + id, JSON.stringify({
+          submitted: true,
+          reflection: val,
+          savedAt: new Date().toISOString()
+        }));
+      }
+
+      if (FincestemCore.progress && nisn) {
+        FincestemCore.progress.submitTask(nisn, 3, 'refleksi_jtp1', {
+          day: 3,
+          session: 2,
+          reflection: val,
+          savedAt: new Date().toISOString()
+        });
+      }
+
+      closeModalRefleksiJtp1();
+      FincestemCore.ui.toast('Jurnal Refleksi Jatim Park 1 berhasil disimpan! Mengarahkan ke Sesi 3: Modul Museum Angkut...', 'success');
+      setTimeout(() => {
+        window.location.href = 'materi.html?day=3&sesi=3';
+      }, 1200);
+    }
+
+    window.openModalRefleksiJtp1 = openModalRefleksiJtp1;
+    window.closeModalRefleksiJtp1 = closeModalRefleksiJtp1;
+    window.submitRefleksiJtp1 = submitRefleksiJtp1;
+  </script>
 </body>
 </html>

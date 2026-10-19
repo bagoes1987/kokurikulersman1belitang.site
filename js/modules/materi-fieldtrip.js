@@ -1547,10 +1547,8 @@
         const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier, user.username].filter(Boolean);
 
         for (const id of ids) {
-          if (localStorage.getItem("fincestem_dok_ft_day3_jatim_" + id) === "true") return true;
           if (localStorage.getItem("fincestem_refleksi_ft_d3_sesi2_" + id)) return true;
-          if (localStorage.getItem('fincestem_lkpd_ft_day3_jtp1_' + id)) return true;
-          if (localStorage.getItem('fincestem_materi_ft_day3_jtp1_' + id)) return true;
+          if (localStorage.getItem("fincestem_lkpd_ft_day3_jtp1_" + id)) return true;
         }
 
         if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.getStudentProgress) {
