@@ -390,7 +390,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261020_v1"></script>
+  <script src="../js/core.js?v=20261020_v2"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -449,15 +449,13 @@
           }
         },
         4: {
-          title: 'Wisata Gunung Bromo – Yogyakarta',
-          theme: 'Sunrise Penanjakan, Pasir Berbisik, Savana, Kawah Bromo menuju Yogyakarta',
+          title: 'Wisata Gunung Bromo – TNBTS & Yogyakarta',
+          theme: 'Eksplorasi Kaldera Tengger, Laut Pasir, Kawah Bromo & Kearifan Budaya Suku Tengger',
           defaultPillar: 'Exploration',
-          fileSlug: 'GunungBromo_Yogyakarta',
+          fileSlug: 'GunungBromo_TNBTS_Yogyakarta',
           pillars: {
-            STEM: 'STEM (Geomorfologi Kaldera & Savana)',
-            Financial: 'Financial (Logistik Jeep Bromo)',
-            Culture: 'Culture (Adat & Kearifan Suku Tengger)',
-            Exploration: 'Exploration (Vulkanologi Kawah Bromo)'
+            Exploration: 'Exploration (Geomorfologi Kaldera, Laut Pasir & Kawah Bromo)',
+            Culture: 'Culture (Kearifan Budaya Suku Tengger & Pura Luhur Poten)'
           }
         },
         5: {
@@ -600,7 +598,7 @@
     function getDayActivityConfig(dayNum) {
       const cat = getStudentCategoryInfo();
       const d = (dayNum !== undefined && dayNum !== null) ? parseInt(dayNum) : 1;
-      const groupKey = (cat.isFieldTrip || d <= 3) ? 'fieldTrip' : 'nonFieldTrip';
+      const groupKey = (cat.isFieldTrip || d <= 4) ? 'fieldTrip' : 'nonFieldTrip';
       const cfgGroup = DAY_ACTIVITIES_CONFIG[groupKey] || DAY_ACTIVITIES_CONFIG.fieldTrip;
       return cfgGroup[d] || cfgGroup[1];
     }
@@ -787,6 +785,22 @@
                   FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan LKPD Petik Apel Sesi 1 sebelum mengunggah Dokumentasi!', 'warning');
                   setTimeout(() => {
                     window.location.replace('lkpd.html?day=3&sesi=1');
+                  }, 1200);
+                  return;
+                }
+              } else if (dayNum === 4) {
+                // Khusus Day 4: LKPD Bromo wajib selesai dulu
+                let hasLkpdBromo = false;
+                for (const id of ids) {
+                  if (localStorage.getItem('fincestem_lkpd_ft_day4_' + id) || localStorage.getItem('fincestem_lkpd_bromo_saved_' + id) === 'true') {
+                    hasLkpdBromo = true;
+                    break;
+                  }
+                }
+                if (!hasLkpdBromo) {
+                  FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan LKPD Day 4 (Eksplorasi Bromo & Kearifan Budaya Tengger) sebelum mengunggah Dokumentasi!', 'warning');
+                  setTimeout(() => {
+                    window.location.replace('lkpd.html?day=4');
                   }, 1200);
                   return;
                 }
@@ -2743,6 +2757,92 @@
             `;
           }
         }
+      } else if (cat.isFieldTrip && Number(dayNum) === 4) {
+        // ==========================================
+        // KHUSUS DAY 4: GUNUNG BROMO (TNBTS)
+        // ==========================================
+        let hasDokBromo = false;
+        let existingRefleksiBromo = '';
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day4_' + id) === 'true') hasDokBromo = true;
+          const rb = localStorage.getItem('fincestem_refleksi_ft_day4_' + id);
+          if (rb) existingRefleksiBromo = rb;
+        }
+
+        // Cek juga dari data galeri tersimpan
+        if (!hasDokBromo && Array.isArray(allPhotos)) {
+          hasDokBromo = allPhotos.some(p => Number(p.day || p.day_number) === 4);
+        }
+
+        if (hasDokBromo) {
+          container.innerHTML = `
+            <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-emerald-500/10 border-2 border-amber-400 flex flex-col gap-3.5 shadow-sm">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-amber-600 text-white shadow-2xs">
+                  DOKUMENTASI FOTO BROMO TERSIMPAN ✓
+                </span>
+                <span class="material-symbols-outlined text-amber-600 text-xl">landscape</span>
+              </div>
+              <div>
+                <h3 class="font-black text-base sm:text-lg text-amber-950">Jurnal Refleksi Mandiri: Eksplorasi Bromo &amp; Budaya Tengger</h3>
+                <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                  Foto ekspedisimu di kawasan Gunung Bromo telah tersimpan! Sekarang tuliskan jurnal refleksi mandiri untuk menuntaskan Day 4 dan membuka tahap Asesmen.
+                </p>
+              </div>
+
+              <!-- Petunjuk Refleksi Day 4 -->
+              <div class="p-3.5 rounded-2xl bg-white/90 border border-amber-200 text-slate-700 text-xs flex flex-col gap-1.5 shadow-2xs">
+                <span class="font-black text-amber-950 flex items-center gap-1.5 text-xs sm:text-sm">
+                  <span class="material-symbols-outlined text-amber-600 text-base">lightbulb</span>
+                  <span>Panduan Menulis Refleksi Day 4:</span>
+                </span>
+                <ul class="list-disc list-inside space-y-1 text-slate-600 pl-1 leading-relaxed">
+                  <li><strong>Eksplorasi Alam Bromo:</strong> Bagaimana kesan dan perasaanmu saat menyaksikan langsung bentang kaldera Tengger, Laut Pasir, atau kawah aktif Gunung Bromo pada ketinggian >2.100 mdpl dengan udara dinginnya?</li>
+                  <li><strong>Kearifan Budaya Tengger:</strong> Apa pelajaran nilai budaya, kesederhanaan, dan kerukunan spiritual masyarakat Hindu Tengger (serta keberadaan Pura Luhur Poten) yang paling berkesan bagimu?</li>
+                  <li><strong>Etika &amp; Konservasi:</strong> Bagaimana kamu menerapkan etika kesopanan dan prinsip zero littering (menjaga kelestarian TNBTS tanpa memetik Edelweis liar / tanpa sampah) selama kegiatan?</li>
+                </ul>
+              </div>
+
+              <!-- Area Input Refleksi Inline -->
+              <div>
+                <label for="txtInlineRefleksiBromo" class="block text-xs font-bold text-slate-800 mb-1.5">
+                  Tuliskan Narasi Refleksi Pengalamanmu di Gunung Bromo:
+                </label>
+                <textarea id="txtInlineRefleksiBromo" rows="5" placeholder="Contoh: Pengalaman berdiri di tepi kaldera Gunung Bromo dan melintasi Laut Pasir Tengger memberikan rasa takjub yang luar biasa terhadap ciptaan Tuhan. Di balik bentang alam vulkanik yang megah, saya sangat terkesan dengan kearifan masyarakat suku Tengger yang hidup berdampingan harmonis dengan alam dan tetap memelihara kesakralan tradisi leluhur di Pura Luhur Poten. Selama kegiatan, kami sekelompok disiplin menjaga kebersihan tanpa meninggalkan sampah plastik demi kelestarian ekosistem TNBTS..." class="w-full p-3.5 rounded-2xl border-2 border-amber-300 bg-white text-xs sm:text-sm font-normal focus:border-amber-600 outline-none transition-all placeholder:text-slate-400 leading-relaxed shadow-xs">${existingRefleksiBromo ? existingRefleksiBromo.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : ''}</textarea>
+              </div>
+
+              <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                <button type="button" onclick="submitInlineRefleksiBromo()" class="flex-1 py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-lg">send</span>
+                  <span>Kirim Refleksi &amp; Lanjut ke Asesmen Day 4 &rarr;</span>
+                </button>
+                <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-amber-900 border border-amber-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-base">add_a_photo</span>
+                  <span>Tambah Foto Bromo Lain</span>
+                </button>
+              </div>
+            </div>
+          `;
+        } else {
+          container.innerHTML = `
+            <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-600 via-orange-600 to-emerald-700 text-white flex flex-col gap-3 shadow-lg">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                  DAY 4 • EKSPEDISI GUNUNG BROMO (TNBTS)
+                </span>
+                <span class="material-symbols-outlined text-amber-200 text-xl">landscape</span>
+              </div>
+              <div>
+                <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto di Kawasan Gunung Bromo</h3>
+                <p class="text-xs text-amber-100 mt-1">Ambil atau unggah foto dirimu/kelompok dengan latar belakang Laut Pasir, Kawah Bromo, Sunrise Penanjakan, Savana, atau Pura Luhur Poten.</p>
+              </div>
+              <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-amber-50 text-amber-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-2xl text-amber-600">photo_camera</span>
+                <span>Unggah Dokumentasi Foto Gunung Bromo</span>
+              </button>
+            </div>
+          `;
+        }
       } else {
         // HARI LAINNYA
         container.innerHTML = `
@@ -3137,6 +3237,13 @@
           }
         }
 
+        if (cat.isFieldTrip && docDayNum === 4) {
+          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          for (const id of ids) {
+            localStorage.setItem('fincestem_dok_ft_day4_' + id, 'true');
+          }
+        }
+
         if (cat.isFieldTrip && docDayNum === 2) {
           const urlParams = new URLSearchParams(window.location.search);
           const sesiParam = urlParams.get('sesi');
@@ -3298,6 +3405,25 @@
           if (nextBtnText) {
             nextBtnText.textContent = 'Lanjut ke Refleksi Kendaraan Pilihan';
           }
+        }
+      } else if (cat.isFieldTrip && dayNum === 4) {
+        if (subtitle) {
+          subtitle.innerHTML = `<strong>Dokumentasi Ekspedisi Gunung Bromo Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Foto eksplorasi Bromo &amp; TNBTS Anda telah tersimpan. Silakan lanjutkan ke Jurnal Refleksi Mandiri Day 4 untuk membuka Asesmen.</span>`;
+        }
+        if (nextBtn) {
+          nextBtn.onclick = function() {
+            closeFtDokSuccessModal();
+            const txt = document.getElementById('txtInlineRefleksiBromo');
+            if (txt) {
+              setTimeout(() => txt.focus(), 300);
+            } else {
+              window.location.href = 'dashboard.html?day=4&task=refleksi';
+            }
+          };
+          nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+        }
+        if (nextBtnText) {
+          nextBtnText.textContent = 'Lanjut ke Jurnal Refleksi Day 4';
         }
       } else if (cat.isFieldTrip && dayNum === 2) {
         const user = FincestemCore.auth.getUser() || {};
@@ -3655,6 +3781,51 @@
       }
       saveAndSubmitRefleksiMuseum(val);
     }
+
+    function saveAndSubmitRefleksiBromo(val) {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+
+      for (const id of ids) {
+        localStorage.setItem('fincestem_refleksi_ft_day4_' + id, val);
+      }
+
+      if (FincestemCore.progress && nisn) {
+        FincestemCore.progress.submitTask(nisn, 4, 'refleksi', {
+          day: 4,
+          reflection: val,
+          savedAt: new Date().toISOString()
+        });
+        if (FincestemCore.progress.syncAllToServer) {
+          FincestemCore.progress.syncAllToServer();
+        }
+      }
+
+      FincestemCore.ui.toast('Jurnal Refleksi Day 4 berhasil disimpan! Mengarahkan ke Asesmen Day 4...', 'success');
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const dayParam = urlParams.get('day') || 4;
+      renderSessionActionCard(Number(dayParam));
+
+      setTimeout(() => {
+        window.location.href = 'dashboard.html?day=4&task=asesmen';
+      }, 1200);
+    }
+
+    function submitInlineRefleksiBromo() {
+      const txt = document.getElementById('txtInlineRefleksiBromo');
+      const val = (txt ? txt.value : '').trim();
+      if (!val || val.length < 15) {
+        FincestemCore.ui.toast('Tuliskan cerita refleksi pengalamanmu di Gunung Bromo minimal beberapa kalimat (10-15 kata)!', 'warning');
+        if (txt) txt.focus();
+        return;
+      }
+      saveAndSubmitRefleksiBromo(val);
+    }
+
+    window.submitInlineRefleksiBromo = submitInlineRefleksiBromo;
+    window.saveAndSubmitRefleksiBromo = saveAndSubmitRefleksiBromo;
 
     window.openModalRefleksiMuseum = openModalRefleksiMuseum;
     window.closeModalRefleksiMuseum = closeModalRefleksiMuseum;

@@ -2629,6 +2629,369 @@
     }
 
     // ==========================================
+    
+    // ==========================================
+    // MODUL BELAJAR KHUSUS FIELD TRIP DAY 4: GUNUNG BROMO (EXPLORATION & CULTURE)
+    // ==========================================
+    function renderDay4FieldTripModule(mainEl) {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+
+      let savedConclusion = '';
+      let savedAt = '';
+      try {
+        const raw = localStorage.getItem('fincestem_materi_ft_day4_' + cleanNisn);
+        if (raw) {
+          const p = JSON.parse(raw);
+          savedConclusion = p.conclusion || p.text || '';
+          savedAt = p.savedAt || '';
+        }
+      } catch(e) {}
+
+      mainEl.innerHTML = `
+        <div class="flex flex-col gap-4 sm:gap-5">
+          <!-- BANNER IDENTITAS DAY 4 BROMO -->
+          <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3 border border-amber-600/40">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
+                Field Trip • Day 4 • Exploration &amp; Culture
+              </span>
+              <span id="ftMateriDay4StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${savedConclusion ? 'bg-amber-300 text-slate-950' : 'bg-white/20 text-white'}">
+                ${savedConclusion ? '✓ Kesimpulan Telah Disimpan' : 'Modul Eksplorasi &amp; Budaya Bromo'}
+              </span>
+            </div>
+
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Modul Belajar Day 4: Eksplorasi Bentang Alam Vulkanik Kaldera Tengger &amp; Etnografi Budaya Suku Tengger
+            </h2>
+            <span class="text-xs sm:text-sm font-semibold text-amber-200 leading-snug">
+              Kajian Geologi Kaldera Tengger, Ekosistem Taman Nasional Bromo Tengger Semeru (TNBTS), Pertanian Sayur Lereng, dan Kearifan Budaya Masyarakat Suku Tengger.
+            </span>
+
+            <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-amber-200 font-semibold flex-wrap">
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                <span>03.30 - Selesai WIB</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">landscape</span>
+                <span>Taman Nasional Bromo Tengger Semeru (TNBTS)</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">explore</span>
+                <span>Exploration (50%) • Culture (50%)</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- BAB 1: KONDISI FISIK GUNUNG BROMO -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-primary font-black text-base sm:text-lg border-b border-slate-100 pb-2.5">
+              <span class="material-symbols-outlined text-amber-600 text-2xl">volcano</span>
+              <span>1. Kondisi Fisik Gunung Bromo</span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 font-normal text-justify">
+              <p>
+                Gunung Bromo merupakan gunung api aktif di Jawa Timur yang berada dalam kompleks pegunungan Tengger dan kawasan Taman Nasional Bromo Tengger Semeru (TNBTS). Secara geografis, Bromo berhubungan dengan wilayah Kabupaten Probolinggo, Pasuruan, Malang, dan Lumajang. Letaknya di dataran tinggi menyebabkan udara relatif sejuk, terutama pada malam hingga dini hari, disertai kabut dan perubahan cuaca yang cukup cepat.
+              </p>
+              <p>
+                Secara geologis, Bromo merupakan kerucut vulkanik aktif yang tumbuh di dalam kaldera Tengger. Kompleks Tengger terbentuk melalui aktivitas vulkanik jangka panjang yang menghasilkan endapan piroklastik, leleran lava, tuff, serta material vulkanik yang mengalami pelapukan dan pengendapan. Kaldera Tengger dipahami sebagai cekungan vulkanik besar yang terbentuk melalui proses keruntuhan permukaan setelah pengosongan sebagian sistem magma. Di dalam kaldera terdapat kerucut pascakaldera seperti Gunung Bromo, Gunung Batok, Gunung Widodaren, Gunung Kursi, dan Gunung Watangan. Bromo memiliki kawah aktif yang dapat mengeluarkan gas, abu, dan material vulkanik. Material vulkanik hasil erupsi berkontribusi terhadap pembentukan Laut Pasir, yaitu dataran luas yang tertutup abu dan pasir vulkanik.
+              </p>
+              <p>
+                Dari sisi topografi, Bromo memiliki bentang yang beragam. Bagian luar kawasan berupa lereng pegunungan yang landai hingga berbukit, sedangkan bagian dalam kaldera memiliki dinding yang curam. Dasar kaldera berupa Laut Pasir Tengger berada pada sekitar 2.100 meter di atas permukaan laut. Gunung Bromo berdiri di tengah bentang tersebut, sementara Gunung Batok berada di dekatnya. Kawasan ini juga memiliki savana yang menjadi bagian penting lanskap TNBTS. Elevasi puncak Gunung Bromo dicantumkan sekitar 2.329 meter di atas permukaan laut dalam kajian geologi ITS. Topografi yang bervariasi memengaruhi aliran air, pembentukan tanah, sebaran vegetasi, dan aksesibilitas wilayah. Lereng curam berpotensi mengalami limpasan dan erosi apabila tidak dikelola dengan baik. Kondisi fisik Bromo juga berkaitan dengan kehidupan masyarakat Tengger, terutama dalam pertanian, permukiman, dan pariwisata.
+              </p>
+            </div>
+          </div>
+
+          <!-- BAB 2: FLORA-FAUNA ENDEMIK DAN BUDAYA TENGGER -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-primary font-black text-base sm:text-lg border-b border-slate-100 pb-2.5">
+              <span class="material-symbols-outlined text-emerald-600 text-2xl">park</span>
+              <span>2. Gunung Bromo: Flora–Fauna Endemik dan Budaya Tengger</span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 font-normal text-justify">
+              <p>
+                Gunung Bromo berada dalam kawasan Taman Nasional Bromo Tengger Semeru (TNBTS) yang memiliki bentang ekosistem vulkanik, hutan pegunungan, savana, dan kawasan terbuka. Persebaran flora dan fauna tidak merata karena dipengaruhi ketinggian, iklim mikro, tanah, ketersediaan air, dan tingkat gangguan manusia. Flora khas yang disebut dalam kajian TNBTS meliputi jamuju (<em>Dacrycarpus imbricatus</em>), cemara gunung (<em>Casuarina sp.</em>), edelweis Jawa (<em>Anaphalis javanica</em>), anggrek, dan rumput langka <em>Styphelia pungieus</em>. Kajian anggrek di Ranu Darungan menemukan 44 spesies dari 28 marga, terdiri atas anggrek epifit, terestrial, dan saprofit.
+              </p>
+              <p>
+                Fauna yang disebut dalam kajian TNBTS meliputi macan tutul Jawa (<em>Panthera pardus melas</em>), elang ular bido (<em>Spilornis cheela bido</em>), rangkong, serta amfibi <em>Leptophryne borbonica</em> yang tercatat pada zona inti. Keanekaragaman hayati perlu dilindungi karena habitat dan regenerasi spesies mudah terganggu oleh aktivitas manusia.
+              </p>
+              <p>
+                Suku Tengger merupakan komunitas yang memiliki hubungan sosial, budaya, dan penghidupan dengan bentang Bromo. Tradisi Yadnya Kasada serta Pura Luhur Poten menunjukkan makna religius kawasan ini bagi masyarakat pendukungnya. Kisah Rara Anteng dan Jaka Seger dipahami sebagai tradisi lisan asal-usul, bukan bukti ilmiah pembentukan kaldera. Masyarakat Tengger umumnya menjalankan kehidupan melalui pertanian, peternakan, dan jasa wisata. Perkembangan pariwisata membuka peluang ekonomi, tetapi juga menuntut pengelolaan yang menghormati budaya dan kelestarian lingkungan.
+              </p>
+            </div>
+          </div>
+
+          <!-- BAB 3: KEGIATAN PEREKONOMIAN DI KAWASAN GUNUNG BROMO -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-primary font-black text-base sm:text-lg border-b border-slate-100 pb-2.5">
+              <span class="material-symbols-outlined text-blue-600 text-2xl">storefront</span>
+              <span>3. Kegiatan Perekonomian di Kawasan Gunung Bromo</span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 font-normal text-justify">
+              <p>
+                Kegiatan perekonomian di kawasan Gunung Bromo didorong oleh pertanian sayur dan pariwisata. Masyarakat Tengger umumnya mengembangkan usaha tani di dataran tinggi, terutama kentang, kubis, wortel, dan bawang prei. Komoditas tersebut menjadi sumber pangan, bahan persembahan dalam upacara adat, serta produk yang dapat dipasarkan ke luar kawasan. Kesuburan tanah vulkanik tidak otomatis menjamin hasil panen karena pertanian juga dipengaruhi air, bahan organik, unsur hara, kemiringan lereng, dan pengelolaan tanah. Kebun lereng memerlukan upaya konservasi seperti penutup tanah, pengaturan barisan mengikuti kontur, dan pengelolaan bahan organik untuk menekan limpasan serta erosi.
+              </p>
+              <p>
+                Pariwisata menjadi sektor penting karena meningkatkan permintaan jasa transportasi, penginapan, pemandu, kuliner, dan produk pertanian. Penyewaan jip, homestay, serta pemasaran hasil pertanian merupakan contoh hubungan wisata dan ekonomi warga. Potensi sebaran tempat wisata di kawasan Bromo mencakup pemandangan kaldera dan Laut Pasir, savana, puncak pengamatan, serta ruang budaya seperti Pura Luhur Poten. Perkembangan wisata perlu dikelola secara berkelanjutan agar manfaat ekonomi tetap seimbang dengan kelestarian lingkungan dan penghormatan terhadap budaya lokal.
+              </p>
+            </div>
+          </div>
+
+          <!-- BAB 4: SEBARAN TEMPAT WISATA MENARIK DI KOMPLEKS GUNUNG BROMO -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-primary font-black text-base sm:text-lg border-b border-slate-100 pb-2.5">
+              <span class="material-symbols-outlined text-purple-600 text-2xl">explore</span>
+              <span>4. Sebaran Tempat Wisata Menarik di Kompleks Gunung Bromo</span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-3 font-normal text-justify">
+              <p>
+                Kompleks Gunung Bromo memiliki sebaran tempat wisata yang menarik dan beragam. Daya tarik utama berada di dalam kaldera Tengger, terutama Laut Pasir sebagai dataran luas yang menjadi ruang utama aktivitas wisatawan. Gunung Bromo menjadi pusat pengamatan kawah dan lanskap vulkanik, sedangkan Gunung Batok menawarkan bentuk kerucut vulkanik yang khas. Gunung Widodaren, Gunung Kursi, dan Gunung Watangan juga menjadi bagian bentang kaldera yang memperkaya pemandangan.
+              </p>
+              <p>
+                Di sekitar kawasan terdapat savana yang menjadi ruang terbuka dengan vegetasi khas dataran tinggi. Puncak pengamatan seperti Penanjakan menjadi lokasi populer untuk menyaksikan lanskap kaldera dan aktivitas fajar. Ruang budaya seperti Pura Luhur Poten juga menjadi bagian penting karena berkaitan dengan kehidupan religius masyarakat Tengger. Sebaran wisata perlu dikelola secara berkelanjutan agar manfaat ekonomi tetap seimbang dengan kelestarian lingkungan dan penghormatan terhadap budaya lokal.
+              </p>
+            </div>
+          </div>
+
+          <!-- BAB 5: SUMBER JURNAL DAN RUJUKAN (20 REFERENSI LENGKAP) -->
+          <div class="bg-slate-50 rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-slate-900 font-black text-base sm:text-lg border-b border-slate-200 pb-2.5">
+              <span class="material-symbols-outlined text-slate-600 text-2xl">menu_book</span>
+              <span>5. Sumber Jurnal dan Rujukan Ilmiah</span>
+            </div>
+            <ol class="list-decimal list-outside ml-4 sm:ml-5 space-y-2 text-[11px] sm:text-xs text-slate-700 leading-relaxed">
+              <li>
+                <strong>Hilyah, A., Fajar, M. H. M., Ikmaluhakim, D. R., Hawan, S. I., Purwanto, M. S., &amp; Bahri, A. S. (2021).</strong> <em>Studi Geologi dan Geofisika Batuan Gunung Bromo dan Sekitarnya.</em> Jurnal SEWAGATI ITS, 5(2), 156–163. <a href="https://doi.org/10.12962/j26139960.v5i2.8248" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://doi.org/10.12962/j26139960.v5i2.8248</a>
+              </li>
+              <li>
+                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/fungsi/?page=2&amp;fungsi=TN" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://ksdae.kehutanan.go.id/kawasan-konservasi/fungsi/?page=2&amp;fungsi=TN</a>
+              </li>
+              <li>
+                <strong>Multidisciplinary study with quantitative analysis of isotopic data for the assessment of recharge and functioning of volcanic aquifers: Case of Bromo-Tengger volcano, Indonesia.</strong> <a href="https://hal.science/hal-02410291/file/1-s2.0-S2214581819300941-main-1.pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://hal.science/hal-02410291/file/1-s2.0-S2214581819300941-main-1.pdf</a>
+              </li>
+              <li>
+                <strong>Jurnal GEOID ITS.</strong> <em>Rancang Bangun Sistem Informasi Bencana Gunung Bromo Berbasis WebGIS.</em> <a href="https://journal.its.ac.id/index.php/geoid/article/download/1329/1037" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.its.ac.id/index.php/geoid/article/download/1329/1037</a>
+              </li>
+              <li>
+                <strong>Jurnal Avicennia UMM.</strong> <em>Kajian lingkungan kawasan Bromo.</em> <a href="https://ejournal.umm.ac.id/index.php/avicennia/article/download/9406/pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://ejournal.umm.ac.id/index.php/avicennia/article/download/9406/pdf</a>
+              </li>
+              <li>
+                <strong>Nisa, R. K., Wisanti, Putri, E. K., Kuntjoro S., &amp; Artaka T. (2021).</strong> <em>Keanekaragaman Spesies Anggrek di Ranu Darungan Taman Nasional Bromo Tengger Semeru.</em> LenteraBio, 10(1), 1–9. <a href="https://journal.unesa.ac.id/index.php/lenterabio/article/download/9943/6006/46901" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.unesa.ac.id/index.php/lenterabio/article/download/9943/6006/46901</a>
+              </li>
+              <li>
+                <strong>Jurnal Silvikultur Tropika, IPB.</strong> <em>Kajian flora dan fauna TNBTS.</em> <a href="https://journal.ipb.ac.id/index.php/jsilvik/article/download/50332/26338" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.ipb.ac.id/index.php/jsilvik/article/download/50332/26338</a>
+              </li>
+              <li>
+                <strong>Jurnal Tropical Biodiversity and Biotechnology, UGM (2024).</strong> <em>The First Record of an Hourglass Toad (Leptophryne borbonica) in the Core Zone of Bromo Tengger Semeru National Park and Its Ecological Aspects.</em> <a href="https://journal.ugm.ac.id/jtbb/article/view/93938" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.ugm.ac.id/jtbb/article/view/93938</a>
+              </li>
+              <li>
+                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
+              </li>
+              <li>
+                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
+              </li>
+              <li>
+                <strong>Proceeding of National Conference on Accounting &amp; Finance, UII.</strong> <em>Mengungkap Akuntansi Budaya atas Pembiayaan Ritual.</em> <a href="https://journal.uii.ac.id/NCAF/article/download/22314/pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.uii.ac.id/NCAF/article/download/22314/pdf</a>
+              </li>
+              <li>
+                <strong>Artikel pada Temu Ilmiah Nasional PERSAGI.</strong> <em>Pengaruh budaya terhadap kebiasaan makan dan gaya hidup.</em> <a href="https://tin.persagi.org/index.php/tin/article/download/85/77/127" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://tin.persagi.org/index.php/tin/article/download/85/77/127</a>
+              </li>
+              <li>
+                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
+              </li>
+              <li>
+                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
+              </li>
+              <li>
+                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/</a>
+              </li>
+              <li>
+                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
+              </li>
+              <li>
+                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
+              </li>
+              <li>
+                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/</a>
+              </li>
+              <li>
+                <strong>Indonesia Travel.</strong> <em>Bromo Tengger Semeru National Park.</em> <a href="https://www.indonesia.travel/id/id/destination/java/east-java/bromo-tengger-semeru-national-park" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://www.indonesia.travel/id/id/destination/java/east-java/bromo-tengger-semeru-national-park</a>
+              </li>
+              <li>
+                <strong>ANTARA Jawa Timur (2012).</strong> <em>Mengemas Bromo Menjadi Paket Wisata Satu Destinasi.</em> <a href="https://jatim.antaranews.com/berita/90497/mengemas-bromo-menjadi-paket-wisata-satu-destinasi" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jatim.antaranews.com/berita/90497/mengemas-bromo-menjadi-paket-wisata-satu-destinasi</a>
+              </li>
+            </ol>
+          </div>
+
+          <!-- BAB 6: FORM CATATAN REFLEKTIF PEMAHAMAN MODUL BROMO (SYARAT BUKA LKPD DAY 4) -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border-2 border-amber-300 shadow-md flex flex-col gap-3.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap border-b border-slate-100 pb-2.5">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-amber-600 text-2xl">rate_review</span>
+                <h3 class="font-black text-base sm:text-lg text-primary">6. Catatan Reflektif Pemahaman Modul Day 4</h3>
+              </div>
+              <span id="ftMateriDay4Badge" class="px-2.5 py-1 rounded-full text-xs font-bold ${savedConclusion ? 'bg-amber-100 text-amber-900' : 'bg-slate-100 text-slate-700'}">
+                ${savedConclusion ? 'Telah Disimpan &amp; Terbuka' : 'Wajib Disimpan untuk Buka LKPD'}
+              </span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Setelah membaca materi modul bentang alam Bromo dan budaya Tengger di atas, tuliskan resume pemahaman Anda (minimal 15–20 kata) mengenai: <strong>proses geologis pembentukan Kaldera Tengger &amp; Laut Pasir</strong>, keanekaragaman <strong>flora/fauna endemik TNBTS</strong>, serta <strong>makna upacara Yadnya Kasada bagi masyarakat Suku Tengger</strong>:
+            </p>
+
+            <div class="flex flex-col gap-1.5">
+              <div class="flex items-center justify-between text-xs text-slate-500 font-semibold">
+                <label for="ftMateriDay4Conclusion" class="text-slate-800 font-bold">Resume Catatan Pemahaman Siswa:</label>
+                <span id="ftMateriDay4SavedTime" class="text-[11px] text-slate-400">${savedAt ? 'Tersimpan pada ' + new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB' : 'Belum disimpan'}</span>
+              </div>
+              <textarea id="ftMateriDay4Conclusion" rows="4" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-slate-400 leading-relaxed" placeholder="Contoh: Dari modul ini saya memahami bahwa Kaldera Tengger dan Laut Pasir terbentuk melalui proses keruntuhan permukaan akibat pengosongan sebagian sistem magma, dengan kerucut aktif Gunung Bromo di dalamnya. Kawasan TNBTS memiliki flora khas seperti Edelweis Jawa dan cemara gunung, serta satwa dilindungi seperti macan tutul Jawa. Selain itu, masyarakat Suku Tengger menjunjung tinggi tradisi Yadnya Kasada sebagai wujud rasa syukur kepada Tuhan dan penghormatan kepada leluhur..."></textarea>
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+              <button id="btnSaveMateriDay4Conclusion" type="button" onclick="saveDay4BromoConclusion()" class="w-full sm:w-auto px-6 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer">
+                <span class="material-symbols-outlined text-lg">task_alt</span>
+                <span id="btnSaveMateriDay4Text">${savedConclusion ? 'Perbarui Kesimpulan Modul' : 'Simpan Kesimpulan &amp; Buka LKPD Day 4'}</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- KARTU AKSES LKPD DAY 4 (TERKUNCI / TERBUKA BERDASARKAN KESIMPULAN) -->
+          <div id="ftLkpdDay4AccessBox" class="bg-gradient-to-r ${savedConclusion ? 'from-emerald-700 to-teal-800' : 'from-amber-800 to-orange-950'} rounded-3xl p-5 text-white shadow-md flex flex-col gap-3 text-center sm:text-left transition-all">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div>
+                <div class="flex items-center justify-center sm:justify-start gap-2">
+                  <span id="ftLkpdDay4LockIcon" class="material-symbols-outlined text-amber-200 text-xl">${savedConclusion ? 'lock_open' : 'lock'}</span>
+                  <h4 id="ftLkpdDay4LockTitle" class="font-extrabold text-sm sm:text-base text-white">
+                    ${savedConclusion ? 'Tahap 2 Terbuka: LKPD Digital Day 4' : 'Tahap 2: LKPD Digital Day 4'}
+                  </h4>
+                </div>
+                <p id="ftLkpdDay4LockDesc" class="text-xs text-amber-100/90 mt-0.5">
+                  ${savedConclusion ? 'Kesimpulan modul tersimpan. Silakan lanjutkan pengerjaan lembar kerja observasi Bromo.' : 'Selesaikan dan simpan kesimpulan modul di atas terlebih dahulu untuk membuka akses LKPD.'}
+                </p>
+              </div>
+              <a id="btnGoToLkpdDay4" href="${savedConclusion ? 'lkpd.html?day=4' : 'javascript:void(0)'}" onclick="${savedConclusion ? '' : 'handleGoToLkpdDay4Locked()'}" class="px-5 py-3 rounded-2xl ${savedConclusion ? 'bg-white text-emerald-900 hover:bg-emerald-50' : 'bg-white/20 text-white cursor-not-allowed opacity-60'} font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0">
+                <span id="btnGoToLkpdDay4Text">${savedConclusion ? 'Buka LKPD Day 4 Bromo' : 'LKPD Masih Terkunci'}</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      `;
+
+      if (savedConclusion) {
+        applyDay4BromoConclusionState(savedConclusion, savedAt);
+      }
+    }
+
+    function applyDay4BromoConclusionState(text, savedAt) {
+      const txtArea = document.getElementById('ftMateriDay4Conclusion');
+      const badge = document.getElementById('ftMateriDay4StatusBadge');
+      const savedTimeEl = document.getElementById('ftMateriDay4SavedTime');
+      const btnSaveText = document.getElementById('btnSaveMateriDay4Text');
+      const lockIcon = document.getElementById('ftLkpdDay4LockIcon');
+      const lockTitle = document.getElementById('ftLkpdDay4LockTitle');
+      const lockDesc = document.getElementById('ftLkpdDay4LockDesc');
+      const accessBox = document.getElementById('ftLkpdDay4AccessBox');
+      const btnGo = document.getElementById('btnGoToLkpdDay4');
+      const btnGoText = document.getElementById('btnGoToLkpdDay4Text');
+
+      if (txtArea) {
+        txtArea.value = text;
+      }
+      if (badge) {
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900';
+        badge.textContent = '✓ Kesimpulan Telah Disimpan';
+      }
+      if (savedTimeEl && savedAt) {
+        savedTimeEl.textContent = 'Tersimpan pada ' + new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+      }
+      if (btnSaveText) btnSaveText.textContent = 'Perbarui Kesimpulan Modul';
+      if (lockIcon) {
+        lockIcon.textContent = 'lock_open';
+        lockIcon.className = 'material-symbols-outlined text-emerald-300 text-xl';
+      }
+      if (lockTitle) lockTitle.textContent = 'Tahap 2 Terbuka: LKPD Digital Day 4';
+      if (lockDesc) lockDesc.textContent = 'Kesimpulan modul tersimpan. Silakan lanjutkan pengerjaan lembar kerja observasi Bromo.';
+      if (accessBox) {
+        accessBox.className = 'bg-gradient-to-r from-emerald-700 to-teal-800 rounded-3xl p-5 text-white shadow-md flex flex-col gap-3 text-center sm:text-left transition-all';
+      }
+      if (btnGo) {
+        btnGo.href = 'lkpd.html?day=4';
+        btnGo.onclick = null;
+        btnGo.className = 'px-5 py-3 rounded-2xl bg-white text-emerald-900 hover:bg-emerald-50 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer';
+      }
+      if (btnGoText) btnGoText.textContent = 'Buka LKPD Day 4 Bromo';
+    }
+
+    function saveDay4BromoConclusion() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const txtArea = document.getElementById('ftMateriDay4Conclusion');
+      const text = txtArea ? txtArea.value.trim() : '';
+
+      if (!text || text.length < 30) {
+        FincestemCore.ui.toast('Silakan tuliskan resume pemahaman Anda minimal 15–20 kata sebelum melanjutkan!', 'error');
+        return;
+      }
+
+      const saveBtn = document.getElementById('btnSaveMateriDay4Conclusion');
+      if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+        FincestemCore.ui.setBtnLoading(saveBtn, true, 'Menyimpan...');
+      }
+
+      const record = {
+        day_number: 4,
+        location: 'Taman Nasional Bromo Tengger Semeru',
+        conclusion: text,
+        savedAt: new Date().toISOString()
+      };
+
+      try {
+        localStorage.setItem('fincestem_materi_ft_day4_' + cleanNisn, JSON.stringify(record));
+      } catch(e) {}
+
+      applyDay4BromoConclusionState(text, record.savedAt);
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(cleanNisn, 4, 'materi', record, function() {
+          if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+            FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'task_alt');
+          }
+          FincestemCore.ui.toast('Resume Modul Bromo berhasil disimpan! LKPD Day 4 sekarang telah terbuka.', 'success');
+        });
+      } else {
+        if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+          FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Kesimpulan Modul', 'task_alt');
+        }
+        FincestemCore.ui.toast('Resume Modul Bromo berhasil disimpan! LKPD Day 4 sekarang telah terbuka.', 'success');
+      }
+    }
+
+    function handleGoToLkpdDay4Locked() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const saved = localStorage.getItem('fincestem_materi_ft_day4_' + cleanNisn);
+      if (!saved) {
+        FincestemCore.ui.toast('Anda wajib membaca modul dan menyimpan kesimpulan di atas sebelum membuka LKPD!', 'warning');
+        const txt = document.getElementById('ftMateriDay4Conclusion');
+        if (txt) {
+          txt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          txt.focus();
+        }
+        return;
+      }
+      window.location.href = 'lkpd.html?day=4';
+    }
+
+    window.renderDay4FieldTripModule = renderDay4FieldTripModule;
+    window.applyDay4BromoConclusionState = applyDay4BromoConclusionState;
+    window.saveDay4BromoConclusion = saveDay4BromoConclusion;
+    window.handleGoToLkpdDay4Locked = handleGoToLkpdDay4Locked;
+
     // MODUL BELAJAR KHUSUS FIELD TRIP DAY 4 S.D. 7
     // ==========================================
     function renderGenericFieldTripModule(mainEl, dayNum) {

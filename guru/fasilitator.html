@@ -1322,6 +1322,61 @@
                   `;
                 }
               } catch(e) {}
+            } else if (dayNum === 4) {
+              try {
+                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day4_' + nisn);
+                const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day4_' + nisn);
+                let ftAsesmen = null;
+                if (storedAsesmen) {
+                  try { ftAsesmen = JSON.parse(storedAsesmen); } catch(e) {}
+                }
+
+                if (storedFt) {
+                  const ftData = JSON.parse(storedFt);
+                  const lokasiList = Array.isArray(ftData.q1_lokasi) ? ftData.q1_lokasi.join(', ') : (ftData.q1_lokasi || '-');
+                  lkpdPreviewEl.innerHTML = `
+                    <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col gap-2 text-xs">
+                      <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <span class="font-extrabold text-amber-950 flex items-center gap-1">
+                          <span class="material-symbols-outlined text-sm text-amber-700">landscape</span>
+                          <span>Eksplorasi Kaldera Bromo &amp; Kearifan Budaya Tengger (LKPD Day 4)</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${ftData.submitted ? 'bg-amber-600 text-white' : 'bg-slate-600 text-white'}">
+                          ${ftData.submitted ? 'Terkirim ✓' : 'Draft'}
+                        </span>
+                      </div>
+                      <div class="grid grid-cols-2 gap-2 text-[11px]">
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
+                          <span class="text-slate-500 block font-semibold">Zona Dikunjungi:</span>
+                          <span class="font-black text-amber-950 truncate block">${lokasiList}</span>
+                        </div>
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
+                          <span class="text-slate-500 block font-semibold">Kondisi Udara:</span>
+                          <span class="font-black text-blue-900">${ftData.q2_suhu || '-'}</span>
+                        </div>
+                      </div>
+                      ${ftData.q2_deskripsi ? `
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
+                          <strong class="text-slate-700 block">Kesan Bentang Alam Bromo:</strong>
+                          <p class="text-slate-600 italic mt-0.5">${ftData.q2_deskripsi}</p>
+                        </div>
+                      ` : ''}
+                      ${ftData.q5_etika ? `
+                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
+                          <strong class="text-slate-700 block">Aturan Etika &amp; Konservasi TNBTS:</strong>
+                          <p class="text-slate-600 italic mt-0.5">${ftData.q5_etika}</p>
+                        </div>
+                      ` : ''}
+                      ${ftAsesmen ? `
+                        <div class="bg-amber-100/70 p-2 rounded-xl border border-amber-300 text-[11px] flex items-center justify-between">
+                          <span class="font-bold text-amber-950">Skor Asesmen Exploration &amp; Culture:</span>
+                          <span class="font-black text-amber-900 bg-white px-2 py-0.5 rounded-lg border border-amber-200">${ftAsesmen.score || 0} / 100</span>
+                        </div>
+                      ` : ''}
+                    </div>
+                  `;
+                }
+              } catch(e) {}
             }
           }
 

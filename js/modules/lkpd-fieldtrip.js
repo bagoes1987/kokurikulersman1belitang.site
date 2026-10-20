@@ -2857,6 +2857,417 @@
 
 
     // ==========================================
+    
+    // ==========================================
+    // MODUL LKPD KHUSUS FIELD TRIP DAY 4: GUNUNG BROMO (EXPLORATION & CULTURE)
+    // ==========================================
+    function renderFieldTripDay4LKPD(isReadOnly) {
+      const mainEl = document.querySelector('main');
+      if (!mainEl) return;
+
+      const studentName = activeUser.name || 'Peserta Field Trip';
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const cleanNisn = String(studentNisn).trim();
+
+      // 1. Cek prasyarat kesimpulan modul Day 4
+      let hasMateri = false;
+      try {
+        const localMateri = localStorage.getItem('fincestem_materi_ft_day4_' + cleanNisn);
+        if (localMateri) {
+          const parsed = JSON.parse(localMateri);
+          if (parsed && (parsed.conclusion || parsed.text || parsed.content)) {
+            hasMateri = true;
+          }
+        }
+      } catch(e) {}
+
+      // 2. Ambil data LKPD yang tersimpan sebelumnya
+      let saved = null;
+      try {
+        const raw = localStorage.getItem('fincestem_lkpd_ft_day4_' + cleanNisn);
+        if (raw) {
+          saved = JSON.parse(raw);
+        }
+      } catch(e) {}
+
+      if (saved && (saved.submitted || saved.spots || saved.suhu)) {
+        hasMateri = true;
+      }
+
+      const isSubmitted = !!(saved && saved.submitted);
+      const isLockedByPrereq = !hasMateri;
+      const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+      const readOnlyAttr = isFormLocked ? 'disabled' : '';
+
+      const savedSpots = (saved && Array.isArray(saved.spots)) ? saved.spots : [];
+
+      mainEl.innerHTML = `
+        <div class="flex flex-col gap-4 sm:gap-5">
+          ${isLockedByPrereq ? `
+            <!-- BANNER PERINGATAN PRASYARAT MODUL -->
+            <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm animate-pulse-once">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">lock</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
+                  <h3 class="text-base font-extrabold text-amber-950">LKPD Day 4 Bromo Masih Terkunci!</h3>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+                Anda belum membaca <strong>Modul Belajar Day 4 (Eksplorasi Bentang Alam Kaldera Tengger &amp; Etnografi Budaya Suku Tengger)</strong> atau belum menyimpan resume catatan pemahaman di bagian bawah modul.
+              </p>
+              <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
+                <a href="materi.html?day=4" class="px-5 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all">
+                  <span class="material-symbols-outlined text-lg">menu_book</span>
+                  <span>Buka Modul Bromo Day 4 Sekarang</span>
+                </a>
+                <a href="dashboard.html" class="px-5 py-3 rounded-2xl bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 border border-slate-300 transition-all">
+                  <span class="material-symbols-outlined text-lg">arrow_back</span>
+                  <span>Kembali ke Beranda</span>
+                </a>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- BANNER IDENTITAS LKPD DAY 4 -->
+          <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-3 border border-amber-600/40">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
+                Field Trip • Day 4 • Exploration &amp; Culture
+              </span>
+              <span id="ftD4StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-amber-300 text-slate-950' : 'bg-white/20 text-white'}">
+                ${isSubmitted ? '✓ Telah Dikirim / Selesai' : 'Lembar Observasi Lapangan'}
+              </span>
+            </div>
+
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              LKPD Eksplorasi Bentang Alam Kaldera &amp; Etnografi Suku Tengger
+            </h2>
+            <span class="text-xs sm:text-sm font-semibold text-amber-200 leading-snug">
+              Investigasi Lapangan Sederhana: Observasi Kerucut Pascakaldera, Hamparan Laut Pasir 2.100 mdpl, Flora Endemik TNBTS, serta Kearifan Tradisi Suku Tengger.
+            </span>
+            <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-amber-200 font-semibold flex-wrap">
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">schedule</span>
+                <span>03.30 - Selesai WIB</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">landscape</span>
+                <span>Kawasan Bromo Tengger Semeru</span>
+              </span>
+              <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+                <span class="material-symbols-outlined text-sm">person</span>
+                <span>${studentName} (${cleanNisn})</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- FORM INVESTIGASI 2 PILAR: EXPLORATION & CULTURE -->
+          <form id="formFtDay4Lkpd" onsubmit="event.preventDefault();" class="flex flex-col gap-5 sm:gap-6">
+
+            <!-- BAGIAN 1: PILAR EXPLORATION -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-5">
+              <div class="flex items-center gap-2 text-amber-950 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+                <span class="material-symbols-outlined text-amber-600 text-2xl">explore</span>
+                <span>Bagian 1: Pilar Exploration (Jelajah Alam Bromo &amp; TNBTS)</span>
+              </div>
+
+              <!-- SOAL 1: CEKLIS LOKASI BENTANG ALAM -->
+              <div class="flex flex-col gap-2.5">
+                <label class="text-xs sm:text-sm font-bold text-slate-800">
+                  1. Beri tanda centang (✓) pada titik lokasi bentang alam Kaldera Bromo yang kalian amati atau kunjungi hari ini: <span class="text-rose-500">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
+                    <input type="checkbox" name="ftD4Spots" value="Puncak Penanjakan" class="accent-amber-600 rounded" ${readOnlyAttr} ${savedSpots.includes('Puncak Penanjakan') ? 'checked' : ''}>
+                    <span>🌅 <strong>Puncak Penanjakan</strong> (Sunrise &amp; Panorama Kaldera)</span>
+                  </label>
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
+                    <input type="checkbox" name="ftD4Spots" value="Laut Pasir (Pasir Berbisik)" class="accent-amber-600 rounded" ${readOnlyAttr} ${savedSpots.includes('Laut Pasir (Pasir Berbisik)') ? 'checked' : ''}>
+                    <span>🏜️ <strong>Laut Pasir (Pasir Berbisik)</strong> (Elevasi 2.100 mdpl)</span>
+                  </label>
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
+                    <input type="checkbox" name="ftD4Spots" value="Kawah Aktif Bromo" class="accent-amber-600 rounded" ${readOnlyAttr} ${savedSpots.includes('Kawah Aktif Bromo') ? 'checked' : ''}>
+                    <span>🌋 <strong>Kawah Aktif Gunung Bromo</strong> (Elevasi 2.329 mdpl)</span>
+                  </label>
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
+                    <input type="checkbox" name="ftD4Spots" value="Gunung Batok" class="accent-amber-600 rounded" ${readOnlyAttr} ${savedSpots.includes('Gunung Batok') ? 'checked' : ''}>
+                    <span>⛰️ <strong>Gunung Batok</strong> (Kerucut Vulkanik Unik Dinding Bergaris)</span>
+                  </label>
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950 sm:col-span-2">
+                    <input type="checkbox" name="ftD4Spots" value="Padang Savana (Bukit Teletubbies)" class="accent-amber-600 rounded" ${readOnlyAttr} ${savedSpots.includes('Padang Savana (Bukit Teletubbies)') ? 'checked' : ''}>
+                    <span>🌿 <strong>Padang Savana (Bukit Teletubbies)</strong> (Hamparan Rumput Pegunungan TNBTS)</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- SOAL 2: KONDISI UDARA & PEMANDANGAN ALAM -->
+              <div class="flex flex-col gap-3 pt-2 border-t border-slate-100">
+                <label class="text-xs sm:text-sm font-bold text-slate-800">
+                  2A. Bagaimana suhu dan kondisi udara yang kamu rasakan saat berada di Bromo dini hari hingga pagi hari? <span class="text-rose-500">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
+                    <input type="radio" name="ftD4Suhu" value="Sangat Dingin & Berangin Kencang" class="accent-amber-600" ${readOnlyAttr} ${(saved && saved.suhu === 'Sangat Dingin & Berangin Kencang') ? 'checked' : ''}>
+                    <span>❄️ Sangat Dingin &amp; Berangin Kencang</span>
+                  </label>
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
+                    <input type="radio" name="ftD4Suhu" value="Sejuk Segar Disertai Kabut Tipis" class="accent-amber-600" ${readOnlyAttr} ${(saved && saved.suhu === 'Sejuk Segar Disertai Kabut Tipis') ? 'checked' : ''}>
+                    <span>🌫️ Sejuk Segar Disertai Kabut</span>
+                  </label>
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
+                    <input type="radio" name="ftD4Suhu" value="Cukup Hangat Setelah Matahari Terbit" class="accent-amber-600" ${readOnlyAttr} ${(saved && saved.suhu === 'Cukup Hangat Setelah Matahari Terbit') ? 'checked' : ''}>
+                    <span>☀️ Cukup Hangat Terkena Sinar Matahari</span>
+                  </label>
+                </div>
+
+                <div class="flex flex-col gap-1.5 pt-1">
+                  <label for="ftD4KesanAlam" class="text-xs sm:text-sm font-bold text-slate-800">
+                    2B. Tuliskan 1–2 kalimat singkat: Pemandangan bentang alam apa di Bromo yang paling membuatmu kagum? <span class="text-rose-500">*</span>
+                  </label>
+                  <textarea id="ftD4KesanAlam" rows="2" ${readOnlyAttr} placeholder="Contoh: Saya sangat kagum menyaksikan lautan pasir yang sangat luas membentang dengan latar kawah Bromo yang aktif dan Gunung Batok yang berdiri kokoh..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-slate-400">${(saved && saved.kesanAlam) ? saved.kesanAlam : ''}</textarea>
+                </div>
+              </div>
+
+              <!-- SOAL 3: FLORA ENDEMIK & LARANGAN MEMETIK EDELWEIS -->
+              <div class="flex flex-col gap-2.5 pt-2 border-t border-slate-100">
+                <label class="text-xs sm:text-sm font-bold text-slate-800">
+                  3. Mengapa wisatawan dilarang keras memetik bunga Edelweis Jawa (<em>Anaphalis javanica</em>) liar di kawasan Bromo? <span class="text-rose-500">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-emerald-400 cursor-pointer flex items-start gap-2 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-600 has-[:checked]:text-emerald-950">
+                    <input type="radio" name="ftD4Edelweis" value="Dilindungi agar tidak punah dan ekosistem lestari" class="accent-emerald-600 mt-0.5" ${readOnlyAttr} ${(saved && saved.alasanEdelweis === 'Dilindungi agar tidak punah dan ekosistem lestari') ? 'checked' : ''}>
+                    <span>🌸 Karena Edelweis adalah flora langka yang dilindungi di Taman Nasional agar tidak punah dan keasrian ekosistem Bromo tetap lestari.</span>
+                  </label>
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-emerald-400 cursor-pointer flex items-start gap-2 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-600 has-[:checked]:text-emerald-950">
+                    <input type="radio" name="ftD4Edelweis" value="Karena beracun jika disentuh langsung" class="accent-emerald-600 mt-0.5" ${readOnlyAttr} ${(saved && saved.alasanEdelweis === 'Karena beracun jika disentuh langsung') ? 'checked' : ''}>
+                    <span>⚠️ Karena getah bunga Edelweis liar mengandung racun berbahaya bagi kulit manusia.</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- BAGIAN 2: PILAR CULTURE -->
+            <div class="p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-5">
+              <div class="flex items-center gap-2 text-purple-950 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+                <span class="material-symbols-outlined text-purple-600 text-2xl">temple_buddhist</span>
+                <span>Bagian 2: Pilar Culture (Kearifan Budaya Suku Tengger)</span>
+              </div>
+
+              <!-- SOAL 4: PURA LUHUR POTEN & MAKNA YADNYA KASADA -->
+              <div class="flex flex-col gap-3">
+                <label class="text-xs sm:text-sm font-bold text-slate-800">
+                  4. Apa makna dan tujuan masyarakat Suku Tengger melaksanakan upacara adat Yadnya Kasada (melemparkan hasil bumi seperti sayuran/ternak ke kawah Bromo)? <span class="text-rose-500">*</span>
+                </label>
+                <div class="flex flex-col gap-2">
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-purple-400 cursor-pointer flex items-start gap-2 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-purple-50 has-[:checked]:border-purple-600 has-[:checked]:text-purple-950">
+                    <input type="radio" name="ftD4Kasada" value="Wujud syukur atas rezeki hasil panen dan permohonan keselamatan kepada Sang Hyang Widhi serta leluhur" class="accent-purple-600 mt-0.5" ${readOnlyAttr} ${(saved && saved.maknaKasada === 'Wujud syukur atas rezeki hasil panen dan permohonan keselamatan kepada Sang Hyang Widhi serta leluhur') ? 'checked' : ''}>
+                    <span>🙏 Sebagai wujud rasa syukur atas rezeki hasil bumi/panen dan permohonan keselamatan kepada Sang Hyang Widhi serta penghormatan kepada para leluhur (Rara Anteng &amp; Jaka Seger).</span>
+                  </label>
+                  <label class="p-3 rounded-xl border border-slate-200 hover:border-purple-400 cursor-pointer flex items-start gap-2 bg-slate-50 text-xs font-semibold text-slate-800 transition-all has-[:checked]:bg-purple-50 has-[:checked]:border-purple-600 has-[:checked]:text-purple-950">
+                    <input type="radio" name="ftD4Kasada" value="Untuk membuang sisa panen sayur yang tidak laku terjual" class="accent-purple-600 mt-0.5" ${readOnlyAttr} ${(saved && saved.maknaKasada === 'Untuk membuang sisa panen sayur yang tidak laku terjual') ? 'checked' : ''}>
+                    <span>📦 Untuk membuang kelebihan panen sayuran yang tidak habis terjual di pasar agribisnis Sukapura.</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- SOAL 5: ETIKA PELAJAR MENGHORMATI ADAT & ALAM BROMO -->
+              <div class="flex flex-col gap-2.5 pt-2 border-t border-slate-100">
+                <label class="text-xs sm:text-sm font-bold text-slate-800">
+                  5. Tuliskan 2 aturan sopan santun (etika) yang wajib dipatuhi siswa saat berwisata di kawasan suci Bromo dan bertemu warga Suku Tengger: <span class="text-rose-500">*</span>
+                </label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1">
+                  <div class="flex flex-col gap-1">
+                    <span class="text-[11px] font-bold text-slate-700">Etika 1: Kesopanan di Area Suci / Pura Poten</span>
+                    <input type="text" id="ftD4Etika1" value="${(saved && saved.etika1) ? saved.etika1.replace(/"/g, '&quot;') : ''}" ${readOnlyAttr} placeholder="Contoh: Menjaga tutur kata sopan, tidak berisik, dan menghormati warga yang sedang beribadah." class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400">
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <span class="text-[11px] font-bold text-slate-700">Etika 2: Menjaga Kelestarian Alam Bromo</span>
+                    <input type="text" id="ftD4Etika2" value="${(saved && saved.etika2) ? saved.etika2.replace(/"/g, '&quot;') : ''}" ${readOnlyAttr} placeholder="Contoh: Membawa kembali sampah sendiri (Zero Littering) dan tidak merusak tanaman pegunungan." class="p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- TOMBOL SIMPAN & KIRIM LKPD DAY 4 -->
+            ${isSubmitted ? `
+              <div class="pt-2 flex flex-col sm:flex-row gap-3 items-center justify-between p-4 rounded-3xl bg-emerald-50 border-2 border-emerald-300 text-emerald-950">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-xl">verified</span>
+                  </div>
+                  <div>
+                    <h4 class="font-black text-sm">LKPD Day 4 Bromo Telah Disimpan &amp; Terkirim!</h4>
+                    <p class="text-xs text-emerald-800">Terkirim pada: ${saved && saved.submittedAt ? saved.submittedAt : 'Selesai'}</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-2 w-full sm:w-auto">
+                  <a href="dokumentasi.html?day=4" class="flex-1 sm:flex-initial px-5 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Lanjut ke Dokumentasi &amp; Refleksi &rarr;</span>
+                  </a>
+                </div>
+              </div>
+            ` : `
+              <div class="pt-2 flex flex-col sm:flex-row gap-3">
+                <button id="btnSubmitD4BromoLkpd" type="button" onclick="saveDay4BromoLKPD(true)" class="flex-1 py-4 px-6 rounded-2xl bg-amber-600 hover:bg-amber-700 active:scale-[0.99] text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-xl">send</span>
+                  <span>Simpan &amp; Kirim LKPD Day 4 (Gunung Bromo)</span>
+                </button>
+                <button type="button" onclick="saveDay4BromoLKPD(false)" class="py-3 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-base">save</span>
+                  <span>Simpan Draf</span>
+                </button>
+              </div>
+            `}
+          </form>
+
+          <!-- MODAL SUKSES SUBMIT LKPD DAY 4 -->
+          <div id="modalD4BromoLkpdSuccess" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
+            <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-slate-100 transform transition-all duration-200 scale-95">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-2xl">check_circle</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs font-black uppercase text-amber-700 tracking-wider">Tahap 2 Selesai ✓</span>
+                  <h3 class="text-base sm:text-lg font-black text-slate-900 leading-snug">LKPD Bromo Berhasil Terkirim!</h3>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                Data observasi bentang alam kaldera, flora endemik TNBTS, serta catatan kearifan adat Suku Tengger telah tersimpan ke sistem.
+              </p>
+              <div class="flex flex-col gap-2 pt-2">
+                <a href="dokumentasi.html?day=4" class="w-full py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center">
+                  <span class="material-symbols-outlined text-lg">photo_camera</span>
+                  <span>Lanjut ke Dokumentasi Foto &amp; Refleksi &rarr;</span>
+                </a>
+                <button type="button" onclick="closeD4BromoLkpdSuccessModal()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer transition-all">
+                  Tetap di Halaman LKPD
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveDay4BromoLKPD(isSubmit) {
+      const studentNisn = activeUser.nisn || activeUser.identifier || '';
+      const cleanNisn = String(studentNisn).trim();
+
+      const selectedSpots = Array.from(document.querySelectorAll('input[name="ftD4Spots"]:checked')).map(el => el.value);
+      const suhu = document.querySelector('input[name="ftD4Suhu"]:checked')?.value || '';
+      const kesanAlam = (document.getElementById('ftD4KesanAlam')?.value || '').trim();
+      const edelweis = document.querySelector('input[name="ftD4Edelweis"]:checked')?.value || '';
+      const kasada = document.querySelector('input[name="ftD4Kasada"]:checked')?.value || '';
+      const etika1 = (document.getElementById('ftD4Etika1')?.value || '').trim();
+      const etika2 = (document.getElementById('ftD4Etika2')?.value || '').trim();
+
+      if (isSubmit) {
+        if (!selectedSpots || selectedSpots.length === 0) {
+          FincestemCore.ui.toast('Centang minimal 1 titik bentang alam yang kalian amati (Soal 1)!', 'warning');
+          return;
+        }
+        if (!suhu) {
+          FincestemCore.ui.toast('Pilih kondisi suhu udara yang dirasakan di Bromo (Soal 2A)!', 'warning');
+          return;
+        }
+        if (!kesanAlam || kesanAlam.length < 10) {
+          FincestemCore.ui.toast('Tuliskan kesan pemandangan alam Bromo minimal 1–2 kalimat (Soal 2B)!', 'warning');
+          document.getElementById('ftD4KesanAlam')?.focus();
+          return;
+        }
+        if (!edelweis) {
+          FincestemCore.ui.toast('Pilih alasan mengapa dilarang memetik bunga Edelweis liar (Soal 3)!', 'warning');
+          return;
+        }
+        if (!kasada) {
+          FincestemCore.ui.toast('Pilih makna dan tujuan upacara adat Yadnya Kasada (Soal 4)!', 'warning');
+          return;
+        }
+        if (!etika1 || !etika2) {
+          FincestemCore.ui.toast('Lengkapi 2 aturan etika sopan santun di kawasan Bromo (Soal 5)!', 'warning');
+          return;
+        }
+      }
+
+      const payload = {
+        day_number: 4,
+        location: 'Taman Nasional Bromo Tengger Semeru',
+        spots: selectedSpots,
+        suhu: suhu,
+        kesanAlam: kesanAlam,
+        alasanEdelweis: edelweis,
+        maknaKasada: kasada,
+        etika1: etika1,
+        etika2: etika2,
+        submitted: !!isSubmit,
+        submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
+      };
+
+      const btnSubmit = document.getElementById('btnSubmitD4BromoLkpd');
+      if (btnSubmit && isSubmit) {
+        btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Mengirimkan Laporan...</span>';
+        btnSubmit.classList.add('pointer-events-none', 'opacity-80');
+      }
+
+      setTimeout(() => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day4_' + cleanNisn, JSON.stringify(payload));
+        } catch(e) {}
+
+        if (FincestemCore.progress && cleanNisn) {
+          FincestemCore.progress.submitTask(cleanNisn, 4, 'lkpd', payload);
+        }
+
+        if (isSubmit) {
+          if (btnSubmit) {
+            btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Terkirim</span>';
+            btnSubmit.classList.remove('pointer-events-none', 'opacity-80');
+          }
+          const statusBadge = document.getElementById('ftD4StatusBadge');
+          if (statusBadge) {
+            statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-300 text-slate-950';
+            statusBadge.textContent = '✓ Telah Dikirim / Selesai';
+          }
+          FincestemCore.ui.toast('LKPD Bromo Day 4 berhasil dikirim! Mengarahkan ke Dokumentasi Foto & Refleksi...', 'success');
+          showD4BromoLkpdSuccessModal();
+          setTimeout(() => {
+            window.location.href = 'dokumentasi.html?day=4';
+          }, 1200);
+        } else {
+          FincestemCore.ui.toast('Draf LKPD Bromo Day 4 tersimpan.', 'info');
+        }
+      }, 400);
+    }
+
+    function showD4BromoLkpdSuccessModal() {
+      const modal = document.getElementById('modalD4BromoLkpdSuccess');
+      if (!modal) return;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const inner = modal.querySelector('div');
+      if (inner) {
+        inner.classList.remove('scale-95');
+        inner.classList.add('scale-100');
+      }
+    }
+
+    function closeD4BromoLkpdSuccessModal() {
+      const modal = document.getElementById('modalD4BromoLkpdSuccess');
+      if (!modal) return;
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      modal.classList.remove('opacity-100');
+    }
+
+    window.renderFieldTripDay4LKPD = renderFieldTripDay4LKPD;
+    window.saveDay4BromoLKPD = saveDay4BromoLKPD;
+    window.showD4BromoLkpdSuccessModal = showD4BromoLkpdSuccessModal;
+    window.closeD4BromoLkpdSuccessModal = closeD4BromoLkpdSuccessModal;
+
     // MODUL LKPD KHUSUS FIELD TRIP DAY 4 S.D. 7
     // ==========================================
     function renderFieldTripGenericLKPD(dayNum, isReadOnly) {

@@ -833,8 +833,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261020_v1"></script>
-  <script src="../js/core.js?v=20261020_v1"></script>
+  <script src="../js/siswa_data.js?v=20261020_v2"></script>
+  <script src="../js/core.js?v=20261020_v2"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -2288,9 +2288,9 @@
           : (stu.zone || 'FINCESTEM OKU TIMUR');
         const zUpper = (studentZone || '').toUpperCase();
         const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-        const isFTDay = (isFieldTrip || dNum <= 3) && (dNum >= 1 && dNum <= 7);
+        const isFTDay = (isFieldTrip || dNum <= 4) && (dNum >= 1 && dNum <= 7);
         const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
-        const ftConfig = ((isFieldTrip || dNum <= 3) && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
+        const ftConfig = ((isFieldTrip || dNum <= 4) && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
 
         // Metadata Tampilan:
         // Jika Siswa Field Trip -> Gunakan konfigurasi Day 1 s.d. 7 khusus Field Trip
@@ -3177,6 +3177,7 @@
       const isFTDay1 = Number(day.day_number) === 1;
       const isFTDay2 = Number(day.day_number) === 2;
       const isFTDay3 = Number(day.day_number) === 3;
+      const isFTDay4 = Number(day.day_number) === 4;
 
       if (type === 'asesmen') {
         if (isFTDay1) {
@@ -3587,8 +3588,180 @@
               </div>
             `)}
           `;
+        } else if (isFTDay4) {
+          title.textContent = 'Asesmen Day 4 (Eksplorasi Kaldera Bromo & Budaya Suku Tengger)';
+          icon.textContent = 'fact_check';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0';
+
+          let ftAsesmen = null;
+          const idList = getStudentStorageIdentifiers();
+          for (const id of idList) {
+            try {
+              const raw = localStorage.getItem('fincestem_asesmen_ft_day4_' + id);
+              if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && (parsed.submitted || parsed.answers || parsed.score !== undefined)) {
+                  ftAsesmen = parsed;
+                  break;
+                }
+              }
+            } catch(e) {}
+          }
+
+          const isSubmitted = !!(ftAsesmen && ftAsesmen.submitted);
+          const score = ftAsesmen ? (ftAsesmen.score || 0) : 0;
+          const userAns = ftAsesmen ? (ftAsesmen.answers || {}) : {};
+
+          const questions = [
+            {
+              id: 'q1',
+              title: '1. Exploration (Geomorfologi Kaldera Tengger)',
+              prompt: 'Berdasarkan kajian geologi fisik, bagaimana Kaldera Tengger yang menjadi ruang berdirinya Gunung Bromo, Gunung Batok, dan Laut Pasir terbentuk di masa lampau?',
+              options: [
+                { key: 'A', text: 'Terbentuk murni karena pengikisan air hujan dan banjir bandang selama ratusan tahun tanpa ada letusan gunung api.' },
+                { key: 'B', text: 'Terbentuk dari proses keruntuhan permukaan (cekungan vulkanik besar) setelah pengosongan sebagian sistem dapur magma akibat erupsi vulkanik masif masa lalu.' },
+                { key: 'C', text: 'Terbentuk akibat pemadatan debu meteorit luar angkasa yang jatuh di atas pegunungan Jawa Timur.' },
+                { key: 'D', text: 'Terbentuk dari timbunan pasir sungai yang terbawa angin dari pesisir pantai selatan Pulau Jawa.' }
+              ],
+              correct: 'B'
+            },
+            {
+              id: 'q2',
+              title: '2. Exploration (Topografi & Elevasi Kawasan Bromo)',
+              prompt: 'Berapakah perkiraan elevasi dasar Laut Pasir Tengger dan titik puncak kerucut vulkanik Gunung Bromo di atas permukaan laut (mdpl)?',
+              options: [
+                { key: 'A', text: 'Dasar Laut Pasir berada di ketinggian 500 mdpl dan puncak Bromo di 1.000 mdpl.' },
+                { key: 'B', text: 'Dasar kaldera Laut Pasir Tengger berada sekitar 2.100 mdpl dan elevasi puncak Gunung Bromo sekitar 2.329 mdpl.' },
+                { key: 'C', text: 'Dasar Laut Pasir sejajar dengan permukaan air laut (0 mdpl) dan puncak Bromo setinggi 5.000 mdpl.' },
+                { key: 'D', text: 'Dasar Laut Pasir berada pada 3.500 mdpl dan puncak Bromo berada pada 4.200 mdpl.' }
+              ],
+              correct: 'B'
+            },
+            {
+              id: 'q3',
+              title: '3. Exploration (Flora & Fauna Endemik TNBTS)',
+              prompt: 'Di kawasan Taman Nasional Bromo Tengger Semeru (TNBTS), keanekaragaman hayati flora dan fauna dilindungi secara ketat. Manakah kombinasi flora khas dan fauna zona konservasi TNBTS yang tepat?',
+              options: [
+                { key: 'A', text: 'Pohon Kelapa Sawit, Kaktus Gurun Sahara, dan Burung Pinguin Antartika.' },
+                { key: 'B', text: 'Edelweis Jawa (Anaphalis javanica), Jamuju, Elang Ular Bido, Macan Tutul Jawa, dan amfibi Leptophryne borbonica.' },
+                { key: 'C', text: 'Bunga Sakura Jepang, Pohon Baobab Afrika, dan Burung Cendrawasih Papua.' },
+                { key: 'D', text: 'Hutan Bakau Mangrove, Bekantan Kalimantan, dan Komodo Nusa Tenggara.' }
+              ],
+              correct: 'B'
+            },
+            {
+              id: 'q4',
+              title: '4. Culture (Makna Sakral Pura Luhur Poten & Yadnya Kasada)',
+              prompt: 'Bagi masyarakat Hindu Tengger yang mendiami lereng Bromo, keberadaan Pura Luhur Poten di Laut Pasir serta upacara sakral Yadnya Kasada memiliki makna luhur sebagai...',
+              options: [
+                { key: 'A', text: 'Hiburan pasar malam komersial musiman untuk menarik wisatawan asing sebanyak-banyaknya tanpa ada nilai doa.' },
+                { key: 'B', text: 'Wujud rasa syukur mendalam kepada Sang Hyang Widhi dan para leluhur atas hasil bumi, rezeki, serta permohonan keselamatan dan berkah hidup.' },
+                { key: 'C', text: 'Tempat membuang limbah plastik sisa pertanian dan sampah rumah tangga warga lereng.' },
+                { key: 'D', text: 'Ajang perlombaan kecepatan kendaraan jeep off-road tahunan di padang pasir.' }
+              ],
+              correct: 'B'
+            },
+            {
+              id: 'q5',
+              title: '5. Culture (Tradisi Lisan Rara Anteng & Jaka Seger vs Sains Geologi)',
+              prompt: 'Bagaimana sikap ilmiah dan etika budaya siswa FINCESTEM dalam memposisikan kisah tutur Rara Anteng dan Jaka Seger yang hidup turun-temurun di kalangan Suku Tengger?',
+              options: [
+                { key: 'A', text: 'Menganggap tradisi lisan tersebut sebagai laporan bukti ilmiah laboratorium tentang komposisi magma vulkanik kaldera.' },
+                { key: 'B', text: 'Menghormati kisah tersebut sebagai warisan tradisi lisan, folklor, dan identitas kultural asal-usul Suku Tengger, sembari memahami pembentukan fisik kaldera secara geologis melalui sains vulkanologi.' },
+                { key: 'C', text: 'Menolak dan melarang masyarakat Tengger menceritakan kisah tersebut karena tidak sesuai rumus fisika modern.' },
+                { key: 'D', text: 'Mengubah cerita rakyat tersebut menjadi cerita fiksi luar angkasa tanpa memperhatikan adat aslinya.' }
+              ],
+              correct: 'B'
+            }
+          ];
+
+          let qHtml = '';
+          questions.forEach((q, idx) => {
+            const userChoice = userAns[q.id] || '';
+            const optsHtml = q.options.map(opt => {
+              const isChecked = userChoice === opt.key ? 'checked' : '';
+              let badgeState = '';
+              if (isSubmitted) {
+                if (opt.key === q.correct) {
+                  badgeState = '<span class="ml-auto px-2 py-0.5 rounded text-[10px] font-black bg-emerald-100 text-emerald-800">Kunci Benar ✓</span>';
+                } else if (isChecked && opt.key !== q.correct) {
+                  badgeState = '<span class="ml-auto px-2 py-0.5 rounded text-[10px] font-black bg-rose-100 text-rose-800">Jawaban Kamu ✗</span>';
+                }
+              }
+
+              return `
+                <label class="p-2.5 sm:p-3 rounded-xl border ${isChecked ? (isSubmitted ? (opt.key === q.correct ? 'border-amber-500 bg-amber-50/70' : 'border-rose-400 bg-rose-50/70') : 'border-amber-500 bg-amber-50/50') : 'border-slate-200 bg-slate-50/60'} hover:bg-amber-50/40 cursor-pointer flex items-center gap-2.5 text-xs font-semibold text-slate-800 transition-all ${isSubmitted ? 'pointer-events-none' : ''}">
+                  <input type="radio" name="ftD4Mcq_${q.id}" value="${opt.key}" ${isChecked} ${isSubmitted ? 'disabled' : ''} class="accent-amber-600">
+                  <span class="font-bold text-slate-900">${opt.key}.</span>
+                  <span class="flex-1">${opt.text}</span>
+                  ${badgeState}
+                </label>
+              `;
+            }).join('');
+
+            qHtml += `
+              <div class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col gap-2.5">
+                <div class="flex items-center justify-between gap-1 flex-wrap">
+                  <span class="text-xs font-black text-amber-950 uppercase tracking-wide">${q.title}</span>
+                  <span class="text-[11px] font-extrabold text-slate-500">Bobot: 20 Poin</span>
+                </div>
+                <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">${q.prompt}</p>
+                <div class="flex flex-col gap-1.5 pt-1">
+                  ${optsHtml}
+                </div>
+              </div>
+            `;
+          });
+
+          body.innerHTML = `
+            <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 flex flex-col gap-1 text-slate-800">
+              <span class="font-bold text-sm text-amber-950">Asesmen Pilihan Ganda: Eksplorasi Bromo &amp; Budaya Tengger (5 Soal PG)</span>
+              <p class="text-xs sm:text-sm leading-relaxed text-slate-600">
+                Jawablah 5 soal pilihan ganda di bawah ini berdasarkan pemahaman bentang alam kaldera Tengger, elevasi Laut Pasir, perlindungan flora-fauna langka TNBTS, kesakralan upacara Yadnya Kasada di Pura Luhur Poten, serta penghormatan terhadap tradisi lisan Suku Tengger.
+              </p>
+            </div>
+
+            ${isSubmitted ? `
+              <div class="p-3.5 sm:p-4 rounded-2xl bg-white border border-emerald-300 shadow-2xs flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-base shrink-0">
+                    <span class="material-symbols-outlined text-2xl">verified</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-xs font-bold text-slate-500">Hasil Asesmen Day 4:</span>
+                    <span class="text-base sm:text-lg font-black text-emerald-900">Nilai: ${score} / 100 (${score >= 80 ? '⭐⭐⭐⭐⭐ Sangat Baik' : '⭐⭐⭐⭐☆ Baik'})</span>
+                  </div>
+                </div>
+                <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase shadow-xs">
+                  Selesai ✓
+                </span>
+              </div>
+            ` : ''}
+
+            <div class="flex flex-col gap-3">
+              ${qHtml}
+            </div>
+
+            ${isSubmitted ? `
+              <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=4';" class="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">photo_camera</span>
+                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
+                  Tutup
+                </button>
+              </div>
+            ` : (readOnlyBanner ? readOnlyBanner : `
+              <div class="pt-2">
+                <button type="button" onclick="saveStudentNote(4, 'asesmen')" class="w-full py-3.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-lg">send</span>
+                  <span>Kirim Jawaban Asesmen &amp; Buka Dokumentasi</span>
+                </button>
+              </div>
+            `)}
+          `;
         } else {
-          title.textContent = isTrial ? 'Asesmen Simulasi (Gladi Bersih)' : `Asesmen Pemahaman - Day ${day.day_number}`;
           icon.textContent = 'fact_check';
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
           body.innerHTML = `
@@ -3608,7 +3781,7 @@
           `;
         }
       } else if (type === 'refleksi') {
-        const ftCfg = ((isFieldTrip || Number(day.day_number) <= 3) && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
+        const ftCfg = ((isFieldTrip || Number(day.day_number) <= 4) && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
         title.textContent = isTrial 
           ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' 
           : (ftCfg 
@@ -4171,6 +4344,54 @@
 
         FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
           FincestemCore.ui.toast(`Asesmen Day 3 Berhasil Dikirim! Skor Anda: ${score} / 100. Evaluasi STEM Transportasi Museum Angkut tuntas.`, 'success');
+          loadStudentProgress();
+        });
+
+        closeDayActivityModal();
+        return;
+      } else if (type === 'asesmen' && isFTDay4) {
+        const q1 = document.querySelector('input[name="ftD4Mcq_q1"]:checked')?.value || '';
+        const q2 = document.querySelector('input[name="ftD4Mcq_q2"]:checked')?.value || '';
+        const q3 = document.querySelector('input[name="ftD4Mcq_q3"]:checked')?.value || '';
+        const q4 = document.querySelector('input[name="ftD4Mcq_q4"]:checked')?.value || '';
+        const q5 = document.querySelector('input[name="ftD4Mcq_q5"]:checked')?.value || '';
+
+        if (!q1 || !q2 || !q3 || !q4 || !q5) {
+          FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan pilihan ganda asesmen Day 4!', 'warning');
+          return;
+        }
+
+        const keys = { q1: 'B', q2: 'B', q3: 'B', q4: 'B', q5: 'B' };
+        let score = 0;
+        if (q1 === keys.q1) score += 20;
+        if (q2 === keys.q2) score += 20;
+        if (q3 === keys.q3) score += 20;
+        if (q4 === keys.q4) score += 20;
+        if (q5 === keys.q5) score += 20;
+
+        const answers = { q1, q2, q3, q4, q5 };
+        const asesmenPayload = {
+          submitted: true,
+          type: 'mcq',
+          score: score,
+          totalQuestions: 5,
+          answers: answers,
+          submitted_at: new Date().toISOString()
+        };
+
+        const idList = getStudentStorageIdentifiers();
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_asesmen_ft_day4_' + id, JSON.stringify(asesmenPayload));
+        });
+
+        note = `Asesmen PG Day 4 - Eksplorasi Kaldera & Budaya Tengger (Skor: ${score}/100):\n1. Kaldera Tengger: ${q1} (${q1 === 'B' ? 'Benar' : 'Salah'})\n2. Topografi & Elevasi: ${q2} (${q2 === 'B' ? 'Benar' : 'Salah'})\n3. Flora Fauna TNBTS: ${q3} (${q3 === 'B' ? 'Benar' : 'Salah'})\n4. Pura Poten & Yadnya Kasada: ${q4} (${q4 === 'B' ? 'Benar' : 'Salah'})\n5. Tradisi Lisan Rara Anteng: ${q5} (${q5 === 'B' ? 'Benar' : 'Salah'})`;
+
+        if (studentProgress && studentProgress.task_map) {
+          studentProgress.task_map['4_asesmen'] = { status: 'submitted', content: note };
+        }
+
+        FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
+          FincestemCore.ui.toast(`Asesmen Day 4 Berhasil Dikirim! Skor Anda: ${score} / 100. Evaluasi Eksplorasi Bromo & Budaya Tengger tuntas.`, 'success');
           loadStudentProgress();
         });
 
