@@ -266,6 +266,60 @@
           <span class="text-slate-500 text-xs font-semibold">Alamat Domisili Siswa:</span>
           <span id="bioAlamat" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-relaxed">-</span>
         </div>
+
+        <!-- KARTU INFORMASI KESEHATAN & MEDIS PESERTA DIDIK -->
+        <div class="mt-3 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-rose-50/70 via-red-50/40 to-amber-50/50 border border-rose-200/90 shadow-2xs flex flex-col gap-3.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-rose-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <span class="material-symbols-outlined text-xl">medical_services</span>
+              </div>
+              <div>
+                <h4 class="font-black text-sm text-slate-900 leading-tight">Informasi Kesehatan &amp; Kesiapan Medis</h4>
+                <span class="text-[11px] text-slate-500 font-medium">Diisi mandiri oleh siswa untuk keselamatan selama kegiatan</span>
+              </div>
+            </div>
+            <button type="button" onclick="openHealthInfoModal()" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-sm">edit</span>
+              <span>Isi / Perbarui</span>
+            </button>
+          </div>
+
+          <!-- Grid Data Kesehatan -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 text-xs pt-1">
+            <div class="p-2.5 rounded-xl bg-white border border-rose-100 flex flex-col">
+              <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Status Kesehatan</span>
+              <span id="bioHealthStatusBadge" class="font-bold text-slate-700 text-xs mt-1 flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-slate-300"></span> Belum diisi
+              </span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-rose-100 flex flex-col">
+              <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Golongan Darah</span>
+              <span id="bioHealthBlood" class="font-black text-slate-800 text-xs mt-1">-</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-rose-100 flex flex-col">
+              <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">No. WA Darurat (Ortu/Wali)</span>
+              <span id="bioHealthEmergencyPhone" class="font-bold text-slate-800 text-xs mt-1">-</span>
+            </div>
+            <div class="p-2.5 rounded-xl bg-white border border-rose-100 flex flex-col">
+              <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider">Obat Pribadi Dibawa</span>
+              <span id="bioHealthMedication" class="font-bold text-slate-800 text-xs mt-1 truncate">-</span>
+            </div>
+          </div>
+
+          <!-- Rincian Penyakit / Catatan Medis (Jika Ada) -->
+          <div id="bioHealthDetailBox" class="hidden p-3 rounded-xl bg-white/90 border border-rose-200 text-xs flex flex-col gap-1">
+            <span class="font-bold text-rose-950 flex items-center gap-1 text-[11px]">
+              <span class="material-symbols-outlined text-rose-600 text-sm">error</span>
+              <span>Riwayat Penyakit / Alergi:</span>
+            </span>
+            <p id="bioHealthDiseaseText" class="text-slate-700 leading-relaxed pl-4 font-medium">-</p>
+            <div class="mt-1 pt-1 border-t border-rose-100 flex items-center gap-1 text-[11px] text-slate-600">
+              <strong class="text-slate-700">Obat yang Diperlukan:</strong>
+              <span id="bioHealthMedicationFull">-</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -520,6 +574,100 @@
           Tutup Rekapitulasi
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- MODAL INPUT KESEHATAN SISWA -->
+  <div id="modalHealthInfo" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Header Modal -->
+      <div class="px-5 py-4 bg-gradient-to-r from-rose-600 to-red-600 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-xl">medical_information</span>
+          </div>
+          <div>
+            <h3 class="font-black text-sm sm:text-base leading-tight">Data Kesehatan &amp; Obat Pribadi</h3>
+            <p class="text-[11px] text-rose-100">Kesiapan medis &amp; kontak darurat peserta kegiatan</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeHealthInfoModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Form Body Modal -->
+      <form id="formHealthInfo" onsubmit="saveStudentHealthInfo(event)" class="p-5 overflow-y-auto flex flex-col gap-4 text-xs sm:text-sm">
+        
+        <!-- Pilihan 1: Status Kesehatan (Radio) -->
+        <div class="flex flex-col gap-2">
+          <label class="font-bold text-slate-800 text-xs uppercase tracking-wide">1. Riwayat Kesehatan Saat Ini *</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <label class="p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 cursor-pointer flex items-center gap-2.5 transition-all text-xs font-bold text-emerald-950 shadow-xs" id="labelHealthSehat">
+              <input type="radio" name="healthConditionRadio" value="sehat" onchange="onHealthConditionChanged()" class="accent-emerald-600" checked>
+              <span>Sehat / Tidak Ada Sakit</span>
+            </label>
+            <label class="p-3 rounded-2xl border-2 border-slate-200 bg-slate-50 cursor-pointer flex items-center gap-2.5 transition-all text-xs font-bold text-slate-600" id="labelHealthSakit">
+              <input type="radio" name="healthConditionRadio" value="sakit" onchange="onHealthConditionChanged()" class="accent-rose-600">
+              <span>Memiliki Riwayat Sakit / Alergi</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Kolom Kondisi Sakit (Dinamis jika memilih 'sakit') -->
+        <div id="healthDiseaseFields" class="hidden flex flex-col gap-3 p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200">
+          <div>
+            <label for="inputDiseaseName" class="font-bold text-slate-800 text-xs block mb-1">
+              Nama Penyakit / Alergi / Keluhan yang Sering Kambuh: *
+            </label>
+            <textarea id="inputDiseaseName" rows="2" placeholder="Contoh: Asma jika terkena udara dingin, maag kronis, alergi debu, mudah mabuk perjalanan, dll." class="w-full p-2.5 rounded-xl border border-rose-300 bg-white text-xs text-slate-800 focus:outline-none focus:border-rose-600 leading-relaxed"></textarea>
+          </div>
+
+          <div>
+            <label for="inputMedicationName" class="font-bold text-slate-800 text-xs block mb-1">
+              Pengobatan yang Dilakukan / Nama Obat Pribadi yang Wajib Dibawa: *
+            </label>
+            <input type="text" id="inputMedicationName" placeholder="Contoh: Inhaler Ventolin (di tas kecil), Promag, Minyak Kayu Putih, Antimo" class="w-full p-2.5 rounded-xl border border-rose-300 bg-white text-xs text-slate-800 focus:outline-none focus:border-rose-600">
+            <span class="text-[10.5px] text-rose-800 font-medium mt-1 inline-block">Pastikan obat ini selalu Anda bawa di dalam tas kecil saat perjalanan bus dan trekking.</span>
+          </div>
+        </div>
+
+        <!-- Kolom Golongan Darah & No. WhatsApp Darurat -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="selectBloodType" class="font-bold text-slate-800 text-xs block mb-1">
+              Golongan Darah:
+            </label>
+            <select id="selectBloodType" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-xs text-slate-800 focus:outline-none focus:border-rose-500 font-bold">
+              <option value="Belum Tahu">Belum Tahu</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="AB">AB</option>
+              <option value="O">O</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="inputEmergencyPhone" class="font-bold text-slate-800 text-xs block mb-1">
+              No. WhatsApp Darurat (Orang Tua / Wali): *
+            </label>
+            <input type="tel" id="inputEmergencyPhone" placeholder="Contoh: 081234567890 (Ayah/Ibu)" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-xs text-slate-800 focus:outline-none focus:border-rose-500 font-bold">
+            <span class="text-[10.5px] text-slate-500 mt-0.5 inline-block">Akan dihubungi tim medis dalam situasi mendesak.</span>
+          </div>
+        </div>
+
+        <!-- Tombol Aksi Simpan -->
+        <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
+          <button type="button" onclick="closeHealthInfoModal()" class="flex-1 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs cursor-pointer transition-all">
+            Batal
+          </button>
+          <button type="submit" id="btnSaveHealth" class="flex-1 py-3 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white font-extrabold text-xs shadow-md cursor-pointer transition-all flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-base">save</span>
+            <span>Simpan Data Kesehatan</span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
@@ -833,8 +981,8 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261020_v2"></script>
-  <script src="../js/core.js?v=20261020_v2"></script>
+  <script src="../js/siswa_data.js?v=20261021_v1"></script>
+  <script src="../js/core.js?v=20261021_v1"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -1028,6 +1176,9 @@
       document.getElementById('bioOrtu').textContent = `Ayah: ${s.ayah || s.parent_father || '-'} | Ibu: ${s.ibu || s.parent_mother || '-'}`;
       document.getElementById('bioPekerjaanHp').textContent = `${s.pekerjaan_ortu || s.parent_job || '-'} | HP: ${s.phone || '-'}`;
       document.getElementById('bioAlamat').textContent = s.alamat || s.address || '-';
+
+      // Muat Informasi Kesehatan Siswa
+      loadStudentHealthInfo(s.nisn || s.identifier);
     }
 
     function renderStudentZoneUI(studentZone) {
@@ -4652,6 +4803,234 @@
       modal.classList.remove('opacity-100');
       modal.classList.add('opacity-0', 'pointer-events-none');
     }
+
+    // ==========================================
+    // MANAJEMEN INFORMASI KESEHATAN SISWA
+    // ==========================================
+    function openHealthInfoModal() {
+      const modal = document.getElementById('modalHealthInfo');
+      if (!modal) return;
+      
+      const idList = getStudentStorageIdentifiers();
+      let health = null;
+      for (const id of idList) {
+        try {
+          const raw = localStorage.getItem('fincestem_health_info_' + id);
+          if (raw) { health = JSON.parse(raw); break; }
+        } catch(e) {}
+      }
+
+      if (!health && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const kRecord = window.currentStudentProgress.task_map['0_kesehatan'];
+        if (kRecord && kRecord.content) {
+          try {
+            health = typeof kRecord.content === 'object' ? kRecord.content : JSON.parse(kRecord.content);
+          } catch(e) {}
+        }
+      }
+
+      const radioSehat = document.querySelector('input[name="healthConditionRadio"][value="sehat"]');
+      const radioSakit = document.querySelector('input[name="healthConditionRadio"][value="sakit"]');
+      const inputDisease = document.getElementById('inputDiseaseName');
+      const inputMed = document.getElementById('inputMedicationName');
+      const selectBlood = document.getElementById('selectBloodType');
+      const inputEmergency = document.getElementById('inputEmergencyPhone');
+
+      if (health) {
+        if (health.condition === 'sakit') {
+          if (radioSakit) radioSakit.checked = true;
+        } else {
+          if (radioSehat) radioSehat.checked = true;
+        }
+        if (inputDisease) inputDisease.value = health.disease || '';
+        if (inputMed) inputMed.value = health.medication || '';
+        if (selectBlood) selectBlood.value = health.blood_type || 'Belum Tahu';
+        if (inputEmergency) inputEmergency.value = health.emergency_phone || '';
+      } else {
+        if (radioSehat) radioSehat.checked = true;
+        if (inputDisease) inputDisease.value = '';
+        if (inputMed) inputMed.value = '';
+        if (selectBlood) selectBlood.value = 'Belum Tahu';
+        const s = currentStudent || FincestemCore.auth.getUser() || {};
+        if (inputEmergency) inputEmergency.value = s.phone || s.hp || '';
+      }
+
+      onHealthConditionChanged();
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+    }
+
+    function closeHealthInfoModal() {
+      const modal = document.getElementById('modalHealthInfo');
+      if (modal) {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        modal.classList.remove('opacity-100');
+      }
+    }
+
+    function onHealthConditionChanged() {
+      const selected = document.querySelector('input[name="healthConditionRadio"]:checked')?.value || 'sehat';
+      const fieldsBox = document.getElementById('healthDiseaseFields');
+      const labelSehat = document.getElementById('labelHealthSehat');
+      const labelSakit = document.getElementById('labelHealthSakit');
+      const inputDisease = document.getElementById('inputDiseaseName');
+
+      if (selected === 'sakit') {
+        if (fieldsBox) fieldsBox.classList.remove('hidden');
+        if (labelSakit) {
+          labelSakit.className = 'p-3 rounded-2xl border-2 border-rose-500 bg-rose-50/50 cursor-pointer flex items-center gap-2.5 transition-all text-xs font-bold text-rose-950 shadow-xs';
+        }
+        if (labelSehat) {
+          labelSehat.className = 'p-3 rounded-2xl border-2 border-slate-200 bg-slate-50 cursor-pointer flex items-center gap-2.5 transition-all text-xs font-bold text-slate-600';
+        }
+        if (inputDisease && !inputDisease.value) inputDisease.focus();
+      } else {
+        if (fieldsBox) fieldsBox.classList.add('hidden');
+        if (labelSehat) {
+          labelSehat.className = 'p-3 rounded-2xl border-2 border-emerald-500 bg-emerald-50/50 cursor-pointer flex items-center gap-2.5 transition-all text-xs font-bold text-emerald-950 shadow-xs';
+        }
+        if (labelSakit) {
+          labelSakit.className = 'p-3 rounded-2xl border-2 border-slate-200 bg-slate-50 cursor-pointer flex items-center gap-2.5 transition-all text-xs font-bold text-slate-600';
+        }
+      }
+    }
+
+    function renderHealthInfoUI(health) {
+      const badge = document.getElementById('bioHealthStatusBadge');
+      const blood = document.getElementById('bioHealthBlood');
+      const phone = document.getElementById('bioHealthEmergencyPhone');
+      const med = document.getElementById('bioHealthMedication');
+      const detailBox = document.getElementById('bioHealthDetailBox');
+      const diseaseText = document.getElementById('bioHealthDiseaseText');
+      const medFull = document.getElementById('bioHealthMedicationFull');
+
+      if (!health) {
+        if (badge) badge.innerHTML = '<span class="px-2 py-0.5 rounded-md bg-slate-200 text-slate-700 font-bold text-[11px] inline-flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Belum Dilengkapi</span>';
+        if (blood) blood.textContent = '-';
+        if (phone) phone.textContent = '-';
+        if (med) med.textContent = '-';
+        if (detailBox) detailBox.classList.add('hidden');
+        return;
+      }
+
+      if (blood) blood.textContent = health.blood_type || 'Belum Tahu';
+      if (phone) phone.textContent = health.emergency_phone || '-';
+
+      if (health.condition === 'sakit') {
+        if (badge) badge.innerHTML = '<span class="px-2.5 py-0.5 rounded-md bg-rose-100 text-rose-800 font-black text-[11px] inline-flex items-center gap-1 border border-rose-300 shadow-2xs"><span class="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span> Perlu Perhatian Medis</span>';
+        if (med) med.textContent = health.medication || '-';
+        if (detailBox) {
+          detailBox.classList.remove('hidden');
+          detailBox.className = 'p-3 rounded-xl bg-white border border-rose-300 text-xs flex flex-col gap-1 shadow-2xs';
+        }
+        if (diseaseText) diseaseText.textContent = health.disease || 'Ada riwayat sakit (belum dirinci)';
+        if (medFull) medFull.textContent = health.medication || 'Belum dicantumkan';
+      } else {
+        if (badge) badge.innerHTML = '<span class="px-2.5 py-0.5 rounded-md bg-emerald-100 text-emerald-800 font-black text-[11px] inline-flex items-center gap-1 border border-emerald-300 shadow-2xs"><span class="w-2 h-2 rounded-full bg-emerald-600"></span> Sehat (Tidak Ada Riwayat Sakit)</span>';
+        if (med) med.textContent = 'Tidak memerlukan obat khusus';
+        if (detailBox) {
+          detailBox.classList.remove('hidden');
+          detailBox.className = 'p-2.5 rounded-xl bg-emerald-50/70 border border-emerald-200 text-xs flex items-center gap-2 text-emerald-900';
+          detailBox.innerHTML = '<span class="material-symbols-outlined text-emerald-600 text-base">check_circle</span><span>Kondisi peserta sehat &amp; siap beraktivitas di seluruh rangkaian kegiatan.</span>';
+        }
+      }
+    }
+
+    function loadStudentHealthInfo(nisn) {
+      const idList = getStudentStorageIdentifiers();
+      let health = null;
+      for (const id of idList) {
+        try {
+          const raw = localStorage.getItem('fincestem_health_info_' + id);
+          if (raw) {
+            health = JSON.parse(raw);
+            if (health) break;
+          }
+        } catch(e) {}
+      }
+
+      if (!health && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const kRecord = window.currentStudentProgress.task_map['0_kesehatan'];
+        if (kRecord && kRecord.content) {
+          try {
+            health = typeof kRecord.content === 'object' ? kRecord.content : JSON.parse(kRecord.content);
+          } catch(e) {}
+        }
+      }
+
+      renderHealthInfoUI(health);
+    }
+
+    function saveStudentHealthInfo(event) {
+      if (event) event.preventDefault();
+      const condition = document.querySelector('input[name="healthConditionRadio"]:checked')?.value || 'sehat';
+      const disease = (document.getElementById('inputDiseaseName')?.value || '').trim();
+      const medication = (document.getElementById('inputMedicationName')?.value || '').trim();
+      const bloodType = document.getElementById('selectBloodType')?.value || 'Belum Tahu';
+      const emergencyPhone = (document.getElementById('inputEmergencyPhone')?.value || '').trim();
+
+      if (condition === 'sakit') {
+        if (!disease || disease.length < 3) {
+          FincestemCore.ui.toast('Harap sebutkan nama penyakit / keluhan yang sering kambuh!', 'warning');
+          document.getElementById('inputDiseaseName')?.focus();
+          return;
+        }
+        if (!medication || medication.length < 2) {
+          FincestemCore.ui.toast('Harap tuliskan nama obat pribadi yang dibutuhkan / wajib dibawa!', 'warning');
+          document.getElementById('inputMedicationName')?.focus();
+          return;
+        }
+      }
+
+      if (!emergencyPhone || emergencyPhone.length < 7) {
+        FincestemCore.ui.toast('Harap masukkan No. WhatsApp Darurat Orang Tua / Wali (minimal 7 digit)!', 'warning');
+        document.getElementById('inputEmergencyPhone')?.focus();
+        return;
+      }
+
+      const u = currentStudent || FincestemCore.auth.getUser() || {};
+      const nisn = u.nisn || u.identifier || '';
+      const idList = getStudentStorageIdentifiers();
+
+      const healthPayload = {
+        condition: condition,
+        disease: condition === 'sakit' ? disease : 'Tidak Memiliki Riwayat Sakit',
+        medication: condition === 'sakit' ? medication : 'Tidak Memerlukan Obat Khusus',
+        blood_type: bloodType,
+        emergency_phone: emergencyPhone,
+        updated_at: new Date().toISOString()
+      };
+
+      // Simpan lokal instan untuk offline access
+      idList.forEach(id => {
+        localStorage.setItem('fincestem_health_info_' + id, JSON.stringify(healthPayload));
+      });
+
+      // Update UI seketika
+      renderHealthInfoUI(healthPayload);
+
+      // Sinkronkan ke server via progress API (day_number 0, task_type kesehatan)
+      if (FincestemCore.progress && nisn) {
+        try {
+          FincestemCore.progress.submitTask(nisn, 0, 'kesehatan', JSON.stringify(healthPayload), function(res) {
+            console.log('Health info synced to server:', res);
+          });
+        } catch(e) {
+          console.warn('Sync health info error:', e);
+        }
+      }
+
+      FincestemCore.ui.toast('Data kesehatan & kontak darurat berhasil disimpan!', 'success');
+      closeHealthInfoModal();
+    }
+
+    window.openHealthInfoModal = openHealthInfoModal;
+    window.closeHealthInfoModal = closeHealthInfoModal;
+    window.onHealthConditionChanged = onHealthConditionChanged;
+    window.saveStudentHealthInfo = saveStudentHealthInfo;
+    window.loadStudentHealthInfo = loadStudentHealthInfo;
+
   </script>
 </body>
 </html>

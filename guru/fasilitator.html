@@ -473,6 +473,9 @@
           <h3 id="modalGradingStudentName" class="font-extrabold text-base text-[#006a61]">-</h3>
           <span id="modalGradingStudentMeta" class="text-xs text-on-surface-variant">-</span>
           <input type="hidden" id="modalGradingTargetNisn" value="">
+
+        <!-- ALERT KESEHATAN & MEDIS SISWA UNTUK FASILITATOR -->
+        <div id="modalGradingHealthAlert" class="mt-2 hidden"></div>
         </div>
         <button onclick="closeGradingModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
           <span class="material-symbols-outlined">close</span>
@@ -1061,10 +1064,53 @@
     }
 
     // MODAL PENILAIAN HARIAN (DAY 1 - 7 & DAY 0)
+        function renderFacilitatorHealthAlert(health) {
+      const healthAlertEl = document.getElementById('modalGradingHealthAlert');
+      if (!healthAlertEl) return;
+      healthAlertEl.classList.remove('hidden');
+
+      if (health) {
+        if (health.condition === 'sakit') {
+          healthAlertEl.className = 'mt-2 p-3 rounded-2xl bg-rose-50 border border-rose-300 text-xs flex flex-col gap-1 shadow-2xs';
+          healthAlertEl.innerHTML = `
+            <div class="flex items-center justify-between gap-1 flex-wrap">
+              <span class="font-black text-rose-950 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-rose-600 text-base">emergency</span>
+                <span>PERINGATAN MEDIS SISWA (Perlu Perhatian)</span>
+              </span>
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-rose-600 text-white">Gol. Darah: ${health.blood_type || '-'}</span>
+            </div>
+            <p class="text-rose-900 font-semibold pl-5">Riwayat: ${health.disease || '-'}</p>
+            <p class="text-slate-700 pl-5">Obat Wajib: <strong>${health.medication || '-'}</strong> | WA Ortu: <strong class="text-emerald-800">${health.emergency_phone || '-'}</strong></p>
+          `;
+        } else {
+          healthAlertEl.className = 'mt-2 p-2.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs flex items-center justify-between gap-2';
+          healthAlertEl.innerHTML = `
+            <span class="text-emerald-950 font-bold flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-emerald-600 text-base">check_circle</span>
+              <span>Kondisi Fisik: <strong>Sehat</strong> (Gol. Darah: ${health.blood_type || 'Belum Tahu'})</span>
+            </span>
+            <span class="text-[11px] text-slate-600">WA Darurat: <strong>${health.emergency_phone || '-'}</strong></span>
+          `;
+        }
+      } else {
+        healthAlertEl.className = 'mt-2 p-2 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-500 flex items-center gap-1';
+        healthAlertEl.innerHTML = '<span class="material-symbols-outlined text-sm text-slate-400">info</span><span>Siswa belum melengkapi formulir informasi kesehatan mandiri.</span>';
+      }
+    }
+
     function openGradingModal(targetNisn, studentName, studentMeta) {
       document.getElementById('modalGradingTargetNisn').value = targetNisn;
       document.getElementById('modalGradingStudentName').textContent = studentName || 'Penilaian Siswa';
       document.getElementById('modalGradingStudentMeta').textContent = studentMeta || '';
+
+      // Tampilkan Status Kesehatan Siswa
+      let initialHealth = null;
+      try {
+        const raw = localStorage.getItem('fincestem_health_info_' + targetNisn);
+        if (raw) initialHealth = JSON.parse(raw);
+      } catch(e) {}
+      renderFacilitatorHealthAlert(initialHealth);
 
       // Deteksi kategori siswa: Field Trip vs Non-Field Trip
       const allStu = window.FincestemMasterStudents || [];
@@ -1191,6 +1237,17 @@
 
       if (FincestemCore.progress) {
         FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+          if (prog && prog.task_map && prog.task_map['0_kesehatan']) {
+            try {
+              const kRecord = prog.task_map['0_kesehatan'];
+              const sHealth = typeof kRecord.content === 'object' ? kRecord.content : JSON.parse(kRecord.content);
+              if (sHealth) {
+                renderFacilitatorHealthAlert(sHealth);
+                localStorage.setItem('fincestem_health_info_' + nisn, JSON.stringify(sHealth));
+              }
+            } catch(e) {}
+          }
+
           if (prog && prog.records) {
             const r = prog.records.find(x => parseInt(x.day_number) === dayNum);
             if (r) {
