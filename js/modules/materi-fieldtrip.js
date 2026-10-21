@@ -932,11 +932,209 @@
               </div>
             </div>
 
-            <!-- VIII. INSPIRASI NILAI BAGI SISWA SMAN 1 BELITANG -->
+            <!-- VIII. INFORMASI PENDAFTARAN & PERSYARATAN MASUK AKPOL -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-amber-50/80 via-orange-50/50 to-blue-50/60 border border-amber-300 flex flex-col gap-4 shadow-sm">
+              <div class="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-amber-200/80">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                    <span class="material-symbols-outlined text-lg">how_to_reg</span>
+                  </div>
+                  <div>
+                    <h4 class="font-black text-sm sm:text-base text-amber-950 leading-tight">VIII. Informasi Pendaftaran &amp; Persyaratan Masuk AKPOL</h4>
+                    <span class="text-[11px] text-slate-600 font-medium">Panduan Resmi Penerimaan Calon Taruna/Taruni Akademi Kepolisian</span>
+                  </div>
+                </div>
+                <a href="https://akpol.ac.id/info-pendaftaran/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center gap-1.5 transition-all shadow-xs">
+                  <span>Portal akpol.ac.id</span>
+                  <span class="material-symbols-outlined text-xs">open_in_new</span>
+                </a>
+              </div>
+
+              <!-- SUB 1: SYARAT UMUM -->
+              <div class="p-4 rounded-xl bg-white border border-blue-200/90 flex flex-col gap-2.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <a href="https://akpol.ac.id/info-pendaftaran/#d302e53f5f7e23e18" target="_blank" rel="noopener noreferrer" class="font-black text-xs sm:text-sm text-blue-900 hover:underline flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-blue-700 text-base">verified</span>
+                    <span>PERSYARATAN UMUM PENERIMAAN TARUNA AKPOL</span>
+                  </a>
+                  <span class="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">Pasal 21 UU No. 2 Tahun 2002</span>
+                </div>
+                <ol class="list-decimal list-outside pl-4 space-y-1.5 text-xs text-slate-700 leading-relaxed text-justify">
+                  <li><strong>Warga Negara Indonesia (WNI).</strong></li>
+                  <li><strong>Beriman dan bertakwa</strong> kepada Tuhan Yang Maha Esa.</li>
+                  <li><strong>Setia kepada Negara Kesatuan Republik Indonesia</strong> berdasarkan Pancasila dan Undang-Undang Dasar Negara Republik Indonesia Tahun 1945.</li>
+                  <li><strong>Berumur paling rendah 18 (delapan belas) tahun</strong> pada saat diangkat menjadi anggota Polri.</li>
+                  <li><strong>Sehat jasmani, rohani dan bebas narkoba</strong> (surat keterangan bebas narkoba dari instansi yang berwenang).</li>
+                  <li><strong>Tidak sedang terlibat kasus pidana</strong> atau pernah dipidana karena melakukan suatu kejahatan yang dibuktikan dengan Surat Keterangan Catatan Kepolisian (SKCK) dari Polres setempat.</li>
+                  <li><strong>Berwibawa, jujur, adil,</strong> dan berkelakuan tidak tercela.</li>
+                </ol>
+              </div>
+
+              <!-- SUB 2: SYARAT KHUSUS -->
+              <div class="p-4 rounded-xl bg-white border border-amber-200/90 flex flex-col gap-2.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <a href="https://akpol.ac.id/info-pendaftaran/#e97bddc558df4d42f" target="_blank" rel="noopener noreferrer" class="font-black text-xs sm:text-sm text-amber-900 hover:underline flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-amber-700 text-base">rule</span>
+                    <span>PERSYARATAN KHUSUS PENERIMAAN TARUNA AKPOL</span>
+                  </a>
+                  <span class="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Kualifikasi Fisik &amp; Administrasi</span>
+                </div>
+                <ol class="list-decimal list-outside pl-4 space-y-2 text-xs text-slate-700 leading-relaxed text-justify">
+                  <li><strong>Status Peserta:</strong> Pria/wanita, bukan anggota/mantan anggota TNI/Polri dan ASN, dan belum pernah mengikuti pendidikan pembentukan Polri, TNI, atau Sekolah Kedinasan lainnya.</li>
+                  <li><strong>Pendidikan Formal:</strong> Berijazah serendah-rendahnya SMA/MA (bukan lulusan dan atau berijazah Paket A, B, dan C). Untuk lulusan SMA/MA IPA/IPS dan lulusan SMA/MA dengan kurikulum Merdeka dibuktikan dengan ijazah Kemendikdasmen, serta lulusan PDF/SPM dengan ijazah Kemenag.</li>
+                  <li><strong>Batas Usia:</strong> Berumur minimal 16 tahun dan maksimal 22 tahun 0 hari pada saat pembukaan pendidikan.</li>
+                  <li><strong>Standar Tinggi &amp; Berat Badan:</strong> Tinggi badan minimal (dengan berat badan seimbang menurut ketentuan yang berlaku):
+                    <div class="mt-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 flex flex-col sm:flex-row gap-2 sm:gap-6">
+                      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-blue-600 text-sm">male</span> Pria: Minimal 165 (seratus enam puluh lima) cm</span>
+                      <span class="flex items-center gap-1"><span class="material-symbols-outlined text-pink-600 text-sm">female</span> Wanita: Minimal 163 (seratus enam puluh tiga) cm</span>
+                    </div>
+                  </li>
+                  <li><strong>Status Pernikahan:</strong> Belum pernah menikah secara hukum positif/agama/adat, belum pernah hamil/melahirkan, belum pernah memiliki anak biologis (anak kandung), dan sanggup untuk tidak menikah selama dalam masa pendidikan pembentukan.</li>
+                  <li><strong>Tato &amp; Tindik:</strong> Tidak bertato dan tidak memiliki tindik telinga atau anggota badan lainnya, kecuali yang disebabkan oleh ketentuan adat/agama resmi.</li>
+                  <li>Bagi peserta calon Taruna/i Akpol yang telah gagal/TMS dalam proses tes karena melakukan tindak pidana yang telah berkekuatan hukum tetap (inkrah) tidak dapat mendaftar kembali.</li>
+                  <li>Bagi peserta calon Taruna/i Akpol yang telah gagal/TMS di tahapan tes PMK pada tahun sebelumnya tidak dapat mendaftar kembali.</li>
+                  <li>Bagi peserta calon Taruna/i Akpol yang diberhentikan dari proses pendidikan pembentukan TNI/Polri atau Sekolah Kedinasan lainnya tidak dapat mendaftar.</li>
+                  <li>Mantan Taruna/i atau Siswa/i yang diberhentikan tidak dengan hormat dari proses pendidikan oleh lembaga pendidikan yang dibiayai oleh anggaran negara tidak dapat mendaftar.</li>
+                  <li>Dinyatakan bebas narkoba berdasarkan hasil pemeriksaan kesehatan oleh Panpus/Panda.</li>
+                  <li>Tidak mendukung atau ikut serta dalam organisasi atau paham yang bertentangan dengan Pancasila, Undang-Undang Dasar 1945, NKRI, dan Bhinneka Tunggal Ika.</li>
+                  <li>Membuat surat pernyataan bermaterai, untuk tidak melakukan perbuatan yang melanggar norma agama, norma kesusilaan, norma sosial, dan norma hukum.</li>
+                  <li>Membuat surat pernyataan bermaterai bersedia ditempatkan di seluruh wilayah NKRI pada semua bidang tugas kepolisian, ditandatangani oleh peserta dan diketahui orang tua/wali.</li>
+                  <li>Membuat surat pernyataan bermaterai, untuk tidak mempercayai pihak-pihak yang menawarkan, menjanjikan, dan menjamin dapat membantu meluluskan dalam proses tes penerimaan, yang ditandatangani oleh calon peserta dan diketahui oleh orang tua/wali.</li>
+                  <li>Bagi calon Taruna/i Akpol Tahun Anggaran 2025/2026 yang berusaha menggunakan sponsor/koneksi dengan cara menghubungi lewat telepon/surat atau dalam bentuk apapun kepada panitia/pejabat yang berwenang melalui orang tua/wali/keluarga atau pihak lain akan didiskualifikasi.</li>
+                  <li>Bagi yang memperoleh ijazah dari sekolah di luar negeri, harus mendapat pengesahan dari Kemendikdasmen.</li>
+                  <li><strong>Ketentuan Domisili:</strong>
+                    <ul class="list-disc list-outside pl-4 mt-1.5 space-y-1.5 text-slate-600">
+                      <li>Peserta berdomisili minimal 2 tahun di wilayah Polda tempat mendaftar (terhitung pada saat pembukaan pendidikan) dengan melampirkan Kartu Keluarga dan Kartu Tanda Penduduk atau Kartu Identitas Anak (terhitung mulai tercatat di domisili baru), dengan verifikasi oleh Panitia Daerah dan Dinas Kependudukan dan Pencatatan Sipil.</li>
+                      <li>Bagi peserta yang berdomisili kurang dari 2 tahun, dapat mendaftar di Polda sesuai tempat pendidikan/sekolah SMA/MA peserta dengan ketentuan:
+                        <p class="pl-2 mt-0.5">• Minimal 2 tahun pada riwayat rapor sekolah SMA/MA (terhitung saat buka pendidikan) bagi yang bertempat tinggal tidak mengikuti orang tua, dibuktikan melalui rapor sekolah SMA/MA peserta dengan menyertakan KK peserta.</p>
+                        <p class="pl-2 mt-0.5">• Minimal 1 tahun terakhir pada riwayat rapor sekolah SMA/MA (terhitung saat Buka Dik) bagi yang bertempat tinggal mengikuti orang tua, dibuktikan melalui KK dan rapor sekolah SMA/MA peserta.</p>
+                      </li>
+                      <li>Bagi peserta yang tidak memenuhi persyaratan di atas, dapat mendaftar di Polda sesuai domisili sebelumnya (terhitung mulai dengan riwayat pada domisili sebelumnya), dengan verifikasi oleh Panitia Daerah dan Dinas Kependudukan dan Pencatatan Sipil.</li>
+                      <li>Bagi peserta dari SMA Taruna Nusantara dan SMA Krida Nusantara yang masih kelas XII, dapat mendaftar di Polda sesuai asal domisili, atau untuk peserta dari SMA Taruna Nusantara dapat mendaftar di Polda Jateng atau Polda DIY, sedangkan untuk peserta dari SMA Krida Nusantara dapat mendaftar di Polda Jabar, dengan ketentuan mengikuti kuota kelulusan berdasarkan peringkat pada Polda sesuai persyaratan domisili.</li>
+                    </ul>
+                  </li>
+                  <li>Bersedia menjalani Ikatan Dinas Pertama (IDP) selama 10 (sepuluh) tahun terhitung saat diangkat menjadi Perwira Polri.</li>
+                  <li>Memperoleh persetujuan resmi dari orang tua/wali.</li>
+                  <li>Tidak terikat perjanjian Ikatan Dinas dengan suatu instansi lain.</li>
+                  <li>Bagi calon Taruna/i yang dinyatakan lulus terpilih agar melampirkan kartu BPJS Kesehatan yang aktif.</li>
+                  <li>Bagi yang sudah bekerja secara tetap sebagai pegawai/karyawan:
+                    <p class="pl-2 mt-0.5">• Mendapat persetujuan/rekomendasi dari kepala instansi yang bersangkutan.</p>
+                    <p class="pl-2 mt-0.5">• Bersedia diberhentikan dari status pegawai/karyawan bila diterima dan mengikuti pendidikan pembentukan Taruna/i Akpol.</p>
+                  </li>
+                  <li>Mengikuti dan dinyatakan lulus pada seluruh tahapan pemeriksaan/pengujian seleksi.</li>
+                </ol>
+              </div>
+
+              <!-- SUB 3: JADWAL & ALUR PENERIMAAN TARUNA AKPOL 2026 -->
+              <div class="p-4 rounded-xl bg-white border border-amber-200/90 flex flex-col gap-3.5 shadow-2xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <h5 class="font-black text-xs sm:text-sm text-slate-900 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base text-rose-600">calendar_month</span>
+                    <span>Jadwal Penerimaan Taruna AKPOL Tahun Anggaran 2026</span>
+                  </h5>
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black bg-blue-100 text-blue-900 border border-blue-200">Timeline Resmi Polri 2026</span>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start pt-1">
+                  <!-- Kolom Kiri: Rincian Jadwal Step-by-Step (7 Kolom) -->
+                  <div class="lg:col-span-7 relative pl-6 space-y-3 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-blue-600">
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">9 Maret – 30 Maret 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">PENDAFTARAN ONLINE DAN VERIFIKASI</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">31 Maret 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">PAKTA INTEGRITAS</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">31 Maret – 4 April 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">RIKMIN AWAL</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">7 April – 11 April 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">RIKKES I</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">23 April – 25 April 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">CAT PSIKOLOGI I</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">6 Mei – 11 Mei 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">CAT UJI AKADEMIK</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">17 Mei – 19 Mei 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">PELAKSANAAN EKG</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">21 Mei – 24 Mei 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">UJI JASMANI DAN ANTRO</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">4 Juni 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">SIDANG MENUJU RIKKES II</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">5 Juni – 6 Juni 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">RIKKES II</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">13 Juni – 15 Juni 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">PMK DAN PSI II</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">16 Juni – 17 Juni 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">RIKMIN AKHIR</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
+                      <span class="text-xs font-black text-blue-900 block">26 Juni 2026</span>
+                      <span class="text-[11.5px] text-slate-800 font-bold">SIDANG AKHIR PANDA</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-amber-500 ring-4 ring-amber-100"></div>
+                      <span class="text-xs font-black text-amber-900 block">3 Juli – 27 Juli 2026</span>
+                      <span class="text-[11.5px] text-amber-900 font-bold">SELEKSI TK PANPUS</span>
+                    </div>
+                    <div class="relative">
+                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-emerald-600 ring-4 ring-emerald-100"></div>
+                      <span class="text-xs font-black text-emerald-900 block">1 Agustus 2026</span>
+                      <span class="text-[12px] text-emerald-800 font-black">BUKA DIK AKPOL</span>
+                    </div>
+                  </div>
+
+                  <!-- Kolom Kanan: Infografis Bagan Timeline Resmi (5 Kolom) -->
+                  <div class="lg:col-span-5 flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
+                    <span class="text-[11px] font-black text-slate-800 mb-2 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-sm text-blue-600">image</span>
+                      <span>Bagan Timeline Penerimaan Taruna AKPOL 2026</span>
+                    </span>
+                    <a href="../jadwal_penerimaan_akpol_2026.png" target="_blank" class="block rounded-xl overflow-hidden border border-slate-300 shadow-xs hover:opacity-95 transition-all bg-white p-1">
+                      <img src="../jadwal_penerimaan_akpol_2026.png" alt="Bagan Jadwal Penerimaan Taruna AKPOL 2026" class="w-full max-h-[560px] object-contain mx-auto">
+                    </a>
+                    <span class="text-[10px] text-slate-500 mt-2 text-center italic">Klik bagan di atas untuk memperbesar infografis seleksi resmi</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- IX. INSPIRASI NILAI BAGI SISWA SMAN 1 BELITANG -->
             <div class="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200/90 flex flex-col gap-2.5 shadow-2xs">
               <h4 class="font-black text-sm text-indigo-950 flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-base text-indigo-700">verified_user</span>
-                <span>VIII. Inspirasi Nilai Karakter Bagi Siswa SMAN 1 Belitang</span>
+                <span>IX. Inspirasi Nilai Karakter Bagi Siswa SMAN 1 Belitang</span>
               </h4>
               <ul class="space-y-1.5 text-xs sm:text-sm text-slate-700 leading-relaxed text-justify">
                 <li>• <strong>Manajemen Waktu Presisi (Military Time Management):</strong> Meneladani disiplin bangun pukul 04.00 WIB dan beraktivitas tepat waktu tanpa penundaan.</li>
