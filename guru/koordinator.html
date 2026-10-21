@@ -855,6 +855,19 @@
             <div class="flex flex-col min-w-0">
               <h5 class="font-extrabold text-xs sm:text-sm text-on-surface truncate">${stu.name}</h5>
               <span class="text-[11px] text-on-surface-variant font-medium">NISN: ${stu.nisn} &bull; ${stu.class_name}</span>
+              ${(() => {
+                let h = null;
+                try {
+                  const rawH = localStorage.getItem('fincestem_health_info_' + stu.nisn);
+                  if (rawH) h = JSON.parse(rawH);
+                } catch(e) {}
+                if (h && h.condition === 'sakit') {
+                  return `<span class="mt-0.5 px-2 py-0.5 rounded-md text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300 flex items-center gap-1 w-fit shadow-2xs"><span class="w-1.5 h-1.5 rounded-full bg-rose-600 animate-pulse"></span> Medis: ${h.disease || 'Perlu Perhatian'}</span>`;
+                } else if (h && h.condition === 'sehat') {
+                  return `<span class="mt-0.5 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1 w-fit"><span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Fisik Sehat (Gol: ${h.blood_type || '-'})</span>`;
+                }
+                return '';
+              })()}
             </div>
             <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black shrink-0 ${badgeStatusClass}">
               ${badgeStatusText}
