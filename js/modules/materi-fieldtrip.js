@@ -1035,96 +1035,114 @@
                   <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black bg-blue-100 text-blue-900 border border-blue-200">Timeline Resmi Polri 2026</span>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start pt-1">
-                  <!-- Kolom Kiri: Rincian Jadwal Step-by-Step (7 Kolom) -->
-                  <div class="lg:col-span-7 relative pl-6 space-y-3 before:absolute before:left-2.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-blue-600">
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">9 Maret – 30 Maret 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">PENDAFTARAN ONLINE DAN VERIFIKASI</span>
+                <div class="pt-1">
+                  <!-- Rincian Alur Jadwal Seleksi Lengkap Step-by-Step -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">1</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">9 – 30 Maret 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">PENDAFTARAN ONLINE DAN VERIFIKASI</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">31 Maret 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">PAKTA INTEGRITAS</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">2</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">31 Maret 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">PAKTA INTEGRITAS</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">31 Maret – 4 April 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">RIKMIN AWAL</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">3</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">31 Maret – 4 April 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">RIKMIN AWAL</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">7 April – 11 April 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">RIKKES I</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">4</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">7 April – 11 April 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">RIKKES I</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">23 April – 25 April 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">CAT PSIKOLOGI I</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">5</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">23 April – 25 April 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">CAT PSIKOLOGI I</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">6 Mei – 11 Mei 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">CAT UJI AKADEMIK</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">6</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">6 Mei – 11 Mei 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">CAT UJI AKADEMIK</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">17 Mei – 19 Mei 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">PELAKSANAAN EKG</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">7</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">17 Mei – 19 Mei 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">PELAKSANAAN EKG</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">21 Mei – 24 Mei 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">UJI JASMANI DAN ANTRO</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">8</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">21 Mei – 24 Mei 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">UJI JASMANI DAN ANTRO</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">4 Juni 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">SIDANG MENUJU RIKKES II</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">9</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">4 Juni 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">SIDANG MENUJU RIKKES II</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">5 Juni – 6 Juni 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">RIKKES II</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">10</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">5 Juni – 6 Juni 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">RIKKES II</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">13 Juni – 15 Juni 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">PMK DAN PSI II</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">11</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">13 Juni – 15 Juni 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">PMK DAN PSI II</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">16 Juni – 17 Juni 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">RIKMIN AKHIR</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">12</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">16 Juni – 17 Juni 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">RIKMIN AKHIR</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-blue-600 ring-4 ring-blue-100"></div>
-                      <span class="text-xs font-black text-blue-900 block">26 Juni 2026</span>
-                      <span class="text-[11.5px] text-slate-800 font-bold">SIDANG AKHIR PANDA</span>
+                    <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-blue-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">13</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-blue-900">26 Juni 2026</span>
+                        <span class="text-[11.5px] text-slate-800 font-bold leading-snug">SIDANG AKHIR PANDA</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-amber-500 ring-4 ring-amber-100"></div>
-                      <span class="text-xs font-black text-amber-900 block">3 Juli – 27 Juli 2026</span>
-                      <span class="text-[11.5px] text-amber-900 font-bold">SELEKSI TK PANPUS</span>
+                    <div class="p-3 rounded-xl bg-amber-50/80 border border-amber-300 flex items-start gap-2.5 shadow-2xs">
+                      <span class="w-6 h-6 rounded-lg bg-amber-600 text-white font-black text-xs flex items-center justify-center shrink-0 mt-0.5">14</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-xs font-black text-amber-900">3 Juli – 27 Juli 2026</span>
+                        <span class="text-[11.5px] text-amber-950 font-black leading-snug">SELEKSI TK PANPUS (AKPOL SEMARANG)</span>
+                      </div>
                     </div>
-                    <div class="relative">
-                      <div class="absolute -left-6 top-1 w-3.5 h-3.5 rounded-full bg-emerald-600 ring-4 ring-emerald-100"></div>
-                      <span class="text-xs font-black text-emerald-900 block">1 Agustus 2026</span>
-                      <span class="text-[12px] text-emerald-800 font-black">BUKA DIK AKPOL</span>
+                    <div class="p-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 text-white flex items-center gap-2.5 shadow-xs">
+                      <span class="w-6 h-6 rounded-lg bg-white/20 text-white font-black text-xs flex items-center justify-center shrink-0">15</span>
+                      <div class="flex flex-col min-w-0">
+                        <span class="text-[10px] font-extrabold text-emerald-200 uppercase">1 Agustus 2026</span>
+                        <strong class="text-xs font-black text-white leading-snug">BUKA DIK AKPOL</strong>
+                      </div>
                     </div>
-                  </div>
-
-                  <!-- Kolom Kanan: Infografis Bagan Timeline Resmi (5 Kolom) -->
-                  <div class="lg:col-span-5 flex flex-col items-center justify-center p-3 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs">
-                    <span class="text-[11px] font-black text-slate-800 mb-2 flex items-center gap-1.5">
-                      <span class="material-symbols-outlined text-sm text-blue-600">image</span>
-                      <span>Bagan Timeline Penerimaan Taruna AKPOL 2026</span>
-                    </span>
-                    <a href="../jadwal_penerimaan_akpol_2026.png" target="_blank" class="block rounded-xl overflow-hidden border border-slate-300 shadow-xs hover:opacity-95 transition-all bg-white p-1">
-                      <img src="../jadwal_penerimaan_akpol_2026.png" alt="Bagan Jadwal Penerimaan Taruna AKPOL 2026" class="w-full max-h-[560px] object-contain mx-auto">
-                    </a>
-                    <span class="text-[10px] text-slate-500 mt-2 text-center italic">Klik bagan di atas untuk memperbesar infografis seleksi resmi</span>
                   </div>
                 </div>
               </div>
