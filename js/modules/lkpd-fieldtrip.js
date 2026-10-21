@@ -1025,12 +1025,12 @@
               <textarea id="d2AkpolQ1" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan rumusan visi AKPOL secara lengkap..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q1 || '') : ''}</textarea>
             </div>
 
-            <!-- Soal 2: Kepanjangan & Status AKPOL -->
+            <!-- Soal 2: Kepanjangan & Tanggal Pendaftaran AKPOL 2026 -->
             <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
-                2. Apa kepanjangan dari singkatan AKPOL, berada di bawah naungan lembaga polri apa, serta di kota mana kampus pusatnya berada?
+                2. Apa kepanjangan dari AKPOL dan kapan tanggal Pendaftaran Online serta Verifikasi Penerimaan Taruna AKPOL Tahun 2026?
               </label>
-              <textarea id="d2AkpolQ2" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan kepanjangan, lembaga penaung (Lemdiklat Polri), dan kota lokasinya..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q2 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ2" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan kepanjangan dari AKPOL dan tanggal pendaftaran online serta verifikasi (contoh: Akademi Kepolisian, tanggal 9 Maret – 30 Maret 2026)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q2 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 3: Tingkatan Kepangkatan Taruna (Perkap 21/2010) -->
