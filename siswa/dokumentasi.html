@@ -3425,6 +3425,18 @@
         if (nextBtnText) {
           nextBtnText.textContent = 'Lanjut ke Jurnal Refleksi Day 4';
         }
+      } else if (cat.isFieldTrip && dayNum === 5) {
+        if (subtitle) {
+          subtitle.innerHTML = `<strong>Dokumentasi Candi Prambanan, Praktik Batik &amp; Kampus UNY Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Foto kegiatan Day 5 Anda telah tersimpan. Silakan lanjutkan ke Tahap 5: Jurnal Refleksi Mandiri Day 5.</span>`;
+        }
+        if (nextBtn) {
+          nextBtn.href = 'dashboard.html?day=5&task=refleksi';
+          nextBtn.onclick = null;
+          nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+        }
+        if (nextBtnText) {
+          nextBtnText.textContent = 'Lanjut ke Jurnal Refleksi Day 5';
+        }
       } else if (cat.isFieldTrip && dayNum === 2) {
         const user = FincestemCore.auth.getUser() || {};
         const nisn = user.nisn || user.identifier || '';

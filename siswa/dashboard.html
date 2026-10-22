@@ -2439,9 +2439,9 @@
           : (stu.zone || 'FINCESTEM OKU TIMUR');
         const zUpper = (studentZone || '').toUpperCase();
         const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-        const isFTDay = (isFieldTrip || dNum <= 4) && (dNum >= 1 && dNum <= 7);
+        const isFTDay = (isFieldTrip || dNum <= 7) && (dNum >= 1 && dNum <= 7);
         const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
-        const ftConfig = ((isFieldTrip || dNum <= 4) && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
+        const ftConfig = ((isFieldTrip || dNum <= 7) && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
 
         // Metadata Tampilan:
         // Jika Siswa Field Trip -> Gunakan konfigurasi Day 1 s.d. 7 khusus Field Trip
@@ -3329,6 +3329,7 @@
       const isFTDay2 = Number(day.day_number) === 2;
       const isFTDay3 = Number(day.day_number) === 3;
       const isFTDay4 = Number(day.day_number) === 4;
+      const isFTDay5 = Number(day.day_number) === 5;
 
       if (type === 'asesmen') {
         if (isFTDay1) {
@@ -3912,6 +3913,179 @@
               </div>
             `)}
           `;
+        } else if (isFTDay5) {
+          title.textContent = 'Asesmen Day 5 (Candi Prambanan, Seni Batik & Kampus UNY)';
+          icon.textContent = 'fact_check';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0';
+
+          let ftAsesmen = null;
+          const idList = getStudentStorageIdentifiers();
+          for (const id of idList) {
+            try {
+              const raw = localStorage.getItem('fincestem_asesmen_ft_day5_' + id);
+              if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && (parsed.submitted || parsed.answers || parsed.score !== undefined)) {
+                  ftAsesmen = parsed;
+                  break;
+                }
+              }
+            } catch(e) {}
+          }
+
+          const isSubmitted = !!(ftAsesmen && ftAsesmen.submitted);
+          const score = ftAsesmen ? (ftAsesmen.score || 0) : 0;
+          const userAns = ftAsesmen ? (ftAsesmen.answers || {}) : {};
+
+          const questions = [
+            {
+              id: 'q1',
+              title: '1. STEM Sains (Sifat Kimiawi Hidrofobik Lilin Malam Batik)',
+              prompt: 'Dalam sains membatik di Batik Benang Ratu, mengapa lilin malam (wax barrier) berfungsi efektif sebagai perintang warna alami maupun sintetis pada lembaran mori/kain?',
+              options: [
+                { key: 'A', text: 'Karena lilin malam bersifat asam pekat yang merusak pigmen warna secara permanen saat dilarutkan.' },
+                { key: 'B', text: 'Karena lilin malam tersusun dari senyawa non-polar (hidrofobik) yang menolak larutan pewarna kain berbasis air (polar), sehingga serat kain yang tertutup lilin tetap bersih tidak tembus zat warna.' },
+                { key: 'C', text: 'Karena lilin malam menyerap air dengan sangat cepat sehingga serat kain membeku seketika.' },
+                { key: 'D', text: 'Karena lilin malam berfungsi sebagai perekat permanen antarbenang agar kain tidak mudah robek saat dipotong.' }
+              ],
+              correct: 'B'
+            },
+            {
+              id: 'q2',
+              title: '2. STEM Kimia & Teknologi (Proses Fiksasi Pewarna & Pelorotan)',
+              prompt: 'Pada tahapan pewarnaan dan proses pelorotan (penghilangan lilin malam), mengapa kain batik harus direbus di dalam air mendidih yang ditambahkan sedikit soda abu (sodium carbonate / Na2CO3)?',
+              options: [
+                { key: 'A', text: 'Untuk membuat motif batik meleleh dan bercampur menjadi motif abstrak baru.' },
+                { key: 'B', text: 'Suhu didih air melelehkan lapisan lilin malam hingga terapung lepas dari serat mori, sedangkan soda abu membantu mengikat warna pada serat kain sekaligus mempermudah lilin terlepas optimal.' },
+                { key: 'C', text: 'Untuk membakar serat kain agar menjadi lebih tipis dan transparan saat dikenakan.' },
+                { key: 'D', text: 'Menghilangkan bau harum alami kain mori agar menjadi netral tanpa aroma.' }
+              ],
+              correct: 'B'
+            },
+            {
+              id: 'q3',
+              title: '3. STEM Rekayasa & Arsitektur (Geometri Megastruktur Candi Prambanan)',
+              prompt: 'Candi Siwa di kompleks Prambanan menjulang setinggi 47 meter dan dibangun tanpa adukan semen perekat. Bagaimana teknik konstruksi andesit kuncian batu (interlocking system) mampu mempertahankan kekokohan struktur candi dari getaran seismik?',
+              options: [
+                { key: 'A', text: 'Batu andesit direkatkan menggunakan lem getah pohon pinus yang mengeras seperti kaca.' },
+                { key: 'B', text: 'Sistem sambungan takik batu pasak (interlocking joint / takikan ekor burung) mendistribusikan beban gravitasi secara simetris dan memberikan fleksibilitas mikro yang meredam energi getaran gempa bumi.' },
+                { key: 'C', text: 'Bagian dalam candi diisi pasir basah agar batu candi saling menekan ke arah luar.' },
+                { key: 'D', text: 'Batu candi dipanaskan hingga meleleh menyatu menjadi satu bongkahan monolith raksasa.' }
+              ],
+              correct: 'B'
+            },
+            {
+              id: 'q4',
+              title: '4. Exploration & Culture (Kosmologi Mandala Candi Prambanan)',
+              prompt: 'Berdasarkan konsep tata ruang Vastu Shastra Hindu, kompleks Candi Prambanan terbagi menjadi tiga halaman konsentris (Jaba, Tenggah, Njeron). Bagian halaman utama/pusat yang menaungi Candi Trimurti melambangkan alam suci tempat bersemayam para dewa yang disebut...',
+              options: [
+                { key: 'A', text: 'Bhurloka (alam fana tempat manusia hidup dengan nafsu keduniawian).' },
+                { key: 'B', text: 'Swahloka (alam surgawi para dewa dan pencerahan spiritual tertinggi), zona tersuci yang terletak di pelataran pusat.' },
+                { key: 'C', text: 'Bhuvarloka (alam pembersihan jiwa antara dunia fana dan surga).' },
+                { key: 'D', text: 'Patala (alam bawah tanah kediaman makhluk kegelapan).' }
+              ],
+              correct: 'B'
+            },
+            {
+              id: 'q5',
+              title: '5. STEM & Exploration (Wawasan Akademik & Studi Lanjut di Kampus UNY)',
+              prompt: 'Sebagai bagian dari orientasi perguruan tinggi negeri (PTN) di Universitas Negeri Yogyakarta (UNY), langkah analitis terbaik yang harus dilakukan peserta didik untuk mempersiapkan diri menghadapi seleksi masuk perguruan tinggi (SNBP/SNBT/Mandiri) adalah...',
+              options: [
+                { key: 'A', text: 'Hanya memilih program studi yang paling sedikit pendaftarnya tanpa memedulikan bakat, minat, maupun prospek karier masa depan.' },
+                { key: 'B', text: 'Menganalisis daya tampung, rasio keketatan seleksi, linieritas nilai rapor dengan rumpun sains/teknologi/pendidikan, akreditasi prodi, serta meninjau fasilitas lab riset dan prospek karier lulusan.' },
+                { key: 'C', text: 'Mengandalkan keberuntungan saat tes tanpa perlu mempelajari materi skolastik dan literasi sains.' },
+                { key: 'D', text: 'Menunggu pengumuman kelulusan SMA baru mulai mencari informasi mengenai jurusan perkuliahan.' }
+              ],
+              correct: 'B'
+            }
+          ];
+
+          let qHtml = '';
+          questions.forEach((q, idx) => {
+            const userChoice = userAns[q.id] || '';
+            const optsHtml = q.options.map(opt => {
+              const isChecked = userChoice === opt.key ? 'checked' : '';
+              let badgeState = '';
+              if (isSubmitted) {
+                if (opt.key === q.correct) {
+                  badgeState = '<span class="ml-auto px-2 py-0.5 rounded text-[10px] font-black bg-indigo-100 text-indigo-800">Kunci Benar ✓</span>';
+                } else if (isChecked && opt.key !== q.correct) {
+                  badgeState = '<span class="ml-auto px-2 py-0.5 rounded text-[10px] font-black bg-rose-100 text-rose-800">Jawaban Kamu ✗</span>';
+                }
+              }
+
+              return `
+                <label class="p-2.5 sm:p-3 rounded-xl border ${isChecked ? (isSubmitted ? (opt.key === q.correct ? 'border-indigo-500 bg-indigo-50/70' : 'border-rose-400 bg-rose-50/70') : 'border-indigo-500 bg-indigo-50/50') : 'border-slate-200 bg-slate-50/60'} hover:bg-indigo-50/40 cursor-pointer flex items-center gap-2.5 text-xs font-semibold text-slate-800 transition-all ${isSubmitted ? 'pointer-events-none' : ''}">
+                  <input type="radio" name="ftD5Mcq_${q.id}" value="${opt.key}" ${isChecked} ${isSubmitted ? 'disabled' : ''} class="accent-indigo-600">
+                  <span class="font-bold text-slate-900">${opt.key}.</span>
+                  <span class="flex-1">${opt.text}</span>
+                  ${badgeState}
+                </label>
+              `;
+            }).join('');
+
+            qHtml += `
+              <div class="p-3.5 sm:p-4 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col gap-2.5">
+                <div class="flex items-center justify-between gap-1 flex-wrap">
+                  <span class="text-xs font-black text-indigo-950 uppercase tracking-wide">${q.title}</span>
+                  <span class="text-[11px] font-extrabold text-slate-500">Bobot: 20 Poin</span>
+                </div>
+                <p class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed">${q.prompt}</p>
+                <div class="flex flex-col gap-1.5 pt-1">
+                  ${optsHtml}
+                </div>
+              </div>
+            `;
+          });
+
+          body.innerHTML = `
+            <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200 flex flex-col gap-1 text-slate-800">
+              <span class="font-bold text-sm text-indigo-950">Asesmen Pilihan Ganda: Candi Prambanan, Sains Batik &amp; Kampus UNY (5 Soal PG)</span>
+              <p class="text-xs sm:text-sm leading-relaxed text-slate-600">
+                Jawablah 5 soal pilihan ganda di bawah ini berdasarkan pemahaman sains kimiawi lilin batik Benang Ratu, reaksi fiksasi dan pelorotan warna, rekayasa batu interlocking Candi Prambanan, kosmologi mandala candi, serta orientasi akademik kampus UNY.
+              </p>
+            </div>
+
+            ${isSubmitted ? `
+              <div class="p-3.5 sm:p-4 rounded-2xl bg-white border border-emerald-300 shadow-2xs flex items-center justify-between gap-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-black text-base shrink-0">
+                    <span class="material-symbols-outlined text-2xl">verified</span>
+                  </div>
+                  <div class="flex flex-col">
+                    <span class="text-xs font-bold text-slate-500">Hasil Asesmen Day 5:</span>
+                    <span class="text-base sm:text-lg font-black text-emerald-900">Nilai: ${score} / 100 (${score >= 80 ? '⭐⭐⭐⭐⭐ Sangat Baik' : '⭐⭐⭐⭐☆ Baik'})</span>
+                  </div>
+                </div>
+                <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase shadow-xs">
+                  Selesai ✓
+                </span>
+              </div>
+            ` : ''}
+
+            <div class="flex flex-col gap-3">
+              ${qHtml}
+            </div>
+
+            ${isSubmitted ? `
+              <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=5';" class="flex-1 py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">photo_camera</span>
+                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
+                  Tutup
+                </button>
+              </div>
+            ` : (readOnlyBanner ? readOnlyBanner : `
+              <div class="pt-2">
+                <button type="button" onclick="saveStudentNote(5, 'asesmen')" class="w-full py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-lg">send</span>
+                  <span>Kirim Jawaban Asesmen &amp; Buka Dokumentasi</span>
+                </button>
+              </div>
+            `)}
+          `;
         } else {
           icon.textContent = 'fact_check';
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
@@ -3932,7 +4106,7 @@
           `;
         }
       } else if (type === 'refleksi') {
-        const ftCfg = ((isFieldTrip || Number(day.day_number) <= 4) && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
+        const ftCfg = ((isFieldTrip || Number(day.day_number) <= 7) && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
         title.textContent = isTrial 
           ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' 
           : (ftCfg 
@@ -4373,6 +4547,10 @@
       const isFTDay1 = isFieldTrip && Number(dayNumber) === 1;
       const isFTDay2 = isFieldTrip && Number(dayNumber) === 2;
       const isFTDay3 = isFieldTrip && Number(dayNumber) === 3;
+      const isFTDay4 = isFieldTrip && Number(dayNumber) === 4;
+      const isFTDay5 = isFieldTrip && Number(dayNumber) === 5;
+      const isFTDay6 = isFieldTrip && Number(dayNumber) === 6;
+      const isFTDay7 = isFieldTrip && Number(dayNumber) === 7;
 
       let note = '';
       if (type === 'asesmen' && isFTDay1) {
@@ -4543,6 +4721,54 @@
 
         FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
           FincestemCore.ui.toast(`Asesmen Day 4 Berhasil Dikirim! Skor Anda: ${score} / 100. Evaluasi Eksplorasi Bromo & Budaya Tengger tuntas.`, 'success');
+          loadStudentProgress();
+        });
+
+        closeDayActivityModal();
+        return;
+      } else if (type === 'asesmen' && isFTDay5) {
+        const q1 = document.querySelector('input[name="ftD5Mcq_q1"]:checked')?.value || '';
+        const q2 = document.querySelector('input[name="ftD5Mcq_q2"]:checked')?.value || '';
+        const q3 = document.querySelector('input[name="ftD5Mcq_q3"]:checked')?.value || '';
+        const q4 = document.querySelector('input[name="ftD5Mcq_q4"]:checked')?.value || '';
+        const q5 = document.querySelector('input[name="ftD5Mcq_q5"]:checked')?.value || '';
+
+        if (!q1 || !q2 || !q3 || !q4 || !q5) {
+          FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan pilihan ganda asesmen Day 5!', 'warning');
+          return;
+        }
+
+        const keys = { q1: 'B', q2: 'B', q3: 'B', q4: 'B', q5: 'B' };
+        let score = 0;
+        if (q1 === keys.q1) score += 20;
+        if (q2 === keys.q2) score += 20;
+        if (q3 === keys.q3) score += 20;
+        if (q4 === keys.q4) score += 20;
+        if (q5 === keys.q5) score += 20;
+
+        const answers = { q1, q2, q3, q4, q5 };
+        const asesmenPayload = {
+          submitted: true,
+          type: 'mcq',
+          score: score,
+          totalQuestions: 5,
+          answers: answers,
+          submitted_at: new Date().toISOString()
+        };
+
+        const idList = getStudentStorageIdentifiers();
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_asesmen_ft_day5_' + id, JSON.stringify(asesmenPayload));
+        });
+
+        note = `Asesmen PG Day 5 - Candi Prambanan, Batik & Kampus UNY (Skor: ${score}/100):\n1. Sains Lilin Batik: ${q1} (${q1 === 'B' ? 'Benar' : 'Salah'})\n2. Kimia Fiksasi & Pelorotan: ${q2} (${q2 === 'B' ? 'Benar' : 'Salah'})\n3. Arsitektur Interlocking Candi: ${q3} (${q3 === 'B' ? 'Benar' : 'Salah'})\n4. Kosmologi Candi Prambanan: ${q4} (${q4 === 'B' ? 'Benar' : 'Salah'})\n5. Wawasan Kampus UNY: ${q5} (${q5 === 'B' ? 'Benar' : 'Salah'})`;
+
+        if (studentProgress && studentProgress.task_map) {
+          studentProgress.task_map['5_asesmen'] = { status: 'submitted', content: note };
+        }
+
+        FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
+          FincestemCore.ui.toast(`Asesmen Day 5 Berhasil Dikirim! Skor Anda: ${score} / 100. Tahap 4 (Dokumentasi Foto) sekarang telah terbuka.`, 'success');
           loadStudentProgress();
         });
 

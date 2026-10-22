@@ -1447,6 +1447,44 @@
                   `;
                 }
               } catch(e) {}
+            } else if (dayNum === 5) {
+              try {
+                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day5_' + nisn);
+                const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day5_' + nisn);
+                let ftAsesmen = null;
+                if (storedAsesmen) {
+                  try { ftAsesmen = JSON.parse(storedAsesmen); } catch(e) {}
+                }
+
+                if (storedFt || ftAsesmen) {
+                  const ftData = storedFt ? JSON.parse(storedFt) : {};
+                  lkpdPreviewEl.innerHTML = `
+                    <div class="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex flex-col gap-2 text-xs">
+                      <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <span class="font-extrabold text-indigo-950 flex items-center gap-1">
+                          <span class="material-symbols-outlined text-sm text-indigo-700">temple_hindu</span>
+                          <span>Candi Prambanan, Praktik Batik &amp; Kampus UNY (Day 5)</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${ftData.submitted ? 'bg-indigo-600 text-white' : (ftAsesmen ? 'bg-emerald-600 text-white' : 'bg-slate-600 text-white')}">
+                          ${ftData.submitted ? 'LKPD Terkirim ✓' : (ftAsesmen ? 'Asesmen Selesai' : 'Draft')}
+                        </span>
+                      </div>
+                      ${ftData.obsSains ? `
+                        <div class="bg-white/90 p-2 rounded-xl border border-indigo-200 text-[10.5px]">
+                          <strong class="text-slate-700 block">Observasi Sains Kimia Batik &amp; Arsitektur:</strong>
+                          <p class="text-slate-600 italic mt-0.5">${ftData.obsSains}</p>
+                        </div>
+                      ` : ''}
+                      ${ftAsesmen ? `
+                        <div class="bg-indigo-100/70 p-2 rounded-xl border border-indigo-300 text-[11px] flex items-center justify-between">
+                          <span class="font-bold text-indigo-950">Skor Asesmen Prambanan, Batik &amp; UNY:</span>
+                          <span class="font-black text-indigo-900 bg-white px-2 py-0.5 rounded-lg border border-indigo-200">${ftAsesmen.score || 0} / 100</span>
+                        </div>
+                      ` : ''}
+                    </div>
+                  `;
+                }
+              } catch(e) {}
             }
           }
 
