@@ -1229,7 +1229,7 @@
       { name: "Gumawang", kec: "Belitang", lat: -4.108037, lng: 104.626813 },
       { name: "Gunung Mas", kec: "Belitang", lat: -4.192, lng: 104.632 },
       { name: "Harjo Winangun", kec: "Belitang", lat: -4.114528, lng: 104.6651 },
-      { name: "Karang Kemiri", kec: "Belitang", lat: -4.115, lng: 104.638 },
+      { name: "Karang Kemiri", kec: "Belitang", lat: -4.155, lng: 104.645 },
       { name: "Ketapang", kec: "Belitang", lat: -4.18, lng: 104.635 },
       { name: "Mojosari", kec: "Belitang", lat: -4.14, lng: 104.655 },
       { name: "Pujorahayu", kec: "Belitang", lat: -4.129517, lng: 104.643398 },
@@ -1294,7 +1294,7 @@
       { name: "Mekar Jaya", kec: "Belitang Madang Raya", lat: -4.010859, lng: 104.554644 },
       { name: "Pandan Sari 1", kec: "Belitang Madang Raya", lat: -4.05, lng: 104.61 },
       { name: "Pelita Jaya", kec: "Belitang Madang Raya", lat: -4.071572, lng: 104.548648 },
-      { name: "Rantau Jaya", kec: "Belitang Madang Raya", lat: -4.062, lng: 104.625 },
+      { name: "Rantau Jaya", kec: "Belitang Madang Raya", lat: -4.10928, lng: 104.63826 },
       { name: "Tanah Merah", kec: "Belitang Madang Raya", lat: -4.220976, lng: 104.489594 },
       { name: "Tugu Harum", kec: "Belitang Madang Raya", lat: -4.093176, lng: 104.597996 },
       { name: "Tugumulyo", kec: "Belitang Madang Raya", lat: -4.072088, lng: 104.577607 },
@@ -1708,20 +1708,20 @@
 
     function applyFallbackGPS(msg) {
       currentGPS = {
-        lat: -4.108037,
-        lng: 104.626813,
+        lat: -4.109280,
+        lng: 104.638260,
         accuracy: 15,
         isFallback: true,
         address: {
-          desa: 'Kel. Gumawang',
-          kec: 'Kec. Belitang',
+          desa: 'Desa Rantau Jaya',
+          kec: 'Kec. Belitang Madang Raya',
           kab: 'Kab. OKU Timur',
           prov: 'Sumatera Selatan',
-          line1: 'Kel. Gumawang, Kec. Belitang',
+          line1: 'Desa Rantau Jaya, Kec. Belitang Madang Raya',
           line2: 'Kab. OKU Timur, Sumatera Selatan',
-          fullText: 'Kel. Gumawang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+          fullText: 'Desa Rantau Jaya, Kec. Belitang Madang Raya, Kab. OKU Timur, Sumatera Selatan'
         },
-        addressText: 'Kel. Gumawang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+        addressText: 'Desa Rantau Jaya, Kec. Belitang Madang Raya, Kab. OKU Timur, Sumatera Selatan'
       };
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
@@ -1731,8 +1731,8 @@
       if (iconBox) {
         iconBox.className = 'w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0';
       }
-      if (title) title.textContent = `📍 GPS Lokasi SMAN 1 Belitang: -4.10804°, 104.62681°`;
-      if (sub) sub.textContent = msg ? `${msg} • Kel. Gumawang, Kec. Belitang` : 'Kel. Gumawang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan';
+      if (title) title.textContent = `📍 GPS Lokasi SMAN 1 Belitang: -4.10928°, 104.63826°`;
+      if (sub) sub.textContent = msg ? `${msg} • Desa Rantau Jaya, Kec. Belitang Madang Raya` : 'Desa Rantau Jaya, Kec. Belitang Madang Raya, Kab. OKU Timur, Sumatera Selatan';
     }
 
     function roundRectHelper(ctx, x, y, w, h, r) {

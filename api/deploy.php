@@ -127,6 +127,9 @@ if ($action === 'deploy') {
         $archiveUrl = "https://github.com/" . REPO_OWNER . "/" . REPO_NAME . "/archive/refs/heads/" . BRANCH . ".zip";
         $tempZip = $baseDir . '/temp_update_' . time() . '.zip';
 
+        @ini_set('max_execution_time', '300');
+        @set_time_limit(300);
+
         // Unduh berkas ZIP via cURL atau file_get_contents
         $downloadSuccess = false;
         if (function_exists('curl_init')) {
@@ -136,12 +139,13 @@ if ($action === 'deploy') {
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
             curl_setopt($ch, CURLOPT_USERAGENT, 'FINCESTEM-Deployer/1.0');
-            curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 300);
             curl_exec($ch);
+            $curlError = curl_errno($ch);
             $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
             curl_close($ch);
             fclose($fp);
-            if ($httpCode === 200 && filesize($tempZip) > 1000) {
+            if ($httpCode === 200 && $curlError === 0 && file_exists($tempZip) && filesize($tempZip) > 1000) {
                 $downloadSuccess = true;
                 $logs[] = "Berhasil mengunduh paket arsip dari GitHub (" . round(filesize($tempZip) / 1024) . " KB)";
             }
