@@ -869,7 +869,7 @@
         });
       }
 
-      const activeDay = dayParam ? parseInt(dayParam) : 1;
+      const activeDay = (dayParam !== null && dayParam !== undefined) ? parseInt(dayParam) : 1;
       setupDayContext(activeDay);
       renderSessionActionCard(activeDay);
 
@@ -950,7 +950,23 @@
         if (policyEl) {
           try {
             const cat = getStudentCategoryInfo();
-            if (cat.isNonFieldTrip) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const dayParam = urlParams.get('day');
+            const isDay0 = (dayParam === '0');
+
+            if (isDay0) {
+              policyEl.innerHTML = `
+                <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs flex items-start gap-2.5 shadow-2xs">
+                  <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">science</span>
+                  <div class="flex flex-col">
+                    <span class="font-extrabold text-amber-950 text-xs">Sesi Day 0: Simulasi &amp; Gladi Bersih FINCESTEM:</span>
+                    <span class="text-[11px] text-amber-900 leading-relaxed mt-0.5">
+                      Sesi uji coba sensor satelit GPS real-time dan geotagging otomatis. Setiap kali Anda membuka form ini, sistem otomatis merefresh koordinat GPS live terkini dari HP Anda. Foto otomatis distempel watermark <strong>Day 0 (Simulasi)</strong> dan radar peta satelit.
+                    </span>
+                  </div>
+                </div>
+              `;
+            } else if (cat.isNonFieldTrip) {
               policyEl.innerHTML = `
                 <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs flex items-start gap-2.5 shadow-2xs">
                   <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">verified_user</span>
@@ -1076,7 +1092,10 @@
 
     function triggerFilePicker() {
       const cat = getStudentCategoryInfo();
-      if (cat.isNonFieldTrip) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDay0 = (urlParams.get('day') === '0');
+
+      if (cat.isNonFieldTrip && !isDay0) {
         const proceed = confirm(
           "⚠️ PERINGATAN REKOMENDASI PENILAIAN BINTANG 1:\n\n" +
           "Sebagai peserta NON-FIELD TRIP, Anda diwajibkan mengambil foto langsung menggunakan 'Kamera HP (Geotag)' di lokasi kegiatan.\n\n" +
@@ -3145,21 +3164,25 @@
           `;
         }
       } else {
-        // HARI LAINNYA
+        // HARI LAINNYA & DAY 0 SIMULASI
+        const isDay0 = (Number(dayNum) === 0);
         container.innerHTML = `
-          <div class="p-4 sm:p-5 rounded-3xl bg-surface-container-lowest border-2 border-primary/40 flex items-center justify-between gap-3 shadow-xs">
+          <div class="p-4 sm:p-5 rounded-3xl ${isDay0 ? 'bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-teal-500/10 border-2 border-amber-400' : 'bg-surface-container-lowest border-2 border-primary/40'} flex items-center justify-between gap-3 shadow-xs">
             <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-2xl">photo_camera</span>
+              <div class="w-12 h-12 rounded-2xl ${isDay0 ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white' : 'bg-primary/10 text-primary'} flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-2xl">${isDay0 ? 'science' : 'photo_camera'}</span>
               </div>
               <div class="flex flex-col">
-                <span class="font-black text-xs sm:text-sm text-on-surface">Dokumentasi Foto Day ${dayNum}</span>
-                <span class="text-[11px] text-slate-500">Unggah bukti foto kegiatan lapangan kelompok Anda hari ini</span>
+                <div class="flex items-center gap-2">
+                  <span class="font-black text-xs sm:text-sm text-on-surface">${isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : `Dokumentasi Foto Day ${dayNum}`}</span>
+                  ${isDay0 ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide">Uji Coba</span>' : ''}
+                </div>
+                <span class="text-[11px] text-slate-500">${isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini'}</span>
               </div>
             </div>
-            <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-xl bg-primary text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm hover:bg-primary/90 transition-all cursor-pointer shrink-0">
+            <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-xl ${isDay0 ? 'bg-amber-600 hover:bg-amber-700' : 'bg-primary hover:bg-primary/90'} text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0">
               <span class="material-symbols-outlined text-base">add_a_photo</span>
-              <span>Ambil Foto</span>
+              <span>${isDay0 ? 'Ambil Foto Simulasi' : 'Ambil Foto'}</span>
             </button>
           </div>
         `;
@@ -3174,7 +3197,7 @@
 
       const urlParams = new URLSearchParams(window.location.search);
       const dayParam = urlParams.get('day');
-      const activeDay = dayParam ? parseInt(dayParam) : null;
+      const activeDay = (dayParam !== null && dayParam !== undefined) ? parseInt(dayParam) : null;
 
       // Hitung statistik per hari
       const countMap = { total: list.length };
@@ -3194,13 +3217,13 @@
             <div class="p-1 rounded-2xl bg-surface-container-high border border-outline-variant/30 flex items-center justify-between gap-1 shadow-2xs">
               <button type="button" onclick="switchGalleryTab('current')" class="flex-1 py-2 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer ${currentGalleryTab === 'current' ? 'bg-primary text-white shadow-xs' : 'text-slate-700 hover:bg-white/60'}">
                 <span class="material-symbols-outlined text-base">filter_vintage</span>
-                <span>Foto Khusus Day ${activeDay}</span>
+                <span>Foto Khusus ${activeDay === 0 ? 'Day 0 (Simulasi)' : `Day ${activeDay}`}</span>
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${currentGalleryTab === 'current' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}">${currentDayCount}</span>
               </button>
 
               <button type="button" onclick="switchGalleryTab('all')" class="flex-1 py-2 px-3 rounded-xl font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer ${currentGalleryTab === 'all' ? 'bg-primary text-white shadow-xs' : 'text-slate-700 hover:bg-white/60'}">
                 <span class="material-symbols-outlined text-base">photo_library</span>
-                <span>Galeri Utama (Day 1–7)</span>
+                <span>Galeri Utama (Day 0–7)</span>
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${currentGalleryTab === 'all' ? 'bg-white/20 text-white' : 'bg-slate-200 text-slate-700'}">${list.length}</span>
               </button>
             </div>
@@ -3211,9 +3234,9 @@
                 <button type="button" onclick="filterGalleryByDay(null)" class="px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${currentGalleryDayFilter === null ? 'bg-slate-900 text-white shadow-2xs' : 'bg-surface-container hover:bg-surface-container-high text-slate-700'}">
                   Semua Day (${list.length})
                 </button>
-                ${[1, 2, 3, 4, 5, 6, 7].map(d => `
+                ${[0, 1, 2, 3, 4, 5, 6, 7].map(d => `
                   <button type="button" onclick="filterGalleryByDay(${d})" class="px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${currentGalleryDayFilter === d ? 'bg-slate-900 text-white shadow-2xs' : 'bg-surface-container hover:bg-surface-container-high text-slate-700'}">
-                    Day ${d} (${countMap[d] || 0})
+                    ${d === 0 ? 'Day 0 (Simulasi)' : `Day ${d}`} (${countMap[d] || 0})
                   </button>
                 `).join('')}
               </div>
@@ -3229,9 +3252,9 @@
               <button type="button" onclick="filterGalleryByDay(null)" class="px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${currentGalleryDayFilter === null ? 'bg-primary text-white shadow-2xs' : 'bg-surface-container hover:bg-surface-container-high text-slate-700'}">
                 Semua Day (${list.length})
               </button>
-              ${[1, 2, 3, 4, 5, 6, 7].map(d => `
+              ${[0, 1, 2, 3, 4, 5, 6, 7].map(d => `
                 <button type="button" onclick="filterGalleryByDay(${d})" class="px-3 py-1.5 rounded-xl text-xs font-bold shrink-0 transition-all cursor-pointer ${currentGalleryDayFilter === d ? 'bg-primary text-white shadow-2xs' : 'bg-surface-container hover:bg-surface-container-high text-slate-700'}">
-                  Day ${d} (${countMap[d] || 0})
+                  ${d === 0 ? 'Day 0 (Simulasi)' : `Day ${d}`} (${countMap[d] || 0})
                 </button>
               `).join('')}
             </div>
@@ -3257,9 +3280,9 @@
       const badge = document.getElementById('docCountBadge');
       if (badge) {
         if (activeDay !== null && currentGalleryTab === 'current') {
-          badge.textContent = `${filtered.length} Foto Day ${activeDay}`;
+          badge.textContent = `${filtered.length} Foto ${activeDay === 0 ? 'Day 0 (Simulasi)' : `Day ${activeDay}`}`;
         } else if (currentGalleryDayFilter !== null) {
-          badge.textContent = `${filtered.length} Foto Day ${currentGalleryDayFilter}`;
+          badge.textContent = `${filtered.length} Foto ${currentGalleryDayFilter === 0 ? 'Day 0 (Simulasi)' : `Day ${currentGalleryDayFilter}`}`;
         } else {
           badge.textContent = `${filtered.length} Total Foto Tersimpan`;
         }
@@ -3429,7 +3452,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const dayParam = urlParams.get('day');
-        const docDayNum = dayParam ? parseInt(dayParam) : 1;
+        const docDayNum = (dayParam !== null && dayParam !== undefined) ? parseInt(dayParam) : 1;
         const actConfig = getDayActivityConfig(docDayNum);
 
         let pillar = (document.getElementById('modalPillarSelect') ? document.getElementById('modalPillarSelect').value : '') || actConfig.defaultPillar || 'STEM';
