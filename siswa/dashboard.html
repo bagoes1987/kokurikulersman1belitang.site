@@ -1998,7 +1998,7 @@
                 hasDok = db.documentation.some(p => {
                   const docDay = Number(p.day || p.day_number || 0);
                   const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
-                  return docDay === dayNum && (!docNisn || idList.includes(docNisn));
+                  return docDay === dayNum && (idList.includes(docNisn) || idList.includes(docNisn.replace(/^0+/, '')));
                 });
               }
             }
@@ -2067,11 +2067,8 @@
             docPhoto = db.documentation.find(p => {
               const pDay = parseInt(p.day_number || p.day || 0);
               const pNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
-              return pDay === d && (!cleanNisn || !pNisn || idList.includes(pNisn));
+              return pDay === d && (idList.includes(pNisn) || idList.includes(pNisn.replace(/^0+/, '')));
             });
-            if (!docPhoto) {
-              docPhoto = db.documentation.find(p => parseInt(p.day_number || p.day || 0) === d);
-            }
           }
         }
       } catch (e) {}

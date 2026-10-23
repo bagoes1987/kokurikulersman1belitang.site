@@ -1996,11 +1996,20 @@
       `;
 
       function displayPhotos(list) {
-        let filtered = list;
+        let classPhotos = list;
+        if (assignedStudents && assignedStudents.length > 0) {
+          const binaanNisns = new Set(assignedStudents.map(s => String(s.nisn).trim()));
+          classPhotos = list.filter(p => {
+            const pNisn = String(p.uploaded_by_nisn || p.nisn || '').trim();
+            const cleanP = pNisn.replace(/^0+/, '');
+            return binaanNisns.has(pNisn) || binaanNisns.has(cleanP);
+          });
+        }
+        let filtered = classPhotos;
         if (fasilPhotoFilterCurrent === 'camera') {
-          filtered = list.filter(p => p.has_geotag == 1 || p.source === 'camera' || p.gps_location);
+          filtered = classPhotos.filter(p => p.has_geotag == 1 || p.source === 'camera' || p.gps_location);
         } else if (fasilPhotoFilterCurrent === 'gallery') {
-          filtered = list.filter(p => p.has_geotag == 0 && (p.source === 'gallery' || !p.gps_location));
+          filtered = classPhotos.filter(p => p.has_geotag == 0 && (p.source === 'gallery' || !p.gps_location));
         }
 
         if (countBadge) countBadge.textContent = filtered.length + ' Foto';
@@ -2090,7 +2099,8 @@
       } catch(e) {}
 
       if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list')
+        const clsQuery = assignedClass ? ('&class_name=' + encodeURIComponent(assignedClass)) : '';
+        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list' + clsQuery)
           .then(r => r.json())
           .then(res => {
             if (res && res.success && Array.isArray(res.data)) {

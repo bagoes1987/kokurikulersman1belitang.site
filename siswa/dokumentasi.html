@@ -138,7 +138,7 @@
         <span id="docCountBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-surface-container text-on-surface-variant">0 Foto Tersimpan</span>
       </div>
       <p id="docPageDesc" class="text-sm text-on-surface-variant leading-relaxed font-medium">
-        Setiap kelompok wajib mengunggah bukti foto lapangan pada tiap pilar kegiatan sebagai komponen portofolio penilaian kokurikuler.
+        Galeri dokumentasi autentik kegiatan riset Anda. Foto pada halaman ini terisolasi khusus untuk akun Anda dan hanya dapat dipantau oleh Fasilitator pembina.
       </p>
     </div>
 
@@ -2262,8 +2262,23 @@
         if (stored) {
           const db = JSON.parse(stored);
           if (Array.isArray(db.documentation)) {
+            const currentUser = FincestemCore.auth.getUser();
+            const myNisn = currentUser ? String(currentUser.nisn || currentUser.identifier || '').trim() : '';
+            const cleanMyNisn = myNisn.replace(/^0+/, '');
+            const idList = [myNisn, cleanMyNisn, currentUser?.nis, currentUser?.identifier].filter(Boolean).map(String);
+
+            // ISOLASI KETAT PRIVASI: Hanya tampilkan foto yang diunggah oleh akun siswa ini!
+            const studentDocs = db.documentation.filter(p => {
+              const pNisn = String(p.nisn || p.author_nisn || p.uploaded_by || p.uploaded_by_nisn || '').trim();
+              const cleanP = pNisn.replace(/^0+/, '');
+              if (pNisn) {
+                return idList.includes(pNisn) || (cleanP && cleanP === cleanMyNisn);
+              }
+              return (p.author && currentUser && (p.author === currentUser.name || p.author === currentUser.group));
+            });
+
             let changed = false;
-            db.documentation.forEach(p => {
+            studentDocs.forEach(p => {
               const properDay = getPhotoDay(p);
               if (p.day !== properDay || p.day_number !== properDay) {
                 p.day = properDay;
@@ -2274,7 +2289,7 @@
             if (changed) {
               try { localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db)); } catch(e) {}
             }
-            return db.documentation;
+            return studentDocs;
           }
         }
       } catch (e) {}
@@ -2282,8 +2297,15 @@
     }
 
     function syncDocumentationFromServer(callback) {
+      const currentUser = FincestemCore.auth.getUser();
+      const myNisn = currentUser ? String(currentUser.nisn || currentUser.identifier || '').trim() : '';
+      if (!myNisn) {
+        if (callback) callback();
+        return;
+      }
+
       if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list')
+        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list&nisn=' + encodeURIComponent(myNisn))
           .then(r => r.json())
           .then(res => {
             if (res && res.success && Array.isArray(res.data)) {
@@ -2291,6 +2313,10 @@
                 let db = {};
                 const stored = localStorage.getItem('fincestem_db_2026_v1');
                 if (stored) db = JSON.parse(stored);
+
+                const cleanMyNisn = myNisn.replace(/^0+/, '');
+                const idList = [myNisn, cleanMyNisn, currentUser.nis, currentUser.identifier].filter(Boolean).map(String);
+
                 const serverDocs = res.data.map(d => {
                   const docDay = getPhotoDay(d);
                   return {
@@ -2304,6 +2330,7 @@
                     url: (d.file_url.startsWith('http') || d.file_url.startsWith('data:')) ? d.file_url : ('../' + d.file_url),
                     author: d.student_name || d.group_name || d.uploaded_by_nisn || 'Siswa',
                     nisn: d.uploaded_by_nisn,
+                    author_nisn: d.uploaded_by_nisn,
                     source: d.source || (d.gps_location ? 'camera' : 'gallery'),
                     has_geotag: (d.has_geotag == 1 || (d.gps_location && d.source !== 'gallery')) ? 1 : 0,
                     gps_location: d.gps_location || '',
@@ -2311,11 +2338,19 @@
                   };
                 });
 
-                // Gabungkan foto server dengan foto lokal (misal base64 yang baru diunggah dan belum tersinkronisasi)
+                // Bersihkan foto milik akun lain yang mungkin sempat tersimpan di local cache siswa ini
                 const existing = Array.isArray(db.documentation) ? db.documentation : [];
-                const serverUrls = new Set(serverDocs.map(s => s.url));
-                const localOnly = existing.filter(p => !String(p.id).startsWith('doc-srv-') && !serverUrls.has(p.url));
+                const myLocalDocs = existing.filter(p => {
+                  const pNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+                  const cleanP = pNisn.replace(/^0+/, '');
+                  const isMine = pNisn ? (idList.includes(pNisn) || cleanP === cleanMyNisn) : (p.author === currentUser.name || p.author === currentUser.group);
+                  return isMine && !String(p.id).startsWith('doc-srv-');
+                });
 
+                const serverUrls = new Set(serverDocs.map(s => s.url));
+                const localOnly = myLocalDocs.filter(p => !serverUrls.has(p.url));
+
+                // Simpan HANYA dokumentasi siswa ini ke storage
                 db.documentation = [...localOnly, ...serverDocs];
                 localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
               } catch(e) {}

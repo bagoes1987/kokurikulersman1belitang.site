@@ -21,14 +21,19 @@ if ($action === 'list') {
 
     $nisn = trim($_GET['nisn'] ?? '');
     if ($nisn !== '') {
-        $where[] = "d.uploaded_by_nisn = :nisn";
+        $cleanNisn = ltrim($nisn, '0');
+        $where[] = "(d.uploaded_by_nisn = :nisn OR d.uploaded_by_nisn = :nisn_clean OR TRIM(LEADING '0' FROM d.uploaded_by_nisn) = :nisn_clean OR u.identifier = :nisn OR u.nis = :nisn)";
         $params[':nisn'] = $nisn;
+        $params[':nisn_clean'] = $cleanNisn;
     }
 
     $className = trim($_GET['class_name'] ?? '');
     if ($className !== '') {
-        $where[] = "(g.class_name = :cls OR u.class_name = :cls)";
+        $cleanCls = trim(preg_replace('/^kelas\s+/i', '', $className));
+        $where[] = "(g.class_name = :cls OR u.class_name = :cls OR g.class_name = :ccls OR u.class_name = :ccls OR g.class_name LIKE :cls_like OR u.class_name LIKE :cls_like)";
         $params[':cls'] = $className;
+        $params[':ccls'] = $cleanCls;
+        $params[':cls_like'] = '%' . $cleanCls . '%';
     }
 
     $source = trim($_GET['source'] ?? '');
