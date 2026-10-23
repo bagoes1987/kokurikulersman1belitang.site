@@ -147,6 +147,36 @@ if ($action === 'add') {
         jsonResponse(false, 'File Media wajib disertakan!');
     }
 
+    // Anti-duplikasi di server: Jika foto serupa baru saja diunggah oleh siswa ini dalam 25 detik terakhir
+    if (!empty($uploadedBy) && $day > 0) {
+        try {
+            $checkDup = $pdo->prepare("
+                SELECT `id`, `file_url`, `day` 
+                FROM `dokumentasi_media` 
+                WHERE (`uploaded_by_nisn` = :ub OR `uploaded_by_nisn` = :ub_clean) 
+                  AND `day` = :day 
+                  AND `title` = :t 
+                  AND `created_at` >= (NOW() - INTERVAL 25 SECOND)
+                ORDER BY `id` DESC LIMIT 1
+            ");
+            $checkDup->execute([
+                ':ub' => $uploadedBy,
+                ':ub_clean' => ltrim($uploadedBy, '0'),
+                ':day' => $day,
+                ':t' => $title
+            ]);
+            $dup = $checkDup->fetch();
+            if ($dup) {
+                jsonResponse(true, 'Dokumentasi riset berhasil disimpan (anti-duplikasi aktif)', [
+                    'id' => (int)$dup['id'],
+                    'file_url' => $dup['file_url'],
+                    'day' => (int)$dup['day']
+                ]);
+                exit;
+            }
+        } catch (Exception $e) {}
+    }
+
     // Jika file_url berupa Base64 Data URL, simpan sebagai file fisik JPG di server hosting
     if (preg_match('/^data:image\/(\w+);base64,/', $fileUrl, $type)) {
         $data = substr($fileUrl, strpos($fileUrl, ',') + 1);

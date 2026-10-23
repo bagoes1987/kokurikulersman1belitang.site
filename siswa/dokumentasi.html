@@ -2245,7 +2245,11 @@
               return (p.author && currentUser && (p.author === currentUser.name || p.author === currentUser.group));
             });
 
+            // ANTI-DUPLIKASI OTOMATIS: Jangan tampilkan foto ganda untuk hari & foto yang sama
+            const seenKeys = new Set();
+            const uniqueDocs = [];
             let changed = false;
+
             studentDocs.forEach(p => {
               const properDay = getPhotoDay(p);
               if (p.day !== properDay || p.day_number !== properDay) {
@@ -2253,11 +2257,21 @@
                 p.day_number = properDay;
                 changed = true;
               }
+              const key = properDay + '_' + String(p.title || '').trim().toLowerCase();
+              if (String(p.id).startsWith('doc-srv-')) {
+                // Versi resmi server selalu diprioritaskan
+                uniqueDocs.push(p);
+                seenKeys.add(key);
+              } else if (!seenKeys.has(key)) {
+                uniqueDocs.push(p);
+                seenKeys.add(key);
+              }
             });
+
             if (changed) {
               try { localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db)); } catch(e) {}
             }
-            return studentDocs;
+            return uniqueDocs;
           }
         }
       } catch (e) {}
@@ -2306,7 +2320,7 @@
                   };
                 });
 
-                // Bersihkan foto milik akun lain yang mungkin sempat tersimpan di local cache siswa ini
+                // Bersihkan foto milik akun lain dan hapus duplikasi lokal base64 jika sudah ada versi server
                 const existing = Array.isArray(db.documentation) ? db.documentation : [];
                 const myLocalDocs = existing.filter(p => {
                   const pNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
@@ -2316,10 +2330,16 @@
                 });
 
                 const serverUrls = new Set(serverDocs.map(s => s.url));
-                const localOnly = myLocalDocs.filter(p => !serverUrls.has(p.url));
+                const localOnly = myLocalDocs.filter(p => {
+                  if (serverUrls.has(p.url)) return false;
+                  // Jika foto sudah ada di serverDocs (dengan day dan title yang sama), buang versi lokal base64
+                  const isAlreadyOnServer = serverDocs.some(s => s.day === p.day && String(s.title || '').trim().toLowerCase() === String(p.title || '').trim().toLowerCase());
+                  if (isAlreadyOnServer) return false;
+                  return true;
+                });
 
-                // Simpan HANYA dokumentasi siswa ini ke storage
-                db.documentation = [...localOnly, ...serverDocs];
+                // Simpan HANYA dokumentasi unik siswa ini ke storage (serverDocs sebagai prioritas)
+                db.documentation = [...serverDocs, ...localOnly];
                 localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
               } catch(e) {}
             }
@@ -3106,7 +3126,17 @@
       renderPhotos();
     }
 
+    let isSubmittingPhoto = false;
+
     function submitNewPhoto() {
+      if (isSubmittingPhoto) return;
+      isSubmittingPhoto = true;
+
+      const submitBtns = document.querySelectorAll('button[onclick*="submitNewPhoto"]');
+      submitBtns.forEach(b => {
+        b.classList.add('opacity-50', 'pointer-events-none');
+      });
+
       try {
         const user = FincestemCore.auth.getUser();
         const descEl = document.getElementById('modalPhotoDesc');
@@ -3203,7 +3233,38 @@
               gps_location: gpsCoordStr,
               uploaded_by: studentNisn
             })
-          }).catch(err => console.warn('Sync dokumentasi error:', err));
+          })
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && res.data) {
+              try {
+                let db = JSON.parse(localStorage.getItem('fincestem_db_2026_v1') || '{}');
+                if (Array.isArray(db.documentation)) {
+                  const srvId = 'doc-srv-' + res.data.id;
+                  const srvUrl = res.data.file_url.startsWith('http') ? res.data.file_url : ('../' + res.data.file_url);
+                  const targetIdx = db.documentation.findIndex(p => p.id === newPhoto.id);
+                  if (targetIdx !== -1) {
+                    db.documentation[targetIdx].id = srvId;
+                    db.documentation[targetIdx].url = srvUrl;
+                    localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+                  }
+                }
+              } catch(e) {}
+              renderPhotos();
+            }
+          })
+          .catch(err => console.warn('Sync dokumentasi error:', err))
+          .finally(() => {
+            isSubmittingPhoto = false;
+            submitBtns.forEach(b => {
+              b.classList.remove('opacity-50', 'pointer-events-none');
+            });
+          });
+        } else {
+          isSubmittingPhoto = false;
+          submitBtns.forEach(b => {
+            b.classList.remove('opacity-50', 'pointer-events-none');
+          });
         }
 
         // Simpan flag sesi khusus Day 2 & Day 3 Field Trip
@@ -3313,6 +3374,10 @@
           }, 350);
         }
       } catch (err) {
+        isSubmittingPhoto = false;
+        submitBtns.forEach(b => {
+          b.classList.remove('opacity-50', 'pointer-events-none');
+        });
         console.error('submitNewPhoto error:', err);
         FincestemCore.ui.toast('Gagal mengunggah foto: ' + (err.message || 'Terjadi kesalahan sistem'), 'error');
       }
