@@ -695,6 +695,11 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Mulai kunci GPS di latar belakang agar sudah siap saat tombol kamera ditekan
+      if (navigator.geolocation) {
+        try { requestGPSCoordinates(false); } catch(e) {}
+      }
+
       const user = FincestemCore.auth.getUser();
       if (!user) {
         window.location.href = 'index.html';
@@ -1219,8 +1224,11 @@
     // Titik pusat koordinat desa-desa di OKU Timur (Terutama Belitang & sekitarnya - Akurat 100%)
     const OKU_TIMUR_VILLAGE_CENTROIDS = [
       // Kecamatan Belitang
-      { name: 'Bedilan', kec: 'Belitang', lat: -4.0880, lng: 104.6600 },
+      { name: 'Karang Kemiri (SMAN 1 Belitang)', kec: 'Belitang', lat: -4.10928, lng: 104.63826 },
+      { name: 'Karang Kemiri', kec: 'Belitang', lat: -4.1150, lng: 104.6380 },
       { name: 'Gumawang', kec: 'Belitang', lat: -4.1080, lng: 104.6268 },
+      { name: 'Bedilan', kec: 'Belitang', lat: -4.0880, lng: 104.6600 },
+      { name: 'Harjowinangun', kec: 'Belitang', lat: -4.0980, lng: 104.6180 },
       { name: 'Sukosari', kec: 'Belitang', lat: -4.1344, lng: 104.6222 },
       { name: 'Harjowinangun', kec: 'Belitang', lat: -4.0980, lng: 104.6180 },
       { name: 'Karang Kemiri', kec: 'Belitang', lat: -4.1150, lng: 104.6380 },
@@ -1586,39 +1594,129 @@
       if (callback) callback(addrObj);
     }
 
+        function extractExifGPS(file, callback) {
+      if (!file || !file.type.startsWith('image/')) {
+        if (callback) callback(null);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const buffer = e.target.result;
+          const view = new DataView(buffer);
+          if (view.getUint16(0, false) !== 0xFFD8) {
+            if (callback) callback(null);
+            return;
+          }
+          let offset = 2;
+          const length = view.byteLength;
+          while (offset < length - 2) {
+            const marker = view.getUint16(offset, false);
+            offset += 2;
+            if (marker === 0xFFE1) {
+              const app1Length = view.getUint16(offset, false);
+              offset += 2;
+              if (view.getUint32(offset, false) === 0x45786966 && view.getUint16(offset + 4, false) === 0x0000) {
+                const tiffOffset = offset + 6;
+                const isLittleEndian = (view.getUint16(tiffOffset, false) === 0x4949);
+                const ifdOffset = view.getUint32(tiffOffset + 4, isLittleEndian);
+                let curOffset = tiffOffset + ifdOffset;
+                const numEntries = view.getUint16(curOffset, isLittleEndian);
+                curOffset += 2;
+                let gpsOffset = 0;
+                for (let i = 0; i < numEntries; i++) {
+                  const tag = view.getUint16(curOffset + (i * 12), isLittleEndian);
+                  if (tag === 0x8825) {
+                    gpsOffset = view.getUint32(curOffset + (i * 12) + 8, isLittleEndian);
+                    break;
+                  }
+                }
+                if (gpsOffset > 0) {
+                  const gpsDirOffset = tiffOffset + gpsOffset;
+                  const gpsNumEntries = view.getUint16(gpsDirOffset, isLittleEndian);
+                  let latRef = 'N', lonRef = 'E';
+                  let latVals = null, lonVals = null;
+                  for (let i = 0; i < gpsNumEntries; i++) {
+                    const entry = gpsDirOffset + 2 + (i * 12);
+                    const tag = view.getUint16(entry, isLittleEndian);
+                    if (tag === 1) {
+                      latRef = String.fromCharCode(view.getUint8(entry + 8));
+                    } else if (tag === 2) {
+                      const valOffset = tiffOffset + view.getUint32(entry + 8, isLittleEndian);
+                      latVals = [
+                        view.getUint32(valOffset, isLittleEndian) / view.getUint32(valOffset + 4, isLittleEndian),
+                        view.getUint32(valOffset + 8, isLittleEndian) / view.getUint32(valOffset + 12, isLittleEndian),
+                        view.getUint32(valOffset + 16, isLittleEndian) / view.getUint32(valOffset + 20, isLittleEndian)
+                      ];
+                    } else if (tag === 3) {
+                      lonRef = String.fromCharCode(view.getUint8(entry + 8));
+                    } else if (tag === 4) {
+                      const valOffset = tiffOffset + view.getUint32(entry + 8, isLittleEndian);
+                      lonVals = [
+                        view.getUint32(valOffset, isLittleEndian) / view.getUint32(valOffset + 4, isLittleEndian),
+                        view.getUint32(valOffset + 8, isLittleEndian) / view.getUint32(valOffset + 12, isLittleEndian),
+                        view.getUint32(valOffset + 16, isLittleEndian) / view.getUint32(valOffset + 20, isLittleEndian)
+                      ];
+                    }
+                  }
+                  if (latVals && lonVals) {
+                    let lat = latVals[0] + (latVals[1] / 60) + (latVals[2] / 3600);
+                    if (latRef === 'S') lat = -lat;
+                    let lon = lonVals[0] + (lonVals[1] / 60) + (lonVals[2] / 3600);
+                    if (lonRef === 'W') lon = -lon;
+                    if (!isNaN(lat) && !isNaN(lon) && lat !== 0 && lon !== 0) {
+                      if (callback) callback({ lat, lng: lon, accuracy: 5, source: 'exif' });
+                      return;
+                    }
+                  }
+                }
+              }
+              break;
+            } else if ((marker & 0xFF00) !== 0xFF00) {
+              break;
+            } else {
+              offset += view.getUint16(offset, false);
+            }
+          }
+        } catch(err) {
+          console.warn('EXIF parse warning:', err);
+        }
+        if (callback) callback(null);
+      };
+      reader.readAsArrayBuffer(file.slice(0, 131072));
+    }
+
     let gpsWatchId = null;
 
-    function requestGPSCoordinates(forceToast = false) {
+    function requestGPSCoordinates(forceToast = false, onLockedCallback = null) {
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
       const sub = document.getElementById('gpsStatusSub');
       const iconBox = document.getElementById('gpsStatusIconBox');
 
       if (icon) icon.className = 'material-symbols-outlined text-lg animate-spin';
-      if (title) title.textContent = 'Mendeteksi Titik Koordinat GPS...';
-      if (sub) sub.textContent = 'Menghubungkan ke satelit GPS perangkat HP/browser';
+      if (title) title.textContent = 'Mencari Titik Koordinat GPS Akurat...';
+      if (sub) sub.textContent = 'Menghubungkan satelit GPS & sensor lokasi perangkat...';
 
       if (!navigator.geolocation) {
-        applyFallbackGPS('GPS tidak didukung browser ini. Menggunakan referensi Belitang.');
+        applyFallbackGPS('GPS tidak didukung browser ini. Menggunakan referensi SMAN 1 Belitang.');
+        if (onLockedCallback) onLockedCallback(currentGPS);
         return;
       }
 
+      let isLocked = false;
       function handlePosSuccess(pos) {
+        if (!pos || !pos.coords) return;
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const accuracy = Math.round(pos.coords.accuracy || 10);
-
-        // Abaikan jika koordinat sama persis dengan yang sudah dikunci (kecuali jika tombol Refresh ditekan)
-        if (!forceToast && currentGPS && !currentGPS.isFallback && Math.abs(currentGPS.lat - lat) < 0.00005 && Math.abs(currentGPS.lng - lng) < 0.00005) {
-          return;
-        }
 
         currentGPS = {
           lat: lat,
           lng: lng,
           accuracy: accuracy,
           isFallback: false,
-          address: 'Mendeteksi wilayah...'
+          address: 'Mendeteksi nama wilayah...'
         };
 
         if (icon) icon.className = 'material-symbols-outlined text-lg';
@@ -1626,9 +1724,8 @@
           iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
         }
         if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
-        if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m`;
+        if (sub) sub.textContent = `Akurasi: ±${currentGPS.accuracy}m (Mencari alamat...)`;
 
-        // Cari nama daerah, kecamatan, kabupaten, provinsi
         fetchAreaAddress(currentGPS.lat, currentGPS.lng, function(addrObj) {
           if (currentGPS) {
             currentGPS.address = addrObj;
@@ -1640,6 +1737,11 @@
             ? '🟢 DALAM WILAYAH OKU TIMUR'
             : '🔴 LUAR WILAYAH OKU TIMUR';
           if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
+
+          if (onLockedCallback && !isLocked) {
+            isLocked = true;
+            onLockedCallback(currentGPS);
+          }
         });
 
         const helpGuide = document.getElementById('gpsHelpGuide');
@@ -1647,23 +1749,29 @@
         if (forceToast) FincestemCore.ui.toast('GPS berhasil dikunci: ' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5), 'success');
       }
 
-      // Ambil posisi sekarang (Force fresh reading tanpa cache browser)
+      // Step 1: Minta High Accuracy (GPS Satelit)
       navigator.geolocation.getCurrentPosition(
         handlePosSuccess,
         function(err) {
-          console.warn('GPS Geolocation Error:', err);
-          let errMsg = 'Izin lokasi belum diberikan. Menggunakan koordinat SMAN 1 Belitang.';
-          if (err.code === 1) errMsg = 'Izin GPS belum disetujui. Menggunakan koordinat SMAN 1 Belitang.';
-          else if (err.code === 2) errMsg = 'Sinyal satelit GPS tidak terdeteksi.';
-          else if (err.code === 3) errMsg = 'Batas waktu pencarian sinyal GPS habis.';
-          applyFallbackGPS(errMsg);
-          if (forceToast) FincestemCore.ui.toast(errMsg, 'warning');
+          console.warn('GPS High Accuracy Error, trying Network/Cell:', err);
+          // Step 2: Coba Low Accuracy (Cellular/WiFi triangulation) jika satelit lambat/indoor
+          navigator.geolocation.getCurrentPosition(
+            handlePosSuccess,
+            function(err2) {
+              console.warn('Network Geolocation Error:', err2);
+              let errMsg = 'Izin lokasi belum disetujui atau sinyal terhalang.';
+              if (err2.code === 1) errMsg = 'Izin akses lokasi GPS ditolak oleh browser/HP.';
+              applyFallbackGPS(errMsg);
+              if (forceToast) FincestemCore.ui.toast(errMsg, 'warning');
+              if (onLockedCallback && !isLocked) {
+                isLocked = true;
+                onLockedCallback(currentGPS);
+              }
+            },
+            { enableHighAccuracy: false, timeout: 8000, maximumAge: 60000 }
+          );
         },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0
-        }
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 20000 }
       );
 
       // Aktifkan pemantauan real-time saat HP bergerak
@@ -1672,7 +1780,7 @@
           gpsWatchId = navigator.geolocation.watchPosition(
             handlePosSuccess,
             () => {},
-            { enableHighAccuracy: true, maximumAge: 0 }
+            { enableHighAccuracy: true, maximumAge: 10000 }
           );
         } catch(e) {}
       }
@@ -1680,20 +1788,20 @@
 
     function applyFallbackGPS(msg) {
       currentGPS = {
-        lat: -4.135240,
-        lng: 104.624890,
+        lat: -4.109286,
+        lng: 104.638255,
         accuracy: 15,
         isFallback: true,
         address: {
-          desa: 'Desa Sukosari',
+          desa: 'Desa Karang Kemiri (SMAN 1 Belitang)',
           kec: 'Kec. Belitang',
           kab: 'Kab. OKU Timur',
           prov: 'Sumatera Selatan',
-          line1: 'Desa Sukosari, Kec. Belitang',
+          line1: 'Desa Karang Kemiri (SMAN 1 Belitang), Kec. Belitang',
           line2: 'Kab. OKU Timur, Sumatera Selatan',
-          fullText: 'Desa Sukosari, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+          fullText: 'Desa Karang Kemiri (SMAN 1 Belitang), Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
         },
-        addressText: 'Desa Sukosari, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
+        addressText: 'Desa Karang Kemiri (SMAN 1 Belitang), Kec. Belitang, Kab. OKU Timur, Sumatera Selatan'
       };
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
@@ -1704,8 +1812,8 @@
       if (iconBox) {
         iconBox.className = 'w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0';
       }
-      if (title) title.textContent = `📍 GPS Referensi: -4.13524°, 104.62489°`;
-      if (sub) sub.textContent = msg ? `${msg} • Desa Sukosari, Kec. Belitang, Kab. OKU Timur` : 'Desa Sukosari, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan';
+      if (title) title.textContent = `📍 GPS Lokasi SMAN 1 Belitang: -4.10929°, 104.63826°`;
+      if (sub) sub.textContent = msg ? `${msg} • Desa Karang Kemiri (SMAN 1 Belitang), Kec. Belitang` : 'Desa Karang Kemiri (SMAN 1 Belitang), Kec. Belitang, Kab. OKU Timur, Sumatera Selatan';
     }
 
     function roundRectHelper(ctx, x, y, w, h, r) {
@@ -1817,297 +1925,157 @@
       ctx.restore();
     }
 
-    function renderGeotaggedWatermark(img, gps, studentInfo, callback) {
-      const maxDimension = 1600;
-      let w = img.naturalWidth || img.width;
-      let h = img.naturalHeight || img.height;
+    function handlePhotoFileSelected(event, source) {
+      source = source || 'camera';
+      selectedPhotoSource = source;
+      selectedPhotoHasGeotag = (source === 'camera');
 
-      if (w > maxDimension || h > maxDimension) {
-        if (w > h) {
-          h = Math.round((h * maxDimension) / w);
-          w = maxDimension;
-        } else {
-          w = Math.round((w * maxDimension) / h);
-          h = maxDimension;
-        }
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        FincestemCore.ui.toast('Hanya berkas gambar/foto yang diperbolehkan!', 'error');
+        return;
       }
 
-      const canvas = document.createElement('canvas');
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext('2d');
+      // Sembunyikan tombol aksi, tampilkan indikator proses
+      const actionsContainer = document.getElementById('uploadActionsContainer');
+      const stampBox = document.getElementById('stampLoadingBox');
+      const stampTitle = document.getElementById('stampLoadingTitle');
+      const stampDesc = document.getElementById('stampLoadingDesc');
+      const previewCard = document.getElementById('uploadPreviewCard');
+      const previewBadge = document.getElementById('uploadPreviewBadge');
 
-      // 1. Gambar foto utama
-      ctx.drawImage(img, 0, 0, w, h);
+      if (actionsContainer) actionsContainer.classList.add('hidden');
+      if (stampBox) stampBox.classList.remove('hidden');
+      if (previewCard) previewCard.classList.add('hidden');
 
-      // 2. Badge Sudut Kanan Atas: "Kokurikuler2026_SMAN1 Belitang_Fincestem"
-      const badgeText = "Kokurikuler2026_SMAN1 Belitang_Fincestem";
-      const badgeFontSize = Math.max(13, Math.round(w * 0.016));
-      ctx.font = `bold ${badgeFontSize}px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif`;
-      const textMetrics = ctx.measureText(badgeText);
-      const badgeW = textMetrics.width + Math.round(badgeFontSize * 2.8);
-      const badgeH = Math.round(badgeFontSize * 2.3);
-      const badgeX = w - badgeW - Math.round(w * 0.02);
-      const badgeY = Math.round(w * 0.02);
+      if (source === 'camera') {
+        if (stampTitle) stampTitle.textContent = 'Membaca Sensor GPS & Menyiapkan Watermark...';
+        if (stampDesc) stampDesc.textContent = 'Mengekstrak titik koordinat presisi perangkat & menyematkan identitas FINCESTEM';
+      } else {
+        if (stampTitle) stampTitle.textContent = 'Memproses Foto dari Galeri...';
+        if (stampDesc) stampDesc.textContent = 'Menyesuaikan resolusi tanpa stempel geotag (unggah dokumen album)';
+      }
 
-      ctx.save();
-      ctx.shadowColor = "rgba(0, 0, 0, 0.6)";
-      ctx.shadowBlur = 10;
-      ctx.shadowOffsetX = 0;
-      ctx.shadowOffsetY = 3;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const rawDataUrl = e.target.result;
+        const img = new Image();
+        img.onload = function() {
+          if (source !== 'camera') {
+            // FOTO GALERI: foto bersih TANPA stempel geotag & TANPA radar map
+            renderCleanGalleryPhoto(img, function(cleanDataUrl) {
+              selectedPhotoBase64 = cleanDataUrl;
 
-      ctx.fillStyle = "rgba(15, 23, 42, 0.88)";
-      roundRectHelper(ctx, badgeX, badgeY, badgeW, badgeH, 12);
-      ctx.fill();
+              if (stampBox) stampBox.classList.add('hidden');
+              if (previewCard) previewCard.classList.remove('hidden');
 
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = "rgba(56, 189, 248, 0.7)";
-      ctx.stroke();
+              const previewImg = document.getElementById('uploadPreviewImg');
+              if (previewImg) previewImg.src = cleanDataUrl;
 
-      const dotRadius = badgeFontSize * 0.32;
-      const dotX = badgeX + badgeFontSize * 1.1;
-      const dotY = badgeY + badgeH / 2;
-      ctx.fillStyle = "#10b981";
-      ctx.beginPath();
-      ctx.arc(dotX, dotY, dotRadius, 0, Math.PI * 2);
-      ctx.fill();
+              initPreviewZoom();
 
-      ctx.fillStyle = "rgba(16, 185, 129, 0.4)";
-      ctx.beginPath();
-      ctx.arc(dotX, dotY, dotRadius * 1.8, 0, Math.PI * 2);
-      ctx.fill();
+              const cat = getStudentCategoryInfo();
+              if (previewBadge) {
+                if (cat.isNonFieldTrip) {
+                  previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-rose-700/95 text-amber-200 backdrop-blur-xs flex items-center gap-1 shadow-md border border-rose-500/40';
+                  previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">warning</span><span>📁 Galeri (Rekomendasi ⭐1)</span>';
+                } else {
+                  previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-amber-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
+                  previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">photo_library</span><span>📁 Galeri (Field Trip)</span>';
+                }
+              }
 
-      ctx.fillStyle = "#ffffff";
-      ctx.textBaseline = "middle";
-      ctx.fillText(badgeText, dotX + dotRadius + 8, dotY);
-      ctx.restore();
+              const previewMeta = document.getElementById('previewPhotoMeta');
+              if (previewMeta) {
+                if (cat.isNonFieldTrip) {
+                  previewMeta.textContent = '📁 Galeri Tanpa Geotag • Rekomendasi Penilaian Fasilitator: Bintang 1 (⭐☆☆☆☆)';
+                } else {
+                  previewMeta.textContent = '📁 Unggahan Galeri • Field Trip';
+                }
+              }
+              if (cat.isNonFieldTrip) {
+                FincestemCore.ui.toast('Perhatian: Foto galeri untuk Non-Field Trip menghasilkan rekomendasi nilai Bintang 1!', 'warning');
+              } else {
+                FincestemCore.ui.toast('Foto galeri diproses. Cubit 2 jari / ketuk 2x untuk perbesar.', 'info');
+              }
+            });
+            return;
+          }
 
-      // 3. Hitung Proporsi Font & Jarak Ketikan Spasi (Rapat, Tebal & Berukuran Besar Terbaca)
-      const scaleRef = Math.max(w, 800);
-      const l1Size = Math.max(20, Math.round(scaleRef * 0.024)); // Judul Header
-      const lLoc1Size = Math.max(17, Math.round(scaleRef * 0.020)); // Baris Lokasi 1: Day & Desa/Kecamatan (Tebal & Kontras)
-      const lLoc2Size = Math.max(16, Math.round(scaleRef * 0.019)); // Baris Lokasi 2: Kabupaten & Provinsi (Jelas Terbaca untuk Guru)
-      const lGpsSize = Math.max(15, Math.round(scaleRef * 0.017));  // Koordinat GPS
-      const lTimeSize = Math.max(15, Math.round(scaleRef * 0.017)); // Waktu & Tanggal
-      const lUserSize = Math.max(15, Math.round(scaleRef * 0.017)); // Identitas Siswa
+          // FOTO KAMERA HP: Ambil EXIF GPS atau Live GPS
+          function proceedWithGPS(gpsData) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentDayNum = urlParams.has('day') ? parseInt(urlParams.get('day')) : 1;
 
-      // Spasi antar baris ketikan dibuat rapat & proporsional
-      const lineGap = Math.max(6, Math.round(scaleRef * 0.006));
-      const totalTextH = l1Size + lLoc1Size + lLoc2Size + lGpsSize + lTimeSize + lUserSize + (lineGap * 5);
+            const user = FincestemCore.auth.getUser() || {};
+            const studentInfo = {
+              name: user.name || 'Siswa SMAN 1 Belitang',
+              nisn: user.nisn || user.identifier || '-',
+              group: user.group || 'Kelompok Riset',
+              class_name: user.class_name || user.class || 'Fase E',
+              day: currentDayNum
+            };
 
-      // Ukuran Banner & Minimap
-      const pad = Math.max(14, Math.round(scaleRef * 0.016));
-      const mapH = totalTextH;
-      const mapW = Math.round(mapH * 1.15);
-      const bannerHeight = totalTextH + (pad * 2);
-      const bannerY = h - bannerHeight;
+            renderGeotaggedWatermark(img, gpsData, studentInfo, function(watermarkedDataUrl) {
+              selectedPhotoBase64 = watermarkedDataUrl;
 
-      // Banner Bawah Gelap Solid + Garis Aksen Neon
-      ctx.save();
-      const gradient = ctx.createLinearGradient(0, bannerY - 35, 0, h);
-      gradient.addColorStop(0, "rgba(10, 15, 30, 0)");
-      gradient.addColorStop(0.22, "rgba(10, 15, 30, 0.92)");
-      gradient.addColorStop(1, "rgba(10, 15, 30, 0.98)");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, bannerY - 35, w, bannerHeight + 35);
+              if (stampBox) stampBox.classList.add('hidden');
+              if (previewCard) previewCard.classList.remove('hidden');
 
-      ctx.fillStyle = "#38bdf8";
-      ctx.fillRect(0, bannerY - 2, w, 3);
-      ctx.restore();
+              const previewImg = document.getElementById('uploadPreviewImg');
+              if (previewImg) previewImg.src = watermarkedDataUrl;
 
-      // Posisi Koordinat Minimap dan Teks
-      const mapX = pad;
-      const mapY = bannerY + pad;
-      const textX = mapX + mapW + Math.round(pad * 1.2);
-      const textStartY = mapY;
+              initPreviewZoom();
 
-      // 5. Informasi Teks di Samping Kanan Minimap
-      function renderWatermarkText() {
-        ctx.save();
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
+              if (previewBadge) {
+                previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
+                previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">location_on</span><span>📍 Kamera Geotag (Otentik)</span>';
+              }
 
-        let curY = textStartY;
+              const previewMeta = document.getElementById('previewPhotoMeta');
+              if (previewMeta) {
+                previewMeta.textContent = `📍 Kamera HP • Geotag: ${gpsData.lat.toFixed(5)}, ${gpsData.lng.toFixed(5)} • ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB`;
+              }
+              FincestemCore.ui.toast('Foto kamera berhasil distempel geotag! Cubit 2 jari / ketuk 2x untuk perbesar.', 'success');
+            });
+          }
 
-        // Baris 1: Judul Utama Program
-        ctx.font = `900 ${l1Size}px "Plus Jakarta Sans", system-ui, sans-serif`;
-        ctx.fillStyle = '#fbbf24'; // Amber Gold
-        ctx.shadowColor = 'rgba(0, 0, 0, 0.95)';
-        ctx.shadowBlur = 6;
-        ctx.fillText('Kokurikuler2026_SMAN1 Belitang_Fincestem', textX, curY);
-        curY += l1Size + lineGap;
-
-        // Persiapkan data alamat 2 baris (Desa/Kecamatan lalu Kabupaten/Provinsi)
-        const dayLabel = studentInfo.day !== undefined ? (studentInfo.day === 0 ? 'Day 0 (Simulasi)' : `Day ${studentInfo.day}`) : 'Day 1';
-        let locLine1 = 'Desa Sukosari, Kec. Belitang';
-        let locLine2 = 'Kab. OKU Timur, Sumatera Selatan';
-
-        if (gps && gps.address) {
-          if (typeof gps.address === 'object') {
-            locLine1 = gps.address.line1 || 'Desa Sukosari, Kec. Belitang';
-            locLine2 = gps.address.line2 || 'Kab. OKU Timur, Sumatera Selatan';
-          } else if (typeof gps.address === 'string') {
-            const rawParts = gps.address.split(',').map(s => s.trim()).filter(Boolean);
-            if (rawParts.length >= 3) {
-              locLine1 = rawParts.slice(0, 2).join(', ');
-              locLine2 = rawParts.slice(2).join(', ');
-            } else if (rawParts.length === 2) {
-              locLine1 = rawParts[0];
-              locLine2 = rawParts[1];
-            } else {
-              locLine1 = gps.address;
-              locLine2 = 'Kab. OKU Timur, Sumatera Selatan';
+          // 1. Coba baca koordinat EXIF asli langsung dari file foto kamera
+          extractExifGPS(file, function(exifGps) {
+            if (exifGps && !isNaN(exifGps.lat) && !isNaN(exifGps.lng)) {
+              currentGPS = {
+                lat: exifGps.lat,
+                lng: exifGps.lng,
+                accuracy: exifGps.accuracy || 5,
+                isFallback: false,
+                address: 'Mendeteksi wilayah EXIF...'
+              };
+              fetchAreaAddress(currentGPS.lat, currentGPS.lng, function(addrObj) {
+                currentGPS.address = addrObj;
+                currentGPS.addressText = addrObj.fullText || addrObj;
+                currentGPS.isInsideOKUTimur = isInsideOKUTimur(currentGPS.lat, currentGPS.lng);
+                proceedWithGPS(currentGPS);
+              });
+              return;
             }
-          }
-        }
 
-        // Sanitasi ekstra: hindari nama 'Desa Belitang' muncul di watermark
-        locLine1 = locLine1
-          .replace(/^Desa Belitang,\s*/i, 'Desa Sukosari, ')
-          .replace(/^Belitang,\s*Kec\.\s*Belitang/i, 'Desa Sukosari, Kec. Belitang');
+            // 2. Jika EXIF tidak memiliki GPS, periksa apakah live GPS sudah siap
+            if (currentGPS && !currentGPS.isFallback && currentGPS.address && typeof currentGPS.address === 'object') {
+              proceedWithGPS(currentGPS);
+              return;
+            }
 
-        // Baris 2: 📍 Day [X] • [Nama Desa / Kelurahan], [Kecamatan], (Sky Cyan Terang)
-        ctx.font = `bold ${lLoc1Size}px system-ui, sans-serif`;
-        ctx.fillStyle = '#38bdf8'; // Sky Cyan Terang
-        ctx.shadowBlur = 4;
-        ctx.fillText(`📍 ${dayLabel} • ${locLine1},`, textX, curY);
-        curY += lLoc1Size + lineGap;
-
-        // Baris 3: [Nama Kabupaten / Kota], [Nama Provinsi] (Neon Yellow Terang)
-        ctx.font = `900 ${lLoc2Size}px system-ui, sans-serif`;
-        ctx.fillStyle = '#fde047'; // Neon Yellow Terang
-        ctx.shadowBlur = 4;
-        ctx.fillText(`   ${locLine2}`, textX, curY);
-        curY += lLoc2Size + lineGap;
-
-        // Baris 4: Koordinat GPS, Akurasi Satelit
-        ctx.font = `bold ${lGpsSize}px "Plus Jakarta Sans", monospace, sans-serif`;
-        ctx.fillStyle = '#ffffff';
-        const coordText = `🌐 Lat: ${gps.lat.toFixed(6)}°, Long: ${gps.lng.toFixed(6)}° (±${gps.accuracy}m)`;
-        ctx.fillText(coordText, textX, curY);
-        curY += lGpsSize + lineGap;
-
-        // Baris 5: Hari, Tanggal, Jam, Menit, Detik (WIB)
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-        const timeFormatted = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':') + ' WIB';
-        ctx.font = `bold ${lTimeSize}px system-ui, sans-serif`;
-        ctx.fillStyle = '#4ade80'; // Emerald Green
-        ctx.fillText(`⏰ ${dateStr} • ${timeFormatted}`, textX, curY);
-        curY += lTimeSize + lineGap;
-
-        // Baris 6: Identitas Siswa & Rombel
-        ctx.font = `bold ${lUserSize}px system-ui, sans-serif`;
-        ctx.fillStyle = '#e2e8f0'; // Slate 200
-        ctx.fillText(`👤 ${studentInfo.name} (${studentInfo.nisn}) • ${studentInfo.class_name}`, textX, curY);
-
-        ctx.restore();
-
-        try {
-          const resultDataUrl = canvas.toDataURL('image/jpeg', 0.88);
-          callback(resultDataUrl);
-        } catch (e) {
-          console.error('Canvas export error:', e);
-          callback(img.src);
-        }
-      }
-
-      // Render Minimap (OSM Tile jika online atau Vector Radar jika offline)
-      const zoom = 14;
-      const n = Math.pow(2, zoom);
-      const tileX = Math.floor((gps.lng + 180) / 360 * n);
-      const latRad = gps.lat * Math.PI / 180;
-      const tileY = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
-      const tileUrl = `https://tile.openstreetmap.org/${zoom}/${tileX}/${tileY}.png`;
-
-      let mapRendered = false;
-      const tileTimeout = setTimeout(() => {
-        if (!mapRendered) {
-          mapRendered = true;
-          drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
-          renderWatermarkText();
-        }
-      }, 1200);
-
-      const tileImg = new Image();
-      tileImg.crossOrigin = 'anonymous';
-      tileImg.onload = function() {
-        if (!mapRendered) {
-          mapRendered = true;
-          clearTimeout(tileTimeout);
-          try {
-            ctx.save();
-            roundRectHelper(ctx, mapX, mapY, mapW, mapH, 12);
-            ctx.clip();
-            ctx.drawImage(tileImg, mapX, mapY, mapW, mapH);
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.22)';
-            ctx.fillRect(mapX, mapY, mapW, mapH);
-            drawMapPin(ctx, mapX + mapW / 2, mapY + mapH / 2);
-
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-            ctx.fillRect(mapX, mapY + mapH - 18, mapW, 18);
-            ctx.fillStyle = '#38bdf8';
-            ctx.font = 'bold 9px monospace';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('OSM GPS MAP', mapX + mapW / 2, mapY + mapH - 9);
-            ctx.restore();
-
-            ctx.save();
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
-            ctx.lineWidth = 2;
-            roundRectHelper(ctx, mapX, mapY, mapW, mapH, 12);
-            ctx.stroke();
-            ctx.restore();
-          } catch (err) {
-            drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
-          }
-          renderWatermarkText();
-        }
+            // 3. Minta kunci GPS segar sekarang
+            requestGPSCoordinates(false, function(freshGps) {
+              proceedWithGPS(freshGps || currentGPS);
+            });
+          });
+        };
+        img.src = rawDataUrl;
       };
-      tileImg.onerror = function() {
-        if (!mapRendered) {
-          mapRendered = true;
-          clearTimeout(tileTimeout);
-          drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
-          renderWatermarkText();
-        }
-      };
-      tileImg.src = tileUrl;
-    }
-
-    let selectedPhotoSource = 'camera';
-    let selectedPhotoHasGeotag = false;
-
-    function renderCleanGalleryPhoto(img, callback) {
-      const maxDimension = 1600;
-      let w = img.naturalWidth || img.width;
-      let h = img.naturalHeight || img.height;
-
-      if (w > maxDimension || h > maxDimension) {
-        if (w > h) {
-          h = Math.round((h * maxDimension) / w);
-          w = maxDimension;
-        } else {
-          w = Math.round((w * maxDimension) / h);
-          h = maxDimension;
-        }
-      }
-
-      const canvas = document.createElement('canvas');
-      canvas.width = w;
-      canvas.height = h;
-      const ctx = canvas.getContext('2d');
-      // Gambar foto asli bersih tanpa stempel watermark, banner, atau peta apapun
-      ctx.drawImage(img, 0, 0, w, h);
-
-      try {
-        const resultDataUrl = canvas.toDataURL('image/jpeg', 0.88);
-        callback(resultDataUrl);
-      } catch (e) {
-        console.error('Gallery canvas export error:', e);
-        callback(img.src);
-      }
+      reader.readAsDataURL(file);
     }
 
     function handlePhotoFileSelected(event, source) {
