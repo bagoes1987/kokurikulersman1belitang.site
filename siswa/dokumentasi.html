@@ -899,8 +899,24 @@
       if (show) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
         modal.classList.add('opacity-100');
-        // Kunci status tombol kamera: Menunggu GPS mengunci lokasi
-        updateCameraButtonState('LOCATING');
+
+        // Jika GPS sudah terkunci dari pemantauan latar belakang, langsung aktifkan tombol tanpa muter-muter!
+        if (currentGPS && !currentGPS.isFallback && currentGPS.address && typeof currentGPS.address === 'object') {
+          updateCameraButtonState('READY', currentGPS.address);
+          const icon = document.getElementById('gpsStatusIcon');
+          const title = document.getElementById('gpsStatusTitle');
+          const sub = document.getElementById('gpsStatusSub');
+          const iconBox = document.getElementById('gpsStatusIconBox');
+          if (icon) icon.className = 'material-symbols-outlined text-lg';
+          if (iconBox) iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
+          if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
+          const disp = currentGPS.addressText || (currentGPS.address.fullText || currentGPS.address);
+          const statusTag = isInsideOKUTimur(currentGPS.lat, currentGPS.lng) ? '🟢 DALAM WILAYAH OKU TIMUR' : '🔴 LUAR WILAYAH OKU TIMUR';
+          if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
+        } else {
+          updateCameraButtonState('LOCATING');
+        }
+
         try {
           requestGPSCoordinates(false);
         } catch (e) {
@@ -961,8 +977,8 @@
       if (!btn) return;
 
       if (state === 'LOCATING') {
-        btn.disabled = true;
-        btn.className = 'w-full py-3 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-not-allowed opacity-80 transition-all select-none';
+        btn.disabled = false;
+        btn.className = 'w-full py-3 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-wait opacity-85 transition-all select-none';
         if (icon) {
           icon.className = 'material-symbols-outlined text-xl animate-spin text-primary';
           icon.textContent = 'sync';
@@ -1676,10 +1692,15 @@
       const sub = document.getElementById('gpsStatusSub');
       const iconBox = document.getElementById('gpsStatusIconBox');
 
-      if (icon) icon.className = 'material-symbols-outlined text-lg animate-spin';
-      if (title) title.textContent = 'Mendeteksi Titik Koordinat GPS...';
-      if (sub) sub.textContent = 'Menghubungkan ke satelit GPS perangkat HP/browser';
-      updateCameraButtonState('LOCATING');
+      const hasValidLock = currentGPS && !currentGPS.isFallback && currentGPS.address && typeof currentGPS.address === 'object';
+      if (!hasValidLock || forceToast) {
+        if (icon) icon.className = 'material-symbols-outlined text-lg animate-spin';
+        if (title) title.textContent = 'Mendeteksi Titik Koordinat GPS...';
+        if (sub) sub.textContent = 'Menghubungkan ke satelit GPS perangkat HP/browser';
+        updateCameraButtonState('LOCATING');
+      } else {
+        updateCameraButtonState('READY', currentGPS.address);
+      }
 
       if (!navigator.geolocation) {
         applyFallbackGPS('GPS tidak didukung browser ini. Menggunakan referensi Belitang.');
@@ -1691,8 +1712,19 @@
         const lng = pos.coords.longitude;
         const accuracy = Math.round(pos.coords.accuracy || 10);
 
-        // Abaikan jika koordinat sama persis dengan yang sudah dikunci (kecuali jika tombol Refresh ditekan)
+        // Jika koordinat sama persis dengan yang sudah dikunci, pastikan tampilan UI langsung READY (jangan biarkan muter-muter!)
         if (!forceToast && currentGPS && !currentGPS.isFallback && Math.abs(currentGPS.lat - lat) < 0.00005 && Math.abs(currentGPS.lng - lng) < 0.00005) {
+          if (icon) icon.className = 'material-symbols-outlined text-lg';
+          if (iconBox) iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
+          if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
+          if (currentGPS.address && typeof currentGPS.address === 'object') {
+            const disp = currentGPS.addressText || (currentGPS.address.fullText || currentGPS.address);
+            const statusTag = isInsideOKUTimur(currentGPS.lat, currentGPS.lng) ? '🟢 DALAM WILAYAH OKU TIMUR' : '🔴 LUAR WILAYAH OKU TIMUR';
+            if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
+            updateCameraButtonState('READY', currentGPS.address);
+          }
+          const helpGuide = document.getElementById('gpsHelpGuide');
+          if (helpGuide) helpGuide.classList.add('hidden');
           return;
         }
 
@@ -1747,10 +1779,10 @@
               applyFallbackGPS(errMsg);
               if (forceToast) FincestemCore.ui.toast(errMsg, 'warning');
             },
-            { enableHighAccuracy: false, timeout: 6000, maximumAge: 60000 }
+            { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
           );
         },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        { enableHighAccuracy: true, timeout: 6000, maximumAge: 30000 }
       );
 
       // Aktifkan pemantauan real-time saat HP bergerak
