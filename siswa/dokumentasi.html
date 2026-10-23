@@ -227,9 +227,9 @@
 
           <!-- Tombol Pilihan Pengambilan Foto -->
           <div id="uploadActionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
-            <button type="button" onclick="triggerCameraCapture()" class="w-full py-3 px-4 rounded-xl bg-primary text-white font-bold text-sm hover:bg-primary/90 transition-all flex items-center justify-center gap-2 shadow-xs cursor-pointer">
-              <span class="material-symbols-outlined text-xl">photo_camera</span>
-              <span>Buka Kamera HP (Geotag)</span>
+            <button id="btnTriggerCamera" type="button" onclick="triggerCameraCapture()" class="w-full py-3 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-not-allowed opacity-80 transition-all select-none">
+              <span id="btnTriggerCameraIcon" class="material-symbols-outlined text-xl animate-spin text-primary">sync</span>
+              <span id="btnTriggerCameraText">Mengunci GPS & Lokasi...</span>
             </button>
             <button type="button" onclick="triggerFilePicker()" class="w-full py-3 px-4 rounded-xl bg-surface-container-high text-on-surface font-bold text-sm hover:bg-surface-container transition-all flex items-center justify-center gap-2 border border-outline-variant/40 cursor-pointer">
               <span class="material-symbols-outlined text-xl">photo_library</span>
@@ -899,7 +899,8 @@
       if (show) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
         modal.classList.add('opacity-100');
-        // Kunci sinyal GPS saat modal dibuka
+        // Kunci status tombol kamera: Menunggu GPS mengunci lokasi
+        updateCameraButtonState('LOCATING');
         try {
           requestGPSCoordinates(false);
         } catch (e) {
@@ -950,11 +951,68 @@
       }
     }
 
-    function triggerCameraCapture() {
-      // Pastikan minta koordinat GPS satelit paling segar sebelum kamera mengambil foto
-      if (navigator.geolocation) {
-        requestGPSCoordinates(false);
+    let gpsLockState = 'LOCATING'; // 'LOCATING', 'READY', 'ERROR'
+
+    function updateCameraButtonState(state, info) {
+      gpsLockState = state;
+      const btn = document.getElementById('btnTriggerCamera');
+      const icon = document.getElementById('btnTriggerCameraIcon');
+      const text = document.getElementById('btnTriggerCameraText');
+      if (!btn) return;
+
+      if (state === 'LOCATING') {
+        btn.disabled = true;
+        btn.className = 'w-full py-3 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-400 font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-not-allowed opacity-80 transition-all select-none';
+        if (icon) {
+          icon.className = 'material-symbols-outlined text-xl animate-spin text-primary';
+          icon.textContent = 'sync';
+        }
+        if (text) text.textContent = 'Mengunci Sinyal GPS Satelit...';
+      } else if (state === 'READY') {
+        btn.disabled = false;
+        btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer select-none';
+        if (icon) {
+          icon.className = 'material-symbols-outlined text-xl text-white';
+          icon.textContent = 'photo_camera';
+        }
+        const desa = (info && info.desa) ? info.desa : '';
+        if (text) text.textContent = desa ? `Buka Kamera HP (${desa})` : 'Buka Kamera HP (Lokasi Siap)';
+      } else if (state === 'ERROR') {
+        btn.disabled = false;
+        btn.className = 'w-full py-3 px-4 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-700 font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer select-none';
+        if (icon) {
+          icon.className = 'material-symbols-outlined text-xl text-amber-600';
+          icon.textContent = 'location_disabled';
+        }
+        if (text) text.textContent = 'GPS Belum Terkunci (Klik untuk Coba Lagi)';
       }
+    }
+
+    function triggerCameraCapture() {
+      // Validasi mutlak: GPS harus sudah terkunci & lokasi sesuai sebelum kamera bisa memfoto
+      if (gpsLockState === 'LOCATING') {
+        FincestemCore.ui.toast('⏳ Harap tunggu beberapa detik, GPS sedang mengunci titik lokasi satelit Anda...', 'warning');
+        return;
+      }
+
+      if (!currentGPS || !currentGPS.address || typeof currentGPS.address !== 'object' || currentGPS.address === 'Mendeteksi wilayah...') {
+        FincestemCore.ui.toast('⚠️ GPS belum mengunci lokasi Anda! Harap pastikan izin GPS aktif dan tunggu sampai lokasi terdeteksi.', 'warning');
+        requestGPSCoordinates(true);
+        return;
+      }
+
+      if (currentGPS.isFallback) {
+        const allowFallback = confirm(
+          "⚠️ Sinyal GPS satelit HP tidak terdeteksi langsung.\n\n" +
+          "Sistem saat ini menggunakan titik acuan lokasi SMAN 1 Belitang (Desa Rantau Jaya).\n\n" +
+          "Apakah Anda ingin tetap membuka kamera dengan lokasi ini?"
+        );
+        if (!allowFallback) {
+          requestGPSCoordinates(true);
+          return;
+        }
+      }
+
       const cam = document.getElementById('modalPhotoCameraInput');
       if (cam) cam.click();
     }
@@ -1230,7 +1288,6 @@
       { name: "Gunung Mas", kec: "Belitang", lat: -4.192, lng: 104.632 },
       { name: "Harjo Winangun", kec: "Belitang", lat: -4.114528, lng: 104.6651 },
       { name: "Karang Kemiri", kec: "Belitang", lat: -4.155, lng: 104.645 },
-      { name: "Ketapang", kec: "Belitang", lat: -4.18, lng: 104.635 },
       { name: "Mojosari", kec: "Belitang", lat: -4.14, lng: 104.655 },
       { name: "Pujorahayu", kec: "Belitang", lat: -4.129517, lng: 104.643398 },
       { name: "Serbaguna", kec: "Belitang", lat: -4.157563, lng: 104.629597 },
@@ -1287,12 +1344,12 @@
       { name: "Sumber Agung", kec: "Belitang Jaya", lat: -4.211419, lng: 104.642775 },
       { name: "Windu Sari", kec: "Belitang Jaya", lat: -4.198693, lng: 104.704367 },
       { name: "Bangsa Negara", kec: "Belitang Madang Raya", lat: -4.096865, lng: 104.557997 },
-      { name: "Jati Mulyo 1", kec: "Belitang Madang Raya", lat: -4.051943, lng: 104.600626 },
-      { name: "Joso Winangun", kec: "Belitang Madang Raya", lat: -4.078969, lng: 104.625179 },
+      { name: "Jati Mulyo I", kec: "Belitang Madang Raya", lat: -4.051943, lng: 104.600626 },
+      { name: "Yosowinangun", kec: "Belitang Madang Raya", lat: -4.078969, lng: 104.625179 },
       { name: "Karang Binangun", kec: "Belitang Madang Raya", lat: -4.049927, lng: 104.62498 },
       { name: "Lubuk Harjo", kec: "Belitang Madang Raya", lat: -4.023161, lng: 104.629232 },
       { name: "Mekar Jaya", kec: "Belitang Madang Raya", lat: -4.010859, lng: 104.554644 },
-      { name: "Pandan Sari 1", kec: "Belitang Madang Raya", lat: -4.05, lng: 104.61 },
+      { name: "Pandan Sari I", kec: "Belitang Madang Raya", lat: -4.05, lng: 104.61 },
       { name: "Pelita Jaya", kec: "Belitang Madang Raya", lat: -4.071572, lng: 104.548648 },
       { name: "Rantau Jaya", kec: "Belitang Madang Raya", lat: -4.10928, lng: 104.63826 },
       { name: "Tanah Merah", kec: "Belitang Madang Raya", lat: -4.220976, lng: 104.489594 },
@@ -1314,7 +1371,7 @@
       { name: "Kurungan Nyawa II", kec: "Buay Madang", lat: -4.233471, lng: 104.473401 },
       { name: "Kurungan Nyawa III", kec: "Buay Madang", lat: -4.239965, lng: 104.48205 },
       { name: "Pisang Jaya", kec: "Buay Madang", lat: -4.26981, lng: 104.482284 },
-      { name: "Sri Dadi / Saridati", kec: "Buay Madang", lat: -4.230332, lng: 104.517017 },
+      { name: "Sridadi", kec: "Buay Madang", lat: -4.230332, lng: 104.517017 },
       { name: "Sukaraja", kec: "Buay Madang", lat: -4.245346, lng: 104.454289 },
       { name: "Sumber Agung", kec: "Buay Madang", lat: -4.248292, lng: 104.53611 },
       { name: "Tanjung Bulan", kec: "Buay Madang", lat: -4.215952, lng: 104.506912 },
@@ -1335,7 +1392,7 @@
       { name: "Tambak Boyo", kec: "Buay Madang Timur", lat: -4.140143, lng: 104.563341 },
       { name: "Tanjung Mas", kec: "Buay Madang Timur", lat: -4.229028, lng: 104.548145 },
       { name: "Tanjung Sari", kec: "Buay Madang Timur", lat: -4.206905, lng: 104.517493 },
-      { name: "Tekorejo", kec: "Buay Madang Timur", lat: -4.136707, lng: 104.513244 },
+      { name: "Tokorejo", kec: "Buay Madang Timur", lat: -4.136707, lng: 104.513244 },
       { name: "Anyar", kec: "Buay Pemuka Bangsa Raja", lat: -4.147163, lng: 104.449896 },
       { name: "Muncak Kabau", kec: "Buay Pemuka Bangsa Raja", lat: -4.187884, lng: 104.422789 },
       { name: "Pandan Sari II", kec: "Buay Pemuka Bangsa Raja", lat: -4.119546, lng: 104.488099 },
@@ -1346,9 +1403,9 @@
       { name: "Bantan", kec: "Buay Pemuka Peliung", lat: -4.1, lng: 104.77 },
       { name: "Negeri Agung", kec: "Buay Pemuka Peliung", lat: -4.295807, lng: 104.411443 },
       { name: "Pahang Asri", kec: "Buay Pemuka Peliung", lat: -4.25814, lng: 104.415962 },
-      { name: "Pemetung Basuki", kec: "Buay Pemuka Peliung", lat: -4.259005, lng: 104.438907 },
+      { name: "Pemetung Besuki", kec: "Buay Pemuka Peliung", lat: -4.259005, lng: 104.438907 },
       { name: "Saung Dadi", kec: "Buay Pemuka Peliung", lat: -4.283573, lng: 104.43255 },
-      { name: "Terantang Sakti", kec: "Buay Pemuka Peliung", lat: -4.291252, lng: 104.461698 },
+      { name: "Trantang Sakti", kec: "Buay Pemuka Peliung", lat: -4.291252, lng: 104.461698 },
       { name: "Tulang Bawang", kec: "Bunga Mayang", lat: -4.386752, lng: 104.623442 },
       { name: "Sukabumi", kec: "Cempaka", lat: -4.272886, lng: 104.578644 },
       { name: "Gunung Terang", kec: "Madang Suku I", lat: -3.985811, lng: 104.44783 },
@@ -1375,7 +1432,7 @@
       { name: "Nikan", kec: "Madang Suku III", lat: -4.081324, lng: 104.402902 },
       { name: "Kangkung", kec: "Semendawai Barat", lat: -4.17, lng: 104.67 },
       { name: "Gunung Sugih", kec: "Semendawai Suku III", lat: -3.983381, lng: 104.624902 },
-      { name: "Jaya Mulia", kec: "Semendawai Suku III", lat: -4.000097, lng: 104.63727 },
+      { name: "Jaya Mulya", kec: "Semendawai Suku III", lat: -4.000097, lng: 104.63727 },
       { name: "Karang Endah", kec: "Semendawai Suku III", lat: -3.962871, lng: 104.679727 },
       { name: "Suka Mulya", kec: "Semendawai Suku III", lat: -3.978331, lng: 104.71914 },
       { name: "Taman Agung", kec: "Semendawai Suku III", lat: -3.960038, lng: 104.620207 },
@@ -1622,6 +1679,7 @@
       if (icon) icon.className = 'material-symbols-outlined text-lg animate-spin';
       if (title) title.textContent = 'Mendeteksi Titik Koordinat GPS...';
       if (sub) sub.textContent = 'Menghubungkan ke satelit GPS perangkat HP/browser';
+      updateCameraButtonState('LOCATING');
 
       if (!navigator.geolocation) {
         applyFallbackGPS('GPS tidak didukung browser ini. Menggunakan referensi Belitang.');
@@ -1665,6 +1723,7 @@
             ? '🟢 DALAM WILAYAH OKU TIMUR'
             : '🔴 LUAR WILAYAH OKU TIMUR';
           if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
+          updateCameraButtonState('READY', addrObj);
         });
 
         const helpGuide = document.getElementById('gpsHelpGuide');
@@ -1733,6 +1792,7 @@
       }
       if (title) title.textContent = `📍 GPS Lokasi SMAN 1 Belitang: -4.10928°, 104.63826°`;
       if (sub) sub.textContent = msg ? `${msg} • Desa Rantau Jaya, Kec. Belitang Madang Raya` : 'Desa Rantau Jaya, Kec. Belitang Madang Raya, Kab. OKU Timur, Sumatera Selatan';
+      updateCameraButtonState('ERROR', msg);
     }
 
     function roundRectHelper(ctx, x, y, w, h, r) {
