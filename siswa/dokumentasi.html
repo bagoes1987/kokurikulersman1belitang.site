@@ -196,7 +196,7 @@
               <p id="gpsStatusSub" class="text-[11px] text-slate-500 truncate">Izinkan akses lokasi browser/HP untuk geotagging otomatis</p>
             </div>
           </div>
-          <button type="button" onclick="requestGPSCoordinates(true)" class="px-2.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container text-[11px] font-bold text-on-surface shrink-0 flex items-center gap-1 transition-all cursor-pointer" title="Perbarui titik sinyal satelit GPS">
+          <button type="button" onclick="requestGPSCoordinates(true, true)" class="px-2.5 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-container text-[11px] font-bold text-on-surface shrink-0 flex items-center gap-1 transition-all cursor-pointer" title="Perbarui / reload titik sinyal satelit GPS">
             <span class="material-symbols-outlined text-sm">refresh</span>
             <span>Ulang</span>
           </button>
@@ -900,27 +900,48 @@
         modal.classList.remove('opacity-0', 'pointer-events-none');
         modal.classList.add('opacity-100');
 
-        // Jika GPS sudah terkunci dari pemantauan latar belakang, langsung aktifkan tombol tanpa muter-muter!
-        if (currentGPS && !currentGPS.isFallback && currentGPS.address && typeof currentGPS.address === 'object') {
-          updateCameraButtonState('READY', currentGPS.address);
-          const icon = document.getElementById('gpsStatusIcon');
-          const title = document.getElementById('gpsStatusTitle');
-          const sub = document.getElementById('gpsStatusSub');
-          const iconBox = document.getElementById('gpsStatusIconBox');
-          if (icon) icon.className = 'material-symbols-outlined text-lg';
-          if (iconBox) iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
-          if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
-          const disp = currentGPS.addressText || (currentGPS.address.fullText || currentGPS.address);
-          const statusTag = isInsideOKUTimur(currentGPS.lat, currentGPS.lng) ? '🟢 DALAM WILAYAH OKU TIMUR' : '🔴 LUAR WILAYAH OKU TIMUR';
-          if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
-        } else {
-          updateCameraButtonState('LOCATING');
-        }
+        // Bersihkan state pratinjau foto lama
+        selectedPhotoBase64 = null;
+        currentGPS = null; // Pastikan data GPS lama langsung dibersihkan dan di-reload saat dokumentasi berikutnya
+        selectedPhotoSource = 'camera';
+        selectedPhotoHasGeotag = true;
+        const camInput = document.getElementById('modalPhotoCameraInput');
+        if (camInput) camInput.value = '';
+        const fileInput = document.getElementById('modalPhotoFileInput');
+        if (fileInput) fileInput.value = '';
+        const prevCard = document.getElementById('uploadPreviewCard');
+        if (prevCard) prevCard.classList.add('hidden');
+        const prevImg = document.getElementById('uploadPreviewImg');
+        if (prevImg) prevImg.src = '';
+        const stampBox = document.getElementById('stampLoadingBox');
+        if (stampBox) stampBox.classList.add('hidden');
+        const actContainer = document.getElementById('uploadActionsContainer');
+        if (actContainer) actContainer.classList.remove('hidden');
 
+        // WAJIB: SETIAP KALI USER INGIN FOTO DOKUMENTASI, LOKASI RELOAD OTOMATIS!
+        // Jangan mengunci data dokumentasi sebelumnya, GPS harus menyesuaikan lokasi real terkini.
+        currentGPS = null;
+        updateCameraButtonState('LOCATING');
+
+        const icon = document.getElementById('gpsStatusIcon');
+        const title = document.getElementById('gpsStatusTitle');
+        const sub = document.getElementById('gpsStatusSub');
+        const iconBox = document.getElementById('gpsStatusIconBox');
+        if (icon) {
+          icon.className = 'material-symbols-outlined text-lg animate-spin text-primary';
+          icon.textContent = 'sync';
+        }
+        if (iconBox) {
+          iconBox.className = 'w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0';
+        }
+        if (title) title.textContent = '🔄 Menyegarkan Lokasi GPS Satelit...';
+        if (sub) sub.textContent = 'Menghubungkan sensor satelit HP untuk mengambil posisi real-time terkini';
+
+        // Panggil reload koordinat GPS satelit secara otomatis dan paksa fresh (maximumAge: 0)
         try {
-          requestGPSCoordinates(false);
+          requestGPSCoordinates(false, true);
         } catch (e) {
-          console.warn('GPS init error:', e);
+          console.warn('GPS auto-reload error:', e);
         }
 
         // Perbarui panduan ketentuan berdasarkan kategori Non-Field Trip vs Field Trip
@@ -964,6 +985,20 @@
         }
         modal.classList.remove('opacity-100');
         modal.classList.add('opacity-0', 'pointer-events-none');
+        // Bersihkan state GPS agar tidak mengunci koordinat lama untuk sesi berikutnya
+        currentGPS = null;
+        if (gpsAcquisitionTimer) {
+          clearTimeout(gpsAcquisitionTimer);
+          gpsAcquisitionTimer = null;
+        }
+        if (gpsStageTicker) {
+          clearInterval(gpsStageTicker);
+          gpsStageTicker = null;
+        }
+        if (gpsWatchId) {
+          try { navigator.geolocation.clearWatch(gpsWatchId); } catch(e) {}
+          gpsWatchId = null;
+        }
       }
     }
 
@@ -978,15 +1013,15 @@
 
       if (state === 'LOCATING') {
         btn.disabled = false;
-        btn.className = 'w-full py-3 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-wait opacity-85 transition-all select-none';
+        btn.className = 'w-full py-3 px-4 rounded-xl bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold text-sm flex items-center justify-center gap-2 shadow-xs cursor-wait opacity-90 transition-all select-none';
         if (icon) {
           icon.className = 'material-symbols-outlined text-xl animate-spin text-primary';
           icon.textContent = 'sync';
         }
-        if (text) text.textContent = 'Mengunci Sinyal GPS Satelit...';
+        if (text) text.textContent = 'Menyegarkan Lokasi GPS Satelit...';
       } else if (state === 'READY') {
         btn.disabled = false;
-        btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-95 transition-all cursor-pointer select-none';
+        btn.className = 'w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer select-none ring-2 ring-emerald-500/20';
         if (icon) {
           icon.className = 'material-symbols-outlined text-xl text-white';
           icon.textContent = 'photo_camera';
@@ -998,22 +1033,28 @@
         btn.className = 'w-full py-3 px-4 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-700 font-bold text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer select-none';
         if (icon) {
           icon.className = 'material-symbols-outlined text-xl text-amber-600';
-          icon.textContent = 'location_disabled';
+          icon.textContent = 'refresh';
         }
-        if (text) text.textContent = 'GPS Belum Terkunci (Klik untuk Coba Lagi)';
+        if (text) text.textContent = 'GPS Belum Terkunci (Klik untuk Segarkan)';
       }
     }
 
     function triggerCameraCapture() {
       // Validasi mutlak: GPS harus sudah terkunci & lokasi sesuai sebelum kamera bisa memfoto
       if (gpsLockState === 'LOCATING') {
-        FincestemCore.ui.toast('⏳ Harap tunggu beberapa detik, GPS sedang mengunci titik lokasi satelit Anda...', 'warning');
+        FincestemCore.ui.toast('⏳ Sedang mengunci titik satelit GPS HP Anda... Kamera akan otomatis aktif begitu lokasi terkunci!', 'info');
+        requestGPSCoordinates(false, false);
         return;
       }
 
-      if (!currentGPS || !currentGPS.address || typeof currentGPS.address !== 'object' || currentGPS.address === 'Mendeteksi wilayah...') {
-        FincestemCore.ui.toast('⚠️ GPS belum mengunci lokasi Anda! Harap pastikan izin GPS aktif dan tunggu sampai lokasi terdeteksi.', 'warning');
-        requestGPSCoordinates(true);
+      if (gpsLockState === 'ERROR' || !currentGPS) {
+        FincestemCore.ui.toast('⚠️ Lokasi GPS satelit belum terkunci. Menyegarkan kembali...', 'warning');
+        requestGPSCoordinates(true, true);
+        return;
+      }
+
+      if (!currentGPS.address || typeof currentGPS.address !== 'object' || currentGPS.address === 'Mendeteksi wilayah...') {
+        FincestemCore.ui.toast('⚠️ Menunggu penyesuaian desa/kecamatan... Harap tunggu sebentar.', 'warning');
         return;
       }
 
@@ -1024,7 +1065,7 @@
           "Apakah Anda ingin tetap membuka kamera dengan lokasi ini?"
         );
         if (!allowFallback) {
-          requestGPSCoordinates(true);
+          requestGPSCoordinates(true, true);
           return;
         }
       }
@@ -1685,65 +1726,119 @@
     }
 
     let gpsWatchId = null;
+    let gpsAcquisitionTimer = null;
+    let gpsStageTicker = null;
+    let isGpsAcquiring = false;
 
-    function requestGPSCoordinates(forceToast = false) {
+    function requestGPSCoordinates(forceToast = false, forceFresh = false) {
       const icon = document.getElementById('gpsStatusIcon');
       const title = document.getElementById('gpsStatusTitle');
       const sub = document.getElementById('gpsStatusSub');
       const iconBox = document.getElementById('gpsStatusIconBox');
 
-      const hasValidLock = currentGPS && !currentGPS.isFallback && currentGPS.address && typeof currentGPS.address === 'object';
-      if (!hasValidLock || forceToast) {
-        if (icon) icon.className = 'material-symbols-outlined text-lg animate-spin';
-        if (title) title.textContent = 'Mendeteksi Titik Koordinat GPS...';
-        if (sub) sub.textContent = 'Menghubungkan ke satelit GPS perangkat HP/browser';
-        updateCameraButtonState('LOCATING');
-      } else {
-        updateCameraButtonState('READY', currentGPS.address);
+      // Bersihkan timer dan watcher pemantauan sebelumnya agar tidak menumpuk
+      if (gpsAcquisitionTimer) {
+        clearTimeout(gpsAcquisitionTimer);
+        gpsAcquisitionTimer = null;
+      }
+      if (gpsStageTicker) {
+        clearInterval(gpsStageTicker);
+        gpsStageTicker = null;
+      }
+      if (gpsWatchId) {
+        try { navigator.geolocation.clearWatch(gpsWatchId); } catch(e) {}
+        gpsWatchId = null;
       }
 
-      if (!navigator.geolocation) {
-        applyFallbackGPS('GPS tidak didukung browser ini. Menggunakan referensi Belitang.');
+      if (forceFresh) {
+        currentGPS = null;
+      }
+
+      // Jika sudah memiliki lock satelit yang valid dan bukan penyegaran paksa, langsung tampilkan READY
+      if (!forceFresh && !forceToast && currentGPS && !currentGPS.isFallback && currentGPS.address && typeof currentGPS.address === 'object') {
+        updateCameraButtonState('READY', currentGPS.address);
         return;
       }
 
+      // Tampilkan indikator status aktif penyegaran satelit GPS terkini
+      if (icon) {
+        icon.className = 'material-symbols-outlined text-lg animate-spin text-primary';
+        icon.textContent = 'sync';
+      }
+      if (iconBox) {
+        iconBox.className = 'w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center shrink-0';
+      }
+      if (title) title.textContent = '🔄 Mengunci Sinyal Satelit GPS...';
+      if (sub) sub.textContent = '📡 Menghubungkan ke sensor satelit HP (Live Real-time)...';
+      updateCameraButtonState('LOCATING');
+
+      if (!navigator.geolocation) {
+        applyFallbackGPS('GPS tidak didukung browser ini. Menggunakan referensi SMAN 1 Belitang.');
+        return;
+      }
+
+      isGpsAcquiring = true;
+      let acquired = false;
+      const startTime = Date.now();
+
+      // Progressive Status Ticker: Memperbarui keterangan secara real-time agar pengguna tidak merasa aplikasi macet/muter-muter
+      gpsStageTicker = setInterval(() => {
+        if (acquired || !isGpsAcquiring) {
+          clearInterval(gpsStageTicker);
+          return;
+        }
+        const elapsed = Math.round((Date.now() - startTime) / 1000);
+        if (elapsed >= 2 && elapsed < 4) {
+          if (sub) sub.textContent = '🛰️ Menajamkan sinyal satelit GPS... (Pastikan lokasi HP aktif)';
+        } else if (elapsed >= 4 && elapsed < 7) {
+          if (sub) sub.textContent = '📡 Mengunci koordinat presisi... (Mendeteksi desa & kecamatan)';
+        } else if (elapsed >= 7) {
+          if (sub) sub.textContent = '🔄 Mempercepat penguncian koordinat satelit terkini...';
+        }
+      }, 1500);
+
       function handlePosSuccess(pos) {
+        if (acquired) return;
+        acquired = true;
+        isGpsAcquiring = false;
+
+        if (gpsAcquisitionTimer) {
+          clearTimeout(gpsAcquisitionTimer);
+          gpsAcquisitionTimer = null;
+        }
+        if (gpsStageTicker) {
+          clearInterval(gpsStageTicker);
+          gpsStageTicker = null;
+        }
+        if (gpsWatchId) {
+          try { navigator.geolocation.clearWatch(gpsWatchId); } catch(e) {}
+          gpsWatchId = null;
+        }
+
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const accuracy = Math.round(pos.coords.accuracy || 10);
-
-        // Jika koordinat sama persis dengan yang sudah dikunci, pastikan tampilan UI langsung READY (jangan biarkan muter-muter!)
-        if (!forceToast && currentGPS && !currentGPS.isFallback && Math.abs(currentGPS.lat - lat) < 0.00005 && Math.abs(currentGPS.lng - lng) < 0.00005) {
-          if (icon) icon.className = 'material-symbols-outlined text-lg';
-          if (iconBox) iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
-          if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
-          if (currentGPS.address && typeof currentGPS.address === 'object') {
-            const disp = currentGPS.addressText || (currentGPS.address.fullText || currentGPS.address);
-            const statusTag = isInsideOKUTimur(currentGPS.lat, currentGPS.lng) ? '🟢 DALAM WILAYAH OKU TIMUR' : '🔴 LUAR WILAYAH OKU TIMUR';
-            if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
-            updateCameraButtonState('READY', currentGPS.address);
-          }
-          const helpGuide = document.getElementById('gpsHelpGuide');
-          if (helpGuide) helpGuide.classList.add('hidden');
-          return;
-        }
 
         currentGPS = {
           lat: lat,
           lng: lng,
           accuracy: accuracy,
           isFallback: false,
+          timestamp: Date.now(),
           address: 'Mendeteksi wilayah...'
         };
 
-        if (icon) icon.className = 'material-symbols-outlined text-lg';
+        if (icon) {
+          icon.className = 'material-symbols-outlined text-lg text-emerald-600';
+          icon.textContent = 'location_on';
+        }
         if (iconBox) {
           iconBox.className = 'w-8 h-8 rounded-xl bg-emerald-500/15 text-emerald-600 flex items-center justify-center shrink-0';
         }
-        if (title) title.textContent = `📍 GPS Terkunci: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
-        if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m`;
+        if (title) title.textContent = `📍 GPS Terkini: ${currentGPS.lat.toFixed(5)}°, ${currentGPS.lng.toFixed(5)}°`;
+        if (sub) sub.textContent = `Akurasi Satelit: ±${currentGPS.accuracy}m • Menyesuaikan nama desa...`;
 
-        // Cari nama daerah, kecamatan, kabupaten, provinsi
+        // Resolusi nama Desa & Kecamatan (Untuk OKU Timur 100% offline 0ms via Kemendagri spatial index)
         fetchAreaAddress(currentGPS.lat, currentGPS.lng, function(addrObj) {
           if (currentGPS) {
             currentGPS.address = addrObj;
@@ -1754,47 +1849,84 @@
           const statusTag = isInsideOKUTimur(currentGPS.lat, currentGPS.lng)
             ? '🟢 DALAM WILAYAH OKU TIMUR'
             : '🔴 LUAR WILAYAH OKU TIMUR';
-          if (sub) sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
+          if (sub) {
+            sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
+          }
           updateCameraButtonState('READY', addrObj);
         });
 
         const helpGuide = document.getElementById('gpsHelpGuide');
         if (helpGuide) helpGuide.classList.add('hidden');
-        if (forceToast) FincestemCore.ui.toast('GPS berhasil dikunci: ' + currentGPS.lat.toFixed(5) + ', ' + currentGPS.lng.toFixed(5), 'success');
+        if (forceToast) {
+          FincestemCore.ui.toast(`GPS terkini berhasil disegarkan: ${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)}`, 'success');
+        }
       }
 
-      // Ambil posisi sekarang (Prioritas High Accuracy, fallback low accuracy jika timeout)
+      function handlePosError(err) {
+        if (acquired) return;
+        // Jika error kode 1 (Permission Denied): user belum mengizinkan akses lokasi
+        if (err && err.code === 1) {
+          acquired = true;
+          isGpsAcquiring = false;
+          if (gpsAcquisitionTimer) {
+            clearTimeout(gpsAcquisitionTimer);
+            gpsAcquisitionTimer = null;
+          }
+          if (gpsStageTicker) {
+            clearInterval(gpsStageTicker);
+            gpsStageTicker = null;
+          }
+          if (gpsWatchId) {
+            try { navigator.geolocation.clearWatch(gpsWatchId); } catch(e) {}
+            gpsWatchId = null;
+          }
+          applyFallbackGPS('Izin GPS belum disetujui di HP Anda. Silakan izinkan akses lokasi.');
+          const helpGuide = document.getElementById('gpsHelpGuide');
+          if (helpGuide) helpGuide.classList.remove('hidden');
+          if (forceToast) FincestemCore.ui.toast('Akses GPS ditolak di HP/browser. Silakan izinkan lokasi.', 'error');
+          return;
+        }
+
+        console.warn('GPS High Accuracy timeout, mempersiapkan fallback cepat:', err);
+      }
+
+      // 1. Panggilan Akurasi Tinggi (maximumAge: 0 untuk menjamin koordinat satelit real-time langsung dari sensor HP)
       navigator.geolocation.getCurrentPosition(
         handlePosSuccess,
-        function(err) {
-          console.warn('GPS High Accuracy timeout/error, trying fallback accuracy:', err);
+        handlePosError,
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+      );
+
+      // 2. Concurrently jalankan watchPosition untuk menangkap paket pertama yang dikirim chip GPS HP (seringkali lebih cepat daripada getCurrentPosition)
+      try {
+        gpsWatchId = navigator.geolocation.watchPosition(
+          handlePosSuccess,
+          () => {},
+          { enableHighAccuracy: true, maximumAge: 0 }
+        );
+      } catch (e) {
+        console.warn('watchPosition init error:', e);
+      }
+
+      // 3. Speed-Assist Fallback pada detik ke-4.5: jika satelit GPS lambat warm-up (misal dalam ruangan tertutup),
+      // luncurkan low-accuracy agar pengguna tidak menunggu muter-muter tanpa kepastian
+      gpsAcquisitionTimer = setTimeout(() => {
+        if (!acquired && isGpsAcquiring) {
           navigator.geolocation.getCurrentPosition(
             handlePosSuccess,
             function(err2) {
-              console.warn('GPS Geolocation Error:', err2);
-              let errMsg = 'Izin lokasi belum diberikan. Menggunakan koordinat SMAN 1 Belitang.';
-              if (err2.code === 1) errMsg = 'Izin GPS belum disetujui. Menggunakan koordinat SMAN 1 Belitang.';
-              else if (err2.code === 2) errMsg = 'Sinyal satelit GPS tidak terdeteksi.';
-              else if (err2.code === 3) errMsg = 'Batas waktu pencarian sinyal GPS habis.';
+              if (acquired) return;
+              console.warn('GPS low accuracy fallback error:', err2);
+              let errMsg = 'Sinyal satelit GPS lambat merespons. Menggunakan titik acuan SMAN 1 Belitang.';
+              if (err2 && err2.code === 1) errMsg = 'Izin GPS belum disetujui di HP Anda.';
+              else if (err2 && err2.code === 2) errMsg = 'Sinyal satelit GPS tidak terdeteksi di dalam ruangan.';
               applyFallbackGPS(errMsg);
               if (forceToast) FincestemCore.ui.toast(errMsg, 'warning');
             },
-            { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
+            { enableHighAccuracy: false, timeout: 4500, maximumAge: 0 }
           );
-        },
-        { enableHighAccuracy: true, timeout: 6000, maximumAge: 30000 }
-      );
-
-      // Aktifkan pemantauan real-time saat HP bergerak
-      if (!gpsWatchId && navigator.geolocation.watchPosition) {
-        try {
-          gpsWatchId = navigator.geolocation.watchPosition(
-            handlePosSuccess,
-            () => {},
-            { enableHighAccuracy: true, maximumAge: 10000 }
-          );
-        } catch(e) {}
-      }
+        }
+      }, 4500);
     }
 
     function applyFallbackGPS(msg) {
@@ -3507,6 +3639,7 @@
         const actContainer = document.getElementById('uploadActionsContainer');
         if (actContainer) actContainer.classList.remove('hidden');
         selectedPhotoBase64 = null;
+        currentGPS = null; // Pastikan data GPS lama langsung dibersihkan dan di-reload saat dokumentasi berikutnya
 
         FincestemCore.ui.toast('Foto dokumentasi berhasil diunggah!', 'success');
         currentGalleryTab = 'current';
