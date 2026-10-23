@@ -191,6 +191,7 @@ if ($action === 'deploy') {
                 if (strpos($relPath, 'uploads/') === 0) continue;
                 if ($relPath === 'api/config.php' && file_exists($baseDir . '/api/config.php')) continue;
                 if (strpos($relPath, '.git') === 0) continue;
+                if (substr($relPath, -4) === '.zip') continue;
 
                 $targetPath = $baseDir . '/' . $relPath;
 

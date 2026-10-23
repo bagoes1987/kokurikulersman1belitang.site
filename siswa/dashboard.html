@@ -2439,9 +2439,9 @@
           : (stu.zone || 'FINCESTEM OKU TIMUR');
         const zUpper = (studentZone || '').toUpperCase();
         const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-        const isFTDay = (isFieldTrip || dNum <= 7) && (dNum >= 1 && dNum <= 7);
+        const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
         const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
-        const ftConfig = ((isFieldTrip || dNum <= 7) && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
+        const ftConfig = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
 
         // Metadata Tampilan:
         // Jika Siswa Field Trip -> Gunakan konfigurasi Day 1 s.d. 7 khusus Field Trip
@@ -3325,11 +3325,11 @@
         : (currentUser.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-      const isFTDay1 = Number(day.day_number) === 1;
-      const isFTDay2 = Number(day.day_number) === 2;
-      const isFTDay3 = Number(day.day_number) === 3;
-      const isFTDay4 = Number(day.day_number) === 4;
-      const isFTDay5 = Number(day.day_number) === 5;
+      const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
+      const isFTDay2 = isFieldTrip && Number(day.day_number) === 2;
+      const isFTDay3 = isFieldTrip && Number(day.day_number) === 3;
+      const isFTDay4 = isFieldTrip && Number(day.day_number) === 4;
+      const isFTDay5 = isFieldTrip && Number(day.day_number) === 5;
 
       if (type === 'asesmen') {
         if (isFTDay1) {
@@ -4106,7 +4106,7 @@
           `;
         }
       } else if (type === 'refleksi') {
-        const ftCfg = ((isFieldTrip || Number(day.day_number) <= 7) && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
+        const ftCfg = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
         title.textContent = isTrial 
           ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' 
           : (ftCfg 
