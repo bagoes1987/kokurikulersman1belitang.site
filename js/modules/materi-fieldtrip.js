@@ -262,8 +262,8 @@
               Penerapannya Pada Day 1 Field Trip (Belitang &rarr; Semarang):
             </span>
             <ul class="list-disc list-inside space-y-1 text-xs text-amber-950/90 font-medium">
-              <li><strong>Kebutuhan Riil di Jalan:</strong> Obat anti-mabuk perjalanan (Antimo/minyak angin), air mineral saat darurat haus di bus, dan kuota telepon untuk mengabarkan orang tua bahwa Anda selamat melintasi Selat Sunda.</li>
-              <li><strong>Keinginan yang Wajib Dikendalikan:</strong> Membeli snack/camilan mahal berulang di minimarket rest area tol Trans-Jawa, membeli suvenir kapal ferry yang tidak berguna, atau membeli makanan cepat saji padahal waktu makan rombongan yang disiapkan biro perjalanan segera tiba.</li>
+              <li class="break-words max-w-full"><strong>Kebutuhan Riil di Jalan:</strong> Obat anti-mabuk perjalanan (Antimo/minyak angin), air mineral saat darurat haus di bus, dan kuota telepon untuk mengabarkan orang tua bahwa Anda selamat melintasi Selat Sunda.</li>
+              <li class="break-words max-w-full"><strong>Keinginan yang Wajib Dikendalikan:</strong> Membeli snack/camilan mahal berulang di minimarket rest area tol Trans-Jawa, membeli suvenir kapal ferry yang tidak berguna, atau membeli makanan cepat saji padahal waktu makan rombongan yang disiapkan biro perjalanan segera tiba.</li>
             </ul>
           </div>
         </div>
@@ -309,9 +309,9 @@
             <h3 class="font-extrabold text-base text-on-surface">Tips Mengamankan Uang Selama Perjalanan</h3>
           </div>
           <ul class="list-disc list-inside text-xs sm:text-sm text-on-surface-variant leading-relaxed space-y-1.5 font-medium">
-            <li>Pisahkan uang: simpan uang jajan harian di dompet/saku depan, dan simpan uang oleh-oleh di amplop terpisah di dalam tas ransel.</li>
-            <li>Hindari memegang atau menghitung uang lembaran banyak di tempat umum atau keramaian pelabuhan.</li>
-            <li>Lakukan evaluasi sisa uang setiap malam sebelum tidur untuk mencocokkan dengan rencana awal.</li>
+            <li class="break-words max-w-full">Pisahkan uang: simpan uang jajan harian di dompet/saku depan, dan simpan uang oleh-oleh di amplop terpisah di dalam tas ransel.</li>
+            <li class="break-words max-w-full">Hindari memegang atau menghitung uang lembaran banyak di tempat umum atau keramaian pelabuhan.</li>
+            <li class="break-words max-w-full">Lakukan evaluasi sisa uang setiap malam sebelum tidur untuk mencocokkan dengan rencana awal.</li>
           </ul>
         </div>
 
@@ -433,6 +433,12 @@
               const task = prog.task_map['1_materi'];
               const content = sanitizeConclusionText(task.content);
               if (content) {
+                try {
+                  const mObj = { conclusion: content, savedAt: task.submitted_at || task.updated_at || new Date().toISOString() };
+                  idVars.forEach(id => {
+                    localStorage.setItem('fincestem_materi_ft_day1_' + id, JSON.stringify(mObj));
+                  });
+                } catch(e) {}
                 applyMateriConclusionState(content, task.submitted_at || 'Tersimpan di server');
               }
             } else if (!saved) {
@@ -565,7 +571,29 @@
     function handleGoToLkpd() {
       const user = FincestemCore.auth.getUser() || {};
       const nisn = user.nisn || user.identifier || '';
-      const saved = localStorage.getItem('fincestem_materi_ft_day1_' + nisn);
+      const cleanNisn = String(nisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, nisn])).filter(Boolean);
+
+      let saved = null;
+      for (const id of idVars) {
+        const s = localStorage.getItem('fincestem_materi_ft_day1_' + id);
+        if (s) { saved = s; break; }
+      }
+
+      if (!saved && window.currentStudentProgress && window.currentStudentProgress.task_map && window.currentStudentProgress.task_map['1_materi']) {
+        const mTask = window.currentStudentProgress.task_map['1_materi'];
+        const mObj = {
+          conclusion: sanitizeConclusionText(mTask.content),
+          savedAt: mTask.submitted_at || mTask.updated_at || new Date().toISOString()
+        };
+        saved = JSON.stringify(mObj);
+        idVars.forEach(id => {
+          try { localStorage.setItem('fincestem_materi_ft_day1_' + id, saved); } catch(e) {}
+        });
+      }
+
       if (!saved) {
         FincestemCore.ui.toast('Anda wajib membaca modul dan menyimpan kesimpulan pemahaman di atas sebelum membuka LKPD!', 'warning');
         const txtArea = document.getElementById('ftMateriConclusion');
@@ -733,11 +761,11 @@
                 <span>II. Lima (5) Misi Utama AKPOL</span>
               </h4>
               <ol class="list-decimal list-inside text-xs sm:text-sm text-slate-700 space-y-2 pl-1 leading-relaxed text-justify">
-                <li><strong>Menyelenggarakan pendidikan pembentukan perwira Polri</strong> melalui kegiatan pengajaran, pelatihan, dan pengasuhan secara bertahap dan berkesinambungan pada setiap tingkat pendidikan.</li>
-                <li><strong>Menyelenggarakan kegiatan penelitian</strong> dalam upaya pengembangan ilmu pengetahuan dan teknologi yang terkait dengan bidang kepolisian.</li>
-                <li><strong>Menyelenggarakan kegiatan pengabdian masyarakat</strong> yang terkait dengan bidang kepolisian.</li>
-                <li><strong>Menyelenggarakan tata kelola institusi</strong> yang berorientasi kepada pelayanan prima dan berkembang menjadi pusat unggulan (<em>centre of excellence</em>).</li>
-                <li><strong>Mengembangkan kerjasama dan jejaring kerja</strong> dengan berbagai lembaga di dalam dan luar negeri.</li>
+                <li class="break-words max-w-full"><strong>Menyelenggarakan pendidikan pembentukan perwira Polri</strong> melalui kegiatan pengajaran, pelatihan, dan pengasuhan secara bertahap dan berkesinambungan pada setiap tingkat pendidikan.</li>
+                <li class="break-words max-w-full"><strong>Menyelenggarakan kegiatan penelitian</strong> dalam upaya pengembangan ilmu pengetahuan dan teknologi yang terkait dengan bidang kepolisian.</li>
+                <li class="break-words max-w-full"><strong>Menyelenggarakan kegiatan pengabdian masyarakat</strong> yang terkait dengan bidang kepolisian.</li>
+                <li class="break-words max-w-full"><strong>Menyelenggarakan tata kelola institusi</strong> yang berorientasi kepada pelayanan prima dan berkembang menjadi pusat unggulan (<em>centre of excellence</em>).</li>
+                <li class="break-words max-w-full"><strong>Mengembangkan kerjasama dan jejaring kerja</strong> dengan berbagai lembaga di dalam dan luar negeri.</li>
               </ol>
             </div>
 
@@ -748,10 +776,10 @@
                 <span>III. Profil, Kedudukan &amp; Landasan Hukum</span>
               </h4>
               <ul class="space-y-2 text-xs sm:text-sm text-slate-700 leading-relaxed text-justify">
-                <li>• <strong>Pengertian &amp; Kedudukan Organisasi:</strong> Akademi Kepolisian (Akpol) adalah lembaga pendidikan kedinasan tinggi untuk mencetak Perwira Polri di bawah naungan <strong>Lemdiklat Polri</strong> (Lembaga Pendidikan dan Pelatihan Polri). Terakreditasi <strong>Unggul</strong> oleh BAN-PT, berlokasi di Jl. Sultan Agung No. 131, Candi Baru, Kec. Gajahmungkur, Kota Semarang, Jawa Tengah.</li>
-                <li>• <strong>Landasan Regulasi &amp; Masa Studi:</strong> Berdasarkan <strong>Perkap No. 21 Tahun 2010</strong>, masa pendidikan Akpol ditempuh selama <strong>4 tahun (8 semester)</strong>.</li>
-                <li>• <strong>Output Kelulusan:</strong> Menyandang gelar akademik <strong>Sarjana Terapan Kepolisian (S.Tr.K.)</strong> dan dilantik resmi menjadi perwira pertama Polri berpangkat <strong>Inspektur Polisi Dua (Ipda)</strong>.</li>
-                <li>• <strong>Pendekatan Tri-Tunggal Pendidikan:</strong>
+                <li class="break-words max-w-full">• <strong>Pengertian &amp; Kedudukan Organisasi:</strong> Akademi Kepolisian (Akpol) adalah lembaga pendidikan kedinasan tinggi untuk mencetak Perwira Polri di bawah naungan <strong>Lemdiklat Polri</strong> (Lembaga Pendidikan dan Pelatihan Polri). Terakreditasi <strong>Unggul</strong> oleh BAN-PT, berlokasi di Jl. Sultan Agung No. 131, Candi Baru, Kec. Gajahmungkur, Kota Semarang, Jawa Tengah.</li>
+                <li class="break-words max-w-full">• <strong>Landasan Regulasi &amp; Masa Studi:</strong> Berdasarkan <strong>Perkap No. 21 Tahun 2010</strong>, masa pendidikan Akpol ditempuh selama <strong>4 tahun (8 semester)</strong>.</li>
+                <li class="break-words max-w-full">• <strong>Output Kelulusan:</strong> Menyandang gelar akademik <strong>Sarjana Terapan Kepolisian (S.Tr.K.)</strong> dan dilantik resmi menjadi perwira pertama Polri berpangkat <strong>Inspektur Polisi Dua (Ipda)</strong>.</li>
+                <li class="break-words max-w-full">• <strong>Pendekatan Tri-Tunggal Pendidikan:</strong>
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-1.5">
                     <div class="p-2.5 rounded-xl bg-white border border-blue-100">
                       <strong class="text-blue-900 block text-xs">1. Pembelajaran (Akademik)</strong>
@@ -767,7 +795,7 @@
                     </div>
                   </div>
                 </li>
-                <li>• <strong>Afiliasi Internasional (INTERPA):</strong> Tergabung aktif sebagai anggota <em>International Association of Police Academies</em> (INTERPA) bersama akademi kepolisian dari <strong>36 negara dunia</strong>.</li>
+                <li class="break-words max-w-full">• <strong>Afiliasi Internasional (INTERPA):</strong> Tergabung aktif sebagai anggota <em>International Association of Police Academies</em> (INTERPA) bersama akademi kepolisian dari <strong>36 negara dunia</strong>.</li>
               </ul>
             </div>
 
@@ -960,13 +988,13 @@
                   <span class="text-[10px] font-bold text-blue-800 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-200">Pasal 21 UU No. 2 Tahun 2002</span>
                 </div>
                 <ol class="list-decimal list-outside pl-4 space-y-1.5 text-xs text-slate-700 leading-relaxed text-justify">
-                  <li><strong>Warga Negara Indonesia (WNI).</strong></li>
-                  <li><strong>Beriman dan bertakwa</strong> kepada Tuhan Yang Maha Esa.</li>
-                  <li><strong>Setia kepada Negara Kesatuan Republik Indonesia</strong> berdasarkan Pancasila dan Undang-Undang Dasar Negara Republik Indonesia Tahun 1945.</li>
-                  <li><strong>Berumur paling rendah 18 (delapan belas) tahun</strong> pada saat diangkat menjadi anggota Polri.</li>
-                  <li><strong>Sehat jasmani, rohani dan bebas narkoba</strong> (surat keterangan bebas narkoba dari instansi yang berwenang).</li>
-                  <li><strong>Tidak sedang terlibat kasus pidana</strong> atau pernah dipidana karena melakukan suatu kejahatan yang dibuktikan dengan Surat Keterangan Catatan Kepolisian (SKCK) dari Polres setempat.</li>
-                  <li><strong>Berwibawa, jujur, adil,</strong> dan berkelakuan tidak tercela.</li>
+                  <li class="break-words max-w-full"><strong>Warga Negara Indonesia (WNI).</strong></li>
+                  <li class="break-words max-w-full"><strong>Beriman dan bertakwa</strong> kepada Tuhan Yang Maha Esa.</li>
+                  <li class="break-words max-w-full"><strong>Setia kepada Negara Kesatuan Republik Indonesia</strong> berdasarkan Pancasila dan Undang-Undang Dasar Negara Republik Indonesia Tahun 1945.</li>
+                  <li class="break-words max-w-full"><strong>Berumur paling rendah 18 (delapan belas) tahun</strong> pada saat diangkat menjadi anggota Polri.</li>
+                  <li class="break-words max-w-full"><strong>Sehat jasmani, rohani dan bebas narkoba</strong> (surat keterangan bebas narkoba dari instansi yang berwenang).</li>
+                  <li class="break-words max-w-full"><strong>Tidak sedang terlibat kasus pidana</strong> atau pernah dipidana karena melakukan suatu kejahatan yang dibuktikan dengan Surat Keterangan Catatan Kepolisian (SKCK) dari Polres setempat.</li>
+                  <li class="break-words max-w-full"><strong>Berwibawa, jujur, adil,</strong> dan berkelakuan tidak tercela.</li>
                 </ol>
               </div>
 
@@ -980,48 +1008,48 @@
                   <span class="text-[10px] font-bold text-amber-800 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200">Kualifikasi Fisik &amp; Administrasi</span>
                 </div>
                 <ol class="list-decimal list-outside pl-4 space-y-2 text-xs text-slate-700 leading-relaxed text-justify">
-                  <li><strong>Status Peserta:</strong> Pria/wanita, bukan anggota/mantan anggota TNI/Polri dan ASN, dan belum pernah mengikuti pendidikan pembentukan Polri, TNI, atau Sekolah Kedinasan lainnya.</li>
-                  <li><strong>Pendidikan Formal:</strong> Berijazah serendah-rendahnya SMA/MA (bukan lulusan dan atau berijazah Paket A, B, dan C). Untuk lulusan SMA/MA IPA/IPS dan lulusan SMA/MA dengan kurikulum Merdeka dibuktikan dengan ijazah Kemendikdasmen, serta lulusan PDF/SPM dengan ijazah Kemenag.</li>
-                  <li><strong>Batas Usia:</strong> Berumur minimal 16 tahun dan maksimal 22 tahun 0 hari pada saat pembukaan pendidikan.</li>
-                  <li><strong>Standar Tinggi &amp; Berat Badan:</strong> Tinggi badan minimal (dengan berat badan seimbang menurut ketentuan yang berlaku):
+                  <li class="break-words max-w-full"><strong>Status Peserta:</strong> Pria/wanita, bukan anggota/mantan anggota TNI/Polri dan ASN, dan belum pernah mengikuti pendidikan pembentukan Polri, TNI, atau Sekolah Kedinasan lainnya.</li>
+                  <li class="break-words max-w-full"><strong>Pendidikan Formal:</strong> Berijazah serendah-rendahnya SMA/MA (bukan lulusan dan atau berijazah Paket A, B, dan C). Untuk lulusan SMA/MA IPA/IPS dan lulusan SMA/MA dengan kurikulum Merdeka dibuktikan dengan ijazah Kemendikdasmen, serta lulusan PDF/SPM dengan ijazah Kemenag.</li>
+                  <li class="break-words max-w-full"><strong>Batas Usia:</strong> Berumur minimal 16 tahun dan maksimal 22 tahun 0 hari pada saat pembukaan pendidikan.</li>
+                  <li class="break-words max-w-full"><strong>Standar Tinggi &amp; Berat Badan:</strong> Tinggi badan minimal (dengan berat badan seimbang menurut ketentuan yang berlaku):
                     <div class="mt-1.5 p-2 rounded-xl bg-slate-50 border border-slate-200 font-bold text-slate-900 flex flex-col sm:flex-row gap-2 sm:gap-6">
                       <span class="flex items-center gap-1"><span class="material-symbols-outlined text-blue-600 text-sm">male</span> Pria: Minimal 165 (seratus enam puluh lima) cm</span>
                       <span class="flex items-center gap-1"><span class="material-symbols-outlined text-pink-600 text-sm">female</span> Wanita: Minimal 163 (seratus enam puluh tiga) cm</span>
                     </div>
                   </li>
-                  <li><strong>Status Pernikahan:</strong> Belum pernah menikah secara hukum positif/agama/adat, belum pernah hamil/melahirkan, belum pernah memiliki anak biologis (anak kandung), dan sanggup untuk tidak menikah selama dalam masa pendidikan pembentukan.</li>
-                  <li><strong>Tato &amp; Tindik:</strong> Tidak bertato dan tidak memiliki tindik telinga atau anggota badan lainnya, kecuali yang disebabkan oleh ketentuan adat/agama resmi.</li>
-                  <li>Bagi peserta calon Taruna/i Akpol yang telah gagal/TMS dalam proses tes karena melakukan tindak pidana yang telah berkekuatan hukum tetap (inkrah) tidak dapat mendaftar kembali.</li>
-                  <li>Bagi peserta calon Taruna/i Akpol yang telah gagal/TMS di tahapan tes PMK pada tahun sebelumnya tidak dapat mendaftar kembali.</li>
-                  <li>Bagi peserta calon Taruna/i Akpol yang diberhentikan dari proses pendidikan pembentukan TNI/Polri atau Sekolah Kedinasan lainnya tidak dapat mendaftar.</li>
-                  <li>Mantan Taruna/i atau Siswa/i yang diberhentikan tidak dengan hormat dari proses pendidikan oleh lembaga pendidikan yang dibiayai oleh anggaran negara tidak dapat mendaftar.</li>
-                  <li>Dinyatakan bebas narkoba berdasarkan hasil pemeriksaan kesehatan oleh Panpus/Panda.</li>
-                  <li>Tidak mendukung atau ikut serta dalam organisasi atau paham yang bertentangan dengan Pancasila, Undang-Undang Dasar 1945, NKRI, dan Bhinneka Tunggal Ika.</li>
-                  <li>Membuat surat pernyataan bermaterai, untuk tidak melakukan perbuatan yang melanggar norma agama, norma kesusilaan, norma sosial, dan norma hukum.</li>
-                  <li>Membuat surat pernyataan bermaterai bersedia ditempatkan di seluruh wilayah NKRI pada semua bidang tugas kepolisian, ditandatangani oleh peserta dan diketahui orang tua/wali.</li>
-                  <li>Membuat surat pernyataan bermaterai, untuk tidak mempercayai pihak-pihak yang menawarkan, menjanjikan, dan menjamin dapat membantu meluluskan dalam proses tes penerimaan, yang ditandatangani oleh calon peserta dan diketahui oleh orang tua/wali.</li>
-                  <li>Bagi calon Taruna/i Akpol Tahun Anggaran 2025/2026 yang berusaha menggunakan sponsor/koneksi dengan cara menghubungi lewat telepon/surat atau dalam bentuk apapun kepada panitia/pejabat yang berwenang melalui orang tua/wali/keluarga atau pihak lain akan didiskualifikasi.</li>
-                  <li>Bagi yang memperoleh ijazah dari sekolah di luar negeri, harus mendapat pengesahan dari Kemendikdasmen.</li>
-                  <li><strong>Ketentuan Domisili:</strong>
+                  <li class="break-words max-w-full"><strong>Status Pernikahan:</strong> Belum pernah menikah secara hukum positif/agama/adat, belum pernah hamil/melahirkan, belum pernah memiliki anak biologis (anak kandung), dan sanggup untuk tidak menikah selama dalam masa pendidikan pembentukan.</li>
+                  <li class="break-words max-w-full"><strong>Tato &amp; Tindik:</strong> Tidak bertato dan tidak memiliki tindik telinga atau anggota badan lainnya, kecuali yang disebabkan oleh ketentuan adat/agama resmi.</li>
+                  <li class="break-words max-w-full">Bagi peserta calon Taruna/i Akpol yang telah gagal/TMS dalam proses tes karena melakukan tindak pidana yang telah berkekuatan hukum tetap (inkrah) tidak dapat mendaftar kembali.</li>
+                  <li class="break-words max-w-full">Bagi peserta calon Taruna/i Akpol yang telah gagal/TMS di tahapan tes PMK pada tahun sebelumnya tidak dapat mendaftar kembali.</li>
+                  <li class="break-words max-w-full">Bagi peserta calon Taruna/i Akpol yang diberhentikan dari proses pendidikan pembentukan TNI/Polri atau Sekolah Kedinasan lainnya tidak dapat mendaftar.</li>
+                  <li class="break-words max-w-full">Mantan Taruna/i atau Siswa/i yang diberhentikan tidak dengan hormat dari proses pendidikan oleh lembaga pendidikan yang dibiayai oleh anggaran negara tidak dapat mendaftar.</li>
+                  <li class="break-words max-w-full">Dinyatakan bebas narkoba berdasarkan hasil pemeriksaan kesehatan oleh Panpus/Panda.</li>
+                  <li class="break-words max-w-full">Tidak mendukung atau ikut serta dalam organisasi atau paham yang bertentangan dengan Pancasila, Undang-Undang Dasar 1945, NKRI, dan Bhinneka Tunggal Ika.</li>
+                  <li class="break-words max-w-full">Membuat surat pernyataan bermaterai, untuk tidak melakukan perbuatan yang melanggar norma agama, norma kesusilaan, norma sosial, dan norma hukum.</li>
+                  <li class="break-words max-w-full">Membuat surat pernyataan bermaterai bersedia ditempatkan di seluruh wilayah NKRI pada semua bidang tugas kepolisian, ditandatangani oleh peserta dan diketahui orang tua/wali.</li>
+                  <li class="break-words max-w-full">Membuat surat pernyataan bermaterai, untuk tidak mempercayai pihak-pihak yang menawarkan, menjanjikan, dan menjamin dapat membantu meluluskan dalam proses tes penerimaan, yang ditandatangani oleh calon peserta dan diketahui oleh orang tua/wali.</li>
+                  <li class="break-words max-w-full">Bagi calon Taruna/i Akpol Tahun Anggaran 2025/2026 yang berusaha menggunakan sponsor/koneksi dengan cara menghubungi lewat telepon/surat atau dalam bentuk apapun kepada panitia/pejabat yang berwenang melalui orang tua/wali/keluarga atau pihak lain akan didiskualifikasi.</li>
+                  <li class="break-words max-w-full">Bagi yang memperoleh ijazah dari sekolah di luar negeri, harus mendapat pengesahan dari Kemendikdasmen.</li>
+                  <li class="break-words max-w-full"><strong>Ketentuan Domisili:</strong>
                     <ul class="list-disc list-outside pl-4 mt-1.5 space-y-1.5 text-slate-600">
-                      <li>Peserta berdomisili minimal 2 tahun di wilayah Polda tempat mendaftar (terhitung pada saat pembukaan pendidikan) dengan melampirkan Kartu Keluarga dan Kartu Tanda Penduduk atau Kartu Identitas Anak (terhitung mulai tercatat di domisili baru), dengan verifikasi oleh Panitia Daerah dan Dinas Kependudukan dan Pencatatan Sipil.</li>
-                      <li>Bagi peserta yang berdomisili kurang dari 2 tahun, dapat mendaftar di Polda sesuai tempat pendidikan/sekolah SMA/MA peserta dengan ketentuan:
+                      <li class="break-words max-w-full">Peserta berdomisili minimal 2 tahun di wilayah Polda tempat mendaftar (terhitung pada saat pembukaan pendidikan) dengan melampirkan Kartu Keluarga dan Kartu Tanda Penduduk atau Kartu Identitas Anak (terhitung mulai tercatat di domisili baru), dengan verifikasi oleh Panitia Daerah dan Dinas Kependudukan dan Pencatatan Sipil.</li>
+                      <li class="break-words max-w-full">Bagi peserta yang berdomisili kurang dari 2 tahun, dapat mendaftar di Polda sesuai tempat pendidikan/sekolah SMA/MA peserta dengan ketentuan:
                         <p class="pl-2 mt-0.5">• Minimal 2 tahun pada riwayat rapor sekolah SMA/MA (terhitung saat buka pendidikan) bagi yang bertempat tinggal tidak mengikuti orang tua, dibuktikan melalui rapor sekolah SMA/MA peserta dengan menyertakan KK peserta.</p>
                         <p class="pl-2 mt-0.5">• Minimal 1 tahun terakhir pada riwayat rapor sekolah SMA/MA (terhitung saat Buka Dik) bagi yang bertempat tinggal mengikuti orang tua, dibuktikan melalui KK dan rapor sekolah SMA/MA peserta.</p>
                       </li>
-                      <li>Bagi peserta yang tidak memenuhi persyaratan di atas, dapat mendaftar di Polda sesuai domisili sebelumnya (terhitung mulai dengan riwayat pada domisili sebelumnya), dengan verifikasi oleh Panitia Daerah dan Dinas Kependudukan dan Pencatatan Sipil.</li>
-                      <li>Bagi peserta dari SMA Taruna Nusantara dan SMA Krida Nusantara yang masih kelas XII, dapat mendaftar di Polda sesuai asal domisili, atau untuk peserta dari SMA Taruna Nusantara dapat mendaftar di Polda Jateng atau Polda DIY, sedangkan untuk peserta dari SMA Krida Nusantara dapat mendaftar di Polda Jabar, dengan ketentuan mengikuti kuota kelulusan berdasarkan peringkat pada Polda sesuai persyaratan domisili.</li>
+                      <li class="break-words max-w-full">Bagi peserta yang tidak memenuhi persyaratan di atas, dapat mendaftar di Polda sesuai domisili sebelumnya (terhitung mulai dengan riwayat pada domisili sebelumnya), dengan verifikasi oleh Panitia Daerah dan Dinas Kependudukan dan Pencatatan Sipil.</li>
+                      <li class="break-words max-w-full">Bagi peserta dari SMA Taruna Nusantara dan SMA Krida Nusantara yang masih kelas XII, dapat mendaftar di Polda sesuai asal domisili, atau untuk peserta dari SMA Taruna Nusantara dapat mendaftar di Polda Jateng atau Polda DIY, sedangkan untuk peserta dari SMA Krida Nusantara dapat mendaftar di Polda Jabar, dengan ketentuan mengikuti kuota kelulusan berdasarkan peringkat pada Polda sesuai persyaratan domisili.</li>
                     </ul>
                   </li>
-                  <li>Bersedia menjalani Ikatan Dinas Pertama (IDP) selama 10 (sepuluh) tahun terhitung saat diangkat menjadi Perwira Polri.</li>
-                  <li>Memperoleh persetujuan resmi dari orang tua/wali.</li>
-                  <li>Tidak terikat perjanjian Ikatan Dinas dengan suatu instansi lain.</li>
-                  <li>Bagi calon Taruna/i yang dinyatakan lulus terpilih agar melampirkan kartu BPJS Kesehatan yang aktif.</li>
-                  <li>Bagi yang sudah bekerja secara tetap sebagai pegawai/karyawan:
+                  <li class="break-words max-w-full">Bersedia menjalani Ikatan Dinas Pertama (IDP) selama 10 (sepuluh) tahun terhitung saat diangkat menjadi Perwira Polri.</li>
+                  <li class="break-words max-w-full">Memperoleh persetujuan resmi dari orang tua/wali.</li>
+                  <li class="break-words max-w-full">Tidak terikat perjanjian Ikatan Dinas dengan suatu instansi lain.</li>
+                  <li class="break-words max-w-full">Bagi calon Taruna/i yang dinyatakan lulus terpilih agar melampirkan kartu BPJS Kesehatan yang aktif.</li>
+                  <li class="break-words max-w-full">Bagi yang sudah bekerja secara tetap sebagai pegawai/karyawan:
                     <p class="pl-2 mt-0.5">• Mendapat persetujuan/rekomendasi dari kepala instansi yang bersangkutan.</p>
                     <p class="pl-2 mt-0.5">• Bersedia diberhentikan dari status pegawai/karyawan bila diterima dan mengikuti pendidikan pembentukan Taruna/i Akpol.</p>
                   </li>
-                  <li>Mengikuti dan dinyatakan lulus pada seluruh tahapan pemeriksaan/pengujian seleksi.</li>
+                  <li class="break-words max-w-full">Mengikuti dan dinyatakan lulus pada seluruh tahapan pemeriksaan/pengujian seleksi.</li>
                 </ol>
               </div>
 
@@ -1155,9 +1183,9 @@
                 <span>IX. Inspirasi Nilai Karakter Bagi Siswa SMAN 1 Belitang</span>
               </h4>
               <ul class="space-y-1.5 text-xs sm:text-sm text-slate-700 leading-relaxed text-justify">
-                <li>• <strong>Manajemen Waktu Presisi (Military Time Management):</strong> Meneladani disiplin bangun pukul 04.00 WIB dan beraktivitas tepat waktu tanpa penundaan.</li>
-                <li>• <strong>Integritas &amp; Moralitas:</strong> Menjunjung tinggi kejujuran dan prinsip bebas suap (BETAH: Bersih, Transparan, Akuntabel, Humanis).</li>
-                <li>• <strong>Jiwa Korsa &amp; Kekompakan:</strong> Saling mendukung dalam tim riset lapangan Field Trip serta menjaga martabat almamater sekolah.</li>
+                <li class="break-words max-w-full">• <strong>Manajemen Waktu Presisi (Military Time Management):</strong> Meneladani disiplin bangun pukul 04.00 WIB dan beraktivitas tepat waktu tanpa penundaan.</li>
+                <li class="break-words max-w-full">• <strong>Integritas &amp; Moralitas:</strong> Menjunjung tinggi kejujuran dan prinsip bebas suap (BETAH: Bersih, Transparan, Akuntabel, Humanis).</li>
+                <li class="break-words max-w-full">• <strong>Jiwa Korsa &amp; Kekompakan:</strong> Saling mendukung dalam tim riset lapangan Field Trip serta menjaga martabat almamater sekolah.</li>
               </ul>
             </div>
           </div>
@@ -2972,71 +3000,71 @@
           </div>
 
           <!-- BAB 5: SUMBER JURNAL DAN RUJUKAN (20 REFERENSI LENGKAP) -->
-          <div class="bg-slate-50 rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+          <div class="bg-slate-50 rounded-3xl p-4 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5 max-w-full overflow-hidden">
             <div class="flex items-center gap-2 text-slate-900 font-black text-base sm:text-lg border-b border-slate-200 pb-2.5">
               <span class="material-symbols-outlined text-slate-600 text-2xl">menu_book</span>
               <span>5. Sumber Jurnal dan Rujukan Ilmiah</span>
             </div>
-            <ol class="list-decimal list-outside ml-4 sm:ml-5 space-y-2 text-[11px] sm:text-xs text-slate-700 leading-relaxed">
-              <li>
-                <strong>Hilyah, A., Fajar, M. H. M., Ikmaluhakim, D. R., Hawan, S. I., Purwanto, M. S., &amp; Bahri, A. S. (2021).</strong> <em>Studi Geologi dan Geofisika Batuan Gunung Bromo dan Sekitarnya.</em> Jurnal SEWAGATI ITS, 5(2), 156–163. <a href="https://doi.org/10.12962/j26139960.v5i2.8248" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://doi.org/10.12962/j26139960.v5i2.8248</a>
+            <ol class="list-decimal list-outside ml-4 sm:ml-5 space-y-2 text-[11px] sm:text-xs text-slate-700 leading-relaxed break-words max-w-full">
+              <li class="break-words max-w-full">
+                <strong>Hilyah, A., Fajar, M. H. M., Ikmaluhakim, D. R., Hawan, S. I., Purwanto, M. S., &amp; Bahri, A. S. (2021).</strong> <em>Studi Geologi dan Geofisika Batuan Gunung Bromo dan Sekitarnya.</em> Jurnal SEWAGATI ITS, 5(2), 156–163. <a href="https://doi.org/10.12962/j26139960.v5i2.8248" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://doi.org/10.12962/j26139960.v5i2.8248</a>
               </li>
-              <li>
-                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/fungsi/?page=2&amp;fungsi=TN" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://ksdae.kehutanan.go.id/kawasan-konservasi/fungsi/?page=2&amp;fungsi=TN</a>
+              <li class="break-words max-w-full">
+                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/fungsi/?page=2&amp;fungsi=TN" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://ksdae.kehutanan.go.id/kawasan-konservasi/fungsi/?page=2&amp;fungsi=TN</a>
               </li>
-              <li>
-                <strong>Multidisciplinary study with quantitative analysis of isotopic data for the assessment of recharge and functioning of volcanic aquifers: Case of Bromo-Tengger volcano, Indonesia.</strong> <a href="https://hal.science/hal-02410291/file/1-s2.0-S2214581819300941-main-1.pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://hal.science/hal-02410291/file/1-s2.0-S2214581819300941-main-1.pdf</a>
+              <li class="break-words max-w-full">
+                <strong>Multidisciplinary study with quantitative analysis of isotopic data for the assessment of recharge and functioning of volcanic aquifers: Case of Bromo-Tengger volcano, Indonesia.</strong> <a href="https://hal.science/hal-02410291/file/1-s2.0-S2214581819300941-main-1.pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://hal.science/hal-02410291/file/1-s2.0-S2214581819300941-main-1.pdf</a>
               </li>
-              <li>
-                <strong>Jurnal GEOID ITS.</strong> <em>Rancang Bangun Sistem Informasi Bencana Gunung Bromo Berbasis WebGIS.</em> <a href="https://journal.its.ac.id/index.php/geoid/article/download/1329/1037" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.its.ac.id/index.php/geoid/article/download/1329/1037</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal GEOID ITS.</strong> <em>Rancang Bangun Sistem Informasi Bencana Gunung Bromo Berbasis WebGIS.</em> <a href="https://journal.its.ac.id/index.php/geoid/article/download/1329/1037" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://journal.its.ac.id/index.php/geoid/article/download/1329/1037</a>
               </li>
-              <li>
-                <strong>Jurnal Avicennia UMM.</strong> <em>Kajian lingkungan kawasan Bromo.</em> <a href="https://ejournal.umm.ac.id/index.php/avicennia/article/download/9406/pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://ejournal.umm.ac.id/index.php/avicennia/article/download/9406/pdf</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal Avicennia UMM.</strong> <em>Kajian lingkungan kawasan Bromo.</em> <a href="https://ejournal.umm.ac.id/index.php/avicennia/article/download/9406/pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://ejournal.umm.ac.id/index.php/avicennia/article/download/9406/pdf</a>
               </li>
-              <li>
-                <strong>Nisa, R. K., Wisanti, Putri, E. K., Kuntjoro S., &amp; Artaka T. (2021).</strong> <em>Keanekaragaman Spesies Anggrek di Ranu Darungan Taman Nasional Bromo Tengger Semeru.</em> LenteraBio, 10(1), 1–9. <a href="https://journal.unesa.ac.id/index.php/lenterabio/article/download/9943/6006/46901" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.unesa.ac.id/index.php/lenterabio/article/download/9943/6006/46901</a>
+              <li class="break-words max-w-full">
+                <strong>Nisa, R. K., Wisanti, Putri, E. K., Kuntjoro S., &amp; Artaka T. (2021).</strong> <em>Keanekaragaman Spesies Anggrek di Ranu Darungan Taman Nasional Bromo Tengger Semeru.</em> LenteraBio, 10(1), 1–9. <a href="https://journal.unesa.ac.id/index.php/lenterabio/article/download/9943/6006/46901" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://journal.unesa.ac.id/index.php/lenterabio/article/download/9943/6006/46901</a>
               </li>
-              <li>
-                <strong>Jurnal Silvikultur Tropika, IPB.</strong> <em>Kajian flora dan fauna TNBTS.</em> <a href="https://journal.ipb.ac.id/index.php/jsilvik/article/download/50332/26338" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.ipb.ac.id/index.php/jsilvik/article/download/50332/26338</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal Silvikultur Tropika, IPB.</strong> <em>Kajian flora dan fauna TNBTS.</em> <a href="https://journal.ipb.ac.id/index.php/jsilvik/article/download/50332/26338" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://journal.ipb.ac.id/index.php/jsilvik/article/download/50332/26338</a>
               </li>
-              <li>
-                <strong>Jurnal Tropical Biodiversity and Biotechnology, UGM (2024).</strong> <em>The First Record of an Hourglass Toad (Leptophryne borbonica) in the Core Zone of Bromo Tengger Semeru National Park and Its Ecological Aspects.</em> <a href="https://journal.ugm.ac.id/jtbb/article/view/93938" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.ugm.ac.id/jtbb/article/view/93938</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal Tropical Biodiversity and Biotechnology, UGM (2024).</strong> <em>The First Record of an Hourglass Toad (Leptophryne borbonica) in the Core Zone of Bromo Tengger Semeru National Park and Its Ecological Aspects.</em> <a href="https://journal.ugm.ac.id/jtbb/article/view/93938" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://journal.ugm.ac.id/jtbb/article/view/93938</a>
               </li>
-              <li>
-                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
               </li>
-              <li>
-                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
               </li>
-              <li>
-                <strong>Proceeding of National Conference on Accounting &amp; Finance, UII.</strong> <em>Mengungkap Akuntansi Budaya atas Pembiayaan Ritual.</em> <a href="https://journal.uii.ac.id/NCAF/article/download/22314/pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://journal.uii.ac.id/NCAF/article/download/22314/pdf</a>
+              <li class="break-words max-w-full">
+                <strong>Proceeding of National Conference on Accounting &amp; Finance, UII.</strong> <em>Mengungkap Akuntansi Budaya atas Pembiayaan Ritual.</em> <a href="https://journal.uii.ac.id/NCAF/article/download/22314/pdf" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://journal.uii.ac.id/NCAF/article/download/22314/pdf</a>
               </li>
-              <li>
-                <strong>Artikel pada Temu Ilmiah Nasional PERSAGI.</strong> <em>Pengaruh budaya terhadap kebiasaan makan dan gaya hidup.</em> <a href="https://tin.persagi.org/index.php/tin/article/download/85/77/127" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://tin.persagi.org/index.php/tin/article/download/85/77/127</a>
+              <li class="break-words max-w-full">
+                <strong>Artikel pada Temu Ilmiah Nasional PERSAGI.</strong> <em>Pengaruh budaya terhadap kebiasaan makan dan gaya hidup.</em> <a href="https://tin.persagi.org/index.php/tin/article/download/85/77/127" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://tin.persagi.org/index.php/tin/article/download/85/77/127</a>
               </li>
-              <li>
-                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
               </li>
-              <li>
-                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
               </li>
-              <li>
-                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/</a>
+              <li class="break-words max-w-full">
+                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/</a>
               </li>
-              <li>
-                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal Sabbhata Yatra.</strong> <em>Wisata Budaya dan Kuliner Suku Tengger di Desa Wisata Ngadas, TNBTS.</em> <a href="https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://jurnal.radenwijaya.ac.id/index.php/sabbhata_yatra/article/download/1524/747/</a>
               </li>
-              <li>
-                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
+              <li class="break-words max-w-full">
+                <strong>Jurnal AS, Universitas Sebelas Maret.</strong> <em>Konstruksi Sosial Upacara Adat Karo Suku Tengger.</em> <a href="https://jurnal.uns.ac.id/jas/article/download/42103/28384" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://jurnal.uns.ac.id/jas/article/download/42103/28384</a>
               </li>
-              <li>
-                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/</a>
+              <li class="break-words max-w-full">
+                <strong>Direktorat Jenderal KSDAE, Kementerian Kehutanan.</strong> <em>Profil Taman Nasional Bromo Tengger Semeru.</em> <a href="https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://ksdae.kehutanan.go.id/kawasan-konservasi/100242021/</a>
               </li>
-              <li>
-                <strong>Indonesia Travel.</strong> <em>Bromo Tengger Semeru National Park.</em> <a href="https://www.indonesia.travel/id/id/destination/java/east-java/bromo-tengger-semeru-national-park" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://www.indonesia.travel/id/id/destination/java/east-java/bromo-tengger-semeru-national-park</a>
+              <li class="break-words max-w-full">
+                <strong>Indonesia Travel.</strong> <em>Bromo Tengger Semeru National Park.</em> <a href="https://www.indonesia.travel/id/id/destination/java/east-java/bromo-tengger-semeru-national-park" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://www.indonesia.travel/id/id/destination/java/east-java/bromo-tengger-semeru-national-park</a>
               </li>
-              <li>
-                <strong>ANTARA Jawa Timur (2012).</strong> <em>Mengemas Bromo Menjadi Paket Wisata Satu Destinasi.</em> <a href="https://jatim.antaranews.com/berita/90497/mengemas-bromo-menjadi-paket-wisata-satu-destinasi" target="_blank" rel="noopener" class="text-blue-600 hover:underline inline-flex items-center gap-0.5">https://jatim.antaranews.com/berita/90497/mengemas-bromo-menjadi-paket-wisata-satu-destinasi</a>
+              <li class="break-words max-w-full">
+                <strong>ANTARA Jawa Timur (2012).</strong> <em>Mengemas Bromo Menjadi Paket Wisata Satu Destinasi.</em> <a href="https://jatim.antaranews.com/berita/90497/mengemas-bromo-menjadi-paket-wisata-satu-destinasi" target="_blank" rel="noopener" class="text-blue-600 hover:underline break-all inline-block max-w-full">https://jatim.antaranews.com/berita/90497/mengemas-bromo-menjadi-paket-wisata-satu-destinasi</a>
               </li>
             </ol>
           </div>
@@ -3393,6 +3421,13 @@
               const task = prog.task_map[taskKey];
               const content = sanitizeConclusionText(task.content);
               if (content) {
+                try {
+                  const mObj = { conclusion: content, savedAt: task.submitted_at || task.updated_at || new Date().toISOString() };
+                  idVars.forEach(id => {
+                    localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + id, JSON.stringify(mObj));
+                    localStorage.setItem(`fincestem_materi_day${dayNum}_` + id, JSON.stringify(mObj));
+                  });
+                } catch(e) {}
                 applyMateriConclusionStateGeneric(dayNum, content, task.submitted_at || 'Tersimpan di server');
               }
             } else if (!saved) {

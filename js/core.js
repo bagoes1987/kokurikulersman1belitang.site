@@ -2096,6 +2096,123 @@ const FincestemCore = {
       }
     },
 
+    hydrateLocalStorageFromProgress: function(nisn, data) {
+      if (!nisn || !data) return;
+      try {
+        const cleanNisn = String(nisn || '').replace(/[^A-Za-z0-9]/g, '');
+        const unpadded = cleanNisn.replace(/^0+/, '');
+        const padded = (cleanNisn.length >= 8 && cleanNisn.length <= 10) ? cleanNisn.padStart(10, '0') : cleanNisn;
+        const idVars = Array.from(new Set([cleanNisn, unpadded, padded, nisn])).filter(Boolean);
+
+        const taskMap = data.task_map || {};
+        const records = Array.isArray(data.records) ? data.records : [];
+
+        const parseContent = function(raw) {
+          if (!raw) return null;
+          if (typeof raw === 'object') return raw;
+          if (typeof raw === 'string') {
+            const trimmed = raw.trim();
+            if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+              try { return JSON.parse(trimmed); } catch (e) {}
+            }
+            return trimmed;
+          }
+          return raw;
+        };
+
+        const writeLocal = function(prefix, val) {
+          if (val === undefined || val === null) return;
+          const str = typeof val === 'object' ? JSON.stringify(val) : String(val);
+          idVars.forEach(id => {
+            try {
+              localStorage.setItem(prefix + id, str);
+            } catch (e) {}
+          });
+        };
+
+        const allTasks = Object.assign({}, taskMap);
+        records.forEach(r => {
+          if (r && r.day_number && r.task_type) {
+            const key = r.day_number + '_' + r.task_type;
+            if (!allTasks[key]) allTasks[key] = r;
+          }
+        });
+
+        Object.keys(allTasks).forEach(taskKey => {
+          const item = allTasks[taskKey];
+          if (!item) return;
+          const parts = taskKey.split('_');
+          const day = parseInt(parts[0]);
+          const type = parts.slice(1).join('_');
+          const parsed = parseContent(item.content);
+          if (!parsed) return;
+
+          const savedTime = item.submitted_at || item.updated_at || new Date().toISOString();
+
+          if (type === 'materi') {
+            const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
+            const mObj = { conclusion: cText, savedAt: savedTime };
+            if (day === 1) {
+              writeLocal('fincestem_materi_ft_day1_', mObj);
+            } else if (day === 2) {
+              writeLocal('fincestem_materi_ft_day2_akpol_', mObj);
+              writeLocal('fincestem_materi_ft_day2_', mObj);
+            } else if (day === 3) {
+              writeLocal('fincestem_materi_ft_day3_apel_', mObj);
+              writeLocal('fincestem_materi_ft_day3_', mObj);
+            } else if (day === 4) {
+              writeLocal('fincestem_materi_ft_day4_', mObj);
+            }
+            writeLocal('fincestem_materi_ft_day' + day + '_', mObj);
+            writeLocal('fincestem_materi_day' + day + '_', mObj);
+          } else if (type === 'materi_lawang') {
+            const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
+            const mObj = { conclusion: cText, savedAt: savedTime };
+            writeLocal('fincestem_materi_ft_day2_lawang_', mObj);
+          } else if (type === 'materi_jtp1') {
+            const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
+            writeLocal('fincestem_materi_ft_day3_jtp1_', { conclusion: cText, savedAt: savedTime });
+          } else if (type === 'materi_museum') {
+            const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
+            writeLocal('fincestem_materi_ft_day3_museum_', { conclusion: cText, savedAt: savedTime });
+          } else if (type === 'lkpd') {
+            if (day === 1) {
+              writeLocal('fincestem_lkpd_ft_day1_', parsed);
+            } else if (day === 2) {
+              writeLocal('fincestem_lkpd_ft_day2_akpol_', parsed);
+              writeLocal('fincestem_lkpd_ft_day2_', parsed);
+            } else if (day === 3) {
+              writeLocal('fincestem_lkpd_ft_day3_apel_', parsed);
+              writeLocal('fincestem_lkpd_ft_day3_', parsed);
+            } else if (day === 4) {
+              writeLocal('fincestem_lkpd_ft_day4_', parsed);
+            }
+            writeLocal('fincestem_lkpd_ft_day' + day + '_', parsed);
+            writeLocal('fincestem_lkpd_day' + day + '_', parsed);
+          } else if (type === 'lkpd_lawang') {
+            writeLocal('fincestem_lkpd_ft_day2_lawang_', parsed);
+            writeLocal('fincestem_lkpd_lawang_saved_', 'true');
+          } else if (type === 'lkpd_jtp1') {
+            writeLocal('fincestem_lkpd_ft_day3_jtp1_', parsed);
+          } else if (type === 'lkpd_museum') {
+            writeLocal('fincestem_lkpd_ft_day3_museum_', parsed);
+          } else if (type === 'asesmen') {
+            writeLocal('fincestem_asesmen_ft_day' + day + '_', parsed);
+            writeLocal('fincestem_asesmen_day' + day + '_', parsed);
+          } else if (type === 'dokumentasi') {
+            writeLocal('fincestem_dok_ft_day' + day + '_', 'true');
+            writeLocal('fincestem_dok_day' + day + '_', 'true');
+            if (day === 2) writeLocal('fincestem_dok_ft_day2_akpol_', 'true');
+          } else if (type === 'refleksi') {
+            writeLocal('fincestem_refl_ft_day' + day + '_', parsed);
+            writeLocal('fincestem_refleksi_ft_day' + day + '_', parsed);
+          }
+        });
+      } catch (eHydrate) {
+        console.warn('hydrateLocalStorageFromProgress error:', eHydrate);
+      }
+    },
+
     getStudentProgress: function(nisn, callback) {
       if (!nisn) {
         if (callback) callback(this.getDefaultProgress(''));
@@ -2120,7 +2237,7 @@ const FincestemCore = {
 
               let shouldPurge = false;
               if (serverResetAt) {
-                if (!clientLastReset || new Date(serverResetAt).getTime() > new Date(clientLastReset).getTime()) {
+                if (clientLastReset && new Date(serverResetAt).getTime() > new Date(clientLastReset).getTime()) {
                   shouldPurge = true;
                 }
               }
@@ -2133,7 +2250,12 @@ const FincestemCore = {
                   u.photo_url = '';
                   FincestemCore.auth.setUser(u, 'siswa');
                 }
+              } else if (!clientLastReset && serverResetAt) {
+                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
               }
+
+              // Hidrasi simpanan lokal seketika dari catatan server agar pindah HP / login baru tidak kehilangan data
+              self.hydrateLocalStorageFromProgress(cleanNisn, res.data);
 
               localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(res.data));
               if (callback) callback(res.data);
@@ -2161,8 +2283,11 @@ const FincestemCore = {
           const stored = localStorage.getItem('fincestem_progress_' + id);
           if (stored) {
             const parsed = JSON.parse(stored);
-            if (callback) callback(parsed);
-            return;
+            if (parsed) {
+              this.hydrateLocalStorageFromProgress(cleanNisn, parsed);
+              if (callback) callback(parsed);
+              return;
+            }
           }
         } catch (e) {}
       }

@@ -91,24 +91,72 @@
         } catch (e) {}
       }
 
+      // Fallback ambil jawaban LKPD Day 1 dari server progress jika local kosong (pindah HP / ganti perangkat)
+      if (!saved) {
+        try {
+          let prog = window.currentStudentProgress;
+          if (!prog) {
+            for (const id of idVars) {
+              const rawP = localStorage.getItem('fincestem_progress_' + id);
+              if (rawP) { prog = JSON.parse(rawP); break; }
+            }
+          }
+          if (prog && prog.task_map && prog.task_map['1_lkpd'] && prog.task_map['1_lkpd'].content) {
+            let parsed = prog.task_map['1_lkpd'].content;
+            if (typeof parsed === 'string') {
+              try { parsed = JSON.parse(parsed); } catch(e) {}
+            }
+            if (parsed && typeof parsed === 'object') {
+              saved = parsed;
+              for (const id of idVars) {
+                try { localStorage.setItem('fincestem_lkpd_ft_day1_' + id, JSON.stringify(saved)); } catch(e) {}
+              }
+            }
+          }
+        } catch (e) {}
+      }
+
       // Verifikasi Prasyarat Berjenjang: Siswa wajib membaca modul & mengisi kesimpulan
       let hasMateri = false;
       try {
-        const cleanNisn = String(studentNisn).trim();
-        const unpadded = cleanNisn.replace(/^0+/, '');
-        const localMateri = localStorage.getItem('fincestem_materi_ft_day1_' + cleanNisn) ||
-                            localStorage.getItem('fincestem_materi_ft_day1_' + unpadded) ||
-                            localStorage.getItem('fincestem_materi_ft_day1_' + ('0' + unpadded));
-        if (localMateri) {
-          const parsed = JSON.parse(localMateri);
-          if (parsed && (parsed.conclusion || parsed.text || parsed.content)) {
-            hasMateri = true;
+        for (const id of idVars) {
+          const localMateri = localStorage.getItem('fincestem_materi_ft_day1_' + id);
+          if (localMateri) {
+            const parsed = JSON.parse(localMateri);
+            if (parsed && (parsed.conclusion || parsed.text || parsed.content)) {
+              hasMateri = true;
+              break;
+            }
           }
         }
       } catch (e) {}
 
-      // Jika LKPD sudah pernah diisi atau disimpan sebagian, jangan dikunci kembali
-      if (saved && (saved.total_saku || saved.submitted || saved.plan_emergency)) {
+      // Fallback periksa server progress jika kesimpulan belum terbaca di storage lokal (pindah HP)
+      if (!hasMateri) {
+        try {
+          let prog = window.currentStudentProgress;
+          if (!prog) {
+            for (const id of idVars) {
+              const rawP = localStorage.getItem('fincestem_progress_' + id);
+              if (rawP) { prog = JSON.parse(rawP); break; }
+            }
+          }
+          if (prog && prog.task_map && prog.task_map['1_materi']) {
+            hasMateri = true;
+            const mTask = prog.task_map['1_materi'];
+            const cText = (mTask.content && typeof mTask.content === 'object') ? (mTask.content.conclusion || mTask.content.text) : mTask.content;
+            if (cText) {
+              const mObj = { conclusion: cText, savedAt: mTask.submitted_at || mTask.updated_at || new Date().toISOString() };
+              for (const id of idVars) {
+                try { localStorage.setItem('fincestem_materi_ft_day1_' + id, JSON.stringify(mObj)); } catch(e) {}
+              }
+            }
+          }
+        } catch (e) {}
+      }
+
+      // Jika LKPD sudah pernah diisi atau disimpan sebagian atau ada catatan jawaban, jangan dikunci kembali
+      if (saved && (saved.total_saku || saved.totalSaku || saved.submitted || saved.plan_emergency || saved.q1 || saved.commitment)) {
         hasMateri = true;
       }
 
@@ -832,6 +880,32 @@
         const rawLawang = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn);
         if (rawLawang) savedLawang = JSON.parse(rawLawang);
       } catch (e) {}
+
+      // Fallback progress server untuk Day 2 jika pindah HP
+      try {
+        let prog = window.currentStudentProgress;
+        if (!prog) {
+          const rawP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+          if (rawP) prog = JSON.parse(rawP);
+        }
+        if (prog && prog.task_map) {
+          if (prog.task_map['2_materi']) hasResumeAkpol = true;
+          if (prog.task_map['2_materi_lawang']) hasResumeLawang = true;
+          if (!savedAkpol && prog.task_map['2_lkpd'] && prog.task_map['2_lkpd'].content) {
+            let p = prog.task_map['2_lkpd'].content;
+            if (typeof p === 'string') { try { p = JSON.parse(p); } catch(e) {} }
+            if (p && typeof p === 'object') savedAkpol = p;
+          }
+          if (!savedLawang && prog.task_map['2_lkpd_lawang'] && prog.task_map['2_lkpd_lawang'].content) {
+            let p = prog.task_map['2_lkpd_lawang'].content;
+            if (typeof p === 'string') { try { p = JSON.parse(p); } catch(e) {} }
+            if (p && typeof p === 'object') savedLawang = p;
+          }
+        }
+      } catch (e) {}
+
+      if (savedAkpol && (savedAkpol.submitted || savedAkpol.savedAt)) hasResumeAkpol = true;
+      if (savedLawang && (savedLawang.submitted || savedLawang.savedAt)) hasResumeLawang = true;
 
       const isAkpolSubmitted = savedAkpol && (savedAkpol.submitted || savedAkpol.savedAt);
       const isLawangSubmitted = savedLawang && (savedLawang.submitted || savedLawang.savedAt);
@@ -1580,6 +1654,25 @@
           saved = JSON.parse(raw);
         }
       } catch(e) {}
+
+      // Fallback progress server untuk Day 3 jika pindah HP
+      if (!saved || !hasMateriApel) {
+        try {
+          let prog = window.currentStudentProgress;
+          if (!prog) {
+            const rawP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+            if (rawP) prog = JSON.parse(rawP);
+          }
+          if (prog && prog.task_map) {
+            if (!hasMateriApel && prog.task_map['3_materi']) hasMateriApel = true;
+            if (!saved && prog.task_map['3_lkpd'] && prog.task_map['3_lkpd'].content) {
+              let p = prog.task_map['3_lkpd'].content;
+              if (typeof p === 'string') { try { p = JSON.parse(p); } catch(e) {} }
+              if (p && typeof p === 'object') saved = p;
+            }
+          }
+        } catch (e) {}
+      }
 
       if (saved && (saved.submitted || saved.varietas || saved.applesEaten !== undefined)) {
         hasMateriApel = true;
@@ -2889,6 +2982,25 @@
           saved = JSON.parse(raw);
         }
       } catch(e) {}
+
+      // Fallback progress server untuk Day 4 jika pindah HP
+      if (!saved || !hasMateri) {
+        try {
+          let prog = window.currentStudentProgress;
+          if (!prog) {
+            const rawP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+            if (rawP) prog = JSON.parse(rawP);
+          }
+          if (prog && prog.task_map) {
+            if (!hasMateri && prog.task_map['4_materi']) hasMateri = true;
+            if (!saved && prog.task_map['4_lkpd'] && prog.task_map['4_lkpd'].content) {
+              let p = prog.task_map['4_lkpd'].content;
+              if (typeof p === 'string') { try { p = JSON.parse(p); } catch(e) {} }
+              if (p && typeof p === 'object') saved = p;
+            }
+          }
+        } catch (e) {}
+      }
 
       if (saved && (saved.submitted || saved.spots || saved.suhu)) {
         hasMateri = true;
