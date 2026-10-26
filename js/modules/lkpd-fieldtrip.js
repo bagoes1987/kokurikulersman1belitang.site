@@ -58,32 +58,7 @@
       const unpadded = cleanNisn.replace(/^0+/, '');
       const padded = cleanNisn.padStart(10, '0');
       const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
-      const isS1RefleksiDone = checkIsD5Sesi1RefleksiDone(cleanNisn);
-      const isS2MateriDone = checkIsD5Sesi2MateriDone(cleanNisn);
 
-      // Cek status LKPD Sesi 2 Batik
-      let savedS2 = null;
-      for (const id of idVars) {
-        const rawS2 = localStorage.getItem('fincestem_lkpd_ft_day5_batik_' + id);
-        if (rawS2) {
-          try {
-            savedS2 = JSON.parse(rawS2);
-            break;
-          } catch(e) {}
-        }
-      }
-      if (!savedS2 && window.currentStudentProgress && window.currentStudentProgress.task_map) {
-        const tm = window.currentStudentProgress.task_map;
-        const task = tm['5_lkpd_batik'];
-        if (task && task.content) {
-          let p = task.content;
-          if (typeof p === 'string') {
-            try { p = JSON.parse(p); } catch(e) {}
-          }
-          if (p && typeof p === 'object') savedS2 = p;
-        }
-      }
-      const isS2Submitted = !!(savedS2 && savedS2.submitted);
       let saved = null;
 
       try {
@@ -3508,6 +3483,33 @@
           currentD5LkpdSession = 1;
         }
       }
+
+      const isS1RefleksiDone = checkIsD5Sesi1RefleksiDone(cleanNisn);
+      const isS2MateriDone = checkIsD5Sesi2MateriDone(cleanNisn);
+
+      // Cek status LKPD Sesi 2 Batik
+      let savedS2 = null;
+      for (const id of idVars) {
+        const rawS2 = localStorage.getItem('fincestem_lkpd_ft_day5_batik_' + id);
+        if (rawS2) {
+          try {
+            savedS2 = JSON.parse(rawS2);
+            break;
+          } catch(e) {}
+        }
+      }
+      if (!savedS2 && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        const task = tm['5_lkpd_batik'];
+        if (task && task.content) {
+          let p = task.content;
+          if (typeof p === 'string') {
+            try { p = JSON.parse(p); } catch(e) {}
+          }
+          if (p && typeof p === 'object') savedS2 = p;
+        }
+      }
+      const isS2Submitted = !!(savedS2 && savedS2.submitted);
 
       // 1. Cek prasyarat kesimpulan Modul Sesi 1 Candi Prambanan
       let hasMateriPrambanan = false;
