@@ -737,7 +737,7 @@ const FincestemCore = {
       2: { day: 2, pilar: 'CULTURE & STEM', label: 'Culture & STEM', weight: '25%', destination: 'AKPOL Semarang & Lawang Sewu', focus: 'Karakter & Rekayasa: Disiplin Bhayangkara AKPOL & arsitektur pendingin alami Lawang Sewu.' },
       3: { day: 3, pilar: 'FULL STEM', label: 'Full STEM', weight: '25%', destination: 'Petik Apel, Jatim Park 1 & Museum Angkut', focus: 'Sains & Rekayasa: Fisika terapan Jatim Park 1, teknologi mesin Museum Angkut & agrosains apel.' },
       4: { day: 4, pilar: 'EXPLORATION & CULTURE', label: 'Exploration & Culture', weight: '25%', destination: 'Wisata Bromo (Kawah, Laut Pasir, Savana)', focus: 'Bentang Alam & Adat: Geologi kaldera vulkanik Bromo & kearifan adat Suku Tengger.' },
-      5: { day: 5, pilar: 'STEM & EXPLORATION', label: 'STEM & Exploration', weight: '25%', destination: 'Prambanan, Praktik Membatik & UNY', focus: 'Sains Kimia & Eksplorasi Edukasi: Sifat hidrofobik malam batik, geometri candi & orientasi kampus UNY.' },
+      5: { day: 5, pilar: 'STEM & EXPLORATION', label: 'STEM & Exploration', weight: '25%', destination: 'Prambanan, Praktik Membatik & UNY', focus: 'Sains Kimia & Eksplorasi Edukasi: Sifat hidrofobik malam batik, geometri candi & kunjungan edukasi kampus UNY.' },
       6: { day: 6, pilar: 'EXPLORATION & FINANCIAL', label: 'Exploration & Financial', weight: '25%', destination: 'Pabrik Bakpia Jogja & Pantai Drini / Drini Park', focus: 'Bentang Alam Bahari & Finansial Industri: Karst Pantai Drini, omzet & HPP pabrik bakpia, serta belanja cerdas.' },
       7: { day: 7, pilar: 'FINANCIAL (Reconciliation)', label: 'Financial (Reconciliation)', weight: '25%', destination: 'Perjalanan Pulang → Tiba di SMAN 1 Belitang', focus: 'Audit & Tutup Buku: Rekonsiliasi anggaran uang saku, selisih rencana vs realisasi, & refleksi akhir.' }
     },
@@ -862,7 +862,7 @@ const FincestemCore = {
       5: {
         day_number: 5,
         title: 'HARI KE-5: CANDI PRAMBANAN, BATIK & KAMPUS UNY',
-        theme: 'Sains Kimia Lilin Batik, Geometri Candi Prambanan & Orientasi Akademik UNY',
+        theme: 'Sains Kimia Lilin Batik, Geometri Candi Prambanan & Inspirasi Studi Lanjut UNY',
         date_formatted: 'Jumat, 13 November 2026',
         time_range: '06.00 - Selesai WIB',
         route_lines: [
@@ -870,18 +870,18 @@ const FincestemCore = {
           ['Restoran Lokal', 'Kampus UNY', 'Malioboro / Hotel']
         ],
         route: 'Hotel → Candi Prambanan → Praktik Membatik Benang Ratu → Restoran Lokal → Kampus UNY → Malioboro → Hotel Yogyakarta',
-        description: 'Setelah sarapan pagi di hotel, rombongan mengeksplorasi megastruktur & geometri Candi Prambanan, mempraktikkan sains kimia malam batik di Batik Benang Ratu, makan siang, dilanjutkan orientasi akademik & studi lanjut di Kampus UNY serta menikmati suasana budaya Malioboro.',
+        description: 'Setelah sarapan pagi di hotel, rombongan mengeksplorasi megastruktur & geometri Candi Prambanan, mempraktikkan sains kimia malam batik di Batik Benang Ratu, makan siang, dilanjutkan kunjungan edukasi kampus & inspirasi studi lanjut di UNY serta menikmati suasana budaya Malioboro.',
         sessions: [
           { time: '06.00 – 07.30', title: 'Sarapan Pagi di Hotel', location: 'Hotel Yogyakarta', icon: 'free_breakfast', highlight: 'orange' },
           { time: '08.00 – 10.30', title: 'Megastruktur & Geometri Candi Prambanan', location: 'Candi Prambanan', icon: 'temple_hindu', highlight: 'purple' },
           { time: '11.00 – 12.45', title: 'Praktik Membatik & Sains Kimia Lilin Malam', location: 'Batik Benang Ratu', icon: 'palette', highlight: 'amber' },
           { time: '13.00 – 14.00', title: 'Makan Siang', location: 'Restoran Lokal', icon: 'lunch_dining', highlight: 'orange' },
-          { time: '14.30 – 17.00', title: 'Eksplorasi Wawasan Akademik Kampus UNY', location: 'Kampus UNY Yogyakarta', icon: 'school', highlight: 'blue' },
+          { time: '14.30 – 17.00', title: 'Kunjungan Edukasi Kampus & Inspirasi UNY', location: 'Kampus UNY Yogyakarta', icon: 'school', highlight: 'blue' },
           { time: '17.30 – 20.30', title: 'Observasi Budaya & Relaksasi Malioboro', location: 'Kawasan Malioboro', icon: 'storefront', highlight: 'amber' },
           { time: '20.30 – Selesai', title: 'Kembali ke Hotel Yogyakarta & Istirahat', location: 'Hotel Yogyakarta', icon: 'hotel', highlight: 'emerald' }
         ],
         refl_title: 'Jurnal Refleksi Hari Kelima (Prambanan, Batik & Kampus UNY)',
-        refl_prompt: 'Refleksikan apa yang Anda peroleh hari ini: (1) Sains kimiawi sifat hidrofobik lilin malam (wax barrier) dan proses fiksasi pewarna kain batik di Benang Ratu, (2) Kajian struktur simetri geometri dan sejarah relief Candi Prambanan, serta (3) Eksplorasi akademik dan motivasi studi lanjut saat orientasi kampus UNY!'
+        refl_prompt: 'Refleksikan apa yang Anda peroleh hari ini: (1) Sains kimiawi sifat hidrofobik lilin malam (wax barrier) dan proses fiksasi pewarna kain batik di Benang Ratu, (2) Kajian struktur simetri geometri dan sejarah relief Candi Prambanan, serta (3) Refleksi kunjungan edukasi kampus UNY dan motivasi studi lanjut jurusan impian Anda!'
       },
       6: {
         day_number: 6,
@@ -2252,6 +2252,9 @@ const FincestemCore = {
           } else if (type === 'materi_batik') {
             const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
             writeLocal('fincestem_materi_ft_day5_batik_', { conclusion: cText, savedAt: savedTime });
+          } else if (type === 'materi_uny') {
+            const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
+            writeLocal('fincestem_materi_ft_day5_uny_', { conclusion: cText, savedAt: savedTime });
           } else if (type === 'lkpd') {
             if (day === 1) {
               writeLocal('fincestem_lkpd_ft_day1_', parsed);
@@ -2281,6 +2284,8 @@ const FincestemCore = {
             writeLocal('fincestem_lkpd_ft_day3_museum_', parsed);
           } else if (type === 'lkpd_batik') {
             writeLocal('fincestem_lkpd_ft_day5_batik_', parsed);
+          } else if (type === 'lkpd_uny') {
+            writeLocal('fincestem_lkpd_ft_day5_uny_', parsed);
           } else if (type === 'asesmen') {
             writeLocal('fincestem_asesmen_ft_day' + day + '_', parsed);
             writeLocal('fincestem_asesmen_day' + day + '_', parsed);

@@ -3330,6 +3330,28 @@
       return false;
     }
 
+    function checkIsD5Sesi3MateriDone(cleanNisn) {
+      try {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = Array.from(new Set([nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier])).filter(Boolean);
+        for (const id of ids) {
+          const raw = localStorage.getItem('fincestem_materi_ft_day5_uny_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && (p.conclusion || p.text || p.content)) return true;
+            } catch(e) {}
+          }
+        }
+        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          if (tm['5_materi_uny']) return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
     function switchD5Session(targetSesi) {
       currentD5Session = Number(targetSesi);
       const mainEl = document.querySelector('main');
@@ -3347,6 +3369,7 @@
       const isS1Done = checkIsD5Sesi1Done(cleanNisn);
       const isS1RefleksiDone = checkIsD5Sesi1RefleksiDone(cleanNisn);
       const isS2MateriDone = checkIsD5Sesi2MateriDone(cleanNisn);
+      const isS3MateriDone = checkIsD5Sesi3MateriDone(cleanNisn);
 
       if (targetSesi !== undefined && targetSesi !== null) {
         currentD5Session = Number(targetSesi);
@@ -3377,10 +3400,11 @@
             ${isS2MateriDone ? '<span class="text-[11px] text-amber-200 font-bold ml-1">✓</span>' : (!isS1RefleksiDone ? '<span class="text-[10px] text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">Kunci</span>' : (currentD5Session === 2 ? '<span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse ml-0.5"></span>' : ''))}
           </button>
 
-          <!-- TAB 3: KAMPUS UNY (ORIENTASI & REFLEKSI) -->
+          <!-- TAB 3: KAMPUS UNY (REFLEKSI STUDI LANJUT) -->
           <button type="button" onclick="switchD5Session(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5Session === 3 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
             <span class="material-symbols-outlined text-base ${currentD5Session === 3 ? 'text-amber-300' : 'text-blue-600'}">school</span>
             <span class="truncate">Sesi 3: Kampus UNY</span>
+            ${isS3MateriDone ? '<span class="text-[11px] text-blue-200 font-bold ml-1">✓</span>' : (currentD5Session === 3 ? '<span class="w-2 h-2 rounded-full bg-blue-300 animate-pulse ml-0.5"></span>' : '')}
           </button>
         </div>
       `;
@@ -3440,42 +3464,7 @@
       }
 
       if (currentD5Session === 3) {
-        // PREVIEW SESI 3: KAMPUS UNY (ORIENTASI & REFLEKSI)
-        mainEl.innerHTML = `
-          ${tabNavHtml}
-          <div class="bg-gradient-to-br from-blue-800 via-indigo-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
-                Field Trip • Day 5 • Sesi 3
-              </span>
-              <span class="text-xs font-bold text-blue-200">Pukul 14.30 - 17.00 WIB</span>
-            </div>
-            <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              Sesi 3: Orientasi Akademik di Kampus UNY
-            </h2>
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-400/20 text-blue-200 font-extrabold text-xs w-fit">
-              <span class="material-symbols-outlined text-base">school</span>
-              <span>Orientasi Studi Lanjut PTN & Jurnal Refleksi Mandiri</span>
-            </div>
-            <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
-              Sesi penjelajahan perguruan tinggi negeri (PTN) Universitas Negeri Yogyakarta untuk memotivasi cita-cita studi lanjut, meninjau laboratorium kampus, dan mengisi refleksi harian.
-            </p>
-          </div>
-
-          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-blue-200/80 shadow-xs flex flex-col items-center text-center gap-3">
-            <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
-              <span class="material-symbols-outlined text-3xl">school</span>
-            </div>
-            <h3 class="font-extrabold text-base text-slate-900">Sesi 3 Orientasi Akademik Kampus</h3>
-            <p class="text-xs text-slate-600 max-w-sm">
-              Sesi ini dijadwalkan pada siang-sore hari setelah kunjungan Sesi 1 Candi Prambanan dan Sesi 2 Membatik selesai dilaksanakan.
-            </p>
-            <button type="button" onclick="switchD5Session(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Kembali ke Sesi 1 Candi Prambanan</span>
-            </button>
-          </div>
-        `;
+        renderD5S3UnyModule(mainEl, tabNavHtml, cleanNisn);
         return;
       }
 
@@ -4245,6 +4234,284 @@
       window.location.href = 'lkpd.html?day=5&sesi=2';
     }
 
+    // ==========================================
+    // MODUL BELAJAR DAY 5 SESI 3: KAMPUS UNY
+    // (Inspirasi Studi Lanjut & Cita-Cita Masa Depan - Murni Refleksi Mandiri)
+    // ==========================================
+    function renderD5S3UnyModule(mainEl, tabNavHtml, cleanNisn) {
+      const user = FincestemCore.auth.getUser() || {};
+      mainEl.innerHTML = `
+        ${tabNavHtml}
+
+        <!-- BANNER MODUL FIELD TRIP DAY 5 SESI 3 -->
+        <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
+              Field Trip • Day 5 • Sesi 3
+            </span>
+            <span class="text-xs font-bold text-blue-200">Pukul 14.30 - 17.00 WIB</span>
+          </div>
+          <h2 class="font-black text-xl sm:text-2xl leading-tight">
+            Sesi 3: Kunjungan Edukasi Kampus UNY (Inspirasi Studi Lanjut)
+          </h2>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-400/20 text-blue-200 font-extrabold text-xs w-fit">
+            <span class="material-symbols-outlined text-base">school</span>
+            <span>Inspirasi Masa Depan: 🎓 Refleksi Studi Lanjut PTN (Murni Refleksi Mandiri)</span>
+          </div>
+          <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
+            Mengenal atmosfer akademik dan fasilitas unggulan Universitas Negeri Yogyakarta (UNY), memetakan potensi diri, serta menumbuhkan motivasi kuat menembus perguruan tinggi negeri impian sejak kelas X.
+          </p>
+        </div>
+
+        <!-- 3 BAB MATERI EDUKASI KAMPUS UNY -->
+        <div class="flex flex-col gap-4">
+
+          <!-- BAB 1: PROFIL & REPUTASI UNY -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 text-blue-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 font-black text-sm">1</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Mengenal Universitas Negeri Yogyakarta (UNY)</h3>
+                <span class="text-[11px] font-bold text-blue-800">Kampus Pendidikan &amp; Sains Teknologi Bereputasi Dunia</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                Universitas Negeri Yogyakarta (UNY) bermula dari IKIP Yogyakarta yang berdiri sejak 1964 dan kini bertransformasi menjadi salah satu <strong>Perguruan Tinggi Negeri Berbadan Hukum (PTN-BH)</strong> terkemuka di Indonesia. UNY memiliki reputasi unggul baik dalam bidang kependidikan (pencetak guru &amp; tenaga pendidik profesional) maupun non-kependidikan (ilmu murni sains, teknik, ekonomi, seni, bahasa, dan keolahragaan).
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
+                <div class="p-3 rounded-2xl bg-blue-50/60 border border-blue-100 flex flex-col gap-1">
+                  <span class="font-bold text-blue-900 text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm text-blue-600">local_library</span>
+                    <span>Fasilitas Akademik Modern</span>
+                  </span>
+                  <span class="text-[11px] text-slate-600">Digital Library modern, laboratorium riset terpadu, pusat pembelajaran mikro (Microteaching Lab), dan sport center berstandar internasional.</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-indigo-50/60 border border-indigo-100 flex flex-col gap-1">
+                  <span class="font-bold text-indigo-900 text-xs flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-sm text-indigo-600">domain</span>
+                    <span>Atmosfer Kota Pendidikan</span>
+                  </span>
+                  <span class="text-[11px] text-slate-600">Terletak strategis di kawasan Karangmalang, Yogyakarta, dikelilingi komunitas ilmiah, perpustakaan daerah, dan pusat kebudayaan nusantara.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAB 2: FAKULTAS UNGGULAN & JALUR PENERIMAAN PTN -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 text-blue-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Eksplorasi Fakultas, Program Studi &amp; Jalur Masuk PTN</h3>
+                <span class="text-[11px] font-bold text-blue-800">Menemukan Jurusan yang Sesuai Minat &amp; Bakat</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                UNY menaungi 8 Fakultas dan 1 Sekolah Vokasi dengan puluhan program studi sarjana (S1) dan terapan (D4):
+              </p>
+              <ul class="list-disc pl-5 space-y-1 text-xs text-slate-700">
+                <li><strong>FIP (Fakultas Ilmu Pendidikan &amp; Psikologi)</strong>: PGSD, PGPAUD, Manajemen Pendidikan, Psikologi, Bimbingan Konseling.</li>
+                <li><strong>FMIPA (Fakultas Matematika &amp; Ilmu Pengetahuan Alam)</strong>: Pendidikan Matematika/Fisika/Kimia/Biologi, Sains Data, Biologi, Kimia, Fisika, Matematika Murni.</li>
+                <li><strong>FT (Fakultas Teknik)</strong>: Teknik Elektro, Teknik Mesin, Teknik Sipil, Pendidikan Teknik Informatika, Arsitektur.</li>
+                <li><strong>FEB (Fakultas Ekonomi &amp; Bisnis)</strong>: Manajemen, Akuntansi, Pendidikan Ekonomi, Bisnis Digital.</li>
+                <li><strong>FBSB (Fakultas Bahasa, Seni &amp; Budaya)</strong>: Sastra Indonesia/Inggris, Pendidikan Bahasa, Seni Rupa, Seni Musik, Tari.</li>
+                <li><strong>FISHIPOL &amp; FIKK</strong>: Ilmu Komunikasi, Hukum, Sosiologi, Pendidikan Olahraga, Kepelatihan Olahraga.</li>
+              </ul>
+              <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs flex flex-col gap-1.5 mt-1">
+                <span class="font-bold text-amber-900 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-amber-700">door_open</span>
+                  <span>3 Jalur Masuk Perguruan Tinggi Negeri (PTN):</span>
+                </span>
+                <span class="text-slate-700 leading-relaxed">
+                  <strong>1. SNBP (Seleksi Nasional Berdasarkan Prestasi)</strong>: Seleksi nilai rapor semester 1-5 + prestasi pendukung tanpa tes tulis.<br>
+                  <strong>2. SNBT (Seleksi Nasional Berdasarkan Tes)</strong>: UTBK Tes Potensi Skolastik, Literasi Bahasa Indonesia/Inggris, dan Penalaran Matematika.<br>
+                  <strong>3. Seleksi Mandiri UNY</strong>: Jalur Prestasi Akademik/Olahraga/Seni, Skor UTBK, dan CBT Kampus.
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAB 3: MEMBANGUN KOMITMEN DAN IKHTIAR SEJAK KELAS X -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 text-blue-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 font-black text-sm">3</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Membangun Komitmen &amp; Ikhtiar Nyata di Sekolah</h3>
+                <span class="text-[11px] font-bold text-blue-800">Strategi Sukses Menuju Kampus Impian Mulai Hari Ini</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                Meraih kursi di perguruan tinggi negeri impian bukanlah hasil keberuntungan semalam, melainkan akumulasi ikhtiar konsisten sejak awal SMA:
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mt-1 text-xs">
+                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                  <strong class="text-slate-900 block mb-1">1. Nilai Rapor Stabil &amp; Meningkat</strong>
+                  <span class="text-slate-600 text-[11px]">Pertahankan tren nilai positif sejak semester 1 agar masuk kuota eligible siswa terbaik sekolah pada seleksi SNBP.</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                  <strong class="text-slate-900 block mb-1">2. Literasi &amp; Berpikir Kritis</strong>
+                  <span class="text-slate-600 text-[11px]">Latih daya nalar matematis dan pemahaman bacaan kritis untuk kesiapan UTBK SNBT serta pemecahan masalah nyata.</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
+                  <strong class="text-slate-900 block mb-1">3. Karakter &amp; Portofolio</strong>
+                  <span class="text-slate-600 text-[11px]">Aktif dalam kegiatan kokurikuler riset FINCESTEM, lomba karya tulis, dan organisasi untuk memperkaya portofolio prestasi.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FORM RESUME / CATATAN INSPIRASI MODUL SESI 3 -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-blue-200/80 shadow-xs flex flex-col gap-3.5">
+          <div class="flex items-center gap-2.5 text-blue-950 border-b border-slate-100 pb-2">
+            <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-lg">edit_note</span>
+            </span>
+            <div>
+              <h3 class="font-black text-sm sm:text-base">Catatan Inspirasi Kunjungan Kampus UNY</h3>
+              <span class="text-[11px] font-bold text-blue-800">Simpan resume singkat pemahaman materi sebelum lanjut ke LKPD</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Tuliskan rangkuman singkat atau hal paling menginspirasi yang Anda pelajari mengenai kampus UNY, pilihan program studi, dan persiapan studi lanjut Anda:
+          </p>
+          <textarea id="ftD5S3ConclusionInput" rows="3" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 bg-white" placeholder="Contoh: UNY menginspirasi saya karena fasilitas risetnya yang lengkap. Saya ingin mempersiapkan nilai rapor sejak semester 1 agar bisa mendaftar prodi impian..."></textarea>
+          
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+            <div id="ftD5S3ConclusionStatus" class="hidden text-xs text-emerald-700 font-bold flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base">check_circle</span>
+              <span>Tersimpan di sistem (<span id="ftD5S3ConclusionSavedTime">-</span>)</span>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto ml-auto">
+              <button id="ftD5S3SaveConclusionBtn" type="button" onclick="saveMateriConclusionD5S3()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all">
+                <span class="material-symbols-outlined text-base">save</span>
+                <span>Simpan Catatan Inspirasi</span>
+              </button>
+              <button id="ftD5S3GoLkpdBtn" type="button" onclick="handleGoToLkpdD5S3()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all opacity-50 pointer-events-none">
+                <span>Buka LKPD Sesi 3 UNY</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Cek apakah siswa sudah pernah menyimpan catatan resume Sesi 3
+      try {
+        const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), user.nis, user.identifier];
+        let savedText = '';
+        let savedTime = '';
+        for (const id of idVars) {
+          if (!id) continue;
+          const raw = localStorage.getItem('fincestem_materi_ft_day5_uny_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && (p.conclusion || p.text || p.content)) {
+                savedText = p.conclusion || p.text || p.content;
+                savedTime = p.savedAt || p.date || '';
+                break;
+              }
+            } catch(e) {}
+          }
+        }
+        if (!savedText && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          if (tm['5_materi_uny']) {
+            const task = tm['5_materi_uny'];
+            if (task.content) {
+              try {
+                const p = JSON.parse(task.content);
+                savedText = p.conclusion || p.text || task.content;
+              } catch(e) {
+                savedText = task.content;
+              }
+            }
+          }
+        }
+        if (savedText) {
+          applyMateriConclusionStateD5S3(savedText, savedTime);
+        }
+      } catch(e) {}
+    }
+
+    function saveMateriConclusionD5S3() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const txt = (document.getElementById('ftD5S3ConclusionInput')?.value || '').trim();
+
+      if (!txt || txt.length < 5) {
+        FincestemCore.ui.toast('Tuliskan catatan inspirasi kunjungan UNY Anda minimal beberapa kata!', 'warning');
+        const el = document.getElementById('ftD5S3ConclusionInput');
+        if (el) el.focus();
+        return;
+      }
+
+      const now = new Date().toISOString();
+      const payload = {
+        conclusion: txt,
+        savedAt: now
+      };
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), user.nis, user.identifier].filter(Boolean);
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_materi_ft_day5_uny_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(cleanNisn, 5, 'materi_uny', payload, function() {
+          applyMateriConclusionStateD5S3(txt, now);
+          FincestemCore.ui.toast('Catatan inspirasi Modul Sesi 3 UNY berhasil disimpan!', 'success');
+        });
+      } else {
+        applyMateriConclusionStateD5S3(txt, now);
+        FincestemCore.ui.toast('Catatan inspirasi Modul Sesi 3 UNY berhasil disimpan!', 'success');
+      }
+    }
+
+    function applyMateriConclusionStateD5S3(savedText, savedTime) {
+      const input = document.getElementById('ftD5S3ConclusionInput');
+      const saveBtn = document.getElementById('ftD5S3SaveConclusionBtn');
+      const statusBox = document.getElementById('ftD5S3ConclusionStatus');
+      const timeBox = document.getElementById('ftD5S3ConclusionSavedTime');
+      const nextBtn = document.getElementById('ftD5S3GoLkpdBtn');
+
+      if (input) {
+        input.value = savedText;
+        input.disabled = true;
+        input.classList.add('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+      }
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.classList.remove('bg-blue-600', 'hover:bg-blue-700', 'cursor-pointer');
+        saveBtn.classList.add('bg-emerald-600', 'text-white', 'cursor-default');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>Catatan Telah Disimpan</span>';
+      }
+      if (statusBox) statusBox.classList.remove('hidden');
+      if (timeBox && savedTime) {
+        try {
+          timeBox.textContent = new Date(savedTime).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+        } catch (e) {
+          timeBox.textContent = savedTime;
+        }
+      }
+      if (nextBtn) {
+        nextBtn.classList.remove('opacity-50', 'pointer-events-none');
+        nextBtn.classList.add('animate-pulse');
+      }
+    }
+
+    function handleGoToLkpdD5S3() {
+      window.location.href = 'lkpd.html?day=5&sesi=3';
+    }
+
     window.renderDay5FieldTripModule = renderDay5FieldTripModule;
     window.switchD5Session = switchD5Session;
     window.saveMateriConclusionD5S1 = saveMateriConclusionD5S1;
@@ -4253,8 +4520,13 @@
     window.saveMateriConclusionD5S2 = saveMateriConclusionD5S2;
     window.applyMateriConclusionStateD5S2 = applyMateriConclusionStateD5S2;
     window.handleGoToLkpdD5S2 = handleGoToLkpdD5S2;
+    window.renderD5S3UnyModule = renderD5S3UnyModule;
+    window.saveMateriConclusionD5S3 = saveMateriConclusionD5S3;
+    window.applyMateriConclusionStateD5S3 = applyMateriConclusionStateD5S3;
+    window.handleGoToLkpdD5S3 = handleGoToLkpdD5S3;
     window.checkIsD5Sesi1RefleksiDone = checkIsD5Sesi1RefleksiDone;
     window.checkIsD5Sesi2MateriDone = checkIsD5Sesi2MateriDone;
+    window.checkIsD5Sesi3MateriDone = checkIsD5Sesi3MateriDone;
 
 
     // MODUL BELAJAR KHUSUS FIELD TRIP DAY 4 S.D. 7

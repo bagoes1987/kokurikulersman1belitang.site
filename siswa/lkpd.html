@@ -157,7 +157,7 @@
     };
     var activeUser = window.activeUser;
   </script>
-  <script src="../js/modules/lkpd-fieldtrip.js?v=20261026_d5_v2"></script>
+  <script src="../js/modules/lkpd-fieldtrip.js?v=20261026_d5_v4"></script>
   <script>
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -194,24 +194,44 @@
         }
       }
 
-      // 1. RENDER INSTAN 0 MILIDETIK (HILANGKAN SPINNER SEKETIKA, FORM LKPD LANGSUNG MUNCUL)
-      try {
-        if (dayNum === 4) {
-          renderFieldTripDay4LKPD(isReadOnlyUrl);
-        } else if (dayNum === 3) {
-          renderFieldTripDay3LKPD(isReadOnlyUrl);
-        } else if (dayNum === 2) {
-          renderFieldTripDay2LKPD(isReadOnlyUrl);
-        } else if (dayNum === 1) {
-          renderFieldTripDay1LKPD(isReadOnlyUrl);
-        } else if (dayNum === 5) {
-          renderFieldTripDay5LKPD(isReadOnlyUrl);
-        } else if (dayNum >= 6 && dayNum <= 7) {
-          renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
+      function renderActiveLkpd() {
+        try {
+          if (dayNum === 4) {
+            renderFieldTripDay4LKPD(isReadOnlyUrl);
+          } else if (dayNum === 3) {
+            renderFieldTripDay3LKPD(isReadOnlyUrl);
+          } else if (dayNum === 2) {
+            renderFieldTripDay2LKPD(isReadOnlyUrl);
+          } else if (dayNum === 1) {
+            renderFieldTripDay1LKPD(isReadOnlyUrl);
+          } else if (dayNum === 5) {
+            renderFieldTripDay5LKPD(isReadOnlyUrl);
+          } else if (dayNum >= 6 && dayNum <= 7) {
+            renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
+          }
+          const spinner = document.getElementById('lkpdLoadingState');
+          if (spinner) spinner.remove();
+        } catch (errRender) {
+          console.error('Error saat render LKPD:', errRender);
+          const spinner = document.getElementById('lkpdLoadingState');
+          if (spinner) {
+            spinner.innerHTML = `
+              <div class="p-6 rounded-3xl bg-red-50 border border-red-200 text-center flex flex-col items-center gap-3 max-w-md mx-auto">
+                <span class="material-symbols-outlined text-red-600 text-4xl">error</span>
+                <h3 class="font-black text-slate-900 text-base">Gagal Memuat Lembar Kerja LKPD</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">${errRender.message || 'Terjadi kendala saat rendering'}</p>
+                <div class="flex gap-2 mt-1">
+                  <button type="button" onclick="location.reload(true)" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs cursor-pointer shadow-xs">Muat Ulang Halaman</button>
+                  <a href="dashboard.html" class="px-5 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs cursor-pointer flex items-center gap-1">Kembali ke Dashboard</a>
+                </div>
+              </div>
+            `;
+          }
         }
-      } catch (errRender) {
-        console.error('Error saat render instan LKPD:', errRender);
       }
+
+      // 1. RENDER INSTAN 0 MILIDETIK (HILANGKAN SPINNER SEKETIKA, FORM LKPD LANGSUNG MUNCUL)
+      renderActiveLkpd();
 
       // 2. SINKRONISASI JADWAL DI LATAR BELAKANG (NON-BLOCKING)
       try {
@@ -231,23 +251,7 @@
               }
 
               // Re-render LKPD otomatis seketika data progres server terhidrasi (membuka kunci & mengisi jawaban)
-              try {
-                if (dayNum === 4) {
-                  renderFieldTripDay4LKPD(isReadOnlyUrl);
-                } else if (dayNum === 3) {
-                  renderFieldTripDay3LKPD(isReadOnlyUrl);
-                } else if (dayNum === 2) {
-                  renderFieldTripDay2LKPD(isReadOnlyUrl);
-                } else if (dayNum === 1) {
-                  renderFieldTripDay1LKPD(isReadOnlyUrl);
-                } else if (dayNum === 5) {
-                  renderFieldTripDay5LKPD(isReadOnlyUrl);
-                } else if (dayNum >= 6 && dayNum <= 7) {
-                  renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
-                }
-              } catch (eRe) {
-                console.warn('Re-render LKPD error:', eRe);
-              }
+              renderActiveLkpd();
 
               if (!access.canEdit || isReadOnlyUrl) {
                 const saveBtns = document.querySelectorAll('#btnSubmitLkpdApel, #saveLkpdBtn, #btnSubmitLkpdD2Akpol, #btnSubmitLkpdD2Lawang, #saveFtLkpdBtn');

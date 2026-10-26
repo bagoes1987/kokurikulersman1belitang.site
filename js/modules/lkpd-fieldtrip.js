@@ -3401,7 +3401,6 @@
 
     
     function checkIsD5Sesi1RefleksiDone(cleanNisn) {
-      if (window.checkIsD5Sesi1RefleksiDone) return window.checkIsD5Sesi1RefleksiDone(cleanNisn);
       try {
         const user = activeUser || {};
         const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
@@ -3433,7 +3432,6 @@
     }
 
     function checkIsD5Sesi2MateriDone(cleanNisn) {
-      if (window.checkIsD5Sesi2MateriDone) return window.checkIsD5Sesi2MateriDone(cleanNisn);
       try {
         const user = activeUser || {};
         const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
@@ -3450,6 +3448,28 @@
         if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
           const tm = window.currentStudentProgress.task_map;
           if (tm['5_materi_batik']) return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function checkIsD5Sesi3LkpdDone(cleanNisn) {
+      try {
+        const user = activeUser || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = Array.from(new Set([nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier])).filter(Boolean);
+        for (const id of ids) {
+          const raw = localStorage.getItem('fincestem_lkpd_ft_day5_uny_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && p.submitted) return true;
+            } catch(e) {}
+          }
+        }
+        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          if (tm['5_lkpd_uny'] && tm['5_lkpd_uny'].status === 'submitted') return true;
         }
       } catch(e) {}
       return false;
@@ -3510,6 +3530,30 @@
         }
       }
       const isS2Submitted = !!(savedS2 && savedS2.submitted);
+
+      // Cek status LKPD Sesi 3 UNY
+      let savedS3 = null;
+      for (const id of idVars) {
+        const rawS3 = localStorage.getItem('fincestem_lkpd_ft_day5_uny_' + id);
+        if (rawS3) {
+          try {
+            savedS3 = JSON.parse(rawS3);
+            break;
+          } catch(e) {}
+        }
+      }
+      if (!savedS3 && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        const task = tm['5_lkpd_uny'];
+        if (task && task.content) {
+          let p = task.content;
+          if (typeof p === 'string') {
+            try { p = JSON.parse(p); } catch(e) {}
+          }
+          if (p && typeof p === 'object') savedS3 = p;
+        }
+      }
+      const isS3Submitted = !!(savedS3 && savedS3.submitted);
 
       // 1. Cek prasyarat kesimpulan Modul Sesi 1 Candi Prambanan
       let hasMateriPrambanan = false;
@@ -3583,10 +3627,11 @@
             ${isS2Submitted ? '<span class="text-[11px] text-amber-200 font-bold ml-1">✓</span>' : (!isS1RefleksiDone ? '<span class="text-[10px] text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">Kunci</span>' : (currentD5LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse ml-0.5"></span>' : ''))}
           </button>
 
-          <!-- TAB 3: KAMPUS UNY (ORIENTASI & REFLEKSI) -->
+          <!-- TAB 3: KAMPUS UNY (REFLEKSI STUDI LANJUT) -->
           <button type="button" onclick="switchD5LkpdSession(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5LkpdSession === 3 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
             <span class="material-symbols-outlined text-base ${currentD5LkpdSession === 3 ? 'text-amber-300' : 'text-blue-600'}">school</span>
             <span class="truncate">Sesi 3: LKPD Kampus UNY</span>
+            ${isS3Submitted ? '<span class="text-[11px] text-blue-200 font-bold ml-1">✓</span>' : (currentD5LkpdSession === 3 ? '<span class="w-2 h-2 rounded-full bg-blue-300 animate-pulse ml-0.5"></span>' : '')}
           </button>
         </div>
       `;
@@ -3893,32 +3938,187 @@
       }
 
       if (currentD5LkpdSession === 3) {
-        // PREVIEW SESI 3 LKPD
+        // SESI 3: KUNJUNGAN EDUKASI KAMPUS UNY (REFLEKSI STUDI LANJUT & CITA-CITA MASA DEPAN)
+        const valWawasan = savedS3 ? (savedS3.wawasanUny || '') : '';
+        const valProdi = savedS3 ? (savedS3.prodiImpian || '') : '';
+        const valAlasanProdi = savedS3 ? (savedS3.alasanProdi || '') : '';
+        const valKomitmen = savedS3 ? (savedS3.komitmenSekolah || '') : '';
+        const s3Disabled = (isReadOnly || isS3Submitted) ? 'disabled' : '';
+
         mainEl.innerHTML = `
           ${tabNavHtml}
-          <div class="bg-gradient-to-br from-blue-800 via-indigo-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
-            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md w-fit">
-              Field Trip • Day 5 • Sesi 3
-            </span>
+
+          <!-- BANNER LKPD FIELD TRIP DAY 5 SESI 3 -->
+          <div class="bg-gradient-to-br from-blue-700 via-indigo-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
+                Field Trip • Day 5 • Sesi 3
+              </span>
+              <span class="text-xs font-bold text-blue-200">Pukul 14.30 - 17.00 WIB</span>
+            </div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              LKPD Sesi 3: Orientasi Akademik Kampus UNY
+              LKPD Sesi 3: Kunjungan Edukasi Kampus UNY
             </h2>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-400/20 text-blue-200 font-extrabold text-xs w-fit">
+              <span class="material-symbols-outlined text-base">school</span>
+              <span>Inspirasi Masa Depan: 🎓 Refleksi Studi Lanjut PTN (Murni Refleksi Mandiri)</span>
+            </div>
             <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
-              Eksplorasi wawasan perguruan tinggi negeri dan refleksi cita-cita studi lanjut di Kampus Universitas Negeri Yogyakarta.
+              Lembar refleksi personal siswa setelah mengamati kampus Universitas Negeri Yogyakarta (UNY): wawasan perguruan tinggi, pemilihan jurusan/prodi impian, dan komitmen ikhtiar nyata di sekolah untuk meraih cita-cita.
             </p>
           </div>
-          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-blue-200/80 shadow-xs flex flex-col items-center text-center gap-3">
-            <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
-              <span class="material-symbols-outlined text-3xl">school</span>
+
+          <!-- KARTU IDENTITAS PESERTA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-4 sm:p-5 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
+              <div class="flex items-center gap-2 text-blue-950 font-black text-xs sm:text-sm">
+                <span class="material-symbols-outlined text-blue-700 text-lg">badge</span>
+                <span>Identitas Peserta Kunjungan Kampus UNY</span>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black ${isS3Submitted ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-blue-100 text-blue-800 border border-blue-200'}">
+                ${isS3Submitted ? '✓ TERSUBMIT RESMI' : 'DRAFT PENGERJAAN'}
+              </span>
             </div>
-            <h3 class="font-extrabold text-base text-slate-900">LKPD Sesi 3 Kampus UNY</h3>
-            <p class="text-xs text-slate-600 max-w-sm">
-              Sesi orientasi kampus dibuka pada siang-sore hari setelah jadwal kunjungan Prambanan dan Membatik tuntas.
-            </p>
-            <button type="button" onclick="switchD5LkpdSession(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Buka LKPD Sesi 1 Candi Prambanan</span>
-            </button>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div class="p-2.5 rounded-2xl bg-blue-50/50 border border-blue-200/60">
+                <span class="text-slate-500 font-semibold block text-[10px]">Nama Siswa:</span>
+                <strong class="text-slate-900 truncate block">${studentName}</strong>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-blue-50/50 border border-blue-200/60">
+                <span class="text-slate-500 font-semibold block text-[10px]">NISN:</span>
+                <strong class="text-slate-900 truncate block">${studentNisn}</strong>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-blue-50/50 border border-blue-200/60">
+                <span class="text-slate-500 font-semibold block text-[10px]">Kelas:</span>
+                <strong class="text-slate-900 truncate block">${studentClass}</strong>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-blue-50/50 border border-blue-200/60">
+                <span class="text-slate-500 font-semibold block text-[10px]">Fasilitator:</span>
+                <strong class="text-slate-900 truncate block">${fasilName}</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- FORM LKPD SESI 3: 3 PERTANYAAN REFLEKSI SEDERHANA -->
+          <form id="formFtDay5S3LKPD" onsubmit="event.preventDefault();" class="flex flex-col gap-4">
+
+            <!-- PERTANYAAN 1: WAWASAN YANG DIPEROLEH DI UNY -->
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-blue-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 font-black text-sm">1</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Pengalaman &amp; Wawasan Kunjungan Kampus UNY</h3>
+                  <span class="text-[11px] font-bold text-blue-800">Eksplorasi Lingkungan, Fasilitas &amp; Budaya Akademik PTN</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Apa saja pengalaman berharga, hal baru, atau inspirasi yang Anda peroleh selama mengamati kehidupan akademik, fasilitas kampus, laboratorium, atau lingkungan Universitas Negeri Yogyakarta?
+              </p>
+              <textarea id="ftD5S3_wawasanUny" rows="4" ${s3Disabled} class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${s3Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Tuliskan wawasan atau pengalaman berkesan Anda selama berada di Kampus UNY...">${valWawasan}</textarea>
+            </div>
+
+            <!-- PERTANYAAN 2: JURUSAN / PRODI IMPIAN DI UNY -->
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-blue-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Pilihan Program Studi (Prodi) / Jurusan Impian</h3>
+                  <span class="text-[11px] font-bold text-blue-800">Cita-Cita &amp; Alasan Minat Studi Lanjut</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Seandainya Anda nanti berkesempatan diterima kuliah di Universitas Negeri Yogyakarta (UNY), program studi (jurusan) apa yang paling ingin Anda ambil? Apa alasan dan minat mendalam Anda memilih jurusan tersebut?
+              </p>
+              <div class="flex flex-col gap-2">
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">Nama Jurusan / Program Studi Impian:</label>
+                  <input type="text" id="ftD5S3_prodiImpian" value="${valProdi}" ${s3Disabled} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${s3Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Contoh: S1 Pendidikan Guru Sekolah Dasar / S1 Teknik Elektro / S1 Matematika / S1 Akuntansi / dll">
+                </div>
+                <div>
+                  <label class="block text-[11px] font-bold text-slate-700 mb-1">Alasan Memilih Jurusan Tersebut:</label>
+                  <textarea id="ftD5S3_alasanProdi" rows="3" ${s3Disabled} class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${s3Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Jelaskan alasan mengapa Anda tertarik dan memilih jurusan tersebut...">${valAlasanProdi}</textarea>
+                </div>
+              </div>
+            </div>
+
+            <!-- PERTANYAAN 3: KOMITMEN & IKHTIAR DI SEKOLAH -->
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-blue-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 font-black text-sm">3</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Komitmen &amp; Ikhtiar Nyata di Sekolah</h3>
+                  <span class="text-[11px] font-bold text-blue-800">Aksi Nyata di SMAN 1 Belitang Mulai Sekarang</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Komitmen dan ikhtiar nyata apa yang akan Anda lakukan di SMAN 1 Belitang mulai sekarang (seperti kedisiplinan belajar, menjaga kestabilan nilai rapor semester 1–5, aktif organisasi/ekskul, atau ibadah &amp; doa) agar cita-cita menembus PTN tersebut dapat tercapai?
+              </p>
+              <textarea id="ftD5S3_komitmenSekolah" rows="4" ${s3Disabled} class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${s3Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Tuliskan komitmen dan langkah nyata Anda di sekolah mulai saat ini...">${valKomitmen}</textarea>
+            </div>
+
+            <!-- TOMBOL AKSI SUBMIT / STATUS TERKUNCI -->
+            ${!isS3Submitted && !isReadOnly ? `
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-3xl bg-surface-container-lowest border border-blue-200 shadow-xs">
+              <button type="button" onclick="switchD5LkpdSession(2)" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
+                <span>Kembali ke Sesi 2 Membatik</span>
+              </button>
+              <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+                <button id="btnSaveFtD5S3Draft" type="button" onclick="saveFtDay5S3LKPD(false)" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">save</span>
+                  <span>Simpan Draft</span>
+                </button>
+                <button id="btnSaveFtD5S3Lkpd" type="button" onclick="saveFtDay5S3LKPD(true)" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all">
+                  <span class="material-symbols-outlined text-base">send</span>
+                  <span>Kirim Jawaban Resmi Sesi 3</span>
+                </button>
+              </div>
+            </div>
+            ` : `
+            <div class="p-4 rounded-3xl bg-blue-50 border border-blue-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-2.5 text-blue-900 font-bold">
+                <span class="material-symbols-outlined text-blue-700 text-xl">verified</span>
+                <span>LKPD Sesi 3 (Kunjungan Kampus UNY) Telah Tersimpan Resmi!</span>
+              </div>
+              <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <button type="button" onclick="switchD5LkpdSession(1)" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs">
+                  Sesi 1 Prambanan
+                </button>
+                <button type="button" onclick="switchD5LkpdSession(2)" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs">
+                  Sesi 2 Batik
+                </button>
+                <a href="dashboard.html?day=5" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs">
+                  <span class="material-symbols-outlined text-sm">dashboard</span>
+                  <span>Dashboard</span>
+                </a>
+              </div>
+            </div>
+            `}
+
+          </form>
+
+          <!-- MODAL SUKSES SUBMIT LKPD SESI 3 -->
+          <div id="modalLkpdFtD5S3Success" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl flex flex-col items-center text-center gap-4 border border-slate-100 transform scale-95 transition-all">
+              <div class="w-16 h-16 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-4xl">school</span>
+              </div>
+              <div class="flex flex-col gap-1">
+                <h3 class="text-lg font-black text-slate-900 leading-tight">LKPD Kampus UNY Tuntas!</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Refleksi wawasan kampus, jurusan impian, dan komitmen belajar Anda berhasil disimpan dan disubmit ke sistem.
+                </p>
+              </div>
+              <div class="flex flex-col gap-2 w-full mt-2">
+                <button type="button" onclick="closeFtD5S3LkpdModal()" class="w-full py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs shadow-xs cursor-pointer transition-all">
+                  Lihat Lembar Jawaban
+                </button>
+                <a href="dashboard.html?day=5" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs cursor-pointer transition-all flex items-center justify-center gap-1.5">
+                  <span class="material-symbols-outlined text-base">dashboard</span>
+                  <span>Kembali ke Dashboard</span>
+                </a>
+              </div>
+            </div>
           </div>
         `;
         return;
@@ -4333,6 +4533,102 @@
       renderFieldTripDay5LKPD(false, 2);
     }
 
+    function saveFtDay5S3LKPD(isFinal) {
+      if (isFinal === undefined) isFinal = true;
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const cleanNisn = String(studentNisn).trim();
+
+      const wawasanUny = (document.getElementById('ftD5S3_wawasanUny')?.value || '').trim();
+      const prodiImpian = (document.getElementById('ftD5S3_prodiImpian')?.value || '').trim();
+      const alasanProdi = (document.getElementById('ftD5S3_alasanProdi')?.value || '').trim();
+      const komitmenSekolah = (document.getElementById('ftD5S3_komitmenSekolah')?.value || '').trim();
+
+      if (isFinal) {
+        if (!wawasanUny || wawasanUny.length < 10) {
+          FincestemCore.ui.toast('Tuliskan wawasan/pengalaman kunjungan UNY Anda (Pertanyaan 1)!', 'warning');
+          const el = document.getElementById('ftD5S3_wawasanUny');
+          if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+          return;
+        }
+        if (!prodiImpian) {
+          FincestemCore.ui.toast('Tuliskan nama jurusan / prodi impian Anda (Pertanyaan 2)!', 'warning');
+          const el = document.getElementById('ftD5S3_prodiImpian');
+          if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+          return;
+        }
+        if (!alasanProdi || alasanProdi.length < 5) {
+          FincestemCore.ui.toast('Tuliskan alasan Anda memilih jurusan tersebut (Pertanyaan 2)!', 'warning');
+          const el = document.getElementById('ftD5S3_alasanProdi');
+          if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+          return;
+        }
+        if (!komitmenSekolah || komitmenSekolah.length < 10) {
+          FincestemCore.ui.toast('Tuliskan komitmen & ikhtiar Anda di sekolah (Pertanyaan 3)!', 'warning');
+          const el = document.getElementById('ftD5S3_komitmenSekolah');
+          if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+          return;
+        }
+      }
+
+      const payload = {
+        wawasanUny,
+        prodiImpian,
+        alasanProdi,
+        komitmenSekolah,
+        submitted: !!isFinal,
+        submittedAt: new Date().toISOString()
+      };
+
+      const btn = document.getElementById('btnSaveFtD5S3Lkpd');
+      if (btn && isFinal) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan LKPD Sesi 3...</span>';
+        btn.classList.add('pointer-events-none', 'opacity-80');
+      }
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), studentNisn];
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day5_uny_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (isFinal) {
+        if (FincestemCore.progress) {
+          FincestemCore.progress.submitTask(studentNisn, 5, 'lkpd_uny', payload, function() {
+            showFtD5S3LkpdModal();
+          });
+        } else {
+          showFtD5S3LkpdModal();
+        }
+      } else {
+        FincestemCore.ui.toast('Draft LKPD Sesi 3 Kampus UNY berhasil disimpan.', 'info');
+      }
+    }
+
+    function showFtD5S3LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtD5S3Success');
+      if (!modal) {
+        FincestemCore.ui.toast('LKPD Sesi 3 (Kampus UNY) Berhasil Disimpan & Dikirim!', 'success');
+        renderFieldTripDay5LKPD(false, 3);
+        return;
+      }
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const inner = modal.querySelector('div');
+      if (inner) {
+        inner.classList.remove('scale-95');
+        inner.classList.add('scale-100');
+      }
+    }
+
+    function closeFtD5S3LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtD5S3Success');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      renderFieldTripDay5LKPD(false, 3);
+    }
+
     window.renderFieldTripDay5LKPD = renderFieldTripDay5LKPD;
     window.switchD5LkpdSession = switchD5LkpdSession;
     window.saveFtDay5S1LKPD = saveFtDay5S1LKPD;
@@ -4341,6 +4637,9 @@
     window.saveFtDay5S2LKPD = saveFtDay5S2LKPD;
     window.showFtD5S2LkpdModal = showFtD5S2LkpdModal;
     window.closeFtD5S2LkpdModal = closeFtD5S2LkpdModal;
+    window.saveFtDay5S3LKPD = saveFtDay5S3LKPD;
+    window.showFtD5S3LkpdModal = showFtD5S3LkpdModal;
+    window.closeFtD5S3LkpdModal = closeFtD5S3LkpdModal;
 
 
     // MODUL LKPD KHUSUS FIELD TRIP DAY 4 S.D. 7
