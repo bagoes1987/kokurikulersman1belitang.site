@@ -204,7 +204,9 @@
           renderFieldTripDay2LKPD(isReadOnlyUrl);
         } else if (dayNum === 1) {
           renderFieldTripDay1LKPD(isReadOnlyUrl);
-        } else if (dayNum >= 5 && dayNum <= 7) {
+        } else if (dayNum === 5) {
+          renderFieldTripDay5LKPD(isReadOnlyUrl);
+        } else if (dayNum >= 6 && dayNum <= 7) {
           renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
         }
       } catch (errRender) {

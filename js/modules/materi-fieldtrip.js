@@ -3236,6 +3236,540 @@
     window.saveDay4BromoConclusion = saveDay4BromoConclusion;
     window.handleGoToLkpdDay4Locked = handleGoToLkpdDay4Locked;
 
+    // ==========================================
+    // MODUL BELAJAR KHUSUS FIELD TRIP DAY 5 (YOGYAKARTA)
+    // Sesi 1: Candi Prambanan (Pilar: EXPLORATION 100%)
+    // Sesi 2: Batik Benang Ratu (Pilar: STEM)
+    // Sesi 3: Kampus UNY (Wawasan & Refleksi)
+    // ==========================================
+    let currentD5Session = 1;
+
+    function checkIsD5Sesi1Done(cleanNisn) {
+      try {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = [nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier].filter(Boolean);
+
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day5_prambanan_' + id) === 'true') return true;
+          const lkpdRaw = localStorage.getItem('fincestem_lkpd_ft_day5_prambanan_' + id) || localStorage.getItem('fincestem_lkpd_ft_day5_' + id);
+          if (lkpdRaw) {
+            try {
+              const p = JSON.parse(lkpdRaw);
+              if (p && (p.submitted || p.candiDekat || p.ceritaRelief)) return true;
+            } catch(e) {}
+          }
+          const materiRaw = localStorage.getItem('fincestem_materi_ft_day5_prambanan_' + id) || localStorage.getItem('fincestem_materi_ft_day5_' + id);
+          if (materiRaw) {
+            try {
+              const m = JSON.parse(materiRaw);
+              if (m && (m.conclusion || m.text)) return true;
+            } catch(e) {}
+          }
+        }
+
+        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          if (tm['5_lkpd_prambanan'] || tm['5_materi_prambanan'] || tm['5_lkpd'] || tm['5_materi']) return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function switchD5Session(targetSesi) {
+      currentD5Session = Number(targetSesi);
+      const mainEl = document.querySelector('main');
+      if (mainEl) renderDay5FieldTripModule(mainEl, currentD5Session);
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch(e) {}
+    }
+
+    function renderDay5FieldTripModule(mainEl, targetSesi) {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+
+      const isS1Done = checkIsD5Sesi1Done(cleanNisn);
+
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD5Session = Number(targetSesi);
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2 || reqSesi === 3) {
+          currentD5Session = reqSesi;
+        } else {
+          currentD5Session = 1;
+        }
+      }
+
+      // Tab navigasi 3 Sesi Day 5
+      const tabNavHtml = `
+        <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+          <!-- TAB 1: CANDI PRAMBANAN (EXPLORATION) -->
+          <button type="button" onclick="switchD5Session(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5Session === 1 ? 'bg-purple-700 text-white shadow-xs ring-2 ring-purple-400/40' : 'bg-slate-50 hover:bg-purple-50 text-purple-950 border border-purple-200'}">
+            <span class="material-symbols-outlined text-base ${currentD5Session === 1 ? 'text-amber-300' : 'text-purple-600'}">temple_hindu</span>
+            <span class="truncate">Sesi 1: Candi Prambanan</span>
+            ${isS1Done ? '<span class="text-[11px] text-purple-200 font-bold ml-1">✓</span>' : (currentD5Session === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5"></span>' : '')}
+          </button>
+
+          <!-- TAB 2: BATIK BENANG RATU (STEM) -->
+          <button type="button" onclick="switchD5Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5Session === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300'}">
+            <span class="material-symbols-outlined text-base ${currentD5Session === 2 ? 'text-amber-200' : 'text-amber-700'}">palette</span>
+            <span class="truncate">Sesi 2: Seni Batik</span>
+          </button>
+
+          <!-- TAB 3: KAMPUS UNY (ORIENTASI & REFLEKSI) -->
+          <button type="button" onclick="switchD5Session(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5Session === 3 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
+            <span class="material-symbols-outlined text-base ${currentD5Session === 3 ? 'text-amber-300' : 'text-blue-600'}">school</span>
+            <span class="truncate">Sesi 3: Kampus UNY</span>
+          </button>
+        </div>
+      `;
+
+      if (currentD5Session === 2) {
+        // PREVIEW SESI 2: BATIK BENANG RATU (STEM)
+        mainEl.innerHTML = `
+          ${tabNavHtml}
+          <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
+                Field Trip • Day 5 • Sesi 2
+              </span>
+              <span class="text-xs font-bold text-amber-200">Pukul 11.00 - 12.45 WIB</span>
+            </div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Sesi 2: Praktik Membatik di Batik Benang Ratu
+            </h2>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-xs w-fit">
+              <span class="material-symbols-outlined text-base">science</span>
+              <span>Pilar Utama: STEM (Sains Kimia Lilin Malam & Pewarnaan Tekstil)</span>
+            </div>
+            <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
+              Sesi ini akan aktif saat rombongan tiba di Sentra Batik Benang Ratu Yogyakarta. Siswa akan mempraktikkan sains perintang lilin malam hidrofobik dan fiksasi zat warna pada kain mori.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-amber-200/80 shadow-xs flex flex-col items-center text-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-3xl">palette</span>
+            </div>
+            <h3 class="font-extrabold text-base text-slate-900">Sesi 2 Segera Dibuka</h3>
+            <p class="text-xs text-slate-600 max-w-sm">
+              Selesaikan terlebih dahulu eksplorasi cagar budaya Candi Prambanan pada Sesi 1 sebelum melanjutkan ke Sesi 2 Batik.
+            </p>
+            <button type="button" onclick="switchD5Session(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Kembali ke Sesi 1 Candi Prambanan</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      if (currentD5Session === 3) {
+        // PREVIEW SESI 3: KAMPUS UNY (ORIENTASI & REFLEKSI)
+        mainEl.innerHTML = `
+          ${tabNavHtml}
+          <div class="bg-gradient-to-br from-blue-800 via-indigo-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md">
+                Field Trip • Day 5 • Sesi 3
+              </span>
+              <span class="text-xs font-bold text-blue-200">Pukul 14.30 - 17.00 WIB</span>
+            </div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Sesi 3: Orientasi Akademik di Kampus UNY
+            </h2>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-blue-400/20 text-blue-200 font-extrabold text-xs w-fit">
+              <span class="material-symbols-outlined text-base">school</span>
+              <span>Orientasi Studi Lanjut PTN & Jurnal Refleksi Mandiri</span>
+            </div>
+            <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
+              Sesi penjelajahan perguruan tinggi negeri (PTN) Universitas Negeri Yogyakarta untuk memotivasi cita-cita studi lanjut, meninjau laboratorium kampus, dan mengisi refleksi harian.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-blue-200/80 shadow-xs flex flex-col items-center text-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-3xl">school</span>
+            </div>
+            <h3 class="font-extrabold text-base text-slate-900">Sesi 3 Orientasi Akademik Kampus</h3>
+            <p class="text-xs text-slate-600 max-w-sm">
+              Sesi ini dijadwalkan pada siang-sore hari setelah kunjungan Sesi 1 Candi Prambanan dan Sesi 2 Membatik selesai dilaksanakan.
+            </p>
+            <button type="button" onclick="switchD5Session(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Kembali ke Sesi 1 Candi Prambanan</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // ==========================================
+      // SESI 1: CANDI PRAMBANAN (MURNI EXPLORATION 100%)
+      // ==========================================
+      mainEl.innerHTML = `
+        ${tabNavHtml}
+
+        <!-- BANNER MODUL FIELD TRIP DAY 5 SESI 1 -->
+        <div class="bg-gradient-to-br from-purple-800 via-indigo-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-purple-100 backdrop-blur-md">
+              Field Trip • Day 5 • Sesi 1
+            </span>
+            <span class="text-xs font-bold text-purple-200">Jumat, 13 November 2026</span>
+          </div>
+          <h2 class="font-black text-xl sm:text-2xl leading-tight">
+            Eksplorasi Mahakarya Candi Prambanan
+          </h2>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-400/20 text-purple-200 font-extrabold text-xs w-fit">
+            <span class="material-symbols-outlined text-base">explore</span>
+            <span>Pilar Utama: EXPLORATION (100% Cagar Budaya & Sejarah)</span>
+          </div>
+          <p class="text-xs sm:text-sm text-purple-100/90 leading-relaxed font-medium">
+            Jelajahi keagungan gugusan candi Hindu terbesar di Indonesia, petakan tata ruang Candi Trimurti dan Candi Wahana, serta telusuri epos relief petualangan Ramayana melalui tradisi pradaksina.
+          </p>
+          <div class="flex items-center gap-2 pt-2 border-t border-white/15 text-xs text-purple-200 font-semibold flex-wrap">
+            <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+              <span>08.00 - 10.30 WIB</span>
+            </span>
+            <span class="inline-flex items-center gap-1 bg-white/10 px-2.5 py-1 rounded-xl">
+              <span class="material-symbols-outlined text-sm">location_on</span>
+              <span>Kompleks Candi Prambanan, Sleman, D.I. Yogyakarta</span>
+            </span>
+          </div>
+        </div>
+
+        <!-- TIMELINE RUNDOWN EKSPLORASI SESI 1 -->
+        <div class="bg-surface-container-lowest rounded-3xl p-4 sm:p-5 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+          <div class="flex items-center gap-2 text-purple-950 font-black text-sm sm:text-base border-b border-slate-100 pb-2">
+            <span class="material-symbols-outlined text-purple-700 text-xl">route</span>
+            <span>Agenda Rute Eksplorasi Candi Prambanan</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-700">
+            <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-200/70 flex items-start gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-purple-600 text-white font-bold flex items-center justify-center shrink-0 text-[11px]">1</span>
+              <div>
+                <strong class="text-purple-950 block">08.00 - 08.30 WIB</strong>
+                <span class="text-slate-600 text-[11px]">Tiba di kawasan Candi Prambanan, pengondisian tim & aktivasi GPS aplikasi.</span>
+              </div>
+            </div>
+            <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-200/70 flex items-start gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-purple-600 text-white font-bold flex items-center justify-center shrink-0 text-[11px]">2</span>
+              <div>
+                <strong class="text-purple-950 block">08.30 - 09.30 WIB</strong>
+                <span class="text-slate-600 text-[11px]">Eksplorasi Pelataran Pusat: Mengamati Candi Siwa (47m), Candi Brahma, Candi Wisnu & Candi Wahana Nandi.</span>
+              </div>
+            </div>
+            <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-200/70 flex items-start gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-purple-600 text-white font-bold flex items-center justify-center shrink-0 text-[11px]">3</span>
+              <div>
+                <strong class="text-purple-950 block">09.30 - 10.15 WIB</strong>
+                <span class="text-slate-600 text-[11px]">Berburu relief Ramayana di dinding lorong Candi Siwa dengan jalan memutar searah jarum jam (pradaksina).</span>
+              </div>
+            </div>
+            <div class="p-3 rounded-2xl bg-purple-50/60 border border-purple-200/70 flex items-start gap-2.5">
+              <span class="w-6 h-6 rounded-lg bg-purple-600 text-white font-bold flex items-center justify-center shrink-0 text-[11px]">4</span>
+              <div>
+                <strong class="text-purple-950 block">10.15 - 10.30 WIB</strong>
+                <span class="text-slate-600 text-[11px]">Pengisian checklist LKPD sederhana & foto geotag di pelataran utama.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KONTEN MATERI BAB 1 S.D. BAB 4 -->
+        <div class="flex flex-col gap-4">
+
+          <!-- BAB 1 -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-purple-950 border-b border-slate-100 pb-2">
+              <div class="w-8 h-8 rounded-xl bg-purple-700 text-white flex items-center justify-center font-black text-xs shrink-0">1</div>
+              <h3 class="font-extrabold text-base text-slate-900">Eksplorasi Sejarah Mataram Kuno (Abad ke-9 Masehi)</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Candi Prambanan dibangun sekitar tahun <strong>850 Masehi oleh Rakai Pikatan</strong> dari Wangsa Sanjaya pada era Kerajaan Mataram Kuno, kemudian disempurnakan oleh raja-raja penerusnya seperti Raja Lokapala dan Raja Balitung.
+            </p>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Berdasarkan <strong>Prasasti Shivagrha (856 M)</strong>, candi megah ini dinamai <em>Shivagrha</em> (artinya Rumah Dewa Siwa) untuk memuliakan Dewa Siwa sebagai dewa tertinggi dalam tradisi Hindu Siwa. Candi ini menjadi bukti puncak keemasan peradaban dan kemampuan pengorganisasian bangsa Indonesia tempo dulu.
+            </p>
+          </div>
+
+          <!-- BAB 2 -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-purple-950 border-b border-slate-100 pb-2">
+              <div class="w-8 h-8 rounded-xl bg-purple-700 text-white flex items-center justify-center font-black text-xs shrink-0">2</div>
+              <h3 class="font-extrabold text-base text-slate-900">Eksplorasi Tata Letak Gugusan Candi (Trimurti & Wahana)</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Kompleks Candi Prambanan aslinya menaungi 240 candi. Di pelataran pusat berdiri megah tiga candi utama pemujaan Trimurti yang menghadap ke timur:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs">
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                <span class="font-black text-purple-900">1. Candi Wisnu (Utara)</span>
+                <span class="text-slate-600 text-[11.5px]">Tinggi 33 meter, dipersembahkan untuk Dewa Wisnu sang pemelihara alam semesta.</span>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-purple-50 border border-purple-300 flex flex-col gap-1">
+                <span class="font-black text-purple-950">2. Candi Siwa (Tengah)</span>
+                <span class="text-slate-700 text-[11.5px]">Candi terbesar & tertinggi mencapai <strong>47 meter</strong>, menaungi arca Siwa Mahadewa di bilik utamanya.</span>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                <span class="font-black text-purple-900">3. Candi Brahma (Selatan)</span>
+                <span class="text-slate-600 text-[11.5px]">Tinggi 33 meter, dipersembahkan untuk Dewa Brahma sang pencipta alam semesta.</span>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium pt-1">
+              Tepat di seberang ketiga candi utama berdiri tiga <strong>Candi Wahana</strong> (hewan tunggangan dewa):
+            </p>
+            <ul class="list-disc list-inside text-xs sm:text-sm text-slate-700 space-y-1 font-medium pl-1">
+              <li><strong>Candi Nandi:</strong> Berada di depan Candi Siwa, menaungi arca lembu jantan Nandi (lambang ketabahan).</li>
+              <li><strong>Candi Angsa:</strong> Berada di depan Candi Brahma, wahana burung angsa (lambang kebijaksanaan).</li>
+              <li><strong>Candi Garuda:</strong> Berada di depan Candi Wisnu, wahana burung garuda sakti (lambang keberanian).</li>
+            </ul>
+          </div>
+
+          <!-- BAB 3 -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-purple-950 border-b border-slate-100 pb-2">
+              <div class="w-8 h-8 rounded-xl bg-purple-700 text-white flex items-center justify-center font-black text-xs shrink-0">3</div>
+              <h3 class="font-extrabold text-base text-slate-900">Eksplorasi Alur Cerita Relief Epos Ramayana</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Dinding pagar langkan Candi Siwa dan Candi Brahma dihiasi pahatan relief mahakarya epos <strong>Ramayana</strong>.
+            </p>
+            <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 text-xs sm:text-sm leading-relaxed flex flex-col gap-1">
+              <strong>🧭 Tradisi Berjalan Pradaksina:</strong>
+              <span>Untuk membaca cerita relief secara urut, naiklah ke teras Candi Siwa melalui tangga sisi timur, lalu berjalanlah menyusuri lorong <strong>searah jarum jam (berputar ke arah kiri)</strong>. Cerita dimulai dari sayembara Rama memenangkan Shinta, pengasingan ke hutan Dandaka, penculikan Shinta oleh Rahwana, perjumpaan dengan kera putih Hanoman, hingga perang di Alengka.</span>
+            </div>
+          </div>
+
+          <!-- BAB 4 -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-purple-950 border-b border-slate-100 pb-2">
+              <div class="w-8 h-8 rounded-xl bg-purple-700 text-white flex items-center justify-center font-black text-xs shrink-0">4</div>
+              <h3 class="font-extrabold text-base text-slate-900">Eksplorasi Penemuan Kembali & Warisan UNESCO</h3>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Candi Prambanan sempat terbengkalai selama ratusan tahun akibat gempa bumi besar pada abad ke-16 serta letusan Gunung Merapi purba.
+            </p>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Situs ini ditemukan kembali oleh penjelajah Inggris (Colin Mackenzie) tahun 1733, mulai dipugar bertahap, dan peresmian pemugaran Candi Siwa dilakukan oleh Presiden Pertama RI Ir. Soekarno pada tahun 1953. Pada tahun <strong>1991</strong>, UNESCO resmi menetapkan Kompleks Candi Prambanan sebagai <strong>Situs Warisan Budaya Dunia (World Heritage No. 642)</strong>.
+            </p>
+          </div>
+
+        </div>
+
+        <!-- FORM RESUME MODUL SESI 1 (SYARAT BUKA LKPD SESI 1) -->
+        <div id="ftD5S1ResumeCard" class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border-2 border-purple-300 shadow-sm flex flex-col gap-3.5 mt-2">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2">
+              <span class="w-8 h-8 rounded-xl bg-purple-700 text-white flex items-center justify-center font-bold text-xs shrink-0">✓</span>
+              <h3 class="font-extrabold text-base text-purple-950">Resume Pemahaman Eksplorasi Candi Prambanan</h3>
+            </div>
+            <span id="ftD5S1StatusBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800">
+              Wajib Disimpan (Tahap 1)
+            </span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            Tuliskan ringkasan pemahaman Anda mengenai raja pembangun Candi Prambanan dan susunan 3 candi utama Trimurti yang ada di pelataran pusat (minimal 15 kata):
+          </p>
+
+          <textarea id="ftD5S1ConclusionInput" rows="3" class="w-full p-4 rounded-2xl border border-slate-300 text-xs sm:text-sm text-slate-900 leading-relaxed focus:border-purple-600 focus:ring-2 focus:ring-purple-100 outline-none transition-all placeholder:text-slate-400" placeholder="Contoh: Candi Prambanan dibangun oleh Rakai Pikatan dari Kerajaan Mataram Kuno pada tahun 850 Masehi. Di pelataran pusat terdapat 3 candi utama yaitu Candi Siwa setinggi 47 meter di tengah, Candi Brahma di sisi selatan, dan Candi Wisnu di sisi utara..."></textarea>
+
+          <div class="flex items-center justify-between gap-2 flex-wrap pt-1">
+            <span id="ftD5S1SavedTime" class="text-xs text-slate-500 font-medium">
+              Belum disimpan
+            </span>
+            <button id="btnSaveD5S1Materi" type="button" onclick="saveMateriConclusionD5S1()" class="px-6 py-3 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer">
+              <span class="material-symbols-outlined text-lg">save</span>
+              <span id="btnSaveD5S1MateriText">Simpan Kesimpulan & Buka LKPD Prambanan</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KARTU AKSES MENUJU LKPD SESI 1 -->
+        <div id="ftD5S1LkpdAccessBox" class="p-5 rounded-3xl bg-slate-100 border border-slate-200 text-slate-800 flex items-center justify-between gap-3 flex-wrap">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-purple-900 text-white flex items-center justify-center shrink-0 shadow-xs">
+              <span id="ftD5S1LkpdLockIcon" class="material-symbols-outlined text-amber-300 text-2xl">lock</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="text-xs font-black uppercase text-purple-700 tracking-wider">Tahap 2 Lapangan</span>
+              <h4 id="ftD5S1LkpdLockTitle" class="text-sm sm:text-base font-extrabold text-slate-900">LKPD Eksplorasi Candi Prambanan</h4>
+              <p id="ftD5S1LkpdLockDesc" class="text-xs text-slate-500">Simpan kesimpulan modul di atas terlebih dahulu untuk membuka lembar kerja eksplorasi.</p>
+            </div>
+          </div>
+          <button id="btnGoToD5S1Lkpd" type="button" onclick="handleGoToLkpdD5S1()" class="px-5 py-3 rounded-2xl bg-slate-300 text-slate-500 font-extrabold text-xs sm:text-sm flex items-center gap-2 cursor-not-allowed">
+            <span id="btnGoToD5S1LkpdText">LKPD Masih Terkunci</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </button>
+        </div>
+      `;
+
+      // Cek apakah kesimpulan Sesi 1 sudah pernah disimpan
+      checkInitialMateriConclusionD5S1();
+    }
+
+    function checkInitialMateriConclusionD5S1() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), nisn];
+
+      let saved = null;
+      for (const id of idVars) {
+        const stored = localStorage.getItem('fincestem_materi_ft_day5_prambanan_' + id) || localStorage.getItem('fincestem_materi_ft_day5_' + id);
+        if (stored) {
+          try { saved = JSON.parse(stored); break; } catch(e) {}
+        }
+      }
+
+      if (saved) {
+        applyMateriConclusionStateD5S1(saved.conclusion || saved.text || '', saved.savedAt);
+      } else if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        const task = tm['5_materi_prambanan'] || tm['5_materi'];
+        if (task && task.content) {
+          let cText = (typeof task.content === 'object') ? (task.content.conclusion || task.content.text) : task.content;
+          if (cText) applyMateriConclusionStateD5S1(cText, task.submitted_at);
+        }
+      }
+    }
+
+    function applyMateriConclusionStateD5S1(text, savedAt) {
+      if (!text) return;
+      const txtArea = document.getElementById('ftD5S1ConclusionInput');
+      const badge = document.getElementById('ftD5S1StatusBadge');
+      const savedTimeEl = document.getElementById('ftD5S1SavedTime');
+      const saveBtn = document.getElementById('btnSaveD5S1Materi');
+      const btnSaveText = document.getElementById('btnSaveD5S1MateriText');
+      const lockIcon = document.getElementById('ftD5S1LkpdLockIcon');
+      const lockTitle = document.getElementById('ftD5S1LkpdLockTitle');
+      const lockDesc = document.getElementById('ftD5S1LkpdLockDesc');
+      const btnGo = document.getElementById('btnGoToD5S1Lkpd');
+      const btnGoText = document.getElementById('btnGoToD5S1LkpdText');
+
+      if (txtArea) {
+        txtArea.value = text;
+        txtArea.setAttribute('disabled', 'disabled');
+        txtArea.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-600');
+      }
+      if (badge) {
+        badge.className = 'px-2.5 py-1 rounded-full text-xs font-bold bg-purple-100 text-purple-800 border border-purple-300';
+        badge.textContent = '🔒 Kesimpulan Disimpan & Terkunci';
+      }
+      if (savedTimeEl) {
+        const dtStr = savedAt ? new Date(savedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB' : 'Tersimpan';
+        savedTimeEl.textContent = `Tersimpan pada ${dtStr}`;
+      }
+      if (saveBtn) {
+        saveBtn.classList.add('pointer-events-none', 'opacity-70');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-lg">lock</span><span>Kesimpulan Telah Terkunci</span>';
+      } else if (btnSaveText) {
+        btnSaveText.textContent = 'Kesimpulan Telah Terkunci';
+      }
+
+      if (lockIcon) {
+        lockIcon.textContent = 'lock_open';
+        lockIcon.className = 'material-symbols-outlined text-emerald-400 text-2xl';
+      }
+      if (lockTitle) lockTitle.textContent = 'Tahap 2 Terbuka: LKPD Eksplorasi Candi Prambanan';
+      if (lockDesc) lockDesc.textContent = 'Kesimpulan modul telah tersimpan. Silakan lanjutkan pengisian lembar kerja eksplorasi di pelataran candi.';
+      if (btnGo) {
+        btnGo.className = 'px-5 py-3 rounded-2xl bg-purple-700 text-white hover:bg-purple-800 font-extrabold text-xs sm:text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer';
+        btnGo.onclick = function() {
+          window.location.href = 'lkpd.html?day=5&sesi=1';
+        };
+      }
+      if (btnGoText) btnGoText.textContent = 'Buka LKPD Candi Prambanan';
+    }
+
+    function saveMateriConclusionD5S1() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const txtArea = document.getElementById('ftD5S1ConclusionInput');
+      const text = txtArea ? txtArea.value.trim() : '';
+
+      if (!text || text.length < 15) {
+        FincestemCore.ui.toast('Tuliskan ringkasan pemahaman Candi Prambanan Anda minimal 15-20 kata!', 'error');
+        return;
+      }
+
+      const saveBtn = document.getElementById('btnSaveD5S1Materi');
+      if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+        FincestemCore.ui.setBtnLoading(saveBtn, true, 'Menyimpan...');
+      }
+
+      const record = {
+        conclusion: text,
+        savedAt: new Date().toISOString()
+      };
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), nisn];
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_materi_ft_day5_prambanan_' + id, JSON.stringify(record));
+          localStorage.setItem('fincestem_materi_ft_day5_' + id, JSON.stringify(record));
+        } catch(e) {}
+      });
+
+      applyMateriConclusionStateD5S1(text, record.savedAt);
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(cleanNisn, 5, 'materi_prambanan', record, function() {
+          FincestemCore.progress.submitTask(cleanNisn, 5, 'materi', record, function() {
+            if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+              FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Kesimpulan Telah Terkunci', 'lock');
+            }
+            FincestemCore.ui.toast('Kesimpulan Candi Prambanan berhasil disimpan! LKPD Sesi 1 sekarang telah terbuka.', 'success');
+          });
+        });
+      } else {
+        FincestemCore.ui.toast('Kesimpulan Candi Prambanan berhasil disimpan! LKPD Sesi 1 sekarang telah terbuka.', 'success');
+      }
+    }
+
+    function handleGoToLkpdD5S1() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), nisn];
+
+      let saved = null;
+      for (const id of idVars) {
+        const s = localStorage.getItem('fincestem_materi_ft_day5_prambanan_' + id) || localStorage.getItem('fincestem_materi_ft_day5_' + id);
+        if (s) { saved = s; break; }
+      }
+
+      if (!saved && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        if (tm['5_materi_prambanan'] || tm['5_materi']) saved = 'true';
+      }
+
+      if (!saved) {
+        FincestemCore.ui.toast('Anda wajib membaca modul dan menyimpan kesimpulan di atas sebelum membuka LKPD!', 'warning');
+        const txt = document.getElementById('ftD5S1ConclusionInput');
+        if (txt) {
+          txt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          txt.focus();
+        }
+        return;
+      }
+      window.location.href = 'lkpd.html?day=5&sesi=1';
+    }
+
+    window.renderDay5FieldTripModule = renderDay5FieldTripModule;
+    window.switchD5Session = switchD5Session;
+    window.saveMateriConclusionD5S1 = saveMateriConclusionD5S1;
+    window.handleGoToLkpdD5S1 = handleGoToLkpdD5S1;
+
+
     // MODUL BELAJAR KHUSUS FIELD TRIP DAY 4 S.D. 7
     // ==========================================
     function renderGenericFieldTripModule(mainEl, dayNum) {

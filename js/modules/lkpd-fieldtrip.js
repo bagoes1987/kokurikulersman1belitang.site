@@ -3380,6 +3380,529 @@
     window.showD4BromoLkpdSuccessModal = showD4BromoLkpdSuccessModal;
     window.closeD4BromoLkpdSuccessModal = closeD4BromoLkpdSuccessModal;
 
+    // ==========================================
+    // MODUL LKPD KHUSUS FIELD TRIP DAY 5 (YOGYAKARTA)
+    // Sesi 1: Candi Prambanan (Pilar: EXPLORATION 100% - Simple & Praktis)
+    // Sesi 2: Seni Batik Benang Ratu (Pilar: STEM)
+    // Sesi 3: Kampus UNY (Wawasan & Refleksi)
+    // ==========================================
+    let currentD5LkpdSession = 1;
+
+    function switchD5LkpdSession(targetSesi) {
+      currentD5LkpdSession = Number(targetSesi);
+      const urlParams = new URLSearchParams(window.location.search);
+      const isReadOnlyUrl = (urlParams.get('readonly') === '1');
+      renderFieldTripDay5LKPD(isReadOnlyUrl, currentD5LkpdSession);
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch(e) {}
+    }
+
+    function renderFieldTripDay5LKPD(isReadOnly, targetSesi) {
+      const mainEl = document.querySelector('main');
+      if (!mainEl) return;
+
+      const studentName = activeUser.name || 'Peserta Field Trip';
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+        : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+      const cleanNisn = String(studentNisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
+
+      const urlParams = new URLSearchParams(window.location.search);
+
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD5LkpdSession = Number(targetSesi);
+      } else {
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2 || reqSesi === 3) {
+          currentD5LkpdSession = reqSesi;
+        } else {
+          currentD5LkpdSession = 1;
+        }
+      }
+
+      // 1. Cek prasyarat kesimpulan Modul Sesi 1 Candi Prambanan
+      let hasMateriPrambanan = false;
+      for (const id of idVars) {
+        const rawM = localStorage.getItem('fincestem_materi_ft_day5_prambanan_' + id) || localStorage.getItem('fincestem_materi_ft_day5_' + id);
+        if (rawM) {
+          try {
+            const p = JSON.parse(rawM);
+            if (p && (p.conclusion || p.text)) {
+              hasMateriPrambanan = true;
+              break;
+            }
+          } catch(e) {}
+        }
+      }
+
+      if (!hasMateriPrambanan && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        if (tm['5_materi_prambanan'] || tm['5_materi']) hasMateriPrambanan = true;
+      }
+
+      // 2. Ambil data LKPD Sesi 1 yang tersimpan sebelumnya
+      let saved = null;
+      for (const id of idVars) {
+        const rawS = localStorage.getItem('fincestem_lkpd_ft_day5_prambanan_' + id) || localStorage.getItem('fincestem_lkpd_ft_day5_' + id);
+        if (rawS) {
+          try {
+            saved = JSON.parse(rawS);
+            break;
+          } catch(e) {}
+        }
+      }
+
+      // Fallback server progress
+      if (!saved && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        const task = tm['5_lkpd_prambanan'] || tm['5_lkpd'];
+        if (task && task.content) {
+          let p = task.content;
+          if (typeof p === 'string') {
+            try { p = JSON.parse(p); } catch(e) {}
+          }
+          if (p && typeof p === 'object') saved = p;
+        }
+      }
+
+      // Jika LKPD sudah pernah diisi sebagian atau disubmit, prasyarat otomatis tuntas
+      if (saved && (saved.submitted || saved.candiDekat || saved.ceritaRelief || saved.kesanJelajah)) {
+        hasMateriPrambanan = true;
+      }
+
+      const isSubmitted = !!(saved && saved.submitted);
+      const isLockedByPrereq = (currentD5LkpdSession === 1) ? !hasMateriPrambanan : false;
+      const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+      const readOnlyAttr = isFormLocked ? 'disabled' : '';
+
+      // TAB NAVIGASI 3 SESI LKPD DAY 5
+      const tabNavHtml = `
+        <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-3 gap-1.5 mb-2">
+          <!-- TAB 1: CANDI PRAMBANAN (EXPLORATION) -->
+          <button type="button" onclick="switchD5LkpdSession(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5LkpdSession === 1 ? 'bg-purple-700 text-white shadow-xs ring-2 ring-purple-400/40' : 'bg-slate-50 hover:bg-purple-50 text-purple-950 border border-purple-200'}">
+            <span class="material-symbols-outlined text-base ${currentD5LkpdSession === 1 ? 'text-amber-300' : 'text-purple-600'}">temple_hindu</span>
+            <span class="truncate">Sesi 1: LKPD Prambanan</span>
+            ${isSubmitted ? '<span class="text-[11px] text-purple-200 font-bold ml-1">✓</span>' : (currentD5LkpdSession === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse ml-0.5"></span>' : '')}
+          </button>
+
+          <!-- TAB 2: BATIK BENANG RATU (STEM) -->
+          <button type="button" onclick="switchD5LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5LkpdSession === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300'}">
+            <span class="material-symbols-outlined text-base ${currentD5LkpdSession === 2 ? 'text-amber-200' : 'text-amber-700'}">palette</span>
+            <span class="truncate">Sesi 2: LKPD Seni Batik</span>
+          </button>
+
+          <!-- TAB 3: KAMPUS UNY (ORIENTASI & REFLEKSI) -->
+          <button type="button" onclick="switchD5LkpdSession(3)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5LkpdSession === 3 ? 'bg-blue-600 text-white shadow-xs ring-2 ring-blue-400/40' : 'bg-slate-50 hover:bg-blue-50 text-blue-950 border border-blue-200'}">
+            <span class="material-symbols-outlined text-base ${currentD5LkpdSession === 3 ? 'text-amber-300' : 'text-blue-600'}">school</span>
+            <span class="truncate">Sesi 3: LKPD Kampus UNY</span>
+          </button>
+        </div>
+      `;
+
+      if (currentD5LkpdSession === 2) {
+        // PREVIEW SESI 2 LKPD
+        mainEl.innerHTML = `
+          ${tabNavHtml}
+          <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md w-fit">
+              Field Trip • Day 5 • Sesi 2
+            </span>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              LKPD Sesi 2: Praktik Membatik (Pilar STEM)
+            </h2>
+            <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
+              Lembar kerja pengamatan sains kimia lilin malam dan proses pewarnaan kain mori di Sentra Batik Benang Ratu Yogyakarta.
+            </p>
+          </div>
+          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-amber-200/80 shadow-xs flex flex-col items-center text-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-3xl">palette</span>
+            </div>
+            <h3 class="font-extrabold text-base text-slate-900">LKPD Sesi 2 Segera Dibuka</h3>
+            <p class="text-xs text-slate-600 max-w-sm">
+              Selesaikan terlebih dahulu pengisian LKPD Sesi 1 Candi Prambanan.
+            </p>
+            <button type="button" onclick="switchD5LkpdSession(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Buka LKPD Sesi 1 Candi Prambanan</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      if (currentD5LkpdSession === 3) {
+        // PREVIEW SESI 3 LKPD
+        mainEl.innerHTML = `
+          ${tabNavHtml}
+          <div class="bg-gradient-to-br from-blue-800 via-indigo-900 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-blue-100 backdrop-blur-md w-fit">
+              Field Trip • Day 5 • Sesi 3
+            </span>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              LKPD Sesi 3: Orientasi Akademik Kampus UNY
+            </h2>
+            <p class="text-xs sm:text-sm text-blue-100/90 leading-relaxed font-medium">
+              Eksplorasi wawasan perguruan tinggi negeri dan refleksi cita-cita studi lanjut di Kampus Universitas Negeri Yogyakarta.
+            </p>
+          </div>
+          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-blue-200/80 shadow-xs flex flex-col items-center text-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-3xl">school</span>
+            </div>
+            <h3 class="font-extrabold text-base text-slate-900">LKPD Sesi 3 Kampus UNY</h3>
+            <p class="text-xs text-slate-600 max-w-sm">
+              Sesi orientasi kampus dibuka pada siang-sore hari setelah jadwal kunjungan Prambanan dan Membatik tuntas.
+            </p>
+            <button type="button" onclick="switchD5LkpdSession(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Buka LKPD Sesi 1 Candi Prambanan</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // ==========================================
+      // SESI 1: LKPD CANDI PRAMBANAN (MURNI EXPLORATION & SIMPEL)
+      // ==========================================
+      mainEl.innerHTML = `
+        ${tabNavHtml}
+
+        ${isLockedByPrereq ? `
+          <!-- BANNER PERINGATAN PRASYARAT MODUL -->
+          <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm animate-pulse-once">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-2xl">lock</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
+                <h3 class="text-base font-extrabold text-amber-950">LKPD Sesi 1 Masih Terkunci!</h3>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Sesuai alur kurikulum FINCESTEM Day 5, Anda <strong>wajib membaca Modul Belajar Sesi 1</strong> dan <strong>menyimpan resume pemahaman singkat</strong> mengenai Candi Prambanan sebelum dapat mengisi lembar kerja ini.
+            </p>
+            <div class="pt-1">
+              <a href="materi.html?day=5&sesi=1" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-md transition-all">
+                <span class="material-symbols-outlined text-base">menu_book</span>
+                <span>Buka Modul & Isi Kesimpulan Sesi 1</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- IDENTITAS RESMI LKPD SESI 1 -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-purple-500/15 text-purple-800">
+              Field Trip • Day 5 • Sesi 1
+            </span>
+            <span id="ftD5S1StatusBadgeLkpd" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800' : (isSubmitted ? 'bg-purple-100 text-purple-900 border border-purple-300' : 'bg-blue-100 text-blue-800')}">
+              ${isLockedByPrereq ? 'Terkunci (Belum Resume Modul)' : (isSubmitted ? '🔒 Telah Dikirim & Terkunci' : 'Lembar Kerja Eksplorasi Sederhana')}
+            </span>
+          </div>
+
+          <h2 class="text-lg sm:text-xl font-black text-purple-950 leading-tight">
+            LKPD 05-A: Eksplorasi Cagar Budaya Candi Prambanan
+          </h2>
+
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-purple-50 text-purple-800 font-extrabold text-xs w-fit border border-purple-200">
+            <span class="material-symbols-outlined text-base text-purple-600">explore</span>
+            <span>Pilar Utama: EXPLORATION (100% Penjelajahan Lapangan)</span>
+          </div>
+
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+            Peserta: <strong>${studentName}</strong> (NISN: ${studentNisn} • ${studentClass})<br>
+            Fasilitator Pembina: <strong>${fasilName}</strong>
+          </p>
+        </div>
+
+        <form id="formFtDay5S1Lkpd" onsubmit="event.preventDefault(); saveFtDay5S1LKPD();" class="flex flex-col gap-4">
+
+          <!-- BAGIAN 1: CHECKLIST JELAJAH CANDI -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+            <div class="flex items-center gap-2 text-purple-950 font-extrabold text-base border-b border-surface-container pb-2.5">
+              <span class="material-symbols-outlined text-xl text-purple-700">checklist</span>
+              <span>Bagian 1: Checklist Jelajah Candi (Tinggal Centang)</span>
+            </div>
+            <p class="text-xs text-slate-500 leading-relaxed">
+              Tandai candi mana saja yang sudah berhasil Anda dekati dan lihat langsung di pelataran:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1 text-xs">
+              <label class="p-3.5 rounded-2xl border ${saved?.candiSiwa ? 'border-purple-600 bg-purple-50/70' : 'border-slate-200 bg-slate-50/60'} flex items-center gap-3 cursor-pointer hover:bg-purple-50/50 transition-all font-bold text-slate-800 ${isFormLocked ? 'pointer-events-none' : ''}">
+                <input id="chkD5CandiSiwa" type="checkbox" ${saved?.candiSiwa ? 'checked' : ''} ${readOnlyAttr} class="w-4 h-4 accent-purple-700 rounded">
+                <span>Candi Siwa (Candi terbesar 47m di tengah)</span>
+              </label>
+
+              <label class="p-3.5 rounded-2xl border ${saved?.candiBrahma ? 'border-purple-600 bg-purple-50/70' : 'border-slate-200 bg-slate-50/60'} flex items-center gap-3 cursor-pointer hover:bg-purple-50/50 transition-all font-bold text-slate-800 ${isFormLocked ? 'pointer-events-none' : ''}">
+                <input id="chkD5CandiBrahma" type="checkbox" ${saved?.candiBrahma ? 'checked' : ''} ${readOnlyAttr} class="w-4 h-4 accent-purple-700 rounded">
+                <span>Candi Brahma (Candi sisi selatan)</span>
+              </label>
+
+              <label class="p-3.5 rounded-2xl border ${saved?.candiWisnu ? 'border-purple-600 bg-purple-50/70' : 'border-slate-200 bg-slate-50/60'} flex items-center gap-3 cursor-pointer hover:bg-purple-50/50 transition-all font-bold text-slate-800 ${isFormLocked ? 'pointer-events-none' : ''}">
+                <input id="chkD5CandiWisnu" type="checkbox" ${saved?.candiWisnu ? 'checked' : ''} ${readOnlyAttr} class="w-4 h-4 accent-purple-700 rounded">
+                <span>Candi Wisnu (Candi sisi utara)</span>
+              </label>
+
+              <label class="p-3.5 rounded-2xl border ${saved?.candiWahana ? 'border-purple-600 bg-purple-50/70' : 'border-slate-200 bg-slate-50/60'} flex items-center gap-3 cursor-pointer hover:bg-purple-50/50 transition-all font-bold text-slate-800 ${isFormLocked ? 'pointer-events-none' : ''}">
+                <input id="chkD5CandiWahana" type="checkbox" ${saved?.candiWahana ? 'checked' : ''} ${readOnlyAttr} class="w-4 h-4 accent-purple-700 rounded">
+                <span>Candi Wahana (Nandi / Angsa / Garuda di depan)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: TEMUAN OBJEK DI LOKASI -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-purple-950 font-extrabold text-base border-b border-surface-container pb-2.5">
+              <span class="material-symbols-outlined text-xl text-purple-700">travel_explore</span>
+              <span>Bagian 2: Temuan Objek Lapangan (Pilihan Cepat)</span>
+            </div>
+
+            <!-- Pertanyaan 1: Candi yang paling dekat diamati -->
+            <div>
+              <label class="block text-xs sm:text-sm font-bold text-slate-800 mb-2">
+                1. Candi yang Anda masuki atau Anda amati paling dekat:
+              </label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                ${['Candi Siwa', 'Candi Wisnu', 'Candi Brahma', 'Candi Nandi'].map(cName => `
+                  <label class="p-3 rounded-xl border ${saved?.candiDekat === cName ? 'border-purple-600 bg-purple-50 text-purple-950 font-black ring-1 ring-purple-500' : 'border-slate-200 bg-slate-50 text-slate-700 font-semibold'} hover:bg-purple-50/70 cursor-pointer flex items-center justify-center gap-2 transition-all ${isFormLocked ? 'pointer-events-none' : ''}">
+                    <input type="radio" name="d5CandiDekat" value="${cName}" ${saved?.candiDekat === cName ? 'checked' : ''} ${readOnlyAttr} class="accent-purple-700">
+                    <span>${cName}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+
+            <!-- Pertanyaan 2: Objek nyata yang dilihat -->
+            <div class="pt-2">
+              <label class="block text-xs sm:text-sm font-bold text-slate-800 mb-2">
+                2. Objek nyata yang Anda lihat langsung di sekitar candi tersebut:
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                ${[
+                  { id: 'chkD5Objek1', key: 'arcaNandi', label: 'Arca batu lembu Nandi yang utuh' },
+                  { id: 'chkD5Objek2', key: 'tanggaTinggi', label: 'Tangga batu yang tinggi menuju bilik candi' },
+                  { id: 'chkD5Objek3', key: 'reliefDinding', label: 'Dinding batu yang penuh ukiran relief cerita' },
+                  { id: 'chkD5Objek4', key: 'batuPugar', label: 'Bebatuan candi yang dikelompokkan untuk dipugar' }
+                ].map(obj => `
+                  <label class="p-3 rounded-xl border ${saved?.objekTemuan && saved.objekTemuan.includes(obj.key) ? 'border-purple-600 bg-purple-50/70' : 'border-slate-200 bg-slate-50'} flex items-center gap-2.5 cursor-pointer hover:bg-purple-50/50 transition-all font-semibold text-slate-800 ${isFormLocked ? 'pointer-events-none' : ''}">
+                    <input id="${obj.id}" type="checkbox" value="${obj.key}" ${saved?.objekTemuan && saved.objekTemuan.includes(obj.key) ? 'checked' : ''} ${readOnlyAttr} class="w-4 h-4 accent-purple-700 rounded">
+                    <span>${obj.label}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN 3: BERBURU CERITA RELIEF -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+            <div class="flex items-center gap-2 text-purple-950 font-extrabold text-base border-b border-surface-container pb-2.5">
+              <span class="material-symbols-outlined text-xl text-purple-700">auto_stories</span>
+              <span>Bagian 3: Berburu Cerita Relief (1-2 Kalimat)</span>
+            </div>
+
+            <div>
+              <label class="block text-xs sm:text-sm font-bold text-slate-800 mb-2">
+                Pilih tokoh atau adegan relief yang Anda temukan di lorong candi:
+              </label>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                ${['Hanoman si Kera Putih', 'Rama Memanah', 'Dewi Shinta', 'Burung Jatayu', 'Tokoh Lainnya'].map(tName => `
+                  <label class="p-2.5 rounded-xl border ${saved?.tokohRelief === tName ? 'border-purple-600 bg-purple-50 text-purple-950 font-black ring-1 ring-purple-500' : 'border-slate-200 bg-slate-50 text-slate-700 font-semibold'} hover:bg-purple-50/70 cursor-pointer flex items-center justify-center gap-2 transition-all ${isFormLocked ? 'pointer-events-none' : ''}">
+                    <input type="radio" name="d5TokohRelief" value="${tName}" ${saved?.tokohRelief === tName ? 'checked' : ''} ${readOnlyAttr} class="accent-purple-700">
+                    <span class="truncate">${tName}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="pt-1">
+              <label class="block text-xs sm:text-sm font-bold text-slate-800 mb-1">
+                Tuliskan 1 kalimat singkat apa yang sedang terjadi di relief itu:
+              </label>
+              <input id="txtD5CeritaRelief" type="text" ${readOnlyAttr} value="${saved?.ceritaRelief || ''}" placeholder="Contoh: Saya melihat pahatan Hanoman melompati pepohonan membawa pesan rahasia Rama." class="w-full px-4 py-3 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-purple-600 focus:ring-2 focus:ring-purple-100 outline-none transition-all placeholder:text-slate-400">
+            </div>
+          </div>
+
+          <!-- BAGIAN 4: KESAN JELAJAH CANDI -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+            <div class="flex items-center gap-2 text-purple-950 font-extrabold text-base border-b border-surface-container pb-2.5">
+              <span class="material-symbols-outlined text-xl text-purple-700">sentiment_satisfied</span>
+              <span>Bagian 4: Kesan Jelajah Candi Prambanan (1 Kalimat)</span>
+            </div>
+            <div>
+              <label class="block text-xs sm:text-sm font-bold text-slate-800 mb-1">
+                Apa 1 hal paling keren atau membuat Anda kagum saat melihat langsung Candi Prambanan hari ini?
+              </label>
+              <input id="txtD5KesanJelajah" type="text" ${readOnlyAttr} value="${saved?.kesanJelajah || ''}" placeholder="Contoh: Candi Siwa sangat megah dan ukiran batunya luar biasa rapi padahal dibuat seribu tahun lalu." class="w-full px-4 py-3 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 focus:border-purple-600 focus:ring-2 focus:ring-purple-100 outline-none transition-all placeholder:text-slate-400">
+            </div>
+          </div>
+
+          <!-- TOMBOL SUBMIT / SIMPAN -->
+          ${isSubmitted ? `
+            <div class="p-4 rounded-3xl bg-purple-50 border border-purple-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-purple-700 text-3xl">task_alt</span>
+                <div>
+                  <h4 class="font-extrabold text-sm text-purple-950">LKPD Sesi 1 Berhasil Disimpan & Dinilai</h4>
+                  <p class="text-xs text-slate-600">Jawaban eksplorasi Candi Prambanan Anda telah tersinkronisasi ke server FINCESTEM.</p>
+                </div>
+              </div>
+              <button type="button" onclick="window.location.href='dashboard.html?day=5&task=asesmen'" class="px-5 py-3 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs sm:text-sm shadow-md transition-all cursor-pointer whitespace-nowrap">
+                Lanjut ke Asesmen Kuis Day 5
+              </button>
+            </div>
+          ` : (isLockedByPrereq ? `
+            <div class="p-4 rounded-2xl bg-slate-100 text-slate-500 font-bold text-xs text-center border border-slate-200">
+              Form LKPD terkunci. Selesaikan resume modul Day 5 Sesi 1 terlebih dahulu untuk mengaktifkan tombol simpan.
+            </div>
+          ` : `
+            <button id="btnSaveFtD5S1Lkpd" type="submit" class="w-full py-4 px-6 rounded-2xl bg-purple-700 hover:bg-purple-800 active:scale-[0.99] text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-xl">save</span>
+              <span>Simpan Hasil Eksplorasi Candi Prambanan</span>
+            </button>
+          `)}
+
+        </form>
+
+        <!-- MODAL SUKSES SIMPAN LKPD SESI 1 -->
+        <div id="modalLkpdFtD5S1Success" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 opacity-0 pointer-events-none transition-all duration-300">
+          <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl flex flex-col items-center text-center gap-4 border border-slate-100 transform scale-95 transition-all">
+            <div class="w-16 h-16 rounded-full bg-purple-100 text-purple-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-4xl">celebration</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <h3 class="text-lg font-black text-slate-900 leading-tight">Eksplorasi Prambanan Tuntas!</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Jawaban LKPD Sesi 1 berhasil disimpan. Akses ke kuis Asesmen Day 5 dan dokumentasi foto sekarang telah terbuka.
+              </p>
+            </div>
+            <div class="flex flex-col w-full gap-2 pt-2">
+              <button type="button" onclick="window.location.href='dashboard.html?day=5&task=asesmen'" class="w-full py-3.5 px-4 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all">
+                <span class="material-symbols-outlined text-lg">fact_check</span>
+                <span>Buka Kuis Asesmen Day 5</span>
+              </button>
+              <button type="button" onclick="closeFtD5S1LkpdModal()" class="w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all">
+                Tetap di Halaman Ini
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveFtDay5S1LKPD() {
+      const studentNisn = activeUser.nisn || activeUser.identifier || '';
+      const cleanNisn = String(studentNisn).trim();
+
+      const candiSiwa = !!document.getElementById('chkD5CandiSiwa')?.checked;
+      const candiBrahma = !!document.getElementById('chkD5CandiBrahma')?.checked;
+      const candiWisnu = !!document.getElementById('chkD5CandiWisnu')?.checked;
+      const candiWahana = !!document.getElementById('chkD5CandiWahana')?.checked;
+
+      const candiDekatEl = document.querySelector('input[name="d5CandiDekat"]:checked');
+      const candiDekat = candiDekatEl ? candiDekatEl.value : '';
+
+      const objekTemuan = [];
+      if (document.getElementById('chkD5Objek1')?.checked) objekTemuan.push('arcaNandi');
+      if (document.getElementById('chkD5Objek2')?.checked) objekTemuan.push('tanggaTinggi');
+      if (document.getElementById('chkD5Objek3')?.checked) objekTemuan.push('reliefDinding');
+      if (document.getElementById('chkD5Objek4')?.checked) objekTemuan.push('batuPugar');
+
+      const tokohReliefEl = document.querySelector('input[name="d5TokohRelief"]:checked');
+      const tokohRelief = tokohReliefEl ? tokohReliefEl.value : '';
+
+      const ceritaRelief = (document.getElementById('txtD5CeritaRelief')?.value || '').trim();
+      const kesanJelajah = (document.getElementById('txtD5KesanJelajah')?.value || '').trim();
+
+      if (!candiSiwa && !candiBrahma && !candiWisnu && !candiWahana) {
+        FincestemCore.ui.toast('Harap centang minimal 1 candi yang sudah Anda jelajahi di Bagian 1!', 'warning');
+        return;
+      }
+
+      if (!candiDekat) {
+        FincestemCore.ui.toast('Pilih salah satu candi yang Anda masuki / amati paling dekat di Bagian 2!', 'warning');
+        return;
+      }
+
+      const payload = {
+        day: 5,
+        sesi: 1,
+        pilar: 'EXPLORATION',
+        candiSiwa: candiSiwa,
+        candiBrahma: candiBrahma,
+        candiWisnu: candiWisnu,
+        candiWahana: candiWahana,
+        candiDekat: candiDekat,
+        objekTemuan: objekTemuan,
+        tokohRelief: tokohRelief,
+        ceritaRelief: ceritaRelief,
+        kesanJelajah: kesanJelajah,
+        submitted: true,
+        submittedAt: new Date().toISOString()
+      };
+
+      const btn = document.getElementById('btnSaveFtD5S1Lkpd');
+      if (btn) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan Eksplorasi...</span>';
+        btn.classList.add('pointer-events-none', 'opacity-80');
+      }
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), studentNisn];
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day5_prambanan_' + id, JSON.stringify(payload));
+          localStorage.setItem('fincestem_lkpd_ft_day5_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(studentNisn, 5, 'lkpd_prambanan', payload, function() {
+          FincestemCore.progress.submitTask(studentNisn, 5, 'lkpd', payload, function() {
+            showFtD5S1LkpdModal();
+          });
+        });
+      } else {
+        showFtD5S1LkpdModal();
+      }
+    }
+
+    function showFtD5S1LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtD5S1Success');
+      if (!modal) return;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const inner = modal.querySelector('div');
+      if (inner) {
+        inner.classList.remove('scale-95');
+        inner.classList.add('scale-100');
+      }
+    }
+
+    function closeFtD5S1LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtD5S1Success');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      renderFieldTripDay5LKPD(false, 1);
+    }
+
+    window.renderFieldTripDay5LKPD = renderFieldTripDay5LKPD;
+    window.switchD5LkpdSession = switchD5LkpdSession;
+    window.saveFtDay5S1LKPD = saveFtDay5S1LKPD;
+    window.showFtD5S1LkpdModal = showFtD5S1LkpdModal;
+    window.closeFtD5S1LkpdModal = closeFtD5S1LkpdModal;
+
+
     // MODUL LKPD KHUSUS FIELD TRIP DAY 4 S.D. 7
     // ==========================================
     function renderFieldTripGenericLKPD(dayNum, isReadOnly) {

@@ -3911,7 +3911,7 @@
             `)}
           `;
         } else if (isFTDay5) {
-          title.textContent = 'Asesmen Day 5 (Candi Prambanan, Seni Batik & Kampus UNY)';
+          title.textContent = 'Asesmen Day 5: Eksplorasi Candi Prambanan (Pilar: Exploration)';
           icon.textContent = 'fact_check';
           iconBox.className = 'w-10 h-10 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0';
 
@@ -3937,61 +3937,61 @@
           const questions = [
             {
               id: 'q1',
-              title: '1. STEM Sains (Sifat Kimiawi Hidrofobik Lilin Malam Batik)',
-              prompt: 'Dalam sains membatik di Batik Benang Ratu, mengapa lilin malam (wax barrier) berfungsi efektif sebagai perintang warna alami maupun sintetis pada lembaran mori/kain?',
+              title: '1. Exploration - Sejarah Pembangunan Candi Prambanan',
+              prompt: 'Candi Prambanan merupakan mahakarya peradaban Hindu terbesar di Indonesia yang dibangun pada abad ke-9 Masehi oleh raja dari Kerajaan Mataram Kuno bernama...',
               options: [
-                { key: 'A', text: 'Karena lilin malam bersifat asam pekat yang merusak pigmen warna secara permanen saat dilarutkan.' },
-                { key: 'B', text: 'Karena lilin malam tersusun dari senyawa non-polar (hidrofobik) yang menolak larutan pewarna kain berbasis air (polar), sehingga serat kain yang tertutup lilin tetap bersih tidak tembus zat warna.' },
-                { key: 'C', text: 'Karena lilin malam menyerap air dengan sangat cepat sehingga serat kain membeku seketika.' },
-                { key: 'D', text: 'Karena lilin malam berfungsi sebagai perekat permanen antarbenang agar kain tidak mudah robek saat dipotong.' }
+                { key: 'A', text: 'Rakai Pikatan dari Wangsa Sanjaya (berdasarkan Prasasti Shivagrha tahun 856 M)' },
+                { key: 'B', text: 'Raja Mulawarman dari Kerajaan Kutai Kartanegara' },
+                { key: 'C', text: 'Prabu Hayam Wuruk dari Kerajaan Majapahit' },
+                { key: 'D', text: 'Sultan Trenggana dari Kesultanan Demak' }
               ],
-              correct: 'B'
+              correct: 'A'
             },
             {
               id: 'q2',
-              title: '2. STEM Kimia & Teknologi (Proses Fiksasi Pewarna & Pelorotan)',
-              prompt: 'Pada tahapan pewarnaan dan proses pelorotan (penghilangan lilin malam), mengapa kain batik harus direbus di dalam air mendidih yang ditambahkan sedikit soda abu (sodium carbonate / Na2CO3)?',
+              title: '2. Exploration - Megastruktur Candi Utama',
+              prompt: 'Dari gugusan candi di pelataran pusat, candi yang memiliki ukuran paling megah dan menjulang paling tinggi (mencapai ketinggian 47 meter) adalah...',
               options: [
-                { key: 'A', text: 'Untuk membuat motif batik meleleh dan bercampur menjadi motif abstrak baru.' },
-                { key: 'B', text: 'Suhu didih air melelehkan lapisan lilin malam hingga terapung lepas dari serat mori, sedangkan soda abu membantu mengikat warna pada serat kain sekaligus mempermudah lilin terlepas optimal.' },
-                { key: 'C', text: 'Untuk membakar serat kain agar menjadi lebih tipis dan transparan saat dikenakan.' },
-                { key: 'D', text: 'Menghilangkan bau harum alami kain mori agar menjadi netral tanpa aroma.' }
+                { key: 'A', text: 'Candi Brahma (sisi selatan)' },
+                { key: 'B', text: 'Candi Wisnu (sisi utara)' },
+                { key: 'C', text: 'Candi Siwa (terletak di tengah menghadap timur)' },
+                { key: 'D', text: 'Candi Nandi' }
               ],
-              correct: 'B'
+              correct: 'C'
             },
             {
               id: 'q3',
-              title: '3. STEM Rekayasa & Arsitektur (Geometri Megastruktur Candi Prambanan)',
-              prompt: 'Candi Siwa di kompleks Prambanan menjulang setinggi 47 meter dan dibangun tanpa adukan semen perekat. Bagaimana teknik konstruksi andesit kuncian batu (interlocking system) mampu mempertahankan kekokohan struktur candi dari getaran seismik?',
+              title: '3. Exploration - Identifikasi Candi Wahana',
+              prompt: 'Di hadapan ketiga candi Trimurti berdiri tiga candi wahana pengiring. Candi Wahana yang berdiri tepat di depan Candi Siwa adalah...',
               options: [
-                { key: 'A', text: 'Batu andesit direkatkan menggunakan lem getah pohon pinus yang mengeras seperti kaca.' },
-                { key: 'B', text: 'Sistem sambungan takik batu pasak (interlocking joint / takikan ekor burung) mendistribusikan beban gravitasi secara simetris dan memberikan fleksibilitas mikro yang meredam energi getaran gempa bumi.' },
-                { key: 'C', text: 'Bagian dalam candi diisi pasir basah agar batu candi saling menekan ke arah luar.' },
-                { key: 'D', text: 'Batu candi dipanaskan hingga meleleh menyatu menjadi satu bongkahan monolith raksasa.' }
+                { key: 'A', text: 'Candi Nandi (menampung arca lembu jantan suci lambang ketabahan)' },
+                { key: 'B', text: 'Candi Angsa (kendaraan suci Dewa Brahma)' },
+                { key: 'C', text: 'Candi Garuda (kendaraan suci Dewa Wisnu)' },
+                { key: 'D', text: 'Candi Singa Barong' }
               ],
-              correct: 'B'
+              correct: 'A'
             },
             {
               id: 'q4',
-              title: '4. Exploration & Culture (Kosmologi Mandala Candi Prambanan)',
-              prompt: 'Berdasarkan konsep tata ruang Vastu Shastra Hindu, kompleks Candi Prambanan terbagi menjadi tiga halaman konsentris (Jaba, Tenggah, Njeron). Bagian halaman utama/pusat yang menaungi Candi Trimurti melambangkan alam suci tempat bersemayam para dewa yang disebut...',
+              title: '4. Exploration - Alur Penjelajahan Relief Ramayana',
+              prompt: 'Saat menyusuri relief epos Ramayana di lorong langkan Candi Siwa, tradisi berjalan memutari candi searah putaran jarum jam agar urutan cerita terbaca runtut disebut...',
               options: [
-                { key: 'A', text: 'Bhurloka (alam fana tempat manusia hidup dengan nafsu keduniawian).' },
-                { key: 'B', text: 'Swahloka (alam surgawi para dewa dan pencerahan spiritual tertinggi), zona tersuci yang terletak di pelataran pusat.' },
-                { key: 'C', text: 'Bhuvarloka (alam pembersihan jiwa antara dunia fana dan surga).' },
-                { key: 'D', text: 'Patala (alam bawah tanah kediaman makhluk kegelapan).' }
+                { key: 'A', text: 'Tirta Yatra' },
+                { key: 'B', text: 'Pradaksina (masuk tangga timur lalu berputar ke arah kiri/searah jarum jam)' },
+                { key: 'C', text: 'Samadhi Moksa' },
+                { key: 'D', text: 'Prasawya' }
               ],
               correct: 'B'
             },
             {
               id: 'q5',
-              title: '5. STEM & Exploration (Wawasan Akademik & Studi Lanjut di Kampus UNY)',
-              prompt: 'Sebagai bagian dari orientasi perguruan tinggi negeri (PTN) di Universitas Negeri Yogyakarta (UNY), langkah analitis terbaik yang harus dilakukan peserta didik untuk mempersiapkan diri menghadapi seleksi masuk perguruan tinggi (SNBP/SNBT/Mandiri) adalah...',
+              title: '5. Exploration - Pengakuan Warisan Budaya Dunia',
+              prompt: 'Bukti pengakuan dunia internasional terhadap nilai sejarah dan kebudayaan luar biasa dari Kompleks Candi Prambanan adalah...',
               options: [
-                { key: 'A', text: 'Hanya memilih program studi yang paling sedikit pendaftarnya tanpa memedulikan bakat, minat, maupun prospek karier masa depan.' },
-                { key: 'B', text: 'Menganalisis daya tampung, rasio keketatan seleksi, linieritas nilai rapor dengan rumpun sains/teknologi/pendidikan, akreditasi prodi, serta meninjau fasilitas lab riset dan prospek karier lulusan.' },
-                { key: 'C', text: 'Mengandalkan keberuntungan saat tes tanpa perlu mempelajari materi skolastik dan literasi sains.' },
-                { key: 'D', text: 'Menunggu pengumuman kelulusan SMA baru mulai mencari informasi mengenai jurusan perkuliahan.' }
+                { key: 'A', text: 'Dijadikan lokasi syuting film internasional semata' },
+                { key: 'B', text: 'Ditetapkan sebagai Situs Warisan Budaya Dunia oleh UNESCO sejak tahun 1991 (World Heritage No. 642)' },
+                { key: 'C', text: 'Penggantian seluruh batuan andesit candi dengan semen modern' },
+                { key: 'D', text: 'Pemindahan candi ke museum internasional luar negeri' }
               ],
               correct: 'B'
             }
@@ -4735,7 +4735,7 @@
           return;
         }
 
-        const keys = { q1: 'B', q2: 'B', q3: 'B', q4: 'B', q5: 'B' };
+        const keys = { q1: 'A', q2: 'C', q3: 'A', q4: 'B', q5: 'B' };
         let score = 0;
         if (q1 === keys.q1) score += 20;
         if (q2 === keys.q2) score += 20;
@@ -4758,7 +4758,7 @@
           localStorage.setItem('fincestem_asesmen_ft_day5_' + id, JSON.stringify(asesmenPayload));
         });
 
-        note = `Asesmen PG Day 5 - Candi Prambanan, Batik & Kampus UNY (Skor: ${score}/100):\n1. Sains Lilin Batik: ${q1} (${q1 === 'B' ? 'Benar' : 'Salah'})\n2. Kimia Fiksasi & Pelorotan: ${q2} (${q2 === 'B' ? 'Benar' : 'Salah'})\n3. Arsitektur Interlocking Candi: ${q3} (${q3 === 'B' ? 'Benar' : 'Salah'})\n4. Kosmologi Candi Prambanan: ${q4} (${q4 === 'B' ? 'Benar' : 'Salah'})\n5. Wawasan Kampus UNY: ${q5} (${q5 === 'B' ? 'Benar' : 'Salah'})`;
+        note = `Asesmen PG Day 5 - Eksplorasi Candi Prambanan (Skor: ${score}/100):\n1. Raja Pembangun Candi: ${q1} (${q1 === 'A' ? 'Benar' : 'Salah'})\n2. Candi Utama Tertinggi: ${q2} (${q2 === 'C' ? 'Benar' : 'Salah'})\n3. Candi Wahana Nandi: ${q3} (${q3 === 'A' ? 'Benar' : 'Salah'})\n4. Tradisi Pradaksina: ${q4} (${q4 === 'B' ? 'Benar' : 'Salah'})\n5. Warisan UNESCO 1991: ${q5} (${q5 === 'B' ? 'Benar' : 'Salah'})`;
 
         if (studentProgress && studentProgress.task_map) {
           studentProgress.task_map['5_asesmen'] = { status: 'submitted', content: note };

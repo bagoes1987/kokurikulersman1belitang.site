@@ -2162,9 +2162,17 @@ const FincestemCore = {
               writeLocal('fincestem_materi_ft_day3_', mObj);
             } else if (day === 4) {
               writeLocal('fincestem_materi_ft_day4_', mObj);
+            } else if (day === 5) {
+              writeLocal('fincestem_materi_ft_day5_prambanan_', mObj);
+              writeLocal('fincestem_materi_ft_day5_', mObj);
             }
             writeLocal('fincestem_materi_ft_day' + day + '_', mObj);
             writeLocal('fincestem_materi_day' + day + '_', mObj);
+          } else if (type === 'materi_prambanan') {
+            const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
+            const mObj = { conclusion: cText, savedAt: savedTime };
+            writeLocal('fincestem_materi_ft_day5_prambanan_', mObj);
+            writeLocal('fincestem_materi_ft_day5_', mObj);
           } else if (type === 'materi_lawang') {
             const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
             const mObj = { conclusion: cText, savedAt: savedTime };
@@ -2186,9 +2194,15 @@ const FincestemCore = {
               writeLocal('fincestem_lkpd_ft_day3_', parsed);
             } else if (day === 4) {
               writeLocal('fincestem_lkpd_ft_day4_', parsed);
+            } else if (day === 5) {
+              writeLocal('fincestem_lkpd_ft_day5_prambanan_', parsed);
+              writeLocal('fincestem_lkpd_ft_day5_', parsed);
             }
             writeLocal('fincestem_lkpd_ft_day' + day + '_', parsed);
             writeLocal('fincestem_lkpd_day' + day + '_', parsed);
+          } else if (type === 'lkpd_prambanan') {
+            writeLocal('fincestem_lkpd_ft_day5_prambanan_', parsed);
+            writeLocal('fincestem_lkpd_ft_day5_', parsed);
           } else if (type === 'lkpd_lawang') {
             writeLocal('fincestem_lkpd_ft_day2_lawang_', parsed);
             writeLocal('fincestem_lkpd_lawang_saved_', 'true');

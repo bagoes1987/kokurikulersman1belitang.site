@@ -235,8 +235,14 @@
         return;
       }
 
-      // TAMPILKAN MODUL BELAJAR DAY 5 S.D. 7 FIELD TRIP
-      if (dayNum >= 5 && dayNum <= 7 && mainEl) {
+      // TAMPILKAN MODUL BELAJAR DAY 5 FIELD TRIP
+      if (dayNum === 5 && mainEl) {
+        renderDay5FieldTripModule(mainEl);
+        return;
+      }
+
+      // TAMPILKAN MODUL BELAJAR DAY 6 S.D. 7 FIELD TRIP
+      if (dayNum >= 6 && dayNum <= 7 && mainEl) {
         renderGenericFieldTripModule(mainEl, dayNum);
         return;
       }
