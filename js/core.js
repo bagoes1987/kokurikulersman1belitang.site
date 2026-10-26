@@ -1963,16 +1963,43 @@ const FincestemCore = {
           }
         }
 
-        // 2. Bersihkan kunci spesifik per-hari untuk seluruh variasi ID
+        // 2. Bersihkan kunci spesifik per-hari untuk seluruh variasi ID (termasuk multi-sesi AKPOL, Lawang, Apel, JTP1, Museum, Prambanan)
         days.forEach(d => {
           idVariations.forEach(id => {
             if (comp.materi) {
               localStorage.removeItem(`fincestem_materi_ft_day${d}_` + id);
               localStorage.removeItem(`fincestem_materi_day${d}_` + id);
+              if (d === 2) {
+                localStorage.removeItem('fincestem_materi_ft_day2_akpol_' + id);
+                localStorage.removeItem('fincestem_materi_ft_day2_lawang_' + id);
+                localStorage.removeItem('fincestem_materi_ft_day2_lawangsewu_' + id);
+                localStorage.removeItem('fincestem_materi_conclusion_ft_day2_akpol_' + id);
+                localStorage.removeItem('fincestem_materi_conclusion_ft_day2_lawang_' + id);
+              } else if (d === 3) {
+                localStorage.removeItem('fincestem_materi_ft_day3_apel_' + id);
+                localStorage.removeItem('fincestem_materi_ft_day3_jtp1_' + id);
+                localStorage.removeItem('fincestem_materi_ft_day3_museum_' + id);
+              } else if (d === 5) {
+                localStorage.removeItem('fincestem_materi_ft_day5_prambanan_' + id);
+              }
             }
             if (comp.lkpd) {
               localStorage.removeItem(`fincestem_lkpd_ft_day${d}_` + id);
               localStorage.removeItem(`fincestem_lkpd_day${d}_` + id);
+              if (d === 2) {
+                localStorage.removeItem('fincestem_lkpd_ft_day2_akpol_' + id);
+                localStorage.removeItem('fincestem_lkpd_ft_day2_lawang_' + id);
+                localStorage.removeItem('fincestem_lkpd_ft_day2_lawangsewu_' + id);
+                localStorage.removeItem('fincestem_lkpd_akpol_saved_' + id);
+                localStorage.removeItem('fincestem_lkpd_lawang_saved_' + id);
+              } else if (d === 3) {
+                localStorage.removeItem('fincestem_lkpd_ft_day3_apel_' + id);
+                localStorage.removeItem('fincestem_lkpd_ft_day3_jtp1_' + id);
+                localStorage.removeItem('fincestem_lkpd_ft_day3_museum_' + id);
+                localStorage.removeItem('fincestem_lkpd_hari3_' + id);
+              } else if (d === 5) {
+                localStorage.removeItem('fincestem_lkpd_ft_day5_prambanan_' + id);
+              }
             }
             if (comp.asesmen) {
               localStorage.removeItem(`fincestem_asesmen_ft_day${d}_` + id);
@@ -1981,43 +2008,69 @@ const FincestemCore = {
             if (comp.dokumentasi) {
               localStorage.removeItem(`fincestem_dok_ft_day${d}_` + id);
               localStorage.removeItem(`fincestem_dok_day${d}_` + id);
+              if (d === 2) {
+                localStorage.removeItem('fincestem_dok_ft_day2_akpol_' + id);
+                localStorage.removeItem('fincestem_dok_ft_day2_lawang_' + id);
+              } else if (d === 3) {
+                localStorage.removeItem('fincestem_dok_ft_day3_apel_' + id);
+                localStorage.removeItem('fincestem_dok_ft_day3_jtp1_' + id);
+                localStorage.removeItem('fincestem_dok_ft_day3_museum_' + id);
+              } else if (d === 5) {
+                localStorage.removeItem('fincestem_dok_ft_day5_prambanan_' + id);
+              }
             }
             if (comp.refleksi) {
               localStorage.removeItem(`fincestem_refleksi_ft_day${d}_` + id);
               localStorage.removeItem(`fincestem_refleksi_day${d}_` + id);
+              localStorage.removeItem(`fincestem_refl_ft_day${d}_` + id);
+              if (d === 3) {
+                localStorage.removeItem('fincestem_refleksi_ft_d3_sesi2_' + id);
+                localStorage.removeItem('fincestem_refleksi_ft_d3_sesi3_' + id);
+              }
             }
           });
         });
 
-        // 3. Bersihkan kunci umum LKPD
+        // 3. Bersihkan kunci umum LKPD & cache sensor geotag / emergency grading
         if (comp.lkpd && targetDay <= 0) {
           idVariations.forEach(id => localStorage.removeItem('fincestem_lkpd_' + id));
         }
+        idVariations.forEach(id => {
+          localStorage.removeItem('fincestem_geo_' + id);
+          localStorage.removeItem('fincestem_geo_v14_' + id);
+          localStorage.removeItem('fincestem_em_grade_' + id);
+        });
 
         // 4. Scanning dinamis seluruh localStorage untuk kunci yang berhubungan dengan siswa ini
         for (let i = localStorage.length - 1; i >= 0; i--) {
           const k = localStorage.key(i);
           if (!k) continue;
+
+          // Cek apakah kunci mengandung salah satu variasi id siswa
           const matchesStudent = idVariations.some(id => id.length >= 4 && k.includes(id));
           if (!matchesStudent) continue;
 
-          let shouldRemove = false;
-          if (comp.materi && k.includes('materi')) shouldRemove = true;
-          if (comp.lkpd && k.includes('lkpd')) shouldRemove = true;
-          if (comp.asesmen && k.includes('asesmen')) shouldRemove = true;
-          if (comp.refleksi && k.includes('refleksi')) shouldRemove = true;
-          if (comp.dokumentasi && k.includes('dok')) shouldRemove = true;
+          // Lindungi kunci kredensial aktif jika siswa sedang login
+          if (k === 'fincestem_user' || k === 'fincestem_auth') continue;
 
-          if (shouldRemove && targetDay >= 0) {
-            const m = k.match(/day(\d+)/i);
+          let keyType = null;
+          if (k.includes('materi')) keyType = 'materi';
+          else if (k.includes('lkpd')) keyType = 'lkpd';
+          else if (k.includes('asesmen')) keyType = 'asesmen';
+          else if (k.includes('refleksi') || k.includes('refl')) keyType = 'refleksi';
+          else if (k.includes('dok')) keyType = 'dokumentasi';
+          else if (k.includes('photo')) keyType = 'foto_profil';
+
+          if (!keyType || !comp[keyType]) continue;
+
+          if (targetDay >= 0) {
+            const m = k.match(/(?:day|d|hari)(\d+)/i);
             if (m && parseInt(m[1]) !== targetDay) {
-              shouldRemove = false;
+              continue;
             }
           }
 
-          if (shouldRemove) {
-            localStorage.removeItem(k);
-          }
+          localStorage.removeItem(k);
         }
 
         // 5. Bersihkan entri dokumentasi, LKPD, dan groups di fincestem_db_2026_v1
@@ -2091,6 +2144,12 @@ const FincestemCore = {
             }
           }
         });
+
+        if (typeof window !== 'undefined') {
+          if (window.currentStudentProgress && idVariations.some(id => String(window.currentStudentProgress.nisn || '').includes(id))) {
+            window.currentStudentProgress = null;
+          }
+        }
       } catch (e) {
         console.warn('purgeStudentLocalStorage error:', e);
       }
@@ -2251,21 +2310,30 @@ const FincestemCore = {
 
               let shouldPurge = false;
               if (serverResetAt) {
-                if (clientLastReset && new Date(serverResetAt).getTime() > new Date(clientLastReset).getTime()) {
+                // Jika server memiliki catatan reset dan klien belum mengeksekusi reset dengan timestamp ini
+                if (!clientLastReset || clientLastReset !== serverResetAt) {
                   shouldPurge = true;
                 }
               }
 
+              // Self-healing: Jika server menyatakan 0 hari selesai (telah direset total ke awal),
+              // tetapi di storage lokal perangkat masih tersisa task_map atau catatan lama
+              const sRecords = Array.isArray(res.data.records) ? res.data.records : [];
+              const sTaskMap = (res.data.task_map && typeof res.data.task_map === 'object') ? res.data.task_map : {};
+              if (serverResetAt && sRecords.length === 0 && Object.keys(sTaskMap).length === 0) {
+                shouldPurge = true;
+              }
+
               if (shouldPurge) {
                 self.purgeStudentLocalStorage(cleanNisn, resetInfo || { scope: 'all_days', target_day: -1 });
-                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt || new Date().toISOString());
+                if (serverResetAt) {
+                  localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
+                }
                 const u = FincestemCore.auth.getUser();
                 if (u && (cleanNisn.includes(String(u.nisn || u.identifier).replace(/\D/g, '')))) {
                   u.photo_url = '';
                   FincestemCore.auth.setUser(u, 'siswa');
                 }
-              } else if (!clientLastReset && serverResetAt) {
-                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
               }
 
               // Hidrasi simpanan lokal seketika dari catatan server agar pindah HP / login baru tidak kehilangan data

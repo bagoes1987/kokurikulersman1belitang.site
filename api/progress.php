@@ -448,22 +448,37 @@ if ($method === 'POST') {
 
             $inIds = "'" . implode("','", array_map('addslashes', $allIds)) . "'";
 
-            // 1. Hapus dari student_progress_eval sesuai filter komponen & hari
-            $taskTypes = [];
-            if ($resetMateri) $taskTypes[] = "'materi'";
-            if ($resetLkpd) $taskTypes[] = "'lkpd'";
-            if ($resetAsesmen) $taskTypes[] = "'asesmen'";
-            if ($resetRefleksi) $taskTypes[] = "'refleksi'";
-            if ($resetDok) $taskTypes[] = "'dokumentasi'";
+            // 1. Hapus dari student_progress_eval sesuai filter komponen & hari (termasuk sub-sesi: lkpd_lawang, lkpd_museum, materi_*, refleksi_*, dok_*)
+            $typeClauses = [];
+            if ($resetMateri) {
+                $typeClauses[] = "(`task_type` = 'materi' OR `task_type` LIKE 'materi%' OR `task_type` LIKE '%materi%')";
+            }
+            if ($resetLkpd) {
+                $typeClauses[] = "(`task_type` = 'lkpd' OR `task_type` LIKE 'lkpd%' OR `task_type` LIKE '%lkpd%')";
+            }
+            if ($resetAsesmen) {
+                $typeClauses[] = "(`task_type` = 'asesmen' OR `task_type` LIKE 'asesmen%' OR `task_type` LIKE '%asesmen%')";
+            }
+            if ($resetRefleksi) {
+                $typeClauses[] = "(`task_type` = 'refleksi' OR `task_type` LIKE 'refleksi%' OR `task_type` LIKE '%refleksi%' OR `task_type` LIKE 'refl%' OR `task_type` LIKE '%refl%')";
+            }
+            if ($resetDok) {
+                $typeClauses[] = "(`task_type` = 'dokumentasi' OR `task_type` LIKE 'dok%' OR `task_type` LIKE '%dok%')";
+            }
 
             $deletedEval = 0;
-            if (!empty($taskTypes)) {
-                $typeSql = implode(',', $taskTypes);
+            if (!empty($typeClauses)) {
+                $whereType = '(' . implode(' OR ', $typeClauses) . ')';
+                if ($resetMateri && $resetLkpd && $resetAsesmen && $resetRefleksi && $resetDok) {
+                    $whereType = "1=1";
+                }
+
                 if ($targetDay >= 0) {
-                    $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `day_number` = :day AND `task_type` IN ($typeSql)");
+                    $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `day_number` = :day AND $whereType");
                     $stmt->execute([':day' => $targetDay]);
+                    $deletedEval = $stmt->rowCount();
                 } else {
-                    $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `task_type` IN ($typeSql)");
+                    $deletedEval = $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND $whereType");
                 }
             }
 
@@ -611,12 +626,26 @@ if ($method === 'POST') {
             $resetDok = !empty($comp['dokumentasi']);
             $resetPhoto = !empty($comp['foto_profil']);
 
-            $taskTypes = [];
-            if ($resetMateri) $taskTypes[] = "'materi'";
-            if ($resetLkpd) $taskTypes[] = "'lkpd'";
-            if ($resetAsesmen) $taskTypes[] = "'asesmen'";
-            if ($resetRefleksi) $taskTypes[] = "'refleksi'";
-            if ($resetDok) $taskTypes[] = "'dokumentasi'";
+            $typeClauses = [];
+            if ($resetMateri) {
+                $typeClauses[] = "(`task_type` = 'materi' OR `task_type` LIKE 'materi%' OR `task_type` LIKE '%materi%')";
+            }
+            if ($resetLkpd) {
+                $typeClauses[] = "(`task_type` = 'lkpd' OR `task_type` LIKE 'lkpd%' OR `task_type` LIKE '%lkpd%')";
+            }
+            if ($resetAsesmen) {
+                $typeClauses[] = "(`task_type` = 'asesmen' OR `task_type` LIKE 'asesmen%' OR `task_type` LIKE '%asesmen%')";
+            }
+            if ($resetRefleksi) {
+                $typeClauses[] = "(`task_type` = 'refleksi' OR `task_type` LIKE 'refleksi%' OR `task_type` LIKE '%refleksi%' OR `task_type` LIKE 'refl%' OR `task_type` LIKE '%refl%')";
+            }
+            if ($resetDok) {
+                $typeClauses[] = "(`task_type` = 'dokumentasi' OR `task_type` LIKE 'dok%' OR `task_type` LIKE '%dok%')";
+            }
+            $whereType = !empty($typeClauses) ? ('(' . implode(' OR ', $typeClauses) . ')') : '';
+            if ($resetMateri && $resetLkpd && $resetAsesmen && $resetRefleksi && $resetDok) {
+                $whereType = "1=1";
+            }
 
             $nowStr = date('Y-m-d H:i:s');
             $isGroupSpecific = ($groupCategory === 'field_trip' || $groupCategory === 'non_field_trip' || !empty($nisnList));
@@ -665,13 +694,12 @@ if ($method === 'POST') {
                     $inSql = "'" . implode("','", array_map('addslashes', $chunk)) . "'";
 
                     // 1. student_progress_eval
-                    if (!empty($taskTypes)) {
-                        $typeSql = implode(',', $taskTypes);
+                    if (!empty($whereType)) {
                         if ($targetDay >= 0) {
-                            $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inSql) AND `day_number` = :day AND `task_type` IN ($typeSql)");
+                            $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inSql) AND `day_number` = :day AND $whereType");
                             $stmt->execute([':day' => $targetDay]);
                         } else {
-                            $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inSql) AND `task_type` IN ($typeSql)");
+                            $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inSql) AND $whereType");
                         }
                     }
 
@@ -776,13 +804,12 @@ if ($method === 'POST') {
             } else {
                 // RESET TOTAL SELURUH SISWA (GLOBAL)
                 // 1. student_progress_eval
-                if (!empty($taskTypes)) {
-                    $typeSql = implode(',', $taskTypes);
+                if (!empty($whereType)) {
                     if ($targetDay >= 0) {
-                        $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `day_number` = :day AND `task_type` IN ($typeSql)");
+                        $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `day_number` = :day AND $whereType");
                         $stmt->execute([':day' => $targetDay]);
                     } else {
-                        $pdo->exec("DELETE FROM `student_progress_eval` WHERE `task_type` IN ($typeSql)");
+                        $pdo->exec("DELETE FROM `student_progress_eval` WHERE $whereType");
                     }
                 }
 
