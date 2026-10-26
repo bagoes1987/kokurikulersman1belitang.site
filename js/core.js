@@ -1981,6 +1981,8 @@ const FincestemCore = {
                 localStorage.removeItem('fincestem_materi_ft_day3_museum_' + id);
               } else if (d === 5) {
                 localStorage.removeItem('fincestem_materi_ft_day5_prambanan_' + id);
+                localStorage.removeItem('fincestem_materi_ft_day5_batik_' + id);
+                localStorage.removeItem('fincestem_materi_ft_day5_uny_' + id);
               }
             }
             if (comp.lkpd) {
@@ -1999,6 +2001,8 @@ const FincestemCore = {
                 localStorage.removeItem('fincestem_lkpd_hari3_' + id);
               } else if (d === 5) {
                 localStorage.removeItem('fincestem_lkpd_ft_day5_prambanan_' + id);
+                localStorage.removeItem('fincestem_lkpd_ft_day5_batik_' + id);
+                localStorage.removeItem('fincestem_lkpd_ft_day5_uny_' + id);
               }
             }
             if (comp.asesmen) {
@@ -2017,6 +2021,7 @@ const FincestemCore = {
                 localStorage.removeItem('fincestem_dok_ft_day3_museum_' + id);
               } else if (d === 5) {
                 localStorage.removeItem('fincestem_dok_ft_day5_prambanan_' + id);
+                localStorage.removeItem('fincestem_dok_ft_day5_batik_' + id);
               }
             }
             if (comp.refleksi) {
@@ -2026,6 +2031,8 @@ const FincestemCore = {
               if (d === 3) {
                 localStorage.removeItem('fincestem_refleksi_ft_d3_sesi2_' + id);
                 localStorage.removeItem('fincestem_refleksi_ft_d3_sesi3_' + id);
+              } else if (d === 5) {
+                localStorage.removeItem('fincestem_refleksi_ft_day5_prambanan_' + id);
               }
             }
           });
@@ -2242,6 +2249,9 @@ const FincestemCore = {
           } else if (type === 'materi_museum') {
             const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
             writeLocal('fincestem_materi_ft_day3_museum_', { conclusion: cText, savedAt: savedTime });
+          } else if (type === 'materi_batik') {
+            const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
+            writeLocal('fincestem_materi_ft_day5_batik_', { conclusion: cText, savedAt: savedTime });
           } else if (type === 'lkpd') {
             if (day === 1) {
               writeLocal('fincestem_lkpd_ft_day1_', parsed);
@@ -2269,6 +2279,8 @@ const FincestemCore = {
             writeLocal('fincestem_lkpd_ft_day3_jtp1_', parsed);
           } else if (type === 'lkpd_museum') {
             writeLocal('fincestem_lkpd_ft_day3_museum_', parsed);
+          } else if (type === 'lkpd_batik') {
+            writeLocal('fincestem_lkpd_ft_day5_batik_', parsed);
           } else if (type === 'asesmen') {
             writeLocal('fincestem_asesmen_ft_day' + day + '_', parsed);
             writeLocal('fincestem_asesmen_day' + day + '_', parsed);
@@ -2276,9 +2288,13 @@ const FincestemCore = {
             writeLocal('fincestem_dok_ft_day' + day + '_', 'true');
             writeLocal('fincestem_dok_day' + day + '_', 'true');
             if (day === 2) writeLocal('fincestem_dok_ft_day2_akpol_', 'true');
-          } else if (type === 'refleksi') {
+          } else if (type === 'refleksi' || type === 'refleksi_prambanan') {
             writeLocal('fincestem_refl_ft_day' + day + '_', parsed);
             writeLocal('fincestem_refleksi_ft_day' + day + '_', parsed);
+            writeLocal('fincestem_refleksi_day' + day + '_', parsed);
+            if (day === 5) {
+              writeLocal('fincestem_refleksi_ft_day5_prambanan_', parsed);
+            }
           }
         });
       } catch (eHydrate) {

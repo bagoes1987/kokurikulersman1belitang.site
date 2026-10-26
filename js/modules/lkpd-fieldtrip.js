@@ -58,6 +58,32 @@
       const unpadded = cleanNisn.replace(/^0+/, '');
       const padded = cleanNisn.padStart(10, '0');
       const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
+      const isS1RefleksiDone = checkIsD5Sesi1RefleksiDone(cleanNisn);
+      const isS2MateriDone = checkIsD5Sesi2MateriDone(cleanNisn);
+
+      // Cek status LKPD Sesi 2 Batik
+      let savedS2 = null;
+      for (const id of idVars) {
+        const rawS2 = localStorage.getItem('fincestem_lkpd_ft_day5_batik_' + id);
+        if (rawS2) {
+          try {
+            savedS2 = JSON.parse(rawS2);
+            break;
+          } catch(e) {}
+        }
+      }
+      if (!savedS2 && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        const task = tm['5_lkpd_batik'];
+        if (task && task.content) {
+          let p = task.content;
+          if (typeof p === 'string') {
+            try { p = JSON.parse(p); } catch(e) {}
+          }
+          if (p && typeof p === 'object') savedS2 = p;
+        }
+      }
+      const isS2Submitted = !!(savedS2 && savedS2.submitted);
       let saved = null;
 
       try {
@@ -3398,6 +3424,62 @@
       } catch(e) {}
     }
 
+    
+    function checkIsD5Sesi1RefleksiDone(cleanNisn) {
+      if (window.checkIsD5Sesi1RefleksiDone) return window.checkIsD5Sesi1RefleksiDone(cleanNisn);
+      try {
+        const user = activeUser || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = Array.from(new Set([nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier])).filter(Boolean);
+
+        for (const id of ids) {
+          const rawRefl = localStorage.getItem('fincestem_refleksi_ft_day5_prambanan_' + id) || 
+                          localStorage.getItem('fincestem_refleksi_ft_day5_' + id) ||
+                          localStorage.getItem('fincestem_refl_ft_day5_' + id);
+          if (rawRefl) {
+            try {
+              const parsed = JSON.parse(rawRefl);
+              if (parsed && (parsed.submitted || parsed.content || parsed.submitted_at)) return true;
+            } catch(e) {
+              if (typeof rawRefl === 'string' && rawRefl.trim().length > 5) return true;
+            }
+          }
+        }
+
+        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          if (tm['5_refleksi_prambanan'] || tm['5_refleksi']) {
+            const task = tm['5_refleksi_prambanan'] || tm['5_refleksi'];
+            if (task && (task.status === 'submitted' || task.content)) return true;
+          }
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function checkIsD5Sesi2MateriDone(cleanNisn) {
+      if (window.checkIsD5Sesi2MateriDone) return window.checkIsD5Sesi2MateriDone(cleanNisn);
+      try {
+        const user = activeUser || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = Array.from(new Set([nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier])).filter(Boolean);
+        for (const id of ids) {
+          const raw = localStorage.getItem('fincestem_materi_ft_day5_batik_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && (p.conclusion || p.text || p.content)) return true;
+            } catch(e) {}
+          }
+        }
+        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          if (tm['5_materi_batik']) return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
     function renderFieldTripDay5LKPD(isReadOnly, targetSesi) {
       const mainEl = document.querySelector('main');
       if (!mainEl) return;
@@ -3493,9 +3575,10 @@
           </button>
 
           <!-- TAB 2: BATIK BENANG RATU (STEM) -->
-          <button type="button" onclick="switchD5LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5LkpdSession === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300'}">
-            <span class="material-symbols-outlined text-base ${currentD5LkpdSession === 2 ? 'text-amber-200' : 'text-amber-700'}">palette</span>
+          <button type="button" onclick="switchD5LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5LkpdSession === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : (isS1RefleksiDone ? 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300' : 'bg-slate-100 text-slate-400 border border-slate-200')}">
+            <span class="material-symbols-outlined text-base ${currentD5LkpdSession === 2 ? 'text-amber-200' : (isS1RefleksiDone ? 'text-amber-700' : 'text-slate-400')}">${isS1RefleksiDone ? 'palette' : 'lock'}</span>
             <span class="truncate">Sesi 2: LKPD Seni Batik</span>
+            ${isS2Submitted ? '<span class="text-[11px] text-amber-200 font-bold ml-1">✓</span>' : (!isS1RefleksiDone ? '<span class="text-[10px] text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">Kunci</span>' : (currentD5LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse ml-0.5"></span>' : ''))}
           </button>
 
           <!-- TAB 3: KAMPUS UNY (ORIENTASI & REFLEKSI) -->
@@ -3507,32 +3590,301 @@
       `;
 
       if (currentD5LkpdSession === 2) {
-        // PREVIEW SESI 2 LKPD
+        if (!isS1RefleksiDone) {
+          // KONDISI TERKUNCI: WAJIB SELESAIKAN REFLEKSI SESI 1 TERLEBIH DAHULU
+          mainEl.innerHTML = `
+            ${tabNavHtml}
+            <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md w-fit">
+                Field Trip • Day 5 • Sesi 2
+              </span>
+              <h2 class="font-black text-xl sm:text-2xl leading-tight">
+                LKPD Sesi 2: Praktik Membatik (Pilar STEM)
+              </h2>
+              <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
+                Lembar kerja pengamatan sains kimia lilin malam, termodinamika canting tembaga, dan proses pelorotan kain mori di Sentra Batik Benang Ratu Yogyakarta.
+              </p>
+            </div>
+            <div class="p-6 sm:p-8 rounded-3xl bg-surface-container-lowest border border-amber-300 shadow-sm flex flex-col items-center text-center gap-3.5">
+              <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center ring-4 ring-amber-200/80 shadow-2xs">
+                <span class="material-symbols-outlined text-3xl">lock</span>
+              </div>
+              <div class="flex flex-col gap-1 max-w-md">
+                <h3 class="font-black text-lg text-slate-900">LKPD Sesi 2 (Batik Benang Ratu) Masih Terkunci</h3>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  Anda wajib menyelesaikan seluruh tahapan <strong>Sesi 1 Candi Prambanan</strong> hingga pengisian <strong>Jurnal Refleksi Sesi 1</strong> sebelum dapat membuka dan mengisi LKPD Sesi 2 Seni Batik.
+                </p>
+              </div>
+              <div class="flex flex-col sm:flex-row items-center gap-2 mt-2 w-full max-w-sm justify-center">
+                <button type="button" onclick="switchD5LkpdSession(1)" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">arrow_back</span>
+                  <span>Buka LKPD Sesi 1 Prambanan</span>
+                </button>
+                <a href="dashboard.html?day=5&task=refleksi" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">psychology</span>
+                  <span>Buka Jurnal Refleksi Sesi 1</span>
+                </a>
+              </div>
+            </div>
+          `;
+          return;
+        }
+
+        // KONDISI TERBUKA: SISWA TELAH MENYELESAIKAN REFLEKSI SESI 1!
+        const valAliran = savedS2 ? (savedS2.aliranLilin || '') : '';
+        const valRintang = savedS2 ? (savedS2.rintangWarna || '') : '';
+        const valNglorod = savedS2 ? (savedS2.nglorodApung || '') : '';
+        const valKesimpulan = savedS2 ? (savedS2.kesimpulanSains || '') : '';
+        const s2Disabled = (isReadOnly || isS2Submitted) ? 'disabled' : '';
+
         mainEl.innerHTML = `
           ${tabNavHtml}
+
+          <!-- BANNER LKPD FIELD TRIP DAY 5 SESI 2 -->
           <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
-            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md w-fit">
-              Field Trip • Day 5 • Sesi 2
-            </span>
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
+                Field Trip • Day 5 • Sesi 2
+              </span>
+              <span class="text-xs font-bold text-amber-200">Pukul 11.00 - 12.45 WIB</span>
+            </div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              LKPD Sesi 2: Praktik Membatik (Pilar STEM)
+              LKPD Sesi 2: Laboratorium Praktik Sains Membatik
             </h2>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-xs w-fit">
+              <span class="material-symbols-outlined text-base">science</span>
+              <span>Pilar Murni: 🔬 STEM (Sains, Teknologi, Rekayasa, Matematika)</span>
+            </div>
             <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
-              Lembar kerja pengamatan sains kimia lilin malam dan proses pewarnaan kain mori di Sentra Batik Benang Ratu Yogyakarta.
+              Lembar observasi pembuktian sains saat memegang canting tembaga di Sentra Batik Benang Ratu: uji termodinamika suhu kerja lilin malam, pembuktian rintang hidrofobik zat warna, dan hukum Archimedes saat proses nglorod.
             </p>
           </div>
-          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-amber-200/80 shadow-xs flex flex-col items-center text-center gap-3">
-            <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 flex items-center justify-center">
-              <span class="material-symbols-outlined text-3xl">palette</span>
+
+          <!-- KARTU IDENTITAS PESERTA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-4 sm:p-5 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
+              <div class="flex items-center gap-2 text-amber-950 font-black text-xs sm:text-sm">
+                <span class="material-symbols-outlined text-amber-700 text-lg">badge</span>
+                <span>Identitas Peserta Praktikum STEM Batik</span>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black ${isS2Submitted ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-amber-100 text-amber-800 border border-amber-200'}">
+                ${isS2Submitted ? '✓ TERSUBMIT RESMI' : 'DRAFT PENGERJAAN'}
+              </span>
             </div>
-            <h3 class="font-extrabold text-base text-slate-900">LKPD Sesi 2 Segera Dibuka</h3>
-            <p class="text-xs text-slate-600 max-w-sm">
-              Selesaikan terlebih dahulu pengisian LKPD Sesi 1 Candi Prambanan.
-            </p>
-            <button type="button" onclick="switchD5LkpdSession(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Buka LKPD Sesi 1 Candi Prambanan</span>
-            </button>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+              <div class="p-2.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+                <span class="text-slate-500 font-semibold block text-[10px]">Nama Siswa:</span>
+                <strong class="text-slate-900 truncate block">${studentName}</strong>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+                <span class="text-slate-500 font-semibold block text-[10px]">NISN:</span>
+                <strong class="text-slate-900 truncate block">${studentNisn}</strong>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+                <span class="text-slate-500 font-semibold block text-[10px]">Kelas:</span>
+                <strong class="text-slate-900 truncate block">${studentClass}</strong>
+              </div>
+              <div class="p-2.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+                <span class="text-slate-500 font-semibold block text-[10px]">Fasilitator:</span>
+                <strong class="text-slate-900 truncate block">${fasilName}</strong>
+              </div>
+            </div>
+          </div>
+
+          ${!isS2MateriDone ? `
+          <!-- BANNER PERINGATAN MODUL BELUM DISIMPAN -->
+          <div class="p-4 rounded-3xl bg-amber-50 border border-amber-300 flex items-center justify-between gap-3 shadow-2xs">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-10 h-10 rounded-2xl bg-amber-600 text-white flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-xl">lightbulb</span>
+              </span>
+              <div class="flex flex-col min-w-0">
+                <span class="text-xs font-black text-amber-950 truncate">Saran Pengamatan Lapangan</span>
+                <span class="text-[11px] text-amber-800 leading-relaxed font-medium">Anda belum menyimpan kesimpulan Modul Sesi 2. Sebaiknya baca materi agar memahami sains canting &amp; pelorotan.</span>
+              </div>
+            </div>
+            <a href="materi.html?day=5&sesi=2" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center gap-1.5 cursor-pointer shadow-xs transition-all shrink-0">
+              <span class="material-symbols-outlined text-base">menu_book</span>
+              <span>Buka Modul</span>
+            </a>
+          </div>
+          ` : ''}
+
+          <!-- FORM LKPD SESI 2: 4 BAGIAN INTERAKTIF RAMAH HP -->
+          <form id="formFtDay5S2LKPD" onsubmit="event.preventDefault();" class="flex flex-col gap-4">
+
+            <!-- BAGIAN 1: KONDISI ALIRAN LILIN & CANTING TEMBAGA -->
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 font-black text-sm">1</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Uji Termodinamika &amp; Kapilaritas Canting Tembaga (Teknologi &amp; Fisika)</h3>
+                  <span class="text-[11px] font-bold text-amber-800">Pengamatan Laju Debit &amp; Daya Serap Serat Mori</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Amati kelancaran aliran lilin malam dari cucuk canting tembaga Anda ke atas permukaan kain mori primissima saat proses <em>nyanting</em>. Bagaimana kondisi termodinamika lilin malam tersebut?
+              </p>
+              <div class="flex flex-col gap-2 mt-1">
+                <label class="p-3 rounded-2xl border ${valAliran === 'ideal' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_aliranLilin" value="ideal" ${valAliran === 'ideal' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-amber-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[A] Suhu Ideal (60°C – 70°C) ✓</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Lilin mengalir lancar melalui cucuk tembaga tanpa tetesan liar, meresap tembus ke dua sisi kain mori (tembus bolak-balik).</span>
+                  </div>
+                </label>
+                <label class="p-3 rounded-2xl border ${valAliran === 'dingin' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_aliranLilin" value="dingin" ${valAliran === 'dingin' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-amber-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[B] Suhu Kurang Panas (&lt; 60°C)</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Lilin kental membeku di ujung cucuk tembaga, menyumbat canting, dan lapisan malam di atas kain rapuh mudah mengelupas.</span>
+                  </div>
+                </label>
+                <label class="p-3 rounded-2xl border ${valAliran === 'panas' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_aliranLilin" value="panas" ${valAliran === 'panas' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-amber-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[C] Suhu Terlalu Panas (&gt; 80°C)</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Lilin mendidih berasap, mengalir terlalu deras meleber keluar garis pola (nyelepet), dan merusak kerapian motif geometri.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- BAGIAN 2: UJI RINTANG SIFAT HIDROFOBIK LILIN MALAM -->
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-orange-100 text-orange-700 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Uji Rintang Sifat Hidrofobik Lilin Malam (Sains Kimia)</h3>
+                  <span class="text-[11px] font-bold text-orange-800">Pembuktian Penolakan Partikel Pewarna Polar</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Setelah kain mori dicelupkan ke dalam larutan zat pewarna dingin, bagaimana efektivitas sifat hidrofobik lilin malam dalam mengunci serat kain?
+              </p>
+              <div class="flex flex-col gap-2 mt-1">
+                <label class="p-3 rounded-2xl border ${valRintang === 'hidrofobik_sempurna' ? 'border-orange-500 bg-orange-50/70 ring-1 ring-orange-400' : 'border-slate-200 bg-white hover:bg-orange-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_rintangWarna" value="hidrofobik_sempurna" ${valRintang === 'hidrofobik_sempurna' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-orange-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[A] Menolak Warna Sempurna (Hidrofobik 100%) ✓</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Ikatan non-polar lilin menolak molekul air pewarna secara total; kain mori di bawah lapisan lilin tetap putih bersih tanpa noda.</span>
+                  </div>
+                </label>
+                <label class="p-3 rounded-2xl border ${valRintang === 'rembes_retak' ? 'border-orange-500 bg-orange-50/70 ring-1 ring-orange-400' : 'border-slate-200 bg-white hover:bg-orange-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_rintangWarna" value="rembes_retak" ${valRintang === 'rembes_retak' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-orange-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[B] Terdapat Sedikit Rembesan Retakan (Efek Remekan)</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Lilin mengalami retakan mikro saat kain ditekuk/dingin, warna meresap menciptakan aksen serat retak khas batik nusantara.</span>
+                  </div>
+                </label>
+                <label class="p-3 rounded-2xl border ${valRintang === 'bocor_gagal' ? 'border-orange-500 bg-orange-50/70 ring-1 ring-orange-400' : 'border-slate-200 bg-white hover:bg-orange-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_rintangWarna" value="bocor_gagal" ${valRintang === 'bocor_gagal' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-orange-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[C] Bocor / Gagal Menolak</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Lapisan lilin terlalu tipis atau belum menembus kain mori bolak-balik sehingga zat warna merembes tembus merusak motif.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- BAGIAN 3: UJI PELOROTAN (NGLOROD) & DENSITAS ARCHIMEDES -->
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center shrink-0 font-black text-sm">3</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Termofisika Pelorotan &amp; Densitas Archimedes (Fisika Nglorod)</h3>
+                  <span class="text-[11px] font-bold text-teal-800">Pengamatan Pemisahan Fluida pada Air Mendidih 100°C</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Amati proses perebusan kain di dalam kancah air mendidih (Nglorod 100°C). Apa yang terjadi pada lilin malam dan di mana posisi lelehan lilin di dalam kancah?
+              </p>
+              <div class="flex flex-col gap-2 mt-1">
+                <label class="p-3 rounded-2xl border ${valNglorod === 'apung_sempurna' ? 'border-teal-500 bg-teal-50/70 ring-1 ring-teal-400' : 'border-slate-200 bg-white hover:bg-teal-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_nglorodApung" value="apung_sempurna" ${valNglorod === 'apung_sempurna' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-teal-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[A] Meleleh &amp; Mengapung di Permukaan Air ✓</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Lilin mencair sempurna pada 100°C dan terangkat ke atas permukaan air karena massa jenis lilin (~0,9 g/cm³) lebih kecil dari massa jenis air (1,0 g/cm³).</span>
+                  </div>
+                </label>
+                <label class="p-3 rounded-2xl border ${valNglorod === 'menempel' ? 'border-teal-500 bg-teal-50/70 ring-1 ring-teal-400' : 'border-slate-200 bg-white hover:bg-teal-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_nglorodApung" value="menempel" ${valNglorod === 'menempel' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-teal-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[B] Lilin Masih Menempel Sebagian</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Air belum mencapai titik didih 100°C sehingga peluruhan lilin dari jalinan serat selulosa mori belum tuntas.</span>
+                  </div>
+                </label>
+                <label class="p-3 rounded-2xl border ${valNglorod === 'tenggelam' ? 'border-teal-500 bg-teal-50/70 ring-1 ring-teal-400' : 'border-slate-200 bg-white hover:bg-teal-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                  <input type="radio" name="ftD5S2_nglorodApung" value="tenggelam" ${valNglorod === 'tenggelam' ? 'checked' : ''} ${s2Disabled} class="mt-0.5 accent-teal-600">
+                  <div class="flex flex-col min-w-0 text-xs">
+                    <strong class="text-slate-900 font-bold">[C] Lilin Tenggelam / Mengendap ke Dasar</strong>
+                    <span class="text-slate-600 text-[11px] leading-relaxed mt-0.5">Terjadi anomali massa jenis atau lilin tercampur zat pemberat sehingga tidak terangkat gaya apung.</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- BAGIAN 4: KESIMPULAN SAINS PRAKTIS LAPANGAN -->
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 font-black text-sm">4</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Kesimpulan Sains Praktis Lapangan (Refleksi STEM Singkat)</h3>
+                  <span class="text-[11px] font-bold text-purple-800">Intisari Pembuktian Konsep Sains Saat Membatik</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Tuliskan 1 prinsip sains (kimia/fisika/rekayasa) yang paling menarik dan berhasil Anda buktikan langsung saat memegang canting &amp; kain hari ini:
+              </p>
+              <textarea id="ftD5S2_kesimpulanSains" rows="3" ${s2Disabled} class="w-full p-3 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-amber-500/20 focus:border-amber-600 outline-none transition-all placeholder:text-slate-400 font-medium ${isS2Submitted ? 'bg-slate-100 text-slate-600' : ''}" placeholder="Contoh: Saya membuktikan bahwa lilin malam bersifat hidrofobik menolak zat warna air, dan saat proses nglorod lilin mengapung ke permukaan karena massa jenis lilin lebih ringan dari air mendidih...">${valKesimpulan}</textarea>
+            </div>
+
+            <!-- ACTION BAR SIMPAN / SUBMIT -->
+            <div class="p-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
+              ${isS2Submitted ? `
+                <div class="flex items-center gap-2 text-emerald-800 font-bold text-xs sm:text-sm">
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
+                  <span>LKPD Sesi 2 Praktik Membatik Telah Terkirim Resmi ✓</span>
+                </div>
+                <button type="button" onclick="switchD5LkpdSession(1)" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">arrow_back</span>
+                  <span>Kembali ke Sesi 1 Prambanan</span>
+                </button>
+              ` : `
+                <span class="text-xs text-slate-500 font-medium text-center sm:text-left">
+                  Pastikan seluruh 3 uji pilihan &amp; 1 kesimpulan terisi sebelum mengirim.
+                </span>
+                <button id="btnSaveFtD5S2Lkpd" type="button" onclick="saveFtDay5S2LKPD()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all">
+                  <span class="material-symbols-outlined text-base">send</span>
+                  <span>Simpan &amp; Kirim LKPD Sesi 2</span>
+                </button>
+              `}
+            </div>
+
+          </form>
+
+          <!-- MODAL SUKSES SIMPAN LKPD SESI 2 -->
+          <div id="modalLkpdFtD5S2Success" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 opacity-0 pointer-events-none transition-all duration-300">
+            <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl flex flex-col items-center text-center gap-4 border border-slate-100 transform scale-95 transition-all">
+              <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center">
+                <span class="material-symbols-outlined text-4xl">celebration</span>
+              </div>
+              <div class="flex flex-col gap-1">
+                <h3 class="text-lg font-black text-slate-900 leading-tight">LKPD Praktik Membatik Tuntas!</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                  Pengamatan sains STEM dan kesimpulan membatik di Sentra Benang Ratu berhasil disimpan dan disubmit ke sistem.
+                </p>
+              </div>
+              <div class="flex flex-col gap-2 w-full mt-2">
+                <button type="button" onclick="closeFtD5S2LkpdModal()" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs shadow-xs cursor-pointer transition-all">
+                  Lihat Lembar Jawaban
+                </button>
+                <a href="dashboard.html?day=5" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs cursor-pointer transition-all flex items-center justify-center gap-1.5">
+                  <span class="material-symbols-outlined text-base">dashboard</span>
+                  <span>Kembali ke Dashboard</span>
+                </a>
+              </div>
+            </div>
           </div>
         `;
         return;
@@ -3896,11 +4248,97 @@
       renderFieldTripDay5LKPD(false, 1);
     }
 
+    function saveFtDay5S2LKPD() {
+      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
+      const cleanNisn = String(studentNisn).trim();
+
+      const aliranLilin = document.querySelector('input[name="ftD5S2_aliranLilin"]:checked')?.value;
+      const rintangWarna = document.querySelector('input[name="ftD5S2_rintangWarna"]:checked')?.value;
+      const nglorodApung = document.querySelector('input[name="ftD5S2_nglorodApung"]:checked')?.value;
+      const kesimpulanSains = (document.getElementById('ftD5S2_kesimpulanSains')?.value || '').trim();
+
+      if (!aliranLilin) {
+        FincestemCore.ui.toast('Harap pilih hasil pengamatan aliran lilin & canting tembaga (Bagian 1)!', 'warning');
+        return;
+      }
+      if (!rintangWarna) {
+        FincestemCore.ui.toast('Harap pilih hasil pengamatan sifat rintang hidrofobik lilin (Bagian 2)!', 'warning');
+        return;
+      }
+      if (!nglorodApung) {
+        FincestemCore.ui.toast('Harap pilih hasil pengamatan proses pelorotan & densitas lilin (Bagian 3)!', 'warning');
+        return;
+      }
+      if (!kesimpulanSains || kesimpulanSains.length < 10) {
+        FincestemCore.ui.toast('Tuliskan kesimpulan sains praktis membatik Anda minimal beberapa kata (Bagian 4)!', 'warning');
+        const el = document.getElementById('ftD5S2_kesimpulanSains');
+        if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        return;
+      }
+
+      const payload = {
+        aliranLilin,
+        rintangWarna,
+        nglorodApung,
+        kesimpulanSains,
+        submitted: true,
+        submittedAt: new Date().toISOString()
+      };
+
+      const btn = document.getElementById('btnSaveFtD5S2Lkpd');
+      if (btn) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan LKPD Sesi 2...</span>';
+        btn.classList.add('pointer-events-none', 'opacity-80');
+      }
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), studentNisn];
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day5_batik_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(studentNisn, 5, 'lkpd_batik', payload, function() {
+          showFtD5S2LkpdModal();
+        });
+      } else {
+        showFtD5S2LkpdModal();
+      }
+    }
+
+    function showFtD5S2LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtD5S2Success');
+      if (!modal) {
+        FincestemCore.ui.toast('LKPD Sesi 2 (Praktik Membatik) Berhasil Disimpan & Dikirim!', 'success');
+        renderFieldTripDay5LKPD(false, 2);
+        return;
+      }
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const inner = modal.querySelector('div');
+      if (inner) {
+        inner.classList.remove('scale-95');
+        inner.classList.add('scale-100');
+      }
+    }
+
+    function closeFtD5S2LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtD5S2Success');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      renderFieldTripDay5LKPD(false, 2);
+    }
+
     window.renderFieldTripDay5LKPD = renderFieldTripDay5LKPD;
     window.switchD5LkpdSession = switchD5LkpdSession;
     window.saveFtDay5S1LKPD = saveFtDay5S1LKPD;
     window.showFtD5S1LkpdModal = showFtD5S1LkpdModal;
     window.closeFtD5S1LkpdModal = closeFtD5S1LkpdModal;
+    window.saveFtDay5S2LKPD = saveFtDay5S2LKPD;
+    window.showFtD5S2LkpdModal = showFtD5S2LkpdModal;
+    window.closeFtD5S2LkpdModal = closeFtD5S2LkpdModal;
 
 
     // MODUL LKPD KHUSUS FIELD TRIP DAY 4 S.D. 7
