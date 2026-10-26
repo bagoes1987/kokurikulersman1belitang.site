@@ -1983,6 +1983,9 @@ const FincestemCore = {
                 localStorage.removeItem('fincestem_materi_ft_day5_prambanan_' + id);
                 localStorage.removeItem('fincestem_materi_ft_day5_batik_' + id);
                 localStorage.removeItem('fincestem_materi_ft_day5_uny_' + id);
+              } else if (d === 6) {
+                localStorage.removeItem('fincestem_materi_ft_day6_bakpia_' + id);
+                localStorage.removeItem('fincestem_materi_ft_day6_drini_' + id);
               }
             }
             if (comp.lkpd) {
@@ -2003,6 +2006,9 @@ const FincestemCore = {
                 localStorage.removeItem('fincestem_lkpd_ft_day5_prambanan_' + id);
                 localStorage.removeItem('fincestem_lkpd_ft_day5_batik_' + id);
                 localStorage.removeItem('fincestem_lkpd_ft_day5_uny_' + id);
+              } else if (d === 6) {
+                localStorage.removeItem('fincestem_lkpd_ft_day6_bakpia_' + id);
+                localStorage.removeItem('fincestem_lkpd_ft_day6_drini_' + id);
               }
             }
             if (comp.asesmen) {
@@ -2255,6 +2261,10 @@ const FincestemCore = {
           } else if (type === 'materi_uny') {
             const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
             writeLocal('fincestem_materi_ft_day5_uny_', { conclusion: cText, savedAt: savedTime });
+          } else if (type === 'materi_bakpia') {
+            const cText = (typeof parsed === 'object') ? (parsed.conclusion || parsed.text || parsed.content || '') : String(parsed);
+            writeLocal('fincestem_materi_ft_day6_bakpia_', { conclusion: cText, savedAt: savedTime });
+            writeLocal('fincestem_materi_ft_day6_', { conclusion: cText, savedAt: savedTime });
           } else if (type === 'lkpd') {
             if (day === 1) {
               writeLocal('fincestem_lkpd_ft_day1_', parsed);
@@ -2269,6 +2279,9 @@ const FincestemCore = {
             } else if (day === 5) {
               writeLocal('fincestem_lkpd_ft_day5_prambanan_', parsed);
               writeLocal('fincestem_lkpd_ft_day5_', parsed);
+            } else if (day === 6) {
+              writeLocal('fincestem_lkpd_ft_day6_bakpia_', parsed);
+              writeLocal('fincestem_lkpd_ft_day6_', parsed);
             }
             writeLocal('fincestem_lkpd_ft_day' + day + '_', parsed);
             writeLocal('fincestem_lkpd_day' + day + '_', parsed);
@@ -2286,6 +2299,9 @@ const FincestemCore = {
             writeLocal('fincestem_lkpd_ft_day5_batik_', parsed);
           } else if (type === 'lkpd_uny') {
             writeLocal('fincestem_lkpd_ft_day5_uny_', parsed);
+          } else if (type === 'lkpd_bakpia') {
+            writeLocal('fincestem_lkpd_ft_day6_bakpia_', parsed);
+            writeLocal('fincestem_lkpd_ft_day6_', parsed);
           } else if (type === 'asesmen') {
             writeLocal('fincestem_asesmen_ft_day' + day + '_', parsed);
             writeLocal('fincestem_asesmen_day' + day + '_', parsed);

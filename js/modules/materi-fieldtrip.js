@@ -4529,6 +4529,389 @@
     window.checkIsD5Sesi3MateriDone = checkIsD5Sesi3MateriDone;
 
 
+    // ==========================================
+    // MODUL BELAJAR KHUSUS FIELD TRIP DAY 6
+    // Sesi 1: Pabrik Bakpia Jogja (Pilar: FINANCIAL 100% - Simple & Praktis)
+    // Sesi 2: Pantai Drini & Drini Park (Pilar: EXPLORATION)
+    // ==========================================
+    let currentD6Session = 1;
+
+    function checkIsD6Sesi1Done(cleanNisn) {
+      try {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = Array.from(new Set([nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier])).filter(Boolean);
+        for (const id of ids) {
+          const raw = localStorage.getItem('fincestem_materi_ft_day6_bakpia_' + id) || localStorage.getItem('fincestem_materi_ft_day6_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && (p.conclusion || p.text || p.content)) return true;
+            } catch(e) {}
+          }
+        }
+        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          if (tm['6_materi_bakpia'] || tm['6_materi']) return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function switchD6Session(targetSesi) {
+      currentD6Session = Number(targetSesi);
+      const mainEl = document.querySelector('main');
+      if (mainEl) renderDay6FieldTripModule(mainEl, currentD6Session);
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch(e) {}
+    }
+
+    function renderDay6FieldTripModule(mainEl, targetSesi) {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+
+      const isS1Done = checkIsD6Sesi1Done(cleanNisn);
+
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD6Session = Number(targetSesi);
+      } else {
+        const urlParams = new URLSearchParams(window.location.search);
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2) {
+          currentD6Session = reqSesi;
+        } else {
+          currentD6Session = 1;
+        }
+      }
+
+      // Tab navigasi 2 Sesi Day 6
+      const tabNavHtml = `
+        <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-2 gap-1.5 mb-2">
+          <!-- TAB 1: PABRIK BAKPIA JOGJA (FINANCIAL) -->
+          <button type="button" onclick="switchD6Session(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD6Session === 1 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-200'}">
+            <span class="material-symbols-outlined text-base ${currentD6Session === 1 ? 'text-amber-200' : 'text-amber-600'}">bakery_dining</span>
+            <span class="truncate">Sesi 1: Pabrik Bakpia Jogja</span>
+            ${isS1Done ? '<span class="text-[11px] text-amber-200 font-bold ml-1">✓</span>' : (currentD6Session === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse ml-0.5"></span>' : '')}
+          </button>
+
+          <!-- TAB 2: PANTAI DRINI & DRINI PARK (EXPLORATION) -->
+          <button type="button" onclick="switchD6Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD6Session === 2 ? 'bg-teal-600 text-white shadow-xs ring-2 ring-teal-400/40' : 'bg-slate-50 hover:bg-teal-50 text-teal-950 border border-teal-200'}">
+            <span class="material-symbols-outlined text-base ${currentD6Session === 2 ? 'text-teal-200' : 'text-teal-600'}">beach_access</span>
+            <span class="truncate">Sesi 2: Pantai Drini &amp; Park</span>
+          </button>
+        </div>
+      `;
+
+      if (currentD6Session === 2) {
+        // PREVIEW SESI 2: PANTAI DRINI & DRINI PARK
+        mainEl.innerHTML = `
+          ${tabNavHtml}
+          <div class="bg-gradient-to-br from-teal-700 via-teal-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-teal-100 backdrop-blur-md">
+                Field Trip • Day 6 • Sesi 2
+              </span>
+              <span class="text-xs font-bold text-teal-200">Pukul 11.30 - 15.30 WIB</span>
+            </div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              Sesi 2: Eksplorasi Ekosistem Karst &amp; Bahari Pantai Drini
+            </h2>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-teal-400/20 text-teal-200 font-extrabold text-xs w-fit">
+              <span class="material-symbols-outlined text-base">beach_access</span>
+              <span>Pilar Murni: 🧭 EXPLORATION (Geomorfologi Karst &amp; Ekowisata)</span>
+            </div>
+            <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium">
+              Eksplorasi bentang alam karst Pegunungan Sewu, fenomena pulau karang pemecah ombak, dan observasi tata kelola wisata pesisir terpadu Drini Park.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-teal-200/80 shadow-xs flex flex-col items-center text-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-3xl">beach_access</span>
+            </div>
+            <h3 class="font-extrabold text-base text-slate-900">Sesi 2: Kunjungan Pantai Drini &amp; Park</h3>
+            <p class="text-xs text-slate-600 max-w-sm">
+              Sesi ini dibuka pada siang hari pukul 11.30 WIB setelah rombongan tiba di kawasan pesisir Gunungkidul.
+            </p>
+            <button type="button" onclick="switchD6Session(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Buka Sesi 1 Pabrik Bakpia</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // ==========================================
+      // SESI 1: PABRIK BAKPIA JOGJA (MURNI FINANCIAL 100%)
+      // ==========================================
+      renderD6S1BakpiaModule(mainEl, tabNavHtml, cleanNisn);
+    }
+
+    function renderD6S1BakpiaModule(mainEl, tabNavHtml, cleanNisn) {
+      const user = FincestemCore.auth.getUser() || {};
+      mainEl.innerHTML = `
+        ${tabNavHtml}
+
+        <!-- BANNER MODUL FIELD TRIP DAY 6 SESI 1 -->
+        <div class="bg-gradient-to-br from-amber-600 via-orange-700 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
+              Field Trip • Day 6 • Sesi 1
+            </span>
+            <span class="text-xs font-bold text-amber-200">Pukul 08.00 - 10.30 WIB</span>
+          </div>
+          <h2 class="font-black text-xl sm:text-2xl leading-tight">
+            Sesi 1: Pabrik Bakpia Jogja &amp; Belanja Cerdas
+          </h2>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-xs w-fit">
+            <span class="material-symbols-outlined text-base">savings</span>
+            <span>Pilar Murni: 💰 FINANCIAL (Literasi Keuangan &amp; Industri)</span>
+          </div>
+          <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
+            Memahami modal pembuatan bakpia, cara toko menentukan keuntungan, serta tips praktis mengatur sisa uang saku untuk belanja oleh-oleh tanpa kehabisan bekal pulang.
+          </p>
+        </div>
+
+        <!-- 3 KARTU MATERI RINGKAS & MUDAH -->
+        <div class="flex flex-col gap-3.5">
+
+          <!-- KARTU 1: MODAL BIKIN BAKPIA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">1</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Modal Dasar Pembuatan Bakpia (HPP Sederhana)</h3>
+                <span class="text-[11px] font-bold text-amber-800">Berapa biaya bahan dan pembuatannya?</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                Untuk membuat 1 kotak bakpia (isi 15–20 butir), pabrik membutuhkan:
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-0.5">
+                <div class="p-3 rounded-2xl bg-amber-50/60 border border-amber-200/80 flex flex-col gap-1 text-xs">
+                  <strong class="text-amber-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-amber-700">inventory_2</span>
+                    <span>Bahan Baku Utama</span>
+                  </strong>
+                  <span class="text-slate-600 text-[11px]">Tepung terigu, isian (kacang hijau kupas/keju/cokelat), gula pasir, dan minyak/margarin pelembut kulit.</span>
+                </div>
+                <div class="p-3 rounded-2xl bg-amber-50/60 border border-amber-200/80 flex flex-col gap-1 text-xs">
+                  <strong class="text-amber-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-amber-700">oven_gen</span>
+                    <span>Tenaga &amp; Pemanggangan</span>
+                  </strong>
+                  <span class="text-slate-600 text-[11px]">Upah tenaga pelipat kulit, gas oven pemanggang, dan kotak kardus kemasan higienis.</span>
+                </div>
+              </div>
+              <p class="text-[11px] text-slate-600 font-medium">
+                💡 <em>Rata-rata modal dasar pembuatan 1 kotak bakpia berkisar antara <strong>Rp 18.000 – Rp 20.000</strong>.</em>
+              </p>
+            </div>
+          </div>
+
+          <!-- KARTU 2: KENAPA DIJUAL RP 35.000 - RP 40.000? -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Harga Jual &amp; Keuntungan Toko</h3>
+                <span class="text-[11px] font-bold text-amber-800">Menghitung keuntungan secara mudah</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                Jika modal bikin bakpia adalah <strong>Rp 20.000</strong> dan dijual ke pengunjung seharga <strong>Rp 35.000</strong>, maka keuntungan kotor toko adalah:
+              </p>
+              <div class="p-3 rounded-2xl bg-amber-100/60 border border-amber-300 font-mono text-center text-xs sm:text-sm text-amber-950 font-bold">
+                Rp 35.000 (Harga Jual) - Rp 20.000 (Modal) = Rp 15.000 (Keuntungan Toko)
+              </div>
+              <p class="text-[11px] text-slate-600">
+                Keuntungan ini digunakan toko untuk membayar gaji kasir &amp; pramusaji, listrik AC ruang belanja, kantong plastik, serta menyediakan <strong>tester gratis</strong> yang bebas dicicipi wisatawan.
+              </p>
+            </div>
+          </div>
+
+          <!-- KARTU 3: TIPS BELANJA CERDAS -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">3</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Tips Belanja Oleh-Oleh Cerdas (Jangan Kalap!)</h3>
+                <span class="text-[11px] font-bold text-amber-800">Disiplin mengatur sisa uang saku di Hari Ke-6</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
+                <li><strong>Cek Sisa Uang Saku</strong>: Hitung sisa uang fisik di dompet Anda sebelum masuk ke kasir toko.</li>
+                <li><strong>Dahulukan Orang Tua &amp; Rumah</strong>: Belilah buah tangan untuk keluarga inti terlebih dahulu sesuai kemampuan dana.</li>
+                <li><strong>Sisihkan Dana Bekal Pulang</strong>: Simpan minimal <strong>Rp 30.000 – Rp 50.000</strong> untuk membeli air minum atau makan di rest area jalan tol saat perjalanan pulang ke Belitang di Day 7.</li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- FORM RESUME / CATATAN SINGKAT SESI 1 -->
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-amber-300 shadow-xs flex flex-col gap-3">
+          <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+            <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-lg">edit_note</span>
+            </span>
+            <div>
+              <h3 class="font-black text-sm sm:text-base">Catatan Pemahaman Sesi 1</h3>
+              <span class="text-[11px] font-bold text-amber-800">Simpan resume singkat sebelum membuka LKPD</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Tuliskan 1 hal penting yang kamu pelajari mengenai modal bakpia atau tips belanja cerdas hari ini:
+          </p>
+          <textarea id="ftD6S1ConclusionInput" rows="2" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 bg-white" placeholder="Contoh: Saya belajar bahwa keuntungan toko bakpia sekitar Rp 15.000 per kotak, dan saya harus menyisihkan uang untuk bekal makan di jalan tol..."></textarea>
+
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+            <div id="ftD6S1ConclusionStatus" class="hidden text-xs text-emerald-700 font-bold flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base">check_circle</span>
+              <span>Tersimpan di sistem (<span id="ftD6S1ConclusionSavedTime">-</span>)</span>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto ml-auto">
+              <button id="ftD6S1SaveConclusionBtn" type="button" onclick="saveMateriConclusionD6S1()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all">
+                <span class="material-symbols-outlined text-base">save</span>
+                <span>Simpan Catatan</span>
+              </button>
+              <button id="ftD6S1GoLkpdBtn" type="button" onclick="handleGoToLkpdD6S1()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all opacity-50 pointer-events-none">
+                <span>Buka LKPD Sesi 1 Bakpia</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Hydrate saved conclusion
+      try {
+        const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), user.nis, user.identifier];
+        let savedText = '';
+        let savedTime = '';
+        for (const id of idVars) {
+          if (!id) continue;
+          const raw = localStorage.getItem('fincestem_materi_ft_day6_bakpia_' + id) || localStorage.getItem('fincestem_materi_ft_day6_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && (p.conclusion || p.text || p.content)) {
+                savedText = p.conclusion || p.text || p.content;
+                savedTime = p.savedAt || p.date || '';
+                break;
+              }
+            } catch(e) {}
+          }
+        }
+        if (!savedText && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          const task = tm['6_materi_bakpia'] || tm['6_materi'];
+          if (task && task.content) {
+            try {
+              const p = JSON.parse(task.content);
+              savedText = p.conclusion || p.text || task.content;
+            } catch(e) {
+              savedText = task.content;
+            }
+          }
+        }
+        if (savedText) {
+          applyMateriConclusionStateD6S1(savedText, savedTime);
+        }
+      } catch(e) {}
+    }
+
+    function saveMateriConclusionD6S1() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const txt = (document.getElementById('ftD6S1ConclusionInput')?.value || '').trim();
+
+      if (!txt || txt.length < 5) {
+        FincestemCore.ui.toast('Tuliskan catatan pemahaman singkat Anda minimal beberapa kata!', 'warning');
+        const el = document.getElementById('ftD6S1ConclusionInput');
+        if (el) el.focus();
+        return;
+      }
+
+      const now = new Date().toISOString();
+      const payload = {
+        conclusion: txt,
+        savedAt: now
+      };
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), user.nis, user.identifier].filter(Boolean);
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_materi_ft_day6_bakpia_' + id, JSON.stringify(payload));
+          localStorage.setItem('fincestem_materi_ft_day6_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(cleanNisn, 6, 'materi_bakpia', payload, function() {
+          FincestemCore.progress.submitTask(cleanNisn, 6, 'materi', payload, function() {
+            applyMateriConclusionStateD6S1(txt, now);
+            FincestemCore.ui.toast('Catatan pemahaman Modul Sesi 1 Bakpia berhasil disimpan! LKPD Sesi 1 sekarang telah terbuka.', 'success');
+          });
+        });
+      } else {
+        applyMateriConclusionStateD6S1(txt, now);
+        FincestemCore.ui.toast('Catatan pemahaman Modul Sesi 1 Bakpia berhasil disimpan! LKPD Sesi 1 sekarang telah terbuka.', 'success');
+      }
+    }
+
+    function applyMateriConclusionStateD6S1(savedText, savedTime) {
+      const input = document.getElementById('ftD6S1ConclusionInput');
+      const saveBtn = document.getElementById('ftD6S1SaveConclusionBtn');
+      const statusBox = document.getElementById('ftD6S1ConclusionStatus');
+      const timeBox = document.getElementById('ftD6S1ConclusionSavedTime');
+      const nextBtn = document.getElementById('ftD6S1GoLkpdBtn');
+
+      if (input) {
+        input.value = savedText;
+        input.disabled = true;
+        input.classList.add('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+      }
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.classList.remove('bg-amber-600', 'hover:bg-amber-700', 'cursor-pointer');
+        saveBtn.classList.add('bg-emerald-600', 'text-white', 'cursor-default');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>Catatan Telah Disimpan</span>';
+      }
+      if (statusBox) statusBox.classList.remove('hidden');
+      if (timeBox && savedTime) {
+        try {
+          timeBox.textContent = new Date(savedTime).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+        } catch (e) {
+          timeBox.textContent = savedTime;
+        }
+      }
+      if (nextBtn) {
+        nextBtn.classList.remove('opacity-50', 'pointer-events-none');
+        nextBtn.classList.add('animate-pulse');
+      }
+    }
+
+    function handleGoToLkpdD6S1() {
+      window.location.href = 'lkpd.html?day=6&sesi=1';
+    }
+
+    window.renderDay6FieldTripModule = renderDay6FieldTripModule;
+    window.switchD6Session = switchD6Session;
+    window.renderD6S1BakpiaModule = renderD6S1BakpiaModule;
+    window.saveMateriConclusionD6S1 = saveMateriConclusionD6S1;
+    window.applyMateriConclusionStateD6S1 = applyMateriConclusionStateD6S1;
+    window.handleGoToLkpdD6S1 = handleGoToLkpdD6S1;
+    window.checkIsD6Sesi1Done = checkIsD6Sesi1Done;
+
+
     // MODUL BELAJAR KHUSUS FIELD TRIP DAY 4 S.D. 7
     // ==========================================
     function renderGenericFieldTripModule(mainEl, dayNum) {

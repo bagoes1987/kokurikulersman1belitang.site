@@ -145,7 +145,7 @@
   </main>
 
   <script src="../js/siswa_data.js?v=20261021_v1"></script>
-  <script src="../js/core.js?v=20261021_v1"></script>
+  <script src="../js/core.js?v=20261026_d6_v1"></script>
   <script>
     window.activeUser = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {
       name: 'Peserta Field Trip',
@@ -157,7 +157,7 @@
     };
     var activeUser = window.activeUser;
   </script>
-  <script src="../js/modules/lkpd-fieldtrip.js?v=20261026_d5_v4"></script>
+  <script src="../js/modules/lkpd-fieldtrip.js?v=20261026_d6_v1"></script>
   <script>
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -206,7 +206,9 @@
             renderFieldTripDay1LKPD(isReadOnlyUrl);
           } else if (dayNum === 5) {
             renderFieldTripDay5LKPD(isReadOnlyUrl);
-          } else if (dayNum >= 6 && dayNum <= 7) {
+          } else if (dayNum === 6) {
+            renderFieldTripDay6LKPD(isReadOnlyUrl);
+          } else if (dayNum >= 7) {
             renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
           }
           const spinner = document.getElementById('lkpdLoadingState');

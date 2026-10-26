@@ -4,6 +4,8 @@
  * Terpisah dari LKPD Riset Sekolah (Non-Field Trip)
  * Versi: 20261018
  */
+    var activeUser = (typeof activeUser !== 'undefined' && activeUser) || (typeof window !== 'undefined' && window.activeUser) || (typeof FincestemCore !== 'undefined' && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+
     function formatRupiahInput(el) {
       if (!el) return;
       const prevVal = el.value || '';
@@ -4640,6 +4642,602 @@
     window.saveFtDay5S3LKPD = saveFtDay5S3LKPD;
     window.showFtD5S3LkpdModal = showFtD5S3LkpdModal;
     window.closeFtD5S3LkpdModal = closeFtD5S3LkpdModal;
+
+    // ==========================================
+    // MODUL LKPD KHUSUS FIELD TRIP DAY 6
+    // Sesi 1: Pabrik Bakpia Jogja (Pilar: FINANCIAL 100% - Simple & Praktis)
+    // Sesi 2: Pantai Drini & Drini Park (Pilar: EXPLORATION)
+    // ==========================================
+    let currentD6LkpdSession = 1;
+
+    function switchD6LkpdSession(targetSesi) {
+      currentD6LkpdSession = Number(targetSesi);
+      const urlParams = new URLSearchParams(window.location.search);
+      const isReadOnlyUrl = (urlParams.get('readonly') === '1');
+      renderFieldTripDay6LKPD(isReadOnlyUrl, currentD6LkpdSession);
+      try {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } catch(e) {}
+    }
+
+    function checkIsD6Sesi1LkpdDone(cleanNisn) {
+      try {
+        const u = (typeof activeUser !== 'undefined' && activeUser) || (window.activeUser) || (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+        const nisn = String(cleanNisn || u.nisn || u.identifier || '').trim();
+        const ids = Array.from(new Set([nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), u.nis, u.identifier])).filter(Boolean);
+        for (const id of ids) {
+          const raw = localStorage.getItem('fincestem_lkpd_ft_day6_bakpia_' + id) || localStorage.getItem('fincestem_lkpd_ft_day6_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && p.submitted) return true;
+            } catch(e) {}
+          }
+        }
+        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          if ((tm['6_lkpd_bakpia'] && tm['6_lkpd_bakpia'].status === 'submitted') || 
+              (tm['6_lkpd'] && tm['6_lkpd'].status === 'submitted')) return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function renderFieldTripDay6LKPD(isReadOnly, targetSesi) {
+      const mainEl = document.querySelector('main');
+      if (!mainEl) return;
+
+      const u = (typeof activeUser !== 'undefined' && activeUser) || (window.activeUser) || (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const studentName = u.name || 'Peserta Field Trip';
+      const studentNisn = u.nisn || u.identifier || '-';
+      const studentClass = u.class || u.class_name || 'Kelas X';
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+        : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+      const cleanNisn = String(studentNisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idVars = Array.from(new Set([cleanNisn, unpadded, padded, studentNisn])).filter(Boolean);
+
+      const urlParams = new URLSearchParams(window.location.search);
+
+      if (targetSesi !== undefined && targetSesi !== null) {
+        currentD6LkpdSession = Number(targetSesi);
+      } else {
+        const reqSesi = parseInt(urlParams.get('sesi'));
+        if (reqSesi === 2) {
+          currentD6LkpdSession = reqSesi;
+        } else {
+          currentD6LkpdSession = 1;
+        }
+      }
+
+      // Cek status LKPD Sesi 1 Bakpia
+      let savedS1 = null;
+      for (const id of idVars) {
+        const rawS1 = localStorage.getItem('fincestem_lkpd_ft_day6_bakpia_' + id) || localStorage.getItem('fincestem_lkpd_ft_day6_' + id);
+        if (rawS1) {
+          try {
+            savedS1 = JSON.parse(rawS1);
+            break;
+          } catch(e) {}
+        }
+      }
+      if (!savedS1 && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        const task = tm['6_lkpd_bakpia'] || tm['6_lkpd'];
+        if (task && task.content) {
+          let p = task.content;
+          if (typeof p === 'string') {
+            try { p = JSON.parse(p); } catch(e) {}
+          }
+          if (p && typeof p === 'object') savedS1 = p;
+        }
+      }
+      const isS1Submitted = !!(savedS1 && savedS1.submitted);
+
+      // Cek prasyarat Modul Sesi 1
+      let hasMateriBakpia = false;
+      for (const id of idVars) {
+        const rawM = localStorage.getItem('fincestem_materi_ft_day6_bakpia_' + id) || localStorage.getItem('fincestem_materi_ft_day6_' + id);
+        if (rawM) {
+          try {
+            const p = JSON.parse(rawM);
+            if (p && (p.conclusion || p.text)) {
+              hasMateriBakpia = true;
+              break;
+            }
+          } catch(e) {}
+        }
+      }
+      if (!hasMateriBakpia && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        if (tm['6_materi_bakpia'] || tm['6_materi']) hasMateriBakpia = true;
+      }
+      if (savedS1 && (savedS1.submitted || savedS1.hargaKotak || savedS1.varianRasa)) {
+        hasMateriBakpia = true;
+      }
+
+      // TAB NAVIGASI 2 SESI LKPD DAY 6
+      const tabNavHtml = `
+        <div class="p-1.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs grid grid-cols-1 sm:grid-cols-2 gap-1.5 mb-2">
+          <!-- TAB 1: PABRIK BAKPIA JOGJA (FINANCIAL) -->
+          <button type="button" onclick="switchD6LkpdSession(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD6LkpdSession === 1 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-200'}">
+            <span class="material-symbols-outlined text-base ${currentD6LkpdSession === 1 ? 'text-amber-200' : 'text-amber-600'}">bakery_dining</span>
+            <span class="truncate">Sesi 1: LKPD Pabrik Bakpia</span>
+            ${isS1Submitted ? '<span class="text-[11px] text-amber-200 font-bold ml-1">✓</span>' : (currentD6LkpdSession === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse ml-0.5"></span>' : '')}
+          </button>
+
+          <!-- TAB 2: PANTAI DRINI & DRINI PARK (EXPLORATION) -->
+          <button type="button" onclick="switchD6LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD6LkpdSession === 2 ? 'bg-teal-600 text-white shadow-xs ring-2 ring-teal-400/40' : 'bg-slate-50 hover:bg-teal-50 text-teal-950 border border-teal-200'}">
+            <span class="material-symbols-outlined text-base ${currentD6LkpdSession === 2 ? 'text-teal-200' : 'text-teal-600'}">beach_access</span>
+            <span class="truncate">Sesi 2: LKPD Pantai Drini</span>
+          </button>
+        </div>
+      `;
+
+      if (currentD6LkpdSession === 2) {
+        // PREVIEW SESI 2 LKPD
+        mainEl.innerHTML = `
+          ${tabNavHtml}
+          <div class="bg-gradient-to-br from-teal-700 via-teal-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-teal-100 backdrop-blur-md w-fit">
+              Field Trip • Day 6 • Sesi 2
+            </span>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              LKPD Sesi 2: Eksplorasi Ekosistem Karst &amp; Bahari Pantai Drini
+            </h2>
+            <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium">
+              Lembar observasi bentang alam karst Pegunungan Sewu, keunikan pulau karang pemecah ombak, dan tata kelola wisata pesisir terpadu Drini Park.
+            </p>
+          </div>
+          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-teal-200/80 shadow-xs flex flex-col items-center text-center gap-3">
+            <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-3xl">beach_access</span>
+            </div>
+            <h3 class="font-extrabold text-base text-slate-900">LKPD Sesi 2 Pantai Drini &amp; Park</h3>
+            <p class="text-xs text-slate-600 max-w-sm">
+              Sesi observasi pantai dibuka pada siang hari pukul 11.30 WIB setelah rombongan tiba di kawasan Pantai Drini.
+            </p>
+            <button type="button" onclick="switchD6LkpdSession(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-base">arrow_back</span>
+              <span>Buka LKPD Sesi 1 Pabrik Bakpia</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      // ==========================================
+      // SESI 1: LKPD PABRIK BAKPIA JOGJA (100% FINANCIAL - SUPER SIMPEL)
+      // ==========================================
+      const valVarian = savedS1 ? (savedS1.varianRasa || '') : '';
+      const valHarga = savedS1 ? (savedS1.hargaKotak || '') : '';
+      const valUntung = savedS1 ? (savedS1.hitungUntung || '') : '';
+      const valSisaUang = savedS1 ? (savedS1.sisaUang || '') : '';
+      const valRencanaBelanja = savedS1 ? (savedS1.rencanaBelanja || '') : '';
+      const valSisaPulang = savedS1 ? (savedS1.sisaPulang || '') : '';
+      const valTips = savedS1 ? (savedS1.tipsBelanja || '') : '';
+      const valCheck1 = savedS1 ? !!savedS1.checkTahuHarga : false;
+      const valCheck2 = savedS1 ? !!savedS1.checkPahamUntung : false;
+      const valCheck3 = savedS1 ? !!savedS1.checkBelanjaBijak : false;
+
+      const s1Disabled = (isReadOnly || isS1Submitted) ? 'disabled' : '';
+
+      mainEl.innerHTML = `
+        ${tabNavHtml}
+
+        <!-- BANNER LKPD FIELD TRIP DAY 6 SESI 1 -->
+        <div class="bg-gradient-to-br from-amber-600 via-orange-700 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
+              Field Trip • Day 6 • Sesi 1
+            </span>
+            <span class="text-xs font-bold text-amber-200">Pukul 08.00 - 10.30 WIB</span>
+          </div>
+          <h2 class="font-black text-xl sm:text-2xl leading-tight">
+            LKPD Sesi 1: Pabrik Bakpia Jogja &amp; Belanja Cerdas
+          </h2>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-xs w-fit">
+            <span class="material-symbols-outlined text-base">savings</span>
+            <span>Pilar Murni: 💰 FINANCIAL (Literasi Keuangan Lapangan)</span>
+          </div>
+          <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
+            Lembar pengamatan harga dan keuntungan toko bakpia, serta latihan mengelola sisa uang saku untuk belanja oleh-oleh secara bijak.
+          </p>
+        </div>
+
+        <!-- KARTU IDENTITAS PESERTA -->
+        <div class="bg-surface-container-lowest rounded-3xl p-4 sm:p-5 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
+            <div class="flex items-center gap-2 text-amber-950 font-black text-xs sm:text-sm">
+              <span class="material-symbols-outlined text-amber-700 text-lg">badge</span>
+              <span>Identitas Peserta Observasi Finansial</span>
+            </div>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black ${isS1Submitted ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-amber-100 text-amber-800 border border-amber-200'}">
+              ${isS1Submitted ? '✓ TERSUBMIT RESMI' : 'DRAFT PENGERJAAN'}
+            </span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <div class="p-2.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+              <span class="text-slate-500 font-semibold block text-[10px]">Nama Siswa:</span>
+              <strong class="text-slate-900 truncate block">${studentName}</strong>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+              <span class="text-slate-500 font-semibold block text-[10px]">NISN:</span>
+              <strong class="text-slate-900 truncate block">${studentNisn}</strong>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+              <span class="text-slate-500 font-semibold block text-[10px]">Kelas:</span>
+              <strong class="text-slate-900 truncate block">${studentClass}</strong>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-amber-50/50 border border-amber-200/60">
+              <span class="text-slate-500 font-semibold block text-[10px]">Fasilitator:</span>
+              <strong class="text-slate-900 truncate block">${fasilName}</strong>
+            </div>
+          </div>
+        </div>
+
+        ${!hasMateriBakpia ? `
+        <!-- SARAN BACA MODUL -->
+        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 flex items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-2 text-amber-900 font-bold">
+            <span class="material-symbols-outlined text-amber-700 text-lg">lightbulb</span>
+            <span>Anda belum menyimpan catatan Modul Sesi 1. Sebaiknya baca ringkasan materi sebelum mengisi lembar kerja.</span>
+          </div>
+          <a href="materi.html?day=6&sesi=1" class="px-3 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shrink-0 shadow-2xs">Buka Modul</a>
+        </div>
+        ` : ''}
+
+        <!-- FORM LKPD DAY 6 SESI 1: 4 BAGIAN SIMPEL -->
+        <form id="formFtDay6S1LKPD" onsubmit="event.preventDefault();" class="flex flex-col gap-4">
+
+          <!-- BAGIAN 1: CEK RASA & HARGA BAKPIA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">1</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Pengamatan Varian Rasa &amp; Harga Bakpia</h3>
+                <span class="text-[11px] font-bold text-amber-800">Apa varian yang kamu amati atau cicipi di toko?</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2">
+              <label class="block text-xs font-bold text-slate-800">Pilih varian rasa bakpia yang kamu amati / cicipi:</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <label class="p-3 rounded-2xl border ${valVarian === 'kacang_hijau' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_varianRasa" value="kacang_hijau" ${valVarian === 'kacang_hijau' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <strong class="text-slate-900">[A] Kacang Hijau Asli (Varian Klasik)</strong>
+                </label>
+                <label class="p-3 rounded-2xl border ${valVarian === 'keju' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_varianRasa" value="keju" ${valVarian === 'keju' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <strong class="text-slate-900">[B] Keju / Susu Gurih</strong>
+                </label>
+                <label class="p-3 rounded-2xl border ${valVarian === 'cokelat' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_varianRasa" value="cokelat" ${valVarian === 'cokelat' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <strong class="text-slate-900">[C] Cokelat Manis</strong>
+                </label>
+                <label class="p-3 rounded-2xl border ${valVarian === 'kumbu_hitam' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_varianRasa" value="kumbu_hitam" ${valVarian === 'kumbu_hitam' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <strong class="text-slate-900">[D] Kumbu Hitam / Aneka Rasa</strong>
+                </label>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1 mt-1">
+              <label class="text-xs font-bold text-slate-800">Berapa harga 1 kotak bakpia varian tersebut di toko? (Rp):</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rp</span>
+                <input type="text" id="ftD6S1_hargaKotak" value="${valHarga ? Number(valHarga).toLocaleString('id-ID') : ''}" oninput="formatRupiahInput(this)" ${s1Disabled} class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 ${s1Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Contoh: 35.000">
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: HITUNG KEUNTUNGAN TOKO (PILIHAN GANDA CEPAT) -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Hitung Keuntungan Toko Secara Mudah</h3>
+                <span class="text-[11px] font-bold text-amber-800">Analisis keuntungan = Harga Jual - Modal</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Jika modal pembuatan 1 kotak bakpia sekitar <strong>Rp 20.000</strong> dan dijual seharga <strong>Rp 35.000</strong>, berapa perkiraan keuntungan kotor toko per kotak?
+            </p>
+
+            <div class="flex flex-col gap-2 mt-1">
+              <label class="p-3 rounded-2xl border ${valUntung === '15000' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                <input type="radio" name="ftD6S1_hitungUntung" value="15000" ${valUntung === '15000' ? 'checked' : ''} ${s1Disabled} class="mt-0.5 accent-amber-600">
+                <div class="flex flex-col text-xs">
+                  <strong class="text-slate-900 font-bold">[A] Rp 15.000 per kotak ✓</strong>
+                  <span class="text-slate-600 text-[11px] mt-0.5">(Cara hitung: Rp 35.000 harga jual dikurangi modal Rp 20.000)</span>
+                </div>
+              </label>
+
+              <label class="p-3 rounded-2xl border ${valUntung === '35000' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                <input type="radio" name="ftD6S1_hitungUntung" value="35000" ${valUntung === '35000' ? 'checked' : ''} ${s1Disabled} class="mt-0.5 accent-amber-600">
+                <div class="flex flex-col text-xs">
+                  <strong class="text-slate-900 font-bold">[B] Rp 35.000 per kotak</strong>
+                  <span class="text-slate-600 text-[11px] mt-0.5">(Kurang tepat, Rp 35.000 adalah harga jual keseluruhan bukan untung)</span>
+                </div>
+              </label>
+
+              <label class="p-3 rounded-2xl border ${valUntung === '55000' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-start gap-3 transition-all">
+                <input type="radio" name="ftD6S1_hitungUntung" value="55000" ${valUntung === '55000' ? 'checked' : ''} ${s1Disabled} class="mt-0.5 accent-amber-600">
+                <div class="flex flex-col text-xs">
+                  <strong class="text-slate-900 font-bold">[C] Rp 55.000 per kotak</strong>
+                  <span class="text-slate-600 text-[11px] mt-0.5">(Salah, angka ini hasil penjumlahan bukan pengurangan modal)</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- BAGIAN 3: CEK DOMPET & BELANJA CERDAS KAMU -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">3</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Cek Dompet &amp; Rencana Belanja Oleh-Oleh Kamu</h3>
+                <span class="text-[11px] font-bold text-amber-800">Praktik mengelola uang saku riil di hari ke-6</span>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="flex flex-col gap-1">
+                <label class="font-bold text-slate-800">Perkiraan sisa uang saku kamu saat ini (Rp):</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rp</span>
+                  <input type="text" id="ftD6S1_sisaUang" value="${valSisaUang ? Number(valSisaUang).toLocaleString('id-ID') : ''}" oninput="formatRupiahInput(this)" ${s1Disabled} class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 ${s1Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Misal: 150.000">
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="font-bold text-slate-800">Rencana uang untuk beli oleh-oleh hari ini (Rp):</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rp</span>
+                  <input type="text" id="ftD6S1_rencanaBelanja" value="${valRencanaBelanja ? Number(valRencanaBelanja).toLocaleString('id-ID') : ''}" oninput="formatRupiahInput(this)" ${s1Disabled} class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 ${s1Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Misal: 100.000">
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2 mt-2">
+              <label class="block text-xs font-bold text-slate-800">Apakah kamu masih menyisihkan uang untuk bekal perjalanan pulang di jalan tol?</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <label class="p-3 rounded-2xl border ${valSisaPulang === 'ada_sisa' ? 'border-emerald-500 bg-emerald-50/70 ring-1 ring-emerald-400' : 'border-slate-200 bg-white hover:bg-emerald-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_sisaPulang" value="ada_sisa" ${valSisaPulang === 'ada_sisa' ? 'checked' : ''} ${s1Disabled} class="accent-emerald-600">
+                  <strong class="text-slate-900">Ya, masih ada sisa untuk bekal pulang ✓</strong>
+                </label>
+                <label class="p-3 rounded-2xl border ${valSisaPulang === 'habis' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_sisaPulang" value="habis" ${valSisaPulang === 'habis' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <strong class="text-slate-900">Habis semua untuk belanja oleh-oleh</strong>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN 4: KESIMPULAN BELANJA CERDAS (1 KALIMAT SINGKAT) -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">4</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Tips Belanja Cerdas Versi Kamu (1 Kalimat)</h3>
+                <span class="text-[11px] font-bold text-amber-800">Tuliskan 1 kalimat tips agar uang saku tidak habis sia-sia</span>
+              </div>
+            </div>
+            <textarea id="ftD6S1_tipsBelanja" rows="2" ${s1Disabled} class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 ${s1Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Contoh: Saya membeli oleh-oleh secukupnya untuk keluarga dan tetap menyimpan sisa uang saku untuk bekal makan di jalan tol...">${valTips}</textarea>
+          </div>
+
+          <!-- BAGIAN 5: ASESMEN MANDIRI SISWA (3 CENTANG CEPAT) -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="material-symbols-outlined text-amber-700 text-xl">fact_check</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Asesmen Mandiri Finansial (Centang Kejujuran)</h3>
+                <span class="text-[11px] font-bold text-amber-800">Centang 3 pernyataan berikut sesuai pengalamanmu:</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-2 text-xs">
+              <label class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                <input type="checkbox" id="ftD6S1_checkTahuHarga" ${valCheck1 ? 'checked' : ''} ${s1Disabled} class="accent-amber-600 rounded">
+                <span class="text-slate-800">1. Saya tahu varian rasa dan harga 1 kotak bakpia yang saya amati/beli.</span>
+              </label>
+              <label class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                <input type="checkbox" id="ftD6S1_checkPahamUntung" ${valCheck2 ? 'checked' : ''} ${s1Disabled} class="accent-amber-600 rounded">
+                <span class="text-slate-800">2. Saya paham cara menghitung keuntungan toko (Harga Jual dikurangi Modal).</span>
+              </label>
+              <label class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
+                <input type="checkbox" id="ftD6S1_checkBelanjaBijak" ${valCheck3 ? 'checked' : ''} ${s1Disabled} class="accent-amber-600 rounded">
+                <span class="text-slate-800">3. Saya belanja bijak dan masih memiliki sisa uang untuk bekal perjalanan pulang.</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- TOMBOL AKSI SUBMIT LKPD -->
+          ${!isS1Submitted && !isReadOnly ? `
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-3xl bg-surface-container-lowest border border-amber-300 shadow-xs">
+            <a href="dashboard.html?day=6" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-base">dashboard</span>
+              <span>Dashboard</span>
+            </a>
+            <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+              <button id="btnSaveFtD6S1Draft" type="button" onclick="saveFtDay6S1LKPD(false)" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-base">save</span>
+                <span>Simpan Draft</span>
+              </button>
+              <button id="btnSaveFtD6S1Lkpd" type="button" onclick="saveFtDay6S1LKPD(true)" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all">
+                <span class="material-symbols-outlined text-base">send</span>
+                <span>Kirim Jawaban Resmi LKPD</span>
+              </button>
+            </div>
+          </div>
+          ` : `
+          <div class="p-4 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2.5 text-emerald-900 font-bold">
+              <span class="material-symbols-outlined text-emerald-700 text-xl">verified</span>
+              <span>LKPD Sesi 1 (Pabrik Bakpia) Telah Tersimpan Resmi!</span>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+              <a href="materi.html?day=6&sesi=1" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold text-xs flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">menu_book</span>
+                <span>Modul Sesi 1</span>
+              </a>
+              <a href="dashboard.html?day=6" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs">
+                <span class="material-symbols-outlined text-sm">dashboard</span>
+                <span>Dashboard</span>
+              </a>
+            </div>
+          </div>
+          `}
+
+        </form>
+
+        <!-- MODAL SUKSES SUBMIT LKPD SESI 1 -->
+        <div id="modalLkpdFtD6S1Success" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4 opacity-0 pointer-events-none transition-all duration-300">
+          <div class="bg-white rounded-3xl p-6 sm:p-8 max-w-sm w-full shadow-2xl flex flex-col items-center text-center gap-4 border border-slate-100 transform scale-95 transition-all">
+            <div class="w-16 h-16 rounded-full bg-amber-100 text-amber-700 flex items-center justify-center">
+              <span class="material-symbols-outlined text-4xl">celebration</span>
+            </div>
+            <div class="flex flex-col gap-1">
+              <h3 class="text-lg font-black text-slate-900 leading-tight">LKPD Pabrik Bakpia Tuntas!</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Pengamatan finansial, harga bakpia, dan rencana belanja cerdas Anda berhasil disimpan dan disubmit ke sistem.
+              </p>
+            </div>
+            <div class="flex flex-col gap-2 w-full mt-2">
+              <a href="dashboard.html?day=6&task=asesmen" class="w-full py-3 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs shadow-xs cursor-pointer transition-all flex items-center justify-center gap-1.5">
+                <span class="material-symbols-outlined text-base">fact_check</span>
+                <span>Lanjut Kerjakan Asesmen Day 6</span>
+              </a>
+              <button type="button" onclick="closeFtD6S1LkpdModal()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs cursor-pointer transition-all">
+                Tetap di Lembar Jawaban
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveFtDay6S1LKPD(isFinal) {
+      if (isFinal === undefined) isFinal = true;
+      const u = (typeof activeUser !== 'undefined' && activeUser) || (window.activeUser) || (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const studentNisn = u.nisn || u.identifier || '-';
+      const cleanNisn = String(studentNisn).trim();
+
+      const varianRasa = document.querySelector('input[name="ftD6S1_varianRasa"]:checked')?.value || '';
+      const hargaKotak = parseRupiah(document.getElementById('ftD6S1_hargaKotak')?.value || '');
+      const hitungUntung = document.querySelector('input[name="ftD6S1_hitungUntung"]:checked')?.value || '';
+      const sisaUang = parseRupiah(document.getElementById('ftD6S1_sisaUang')?.value || '');
+      const rencanaBelanja = parseRupiah(document.getElementById('ftD6S1_rencanaBelanja')?.value || '');
+      const sisaPulang = document.querySelector('input[name="ftD6S1_sisaPulang"]:checked')?.value || '';
+      const tipsBelanja = (document.getElementById('ftD6S1_tipsBelanja')?.value || '').trim();
+      const checkTahuHarga = document.getElementById('ftD6S1_checkTahuHarga')?.checked || false;
+      const checkPahamUntung = document.getElementById('ftD6S1_checkPahamUntung')?.checked || false;
+      const checkBelanjaBijak = document.getElementById('ftD6S1_checkBelanjaBijak')?.checked || false;
+
+      if (isFinal) {
+        if (!varianRasa) {
+          FincestemCore.ui.toast('Pilih salah satu varian rasa bakpia yang kamu amati (Bagian 1)!', 'warning');
+          return;
+        }
+        if (!hargaKotak || hargaKotak <= 0) {
+          FincestemCore.ui.toast('Tuliskan harga 1 kotak bakpia di toko (Bagian 1)!', 'warning');
+          const el = document.getElementById('ftD6S1_hargaKotak');
+          if (el) el.focus();
+          return;
+        }
+        if (!hitungUntung) {
+          FincestemCore.ui.toast('Pilih jawaban perkiraan keuntungan toko (Bagian 2)!', 'warning');
+          return;
+        }
+        if (!sisaPulang) {
+          FincestemCore.ui.toast('Pilih apakah kamu masih menyisihkan uang bekal pulang (Bagian 3)!', 'warning');
+          return;
+        }
+        if (!tipsBelanja || tipsBelanja.length < 5) {
+          FincestemCore.ui.toast('Tuliskan 1 kalimat tips belanja cerdas (Bagian 4)!', 'warning');
+          const el = document.getElementById('ftD6S1_tipsBelanja');
+          if (el) el.focus();
+          return;
+        }
+      }
+
+      const payload = {
+        varianRasa,
+        hargaKotak,
+        hitungUntung,
+        sisaUang,
+        rencanaBelanja,
+        sisaPulang,
+        tipsBelanja,
+        checkTahuHarga,
+        checkPahamUntung,
+        checkBelanjaBijak,
+        submitted: !!isFinal,
+        submittedAt: new Date().toISOString()
+      };
+
+      const btn = document.getElementById('btnSaveFtD6S1Lkpd');
+      if (btn && isFinal) {
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan LKPD Sesi 1...</span>';
+        btn.classList.add('pointer-events-none', 'opacity-80');
+      }
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), studentNisn];
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day6_bakpia_' + id, JSON.stringify(payload));
+          localStorage.setItem('fincestem_lkpd_ft_day6_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (isFinal) {
+        if (FincestemCore.progress) {
+          FincestemCore.progress.submitTask(studentNisn, 6, 'lkpd_bakpia', payload, function() {
+            FincestemCore.progress.submitTask(studentNisn, 6, 'lkpd', payload, function() {
+              showFtD6S1LkpdModal();
+            });
+          });
+        } else {
+          showFtD6S1LkpdModal();
+        }
+      } else {
+        FincestemCore.ui.toast('Draft LKPD Sesi 1 Pabrik Bakpia berhasil disimpan.', 'info');
+      }
+    }
+
+    function showFtD6S1LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtD6S1Success');
+      if (!modal) {
+        FincestemCore.ui.toast('LKPD Sesi 1 (Pabrik Bakpia) Berhasil Disimpan & Dikirim!', 'success');
+        renderFieldTripDay6LKPD(false, 1);
+        return;
+      }
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const inner = modal.querySelector('div');
+      if (inner) {
+        inner.classList.remove('scale-95');
+        inner.classList.add('scale-100');
+      }
+    }
+
+    function closeFtD6S1LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtD6S1Success');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      renderFieldTripDay6LKPD(false, 1);
+    }
+
+    window.renderFieldTripDay6LKPD = renderFieldTripDay6LKPD;
+    window.switchD6LkpdSession = switchD6LkpdSession;
+    window.saveFtDay6S1LKPD = saveFtDay6S1LKPD;
+    window.showFtD6S1LkpdModal = showFtD6S1LkpdModal;
+    window.closeFtD6S1LkpdModal = closeFtD6S1LkpdModal;
 
 
     // MODUL LKPD KHUSUS FIELD TRIP DAY 4 S.D. 7
