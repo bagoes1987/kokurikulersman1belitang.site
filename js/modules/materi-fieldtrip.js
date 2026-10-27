@@ -4592,7 +4592,7 @@
           <!-- TAB 1: PABRIK BAKPIA JOGJA (FINANCIAL) -->
           <button type="button" onclick="switchD6Session(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD6Session === 1 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-200'}">
             <span class="material-symbols-outlined text-base ${currentD6Session === 1 ? 'text-amber-200' : 'text-amber-600'}">bakery_dining</span>
-            <span class="truncate">Sesi 1: Pabrik Bakpia Jogja</span>
+            <span class="truncate">Sesi 1: Pabrik Bakpia Jogkem</span>
             ${isS1Done ? '<span class="text-[11px] text-amber-200 font-bold ml-1">✓</span>' : (currentD6Session === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse ml-0.5"></span>' : '')}
           </button>
 
@@ -4688,6 +4688,101 @@
             <span class="text-white/80 italic ml-auto">
               Sumber: Multikultura UI (Vol. 3 No. 3, Juli 2024, hlm. 366–385)
             </span>
+          </div>
+        </div>
+
+        <!-- PROFIL DESTINASI KUNJUNGAN EDUKATIF: BAKPIA JOGKEM -->
+        <div class="bg-gradient-to-br from-amber-500/10 via-orange-500/5 to-slate-50 rounded-3xl p-5 sm:p-6 border-2 border-amber-300/80 shadow-xs flex flex-col gap-4">
+          <div class="flex items-start sm:items-center justify-between gap-3 flex-wrap border-b border-amber-200/80 pb-3">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-600 text-white flex items-center justify-center font-black text-2xl shadow-sm shrink-0">
+                <span class="material-symbols-outlined text-2xl">storefront</span>
+              </div>
+              <div class="flex flex-col">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h3 class="font-black text-base sm:text-lg text-slate-900">
+                    Profil Destinasi Riset: Bakpia Jogkem
+                  </h3>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wide bg-amber-600 text-white shadow-2xs">
+                    Lokasi Kunjungan Lapangan
+                  </span>
+                </div>
+                <span class="text-xs font-bold text-amber-800 italic mt-0.5">
+                  “Jogja Ngangeni, Jogja Kembali”
+                </span>
+              </div>
+            </div>
+            
+            <a href="https://bakpiajogkem.id/" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-white hover:bg-amber-50 border border-amber-300 text-amber-900 font-extrabold text-[11px] flex items-center gap-1 shadow-2xs transition-all cursor-pointer">
+              <span>Website Resmi Jogkem</span>
+              <span class="material-symbols-outlined text-xs">open_in_new</span>
+            </a>
+          </div>
+
+          <!-- Rincian Profil -->
+          <div class="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <p>
+              <strong>Bakpia Jogkem</strong> merupakan usaha kuliner unggulan di Yogyakarta yang bergerak di bidang produksi dan penjualan bakpia berkualitas sebagai oleh-oleh khas daerah. Nama <strong>"Jogkem"</strong> merupakan akronim resmi dari <strong>"Jogja Kembali"</strong>, yang disandingkan dengan slogan hangat <em>“Jogja Ngangeni, Jogja Kembali”</em>—mencerminkan kerinduan mendalam wisatawan untuk selalu pulang dan kembali ke Yogyakarta.
+            </p>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+              <!-- Kartu 1: Sejarah & Perjalanan -->
+              <div class="p-3.5 rounded-2xl bg-white border border-amber-200 flex flex-col gap-1.5 shadow-2xs">
+                <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+                  <span class="material-symbols-outlined text-amber-700 text-base">history_edu</span>
+                  <span>Perintisan &amp; Usia Usaha</span>
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">
+                  Mulai dirintis pada tahun <strong>2013</strong> dan memperingati usia ke-12 tahun pada Desember 2025. Terus bertumbuh pesat menjadi salah satu sentra oleh-oleh modern terfavorit di Yogyakarta.
+                </p>
+              </div>
+
+              <!-- Kartu 2: Karakteristik & Varian Rasa -->
+              <div class="p-3.5 rounded-2xl bg-white border border-amber-200 flex flex-col gap-1.5 shadow-2xs">
+                <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+                  <span class="material-symbols-outlined text-amber-700 text-base">bakery_dining</span>
+                  <span>Ciri Khas &amp; Varian Rasa</span>
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">
+                  Terkenal dengan <strong>tekstur isian yang lembut dan kulit pastry yang tipis</strong>. Menawarkan varian inovatif: <em>kacang hijau, kumbu hitam, cokelat, keju, green tea, cappuccino, tiramisu, susu</em>, serta varian buah-buahan segar.
+                </p>
+              </div>
+
+              <!-- Kartu 3: Open Kitchen Edukasi -->
+              <div class="p-3.5 rounded-2xl bg-white border border-amber-200 flex flex-col gap-1.5 shadow-2xs">
+                <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+                  <span class="material-symbols-outlined text-amber-700 text-base">visibility</span>
+                  <span>Konsep Open Kitchen</span>
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">
+                  Mengembangkan fasilitas dapur terbuka (<em>open kitchen</em>), di mana peserta didik dapat melihat langsung proses pengadukan, pencetakan kulit, penumisan isian, dan pemanggangan higienis.
+                </p>
+              </div>
+            </div>
+
+            <!-- Relevansi dengan FINCESTEM & Kunjungan Edukatif -->
+            <div class="p-3.5 rounded-2xl bg-amber-100/70 border border-amber-300 text-amber-950 flex flex-col gap-1.5">
+              <strong class="text-xs flex items-center gap-1.5 text-amber-900">
+                <span class="material-symbols-outlined text-sm text-amber-800">school</span>
+                <span>Fokus Pembelajaran FINCESTEM di Bakpia Jogkem:</span>
+              </strong>
+              <p class="text-xs text-slate-700 leading-relaxed">
+                Kunjungan edukatif ke Bakpia Jogkem membekali siswa untuk mempelajari manajemen wirausaha kuliner, inovasi varian produk, pengoperasian mesin oven &amp; peralatan produksi, standarisasi kemasan higienis, serta strategi pemasaran modern. Kunjungan ini menghubungkan materi <strong>akulturasi budaya</strong> dengan implementasi nyata <strong>Sains, Teknologi, Rekayasa, dan Matematika (STEM)</strong> dalam industri pangan.
+              </p>
+              <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-amber-200 text-[10.5px] text-slate-600">
+                <span class="font-bold text-slate-800">Sumber Informasi Resmi:</span>
+                <a href="https://bakpiajogkem.id/" target="_blank" rel="noopener noreferrer" class="text-amber-800 underline font-medium hover:text-amber-950">Website Resmi Jogkem</a> •
+                <a href="https://www.bisnisjogja.id/bakpia-jogkem-12-tahun-jogja-ngangeni-jogja-kembali/" target="_blank" rel="noopener noreferrer" class="text-amber-800 underline font-medium hover:text-amber-950">Bisnis Jogja (HUT ke-12)</a> •
+                <a href="https://jogja-ngangkring.com/news/show/0905202537-launching-bakpia-jogkem-jakal" target="_blank" rel="noopener noreferrer" class="text-amber-800 underline font-medium hover:text-amber-950">Jogja Ngangkring (Soft Opening Jakal)</a>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-xl bg-white border border-slate-200 flex items-center gap-2 text-xs text-slate-600">
+              <span class="material-symbols-outlined text-amber-700 text-base shrink-0">arrow_downward</span>
+              <span>
+                <strong>Panduan Belajar:</strong> Sebelum mengamati langsung di lokasi Bakpia Jogkem, pelajari terlebih dahulu kajian ilmiah mengenai sejarah akulturasi budaya dan proses pembuatan bakpia pada materi di bawah ini:
+              </span>
+            </div>
           </div>
         </div>
 

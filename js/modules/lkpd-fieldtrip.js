@@ -4765,7 +4765,7 @@
           <!-- TAB 1: PABRIK BAKPIA JOGJA (FINANCIAL) -->
           <button type="button" onclick="switchD6LkpdSession(1)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD6LkpdSession === 1 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-200'}">
             <span class="material-symbols-outlined text-base ${currentD6LkpdSession === 1 ? 'text-amber-200' : 'text-amber-600'}">bakery_dining</span>
-            <span class="truncate">Sesi 1: LKPD Pabrik Bakpia</span>
+            <span class="truncate">Sesi 1: LKPD Bakpia Jogkem</span>
             ${isS1Submitted ? '<span class="text-[11px] text-amber-200 font-bold ml-1">✓</span>' : (currentD6LkpdSession === 1 ? '<span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse ml-0.5"></span>' : '')}
           </button>
 
@@ -4837,7 +4837,7 @@
             <span class="text-xs font-bold text-amber-200">Pukul 08.00 - 10.30 WIB</span>
           </div>
           <h2 class="font-black text-xl sm:text-2xl leading-tight">
-            LKPD Sesi 1: Pabrik Bakpia Jogja &amp; Belanja Cerdas
+            LKPD Sesi 1: Pabrik Bakpia Jogkem &amp; Belanja Cerdas
           </h2>
           <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-xs w-fit">
             <span class="material-symbols-outlined text-base">savings</span>
