@@ -4656,120 +4656,501 @@
         ${tabNavHtml}
 
         <!-- BANNER MODUL FIELD TRIP DAY 6 SESI 1 -->
-        <div class="bg-gradient-to-br from-amber-600 via-orange-700 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+        <div class="bg-gradient-to-br from-amber-600 via-orange-700 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col gap-3">
           <div class="flex items-center justify-between gap-2 flex-wrap">
             <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
               Field Trip • Day 6 • Sesi 1
             </span>
-            <span class="text-xs font-bold text-amber-200">Pukul 08.00 - 10.30 WIB</span>
+            <span class="text-xs font-bold text-amber-200 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+              <span>Pukul 08.00 - 10.30 WIB</span>
+            </span>
           </div>
-          <h2 class="font-black text-xl sm:text-2xl leading-tight">
-            Sesi 1: Pabrik Bakpia Jogja &amp; Belanja Cerdas
-          </h2>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-xs w-fit">
-            <span class="material-symbols-outlined text-base">savings</span>
-            <span>Pilar Murni: 💰 FINANCIAL (Literasi Keuangan &amp; Industri)</span>
+          
+          <div>
+            <h2 class="font-black text-xl sm:text-2xl lg:text-3xl leading-tight">
+              Bakpia: Perjalanan Akulturasi Cina–Indonesia dalam Makanan Khas Yogyakarta
+            </h2>
+            <p class="text-xs sm:text-sm text-amber-100/90 mt-1.5 font-medium leading-relaxed">
+              Kajian Etnografi Kuliner, Harmoni Lintas Budaya, dan Strategi Kewirausahaan Finansial Tradisional Menjadi Ikon Oleh-Oleh Daerah
+            </p>
           </div>
-          <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
-            Memahami modal pembuatan bakpia, cara toko menentukan keuntungan, serta tips praktis mengatur sisa uang saku untuk belanja oleh-oleh tanpa kehabisan bekal pulang.
-          </p>
+
+          <div class="flex flex-wrap items-center gap-2 pt-1 border-t border-white/15 text-[11px] font-semibold text-amber-100">
+            <span class="px-2.5 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">palette</span>
+              <span>Pilar Budaya (Akulturasi)</span>
+            </span>
+            <span class="px-2.5 py-1 rounded-xl bg-emerald-400/20 text-emerald-200 font-extrabold flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">payments</span>
+              <span>Pilar Finansial (Kewirausahaan)</span>
+            </span>
+            <span class="text-white/80 italic ml-auto">
+              Sumber: Multikultura UI (Vol. 3 No. 3, Juli 2024, hlm. 366–385)
+            </span>
+          </div>
         </div>
 
-        <!-- 3 KARTU MATERI RINGKAS & MUDAH -->
-        <div class="flex flex-col gap-3.5">
+        <!-- DAFTAR MATERI A SAMPAI I -->
+        <div class="flex flex-col gap-4">
 
-          <!-- KARTU 1: MODAL BIKIN BAKPIA -->
+          <!-- A. PENGERTIAN AKULTURASI BUDAYA -->
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
-            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
-              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">1</span>
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">A</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base">Modal Dasar Pembuatan Bakpia (HPP Sederhana)</h3>
-                <span class="text-[11px] font-bold text-amber-800">Berapa biaya bahan dan pembuatannya?</span>
+                <h3 class="font-black text-sm sm:text-base">Pengertian Akulturasi Budaya</h3>
+                <span class="text-[11px] font-bold text-amber-800">Pertemuan dua kebudayaan yang saling melengkapi</span>
               </div>
             </div>
-            <div class="flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <div class="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
               <p>
-                Untuk membuat 1 kotak bakpia (isi 15–20 butir), pabrik membutuhkan:
+                <strong>Akulturasi budaya</strong> adalah proses pertemuan dua kebudayaan atau lebih yang saling memengaruhi secara timbal balik. Proses ini berlangsung bertahap hingga unsur budaya yang berasal dari luar diterima dan berpadu secara harmonis menjadi bagian tak terpisahkan dari kehidupan masyarakat setempat tanpa menghilangkan kepribadian kebudayaan asli.
               </p>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-0.5">
-                <div class="p-3 rounded-2xl bg-amber-50/60 border border-amber-200/80 flex flex-col gap-1 text-xs">
-                  <strong class="text-amber-950 flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm text-amber-700">inventory_2</span>
-                    <span>Bahan Baku Utama</span>
-                  </strong>
-                  <span class="text-slate-600 text-[11px]">Tepung terigu, isian (kacang hijau kupas/keju/cokelat), gula pasir, dan minyak/margarin pelembut kulit.</span>
-                </div>
-                <div class="p-3 rounded-2xl bg-amber-50/60 border border-amber-200/80 flex flex-col gap-1 text-xs">
-                  <strong class="text-amber-950 flex items-center gap-1">
-                    <span class="material-symbols-outlined text-sm text-amber-700">oven_gen</span>
-                    <span>Tenaga &amp; Pemanggangan</span>
-                  </strong>
-                  <span class="text-slate-600 text-[11px]">Upah tenaga pelipat kulit, gas oven pemanggang, dan kotak kardus kemasan higienis.</span>
-                </div>
+              <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex items-start gap-2.5">
+                <span class="material-symbols-outlined text-amber-700 shrink-0 text-lg mt-0.5">diversity_3</span>
+                <p class="text-xs text-amber-950">
+                  Akulturasi dapat dijumpai dalam berbagai ranah kehidupan: tarian tradisional, busana adat, perayaan tradisi, bahasa percakapan, hingga ragam kuliner khas. Salah satu bukti akulturasi budaya Cina dan Indonesia yang paling lekat dan terkenal adalah <strong>bakpia</strong>, yang kini diakui sebagai makanan khas Yogyakarta.
+                </p>
               </div>
-              <p class="text-[11px] text-slate-600 font-medium">
-                💡 <em>Rata-rata modal dasar pembuatan 1 kotak bakpia berkisar antara <strong>Rp 18.000 – Rp 20.000</strong>.</em>
-              </p>
             </div>
           </div>
 
-          <!-- KARTU 2: KENAPA DIJUAL RP 35.000 - RP 40.000? -->
+          <!-- B. SEJARAH DAN ASAL-USUL BAKPIA -->
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
-            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
-              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">B</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base">Harga Jual &amp; Keuntungan Toko</h3>
-                <span class="text-[11px] font-bold text-amber-800">Menghitung keuntungan secara mudah</span>
+                <h3 class="font-black text-sm sm:text-base">Sejarah dan Asal-Usul Bakpia di Yogyakarta</h3>
+                <span class="text-[11px] font-bold text-amber-800">Dua tokoh perintis tahun 1940-an: Kwik Sun Kok &amp; Liem Bok Sing</span>
               </div>
             </div>
-            <div class="flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
+            <div class="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
               <p>
-                Jika modal bikin bakpia adalah <strong>Rp 20.000</strong> dan dijual ke pengunjung seharga <strong>Rp 35.000</strong>, maka keuntungan kotor toko adalah:
+                Bakpia berakar dari pengaruh kuliner Tionghoa dan mulai bersemi di Yogyakarta sekitar dekade <strong>1940-an</strong>. Berdasarkan telaah artikel ilmiah, terdapat dua tokoh perintis utama yang meletakkan fondasi produksi bakpia:
               </p>
-              <div class="p-3 rounded-2xl bg-amber-100/60 border border-amber-300 font-mono text-center text-xs sm:text-sm text-amber-950 font-bold">
-                Rp 35.000 (Harga Jual) - Rp 20.000 (Modal) = Rp 15.000 (Keuntungan Toko)
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-xs shrink-0">1</span>
+                    <strong class="text-slate-900 text-xs sm:text-sm">Kwik Sun Kok &amp; Niti Gurnito</strong>
+                  </div>
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    Kwik Sun Kok merupakan keturunan Cina kelahiran Wonogiri yang menimba ilmu pembuatan bakpia langsung di Cina. Sekembalinya ke Indonesia, ia mulai merintis usaha di Tamansari Yogyakarta dengan menyewa tanah milik <strong>Niti Gurnito</strong>. Ketika Kwik berpindah lokasi, ia mewariskan resep rahasia dan tenaga kerja kepada Niti Gurnito, yang kemudian melegenda dengan merek <em>Bakpia M Niti Gurnito</em>.
+                  </p>
+                </div>
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2">
+                  <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-lg bg-orange-100 text-orange-800 flex items-center justify-center font-bold text-xs shrink-0">2</span>
+                    <strong class="text-slate-900 text-xs sm:text-sm">Liem Bok Sing (Cikal Bakal Pathuk)</strong>
+                  </div>
+                  <p class="text-xs text-slate-600 leading-relaxed">
+                    Liem Bok Sing merupakan perantau dari Cina yang mengembangkan produksi bakpia di kawasan Pathuk. Usahanya menjadi pelopor lahirnya sentra industri <em>Bakpia Pathuk</em> yang kini identik dengan penomoran rumah toko (seperti Bakpia Pathuk 25, 75, dll).
+                  </p>
+                </div>
               </div>
-              <p class="text-[11px] text-slate-600">
-                Keuntungan ini digunakan toko untuk membayar gaji kasir &amp; pramusaji, listrik AC ruang belanja, kantong plastik, serta menyediakan <strong>tester gratis</strong> yang bebas dicicipi wisatawan.
-              </p>
+              <div class="p-3 rounded-xl bg-blue-50/70 border border-blue-200 text-blue-950 text-xs flex items-center gap-2">
+                <span class="material-symbols-outlined text-blue-700 text-base shrink-0">info</span>
+                <span><strong>Fakta Sejarah:</strong> Kwik Sun Kok dan Liem Bok Sing adalah dua sosok berbeda dan bukan saudara kandung, namun dedikasi keduanya membentuk fondasi lahirnya industri bakpia di Yogyakarta.</span>
+              </div>
             </div>
           </div>
 
-          <!-- KARTU 3: TIPS BELANJA CERDAS -->
+          <!-- C. PROSES AKULTURASI BUDAYA CINA-INDONESIA PADA BAKPIA -->
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
-            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
-              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">3</span>
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">C</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base">Tips Belanja Oleh-Oleh Cerdas (Jangan Kalap!)</h3>
-                <span class="text-[11px] font-bold text-amber-800">Disiplin mengatur sisa uang saku di Hari Ke-6</span>
+                <h3 class="font-black text-sm sm:text-base">Proses Akulturasi Budaya Cina–Indonesia pada Bakpia</h3>
+                <span class="text-[11px] font-bold text-amber-800">Adaptasi resep, penggantian bahan non-halal, dan penerimaan lokal</span>
               </div>
             </div>
-            <div class="flex flex-col gap-2 text-xs sm:text-sm text-slate-700 leading-relaxed">
-              <ul class="list-disc pl-5 space-y-1.5 text-xs text-slate-700">
-                <li><strong>Cek Sisa Uang Saku</strong>: Hitung sisa uang fisik di dompet Anda sebelum masuk ke kasir toko.</li>
-                <li><strong>Dahulukan Orang Tua &amp; Rumah</strong>: Belilah buah tangan untuk keluarga inti terlebih dahulu sesuai kemampuan dana.</li>
-                <li><strong>Sisihkan Dana Bekal Pulang</strong>: Simpan minimal <strong>Rp 30.000 – Rp 50.000</strong> untuk membeli air minum atau makan di rest area jalan tol saat perjalanan pulang ke Belitang di Day 7.</li>
-              </ul>
+            <div class="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                Bakpia menjadi teladan sempurna dari akulturasi karena mengalami transformasi resep, bahan baku, dan cita rasa agar selaras dengan kearifan lokal masyarakat Yogyakarta:
+              </p>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div class="p-3.5 rounded-2xl bg-amber-50/60 border border-amber-200/80 flex flex-col gap-1.5">
+                  <div class="flex items-center gap-1.5 text-amber-900 font-bold text-xs">
+                    <span class="material-symbols-outlined text-base text-amber-700">bakery_dining</span>
+                    <span>1. Pengaruh Kuliner Cina</span>
+                  </div>
+                  <p class="text-[11px] text-slate-600 leading-relaxed">
+                    Diduga kuat terinspirasi dari kue bulan khas Cina, terutama <em>Sūshì yuèbǐng</em> (kue bulan gaya Suzhou) yang memiliki kulit pastry berlapis-lapis dan awalnya berisi daging babi.
+                  </p>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-emerald-50/60 border border-emerald-200/80 flex flex-col gap-1.5">
+                  <div class="flex items-center gap-1.5 text-emerald-900 font-bold text-xs">
+                    <span class="material-symbols-outlined text-base text-emerald-700">swap_horiz</span>
+                    <span>2. Penyesuaian Resep &amp; Bahan</span>
+                  </div>
+                  <p class="text-[11px] text-slate-600 leading-relaxed">
+                    Isian daging babi diganti dengan <strong>kacang hijau manis</strong>. Minyak babi yang awalnya dipakai untuk melembutkan kulit diganti dengan <strong>minyak kelapa</strong> nabati agar halal dan sesuai nilai masyarakat Jawa.
+                  </p>
+                </div>
+
+                <div class="p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-200/80 flex flex-col gap-1.5">
+                  <div class="flex items-center gap-1.5 text-indigo-900 font-bold text-xs">
+                    <span class="material-symbols-outlined text-base text-indigo-700">verified</span>
+                    <span>3. Terbentuknya Identitas Lokal</span>
+                  </div>
+                  <p class="text-[11px] text-slate-600 leading-relaxed">
+                    Setelah beradaptasi, bakpia diterima luas oleh warga Yogyakarta dari berbagai kalangan, hingga menjelma menjadi identitas kuliner khas daerah dan buah tangan wajib wisatawan Nusantara.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- D. PERKEMBANGAN BAKPIA DI YOGYAKARTA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">D</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Perkembangan Bakpia di Yogyakarta</h3>
+                <span class="text-[11px] font-bold text-amber-800">5 Tahap transformasi dari usaha rumahan hingga industri oleh-oleh</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-2.5 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                Seiring bergulirnya waktu, usaha bakpia berevolusi melalui 5 tahapan strategis:
+              </p>
+              <div class="space-y-2">
+                <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="px-2 py-0.5 rounded-md bg-amber-600 text-white font-extrabold text-[10px] shrink-0 mt-0.5">Tahap 1</span>
+                  <div class="text-xs">
+                    <strong class="text-slate-900">Perintisan Usaha:</strong> Kwik Sun Kok merintis di kawasan Tamansari, sedangkan Liem Bok Sing membuka usaha di kawasan Pathuk secara mandiri.
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="px-2 py-0.5 rounded-md bg-amber-600 text-white font-extrabold text-[10px] shrink-0 mt-0.5">Tahap 2</span>
+                  <div class="text-xs">
+                    <strong class="text-slate-900">Penyebaran Resep:</strong> Kwik mewariskan resep ke Niti Gurnito. Generasi penerus Liem Bok Sing juga murah hati mengajarkan resep kepada tetangga sekitar Pathuk.
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="px-2 py-0.5 rounded-md bg-amber-600 text-white font-extrabold text-[10px] shrink-0 mt-0.5">Tahap 3</span>
+                  <div class="text-xs">
+                    <strong class="text-slate-900">Perluasan Pemasaran:</strong> Bakpia dipasarkan tidak hanya di toko, melainkan dijajakan oleh pedagang keliling yang memikul keranjang bakpia ke berbagai sudut kota.
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="px-2 py-0.5 rounded-md bg-amber-600 text-white font-extrabold text-[10px] shrink-0 mt-0.5">Tahap 4</span>
+                  <div class="text-xs">
+                    <strong class="text-slate-900">Pertumbuhan Sentra Produksi:</strong> Bertambah banyaknya warga yang memproduksi bakpia menjadikan kawasan Pathuk sebagai sentra klaster industri bakpia terbesar di Indonesia.
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200/70">
+                  <span class="px-2 py-0.5 rounded-md bg-amber-600 text-white font-extrabold text-[10px] shrink-0 mt-0.5">Tahap 5</span>
+                  <div class="text-xs">
+                    <strong class="text-slate-900">Penguatan Identitas Daerah:</strong> Seiring maraknya pariwisata Yogyakarta, bakpia bertransformasi menjadi komoditas ekonomi utama dan cinderamata wajib bagi pelancong.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- E. BAHAN DAN PROSES PEMBUATAN BAKPIA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">E</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Bahan dan 5 Tahapan Proses Pembuatan Bakpia</h3>
+                <span class="text-[11px] font-bold text-amber-800">Formula bahan baku dan langkah pengolahan higienis</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              
+              <!-- 1. Bahan Dasar -->
+              <div>
+                <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800 mb-2 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-amber-700 text-sm">shopping_cart</span>
+                  <span>1. Bahan Dasar Pembuatan Bakpia</span>
+                </h4>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                  <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-center flex flex-col items-center">
+                    <span class="material-symbols-outlined text-amber-700 text-lg mb-1">grain</span>
+                    <strong class="text-[11px] text-amber-950">Kacang Hijau</strong>
+                    <span class="text-[10px] text-slate-500">Kupas, bahan isian utama</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-center flex flex-col items-center">
+                    <span class="material-symbols-outlined text-amber-700 text-lg mb-1">nutrition</span>
+                    <strong class="text-[11px] text-amber-950">Gula Pasir</strong>
+                    <span class="text-[10px] text-slate-500">Pemberi rasa manis &amp; awet</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-center flex flex-col items-center">
+                    <span class="material-symbols-outlined text-amber-700 text-lg mb-1">cookie</span>
+                    <strong class="text-[11px] text-amber-950">Tepung Terigu</strong>
+                    <span class="text-[10px] text-slate-500">Bahan adonan kulit berlapis</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-center flex flex-col items-center">
+                    <span class="material-symbols-outlined text-amber-700 text-lg mb-1">opacity</span>
+                    <strong class="text-[11px] text-amber-950">Minyak Kelapa</strong>
+                    <span class="text-[10px] text-slate-500">Melembutkan kulit adonan</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 text-center flex flex-col items-center col-span-2 sm:col-span-1">
+                    <span class="material-symbols-outlined text-amber-700 text-lg mb-1">water_drop</span>
+                    <strong class="text-[11px] text-amber-950">Air Panas</strong>
+                    <span class="text-[10px] text-slate-500">Membantu elastisitas kulit</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 2. Tahapan Pembuatan -->
+              <div class="pt-2 border-t border-slate-100">
+                <h4 class="font-bold text-xs uppercase tracking-wider text-slate-800 mb-2 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-amber-700 text-sm">precision_manufacturing</span>
+                  <span>2. 5 Tahapan Pembuatan Bakpia</span>
+                </h4>
+                <div class="grid grid-cols-1 sm:grid-cols-5 gap-2">
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                    <div class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">1</div>
+                    <strong class="text-xs text-slate-900 mt-1">Mengukus</strong>
+                    <p class="text-[11px] text-slate-600">Kacang hijau kupas dikukus hingga matang dan lunak agar mudah diolah.</p>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                    <div class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">2</div>
+                    <strong class="text-xs text-slate-900 mt-1">Menghaluskan</strong>
+                    <p class="text-[11px] text-slate-600">Digiling menggunakan alat giling silinder/kayu agar tekstur tidak terlalu hancur.</p>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                    <div class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">3</div>
+                    <strong class="text-xs text-slate-900 mt-1">Membuat Isian</strong>
+                    <p class="text-[11px] text-slate-600">Kacang hijau ditumis bersama gula hingga membentuk adonan isian kumbu yang kalis.</p>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                    <div class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">4</div>
+                    <strong class="text-xs text-slate-900 mt-1">Membentuk</strong>
+                    <p class="text-[11px] text-slate-600">Kulit terigu dibentuk, diisi adonan kacang, ditutup rapi, dan dipipihkan.</p>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                    <div class="w-6 h-6 rounded-full bg-amber-600 text-white font-bold text-xs flex items-center justify-center">5</div>
+                    <strong class="text-xs text-slate-900 mt-1">Memanggang</strong>
+                    <p class="text-[11px] text-slate-600">Dipanggang menggunakan oven atau tungku tradisional hingga kuning keemasan.</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- F. INOVASI PRODUK BAKPIA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">F</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Inovasi Produk Bakpia Modern</h3>
+                <span class="text-[11px] font-bold text-amber-800">Menjawab selera konsumen masa kini tanpa kehilangan identitas tradisional</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                Pada mulanya, bakpia hanya mengenal satu rasa yaitu <strong>kacang hijau (original)</strong>. Agar dapat bersaing dan memenuhi ragam preferensi konsumen lintas generasi, industri bakpia terus berinovasi memunculkan varian:
+              </p>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-3 py-1 rounded-xl bg-amber-100 text-amber-900 font-bold text-xs">🌿 Original Kacang Hijau</span>
+                <span class="px-3 py-1 rounded-xl bg-yellow-100 text-yellow-900 font-bold text-xs">🧀 Keju Gurih</span>
+                <span class="px-3 py-1 rounded-xl bg-amber-900 text-white font-bold text-xs">🍫 Cokelat Lumer</span>
+                <span class="px-3 py-1 rounded-xl bg-emerald-100 text-emerald-900 font-bold text-xs">🍵 Green Tea (Matcha)</span>
+                <span class="px-3 py-1 rounded-xl bg-orange-100 text-orange-900 font-bold text-xs">🌟 Durian Wangi</span>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5">
+                <strong class="text-xs text-slate-900">Perbedaan Cara Inovasi Antar Produsen (Hasil Kajian Ilmiah):</strong>
+                <ul class="list-disc pl-5 space-y-1 text-xs text-slate-600">
+                  <li><strong>Bakpia Lestari:</strong> Menggunakan isian cokelat atau keju murni <em>tanpa</em> campuran kacang hijau.</li>
+                  <li><strong>Bakpia M Niti Gurnito:</strong> Menambahkan cokelat atau keju langsung pada adonan dasar kacang hijau sehingga tekstur kumbu khas tetap dipertahankan.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- G. BAKPIA SEBAGAI PELUANG USAHA & KEWIRAUSAHAAN (FINANSIAL) -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">G</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Bakpia sebagai Peluang Usaha &amp; Literasi Finansial</h3>
+                <span class="text-[11px] font-bold text-amber-800">Kunci sukses bisnis, margin harga, dan belanja cerdas</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                Perjalanan bakpia membuktikan bahwa keberhasilan bisnis tidak semata-mata mengandalkan produk yang lezat, tetapi ditentukan oleh kejelian membaca pasar dan pengelolaan modal:
+              </p>
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70 flex flex-col gap-1 text-xs">
+                  <strong class="text-amber-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-amber-700">target</span>
+                    <span>1. Paham Kebutuhan Konsumen</span>
+                  </strong>
+                  <span class="text-slate-600 text-[11px]">Menyesuaikan bahan halal dan cita rasa yang disukai lidah masyarakat lokal.</span>
+                </div>
+                <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70 flex flex-col gap-1 text-xs">
+                  <strong class="text-amber-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-amber-700">lightbulb</span>
+                    <span>2. Kreatif Berinovasi</span>
+                  </strong>
+                  <span class="text-slate-600 text-[11px]">Menciptakan varian rasa kekinian agar pembeli memiliki lebih banyak opsi pilihan.</span>
+                </div>
+                <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70 flex flex-col gap-1 text-xs">
+                  <strong class="text-amber-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-amber-700">storefront</span>
+                    <span>3. Perluas Saluran Pemasaran</span>
+                  </strong>
+                  <span class="text-slate-600 text-[11px]">Memadukan gerai sentra oleh-oleh dengan jaringan pedagang keliling.</span>
+                </div>
+                <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70 flex flex-col gap-1 text-xs">
+                  <strong class="text-amber-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-amber-700">share</span>
+                    <span>4. Berbagi Pengetahuan</span>
+                  </strong>
+                  <span class="text-slate-600 text-[11px]">Membagikan resep ke tetangga sehingga tercipta klaster sentra industri Pathuk yang kuat.</span>
+                </div>
+                <div class="p-3 rounded-xl bg-amber-50/60 border border-amber-200/70 flex flex-col gap-1 text-xs col-span-1 sm:col-span-2 lg:col-span-2">
+                  <strong class="text-amber-950 flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-amber-700">flight_takeoff</span>
+                    <span>5. Memanfaatkan Peluang Pariwisata</span>
+                  </strong>
+                  <span class="text-slate-600 text-[11px]">Menjadikan bakpia sebagai oleh-oleh legendaris yang wajib dibeli oleh jutaan wisatawan yang bertandang ke Yogyakarta.</span>
+                </div>
+              </div>
+
+              <!-- Simulasi Finansial Praktis Bagi Siswa -->
+              <div class="p-4 rounded-2xl bg-amber-100/60 border border-amber-300 flex flex-col gap-2 mt-1">
+                <span class="font-black text-xs text-amber-950 uppercase tracking-wide flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-amber-800">calculate</span>
+                  <span>Simulasi Finansial Praktis di Pabrik:</span>
+                </span>
+                <p class="text-xs text-slate-700">
+                  Rata-rata modal bahan baku dan kemasan 1 kotak bakpia (HPP) adalah <strong>Rp 18.000 – Rp 20.000</strong>. Di toko oleh-oleh, bakpia dijual seharga <strong>Rp 35.000 – Rp 40.000</strong>. Selisih margin kotor sebesar <strong>Rp 15.000 – Rp 20.000</strong> digunakan untuk membayar gaji karyawan, listrik/AC gerai, kemasan kotak cantik, dan penyediaan <strong>tester gratis</strong> bagi pengunjung.
+                </p>
+                <div class="pt-2 border-t border-amber-200 text-xs font-semibold text-amber-900 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm">savings</span>
+                  <span><strong>Tips Belanja Cerdas Siswa:</strong> Jangan tergiur belanja kalap! Catat titipan keluarga dan pastikan selalu menyisihkan uang bekal (Rp 30.000 – Rp 50.000) untuk makan di rest area saat perjalanan pulang Day 7.</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- H. NILAI-NILAI YANG DAPAT DIPELAJARI -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">H</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Nilai-Nilai Luhur yang Dapat Dipelajari</h3>
+                <span class="text-[11px] font-bold text-amber-800">6 Sikap teladan dari sejarah perkembangan bakpia</span>
+              </div>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-left text-xs border-collapse">
+                <thead>
+                  <tr class="bg-amber-100/70 text-amber-950 font-bold border-b border-amber-200">
+                    <th class="p-3 rounded-l-xl w-32 sm:w-40">Nilai</th>
+                    <th class="p-3 rounded-r-xl">Penjelasan Makna &amp; Penerapan</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 text-slate-700">
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-amber-700 text-base">handshake</span>
+                      <span>Toleransi</span>
+                    </td>
+                    <td class="p-3 text-xs leading-relaxed">Menghargai perbedaan budaya, kepercayaan, dan kebiasaan masyarakat tanpa memandang latar belakang etnis.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-amber-700 text-base">lock_open</span>
+                      <span>Keterbukaan</span>
+                    </td>
+                    <td class="p-3 text-xs leading-relaxed">Menerima pengaruh budaya lain secara positif dan mampu menyesuaikannya dengan norma setempat.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-amber-700 text-base">palette</span>
+                      <span>Kreativitas</span>
+                    </td>
+                    <td class="p-3 text-xs leading-relaxed">Mengembangkan resep, memodifikasi bahan baku, dan menciptakan variasi rasa produk yang diminati pasar.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-amber-700 text-base">group</span>
+                      <span>Kerja Sama</span>
+                    </td>
+                    <td class="p-3 text-xs leading-relaxed">Saling berbagi ilmu pengetahuan dan resep untuk memajukan perekonomian bersama di lingkungan sekitar.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-amber-700 text-base">trending_up</span>
+                      <span>Kewirausahaan</span>
+                    </td>
+                    <td class="p-3 text-xs leading-relaxed">Pintar menangkap peluang bisnis, mengelola biaya modal produksi, dan mengembangkan strategi pemasaran.</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-bold text-slate-900 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-amber-700 text-base">temple_buddhist</span>
+                      <span>Pelestarian Budaya</span>
+                    </td>
+                    <td class="p-3 text-xs leading-relaxed">Mempertahankan dan merawat kuliner hasil akulturasi agar tetap lestari sebagai warisan identitas daerah.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- I. KESIMPULAN & REFERENSI ILMIAH RESMI -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-3 text-amber-950 border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">I</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Kesimpulan &amp; Referensi Ilmiah Resmi</h3>
+                <span class="text-[11px] font-bold text-amber-800">Sintesis riset dan sitasi akademik</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p>
+                <strong>Kesimpulan:</strong> Bakpia adalah monumen hidup dari akulturasi budaya Cina dan Indonesia yang telah mengakar kuat menjadi identitas kuliner Yogyakarta. Proses ini tercermin nyata dari adaptasi bahan baku dan resep, penerimaan hangat masyarakat, serta evolusi usaha dari dapur rumahan menjadi industri oleh-oleh pariwisata yang menghidupi ribuan keluarga. Keberhasilan bakpia mengajarkan betapa pentingnya keharmonisan sosial, kreativitas inovasi, serta etos kewirausahaan yang tangguh.
+              </p>
+
+              <!-- KOTAK SITASI JURNAL ILMIAH RESMI -->
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                <div class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-amber-700 text-2xl shrink-0 mt-0.5">menu_book</span>
+                  <div class="flex flex-col text-xs">
+                    <span class="font-bold text-slate-900">Rujukan Sumber Utama Artikel Ilmiah:</span>
+                    <span class="text-slate-600 mt-0.5 leading-relaxed">
+                      Rato, M. N. R., &amp; Hadi, R. P. (2024). <em>Bakpia: Perjalanan Akulturasi Cina-Indonesia dalam Makanan Khas Yogyakarta</em>. <strong>Multikultura</strong>, 3(3), 366–385. DOI: 10.7454/multikultura.v3i3.1034.
+                    </span>
+                  </div>
+                </div>
+                <a href="https://scholarhub.ui.ac.id/multikultura/vol3/iss3/5/" target="_blank" rel="noopener noreferrer" class="shrink-0 px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-xs transition-all cursor-pointer">
+                  <span>Buka Jurnal UI</span>
+                  <span class="material-symbols-outlined text-sm">open_in_new</span>
+                </a>
+              </div>
             </div>
           </div>
 
         </div>
 
         <!-- FORM RESUME / CATATAN SINGKAT SESI 1 -->
-        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-amber-300 shadow-xs flex flex-col gap-3">
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-amber-300 shadow-xs flex flex-col gap-3 mt-1">
           <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
             <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
               <span class="material-symbols-outlined text-lg">edit_note</span>
             </span>
             <div>
               <h3 class="font-black text-sm sm:text-base">Catatan Pemahaman Sesi 1</h3>
-              <span class="text-[11px] font-bold text-amber-800">Simpan resume singkat sebelum membuka LKPD</span>
+              <span class="text-[11px] font-bold text-amber-800">Simpan resume singkat pemahaman Anda sebelum membuka LKPD</span>
             </div>
           </div>
           <p class="text-xs text-slate-600 leading-relaxed">
-            Tuliskan 1 hal penting yang kamu pelajari mengenai modal bakpia atau tips belanja cerdas hari ini:
+            Tuliskan 1 hal penting yang paling berkesan bagi Anda mengenai proses akulturasi bakpia, sejarah perintisnya, atau nilai kewirausahaannya:
           </p>
-          <textarea id="ftD6S1ConclusionInput" rows="2" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 bg-white" placeholder="Contoh: Saya belajar bahwa keuntungan toko bakpia sekitar Rp 15.000 per kotak, dan saya harus menyisihkan uang untuk bekal makan di jalan tol..."></textarea>
+          <textarea id="ftD6S1ConclusionInput" rows="3" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 bg-white" placeholder="Contoh: Saya belajar bahwa bakpia merupakan wujud akulturasi budaya Cina dan Indonesia (terinspirasi dari kue bulan yang disesuaikan bahannya dengan kacang hijau dan minyak kelapa agar halal), serta menjadi sentra usaha kerakyatan di Pathuk..."></textarea>
 
           <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
             <div id="ftD6S1ConclusionStatus" class="hidden text-xs text-emerald-700 font-bold flex items-center gap-1.5">

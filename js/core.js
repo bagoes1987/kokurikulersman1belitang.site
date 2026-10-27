@@ -886,7 +886,7 @@ const FincestemCore = {
       6: {
         day_number: 6,
         title: 'HARI KE-6: PABRIK BAKPIA, PANTAI DRINI & PULANG',
-        theme: 'Finansial Industri Bakpia, Ekosistem Karst Bahari Pantai Drini & Perjalanan Pulang',
+        theme: 'Akulturasi Budaya & Finansial Industri Bakpia, Ekosistem Karst Bahari Pantai Drini & Perjalanan Pulang',
         date_formatted: 'Sabtu, 14 November 2026',
         time_range: '06.30 - Selesai WIB',
         route_lines: [
@@ -894,10 +894,10 @@ const FincestemCore = {
           ['Restoran Lokal', 'Yogyakarta–Belitang']
         ],
         route: 'Hotel → Pabrik Bakpia Jogja → Pantai Drini Gunungkidul → Drini Park → Restoran Lokal → Perjalanan Pulang Belitang',
-        description: 'Setelah sarapan pagi dan check-out hotel, rombongan mengunjungi Pabrik Bakpia Jogja untuk observasi literasi finansial/HPP/omzet dan belanja cerdas, dilanjutkan eksplorasi bentang alam karst & ekosistem bahari Pantai Drini serta Drini Park. Malam hari rombongan bertolak pulang menuju Belitang.',
+        description: 'Setelah sarapan pagi dan check-out hotel, rombongan mengunjungi Pabrik Bakpia Jogja untuk observasi akulturasi budaya Cina-Indonesia, literasi finansial/HPP/omzet dan belanja cerdas, dilanjutkan eksplorasi bentang alam karst & ekosistem bahari Pantai Drini serta Drini Park. Malam hari rombongan bertolak pulang menuju Belitang.',
         sessions: [
           { time: '06.30 – 07.30', title: 'Sarapan & Check-out Hotel', location: 'Hotel Yogyakarta', icon: 'free_breakfast', highlight: 'orange' },
-          { time: '08.00 – 10.00', title: 'Literasi Finansial & HPP di Pabrik Bakpia', location: 'Pabrik Bakpia Jogja', icon: 'bakery_dining', highlight: 'amber' },
+          { time: '08.00 – 10.00', title: 'Akulturasi Budaya & Literasi Finansial Pabrik Bakpia', location: 'Pabrik Bakpia Jogja', icon: 'bakery_dining', highlight: 'amber' },
           { time: '11.30 – 13.30', title: 'Eksplorasi Ekosistem & Karst Pantai Drini', location: 'Pantai Drini Gunungkidul', icon: 'beach_access', highlight: 'cyan' },
           { time: '13.30 – 15.00', title: 'Observasi Tata Kelola Wisata Drini Park', location: 'Drini Park Gunungkidul', icon: 'attractions', highlight: 'teal' },
           { time: '15.30 – 17.00', title: 'Makan Sore & Manajemen Belanja Oleh-Oleh Cerdas', location: 'Pusat Belanja Jogja', icon: 'shopping_bag', highlight: 'amber' },
@@ -905,7 +905,7 @@ const FincestemCore = {
           { time: '19.30 – Selesai', title: 'Perjalanan Pulang Menuju Belitang', location: 'Yogyakarta–Belitang', icon: 'directions_bus', highlight: 'indigo' }
         ],
         refl_title: 'Jurnal Refleksi Hari Keenam (Pabrik Bakpia, Pantai Drini & Perjalanan Pulang)',
-        refl_prompt: 'Ceritakan pengalaman Anda di hari keenam: (1) Analisis rantai pasok, penetapan HPP, margin laba dan omzet di Pabrik Bakpia Jogja, (2) Observasi morfologi batuan karst dan ekosistem bahari Pantai Drini, serta (3) Manajemen belanja oleh-oleh cerdas untuk keluarga berbasis sisa uang saku sebelum bertolak menuju Belitang!'
+        refl_prompt: 'Ceritakan pengalaman Anda di hari keenam: (1) Wawasan akulturasi budaya Cina–Indonesia pada kuliner bakpia, inovasi rasa, penetapan HPP, margin laba dan omzet di Pabrik Bakpia Jogja, (2) Observasi morfologi batuan karst dan ekosistem bahari Pantai Drini, serta (3) Manajemen belanja oleh-oleh cerdas untuk keluarga berbasis sisa uang saku sebelum bertolak menuju Belitang!'
       },
       7: {
         day_number: 7,
