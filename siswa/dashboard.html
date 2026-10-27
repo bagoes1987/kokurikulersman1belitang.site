@@ -982,7 +982,7 @@
   </div>
 
   <script src="../js/siswa_data.js?v=20261026_d6_v1"></script>
-  <script src="../js/core.js?v=20261027_d6_jogkem_v3"></script>
+  <script src="../js/core.js?v=20261027_d6_final_v4"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -4085,7 +4085,7 @@
             `)}
           `;
         } else if (isFTDay6) {
-          title.textContent = 'Asesmen Day 6: Sesi 1 - Pabrik Bakpia Jogja (Pilar: Financial)';
+          title.textContent = 'Asesmen Day 6: Sesi 1 - Pabrik Bakpia Jogkem (Budaya & Finansial)';
           icon.textContent = 'fact_check';
           iconBox.className = 'w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0';
 
@@ -4111,61 +4111,61 @@
           const questions = [
             {
               id: 'q1',
-              title: '1. Financial - Komponen Modal Produksi Bakpia',
-              prompt: 'Untuk memproduksi 1 kotak bakpia, komponen biaya bahan baku utama (HPP dasar) yang dibutuhkan produsen meliputi...',
+              title: '1. Culture - Akulturasi Budaya & Penyesuaian Resep Halal',
+              prompt: 'Bakpia merupakan bukti nyata akulturasi budaya Cina dan Indonesia yang terinspirasi dari kue bulan (Sūshì yuèbǐng). Ketika berkembang di Yogyakarta, penyesuaian bahan utama yang dilakukan agar sesuai dengan budaya masyarakat setempat dan terjamin kehalalannya adalah...',
               options: [
-                { key: 'A', text: 'Tepung terigu, isian (kacang hijau/keju), gula, dan margarin' },
-                { key: 'B', text: 'Biaya tiket masuk wisata dan sewa bus pariwisata' },
-                { key: 'C', text: 'Biaya sewa kamar hotel berbintang di pusat kota' },
-                { key: 'D', text: 'Bensin kendaraan pribadi pengunjung' }
+                { key: 'A', text: 'Mengganti isian daging babi dengan kacang hijau manis dan memakai minyak kelapa nabati' },
+                { key: 'B', text: 'Mengganti tepung terigu dengan ketan hitam tanpa pemanis' },
+                { key: 'C', text: 'Menambahkan kuah santan dan bumbu rendang ke dalam adonan' },
+                { key: 'D', text: 'Menghilangkan seluruh bahan isian dan hanya memanggang kulitnya saja' }
               ],
               correct: 'A'
             },
             {
               id: 'q2',
-              title: '2. Financial - Menghitung Keuntungan Toko',
-              prompt: 'Jika modal produksi (HPP) 1 kotak bakpia adalah Rp 20.000 dan dijual di pusat oleh-oleh seharga Rp 35.000, berapakah margin laba kotor toko per kotak?',
+              title: '2. Exploration - Profil Destinasi Kunjungan Bakpia Jogkem',
+              prompt: 'Pada kegiatan field trip Day 6, siswa melakukan riset di pusat oleh-oleh Bakpia Jogkem. Nama "Jogkem" merupakan singkatan resmi dari... serta mengusung slogan kerinduan terhadap Yogyakarta, yaitu...',
               options: [
-                { key: 'A', text: 'Rp 5.000' },
-                { key: 'B', text: 'Rp 15.000 (didapat dari Rp 35.000 dikurangi Rp 20.000)' },
-                { key: 'C', text: 'Rp 35.000' },
-                { key: 'D', text: 'Rp 55.000' }
+                { key: 'A', text: 'Jogja Kembali — dengan slogan “Jogja Ngangeni, Jogja Kembali”' },
+                { key: 'B', text: 'Jogja Kemarin — dengan slogan “Jogja Penuh Kenangan”' },
+                { key: 'C', text: 'Jogja Kemari — dengan slogan “Ayo Belanja ke Jogja”' },
+                { key: 'D', text: 'Jogja Kembang — dengan slogan “Kota Wisata Berbunga”' }
               ],
-              correct: 'B'
+              correct: 'A'
             },
             {
               id: 'q3',
-              title: '3. Financial - Alokasi Selisih Margin Keuntungan',
-              prompt: 'Mengapa harga jual bakpia di toko lebih tinggi daripada modal bahan bakunya? Keuntungan tersebut digunakan pengusaha untuk...',
+              title: '3. Technology - Fasilitas Open Kitchen Edukasi',
+              prompt: 'Salah satu keunggulan fasilitas edukasi di Bakpia Jogkem adalah adanya konsep Open Kitchen (dapur terbuka). Manfaat utama konsep ini bagi peserta didik saat observasi adalah...',
               options: [
-                { key: 'A', text: 'Membayar gaji karyawan, listrik/AC toko, kemasan kotak, dan biaya tester gratis' },
-                { key: 'B', text: 'Membeli perhiasan mewah untuk disimpan di brankas' },
-                { key: 'C', text: 'Membayar denda tilang kendaraan rombongan' },
-                { key: 'D', text: 'Menurunkan standar mutu bahan baku bakpia' }
+                { key: 'A', text: 'Dapat menyaksikan secara langsung higienitas dan tahapan produksi bakpia, mulai dari pencetakan kulit hingga pemanggangan di oven' },
+                { key: 'B', text: 'Pengunjung bebas masuk memasak sendiri tanpa pengawasan staf' },
+                { key: 'C', text: 'Mengurangi luas area belanja agar pengunjung cepat bergantian keluar' },
+                { key: 'D', text: 'Menyembunyikan resep rahasia di balik dinding kaca tertutup' }
               ],
               correct: 'A'
             },
             {
               id: 'q4',
-              title: '4. Financial - Strategi Tester Gratis',
-              prompt: 'Di pabrik dan sentra oleh-oleh disediakan potongan bakpia gratis (tester) bagi pengunjung. Tujuan utama strategi bisnis tersebut adalah...',
+              title: '4. Financial - Analisis Margin Keuntungan Toko',
+              prompt: 'Jika modal bahan baku dan kemasan 1 kotak bakpia (HPP dasar) adalah Rp 20.000 dan dijual di toko seharga Rp 35.000, berapakah perkiraan keuntungan kotor toko per kotak, dan untuk apa selisih tersebut digunakan?',
               options: [
-                { key: 'A', text: 'Meyakinkan rasa kepada calon pembeli agar puas dan mantap membeli tanpa ragu' },
-                { key: 'B', text: 'Menghabiskan stok kue yang sudah tidak laku atau hampir basi' },
-                { key: 'C', text: 'Menghindari pemeriksaan petugas pajak' },
-                { key: 'D', text: 'Menyuruh pengunjung agar cepat keluar dari toko' }
+                { key: 'A', text: 'Untung Rp 15.000 — digunakan untuk membayar gaji karyawan, listrik AC gerai, kemasan kotak, dan biaya tester gratis' },
+                { key: 'B', text: 'Untung Rp 5.000 — toko tidak mengambil keuntungan untuk operasional' },
+                { key: 'C', text: 'Untung Rp 35.000 — toko memproduksi tanpa memerlukan modal bahan' },
+                { key: 'D', text: 'Rugi Rp 15.000 — karena harga jual lebih murah dari harga bahan' }
               ],
               correct: 'A'
             },
             {
               id: 'q5',
               title: '5. Financial - Sikap Belanja Finansial Cerdas',
-              prompt: 'Sikap cerdas yang harus diterapkan seorang pelajar saat membelanjakan uang saku di pusat oleh-oleh Yogyakarta adalah...',
+              prompt: 'Sebagai pelajar yang cerdas dalam mengelola uang saku di hari-hari terakhir field trip sebelum bertolak pulang menuju Belitang, sikap belanja yang paling tepat adalah...',
               options: [
-                { key: 'A', text: 'Membeli oleh-oleh secukupnya sesuai catatan prioritas keluarga dan tetap menyisihkan uang bekal pulang' },
-                { key: 'B', text: 'Menghabiskan seluruh uang saku di gerai pertama karena tergiur diskon sesaat' },
+                { key: 'A', text: 'Membeli oleh-oleh sesuai prioritas titipan keluarga dan tetap menyisihkan uang bekal (Rp 30.000 – Rp 50.000) untuk makan/minum di perjalanan pulang' },
+                { key: 'B', text: 'Menghabiskan seluruh isi dompet di toko pertama karena tergiur diskon sesaat' },
                 { key: 'C', text: 'Meminjam uang teman sebanyak-banyaknya untuk membeli barang konsumtif' },
-                { key: 'D', text: 'Membeli oleh-oleh tanpa memeriksa label harga dan tanggal kedaluwarsa' }
+                { key: 'D', text: 'Membeli oleh-oleh tanpa memperhatikan tanggal kedaluwarsa dan sisa uang saku' }
               ],
               correct: 'A'
             }
@@ -4980,7 +4980,7 @@
           return;
         }
 
-        const keys = { q1: 'A', q2: 'B', q3: 'A', q4: 'A', q5: 'A' };
+        const keys = { q1: 'A', q2: 'A', q3: 'A', q4: 'A', q5: 'A' };
         let score = 0;
         if (q1 === keys.q1) score += 20;
         if (q2 === keys.q2) score += 20;
@@ -5003,7 +5003,7 @@
           localStorage.setItem('fincestem_asesmen_ft_day6_' + id, JSON.stringify(asesmenPayload));
         });
 
-        note = `Asesmen PG Day 6 - Sesi 1 Pabrik Bakpia Jogja (Skor: ${score}/100):\n1. Komponen Modal Produksi Bakpia: ${q1} (${q1 === 'A' ? 'Benar' : 'Salah'})\n2. Hitung Keuntungan Toko: ${q2} (${q2 === 'B' ? 'Benar' : 'Salah'})\n3. Alokasi Margin Keuntungan: ${q3} (${q3 === 'A' ? 'Benar' : 'Salah'})\n4. Strategi Tester Gratis: ${q4} (${q4 === 'A' ? 'Benar' : 'Salah'})\n5. Sikap Belanja Finansial Cerdas: ${q5} (${q5 === 'A' ? 'Benar' : 'Salah'})`;
+        note = `Asesmen PG Day 6 - Sesi 1 Bakpia Jogkem (Skor: ${score}/100):\n1. Akulturasi Bahan Halal: ${q1} (${q1 === 'A' ? 'Benar' : 'Salah'})\n2. Profil Bakpia Jogkem: ${q2} (${q2 === 'A' ? 'Benar' : 'Salah'})\n3. Fasilitas Open Kitchen: ${q3} (${q3 === 'A' ? 'Benar' : 'Salah'})\n4. Analisis Margin Keuntungan: ${q4} (${q4 === 'A' ? 'Benar' : 'Salah'})\n5. Sikap Belanja Finansial Cerdas: ${q5} (${q5 === 'A' ? 'Benar' : 'Salah'})`;
 
         if (studentProgress && studentProgress.task_map) {
           studentProgress.task_map['6_asesmen'] = { status: 'submitted', content: note };

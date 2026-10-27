@@ -4810,8 +4810,10 @@
       }
 
       // ==========================================
-      // SESI 1: LKPD PABRIK BAKPIA JOGJA (100% FINANCIAL - SUPER SIMPEL)
+      // SESI 1: LKPD PABRIK BAKPIA JOGKEM (BUDAYA, TEKNOLOGI & FINANSIAL)
       // ==========================================
+      const valBahan = savedS1 ? (savedS1.bahanHalal || '') : '';
+      const valOpenKitchen = savedS1 ? (savedS1.openKitchen || '') : '';
       const valVarian = savedS1 ? (savedS1.varianRasa || '') : '';
       const valHarga = savedS1 ? (savedS1.hargaKotak || '') : '';
       const valUntung = savedS1 ? (savedS1.hitungUntung || '') : '';
@@ -4819,8 +4821,8 @@
       const valRencanaBelanja = savedS1 ? (savedS1.rencanaBelanja || '') : '';
       const valSisaPulang = savedS1 ? (savedS1.sisaPulang || '') : '';
       const valTips = savedS1 ? (savedS1.tipsBelanja || '') : '';
-      const valCheck1 = savedS1 ? !!savedS1.checkTahuHarga : false;
-      const valCheck2 = savedS1 ? !!savedS1.checkPahamUntung : false;
+      const valCheck1 = savedS1 ? !!(savedS1.checkOpenKitchen || savedS1.checkTahuHarga) : false;
+      const valCheck2 = savedS1 ? !!(savedS1.checkAkulturasi || savedS1.checkPahamUntung) : false;
       const valCheck3 = savedS1 ? !!savedS1.checkBelanjaBijak : false;
 
       const s1Disabled = (isReadOnly || isS1Submitted) ? 'disabled' : '';
@@ -4834,17 +4836,26 @@
             <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md">
               Field Trip • Day 6 • Sesi 1
             </span>
-            <span class="text-xs font-bold text-amber-200">Pukul 08.00 - 10.30 WIB</span>
+            <span class="text-xs font-bold text-amber-200 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+              <span>Pukul 08.00 - 10.30 WIB</span>
+            </span>
           </div>
           <h2 class="font-black text-xl sm:text-2xl leading-tight">
             LKPD Sesi 1: Pabrik Bakpia Jogkem &amp; Belanja Cerdas
           </h2>
-          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-xs w-fit">
-            <span class="material-symbols-outlined text-base">savings</span>
-            <span>Pilar Murni: 💰 FINANCIAL (Literasi Keuangan Lapangan)</span>
+          <div class="flex flex-wrap items-center gap-1.5 pt-1">
+            <span class="px-2.5 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-[11px] flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">palette</span>
+              <span>Akulturasi &amp; Open Kitchen</span>
+            </span>
+            <span class="px-2.5 py-1 rounded-xl bg-emerald-400/20 text-emerald-200 font-extrabold text-[11px] flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">savings</span>
+              <span>Literasi Finansial Lapangan</span>
+            </span>
           </div>
           <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
-            Lembar pengamatan harga dan keuntungan toko bakpia, serta latihan mengelola sisa uang saku untuk belanja oleh-oleh secara bijak.
+            Lembar observasi edukatif di Bakpia Jogkem: amati bukti akulturasi bahan halal, proses open kitchen, varian rasa, serta analisis keuntungan toko dan belanja oleh-oleh cerdas.
           </p>
         </div>
 
@@ -4853,7 +4864,7 @@
           <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
             <div class="flex items-center gap-2 text-amber-950 font-black text-xs sm:text-sm">
               <span class="material-symbols-outlined text-amber-700 text-lg">badge</span>
-              <span>Identitas Peserta Observasi Finansial</span>
+              <span>Identitas Peserta Observasi Lapangan</span>
             </div>
             <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black ${isS1Submitted ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-amber-100 text-amber-800 border border-amber-200'}">
               ${isS1Submitted ? '✓ TERSUBMIT RESMI' : 'DRAFT PENGERJAAN'}
@@ -4890,43 +4901,100 @@
         </div>
         ` : ''}
 
-        <!-- FORM LKPD DAY 6 SESI 1: 4 BAGIAN SIMPEL -->
+        <!-- FORM LKPD DAY 6 SESI 1: 5 BAGIAN TERPADU & SIMPEL -->
         <form id="formFtDay6S1LKPD" onsubmit="event.preventDefault();" class="flex flex-col gap-4">
 
-          <!-- BAGIAN 1: CEK RASA & HARGA BAKPIA -->
-          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+          <!-- BAGIAN 1: OBSERVASI AKULTURASI & FASILITAS OPEN KITCHEN -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3.5">
             <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
               <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">1</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base">Pengamatan Varian Rasa &amp; Harga Bakpia</h3>
-                <span class="text-[11px] font-bold text-amber-800">Apa varian yang kamu amati atau cicipi di toko?</span>
+                <h3 class="font-black text-sm sm:text-base">Observasi Akulturasi &amp; Fasilitas Open Kitchen</h3>
+                <span class="text-[11px] font-bold text-amber-800">Bukti penyesuaian bahan halal dan pengamatan dapur terbuka</span>
+              </div>
+            </div>
+
+            <!-- 1A: Bukti Penyesuaian Bahan Halal -->
+            <div class="flex flex-col gap-2">
+              <label class="block text-xs font-bold text-slate-800">
+                A. Dari materi dan hasil pengamatan di Bakpia Jogkem, penyesuaian bahan apa yang dilakukan agar sesuai dengan masyarakat lokal dan terjamin kehalalannya?
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <label class="p-3 rounded-2xl border ${valBahan === 'kacang_hijau_nabati' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_bahanHalal" value="kacang_hijau_nabati" ${valBahan === 'kacang_hijau_nabati' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900 font-bold">[A] Isian kacang hijau manis &amp; minyak kelapa nabati ✓</span>
+                </label>
+                <label class="p-3 rounded-2xl border ${valBahan === 'daging_babi' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_bahanHalal" value="daging_babi" ${valBahan === 'daging_babi' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900">[B] Tetap memakai isian daging babi seperti kue bulan asal</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 1B: Observasi Open Kitchen -->
+            <div class="flex flex-col gap-2 pt-2 border-t border-slate-100">
+              <label class="block text-xs font-bold text-slate-800">
+                B. Aktivitas produksi apa yang paling menarik yang kamu amati langsung melalui kaca Open Kitchen Bakpia Jogkem?
+              </label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <label class="p-3 rounded-2xl border ${valOpenKitchen === 'kulit_isian' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_openKitchen" value="kulit_isian" ${valOpenKitchen === 'kulit_isian' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900">Perajin melipat kulit tipis &amp; menakar isian</span>
+                </label>
+                <label class="p-3 rounded-2xl border ${valOpenKitchen === 'oven_panggang' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_openKitchen" value="oven_panggang" ${valOpenKitchen === 'oven_panggang' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900">Proses pemanggangan oven hingga keemasan</span>
+                </label>
+                <label class="p-3 rounded-2xl border ${valOpenKitchen === 'kemasan_kotak' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                  <input type="radio" name="ftD6S1_openKitchen" value="kemasan_kotak" ${valOpenKitchen === 'kemasan_kotak' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900">Pengemasan higienis ke kardus oleh-oleh</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: INOVASI VARIAN RASA PRODUK & HARGA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+              <div>
+                <h3 class="font-black text-sm sm:text-base">Inovasi Varian Rasa &amp; Harga Produk</h3>
+                <span class="text-[11px] font-bold text-amber-800">Varian rasa khas Bakpia Jogkem yang kamu amati/cicipi</span>
               </div>
             </div>
 
             <div class="flex flex-col gap-2">
-              <label class="block text-xs font-bold text-slate-800">Pilih varian rasa bakpia yang kamu amati / cicipi:</label>
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <label class="p-3 rounded-2xl border ${valVarian === 'kacang_hijau' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+              <label class="block text-xs font-bold text-slate-800">Pilih varian rasa bakpia yang kamu amati / cicipi tester di gerai:</label>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs">
+                <label class="p-2.5 sm:p-3 rounded-2xl border ${valVarian === 'kacang_hijau' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2 transition-all">
                   <input type="radio" name="ftD6S1_varianRasa" value="kacang_hijau" ${valVarian === 'kacang_hijau' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
-                  <strong class="text-slate-900">[A] Kacang Hijau Asli (Varian Klasik)</strong>
+                  <span class="text-slate-900 font-bold truncate">Original Kacang Hijau</span>
                 </label>
-                <label class="p-3 rounded-2xl border ${valVarian === 'keju' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
-                  <input type="radio" name="ftD6S1_varianRasa" value="keju" ${valVarian === 'keju' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
-                  <strong class="text-slate-900">[B] Keju / Susu Gurih</strong>
-                </label>
-                <label class="p-3 rounded-2xl border ${valVarian === 'cokelat' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
-                  <input type="radio" name="ftD6S1_varianRasa" value="cokelat" ${valVarian === 'cokelat' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
-                  <strong class="text-slate-900">[C] Cokelat Manis</strong>
-                </label>
-                <label class="p-3 rounded-2xl border ${valVarian === 'kumbu_hitam' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
+                <label class="p-2.5 sm:p-3 rounded-2xl border ${valVarian === 'kumbu_hitam' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2 transition-all">
                   <input type="radio" name="ftD6S1_varianRasa" value="kumbu_hitam" ${valVarian === 'kumbu_hitam' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
-                  <strong class="text-slate-900">[D] Kumbu Hitam / Aneka Rasa</strong>
+                  <span class="text-slate-900 font-bold truncate">Kumbu Hitam</span>
+                </label>
+                <label class="p-2.5 sm:p-3 rounded-2xl border ${valVarian === 'keju' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2 transition-all">
+                  <input type="radio" name="ftD6S1_varianRasa" value="keju" ${valVarian === 'keju' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900 font-bold truncate">Keju / Susu Gurih</span>
+                </label>
+                <label class="p-2.5 sm:p-3 rounded-2xl border ${valVarian === 'cokelat' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2 transition-all">
+                  <input type="radio" name="ftD6S1_varianRasa" value="cokelat" ${valVarian === 'cokelat' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900 font-bold truncate">Cokelat Lumer</span>
+                </label>
+                <label class="p-2.5 sm:p-3 rounded-2xl border ${valVarian === 'green_tea' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2 transition-all">
+                  <input type="radio" name="ftD6S1_varianRasa" value="green_tea" ${valVarian === 'green_tea' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900 font-bold truncate">Green Tea (Matcha)</span>
+                </label>
+                <label class="p-2.5 sm:p-3 rounded-2xl border ${valVarian === 'cappuccino_buah' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2 transition-all">
+                  <input type="radio" name="ftD6S1_varianRasa" value="cappuccino_buah" ${valVarian === 'cappuccino_buah' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
+                  <span class="text-slate-900 font-bold truncate">Cappuccino/Tiramisu/Buah</span>
                 </label>
               </div>
             </div>
 
             <div class="flex flex-col gap-1 mt-1">
-              <label class="text-xs font-bold text-slate-800">Berapa harga 1 kotak bakpia varian tersebut di toko? (Rp):</label>
+              <label class="text-xs font-bold text-slate-800">Berapa harga 1 kotak bakpia varian tersebut di kasir? (Rp):</label>
               <div class="relative">
                 <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rp</span>
                 <input type="text" id="ftD6S1_hargaKotak" value="${valHarga ? Number(valHarga).toLocaleString('id-ID') : ''}" oninput="formatRupiahInput(this)" ${s1Disabled} class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 ${s1Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Contoh: 35.000">
@@ -4934,18 +5002,18 @@
             </div>
           </div>
 
-          <!-- BAGIAN 2: HITUNG KEUNTUNGAN TOKO (PILIHAN GANDA CEPAT) -->
+          <!-- BAGIAN 3: ANALISIS FINANSIAL KEUNTUNGAN TOKO -->
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
             <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
-              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">3</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base">Hitung Keuntungan Toko Secara Mudah</h3>
-                <span class="text-[11px] font-bold text-amber-800">Analisis keuntungan = Harga Jual - Modal</span>
+                <h3 class="font-black text-sm sm:text-base">Analisis Keuntungan Toko Secara Mudah</h3>
+                <span class="text-[11px] font-bold text-amber-800">Menghitung margin keuntungan kotor = Harga Jual - Modal Bahan (HPP)</span>
               </div>
             </div>
 
             <p class="text-xs text-slate-600 leading-relaxed">
-              Jika modal pembuatan 1 kotak bakpia sekitar <strong>Rp 20.000</strong> dan dijual seharga <strong>Rp 35.000</strong>, berapa perkiraan keuntungan kotor toko per kotak?
+              Jika perkiraan modal bahan baku dan kemasan 1 kotak bakpia sekitar <strong>Rp 20.000</strong> dan dijual seharga <strong>Rp 35.000</strong>, berapa perkiraan keuntungan kotor toko per kotak?
             </p>
 
             <div class="flex flex-col gap-2 mt-1">
@@ -4953,7 +5021,7 @@
                 <input type="radio" name="ftD6S1_hitungUntung" value="15000" ${valUntung === '15000' ? 'checked' : ''} ${s1Disabled} class="mt-0.5 accent-amber-600">
                 <div class="flex flex-col text-xs">
                   <strong class="text-slate-900 font-bold">[A] Rp 15.000 per kotak ✓</strong>
-                  <span class="text-slate-600 text-[11px] mt-0.5">(Cara hitung: Rp 35.000 harga jual dikurangi modal Rp 20.000)</span>
+                  <span class="text-slate-600 text-[11px] mt-0.5">(Cara hitung: Rp 35.000 harga jual dikurangi modal Rp 20.000. Digunakan untuk gaji karyawan, listrik/AC, kemasan &amp; tester gratis)</span>
                 </div>
               </label>
 
@@ -4961,7 +5029,7 @@
                 <input type="radio" name="ftD6S1_hitungUntung" value="35000" ${valUntung === '35000' ? 'checked' : ''} ${s1Disabled} class="mt-0.5 accent-amber-600">
                 <div class="flex flex-col text-xs">
                   <strong class="text-slate-900 font-bold">[B] Rp 35.000 per kotak</strong>
-                  <span class="text-slate-600 text-[11px] mt-0.5">(Kurang tepat, Rp 35.000 adalah harga jual keseluruhan bukan untung)</span>
+                  <span class="text-slate-600 text-[11px] mt-0.5">(Kurang tepat, Rp 35.000 adalah harga jual keseluruhan bukan keuntungan murni)</span>
                 </div>
               </label>
 
@@ -4975,13 +5043,13 @@
             </div>
           </div>
 
-          <!-- BAGIAN 3: CEK DOMPET & BELANJA CERDAS KAMU -->
+          <!-- BAGIAN 4: CEK DOMPET & BELANJA CERDAS SISWA -->
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
             <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
-              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">3</span>
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">4</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base">Cek Dompet &amp; Rencana Belanja Oleh-Oleh Kamu</h3>
-                <span class="text-[11px] font-bold text-amber-800">Praktik mengelola uang saku riil di hari ke-6</span>
+                <h3 class="font-black text-sm sm:text-base">Manajemen Uang Saku &amp; Belanja Cerdas Siswa</h3>
+                <span class="text-[11px] font-bold text-amber-800">Praktik disiplin mengelola uang saku pribadi sebelum kepulangan</span>
               </div>
             </div>
 
@@ -5004,54 +5072,48 @@
             </div>
 
             <div class="flex flex-col gap-2 mt-2">
-              <label class="block text-xs font-bold text-slate-800">Apakah kamu masih menyisihkan uang untuk bekal perjalanan pulang di jalan tol?</label>
+              <label class="block text-xs font-bold text-slate-800">Apakah kamu sudah menyisihkan minimal Rp 30.000 – Rp 50.000 untuk bekal makan/minum di jalan tol saat pulang ke Belitang?</label>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 <label class="p-3 rounded-2xl border ${valSisaPulang === 'ada_sisa' ? 'border-emerald-500 bg-emerald-50/70 ring-1 ring-emerald-400' : 'border-slate-200 bg-white hover:bg-emerald-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
                   <input type="radio" name="ftD6S1_sisaPulang" value="ada_sisa" ${valSisaPulang === 'ada_sisa' ? 'checked' : ''} ${s1Disabled} class="accent-emerald-600">
-                  <strong class="text-slate-900">Ya, masih ada sisa untuk bekal pulang ✓</strong>
+                  <strong class="text-slate-900">Ya, sudah aman! Uang bekal pulang telah disisihkan terpisah ✓</strong>
                 </label>
                 <label class="p-3 rounded-2xl border ${valSisaPulang === 'habis' ? 'border-amber-500 bg-amber-50/70 ring-1 ring-amber-400' : 'border-slate-200 bg-white hover:bg-amber-50/40'} cursor-pointer flex items-center gap-2.5 transition-all">
                   <input type="radio" name="ftD6S1_sisaPulang" value="habis" ${valSisaPulang === 'habis' ? 'checked' : ''} ${s1Disabled} class="accent-amber-600">
-                  <strong class="text-slate-900">Habis semua untuk belanja oleh-oleh</strong>
+                  <strong class="text-slate-900">Masih pas-pasan, saya harus membatasi belanja</strong>
                 </label>
               </div>
             </div>
           </div>
 
-          <!-- BAGIAN 4: KESIMPULAN BELANJA CERDAS (1 KALIMAT SINGKAT) -->
+          <!-- BAGIAN 5: KESIMPULAN BELANJA & ASESMEN MANDIRI SISWA -->
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
             <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
-              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">4</span>
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 font-black text-sm">5</span>
               <div>
-                <h3 class="font-black text-sm sm:text-base">Tips Belanja Cerdas Versi Kamu (1 Kalimat)</h3>
-                <span class="text-[11px] font-bold text-amber-800">Tuliskan 1 kalimat tips agar uang saku tidak habis sia-sia</span>
+                <h3 class="font-black text-sm sm:text-base">Kesimpulan Singkat &amp; Karakter Mandiri</h3>
+                <span class="text-[11px] font-bold text-amber-800">Tuliskan 1 kalimat intisari pelajaran berharga dan centang kejujuran</span>
               </div>
             </div>
-            <textarea id="ftD6S1_tipsBelanja" rows="2" ${s1Disabled} class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 ${s1Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Contoh: Saya membeli oleh-oleh secukupnya untuk keluarga dan tetap menyimpan sisa uang saku untuk bekal makan di jalan tol...">${valTips}</textarea>
-          </div>
-
-          <!-- BAGIAN 5: ASESMEN MANDIRI SISWA (3 CENTANG CEPAT) -->
-          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
-            <div class="flex items-center gap-2.5 text-amber-950 border-b border-slate-100 pb-2">
-              <span class="material-symbols-outlined text-amber-700 text-xl">fact_check</span>
-              <div>
-                <h3 class="font-black text-sm sm:text-base">Asesmen Mandiri Finansial (Centang Kejujuran)</h3>
-                <span class="text-[11px] font-bold text-amber-800">Centang 3 pernyataan berikut sesuai pengalamanmu:</span>
-              </div>
+            
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold text-slate-800">Kesimpulan Observasi &amp; Belanja Cerdas Versi Kamu (1 Kalimat):</label>
+              <textarea id="ftD6S1_tipsBelanja" rows="2" ${s1Disabled} class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 ${s1Disabled ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-white'}" placeholder="Contoh: Saya belajar bahwa Bakpia Jogkem memadukan akulturasi budaya dengan dapur terbuka (open kitchen) dan inovasi rasa, serta mengajarkan saya pentingnya belanja oleh-oleh secara bijak...">${valTips}</textarea>
             </div>
 
-            <div class="flex flex-col gap-2 text-xs">
+            <div class="flex flex-col gap-2 text-xs pt-2 border-t border-slate-100">
+              <span class="font-bold text-slate-800">Centang 3 pernyataan berikut sesuai pengalamanmu:</span>
               <label class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
-                <input type="checkbox" id="ftD6S1_checkTahuHarga" ${valCheck1 ? 'checked' : ''} ${s1Disabled} class="accent-amber-600 rounded">
-                <span class="text-slate-800">1. Saya tahu varian rasa dan harga 1 kotak bakpia yang saya amati/beli.</span>
+                <input type="checkbox" id="ftD6S1_checkOpenKitchen" ${valCheck1 ? 'checked' : ''} ${s1Disabled} class="accent-amber-600 rounded">
+                <span class="text-slate-800">1. Saya mengamati proses pembuatan di <em>open kitchen</em> dengan tertib dan sopan.</span>
               </label>
               <label class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
-                <input type="checkbox" id="ftD6S1_checkPahamUntung" ${valCheck2 ? 'checked' : ''} ${s1Disabled} class="accent-amber-600 rounded">
-                <span class="text-slate-800">2. Saya paham cara menghitung keuntungan toko (Harga Jual dikurangi Modal).</span>
+                <input type="checkbox" id="ftD6S1_checkAkulturasi" ${valCheck2 ? 'checked' : ''} ${s1Disabled} class="accent-amber-600 rounded">
+                <span class="text-slate-800">2. Saya memahami sejarah akulturasi budaya Cina–Indonesia pada kuliner bakpia.</span>
               </label>
               <label class="flex items-center gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-200 cursor-pointer">
                 <input type="checkbox" id="ftD6S1_checkBelanjaBijak" ${valCheck3 ? 'checked' : ''} ${s1Disabled} class="accent-amber-600 rounded">
-                <span class="text-slate-800">3. Saya belanja bijak dan masih memiliki sisa uang untuk bekal perjalanan pulang.</span>
+                <span class="text-slate-800">3. Saya belanja bijak dan masih memiliki sisa uang untuk bekal perjalanan pulang di jalan tol.</span>
               </label>
             </div>
           </div>
@@ -5127,6 +5189,8 @@
       const studentNisn = u.nisn || u.identifier || '-';
       const cleanNisn = String(studentNisn).trim();
 
+      const bahanHalal = document.querySelector('input[name="ftD6S1_bahanHalal"]:checked')?.value || '';
+      const openKitchen = document.querySelector('input[name="ftD6S1_openKitchen"]:checked')?.value || '';
       const varianRasa = document.querySelector('input[name="ftD6S1_varianRasa"]:checked')?.value || '';
       const hargaKotak = parseRupiah(document.getElementById('ftD6S1_hargaKotak')?.value || '');
       const hitungUntung = document.querySelector('input[name="ftD6S1_hitungUntung"]:checked')?.value || '';
@@ -5134,31 +5198,39 @@
       const rencanaBelanja = parseRupiah(document.getElementById('ftD6S1_rencanaBelanja')?.value || '');
       const sisaPulang = document.querySelector('input[name="ftD6S1_sisaPulang"]:checked')?.value || '';
       const tipsBelanja = (document.getElementById('ftD6S1_tipsBelanja')?.value || '').trim();
-      const checkTahuHarga = document.getElementById('ftD6S1_checkTahuHarga')?.checked || false;
-      const checkPahamUntung = document.getElementById('ftD6S1_checkPahamUntung')?.checked || false;
+      const checkOpenKitchen = document.getElementById('ftD6S1_checkOpenKitchen')?.checked || false;
+      const checkAkulturasi = document.getElementById('ftD6S1_checkAkulturasi')?.checked || false;
       const checkBelanjaBijak = document.getElementById('ftD6S1_checkBelanjaBijak')?.checked || false;
 
       if (isFinal) {
+        if (!bahanHalal) {
+          FincestemCore.ui.toast('Pilih jawaban penyesuaian bahan akulturasi halal (Bagian 1A)!', 'warning');
+          return;
+        }
+        if (!openKitchen) {
+          FincestemCore.ui.toast('Pilih salah satu aktivitas open kitchen yang kamu amati (Bagian 1B)!', 'warning');
+          return;
+        }
         if (!varianRasa) {
-          FincestemCore.ui.toast('Pilih salah satu varian rasa bakpia yang kamu amati (Bagian 1)!', 'warning');
+          FincestemCore.ui.toast('Pilih salah satu varian rasa bakpia yang kamu amati di gerai (Bagian 2)!', 'warning');
           return;
         }
         if (!hargaKotak || hargaKotak <= 0) {
-          FincestemCore.ui.toast('Tuliskan harga 1 kotak bakpia di toko (Bagian 1)!', 'warning');
+          FincestemCore.ui.toast('Tuliskan harga 1 kotak bakpia di toko (Bagian 2)!', 'warning');
           const el = document.getElementById('ftD6S1_hargaKotak');
           if (el) el.focus();
           return;
         }
         if (!hitungUntung) {
-          FincestemCore.ui.toast('Pilih jawaban perkiraan keuntungan toko (Bagian 2)!', 'warning');
+          FincestemCore.ui.toast('Pilih jawaban perkiraan keuntungan toko (Bagian 3)!', 'warning');
           return;
         }
         if (!sisaPulang) {
-          FincestemCore.ui.toast('Pilih apakah kamu masih menyisihkan uang bekal pulang (Bagian 3)!', 'warning');
+          FincestemCore.ui.toast('Pilih apakah kamu masih menyisihkan uang bekal pulang (Bagian 4)!', 'warning');
           return;
         }
         if (!tipsBelanja || tipsBelanja.length < 5) {
-          FincestemCore.ui.toast('Tuliskan 1 kalimat tips belanja cerdas (Bagian 4)!', 'warning');
+          FincestemCore.ui.toast('Tuliskan 1 kalimat kesimpulan observasi dan tips belanja cerdas (Bagian 5)!', 'warning');
           const el = document.getElementById('ftD6S1_tipsBelanja');
           if (el) el.focus();
           return;
@@ -5166,6 +5238,8 @@
       }
 
       const payload = {
+        bahanHalal,
+        openKitchen,
         varianRasa,
         hargaKotak,
         hitungUntung,
@@ -5173,8 +5247,8 @@
         rencanaBelanja,
         sisaPulang,
         tipsBelanja,
-        checkTahuHarga,
-        checkPahamUntung,
+        checkOpenKitchen,
+        checkAkulturasi,
         checkBelanjaBijak,
         submitted: !!isFinal,
         submittedAt: new Date().toISOString()
