@@ -681,6 +681,32 @@
           }
         }
 
+        // Penyesuaian khusus Day 6 Field Trip (Sesi 1: Pabrik Bakpia Jogkem, Sesi 2: Pantai Drini & Drini Park)
+        if (cat.isFieldTrip && Number(dayNum) === 6) {
+          const user = FincestemCore.auth.getUser() || {};
+          const nisn = user.nisn || user.identifier || '';
+          const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+          const urlParams = new URLSearchParams(window.location.search);
+          const sesiParam = urlParams.get('sesi');
+          let hasDokBakpia = false;
+          for (const id of ids) {
+            if (localStorage.getItem('fincestem_dok_ft_day6_bakpia_' + id) === 'true') {
+              hasDokBakpia = true;
+              break;
+            }
+          }
+          const isSesi2 = (sesiParam === '2');
+          if (isSesi2) {
+            dayBadge = 'DAY 6 • SESI 2: PANTAI DRINI & DRINI PARK';
+            subTitle = 'Dokumentasi Eksplorasi Pantai Drini & Drini Park';
+            subTheme = 'Geomorfologi Karst Pegunungan Sewu, Pulau Karang Pemecah Ombak & Ekowisata Bahari';
+          } else {
+            dayBadge = 'DAY 6 • SESI 1: PABRIK BAKPIA JOGKEM';
+            subTitle = 'Dokumentasi Observasi Open Kitchen & Sentra Bakpia Jogkem';
+            subTheme = 'Akulturasi Budaya Kuliner, Higienitas Open Kitchen & Edukasi Kewirausahaan';
+          }
+        }
+
         descEl.innerHTML = `
           <span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-primary/10 text-primary mb-1">${dayBadge}</span>
           <br><strong class="text-on-surface text-sm sm:text-base">${subTitle}</strong>
@@ -808,6 +834,54 @@
                     window.location.replace('lkpd.html?day=4');
                   }, 1200);
                   return;
+                }
+              } else if (dayNum === 6) {
+                // Khusus Day 6: Alur 2 Sesi Berurutan
+                const urlParams = new URLSearchParams(window.location.search);
+                const sesiParam = urlParams.get('sesi');
+                let hasDokBakpia = false;
+                for (const id of ids) {
+                  if (localStorage.getItem('fincestem_dok_ft_day6_bakpia_' + id) === 'true') {
+                    hasDokBakpia = true;
+                    break;
+                  }
+                }
+                const isSesi2 = (sesiParam === '2');
+
+                if (isSesi2) {
+                  // Sesi 2: Dokumentasi Pantai Drini memerlukan Dokumentasi Sesi 1 tuntas
+                  if (!hasDokBakpia) {
+                    FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan Dokumentasi Sesi 1 (Pabrik Bakpia Jogkem) terlebih dahulu!', 'warning');
+                    setTimeout(() => {
+                      window.location.replace('dokumentasi.html?day=6&sesi=1');
+                    }, 1200);
+                    return;
+                  }
+                } else {
+                  // Sesi 1: Dokumentasi Pabrik Bakpia memerlukan Asesmen Day 6 Sesi 1 tuntas
+                  const taskMap = (prog && prog.task_map) || {};
+                  let hasAsesmenS1 = !!taskMap['6_asesmen'];
+                  if (!hasAsesmenS1) {
+                    for (const id of ids) {
+                      try {
+                        const ask = localStorage.getItem('fincestem_asesmen_ft_day6_' + id);
+                        if (ask) {
+                          const parsed = JSON.parse(ask);
+                          if (parsed && (parsed.submitted || parsed.score !== undefined || parsed.answers)) {
+                            hasAsesmenS1 = true;
+                            break;
+                          }
+                        }
+                      } catch(e) {}
+                    }
+                  }
+                  if (!hasAsesmenS1) {
+                    FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day 6 Sesi 1 sebelum mengunggah Dokumentasi!', 'warning');
+                    setTimeout(() => {
+                      window.location.replace('dashboard.html?day=6&task=asesmen');
+                    }, 1200);
+                    return;
+                  }
                 }
               } else {
                 // Hari lainnya: Asesmen wajib selesai dulu
@@ -3163,6 +3237,122 @@
             </div>
           `;
         }
+      } else if (cat.isFieldTrip && Number(dayNum) === 6) {
+        // ==========================================
+        // KHUSUS DAY 6: SESI 1 (PABRIK BAKPIA JOGKEM) & SESI 2 (PANTAI DRINI & DRINI PARK)
+        // ==========================================
+        let hasDokBakpia = false;
+        let hasDokDrini = false;
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day6_bakpia_' + id) === 'true') hasDokBakpia = true;
+          if (localStorage.getItem('fincestem_dok_ft_day6_drini_' + id) === 'true') hasDokDrini = true;
+        }
+
+        const isSesi2 = (sesiParam === '2');
+
+        if (!isSesi2) {
+          // ==============================
+          // SESI 1: PABRIK BAKPIA JOGKEM
+          // ==============================
+          if (hasDokBakpia) {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/10 via-emerald-500/10 to-teal-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
+                    SESI 1 SELESAI
+                  </span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Dokumentasi Pabrik Bakpia Jogkem Berhasil Diunggah</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Bukti foto kunjungan edukasi di sentra Bakpia Jogkem telah tersimpan. Silakan lanjutkan ke Sesi 2 (Materi Pantai Drini &amp; Drini Park) atau tambah foto Bakpia lainnya.
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="materi.html?day=6&sesi=2" class="flex-1 py-3.5 px-4 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-xl">menu_book</span>
+                    <span>Lanjut ke Sesi 2: Materi Pantai Drini &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-amber-900 border border-amber-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Bakpia</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-600 to-orange-700 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    SESI 1 • PABRIK BAKPIA JOGKEM
+                  </span>
+                  <span class="material-symbols-outlined text-amber-200 text-xl">bakery_dining</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Sentra Bakpia Jogkem</h3>
+                  <p class="text-xs text-amber-100 mt-1">Ambil atau pilih foto observasi di open kitchen pembuatan bakpia, kasir/belanja cerdas, atau foto bersama kelompok di gerai Jogkem.</p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-amber-50 text-amber-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-amber-700">photo_camera</span>
+                  <span>Unggah Dokumentasi Foto Pabrik Bakpia</span>
+                </button>
+              </div>
+            `;
+          }
+        } else {
+          // ==============================
+          // SESI 2: PANTAI DRINI & DRINI PARK
+          // ==============================
+          if (hasDokDrini) {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-teal-500/10 via-emerald-500/10 to-blue-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
+                    SESI 2 SELESAI
+                  </span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Dokumentasi Pantai Drini &amp; Drini Park Lengkap</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Seluruh dokumentasi kegiatan Day 6 telah lengkap. Silakan lanjutkan ke tahap akhir Jurnal Refleksi Day 6.
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="dashboard.html?day=6&task=refleksi" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-xl">psychology</span>
+                    <span>Lanjut ke Jurnal Refleksi Day 6 &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-teal-900 border border-teal-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Pantai Drini</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-teal-600 to-cyan-700 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    SESI 2 • PANTAI DRINI &amp; DRINI PARK
+                  </span>
+                  <span class="material-symbols-outlined text-teal-200 text-xl">beach_access</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Dokumentasi Foto Pantai Drini &amp; Drini Park</h3>
+                  <p class="text-xs text-teal-100 mt-1">Ambil atau pilih foto pulau karang pemecah ombak, tebing karst Drini Park, atau biota pesisir laut selatan.</p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-teal-50 text-teal-900 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-teal-700">photo_camera</span>
+                  <span>Unggah Dokumentasi Foto Pantai Drini</span>
+                </button>
+              </div>
+            `;
+          }
+        }
       } else {
         // HARI LAINNYA & DAY 0 SIMULASI
         const isDay0 = (Number(dayNum) === 0);
@@ -3631,6 +3821,22 @@
           }
         }
 
+        if (cat.isFieldTrip && docDayNum === 6) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const sesiParam = urlParams.get('sesi');
+          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          const isSesi2 = (sesiParam === '2');
+          for (const id of ids) {
+            if (isSesi2) {
+              localStorage.setItem('fincestem_dok_ft_day6_drini_' + id, 'true');
+              localStorage.setItem('fincestem_dok_ft_day6_' + id, 'true');
+            } else {
+              localStorage.setItem('fincestem_dok_ft_day6_bakpia_' + id, 'true');
+              localStorage.setItem('fincestem_dok_ft_day6_' + id, 'true');
+            }
+          }
+        }
+
         // Catat ke progres siswa untuk sinkronisasi aktivitas berurutan
         if (FincestemCore.progress && studentNisn) {
           try {
@@ -3843,6 +4049,43 @@
           }
           if (nextBtnText) {
             nextBtnText.textContent = 'Lanjut ke Sesi 2: Materi Lawang Sewu';
+          }
+        }
+      } else if (cat.isFieldTrip && dayNum === 6) {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = user.nisn || user.identifier || '';
+        const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+        const urlParams = new URLSearchParams(window.location.search);
+        const sesiParam = urlParams.get('sesi');
+        let hasDokDrini = false;
+        let hasDokBakpia = false;
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day6_drini_' + id) === 'true') hasDokDrini = true;
+          if (localStorage.getItem('fincestem_dok_ft_day6_bakpia_' + id) === 'true') hasDokBakpia = true;
+        }
+
+        if (hasDokDrini || sesiParam === '2') {
+          if (subtitle) {
+            subtitle.innerHTML = `<strong>Dokumentasi Pantai Drini &amp; Drini Park Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Seluruh rangkaian eksplorasi pesisir dan budaya Day 6 telah lengkap. Silakan lanjutkan ke tahap akhir Jurnal Refleksi Day 6.</span>`;
+          }
+          if (nextBtn) {
+            nextBtn.href = `dashboard.html?day=6&task=refleksi`;
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+          }
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Lanjut ke Jurnal Refleksi Day 6';
+          }
+        } else {
+          // Sesi 1 Pabrik Bakpia Jogkem baru saja diunggah
+          if (subtitle) {
+            subtitle.innerHTML = `<strong>Dokumentasi Sesi 1 Pabrik Bakpia Jogkem Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Bukti foto open kitchen &amp; sentra bakpia telah tersimpan. Silakan melangkah ke Sesi 2: Eksplorasi Pantai Drini &amp; Drini Park.</span>`;
+          }
+          if (nextBtn) {
+            nextBtn.href = `materi.html?day=6&sesi=2`;
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+          }
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Lanjut ke Sesi 2: Materi Pantai Drini & Park →';
           }
         }
       } else {

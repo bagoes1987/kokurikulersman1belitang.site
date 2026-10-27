@@ -3211,6 +3211,10 @@
       }
 
       if (type === 'materi') {
+        if (isFieldTrip && Number(dayNumber) === 6) {
+          window.location.href = 'materi.html?day=6&sesi=1';
+          return;
+        }
         window.location.href = 'materi.html?day=' + dayNumber;
         return;
       }
@@ -3222,11 +3226,11 @@
         }
         FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} ditutup oleh Admin (Hanya Lihat). Pengumpulan tugas dinonaktifkan.`, 'warning');
         if (type === 'lkpd') {
-          window.location.href = 'lkpd.html?day=' + dayNumber + '&readonly=1';
+          window.location.href = (isFieldTrip && Number(dayNumber) === 6) ? 'lkpd.html?day=6&sesi=1&readonly=1' : ('lkpd.html?day=' + dayNumber + '&readonly=1');
           return;
         }
         if (type === 'dokumentasi') {
-          window.location.href = 'dokumentasi.html?day=' + dayNumber + '&readonly=1';
+          window.location.href = (isFieldTrip && Number(dayNumber) === 6) ? 'dokumentasi.html?day=6&sesi=1&readonly=1' : ('dokumentasi.html?day=' + dayNumber + '&readonly=1');
           return;
         }
         openDayActivityModal(day, type, true);
@@ -3234,10 +3238,26 @@
       }
 
       if (type === 'lkpd') {
+        if (isFieldTrip && Number(dayNumber) === 6) {
+          window.location.href = 'lkpd.html?day=6&sesi=1';
+          return;
+        }
         window.location.href = 'lkpd.html?day=' + dayNumber;
         return;
       }
       if (type === 'dokumentasi') {
+        if (isFieldTrip && Number(dayNumber) === 6) {
+          let hasBakpiaDok = false;
+          const idList = getStudentStorageIdentifiers();
+          for (const id of idList) {
+            if (localStorage.getItem('fincestem_dok_ft_day6_bakpia_' + id) === 'true') {
+              hasBakpiaDok = true;
+              break;
+            }
+          }
+          window.location.href = hasBakpiaDok ? 'dokumentasi.html?day=6&sesi=2' : 'dokumentasi.html?day=6&sesi=1';
+          return;
+        }
         window.location.href = 'dokumentasi.html?day=' + dayNumber;
         return;
       }
@@ -4240,9 +4260,9 @@
 
             ${isSubmitted ? `
               <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=6';" class="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=6&sesi=1';" class="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
                   <span class="material-symbols-outlined text-lg">photo_camera</span>
-                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
+                  <span>Lanjut ke Dokumentasi Foto Sesi 1 (Pabrik Bakpia) &rarr;</span>
                 </button>
                 <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
                   Tutup
@@ -5010,11 +5030,12 @@
         }
 
         FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
-          FincestemCore.ui.toast(`Asesmen Day 6 Berhasil Dikirim! Skor Anda: ${score} / 100. Tahap 4 (Dokumentasi Foto) sekarang telah terbuka.`, 'success');
+          FincestemCore.ui.toast(`Asesmen Day 6 Berhasil Dikirim! Skor Anda: ${score} / 100. Mengalihkan ke Dokumentasi Sesi 1 Bakpia Jogkem...`, 'success');
           loadStudentProgress();
+          setTimeout(() => {
+            window.location.href = 'dokumentasi.html?day=6&sesi=1';
+          }, 800);
         });
-
-        closeDayActivityModal();
         return;
       } else if (type === 'asesmen') {
         const noteInput = document.getElementById('txtAsesmenNote');
