@@ -117,49 +117,8 @@
 </head>
 <body class="bg-background font-body-md text-on-surface antialiased flex flex-col min-h-full">
 
-  <!-- TOP HEADER (HANYA AKTIF SAAT LOGIN) -->
-  <header id="dashboardHeader" class="hidden sticky top-0 w-full z-40 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-container-high">
-    <div class="h-16 px-4 flex items-center justify-between max-w-xl mx-auto w-full">
-      <div class="flex items-center gap-3">
-        <a href="../" class="w-10 h-10 rounded-2xl bg-orange-50 flex items-center justify-center p-1 border border-orange-200 shrink-0">
-          <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
-        </a>
-        <div class="flex flex-col">
-          <span class="text-[10.5px] text-[#F15A24] font-extrabold uppercase tracking-wider leading-tight">SMAN 1 Belitang</span>
-          <span class="text-sm font-bold text-on-surface leading-tight">Portal Koordinator</span>
-        </div>
-      </div>
-      <div class="flex items-center gap-2">
-        <a href="../" class="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-all" title="Beranda Utama">
-          <span class="material-symbols-outlined text-xl">home</span>
-        </a>
-        <button id="btnKoordLogout" onclick="handleKoordLogout()" class="hidden p-2 rounded-xl text-red-600 hover:bg-red-50 transition-all cursor-pointer" title="Keluar Akun">
-          <span class="material-symbols-outlined text-xl">logout</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- 4 TABS UTAMA KOORDINATOR -->
-    <div id="koordTabs" class="hidden max-w-xl mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50 overflow-x-auto no-scrollbar">
-      <button id="btnTabKoord1" onclick="switchKoordTab('ringkasan')" class="py-2 px-2.5 text-center text-xs font-bold border-b-2 border-[#F15A24] text-[#F15A24] whitespace-nowrap cursor-pointer">
-        Ringkasan &amp; Kelas
-      </button>
-      <button id="btnTabKoord2" onclick="switchKoordTab('siswa')" class="py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer flex items-center gap-1">
-        <span>Daftar Siswa</span>
-        <span class="text-[9.5px] px-1.5 py-0.2 rounded bg-slate-100 font-bold text-slate-600">Read-Only</span>
-      </button>
-      <button id="btnTabKoord3" onclick="switchKoordTab('kinerja')" class="py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
-        Kinerja Fasilitator
-      </button>
-      <button id="btnTabKoord4" onclick="switchKoordTab('wilayah')" class="py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
-        Wilayah &amp; Rute
-      </button>
-      <button id="btnTabKoord5" onclick="switchKoordTab('galeri')" class="py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer flex items-center gap-1">
-        <span class="material-symbols-outlined text-sm">photo_library</span>
-        <span>Dokumentasi Riset</span>
-      </button>
-    </div>
-  </header>
+  <!-- SIDEBAR BACKDROP UNTUK LAYAR MOBILE -->
+  <div id="sidebarBackdrop" onclick="toggleKoordSidebar(false)" class="hidden fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-xs transition-opacity duration-300 md:hidden"></div>
 
   <!-- FORM LOGIN KOORDINATOR (TAMPIL JIKA BELUM LOGIN) -->
   <main id="loginSection" class="flex-1 flex flex-col justify-center max-w-md mx-auto w-full p-6">
@@ -219,23 +178,135 @@
     </div>
   </main>
 
-  <!-- MAIN CONTENT (TERPROTEKSI) -->
-  <main id="portalContent" class="hidden flex-1 flex flex-col max-w-xl mx-auto w-full p-4 gap-4 pb-20">
+  <!-- WRAPPER KONTEN DASBOR KOORDINATOR (SIDEBAR KIRI + WORKSPACE KANAN SEPERTI ADMIN) -->
+  <div id="koordLayoutWrapper" class="hidden flex-1 flex w-full h-screen overflow-hidden bg-slate-50">
 
-    <!-- USER BADGE (ORANYE #F15A24) -->
-    <div class="bg-gradient-to-r from-[#F15A24] to-[#c73e0c] text-white rounded-3xl p-5 shadow-md flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-white shrink-0">
-          <span class="material-symbols-outlined text-2xl">account_tree</span>
+    <!-- SIDEBAR KIRI KOORDINATOR ELEGAN & PROFESIONAL -->
+    <aside id="koordSidebar" class="fixed inset-y-0 left-0 z-50 w-72 h-screen bg-slate-900 text-slate-100 flex flex-col justify-between border-r border-slate-800 shadow-2xl transition-transform duration-300 -translate-x-full md:translate-x-0 md:static md:shadow-none shrink-0 overflow-hidden">
+      
+      <!-- Bagian Atas Sidebar: Logo & Identitas SMANSA -->
+      <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
+        <div class="flex items-center gap-3 min-w-0">
+          <div class="w-10 h-10 rounded-2xl bg-orange-50 flex items-center justify-center p-1 border border-orange-200 shrink-0 shadow-sm">
+            <img alt="Logo SMAN 1 Belitang" class="w-full h-full object-contain" src="../LOGO SMAN1 BELITANG.png">
+          </div>
+          <div class="flex flex-col min-w-0">
+            <span class="text-[10px] font-black uppercase text-[#F15A24] tracking-wider">SMAN 1 BELITANG</span>
+            <span class="text-xs font-bold text-slate-200 truncate">Portal Koordinator</span>
+          </div>
         </div>
-        <div class="flex flex-col min-w-0">
-          <span class="text-[11px] text-orange-100 font-semibold">Guru Koordinator Kelas</span>
-          <h2 id="koordUserName" class="text-sm font-extrabold text-white leading-tight truncate">Koordinator Utama</h2>
-          <span id="koordUserMeta" class="text-[10.5px] text-orange-200/80 truncate">Koordinator Kokurikuler FINCESTEM</span>
+        <!-- Tombol Tutup Sidebar di Layar HP -->
+        <button onclick="toggleKoordSidebar(false)" class="md:hidden p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors cursor-pointer" title="Tutup Menu">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+      </div>
+
+      <!-- Kartu Profil Koordinator: Merek Koordinator di Bawah Nama/Mapel -->
+      <div class="p-4 mx-3 my-2 rounded-2xl bg-slate-800/70 border border-slate-700/60 flex items-start gap-3">
+        <div class="w-10 h-10 rounded-xl bg-orange-500/20 text-[#F15A24] flex items-center justify-center shrink-0 border border-orange-400/30">
+          <span class="material-symbols-outlined text-xl">account_tree</span>
+        </div>
+        <div class="flex flex-col min-w-0 gap-0.5">
+          <h3 id="koordUserName" class="text-xs font-black text-white truncate">Koordinator Utama</h3>
+          <span id="koordUserMeta" class="text-[10.5px] text-slate-300 truncate">Koordinator Kokurikuler</span>
+          <div class="pt-1.5 flex items-center gap-1.5 flex-wrap">
+            <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-400 text-amber-950 border border-amber-300 flex items-center gap-1 shadow-2xs">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-700 animate-pulse"></span>
+              <span>KOORDINATOR KELAS</span>
+            </span>
+            <span id="lblSidebarKoordClasses" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-900 text-orange-200 border border-slate-700">
+              Wilayah Binaan
+            </span>
+          </div>
         </div>
       </div>
-      <span class="px-2.5 py-1 rounded-full bg-white/20 text-white text-[10px] font-bold shrink-0">Koordinator</span>
-    </div>
+
+      <!-- Menu Navigasi Vertikal Sidebar -->
+      <nav class="flex-1 px-3 py-2 overflow-y-auto no-scrollbar flex flex-col gap-1.5 text-xs font-semibold">
+        <button id="btnSideKoordRingkasan" onclick="switchKoordTab('ringkasan')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left bg-orange-600/90 text-white font-extrabold border-l-4 border-amber-400 shadow-xs cursor-pointer">
+          <span class="material-symbols-outlined text-lg text-amber-300">dashboard</span>
+          <span>Ringkasan &amp; Kelas</span>
+        </button>
+        <button id="btnSideKoordSiswa" onclick="switchKoordTab('siswa')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-slate-400 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg">group</span>
+          <span>Daftar Siswa (Monitoring)</span>
+        </button>
+        <button id="btnSideKoordKinerja" onclick="switchKoordTab('kinerja')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-slate-400 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg">monitoring</span>
+          <span>Kinerja Fasilitator</span>
+        </button>
+        <button id="btnSideKoordWilayah" onclick="switchKoordTab('wilayah')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-slate-400 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg">map</span>
+          <span>Wilayah &amp; Rute</span>
+        </button>
+        <button id="btnSideKoordGaleri" onclick="switchKoordTab('galeri')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-slate-400 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg">photo_library</span>
+          <span>Dokumentasi Riset</span>
+        </button>
+      </nav>
+
+      <!-- Footer Sidebar: Beranda & Logout -->
+      <div class="p-3 border-t border-slate-800/80 bg-slate-950/60 flex items-center justify-between">
+        <a href="../" class="px-3 py-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 text-xs font-semibold flex items-center gap-1.5 transition-all">
+          <span class="material-symbols-outlined text-base">home</span>
+          <span>Beranda</span>
+        </a>
+        <button onclick="handleKoordLogout()" class="px-3 py-2 rounded-xl text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-base">logout</span>
+          <span>Keluar</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- WORKSPACE UTAMA KANAN (LEGA & SCROLL INDEPENDEN) -->
+    <div class="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden">
+      
+      <!-- Top Navbar Ringkas dengan Tombol Hamburger Sidebar -->
+      <header class="h-16 px-4 bg-white/95 backdrop-blur-md border-b border-slate-200/80 flex items-center justify-between sticky top-0 z-30 shrink-0">
+        <div class="flex items-center gap-3 min-w-0">
+          <!-- Tombol Hamburger Menu Sidebar untuk HP / Tablet -->
+          <button onclick="toggleKoordSidebar(true)" class="md:hidden p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer" title="Buka Menu Sidebar">
+            <span class="material-symbols-outlined text-2xl">menu</span>
+          </button>
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="material-symbols-outlined text-[#F15A24] text-xl hidden sm:inline">account_tree</span>
+            <span id="koordActiveMenuTitle" class="text-sm sm:text-base font-extrabold text-slate-800 truncate">Ringkasan &amp; Kelas</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span id="lblKoordScopeTop" class="hidden sm:inline-block px-3 py-1 rounded-full text-xs font-extrabold bg-orange-50 text-[#F15A24] border border-orange-200">Semua Tingkat</span>
+          <a href="../" class="p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-all" title="Beranda Utama">
+            <span class="material-symbols-outlined text-xl">home</span>
+          </a>
+          <button onclick="handleKoordLogout()" class="p-2 rounded-xl text-rose-600 hover:bg-rose-50 transition-all cursor-pointer" title="Keluar Akun">
+            <span class="material-symbols-outlined text-xl">logout</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Konten Workspace -->
+      <main id="portalContent" class="flex-1 p-4 sm:p-6 max-w-5xl mx-auto w-full flex flex-col gap-4 pb-20">
+
+        <!-- BANNER PROFIL KOORDINATOR (DENGAN MEREK DI BAWAH NAMA/MAPEL) -->
+        <div class="bg-gradient-to-r from-[#F15A24] to-[#c73e0c] text-white rounded-3xl p-5 shadow-md flex items-center gap-4">
+          <div class="w-13 h-13 rounded-2xl bg-white/15 flex items-center justify-center text-white shrink-0 border border-white/20 shadow-xs">
+            <span class="material-symbols-outlined text-3xl">account_tree</span>
+          </div>
+          <div class="flex flex-col min-w-0 gap-0.5">
+            <h2 id="koordUserNameMain" class="text-base sm:text-lg font-black text-white leading-tight truncate">Koordinator Utama</h2>
+            <span id="koordUserMetaMain" class="text-xs text-orange-100 font-medium truncate">Koordinator Kokurikuler FINCESTEM</span>
+            <div class="pt-1 flex items-center gap-2 flex-wrap">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-[10.5px] font-black bg-amber-400 text-amber-950 border border-amber-300 shadow-2xs">
+                <span class="w-1.5 h-1.5 rounded-full bg-amber-700 animate-pulse"></span>
+                <span>KOORDINATOR KELAS</span>
+              </span>
+              <span id="lblAssignedLevelBadge" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-orange-950/60 text-orange-100 border border-orange-400/30">
+                <span class="material-symbols-outlined text-xs">school</span>
+                <span id="lblAssignedLevelText">Semua Tingkat</span>
+              </span>
+            </div>
+          </div>
+        </div>
 
     <!-- TAB 1: RINGKASAN & KELAS KOORDINATOR -->
     <div id="panelKoordRingkasan" class="flex flex-col gap-3">
@@ -392,6 +463,8 @@
       </p>
     </div>
   </main>
+</div>
+</div>
 
   <!-- MODAL EVALUASI & CATATAN KOORDINATOR UNTUK FASILITATOR -->
   <div id="modalKoordEvalFasil" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
@@ -554,35 +627,59 @@
       }
     });
 
+    function toggleKoordSidebar(open) {
+      const sidebar = document.getElementById('koordSidebar');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (!sidebar) return;
+
+      if (open === undefined) {
+        open = sidebar.classList.contains('-translate-x-full');
+      }
+
+      if (open) {
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+        if (backdrop) backdrop.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        sidebar.classList.remove('translate-x-0');
+        if (backdrop) backdrop.classList.add('hidden');
+      }
+    }
+
     function checkKoordAuth() {
       const isAuth = FincestemCore.auth.isLoggedIn();
       const role = FincestemCore.auth.getRole();
       const user = FincestemCore.auth.getUser();
 
-      const dashboardHeader = document.getElementById('dashboardHeader');
+      const layoutWrapper = document.getElementById('koordLayoutWrapper');
       const loginSec = document.getElementById('loginSection');
-      const portalContent = document.getElementById('portalContent');
-      const koordTabs = document.getElementById('koordTabs');
-      const logoutBtn = document.getElementById('btnKoordLogout');
 
       if (isAuth && (role === 'koordinator' || role === 'admin')) {
-        if (dashboardHeader) dashboardHeader.classList.remove('hidden');
+        if (layoutWrapper) {
+          layoutWrapper.classList.remove('hidden');
+          layoutWrapper.classList.add('flex');
+        }
         if (loginSec) loginSec.classList.add('hidden');
-        if (portalContent) portalContent.classList.remove('hidden');
-        if (koordTabs) koordTabs.classList.remove('hidden');
-        if (logoutBtn) logoutBtn.classList.remove('hidden');
 
         if (user && user.name) {
-          document.getElementById('koordUserName').textContent = user.name;
-          document.getElementById('koordUserMeta').textContent = user.assignment || 'Koordinator Kelas SMAN 1 Belitang';
+          const uNameSide = document.getElementById('koordUserName');
+          if (uNameSide) uNameSide.textContent = user.name;
+          const uMetaSide = document.getElementById('koordUserMeta');
+          if (uMetaSide) uMetaSide.textContent = user.assignment || user.mapel || 'Koordinator Kokurikuler';
+
+          const uNameMain = document.getElementById('koordUserNameMain');
+          if (uNameMain) uNameMain.textContent = user.name;
+          const uMetaMain = document.getElementById('koordUserMetaMain');
+          if (uMetaMain) uMetaMain.textContent = user.assignment || user.mapel || 'Koordinator Kokurikuler FINCESTEM';
         }
         loadCoordinatorPortalData();
       } else {
-        if (dashboardHeader) dashboardHeader.classList.add('hidden');
+        if (layoutWrapper) {
+          layoutWrapper.classList.add('hidden');
+          layoutWrapper.classList.remove('flex');
+        }
         if (loginSec) loginSec.classList.remove('hidden');
-        if (portalContent) portalContent.classList.add('hidden');
-        if (koordTabs) koordTabs.classList.add('hidden');
-        if (logoutBtn) logoutBtn.classList.add('hidden');
       }
     }
 
@@ -635,28 +732,37 @@
 
     function switchKoordTab(tab) {
       const tabs = [
-        { key: 'ringkasan', btnId: 'btnTabKoord1', panelId: 'panelKoordRingkasan' },
-        { key: 'siswa', btnId: 'btnTabKoord2', panelId: 'panelKoordSiswa' },
-        { key: 'kinerja', btnId: 'btnTabKoord3', panelId: 'panelKoordKinerja' },
-        { key: 'wilayah', btnId: 'btnTabKoord4', panelId: 'panelKoordWilayah' },
-        { key: 'galeri', btnId: 'btnTabKoord5', panelId: 'panelKoordGaleri' }
+        { key: 'ringkasan', sideBtnId: 'btnSideKoordRingkasan', panelId: 'panelKoordRingkasan', title: 'Ringkasan & Kelas Binaan' },
+        { key: 'siswa', sideBtnId: 'btnSideKoordSiswa', panelId: 'panelKoordSiswa', title: 'Daftar Siswa (Monitoring)' },
+        { key: 'kinerja', sideBtnId: 'btnSideKoordKinerja', panelId: 'panelKoordKinerja', title: 'Kinerja Guru Fasilitator' },
+        { key: 'wilayah', sideBtnId: 'btnSideKoordWilayah', panelId: 'panelKoordWilayah', title: 'Wilayah & Rute Field Trip' },
+        { key: 'galeri', sideBtnId: 'btnSideKoordGaleri', panelId: 'panelKoordGaleri', title: 'Dokumentasi Riset Siswa' }
       ];
 
       tabs.forEach(t => {
         const panel = document.getElementById(t.panelId);
-        const btn = document.getElementById(t.btnId);
+        const sideBtn = document.getElementById(t.sideBtnId);
         if (panel) {
           if (t.key === tab) panel.classList.remove('hidden');
           else panel.classList.add('hidden');
         }
-        if (btn) {
+        if (sideBtn) {
           if (t.key === tab) {
-            btn.className = 'py-2 px-2.5 text-center text-xs font-bold border-b-2 border-[#F15A24] text-[#F15A24] whitespace-nowrap cursor-pointer flex items-center gap-1';
+            sideBtn.className = 'w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left bg-orange-600/90 text-white font-extrabold border-l-4 border-amber-400 shadow-xs cursor-pointer';
           } else {
-            btn.className = 'py-2 px-2.5 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer flex items-center gap-1';
+            sideBtn.className = 'w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-slate-400 hover:text-white hover:bg-slate-800/80 cursor-pointer';
           }
         }
+        if (t.key === tab) {
+          const titleEl = document.getElementById('koordActiveMenuTitle');
+          if (titleEl) titleEl.textContent = t.title;
+        }
       });
+
+      // Tutup drawer sidebar di mobile saat menu diklik
+      if (window.innerWidth < 768) {
+        toggleKoordSidebar(false);
+      }
 
       if (tab === 'galeri') {
         renderKoordGallery();
@@ -699,6 +805,19 @@
       document.getElementById('statClassFacilitatorsCount').textContent = facilitators.length;
       document.getElementById('statCoordinatedStudentsCount').textContent = students.length;
       document.getElementById('badgeClassCountSummary').textContent = `${classes.length} Rombel`;
+
+      const lblSidebarKoord = document.getElementById('lblSidebarKoordClasses');
+      if (lblSidebarKoord) {
+        lblSidebarKoord.textContent = classes.length > 0 ? `${classes.length} Rombel Binaan` : 'Semua Tingkat';
+      }
+      const lblTopScope = document.getElementById('lblKoordScopeTop');
+      if (lblTopScope) {
+        lblTopScope.textContent = classes.length > 0 ? `${classes.length} Rombel` : 'Semua Tingkat';
+      }
+      const lblLevelText = document.getElementById('lblAssignedLevelText');
+      if (lblLevelText) {
+        lblLevelText.textContent = classes.length > 0 ? `${classes.length} Rombel Terbina` : 'Semua Tingkat';
+      }
 
       const container = document.getElementById('containerClassCoordinatorCards');
       container.innerHTML = '';
