@@ -249,7 +249,11 @@
 
       // TAMPILKAN MODUL BELAJAR DAY 7 FIELD TRIP
       if (dayNum === 7 && mainEl) {
-        renderGenericFieldTripModule(mainEl, dayNum);
+        if (typeof renderDay7FieldTripModule === 'function') {
+          renderDay7FieldTripModule(mainEl);
+        } else {
+          renderGenericFieldTripModule(mainEl, dayNum);
+        }
         return;
       }
 

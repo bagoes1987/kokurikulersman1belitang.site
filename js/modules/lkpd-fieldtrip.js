@@ -5644,4 +5644,545 @@
           }
         }
       }, 400);
-    }
+    }
+
+    // ==========================================
+    // MODUL LKPD KHUSUS FIELD TRIP DAY 7
+    // Tema: Tutup Buku Kas Saku & Lembar Kesan Pesan Field Trip 2026
+    // Pilar: FINANCIAL (Tutup Buku Kas Saku) & REFLEKSI KEPULANGAN
+    // ==========================================
+    function renderFieldTripDay7LKPD(isReadOnly) {
+      const mainEl = document.querySelector('main');
+      if (!mainEl) return;
+
+      const u = (typeof activeUser !== 'undefined' && activeUser) || (window.activeUser) || (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const studentName = u.name || 'Peserta Field Trip';
+      const studentNisn = u.nisn || u.identifier || '-';
+      const studentClass = u.class || u.class_name || 'Kelas X';
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+        : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+      const cleanNisn = String(studentNisn).trim();
+      const idVars = Array.from(new Set([cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), u.nis, u.identifier])).filter(Boolean);
+
+      // Cek apakah modul Day 7 sudah selesai
+      let hasMateriD7 = false;
+      for (const id of idVars) {
+        const rawM = localStorage.getItem('fincestem_materi_ft_day7_' + id);
+        if (rawM) {
+          try {
+            const p = JSON.parse(rawM);
+            if (p && (p.conclusion || p.text)) { hasMateriD7 = true; break; }
+          } catch(e) {}
+        }
+      }
+
+      // Ambil data LKPD Day 7 jika sebelumnya pernah disimpan
+      let saved = null;
+      for (const id of idVars) {
+        const raw = localStorage.getItem('fincestem_lkpd_ft_day7_' + id);
+        if (raw) {
+          try {
+            saved = JSON.parse(raw);
+            break;
+          } catch(e) {}
+        }
+      }
+
+      // Cari estimasi modal uang saku awal dari Day 1 jika belum ada input manual
+      let defaultModalAwal = (saved && saved.modalAwal !== undefined) ? saved.modalAwal : '';
+      if (!defaultModalAwal) {
+        for (const id of idVars) {
+          try {
+            const rawD1 = localStorage.getItem('fincestem_lkpd_ft_day1_' + id);
+            if (rawD1) {
+              const p1 = JSON.parse(rawD1);
+              if (p1 && p1.totalSaku) {
+                defaultModalAwal = p1.totalSaku;
+                break;
+              }
+            }
+          } catch(e) {}
+        }
+      }
+      if (!defaultModalAwal) defaultModalAwal = '500000';
+
+      const expJajan = (saved && saved.expJajan !== undefined) ? saved.expJajan : '150000';
+      const expOlehOleh = (saved && saved.expOlehOleh !== undefined) ? saved.expOlehOleh : '200000';
+      const expLain = (saved && saved.expLain !== undefined) ? saved.expLain : '50000';
+      const statusKas = (saved && saved.statusKas) ? saved.statusKas : 'hemat';
+      const rencanaSisa = (saved && saved.rencanaSisa) ? saved.rencanaSisa : 'ortu';
+      const momenFavorit = (saved && saved.momenFavorit) ? saved.momenFavorit : 'bromo';
+      const alasanMomen = (saved && saved.alasanMomen) ? saved.alasanMomen : '';
+      const pesanOrtu = (saved && saved.pesanOrtu) ? saved.pesanOrtu : '';
+      const pesanGuru = (saved && saved.pesanGuru) ? saved.pesanGuru : '';
+      const komitmenAkhir = (saved && saved.komitmenAkhir) ? saved.komitmenAkhir : '';
+      const isSubmitted = !!(saved && saved.submitted);
+
+      mainEl.innerHTML = `
+        <div class="flex flex-col gap-5 pb-12 max-w-4xl mx-auto w-full">
+          <!-- HEADER LKPD DAY 7 -->
+          <div class="bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-950 rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col gap-3 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-emerald-200 backdrop-blur-md flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm">home</span>
+                LKPD Day 7 • Penutup Ekspedisi Field Trip 2026
+              </span>
+              <span class="text-xs font-bold text-emerald-300 bg-white/10 px-2.5 py-1 rounded-lg">Pilar: 💰 Financial (Tutup Buku) &amp; Refleksi</span>
+            </div>
+
+            <div class="flex flex-col gap-1 mt-1">
+              <h1 class="font-black text-xl sm:text-2xl md:text-3xl leading-snug">
+                Tutup Buku Kas Saku &amp; Lembar Kesan Pesan
+              </h1>
+              <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-medium max-w-2xl">
+                Audit sisa uang saku riil di dompet, evaluasi pengeluaran 7 hari, dan tuliskan kesan serta pesan terima kasih untuk keluarga tercinta.
+              </p>
+            </div>
+
+            <!-- IDENTITAS SISWA -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 border-t border-emerald-700/50 text-xs">
+              <div>
+                <span class="text-[10.5px] text-emerald-300 font-medium">Nama Peserta:</span>
+                <p class="font-bold text-white truncate">${studentName}</p>
+              </div>
+              <div>
+                <span class="text-[10.5px] text-emerald-300 font-medium">NISN / ID:</span>
+                <p class="font-bold text-white truncate">${studentNisn}</p>
+              </div>
+              <div>
+                <span class="text-[10.5px] text-emerald-300 font-medium">Rombel / Kelas:</span>
+                <p class="font-bold text-white truncate">${studentClass}</p>
+              </div>
+              <div>
+                <span class="text-[10.5px] text-emerald-300 font-medium">Fasilitator:</span>
+                <p class="font-bold text-white truncate">${fasilName}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- STATUS SUBMITTED BANNER -->
+          ${isSubmitted ? `
+            <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 flex items-center justify-between gap-3 shadow-xs">
+              <div class="flex items-center gap-2.5">
+                <span class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black shrink-0">✓</span>
+                <div class="flex flex-col">
+                  <span class="font-black text-sm text-emerald-900">LKPD Day 7 Telah Berhasil Dikirim!</span>
+                  <span class="text-xs text-slate-600">Audit kas dan lembar kesan pesan Anda telah tersimpan rapi. Asesmen Day 7 bebas kuis (Skor 100).</span>
+                </div>
+              </div>
+              <a href="dokumentasi.html?day=7&sesi=1" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-xs shrink-0 flex items-center gap-1.5 transition-all">
+                <span class="material-symbols-outlined text-base">photo_camera</span>
+                <span>Unggah Foto</span>
+              </a>
+            </div>
+          ` : ''}
+
+          <!-- PERINGATAN MODUL BELUM DISIMPAN JIKA ADA -->
+          ${!hasMateriD7 ? `
+            <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-300 text-amber-950 flex items-center gap-2.5 text-xs shadow-2xs">
+              <span class="material-symbols-outlined text-amber-700 text-lg shrink-0">info</span>
+              <span>Anda belum menyimpan catatan Modul Day 7. Disarankan membaca ringkasan materi kepulangan terlebih dahulu sebelum mengisi LKPD.</span>
+            </div>
+          ` : ''}
+
+          <!-- BAGIAN 1: TUTUP BUKU KAS SAKU (AUDIT FINANSIAL RIIL) -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-4">
+            <div class="flex items-center gap-2.5 text-slate-900 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">account_balance_wallet</span>
+              </span>
+              <span>Bagian 1: Tutup Buku Kas Saku (Audit Finansial Riil 7 Hari)</span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Buka dompet Anda sekarang. Masukkan perkiraan total uang saku yang Anda bawa dan rincian belanja selama 7 hari perjalanan. Sistem akan otomatis mengkalkulasikan sisa saldo Anda:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+              <!-- Modal Awal -->
+              <div class="flex flex-col gap-1.5">
+                <label class="font-extrabold text-xs text-slate-800">1. Total Modal Uang Saku Awal (Day 1):</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-3 text-xs font-bold text-slate-400">Rp</span>
+                  <input type="number" id="ftD7_modalAwal" value="${defaultModalAwal}" ${isSubmitted || isReadOnly ? 'disabled' : ''} oninput="calculateD7CashBalance()" placeholder="500000" class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-emerald-600 bg-slate-50/50">
+                </div>
+                <span class="text-[10.5px] text-slate-400">Total uang saku dari orang tua saat berangkat di Day 1</span>
+              </div>
+
+              <!-- Jajan / Konsumsi Tambahan -->
+              <div class="flex flex-col gap-1.5">
+                <label class="font-extrabold text-xs text-slate-800">2. Total Jajan / Makanan Tambahan:</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-3 text-xs font-bold text-slate-400">Rp</span>
+                  <input type="number" id="ftD7_expJajan" value="${expJajan}" ${isSubmitted || isReadOnly ? 'disabled' : ''} oninput="calculateD7CashBalance()" placeholder="150000" class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-emerald-600 bg-slate-50/50">
+                </div>
+                <span class="text-[10.5px] text-slate-400">Jajan snack di rest area tol, minimarket, warung wisata</span>
+              </div>
+
+              <!-- Belanja Oleh-Oleh -->
+              <div class="flex flex-col gap-1.5">
+                <label class="font-extrabold text-xs text-slate-800">3. Total Belanja Oleh-Oleh &amp; Suvenir:</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-3 text-xs font-bold text-slate-400">Rp</span>
+                  <input type="number" id="ftD7_expOlehOleh" value="${expOlehOleh}" ${isSubmitted || isReadOnly ? 'disabled' : ''} oninput="calculateD7CashBalance()" placeholder="200000" class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-emerald-600 bg-slate-50/50">
+                </div>
+                <span class="text-[10.5px] text-slate-400">Bakpia Jogkem, Apel Batu, Batik, kaos, suvenir keluarga</span>
+              </div>
+
+              <!-- Biaya Lainnya / Tak Terduga -->
+              <div class="flex flex-col gap-1.5">
+                <label class="font-extrabold text-xs text-slate-800">4. Biaya Lain-lain / Tak Terduga:</label>
+                <div class="relative">
+                  <span class="absolute left-3.5 top-3 text-xs font-bold text-slate-400">Rp</span>
+                  <input type="number" id="ftD7_expLain" value="${expLain}" ${isSubmitted || isReadOnly ? 'disabled' : ''} oninput="calculateD7CashBalance()" placeholder="50000" class="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-emerald-600 bg-slate-50/50">
+                </div>
+                <span class="text-[10.5px] text-slate-400">Sewa jeep/kuda bromo, toilet tol, obat-obatan, baterai</span>
+              </div>
+            </div>
+
+            <!-- KOTAK KALKULASI OTOMATIS SISA SALDO -->
+            <div id="ftD7_calcCard" class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-amber-500/15 border-2 border-emerald-400 flex flex-col gap-2.5 mt-2 shadow-xs">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="text-xs font-black text-emerald-950 uppercase tracking-wide flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-emerald-700 text-lg">calculate</span>
+                  Hasil Perhitungan Saldo Kas Akhir
+                </span>
+                <span id="ftD7_statusBadge" class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-emerald-600 text-white uppercase shadow-2xs">
+                  Surplus / Hemat
+                </span>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1 border-t border-emerald-200">
+                <div class="flex flex-col">
+                  <span class="text-xs text-slate-600 font-semibold">Total Pengeluaran 7 Hari:</span>
+                  <span id="ftD7_lblTotalExp" class="text-base sm:text-lg font-black text-slate-900">Rp 400.000</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-xs text-slate-600 font-semibold">Sisa Uang Saku di Dompet Anda:</span>
+                  <span id="ftD7_lblSisaSaldo" class="text-lg sm:text-xl font-black text-emerald-800">Rp 100.000</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- STATUS EVALUASI KEUANGAN -->
+            <div class="flex flex-col gap-2 pt-2">
+              <label class="font-extrabold text-xs text-slate-800">5. Bagaimana Evaluasi Finansial Pribadi Anda Selama 7 Hari?</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <label class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-emerald-50/50 cursor-pointer flex items-center gap-2.5 text-xs font-bold text-slate-800 transition-all">
+                  <input type="radio" name="ftD7_statusKas" value="hemat" ${statusKas === 'hemat' ? 'checked' : ''} ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600">
+                  <span>🟢 Berhasil Hemat &amp; Surplus Sisa Saldo</span>
+                </label>
+                <label class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-emerald-50/50 cursor-pointer flex items-center gap-2.5 text-xs font-bold text-slate-800 transition-all">
+                  <input type="radio" name="ftD7_statusKas" value="pas" ${statusKas === 'pas' ? 'checked' : ''} ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600">
+                  <span>🟡 Pas Sesuai Target Awal (Break-Even)</span>
+                </label>
+                <label class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-emerald-50/50 cursor-pointer flex items-center gap-2.5 text-xs font-bold text-slate-800 transition-all">
+                  <input type="radio" name="ftD7_statusKas" value="over" ${statusKas === 'over' ? 'checked' : ''} ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600">
+                  <span>🔴 Melebihi Anggaran Awal (Pelajaran Finansial)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- RENCANA PEMANFAATAN SISA SALDO -->
+            <div class="flex flex-col gap-2 pt-1">
+              <label class="font-extrabold text-xs text-slate-800">6. Rencana Pemanfaatan Sisa Uang Saku Anda di Rumah:</label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <label class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-emerald-50/50 cursor-pointer flex items-center gap-2.5 text-xs font-bold text-slate-800 transition-all">
+                  <input type="radio" name="ftD7_rencanaSisa" value="ortu" ${rencanaSisa === 'ortu' ? 'checked' : ''} ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600">
+                  <span>Diserahkan kembali secara jujur ke Orang Tua</span>
+                </label>
+                <label class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-emerald-50/50 cursor-pointer flex items-center gap-2.5 text-xs font-bold text-slate-800 transition-all">
+                  <input type="radio" name="ftD7_rencanaSisa" value="tabung" ${rencanaSisa === 'tabung' ? 'checked' : ''} ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600">
+                  <span>Dimasukkan ke rekening / celengan tabungan pribadi</span>
+                </label>
+                <label class="p-3 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-emerald-50/50 cursor-pointer flex items-center gap-2.5 text-xs font-bold text-slate-800 transition-all">
+                  <input type="radio" name="ftD7_rencanaSisa" value="kas" ${rencanaSisa === 'kas' ? 'checked' : ''} ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600">
+                  <span>Disisihkan sebagian untuk infak / dana kas kelas</span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: LEMBAR KESAN, PESAN & JEJAK KENANGAN FIELD TRIP 2026 -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-4">
+            <div class="flex items-center gap-2.5 text-slate-900 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">hotel_class</span>
+              </span>
+              <span>Bagian 2: Lembar Kesan, Pesan &amp; Jejak Kenangan Field Trip 2026</span>
+            </div>
+
+            <!-- MOMEN FAVORIT -->
+            <div class="flex flex-col gap-1.5">
+              <label for="ftD7_momenFavorit" class="font-extrabold text-xs text-slate-800">
+                1. Dari Seluruh 7 Hari Perjalanan, Destinasi / Momen Mana yang Paling Mengesankan Bagi Anda?
+              </label>
+              <select id="ftD7_momenFavorit" ${isSubmitted || isReadOnly ? 'disabled' : ''} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-bold text-slate-900 bg-slate-50/50 outline-none focus:border-amber-500">
+                <option value="bromo" ${momenFavorit === 'bromo' ? 'selected' : ''}>🌋 Gunung Bromo (Dinginnya Malam, Sunrise Penanjakan &amp; Pasir Berbisik)</option>
+                <option value="prambanan" ${momenFavorit === 'prambanan' ? 'selected' : ''}>🏛️ Candi Prambanan (Kemegahan Megastruktur Geometri Candi Siwa)</option>
+                <option value="drini" ${momenFavorit === 'drini' ? 'selected' : ''}>🏖️ Pantai Drini &amp; Drini Park (Pulau Karang Pemecah Ombak &amp; Tebing Karst)</option>
+                <option value="bakpia" ${momenFavorit === 'bakpia' ? 'selected' : ''}>🍪 Pabrik Bakpia Jogkem (Open Kitchen, Akulturasi Budaya &amp; Belanja Cerdas)</option>
+                <option value="museum" ${momenFavorit === 'museum' ? 'selected' : ''}>🚗 Museum Angkut Kota Batu (Sejarah Rekayasa Transportasi Dunia)</option>
+                <option value="jatim" ${momenFavorit === 'jatim' ? 'selected' : ''}>🔬 Jatim Park 1 (Eksplorasi Sains Fisika Interaktif &amp; Etnografi)</option>
+                <option value="apel" ${momenFavorit === 'apel' ? 'selected' : ''}>🍎 Kebun Apel Batu (Sensasi Petik Buah Apel Segar Langsung dari Pohon)</option>
+                <option value="akpol" ${momenFavorit === 'akpol' ? 'selected' : ''}>👮 Kampus AKPOL &amp; Lawang Sewu Semarang (Disiplin &amp; Arsitektur Megah)</option>
+                <option value="bus" ${momenFavorit === 'bus' ? 'selected' : ''}>🚌 Canda Tawa Kebersamaan di Bus Sepanjang Tol Trans-Jawa &amp; Sumatera</option>
+              </select>
+            </div>
+
+            <!-- ALASAN MOMEN -->
+            <div class="flex flex-col gap-1.5">
+              <label for="ftD7_alasanMomen" class="font-extrabold text-xs text-slate-800">
+                Tuliskan Alasan Singkat Mengapa Momen Tersebut Paling Tidak Terlupakan:
+              </label>
+              <textarea id="ftD7_alasanMomen" rows="2" ${isSubmitted || isReadOnly ? 'disabled' : ''} placeholder="Contoh: Karena saat berdiri menatap kawah aktif Bromo bersama teman sekelompok, saya merasa sangat takjub akan keagungan ciptaan Tuhan dan merasakan hangatnya persahabatan sejati..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-normal text-slate-900 bg-slate-50/50 outline-none focus:border-amber-500 leading-relaxed">${alasanMomen.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+            </div>
+
+            <!-- PESAN UNTUK ORANG TUA -->
+            <div class="flex flex-col gap-1.5 pt-1">
+              <label for="ftD7_pesanOrtu" class="font-extrabold text-xs text-rose-900 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-rose-600">favorite</span>
+                2. Pesan Penuh Cinta &amp; Terima Kasih untuk Orang Tua di Rumah:
+              </label>
+              <textarea id="ftD7_pesanOrtu" rows="2" ${isSubmitted || isReadOnly ? 'disabled' : ''} placeholder="Tuliskan ucapan terima kasih tulus untuk Ayah dan Ibu yang telah bekerja keras membiayai dan mendoakan kepulangan Anda..." class="w-full p-3 rounded-xl border border-rose-200 text-xs sm:text-sm font-normal text-slate-900 bg-rose-50/20 outline-none focus:border-rose-500 leading-relaxed">${pesanOrtu.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+            </div>
+
+            <!-- PESAN UNTUK GURU & TEMAN -->
+            <div class="flex flex-col gap-1.5 pt-1">
+              <label for="ftD7_pesanGuru" class="font-extrabold text-xs text-slate-800">
+                3. Pesan &amp; Kesan untuk Bapak/Ibu Guru Pendamping Serta Kawan Sekelompok:
+              </label>
+              <textarea id="ftD7_pesanGuru" rows="2" ${isSubmitted || isReadOnly ? 'disabled' : ''} placeholder="Tuliskan apresiasi Anda kepada guru yang telah menjaga 24 jam dan teman yang selalu kompak saling membantu..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-normal text-slate-900 bg-slate-50/50 outline-none focus:border-emerald-600 leading-relaxed">${pesanGuru.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</textarea>
+            </div>
+
+            <!-- 4 CEKLIS KARAKTER -->
+            <div class="flex flex-col gap-2 pt-1">
+              <span class="font-extrabold text-xs text-slate-800">4. Perubahan Karakter Positif yang Paling Anda Rasakan pada Diri Sendiri (Centang Semua yang Sesuai):</span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <label class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 flex items-center gap-2.5 text-xs font-bold text-slate-800 cursor-pointer">
+                  <input type="checkbox" id="ftD7_chk1" checked ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600 w-4 h-4">
+                  <span>Saya menjadi lebih mandiri mengurus perlengkapan pribadi</span>
+                </label>
+                <label class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 flex items-center gap-2.5 text-xs font-bold text-slate-800 cursor-pointer">
+                  <input type="checkbox" id="ftD7_chk2" checked ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600 w-4 h-4">
+                  <span>Saya lebih bijak dan berhitung saat membelanjakan uang saku</span>
+                </label>
+                <label class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 flex items-center gap-2.5 text-xs font-bold text-slate-800 cursor-pointer">
+                  <input type="checkbox" id="ftD7_chk3" checked ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600 w-4 h-4">
+                  <span>Saya lebih disiplin menghargai waktu dan instruksi guru</span>
+                </label>
+                <label class="p-3 rounded-xl border border-emerald-200 bg-emerald-50/40 flex items-center gap-2.5 text-xs font-bold text-slate-800 cursor-pointer">
+                  <input type="checkbox" id="ftD7_chk4" checked ${isSubmitted || isReadOnly ? 'disabled' : ''} class="accent-emerald-600 w-4 h-4">
+                  <span>Saya semakin bersyukur dan menyayangi keluarga di rumah</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- KALIMAT MUTIARA PENUTUP -->
+            <div class="flex flex-col gap-1.5 pt-1">
+              <label for="ftD7_komitmenAkhir" class="font-extrabold text-xs text-slate-800">
+                5. Kalimat Mutiara Penutup Ekspedisi Field Trip 2026 Anda:
+              </label>
+              <input type="text" id="ftD7_komitmenAkhir" value="${komitmenAkhir.replace(/"/g, '&quot;')}" ${isSubmitted || isReadOnly ? 'disabled' : ''} placeholder="Contoh: Perjalanan telah usai, namun persahabatan, kemandirian, dan ilmu yang didapat akan hidup selamanya di hati saya." class="w-full p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-900 bg-slate-50/50 outline-none focus:border-emerald-600">
+            </div>
+          </div>
+
+          <!-- TOMBOL AKSI SUBMIT LKPD -->
+          ${!isReadOnly ? `
+            <div class="pt-2">
+              <button id="btnSubmitFtDay7Lkpd" type="button" onclick="saveFtDay7LKPD(true)" class="w-full py-4 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-xl">send</span>
+                <span>${isSubmitted ? 'Perbarui &amp; Kirim Ulang LKPD Day 7' : 'Kirim LKPD Day 7 &amp; Buka Dokumentasi Foto (Tahap 4)'}</span>
+              </button>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- MODAL SUKSES PENGIRIMAN LKPD DAY 7 -->
+        <div id="modalLkpdFtDay7Success" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs opacity-0 pointer-events-none transition-opacity duration-200">
+          <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100 flex flex-col gap-4 text-center items-center scale-95 transition-transform duration-200">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center font-black text-2xl shadow-inner">
+              <span class="material-symbols-outlined text-4xl">task_alt</span>
+            </div>
+            <div>
+              <h3 class="text-lg font-black text-slate-900">LKPD Day 7 Berhasil Dikirim!</h3>
+              <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                Tutup buku kas saku dan lembar kesan pesan Anda telah tersimpan dengan predikat Bintang 5! 
+                <strong>Khusus Day 7, Asesmen Kuis Ditiadakan (Otomatis Tuntas 100 Poin).</strong>
+              </p>
+            </div>
+            <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs w-full text-left flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-600 text-lg shrink-0">verified</span>
+              <span>Tahap 4 (Dokumentasi Dua Potret Berharga) kini telah terbuka!</span>
+            </div>
+            <div class="flex flex-col gap-2 w-full pt-1">
+              <a href="dokumentasi.html?day=7&sesi=1" class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all">
+                <span class="material-symbols-outlined text-lg">photo_camera</span>
+                <span>Lanjut ke Dokumentasi Dua Potret (Tahap 4) &rarr;</span>
+              </a>
+              <button type="button" onclick="closeFtD7LkpdModal()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs cursor-pointer transition-all">
+                Tetap di Lembar Jawaban
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Jalankan kalkulasi saldo pertama kali
+      try { calculateD7CashBalance(); } catch(e) {}
+    }
+
+    function calculateD7CashBalance() {
+      const modal = Number(document.getElementById('ftD7_modalAwal')?.value || 0);
+      const jajan = Number(document.getElementById('ftD7_expJajan')?.value || 0);
+      const oleh = Number(document.getElementById('ftD7_expOlehOleh')?.value || 0);
+      const lain = Number(document.getElementById('ftD7_expLain')?.value || 0);
+
+      const totalExp = jajan + oleh + lain;
+      const sisaSaldo = modal - totalExp;
+
+      const lblExp = document.getElementById('ftD7_lblTotalExp');
+      const lblSisa = document.getElementById('ftD7_lblSisaSaldo');
+      const badge = document.getElementById('ftD7_statusBadge');
+      const card = document.getElementById('ftD7_calcCard');
+
+      if (lblExp) lblExp.textContent = 'Rp ' + totalExp.toLocaleString('id-ID');
+      if (lblSisa) lblSisa.textContent = 'Rp ' + sisaSaldo.toLocaleString('id-ID');
+
+      if (badge && card) {
+        if (sisaSaldo > 0) {
+          badge.className = 'px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-emerald-600 text-white uppercase shadow-2xs';
+          badge.textContent = '🟢 Surplus / Hemat';
+          card.className = 'p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-amber-500/15 border-2 border-emerald-400 flex flex-col gap-2.5 mt-2 shadow-xs';
+          if (lblSisa) lblSisa.className = 'text-lg sm:text-xl font-black text-emerald-800';
+        } else if (sisaSaldo === 0) {
+          badge.className = 'px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-amber-500 text-slate-950 uppercase shadow-2xs';
+          badge.textContent = '🟡 Pas / Break-Even';
+          card.className = 'p-4 sm:p-5 rounded-2xl bg-amber-500/15 border-2 border-amber-400 flex flex-col gap-2.5 mt-2 shadow-xs';
+          if (lblSisa) lblSisa.className = 'text-lg sm:text-xl font-black text-amber-900';
+        } else {
+          badge.className = 'px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-rose-600 text-white uppercase shadow-2xs';
+          badge.textContent = '🔴 Overbudget / Minus';
+          card.className = 'p-4 sm:p-5 rounded-2xl bg-rose-500/15 border-2 border-rose-400 flex flex-col gap-2.5 mt-2 shadow-xs';
+          if (lblSisa) lblSisa.className = 'text-lg sm:text-xl font-black text-rose-800';
+        }
+      }
+    }
+
+    function saveFtDay7LKPD(isFinal) {
+      if (isFinal === undefined) isFinal = true;
+      const u = (typeof activeUser !== 'undefined' && activeUser) || (window.activeUser) || (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const studentNisn = u.nisn || u.identifier || '-';
+      const cleanNisn = String(studentNisn).trim();
+
+      const modalAwal = Number(document.getElementById('ftD7_modalAwal')?.value || 0);
+      const expJajan = Number(document.getElementById('ftD7_expJajan')?.value || 0);
+      const expOlehOleh = Number(document.getElementById('ftD7_expOlehOleh')?.value || 0);
+      const expLain = Number(document.getElementById('ftD7_expLain')?.value || 0);
+      const totalExp = expJajan + expOlehOleh + expLain;
+      const sisaSaldo = modalAwal - totalExp;
+
+      const statusKas = document.querySelector('input[name="ftD7_statusKas"]:checked')?.value || 'hemat';
+      const rencanaSisa = document.querySelector('input[name="ftD7_rencanaSisa"]:checked')?.value || 'ortu';
+      const momenFavorit = document.getElementById('ftD7_momenFavorit')?.value || 'bromo';
+      const alasanMomen = (document.getElementById('ftD7_alasanMomen')?.value || '').trim();
+      const pesanOrtu = (document.getElementById('ftD7_pesanOrtu')?.value || '').trim();
+      const pesanGuru = (document.getElementById('ftD7_pesanGuru')?.value || '').trim();
+      const komitmenAkhir = (document.getElementById('ftD7_komitmenAkhir')?.value || '').trim();
+
+      if (!pesanOrtu || pesanOrtu.length < 5) {
+        FincestemCore.ui.toast('Harap tuliskan pesan terima kasih untuk Orang Tua di rumah!', 'warning');
+        const txt = document.getElementById('ftD7_pesanOrtu');
+        if (txt) { txt.focus(); txt.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+        return;
+      }
+
+      const payload = {
+        day: 7,
+        submitted: isFinal,
+        modalAwal: modalAwal,
+        expJajan: expJajan,
+        expOlehOleh: expOlehOleh,
+        expLain: expLain,
+        totalExp: totalExp,
+        sisaSaldo: sisaSaldo,
+        statusKas: statusKas,
+        rencanaSisa: rencanaSisa,
+        momenFavorit: momenFavorit,
+        alasanMomen: alasanMomen,
+        pesanOrtu: pesanOrtu,
+        pesanGuru: pesanGuru,
+        komitmenAkhir: komitmenAkhir,
+        submitted_at: new Date().toISOString()
+      };
+
+      const idVars = Array.from(new Set([cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), u.nis, u.identifier])).filter(Boolean);
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day7_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      // Otomatis tandai Asesmen Day 7 sebagai Tuntas / Bebas Tes (Skor 100)
+      const asesmenPayload = {
+        submitted: true,
+        type: 'exemption',
+        score: 100,
+        totalQuestions: 0,
+        content: 'Asesmen Day 7 ditiadakan (Bebas tes kepulangan - Skor Bonus 100/100)',
+        submitted_at: new Date().toISOString()
+      };
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_asesmen_ft_day7_' + id, JSON.stringify(asesmenPayload));
+        } catch(e) {}
+      });
+
+      if (isFinal) {
+        if (FincestemCore.progress) {
+          FincestemCore.progress.submitTask(studentNisn, 7, 'lkpd', payload, function() {
+            FincestemCore.progress.submitTask(studentNisn, 7, 'asesmen', asesmenPayload, function() {
+              showFtD7LkpdModal();
+            });
+          });
+        } else {
+          showFtD7LkpdModal();
+        }
+      } else {
+        FincestemCore.ui.toast('Draft LKPD Day 7 berhasil disimpan.', 'info');
+      }
+    }
+
+    function showFtD7LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtDay7Success');
+      if (!modal) {
+        FincestemCore.ui.toast('LKPD Day 7 Berhasil Dikirim! Asesmen bebas kuis (Skor 100).', 'success');
+        renderFieldTripDay7LKPD(false);
+        return;
+      }
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      const inner = modal.querySelector('div');
+      if (inner) {
+        inner.classList.remove('scale-95');
+        inner.classList.add('scale-100');
+      }
+    }
+
+    function closeFtD7LkpdModal() {
+      const modal = document.getElementById('modalLkpdFtDay7Success');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      renderFieldTripDay7LKPD(false);
+    }
+
+    window.renderFieldTripDay7LKPD = renderFieldTripDay7LKPD;
+    window.calculateD7CashBalance = calculateD7CashBalance;
+    window.saveFtDay7LKPD = saveFtDay7LKPD;
+    window.showFtD7LkpdModal = showFtD7LkpdModal;
+    window.closeFtD7LkpdModal = closeFtD7LkpdModal;

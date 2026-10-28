@@ -707,6 +707,32 @@
           }
         }
 
+        // Penyesuaian khusus Day 7 Field Trip (Misi 1: Foto Kenangan Terindah, Misi 2: Foto Bersama Keluarga di Rumah)
+        if (cat.isFieldTrip && Number(dayNum) === 7) {
+          const user = FincestemCore.auth.getUser() || {};
+          const nisn = user.nisn || user.identifier || '';
+          const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+          const urlParams = new URLSearchParams(window.location.search);
+          const sesiParam = urlParams.get('sesi');
+          let hasDokKenangan = false;
+          for (const id of ids) {
+            if (localStorage.getItem('fincestem_dok_ft_day7_kenangan_' + id) === 'true') {
+              hasDokKenangan = true;
+              break;
+            }
+          }
+          const isSesi2 = (sesiParam === '2');
+          if (isSesi2) {
+            dayBadge = 'DAY 7 • MISI 2: FOTO BERSAMA KELUARGA DI RUMAH';
+            subTitle = 'Dokumentasi Kepulangan & Berjumpa Keluarga Tercinta';
+            subTheme = 'Bukti Keselamatan Perjalanan, Salam Hormat & Rasa Syukur Bersama Orang Tua Tercinta';
+          } else {
+            dayBadge = 'DAY 7 • MISI 1: FOTO KENANGAN TERINDAH FIELD TRIP';
+            subTitle = 'Dokumentasi Momen Emas & Kenangan Terbaik 2026';
+            subTheme = 'Potret Persahabatan, Lanskap Destinasi Favorit & Pengalaman Riset Tak Terlupakan';
+          }
+        }
+
         descEl.innerHTML = `
           <span class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-primary/10 text-primary mb-1">${dayBadge}</span>
           <br><strong class="text-on-surface text-sm sm:text-base">${subTitle}</strong>
@@ -879,6 +905,54 @@
                     FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day 6 Sesi 1 sebelum mengunggah Dokumentasi!', 'warning');
                     setTimeout(() => {
                       window.location.replace('dashboard.html?day=6&task=asesmen');
+                    }, 1200);
+                    return;
+                  }
+                }
+              } else if (dayNum === 7) {
+                // Khusus Day 7: Bebas Asesmen! Hanya perlu LKPD Day 7 (Tutup Buku Kas Saku & Kesan Pesan) selesai
+                let hasLkpdD7 = false;
+                for (const id of ids) {
+                  const raw = localStorage.getItem('fincestem_lkpd_ft_day7_' + id);
+                  if (raw) {
+                    try {
+                      const p = JSON.parse(raw);
+                      if (p && (p.submitted || p.totalModal || p.answers || p.kesanPesann || p.momenKesan || p.selisihSaldo !== undefined)) {
+                        hasLkpdD7 = true;
+                        break;
+                      }
+                    } catch(e) {
+                      hasLkpdD7 = true;
+                      break;
+                    }
+                  }
+                }
+                const taskMap = (prog && prog.task_map) || {};
+                if (taskMap['7_lkpd']) hasLkpdD7 = true;
+
+                if (!hasLkpdD7) {
+                  FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan LKPD Day 7 (Tutup Buku Kas Saku & Kesan Pesan) sebelum mengunggah Dokumentasi!', 'warning');
+                  setTimeout(() => {
+                    window.location.replace('lkpd.html?day=7');
+                  }, 1200);
+                  return;
+                }
+
+                // Jika mengakses Sesi 2 (Foto Bersama Keluarga), cek apakah Misi 1 (Foto Kenangan Terindah) sudah diunggah
+                const urlParams = new URLSearchParams(window.location.search);
+                const sesiParam = urlParams.get('sesi');
+                if (sesiParam === '2') {
+                  let hasDokKenangan = false;
+                  for (const id of ids) {
+                    if (localStorage.getItem('fincestem_dok_ft_day7_kenangan_' + id) === 'true') {
+                      hasDokKenangan = true;
+                      break;
+                    }
+                  }
+                  if (!hasDokKenangan) {
+                    FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib mengunggah Foto Kenangan Terindah (Misi 1) terlebih dahulu!', 'warning');
+                    setTimeout(() => {
+                      window.location.replace('dokumentasi.html?day=7&sesi=1');
                     }, 1200);
                     return;
                   }
@@ -3353,6 +3427,145 @@
             `;
           }
         }
+      } else if (cat.isFieldTrip && Number(dayNum) === 7) {
+        // ==========================================
+        // KHUSUS DAY 7: MISI 1 (FOTO KENANGAN TERINDAH) & MISI 2 (FOTO BERSAMA KELUARGA DI RUMAH)
+        // ==========================================
+        let hasDokKenangan = false;
+        let hasDokKeluarga = false;
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day7_kenangan_' + id) === 'true') hasDokKenangan = true;
+          if (localStorage.getItem('fincestem_dok_ft_day7_keluarga_' + id) === 'true') hasDokKeluarga = true;
+        }
+
+        const isSesi2 = (sesiParam === '2');
+
+        const navTabsHtml = `
+          <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-100 border border-slate-200 text-xs font-bold mb-2">
+            <a href="dokumentasi.html?day=7&sesi=1" class="flex-1 py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all ${!isSesi2 ? 'bg-white text-indigo-950 font-black shadow-xs' : 'text-slate-600 hover:text-slate-900'}">
+              <span class="material-symbols-outlined text-sm ${hasDokKenangan ? 'text-emerald-600' : 'text-indigo-600'}">${hasDokKenangan ? 'check_circle' : 'photo_library'}</span>
+              <span>Misi 1: Kenangan Terindah</span>
+              ${hasDokKenangan ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : ''}
+            </a>
+            <a href="${hasDokKenangan ? 'dokumentasi.html?day=7&sesi=2' : '#'}" onclick="${!hasDokKenangan ? 'FincestemCore.ui.toast(\'Harap selesaikan Misi 1 (Foto Kenangan Terindah) terlebih dahulu!\', \'warning\'); return false;' : ''}" class="flex-1 py-2 px-3 rounded-xl flex items-center justify-center gap-1.5 transition-all ${isSesi2 ? 'bg-white text-emerald-950 font-black shadow-xs' : 'text-slate-600 hover:text-slate-900'} ${!hasDokKenangan ? 'opacity-60 cursor-not-allowed' : ''}">
+              <span class="material-symbols-outlined text-sm ${hasDokKeluarga ? 'text-emerald-600' : 'text-emerald-600'}">${hasDokKeluarga ? 'check_circle' : 'family_restroom'}</span>
+              <span>Misi 2: Bersama Keluarga</span>
+              ${hasDokKeluarga ? '<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>' : ''}
+            </a>
+          </div>
+        `;
+
+        if (!isSesi2) {
+          // ==============================
+          // MISI 1: FOTO KENANGAN TERINDAH
+          // ==============================
+          if (hasDokKenangan) {
+            container.innerHTML = `
+              ${navTabsHtml}
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-indigo-500/10 via-emerald-500/10 to-teal-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
+                    MISI 1 SELESAI
+                  </span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Kenangan Terindah Field Trip 2026 Berhasil Diunggah</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Momen terbaik Anda selama perjalanan field trip telah tersimpan abadi di sistem. Silakan lanjutkan ke <strong>Misi 2: Foto Sudah Tiba di Rumah Bersama Keluarga Tercinta</strong> untuk menuntaskan seluruh kewajiban dokumentasi!
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="dokumentasi.html?day=7&sesi=2" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center cursor-pointer">
+                    <span class="material-symbols-outlined text-xl">family_restroom</span>
+                    <span>Lanjut ke Misi 2: Foto Bersama Keluarga &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-indigo-900 border border-indigo-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Kenangan Lain</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              ${navTabsHtml}
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-indigo-700 via-purple-700 to-indigo-900 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    DAY 7 • MISI 1 DOKUMENTASI
+                  </span>
+                  <span class="material-symbols-outlined text-amber-300 text-xl">photo_library</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Foto Kenangan Terindah Field Trip 2026</h3>
+                  <p class="text-xs text-indigo-100 mt-1 leading-relaxed">
+                    Pilih 1 foto paling berkesan dan paling Anda sukai selama 7 hari perjalanan — baik saat di Lawang Sewu, AKPOL, Kebun Apel, Jatim Park 1, Museum Angkut, Bromo, Prambanan, Membatik, Pabrik Bakpia, maupun Pantai Drini bersama sahabat atau guru pembimbing.
+                  </p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-indigo-50 text-indigo-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-indigo-700">photo_camera</span>
+                  <span>Ambil / Unggah Foto Kenangan Terindah</span>
+                </button>
+              </div>
+            `;
+          }
+        } else {
+          // ==============================
+          // MISI 2: FOTO BERSAMA KELUARGA DI RUMAH
+          // ==============================
+          if (hasDokKeluarga) {
+            container.innerHTML = `
+              ${navTabsHtml}
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-500/10 via-teal-500/10 to-amber-500/10 border-2 border-emerald-400 flex flex-col gap-3 shadow-sm">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs">
+                    MISI 2 SELESAI • SEMUA DOKUMENTASI TUNTAS
+                  </span>
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-emerald-950">Foto Bersama Keluarga Berhasil Diunggah! Selamat Tiba di Rumah</h3>
+                  <p class="text-xs sm:text-sm text-slate-700 leading-relaxed mt-1">
+                    Alhamdulillah, Anda telah tiba di rumah dengan selamat dan berjumpa kembali dengan keluarga tercinta. Seluruh kewajiban dokumentasi FINCESTEM 2026 telah rampung secara sempurna!
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-2 pt-1">
+                  <a href="dashboard.html?day=7&task=refleksi" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center cursor-pointer">
+                    <span class="material-symbols-outlined text-xl">psychology</span>
+                    <span>Lanjut ke Jurnal Refleksi Akbar Day 7 &rarr;</span>
+                  </a>
+                  <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-emerald-900 border border-emerald-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">add_a_photo</span>
+                    <span>Tambah Foto Keluarga Lain</span>
+                  </button>
+                </div>
+              </div>
+            `;
+          } else {
+            container.innerHTML = `
+              ${navTabsHtml}
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-700 via-teal-700 to-emerald-900 text-white flex flex-col gap-3 shadow-lg">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase tracking-wider bg-white/20 text-white shadow-2xs">
+                    DAY 7 • MISI 2 (FINAL)
+                  </span>
+                  <span class="material-symbols-outlined text-emerald-200 text-xl">family_restroom</span>
+                </div>
+                <div>
+                  <h3 class="font-black text-base sm:text-lg text-white">Unggah Foto Sudah Tiba di Rumah Bersama Keluarga Tercinta</h3>
+                  <p class="text-xs text-emerald-100 mt-1 leading-relaxed">
+                    Bukti foto kehangatan kepulangan: ambil foto bersama orang tua, ayah, ibu, atau keluarga di rumah sambil menunjukkan senyum bahagia dan menyerahkan oleh-oleh hasil perjalanan belajar Anda.
+                  </p>
+                </div>
+                <button type="button" onclick="toggleUploadModal(true)" class="w-full py-4 px-5 rounded-2xl bg-white hover:bg-emerald-50 text-emerald-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-2xl text-emerald-700">photo_camera</span>
+                  <span>Ambil / Unggah Foto Bersama Keluarga di Rumah</span>
+                </button>
+              </div>
+            `;
+          }
+        }
       } else {
         // HARI LAINNYA & DAY 0 SIMULASI
         const isDay0 = (Number(dayNum) === 0);
@@ -3837,6 +4050,22 @@
           }
         }
 
+        if (cat.isFieldTrip && docDayNum === 7) {
+          const urlParams = new URLSearchParams(window.location.search);
+          const sesiParam = urlParams.get('sesi');
+          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          const isSesi2 = (sesiParam === '2');
+          for (const id of ids) {
+            if (isSesi2) {
+              localStorage.setItem('fincestem_dok_ft_day7_keluarga_' + id, 'true');
+              localStorage.setItem('fincestem_dok_ft_day7_' + id, 'true');
+            } else {
+              localStorage.setItem('fincestem_dok_ft_day7_kenangan_' + id, 'true');
+              localStorage.setItem('fincestem_dok_ft_day7_' + id, 'true');
+            }
+          }
+        }
+
         // Catat ke progres siswa untuk sinkronisasi aktivitas berurutan
         if (FincestemCore.progress && studentNisn) {
           try {
@@ -4086,6 +4315,43 @@
           }
           if (nextBtnText) {
             nextBtnText.textContent = 'Lanjut ke Sesi 2: Materi Pantai Drini & Park →';
+          }
+        }
+      } else if (cat.isFieldTrip && dayNum === 7) {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = user.nisn || user.identifier || '';
+        const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+        const urlParams = new URLSearchParams(window.location.search);
+        const sesiParam = urlParams.get('sesi');
+        let hasDokKenangan = false;
+        let hasDokKeluarga = false;
+        for (const id of ids) {
+          if (localStorage.getItem('fincestem_dok_ft_day7_kenangan_' + id) === 'true') hasDokKenangan = true;
+          if (localStorage.getItem('fincestem_dok_ft_day7_keluarga_' + id) === 'true') hasDokKeluarga = true;
+        }
+
+        if (hasDokKeluarga || sesiParam === '2') {
+          if (subtitle) {
+            subtitle.innerHTML = `<strong>Foto Bersama Keluarga di Rumah Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Alhamdulillah, Anda telah tiba di rumah dengan selamat dan berjumpa kembali dengan keluarga tercinta. Seluruh misi dokumentasi FINCESTEM 2026 telah rampung secara sempurna! Silakan tutup ekspedisi dengan mengisi Jurnal Refleksi Akbar Day 7.</span>`;
+          }
+          if (nextBtn) {
+            nextBtn.href = `dashboard.html?day=7&task=refleksi`;
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+          }
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Lanjut ke Jurnal Refleksi Akbar Day 7 ⭐';
+          }
+        } else {
+          // Misi 1 (Foto Kenangan Terindah) baru saja diunggah
+          if (subtitle) {
+            subtitle.innerHTML = `<strong>Foto Kenangan Terindah Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Potret momen terbaik Anda selama Field Trip 2026 telah tersimpan rapi. Misi terakhir kepulangan: unggah Foto Anda Sudah Tiba di Rumah Bersama Keluarga Tercinta!</span>`;
+          }
+          if (nextBtn) {
+            nextBtn.href = `dokumentasi.html?day=7&sesi=2`;
+            nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+          }
+          if (nextBtnText) {
+            nextBtnText.textContent = 'Lanjut ke Misi 2: Foto Bersama Keluarga →';
           }
         }
       } else {

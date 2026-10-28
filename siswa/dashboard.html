@@ -1946,6 +1946,9 @@
         // Khusus Day 2 Field Trip: Asesmen terintegrasi dalam LKPD Esai AKPOL & Lawang Sewu
         if (dayNum === 2 && hasLkpd) {
           hasAsesmen = true;
+        } else if (dayNum === 7 && hasLkpd) {
+          // Khusus Day 7 Field Trip: Bebas Asesmen Kepulangan (otomatis tuntas jika LKPD selesai)
+          hasAsesmen = true;
         } else {
           for (const id of idList) {
             try {
@@ -1978,6 +1981,14 @@
               const dokAkpol = localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true';
               const dokLawang = localStorage.getItem('fincestem_dok_ft_day2_lawang_' + id) === 'true';
               if (dokAkpol || dokLawang) {
+                hasDok = true;
+                break;
+              }
+            }
+            if (dayNum === 7) {
+              const dokKenangan = localStorage.getItem('fincestem_dok_ft_day7_kenangan_' + id) === 'true';
+              const dokKeluarga = localStorage.getItem('fincestem_dok_ft_day7_keluarga_' + id) === 'true';
+              if (dokKenangan || dokKeluarga) {
                 hasDok = true;
                 break;
               }
@@ -2023,16 +2034,16 @@
       // Cascading logic berurutan mutlak
       let canLkpd = hasMateri;
       let canAsesmen = hasMateri && hasLkpd;
-      let canDok = hasMateri && hasLkpd && hasAsesmen;
-      let canRefleksi = hasMateri && hasLkpd && hasAsesmen && hasDok;
-      let canPenilaian = hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi;
+      let canDok = (dayNum === 7) ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen);
+      let canRefleksi = (dayNum === 7) ? (hasMateri && hasLkpd && hasDok) : (hasMateri && hasLkpd && hasAsesmen && hasDok);
+      let canPenilaian = (dayNum === 7) ? (hasMateri && hasLkpd && hasDok && hasRefleksi) : (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi);
 
       return {
         hasMateri,
         hasLkpd: hasLkpd && hasMateri,
-        hasAsesmen: hasAsesmen && hasLkpd && hasMateri,
-        hasDok: hasDok && hasAsesmen && hasLkpd && hasMateri,
-        hasRefleksi: hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri,
+        hasAsesmen: (dayNum === 7 ? (hasLkpd && hasMateri) : (hasAsesmen && hasLkpd && hasMateri)),
+        hasDok: (dayNum === 7 ? (hasDok && hasLkpd && hasMateri) : (hasDok && hasAsesmen && hasLkpd && hasMateri)),
+        hasRefleksi: (dayNum === 7 ? (hasRefleksi && hasDok && hasLkpd && hasMateri) : (hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri)),
         canLkpd,
         canAsesmen,
         canDok,
@@ -2970,11 +2981,11 @@
               <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 sm:p-3 rounded-2xl ${asesmenBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
                 <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
                   <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${asesmenIconClass} flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenAsesmen ? 'lock' : 'fact_check'}</span>
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenAsesmen ? 'lock' : (isFieldTrip && dNum === 7 ? 'celebration' : 'fact_check')}</span>
                   </span>
                   <div class="flex flex-col text-left min-w-0">
                     <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">3. Asesmen</span>
-                    <span class="text-[10px] sm:text-xs ${hasAsesmen ? 'text-emerald-700 font-bold' : (canOpenAsesmen ? 'text-blue-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasAsesmen ? '✓ Kuis Terkirim' : (canOpenAsesmen ? 'Kerjakan Kuis' : 'Terkunci')}</span>
+                    <span class="text-[10px] sm:text-xs ${hasAsesmen ? 'text-emerald-700 font-bold' : (canOpenAsesmen ? 'text-blue-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasAsesmen ? (isFieldTrip && dNum === 7 ? '✓ Bebas Tes (100)' : '✓ Kuis Terkirim') : (canOpenAsesmen ? (isFieldTrip && dNum === 7 ? 'Bebas Kuis' : 'Kerjakan Kuis') : 'Terkunci')}</span>
                   </div>
                 </div>
                 ${getCheckBadge(hasAsesmen, canOpenAsesmen)}
@@ -3258,6 +3269,18 @@
           window.location.href = hasBakpiaDok ? 'dokumentasi.html?day=6&sesi=2' : 'dokumentasi.html?day=6&sesi=1';
           return;
         }
+        if (isFieldTrip && Number(dayNumber) === 7) {
+          let hasKenanganDok = false;
+          const idList = getStudentStorageIdentifiers();
+          for (const id of idList) {
+            if (localStorage.getItem('fincestem_dok_ft_day7_kenangan_' + id) === 'true') {
+              hasKenanganDok = true;
+              break;
+            }
+          }
+          window.location.href = hasKenanganDok ? 'dokumentasi.html?day=7&sesi=2' : 'dokumentasi.html?day=7&sesi=1';
+          return;
+        }
         window.location.href = 'dokumentasi.html?day=' + dayNumber;
         return;
       }
@@ -3348,6 +3371,7 @@
       const isFTDay4 = isFieldTrip && Number(day.day_number) === 4;
       const isFTDay5 = isFieldTrip && Number(day.day_number) === 5;
       const isFTDay6 = isFieldTrip && Number(day.day_number) === 6;
+      const isFTDay7 = isFieldTrip && Number(day.day_number) === 7;
 
       if (type === 'asesmen') {
         if (isFTDay1) {
@@ -4277,6 +4301,54 @@
               </div>
             `)}
           `;
+        } else if (isFTDay7) {
+          title.textContent = 'Asesmen Day 7 (Bebas Tes Kepulangan)';
+          icon.textContent = 'celebration';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0';
+
+          body.innerHTML = `
+            <div class="p-5 rounded-3xl bg-gradient-to-br from-emerald-500/15 via-teal-500/10 to-amber-500/15 border-2 border-emerald-400 flex flex-col gap-3.5 shadow-sm text-slate-800">
+              <div class="flex items-center justify-between">
+                <span class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-emerald-600 text-white shadow-2xs flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm">verified</span>
+                  <span>BEBAS ASESMEN KEPULANGAN</span>
+                </span>
+                <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-900 border border-amber-300">
+                  Skor Bonus: 100 / 100 ✓
+                </span>
+              </div>
+              <div>
+                <h4 class="font-black text-base sm:text-lg text-emerald-950 flex items-center gap-2">
+                  <span>Selamat! Seluruh Kuis Lapangan Telah Tuntas</span>
+                  <span class="text-xl">🎉</span>
+                </h4>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1">
+                  Pada <strong>Day 7 (Perjalanan Pulang &amp; Berjumpa Keluarga)</strong>, Anda <strong>dibebaskan dari asesmen / tes kuis tertulis</strong>. Rangkaian evaluasi akademik lapangan Anda selama Day 1 s.d. Day 6 telah tuntas dinilai.
+                </p>
+                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mt-1.5">
+                  Fokus Anda pada hari kepulangan ini adalah menyelesaikan <strong>LKPD Day 7 (Tutup Buku Kas Saku &amp; Kesan Pesan)</strong>, lalu mengunggah dua misi foto berharga: <strong>Misi 1 (Foto Kenangan Terindah)</strong> dan <strong>Misi 2 (Foto Tiba di Rumah Bersama Keluarga Tercinta)</strong>.
+                </p>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-white/80 border border-emerald-200 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-xl">photo_camera</span>
+                </div>
+                <div class="text-xs text-slate-700">
+                  <span class="font-bold text-slate-900 block">Tahap 4 Dokumentasi Foto Day 7 Telah Terbuka:</span>
+                  <span>1. Misi 1: Foto Kenangan Terindah &bull; 2. Misi 2: Foto Bersama Keluarga di Rumah.</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-2 pt-2">
+              <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=7&sesi=1';" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-lg">photo_camera</span>
+                <span>Lanjut ke Dokumentasi Foto Day 7 &rarr;</span>
+              </button>
+              <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
+                Tutup
+              </button>
+            </div>
+          `;
         } else {
           icon.textContent = 'fact_check';
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
@@ -5034,6 +5106,32 @@
           loadStudentProgress();
           setTimeout(() => {
             window.location.href = 'dokumentasi.html?day=6&sesi=1';
+          }, 800);
+        });
+        return;
+      } else if (type === 'asesmen' && isFTDay7) {
+        const asesmenPayload = {
+          submitted: true,
+          type: 'exemption',
+          score: 100,
+          totalQuestions: 0,
+          content: 'Asesmen Day 7 ditiadakan (Bebas tes kepulangan - Skor Bonus 100/100)',
+          submitted_at: new Date().toISOString()
+        };
+        const idList = getStudentStorageIdentifiers();
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_asesmen_ft_day7_' + id, JSON.stringify(asesmenPayload));
+        });
+        note = asesmenPayload.content;
+        if (studentProgress && studentProgress.task_map) {
+          studentProgress.task_map['7_asesmen'] = { status: 'submitted', content: note };
+        }
+        FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
+          FincestemCore.ui.toast('Day 7 Bebas Tes Asesmen Kepulangan! Skor Bonus 100/100. Mengalihkan ke Dokumentasi Foto...', 'success');
+          loadStudentProgress();
+          closeDayActivityModal();
+          setTimeout(() => {
+            window.location.href = 'dokumentasi.html?day=7&sesi=1';
           }, 800);
         });
         return;

@@ -5865,3 +5865,325 @@
     window.saveDay3MuseumConclusion = saveDay3MuseumConclusion;
     window.handleGoToLkpdMuseum = handleGoToLkpdMuseum;
     window.applyDay3MuseumConclusionState = applyDay3MuseumConclusionState;
+
+    // ==========================================
+    // MODUL BELAJAR KHUSUS FIELD TRIP DAY 7
+    // Tema: Pulang Membawa Cerita, Berjumpa dengan Keluarga
+    // Pilar: FINANCIAL (Tutup Buku Kas Saku) & KARAKTER MANDIRI
+    // ==========================================
+    function renderDay7FieldTripModule(mainEl) {
+      if (!mainEl) return;
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+      let savedText = '';
+      let savedTime = '';
+      for (const id of idVars) {
+        if (!id) continue;
+        const raw = localStorage.getItem('fincestem_materi_ft_day7_' + id);
+        if (raw) {
+          try {
+            const p = JSON.parse(raw);
+            if (p && (p.conclusion || p.text || p.content)) {
+              savedText = p.conclusion || p.text || p.content;
+              savedTime = p.savedAt || p.date || '';
+              break;
+            }
+          } catch(e) {}
+        }
+      }
+
+      mainEl.innerHTML = `
+        <div class="flex flex-col gap-5 pb-12 max-w-4xl mx-auto w-full">
+          <!-- HERO BANNER DAY 7 -->
+          <div class="bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-950 rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col gap-3 relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+            
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-emerald-200 backdrop-blur-md flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm">home</span>
+                Field Trip • Day 7 • Hari Kepulangan &amp; Tutup Buku
+              </span>
+              <span class="text-xs font-bold text-emerald-300 bg-white/10 px-2.5 py-1 rounded-lg">Tol Trans-Sumatera &rarr; SMAN 1 Belitang</span>
+            </div>
+
+            <div class="flex flex-col gap-1.5 mt-1">
+              <h1 class="font-black text-xl sm:text-2xl md:text-3xl leading-snug">
+                Pulang Membawa Cerita, Berjumpa dengan Keluarga
+              </h1>
+              <p class="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-medium max-w-2xl">
+                Menenun Kenangan Menjadi Karakter: Audit Kas Saku Mandiri, Adab Menyambut Orang Tua, dan Refleksi 7 Hari Ekspedisi Menembus Pulau Jawa.
+              </p>
+            </div>
+
+            <div class="flex items-center gap-2 flex-wrap pt-2 border-t border-emerald-700/50">
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-500/20 text-emerald-200 font-extrabold text-[11px]">
+                <span class="material-symbols-outlined text-sm">account_balance_wallet</span>
+                <span>Pilar Utama: 💰 FINANCIAL (Tutup Buku Kas Saku)</span>
+              </span>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-amber-400/20 text-amber-200 font-extrabold text-[11px]">
+                <span class="material-symbols-outlined text-sm">family_restroom</span>
+                <span>Nilai Karakter: Mandiri, Jujur &amp; Berbakti</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- JADWAL ITINERARY KEPULANGAN RESMI -->
+          ${renderFieldTripScheduleCard(7)}
+
+          <!-- BAGIAN A: FILOSOFI PERJALANAN (THE JOURNEY OF GROWTH) -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 text-emerald-950 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">psychology</span>
+              </span>
+              <span>A. Filosofi Perjalanan: Dari Berangkat Hingga Pulang Menjadi Pribadi Baru</span>
+            </div>
+            
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify">
+              Perjalanan ribuan kilometer yang telah Anda tempuh sejak meninggalkan gerbang <strong>SMAN 1 Belitang</strong> pada Day 1, menyeberangi Selat Sunda, melintasi Tol Trans-Jawa menuju Semarang, mendaki dinginnya lautan pasir Bromo, menelusuri megastruktur Candi Prambanan di Yogyakarta, hingga menatap ombak Samudra Hindia di Pantai Drini bukanlah sekadar tamasya melepas lelah.
+            </p>
+
+            <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-xs sm:text-sm text-emerald-950 leading-relaxed flex flex-col gap-2">
+              <span class="font-extrabold flex items-center gap-1 text-emerald-900">
+                <span class="material-symbols-outlined text-base text-emerald-600">verified</span>
+                <span>4 Nilai Kedewasaan yang Telah Anda Buktikan Selama 7 Hari:</span>
+              </span>
+              <ul class="list-disc list-inside space-y-1 text-slate-700 text-xs sm:text-[13px] leading-relaxed">
+                <li><strong>Kemandirian Total:</strong> Mampu merawat diri sendiri, menata koper/tas, bangun subuh tepat waktu, dan menjaga kesehatan tanpa disuruh orang tua.</li>
+                <li><strong>Toleransi &amp; Empati:</strong> Belajar berbagi tempat duduk di bus, mengantre giliran makan dan mandi dengan sabar, serta saling menolong saat teman kelelahan.</li>
+                <li><strong>Integritas Finansial:</strong> Menjaga dompet dan uang saku titipan orang tua, menghitung kembalian belanja, dan menolak godaan membeli barang yang tak berguna.</li>
+                <li><strong>Ketahanan Fisik &amp; Mental:</strong> Mampu menyesuaikan diri dengan suhu ekstrem (dinginnya Bromo hingga teriknya pesisir Drini) dengan tetap ceria dan santun.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- BAGIAN B: TUTUP BUKU KAS SAKU & REKONSILIASI KEUANGAN -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 text-slate-900 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">savings</span>
+              </span>
+              <span>B. Rekonsiliasi Finansial: Mengapa Pelajar Wajib Tutup Buku Kas?</span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify">
+              Dalam pilar <strong>Financial FINCESTEM</strong>, siklus manajemen uang saku memiliki awal dan akhir yang terukur:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[10px] font-black bg-blue-100 text-blue-900 w-fit">HARI KE-1</span>
+                <span class="font-extrabold text-xs text-slate-900">Perencanaan (Budgeting)</span>
+                <p class="text-[11px] text-slate-600 leading-relaxed">Membuat pos alokasi (jajan, darurat, oleh-oleh) agar uang tidak langsung habis di hari-hari awal.</p>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[10px] font-black bg-amber-100 text-amber-900 w-fit">HARI KE-6</span>
+                <span class="font-extrabold text-xs text-slate-900">Belanja Cerdas (Smart Shopper)</span>
+                <p class="text-[11px] text-slate-600 leading-relaxed">Menghitung HPP, membandingkan harga per kotak bakpia/suvenir, dan menyisihkan bekal pulang.</p>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-300 flex flex-col gap-1.5">
+                <span class="px-2 py-0.5 rounded text-[10px] font-black bg-emerald-600 text-white w-fit">HARI KE-7</span>
+                <span class="font-extrabold text-xs text-emerald-950">Audit &amp; Tutup Buku Kas</span>
+                <p class="text-[11px] text-slate-700 leading-relaxed">Menghitung fisik sisa saldo uang di dompet riil vs total belanjaan yang telah dikeluarkan.</p>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs sm:text-sm text-amber-950 leading-relaxed">
+              <strong>💡 Hikmah Finansial:</strong> Seorang pelajar yang hebat bukanlah yang menghabiskan seluruh uang sakunya sampai nol rupiah demi gengsi, melainkan yang mampu <em>membawa pulang sisa saldo kas</em> dengan selamat untuk ditabung atau diserahkan kembali kepada orang tua.
+            </div>
+          </div>
+
+          <!-- BAGIAN C: ADAB & ETIKA KEPULANGAN BERSAMA KELUARGA -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 text-slate-900 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">volunteer_activism</span>
+              </span>
+              <span>C. Adab Kepulangan: Menyambut Cinta dan Doa Orang Tua</span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed text-justify">
+              Selama 7 hari Anda bersenang-senang mengeksplorasi tempat wisata megah, ingatlah bahwa di rumah ada Ayah dan Ibu yang selalu cemas mendoakan keselamatan Anda di setiap sujud dan helaan nafas mereka. Mereka telah menyisihkan rezeki keringat mereka agar Anda bisa mengikuti program pembelajaran berharga ini.
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+              <div class="p-3.5 rounded-2xl bg-rose-50/60 border border-rose-200 flex flex-col gap-1.5">
+                <span class="font-extrabold text-xs text-rose-900 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-rose-600">handshake</span>
+                  1. Cium Tangan &amp; Peluk Orang Tua
+                </span>
+                <p class="text-[11.5px] text-slate-700 leading-relaxed">
+                  Begitu Anda tiba di gerbang sekolah dan dijemput orang tua, sambutlah mereka dengan senyum terindah. Ucapkan terima kasih yang tulus: <em>"Terima kasih Ayah/Ibu, saya pulang dengan selamat dan sangat bahagia."</em>
+                </p>
+              </div>
+
+              <div class="p-3.5 rounded-2xl bg-teal-50/60 border border-teal-200 flex flex-col gap-1.5">
+                <span class="font-extrabold text-xs text-teal-900 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-teal-600">redeem</span>
+                  2. Serahkan Oleh-Oleh &amp; Laporan Kas
+                </span>
+                <p class="text-[11.5px] text-slate-700 leading-relaxed">
+                  Serahkan oleh-oleh bakpia atau buah apel yang Anda bawa dengan kedua tangan. Jika masih ada sisa uang saku, laporkan dengan jujur sebagai bukti anak yang amanah.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN D: KILAS BALIK 4 PILAR FINCESTEM -->
+          <div class="bg-gradient-to-br from-slate-900 to-indigo-950 rounded-3xl p-5 sm:p-6 text-white shadow-md flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 border-b border-white/10 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-amber-400 text-slate-950 flex items-center justify-center font-black text-sm shrink-0">4</span>
+              <span class="font-black text-base sm:text-lg">Kilas Balik Prestasi Riset 4 Pilar FINCESTEM</span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Anda telah mengukir jejak riset nyata di setiap jengkal destinasi:
+            </p>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+              <div class="p-3 rounded-2xl bg-white/10 border border-white/15 flex flex-col gap-1">
+                <span class="text-[10px] font-black uppercase text-amber-300 tracking-wider">💰 Financial</span>
+                <span class="text-xs font-bold leading-tight">Literasi Saku &amp; HPP Pabrik Bakpia</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-white/10 border border-white/15 flex flex-col gap-1">
+                <span class="text-[10px] font-black uppercase text-purple-300 tracking-wider">🏛️ Culture</span>
+                <span class="text-xs font-bold leading-tight">AKPOL, Lawang Sewu &amp; Prambanan</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-white/10 border border-white/15 flex flex-col gap-1">
+                <span class="text-[10px] font-black uppercase text-cyan-300 tracking-wider">🧭 Exploration</span>
+                <span class="text-xs font-bold leading-tight">Kaldera Bromo &amp; Karst Pantai Drini</span>
+              </div>
+              <div class="p-3 rounded-2xl bg-white/10 border border-white/15 flex flex-col gap-1">
+                <span class="text-[10px] font-black uppercase text-emerald-300 tracking-wider">🔬 STEM</span>
+                <span class="text-xs font-bold leading-tight">Fisika JTP, Mesin Otomotif &amp; Batik</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- FORM RESUME & KOMITMEN KEPULANGAN HARI KE-7 -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border-2 border-emerald-300 shadow-md flex flex-col gap-4">
+            <div class="flex items-center gap-2.5 text-emerald-950 font-black text-base sm:text-lg border-b border-emerald-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">draw</span>
+              </span>
+              <span>Lembar Komitmen Kepulangan Day 7 (Wajib Diisi untuk Buka LKPD)</span>
+            </div>
+
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Tuliskan <strong>1 Kalimat Reflektif</strong> mengenai komitmen pribadi Anda saat tiba di rumah bersama keluarga dan bagaimana Anda memanfaatkan pengalaman 7 hari ini untuk menjadi anak yang lebih mandiri dan berbakti:
+            </p>
+
+            <div class="relative">
+              <textarea id="ftMateriDay7Conclusion" rows="3" placeholder="Contoh: Saya bersyukur dapat pulang dengan selamat dan berkomitmen untuk lebih mandiri mengatur waktu, menjaga amanah uang saku, serta semakin menyayangi dan berbakti kepada kedua orang tua di rumah..." class="w-full p-4 rounded-2xl border border-slate-300 text-xs sm:text-sm leading-relaxed outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-200 transition-all font-normal placeholder:text-slate-400 bg-slate-50/50">${savedText ? savedText.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : ''}</textarea>
+            </div>
+
+            <div id="ftMateriDay7StateBox" class="${savedText ? 'flex' : 'hidden'} p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-600 text-lg">check_circle</span>
+                <span><strong>Status:</strong> Resume Modul Day 7 Berhasil Tersimpan!</span>
+              </div>
+              <span id="ftMateriDay7TimeBadge" class="text-[11px] text-emerald-800 font-semibold">${savedTime ? 'Tersimpan' : ''}</span>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2.5 pt-1">
+              <button id="btnSaveMateriDay7Conclusion" type="button" onclick="saveDay7MateriConclusion()" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-lg">task_alt</span>
+                <span>${savedText ? 'Perbarui Komitmen Modul Day 7' : 'Simpan Komitmen Modul Day 7'}</span>
+              </button>
+
+              <button id="btnGoToLkpdDay7" type="button" onclick="handleGoToLkpdDay7()" class="py-3.5 px-5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+                <span>Lanjut ke LKPD Day 7 (Tutup Buku Kas)</span>
+                <span class="material-symbols-outlined text-lg">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveDay7MateriConclusion() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const txtArea = document.getElementById('ftMateriDay7Conclusion');
+      const text = txtArea ? txtArea.value.trim() : '';
+
+      if (!text || text.length < 15) {
+        FincestemCore.ui.toast('Silakan tuliskan komitmen kepulangan Anda minimal 1 kalimat sebelum melanjutkan!', 'warning');
+        return;
+      }
+
+      const saveBtn = document.getElementById('btnSaveMateriDay7Conclusion');
+      if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+        FincestemCore.ui.setBtnLoading(saveBtn, true, 'Menyimpan...');
+      }
+
+      const payload = {
+        day_number: 7,
+        location: 'Perjalanan Tol Trans-Sumatera menuju Belitang',
+        conclusion: text,
+        savedAt: new Date().toISOString()
+      };
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_materi_ft_day7_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      const box = document.getElementById('ftMateriDay7StateBox');
+      const badge = document.getElementById('ftMateriDay7TimeBadge');
+      if (box) box.classList.remove('hidden');
+      if (badge) badge.textContent = 'Baru saja disimpan';
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.submitTask(cleanNisn, 7, 'materi', payload, function() {
+          if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+            FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Komitmen Modul Day 7', 'task_alt');
+          }
+          FincestemCore.ui.toast('Komitmen Modul Day 7 berhasil disimpan! LKPD Day 7 (Tutup Buku Kas) sekarang telah terbuka.', 'success');
+        });
+      } else {
+        if (saveBtn && FincestemCore.ui && FincestemCore.ui.setBtnLoading) {
+          FincestemCore.ui.setBtnLoading(saveBtn, false, '', 'Perbarui Komitmen Modul Day 7', 'task_alt');
+        }
+        FincestemCore.ui.toast('Komitmen Modul Day 7 berhasil disimpan! LKPD Day 7 (Tutup Buku Kas) sekarang telah terbuka.', 'success');
+      }
+    }
+
+    function handleGoToLkpdDay7() {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+      let isDone = false;
+      for (const id of idVars) {
+        const raw = localStorage.getItem('fincestem_materi_ft_day7_' + id);
+        if (raw) {
+          try {
+            const p = JSON.parse(raw);
+            if (p && (p.conclusion || p.text)) { isDone = true; break; }
+          } catch(e) {}
+        }
+      }
+      if (!isDone) {
+        FincestemCore.ui.toast('Anda wajib membaca modul dan menyimpan komitmen Day 7 sebelum membuka lembar LKPD!', 'warning');
+        const txt = document.getElementById('ftMateriDay7Conclusion');
+        if (txt) {
+          txt.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          txt.focus();
+        }
+        return;
+      }
+      window.location.href = 'lkpd.html?day=7';
+    }
+
+    window.renderDay7FieldTripModule = renderDay7FieldTripModule;
+    window.saveDay7MateriConclusion = saveDay7MateriConclusion;
+    window.handleGoToLkpdDay7 = handleGoToLkpdDay7;
