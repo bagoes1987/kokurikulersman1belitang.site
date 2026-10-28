@@ -53,7 +53,7 @@ function ensureDaySchedulesTable($pdo) {
             $pdo->exec("
                 INSERT INTO `day_schedules` (`day_number`, `title`, `theme`, `date`, `start_time`, `end_time`, `is_active`, `auto_schedule`, `description`) VALUES
                 (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.'),
-                (1, 'Day 1: Orientasi & Pembekalan Riset', 'Pembekalan STEM & Etika Riset Lapangan', '2026-11-09', '07:00:00', '18:00:00', 1, 1, 'Pengenalan instrumen observasi, sosialisasi modul kokurikuler, dan konsolidasi tim ekspedisi.'),
+                (1, 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur', 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah', '2026-11-09', '07:00:00', '18:00:00', 1, 1, 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.'),
                 (2, 'Day 2: Eksplorasi Sains & Ekosistem Irigasi', 'STEM Sains & Konservasi Lingkungan Belitang', '2026-11-10', '07:00:00', '18:00:00', 0, 1, 'Pengambilan sampel kualitas air saluran irigasi, identifikasi flora-fauna sawah pasang surut.'),
                 (3, 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan', 'Teknologi Pertanian Modern & Mekanisasi', '2026-11-11', '07:00:00', '18:00:00', 0, 1, 'Observasi mekanisasi pengolahan pascapanen, pengoperasian sensor lingkungan dan dokumentasi teknologi.'),
                 (4, 'Day 4: Literasi Finansial & Rantai Pasok Pangan', 'Financial Literacy & Ekonomi Agrikultur', '2026-11-12', '07:00:00', '18:00:00', 0, 1, 'Analisis biaya produksi, wawancara harga pasar komoditas beras, serta simulasi manajemen modal usaha tani.'),
@@ -69,6 +69,14 @@ function ensureDaySchedulesTable($pdo) {
                     (0, 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', '{$today}', '06:00:00', '23:59:00', 1, 0, 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.')
                 ");
             }
+            // Auto-update Day 1 Non-Field Trip jika di DB masih bertuliskan Orientasi & Pembekalan Riset
+            $pdo->exec("
+                UPDATE `day_schedules` 
+                SET `title` = 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur',
+                    `theme` = 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah',
+                    `description` = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.'
+                WHERE `day_number` = 1 AND (`title` LIKE '%Orientasi%' OR `theme` LIKE '%Pembekalan%')
+            ");
         }
 
         // 2. Tabel Jadwal Field Trip (Ekspedisi Luar 2026)
@@ -153,7 +161,7 @@ if ($method === 'GET') {
         } else {
             $rows = [
                 ['day_number' => 0, 'title' => 'Day 0: Simulasi & Gladi Bersih FINCESTEM', 'theme' => 'Orientasi Sistem, Pengisian LKPD, Asesmen Latihan & Unggah Dokumentasi', 'date' => $today, 'start_time' => '06:00:00', 'end_time' => '23:59:00', 'is_active' => 1, 'auto_schedule' => 0, 'description' => 'Sesi uji coba dan orientasi teknis seluruh fitur aplikasi FINCESTEM sebelum pelaksanaan asli.'],
-                ['day_number' => 1, 'title' => 'Day 1: Orientasi & Pembekalan Riset', 'theme' => 'Pembekalan STEM & Etika Riset Lapangan', 'date' => '2026-11-09', 'start_time' => '07:00:00', 'end_time' => '18:00:00', 'is_active' => 1, 'auto_schedule' => 1, 'description' => 'Sosialisasi instrumen riset dan konsolidasi tim.'],
+                ['day_number' => 1, 'title' => 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur', 'theme' => 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah', 'date' => '2026-11-09', 'start_time' => '07:00:00', 'end_time' => '18:00:00', 'is_active' => 1, 'auto_schedule' => 1, 'description' => 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.'],
                 ['day_number' => 2, 'title' => 'Day 2: Eksplorasi Sains & Ekosistem Irigasi', 'theme' => 'STEM Sains & Konservasi Lingkungan Belitang', 'date' => '2026-11-10', 'start_time' => '07:00:00', 'end_time' => '18:00:00', 'is_active' => 0, 'auto_schedule' => 1, 'description' => 'Pengambilan sampel kualitas air irigasi.'],
                 ['day_number' => 3, 'title' => 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan', 'theme' => 'Teknologi Pertanian Modern & Mekanisasi', 'date' => '2026-11-11', 'start_time' => '07:00:00', 'end_time' => '18:00:00', 'is_active' => 0, 'auto_schedule' => 1, 'description' => 'Observasi mekanisasi pascapanen.'],
                 ['day_number' => 4, 'title' => 'Day 4: Literasi Finansial & Rantai Pasok Pangan', 'theme' => 'Financial Literacy & Ekonomi Agrikultur', 'date' => '2026-11-12', 'start_time' => '07:00:00', 'end_time' => '18:00:00', 'is_active' => 0, 'auto_schedule' => 1, 'description' => 'Analisis biaya produksi, wawancara harga pasar komoditas beras, serta simulasi manajemen modal usaha tani.'],

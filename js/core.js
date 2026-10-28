@@ -975,8 +975,31 @@ const FincestemCore = {
       }
     },
 
+    nonFieldTripDaysConfig: {
+      0: {
+        day_number: 0,
+        title: 'Day 0: Simulasi & Gladi Bersih FINCESTEM',
+        theme: 'Orientasi Sistem, Pengisian LKPD, Asesmen & Unggah Dokumentasi',
+        date_formatted: 'Hari Ini (Simulasi)',
+        time_range: '06.00 - 23.59 WIB',
+        description: 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.'
+      },
+      1: {
+        day_number: 1,
+        title: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur',
+        theme: 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah',
+        date_formatted: 'Senin, 09 November 2026',
+        time_range: '07.00 - 18.00 WIB',
+        description: 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.'
+      }
+    },
+
     getFieldTripDayConfig: function(dayNum) {
       return this.fieldTripDaysConfig ? this.fieldTripDaysConfig[Number(dayNum)] : null;
+    },
+
+    getNonFieldTripDayConfig: function(dayNum) {
+      return this.nonFieldTripDaysConfig ? this.nonFieldTripDaysConfig[Number(dayNum)] : null;
     },
 
     // Evaluasi status keterbukaan hari (Tutup Paksa jika is_active = 0, Buka Manual jika auto_schedule = 0, atau Otomatis)
@@ -1034,7 +1057,15 @@ const FincestemCore = {
     evaluateScheduleList: function(days, serverTime) {
       if (!Array.isArray(days)) return [];
       const self = this;
-      return days.map(d => self.evaluateDayStatus(d, serverTime));
+      return days.map(d => {
+        // Auto-sinkronisasi Day 1 Non-Field Trip jika di DB / cache masih tersimpan data usang Orientasi & Pembekalan Riset
+        if (Number(d.day_number) === 1 && (String(d.title).includes('Orientasi') || String(d.theme).includes('Pembekalan'))) {
+          d.title = 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur';
+          d.theme = 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah';
+          d.description = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.';
+        }
+        return self.evaluateDayStatus(d, serverTime);
+      });
     },
 
     getFieldTripDefaults: function() {

@@ -2482,6 +2482,7 @@
     }
 
     const FIELD_TRIP_DAYS_CONFIG = (FincestemCore.schedule && FincestemCore.schedule.fieldTripDaysConfig) || {};
+    const NON_FIELD_TRIP_DAYS_CONFIG = (FincestemCore.schedule && FincestemCore.schedule.nonFieldTripDaysConfig) || {};
 
     function renderDaysSchedule(days) {
       const container = document.getElementById('scheduleDaysContainer');
@@ -2498,7 +2499,7 @@
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
       if (!days || !Array.isArray(days) || days.length === 0) {
-        days = FincestemCore.schedule.getFieldTripDefaults();
+        days = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
       }
 
       container.innerHTML = '';
@@ -2532,10 +2533,11 @@
         const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
         const ftStatus = isFTDay ? getFTProgressStatus(taskMap, dNum) : null;
         const ftConfig = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG && FIELD_TRIP_DAYS_CONFIG[dNum]) ? FIELD_TRIP_DAYS_CONFIG[dNum] : null;
+        const nftConfig = (!isFieldTrip && NON_FIELD_TRIP_DAYS_CONFIG && NON_FIELD_TRIP_DAYS_CONFIG[dNum]) ? NON_FIELD_TRIP_DAYS_CONFIG[dNum] : null;
 
         // Metadata Tampilan:
         // Jika Siswa Field Trip -> Gunakan konfigurasi Day 1 s.d. 7 khusus Field Trip
-        // Jika Siswa Non-Field Trip -> Gunakan data bawaan OKU Timur dari database (d.title, d.theme, d.description, dll)
+        // Jika Siswa Non-Field Trip -> Gunakan konfigurasi resmi Non-Field Trip atau data database
         let cardTitle = d.title;
         let cardTheme = d.theme || '';
         let cardDate = d.date_formatted || d.date;
@@ -2548,6 +2550,16 @@
           cardDate = ftConfig.date_formatted;
           cardTime = ftConfig.time_range;
           cardDesc = ftConfig.description;
+        } else if (nftConfig) {
+          cardTitle = nftConfig.title;
+          cardTheme = nftConfig.theme;
+          if (nftConfig.date_formatted) cardDate = nftConfig.date_formatted;
+          if (nftConfig.time_range) cardTime = nftConfig.time_range;
+          if (nftConfig.description) cardDesc = nftConfig.description;
+        } else if (!isFieldTrip && dNum === 1) {
+          cardTitle = 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur';
+          cardTheme = 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah';
+          cardDesc = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.';
         }
 
         // Cek status pengerjaan hari ini
