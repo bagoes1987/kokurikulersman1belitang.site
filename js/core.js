@@ -2878,11 +2878,9 @@ const FincestemCore = {
         const score = (evalData.score !== undefined && evalData.score !== null && evalData.score !== '') ? parseFloat(evalData.score) : null;
         let predicate = evalData.predicate;
         if (score !== null && !predicate) {
-          if (score >= 90) predicate = 'Sangat Baik';
-          else if (score >= 80) predicate = 'Baik';
-          else if (score >= 70) predicate = 'Cukup';
-          else if (score >= 60) predicate = 'Kurang';
-          else predicate = 'Sangat Kurang';
+          if (score >= 85.0) predicate = 'Mahir';
+          else if (score >= 70.0) predicate = 'Cakap';
+          else predicate = 'Berkembang';
         }
 
         const rawStatus = (evalData.status || '').toLowerCase();
@@ -2938,11 +2936,9 @@ const FincestemCore = {
         const scoreList = prog.records.filter(r => r.score > 0).map(r => r.score);
         if (scoreList.length > 0) {
           prog.average_score = Math.round((scoreList.reduce((a, b) => a + b, 0) / scoreList.length) * 10) / 10;
-          if (prog.average_score >= 90) prog.predicate = 'Sangat Baik';
-          else if (prog.average_score >= 80) prog.predicate = 'Baik';
-          else if (prog.average_score >= 70) prog.predicate = 'Cukup';
-          else if (prog.average_score >= 60) prog.predicate = 'Kurang';
-          else prog.predicate = 'Sangat Kurang';
+          if (prog.average_score >= 85.0) prog.predicate = 'Mahir';
+          else if (prog.average_score >= 70.0) prog.predicate = 'Cakap';
+          else prog.predicate = 'Berkembang';
         }
 
         localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));
@@ -3159,7 +3155,7 @@ const FincestemCore = {
           score: sc,
           stars: st,
           star_label: st === 5 ? '⭐⭐⭐⭐⭐ Bintang 5' : '⭐⭐⭐⭐☆ Bintang 4',
-          predicate: sc >= 90 ? 'Sangat Baik' : (sc >= 80 ? 'Baik' : (sc >= 70 ? 'Cukup' : (sc >= 60 ? 'Kurang' : 'Sangat Kurang'))),
+          predicate: sc >= 85.0 ? 'Mahir' : (sc >= 70.0 ? 'Cakap' : 'Berkembang'),
           is_emergency_override: true,
           reason: emergency.reason || 'Dispensasi Khusus (Kebijakan Admin)',
           approved_by: emergency.approved_by || 'admin',
@@ -3229,7 +3225,7 @@ const FincestemCore = {
           score: 100,
           stars: 5,
           star_label: '⭐⭐⭐⭐⭐ Bintang 5',
-          predicate: 'Sangat Baik',
+          predicate: 'Mahir',
           is_emergency_override: false,
           reason: 'Tuntas sebelum batas waktu kunjungan',
           cutoff_perfect: cutoffPerfect,
@@ -3246,7 +3242,7 @@ const FincestemCore = {
           score: score,
           stars: 5,
           star_label: '⭐⭐⭐⭐⭐ Bintang 5',
-          predicate: 'Sangat Baik',
+          predicate: 'Mahir',
           is_emergency_override: false,
           reason: 'Tuntas sore / petang hari',
           cutoff_perfect: cutoffPerfect,
@@ -3269,7 +3265,7 @@ const FincestemCore = {
           score: score,
           stars: 4,
           star_label: '⭐⭐⭐⭐☆ Bintang 4',
-          predicate: 'Baik',
+          predicate: 'Mahir',
           is_emergency_override: false,
           reason: 'Tuntas malam hari',
           cutoff_perfect: cutoffPerfect,
@@ -3283,7 +3279,7 @@ const FincestemCore = {
         score: 85,
         stars: 4,
         star_label: '⭐⭐⭐⭐☆ Bintang 4',
-        predicate: 'Baik',
+        predicate: 'Mahir',
         is_emergency_override: false,
         reason: 'Pengumpulan hari berikutnya',
         cutoff_perfect: cutoffPerfect,

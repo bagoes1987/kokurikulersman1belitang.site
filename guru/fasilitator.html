@@ -696,7 +696,7 @@
               <div class="flex flex-col min-w-0">
                 <div class="flex items-center gap-2 flex-wrap">
                   <span id="heroAutoStars" class="text-amber-400 font-black text-sm tracking-wider">⭐⭐⭐⭐⭐</span>
-                  <span id="heroAutoPredicate" class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-400 text-amber-950">Sangat Baik (Mahir)</span>
+                  <span id="heroAutoPredicate" class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-400 text-amber-950">Mahir</span>
                 </div>
                 <span id="heroAutoTimeText" class="text-xs font-semibold text-teal-100 mt-1 flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-teal-300">schedule</span>
@@ -992,7 +992,7 @@
           </div>
           <div>
             <label class="block font-bold text-slate-800 mb-1">Predikat Capaian Dimensi Profil:</label>
-            <input id="inputFinalPredicate" type="text" readonly value="MAHIR (Sangat Baik)" class="w-full px-3 py-2.5 rounded-xl bg-purple-50/80 border border-purple-200 text-xs font-black text-purple-950 outline-none">
+            <input id="inputFinalPredicate" type="text" readonly value="Mahir" class="w-full px-3 py-2.5 rounded-xl bg-purple-50/80 border border-purple-200 text-xs font-black text-purple-950 outline-none">
           </div>
         </div>
 
@@ -1497,14 +1497,35 @@
         if (!studentFinalScore && (completedDays >= 7 || percentage >= 100)) {
           studentFinalScore = avgScore || 98.8;
         }
-        if (studentFinalScore && !studentFinalPred) {
-          const scNum = parseFloat(studentFinalScore) || 0;
-          studentFinalPred = scNum >= 85.0 ? 'Mahir' : (scNum >= 70.0 ? 'Cakap' : 'Berkembang');
-        }
 
-        const finalScoreBadgeHtml = studentFinalScore
-          ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">verified</span> Rapor: <strong>${studentFinalScore}</strong> (${studentFinalPred || 'Mahir'})</span>`
-          : `<span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-100 text-slate-500">Rapor: Berjalan</span>`;
+        // Pastikan predikat resmi HANYA Mahir, Cakap, atau Berkembang (tanpa istilah Sangat Baik, Baik, Cukup)
+        const scNum = parseFloat(studentFinalScore) || 0;
+        let cleanPred = 'Berkembang';
+        if (scNum >= 85.0) cleanPred = 'Mahir';
+        else if (scNum >= 70.0) cleanPred = 'Cakap';
+        else cleanPred = 'Berkembang';
+
+        if (studentFinalPred) {
+          const pLower = String(studentFinalPred).toLowerCase();
+          if (pLower.includes('mahir')) cleanPred = 'Mahir';
+          else if (pLower.includes('cakap')) cleanPred = 'Cakap';
+          else if (pLower.includes('berkembang')) cleanPred = 'Berkembang';
+        }
+        studentFinalPred = cleanPred;
+
+        // Badge Ceklis Predikat Rapor Resmi (Mahir, Cakap, Berkembang)
+        let predBadgeHtml = '';
+        if (studentFinalScore && (completedDays >= 7 || percentage >= 100 || stu.final_score)) {
+          if (studentFinalPred === 'Mahir') {
+            predBadgeHtml = `<span class="px-2.5 py-1 rounded-xl text-[11px] font-black bg-amber-100 text-amber-950 border border-amber-300 flex items-center gap-1 shadow-2xs shrink-0"><span class="material-symbols-outlined text-sm text-amber-700">verified</span> 🏆 Mahir</span>`;
+          } else if (studentFinalPred === 'Cakap') {
+            predBadgeHtml = `<span class="px-2.5 py-1 rounded-xl text-[11px] font-black bg-emerald-100 text-emerald-950 border border-emerald-300 flex items-center gap-1 shadow-2xs shrink-0"><span class="material-symbols-outlined text-sm text-emerald-700">verified</span> 🌟 Cakap</span>`;
+          } else {
+            predBadgeHtml = `<span class="px-2.5 py-1 rounded-xl text-[11px] font-black bg-blue-100 text-blue-950 border border-blue-300 flex items-center gap-1 shadow-2xs shrink-0"><span class="material-symbols-outlined text-sm text-blue-700">verified</span> 🌱 Berkembang</span>`;
+          }
+        } else {
+          predBadgeHtml = `<span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-100 text-slate-500 border border-slate-200 flex items-center gap-1 shrink-0"><span class="material-symbols-outlined text-xs text-slate-400">pending</span> Rapor Berjalan</span>`;
+        }
 
         const rawPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(stu.nisn)) || stu.photo_url;
         const savedPhoto = rawPhoto ? (FincestemCore.profile ? FincestemCore.profile.normalizePhotoUrl(rawPhoto) : rawPhoto) : null;
@@ -1539,18 +1560,33 @@
             <span class="px-2 py-0.5 rounded-full text-[10.5px] font-black shrink-0 ${badgeStatusClass}">${badgeStatusText}</span>
           </div>
 
-          <!-- Progress Mini Bar -->
-          <div class="p-2.5 rounded-2xl bg-surface-container-low flex flex-col gap-1 text-[11px]">
-            <div class="flex items-center justify-between font-semibold text-on-surface-variant">
-              <span>Progres Riset: <strong>${completedDays}/7 Hari</strong></span>
-              <div class="flex items-center gap-2">
-                ${finalScoreBadgeHtml}
-                <span class="font-bold text-[#006a61]">${percentage}%</span>
+          <!-- Progress Mini Bar & Status Rapor Siswa (Rapi, Luwes, Tidak Bertumpuk) -->
+          <div class="p-3 rounded-2xl bg-surface-container-low flex flex-col gap-2.5">
+            <!-- Baris 1: Progres Riset & Persentase Selesai -->
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-slate-700 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-[#006a61]">timelapse</span>
+                <span>Progres Riset: <strong class="text-slate-900">${completedDays}/7 Hari</strong></span>
+              </span>
+              <span class="font-black text-xs text-[#006a61] bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-200 shadow-2xs">${percentage}%</span>
+            </div>
+
+            <!-- Bar Progres -->
+            <div class="w-full h-2 bg-slate-200/80 rounded-full overflow-hidden border border-outline-variant/20">
+              <div class="h-full bg-gradient-to-r from-[#006a61] to-teal-500 rounded-full transition-all duration-300" style="width: ${percentage}%"></div>
+            </div>
+
+            <!-- Baris 2: Nilai Akhir & Ceklis Predikat Rapor (Terpisah Rapi, Tidak Bertumpuk) -->
+            <div class="flex items-center justify-between gap-2 pt-1.5 border-t border-outline-variant/15 text-xs">
+              <div class="flex items-center gap-1.5 shrink-0">
+                <span class="text-slate-500 font-semibold text-[11px]">Nilai Rapor:</span>
+                <span class="font-black text-xs text-purple-950 bg-white px-2.5 py-0.5 rounded-lg border border-purple-200 shadow-2xs">${studentFinalScore || '-'}</span>
+              </div>
+              <div class="flex items-center shrink-0">
+                ${predBadgeHtml}
               </div>
             </div>
-            <div class="w-full h-2 bg-white rounded-full overflow-hidden border border-outline-variant/30">
-              <div class="h-full bg-gradient-to-r from-[#006a61] to-teal-500 rounded-full" style="width: ${percentage}%"></div>
-            </div>
+
             ${prog?.latest_feedback?.feedback ? `
               <p class="text-[10.5px] text-on-surface-variant italic truncate mt-0.5">
                 "${prog.latest_feedback.feedback}"
@@ -1781,7 +1817,11 @@
 
           let currentScore = autoScore.score || 95;
           let currentStars = autoScore.stars || 5;
-          let currentPred = autoScore.predicate || 'Sangat Baik (Mahir)';
+          let currentPred = 'Mahir';
+          const pRaw = autoScore.predicate || '';
+          if (pRaw.toLowerCase().includes('mahir') || pRaw.toLowerCase().includes('sangat baik') || currentScore >= 85) currentPred = 'Mahir';
+          else if (pRaw.toLowerCase().includes('cakap') || pRaw.toLowerCase().includes('baik') || currentScore >= 70) currentPred = 'Cakap';
+          else currentPred = 'Berkembang';
           let currentTime = autoScore.time_formatted || 'Tuntas Tepat Waktu';
           let currentStatus = 'completed';
 
@@ -1790,7 +1830,12 @@
             if (r) {
               if (r.score) currentScore = parseFloat(r.score);
               if (r.stars) currentStars = parseInt(r.stars);
-              if (r.predicate) currentPred = r.predicate;
+              if (r.predicate) {
+                const rpL = String(r.predicate).toLowerCase();
+                if (rpL.includes('mahir') || rpL.includes('sangat baik') || currentScore >= 85) currentPred = 'Mahir';
+                else if (rpL.includes('cakap') || rpL.includes('baik') || currentScore >= 70) currentPred = 'Cakap';
+                else currentPred = 'Berkembang';
+              }
               if (r.score_financial !== undefined && r.score_financial !== null) fin = r.score_financial;
               if (r.score_culture !== undefined && r.score_culture !== null) cul = r.score_culture;
               if (r.score_exploration !== undefined && r.score_exploration !== null) exp = r.score_exploration;
@@ -2273,16 +2318,16 @@
     function onFinalScoreInput(val, forceUpdateNotes) {
       const num = parseFloat(val) || 0;
       let cat = 'BERKEMBANG';
-      let pred = 'BERKEMBANG (Cukup)';
+      let pred = 'Berkembang';
       if (num >= 85.0) {
         cat = 'MAHIR';
-        pred = 'MAHIR (Sangat Baik)';
+        pred = 'Mahir';
       } else if (num >= 70.0) {
         cat = 'CAKAP';
-        pred = 'CAKAP (Baik)';
+        pred = 'Cakap';
       } else {
         cat = 'BERKEMBANG';
-        pred = 'BERKEMBANG (Perlu Bimbingan)';
+        pred = 'Berkembang';
       }
       const predEl = document.getElementById('inputFinalPredicate');
       if (predEl) predEl.value = pred;
@@ -2438,7 +2483,7 @@
     function applyStarRecommendation(stars, reason) {
       const score = (stars === 1) ? 60 : 100;
       const status = (stars === 1) ? 'revision' : 'completed';
-      const pred = (stars === 1) ? 'Perlu Perbaikan (Berkembang)' : 'Sangat Baik (Mahir)';
+      const pred = (stars === 1) ? 'Berkembang' : 'Mahir';
 
       document.getElementById('gradeFinancial').value = score;
       document.getElementById('gradeCulture').value = score;

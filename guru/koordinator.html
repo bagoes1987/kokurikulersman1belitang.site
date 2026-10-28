@@ -1048,13 +1048,14 @@
           finalScore = 98.8;
           finalPred = 'Mahir';
         }
-        if (finalScore && !finalPred) {
-          const scNum = parseFloat(finalScore) || 0;
-          finalPred = scNum >= 85.0 ? 'Mahir' : (scNum >= 70.0 ? 'Cakap' : 'Berkembang');
-        }
+        let cleanKoordPred = 'Berkembang';
+        if (String(finalPred || '').toLowerCase().includes('mahir') || (parseFloat(finalScore) >= 85.0)) cleanKoordPred = 'Mahir';
+        else if (String(finalPred || '').toLowerCase().includes('cakap') || (parseFloat(finalScore) >= 70.0)) cleanKoordPred = 'Cakap';
+        else cleanKoordPred = 'Berkembang';
+        finalPred = cleanKoordPred;
 
         const finalGradeBadge = finalScore 
-          ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">verified</span> Rapor: <strong>${finalScore}</strong> (${finalPred || 'A'})</span>`
+          ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">verified</span> Rapor: <strong>${finalScore}</strong> (${finalPred})</span>`
           : `<span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-100 text-slate-500">Rapor: Berjalan</span>`;
 
         const rawPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(stu.nisn)) || stu.photo_url;
