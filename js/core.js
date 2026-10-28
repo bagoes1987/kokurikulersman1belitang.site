@@ -2769,6 +2769,63 @@ const FincestemCore = {
         const taskPct = Math.round((submittedTasksCount / 35) * 100);
         prog.percentage = (prog.completed_days >= 7 || submittedTasksCount >= 35) ? 100 : Math.min(100, Math.max(dayPct, taskPct));
 
+        // Otomatisasi Penilaian Harian (Waktu 07.00 - Cutoff) & Feedback Pedagogis
+        const dNum = parseInt(dayNumber);
+        if (dNum >= 1 && dNum <= 7 && (taskType === 'refleksi' || (self.isDayStudentTasksDone && self.isDayStudentTasksDone(prog, dNum)))) {
+          try {
+            const isFieldTrip = (FincestemCore.zones && FincestemCore.zones.isFieldTripStudent) 
+              ? FincestemCore.zones.isFieldTripStudent(nisn) 
+              : true;
+            const autoScore = (FincestemCore.fieldTripRules && FincestemCore.fieldTripRules.calculateFieldTripScore)
+              ? FincestemCore.fieldTripRules.calculateFieldTripScore(dNum, new Date(), nisn)
+              : { score: 95, stars: 5, predicate: 'Sangat Baik' };
+            const themedFb = (FincestemCore.feedback && FincestemCore.feedback.generateThemedFeedback)
+              ? FincestemCore.feedback.generateThemedFeedback(dNum, autoScore.stars || 5, isFieldTrip, autoScore.score || 95)
+              : 'Kerja sama tim dan penyelesaian tugas harian sangat baik.';
+
+            if (!prog.records) prog.records = [];
+            let recIdx = prog.records.findIndex(r => parseInt(r.day_number) === dNum);
+            const evalData = {
+              day_number: dNum,
+              task_type: 'general',
+              score: autoScore.score || 95,
+              stars: autoScore.stars || 5,
+              predicate: autoScore.predicate || 'Sangat Baik',
+              score_financial: autoScore.score || 95,
+              score_culture: autoScore.score || 95,
+              score_exploration: autoScore.score || 95,
+              score_stem: autoScore.score || 95,
+              feedback: themedFb,
+              status: 'completed',
+              facilitator_name: 'Sistem Otomatis FINCESTEM (Penilaian Waktu)',
+              updated_at: new Date().toISOString()
+            };
+            if (recIdx >= 0) {
+              prog.records[recIdx] = Object.assign({}, prog.records[recIdx], evalData);
+            } else {
+              prog.records.push(evalData);
+            }
+            prog.latest_feedback = evalData;
+
+            // Hitung ulang rata-rata nilai siswa secara konsisten
+            const scList = prog.records.filter(r => r.score && !isNaN(r.score)).map(r => parseFloat(r.score));
+            if (scList.length > 0) {
+              prog.average_score = Math.round((scList.reduce((a, b) => a + b, 0) / scList.length) * 10) / 10;
+            }
+
+            // Sync auto grade ke MySQL backend secara background
+            if (window.location.protocol.startsWith('http')) {
+              fetch(FincestemCore.api.base + '/progress.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(Object.assign({ action: 'submit_grade', student_nisn: nisn }, evalData))
+              }).catch(() => {});
+            }
+          } catch (eAuto) {
+            console.warn('Auto grading error:', eAuto);
+          }
+        }
+
         const cleanNisn = String(nisn || '').replace(/[^A-Za-z0-9]/g, '');
         const unpadded = cleanNisn.replace(/^0+/, '');
         const padded = (cleanNisn.length >= 8 && cleanNisn.length <= 10) ? cleanNisn.padStart(10, '0') : cleanNisn;
@@ -3232,6 +3289,122 @@ const FincestemCore = {
         cutoff_perfect: cutoffPerfect,
         time_formatted: subFormatted
       };
+    }
+  },
+
+  // Bank Feedback & Umpan Balik Pedagogis Otomatis Sesuai Bintang (1 - 5) & Tema Riset (Day 1 - 7)
+  feedback: {
+    generateThemedFeedback: function(dayNum, stars, isFieldTrip, score) {
+      const d = parseInt(dayNum) || 1;
+      const st = Math.max(1, Math.min(5, parseInt(stars) || (score >= 90 ? 5 : (score >= 80 ? 4 : (score >= 70 ? 3 : (score >= 60 ? 2 : 1))))));
+
+      const ftFeedbacks = {
+        1: {
+          5: "Luar biasa! Pengelolaan budgeting uang saku sangat disiplin dan terencana, serta pengamatan alur logistik transportasi bandara tuntas tepat waktu dengan adab musafir yang sangat baik.",
+          4: "Sangat baik! Perencanaan kas saku mandiri dan resume observasi logistik bandara tersusun rapi. Pertahankan kedisiplinan pencatatan pengeluaran harian.",
+          3: "Cukup baik. Perencanaan anggaran kas telah dibuat, namun perhatikan ketepatan waktu pengumpulan dan ketelitian rincian pos dana darurat.",
+          2: "Perlu peningkatan kedisiplinan waktu pelaporan dan kelengkapan rincian pos anggaran kas saku.",
+          1: "Tugas terlambat dikumpulkan. Segera lengkapi lembar budgeting kas saku dan koordinasikan dengan pembina."
+        },
+        2: {
+          5: "Eksplorasi istimewa! Analisis ketahanan arsitektur kolonial tropis Lawang Sewu serta observasi kepemimpinan disiplin teknologi di AKPOL terdokumentasi sangat mendalam dan tepat waktu.",
+          4: "Sangat baik! Observasi sejarah cagar budaya dan teknologi material bangunan disajikan dengan runtut dan analitis.",
+          3: "Cukup baik. Data sejarah dan observasi lapangan telah diisi, namun pendalaman aspek sains-arsitektur perlu lebih diperkuat.",
+          2: "Perlu peningkatan fokus pada eksplorasi sains cagar budaya dan ketepatan waktu submit.",
+          1: "Pengumpulan melewati batas waktu. Lakukan observasi budaya dan sains dengan lebih teliti."
+        },
+        3: {
+          5: "Luar biasa! Pemahaman bioteknologi holtikultura kebun apel serta analisis fisika mekanika dan konversi energi wahana Museum Angkut sangat komprehensif dan otentik.",
+          4: "Sangat baik! Laporan agrosains tanaman apel dan prinsip mekanika transportasi terangkum dengan bukti data yang akurat.",
+          3: "Cukup baik. Pengamatan ekosistem dan wahana mekanika sudah dicatat, tingkatkan analisis integrasi STEM terapan.",
+          2: "Analisis sains fisika terapan masih minim. Mohon lengkapi catatan lapangan dengan bimbingan fasilitator.",
+          1: "Tugas dikumpulkan sangat terlambat. Lengkapi resume sains agrikultur dan fisika mekanika."
+        },
+        4: {
+          5: "Spektakuler! Investigasi bentang alam vulkanik Bromo, adaptasi vegetasi kawah, dan dinamika lautan pasir dianalisis dengan nalar kritis yang tajam dan tuntas tepat waktu.",
+          4: "Sangat baik! Dokumentasi dan pemahaman siklus geologi serta ekosistem kaldera Bromo terdokumentasi dengan sangat jelas.",
+          3: "Cukup baik. Pengamatan bentang alam vulkanik sudah dipaparkan, perdalam hubungan antara material vulkanik dan kesuburan tanah.",
+          2: "Laporan observasi ekosistem vulkanik masih ringkas. Perhatikan tenggat waktu pengumpulan.",
+          1: "Keterlambatan pengumpulan tugas observasi alam Bromo. Segera perbaiki analisis geomorfologi."
+        },
+        5: {
+          5: "Luar biasa membanggakan! Integrasi prinsip matematika fraktal candi, reaksi kimia pewarnaan batik alami, dan eksplorasi sains terapan di kampus UNY disintesis dengan sangat brilian!",
+          4: "Sangat baik! Analisis geometri arsitektur candi serta proses sains batik ramah lingkungan dijelaskan dengan metodis.",
+          3: "Cukup baik. Data sains budaya dan kunjungan kampus telah terisi, tingkatkan elaborasi konsep STEM terapan.",
+          2: "Penjelasan kaitan sains dengan kebudayaan masih perlu diperdalam. Perhatikan kedisiplinan jadwal.",
+          1: "Tugas terlambat. Segera lengkapi lembar observasi Prambanan, batik, dan sains UNY."
+        },
+        6: {
+          5: "Sempurna! Analisis proses bioteknologi fermentasi pada UMKM bakpia dan observasi ekosistem pasang surut karst Pantai Drini disajikan dengan data ilmiah yang valid dan solutif.",
+          4: "Sangat baik! Pemahaman bioteknologi pangan lokal serta dinamika geomorfologi pesisir terdokumentasi dengan rapi.",
+          3: "Cukup baik. Pengamatan industri pangan dan pesisir telah diinput, perkuat ulasan pengaruh salinitas air laut.",
+          2: "Data eksplorasi pesisir dan proses pangan masih kurang detail. Tingkatkan ketepatan waktu.",
+          1: "Pengumpulan melewati batas waktu kunjungan. Lengkapi segera data bioteknologi dan oseanografi."
+        },
+        7: {
+          5: "Istimewa! Rekonsiliasi tutup buku kas saku 100% seimbang dan transparan. Refleksi makna perjalanan kokurikuler mencerminkan kemandirian, nalar kritis, dan profil pelajar Pancasila yang paripurna!",
+          4: "Sangat baik! Pembukuan kas saku tertib dan saldo akhir terverifikasi. Refleksi perjalanan merangkum pembelajaran 4 pilar dengan berkesan.",
+          3: "Cukup baik. Tutup buku kas saku telah diselesaikan. Refleksi kesan pesan telah tercatat dengan cukup baik.",
+          2: "Perhitungan saldo kas saku dan catatan refleksi masih memerlukan perapian. Hubungi fasilitator.",
+          1: "Pengumpulan laporan akhir dan kas saku terlambat. Segera tuntaskan pertanggungjawaban mandiri."
+        }
+      };
+
+      const nonFtFeedbacks = {
+        1: {
+          5: "Luar biasa! Analisis rantai pasok pangan dan investigasi awal pertanian di OKU Timur terdokumentasi sangat cermat dan tepat waktu.",
+          4: "Sangat baik! Pengamatan sistem pangan dan pemetaan data awal tersusun dengan rapi dan logis.",
+          3: "Cukup baik. Data awal riset sudah dihimpun, tingkatkan kedalaman analisis kebutuhan pertanian.",
+          2: "Data riset masih terbatas. Perhatikan ketepatan waktu dan kelengkapan bukti dokumentasi.",
+          1: "Tugas terlambat dikumpulkan. Segera konsultasikan kendala riset bersama fasilitator."
+        },
+        2: {
+          5: "Hebat! Observasi hidrologi Bendung Komering dan distribusi air irigasi primer dikaji dengan data sains yang komprehensif.",
+          4: "Sangat baik! Deskripsi fungsi irigasi dan tata kelola air terdokumentasi dengan baik.",
+          3: "Cukup baik. Laporan irigasi sudah masuk, tambahkan parameter debit dan kebersihan air.",
+          2: "Analisis ekosistem irigasi belum mendalam. Tingkatkan ketelitian data lapangan.",
+          1: "Laporan belum memenuhi standar waktu. Lengkapi segera jurnal irigasi lokal."
+        },
+        3: {
+          5: "Sempurna! Investigasi struktur tanah, pH lahan persawahan, dan sains pemupukan dianalisis dengan metode ilmiah yang valid.",
+          4: "Sangat baik! Pemahaman agroteknologi dan pengujian unsur hara tanah disajikan secara sistematis.",
+          3: "Cukup baik. Hasil uji tanah telah dilaporkan, perdalam saran perbaikan mutu tanah.",
+          2: "Data sains lahan masih kurang terverifikasi. Diskusikan dengan kelompok.",
+          1: "Pengumpulan terlambat. Lakukan pengukuran ulang parameter tanah di lapangan."
+        },
+        4: {
+          5: "Luar biasa! Perhitungan HPP gabah, margin keuntungan usaha tani, dan literasi finansial disajikan dengan akurat dan mandiri.",
+          4: "Sangat baik! Pembukuan analisis biaya produksi padi tersusun rapi dan terukur.",
+          3: "Cukup baik. Rincian pengeluaran telah ada, lengkapi estimasi penyusutan alat pertanian.",
+          2: "Kalkulasi finansial masih belum seimbang. Teliti kembali angka-angka biaya produksi.",
+          1: "Laporan keuangan belum tuntas tepat waktu. Koordinasikan dengan pembina."
+        },
+        5: {
+          5: "Istimewa! Eksplorasi tradisi sambatan gotong royong dan kearifan adat Komering dipadukan dengan nalar kebhinekaan yang luhur.",
+          4: "Sangat baik! Dokumentasi nilai budaya lokal dan etnosains tersaji dengan narasi yang bermakna.",
+          3: "Cukup baik. Catatan adat istiadat telah ditulis, perkuat kaitannya dengan pembentukan karakter.",
+          2: "Uraian nilai budaya masih terlalu singkat. Perdalam wawancara dengan tokoh setempat.",
+          1: "Tugas kebudayaan terlambat. Lengkapi segera catatan etnosains lokal."
+        },
+        6: {
+          5: "Sangat inovatif! Analisis nilai tambah pengolahan produk turunan beras dan strategi pemasaran UMKM mandiri dipaparkan dengan solutif.",
+          4: "Sangat baik! Alur produksi dan analisis pasar UMKM pangan lokal terdokumentasi dengan jelas.",
+          3: "Cukup baik. Informasi olahan pangan telah tersusun, perkuat strategi diferensiasi produk.",
+          2: "Inovasi produk belum dijelaskan secara konkret. Perhatikan tenggat submit.",
+          1: "Tugas terlambat diserahkan. Segera tuntaskan lembar kerja inovasi pangan."
+        },
+        7: {
+          5: "Paripurna! Diseminasi hasil riset, pameran portofolio, dan refleksi 4 pilar FINCESTEM mencerminkan profil pelajar berprestasi dan berkarakter kuat!",
+          4: "Sangat baik! Sintesis laporan akhir tersaji secara utuh, komunikatif, dan akuntabel.",
+          3: "Cukup baik. Portofolio riset telah disatukan, sempurnakan kesimpulan dan rekomendasi aksi.",
+          2: "Refleksi akhir masih membutuhkan penguatan pada capaian dimensi mandiri dan bernalar kritis.",
+          1: "Pengumpulan laporan akhir terlambat. Segera lengkapi seluruh lembar pertanggungjawaban."
+        }
+      };
+
+      const source = isFieldTrip ? ftFeedbacks : nonFtFeedbacks;
+      const dayData = source[d] || source[1];
+      return dayData[st] || dayData[5];
     }
   },
 

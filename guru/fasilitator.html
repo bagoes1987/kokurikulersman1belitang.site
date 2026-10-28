@@ -140,20 +140,20 @@
     </div>
 
     <!-- TABS (HANYA AKTIF SAAT LOGIN) -->
-    <div id="fasTabs" class="hidden max-w-lg mx-auto w-full px-3 py-1 flex items-center gap-1 border-t border-surface-container/50">
-      <button id="btnTabFas1" onclick="switchFasTab('penilaian')" class="flex-1 py-2 text-center text-xs font-bold border-b-2 border-[#006a61] text-[#006a61] cursor-pointer">
-        Penilaian
+    <div id="fasTabs" class="hidden max-w-lg mx-auto w-full px-2 py-1 flex items-center gap-1 border-t border-surface-container/50 overflow-x-auto no-scrollbar">
+      <button id="btnTabFas1" onclick="switchFasTab('penilaian')" class="shrink-0 px-3 py-2 text-center text-xs font-bold border-b-2 border-[#006a61] text-[#006a61] whitespace-nowrap cursor-pointer">
+        Penilaian Siswa
       </button>
-      <button id="btnTabFas2" onclick="switchFasTab('presensi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer">
+      <button id="btnTabFas2" onclick="switchFasTab('presensi')" class="shrink-0 px-3 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
         Presensi
       </button>
-      <button id="btnTabFas4" onclick="switchFasTab('galeri')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer flex items-center justify-center gap-1">
-        <span>Galeri</span>
+      <button id="btnTabFas4" onclick="switchFasTab('galeri')" class="shrink-0 px-3 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer flex items-center justify-center gap-1">
+        <span>Galeri Foto</span>
       </button>
-      <button id="btnTabFas3" onclick="switchFasTab('materi')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer">
-        Rubrik
+      <button id="btnTabFas3" onclick="switchFasTab('materi')" class="shrink-0 px-3 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer">
+        Rubrik 4 Pilar
       </button>
-      <button id="btnTabFas5" onclick="switchFasTab('rekap')" class="flex-1 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface cursor-pointer flex items-center justify-center gap-1">
+      <button id="btnTabFas5" onclick="switchFasTab('rekap')" class="shrink-0 px-3 py-2 text-center text-xs font-semibold border-b-2 border-transparent text-on-surface-variant hover:text-on-surface whitespace-nowrap cursor-pointer flex items-center justify-center gap-1">
         <span>Rekap FT</span>
       </button>
     </div>
@@ -253,18 +253,44 @@
 
     <!-- TAB 1: PENILAIAN LKPD & TUGAS KELAS -->
     <div id="panelFasPenilaian" class="flex flex-col gap-3">
-      <!-- Search & Status Filter -->
+      <!-- Search Bar -->
       <div class="p-3 rounded-2xl bg-surface-container-lowest border border-outline-variant/25 flex items-center gap-2 shadow-2xs">
         <span class="material-symbols-outlined text-sm text-on-surface-variant pl-1">search</span>
         <input type="text" id="inputFasStudentSearch" oninput="onFasSearchInput(this.value)" placeholder="Cari nama siswa atau NISN..." class="w-full text-xs outline-none bg-transparent">
       </div>
 
-      <!-- Notice Status Aturan Ketat -->
-      <div class="p-3 rounded-2xl bg-teal-50/70 border border-teal-100 flex items-start gap-2 text-xs text-teal-950 shadow-2xs">
-        <span class="material-symbols-outlined text-base text-[#006a61] shrink-0 mt-0.5">info</span>
-        <p class="leading-relaxed">
-          Tentukan status penilaian tugas: <strong>Submitted</strong>, <strong>Reviewed</strong>, <strong>Revision</strong>, atau <strong>Completed</strong>. Siswa hanya dapat melangkah ke Day berikutnya jika status ditetapkan <strong>Completed</strong>.
-        </p>
+      <!-- Segmented Status Filter Tabs -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
+        <button id="btnFasFilterAll" onclick="filterFasByStatus('all')" class="px-3 py-1.5 rounded-xl bg-[#006a61] text-white shadow-2xs whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
+          <span>Semua</span>
+          <span id="badgeCountAll" class="px-1.5 py-0.2 rounded-md bg-white/20 text-[10px]">0</span>
+        </button>
+        <button id="btnFasFilterCompleted" onclick="filterFasByStatus('completed')" class="px-3 py-1.5 rounded-xl bg-surface-container-lowest text-emerald-800 border border-outline-variant/30 hover:bg-emerald-50 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+          <span>Completed</span>
+          <span id="badgeCountCompleted" class="px-1.5 py-0.2 rounded-md bg-emerald-100 text-[10px]">0</span>
+        </button>
+        <button id="btnFasFilterSubmitted" onclick="filterFasByStatus('submitted')" class="px-3 py-1.5 rounded-xl bg-surface-container-lowest text-amber-800 border border-outline-variant/30 hover:bg-amber-50 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+          <span>Submitted</span>
+          <span id="badgeCountSubmitted" class="px-1.5 py-0.2 rounded-md bg-amber-100 text-[10px]">0</span>
+        </button>
+        <button id="btnFasFilterNotStarted" onclick="filterFasByStatus('belum_mulai')" class="px-3 py-1.5 rounded-xl bg-surface-container-lowest text-slate-700 border border-outline-variant/30 hover:bg-slate-100 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
+          <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+          <span>Belum Mulai</span>
+          <span id="badgeCountNotStarted" class="px-1.5 py-0.2 rounded-md bg-slate-100 text-[10px]">0</span>
+        </button>
+      </div>
+
+      <!-- Notice Status Penilaian Otomatis & Kontrol Guru -->
+      <div class="p-3.5 rounded-2xl bg-teal-50/80 border border-teal-200/80 flex items-start gap-2.5 text-xs text-teal-950 shadow-2xs">
+        <span class="material-symbols-outlined text-lg text-[#006a61] shrink-0 mt-0.5">verified</span>
+        <div class="flex flex-col gap-0.5">
+          <span class="font-extrabold text-[#006a61] text-xs">Penilaian Harian Otomatis Aktif</span>
+          <p class="leading-relaxed text-[11.5px] text-teal-900">
+            Penilaian harian dan feedback otomatis dihitung dari jam pengumpulan tugas. Guru dapat meninjau, menetapkan Nilai Akhir Rapor, atau membuka izin dispensasi bila siswa membutuhkan perbaikan.
+          </p>
+        </div>
       </div>
 
       <!-- Student Cards List -->
@@ -961,6 +987,24 @@
       }
     }
 
+    let fasStatusFilter = 'all';
+
+    function filterFasByStatus(status) {
+      fasStatusFilter = status;
+      ['All', 'Completed', 'Submitted', 'NotStarted'].forEach(key => {
+        const btn = document.getElementById('btnFasFilter' + key);
+        if (btn) {
+          const matchKey = key.toLowerCase() === 'all' ? 'all' : (key.toLowerCase() === 'completed' ? 'completed' : (key.toLowerCase() === 'submitted' ? 'submitted' : 'belum_mulai'));
+          if (fasStatusFilter === matchKey) {
+            btn.className = 'px-3 py-1.5 rounded-xl bg-[#006a61] text-white shadow-2xs whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all';
+          } else {
+            btn.className = 'px-3 py-1.5 rounded-xl bg-surface-container-lowest text-on-surface-variant border border-outline-variant/30 hover:bg-surface-container whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all';
+          }
+        }
+      });
+      renderAssignedStudentList();
+    }
+
     function onFasSearchInput(val) {
       fasStudentSearchQuery = val.trim();
       renderAssignedStudentList();
@@ -971,25 +1015,12 @@
       if (!container) return;
       container.innerHTML = '';
 
-      let filtered = assignedStudents;
-      if (fasStudentSearchQuery) {
-        const q = fasStudentSearchQuery.toLowerCase();
-        filtered = filtered.filter(s => 
-          (s.name || '').toLowerCase().includes(q) ||
-          String(s.nisn || '').includes(q)
-        );
-      }
+      let countAll = assignedStudents.length;
+      let countCompleted = 0;
+      let countSubmitted = 0;
+      let countNotStarted = 0;
 
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="py-8 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-2xl border border-outline-variant/20 p-4">
-            Tidak ada siswa ditemukan di kelas binaan ini.
-          </div>
-        `;
-        return;
-      }
-
-      filtered.forEach(stu => {
+      const studentMetaList = assignedStudents.map(stu => {
         let prog = null;
         try {
           const pStr = localStorage.getItem('fincestem_progress_' + stu.nisn);
@@ -999,24 +1030,97 @@
         const completedDays = prog ? (prog.completed_days || 0) : 0;
         const percentage = prog ? (prog.percentage || 0) : 0;
         const avgScore = prog ? prog.average_score : null;
-        const latestStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : (prog ? FincestemCore.progress.getDayStatus(prog, 1) : 'belum_mulai');
+        let latestStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : (prog ? FincestemCore.progress.getDayStatus(prog, 1) : 'belum_mulai');
+
+        if (completedDays >= 7 || percentage >= 100) {
+          latestStatus = 'completed';
+        }
+
+        if (latestStatus === 'completed') countCompleted++;
+        else if (latestStatus === 'submitted') countSubmitted++;
+        else countNotStarted++;
+
+        return { stu, prog, completedDays, percentage, avgScore, latestStatus };
+      });
+
+      const bAll = document.getElementById('badgeCountAll');
+      if (bAll) bAll.textContent = countAll;
+      const bComp = document.getElementById('badgeCountCompleted');
+      if (bComp) bComp.textContent = countCompleted;
+      const bSub = document.getElementById('badgeCountSubmitted');
+      if (bSub) bSub.textContent = countSubmitted;
+      const bNot = document.getElementById('badgeCountNotStarted');
+      if (bNot) bNot.textContent = countNotStarted;
+
+      let filteredMeta = studentMetaList;
+      if (fasStudentSearchQuery) {
+        const q = fasStudentSearchQuery.toLowerCase();
+        filteredMeta = filteredMeta.filter(m => 
+          (m.stu.name || '').toLowerCase().includes(q) ||
+          String(m.stu.nisn || '').includes(q)
+        );
+      }
+      if (fasStatusFilter !== 'all') {
+        filteredMeta = filteredMeta.filter(m => {
+          if (fasStatusFilter === 'completed') return m.latestStatus === 'completed';
+          if (fasStatusFilter === 'submitted') return m.latestStatus === 'submitted';
+          if (fasStatusFilter === 'belum_mulai') return m.latestStatus === 'belum_mulai' || (!m.latestStatus && m.completedDays === 0);
+          return true;
+        });
+      }
+
+      if (filteredMeta.length === 0) {
+        container.innerHTML = `
+          <div class="py-8 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-2xl border border-outline-variant/20 p-4">
+            Tidak ada siswa yang sesuai dengan filter pencarian / status.
+          </div>
+        `;
+        return;
+      }
+
+      filteredMeta.forEach(m => {
+        const { stu, prog, completedDays, percentage, avgScore, latestStatus } = m;
 
         let badgeStatusClass = 'bg-slate-100 text-slate-700';
         let badgeStatusText = 'Belum Mulai';
 
         if (latestStatus === 'completed') {
-          badgeStatusClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300';
+          badgeStatusClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold shadow-2xs';
           badgeStatusText = 'Completed';
         } else if (latestStatus === 'revision') {
-          badgeStatusClass = 'bg-rose-100 text-rose-900 border border-rose-300';
+          badgeStatusClass = 'bg-rose-100 text-rose-900 border border-rose-300 font-bold';
           badgeStatusText = 'Perlu Revisi';
         } else if (latestStatus === 'reviewed') {
-          badgeStatusClass = 'bg-blue-100 text-blue-900 border border-blue-300';
+          badgeStatusClass = 'bg-blue-100 text-blue-900 border border-blue-300 font-bold';
           badgeStatusText = 'Reviewed';
         } else if (latestStatus === 'submitted') {
-          badgeStatusClass = 'bg-amber-100 text-amber-900 border border-amber-300';
+          badgeStatusClass = 'bg-amber-100 text-amber-900 border border-amber-300 font-bold';
           badgeStatusText = 'Submitted';
         }
+
+        // Hitung Nilai Akhir Rapor Siswa secara sinkron
+        let studentFinalScore = stu.final_score;
+        let studentFinalPred = stu.final_predicate;
+        if (!studentFinalScore) {
+          try {
+            const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
+            if (local && local.final_grades) {
+              const fg = local.final_grades.find(g => String(g.student_nisn).trim() === String(stu.nisn).trim());
+              if (fg && fg.final_score) {
+                studentFinalScore = fg.final_score;
+                studentFinalPred = fg.final_predicate;
+              }
+            }
+          } catch (e) {}
+        }
+        if (!studentFinalScore && (completedDays >= 7 || percentage >= 100)) {
+          studentFinalScore = avgScore || 98.6;
+          studentFinalPred = 'Mahir';
+        }
+
+        const finalScoreBadgeHtml = studentFinalScore
+          ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">verified</span> Rapor: <strong>${studentFinalScore}</strong></span>`
+          : `<span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-100 text-slate-500">Rapor: Berjalan</span>`;
 
         const rawPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(stu.nisn)) || stu.photo_url;
         const savedPhoto = rawPhoto ? (FincestemCore.profile ? FincestemCore.profile.normalizePhotoUrl(rawPhoto) : rawPhoto) : null;
@@ -1053,9 +1157,12 @@
 
           <!-- Progress Mini Bar -->
           <div class="p-2.5 rounded-2xl bg-surface-container-low flex flex-col gap-1 text-[11px]">
-            <div class="flex justify-between font-semibold text-on-surface-variant">
+            <div class="flex items-center justify-between font-semibold text-on-surface-variant">
               <span>Progres Riset: <strong>${completedDays}/7 Hari</strong></span>
-              <span class="font-bold text-[#006a61]">${percentage}%</span>
+              <div class="flex items-center gap-2">
+                ${finalScoreBadgeHtml}
+                <span class="font-bold text-[#006a61]">${percentage}%</span>
+              </div>
             </div>
             <div class="w-full h-2 bg-white rounded-full overflow-hidden border border-outline-variant/30">
               <div class="h-full bg-gradient-to-r from-[#006a61] to-teal-500 rounded-full" style="width: ${percentage}%"></div>
@@ -1067,18 +1174,21 @@
             ` : ''}
           </div>
 
-          <!-- Tiga Tombol Aksi Fasilitator: Nilai Tugas, Nilai Akhir, & Buka Kunci -->
-          <div class="grid grid-cols-5 gap-1.5 pt-1">
-            <button onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}')" class="col-span-2 py-2.5 px-2 rounded-xl bg-[#006a61] hover:bg-[#004f48] text-white font-bold text-xs flex items-center justify-center gap-1 transition-all shadow-xs cursor-pointer">
-              <span class="material-symbols-outlined text-sm">edit_note</span>
-              <span>Nilai Harian</span>
-            </button>
-            <button onclick="openFinalGradeModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}')" class="col-span-2 py-2.5 px-2 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs flex items-center justify-center gap-1 transition-all shadow-xs cursor-pointer">
-              <span class="material-symbols-outlined text-sm">verified</span>
-              <span>Nilai Akhir</span>
-            </button>
-            <button onclick="openFasilUnlockModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name}')" class="col-span-1 py-2.5 px-1 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs flex items-center justify-center gap-0.5 transition-all shadow-2xs cursor-pointer" title="Buka Kunci / Reset Tugas Siswa (Remedial / Perbaikan)">
-              <span class="material-symbols-outlined text-base text-amber-700">lock_open</span>
+          <!-- Tiga Tombol Aksi Fasilitator: Nilai Harian, Nilai Akhir, & Dispensasi Buka Kunci -->
+          <div class="flex flex-col gap-2 pt-1 border-t border-outline-variant/15">
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}')" class="py-2.5 px-3 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-98 cursor-pointer">
+                <span class="material-symbols-outlined text-base">edit_note</span>
+                <span>Nilai Harian</span>
+              </button>
+              <button onclick="openFinalGradeModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}')" class="py-2.5 px-3 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-98 cursor-pointer">
+                <span class="material-symbols-outlined text-base">verified</span>
+                <span>Nilai Akhir Rapor</span>
+              </button>
+            </div>
+            <button onclick="openFasilUnlockModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name}')" class="w-full py-1.5 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300/80 text-[11px] font-bold flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-2xs">
+              <span class="material-symbols-outlined text-sm text-amber-700">lock_open</span>
+              <span>Buka Kunci / Dispensasi Siswa (Izin Koreksi Guru)</span>
             </button>
           </div>
         `;
@@ -1190,16 +1300,27 @@
     }
 
     function loadStudentDayEvaluation(nisn, dayNum) {
-      let fin = 90, cul = 86, exp = 88, stem = 90;
-      let fb = 'Kerja sama tim dan analisis data lapangan sangat memuaskan.';
-      let st = 'completed';
-
       // Deteksi kategori siswa: Field Trip vs Non-Field Trip
       const allStu = window.FincestemMasterStudents || [];
       const currentStu = allStu.find(s => String(s.nisn).trim() === String(nisn).trim());
       const isFieldTrip = currentStu 
         ? ((currentStu.zone || '').toUpperCase().includes('LUAR') || currentStu.is_field_trip === true)
         : true;
+
+      // Nilai otomatis awal berdasarkan kalkulasi jam kirim
+      const autoScore = (FincestemCore.fieldTripRules && FincestemCore.fieldTripRules.calculateFieldTripScore)
+        ? FincestemCore.fieldTripRules.calculateFieldTripScore(dayNum, null, nisn)
+        : { score: 95, stars: 5, predicate: 'Sangat Baik' };
+      const autoFb = (FincestemCore.feedback && FincestemCore.feedback.generateThemedFeedback)
+        ? FincestemCore.feedback.generateThemedFeedback(dayNum, autoScore.stars || 5, isFieldTrip, autoScore.score || 95)
+        : 'Kerja sama tim dan analisis data lapangan sangat memuaskan.';
+
+      let fin = autoScore.score || 95;
+      let cul = autoScore.score || 95;
+      let exp = autoScore.score || 95;
+      let stem = autoScore.score || 95;
+      let fb = autoFb;
+      let st = 'completed';
 
       // Update Banner Panduan Matriks Keseimbangan 4 Pilar & Kartu Fokus
       const titleEl = document.getElementById('modalPillarFocusTitle');
@@ -1583,26 +1704,82 @@
       }
     }
 
-    // MODAL NILAI AKHIR KOKURIKULER
+    // MODAL NILAI AKHIR KOKURIKULER (OTOMATIS SESUAI NILAI RIIL DAY 1 - 7)
     function openFinalGradeModal(targetNisn, studentName, studentMeta) {
       document.getElementById('modalFinalTargetNisn').value = targetNisn;
       document.getElementById('modalFinalStudentName').textContent = studentName || 'Nilai Akhir Siswa';
       document.getElementById('modalFinalStudentMeta').textContent = studentMeta || '';
 
-      let score = 90;
-      let notes = 'Memiliki kemandirian, nalar kritis, dan gotong royong yang sangat baik selama pelaksanaan riset 4 pilar FINCESTEM.';
+      let score = null;
+      let notes = '';
 
-      // Cek simpanan sebelumnya
+      // 1. Cek apakah sudah pernah disimpan manual oleh fasilitator di database/local final_grades
       try {
         const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
         if (local && local.final_grades) {
-          const fg = local.final_grades.find(g => g.student_nisn === targetNisn);
-          if (fg) {
-            score = fg.final_score;
-            notes = fg.notes;
+          const fg = local.final_grades.find(g => String(g.student_nisn).trim() === String(targetNisn).trim());
+          if (fg && fg.final_score !== null && fg.final_score !== undefined && fg.final_score !== '') {
+            score = parseFloat(fg.final_score);
+            notes = fg.notes || '';
           }
         }
       } catch (e) {}
+
+      // 2. Jika belum tersimpan manual, hitung otomatis dari nilai riil tugas Day 1 - 7 siswa
+      if (score === null || isNaN(score)) {
+        try {
+          let prog = null;
+          const pStr = localStorage.getItem('fincestem_progress_' + targetNisn);
+          if (pStr) prog = JSON.parse(pStr);
+
+          if (prog) {
+            if (prog.average_score && !isNaN(prog.average_score) && parseFloat(prog.average_score) > 0) {
+              score = parseFloat(prog.average_score);
+            } else {
+              let totalSc = 0;
+              let countSc = 0;
+              const taskMap = prog.task_map || {};
+              const records = prog.records || [];
+
+              for (let d = 1; d <= 7; d++) {
+                const rec = records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.score));
+                if (rec && rec.score && !isNaN(rec.score)) {
+                  totalSc += parseFloat(rec.score);
+                  countSc++;
+                } else {
+                  const hasLkpd = !!taskMap[d + '_lkpd'];
+                  const hasRefleksi = !!taskMap[d + '_refleksi'];
+                  if (hasLkpd || hasRefleksi) {
+                    const autoSc = FincestemCore.fieldTripRules ? FincestemCore.fieldTripRules.calculateFieldTripScore(d, null, targetNisn) : { score: 95 };
+                    totalSc += (autoSc.score || 95);
+                    countSc++;
+                  }
+                }
+              }
+              if (countSc > 0) {
+                score = Math.round((totalSc / countSc) * 10) / 10;
+              }
+            }
+          }
+        } catch (eCalc) {
+          console.warn('Error calculating auto avgScore for final grade modal:', eCalc);
+        }
+      }
+
+      // 3. Fallback aman jika data belum ada
+      if (score === null || isNaN(score) || score <= 0) {
+        score = 95;
+      }
+
+      if (!notes) {
+        if (score >= 88) {
+          notes = 'Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta menunjukkan profil pelajar Pancasila yang mandiri dan bertanggung jawab (Mahir).';
+        } else if (score >= 75) {
+          notes = 'Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan kas saku secara logis dan mandiri (Cakap).';
+        } else {
+          notes = 'Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, namun masih memerlukan pendampingan berkala dalam evaluasi sains dan finansial (Berkembang).';
+        }
+      }
 
       document.getElementById('inputFinalScore').value = score;
       document.getElementById('inputFinalNotes').value = notes;
@@ -1619,11 +1796,11 @@
 
     function onFinalScoreInput(val) {
       const num = parseFloat(val) || 0;
-      let pred = 'Sangat Baik';
-      if (num >= 90) pred = 'Sangat Baik';
-      else if (num >= 80) pred = 'Baik';
-      else if (num >= 70) pred = 'Cukup';
-      else if (num >= 60) pred = 'Kurang';
+      let pred = 'Sangat Baik (Mahir)';
+      if (num >= 88) pred = 'Sangat Baik (Mahir)';
+      else if (num >= 75) pred = 'Baik (Cakap)';
+      else if (num >= 65) pred = 'Cukup (Berkembang)';
+      else if (num >= 50) pred = 'Kurang';
       else pred = 'Sangat Kurang';
       document.getElementById('inputFinalPredicate').value = pred;
     }

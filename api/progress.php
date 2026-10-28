@@ -226,6 +226,19 @@ if ($method === 'GET') {
                 $percentage = 100;
             }
 
+            // Jika siswa sudah tuntas 7 hari atau 100%, pastikan status selalu 'completed'
+            if ($completedCount >= 7 || $percentage >= 100) {
+                if ($latestFeedback === null) {
+                    $latestFeedback = [
+                        'status' => 'completed',
+                        'feedback' => 'Seluruh tahapan riset 7 hari tuntas diselesaikan dengan sangat baik.',
+                        'facilitator_name' => 'Sistem Otomatis FINCESTEM'
+                    ];
+                } else {
+                    $latestFeedback['status'] = 'completed';
+                }
+            }
+
             $avgScore = count($scores) > 0 ? round(array_sum($scores) / count($scores), 1) : null;
             $predicate = 'Belum Ada';
             if ($avgScore !== null) {
@@ -233,6 +246,9 @@ if ($method === 'GET') {
                 elseif ($avgScore >= 75) $predicate = 'Baik (B)';
                 elseif ($avgScore >= 65) $predicate = 'Cukup (C)';
                 else $predicate = 'Perlu Bimbingan (D)';
+            } elseif ($completedCount >= 7 || $percentage >= 100) {
+                $avgScore = 95.0;
+                $predicate = 'Sangat Baik (A)';
             }
 
             jsonResponse(true, 'Data progres siswa berhasil diambil', [
@@ -330,6 +346,64 @@ if ($method === 'POST') {
                 ':c'    => $content,
                 ':st'   => $status
             ]);
+
+            // Jika refleksi dikirim (tahap 5 tuntas), pastikan status harian langsung 'completed' dan dinilai otomatis jika belum ada nilai manual
+            if ($taskType === 'refleksi' && $dayNum >= 1 && $dayNum <= 7) {
+                try {
+                    $checkGrade = $pdo->prepare("SELECT `score`, `status` FROM `student_progress_eval` WHERE `student_nisn` = :nisn AND `day_number` = :d AND `task_type` = 'general'");
+                    $checkGrade->execute([':nisn' => $canonicalNisn, ':d' => $dayNum]);
+                    $existingGrade = $checkGrade->fetch();
+                    if (!$existingGrade || empty($existingGrade['score'])) {
+                        // Tentukan skor otomatis berdasarkan waktu saat ini (WIB)
+                        $hourWib = (int)gmdate('H', time() + 7 * 3600);
+                        $minWib  = (int)gmdate('i', time() + 7 * 3600);
+                        $totalMin = ($hourWib * 60) + $minWib;
+                        
+                        $score = 95;
+                        $pred  = 'Sangat Baik';
+                        if ($totalMin <= 16 * 60) {
+                            $score = 100;
+                        } elseif ($totalMin <= 21 * 60) {
+                            $score = max(95, 99 - floor(($totalMin - (16 * 60) - 1) / 60));
+                        } elseif ($totalMin <= 24 * 60) {
+                            $score = 90;
+                            $pred  = 'Baik';
+                        } else {
+                            $score = 85;
+                            $pred  = 'Baik';
+                        }
+                        
+                        $feedbackList = [
+                            1 => "Luar biasa! Pengelolaan budgeting uang saku sangat disiplin dan terencana, serta pengamatan alur logistik transportasi bandara tuntas tepat waktu dengan adab musafir yang sangat baik.",
+                            2 => "Eksplorasi istimewa! Analisis ketahanan arsitektur kolonial tropis Lawang Sewu serta observasi kepemimpinan disiplin teknologi di AKPOL terdokumentasi sangat mendalam dan tepat waktu.",
+                            3 => "Luar biasa! Pemahaman bioteknologi holtikultura kebun apel serta analisis fisika mekanika dan konversi energi wahana Museum Angkut sangat komprehensif dan otentik.",
+                            4 => "Spektakuler! Investigasi bentang alam vulkanik Bromo, adaptasi vegetasi kawah, dan dinamika lautan pasir dianalisis dengan nalar kritis yang tajam dan tuntas tepat waktu.",
+                            5 => "Luar biasa membanggakan! Integrasi prinsip matematika fraktal candi, reaksi kimia pewarnaan batik alami, dan eksplorasi sains terapan di kampus UNY disintesis dengan sangat brilian!",
+                            6 => "Sempurna! Analisis proses bioteknologi fermentasi pada UMKM bakpia dan observasi ekosistem pasang surut karst Pantai Drini disajikan dengan data ilmiah yang valid dan solutif.",
+                            7 => "Istimewa! Rekonsiliasi tutup buku kas saku 100% seimbang dan transparan. Refleksi makna perjalanan kokurikuler mencerminkan kemandirian, nalar kritis, dan profil pelajar Pancasila yang paripurna!"
+                        ];
+                        $fbText = $feedbackList[$dayNum] ?? "Tugas harian Day {$dayNum} berhasil diselesaikan tepat waktu dengan sangat baik.";
+
+                        $stmtAuto = $pdo->prepare("
+                            INSERT INTO `student_progress_eval`
+                                (`student_nisn`, `day_number`, `task_type`, `score`, `predicate`, `score_financial`, `score_culture`, `score_exploration`, `score_stem`, `feedback`, `status`, `facilitator_name`, `updated_at`)
+                            VALUES
+                                (:nisn, :d, 'general', :sc, :pred, :sc, :sc, :sc, :sc, :fb, 'completed', 'Sistem Otomatis FINCESTEM (Penilaian Waktu)', NOW())
+                            ON DUPLICATE KEY UPDATE
+                                `score` = IF(`score` IS NULL, VALUES(`score`), `score`),
+                                `status` = 'completed',
+                                `updated_at` = NOW()
+                        ");
+                        $stmtAuto->execute([
+                            ':nisn' => $canonicalNisn,
+                            ':d'    => $dayNum,
+                            ':sc'   => $score,
+                            ':pred' => $pred,
+                            ':fb'   => $fbText
+                        ]);
+                    }
+                } catch (Exception $eAutoG) {}
+            }
 
             jsonResponse(true, "Tugas Day {$dayNum} ({$taskType}) berhasil dikirim!", [
                 'student_nisn' => $nisn,
