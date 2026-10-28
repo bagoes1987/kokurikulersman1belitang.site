@@ -190,15 +190,20 @@ if ($method === 'GET') {
             $scores = [];
             $latestFeedback = null;
             $taskMap = [];
+            $submittedTasks = [];
 
             foreach ($records as $r) {
                 $d = (int)$r['day_number'];
                 $t = $r['task_type'];
                 $taskMap[$d . '_' . $t] = $r;
 
-                // Aturan Ketat FINCESTEM: Hanya jika status = 'completed' progress bertambah ke Day berikutnya
-                if ($r['status'] === 'completed' && $d >= 1 && $d <= 7) {
-                    $completedDays[$d] = true;
+                if ($d >= 1 && $d <= 7) {
+                    $submittedTasks[$d . '_' . $t] = true;
+
+                    // Hari tuntas jika status = 'completed'/'reviewed' ATAU refleksi (tahap 5 akhir) telah submitted
+                    if ($r['status'] === 'completed' || $r['status'] === 'reviewed' || ($t === 'refleksi' && $r['status'] === 'submitted')) {
+                        $completedDays[$d] = true;
+                    }
                 }
 
                 if ($r['score'] !== null && is_numeric($r['score']) && (float)$r['score'] > 0) {
@@ -212,7 +217,14 @@ if ($method === 'GET') {
 
             $totalTargetDays = 7;
             $completedCount = count($completedDays);
-            $percentage = min(100, round(($completedCount / $totalTargetDays) * 100));
+
+            // Hitung persentase progres yang akurat: proporsi hari tuntas atau tugas mandiri tersubmit (max 35)
+            $dayPercentage = min(100, round(($completedCount / $totalTargetDays) * 100));
+            $taskPercentage = min(100, round((count($submittedTasks) / 35) * 100));
+            $percentage = max($dayPercentage, $taskPercentage);
+            if ($completedCount >= 7 || count($submittedTasks) >= 35) {
+                $percentage = 100;
+            }
 
             $avgScore = count($scores) > 0 ? round(array_sum($scores) / count($scores), 1) : null;
             $predicate = 'Belum Ada';

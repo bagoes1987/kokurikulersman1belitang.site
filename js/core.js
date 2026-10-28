@@ -2687,19 +2687,30 @@ const FincestemCore = {
         if (!prog.task_map) prog.task_map = {};
         prog.task_map[dayNumber + '_' + taskType] = { status: 'submitted', content: content };
 
-        // ATURAN FINCESTEM: Submit tugas dari siswa TIDAK menambah completed_days!
-        // completed_days HANYA bertambah jika Fasilitator memberikan status 'completed'
+        // Hitung completed_days & persentase progres siswa secara responsif
         let completedDaysSet = new Set();
         (prog.records || []).forEach(r => {
           const d = parseInt(r.day_number);
-          if (d >= 1 && d <= 7 && r.status === 'completed') completedDaysSet.add(d);
+          if (d >= 1 && d <= 7 && (r.status === 'completed' || r.status === 'reviewed' || (r.task_type === 'refleksi' && r.status === 'submitted'))) {
+            completedDaysSet.add(d);
+          }
         });
+        let submittedTasksCount = 0;
         Object.keys(prog.task_map).forEach(k => {
-          const d = parseInt(k.split('_')[0]);
-          if (d >= 1 && d <= 7 && prog.task_map[k].status === 'completed') completedDaysSet.add(d);
+          const parts = k.split('_');
+          const d = parseInt(parts[0]);
+          const t = parts[1];
+          if (d >= 1 && d <= 7) {
+            submittedTasksCount++;
+            if (prog.task_map[k].status === 'completed' || prog.task_map[k].status === 'reviewed' || (t === 'refleksi' && prog.task_map[k].status === 'submitted')) {
+              completedDaysSet.add(d);
+            }
+          }
         });
         prog.completed_days = completedDaysSet.size;
-        prog.percentage = Math.min(100, Math.round((prog.completed_days / 7) * 100));
+        const dayPct = Math.round((prog.completed_days / 7) * 100);
+        const taskPct = Math.round((submittedTasksCount / 35) * 100);
+        prog.percentage = (prog.completed_days >= 7 || submittedTasksCount >= 35) ? 100 : Math.min(100, Math.max(dayPct, taskPct));
 
         const cleanNisn = String(nisn || '').replace(/[^A-Za-z0-9]/g, '');
         const unpadded = cleanNisn.replace(/^0+/, '');
@@ -2896,6 +2907,8 @@ const FincestemCore = {
         return true;
       }
       // Atau jika 3 instrumen inti (LKPD, Asesmen, dan Foto Dokumentasi) lengkap terkirim
+      if (d === 2 && tm['2_lkpd'] && tm['2_dokumentasi']) return true;
+      if (d === 7 && tm['7_lkpd'] && tm['7_dokumentasi']) return true;
       if (tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi']) {
         return true;
       }
