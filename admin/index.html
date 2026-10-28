@@ -1324,7 +1324,7 @@
           </div>
         </div>
 
-        <!-- BARIS FILTER: TINGKAT, KELAS & PENCARIAN -->
+        <!-- BARIS FILTER: TINGKAT, KELAS, JALUR & PENCARIAN -->
         <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 pt-3 border-t border-amber-200/60 items-center">
           <!-- Filter Tingkat -->
           <div class="sm:col-span-3 flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200">
@@ -1335,16 +1335,25 @@
           </div>
 
           <!-- Filter Pilih Rombel -->
-          <div class="sm:col-span-4">
+          <div class="sm:col-span-3">
             <select id="selectCardsRombel" onchange="onCardsFilterChanged()" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 font-bold text-xs text-slate-800 outline-none focus:border-[#0875D1]">
               <option value="ALL">Semua Rombel (33 Kelas)</option>
             </select>
           </div>
 
+          <!-- Filter Jalur: Field Trip vs Non-Field Trip -->
+          <div class="sm:col-span-3">
+            <select id="selectCardsZone" onchange="onCardsFilterChanged()" class="w-full px-3 py-2 rounded-xl bg-white border border-slate-300 font-bold text-xs text-slate-800 outline-none focus:border-[#0875D1]">
+              <option value="ALL">Semua Jalur (Seluruh Siswa)</option>
+              <option value="FIELD_TRIP">Khusus FIELD TRIP</option>
+              <option value="NON_FIELD_TRIP">Khusus NON-FIELD TRIP</option>
+            </select>
+          </div>
+
           <!-- Input Cari Nama / NISN -->
-          <div class="sm:col-span-5 relative">
+          <div class="sm:col-span-3 relative">
             <span class="material-symbols-outlined text-slate-400 absolute left-3 top-2.5 text-base">search</span>
-            <input type="text" id="inputCardsSearch" oninput="onCardsFilterChanged()" placeholder="Cari nama siswa / NISN..." class="w-full pl-9 pr-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-medium outline-none focus:border-[#0875D1]">
+            <input type="text" id="inputCardsSearch" oninput="onCardsFilterChanged()" placeholder="Cari nama / NISN..." class="w-full pl-9 pr-3 py-2 rounded-xl bg-white border border-slate-300 text-xs font-medium outline-none focus:border-[#0875D1]">
           </div>
         </div>
 
@@ -7393,6 +7402,7 @@
        ======================================================== */
     let cardsGradeFilter = 'ALL';
     let cardsRombelFilter = 'ALL';
+    let cardsZoneFilter = 'ALL';
     let cardsSearchQuery = '';
 
     function initAdminCardsView() {
@@ -7411,10 +7421,16 @@
         });
       }
 
-      // 2. Sinkronisasi data assignment koordinator & fasil
+      // 2. Sinkronisasi data assignment koordinator & fasil serta zonasi jalur terbaru
       if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
         FincestemCore.assignments.getAssignments(function() {
-          renderAdminCards();
+          if (FincestemCore.zones && FincestemCore.zones.syncZones) {
+            FincestemCore.zones.syncZones(function() {
+              renderAdminCards();
+            });
+          } else {
+            renderAdminCards();
+          }
         });
       } else {
         renderAdminCards();
@@ -7438,8 +7454,10 @@
 
     function onCardsFilterChanged() {
       const select = document.getElementById('selectCardsRombel');
+      const selectZone = document.getElementById('selectCardsZone');
       const input = document.getElementById('inputCardsSearch');
       if (select) cardsRombelFilter = select.value;
+      if (selectZone) cardsZoneFilter = selectZone.value;
       if (input) cardsSearchQuery = input.value.trim().toLowerCase();
       renderAdminCards();
     }
@@ -7489,6 +7507,16 @@
           const rNorm = cardsRombelFilter.replace(/^KELAS\s+/i, '').trim().toUpperCase();
           if (sNorm !== rNorm) return false;
         }
+        // Filter Jalur (Field Trip vs Non-Field Trip)
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+          : (s.zone || 'FINCESTEM OKU TIMUR');
+        const zUpper = String(studentZone || '').toUpperCase();
+        const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
+        if (cardsZoneFilter === 'FIELD_TRIP' && !isFieldTrip) return false;
+        if (cardsZoneFilter === 'NON_FIELD_TRIP' && isFieldTrip) return false;
+
         // Filter Search
         if (cardsSearchQuery) {
           const q = cardsSearchQuery;
@@ -7525,6 +7553,13 @@
         const username = s.nisn || '-';
         const password = s.nis || '-';
 
+        // Deteksi Real-Time Jalur Siswa (Otomatis ikut perubahan data Admin)
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+          : (s.zone || 'FINCESTEM OKU TIMUR');
+        const zUpper = String(studentZone || '').toUpperCase();
+        const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
         html += `
           <div class="bg-white rounded-xl p-3 border-2 border-black shadow-sm flex flex-col justify-between text-black text-xs relative overflow-hidden font-sans">
             <!-- Kop Kartu (Rata Tengah, Ukuran Lebih Besar, Hitam Pekat) -->
@@ -7542,9 +7577,17 @@
               <table class="w-full text-[11px] leading-snug text-black">
                 <tbody>
                   <tr>
-                    <td class="w-24 font-bold text-black py-0.5">Nama Siswa</td>
+                    <td class="w-20 font-bold text-black py-0.5">Nama Siswa</td>
                     <td class="w-3 text-center font-bold text-black py-0.5">:</td>
                     <td class="font-bold text-black uppercase break-words py-0.5">${s.nama}</td>
+                    <!-- Label Field Trip / Non-Field Trip di Kanan Atas Sejajar Nama & Kelas -->
+                    <td rowspan="2" class="align-top text-right pl-2 w-28">
+                      <div class="border-2 border-black rounded-lg px-2 py-1 text-center bg-white shadow-2xs inline-block w-full">
+                        <span class="font-black text-[10px] tracking-wider uppercase text-black block leading-tight whitespace-nowrap">
+                          ${isFieldTrip ? 'FIELD TRIP' : 'NON-FIELD TRIP'}
+                        </span>
+                      </div>
+                    </td>
                   </tr>
                   <tr>
                     <td class="font-bold text-black py-0.5">Kelas</td>
@@ -7554,22 +7597,22 @@
                   <tr>
                     <td class="font-bold text-black py-0.5">Username</td>
                     <td class="text-center font-bold text-black py-0.5">:</td>
-                    <td class="font-mono font-black text-black py-0.5 tracking-wider">${username}</td>
+                    <td colspan="2" class="font-mono font-black text-black py-0.5 tracking-wider">${username}</td>
                   </tr>
                   <tr>
                     <td class="font-bold text-black py-0.5">Password</td>
                     <td class="text-center font-bold text-black py-0.5">:</td>
-                    <td class="font-mono font-black text-black py-0.5 tracking-wider">${password}</td>
+                    <td colspan="2" class="font-mono font-black text-black py-0.5 tracking-wider">${password}</td>
                   </tr>
                   <tr>
                     <td class="font-bold text-black py-0.5">Koordinator</td>
                     <td class="text-center font-bold text-black py-0.5">:</td>
-                    <td class="font-bold text-black py-0.5">${staff.coordinator}</td>
+                    <td colspan="2" class="font-bold text-black py-0.5">${staff.coordinator}</td>
                   </tr>
                   <tr>
                     <td class="font-bold text-black py-0.5 align-top">Fasilitator</td>
                     <td class="text-center font-bold text-black py-0.5 align-top">:</td>
-                    <td class="font-bold text-black py-0.5">
+                    <td colspan="2" class="font-bold text-black py-0.5">
                       <div>1. ${staff.facilitator1}</div>
                       <div>2. ${staff.facilitator2}</div>
                     </td>
@@ -7616,6 +7659,16 @@
           const rNorm = cardsRombelFilter.replace(/^KELAS\s+/i, '').trim().toUpperCase();
           if (sNorm !== rNorm) return false;
         }
+        // Filter Jalur (Field Trip vs Non-Field Trip)
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+          : (s.zone || 'FINCESTEM OKU TIMUR');
+        const zUpper = String(studentZone || '').toUpperCase();
+        const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
+        if (cardsZoneFilter === 'FIELD_TRIP' && !isFieldTrip) return false;
+        if (cardsZoneFilter === 'NON_FIELD_TRIP' && isFieldTrip) return false;
+
         if (cardsSearchQuery) {
           const q = cardsSearchQuery;
           const matchNama = (s.nama || '').toLowerCase().includes(q);
@@ -7646,6 +7699,13 @@
               const username = s.nisn || '-';
               const password = s.nis || '-';
 
+              // Deteksi Real-Time Jalur Siswa untuk Versi Cetak
+              const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+                ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+                : (s.zone || 'FINCESTEM OKU TIMUR');
+              const zUpper = String(studentZone || '').toUpperCase();
+              const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
               return `
                 <!-- Pembungkus Kartu dengan Garis Luar Tipis Putus-Putus Sebagai Panduan Potong -->
                 <div style="border: 1px dashed #64748b; padding: 1.5mm; box-sizing: border-box; background: #ffffff; page-break-inside: avoid;">
@@ -7667,9 +7727,17 @@
                       <table style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif;">
                         <tbody>
                           <tr>
-                            <td style="width: 62px; color: #000000; font-weight: bold; padding: 1px 0; white-space: nowrap;">Nama Siswa</td>
-                            <td style="width: 9px; text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
+                            <td style="width: 58px; color: #000000; font-weight: bold; padding: 1px 0; white-space: nowrap;">Nama Siswa</td>
+                            <td style="width: 8px; text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
                             <td style="font-weight: 900; color: #000000; text-transform: uppercase; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${s.nama}</td>
+                            <!-- Label Field Trip / Non-Field Trip Sejajar Nama & Kelas di Kanan Atas -->
+                            <td rowspan="2" style="vertical-align: top; text-align: right; padding-left: 6px; width: 82px;">
+                              <div style="border: 1.5px solid #000000; border-radius: 4px; padding: 2px 4px; text-align: center; background: #ffffff; display: block; box-sizing: border-box;">
+                                <div style="font-size: 7.5px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; color: #000000; white-space: nowrap; line-height: 1.1;">
+                                  ${isFieldTrip ? 'FIELD TRIP' : 'NON-FIELD TRIP'}
+                                </div>
+                              </div>
+                            </td>
                           </tr>
                           <tr>
                             <td style="color: #000000; font-weight: bold; padding: 1px 0;">Kelas</td>
@@ -7679,22 +7747,22 @@
                           <tr>
                             <td style="color: #000000; font-weight: bold; padding: 1px 0;">Username</td>
                             <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
-                            <td style="font-family: 'Courier New', Courier, monospace; font-weight: 900; font-size: 10px; color: #000000; padding: 1px 0; letter-spacing: 0.5px;">${username}</td>
+                            <td colspan="2" style="font-family: 'Courier New', Courier, monospace; font-weight: 900; font-size: 10px; color: #000000; padding: 1px 0; letter-spacing: 0.5px;">${username}</td>
                           </tr>
                           <tr>
                             <td style="color: #000000; font-weight: bold; padding: 1px 0;">Password</td>
                             <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
-                            <td style="font-family: 'Courier New', Courier, monospace; font-weight: 900; font-size: 10px; color: #000000; padding: 1px 0; letter-spacing: 0.5px;">${password}</td>
+                            <td colspan="2" style="font-family: 'Courier New', Courier, monospace; font-weight: 900; font-size: 10px; color: #000000; padding: 1px 0; letter-spacing: 0.5px;">${password}</td>
                           </tr>
                           <tr>
                             <td style="color: #000000; font-weight: bold; padding: 1px 0;">Koordinator</td>
                             <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
-                            <td style="font-weight: 800; color: #000000; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${staff.coordinator}</td>
+                            <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${staff.coordinator}</td>
                           </tr>
                           <tr>
                             <td style="color: #000000; font-weight: bold; padding: 1px 0; vertical-align: top;">Fasilitator</td>
                             <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0; vertical-align: top;">:</td>
-                            <td style="font-weight: 800; color: #000000; padding: 1px 0;">
+                            <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0;">
                               <div>1. ${staff.facilitator1}</div>
                               <div>2. ${staff.facilitator2}</div>
                             </td>
@@ -7728,6 +7796,12 @@
         pdfSuffix = 'Kelas XI';
       } else if (cardsGradeFilter === 'XII') {
         pdfSuffix = 'Kelas XII';
+      }
+
+      if (cardsZoneFilter === 'FIELD_TRIP') {
+        pdfSuffix += '_FieldTrip';
+      } else if (cardsZoneFilter === 'NON_FIELD_TRIP') {
+        pdfSuffix += '_NonFieldTrip';
       }
 
       document.title = `Kartu Login Kokurikuler 2026_${pdfSuffix}`;
