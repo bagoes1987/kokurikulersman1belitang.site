@@ -237,6 +237,10 @@ if ($method === 'GET') {
 
             jsonResponse(true, 'Data progres siswa berhasil diambil', [
                 'nisn'            => $nisn,
+                'photo_url'       => $uRow['photo_url'] ?? null,
+                'student_name'    => $uRow['name'] ?? null,
+                'class_name'      => $uRow['class_name'] ?? null,
+                'zone'            => $uRow['zone'] ?? $studentZone,
                 'percentage'      => $percentage,
                 'completed_days'  => $completedCount,
                 'total_days'      => $totalTargetDays,
@@ -549,11 +553,14 @@ if ($method === 'POST') {
                 try {
                     $docQuery = "SELECT `id`, `file_url` FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inIds)";
                     if ($targetDay > 0) {
-                        $docQuery .= " AND (`title` LIKE :dtit OR `caption` LIKE :dtit)";
+                        $docQuery .= " AND (`day` = :tday OR `day_number` = :tday OR `title` LIKE :dtit OR `caption` LIKE :dtit)";
                     }
                     $stmtDocFind = $pdo->prepare($docQuery);
                     $docParams = [];
-                    if ($targetDay > 0) $docParams[':dtit'] = "%Day {$targetDay}%";
+                    if ($targetDay > 0) {
+                        $docParams[':tday'] = $targetDay;
+                        $docParams[':dtit'] = "%Day {$targetDay}%";
+                    }
                     $stmtDocFind->execute($docParams);
                     $docs = $stmtDocFind->fetchAll();
                     foreach ($docs as $d) {
@@ -565,8 +572,8 @@ if ($method === 'POST') {
                     }
 
                     if ($targetDay > 0) {
-                        $stmtDoc = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inIds) AND (`title` LIKE :dtit OR `caption` LIKE :dtit)");
-                        $stmtDoc->execute([':dtit' => "%Day {$targetDay}%"]);
+                        $stmtDoc = $pdo->prepare("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inIds) AND (`day` = :tday OR `day_number` = :tday OR `title` LIKE :dtit OR `caption` LIKE :dtit)");
+                        $stmtDoc->execute([':tday' => $targetDay, ':dtit' => "%Day {$targetDay}%"]);
                     } else {
                         $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inIds)");
                     }
@@ -744,7 +751,7 @@ if ($method === 'POST') {
                     // 4. Dokumentasi media
                     if ($resetDok) {
                         $docQuery = "SELECT `id`, `file_url` FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inSql)";
-                        if ($targetDay > 0) $docQuery .= " AND (`title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%')";
+                        if ($targetDay > 0) $docQuery .= " AND (`day` = {$targetDay} OR `day_number` = {$targetDay} OR `title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%')";
                         $stmtDocFind = $pdo->query($docQuery);
                         if ($stmtDocFind) {
                             while ($d = $stmtDocFind->fetch()) {
@@ -756,7 +763,7 @@ if ($method === 'POST') {
                             }
                         }
                         if ($targetDay > 0) {
-                            $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inSql) AND (`title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%')");
+                            $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inSql) AND (`day` = {$targetDay} OR `day_number` = {$targetDay} OR `title` LIKE '%Day {$targetDay}%' OR `caption` LIKE '%Day {$targetDay}%')");
                         } else {
                             $pdo->exec("DELETE FROM `dokumentasi_media` WHERE `uploaded_by_nisn` IN ($inSql)");
                         }

@@ -21,10 +21,12 @@ if ($action === 'list') {
 
     $nisn = trim($_GET['nisn'] ?? '');
     if ($nisn !== '') {
-        $cleanNisn = ltrim($nisn, '0');
-        $where[] = "(d.uploaded_by_nisn = :nisn OR d.uploaded_by_nisn = :nisn_clean OR TRIM(LEADING '0' FROM d.uploaded_by_nisn) = :nisn_clean OR u.identifier = :nisn OR u.nis = :nisn)";
-        $params[':nisn'] = $nisn;
-        $params[':nisn_clean'] = $cleanNisn;
+        $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
+        $unpadded = ltrim($cleanNisn, '0');
+        $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
+        $allNisnIds = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
+        $inNisnSql = "'" . implode("','", array_map('addslashes', $allNisnIds)) . "'";
+        $where[] = "(d.uploaded_by_nisn IN ($inNisnSql) OR u.identifier IN ($inNisnSql) OR u.nis IN ($inNisnSql) OR TRIM(LEADING '0' FROM d.uploaded_by_nisn) = '" . addslashes($unpadded) . "')";
     }
 
     $className = trim($_GET['class_name'] ?? '');
@@ -53,7 +55,12 @@ if ($action === 'list') {
                COALESCE(u.name, d.uploaded_by_nisn, 'Peserta Didik') AS student_name
         FROM `dokumentasi_media` d
         LEFT JOIN `groups` g ON d.group_id = g.id
-        LEFT JOIN `users` u ON (d.uploaded_by_nisn = u.identifier OR d.uploaded_by_nisn = u.nis)
+        LEFT JOIN `users` u ON (
+            d.uploaded_by_nisn = u.identifier 
+            OR d.uploaded_by_nisn = u.nis 
+            OR TRIM(LEADING '0' FROM d.uploaded_by_nisn) = TRIM(LEADING '0' FROM u.identifier)
+            OR LPAD(d.uploaded_by_nisn, 10, '0') = LPAD(u.identifier, 10, '0')
+        )
         $whereSql
         ORDER BY d.created_at DESC
         LIMIT $limit

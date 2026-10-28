@@ -533,22 +533,38 @@ const FincestemCore = {
       const unpadded = cleanNisn.replace(/^0+/, '');
       const padded = cleanNisn.padStart(10, '0');
 
-      // Jika user sedang aktif login dan photo_url kosong/null di sesi (karena di-reset), jangan ambil foto lama
+      // 1. Cek sesi user login aktif
       const u = FincestemCore.auth.getUser();
       if (u) {
         const uId = String(u.nisn || u.identifier || '').replace(/\D/g, '');
-        if (uId && (uId === cleanNisn || uId === unpadded || uId === padded)) {
-          if (u.photo_url === '' || u.photo_url === null) return null;
+        if (uId && (uId === cleanNisn || uId === unpadded || uId === padded) && u.photo_url) {
+          return this.normalizePhotoUrl(u.photo_url);
         }
       }
 
+      // 2. Cek penyimpanan lokal browser untuk seluruh variasi NISN
       const local = localStorage.getItem('fincestem_photo_' + cleanNisn) ||
                     localStorage.getItem('fincestem_photo_' + unpadded) ||
                     localStorage.getItem('fincestem_photo_' + padded);
-      if (local) return this.normalizePhotoUrl(local);
+      if (local) {
+        if (u) {
+          const uId = String(u.nisn || u.identifier || '').replace(/\D/g, '');
+          if (uId && (uId === cleanNisn || uId === unpadded || uId === padded) && !u.photo_url) {
+            u.photo_url = this.normalizePhotoUrl(local);
+            FincestemCore.auth.setUser(u, u.role || 'siswa');
+          }
+        }
+        return this.normalizePhotoUrl(local);
+      }
 
+      // 3. Cek master data siswa in-memory
       if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
-        const found = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === cleanNisn || String(x.nisn).trim() === unpadded || String(x.nis).trim() === cleanNisn);
+        const found = window.FincestemMasterStudents.find(x => 
+          String(x.nisn).trim() === cleanNisn || 
+          String(x.nisn).trim() === unpadded || 
+          String(x.nisn).trim() === padded || 
+          String(x.nis).trim() === cleanNisn
+        );
         if (found && found.photo_url) return this.normalizePhotoUrl(found.photo_url);
       }
       return null;
@@ -605,28 +621,37 @@ const FincestemCore = {
       }
       const self = this;
       const cleanNisn = String(nisn).trim();
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const allIdVars = Array.from(new Set([cleanNisn, unpadded, padded])).filter(Boolean);
 
       // Kompres otomatis sebelum disimpan/dikirim agar website tetap ringan & hemat kuota
       this.compressImage(file, 480, 0.82, function(compressedDataUrl, compressedBlob) {
-        // 1. Simpan pratinjau lokal instan
+        // 1. Simpan pratinjau lokal instan ke seluruh variasi ID
         if (compressedDataUrl) {
-          try {
-            localStorage.setItem('fincestem_photo_' + cleanNisn, compressedDataUrl);
-          } catch (e) {
-            console.warn('LocalStorage quota exceeded for photo preview', e);
-          }
+          allIdVars.forEach(id => {
+            try {
+              localStorage.setItem('fincestem_photo_' + id, compressedDataUrl);
+            } catch (e) {}
+          });
         }
 
         // Update sesi user jika sedang login
         const u = FincestemCore.auth.getUser();
-        if (u && (String(u.nisn).trim() === cleanNisn || String(u.identifier).trim() === cleanNisn)) {
-          u.photo_url = compressedDataUrl || u.photo_url;
-          FincestemCore.auth.setUser(u, u.role);
+        if (u) {
+          const uId = String(u.nisn || u.identifier || '').replace(/\D/g, '');
+          if (allIdVars.includes(uId) || allIdVars.includes(String(u.nis || '').trim())) {
+            u.photo_url = compressedDataUrl || u.photo_url;
+            FincestemCore.auth.setUser(u, u.role || 'siswa');
+          }
         }
 
         // Update di master data in-memory
-        if (window.FincestemMasterStudents) {
-          const s = window.FincestemMasterStudents.find(x => String(x.nisn).trim() === cleanNisn || String(x.nis).trim() === cleanNisn);
+        if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+          const s = window.FincestemMasterStudents.find(x => 
+            allIdVars.includes(String(x.nisn || '').trim()) || 
+            allIdVars.includes(String(x.nis || '').trim())
+          );
           if (s) s.photo_url = compressedDataUrl;
         }
 
@@ -650,12 +675,24 @@ const FincestemCore = {
           .then(res => {
             if (res.success && res.data && res.data.photo_url) {
               const serverPhotoUrl = self.normalizePhotoUrl(res.data.photo_url);
-              try {
-                localStorage.setItem('fincestem_photo_' + cleanNisn, serverPhotoUrl);
-              } catch (e) {}
-              if (u && (String(u.nisn).trim() === cleanNisn || String(u.identifier).trim() === cleanNisn)) {
-                u.photo_url = serverPhotoUrl;
-                FincestemCore.auth.setUser(u, u.role);
+              allIdVars.forEach(id => {
+                try {
+                  localStorage.setItem('fincestem_photo_' + id, serverPhotoUrl);
+                } catch (e) {}
+              });
+              if (u) {
+                const uId = String(u.nisn || u.identifier || '').replace(/\D/g, '');
+                if (allIdVars.includes(uId) || allIdVars.includes(String(u.nis || '').trim())) {
+                  u.photo_url = serverPhotoUrl;
+                  FincestemCore.auth.setUser(u, u.role || 'siswa');
+                }
+              }
+              if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+                const s = window.FincestemMasterStudents.find(x => 
+                  allIdVars.includes(String(x.nisn || '').trim()) || 
+                  allIdVars.includes(String(x.nis || '').trim())
+                );
+                if (s) s.photo_url = serverPhotoUrl;
               }
             }
             if (callback) callback(res);
@@ -683,20 +720,29 @@ const FincestemCore = {
           if (res && res.success && Array.isArray(res.data)) {
             const master = window.FincestemMasterStudents || [];
             res.data.forEach(item => {
-              const id = String(item.identifier || item.nisn || '').trim();
-              if (id && item.photo_url) {
+              const rawId = String(item.identifier || item.nisn || '').trim();
+              if (rawId && item.photo_url) {
                 const normUrl = self.normalizePhotoUrl(item.photo_url);
-                try {
-                  localStorage.setItem('fincestem_photo_' + id, normUrl);
-                } catch (e) {}
+                const clean = rawId.replace(/[^A-Za-z0-9]/g, '');
+                const unpadded = clean.replace(/^0+/, '');
+                const padded = clean.padStart(10, '0');
+                const variations = Array.from(new Set([rawId, clean, unpadded, padded, String(item.nis || '').trim()])).filter(Boolean);
 
-                if (item.zone) {
+                variations.forEach(vid => {
                   try {
-                    localStorage.setItem('fincestem_student_zone_' + id, item.zone);
+                    localStorage.setItem('fincestem_photo_' + vid, normUrl);
                   } catch (e) {}
-                }
+                  if (item.zone) {
+                    try {
+                      localStorage.setItem('fincestem_student_zone_' + vid, item.zone);
+                    } catch (e) {}
+                  }
+                });
 
-                const s = master.find(x => String(x.nisn).trim() === id || String(x.nis).trim() === id);
+                const s = master.find(x => 
+                  variations.includes(String(x.nisn || '').trim()) || 
+                  variations.includes(String(x.nis || '').trim())
+                );
                 if (s) {
                   s.photo_url = normUrl;
                   if (item.zone) s.zone = item.zone;
@@ -2347,18 +2393,10 @@ const FincestemCore = {
 
               let shouldPurge = false;
               if (serverResetAt) {
-                // Jika server memiliki catatan reset dan klien belum mengeksekusi reset dengan timestamp ini
+                // Purge HANYA dieksekusi 1 kali per timestamp reset baru dari server
                 if (!clientLastReset || clientLastReset !== serverResetAt) {
                   shouldPurge = true;
                 }
-              }
-
-              // Self-healing: Jika server menyatakan 0 hari selesai (telah direset total ke awal),
-              // tetapi di storage lokal perangkat masih tersisa task_map atau catatan lama
-              const sRecords = Array.isArray(res.data.records) ? res.data.records : [];
-              const sTaskMap = (res.data.task_map && typeof res.data.task_map === 'object') ? res.data.task_map : {};
-              if (serverResetAt && sRecords.length === 0 && Object.keys(sTaskMap).length === 0) {
-                shouldPurge = true;
               }
 
               if (shouldPurge) {
@@ -2366,9 +2404,28 @@ const FincestemCore = {
                 if (serverResetAt) {
                   localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
                 }
+                const resetComp = (resetInfo && resetInfo.components) || {};
                 const u = FincestemCore.auth.getUser();
                 if (u && (cleanNisn.includes(String(u.nisn || u.identifier).replace(/\D/g, '')))) {
-                  u.photo_url = '';
+                  // Hanya kosongkan foto profil jika opsi foto_profil memang di-reset
+                  if (resetComp.foto_profil !== false) {
+                    u.photo_url = '';
+                    FincestemCore.auth.setUser(u, 'siswa');
+                  }
+                }
+              }
+
+              // Jika server mengembalikan URL foto siswa yang sah, segera pulihkan ke sesi & storage lokal
+              if (res.data.photo_url) {
+                const normPhoto = FincestemCore.profile ? FincestemCore.profile.normalizePhotoUrl(res.data.photo_url) : res.data.photo_url;
+                const unpadded = cleanNisn.replace(/^0+/, '');
+                const padded = cleanNisn.padStart(10, '0');
+                [cleanNisn, unpadded, padded].forEach(id => {
+                  try { localStorage.setItem('fincestem_photo_' + id, normPhoto); } catch(e) {}
+                });
+                const u = FincestemCore.auth.getUser();
+                if (u && (cleanNisn.includes(String(u.nisn || u.identifier).replace(/\D/g, '')))) {
+                  u.photo_url = normPhoto;
                   FincestemCore.auth.setUser(u, 'siswa');
                 }
               }

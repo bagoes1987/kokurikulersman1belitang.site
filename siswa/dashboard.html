@@ -1226,21 +1226,27 @@
 
       if (!file.type.startsWith('image/')) {
         FincestemCore.ui.toast('Silakan pilih file gambar (JPG/PNG)!', 'error');
+        event.target.value = '';
         return;
       }
 
       if (file.size > 5 * 1024 * 1024) {
         FincestemCore.ui.toast('Ukuran foto maksimal 5 MB!', 'error');
+        event.target.value = '';
         return;
       }
 
-      const nisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier) : '';
-      FincestemCore.ui.toast('Sedang mengunggah foto...', 'info');
+      const u = FincestemCore.auth.getUser() || {};
+      const nisn = (currentStudent && (currentStudent.nisn || currentStudent.identifier)) || u.nisn || u.identifier || '';
+      FincestemCore.ui.toast('Sedang mengunggah foto profil...', 'info');
 
       FincestemCore.profile.uploadStudentPhoto(file, nisn, function(res) {
+        event.target.value = '';
         if (res.success) {
           FincestemCore.ui.toast('Foto profil berhasil diunggah & tersinkron!', 'success');
-          renderProfilePhoto(nisn, res.photo_url || res.data?.photo_url);
+          const targetUrl = res.photo_url || res.data?.photo_url;
+          renderProfilePhoto(nisn, targetUrl);
+          if (currentStudent) currentStudent.photo_url = targetUrl;
         } else {
           FincestemCore.ui.toast(res.message || 'Foto tersimpan di perangkat ini.', 'success');
         }
@@ -1270,10 +1276,12 @@
       FincestemCore.progress.getStudentProgress(nisn, function(prog) {
         studentProgress = prog;
 
-        // Jika server ter-reset atau user tidak punya foto, pastikan foto profil sinkron (default person)
-        if (prog && prog.reset_info && prog.reset_info.reset_at) {
+        // Sinkronkan foto profil dari server jika tersedia
+        if (prog && prog.photo_url) {
+          renderProfilePhoto(nisn, prog.photo_url);
+        } else if (prog && prog.reset_info && prog.reset_info.reset_at) {
           const u = FincestemCore.auth.getUser();
-          if (u && !u.photo_url) {
+          if (u && !u.photo_url && !FincestemCore.profile.getPhoto(nisn)) {
             renderProfilePhoto(nisn, '');
           }
         }

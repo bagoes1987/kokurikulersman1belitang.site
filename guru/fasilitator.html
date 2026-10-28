@@ -924,6 +924,15 @@
       const user = FincestemCore.auth.getUser();
       const fasilUser = (user && user.username) || (user && user.nip) || (user && user.kode) || '';
 
+      // Sinkronkan seluruh foto profil siswa dari server cPanel secara asinkron
+      if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
+        FincestemCore.profile.syncPhotos(function(updated) {
+          if (updated && assignedStudents && assignedStudents.length > 0) {
+            renderAssignedStudentList();
+          }
+        });
+      }
+
       if (FincestemCore.assignments) {
         FincestemCore.assignments.getFacilitatorData(fasilUser, function(data) {
           if (data && data.class_name) {
@@ -1009,9 +1018,10 @@
           badgeStatusText = 'Submitted';
         }
 
-        const savedPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(stu.nisn)) || stu.photo_url;
+        const rawPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(stu.nisn)) || stu.photo_url;
+        const savedPhoto = rawPhoto ? (FincestemCore.profile ? FincestemCore.profile.normalizePhotoUrl(rawPhoto) : rawPhoto) : null;
         const photoHtml = savedPhoto 
-          ? `<img src="${savedPhoto}" alt="Foto" class="w-10 h-10 rounded-2xl object-cover border border-outline-variant/40 shrink-0">` 
+          ? `<img src="${savedPhoto}" alt="Foto" class="w-10 h-10 rounded-2xl object-cover border border-outline-variant/40 shrink-0" onerror="this.outerHTML='<div class=\\'w-10 h-10 rounded-2xl bg-teal-50 text-[#006a61] flex items-center justify-center font-bold text-sm shrink-0\\'><span class=\\'material-symbols-outlined text-lg\\'>person</span></div>'">` 
           : `<div class="w-10 h-10 rounded-2xl bg-teal-50 text-[#006a61] flex items-center justify-center font-bold text-sm shrink-0"><span class="material-symbols-outlined text-lg">person</span></div>`;
 
         const card = document.createElement('div');
@@ -1794,9 +1804,18 @@
       } catch(e) {}
 
       function filterAndDisplay(docs) {
+        const sRaw = String(nisn || '').trim();
+        const sCln = sRaw.replace(/\D/g, '');
+        const sUnp = sCln.replace(/^0+/, '');
+        const sPad = sCln.padStart(10, '0');
+        const sIds = new Set([sRaw, sCln, sUnp, sPad].filter(Boolean));
+
         const studentDocs = docs.filter(d => {
-          const matchNisn = String(d.nisn || d.uploaded_by_nisn || d.author_nisn || '').trim() === String(nisn).trim();
-          return matchNisn;
+          const dRaw = String(d.nisn || d.uploaded_by_nisn || d.author_nisn || '').trim();
+          const dCln = dRaw.replace(/\D/g, '');
+          const dUnp = dCln.replace(/^0+/, '');
+          const dPad = dCln.padStart(10, '0');
+          return sIds.has(dRaw) || sIds.has(dCln) || sIds.has(dUnp) || sIds.has(dPad);
         });
 
         // Deteksi kategori siswa: Non-Field Trip vs Field Trip
@@ -2036,11 +2055,20 @@
       function displayPhotos(list) {
         let classPhotos = list;
         if (assignedStudents && assignedStudents.length > 0) {
-          const binaanNisns = new Set(assignedStudents.map(s => String(s.nisn).trim()));
+          const binaanNisns = new Set();
+          assignedStudents.forEach(s => {
+            const raw = String(s.nisn || s.identifier || '').trim();
+            const cln = raw.replace(/\D/g, '');
+            const unp = cln.replace(/^0+/, '');
+            const pad = cln.padStart(10, '0');
+            [raw, cln, unp, pad, String(s.nis || '').trim()].filter(Boolean).forEach(id => binaanNisns.add(id));
+          });
           classPhotos = list.filter(p => {
-            const pNisn = String(p.uploaded_by_nisn || p.nisn || '').trim();
-            const cleanP = pNisn.replace(/^0+/, '');
-            return binaanNisns.has(pNisn) || binaanNisns.has(cleanP);
+            const pRaw = String(p.uploaded_by_nisn || p.nisn || '').trim();
+            const pCln = pRaw.replace(/\D/g, '');
+            const pUnp = pCln.replace(/^0+/, '');
+            const pPad = pCln.padStart(10, '0');
+            return binaanNisns.has(pRaw) || binaanNisns.has(pCln) || binaanNisns.has(pUnp) || binaanNisns.has(pPad);
           });
         }
         let filtered = classPhotos;
