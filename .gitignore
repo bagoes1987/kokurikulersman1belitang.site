@@ -17,3 +17,4 @@ database cpanel fincestem.txt
 *.bak
 import_siswa.sql
 _snapshots/
+BACKUP_FIELDTRIP_DAY1_7_STABIL/
