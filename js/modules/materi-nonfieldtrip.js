@@ -99,10 +99,10 @@
 
           <div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              Modul Riset Day 1: Kegiatan Ekonomi, Literasi Finansial &amp; Potensi OKU Timur
+              Modul Riset Day 1: Fondasi Ekonomi, Literasi Finansial &amp; Pemetaan Potensi OKU Timur
             </h2>
             <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium mt-1">
-              Laboratorium Riset Mandiri Pelajar SMAN 1 Belitang • Eksplorasi Konseptual Melalui Kajian Pustaka &amp; Analisis Kontekstual Lokal
+              Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian, serta Identifikasi Komoditas Unggulan Daerah
             </p>
           </div>
 

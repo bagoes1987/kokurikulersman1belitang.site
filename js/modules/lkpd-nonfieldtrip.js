@@ -103,10 +103,10 @@
 
           <div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              LKPD 01: Proposal Rancangan Riset Mandiri &amp; Anggaran Operasional Kelompok
+              LKPD 01: Fondasi Ekonomi, Literasi Finansial &amp; Desain Riset Potensi OKU Timur
             </h2>
             <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium mt-1">
-              Desain Proyek Lapangan OKU Timur: Penetapan Objek Riset, Pembagian Tim, &amp; Penyusunan Rencana Anggaran Kas
+              Kajian Lapangan Mandiri: Penetapan Objek Riset, Pembagian Tim, &amp; Penyusunan Rencana Anggaran Kas
             </p>
           </div>
 
