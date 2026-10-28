@@ -158,6 +158,7 @@
     var activeUser = window.activeUser;
   </script>
   <script src="../js/modules/lkpd-fieldtrip.js?v=20261027_d6_final_v4"></script>
+  <script src="../js/modules/lkpd-nonfieldtrip.js?v=20261028_nft_lkpd_v1"></script>
   <script>
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -169,6 +170,13 @@
       const dayNum = (rawDay !== null && rawDay !== '') ? parseInt(rawDay) : 1;
       const isReadOnlyUrl = (urlParams.get('readonly') === '1');
 
+      // Cek kategori siswa (Field Trip vs Non-Field Trip)
+      const studentZone = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(activeUser.nisn || activeUser.identifier, activeUser.class || activeUser.class_name, activeUser.zone)
+        : (activeUser.zone || 'FINCESTEM OKU TIMUR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
       // Proteksi Alur Berurutan Cepat: Day N (N > 1) mewajibkan Day N-1 selesai
       if (dayNum > 1 && window.FincestemCore && FincestemCore.progress) {
         let cachedProg = null;
@@ -178,7 +186,7 @@
         } catch(e) {}
         let cachedDays = null;
         try {
-          const rawD = localStorage.getItem('fincestem_schedules_field_trip');
+          const rawD = localStorage.getItem('fincestem_schedules_' + (isFieldTrip ? 'field_trip' : 'non_field_trip'));
           if (rawD) cachedDays = JSON.parse(rawD);
         } catch(e) {}
 
@@ -196,26 +204,36 @@
 
       function renderActiveLkpd() {
         try {
-          if (dayNum === 4) {
-            renderFieldTripDay4LKPD(isReadOnlyUrl);
-          } else if (dayNum === 3) {
-            renderFieldTripDay3LKPD(isReadOnlyUrl);
-          } else if (dayNum === 2) {
-            renderFieldTripDay2LKPD(isReadOnlyUrl);
-          } else if (dayNum === 1) {
-            renderFieldTripDay1LKPD(isReadOnlyUrl);
-          } else if (dayNum === 5) {
-            renderFieldTripDay5LKPD(isReadOnlyUrl);
-          } else if (dayNum === 6) {
-            renderFieldTripDay6LKPD(isReadOnlyUrl);
-          } else if (dayNum === 7) {
-            if (typeof renderFieldTripDay7LKPD === 'function') {
-              renderFieldTripDay7LKPD(isReadOnlyUrl);
-            } else {
+          if (isFieldTrip) {
+            // RENDER LKPD FIELD TRIP (UTUH TERKUNCI)
+            if (dayNum === 4) {
+              renderFieldTripDay4LKPD(isReadOnlyUrl);
+            } else if (dayNum === 3) {
+              renderFieldTripDay3LKPD(isReadOnlyUrl);
+            } else if (dayNum === 2) {
+              renderFieldTripDay2LKPD(isReadOnlyUrl);
+            } else if (dayNum === 1) {
+              renderFieldTripDay1LKPD(isReadOnlyUrl);
+            } else if (dayNum === 5) {
+              renderFieldTripDay5LKPD(isReadOnlyUrl);
+            } else if (dayNum === 6) {
+              renderFieldTripDay6LKPD(isReadOnlyUrl);
+            } else if (dayNum === 7) {
+              if (typeof renderFieldTripDay7LKPD === 'function') {
+                renderFieldTripDay7LKPD(isReadOnlyUrl);
+              } else {
+                renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
+              }
+            } else if (dayNum > 7) {
               renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
             }
-          } else if (dayNum > 7) {
-            renderFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
+          } else {
+            // RENDER LKPD NON-FIELD TRIP (Riset Mandiri OKU Timur)
+            if (typeof renderNonFieldTripLKPD === 'function') {
+              renderNonFieldTripLKPD(dayNum, isReadOnlyUrl);
+            } else if (typeof renderNonFieldTripGenericLKPD === 'function') {
+              renderNonFieldTripGenericLKPD(dayNum, isReadOnlyUrl);
+            }
           }
           const spinner = document.getElementById('lkpdLoadingState');
           if (spinner) spinner.remove();

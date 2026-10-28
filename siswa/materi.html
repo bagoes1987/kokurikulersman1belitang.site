@@ -157,6 +157,7 @@
   <script src="../js/siswa_data.js?v=20261021_v1"></script>
   <script src="../js/core.js?v=20261027_d6_final_v4"></script>
   <script src="../js/modules/materi-fieldtrip.js?v=20261027_d6_final_v4"></script>
+  <script src="../js/modules/materi-nonfieldtrip.js?v=20261028_nft_v1"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -211,50 +212,35 @@
 
       const mainEl = document.querySelector('main');
 
-      // TAMPILKAN MODUL BELAJAR SESUAI HARI (DAY 1 S.D. 7)
-      if (dayNum === 3 && mainEl) {
-        renderDay3FieldTripModule(mainEl);
-        return;
-      }
-
-      // TAMPILKAN MODUL BELAJAR DAY 2 FIELD TRIP
-      if (dayNum === 2 && mainEl) {
-        renderDay2FieldTripModule(mainEl);
-        return;
-      }
-
-      // TAMPILKAN MODUL BELAJAR DAY 1 FIELD TRIP
-      if (dayNum === 1 && mainEl) {
-        renderDay1FieldTripModule(mainEl);
-        return;
-      }
-
-      // TAMPILKAN MODUL BELAJAR DAY 4 S.D. 7 FIELD TRIP
-      if (dayNum === 4 && mainEl) {
-        renderDay4FieldTripModule(mainEl);
-        return;
-      }
-
-      // TAMPILKAN MODUL BELAJAR DAY 5 FIELD TRIP
-      if (dayNum === 5 && mainEl) {
-        renderDay5FieldTripModule(mainEl);
-        return;
-      }
-
-      // TAMPILKAN MODUL BELAJAR DAY 6 FIELD TRIP
-      if (dayNum === 6 && mainEl) {
-        renderDay6FieldTripModule(mainEl);
-        return;
-      }
-
-      // TAMPILKAN MODUL BELAJAR DAY 7 FIELD TRIP
-      if (dayNum === 7 && mainEl) {
-        if (typeof renderDay7FieldTripModule === 'function') {
-          renderDay7FieldTripModule(mainEl);
-        } else {
-          renderGenericFieldTripModule(mainEl, dayNum);
+      // SMART ROUTER MODUL BELAJAR: FIELD TRIP VS NON-FIELD TRIP
+      if (isFieldTrip) {
+        // TAMPILKAN MODUL BELAJAR FIELD TRIP (Day 1 s.d. 7 UTUH TERKUNCI)
+        if (dayNum === 1 && mainEl) { renderDay1FieldTripModule(mainEl); return; }
+        if (dayNum === 2 && mainEl) { renderDay2FieldTripModule(mainEl); return; }
+        if (dayNum === 3 && mainEl) { renderDay3FieldTripModule(mainEl); return; }
+        if (dayNum === 4 && mainEl) { renderDay4FieldTripModule(mainEl); return; }
+        if (dayNum === 5 && mainEl) { renderDay5FieldTripModule(mainEl); return; }
+        if (dayNum === 6 && mainEl) { renderDay6FieldTripModule(mainEl); return; }
+        if (dayNum === 7 && mainEl) {
+          if (typeof renderDay7FieldTripModule === 'function') {
+            renderDay7FieldTripModule(mainEl);
+          } else {
+            renderGenericFieldTripModule(mainEl, dayNum);
+          }
+          return;
         }
-        return;
+      } else {
+        // TAMPILKAN MODUL BELAJAR NON-FIELD TRIP (Riset Mandiri OKU Timur)
+        if (dayNum === 1 && mainEl) {
+          if (typeof renderDay1NonFieldTripModule === 'function') {
+            renderDay1NonFieldTripModule(mainEl);
+            return;
+          }
+        }
+        if (typeof renderGenericNonFieldTripModule === 'function') {
+          renderGenericNonFieldTripModule(mainEl, dayNum);
+          return;
+        }
       }
 
       if (dayNum === 0) {

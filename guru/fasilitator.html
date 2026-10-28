@@ -1971,7 +1971,84 @@
             if (dayNum === 1) {
               try {
                 const storedFt = localStorage.getItem('fincestem_lkpd_ft_day1_' + nisn);
-                if (storedFt) {
+                const storedNftLkpd = localStorage.getItem('fincestem_lkpd_nft_day1_' + nisn) || localStorage.getItem('fincestem_lkpd_day1_' + nisn);
+                const storedNftMat = localStorage.getItem('fincestem_materi_nft_day1_' + nisn);
+
+                if (storedNftLkpd || storedNftMat) {
+                  const nftLkpd = storedNftLkpd ? JSON.parse(storedNftLkpd) : null;
+                  const nftMat = storedNftMat ? JSON.parse(storedNftMat) : null;
+
+                  let cardsHtml = '';
+                  if (nftMat) {
+                    const cards = [
+                      { key: 'A', data: nftMat.cardA, name: 'A: Kegiatan Ekonomi' },
+                      { key: 'B', data: nftMat.cardB, name: 'B: Literasi Finansial' },
+                      { key: 'C', data: nftMat.cardC, name: 'C: Kebanksentralan' },
+                      { key: 'D', data: nftMat.cardD, name: 'D: Badan Usaha & Koperasi' },
+                      { key: 'E', data: nftMat.cardE, name: 'E: Potensi OKU Timur' }
+                    ];
+                    cardsHtml = `
+                      <div class="mt-2 flex flex-col gap-1.5 border-t border-teal-200 pt-2">
+                        <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
+                          <span class="material-symbols-outlined text-xs text-teal-700">psychology</span>
+                          <span>Hasil Sintesis 5 Kartu Riset Mandiri (Modul Day 1):</span>
+                        </span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10.5px]">
+                          ${cards.map(c => `
+                            <div class="bg-white/95 p-2 rounded-xl border border-teal-200 flex flex-col gap-1">
+                              <div class="flex items-center justify-between">
+                                <strong class="text-teal-900">${c.name}</strong>
+                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-100 text-teal-800 font-bold">${c.data?.text ? c.data.text.length : 0} Karakter</span>
+                              </div>
+                              <p class="text-slate-600 line-clamp-3 italic">"${c.data?.text || '-'}"</p>
+                              <span class="text-[9.5px] text-slate-500 font-medium truncate">📚 ${c.data?.source || '-'}</span>
+                            </div>
+                          `).join('')}
+                        </div>
+                      </div>
+                    `;
+                  }
+
+                  let lkpdHtml = '';
+                  if (nftLkpd) {
+                    lkpdHtml = `
+                      <div class="grid grid-cols-2 gap-2 text-[11px] mt-1">
+                        <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
+                          <span class="text-slate-500 block">Judul Riset:</span>
+                          <span class="font-black text-slate-900">${nftLkpd.projectTitle || '-'}</span>
+                        </div>
+                        <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
+                          <span class="text-slate-500 block">Lokasi OKU Timur:</span>
+                          <span class="font-black text-teal-900">${nftLkpd.location || '-'}</span>
+                        </div>
+                        <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
+                          <span class="text-slate-500 block">Rencana Wawancara:</span>
+                          <span class="font-medium text-slate-800 line-clamp-2">${nftLkpd.interviewPlan || '-'}</span>
+                        </div>
+                        <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
+                          <span class="text-slate-500 block">Pembagian Tim:</span>
+                          <span class="font-medium text-slate-800 line-clamp-2">${nftLkpd.teamRoles || '-'}</span>
+                        </div>
+                      </div>
+                    `;
+                  }
+
+                  lkpdPreviewEl.innerHTML = `
+                    <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-300 flex flex-col gap-2 text-xs shadow-2xs">
+                      <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <span class="font-black text-teal-950 flex items-center gap-1">
+                          <span class="material-symbols-outlined text-sm text-teal-700">school</span>
+                          <span>Riset Mandiri Non-Field Trip OKU Timur (Day 1)</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-teal-600 text-white">
+                          Riset Mandiri
+                        </span>
+                      </div>
+                      ${lkpdHtml}
+                      ${cardsHtml}
+                    </div>
+                  `;
+                } else if (storedFt) {
                   const ftData = JSON.parse(storedFt);
                   const isGood = ftData.diagnosis && ftData.diagnosis.includes('Sangat Baik');
                   const isWasteful = ftData.diagnosis && ftData.diagnosis.includes('Boros');
