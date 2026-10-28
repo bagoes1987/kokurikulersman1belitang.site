@@ -2001,7 +2001,7 @@
                                 <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-100 text-teal-800 font-bold">${c.data?.text ? c.data.text.length : 0} Karakter</span>
                               </div>
                               <p class="text-slate-600 line-clamp-3 italic">"${c.data?.text || '-'}"</p>
-                              <span class="text-[9.5px] text-slate-500 font-medium truncate">📚 ${c.data?.source || '-'}</span>
+                              <div class="text-[9.5px] text-slate-600 font-medium bg-teal-50/60 p-1.5 rounded-lg border border-teal-100/80 whitespace-pre-line line-clamp-3" title="${c.data?.source || '-'}">📚 <strong>Rujukan:</strong><br>${c.data?.source || '-'}</div>
                             </div>
                           `).join('')}
                         </div>

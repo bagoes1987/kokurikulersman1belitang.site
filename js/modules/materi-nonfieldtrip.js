@@ -34,14 +34,62 @@
   }
 
   function validateSourceCitation(source, minChars) {
-    if (!source || typeof source !== 'string') return { valid: false, count: 0, reason: 'Sumber belum diisi' };
+    if (!source || typeof source !== 'string') return { valid: false, count: 0, sourcesCount: 0, reason: 'Sumber rujukan belum diisi' };
     const trimmed = source.trim();
     const count = trimmed.length;
     if (count < minChars) {
-      return { valid: false, count: count, reason: `Kurang ${minChars - count} karakter (Cantumkan judul buku, penulis, hal, atau URL resmi)` };
+      return { valid: false, count: count, sourcesCount: 0, reason: `Kurang ${minChars - count} karakter (Cantumkan judul referensi, pengarang/penerbit, hal, atau URL resmi)` };
     }
-    return { valid: true, count: count, reason: 'Sumber valid' };
+
+    // Hitung estimasi jumlah rujukan jika siswa menginput lebih dari 1 sumber
+    // Siswa bisa memisahkan dengan baris baru, titik koma (;), atau penomoran (1., 2., dst)
+    const rawItems = trimmed.split(/(?:\r?\n|;|\b\d+[\.\)]\s+)/);
+    const validItems = rawItems
+      .map(s => s.trim())
+      .filter(s => s.length >= 8); // Syarat per rujukan minimal 8 karakter agar terhitung sebagai entri valid
+
+    const sourcesCount = Math.max(1, validItems.length);
+
+    if (sourcesCount > 1) {
+      return { valid: true, count: count, sourcesCount: sourcesCount, reason: `✓ ${sourcesCount} Sumber rujukan terverifikasi` };
+    }
+    return { valid: true, count: count, sourcesCount: 1, reason: '✓ Sumber rujukan valid' };
   }
+
+  // Helper untuk menambah nomor rujukan otomatis (+ Tambah Rujukan Lain)
+  window.appendNextSource = function(key) {
+    const srcEl = document.getElementById('nftSource' + key);
+    if (!srcEl) return;
+    const currentVal = srcEl.value;
+    const trimmed = currentVal.trim();
+
+    if (!trimmed) {
+      srcEl.value = '1. ';
+    } else {
+      // Cari nomor terakhir jika teks sudah memiliki format 1., 2., dst
+      const matches = trimmed.match(/(?:^|\n)\s*(\d+)[\.\)]/g);
+      let nextNum = 2;
+      if (matches && matches.length > 0) {
+        const lastMatch = matches[matches.length - 1];
+        const numPart = parseInt(lastMatch.replace(/\D/g, ''), 10);
+        if (!isNaN(numPart)) nextNum = numPart + 1;
+        srcEl.value = trimmed + '\n' + nextNum + '. ';
+      } else {
+        // Jika belum ada penomoran, ubah baris pertama jadi 1. dan tambah baris 2.
+        if (!trimmed.startsWith('1.')) {
+          srcEl.value = '1. ' + trimmed + '\n2. ';
+        } else {
+          srcEl.value = trimmed + '\n2. ';
+        }
+      }
+    }
+
+    srcEl.focus();
+    srcEl.setSelectionRange(srcEl.value.length, srcEl.value.length);
+    if (typeof window.onNftCardInput === 'function') {
+      window.onNftCardInput(key);
+    }
+  };
 
   // 2. RENDER MODUL BELAJAR DAY 1 NON-FIELD TRIP (5 RESEARCH CARDS)
   function renderDay1NonFieldTripModule(container) {
@@ -196,14 +244,22 @@
               </div>
             </div>
 
-            <!-- Kolom Sumber Rujukan -->
-            <div class="flex flex-col gap-1 pt-1 border-t border-slate-100">
-              <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
-                <span>Sumber Rujukan Wajib (Buku / Modul / URL Resmi):</span>
-              </label>
-              <input type="text" id="nftSourceA" value="${dataA.source || ''}" oninput="onNftCardInput('A')" placeholder="Contoh: Buku Ekonomi SMA Kelas X Kurikulum Merdeka (Kemdikbudristek 2023), Bab 1 Hal. 24-28" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800">
-              <span id="msgSourceA" class="text-[10.5px] text-slate-400 font-medium">Cantumkan judul referensi, pengarang/penerbit, dan nomor halaman (minimal 20 karakter).</span>
+            <!-- Kolom Sumber Rujukan (Mendukung Multi-Rujukan) -->
+            <div class="flex flex-col gap-1.5 pt-1 border-t border-slate-100">
+              <div class="flex items-center justify-between gap-2">
+                <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
+                  <span>Sumber Rujukan Wajib (Buku / Modul / URL Resmi):</span>
+                </label>
+                <button type="button" onclick="appendNextSource('A')" class="px-2.5 py-1 rounded-xl text-[11px] font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 active:scale-95 border border-teal-200 flex items-center gap-1 transition-all cursor-pointer shadow-2xs">
+                  <span class="material-symbols-outlined text-xs">add_circle</span>
+                  <span>+ Tambah Rujukan Lain</span>
+                </button>
+              </div>
+              <textarea id="nftSourceA" rows="2" oninput="onNftCardInput('A')" placeholder="Contoh rujukan (Bisa 1 atau lebih):&#10;1. Buku Ekonomi SMA Kelas X Kurikulum Merdeka (Kemdikbudristek 2023), Bab 1 Hal. 24-28&#10;2. Modul Pengantar Teori Ekonomi Mikro (Kemendikbud)" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataA.source || ''}</textarea>
+              <div class="flex items-center justify-between text-[10.5px]">
+                <span id="msgSourceA" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan (pisahkan dengan nomor atau baris baru). Minimal 20 karakter.</span>
+              </div>
             </div>
           </div>
 
@@ -237,13 +293,22 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-1 pt-1 border-t border-slate-100">
-              <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
-                <span>Sumber Rujukan Wajib (Buku / Modul OJK / Web Resmi):</span>
-              </label>
-              <input type="text" id="nftSourceB" value="${dataB.source || ''}" oninput="onNftCardInput('B')" placeholder="Contoh: Modul Edukasi Literasi Keuangan Otoritas Jasa Keuangan (OJK) RI, Sikapi Uangmu" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800">
-              <span id="msgSourceB" class="text-[10.5px] text-slate-400 font-medium">Cantumkan rujukan pustaka atau laman resmi (minimal 20 karakter).</span>
+            <!-- Kolom Sumber Rujukan (Mendukung Multi-Rujukan) -->
+            <div class="flex flex-col gap-1.5 pt-1 border-t border-slate-100">
+              <div class="flex items-center justify-between gap-2">
+                <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
+                  <span>Sumber Rujukan Wajib (Buku / Modul OJK / Web Resmi):</span>
+                </label>
+                <button type="button" onclick="appendNextSource('B')" class="px-2.5 py-1 rounded-xl text-[11px] font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 active:scale-95 border border-teal-200 flex items-center gap-1 transition-all cursor-pointer shadow-2xs">
+                  <span class="material-symbols-outlined text-xs">add_circle</span>
+                  <span>+ Tambah Rujukan Lain</span>
+                </button>
+              </div>
+              <textarea id="nftSourceB" rows="2" oninput="onNftCardInput('B')" placeholder="Contoh rujukan (Bisa 1 atau lebih):&#10;1. Modul Literasi Keuangan OJK RI (Sikapi Uangmu), Manajemen Keuangan Pribadi&#10;2. Buku Panduan Mengelola Arus Kas Siswa" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataB.source || ''}</textarea>
+              <div class="flex items-center justify-between text-[10.5px]">
+                <span id="msgSourceB" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan (pisahkan dengan nomor atau baris baru). Minimal 20 karakter.</span>
+              </div>
             </div>
           </div>
 
@@ -279,13 +344,22 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-1 pt-1 border-t border-slate-100">
-              <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
-                <span>Sumber Rujukan Wajib (Buku / Situs Resmi Bank Indonesia):</span>
-              </label>
-              <input type="text" id="nftSourceC" value="${dataC.source || ''}" oninput="onNftCardInput('C')" placeholder="Contoh: Portal Resmi Bank Indonesia (www.bi.go.id), Profil &amp; Fungsi Utama BI" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800">
-              <span id="msgSourceC" class="text-[10.5px] text-slate-400 font-medium">Cantumkan rujukan pustaka atau tautan situs resmi (minimal 20 karakter).</span>
+            <!-- Kolom Sumber Rujukan (Mendukung Multi-Rujukan) -->
+            <div class="flex flex-col gap-1.5 pt-1 border-t border-slate-100">
+              <div class="flex items-center justify-between gap-2">
+                <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
+                  <span>Sumber Rujukan Wajib (Buku / Situs Resmi Bank Indonesia):</span>
+                </label>
+                <button type="button" onclick="appendNextSource('C')" class="px-2.5 py-1 rounded-xl text-[11px] font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 active:scale-95 border border-teal-200 flex items-center gap-1 transition-all cursor-pointer shadow-2xs">
+                  <span class="material-symbols-outlined text-xs">add_circle</span>
+                  <span>+ Tambah Rujukan Lain</span>
+                </button>
+              </div>
+              <textarea id="nftSourceC" rows="2" oninput="onNftCardInput('C')" placeholder="Contoh rujukan (Bisa 1 atau lebih):&#10;1. Portal Edukasi Bank Indonesia (www.bi.go.id), Mengenal BI &amp; Sistem Pembayaran&#10;2. UU No. 23 Tahun 1999 tentang Bank Indonesia" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataC.source || ''}</textarea>
+              <div class="flex items-center justify-between text-[10.5px]">
+                <span id="msgSourceC" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan (pisahkan dengan nomor atau baris baru). Minimal 20 karakter.</span>
+              </div>
             </div>
           </div>
 
@@ -321,13 +395,22 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-1 pt-1 border-t border-slate-100">
-              <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
-                <span>Sumber Rujukan Wajib (Buku / Undang-Undang Koperasi):</span>
-              </label>
-              <input type="text" id="nftSourceD" value="${dataD.source || ''}" oninput="onNftCardInput('D')" placeholder="Contoh: Undang-Undang RI No. 25 Tahun 1992 tentang Perkoperasian / Buku Ekonomi SMA" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800">
-              <span id="msgSourceD" class="text-[10.5px] text-slate-400 font-medium">Cantumkan rujukan pustaka atau regulasi resmi (minimal 20 karakter).</span>
+            <!-- Kolom Sumber Rujukan (Mendukung Multi-Rujukan) -->
+            <div class="flex flex-col gap-1.5 pt-1 border-t border-slate-100">
+              <div class="flex items-center justify-between gap-2">
+                <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
+                  <span>Sumber Rujukan Wajib (Buku / UU Koperasi / Web Kemenkop UKM):</span>
+                </label>
+                <button type="button" onclick="appendNextSource('D')" class="px-2.5 py-1 rounded-xl text-[11px] font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 active:scale-95 border border-teal-200 flex items-center gap-1 transition-all cursor-pointer shadow-2xs">
+                  <span class="material-symbols-outlined text-xs">add_circle</span>
+                  <span>+ Tambah Rujukan Lain</span>
+                </button>
+              </div>
+              <textarea id="nftSourceD" rows="2" oninput="onNftCardInput('D')" placeholder="Contoh rujukan (Bisa 1 atau lebih):&#10;1. Undang-Undang RI No. 25 Tahun 1992 tentang Perkoperasian&#10;2. Modul Pengantar Badan Usaha Koperasi, Kemenkop UKM RI" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataD.source || ''}</textarea>
+              <div class="flex items-center justify-between text-[10.5px]">
+                <span id="msgSourceD" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan (pisahkan dengan nomor atau baris baru). Minimal 20 karakter.</span>
+              </div>
             </div>
           </div>
 
@@ -364,13 +447,22 @@
               </div>
             </div>
 
-            <div class="flex flex-col gap-1 pt-1 border-t border-slate-100">
-              <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
-                <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
-                <span>Sumber Rujukan Wajib (BPS OKU Timur / Web Pemkab / Observasi):</span>
-              </label>
-              <input type="text" id="nftSourceE" value="${dataE.source || ''}" oninput="onNftCardInput('E')" placeholder="Contoh: BPS Kabupaten OKU Timur, Publikasi OKU Timur Dalam Angka / Portal Resmi okutimurkab.go.id" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800">
-              <span id="msgSourceE" class="text-[10.5px] text-slate-400 font-medium">Cantumkan publikasi data statistik atau dokumen resmi daerah (minimal 20 karakter).</span>
+            <!-- Kolom Sumber Rujukan (Mendukung Multi-Rujukan) -->
+            <div class="flex flex-col gap-1.5 pt-1 border-t border-slate-100">
+              <div class="flex items-center justify-between gap-2">
+                <label class="text-xs font-bold text-slate-800 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs text-amber-600">menu_book</span>
+                  <span>Sumber Rujukan Wajib (BPS OKU Timur / Web Pemkab / Observasi):</span>
+                </label>
+                <button type="button" onclick="appendNextSource('E')" class="px-2.5 py-1 rounded-xl text-[11px] font-bold text-teal-800 bg-teal-50 hover:bg-teal-100 active:scale-95 border border-teal-200 flex items-center gap-1 transition-all cursor-pointer shadow-2xs">
+                  <span class="material-symbols-outlined text-xs">add_circle</span>
+                  <span>+ Tambah Rujukan Lain</span>
+                </button>
+              </div>
+              <textarea id="nftSourceE" rows="2" oninput="onNftCardInput('E')" placeholder="Contoh rujukan (Bisa 1 atau lebih):&#10;1. BPS Kabupaten OKU Timur, Publikasi Kabupaten OKU Timur Dalam Angka&#10;2. Situs Resmi Pemkab OKU Timur (okutimurkab.go.id), Profil Potensi Daerah" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataE.source || ''}</textarea>
+              <div class="flex items-center justify-between text-[10.5px]">
+                <span id="msgSourceE" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan (pisahkan dengan nomor atau baris baru). Minimal 20 karakter.</span>
+              </div>
             </div>
           </div>
 
@@ -436,7 +528,7 @@
 
     if (valSrc.valid) {
       if (msgSrcEl) {
-        msgSrcEl.textContent = '✓ Sumber rujukan valid';
+        msgSrcEl.textContent = valSrc.reason;
         msgSrcEl.className = 'text-[10.5px] text-emerald-700 font-semibold';
       }
     } else {

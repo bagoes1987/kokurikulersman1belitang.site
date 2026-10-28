@@ -3021,9 +3021,14 @@
               <span class="text-[11px] sm:text-xs ${isFieldTrip ? 'text-amber-900/90' : 'text-teal-900/90'} leading-relaxed font-medium">
                 ${isTrial 
                   ? 'Bebas mencoba seluruh 5 instrumen latihan (Modul, LKPD Uji Coba, Kuis Latihan, Unggah Foto, dan Refleksi) sebelum pelaksanaan kegiatan sesungguhnya.' 
-                  : ((isFTDay && dNum === 2)
-                    ? '<strong>Sesi 1:</strong> Modul &amp; LKPD AKPOL &rarr; Unggah Dokumentasi AKPOL &rarr; <strong>Sesi 2:</strong> Modul &amp; LKPD Lawang Sewu &rarr; Unggah Dokumentasi Lawang Sewu &rarr; <strong>Tahap Akhir:</strong> Jurnal Refleksi Day 2.'
-                    : '<strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.')}
+                  : (isFieldTrip
+                    ? ((isFTDay && dNum === 2)
+                        ? '<strong>Sesi 1:</strong> Modul &amp; LKPD AKPOL &rarr; Unggah Dokumentasi AKPOL &rarr; <strong>Sesi 2:</strong> Modul &amp; LKPD Lawang Sewu &rarr; Unggah Dokumentasi Lawang Sewu &rarr; <strong>Tahap Akhir:</strong> Jurnal Refleksi Day 2.'
+                        : '<strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.')
+                    : (dNum === 1
+                        ? '<strong>1. Modul Riset</strong> (Tuntaskan 5 Kartu Riset Mandiri A s.d. E min. 300 karakter + sumber) &rarr; <strong>2. LKPD 01</strong> (Proposal Riset &amp; RAB Kelompok) &rarr; <strong>3. Asesmen</strong> (Kuis) &rarr; <strong>4. Dokumentasi</strong> (Foto Kamera Geotag OKU Timur) &rarr; <strong>5. Jurnal Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong>.'
+                        : '<strong>1. Modul Belajar</strong> (Riset materi lokal) &rarr; <strong>2. LKPD</strong> (Lembar kerja observasi OKU Timur) &rarr; <strong>3. Asesmen</strong> (Kuis) &rarr; <strong>4. Dokumentasi</strong> (Foto Kamera Geotag OKU Timur) &rarr; <strong>5. Jurnal Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong>.')
+                    )}
               </span>
             </div>
 
