@@ -16,3 +16,4 @@ database cpanel fincestem.txt
 *.backup.*
 *.bak
 import_siswa.sql
+_snapshots/
