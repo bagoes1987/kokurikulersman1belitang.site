@@ -271,8 +271,8 @@
               <span class="flex-1 truncate">Jadwal &amp; Penilaian</span>
             </button>
             <button id="btnTabAdm_rekap" onclick="switchAdmTab('rekap')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
-              <span class="material-symbols-outlined text-lg text-amber-400 group-hover:text-amber-300">travel_explore</span>
-              <span class="flex-1 truncate">Rekap Field Trip (455)</span>
+              <span class="material-symbols-outlined text-lg text-amber-400 group-hover:text-amber-300">directions_bus</span>
+              <span class="flex-1 truncate">Rekap Jalur Peserta</span>
             </button>
             <button id="btnTabAdm_gallery" onclick="switchAdmTab('gallery')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
               <span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-emerald-400">photo_library</span>
@@ -1376,14 +1376,14 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div class="flex items-center gap-3">
             <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md">
-              <span class="material-symbols-outlined text-2xl">travel_explore</span>
+              <span class="material-symbols-outlined text-2xl">directions_bus</span>
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <h3 class="font-black text-base sm:text-lg text-slate-800 leading-tight">Rekapitulasi Peserta Field Trip per Kelas</h3>
+                <h3 class="font-black text-base sm:text-lg text-slate-800 leading-tight">Rekapitulasi Jalur Peserta per Kelas</h3>
                 <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-500 text-white shadow-2xs">Resmi 2026</span>
               </div>
-              <p class="text-xs text-slate-500 font-medium mt-0.5">Rincian 455 peserta Field Trip SMAN 1 Belitang beserta Koordinator &amp; Fasilitator Pendamping</p>
+              <p class="text-xs text-slate-500 font-medium mt-0.5">Rincian 455 peserta Field Trip &amp; 710 Non-Field Trip SMAN 1 Belitang beserta Koordinator &amp; Fasilitator Pendamping</p>
             </div>
           </div>
           <div class="flex items-center gap-2 shrink-0">
@@ -1401,12 +1401,12 @@
         <!-- KPI SUMMARY CARDS -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 border-t border-amber-200/50">
           <div class="p-3 rounded-2xl bg-white/80 border border-amber-200/60 shadow-2xs flex flex-col">
-            <span class="text-[11px] font-bold text-amber-800">Peserta Field Trip</span>
+            <span class="text-[11px] font-bold text-amber-800">🚌 Peserta Field Trip</span>
             <span id="rekapStatTotalFT" class="text-xl font-black text-amber-600 mt-0.5">455 Siswa</span>
-            <span class="text-[10px] text-slate-500 mt-0.5">Belitang → Semarang</span>
+            <span class="text-[10px] text-slate-500 mt-0.5">Belitang → Semarang (Bus)</span>
           </div>
           <div class="p-3 rounded-2xl bg-white/80 border border-emerald-200/60 shadow-2xs flex flex-col">
-            <span class="text-[11px] font-bold text-emerald-800">Peserta Non-Field Trip</span>
+            <span class="text-[11px] font-bold text-emerald-800">🏫 Peserta Non-Field Trip</span>
             <span id="rekapStatTotalNonFT" class="text-xl font-black text-emerald-600 mt-0.5">710 Siswa</span>
             <span class="text-[10px] text-slate-500 mt-0.5">Riset Wilayah OKU Timur</span>
           </div>
@@ -2759,7 +2759,7 @@
       zones: 'Data Koordinator & Fasilitator',
       cards: 'Cetak Kartu Login Siswa (Folio/F4/HVS)',
       schedule: 'Jadwal & Penilaian (Day 1 - 7)',
-      rekap: 'Rekap Field Trip (455)',
+      rekap: 'Rekap Jalur Peserta',
       gallery: 'Galeri Foto Riset',
       config: 'Konfigurasi Sistem',
       backup: 'Cadangan & Audit Log',
@@ -7057,8 +7057,8 @@
           sortedStudents.forEach((s, idx) => {
             const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
             const statusBadge = isFT
-              ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-500 text-white shadow-2xs">✈️ Field Trip</span>`
-              : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">🌿 Non-FT</span>`;
+              ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-500 text-white shadow-2xs">🚌 Field Trip</span>`
+              : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-100 text-teal-900 border border-teal-200">🏫 Non-Field Trip</span>`;
 
             rowsHtml += `
               <tr class="${isFT ? 'bg-amber-50/30' : ''} hover:bg-slate-50 transition-colors">
