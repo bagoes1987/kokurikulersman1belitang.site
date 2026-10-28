@@ -237,7 +237,7 @@
         </button>
         <button id="btnSideFasMateri" onclick="switchFasTab('materi')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-slate-400 hover:text-white hover:bg-slate-800/80 cursor-pointer">
           <span class="material-symbols-outlined text-lg">balance</span>
-          <span>Rubrik 4 Pilar</span>
+          <span>Rubrik & Predikat Rapor</span>
         </button>
         <button id="btnSideFasRekap" onclick="switchFasTab('rekap')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-slate-400 hover:text-white hover:bg-slate-800/80 cursor-pointer">
           <span class="material-symbols-outlined text-lg">travel_explore</span>
@@ -412,29 +412,108 @@
       </div>
     </div>
 
-    <!-- TAB 3: BAHAN BIMBINGAN & RUBRIK 4 PILAR -->
-    <div id="panelFasMateri" class="hidden flex flex-col gap-3">
+    <!-- TAB 3: BAHAN BIMBINGAN & RUBRIK 4 PILAR & PREDIKAT RAPOR -->
+    <div id="panelFasMateri" class="hidden flex flex-col gap-3.5">
+      <!-- 1. PANDUAN RESMI AMBANG BATAS PREDIKAT RAPOR -->
+      <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+        <div class="flex items-center justify-between pb-2 border-b border-surface-container">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center shrink-0 shadow-2xs">
+              <span class="material-symbols-outlined text-xl">military_tech</span>
+            </div>
+            <div>
+              <h3 class="font-extrabold text-sm sm:text-base text-slate-800">Panduan Ambang Batas Predikat Rapor Kokurikuler</h3>
+              <p class="text-xs text-on-surface-variant">Standar Resmi Ambang Batas Bintang, Nilai Rata-Rata, dan Narasi Capaian Rapor Siswa FINCESTEM</p>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs">
+            <span class="material-symbols-outlined text-xs">verified</span>
+            <span>Standar Resmi Rapor</span>
+          </span>
+        </div>
+
+        <!-- 3 Kartu Matriks Ambang Batas Kategori Nilai Akhir -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+          <!-- 1. MAHIR -->
+          <div class="p-3.5 rounded-2xl bg-gradient-to-b from-amber-50/90 to-amber-100/50 border border-amber-300 flex flex-col gap-2 shadow-2xs">
+            <div class="flex items-center justify-between">
+              <span class="text-xs sm:text-[13px] font-black text-amber-950 flex items-center gap-1">
+                <span>🏆</span> MAHIR
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-200 text-amber-950 border border-amber-300">
+                30 – 35 ⭐
+              </span>
+            </div>
+            <span class="text-[11px] font-bold text-amber-800">Nilai Rata-rata: ≥ 85.0</span>
+            <p class="text-[11.5px] text-amber-950 leading-relaxed text-justify mt-0.5">
+              Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat. Dalam kreativitas, peserta didik mampu menghasilkan karya orisinal berbasis STEM yang mengangkat nilai dan filosofi budaya lokal, serta menyajikan hasil eksplorasi melalui video dokumenter dan infografis yang menarik, informatif, dan berkualitas. Dalam aspek kewargaan, peserta didik menunjukkan keteladanan dalam menghargai kearifan lokal, menjunjung toleransi, dan menginisiasi kegiatan pelestarian lingkungan. Dalam kemandirian, peserta didik menunjukkan tanggung jawab, disiplin dalam menyelesaikan tugas, integritas, serta pengelolaan keuangan yang jujur dan transparan.
+            </p>
+          </div>
+
+          <!-- 2. CAKAP -->
+          <div class="p-3.5 rounded-2xl bg-gradient-to-b from-emerald-50/90 to-emerald-100/50 border border-emerald-300 flex flex-col gap-2 shadow-2xs">
+            <div class="flex items-center justify-between">
+              <span class="text-xs sm:text-[13px] font-black text-emerald-950 flex items-center gap-1">
+                <span>🌟</span> CAKAP
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-200 text-emerald-950 border border-emerald-300">
+                21 – 29 ⭐
+              </span>
+            </div>
+            <span class="text-[11px] font-bold text-emerald-800">Nilai Rata-rata: 70.0 – 84.9</span>
+            <p class="text-[11.5px] text-emerald-950 leading-relaxed text-justify mt-0.5">
+              Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri. Dalam kreativitas, peserta didik mampu menghasilkan karya berbasis STEM yang memadukan kearifan lokal serta menyajikan hasil eksplorasi melalui infografis atau video pendek yang informatif. Dalam aspek kewargaan, peserta didik mampu menghormati keberagaman budaya, menjaga etika dan kesopanan, serta berperan aktif dalam menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mampu mengatur waktu, bertanggung jawab atas barang bawaan, menyelesaikan tugas harian dengan disiplin, dan mengelola anggaran pribadi secara mandiri.
+            </p>
+          </div>
+
+          <!-- 3. BERKEMBANG -->
+          <div class="p-3.5 rounded-2xl bg-gradient-to-b from-blue-50/90 to-blue-100/50 border border-blue-300 flex flex-col gap-2 shadow-2xs">
+            <div class="flex items-center justify-between">
+              <span class="text-xs sm:text-[13px] font-black text-blue-950 flex items-center gap-1">
+                <span>🌱</span> BERKEMBANG
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-200 text-blue-950 border border-blue-300">
+                ≤ 20 ⭐
+              </span>
+            </div>
+            <span class="text-[11px] font-bold text-blue-800">Nilai Rata-rata: &lt; 70.0</span>
+            <p class="text-[11.5px] text-blue-950 leading-relaxed text-justify mt-0.5">
+              Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains dan mengevaluasi pembukuan keuangan. Dalam kreativitas, peserta didik mulai mengembangkan karya berbasis STEM dan mempraktikkan keterampilan budaya lokal, meskipun pembuatan video dan infografis masih memerlukan pendampingan. Dalam aspek kewargaan, peserta didik mulai mematuhi aturan dan menghargai nilai-nilai budaya setempat, tetapi masih perlu diingatkan untuk menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mulai belajar mengelola uang saku dan masih memerlukan dorongan untuk menyelesaikan serta mengumpulkan tugas harian tepat waktu.
+            </p>
+          </div>
+        </div>
+
+        <!-- Catatan Edukatif Spesifik Sesuai Jalur (Rata Kanan Kiri) -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start gap-2.5">
+          <span class="material-symbols-outlined text-[#006a61] text-xl shrink-0 mt-0.5">info</span>
+          <p class="text-[12px] sm:text-[12.5px] text-slate-700 leading-relaxed text-justify">
+            <strong>Petunjuk Field Trip:</strong> Predikat resmi dan narasi capaian rapor akhir akan dikalkulasikan secara otomatis oleh sistem setelah seluruh instrumen Day 1 hingga Day 7 tuntas diselesaikan sesuai batas waktu kunjungan dan toleransi perjalanan. Guru Fasilitator dapat memvalidasi dan memberikan catatan deskripsi final melalui tombol <strong>Nilai Akhir Rapor</strong> pada setiap siswa.
+          </p>
+        </div>
+      </div>
+
+      <!-- 2. PANDUAN RUBRIK PENILAIAN 4 PILAR -->
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-        <h3 class="font-bold text-sm text-on-surface">Panduan Rubrik Penilaian 4 Pilar</h3>
+        <h3 class="font-bold text-sm text-on-surface">Panduan Rubrik Penilaian 4 Pilar FINCESTEM</h3>
         <p class="text-xs text-on-surface-variant leading-relaxed">
           Gunakan rubrik analitis berjenjang 1 s.d. 100 dengan bobot berimbang: Financial (25%), Culture (25%), Exploration (25%), STEM (25%).
         </p>
-        <div class="grid grid-cols-2 gap-2 text-xs pt-1">
-          <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col gap-1">
-            <span class="font-bold text-amber-800">Pilar Financial</span>
-            <span class="text-[11px] text-on-surface-variant">Struktur biaya produksi HPP &amp; tata niaga beras.</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs pt-1">
+          <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex flex-col gap-1 shadow-2xs">
+            <span class="font-extrabold text-amber-900">1. Pilar Financial (25%)</span>
+            <span class="text-[11px] text-on-surface-variant leading-relaxed">Pengelolaan kas saku pribadi, struktur biaya produksi HPP, tata niaga komoditas pangan/beras, dan pembukuan neraca harian yang jujur &amp; transparan.</span>
           </div>
-          <div class="p-3 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex flex-col gap-1">
-            <span class="font-bold text-purple-800">Pilar Culture</span>
-            <span class="text-[11px] text-on-surface-variant">Sejarah kolonisasi BK &amp; tradisi sambatan gotong royong.</span>
+          <div class="p-3.5 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex flex-col gap-1 shadow-2xs">
+            <span class="font-extrabold text-purple-900">2. Pilar Culture (25%)</span>
+            <span class="text-[11px] text-on-surface-variant leading-relaxed">Apresiasi sejarah akulturasi &amp; kolonisasi, etika tata krama lokal, tradisi sambatan gotong royong, dan pelestarian warisan budaya nusantara.</span>
           </div>
-          <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col gap-1">
-            <span class="font-bold text-emerald-800">Pilar Exploration</span>
-            <span class="text-[11px] text-on-surface-variant">Navigasi lapangan &amp; pemetaan irigasi Komering.</span>
+          <div class="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col gap-1 shadow-2xs">
+            <span class="font-extrabold text-emerald-900">3. Pilar Exploration (25%)</span>
+            <span class="text-[11px] text-on-surface-variant leading-relaxed">Navigasi geospasial lapangan, observasi lingkungan ekosistem, pemetaan irigasi primer-tersier, ketangkasan fisik, dan kedisiplinan waktu.</span>
           </div>
-          <div class="p-3 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex flex-col gap-1">
-            <span class="font-bold text-blue-800">Pilar STEM</span>
-            <span class="text-[11px] text-on-surface-variant">Uji mutu air baku pH &amp; kalkulasi debit air.</span>
+          <div class="p-3.5 rounded-2xl bg-blue-500/10 border border-blue-500/20 flex flex-col gap-1 shadow-2xs">
+            <span class="font-extrabold text-blue-900">4. Pilar STEM (25%)</span>
+            <span class="text-[11px] text-on-surface-variant leading-relaxed">Uji parameter sains (suhu, pH air baku, kelembaban, debit air), integrasi teknologi digital, perancangan prototipe rekayasa, dan penalaran logis data.</span>
           </div>
         </div>
       </div>
@@ -815,46 +894,131 @@
   </div>
 
   <!-- MODAL PENETAPAN NILAI AKHIR KOKURIKULER -->
-  <div id="modalFinalGrade" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
-    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high">
-      <div class="flex items-center justify-between border-b border-surface-container pb-2">
-        <div>
-          <h3 id="modalFinalStudentName" class="font-extrabold text-base text-purple-800">Nilai Akhir Kokurikuler</h3>
-          <span id="modalFinalStudentMeta" class="text-xs text-on-surface-variant">-</span>
-          <input type="hidden" id="modalFinalTargetNisn" value="">
+  <div id="modalFinalGrade" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-3 sm:p-5 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 max-w-3xl sm:max-w-4xl w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high max-h-[92vh] overflow-y-auto no-scrollbar">
+      <!-- Modal Header -->
+      <div class="flex items-center justify-between border-b border-surface-container pb-2.5">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center shrink-0 shadow-2xs">
+            <span class="material-symbols-outlined text-xl">verified</span>
+          </div>
+          <div>
+            <h3 id="modalFinalStudentName" class="font-extrabold text-base text-purple-900">Nilai Akhir Kokurikuler</h3>
+            <span id="modalFinalStudentMeta" class="text-xs text-on-surface-variant">-</span>
+            <input type="hidden" id="modalFinalTargetNisn" value="">
+          </div>
         </div>
-        <button onclick="closeFinalGradeModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
-          <span class="material-symbols-outlined">close</span>
+        <button onclick="closeFinalGradeModal()" class="p-1.5 rounded-full text-on-surface-variant hover:bg-surface-container transition-colors cursor-pointer">
+          <span class="material-symbols-outlined text-xl">close</span>
         </button>
       </div>
 
-      <div class="flex flex-col gap-3 text-xs">
-        <div>
-          <label class="block font-bold text-on-surface mb-1">Nilai Akhir Kokurikuler (Skala 0 - 100):</label>
-          <input id="inputFinalScore" type="number" min="0" max="100" placeholder="Contoh: 90" oninput="onFinalScoreInput(this.value)" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-black focus:border-purple-600 outline-none text-purple-900">
+      <!-- PANDUAN RESMI AMBANG BATAS PREDIKAT RAPOR (3 KARTU INTERAKTIF) -->
+      <div class="flex flex-col gap-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-amber-600 text-sm">grade</span>
+            <span>Matriks Standar Ambang Batas Predikat Rapor Resmi</span>
+          </span>
+          <span class="text-[10.5px] text-slate-500 font-semibold italic">Klik kartu untuk menerapkan preset nilai</span>
         </div>
 
-        <div>
-          <label class="block font-bold text-on-surface mb-1">Predikat Capaian Dimensi Profil:</label>
-          <input id="inputFinalPredicate" type="text" readonly value="Sangat Baik" class="w-full px-3 py-2 rounded-xl bg-slate-50 border border-outline-variant/30 text-xs font-bold text-slate-700 outline-none">
-        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <!-- 1. MAHIR -->
+          <div id="cardCategoryMahir" onclick="applyCategoryPreset('MAHIR')" class="p-3 rounded-2xl bg-gradient-to-b from-amber-50/90 to-amber-100/50 border-2 border-amber-300 flex flex-col gap-1.5 shadow-2xs cursor-pointer hover:border-amber-500 transition-all">
+            <div class="flex items-center justify-between">
+              <span class="text-xs sm:text-[13px] font-black text-amber-950 flex items-center gap-1">
+                <span>🏆</span> MAHIR
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-200 text-amber-950 border border-amber-300">
+                30 – 35 ⭐
+              </span>
+            </div>
+            <span class="text-[11px] font-bold text-amber-800">Nilai Rata-rata: ≥ 85.0</span>
+            <p class="text-[10.5px] text-amber-950 leading-relaxed text-justify line-clamp-3">
+              Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat...
+            </p>
+            <div class="mt-auto pt-1 flex justify-end">
+              <span class="text-[10px] font-bold text-amber-900 bg-amber-200/80 px-2 py-0.5 rounded-lg border border-amber-300">Preset Mahir (95)</span>
+            </div>
+          </div>
 
-        <div>
-          <label class="block font-bold text-on-surface mb-1">Catatan Deskripsi Capaian Kompetensi:</label>
-          <textarea id="inputFinalNotes" rows="3" placeholder="Tuliskan capaian profil pelajar Pancasila dan literasi riset siswa selama kokurikuler..." class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed focus:border-purple-600 outline-none"></textarea>
+          <!-- 2. CAKAP -->
+          <div id="cardCategoryCakap" onclick="applyCategoryPreset('CAKAP')" class="p-3 rounded-2xl bg-gradient-to-b from-emerald-50/90 to-emerald-100/50 border-2 border-emerald-300 flex flex-col gap-1.5 shadow-2xs cursor-pointer hover:border-emerald-500 transition-all">
+            <div class="flex items-center justify-between">
+              <span class="text-xs sm:text-[13px] font-black text-emerald-950 flex items-center gap-1">
+                <span>🌟</span> CAKAP
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-200 text-emerald-950 border border-emerald-300">
+                21 – 29 ⭐
+              </span>
+            </div>
+            <span class="text-[11px] font-bold text-emerald-800">Nilai Rata-rata: 70.0 – 84.9</span>
+            <p class="text-[10.5px] text-emerald-950 leading-relaxed text-justify line-clamp-3">
+              Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri...
+            </p>
+            <div class="mt-auto pt-1 flex justify-end">
+              <span class="text-[10px] font-bold text-emerald-900 bg-emerald-200/80 px-2 py-0.5 rounded-lg border border-emerald-300">Preset Cakap (80)</span>
+            </div>
+          </div>
+
+          <!-- 3. BERKEMBANG -->
+          <div id="cardCategoryBerkembang" onclick="applyCategoryPreset('BERKEMBANG')" class="p-3 rounded-2xl bg-gradient-to-b from-blue-50/90 to-blue-100/50 border-2 border-blue-300 flex flex-col gap-1.5 shadow-2xs cursor-pointer hover:border-blue-500 transition-all">
+            <div class="flex items-center justify-between">
+              <span class="text-xs sm:text-[13px] font-black text-blue-950 flex items-center gap-1">
+                <span>🌱</span> BERKEMBANG
+              </span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-200 text-blue-950 border border-blue-300">
+                ≤ 20 ⭐
+              </span>
+            </div>
+            <span class="text-[11px] font-bold text-blue-800">Nilai Rata-rata: &lt; 70.0</span>
+            <p class="text-[10.5px] text-blue-950 leading-relaxed text-justify line-clamp-3">
+              Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains...
+            </p>
+            <div class="mt-auto pt-1 flex justify-end">
+              <span class="text-[10px] font-bold text-blue-900 bg-blue-200/80 px-2 py-0.5 rounded-lg border border-blue-300">Preset Berkembang (65)</span>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="flex items-center gap-2 pt-2 border-t border-surface-container">
-        <button onclick="closeFinalGradeModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all">
+      <!-- FORM INPUT PENETAPAN NILAI AKHIR -->
+      <div class="flex flex-col gap-3 text-xs bg-slate-50/80 p-3.5 rounded-2xl border border-slate-200/80">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block font-bold text-slate-800 mb-1">Nilai Akhir Kokurikuler (Skala 0 - 100):</label>
+            <input id="inputFinalScore" type="number" step="0.1" min="0" max="100" placeholder="Contoh: 98.8" oninput="onFinalScoreInput(this.value)" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 text-sm font-black focus:border-purple-600 outline-none text-purple-900 bg-white shadow-2xs">
+          </div>
+          <div>
+            <label class="block font-bold text-slate-800 mb-1">Predikat Capaian Dimensi Profil:</label>
+            <input id="inputFinalPredicate" type="text" readonly value="MAHIR (Sangat Baik)" class="w-full px-3 py-2.5 rounded-xl bg-purple-50/80 border border-purple-200 text-xs font-black text-purple-950 outline-none">
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="font-bold text-slate-800">Catatan Narasi Capaian Rapor Kokurikuler:</label>
+            <button type="button" onclick="resetFinalNotesToOfficial()" class="text-[11px] font-bold text-purple-700 hover:text-purple-900 underline cursor-pointer">
+              Muat Ulang Narasi Resmi Kategori
+            </button>
+          </div>
+          <textarea id="inputFinalNotes" rows="5" placeholder="Narasi capaian rapor resmi..." class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 text-xs leading-relaxed focus:border-purple-600 outline-none bg-white text-justify shadow-2xs"></textarea>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="flex items-center gap-2 pt-1 border-t border-surface-container">
+        <button onclick="closeFinalGradeModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all cursor-pointer">
           Batal
         </button>
-        <button onclick="submitFinalGrade()" class="flex-1 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md">
+        <button onclick="submitFinalGrade()" class="flex-1 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer">
           <span class="material-symbols-outlined text-sm">verified</span>
-          <span>Simpan Nilai Akhir</span>
+          <span>Simpan Nilai Akhir Rapor</span>
         </button>
       </div>
     </div>
+  </div>
   <!-- MODAL BUKA KUNCI / RESET TUGAS SISWA (FASILITATOR) -->
   <div id="modalFasilUnlock" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs transition-opacity duration-300 opacity-0 pointer-events-none">
     <div class="bg-surface-container-lowest rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-outline-variant/30 flex flex-col gap-4 max-h-[90vh] overflow-y-auto no-scrollbar">
@@ -1081,7 +1245,7 @@
         { key: 'penilaian', sideBtnId: 'btnSideFasPenilaian', panelId: 'panelFasPenilaian', title: 'Penilaian & Rapor Siswa' },
         { key: 'presensi', sideBtnId: 'btnSideFasPresensi', panelId: 'panelFasPresensi', title: 'Presensi Lapangan Siswa' },
         { key: 'galeri', sideBtnId: 'btnSideFasGaleri', panelId: 'panelFasGaleri', title: 'Galeri Foto Riset Siswa' },
-        { key: 'materi', sideBtnId: 'btnSideFasMateri', panelId: 'panelFasMateri', title: 'Rubrik Capaian 4 Pilar' },
+        { key: 'materi', sideBtnId: 'btnSideFasMateri', panelId: 'panelFasMateri', title: 'Rubrik 4 Pilar & Predikat Rapor' },
         { key: 'rekap', sideBtnId: 'btnSideFasRekap', panelId: 'panelFasRekap', title: 'Rekapitulasi Field Trip' }
       ];
 
@@ -1224,7 +1388,29 @@
 
         const completedDays = prog ? (prog.completed_days || 0) : 0;
         const percentage = prog ? (prog.percentage || 0) : 0;
-        const avgScore = prog ? prog.average_score : null;
+        let avgScore = prog ? prog.average_score : null;
+        if ((avgScore === null || isNaN(avgScore) || avgScore <= 0) && prog && (prog.records || prog.task_map)) {
+          try {
+            let totalSc = 0;
+            let cSc = 0;
+            const records = prog.records || [];
+            const taskMap = prog.task_map || {};
+            for (let d = 1; d <= 7; d++) {
+              const rec = records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.score));
+              if (rec && rec.score && !isNaN(rec.score)) {
+                totalSc += parseFloat(rec.score);
+                cSc++;
+              } else if (taskMap[d + '_lkpd'] || taskMap[d + '_refleksi']) {
+                const autoSc = FincestemCore.fieldTripRules ? FincestemCore.fieldTripRules.calculateFieldTripScore(d, null, stu.nisn) : { score: 98.8 };
+                totalSc += (autoSc.score || 98.8);
+                cSc++;
+              }
+            }
+            if (cSc > 0) {
+              avgScore = Math.round((totalSc / cSc) * 10) / 10;
+            }
+          } catch(e) {}
+        }
         let latestStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : (prog ? FincestemCore.progress.getDayStatus(prog, 1) : 'belum_mulai');
 
         if (completedDays >= 7 || percentage >= 100) {
@@ -1309,12 +1495,15 @@
           } catch (e) {}
         }
         if (!studentFinalScore && (completedDays >= 7 || percentage >= 100)) {
-          studentFinalScore = avgScore || 98.6;
-          studentFinalPred = 'Mahir';
+          studentFinalScore = avgScore || 98.8;
+        }
+        if (studentFinalScore && !studentFinalPred) {
+          const scNum = parseFloat(studentFinalScore) || 0;
+          studentFinalPred = scNum >= 85.0 ? 'Mahir' : (scNum >= 70.0 ? 'Cakap' : 'Berkembang');
         }
 
         const finalScoreBadgeHtml = studentFinalScore
-          ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">verified</span> Rapor: <strong>${studentFinalScore}</strong></span>`
+          ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">verified</span> Rapor: <strong>${studentFinalScore}</strong> (${studentFinalPred || 'Mahir'})</span>`
           : `<span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-100 text-slate-500">Rapor: Berjalan</span>`;
 
         const rawPhoto = (FincestemCore.profile && FincestemCore.profile.getPhoto(stu.nisn)) || stu.photo_url;
@@ -1963,6 +2152,13 @@
       }
     }
 
+    // STANDAR RESMI AMBANG BATAS & NARASI CAPAIAN RAPOR FINCESTEM (SINKRON 100% DENGAN SISWA)
+    const OFFICIAL_NARRASI_RAPOR = {
+      MAHIR: "Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat. Dalam kreativitas, peserta didik mampu menghasilkan karya orisinal berbasis STEM yang mengangkat nilai dan filosofi budaya lokal, serta menyajikan hasil eksplorasi melalui video dokumenter dan infografis yang menarik, informatif, dan berkualitas. Dalam aspek kewargaan, peserta didik menunjukkan keteladanan dalam menghargai kearifan lokal, menjunjung toleransi, dan menginisiasi kegiatan pelestarian lingkungan. Dalam kemandirian, peserta didik menunjukkan tanggung jawab, disiplin dalam menyelesaikan tugas, integritas, serta pengelolaan keuangan yang jujur dan transparan.",
+      CAKAP: "Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri. Dalam kreativitas, peserta didik mampu menghasilkan karya berbasis STEM yang memadukan kearifan lokal serta menyajikan hasil eksplorasi melalui infografis atau video pendek yang informatif. Dalam aspek kewargaan, peserta didik mampu menghormati keberagaman budaya, menjaga etika dan kesopanan, serta berperan aktif dalam menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mampu mengatur waktu, bertanggung jawab atas barang bawaan, menyelesaikan tugas harian dengan disiplin, dan mengelola anggaran pribadi secara mandiri.",
+      BERKEMBANG: "Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains dan mengevaluasi pembukuan keuangan. Dalam kreativitas, peserta didik mulai mengembangkan karya berbasis STEM dan mempraktikkan keterampilan budaya lokal, meskipun pembuatan video dan infografis masih memerlukan pendampingan. Dalam aspek kewargaan, peserta didik mulai mematuhi aturan dan menghargai nilai-nilai budaya setempat, tetapi masih perlu diingatkan untuk menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mulai belajar mengelola uang saku dan masih memerlukan dorongan untuk menyelesaikan serta mengumpulkan tugas harian tepat waktu."
+    };
+
     // MODAL NILAI AKHIR KOKURIKULER (OTOMATIS SESUAI NILAI RIIL DAY 1 - 7)
     function openFinalGradeModal(targetNisn, studentName, studentMeta, calculatedFinalScore) {
       document.getElementById('modalFinalTargetNisn').value = targetNisn;
@@ -1972,21 +2168,23 @@
       let score = null;
       let notes = '';
 
-      // 1. Cek apakah sudah pernah disimpan manual oleh fasilitator di database/local final_grades
-      try {
-        const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
-        if (local && local.final_grades) {
-          const fg = local.final_grades.find(g => String(g.student_nisn).trim() === String(targetNisn).trim());
-          if (fg && fg.final_score !== null && fg.final_score !== undefined && fg.final_score !== '') {
-            score = parseFloat(fg.final_score);
-            notes = fg.notes || '';
-          }
-        }
-      } catch (e) {}
-
-      // 2. Jika nilai kalkulasi riil dari card siswa diteruskan langsung, gunakan sebagai prioritas utama (garansi 100% sama dengan card)
-      if ((score === null || isNaN(score)) && calculatedFinalScore !== null && calculatedFinalScore !== undefined && !isNaN(calculatedFinalScore) && parseFloat(calculatedFinalScore) > 0) {
+      // 1. Prioritas Utama: Nilai kalkulasi riil dari card siswa diteruskan langsung (garansi 100% sama persis dengan kartu rapor siswa)
+      if (calculatedFinalScore !== null && calculatedFinalScore !== undefined && !isNaN(calculatedFinalScore) && parseFloat(calculatedFinalScore) > 0) {
         score = parseFloat(calculatedFinalScore);
+      }
+
+      // 2. Cek apakah sudah pernah disimpan manual oleh fasilitator di database/local final_grades
+      if (score === null || isNaN(score)) {
+        try {
+          const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
+          if (local && local.final_grades) {
+            const fg = local.final_grades.find(g => String(g.student_nisn).trim() === String(targetNisn).trim());
+            if (fg && fg.final_score !== null && fg.final_score !== undefined && fg.final_score !== '') {
+              score = parseFloat(fg.final_score);
+              notes = fg.notes || '';
+            }
+          }
+        } catch (e) {}
       }
 
       // 3. Jika belum tersimpan manual, hitung otomatis dari nilai riil tugas Day 1 - 7 siswa
@@ -2014,8 +2212,8 @@
                   const hasLkpd = !!taskMap[d + '_lkpd'];
                   const hasRefleksi = !!taskMap[d + '_refleksi'];
                   if (hasLkpd || hasRefleksi) {
-                    const autoSc = FincestemCore.fieldTripRules ? FincestemCore.fieldTripRules.calculateFieldTripScore(d, null, targetNisn) : { score: 95 };
-                    totalSc += (autoSc.score || 95);
+                    const autoSc = FincestemCore.fieldTripRules ? FincestemCore.fieldTripRules.calculateFieldTripScore(d, null, targetNisn) : { score: 98.8 };
+                    totalSc += (autoSc.score || 98.8);
                     countSc++;
                   }
                 }
@@ -2030,24 +2228,19 @@
         }
       }
 
-      // 3. Fallback aman jika data belum ada
+      // 4. Fallback aman jika data belum ada
       if (score === null || isNaN(score) || score <= 0) {
-        score = 95;
+        score = 98.8;
       }
 
-      if (!notes) {
-        if (score >= 88) {
-          notes = 'Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta menunjukkan profil pelajar Pancasila yang mandiri dan bertanggung jawab (Mahir).';
-        } else if (score >= 75) {
-          notes = 'Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan kas saku secara logis dan mandiri (Cakap).';
-        } else {
-          notes = 'Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, namun masih memerlukan pendampingan berkala dalam evaluasi sains dan finansial (Berkembang).';
-        }
+      const category = score >= 85.0 ? 'MAHIR' : (score >= 70.0 ? 'CAKAP' : 'BERKEMBANG');
+      if (!notes || notes.includes('(Mahir)') || notes.includes('(Cakap)') || notes.includes('(Berkembang)')) {
+        notes = OFFICIAL_NARRASI_RAPOR[category] || OFFICIAL_NARRASI_RAPOR.MAHIR;
       }
 
       document.getElementById('inputFinalScore').value = score;
       document.getElementById('inputFinalNotes').value = notes;
-      onFinalScoreInput(score);
+      onFinalScoreInput(score, false);
 
       const modal = document.getElementById('modalFinalGrade');
       modal.classList.remove('opacity-0', 'pointer-events-none');
@@ -2058,15 +2251,70 @@
       modal.classList.add('opacity-0', 'pointer-events-none');
     }
 
-    function onFinalScoreInput(val) {
+    function applyCategoryPreset(category) {
+      let presetScore = 95;
+      if (category === 'MAHIR') presetScore = 95;
+      else if (category === 'CAKAP') presetScore = 80;
+      else if (category === 'BERKEMBANG') presetScore = 65;
+
+      document.getElementById('inputFinalScore').value = presetScore;
+      document.getElementById('inputFinalNotes').value = OFFICIAL_NARRASI_RAPOR[category] || OFFICIAL_NARRASI_RAPOR.MAHIR;
+      onFinalScoreInput(presetScore, true);
+      FincestemCore.ui.toast(`Preset kategori ${category} (${presetScore}) diterapkan!`, 'info');
+    }
+
+    function resetFinalNotesToOfficial() {
+      const num = parseFloat(document.getElementById('inputFinalScore').value) || 0;
+      const cat = num >= 85.0 ? 'MAHIR' : (num >= 70.0 ? 'CAKAP' : 'BERKEMBANG');
+      document.getElementById('inputFinalNotes').value = OFFICIAL_NARRASI_RAPOR[cat] || OFFICIAL_NARRASI_RAPOR.MAHIR;
+      FincestemCore.ui.toast(`Narasi resmi kategori ${cat} berhasil dimuat ulang!`, 'info');
+    }
+
+    function onFinalScoreInput(val, forceUpdateNotes) {
       const num = parseFloat(val) || 0;
-      let pred = 'Sangat Baik (Mahir)';
-      if (num >= 88) pred = 'Sangat Baik (Mahir)';
-      else if (num >= 75) pred = 'Baik (Cakap)';
-      else if (num >= 65) pred = 'Cukup (Berkembang)';
-      else if (num >= 50) pred = 'Kurang';
-      else pred = 'Sangat Kurang';
-      document.getElementById('inputFinalPredicate').value = pred;
+      let cat = 'BERKEMBANG';
+      let pred = 'BERKEMBANG (Cukup)';
+      if (num >= 85.0) {
+        cat = 'MAHIR';
+        pred = 'MAHIR (Sangat Baik)';
+      } else if (num >= 70.0) {
+        cat = 'CAKAP';
+        pred = 'CAKAP (Baik)';
+      } else {
+        cat = 'BERKEMBANG';
+        pred = 'BERKEMBANG (Perlu Bimbingan)';
+      }
+      const predEl = document.getElementById('inputFinalPredicate');
+      if (predEl) predEl.value = pred;
+
+      // Update highlight kartu kategori matriks di dalam modal
+      const cMahir = document.getElementById('cardCategoryMahir');
+      const cCakap = document.getElementById('cardCategoryCakap');
+      const cBerkembang = document.getElementById('cardCategoryBerkembang');
+      if (cMahir) {
+        cMahir.className = `p-3 rounded-2xl bg-gradient-to-b from-amber-50/90 to-amber-100/50 border-2 ${cat === 'MAHIR' ? 'border-amber-500 ring-2 ring-amber-400 shadow-md' : 'border-amber-300'} flex flex-col gap-1.5 shadow-2xs cursor-pointer hover:border-amber-500 transition-all`;
+      }
+      if (cCakap) {
+        cCakap.className = `p-3 rounded-2xl bg-gradient-to-b from-emerald-50/90 to-emerald-100/50 border-2 ${cat === 'CAKAP' ? 'border-emerald-500 ring-2 ring-emerald-400 shadow-md' : 'border-emerald-300'} flex flex-col gap-1.5 shadow-2xs cursor-pointer hover:border-emerald-500 transition-all`;
+      }
+      if (cBerkembang) {
+        cBerkembang.className = `p-3 rounded-2xl bg-gradient-to-b from-blue-50/90 to-blue-100/50 border-2 ${cat === 'BERKEMBANG' ? 'border-blue-500 ring-2 ring-blue-400 shadow-md' : 'border-blue-300'} flex flex-col gap-1.5 shadow-2xs cursor-pointer hover:border-blue-500 transition-all`;
+      }
+
+      const notesEl = document.getElementById('inputFinalNotes');
+      if (notesEl) {
+        const curNotes = notesEl.value.trim();
+        const isOfficialText = !curNotes ||
+          curNotes === OFFICIAL_NARRASI_RAPOR.MAHIR ||
+          curNotes === OFFICIAL_NARRASI_RAPOR.CAKAP ||
+          curNotes === OFFICIAL_NARRASI_RAPOR.BERKEMBANG ||
+          curNotes.includes('(Mahir)') ||
+          curNotes.includes('(Cakap)') ||
+          curNotes.includes('(Berkembang)');
+        if (forceUpdateNotes || isOfficialText) {
+          notesEl.value = OFFICIAL_NARRASI_RAPOR[cat] || OFFICIAL_NARRASI_RAPOR.MAHIR;
+        }
+      }
     }
 
     function submitFinalGrade() {
