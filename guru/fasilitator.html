@@ -553,28 +553,45 @@
 </div>
 </div>
 
-  <!-- MODAL RUBRIK PENILAIAN TUGAS HARIAN FASILITATOR (DENGAN 4 STATUS) -->
-  <div id="modalGradingFasilitator" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none">
-    <div class="bg-surface-container-lowest rounded-3xl p-6 max-w-md w-full shadow-2xl flex flex-col gap-4 border border-surface-container-high max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between border-b border-surface-container pb-2">
-        <div>
-          <h3 id="modalGradingStudentName" class="font-extrabold text-base text-[#006a61]">-</h3>
-          <span id="modalGradingStudentMeta" class="text-xs text-on-surface-variant">-</span>
-          <input type="hidden" id="modalGradingTargetNisn" value="">
-
-        <!-- ALERT KESEHATAN & MEDIS SISWA UNTUK FASILITATOR -->
-        <div id="modalGradingHealthAlert" class="mt-2 hidden"></div>
+  <!-- MODAL RUBRIK PENILAIAN TUGAS HARIAN FASILITATOR (OTOMATIS SISTEM & BERSIH) -->
+  <div id="modalGradingFasilitator" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center p-3 sm:p-4 transition-all duration-300 opacity-0 pointer-events-none">
+    <div class="bg-white rounded-3xl p-5 sm:p-7 max-w-2xl w-full shadow-2xl flex flex-col gap-4 border border-slate-200/80 max-h-[92vh] overflow-y-auto">
+      
+      <!-- Header Modal Elegan -->
+      <div class="flex items-start justify-between border-b border-slate-200/80 pb-3 gap-3">
+        <div class="flex items-start gap-3 min-w-0">
+          <div class="w-11 h-11 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-[#006a61] shrink-0 shadow-2xs">
+            <span class="material-symbols-outlined text-2xl">verified</span>
+          </div>
+          <div class="flex flex-col min-w-0">
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="px-2 py-0.5 rounded-md text-[9.5px] font-black uppercase tracking-wider bg-teal-100 text-[#006a61] border border-teal-200">Penilaian Otomatis Sistem</span>
+              <span id="modalPillarFocusBadge" class="px-2 py-0.5 rounded-full text-[9.5px] font-black bg-teal-800 text-white">Bobot 25%</span>
+            </div>
+            <h3 id="modalGradingStudentName" class="font-black text-base sm:text-lg text-slate-800 truncate mt-0.5">-</h3>
+            <span id="modalGradingStudentMeta" class="text-xs text-slate-500 font-medium truncate">-</span>
+            <input type="hidden" id="modalGradingTargetNisn" value="">
+            
+            <!-- Alert Kesehatan Siswa -->
+            <div id="modalGradingHealthAlert" class="mt-1.5 hidden"></div>
+          </div>
         </div>
-        <button onclick="closeGradingModal()" class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container">
-          <span class="material-symbols-outlined">close</span>
+        <button onclick="closeGradingModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors shrink-0 cursor-pointer" title="Tutup Jendela">
+          <span class="material-symbols-outlined text-xl">close</span>
         </button>
       </div>
 
-      <div class="flex flex-col gap-3 text-xs">
-        <!-- Target Hari / Sesi -->
-        <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Target Hari / Sesi Kegiatan</label>
-          <select id="gradeTargetDay" onchange="onTargetDayChange(this.value)" class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs font-semibold focus:border-[#006a61] outline-none">
+      <div class="flex flex-col gap-3.5 text-xs">
+        <!-- Target Hari / Sesi Kegiatan -->
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200/80 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <label class="text-xs font-extrabold text-slate-800 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-[#006a61]">calendar_today</span>
+              <span>Pilih Target Hari / Sesi Field Trip:</span>
+            </label>
+            <span id="modalPillarFocusTitle" class="text-[10.5px] font-bold text-teal-800 truncate">Matriks 4 Pilar</span>
+          </div>
+          <select id="gradeTargetDay" onchange="onTargetDayChange(this.value)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold bg-white text-slate-800 focus:border-[#006a61] focus:ring-1 focus:ring-[#006a61]/30 outline-none transition-all shadow-2xs">
             <option value="1">Day 1: Orientasi &amp; Pembekalan Riset</option>
             <option value="2">Day 2: Eksplorasi Sains &amp; Ekosistem Irigasi</option>
             <option value="3">Day 3: Rekayasa Teknologi &amp; Pengukuran Lapangan</option>
@@ -584,22 +601,188 @@
             <option value="7">Day 7: Gelar Karya Ilmiah, Presentasi &amp; Refleksi</option>
             <option value="0">Day 0: Uji Coba / Simulasi Gladi Bersih</option>
           </select>
+          <p id="modalPillarFocusDesc" class="text-[10.5px] text-slate-500 leading-tight">
+            Pedoman penilaian instrumen &amp; LKPD harian siswa.
+          </p>
+        </div>
+
+        <!-- HERO CARD: NILAI HARIAN OTOMATIS SISTEM -->
+        <div class="rounded-2xl p-4 bg-gradient-to-br from-teal-900 via-slate-900 to-teal-950 text-white shadow-md border border-teal-700/50 flex flex-col gap-3">
+          <div class="flex items-start justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-3.5">
+              <div class="w-14 h-14 rounded-2xl bg-teal-400/20 border border-teal-400/40 flex flex-col items-center justify-center shrink-0 shadow-inner">
+                <span id="heroAutoScoreNumber" class="text-2xl font-black text-amber-300 leading-none">100</span>
+                <span class="text-[9px] font-bold text-teal-200">/ 100</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span id="heroAutoStars" class="text-amber-400 font-black text-sm tracking-wider">⭐⭐⭐⭐⭐</span>
+                  <span id="heroAutoPredicate" class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-400 text-amber-950">Sangat Baik (Mahir)</span>
+                </div>
+                <span id="heroAutoTimeText" class="text-xs font-semibold text-teal-100 mt-1 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-teal-300">schedule</span>
+                  <span id="heroAutoTimeVal">Pukul 14.15 WIB • Tuntas Tepat Waktu</span>
+                </span>
+              </div>
+            </div>
+            <span id="heroAutoStatusBadge" class="px-3 py-1 rounded-xl text-[10.5px] font-black bg-emerald-400 text-emerald-950 border border-emerald-300 shadow-xs shrink-0 flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs">verified</span>
+              <span>COMPLETED</span>
+            </span>
+          </div>
+          <div class="pt-2 border-t border-teal-800/80 flex items-center justify-between text-[11px] text-teal-200 flex-wrap gap-1">
+            <span class="flex items-center gap-1">
+              <span class="material-symbols-outlined text-xs text-amber-400">bolt</span>
+              <span>Penilaian otomatis sistem FINCESTEM berdasarkan waktu submit siswa</span>
+            </span>
+            <span id="heroAutoPillarFocus" class="text-amber-300 font-extrabold">Bobot 4 Pilar 25%</span>
+          </div>
+        </div>
+
+        <!-- 4 PILAR FINCESTEM (STATIS BERSIH DENGAN NILAI OTOMATIS) -->
+        <div class="flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-[#006a61]">balance</span>
+              <span>Matriks Capaian 4 Pilar FINCESTEM</span>
+            </span>
+            <span class="text-[10px] font-bold text-slate-500">Bobot Seimbang @ 25%</span>
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <!-- 1. Financial -->
+            <div id="cardFinancialGrade" class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex flex-col gap-0.5 transition-all">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-extrabold text-amber-900">1. Financial</span>
+                <span id="badgeFocusFinancial" class="hidden text-[8.5px] px-1 py-0.2 rounded bg-amber-200 text-amber-950 font-black">Fokus</span>
+              </div>
+              <span id="valDisplayFin" class="text-xl font-black text-amber-950">100</span>
+              <span id="descFinancialGrade" class="text-[9.5px] text-amber-800/80 truncate">Budgeting Kas</span>
+            </div>
+            <!-- 2. Culture -->
+            <div id="cardCultureGrade" class="p-2.5 rounded-xl bg-purple-50 border border-purple-200 flex flex-col gap-0.5 transition-all">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-extrabold text-purple-900">2. Culture</span>
+                <span id="badgeFocusCulture" class="hidden text-[8.5px] px-1 py-0.2 rounded bg-purple-200 text-purple-950 font-black">Fokus</span>
+              </div>
+              <span id="valDisplayCul" class="text-xl font-black text-purple-950">100</span>
+              <span id="descCultureGrade" class="text-[9.5px] text-purple-800/80 truncate">Kearifan Budaya</span>
+            </div>
+            <!-- 3. Exploration -->
+            <div id="cardExplorationGrade" class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col gap-0.5 transition-all">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-extrabold text-emerald-900">3. Exploration</span>
+                <span id="badgeFocusExploration" class="hidden text-[8.5px] px-1 py-0.2 rounded bg-emerald-200 text-emerald-950 font-black">Fokus</span>
+              </div>
+              <span id="valDisplayExp" class="text-xl font-black text-emerald-950">100</span>
+              <span id="descExplorationGrade" class="text-[9.5px] text-emerald-800/80 truncate">Observasi Geologi</span>
+            </div>
+            <!-- 4. STEM -->
+            <div id="cardSTEMGrade" class="p-2.5 rounded-xl bg-blue-50 border border-blue-200 flex flex-col gap-0.5 transition-all">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-extrabold text-blue-900">4. STEM</span>
+                <span id="badgeFocusSTEM" class="hidden text-[8.5px] px-1 py-0.2 rounded bg-blue-200 text-blue-950 font-black">Fokus</span>
+              </div>
+              <span id="valDisplayStem" class="text-xl font-black text-blue-950">100</span>
+              <span id="descSTEMGrade" class="text-[9.5px] text-blue-800/80 truncate">Sains Terapan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- UMPAN BALIK / FEEDBACK PEDAGOGIS OTOMATIS -->
+        <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200 flex flex-col gap-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-[#006a61] flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">chat</span>
+              <span>Umpan Balik / Feedback Pedagogis Otomatis:</span>
+            </span>
+            <button type="button" onclick="toggleFasilManualEdit()" class="text-[10.5px] font-bold text-teal-800 hover:text-teal-950 flex items-center gap-1 cursor-pointer">
+              <span class="material-symbols-outlined text-xs">edit_note</span>
+              <span>Sesuaikan Manual</span>
+            </button>
+          </div>
+          <p id="displayAutoFeedbackText" class="text-xs text-slate-700 leading-relaxed italic bg-white p-2.5 rounded-xl border border-teal-100">
+            "Memuat umpan balik otomatis..."
+          </p>
+        </div>
+
+        <!-- PANEL EDIT MANUAL / DISPENSASI KHUSUS (COLLAPSIBLE / TERSEMBUNYI SECARA DEFAULT) -->
+        <div id="sectionManualGradingOverride" class="hidden flex flex-col gap-3 p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black text-amber-950 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm text-amber-700">tune</span>
+              <span>Penyesuaian Nilai Manual (Dispensasi Guru)</span>
+            </span>
+            <button type="button" onclick="toggleFasilManualEdit()" class="text-[10px] text-amber-700 hover:text-amber-900 font-bold">Tutup Panel</button>
+          </div>
+
+          <!-- Input Manual 4 Pilar -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <div>
+              <label class="block text-[10px] font-bold text-amber-900 mb-0.5">Financial</label>
+              <input id="gradeFinancial" type="number" min="0" max="100" placeholder="0-100" class="w-full px-2 py-1.5 rounded-lg border border-amber-300 bg-white text-center font-bold text-xs outline-none">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-purple-900 mb-0.5">Culture</label>
+              <input id="gradeCulture" type="number" min="0" max="100" placeholder="0-100" class="w-full px-2 py-1.5 rounded-lg border border-purple-300 bg-white text-center font-bold text-xs outline-none">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-emerald-900 mb-0.5">Exploration</label>
+              <input id="gradeExploration" type="number" min="0" max="100" placeholder="0-100" class="w-full px-2 py-1.5 rounded-lg border border-emerald-300 bg-white text-center font-bold text-xs outline-none">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-blue-900 mb-0.5">STEM</label>
+              <input id="gradeSTEM" type="number" min="0" max="100" placeholder="0-100" class="w-full px-2 py-1.5 rounded-lg border border-blue-300 bg-white text-center font-bold text-xs outline-none">
+            </div>
+          </div>
+
+          <!-- Radio Status Penilaian -->
+          <div>
+            <label class="block text-[10.5px] font-bold text-slate-700 mb-1">Status Penilaian:</label>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+              <label class="p-1.5 rounded-lg border flex items-center gap-1.5 cursor-pointer bg-white text-[10.5px]">
+                <input type="radio" name="evalStatusRadio" id="statusRadioCompleted" value="completed" checked class="text-emerald-600 focus:ring-0">
+                <span class="font-bold text-emerald-900">Completed</span>
+              </label>
+              <label class="p-1.5 rounded-lg border flex items-center gap-1.5 cursor-pointer bg-white text-[10.5px]">
+                <input type="radio" name="evalStatusRadio" id="statusRadioReviewed" value="reviewed" class="text-blue-600 focus:ring-0">
+                <span class="font-bold text-blue-900">Reviewed</span>
+              </label>
+              <label class="p-1.5 rounded-lg border flex items-center gap-1.5 cursor-pointer bg-white text-[10.5px]">
+                <input type="radio" name="evalStatusRadio" id="statusRadioRevision" value="revision" class="text-rose-600 focus:ring-0">
+                <span class="font-bold text-rose-900">Revision</span>
+              </label>
+              <label class="p-1.5 rounded-lg border flex items-center gap-1.5 cursor-pointer bg-white text-[10.5px]">
+                <input type="radio" name="evalStatusRadio" id="statusRadioSubmitted" value="submitted" class="text-amber-600 focus:ring-0">
+                <span class="font-bold text-amber-900">Submitted</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Textarea Feedback Manual -->
+          <div>
+            <label class="block text-[10.5px] font-bold text-slate-700 mb-1">Edit Feedback:</label>
+            <textarea id="gradeFeedbackInput" rows="2" placeholder="Catatan umpan balik..." class="w-full px-3 py-1.5 rounded-xl border border-slate-300 text-xs bg-white outline-none focus:border-[#006a61]"></textarea>
+          </div>
+
+          <div class="flex justify-end pt-1">
+            <button type="button" onclick="submitGrading()" class="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs shadow-xs flex items-center gap-1.5 cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-sm">save</span>
+              <span>Simpan Penyesuaian Manual</span>
+            </button>
+          </div>
         </div>
 
         <!-- PRATINJAU JAWABAN LKPD / BUDGETING PLAN SISWA -->
         <div id="modalGradingLkpdPreview" class="empty:hidden"></div>
-        <div class="p-3 rounded-2xl bg-surface-container-low border border-outline-variant/30 flex flex-col gap-2">
+
+        <!-- FOTO DOKUMENTASI & VERIFIKASI GEOTAG -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-1.5">
               <span class="material-symbols-outlined text-base text-[#006a61]">photo_camera</span>
-              <span class="font-extrabold text-xs text-on-surface">Foto Dokumentasi Sesi Ini</span>
+              <span class="font-extrabold text-xs text-slate-800">Foto Dokumentasi Lapangan Sesi Ini</span>
             </div>
-            <span class="text-[10px] text-on-surface-variant font-medium">Ketuk foto untuk zoom 2 jari</span>
-          </div>
-
-          <!-- Petunjuk Penilaian Otentikasi -->
-          <div class="text-[10.5px] text-slate-600 bg-white/90 p-2 rounded-xl border border-slate-200 leading-tight">
-            💡 <b>Pedoman Fasilitator:</b> Nilai foto berstempel <b>📍 Kamera Geotag</b> sebagai kehadiran live di lapangan, dan foto <b>📁 Galeri</b> sebagai unggahan album.
+            <span class="text-[10px] text-slate-500 font-medium">Ketuk foto untuk zoom</span>
           </div>
 
           <div id="modalGradingPhotoContainer" class="flex flex-col gap-1.5">
@@ -611,128 +794,23 @@
             <!-- Populated dynamically based on student category & photo geotag status -->
           </div>
         </div>
-
-        <!-- PILIHAN 4 STATUS PENILAIAN (PERSYARATAN UTAMA) -->
-        <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Status Penilaian Tugas:</label>
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            <label class="p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all has-[:checked]:border-emerald-600 has-[:checked]:bg-emerald-50 has-[:checked]:ring-1 has-[:checked]:ring-emerald-500">
-              <input type="radio" name="evalStatusRadio" id="statusRadioCompleted" value="completed" checked class="text-emerald-600 focus:ring-0">
-              <div class="flex flex-col">
-                <span class="font-extrabold text-emerald-900">Completed</span>
-                <span class="text-[10px] text-emerald-700 font-medium">Lulus &amp; Buka Day N+1</span>
-              </div>
-            </label>
-
-            <label class="p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all has-[:checked]:border-blue-600 has-[:checked]:bg-blue-50 has-[:checked]:ring-1 has-[:checked]:ring-blue-500">
-              <input type="radio" name="evalStatusRadio" id="statusRadioReviewed" value="reviewed" class="text-blue-600 focus:ring-0">
-              <div class="flex flex-col">
-                <span class="font-extrabold text-blue-900">Reviewed</span>
-                <span class="text-[10px] text-blue-700 font-medium">Telah Diperiksa</span>
-              </div>
-            </label>
-
-            <label class="p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all has-[:checked]:border-rose-600 has-[:checked]:bg-rose-50 has-[:checked]:ring-1 has-[:checked]:ring-rose-500">
-              <input type="radio" name="evalStatusRadio" id="statusRadioRevision" value="revision" class="text-rose-600 focus:ring-0">
-              <div class="flex flex-col">
-                <span class="font-extrabold text-rose-900">Revision</span>
-                <span class="text-[10px] text-rose-700 font-medium">Perlu Perbaikan</span>
-              </div>
-            </label>
-
-            <label class="p-2.5 rounded-xl border flex items-center gap-2 cursor-pointer transition-all has-[:checked]:border-amber-600 has-[:checked]:bg-amber-50 has-[:checked]:ring-1 has-[:checked]:ring-amber-500">
-              <input type="radio" name="evalStatusRadio" id="statusRadioSubmitted" value="submitted" class="text-amber-600 focus:ring-0">
-              <div class="flex flex-col">
-                <span class="font-extrabold text-amber-900">Submitted</span>
-                <span class="text-[10px] text-amber-700 font-medium">Menunggu Koreksi</span>
-              </div>
-            </label>
-          </div>
-        </div>
-
-        <!-- BANNER PEDOMAN MATRIKS KESEIMBANGAN 4 PILAR -->
-        <div id="modalGradingPillarFocusBanner" class="p-3 rounded-2xl bg-teal-500/10 border border-teal-500/30 flex flex-col gap-1 transition-all">
-          <div class="flex items-center justify-between gap-1 flex-wrap">
-            <span class="font-extrabold text-xs text-teal-950 flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-teal-700">stars</span>
-              <span id="modalPillarFocusTitle">Matriks 4 Pilar</span>
-            </span>
-            <span id="modalPillarFocusBadge" class="px-2 py-0.5 rounded-full text-[10px] font-black bg-teal-700 text-white">Bobot 25%</span>
-          </div>
-          <p id="modalPillarFocusDesc" class="text-[11px] text-teal-900 leading-snug">
-            Pedoman penilaian instrumen &amp; LKPD harian siswa.
-          </p>
-        </div>
-
-        <!-- Rubrik 4 Pilar -->
-        <div class="grid grid-cols-2 gap-2 pt-1">
-          <div id="cardFinancialGrade" class="p-2.5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col gap-1 transition-all">
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-amber-900 flex items-center gap-1">
-                <span>1. Financial</span>
-                <span id="badgeFocusFinancial" class="hidden text-[9px] px-1 rounded bg-amber-200 text-amber-900 font-black uppercase">Fokus</span>
-              </span>
-              <input id="gradeFinancial" type="number" min="0" max="100" placeholder="0-100" class="w-14 px-1.5 py-0.5 rounded-lg border border-amber-400 bg-white text-right font-bold text-xs">
-            </div>
-            <span id="descFinancialGrade" class="text-[9.5px] text-on-surface-variant">Struktur biaya &amp; budgeting kas</span>
-          </div>
-
-          <div id="cardCultureGrade" class="p-2.5 rounded-2xl bg-purple-50 border border-purple-200 flex flex-col gap-1 transition-all">
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-purple-900 flex items-center gap-1">
-                <span>2. Culture</span>
-                <span id="badgeFocusCulture" class="hidden text-[9px] px-1 rounded bg-purple-200 text-purple-900 font-black uppercase">Fokus</span>
-              </span>
-              <input id="gradeCulture" type="number" min="0" max="100" placeholder="0-100" class="w-14 px-1.5 py-0.5 rounded-lg border border-purple-400 bg-white text-right font-bold text-xs">
-            </div>
-            <span id="descCultureGrade" class="text-[9.5px] text-on-surface-variant">Kearifan lokal &amp; karakter adat</span>
-          </div>
-
-          <div id="cardExplorationGrade" class="p-2.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex flex-col gap-1 transition-all">
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-emerald-900 flex items-center gap-1">
-                <span>3. Exploration</span>
-                <span id="badgeFocusExploration" class="hidden text-[9px] px-1 rounded bg-emerald-200 text-emerald-900 font-black uppercase">Fokus</span>
-              </span>
-              <input id="gradeExploration" type="number" min="0" max="100" placeholder="0-100" class="w-14 px-1.5 py-0.5 rounded-lg border border-emerald-400 bg-white text-right font-bold text-xs">
-            </div>
-            <span id="descExplorationGrade" class="text-[9.5px] text-on-surface-variant">Geomorfologi, bahari &amp; observasi</span>
-          </div>
-
-          <div id="cardSTEMGrade" class="p-2.5 rounded-2xl bg-blue-50 border border-blue-200 flex flex-col gap-1 transition-all">
-            <div class="flex justify-between items-center">
-              <span class="font-bold text-blue-900 flex items-center gap-1">
-                <span>4. STEM</span>
-                <span id="badgeFocusSTEM" class="hidden text-[9px] px-1 rounded bg-blue-200 text-blue-900 font-black uppercase">Fokus</span>
-              </span>
-              <input id="gradeSTEM" type="number" min="0" max="100" placeholder="0-100" class="w-14 px-1.5 py-0.5 rounded-lg border border-blue-400 bg-white text-right font-bold text-xs">
-            </div>
-            <span id="descSTEMGrade" class="text-[9.5px] text-on-surface-variant">Sains, rekayasa &amp; teknologi</span>
-          </div>
-        </div>
-
-        <!-- Feedback & Komentar Guru -->
-        <div>
-          <label class="block text-xs font-bold text-on-surface mb-1">Feedback &amp; Komentar Pembina:</label>
-          <textarea id="gradeFeedbackInput" rows="3" placeholder="Tuliskan umpan balik konstruktif untuk peserta didik..." class="w-full px-3 py-2 rounded-xl border border-outline-variant/50 text-xs leading-relaxed focus:border-[#006a61] outline-none"></textarea>
-        </div>
       </div>
 
-      <div class="flex flex-col gap-2 pt-2 border-t border-surface-container">
-        <button type="button" onclick="openFasilUnlockFromGradingModal()" class="w-full py-2 px-3 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-2xs">
+      <!-- Action Footer -->
+      <div class="flex flex-col sm:flex-row items-center gap-2 pt-3 border-t border-slate-200">
+        <button type="button" onclick="openFasilUnlockFromGradingModal()" class="w-full sm:flex-1 py-2.5 px-3 rounded-2xl bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300/80 font-bold text-xs transition-all flex items-center justify-center gap-2 cursor-pointer shadow-2xs">
           <span class="material-symbols-outlined text-base text-amber-700">lock_open</span>
-          <span>Buka Kunci Tugas Day Ini (Izinkan Siswa Edit Ulang)</span>
+          <div class="flex flex-col items-center leading-tight">
+            <span class="font-extrabold text-xs text-amber-950">Buka Kunci / Dispensasi Siswa</span>
+            <span class="text-[9.5px] font-semibold text-amber-700">(Izin Koreksi Guru)</span>
+          </div>
         </button>
-        <div class="flex items-center gap-2">
-          <button onclick="closeGradingModal()" class="flex-1 py-2.5 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-bold text-xs transition-all cursor-pointer">
-            Batal
-          </button>
-          <button onclick="submitGrading()" class="flex-1 py-2.5 rounded-xl bg-[#006a61] hover:bg-[#004f48] text-white font-bold text-xs transition-all flex items-center justify-center gap-1.5 shadow-md cursor-pointer">
-            <span class="material-symbols-outlined text-sm">send</span>
-            <span>Simpan Evaluasi</span>
-          </button>
-        </div>
+        <button onclick="closeGradingModal()" class="w-full sm:w-44 py-3 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-xs transition-all flex items-center justify-center gap-1.5 shadow-sm cursor-pointer">
+          <span class="material-symbols-outlined text-base">check_circle</span>
+          <span>Selesai &amp; Tutup</span>
+        </button>
       </div>
+
     </div>
   </div>
 
@@ -1337,18 +1415,18 @@
             <p class="text-slate-700 pl-5">Obat Wajib: <strong>${health.medication || '-'}</strong> | WA Ortu: <strong class="text-emerald-800">${health.emergency_phone || '-'}</strong></p>
           `;
         } else {
-          healthAlertEl.className = 'mt-2 p-2.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs flex items-center justify-between gap-2';
+          healthAlertEl.className = 'mt-1.5 p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-xs flex items-center justify-between gap-2';
           healthAlertEl.innerHTML = `
-            <span class="text-emerald-950 font-bold flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-emerald-600 text-base">check_circle</span>
-              <span>Kondisi Fisik: <strong>Sehat</strong> (Gol. Darah: ${health.blood_type || 'Belum Tahu'})</span>
+            <span class="text-emerald-950 font-bold flex items-center gap-1.5 text-[11px]">
+              <span class="material-symbols-outlined text-emerald-600 text-sm">check_circle</span>
+              <span>Fisik Sehat (Gol. Darah: <strong>${health.blood_type || '-'}</strong>)</span>
             </span>
-            <span class="text-[11px] text-slate-600">WA Darurat: <strong>${health.emergency_phone || '-'}</strong></span>
+            ${health.emergency_phone ? `<span class="text-[10.5px] text-slate-600">WA Ortu: <strong>${health.emergency_phone}</strong></span>` : ''}
           `;
         }
       } else {
-        healthAlertEl.className = 'mt-2 p-2 rounded-xl bg-slate-50 border border-slate-200 text-[11px] text-slate-500 flex items-center gap-1';
-        healthAlertEl.innerHTML = '<span class="material-symbols-outlined text-sm text-slate-400">info</span><span>Siswa belum melengkapi formulir informasi kesehatan mandiri.</span>';
+        healthAlertEl.className = 'hidden';
+        healthAlertEl.innerHTML = '';
       }
     }
 
@@ -1512,17 +1590,68 @@
             } catch(e) {}
           }
 
+          let currentScore = autoScore.score || 95;
+          let currentStars = autoScore.stars || 5;
+          let currentPred = autoScore.predicate || 'Sangat Baik (Mahir)';
+          let currentTime = autoScore.time_formatted || 'Tuntas Tepat Waktu';
+          let currentStatus = 'completed';
+
           if (prog && prog.records) {
             const r = prog.records.find(x => parseInt(x.day_number) === dayNum);
             if (r) {
+              if (r.score) currentScore = parseFloat(r.score);
+              if (r.stars) currentStars = parseInt(r.stars);
+              if (r.predicate) currentPred = r.predicate;
               if (r.score_financial !== undefined && r.score_financial !== null) fin = r.score_financial;
               if (r.score_culture !== undefined && r.score_culture !== null) cul = r.score_culture;
               if (r.score_exploration !== undefined && r.score_exploration !== null) exp = r.score_exploration;
               if (r.score_stem !== undefined && r.score_stem !== null) stem = r.score_stem;
               if (r.feedback) fb = r.feedback;
               if (r.status) st = r.status;
+              currentStatus = st;
+              if (r.updated_at) {
+                try {
+                  const dt = new Date(r.updated_at);
+                  if (!isNaN(dt.getTime())) {
+                    const utc = dt.getTime() + (dt.getTimezoneOffset() * 60000);
+                    const wib = new Date(utc + (3600000 * 7));
+                    currentTime = `${String(wib.getHours()).padStart(2,'0')}:${String(wib.getMinutes()).padStart(2,'0')} WIB`;
+                  }
+                } catch(e) {}
+              }
             }
           }
+
+          // Update Tampilan Hero Card Otomatis
+          const elScore = document.getElementById('heroAutoScoreNumber');
+          if (elScore) elScore.textContent = currentScore;
+          const elStars = document.getElementById('heroAutoStars');
+          if (elStars) elStars.textContent = '⭐'.repeat(currentStars) + '☆'.repeat(Math.max(0, 5 - currentStars));
+          const elPred = document.getElementById('heroAutoPredicate');
+          if (elPred) elPred.textContent = currentPred;
+          const elTime = document.getElementById('heroAutoTimeVal');
+          if (elTime) elTime.textContent = `${currentTime} • ${autoScore.reason || 'Sesuai Batas Jam Kegiatan'}`;
+          const elStatus = document.getElementById('heroAutoStatusBadge');
+          if (elStatus) {
+            elStatus.textContent = currentStatus.toUpperCase();
+            if (currentStatus === 'completed') elStatus.className = 'px-3 py-1 rounded-xl text-[10.5px] font-black bg-emerald-400 text-emerald-950 border border-emerald-300 shadow-xs shrink-0 flex items-center gap-1';
+            else if (currentStatus === 'revision') elStatus.className = 'px-3 py-1 rounded-xl text-[10.5px] font-black bg-rose-400 text-rose-950 border border-rose-300 shadow-xs shrink-0 flex items-center gap-1';
+            else elStatus.className = 'px-3 py-1 rounded-xl text-[10.5px] font-black bg-amber-400 text-amber-950 border border-amber-300 shadow-xs shrink-0 flex items-center gap-1';
+          }
+
+          // Update 4 Pilar Card Stat Display
+          const elFin = document.getElementById('valDisplayFin');
+          if (elFin) elFin.textContent = fin;
+          const elCul = document.getElementById('valDisplayCul');
+          if (elCul) elCul.textContent = cul;
+          const elExp = document.getElementById('valDisplayExp');
+          if (elExp) elExp.textContent = exp;
+          const elStem = document.getElementById('valDisplayStem');
+          if (elStem) elStem.textContent = stem;
+
+          // Update Feedback Text Display
+          const elFb = document.getElementById('displayAutoFeedbackText');
+          if (elFb) elFb.textContent = `"${fb}"`;
 
           document.getElementById('gradeFinancial').value = fin;
           document.getElementById('gradeCulture').value = cul;
@@ -1817,10 +1946,20 @@
           facilitator_name: fasilName
         }, function() {
           const statusText = status === 'completed' ? 'Completed (Lulus & Lanjut Day Berikutnya)' : status.toUpperCase();
-          FincestemCore.ui.toast(`Nilai ${avg}/100 (${statusText}) berhasil disimpan untuk siswa!`, 'success');
-          closeGradingModal();
+          FincestemCore.ui.toast(`Penyesuaian manual nilai ${avg}/100 (${statusText}) berhasil disimpan!`, 'success');
+          loadStudentDayEvaluation(targetNisn, dayNum);
           renderAssignedStudentList();
         });
+      }
+    }
+
+    function toggleFasilManualEdit() {
+      const sec = document.getElementById('sectionManualGradingOverride');
+      if (!sec) return;
+      if (sec.classList.contains('hidden')) {
+        sec.classList.remove('hidden');
+      } else {
+        sec.classList.add('hidden');
       }
     }
 
@@ -2049,38 +2188,60 @@
 
     // FUNGSI REKOMENDASI PENILAIAN OTOMATIS BINTANG 1 VS BINTANG 5
     function applyStarRecommendation(stars, reason) {
+      const score = (stars === 1) ? 60 : 100;
+      const status = (stars === 1) ? 'revision' : 'completed';
+      const pred = (stars === 1) ? 'Perlu Perbaikan (Berkembang)' : 'Sangat Baik (Mahir)';
+
+      document.getElementById('gradeFinancial').value = score;
+      document.getElementById('gradeCulture').value = score;
+      document.getElementById('gradeExploration').value = score;
+      document.getElementById('gradeSTEM').value = score;
+
+      const elScore = document.getElementById('heroAutoScoreNumber');
+      if (elScore) elScore.textContent = score;
+      const elStars = document.getElementById('heroAutoStars');
+      if (elStars) elStars.textContent = '⭐'.repeat(stars) + '☆'.repeat(Math.max(0, 5 - stars));
+      const elPred = document.getElementById('heroAutoPredicate');
+      if (elPred) elPred.textContent = pred;
+
+      const elFin = document.getElementById('valDisplayFin');
+      if (elFin) elFin.textContent = score;
+      const elCul = document.getElementById('valDisplayCul');
+      if (elCul) elCul.textContent = score;
+      const elExp = document.getElementById('valDisplayExp');
+      if (elExp) elExp.textContent = score;
+      const elStem = document.getElementById('valDisplayStem');
+      if (elStem) elStem.textContent = score;
+
+      const radio = document.querySelector(`input[name="evalStatusRadio"][value="${status}"]`);
+      if (radio) radio.checked = true;
+
+      const dayNum = parseInt(document.getElementById('gradeTargetDay').value) || 1;
+      const allStu = window.FincestemMasterStudents || [];
+      const targetNisn = document.getElementById('modalGradingTargetNisn').value;
+      const currentStu = allStu.find(s => String(s.nisn).trim() === String(targetNisn).trim());
+      const isFieldTrip = currentStu 
+        ? ((currentStu.zone || '').toUpperCase().includes('LUAR') || currentStu.is_field_trip === true)
+        : true;
+
+      let fbText = '';
       if (stars === 1) {
-        document.getElementById('gradeFinancial').value = 60;
-        document.getElementById('gradeCulture').value = 60;
-        document.getElementById('gradeExploration').value = 60;
-        document.getElementById('gradeSTEM').value = 60;
-
-        const radioRevision = document.querySelector('input[name="evalStatusRadio"][value="revision"]');
-        if (radioRevision) radioRevision.checked = true;
-
         if (reason === 'outside_okut') {
-          document.getElementById('gradeFeedbackInput').value = 
-            'Rekomendasi Bintang 1 (Penalti Lokasi): Foto geotagging terdeteksi berada di luar wilayah resmi Kabupaten OKU Timur tanpa dispensasi. Siswa Non-Field Trip wajib melaksanakan kegiatan riset di dalam wilayah OKU Timur.';
-          FincestemCore.ui.toast('Rekomendasi Bintang 1 (Penalti Luar OKU Timur / Skor 60) diterapkan!', 'warning');
+          fbText = 'Rekomendasi Bintang 1 (Penalti Lokasi): Foto geotagging terdeteksi berada di luar wilayah resmi Kabupaten OKU Timur tanpa dispensasi. Siswa Non-Field Trip wajib melaksanakan kegiatan riset di dalam wilayah OKU Timur.';
         } else {
-          document.getElementById('gradeFeedbackInput').value = 
-            'Rekomendasi Bintang 1 (Penalti Dokumentasi): Foto riset diunggah via Galeri tanpa stempel GPS Geotagging live di lokasi kegiatan. Harap lakukan dokumentasi ulang menggunakan Kamera HP ber-geotag di lokasi riset.';
-          FincestemCore.ui.toast('Rekomendasi Bintang 1 (Skor 60 / Status Revision) berhasil diterapkan ke form!', 'warning');
+          fbText = 'Rekomendasi Bintang 1 (Penalti Dokumentasi): Foto riset diunggah via Galeri tanpa stempel GPS Geotagging live di lokasi kegiatan. Harap lakukan dokumentasi ulang menggunakan Kamera HP ber-geotag di lokasi riset.';
         }
-      } else if (stars === 5) {
-        document.getElementById('gradeFinancial').value = 90;
-        document.getElementById('gradeCulture').value = 90;
-        document.getElementById('gradeExploration').value = 90;
-        document.getElementById('gradeSTEM').value = 90;
-
-        const radioCompleted = document.querySelector('input[name="evalStatusRadio"][value="completed"]');
-        if (radioCompleted) radioCompleted.checked = true;
-
-        document.getElementById('gradeFeedbackInput').value = 
-          'Rekomendasi Bintang 5: Dokumentasi foto kamera ber-geotagging lengkap dan otentik di lapangan. Kerja sama tim dan analisis data sangat baik.';
-
-        FincestemCore.ui.toast('Rekomendasi Bintang 5 (Skor 90 / Status Completed) berhasil diterapkan ke form!', 'success');
+      } else {
+        fbText = (FincestemCore.feedback && FincestemCore.feedback.generateThemedFeedback)
+          ? FincestemCore.feedback.generateThemedFeedback(dayNum, 5, isFieldTrip, score)
+          : 'Dokumentasi foto kamera ber-geotagging lengkap dan otentik di rute lapangan. Kinerja dan analisis data sangat baik.';
       }
+
+      document.getElementById('gradeFeedbackInput').value = fbText;
+      const elFb = document.getElementById('displayAutoFeedbackText');
+      if (elFb) elFb.textContent = `"${fbText}"`;
+
+      FincestemCore.ui.toast(`Rekomendasi Bintang ${stars} (Skor ${score} / Status ${status.toUpperCase()}) diterapkan!`, stars === 1 ? 'warning' : 'success');
     }
 
     // FUNGSI INSPEKSI DOKUMENTASI SISWA OLEH FASILITATOR
