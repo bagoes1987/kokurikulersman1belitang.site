@@ -2045,7 +2045,9 @@ const FincestemCore = {
           idVariations.forEach(id => {
             if (comp.materi) {
               localStorage.removeItem(`fincestem_materi_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_materi_nft_day${d}_` + id);
               localStorage.removeItem(`fincestem_materi_day${d}_` + id);
+              localStorage.removeItem(`fincestem_draft_nft_materi_d${d}_` + id);
               if (d === 2) {
                 localStorage.removeItem('fincestem_materi_ft_day2_akpol_' + id);
                 localStorage.removeItem('fincestem_materi_ft_day2_lawang_' + id);
@@ -2067,7 +2069,9 @@ const FincestemCore = {
             }
             if (comp.lkpd) {
               localStorage.removeItem(`fincestem_lkpd_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_lkpd_nft_day${d}_` + id);
               localStorage.removeItem(`fincestem_lkpd_day${d}_` + id);
+              localStorage.removeItem(`fincestem_draft_nft_lkpd_d${d}_` + id);
               if (d === 2) {
                 localStorage.removeItem('fincestem_lkpd_ft_day2_akpol_' + id);
                 localStorage.removeItem('fincestem_lkpd_ft_day2_lawang_' + id);
@@ -2090,10 +2094,12 @@ const FincestemCore = {
             }
             if (comp.asesmen) {
               localStorage.removeItem(`fincestem_asesmen_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_asesmen_nft_day${d}_` + id);
               localStorage.removeItem(`fincestem_asesmen_day${d}_` + id);
             }
             if (comp.dokumentasi) {
               localStorage.removeItem(`fincestem_dok_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_dok_nft_day${d}_` + id);
               localStorage.removeItem(`fincestem_dok_day${d}_` + id);
               if (d === 2) {
                 localStorage.removeItem('fincestem_dok_ft_day2_akpol_' + id);
@@ -2109,6 +2115,7 @@ const FincestemCore = {
             }
             if (comp.refleksi) {
               localStorage.removeItem(`fincestem_refleksi_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_refleksi_nft_day${d}_` + id);
               localStorage.removeItem(`fincestem_refleksi_day${d}_` + id);
               localStorage.removeItem(`fincestem_refl_ft_day${d}_` + id);
               if (d === 3) {

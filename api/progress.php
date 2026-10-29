@@ -578,8 +578,12 @@ if ($method === 'POST') {
                     if ($targetDay === 0) {
                         $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inIds) AND (`title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `title` LIKE '%Gladi%')");
                     } elseif ($targetDay > 0) {
-                        $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inIds) AND `title` LIKE :dtit");
-                        $stmtLkpd->execute([':dtit' => "%Day {$targetDay}%"]);
+                        $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inIds) AND (`title` LIKE :dtit OR `title` LIKE :dalt OR `pillar` LIKE :dpil)");
+                        $stmtLkpd->execute([
+                            ':dtit' => "%Day {$targetDay}%",
+                            ':dalt' => "%Hari {$targetDay}%",
+                            ':dpil' => "%{$targetDay}%"
+                        ]);
                     } else {
                         $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inIds)");
                     }
@@ -801,8 +805,12 @@ if ($method === 'POST') {
                         if ($targetDay === 0) {
                             $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inSql) AND (`title` LIKE '%Day 0%' OR `title` LIKE '%Simulasi%' OR `title` LIKE '%Gladi%')");
                         } elseif ($targetDay > 0) {
-                            $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inSql) AND `title` LIKE :dtit");
-                            $stmtLkpd->execute([':dtit' => "%Day {$targetDay}%"]);
+                            $stmtLkpd = $pdo->prepare("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inSql) AND (`title` LIKE :dtit OR `title` LIKE :dalt OR `pillar` LIKE :dpil)");
+                            $stmtLkpd->execute([
+                                ':dtit' => "%Day {$targetDay}%",
+                                ':dalt' => "%Hari {$targetDay}%",
+                                ':dpil' => "%{$targetDay}%"
+                            ]);
                         } else {
                             $pdo->exec("DELETE FROM `lkpd_submissions` WHERE `submitted_by_nisn` IN ($inSql)");
                         }

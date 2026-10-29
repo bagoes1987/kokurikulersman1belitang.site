@@ -1617,29 +1617,90 @@
         </div>
 
         <!-- STEP 2: PILIH CAKUPAN HARI (SCOPE) -->
-        <div class="flex flex-col gap-2 pt-2 border-t border-slate-100">
-          <span class="text-xs font-black uppercase text-slate-400 tracking-wider">Langkah 2: Cakupan Hari (Scope)</span>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        <div class="flex flex-col gap-2.5 pt-2 border-t border-slate-100">
+          <div class="flex items-center justify-between flex-wrap gap-1">
+            <span class="text-xs font-black uppercase text-slate-400 tracking-wider">Langkah 2: Cakupan Hari (Scope)</span>
+            <span class="text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200" id="badgeSelectedResetDay">Mode: Reset Per-Day (Day 1)</span>
+          </div>
+
+          <!-- OPSI UTAMA: RESET PER-DAY (HANYA 1 HARI SPESIFIK) -->
+          <label class="p-3.5 rounded-2xl border-2 border-teal-600 bg-teal-50/40 flex flex-col gap-2.5 cursor-pointer transition-all has-[:checked]:border-teal-700 has-[:checked]:bg-teal-50/70 has-[:checked]:shadow-xs">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5">
+                <input type="radio" name="resetScopeRadio" id="scopeRadioPerDay" value="per_day" checked onchange="updateResetScopeUI()" class="text-teal-700 focus:ring-0 w-4 h-4">
+                <span class="text-xs sm:text-sm font-black text-teal-950 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-teal-700">event_repeat</span>
+                  <span>Reset Khusus Per-Day (Hanya 1 Hari Spesifik)</span>
+                </span>
+              </div>
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-teal-700 text-white shadow-2xs">
+                Aman &bull; Hari Lain Tidak Berubah
+              </span>
+            </div>
+            
+            <p class="text-[11px] text-slate-600 leading-relaxed font-medium pl-6">
+              Jika siswa salah mengisi data pada hari tertentu (misal Day 1), <strong>hanya data Day tersebut yang dibersihkan</strong>. Pengerjaan pada hari lainnya (Day 2, 3, dst.) <strong>100% AMAN dan TETAP UTUH</strong>. Berlaku untuk siswa Field Trip maupun Non-Field Trip.
+            </p>
+
+            <!-- SELECTOR HARI INTERAKTIF & PILLS -->
+            <div id="resetPerDaySelectorBox" class="pl-6 flex flex-col gap-2 pt-1 border-t border-teal-200/60 mt-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <label class="text-xs font-bold text-slate-800 shrink-0">Pilih Target Hari:</label>
+                <select id="resetSelectTargetDay" onchange="handleResetDayChange()" class="px-3 py-1.5 rounded-xl border border-teal-500 text-xs font-black bg-white text-teal-950 outline-none focus:ring-2 focus:ring-teal-500 shadow-2xs cursor-pointer">
+                  <option value="1" selected>Day 1</option>
+                  <option value="2">Day 2</option>
+                  <option value="3">Day 3</option>
+                  <option value="4">Day 4</option>
+                  <option value="5">Day 5</option>
+                  <option value="6">Day 6</option>
+                  <option value="7">Day 7</option>
+                  <option value="0">Day 0 (Gladi Bersih / Uji Coba)</option>
+                </select>
+                <span class="text-[11px] text-slate-500 italic" id="resetTargetDayHint">(Hanya data Day 1 yang akan di-reset)</span>
+              </div>
+
+              <!-- Quick Pills -->
+              <div class="flex flex-wrap items-center gap-1.5">
+                <span class="text-[10px] font-bold text-slate-400">Pilih Cepat:</span>
+                <button type="button" onclick="selectResetDayDirect(1)" class="btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-black bg-teal-700 text-white cursor-pointer shadow-2xs" data-day="1">Day 1</button>
+                <button type="button" onclick="selectResetDayDirect(2)" class="btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-teal-50 cursor-pointer" data-day="2">Day 2</button>
+                <button type="button" onclick="selectResetDayDirect(3)" class="btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-teal-50 cursor-pointer" data-day="3">Day 3</button>
+                <button type="button" onclick="selectResetDayDirect(4)" class="btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-teal-50 cursor-pointer" data-day="4">Day 4</button>
+                <button type="button" onclick="selectResetDayDirect(5)" class="btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-teal-50 cursor-pointer" data-day="5">Day 5</button>
+                <button type="button" onclick="selectResetDayDirect(6)" class="btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-teal-50 cursor-pointer" data-day="6">Day 6</button>
+                <button type="button" onclick="selectResetDayDirect(7)" class="btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-teal-50 cursor-pointer" data-day="7">Day 7</button>
+                <button type="button" onclick="selectResetDayDirect(0)" class="btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 hover:bg-amber-200 cursor-pointer" data-day="0">Day 0 (Gladi)</button>
+              </div>
+
+              <!-- Deskripsi Topik Day Aktif -->
+              <div id="resetDayTopicBox" class="p-2.5 rounded-xl bg-white border border-teal-200 flex items-center gap-2 text-xs text-teal-950 font-bold">
+                <span class="material-symbols-outlined text-base text-teal-700 shrink-0">school</span>
+                <span id="resetDayTopicText">Day 1: Literasi Kas Saku &amp; Perjalanan Belitang - Semarang</span>
+              </div>
+            </div>
+          </label>
+
+          <!-- OPSI CADANGAN: DAY UJI COBA ATAU TOTAL SEMUA HARI -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-1">
             <label class="p-3 rounded-2xl border flex items-center gap-2.5 cursor-pointer transition-all has-[:checked]:border-amber-400 has-[:checked]:bg-amber-50/50 has-[:checked]:ring-1 has-[:checked]:ring-amber-400">
-              <input type="radio" name="resetScopeRadio" id="scopeRadioTrial" value="trial_only" checked onchange="updateResetScopeUI()" class="text-amber-500 focus:ring-0">
+              <input type="radio" name="resetScopeRadio" id="scopeRadioTrial" value="trial_only" onchange="updateResetScopeUI()" class="text-amber-500 focus:ring-0">
               <div class="flex flex-col">
                 <span class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
                   <span class="material-symbols-outlined text-sm text-amber-600">model_training</span>
-                  <span>Khusus Day Uji Coba (Day 0) Saja</span>
-                  <span class="px-1.5 py-0.5 rounded-md text-[10px] font-bold bg-amber-200 text-amber-900">Aman</span>
+                  <span>Khusus Day Uji Coba (Day 0)</span>
                 </span>
-                <span class="text-[11px] text-slate-500">Hanya membersihkan data gladi bersih tanpa menyentuh Day 1-7 yang asli</span>
+                <span class="text-[11px] text-slate-500">Hanya membersihkan gladi simulasi tanpa merubah Day 1-7</span>
               </div>
             </label>
 
-            <label class="p-3 rounded-2xl border flex items-center gap-2.5 cursor-pointer transition-all has-[:checked]:border-[#0875D1] has-[:checked]:bg-blue-50/50 has-[:checked]:ring-1 has-[:checked]:ring-[#0875D1]">
-              <input type="radio" name="resetScopeRadio" id="scopeRadioAll" value="all_days" onchange="updateResetScopeUI()" class="text-[#0875D1] focus:ring-0">
+            <label class="p-3 rounded-2xl border flex items-center gap-2.5 cursor-pointer transition-all has-[:checked]:border-rose-500 has-[:checked]:bg-rose-50/50 has-[:checked]:ring-1 has-[:checked]:ring-rose-500">
+              <input type="radio" name="resetScopeRadio" id="scopeRadioAll" value="all_days" onchange="updateResetScopeUI()" class="text-rose-600 focus:ring-0">
               <div class="flex flex-col">
                 <span class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-sm text-[#0875D1]">date_range</span>
-                  <span>Semua Hari (Day 0 s.d. Day 7)</span>
+                  <span class="material-symbols-outlined text-sm text-rose-600">cleaning_services</span>
+                  <span>Semua Hari Sekaligus (Day 0 - Day 7)</span>
                 </span>
-                <span class="text-[11px] text-slate-500">Mereset data seluruh hari kegiatan secara menyeluruh sampai bersih 100%</span>
+                <span class="text-[11px] text-slate-500">Mereset total data siswa ke 0%</span>
               </div>
             </label>
           </div>
@@ -1709,30 +1770,39 @@
 
         <!-- STEP 4: TOMBOL EKSEKUSI RESET -->
         <div class="flex flex-col gap-2.5 pt-3 border-t border-slate-100">
-          <span class="text-xs font-black uppercase text-slate-400 tracking-wider">Langkah 4: Pilih Tombol Eksekusi</span>
+          <div class="flex items-center justify-between flex-wrap gap-1">
+            <span class="text-xs font-black uppercase text-slate-400 tracking-wider">Langkah 4: Pilih Tombol Eksekusi</span>
+            <span class="text-[11px] font-bold text-slate-500">*Dialog konfirmasi akan tampil sebelum eksekusi</span>
+          </div>
           
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-            <!-- Tombol 1: Khusus Day Uji Coba -->
-            <button type="button" onclick="executeResetAction('trial_only')" class="py-3 px-3 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
-              <span class="material-symbols-outlined text-lg">model_training</span>
-              <span>Reset Khusus Day Uji Coba</span>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
+            <!-- Tombol 1: UTAMA - Reset Khusus Per-Day -->
+            <button type="button" id="btnResetPerDayAction" onclick="executeResetAction('per_day')" class="py-3 px-3 rounded-2xl bg-gradient-to-r from-teal-700 to-teal-800 hover:from-teal-800 hover:to-teal-900 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md cursor-pointer border border-teal-600">
+              <span class="material-symbols-outlined text-lg">event_repeat</span>
+              <span id="btnResetPerDayLabel">Reset Khusus Day 1</span>
             </button>
 
             <!-- Tombol 2: Komponen Terpilih -->
-            <button type="button" onclick="executeResetAction('selective')" class="py-3 px-3 rounded-2xl bg-[#0875D1] hover:bg-[#02569b] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
+            <button type="button" onclick="executeResetAction('selective')" class="py-3 px-3 rounded-2xl bg-[#0875D1] hover:bg-[#02569b] active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
               <span class="material-symbols-outlined text-lg">tune</span>
               <span>Reset Komponen Terpilih</span>
             </button>
 
-            <!-- Tombol 3: Total Semua Data ke 0% -->
-            <button type="button" onclick="executeResetAction('total')" class="py-3 px-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
+            <!-- Tombol 3: Khusus Day Uji Coba -->
+            <button type="button" onclick="executeResetAction('trial_only')" class="py-3 px-3 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
+              <span class="material-symbols-outlined text-lg">model_training</span>
+              <span>Reset Day Uji Coba</span>
+            </button>
+
+            <!-- Tombol 4: Total Semua Data ke 0% -->
+            <button type="button" onclick="executeResetAction('total')" class="py-3 px-3 rounded-2xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-xs cursor-pointer">
               <span class="material-symbols-outlined text-lg">cleaning_services</span>
               <span>Reset Total ke 0%</span>
             </button>
           </div>
 
           <p class="text-[11px] text-slate-500 text-center mt-1">
-            *Setiap tindakan reset akan menampilkan dialog konfirmasi rincian sebelum dieksekusi ke server.
+            *Tindakan reset per-day menjamin integritas data: hanya hari yang dipilih yang dikosongkan, hari lainnya 100% aman dan tidak terpengaruh.
           </p>
         </div>
 
@@ -2239,22 +2309,50 @@
           </button>
         </div>
 
-        <!-- Tombol Reset Data Ujicoba Siswa Ini -->
-        <div class="p-3 rounded-2xl bg-rose-50 border border-rose-200/80 flex flex-col gap-2 text-xs">
+        <!-- Menu Reset Data Siswa (Per Day Spesifik & Aman) -->
+        <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200/90 flex flex-col gap-2.5 text-xs shadow-2xs">
           <div class="flex items-center justify-between">
-            <span class="font-extrabold text-rose-950 flex items-center gap-1.5">
-              <span class="material-symbols-outlined text-sm text-rose-600">restart_alt</span>
-              <span>Reset Data Pengerjaan Uji Coba:</span>
+            <span class="font-extrabold text-teal-950 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-teal-700">event_repeat</span>
+              <span>Reset Data Siswa Khusus Per-Day:</span>
             </span>
-            <span class="text-[10px] font-bold text-rose-700 bg-rose-100 px-2 py-0.5 rounded-md">Uji Coba</span>
+            <span class="text-[10px] font-black text-teal-800 bg-teal-100 px-2 py-0.5 rounded-md border border-teal-200">
+              Aman &bull; Hari Lain Utuh
+            </span>
           </div>
-          <p class="text-[11px] text-rose-900/80 leading-tight">
-            Kosongkan kiriman LKPD, catatan tugas, dan nilai simulasi untuk siswa ini agar kembali bersih ke keadaan awal (0%).
+          <p class="text-[11px] text-slate-600 leading-tight">
+            Jika siswa ada kesalahan di hari tertentu (misal Day 1), pilih Day lalu klik <strong>Reset Day Ini</strong>. Data di hari-hari lainnya <strong>TIDAK AKAN BERUBAH</strong>.
           </p>
-          <button type="button" onclick="confirmResetCurrentModalStudent()" class="w-full py-2 px-3 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-2xs cursor-pointer">
-            <span class="material-symbols-outlined text-sm">restart_alt</span>
-            <span>Reset Akun Siswa Ini ke Keadaan Awal</span>
-          </button>
+
+          <div class="flex items-center gap-2">
+            <select id="modalStudentResetDaySelect" class="flex-1 px-3 py-2 rounded-xl border border-teal-400 text-xs font-black bg-white text-teal-950 outline-none focus:ring-2 focus:ring-teal-500 cursor-pointer shadow-2xs">
+              <option value="1" selected>Day 1 (Hanya Day 1)</option>
+              <option value="2">Day 2 (Hanya Day 2)</option>
+              <option value="3">Day 3 (Hanya Day 3)</option>
+              <option value="4">Day 4 (Hanya Day 4)</option>
+              <option value="5">Day 5 (Hanya Day 5)</option>
+              <option value="6">Day 6 (Hanya Day 6)</option>
+              <option value="7">Day 7 (Hanya Day 7)</option>
+              <option value="0">Day 0 (Gladi Bersih / Uji Coba)</option>
+            </select>
+            <button type="button" onclick="confirmResetCurrentModalStudentPerDay()" class="px-4 py-2 rounded-xl bg-teal-700 hover:bg-teal-800 active:scale-95 text-white font-black text-xs flex items-center gap-1.5 transition-all shadow-xs cursor-pointer shrink-0">
+              <span class="material-symbols-outlined text-sm">refresh</span>
+              <span>Reset Day Ini</span>
+            </button>
+          </div>
+
+          <div class="pt-2 border-t border-teal-200/60 flex items-center justify-between flex-wrap gap-2 text-[10.5px]">
+            <span class="text-slate-500">Pilihan reset lainnya:</span>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="confirmResetCurrentModalStudent()" class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-700 font-bold border border-rose-200 cursor-pointer transition-all">
+                Reset Total (0%)
+              </button>
+              <button type="button" onclick="goToAdminResetTabWithCurrentStudent()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-teal-100 text-teal-800 font-bold border border-teal-300 cursor-pointer flex items-center gap-1 transition-all">
+                <span>Pusat Reset Tab</span>
+                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         <div class="pt-2 border-t border-outline-variant/20 flex justify-end">
@@ -3878,6 +3976,7 @@
 
       populateResetClassOptions();
       handleResetClassChange();
+      if (typeof handleResetDayChange === 'function') handleResetDayChange();
     }
 
     function getFilteredResetStudents() {
@@ -4016,18 +4115,112 @@
       }
     }
 
+    const RESET_DAY_TOPICS = {
+      field_trip: {
+        0: 'Day 0: Gladi Bersih & Simulasi Pengisian Data',
+        1: 'Day 1: Literasi Kas Saku & Perjalanan Belitang - Semarang',
+        2: 'Day 2: Multi-Sesi Semarang (AKPOL & Lawang Sewu)',
+        3: 'Day 3: Tiga Sesi Malang/Batu (Petik Apel, JTP1 & Museum Angkut)',
+        4: 'Day 4: Bromo TNBTS & Ekosistem Vulkanik',
+        5: 'Day 5: Yogyakarta (Prambanan, Batik & Kunjungan UNY)',
+        6: 'Day 6: Sentra Bakpia & Konservasi Pantai Drini Karst',
+        7: 'Day 7: Perjalanan Pulang Belitang (Tutup Kas & Foto Kenangan)'
+      },
+      non_field_trip: {
+        0: 'Day 0: Gladi Bersih & Simulasi Pengisian Data',
+        1: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Observasi Lapangan OKU Timur (Koperasi, BUMDes, BRILink, Pasar, UMKM)',
+        2: 'Day 2: Riset Mandiri Day 2 (Eksplorasi Sektor Unggulan)',
+        3: 'Day 3: Riset Mandiri Day 3 (Analisis Rantai Distribusi)',
+        4: 'Day 4: Riset Mandiri Day 4 (Studi Kelayakan Usaha & Finansial)',
+        5: 'Day 5: Riset Mandiri Day 5 (Inklusi Keuangan & Digitalisasi)',
+        6: 'Day 6: Riset Mandiri Day 6 (Pemberdayaan UMKM Lokal OKU Timur)',
+        7: 'Day 7: Evaluasi Akhir & Penyusunan Laporan Portofolio'
+      }
+    };
+
+    function selectResetDayDirect(dayNum) {
+      const sel = document.getElementById('resetSelectTargetDay');
+      if (sel) {
+        sel.value = String(dayNum);
+        handleResetDayChange();
+      }
+      const r = document.getElementById('scopeRadioPerDay');
+      if (r) {
+        r.checked = true;
+        updateResetScopeUI();
+      }
+    }
+
+    function handleResetDayChange() {
+      const sel = document.getElementById('resetSelectTargetDay');
+      const val = parseInt(sel ? sel.value : '1') || 0;
+      const isFT = (currentResetGroupCategory === 'field_trip');
+      const topics = isFT ? RESET_DAY_TOPICS.field_trip : RESET_DAY_TOPICS.non_field_trip;
+      const desc = topics[val] || `Day ${val}`;
+
+      const topicText = document.getElementById('resetDayTopicText');
+      if (topicText) topicText.textContent = desc;
+
+      const badge = document.getElementById('badgeSelectedResetDay');
+      if (badge) badge.textContent = val === 0 ? 'Mode: Day Uji Coba (Day 0)' : `Mode: Reset Per-Day (Day ${val})`;
+
+      const btnLabel = document.getElementById('btnResetPerDayLabel');
+      if (btnLabel) btnLabel.textContent = val === 0 ? 'Reset Day Uji Coba' : `Reset Khusus Day ${val}`;
+
+      const hint = document.getElementById('resetTargetDayHint');
+      if (hint) hint.textContent = val === 0 ? '(Hanya data gladi simulasi yang di-reset)' : `(Hanya data Day ${val} yang akan di-reset, hari lain aman)`;
+
+      document.querySelectorAll('.btn-reset-day-pill').forEach(btn => {
+        const d = parseInt(btn.getAttribute('data-day'));
+        if (d === val) {
+          btn.className = 'btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-black bg-teal-700 text-white cursor-pointer shadow-2xs';
+        } else if (d === 0) {
+          btn.className = 'btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-900 border border-amber-200 hover:bg-amber-200 cursor-pointer';
+        } else {
+          btn.className = 'btn-reset-day-pill px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-700 border border-slate-200 hover:bg-teal-50 cursor-pointer';
+        }
+      });
+    }
+
     function updateResetScopeUI() {
+      const isPerDay = document.getElementById('scopeRadioPerDay')?.checked;
       const isTrialOnly = document.getElementById('scopeRadioTrial')?.checked;
       const chkPhoto = document.getElementById('chkResetFotoProfil');
       const boxPhoto = document.getElementById('boxResetFotoProfil');
+      const selectorBox = document.getElementById('resetPerDaySelectorBox');
+
+      if (selectorBox) {
+        if (isPerDay) {
+          selectorBox.classList.remove('hidden');
+          handleResetDayChange();
+        } else {
+          selectorBox.classList.add('hidden');
+        }
+      }
+
       if (chkPhoto && boxPhoto) {
-        if (isTrialOnly) {
+        if (isTrialOnly || isPerDay) {
           chkPhoto.checked = false;
           chkPhoto.disabled = true;
           boxPhoto.classList.add('opacity-50');
         } else {
           chkPhoto.disabled = false;
           boxPhoto.classList.remove('opacity-50');
+        }
+      }
+
+      const badge = document.getElementById('badgeSelectedResetDay');
+      if (badge) {
+        if (isPerDay) {
+          const val = parseInt(document.getElementById('resetSelectTargetDay')?.value || '1');
+          badge.textContent = `Mode: Reset Per-Day (Day ${val})`;
+          badge.className = 'text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200';
+        } else if (isTrialOnly) {
+          badge.textContent = 'Mode: Day Uji Coba (Day 0)';
+          badge.className = 'text-[11px] font-bold text-amber-800 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200';
+        } else {
+          badge.textContent = 'Mode: Semua Hari (Day 0 - 7)';
+          badge.className = 'text-[11px] font-bold text-rose-800 bg-rose-50 px-2.5 py-0.5 rounded-full border border-rose-200';
         }
       }
     }
@@ -4069,9 +4262,9 @@
         targetStudentName = targetStudentObj ? targetStudentObj.nama : resetSelectedStudentNisn;
       }
 
-      // Tentukan scope & komponen berdasarkan actionType
-      let scope = 'trial_only';
-      let targetDay = 0;
+      // Tentukan scope & targetDay berdasarkan actionType
+      let scope = 'per_day';
+      let targetDay = 1;
       let comp = {
         materi: true,
         lkpd: true,
@@ -4081,7 +4274,19 @@
         foto_profil: false
       };
 
-      if (actionType === 'trial_only') {
+      if (actionType === 'per_day') {
+        const selDay = parseInt(document.getElementById('resetSelectTargetDay')?.value || '1');
+        targetDay = isNaN(selDay) ? 1 : selDay;
+        scope = (targetDay === 0) ? 'trial_only' : ('day_' + targetDay);
+        comp = {
+          materi: !!document.getElementById('chkResetMateri')?.checked,
+          lkpd: !!document.getElementById('chkResetLkpd')?.checked,
+          asesmen: !!document.getElementById('chkResetAsesmen')?.checked,
+          refleksi: !!document.getElementById('chkResetRefleksi')?.checked,
+          dokumentasi: !!document.getElementById('chkResetDokumentasi')?.checked,
+          foto_profil: false
+        };
+      } else if (actionType === 'trial_only') {
         scope = 'trial_only';
         targetDay = 0;
         comp = {
@@ -4104,16 +4309,26 @@
           foto_profil: true
         };
       } else if (actionType === 'selective') {
+        const isPerDayScope = document.getElementById('scopeRadioPerDay')?.checked;
         const isTrialScope = document.getElementById('scopeRadioTrial')?.checked;
-        scope = isTrialScope ? 'trial_only' : 'all_days';
-        targetDay = isTrialScope ? 0 : -1;
+        if (isPerDayScope) {
+          const selDay = parseInt(document.getElementById('resetSelectTargetDay')?.value || '1');
+          targetDay = isNaN(selDay) ? 1 : selDay;
+          scope = (targetDay === 0) ? 'trial_only' : ('day_' + targetDay);
+        } else if (isTrialScope) {
+          scope = 'trial_only';
+          targetDay = 0;
+        } else {
+          scope = 'all_days';
+          targetDay = -1;
+        }
         comp = {
           materi: !!document.getElementById('chkResetMateri')?.checked,
           lkpd: !!document.getElementById('chkResetLkpd')?.checked,
           asesmen: !!document.getElementById('chkResetAsesmen')?.checked,
           refleksi: !!document.getElementById('chkResetRefleksi')?.checked,
           dokumentasi: !!document.getElementById('chkResetDokumentasi')?.checked,
-          foto_profil: !isTrialScope && !!document.getElementById('chkResetFotoProfil')?.checked
+          foto_profil: (!isTrialScope && !isPerDayScope) && !!document.getElementById('chkResetFotoProfil')?.checked
         };
       }
 
@@ -4130,15 +4345,25 @@
         return;
       }
 
-      const scopeText = (scope === 'trial_only' || targetDay === 0) ? 'Khusus Day Uji Coba (Day 0: Gladi Bersih)' : 'Semua Hari (Day 0 - Day 7 Sampai Bersih Total)';
+      let scopeText = '';
+      if (targetDay > 0) {
+        scopeText = `KHUSUS DAY ${targetDay} (Hari lainnya seperti Day ${targetDay === 1 ? '2 s.d. 7' : '1, dst.'} 100% AMAN & TIDAK BERUBAH)`;
+      } else if (targetDay === 0 || scope === 'trial_only') {
+        scopeText = 'Khusus Day Uji Coba (Day 0: Gladi Bersih - Hari 1-7 Aman)';
+      } else {
+        scopeText = 'Semua Hari Sekaligus (Day 0 s.d. Day 7)';
+      }
+
       const groupLabel = currentResetGroupCategory === 'field_trip' ? 'Siswa Field Trip (455 Peserta)' : 'Siswa Non-Field Trip (710 Peserta)';
       const targetText = isSingle ? `Siswa "${targetStudentName}" (NISN: ${resetSelectedStudentNisn})` : `SELURUH ${groupLabel.toUpperCase()}`;
 
-      const confirmMsg = `KONFIRMASI RESET DATA:\n\n` +
+      const confirmMsg = `KONFIRMASI RESET DATA SISWA:\n\n` +
         `• Target: ${targetText}\n` +
-        `• Cakupan: ${scopeText}\n` +
+        `• Cakupan Hari: ${scopeText}\n` +
         `• Komponen Direset: ${activeComps.join(', ')}\n\n` +
-        `Data akan dibersihkan sampai bersih total (termasuk resume pemahaman modul, jawaban, kuis, dan cache lokal).\n\n` +
+        (targetDay > 0 
+          ? `⚠️ JAMINAN SISTEM:\nHanya data pengerjaan pada DAY ${targetDay} yang akan dibersihkan.\nSeluruh data pengerjaan pada hari lainnya TIDAK AKAN BERUBAH.\n\n`
+          : `Data akan dibersihkan sesuai cakupan yang dipilih.\n\n`) +
         `Apakah Anda yakin ingin melanjutkan tindakan reset ini?`;
 
       if (!confirm(confirmMsg)) return;
@@ -4153,7 +4378,10 @@
 
       if (isSingle) {
         FincestemCore.progress.resetStudent(resetSelectedStudentNisn, resetOptions, function(res) {
-          FincestemCore.ui.toast(res.message || 'Data siswa berhasil di-reset sampai bersih total!', 'success');
+          const successMsg = (targetDay > 0)
+            ? `Data Day ${targetDay} siswa "${targetStudentName}" berhasil di-reset! Hari lainnya tetap aman.`
+            : (res.message || 'Data siswa berhasil di-reset sampai bersih!');
+          FincestemCore.ui.toast(successMsg, 'success');
           if (comp.foto_profil && targetStudentObj) targetStudentObj.photo_url = '';
           handleResetStudentSelected();
           if (comp.dokumentasi) renderAdminGallery();
@@ -4168,7 +4396,7 @@
           return;
         }
 
-        FincestemCore.ui.toast(`Sedang memproses reset masal untuk ${total} siswa...`, 'info');
+        FincestemCore.ui.toast(`Sedang memproses reset untuk ${total} siswa...`, 'info');
 
         FincestemCore.progress.resetGroupStudents({
           group_category: currentResetGroupCategory,
@@ -4178,7 +4406,10 @@
           components: comp
         }, function(res) {
           if (res && res.success) {
-            FincestemCore.ui.toast(res.message || `Reset masal selesai! Sebanyak ${total} data siswa ${groupLabel} berhasil dibersihkan total.`, 'success');
+            const successMsg = (targetDay > 0)
+              ? `Reset Day ${targetDay} selesai! Data Day ${targetDay} untuk ${total} siswa ${groupLabel} berhasil dibersihkan. Hari lainnya tetap utuh.`
+              : (res.message || `Reset masal selesai! Sebanyak ${total} data siswa ${groupLabel} berhasil dibersihkan.`);
+            FincestemCore.ui.toast(successMsg, 'success');
             if (comp.foto_profil) {
               studentsInGroup.forEach(s => { s.photo_url = ''; });
             }
@@ -4252,6 +4483,88 @@
         }
         if (s) s.photo_url = '';
       });
+    }
+
+    function confirmResetCurrentModalStudentPerDay() {
+      if (!currentModalNisn) return;
+      const selDay = parseInt(document.getElementById('modalStudentResetDaySelect')?.value || '1');
+      const list = window.FincestemMasterStudents || [];
+      const s = list.find(item => String(item.nisn).trim() === String(currentModalNisn).trim());
+      const name = s ? s.nama : currentModalNisn;
+      const dayLabel = (selDay === 0) ? 'Day 0 (Gladi Bersih / Uji Coba)' : `Day ${selDay}`;
+
+      const conf = confirm(
+        `KONFIRMASI RESET PER-DAY UNTUK SISWA:\n\n` +
+        `• Siswa: ${name} (NISN: ${currentModalNisn})\n` +
+        `• Target: KHUSUS ${dayLabel.toUpperCase()}\n\n` +
+        `⚠️ JAMINAN SISTEM:\n` +
+        `Hanya data pengerjaan pada ${dayLabel} yang akan di-reset bersih.\n` +
+        `Seluruh data pada hari-hari lainnya (selain ${dayLabel}) 100% AMAN & TIDAK AKAN BERUBAH.\n\n` +
+        `Apakah Anda yakin ingin mereset ${dayLabel} untuk siswa ini?`
+      );
+      if (!conf) return;
+
+      const resetOptions = {
+        scope: (selDay === 0) ? 'trial_only' : ('day_' + selDay),
+        target_day: selDay,
+        components: {
+          materi: true,
+          lkpd: true,
+          asesmen: true,
+          refleksi: true,
+          dokumentasi: true,
+          foto_profil: false
+        }
+      };
+
+      FincestemCore.ui.toast(`Sedang memproses reset ${dayLabel}...`, 'info');
+      FincestemCore.progress.resetStudent(currentModalNisn, resetOptions, function(res) {
+        FincestemCore.ui.toast(res.message || `Data ${dayLabel} siswa berhasil di-reset bersih! Hari lainnya tetap utuh.`, 'success');
+        if (FincestemCore.progress) {
+          FincestemCore.progress.getStudentProgress(currentModalNisn, function(prog) {
+            if (prog) {
+              const compDays = prog.completed_days || 0;
+              const pct = prog.percentage || 0;
+              const badgeEl = document.getElementById('modalStudentProgressBadge');
+              if (badgeEl) badgeEl.textContent = `${pct}% Selesai`;
+              const daysEl = document.getElementById('modalStudentDays');
+              if (daysEl) daysEl.textContent = `${compDays} / 7 Hari`;
+              if (prog.average_score) {
+                const scoreEl = document.getElementById('modalStudentAvgScore');
+                if (scoreEl) scoreEl.textContent = prog.average_score;
+              }
+            }
+          });
+        }
+      });
+    }
+
+    function goToAdminResetTabWithCurrentStudent() {
+      if (!currentModalNisn) return;
+      const nisn = currentModalNisn;
+      const list = window.FincestemMasterStudents || [];
+      const s = list.find(item => String(item.nisn).trim() === String(nisn).trim());
+      closeStudentDetail();
+      switchAdmTab('reset');
+
+      if (s) {
+        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+          ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+          : (s.zone || 'FINCESTEM OKU TIMUR');
+        const zUpper = String(studentZone || '').toUpperCase();
+        const isFT = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+        switchResetGroupCategory(isFT ? 'field_trip' : 'non_field_trip');
+        setTimeout(() => {
+          switchResetTargetMode('single');
+          const studentSelect = document.getElementById('resetSelectStudent');
+          if (studentSelect) {
+            studentSelect.value = nisn;
+            handleResetStudentSelected();
+          }
+          const targetEl = document.getElementById('resetPerDaySelectorBox');
+          if (targetEl) targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 150);
+      }
     }
 
     /* ========================================================
