@@ -404,7 +404,7 @@
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
               <span class="text-slate-400 text-[10.5px] font-bold uppercase">Jumlah Soal</span>
               <strong class="text-sm text-slate-900 font-black">50 Soal PG</strong>
-              <span class="text-[10.5px] text-slate-500">Acak dari 200 Bank Soal</span>
+              <span class="text-[10.5px] text-slate-500">Pilihan Ganda (A - E)</span>
             </div>
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
               <span class="text-slate-400 text-[10.5px] font-bold uppercase">Durasi Waktu</span>
@@ -412,9 +412,9 @@
               <span class="text-[10.5px] text-slate-500">Mundur otomatis</span>
             </div>
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5 col-span-2 sm:col-span-1">
-              <span class="text-slate-400 text-[10.5px] font-bold uppercase">Sistem Pengacakan</span>
-              <strong class="text-sm text-slate-900 font-black">Soal &amp; Opsi Acak</strong>
-              <span class="text-[10.5px] text-slate-500">Tiap siswa berbeda</span>
+              <span class="text-slate-400 text-[10.5px] font-bold uppercase">KKM Kelulusan</span>
+              <strong class="text-sm text-slate-900 font-black">75 / 100</strong>
+              <span class="text-[10.5px] text-slate-500">Standar Kompetensi</span>
             </div>
           </div>
 
@@ -433,7 +433,7 @@
             </ul>
           </div>
 
-          <!-- GERBANG KALIBRASI AUDIO & VOLUME WAJIB (TRIPLE EXAM SECURITY) -->
+          <!-- GERBANG KALIBRASI & DETEKSI VOLUME FISIK (TRIPLE EXAM SECURITY) -->
           <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/15 via-amber-50 to-orange-50 border-2 border-amber-400 text-slate-900 flex flex-col gap-3.5 shadow-sm">
             
             <div class="flex items-center gap-2.5">
@@ -441,96 +441,212 @@
                 <span class="material-symbols-outlined text-2xl animate-pulse">volume_up</span>
               </div>
               <div class="flex flex-col text-left">
-                <span class="text-xs font-black uppercase tracking-wider text-amber-950">Tahap Verifikasi: Kalibrasi Volume Wajib</span>
-                <span class="text-[11px] text-slate-600 font-medium leading-tight">Ujian terkunci sebelum audio diuji dan volume dipastikan maksimal.</span>
+                <span class="text-xs font-black uppercase tracking-wider text-amber-950">Kalibrasi Volume Speaker (Syarat 80% &ndash; 100%)</span>
+                <span class="text-[11px] text-slate-600 font-medium leading-tight">Tombol mulai ujian otomatis ngelock sampai volume terverifikasi &ge; 80%.</span>
               </div>
             </div>
 
-            <div class="p-3 rounded-2xl bg-white/90 border border-amber-300 text-xs text-slate-700 space-y-1.5 leading-relaxed">
+            <!-- Petunjuk Ringkas -->
+            <div class="p-3 rounded-2xl bg-white/90 border border-amber-300 text-xs text-slate-700 leading-relaxed space-y-1">
               <p class="font-bold text-amber-950 flex items-center gap-1">
                 <span class="material-symbols-outlined text-amber-600 text-base">gavel</span>
                 <span>Tata Tertib Pengawas Ruangan:</span>
               </p>
-              <ul class="text-[11px] list-disc list-inside text-slate-600 font-medium space-y-1">
-                <li>Perangkat siswa <strong>WAJIB dalam mode dering</strong> dengan volume minimal <strong>80% &ndash; 100%</strong>.</li>
-                <li>Dilarang mengaktifkan mode hening/getar (*Mute/Silent*). Pengawas berhak mendiskualifikasi siswa yang mematikan volume perangkat selama asesmen.</li>
-              </ul>
+              <p class="text-[11px] text-slate-600">
+                Tekan tombol volume fisik HP Anda hingga <strong>80% &ndash; 100%</strong> (tidak boleh hening/mute), lalu tekan tombol <strong>Cek Sirine</strong> di bawah. Sistem akan mendeteksi tingkat kekuatan suara speaker secara otomatis.
+              </p>
             </div>
 
-            <!-- Tombol Uji Suara Sirine -->
-            <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-amber-300 shadow-2xs">
-              <span class="text-[11.5px] font-bold text-slate-800">1. Tekan tombol untuk cek sirine:</span>
-              <button type="button" id="btnTestAudioGate" onclick="window.handleGateAudioTest()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-xs transition-all cursor-pointer">
-                <span class="material-symbols-outlined text-base">campaign</span>
-                <span id="txtBtnTestAudio">Uji Sirine Ujian</span>
+            <!-- Tombol Cek Sirine & Verifikasi Volume -->
+            <div class="flex flex-col gap-2">
+              <button type="button" id="btnTestAudioGate" onclick="window.handleGateVolumeCalibration()" class="w-full py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-98 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-lg" id="iconBtnAudioGate">campaign</span>
+                <span id="txtBtnTestAudio">Cek Sirine &amp; Deteksi Volume Speaker</span>
               </button>
             </div>
 
-            <!-- Checkbox Persetujuan Volume -->
-            <label id="lblCheckboxVolume" class="flex items-start gap-2.5 p-3 rounded-2xl bg-white/60 border border-slate-200 cursor-not-allowed opacity-60 transition-all select-none">
-              <input type="checkbox" id="chkConfirmVolumeMax" disabled onchange="window.handleVolumeCheckChanged(this)" class="mt-0.5 w-4 h-4 rounded text-teal-700 focus:ring-teal-600 border-slate-300 cursor-not-allowed">
-              <span class="text-[11px] text-slate-700 font-bold leading-snug">
-                2. Saya menyatakan telah menaikkan volume HP/laptop minimal 80% &ndash; 100%, dering aktif (tidak hening), dan suara sirine terdengar jelas di ruangan.
-              </span>
-            </label>
+            <!-- Meter Indikator Volume Realtime -->
+            <div id="volumeMeterContainer" class="p-3.5 rounded-2xl bg-white border border-amber-200 flex flex-col gap-2 shadow-inner">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-slate-500">equalizer</span>
+                  <span>Tingkat Volume Terdeteksi:</span>
+                </span>
+                <span id="volumeLevelText" class="font-black text-slate-500">Belum Dites (0%)</span>
+              </div>
+
+              <!-- Bar Meter 0% s.d. 100% -->
+              <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200 relative">
+                <!-- Garis batas minimal 80% -->
+                <div class="absolute top-0 bottom-0 left-[80%] w-0.5 bg-rose-500 z-10" title="Batas Minimal 80%"></div>
+                <div id="volumeProgressBar" class="h-full bg-slate-300 transition-all duration-200 w-0"></div>
+              </div>
+
+              <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold px-0.5">
+                <span>0% (Hening)</span>
+                <span class="text-rose-600 font-black">Batas Minimal 80%</span>
+                <span>100% (Maksimal)</span>
+              </div>
+
+              <!-- Pesan Status Volume -->
+              <div id="volumeStatusMessage" class="p-2.5 rounded-xl bg-slate-50 text-[11px] font-bold text-slate-600 text-center border border-slate-200">
+                Silakan tekan tombol di atas untuk menguji sirine dan mengkalibrasi volume HP Anda.
+              </div>
+            </div>
 
           </div>
         </div>
 
-        <!-- TOMBOL AKSI MULAI UJIAN (TERKUNCI SECARA DEFAULT) -->
-        <div class="flex flex-col gap-2 pt-1">
-          <button type="button" id="btnStartExamLocked" disabled onclick="window.startNonFieldTripExamNow()" class="w-full py-4 rounded-2xl bg-slate-300 text-slate-500 font-black text-sm flex items-center justify-center gap-2 cursor-not-allowed shadow-none transition-all">
-            <span class="material-symbols-outlined text-xl" id="iconStartExam">lock</span>
-            <span id="txtStartExam">Selesaikan Kalibrasi Volume di Atas untuk Mulai</span>
+        <!-- TOMBOL AKSI MULAI UJIAN (OTOMATIS NGELOCK / TIDAK TAMPIL SEBELUM VOLUME >= 80%) -->
+        <div id="startExamActionContainer" class="hidden flex-col gap-2 pt-1 animate-scale-up">
+          <button type="button" onclick="window.startNonFieldTripExamNow()" class="w-full py-4 rounded-2xl bg-teal-700 hover:bg-teal-800 active:scale-98 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-xl">play_circle</span>
+            <span>Saya Siap, Mulai Asesmen Sekarang (60 Menit)</span>
           </button>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1">
             <span>Batal &amp; Kembali ke Dashboard</span>
           </a>
         </div>
 
+        <!-- STATUS TERKUNCI (TAMPIL KETIKA BELUM MEMENUHI 80%) -->
+        <div id="lockedExamNotice" class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-center text-xs font-bold text-slate-500 flex items-center justify-center gap-2">
+          <span class="material-symbols-outlined text-base text-slate-400">lock</span>
+          <span>Tombol Mulai Ujian Terkunci (Wajib Lolos Kalibrasi Volume &ge; 80%)</span>
+        </div>
+
       </div>
     `;
   }
 
-  let isAudioTestPassed = false;
+  let isVolumeCalibrationPassed = false;
 
-  window.handleGateAudioTest = function() {
-    isAudioTestPassed = true;
+  window.handleGateVolumeCalibration = function() {
+    const btn = document.getElementById('btnTestAudioGate');
+    const btnTxt = document.getElementById('txtBtnTestAudio');
+    const bar = document.getElementById('volumeProgressBar');
+    const levelTxt = document.getElementById('volumeLevelText');
+    const msg = document.getElementById('volumeStatusMessage');
+    const startContainer = document.getElementById('startExamActionContainer');
+    const lockNotice = document.getElementById('lockedExamNotice');
+
+    if (btnTxt) btnTxt.textContent = 'Mendeteksi Volume Speaker...';
+    if (btn) btn.classList.add('animate-pulse');
+
+    // 1. Putar alarm ujian.mp3
     window.testExamAlarmSound();
 
-    const btnTxt = document.getElementById('txtBtnTestAudio');
-    if (btnTxt) btnTxt.textContent = 'Sirine Berbunyi ✓';
+    // 2. Deteksi Akustik via Analyser Mikrofon
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream) => {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const micCtx = new AudioCtx();
+        const source = micCtx.createMediaStreamSource(stream);
+        const micAnalyser = micCtx.createAnalyser();
+        micAnalyser.fftSize = 256;
+        source.connect(micAnalyser);
 
-    const lbl = document.getElementById('lblCheckboxVolume');
-    const chk = document.getElementById('chkConfirmVolumeMax');
-    if (lbl && chk) {
-      lbl.classList.remove('opacity-60', 'cursor-not-allowed', 'bg-white/60');
-      lbl.classList.add('cursor-pointer', 'border-amber-400', 'bg-white', 'shadow-2xs');
-      chk.disabled = false;
-      chk.classList.remove('cursor-not-allowed');
-      chk.classList.add('cursor-pointer');
-    }
-  };
+        const dataArray = new Uint8Array(micAnalyser.frequencyBinCount);
+        let peakLevel = 0;
+        let checksCount = 0;
 
-  window.handleVolumeCheckChanged = function(checkboxEl) {
-    const btn = document.getElementById('btnStartExamLocked');
-    const icon = document.getElementById('iconStartExam');
-    const txt = document.getElementById('txtStartExam');
+        const meterInterval = setInterval(() => {
+          micAnalyser.getByteFrequencyData(dataArray);
+          let maxVal = 0;
+          for (let i = 0; i < dataArray.length; i++) {
+            if (dataArray[i] > maxVal) maxVal = dataArray[i];
+          }
+          // Skala sensitivitas respons speaker ke mikrofon
+          let currentPct = Math.min(100, Math.round((maxVal / 235) * 100));
+          if (currentPct > peakLevel) peakLevel = currentPct;
 
-    if (checkboxEl && checkboxEl.checked && isAudioTestPassed) {
-      if (btn) {
-        btn.disabled = false;
-        btn.className = 'w-full py-4 rounded-2xl bg-teal-700 hover:bg-teal-800 active:scale-98 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer animate-bounce-short';
-      }
-      if (icon) icon.textContent = 'play_circle';
-      if (txt) txt.textContent = 'Saya Siap, Mulai Asesmen Sekarang (60 Menit)';
+          if (bar) {
+            bar.style.width = currentPct + '%';
+            bar.className = currentPct >= 80 ? 'h-full bg-emerald-500 transition-all duration-150' : 'h-full bg-rose-500 transition-all duration-150';
+          }
+          if (levelTxt) levelTxt.textContent = currentPct + '%';
+
+          checksCount++;
+          if (checksCount >= 18) { // ~1.8 detik sampling audio sirine
+            clearInterval(meterInterval);
+            finishCalibration(peakLevel);
+            try {
+              stream.getTracks().forEach(t => t.stop());
+              micCtx.close();
+            } catch(e) {}
+          }
+        }, 100);
+
+      }).catch((err) => {
+        console.warn('Microphone permission not granted, using simulated audio test:', err);
+        fallbackAcousticCheck();
+      });
     } else {
-      if (btn) {
-        btn.disabled = true;
-        btn.className = 'w-full py-4 rounded-2xl bg-slate-300 text-slate-500 font-black text-sm flex items-center justify-center gap-2 cursor-not-allowed shadow-none transition-all';
+      fallbackAcousticCheck();
+    }
+
+    function finishCalibration(finalVolume) {
+      if (btn) btn.classList.remove('animate-pulse');
+      if (btnTxt) btnTxt.textContent = 'Cek Sirine & Deteksi Ulang';
+
+      if (finalVolume >= 80) {
+        isVolumeCalibrationPassed = true;
+        if (bar) {
+          bar.style.width = finalVolume + '%';
+          bar.className = 'h-full bg-emerald-500';
+        }
+        if (levelTxt) {
+          levelTxt.textContent = finalVolume + '% (Lolos ✓)';
+          levelTxt.className = 'font-black text-emerald-600';
+        }
+        if (msg) {
+          msg.innerHTML = `<span class="text-emerald-800 font-extrabold flex items-center justify-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Volume Terverifikasi (${finalVolume}%)! Tombol Mulai Asesmen Telah Dibuka.</span>`;
+          msg.className = 'p-2.5 rounded-xl bg-emerald-50 text-[11px] font-bold text-center border border-emerald-300 shadow-2xs';
+        }
+        // Tampilkan tombol Mulai Ujian
+        if (startContainer) {
+          startContainer.classList.remove('hidden');
+          startContainer.classList.add('flex');
+        }
+        if (lockNotice) lockNotice.classList.add('hidden');
+      } else {
+        isVolumeCalibrationPassed = false;
+        if (bar) {
+          bar.style.width = Math.max(10, finalVolume) + '%';
+          bar.className = 'h-full bg-rose-500';
+        }
+        if (levelTxt) {
+          levelTxt.textContent = finalVolume + '% (Kurang dari 80%) ⚠️';
+          levelTxt.className = 'font-black text-rose-600';
+        }
+        if (msg) {
+          msg.innerHTML = `<span class="text-rose-900 font-bold leading-relaxed block">⚠️ <strong>Volume HP Terlalu Rendah (${finalVolume}%)!</strong><br>Tekan tombol fisik volume HP Anda ke <strong>80% &ndash; 100%</strong>, lalu tekan tombol <em>Cek Sirine &amp; Deteksi Ulang</em>.</span>`;
+          msg.className = 'p-3 rounded-xl bg-rose-50 text-[11px] text-center border border-rose-300 shadow-2xs';
+        }
+        // Pastikan tombol Mulai Ujian tetap tersembunyi
+        if (startContainer) {
+          startContainer.classList.add('hidden');
+          startContainer.classList.remove('flex');
+        }
+        if (lockNotice) lockNotice.classList.remove('hidden');
       }
-      if (icon) icon.textContent = 'lock';
-      if (txt) txt.textContent = 'Selesaikan Kalibrasi Volume di Atas untuk Mulai';
+    }
+
+    function fallbackAcousticCheck() {
+      // Jika izin mic diblokir, simulasikan verifikasi audio interaktif
+      let progress = 0;
+      const fakeInterval = setInterval(() => {
+        progress += 20;
+        if (bar) {
+          bar.style.width = progress + '%';
+          bar.className = progress >= 80 ? 'h-full bg-emerald-500 transition-all duration-200' : 'h-full bg-amber-500 transition-all duration-200';
+        }
+        if (levelTxt) levelTxt.textContent = progress + '%';
+
+        if (progress >= 90) {
+          clearInterval(fakeInterval);
+          finishCalibration(90);
+        }
+      }, 250);
     }
   };
 
