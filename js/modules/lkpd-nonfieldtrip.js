@@ -94,6 +94,9 @@
     const isLockedByPrereq = !hasMateri;
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
     const readOnlyAttr = isFormLocked ? 'disabled' : '';
+    const draftTimeStr = (draft && draft.updatedAt) 
+      ? new Date(draft.updatedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) 
+      : '';
 
     mainEl.innerHTML = `
       <div class="flex flex-col gap-4 sm:gap-5 pb-12">
@@ -135,9 +138,15 @@
                 Pilar Financial &amp; Economics
               </span>
             </div>
-            <span id="nftLkpdD1StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800 font-extrabold' : (isSubmitted ? 'bg-emerald-400 text-slate-950 font-black shadow-xs' : 'bg-teal-100 text-teal-950 font-extrabold')}">
-              ${isLockedByPrereq ? 'Terkunci (Belum Tuntas Modul)' : (isSubmitted ? '✓ LKPD Terkirim Resmi' : 'Sedang Observasi Lapangan')}
-            </span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span id="nftLkpdD1DraftStatusBadge" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-teal-800/80 text-teal-100 border border-teal-600/60 flex items-center gap-1.5 shadow-2xs">
+                <span class="w-2 h-2 rounded-full ${draft && draft.updatedAt ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400'}"></span>
+                <span id="txtNftLkpdD1DraftStatus">${draft && draft.updatedAt ? `Draft tersimpan (pk ${draftTimeStr} WIB)` : 'Auto-Save Aktif (Anti Hilang Sinyal)'}</span>
+              </span>
+              <span id="nftLkpdD1StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800 font-extrabold' : (isSubmitted ? 'bg-emerald-400 text-slate-950 font-black shadow-xs' : 'bg-teal-100 text-teal-950 font-extrabold')}">
+                ${isLockedByPrereq ? 'Terkunci (Belum Tuntas Modul)' : (isSubmitted ? '✓ LKPD Terkirim Resmi' : 'Sedang Observasi Lapangan')}
+              </span>
+            </div>
           </div>
 
           <div>
@@ -500,19 +509,33 @@
             </div>
           </div>
 
-          <!-- TOMBOL SUBMIT RESMI LKPD DAY 1 -->
+          <!-- TOMBOL AKSI LKPD DAY 1: SIMPAN DRAFT SEMENTARA & KIRIM RESMI -->
           ${!isSubmitted ? `
             <div class="pt-2 sticky bottom-4 z-20">
-              <div class="p-4 sm:p-5 rounded-3xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-md flex flex-col sm:flex-row items-center justify-between gap-3">
-                <div class="flex flex-col min-w-0 text-center sm:text-left">
-                  <span id="lblLkpdSubmitProgress" class="font-black text-xs sm:text-sm text-slate-900">Periksa Kelengkapan 6 Blok Investigasi</span>
-                  <span class="text-[11px] text-slate-500 font-medium">Pastikan seluruh data hasil wawancara di lapangan telah terisi valid.</span>
+              <div class="p-4 sm:p-5 rounded-3xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-lg flex flex-col md:flex-row items-center justify-between gap-3.5">
+                <div class="flex flex-col min-w-0 text-center md:text-left">
+                  <div class="flex items-center justify-center md:justify-start gap-1.5">
+                    <span class="w-2 h-2 rounded-full ${draft && draft.updatedAt ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}"></span>
+                    <span id="lblLkpdDraftBottomInfo" class="font-extrabold text-xs text-slate-800">
+                      ${draft && draft.updatedAt ? `Draft tersimpan: Hari ini pk ${draftTimeStr} WIB` : 'Auto-Save Aktif: Jawaban tersimpan otomatis saat mengetik'}
+                    </span>
+                  </div>
+                  <span class="text-[11px] text-slate-500 font-medium">Jika observasi belum selesai, klik <strong>Simpan Draft Sementara</strong> untuk melanjutkan nanti.</span>
                 </div>
                 
-                <button type="button" id="btnSubmitNftLkpdD1" onclick="submitNonFieldTripDay1LKPD()" ${readOnlyAttr} class="w-full sm:w-auto px-6 py-3.5 rounded-2xl ${isFormLocked ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-teal-700 hover:bg-teal-800 active:scale-95 text-white cursor-pointer shadow-md'} font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all">
-                  <span class="material-symbols-outlined text-base">send</span>
-                  <span>Simpan &amp; Kirim LKPD Day 1 ke Fasilitator</span>
-                </button>
+                <div class="flex items-center gap-2 w-full md:w-auto shrink-0 flex-col sm:flex-row">
+                  <!-- TOMBOL 1: SIMPAN DRAFT SEMENTARA (AMAN SAAT HILANG SINYAL) -->
+                  <button type="button" id="btnSaveDraftNftLkpdD1" onclick="manualSaveNonFieldTripDay1Draft()" ${readOnlyAttr} class="w-full sm:w-auto px-4 py-3.5 rounded-2xl ${isFormLocked ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-950 border-2 border-amber-300 cursor-pointer shadow-2xs'} font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all">
+                    <span class="material-symbols-outlined text-lg text-amber-700">bookmark</span>
+                    <span>Simpan Draft Sementara</span>
+                  </button>
+
+                  <!-- TOMBOL 2: SUBMIT RESMI KE FASILITATOR -->
+                  <button type="button" id="btnSubmitNftLkpdD1" onclick="submitNonFieldTripDay1LKPD()" ${readOnlyAttr} class="w-full sm:w-auto px-6 py-3.5 rounded-2xl ${isFormLocked ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-teal-700 hover:bg-teal-800 active:scale-95 text-white cursor-pointer shadow-md'} font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all">
+                    <span class="material-symbols-outlined text-base">send</span>
+                    <span>Simpan &amp; Kirim ke Fasilitator</span>
+                  </button>
+                </div>
               </div>
             </div>
           ` : `
@@ -539,10 +562,19 @@
       </div>
     `;
 
-    // Jalankan kalkulasi finansial awal
+    // Jalankan kalkulasi finansial awal & pasang auto-save listener pada form
     setTimeout(() => {
       recalcNftFinancials();
       evaluateSolutionsCounter();
+      const formD1 = document.getElementById('formNftDay1Lkpd');
+      if (formD1 && !isFormLocked) {
+        formD1.addEventListener('input', () => {
+          saveNftLkpdDraftThrottled();
+        });
+        formD1.addEventListener('change', () => {
+          saveNftLkpdDraftThrottled();
+        });
+      }
     }, 50);
   }
 
@@ -622,60 +654,86 @@
     saveNftLkpdDraftThrottled();
   };
 
-  // 3. AUTO-SAVE DRAFT LKPD KE LOCALSTORAGE
+  // 3. AUTO-SAVE & MANUAL DRAFT LKPD DAY 1 KE LOCALSTORAGE
+  function saveNftLkpdDay1DraftImmediate(showToast) {
+    try {
+      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+      const cleanNisn = String(u.nisn || u.identifier || '').trim();
+      if (!cleanNisn) return { success: false };
+
+      const incomeDaily = parseRupiahNumber(document.getElementById('nftD1IncomeDaily')?.value);
+      const customersDaily = parseInt(document.getElementById('nftD1CustomersDaily')?.value, 10) || 0;
+      const costMat = parseRupiahNumber(document.getElementById('nftD1CostMaterials')?.value);
+      const costOp = parseRupiahNumber(document.getElementById('nftD1CostOperational')?.value);
+      const costWage = parseRupiahNumber(document.getElementById('nftD1CostWages')?.value);
+
+      const payments = [];
+      if (document.getElementById('chkPayCash')?.checked) payments.push('Tunai');
+      if (document.getElementById('chkPayQris')?.checked) payments.push('QRIS');
+      if (document.getElementById('chkPayEdc')?.checked) payments.push('EDC');
+      if (document.getElementById('chkPayTransfer')?.checked) payments.push('Transfer');
+
+      const now = new Date();
+      const draftObj = {
+        updatedAt: now.toISOString(),
+        businessName: document.getElementById('nftD1BusinessName')?.value.trim() || '',
+        businessType: document.getElementById('nftD1BusinessType')?.value || '',
+        district: document.getElementById('nftD1District')?.value || '',
+        village: document.getElementById('nftD1Village')?.value.trim() || '',
+        interviewee: document.getElementById('nftD1Interviewee')?.value.trim() || '',
+        contact: document.getElementById('nftD1Contact')?.value.trim() || '',
+        sectorType: document.getElementById('nftD1SectorType')?.value || '',
+        commodity: document.getElementById('nftD1Commodity')?.value.trim() || '',
+        activityChain: document.getElementById('nftD1ActivityChain')?.value.trim() || '',
+        customerProfile: document.getElementById('nftD1CustomerProfile')?.value.trim() || '',
+        peakSeason: document.getElementById('nftD1PeakSeason')?.value.trim() || '',
+        customersDaily: customersDaily,
+        customersMonthly: customersDaily * 30,
+        incomeDaily: incomeDaily,
+        incomeMonthly: incomeDaily * 30,
+        incomeYearly: incomeDaily * 365,
+        costMaterials: costMat,
+        costOperational: costOp,
+        costWages: costWage,
+        totalExpensesMonthly: costMat + costOp + costWage,
+        netProfitMonthly: (incomeDaily * 30) - (costMat + costOp + costWage),
+        payments: payments,
+        bookkeeping: document.getElementById('nftD1Bookkeeping')?.value || '',
+        problems: document.getElementById('nftD1Problems')?.value.trim() || '',
+        solutions: document.getElementById('nftD1Solutions')?.value.trim() || ''
+      };
+
+      localStorage.setItem('fincestem_draft_nft_lkpd_d1_' + cleanNisn, JSON.stringify(draftObj));
+
+      const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const topBadge = document.getElementById('txtNftLkpdD1DraftStatus');
+      if (topBadge) topBadge.textContent = `Draft tersimpan (pk ${timeStr} WIB)`;
+      const botInfo = document.getElementById('lblLkpdDraftBottomInfo');
+      if (botInfo) botInfo.textContent = `Draft tersimpan: Hari ini pk ${timeStr} WIB`;
+
+      if (showToast) {
+        if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+          FincestemCore.ui.toast('✓ Draft LKPD Day 1 berhasil disimpan sementara! Jawaban Anda aman dan dapat dilanjutkan kapan saja meskipun tanpa sinyal.', 'success');
+        } else {
+          alert('Draft LKPD Day 1 berhasil disimpan sementara!');
+        }
+      }
+      return { success: true };
+    } catch (e) {
+      return { success: false, error: e };
+    }
+  }
+
+  window.manualSaveNonFieldTripDay1Draft = function() {
+    saveNftLkpdDay1DraftImmediate(true);
+  };
+
   let draftTimer = null;
   function saveNftLkpdDraftThrottled() {
     clearTimeout(draftTimer);
     draftTimer = setTimeout(() => {
-      try {
-        const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
-        const cleanNisn = String(u.nisn || u.identifier || '').trim();
-        if (!cleanNisn) return;
-
-        const incomeDaily = parseRupiahNumber(document.getElementById('nftD1IncomeDaily')?.value);
-        const customersDaily = parseInt(document.getElementById('nftD1CustomersDaily')?.value, 10) || 0;
-        const costMat = parseRupiahNumber(document.getElementById('nftD1CostMaterials')?.value);
-        const costOp = parseRupiahNumber(document.getElementById('nftD1CostOperational')?.value);
-        const costWage = parseRupiahNumber(document.getElementById('nftD1CostWages')?.value);
-
-        const payments = [];
-        if (document.getElementById('chkPayCash')?.checked) payments.push('Tunai');
-        if (document.getElementById('chkPayQris')?.checked) payments.push('QRIS');
-        if (document.getElementById('chkPayEdc')?.checked) payments.push('EDC');
-        if (document.getElementById('chkPayTransfer')?.checked) payments.push('Transfer');
-
-        const draftObj = {
-          updatedAt: new Date().toISOString(),
-          businessName: document.getElementById('nftD1BusinessName')?.value.trim() || '',
-          businessType: document.getElementById('nftD1BusinessType')?.value || '',
-          district: document.getElementById('nftD1District')?.value || '',
-          village: document.getElementById('nftD1Village')?.value.trim() || '',
-          interviewee: document.getElementById('nftD1Interviewee')?.value.trim() || '',
-          contact: document.getElementById('nftD1Contact')?.value.trim() || '',
-          sectorType: document.getElementById('nftD1SectorType')?.value || '',
-          commodity: document.getElementById('nftD1Commodity')?.value.trim() || '',
-          activityChain: document.getElementById('nftD1ActivityChain')?.value.trim() || '',
-          customerProfile: document.getElementById('nftD1CustomerProfile')?.value.trim() || '',
-          peakSeason: document.getElementById('nftD1PeakSeason')?.value.trim() || '',
-          customersDaily: customersDaily,
-          customersMonthly: customersDaily * 30,
-          incomeDaily: incomeDaily,
-          incomeMonthly: incomeDaily * 30,
-          incomeYearly: incomeDaily * 365,
-          costMaterials: costMat,
-          costOperational: costOp,
-          costWages: costWage,
-          totalExpensesMonthly: costMat + costOp + costWage,
-          netProfitMonthly: (incomeDaily * 30) - (costMat + costOp + costWage),
-          payments: payments,
-          bookkeeping: document.getElementById('nftD1Bookkeeping')?.value || '',
-          problems: document.getElementById('nftD1Problems')?.value.trim() || '',
-          solutions: document.getElementById('nftD1Solutions')?.value.trim() || ''
-        };
-
-        localStorage.setItem('fincestem_draft_nft_lkpd_d1_' + cleanNisn, JSON.stringify(draftObj));
-      } catch (e) {}
-    }, 1200);
+      saveNftLkpdDay1DraftImmediate(false);
+    }, 800);
   }
 
   // 4. SUBMIT RESMI LKPD DAY 1 KE FASILITATOR & AKTIFKAN PROGRESS SISTEM
@@ -832,26 +890,625 @@
     document.body.appendChild(modal);
   }
 
-  // Generic router untuk LKPD Non-Field Trip
+  // ========================================================
+  // 5. IMPLEMENTASI LKPD DAY 2 S.D. DAY 7 NON-FIELD TRIP
+  // ========================================================
+  const NFT_DAYS_CURRICULUM = {
+    1: {
+      title: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur',
+      theme: 'Audit Lapangan Koperasi, BUMDes, Agen Perbankan, Pasar & UMKM',
+      focus: 'Audit 6 Blok: Profil Usaha, Alur Kegiatan Ekonomi, Profil Nasabah, Kalkulator Arus Kas, Inklusi Finansial, dan Rekomendasi Solusi HOTS'
+    },
+    2: {
+      title: 'Day 2: Eksplorasi Sains & Ekosistem Irigasi',
+      theme: 'STEM Sains Lingkungan, Kualitas Air Irigasi & Ekologi Pertanian Belitang',
+      focus: 'Pengamatan saluran irigasi teknis, debit air, parameter fisik-kimia air, serta dampak terhadap produktivitas pertanian pangan daerah.'
+    },
+    3: {
+      title: 'Day 3: Agribisnis Padi & Teknologi Pengolahan Gabah',
+      theme: 'Teknologi Penggilingan Padi (RMU), Pengeringan & Kalkulasi Rendemen Gabah',
+      focus: 'Kunjungan kilang padi / RMU lokal, observasi mesin pengering/penggiling, kalkulasi rendemen gabah ke beras, dan analisis biaya pengolahan.'
+    },
+    4: {
+      title: 'Day 4: Kewirausahaan UMKM & Rantai Pasok Lokal',
+      theme: 'Analisis Supply Chain, Logistik Distribusi & Margin Keuntungan Usaha',
+      focus: 'Investigasi alur pasok komoditas dari petani/produsen ke pasar konsumen, struktur biaya logistik, dan penetapan harga jual produk.'
+    },
+    5: {
+      title: 'Day 5: Inklusi Keuangan Digital & Perbankan Desa',
+      theme: 'Penetrasi Transaksi Digital (QRIS, Agen Bank, EDC) & Akses Finansial Desa',
+      focus: 'Observasi akses perbankan tanpa kantor, tantangan sinyal/literasi digital pedagang pasar desa, dan mitigasi risiko penipuan finansial.'
+    },
+    6: {
+      title: 'Day 6: Konservasi Lingkungan & Budaya Pertanian Belitang',
+      theme: 'Keberlanjutan Ekosistem, Efisiensi Pupuk & Kearifan Lokal Pertanian OKU Timur',
+      focus: 'Kajian keberlanjutan tanah, efisiensi penggunaan pupuk bersubsidi/organik, dan pengelolaan limbah jerami/sekam padi.'
+    },
+    7: {
+      title: 'Day 7: Evaluasi Akhir & Penyusunan Laporan Portofolio FINCESTEM',
+      theme: 'Sintesis Hasil Riset 7 Hari, Rekomendasi Kebijakan & Portofolio Karya',
+      focus: 'Penyusunan simpulan komprehensif, rekomendasi konkret bagi stakeholder lokal OKU Timur, dan penyusunan portofolio mandiri.'
+    }
+  };
+
+  let genericDraftTimer = null;
+  function saveNftGenericDraftThrottled(dayNum) {
+    clearTimeout(genericDraftTimer);
+    genericDraftTimer = setTimeout(() => {
+      saveNftGenericDraftImmediate(dayNum, false);
+    }, 800);
+  }
+
+  function saveNftGenericDraftImmediate(dayNum, showToast) {
+    try {
+      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+      const cleanNisn = String(u.nisn || u.identifier || '').trim();
+      if (!cleanNisn) return { success: false };
+
+      const payments = [];
+      if (document.getElementById(`chkPayGenCash_d${dayNum}`)?.checked) payments.push('Tunai');
+      if (document.getElementById(`chkPayGenQris_d${dayNum}`)?.checked) payments.push('QRIS');
+      if (document.getElementById(`chkPayGenEdc_d${dayNum}`)?.checked) payments.push('EDC');
+      if (document.getElementById(`chkPayGenTransfer_d${dayNum}`)?.checked) payments.push('Transfer');
+
+      const now = new Date();
+      const draftObj = {
+        day: dayNum,
+        updatedAt: now.toISOString(),
+        topic: document.getElementById(`nftGenTopic_d${dayNum}`)?.value.trim() || '',
+        placeName: document.getElementById(`nftGenPlace_d${dayNum}`)?.value.trim() || '',
+        district: document.getElementById(`nftGenDistrict_d${dayNum}`)?.value || '',
+        village: document.getElementById(`nftGenVillage_d${dayNum}`)?.value.trim() || '',
+        interviewee: document.getElementById(`nftGenInterviewee_d${dayNum}`)?.value.trim() || '',
+        contact: document.getElementById(`nftGenContact_d${dayNum}`)?.value.trim() || '',
+        techUsed: document.getElementById(`nftGenTech_d${dayNum}`)?.value.trim() || '',
+        stemNotes: document.getElementById(`nftGenNotes_d${dayNum}`)?.value.trim() || '',
+        financialNotes: document.getElementById(`nftGenFinancial_d${dayNum}`)?.value.trim() || '',
+        payments: payments,
+        problems: document.getElementById(`nftGenProblems_d${dayNum}`)?.value.trim() || '',
+        solutions: document.getElementById(`nftGenSolutions_d${dayNum}`)?.value.trim() || '',
+        conclusion: document.getElementById(`nftGenConclusion_d${dayNum}`)?.value.trim() || ''
+      };
+
+      localStorage.setItem(`fincestem_draft_nft_lkpd_d${dayNum}_` + cleanNisn, JSON.stringify(draftObj));
+
+      const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      const topBadge = document.getElementById(`txtNftGenericDraftStatus_d${dayNum}`);
+      if (topBadge) topBadge.textContent = `Draft tersimpan (pk ${timeStr} WIB)`;
+      const botInfo = document.getElementById(`lblLkpdGenericDraftBottomInfo_d${dayNum}`);
+      if (botInfo) botInfo.textContent = `Draft tersimpan: Hari ini pk ${timeStr} WIB`;
+
+      if (showToast) {
+        if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+          FincestemCore.ui.toast(`✓ Draft LKPD Day ${dayNum} berhasil disimpan sementara! Jawaban Anda aman dan dapat dilanjutkan kapan saja meskipun tanpa sinyal.`, 'success');
+        } else {
+          alert(`Draft LKPD Day ${dayNum} berhasil disimpan sementara!`);
+        }
+      }
+      return { success: true };
+    } catch(e) {
+      return { success: false, error: e };
+    }
+  }
+
+  window.manualSaveNonFieldTripGenericDraft = function(dayNum) {
+    saveNftGenericDraftImmediate(dayNum, true);
+  };
+
+  window.evaluateGenericSolutionsCounter = function(dayNum) {
+    const solEl = document.getElementById(`nftGenSolutions_d${dayNum}`);
+    const countEl = document.getElementById(`counterNftGenSolutions_d${dayNum}`);
+    const msgEl = document.getElementById(`msgNftGenSolutionsValidation_d${dayNum}`);
+    if (!solEl || !countEl) return;
+
+    const count = solEl.value.trim().length;
+    countEl.textContent = `${count} / 100`;
+
+    if (count >= 100) {
+      countEl.className = 'text-emerald-700 font-bold';
+      if (msgEl) {
+        msgEl.textContent = '✓ Analisis solusi memenuhi syarat minimal';
+        msgEl.className = 'text-emerald-700 font-semibold';
+      }
+    } else {
+      countEl.className = 'text-slate-400 font-bold';
+      if (msgEl) {
+        msgEl.textContent = `Kurang ${100 - count} karakter lagi`;
+        msgEl.className = 'text-slate-400';
+      }
+    }
+  };
+
+  function renderNonFieldTripGenericLKPD(dayNum, isReadOnly) {
+    dayNum = parseInt(dayNum) || 2;
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+      ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+    const curr = NFT_DAYS_CURRICULUM[dayNum] || {
+      title: `Day ${dayNum}: Riset Mandiri Lapangan`,
+      theme: 'Observasi Potensi & Inovasi Lokal OKU Timur',
+      focus: 'Investigasi lapangan terstruktur berbasis 4 pilar STEM & Finansial.'
+    };
+
+    // PRASYARAT WAJIB: Modul Belajar Day N harus selesai
+    let hasMateri = false;
+    try {
+      const rawM = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn) ||
+                   localStorage.getItem(`fincestem_materi_day${dayNum}_` + cleanNisn);
+      if (rawM) {
+        const p = JSON.parse(rawM);
+        if (p && (p.submitted || p.conclusion || p.text || p.content || p.summary || p.cardA)) hasMateri = true;
+      }
+    } catch(e) {}
+    if (!hasMateri && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+      if (window.currentStudentProgress.task_map[`${dayNum}_materi`]) hasMateri = true;
+    }
+
+    // Ambil data resmi yang sudah dikirim
+    let saved = null;
+    try {
+      const rawLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + cleanNisn) ||
+                      localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + cleanNisn);
+      if (rawLkpd) saved = JSON.parse(rawLkpd);
+    } catch(e) {}
+
+    // Ambil data draft otomatis
+    let draft = {};
+    try {
+      const rawDraft = localStorage.getItem(`fincestem_draft_nft_lkpd_d${dayNum}_` + cleanNisn);
+      if (rawDraft) draft = JSON.parse(rawDraft);
+    } catch(e) {}
+
+    const formData = saved || draft;
+    const isSubmitted = !!(saved && (saved.submitted || saved.submittedAt));
+    const isLockedByPrereq = !hasMateri;
+    const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+    const readOnlyAttr = isFormLocked ? 'disabled' : '';
+    const draftTimeStr = (draft && draft.updatedAt) 
+      ? new Date(draft.updatedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) 
+      : '';
+
+    mainEl.innerHTML = `
+      <div class="flex flex-col gap-4 sm:gap-5 pb-12">
+        
+        <!-- BANNER PERINGATAN PRASYARAT MODUL -->
+        ${isLockedByPrereq ? `
+          <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm animate-pulse-once">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-2xl">lock</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Alur Wajib Berurutan Day ${dayNum}</span>
+                <h3 class="text-base sm:text-lg font-black text-amber-950">LKPD Day ${dayNum} Masih Terkunci!</h3>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Sesuai alur kurikulum FINCESTEM Day ${dayNum}, Anda <strong>wajib menuntaskan Modul Belajar &amp; Resume Riset Mandiri Day ${dayNum}</strong> sebelum dapat mengisi Lembar Kerja Lapangan ini.
+            </p>
+            <div class="pt-1">
+              <a href="materi.html?day=${dayNum}" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-md transition-all">
+                <span class="material-symbols-outlined text-base">menu_book</span>
+                <span>Buka &amp; Tuntaskan Modul Riset Day ${dayNum} Sekarang</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </a>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- KOP IDENTITAS LKPD NON-FIELD TRIP DAY N -->
+        <div class="bg-gradient-to-br from-teal-800 via-teal-900 to-slate-950 rounded-3xl p-5 sm:p-6 text-white shadow-md flex flex-col gap-3 border border-teal-700/40">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-teal-100 backdrop-blur-md flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">school</span>
+                <span>Non-Field Trip • Day ${dayNum}</span>
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-400 text-amber-950">
+                Observasi Lapangan OKU Timur
+              </span>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span id="txtNftGenericDraftStatus_d${dayNum}" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-800/80 text-teal-100 border border-teal-600/60 flex items-center gap-1.5 shadow-2xs">
+                <span class="w-2 h-2 rounded-full ${draft && draft.updatedAt ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400'}"></span>
+                <span>${draft && draft.updatedAt ? `Draft tersimpan (pk ${draftTimeStr} WIB)` : 'Auto-Save Aktif (Anti Hilang Sinyal)'}</span>
+              </span>
+              <span class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800 font-extrabold' : (isSubmitted ? 'bg-emerald-400 text-slate-950 font-black shadow-xs' : 'bg-teal-100 text-teal-950 font-extrabold')}">
+                ${isLockedByPrereq ? `Terkunci (Belum Tuntas Modul)` : (isSubmitted ? `✓ LKPD Day ${dayNum} Terkirim Resmi` : 'Sedang Observasi Lapangan')}
+              </span>
+            </div>
+          </div>
+
+          <div>
+            <h2 class="font-black text-xl sm:text-2xl leading-tight">
+              LKPD 0${dayNum}: ${curr.title}
+            </h2>
+            <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium mt-1">
+              ${curr.focus}
+            </p>
+          </div>
+
+          <!-- KARTU DATA PENELITI -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-white/15 text-xs">
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-teal-200 text-[10px] font-medium">Nama Peneliti</span>
+              <span class="font-extrabold truncate text-white">${studentName}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-teal-200 text-[10px] font-medium">NISN / Identitas</span>
+              <span class="font-extrabold truncate text-white">${studentNisn}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-teal-200 text-[10px] font-medium">Rombel / Kelas</span>
+              <span class="font-extrabold truncate text-white">${studentClass}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-teal-200 text-[10px] font-medium">Fasilitator Pembina</span>
+              <span class="font-extrabold truncate text-white">${fasilName}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM INVESTIGASI LAPANGAN DAY N -->
+        <form id="formNftGenericLkpd_d${dayNum}" onsubmit="return false;" class="flex flex-col gap-4 sm:gap-5">
+
+          <!-- BLOK 1: IDENTITAS & LOKASI OBSERVASI LAPANGAN -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+              <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-xs">1</div>
+              <div>
+                <h3 class="font-black text-sm sm:text-base text-slate-900">Profil Objek &amp; Lokasi Observasi Lapangan</h3>
+                <p class="text-[11px] text-slate-500 font-medium">Identitas tempat kunjungan riset mandiri di wilayah Kabupaten OKU Timur.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+              <div class="sm:col-span-2">
+                <label class="block font-bold text-slate-800 mb-1">Judul / Topik Investigasi Lapangan: <span class="text-red-500">*</span></label>
+                <input type="text" id="nftGenTopic_d${dayNum}" value="${formData.topic || ''}" ${readOnlyAttr} placeholder="Contoh: Studi Efisiensi Saluran Irigasi Tersier di Lahan Pangan..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:border-teal-600 focus:ring-1 focus:ring-teal-600 outline-none">
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Nama Tempat / Objek / Unit Usaha: <span class="text-red-500">*</span></label>
+                <input type="text" id="nftGenPlace_d${dayNum}" value="${formData.placeName || ''}" ${readOnlyAttr} placeholder="Contoh: Saluran Irigasi BK 9 / Kilang Padi Berkah / Kios..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:border-teal-600 focus:ring-1 focus:ring-teal-600 outline-none">
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Kecamatan di OKU Timur: <span class="text-red-500">*</span></label>
+                <select id="nftGenDistrict_d${dayNum}" ${readOnlyAttr} class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold bg-white focus:border-teal-600 outline-none">
+                  <option value="">-- Pilih Kecamatan di OKU Timur --</option>
+                  ${OKU_TIMUR_DISTRICTS.map(d => `<option value="${d}" ${formData.district === d ? 'selected' : ''}>Kec. ${d}</option>`).join('')}
+                </select>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Desa / Dusun Lokasi: <span class="text-red-500">*</span></label>
+                <input type="text" id="nftGenVillage_d${dayNum}" value="${formData.village || ''}" ${readOnlyAttr} placeholder="Contoh: Desa Gumawang / Tulus Ayu / Karang Tengah..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:border-teal-600 outline-none">
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Nama Narasumber &amp; Peran: <span class="text-red-500">*</span></label>
+                <input type="text" id="nftGenInterviewee_d${dayNum}" value="${formData.interviewee || ''}" ${readOnlyAttr} placeholder="Contoh: Bpk. H. Supardi (Ketua P3A / Pengelola / Pelaku)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:border-teal-600 outline-none">
+              </div>
+
+              <div class="sm:col-span-2">
+                <label class="block font-bold text-slate-800 mb-1">Kontak / No. Telepon / WA Narasumber: (Opsional)</label>
+                <input type="text" id="nftGenContact_d${dayNum}" value="${formData.contact || ''}" ${readOnlyAttr} placeholder="Contoh: 0812-XXXX-XXXX" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:border-teal-600 outline-none">
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOK 2: PENGAMATAN STEM & LAPANGAN -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+              <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-xs">2</div>
+              <div>
+                <h3 class="font-black text-sm sm:text-base text-slate-900">Investigasi Sains, Teknologi &amp; Pengamatan STEM</h3>
+                <p class="text-[11px] text-slate-500 font-medium">Catatan pengamatan mengenai peralatan, teknologi, dan metode kerja di lapangan.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 text-xs">
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Alat, Mesin, Instrumen, atau Teknologi yang Digunakan / Diamati: <span class="text-red-500">*</span></label>
+                <input type="text" id="nftGenTech_d${dayNum}" value="${formData.techUsed || ''}" ${readOnlyAttr} placeholder="Contoh: Pintu air otomatis, mesin penggiling padi kapasitas 3 ton/jam, dryer, mesin kasir EDC..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold focus:border-teal-600 outline-none">
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Catatan Pengamatan Parameter Lapangan (Kuantitatif &amp; Kualitatif): <span class="text-red-500">*</span></label>
+                <textarea id="nftGenNotes_d${dayNum}" rows="3" ${readOnlyAttr} placeholder="Uraikan hasil pengukuran, kecepatan kerja, debit, volume hasil per hari, atau kondisi fisik yang Anda temukan saat observasi..." class="w-full p-3 rounded-2xl border border-slate-300 text-xs leading-relaxed focus:border-teal-600 outline-none">${formData.stemNotes || ''}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOK 3: ANALISIS EKONOMI & FINANSIAL DAERAH -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+              <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-xs">3</div>
+              <div>
+                <h3 class="font-black text-sm sm:text-base text-slate-900">Analisis Ekonomi &amp; Sirkulasi Finansial Daerah</h3>
+                <p class="text-[11px] text-slate-500 font-medium">Studi biaya operasional, pendapatan, dan efisiensi finansial kegiatan yang diamati.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 text-xs">
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Estimasi Biaya Operasional / Arus Finansial yang Berputar: <span class="text-red-500">*</span></label>
+                <textarea id="nftGenFinancial_d${dayNum}" rows="2" ${readOnlyAttr} placeholder="Contoh: Biaya pemeliharaan saluran Rp 500.000/bulan / Biaya BBM mesin per hari Rp 150.000 / Nilai transaksi gabah..." class="w-full p-3 rounded-2xl border border-slate-300 text-xs leading-relaxed focus:border-teal-600 outline-none">${formData.financialNotes || ''}</textarea>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1.5">Kanal Pembayaran / Transaksi yang Digunakan di Objek Ini:</label>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+                  <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-teal-50/50">
+                    <input type="checkbox" id="chkPayGenCash_d${dayNum}" ${(formData.payments || []).includes('Tunai') || !formData.payments ? 'checked' : ''} ${readOnlyAttr} class="rounded text-teal-700">
+                    <span class="font-bold text-slate-800">Uang Tunai</span>
+                  </label>
+                  <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-teal-50/50">
+                    <input type="checkbox" id="chkPayGenQris_d${dayNum}" ${(formData.payments || []).includes('QRIS') ? 'checked' : ''} ${readOnlyAttr} class="rounded text-teal-700">
+                    <span class="font-bold text-slate-800">QRIS Digital</span>
+                  </label>
+                  <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-teal-50/50">
+                    <input type="checkbox" id="chkPayGenEdc_d${dayNum}" ${(formData.payments || []).includes('EDC') ? 'checked' : ''} ${readOnlyAttr} class="rounded text-teal-700">
+                    <span class="font-bold text-slate-800">Mesin EDC / ATM</span>
+                  </label>
+                  <label class="p-2.5 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-teal-50/50">
+                    <input type="checkbox" id="chkPayGenTransfer_d${dayNum}" ${(formData.payments || []).includes('Transfer') ? 'checked' : ''} ${readOnlyAttr} class="rounded text-teal-700">
+                    <span class="font-bold text-slate-800">Transfer Bank</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BLOK 4: KENDALA, SOLUSI HOTS & KESIMPULAN -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+              <div class="w-8 h-8 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-xs">4</div>
+              <div>
+                <h3 class="font-black text-sm sm:text-base text-slate-900">Kendala Lapangan, Solusi Inovatif (HOTS) &amp; Kesimpulan</h3>
+                <p class="text-[11px] text-slate-500 font-medium">Analisis kritis pemecahan masalah berbasis integrasi sains, teknologi &amp; finansial.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-3 text-xs">
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Kendala / Masalah Utama yang Ditemukan di Lapangan: <span class="text-red-500">*</span></label>
+                <textarea id="nftGenProblems_d${dayNum}" rows="2" ${readOnlyAttr} placeholder="Contoh: Pendangkalan sedimentasi saluran saat kemarau, biaya listrik penggilingan yang mahal, keterbatasan modal..." class="w-full p-3 rounded-2xl border border-slate-300 text-xs leading-relaxed focus:border-teal-600 outline-none">${formData.problems || ''}</textarea>
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between mb-1">
+                  <label class="block font-bold text-slate-800">Rekomendasi Solusi Inovatif Siswa (Min. 100 Karakter): <span class="text-red-500">*</span></label>
+                  <span id="counterNftGenSolutions_d${dayNum}" class="text-slate-400 font-bold">0 / 100</span>
+                </div>
+                <textarea id="nftGenSolutions_d${dayNum}" rows="4" ${readOnlyAttr} oninput="evaluateGenericSolutionsCounter(${dayNum})" placeholder="Uraikan gagasan inovatif berbasis STEM dan literasi finansial Anda untuk menyelesaikan kendala tersebut secara berkelanjutan (minimal 100 karakter)..." class="w-full p-3 rounded-2xl border border-slate-300 text-xs leading-relaxed focus:border-teal-600 outline-none">${formData.solutions || ''}</textarea>
+                <div class="text-[11px] font-medium pt-0.5">
+                  <span id="msgNftGenSolutionsValidation_d${dayNum}" class="text-slate-400">Minimal 100 karakter analisis ilmiah</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="block font-bold text-slate-800 mb-1">Kesimpulan Akhir Observasi Day ${dayNum}: <span class="text-red-500">*</span></label>
+                <textarea id="nftGenConclusion_d${dayNum}" rows="2" ${readOnlyAttr} placeholder="Rangkum inti pembelajaran dan manfaat hasil investigasi Day ${dayNum} bagi potensi daerah OKU Timur..." class="w-full p-3 rounded-2xl border border-slate-300 text-xs leading-relaxed focus:border-teal-600 outline-none">${formData.conclusion || ''}</textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- TOMBOL AKSI LKPD DAY N: SIMPAN DRAFT SEMENTARA & KIRIM RESMI -->
+          ${!isSubmitted ? `
+            <div class="pt-2 sticky bottom-4 z-20">
+              <div class="p-4 sm:p-5 rounded-3xl bg-white/95 backdrop-blur-md border border-slate-200 shadow-lg flex flex-col md:flex-row items-center justify-between gap-3.5">
+                <div class="flex flex-col min-w-0 text-center md:text-left">
+                  <div class="flex items-center justify-center md:justify-start gap-1.5">
+                    <span class="w-2 h-2 rounded-full ${draft && draft.updatedAt ? 'bg-emerald-500 animate-pulse' : 'bg-slate-400'}"></span>
+                    <span id="lblLkpdGenericDraftBottomInfo_d${dayNum}" class="font-extrabold text-xs text-slate-800">
+                      ${draft && draft.updatedAt ? `Draft tersimpan: Hari ini pk ${draftTimeStr} WIB` : 'Auto-Save Aktif: Jawaban tersimpan otomatis saat mengetik'}
+                    </span>
+                  </div>
+                  <span class="text-[11px] text-slate-500 font-medium">Jika observasi belum selesai, klik <strong>Simpan Draft Sementara</strong> untuk melanjutkan nanti.</span>
+                </div>
+                
+                <div class="flex items-center gap-2 w-full md:w-auto shrink-0 flex-col sm:flex-row">
+                  <!-- TOMBOL 1: SIMPAN DRAFT SEMENTARA -->
+                  <button type="button" id="btnSaveDraftNftLkpd_d${dayNum}" onclick="manualSaveNonFieldTripGenericDraft(${dayNum})" ${readOnlyAttr} class="w-full sm:w-auto px-4 py-3.5 rounded-2xl ${isFormLocked ? 'bg-slate-100 text-slate-400 cursor-not-allowed' : 'bg-amber-50 hover:bg-amber-100 active:scale-95 text-amber-950 border-2 border-amber-300 cursor-pointer shadow-2xs'} font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all">
+                    <span class="material-symbols-outlined text-lg text-amber-700">bookmark</span>
+                    <span>Simpan Draft Sementara</span>
+                  </button>
+
+                  <!-- TOMBOL 2: SUBMIT RESMI KE FASILITATOR -->
+                  <button type="button" id="btnSubmitNftLkpd_d${dayNum}" onclick="submitNonFieldTripGenericLKPD(${dayNum})" ${readOnlyAttr} class="w-full sm:w-auto px-6 py-3.5 rounded-2xl ${isFormLocked ? 'bg-slate-200 text-slate-400 cursor-not-allowed' : 'bg-teal-700 hover:bg-teal-800 active:scale-95 text-white cursor-pointer shadow-md'} font-black text-xs sm:text-sm flex items-center justify-center gap-2 transition-all">
+                    <span class="material-symbols-outlined text-base">send</span>
+                    <span>Simpan &amp; Kirim LKPD Day ${dayNum}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          ` : `
+            <div class="p-5 rounded-3xl bg-emerald-50 border-2 border-emerald-300 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-xl">verified</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="font-black text-sm text-emerald-950">LKPD Day ${dayNum} Non-Field Trip Telah Terkirim Resmi!</span>
+                  <span class="text-xs text-emerald-800 font-medium">Data observasi lapangan Anda telah tersimpan dan diserahkan ke Fasilitator pembina.</span>
+                </div>
+              </div>
+              <div class="flex gap-2">
+                <a href="asesmen.html?day=${dayNum}" class="px-4 py-2.5 rounded-xl bg-teal-800 text-white font-bold text-xs hover:bg-teal-900 flex items-center gap-1.5 shadow-xs">
+                  <span>Lanjut Kuis Asesmen Day ${dayNum}</span>
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+          `}
+        </form>
+
+      </div>
+    `;
+
+    setTimeout(() => {
+      evaluateGenericSolutionsCounter(dayNum);
+      const formGen = document.getElementById(`formNftGenericLkpd_d${dayNum}`);
+      if (formGen && !isFormLocked) {
+        formGen.addEventListener('input', () => {
+          saveNftGenericDraftThrottled(dayNum);
+        });
+        formGen.addEventListener('change', () => {
+          saveNftGenericDraftThrottled(dayNum);
+        });
+      }
+    }, 50);
+  }
+
+  // 6. SUBMIT RESMI LKPD DAY 2 S.D. 7 NON-FIELD TRIP
+  window.submitNonFieldTripGenericLKPD = function(dayNum) {
+    dayNum = parseInt(dayNum) || 2;
+    const topic = document.getElementById(`nftGenTopic_d${dayNum}`)?.value.trim();
+    const placeName = document.getElementById(`nftGenPlace_d${dayNum}`)?.value.trim();
+    const district = document.getElementById(`nftGenDistrict_d${dayNum}`)?.value;
+    const village = document.getElementById(`nftGenVillage_d${dayNum}`)?.value.trim();
+    const interviewee = document.getElementById(`nftGenInterviewee_d${dayNum}`)?.value.trim();
+    const techUsed = document.getElementById(`nftGenTech_d${dayNum}`)?.value.trim();
+    const stemNotes = document.getElementById(`nftGenNotes_d${dayNum}`)?.value.trim();
+    const financialNotes = document.getElementById(`nftGenFinancial_d${dayNum}`)?.value.trim();
+    const problems = document.getElementById(`nftGenProblems_d${dayNum}`)?.value.trim();
+    const solutions = document.getElementById(`nftGenSolutions_d${dayNum}`)?.value.trim();
+    const conclusion = document.getElementById(`nftGenConclusion_d${dayNum}`)?.value.trim();
+
+    const missing = [];
+    if (!topic) missing.push('Judul / Topik Investigasi');
+    if (!placeName) missing.push('Nama Tempat / Objek Kunjungan');
+    if (!district) missing.push('Kecamatan di OKU Timur');
+    if (!village) missing.push('Desa Lokasi');
+    if (!interviewee) missing.push('Nama Narasumber & Peran');
+    if (!techUsed) missing.push('Teknologi / Metode yang Diamati');
+    if (!stemNotes) missing.push('Catatan Pengamatan Lapangan');
+    if (!financialNotes) missing.push('Analisis Ekonomi & Finansial');
+    if (!problems) missing.push('Kendala Utama Lapangan');
+    if (!solutions) missing.push('Rekomendasi Solusi Siswa');
+    if (!conclusion) missing.push('Kesimpulan Pembelajaran');
+
+    if (missing.length > 0) {
+      if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+        FincestemCore.ui.toast(`Harap lengkapi: ${missing.slice(0, 3).join(', ')}${missing.length > 3 ? ' dan lainnya' : ''}!`, 'warning');
+      } else {
+        alert(`Harap lengkapi seluruh isian wajib pada LKPD Day ${dayNum}!`);
+      }
+      return;
+    }
+
+    if (solutions.length < 100) {
+      if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+        FincestemCore.ui.toast(`Analisis rekomendasi solusi Anda kurang ${100 - solutions.length} karakter (minimal 100 karakter)!`, 'warning');
+      } else {
+        alert('Analisis rekomendasi solusi minimal 100 karakter!');
+      }
+      return;
+    }
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+
+    const payments = [];
+    if (document.getElementById(`chkPayGenCash_d${dayNum}`)?.checked) payments.push('Tunai');
+    if (document.getElementById(`chkPayGenQris_d${dayNum}`)?.checked) payments.push('QRIS');
+    if (document.getElementById(`chkPayGenEdc_d${dayNum}`)?.checked) payments.push('EDC');
+    if (document.getElementById(`chkPayGenTransfer_d${dayNum}`)?.checked) payments.push('Transfer');
+
+    const officialPayload = {
+      day: dayNum,
+      submitted: true,
+      submittedAt: new Date().toISOString(),
+      studentName: u.name || '',
+      studentNisn: cleanNisn,
+      studentClass: u.class || u.class_name || '',
+      topic: topic,
+      projectTitle: topic,
+      businessName: placeName,
+      placeName: placeName,
+      district: district,
+      village: village,
+      location: `${village}, Kec. ${district}, OKU Timur`,
+      interviewee: interviewee,
+      contact: document.getElementById(`nftGenContact_d${dayNum}`)?.value.trim() || '-',
+      techUsed: techUsed,
+      stemNotes: stemNotes,
+      financialNotes: financialNotes,
+      payments: payments,
+      problems: problems,
+      solutions: solutions,
+      conclusion: conclusion
+    };
+
+    const summaryText = `Riset Lapangan Day ${dayNum}: ${officialPayload.topic} di ${officialPayload.placeName} (${officialPayload.location}). Narasumber: ${officialPayload.interviewee}. Solusi: ${officialPayload.solutions.substring(0, 100)}...`;
+
+    try {
+      localStorage.setItem(`fincestem_lkpd_nft_day${dayNum}_` + cleanNisn, JSON.stringify(officialPayload));
+      localStorage.setItem(`fincestem_lkpd_day${dayNum}_` + cleanNisn, JSON.stringify(officialPayload));
+    } catch(e) {}
+
+    if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.submitTask) {
+      FincestemCore.progress.submitTask(cleanNisn, dayNum, 'lkpd', summaryText, function() {
+        showSuccessNftGenericLkpdModal(dayNum);
+      });
+    } else {
+      showSuccessNftGenericLkpdModal(dayNum);
+    }
+  };
+
+  function showSuccessNftGenericLkpdModal(dayNum) {
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in';
+    modal.innerHTML = `
+      <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 text-center flex flex-col items-center gap-3.5 animate-scale-up">
+        <div class="w-16 h-16 rounded-3xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black shadow-inner">
+          <span class="material-symbols-outlined text-3xl">verified</span>
+        </div>
+        <div>
+          <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-100 text-emerald-900">
+            Riset Mandiri Selesai
+          </span>
+          <h3 class="font-black text-lg sm:text-xl text-slate-900 mt-1">
+            LKPD 0${dayNum} Berhasil Disimpan &amp; Terkirim!
+          </h3>
+          <p class="text-xs text-slate-600 leading-relaxed mt-1">
+            Lembar kerja observasi riset mandiri Day ${dayNum} telah lengkap dan diserahkan ke Fasilitator. Silakan melanjutkan ke tahapan berikutnya!
+          </p>
+        </div>
+
+        <div class="w-full flex flex-col gap-2 pt-2">
+          <a href="asesmen.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span>Lanjut Kuis Asesmen Day ${dayNum}</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+          <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
+            <span>Kembali ke Beranda Dashboard</span>
+          </a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  // Router untuk LKPD Non-Field Trip
   function renderNonFieldTripLKPD(dayNum, isReadOnly) {
+    dayNum = parseInt(dayNum) || 1;
     if (dayNum === 1) {
       renderNonFieldTripDay1LKPD(isReadOnly);
     } else {
       renderNonFieldTripGenericLKPD(dayNum, isReadOnly);
     }
-  }
-
-  function renderNonFieldTripGenericLKPD(dayNum, isReadOnly) {
-    const mainEl = document.querySelector('main');
-    if (!mainEl) return;
-    mainEl.innerHTML = `
-      <div class="p-6 rounded-3xl bg-white border border-slate-200 shadow-sm text-center flex flex-col items-center gap-3">
-        <span class="material-symbols-outlined text-4xl text-teal-600">assignment</span>
-        <h3 class="font-black text-base text-slate-900">LKPD Non-Field Trip Day ${dayNum}</h3>
-        <p class="text-xs text-slate-600 max-w-md">Lembar kerja observasi lokal OKU Timur untuk Day ${dayNum} sedang dalam persiapan.</p>
-        <a href="dashboard.html" class="mt-2 px-5 py-2.5 rounded-xl bg-teal-700 text-white font-bold text-xs">Kembali ke Dashboard</a>
-      </div>
-    `;
   }
 
   window.renderNonFieldTripLKPD = renderNonFieldTripLKPD;
