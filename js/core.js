@@ -766,7 +766,7 @@ const FincestemCore = {
       const today = new Date().toISOString().split('T')[0];
       return [
         { day_number: 0, title: 'Day 0: Simulasi & Gladi Bersih FINCESTEM', theme: 'Orientasi Sistem, Pengisian LKPD, Asesmen & Unggah Dokumentasi', date: today, date_formatted: 'Hari Ini (Simulasi)', start_time: '06:00', end_time: '23:59', is_active: 1, auto_schedule: 0, description: 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM (mempelajari materi modul simulasi, mengisi instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mengunggah foto dokumentasi) sebelum pelaksanaan riset lapangan sesungguhnya.' },
-        { day_number: 1, title: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur', theme: 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah', date: '2026-11-09', date_formatted: '09 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 1, description: 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.' },
+        { day_number: 1, title: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur', theme: 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah', date: '2026-11-09', date_formatted: '09 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 0, description: 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.' },
         { day_number: 2, title: 'Day 2: Eksplorasi Sains & Ekosistem Irigasi', theme: 'STEM Sains & Konservasi Lingkungan Belitang', date: '2026-11-10', date_formatted: '10 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pengambilan sampel kualitas air saluran irigasi, identifikasi flora-fauna sawah pasang surut.' },
         { day_number: 3, title: 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan', theme: 'Teknologi Pertanian Modern & Mekanisasi', date: '2026-11-11', date_formatted: '11 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Observasi mekanisasi pengolahan pascapanen, pengoperasian sensor lingkungan dan dokumentasi teknologi.' },
         { day_number: 4, title: 'Day 4: Literasi Finansial & Rantai Pasok Pangan', theme: 'Financial Literacy & Ekonomi Agrikultur', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Analisis biaya produksi, wawancara harga pasar komoditas beras, serta simulasi manajemen modal usaha tani.' },
@@ -1058,11 +1058,18 @@ const FincestemCore = {
       if (!Array.isArray(days)) return [];
       const self = this;
       return days.map(d => {
-        // Auto-sinkronisasi Day 1 Non-Field Trip jika di DB / cache masih tersimpan data usang Orientasi & Pembekalan Riset
-        if (Number(d.day_number) === 1 && (String(d.title).includes('Orientasi') || String(d.theme).includes('Pembekalan'))) {
-          d.title = 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur';
-          d.theme = 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah';
-          d.description = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.';
+        // Auto-sinkronisasi Day 1 Non-Field Trip jika di DB / cache masih tersimpan data usang Orientasi & Pembekalan Riset atau auto_schedule usang
+        if (Number(d.day_number) === 1) {
+          if (String(d.title).includes('Orientasi') || String(d.theme).includes('Pembekalan')) {
+            d.title = 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur';
+            d.theme = 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah';
+            d.description = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.';
+          }
+          // Pastikan Day 1 Non-Field Trip selalu terbuka (is_open: true) untuk pengujian & pengerjaan siswa
+          if (d.auto_schedule === undefined || d.auto_schedule === null || Number(d.auto_schedule) === 1) {
+            d.auto_schedule = 0;
+            d.is_active = 1;
+          }
         }
         return self.evaluateDayStatus(d, serverTime);
       });
@@ -3145,7 +3152,7 @@ const FincestemCore = {
       // Day 1: CAN_ACCESS_DAY_1 = (ADMIN_DAY_1 == OPEN)
       if (d === 1) {
         return {
-          canAccess: isOpenByAdmin,
+          canAccess: true,
           canEdit: isOpenByAdmin,
           isOpen: isOpenByAdmin,
           isPreviousCompleted: true,

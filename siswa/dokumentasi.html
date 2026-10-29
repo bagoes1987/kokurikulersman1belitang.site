@@ -390,7 +390,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261021_v1"></script>
+  <script src="../js/core.js?v=20261029_nft_core_v2"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -598,7 +598,7 @@
     function getDayActivityConfig(dayNum) {
       const cat = getStudentCategoryInfo();
       const d = (dayNum !== undefined && dayNum !== null) ? parseInt(dayNum) : 1;
-      const groupKey = (cat.isFieldTrip || d <= 4) ? 'fieldTrip' : 'nonFieldTrip';
+      const groupKey = cat.isFieldTrip ? 'fieldTrip' : 'nonFieldTrip';
       const cfgGroup = DAY_ACTIVITIES_CONFIG[groupKey] || DAY_ACTIVITIES_CONFIG.fieldTrip;
       return cfgGroup[d] || cfgGroup[1];
     }
@@ -964,11 +964,13 @@
                 if (!hasAsesmen) {
                   for (const id of ids) {
                     try {
-                      const ask = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id);
+                      const ask = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
+                                  localStorage.getItem(`fincestem_asesmen_nft_day${dayNum}_` + id) ||
+                                  localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + id);
                       if (ask) {
                         try {
                           const parsed = JSON.parse(ask);
-                          if (parsed && (parsed.submitted || parsed.score !== undefined || parsed.answers)) {
+                          if (parsed && (parsed.submitted || parsed.score !== undefined || parsed.answers || parsed.correctCount !== undefined)) {
                             hasAsesmen = true;
                             break;
                           }
@@ -990,6 +992,10 @@
             }
             let canEdit = access.canEdit;
             if (studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
+              canEdit = true;
+            }
+            // Siswa Non-Field Trip Day 1 yang memiliki hak akses diberikan izin edit (tidak terkunci read-only)
+            if (!studentCategory.isFieldTrip && dayNum === 1 && access.canAccess) {
               canEdit = true;
             }
             if (!canEdit || isReadOnlyUrl) {
@@ -1204,36 +1210,32 @@
     }
 
     function triggerCameraCapture() {
-      // Validasi mutlak: GPS harus sudah terkunci & lokasi sesuai sebelum kamera bisa memfoto
-      if (gpsLockState === 'LOCATING') {
-        FincestemCore.ui.toast('⏳ Sedang mengunci titik satelit GPS HP Anda... Kamera akan otomatis aktif begitu lokasi terkunci!', 'info');
+      // 1. Jika masih mencari koordinat pertama kali dan belum ada titik fallback
+      if (gpsLockState === 'LOCATING' && !currentGPS) {
+        FincestemCore.ui.toast('⏳ Sedang mengunci titik satelit GPS HP Anda... Kamera akan segera aktif!', 'info');
         requestGPSCoordinates(false, false);
         return;
       }
 
-      if (gpsLockState === 'ERROR' || !currentGPS) {
-        FincestemCore.ui.toast('⚠️ Lokasi GPS satelit belum terkunci. Menyegarkan kembali...', 'warning');
-        requestGPSCoordinates(true, true);
-        return;
+      // 2. Jika GPS error atau belum ada koordinat, gunakan fallback titik acuan SMAN 1 Belitang otomatis
+      if (!currentGPS) {
+        applyFallbackGPS('GPS dialihkan ke titik acuan SMAN 1 Belitang');
       }
 
-      if (!currentGPS.address || typeof currentGPS.address !== 'object' || currentGPS.address === 'Mendeteksi wilayah...') {
-        FincestemCore.ui.toast('⚠️ Menunggu penyesuaian desa/kecamatan... Harap tunggu sebentar.', 'warning');
-        return;
+      // 3. Pastikan alamat terisi
+      if (!currentGPS.address) {
+        currentGPS.address = {
+          desa: 'Desa Rantau Jaya',
+          kec: 'Kec. Belitang Madang Raya',
+          kab: 'Kab. OKU Timur',
+          prov: 'Sumatera Selatan',
+          line1: 'Desa Rantau Jaya, Kec. Belitang Madang Raya',
+          line2: 'Kab. OKU Timur, Sumatera Selatan',
+          fullText: 'Desa Rantau Jaya, Kec. Belitang Madang Raya, Kab. OKU Timur, Sumatera Selatan'
+        };
       }
 
-      if (currentGPS.isFallback) {
-        const allowFallback = confirm(
-          "⚠️ Sinyal GPS satelit HP tidak terdeteksi langsung.\n\n" +
-          "Sistem saat ini menggunakan titik acuan lokasi SMAN 1 Belitang (Desa Rantau Jaya).\n\n" +
-          "Apakah Anda ingin tetap membuka kamera dengan lokasi ini?"
-        );
-        if (!allowFallback) {
-          requestGPSCoordinates(true, true);
-          return;
-        }
-      }
-
+      // 4. Langsung picu pembukaan kamera HP
       const cam = document.getElementById('modalPhotoCameraInput');
       if (cam) cam.click();
     }
@@ -2121,9 +2123,9 @@
       if (iconBox) {
         iconBox.className = 'w-8 h-8 rounded-xl bg-amber-500/15 text-amber-600 flex items-center justify-center shrink-0';
       }
-      if (title) title.textContent = `📍 GPS Lokasi SMAN 1 Belitang: -4.10928°, 104.63826°`;
+      if (title) title.textContent = `📍 Titik Acuan SMAN 1 Belitang: -4.10928°, 104.63826°`;
       if (sub) sub.textContent = msg ? `${msg} • Desa Rantau Jaya, Kec. Belitang Madang Raya` : 'Desa Rantau Jaya, Kec. Belitang Madang Raya, Kab. OKU Timur, Sumatera Selatan';
-      updateCameraButtonState('ERROR', msg);
+      updateCameraButtonState('READY', { desa: 'Acuan Belitang' });
     }
 
     function roundRectHelper(ctx, x, y, w, h, r) {
@@ -3569,26 +3571,74 @@
       } else {
         // HARI LAINNYA & DAY 0 SIMULASI
         const isDay0 = (Number(dayNum) === 0);
-        container.innerHTML = `
-          <div class="p-4 sm:p-5 rounded-3xl ${isDay0 ? 'bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-teal-500/10 border-2 border-amber-400' : 'bg-surface-container-lowest border-2 border-primary/40'} flex items-center justify-between gap-3 shadow-xs">
-            <div class="flex items-center gap-3">
-              <div class="w-12 h-12 rounded-2xl ${isDay0 ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white' : 'bg-primary/10 text-primary'} flex items-center justify-center shrink-0 shadow-xs">
-                <span class="material-symbols-outlined text-2xl">${isDay0 ? 'science' : 'photo_camera'}</span>
-              </div>
-              <div class="flex flex-col">
-                <div class="flex items-center gap-2">
-                  <span class="font-black text-xs sm:text-sm text-on-surface">${isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : `Dokumentasi Foto Day ${dayNum}`}</span>
-                  ${isDay0 ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide">Uji Coba</span>' : ''}
+        let hasPhotoUploaded = false;
+        for (const id of ids) {
+          if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true' ||
+              localStorage.getItem(`fincestem_dok_nft_day${dayNum}_` + id) === 'true' ||
+              localStorage.getItem(`fincestem_dok_day${dayNum}_` + id) === 'true') {
+            hasPhotoUploaded = true;
+            break;
+          }
+        }
+        if (!hasPhotoUploaded) {
+          try {
+            const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+            if (dbStr) {
+              const db = JSON.parse(dbStr);
+              if (Array.isArray(db.documentation)) {
+                hasPhotoUploaded = db.documentation.some(p => Number(p.day || p.day_number || 0) === Number(dayNum));
+              }
+            }
+          } catch(e) {}
+        }
+
+        if (hasPhotoUploaded && !isDay0) {
+          container.innerHTML = `
+            <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-400 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm animate-fade-in">
+              <div class="flex items-center gap-3 w-full sm:w-auto">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">task_alt</span>
                 </div>
-                <span class="text-[11px] text-slate-500">${isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini'}</span>
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-2">
+                    <span class="font-black text-sm text-emerald-950">Dokumentasi Day ${dayNum} Selesai</span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-200 text-emerald-900 uppercase tracking-wide">Tuntas</span>
+                  </div>
+                  <span class="text-xs text-slate-600">Foto bukti riset Anda telah tersimpan. Silakan melangkah ke tahap akhir: Jurnal Refleksi Mandiri.</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 w-full sm:w-auto shrink-0">
+                <a href="dashboard.html?day=${dayNum}&task=refleksi" class="flex-1 sm:flex-none py-3 px-4 rounded-xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
+                  <span>Lanjut ke Tahap 5: Jurnal Refleksi Day ${dayNum} &rarr;</span>
+                </a>
+                <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-3.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs" title="Tambah Foto Lainnya">
+                  <span class="material-symbols-outlined text-base">add_a_photo</span>
+                </button>
               </div>
             </div>
-            <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-xl ${isDay0 ? 'bg-amber-600 hover:bg-amber-700' : 'bg-primary hover:bg-primary/90'} text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0">
-              <span class="material-symbols-outlined text-base">add_a_photo</span>
-              <span>${isDay0 ? 'Ambil Foto Simulasi' : 'Ambil Foto'}</span>
-            </button>
-          </div>
-        `;
+          `;
+        } else {
+          container.innerHTML = `
+            <div class="p-4 sm:p-5 rounded-3xl ${isDay0 ? 'bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-teal-500/10 border-2 border-amber-400' : 'bg-surface-container-lowest border-2 border-primary/40'} flex items-center justify-between gap-3 shadow-xs">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl ${isDay0 ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white' : 'bg-primary/10 text-primary'} flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">${isDay0 ? 'science' : 'photo_camera'}</span>
+                </div>
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-2">
+                    <span class="font-black text-xs sm:text-sm text-on-surface">${isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : `Dokumentasi Foto Day ${dayNum}`}</span>
+                    ${isDay0 ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide">Uji Coba</span>' : ''}
+                  </div>
+                  <span class="text-[11px] text-slate-500">${isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini'}</span>
+                </div>
+              </div>
+              <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-xl ${isDay0 ? 'bg-amber-600 hover:bg-amber-700' : 'bg-primary hover:bg-primary/90'} text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0">
+                <span class="material-symbols-outlined text-base">add_a_photo</span>
+                <span>${isDay0 ? 'Ambil Foto Simulasi' : 'Ambil Foto'}</span>
+              </button>
+            </div>
+          `;
+        }
       }
     }
 
@@ -3847,6 +3897,10 @@
         const desc = descEl ? descEl.value.trim() : '';
 
         if (!selectedPhotoBase64) {
+          isSubmittingPhoto = false;
+          submitBtns.forEach(b => {
+            b.classList.remove('opacity-50', 'pointer-events-none');
+          });
           FincestemCore.ui.toast('Silakan ambil foto dengan kamera atau pilih berkas foto terlebih dahulu!', 'error');
           return;
         }
@@ -3908,12 +3962,18 @@
           if (stored) db = JSON.parse(stored);
           if (!Array.isArray(db.documentation)) db.documentation = [];
           db.documentation.unshift(newPhoto);
+          // Batasi maksimal 20 item foto di storage lokal agar tidak QuotaExceededError
+          if (db.documentation.length > 20) {
+            db.documentation = db.documentation.slice(0, 20);
+          }
           localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
 
           const cleanNisn = String(studentNisn).trim();
           const idList = [studentNisn, cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
           idList.forEach(id => {
             localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + id, 'true');
+            localStorage.setItem('fincestem_dok_nft_day' + docDayNum + '_' + id, 'true');
+            localStorage.setItem('fincestem_dok_day' + docDayNum + '_' + id, 'true');
           });
         } catch (e) {
           console.error('Save to local storage error:', e);
@@ -4104,8 +4164,8 @@
         renderPhotos();
         renderSessionActionCard(docDayNum);
 
-        // Untuk Siswa Field Trip (Day 1 s.d. 7), munculkan modal navigasi ke Tahap 5: Refleksi
-        if (cat.isFieldTrip && (docDayNum >= 1 && docDayNum <= 7)) {
+        // Munculkan modal navigasi ke Tahap 5: Refleksi (Day 1 s.d. 7)
+        if (docDayNum >= 1 && docDayNum <= 7) {
           setTimeout(() => {
             showFtDokSuccessModal(docDayNum);
           }, 350);

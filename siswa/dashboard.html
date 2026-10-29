@@ -2079,6 +2079,7 @@
               }
             }
             if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true' ||
+                localStorage.getItem(`fincestem_dok_nft_day${dayNum}_` + id) === 'true' ||
                 localStorage.getItem(`fincestem_dok_day${dayNum}_` + id) === 'true') {
               hasDok = true;
               break;
@@ -2107,6 +2108,7 @@
         for (const id of idList) {
           try {
             const raw = localStorage.getItem(`fincestem_refleksi_ft_day${dayNum}_` + id) ||
+                        localStorage.getItem(`fincestem_refleksi_nft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_refleksi_day${dayNum}_` + id);
             if (raw) {
               hasRefleksi = true;
@@ -3332,7 +3334,9 @@
         return;
       }
 
-      if (!access.canEdit) {
+      // Siswa Non-Field Trip Day 1 yang dapat diakses tidak boleh dipaksa mode readonly
+      const isDay1ActiveNonFt = (!isFieldTrip && Number(dayNumber) === 1 && access.canAccess);
+      if (!access.canEdit && !isDay1ActiveNonFt) {
         if (type === 'penilaian') {
           openDayActivityModal(day, type, true);
           return;
