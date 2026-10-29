@@ -2121,7 +2121,7 @@
                               </span>
                               <div>
                                 <span class="font-extrabold text-teal-950 block text-[11px]">Kuis Asesmen Day 1 (50 Soal Acak Exam Shield)</span>
-                                <span class="text-[10px] text-slate-500">${aData.correctCount || 0}/50 Benar &bull; Durasi: ${Math.round((aData.durationSpentSeconds || 0)/60)} Menit &bull; Pelanggaran: ${aData.violationCount || 0}x</span>
+                                <span class="text-[10px] text-slate-500">${aData.correctCount || 0}/50 Benar &bull; Durasi: ${Math.round((aData.durationSpentSeconds || 0)/60)} Menit &bull; <span class="${(aData.violationCount || 0) > 0 ? 'text-rose-600 font-black' : 'text-slate-500'}">Pelanggaran: ${aData.violationCount || 0}x ${(aData.violationCount || 0) > 0 ? '⚠️' : ''}</span></span>
                               </div>
                             </div>
                             <span class="px-2.5 py-1 rounded-lg bg-teal-100 text-teal-900 font-black text-xs border border-teal-300">

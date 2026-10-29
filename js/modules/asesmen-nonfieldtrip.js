@@ -433,29 +433,55 @@
             </ul>
           </div>
 
-          <!-- KOTAK TES BUNYI ALARM -->
-          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+          <!-- GERBANG KALIBRASI AUDIO & VOLUME WAJIB (TRIPLE EXAM SECURITY) -->
+          <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/15 via-amber-50 to-orange-50 border-2 border-amber-400 text-slate-900 flex flex-col gap-3.5 shadow-sm">
+            
             <div class="flex items-center gap-2.5">
-              <span class="w-8 h-8 rounded-xl bg-amber-200 text-amber-900 flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-lg">campaign</span>
-              </span>
+              <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md shrink-0">
+                <span class="material-symbols-outlined text-2xl animate-pulse">volume_up</span>
+              </div>
               <div class="flex flex-col text-left">
-                <span class="text-xs font-black text-amber-950">Alarm Audio Keamanan Aktif</span>
-                <span class="text-[10.5px] text-amber-800">Sirine berbunyi jika pindah tab atau coba screenshot</span>
+                <span class="text-xs font-black uppercase tracking-wider text-amber-950">Tahap Verifikasi: Kalibrasi Volume Wajib</span>
+                <span class="text-[11px] text-slate-600 font-medium leading-tight">Ujian terkunci sebelum audio diuji dan volume dipastikan maksimal.</span>
               </div>
             </div>
-            <button type="button" onclick="window.testExamAlarmSound()" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 active:scale-95 text-slate-950 font-black text-xs flex items-center gap-1 shadow-2xs transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-sm">volume_up</span>
-              <span>Uji Sirine</span>
-            </button>
+
+            <div class="p-3 rounded-2xl bg-white/90 border border-amber-300 text-xs text-slate-700 space-y-1.5 leading-relaxed">
+              <p class="font-bold text-amber-950 flex items-center gap-1">
+                <span class="material-symbols-outlined text-amber-600 text-base">gavel</span>
+                <span>Tata Tertib Pengawas Ruangan:</span>
+              </p>
+              <ul class="text-[11px] list-disc list-inside text-slate-600 font-medium space-y-1">
+                <li>Perangkat siswa <strong>WAJIB dalam mode dering</strong> dengan volume minimal <strong>80% &ndash; 100%</strong>.</li>
+                <li>Dilarang mengaktifkan mode hening/getar (*Mute/Silent*). Pengawas berhak mendiskualifikasi siswa yang mematikan volume perangkat selama asesmen.</li>
+              </ul>
+            </div>
+
+            <!-- Tombol Uji Suara Sirine -->
+            <div class="flex items-center justify-between gap-2 p-3 rounded-2xl bg-white border border-amber-300 shadow-2xs">
+              <span class="text-[11.5px] font-bold text-slate-800">1. Tekan tombol untuk cek sirine:</span>
+              <button type="button" id="btnTestAudioGate" onclick="window.handleGateAudioTest()" class="px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-black text-xs flex items-center gap-1.5 shadow-xs transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-base">campaign</span>
+                <span id="txtBtnTestAudio">Uji Sirine Ujian</span>
+              </button>
+            </div>
+
+            <!-- Checkbox Persetujuan Volume -->
+            <label id="lblCheckboxVolume" class="flex items-start gap-2.5 p-3 rounded-2xl bg-white/60 border border-slate-200 cursor-not-allowed opacity-60 transition-all select-none">
+              <input type="checkbox" id="chkConfirmVolumeMax" disabled onchange="window.handleVolumeCheckChanged(this)" class="mt-0.5 w-4 h-4 rounded text-teal-700 focus:ring-teal-600 border-slate-300 cursor-not-allowed">
+              <span class="text-[11px] text-slate-700 font-bold leading-snug">
+                2. Saya menyatakan telah menaikkan volume HP/laptop minimal 80% &ndash; 100%, dering aktif (tidak hening), dan suara sirine terdengar jelas di ruangan.
+              </span>
+            </label>
+
           </div>
         </div>
 
-        <!-- TOMBOL AKSI MULAI UJIAN -->
+        <!-- TOMBOL AKSI MULAI UJIAN (TERKUNCI SECARA DEFAULT) -->
         <div class="flex flex-col gap-2 pt-1">
-          <button type="button" onclick="window.startNonFieldTripExamNow()" class="w-full py-4 rounded-2xl bg-teal-700 hover:bg-teal-800 active:scale-98 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer">
-            <span class="material-symbols-outlined text-xl">play_circle</span>
-            <span>Saya Siap, Mulai Asesmen Sekarang (60 Menit)</span>
+          <button type="button" id="btnStartExamLocked" disabled onclick="window.startNonFieldTripExamNow()" class="w-full py-4 rounded-2xl bg-slate-300 text-slate-500 font-black text-sm flex items-center justify-center gap-2 cursor-not-allowed shadow-none transition-all">
+            <span class="material-symbols-outlined text-xl" id="iconStartExam">lock</span>
+            <span id="txtStartExam">Selesaikan Kalibrasi Volume di Atas untuk Mulai</span>
           </button>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1">
             <span>Batal &amp; Kembali ke Dashboard</span>
@@ -465,6 +491,48 @@
       </div>
     `;
   }
+
+  let isAudioTestPassed = false;
+
+  window.handleGateAudioTest = function() {
+    isAudioTestPassed = true;
+    window.testExamAlarmSound();
+
+    const btnTxt = document.getElementById('txtBtnTestAudio');
+    if (btnTxt) btnTxt.textContent = 'Sirine Berbunyi ✓';
+
+    const lbl = document.getElementById('lblCheckboxVolume');
+    const chk = document.getElementById('chkConfirmVolumeMax');
+    if (lbl && chk) {
+      lbl.classList.remove('opacity-60', 'cursor-not-allowed', 'bg-white/60');
+      lbl.classList.add('cursor-pointer', 'border-amber-400', 'bg-white', 'shadow-2xs');
+      chk.disabled = false;
+      chk.classList.remove('cursor-not-allowed');
+      chk.classList.add('cursor-pointer');
+    }
+  };
+
+  window.handleVolumeCheckChanged = function(checkboxEl) {
+    const btn = document.getElementById('btnStartExamLocked');
+    const icon = document.getElementById('iconStartExam');
+    const txt = document.getElementById('txtStartExam');
+
+    if (checkboxEl && checkboxEl.checked && isAudioTestPassed) {
+      if (btn) {
+        btn.disabled = false;
+        btn.className = 'w-full py-4 rounded-2xl bg-teal-700 hover:bg-teal-800 active:scale-98 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer animate-bounce-short';
+      }
+      if (icon) icon.textContent = 'play_circle';
+      if (txt) txt.textContent = 'Saya Siap, Mulai Asesmen Sekarang (60 Menit)';
+    } else {
+      if (btn) {
+        btn.disabled = true;
+        btn.className = 'w-full py-4 rounded-2xl bg-slate-300 text-slate-500 font-black text-sm flex items-center justify-center gap-2 cursor-not-allowed shadow-none transition-all';
+      }
+      if (icon) icon.textContent = 'lock';
+      if (txt) txt.textContent = 'Selesaikan Kalibrasi Volume di Atas untuk Mulai';
+    }
+  };
 
   /**
    * EKSEKUSI MULAI UJIAN
@@ -947,8 +1015,46 @@
     }
   }
 
+  /**
+   * GETARAN DARURAT (HAPTIC VIBRATION API)
+   * Bergetar kencang dan berdengung keras di atas meja saat terdeteksi pelanggaran
+   */
+  let vibrateInterval = null;
+
+  function startExamVibrationLoop() {
+    try {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        // Pola getar berulang kencang: 500ms getar, 200ms jeda, 500ms getar, 200ms jeda, 800ms getar
+        navigator.vibrate([500, 200, 500, 200, 800]);
+        clearInterval(vibrateInterval);
+        vibrateInterval = setInterval(() => {
+          if (navigator.vibrate) {
+            navigator.vibrate([500, 200, 500, 200, 800]);
+          }
+        }, 2200);
+      }
+    } catch(e) {}
+  }
+
+  function stopExamVibrationLoop() {
+    try {
+      if (vibrateInterval) {
+        clearInterval(vibrateInterval);
+        vibrateInterval = null;
+      }
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate(0);
+      }
+    } catch(e) {}
+  }
+
   window.testExamAlarmSound = function() {
     primeAudioElements();
+    try {
+      if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
+      }
+    } catch(e) {}
     try {
       const audio = getAlarmAudioElement();
       if (audio) {
@@ -1169,6 +1275,7 @@
     isViolationModalOpen = true;
     const container = getOrCreateViolationContainer();
     startExamAlarmLoop();
+    startExamVibrationLoop();
 
     let title = '';
     let message = '';
@@ -1193,9 +1300,16 @@
     }
 
     container.innerHTML = `
-      <div id="examViolationModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in select-none">
+      <div id="examViolationModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 animate-emergency-strobe select-none">
         <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border-2 ${count >= 2 ? 'border-rose-500' : 'border-amber-500'} flex flex-col items-center text-center gap-4 animate-scale-up">
           
+          <!-- BEACON STROBO DARURAT ATAS -->
+          <div class="w-full py-2 px-3 rounded-2xl bg-rose-700 text-white text-[11px] font-black uppercase tracking-wider flex items-center justify-center gap-2 animate-pulse shadow-md">
+            <span class="material-symbols-outlined text-base">emergency_home</span>
+            <span>PERINGATAN DARURAT: PELANGGARAN TERDETEKSI</span>
+            <span class="material-symbols-outlined text-base">emergency_home</span>
+          </div>
+
           <!-- IKON ALARM PULSING -->
           <div class="relative flex items-center justify-center my-1">
             <span class="absolute w-20 h-20 rounded-full ${count >= 2 ? 'bg-rose-500/30' : 'bg-amber-500/30'} animate-ping"></span>
@@ -1221,7 +1335,7 @@
           <div class="w-full p-3.5 rounded-2xl ${count >= 3 ? 'bg-rose-950 text-rose-100' : 'bg-rose-50 border border-rose-200 text-rose-950'} text-xs font-bold flex items-center justify-between">
             <span class="flex items-center gap-1.5">
               <span class="material-symbols-outlined text-sm text-rose-600 animate-pulse">volume_up</span>
-              <span>Alarm Sirine Aktif</span>
+              <span>Sirine &amp; Getar Aktif</span>
             </span>
             <span class="px-2.5 py-1 rounded-xl ${count >= 3 ? 'bg-rose-600 text-white' : 'bg-rose-200 text-rose-900'} font-black">
               Pelanggaran ${count} dari 3
@@ -1250,6 +1364,7 @@
     if (count >= 3) {
       setTimeout(() => {
         stopExamAlarmLoop();
+        stopExamVibrationLoop();
         submitExam(true, 'Force Submit (Pelanggaran Tab 3x)');
       }, 2500);
     }
@@ -1257,6 +1372,7 @@
 
   window.dismissExamViolationModal = function() {
     stopExamAlarmLoop();
+    stopExamVibrationLoop();
     isViolationModalOpen = false;
     isTabAway = false;
     lastViolationTime = Date.now();

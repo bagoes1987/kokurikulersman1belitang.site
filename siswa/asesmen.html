@@ -70,6 +70,14 @@
       pointer-events: none !important;
       filter: brightness(0) blur(60px) !important;
     }
+    /* Efek Lampu Strobo Darurat Merah-Gelap saat Terdeteksi Pelanggaran */
+    @keyframes emergencyStrobe {
+      0%, 100% { background-color: rgba(185, 28, 28, 0.95); }
+      50% { background-color: rgba(15, 23, 42, 0.95); }
+    }
+    .animate-emergency-strobe {
+      animation: emergencyStrobe 0.5s infinite ease-in-out;
+    }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
