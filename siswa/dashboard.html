@@ -2036,7 +2036,8 @@
         } else {
           for (const id of idList) {
             try {
-              const raw = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
+              const raw = localStorage.getItem(`fincestem_asesmen_nft_day${dayNum}_` + id) ||
+                          localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
                           localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + id);
               if (raw) {
                 try {
@@ -3345,6 +3346,10 @@
           window.location.href = (isFieldTrip && Number(dayNumber) === 6) ? 'dokumentasi.html?day=6&sesi=1&readonly=1' : ('dokumentasi.html?day=' + dayNumber + '&readonly=1');
           return;
         }
+        if (type === 'asesmen' && !isFieldTrip) {
+          window.location.href = 'asesmen.html?day=' + dayNumber + '&readonly=1';
+          return;
+        }
         openDayActivityModal(day, type, true);
         return;
       }
@@ -3383,6 +3388,11 @@
           return;
         }
         window.location.href = 'dokumentasi.html?day=' + dayNumber;
+        return;
+      }
+
+      if (type === 'asesmen' && !isFieldTrip) {
+        window.location.href = 'asesmen.html?day=' + dayNumber;
         return;
       }
 

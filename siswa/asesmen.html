@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html class="h-full" lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Kuis Asesmen Kompetensi - FINCESTEM 2026 - SMAN 1 Belitang</title>
+  <link rel="icon" type="image/png" href="../LOGO FICESTEM2026.png">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script>
+    (function() {
+      try {
+        var auth = localStorage.getItem('fincestem_auth');
+        var role = localStorage.getItem('fincestem_role');
+        if (auth !== 'true' || role !== 'siswa') {
+          window.location.replace('index.html');
+        }
+      } catch (e) {}
+    })();
+  </script>
+  <style>
+    @layer base {
+      html {
+        font-size: 16px;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+      html, body {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+      }
+      body {
+        overscroll-behavior-y: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+    }
+    /* Anti-seleksi teks umum pada lembar ujian */
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'primary': '#00236f',
+            'secondary': '#006a61',
+            'background': '#faf8ff',
+            'surface': '#faf8ff',
+            'surface-container-lowest': '#ffffff'
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-slate-100 font-sans text-slate-800 antialiased flex flex-col min-h-full overflow-x-hidden no-select">
+
+  <!-- TOP HEADER MINIMALIS -->
+  <header class="sticky top-0 w-full z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
+    <div class="h-16 px-4 flex items-center justify-between max-w-xl mx-auto w-full">
+      <div class="flex items-center gap-3">
+        <button type="button" onclick="handleExitAsesmen()" class="p-2 rounded-xl text-slate-700 hover:bg-slate-100 transition-all cursor-pointer" title="Kembali ke Dashboard">
+          <span class="material-symbols-outlined text-xl">arrow_back</span>
+        </button>
+        <div class="flex flex-col">
+          <span class="text-[11px] text-teal-700 font-black uppercase tracking-wider leading-tight">Portal Asesmen Siswa</span>
+          <span class="text-sm sm:text-base font-black text-slate-900 leading-tight">FINCESTEM SMAN 1 Belitang</span>
+        </div>
+      </div>
+      <button type="button" onclick="handleExitAsesmen()" class="p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-all cursor-pointer" title="Dashboard">
+        <span class="material-symbols-outlined text-xl">home</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- CONTAINER UTAMA UJIAN (INJEKSI DARI ENGINE ASESMEN) -->
+  <main id="examRootContainer" class="flex-1 flex flex-col max-w-xl mx-auto w-full p-3 sm:p-4 pb-16">
+    <div class="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center gap-3 my-auto min-h-[300px]">
+      <div class="w-10 h-10 border-4 border-teal-600 border-t-transparent rounded-full animate-spin"></div>
+      <span class="text-sm font-black text-slate-800">Menyiapkan Lembar Asesmen Digital...</span>
+      <p class="text-xs text-slate-500 max-w-xs">Mengacak 50 butir soal berimbang 5 indikator &amp; mengaktifkan Exam Shield.</p>
+    </div>
+  </main>
+
+  <!-- FOOTER COPYRIGHT -->
+  <footer class="text-center py-4 border-t border-slate-200/60 bg-white text-[11px] text-slate-400">
+    &copy; 2026 Kurikulum SMAN 1 Belitang • FINCESTEM Exam Shield
+  </footer>
+
+  <script src="../js/siswa_data.js?v=20261021_v1"></script>
+  <script src="../js/core.js?v=20261027_d6_final_v4"></script>
+  <script>
+    window.activeUser = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {
+      name: 'Peserta Didik',
+      class: 'Kelas X',
+      nisn: '0000000000',
+      identifier: '0000000000',
+      role: 'siswa'
+    };
+  </script>
+  <script src="../js/data/bank-soal-nonfieldtrip.js?v=20261029_nft_bs1"></script>
+  <script src="../js/modules/asesmen-nonfieldtrip.js?v=20261029_nft_asesmen_v1"></script>
+  <script>
+    function handleExitAsesmen() {
+      if (confirm('Keluar dari halaman asesmen dan kembali ke beranda dashboard?')) {
+        window.location.href = 'dashboard.html';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.activeUser = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser;
+      
+      const urlParams = new URLSearchParams(window.location.search);
+      const rawDay = urlParams.get('day');
+      const dayNum = (rawDay !== null && rawDay !== '') ? parseInt(rawDay) : 1;
+
+      // Cek kategori siswa (Field Trip vs Non-Field Trip)
+      const studentZone = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(activeUser.nisn || activeUser.identifier, activeUser.class || activeUser.class_name, activeUser.zone)
+        : (activeUser.zone || 'FINCESTEM OKU TIMUR');
+      const zUpper = (studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
+      if (isFieldTrip) {
+        alert('Halaman asesmen 50 soal pilihan ganda ini dikhususkan untuk peserta Non-Field Trip. Anda akan dialihkan ke dashboard.');
+        window.location.replace('dashboard.html');
+        return;
+      }
+
+      // Mulai inisialisasi modul asesmen Non-Field Trip
+      if (typeof window.initNonFieldTripAsesmenPage === 'function') {
+        window.initNonFieldTripAsesmenPage(dayNum);
+      }
+    });
+  </script>
+</body>
+</html>
