@@ -278,6 +278,10 @@
               <span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-emerald-400">photo_library</span>
               <span class="flex-1 truncate">Galeri Foto Riset</span>
             </button>
+            <button id="btnTabAdm_banksoal" onclick="switchAdmTab('banksoal')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
+              <span class="material-symbols-outlined text-lg text-teal-400 group-hover:text-teal-300">quiz</span>
+              <span class="flex-1 truncate">Bank Soal</span>
+            </button>
           </div>
         </div>
 
@@ -1981,6 +1985,9 @@
       </div>
     </div>
 
+    <!-- TAB: BANK SOAL ASESMEN (NON-FIELD TRIP) -->
+    <div id="panelAdminBanksoal" class="hidden flex flex-col gap-3.5"></div>
+
     <!-- TAB 8: GALERI FOTO DOKUMENTASI RISET LAPANGAN SISWA -->
     <div id="panelAdminGallery" class="hidden flex flex-col gap-3">
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
@@ -2686,6 +2693,8 @@
   <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
   <script src="../js/guru_data.js?v=20261015_ft_full"></script>
   <script src="../js/core.js?v=20261015_master_sched_v1"></script>
+  <script src="../js/data/bank-soal-nonfieldtrip.js?v=20261029_nft_bs1"></script>
+  <script src="../js/modules/admin-banksoal.js?v=20261029_nft_bs1"></script>
   <script>
     let adminCurrentGrade = 'ALL';
     let adminSearchQuery = '';
@@ -2868,13 +2877,14 @@
       schedule: 'Jadwal & Penilaian (Day 1 - 7)',
       rekap: 'Rekap Jalur Peserta',
       gallery: 'Galeri Foto Riset',
+      banksoal: 'Bank Soal Asesmen (Non-Field Trip)',
       config: 'Konfigurasi Sistem',
       backup: 'Cadangan & Audit Log',
       reset: 'Reset Progres Siswa'
     };
 
     function switchAdmTab(tab) {
-      const allTabs = ['users', 'teachers', 'zones', 'cards', 'schedule', 'rekap', 'reset', 'config', 'backup', 'gallery'];
+      const allTabs = ['users', 'teachers', 'zones', 'cards', 'schedule', 'rekap', 'reset', 'config', 'backup', 'gallery', 'banksoal'];
       
       // Update Title Breadcrumb di Header Atas
       const activeTitleEl = document.getElementById('adminActiveMenuTitle');
@@ -2933,6 +2943,7 @@
       if (tab === 'rekap') initAdminRekapView();
       if (tab === 'reset') initAdminResetView();
       if (tab === 'gallery') renderAdminGallery();
+      if (tab === 'banksoal' && typeof initAdminBankSoalView === 'function') initAdminBankSoalView();
       if (tab === 'backup') loadTelemetryLogs();
     }
 
