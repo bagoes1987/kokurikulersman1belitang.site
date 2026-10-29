@@ -427,9 +427,27 @@
             <ul class="text-[11.5px] text-rose-900 space-y-1 list-disc list-inside font-medium leading-relaxed">
               <li><strong>Anti-Screenshot:</strong> Layar soal seketika menjadi <strong>HITAM PEKAT</strong> jika Anda mencoba mengambil tangkapan layar (screenshot).</li>
               <li><strong>Deteksi Pindah Tab / Buka Aplikasi Lain:</strong> Dilarang membuka Google, WhatsApp, atau aplikasi lain. Sistem mendeteksi otomatis maksimal <strong>3 kali pelanggaran</strong> sebelum ujian <strong>DIKUNCI &amp; DIKIRIM PAKSA</strong>!</li>
+              <li><strong>Alarm Sirine Nyaring:</strong> Sirine keamanan akan berbunyi otomatis saat pelanggaran terdeteksi.</li>
               <li><strong>Watermark Identitas:</strong> Layar soal dilindungi watermark identitas Nama &amp; NISN Anda.</li>
               <li><strong>Auto-Save:</strong> Setiap pilihan yang Anda klik langsung tersimpan aman secara instan.</li>
             </ul>
+          </div>
+
+          <!-- KOTAK TES BUNYI ALARM -->
+          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+            <div class="flex items-center gap-2.5">
+              <span class="w-8 h-8 rounded-xl bg-amber-200 text-amber-900 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">campaign</span>
+              </span>
+              <div class="flex flex-col text-left">
+                <span class="text-xs font-black text-amber-950">Alarm Audio Keamanan Aktif</span>
+                <span class="text-[10.5px] text-amber-800">Sirine berbunyi jika pindah tab atau coba screenshot</span>
+              </div>
+            </div>
+            <button type="button" onclick="window.testExamAlarmSound()" class="px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-500 active:scale-95 text-slate-950 font-black text-xs flex items-center gap-1 shadow-2xs transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-sm">volume_up</span>
+              <span>Uji Sirine</span>
+            </button>
           </div>
         </div>
 
@@ -452,6 +470,7 @@
    * EKSEKUSI MULAI UJIAN
    */
   window.startNonFieldTripExamNow = function() {
+    initAudioContext();
     examState.isExamActive = true;
     examState.isExamFinished = false;
     if (!examState.startTime) {
@@ -559,8 +578,8 @@
 
           <!-- Pelanggaran Tab Counter -->
           <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-white/5 border border-white/10 text-xs">
-            <span class="material-symbols-outlined text-sm ${examState.violationCount > 0 ? 'text-rose-400 animate-pulse' : 'text-slate-400'}">gpp_maybe</span>
-            <span class="text-[11px] font-bold ${examState.violationCount > 0 ? 'text-rose-300' : 'text-slate-300'}">
+            <span id="examViolationCounterIcon" class="material-symbols-outlined text-sm ${examState.violationCount > 0 ? 'text-rose-400 animate-pulse' : 'text-slate-400'}">gpp_maybe</span>
+            <span id="examViolationCounterBadge" class="text-[11px] font-bold ${examState.violationCount > 0 ? 'text-rose-300' : 'text-slate-300'}">
               Pelanggaran: <strong>${examState.violationCount} / 3</strong>
             </span>
           </div>
@@ -762,9 +781,87 @@
   };
 
   /**
+   * AUDIO ALARM KEAMANAN & SIREN GENERATOR (WEB AUDIO API)
+   * Berbunyi keras saat terdeteksi tab-switch, screenshot, atau buka aplikasi lain
+   */
+  let audioCtx = null;
+  let alarmInterval = null;
+
+  function initAudioContext() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (AudioCtx && !audioCtx) {
+        audioCtx = new AudioCtx();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+    } catch (e) {
+      console.warn('AudioContext init error:', e);
+    }
+  }
+
+  function playSingleAlarmBeep() {
+    try {
+      initAudioContext();
+      if (!audioCtx) return;
+
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+
+      osc.type = 'sawtooth';
+      
+      // Siren warble: high (920Hz) -> mid (620Hz) -> high (920Hz) -> low (520Hz)
+      osc.frequency.setValueAtTime(920, now);
+      osc.frequency.linearRampToValueAtTime(620, now + 0.15);
+      osc.frequency.linearRampToValueAtTime(920, now + 0.3);
+      osc.frequency.linearRampToValueAtTime(520, now + 0.45);
+
+      gain.gain.setValueAtTime(0.35, now);
+      gain.gain.setValueAtTime(0.35, now + 0.42);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.5);
+    } catch (e) {
+      console.warn('Play alarm error:', e);
+    }
+  }
+
+  function startExamAlarmLoop() {
+    stopExamAlarmLoop();
+    playSingleAlarmBeep();
+    alarmInterval = setInterval(() => {
+      playSingleAlarmBeep();
+    }, 650);
+  }
+
+  function stopExamAlarmLoop() {
+    if (alarmInterval) {
+      clearInterval(alarmInterval);
+      alarmInterval = null;
+    }
+  }
+
+  window.testExamAlarmSound = function() {
+    initAudioContext();
+    playSingleAlarmBeep();
+  };
+
+  /**
    * PROTEKSI EXAM SHIELD (TAB-SWITCH, SCREENSHOT, COPY)
+   * Dilengkapi Debounce & State Machine Anti-Double Count
    */
   let shieldBound = false;
+  let isTabAway = false;
+  let isViolationModalOpen = false;
+  let lastViolationTime = 0;
+  const VIOLATION_DEBOUNCE_MS = 3000; // Minimal 3 detik jeda antar-pelanggaran
+
   function bindExamShieldListeners() {
     if (shieldBound) return;
     shieldBound = true;
@@ -774,26 +871,38 @@
     document.addEventListener('cut', (e) => { e.preventDefault(); return false; });
     document.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
 
-    // 2. Deteksi Screenshot / Blur (Blackout on Blur)
-    window.addEventListener('blur', () => {
-      if (examState.isExamActive && !examState.isExamFinished) {
-        triggerBlackout();
-        handleTabViolation('Layar kehilangan fokus / upaya screenshot');
+    // 2. Deteksi Tab Switch & Minimize melalui visibilitychange
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        handleTabExit('Meninggalkan tab lembar asesmen');
+      } else {
+        handleTabReturn('Meninggalkan tab lembar asesmen');
       }
+    });
+
+    // 3. Deteksi Blur/Focus (Pindah window atau upaya screenshot laptop/HP)
+    window.addEventListener('blur', () => {
+      handleTabExit('Layar kehilangan fokus / upaya screenshot');
     });
 
     window.addEventListener('focus', () => {
-      removeBlackout();
+      handleTabReturn('Layar kehilangan fokus / upaya screenshot');
     });
+  }
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && examState.isExamActive && !examState.isExamFinished) {
-        triggerBlackout();
-        handleTabViolation('Meninggalkan tab ujian');
-      } else {
-        removeBlackout();
-      }
-    });
+  function handleTabExit(reason) {
+    if (!examState.isExamActive || examState.isExamFinished) return;
+    triggerBlackout();
+    isTabAway = true;
+  }
+
+  function handleTabReturn(reason) {
+    if (!examState.isExamActive || examState.isExamFinished) return;
+    removeBlackout();
+    if (isTabAway) {
+      isTabAway = false;
+      triggerViolation(reason || 'Meninggalkan lembar asesmen / membuka aplikasi lain');
+    }
   }
 
   function triggerBlackout() {
@@ -810,20 +919,146 @@
     if (ov) ov.classList.add('hidden');
   }
 
-  function handleTabViolation(reason) {
-    examState.violationCount++;
-    saveDraftProgress();
-
-    // Notifikasi Pelanggaran
-    if (examState.violationCount === 1) {
-      alert(`⚠️ PERINGATAN PELANGGARAN (1/3):\n\nAnda terdeteksi meninggalkan layar asesmen (${reason})!\nWaktu terus berjalan. Harap tetap berada di halaman ujian.`);
-    } else if (examState.violationCount === 2) {
-      alert(`🚨 PERINGATAN KERAS (2/3):\n\nKesempatan Anda tinggal 1 KALI LAGI!\nJika terdeteksi meninggalkan layar 1x lagi, sistem akan MENGUNCI dan MENGIRIM PAKSA ujian Anda secara otomatis.`);
-    } else if (examState.violationCount >= 3) {
-      alert(`❌ DISKUALIFIKASI OTOMATIS (3/3):\n\nBatas toleransi pelanggaran telah habis (3x meninggalkan layar ujian).\nUjian Anda otomatis DIKUNCI dan DIKIRIM ke sistem saat ini juga.`);
-      submitExam(true, 'Force Submit (Pelanggaran Tab 3x)');
+  function updateViolationCounterDisplay() {
+    const badge = document.getElementById('examViolationCounterBadge');
+    const icon = document.getElementById('examViolationCounterIcon');
+    if (badge) {
+      badge.innerHTML = `Pelanggaran: <strong>${examState.violationCount} / 3</strong>`;
+      badge.className = `text-[11px] font-bold ${examState.violationCount > 0 ? 'text-rose-300' : 'text-slate-300'}`;
+    }
+    if (icon) {
+      icon.className = `material-symbols-outlined text-sm ${examState.violationCount > 0 ? 'text-rose-400 animate-pulse' : 'text-slate-400'}`;
     }
   }
+
+  function getOrCreateViolationContainer() {
+    let container = document.getElementById('examViolationModalContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'examViolationModalContainer';
+      document.body.appendChild(container);
+    }
+    return container;
+  }
+
+  function triggerViolation(reason) {
+    if (!examState.isExamActive || examState.isExamFinished) return;
+    if (isViolationModalOpen) return; // Jangan hitung berulang jika modal sedang terbuka
+
+    const now = Date.now();
+    if (now - lastViolationTime < VIOLATION_DEBOUNCE_MS) {
+      return; // Batasi interval debounce minimal 3 detik
+    }
+    lastViolationTime = now;
+
+    examState.violationCount++;
+    saveDraftProgress();
+    updateViolationCounterDisplay();
+
+    showViolationModal(examState.violationCount, reason);
+  }
+
+  function showViolationModal(count, reason) {
+    isViolationModalOpen = true;
+    const container = getOrCreateViolationContainer();
+    startExamAlarmLoop();
+
+    let title = '';
+    let message = '';
+    let badgeColor = '';
+    let alertIcon = 'campaign';
+
+    if (count === 1) {
+      title = 'Peringatan Pelanggaran (1/3)';
+      message = `Anda terdeteksi meninggalkan lembar asesmen (${escapeHtml(reason)}). Harap tetap berada di layar ujian! Sisa toleransi Anda tinggal <strong>2 kali</strong> lagi.`;
+      badgeColor = 'bg-amber-100 text-amber-900 border-amber-300';
+      alertIcon = 'gpp_maybe';
+    } else if (count === 2) {
+      title = 'PERINGATAN KERAS (2/3)!';
+      message = `Anda terdeteksi kembali meninggalkan ujian (${escapeHtml(reason)}). Ini adalah peringatan terakhir! Jika terdeteksi <strong>1 KALI LAGI</strong>, sistem akan otomatis <strong>MENGUNCI &amp; MENGIRIM PAKSA</strong> lembar ujian Anda.`;
+      badgeColor = 'bg-rose-100 text-rose-900 border-rose-400';
+      alertIcon = 'warning';
+    } else {
+      title = 'DISKUALIFIKASI OTOMATIS (3/3)';
+      message = `Batas toleransi pelanggaran (3x) telah habis! Sistem secara otomatis <strong>mengunci dan mengumpulkan lembar jawaban Anda</strong> saat ini juga.`;
+      badgeColor = 'bg-red-600 text-white border-red-700';
+      alertIcon = 'block';
+    }
+
+    container.innerHTML = `
+      <div id="examViolationModal" class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fade-in select-none">
+        <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border-2 ${count >= 2 ? 'border-rose-500' : 'border-amber-500'} flex flex-col items-center text-center gap-4 animate-scale-up">
+          
+          <!-- IKON ALARM PULSING -->
+          <div class="relative flex items-center justify-center my-1">
+            <span class="absolute w-20 h-20 rounded-full ${count >= 2 ? 'bg-rose-500/30' : 'bg-amber-500/30'} animate-ping"></span>
+            <div class="w-16 h-16 rounded-2xl ${count >= 2 ? 'bg-rose-600' : 'bg-amber-500'} text-white flex items-center justify-center shadow-lg relative z-10">
+              <span class="material-symbols-outlined text-4xl animate-pulse">${alertIcon}</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${badgeColor} border shadow-2xs">
+              <span class="material-symbols-outlined text-sm">crisis_alert</span>
+              <span>PELANGGARAN SISTEM EXAM SHIELD</span>
+            </div>
+            <h3 class="font-black text-xl sm:text-2xl text-slate-900 mt-2.5">
+              ${title}
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mt-2 font-medium">
+              ${message}
+            </p>
+          </div>
+
+          <!-- KOTAK INDIKATOR TOLERANSI SISA -->
+          <div class="w-full p-3.5 rounded-2xl ${count >= 3 ? 'bg-rose-950 text-rose-100' : 'bg-rose-50 border border-rose-200 text-rose-950'} text-xs font-bold flex items-center justify-between">
+            <span class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-rose-600 animate-pulse">volume_up</span>
+              <span>Alarm Sirine Aktif</span>
+            </span>
+            <span class="px-2.5 py-1 rounded-xl ${count >= 3 ? 'bg-rose-600 text-white' : 'bg-rose-200 text-rose-900'} font-black">
+              Pelanggaran ${count} dari 3
+            </span>
+          </div>
+
+          <!-- TOMBOL AKSI DISMISS ATAU FORCE SUBMIT COUNTDOWN -->
+          <div class="w-full pt-1">
+            ${count < 3 ? `
+              <button type="button" onclick="window.dismissExamViolationModal()" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-base">volume_off</span>
+                <span>Saya Mengerti &amp; Matikan Alarm (Lanjut Ujian)</span>
+              </button>
+            ` : `
+              <div class="p-3.5 rounded-2xl bg-rose-600 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+                <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <span>Mengirim Paksa &amp; Mengunci Lembar Ujian...</span>
+              </div>
+            `}
+          </div>
+
+        </div>
+      </div>
+    `;
+
+    if (count >= 3) {
+      setTimeout(() => {
+        stopExamAlarmLoop();
+        submitExam(true, 'Force Submit (Pelanggaran Tab 3x)');
+      }, 2500);
+    }
+  }
+
+  window.dismissExamViolationModal = function() {
+    stopExamAlarmLoop();
+    isViolationModalOpen = false;
+    isTabAway = false;
+    lastViolationTime = Date.now();
+    const container = document.getElementById('examViolationModalContainer');
+    if (container) container.innerHTML = '';
+    removeBlackout();
+    updateViolationCounterDisplay();
+    try { window.focus(); } catch(e) {}
+  };
 
   /**
    * KONFIRMASI PENGUMPULAN UJIAN
