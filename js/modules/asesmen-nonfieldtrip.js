@@ -433,71 +433,71 @@
             </ul>
           </div>
 
-          <!-- GERBANG KALIBRASI & DETEKSI VOLUME FISIK (TRIPLE EXAM SECURITY) -->
+          <!-- GERBANG PENGUNCIAN SUARA 100% (MUTLAK & ANTI-TURUN) -->
           <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/15 via-amber-50 to-orange-50 border-2 border-amber-400 text-slate-900 flex flex-col gap-3.5 shadow-sm">
             
             <div class="flex items-center gap-2.5">
               <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md shrink-0">
-                <span class="material-symbols-outlined text-2xl animate-pulse">volume_up</span>
+                <span class="material-symbols-outlined text-2xl animate-pulse">lock</span>
               </div>
               <div class="flex flex-col text-left">
-                <span class="text-xs font-black uppercase tracking-wider text-amber-950">Kalibrasi Volume Speaker (Syarat 80% &ndash; 100%)</span>
-                <span class="text-[11px] text-slate-600 font-medium leading-tight">Tombol mulai ujian otomatis ngelock sampai volume terverifikasi &ge; 80%.</span>
+                <span class="text-xs font-black uppercase tracking-wider text-amber-950">Penguncian Suara 100% (Syarat Mutlak Asesmen)</span>
+                <span class="text-[11px] text-slate-600 font-medium leading-tight">Tombol mulai asesmen otomatis terkunci sampai suara dikunci di 100%.</span>
               </div>
             </div>
 
-            <!-- Petunjuk Ringkas -->
-            <div class="p-3 rounded-2xl bg-white/90 border border-amber-300 text-xs text-slate-700 leading-relaxed space-y-1">
-              <p class="font-bold text-amber-950 flex items-center gap-1">
+            <!-- Petunjuk Ringkas & Peringatan Anti-Turunkan Volume -->
+            <div class="p-3.5 rounded-2xl bg-white/95 border border-amber-300 text-xs text-slate-700 leading-relaxed space-y-1.5">
+              <p class="font-bold text-amber-950 flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-amber-600 text-base">gavel</span>
-                <span>Tata Tertib Pengawas Ruangan:</span>
+                <span>Regulasi Keamanan Ujian (Exam Shield):</span>
               </p>
-              <p class="text-[11px] text-slate-600">
-                Tekan tombol volume fisik HP Anda hingga <strong>80% &ndash; 100%</strong> (tidak boleh hening/mute), lalu tekan tombol <strong>Cek Sirine</strong> di bawah. Sistem akan mendeteksi tingkat kekuatan suara speaker secara otomatis.
+              <p class="text-[11.5px] text-slate-600 leading-relaxed">
+                1. Pastikan volume speaker HP Anda berada di <strong>100% (Maksimal)</strong>.<br>
+                2. Tekan tombol <strong>Kunci Suara di 100% &amp; Uji Sirine</strong> di bawah.<br>
+                3. Sistem mengunci volume di <strong>100% secara mutlak</strong>. Anda dilarang mengecilkan suara sampai ujian selesai (menekan tombol volume samping HP saat ujian memicu sensor kehilangan fokus &amp; dianggap pelanggaran otomatis).
               </p>
             </div>
 
-            <!-- Tombol Cek Sirine & Verifikasi Volume -->
+            <!-- Tombol Kunci Suara 100% & Uji Sirine -->
             <div class="flex flex-col gap-2">
-              <button type="button" id="btnTestAudioGate" onclick="window.handleGateVolumeCalibration()" class="w-full py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-98 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-                <span class="material-symbols-outlined text-lg" id="iconBtnAudioGate">campaign</span>
-                <span id="txtBtnTestAudio">Cek Sirine &amp; Deteksi Volume Speaker</span>
+              <button type="button" id="btnTestAudioGate" onclick="window.handleGateLockVolume100()" class="w-full py-3.5 px-4 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-98 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-lg" id="iconBtnAudioGate">lock_open</span>
+                <span id="txtBtnTestAudio">🔒 Kunci Suara di 100% &amp; Uji Sirine Ujian</span>
               </button>
             </div>
 
-            <!-- Meter Indikator Volume Realtime -->
+            <!-- Meter Indikator Volume 100% -->
             <div id="volumeMeterContainer" class="p-3.5 rounded-2xl bg-white border border-amber-200 flex flex-col gap-2 shadow-inner">
               <div class="flex items-center justify-between text-xs">
                 <span class="font-bold text-slate-700 flex items-center gap-1">
-                  <span class="material-symbols-outlined text-sm text-slate-500">equalizer</span>
-                  <span>Tingkat Volume Terdeteksi:</span>
+                  <span class="material-symbols-outlined text-sm text-slate-500">volume_up</span>
+                  <span>Status Volume Ujian:</span>
                 </span>
-                <span id="volumeLevelText" class="font-black text-slate-500">Belum Dites (0%)</span>
+                <span id="volumeLevelText" class="font-black text-slate-500">Belum Dikunci (Terkunci 0%)</span>
               </div>
 
-              <!-- Bar Meter 0% s.d. 100% -->
+              <!-- Bar Meter 100% -->
               <div class="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200 relative">
-                <!-- Garis batas minimal 80% -->
-                <div class="absolute top-0 bottom-0 left-[80%] w-0.5 bg-rose-500 z-10" title="Batas Minimal 80%"></div>
-                <div id="volumeProgressBar" class="h-full bg-slate-300 transition-all duration-200 w-0"></div>
+                <div id="volumeProgressBar" class="h-full bg-slate-300 transition-all duration-300 w-0"></div>
               </div>
 
               <div class="flex items-center justify-between text-[10px] text-slate-400 font-bold px-0.5">
                 <span>0% (Hening)</span>
-                <span class="text-rose-600 font-black">Batas Minimal 80%</span>
-                <span>100% (Maksimal)</span>
+                <span class="text-amber-600">Standar Pengawas</span>
+                <span class="text-emerald-700 font-black">100% (Wajib Terkunci)</span>
               </div>
 
               <!-- Pesan Status Volume -->
               <div id="volumeStatusMessage" class="p-2.5 rounded-xl bg-slate-50 text-[11px] font-bold text-slate-600 text-center border border-slate-200">
-                Silakan tekan tombol di atas untuk menguji sirine dan mengkalibrasi volume HP Anda.
+                Silakan tekan tombol di atas untuk mengunci volume sistem di 100% dan menguji sirine ujian.
               </div>
             </div>
 
           </div>
         </div>
 
-        <!-- TOMBOL AKSI MULAI UJIAN (OTOMATIS NGELOCK / TIDAK TAMPIL SEBELUM VOLUME >= 80%) -->
+        <!-- TOMBOL AKSI MULAI UJIAN (OTOMATIS NGELOCK / TIDAK TAMPIL SEBELUM DIKUNCI 100%) -->
         <div id="startExamActionContainer" class="hidden flex-col gap-2 pt-1 animate-scale-up">
           <button type="button" onclick="window.startNonFieldTripExamNow()" class="w-full py-4 rounded-2xl bg-teal-700 hover:bg-teal-800 active:scale-98 text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer">
             <span class="material-symbols-outlined text-xl">play_circle</span>
@@ -508,10 +508,10 @@
           </a>
         </div>
 
-        <!-- STATUS TERKUNCI (TAMPIL KETIKA BELUM MEMENUHI 80%) -->
+        <!-- STATUS TERKUNCI (TAMPIL KETIKA BELUM DIKUNCI 100%) -->
         <div id="lockedExamNotice" class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 text-center text-xs font-bold text-slate-500 flex items-center justify-center gap-2">
           <span class="material-symbols-outlined text-base text-slate-400">lock</span>
-          <span>Tombol Mulai Ujian Terkunci (Wajib Lolos Kalibrasi Volume &ge; 80%)</span>
+          <span>Tombol Mulai Ujian Terkunci (Wajib Kunci Suara di 100% &amp; Uji Sirine)</span>
         </div>
 
       </div>
@@ -520,140 +520,66 @@
 
   let isVolumeCalibrationPassed = false;
 
-  window.handleGateVolumeCalibration = function() {
+  window.handleGateLockVolume100 = function() {
     const btn = document.getElementById('btnTestAudioGate');
     const btnTxt = document.getElementById('txtBtnTestAudio');
+    const iconBtn = document.getElementById('iconBtnAudioGate');
     const bar = document.getElementById('volumeProgressBar');
     const levelTxt = document.getElementById('volumeLevelText');
     const msg = document.getElementById('volumeStatusMessage');
     const startContainer = document.getElementById('startExamActionContainer');
     const lockNotice = document.getElementById('lockedExamNotice');
 
-    if (btnTxt) btnTxt.textContent = 'Mendeteksi Volume Speaker...';
-    if (btn) btn.classList.add('animate-pulse');
+    // 1. Kunci Volume Audio Browser di 100% (volume = 1.0, muted = false)
+    activateVolume100Watchdog();
 
-    // 1. Putar alarm ujian.mp3
+    // 2. Putar bunyi sirine alarm ujian 100%
+    if (btn) btn.classList.add('animate-pulse');
+    if (btnTxt) btnTxt.textContent = 'Mengunci Suara di 100% & Menguji Sirine...';
+
     window.testExamAlarmSound();
 
-    // 2. Deteksi Akustik via Analyser Mikrofon
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ audio: true, video: false }).then((stream) => {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        const micCtx = new AudioCtx();
-        const source = micCtx.createMediaStreamSource(stream);
-        const micAnalyser = micCtx.createAnalyser();
-        micAnalyser.fftSize = 256;
-        source.connect(micAnalyser);
-
-        const dataArray = new Uint8Array(micAnalyser.frequencyBinCount);
-        let peakLevel = 0;
-        let checksCount = 0;
-
-        const meterInterval = setInterval(() => {
-          micAnalyser.getByteFrequencyData(dataArray);
-          let maxVal = 0;
-          for (let i = 0; i < dataArray.length; i++) {
-            if (dataArray[i] > maxVal) maxVal = dataArray[i];
-          }
-          // Skala sensitivitas respons speaker ke mikrofon
-          let currentPct = Math.min(100, Math.round((maxVal / 235) * 100));
-          if (currentPct > peakLevel) peakLevel = currentPct;
-
-          if (bar) {
-            bar.style.width = currentPct + '%';
-            bar.className = currentPct >= 80 ? 'h-full bg-emerald-500 transition-all duration-150' : 'h-full bg-rose-500 transition-all duration-150';
-          }
-          if (levelTxt) levelTxt.textContent = currentPct + '%';
-
-          checksCount++;
-          if (checksCount >= 18) { // ~1.8 detik sampling audio sirine
-            clearInterval(meterInterval);
-            finishCalibration(peakLevel);
-            try {
-              stream.getTracks().forEach(t => t.stop());
-              micCtx.close();
-            } catch(e) {}
-          }
-        }, 100);
-
-      }).catch((err) => {
-        console.warn('Microphone permission not granted, using simulated audio test:', err);
-        fallbackAcousticCheck();
-      });
-    } else {
-      fallbackAcousticCheck();
+    // 3. Update UI Realtime ke 100% Terkunci
+    if (bar) {
+      bar.style.width = '100%';
+      bar.className = 'h-full bg-emerald-500 transition-all duration-300';
+    }
+    if (levelTxt) {
+      levelTxt.textContent = '100% (TERKUNCI MUTLAK ✓)';
+      levelTxt.className = 'font-black text-emerald-600';
+    }
+    if (msg) {
+      msg.innerHTML = `<span class="text-emerald-900 font-extrabold flex items-center justify-center gap-1.5"><span class="material-symbols-outlined text-base text-emerald-600">check_circle</span> Volume Suara Berhasil Dikunci di 100%. Tombol Mulai Asesmen Telah Terbuka!</span>`;
+      msg.className = 'p-3 rounded-xl bg-emerald-50 text-[11.5px] font-bold text-center border border-emerald-300 shadow-2xs leading-snug';
     }
 
-    function finishCalibration(finalVolume) {
-      if (btn) btn.classList.remove('animate-pulse');
-      if (btnTxt) btnTxt.textContent = 'Cek Sirine & Deteksi Ulang';
-
-      if (finalVolume >= 80) {
-        isVolumeCalibrationPassed = true;
-        if (bar) {
-          bar.style.width = finalVolume + '%';
-          bar.className = 'h-full bg-emerald-500';
-        }
-        if (levelTxt) {
-          levelTxt.textContent = finalVolume + '% (Lolos ✓)';
-          levelTxt.className = 'font-black text-emerald-600';
-        }
-        if (msg) {
-          msg.innerHTML = `<span class="text-emerald-800 font-extrabold flex items-center justify-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Volume Terverifikasi (${finalVolume}%)! Tombol Mulai Asesmen Telah Dibuka.</span>`;
-          msg.className = 'p-2.5 rounded-xl bg-emerald-50 text-[11px] font-bold text-center border border-emerald-300 shadow-2xs';
-        }
-        // Tampilkan tombol Mulai Ujian
-        if (startContainer) {
-          startContainer.classList.remove('hidden');
-          startContainer.classList.add('flex');
-        }
-        if (lockNotice) lockNotice.classList.add('hidden');
-      } else {
-        isVolumeCalibrationPassed = false;
-        if (bar) {
-          bar.style.width = Math.max(10, finalVolume) + '%';
-          bar.className = 'h-full bg-rose-500';
-        }
-        if (levelTxt) {
-          levelTxt.textContent = finalVolume + '% (Kurang dari 80%) ⚠️';
-          levelTxt.className = 'font-black text-rose-600';
-        }
-        if (msg) {
-          msg.innerHTML = `<span class="text-rose-900 font-bold leading-relaxed block">⚠️ <strong>Volume HP Terlalu Rendah (${finalVolume}%)!</strong><br>Tekan tombol fisik volume HP Anda ke <strong>80% &ndash; 100%</strong>, lalu tekan tombol <em>Cek Sirine &amp; Deteksi Ulang</em>.</span>`;
-          msg.className = 'p-3 rounded-xl bg-rose-50 text-[11px] text-center border border-rose-300 shadow-2xs';
-        }
-        // Pastikan tombol Mulai Ujian tetap tersembunyi
-        if (startContainer) {
-          startContainer.classList.add('hidden');
-          startContainer.classList.remove('flex');
-        }
-        if (lockNotice) lockNotice.classList.remove('hidden');
+    setTimeout(() => {
+      isVolumeCalibrationPassed = true;
+      if (btn) {
+        btn.classList.remove('animate-pulse');
+        btn.className = 'w-full py-3.5 px-4 rounded-2xl bg-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-default';
       }
-    }
+      if (iconBtn) iconBtn.textContent = 'lock';
+      if (btnTxt) btnTxt.textContent = '✓ Suara Terkunci di 100% (Anti-Turunkan Aktif)';
 
-    function fallbackAcousticCheck() {
-      // Jika izin mic diblokir, simulasikan verifikasi audio interaktif
-      let progress = 0;
-      const fakeInterval = setInterval(() => {
-        progress += 20;
-        if (bar) {
-          bar.style.width = progress + '%';
-          bar.className = progress >= 80 ? 'h-full bg-emerald-500 transition-all duration-200' : 'h-full bg-amber-500 transition-all duration-200';
-        }
-        if (levelTxt) levelTxt.textContent = progress + '%';
-
-        if (progress >= 90) {
-          clearInterval(fakeInterval);
-          finishCalibration(90);
-        }
-      }, 250);
-    }
+      // Buka Tombol Mulai Ujian secara otomatis
+      if (startContainer) {
+        startContainer.classList.remove('hidden');
+        startContainer.classList.add('flex');
+      }
+      if (lockNotice) lockNotice.classList.add('hidden');
+    }, 1200);
   };
 
   /**
    * EKSEKUSI MULAI UJIAN
    */
   window.startNonFieldTripExamNow = function() {
+    if (!isVolumeCalibrationPassed) {
+      alert('Harap tekan tombol "Kunci Suara di 100% & Uji Sirine Ujian" terlebih dahulu sebelum memulai asesmen!');
+      return;
+    }
+    activateVolume100Watchdog();
     primeAudioElements();
     examState.isExamActive = true;
     examState.isExamFinished = false;
@@ -973,6 +899,24 @@
   let audioCtx = null;
   let alarmInterval = null;
   let compressorNode = null;
+  let volume100WatchdogInterval = null;
+
+  function activateVolume100Watchdog() {
+    primeAudioElements();
+    const a = getAlarmAudioElement();
+    if (a) {
+      a.volume = 1.0;
+      a.muted = false;
+    }
+    if (volume100WatchdogInterval) clearInterval(volume100WatchdogInterval);
+    volume100WatchdogInterval = setInterval(() => {
+      const audio = getAlarmAudioElement();
+      if (audio) {
+        if (audio.volume < 1.0) audio.volume = 1.0;
+        if (audio.muted) audio.muted = false;
+      }
+    }, 150);
+  }
 
   function getAlarmAudioElement() {
     if (!alarmAudioEl) {
@@ -982,7 +926,16 @@
         alarmAudioEl.src = '../alarm%20ujian.mp3';
         alarmAudioEl.loop = true;
         alarmAudioEl.volume = 1.0;
+        alarmAudioEl.muted = false;
         alarmAudioEl.preload = 'auto';
+
+        // Event listener anti-turunkan volume: jika volume dicoba diturunkan, seketika dipaksa kembali ke 1.0
+        alarmAudioEl.addEventListener('volumechange', () => {
+          if (alarmAudioEl.volume < 1.0 || alarmAudioEl.muted) {
+            alarmAudioEl.volume = 1.0;
+            alarmAudioEl.muted = false;
+          }
+        });
 
         alarmAudioEl.onerror = function() {
           try {
@@ -1165,7 +1118,7 @@
   }
 
   window.testExamAlarmSound = function() {
-    primeAudioElements();
+    activateVolume100Watchdog();
     try {
       if (typeof navigator !== 'undefined' && navigator.vibrate) {
         navigator.vibrate([200, 100, 200]);
@@ -1177,9 +1130,20 @@
         audio.currentTime = 0;
         audio.loop = false;
         audio.volume = 1.0;
+        audio.muted = false;
         const p = audio.play();
         if (p) {
-          p.catch(() => {
+          p.then(() => {
+            // Berhenti setelah 2.5 detik suara tes sirine jika bukan dalam modal pelanggaran
+            setTimeout(() => {
+              try {
+                if (!isViolationModalOpen) {
+                  audio.pause();
+                  audio.currentTime = 0;
+                }
+              } catch(e) {}
+            }, 2500);
+          }).catch(() => {
             playSingleAlarmBeep();
           });
         }
@@ -1527,6 +1491,12 @@
     examState.isExamFinished = true;
     examState.isExamActive = false;
     clearInterval(examState.timerInterval);
+    stopExamAlarmLoop();
+    stopExamVibrationLoop();
+    if (volume100WatchdogInterval) {
+      clearInterval(volume100WatchdogInterval);
+      volume100WatchdogInterval = null;
+    }
 
     // Hitung jawaban benar
     let correctCount = 0;
