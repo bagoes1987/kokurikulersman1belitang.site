@@ -1139,6 +1139,7 @@
   <script src="../js/siswa_data.js"></script>
   <script src="../js/guru_data.js"></script>
   <script src="../js/core.js"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261029_v1"></script>
   <script>
     let assignedClass = null;
     let assignedStudents = [];
@@ -1312,6 +1313,39 @@
             renderAssignedStudentList();
           }
         });
+      }
+
+      // 0. Cek apakah guru ini memiliki Siswa Binaan Khusus dari Modul Mentorship (Lintas Kelas)
+      const teacherKey = fasilUser ? String(fasilUser.username || fasilUser.nip || fasilUser.kode || '').trim().toLowerCase() : '';
+      const mentorStudents = (window.FincestemMentorship && teacherKey) ? window.FincestemMentorship.getStudentsForTeacher(teacherKey) : [];
+
+      if (mentorStudents && mentorStudents.length > 0) {
+        assignedClass = 'Binaan Anda';
+        assignedStudents = mentorStudents.map(s => ({
+          nisn: s.nisn,
+          name: s.nama,
+          class_name: s.class || s.rombel || '-',
+          nis: s.nis,
+          photo_url: s.photo_url,
+          zone: s.zone,
+          is_field_trip: (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true)
+        }));
+
+        const lblSidebarClass = document.getElementById('lblSidebarClassName');
+        if (lblSidebarClass) lblSidebarClass.textContent = 'Binaan Anda';
+        const lblSidebarCount = document.getElementById('lblSidebarStudentCount');
+        if (lblSidebarCount) lblSidebarCount.textContent = `${assignedStudents.length} Siswa`;
+
+        const lblTopClass = document.getElementById('lblAssignedClassNameTop');
+        if (lblTopClass) lblTopClass.textContent = '🎯 Siswa Binaan Anda';
+
+        const lblBannerClass = document.getElementById('lblAssignedClassNameText');
+        if (lblBannerClass) lblBannerClass.textContent = 'Siswa Tanggung Jawab Bimbingan';
+        const lblBannerCount = document.getElementById('lblAssignedStudentCount');
+        if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa Binaan`;
+
+        renderAssignedStudentList();
+        return;
       }
 
       if (FincestemCore.assignments) {
@@ -3216,10 +3250,18 @@
       const currentClass = assignedClass || 'KELAS X.1';
       const normClass = currentClass.replace(/^KELAS\s+/i, '').trim().toUpperCase();
 
-      const studentsInBinaan = allStudents.filter(s => {
-        const sClass = (s.class || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
-        return sClass === normClass;
-      });
+      const teacherKey = fasilUser ? String(fasilUser.username || fasilUser.nip || fasilUser.kode || '').trim().toLowerCase() : '';
+      const mentorStudents = (window.FincestemMentorship && teacherKey) ? window.FincestemMentorship.getStudentsForTeacher(teacherKey) : [];
+
+      let studentsInBinaan = [];
+      if (mentorStudents && mentorStudents.length > 0) {
+        studentsInBinaan = mentorStudents;
+      } else {
+        studentsInBinaan = allStudents.filter(s => {
+          const sClass = (s.class || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+          return sClass === normClass;
+        });
+      }
 
       const ftStudents = studentsInBinaan.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
       const nonFtStudents = studentsInBinaan.filter(s => s.zone !== 'FINCESTEM LUAR OKU TIMUR' && !s.is_field_trip);
@@ -3234,7 +3276,11 @@
       if (elFT) elFT.textContent = `${ftStudents.length} Siswa`;
       if (elNonFT) elNonFT.textContent = `${nonFtStudents.length} Siswa`;
       if (elTotal) elTotal.textContent = `${studentsInBinaan.length} Siswa`;
-      if (elTitle) elTitle.textContent = `Daftar Siswa ${currentClass}`;
+      if (elTitle) {
+        elTitle.textContent = (mentorStudents && mentorStudents.length > 0)
+          ? 'Daftar Siswa Binaan & Tanggung Jawab Anda'
+          : `Daftar Siswa ${currentClass}`;
+      }
       if (elBadge) elBadge.textContent = `${ftStudents.length} Field Trip (${studentsInBinaan.length} Total)`;
 
       // Sort: FT first, then by name
