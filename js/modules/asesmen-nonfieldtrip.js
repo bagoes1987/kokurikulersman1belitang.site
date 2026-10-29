@@ -470,7 +470,7 @@
    * EKSEKUSI MULAI UJIAN
    */
   window.startNonFieldTripExamNow = function() {
-    initAudioContext();
+    primeAudioElements();
     examState.isExamActive = true;
     examState.isExamFinished = false;
     if (!examState.startTime) {
@@ -781,13 +781,46 @@
   };
 
   /**
-   * AUDIO ALARM KEAMANAN & SIREN GENERATOR (WEB AUDIO API)
-   * Suara Sirine Keamanan Tegangan Tinggi (High-Urgency Military / Bank Vault Alarm)
-   * Menggunakan Master Dynamics Compressor & Dual-Tone Dissonant Harmonics
+   * AUDIO ALARM KEAMANAN & SIREN GENERATOR
+   * File Audio Utama: "alarm ujian.mp3"
+   * Dilengkapi Cadangan Web Audio API Synthesizer (Zero-Failure Architecture)
    */
+  let alarmAudioEl = null;
   let audioCtx = null;
   let alarmInterval = null;
   let compressorNode = null;
+
+  function getAlarmAudioElement() {
+    if (!alarmAudioEl) {
+      try {
+        alarmAudioEl = new Audio();
+        // Path prioritas dari folder siswa maupun root
+        alarmAudioEl.src = '../alarm%20ujian.mp3';
+        alarmAudioEl.loop = true;
+        alarmAudioEl.volume = 1.0;
+        alarmAudioEl.preload = 'auto';
+
+        alarmAudioEl.onerror = function() {
+          try {
+            alarmAudioEl.src = 'alarm%20ujian.mp3';
+          } catch(e) {}
+        };
+      } catch(e) {
+        console.warn('Audio element error:', e);
+      }
+    }
+    return alarmAudioEl;
+  }
+
+  function primeAudioElements() {
+    initAudioContext();
+    try {
+      const a = getAlarmAudioElement();
+      if (a) {
+        a.load();
+      }
+    } catch(e) {}
+  }
 
   function initAudioContext() {
     try {
@@ -861,14 +894,53 @@
 
   function startExamAlarmLoop() {
     stopExamAlarmLoop();
+
+    let mp3Started = false;
+    try {
+      const audio = getAlarmAudioElement();
+      if (audio) {
+        audio.currentTime = 0;
+        audio.loop = true;
+        audio.volume = 1.0;
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.then(() => {
+            mp3Started = true;
+          }).catch((err) => {
+            console.warn('MP3 playback blocked, falling back to Web Audio:', err);
+            startSynthesizedAlarmLoop();
+          });
+        } else {
+          mp3Started = true;
+        }
+      } else {
+        startSynthesizedAlarmLoop();
+      }
+    } catch(e) {
+      console.warn('MP3 error, falling back:', e);
+      startSynthesizedAlarmLoop();
+    }
+  }
+
+  function stopExamAlarmLoop() {
+    try {
+      if (alarmAudioEl) {
+        alarmAudioEl.pause();
+        alarmAudioEl.currentTime = 0;
+      }
+    } catch(e) {}
+    stopSynthesizedAlarmLoop();
+  }
+
+  function startSynthesizedAlarmLoop() {
+    stopSynthesizedAlarmLoop();
     playSingleAlarmBeep();
-    // Tempo cepat staccato darurat militer: setiap 380ms
     alarmInterval = setInterval(() => {
       playSingleAlarmBeep();
     }, 380);
   }
 
-  function stopExamAlarmLoop() {
+  function stopSynthesizedAlarmLoop() {
     if (alarmInterval) {
       clearInterval(alarmInterval);
       alarmInterval = null;
@@ -876,11 +948,25 @@
   }
 
   window.testExamAlarmSound = function() {
-    initAudioContext();
-    playSingleAlarmBeep();
-    setTimeout(() => {
+    primeAudioElements();
+    try {
+      const audio = getAlarmAudioElement();
+      if (audio) {
+        audio.currentTime = 0;
+        audio.loop = false;
+        audio.volume = 1.0;
+        const p = audio.play();
+        if (p) {
+          p.catch(() => {
+            playSingleAlarmBeep();
+          });
+        }
+      } else {
+        playSingleAlarmBeep();
+      }
+    } catch(e) {
       playSingleAlarmBeep();
-    }, 380);
+    }
   };
 
   /**
