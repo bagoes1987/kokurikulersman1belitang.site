@@ -11,6 +11,7 @@
 
   let currentDay = 1;
   let currentIndicator = 'ALL';
+  let currentCognitive = 'ALL';
   let searchQuery = '';
   let currentPage = 1;
   let pageSize = 10; // Default 10 soal per halaman agar tidak scroll panjang
@@ -59,6 +60,10 @@
 
     if (currentIndicator !== 'ALL') {
       filtered = filtered.filter(q => q.indicatorCode === currentIndicator);
+    }
+
+    if (currentCognitive !== 'ALL') {
+      filtered = filtered.filter(q => q.cognitiveLevel === currentCognitive);
     }
 
     if (searchQuery.trim()) {
@@ -218,7 +223,7 @@
         <!-- QUICK FILTER CHIPS & TOGGLE PEMBAHASAN -->
         <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-100 flex-wrap text-xs">
           <div class="flex items-center gap-1 flex-wrap">
-            <span class="text-[10px] font-extrabold text-slate-400 uppercase mr-1">Filter Cepat:</span>
+            <span class="text-[10px] font-extrabold text-slate-400 uppercase mr-1">Indikator:</span>
             <button type="button" onclick="window.filterBankSoalIndicator('ALL')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'ALL' ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">Semua</button>
             <button type="button" onclick="window.filterBankSoalIndicator('A')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'A' ? 'bg-teal-700 text-white' : 'bg-teal-50 text-teal-800 border border-teal-200'}">A (40)</button>
             <button type="button" onclick="window.filterBankSoalIndicator('B')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'B' ? 'bg-emerald-700 text-white' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}">B (40)</button>
@@ -233,6 +238,16 @@
               <span>${expandAllExplanations ? 'Tutup Semua Pembahasan' : 'Buka Semua Pembahasan'}</span>
             </button>
           </div>
+        </div>
+
+        <!-- BARIS KEDUA: FILTER LEVEL KOGNITIF (C1-C4 TAKSONOMI BLOOM) -->
+        <div class="flex items-center gap-1 flex-wrap pt-1 border-t border-slate-100 text-xs">
+          <span class="text-[10px] font-extrabold text-indigo-700 uppercase mr-1">Bloom (C1-C4):</span>
+          <button type="button" onclick="window.filterBankSoalCognitive('ALL')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'ALL' ? 'bg-indigo-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">Semua Level (200)</button>
+          <button type="button" onclick="window.filterBankSoalCognitive('C1')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C1' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C1 Mengingat (50)</button>
+          <button type="button" onclick="window.filterBankSoalCognitive('C2')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C2' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C2 Memahami (50)</button>
+          <button type="button" onclick="window.filterBankSoalCognitive('C3')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C3' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C3 Menerapkan (50)</button>
+          <button type="button" onclick="window.filterBankSoalCognitive('C4')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C4' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C4 Menganalisis (50)</button>
         </div>
       </div>
 
@@ -267,6 +282,9 @@
                   </span>
                   <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold border ${badgeCfg.bg}">
                     ${badgeCfg.name} (No. ${q.numberInIndicator || q.id})
+                  </span>
+                  <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-indigo-50 text-indigo-700 border border-indigo-200">
+                    Bloom: ${q.cognitiveLevel || 'C2'}
                   </span>
                 </div>
 
@@ -442,6 +460,12 @@
     renderAdminBankSoalView();
   };
 
+  window.filterBankSoalCognitive = function(lvl) {
+    currentCognitive = lvl || 'ALL';
+    currentPage = 1;
+    renderAdminBankSoalView();
+  };
+
   let searchDebounceTimer = null;
   window.onBankSoalSearchInput = function(val) {
     clearTimeout(searchDebounceTimer);
@@ -466,6 +490,7 @@
   window.clearBankSoalFilters = function() {
     searchQuery = '';
     currentIndicator = 'ALL';
+    currentCognitive = 'ALL';
     currentPage = 1;
     renderAdminBankSoalView();
   };

@@ -89,11 +89,13 @@
   }
 
   /**
-   * Bangun Paket 50 Soal dari Bank 200 (10 Soal x 5 Indikator)
+   * Bangun Paket 50 Soal dari Bank 200 (10 Soal x 5 Indikator, Seimbang Rata C1-C4)
    */
   function generateStudentPackage(dayNum, cleanNisn) {
-    const storageKey = `fincestem_pkg_nft_asesmen_d${dayNum}_${cleanNisn}`;
+    const storageKey = `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`;
     try {
+      // Bersihkan cache paket v1 lama jika ada
+      localStorage.removeItem(`fincestem_pkg_nft_asesmen_d${dayNum}_${cleanNisn}`);
       const savedPkg = localStorage.getItem(storageKey);
       if (savedPkg) {
         return JSON.parse(savedPkg);
@@ -113,15 +115,53 @@
       }
     });
 
+    // Definisi proporsi kognitif per indikator agar total 50 butir seimbang rata C1-C4:
+    // Indikator A: 3 C1, 2 C2, 3 C3, 2 C4 (=10)
+    // Indikator B: 2 C1, 3 C2, 2 C3, 3 C4 (=10)
+    // Indikator C: 3 C1, 3 C2, 2 C3, 2 C4 (=10)
+    // Indikator D: 2 C1, 2 C2, 3 C3, 3 C4 (=10)
+    // Indikator E: 3 C1, 2 C2, 2 C3, 3 C4 (=10)
+    // Total Akumulasi: C1=13 (26%), C2=12 (24%), C3=12 (24%), C4=13 (26%) = 50 butir tepat
+    const cognitiveQuota = {
+      'A': { C1: 3, C2: 2, C3: 3, C4: 2 },
+      'B': { C1: 2, C2: 3, C3: 2, C4: 3 },
+      'C': { C1: 3, C2: 3, C3: 2, C4: 2 },
+      'D': { C1: 2, C2: 2, C3: 3, C4: 3 },
+      'E': { C1: 3, C2: 2, C3: 2, C4: 3 }
+    };
+
     const chosen50 = [];
     ['A', 'B', 'C', 'D', 'E'].forEach(code => {
       const pool = grouped[code] || [];
-      const shuffled = seededShuffle(pool, rng);
-      const picked10 = shuffled.slice(0, 10);
-      chosen50.push(...picked10);
+      const quota = cognitiveQuota[code] || { C1: 2, C2: 3, C3: 3, C4: 2 };
+
+      const byCog = { C1: [], C2: [], C3: [], C4: [] };
+      pool.forEach(item => {
+        const lvl = item.cognitiveLevel || 'C2';
+        if (byCog[lvl]) byCog[lvl].push(item);
+        else byCog.C2.push(item);
+      });
+
+      let pickedForThisInd = [];
+      ['C1', 'C2', 'C3', 'C4'].forEach(lvl => {
+        const count = quota[lvl] || 2;
+        const shuf = seededShuffle(byCog[lvl] || [], rng);
+        pickedForThisInd.push(...shuf.slice(0, count));
+      });
+
+      // Cadangan pencegah underflow jika ada soal tanpa level lengkap
+      if (pickedForThisInd.length < 10) {
+        const remainingNeeded = 10 - pickedForThisInd.length;
+        const alreadyIds = new Set(pickedForThisInd.map(x => x.id));
+        const leftover = pool.filter(x => !alreadyIds.has(x.id));
+        const shufLeft = seededShuffle(leftover, rng);
+        pickedForThisInd.push(...shufLeft.slice(0, remainingNeeded));
+      }
+
+      chosen50.push(...pickedForThisInd);
     });
 
-    // Acak urutan 50 soal agar tersebar merata antar-indikator
+    // Acak urutan 50 soal agar tersebar merata antar-indikator dan level kognitif
     const mixed50 = seededShuffle(chosen50, rng);
 
     // Acak urutan pilihan (A, B, C, D, E) untuk tiap butir soal
@@ -148,6 +188,7 @@
         originalId: origQ.id,
         indicatorCode: origQ.indicatorCode,
         indicatorName: origQ.indicatorName,
+        cognitiveLevel: origQ.cognitiveLevel || 'C2',
         question: origQ.question,
         options: remappedOptions,
         correctKey: newCorrectKey,
@@ -711,12 +752,15 @@
           
           <!-- BAR INFORMASI NOMOR SOAL & INDIKATOR -->
           <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2 flex-wrap">
               <span class="px-3 py-1 rounded-xl bg-slate-900 text-white font-black text-xs sm:text-sm shadow-2xs">
                 Soal ${q.displayNumber} / ${totalQuestions}
               </span>
               <span class="px-2.5 py-1 rounded-xl text-[11px] font-extrabold bg-teal-50 text-teal-900 border border-teal-200 truncate max-w-[200px] sm:max-w-none">
                 ${q.indicatorName}
+              </span>
+              <span class="px-2 py-0.5 rounded-lg text-[10px] font-black bg-indigo-50 text-indigo-700 border border-indigo-200">
+                ${q.cognitiveLevel || 'C2'}
               </span>
             </div>
 
