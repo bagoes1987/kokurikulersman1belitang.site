@@ -1985,11 +1985,12 @@
                 break;
               }
             }
-            const raw = localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id) ||
+            const raw = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + id) ||
+                        localStorage.getItem(`fincestem_materi_ft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_materi_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
-              if (p && (p.conclusion || p.text || p.content || p.summary)) {
+              if (p && (p.conclusion || p.text || p.content || p.summary || p.cardA)) {
                 hasMateri = true;
                 break;
               }
@@ -2010,11 +2011,12 @@
                 break;
               }
             }
-            const raw = localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
+            const raw = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + id) ||
+                        localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
-              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined || p.answers || p.content)) {
+              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined || p.answers || p.content || p.businessName)) {
                 hasLkpd = true;
                 break;
               }

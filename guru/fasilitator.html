@@ -2011,26 +2011,100 @@
 
                   let lkpdHtml = '';
                   if (nftLkpd) {
-                    lkpdHtml = `
-                      <div class="grid grid-cols-2 gap-2 text-[11px] mt-1">
-                        <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
-                          <span class="text-slate-500 block">Judul Riset:</span>
-                          <span class="font-black text-slate-900">${nftLkpd.projectTitle || '-'}</span>
+                    const isNewAudit = !!(nftLkpd.businessName || nftLkpd.businessType || nftLkpd.incomeMonthly !== undefined);
+                    if (isNewAudit) {
+                      const netProfit = Number(nftLkpd.netProfitMonthly || 0);
+                      const isSurplus = netProfit >= 0;
+                      lkpdHtml = `
+                        <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
+                          <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs text-teal-700">storefront</span>
+                            <span>Hasil Audit Investigasi Lapangan (LKPD Day 1):</span>
+                          </span>
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10.5px]">
+                            <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
+                              <span class="text-slate-500 block text-[9.5px]">Tempat / Badan Usaha:</span>
+                              <div class="font-black text-teal-950 text-xs">${nftLkpd.businessName || '-'}</div>
+                              <span class="inline-block mt-0.5 px-2 py-0.5 rounded-md bg-teal-100 text-teal-800 text-[9.5px] font-bold">${nftLkpd.businessType || 'Unit Ekonomi'}</span>
+                            </div>
+                            <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
+                              <span class="text-slate-500 block text-[9.5px]">Lokasi &amp; Narasumber:</span>
+                              <div class="font-bold text-slate-800 text-xs">${nftLkpd.location || (nftLkpd.village ? `${nftLkpd.village}, Kec. ${nftLkpd.district}` : '-')}</div>
+                              <div class="text-[9.5px] text-slate-600 mt-0.5">👤 ${nftLkpd.interviewee || '-'} ${nftLkpd.contact && nftLkpd.contact !== '-' ? `(${nftLkpd.contact})` : ''}</div>
+                            </div>
+                            <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
+                              <span class="text-slate-500 block text-[9.5px]">Sektor &amp; Alur Kegiatan:</span>
+                              <div class="font-bold text-slate-900">${nftLkpd.sectorType || '-'} &bull; <span class="text-slate-600 text-[10px]">${nftLkpd.commodity || '-'}</span></div>
+                              <div class="text-[9.5px] text-slate-600 italic mt-0.5">${nftLkpd.activityChain || '-'}</div>
+                            </div>
+                            <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
+                              <span class="text-slate-500 block text-[9.5px]">Nasabah &amp; Kanal Pembayaran:</span>
+                              <div class="font-bold text-slate-900">~${nftLkpd.customersDaily || 0} orang/hari (${nftLkpd.peakSeason || '-'})</div>
+                              <div class="text-[9.5px] text-slate-600 mt-0.5 flex flex-wrap gap-1">
+                                ${(nftLkpd.payments && nftLkpd.payments.length > 0) ? nftLkpd.payments.map(p => `<span class="px-1.5 py-0.2 rounded bg-slate-100 text-slate-700 font-semibold text-[9px]">${p}</span>`).join('') : '<span class="text-slate-400">Tunai</span>'}
+                                <span class="px-1.5 py-0.2 rounded bg-amber-50 text-amber-800 font-semibold text-[9px]">Buku: ${nftLkpd.bookkeeping || 'Manual'}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- Finansial Overview -->
+                          <div class="bg-teal-900/90 text-white p-2.5 rounded-xl border border-teal-700 flex flex-wrap items-center justify-between gap-2 text-[10.5px]">
+                            <div>
+                              <span class="text-teal-300 text-[9.5px] block">Omzet Estimasi:</span>
+                              <span class="font-extrabold text-xs">Rp ${(Number(nftLkpd.incomeMonthly || 0)).toLocaleString('id-ID')}/bln</span>
+                              <span class="text-teal-300 text-[9px] block">(Rp ${(Number(nftLkpd.incomeDaily || 0)).toLocaleString('id-ID')}/hari)</span>
+                            </div>
+                            <div>
+                              <span class="text-teal-300 text-[9.5px] block">Beban Pengeluaran:</span>
+                              <span class="font-bold text-xs text-rose-200">Rp ${(Number(nftLkpd.totalExpensesMonthly || 0)).toLocaleString('id-ID')}/bln</span>
+                            </div>
+                            <div class="text-right">
+                              <span class="text-teal-300 text-[9.5px] block">Estimasi Laba Bersih:</span>
+                              <span class="font-black text-xs ${isSurplus ? 'text-emerald-300' : 'text-rose-300'}">
+                                ${isSurplus ? '+' : ''}Rp ${netProfit.toLocaleString('id-ID')}/bln
+                              </span>
+                              <span class="text-[8.5px] block ${isSurplus ? 'text-emerald-200' : 'text-rose-200'} font-bold">(${isSurplus ? 'Surplus / Laba' : 'Defisit / Rugi'})</span>
+                            </div>
+                          </div>
+
+                          <!-- Analisis Kendala & Solusi HOTS -->
+                          <div class="bg-white/95 p-2 rounded-xl border border-teal-200 flex flex-col gap-1 text-[10.5px]">
+                            <div>
+                              <strong class="text-amber-900 text-[10px]">⚠️ Kendala Utama:</strong>
+                              <p class="text-slate-700 text-[10px] leading-relaxed">${nftLkpd.problems || '-'}</p>
+                            </div>
+                            <div class="mt-1 pt-1 border-t border-slate-100">
+                              <strong class="text-teal-900 text-[10px] flex items-center justify-between">
+                                <span>💡 Rekomendasi Solusi Siswa:</span>
+                                <span class="text-[9px] font-bold text-teal-700 bg-teal-100 px-1.5 py-0.2 rounded">${(nftLkpd.solutions || '').length} Karakter</span>
+                              </strong>
+                              <p class="text-slate-800 text-[10px] leading-relaxed font-medium bg-teal-50/50 p-2 rounded-lg border border-teal-100/60 mt-0.5 whitespace-pre-line">${nftLkpd.solutions || '-'}</p>
+                            </div>
+                          </div>
                         </div>
-                        <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
-                          <span class="text-slate-500 block">Lokasi OKU Timur:</span>
-                          <span class="font-black text-teal-900">${nftLkpd.location || '-'}</span>
+                      `;
+                    } else {
+                      lkpdHtml = `
+                        <div class="grid grid-cols-2 gap-2 text-[11px] mt-1">
+                          <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
+                            <span class="text-slate-500 block">Judul Riset:</span>
+                            <span class="font-black text-slate-900">${nftLkpd.projectTitle || '-'}</span>
+                          </div>
+                          <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
+                            <span class="text-slate-500 block">Lokasi OKU Timur:</span>
+                            <span class="font-black text-teal-900">${nftLkpd.location || '-'}</span>
+                          </div>
+                          <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
+                            <span class="text-slate-500 block">Rencana Wawancara:</span>
+                            <span class="font-medium text-slate-800 line-clamp-2">${nftLkpd.interviewPlan || '-'}</span>
+                          </div>
+                          <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
+                            <span class="text-slate-500 block">Pembagian Tim:</span>
+                            <span class="font-medium text-slate-800 line-clamp-2">${nftLkpd.teamRoles || '-'}</span>
+                          </div>
                         </div>
-                        <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
-                          <span class="text-slate-500 block">Rencana Wawancara:</span>
-                          <span class="font-medium text-slate-800 line-clamp-2">${nftLkpd.interviewPlan || '-'}</span>
-                        </div>
-                        <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
-                          <span class="text-slate-500 block">Pembagian Tim:</span>
-                          <span class="font-medium text-slate-800 line-clamp-2">${nftLkpd.teamRoles || '-'}</span>
-                        </div>
-                      </div>
-                    `;
+                      `;
+                    }
                   }
 
                   lkpdPreviewEl.innerHTML = `
