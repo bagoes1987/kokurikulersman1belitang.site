@@ -782,16 +782,26 @@
 
   /**
    * AUDIO ALARM KEAMANAN & SIREN GENERATOR (WEB AUDIO API)
-   * Berbunyi keras saat terdeteksi tab-switch, screenshot, atau buka aplikasi lain
+   * Suara Sirine Keamanan Tegangan Tinggi (High-Urgency Military / Bank Vault Alarm)
+   * Menggunakan Master Dynamics Compressor & Dual-Tone Dissonant Harmonics
    */
   let audioCtx = null;
   let alarmInterval = null;
+  let compressorNode = null;
 
   function initAudioContext() {
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx && !audioCtx) {
         audioCtx = new AudioCtx();
+        // Master Dynamics Compressor: Memaksimalkan desibel keluaran tanpa distorsi
+        compressorNode = audioCtx.createDynamicsCompressor();
+        compressorNode.threshold.setValueAtTime(-18, audioCtx.currentTime);
+        compressorNode.knee.setValueAtTime(12, audioCtx.currentTime);
+        compressorNode.ratio.setValueAtTime(20, audioCtx.currentTime);
+        compressorNode.attack.setValueAtTime(0.001, audioCtx.currentTime);
+        compressorNode.release.setValueAtTime(0.06, audioCtx.currentTime);
+        compressorNode.connect(audioCtx.destination);
       }
       if (audioCtx && audioCtx.state === 'suspended') {
         audioCtx.resume().catch(() => {});
@@ -807,26 +817,43 @@
       if (!audioCtx) return;
 
       const now = audioCtx.currentTime;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
+      const targetDest = compressorNode || audioCtx.destination;
 
-      osc.type = 'sawtooth';
-      
-      // Siren warble: high (920Hz) -> mid (620Hz) -> high (920Hz) -> low (520Hz)
-      osc.frequency.setValueAtTime(920, now);
-      osc.frequency.linearRampToValueAtTime(620, now + 0.15);
-      osc.frequency.linearRampToValueAtTime(920, now + 0.3);
-      osc.frequency.linearRampToValueAtTime(520, now + 0.45);
+      // Master Gain Tingkat Maksimal (0.95)
+      const masterGain = audioCtx.createGain();
+      masterGain.gain.setValueAtTime(0.95, now);
+      masterGain.gain.setValueAtTime(0.95, now + 0.32);
+      masterGain.gain.exponentialRampToValueAtTime(0.01, now + 0.36);
+      masterGain.connect(targetDest);
 
-      gain.gain.setValueAtTime(0.35, now);
-      gain.gain.setValueAtTime(0.35, now + 0.42);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+      // OSCILLATOR 1: Nada Utama Melengking Menukik Tajam (Sawtooth 1600Hz -> 800Hz)
+      const osc1 = audioCtx.createOscillator();
+      osc1.type = 'sawtooth';
+      osc1.frequency.setValueAtTime(1600, now);
+      osc1.frequency.exponentialRampToValueAtTime(800, now + 0.16);
+      osc1.frequency.setValueAtTime(1500, now + 0.17);
+      osc1.frequency.exponentialRampToValueAtTime(700, now + 0.34);
 
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+      // OSCILLATOR 2: Nada Disonan Kasar Penambah Ketegangan (Square 1200Hz -> 600Hz)
+      const osc2 = audioCtx.createOscillator();
+      osc2.type = 'square';
+      osc2.frequency.setValueAtTime(1200, now);
+      osc2.frequency.exponentialRampToValueAtTime(600, now + 0.16);
+      osc2.frequency.setValueAtTime(1100, now + 0.17);
+      osc2.frequency.exponentialRampToValueAtTime(550, now + 0.34);
 
-      osc.start(now);
-      osc.stop(now + 0.5);
+      // Gain sub-harmonis osc2
+      const gain2 = audioCtx.createGain();
+      gain2.gain.setValueAtTime(0.7, now);
+
+      osc1.connect(masterGain);
+      osc2.connect(gain2);
+      gain2.connect(masterGain);
+
+      osc1.start(now);
+      osc2.start(now);
+      osc1.stop(now + 0.36);
+      osc2.stop(now + 0.36);
     } catch (e) {
       console.warn('Play alarm error:', e);
     }
@@ -835,9 +862,10 @@
   function startExamAlarmLoop() {
     stopExamAlarmLoop();
     playSingleAlarmBeep();
+    // Tempo cepat staccato darurat militer: setiap 380ms
     alarmInterval = setInterval(() => {
       playSingleAlarmBeep();
-    }, 650);
+    }, 380);
   }
 
   function stopExamAlarmLoop() {
@@ -850,7 +878,49 @@
   window.testExamAlarmSound = function() {
     initAudioContext();
     playSingleAlarmBeep();
+    setTimeout(() => {
+      playSingleAlarmBeep();
+    }, 380);
   };
+
+  /**
+   * PEMBERSIH CLIPBOARD OTOMATIS (ANTI-COPY/ANTI-SS PASTE)
+   */
+  function wipeClipboard() {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText('⚠️ DILARANG MENGAMBIL SCREENSHOT! FINCESTEM EXAM SHIELD AKTIF.').catch(() => {});
+      }
+    } catch(e) {}
+  }
+
+  /**
+   * DETEKSI KOMBINASI TOMBOL SCREENSHOT (PRINTSCREEN, WIN+SHIFT+S, CTRL+P, DLL)
+   */
+  function isScreenshotAttempt(e) {
+    if (!e) return false;
+    const k = e.key || '';
+    const code = e.code || '';
+    const which = e.which || e.keyCode;
+
+    // Tombol PrintScreen / Snapshot di segala keyboard
+    if (k === 'PrintScreen' || code === 'PrintScreen' || which === 44 || k === 'Snapshot') {
+      return true;
+    }
+    // Windows Snipping Tool: Win+Shift+S / Ctrl+Shift+S / Alt+Shift+S
+    if (e.shiftKey && (k === 's' || k === 'S' || code === 'KeyS' || which === 83)) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return true;
+    }
+    // Cetak / Save PDF: Ctrl+P / Cmd+P
+    if ((e.ctrlKey || e.metaKey) && (k === 'p' || k === 'P' || code === 'KeyP' || which === 80)) {
+      return true;
+    }
+    // DevTools: F12 atau Ctrl+Shift+I / J / C
+    if (which === 123 || ((e.ctrlKey || e.metaKey) && e.shiftKey && (which === 73 || which === 74 || which === 67))) {
+      return true;
+    }
+    return false;
+  }
 
   /**
    * PROTEKSI EXAM SHIELD (TAB-SWITCH, SCREENSHOT, COPY)
@@ -867,11 +937,40 @@
     shieldBound = true;
 
     // 1. Blokir Copy, Cut, Context Menu
-    document.addEventListener('copy', (e) => { e.preventDefault(); return false; });
-    document.addEventListener('cut', (e) => { e.preventDefault(); return false; });
+    document.addEventListener('copy', (e) => { e.preventDefault(); wipeClipboard(); return false; });
+    document.addEventListener('cut', (e) => { e.preventDefault(); wipeClipboard(); return false; });
     document.addEventListener('contextmenu', (e) => { e.preventDefault(); return false; });
 
-    // 2. Deteksi Tab Switch & Minimize melalui visibilitychange
+    // 2. Cegah Tombol Screenshot di Keyboard (PrtScn, Win+Shift+S, Ctrl+P) via Capture Phase
+    window.addEventListener('keydown', (e) => {
+      if (isScreenshotAttempt(e)) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerBlackout();
+        wipeClipboard();
+        if (examState.isExamActive && !examState.isExamFinished) {
+          isTabAway = true;
+          handleTabReturn('Upaya tangkapan layar (Screenshot Keyboard)');
+        }
+        return false;
+      }
+    }, true);
+
+    window.addEventListener('keyup', (e) => {
+      if (isScreenshotAttempt(e)) {
+        e.preventDefault();
+        e.stopPropagation();
+        triggerBlackout();
+        wipeClipboard();
+        if (examState.isExamActive && !examState.isExamFinished) {
+          isTabAway = true;
+          handleTabReturn('Upaya tangkapan layar (Screenshot Keyboard)');
+        }
+        return false;
+      }
+    }, true);
+
+    // 3. Deteksi Tab Switch & Minimize melalui visibilitychange
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         handleTabExit('Meninggalkan tab lembar asesmen');
@@ -880,7 +979,7 @@
       }
     });
 
-    // 3. Deteksi Blur/Focus (Pindah window atau upaya screenshot laptop/HP)
+    // 4. Deteksi Blur/Focus (Snipping Tool, ganti window, atau screenshot HP)
     window.addEventListener('blur', () => {
       handleTabExit('Layar kehilangan fokus / upaya screenshot');
     });
@@ -888,6 +987,14 @@
     window.addEventListener('focus', () => {
       handleTabReturn('Layar kehilangan fokus / upaya screenshot');
     });
+
+    // 5. Klik pada overlay blackout untuk kembali
+    const bo = document.getElementById('examShieldFullBlackout');
+    if (bo) {
+      bo.onclick = function() {
+        handleTabReturn('Kembali dari pelepasan fokus layar');
+      };
+    }
   }
 
   function handleTabExit(reason) {
@@ -899,6 +1006,7 @@
   function handleTabReturn(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
     removeBlackout();
+    wipeClipboard();
     if (isTabAway) {
       isTabAway = false;
       triggerViolation(reason || 'Meninggalkan lembar asesmen / membuka aplikasi lain');
@@ -906,17 +1014,30 @@
   }
 
   function triggerBlackout() {
-    const el = document.getElementById('examQuestionContent');
-    const ov = document.getElementById('blackoutOverlay');
-    if (el) el.style.filter = 'blur(40px) brightness(0)';
-    if (ov) ov.classList.remove('hidden');
+    try {
+      document.documentElement.classList.add('exam-shield-blackout-active');
+      document.body.classList.add('exam-shield-blackout-active');
+      const bo = document.getElementById('examShieldFullBlackout');
+      if (bo) bo.style.display = 'flex';
+      const el = document.getElementById('examQuestionContent');
+      if (el) el.style.filter = 'blur(60px) brightness(0)';
+      const ov = document.getElementById('blackoutOverlay');
+      if (ov) ov.classList.remove('hidden');
+    } catch(e) {}
+    wipeClipboard();
   }
 
   function removeBlackout() {
-    const el = document.getElementById('examQuestionContent');
-    const ov = document.getElementById('blackoutOverlay');
-    if (el) el.style.filter = 'none';
-    if (ov) ov.classList.add('hidden');
+    try {
+      document.documentElement.classList.remove('exam-shield-blackout-active');
+      document.body.classList.remove('exam-shield-blackout-active');
+      const bo = document.getElementById('examShieldFullBlackout');
+      if (bo) bo.style.display = 'none';
+      const el = document.getElementById('examQuestionContent');
+      if (el) el.style.filter = 'none';
+      const ov = document.getElementById('blackoutOverlay');
+      if (ov) ov.classList.add('hidden');
+    } catch(e) {}
   }
 
   function updateViolationCounterDisplay() {

@@ -43,10 +43,32 @@
     }
     /* Anti-seleksi teks umum pada lembar ujian */
     .no-select {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
+      user-select: none !important;
+      -webkit-touch-callout: none !important;
+    }
+    /* Anti-Print / Save to PDF */
+    @media print {
+      html, body {
+        display: none !important;
+        visibility: hidden !important;
+      }
+    }
+    /* Mode Blackout Instan Anti-Screenshot (Zero Latency) */
+    html.exam-shield-blackout-active,
+    body.exam-shield-blackout-active {
+      background-color: #000000 !important;
+      overflow: hidden !important;
+    }
+    html.exam-shield-blackout-active main,
+    html.exam-shield-blackout-active header,
+    html.exam-shield-blackout-active footer {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      filter: brightness(0) blur(60px) !important;
     }
   </style>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -68,6 +90,21 @@
   </script>
 </head>
 <body class="bg-slate-100 font-sans text-slate-800 antialiased flex flex-col min-h-full overflow-x-hidden no-select">
+
+  <!-- OVERLAY BLACKOUT INSTAN TINGKAT ROOT (ANTI-SCREENSHOT & SNIPPING TOOL) -->
+  <div id="examShieldFullBlackout" style="display: none;" class="fixed inset-0 w-screen h-screen z-[2147483647] bg-black text-white flex flex-col items-center justify-center p-6 text-center select-none cursor-pointer">
+    <div class="relative flex items-center justify-center mb-4">
+      <span class="absolute w-24 h-24 rounded-full bg-rose-500/20 animate-ping"></span>
+      <div class="w-16 h-16 rounded-2xl bg-rose-600/30 border border-rose-500 text-rose-400 flex items-center justify-center shadow-2xl">
+        <span class="material-symbols-outlined text-4xl">shield_lock</span>
+      </div>
+    </div>
+    <h2 class="font-black text-xl sm:text-2xl text-white">Layar Diamankan (Anti-Screenshot)</h2>
+    <p class="text-xs sm:text-sm text-slate-300 max-w-sm mt-2 leading-relaxed">
+      Sistem mendeteksi upaya penangkapan layar atau pelepasan fokus.<br>
+      <span class="text-rose-400 font-bold">Sentuh layar atau kembali ke tab asesmen untuk melanjutkan.</span>
+    </p>
+  </div>
 
   <!-- TOP HEADER MINIMALIS -->
   <header class="sticky top-0 w-full z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
