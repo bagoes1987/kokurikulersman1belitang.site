@@ -1,8 +1,9 @@
 /**
  * FINCESTEM 2026 - Modul Admin: Bank Soal & Kunci Jawaban Asesmen
  * Khusus Peserta Non-Field Trip (Riset Mandiri di Wilayah Kabupaten OKU Timur)
+ * Desain Ramping, Rapi, Profesional dengan Pagination 10, 20, 30, 40, 50
  * File Modular Terpisah - Bebas Konflik dengan Modul Lain
- * Versi: 20261029_nft_bs1
+ * Versi: 20261029_nft_bs2_compact
  */
 
 (function(window) {
@@ -12,28 +13,34 @@
   let currentIndicator = 'ALL';
   let searchQuery = '';
   let currentPage = 1;
-  let pageSize = 25; // 25 soal per halaman agar ringan
+  let pageSize = 10; // Default 10 soal per halaman agar tidak scroll panjang
+  let expandAllExplanations = false;
 
   const INDICATOR_BADGES = {
     'A': {
-      bg: 'bg-teal-100 text-teal-900 border-teal-300',
-      tag: 'Indikator A • Kegiatan Ekonomi'
+      bg: 'bg-teal-50 text-teal-800 border-teal-200',
+      badge: 'bg-teal-700 text-white',
+      name: 'Indikator A • Kegiatan Ekonomi'
     },
     'B': {
-      bg: 'bg-emerald-100 text-emerald-900 border-emerald-300',
-      tag: 'Indikator B • Literasi Finansial'
+      bg: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+      badge: 'bg-emerald-700 text-white',
+      name: 'Indikator B • Literasi Finansial'
     },
     'C': {
-      bg: 'bg-sky-100 text-sky-900 border-sky-300',
-      tag: 'Indikator C • Kebanksentralan & BI'
+      bg: 'bg-sky-50 text-sky-800 border-sky-200',
+      badge: 'bg-sky-700 text-white',
+      name: 'Indikator C • Kebanksentralan & BI'
     },
     'D': {
-      bg: 'bg-amber-100 text-amber-950 border-amber-300',
-      tag: 'Indikator D • Badan Usaha & Koperasi'
+      bg: 'bg-amber-50 text-amber-900 border-amber-200',
+      badge: 'bg-amber-700 text-white',
+      name: 'Indikator D • Badan Usaha & Koperasi'
     },
     'E': {
-      bg: 'bg-purple-100 text-purple-950 border-purple-300',
-      tag: 'Indikator E • Potensi OKU Timur'
+      bg: 'bg-purple-50 text-purple-900 border-purple-200',
+      badge: 'bg-purple-700 text-white',
+      name: 'Indikator E • Potensi OKU Timur'
     }
   };
 
@@ -46,9 +53,8 @@
     if (!container) return;
 
     const allQuestions = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(currentDay)) || [];
-    const indicators = (window.getNftBankSoalIndicators && window.getNftBankSoalIndicators()) || [];
 
-    // Filter data
+    // 1. Filter Data
     let filtered = allQuestions.slice();
 
     if (currentIndicator !== 'ALL') {
@@ -67,242 +73,238 @@
       });
     }
 
-    // Pagination
+    // 2. Pagination Calculations
     const totalFiltered = filtered.length;
-    let paginated = filtered;
-    let totalPages = 1;
+    const sizeNum = parseInt(pageSize, 10) || 10;
+    const totalPages = Math.max(1, Math.ceil(totalFiltered / sizeNum));
 
-    if (pageSize !== 'ALL') {
-      const sizeNum = parseInt(pageSize, 10) || 25;
-      totalPages = Math.ceil(totalFiltered / sizeNum) || 1;
-      if (currentPage > totalPages) currentPage = totalPages;
-      if (currentPage < 1) currentPage = 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
 
-      const startIndex = (currentPage - 1) * sizeNum;
-      paginated = filtered.slice(startIndex, startIndex + sizeNum);
-    }
+    const startIndex = (currentPage - 1) * sizeNum;
+    const endIndex = Math.min(startIndex + sizeNum, totalFiltered);
+    const paginated = filtered.slice(startIndex, endIndex);
 
-    // Render HTML
+    // 3. Render Component HTML
     container.innerHTML = `
-      <!-- 1. HEADER BANNER UTAMA: BANK SOAL ASESMEN (NON-FIELD TRIP) -->
-      <div class="bg-gradient-to-br from-teal-900 via-slate-900 to-slate-950 rounded-3xl p-5 sm:p-6 text-white border border-teal-700/50 shadow-md flex flex-col gap-3.5">
-        <div class="flex items-center justify-between flex-wrap gap-2.5">
-          <div class="flex items-center gap-2">
-            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-400 text-slate-950 flex items-center gap-1.5 shadow-xs">
-              <span class="material-symbols-outlined text-sm">school</span>
+      <!-- ======================================================== -->
+      <!-- HEADER BANNER PROFESIONAL & RINGKAS                      -->
+      <!-- ======================================================== -->
+      <div class="bg-gradient-to-r from-teal-900 via-slate-900 to-slate-950 rounded-2xl p-4 sm:p-5 text-white border border-teal-700/40 shadow-sm flex flex-col gap-3">
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-black uppercase tracking-wider bg-amber-400 text-slate-950 flex items-center gap-1 shadow-2xs">
+              <span class="material-symbols-outlined text-xs">school</span>
               <span>Khusus Non-Field Trip</span>
             </span>
-            <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/10 text-teal-200 border border-white/15">
+            <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-white/10 text-teal-200 border border-white/10">
               Riset Mandiri Wilayah OKU Timur
+            </span>
+            <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold bg-teal-800/80 text-teal-100 border border-teal-600/50">
+              Day ${currentDay} • 200 Soal Pilihan Ganda
             </span>
           </div>
 
           <div class="flex items-center gap-2">
-            <button type="button" onclick="window.printBankSoalPdf()" class="px-3.5 py-2 rounded-xl bg-teal-700/80 hover:bg-teal-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer border border-teal-500/50">
-              <span class="material-symbols-outlined text-base">print</span>
-              <span>Cetak / Ekspor Kunci</span>
+            <button type="button" onclick="window.printBankSoalPdf()" class="px-3 py-1.5 rounded-xl bg-teal-700 hover:bg-teal-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer border border-teal-500/40">
+              <span class="material-symbols-outlined text-sm">print</span>
+              <span>Cetak Kunci (PDF)</span>
             </button>
           </div>
         </div>
 
-        <div>
-          <h2 class="font-black text-lg sm:text-2xl text-white tracking-tight flex items-center gap-2">
-            <span class="material-symbols-outlined text-2xl text-teal-400">quiz</span>
-            <span>Bank Soal Asesmen (Non-Field Trip)</span>
-          </h2>
-          <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium mt-1">
-            Database butir soal pilihan ganda, kunci jawaban resmi terverifikasi, dan sebaran 5 indikator kurikulum FINCESTEM. Soal diacak 50 butir per siswa dengan durasi 60 menit.
-          </p>
-        </div>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-white/10 pt-2.5">
+          <div>
+            <h2 class="font-black text-base sm:text-lg text-white tracking-tight flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-teal-400 text-xl">quiz</span>
+              <span>Bank Soal Asesmen (Non-Field Trip)</span>
+            </h2>
+            <p class="text-[11.5px] text-teal-100/80 font-medium">
+              Database butir soal, kunci jawaban resmi, dan sebaran 5 indikator. Setiap siswa mendapat 50 soal acak (waktu 60 menit).
+            </p>
+          </div>
 
-        <!-- STATS BARIS RINGKAS -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-white/15 text-xs">
-          <div class="p-3 rounded-2xl bg-white/10 flex flex-col">
-            <span class="text-teal-200 text-[10.5px] font-medium">Total Bank Soal Day ${currentDay}</span>
-            <span class="font-black text-sm sm:text-base text-white">${allQuestions.length} Soal PG</span>
-          </div>
-          <div class="p-3 rounded-2xl bg-white/10 flex flex-col">
-            <span class="text-teal-200 text-[10.5px] font-medium">Diacak per Siswa</span>
-            <span class="font-black text-sm sm:text-base text-amber-300">50 Soal Berimbang</span>
-          </div>
-          <div class="p-3 rounded-2xl bg-white/10 flex flex-col">
-            <span class="text-teal-200 text-[10.5px] font-medium">Durasi Ujian Siswa</span>
-            <span class="font-black text-sm sm:text-base text-white">60 Menit (72 dtk/soal)</span>
-          </div>
-          <div class="p-3 rounded-2xl bg-white/10 flex flex-col">
-            <span class="text-teal-200 text-[10.5px] font-medium">Proteksi Keamanan</span>
-            <span class="font-black text-sm sm:text-base text-emerald-400">Exam Shield Aktif</span>
+          <!-- Quick Stats Pill -->
+          <div class="flex items-center gap-2 text-xs shrink-0 bg-white/5 px-3 py-1.5 rounded-xl border border-white/10">
+            <div class="flex items-center gap-1">
+              <span class="text-slate-400 text-[11px]">Bank:</span>
+              <strong class="text-white">${allQuestions.length} Soal</strong>
+            </div>
+            <span class="text-white/20">•</span>
+            <div class="flex items-center gap-1">
+              <span class="text-slate-400 text-[11px]">Ujian:</span>
+              <strong class="text-amber-300">50 Soal</strong>
+            </div>
+            <span class="text-white/20">•</span>
+            <div class="flex items-center gap-1">
+              <span class="text-slate-400 text-[11px]">Waktu:</span>
+              <strong class="text-emerald-400">60 Menit</strong>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- 2. PEMILIH TAB PER DAY (DAY 1 S.D. DAY 7) -->
-      <div class="bg-surface-container-lowest rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col gap-3">
-        <div class="flex items-center justify-between flex-wrap gap-2">
-          <span class="text-xs font-black uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-base text-teal-700">calendar_view_day</span>
-            <span>Pilih Hari Asesmen (Per Day):</span>
-          </span>
-          <span class="text-[11px] text-slate-500 font-medium">Klik tombol Day untuk melihat bank soal masing-masing hari</span>
+      <!-- ======================================================== -->
+      <!-- PEMILIH PER DAY (DAY 1 S.D. DAY 7) - FORMAT RAMPING      -->
+      <!-- ======================================================== -->
+      <div class="bg-surface-container-lowest rounded-2xl p-3 border border-slate-200 shadow-2xs flex items-center justify-between gap-2 flex-wrap">
+        <div class="flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-teal-700 text-sm">calendar_month</span>
+          <span class="text-xs font-black uppercase tracking-wider text-slate-700">Pilih Hari:</span>
         </div>
-
-        <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
+        <div class="flex items-center gap-1.5 flex-wrap">
           ${[1, 2, 3, 4, 5, 6, 7].map(d => {
             const isAct = (d === currentDay);
-            const count = (d === 1) ? 200 : 0;
-            const subtitle = (d === 1) ? '200 Soal Siap' : 'Persiapan';
+            const isReady = (d === 1);
             return `
-              <button type="button" onclick="window.switchBankSoalDay(${d})" class="p-3 rounded-2xl flex flex-col items-center justify-center gap-1 transition-all cursor-pointer ${
+              <button type="button" onclick="window.switchBankSoalDay(${d})" class="px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center gap-1 transition-all cursor-pointer ${
                 isAct 
-                  ? 'bg-teal-800 text-white font-black shadow-md border-2 border-teal-600' 
-                  : 'bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200/80 font-bold'
+                  ? 'bg-teal-800 text-white shadow-2xs border border-teal-700' 
+                  : (isReady 
+                      ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200' 
+                      : 'bg-slate-50 text-slate-400 border border-slate-200/60')
               }">
-                <span class="text-xs sm:text-sm">Day ${d}</span>
-                <span class="text-[10px] ${isAct ? 'text-amber-300 font-extrabold' : 'text-slate-400'}">${subtitle}</span>
+                <span>Day ${d}</span>
+                ${isReady ? `<span class="w-1.5 h-1.5 rounded-full ${isAct ? 'bg-amber-400' : 'bg-emerald-500'}"></span>` : ''}
               </button>
             `;
           }).join('')}
         </div>
       </div>
 
-      <!-- 3. FILTER INDIKATOR & KOTAK PENCARIAN LIVE -->
-      <div class="bg-surface-container-lowest rounded-3xl p-4 sm:p-5 border border-slate-200/90 shadow-sm flex flex-col gap-3">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+      <!-- ======================================================== -->
+      <!-- TOOLBAR KONTROL FILTER & SEARCHING (KOMPAK)             -->
+      <!-- ======================================================== -->
+      <div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-slate-200 shadow-2xs flex flex-col gap-2.5">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center">
           
-          <!-- Filter Indikator Materi -->
-          <div class="md:col-span-5 flex flex-col gap-1">
-            <label class="text-xs font-bold text-slate-700">Filter Indikator Materi:</label>
-            <select id="selBankSoalIndicator" onchange="window.filterBankSoalIndicator(this.value)" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 outline-none">
-              <option value="ALL" ${currentIndicator === 'ALL' ? 'selected' : ''}>Semua Indikator (Total 200 Soal)</option>
-              <option value="A" ${currentIndicator === 'A' ? 'selected' : ''}>Indikator A: Kegiatan Ekonomi (40 Soal)</option>
-              <option value="B" ${currentIndicator === 'B' ? 'selected' : ''}>Indikator B: Literasi Finansial (40 Soal)</option>
-              <option value="C" ${currentIndicator === 'C' ? 'selected' : ''}>Indikator C: Kebanksentralan &amp; BI (40 Soal)</option>
-              <option value="D" ${currentIndicator === 'D' ? 'selected' : ''}>Indikator D: Badan Usaha &amp; Koperasi (40 Soal)</option>
-              <option value="E" ${currentIndicator === 'E' ? 'selected' : ''}>Indikator E: Potensi Sektor OKU Timur (40 Soal)</option>
+          <!-- 1. Search Box -->
+          <div class="sm:col-span-6 relative">
+            <span class="material-symbols-outlined absolute left-2.5 top-2 text-slate-400 text-lg">search</span>
+            <input type="text" id="txtBankSoalSearch" value="${escapeHtml(searchQuery)}" oninput="window.onBankSoalSearchInput(this.value)" placeholder="Cari kata kunci (koperasi, padi, inflasi, QRIS, dsb)..." class="w-full pl-8 pr-7 py-1.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:border-teal-600 focus:ring-1 focus:ring-teal-600 outline-none">
+            ${searchQuery ? `
+              <button type="button" onclick="window.clearBankSoalSearch()" class="absolute right-2 top-2 text-slate-400 hover:text-slate-600">
+                <span class="material-symbols-outlined text-sm">close</span>
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- 2. Filter Indikator Dropdown -->
+          <div class="sm:col-span-4">
+            <select id="selBankSoalIndicator" onchange="window.filterBankSoalIndicator(this.value)" class="w-full p-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 focus:border-teal-600 outline-none">
+              <option value="ALL" ${currentIndicator === 'ALL' ? 'selected' : ''}>Semua Indikator (200 Soal)</option>
+              <option value="A" ${currentIndicator === 'A' ? 'selected' : ''}>Indikator A: Kegiatan Ekonomi (40)</option>
+              <option value="B" ${currentIndicator === 'B' ? 'selected' : ''}>Indikator B: Literasi Finansial (40)</option>
+              <option value="C" ${currentIndicator === 'C' ? 'selected' : ''}>Indikator C: Bank Sentral &amp; BI (40)</option>
+              <option value="D" ${currentIndicator === 'D' ? 'selected' : ''}>Indikator D: Badan Usaha &amp; Koperasi (40)</option>
+              <option value="E" ${currentIndicator === 'E' ? 'selected' : ''}>Indikator E: Potensi OKU Timur (40)</option>
             </select>
           </div>
 
-          <!-- Live Search Box -->
-          <div class="md:col-span-5 flex flex-col gap-1">
-            <label class="text-xs font-bold text-slate-700">Cari Kata Kunci / Pertanyaan:</label>
-            <div class="relative">
-              <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-lg">search</span>
-              <input type="text" id="txtBankSoalSearch" value="${escapeHtml(searchQuery)}" oninput="window.onBankSoalSearchInput(this.value)" placeholder="Ketik kata kunci (misal: koperasi, padi, inflasi, QRIS)..." class="w-full pl-9 pr-8 py-2.5 rounded-xl border border-slate-300 text-xs font-medium text-slate-900 focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 outline-none transition-all">
-              ${searchQuery ? `
-                <button type="button" onclick="window.clearBankSoalSearch()" class="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 text-xs">
-                  <span class="material-symbols-outlined text-base">close</span>
-                </button>
-              ` : ''}
-            </div>
-          </div>
-
-          <!-- Tampilan per Halaman -->
-          <div class="md:col-span-2 flex flex-col gap-1">
-            <label class="text-xs font-bold text-slate-700">Tampilan:</label>
-            <select id="selBankSoalPageSize" onchange="window.changeBankSoalPageSize(this.value)" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 focus:border-teal-600 outline-none">
-              <option value="25" ${pageSize == 25 ? 'selected' : ''}>25 Soal / Hal</option>
-              <option value="50" ${pageSize == 50 ? 'selected' : ''}>50 Soal / Hal</option>
-              <option value="ALL" ${pageSize === 'ALL' ? 'selected' : ''}>Tampilkan Semua</option>
+          <!-- 3. PILIHAN PAGINATION: 10, 20, 30, 40, 50 -->
+          <div class="sm:col-span-2 flex items-center gap-1.5 justify-end">
+            <span class="text-[11px] font-bold text-slate-500 whitespace-nowrap">Per Halaman:</span>
+            <select id="selBankSoalPageSize" onchange="window.changeBankSoalPageSize(this.value)" class="p-1.5 rounded-xl border border-teal-600 bg-teal-50 text-xs font-extrabold text-teal-950 focus:ring-1 focus:ring-teal-600 outline-none cursor-pointer">
+              <option value="10" ${sizeNum === 10 ? 'selected' : ''}>10 Soal</option>
+              <option value="20" ${sizeNum === 20 ? 'selected' : ''}>20 Soal</option>
+              <option value="30" ${sizeNum === 30 ? 'selected' : ''}>30 Soal</option>
+              <option value="40" ${sizeNum === 40 ? 'selected' : ''}>40 Soal</option>
+              <option value="50" ${sizeNum === 50 ? 'selected' : ''}>50 Soal</option>
             </select>
           </div>
 
         </div>
 
-        <!-- INDIKATOR CHIPS (QUICK FILTER) -->
-        <div class="flex items-center gap-1.5 flex-wrap pt-1 border-t border-slate-100 text-[11px]">
-          <span class="font-bold text-slate-400 text-[10px] uppercase">Pintas Indikator:</span>
-          <button type="button" onclick="window.filterBankSoalIndicator('ALL')" class="px-2.5 py-1 rounded-lg font-bold transition-all ${currentIndicator === 'ALL' ? 'bg-teal-700 text-white' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}">Semua (200)</button>
-          <button type="button" onclick="window.filterBankSoalIndicator('A')" class="px-2.5 py-1 rounded-lg font-bold transition-all ${currentIndicator === 'A' ? 'bg-teal-700 text-white' : 'bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200'}">A: Kegiatan Ekonomi (40)</button>
-          <button type="button" onclick="window.filterBankSoalIndicator('B')" class="px-2.5 py-1 rounded-lg font-bold transition-all ${currentIndicator === 'B' ? 'bg-emerald-700 text-white' : 'bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200'}">B: Literasi Finansial (40)</button>
-          <button type="button" onclick="window.filterBankSoalIndicator('C')" class="px-2.5 py-1 rounded-lg font-bold transition-all ${currentIndicator === 'C' ? 'bg-sky-700 text-white' : 'bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200'}">C: Bank Sentral &amp; BI (40)</button>
-          <button type="button" onclick="window.filterBankSoalIndicator('D')" class="px-2.5 py-1 rounded-lg font-bold transition-all ${currentIndicator === 'D' ? 'bg-amber-700 text-white' : 'bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200'}">D: Badan Usaha &amp; Koperasi (40)</button>
-          <button type="button" onclick="window.filterBankSoalIndicator('E')" class="px-2.5 py-1 rounded-lg font-bold transition-all ${currentIndicator === 'E' ? 'bg-purple-700 text-white' : 'bg-purple-50 hover:bg-purple-100 text-purple-800 border border-purple-200'}">E: Potensi OKU Timur (40)</button>
-        </div>
-      </div>
+        <!-- QUICK FILTER CHIPS & TOGGLE PEMBAHASAN -->
+        <div class="flex items-center justify-between gap-2 pt-1 border-t border-slate-100 flex-wrap text-xs">
+          <div class="flex items-center gap-1 flex-wrap">
+            <span class="text-[10px] font-extrabold text-slate-400 uppercase mr-1">Filter Cepat:</span>
+            <button type="button" onclick="window.filterBankSoalIndicator('ALL')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'ALL' ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">Semua</button>
+            <button type="button" onclick="window.filterBankSoalIndicator('A')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'A' ? 'bg-teal-700 text-white' : 'bg-teal-50 text-teal-800 border border-teal-200'}">A (40)</button>
+            <button type="button" onclick="window.filterBankSoalIndicator('B')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'B' ? 'bg-emerald-700 text-white' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}">B (40)</button>
+            <button type="button" onclick="window.filterBankSoalIndicator('C')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'C' ? 'bg-sky-700 text-white' : 'bg-sky-50 text-sky-800 border border-sky-200'}">C (40)</button>
+            <button type="button" onclick="window.filterBankSoalIndicator('D')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'D' ? 'bg-amber-700 text-white' : 'bg-amber-50 text-amber-800 border border-amber-200'}">D (40)</button>
+            <button type="button" onclick="window.filterBankSoalIndicator('E')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'E' ? 'bg-purple-700 text-white' : 'bg-purple-50 text-purple-800 border border-purple-200'}">E (40)</button>
+          </div>
 
-      <!-- 4. BAR STATUS HASIL PENCARIAN & PAGINATION ATAS -->
-      <div class="flex items-center justify-between flex-wrap gap-2 px-1 text-xs text-slate-600 font-semibold">
-        <div class="flex items-center gap-1.5">
-          <span>Menampilkan <strong>${paginated.length}</strong> dari <strong>${totalFiltered}</strong> butir soal</span>
-          ${searchQuery ? `<span class="text-teal-700 font-bold">(Pencarian: "${escapeHtml(searchQuery)}")</span>` : ''}
-          ${currentIndicator !== 'ALL' ? `<span class="text-amber-800 font-bold">(Indikator ${currentIndicator})</span>` : ''}
-        </div>
-
-        ${pageSize !== 'ALL' && totalPages > 1 ? `
-          <div class="flex items-center gap-1">
-            <button type="button" onclick="window.changeBankSoalPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed text-xs"' : 'class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs cursor-pointer shadow-2xs"'}>
-              &larr; Prev
-            </button>
-            <span class="px-2 text-xs font-bold text-slate-700">Hal ${currentPage} / ${totalPages}</span>
-            <button type="button" onclick="window.changeBankSoalPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed text-xs"' : 'class="px-2.5 py-1 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 font-bold text-xs cursor-pointer shadow-2xs"'}>
-              Next &rarr;
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="window.toggleAllExplanations()" class="px-2.5 py-1 rounded-lg text-[11px] font-extrabold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200 flex items-center gap-1 cursor-pointer transition-all shadow-2xs">
+              <span class="material-symbols-outlined text-xs text-amber-700">${expandAllExplanations ? 'visibility_off' : 'visibility'}</span>
+              <span>${expandAllExplanations ? 'Tutup Semua Pembahasan' : 'Buka Semua Pembahasan'}</span>
             </button>
           </div>
-        ` : ''}
+        </div>
       </div>
 
-      <!-- 5. DAFTAR KARTU BUTIR SOAL & KUNCI JAWABAN -->
-      <div class="flex flex-col gap-4">
+      <!-- ======================================================== -->
+      <!-- PAGINATION BAR ATAS (NAVIGASI CEPAT TANPA SCROLL)       -->
+      <!-- ======================================================== -->
+      ${renderPaginationBar(currentPage, totalPages, totalFiltered, startIndex, endIndex, sizeNum, 'top')}
+
+      <!-- ======================================================== -->
+      <!-- DAFTAR KARTU BUTIR SOAL (DESAIN RAMPING & PROFESIONAL)  -->
+      <!-- ======================================================== -->
+      <div class="flex flex-col gap-3">
         ${paginated.length === 0 ? `
-          <div class="bg-surface-container-lowest rounded-3xl p-8 border border-slate-200 text-center flex flex-col items-center justify-center gap-2">
-            <span class="material-symbols-outlined text-4xl text-slate-400">search_off</span>
+          <div class="bg-surface-container-lowest rounded-2xl p-8 border border-slate-200 text-center flex flex-col items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-3xl text-slate-400">search_off</span>
             <h4 class="font-black text-sm text-slate-700">Tidak ada butir soal yang sesuai</h4>
-            <p class="text-xs text-slate-500">Coba ubah kata kunci pencarian atau ganti filter indikator materi.</p>
-            <button type="button" onclick="window.clearBankSoalFilters()" class="mt-2 px-4 py-2 rounded-xl bg-teal-800 text-white font-bold text-xs">Reset Seluruh Filter</button>
+            <p class="text-xs text-slate-500">Coba ubah kata kunci pencarian atau ganti filter indikator.</p>
+            <button type="button" onclick="window.clearBankSoalFilters()" class="mt-1 px-3 py-1.5 rounded-xl bg-teal-800 text-white font-bold text-xs">Reset Seluruh Filter</button>
           </div>
         ` : paginated.map((q) => {
-          const badgeCfg = INDICATOR_BADGES[q.indicatorCode] || { bg: 'bg-slate-100 text-slate-800 border-slate-300', tag: q.indicatorName };
+          const badgeCfg = INDICATOR_BADGES[q.indicatorCode] || { bg: 'bg-slate-100 text-slate-800 border-slate-300', badge: 'bg-slate-700 text-white', name: q.indicatorName };
           const formattedId = String(q.id).padStart(3, '0');
 
           return `
-            <div class="bg-white rounded-3xl p-5 sm:p-6 border-2 border-slate-200/80 shadow-2xs hover:border-teal-300 transition-all flex flex-col gap-3.5">
+            <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-2xs hover:border-teal-400 hover:shadow-xs transition-all flex flex-col gap-2.5">
               
-              <!-- KOP KARTU SOAL: NOMOR, INDIKATOR, KUNCI BADGE -->
-              <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
-                <div class="flex items-center gap-2.5 flex-wrap">
-                  <span class="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-xs shrink-0 shadow-2xs">
+              <!-- KOP SOAL: NOMOR, INDIKATOR, DAN KUNCI JAWABAN -->
+              <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5 flex-wrap">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-lg bg-slate-900 text-white font-black text-xs shadow-2xs">
                     #${formattedId}
                   </span>
-                  <span class="px-2.5 py-1 rounded-xl text-[11px] font-extrabold border ${badgeCfg.bg}">
-                    ${badgeCfg.tag} (No. ${q.numberInIndicator || q.id})
+                  <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold border ${badgeCfg.bg}">
+                    ${badgeCfg.name} (No. ${q.numberInIndicator || q.id})
                   </span>
                 </div>
 
-                <div class="flex items-center gap-2">
-                  <span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-600 text-white flex items-center gap-1 shadow-2xs">
-                    <span class="material-symbols-outlined text-xs">verified</span>
-                    <span>Kunci Resmi: Opsi (${q.correct})</span>
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-600 text-white flex items-center gap-1 shadow-2xs">
+                    <span class="material-symbols-outlined text-xs">check_circle</span>
+                    <span>Kunci: (${q.correct})</span>
                   </span>
                 </div>
               </div>
 
               <!-- TEKS PERTANYAAN -->
-              <div class="text-xs sm:text-sm text-slate-900 leading-relaxed font-semibold">
+              <div class="text-xs sm:text-[13px] text-slate-900 leading-relaxed font-semibold">
                 ${escapeHtml(q.question)}
               </div>
 
-              <!-- PILIHAN GANDA (A, B, C, D, E) DENGAN HIGHLIGHT HIJAU PADA KUNCI -->
-              <div class="flex flex-col gap-2 pt-1">
+              <!-- PILIHAN GANDA: FORMAT RAMPING DENGAN HIGHLIGHT KUNCI HIJAU -->
+              <div class="grid grid-cols-1 gap-1.5 pt-0.5">
                 ${q.options.map(opt => {
                   const isCorrect = (opt.key === q.correct);
                   return `
-                    <div class="p-3 rounded-2xl flex items-center justify-between gap-3 text-xs transition-all ${
+                    <div class="px-3 py-2 rounded-xl flex items-center justify-between gap-2.5 text-xs transition-all ${
                       isCorrect 
-                        ? 'bg-emerald-50/90 border-2 border-emerald-500 text-emerald-950 font-black shadow-xs' 
-                        : 'bg-slate-50/80 border border-slate-200 text-slate-700 font-medium'
+                        ? 'bg-emerald-50 border-2 border-emerald-400 text-emerald-950 font-black shadow-2xs' 
+                        : 'bg-slate-50/70 border border-slate-200/80 text-slate-700 font-medium'
                     }">
-                      <div class="flex items-start gap-2.5 min-w-0">
-                        <span class="w-6 h-6 rounded-lg flex items-center justify-center font-black text-xs shrink-0 ${
+                      <div class="flex items-start gap-2 min-w-0">
+                        <span class="w-5 h-5 rounded-md flex items-center justify-center font-black text-[11px] shrink-0 mt-0.5 ${
                           isCorrect ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700'
                         }">
                           ${opt.key}
                         </span>
-                        <span class="leading-snug pt-0.5">${escapeHtml(opt.text)}</span>
+                        <span class="leading-snug">${escapeHtml(opt.text)}</span>
                       </div>
                       ${isCorrect ? `
-                        <span class="px-2.5 py-1 rounded-lg bg-emerald-600 text-white text-[10.5px] font-black shrink-0 flex items-center gap-1 shadow-2xs">
-                          <span class="material-symbols-outlined text-xs">check</span>
-                          <span>Kunci Jawaban</span>
+                        <span class="px-2 py-0.5 rounded-md bg-emerald-600 text-white text-[10px] font-black shrink-0 flex items-center gap-0.5 shadow-2xs">
+                          <span class="material-symbols-outlined text-[11px]">check</span>
+                          <span>Kunci Benar</span>
                         </span>
                       ` : ''}
                     </div>
@@ -310,15 +312,20 @@
                 }).join('')}
               </div>
 
-              <!-- PEMBAHASAN / RASIONALISASI JAWABAN -->
+              <!-- ACCORDION PEMBAHASAN / RASIONALISASI KUNCI -->
               ${q.explanation ? `
-                <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/70 text-xs text-amber-950 flex items-start gap-2.5 leading-relaxed">
-                  <span class="material-symbols-outlined text-base text-amber-700 shrink-0 mt-0.5">lightbulb</span>
-                  <div class="flex flex-col gap-0.5">
-                    <span class="font-extrabold text-[11px] uppercase tracking-wider text-amber-900">Pembahasan &amp; Rasionalisasi Kunci:</span>
-                    <p class="font-medium text-slate-700">${escapeHtml(q.explanation)}</p>
+                <details ${expandAllExplanations ? 'open' : ''} class="group rounded-xl border border-amber-200/80 bg-amber-50/50 text-xs transition-all">
+                  <summary class="px-3 py-1.5 font-bold text-amber-900 cursor-pointer flex items-center justify-between select-none hover:bg-amber-100/50 rounded-xl transition-all">
+                    <span class="flex items-center gap-1.5 text-[11px]">
+                      <span class="material-symbols-outlined text-xs text-amber-600">lightbulb</span>
+                      <span>Pembahasan &amp; Rasionalisasi Kunci</span>
+                    </span>
+                    <span class="material-symbols-outlined text-sm text-amber-700 transition-transform group-open:rotate-180">expand_more</span>
+                  </summary>
+                  <div class="px-3 pb-2.5 pt-1 text-[11.5px] font-medium text-slate-700 leading-relaxed border-t border-amber-100 mt-1">
+                    ${escapeHtml(q.explanation)}
                   </div>
-                </div>
+                </details>
               ` : ''}
 
             </div>
@@ -326,19 +333,89 @@
         }).join('')}
       </div>
 
-      <!-- 6. PAGINATION BAWAH -->
-      ${pageSize !== 'ALL' && totalPages > 1 ? `
-        <div class="flex items-center justify-center gap-2 pt-4 pb-8">
-          <button type="button" onclick="window.changeBankSoalPage(${currentPage - 1})" ${currentPage <= 1 ? 'disabled class="px-4 py-2 rounded-xl bg-slate-100 text-slate-400 cursor-not-allowed font-bold text-xs"' : 'class="px-4 py-2 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 font-bold text-xs cursor-pointer shadow-xs"'}>
-            &larr; Halaman Sebelumnya
+      <!-- ======================================================== -->
+      <!-- PAGINATION BAR BAWAH                                     -->
+      <!-- ======================================================== -->
+      ${renderPaginationBar(currentPage, totalPages, totalFiltered, startIndex, endIndex, sizeNum, 'bottom')}
+    `;
+  }
+
+  // Komponen Pagination Terpadu (Atas & Bawah)
+  function renderPaginationBar(current, total, totalRecords, start, end, size, position) {
+    if (totalRecords === 0) return '';
+
+    const pages = getPaginationPageNumbers(current, total);
+
+    return `
+      <div class="bg-surface-container-lowest rounded-2xl px-3.5 py-2.5 border border-slate-200/90 shadow-2xs flex items-center justify-between flex-wrap gap-2 text-xs">
+        
+        <!-- Status Info Data -->
+        <div class="flex items-center gap-1 text-slate-600 font-semibold text-[11.5px]">
+          <span>Menampilkan <strong>${start + 1} - ${end}</strong> dari <strong>${totalRecords}</strong> Soal</span>
+          <span class="text-slate-300">|</span>
+          <span class="text-teal-800 font-bold">Halaman ${current} dari ${total}</span>
+        </div>
+
+        <!-- Tombol Nomor Halaman & Navigasi -->
+        <div class="flex items-center gap-1">
+          <!-- Tombol Pertama & Prev -->
+          <button type="button" onclick="window.changeBankSoalPage(1)" ${current <= 1 ? 'disabled class="w-7 h-7 rounded-lg bg-slate-100 text-slate-300 cursor-not-allowed flex items-center justify-center"' : 'class="w-7 h-7 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold flex items-center justify-center shadow-2xs cursor-pointer"'} title="Halaman Pertama">
+            <span class="material-symbols-outlined text-sm">first_page</span>
           </button>
-          <span class="px-3 text-xs font-black text-slate-700">Halaman ${currentPage} dari ${totalPages}</span>
-          <button type="button" onclick="window.changeBankSoalPage(${currentPage + 1})" ${currentPage >= totalPages ? 'disabled class="px-4 py-2 rounded-xl bg-slate-100 text-slate-400 cursor-not-allowed font-bold text-xs"' : 'class="px-4 py-2 rounded-xl bg-white border border-slate-300 text-slate-700 hover:bg-slate-100 font-bold text-xs cursor-pointer shadow-xs"'}>
-            Halaman Berikutnya &rarr;
+          <button type="button" onclick="window.changeBankSoalPage(${current - 1})" ${current <= 1 ? 'disabled class="w-7 h-7 rounded-lg bg-slate-100 text-slate-300 cursor-not-allowed flex items-center justify-center"' : 'class="w-7 h-7 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold flex items-center justify-center shadow-2xs cursor-pointer"'} title="Sebelumnya">
+            <span class="material-symbols-outlined text-sm">chevron_left</span>
+          </button>
+
+          <!-- Nomor Halaman -->
+          <div class="flex items-center gap-1">
+            ${pages.map(p => {
+              if (p === '...') {
+                return `<span class="w-7 h-7 flex items-center justify-center text-slate-400 font-bold text-xs">...</span>`;
+              }
+              const isCurrent = (p === current);
+              return `
+                <button type="button" onclick="window.changeBankSoalPage(${p})" class="w-7 h-7 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  isCurrent 
+                    ? 'bg-teal-800 text-white shadow-2xs' 
+                    : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 shadow-2xs'
+                }">
+                  ${p}
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <!-- Tombol Next & Terakhir -->
+          <button type="button" onclick="window.changeBankSoalPage(${current + 1})" ${current >= total ? 'disabled class="w-7 h-7 rounded-lg bg-slate-100 text-slate-300 cursor-not-allowed flex items-center justify-center"' : 'class="w-7 h-7 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold flex items-center justify-center shadow-2xs cursor-pointer"'} title="Berikutnya">
+            <span class="material-symbols-outlined text-sm">chevron_right</span>
+          </button>
+          <button type="button" onclick="window.changeBankSoalPage(${total})" ${current >= total ? 'disabled class="w-7 h-7 rounded-lg bg-slate-100 text-slate-300 cursor-not-allowed flex items-center justify-center"' : 'class="w-7 h-7 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 font-bold flex items-center justify-center shadow-2xs cursor-pointer"'} title="Halaman Terakhir">
+            <span class="material-symbols-outlined text-sm">last_page</span>
           </button>
         </div>
-      ` : ''}
+
+      </div>
     `;
+  }
+
+  // Hitung nomor halaman dinamis
+  function getPaginationPageNumbers(current, total) {
+    if (total <= 7) {
+      const arr = [];
+      for (let i = 1; i <= total; i++) arr.push(i);
+      return arr;
+    }
+    const pages = [];
+    pages.push(1);
+    if (current > 3) pages.push('...');
+    const start = Math.max(2, current - 1);
+    const end = Math.min(total - 1, current + 1);
+    for (let i = start; i <= end; i++) {
+      if (!pages.includes(i)) pages.push(i);
+    }
+    if (current < total - 2) pages.push('...');
+    if (!pages.includes(total)) pages.push(total);
+    return pages;
   }
 
   // Helper Escape HTML
@@ -352,7 +429,7 @@
       .replace(/'/g, '&#039;');
   }
 
-  // Interaktivitas UI
+  // Handler Event Global Window
   window.switchBankSoalDay = function(dayNum) {
     currentDay = parseInt(dayNum) || 1;
     currentPage = 1;
@@ -394,16 +471,21 @@
   };
 
   window.changeBankSoalPageSize = function(size) {
-    pageSize = (size === 'ALL') ? 'ALL' : parseInt(size, 10);
+    pageSize = parseInt(size, 10) || 10;
     currentPage = 1;
     renderAdminBankSoalView();
   };
 
   window.changeBankSoalPage = function(page) {
-    currentPage = page;
+    currentPage = parseInt(page, 10) || 1;
     renderAdminBankSoalView();
     const panel = document.getElementById('panelAdminBanksoal');
     if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
+
+  window.toggleAllExplanations = function() {
+    expandAllExplanations = !expandAllExplanations;
+    renderAdminBankSoalView();
   };
 
   // Cetak / Ekspor PDF Ringkasan Kunci Jawaban
