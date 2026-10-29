@@ -143,8 +143,8 @@
                 <span class="w-2 h-2 rounded-full ${draft && draft.updatedAt ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400'}"></span>
                 <span id="txtNftLkpdD1DraftStatus">${draft && draft.updatedAt ? `Draft tersimpan (pk ${draftTimeStr} WIB)` : 'Auto-Save Aktif (Anti Hilang Sinyal)'}</span>
               </span>
-              <span id="nftLkpdD1StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800 font-extrabold' : (isSubmitted ? 'bg-emerald-400 text-slate-950 font-black shadow-xs' : 'bg-teal-100 text-teal-950 font-extrabold')}">
-                ${isLockedByPrereq ? 'Terkunci (Belum Tuntas Modul)' : (isSubmitted ? '✓ LKPD Terkirim Resmi' : 'Sedang Observasi Lapangan')}
+              <span id="nftLkpdD1StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800 font-extrabold' : (isSubmitted ? 'bg-emerald-400 text-slate-950 font-black shadow-xs' : (draft && draft.updatedAt ? 'bg-amber-100 text-amber-950 font-extrabold border border-amber-300 shadow-2xs' : 'bg-teal-100 text-teal-950 font-extrabold'))}">
+                ${isLockedByPrereq ? 'Terkunci (Belum Tuntas Modul)' : (isSubmitted ? '✓ LKPD Terkirim Resmi' : (draft && draft.updatedAt ? '📝 Mode Draft (Belum Dikirim)' : 'Sedang Observasi Lapangan'))}
               </span>
             </div>
           </div>
@@ -710,6 +710,11 @@
       if (topBadge) topBadge.textContent = `Draft tersimpan (pk ${timeStr} WIB)`;
       const botInfo = document.getElementById('lblLkpdDraftBottomInfo');
       if (botInfo) botInfo.textContent = `Draft tersimpan: Hari ini pk ${timeStr} WIB`;
+      const mainBadge = document.getElementById('nftLkpdD1StatusBadge');
+      if (mainBadge) {
+        mainBadge.textContent = '📝 Mode Draft (Belum Dikirim)';
+        mainBadge.className = 'px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-950 border border-amber-300 shadow-2xs';
+      }
 
       if (showToast) {
         if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
@@ -787,6 +792,10 @@
       } else {
         alert('Analisis rekomendasi solusi minimal 100 karakter!');
       }
+      return;
+    }
+
+    if (!confirm('Kirim LKPD Day 1 ke Fasilitator sekarang?\n\nPerhatian: Pastikan seluruh data observasi lapangan dan analisis finansial Anda sudah lengkap dan benar.\n\n• Klik "OK" jika Anda sudah yakin untuk mengirim resmi (tugas akan diserahkan ke Fasilitator).\n• Klik "Batal" jika Anda masih ingin memeriksa atau mengoreksi jawaban (Anda bisa memilih "Simpan Draft Sementara").')) {
       return;
     }
 
@@ -977,6 +986,11 @@
       if (topBadge) topBadge.textContent = `Draft tersimpan (pk ${timeStr} WIB)`;
       const botInfo = document.getElementById(`lblLkpdGenericDraftBottomInfo_d${dayNum}`);
       if (botInfo) botInfo.textContent = `Draft tersimpan: Hari ini pk ${timeStr} WIB`;
+      const mainBadge = document.getElementById(`nftGenericStatusBadge_d${dayNum}`);
+      if (mainBadge) {
+        mainBadge.textContent = '📝 Mode Draft (Belum Dikirim)';
+        mainBadge.className = 'px-3 py-1 rounded-full text-xs font-extrabold bg-amber-100 text-amber-950 border border-amber-300 shadow-2xs';
+      }
 
       if (showToast) {
         if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
@@ -1122,8 +1136,8 @@
                 <span class="w-2 h-2 rounded-full ${draft && draft.updatedAt ? 'bg-emerald-400 animate-pulse' : 'bg-slate-400'}"></span>
                 <span>${draft && draft.updatedAt ? `Draft tersimpan (pk ${draftTimeStr} WIB)` : 'Auto-Save Aktif (Anti Hilang Sinyal)'}</span>
               </span>
-              <span class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800 font-extrabold' : (isSubmitted ? 'bg-emerald-400 text-slate-950 font-black shadow-xs' : 'bg-teal-100 text-teal-950 font-extrabold')}">
-                ${isLockedByPrereq ? `Terkunci (Belum Tuntas Modul)` : (isSubmitted ? `✓ LKPD Day ${dayNum} Terkirim Resmi` : 'Sedang Observasi Lapangan')}
+              <span id="nftGenericStatusBadge_d${dayNum}" class="px-3 py-1 rounded-full text-xs font-bold ${isLockedByPrereq ? 'bg-rose-100 text-rose-800 font-extrabold' : (isSubmitted ? 'bg-emerald-400 text-slate-950 font-black shadow-xs' : (draft && draft.updatedAt ? 'bg-amber-100 text-amber-950 font-extrabold border border-amber-300 shadow-2xs' : 'bg-teal-100 text-teal-950 font-extrabold'))}">
+                ${isLockedByPrereq ? `Terkunci (Belum Tuntas Modul)` : (isSubmitted ? `✓ LKPD Day ${dayNum} Terkirim Resmi` : (draft && draft.updatedAt ? '📝 Mode Draft (Belum Dikirim)' : 'Sedang Observasi Lapangan'))}
               </span>
             </div>
           </div>
@@ -1414,6 +1428,10 @@
       } else {
         alert('Analisis rekomendasi solusi minimal 100 karakter!');
       }
+      return;
+    }
+
+    if (!confirm(`Kirim LKPD Day ${dayNum} ke Fasilitator sekarang?\n\nPerhatian: Pastikan seluruh isian riset mandiri Anda sudah lengkap dan benar.\n\n• Klik "OK" jika Anda sudah yakin untuk mengirim resmi (tugas akan diserahkan ke Fasilitator).\n• Klik "Batal" jika Anda masih ingin memeriksa atau mengoreksi jawaban (Anda bisa memilih "Simpan Draft Sementara").`)) {
       return;
     }
 
