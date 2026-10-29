@@ -157,7 +157,7 @@
   <script src="../js/siswa_data.js?v=20261021_v1"></script>
   <script src="../js/core.js?v=20261027_d6_final_v4"></script>
   <script src="../js/modules/materi-fieldtrip.js?v=20261027_d6_final_v4"></script>
-  <script src="../js/modules/materi-nonfieldtrip.js?v=20261028_nft_v1"></script>
+  <script src="../js/modules/materi-nonfieldtrip.js?v=20261029_nft_d2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -234,6 +234,12 @@
         if (dayNum === 1 && mainEl) {
           if (typeof renderDay1NonFieldTripModule === 'function') {
             renderDay1NonFieldTripModule(mainEl);
+            return;
+          }
+        }
+        if (dayNum === 2 && mainEl) {
+          if (typeof renderDay2NonFieldTripModule === 'function') {
+            renderDay2NonFieldTripModule(mainEl);
             return;
           }
         }

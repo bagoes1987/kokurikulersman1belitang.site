@@ -909,9 +909,9 @@
       focus: 'Audit 6 Blok: Profil Usaha, Alur Kegiatan Ekonomi, Profil Nasabah, Kalkulator Arus Kas, Inklusi Finansial, dan Rekomendasi Solusi HOTS'
     },
     2: {
-      title: 'Day 2: Eksplorasi Sains & Ekosistem Irigasi',
-      theme: 'STEM Sains Lingkungan, Kualitas Air Irigasi & Ekologi Pertanian Belitang',
-      focus: 'Pengamatan saluran irigasi teknis, debit air, parameter fisik-kimia air, serta dampak terhadap produktivitas pertanian pangan daerah.'
+      title: 'Day 2: Budaya & Sistem Mata Pencaharian Masyarakat OKU Timur',
+      theme: 'Budaya, 7 Unsur Kebudayaan Universal & Ragam Mata Pencaharian Daerah',
+      focus: 'Observasi antropologis & ekonomi: keterkaitan budaya masyarakat, keragaman etnis multikultural, serta sistem mata pencaharian (pertanian pangan, perkebunan, perikanan, peternakan, UMKM, perdagangan, jasa & formal) di OKU Timur.'
     },
     3: {
       title: 'Day 3: Agribisnis Padi & Teknologi Pengolahan Gabah',
