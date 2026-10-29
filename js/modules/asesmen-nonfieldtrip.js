@@ -208,9 +208,11 @@
 
     // Render layar selamat datang / mulai ujian atau lanjut mengerjakan
     if (examState.isExamActive && !examState.isExamFinished) {
+      activateVolume100Watchdog();
       startExamTimer();
       renderExamScreen();
       bindExamShieldListeners();
+      startScreenIntegrityWatchdog();
     } else {
       renderExamWelcomeScreen();
     }
@@ -427,6 +429,7 @@
             <ul class="text-[11.5px] text-rose-900 space-y-1 list-disc list-inside font-medium leading-relaxed">
               <li><strong>Anti-Screenshot:</strong> Layar soal seketika menjadi <strong>HITAM PEKAT</strong> jika Anda mencoba mengambil tangkapan layar (screenshot).</li>
               <li><strong>Deteksi Pindah Tab / Buka Aplikasi Lain:</strong> Dilarang membuka Google, WhatsApp, atau aplikasi lain. Sistem mendeteksi otomatis maksimal <strong>3 kali pelanggaran</strong> sebelum ujian <strong>DIKUNCI &amp; DIKIRIM PAKSA</strong>!</li>
+              <li><strong>Anti-Split Screen &amp; Layar Mengambang:</strong> Dilarang membagi layar menjadi 2 (Split Screen), menggunakan layar mengambang (Floating Window / Pop-up), atau monitor ganda. Sistem mendeteksi otomatis dan seketika mengunci layar!</li>
               <li><strong>Alarm Sirine Nyaring:</strong> Sirine keamanan akan berbunyi otomatis saat pelanggaran terdeteksi.</li>
               <li><strong>Watermark Identitas:</strong> Layar soal dilindungi watermark identitas Nama &amp; NISN Anda.</li>
               <li><strong>Auto-Save:</strong> Setiap pilihan yang Anda klik langsung tersimpan aman secara instan.</li>
@@ -591,6 +594,7 @@
     startExamTimer();
     renderExamScreen();
     bindExamShieldListeners();
+    startScreenIntegrityWatchdog();
 
     // Minta Layar Penuh (Fullscreen) jika didukung
     try {
@@ -1195,14 +1199,96 @@
   }
 
   /**
-   * PROTEKSI EXAM SHIELD (TAB-SWITCH, SCREENSHOT, COPY)
+   * PROTEKSI EXAM SHIELD (TAB-SWITCH, SCREENSHOT, COPY, SPLIT SCREEN, FLOATING WINDOW, DUAL DISPLAY)
    * Dilengkapi Debounce & State Machine Anti-Double Count
    */
   let shieldBound = false;
   let isTabAway = false;
   let isViolationModalOpen = false;
   let lastViolationTime = 0;
+  let screenIntegrityWatchdogInterval = null;
   const VIOLATION_DEBOUNCE_MS = 3000; // Minimal 3 detik jeda antar-pelanggaran
+
+  /**
+   * DETEKSI DUA LAYAR (SPLIT SCREEN), LAYAR MENGAMBANG (FLOATING WINDOW) & MONITOR GANDA
+   */
+  function detectMultiWindowViolation() {
+    if (!examState.isExamActive || examState.isExamFinished) return null;
+
+    const screenW = screen.width || window.outerWidth || 1;
+    const screenH = screen.height || window.outerHeight || 1;
+    const winW = window.innerWidth;
+    const winH = window.innerHeight;
+
+    // 1. Deteksi Picture-in-Picture (Video Mengambang)
+    if (document.pictureInPictureElement) {
+      try { document.exitPictureInPicture(); } catch(e) {}
+      return 'Video Mengambang (Picture-in-Picture)';
+    }
+
+    // 2. Deteksi Layar Ganda / Multi-Monitor di PC/Laptop
+    if (window.screen && window.screen.isExtended) {
+      return 'Layar Ganda / Multi-Monitor (Terhubung 2 Layar)';
+    }
+
+    // 3. Deteksi Split Screen (Layar Belah) & Floating Window di Mobile / Tablet
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window) || (screenW <= 1024);
+
+    if (isMobile) {
+      const isPortrait = screenH >= screenW;
+      if (isPortrait) {
+        // Posisi tegak (Portrait): Split Screen memotong tinggi layar (< 62% tinggi fisik layar)
+        const hRatio = winH / screenH;
+        if (hRatio < 0.62) {
+          return 'Layar Belah (Split Screen) - Tinggi layar terpotong menjadi 2';
+        }
+      } else {
+        // Posisi tidur (Landscape): Split Screen memotong lebar layar (< 68% lebar fisik layar)
+        const wRatio = winW / screenW;
+        if (wRatio < 0.68) {
+          return 'Layar Belah (Split Screen) - Lebar layar terpotong menjadi 2';
+        }
+      }
+
+      // Deteksi Floating Window mini di HP (Jendela browser diperkecil melayang)
+      if ((winW / screenW < 0.80) && (winH / screenH < 0.75)) {
+        return 'Layar Mengambang (Floating Window / Pop-up View)';
+      }
+    } else {
+      // 4. Deteksi Jendela Terbelah di PC / Laptop (Desktop Split Window < 65% lebar layar)
+      if (winW / screenW < 0.65) {
+        return 'Jendela Terbelah (Split Screen Desktop) - Wajib 1 Layar Penuh';
+      }
+    }
+
+    return null;
+  }
+
+  function startScreenIntegrityWatchdog() {
+    if (screenIntegrityWatchdogInterval) clearInterval(screenIntegrityWatchdogInterval);
+    screenIntegrityWatchdogInterval = setInterval(() => {
+      if (!examState.isExamActive || examState.isExamFinished) return;
+
+      // Cek apakah ada pelanggaran rasio Split Screen atau Floating Window
+      const violationReason = detectMultiWindowViolation();
+      if (violationReason) {
+        handleTabExit(violationReason);
+        return;
+      }
+
+      // Cek kehilangan fokus (ketika siswa mengetuk floating window lain seperti kalkulator/chat melayang)
+      if (typeof document.hasFocus === 'function' && !document.hasFocus() && !isTabAway && !isViolationModalOpen) {
+        handleTabExit('Layar kehilangan fokus (Interaksi dengan Layar Mengambang / Aplikasi Lain)');
+      }
+    }, 400);
+  }
+
+  function stopScreenIntegrityWatchdog() {
+    if (screenIntegrityWatchdogInterval) {
+      clearInterval(screenIntegrityWatchdogInterval);
+      screenIntegrityWatchdogInterval = null;
+    }
+  }
 
   function bindExamShieldListeners() {
     if (shieldBound) return;
@@ -1218,7 +1304,7 @@
       if (isScreenshotAttempt(e)) {
         e.preventDefault();
         e.stopPropagation();
-        triggerBlackout();
+        triggerBlackout('Upaya tangkapan layar (Screenshot Keyboard)');
         wipeClipboard();
         if (examState.isExamActive && !examState.isExamFinished) {
           isTabAway = true;
@@ -1232,7 +1318,7 @@
       if (isScreenshotAttempt(e)) {
         e.preventDefault();
         e.stopPropagation();
-        triggerBlackout();
+        triggerBlackout('Upaya tangkapan layar (Screenshot Keyboard)');
         wipeClipboard();
         if (examState.isExamActive && !examState.isExamFinished) {
           isTabAway = true;
@@ -1251,16 +1337,52 @@
       }
     });
 
-    // 4. Deteksi Blur/Focus (Snipping Tool, ganti window, atau screenshot HP)
+    // 4. Deteksi Blur/Focus (Snipping Tool, ganti window, floating window, atau screenshot HP)
     window.addEventListener('blur', () => {
-      handleTabExit('Layar kehilangan fokus / upaya screenshot');
+      handleTabExit('Layar kehilangan fokus / upaya screenshot / layar mengambang');
     });
 
     window.addEventListener('focus', () => {
       handleTabReturn('Layar kehilangan fokus / upaya screenshot');
     });
 
-    // 5. Klik pada overlay blackout untuk kembali
+    // 5. Deteksi Perubahan Ukuran Layar Realtime (Resize / Split Screen Drag)
+    window.addEventListener('resize', () => {
+      if (examState.isExamActive && !examState.isExamFinished) {
+        const violationReason = detectMultiWindowViolation();
+        if (violationReason) {
+          handleTabExit(violationReason);
+        } else if (isTabAway) {
+          handleTabReturn('Kembali ke satu layar penuh');
+        }
+      }
+    });
+
+    // 6. Deteksi Keluar Layar Penuh (Fullscreen Change)
+    document.addEventListener('fullscreenchange', () => {
+      if (!document.fullscreenElement && examState.isExamActive && !examState.isExamFinished) {
+        handleTabExit('Keluar dari Mode Layar Penuh (Fullscreen)');
+      }
+    });
+    document.addEventListener('webkitfullscreenchange', () => {
+      if (!document.webkitFullscreenElement && examState.isExamActive && !examState.isExamFinished) {
+        handleTabExit('Keluar dari Mode Layar Penuh (Fullscreen)');
+      }
+    });
+
+    // 7. Deteksi Mouse Keluar Jendela Browser (PC/Laptop Dual Display)
+    document.addEventListener('mouseleave', () => {
+      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
+        triggerBlackout('Kursor mouse keluar dari area lembar asesmen');
+      }
+    });
+    document.addEventListener('mouseenter', () => {
+      if (examState.isExamActive && !examState.isExamFinished && !isTabAway && !isViolationModalOpen) {
+        removeBlackout();
+      }
+    });
+
+    // 8. Klik pada overlay blackout untuk kembali
     const bo = document.getElementById('examShieldFullBlackout');
     if (bo) {
       bo.onclick = function() {
@@ -1271,7 +1393,7 @@
 
   function handleTabExit(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
-    triggerBlackout();
+    triggerBlackout(reason);
     isTabAway = true;
   }
 
@@ -1285,12 +1407,35 @@
     }
   }
 
-  function triggerBlackout() {
+  function triggerBlackout(reason) {
     try {
       document.documentElement.classList.add('exam-shield-blackout-active');
       document.body.classList.add('exam-shield-blackout-active');
       const bo = document.getElementById('examShieldFullBlackout');
-      if (bo) bo.style.display = 'flex';
+      if (bo) {
+        bo.style.display = 'flex';
+        const titleEl = document.getElementById('examBlackoutTitle');
+        const descEl = document.getElementById('examBlackoutDesc');
+        const iconEl = document.getElementById('examBlackoutIcon');
+
+        if (reason && (reason.includes('Split Screen') || reason.includes('Layar Belah') || reason.includes('Layar Ganda') || reason.includes('Dual Monitor') || reason.includes('Terbelah'))) {
+          if (titleEl) titleEl.textContent = '⚠️ TERDETEKSI 2 LAYAR (SPLIT SCREEN / DUAL MONITOR)';
+          if (descEl) descEl.innerHTML = `Sistem mendeteksi <strong>${escapeHtml(reason)}</strong>.<br><span class="text-rose-400 font-bold">Dilarang keras membagi layar atau menghubungkan 2 layar! Kembalikan ke 1 Layar Penuh untuk membuka soal.</span>`;
+          if (iconEl) iconEl.textContent = 'splitscreen';
+        } else if (reason && (reason.includes('Mengambang') || reason.includes('Floating') || reason.includes('Pop-up'))) {
+          if (titleEl) titleEl.textContent = '⚠️ TERDETEKSI LAYAR MENGAMBANG (FLOATING WINDOW)';
+          if (descEl) descEl.innerHTML = `Sistem mendeteksi <strong>${escapeHtml(reason)}</strong>.<br><span class="text-rose-400 font-bold">Tutup semua aplikasi mengambang dan kembali ke layar asesmen penuh.</span>`;
+          if (iconEl) iconEl.textContent = 'picture_in_picture';
+        } else if (reason && reason.includes('Kursor')) {
+          if (titleEl) titleEl.textContent = '⚠️ KURSOR KELUAR DARI AREA UJIAN';
+          if (descEl) descEl.innerHTML = `Kursor mouse Anda keluar dari batas layar lembar asesmen.<br><span class="text-rose-400 font-bold">Arahkan kursor kembali ke dalam lembar asesmen untuk melanjutkan.</span>`;
+          if (iconEl) iconEl.textContent = 'near_me_disabled';
+        } else {
+          if (titleEl) titleEl.textContent = 'Layar Diamankan (Anti-Screenshot / Exam Shield)';
+          if (descEl) descEl.innerHTML = `Sistem mendeteksi upaya penangkapan layar atau pelepasan fokus.<br><span class="text-rose-400 font-bold">Sentuh layar atau kembali ke tab asesmen untuk melanjutkan.</span>`;
+          if (iconEl) iconEl.textContent = 'shield_lock';
+        }
+      }
       const el = document.getElementById('examQuestionContent');
       if (el) el.style.filter = 'blur(60px) brightness(0)';
       const ov = document.getElementById('blackoutOverlay');
@@ -1361,17 +1506,26 @@
     let message = '';
     let badgeColor = '';
     let alertIcon = 'campaign';
+    let alertBadgeText = 'PELANGGARAN SISTEM EXAM SHIELD';
+
+    if (reason && (reason.includes('Split Screen') || reason.includes('Layar Belah') || reason.includes('Layar Ganda') || reason.includes('Dual Monitor') || reason.includes('Terbelah'))) {
+      alertBadgeText = 'PELANGGARAN DUA LAYAR / SPLIT SCREEN';
+      alertIcon = 'splitscreen';
+    } else if (reason && (reason.includes('Mengambang') || reason.includes('Floating') || reason.includes('Pop-up'))) {
+      alertBadgeText = 'PELANGGARAN LAYAR MENGAMBANG';
+      alertIcon = 'picture_in_picture';
+    }
 
     if (count === 1) {
       title = 'Peringatan Pelanggaran (1/3)';
-      message = `Anda terdeteksi meninggalkan lembar asesmen (${escapeHtml(reason)}). Harap tetap berada di layar ujian! Sisa toleransi Anda tinggal <strong>2 kali</strong> lagi.`;
+      message = `Anda terdeteksi melakukan pelanggaran integritas asesmen (${escapeHtml(reason)}). Harap tetap berada di 1 layar penuh! Sisa toleransi Anda tinggal <strong>2 kali</strong> lagi.`;
       badgeColor = 'bg-amber-100 text-amber-900 border-amber-300';
-      alertIcon = 'gpp_maybe';
+      if (!alertIcon || alertIcon === 'campaign') alertIcon = 'gpp_maybe';
     } else if (count === 2) {
       title = 'PERINGATAN KERAS (2/3)!';
-      message = `Anda terdeteksi kembali meninggalkan ujian (${escapeHtml(reason)}). Ini adalah peringatan terakhir! Jika terdeteksi <strong>1 KALI LAGI</strong>, sistem akan otomatis <strong>MENGUNCI &amp; MENGIRIM PAKSA</strong> lembar ujian Anda.`;
+      message = `Anda terdeteksi kembali melakukan pelanggaran (${escapeHtml(reason)}). Ini adalah peringatan terakhir! Jika terdeteksi <strong>1 KALI LAGI</strong>, sistem akan otomatis <strong>MENGUNCI &amp; MENGIRIM PAKSA</strong> lembar ujian Anda.`;
       badgeColor = 'bg-rose-100 text-rose-900 border-rose-400';
-      alertIcon = 'warning';
+      if (!alertIcon || alertIcon === 'campaign') alertIcon = 'warning';
     } else {
       title = 'DISKUALIFIKASI OTOMATIS (3/3)';
       message = `Batas toleransi pelanggaran (3x) telah habis! Sistem secara otomatis <strong>mengunci dan mengumpulkan lembar jawaban Anda</strong> saat ini juga.`;
@@ -1493,6 +1647,7 @@
     clearInterval(examState.timerInterval);
     stopExamAlarmLoop();
     stopExamVibrationLoop();
+    stopScreenIntegrityWatchdog();
     if (volume100WatchdogInterval) {
       clearInterval(volume100WatchdogInterval);
       volume100WatchdogInterval = null;
