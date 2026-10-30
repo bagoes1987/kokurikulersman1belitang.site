@@ -94,13 +94,14 @@
    */
   function generateStudentPackage(dayNum, cleanNisn) {
     const storageKey = `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`;
+    const expectedLength = (dayNum === 0) ? 10 : 50;
     try {
       // Bersihkan cache paket v1 lama jika ada
       localStorage.removeItem(`fincestem_pkg_nft_asesmen_d${dayNum}_${cleanNisn}`);
       const savedPkg = localStorage.getItem(storageKey);
       if (savedPkg) {
         const parsedPkg = JSON.parse(savedPkg);
-        if (Array.isArray(parsedPkg) && parsedPkg.length === 50) {
+        if (Array.isArray(parsedPkg) && parsedPkg.length === expectedLength) {
           return parsedPkg;
         }
       }
@@ -110,9 +111,47 @@
     if (!allBank.length) return [];
 
     // Gunakan kombinasi NISN + timestamp + random salt agar setiap kali ujian dimulai ulang / direset,
-    // 50 butir soal dan posisi opsi (A-E) teracak baru!
+    // butir soal dan posisi opsi (A-E) teracak baru!
     const sessionSalt = `${Date.now()}_${Math.random().toString(36).slice(2)}`;
     const rng = getSeededRandom(`fincestem_nft_day_${dayNum}_nisn_${cleanNisn}_salt_${sessionSalt}`);
+
+    // KHUSUS DAY 0 SIMULASI (10 SOAL LATIHAN PILIHAN GANDA)
+    if (dayNum === 0) {
+      const shuffled10 = seededShuffle([...allBank], rng).slice(0, 10);
+      const pkgWithShuffledChoices = shuffled10.map((origQ, qIdx) => {
+        const choiceRng = getSeededRandom(`q_choice_d0_${cleanNisn}_${origQ.id}_${qIdx}_salt_${sessionSalt}`);
+        const shuffledOptions = seededShuffle([...origQ.options], choiceRng);
+        
+        let newCorrectKey = 'A';
+        const remappedOptions = shuffledOptions.map((opt, oIdx) => {
+          const letter = ['A', 'B', 'C', 'D', 'E'][oIdx];
+          if (opt.key === origQ.correct) {
+            newCorrectKey = letter;
+          }
+          return {
+            key: letter,
+            text: opt.text
+          };
+        });
+
+        return {
+          id: origQ.id,
+          displayNumber: qIdx + 1,
+          day: 0,
+          indicatorCode: origQ.indicatorCode,
+          indicatorName: origQ.indicatorName,
+          cognitiveLevel: origQ.cognitiveLevel || 'C2',
+          question: origQ.question,
+          options: remappedOptions,
+          correctKey: newCorrectKey,
+          explanation: origQ.explanation || ''
+        };
+      });
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(pkgWithShuffledChoices));
+      } catch(e) {}
+      return pkgWithShuffledChoices;
+    }
 
     // Kelompokkan 40 soal per indikator (A, B, C, D, E)
     const grouped = { 'A': [], 'B': [], 'C': [], 'D': [], 'E': [] };
@@ -215,7 +254,7 @@
    * Inisialisasi Halaman Asesmen Siswa
    */
   function initNonFieldTripAsesmenPage(dayNum) {
-    dayNum = parseInt(dayNum) || 1;
+    dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (parseInt(dayNum) || 1);
     examState.dayNum = dayNum;
     examState.isExamActive = false;
     examState.isExamFinished = false;
@@ -223,6 +262,7 @@
     examState.markedDoubt = {};
     examState.currentIdx = 0;
     examState.startTime = null;
+    examState.durationSeconds = (dayNum === 0) ? 900 : 3600; // 15 menit Day 0, 60 menit Day 1-7
     examState.remainingSeconds = examState.durationSeconds;
     examState.violationCount = 0;
 
@@ -520,6 +560,14 @@
     const studentName = examState.student?.name || 'Peserta Non-Field Trip';
     const studentNisn = examState.cleanNisn;
     const studentClass = examState.student?.class || examState.student?.class_name || 'Kelas X';
+    const isDay0 = (examState.dayNum === 0);
+    const dayBadgeText = isDay0 ? 'Non-Field Trip • Day 0 (Simulasi)' : `Non-Field Trip • Day ${examState.dayNum}`;
+    const examHeading = isDay0 ? 'Kuis Asesmen Simulasi &amp; Gladi Bersih' : `Kuis Asesmen Kompetensi Day ${examState.dayNum}`;
+    const examSubtitle = isDay0
+      ? 'Uji coba pemahaman sistem, 4 pilar FINCESTEM, etika riset, dan pengenalan fitur ujian digital.'
+      : (examState.dayNum === 2
+          ? 'Uji pemahaman komprehensif Taksonomi Bloom C1-C5 berbasis 5 modul riset mandiri OKU Timur.'
+          : 'Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.');
 
     root.innerHTML = `
       <div class="max-w-xl mx-auto w-full p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xl flex flex-col gap-5 my-6 animate-scale-up">
@@ -529,7 +577,7 @@
           <div class="flex items-center justify-between gap-2 flex-wrap">
             <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-400 text-slate-950 flex items-center gap-1 shadow-2xs">
               <span class="material-symbols-outlined text-sm">school</span>
-              <span>Non-Field Trip • Day ${examState.dayNum}</span>
+              <span>${dayBadgeText}</span>
             </span>
             <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/10 text-teal-200 border border-white/15">
               Riset Mandiri OKU Timur
@@ -538,10 +586,10 @@
 
           <div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              Kuis Asesmen Kompetensi Day ${examState.dayNum}
+              ${examHeading}
             </h2>
             <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium mt-1">
-              Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.
+              ${examSubtitle}
             </p>
           </div>
 
@@ -985,7 +1033,7 @@
           
           <div class="flex items-center justify-between border-b border-slate-100 pb-3">
             <div>
-              <h3 class="font-black text-sm sm:text-base text-slate-900">Daftar Butir Soal (1 - 50)</h3>
+              <h3 class="font-black text-sm sm:text-base text-slate-900">Daftar Butir Soal (1 - ${totalQuestions})</h3>
               <p class="text-[11px] text-slate-500 font-medium">Klik nomor soal untuk melompat langsung</p>
             </div>
             <button type="button" onclick="window.closeQuestionDrawerModal()" class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center">
@@ -2333,7 +2381,7 @@
             ${isForceSubmitted ? 'Terkirim Otomatis (Pelanggaran 3/3)' : (isPassed ? 'Asesmen Tuntas &amp; Kompeten' : 'Asesmen Selesai')}
           </span>
           <h3 class="font-black text-xl sm:text-2xl text-slate-900 mt-2">
-            Hasil Kuis Asesmen Day ${dayNum}
+            Hasil Kuis Asesmen ${Number(dayNum) === 0 ? 'Day 0 (Simulasi)' : ('Day ' + dayNum)}
           </h3>
           <p class="text-xs text-slate-500 font-medium mt-0.5">
             ${isForceSubmitted

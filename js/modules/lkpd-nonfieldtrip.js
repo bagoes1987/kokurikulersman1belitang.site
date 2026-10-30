@@ -2793,10 +2793,306 @@
     document.body.appendChild(modal);
   }
 
+    // =========================================================================
+  // LKPD LATIHAN & SIMULASI KHUSUS DAY 0 (NON-FIELD TRIP)
+  // =========================================================================
+  function renderNonFieldTripDay0LKPD(isReadOnly) {
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+      ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+    // Cek Prasyarat Modul Belajar Day 0
+    let hasMateri = false;
+    try {
+      const rawM = localStorage.getItem('fincestem_materi_nft_day0_' + cleanNisn) ||
+                   localStorage.getItem('fincestem_materi_day0_' + cleanNisn);
+      if (rawM) {
+        const pM = JSON.parse(rawM);
+        if (pM && (pM.submitted || pM.summary || pM.conclusion)) hasMateri = true;
+      }
+    } catch(e) {}
+    if (!hasMateri && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+      if (window.currentStudentProgress.task_map['0_materi']) hasMateri = true;
+    }
+
+    if (!hasMateri && !isReadOnly) {
+      mainEl.innerHTML = `
+        <div class="max-w-md mx-auto w-full p-6 rounded-3xl bg-white border border-slate-200 shadow-xl flex flex-col items-center text-center gap-4 my-8 animate-scale-up">
+          <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-800 flex items-center justify-center font-black shadow-inner">
+            <span class="material-symbols-outlined text-3xl">lock</span>
+          </div>
+          <div>
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-100 text-amber-900">
+              Tahap 1 Belum Selesai
+            </span>
+            <h3 class="font-black text-lg sm:text-xl text-slate-900 mt-2">
+              LKPD Day 0 Terkunci
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">
+              Untuk membiasakan alur berurutan (*cascading*), Anda wajib membaca dan menyelesaikan <strong>Tahap 1: Modul Belajar &amp; Orientasi Day 0</strong> terlebih dahulu sebelum mengisi LKPD.
+            </p>
+          </div>
+          <div class="w-full flex flex-col gap-2 pt-2">
+            <a href="materi.html?day=0" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">menu_book</span>
+              <span>Buka Modul Belajar Day 0</span>
+            </a>
+            <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
+              <span>Kembali ke Beranda Dashboard</span>
+            </a>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Ambil data LKPD Day 0 yang tersimpan sebelumnya
+    let savedAnswers = { q1: '', q2: '' };
+    let isSubmitted = false;
+    try {
+      const raw = localStorage.getItem('fincestem_lkpd_nft_day0_' + cleanNisn) ||
+                  localStorage.getItem('fincestem_lkpd_day0_' + cleanNisn);
+      if (raw) {
+        const p = JSON.parse(raw);
+        if (p) {
+          if (p.answers) {
+            savedAnswers.q1 = p.answers.q1 || '';
+            savedAnswers.q2 = p.answers.q2 || '';
+          } else {
+            savedAnswers.q1 = p.q1 || '';
+            savedAnswers.q2 = p.q2 || '';
+          }
+          if (p.submitted || p.submittedAt) isSubmitted = true;
+        }
+      }
+    } catch(e) {}
+
+    const canEdit = !isReadOnly && !isSubmitted;
+
+    mainEl.innerHTML = `
+      <div class="flex flex-col gap-4 max-w-lg mx-auto w-full pb-16">
+        
+        <!-- HEADER KOP DAY 0 -->
+        <div class="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-teal-800 via-teal-900 to-slate-950 text-white shadow-lg border border-teal-700/50 flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-400 text-slate-950 flex items-center gap-1 shadow-2xs">
+              <span class="material-symbols-outlined text-sm">assignment</span>
+              <span>Day 0 • Simulasi LKPD</span>
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/15 text-teal-100 border border-white/20">
+              Riset Mandiri OKU Timur
+            </span>
+          </div>
+
+          <div>
+            <h1 class="font-black text-xl sm:text-2xl leading-tight">
+              Lembar Kerja Peserta Didik (Uji Coba)
+            </h1>
+            <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium mt-1">
+              Latihan simulasi pengisian instrumen lembar kerja kelompok sebelum pelaksanaan observasi lapangan hari pertama.
+            </p>
+          </div>
+
+          <!-- IDENTITAS SISWA & FASILITATOR -->
+          <div class="p-3 sm:p-3.5 rounded-2xl bg-black/20 border border-white/10 flex items-center justify-between gap-3 text-xs flex-wrap">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-base">person</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-extrabold text-white truncate text-xs sm:text-sm">${studentName}</span>
+                <span class="text-teal-200 text-[11px]">NISN: ${cleanNisn} • ${studentClass}</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] text-teal-200 block uppercase font-bold tracking-wider">Fasilitator Binaan</span>
+              <span class="font-bold text-white text-xs">${fasilName}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- PETUNJUK PENGERJAAN LATIHAN -->
+        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 text-xs flex items-start gap-3 shadow-2xs">
+          <span class="material-symbols-outlined text-amber-600 text-xl shrink-0 mt-0.5">info</span>
+          <div class="flex flex-col gap-0.5">
+            <strong class="font-bold text-xs text-amber-900">Petunjuk Gladi Bersih LKPD:</strong>
+            <p class="text-[11.5px] text-slate-700 leading-relaxed text-justify">
+              Jawablah 2 pertanyaan latihan di bawah ini untuk membiasakan diri dengan formulir LKPD digital. Setelah dikirim, sistem akan otomatis membuka <strong>Tahap 3: Asesmen Simulasi (10 Soal)</strong>.
+            </p>
+          </div>
+        </div>
+
+        <!-- FORMULIR LKPD 2 PERTANYAAN -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-4">
+          
+          <!-- PERTANYAAN 1 -->
+          <div class="flex flex-col gap-2">
+            <label class="text-xs font-bold text-slate-800 leading-snug flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md bg-teal-800 text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
+              <span>Identitas Tim &amp; Rencana Objek Riset di OKU Timur:</span>
+            </label>
+            <p class="text-[11px] text-slate-500 leading-tight">
+              Tuliskan nama anggota kelompok Anda dan sektor / komoditas lokal yang direncanakan untuk diobservasi (contoh: Pertanian Padi Sawah di Belitang, UMKM Keripik Pisang, Budidaya Ikan Patin, KUD, dsb).
+            </p>
+            <textarea id="nftD0LkpdQ1" rows="3" ${!canEdit ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${!canEdit ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Tuliskan nama tim kelompok, kelas, dan topik riset mandiri Anda di sini...">${savedAnswers.q1}</textarea>
+            <span id="nftD0LkpdQ1Counter" class="text-[10.5px] text-slate-400">Minimal 15 karakter</span>
+          </div>
+
+          <!-- PERTANYAAN 2 -->
+          <div class="flex flex-col gap-2 pt-2 border-t border-slate-100">
+            <label class="text-xs font-bold text-slate-800 leading-snug flex items-center gap-1.5">
+              <span class="w-5 h-5 rounded-md bg-teal-800 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
+              <span>Kesiapan Perlengkapan &amp; Pembagian Tugas Kelompok:</span>
+            </label>
+            <p class="text-[11px] text-slate-500 leading-tight">
+              Sebutkan perlengkapan riset yang Anda siapkan (kamera smartphone aktif GPS, lembar catatan wawancara, seragam sekolah) dan pembagian peran anggota dalam tim saat observasi.
+            </p>
+            <textarea id="nftD0LkpdQ2" rows="3" ${!canEdit ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${!canEdit ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Tuliskan perlengkapan yang disiapkan dan pembagian tugas kelompok...">${savedAnswers.q2}</textarea>
+            <span id="nftD0LkpdQ2Counter" class="text-[10.5px] text-slate-400">Minimal 15 karakter</span>
+          </div>
+
+          <!-- STATUS & TOMBOL SUBMIT -->
+          ${isSubmitted ? `
+            <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-between gap-3 text-xs mt-2">
+              <div class="flex items-center gap-2 text-emerald-950 font-bold">
+                <span class="material-symbols-outlined text-emerald-600 text-lg">check_circle</span>
+                <span>LKPD Latihan Day 0 Berhasil Dikirim!</span>
+              </div>
+              <a href="asesmen.html?day=0" class="px-3.5 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1 shrink-0">
+                <span>Lanjut ke Asesmen (10 Soal)</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+          ` : `
+            <button type="button" onclick="submitDay0NonFieldTripLKPD()" id="btnSubmitD0Lkpd" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-2">
+              <span class="material-symbols-outlined text-lg">send</span>
+              <span>Kirim LKPD Latihan &amp; Buka Asesmen Day 0</span>
+            </button>
+          `}
+
+        </div>
+
+      </div>
+    `;
+
+    if (canEdit) {
+      const q1El = document.getElementById('nftD0LkpdQ1');
+      const q1C = document.getElementById('nftD0LkpdQ1Counter');
+      const q2El = document.getElementById('nftD0LkpdQ2');
+      const q2C = document.getElementById('nftD0LkpdQ2Counter');
+
+      const updateCounter = (el, cEl) => {
+        if (!el || !cEl) return;
+        const len = el.value.trim().length;
+        if (len < 15) {
+          cEl.textContent = `Kurang ${15 - len} karakter lagi (Minimal 15 karakter).`;
+          cEl.className = 'text-[10.5px] text-rose-600 font-semibold';
+        } else {
+          cEl.textContent = `✓ ${len} karakter (Cukup).`;
+          cEl.className = 'text-[10.5px] text-emerald-600 font-bold';
+        }
+      };
+
+      if (q1El && q1C) q1El.addEventListener('input', () => updateCounter(q1El, q1C));
+      if (q2El && q2C) q2El.addEventListener('input', () => updateCounter(q2El, q2C));
+    }
+  }
+
+  window.submitDay0NonFieldTripLKPD = function() {
+    const q1 = (document.getElementById('nftD0LkpdQ1')?.value || '').trim();
+    const q2 = (document.getElementById('nftD0LkpdQ2')?.value || '').trim();
+
+    if (q1.length < 15) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Pertanyaan 1 minimal 15 karakter sebelum LKPD dikirim!', 'warning');
+      } else {
+        alert('Pertanyaan 1 minimal 15 karakter sebelum LKPD dikirim!');
+      }
+      return;
+    }
+
+    if (q2.length < 15) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Pertanyaan 2 minimal 15 karakter sebelum LKPD dikirim!', 'warning');
+      } else {
+        alert('Pertanyaan 2 minimal 15 karakter sebelum LKPD dikirim!');
+      }
+      return;
+    }
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+
+    const answers = { q1, q2 };
+    const payload = {
+      submitted: true,
+      day: 0,
+      answers: answers,
+      submittedAt: new Date().toISOString()
+    };
+
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day0_' + cleanNisn, JSON.stringify(payload));
+      localStorage.setItem('fincestem_lkpd_day0_' + cleanNisn, JSON.stringify(payload));
+    } catch(e) {}
+
+    if (window.FincestemCore && FincestemCore.progress && cleanNisn) {
+      FincestemCore.progress.submitTask(cleanNisn, 0, 'lkpd', answers, function() {
+        if (window.FincestemCore.ui) {
+          FincestemCore.ui.toast('LKPD Latihan Day 0 Berhasil Dikirim! Tahap 3: Asesmen Simulasi (10 Soal) kini terbuka.', 'success');
+        }
+      });
+    }
+
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in';
+    modal.innerHTML = `
+      <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 text-center flex flex-col items-center gap-3.5 animate-scale-up">
+        <div class="w-16 h-16 rounded-3xl bg-teal-100 text-teal-800 flex items-center justify-center font-black shadow-inner">
+          <span class="material-symbols-outlined text-3xl">fact_check</span>
+        </div>
+        <div>
+          <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-teal-100 text-teal-900">
+            Tahap 2 Tuntas • Simulasi LKPD
+          </span>
+          <h3 class="font-black text-lg sm:text-xl text-slate-900 mt-1">
+            LKPD Day 0 Berhasil Dikirim!
+          </h3>
+          <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">
+            Laporan latihan lembar kerja telah terekam. Tahap berikutnya adalah mencoba <strong>Asesmen Simulasi (10 Soal CBT Pilihan Ganda)</strong> dengan fitur timer dan Exam Shield.
+          </p>
+        </div>
+
+        <div class="w-full flex flex-col gap-2 pt-2">
+          <a href="asesmen.html?day=0" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span>Lanjut ke Tahap 3: Asesmen (10 Soal)</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+          <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
+            <span>Kembali ke Beranda Dashboard</span>
+          </a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    renderNonFieldTripDay0LKPD(false);
+  };
+
   // Router untuk LKPD Non-Field Trip
   function renderNonFieldTripLKPD(dayNum, isReadOnly) {
-    dayNum = parseInt(dayNum) || 1;
-    if (dayNum === 1) {
+    dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (parseInt(dayNum) || 1);
+    if (dayNum === 0) {
+      renderNonFieldTripDay0LKPD(isReadOnly);
+    } else if (dayNum === 1) {
       renderNonFieldTripDay1LKPD(isReadOnly);
     } else if (dayNum === 2) {
       renderNonFieldTripDay2LKPD(isReadOnly);
@@ -2806,6 +3102,7 @@
   }
 
   window.renderNonFieldTripLKPD = renderNonFieldTripLKPD;
+  window.renderNonFieldTripDay0LKPD = renderNonFieldTripDay0LKPD;
   window.renderNonFieldTripDay1LKPD = renderNonFieldTripDay1LKPD;
   window.renderNonFieldTripDay2LKPD = renderNonFieldTripDay2LKPD;
   window.renderNonFieldTripGenericLKPD = renderNonFieldTripGenericLKPD;

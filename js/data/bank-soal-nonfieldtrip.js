@@ -101,6 +101,348 @@
   };
 
   window.NFT_BANK_SOAL_DAYS = {
+    0: [
+  {
+    "id": 1,
+    "day": 0,
+    "indicatorCode": "A",
+    "indicatorKey": "ind_orientasi_fincestem",
+    "indicatorName": "Orientasi Pilar FINCESTEM 2026",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 1,
+    "question": "Program FINCESTEM 2026 di SMAN 1 Belitang memadukan lima bidang keilmuan yang saling terintegrasi dalam pembelajaran kontekstual. Kepanjangan dari akronim FINCESTEM yang tepat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Financial, Culture, Science, Technology, Engineering, and Mathematics"
+      },
+      {
+        "key": "B",
+        "text": "Fiscal, Communication, Science, Technology, Ecology, and Mechanics"
+      },
+      {
+        "key": "C",
+        "text": "Finance, Citizenship, Social, Technique, Environment, and Management"
+      },
+      {
+        "key": "D",
+        "text": "Financial, Creative, Science, Tourism, Economy, and Mathematics"
+      },
+      {
+        "key": "E",
+        "text": "Formal, Culture, Social, Technology, Education, and Mathematics"
+      }
+    ],
+    "correct": "A",
+    "explanation": "FINCESTEM merupakan akronim resmi dari Financial (Literasi Keuangan), Culture (Kearifan Budaya), Science (Sains Terapan), Technology (Teknologi Digital), Engineering (Rekayasa Desain), dan Mathematics (Pemodelan Matematis)."
+  },
+  {
+    "id": 2,
+    "day": 0,
+    "indicatorCode": "A",
+    "indicatorKey": "ind_tujuan_riset",
+    "indicatorName": "Tujuan Riset Mandiri OKU Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 2,
+    "question": "Tujuan utama pelaksanaan kegiatan Kokurikuler FINCESTEM bagi kelompok Non-Field Trip di wilayah Kabupaten OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menggantikan seluruh ujian akhir semester dengan kegiatan liburan santai di rumah"
+      },
+      {
+        "key": "B",
+        "text": "Melakukan investigasi ilmiah kontekstual terhadap potensi lokal, UMKM, dan budaya di OKU Timur"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan siswa menjual produk komersial secara massal untuk memperoleh omzet pribadi"
+      },
+      {
+        "key": "D",
+        "text": "Mencatat absensi harian tanpa perlu menghasilkan laporan lembar kerja berbasis data"
+      },
+      {
+        "key": "E",
+        "text": "Mengikuti kompetisi olahraga antarkelas di lingkungan sekolah selama satu pekan penuh"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Riset mandiri Non-Field Trip melatih siswa mengeksplorasi potensi kearifan lokal, komoditas unggulan, rantai pasok ekonomi, dan teknologi terapan di Kabupaten OKU Timur."
+  },
+  {
+    "id": 3,
+    "day": 0,
+    "indicatorCode": "B",
+    "indicatorKey": "ind_alur_harian",
+    "indicatorName": "Alur Kerja Sistem Berurutan",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 3,
+    "question": "Pada sistem aplikasi FINCESTEM, setiap hari peserta didik wajib menyelesaikan alur instrumen secara berurutan (*cascading*). Urutan pengerjaan yang benar adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Refleksi -> Asesmen -> LKPD -> Dokumentasi -> Modul Belajar"
+      },
+      {
+        "key": "B",
+        "text": "Asesmen -> LKPD -> Modul Belajar -> Dokumentasi -> Refleksi"
+      },
+      {
+        "key": "C",
+        "text": "Modul Belajar -> LKPD -> Asesmen -> Dokumentasi Foto -> Refleksi"
+      },
+      {
+        "key": "D",
+        "text": "Dokumentasi Foto -> Modul Belajar -> Refleksi -> Asesmen -> LKPD"
+      },
+      {
+        "key": "E",
+        "text": "LKPD -> Asesmen -> Modul Belajar -> Refleksi -> Dokumentasi Foto"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Alur baku FINCESTEM dimulai dari membaca Modul Belajar (tahap 1), mengisi LKPD (tahap 2), mengerjakan Asesmen Harian (tahap 3), mengunggah Dokumentasi Foto (tahap 4), dan mengisi Jurnal Refleksi Mandiri (tahap 5)."
+  },
+  {
+    "id": 4,
+    "day": 0,
+    "indicatorCode": "B",
+    "indicatorKey": "ind_etika_kejujuran",
+    "indicatorName": "Integritas & Etika Akademik",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Ketika mengisi Lembar Kerja Peserta Didik (LKPD) dan Modul Resume, sikap integritas akademik yang wajib ditunjukkan peserta didik adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyalin secara utuh laporan dari internet tanpa mencantumkan sumber referensi rujukan"
+      },
+      {
+        "key": "B",
+        "text": "Meminta bantuan pihak luar sekolah untuk membuatkan laporan secara instan dan berbayar"
+      },
+      {
+        "key": "C",
+        "text": "Mengabaikan fakta di lapangan dan mengarang angka perkiraan biaya fiktif dalam proposal"
+      },
+      {
+        "key": "D",
+        "text": "Menuliskan data faktual hasil wawancara riil dan menyusun narasi hasil analisis kelompok sendiri"
+      },
+      {
+        "key": "E",
+        "text": "Mengumpulkan lembar kerja yang persis sama dengan kelompok lain tanpa adanya kolaborasi"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Integritas akademik mengutamakan kejujuran orisinalitas karya, data riil hasil observasi lapangan, serta analisis berbasis fakta tanpa plagiasi atau manipulasi data."
+  },
+  {
+    "id": 5,
+    "day": 0,
+    "indicatorCode": "C",
+    "indicatorKey": "ind_geotagging_gps",
+    "indicatorName": "Validasi Geotagging & Kamera",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 5,
+    "question": "Mengapa modul dokumentasi foto pada aplikasi FINCESTEM mewajibkan pengaktifan koordinat lokasi GPS (Geotagging)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Untuk menyedot kuota internet peserta didik secara cepat saat pengambilan foto"
+      },
+      {
+        "key": "B",
+        "text": "Untuk membagikan lokasi tempat tinggal siswa secara terbuka kepada publik di media sosial"
+      },
+      {
+        "key": "C",
+        "text": "Untuk membatasi jumlah foto yang boleh diambil peserta didik menjadi satu foto saja per hari"
+      },
+      {
+        "key": "D",
+        "text": "Untuk mengubah warna latar belakang foto menjadi hitam-putih secara otomatis oleh sistem"
+      },
+      {
+        "key": "E",
+        "text": "Untuk memverifikasi secara sah bahwa observasi benar-benar dilakukan di lokasi riset yang sesuai"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Fitur GPS Geotagging dan stempel watermark digital berfungsi membuktikan validitas keaslian riset di titik observasi riil (wilayah OKU Timur) serta mencegah penggunaan foto unduhan internet."
+  },
+  {
+    "id": 6,
+    "day": 0,
+    "indicatorCode": "C",
+    "indicatorKey": "ind_exam_shield",
+    "indicatorName": "Prosedur Ujian & Exam Shield",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Saat mengerjakan kuis Asesmen pada aplikasi FINCESTEM, fitur *Exam Shield* aktif. Apa konsekuensi jika peserta berpindah tab, membuka jendela mengambang, atau meninggalkan halaman ujian melebihi batas toleransi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sistem secara otomatis akan menambahkan waktu ujian selama tiga puluh menit tambahan"
+      },
+      {
+        "key": "B",
+        "text": "Sistem langsung mematikan perangkat gawai siswa dan merestart sistem operasi ponsel"
+      },
+      {
+        "key": "C",
+        "text": "Sistem mencatat pelanggaran integritas dan dapat membatalkan atau mengirim ujian secara paksa"
+      },
+      {
+        "key": "D",
+        "text": "Sistem akan menghapus akun siswa secara permanen dari basis data induk Dapodik sekolah"
+      },
+      {
+        "key": "E",
+        "text": "Sistem memberikan bocoran kunci jawaban kepada siswa agar ujian cepat diselesaikan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Exam Shield menjaga kejujuran ujian dengan mendeteksi tab switching, window blur, dan floating apps. Jika batas pelanggaran terlampaui, sistem otomatis mengunci dan mensubmit jawaban apa adanya dengan catatan pelanggaran."
+  },
+  {
+    "id": 7,
+    "day": 0,
+    "indicatorCode": "D",
+    "indicatorKey": "ind_kolaborasi_tim",
+    "indicatorName": "Kolaborasi & Peran Kelompok",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 7,
+    "question": "Dalam pelaksanaan proyek riset mandiri kelompok Non-Field Trip, prinsip kolaborasi yang efektif tercermin dari...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyerahkan seluruh tugas penyusunan modul, LKPD, dan foto hanya kepada ketua kelompok"
+      },
+      {
+        "key": "B",
+        "text": "Bekerja sendiri-sendiri tanpa koordinasi dan mengumpulkan hasil laporan secara terpisah"
+      },
+      {
+        "key": "C",
+        "text": "Menghindari komunikasi dengan guru fasilitator agar tidak diberikan masukan perbaikan"
+      },
+      {
+        "key": "D",
+        "text": "Pembagian tugas yang berkeadilan, diskusi aktif, dan saling melengkapi dalam mengkaji instrumen"
+      },
+      {
+        "key": "E",
+        "text": "Menunggu teman lain menyelesaikan tugas terlebih dahulu sebelum ikut menandatangani lembar kerja"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Kolaborasi efektif mengedepankan pembagian peran yang seimbang, komunikasi yang sehat, kerja tim yang sinergis, serta saling mendukung demi kesuksesan riset bersama."
+  },
+  {
+    "id": 8,
+    "day": 0,
+    "indicatorCode": "D",
+    "indicatorKey": "ind_bimbingan_fasilitator",
+    "indicatorName": "Bimbingan Guru Fasilitator",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 8,
+    "question": "Peran utama Guru Fasilitator yang membina kelompok riset mandiri Non-Field Trip adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memberikan pendampingan, arahan metodologi, memvalidasi progres harian, dan mengevaluasi karya"
+      },
+      {
+        "key": "B",
+        "text": "Mengerjakan seluruh instrumen LKPD siswa dari awal hingga akhir kegiatan riset"
+      },
+      {
+        "key": "C",
+        "text": "Mengawasi gerak-gerik siswa selama 24 jam non-stop di rumah masing-masing siswa"
+      },
+      {
+        "key": "D",
+        "text": "Menghapus data hasil penelitian siswa apabila terjadi sedikit kesalahan ketik"
+      },
+      {
+        "key": "E",
+        "text": "Memaksa siswa mengubah topik riset setiap hari tanpa persetujuan tim kelompok"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Guru Fasilitator bertindak sebagai pembimbing dan pendamping yang mengarahkan proses riset, memonitor ketercapaian 4 pilar FINCESTEM, serta memberikan umpan balik konstruktif."
+  },
+  {
+    "id": 9,
+    "day": 0,
+    "indicatorCode": "E",
+    "indicatorKey": "ind_jurnal_refleksi",
+    "indicatorName": "Fungsi Jurnal Refleksi Mandiri",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 9,
+    "question": "Mengapa pengisian Jurnal Refleksi Mandiri di akhir setiap hari kegiatan sangat penting bagi peserta didik?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hanya sebagai formalitas syarat penutup tanpa ada kaitan dengan pembelajaran siswa"
+      },
+      {
+        "key": "B",
+        "text": "Untuk mengevaluasi diri, menyadari hikmah pembelajaran, dan merencanakan langkah esok hari"
+      },
+      {
+        "key": "C",
+        "text": "Untuk membandingkan kelemahan teman satu kelompok agar mendapatkan nilai lebih tinggi"
+      },
+      {
+        "key": "D",
+        "text": "Untuk memperpanjang durasi waktu penggunaan gawai di malam hari sebelum istirahat"
+      },
+      {
+        "key": "E",
+        "text": "Untuk mencurahkan keluh kesah yang tidak berkaitan dengan tema pembelajaran kokurikuler"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Refleksi merupakan tahapan metakognisi krusial di mana siswa merenungkan apa yang telah dipelajari, tantangan yang dihadapi, serta rencana tindak lanjut untuk pertumbuhan karakter dan kompetensi."
+  },
+  {
+    "id": 10,
+    "day": 0,
+    "indicatorCode": "E",
+    "indicatorKey": "ind_keselamatan_k3",
+    "indicatorName": "Keselamatan & Kesiapan Lapangan",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 10,
+    "question": "Saat melakukan observasi lapangan ke pelaku UMKM atau lokasi riset di Kabupaten OKU Timur, hal yang paling wajib diperhatikan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memasuki tempat produksi tanpa izin pemilik demi mendapatkan foto dokumentasi yang unik"
+      },
+      {
+        "key": "B",
+        "text": "Mengabaikan keselamatan berkendara di jalan raya demi mengejar tenggat waktu pengumpulan"
+      },
+      {
+        "key": "C",
+        "text": "Mengubah data keuangan pemilik usaha tanpa memberitahukan kepada narasumber terkait"
+      },
+      {
+        "key": "D",
+        "text": "Menghentikan wawancara secara mendadak saat narasumber sedang memberikan penjelasan penting"
+      },
+      {
+        "key": "E",
+        "text": "Berperilaku sopan santun, mematuhi tata tertib, memakai seragam/identitas resmi, dan menjaga K3"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Etika observasi lapangan dan keselamatan kerja (K3) mewajibkan siswa beridentitas jelas, santun, mematuhi aturan setempat, mengutamakan keselamatan diri, serta meminta izin saat wawancara dan pengambilan foto."
+  }
+],
     1: [
   {
     "id": 1,
@@ -13711,7 +14053,7 @@
    * Helper: Mengambil bank soal berdasarkan day
    */
   window.getNftBankSoalByDay = function(dayNum) {
-    dayNum = parseInt(dayNum) || 1;
+    dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (parseInt(dayNum) || 1);
     return (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[dayNum]) || [];
   };
 

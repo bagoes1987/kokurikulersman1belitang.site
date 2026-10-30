@@ -2601,6 +2601,27 @@
         const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, days);
         const dayStatus = FincestemCore.progress.getDayStatus(studentProgress, dNum);
 
+        // Ekstraksi Skor Kuis Asesmen (khusus Non-Field Trip & Day 0)
+        let nftScoreText = '';
+        if (hasAsesmen && !isFieldTrip) {
+          try {
+            for (const id of idList) {
+              const rawA = localStorage.getItem(`fincestem_asesmen_nft_day${dNum}_` + id) ||
+                           localStorage.getItem(`fincestem_asesmen_day${dNum}_` + id);
+              if (rawA) {
+                const pA = JSON.parse(rawA);
+                if (pA && pA.score !== undefined) {
+                  nftScoreText = `${pA.score}/100`;
+                  break;
+                }
+              }
+            }
+          } catch(e) {}
+          if (!nftScoreText && taskMap[`${dNum}_asesmen`] && taskMap[`${dNum}_asesmen`].score !== undefined) {
+            nftScoreText = `${taskMap[`${dNum}_asesmen`].score}/100`;
+          }
+        }
+
         let borderClass = 'border-slate-200/80 shadow-xs opacity-95';
         let bgClass = 'bg-slate-50/70';
         let dayIconBg = 'bg-slate-300 text-slate-600';
@@ -3109,7 +3130,7 @@
                   </span>
                   <div class="flex flex-col text-left min-w-0">
                     <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">3. Asesmen</span>
-                    <span class="text-[10px] sm:text-xs ${hasAsesmen ? 'text-emerald-700 font-bold' : (canOpenAsesmen ? 'text-blue-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasAsesmen ? (isFieldTrip && dNum === 7 ? '✓ Bebas Tes (100)' : '✓ Kuis Terkirim') : (canOpenAsesmen ? (isFieldTrip && dNum === 7 ? 'Bebas Kuis' : 'Kerjakan Kuis') : 'Terkunci')}</span>
+                    <span class="text-[10px] sm:text-xs ${hasAsesmen ? 'text-emerald-700 font-bold' : (canOpenAsesmen ? 'text-blue-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasAsesmen ? (isFieldTrip && dNum === 7 ? '✓ Bebas Tes (100)' : (isTrial ? (nftScoreText ? `✓ Skor: ${nftScoreText}` : '✓ Kuis Simulasi Selesai') : '✓ Kuis Terkirim')) : (canOpenAsesmen ? (isFieldTrip && dNum === 7 ? 'Bebas Kuis' : (isTrial ? 'Kuis Latihan (10 Soal)' : 'Kerjakan Kuis')) : 'Terkunci')}</span>
                   </div>
                 </div>
                 ${getCheckBadge(hasAsesmen, canOpenAsesmen)}
@@ -3296,8 +3317,8 @@
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
 
-      // VALIDASI ALUR BERURUTAN (DAY 1 S.D. 7) UNTUK SEMUA SISWA (FIELD TRIP MAUPUN NON-FIELD TRIP)
-      if (dNum >= 1 && dNum <= 7) {
+      // VALIDASI ALUR BERURUTAN: DAY 1 S.D. 7 (SEMUA SISWA) & DAY 0 (SIMULASI NON-FIELD TRIP)
+      if ((dNum >= 1 && dNum <= 7) || (dNum === 0 && !isFieldTrip)) {
         const progStatus = getFTProgressStatus(null, dNum);
 
         // Tahap 2: LKPD butuh Modul

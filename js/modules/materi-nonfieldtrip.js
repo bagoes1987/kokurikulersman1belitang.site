@@ -1242,7 +1242,312 @@
     document.body.appendChild(modal);
   }
 
-  // 7. EKSPOR FUNGSI KE WINDOW GLOBAL (SEMUA HARI DAY 1 S.D. DAY 7)
+  // =========================================================================
+  // 6B. MODUL ORIENTASI & SIMULASI KHUSUS DAY 0 (GLADI BERSIH NON-FIELD TRIP)
+  // =========================================================================
+  function renderDay0NonFieldTripModule(container) {
+    if (!container) return;
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
+      ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+    let savedOfficial = null;
+    try {
+      const raw = localStorage.getItem('fincestem_materi_nft_day0_' + cleanNisn) ||
+                  localStorage.getItem('fincestem_materi_day0_' + cleanNisn);
+      if (raw) savedOfficial = JSON.parse(raw);
+    } catch(e) {}
+
+    const isSubmitted = !!(savedOfficial && (savedOfficial.submitted || savedOfficial.summary || savedOfficial.conclusion));
+    const savedText = (savedOfficial && (savedOfficial.summary || savedOfficial.conclusion || savedOfficial.text)) || '';
+
+    container.innerHTML = `
+      <div class="flex flex-col gap-4">
+        <!-- BANNER HEADER DAY 0 -->
+        <div class="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-amber-600 via-amber-700 to-slate-900 text-white shadow-lg border border-amber-500/50 flex flex-col gap-3">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-300 text-slate-950 flex items-center gap-1 shadow-2xs">
+              <span class="material-symbols-outlined text-sm">model_training</span>
+              <span>Day 0 • Gladi Bersih</span>
+            </span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/15 text-amber-100 border border-white/20">
+              Orientasi Sistem Non-Field Trip
+            </span>
+          </div>
+
+          <div>
+            <h1 class="font-black text-xl sm:text-2xl leading-tight">
+              Panduan &amp; Orientasi Riset Mandiri FINCESTEM 2026
+            </h1>
+            <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium mt-1">
+              Simulasi alur menyeluruh bagi peserta didik Non-Field Trip di wilayah Kabupaten OKU Timur sebelum pelaksanaan hari pertama.
+            </p>
+          </div>
+
+          <!-- IDENTITAS SISWA & FASILITATOR -->
+          <div class="p-3 sm:p-3.5 rounded-2xl bg-black/20 border border-white/10 flex items-center justify-between gap-3 text-xs flex-wrap">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-base">person</span>
+              </div>
+              <div class="flex flex-col min-w-0">
+                <span class="font-extrabold text-white truncate text-xs sm:text-sm">${studentName}</span>
+                <span class="text-amber-200 text-[11px]">NISN: ${cleanNisn} • ${studentClass}</span>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="text-[10px] text-amber-200 block uppercase font-bold tracking-wider">Guru Fasilitator</span>
+              <span class="font-bold text-white text-xs">${fasilName}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 KARTU KONSEPTUAL ORIENTASI -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+            <span class="w-8 h-8 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-base">account_tree</span>
+            </span>
+            <div>
+              <h3 class="font-black text-sm text-slate-900">1. Integrasi 4 Pilar FINCESTEM 2026</h3>
+              <p class="text-[11px] text-slate-500">Keterpaduan lintas disiplin ilmu riset kontekstual</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-justify">
+            <div class="p-3 rounded-2xl bg-teal-50/70 border border-teal-200/80 flex flex-col gap-1">
+              <strong class="text-teal-900 font-extrabold flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">payments</span> Financial &amp; Economics
+              </strong>
+              <p class="text-slate-600 leading-relaxed text-[11.5px]">
+                Mempelajari literasi keuangan, perhitungan HPP, margin laba, sistem pembayaran non-tunai (QRIS), dan analisis rantai pasok ekonomi di OKU Timur.
+              </p>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col gap-1">
+              <strong class="text-amber-900 font-extrabold flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">temple_buddhist</span> Culture &amp; Society
+              </strong>
+              <p class="text-slate-600 leading-relaxed text-[11.5px]">
+                Menggali kearifan lokal Komering &amp; Jawa transmigran, etika bermasyarakat, gotong royong, dan nilai-nilai sosial budaya pedesaan.
+              </p>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-blue-50/70 border border-blue-200/80 flex flex-col gap-1">
+              <strong class="text-blue-900 font-extrabold flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">science</span> Science &amp; Technology
+              </strong>
+              <p class="text-slate-600 leading-relaxed text-[11.5px]">
+                Memanfaatkan pendekatan sains pengamatan (kualitas tanah, air, fermentasi) dan teknologi digital (GPS Geotagging, Google Form, aplikasi FINCESTEM).
+              </p>
+            </div>
+
+            <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col gap-1">
+              <strong class="text-emerald-900 font-extrabold flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">precision_manufacturing</span> Engineering &amp; Math
+              </strong>
+              <p class="text-slate-600 leading-relaxed text-[11.5px]">
+                Menganalisis efisiensi mekanisasi alat pertanian/produksi, pemodelan matematis proyeksi panen, dan perancangan solusi inovatif.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ALUR SISTEM BERURUTAN (CASCADING) -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-3">
+          <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+            <span class="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-base">alt_route</span>
+            </span>
+            <div>
+              <h3 class="font-black text-sm text-slate-900">2. Alur Pengerjaan Harian Berurutan (*Cascading*)</h3>
+              <p class="text-[11px] text-slate-500">Sistem otomatis membuka instrumen secara bertahap</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2 text-xs">
+            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">1</span>
+              <div>
+                <strong class="text-slate-900 block font-bold">Modul Belajar Digital</strong>
+                <p class="text-slate-600 text-[11.5px] leading-relaxed">Membaca materi pengantar dan menyelesaikan kartu riset mandiri.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">2</span>
+              <div>
+                <strong class="text-slate-900 block font-bold">Lembar Kerja Peserta Didik (LKPD)</strong>
+                <p class="text-slate-600 text-[11.5px] leading-relaxed">Mengisi instrumen observasi lapangan dan rancangan anggaran kelompok.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">3</span>
+              <div>
+                <strong class="text-slate-900 block font-bold">Kuis Asesmen CBT (Exam Shield)</strong>
+                <p class="text-slate-600 text-[11.5px] leading-relaxed">Mengerjakan kuis objektif dengan sistem pengaman anti-contek dan timer.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">4</span>
+              <div>
+                <strong class="text-slate-900 block font-bold">Dokumentasi Foto Geotagging GPS</strong>
+                <p class="text-slate-600 text-[11.5px] leading-relaxed">Mengunggah foto autentik di lapangan dengan watermark koordinat otomatis.</p>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
+              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">5</span>
+              <div>
+                <strong class="text-slate-900 block font-bold">Jurnal Refleksi Mandiri</strong>
+                <p class="text-slate-600 text-[11.5px] leading-relaxed">Menuliskan evaluasi diri dan makna pembelajaran yang diperoleh.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- FORM LATIHAN PENGISIAN MODUL DAY 0 -->
+        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-3">
+          <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
+            <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-base">edit_note</span>
+            </span>
+            <div>
+              <h3 class="font-black text-sm text-slate-900">3. Simulasi Pengisian Resume Modul</h3>
+              <p class="text-[11px] text-slate-500">Tuliskan pemahaman singkat Anda sebagai latihan</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col gap-2">
+            <label class="text-xs font-bold text-slate-700">
+              Catatan Orientasi &amp; Kesiapan Riset Kelompok Anda:
+            </label>
+            <textarea id="nftD0MateriSummary" rows="3" ${isSubmitted ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none transition-all ${isSubmitted ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Contoh: Saya dan kelompok siap melaksanakan riset mandiri FINCESTEM 2026 di OKU Timur dengan jujur, disiplin, dan berkolaborasi secara kompak...">${savedText}</textarea>
+            <span id="nftD0MateriCounter" class="text-[11px] text-slate-500 font-medium">Minimal 20 karakter untuk simulasi latihan.</span>
+          </div>
+
+          ${isSubmitted ? `
+            <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-between gap-3 text-xs mt-1">
+              <div class="flex items-center gap-2 text-emerald-950 font-bold">
+                <span class="material-symbols-outlined text-emerald-600 text-lg">check_circle</span>
+                <span>Modul Simulasi Day 0 telah selesai diselesaikan!</span>
+              </div>
+              <a href="lkpd.html?day=0" class="px-3 py-1.5 rounded-xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1 shrink-0">
+                <span>Buka LKPD Day 0</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
+          ` : `
+            <button type="button" onclick="submitDay0NonFieldTripMateri()" id="btnSubmitD0Materi" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+              <span class="material-symbols-outlined text-lg">done_all</span>
+              <span>Selesaikan Simulasi Modul &amp; Buka LKPD Day 0</span>
+            </button>
+          `}
+        </div>
+      </div>
+    `;
+
+    // Pasang listener input counter jika belum submit
+    if (!isSubmitted) {
+      const txt = document.getElementById('nftD0MateriSummary');
+      const counter = document.getElementById('nftD0MateriCounter');
+      if (txt && counter) {
+        txt.addEventListener('input', () => {
+          const len = txt.value.trim().length;
+          if (len < 20) {
+            counter.textContent = `Kurang ${20 - len} karakter lagi (Minimal 20 karakter).`;
+            counter.className = 'text-[11px] text-rose-600 font-semibold';
+          } else {
+            counter.textContent = `✓ ${len} karakter (Memenuhi syarat).`;
+            counter.className = 'text-[11px] text-emerald-600 font-bold';
+          }
+        });
+      }
+    }
+  }
+
+  window.submitDay0NonFieldTripMateri = function() {
+    const txt = document.getElementById('nftD0MateriSummary');
+    const val = (txt ? txt.value.trim() : '');
+    if (val.length < 20) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Catatan simulasi minimal 20 karakter sebelum ditandai selesai!', 'warning');
+      } else {
+        alert('Catatan simulasi minimal 20 karakter sebelum ditandai selesai!');
+      }
+      return;
+    }
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+
+    const payload = {
+      submitted: true,
+      day: 0,
+      summary: val,
+      conclusion: val,
+      submittedAt: new Date().toISOString()
+    };
+
+    try {
+      localStorage.setItem('fincestem_materi_nft_day0_' + cleanNisn, JSON.stringify(payload));
+      localStorage.setItem('fincestem_materi_day0_' + cleanNisn, JSON.stringify(payload));
+    } catch(e) {}
+
+    if (window.FincestemCore && FincestemCore.progress && cleanNisn) {
+      FincestemCore.progress.submitTask(cleanNisn, 0, 'materi', payload, function() {
+        if (window.FincestemCore.ui) {
+          FincestemCore.ui.toast('Simulasi Modul Day 0 Selesai! Tahap 2: LKPD Latihan sekarang terbuka.', 'success');
+        }
+      });
+    }
+
+    // Tampilkan modal transisi ke LKPD Day 0
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in';
+    modal.innerHTML = `
+      <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 text-center flex flex-col items-center gap-3.5 animate-scale-up">
+        <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-800 flex items-center justify-center font-black shadow-inner">
+          <span class="material-symbols-outlined text-3xl">task_alt</span>
+        </div>
+        <div>
+          <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-100 text-amber-900">
+            Tahap 1 Tuntas • Simulasi Modul
+          </span>
+          <h3 class="font-black text-lg sm:text-xl text-slate-900 mt-1">
+            Modul Day 0 Berhasil Diselesaikan!
+          </h3>
+          <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">
+            Bagus sekali! Anda telah memahami konsep 4 pilar FINCESTEM dan alur sistem. Tahap selanjutnya adalah mencoba <strong>LKPD Latihan Day 0</strong> (2 pertanyaan singkat).
+          </p>
+        </div>
+
+        <div class="w-full flex flex-col gap-2 pt-2">
+          <a href="lkpd.html?day=0" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span>Lanjut ke Tahap 2: LKPD Day 0</span>
+            <span class="material-symbols-outlined text-base">arrow_forward</span>
+          </a>
+          <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
+            <span>Kembali ke Beranda Dashboard</span>
+          </a>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
+    if (mainEl) renderDay0NonFieldTripModule(mainEl);
+  };
+
+  // 7. EKSPOR FUNGSI KE WINDOW GLOBAL (SEMUA HARI DAY 0 S.D. DAY 7)
+  window.renderDay0NonFieldTripModule = renderDay0NonFieldTripModule;
   window.renderDay1NonFieldTripModule = function(c) { renderNonFieldTripDayModule(c, 1); };
   window.renderDay2NonFieldTripModule = function(c) { renderNonFieldTripDayModule(c, 2); };
   window.renderDay3NonFieldTripModule = function(c) { renderNonFieldTripDayModule(c, 3); };
