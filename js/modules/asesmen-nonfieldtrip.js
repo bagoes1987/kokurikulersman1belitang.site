@@ -1369,7 +1369,7 @@
   }
 
   /**
-   * DETEKSI KOMBINASI TOMBOL SCREENSHOT (PRINTSCREEN, WIN+SHIFT+S, CTRL+P, DLL)
+   * DETEKSI KOMBINASI TOMBOL SCREENSHOT (PRINTSCREEN, WIN+SHIFT+S, CTRL+P, VOLUME DOWN, DLL)
    */
   function isScreenshotAttempt(e) {
     if (!e) return false;
@@ -1377,16 +1377,24 @@
     const code = e.code || '';
     const which = e.which || e.keyCode;
 
-    // Tombol PrintScreen / Snapshot di segala keyboard
-    if (k === 'PrintScreen' || code === 'PrintScreen' || which === 44 || k === 'Snapshot') {
+    // Tombol PrintScreen / Snapshot di segala keyboard & HP (VolumeDown + Power)
+    if (
+      k === 'PrintScreen' || code === 'PrintScreen' || which === 44 || k === 'Snapshot' ||
+      k === 'AudioVolumeDown' || k === 'VolumeDown' || code === 'AudioVolumeDown' || code === 'VolumeDown' || which === 174 ||
+      k === 'AppSwitch' || k === 'Overview'
+    ) {
       return true;
     }
     // Windows Snipping Tool: Win+Shift+S / Ctrl+Shift+S / Alt+Shift+S
     if (e.shiftKey && (k === 's' || k === 'S' || code === 'KeyS' || which === 83)) {
       if (e.metaKey || e.ctrlKey || e.altKey) return true;
     }
-    // Cetak / Save PDF: Ctrl+P / Cmd+P
-    if ((e.ctrlKey || e.metaKey) && (k === 'p' || k === 'P' || code === 'KeyP' || which === 80)) {
+    // Mac Screenshot: Cmd+Shift+3 / Cmd+Shift+4 / Cmd+Shift+5
+    if (e.metaKey && e.shiftKey && (k === '3' || k === '4' || k === '5' || which === 51 || which === 52 || which === 53)) {
+      return true;
+    }
+    // Cetak / Save PDF: Ctrl+P / Cmd+P / Ctrl+S / Cmd+S
+    if ((e.ctrlKey || e.metaKey) && (k === 'p' || k === 'P' || code === 'KeyP' || which === 80 || k === 's' || k === 'S' || code === 'KeyS' || which === 83)) {
       return true;
     }
     // DevTools: F12 atau Ctrl+Shift+I / J / C
@@ -1410,8 +1418,9 @@
   let baselineMaxScreenW = 0;
   let baselineMaxScreenH = 0;
   const VIOLATION_DEBOUNCE_MS = 2500; // Minimal 2.5 detik jeda antar-pelanggaran
-  const QUESTION_IDLE_BLUR_MS = 8000; // 8 detik tanpa sentuhan -> blur soal otomatis (anti-intip floating window)
+  const QUESTION_IDLE_BLUR_MS = 3500; // 3.5 detik tanpa sentuhan -> langsung sembunyikan soal (anti-screenshot & anti-intip)
   const ESCALATION_INTERVAL_MS = 6000; // Jika tetap di layar mengambang > 6 detik -> penalti beruntun otomatis!
+  let activeTouchPoints = new Set();
 
   /**
    * 1. KALIBRASI DIMENSI FISIK LAYAR PERANGKAT (ANTI-SPOOF SCREEN.WIDTH DI ANDROID FREEFORM)
@@ -1451,10 +1460,10 @@
   }
 
   /**
-   * 3. AUTO-BLUR SOAL SAAT IDLE TANPA SENTUHAN (ANTI-INTIP DARI LAYAR MENGAMBANG)
-   * Saat siswa mengetik di jendela Google mengambang, jari siswa menyentuh jendela Google (bukan lembar soal).
-   * Dalam 8 detik tanpa sentuhan di lembar soal, teks soal otomatis buram dan terkunci!
-   * Saat siswa menyentuh lembar soal untuk membuka buram, browser otomatis merebut fokus & masuk Fullscreen!
+   * 3. AUTO-BLUR & HAPUS TEKS SOAL SAAT IDLE TANPA SENTUHAN (ANTI-SCREENSHOT TOMBOL FISIK & ANTI-INTIP)
+   * Saat siswa melepas tangan dari layar untuk menekan tombol Power + Volume Down (Screenshot HP)
+   * atau mengetik di jendela Google mengambang, dalam 3.5 detik tanpa sentuhan teks soal otomatis diganti
+   * teks kunci pengaman dan diburamkan sehingga hasil tangkapan layar tidak memuat soal!
    */
   function stopQuestionIdleBlurTimer() {
     if (questionIdleBlurTimeout) {
@@ -1465,7 +1474,12 @@
     const qText = document.getElementById('examQuestionText');
     const optList = document.getElementById('examOptionsList');
     if (idleNotice) idleNotice.style.display = 'none';
-    if (qText) qText.style.filter = 'none';
+    if (qText) {
+      qText.style.filter = 'none';
+      if (examState.isExamActive && !examState.isExamFinished && examState.pkg && examState.pkg[examState.currentIdx]) {
+        qText.textContent = examState.pkg[examState.currentIdx].question;
+      }
+    }
     if (optList) optList.style.filter = 'none';
   }
 
@@ -1475,7 +1489,12 @@
     const qText = document.getElementById('examQuestionText');
     const optList = document.getElementById('examOptionsList');
     if (idleNotice) idleNotice.style.display = 'none';
-    if (qText && !isTabAway && !isViolationModalOpen) qText.style.filter = 'none';
+    if (qText && !isTabAway && !isViolationModalOpen) {
+      qText.style.filter = 'none';
+      if (examState.isExamActive && !examState.isExamFinished && examState.pkg && examState.pkg[examState.currentIdx]) {
+        qText.textContent = examState.pkg[examState.currentIdx].question;
+      }
+    }
     if (optList && !isTabAway && !isViolationModalOpen) optList.style.filter = 'none';
 
     if (!examState.isExamActive || examState.isExamFinished) return;
@@ -1486,8 +1505,11 @@
       const qt = document.getElementById('examQuestionText');
       const ol = document.getElementById('examOptionsList');
       if (notice) notice.style.display = 'flex';
-      if (qt) qt.style.filter = 'blur(12px)';
-      if (ol) ol.style.filter = 'blur(8px)';
+      if (qt) {
+        qt.textContent = '🔒 [SOAL DISEMBUNYIKAN OTOMATIS (ANTI-SCREENSHOT & ANTI-INTIP) — SENTUH KOTAK SOAL UNTUK MEMBACA]';
+        qt.style.filter = 'blur(14px)';
+      }
+      if (ol) ol.style.filter = 'blur(10px)';
     }, QUESTION_IDLE_BLUR_MS);
   }
 
@@ -1743,24 +1765,76 @@
       }
     });
 
-    // 7. Deteksi Interupsi Gestur Sistem Android (touchcancel / pointercancel saat Smart Sidebar atau Floating Window ditarik!)
-    window.addEventListener('touchcancel', () => {
-      if (examState.isExamActive && !examState.isExamFinished) {
-        setTimeout(() => {
-          const vReason = detectMultiWindowViolation();
-          if (vReason || (typeof document.hasFocus === 'function' && !document.hasFocus()) || document.hidden) {
-            handleTabExit(vReason || 'Interupsi Gestur Layar Mengambang / Smart Sidebar');
-          }
-        }, 80);
-      }
-    }, { passive: true });
+    // 7. Deteksi Gestur Screenshot HP (Usap 3 Jari / 2 Jari, Palm Swipe, & Interupsi Sistem Android)
+    window.addEventListener('touchstart', (e) => {
+      if (!examState.isExamActive || examState.isExamFinished) return;
 
-    // 8. Reset timer anti-intip saat siswa menyentuh atau menggulir lembar soal
-    window.addEventListener('touchstart', () => {
-      if (examState.isExamActive && !examState.isExamFinished && !isTabAway && !isViolationModalOpen) {
+      // Deteksi Multi-Touch (>= 2 Jari): Gestur Screenshot 3-Jari / 2-Jari / Cubit Layar
+      if (e.touches && e.touches.length >= 2) {
+        triggerBlackout('Terdeteksi Gestur Screenshot Multi-Jari (2/3 Jari pada Layar)');
+        handleTabExit('Upaya Tangkapan Layar (Gestur Screenshot Multi-Jari)');
+        return;
+      }
+
+      // Deteksi Palm Swipe Screenshot (Samsung/Android): radius sentuhan telapak tangan sangat lebar
+      if (e.touches && e.touches[0]) {
+        const t = e.touches[0];
+        const rX = t.radiusX || t.webkitRadiusX || 0;
+        const rY = t.radiusY || t.webkitRadiusY || 0;
+        if (rX > 45 || rY > 45) {
+          triggerBlackout('Terdeteksi Gestur Sapuan Telapak Tangan (Palm Swipe Screenshot)');
+          handleTabExit('Upaya Tangkapan Layar (Palm Swipe Screenshot)');
+          return;
+        }
+      }
+
+      if (!isTabAway && !isViolationModalOpen) {
         resetQuestionIdleBlurTimer();
       }
-    }, { passive: true });
+    }, { passive: true, capture: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (!examState.isExamActive || examState.isExamFinished) return;
+      if (e.touches && e.touches.length >= 2) {
+        triggerBlackout('Terdeteksi Gestur Screenshot Multi-Jari (Usap 2/3 Jari)');
+        handleTabExit('Upaya Tangkapan Layar (Gestur Usap 2/3 Jari)');
+      }
+    }, { passive: true, capture: true });
+
+    window.addEventListener('pointerdown', (e) => {
+      if (!examState.isExamActive || examState.isExamFinished) return;
+      if (e.pointerType === 'touch') {
+        activeTouchPoints.add(e.pointerId);
+        if (activeTouchPoints.size >= 2) {
+          activeTouchPoints.clear();
+          triggerBlackout('Terdeteksi Gestur Screenshot Multi-Jari');
+          handleTabExit('Upaya Tangkapan Layar (Gestur Screenshot Multi-Jari)');
+        }
+      }
+    }, true);
+
+    window.addEventListener('pointerup', (e) => {
+      activeTouchPoints.delete(e.pointerId);
+    }, true);
+
+    // 8. Saat OS Android mengambil alih sentuhan (touchcancel / pointercancel) untuk Screenshot 3 Jari,
+    // Panel Notifikasi Atas, atau Bilah Samping: LANGSUNG gelapkan soal detik itu juga (0ms delay!)
+    window.addEventListener('touchcancel', () => {
+      activeTouchPoints.clear();
+      if (examState.isExamActive && !examState.isExamFinished) {
+        // Gelapkan layar seketika pada milidetik ke-0 agar tangkapan layar yang dihasilkan HANYA HITAM!
+        triggerBlackout('Interupsi Sistem Terdeteksi (Upaya Screenshot / Panel Notifikasi / Layar Mengambang)');
+        handleTabExit('Upaya Tangkapan Layar (Screenshot) / Interupsi Gestur Sistem');
+      }
+    }, { passive: true, capture: true });
+
+    window.addEventListener('pointercancel', () => {
+      activeTouchPoints.clear();
+      if (examState.isExamActive && !examState.isExamFinished) {
+        triggerBlackout('Interupsi Sistem Terdeteksi (Upaya Screenshot / Panel Notifikasi / Layar Mengambang)');
+        handleTabExit('Upaya Tangkapan Layar (Screenshot) / Interupsi Gestur Sistem');
+      }
+    }, true);
 
     // 9. Deteksi Mouse Keluar Jendela Browser (PC/Laptop Dual Display / Floating Browser)
     document.addEventListener('mouseleave', () => {
