@@ -54,6 +54,7 @@
     if (!container) return;
 
     const allQuestions = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(currentDay)) || [];
+    const indicatorsList = (window.getNftBankSoalIndicators && window.getNftBankSoalIndicators(currentDay)) || [];
 
     // 1. Filter Data
     let filtered = allQuestions.slice();
@@ -160,7 +161,7 @@
         <div class="flex items-center gap-1.5 flex-wrap">
           ${[1, 2, 3, 4, 5, 6, 7].map(d => {
             const isAct = (d === currentDay);
-            const isReady = (d === 1);
+            const isReady = (d === 1 || d === 2);
             return `
               <button type="button" onclick="window.switchBankSoalDay(${d})" class="px-3 py-1.5 rounded-xl text-xs font-extrabold flex items-center gap-1 transition-all cursor-pointer ${
                 isAct 
@@ -197,12 +198,10 @@
           <!-- 2. Filter Indikator Dropdown -->
           <div class="sm:col-span-4">
             <select id="selBankSoalIndicator" onchange="window.filterBankSoalIndicator(this.value)" class="w-full p-1.5 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 focus:border-teal-600 outline-none">
-              <option value="ALL" ${currentIndicator === 'ALL' ? 'selected' : ''}>Semua Indikator (200 Soal)</option>
-              <option value="A" ${currentIndicator === 'A' ? 'selected' : ''}>Indikator A: Kegiatan Ekonomi (40)</option>
-              <option value="B" ${currentIndicator === 'B' ? 'selected' : ''}>Indikator B: Literasi Finansial (40)</option>
-              <option value="C" ${currentIndicator === 'C' ? 'selected' : ''}>Indikator C: Bank Sentral &amp; BI (40)</option>
-              <option value="D" ${currentIndicator === 'D' ? 'selected' : ''}>Indikator D: Badan Usaha &amp; Koperasi (40)</option>
-              <option value="E" ${currentIndicator === 'E' ? 'selected' : ''}>Indikator E: Potensi OKU Timur (40)</option>
+              <option value="ALL" ${currentIndicator === 'ALL' ? 'selected' : ''}>Semua Indikator (${allQuestions.length} Soal)</option>
+              ${indicatorsList.map(ind => `
+                <option value="${ind.code}" ${currentIndicator === ind.code ? 'selected' : ''}>${ind.code}: ${ind.name} (40)</option>
+              `).join('')}
             </select>
           </div>
 
@@ -225,11 +224,9 @@
           <div class="flex items-center gap-1 flex-wrap">
             <span class="text-[10px] font-extrabold text-slate-400 uppercase mr-1">Indikator:</span>
             <button type="button" onclick="window.filterBankSoalIndicator('ALL')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'ALL' ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">Semua</button>
-            <button type="button" onclick="window.filterBankSoalIndicator('A')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'A' ? 'bg-teal-700 text-white' : 'bg-teal-50 text-teal-800 border border-teal-200'}">A (40)</button>
-            <button type="button" onclick="window.filterBankSoalIndicator('B')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'B' ? 'bg-emerald-700 text-white' : 'bg-emerald-50 text-emerald-800 border border-emerald-200'}">B (40)</button>
-            <button type="button" onclick="window.filterBankSoalIndicator('C')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'C' ? 'bg-sky-700 text-white' : 'bg-sky-50 text-sky-800 border border-sky-200'}">C (40)</button>
-            <button type="button" onclick="window.filterBankSoalIndicator('D')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'D' ? 'bg-amber-700 text-white' : 'bg-amber-50 text-amber-800 border border-amber-200'}">D (40)</button>
-            <button type="button" onclick="window.filterBankSoalIndicator('E')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === 'E' ? 'bg-purple-700 text-white' : 'bg-purple-50 text-purple-800 border border-purple-200'}">E (40)</button>
+            ${indicatorsList.map(ind => `
+              <button type="button" onclick="window.filterBankSoalIndicator('${ind.code}')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentIndicator === ind.code ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">${ind.code} (40)</button>
+            `).join('')}
           </div>
 
           <div class="flex items-center gap-2">
@@ -240,14 +237,17 @@
           </div>
         </div>
 
-        <!-- BARIS KEDUA: FILTER LEVEL KOGNITIF (C1-C4 TAKSONOMI BLOOM) -->
+        <!-- BARIS KEDUA: FILTER LEVEL KOGNITIF (TAKSONOMI BLOOM) -->
         <div class="flex items-center gap-1 flex-wrap pt-1 border-t border-slate-100 text-xs">
-          <span class="text-[10px] font-extrabold text-indigo-700 uppercase mr-1">Bloom (C1-C4):</span>
-          <button type="button" onclick="window.filterBankSoalCognitive('ALL')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'ALL' ? 'bg-indigo-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">Semua Level (200)</button>
-          <button type="button" onclick="window.filterBankSoalCognitive('C1')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C1' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C1 Mengingat (50)</button>
-          <button type="button" onclick="window.filterBankSoalCognitive('C2')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C2' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C2 Memahami (50)</button>
-          <button type="button" onclick="window.filterBankSoalCognitive('C3')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C3' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C3 Menerapkan (50)</button>
-          <button type="button" onclick="window.filterBankSoalCognitive('C4')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C4' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C4 Menganalisis (50)</button>
+          <span class="text-[10px] font-extrabold text-indigo-700 uppercase mr-1">Bloom:</span>
+          <button type="button" onclick="window.filterBankSoalCognitive('ALL')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'ALL' ? 'bg-indigo-700 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}">Semua Level (${allQuestions.length})</button>
+          <button type="button" onclick="window.filterBankSoalCognitive('C1')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C1' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C1 Mengingat (${currentDay === 2 ? 40 : 50})</button>
+          <button type="button" onclick="window.filterBankSoalCognitive('C2')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C2' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C2 Memahami (${currentDay === 2 ? 40 : 50})</button>
+          <button type="button" onclick="window.filterBankSoalCognitive('C3')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C3' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C3 Menerapkan (${currentDay === 2 ? 40 : 50})</button>
+          <button type="button" onclick="window.filterBankSoalCognitive('C4')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C4' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C4 Menganalisis (${currentDay === 2 ? 40 : 50})</button>
+          ${currentDay === 2 ? `
+            <button type="button" onclick="window.filterBankSoalCognitive('C5')" class="px-2 py-0.5 rounded-lg text-[11px] font-bold ${currentCognitive === 'C5' ? 'bg-indigo-700 text-white' : 'bg-indigo-50 text-indigo-800 border border-indigo-200'}">C5 Mengevaluasi (40)</button>
+          ` : ''}
         </div>
       </div>
 
@@ -516,6 +516,7 @@
   // Cetak / Ekspor PDF Ringkasan Kunci Jawaban
   window.printBankSoalPdf = function() {
     const allQuestions = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(currentDay)) || [];
+    const indicatorsList = (window.getNftBankSoalIndicators && window.getNftBankSoalIndicators(currentDay)) || [];
     if (!allQuestions.length) {
       alert('Belum ada data butir soal untuk Day ini.');
       return;
@@ -559,7 +560,7 @@
         <div class="kop">
           <h2>KOKURIKULER FINCESTEM 2026 - SMAN 1 BELITANG</h2>
           <p>DOKUMEN RESMI BANK SOAL &amp; KUNCI JAWABAN ASESMEN (NON-FIELD TRIP)</p>
-          <p><strong>DAY ${currentDay}: Fondasi Ekonomi, Literasi Finansial &amp; Pemetaan Potensi OKU Timur</strong></p>
+          <p><strong>DAY ${currentDay}: ${currentDay === 2 ? 'Budaya, Sistem Mata Pencaharian &amp; Modernisasi Teknologi Pertanian OKU Timur' : 'Fondasi Ekonomi, Literasi Finansial &amp; Pemetaan Potensi OKU Timur'}</strong></p>
         </div>
         <div class="meta">
           <strong>Total Soal:</strong> ${allQuestions.length} Butir PG &bull; 

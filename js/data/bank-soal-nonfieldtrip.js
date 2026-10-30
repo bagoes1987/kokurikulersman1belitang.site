@@ -2,6 +2,7 @@
  * FINCESTEM 2026 - Bank Soal Digital Asesmen Khusus Non-Field Trip
  * Riset Mandiri di Wilayah Kabupaten OKU Timur
  * Day 1: 200 Soal Pilihan Ganda (5 Indikator x 40 Soal)
+ * Day 2: 200 Soal Pilihan Ganda (5 Modul x 40 Soal: Bloom C1-C5)
  * Standar Kognitif Taksonomi Bloom Berimbang: C1 (25%), C2 (25%), C3 (25%), C4 (25%)
  * Keseimbangan & Homogenitas Panjang Opsi Jawaban (Tanpa Bocoran Tanda Kurung)
  * Distribusi Kunci Jawaban Proporsional Merata (A: 40, B: 40, C: 40, D: 40, E: 40)
@@ -42,6 +43,39 @@
     "key": "ind_potensi_oku_timur",
     "name": "Potensi Sektor Ekonomi Kabupaten OKU Timur",
     "desc": "Lumbung Padi Sumsel, Irigasi Komering, Perkebunan Karet/Sawit, Peternakan Sapi, Patin, UMKM Gumawang, BRILink/BUMDes."
+  }
+];
+
+  window.NFT_BANK_SOAL_INDICATORS_DAY2 = [
+  {
+    "code": "A",
+    "key": "modul_a_hakikat_budaya",
+    "name": "Modul A: Hakikat Budaya & 7 Unsur Kebudayaan Universal",
+    "desc": "Pengertian budaya (Koentjaraningrat/Tylor), wujud kebudayaan, 7 unsur universal, dan akulturasi multikultural di OKU Timur."
+  },
+  {
+    "code": "B",
+    "key": "modul_b_budaya_ekonomi_umkm",
+    "name": "Modul B: Hubungan Budaya dengan Kegiatan Ekonomi, UMKM & Pekerjaan Formal",
+    "desc": "Etos kerja, modal sosial gotong royong sambatan, Pasar Gumawang, UMKM pangan kemplang/rengginang, dan tenaga kerja formal."
+  },
+  {
+    "code": "C",
+    "key": "modul_c_agrikultur_unggulan",
+    "name": "Modul C: Ragam Mata Pencaharian Sektor Agrikultur Unggulan",
+    "desc": "Lumbung pangan padi sawah, rotasi palawija, perkebunan karet & sawit, budidaya patin, dan peternakan sapi perdesaan."
+  },
+  {
+    "code": "D",
+    "key": "modul_d_alsintan_irigasi",
+    "name": "Modul D: Sistem Teknologi Alsintan Modern & Jaringan Irigasi",
+    "desc": "Peralihan perkakas manual ke alsintan (traktor, transplanter, combine), efisiensi biaya, dan jaringan irigasi Bendung Perjaya."
+  },
+  {
+    "code": "E",
+    "key": "modul_e_inovasi_smart_farming",
+    "name": "Modul E: Inovasi Penanaman, Pascapanen, Otomatisasi & Petani Cerdas",
+    "desc": "Sistem jajar legowo, RMU modern/bed dryer, penekanan susut panen, adopsi drone sprayer, Katam BMKG, dan smart farming."
   }
 ];
 
@@ -6868,6 +6902,6808 @@
     "correct": "E",
     "explanation": "Visi masa depan OKU Timur berpusat pada pertanian cerdas (smart agriculture), hilirisasi industri pengolahan pangan, dan penguatan ekosistem keuangan pedesaan."
   }
+],
+2: [
+  {
+    "id": 201,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 1,
+    "question": "Kata kebudayaan secara etimologis berakar dari bahasa Sanskerta 'buddhayah', yang merupakan bentuk jamak dari perkataan 'buddhi' dengan arti...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Budi atau akal pikiran manusia"
+      },
+      {
+        "key": "B",
+        "text": "Kekuatan fisik dan ketangkasan jiwa"
+      },
+      {
+        "key": "C",
+        "text": "Kumpulan aturan hukum perdata desa"
+      },
+      {
+        "key": "D",
+        "text": "Kekayaan materi dan harta benda"
+      },
+      {
+        "key": "E",
+        "text": "Hubungan kekerabatan sedarah seketurunan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Secara etimologis, kebudayaan berasal dari bahasa Sanskerta buddhayah (jamak dari buddhi) yang berarti akal atau budi manusia."
+  },
+  {
+    "id": 202,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 2,
+    "question": "Antropolog kenamaan E.B. Tylor merumuskan kebudayaan sebagai suatu keseluruhan kompleks yang mencakup komponen berikut, kecuali...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pengetahuan, kepercayaan, dan kesenian"
+      },
+      {
+        "key": "B",
+        "text": "Naluri biologis murni tanpa proses belajar"
+      },
+      {
+        "key": "C",
+        "text": "Hukum, moral, dan adat kebiasaan"
+      },
+      {
+        "key": "D",
+        "text": "Keterampilan yang diperoleh anggota masyarakat"
+      },
+      {
+        "key": "E",
+        "text": "Norma-norma yang disepakati bersama kelompok"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Kebudayaan menurut E.B. Tylor mencakup segala pengetahuan, kepercayaan, seni, moral, hukum, dan adat yang didapat manusia melalui proses belajar sosial, bukan naluri biologis bawaan lahir."
+  },
+  {
+    "id": 203,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 3,
+    "question": "Koentjaraningrat mengelompokkan wujud kebudayaan ke dalam tiga gejala kultural utama, yaitu...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Cita-cita politik, doktrin ekonomi, dan partai"
+      },
+      {
+        "key": "B",
+        "text": "Teknologi digital, mesin pabrik, dan industri"
+      },
+      {
+        "key": "C",
+        "text": "Gagasan, tindakan berpola, dan benda fisik"
+      },
+      {
+        "key": "D",
+        "text": "Keturunan biologis, wilayah daratan, dan iklim"
+      },
+      {
+        "key": "E",
+        "text": "Peraturan undang-undang, militer, dan pengadilan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Tiga wujud kebudayaan menurut Koentjaraningrat adalah: sistem gagasan (ide/nilai), sistem aktivitas (tindakan berpola manusia), dan sistem artefak (benda fisik hasil karya manusia)."
+  },
+  {
+    "id": 204,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 4,
+    "question": "Di antara tujuh unsur kebudayaan universal, unsur yang umumnya paling cepat dan mudah mengalami pembaruan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sistem religi dan keyakinan spiritual"
+      },
+      {
+        "key": "B",
+        "text": "Sistem nilai moral dan falsafah hidup"
+      },
+      {
+        "key": "C",
+        "text": "Struktur kekerabatan klan keluarga besar"
+      },
+      {
+        "key": "D",
+        "text": "Sistem peralatan hidup dan teknologi kerja"
+      },
+      {
+        "key": "E",
+        "text": "Kosakata inti bahasa ibu daerah setempat"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Sistem peralatan hidup dan teknologi bersifat praktis serta material, sehingga paling terbuka dan cepat mengadopsi perubahan dibanding sistem religi atau nilai moral."
+  },
+  {
+    "id": 205,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 5,
+    "question": "Suku asli yang mendiami wilayah pedalaman sepanjang aliran sungai utama di Kabupaten OKU Timur adalah suku...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pasemah dan Besemah dataran tinggi"
+      },
+      {
+        "key": "B",
+        "text": "Rejang dan Serawai pesisir barat"
+      },
+      {
+        "key": "C",
+        "text": "Rawas dan Musi hilir pedalaman"
+      },
+      {
+        "key": "D",
+        "text": "Kubu dan Anak Dalam perbatasan hutan"
+      },
+      {
+        "key": "E",
+        "text": "Komering dengan ragam marga klan lokal"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Masyarakat asli wilayah OKU Timur adalah suku Komering yang mendiami sepanjang daerah aliran Sungai Komering dengan berbagai marga adat."
+  },
+  {
+    "id": 206,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 6,
+    "question": "Program penempatan transmigran pertama kali di kawasan Belitang pada masa kolonial Belanda dimulai pada tahun...",
+    "options": [
+      {
+        "key": "A",
+        "text": "1937 dengan rombongan perintis asal Jawa"
+      },
+      {
+        "key": "B",
+        "text": "1905 di kawasan pesisir teluk Lampung"
+      },
+      {
+        "key": "C",
+        "text": "1945 bersamaan proklamasi kemerdekaan"
+      },
+      {
+        "key": "D",
+        "text": "1965 menjelang pembentukan orde baru"
+      },
+      {
+        "key": "E",
+        "text": "1980 masa swasembada beras nasional"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kolonisasi (cikal bakal transmigrasi) di Belitang pertama kali dibuka oleh pemerintah Hindia Belanda pada tahun 1937 untuk pembukaan persawahan irigasi."
+  },
+  {
+    "id": 207,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 7,
+    "question": "Contoh wujud kebudayaan fisik (artefak) peninggalan masyarakat tradisional Komering yang masih lestari adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tata susila penghormatan tokoh adat desa"
+      },
+      {
+        "key": "B",
+        "text": "Rumah panggung kayu berukir ornamen lokal"
+      },
+      {
+        "key": "C",
+        "text": "Pantun lisan nasihat dalam upacara pinangan"
+      },
+      {
+        "key": "D",
+        "text": "Keyakinan tentang pantangan waktu malam"
+      },
+      {
+        "key": "E",
+        "text": "Aturan pembagian warisan antar-ahli waris"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Rumah panggung kayu berukir merupakan wujud fisik (kebudayaan material/artefak) hasil karya arsitektur tradisional masyarakat Komering."
+  },
+  {
+    "id": 208,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 8,
+    "question": "Prinsip kekerabatan yang lazim dianut dalam sistem adat masyarakat suku Komering di OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Matrilineal berdasarkan garis keturunan ibu"
+      },
+      {
+        "key": "B",
+        "text": "Bilateral seimbang kedua pihak tanpa marga"
+      },
+      {
+        "key": "C",
+        "text": "Patrilineal menarik garis silsilah ayah"
+      },
+      {
+        "key": "D",
+        "text": "Matrilokal mutlak menetap di kerabat istri"
+      },
+      {
+        "key": "E",
+        "text": "Avunkulokal menetap di kediaman paman ibu"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Masyarakat Komering menganut garis kekerabatan patrilineal, di mana garis keturunan dan nama marga ditarik melalui garis ayah/pria."
+  },
+  {
+    "id": 209,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 9,
+    "question": "Keberadaan komunitas transmigran asal Bali di Belitang dengan ciri bangunan pura dan upacara keagamaan menunjukkan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Masyarakat lokal menolak perubahan sosial"
+      },
+      {
+        "key": "B",
+        "text": "Terjadi asimilasi total meleburkan semua adat"
+      },
+      {
+        "key": "C",
+        "text": "Pemerintah melarang interaksi antarsuku bangsa"
+      },
+      {
+        "key": "D",
+        "text": "Terjadi pluralisme kultural yang harmonis"
+      },
+      {
+        "key": "E",
+        "text": "Kebudayaan pendatang mendominasi warga asli"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Keberadaan warga Bali dengan kebudayaan dan pura di Belitang merupakan bukti nyata kemajemukan budaya (pluralisme) yang hidup berdampingan secara harmonis."
+  },
+  {
+    "id": 210,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 10,
+    "question": "Perbedaan mendasar antara proses asimilasi dan akulturasi dalam dinamika masyarakat multikultural Belitang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Akulturasi menghilangkan sama sekali ciri lama"
+      },
+      {
+        "key": "B",
+        "text": "Asimilasi selalu menimbulkan perpecahan sosial"
+      },
+      {
+        "key": "C",
+        "text": "Akulturasi hanya terjadi di bidang perekonomian"
+      },
+      {
+        "key": "D",
+        "text": "Asimilasi tidak melibatkan interaksi tatap muka"
+      },
+      {
+        "key": "E",
+        "text": "Akulturasi memadukan budaya tanpa hilang jati diri"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Akulturasi adalah perpaduan dua budaya atau lebih di mana unsur asli masing-masing budaya tetap bertahan, sedangkan asimilasi melebur menjadi kebudayaan baru."
+  },
+  {
+    "id": 211,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 11,
+    "question": "Sikap saling menjaga ketertiban saat perayaan hari besar keagamaan di wilayah Belitang mencerminkan pemahaman nilai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Toleransi dan penghormatan kebebasan beragama"
+      },
+      {
+        "key": "B",
+        "text": "Eksklusivisme kelompok masyarakat tertutup"
+      },
+      {
+        "key": "C",
+        "text": "Kepatuhan semata karena ancaman aparat hukum"
+      },
+      {
+        "key": "D",
+        "text": "Keseragaman keyakinan seluruh warga desa"
+      },
+      {
+        "key": "E",
+        "text": "Keengganan bertegur sapa antarumat beragama"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Ketertiban bersama saat peringatan hari besar keagamaan adalah perwujudan sikap toleransi aktif dan saling menghormati di tengah keberagaman keyakinan."
+  },
+  {
+    "id": 212,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 12,
+    "question": "Tradisi 'sambatan' dalam masyarakat perdesaan di OKU Timur dipahami oleh warga sebagai wujud gotong royong yang bertujuan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengumpulkan laba tunai untuk kas perorangan"
+      },
+      {
+        "key": "B",
+        "text": "Meringankan pekerjaan berat demi kepentingan bersama"
+      },
+      {
+        "key": "C",
+        "text": "Menghindari keterlibatan dalam kegiatan desa"
+      },
+      {
+        "key": "D",
+        "text": "Menggantikan seluruh upacara adat dengan kerja fisik"
+      },
+      {
+        "key": "E",
+        "text": "Menyeragamkan mata pencaharian seluruh warga"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Sambatan adalah pranata tolong-menolong tradisional tanpa upah untuk menyelesaikan pekerjaan besar seperti membangun rumah, mengolah lahan, atau hajatan."
+  },
+  {
+    "id": 213,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 13,
+    "question": "Penggunaan frasa bahasa daerah Komering yang dipadukan dengan bahasa Jawa dalam pergaulan harian di pasar Belitang membuktikan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bahasa Indonesia dilarang digunakan di pasar"
+      },
+      {
+        "key": "B",
+        "text": "Warga mengalami penurunan kemampuan berbahasa"
+      },
+      {
+        "key": "C",
+        "text": "Bahasa berfungsi jembatan integrasi sosial budaya"
+      },
+      {
+        "key": "D",
+        "text": "Pedagang menolak pembeli yang berbeda bahasa"
+      },
+      {
+        "key": "E",
+        "text": "Terjadi kepunahan total kosakata bahasa ibu"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pencampuran kosakata lokal dalam interaksi pasar membuktikan bahasa berperan penting sebagai sarana komunikasi inklusif dan jembatan pemersatu antarsuku."
+  },
+  {
+    "id": 214,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 14,
+    "question": "Kearifan lokal pranata mangsa yang diwariskan petani transmigran di Belitang merupakan bagian dari unsur kebudayaan universal...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sistem persenjataan bela diri tradisional"
+      },
+      {
+        "key": "B",
+        "text": "Sistem hukum pidana adat perdesaan"
+      },
+      {
+        "key": "C",
+        "text": "Sistem stratifikasi kasta kebangsawanan"
+      },
+      {
+        "key": "D",
+        "text": "Sistem pengetahuan lingkungan dan astronomi"
+      },
+      {
+        "key": "E",
+        "text": "Sistem kesenian vokal tembang macapat"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Pranata mangsa adalah sistem pengetahuan tradisional tentang peredaran musim dan astronomi untuk memandu jadwal kegiatan pertanian."
+  },
+  {
+    "id": 215,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 15,
+    "question": "Tari Tanggai yang sering ditarikan pada pembukaan acara resmi di Kabupaten OKU Timur memiliki fungsi utama sebagai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sarana perang tanding memperebutkan wilayah"
+      },
+      {
+        "key": "B",
+        "text": "Ritual pengusiran wabah penyakit menular"
+      },
+      {
+        "key": "C",
+        "text": "Tarian pemanggil hujan di musim kemarau panjang"
+      },
+      {
+        "key": "D",
+        "text": "Simbol penobatan raja baru di istana kesultanan"
+      },
+      {
+        "key": "E",
+        "text": "Tarian penyambutan ungkapan rasa hormat tamu"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Tari Tanggai merupakan tarian tradisional persembahan khas Sumatera Selatan untuk menyambut tamu kehormatan dengan penuh ketulusan dan keramahan."
+  },
+  {
+    "id": 216,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 16,
+    "question": "Masyarakat multikultural di OKU Timur dapat menjaga kerukunan antaretnis dalam jangka panjang terutama karena didukung oleh...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Modal sosial kesadaran nasib senasib sepenanggungan"
+      },
+      {
+        "key": "B",
+        "text": "Pemisahan ketat kompleks pemukiman per suku"
+      },
+      {
+        "key": "C",
+        "text": "Larangan perkawinan silang antarsuku berbeda"
+      },
+      {
+        "key": "D",
+        "text": "Pemberian hak istimewa hukum bagi suku mayoritas"
+      },
+      {
+        "key": "E",
+        "text": "Ketergantungan ekonomi mutlak pada bantuan luar"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kerukunan masyarakat OKU Timur bertumpu pada modal sosial gotong royong dan kesadaran historis saling membutuhkan dalam membangun daerah pertanian lumbung pangan."
+  },
+  {
+    "id": 217,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 17,
+    "question": "Ketika pemuda desa di Belitang bergotong royong membersihkan lingkungan tempat ibadah umat lain menjelang perayaan agamanya, tindakan tersebut menerapkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Prinsip asimilasi budaya tanpa pertimbangan"
+      },
+      {
+        "key": "B",
+        "text": "Prinsip kerukunan dan moderasi beragama nyata"
+      },
+      {
+        "key": "C",
+        "text": "Kewajiban administratif dari dinas ketenagakerjaan"
+      },
+      {
+        "key": "D",
+        "text": "Keharusan formal demi mendapatkan insentif dana"
+      },
+      {
+        "key": "E",
+        "text": "Penyeragaman ajaran semua agama di perdesaan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Aksi gotong royong lintas agama merupakan implementasi nyata moderasi beragama dan toleransi dalam kehidupan bermasyarakat sehari-hari."
+  },
+  {
+    "id": 218,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 18,
+    "question": "Seorang pelajar SMAN 1 Belitang memiliki darah campuran Komering dan Jawa. Cara paling tepat bagi pelajar tersebut menerapkan nilai keberagaman adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menolak mempelajari salah satu bahasa orang tuanya"
+      },
+      {
+        "key": "B",
+        "text": "Hanya bergaul dengan teman yang bersuku serupa"
+      },
+      {
+        "key": "C",
+        "text": "Mempelajari dan menghargai kekayaan kedua budaya"
+      },
+      {
+        "key": "D",
+        "text": "Menganggap sukunya lebih unggul daripada suku lain"
+      },
+      {
+        "key": "E",
+        "text": "Mengabaikan seluruh tradisi lokal di lingkungannya"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pelajar yang berlatar belakang multikultural sebaiknya bangga dan mempelajari kedua budaya warisan keluarganya sebagai wujud apresiasi keberagaman."
+  },
+  {
+    "id": 219,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 19,
+    "question": "Menghadapi musim tanam serentak, kelompok tani di Buay Madang menyepakati jadwal pengolahan tanah secara musyawarah mufakat. Praktik ini menerapkan unsur...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sistem peralatan fisik persenjataan tradisional"
+      },
+      {
+        "key": "B",
+        "text": "Sistem kesenian musik instrumen gamelan Jawa"
+      },
+      {
+        "key": "C",
+        "text": "Sistem kepercayaan ritual magis penolak bala"
+      },
+      {
+        "key": "D",
+        "text": "Sistem organisasi sosial kemasyarakatan desa"
+      },
+      {
+        "key": "E",
+        "text": "Sistem bahasa rahasia internal kelompok klan"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Musyawarah kelompok tani untuk menetapkan kesepakatan bersama merupakan implementasi dari sistem kemasyarakatan/organisasi sosial."
+  },
+  {
+    "id": 220,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 20,
+    "question": "Ketika bertamu ke rumah sesepuh suku Komering, seorang siswa membungkukkan badan sedikit dan menyapa dengan tutur santun setempat. Tindakan ini mencerminkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kepatuhan mutlak terhadap perintah undang-undang"
+      },
+      {
+        "key": "B",
+        "text": "Keterikatan semata karena hubungan kekerabatan darah"
+      },
+      {
+        "key": "C",
+        "text": "Rasa takut dikenai sanksi denda material perdata"
+      },
+      {
+        "key": "D",
+        "text": "Ketiadaan kebebasan berekspresi di masyarakat"
+      },
+      {
+        "key": "E",
+        "text": "Penerapan etika sopan santun sesuai norma adat"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Sikap hormat kepada sesepuh adalah wujud penerapan tata krama dan etika kesopanan yang dijunjung tinggi dalam adat istiadat Komering."
+  },
+  {
+    "id": 221,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 21,
+    "question": "Komunitas siswa membuat siniar (podcast) daring yang mewawancarai maestro musik kelintang Komering. Tindakan siswa tersebut menerapkan prinsip...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemanfaatan teknologi digital untuk pelestarian budaya"
+      },
+      {
+        "key": "B",
+        "text": "Komersialisasi penuh hak cipta lagu tradisional"
+      },
+      {
+        "key": "C",
+        "text": "Penggantian alat musik akustik dengan suara sintesis"
+      },
+      {
+        "key": "D",
+        "text": "Penutupan akses budaya lokal dari publik luas"
+      },
+      {
+        "key": "E",
+        "text": "Penolakan terhadap perkembangan teknologi informasi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Mendokumentasikan seni musik kelintang lewat podcast merupakan pemanfaatan teknologi digital untuk pelestarian warisan budaya lokal bagi generasi muda."
+  },
+  {
+    "id": 222,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 22,
+    "question": "Seorang pemilik warung makan di Belitang menyajikan menu nasi liwet Jawa bersanding dengan pindang patin khas Komering. Inovasi kuliner ini menerapkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Penolakan terhadap cita rasa kuliner nusantara"
+      },
+      {
+        "key": "B",
+        "text": "Perpaduan akulturatif potensi kuliner antarsuku"
+      },
+      {
+        "key": "C",
+        "text": "Kewajiban menu seragam oleh dinas pariwisata"
+      },
+      {
+        "key": "D",
+        "text": "Larangan menjual kuliner tradisional daerah lain"
+      },
+      {
+        "key": "E",
+        "text": "Penghilangan resep bumbu rempah asli leluhur"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Penyajian menu berdampingan antara kuliner Jawa dan Komering merupakan contoh akulturasi kuliner yang memperkaya daya tarik ekonomi lokal."
+  },
+  {
+    "id": 223,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 23,
+    "question": "Di sekolah multikultural, peringatan bulan bahasa diisi lomba pidato dalam tiga bahasa: Indonesia, Komering, dan Jawa. Kegiatan ini menerapkan fungsi bahasa sebagai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pembeda derajat status sosial antarsiswa sekolah"
+      },
+      {
+        "key": "B",
+        "text": "Penentu kelulusan ujian nasional akademik siswa"
+      },
+      {
+        "key": "C",
+        "text": "Sarana edukasi apresiasi keberagaman dan ekspresi"
+      },
+      {
+        "key": "D",
+        "text": "Alat membatasi interaksi antarkelompok kelas"
+      },
+      {
+        "key": "E",
+        "text": "Media kampanye politik praktis di lingkungan sekolah"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Lomba pidato dwibahasa lokal mengedukasi siswa untuk menghargai kekayaan linguistik dan mengekspresikan jati diri budayanya secara positif."
+  },
+  {
+    "id": 224,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 24,
+    "question": "Apabila terjadi perselisihan batas parit sawah antarpetani berbeda suku di pedesaan Belitang, langkah awal yang paling sesuai dengan budaya lokal adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Melakukan pengerahan massa untuk unjuk kekuatan"
+      },
+      {
+        "key": "B",
+        "text": "Langsung mengajukan gugatan perdata ke pengadilan"
+      },
+      {
+        "key": "C",
+        "text": "Memutus aliran air parit secara sepihak di hulu"
+      },
+      {
+        "key": "D",
+        "text": "Bermusyawarah difasilitasi sesepuh adat dan P3A"
+      },
+      {
+        "key": "E",
+        "text": "Menolak bertemu dan membiarkan lahan sawah terbengkalai"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Penyelesaian sengketa melalui musyawarah dengan mediasi tokoh adat dan pengurus P3A mencerminkan nilai kearifan lokal gotong royong dan mufakat."
+  },
+  {
+    "id": 225,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 25,
+    "question": "Banyak generasi muda di pedesaan OKU Timur saat ini lebih fasih menggunakan bahasa gaul media sosial dibanding bahasa daerahnya. Analisis kausalitas menunjukkan faktor utama pemicunya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bahasa daerah secara resmi dilarang oleh pemerintah"
+      },
+      {
+        "key": "B",
+        "text": "Bahasa daerah memiliki struktur tata bahasa yang kaku"
+      },
+      {
+        "key": "C",
+        "text": "Seluruh sekolah mewajibkan bahasa asing internasional"
+      },
+      {
+        "key": "D",
+        "text": "Jumlah penutur asli di pedesaan sudah habis total"
+      },
+      {
+        "key": "E",
+        "text": "Dominasi paparan konten digital dan gengsi sosial"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Intensitas konsumsi media sosial digital serta persepsi bahwa bahasa daerah kurang modern menjadi penyebab utama pergeseran bahasa di kalangan remaja."
+  },
+  {
+    "id": 226,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 26,
+    "question": "Meskipun memiliki latar belakang etnis dan agama yang sangat majemuk, Belitang dikenal sangat kondusif. Analisis sosiologis menunjukkan faktor integratif terkuat bertumpu pada...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Keterikatan kepentingan ekonomi agraria bersama"
+      },
+      {
+        "key": "B",
+        "text": "Dominasi tunggal salah satu kelompok etnis dominan"
+      },
+      {
+        "key": "C",
+        "text": "Ketiadaan sarana komunikasi antarsuku di perdesaan"
+      },
+      {
+        "key": "D",
+        "text": "Pemisahan zona pemukiman yang terisolasi total"
+      },
+      {
+        "key": "E",
+        "text": "Pengawasan militer bersenjata secara berkelanjutan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kebutuhan mengelola persawahan, irigasi, dan perputaran ekonomi pasar secara kolektif menciptakan ketergantungan fungsional yang merekatkan masyarakat."
+  },
+  {
+    "id": 227,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 27,
+    "question": "Perbedaan karakteristik antara gotong royong di pedesaan agraris OKU Timur dengan tolong-menolong di kawasan perkotaan terletak pada...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kawasan pedesaan selalu menuntut upah harian tinggi"
+      },
+      {
+        "key": "B",
+        "text": "Pedesaan bersifat ikatan batiniah, kota kontraktual"
+      },
+      {
+        "key": "C",
+        "text": "Masyarakat perkotaan menolak transaksi keuangan tunai"
+      },
+      {
+        "key": "D",
+        "text": "Pedesaan tidak mengenal pembagian kerja sama sekali"
+      },
+      {
+        "key": "E",
+        "text": "Masyarakat kota tidak memiliki kepedulian kemanusiaan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Gotong royong desa berakar pada solidaritas mekanik (gemeinschaft/paguyuban batiniah), sedangkan kerja sama perkotaan cenderung bersifat pamrih kontraktual (gesellschaft)."
+  },
+  {
+    "id": 228,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 28,
+    "question": "Larangan adat membuang bangkai atau meracuni ikan di aliran sungai Komering mengandung fungsi laten kultural, yaitu...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menjaga monopoli tangkapan bagi tetua adat semata"
+      },
+      {
+        "key": "B",
+        "text": "Menghalangi nelayan luar memasuki kawasan sungai"
+      },
+      {
+        "key": "C",
+        "text": "Konservasi ekosistem air dan kelangsungan hayati"
+      },
+      {
+        "key": "D",
+        "text": "Menghentikan seluruh pemanfaatan air untuk irigasi"
+      },
+      {
+        "key": "E",
+        "text": "Mengharuskan warga membeli ikan impor kemasan kaleng"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Fungsi tersembunyi (laten) dari pantangan adat sungai adalah menjaga keseimbangan ekologis perairan agar sumber protein ikan dan air tetap lestari."
+  },
+  {
+    "id": 229,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 29,
+    "question": "Fenomena percampuran kosakata bahasa Komering, Jawa, dan Melayu Palembang dalam obrolan remaja Belitang dianalisis secara linguistik sebagai wujud...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kerusakan fatal sistem tata bahasa nasional"
+      },
+      {
+        "key": "B",
+        "text": "Kegagalan kurikulum pendidikan formal di sekolah"
+      },
+      {
+        "key": "C",
+        "text": "Ketidakmampuan remaja memahami makna kosakata"
+      },
+      {
+        "key": "D",
+        "text": "Dinamika kontak bahasa membentuk register unik"
+      },
+      {
+        "key": "E",
+        "text": "Tuntutan resmi dari pemerintah daerah kabupaten"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Alih kode dan campur kode merupakan fenomena kontak bahasa wajar dalam masyarakat multilingual yang melahirkan dialek sosial pergaulan khas daerah."
+  },
+  {
+    "id": 230,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 30,
+    "question": "Pergeseran bentuk tempat tinggal warga dari rumah panggung kayu ke rumah tembok semen lantai keramik di Belitang dianalisis terutama disebabkan oleh...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Larangan resmi membangun rumah panggung dari camat"
+      },
+      {
+        "key": "B",
+        "text": "Musnahnya seluruh tukang kayu tradisional setempat"
+      },
+      {
+        "key": "C",
+        "text": "Keyakinan mistis bahwa kayu membawa nasib sial"
+      },
+      {
+        "key": "D",
+        "text": "Ketiadaan lahan persawahan di sekitar pemukiman"
+      },
+      {
+        "key": "E",
+        "text": "Kelangkaan bahan kayu berkualitas dan faktor praktis"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Kenaikan harga kayu keras, kelangkaan bahan baku hutan, serta kemudahan perawatan material bata/semen mendorong modernisasi bentuk rumah hunian."
+  },
+  {
+    "id": 231,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 31,
+    "question": "Ketiadaan konflik etnis terbuka dalam sejarah Kabupaten OKU Timur jika dianalisis dari teori struktur sosial disebabkan oleh adanya...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Interseksi keanggotaan silang dalam berbagai pranata"
+      },
+      {
+        "key": "B",
+        "text": "Sistem pemerintahan otoriter yang menekan warga"
+      },
+      {
+        "key": "C",
+        "text": "Ketiadaan perbedaan kepentingan antarkelompok desa"
+      },
+      {
+        "key": "D",
+        "text": "Kesamaan menyeluruh dalam hal keyakinan agama"
+      },
+      {
+        "key": "E",
+        "text": "Kekayaan alam yang berlimpah tanpa perlu bekerja"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Interseksi sosial (persilangan keanggotaan dalam kelompok tani, pasar, sekolah, organisasi) mempertemukan berbagai suku sehingga meredam potensi konflik antar-etnis."
+  },
+  {
+    "id": 232,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 32,
+    "question": "Pemekaran Kabupaten OKU Timur dari kabupaten induk OKU pada tahun 2004 terhadap perkembangan kebudayaan daerah secara kritis dianalisis telah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghapuskan eksistensi seluruh marga adat asli"
+      },
+      {
+        "key": "B",
+        "text": "Mendorong revitalisasi identitas budaya dan aset lokal"
+      },
+      {
+        "key": "C",
+        "text": "Menutup pergaulan budaya dengan daerah kabupaten lain"
+      },
+      {
+        "key": "D",
+        "text": "Menjadikan kebudayaan seragam tanpa ada variasi"
+      },
+      {
+        "key": "E",
+        "text": "Mengurangi alokasi anggaran pelestarian kesenian"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Otonomi daerah hasil pemekaran memberi ruang kebijakan mandiri untuk memajukan, mendokumentasikan, dan merevitalisasi seni budaya lokal OKU Timur."
+  },
+  {
+    "id": 233,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 33,
+    "question": "Untuk mengevaluasi keberhasilan program pelestarian bahasa daerah Komering di tingkat SMA se-OKU Timur, indikator penilaian paling valid adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Jumlah sertifikat lomba pidato yang dicetak panitia"
+      },
+      {
+        "key": "B",
+        "text": "Anggaran dana hibah yang terserap habis dalam satu tahun"
+      },
+      {
+        "key": "C",
+        "text": "Frekuensi siswa bertutur bahasa daerah dalam keseharian"
+      },
+      {
+        "key": "D",
+        "text": "Banyaknya spanduk slogan pelestarian bahasa di jalan"
+      },
+      {
+        "key": "E",
+        "text": "Jumlah buku tata bahasa yang tersimpan rapi di gudang"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Tolok ukur keberhasilan pelestarian bahasa yang paling nyata adalah vitalitas penggunaannya dalam komunikasi lisan sehari-hari oleh generasi muda."
+  },
+  {
+    "id": 234,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 34,
+    "question": "Sebuah wacana mengusulkan penggantian penuh rumah panggung kayu bersejarah dengan ruko modern di pusat kota Martapura. Penilaian kritis atas usulan tersebut adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sangat tepat karena rumah kayu tidak lagi memiliki nilai guna"
+      },
+      {
+        "key": "B",
+        "text": "Perlu segera dibongkar demi mengejar kemajuan metropolitan"
+      },
+      {
+        "key": "C",
+        "text": "Rumah kayu panggung mencerminkan keterbelakangan arsitektur"
+      },
+      {
+        "key": "D",
+        "text": "Keliru karena menghilangkan warisan cagar budaya bernilai tinggi"
+      },
+      {
+        "key": "E",
+        "text": "Bagus karena bangunan ruko lebih disukai turis asing modern"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Membongkar total rumah panggung historis mengorbankan cagar budaya dan identitas arsitektur lokal yang tidak tergantikan oleh ruko komersial."
+  },
+  {
+    "id": 235,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 35,
+    "question": "Menghadapi pergeseran gotong royong menjadi hubungan kerja upahan di perdesaan Belitang, evaluasi strategi terbaik yang dapat diambil adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghukum petani yang mempekerjakan buruh panen mesin"
+      },
+      {
+        "key": "B",
+        "text": "Melarang seluruh mekanisasi pertanian modern di perdesaan"
+      },
+      {
+        "key": "C",
+        "text": "Memaksa pemuda bekerja sukarela tanpa diberi uang saku"
+      },
+      {
+        "key": "D",
+        "text": "Menghapus tradisi sambatan karena dianggap kuno dan lambat"
+      },
+      {
+        "key": "E",
+        "text": "Mengadaptasi gotong royong ke kegiatan sosial non-ekonomi"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Mekanisasi sawah tak terelakkan, sehingga semangat gotong royong perlu direvitalisasi pada ranah fasilitas publik desa, kebersihan lingkungan, dan kebencanaan."
+  },
+  {
+    "id": 236,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 36,
+    "question": "Ketika menilai efektivitas aturan adat mengenai larangan perburuan burung dan satwa langka di hutan desa OKU Timur, pertimbangan utama adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Konsistensi sanksi sosial dan kepatuhan warga lokal"
+      },
+      {
+        "key": "B",
+        "text": "Jumlah pendapatan denda yang masuk ke kantong pribadi ketua"
+      },
+      {
+        "key": "C",
+        "text": "Tingkat persetujuan dari para pemburu satwa komersial"
+      },
+      {
+        "key": "D",
+        "text": "Kemampuan aturan adat menggantikan hukum pidana formal"
+      },
+      {
+        "key": "E",
+        "text": "Seberapa sering aturan tersebut diliput stasiun televisi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kekuatan norma adat bertumpu pada wibawa sosial, konsistensi penegakan sanksi moral, dan kesadaran kolektif warga untuk melaksanakannya."
+  },
+  {
+    "id": 237,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 37,
+    "question": "Sebuah sekolah hendak menyusun kebijakan penguatan profil pelajar Pancasila berbasis kearifan lokal OKU Timur. Evaluasi terhadap pilihan program paling bermakna adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghafal nama marga Komering tanpa memahami filosofinya"
+      },
+      {
+        "key": "B",
+        "text": "Proyek kolaboratif lintas budaya meneliti kearifan lokal"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan seragam adat setiap hari sepanjang tahun pelajaran"
+      },
+      {
+        "key": "D",
+        "text": "Membatasi siswa untuk hanya mempelajari budaya sukunya sendiri"
+      },
+      {
+        "key": "E",
+        "text": "Menonton film komersial bertema budaya asing dari luar negeri"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Proyek riset dan aksi nyata lintas budaya melatih siswa berpikir kritis, berempati terhadap kemajemukan, dan menerapkan nilai kearifan lokal secara mendalam."
+  },
+  {
+    "id": 238,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 38,
+    "question": "Menilai arah kebijakan pemajuan kebudayaan daerah Kabupaten OKU Timur ke depan, strategi penganggaran yang paling berdampak jangka panjang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membeli pakaian adat seragam untuk pejabat daerah semata"
+      },
+      {
+        "key": "B",
+        "text": "Mengadakan pesta kembang api pada malam pergantian tahun"
+      },
+      {
+        "key": "C",
+        "text": "Pemberdayaan sanggar seni generasi muda dan riset cagar budaya"
+      },
+      {
+        "key": "D",
+        "text": "Menutup seluruh objek wisata budaya dari kunjungan masyarakat"
+      },
+      {
+        "key": "E",
+        "text": "Membubarkan komunitas pemuda penggiat sejarah lokal perdesaan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Investasi pada pembinaan regenerasi pelaku seni muda dan penelitian cagar budaya menjamin kelangsungan transmisi nilai kebudayaan secara berkesinambungan."
+  },
+  {
+    "id": 239,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 39,
+    "question": "Evaluasi terhadap fenomena akulturasi tradisi sedekah bumi pada masyarakat petani transmigran di Belitang menunjukkan bahwa upacara ini berhasil...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghapus seluruh pengaruh ajaran agama samawi di desa"
+      },
+      {
+        "key": "B",
+        "text": "Mewajibkan seluruh petani beralih ke komoditas kelapa sawit"
+      },
+      {
+        "key": "C",
+        "text": "Memisahkan pergaulan antara petani kaya dengan petani penggarap"
+      },
+      {
+        "key": "D",
+        "text": "Menjadi ruang kohesi sosial ungkapan syukur panen bersama"
+      },
+      {
+        "key": "E",
+        "text": "Menimbulkan ketergantungan pangan dari daerah kabupaten lain"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Sedekah bumi bertransformasi menjadi sarana kohesi sosial, doa bersama lintas warga, dan ungkapan syukur atas anugerah hasil panen bumi OKU Timur."
+  },
+  {
+    "id": 240,
+    "day": 2,
+    "indicatorCode": "A",
+    "indicatorKey": "modul_a_hakikat_budaya",
+    "indicatorName": "Hakikat Budaya dan Tujuh Unsur Kebudayaan Universal di Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 40,
+    "question": "Menilai kedudukan hukum lembaga adat Pembina Adat Komering dalam era tata kelola pemerintahan modern saat ini, peran ideal lembaga adat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengambil alih fungsi penegakan hukum kepolisian dan jaksa"
+      },
+      {
+        "key": "B",
+        "text": "Menolak berlakunya hukum positif Republik Indonesia di daerah"
+      },
+      {
+        "key": "C",
+        "text": "Menjadi badan usaha bisnis profit untuk keuntungan pengurus"
+      },
+      {
+        "key": "D",
+        "text": "Membatasi diri hanya pada urusan seremonial tanpa pengaruh"
+      },
+      {
+        "key": "E",
+        "text": "Mitra strategis pemerintah dalam mediasi damai dan budaya"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Lembaga adat berfungsi paling ideal sebagai mitra strategis pemda dalam menjaga kearifan lokal, melestarikan nilai moral, dan mediator musyawarah damai warga."
+  },
+  {
+    "id": 241,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 1,
+    "question": "Konsep etos kerja dalam sosiologi ekonomi diartikan sebagai sikap mendasar dan pandangan hidup seseorang terhadap...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kemenangan mutlak dalam persaingan politik lokal"
+      },
+      {
+        "key": "B",
+        "text": "Kerja sebagai panggilan moral bernilai luhur"
+      },
+      {
+        "key": "C",
+        "text": "Penghindaran tanggung jawab demi kenyamanan pribadi"
+      },
+      {
+        "key": "D",
+        "text": "Pemuasan nafsu konsumtif tanpa perencanaan masa depan"
+      },
+      {
+        "key": "E",
+        "text": "Ketergantungan nasib pada belas kasihan orang lain"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Etos kerja adalah seperangkat nilai, keyakinan, dan sikap mental positif yang memandang kerja sebagai ibadah, kewajiban moral, dan jalan meraih martabat hidup."
+  },
+  {
+    "id": 242,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 2,
+    "question": "Pusat pasar tradisional paling ramai yang menjadi urat nadi perdagangan dan distribusi komoditas pangan di kawasan Belitang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pasar Cinde Palembang dermaga sungai"
+      },
+      {
+        "key": "B",
+        "text": "Pasar 16 Ilir pusat kain konveksi grosir"
+      },
+      {
+        "key": "C",
+        "text": "Pasar Gumawang Belitang sentra hasil bumi"
+      },
+      {
+        "key": "D",
+        "text": "Pasar Kertapati stasiun persimpangan rel"
+      },
+      {
+        "key": "E",
+        "text": "Pasar Baturaja pusat batu akik mineral"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pasar Gumawang di Kecamatan Belitang merupakan pasar induk tradisional terbesar yang menggerakkan roda perputaran ekonomi komoditas pertanian dan perdagangan di OKU Timur."
+  },
+  {
+    "id": 243,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 3,
+    "question": "Berdasarkan regulasi resmi perundang-undangan di Indonesia, kriteria utama yang digunakan untuk mengklasifikasikan skala UMKM adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tingkat pendidikan formal pemilik dan manajer"
+      },
+      {
+        "key": "B",
+        "text": "Luas tanah tempat tinggal keluarga pengusaha"
+      },
+      {
+        "key": "C",
+        "text": "Jumlah akun media sosial dan pengikut promosi"
+      },
+      {
+        "key": "D",
+        "text": "Modal usaha atau hasil penjualan tahunan bersih"
+      },
+      {
+        "key": "E",
+        "text": "Usia kendaraan bermotor operasional pengiriman"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Berdasarkan PP No. 7 Tahun 2021, klasifikasi UMKM ditentukan berdasarkan modal usaha (aset di luar tanah/bangunan) atau omzet hasil penjualan tahunan."
+  },
+  {
+    "id": 244,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 4,
+    "question": "Salah satu produk olahan pangan bernilai ekonomi tinggi yang banyak diproduksi oleh UMKM rumahan di wilayah OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Keju fermentasi susu kambing etawa impor"
+      },
+      {
+        "key": "B",
+        "text": "Gudeg nangka manis kalengan steril kemasan"
+      },
+      {
+        "key": "C",
+        "text": "Rendang daging sapi kering bumbu kelapa sangrai"
+      },
+      {
+        "key": "D",
+        "text": "Dodol rumput laut pesisir pantai selatan"
+      },
+      {
+        "key": "E",
+        "text": "Kerupuk kemplang ikan patin dan rengginang ketan"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Kerupuk kemplang berbahan baku ikan patin lokal dan rengginang dari beras ketan Belitang merupakan produk unggulan UMKM khas OKU Timur."
+  },
+  {
+    "id": 245,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 5,
+    "question": "Profesi di sektor formal yang bertugas menyelenggarakan fungsi birokrasi, regulasi, dan pelayanan publik bagi masyarakat daerah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Aparatur Sipil Negara di dinas pemerintahan"
+      },
+      {
+        "key": "B",
+        "text": "Tengkulak pengepul gabah sawah musiman"
+      },
+      {
+        "key": "C",
+        "text": "Pedagang kelontong keliling antar-desa"
+      },
+      {
+        "key": "D",
+        "text": "Buruh lepas pemanen kebun karet harian"
+      },
+      {
+        "key": "E",
+        "text": "Pengemudi ojek pangkalan tanpa paguyuban"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Aparatur Sipil Negara (PNS dan PPPK) merupakan tenaga kerja sektor formal yang menjalankan tata kelola administrasi pemerintahan dan pelayanan umum."
+  },
+  {
+    "id": 246,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 6,
+    "question": "Ciri khas yang menonjol dari unit usaha ekonomi di sektor informal perdesaan OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Wajib memiliki sertifikat saham di bursa efek"
+      },
+      {
+        "key": "B",
+        "text": "Operasional fleksibel tanpa badan hukum formal kaku"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan rekrutmen pegawai melalui seleksi CPNS"
+      },
+      {
+        "key": "D",
+        "text": "Seluruh transaksi diawasi langsung oleh menteri keuangan"
+      },
+      {
+        "key": "E",
+        "text": "Memiliki kantor cabang resmi di berbagai negara"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Sektor informal memiliki karakteristik fleksibel, modal mandiri sederhana, prosedur mudah, dan umumnya belum berbadan hukum perseroan."
+  },
+  {
+    "id": 247,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 7,
+    "question": "Lembaga perbankan milik pemerintah daerah yang memiliki kantor cabang di Martapura dan Belitang untuk mengelola keuangan kas daerah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bank Central Asia kantor perwakilan bursa"
+      },
+      {
+        "key": "B",
+        "text": "Bank Mandiri unit syariah investasi luar negeri"
+      },
+      {
+        "key": "C",
+        "text": "Bank Sumsel Babel mitra kas daerah pemkab"
+      },
+      {
+        "key": "D",
+        "text": "Bank Tabungan Negara pembiayaan apartemen kota"
+      },
+      {
+        "key": "E",
+        "text": "Bank Perkreditan Rakyat swasta tanpa penjamin LPS"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Bank Sumsel Babel adalah Bank Pembangunan Daerah (BPD) resmi yang bertindak sebagai pemegang kas daerah dan mitra utama keuangan Pemkab OKU Timur."
+  },
+  {
+    "id": 248,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 8,
+    "question": "Standar pembayaran kode batang nasional yang distandardisasi oleh Bank Indonesia dan banyak digunakan pedagang di Gumawang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "SWIFT transfer antar-negara valuta asing"
+      },
+      {
+        "key": "B",
+        "text": "BI-RTGS transaksi triliunan antar-korporasi"
+      },
+      {
+        "key": "C",
+        "text": "EDC mesin gesek kartu magnetik pita kawat"
+      },
+      {
+        "key": "D",
+        "text": "QRIS kode pembayaran terpadu satu pintu"
+      },
+      {
+        "key": "E",
+        "text": "Cek bilyet giro kertas bertanda tangan basah"
+      }
+    ],
+    "correct": "D",
+    "explanation": "QRIS (Quick Response Code Indonesian Standard) menyatukan berbagai penyedia jasa pembayaran digital dalam satu stiker kode QR praktis bagi UMKM."
+  },
+  {
+    "id": 249,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 9,
+    "question": "Tradisi gotong royong dan tolong-menolong di kalangan produsen kemplang Belitang berkontribusi positif terhadap kelangsungan usaha karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghilangkan keharusan membeli bahan baku bumbu"
+      },
+      {
+        "key": "B",
+        "text": "Memungkinkan perajin menaikkan harga tanpa batas"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan warga mengonsumsi kerupuk setiap jam makan"
+      },
+      {
+        "key": "D",
+        "text": "Melarang pengusaha lain membuka usaha serupa di desa"
+      },
+      {
+        "key": "E",
+        "text": "Membantu proses penjemuran massal saat cuaca terik"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Gotong royong saling meminjamkan tempat penjemuran atau tenaga saat musim panas mempercepat kapasitas produksi kemplang tanpa beban biaya upah tinggi."
+  },
+  {
+    "id": 250,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 10,
+    "question": "Peranan strategis Pasar Gumawang bagi kehidupan perekonomian masyarakat petani pedesaan di sekitarnya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menjadi saluran perjumpaan pasokan panen dan kebutuhan harian"
+      },
+      {
+        "key": "B",
+        "text": "Tempat penentuan kurs mata uang dolar Amerika setiap pagi"
+      },
+      {
+        "key": "C",
+        "text": "Satu-satunya lokasi penyimpanan cadangan emas batangan daerah"
+      },
+      {
+        "key": "D",
+        "text": "Tempat penyelenggaraan pemilihan bupati dan wakil bupati"
+      },
+      {
+        "key": "E",
+        "text": "Kawasan khusus perakitan komponen pesawat antariksa modern"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pasar Gumawang berfungsi fungsional mempertemukan hasil bumi dari desa (beras, sayur, ikan) dengan pasokan kebutuhan sandang-pangan dari luar wilayah."
+  },
+  {
+    "id": 251,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 11,
+    "question": "Keberadaan tenaga kerja formal (guru, tenaga medis, ASN) mempengaruhi stabilitas ekonomi di pedesaan OKU Timur terutama karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mereka mengambil alih seluruh lahan garapan sawah desa"
+      },
+      {
+        "key": "B",
+        "text": "Memiliki penghasilan rutin penopang daya beli pasar lokal"
+      },
+      {
+        "key": "C",
+        "text": "Diberikan kewenangan memungut pajak pribadi secara mandiri"
+      },
+      {
+        "key": "D",
+        "text": "Dilarang berbelanja kebutuhan pokok di pasar tradisional"
+      },
+      {
+        "key": "E",
+        "text": "Mewajibkan seluruh pedagang menjual barang dengan harga modal"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Gaji tetap bulanan pekerja formal menjaga sirkulasi uang dan daya beli konsumen di toko, pasar, dan UMKM lokal tetap berputar stabil."
+  },
+  {
+    "id": 252,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 12,
+    "question": "Kebiasaan pemilik UMKM rengginang di Belitang membeli bahan baku beras ketan dari petani setempat mencerminkan pemahaman nilai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Keterpaksaan karena ketiadaan jalur transportasi luar"
+      },
+      {
+        "key": "B",
+        "text": "Penolakan terhadap teknologi pengolahan pangan modern"
+      },
+      {
+        "key": "C",
+        "text": "Solidaritas rantai pasok ekonomi sirkular komunitas"
+      },
+      {
+        "key": "D",
+        "text": "Monopoli pasar untuk mematikan pedagang beras keliling"
+      },
+      {
+        "key": "E",
+        "text": "Kepatuhan mutlak pada aturan adat masa penjajahan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Membeli bahan baku lokal menciptakan sinergi rantai pasok ekonomi sirkular yang saling menguntungkan petani dan produsen olahan makanan."
+  },
+  {
+    "id": 253,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 13,
+    "question": "Urgensi pengurusan sertifikasi halal dan izin edar P-IRT bagi produsen UMKM olahan pangan di OKU Timur adalah untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghindari pemeriksaan pajak penghasilan tahunan badan"
+      },
+      {
+        "key": "B",
+        "text": "Memperoleh pinjaman bank tanpa kewajiban mengembalikan dana"
+      },
+      {
+        "key": "C",
+        "text": "Menjamin produk tidak akan pernah mengalami basi atau rusak"
+      },
+      {
+        "key": "D",
+        "text": "Meningkatkan jaminan mutu, higienitas, dan kepercayaan pasar"
+      },
+      {
+        "key": "E",
+        "text": "Membatasi penjualan produk hanya untuk warga satu desa saja"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Izin P-IRT dan sertifikasi halal memberikan jaminan keamanan konsumsi dan kepatuhan syariah, sehingga memperluas pasar hingga ke swalayan modern."
+  },
+  {
+    "id": 254,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 14,
+    "question": "Bagi pedagang sayur dan sembako di pasar tradisional OKU Timur, manfaat praktis penyediaan opsi bayar QRIS adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mendapatkan subsidi pupuk gratis langsung dari pemerintah"
+      },
+      {
+        "key": "B",
+        "text": "Menaikkan timbangan sayur secara digital otomatis di lapak"
+      },
+      {
+        "key": "C",
+        "text": "Membebaskan lapak dari retribusi kebersihan pasar selamanya"
+      },
+      {
+        "key": "D",
+        "text": "Menghentikan seluruh pencatatan pembukuan harian pedagang"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah peredaran uang palsu dan repot mencari kembalian"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Pembayaran digital QRIS memitigasi risiko uang palsu, mempercepat antrean transaksi, dan meniadakan kesulitan mencari uang receh kembalian."
+  },
+  {
+    "id": 255,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 15,
+    "question": "Kepercayaan (trust) antar-pedagang di Pasar Gumawang yang memungkinkan penitipan barang dagangan tanpa khawatir hilang dikategorikan sebagai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Modal sosial yang memperlancar efisiensi transaksi ekonomi"
+      },
+      {
+        "key": "B",
+        "text": "Kelemahan sistem pengamanan pasar yang membahayakan aset"
+      },
+      {
+        "key": "C",
+        "text": "Tindakan ceroboh yang melanggar hukum perdata formal negara"
+      },
+      {
+        "key": "D",
+        "text": "Bukti ketiadaan persaingan usaha di lingkungan perbelanjaan"
+      },
+      {
+        "key": "E",
+        "text": "Kewajiban paksa yang diatur dalam peraturan daerah pasar"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Rasa saling percaya (trust) adalah elemen utama modal sosial yang menurunkan biaya transaksi (transaction cost) dan menciptakan rasa aman bersama."
+  },
+  {
+    "id": 256,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 16,
+    "question": "Keberadaan agen bank laku pandai (seperti BRILink) di pedesaan terpencil OKU Timur dipahami oleh masyarakat luas sebagai sarana...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Penghapus seluruh utang piutang petani sawah seketika"
+      },
+      {
+        "key": "B",
+        "text": "Inklusi keuangan mendekatkan layanan perbankan ke pelosok"
+      },
+      {
+        "key": "C",
+        "text": "Pengganti fungsi pengadilan agama dalam sengketa warisan"
+      },
+      {
+        "key": "D",
+        "text": "Tempat penyitaan agunan tanah bagi debitur yang menunggak"
+      },
+      {
+        "key": "E",
+        "text": "Satu-satunya tempat pembagian bantuan sosial tunai pusat"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Agen laku pandai memperluas inklusi keuangan, sehingga petani dan pedagang kecil dapat mentransfer uang, menabung, atau bayar tagihan tanpa jauh ke kota."
+  },
+  {
+    "id": 257,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 17,
+    "question": "Produsen kerupuk kemplang ikan di Belitang ingin memasarkan produknya ke pasar luar kota. Langkah pemasaran digital paling aplikatif yang harus diterapkan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyebarkan selebaran fotokopi di tiang listrik jalan desa"
+      },
+      {
+        "key": "B",
+        "text": "Menitipkan produk di warung tetangga dengan sistem konsinyasi"
+      },
+      {
+        "key": "C",
+        "text": "Mengemas rapi vacuum pack dan menjual di lokapasar daring"
+      },
+      {
+        "key": "D",
+        "text": "Memasang pengeras suara di depan rumah produksi setiap hari"
+      },
+      {
+        "key": "E",
+        "text": "Menolak pembeli daring karena khawatir merepotkan pengiriman"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pengemasan kedap udara (vacuum pack) mempertahankan kerenyahan dan daya tahan produk selama ekspedisi, ideal untuk penjualan di marketplace online."
+  },
+  {
+    "id": 258,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 18,
+    "question": "Kelompok usaha keripik pisang di Madang Suku menghadapi kenaikan harga minyak goreng. Penerapan efisiensi produksi yang tepat tanpa menurunkan mutu adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menggunakan minyak goreng jelantah yang sudah berbau tengik"
+      },
+      {
+        "key": "B",
+        "text": "Mengurangi bobot timbangan kemasan secara diam-diam tanpa label"
+      },
+      {
+        "key": "C",
+        "text": "Mencampur adonan pisang dengan bahan pengisi tepung murahan"
+      },
+      {
+        "key": "D",
+        "text": "Menggunakan mesin spinner peniris minyak dan kontrol api presisi"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan seluruh produksi dan memecat anggota kelompok tani"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Penggunaan mesin spinner peniris minyak menghemat penggunaan minyak, memperpanjang masa simpan keripik, dan menjaga kualitas produk tetap renyah."
+  },
+  {
+    "id": 259,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 19,
+    "question": "Agar keuangan usaha warung kelontong tidak bangkrut tergerus kebutuhan keluarga, penerapan literasi keuangan dasar yang wajib dijalankan pemilik adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengambil uang kas warung kapan saja saat hendak berbelanja"
+      },
+      {
+        "key": "B",
+        "text": "Menolak mencatat transaksi karena merasa sudah hafal di ingatan"
+      },
+      {
+        "key": "C",
+        "text": "Memberikan utang tanpa batas kepada seluruh tetangga sekitar"
+      },
+      {
+        "key": "D",
+        "text": "Menyimpan seluruh modal di dompet pribadi tanpa pembukuan kas"
+      },
+      {
+        "key": "E",
+        "text": "Memisahkan rekening kas usaha dengan keuangan rumah tangga"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Pemisahan rekening dan pencatatan kas antara modal usaha dengan belanja pribadi adalah fondasi tata kelola keuangan yang sehat untuk kelangsungan UMKM."
+  },
+  {
+    "id": 260,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 20,
+    "question": "Seorang wirausahawan muda di Martapura ingin melegalkan usaha kopi seduh lokalnya. Langkah praktis pendaftaran izin usaha mikro melalui sistem OSS adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengajukan Nomor Induk Berusaha secara elektronik di laman OSS"
+      },
+      {
+        "key": "B",
+        "text": "Membayar upeti tunai kepada petugas ronda malam perumahan"
+      },
+      {
+        "key": "C",
+        "text": "Memasang plang nama kafe besar di perempatan jalan raya protokol"
+      },
+      {
+        "key": "D",
+        "text": "Membuat akun media sosial kafe dengan ribuan pengikut palsu"
+      },
+      {
+        "key": "E",
+        "text": "Meminta surat izin lisan kepada tetangga sebelah kedai kopi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pendaftaran NIB (Nomor Induk Berusaha) melalui Online Single Submission (OSS) merupakan prosedur resmi dan mudah untuk melegalkan izin usaha UMKM."
+  },
+  {
+    "id": 261,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 21,
+    "question": "Produsen rengginang di Belitang menerapkan ketentuan uang muka 40% saat menerima pesanan pesta hajatan. Penerapan kebijakan ini bertujuan untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menakut-nakuti calon pembeli agar membatalkan pesanan hajatan"
+      },
+      {
+        "key": "B",
+        "text": "Menjamin ketersediaan modal bahan baku dan mitigasi pembatalan"
+      },
+      {
+        "key": "C",
+        "text": "Menghindari pencatatan bukti transaksi pada buku kas penjualan"
+      },
+      {
+        "key": "D",
+        "text": "Membiayai liburan keluarga pemilik usaha sebelum pesanan selesai"
+      },
+      {
+        "key": "E",
+        "text": "Menyerahkan risiko kenaikan harga beras ketan kepada pembeli"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Penerapan uang muka (DP) memberikan kepastian permodalan untuk membeli bahan baku serta melindungi pelaku usaha dari risiko kerugian akibat pesanan fiktif."
+  },
+  {
+    "id": 262,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 22,
+    "question": "Seorang guru SMA di Belitang menerima gaji bulanan dan mengalokasikannya ke dalam tabungan pensiun, belanja warung sekitar, dan infak. Guru tersebut menerapkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pola konsumsi spekulatif berisiko tinggi di pasar komoditas"
+      },
+      {
+        "key": "B",
+        "text": "Prinsip penimbunan uang tunai tanpa perputaran produktif"
+      },
+      {
+        "key": "C",
+        "text": "Manajemen anggaran seimbang berorientasi masa depan dan sosial"
+      },
+      {
+        "key": "D",
+        "text": "Perilaku hidup boros memamerkan gaya hidup mewah di medsos"
+      },
+      {
+        "key": "E",
+        "text": "Penolakan terhadap sistem perbankan nasional yang sah"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Membagi pos penghasilan untuk tabungan, kebutuhan konsumsi lokal, dan filantropi sosial mencerminkan literasi perencanaan keuangan pribadi yang bijak."
+  },
+  {
+    "id": 263,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 23,
+    "question": "Pemilik bengkel las alat mesin pertanian di Belitang mengizinkan petani membayar biaya perbaikan setelah panen padi (sistem yarnen). Pelayanan ini menerapkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kecerobohan finansial yang pasti membangkrutkan usaha bengkel"
+      },
+      {
+        "key": "B",
+        "text": "Praktik riba terselubung yang dilarang norma agama setempat"
+      },
+      {
+        "key": "C",
+        "text": "Tuntutan sepihak dari gabungan kelompok tani desa sebelah"
+      },
+      {
+        "key": "D",
+        "text": "Kemitraan berbasis kearifan lokal siklus pendapatan musiman"
+      },
+      {
+        "key": "E",
+        "text": "Penolakan terhadap uang kartal resmi rupiah dari pemerintah"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Sistem 'bayar panen' (yarnen) merupakan bentuk adaptasi ekonomi kultural yang memperhitungkan likuiditas arus kas petani yang bersifat musiman."
+  },
+  {
+    "id": 264,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 24,
+    "question": "Koperasi sekolah SMAN 1 Belitang bekerja sama dengan kelompok UMKM kue tradisional setempat untuk mengisi etalase kantin. Praktik ini menerapkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Monopoli perdagangan yang mematikan kantin guru sekolah"
+      },
+      {
+        "key": "B",
+        "text": "Pemaksaan konsumsi makanan manis berlebih pada siswa"
+      },
+      {
+        "key": "C",
+        "text": "Pelanggaran aturan kebersihan makanan higienis di sekolah"
+      },
+      {
+        "key": "D",
+        "text": "Pengurangan alokasi waktu belajar kurikulum akademik siswa"
+      },
+      {
+        "key": "E",
+        "text": "Sinergi kelembagaan ekonomi edukatif dan pemberdayaan UMKM"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Kemitraan koperasi sekolah dengan produsen lokal mengedukasi siswa berwirausaha sekaligus memberdayakan rantai pasok ekonomi warga sekitar sekolah."
+  },
+  {
+    "id": 265,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 25,
+    "question": "Di tengah menjamurnya minimarket modern di Belitang, toko kelontong tradisional tetap mampu bertahan. Analisis keunggulan komparatif toko kelontong adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kedekatan personal emosional dan fleksibilitas eceran kecil"
+      },
+      {
+        "key": "B",
+        "text": "Kelengkapan sistem pendingin udara dan kasir komputer otomatis"
+      },
+      {
+        "key": "C",
+        "text": "Dukungan dana talangan modal tanpa batas dari investor asing"
+      },
+      {
+        "key": "D",
+        "text": "Kewajiban warga desa untuk hanya belanja di toko kelontong"
+      },
+      {
+        "key": "E",
+        "text": "Harga barang kelontong yang disubsidi penuh oleh APBD daerah"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Toko kelontong memiliki modal relasi sosial personal yang akrab, melayani pembelian eceran kecil, serta terkadang memberi kemudahan kasbon darurat."
+  },
+  {
+    "id": 266,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 26,
+    "question": "Banyak produk keripik pisang lokal OKU Timur kesulitan menembus gerai swalayan modern di Palembang. Analisis kendala internal utama menunjukkan kelemahan pada...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rasa keripik pisang lokal yang tidak disukai lidah konsumen"
+      },
+      {
+        "key": "B",
+        "text": "Konsistensi mutu kemasan, legalitas izin, dan pasokan kontinu"
+      },
+      {
+        "key": "C",
+        "text": "Jarak geografis jalan darat antara OKU Timur dan Palembang"
+      },
+      {
+        "key": "D",
+        "text": "Larangan membawa produk hasil pertanian keluar dari kabupaten"
+      },
+      {
+        "key": "E",
+        "text": "Ketiadaan pisang berkualitas di seluruh perkebunan lokal"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Ritel modern mensyaratkan standar kemasan berlabel barcode, izin edar resmi, informasi nilai gizi, serta jaminan ketersediaan stok yang stabil."
+  },
+  {
+    "id": 267,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 27,
+    "question": "Saat komoditas perkebunan karet dan sawit mengalami penurunan harga drastis, perputaran ekonomi di Belitang tidak mati total. Analisis makroekonomi menunjukkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemerintah pusat membagikan uang tunai kepada setiap warga"
+      },
+      {
+        "key": "B",
+        "text": "Petani beralih mencetak uang sendiri untuk memenuhi kebutuhan"
+      },
+      {
+        "key": "C",
+        "text": "Sektor pangan padi sawah dan gaji pekerja formal jadi penyangga"
+      },
+      {
+        "key": "D",
+        "text": "Seluruh warga OKU Timur berhenti mengonsumsi bahan makanan"
+      },
+      {
+        "key": "E",
+        "text": "Harga beras di pasar Gumawang langsung anjlok mendekati nol"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Struktur ekonomi OKU Timur memiliki diversifikasi kuat: ketahanan panen padi sawah irigasi dan gaji tetap sektor formal berfungsi sebagai penstabil guncangan ekonomi."
+  },
+  {
+    "id": 268,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 28,
+    "question": "Mengapa skema arisan kelompok pedagang di Pasar Gumawang tetap lestari meski banyak tawaran pinjaman daring instan? Analisis komparatif menunjukkan faktor penentunya...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pinjaman daring memberikan bunga pinjaman nol persen mutlak"
+      },
+      {
+        "key": "B",
+        "text": "Pedagang pasar dilarang memiliki gawai pintar telepon seluler"
+      },
+      {
+        "key": "C",
+        "text": "Arisan pasar diawasi langsung oleh satuan polisi pamong praja"
+      },
+      {
+        "key": "D",
+        "text": "Arisan mengedepankan modal sosial kepercayaan tanpa jeratan bunga"
+      },
+      {
+        "key": "E",
+        "text": "Seluruh peserta arisan wajib membayar iuran setiap jam kerja"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Arisan pasar mengintegrasikan fungsi tabungan bergulir dengan silaturahmi sosial, bebas biaya bunga tinggi, dan terhindar dari teror penagihan pinjol ilegal."
+  },
+  {
+    "id": 269,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 29,
+    "question": "Analisis dampak perluasan jaringan internet dan agen bank digital di pedesaan OKU Timur terhadap perilaku ekonomi keluarga petani menunjukkan adanya...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Penurunan drastis minat anak petani untuk melanjutkan kuliah"
+      },
+      {
+        "key": "B",
+        "text": "Hilangnya kebutuhan transportasi jalan raya antar-kecamatan"
+      },
+      {
+        "key": "C",
+        "text": "Kenaikan biaya hidup tanpa diimbangi kemudahan transaksi"
+      },
+      {
+        "key": "D",
+        "text": "Pemusatan seluruh uang petani ke bank-bank di luar negeri"
+      },
+      {
+        "key": "E",
+        "text": "Efisiensi waktu transfer transaksi dan akses modal lebih terbuka"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Digitalisasi memangkas jarak dan waktu perjalanan ke kantor bank di kota kecamatan, mempercepat pembayaran belanja usaha, dan memperluas literasi tabungan."
+  },
+  {
+    "id": 270,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 30,
+    "question": "UMKM olahan pangan perdesaan OKU Timur terbukti tangguh saat terjadi goncangan ekonomi nasional. Analisis ketahanan tersebut membuktikan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bertumpu pada bahan baku lokal dan pasar kebutuhan pokok nyata"
+      },
+      {
+        "key": "B",
+        "text": "Mendapat suntikan dana talangan devisa dari bank internasional"
+      },
+      {
+        "key": "C",
+        "text": "Mempekerjakan tenaga ahli asing dengan gaji standar dunia"
+      },
+      {
+        "key": "D",
+        "text": "Tidak terikat sama sekali dengan mata uang rupiah Indonesia"
+      },
+      {
+        "key": "E",
+        "text": "Memiliki kekebalan hukum khusus dari kementerian perdagangan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Ketahanan UMKM berbasis agribisnis bertumpu pada kemandirian bahan baku lokal dan memproduksi komoditas pangan yang selalu dibutuhkan masyarakat setiap hari."
+  },
+  {
+    "id": 271,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 31,
+    "question": "Ketergantungan sebagian pedagang kecil pasar terhadap rentenir keliling (bank harian) dianalisis secara struktural bersumber dari...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bunga pinjaman rentenir yang jauh lebih rendah daripada bank"
+      },
+      {
+        "key": "B",
+        "text": "Proses pencairan rentenir cepat tanpa syarat agunan sertifikat"
+      },
+      {
+        "key": "C",
+        "text": "Kewajiban pemerintah daerah untuk meminjam kepada rentenir"
+      },
+      {
+        "key": "D",
+        "text": "Larangan bagi pedagang kecil untuk membuka rekening tabungan"
+      },
+      {
+        "key": "E",
+        "text": "Ketiadaan uang kartal rupiah di kantor perbankan resmi daerah"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pedagang mikro sering terpaksa meminjam ke rentenir karena butuh uang tunai saat itu juga untuk belanja subuh, sedangkan prosedur kredit bank formal membutuhkan waktu verifikasi."
+  },
+  {
+    "id": 272,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 32,
+    "question": "Analisis posisi tawar petani padi OKU Timur yang sering lebih lemah dibanding pedagang perantara (tengkulak) menunjukkan akar masalah pada...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kualitas gabah beras Belitang yang tidak memenuhi selera pasar"
+      },
+      {
+        "key": "B",
+        "text": "Jumlah petani padi yang terlalu sedikit di seluruh kabupaten"
+      },
+      {
+        "key": "C",
+        "text": "Keterdesakan likuiditas tunai dan ketiadaan sarana pengeringan"
+      },
+      {
+        "key": "D",
+        "text": "Peraturan dinas pertanian yang mewajibkan penjualan ke tengkulak"
+      },
+      {
+        "key": "E",
+        "text": "Larangan bagi petani untuk menggiling gabahnya di pabrik sendiri"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Petani sering harus segera melunasi utang saprodi atau biaya hidup pascapanen dan tidak memiliki lumbung/lantai jemur sendiri, sehingga terpaksa menjual gabah basah dengan harga rendah."
+  },
+  {
+    "id": 273,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 33,
+    "question": "Ketika mengevaluasi proposal permodalan bagi koperasi produsen kemplang di Belitang, kriteria kelayakan finansial yang paling krusial dinilai adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kedekatan hubungan kekerabatan ketua dengan camat setempat"
+      },
+      {
+        "key": "B",
+        "text": "Desain logo koperasi yang dibuat dengan warna menyolok"
+      },
+      {
+        "key": "C",
+        "text": "Banyaknya janji keuntungan tanpa dasar perhitungan rasional"
+      },
+      {
+        "key": "D",
+        "text": "Analisis arus kas rasional, kapasitas bayar, dan rekam jejak"
+      },
+      {
+        "key": "E",
+        "text": "Kemegahan gedung kantor sekretariat koperasi di jalan raya"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Kelayakan pembiayaan usaha diukur dari proyeksi arus kas riil, rasio kemampuan membayar kewajiban, dan integritas rekam jejak usaha para pengurusnya."
+  },
+  {
+    "id": 274,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 34,
+    "question": "Pemerintah daerah merencanakan penataan pedagang kaki lima di sekitar Pasar Gumawang ke sentra kuliner modern. Evaluasi dampak kebijakan ini menunjukkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pasti mematikan seluruh usaha kuliner warga dalam waktu singkat"
+      },
+      {
+        "key": "B",
+        "text": "Menimbulkan kemacetan lalu lintas yang lebih parah di jalan utama"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan pedagang menjual makanan khas luar negeri yang mahal"
+      },
+      {
+        "key": "D",
+        "text": "Menghapuskan fungsi pasar tradisional sebagai sarana interaksi"
+      },
+      {
+        "key": "E",
+        "text": "Meningkatkan higienitas, kenyamanan pembeli, dan ketertiban jalan"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Relokasi tertata ke sentra kuliner yang bersih meningkatkan daya tarik wisata kuliner, mempermudah pengawasan sanitasi, dan melancarkan arus lalu lintas."
+  },
+  {
+    "id": 275,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 35,
+    "question": "Menilai strategi penetapan harga produk olahan UMKM lokal OKU Timur saat memasuki etalase pasar daring nasional, strategi paling sehat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Berbasis biaya produksi riil ditambah margin wajar dan mutu"
+      },
+      {
+        "key": "B",
+        "text": "Perang tarif banting harga serendah mungkin di bawah biaya modal"
+      },
+      {
+        "key": "C",
+        "text": "Menetapkan harga sepuluh kali lipat untuk menjerat pembeli awam"
+      },
+      {
+        "key": "D",
+        "text": "Mengubah-ubah harga setiap jam mengikuti suasana hati penjual"
+      },
+      {
+        "key": "E",
+        "text": "Menjual gratis seluruh stok produk demi mengejar jumlah ulasan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Penetapan harga berbasis nilai (value-based pricing) dan kalkulasi HPP yang akurat memastikan kelangsungan operasional tanpa terjebak perang harga yang merugikan."
+  },
+  {
+    "id": 276,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 36,
+    "question": "Evaluasi terhadap program pelatihan akuntansi buku kas digital bagi ibu-ibu pengrajin rengginang di Belitang berhasil apabila terbukti...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Seluruh peserta mendapatkan bingkisan cinderamata saat penutupan"
+      },
+      {
+        "key": "B",
+        "text": "Peserta mampu mengontrol pengeluaran dan mengetahui laba riil"
+      },
+      {
+        "key": "C",
+        "text": "Ruang pelatihan berpendingin udara dan dihadiri pejabat daerah"
+      },
+      {
+        "key": "D",
+        "text": "Peserta membeli telepon genggam termahal setelah selesai acara"
+      },
+      {
+        "key": "E",
+        "text": "Pengrajin berhenti memproduksi rengginang dan membuka usaha lain"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Indikator keberhasilan pelatihan literasi keuangan adalah keterampilan praktis peserta dalam mencatat arus kas masuk-keluar secara mandiri dan disiplin."
+  },
+  {
+    "id": 277,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 37,
+    "question": "Menghadapi persaingan camilan pabrikan modern berkemasan menarik, penilaian strategi terbaik untuk memperkuat daya saing camilan UMKM lokal adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Meniru persis merek dan logo pabrikan terkenal secara ilegal"
+      },
+      {
+        "key": "B",
+        "text": "Menuntut pemerintah melarang peredaran semua camilan modern"
+      },
+      {
+        "key": "C",
+        "text": "Meningkatkan estetika kemasan, legalitas, dan narasi lokalitas"
+      },
+      {
+        "key": "D",
+        "text": "Mengurangi takaran bumbu asli dan mengganti pemanis buatan"
+      },
+      {
+        "key": "E",
+        "text": "Memaksa warung-warung desa menyembunyikan produk pabrikan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Peningkatan mutu kemasan (packaging), higienitas, dan kekuatan narasi budaya (storytelling) kearifan lokal memberikan nilai tambah yang membedakan produk UMKM."
+  },
+  {
+    "id": 278,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 38,
+    "question": "Kebijakan pemerintah daerah yang mewajibkan konsumsi kudapan rapat dinas bersumber dari UMKM lokal perdesaan dinilai secara ekonomi telah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memboroskan anggaran daerah tanpa ada dampak ekonomi positif"
+      },
+      {
+        "key": "B",
+        "text": "Menurunkan kualitas gizi para pegawai birokrasi pemerintahan"
+      },
+      {
+        "key": "C",
+        "text": "Melanggar prinsip persaingan usaha terbuka di bursa nasional"
+      },
+      {
+        "key": "D",
+        "text": "Menciptakan captive market yang menggerakkan ekonomi mikro lokal"
+      },
+      {
+        "key": "E",
+        "text": "Menyebabkan kelangkaan beras ketan di pasar tradisional Gumawang"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Kebijakan pengadaan lokal (local procurement) menciptakan pasar pasti (captive market) yang menyuntikkan likuiditas APBD langsung ke kas produsen makanan kecil."
+  },
+  {
+    "id": 279,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 39,
+    "question": "Menilai keberhasilan program kredit lunak ultra mikro bagi pedagang lapak sayur di pasar tradisional Martapura, tolok ukur utamanya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Seberapa megah baliho promosi bank yang dipasang di pintu pasar"
+      },
+      {
+        "key": "B",
+        "text": "Tingkat suku bunga kredit yang dinaikkan berkala setiap bulan"
+      },
+      {
+        "key": "C",
+        "text": "Banyaknya pedagang yang meminjam dana untuk berlibur ke luar kota"
+      },
+      {
+        "key": "D",
+        "text": "Keharusan pedagang menyerahkan akta tanah rumah tempat tinggal"
+      },
+      {
+        "key": "E",
+        "text": "Kelancaran pengembalian modal dan lepasnya pedagang dari rentenir"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Tujuan pembiayaan mikro adalah membebaskan pedagang kecil dari jerat bunga rentenir dan meningkatkan modal kerja mandiri secara berkesinambungan."
+  },
+  {
+    "id": 280,
+    "day": 2,
+    "indicatorCode": "B",
+    "indicatorKey": "modul_b_budaya_ekonomi_umkm",
+    "indicatorName": "Hubungan Budaya dengan Kegiatan Ekonomi, UMKM, dan Pekerjaan Formal",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 40,
+    "question": "Evaluasi terhadap rencana pengembangan sentra pandai besi di Belitang menjadi produsen alat pertanian modern regional menyimpulkan prioritas utama berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Standardisasi kualitas logam, pelatihan mekanik, dan sertifikasi"
+      },
+      {
+        "key": "B",
+        "text": "Membongkar seluruh bengkel tradisional dan mengganti toko impor"
+      },
+      {
+        "key": "C",
+        "text": "Melarang petani menggunakan alat pertanian buatan pabrik besar"
+      },
+      {
+        "key": "D",
+        "text": "Mewajibkan para empu pandai besi bekerja tanpa menggunakan mesin"
+      },
+      {
+        "key": "E",
+        "text": "Menetapkan harga jual perkakas besi setinggi mungkin di pasaran"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Peningkatan kapabilitas pandai besi lokal menuju produsen alsintan membutuhkan standardisasi metalurgi, pelatihan teknik permesinan presisi, dan uji kelayakan SNI."
+  },
+  {
+    "id": 281,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 1,
+    "question": "Predikat lumbung pangan utama Provinsi Sumatera Selatan yang disandang oleh Kabupaten OKU Timur terutama ditopang oleh keunggulan produksi komoditas...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kopi robusta dataran tinggi pegunungan"
+      },
+      {
+        "key": "B",
+        "text": "Garam kristal tambak pesisir laut dangkal"
+      },
+      {
+        "key": "C",
+        "text": "Padi sawah irigasi teknis terhampar luas"
+      },
+      {
+        "key": "D",
+        "text": "Bawang merah umbi dataran tinggi dingin"
+      },
+      {
+        "key": "E",
+        "text": "Tembakau kering bahan baku rokok kretek"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Kabupaten OKU Timur adalah salah satu penghasil beras terbesar di Pulau Sumatera berkat hamparan puluhan ribu hektar sawah irigasi Komering."
+  },
+  {
+    "id": 282,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 2,
+    "question": "Istilah pola musim tanam padi sawah di Belitang yang dimulai pada awal musim penghujan (musim basah) lazim disebut musim tanam...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Gadu kedua di puncak kemarau kering"
+      },
+      {
+        "key": "B",
+        "text": "Palawija selingan tanah bera kosong"
+      },
+      {
+        "key": "C",
+        "text": "Labuhan menjelang pasang air muara"
+      },
+      {
+        "key": "D",
+        "text": "Rendengan dengan ketersediaan air melimpah"
+      },
+      {
+        "key": "E",
+        "text": "Tumpang sari bedengan sayuran hijau"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Musim rendengan (rendeng) adalah musim tanam utama pada periode musim hujan di mana pasokan air irigasi dan curah hujan sangat melimpah."
+  },
+  {
+    "id": 283,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 3,
+    "question": "Praktik pergiliran tanaman palawija (seperti jagung atau kedelai) di lahan sawah setelah dua musim tanam padi secara agronomis bertujuan untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mempercepat penurunan harga jual gabah di pasar"
+      },
+      {
+        "key": "B",
+        "text": "Menghilangkan genangan air selamanya dari persawahan"
+      },
+      {
+        "key": "C",
+        "text": "Mengundang hama tikus sawah berpindah ke pemukiman"
+      },
+      {
+        "key": "D",
+        "text": "Menghentikan seluruh penggunaan pupuk kompos organik"
+      },
+      {
+        "key": "E",
+        "text": "Memutus daur hidup hama dan memulihkan hara tanah"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Rotasi tanaman dengan palawija memutus rantai hidup serangga/hama padi serta mengembalikan unsur hara (seperti nitrogen lewat tanaman legum)."
+  },
+  {
+    "id": 284,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 4,
+    "question": "Cairan getah kental berwarna putih susu hasil penyadapan kulit batang pohon karet rakyat di OKU Timur secara teknis disebut...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Lateks getah alami pohon hevea"
+      },
+      {
+        "key": "B",
+        "text": "Resin damar wangi getah pinus"
+      },
+      {
+        "key": "C",
+        "text": "Nira manis cairan tandan enau"
+      },
+      {
+        "key": "D",
+        "text": "Minyak atsiri daun serai wangi"
+      },
+      {
+        "key": "E",
+        "text": "Terpentin pelarut cat industri"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Getah hasil sadapan pohon karet (Hevea brasiliensis) berupa cairan emulsi hidrokarbon polimer yang disebut lateks."
+  },
+  {
+    "id": 285,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 5,
+    "question": "Bahan koagulan pembeku getah karet yang dianjurkan dinas perkebunan agar menghasilkan bokar berkualitas tinggi dan tidak berbau busuk adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tawas penjernih air dan pupuk urea"
+      },
+      {
+        "key": "B",
+        "text": "Asam format atau asam semut standar"
+      },
+      {
+        "key": "C",
+        "text": "Air cuka dapur sintetis kadar rendah"
+      },
+      {
+        "key": "D",
+        "text": "Limbah air aki bekas kendaraan bermotor"
+      },
+      {
+        "key": "E",
+        "text": "Bubuk deterjen pencuci pakaian berbusa"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Asam format (asam semut) adalah bahan pembeku lateks standar yang menghasilkan karet bekuan (bokar) elastis, berbobot kering tinggi, dan tidak merusak mutu."
+  },
+  {
+    "id": 286,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 6,
+    "question": "Komoditas perikanan air tawar budidaya kolam tanah yang menjadi sentra produksi unggulan dan bahan baku industri pangan di Belitang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ikan salmon laut dingin atlantik utara"
+      },
+      {
+        "key": "B",
+        "text": "Kepiting bakau tambak air payau muara"
+      },
+      {
+        "key": "C",
+        "text": "Ikan patin siam dan lele sangkuriang"
+      },
+      {
+        "key": "D",
+        "text": "Udang lobster mutiara terumbu karang"
+      },
+      {
+        "key": "E",
+        "text": "Ikan bandeng presto duri lunak pesisir"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Belitang dikenal sebagai sentra budidaya kolam ikan patin dan lele air tawar terbesar yang memasok kebutuhan pasar ikan dan bahan baku kemplang di Sumsel."
+  },
+  {
+    "id": 287,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 7,
+    "question": "Bangsa sapi potong pedaging yang paling banyak dipelihara secara turun-temurun oleh para petani di pedesaan Belitang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sapi perah Frisian Holstein belang hitam"
+      },
+      {
+        "key": "B",
+        "text": "Sapi kerdil pegunungan dataran tinggi Dieng"
+      },
+      {
+        "key": "C",
+        "text": "Sapi yak berbulu tebal pegunungan Himalaya"
+      },
+      {
+        "key": "D",
+        "text": "Sapi Bali dan peranakan ongole tahan panas"
+      },
+      {
+        "key": "E",
+        "text": "Sapi wagyu pemakan gandum fermentasi khusus"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Sapi Bali dan Sapi Peranakan Ongole (PO) sangat populer di OKU Timur karena adaptif terhadap iklim tropis, pakannya mudah, dan daya tahan penyakitnya kuat."
+  },
+  {
+    "id": 288,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 8,
+    "question": "Bagian buah kelapa sawit yang dipanen dari pohon dan diangkut menggunakan truk menuju Pabrik Kelapa Sawit (PKS) dikenal dengan singkatan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "BBM bahan bakar minyak diesel nabati"
+      },
+      {
+        "key": "B",
+        "text": "CPO minyak mentah sawit olahan tangki"
+      },
+      {
+        "key": "C",
+        "text": "PKO minyak inti kelapa sawit murni"
+      },
+      {
+        "key": "D",
+        "text": "PKP pengusaha kena pajak hasil perkebunan"
+      },
+      {
+        "key": "E",
+        "text": "TBS tandan buah segar hasil panen kebun"
+      }
+    ],
+    "correct": "E",
+    "explanation": "TBS (Tandan Buah Segar) adalah bentuk fisik panen kelapa sawit segar yang langsung dipotong dari pelepah pohon dan dikirim ke pabrik pengolahan."
+  },
+  {
+    "id": 289,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 9,
+    "question": "Petani perkebunan karet rakyat di OKU Timur menyadap pohon karet pada waktu subuh dini hari (pukul 04.30–06.30 WIB) karena alasan fisiologis, yaitu...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tekanan turgor sel pembuluh lateks tertinggi saat pagi"
+      },
+      {
+        "key": "B",
+        "text": "Harga getah karet di pasar lelang turun saat matahari terbit"
+      },
+      {
+        "key": "C",
+        "text": "Pohon karet tidak dapat mengeluarkan getah di siang hari"
+      },
+      {
+        "key": "D",
+        "text": "Menghindari pemeriksaan petugas dinas kehutanan setempat"
+      },
+      {
+        "key": "E",
+        "text": "Kulit pohon karet hanya melunak ketika malam hari saja"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pada pagi hari suhu masih sejuk dan kelembapan tinggi, menyebabkan tekanan turgor sel lateks maksimal sehingga getah mengalir lebih deras dan lama."
+  },
+  {
+    "id": 290,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 10,
+    "question": "Sistem integrasi tanaman padi sawah dan ternak sapi potong (crop-livestock integration) di Belitang memberikan keuntungan simbiosis berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sapi dapat dipelihara langsung di dalam petak sawah basah"
+      },
+      {
+        "key": "B",
+        "text": "Jerami padi jadi pakan sapi, kotoran jadi pupuk organik"
+      },
+      {
+        "key": "C",
+        "text": "Padi sawah tidak lagi membutuhkan air irigasi sama sekali"
+      },
+      {
+        "key": "D",
+        "text": "Petani dibebaskan dari seluruh biaya pajak bumi bangunan"
+      },
+      {
+        "key": "E",
+        "text": "Daging sapi otomatis memiliki aroma wangi beras pandan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Integrasi pertanian dan peternakan menciptakan sistem pertanian sirkular: limbah jerami dimanfaatkan untuk pakan sapi, dan kotoran sapi difermentasi menjadi pupuk kandang."
+  },
+  {
+    "id": 291,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 11,
+    "question": "Ketika harga getah karet di pasar dunia mengalami penurunan drastis, dampak ekonomi langsung yang dialami keluarga petani karet di OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Keluarga petani beralih membeli mobil mewah tunai"
+      },
+      {
+        "key": "B",
+        "text": "Jumlah pohon karet di kebun mati secara serentak"
+      },
+      {
+        "key": "C",
+        "text": "Penurunan pendapatan harian dan pengetatan belanja"
+      },
+      {
+        "key": "D",
+        "text": "Kenaikan drastis upah buruh sadap di perkebunan"
+      },
+      {
+        "key": "E",
+        "text": "Pasar tradisional Gumawang kehabisan stok beras"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Karena pendapatan petani karet sangat bergantung pada harga lelang mingguan, anjloknya harga karet menekan likuiditas belanja harian keluarga petani."
+  },
+  {
+    "id": 292,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 12,
+    "question": "Pembudidaya ikan patin kolam tanah di Belitang sangat bergantung pada jaringan saluran irigasi teknis Komering karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ikan patin hanya dapat hidup pada air asin laut lepas"
+      },
+      {
+        "key": "B",
+        "text": "Irigasi digunakan untuk membuang bangkai ikan ke sungai"
+      },
+      {
+        "key": "C",
+        "text": "Saluran irigasi merupakan tempat penjualan tiket wisata"
+      },
+      {
+        "key": "D",
+        "text": "Membutuhkan pasokan air segar kontinu penyuplai oksigen"
+      },
+      {
+        "key": "E",
+        "text": "Ikan patin diberi makan lumut dasar saluran bendung"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Sirkulasi air mengalir dari saluran irigasi menjaga kualitas air kolam, membuang sisa amonia pakan, dan mencukupi kadar oksigen terlarut bagi pertumbuhan ikan."
+  },
+  {
+    "id": 293,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 13,
+    "question": "Perbedaan karakteristik masa panen antara tanaman perkebunan kelapa sawit dengan tanaman pangan padi sawah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Padi sawah dipanen setiap minggu sepanjang tahun"
+      },
+      {
+        "key": "B",
+        "text": "Kelapa sawit hanya dipanen sekali seumur hidup pohon"
+      },
+      {
+        "key": "C",
+        "text": "Padi sawah menghasilkan buah berupa tandan berbobot berat"
+      },
+      {
+        "key": "D",
+        "text": "Kelapa sawit dipanen setelah menunggu seratus tahun tanam"
+      },
+      {
+        "key": "E",
+        "text": "Sawit dipanen berkala 10–14 hari, padi musiman 110 hari"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Kelapa sawit merupakan tanaman tahunan yang dapat dipanen rutin setiap putaran dua minggu, sedangkan padi adalah tanaman semusim dengan siklus sekitar 3,5–4 bulan."
+  },
+  {
+    "id": 294,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 14,
+    "question": "Penanaman kacang-kacangan di pematang sawah atau saat jeda tanam oleh petani Belitang secara ilmiah menyuburkan tanah karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bintil akar bersimbiosis dengan Rhizobium pengikat N2"
+      },
+      {
+        "key": "B",
+        "text": "Akar kacang menyerap seluruh air tanah hingga sangat kering"
+      },
+      {
+        "key": "C",
+        "text": "Daun kacang mengeluarkan zat racun pembunuh cacing tanah"
+      },
+      {
+        "key": "D",
+        "text": "Tanaman kacang menghasilkan pupuk urea kimia pabrikan"
+      },
+      {
+        "key": "E",
+        "text": "Batang kacang dapat menyerap logam berat berbahaya tanah"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bakteri Rhizobium pada bintil akar legum mampu mengikat nitrogen bebas di udara dan mengubahnya menjadi nitrat penyubur tanah alami."
+  },
+  {
+    "id": 295,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 15,
+    "question": "Alasan utama mengapa sebagian petani di Belitang memilih menjual hasil panennya dalam bentuk Gabah Kering Panen (GKP) di petak sawah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Dilarang membawa gabah keluar melintasi batas pematang"
+      },
+      {
+        "key": "B",
+        "text": "Ketiadaan sarana penjemuran dan kebutuhan uang tunai segera"
+      },
+      {
+        "key": "C",
+        "text": "Harga gabah basah di sawah selalu lebih tinggi dari beras"
+      },
+      {
+        "key": "D",
+        "text": "Tengkulak mewajibkan gabah dibeli sebelum mesin panen tiba"
+      },
+      {
+        "key": "E",
+        "text": "Beras Belitang tidak laku jika dijual dalam bentuk beras giling"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Ketiadaan lantai jemur luas saat panen raya dan kebutuhan mendesak melunasi biaya sewa alat/saprodi mendorong petani menjual gabah segar (GKP)."
+  },
+  {
+    "id": 296,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 16,
+    "question": "Tradisi menggembalakan itik di petak sawah pascapanen (sistem angon) di pedesaan Belitang memberikan manfaat ekologis dan ekonomis, yaitu...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Itik merusak seluruh saluran irigasi tersier persawahan"
+      },
+      {
+        "key": "B",
+        "text": "Petani tidak perlu lagi menanam bibit padi pada musim depan"
+      },
+      {
+        "key": "C",
+        "text": "Itik memakan sisa gabah dan hama keong, kotoran jadi pupuk"
+      },
+      {
+        "key": "D",
+        "text": "Daging itik secara otomatis berubah menjadi pupuk urea sawah"
+      },
+      {
+        "key": "E",
+        "text": "Menghilangkan kebutuhan air irigasi sepanjang musim tanam"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Itik memakan gabah rontok dan memangsa hama keong mas serta serangga sawah, sementara kotoran itik menyuburkan tanah sawah secara alami."
+  },
+  {
+    "id": 297,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 17,
+    "question": "Seorang petani Belitang memanen lahan 1 hektar dengan hasil 6 ton GKP. Jika harga jual GKP Rp6.000/kg dan total biaya operasional Rp16.000.000, laba bersih petani adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp10.000.000 dari hasil panen"
+      },
+      {
+        "key": "B",
+        "text": "Rp12.000.000 dari hasil panen"
+      },
+      {
+        "key": "C",
+        "text": "Rp15.000.000 dari hasil panen"
+      },
+      {
+        "key": "D",
+        "text": "Rp20.000.000 dari hasil panen"
+      },
+      {
+        "key": "E",
+        "text": "Rp36.000.000 dari hasil panen"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Penerimaan total = 6.000 kg x Rp6.000 = Rp36.000.000. Laba bersih = Rp36.000.000 - Rp16.000.000 = Rp20.000.000."
+  },
+  {
+    "id": 298,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 18,
+    "question": "Pembudidaya ikan patin di Belitang ingin menghemat biaya pakan pelet pabrikan yang mahal. Penerapan formulasi pakan alternatif yang tepat dan bergizi adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memberikan sampah plastik kemasan yang dicacah sangat halus"
+      },
+      {
+        "key": "B",
+        "text": "Memberikan potongan rumput liar lapangan tanpa campuran gizi"
+      },
+      {
+        "key": "C",
+        "text": "Menghentikan pemberian pakan total selama dua bulan budidaya"
+      },
+      {
+        "key": "D",
+        "text": "Memberikan bahan kimia pengawet deterjen ke dalam kolam"
+      },
+      {
+        "key": "E",
+        "text": "Mengolah maggot BSF dan limbah ikan rucah terfermentasi"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Maggot lalat tentara hitam (BSF) kaya protein tinggi dan limbah ikan fermentasi merupakan pakan alternatif bermutu yang menekan FCR dan biaya produksi."
+  },
+  {
+    "id": 299,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 19,
+    "question": "Menghadapi musim kemarau saat debit air saluran irigasi Komering menyusut, keputusan pola tanam paling tepat yang harus diterapkan petani adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Beralih menanam komoditas palawija hemat air seperti jagung"
+      },
+      {
+        "key": "B",
+        "text": "Tetap memaksa menanam padi sawah genangan air tinggi tiga kali"
+      },
+      {
+        "key": "C",
+        "text": "Membongkar seluruh tanggul pintu air bendung secara ilegal"
+      },
+      {
+        "key": "D",
+        "text": "Menjual seluruh lahan sawah produktif kepada pengembang kota"
+      },
+      {
+        "key": "E",
+        "text": "Membiarkan lahan sawah ditumbuhi semak belukar liar tandus"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Menanam palawija (jagung, kedelai, kacang hijau) adalah strategi adaptif saat kemarau karena tanaman tersebut membutuhkan air jauh lebih sedikit dibanding padi."
+  },
+  {
+    "id": 300,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 20,
+    "question": "Peternak sapi di Belitang memiliki 8 ekor sapi dan menghadapi keluhan bau kotoran kandang dari warga. Penerapan solusi bioteknologi yang tepat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membuang seluruh kotoran sapi ke dalam aliran sungai Komering"
+      },
+      {
+        "key": "B",
+        "text": "Membangun instalasi digester biogas dan fermentasi kompos"
+      },
+      {
+        "key": "C",
+        "text": "Menyemprotkan parfum kimia ruangan secara massal di kandang"
+      },
+      {
+        "key": "D",
+        "text": "Mengurangi jatah makan sapi agar kotorannya menjadi sedikit"
+      },
+      {
+        "key": "E",
+        "text": "Memindahkan kandang sapi ke dalam hutan lindung terlarang"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Instalasi digester biogas mengubah kotoran sapi menjadi gas metana untuk memasak serta menghasilkan pupuk organik padat dan cair yang tidak berbau."
+  },
+  {
+    "id": 301,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 21,
+    "question": "Pada musim hujan di OKU Timur, getah karet hasil sadapan sering hanyut tersapu air hujan sebelum membeku. Penerapan alat pelindung yang efektif adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyalakan api unggun di bawah setiap pohon karet kebun"
+      },
+      {
+        "key": "B",
+        "text": "Membungkus seluruh batang pohon karet dengan terpal plastik"
+      },
+      {
+        "key": "C",
+        "text": "Memasang talang pelindung hujan di atas alur bidang sadap"
+      },
+      {
+        "key": "D",
+        "text": "Menyadap pohon karet pada saat hujan lebat sedang turun"
+      },
+      {
+        "key": "E",
+        "text": "Mengoleskan minyak goreng ke seluruh kulit batang pohon"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pemasangan talang pelindung hujan (rain gutter/rain collar) di atas irisan sadap mengalirkan air hujan menjauhi mangkok sadap, mencegah lateks hanyut."
+  },
+  {
+    "id": 302,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 22,
+    "question": "Pekebun kelapa sawit rakyat di Semendawai mendapati daun tua pohon sawitnya menguning merata (gejala klorosis). Penerapan pemupukan yang harus dilakukan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyiram pohon sawit dengan air garam konsentrasi pekat"
+      },
+      {
+        "key": "B",
+        "text": "Memberikan herbisida racun rumput di sekitar piringan pohon"
+      },
+      {
+        "key": "C",
+        "text": "Memotong seluruh pelepah daun pohon sawit yang menguning"
+      },
+      {
+        "key": "D",
+        "text": "Menambahkan pupuk nitrogen (Urea/ZA) dan magnesium (Kieserit)"
+      },
+      {
+        "key": "E",
+        "text": "Mengganti tanah perkebunan dengan pasir pantai putih"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Klorosis pada daun sawit mengindikasikan defisiensi hara Nitrogen dan Magnesium, yang dapat diatasi dengan aplikasi pupuk Urea dan Kieserit secara berimbang."
+  },
+  {
+    "id": 303,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 23,
+    "question": "Ketika terjadi ledakan populasi hama wereng batang cokelat di persawahan Belitang, langkah Pengendalian Hama Terpadu (PHT) yang tepat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyemprotkan pestisida dosis sepuluh kali lipat setiap hari"
+      },
+      {
+        "key": "B",
+        "text": "Membakar seluruh tanaman padi yang sedang bunting serentak"
+      },
+      {
+        "key": "C",
+        "text": "Menutup petak sawah dengan jaring kain hitam sepanjang masa"
+      },
+      {
+        "key": "D",
+        "text": "Mengalirkan air hingga merendam seluruh malai padi sawah"
+      },
+      {
+        "key": "E",
+        "text": "Pengeringan sawah berkala dan konservasi musuh alami wereng"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Prinsip PHT wereng meliputi pengeringan lahan berkala (intermittent irrigation), pelestarian laba-laba predator alami, dan insektisida selektif bila di atas ambang kendali."
+  },
+  {
+    "id": 304,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 24,
+    "question": "Peternak sapi potong di OKU Timur yang menyiapkan sapinya untuk penjualan Idul Adha menerapkan program penggemukan (fattening) dengan cara...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemberian hijauan berkualitas dipadu konsentrat dedak terukur"
+      },
+      {
+        "key": "B",
+        "text": "Memaksa sapi meminum air garam dalam jumlah berlebihan"
+      },
+      {
+        "key": "C",
+        "text": "Mengandangkan sapi di tempat gelap tanpa sirkulasi udara"
+      },
+      {
+        "key": "D",
+        "text": "Melarang sapi berbaring sepanjang siang dan malam hari"
+      },
+      {
+        "key": "E",
+        "text": "Memberikan pakan bangkai ayam tiren setiap pagi hari"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Penggemukan sapi yang sehat dan memenuhi kaidah syariat qurban dilakukan melalui ransum seimbang antara rumput hijauan segar dan pakan penguat (konsentrat dedak/bungkil)."
+  },
+  {
+    "id": 305,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 25,
+    "question": "Sebagian petani mengonversi sawah irigasi teknis menjadi kebun kelapa sawit di OKU Timur. Analisis dampak jangka panjang terhadap ketahanan pangan daerah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Meningkatkan produksi beras lokal secara berkelanjutan"
+      },
+      {
+        "key": "B",
+        "text": "Mengancam status lumbung pangan dan merusak saluran irigasi"
+      },
+      {
+        "key": "C",
+        "text": "Membuat harga pupuk subsidi sawah menjadi gratis di kios"
+      },
+      {
+        "key": "D",
+        "text": "Menjadikan seluruh petani sawah menjadi jutawan seketika"
+      },
+      {
+        "key": "E",
+        "text": "Menghilangkan kebutuhan air minum bagi warga perkotaan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Alih fungsi lahan sawah beririgasi teknis mengurangi luas baku sawah, menurunkan produksi beras daerah, serta mengganggu sistem hidrologi jaringan irigasi persawahan sekitarnya."
+  },
+  {
+    "id": 306,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 26,
+    "question": "Mengapa usaha budidaya ikan patin di Belitang sangat rentan terhadap fluktuasi harga pakan pelet pabrikan? Analisis struktur biaya produksi menunjukkan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pakan pelet hanya dibutuhkan saat ikan patin sedang sakit"
+      },
+      {
+        "key": "B",
+        "text": "Pakan pelet impor dilarang masuk oleh kementerian kelautan"
+      },
+      {
+        "key": "C",
+        "text": "Komponen pakan menyerap 65–75% dari total biaya operasional"
+      },
+      {
+        "key": "D",
+        "text": "Harga jual ikan patin di pasar ditentukan langsung oleh pembeli"
+      },
+      {
+        "key": "E",
+        "text": "Ikan patin memakan pelet hanya pada malam pergantian tahun"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Biaya pakan merupakan komponen terbesar (65-75%) dalam budidaya ikan patin, sehingga kenaikan harga pelet tanpa kenaikan harga jual ikan langsung memangkas margin keuntungan petambak."
+  },
+  {
+    "id": 307,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 27,
+    "question": "Analisis hubungan antara curah hujan ekstrem dengan hasil produksi perkebunan karet di OKU Timur membuktikan bahwa hari hujan lebat berkepanjangan justru...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Meningkatkan kualitas bekuan getah karet menjadi sangat murni"
+      },
+      {
+        "key": "B",
+        "text": "Mempercepat pertumbuhan cabang daun pohon karet baru"
+      },
+      {
+        "key": "C",
+        "text": "Menaikkan harga lelang getah karet di pasar mingguan desa"
+      },
+      {
+        "key": "D",
+        "text": "Menurunkan produksi karena bidang sadap basah dan lateks hanyut"
+      },
+      {
+        "key": "E",
+        "text": "Menyebabkan pohon karet menghasilkan minyak kelapa sawit"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Batang karet yang basah tidak dapat disadap karena dapat memicu jamur bidang sadap, dan air hujan yang masuk ke mangkok mengencerkan atau menghanyutkan lateks."
+  },
+  {
+    "id": 308,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 28,
+    "question": "Penerapan diversifikasi usaha tani (padi sawah, kolam ikan patin, dan ternak sapi) di pedesaan Belitang dianalisis memiliki resiliensi ekonomi tinggi karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memungkinkan petani tidak perlu bekerja lagi di sawah kebun"
+      },
+      {
+        "key": "B",
+        "text": "Membebaskan keluarga dari seluruh kewajiban membayar utang"
+      },
+      {
+        "key": "C",
+        "text": "Seluruh hasil panen dibeli dengan harga dua kali lipat oleh dinas"
+      },
+      {
+        "key": "D",
+        "text": "Mewajibkan anak petani bekerja di pabrik penggilingan beras"
+      },
+      {
+        "key": "E",
+        "text": "Menyebarkan risiko gagal panen dan menjaga stabilitas arus kas"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Diversifikasi usaha tani membagi risiko pasar: jika harga salah satu komoditas anjlok atau terserang hama, komoditas lain tetap menopang pendapatan keluarga."
+  },
+  {
+    "id": 309,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 29,
+    "question": "Kelangkaan pupuk kimia bersubsidi yang kerap terjadi saat musim tanam serentak di OKU Timur jika dianalisis dari tata kelola distribusi disebabkan oleh...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kesenjangan kuota e-RDKK dengan pasokan riil dan rembesan pasar"
+      },
+      {
+        "key": "B",
+        "text": "Pabrik pupuk menghentikan seluruh produksi pupuk nasional"
+      },
+      {
+        "key": "C",
+        "text": "Petani sawah menolak menggunakan pupuk kimia di lahannya"
+      },
+      {
+        "key": "D",
+        "text": "Petani membuang seluruh jatah pupuk subsidi ke saluran irigasi"
+      },
+      {
+        "key": "E",
+        "text": "Harga pupuk subsidi dinaikkan sepuluh kali lipat oleh kelompok"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Akar persoalan pupuk subsidi bersumber dari keterbatasan alokasi APBN dibanding kebutuhan riil usulan e-RDKK, kendala penebusan kartu tani, dan potensi penyimpangan distribusi."
+  },
+  {
+    "id": 310,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 30,
+    "question": "Analisis perbandingan profil likuiditas antara berkebun kelapa sawit dan bersawah padi bagi petani OKU Timur menunjukkan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bersawah padi memberikan uang tunai harian secara kontinu"
+      },
+      {
+        "key": "B",
+        "text": "Sawit memberi arus kas rutin dwi-mingguan, padi panen berkala"
+      },
+      {
+        "key": "C",
+        "text": "Berkebun kelapa sawit membutuhkan air genangan setinggi satu meter"
+      },
+      {
+        "key": "D",
+        "text": "Tanaman kelapa sawit mati setelah berbuah selama tiga bulan"
+      },
+      {
+        "key": "E",
+        "text": "Petani padi sawah dilarang menjual gabahnya ke pedagang pasar"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Sawit menghasilkan TBS yang dipanen dan diuangkan setiap 10-14 hari, sedangkan padi sawah menghasilkan pendapatan besar secara musiman setiap 3-4 bulan sekali."
+  },
+  {
+    "id": 311,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 31,
+    "question": "Wabah penyakit gugur daun Pestalotiopsis pada perkebunan karet di OKU Timur dianalisis menyebabkan penurunan produksi lateks secara drastis karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghancurkan seluruh sistem perakaran pohon karet di tanah"
+      },
+      {
+        "key": "B",
+        "text": "Mengubah getah lateks menjadi cairan minyak kelapa sawit"
+      },
+      {
+        "key": "C",
+        "text": "Mengganggu fotosintesis sehingga pembentukan lateks anjlok"
+      },
+      {
+        "key": "D",
+        "text": "Menyebabkan batang pohon karet patah menjadi serpihan kayu"
+      },
+      {
+        "key": "E",
+        "text": "Mewajibkan pohon karet disiram dengan air kopi panas mendidih"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Gugurnya daun akibat infeksi jamur menurunkan tajuk hijau klorofil secara signifikan, sehingga proses fotosintesis terhambat dan biosintesis getah lateks menurun drastis."
+  },
+  {
+    "id": 312,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 32,
+    "question": "Analisis pola kemitraan usaha ternak ayam pedaging broiler sistem inti-plasma di OKU Timur memperlihatkan bahwa kelemahan posisi peternak plasma terletak pada...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kewajiban membeli tanah perkantoran perusahaan inti di Jakarta"
+      },
+      {
+        "key": "B",
+        "text": "Ketiadaan bantuan bibit anak ayam (DOC) dan pakan dari inti"
+      },
+      {
+        "key": "C",
+        "text": "Larangan menjual kotoran ayam kandang sebagai pupuk kompos"
+      },
+      {
+        "key": "D",
+        "text": "Ketergantungan harga sapronak dan risiko kematian ayam di plasma"
+      },
+      {
+        "key": "E",
+        "text": "Kewajiban memelihara ayam broiler di dalam kolam ikan patin"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Dalam skema inti-plasma, harga bibit dan pakan ditentukan oleh perusahaan inti, sementara risiko kematian ternak dan fluktuasi indeks performa kandang ditanggung peternak plasma."
+  },
+  {
+    "id": 313,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 33,
+    "question": "Untuk mengevaluasi efektivitas program diversifikasi pangan lokal berbasis ubi dan jagung di Kabupaten OKU Timur, indikator penilaian paling tepat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Banyaknya pameran kuliner yang diadakan di halaman pemkab"
+      },
+      {
+        "key": "B",
+        "text": "Jumlah spanduk promosi makanan sehat di sepanjang jalan raya"
+      },
+      {
+        "key": "C",
+        "text": "Kenaikan harga beras di pasar tradisional Gumawang Belitang"
+      },
+      {
+        "key": "D",
+        "text": "Besaran anggaran belanja perjalanan dinas penyuluh pertanian"
+      },
+      {
+        "key": "E",
+        "text": "Penurunan angka konsumsi beras per kapita dan ragam menu harian"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Keberhasilan diversifikasi pangan dinilai dari penurunan ketergantungan konsumsi beras per kapita dan meningkatnya proporsi pangan karbohidrat lokal di meja makan keluarga."
+  },
+  {
+    "id": 314,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 34,
+    "question": "Sebuah kebijakan daerah menetapkan Peraturan Daerah tentang Lahan Pertanian Pangan Berkelanjutan (LP2B) di OKU Timur. Evaluasi terhadap kebijakan ini menyimpulkan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Strategis melindungi sawah teknis dari alih fungsi non-pertanian"
+      },
+      {
+        "key": "B",
+        "text": "Menghambat pembangunan jalan tol dan gedung perkantoran daerah"
+      },
+      {
+        "key": "C",
+        "text": "Merugikan para pengembang perumahan komersial di kawasan Belitang"
+      },
+      {
+        "key": "D",
+        "text": "Menurunkan harga jual gabah petani sawah di hadapan tengkulak"
+      },
+      {
+        "key": "E",
+        "text": "Menghapuskan hak kepemilikan sertifikat tanah sawah milik petani"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Perda LP2B memberikan kepastian hukum untuk mengunci areal persawahan irigasi produktif agar tidak dialihfungsikan menjadi perumahan, industri, atau perkebunan sawit."
+  },
+  {
+    "id": 315,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 35,
+    "question": "Ketika mengevaluasi pembentukan Unit Pengolahan dan Pemasaran Bokar (UPPB) di sentra perkebunan karet OKU Timur, keunggulan model kelembagaan ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Petani dilarang menjual getah karetnya kepada pihak manapun"
+      },
+      {
+        "key": "B",
+        "text": "Memotong rantai tengkulak lewat sistem lelang terbuka bermutu"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan petani membayar iuran keanggotaan sebesar gaji camat"
+      },
+      {
+        "key": "D",
+        "text": "Pemerintah membeli seluruh getah karet dengan harga emas murni"
+      },
+      {
+        "key": "E",
+        "text": "Menghapuskan fungsi pabrik ban kendaraan di tingkat nasional"
+      }
+    ],
+    "correct": "B",
+    "explanation": "UPPB mengorganisasi petani karet untuk menghasilkan bekuan karet bersih dan menjualnya serentak melalui lelang pasar mingguan, sehingga posisi tawar petani meningkat signifikan."
+  },
+  {
+    "id": 316,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 36,
+    "question": "Evaluasi terhadap program Asuransi Usaha Tani Padi (AUTP) yang difasilitasi pemerintah bagi petani sawah di OKU Timur membuktikan bahwa asuransi ini berfungsi sebagai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Beban tambahan pengeluaran premi tanpa memberikan manfaat riil"
+      },
+      {
+        "key": "B",
+        "text": "Pengganti seluruh fungsi pupuk dan obat-obatan hama persawahan"
+      },
+      {
+        "key": "C",
+        "text": "Jaring pengaman modal kerja saat gagal panen banjir atau OPT"
+      },
+      {
+        "key": "D",
+        "text": "Alat bagi perbankan untuk menyita lahan sawah milik kelompok"
+      },
+      {
+        "key": "E",
+        "text": "Jaminan bahwa harga beras di pasar tidak akan pernah berubah"
+      }
+    ],
+    "correct": "C",
+    "explanation": "AUTP memberikan ganti rugi klaim (Rp6 juta/ha) apabila sawah terdampak banjir, kekeringan, atau serangan hama di atas 75%, menjamin modal petani untuk musim tanam berikutnya."
+  },
+  {
+    "id": 317,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 37,
+    "question": "Menilai kebiasaan petani membakar jerami pascapanen vs memanfaatkannya sebagai pakan silase ternak dan kompos, penilaian ilmiah yang tepat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membakar jerami adalah metode terbaik menyuburkan biologi tanah"
+      },
+      {
+        "key": "B",
+        "text": "Jerami padi beracun dan tidak boleh disentuh oleh hewan ternak"
+      },
+      {
+        "key": "C",
+        "text": "Membakar jerami menghasilkan gas oksigen segar bagi lingkungan"
+      },
+      {
+        "key": "D",
+        "text": "Fermentasi jerami bernilai ekologis tinggi dan menekan polusi"
+      },
+      {
+        "key": "E",
+        "text": "Pemanfaatan jerami membutuhkan biaya lebih besar dari harga sawah"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Membakar jerami membunuh mikroba tanah dan memicu polusi asap, sedangkan fermentasi silase jerami dan pengomposan menjaga struktur bahan organik tanah dan menyediakan pakan."
+  },
+  {
+    "id": 318,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 38,
+    "question": "Sebuah usulan program mendorong penggantian seluruh kolam tanah patin Belitang dengan tambak terpal bundar bioflok. Evaluasi kritis terhadap usulan tersebut adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sangat mendesak karena kolam tanah sudah dilarang oleh undang-undang"
+      },
+      {
+        "key": "B",
+        "text": "Sistem bioflok tidak memerlukan pemberian pakan sama sekali"
+      },
+      {
+        "key": "C",
+        "text": "Tambak terpal bundar otomatis menghasilkan ikan patin tanpa duri"
+      },
+      {
+        "key": "D",
+        "text": "Ikan patin menolak hidup di dalam air kolam tanah tradisional"
+      },
+      {
+        "key": "E",
+        "text": "Biaya listrik aerasi tinggi dan kolam tanah lokal sudah efisien"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Kolam tanah di Belitang memanfaatkan gravitasi saluran irigasi alami dengan biaya energi rendah, sedangkan bioflok memerlukan aerasi listrik kontinu dan investasi awal yang mahal."
+  },
+  {
+    "id": 319,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 39,
+    "question": "Menilai keberhasilan program Inseminasi Buatan (IB) kawin suntik pada sapi potong di OKU Timur, faktor kunci keberhasilan di tingkat peternak adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ketepatan deteksi masa birahi betina dan kecepatan inseminator"
+      },
+      {
+        "key": "B",
+        "text": "Pemberian pakan konsentrat impor seharga jutaan rupiah per sak"
+      },
+      {
+        "key": "C",
+        "text": "Penggunaan kandang sapi bertingkat dengan lantai marmer putih"
+      },
+      {
+        "key": "D",
+        "text": "Mewajibkan induk sapi betina melahirkan anak setiap tiga bulan"
+      },
+      {
+        "key": "E",
+        "text": "Melarang peternak menyentuh anak sapi hasil kawin suntik IB"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Keberhasilan konsepsi kebuntingan IB sangat ditentukan oleh kejelian peternak mendeteksi tanda birahi ternak dan respons cepat petugas inseminator melakukan deposisi semen beku."
+  },
+  {
+    "id": 320,
+    "day": 2,
+    "indicatorCode": "C",
+    "indicatorKey": "modul_c_agrikultur_unggulan",
+    "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 40,
+    "question": "Evaluasi terhadap ketergantungan petani padi pada pestisida kimia sintetis secara berlebihan di OKU Timur menghasilkan kesimpulan bahwa praktik tersebut...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Merupakan bukti kemajuan teknologi pertanian paling ramah lingkungan"
+      },
+      {
+        "key": "B",
+        "text": "Memicu resistensi hama, matinya musuh alami, dan residu kimia"
+      },
+      {
+        "key": "C",
+        "text": "Menjamin hasil panen padi sawah terbebas dari serangan jamur selamanya"
+      },
+      {
+        "key": "D",
+        "text": "Menyebabkan harga beras Belitang naik menjadi sepuluh kali lipat"
+      },
+      {
+        "key": "E",
+        "text": "Meningkatkan kesuburan populasi mikroorganisme pengurai di dalam tanah"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Aplikasi pestisida berlebihan membunuh predator alami (laba-laba, capung), memicu ledakan resistensi hama sekunder, serta meninggalkan residu berbahaya bagi ekosistem sawah."
+  },
+  {
+    "id": 321,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 1,
+    "question": "Perkakas pertanian tradisional berupa pisau kecil berpenampang kayu yang digunakan memotong tangkai malai padi satu per satu adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Arit bergerigi pemotong semak tebal"
+      },
+      {
+        "key": "B",
+        "text": "Parang panjang penebas dahan pohon"
+      },
+      {
+        "key": "C",
+        "text": "Cangkul baja pembalik tanah liat"
+      },
+      {
+        "key": "D",
+        "text": "Ani-ani atau ketam pemetik malai"
+      },
+      {
+        "key": "E",
+        "text": "Sabit lengkung pemotong rumput gajah"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Ani-ani (ketam) adalah pisau tradisional kecil yang disembunyikan di telapak tangan untuk memotong tangkai malai padi satu demi satu pada masa lampau."
+  },
+  {
+    "id": 322,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 2,
+    "question": "Mesin pemanen modern yang mengintegrasikan fungsi memotong batang padi, merontokkan bulir gabah, dan membersihkannya secara serentak adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Power thresher mesin perontok stasioner"
+      },
+      {
+        "key": "B",
+        "text": "Traktor roda empat bajak piringan tanah"
+      },
+      {
+        "key": "C",
+        "text": "Rice transplanter penanam bibit muda"
+      },
+      {
+        "key": "D",
+        "text": "Mist blower penyemprot butiran pestisida"
+      },
+      {
+        "key": "E",
+        "text": "Combine harvester mesin pemanen terpadu"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Combine harvester adalah alsintan pemanen terpadu yang memotong, merontokkan gabah, memisahkan jerami, dan menyaring kotoran dalam satu lintasan kerja."
+  },
+  {
+    "id": 323,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 3,
+    "question": "Nama bendung gerak teknis utama di Martapura yang menjadi hulu pengatur suplesi debit air bagi jaringan irigasi Komering di OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bendung Perjaya pengatur intake irigasi"
+      },
+      {
+        "key": "B",
+        "text": "Bendungan Jatiluhur pembangkit listrik"
+      },
+      {
+        "key": "C",
+        "text": "Bendung Katulampa pengukur debit ciliwung"
+      },
+      {
+        "key": "D",
+        "text": "Bendung Karangkates waduk pengendali lahar"
+      },
+      {
+        "key": "E",
+        "text": "Bendungan Gajah Mungkur hulu bengawan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bendung Perjaya di Martapura adalah infrastruktur hidrolik utama yang membendung Sungai Komering untuk memasok air ke Saluran Induk Komering."
+  },
+  {
+    "id": 324,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 4,
+    "question": "Sumber air alami yang mengaliri Sungai Komering dan menjadi pasokan baku abadi bagi jaringan irigasi di persawahan Belitang berhulu dari...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Danau Toba di pegunungan Sumatera Utara"
+      },
+      {
+        "key": "B",
+        "text": "Danau Ranau di perbatasan OKU Selatan"
+      },
+      {
+        "key": "C",
+        "text": "Danau Singkarak di dataran tinggi Minang"
+      },
+      {
+        "key": "D",
+        "text": "Rawa Pening di lembah pegunungan Jawa"
+      },
+      {
+        "key": "E",
+        "text": "Danau Matano di perbukitan Sulawesi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Sungai Komering berhulu dari Danau Ranau di Kabupaten OKU Selatan, menjamin ketersediaan debit air yang stabil sepanjang tahun bagi irigasi Komering."
+  },
+  {
+    "id": 325,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 5,
+    "question": "Mesin mekanis modern yang digunakan untuk menanam bibit padi muda dari baki semai (dapog) langsung ke lumpur sawah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Corn seeder penugal benih jagung pipil"
+      },
+      {
+        "key": "B",
+        "text": "Cultivator pencacah gulma tanah kering"
+      },
+      {
+        "key": "C",
+        "text": "Rice transplanter penanam bibit padi"
+      },
+      {
+        "key": "D",
+        "text": "Bed dryer pengering gabah lorong udara"
+      },
+      {
+        "key": "E",
+        "text": "Color sorter penyortir butir beras patah"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Rice transplanter adalah mesin tanam pindah yang menancapkan bibit padi persemaian dapog dengan jarak tanam teratur dan kecepatan tinggi."
+  },
+  {
+    "id": 326,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 6,
+    "question": "Saluran pembagi air irigasi yang membawa air langsung dari saluran tersier menuju petak-petak persawahan milik petani disebut saluran...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Saluran induk primer antar-kabupaten"
+      },
+      {
+        "key": "B",
+        "text": "Saluran sekunder penghubung antar-kecamatan"
+      },
+      {
+        "key": "C",
+        "text": "Saluran pembuang banjir menuju laut"
+      },
+      {
+        "key": "D",
+        "text": "Saluran kuarter atau cacing petak sawah"
+      },
+      {
+        "key": "E",
+        "text": "Saluran pipa bawah tanah limbah industri"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Saluran kuarter (sering disebut saluran cacing) adalah saluran terkecil di tingkat usaha tani yang mendistribusikan air langsung ke tiap petak sawah."
+  },
+  {
+    "id": 327,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 7,
+    "question": "Kelembagaan swadaya petani yang bertugas mengelola pembagian air, iuran, dan pemeliharaan parit irigasi di tingkat tersier adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Lembaga Swadaya Masyarakat hak konsumen"
+      },
+      {
+        "key": "B",
+        "text": "Satuan Polisi Pamong Praja penegak perda"
+      },
+      {
+        "key": "C",
+        "text": "Dinas Kebersihan dan Pertamanan kota"
+      },
+      {
+        "key": "D",
+        "text": "Badan Pusat Statistik pendata sensus"
+      },
+      {
+        "key": "E",
+        "text": "P3A Perkumpulan Petani Pemakai Air desa"
+      }
+    ],
+    "correct": "E",
+    "explanation": "P3A (Perkumpulan Petani Pemakai Air) adalah wadah resmi petani pemanfaat air irigasi untuk mengatur giliran air dan merawat saluran tersier."
+  },
+  {
+    "id": 328,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 8,
+    "question": "Alat pengolah tanah tradisional berupa rangka kayu berujung besi yang ditarik sapi untuk membalik bongkahan tanah sawah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bajak singkal atau luku tradisional sapi"
+      },
+      {
+        "key": "B",
+        "text": "Garpu tanah penggembur gulma pekarangan"
+      },
+      {
+        "key": "C",
+        "text": "Cangkul lempang pemotong tebing parit"
+      },
+      {
+        "key": "D",
+        "text": "Beliung kayu pembelah batang pohon"
+      },
+      {
+        "key": "E",
+        "text": "Kored rumput pembersih bedengan cabai"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bajak singkal (luku) tradisional ditarik hewan ternak (sapi/kerbau) untuk memotong dan membalik tanah sawah sebelum ditemukannya traktor mesin."
+  },
+  {
+    "id": 329,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 9,
+    "question": "Keunggulan mekanis traktor besar roda empat dibanding traktor tangan roda dua saat mengolah hamparan sawah luas di Belitang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Dapat diterbangkan melintasi sungai tanpa jembatan"
+      },
+      {
+        "key": "B",
+        "text": "Kapasitas kerja lebih luas, cepat, dan nyaman bagi operator"
+      },
+      {
+        "key": "C",
+        "text": "Tidak memerlukan bahan bakar solar maupun minyak pelumas"
+      },
+      {
+        "key": "D",
+        "text": "Dapat memanen gabah sekaligus mengemasnya ke dalam karung"
+      },
+      {
+        "key": "E",
+        "text": "Bebas dari risiko terjebak dalam kubangan lumpur sawah"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Traktor roda empat memiliki tenaga horse-power (HP) besar, lebar kerja bajak lebih luas, waktu olah lebih singkat, dan operator duduk di kabin kemudi."
+  },
+  {
+    "id": 330,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 10,
+    "question": "Pemanenan padi menggunakan combine harvester dapat mempercepat mulainya musim tanam berikutnya di Belitang karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mesin combine secara otomatis menanam benih padi baru"
+      },
+      {
+        "key": "B",
+        "text": "Mesin mengeringkan seluruh petak sawah menjadi tanah padat"
+      },
+      {
+        "key": "C",
+        "text": "Panen tuntas dalam hitungan jam dan jerami tercacah cepat busuk"
+      },
+      {
+        "key": "D",
+        "text": "Menghilangkan kebutuhan membajak tanah untuk musim berikutnya"
+      },
+      {
+        "key": "E",
+        "text": "Mewajibkan petani segera menaburkan pupuk urea ke jerami"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pemanenan dengan combine harvester berlangsung sangat cepat (2–3 jam/ha) dan jerami langsung tercacah rata di sawah, sehingga pengolahan tanah musim berikutnya segera dimulai."
+  },
+  {
+    "id": 331,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 11,
+    "question": "Fungsi utama bangunan bagi-sadap (pintu air) pada saluran sekunder jaringan irigasi Komering adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menampung limbah deterjen cair dari pemukiman warga"
+      },
+      {
+        "key": "B",
+        "text": "Tempat pembibitan ikan patin secara liar tanpa pakan"
+      },
+      {
+        "key": "C",
+        "text": "Menghambat aliran air agar persawahan mengalami banjir"
+      },
+      {
+        "key": "D",
+        "text": "Mengatur dan membagi debit aliran air secara proporsional"
+      },
+      {
+        "key": "E",
+        "text": "Tempat perhentian perahu wisata penumpang antar-kota"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Bangunan bagi-sadap dilengkapi pintu sorong pengatur debit untuk membagi pasokan air secara terukur ke saluran sekunder dan tersier sesuai luas areal layanan."
+  },
+  {
+    "id": 332,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 12,
+    "question": "Perbedaan mendasar antara sistem pengaliran air terus-menerus (continuous) dengan sistem gilir-giring (rotational) adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sistem terus-menerus hanya diterapkan saat musim kemarau parah"
+      },
+      {
+        "key": "B",
+        "text": "Sistem gilir-giring menghentikan pasokan air ke sawah selamanya"
+      },
+      {
+        "key": "C",
+        "text": "Sistem terus-menerus mewajibkan petani membeli air botol kemasan"
+      },
+      {
+        "key": "D",
+        "text": "Sistem gilir-giring hanya mengalirkan air pada waktu tengah malam"
+      },
+      {
+        "key": "E",
+        "text": "Gilir-giring menjatah jadwal buka pintu air saat debit berkurang"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Sistem gilir-giring diterapkan saat debit air mengecil di musim kemarau dengan membagi giliran alokasi air per blok secara terjadwal agar pembagian adil."
+  },
+  {
+    "id": 333,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 13,
+    "question": "Penggunaan mesin perontok padi bermotor (power thresher) dibanding cara gebot tradisional menguntungkan petani karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menekan butir gabah yang tertinggal di jerami dan hemat tenaga"
+      },
+      {
+        "key": "B",
+        "text": "Membuat beras menjadi otomatis beraroma pandan wangi"
+      },
+      {
+        "key": "C",
+        "text": "Menghilangkan seluruh bulir gabah hampa tanpa mesin penggiling"
+      },
+      {
+        "key": "D",
+        "text": "Menyebabkan jerami padi berubah menjadi abu pembasmi hama"
+      },
+      {
+        "key": "E",
+        "text": "Mengurangi bobot timbangan gabah panen saat ditimbang"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Power thresher memiliki silinder perontok berkecepatan putar stabil yang merontokkan bulir gabah secara tuntas dengan susut rontok (losses) jauh lebih rendah."
+  },
+  {
+    "id": 334,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 14,
+    "question": "Tanggung jawab teknis Balai Besar Wilayah Sungai (BBWS) Sumatera VIII dalam pengelolaan irigasi Komering mencakup...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menentukan harga gabah kering panen di tingkat tengkulak"
+      },
+      {
+        "key": "B",
+        "text": "Operasi dan pemeliharaan bendung serta saluran primer-sekunder"
+      },
+      {
+        "key": "C",
+        "text": "Membeli seluruh hasil panen beras petani di kawasan Belitang"
+      },
+      {
+        "key": "D",
+        "text": "Menjual traktor dan suku cadang mesin panen kepada petani"
+      },
+      {
+        "key": "E",
+        "text": "Memungut pajak penghasilan dari buruh tani pemanen sawah"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pemerintah pusat melalui BBWS Sumatera VIII bertanggung jawab atas infrastruktur utama irigasi teknis (bendung, saluran induk primer, dan saluran sekunder lintas wilayah)."
+  },
+  {
+    "id": 335,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 15,
+    "question": "Saluran primer dan sekunder irigasi Komering perlu dikeruk endapan lumpurnya secara berkala karena sedimentasi dapat...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengubah air tawar irigasi menjadi air asin laut lepas"
+      },
+      {
+        "key": "B",
+        "text": "Mempercepat pertumbuhan bibit padi sawah secara tidak terkendali"
+      },
+      {
+        "key": "C",
+        "text": "Mendangkalkan penampang saluran dan mengurangi kapasitas debit"
+      },
+      {
+        "key": "D",
+        "text": "Menaikkan harga sewa traktor bajak di tingkat perdesaan"
+      },
+      {
+        "key": "E",
+        "text": "Menghilangkan seluruh ikan patin yang hidup di kolam warga"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Sedimentasi lumpur mempersempit luas penampang basah saluran, memperlambat kecepatan aliran air, dan memicu luapan banjir saat musim hujan lebat."
+  },
+  {
+    "id": 336,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 16,
+    "question": "Peralatan perata tanah berpemandu sinar laser (laser land leveler) yang diaplikasikan pada traktor sawah modern berfungsi untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membakar gulma sawah menggunakan pancaran panas sinar laser"
+      },
+      {
+        "key": "B",
+        "text": "Mendeteksi letak emas batangan yang terpendam di dalam lumpur"
+      },
+      {
+        "key": "C",
+        "text": "Menghitung jumlah cacing tanah yang hidup di lahan sawah"
+      },
+      {
+        "key": "D",
+        "text": "Mencapai kerataan tanah presisi sehingga efisiensi air optimal"
+      },
+      {
+        "key": "E",
+        "text": "Menggantikan seluruh fungsi benih padi bersertifikat unggul"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Perataan tanah presisi memastikan ketinggian muka air genangan merata di seluruh petak sawah, menghemat kebutuhan air hingga 25%, dan menekan pertumbuhan gulma."
+  },
+  {
+    "id": 337,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 17,
+    "question": "Petani di Belitang memanen sawah 1 ha secara manual butuh 25 buruh harian upah Rp100.000/orang (Rp2,5 juta). Jika sewa combine harvester Rp1,8 juta, penghematan biayanya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp300.000 per hektar panen"
+      },
+      {
+        "key": "B",
+        "text": "Rp400.000 per hektar panen"
+      },
+      {
+        "key": "C",
+        "text": "Rp500.000 per hektar panen"
+      },
+      {
+        "key": "D",
+        "text": "Rp600.000 per hektar panen"
+      },
+      {
+        "key": "E",
+        "text": "Rp700.000 per hektar panen"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Biaya panen manual = Rp2.500.000. Biaya sewa combine = Rp1.800.000. Penghematan biaya tunai = Rp2.500.000 - Rp1.800.000 = Rp700.000."
+  },
+  {
+    "id": 338,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 18,
+    "question": "Ketika debit air saluran tersier menyusut drastis pada musim kemarau, langkah operasional yang harus diterapkan oleh pengurus P3A desa adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menerapkan sistem rotasi gilir-giring pembagian air antar-blok"
+      },
+      {
+        "key": "B",
+        "text": "Membendung seluruh saluran air hanya untuk petak milik ketua"
+      },
+      {
+        "key": "C",
+        "text": "Membiarkan petani saling berebut air dengan kekerasan fisik"
+      },
+      {
+        "key": "D",
+        "text": "Menutup permanen pintu air tersier menggunakan adukan semen"
+      },
+      {
+        "key": "E",
+        "text": "Membuang air irigasi ke saluran pembuang tanpa dialirkan ke sawah"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Penerapan sistem gilir-giring menjamin keadilan distribusi air bagi seluruh anggota blok tersier, menghindari kekeringan petak di ujung hilir saluran."
+  },
+  {
+    "id": 339,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 19,
+    "question": "Operator traktor tangan roda dua yang mengolah petak sawah dengan kedalaman lumpur melebihi 30 cm harus mengganti roda karetnya dengan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Roda kayu jati berukir tanpa sirip cakar"
+      },
+      {
+        "key": "B",
+        "text": "Roda besi bersirip tapak lebar anti-slip lumpur"
+      },
+      {
+        "key": "C",
+        "text": "Roda sepeda motor modifikasi ban gundul"
+      },
+      {
+        "key": "D",
+        "text": "Roda katrol besi pemutar kawat baja lift"
+      },
+      {
+        "key": "E",
+        "text": "Roda bantalan rel kereta api bermuatan baja"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Roda besi dengan sirip tapak lebar (cage wheel) memberikan daya apung dan traksi cengkeram di lahan berlumpur dalam, mencegah traktor ambles."
+  },
+  {
+    "id": 340,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 20,
+    "question": "Petani di Belitang yang menggunakan mesin rice transplanter harus menyiapkan bibit tanaman padi dengan teknik persemaian modern berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bibit disemai di atas tumpukan jerami busuk tanpa tanah"
+      },
+      {
+        "key": "B",
+        "text": "Bibit ditebar langsung di sungai Komering yang mengalir deras"
+      },
+      {
+        "key": "C",
+        "text": "Sistem baki plastik dapog dengan kerapatan akar anyam"
+      },
+      {
+        "key": "D",
+        "text": "Bibit direndam dalam minyak kelapa selama satu bulan penuh"
+      },
+      {
+        "key": "E",
+        "text": "Sistem cabut akar manual dari lumpur sawah tua (kocoran)"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Rice transplanter mensyaratkan bibit semai sistem dapog (baki/tray) dengan gulungan karpet akar teratur agar jari-jari penjepit mesin dapat mencengkeram bibit secara presisi."
+  },
+  {
+    "id": 341,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 21,
+    "question": "Ketika saluran pembuang (drainase) persawahan tersumbat eceng gondok menjelang musim hujan lebat, tindakan kelompok tani yang tepat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyemprotkan herbisida berbahaya yang mencemari kolam patin"
+      },
+      {
+        "key": "B",
+        "text": "Membiarkan gulma berkembang biak agar air meluap ke sawah"
+      },
+      {
+        "key": "C",
+        "text": "Membangun tanggul beton menutup seluruh saluran drainase"
+      },
+      {
+        "key": "D",
+        "text": "Gotong royong membersihkan gulma agar aliran air lancar"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan seluruh aktivitas pertanian hingga musim berganti"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Pembersihan saluran drainase secara gotong royong mencegah genangan air berlebih yang dapat menenggelamkan tanaman padi muda saat musim hujan."
+  },
+  {
+    "id": 342,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 22,
+    "question": "Pengelola Unit Pengelola Jasa Alsintan (UPJA) di Belitang rutin melumasi rantai konveyor dan memeriksa ketegangan sabuk v-belt combine harvester dengan tujuan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Meningkatkan kecepatan laju mesin hingga menyamai mobil balap"
+      },
+      {
+        "key": "B",
+        "text": "Menghilangkan kebutuhan pengisian solar mesin saat beroperasi"
+      },
+      {
+        "key": "C",
+        "text": "Mengubah warna pisau pemotong gabah menjadi mengilap kuning"
+      },
+      {
+        "key": "D",
+        "text": "Memperpanjang masa garansi dari pabrik pembuat mesin selamanya"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah slip transmisi dan menghindari kerusakan mendadak"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Perawatan preventif transmisi mekanik (v-belt dan rantai) mencegah slip daya perontok dan meminimalkan risiko macet (breakdown) di tengah hamparan sawah."
+  },
+  {
+    "id": 343,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 23,
+    "question": "Sepuluh hari menjelang pemanenan padi menggunakan combine harvester, tindakan manajemen air yang harus diterapkan petani di petak sawahnya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membuka pintu pembuang untuk mengeringkan hamparan sawah"
+      },
+      {
+        "key": "B",
+        "text": "Menggenangi petak sawah setinggi satu meter dari pematang"
+      },
+      {
+        "key": "C",
+        "text": "Menutup saluran drainase agar tanah menjadi lumpur sangat lembek"
+      },
+      {
+        "key": "D",
+        "text": "Mengalirkan air keruh dari kolam limbah kotoran ternak sapi"
+      },
+      {
+        "key": "E",
+        "text": "Menaburkan garam dapur untuk mempercepat proses panen padi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pengeringan lahan sebelum panen memadatkan daya dukung tanah sawah sehingga combine harvester berbobot berat dapat melintas lincah tanpa risiko terperosok."
+  },
+  {
+    "id": 344,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 24,
+    "question": "Dalam pembagian air irigasi gilir-giring di blok tersier, ketua P3A menentukan durasi jam buka pintu air untuk tiap kelompok petak sawah berdasarkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kekerabatan keluarga terdekat dengan kepala desa setempat"
+      },
+      {
+        "key": "B",
+        "text": "Proporsi luas areal lahan garapan dan fase pertumbuhan padi"
+      },
+      {
+        "key": "C",
+        "text": "Jumlah traktor modern yang dimiliki oleh pemilik petak sawah"
+      },
+      {
+        "key": "D",
+        "text": "Besaran uang tip rahasia yang diserahkan kepada penjaga pintu"
+      },
+      {
+        "key": "E",
+        "text": "Urutan abjad nama pemilik sawah di kartu tanda penduduk"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Penjatahan waktu gilir air dihitung proporsional berbasis luas lahan efektif dan tingkat kebutuhan air tanaman (misalnya fase pembungaan butuh air lebih banyak dibanding fase pematangan)."
+  },
+  {
+    "id": 345,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 25,
+    "question": "Masuknya mesin combine harvester secara masif di Belitang mengubah struktur tenaga kerja perdesaan. Analisis perubahan sosial menunjukkan terjadinya...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Peningkatan kebutuhan buruh pemotong padi wanita secara besar"
+      },
+      {
+        "key": "B",
+        "text": "Kepunahan total seluruh jenis varietas benih padi lokal unggul"
+      },
+      {
+        "key": "C",
+        "text": "Pergeseran buruh derep manual menjadi tenaga mekanik operator"
+      },
+      {
+        "key": "D",
+        "text": "Penutupan seluruh kios penjual pupuk dan bibit di kecamatan"
+      },
+      {
+        "key": "E",
+        "text": "Keharusan bagi pemilik sawah untuk pindah domisili ke perkotaan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Mekanisasi panen menggeser tradisi buruh derep manual (terutama kaum perempuan) dan membuka lapangan kerja baru bagi generasi muda sebagai operator mesin dan teknisi bengkel alsintan."
+  },
+  {
+    "id": 346,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 26,
+    "question": "Mengapa persawahan Belitang mampu berproduksi IP (Indeks Pertanaman) 200 hingga 300, sementara sawah tadah hujan hanya 100? Analisis teknis menunjukkan faktornya...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tanah di Belitang tidak memerlukan pemupukan sama sekali"
+      },
+      {
+        "key": "B",
+        "text": "Petani Belitang bekerja selama 24 jam tanpa pernah tidur"
+      },
+      {
+        "key": "C",
+        "text": "Belitang memiliki sinar matahari yang bersinar sepanjang malam"
+      },
+      {
+        "key": "D",
+        "text": "Ketersediaan air irigasi teknis terjamin sepanjang tahun"
+      },
+      {
+        "key": "E",
+        "text": "Sawah di Belitang ditanami pohon padi raksasa usia puluhan tahun"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Jaringan irigasi teknis Bendung Perjaya menjamin ketersediaan air secara kontinu di luar ketergantungan air hujan, memungkinkan petani menanam padi 2-3 kali setahun."
+  },
+  {
+    "id": 347,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 27,
+    "question": "Terjadinya pendangkalan cepat pada saluran sekunder Belitang jika dianalisis dari dinamika daerah aliran sungai (DAS) di kawasan hulu disebabkan oleh...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemasangan pipa air minum milik perusahaan daerah di dasar sungai"
+      },
+      {
+        "key": "B",
+        "text": "Banyaknya petani yang menanam rumput gajah di pematang sawah"
+      },
+      {
+        "key": "C",
+        "text": "Penggunaan combine harvester secara serentak di petak sawah"
+      },
+      {
+        "key": "D",
+        "text": "Ketiadaan pintu air di seluruh percabangan saluran tersier"
+      },
+      {
+        "key": "E",
+        "text": "Degradasi tutupan hutan hulu memicu erosi tanah terbawa arus"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Alih fungsi lahan dan penggundulan hutan di hulu DAS Sungai Komering memicu erosi permukaan tanah, menghasilkan muatan sedimen lumpur tinggi yang mengendap di saluran irigasi."
+  },
+  {
+    "id": 348,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 28,
+    "question": "Analisis perbandingan waktu kerja penanaman manual (tandur benang) vs mesin rice transplanter untuk lahan 1 hektar membuktikan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Transplanter memangkas waktu kerja dari 20 hari-orang jadi 3 jam"
+      },
+      {
+        "key": "B",
+        "text": "Penanaman manual selalu lebih cepat daripada menggunakan mesin"
+      },
+      {
+        "key": "C",
+        "text": "Penggunaan mesin transplanter mewajibkan tanam malam hari"
+      },
+      {
+        "key": "D",
+        "text": "Bibit padi yang ditanam mesin menghasilkan bulir beras hitam"
+      },
+      {
+        "key": "E",
+        "text": "Mesin transplanter membutuhkan tenaga tarik empat ekor kerbau"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Rice transplanter mampu menanam 1 hektar sawah dalam waktu sekitar 2-4 jam dengan 2 operator, jauh lebih efisien dibanding cara manual yang butuh 20-25 orang tenaga kerja/hari."
+  },
+  {
+    "id": 349,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 29,
+    "question": "Mengapa petani di petak sawah sempit dengan pematang tinggi masih lebih memilih traktor tangan roda dua? Analisis teknis operasional menunjukkan faktor...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Traktor roda dua memiliki kecepatan kerja sepuluh kali lipat"
+      },
+      {
+        "key": "B",
+        "text": "Akses manuver belok dan transportasi jalan sempit lebih fleksibel"
+      },
+      {
+        "key": "C",
+        "text": "Traktor tangan dilarang menggunakan bahan bakar minyak bumi"
+      },
+      {
+        "key": "D",
+        "text": "Harga beli traktor tangan lebih mahal daripada traktor roda empat"
+      },
+      {
+        "key": "E",
+        "text": "Traktor roda empat dilarang melintasi sawah oleh peraturan adat"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pada lahan berpetak kecil dengan jalan usaha tani sempit, traktor tangan roda 2 lebih mudah dipindahkan antarpematang dan memiliki radius putar belok yang lincah."
+  },
+  {
+    "id": 350,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 30,
+    "question": "Analisis dampak pemadatan lapisan tanah bawah (hardpan) akibat mobilitas traktor dan combine harvester berbobot berat di persawahan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyebabkan tanah sawah hancur menjadi abu debu kering"
+      },
+      {
+        "key": "B",
+        "text": "Menghilangkan seluruh kebutuhan unsur hara pupuk kimia sawah"
+      },
+      {
+        "key": "C",
+        "text": "Bagus menahan rembesan air, namun perakaran dalam bisa terhambat"
+      },
+      {
+        "key": "D",
+        "text": "Mewajibkan tanah sawah dibongkar menggunakan dinamit tambang"
+      },
+      {
+        "key": "E",
+        "text": "Menjadikan tanah sawah berubah menjadi batu karang laut padat"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Lapisan hardpan bermanfaat mencegah perkolasi air yang berlebihan pada tanah sawah, namun pemadatan berlebih dapat membatasi aerasi dan kedalaman penetrasi akar tanaman."
+  },
+  {
+    "id": 351,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 31,
+    "question": "Sengketa pembagian air irigasi yang kerap muncul antar-blok tersier saat puncak kemarau dianalisis secara sosial-kelembagaan berakar pada...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Petani di hilir memiliki penghasilan yang jauh lebih melimpah"
+      },
+      {
+        "key": "B",
+        "text": "Seluruh pintu air irigasi rusak total tersambar petir halilintar"
+      },
+      {
+        "key": "C",
+        "text": "Saluran irigasi Komering beralih fungsi menjadi jalan raya tol"
+      },
+      {
+        "key": "D",
+        "text": "Pelanggaran jadwal gilir dan ego sektoral petak di bagian hulu"
+      },
+      {
+        "key": "E",
+        "text": "Petani sawah diwajibkan menyiram tanaman menggunakan air laut"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Konflik air sering dipicu oleh oknum petani di hulu yang membendung parit secara liar di luar jadwal gilirnya, mengakibatkan petak sawah di bagian hilir mengalami defisit air."
+  },
+  {
+    "id": 352,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 32,
+    "question": "Ketergantungan petani kecil pada Unit Pengelola Jasa Alsintan (UPJA) di Belitang dianalisis menciptakan relasi sosial-ekonomi berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Perbudakan tenaga kerja petani oleh pengurus brigade alsintan"
+      },
+      {
+        "key": "B",
+        "text": "Penutupan seluruh toko kelontong di sekitar kawasan persawahan"
+      },
+      {
+        "key": "C",
+        "text": "Keharusan petani menjual sertifikat sawahnya kepada pihak UPJA"
+      },
+      {
+        "key": "D",
+        "text": "Larangan bagi petani untuk memiliki telepon seluler pintar"
+      },
+      {
+        "key": "E",
+        "text": "Komersialisasi jasa mekanisasi menggantikan gotong royong kerja"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Kebutuhan efisiensi waktu mendorong peralihan dari sistem tolong-menolong kerja fisik tradisional menjadi transaksi jasa sewa alat mesin pertanian komersial."
+  },
+  {
+    "id": 353,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 33,
+    "question": "Ketika mengevaluasi kelayakan investasi pembelian mesin combine harvester seharga Rp450 juta oleh Gapoktan di Belitang, kriteria penilaian prioritas adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Luas hamparan layanan, tarif sewa, dan periode pengembalian modal"
+      },
+      {
+        "key": "B",
+        "text": "Warna cat bodi mesin combine harvester yang paling disukai warga"
+      },
+      {
+        "key": "C",
+        "text": "Banyaknya stiker sponsor iklan yang tertempel di dinding mesin"
+      },
+      {
+        "key": "D",
+        "text": "Kemampuan mesin combine melaju kencang di jalan raya aspal tol"
+      },
+      {
+        "key": "E",
+        "text": "Suara raungan knalpot mesin combine yang terdengar paling garang"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kelayakan investasi alsintan dievaluasi dari kecukupan luas areal kerja musiman (minimal 80–100 ha/musim), margin tarif sewa, serta Payback Period (periode balik modal)."
+  },
+  {
+    "id": 354,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 34,
+    "question": "Sebuah gagasan mengusulkan penerapan pintu air irigasi otomatis berbasis sensor telemetri di jaringan Komering. Evaluasi terhadap gagasan tersebut menyimpulkan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pasti gagal karena pintu air tidak dapat digerakkan oleh motor listrik"
+      },
+      {
+        "key": "B",
+        "text": "Sangat efektif meningkatkan presisi pembagian air dan data debit"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan seluruh petani beralih menjadi ahli pemrograman komputer"
+      },
+      {
+        "key": "D",
+        "text": "Menghilangkan seluruh aliran air yang mengalir menuju saluran sekunder"
+      },
+      {
+        "key": "E",
+        "text": "Mengharuskan persawahan Belitang dipagari kawat berduri beraliran listrik"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Telemetri hidrologi otomatis memantau fluktuasi muka air secara real-time dan mengatur bukaan pintu air secara akurat, meminimalkan kehilangan air akibat human error."
+  },
+  {
+    "id": 355,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 35,
+    "question": "Menilai keberhasilan tata kelola kelembagaan P3A di tingkat perdesaan OKU Timur, indikator kinerja paling valid dan objektif adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Banyaknya piala penghargaan lomba desa yang dipajang di kantor"
+      },
+      {
+        "key": "B",
+        "text": "Besaran saldo kas iuran air yang tidak pernah digunakan sama sekali"
+      },
+      {
+        "key": "C",
+        "text": "Kelancaran pembagian air hingga petak hilir dan minimnya sengketa"
+      },
+      {
+        "key": "D",
+        "text": "Kemampuan pengurus P3A membeli mobil dinas operasional mewah"
+      },
+      {
+        "key": "E",
+        "text": "Jumlah anggota P3A yang pindah bekerja ke sektor pertambangan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Keberhasilan P3A tercermin dari kepuasan anggota, pemerataan distribusi air hingga petak tersier paling ujung, serta terpeliharanya fungsi fisik saluran tanpa konflik."
+  },
+  {
+    "id": 356,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 36,
+    "question": "Bantuan alsintan traktor dari pemerintah dievaluasi sering cepat rusak dan terbengkalai di beberapa desa. Penilaian terhadap penyebab utama kelemahan ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Traktor buatan pabrik dalam negeri selalu berkualitas sangat jelek"
+      },
+      {
+        "key": "B",
+        "text": "Petani di perdesaan menolak seluruh bantuan alat mesin modern"
+      },
+      {
+        "key": "C",
+        "text": "Traktor sengaja dirusak oleh petugas penyuluh pertanian setempat"
+      },
+      {
+        "key": "D",
+        "text": "Lemahnya manajemen pemeliharaan, ketiadaan suku cadang, dan operator"
+      },
+      {
+        "key": "E",
+        "text": "Harga solar bahan bakar traktor disubsidi penuh oleh pemerintah"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Kerusakan alsintan bantuan umumnya berakar dari ketiadaan alokasi dana perawatan rutin, minimnya keterampilan operator, serta kesulitan memperoleh suku cadang di desa."
+  },
+  {
+    "id": 357,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 37,
+    "question": "Menilai solusi konflik penggunaan air antara petambak kolam patin dan petani sawah di Belitang saat kemarau, rekomendasi kebijakan paling berkeadilan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menutup seluruh kolam patin dan menimbunnya dengan tanah sawah"
+      },
+      {
+        "key": "B",
+        "text": "Melarang petani sawah menanam padi selama sepuluh tahun ke depan"
+      },
+      {
+        "key": "C",
+        "text": "Mengharuskan petambak ikan membeli air tangki dari luar provinsi"
+      },
+      {
+        "key": "D",
+        "text": "Membiarkan kelompok yang memiliki massa terbanyak menguasai air"
+      },
+      {
+        "key": "E",
+        "text": "Pengaturan kuota terjadwal dan optimalisasi resirkulasi air kolam"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Solusi win-win solution dicapai melalui alokasi kuota air bergilir yang tertib serta mendorong petambak menerapkan sistem sirkulasi/filter air kolam tertutup."
+  },
+  {
+    "id": 358,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 38,
+    "question": "Evaluasi terhadap usulan pelarangan mesin combine harvester demi melindungi buruh panen tradisional di persawahan OKU Timur menyimpulkan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Langkah mundur yang merugikan efisiensi dan daya saing beras daerah"
+      },
+      {
+        "key": "B",
+        "text": "Keputusan sangat cerdas yang akan memajukan perekonomian daerah"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan seluruh petani sawah menggiling padinya secara manual"
+      },
+      {
+        "key": "D",
+        "text": "Meningkatkan produksi gabah kering panen menjadi dua kali lipat"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah terjadinya banjir kiriman dari kawasan hulu sungai"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Melarang mekanisasi akan menaikkan biaya panen, memperlambat masa tanam, dan memicu susut hasil tinggi; solusinya adalah alih profesi buruh ke sektor pengolahan dan jasa alsintan."
+  },
+  {
+    "id": 359,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 39,
+    "question": "Menghadapi anomali iklim global El Nino kering, evaluasi strategi infrastruktur irigasi paling adaptif bagi ketahanan pangan OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghentikan seluruh penanaman komoditas pertanian di persawahan"
+      },
+      {
+        "key": "B",
+        "text": "Pembangunan embung suplesi, sumur pantek surya, dan rehabilitasi saluran"
+      },
+      {
+        "key": "C",
+        "text": "Menjual seluruh air Sungai Komering ke pabrik industri minuman botol"
+      },
+      {
+        "key": "D",
+        "text": "Membongkar seluruh tanggul penahan banjir di sepanjang bantaran sungai"
+      },
+      {
+        "key": "E",
+        "text": "Mengharuskan warga berdoa meminta hujan tanpa melakukan ikhtiar fisik"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Adaptasi iklim menuntut kombinasi rehabilitasi saluran kedap air, pembuatan kantong embung penampung limpasan hujan, dan sumur dangkal bertenaga panel surya."
+  },
+  {
+    "id": 360,
+    "day": 2,
+    "indicatorCode": "D",
+    "indicatorKey": "modul_d_alsintan_irigasi",
+    "indicatorName": "Sistem Teknologi Peralatan Pertanian (dari Tradisional ke Alsintan Modern) dan Jaringan Irigasi",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 40,
+    "question": "Evaluasi terhadap keberlanjutan unit usaha jasa alsintan (UPJA) mandiri di Belitang menunjukkan faktor penentu utama kelangsungan usahanya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ketiadaan pembukuan keuangan agar terhindar dari audit pajak"
+      },
+      {
+        "key": "B",
+        "text": "Ketergantungan abadi pada hibah mesin gratis dari pemerintah daerah"
+      },
+      {
+        "key": "C",
+        "text": "Disiplin alokasi dana penyusutan aset untuk peremajaan mesin baru"
+      },
+      {
+        "key": "D",
+        "text": "Penetapan tarif sewa mesin yang jauh lebih tinggi daripada harga beras"
+      },
+      {
+        "key": "E",
+        "text": "Menolak melayani petani yang memiliki sawah kurang dari satu hektar"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Bisnis jasa alsintan berkelanjutan jika menyisihkan dana depresiasi penyusutan mesin dari setiap pendapatan sewa untuk biaya overhaul dan regenerasi armada baru."
+  },
+  {
+    "id": 361,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 1,
+    "question": "Rekayasa teknologi penanaman padi sawah berselang baris teratur yang menciptakan lorong terbuka memanjang di antara barisan rumpun disebut...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sistem tumpang sari tanaman keras perkebunan"
+      },
+      {
+        "key": "B",
+        "text": "Pola tanam acak tanpa jarak pematang beraturan"
+      },
+      {
+        "key": "C",
+        "text": "Metode tebar benih langsung di genangan air dalam"
+      },
+      {
+        "key": "D",
+        "text": "Sistem tanam tegel bujur sangkar rapat konvensional"
+      },
+      {
+        "key": "E",
+        "text": "Sistem tanam jajar legowo tipe dua atau empat satu"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Sistem tanam jajar legowo adalah teknik menata barisan rumpun padi dengan menyisipkan satu baris kosong memanjang untuk memanipulasi tata kelola tanaman."
+  },
+  {
+    "id": 362,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 2,
+    "question": "Standar kadar air gabah kering giling (GKG) yang ditetapkan oleh Perum Bulog untuk penyimpanan aman jangka panjang di gudang adalah maksimal...",
+    "options": [
+      {
+        "key": "A",
+        "text": "14 persen agar bebas dari pertumbuhan jamur dan kutu"
+      },
+      {
+        "key": "B",
+        "text": "25 persen agar gabah tetap basah dan berbobot berat"
+      },
+      {
+        "key": "C",
+        "text": "35 persen seperti kondisi gabah baru selesai dipotong"
+      },
+      {
+        "key": "D",
+        "text": "50 persen dengan rendaman air di dalam karung goni"
+      },
+      {
+        "key": "E",
+        "text": "0 persen tanpa ada kandungan molekul air sama sekali"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Standar kadar air Gabah Kering Giling (GKG) adalah maksimal 14% untuk mencegah pembusukan mikroorganisme dan respirasi yang merusak mutu simpan beras."
+  },
+  {
+    "id": 363,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 3,
+    "question": "Mesin pengering gabah mekanis tipe hamparan datar berdaya hembus udara panas sekam yang digunakan saat panen musim hujan disebut...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Vertical dryer silinder putar bertingkat tinggi"
+      },
+      {
+        "key": "B",
+        "text": "Flat bed dryer bak hamparan datar lorong pemanas"
+      },
+      {
+        "key": "C",
+        "text": "Continuous flow dryer pipa aliran berjalan otomatis"
+      },
+      {
+        "key": "D",
+        "text": "Rotary dryer tabung putar pengering tepung tapioka"
+      },
+      {
+        "key": "E",
+        "text": "Solar dryer dome kubah kaca penangkap sinar surya"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Flat bed dryer adalah mesin pengering gabah dengan lantai berlubang dan blower penghembus udara panas yang sangat populer di penggilingan padi Belitang."
+  },
+  {
+    "id": 364,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 4,
+    "question": "Instalasi pabrik penggilingan padi terpadu yang memadukan mesin pemecah kulit, pemisah batu, dan penyosoh poles beras dikenal dengan istilah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "UPJA unit pengelola jasa sewa alsintan perdesaan"
+      },
+      {
+        "key": "B",
+        "text": "BUMDes badan usaha milik desa bidang perdagangan"
+      },
+      {
+        "key": "C",
+        "text": "RMU Rice Milling Unit penggilingan beras modern"
+      },
+      {
+        "key": "D",
+        "text": "PKS pabrik pengolahan kelapa sawit minyak mentah"
+      },
+      {
+        "key": "E",
+        "text": "KUD koperasi unit desa simpan pinjam permodalan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Rice Milling Unit (RMU) modern mengintegrasikan tahapan pengolahan gabah menjadi beras putih bersih berkualitas tinggi dengan rendemen optimal."
+  },
+  {
+    "id": 365,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 5,
+    "question": "Kehilangan atau penyusutan hasil panen gabah akibat tercecer, rontok di tanah, atau patah saat proses pengeringan dan penggilingan disebut...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Deflasi penurunan harga komoditas pasar umum"
+      },
+      {
+        "key": "B",
+        "text": "Stagnasi ketiadaan pertumbuhan volume panen"
+      },
+      {
+        "key": "C",
+        "text": "Depresiasi penyusutan nilai buku aset mesin"
+      },
+      {
+        "key": "D",
+        "text": "Losses susut hasil panen dan pascapanen gabah"
+      },
+      {
+        "key": "E",
+        "text": "Fluktuasi naik turunnya nilai kurs valuta asing"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Losses (susut pascapanen) merujuk pada persentase gabah/beras yang hilang kuantitas atau kualitasnya sepanjang rantai panen hingga siap konsumsi."
+  },
+  {
+    "id": 366,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 6,
+    "question": "Wahana pesawat terbang tanpa awak berbaling-baling yang diadopsi petani milenial di OKU Timur untuk menyemprot pupuk cair secara presisi adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Helikopter kargo bermesin jet angkut logistik"
+      },
+      {
+        "key": "B",
+        "text": "Pesawat layang gantung olahraga paralayang udara"
+      },
+      {
+        "key": "C",
+        "text": "Balon udara panas bertenaga gas elpiji tabung"
+      },
+      {
+        "key": "D",
+        "text": "Satelit komunikasi orbit rendah pemancar sinyal"
+      },
+      {
+        "key": "E",
+        "text": "Drone agrikultur sprayer penyemprot otomatis"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Drone sprayer agrikultur adalah wahana terbang nirawak (UAV) berpengendali GPS yang menyemprotkan cairan pupuk/pestisida dengan radius dan droplet mikro terukur."
+  },
+  {
+    "id": 367,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 7,
+    "question": "Sistem informasi berbasis data spasial iklim dari Kementerian Pertanian dan BMKG untuk memandu penetapan awal musim tanam di Belitang disebut...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Katam Kalender Tanam Terpadu digital spasial"
+      },
+      {
+        "key": "B",
+        "text": "Simpatika sistem informasi pendidik madrasah"
+      },
+      {
+        "key": "C",
+        "text": "Dapodik data pokok pendidikan sekolah nasional"
+      },
+      {
+        "key": "D",
+        "text": "Siadin sistem informasi administrasi perizinan"
+      },
+      {
+        "key": "E",
+        "text": "PeduliLindungi aplikasi pemantau mobilitas warga"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Katam Terpadu (Kalender Tanam Terpadu) menyajikan prediksi awal musim tanam, potensi luas tanam, estimasi curah hujan, dan rekomendasi varietas benih per kecamatan."
+  },
+  {
+    "id": 368,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C1",
+    "numberInIndicator": 8,
+    "question": "Konsep 'smart farming' (pertanian pintar) dalam modernisasi agribisnis di Kabupaten OKU Timur bertumpu pada pemanfaatan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tenaga kerja hewan ternak sapi dalam jumlah ribuan"
+      },
+      {
+        "key": "B",
+        "text": "Teknologi digital, sensor IoT, dan otomatisasi data"
+      },
+      {
+        "key": "C",
+        "text": "Pemberian mantra gaib penolak hama oleh pawang desa"
+      },
+      {
+        "key": "D",
+        "text": "Penutupan seluruh akses persawahan dari dunia internet"
+      },
+      {
+        "key": "E",
+        "text": "Penebangan seluruh pepohonan di sepanjang pinggir jalan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Smart farming memadukan teknologi kecerdasan buatan, Internet of Things (IoT), drone, dan sensor tanah untuk pengambilan keputusan budidaya presisi dan efisien."
+  },
+  {
+    "id": 369,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 9,
+    "question": "Penerapan sistem tanam jajar legowo (tipe 2:1) meningkatkan produktivitas panen padi sawah di Belitang terutama karena memanfaatkan fenomena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Efek penenggelaman akar padi di lumpur paling dalam"
+      },
+      {
+        "key": "B",
+        "text": "Penyinaran lampu listrik tenaga surya di malam hari"
+      },
+      {
+        "key": "C",
+        "text": "Efek tanaman pinggir border effect menyerap surya"
+      },
+      {
+        "key": "D",
+        "text": "Pengurangan jumlah rumpun tanaman hingga separuh lahan"
+      },
+      {
+        "key": "E",
+        "text": "Pencegahan angin agar tidak berhembus melintasi sawah"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Lorong legowo membuat setiap baris tanaman berperilaku sebagai tanaman pinggir (border effect) yang menerima fotosintesis sinar matahari dan sirkulasi CO2 maksimal."
+  },
+  {
+    "id": 370,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 10,
+    "question": "Peranan penting mesin destoner (pemisah batu) pada pabrik penggilingan padi (RMU) modern bagi kualitas beras Belitang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengubah butir beras biasa menjadi berbentuk mutiara"
+      },
+      {
+        "key": "B",
+        "text": "Menambahkan zat pemutih kimia klorin ke dalam butir"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan beras dimasak menggunakan air mendidih murni"
+      },
+      {
+        "key": "D",
+        "text": "Memisahkan butiran kerikil berat jenis sama dari gabah"
+      },
+      {
+        "key": "E",
+        "text": "Mengurangi kandungan karbohidrat beras hingga nol persen"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Destoner menggunakan perbedaan berat jenis dan getaran hembusan udara untuk menyaring butiran batu/kerikil kecil yang lolos dari pembersihan awal gabah."
+  },
+  {
+    "id": 371,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 11,
+    "question": "Gabah basah hasil panen musim hujan yang menumpuk lebih dari 24 jam tanpa dikeringkan akan mengalami kerusakan mutu serius berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Batang jerami padi berubah menjadi logam tembaga murni"
+      },
+      {
+        "key": "B",
+        "text": "Butir gabah mengecil menjadi butiran pasir pantai halus"
+      },
+      {
+        "key": "C",
+        "text": "Beras berubah warna menjadi hijau terang berbau wangi"
+      },
+      {
+        "key": "D",
+        "text": "Kadar amilosa beras meningkat menjadi seratus persen"
+      },
+      {
+        "key": "E",
+        "text": "Fermentasi panas memicu butir kuning, berkecambah, dan busuk"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Respirasi aktif gabah basah yang tertumpuk padat menimbulkan kenaikan suhu lokal (self-heating), memicu jamur, perubahan warna butir kuning/rusak, dan perkecambahan."
+  },
+  {
+    "id": 372,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 12,
+    "question": "Keunggulan penggunaan drone sprayer dibanding alat semprot manual knapsack dalam pemupukan daun di hamparan sawah Belitang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Penyemprotan super cepat, sebaran merata, dan bebas lelah"
+      },
+      {
+        "key": "B",
+        "text": "Drone tidak memerlukan baterai isi ulang maupun bensin"
+      },
+      {
+        "key": "C",
+        "text": "Drone dapat memanen bulir gabah langsung dari udara"
+      },
+      {
+        "key": "D",
+        "text": "Menghilangkan keharusan membeli pupuk cair tanaman"
+      },
+      {
+        "key": "E",
+        "text": "Drone bekerja otomatis tanpa perlu dikemudikan operator"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Drone mampu menyelesaikan 1 hektar sawah dalam waktu 10-15 menit dengan butiran kabut (droplet) halus merata terdorong angin baling-baling, tanpa menginjak tanaman."
+  },
+  {
+    "id": 373,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 13,
+    "question": "Pemanfaatan sensor pH meter digital tanah portabel membantu petani sawah di Belitang dalam mengambil keputusan agronomis berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menentukan waktu keberangkatan bus perjalanan field trip"
+      },
+      {
+        "key": "B",
+        "text": "Menakar kebutuhan kapur dolomit untuk atasi kemasaman tanah"
+      },
+      {
+        "key": "C",
+        "text": "Mengetahui ramalan nasib keberuntungan panen musim depan"
+      },
+      {
+        "key": "D",
+        "text": "Memeriksa keaslian uang kertas hasil penjualan beras"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan seluruh pemakaian pupuk kompos kandang sapi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Sensor pH menunjukkan tingkat keasaman tanah sawah; jika pH di bawah 5,5, petani perlu mengaplikasikan kapur pertanian (dolomit) untuk menetralkan tanah."
+  },
+  {
+    "id": 374,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 14,
+    "question": "Penurunan angka susut panen (losses) padi dari 10% menjadi di bawah 3% berkat modernisasi alsintan pascapanen secara makro berdampak pada...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kenaikan drastis impor beras dari negara tetangga"
+      },
+      {
+        "key": "B",
+        "text": "Penurunan drastis jumlah penduduk di Kabupaten OKU Timur"
+      },
+      {
+        "key": "C",
+        "text": "Penyelamatan ribuan ton beras penopang cadangan nasional"
+      },
+      {
+        "key": "D",
+        "text": "Penutupan seluruh penggilingan padi swasta di Belitang"
+      },
+      {
+        "key": "E",
+        "text": "Kenaikan angka pengangguran terbuka di sektor perkotaan"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Penurunan susut panen sebesar 7% pada skala produksi OKU Timur setara dengan menyelamatkan puluhan ribu ton beras yang langsung menambah pasokan pangan nasional."
+  },
+  {
+    "id": 375,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 15,
+    "question": "Mesin pemilah warna optik (color sorter) pada pabrik penggilingan beras modern bekerja dengan bantuan kamera sensor canggih untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mewarnai butir beras putih menjadi merah atau ungu"
+      },
+      {
+        "key": "B",
+        "text": "Membuat butir beras mengeluarkan aroma wangi melati"
+      },
+      {
+        "key": "C",
+        "text": "Menghitung berat kotor karung beras saat ditimbang"
+      },
+      {
+        "key": "D",
+        "text": "Menolak dan meniup butir beras kuning, hitam, atau kapur"
+      },
+      {
+        "key": "E",
+        "text": "Mengemas beras ke dalam karung plastik secara otomatis"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Color sorter mendeteksi diskolorisasi butiran beras cacat (beras kuning, hitam, berbintik, atau berkapur) menggunakan kamera optik dan menyemprotnya keluar dengan hembusan angin pneumatik."
+  },
+  {
+    "id": 376,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 16,
+    "question": "Faktor psikososial utama yang menyebabkan sebagian generasi muda di perdesaan Belitang masih enggan menjadi petani adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ketiadaan lahan persawahan subur di Kabupaten OKU Timur"
+      },
+      {
+        "key": "B",
+        "text": "Harga beras Belitang yang tidak laku dijual di pasaran"
+      },
+      {
+        "key": "C",
+        "text": "Larangan bagi anak muda untuk mengoperasikan traktor mesin"
+      },
+      {
+        "key": "D",
+        "text": "Kewajiban seluruh sarjana untuk menjadi pegawai negeri sipil"
+      },
+      {
+        "key": "E",
+        "text": "Stigma bahwa profesi petani identik kotor, berat, dan kuno"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Citra pertanian konvensional yang melelahkan fisik dan berlumpur menimbulkan persepsi negatif; modernisasi melalui smart farming dan agribisnis digital menjadi kunci memulihkan minat generasi muda."
+  },
+  {
+    "id": 377,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 17,
+    "question": "Petani di Belitang menerapkan sistem jajar legowo 2:1 (jarak tanam 20 cm x 10 cm x 40 cm). Perhitungan populasi rumpun padi per hektar dibanding tegel 20 cm x 20 cm menunjukkan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Populasi meningkat sekitar 33 persen menjadi 333 ribu rumpun"
+      },
+      {
+        "key": "B",
+        "text": "Populasi tanaman berkurang separuh menjadi 125 ribu rumpun"
+      },
+      {
+        "key": "C",
+        "text": "Populasi tetap sama persis tanpa ada perubahan sedikitpun"
+      },
+      {
+        "key": "D",
+        "text": "Jumlah rumpun menurun karena lorong tengah dibiarkan kosong"
+      },
+      {
+        "key": "E",
+        "text": "Sawah hanya dapat ditanami 50 ribu rumpun tanaman padi saja"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sistem legowo 2:1 merapatkan jarak tanam dalam barisan (10 cm), sehingga meskipun ada lorong kosong 40 cm, populasi rumpun meningkat sekitar 33% (dari 250.000 menjadi 333.300 rumpun/ha)."
+  },
+  {
+    "id": 378,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 18,
+    "question": "Ketika panen padi bertepatan dengan hujan lebat berturut-turut di Belitang, langkah operasional pascapanen paling tepat yang harus diterapkan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membiarkan gabah terendam air di dalam karung plastik rapat"
+      },
+      {
+        "key": "B",
+        "text": "Memasukkan gabah ke mesin flat bed dryer pengering mekanis"
+      },
+      {
+        "key": "C",
+        "text": "Menjemur gabah di bawah rintik hujan tanpa pelindung atap"
+      },
+      {
+        "key": "D",
+        "text": "Membakar separuh gabah basah untuk mengeringkan sisanya"
+      },
+      {
+        "key": "E",
+        "text": "Menjual gabah dengan harga gratis kepada siapa saja yang lewat"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Penggunaan flat bed dryer mekanis memutus ketergantungan pada sinar matahari, mengeringkan gabah basah secara cepat dan menyelamatkan mutu butir beras dari kerusakan."
+  },
+  {
+    "id": 379,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 19,
+    "question": "Operator drone agrikultur yang hendak melakukan penyemprotan pupuk cair di hamparan sawah Belitang wajib menerapkan prosedur keselamatan K3 berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menerbangkan drone di bawah kabel jaringan listrik tegangan tinggi"
+      },
+      {
+        "key": "B",
+        "text": "Menyemprotkan pupuk cair tepat di atas kerumunan warga yang menonton"
+      },
+      {
+        "key": "C",
+        "text": "Mengecek arah angin, baterai, kalibrasi GPS, dan memakai APD"
+      },
+      {
+        "key": "D",
+        "text": "Menutup mata saat drone sedang terbang melintasi persawahan"
+      },
+      {
+        "key": "E",
+        "text": "Menerbangkan drone saat terjadi badai petir dan angin kencang"
+      }
+    ],
+    "correct": "C",
+    "explanation": "SOP operasional drone mencakup pra-terbang (cek kalibrasi kompas/GPS, baterai), pengamatan cuaca/kecepatan angin, serta penggunaan Alat Pelindung Diri (masker, kacamata pelindung)."
+  },
+  {
+    "id": 380,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 20,
+    "question": "Pengelola RMU mendapati persentase beras patah (broken rice) terlalu tinggi saat menggiling gabah. Tindakan teknis perbaikan mesin yang harus diterapkan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menambahkan oli pelumas mesin langsung ke dalam corong gabah"
+      },
+      {
+        "key": "B",
+        "text": "Menaikkan putaran mesin husker melebihi batas kecepatan aman"
+      },
+      {
+        "key": "C",
+        "text": "Mengganti saringan beras dengan kawat berduri penusuk"
+      },
+      {
+        "key": "D",
+        "text": "Menyetel ulang celah rol karet husker dan tekanan silinder poles"
+      },
+      {
+        "key": "E",
+        "text": "Menggiling gabah yang kadar airnya masih di atas 22 persen"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Celah rubber roll (rol karet) yang terlalu sempit atau tekanan batu penyosoh (polisher) yang berlebihan menimbulkan gesekan keras yang meremukkan butiran beras."
+  },
+  {
+    "id": 381,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 21,
+    "question": "Ketika petani hendak menyebarkan pupuk urea susulan pada pertanaman padi fase anakan, pemanfaatan informasi Katam digital BMKG memandu petani untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menabur pupuk saat prakiraan cuaca menunjukkan badai hujan lebat"
+      },
+      {
+        "key": "B",
+        "text": "Menghentikan seluruh pemberian pupuk sepanjang hidup tanaman"
+      },
+      {
+        "key": "C",
+        "text": "Membuang seluruh persediaan pupuk urea ke dalam saluran primer"
+      },
+      {
+        "key": "D",
+        "text": "Menabur pupuk saat kondisi tanah tergenang banjir meluap"
+      },
+      {
+        "key": "E",
+        "text": "Memilih hari cerah berawan agar pupuk terserap tanpa tercuci"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Menabur pupuk saat curah hujan ekstrem memicu hanyutnya hara nitrogen (leaching) terbawa aliran limpasan air sawah sebelum sempat diserap perakaran tanaman."
+  },
+  {
+    "id": 382,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 22,
+    "question": "Lulusan muda di Belitang ingin mengemas beras premium kemasan 5 kg berlabel mandiri. Langkah penerapan penjaminan mutu yang harus dipenuhi adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Uji derajat sosoh minimal 95 persen, kadar air 14 persen, dan izin Kementan"
+      },
+      {
+        "key": "B",
+        "text": "Mencampur beras menir patah dengan beras ketan tanpa merek"
+      },
+      {
+        "key": "C",
+        "text": "Menyemprotkan parfum melati agar beras harum sepanjang masa"
+      },
+      {
+        "key": "D",
+        "text": "Menjual beras tanpa mencantumkan berat netto kemasan pada kantong"
+      },
+      {
+        "key": "E",
+        "text": "Mengemas beras basah berkadar air 20 persen langsung ke karung"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Standar beras premium mensyaratkan derajat sosoh minimal 95%, butir patah maksimal 15%, kadar air maksimal 14%, bebas butir gabah/batu, dan registrasi kemasan PSAT Kementan."
+  },
+  {
+    "id": 383,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 23,
+    "question": "Petani padi di Belitang menggunakan alat Bagan Warna Daun (BWD) 4 skala untuk memandu pemupukan nitrogen. Cara penerapannya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menempelkan BWD ke tanah sawah untuk mengukur kelembaban"
+      },
+      {
+        "key": "B",
+        "text": "Mencocokkan warna daun teratas dengan skala warna di bawah naungan tubuh"
+      },
+      {
+        "key": "C",
+        "text": "Mencelupkan BWD ke dalam air saluran irigasi selama 24 jam"
+      },
+      {
+        "key": "D",
+        "text": "Mewarnai daun padi menggunakan cat hijau sesuai warna skala BWD"
+      },
+      {
+        "key": "E",
+        "text": "Mematahkan batang padi lalu membakarnya bersama alat BWD"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pembacaan BWD dilakukan pada daun teratas yang telah membuka penuh, di bawah naungan tubuh agar tidak bias sinar matahari langsung, untuk menentukan perlu tidaknya tambahan urea."
+  },
+  {
+    "id": 384,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 24,
+    "question": "Pengelola penggilingan padi di Belitang mengonversi sekam sisa giling menjadi briket arang sekam dan abu silika. Penerapan teknologi ini merupakan wujud...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemborosan biaya produksi yang membebani harga jual beras"
+      },
+      {
+        "key": "B",
+        "text": "Pelanggaran aturan kebersihan lingkungan pabrik penggilingan"
+      },
+      {
+        "key": "C",
+        "text": "Pemanfaatan biomassa limbah menjadi produk bernilai tambah sirkular"
+      },
+      {
+        "key": "D",
+        "text": "Penggantian beras makan warga dengan briket sekam padi bakar"
+      },
+      {
+        "key": "E",
+        "text": "Penutupan jalur distribusi beras menuju pasar tradisional"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pemanfaatan sekam padi menjadi briket bahan bakar atau arang media tanam (zero waste agriculture) mengubah limbah pengganggu menjadi pendapatan ekonomi baru."
+  },
+  {
+    "id": 385,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 25,
+    "question": "Mengapa beras hasil olahan RMU modern di Belitang memiliki harga jual lebih tinggi dibanding beras gilingan keliling? Analisis mutu menunjukkan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Beras gilingan keliling diberi pewarna makanan buatan pabrik"
+      },
+      {
+        "key": "B",
+        "text": "RMU modern disubsidi dana devisa internasional luar negeri"
+      },
+      {
+        "key": "C",
+        "text": "Beras keliling memiliki kadar racun pestisida mematikan"
+      },
+      {
+        "key": "D",
+        "text": "RMU modern menghasilkan beras mengkilap, minim patah, dan bebas batu"
+      },
+      {
+        "key": "E",
+        "text": "Gilingan keliling dilarang beroperasi oleh peraturan kepolisian"
+      }
+    ],
+    "correct": "D",
+    "explanation": "RMU modern dilengkapi separator bertingkat, polisher pengkilap (tanpa kimia), dan destoner sehingga berasnya masuk kategori premium yang berharga jual tinggi."
+  },
+  {
+    "id": 386,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 26,
+    "question": "Analisis faktor penghambat adopsi teknologi drone pertanian di kalangan petani pedesaan usia lanjut di OKU Timur menunjukkan akar masalah pada...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Larangan membawa gawai pengendali drone di kawasan persawahan"
+      },
+      {
+        "key": "B",
+        "text": "Ketiadaan udara terbuka di atas persawahan wilayah Belitang"
+      },
+      {
+        "key": "C",
+        "text": "Baterai drone hanya dapat diisi ulang di negara produsen asalnya"
+      },
+      {
+        "key": "D",
+        "text": "Tanaman padi akan mati seketika jika dilintasi oleh bayangan drone"
+      },
+      {
+        "key": "E",
+        "text": "Biaya investasi awal tinggi dan keterbatasan literasi digital mekanik"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Tingginya harga unit drone (puluhan juta rupiah), kebutuhan keterampilan pemrograman jalur terbang (mission planner), dan literasi digital menjadi kendala bagi petani senior."
+  },
+  {
+    "id": 387,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 27,
+    "question": "Mengapa penerapan sistem jajar legowo mampu menekan tingkat serangan hama tikus sawah di Belitang? Analisis agronomis membuktikan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Lorong legowo yang terang dan terbuka tidak disukai tikus bersarang"
+      },
+      {
+        "key": "B",
+        "text": "Tanaman padi legowo mengeluarkan gelombang ultrasonik pengusir"
+      },
+      {
+        "key": "C",
+        "text": "Tikus sawah memakan pupuk urea yang diletakkan di lorong tanaman"
+      },
+      {
+        "key": "D",
+        "text": "Lorong legowo selalu dialiri air panas mendidih sepanjang malam"
+      },
+      {
+        "key": "E",
+        "text": "Tikus sawah hanya menyerang tanaman padi yang ditanam secara acak"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Tikus menyukai lingkungan yang rimbun, lembap, dan gelap; lorong legowo yang terbuka mempermudah masuknya cahaya matahari dan pergerakan predator alami (burung hantu/ular)."
+  },
+  {
+    "id": 388,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 28,
+    "question": "Analisis dampak keberadaan mesin pengering mekanis (bed dryer) terhadap stabilitas harga gabah petani saat musim hujan di Belitang adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membuat harga gabah anjlok hingga mencapai titik nol rupiah"
+      },
+      {
+        "key": "B",
+        "text": "Mencegah anjloknya harga gabah basah akibat tengkulak beralasan rusak"
+      },
+      {
+        "key": "C",
+        "text": "Mengharuskan petani membuang gabahnya ke saluran irigasi teknis"
+      },
+      {
+        "key": "D",
+        "text": "Menaikkan biaya transportasi pengiriman beras ke luar kota"
+      },
+      {
+        "key": "E",
+        "text": "Menjadikan seluruh petani sawah beralih menanam komoditas jagung"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Dengan adanya fasilitas pengeringan mekanis, tengkulak tidak lagi dapat mempermainkan harga beli gabah basah petani dengan dalih risiko busuk akibat cuaca hujan."
+  },
+  {
+    "id": 389,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 29,
+    "question": "Fenomena pergeseran minat pemuda desa OKU Timur yang lebih memilih merantau ke kawasan industri Jawa dianalisis secara sosio-kultural didorong oleh...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ketiadaan pasokan listrik dan internet di perdesaan Belitang"
+      },
+      {
+        "key": "B",
+        "text": "Larangan bagi pemuda untuk memiliki tabungan uang di bank desa"
+      },
+      {
+        "key": "C",
+        "text": "Daya tarik upah bulanan pasti di pabrik dan gengsi sosial kota"
+      },
+      {
+        "key": "D",
+        "text": "Seluruh lahan persawahan di OKU Timur musnah akibat bencana gempa"
+      },
+      {
+        "key": "E",
+        "text": "Kewajiban seluruh pemuda untuk merantau sebelum usia dua puluh"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Kepastian penerimaan gaji bulanan di sektor industri formal kota serta prestise sosial modern menjadi faktor pendorong utama arus urbanisasi tenaga kerja muda desa."
+  },
+  {
+    "id": 390,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 30,
+    "question": "Analisis efisiensi penggunaan bahan kimia pupuk/pestisida menggunakan drone dibanding penyemprotan konvensional menunjukkan bahwa drone mampu...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghilangkan kebutuhan air pelarut pestisida menjadi nol liter"
+      },
+      {
+        "key": "B",
+        "text": "Meningkatkan dosis racun kimia hingga sepuluh kali lipat takaran"
+      },
+      {
+        "key": "C",
+        "text": "Mengubah cairan pestisida kimia menjadi pupuk organik murni"
+      },
+      {
+        "key": "D",
+        "text": "Menghemat volume air hingga 80 persen dengan partikel kabut ultra-low"
+      },
+      {
+        "key": "E",
+        "text": "Menyemprotkan benih padi secara otomatis ke dalam buah malai"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Teknologi ultra-low volume (ULV) pada nozzle drone memecah larutan menjadi droplet mikro yang menempel lekat pada daun, menghemat volume air dari 200–300 L/ha menjadi hanya 20–30 L/ha."
+  },
+  {
+    "id": 391,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 31,
+    "question": "Fenomena tanah sawah di Belitang yang 'bantat' dan mengeras saat kering jika dianalisis dari riwayat pemupukan disebabkan oleh...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Air saluran irigasi Komering yang mengandung terlalu banyak ikan"
+      },
+      {
+        "key": "B",
+        "text": "Pemberian pupuk kandang sapi yang melebihi takaran satu ton"
+      },
+      {
+        "key": "C",
+        "text": "Penanaman varietas padi unggul Inpari secara berulang-ulang"
+      },
+      {
+        "key": "D",
+        "text": "Pemasangan mesin combine harvester yang berputar di atas pematang"
+      },
+      {
+        "key": "E",
+        "text": "Penurunan bahan organik akibat pupuk kimia terus-menerus tanpa kompos"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Pemupukan anorganik kimia tanpa asupan bahan organik (kompos/jerami) merusak struktur biologi tanah, memadatkan partikel lempung, dan menurunkan populasi mikrob perombak hara."
+  },
+  {
+    "id": 392,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 32,
+    "question": "Analisis dampak integrasi pemasaran beras kemasan Belitang di platform perdagangan elektronik (e-commerce) terhadap rantai pasok membuktikan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memangkas perantara tengkulak dan menghubungkan produsen ke konsumen"
+      },
+      {
+        "key": "B",
+        "text": "Mengharuskan beras Belitang dikirim menggunakan pesawat antariksa"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan konsumen membeli beras dengan mata uang dolar Amerika"
+      },
+      {
+        "key": "D",
+        "text": "Menutup seluruh pasar tradisional di wilayah Kabupaten OKU Timur"
+      },
+      {
+        "key": "E",
+        "text": "Menaikkan biaya produksi pertanian sawah menjadi sepuluh kali lipat"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Digitalisasi rantai pasok (direct-to-consumer) meniadakan rantai calo/tengkulak panjang, sehingga petani/RMU memperoleh margin harga lebih adil dan konsumen mendapat beras segar."
+  },
+  {
+    "id": 393,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 33,
+    "question": "Ketika mengevaluasi efektivitas modernisasi fasilitas RMU milik Gapoktan di Belitang terhadap pendapatan anggota, indikator penilaian utama adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Banyaknya spanduk peresmian pabrik yang dipasang di tepi jalan"
+      },
+      {
+        "key": "B",
+        "text": "Kenaikan rendemen giling gabah dan harga beli gabah di petani"
+      },
+      {
+        "key": "C",
+        "text": "Kemampuan ketua Gapoktan berpidato di hadapan menteri pertanian"
+      },
+      {
+        "key": "D",
+        "text": "Kenyamanan ruang tunggu ber-AC di dalam gedung penggilingan padi"
+      },
+      {
+        "key": "E",
+        "text": "Jumlah pegawai kantoran yang dipekerjakan di bagian administrasi"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Kinerja RMU modern berhasil jika mampu meningkatkan angka rendemen beras kepala (dari 60% menjadi 65–68%) dan mampu membeli gabah petani dengan harga lebih menguntungkan."
+  },
+  {
+    "id": 394,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 34,
+    "question": "Sebuah usulan program mendorong pembentukan brigade drone semprot pertanian perdesaan di OKU Timur. Evaluasi terhadap prasyarat keberlanjutannya menyimpulkan perlunya...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengharuskan drone diterbangkan tanpa panduan peta satelit GPS"
+      },
+      {
+        "key": "B",
+        "text": "Membubarkan seluruh kelompok tani yang anggotanya berusia tua"
+      },
+      {
+        "key": "C",
+        "text": "Pelatihan pilot bersertifikat, ketersediaan bengkel suku cadang, dan baterai"
+      },
+      {
+        "key": "D",
+        "text": "Melarang penyemprotan pupuk dilakukan pada pagi dan sore hari"
+      },
+      {
+        "key": "E",
+        "text": "Menetapkan tarif sewa drone lebih mahal daripada harga tanah sawah"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Keberlanjutan unit layanan drone memerlukan pilot yang terampil mengoperasikan software penerbangan, manajemen perawatan baterai LiPo, dan jaminan ketersediaan suku cadang motor/propeller."
+  },
+  {
+    "id": 395,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 35,
+    "question": "Menilai strategi penekanan susut panen (losses) padi nasional di bawah 5%, kebijakan investasi infrastruktur pascapanen paling tepat di OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membangun tugu patung petani raksasa di setiap persimpangan jalan"
+      },
+      {
+        "key": "B",
+        "text": "Melarang pengangkutan gabah menggunakan kendaraan truk bermotor"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan pemotongan padi menggunakan pisau ani-ani tradisional"
+      },
+      {
+        "key": "D",
+        "text": "Masifikasi combine harvester prima dan dryer mekanis berkapasitas besar"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan seluruh penanaman padi sawah saat musim penghujan"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Kombinasi penggunaan combine harvester yang terkalibrasi presisi dan flat/vertical dryer berkapasitas besar merupakan solusi terbukti menurunkan angka susut dari sawah hingga gudang."
+  },
+  {
+    "id": 396,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 36,
+    "question": "Evaluasi terhadap program pembinaan wirausaha muda pertanian (petani milenial) di Kabupaten OKU Timur membuktikan bahwa faktor pengungkit keberhasilannya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemberian cangkul dan caping tradisional berbahan anyaman bambu"
+      },
+      {
+        "key": "B",
+        "text": "Kewajiban tinggal di gubuk sawah tanpa fasilitas komunikasi"
+      },
+      {
+        "key": "C",
+        "text": "Larangan bagi pemuda tani untuk menggunakan media sosial promosi"
+      },
+      {
+        "key": "D",
+        "text": "Pembatasan pasar penjualan produk hanya di lingkungan keluarga"
+      },
+      {
+        "key": "E",
+        "text": "Akses pembiayaan modal, pendampingan inovasi agritech, dan pasar pasti"
+      }
+    ],
+    "correct": "E",
+    "explanation": "Petani milenial membutuhkan ekosistem pendukung: akses permodalan usaha tanpa agunan rumit, bimbingan teknis agriteknologi modern, dan kepastian akses pasar (offtaker)."
+  },
+  {
+    "id": 397,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 37,
+    "question": "Menilai kelayakan pengembangan persawahan padi organik bersertifikat di Belitang, tantangan teknis ekologis terbesar yang harus diantisipasi adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rembesan residu pestisida kimia dari air irigasi sawah tetangga hulu"
+      },
+      {
+        "key": "B",
+        "text": "Ketiadaan sinar matahari yang cukup di kawasan persawahan Belitang"
+      },
+      {
+        "key": "C",
+        "text": "Harga beras organik yang tidak diminati oleh masyarakat perkotaan"
+      },
+      {
+        "key": "D",
+        "text": "Larangan dari dinas pertanian daerah untuk memproduksi beras sehat"
+      },
+      {
+        "key": "E",
+        "text": "Tanaman padi organik menolak menyerap pupuk kompos daun hijau"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sertifikasi organik menuntut isolasi buffer zone ketat agar air irigasi yang masuk tidak terkontaminasi residu pupuk kimia sintetis atau pestisida dari petak sawah konvensional di sekitarnya."
+  },
+  {
+    "id": 398,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 38,
+    "question": "Sebuah program daerah merencanakan pembangunan fasilitas penyimpanan silo berudara dingin (chilled silo) di Belitang. Evaluasi terhadap dampak strategisnya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menimbulkan pemborosan anggaran tanpa ada nilai manfaat ekonomis"
+      },
+      {
+        "key": "B",
+        "text": "Menjaga kesegaran gabah, memperpanjang masa simpan, dan stabilkan pasokan"
+      },
+      {
+        "key": "C",
+        "text": "Mengharuskan seluruh petani sawah menjual gabahnya ke luar pulau"
+      },
+      {
+        "key": "D",
+        "text": "Menyebabkan beras berubah menjadi butiran es beku yang keras"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan seluruh kegiatan penggilingan padi swasta di pedesaan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Silo penyimpanan berpendingin menjaga kualitas fisiologis benih/gabah, mencegah serangan kutu gudang (Sitophilus oryzae), dan memungkinkan pelepasan stok pangan secara teratur."
+  },
+  {
+    "id": 399,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 39,
+    "question": "Menilai arah transformasi sektor pertanian OKU Timur di era digital Society 5.0, pergeseran paradigma paling mendasar yang harus dibangun di sekolah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mewajibkan seluruh siswa belajar mencangkul tanah tanpa menggunakan sepatu"
+      },
+      {
+        "key": "B",
+        "text": "Melarang siswa membawa gawai telepon pintar ke laboratorium sekolah"
+      },
+      {
+        "key": "C",
+        "text": "Memandang agribisnis sebagai profesi presisi berbasis sains dan teknologi"
+      },
+      {
+        "key": "D",
+        "text": "Mengajarkan bahwa kekayaan hanya bisa didapatkan melalui sektor pertambangan"
+      },
+      {
+        "key": "E",
+        "text": "Menghapus pelajaran biologi dan fisika dari kurikulum pendidikan sekolah"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Pendidikan modern harus mereposisi citra pertanian dari sekadar kerja fisik tradisional menjadi industri agriteknologi cerdas bernilai tambah tinggi yang menarik bagi generasi digital."
+  },
+  {
+    "id": 400,
+    "day": 2,
+    "indicatorCode": "E",
+    "indicatorKey": "modul_e_inovasi_smart_farming",
+    "indicatorName": "Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian, dan Keterampilan Teknis Petani Ogan Komering Ulu Timur",
+    "cognitiveLevel": "C5",
+    "numberInIndicator": 40,
+    "question": "Evaluasi komprehensif terhadap integrasi mekanisasi hulu-hilir (transplanter, combine, dryer, dan RMU) di Belitang menghasilkan kesimpulan bahwa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mekanisasi pertanian hanya menguntungkan pabrik pembuat mesin di luar negeri"
+      },
+      {
+        "key": "B",
+        "text": "Mekanisasi modern mematikan seluruh aktivitas gotong royong warga desa selamanya"
+      },
+      {
+        "key": "C",
+        "text": "Mekanisasi sawah menimbulkan polusi suara yang mengganggu ketenangan pedesaan"
+      },
+      {
+        "key": "D",
+        "text": "Modernisasi hulu-hilir adalah pilar ketahanan pangan dan kesejahteraan petani"
+      },
+      {
+        "key": "E",
+        "text": "Penggunaan alat mesin pertanian modern mewajibkan harga beras dinaikkan drastis"
+      }
+    ],
+    "correct": "D",
+    "explanation": "Modernisasi terintegrasi dari olah tanah hingga pascapanen menekan biaya usaha tani, menekan susut panen, melipatgandakan indeks pertanaman, dan memperkokoh kedaulatan pangan nasional."
+  }
 ]
   };
 
@@ -6882,7 +13718,11 @@
   /**
    * Helper: Mengambil daftar indikator resmi
    */
-  window.getNftBankSoalIndicators = function() {
+  window.getNftBankSoalIndicators = function(dayNum) {
+    dayNum = parseInt(dayNum) || 1;
+    if (dayNum === 2 && window.NFT_BANK_SOAL_INDICATORS_DAY2) {
+      return window.NFT_BANK_SOAL_INDICATORS_DAY2;
+    }
     return window.NFT_BANK_SOAL_INDICATORS || [];
   };
 

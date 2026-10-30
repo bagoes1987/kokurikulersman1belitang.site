@@ -115,14 +115,14 @@
       }
     });
 
-    // Definisi proporsi kognitif per indikator agar total 50 butir seimbang rata C1-C4:
-    // Indikator A: 3 C1, 2 C2, 3 C3, 2 C4 (=10)
-    // Indikator B: 2 C1, 3 C2, 2 C3, 3 C4 (=10)
-    // Indikator C: 3 C1, 3 C2, 2 C3, 2 C4 (=10)
-    // Indikator D: 2 C1, 2 C2, 3 C3, 3 C4 (=10)
-    // Indikator E: 3 C1, 2 C2, 2 C3, 3 C4 (=10)
-    // Total Akumulasi: C1=13 (26%), C2=12 (24%), C3=12 (24%), C4=13 (26%) = 50 butir tepat
-    const cognitiveQuota = {
+    const isDay2 = (dayNum === 2);
+    const cognitiveQuota = isDay2 ? {
+      'A': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
+      'B': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
+      'C': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
+      'D': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
+      'E': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 }
+    } : {
       'A': { C1: 3, C2: 2, C3: 3, C4: 2 },
       'B': { C1: 2, C2: 3, C3: 2, C4: 3 },
       'C': { C1: 3, C2: 3, C3: 2, C4: 2 },
@@ -133,9 +133,9 @@
     const chosen50 = [];
     ['A', 'B', 'C', 'D', 'E'].forEach(code => {
       const pool = grouped[code] || [];
-      const quota = cognitiveQuota[code] || { C1: 2, C2: 3, C3: 3, C4: 2 };
+      const quota = cognitiveQuota[code] || { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 };
 
-      const byCog = { C1: [], C2: [], C3: [], C4: [] };
+      const byCog = { C1: [], C2: [], C3: [], C4: [], C5: [] };
       pool.forEach(item => {
         const lvl = item.cognitiveLevel || 'C2';
         if (byCog[lvl]) byCog[lvl].push(item);
@@ -143,7 +143,8 @@
       });
 
       let pickedForThisInd = [];
-      ['C1', 'C2', 'C3', 'C4'].forEach(lvl => {
+      const levelsToPick = isDay2 ? ['C1', 'C2', 'C3', 'C4', 'C5'] : ['C1', 'C2', 'C3', 'C4'];
+      levelsToPick.forEach(lvl => {
         const count = quota[lvl] || 2;
         const shuf = seededShuffle(byCog[lvl] || [], rng);
         pickedForThisInd.push(...shuf.slice(0, count));
