@@ -243,6 +243,14 @@
           <span class="material-symbols-outlined text-lg">photo_library</span>
           <span>Dokumentasi Riset</span>
         </button>
+        <button id="btnSideKoordKriteriaNonFT" onclick="openKriteriaNonFTModal()" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-indigo-300 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg text-indigo-400">fact_check</span>
+          <span>Kriteria Non-Field Trip</span>
+        </button>
+        <button id="btnSideKoordKriteriaFT" onclick="openKriteriaFTModal()" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-emerald-300 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg text-emerald-400">verified</span>
+          <span>Kriteria Field Trip</span>
+        </button>
       </nav>
 
       <!-- Footer Sidebar: Beranda & Logout -->
@@ -669,6 +677,7 @@
   <script src="../js/siswa_data.js"></script>
   <script src="../js/guru_data.js"></script>
   <script src="../js/core.js"></script>
+  <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v2"></script>
   <script>
     let currentCoordinatorData = null;
     let selectedKoordClassFilter = 'ALL';
