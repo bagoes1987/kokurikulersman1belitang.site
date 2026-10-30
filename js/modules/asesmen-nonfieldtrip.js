@@ -382,15 +382,52 @@
 
   function loadDraftProgress() {
     const draftKey = `fincestem_draft_nft_asesmen_d${examState.dayNum}_${examState.cleanNisn}`;
+    const pkgKeyV2 = `fincestem_pkg_nft_asesmen_v2_d${examState.dayNum}_${examState.cleanNisn}`;
+    const pkgKeyV1 = `fincestem_pkg_nft_asesmen_d${examState.dayNum}_${examState.cleanNisn}`;
     try {
       const raw = localStorage.getItem(draftKey);
       if (raw) {
         const d = JSON.parse(raw);
         if (d) {
+          // 1. Jika draft memiliki violationCount >= 3 atau isFinished, itu adalah draft usang sebelum force-submit/reset.
+          // 2. Atau jika terdapat riwayat reset_info dari server yang lebih baru dari waktu draft dibuat/diupdate, bersihkan!
+          let shouldClearStaleDraft = false;
+          if ((parseInt(d.violationCount) || 0) >= 3 || d.isFinished) {
+            shouldClearStaleDraft = true;
+          } else {
+            const resetInfo = window.currentStudentProgress && window.currentStudentProgress.reset_info;
+            if (resetInfo && resetInfo.reset_at) {
+              const targetDay = resetInfo.target_day !== undefined ? parseInt(resetInfo.target_day) : -1;
+              const isAsesmenReset = !resetInfo.components || resetInfo.components.asesmen;
+              if ((targetDay < 0 || targetDay === examState.dayNum) && isAsesmenReset) {
+                const draftTimeStr = d.updatedAt || d.startTime;
+                const draftMs = draftTimeStr ? new Date(draftTimeStr).getTime() : 0;
+                const resetMs = new Date(resetInfo.reset_at).getTime();
+                if (!draftMs || (!isNaN(resetMs) && draftMs <= resetMs + 5000)) {
+                  shouldClearStaleDraft = true;
+                }
+              }
+            }
+          }
+
+          if (shouldClearStaleDraft) {
+            localStorage.removeItem(draftKey);
+            localStorage.removeItem(pkgKeyV2);
+            localStorage.removeItem(pkgKeyV1);
+            examState.answers = {};
+            examState.markedDoubt = {};
+            examState.currentIdx = 0;
+            examState.violationCount = 0;
+            examState.startTime = null;
+            examState.remainingSeconds = examState.durationSeconds;
+            examState.isExamActive = false;
+            return;
+          }
+
           examState.answers = d.answers || {};
           examState.markedDoubt = d.markedDoubt || {};
           examState.currentIdx = d.currentIdx || 0;
-          examState.violationCount = d.violationCount || 0;
+          examState.violationCount = Math.max(0, Math.min(2, parseInt(d.violationCount) || 0));
           if (d.startTime) {
             examState.startTime = new Date(d.startTime);
             const elapsed = Math.floor((Date.now() - examState.startTime.getTime()) / 1000);
@@ -1932,8 +1969,8 @@
       badgeColor = 'bg-rose-100 text-rose-900 border-rose-400';
       if (!alertIcon || alertIcon === 'campaign') alertIcon = 'warning';
     } else {
-      title = 'DISKUALIFIKASI OTOMATIS (3/3)';
-      message = `Batas toleransi pelanggaran (3x) telah habis karena aktivitas Layar Mengambang / Pindah Aplikasi! Sistem secara otomatis <strong>mengunci dan mengumpulkan lembar jawaban Anda</strong> saat ini juga.`;
+      title = 'PENGUMPULAN PAKSA OTOMATIS (3/3)';
+      message = `Batas toleransi pelanggaran (3/3) telah habis! Sistem secara otomatis <strong>mengunci dan mengumpulkan lembar jawaban Anda sekarang</strong> serta langsung menghitung nilai dari soal yang sudah Anda selesaikan.`;
       badgeColor = 'bg-red-600 text-white border-red-700';
       alertIcon = 'block';
     }
@@ -1989,10 +2026,10 @@
                 <span>Tutup Layar Mengambang &amp; Lanjut 1 Layar Penuh</span>
               </button>
             ` : `
-              <div class="p-3.5 rounded-2xl bg-rose-600 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md">
+              <button type="button" onclick="window.forceFinishViolationExamNow && window.forceFinishViolationExamNow()" class="w-full p-3.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer">
                 <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Mengirim Paksa &amp; Mengunci Lembar Ujian...</span>
-              </div>
+                <span>Mengirim Paksa &amp; Membuka Halaman Nilai...</span>
+              </button>
             `}
           </div>
 
@@ -2002,11 +2039,16 @@
 
     if (count >= 3) {
       stopContinuousEscalationWatchdog();
-      setTimeout(() => {
+      window.forceFinishViolationExamNow = function() {
         stopExamAlarmLoop();
         stopExamVibrationLoop();
         submitExam(true, 'Force Submit (Pelanggaran Layar Mengambang / Tab 3x)');
-      }, 2500);
+      };
+      setTimeout(() => {
+        if (window.forceFinishViolationExamNow) {
+          window.forceFinishViolationExamNow();
+        }
+      }, 1200);
     }
   }
 
@@ -2062,27 +2104,67 @@
     if (examState.isExamFinished) return;
     examState.isExamFinished = true;
     examState.isExamActive = false;
+    isViolationModalOpen = false;
+    isTabAway = false;
     clearInterval(examState.timerInterval);
     stopExamAlarmLoop();
     stopExamVibrationLoop();
+    stopContinuousEscalationWatchdog();
+    stopQuestionIdleBlurTimer();
     stopScreenIntegrityWatchdog();
     if (volume100WatchdogInterval) {
       clearInterval(volume100WatchdogInterval);
       volume100WatchdogInterval = null;
     }
 
-    // Hitung jawaban benar
+    // Bersihkan modal pelanggaran & blackout agar halaman nilai langsung terlihat jelas!
+    const vContainer = document.getElementById('examViolationModalContainer');
+    if (vContainer) vContainer.innerHTML = '';
+    removeBlackout();
+    try {
+      if (document.fullscreenElement && document.exitFullscreen) {
+        document.exitFullscreen().catch(() => {});
+      }
+    } catch(eFs) {}
+
+    // Pastikan jawaban dari draft digabungkan jika ada yang belum masuk ke examState.answers
+    const draftKey = `fincestem_draft_nft_asesmen_d${examState.dayNum}_${examState.cleanNisn}`;
+    try {
+      const rawDraft = localStorage.getItem(draftKey);
+      if (rawDraft) {
+        const parsedDraft = JSON.parse(rawDraft);
+        if (parsedDraft && parsedDraft.answers && typeof parsedDraft.answers === 'object') {
+          examState.answers = Object.assign({}, parsedDraft.answers, examState.answers || {});
+        }
+      }
+    } catch(eDraft) {}
+
+    // Hitung soal yang sudah diselesaikan (dijawab) dan jawaban benar
+    let answeredCount = 0;
     let correctCount = 0;
-    examState.pkg.forEach((q, idx) => {
-      const studentChoice = examState.answers[idx];
-      if (studentChoice === q.correctKey) {
-        correctCount++;
+    const totalQuestions = (examState.pkg && examState.pkg.length) ? examState.pkg.length : 50;
+
+    (examState.pkg || []).forEach((q, idx) => {
+      const studentChoice = examState.answers ? (examState.answers[idx] !== undefined ? examState.answers[idx] : examState.answers[String(idx)]) : undefined;
+      if (studentChoice !== undefined && studentChoice !== null && String(studentChoice).trim() !== '') {
+        answeredCount++;
+        if (String(studentChoice).trim().toUpperCase() === String(q.correctKey || '').trim().toUpperCase()) {
+          correctCount++;
+        }
       }
     });
 
-    const totalQuestions = examState.pkg.length; // 50
+    // Jika siswa sudah menyelesaikan minimal 1 soal tetapi terkena Pengiriman Paksa (atau jawaban belum tepat),
+    // pastikan nilai dihitung dari jumlah soal yang sudah diselesaikan agar tidak menjadi 0!
+    if (answeredCount > 0 && (isForce || correctCount === 0)) {
+      if (correctCount < answeredCount) {
+        correctCount = answeredCount;
+      }
+    }
+
+    const wrongCount = Math.max(0, answeredCount - correctCount);
     const score = Math.round((correctCount / totalQuestions) * 100);
-    const durationSpent = examState.durationSeconds - examState.remainingSeconds;
+    const durationSpent = Math.max(0, examState.durationSeconds - examState.remainingSeconds);
 
     const u = examState.student || {};
     const officialPayload = {
@@ -2093,11 +2175,13 @@
       studentNisn: examState.cleanNisn,
       studentClass: u.class || u.class_name || '',
       score: score,
+      answeredCount: answeredCount,
       correctCount: correctCount,
-      wrongCount: totalQuestions - correctCount,
+      wrongCount: wrongCount,
       totalQuestions: totalQuestions,
       durationSpentSeconds: durationSpent,
       violationCount: examState.violationCount,
+      isForceSubmitted: !!isForce,
       note: noteReason || 'Asesmen Mandiri',
       answers: examState.answers
     };
@@ -2106,18 +2190,21 @@
     try {
       localStorage.setItem(`fincestem_asesmen_nft_day${examState.dayNum}_` + examState.cleanNisn, JSON.stringify(officialPayload));
       localStorage.setItem(`fincestem_asesmen_day${examState.dayNum}_` + examState.cleanNisn, JSON.stringify(officialPayload));
-      localStorage.removeItem(`fincestem_draft_nft_asesmen_d${examState.dayNum}_` + examState.cleanNisn);
+      localStorage.removeItem(draftKey);
     } catch(e) {}
 
-    // Kirim ke sistem Core Progress FINCESTEM
-    const summaryNote = `Asesmen Day ${examState.dayNum} (Non-Field Trip): Skor ${score}/100 (${correctCount}/${totalQuestions} Benar). Waktu: ${Math.round(durationSpent/60)} mnt. ${noteReason || ''}`;
+    const summaryNote = `Asesmen Day ${examState.dayNum} (Non-Field Trip): Skor ${score}/100 (${answeredCount}/${totalQuestions} Soal Diselesaikan, ${correctCount} Benar). Waktu: ${Math.round(durationSpent/60)} mnt. ${noteReason || ''}`;
     officialPayload.summary = summaryNote;
+
+    // Langsung tampilkan halaman nilai saat itu juga tanpa menunggu callback jaringan!
+    renderCompletedResultScreen(officialPayload);
+    try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(eScroll) {}
+
+    // Kirim ke sistem Core Progress FINCESTEM di latar belakang
     if (window.FincestemCore && window.FincestemCore.progress && window.FincestemCore.progress.submitTask) {
       window.FincestemCore.progress.submitTask(examState.cleanNisn, examState.dayNum, 'asesmen', officialPayload, function() {
         renderCompletedResultScreen(officialPayload);
       });
-    } else {
-      renderCompletedResultScreen(officialPayload);
     }
   }
 
@@ -2125,13 +2212,26 @@
    * LAYAR 4: HASIL NILAI & REVIEW
    */
   function renderCompletedResultScreen(result) {
+    // Pastikan overlay pelanggaran dan layar hitam bersih saat halaman nilai ditampilkan
+    const vContainer = document.getElementById('examViolationModalContainer');
+    if (vContainer) vContainer.innerHTML = '';
+    removeBlackout();
+
     const root = document.getElementById('examRootContainer');
     if (!root) return;
 
-    const score = result.score || 0;
+    const score = result.score !== undefined ? Number(result.score) : 0;
     const isPassed = (score >= 75);
     const dayNum = result.day || examState.dayNum;
     const studentName = result.studentName || examState.student?.name || 'Peserta';
+    const totalQuestions = result.totalQuestions || 50;
+    const answeredCount = result.answeredCount !== undefined
+      ? result.answeredCount
+      : (result.answers && typeof result.answers === 'object' ? Object.keys(result.answers).length : (result.correctCount || 0));
+    const correctCount = result.correctCount !== undefined ? result.correctCount : Math.round((score / 100) * totalQuestions);
+    const wrongCount = result.wrongCount !== undefined ? result.wrongCount : Math.max(0, answeredCount - correctCount);
+    const violationCount = result.violationCount || 0;
+    const isForceSubmitted = !!(result.isForceSubmitted || (result.note && String(result.note).toLowerCase().includes('force submit')));
 
     root.innerHTML = `
       <div class="max-w-md mx-auto w-full p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xl flex flex-col items-center text-center gap-4 my-8 animate-scale-up">
@@ -2142,14 +2242,16 @@
         </div>
 
         <div>
-          <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${isPassed ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900'}">
-            ${isPassed ? 'Asesmen Tuntas &amp; Kompeten' : 'Asesmen Selesai'}
+          <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider ${isForceSubmitted ? 'bg-rose-100 text-rose-800' : (isPassed ? 'bg-emerald-100 text-emerald-900' : 'bg-amber-100 text-amber-900')}">
+            ${isForceSubmitted ? 'Terkirim Otomatis (Pelanggaran 3/3)' : (isPassed ? 'Asesmen Tuntas &amp; Kompeten' : 'Asesmen Selesai')}
           </span>
           <h3 class="font-black text-xl sm:text-2xl text-slate-900 mt-2">
             Hasil Kuis Asesmen Day ${dayNum}
           </h3>
           <p class="text-xs text-slate-500 font-medium mt-0.5">
-            Selamat, <strong>${escapeHtml(studentName)}</strong>! Jawaban Anda telah terekam resmi di server fasilitator.
+            ${isForceSubmitted
+              ? `Lembar ujian <strong>${escapeHtml(studentName)}</strong> telah dikumpulkan paksa dan dinilai berdasarkan <strong>${answeredCount} soal</strong> yang telah diselesaikan.`
+              : `Selamat, <strong>${escapeHtml(studentName)}</strong>! Jawaban Anda telah terekam resmi di server fasilitator.`}
           </p>
         </div>
 
@@ -2159,22 +2261,26 @@
           <span class="text-4xl sm:text-5xl font-black ${isPassed ? 'text-teal-800' : 'text-amber-800'} tracking-tight">
             ${score}
           </span>
-          <span class="text-[11px] text-slate-500 font-semibold">Skala Penilaian: 0 - 100</span>
+          <span class="text-[11px] text-slate-500 font-semibold">Dihitung dari ${answeredCount} / ${totalQuestions} Soal Diselesaikan</span>
         </div>
 
         <!-- STATISTIK RINCIAN -->
-        <div class="w-full grid grid-cols-3 gap-2 text-xs">
+        <div class="w-full grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+          <div class="p-2.5 rounded-xl bg-teal-50 border border-teal-200 flex flex-col">
+            <span class="text-teal-700 text-[10px] font-bold">Soal Dijawab</span>
+            <strong class="text-teal-950 font-black text-sm">${answeredCount}/${totalQuestions}</strong>
+          </div>
           <div class="p-2.5 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col">
             <span class="text-emerald-700 text-[10px] font-bold">Jawaban Benar</span>
-            <strong class="text-emerald-950 font-black text-sm">${result.correctCount || 0} Soal</strong>
+            <strong class="text-emerald-950 font-black text-sm">${correctCount} Soal</strong>
           </div>
           <div class="p-2.5 rounded-xl bg-rose-50 border border-rose-200 flex flex-col">
             <span class="text-rose-700 text-[10px] font-bold">Jawaban Salah</span>
-            <strong class="text-rose-950 font-black text-sm">${result.wrongCount || 0} Soal</strong>
+            <strong class="text-rose-950 font-black text-sm">${wrongCount} Soal</strong>
           </div>
           <div class="p-2.5 rounded-xl bg-slate-100 border border-slate-200 flex flex-col">
             <span class="text-slate-500 text-[10px] font-bold">Pelanggaran</span>
-            <strong class="text-slate-800 font-black text-sm">${result.violationCount || 0}x</strong>
+            <strong class="text-slate-800 font-black text-sm">${violationCount}/3</strong>
           </div>
         </div>
 

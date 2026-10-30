@@ -2898,7 +2898,7 @@ const FincestemCore = {
                   if (!serverResetAt) return false;
                   try {
                     const parsed = JSON.parse(rawStr);
-                    const subTimeStr = parsed && (parsed.submittedAt || parsed.submitted_at || parsed.savedAt);
+                    const subTimeStr = parsed && (parsed.submittedAt || parsed.submitted_at || parsed.savedAt || parsed.updatedAt || parsed.startTime);
                     if (subTimeStr) {
                       const subMs = new Date(subTimeStr).getTime();
                       // Lindungi tugas yang baru saja dikirim dalam 20 detik terakhir di perangkat ini
@@ -2912,7 +2912,17 @@ const FincestemCore = {
                   idVars.forEach(id => {
                     if (!srvHasTask(d, 'asesmen')) {
                       const rawAsesmen = localStorage.getItem(`fincestem_asesmen_nft_day${d}_` + id) || localStorage.getItem(`fincestem_asesmen_day${d}_` + id);
-                      if (isStaleSubmitted(rawAsesmen)) {
+                      const rawDraftAsesmen = localStorage.getItem(`fincestem_draft_nft_asesmen_d${d}_` + id);
+                      let hasMaxedOutViolationDraft = false;
+                      if (rawDraftAsesmen) {
+                        try {
+                          const parsedDraft = JSON.parse(rawDraftAsesmen);
+                          if (parsedDraft && ((parseInt(parsedDraft.violationCount) || 0) >= 3 || parsedDraft.isFinished)) {
+                            hasMaxedOutViolationDraft = true;
+                          }
+                        } catch (eDr) {}
+                      }
+                      if (isStaleSubmitted(rawAsesmen) || isStaleSubmitted(rawDraftAsesmen) || hasMaxedOutViolationDraft) {
                         localStorage.removeItem(`fincestem_asesmen_nft_day${d}_` + id);
                         localStorage.removeItem(`fincestem_asesmen_ft_day${d}_` + id);
                         localStorage.removeItem(`fincestem_asesmen_day${d}_` + id);

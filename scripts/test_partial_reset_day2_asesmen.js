@@ -157,8 +157,42 @@ console.log('=== TEST 1: Admin Reset Day 2 Bagian Asesmen (First-Time Reset & Pa
         'siswa/dashboard.html only auto-marks Day 7 Asesmen from LKPD for Field Trip students (NOT Non-Field Trip)'
       );
 
-      console.log(`\nDONE: ${passed} passed, ${failed} failed.`);
-      if (failed > 0) process.exit(1);
+      console.log('\n=== TEST 4: Orphan Draft with Pelanggaran 3/3 is Cleared on Reset -> Pelanggaran 0/3 ===');
+      const orphanPhone = createMockEnv(() => Promise.resolve({
+        json: () => Promise.resolve(serverResponseAfterPartialReset)
+      }));
+      orphanPhone.localStorage.setItem('fincestem_user', JSON.stringify({ nisn, identifier: nisn, name: 'Bagas Arya', class: 'X.11', zone: 'FINCESTEM OKU TIMUR' }));
+      // Simulate orphan draft where fincestem_asesmen_nft_day2_ was already null, but draft still had violationCount: 3
+      orphanPhone.localStorage.setItem('fincestem_draft_nft_asesmen_d2_' + nisn, JSON.stringify({
+        day: 2,
+        startTime: '2026-10-30T03:00:00.000Z',
+        updatedAt: '2026-10-30T03:05:00.000Z',
+        answers: { 0: 'B', 1: 'C', 2: 'D' },
+        violationCount: 3
+      }));
+      orphanPhone.sandbox.window.FincestemCore.progress.getStudentProgress(nisn, () => {
+        assert(
+          orphanPhone.localStorage.getItem('fincestem_draft_nft_asesmen_d2_' + nisn) === null,
+          'Orphan draft with violationCount 3/3 is 100% removed so Pelanggaran resets to 0/3'
+        );
+
+        const asesmenCode = fs.readFileSync(path.join(__dirname, '..', 'js', 'modules', 'asesmen-nonfieldtrip.js'), 'utf8');
+        assert(
+          asesmenCode.includes("const vContainer = document.getElementById('examViolationModalContainer');\n    if (vContainer) vContainer.innerHTML = '';\n    removeBlackout();"),
+          'submitExam immediately clears #examViolationModalContainer and blackout so Score Page is visible'
+        );
+        assert(
+          asesmenCode.includes('if (answeredCount > 0 && (isForce || correctCount === 0))'),
+          'Force Submit calculates non-zero score proportional to answeredCount when student has completed questions'
+        );
+        assert(
+          asesmenCode.includes('if ((parseInt(d.violationCount) || 0) >= 3 || d.isFinished)'),
+          'loadDraftProgress rejects any stale draft with violationCount >= 3 and resets violationCount to 0'
+        );
+
+        console.log(`\nDONE: ${passed} passed, ${failed} failed.`);
+        if (failed > 0) process.exit(1);
+      });
     });
   });
 }
