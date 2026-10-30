@@ -7678,6 +7678,16 @@
       tbody.innerHTML = html;
     }
 
+    function isStudentFTAdminRekap(s) {
+      if (!s) return false;
+      if (FincestemCore.zones && FincestemCore.zones.getStudentZone) {
+        const z = FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone);
+        const zUpper = String(z || '').toUpperCase();
+        return zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+      }
+      return s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+    }
+
     function openRekapClassModal(className) {
       currentModalRekapClass = className;
       const modal = document.getElementById('modalRekapClassDetail');
@@ -7692,14 +7702,14 @@
 
       // Sort: Field Trip first, then alphabetical
       const sortedStudents = [...studentsInClass].sort((a, b) => {
-        const aIsFT = a.zone === 'FINCESTEM LUAR OKU TIMUR' || a.is_field_trip === true;
-        const bIsFT = b.zone === 'FINCESTEM LUAR OKU TIMUR' || b.is_field_trip === true;
+        const aIsFT = isStudentFTAdminRekap(a);
+        const bIsFT = isStudentFTAdminRekap(b);
         if (aIsFT && !bIsFT) return -1;
         if (!aIsFT && bIsFT) return 1;
         return (a.nama || '').localeCompare(b.nama || '');
       });
 
-      const ftCount = sortedStudents.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true).length;
+      const ftCount = sortedStudents.filter(s => isStudentFTAdminRekap(s)).length;
       const nonFtCount = sortedStudents.length - ftCount;
 
       const coord = (FincestemCore.assignments && FincestemCore.assignments.getClassCoordinator)
@@ -7724,7 +7734,7 @@
         } else {
           let rowsHtml = '';
           sortedStudents.forEach((s, idx) => {
-            const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+            const isFT = isStudentFTAdminRekap(s);
             const statusBadge = isFT
               ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-500 text-white shadow-2xs">🚌 Field Trip</span>`
               : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-100 text-teal-900 border border-teal-200">🏫 Non-Field Trip</span>`;
@@ -7777,15 +7787,15 @@
           : 'Tim Fasilitator SMAN 1 Belitang').replace(/\n/g, '; ');
 
         studentsInClass.sort((a, b) => {
-          const aIsFT = a.zone === 'FINCESTEM LUAR OKU TIMUR' || a.is_field_trip === true;
-          const bIsFT = b.zone === 'FINCESTEM LUAR OKU TIMUR' || b.is_field_trip === true;
+          const aIsFT = isStudentFTAdminRekap(a);
+          const bIsFT = isStudentFTAdminRekap(b);
           if (aIsFT && !bIsFT) return -1;
           if (!aIsFT && bIsFT) return 1;
           return (a.nama || '').localeCompare(b.nama || '');
         });
 
         studentsInClass.forEach(s => {
-          const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+          const isFT = isStudentFTAdminRekap(s);
           const statusStr = isFT ? 'PESERTA FIELD TRIP' : 'NON-FIELD TRIP';
           const safeName = (s.nama || '').replace(/"/g, '""');
           const row = [
@@ -7832,7 +7842,7 @@
           return sClass === normTarget;
         });
 
-        const ftCount = studentsInClass.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true).length;
+        const ftCount = studentsInClass.filter(s => isStudentFTAdminRekap(s)).length;
         const nonFtCount = studentsInClass.length - ftCount;
 
         grandTotalFT += ftCount;
@@ -7953,14 +7963,14 @@
       });
 
       const sortedStudents = [...studentsInClass].sort((a, b) => {
-        const aIsFT = a.zone === 'FINCESTEM LUAR OKU TIMUR' || a.is_field_trip === true;
-        const bIsFT = b.zone === 'FINCESTEM LUAR OKU TIMUR' || b.is_field_trip === true;
+        const aIsFT = isStudentFTAdminRekap(a);
+        const bIsFT = isStudentFTAdminRekap(b);
         if (aIsFT && !bIsFT) return -1;
         if (!aIsFT && bIsFT) return 1;
         return (a.nama || '').localeCompare(b.nama || '');
       });
 
-      const ftCount = sortedStudents.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true).length;
+      const ftCount = sortedStudents.filter(s => isStudentFTAdminRekap(s)).length;
       const nonFtCount = sortedStudents.length - ftCount;
 
       const coord = ((FincestemCore.assignments && FincestemCore.assignments.getClassCoordinator)
@@ -7978,7 +7988,7 @@
       }
 
       const rowsHtml = sortedStudents.map((s, idx) => {
-        const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+        const isFT = isStudentFTAdminRekap(s);
         return `
           <tr>
             <td class="center">${idx + 1}</td>

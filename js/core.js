@@ -1514,11 +1514,20 @@ const FincestemCore = {
             if (data.data.student_zones && typeof data.data.student_zones === 'object') {
               try {
                 localStorage.setItem('fincestem_student_zones_map', JSON.stringify(data.data.student_zones));
-                // Terapkan ke master list di memori
+                // Terapkan ke master list di memori (sinkronkan zone & is_field_trip mengikuti Admin)
                 if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+                  const sz = data.data.student_zones;
                   window.FincestemMasterStudents.forEach(s => {
-                    const z = data.data.student_zones[s.nisn] || data.data.student_zones[s.nis];
-                    if (z) s.zone = z;
+                    const sNisn = String(s.nisn || '').trim();
+                    const sNis = String(s.nis || '').trim();
+                    const rawDigits = sNisn.replace(/\D/g, '');
+                    const padded = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
+                    const unpadded = rawDigits.replace(/^0+/, '');
+                    const z = sz[sNisn] || sz[padded] || (unpadded ? sz[unpadded] : null) || sz[sNis];
+                    if (z) {
+                      s.zone = z;
+                      s.is_field_trip = String(z).toUpperCase().includes('LUAR');
+                    }
                   });
                 }
               } catch (e) {}
@@ -1655,16 +1664,28 @@ const FincestemCore = {
       return defaultZone || 'FINCESTEM OKU TIMUR';
     },
 
+    isFieldTripStudent: function(nisn, className, defaultZone) {
+      const z = this.getStudentZone(nisn, className, defaultZone);
+      const zUpper = String(z || '').toUpperCase();
+      return zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+    },
+
     setStudentZone: function(nisn, zone, callback) {
       if (!nisn) {
         if (callback) callback({ success: false, message: 'NISN tidak valid' });
         return;
       }
       const cleanNisn = String(nisn).trim();
+      const rawDigits = cleanNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+      const isFT = String(zone || '').toUpperCase().includes('LUAR');
 
-      // 1. Simpan individual key
+      // 1. Simpan individual key (raw, padded, unpadded)
       try {
         localStorage.setItem('fincestem_student_zone_' + cleanNisn, zone);
+        if (paddedNisn) localStorage.setItem('fincestem_student_zone_' + paddedNisn, zone);
+        if (unpaddedNisn) localStorage.setItem('fincestem_student_zone_' + unpaddedNisn, zone);
       } catch (e) {}
 
       // 2. Simpan ke peta sinkronisasi
@@ -1673,20 +1694,28 @@ const FincestemCore = {
         const mapStr = localStorage.getItem('fincestem_student_zones_map');
         if (mapStr) map = JSON.parse(mapStr);
         map[cleanNisn] = zone;
+        if (paddedNisn) map[paddedNisn] = zone;
+        if (unpaddedNisn) map[unpaddedNisn] = zone;
         localStorage.setItem('fincestem_student_zones_map', JSON.stringify(map));
       } catch (e) {}
 
-      // 3. Update master list di memori
+      // 3. Update master list di memori (sinkronkan zone & is_field_trip)
       if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
-        const found = window.FincestemMasterStudents.find(s => String(s.nisn).trim() === cleanNisn || String(s.nis).trim() === cleanNisn);
+        const found = window.FincestemMasterStudents.find(s =>
+          String(s.nisn).trim() === cleanNisn ||
+          String(s.nisn).trim() === paddedNisn ||
+          String(s.nis).trim() === cleanNisn ||
+          (unpaddedNisn && String(s.nisn).trim().replace(/^0+/, '') === unpaddedNisn)
+        );
         if (found) {
           found.zone = zone;
+          found.is_field_trip = isFT;
         }
       }
 
       // 4. Update session user jika sedang login sebagai siswa ini
       const u = FincestemCore.auth.getUser();
-      if (u && (String(u.nisn).trim() === cleanNisn || String(u.identifier).trim() === cleanNisn || String(u.nis).trim() === cleanNisn)) {
+      if (u && (String(u.nisn).trim() === cleanNisn || String(u.nisn).trim() === paddedNisn || String(u.identifier).trim() === cleanNisn || String(u.nis).trim() === cleanNisn)) {
         u.zone = zone;
         FincestemCore.auth.setUser(u, u.role || 'siswa');
       }
@@ -4653,10 +4682,20 @@ const FincestemCore = {
     getCoordinatorData: function(coordUser, callback) {
       const self = this;
       if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/settings.php?action=get_coordinator_data&coordinator_user=' + encodeURIComponent(coordUser))
+        fetch(FincestemCore.api.base + '/settings.php?action=get_coordinator_data&coordinator_user=' + encodeURIComponent(coordUser) + '&_t=' + Date.now(), { cache: 'no-store' })
           .then(r => r.json())
           .then(res => {
             if (res && res.success && res.data) {
+              if (Array.isArray(res.data.students)) {
+                res.data.students.forEach(st => {
+                  const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+                    ? FincestemCore.zones.getStudentZone(st.nisn, st.class_name, st.zone)
+                    : (st.zone || 'FINCESTEM OKU TIMUR');
+                  const finalZone = st.zone || z;
+                  st.zone = finalZone;
+                  st.is_field_trip = String(finalZone).toUpperCase().includes('LUAR');
+                });
+              }
               if (callback) callback(res.data);
             } else {
               self.getLocalCoordinatorData(coordUser, callback);
@@ -4705,11 +4744,16 @@ const FincestemCore = {
             const pStr = localStorage.getItem('fincestem_progress_' + s.nisn);
             if (pStr) stProg = JSON.parse(pStr);
           } catch (e) {}
+          const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+            ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+            : (s.zone || 'FINCESTEM OKU TIMUR');
           return {
             nisn: s.nisn,
             name: s.nama,
             class_name: s.class,
             nis: s.nis,
+            zone: z,
+            is_field_trip: String(z).toUpperCase().includes('LUAR'),
             completed_days: stProg ? (stProg.completed_days || 0) : 0,
             percentage: stProg ? (stProg.percentage || 0) : 0,
             task_status: stProg ? (FincestemCore.progress.getDayStatus(stProg, 1)) : 'belum_mulai',
@@ -4730,10 +4774,20 @@ const FincestemCore = {
     getFacilitatorData: function(fasilUser, callback) {
       const self = this;
       if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/settings.php?action=get_facilitator_data&facilitator_user=' + encodeURIComponent(fasilUser))
+        fetch(FincestemCore.api.base + '/settings.php?action=get_facilitator_data&facilitator_user=' + encodeURIComponent(fasilUser) + '&_t=' + Date.now(), { cache: 'no-store' })
           .then(r => r.json())
           .then(res => {
             if (res && res.success && res.data) {
+              if (Array.isArray(res.data.students)) {
+                res.data.students.forEach(st => {
+                  const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+                    ? FincestemCore.zones.getStudentZone(st.nisn, st.class_name, st.zone)
+                    : (st.zone || 'FINCESTEM OKU TIMUR');
+                  const finalZone = st.zone || z;
+                  st.zone = finalZone;
+                  st.is_field_trip = String(finalZone).toUpperCase().includes('LUAR');
+                });
+              }
               if (callback) callback(res.data);
             } else {
               self.getLocalFacilitatorData(fasilUser, callback);
@@ -4759,14 +4813,20 @@ const FincestemCore = {
       const out = {
         assignment: assignment,
         class_name: assignment.class_name,
-        students: students.map(s => ({
-          nisn: s.nisn,
-          name: s.nama,
-          class_name: s.class,
-          nis: s.nis,
-          photo_url: s.photo_url,
-          zone: s.zone
-        }))
+        students: students.map(s => {
+          const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+            ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+            : (s.zone || 'FINCESTEM OKU TIMUR');
+          return {
+            nisn: s.nisn,
+            name: s.nama,
+            class_name: s.class,
+            nis: s.nis,
+            photo_url: s.photo_url,
+            zone: z,
+            is_field_trip: String(z).toUpperCase().includes('LUAR')
+          };
+        })
       };
       if (callback) callback(out);
       return out;

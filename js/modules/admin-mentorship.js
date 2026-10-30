@@ -155,9 +155,13 @@
 
     if (!tObj) return;
 
+    const isStudentFTMentor = (s) => (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+      ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
+      : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
+
     const currentRole = window.FincestemMentorship.getTeacherRole(selectedTeacherKey);
     const students = window.FincestemMentorship.getStudentsForTeacher(selectedTeacherKey);
-    const ftCount = students.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true).length;
+    const ftCount = students.filter(s => isStudentFTMentor(s)).length;
     const nonFtCount = students.length - ftCount;
 
     if (btnAdd) btnAdd.disabled = false;
@@ -227,8 +231,8 @@
       } else {
         // Urutkan: Field Trip dulu, lalu nama
         const sortedStudents = [...students].sort((a, b) => {
-          const aIsFT = a.zone === 'FINCESTEM LUAR OKU TIMUR' || a.is_field_trip === true;
-          const bIsFT = b.zone === 'FINCESTEM LUAR OKU TIMUR' || b.is_field_trip === true;
+          const aIsFT = isStudentFTMentor(a);
+          const bIsFT = isStudentFTMentor(b);
           if (aIsFT && !bIsFT) return -1;
           if (!aIsFT && bIsFT) return 1;
           return (a.nama || '').localeCompare(b.nama || '');
@@ -236,7 +240,7 @@
 
         let html = '';
         sortedStudents.forEach((s, idx) => {
-          const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+          const isFT = isStudentFTMentor(s);
           const badge = isFT
             ? `<span class="px-2 py-0.5 rounded-full text-[10.5px] font-black bg-amber-500 text-slate-950">🚌 Field Trip</span>`
             : `<span class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800 border border-teal-200">🏫 Non-FT</span>`;
@@ -415,7 +419,9 @@
       const sNisn = String(s.nisn || '').trim();
       const sClass = (s.class || s.rombel || '').toUpperCase();
       const sLvl = String(s.level || '').toUpperCase();
-      const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+      const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+        ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
+        : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
       const isAssigned = assignedNisns.has(sNisn);
       const isAlreadyInThisTeacher = currentMentorNisns.has(sNisn);
 
@@ -469,7 +475,9 @@
     let html = '';
     filtered.forEach(s => {
       const sNisn = String(s.nisn || '').trim();
-      const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+      const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+        ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
+        : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
       const isAssignedToOther = assignedNisns.has(sNisn);
       const isChecked = modalSelectedNisns.has(sNisn);
 

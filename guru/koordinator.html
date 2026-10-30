@@ -832,9 +832,27 @@
       }
     }
 
+    function isStudentFieldTripKoord(s) {
+      if (!s) return false;
+      if (FincestemCore.zones && FincestemCore.zones.isFieldTripStudent) {
+        return FincestemCore.zones.isFieldTripStudent(s.nisn, s.class_name || s.class, s.zone);
+      }
+      return (s.zone || '').toUpperCase().includes('LUAR') || s.is_field_trip === true;
+    }
+
     function loadCoordinatorPortalData() {
       const user = FincestemCore.auth.getUser();
       const coordUser = (user && user.username) || (user && user.nip) || (user && user.kode) || '';
+
+      // Sinkronkan peta zona/jalur siswa dari Admin secara real-time
+      if (FincestemCore.zones && FincestemCore.zones.syncZones) {
+        FincestemCore.zones.syncZones(function(syncedData) {
+          if (syncedData && currentCoordinatorData) {
+            renderRingkasanTab(currentCoordinatorData);
+            renderSiswaTab(currentCoordinatorData);
+          }
+        });
+      }
 
       // Sinkronkan seluruh foto profil siswa dari server cPanel secara asinkron
       if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
@@ -900,7 +918,7 @@
         const classFasils = facilitators.filter(f => f.class_name === cls);
         const classStudents = students.filter(s => s.class_name === cls);
         const totalStu = classStudents.length;
-        const ftCount = classStudents.filter(s => (s.zone || '').toUpperCase().includes('LUAR') || s.is_field_trip === true).length;
+        const ftCount = classStudents.filter(s => isStudentFieldTripKoord(s)).length;
         const nonFtCount = totalStu - ftCount;
 
         // Rata-rata progres kelas
@@ -1001,7 +1019,7 @@
       }
       if (selectedKoordJalurFilter !== 'ALL') {
         filtered = filtered.filter(s => {
-          const isFT = (s.zone || '').toUpperCase().includes('LUAR') || s.is_field_trip === true;
+          const isFT = isStudentFieldTripKoord(s);
           if (selectedKoordJalurFilter === 'FIELD_TRIP') return isFT;
           if (selectedKoordJalurFilter === 'NON_FIELD_TRIP') return !isFT;
           return true;
@@ -1082,7 +1100,7 @@
           ? `<span class="px-2 py-0.5 rounded-lg text-[10.5px] font-black bg-purple-100 text-purple-900 border border-purple-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">verified</span> Rapor: <strong>${finalScore}</strong> (${finalPred})</span>`
           : `<span class="px-2 py-0.5 rounded-lg text-[10px] font-semibold bg-slate-100 text-slate-500">Rapor: Berjalan</span>`;
 
-        const isFT = (stu.zone || '').toUpperCase().includes('LUAR') || stu.is_field_trip === true;
+        const isFT = isStudentFieldTripKoord(stu);
         const jalurBadge = isFT
           ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-300 flex items-center gap-1 shadow-2xs shrink-0"><span class="material-symbols-outlined text-[12px] text-amber-700">directions_bus</span> 🚌 Field Trip</span>`
           : `<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-teal-100 text-teal-950 border border-teal-300 flex items-center gap-1 shadow-2xs shrink-0"><span class="material-symbols-outlined text-[12px] text-teal-700">school</span> 🏫 Non-Field Trip</span>`;

@@ -340,7 +340,9 @@
       let nonFtAssigned = 0;
 
       allStudents.forEach(s => {
-        const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+        const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+          ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
+          : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
         const sNisn = String(s.nisn || '').trim();
         const isMapped = assignedNisns.has(sNisn);
 
@@ -437,7 +439,9 @@
             <!-- GRID KARTU (2 KOLOM X 5 BARIS = 10 KARTU PER LEMBAR F4) -->
             <div class="grid grid-cols-2 gap-2 text-xs">
               ${pageCards.map((s) => {
-                const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+                const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+                  ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
+                  : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
                 const badgeText = isFT ? '🚌 Field Trip' : '🏫 Non-Field Trip';
                 const badgeBg = isFT ? 'background-color: #f59e0b; color: #000;' : 'background-color: #0d9488; color: #fff;';
                 const pwd = s.password || (s.nisn ? s.nisn.slice(-6) : '123456');

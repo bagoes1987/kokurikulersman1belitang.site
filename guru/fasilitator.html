@@ -1307,9 +1307,84 @@
     }
 
     // LOAD KELAS BINAAN FASILITATOR (STRICT: HANYA 1 KELAS!)
+    function isStudentFieldTripFasil(nisn, stuObj) {
+      const cleanNisn = String(nisn || (stuObj && stuObj.nisn) || '').trim();
+      const rawDigits = cleanNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+
+      // 1. Prioritas Tertinggi: Peta sinkronisasi zona resmi dari Admin (fincestem_student_zones_map)
+      try {
+        const mapStr = localStorage.getItem('fincestem_student_zones_map');
+        if (mapStr) {
+          const map = JSON.parse(mapStr);
+          if (map) {
+            const zMap = map[cleanNisn] || map[paddedNisn] || (unpaddedNisn ? map[unpaddedNisn] : null) || (stuObj && stuObj.nis ? map[String(stuObj.nis).trim()] : null);
+            if (zMap) {
+              return String(zMap).toUpperCase().includes('LUAR');
+            }
+          }
+        }
+      } catch (e) {}
+
+      // 2. Cek jika siswa ada di daftar assignedStudents yang baru dimuat dari server API
+      if (Array.isArray(assignedStudents) && assignedStudents.length > 0) {
+        const foundAssigned = assignedStudents.find(s =>
+          String(s.nisn).trim() === cleanNisn ||
+          String(s.nisn).trim() === paddedNisn ||
+          (unpaddedNisn && String(s.nisn).trim().replace(/^0+/, '') === unpaddedNisn)
+        );
+        if (foundAssigned && foundAssigned.zone) {
+          return String(foundAssigned.zone).toUpperCase().includes('LUAR');
+        }
+      }
+
+      // 3. Gunakan FincestemCore.zones.getStudentZone (mengikuti keputusan Admin)
+      if (FincestemCore.zones && FincestemCore.zones.getStudentZone) {
+        const z = FincestemCore.zones.getStudentZone(
+          cleanNisn,
+          (stuObj && (stuObj.class_name || stuObj.class)) || assignedClass,
+          stuObj ? stuObj.zone : null
+        );
+        if (z) {
+          return String(z).toUpperCase().includes('LUAR');
+        }
+      }
+
+      if (stuObj && stuObj.zone) {
+        return String(stuObj.zone).toUpperCase().includes('LUAR');
+      }
+      return false;
+    }
+
     function loadFacilitatorClassData() {
       const user = FincestemCore.auth.getUser();
       const fasilUser = (user && user.username) || (user && user.nip) || (user && user.kode) || '';
+
+      // Sinkronkan seluruh peta zonasi/jalur siswa dari Admin secara real-time
+      if (FincestemCore.zones && FincestemCore.zones.syncZones) {
+        FincestemCore.zones.syncZones(function(syncedData) {
+          if (syncedData && syncedData.student_zones && Array.isArray(assignedStudents) && assignedStudents.length > 0) {
+            const sz = syncedData.student_zones;
+            assignedStudents.forEach(s => {
+              const sNisn = String(s.nisn || '').trim();
+              const rawD = sNisn.replace(/\D/g, '');
+              const padD = (rawD.length >= 8 && rawD.length <= 10) ? rawD.padStart(10, '0') : sNisn;
+              const unpD = rawD.replace(/^0+/, '');
+              const z = sz[sNisn] || sz[padD] || (unpD ? sz[unpD] : null) || (s.nis ? sz[String(s.nis).trim()] : null);
+              if (z) {
+                s.zone = z;
+                s.is_field_trip = String(z).toUpperCase().includes('LUAR');
+              }
+            });
+            renderAssignedStudentList();
+            const secRekap = document.getElementById('secFasRekap');
+            if (secRekap && !secRekap.classList.contains('hidden')) {
+              renderFasRekapView();
+            }
+          }
+        });
+      }
 
       // Sinkronkan seluruh foto profil siswa dari server cPanel secara asinkron
       if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
@@ -1321,20 +1396,23 @@
       }
 
       // 0. Cek apakah guru ini memiliki Siswa Binaan Khusus dari Modul Mentorship (Lintas Kelas)
-      const teacherKey = fasilUser ? String(fasilUser.username || fasilUser.nip || fasilUser.kode || '').trim().toLowerCase() : '';
+      const teacherKey = String(fasilUser || '').trim().toLowerCase();
       const mentorStudents = (window.FincestemMentorship && teacherKey) ? window.FincestemMentorship.getStudentsForTeacher(teacherKey) : [];
 
       if (mentorStudents && mentorStudents.length > 0) {
         assignedClass = 'Binaan Anda';
-        assignedStudents = mentorStudents.map(s => ({
-          nisn: s.nisn,
-          name: s.nama,
-          class_name: s.class || s.rombel || '-',
-          nis: s.nis,
-          photo_url: s.photo_url,
-          zone: s.zone,
-          is_field_trip: (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true)
-        }));
+        assignedStudents = mentorStudents.map(s => {
+          const isFT = isStudentFieldTripFasil(s.nisn, s);
+          return {
+            nisn: s.nisn,
+            name: s.nama,
+            class_name: s.class || s.rombel || '-',
+            nis: s.nis,
+            photo_url: s.photo_url,
+            zone: isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR',
+            is_field_trip: isFT
+          };
+        });
 
         const lblSidebarClass = document.getElementById('lblSidebarClassName');
         if (lblSidebarClass) lblSidebarClass.textContent = 'Binaan Anda';
@@ -1357,7 +1435,13 @@
         FincestemCore.assignments.getFacilitatorData(fasilUser, function(data) {
           if (data && data.class_name) {
             assignedClass = data.class_name;
-            assignedStudents = data.students || [];
+            assignedStudents = (data.students || []).map(s => {
+              const isFT = isStudentFieldTripFasil(s.nisn, s);
+              return Object.assign({}, s, {
+                zone: isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR',
+                is_field_trip: isFT
+              });
+            });
             
             const lblSidebarClass = document.getElementById('lblSidebarClassName');
             if (lblSidebarClass) lblSidebarClass.textContent = assignedClass;
@@ -1375,14 +1459,18 @@
             // Jika belum ditugaskan oleh admin, ambil fallback kelas pertama dari master data
             const masterList = window.FincestemMasterStudents || [];
             assignedClass = 'KELAS X.1';
-            assignedStudents = masterList.filter(s => s.class === assignedClass).map(s => ({
-              nisn: s.nisn,
-              name: s.nama,
-              class_name: s.class,
-              nis: s.nis,
-              photo_url: s.photo_url,
-              zone: s.zone
-            }));
+            assignedStudents = masterList.filter(s => s.class === assignedClass).map(s => {
+              const isFT = isStudentFieldTripFasil(s.nisn, s);
+              return {
+                nisn: s.nisn,
+                name: s.nama,
+                class_name: s.class,
+                nis: s.nis,
+                photo_url: s.photo_url,
+                zone: isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR',
+                is_field_trip: isFT
+              };
+            });
             
             const lblSidebarClass = document.getElementById('lblSidebarClassName');
             if (lblSidebarClass) lblSidebarClass.textContent = `${assignedClass} (Demo)`;
@@ -1469,13 +1557,15 @@
           if (pStr) prog = JSON.parse(pStr);
         } catch (e) {}
 
-        const isFT = (stu.zone || '').toUpperCase().includes('LUAR') || stu.is_field_trip === true;
+        const isFT = isStudentFieldTripFasil(stu.nisn, stu);
+        stu.zone = isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR';
+        stu.is_field_trip = isFT;
         if (isFT) countJalurFT++;
         else countJalurNonFT++;
 
-        const completedDays = prog ? (prog.completed_days || 0) : 0;
-        const percentage = prog ? (prog.percentage || 0) : 0;
-        let avgScore = prog ? prog.average_score : null;
+        const completedDays = prog ? (prog.completed_days || 0) : (stu.completed_days || 0);
+        const percentage = prog ? (prog.percentage || 0) : (stu.percentage || 0);
+        let avgScore = prog ? prog.average_score : (stu.avg_score || null);
         if ((avgScore === null || isNaN(avgScore) || avgScore <= 0) && prog && (prog.records || prog.task_map)) {
           try {
             let totalSc = 0;
@@ -1487,9 +1577,12 @@
               if (rec && rec.score && !isNaN(rec.score)) {
                 totalSc += parseFloat(rec.score);
                 cSc++;
-              } else if (taskMap[d + '_lkpd'] || taskMap[d + '_refleksi']) {
+              } else if (isFT && (taskMap[d + '_lkpd'] || taskMap[d + '_refleksi'])) {
                 const autoSc = FincestemCore.fieldTripRules ? FincestemCore.fieldTripRules.calculateFieldTripScore(d, null, stu.nisn) : { score: 98.8 };
                 totalSc += (autoSc.score || 98.8);
+                cSc++;
+              } else if (!isFT && taskMap[d + '_asesmen'] && taskMap[d + '_asesmen'].score) {
+                totalSc += parseFloat(taskMap[d + '_asesmen'].score);
                 cSc++;
               }
             }
@@ -1498,7 +1591,7 @@
             }
           } catch(e) {}
         }
-        let latestStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : (prog ? FincestemCore.progress.getDayStatus(prog, 1) : 'belum_mulai');
+        let latestStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : (prog ? FincestemCore.progress.getDayStatus(prog, 1) : (stu.task_status || 'belum_mulai'));
 
         if (completedDays >= 7 || percentage >= 100) {
           latestStatus = 'completed';
@@ -1774,12 +1867,8 @@
       } catch(e) {}
       renderFacilitatorHealthAlert(initialHealth);
 
-      // Deteksi kategori siswa: Field Trip vs Non-Field Trip
-      const allStu = window.FincestemMasterStudents || [];
-      const currentStu = allStu.find(s => String(s.nisn).trim() === String(targetNisn).trim());
-      const isFieldTrip = currentStu 
-        ? ((currentStu.zone || '').toUpperCase().includes('LUAR') || currentStu.is_field_trip === true)
-        : true;
+      // Deteksi kategori siswa: Field Trip vs Non-Field Trip (100% mengikuti pengaturan Admin)
+      const isFieldTrip = isStudentFieldTripFasil(targetNisn);
 
       // Update opsi target day dropdown agar mencerminkan destinasi & 4 pilar yang presisi
       const daySelect = document.getElementById('gradeTargetDay');
@@ -1798,12 +1887,12 @@
       } else {
         daySelect.innerHTML = `
           <option value="1">Day 1: Fondasi Ekonomi, Literasi Finansial &amp; Potensi OKU Timur</option>
-          <option value="2">Day 2: Eksplorasi Sains & Ekosistem Irigasi Komering</option>
-          <option value="3">Day 3: Rekayasa Teknologi & Pengukuran Lapangan</option>
-          <option value="4">Day 4: Literasi Finansial & Rantai Pasok Pangan</option>
-          <option value="5">Day 5: Eksplorasi Budaya & Etnosains Nusantara</option>
-          <option value="6">Day 6: Sintesis Data & Penyusunan LKPD Riset Mandiri</option>
-          <option value="7">Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi</option>
+          <option value="2">Day 2: Budaya Lokal, Kearifan &amp; Mata Pencaharian OKU Timur</option>
+          <option value="3">Day 3: Teknologi Pertanian, RMU &amp; Inovasi Pangan Lokal</option>
+          <option value="4">Day 4: Ekosistem Irigasi Komering, Bendungan Perjaya &amp; Air</option>
+          <option value="5">Day 5: Kerajinan Etnosains, Kriya Lokal &amp; Ekonomi Kreatif</option>
+          <option value="6">Day 6: Rantai Pasok Agribisnis, Koperasi &amp; Pemasaran Digital</option>
+          <option value="7">Day 7: Sintesis Riset Mandiri, Audit Kas &amp; Gelar Karya</option>
           <option value="0">Day 0: Uji Coba / Simulasi Gladi Bersih</option>
         `;
       }
@@ -1829,12 +1918,8 @@
     }
 
     function loadStudentDayEvaluation(nisn, dayNum) {
-      // Deteksi kategori siswa: Field Trip vs Non-Field Trip
-      const allStu = window.FincestemMasterStudents || [];
-      const currentStu = allStu.find(s => String(s.nisn).trim() === String(nisn).trim());
-      const isFieldTrip = currentStu 
-        ? ((currentStu.zone || '').toUpperCase().includes('LUAR') || currentStu.is_field_trip === true)
-        : true;
+      // Deteksi kategori siswa: Field Trip vs Non-Field Trip (100% mengikuti pengaturan Admin)
+      const isFieldTrip = isStudentFieldTripFasil(nisn);
 
       // Nilai otomatis awal berdasarkan kalkulasi jam kirim
       const autoScore = (FincestemCore.fieldTripRules && FincestemCore.fieldTripRules.calculateFieldTripScore)
@@ -2003,41 +2088,45 @@
           const radio = document.querySelector(`input[name="evalStatusRadio"][value="${st}"]`);
           if (radio) radio.checked = true;
 
-          // Pratinjau LKPD Day 1 Field Trip (Budgeting Plan) jika ada
+          // Pratinjau Pekerjaan Siswa (Non-Field Trip Day 1–7 & Field Trip Day 1–7)
           const lkpdPreviewEl = document.getElementById('modalGradingLkpdPreview');
           if (lkpdPreviewEl) {
             lkpdPreviewEl.innerHTML = '';
-            if (dayNum === 1) {
-              try {
-                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day1_' + nisn);
-                const storedNftLkpd = localStorage.getItem('fincestem_lkpd_nft_day1_' + nisn) || localStorage.getItem('fincestem_lkpd_day1_' + nisn);
-                const storedNftMat = localStorage.getItem('fincestem_materi_nft_day1_' + nisn);
+            let renderedNftPreview = false;
 
-                if (storedNftLkpd || storedNftMat) {
+            if (dayNum >= 1 && dayNum <= 7) {
+              try {
+                const storedNftLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + nisn);
+                const storedNftMat = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + nisn);
+                const storedNftAsesmen = localStorage.getItem(`fincestem_asesmen_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + nisn);
+                const storedNftRefl = localStorage.getItem(`fincestem_refleksi_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_refl_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_refleksi_day${dayNum}_` + nisn);
+
+                if (!isFieldTrip && (storedNftLkpd || storedNftMat || storedNftAsesmen || storedNftRefl)) {
+                  renderedNftPreview = true;
                   const nftLkpd = storedNftLkpd ? JSON.parse(storedNftLkpd) : null;
                   const nftMat = storedNftMat ? JSON.parse(storedNftMat) : null;
 
                   let cardsHtml = '';
                   if (nftMat) {
                     const cards = [
-                      { key: 'A', data: nftMat.cardA, name: 'A: Kegiatan Ekonomi' },
-                      { key: 'B', data: nftMat.cardB, name: 'B: Literasi Finansial' },
-                      { key: 'C', data: nftMat.cardC, name: 'C: Kebanksentralan' },
-                      { key: 'D', data: nftMat.cardD, name: 'D: Badan Usaha & Koperasi' },
-                      { key: 'E', data: nftMat.cardE, name: 'E: Potensi OKU Timur' }
+                      { key: 'A', data: nftMat.cardA, name: nftMat.cardA?.title ? `A: ${nftMat.cardA.title}` : `Kartu Riset A (Day ${dayNum})` },
+                      { key: 'B', data: nftMat.cardB, name: nftMat.cardB?.title ? `B: ${nftMat.cardB.title}` : `Kartu Riset B (Day ${dayNum})` },
+                      { key: 'C', data: nftMat.cardC, name: nftMat.cardC?.title ? `C: ${nftMat.cardC.title}` : `Kartu Riset C (Day ${dayNum})` },
+                      { key: 'D', data: nftMat.cardD, name: nftMat.cardD?.title ? `D: ${nftMat.cardD.title}` : `Kartu Riset D (Day ${dayNum})` },
+                      { key: 'E', data: nftMat.cardE, name: nftMat.cardE?.title ? `E: ${nftMat.cardE.title}` : `Kartu Riset E (Day ${dayNum})` }
                     ];
                     cardsHtml = `
                       <div class="mt-2 flex flex-col gap-1.5 border-t border-teal-200 pt-2">
                         <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
                           <span class="material-symbols-outlined text-xs text-teal-700">psychology</span>
-                          <span>Hasil Sintesis 5 Kartu Riset Mandiri (Modul Day 1):</span>
+                          <span>Hasil Sintesis 5 Kartu Riset Mandiri (Modul Day ${dayNum}):</span>
                         </span>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10.5px]">
                           ${cards.map(c => `
                             <div class="bg-white/95 p-2 rounded-xl border border-teal-200 flex flex-col gap-1">
-                              <div class="flex items-center justify-between">
-                                <strong class="text-teal-900">${c.name}</strong>
-                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-100 text-teal-800 font-bold">${c.data?.text ? c.data.text.length : 0} Karakter</span>
+                              <div class="flex items-center justify-between gap-1">
+                                <strong class="text-teal-900 truncate">${c.name}</strong>
+                                <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-100 text-teal-800 font-bold shrink-0">${c.data?.text ? c.data.text.length : 0} Karakter</span>
                               </div>
                               <p class="text-slate-600 line-clamp-3 italic">"${c.data?.text || '-'}"</p>
                               <div class="text-[9.5px] text-slate-600 font-medium bg-teal-50/60 p-1.5 rounded-lg border border-teal-100/80 whitespace-pre-line line-clamp-3" title="${c.data?.source || '-'}">📚 <strong>Rujukan:</strong><br>${c.data?.source || '-'}</div>
@@ -2051,6 +2140,7 @@
                   let lkpdHtml = '';
                   if (nftLkpd) {
                     const isNewAudit = !!(nftLkpd.businessName || nftLkpd.businessType || nftLkpd.incomeMonthly !== undefined);
+                    const isSectorObservasi = !!(nftLkpd.sectorName || nftLkpd.narasumberName || nftLkpd.conclusion_1 || nftLkpd.conclusion_6);
                     if (isNewAudit) {
                       const netProfit = Number(nftLkpd.netProfitMonthly || 0);
                       const isSurplus = netProfit >= 0;
@@ -2058,7 +2148,7 @@
                         <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
                           <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
                             <span class="material-symbols-outlined text-xs text-teal-700">storefront</span>
-                            <span>Hasil Audit Investigasi Lapangan (LKPD Day 1):</span>
+                            <span>Hasil Audit Investigasi Lapangan (LKPD Day ${dayNum}):</span>
                           </span>
                           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10.5px]">
                             <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
@@ -2110,16 +2200,43 @@
                           <div class="bg-white/95 p-2 rounded-xl border border-teal-200 flex flex-col gap-1 text-[10.5px]">
                             <div>
                               <strong class="text-amber-900 text-[10px]">⚠️ Kendala Utama:</strong>
-                              <p class="text-slate-700 text-[10px] leading-relaxed">${nftLkpd.problems || '-'}</p>
+                              <p class="text-slate-700 text-[10px] leading-relaxed">${nftLkpd.problems || nftLkpd.problemFaced || '-'}</p>
                             </div>
                             <div class="mt-1 pt-1 border-t border-slate-100">
                               <strong class="text-teal-900 text-[10px] flex items-center justify-between">
                                 <span>💡 Rekomendasi Solusi Siswa:</span>
-                                <span class="text-[9px] font-bold text-teal-700 bg-teal-100 px-1.5 py-0.2 rounded">${(nftLkpd.solutions || '').length} Karakter</span>
+                                <span class="text-[9px] font-bold text-teal-700 bg-teal-100 px-1.5 py-0.2 rounded">${(nftLkpd.solutions || nftLkpd.recommendation || '').length} Karakter</span>
                               </strong>
-                              <p class="text-slate-800 text-[10px] leading-relaxed font-medium bg-teal-50/50 p-2 rounded-lg border border-teal-100/60 mt-0.5 whitespace-pre-line">${nftLkpd.solutions || '-'}</p>
+                              <p class="text-slate-800 text-[10px] leading-relaxed font-medium bg-teal-50/50 p-2 rounded-lg border border-teal-100/60 mt-0.5 whitespace-pre-line">${nftLkpd.solutions || nftLkpd.recommendation || '-'}</p>
                             </div>
                           </div>
+                        </div>
+                      `;
+                    } else if (isSectorObservasi) {
+                      lkpdHtml = `
+                        <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
+                          <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs text-teal-700">fact_check</span>
+                            <span>Hasil Observasi &amp; Wawancara Lapangan (LKPD Day ${dayNum}):</span>
+                          </span>
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10.5px]">
+                            <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
+                              <span class="text-slate-500 block text-[9.5px]">Sektor / Fokus Observasi:</span>
+                              <div class="font-black text-teal-950 text-xs">${nftLkpd.sectorName || '-'}</div>
+                              <div class="text-[9.5px] text-slate-600 mt-0.5">📍 ${nftLkpd.location || (nftLkpd.village ? `${nftLkpd.village}, Kec. ${nftLkpd.district}` : '-')}</div>
+                            </div>
+                            <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
+                              <span class="text-slate-500 block text-[9.5px]">Narasumber Wawancara:</span>
+                              <div class="font-bold text-slate-800 text-xs">👤 ${nftLkpd.narasumberName || '-'}</div>
+                              <div class="text-[9.5px] text-slate-600 mt-0.5">${nftLkpd.narasumberRole || 'Pelaku Sektor'} ${nftLkpd.narasumberPhone ? `(${nftLkpd.narasumberPhone})` : ''}</div>
+                            </div>
+                          </div>
+                          ${(nftLkpd.conclusion_6 || nftLkpd.conclusion_1) ? `
+                            <div class="bg-white/95 p-2 rounded-xl border border-teal-200 text-[10.5px]">
+                              <strong class="text-teal-900 text-[10px] block">💡 Sintesis &amp; Rekomendasi Observasi Siswa:</strong>
+                              <p class="text-slate-700 text-[10px] leading-relaxed mt-0.5 whitespace-pre-line">${nftLkpd.conclusion_6 || nftLkpd.conclusion_1 || '-'}</p>
+                            </div>
+                          ` : ''}
                         </div>
                       `;
                     } else {
@@ -2127,19 +2244,11 @@
                         <div class="grid grid-cols-2 gap-2 text-[11px] mt-1">
                           <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
                             <span class="text-slate-500 block">Judul Riset:</span>
-                            <span class="font-black text-slate-900">${nftLkpd.projectTitle || '-'}</span>
+                            <span class="font-black text-slate-900">${nftLkpd.projectTitle || nftLkpd.title || `LKPD Day ${dayNum}`}</span>
                           </div>
                           <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
                             <span class="text-slate-500 block">Lokasi OKU Timur:</span>
                             <span class="font-black text-teal-900">${nftLkpd.location || '-'}</span>
-                          </div>
-                          <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
-                            <span class="text-slate-500 block">Rencana Wawancara:</span>
-                            <span class="font-medium text-slate-800 line-clamp-2">${nftLkpd.interviewPlan || '-'}</span>
-                          </div>
-                          <div class="bg-white/90 p-2 rounded-xl border border-teal-200">
-                            <span class="text-slate-500 block">Pembagian Tim:</span>
-                            <span class="font-medium text-slate-800 line-clamp-2">${nftLkpd.teamRoles || '-'}</span>
                           </div>
                         </div>
                       `;
@@ -2148,7 +2257,6 @@
 
                   let nftAsesmenHtml = '';
                   try {
-                    const storedNftAsesmen = localStorage.getItem('fincestem_asesmen_nft_day1_' + nisn) || localStorage.getItem('fincestem_asesmen_day1_' + nisn);
                     if (storedNftAsesmen) {
                       const aData = JSON.parse(storedNftAsesmen);
                       if (aData && aData.score !== undefined) {
@@ -2159,8 +2267,8 @@
                                 <span class="material-symbols-outlined text-sm">quiz</span>
                               </span>
                               <div>
-                                <span class="font-extrabold text-teal-950 block text-[11px]">Kuis Asesmen Day 1 (50 Soal Acak Exam Shield)</span>
-                                <span class="text-[10px] text-slate-500">${aData.correctCount || 0}/50 Benar &bull; Durasi: ${Math.round((aData.durationSpentSeconds || 0)/60)} Menit &bull; <span class="${(aData.violationCount || 0) > 0 ? 'text-rose-600 font-black' : 'text-slate-500'}">Pelanggaran: ${aData.violationCount || 0}x ${(aData.violationCount || 0) > 0 ? '⚠️' : ''}</span></span>
+                                <span class="font-extrabold text-teal-950 block text-[11px]">Kuis Asesmen Day ${dayNum} (50 Soal Acak Exam Shield)</span>
+                                <span class="text-[10px] text-slate-500">${aData.correctCount || 0}/${aData.totalQuestions || 50} Benar &bull; Durasi: ${Math.round((aData.durationSpentSeconds || 0)/60)} Menit &bull; <span class="${(aData.violationCount || 0) > 0 ? 'text-rose-600 font-black' : 'text-slate-500'}">Pelanggaran: ${aData.violationCount || 0}/3 ${(aData.violationCount || 0) > 0 ? '⚠️' : ''}</span></span>
                               </div>
                             </div>
                             <span class="px-2.5 py-1 rounded-lg bg-teal-100 text-teal-900 font-black text-xs border border-teal-300">
@@ -2172,12 +2280,31 @@
                     }
                   } catch(e) {}
 
+                  let nftReflHtml = '';
+                  try {
+                    if (storedNftRefl) {
+                      const rData = JSON.parse(storedNftRefl);
+                      const rText = rData && (rData.content || rData.reflection || rData.note || (typeof rData === 'string' ? rData : ''));
+                      if (rText) {
+                        nftReflHtml = `
+                          <div class="mt-2 bg-white/95 p-2 rounded-xl border border-teal-200 text-[10.5px]">
+                            <strong class="text-teal-900 text-[10px] flex items-center gap-1">
+                              <span class="material-symbols-outlined text-xs text-teal-700">edit_note</span>
+                              <span>Jurnal Refleksi Mandiri Day ${dayNum}:</span>
+                            </strong>
+                            <p class="text-slate-700 italic mt-0.5 line-clamp-3">"${rText}"</p>
+                          </div>
+                        `;
+                      }
+                    }
+                  } catch(e) {}
+
                   lkpdPreviewEl.innerHTML = `
                     <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-300 flex flex-col gap-2 text-xs shadow-2xs">
                       <div class="flex items-center justify-between gap-1 flex-wrap">
                         <span class="font-black text-teal-950 flex items-center gap-1">
                           <span class="material-symbols-outlined text-sm text-teal-700">school</span>
-                          <span>Riset Mandiri Non-Field Trip OKU Timur (Day 1)</span>
+                          <span>Riset Mandiri Non-Field Trip OKU Timur (Day ${dayNum})</span>
                         </span>
                         <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-teal-600 text-white">
                           Riset Mandiri
@@ -2186,9 +2313,17 @@
                       ${lkpdHtml}
                       ${cardsHtml}
                       ${nftAsesmenHtml}
+                      ${nftReflHtml}
                     </div>
                   `;
-                } else if (storedFt) {
+                }
+              } catch(e) {}
+            }
+
+            if (!renderedNftPreview && dayNum === 1) {
+              try {
+                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day1_' + nisn);
+                if (storedFt) {
                   const ftData = JSON.parse(storedFt);
                   const isGood = ftData.diagnosis && ftData.diagnosis.includes('Sangat Baik');
                   const isWasteful = ftData.diagnosis && ftData.diagnosis.includes('Boros');
@@ -2233,7 +2368,7 @@
                   `;
                 }
               } catch(e) {}
-            } else if (dayNum === 3) {
+            } else if (!renderedNftPreview && dayNum === 3) {
               try {
                 const storedFt = localStorage.getItem('fincestem_lkpd_ft_day3_apel_' + nisn) ||
                                  localStorage.getItem('fincestem_lkpd_ft_day3_' + nisn);
@@ -2290,7 +2425,7 @@
                   `;
                 }
               } catch(e) {}
-            } else if (dayNum === 4) {
+            } else if (!renderedNftPreview && dayNum === 4) {
               try {
                 const storedFt = localStorage.getItem('fincestem_lkpd_ft_day4_' + nisn);
                 const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day4_' + nisn);
@@ -2345,7 +2480,7 @@
                   `;
                 }
               } catch(e) {}
-            } else if (dayNum === 5) {
+            } else if (!renderedNftPreview && dayNum === 5) {
               try {
                 const storedFt = localStorage.getItem('fincestem_lkpd_ft_day5_' + nisn);
                 const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day5_' + nisn);
@@ -2383,7 +2518,7 @@
                   `;
                 }
               } catch(e) {}
-            } else if (dayNum === 6) {
+            } else if (!renderedNftPreview && dayNum === 6) {
               try {
                 const storedFt = localStorage.getItem('fincestem_lkpd_ft_day6_' + nisn) || localStorage.getItem('fincestem_lkpd_ft_day6_bakpia_' + nisn);
                 const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day6_' + nisn);
@@ -3255,7 +3390,9 @@
       const currentClass = assignedClass || 'KELAS X.1';
       const normClass = currentClass.replace(/^KELAS\s+/i, '').trim().toUpperCase();
 
-      const teacherKey = fasilUser ? String(fasilUser.username || fasilUser.nip || fasilUser.kode || '').trim().toLowerCase() : '';
+      const user = FincestemCore.auth.getUser();
+      const fasilUser = (user && user.username) || (user && user.nip) || (user && user.kode) || '';
+      const teacherKey = String(fasilUser || '').trim().toLowerCase();
       const mentorStudents = (window.FincestemMentorship && teacherKey) ? window.FincestemMentorship.getStudentsForTeacher(teacherKey) : [];
 
       let studentsInBinaan = [];
@@ -3268,8 +3405,8 @@
         });
       }
 
-      const ftStudents = studentsInBinaan.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
-      const nonFtStudents = studentsInBinaan.filter(s => s.zone !== 'FINCESTEM LUAR OKU TIMUR' && !s.is_field_trip);
+      const ftStudents = studentsInBinaan.filter(s => isStudentFieldTripFasil(s.nisn, s));
+      const nonFtStudents = studentsInBinaan.filter(s => !isStudentFieldTripFasil(s.nisn, s));
 
       // Update counters
       const elFT = document.getElementById('fasRekapCountFT');
@@ -3290,8 +3427,8 @@
 
       // Sort: FT first, then by name
       const sortedBinaan = [...studentsInBinaan].sort((a, b) => {
-        const aIsFT = a.zone === 'FINCESTEM LUAR OKU TIMUR' || a.is_field_trip === true;
-        const bIsFT = b.zone === 'FINCESTEM LUAR OKU TIMUR' || b.is_field_trip === true;
+        const aIsFT = isStudentFieldTripFasil(a.nisn, a);
+        const bIsFT = isStudentFieldTripFasil(b.nisn, b);
         if (aIsFT && !bIsFT) return -1;
         if (!aIsFT && bIsFT) return 1;
         return (a.nama || '').localeCompare(b.nama || '');
@@ -3305,7 +3442,7 @@
         } else {
           let htmlBinaan = '';
           sortedBinaan.forEach((s, idx) => {
-            const isFT = s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true;
+            const isFT = isStudentFieldTripFasil(s.nisn, s);
             const badge = isFT
               ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-white shadow-2xs">🚌 Field Trip</span>`
               : `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-900 border border-teal-200">🏫 Non-Field Trip</span>`;
@@ -3338,7 +3475,7 @@
         classList.forEach((cls, idx) => {
           const norm = cls.replace(/^KELAS\s+/i, '').trim().toUpperCase();
           const inClass = allStudents.filter(s => (s.class || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
-          const ft = inClass.filter(s => s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true).length;
+          const ft = inClass.filter(s => isStudentFieldTripFasil(s.nisn, s)).length;
           const nonFt = inClass.length - ft;
           const isMyClass = norm === normClass;
 

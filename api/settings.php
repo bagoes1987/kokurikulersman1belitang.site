@@ -200,6 +200,12 @@ function ensureRoleTables($pdo) {
                 $rawFt = file_get_contents($ftFile);
                 $ftStudents = json_decode($rawFt, true);
                 if (is_array($ftStudents) && count($ftStudents) > 0) {
+                    // Simpan override manual Admin yang sudah ada di student_custom_zones sebelum sinkronisasi
+                    $existingCustom = [];
+                    try {
+                        $existingCustom = $pdo->query("SELECT `nisn`, `zone` FROM `student_custom_zones`")->fetchAll(PDO::FETCH_KEY_PAIR);
+                    } catch (Exception $eCust) {}
+
                     $pdo->exec("UPDATE `users` SET `zone` = 'FINCESTEM OKU TIMUR' WHERE `role` = 'siswa'");
                     // JANGAN DELETE student_custom_zones agar perubahan manual admin tidak terhapus!
                     // Siswa di tabel student_custom_zones akan tetap mempertahankan zona yang diubah admin.
@@ -249,7 +255,28 @@ function ensureRoleTables($pdo) {
                         $chunks = array_chunk($insertValues, 100);
                         foreach ($chunks as $chunk) {
                             $valSql = implode(',', $chunk);
-                            $pdo->exec("INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES $valSql ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`)");
+                            // Gunakan INSERT IGNORE agar perubahan manual Admin di student_custom_zones TIDAK tertimpa
+                            $pdo->exec("INSERT IGNORE INTO `student_custom_zones` (`nisn`, `zone`) VALUES $valSql");
+                        }
+                    }
+
+                    // Terapkan kembali seluruh override manual Admin ke tabel users
+                    if (!empty($existingCustom)) {
+                        $stmtRestoreUser = $pdo->prepare("UPDATE `users` SET `zone` = :z WHERE (`identifier` = :id OR `identifier` = :padded OR `identifier` = :unpadded OR `nis` = :nis) AND `role` = 'siswa'");
+                        $stmtRestoreCust = $pdo->prepare("INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES (:id, :z) ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`)");
+                        foreach ($existingCustom as $cNisn => $cZone) {
+                            $cleanN = trim((string)$cNisn);
+                            $digits = preg_replace('/\D/', '', $cleanN);
+                            $padded = (strlen($digits) >= 8 && strlen($digits) <= 10) ? str_pad($digits, 10, '0', STR_PAD_LEFT) : $cleanN;
+                            $unpadded = ltrim($digits, '0') ?: $cleanN;
+                            $stmtRestoreUser->execute([
+                                ':z'        => $cZone,
+                                ':id'       => $cleanN,
+                                ':padded'   => $padded,
+                                ':unpadded' => $unpadded,
+                                ':nis'      => $cleanN
+                            ]);
+                            $stmtRestoreCust->execute([':id' => $cleanN, ':z' => $cZone]);
                         }
                     }
 
@@ -265,6 +292,43 @@ function ensureRoleTables($pdo) {
 
     @touch($lockFile);
     $checked = true;
+}
+
+function buildCustomZonesLookup($pdo) {
+    $map = [];
+    try {
+        $stmtCust = $pdo->query("SELECT `nisn`, `zone` FROM `student_custom_zones`");
+        while ($r = $stmtCust->fetch()) {
+            if (!empty($r['nisn']) && !empty($r['zone'])) {
+                $n = trim($r['nisn']);
+                $z = trim($r['zone']);
+                $map[$n] = $z;
+                $cleanN = preg_replace('/\D/', '', $n);
+                if (strlen($cleanN) >= 8 && strlen($cleanN) <= 10) {
+                    $map[str_pad($cleanN, 10, '0', STR_PAD_LEFT)] = $z;
+                    $map[ltrim($cleanN, '0')] = $z;
+                }
+            }
+        }
+    } catch (Exception $e) {}
+    return $map;
+}
+
+function resolveStudentZoneWithAdminOverride($stu, $customZonesMap) {
+    $id = trim((string)($stu['nisn'] ?? $stu['identifier'] ?? ''));
+    $nis = trim((string)($stu['nis'] ?? ''));
+    if ($id && isset($customZonesMap[$id])) return $customZonesMap[$id];
+    if ($id) {
+        $cleanId = preg_replace('/\D/', '', $id);
+        if (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) {
+            $padded = str_pad($cleanId, 10, '0', STR_PAD_LEFT);
+            $unpadded = ltrim($cleanId, '0');
+            if (isset($customZonesMap[$padded])) return $customZonesMap[$padded];
+            if ($unpadded && isset($customZonesMap[$unpadded])) return $customZonesMap[$unpadded];
+        }
+    }
+    if ($nis && isset($customZonesMap[$nis])) return $customZonesMap[$nis];
+    return !empty($stu['zone']) ? $stu['zone'] : 'FINCESTEM OKU TIMUR';
 }
 
 if ($method === 'GET') {
@@ -363,6 +427,9 @@ if ($method === 'GET') {
             $stu = $stmt->fetch();
             if ($stu) {
                 unset($stu['password_hash']);
+                $customZonesMap = buildCustomZonesLookup($pdo);
+                $stu['zone'] = resolveStudentZoneWithAdminOverride($stu, $customZonesMap);
+                $stu['is_field_trip'] = (stripos($stu['zone'], 'LUAR') !== false);
                 // Sinkronkan nama koordinator & fasilitator terbaru dari penugasan kelas (cocokkan format 'KELAS X.1' maupun 'X.1')
                 if (!empty($stu['class_name'])) {
                     $rawCls = trim($stu['class_name']);
@@ -479,6 +546,7 @@ if ($method === 'GET') {
             ");
             $stmtStu->execute($classes);
             $students = $stmtStu->fetchAll();
+            $customZonesMap = buildCustomZonesLookup($pdo);
 
             // Rekap progress per siswa dari student_progress_eval
             $progressMap = [];
@@ -517,9 +585,11 @@ if ($method === 'GET') {
                 }
             } catch (Exception $e) {}
 
-            // Attach progress info to students
+            // Attach progress info & Admin zone override to students
             foreach ($students as &$stu) {
                 $sNisn = $stu['nisn'];
+                $stu['zone'] = resolveStudentZoneWithAdminOverride($stu, $customZonesMap);
+                $stu['is_field_trip'] = (stripos($stu['zone'], 'LUAR') !== false);
                 $pr = $progressMap[$sNisn] ?? null;
                 $stu['completed_days'] = $pr ? $pr['completed_days'] : 0;
                 $stu['percentage'] = min(100, round(($stu['completed_days'] / 7) * 100));
@@ -611,6 +681,56 @@ if ($method === 'GET') {
             ");
             $stmtStu->execute([':c' => $className]);
             $students = $stmtStu->fetchAll();
+            $customZonesMap = buildCustomZonesLookup($pdo);
+
+            // Rekap progress per siswa di kelas fasilitator dari student_progress_eval
+            $progressMap = [];
+            try {
+                $stmtProg = $pdo->prepare("
+                    SELECT p.student_nisn, p.day_number, p.task_type, p.status, p.score, p.updated_at
+                    FROM `student_progress_eval` p
+                    JOIN `users` u ON p.student_nisn = u.identifier
+                    WHERE u.class_name = :c
+                ");
+                $stmtProg->execute([':c' => $className]);
+                foreach ($stmtProg->fetchAll() as $pRow) {
+                    $sNisn = $pRow['student_nisn'];
+                    if (!isset($progressMap[$sNisn])) {
+                        $progressMap[$sNisn] = [
+                            'completed_days' => 0,
+                            'total_submitted' => 0,
+                            'latest_status' => 'belum_mulai',
+                            'scores' => [],
+                            'last_active' => null
+                        ];
+                    }
+                    if ($pRow['status'] === 'completed') {
+                        $progressMap[$sNisn]['completed_days']++;
+                    }
+                    if (in_array($pRow['status'], ['submitted', 'reviewed', 'revision', 'completed'])) {
+                        $progressMap[$sNisn]['total_submitted']++;
+                    }
+                    $progressMap[$sNisn]['latest_status'] = $pRow['status'];
+                    if ($pRow['score'] > 0) {
+                        $progressMap[$sNisn]['scores'][] = (float)$pRow['score'];
+                    }
+                    if (!$progressMap[$sNisn]['last_active'] || strtotime($pRow['updated_at']) > strtotime($progressMap[$sNisn]['last_active'])) {
+                        $progressMap[$sNisn]['last_active'] = $pRow['updated_at'];
+                    }
+                }
+            } catch (Exception $e) {}
+
+            foreach ($students as &$stu) {
+                $sNisn = $stu['nisn'];
+                $stu['zone'] = resolveStudentZoneWithAdminOverride($stu, $customZonesMap);
+                $stu['is_field_trip'] = (stripos($stu['zone'], 'LUAR') !== false);
+                $pr = $progressMap[$sNisn] ?? null;
+                $stu['completed_days'] = $pr ? $pr['completed_days'] : 0;
+                $stu['percentage'] = min(100, round(($stu['completed_days'] / 7) * 100));
+                $stu['task_status'] = $pr ? $pr['latest_status'] : 'belum_mulai';
+                $stu['avg_score'] = ($pr && count($pr['scores']) > 0) ? round(array_sum($pr['scores']) / count($pr['scores']), 1) : null;
+            }
+            unset($stu);
 
             jsonResponse(true, "Data siswa binaan kelas {$className} berhasil dimuat", [
                 'assignment' => $assignment,
