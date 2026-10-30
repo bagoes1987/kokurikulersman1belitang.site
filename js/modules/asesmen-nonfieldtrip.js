@@ -1456,6 +1456,19 @@
    * Dalam 8 detik tanpa sentuhan di lembar soal, teks soal otomatis buram dan terkunci!
    * Saat siswa menyentuh lembar soal untuk membuka buram, browser otomatis merebut fokus & masuk Fullscreen!
    */
+  function stopQuestionIdleBlurTimer() {
+    if (questionIdleBlurTimeout) {
+      clearTimeout(questionIdleBlurTimeout);
+      questionIdleBlurTimeout = null;
+    }
+    const idleNotice = document.getElementById('examIdleBlurNotice');
+    const qText = document.getElementById('examQuestionText');
+    const optList = document.getElementById('examOptionsList');
+    if (idleNotice) idleNotice.style.display = 'none';
+    if (qText) qText.style.filter = 'none';
+    if (optList) optList.style.filter = 'none';
+  }
+
   function resetQuestionIdleBlurTimer() {
     if (questionIdleBlurTimeout) clearTimeout(questionIdleBlurTimeout);
     const idleNotice = document.getElementById('examIdleBlurNotice');
@@ -1631,25 +1644,14 @@
   }
 
   /**
-   * 6. ESCALATION WATCHDOG: PENALTI BERUNTUN JIKA SISWA TETAP MEMBUKA LAYAR MENGAMBANG
-   * Jika siswa tetap berada di jendela mengambang Google > 6 detik, pelanggaran otomatis naik 2/3 lalu 3/3 (Diskualifikasi)!
+   * 6. ESCALATION WATCHDOG: HANYA NAIK JIKA LAYAR MENGAMBANG MASIH TERBUKA & POP-UP BELUM MUNCUL
+   * Catatan Penting: Selama pop-up Peringatan (1/3 atau 2/3) sedang terbuka dan menunggu siswa menekan
+   * tombol "Tutup Layar Mengambang & Lanjut", JANGAN naikkan pelanggaran otomatis menjadi 2/3 atau 3/3!
+   * Setiap 1x kejadian melanggar hanya dihitung tepat +1 pelanggaran.
    */
   function startContinuousEscalationWatchdog(reason) {
-    if (outsideFocusEscalationInterval) return;
-    outsideFocusEscalationInterval = setInterval(() => {
-      if (!examState.isExamActive || examState.isExamFinished) {
-        stopContinuousEscalationWatchdog();
-        return;
-      }
-      const multiWinReason = detectMultiWindowViolation();
-      const lostFocus = (typeof document.hasFocus === 'function' && !document.hasFocus()) || document.hidden;
-      if (multiWinReason || lostFocus || isTabAway) {
-        // Paksa naikkan pelanggaran berikutnya meskipun modal peringatan sedang terbuka!
-        forceEscalateViolation(multiWinReason || reason || 'Masih membuka Layar Mengambang / Aplikasi Lain');
-      } else {
-        stopContinuousEscalationWatchdog();
-      }
-    }, ESCALATION_INTERVAL_MS);
+    // Nonaktifkan eskalasi otomatis beruntun saat pop-up sedang terbuka agar 1x melanggar = tepat 1/3 (bukan langsung 3/3)!
+    stopContinuousEscalationWatchdog();
   }
 
   function stopContinuousEscalationWatchdog() {
@@ -1789,22 +1791,28 @@
    */
   function handleTabExit(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
+    // Jika sedang dalam kondisi melanggar / pop-up peringatan sedang terbuka, jangan hitung ulang!
+    // Tunggu sampai siswa menekan tombol "Lanjut" (dismissExamViolationModal) baru pelanggaran berikutnya bisa dihitung.
+    if (isViolationModalOpen || isTabAway) return;
+
     const cleanReason = reason || 'Membuka Layar Mengambang (Floating Window) / Aplikasi Lain';
     isTabAway = true;
 
     // 1. Gelapkan layar & hapus sementara teks soal dari DOM agar tidak bisa diintip dari balik jendela mengambang
     triggerBlackout(cleanReason);
 
-    // 2. Langsung catat pelanggaran & nyalakan Sirine 100% detik itu juga (0ms delay!)
+    // 2. Langsung catat tepat +1 pelanggaran & nyalakan Sirine 100% detik itu juga
     triggerViolation(cleanReason);
-
-    // 3. Jalankan Escalation Watchdog: jika tetap di layar mengambang > 6 detik, tambah pelanggaran otomatis sampai diskualifikasi!
-    startContinuousEscalationWatchdog(cleanReason);
   }
 
   function handleTabReturn(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
     wipeClipboard();
+
+    // Jika pop-up pelanggaran sudah terbuka (karena sudah dihitung +1 saat keluar), jangan hitung +1 lagi saat kembali!
+    if (isViolationModalOpen) {
+      return;
+    }
 
     // Cek apakah masih dalam mode Split Screen / Floating Window
     const activeMultiWin = detectMultiWindowViolation();
@@ -1815,14 +1823,9 @@
     }
 
     stopContinuousEscalationWatchdog();
-    if (isTabAway) {
-      isTabAway = false;
-      triggerViolation(reason || 'Meninggalkan lembar asesmen / membuka aplikasi lain');
-    }
-    if (!isViolationModalOpen) {
-      removeBlackout();
-      resetQuestionIdleBlurTimer();
-    }
+    isTabAway = false;
+    removeBlackout();
+    resetQuestionIdleBlurTimer();
   }
 
   function triggerBlackout(reason) {
@@ -1940,6 +1943,17 @@
 
   function showViolationModal(count, reason) {
     isViolationModalOpen = true;
+
+    // Jika pelanggaran sudah mencapai 3/3 (batas maksimal), LANGSUNG kirim paksa & buka halaman nilai
+    // tanpa menunggu setTimeout (karena setTimeout dibekukan oleh Android saat tab di belakang layar mengambang!)
+    if (count >= 3) {
+      stopContinuousEscalationWatchdog();
+      stopExamAlarmLoop();
+      stopExamVibrationLoop();
+      submitExam(true, 'Force Submit (Pelanggaran Layar Mengambang / Tab 3x)');
+      return;
+    }
+
     const container = getOrCreateViolationContainer();
     startExamAlarmLoop();
     startExamVibrationLoop();

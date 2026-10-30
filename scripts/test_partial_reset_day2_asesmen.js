@@ -189,6 +189,18 @@ console.log('=== TEST 1: Admin Reset Day 2 Bagian Asesmen (First-Time Reset & Pa
           asesmenCode.includes('if ((parseInt(d.violationCount) || 0) >= 3 || d.isFinished)'),
           'loadDraftProgress rejects any stale draft with violationCount >= 3 and resets violationCount to 0'
         );
+        assert(
+          asesmenCode.includes('function stopQuestionIdleBlurTimer()'),
+          'stopQuestionIdleBlurTimer is properly defined so submitExam never throws ReferenceError'
+        );
+        assert(
+          asesmenCode.includes('if (isViolationModalOpen || isTabAway) return;'),
+          'handleTabExit only increments +1 per violation and waits for student to dismiss modal before counting next violation'
+        );
+        assert(
+          asesmenCode.includes("if (count >= 3) {\n      stopContinuousEscalationWatchdog();\n      stopExamAlarmLoop();\n      stopExamVibrationLoop();\n      submitExam(true, 'Force Submit (Pelanggaran Layar Mengambang / Tab 3x)');\n      return;\n    }"),
+          '3rd violation (3/3) immediately executes submitExam synchronously without getting stuck on spinning modal'
+        );
 
         console.log(`\nDONE: ${passed} passed, ${failed} failed.`);
         if (failed > 0) process.exit(1);
