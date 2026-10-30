@@ -1406,11 +1406,6 @@
         <!-- Populated by JavaScript -->
       </div>
 
-      <!-- AREA KHUSUS CETAK PRINTER / PDF (8 KARTU PER LEMBAR DENGAN GARIS POTONG) -->
-      <div id="printAreaCards" class="hidden">
-        <!-- Rendered dynamically for @media print -->
-      </div>
-
     </div>
 
     <!-- TAB: REKAP PESERTA FIELD TRIP PER KELAS -->
@@ -3048,13 +3043,18 @@
   </div>
   </div>
 
+  <!-- AREA KHUSUS CETAK PRINTER / PDF (DI LEVEL BODY AGAR BISA DICETAK DARI MENU MANA SAJA) -->
+  <div id="printAreaCards" class="hidden">
+    <!-- Rendered dynamically for @media print -->
+  </div>
+
   <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
-  <script src="../js/guru_data.js?v=20261030_multipc_v3"></script>
-  <script src="../js/core.js?v=20261030_multipc_v3"></script>
+  <script src="../js/guru_data.js?v=20261030_binaan_v4"></script>
+  <script src="../js/core.js?v=20261030_binaan_v4"></script>
   <script src="../js/data/bank-soal-nonfieldtrip.js?v=20261029_nft_bs2"></script>
   <script src="../js/modules/admin-banksoal.js?v=20261029_nft_bs2"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261030_multipc_v3"></script>
-  <script src="../js/modules/admin-mentorship.js?v=20261030_multipc_v3"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v4"></script>
+  <script src="../js/modules/admin-mentorship.js?v=20261030_binaan_v4"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
   <script>
     let adminCurrentGrade = 'ALL';
@@ -6220,30 +6220,18 @@
         let coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
         let fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
 
-        // Gabungkan / Prioritaskan data dari Pembagian Siswa Binaan (FincestemMentorship)
+        // Fasilitator diambil dari Pembagian Siswa Binaan (FincestemMentorship)
         if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
           const mClass = window.FincestemMentorship.getMentorsForClass(cls);
-          if (mClass) {
-            if (Array.isArray(mClass.coordinators) && mClass.coordinators.length > 0) {
-              coordMatches = mClass.coordinators.map(cName => {
-                const tObj = teachers.find(x => x.nama_guru === cName);
-                return {
-                  teacher_username: tObj ? (tObj.username || tObj.nip) : cName,
-                  teacher_name: cName,
-                  class_name: cls
-                };
-              });
-            }
-            if (Array.isArray(mClass.facilitators) && mClass.facilitators.length > 0) {
-              fasilMatches = mClass.facilitators.map(fName => {
-                const tObj = teachers.find(x => x.nama_guru === fName);
-                return {
-                  teacher_username: tObj ? (tObj.username || tObj.nip) : fName,
-                  teacher_name: fName,
-                  class_name: cls
-                };
-              });
-            }
+          if (mClass && Array.isArray(mClass.facilitators) && mClass.facilitators.length > 0) {
+            fasilMatches = mClass.facilitators.map(fName => {
+              const tObj = teachers.find(x => x.nama_guru === fName);
+              return {
+                teacher_username: tObj ? (tObj.username || tObj.nip) : fName,
+                teacher_name: fName,
+                class_name: cls
+              };
+            });
           }
         }
 
@@ -6341,30 +6329,18 @@
         let coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
         let fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
 
-        // Gabungkan / Prioritaskan data dari Pembagian Siswa Binaan (FincestemMentorship)
+        // Fasilitator diambil dari Pembagian Siswa Binaan (FincestemMentorship)
         if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
           const mClass = window.FincestemMentorship.getMentorsForClass(cls);
-          if (mClass) {
-            if (Array.isArray(mClass.coordinators) && mClass.coordinators.length > 0) {
-              coordMatches = mClass.coordinators.map(cName => {
-                const tObj = teachers.find(x => x.nama_guru === cName);
-                return {
-                  teacher_username: tObj ? (tObj.username || tObj.nip) : cName,
-                  teacher_name: cName,
-                  class_name: cls
-                };
-              });
-            }
-            if (Array.isArray(mClass.facilitators) && mClass.facilitators.length > 0) {
-              fasilMatches = mClass.facilitators.map(fName => {
-                const tObj = teachers.find(x => x.nama_guru === fName);
-                return {
-                  teacher_username: tObj ? (tObj.username || tObj.nip) : fName,
-                  teacher_name: fName,
-                  class_name: cls
-                };
-              });
-            }
+          if (mClass && Array.isArray(mClass.facilitators) && mClass.facilitators.length > 0) {
+            fasilMatches = mClass.facilitators.map(fName => {
+              const tObj = teachers.find(x => x.nama_guru === fName);
+              return {
+                teacher_username: tObj ? (tObj.username || tObj.nip) : fName,
+                teacher_name: fName,
+                class_name: cls
+              };
+            });
           }
         }
 
@@ -8199,61 +8175,36 @@
       renderAdminCards();
     }
 
-    // Mengambil data Koordinator dan Fasilitator per Siswa berdasarkan Pembagian Siswa Binaan (dengan fallback per Rombel)
+    // Mengambil data Koordinator (dari Menu Data Koordinator & Fasil per Rombel)
+    // dan Fasilitator (dari Menu Pembagian Siswa Binaan per Siswa)
     function getRombelStaffInfo(className, studentNisn) {
-      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function' && studentNisn) {
-        const mentorInfo = window.FincestemMentorship.getMentorsForStudent(studentNisn, className);
-        if (mentorInfo && ((mentorInfo.coordinator && mentorInfo.coordinator !== '-') || (mentorInfo.facilitators && mentorInfo.facilitators.length > 0))) {
-          const fasils = Array.isArray(mentorInfo.facilitators) ? mentorInfo.facilitators : [];
-          return {
-            coordinator: mentorInfo.coordinator || '-',
-            facilitator1: fasils.length > 0 ? fasils[0] : (mentorInfo.facilitator || '-'),
-            facilitator2: fasils.length > 1 ? fasils[1] : '',
-            facilitatorDisplay: fasils.length > 1
-              ? `<div>1. ${fasils[0]}</div><div>2. ${fasils[1]}</div>`
-              : `<div>${fasils[0] || mentorInfo.facilitator || '-'}</div>`
-          };
-        }
-      }
-
-      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
-        const classMentors = window.FincestemMentorship.getMentorsForClass(className);
-        if (classMentors && ((classMentors.coordinators && classMentors.coordinators.length > 0) || (classMentors.facilitators && classMentors.facilitators.length > 0))) {
-          const fasils = classMentors.facilitators || [];
-          const coords = classMentors.coordinators || [];
-          return {
-            coordinator: coords.length > 0 ? coords.join(', ') : '-',
-            facilitator1: fasils.length > 0 ? fasils[0] : '-',
-            facilitator2: fasils.length > 1 ? fasils[1] : '',
-            facilitatorDisplay: fasils.length > 1
-              ? `<div>1. ${fasils[0]}</div><div>2. ${fasils[1]}</div>`
-              : `<div>${fasils[0] || '-'}</div>`
-          };
-        }
-      }
-
       const local = (FincestemCore.assignments && FincestemCore.assignments.getLocalAssignments) 
         ? FincestemCore.assignments.getLocalAssignments() 
         : { coordinators: [], facilitators: [] };
 
       const norm = (className || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
 
-      // Koordinator
+      // 1. KOORDINATOR: Tetap diambil dari pengaturan Menu Data Koordinator & Fasil (per Rombel)
       const coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
       const coordName = coordMatches.length > 0 ? coordMatches[0].teacher_name : '-';
 
-      // Fasilitator (Fasil 1 & Fasil 2)
-      const fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
-      const fasil1 = fasilMatches.length > 0 ? fasilMatches[0].teacher_name : '-';
-      const fasil2 = fasilMatches.length > 1 ? fasilMatches[1].teacher_name : '';
+      // 2. FASILITATOR: Diambil dari Pembagian Siswa Binaan berdasarkan NISN Siswa
+      let fasil1 = '-';
+      let fasil2 = '-';
+
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function' && studentNisn) {
+        const mentorInfo = window.FincestemMentorship.getMentorsForStudent(studentNisn, className);
+        if (mentorInfo) {
+          fasil1 = mentorInfo.facilitator1 || '-';
+          fasil2 = mentorInfo.facilitator2 || '-';
+        }
+      }
 
       return {
         coordinator: coordName,
         facilitator1: fasil1,
         facilitator2: fasil2,
-        facilitatorDisplay: fasil2
-          ? `<div>1. ${fasil1}</div><div>2. ${fasil2}</div>`
-          : `<div>${fasil1}</div>`
+        facilitatorDisplay: `<div>1. ${fasil1}</div><div>2. ${fasil2}</div>`
       };
     }
 

@@ -4510,12 +4510,6 @@ const FincestemCore = {
     },
 
     getStudentCoordinator: function(nisn, className) {
-      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
-        const info = window.FincestemMentorship.getMentorsForStudent(nisn, className);
-        if (info && info.coordinator && info.coordinator !== '-') {
-          return info.coordinator;
-        }
-      }
       return this.getClassCoordinator(className);
     },
 
@@ -4534,12 +4528,6 @@ const FincestemCore = {
 
     getClassCoordinator: function(className) {
       if (!className) return 'Drs. H. Koordinator FINCESTEM';
-      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
-        const mClass = window.FincestemMentorship.getMentorsForClass(className);
-        if (mClass && Array.isArray(mClass.coordinators) && mClass.coordinators.length > 0) {
-          return mClass.coordinators.join('\n');
-        }
-      }
       const normTarget = this.normalizeClassName(className);
       const local = this.getLocalAssignments();
       const matches = (local.coordinators || []).filter(c => this.normalizeClassName(c.class_name) === normTarget);

@@ -237,41 +237,6 @@
     }
 
     if (cardEl) {
-      let linkedCoordHtml = '';
-      if (currentRole !== 'KOORDINATOR') {
-        const linkedCoord = window.FincestemMentorship.getFacilitatorCoordinator
-          ? window.FincestemMentorship.getFacilitatorCoordinator(selectedTeacherKey)
-          : null;
-        const currentCoordKey = linkedCoord ? String(linkedCoord.coordinator_key).toLowerCase() : '';
-        const coordTeachers = [...teachers].sort((a, b) => {
-          const rA = window.FincestemMentorship.getTeacherRole(a.username || a.nip || a.kode_guru) === 'KOORDINATOR';
-          const rB = window.FincestemMentorship.getTeacherRole(b.username || b.nip || b.kode_guru) === 'KOORDINATOR';
-          if (rA && !rB) return -1;
-          if (!rA && rB) return 1;
-          return (a.nama_guru || '').localeCompare(b.nama_guru || '');
-        });
-        let coordOpts = '<option value="">-- Pilih Guru Koordinator Pendamping Kelompok Ini --</option>';
-        coordTeachers.forEach(ct => {
-          const ck = String(ct.username || ct.nip || ct.kode_guru).toLowerCase();
-          if (ck === selectedTeacherKey) return;
-          const isKoord = window.FincestemMentorship.getTeacherRole(ck) === 'KOORDINATOR';
-          const selAttr = (ck === currentCoordKey) ? 'selected' : '';
-          coordOpts += `<option value="${ck}" ${selAttr}>${isKoord ? '🎯 [Koord] ' : ''}${escapeHtml(ct.nama_guru)}</option>`;
-        });
-
-        linkedCoordHtml = `
-          <div class="mt-3 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
-            <div class="flex items-center gap-1.5 text-slate-600 font-bold">
-              <span class="material-symbols-outlined text-base text-cyan-600">supervisor_account</span>
-              <span>Koordinator Pendamping Kelompok Binaan Ini:</span>
-            </div>
-            <select id="selectMentorLinkedCoordinator" onchange="onChangeFacilitatorCoordinator(this.value)" class="w-full sm:w-80 px-3 py-1.5 rounded-xl border border-cyan-200 bg-cyan-50/50 text-xs font-extrabold text-slate-800 outline-none focus:border-cyan-600">
-              ${coordOpts}
-            </select>
-          </div>
-        `;
-      }
-
       cardEl.innerHTML = `
         <div class="flex flex-col">
           <div class="flex items-center justify-between gap-4 flex-wrap">
@@ -301,7 +266,6 @@
               <button type="button" onclick="setMentorTeacherRoleAction('KOORDINATOR')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${currentRole === 'KOORDINATOR' ? 'bg-cyan-700 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'}">Koord</button>
             </div>
           </div>
-          ${linkedCoordHtml}
         </div>
       `;
     }

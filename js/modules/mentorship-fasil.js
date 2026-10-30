@@ -720,21 +720,47 @@
     },
 
     /**
-     * Mengambil Nama Koordinator & Fasilitator Siswa Berdasarkan Pembagian Siswa Binaan
-     * Digunakan untuk Dashboard Siswa, Cetak Kartu Siswa, dan Rekap Admin.
+     * Mengambil Nama Koordinator (dari Data Koordinator & Fasil per Kelas)
+     * & Fasilitator Siswa (dari Pembagian Siswa Binaan per NISN)
+     * Digunakan untuk Dashboard Siswa, Cetak Kartu Siswa, dan Cetak Kartu Binaan.
      */
     getMentorsForStudent: function(nisn, studentClass) {
       const result = {
+        coordinator: '-',
         coordinator_name: '',
-        coordinator_key: '',
+        coordinator_single: '-',
+        facilitator: '-',
         facilitator_name: '',
         facilitator_key: '',
+        facilitators: [],
         facilitator1: '-',
-        facilitator2: '-',
-        coordinator_single: '-'
+        facilitator2: '-'
       };
+
+      // 1. KOORDINATOR: Ambil dari pengaturan Menu Data Koordinator & Fasil (per Kelas/Rombel)
+      if (studentClass) {
+        const normTarget = String(studentClass || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        try {
+          const local = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getLocalAssignments)
+            ? FincestemCore.assignments.getLocalAssignments()
+            : JSON.parse(localStorage.getItem('fincestem_role_assignments') || '{}');
+          const coordMatches = (local.coordinators || []).filter(c =>
+            String(c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === normTarget
+          );
+          if (coordMatches.length > 0) {
+            const cNames = [...new Set(coordMatches.map(c => c.teacher_name || c.teacher_username).filter(Boolean))];
+            if (cNames.length > 0) {
+              result.coordinator = cNames[0];
+              result.coordinator_single = cNames[0];
+              result.coordinator_name = cNames.join('\n');
+            }
+          }
+        } catch (e) {}
+      }
+
       if (!nisn) return result;
 
+      // 2. FASILITATOR: Ambil dari Pembagian Siswa Binaan berdasarkan NISN siswa
       const cleanNisn = String(nisn).trim();
       const digits = cleanNisn.replace(/\D/g, '');
       const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : cleanNisn;
@@ -742,7 +768,6 @@
       const map = this.getAssignmentsMap();
 
       const fasilNames = [];
-      const coordNames = [];
 
       for (const [tKey, entry] of Object.entries(map)) {
         if (!entry || !Array.isArray(entry.student_nisns)) continue;
@@ -751,36 +776,21 @@
           entry.student_nisns.includes(padded) ||
           entry.student_nisns.includes(unpadded)
         ) {
-          const role = this.getTeacherRole(tKey);
           const tObj = this.findTeacherByIdentifier(tKey);
           const tName = (tObj && tObj.nama_guru) || entry.teacher_name || tKey;
-
-          if (role === 'KOORDINATOR') {
-            if (tName && !coordNames.includes(tName)) coordNames.push(tName);
-            if (!result.coordinator_key) result.coordinator_key = tKey;
-          } else {
-            if (tName && !fasilNames.includes(tName)) fasilNames.push(tName);
-            if (!result.facilitator_key) result.facilitator_key = tKey;
-
-            // Cek apakah Fasilitator ini memiliki Koordinator Pendamping yang ditautkan
-            if (entry.coordinator_key || entry.coordinator_name) {
-              const cObj = entry.coordinator_key ? this.findTeacherByIdentifier(entry.coordinator_key) : null;
-              const cName = (cObj && cObj.nama_guru) || entry.coordinator_name || entry.coordinator_key;
-              if (cName && !coordNames.includes(cName)) coordNames.push(cName);
-              if (!result.coordinator_key && entry.coordinator_key) result.coordinator_key = entry.coordinator_key;
-            }
+          if (tName && !fasilNames.includes(tName)) {
+            fasilNames.push(tName);
           }
+          if (!result.facilitator_key) result.facilitator_key = tKey;
         }
       }
 
-      if (coordNames.length > 0) {
-        result.coordinator_name = coordNames.join('\n');
-        result.coordinator_single = coordNames.join(', ');
-      }
       if (fasilNames.length > 0) {
+        result.facilitators = fasilNames;
+        result.facilitator = fasilNames[0];
         result.facilitator_name = fasilNames.join('\n');
         result.facilitator1 = fasilNames[0] || '-';
-        result.facilitator2 = fasilNames[1] || '-';
+        result.facilitator2 = fasilNames.length > 1 ? fasilNames[1] : '-';
       }
 
       return result;
@@ -898,14 +908,15 @@
 
       const tObj = this.findTeacherByIdentifier(teacherIdentifier);
       const teacherName = tObj ? tObj.nama_guru : teacherIdentifier;
-      const teacherRole = this.getTeacherRole(teacherIdentifier);
 
-      // Buat container print khusus di memory
-      let printEl = document.getElementById('printAreaMentorCards');
+      // Gunakan container #printAreaCards di level body agar tampil saat @media print
+      let printEl = document.getElementById('printAreaCards');
       if (!printEl) {
         printEl = document.createElement('div');
-        printEl.id = 'printAreaMentorCards';
-        printEl.className = 'hidden print:block';
+        printEl.id = 'printAreaCards';
+        printEl.className = 'hidden';
+        document.body.appendChild(printEl);
+      } else if (printEl.parentElement !== document.body) {
         document.body.appendChild(printEl);
       }
 
@@ -925,9 +936,9 @@
               const username = s.nisn || '-';
               const password = s.nis || s.password || (s.nisn ? s.nisn.slice(-6) : '123456');
               const mentorInfo = this.getMentorsForStudent(s.nisn, s.class || s.rombel);
-              const coordLabel = mentorInfo.coordinator_single !== '-' ? mentorInfo.coordinator_single : (teacherRole === 'KOORDINATOR' ? teacherName : '-');
-              const fasil1Label = mentorInfo.facilitator1 !== '-' ? mentorInfo.facilitator1 : (teacherRole !== 'KOORDINATOR' ? teacherName : '-');
-              const fasil2Label = mentorInfo.facilitator2 || '-';
+              const coordLabel = mentorInfo.coordinator_single || '-';
+              const fasil1Label = teacherName || mentorInfo.facilitator1 || '-';
+              const fasil2Label = '-';
 
               return `
                 <div style="border: 1px dashed #64748b; padding: 1.5mm; box-sizing: border-box; background: #ffffff; page-break-inside: avoid;">
