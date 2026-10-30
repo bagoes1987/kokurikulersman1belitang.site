@@ -4740,95 +4740,7 @@ const FincestemCore = {
       const local = this.getLocalAssignments();
       const allStudents = window.FincestemMasterStudents || [];
 
-      // Prioritaskan data Pembagian Siswa Binaan (FincestemMentorship)
-      if (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function') {
-        const assignMap = window.FincestemMentorship.getAssignmentsMap();
-        const roleMap = window.FincestemMentorship.getTeacherRoleMap();
-        const linkedMap = window.FincestemMentorship.getFacilitatorCoordinatorsMap ? window.FincestemMentorship.getFacilitatorCoordinatorsMap() : {};
-        const allTeachers = window.FincestemMentorship.getAllTeachers();
-
-        let directNisns = Array.isArray(assignMap[coordUser]) ? assignMap[coordUser].slice() : [];
-        // Juga cek fasilitator yang ditautkan ke koordinator ini
-        Object.keys(linkedMap).forEach(fasilUser => {
-          if (linkedMap[fasilUser] === coordUser && Array.isArray(assignMap[fasilUser])) {
-            directNisns = directNisns.concat(assignMap[fasilUser]);
-          }
-        });
-        directNisns = [...new Set(directNisns.map(x => String(x).trim()).filter(Boolean))];
-
-        if (directNisns.length > 0) {
-          const nisnSet = new Set(directNisns);
-          const students = allStudents.filter(s => nisnSet.has(String(s.nisn).trim()));
-          const coordClasses = FincestemCore.sortClasses([...new Set(students.map(s => s.class).filter(Boolean))]);
-
-          // Cari fasilitator yang membina siswa-siswa di kelompok/kelas binaan koordinator ini
-          const fasils = [];
-          const fasilPerformance = [];
-          allTeachers.forEach(t => {
-            if (t.username === coordUser) return;
-            const tRole = roleMap[t.username] || t.mentorship_role || 'NON_FIELD_TRIP';
-            if (tRole === 'KOORDINATOR') return;
-            const fNisns = (assignMap[t.username] || []).filter(n => nisnSet.has(String(n).trim()));
-            if (fNisns.length > 0 || linkedMap[t.username] === coordUser) {
-              const fStudents = allStudents.filter(s => (assignMap[t.username] || []).includes(String(s.nisn).trim()));
-              const fClasses = [...new Set(fStudents.map(s => s.class).filter(Boolean))].join(', ') || 'Kelompok Binaan';
-              fasils.push({
-                teacher_username: t.username,
-                teacher_name: t.nama_guru,
-                class_name: fClasses
-              });
-              fasilPerformance.push({
-                teacher_username: t.username,
-                teacher_name: t.nama_guru,
-                class_name: fClasses,
-                total_students: fStudents.length,
-                graded_count: 0,
-                unreviewed_count: fStudents.length,
-                last_activity: null,
-                coordinator_rating: null,
-                coordinator_notes: ''
-              });
-            }
-          });
-
-          const out = {
-            classes: coordClasses,
-            facilitators: fasils,
-            fasil_performance: fasilPerformance,
-            students: students.map(s => {
-              let stProg = null;
-              try {
-                const pStr = localStorage.getItem('fincestem_progress_' + s.nisn);
-                if (pStr) stProg = JSON.parse(pStr);
-              } catch (e) {}
-              const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-                ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
-                : (s.zone || 'FINCESTEM OKU TIMUR');
-              return {
-                nisn: s.nisn,
-                name: s.nama,
-                class_name: s.class,
-                nis: s.nis,
-                zone: z,
-                is_field_trip: String(z).toUpperCase().includes('LUAR'),
-                completed_days: stProg ? (stProg.completed_days || 0) : 0,
-                percentage: stProg ? (stProg.percentage || 0) : 0,
-                task_status: stProg ? (FincestemCore.progress.getDayStatus(stProg, 1)) : 'belum_mulai',
-                avg_score: stProg ? stProg.average_score : null,
-                final_score: null
-              };
-            }),
-            summary: {
-              total_classes: coordClasses.length,
-              total_facilitators: fasils.length,
-              total_students: students.length
-            }
-          };
-          if (callback) callback(out);
-          return out;
-        }
-      }
-
+      // Koordinator selalu memantau 1 kelas / rombel penuh sesuai Menu Data Koordinator & Fasilitator
       const coordClasses = FincestemCore.sortClasses(
         (local.coordinators || [])
           .filter(c => c.teacher_username === coordUser)
@@ -4953,35 +4865,10 @@ const FincestemCore = {
         }
       }
 
-      const local = this.getLocalAssignments();
-      const assignment = (local.facilitators || []).find(f => f.teacher_username === fasilUser);
-      if (!assignment) {
-        const empty = { assignment: null, class_name: null, students: [] };
-        if (callback) callback(empty);
-        return empty;
-      }
-
-      const students = allStudents.filter(s => s.class === assignment.class_name);
-      const out = {
-        assignment: assignment,
-        class_name: assignment.class_name,
-        students: students.map(s => {
-          const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-            ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
-            : (s.zone || 'FINCESTEM OKU TIMUR');
-          return {
-            nisn: s.nisn,
-            name: s.nama,
-            class_name: s.class,
-            nis: s.nis,
-            photo_url: s.photo_url,
-            zone: z,
-            is_field_trip: String(z).toUpperCase().includes('LUAR')
-          };
-        })
-      };
-      if (callback) callback(out);
-      return out;
+      // Jika belum memiliki siswa binaan yang terpetakan, kembalikan kosong (0 siswa)
+      const empty = { assignment: null, class_name: null, students: [] };
+      if (callback) callback(empty);
+      return empty;
     },
 
     saveFacilitatorEvaluation: function(evalData, callback) {

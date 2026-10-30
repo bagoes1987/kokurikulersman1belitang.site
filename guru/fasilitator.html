@@ -1456,34 +1456,22 @@
             const lblBannerCount = document.getElementById('lblAssignedStudentCount');
             if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa`;
           } else {
-            // Jika belum ditugaskan oleh admin, ambil fallback kelas pertama dari master data
-            const masterList = window.FincestemMasterStudents || [];
-            assignedClass = 'KELAS X.1';
-            assignedStudents = masterList.filter(s => s.class === assignedClass).map(s => {
-              const isFT = isStudentFieldTripFasil(s.nisn, s);
-              return {
-                nisn: s.nisn,
-                name: s.nama,
-                class_name: s.class,
-                nis: s.nis,
-                photo_url: s.photo_url,
-                zone: isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR',
-                is_field_trip: isFT
-              };
-            });
+            // Jika belum memiliki siswa binaan yang terpetakan oleh admin
+            assignedClass = 'Belum Ada Siswa Binaan';
+            assignedStudents = [];
             
             const lblSidebarClass = document.getElementById('lblSidebarClassName');
-            if (lblSidebarClass) lblSidebarClass.textContent = `${assignedClass} (Demo)`;
+            if (lblSidebarClass) lblSidebarClass.textContent = 'Belum Ada Binaan';
             const lblSidebarCount = document.getElementById('lblSidebarStudentCount');
-            if (lblSidebarCount) lblSidebarCount.textContent = `${assignedStudents.length} Siswa`;
+            if (lblSidebarCount) lblSidebarCount.textContent = '0 Siswa';
 
             const lblTopClass = document.getElementById('lblAssignedClassNameTop');
-            if (lblTopClass) lblTopClass.textContent = `${assignedClass} (Demo)`;
+            if (lblTopClass) lblTopClass.textContent = 'Belum Ada Siswa Binaan';
 
             const lblBannerClass = document.getElementById('lblAssignedClassNameText');
-            if (lblBannerClass) lblBannerClass.textContent = `${assignedClass} (Mode Demo)`;
+            if (lblBannerClass) lblBannerClass.textContent = 'Belum Ada Siswa Binaan';
             const lblBannerCount = document.getElementById('lblAssignedStudentCount');
-            if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa`;
+            if (lblBannerCount) lblBannerCount.textContent = '0 Siswa Binaan';
           }
 
           renderAssignedStudentList();
@@ -1642,6 +1630,17 @@
           if (fasStatusFilter === 'belum_mulai') return m.latestStatus === 'belum_mulai' || (!m.latestStatus && m.completedDays === 0);
           return true;
         });
+      }
+
+      if (countAll === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-xs text-on-surface-variant bg-surface-container-low rounded-3xl border border-outline-variant/20 p-6 flex flex-col items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-4xl text-slate-300">group_off</span>
+            <span class="font-extrabold text-sm text-slate-700">Belum Ada Siswa Binaan yang Terpetakan</span>
+            <p class="text-slate-400 text-xs max-w-md">Admin belum menetapkan siswa binaan untuk akun Anda di menu Pembagian Siswa Binaan.</p>
+          </div>
+        `;
+        return;
       }
 
       if (filteredMeta.length === 0) {
