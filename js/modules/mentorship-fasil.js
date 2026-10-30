@@ -244,6 +244,7 @@
         if (callback) callback({ success: true });
         return;
       }
+      const self = this;
       try {
         const assignments = this.getAssignmentsMap();
         let teacherRoles = {};
@@ -268,7 +269,12 @@
           })
         })
           .then(r => r.json())
-          .then(res => { if (callback) callback(res); })
+          .then(res => {
+            if (res && res.success && res.data) {
+              self.applyServerState(res.data);
+            }
+            if (callback) callback(res);
+          })
           .catch(() => { if (callback) callback({ success: false }); });
       } catch (e) {
         if (callback) callback({ success: false });
@@ -279,17 +285,64 @@
       if (!state || typeof state !== 'object') return false;
       let updated = false;
       try {
-        if (state.assignments && typeof state.assignments === 'object' && Object.keys(state.assignments).length > 0) {
-          localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(state.assignments));
+        // 1. Smart Merge Assignments per-Guru (Multi-PC Safe)
+        const localAssigns = this.getAssignmentsMap();
+        const serverAssigns = (state.assignments && typeof state.assignments === 'object') ? state.assignments : {};
+        const mergedAssigns = Object.assign({}, localAssigns);
+        let assignChanged = false;
+
+        Object.keys(serverAssigns).forEach(tKey => {
+          const sEntry = serverAssigns[tKey];
+          if (!sEntry || typeof sEntry !== 'object') return;
+          const lEntry = mergedAssigns[tKey];
+          if (!lEntry) {
+            mergedAssigns[tKey] = sEntry;
+            assignChanged = true;
+          } else {
+            const sTime = sEntry.updated_at ? Date.parse(sEntry.updated_at) || 0 : 0;
+            const lTime = lEntry.updated_at ? Date.parse(lEntry.updated_at) || 0 : 0;
+            if (sTime >= lTime && JSON.stringify(lEntry) !== JSON.stringify(sEntry)) {
+              mergedAssigns[tKey] = sEntry;
+              assignChanged = true;
+            }
+          }
+        });
+
+        if (assignChanged) {
+          localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(mergedAssigns));
           updated = true;
         }
-        if (state.teacher_roles && typeof state.teacher_roles === 'object' && Object.keys(state.teacher_roles).length > 0) {
-          localStorage.setItem(STORAGE_KEY_TEACHER_ROLES, JSON.stringify(state.teacher_roles));
-          updated = true;
+
+        // 2. Smart Merge Teacher Roles per-Guru
+        const serverRoles = (state.teacher_roles && typeof state.teacher_roles === 'object') ? state.teacher_roles : {};
+        if (Object.keys(serverRoles).length > 0) {
+          let localRoles = {};
+          try {
+            const rawR = localStorage.getItem(STORAGE_KEY_TEACHER_ROLES);
+            if (rawR) localRoles = JSON.parse(rawR) || {};
+          } catch (eR) {}
+          const mergedRoles = Object.assign({}, localRoles, serverRoles);
+          if (JSON.stringify(localRoles) !== JSON.stringify(mergedRoles)) {
+            localStorage.setItem(STORAGE_KEY_TEACHER_ROLES, JSON.stringify(mergedRoles));
+            updated = true;
+          }
         }
+
+        // 3. Smart Merge Custom Teachers
         if (Array.isArray(state.custom_teachers) && state.custom_teachers.length > 0) {
-          localStorage.setItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS, JSON.stringify(state.custom_teachers));
-          updated = true;
+          let localCust = [];
+          try {
+            const rawC = localStorage.getItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS);
+            if (rawC) localCust = JSON.parse(rawC) || [];
+          } catch (eC) {}
+          const custMap = new Map();
+          localCust.forEach(c => { if (c && c.username) custMap.set(String(c.username).toLowerCase(), c); });
+          state.custom_teachers.forEach(c => { if (c && c.username) custMap.set(String(c.username).toLowerCase(), c); });
+          const mergedCust = Array.from(custMap.values());
+          if (JSON.stringify(localCust) !== JSON.stringify(mergedCust)) {
+            localStorage.setItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS, JSON.stringify(mergedCust));
+            updated = true;
+          }
         }
       } catch (e) {}
       return updated;
@@ -305,8 +358,28 @@
         .then(r => r.json())
         .then(res => {
           if (res && res.success && res.data) {
+            const serverAssigns = (res.data.assignments && typeof res.data.assignments === 'object') ? res.data.assignments : {};
+            const serverRoles = (res.data.teacher_roles && typeof res.data.teacher_roles === 'object') ? res.data.teacher_roles : {};
+            const localAssignsBefore = self.getAssignmentsMap();
+            let localRolesBefore = {};
+            try {
+              const r = localStorage.getItem(STORAGE_KEY_TEACHER_ROLES);
+              if (r) localRolesBefore = JSON.parse(r) || {};
+            } catch (e) {}
+
+            // Cek apakah PC ini memiliki data lokal yang belum pernah terunggah ke server (misal PC Kantor)
+            const hasUnsyncedLocal = Object.keys(localAssignsBefore).some(k => !serverAssigns[k]) ||
+                                     Object.keys(localRolesBefore).some(k => !serverRoles[k]);
+
             const changed = self.applyServerState(res.data);
-            if (callback) callback(changed, res.data);
+
+            if (hasUnsyncedLocal) {
+              self.syncToServer(function() {
+                if (callback) callback(true, res.data);
+              });
+            } else {
+              if (callback) callback(changed, res.data);
+            }
           } else {
             if (callback) callback(false);
           }
@@ -598,9 +671,15 @@
       }
 
       let changed = false;
+      const nowIso = new Date().toISOString();
       keysToCheck.forEach(k => {
         if (map[k]) {
-          delete map[k];
+          if (k === cleanKey) {
+            map[k].student_nisns = [];
+            map[k].updated_at = nowIso;
+          } else {
+            delete map[k];
+          }
           changed = true;
         }
       });

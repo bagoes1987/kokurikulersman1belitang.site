@@ -29,6 +29,8 @@
     search: ''
   };
 
+  let mentorshipSyncTimer = null;
+
   window.initAdminMentorshipView = function() {
     renderMentorshipStats();
     switchMentorshipSubTab(currentSubTab);
@@ -40,6 +42,45 @@
         }
       });
     }
+    if (!mentorshipSyncTimer) {
+      mentorshipSyncTimer = setInterval(function() {
+        const panel = document.getElementById('panelAdminMentorship');
+        const modal = document.getElementById('modalAssignStudents');
+        const isModalOpen = modal && !modal.classList.contains('hidden');
+        if (panel && !panel.classList.contains('hidden') && !document.hidden && !isModalOpen) {
+          if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+            window.FincestemMentorship.syncFromServer(function(changed) {
+              if (changed) {
+                renderMentorshipStats();
+                switchMentorshipSubTab(currentSubTab);
+              }
+            });
+          }
+        }
+      }, 15000);
+    }
+  };
+
+  window.syncMentorshipMultiPCNow = function() {
+    if (!window.FincestemMentorship) return;
+    const lbl = document.getElementById('lblSyncMentorshipBtn');
+    if (lbl) lbl.textContent = 'Menyinkronkan...';
+
+    // Tarik dari server dulu (merge aman), lalu kirim gabungan lokal + server kembali ke database
+    window.FincestemMentorship.syncFromServer(function() {
+      window.FincestemMentorship.syncToServer(function(res) {
+        if (lbl) lbl.textContent = 'Sinkronkan Server (Multi-PC)';
+        renderMentorshipStats();
+        switchMentorshipSubTab(currentSubTab);
+        if (window.FincestemCore && FincestemCore.ui) {
+          if (res && res.success) {
+            FincestemCore.ui.toast('Data Pembagian Siswa Binaan berhasil disinkronkan antar-PC ke Server!', 'success');
+          } else {
+            FincestemCore.ui.toast('Data lokal telah diperbarui.', 'info');
+          }
+        }
+      });
+    });
   };
 
   window.switchMentorshipSubTab = function(tab) {

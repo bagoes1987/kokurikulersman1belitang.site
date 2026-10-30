@@ -1869,18 +1869,75 @@ if ($method === 'POST') {
             jsonResponse(true, "Koreksi darurat berhasil dihapus. Penilaian Day {$dayNum} dikembalikan ke kalkulasi waktu otomatis.");
         }
 
-        // O. SIMPAN PEMBAGIAN SISWA BINAAN (MENTORSHIP FASILITATOR & KOORDINATOR)
+        // O. SIMPAN PEMBAGIAN SISWA BINAAN (MENTORSHIP FASILITATOR & KOORDINATOR - MULTI-PC SAFE MERGE)
         if ($action === 'save_mentorship_data') {
             $current = getMentorshipState($pdo);
-            if (isset($input['assignments']) && is_array($input['assignments'])) {
-                $current['assignments'] = $input['assignments'];
+            if (!isset($current['assignments']) || !is_array($current['assignments'])) $current['assignments'] = [];
+            if (!isset($current['teacher_roles']) || !is_array($current['teacher_roles'])) $current['teacher_roles'] = [];
+            if (!isset($current['custom_teachers']) || !is_array($current['custom_teachers'])) $current['custom_teachers'] = [];
+
+            $replaceAll = !empty($input['replace_all']);
+
+            if ($replaceAll) {
+                if (isset($input['assignments']) && is_array($input['assignments'])) {
+                    $current['assignments'] = $input['assignments'];
+                }
+                if (isset($input['teacher_roles']) && is_array($input['teacher_roles'])) {
+                    $current['teacher_roles'] = $input['teacher_roles'];
+                }
+                if (isset($input['custom_teachers']) && is_array($input['custom_teachers'])) {
+                    $current['custom_teachers'] = $input['custom_teachers'];
+                }
+            } else {
+                // Smart Multi-PC Merge: Gabungkan per-guru berdasarkan updated_at agar beberapa PC Admin bisa bagi tugas serentak tanpa saling menimpa
+                if (isset($input['teacher_roles']) && is_array($input['teacher_roles'])) {
+                    foreach ($input['teacher_roles'] as $tKey => $roleVal) {
+                        $cleanKey = strtolower(trim((string)$tKey));
+                        if ($cleanKey !== '' && $roleVal) {
+                            $current['teacher_roles'][$cleanKey] = $roleVal;
+                        }
+                    }
+                }
+
+                if (isset($input['assignments']) && is_array($input['assignments'])) {
+                    foreach ($input['assignments'] as $tKey => $incomingEntry) {
+                        $cleanKey = strtolower(trim((string)$tKey));
+                        if ($cleanKey === '' || !is_array($incomingEntry)) continue;
+
+                        if (!isset($current['assignments'][$cleanKey]) || !is_array($current['assignments'][$cleanKey])) {
+                            $current['assignments'][$cleanKey] = $incomingEntry;
+                        } else {
+                            $existingEntry = $current['assignments'][$cleanKey];
+                            $inTime = !empty($incomingEntry['updated_at']) ? strtotime($incomingEntry['updated_at']) : 0;
+                            $exTime = !empty($existingEntry['updated_at']) ? strtotime($existingEntry['updated_at']) : 0;
+                            $inCount = isset($incomingEntry['student_nisns']) && is_array($incomingEntry['student_nisns']) ? count($incomingEntry['student_nisns']) : 0;
+                            $exCount = isset($existingEntry['student_nisns']) && is_array($existingEntry['student_nisns']) ? count($existingEntry['student_nisns']) : 0;
+
+                            // Gunakan data terbaru, atau jika belum ada timestamp, utamakan yang sudah berisi siswa binaan
+                            if ($inTime >= $exTime && ($inTime > 0 || $inCount >= $exCount)) {
+                                $current['assignments'][$cleanKey] = $incomingEntry;
+                            }
+                        }
+                    }
+                }
+
+                if (isset($input['custom_teachers']) && is_array($input['custom_teachers'])) {
+                    $customMap = [];
+                    foreach ($current['custom_teachers'] as $ct) {
+                        if (is_array($ct) && !empty($ct['username'])) {
+                            $customMap[strtolower(trim($ct['username']))] = $ct;
+                        }
+                    }
+                    foreach ($input['custom_teachers'] as $ct) {
+                        if (is_array($ct) && !empty($ct['username'])) {
+                            $customMap[strtolower(trim($ct['username']))] = $ct;
+                        }
+                    }
+                    $current['custom_teachers'] = array_values($customMap);
+                }
             }
-            if (isset($input['teacher_roles']) && is_array($input['teacher_roles'])) {
-                $current['teacher_roles'] = $input['teacher_roles'];
-            }
-            if (isset($input['custom_teachers']) && is_array($input['custom_teachers'])) {
-                $current['custom_teachers'] = $input['custom_teachers'];
-            }
+
+            $current['last_synced_at'] = gmdate('c');
 
             $stmtSave = $pdo->prepare("REPLACE INTO `app_settings` (`key_name`, `value`) VALUES ('mentorship_state_v1', :val)");
             $stmtSave->execute([':val' => json_encode($current, JSON_UNESCAPED_UNICODE)]);

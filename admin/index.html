@@ -2038,7 +2038,11 @@
             </div>
           </div>
 
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" id="btnManualSyncMentorship" onclick="syncMentorshipMultiPCNow()" class="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer" title="Sinkronkan data Pembagian Siswa Binaan antar PC Kantor & Laptop ke Server Database">
+              <span class="material-symbols-outlined text-base">cloud_sync</span>
+              <span id="lblSyncMentorshipBtn">Sinkronkan Server (Multi-PC)</span>
+            </button>
             <button type="button" onclick="openAddTeacherModal()" class="px-4 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 active:scale-95 text-white font-bold text-xs flex items-center gap-2 shadow-md transition-all cursor-pointer">
               <span class="material-symbols-outlined text-base">person_add</span>
               <span>+ Tambah Guru Baru (Manual)</span>
@@ -3041,12 +3045,12 @@
   </div>
 
   <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
-  <script src="../js/guru_data.js?v=20261030_binaan_v2"></script>
-  <script src="../js/core.js?v=20261030_binaan_v2"></script>
+  <script src="../js/guru_data.js?v=20261030_multipc_v3"></script>
+  <script src="../js/core.js?v=20261030_multipc_v3"></script>
   <script src="../js/data/bank-soal-nonfieldtrip.js?v=20261029_nft_bs2"></script>
   <script src="../js/modules/admin-banksoal.js?v=20261029_nft_bs2"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v2"></script>
-  <script src="../js/modules/admin-mentorship.js?v=20261030_binaan_v2"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261030_multipc_v3"></script>
+  <script src="../js/modules/admin-mentorship.js?v=20261030_multipc_v3"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
   <script>
     let adminCurrentGrade = 'ALL';
