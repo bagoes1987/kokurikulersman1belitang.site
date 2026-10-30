@@ -2,6 +2,7 @@
 /**
  * FINCESTEM 2026 - Database Connector (PDO)
  */
+date_default_timezone_set('Asia/Jakarta');
 require_once __DIR__ . '/config.php';
 
 function getDB() {

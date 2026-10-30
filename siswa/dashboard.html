@@ -982,7 +982,7 @@
   </div>
 
   <script src="../js/siswa_data.js?v=20261026_d6_v1"></script>
-  <script src="../js/core.js?v=20261027_d6_final_v4"></script>
+  <script src="../js/core.js?v=20261030_reset_fix_v1"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -1973,6 +1973,17 @@
       const records = (studentProgress && studentProgress.records) || [];
       const idList = getStudentStorageIdentifiers();
 
+      // Deteksi apakah siswa adalah Field Trip atau Non-Field Trip
+      const u = FincestemCore.auth.getUser() || {};
+      const stu = currentStudent || u;
+      const studentNisn = stu.nisn || stu.identifier || '';
+      const studentClass = stu.class || stu.class_name || '';
+      const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+        ? FincestemCore.zones.getStudentZone(studentNisn, studentClass, stu.zone)
+        : (stu.zone || 'FINCESTEM OKU TIMUR');
+      const zUpper = String(studentZone || '').toUpperCase();
+      const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
       let hasMateri = !!taskMap[dayNum + '_materi'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'materi');
       if (!hasMateri) {
         for (const id of idList) {
@@ -2028,9 +2039,10 @@
       let hasAsesmen = !!taskMap[dayNum + '_asesmen'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'asesmen');
       if (!hasAsesmen) {
         // Khusus Day 2 Field Trip: Asesmen terintegrasi dalam LKPD Esai AKPOL & Lawang Sewu
-        if (dayNum === 2 && hasLkpd) {
+        // (Untuk Non-Field Trip, Day 2 dan Day 7 memiliki 50 soal Asesmen CBT tersendiri)
+        if (isFieldTrip && dayNum === 2 && hasLkpd) {
           hasAsesmen = true;
-        } else if (dayNum === 7 && hasLkpd) {
+        } else if (isFieldTrip && dayNum === 7 && hasLkpd) {
           // Khusus Day 7 Field Trip: Bebas Asesmen Kepulangan (otomatis tuntas jika LKPD selesai)
           hasAsesmen = true;
         } else {
@@ -2119,18 +2131,19 @@
       }
 
       // Cascading logic berurutan mutlak
+      const isFtDay7 = isFieldTrip && dayNum === 7;
       let canLkpd = hasMateri;
       let canAsesmen = hasMateri && hasLkpd;
-      let canDok = (dayNum === 7) ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen);
-      let canRefleksi = (dayNum === 7) ? (hasMateri && hasLkpd && hasDok) : (hasMateri && hasLkpd && hasAsesmen && hasDok);
-      let canPenilaian = (dayNum === 7) ? (hasMateri && hasLkpd && hasDok && hasRefleksi) : (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi);
+      let canDok = isFtDay7 ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen);
+      let canRefleksi = isFtDay7 ? (hasMateri && hasLkpd && hasDok) : (hasMateri && hasLkpd && hasAsesmen && hasDok);
+      let canPenilaian = isFtDay7 ? (hasMateri && hasLkpd && hasDok && hasRefleksi) : (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi);
 
       return {
         hasMateri,
         hasLkpd: hasLkpd && hasMateri,
-        hasAsesmen: (dayNum === 7 ? (hasLkpd && hasMateri) : (hasAsesmen && hasLkpd && hasMateri)),
-        hasDok: (dayNum === 7 ? (hasDok && hasLkpd && hasMateri) : (hasDok && hasAsesmen && hasLkpd && hasMateri)),
-        hasRefleksi: (dayNum === 7 ? (hasRefleksi && hasDok && hasLkpd && hasMateri) : (hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri)),
+        hasAsesmen: (isFtDay7 ? (hasLkpd && hasMateri) : (hasAsesmen && hasLkpd && hasMateri)),
+        hasDok: (isFtDay7 ? (hasDok && hasLkpd && hasMateri) : (hasDok && hasAsesmen && hasLkpd && hasMateri)),
+        hasRefleksi: (isFtDay7 ? (hasRefleksi && hasDok && hasLkpd && hasMateri) : (hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri)),
         canLkpd,
         canAsesmen,
         canDok,

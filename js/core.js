@@ -2129,6 +2129,9 @@ const FincestemCore = {
               localStorage.removeItem(`fincestem_asesmen_ft_day${d}_` + id);
               localStorage.removeItem(`fincestem_asesmen_nft_day${d}_` + id);
               localStorage.removeItem(`fincestem_asesmen_day${d}_` + id);
+              localStorage.removeItem(`fincestem_draft_nft_asesmen_d${d}_` + id);
+              localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d${d}_` + id);
+              localStorage.removeItem(`fincestem_pkg_nft_asesmen_d${d}_` + id);
             }
             if (comp.dokumentasi) {
               localStorage.removeItem(`fincestem_dok_ft_day${d}_` + id);
@@ -2253,19 +2256,32 @@ const FincestemCore = {
               try {
                 const p = JSON.parse(storedProg);
                 if (p && p.task_map) {
+                  const hasAnyCompReset = !!(comp.materi || comp.lkpd || comp.asesmen || comp.refleksi || comp.dokumentasi);
                   Object.keys(p.task_map).forEach(tk => {
                     const parts = tk.split('_');
                     const d = parseInt(parts[0]);
                     const type = parts.slice(1).join('_');
-                    if ((targetDay < 0 || targetDay === d) && comp[type]) {
-                      delete p.task_map[tk];
+                    if (targetDay < 0 || targetDay === d) {
+                      if (comp[type] || (type === 'general' && hasAnyCompReset)) {
+                        delete p.task_map[tk];
+                      }
                     }
                   });
+                  if (Array.isArray(p.records)) {
+                    p.records = p.records.filter(r => {
+                      const d = parseInt(r.day_number);
+                      const type = String(r.task_type || '');
+                      if (targetDay >= 0 && d !== targetDay) return true;
+                      if (comp[type] || (type === 'general' && hasAnyCompReset)) return false;
+                      return true;
+                    });
+                  }
                   let daysSet = new Set();
-                  Object.keys(p.task_map).forEach(tk => {
-                    const d = parseInt(tk.split('_')[0]);
-                    if (d && d >= 1 && d <= 7 && p.task_map[tk].status === 'completed') daysSet.add(d);
-                  });
+                  for (let dCheck = 1; dCheck <= 7; dCheck++) {
+                    const hasAll5 = p.task_map[dCheck + '_materi'] && p.task_map[dCheck + '_lkpd'] && p.task_map[dCheck + '_asesmen'] && p.task_map[dCheck + '_dokumentasi'] && p.task_map[dCheck + '_refleksi'];
+                    const hasGenComp = p.task_map[dCheck + '_general'] && p.task_map[dCheck + '_general'].status === 'completed';
+                    if (hasAll5 || hasGenComp) daysSet.add(dCheck);
+                  }
                   p.completed_days = daysSet.size;
                   p.percentage = Math.min(100, Math.round((p.completed_days / 7) * 100));
                   localStorage.setItem(progKey, JSON.stringify(p));
@@ -2834,50 +2850,110 @@ const FincestemCore = {
               const cleanNisn = String(nisn || '').replace(/[^A-Za-z0-9]/g, '');
               const resetInfo = res.data.reset_info;
               const serverResetAt = resetInfo && resetInfo.reset_at ? resetInfo.reset_at : null;
+              const resetSig = serverResetAt
+                ? `${serverResetAt}|${resetInfo.scope || ''}|${resetInfo.target_day !== undefined ? resetInfo.target_day : ''}|${JSON.stringify(resetInfo.components || {})}`
+                : null;
               const clientLastReset = localStorage.getItem('fincestem_client_reset_' + cleanNisn);
 
+              // Pemisahan Tegas Reset Device vs Reset Progres:
+              // Reset Device (auth.php) tidak pernah menyentuh reset_info atau menghapus task_map di server.
+              // Jika ada resetSig dari server (Reset Progres Admin) yang belum pernah dijalankan di browser ini
+              // (termasuk saat reset pertama kali ketika clientLastReset masih kosong/null), WAJIB jalankan purge sesuai komponen!
               let shouldPurge = false;
-              if (serverResetAt && clientLastReset) {
-                // Purge HANYA dieksekusi jika ada timestamp reset baru yang lebih mutakhir dari yang pernah diproses perangkat ini
-                const sTime = new Date(serverResetAt).getTime();
-                const cTime = new Date(clientLastReset).getTime();
-                if (!isNaN(sTime) && !isNaN(cTime) && sTime > cTime) {
-                  shouldPurge = true;
-                }
-              } else if (serverResetAt && !clientLastReset) {
-                // Login perdana di perangkat/gawai baru: sinkronkan penanda reset server tanpa purge
-                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
-              }
-
-              // Pengaman Mutlak: Jika server mengembalikan catatan pengerjaan yang lebih baru daripada serverResetAt,
-              // JANGAN PERNAH lakukan purge agar pekerjaan siswa tidak hilang saat pindah perangkat!
-              if (shouldPurge && Array.isArray(res.data.records) && res.data.records.length > 0) {
-                const sResetMs = new Date(serverResetAt).getTime();
-                const hasNewerRecords = res.data.records.some(r => {
-                  const rTime = new Date(r.updated_at || r.created_at || 0).getTime();
-                  return !isNaN(rTime) && rTime > sResetMs;
-                });
-                if (hasNewerRecords) {
-                  shouldPurge = false;
-                  localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
-                }
+              if (resetSig && clientLastReset !== resetSig) {
+                shouldPurge = true;
               }
 
               if (shouldPurge) {
                 self.purgeStudentLocalStorage(cleanNisn, resetInfo || { scope: 'all_days', target_day: -1 });
-                if (serverResetAt) {
-                  localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
-                }
+                localStorage.setItem('fincestem_client_reset_' + cleanNisn, resetSig);
                 const resetComp = (resetInfo && resetInfo.components) || {};
                 const u = FincestemCore.auth.getUser();
                 if (u && (cleanNisn.includes(String(u.nisn || u.identifier).replace(/\D/g, '')))) {
                   // Hanya kosongkan foto profil jika opsi foto_profil memang di-reset
-                  if (resetComp.foto_profil !== false) {
+                  if (resetComp.foto_profil === true) {
                     u.photo_url = '';
                     FincestemCore.auth.setUser(u, 'siswa');
                   }
                 }
               }
+
+              // Rekonsiliasi Kebenaran Server (Server-Truth Sync) untuk Komponen yang Direset di Server:
+              // Jika suatu komponen di localStorage berstatus selesai (submitted) namun sudah TIDAK ADA di task_map server
+              // (karena telah dihapus melalui Reset Progres Admin), bersihkan kunci lokal komponen tersebut agar 100% sinkron.
+              try {
+                const srvTaskMap = res.data.task_map || {};
+                const srvRecords = Array.isArray(res.data.records) ? res.data.records : [];
+                const srvHasTask = function(d, t) {
+                  if (srvTaskMap[d + '_' + t]) return true;
+                  return srvRecords.some(r => parseInt(r.day_number) === d && r.task_type === t);
+                };
+                const unpadded = cleanNisn.replace(/^0+/, '');
+                const padded = (cleanNisn.length >= 8 && cleanNisn.length <= 10) ? cleanNisn.padStart(10, '0') : cleanNisn;
+                const idVars = Array.from(new Set([cleanNisn, unpadded, padded, String(nisn).trim()])).filter(Boolean);
+                const nowMs = Date.now();
+
+                const isStaleSubmitted = function(rawStr) {
+                  if (!rawStr) return false;
+                  if (!serverResetAt) return false;
+                  try {
+                    const parsed = JSON.parse(rawStr);
+                    const subTimeStr = parsed && (parsed.submittedAt || parsed.submitted_at || parsed.savedAt);
+                    if (subTimeStr) {
+                      const subMs = new Date(subTimeStr).getTime();
+                      // Lindungi tugas yang baru saja dikirim dalam 20 detik terakhir di perangkat ini
+                      if (!isNaN(subMs) && (nowMs - subMs) < 20000) return false;
+                    }
+                  } catch (e) {}
+                  return true;
+                };
+
+                for (let d = 1; d <= 7; d++) {
+                  idVars.forEach(id => {
+                    if (!srvHasTask(d, 'asesmen')) {
+                      const rawAsesmen = localStorage.getItem(`fincestem_asesmen_nft_day${d}_` + id) || localStorage.getItem(`fincestem_asesmen_day${d}_` + id);
+                      if (isStaleSubmitted(rawAsesmen)) {
+                        localStorage.removeItem(`fincestem_asesmen_nft_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_asesmen_ft_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_asesmen_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_draft_nft_asesmen_d${d}_` + id);
+                        localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d${d}_` + id);
+                        localStorage.removeItem(`fincestem_pkg_nft_asesmen_d${d}_` + id);
+                      }
+                    }
+                    if (!srvHasTask(d, 'materi')) {
+                      const rawMateri = localStorage.getItem(`fincestem_materi_nft_day${d}_` + id);
+                      if (isStaleSubmitted(rawMateri)) {
+                        localStorage.removeItem(`fincestem_materi_nft_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_materi_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_draft_nft_materi_d${d}_` + id);
+                      }
+                    }
+                    if (!srvHasTask(d, 'lkpd')) {
+                      const rawLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${d}_` + id);
+                      if (isStaleSubmitted(rawLkpd)) {
+                        localStorage.removeItem(`fincestem_lkpd_nft_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_lkpd_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_draft_nft_lkpd_d${d}_` + id);
+                      }
+                    }
+                    if (!srvHasTask(d, 'dokumentasi') && serverResetAt) {
+                      if (resetInfo && (resetInfo.target_day < 0 || parseInt(resetInfo.target_day) === d) && resetInfo.components && resetInfo.components.dokumentasi) {
+                        localStorage.removeItem(`fincestem_dok_nft_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_dok_day${d}_` + id);
+                      }
+                    }
+                    if (!srvHasTask(d, 'refleksi')) {
+                      const rawRefl = localStorage.getItem(`fincestem_refleksi_nft_day${d}_` + id);
+                      if (isStaleSubmitted(rawRefl)) {
+                        localStorage.removeItem(`fincestem_refleksi_nft_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_refl_nft_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_refleksi_day${d}_` + id);
+                      }
+                    }
+                  });
+                }
+              } catch (eReconcile) {}
 
               // Jika server mengembalikan URL foto siswa yang sah, segera pulihkan ke sesi & storage lokal
               if (res.data.photo_url) {
@@ -3454,6 +3530,27 @@ const FincestemCore = {
     isDayCompleted: function(prog, dayNum) {
       if (!prog) return false;
       const d = parseInt(dayNum);
+      let isFt = true;
+      try {
+        const u = FincestemCore.auth.getUser() || {};
+        const z = prog.zone || u.zone || ((FincestemCore.zones && FincestemCore.zones.getStudentZone) ? FincestemCore.zones.getStudentZone(prog.nisn || u.nisn || u.identifier, prog.class_name || u.class, prog.zone || u.zone) : '');
+        if (z) {
+          const zUp = String(z).toUpperCase();
+          isFt = zUp.includes('LUAR') || zUp.includes('FIELD') || zUp.includes('TRIP');
+        }
+      } catch (e) {}
+
+      // Jika Non-Field Trip memiliki komponen pada hari d yang baru di-reset sebagian (misal materi/lkpd ada tapi asesmen di-reset),
+      // maka hari d tidak boleh dianggap completed sebelum kelima instrumen lengkap kembali
+      if (!isFt && prog.task_map) {
+        const tm = prog.task_map;
+        const hasAnyTaskOnDay = !!(tm[d + '_materi'] || tm[d + '_lkpd'] || tm[d + '_asesmen'] || tm[d + '_dokumentasi'] || tm[d + '_refleksi']);
+        if (hasAnyTaskOnDay) {
+          const hasAll5 = !!(tm[d + '_materi'] && tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi'] && tm[d + '_refleksi']);
+          if (!hasAll5) return false;
+        }
+      }
+
       if (prog.records && Array.isArray(prog.records)) {
         if (prog.records.some(r => parseInt(r.day_number) === d && (r.status === 'completed' || (r.task_type === 'general' && r.status === 'reviewed')))) return true;
       }
@@ -3474,15 +3571,16 @@ const FincestemCore = {
     getDayStatus: function(prog, dayNum) {
       if (!prog) return 'belum_mulai';
       const d = parseInt(dayNum);
+      if (this.isDayCompleted(prog, d)) return 'completed';
       let foundStatus = null;
       if (prog.records && Array.isArray(prog.records)) {
-        const r = prog.records.find(rec => parseInt(rec.day_number) === d);
+        const r = prog.records.find(rec => parseInt(rec.day_number) === d && rec.status !== 'completed');
         if (r && r.status) foundStatus = r.status;
       }
       if (!foundStatus && prog.task_map) {
         for (const k in prog.task_map) {
           if (k.startsWith(d + '_') && prog.task_map[k].status) {
-            foundStatus = prog.task_map[k].status;
+            foundStatus = prog.task_map[k].status === 'completed' ? 'submitted' : prog.task_map[k].status;
             break;
           }
         }
@@ -3494,6 +3592,25 @@ const FincestemCore = {
       if (!prog) return false;
       const d = parseInt(dayNum);
       if (d <= 0) return true;
+
+      let isFt = true;
+      try {
+        const u = FincestemCore.auth.getUser() || {};
+        const z = prog.zone || u.zone || ((FincestemCore.zones && FincestemCore.zones.getStudentZone) ? FincestemCore.zones.getStudentZone(prog.nisn || u.nisn || u.identifier, prog.class_name || u.class, prog.zone || u.zone) : '');
+        if (z) {
+          const zUp = String(z).toUpperCase();
+          isFt = zUp.includes('LUAR') || zUp.includes('FIELD') || zUp.includes('TRIP');
+        }
+      } catch (e) {}
+
+      const tm = prog.task_map || {};
+      if (!isFt) {
+        const hasAnyTaskOnDay = !!(tm[d + '_materi'] || tm[d + '_lkpd'] || tm[d + '_asesmen'] || tm[d + '_dokumentasi'] || tm[d + '_refleksi']);
+        if (hasAnyTaskOnDay) {
+          return !!(tm[d + '_materi'] && tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi'] && tm[d + '_refleksi']);
+        }
+      }
+
       if (this.isDayCompleted(prog, d)) return true;
 
       // Cek record evaluasi resmi fasilitator
@@ -3507,14 +3624,13 @@ const FincestemCore = {
         }
       }
 
-      const tm = prog.task_map || {};
       // Refleksi adalah tahap ke-5 (tahap terakhir siswa)
       if (tm[d + '_refleksi'] && (tm[d + '_refleksi'].status === 'submitted' || tm[d + '_refleksi'].status === 'completed')) {
         return true;
       }
       // Atau jika 3 instrumen inti (LKPD, Asesmen, dan Foto Dokumentasi) lengkap terkirim
-      if (d === 2 && tm['2_lkpd'] && tm['2_dokumentasi']) return true;
-      if (d === 7 && tm['7_lkpd'] && tm['7_dokumentasi']) return true;
+      if (isFt && d === 2 && tm['2_lkpd'] && tm['2_dokumentasi']) return true;
+      if (isFt && d === 7 && tm['7_lkpd'] && tm['7_dokumentasi']) return true;
       if (tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi']) {
         return true;
       }

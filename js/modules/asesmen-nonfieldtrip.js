@@ -210,6 +210,14 @@
   function initNonFieldTripAsesmenPage(dayNum) {
     dayNum = parseInt(dayNum) || 1;
     examState.dayNum = dayNum;
+    examState.isExamActive = false;
+    examState.isExamFinished = false;
+    examState.answers = {};
+    examState.markedDoubt = {};
+    examState.currentIdx = 0;
+    examState.startTime = null;
+    examState.remainingSeconds = examState.durationSeconds;
+    examState.violationCount = 0;
 
     const u = (window.FincestemCore && window.FincestemCore.auth && window.FincestemCore.auth.getUser()) || window.activeUser || {};
     examState.student = u;
@@ -2094,10 +2102,11 @@
       answers: examState.answers
     };
 
-    // Simpan ke storage resmi
+    // Simpan ke storage resmi & bersihkan draft pengerjaan
     try {
       localStorage.setItem(`fincestem_asesmen_nft_day${examState.dayNum}_` + examState.cleanNisn, JSON.stringify(officialPayload));
       localStorage.setItem(`fincestem_asesmen_day${examState.dayNum}_` + examState.cleanNisn, JSON.stringify(officialPayload));
+      localStorage.removeItem(`fincestem_draft_nft_asesmen_d${examState.dayNum}_` + examState.cleanNisn);
     } catch(e) {}
 
     // Kirim ke sistem Core Progress FINCESTEM

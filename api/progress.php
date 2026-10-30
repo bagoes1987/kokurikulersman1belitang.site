@@ -159,7 +159,7 @@ if ($method === 'GET') {
 
                 if ($uRow && !empty($uRow['reset_at'])) {
                     $uTime = strtotime($uRow['reset_at']);
-                    if ($latestResetTime === null || $uTime > $latestResetTime) {
+                    if ($latestResetTime === null || $uTime > ($latestResetTime + 2)) {
                         $latestResetTime = $uTime;
                         $effectiveReset = [
                             'reset_at'   => $uRow['reset_at'],
@@ -198,13 +198,8 @@ if ($method === 'GET') {
                 $t = $r['task_type'];
                 $taskMap[$d . '_' . $t] = $r;
 
-                if ($d >= 1 && $d <= 7) {
+                if ($d >= 1 && $d <= 7 && $t !== 'general') {
                     $submittedTasks[$d . '_' . $t] = true;
-
-                    // Hari tuntas jika status = 'completed'/'reviewed' ATAU refleksi (tahap 5 akhir) telah submitted
-                    if ($r['status'] === 'completed' || $r['status'] === 'reviewed' || ($t === 'refleksi' && $r['status'] === 'submitted')) {
-                        $completedDays[$d] = true;
-                    }
                 }
 
                 if ($r['score'] !== null && is_numeric($r['score']) && (float)$r['score'] > 0) {
@@ -213,6 +208,28 @@ if ($method === 'GET') {
 
                 if (!empty($r['feedback']) && ($latestFeedback === null || strtotime($r['updated_at']) > strtotime($latestFeedback['updated_at']))) {
                     $latestFeedback = $r;
+                }
+            }
+
+            for ($d = 1; $d <= 7; $d++) {
+                $genRec = $taskMap[$d . '_general'] ?? null;
+                $reflRec = $taskMap[$d . '_refleksi'] ?? null;
+                if (!$isFieldTrip) {
+                    // Non-Field Trip: Hari tuntas hanya jika kelima instrumen (materi, lkpd, asesmen, dokumentasi, refleksi) lengkap
+                    $hasAll5 = isset($taskMap[$d . '_materi'])
+                        && isset($taskMap[$d . '_lkpd'])
+                        && isset($taskMap[$d . '_asesmen'])
+                        && isset($taskMap[$d . '_dokumentasi'])
+                        && isset($taskMap[$d . '_refleksi']);
+                    if ($hasAll5 || ($genRec && ($genRec['status'] === 'completed' || $genRec['status'] === 'reviewed'))) {
+                        $completedDays[$d] = true;
+                    }
+                } else {
+                    // Field Trip: Hari tuntas jika status = 'completed'/'reviewed' ATAU refleksi telah submitted
+                    if (($genRec && ($genRec['status'] === 'completed' || $genRec['status'] === 'reviewed'))
+                        || ($reflRec && ($reflRec['status'] === 'completed' || $reflRec['status'] === 'reviewed' || $reflRec['status'] === 'submitted'))) {
+                        $completedDays[$d] = true;
+                    }
                 }
             }
 
@@ -556,6 +573,10 @@ if ($method === 'POST') {
             if ($resetDok) {
                 $typeClauses[] = "(`task_type` = 'dokumentasi' OR `task_type` LIKE 'dok%' OR `task_type` LIKE '%dok%')";
             }
+            if (!empty($typeClauses)) {
+                // Jika salah satu komponen hari di-reset, hapus juga rekap general (auto-grade) hari tersebut agar status hari kembali aktif/dalam proses
+                $typeClauses[] = "(`task_type` = 'general')";
+            }
 
             $deletedEval = 0;
             if (!empty($typeClauses)) {
@@ -682,7 +703,9 @@ if ($method === 'POST') {
                     ]);
                 }
 
-                $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `identifier` IN ($inIds) OR `nis` IN ($inIds)");
+                if ($scope === 'all_days' && $targetDay < 0 && $resetMateri && $resetLkpd && $resetAsesmen && $resetRefleksi && $resetDok) {
+                    $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `identifier` IN ($inIds) OR `nis` IN ($inIds)");
+                }
             } catch (Exception $eMeta) {}
 
             $scopeMsg = $targetDay === 0 ? "khusus Day Uji Coba (Day 0)" : ($targetDay > 0 ? "Day {$targetDay}" : "seluruh hari");
@@ -739,6 +762,9 @@ if ($method === 'POST') {
             }
             if ($resetDok) {
                 $typeClauses[] = "(`task_type` = 'dokumentasi' OR `task_type` LIKE 'dok%' OR `task_type` LIKE '%dok%')";
+            }
+            if (!empty($typeClauses)) {
+                $typeClauses[] = "(`task_type` = 'general')";
             }
             $whereType = !empty($typeClauses) ? ('(' . implode(' OR ', $typeClauses) . ')') : '';
             if ($resetMateri && $resetLkpd && $resetAsesmen && $resetRefleksi && $resetDok) {
@@ -852,8 +878,10 @@ if ($method === 'POST') {
                         }
                     }
 
-                    // 5. Update users.reset_at
-                    $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `identifier` IN ($inSql) OR `nis` IN ($inSql)");
+                    // 5. Update users.reset_at hanya jika reset total semua hari & semua komponen
+                    if ($scope === 'all_days' && $targetDay < 0 && $resetMateri && $resetLkpd && $resetAsesmen && $resetRefleksi && $resetDok) {
+                        $pdo->exec("UPDATE `users` SET `reset_at` = '$nowStr' WHERE `identifier` IN ($inSql) OR `nis` IN ($inSql)");
+                    }
 
                     // 6. Catat ke student_reset_meta
                     $stmtMeta = $pdo->prepare("
