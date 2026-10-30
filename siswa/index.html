@@ -309,13 +309,16 @@
               // Deteksi Reset dari Server:
               const clientReset = localStorage.getItem('fincestem_client_reset_' + cleanNisn);
               const serverResetAt = serverUser.reset_at;
-              const isResetNewer = serverResetAt && (!clientReset || new Date(serverResetAt).getTime() > new Date(clientReset).getTime());
+              const isResetNewer = serverResetAt && clientReset && (new Date(serverResetAt).getTime() > new Date(clientReset).getTime());
 
               if (isResetNewer) {
                 // Eksekusi pembersihan total storage siswa di perangkat ini
                 FincestemCore.progress.purgeStudentLocalStorage(cleanNisn, { scope: 'all_days', target_day: -1 });
                 localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
                 serverUser.photo_url = '';
+              } else if (serverResetAt && !clientReset) {
+                // Login perdana di perangkat/gawai baru: catat token reset tanpa melakukan purge
+                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
               }
 
               // JIKA FOTO PROFIL KOSONG DARI SERVER (Karena di-reset admin / belum pernah upload):

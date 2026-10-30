@@ -186,9 +186,18 @@
         return;
       }
 
-      // Mulai inisialisasi modul asesmen Non-Field Trip
-      if (typeof window.initNonFieldTripAsesmenPage === 'function') {
-        window.initNonFieldTripAsesmenPage(dayNum);
+      // Mulai inisialisasi modul asesmen Non-Field Trip dengan sinkronisasi progres
+      if (window.FincestemCore && FincestemCore.progress) {
+        FincestemCore.progress.getStudentProgress(activeUser.nisn || activeUser.identifier, function(prog) {
+          window.currentStudentProgress = prog;
+          if (typeof window.initNonFieldTripAsesmenPage === 'function') {
+            window.initNonFieldTripAsesmenPage(dayNum);
+          }
+        });
+      } else {
+        if (typeof window.initNonFieldTripAsesmenPage === 'function') {
+          window.initNonFieldTripAsesmenPage(dayNum);
+        }
       }
     });
   </script>

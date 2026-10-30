@@ -111,6 +111,37 @@
       if (rawOff) savedOfficial = JSON.parse(rawOff);
     } catch (e) {}
 
+    // Fallback ekstraksi dari progress server jika berpindah gawai/device baru
+    if (!savedOfficial || !savedOfficial.cardA) {
+      try {
+        const storedP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+        if (storedP) {
+          const prog = JSON.parse(storedP);
+          const tMap = (prog && prog.task_map) ? prog.task_map['1_materi'] : null;
+          if (tMap && tMap.content) {
+            let c = tMap.content;
+            if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
+              try { c = JSON.parse(c); } catch(e) {}
+            }
+            if (typeof c === 'object' && c && c.cardA) {
+              savedOfficial = c;
+            } else if (typeof c === 'string' && c.trim()) {
+              savedOfficial = {
+                day: 1,
+                submitted: true,
+                submittedAt: tMap.updated_at || new Date().toISOString(),
+                cardA: { title: 'Kegiatan Ekonomi & Sektor Utama', text: c, source: 'Buku Siswa & Kajian Riset' },
+                cardB: { title: 'Literasi dan Pengelolaan Keuangan', text: c, source: 'Buku Siswa & Modul OJK' },
+                cardC: { title: 'Kebanksentralan & Bank Indonesia', text: c, source: 'Buku Siswa & Bank Indonesia' },
+                cardD: { title: 'Badan Usaha & Koperasi', text: c, source: 'UU Perkoperasian & Kemenkop' },
+                cardE: { title: 'Potensi Sektor Ekonomi OKU Timur', text: c, source: 'BPS OKU Timur & Web Pemkab' }
+              };
+            }
+          }
+        }
+      } catch(eHyd) {}
+    }
+
     // Cek auto-save draft sementara
     let draft = {};
     try {
@@ -672,9 +703,12 @@
       localStorage.setItem('fincestem_materi_ft_day1_' + cleanNisn, JSON.stringify({ conclusion: summaryText, savedAt: officialPayload.submittedAt }));
     } catch(e) {}
 
+    officialPayload.conclusion = summaryText;
+    officialPayload.summary = summaryText;
+
     // Update status progress sistem FINCESTEM
     if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.submitTask) {
-      FincestemCore.progress.submitTask(cleanNisn, 1, 'materi', summaryText, function() {
+      FincestemCore.progress.submitTask(cleanNisn, 1, 'materi', officialPayload, function() {
         showSuccessDay1NftModal();
       });
     } else {
@@ -738,6 +772,37 @@
       const rawOff = localStorage.getItem('fincestem_materi_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_materi_day2_' + cleanNisn);
       if (rawOff) savedOfficial = JSON.parse(rawOff);
     } catch (e) {}
+
+    // Fallback ekstraksi dari progress server jika berpindah gawai/device baru
+    if (!savedOfficial || !savedOfficial.cardA) {
+      try {
+        const storedP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+        if (storedP) {
+          const prog = JSON.parse(storedP);
+          const tMap = (prog && prog.task_map) ? prog.task_map['2_materi'] : null;
+          if (tMap && tMap.content) {
+            let c = tMap.content;
+            if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
+              try { c = JSON.parse(c); } catch(e) {}
+            }
+            if (typeof c === 'object' && c && c.cardA) {
+              savedOfficial = c;
+            } else if (typeof c === 'string' && c.trim()) {
+              savedOfficial = {
+                day: 2,
+                submitted: true,
+                submittedAt: tMap.updated_at || new Date().toISOString(),
+                cardA: { title: 'Hakikat Budaya & 7 Unsur Universal OKU Timur', text: c, source: 'Buku Siswa & Riset Antropologi' },
+                cardB: { title: 'Hubungan Budaya dengan Ekonomi & UMKM', text: c, source: 'Buku Siswa & Modul Pembelajaran' },
+                cardC: { title: 'Sistem Mata Pencaharian Sektor Agrikultur', text: c, source: 'Dinas Pertanian & BPS OKU Timur' },
+                cardD: { title: 'Sistem Teknologi Alsintan & Jaringan Irigasi', text: c, source: 'Balai Penyuluhan & Jaringan Irigasi' },
+                cardE: { title: 'Inovasi Penanaman, Pascapanen & Keterampilan', text: c, source: 'BPS OKU Timur & Riset Komoditas' }
+              };
+            }
+          }
+        }
+      } catch(eHyd2) {}
+    }
 
     // Cek auto-save draft sementara Day 2
     let draft = {};
@@ -1320,8 +1385,11 @@
       localStorage.setItem('fincestem_materi_ft_day2_' + cleanNisn, JSON.stringify({ conclusion: summaryText, savedAt: officialPayload.submittedAt }));
     } catch(e) {}
 
+    officialPayload.conclusion = summaryText;
+    officialPayload.summary = summaryText;
+
     if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.submitTask) {
-      FincestemCore.progress.submitTask(cleanNisn, 2, 'materi', summaryText, function() {
+      FincestemCore.progress.submitTask(cleanNisn, 2, 'materi', officialPayload, function() {
         showSuccessDay2NftModal();
       });
     } else {

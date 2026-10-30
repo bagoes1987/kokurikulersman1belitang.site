@@ -42,6 +42,7 @@ function ensureProgressTable($pdo) {
     try {
         $pdo->exec($sql);
         $pdo->exec("ALTER TABLE `student_progress_eval` MODIFY COLUMN `status` VARCHAR(50) NOT NULL DEFAULT 'submitted'");
+        $pdo->exec("ALTER TABLE `student_progress_eval` MODIFY COLUMN `content` MEDIUMTEXT DEFAULT NULL");
     } catch (Exception $e) {}
 
     try {

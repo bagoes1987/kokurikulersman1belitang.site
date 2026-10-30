@@ -3462,7 +3462,26 @@
 
       const taskMap = (studentProgress && studentProgress.task_map) || {};
       const savedTask = taskMap[day.day_number + '_' + type];
-      const savedContent = savedTask ? (savedTask.content || '') : '';
+      let savedContent = savedTask ? (savedTask.content || '') : '';
+      if (typeof savedContent === 'object' && savedContent !== null) {
+        savedContent = savedContent.content || savedContent.text || savedContent.summary || '';
+      }
+      if (!savedContent) {
+        for (const id of getStudentStorageIdentifiers()) {
+          try {
+            const rawRefl = localStorage.getItem(`fincestem_refleksi_nft_day${day.day_number}_` + id) ||
+                            localStorage.getItem(`fincestem_refleksi_ft_day${day.day_number}_` + id) ||
+                            localStorage.getItem(`fincestem_refleksi_day${day.day_number}_` + id);
+            if (rawRefl) {
+              const pRefl = JSON.parse(rawRefl);
+              if (pRefl) {
+                savedContent = pRefl.content || pRefl.text || (typeof pRefl === 'string' ? pRefl : '');
+                if (savedContent) break;
+              }
+            }
+          } catch(e) {}
+        }
+      }
       const isTaskSubmitted = savedTask && (savedTask.status === 'submitted' || savedTask.status === 'completed');
       const isEffectivelyLocked = isReadOnly || (type === 'refleksi' && isTaskSubmitted);
       const readOnlyAttr = isEffectivelyLocked ? 'disabled' : '';
