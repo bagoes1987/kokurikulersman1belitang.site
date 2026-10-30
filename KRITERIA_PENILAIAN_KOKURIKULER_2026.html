@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kriteria Penilaian Kokurikuler FINCESTEM 2026</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm 8mm 10mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      color: #0f172a;
+      line-height: 1.25;
+      font-size: 8pt;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+    }
+    .page-sheet {
+      width: 100%;
+      height: 281mm;
+      max-height: 281mm;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      page-break-after: always;
+      padding-bottom: 2mm;
+    }
+    .page-sheet:last-child {
+      page-break-after: auto;
+    }
+
+    /* Modern Clean Header (Tanpa Kop Surat Tradisional) */
+    .modern-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #38bdf8, #0284c7);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13pt;
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+    .header-titles h1 {
+      margin: 0;
+      font-size: 10pt;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      color: #f8fafc;
+    }
+    .header-titles p {
+      margin: 1px 0 0 0;
+      font-size: 7.2pt;
+      color: #94a3b8;
+    }
+    .header-pill {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 7pt;
+      font-weight: 700;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Section Heading */
+    .section-banner {
+      background: #f1f5f9;
+      border-left: 4px solid #0284c7;
+      padding: 4px 8px;
+      border-radius: 0 6px 6px 0;
+      margin: 4px 0 3px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-banner h2 {
+      margin: 0;
+      font-size: 8.5pt;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .section-banner span {
+      font-size: 6.8pt;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    /* Grid Layouts */
+    .grid-2col {
+      display: flex;
+      gap: 8px;
+    }
+    .col-half {
+      width: 50%;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.2pt;
+      margin-bottom: 2px;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 3px 5px;
+      text-align: left;
+      vertical-align: middle;
+    }
+    th {
+      background-color: #f8fafc;
+      color: #0f172a;
+      font-weight: 800;
+      text-transform: uppercase;
+      font-size: 6.8pt;
+    }
+    tr:nth-child(even) td {
+      background-color: #fbfcfd;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 1px 4px;
+      border-radius: 4px;
+      font-weight: 800;
+      font-size: 6.8pt;
+    }
+    .badge-green { background: #dcfce7; color: #166534; border: 0.5px solid #86efac; }
+    .badge-yellow { background: #fef9c3; color: #854d0e; border: 0.5px solid #fde047; }
+    .badge-orange { background: #ffedd5; color: #9a3412; border: 0.5px solid #fdba74; }
+    .badge-red { background: #fee2e2; color: #991b1b; border: 0.5px solid #fca5a5; }
+
+    /* Callout Boxes */
+    .callout {
+      padding: 4px 7px;
+      border-radius: 5px;
+      font-size: 7.1pt;
+      line-height: 1.25;
+      margin: 2px 0;
+    }
+    .callout-info { background: #f0fdf4; border-left: 3px solid #16a34a; color: #14532d; }
+    .callout-warning { background: #fffbeb; border-left: 3px solid #f59e0b; color: #78350f; }
+    .callout-danger { background: #fef2f2; border-left: 3px solid #dc2626; color: #7f1d1d; }
+    .callout-dark { background: #0f172a; color: #f8fafc; border-radius: 6px; padding: 5px 8px; text-align: center; }
+
+    /* Predikat Rapor Cards */
+    .rapor-card {
+      border-radius: 6px;
+      padding: 6px 8px;
+      border: 1px solid;
+      margin-bottom: 4px;
+    }
+    .rapor-card-mahir {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-color: #f59e0b;
+    }
+    .rapor-card-cakap {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-color: #10b981;
+    }
+    .rapor-card-berkembang {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-color: #3b82f6;
+    }
+
+    .rapor-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
+    .rapor-title {
+      font-size: 8.5pt;
+      font-weight: 900;
+    }
+    .rapor-badge {
+      font-size: 7.2pt;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 12px;
+    }
+    .rapor-desc {
+      font-size: 7.1pt;
+      line-height: 1.25;
+      text-align: justify;
+      margin: 0;
+    }
+
+    /* Pilar 4 Boxes */
+    .pilar-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-top: 3px;
+    }
+    .pilar-box {
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      padding: 4px 6px;
+      font-size: 7pt;
+      line-height: 1.2;
+    }
+    .pilar-box strong {
+      display: block;
+      margin-bottom: 1px;
+      font-size: 7.2pt;
+    }
+
+    /* Footer Clean */
+    .footer-sheet {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 3px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 6.8pt;
+      color: #64748b;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HALAMAN 1: FIELD TRIP & NON-FIELD TRIP ==================== -->
+  <div class="page-sheet">
+    <div>
+      
+      <!-- Clean Header -->
+      <div class="modern-header">
+        <div class="header-left">
+          <div class="badge-icon">FC</div>
+          <div class="header-titles">
+            <h1>KRITERIA PENILAIAN KOKURIKULER FINCESTEM 2026</h1>
+            <p>Standar Operasional Penilaian Harian: Field Trip (Jawa) &amp; Non-Field Trip (OKU Timur)</p>
+          </div>
+        </div>
+        <div class="header-pill">Pedoman Guru &amp; Penilai</div>
+      </div>
+
+      <!-- BAGIAN 1: FIELD TRIP -->
+      <div class="section-banner" style="border-left-color: #059669;">
+        <h2 style="color: #064e3b;">1. Kriteria Penilaian Harian Field Trip (Studi Wisata Jawa)</h2>
+        <span style="color: #047857; font-weight: bold;">100% Berbasis Jam Pengumpulan Tugas (On-Time Submission)</span>
+      </div>
+
+      <p style="margin: 0 0 3px 0; font-size: 7.2pt; text-align: justify;">
+        Peserta Field Trip bergerak dalam <strong>rombongan armada bus sekolah</strong> dengan jadwal operasional objek wisata yang ketat (Semarang, Malang, Bromo, Yogyakarta). Oleh karena itu, penilaian harian dinilai <strong>murni dari ketepatan waktu pengumpulan tugas</strong>:
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 22%; text-align: center;">Jam Pengumpulan (WIB)</th>
+            <th style="width: 12%; text-align: center;">Nilai</th>
+            <th style="width: 18%; text-align: center;">Bintang</th>
+            <th style="width: 48%;">Status Lapangan &amp; Karakter Siswa</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="text-align: center; font-weight: bold;">07.00 – 16.00 WIB</td>
+            <td style="text-align: center;"><span class="badge badge-green">100 Poin</span></td>
+            <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐ (B5)</td>
+            <td><strong>Sangat Baik (Sempurna):</strong> Tuntas di lokasi objek sebelum rombongan bus bergeser.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; font-weight: bold;">16.01 – 21.00 WIB</td>
+            <td style="text-align: center;"><span class="badge badge-green">95 – 99 Poin</span></td>
+            <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐ (B5)</td>
+            <td><strong>Sangat Baik:</strong> Tuntas sore/petang di bus / Rest Area Trans-Jawa <em>(turun 1 poin per jam)</em>.</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; font-weight: bold;">21.01 – 24.00 WIB</td>
+            <td style="text-align: center;"><span class="badge badge-yellow">90 – 94 Poin</span></td>
+            <td style="text-align: center; font-weight: bold; color: #b45309;">⭐⭐⭐⭐☆ (B4)</td>
+            <td><strong>Baik:</strong> Tuntas malam hari saat tiba/istirahat di hotel rombongan (21-22: 94/93, 22-23: 92/91, 23-24: 90).</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; font-weight: bold;">&gt; 24.00 WIB / Besok</td>
+            <td style="text-align: center;"><span class="badge badge-orange">85 Poin</span></td>
+            <td style="text-align: center; font-weight: bold; color: #c2410c;">⭐⭐⭐⭐☆ (B4)</td>
+            <td><strong>Cukup:</strong> Pengumpulan terlambat pada keesokan harinya.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2col" style="margin-top: 2px;">
+        <div class="col-half">
+          <div class="callout callout-warning">
+            <strong>⚡ Koreksi Darurat Admin (Emergency Manual Override):</strong><br>
+            Jika terjadi kendala sinyal <em>blank-spot</em> seluler (seperti Laut Pasir Kaldera Bromo) atau siswa sakit, Admin/Koordinator berwenang memberikan nilai dispensasi manual yang otomatis tercatat dalam sistem audit.
+          </div>
+        </div>
+        <div class="col-half">
+          <div class="callout callout-info">
+            <strong>✓ Integritas Pengawasan (Bebas Pinalti Geotag):</strong><br>
+            Siswa Field Trip tidak dikenakan pinalti Google Tagging GPS karena aktivitas dan pergerakan fisik diawasi langsung oleh Guru Pendamping, Fasilitator Bus, dan Tour Leader.
+          </div>
+        </div>
+      </div>
+
+      <!-- BAGIAN 2: NON-FIELD TRIP -->
+      <div class="section-banner" style="border-left-color: #4f46e5; margin-top: 5px;">
+        <h2 style="color: #1e1b4b;">2. Kriteria Penilaian Harian Non-Field Trip (Riset OKU Timur)</h2>
+        <span style="color: #4338ca; font-weight: bold;">Komposit 4 Pilar (Modul 20%, LKPD 30%, Kuis 35%, Geotag 15%)</span>
+      </div>
+
+      <div class="callout-dark" style="margin-bottom: 3px;">
+        <span style="font-size: 7.2pt; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Rumus Resmi Nilai Akhir Harian (NA) Non-Field Trip:</span><br>
+        <span style="font-size: 8.8pt; font-weight: 900; color: #38bdf8;">NA = (20% × Waktu Modul) + (30% × LKPD) + (35% × Asesmen) + (15% × Geotag)</span>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Kolom Kiri: Parameter Modul Pagi -->
+        <div class="col-half">
+          <div style="font-weight: 800; font-size: 7.2pt; color: #1e1b4b; margin-bottom: 1px;">
+            A. Kedisiplinan Jam Pengisian Modul Pagi (Bobot 20%):
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="text-align: center; width: 45%;">Jam Submit Modul</th>
+                <th style="text-align: center; width: 25%;">Poin</th>
+                <th style="width: 30%;">Status Kedisiplinan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">07.00 – 09.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">100</span></td>
+                <td style="color: #166534; font-weight: bold;">Sangat Disiplin</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">09.01 – 12.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">88</span></td>
+                <td>Baik (Pagi Jelang Siang)</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">12.01 – 15.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-yellow">85</span></td>
+                <td>Cukup Disiplin (Siang)</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">15.01 – 16.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-yellow">80</span></td>
+                <td>Toleransi Sore 1</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">16.01 – 17.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-orange">70</span></td>
+                <td>Toleransi Sore 2</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">17.01 – 18.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-orange">60</span></td>
+                <td>Mepet Batas Akhir</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">&gt; 18.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-red">50</span></td>
+                <td style="color: #991b1b; font-weight: bold;">Terlambat</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Kolom Kanan: LKPD, Asesmen & Geotag -->
+        <div class="col-half">
+          <div style="font-weight: 800; font-size: 7.2pt; color: #1e1b4b; margin-bottom: 1px;">
+            B. Komponen Penilaian Lapangan &amp; Asesmen:
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 35%;">Komponen</th>
+                <th style="text-align: center; width: 20%;">Bobot</th>
+                <th style="width: 45%;">Indikator Mutu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: bold;">Kualitas LKPD</td>
+                <td style="text-align: center; font-weight: bold; color: #4338ca;">30%</td>
+                <td>Kelengkapan 6 kartu, wawancara orisinal, 9 observasi, 6 analisis HOTS (wajib ketik).</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Asesmen CBT</td>
+                <td style="text-align: center; font-weight: bold; color: #4338ca;">35%</td>
+                <td>Skor tes kognitif Bloom C1–C4 (50 butir soal objektif acak).</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Google Tagging</td>
+                <td style="text-align: center; font-weight: bold; color: #4338ca;">15%</td>
+                <td>Validitas koordinat GPS foto kamera di OKU Timur (Skor 100).</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout callout-danger" style="margin-top: 3px;">
+            <strong>⚠ Sanksi Pinalti Geotagging (Skor 30 &amp; Maksimal Bintang 1):</strong><br>
+            Foto galeri tanpa koordinat GPS, foto comot internet, atau foto di luar OKU Timur tanpa dispensasi resmi otomatis terkena <strong>Pinalti Skor Geotag = 30 dan Maksimal Peringkat Bintang 1 (⭐☆☆☆☆)</strong> karena tidak terbukti terjun observasi ke lapangan!
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Clean Footer Halaman 1 -->
+    <div class="footer-sheet">
+      <span>FINCESTEM 2026 • Panduan &amp; Kriteria Penilaian Kokurikuler</span>
+      <span>Halaman 1: Kriteria Harian Field Trip &amp; Non-Field Trip</span>
+      <span>Hal 1 / 2</span>
+    </div>
+  </div>
+
+
+  <!-- ==================== HALAMAN 2: PREDIKAT RAPOR & RUBRIK 4 PILAR ==================== -->
+  <div class="page-sheet">
+    <div>
+      
+      <!-- Clean Header Halaman 2 -->
+      <div class="modern-header" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #0f172a 100%);">
+        <div class="header-left">
+          <div class="badge-icon" style="background: linear-gradient(135deg, #fbbf24, #d97706); color: #78350f;">🏆</div>
+          <div class="header-titles">
+            <h1>STANDAR PREDIKAT &amp; AMBANG BATAS RAPOR KOKURIKULER</h1>
+            <p>Konversi Peringkat Bintang, Nilai Rata-Rata, Narasi Capaian Rapor Siswa &amp; Rubrik 4 Pilar</p>
+          </div>
+        </div>
+        <div class="header-pill" style="color: #fde047; border-color: rgba(253, 224, 71, 0.3);">Standar Resmi Rapor</div>
+      </div>
+
+      <!-- BAGIAN 3: PREDIKAT RAPOR -->
+      <div class="section-banner" style="border-left-color: #d97706;">
+        <h2 style="color: #92400e;">3. Ambang Batas Predikat Rapor Kokurikuler (Mahir, Cakap, Berkembang)</h2>
+        <span style="color: #b45309; font-weight: bold;">Akumulasi Day 1 – 7 (Maksimal 35 Bintang)</span>
+      </div>
+
+      <!-- KARTU 1: MAHIR -->
+      <div class="rapor-card rapor-card-mahir">
+        <div class="rapor-head">
+          <span class="rapor-title" style="color: #78350f;">🏆 1. PREDIKAT MAHIR</span>
+          <div>
+            <span class="rapor-badge" style="background: #fef08a; color: #854d0e; border: 1px solid #fde047; font-weight: 900;">30 – 35 ⭐ Bintang</span>
+            <span class="rapor-badge" style="background: #dcfce7; color: #166534; border: 1px solid #86efac; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: ≥ 85.0</span>
+          </div>
+        </div>
+        <p class="rapor-desc" style="color: #713f12;">
+          <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat. Dalam kreativitas, peserta didik mampu menghasilkan karya orisinal berbasis STEM yang mengangkat nilai dan filosofi budaya lokal, serta menyajikan hasil eksplorasi melalui video dokumenter dan infografis yang menarik, informatif, dan berkualitas. Dalam aspek kewargaan, peserta didik menunjukkan keteladanan dalam menghargai kearifan lokal, menjunjung toleransi, dan menginisiasi kegiatan pelestarian lingkungan. Dalam kemandirian, peserta didik menunjukkan tanggung jawab, disiplin dalam menyelesaikan tugas, integritas, serta pengelolaan keuangan yang jujur dan transparan.
+        </p>
+      </div>
+
+      <!-- KARTU 2: CAKAP -->
+      <div class="rapor-card rapor-card-cakap">
+        <div class="rapor-head">
+          <span class="rapor-title" style="color: #065f46;">🌟 2. PREDIKAT CAKAP</span>
+          <div>
+            <span class="rapor-badge" style="background: #a7f3d0; color: #064e3b; border: 1px solid #6ee7b7; font-weight: 900;">21 – 29 ⭐ Bintang</span>
+            <span class="rapor-badge" style="background: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: 70.0 – 84.9</span>
+          </div>
+        </div>
+        <p class="rapor-desc" style="color: #064e3b;">
+          <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri. Dalam kreativitas, peserta didik mampu menghasilkan karya berbasis STEM yang memadukan kearifan lokal serta menyajikan hasil eksplorasi melalui infografis atau video pendek yang informatif. Dalam aspek kewargaan, peserta didik mampu menghormati keberagaman budaya, menjaga etika dan kesopanan, serta berperan aktif dalam menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mampu mengatur waktu, bertanggung jawab atas barang bawaan, menyelesaikan tugas harian dengan disiplin, dan mengelola anggaran pribadi secara mandiri.
+        </p>
+      </div>
+
+      <!-- KARTU 3: BERKEMBANG -->
+      <div class="rapor-card rapor-card-berkembang">
+        <div class="rapor-head">
+          <span class="rapor-title" style="color: #1e40af;">🌱 3. PREDIKAT BERKEMBANG</span>
+          <div>
+            <span class="rapor-badge" style="background: #bfdbfe; color: #1e3a8a; border: 1px solid #93c5fd; font-weight: 900;">≤ 20 ⭐ Bintang</span>
+            <span class="rapor-badge" style="background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: &lt; 70.0</span>
+          </div>
+        </div>
+        <p class="rapor-desc" style="color: #1e3a8a;">
+          <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains dan mengevaluasi pembukuan keuangan. Dalam kreativitas, peserta didik mulai mengembangkan karya berbasis STEM dan mempraktikkan keterampilan budaya lokal, meskipun pembuatan video dan infografis masih memerlukan pendampingan. Dalam aspek kewargaan, peserta didik mulai mematuhi aturan dan menghargai nilai-nilai budaya setempat, tetapi masih perlu diingatkan untuk menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mulai belajar mengelola uang saku dan masih memerlukan dorongan untuk menyelesaikan serta mengumpulkan tugas harian tepat waktu.
+        </p>
+      </div>
+
+      <!-- BAGIAN 4: RUBRIK 4 PILAR -->
+      <div class="section-banner" style="border-left-color: #7c3aed; margin-top: 4px;">
+        <h2 style="color: #5b21b6;">4. Panduan Rubrik 4 Pilar FINCESTEM (Bobot Seimbang 25% Masing-Masing)</h2>
+        <span style="color: #6d28d9; font-weight: bold;">Fondasi Penilaian Karakter &amp; Portofolio</span>
+      </div>
+
+      <div class="pilar-grid">
+        <div class="pilar-box" style="background: #fffbeb; border-color: #fde68a;">
+          <strong style="color: #92400e;">1. Pilar Financial (Bobot 25%)</strong>
+          <span style="color: #78350f;">Pengelolaan kas saku pribadi, pembukuan neraca harian yang jujur &amp; transparan, kalkulasi efisiensi konsumsi, serta pemahaman struktur biaya produksi (HPP) komoditas lokal/umkm.</span>
+        </div>
+        <div class="pilar-box" style="background: #faf5ff; border-color: #e9d5ff;">
+          <strong style="color: #6b21a8;">2. Pilar Culture (Bobot 25%)</strong>
+          <span style="color: #581c87;">Apresiasi sejarah akulturasi &amp; kolonisasi, etika tata krama terhadap sesama &amp; narasumber, tradisi gotong royong sambatan, dan pelestarian warisan budaya nusantara.</span>
+        </div>
+        <div class="pilar-box" style="background: #f0fdf4; border-color: #bbf7d0;">
+          <strong style="color: #166534;">3. Pilar Exploration (Bobot 25%)</strong>
+          <span style="color: #14532d;">Ketangkasan navigasi geospasial lapangan, ketelitian observasi objek fisik/ekosistem, kedisiplinan jam pengumpulan, dan ketahanan fisik dalam menyelesaikan observasi mandiri.</span>
+        </div>
+        <div class="pilar-box" style="background: #eff6ff; border-color: #bfdbfe;">
+          <strong style="color: #1e40af;">4. Pilar STEM (Bobot 25%)</strong>
+          <span style="color: #1e3a8a;">Penerapan sains terapan (mekanika fisika, ekosistem biologi, irigasi tanah), integrasi rekayasa teknologi, pengolahan data matematis, dan logika pemecahan masalah objektif.</span>
+        </div>
+      </div>
+
+      <div class="callout callout-info" style="margin-top: 5px;">
+        <strong>Catatan Penggunaan Guru Fasilitator &amp; Koordinator:</strong> Seluruh perhitungan nilai harian dan akumulasi predikat rapor dihitung otomatis oleh sistem aplikasi FINCESTEM. Guru Fasilitator bertugas memantau kedisiplinan dan dapat memberikan catatan deskripsi penguatan karakter pada lembar rapor siswa.
+      </div>
+
+    </div>
+
+    <!-- Clean Footer Halaman 2 -->
+    <div class="footer-sheet">
+      <span>FINCESTEM 2026 • Panduan &amp; Kriteria Penilaian Kokurikuler</span>
+      <span>Halaman 2: Standar Ambang Batas Predikat Rapor &amp; Rubrik 4 Pilar</span>
+      <span>Hal 2 / 2</span>
+    </div>
+  </div>
+
+</body>
+</html>

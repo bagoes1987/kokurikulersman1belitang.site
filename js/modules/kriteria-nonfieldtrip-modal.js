@@ -1,251 +1,393 @@
 /**
- * FINCESTEM 2026 - Modal Pedoman & Kriteria Penilaian Harian
- * Mencakup: Non-Field Trip (OKU Timur) & Field Trip (Jawa)
- * Khusus Portal Administrator, Fasilitator & Koordinator
- * (DILARANG Ditampilkan di Portal Siswa)
+ * FINCESTEM 2026 - Modal Kriteria Penilaian Kokurikuler
+ * Menampilkan:
+ * 1. Field Trip (Jawa) - Konsep interaktif langsung di layar
+ * 2. Non - Field Trip (OKU Timur) - Konsep interaktif langsung di layar
+ * 3. Nilai Rapor - Mahir, Cakap, Berkembang beserta kriteria lengkapnya
+ * 4. Tombol Download PDF Kriteria Penilaian (2 Halaman Rapi tanpa Kop & tanpa TTD)
+ *
+ * KHUSUS: Portal Administrator, Fasilitator & Koordinator
+ * (DILARANG KERAS Ditampilkan di Portal Siswa!)
  */
 
 (function(window) {
   'use strict';
 
-  let currentActiveTab = 'nonft'; // 'nonft' | 'ft'
+  let currentActiveTab = 'ft'; // 'ft' | 'nonft' | 'rapor'
 
   function createModalDOM() {
-    let existing = document.getElementById('modalKriteriaPenilaian');
+    let existing = document.getElementById('modalKriteriaKokurikuler');
     if (existing) return existing;
 
     const modal = document.createElement('div');
-    modal.id = 'modalKriteriaPenilaian';
-    modal.className = 'fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5 transition-all duration-300 opacity-0 pointer-events-none';
+    modal.id = 'modalKriteriaKokurikuler';
+    modal.className = 'fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-5 transition-all duration-300 opacity-0 pointer-events-none';
     modal.innerHTML = `
-      <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[92vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-scale-up">
+      <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-scale-up">
         
         <!-- Header Modal -->
-        <div class="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between border-b border-indigo-800/60">
+        <div class="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between border-b border-indigo-800/60 shrink-0">
           <div class="flex items-center gap-3">
-            <div id="kriteriaHeaderIcon" class="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0">
+            <div id="kriteriaIconWrapper" class="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0">
               <span class="material-symbols-outlined text-2xl">fact_check</span>
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-400 text-amber-950">Pedoman Guru &amp; Fasil</span>
-                <span id="kriteriaHeaderSub" class="text-xs text-indigo-200">FINCESTEM Day 1 – 7</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-400 text-amber-950 tracking-wide uppercase">Pedoman Penilai</span>
+                <span id="kriteriaSubtitle" class="text-xs text-indigo-200 font-medium">FINCESTEM Day 1 – 7</span>
               </div>
-              <h3 id="kriteriaHeaderTitle" class="font-black text-base sm:text-lg text-white leading-tight mt-0.5">
-                Kriteria &amp; Pedoman Penilaian Harian
+              <h3 id="kriteriaMainTitle" class="font-black text-base sm:text-lg text-white leading-tight mt-0.5">
+                Kriteria Penilaian Kokurikuler
               </h3>
             </div>
           </div>
-          <button type="button" onclick="closeKriteriaModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer" title="Tutup">
-            <span class="material-symbols-outlined text-2xl">close</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <button type="button" onclick="downloadKriteriaKokurikulerPdf()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer" title="Download Versi PDF (2 Halaman Rapi)">
+              <span class="material-symbols-outlined text-base">download</span>
+              <span>Download PDF</span>
+            </button>
+            <button type="button" onclick="closeKriteriaKokurikulerModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer" title="Tutup">
+              <span class="material-symbols-outlined text-2xl">close</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Tab Navigation (Non-Field Trip vs Field Trip) -->
-        <div class="flex border-b border-slate-200 bg-slate-100/80 px-4 pt-2 gap-2 text-xs font-bold">
-          <button id="tabBtnKriteriaNonFT" type="button" onclick="switchKriteriaTab('nonft')" class="px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-2 cursor-pointer bg-white text-indigo-900 border-indigo-600 shadow-xs">
-            <span class="material-symbols-outlined text-base text-indigo-600">home_pin</span>
-            <span>Non-Field Trip (OKU Timur)</span>
-          </button>
-          <button id="tabBtnKriteriaFT" type="button" onclick="switchKriteriaTab('ft')" class="px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-2 cursor-pointer text-slate-600 hover:text-slate-900 border-transparent">
+        <!-- 3 Tab Navigation: Field Trip, Non-Field Trip, Nilai Rapor -->
+        <div class="flex border-b border-slate-200 bg-slate-100/90 px-3 sm:px-5 pt-2.5 gap-1.5 sm:gap-2 text-xs font-bold overflow-x-auto no-scrollbar shrink-0">
+          <button id="tabBtn_FT" type="button" onclick="switchKriteriaTab('ft')" class="px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer bg-white text-emerald-900 border-emerald-600 shadow-xs">
             <span class="material-symbols-outlined text-base text-emerald-600">directions_bus</span>
             <span>Field Trip (Jawa)</span>
           </button>
+          <button id="tabBtn_NonFT" type="button" onclick="switchKriteriaTab('nonft')" class="px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer text-slate-600 hover:text-slate-900 border-transparent">
+            <span class="material-symbols-outlined text-base text-indigo-600">home_pin</span>
+            <span>Non - Field Trip (OKU Timur)</span>
+          </button>
+          <button id="tabBtn_Rapor" type="button" onclick="switchKriteriaTab('rapor')" class="px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer text-slate-600 hover:text-slate-900 border-transparent">
+            <span class="material-symbols-outlined text-base text-amber-600">military_tech</span>
+            <span>Nilai Rapor (Mahir, Cakap, Berkembang)</span>
+          </button>
         </div>
 
-        <!-- Body Scrollable -->
+        <!-- Body Scrollable Content -->
         <div class="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed no-scrollbar flex-1">
           
-          <!-- KONTEN TAB 1: NON-FIELD TRIP -->
-          <div id="contentKriteriaNonFT" class="space-y-4">
+          <!-- ==================== TAB 1: FIELD TRIP ==================== -->
+          <div id="contentTab_FT" class="space-y-4">
             
-            <!-- Box Rumus Resmi Non-FT -->
-            <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-950 to-slate-900 text-white flex flex-col items-center text-center gap-1.5 shadow-md border border-indigo-800/40">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-300">Rumus Resmi Nilai Akhir Harian (NA) Non-Field Trip:</span>
-              <div class="font-mono text-sm sm:text-base font-black text-sky-300 bg-black/30 px-3 py-1.5 rounded-xl border border-sky-400/30 w-full text-center">
-                NA = (20% × Waktu Modul) + (30% × LKPD) + (35% × Asesmen) + (15% × Geotag)
+            <!-- Box Prinsip Field Trip -->
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-950 text-white flex flex-col items-center text-center gap-1.5 shadow-md border border-emerald-800/40">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-300">Konsep Penilaian Resmi Field Trip (Studi Wisata Jawa):</span>
+              <div class="font-mono text-sm sm:text-base font-black text-emerald-300 bg-black/40 px-4 py-2 rounded-xl border border-emerald-400/30 w-full text-center">
+                100% Murni Berbasis Jam Pengumpulan Tugas (On-Time Submission)
               </div>
-              <span class="text-[10.5px] text-slate-300">Akumulasi skala 0 – 100 otomatis dikonversikan ke peringkat Bintang 1 sampai Bintang 5.</span>
+              <span class="text-[11px] text-slate-300">
+                Siswa bergerak dalam rombongan armada bus sekolah dengan jadwal objek wisata yang ketat (Semarang, Malang, Bromo, Yogyakarta). Batas standar pengumpulan adalah pukul <strong>16.00 WIB</strong> (sebelum jam operasional objek wisata ditutup).
+              </span>
             </div>
 
-            <!-- Parameter Jam Pengisian Modul (Bobot 20%) -->
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+            <!-- Tabel Skema Jam Pengumpulan Field Trip -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2.5">
               <div class="flex items-center justify-between">
-                <span class="font-extrabold text-slate-900 flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-base text-indigo-600">schedule</span>
-                  <span>1. Parameter Jam Pengisian Modul Pagi (Bobot 20%):</span>
+                <span class="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs sm:text-sm">
+                  <span class="material-symbols-outlined text-base text-emerald-600">schedule</span>
+                  <span>Tabel Rentang Jam Pengumpulan &amp; Poin Nilai Harian:</span>
                 </span>
-                <span class="text-[10.5px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-200">Indikator Awal Siswa Bekerja</span>
+                <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-200">Batas Standar: 16.00 WIB</span>
               </div>
-              <p class="text-xs text-slate-600 leading-relaxed">
-                Sistem FINCESTEM membaca jam submit Modul Belajar (5 Kartu Riset Mandiri) secara otomatis per detik:
-              </p>
               <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr class="bg-slate-200/70 text-slate-800 font-bold">
-                      <th class="p-2 border border-slate-300 text-center">Rentang Jam Submit</th>
-                      <th class="p-2 border border-slate-300 text-center">Poin</th>
-                      <th class="p-2 border border-slate-300">Status Kedisiplinan</th>
+                    <tr class="bg-slate-200/80 text-slate-800 font-bold">
+                      <th class="p-2 border border-slate-300 text-center">Jam Pengumpulan</th>
+                      <th class="p-2 border border-slate-300 text-center">Nilai</th>
+                      <th class="p-2 border border-slate-300 text-center">Peringkat Bintang</th>
+                      <th class="p-2 border border-slate-300">Status &amp; Keterangan Lapangan</th>
                     </tr>
                   </thead>
                   <tbody class="divide-y divide-slate-200">
-                    <tr class="bg-emerald-50/50">
-                      <td class="p-2 border border-slate-300 text-center font-bold">07.00 – 09.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-black text-emerald-700">100</td>
-                      <td class="p-2 border border-slate-300 font-semibold text-emerald-800">Sangat Disiplin (Pagi Penuh)</td>
+                    <tr class="bg-emerald-50/60">
+                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-950">07.00 – 16.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-black text-emerald-700 text-sm">100</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-800">⭐⭐⭐⭐⭐ (B5)</td>
+                      <td class="p-2 border border-slate-300 font-semibold text-emerald-900">
+                        <strong>Sangat Baik (Sempurna):</strong> Tugas tuntas langsung di lokasi objek riset sebelum jam kunjungan selesai / bus bergeser.
+                      </td>
                     </tr>
                     <tr>
-                      <td class="p-2 border border-slate-300 text-center font-bold">09.01 – 12.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-600">88</td>
-                      <td class="p-2 border border-slate-300 font-semibold text-emerald-700">Baik (Menjelang Siang)</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-slate-800">16.01 – 21.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-600">95 – 99</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-700">⭐⭐⭐⭐⭐ (B5)</td>
+                      <td class="p-2 border border-slate-300 text-slate-700">
+                        <strong>Sangat Baik:</strong> Tuntas sore/petang selama perjalanan bus menuju hotel atau singgah di Rest Area tol Trans-Jawa <em>(skor berkurang 1 poin per jam keterlambatan)</em>.
+                      </td>
                     </tr>
                     <tr>
-                      <td class="p-2 border border-slate-300 text-center font-bold">12.01 – 15.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-amber-600">85</td>
-                      <td class="p-2 border border-slate-300 font-semibold text-amber-800">Cukup Disiplin (Siang Hari)</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-slate-800">21.01 – 24.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-amber-600">90 – 94</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-amber-700">⭐⭐⭐⭐☆ (B4)</td>
+                      <td class="p-2 border border-slate-300 text-slate-700">
+                        <strong>Baik:</strong> Tuntas malam hari saat tiba dan istirahat di hotel rombongan (21–22: 94/93, 22–23: 92/91, 23–24: 90).
+                      </td>
                     </tr>
-                    <tr>
-                      <td class="p-2 border border-slate-300 text-center font-bold">15.01 – 16.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-amber-600">80</td>
-                      <td class="p-2 border border-slate-300 text-slate-700">Toleransi Sore 1 (Mulai Terlambat)</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 border border-slate-300 text-center font-bold">16.01 – 17.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-orange-600">70</td>
-                      <td class="p-2 border border-slate-300 text-slate-700">Toleransi Sore 2 (Waktu Observasi Sedikit)</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 border border-slate-300 text-center font-bold">17.01 – 18.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-orange-600">60</td>
-                      <td class="p-2 border border-slate-300 text-slate-700">Mepet Batas Akhir Jam Riset</td>
-                    </tr>
-                    <tr class="bg-rose-50/50">
-                      <td class="p-2 border border-slate-300 text-center font-bold text-rose-700">&gt; 18.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-black text-rose-700">50</td>
-                      <td class="p-2 border border-slate-300 font-semibold text-rose-800">Terlambat (Lewat Jam Riset Resmi)</td>
+                    <tr class="bg-orange-50/50">
+                      <td class="p-2 border border-slate-300 text-center font-bold text-orange-900">&gt; 24.00 WIB / Besok</td>
+                      <td class="p-2 border border-slate-300 text-center font-black text-orange-700 text-sm">85</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-orange-700">⭐⭐⭐⭐☆ (B4)</td>
+                      <td class="p-2 border border-slate-300 font-semibold text-orange-800">
+                        <strong>Cukup:</strong> Pengumpulan terlambat pada keesokan harinya sebelum kegiatan berikutnya dimulai.
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
 
-            <!-- Matriks 4 Komponen & Bobot -->
+            <!-- Fitur Khusus: Koreksi Darurat Admin & Bebas Pinalti Geotag -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div class="p-3.5 rounded-2xl bg-indigo-50/60 border border-indigo-200/80 flex flex-col gap-1">
-                <span class="font-extrabold text-indigo-950 text-xs flex items-center justify-between">
-                  <span>Kualitas LKPD Lapangan</span>
-                  <span class="px-2 py-0.5 rounded-full bg-indigo-200 text-indigo-900 font-black text-[10px]">Bobot 30%</span>
+              <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-300 flex flex-col gap-1.5">
+                <span class="font-extrabold text-amber-950 text-xs flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-amber-600">bolt</span>
+                  <span>Koreksi Darurat Admin (Emergency Manual Override)</span>
                 </span>
-                <p class="text-[11.5px] text-slate-600 leading-snug">
-                  Dinilai dari kelengkapan 6 kartu, catatan orisinal wawancara narasumber, 9 observasi lapangan nyata, dan 6 analisis kritis HOTS (wajib ketik mandiri).
+                <p class="text-[11.5px] text-slate-700 leading-snug">
+                  Jika terjadi kendala sinyal <em>blank-spot</em> seluler (seperti di Laut Pasir Kaldera Gunung Bromo atau perbukitan) atau siswa mengalami sakit selama perjalanan, Admin/Koordinator memiliki hak memberikan dispensasi nilai manual dengan alasan resmi yang tercatat di sistem audit.
                 </p>
               </div>
-              <div class="p-3.5 rounded-2xl bg-teal-50/60 border border-teal-200/80 flex flex-col gap-1">
-                <span class="font-extrabold text-teal-950 text-xs flex items-center justify-between">
-                  <span>Skor Kuis Asesmen CBT</span>
-                  <span class="px-2 py-0.5 rounded-full bg-teal-200 text-teal-900 font-black text-[10px]">Bobot 35%</span>
+              <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-300 flex flex-col gap-1.5">
+                <span class="font-extrabold text-emerald-950 text-xs flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base text-emerald-600">verified</span>
+                  <span>Integritas Lapangan (Bebas Pinalti Geotag)</span>
                 </span>
-                <p class="text-[11.5px] text-slate-600 leading-snug">
-                  Nilai murni hasil tes kuis objektif kognitif Bloom C1–C4 (50 butir soal teracak acak per siswa dari Bank Soal 200).
+                <p class="text-[11.5px] text-slate-700 leading-snug">
+                  Siswa Field Trip <strong>tidak dikenakan pinalti Google Tagging GPS</strong> karena seluruh pergerakan fisik siswa dipantau langsung oleh Guru Pendamping, Fasilitator Armada Bus, dan Tour Leader resmi sekolah.
                 </p>
               </div>
             </div>
 
-            <!-- Aturan Google Tagging GPS & Sanksi Pinalti -->
-            <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-300 flex flex-col gap-2">
+            <!-- Rute Riset Day 1 - 7 -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 text-xs">
+              <span class="font-extrabold text-slate-800 flex items-center gap-1">
+                <span class="material-symbols-outlined text-base text-teal-600">route</span>
+                <span>Destinasi &amp; Objek Riset Field Trip Day 1 – 7:</span>
+              </span>
+              <p class="text-[11.5px] text-slate-600 leading-relaxed">
+                Day 1 (Bandara &amp; Budgeting) • Day 2 (Kota Lama &amp; Lawang Sewu) • Day 3 (JTP 1 Sains Terapan &amp; Museum) • Day 4 (Vulkanologi &amp; Ekosistem Bromo) • Day 5 (Arkeologi Prambanan &amp; Batik) • Day 6 (Malioboro &amp; Industri Bakpia) • Day 7 (Evaluasi Portofolio Kepulangan).
+              </p>
+            </div>
+
+          </div>
+
+          <!-- ==================== TAB 2: NON - FIELD TRIP ==================== -->
+          <div id="contentTab_NonFT" class="space-y-4 hidden">
+            
+            <!-- Box Rumus Non-Field Trip -->
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950 text-white flex flex-col items-center text-center gap-1.5 shadow-md border border-indigo-800/40">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-indigo-300">Rumus Resmi Nilai Akhir Harian (NA) Non-Field Trip:</span>
+              <div class="font-mono text-sm sm:text-base font-black text-sky-300 bg-black/40 px-4 py-2 rounded-xl border border-sky-400/30 w-full text-center">
+                NA = (20% × Waktu Modul) + (30% × LKPD) + (35% × Asesmen) + (15% × Geotag)
+              </div>
+              <span class="text-[11px] text-slate-300">
+                Akumulasi komposit 4 pilar skala 0 – 100 otomatis dikonversikan oleh sistem menjadi peringkat Bintang 1 hingga Bintang 5 harian.
+              </span>
+            </div>
+
+            <!-- Parameter Jam Pengisian Modul Pagi (Bobot 20%) -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-slate-900 flex items-center gap-1.5 text-xs sm:text-sm">
+                  <span class="material-symbols-outlined text-base text-indigo-600">schedule</span>
+                  <span>1. Parameter Jam Pengisian Modul Pagi (Bobot 20%):</span>
+                </span>
+                <span class="text-[10px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-md border border-indigo-200">Indikator Awal Siswa Bekerja</span>
+              </div>
+              <p class="text-xs text-slate-600 leading-relaxed">
+                Pengisian <strong>Modul Belajar (5 Kartu Riset Mandiri)</strong> wajib dituntaskan di pagi hari sebagai bukti awal keaktifan siswa sebelum turun ke lapangan OKU Timur:
+              </p>
+              <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead>
+                    <tr class="bg-slate-200/80 text-slate-800 font-bold">
+                      <th class="p-2 border border-slate-300 text-center">Rentang Jam Submit Modul</th>
+                      <th class="p-2 border border-slate-300 text-center">Poin Waktu</th>
+                      <th class="p-2 border border-slate-300">Status Kedisiplinan Kerja</th>
+                    </tr>
+                  </thead>
+                  <tbody class="divide-y divide-slate-200">
+                    <tr class="bg-emerald-50/60">
+                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-950">07.00 – 09.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-black text-emerald-700 text-sm">100</td>
+                      <td class="p-2 border border-slate-300 font-semibold text-emerald-900">Sangat Disiplin (Pagi Penuh, langsung siap observasi)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-slate-800">09.01 – 12.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-600">88</td>
+                      <td class="p-2 border border-slate-300 text-slate-700">Baik (Pagi menjelang siang, ritme belajar tertib)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-slate-800">12.01 – 15.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-amber-600">85</td>
+                      <td class="p-2 border border-slate-300 text-slate-700">Cukup Disiplin (Siang hari, waktu lapangan mulai berkurang)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-slate-800">15.01 – 16.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-amber-600">80</td>
+                      <td class="p-2 border border-slate-300 text-slate-700">Toleransi Sore 1 (Mulai terlambat turun ke lapangan)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-slate-800">16.01 – 17.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-orange-600">70</td>
+                      <td class="p-2 border border-slate-300 text-slate-700">Toleransi Sore 2 (Waktu observasi dan wawancara sempit)</td>
+                    </tr>
+                    <tr>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-slate-800">17.01 – 18.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-bold text-orange-600">60</td>
+                      <td class="p-2 border border-slate-300 text-slate-700">Mepet Batas Akhir Jam Riset Resmi</td>
+                    </tr>
+                    <tr class="bg-rose-50/60">
+                      <td class="p-2 border border-slate-300 text-center font-bold text-rose-900">&gt; 18.00 WIB</td>
+                      <td class="p-2 border border-slate-300 text-center font-black text-rose-700 text-sm">50</td>
+                      <td class="p-2 border border-slate-300 font-semibold text-rose-900">Terlambat (Melewati batas resmi kegiatan lapangan harian)</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Matriks Komposisi LKPD & Asesmen -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200/80 flex flex-col gap-1">
+                <span class="font-extrabold text-indigo-950 text-xs flex items-center justify-between">
+                  <span>2. Kualitas LKPD Lapangan</span>
+                  <span class="px-2 py-0.5 rounded-full bg-indigo-200 text-indigo-900 font-black text-[10px]">Bobot 30%</span>
+                </span>
+                <p class="text-[11.5px] text-slate-600 leading-snug">
+                  Dinilai dari kelengkapan 6 kartu: identitas sektor, wawancara narasumber orisinal, 9 observasi lapangan nyata, dan 6 analisis kritis HOTS (wajib ketik mandiri, bukan klik-klik instan).
+                </p>
+              </div>
+              <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200/80 flex flex-col gap-1">
+                <span class="font-extrabold text-teal-950 text-xs flex items-center justify-between">
+                  <span>3. Skor Kuis Asesmen CBT</span>
+                  <span class="px-2 py-0.5 rounded-full bg-teal-200 text-teal-900 font-black text-[10px]">Bobot 35%</span>
+                </span>
+                <p class="text-[11.5px] text-slate-600 leading-snug">
+                  Nilai tes objektif kognitif Bloom C1–C4 (50 butir soal acak terstandar per siswa dari Bank Soal 200 soal harian).
+                </p>
+              </div>
+            </div>
+
+            <!-- Validasi Google Tagging GPS & Sanksi Keras -->
+            <div class="p-4 rounded-2xl bg-amber-50/90 border border-amber-300 flex flex-col gap-2">
               <span class="font-extrabold text-amber-950 text-xs flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-base text-amber-600">location_on</span>
-                <span>Integritas Google Tagging GPS (Bobot 15% &amp; Gatekeeper Lapangan):</span>
+                <span>4. Integritas Google Tagging GPS (Bobot 15% &amp; Gatekeeper Lapangan):</span>
               </span>
-              <ul class="text-[11.5px] text-slate-700 space-y-1 font-medium list-disc list-inside">
-                <li><strong>Foto Kamera Valid OKU Timur (Skor 100):</strong> Foto wajib diambil langsung kamera HP dengan GPS berada di wilayah OKU Timur.</li>
-                <li><strong class="text-rose-700">Sanksi Pinalti Foto Galeri / Tanpa GPS (Skor 30 / Maksimal Bintang 1):</strong> Foto galeri tanpa GPS, foto internet, atau di luar OKU Timur tanpa izin dispensasi resmi otomatis terkena Pinalti Geotag = 30 dan <strong>Maksimal Bintang 1 (⭐☆☆☆☆)</strong> karena tidak terbukti terjun ke lapangan!</li>
+              <ul class="text-[11.5px] text-slate-700 space-y-1.5 font-medium list-disc list-inside">
+                <li><strong>Foto Kamera Valid OKU Timur (Skor 100):</strong> Foto wajib diambil langsung kamera aplikasi dengan koordinat GPS valid di wilayah OKU Timur (atau izin dispensasi domisili resmi Admin).</li>
+                <li><strong class="text-rose-700">Sanksi Pinalti Foto Galeri / Tanpa GPS (Skor 30 &amp; Maksimal Bintang 1):</strong> Siswa yang mengunggah foto galeri tanpa GPS, foto internet, atau di luar OKU Timur tanpa dispensasi otomatis terkena Pinalti Geotag = 30 dan <strong>Maksimal Bintang 1 (⭐☆☆☆☆)</strong> karena tidak terbukti melakukan riset nyata di lapangan!</li>
               </ul>
             </div>
 
           </div>
 
-          <!-- KONTEN TAB 2: FIELD TRIP -->
-          <div id="contentKriteriaFT" class="space-y-4 hidden">
+          <!-- ==================== TAB 3: NILAI RAPOR ==================== -->
+          <div id="contentTab_Rapor" class="space-y-4 hidden">
             
-            <!-- Box Filosofi FT -->
-            <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-950 to-slate-900 text-white flex flex-col items-center text-center gap-1.5 shadow-md border border-emerald-800/40">
-              <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-300">Prinsip Resmi Penilaian Harian Field Trip (Jawa):</span>
-              <div class="font-mono text-sm sm:text-base font-black text-emerald-300 bg-black/30 px-3 py-1.5 rounded-xl border border-emerald-400/30 w-full text-center">
-                Nilai Harian FT = 100% Berbasis Jam Pengumpulan (On-Time Submission)
+            <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between">
+              <div>
+                <span class="font-black text-xs sm:text-sm text-amber-950">Standar Resmi Ambang Batas Predikat Rapor FINCESTEM</span>
+                <p class="text-[11px] text-amber-900/80">Kalkulasi kumulatif Day 1 hingga Day 7 (Maksimal Akumulasi 35 ⭐ Bintang)</p>
               </div>
-              <span class="text-[10.5px] text-slate-300">Karena siswa berada dalam rombongan armada bus sekolah dengan jadwal objek wisata yang ketat.</span>
+              <span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-200 text-amber-950 border border-amber-300">
+                Akumulasi 7 Hari
+              </span>
             </div>
 
-            <!-- Tabel Skema Jam Field Trip -->
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2">
-              <div class="flex items-center justify-between">
-                <span class="font-extrabold text-slate-900 flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-base text-emerald-600">schedule</span>
-                  <span>Skema Penilaian Jam Submit Field Trip (js/core.js):</span>
-                </span>
-                <span class="text-[10.5px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">Batas Standar: 16.00 WIB</span>
+            <!-- KARTU 1: MAHIR -->
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-amber-50/90 via-amber-100/50 to-amber-50/80 border-2 border-amber-300 flex flex-col gap-2 shadow-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5 border-b border-amber-200">
+                <div class="flex items-center gap-2">
+                  <span class="text-base sm:text-lg">🏆</span>
+                  <span class="font-black text-sm sm:text-base text-amber-950">PREDIKAT MAHIR</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-amber-200 text-amber-950 border border-amber-300">
+                    30 – 35 ⭐ Bintang
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+                    Nilai Rata-rata: ≥ 85.0
+                  </span>
+                </div>
               </div>
-              <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs border-collapse">
-                  <thead>
-                    <tr class="bg-slate-200/70 text-slate-800 font-bold">
-                      <th class="p-2 border border-slate-300 text-center">Jam Submit</th>
-                      <th class="p-2 border border-slate-300 text-center">Nilai</th>
-                      <th class="p-2 border border-slate-300 text-center">Bintang</th>
-                      <th class="p-2 border border-slate-300">Keterangan Aktivitas Siswa</th>
-                    </tr>
-                  </thead>
-                  <tbody class="divide-y divide-slate-200">
-                    <tr class="bg-emerald-50/50">
-                      <td class="p-2 border border-slate-300 text-center font-bold">07.00 – 16.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-black text-emerald-700">100</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-800">⭐⭐⭐⭐⭐ (B5)</td>
-                      <td class="p-2 border border-slate-300 font-semibold text-emerald-800">Tuntas di lokasi sebelum jam kunjungan objek ditutup.</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 border border-slate-300 text-center font-bold">16.01 – 21.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-600">95 – 99</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-emerald-700">⭐⭐⭐⭐⭐ (B5)</td>
-                      <td class="p-2 border border-slate-300 text-slate-700">Tuntas di bus/rest area (turun 1 poin per jam keterlambatan).</td>
-                    </tr>
-                    <tr>
-                      <td class="p-2 border border-slate-300 text-center font-bold">21.01 – 24.00 WIB</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-amber-600">90 – 94</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-amber-700">⭐⭐⭐⭐☆ (B4)</td>
-                      <td class="p-2 border border-slate-300 text-slate-700">Tuntas malam hari saat tiba di hotel/penginapan rombongan.</td>
-                    </tr>
-                    <tr class="bg-orange-50/50">
-                      <td class="p-2 border border-slate-300 text-center font-bold">&gt; 24.00 WIB / Besok</td>
-                      <td class="p-2 border border-slate-300 text-center font-black text-orange-700">85</td>
-                      <td class="p-2 border border-slate-300 text-center font-bold text-orange-700">⭐⭐⭐⭐☆ (B4)</td>
-                      <td class="p-2 border border-slate-300 font-semibold text-orange-800">Pengumpulan terlambat pada keesokan harinya.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <p class="text-xs sm:text-[12.5px] text-amber-950 leading-relaxed text-justify mt-1">
+                <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat. Dalam kreativitas, peserta didik mampu menghasilkan karya orisinal berbasis STEM yang mengangkat nilai dan filosofi budaya lokal, serta menyajikan hasil eksplorasi melalui video dokumenter dan infografis yang menarik, informatif, dan berkualitas. Dalam aspek kewargaan, peserta didik menunjukkan keteladanan dalam menghargai kearifan lokal, menjunjung toleransi, dan menginisiasi kegiatan pelestarian lingkungan. Dalam kemandirian, peserta didik menunjukkan tanggung jawab, disiplin dalam menyelesaikan tugas, integritas, serta pengelolaan keuangan yang jujur dan transparan.
+              </p>
             </div>
 
-            <!-- Fitur Darurat Admin & Integritas Lapangan -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-300 flex flex-col gap-1">
-                <span class="font-extrabold text-amber-950 text-xs flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-base text-amber-600">bolt</span>
-                  <span>Koreksi Darurat Admin (Override)</span>
-                </span>
-                <p class="text-[11.5px] text-slate-700 leading-snug">
-                  Jika terjadi kendala sinyal blank-spot (misal Kaldera Bromo) atau siswa sakit, Admin/Koordinator berhak melakukan override nilai manual dengan catatan alasan resmi.
-                </p>
+            <!-- KARTU 2: CAKAP -->
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-emerald-50/90 via-emerald-100/50 to-emerald-50/80 border-2 border-emerald-300 flex flex-col gap-2 shadow-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5 border-b border-emerald-200">
+                <div class="flex items-center gap-2">
+                  <span class="text-base sm:text-lg">🌟</span>
+                  <span class="font-black text-sm sm:text-base text-emerald-950">PREDIKAT CAKAP</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-emerald-200 text-emerald-950 border border-emerald-300">
+                    21 – 29 ⭐ Bintang
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-sky-100 text-sky-900 border border-sky-300">
+                    Nilai Rata-rata: 70.0 – 84.9
+                  </span>
+                </div>
               </div>
-              <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-300 flex flex-col gap-1">
-                <span class="font-extrabold text-emerald-950 text-xs flex items-center gap-1.5">
-                  <span class="material-symbols-outlined text-base text-emerald-600">verified</span>
-                  <span>Bebas Pinalti Geotag</span>
-                </span>
-                <p class="text-[11.5px] text-slate-700 leading-snug">
-                  Siswa Field Trip tidak dikenakan pinalti Google Tagging karena seluruh pergerakan berada dalam pengawasan fisik guru pendamping dan tour leader.
-                </p>
+              <p class="text-xs sm:text-[12.5px] text-emerald-950 leading-relaxed text-justify mt-1">
+                <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri. Dalam kreativitas, peserta didik mampu menghasilkan karya berbasis STEM yang memadukan kearifan lokal serta menyajikan hasil eksplorasi melalui infografis atau video pendek yang informatif. Dalam aspek kewargaan, peserta didik mampu menghormati keberagaman budaya, menjaga etika dan kesopanan, serta berperan aktif dalam menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mampu mengatur waktu, bertanggung jawab atas barang bawaan, menyelesaikan tugas harian dengan disiplin, dan mengelola anggaran pribadi secara mandiri.
+              </p>
+            </div>
+
+            <!-- KARTU 3: BERKEMBANG -->
+            <div class="p-4 rounded-2xl bg-gradient-to-br from-blue-50/90 via-blue-100/50 to-blue-50/80 border-2 border-blue-300 flex flex-col gap-2 shadow-xs">
+              <div class="flex flex-wrap items-center justify-between gap-2 pb-1.5 border-b border-blue-200">
+                <div class="flex items-center gap-2">
+                  <span class="text-base sm:text-lg">🌱</span>
+                  <span class="font-black text-sm sm:text-base text-blue-950">PREDIKAT BERKEMBANG</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-blue-200 text-blue-950 border border-blue-300">
+                    ≤ 20 ⭐ Bintang
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-xs font-black bg-rose-100 text-rose-900 border border-rose-300">
+                    Nilai Rata-rata: &lt; 70.0
+                  </span>
+                </div>
+              </div>
+              <p class="text-xs sm:text-[12.5px] text-blue-950 leading-relaxed text-justify mt-1">
+                <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains dan mengevaluasi pembukuan keuangan. Dalam kreativitas, peserta didik mulai mengembangkan karya berbasis STEM dan mempraktikkan keterampilan budaya lokal, meskipun pembuatan video dan infografis masih memerlukan pendampingan. Dalam aspek kewargaan, peserta didik mulai mematuhi aturan dan menghargai nilai-nilai budaya setempat, tetapi masih perlu diingatkan untuk menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mulai belajar mengelola uang saku dan masih memerlukan dorongan untuk menyelesaikan serta mengumpulkan tugas harian tepat waktu.
+              </p>
+            </div>
+
+            <!-- Rubrik 4 Pilar Seimbang 25% -->
+            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2.5">
+              <span class="font-extrabold text-slate-900 text-xs sm:text-sm flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base text-indigo-600">balance</span>
+                <span>Panduan Rubrik 4 Pilar FINCESTEM (Bobot Seimbang 25% Masing-Masing):</span>
+              </span>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex flex-col gap-1">
+                  <span class="font-extrabold text-amber-900">1. Pilar Financial (Bobot 25%)</span>
+                  <span class="text-[11px] text-slate-600 leading-snug">Pengelolaan kas saku pribadi, pembukuan neraca harian jujur &amp; transparan, kalkulasi efisiensi, dan pemahaman struktur biaya (HPP).</span>
+                </div>
+                <div class="p-3 rounded-xl bg-purple-500/10 border border-purple-500/20 flex flex-col gap-1">
+                  <span class="font-extrabold text-purple-900">2. Pilar Culture (Bobot 25%)</span>
+                  <span class="text-[11px] text-slate-600 leading-snug">Apresiasi sejarah akulturasi, tata krama etika terhadap warga/narasumber, tradisi gotong royong sambatan, dan pelestarian budaya nusantara.</span>
+                </div>
+                <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex flex-col gap-1">
+                  <span class="font-extrabold text-emerald-900">3. Pilar Exploration (Bobot 25%)</span>
+                  <span class="text-[11px] text-slate-600 leading-snug">Ketangkasan navigasi lapangan, observasi objek fisik/ekosistem, kedisiplinan pengumpulan, dan ketahanan fisik dalam riset mandiri.</span>
+                </div>
+                <div class="p-3 rounded-xl bg-blue-500/10 border border-blue-500/20 flex flex-col gap-1">
+                  <span class="font-extrabold text-blue-900">4. Pilar STEM (Bobot 25%)</span>
+                  <span class="text-[11px] text-slate-600 leading-snug">Penerapan mekanika fisika, ekosistem biologi, rekayasa teknologi, pengolahan data numerik, dan pemecahan masalah ilmiah secara objektif.</span>
+                </div>
               </div>
             </div>
 
@@ -254,22 +396,16 @@
         </div>
 
         <!-- Footer Modal Aksi -->
-        <div class="p-4 sm:p-5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
+        <div class="p-4 sm:p-5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
           <div class="text-[11px] text-slate-500 font-medium text-center sm:text-left">
-            <span id="kriteriaFooterNote">Tersedia dokumen resmi standar cetak A4 (1 lembar).</span>
+            <span>Tersedia dokumen resmi format ringkas 2 halaman tanpa kop &amp; tanpa tanda tangan.</span>
           </div>
           <div class="flex items-center gap-2 w-full sm:w-auto">
-            <!-- Tombol Buka PDF Non-FT -->
-            <button id="btnOpenPdfNonFT" type="button" onclick="openKriteriaNonFTPdf()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-700 hover:bg-indigo-800 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">picture_as_pdf</span>
-              <span>Buka PDF Non-Field Trip (1 Lembar)</span>
+            <button type="button" onclick="downloadKriteriaKokurikulerPdf()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-700 hover:bg-indigo-800 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">download</span>
+              <span>Download PDF Kriteria Penilaian</span>
             </button>
-            <!-- Tombol Buka PDF FT -->
-            <button id="btnOpenPdfFT" type="button" onclick="openKriteriaFTPdf()" class="hidden flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">picture_as_pdf</span>
-              <span>Buka PDF Field Trip (1 Lembar)</span>
-            </button>
-            <button type="button" onclick="closeKriteriaModal()" class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition-all cursor-pointer">
+            <button type="button" onclick="closeKriteriaKokurikulerModal()" class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition-all cursor-pointer">
               <span>Tutup</span>
             </button>
           </div>
@@ -284,92 +420,75 @@
 
   window.switchKriteriaTab = function(tab) {
     currentActiveTab = tab;
-    const tabNonFT = document.getElementById('tabBtnKriteriaNonFT');
-    const tabFT = document.getElementById('tabBtnKriteriaFT');
-    const contentNonFT = document.getElementById('contentKriteriaNonFT');
-    const contentFT = document.getElementById('contentKriteriaFT');
-    const btnPdfNonFT = document.getElementById('btnOpenPdfNonFT');
-    const btnPdfFT = document.getElementById('btnOpenPdfFT');
-    const headerTitle = document.getElementById('kriteriaHeaderTitle');
-    const headerSub = document.getElementById('kriteriaHeaderSub');
-    const headerIcon = document.getElementById('kriteriaHeaderIcon');
+    const tabFT = document.getElementById('tabBtn_FT');
+    const tabNonFT = document.getElementById('tabBtn_NonFT');
+    const tabRapor = document.getElementById('tabBtn_Rapor');
 
-    if (tab === 'ft') {
-      // Aktifkan Tab FT
-      if (tabNonFT) {
-        tabNonFT.className = 'px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-2 cursor-pointer text-slate-600 hover:text-slate-900 border-transparent';
-      }
-      if (tabFT) {
-        tabFT.className = 'px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-2 cursor-pointer bg-white text-emerald-900 border-emerald-600 shadow-xs';
-      }
-      if (contentNonFT) contentNonFT.classList.add('hidden');
-      if (contentFT) contentFT.classList.remove('hidden');
-      if (btnPdfNonFT) btnPdfNonFT.classList.add('hidden');
-      if (btnPdfFT) btnPdfFT.classList.remove('hidden');
+    const contentFT = document.getElementById('contentTab_FT');
+    const contentNonFT = document.getElementById('contentTab_NonFT');
+    const contentRapor = document.getElementById('contentTab_Rapor');
 
-      if (headerTitle) headerTitle.textContent = 'Kriteria Penilaian Harian Field Trip';
-      if (headerSub) headerSub.textContent = 'Studi Wisata Jawa (Day 1 – 7)';
-      if (headerIcon) {
-        headerIcon.className = 'w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 flex items-center justify-center shrink-0';
-      }
-    } else {
-      // Aktifkan Tab Non-FT
-      if (tabNonFT) {
-        tabNonFT.className = 'px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-2 cursor-pointer bg-white text-indigo-900 border-indigo-600 shadow-xs';
-      }
-      if (tabFT) {
-        tabFT.className = 'px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-2 cursor-pointer text-slate-600 hover:text-slate-900 border-transparent';
-      }
+    const headerSub = document.getElementById('kriteriaSubtitle');
+    const iconWrapper = document.getElementById('kriteriaIconWrapper');
+
+    // Reset styles
+    const inactiveClass = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer text-slate-600 hover:text-slate-900 border-transparent';
+    if (tabFT) tabFT.className = inactiveClass;
+    if (tabNonFT) tabNonFT.className = inactiveClass;
+    if (tabRapor) tabRapor.className = inactiveClass;
+
+    if (contentFT) contentFT.classList.add('hidden');
+    if (contentNonFT) contentNonFT.classList.add('hidden');
+    if (contentRapor) contentRapor.classList.add('hidden');
+
+    if (tab === 'nonft') {
+      if (tabNonFT) tabNonFT.className = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer bg-white text-indigo-900 border-indigo-600 shadow-xs';
       if (contentNonFT) contentNonFT.classList.remove('hidden');
-      if (contentFT) contentFT.classList.add('hidden');
-      if (btnPdfNonFT) btnPdfNonFT.classList.remove('hidden');
-      if (btnPdfFT) btnPdfFT.classList.add('hidden');
-
-      if (headerTitle) headerTitle.textContent = 'Kriteria Penilaian Harian Non-Field Trip';
-      if (headerSub) headerSub.textContent = 'Riset Mandiri OKU Timur (Day 1 – 7)';
-      if (headerIcon) {
-        headerIcon.className = 'w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0';
-      }
+      if (headerSub) headerSub.textContent = 'Non-Field Trip (Riset Mandiri OKU Timur)';
+      if (iconWrapper) iconWrapper.className = 'w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0';
+    } else if (tab === 'rapor') {
+      if (tabRapor) tabRapor.className = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer bg-white text-amber-900 border-amber-600 shadow-xs';
+      if (contentRapor) contentRapor.classList.remove('hidden');
+      if (headerSub) headerSub.textContent = 'Predikat Rapor & Rubrik 4 Pilar';
+      if (iconWrapper) iconWrapper.className = 'w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400/30 text-amber-300 flex items-center justify-center shrink-0';
+    } else {
+      // default: ft
+      if (tabFT) tabFT.className = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer bg-white text-emerald-900 border-emerald-600 shadow-xs';
+      if (contentFT) contentFT.classList.remove('hidden');
+      if (headerSub) headerSub.textContent = 'Field Trip (Studi Wisata Jawa)';
+      if (iconWrapper) iconWrapper.className = 'w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 flex items-center justify-center shrink-0';
     }
   };
 
-  window.openKriteriaModal = function(initialTab) {
+  window.openKriteriaKokurikulerModal = function(initialTab) {
     const modal = createModalDOM();
-    if (initialTab) {
-      window.switchKriteriaTab(initialTab);
-    }
+    window.switchKriteriaTab(initialTab || 'ft');
     modal.classList.remove('opacity-0', 'pointer-events-none');
     modal.classList.add('opacity-100');
   };
 
-  window.openKriteriaNonFTModal = function() {
-    window.openKriteriaModal('nonft');
-  };
-
-  window.openKriteriaFTModal = function() {
-    window.openKriteriaModal('ft');
-  };
-
-  window.closeKriteriaModal = function() {
-    const modal = document.getElementById('modalKriteriaPenilaian');
+  window.closeKriteriaKokurikulerModal = function() {
+    const modal = document.getElementById('modalKriteriaKokurikuler');
     if (modal) {
       modal.classList.remove('opacity-100');
       modal.classList.add('opacity-0', 'pointer-events-none');
     }
   };
 
-  window.closeKriteriaNonFTModal = window.closeKriteriaModal;
+  // Backward compatibility alias
+  window.openKriteriaModal = window.openKriteriaKokurikulerModal;
+  window.closeKriteriaModal = window.closeKriteriaKokurikulerModal;
+  window.openKriteriaNonFTModal = function() { window.openKriteriaKokurikulerModal('nonft'); };
+  window.openKriteriaFTModal = function() { window.openKriteriaKokurikulerModal('ft'); };
+  window.closeKriteriaNonFTModal = window.closeKriteriaKokurikulerModal;
 
-  window.openKriteriaNonFTPdf = function() {
+  window.downloadKriteriaKokurikulerPdf = function() {
     const isSubdir = window.location.pathname.includes('/admin/') || window.location.pathname.includes('/guru/') || window.location.pathname.includes('/siswa/');
-    const pdfUrl = isSubdir ? '../KRITERIA_PENILAIAN_NON_FIELDTRIP_2026.pdf' : 'KRITERIA_PENILAIAN_NON_FIELDTRIP_2026.pdf';
+    const pdfUrl = isSubdir ? '../KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf' : 'KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf';
     window.open(pdfUrl, '_blank');
   };
 
-  window.openKriteriaFTPdf = function() {
-    const isSubdir = window.location.pathname.includes('/admin/') || window.location.pathname.includes('/guru/') || window.location.pathname.includes('/siswa/');
-    const pdfUrl = isSubdir ? '../KRITERIA_PENILAIAN_FIELDTRIP_2026.pdf' : 'KRITERIA_PENILAIAN_FIELDTRIP_2026.pdf';
-    window.open(pdfUrl, '_blank');
-  };
+  window.openKriteriaNonFTPdf = window.downloadKriteriaKokurikulerPdf;
+  window.openKriteriaFTPdf = window.downloadKriteriaKokurikulerPdf;
 
 })(window);
