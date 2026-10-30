@@ -6,7 +6,7 @@
   <style>
     @page {
       size: A4 portrait;
-      margin: 8mm 10mm 8mm 10mm;
+      margin: 7mm 9mm 7mm 9mm;
     }
     * {
       box-sizing: border-box;
@@ -16,137 +16,117 @@
     body {
       font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
       color: #0f172a;
-      line-height: 1.25;
-      font-size: 8pt;
+      line-height: 1.22;
+      font-size: 7.4pt;
       margin: 0;
       padding: 0;
       background-color: #ffffff;
     }
     .page-container {
       width: 100%;
-      height: 281mm; /* Pas 1 lembar A4 */
-      max-height: 281mm;
+      height: 283mm; /* Pas 1 lembar A4 */
+      max-height: 283mm;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    
-    /* Kop Surat */
-    .header-kop {
-      border-bottom: 2px double #0f172a;
-      padding-bottom: 4px;
-      margin-bottom: 6px;
+
+    /* Modern Clean Header (Tanpa Kop Surat) */
+    .modern-header {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #0f172a 100%);
+      color: #ffffff;
+      padding: 7px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header-left {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .logo-box {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #1e3a8a, #0f172a);
+    .badge-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #6366f1, #4338ca);
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 15pt;
+      font-size: 12pt;
+      letter-spacing: -0.5px;
       flex-shrink: 0;
     }
-    .kop-text {
-      flex: 1;
-      text-align: center;
-    }
-    .kop-text h4 {
+    .header-titles h1 {
       margin: 0;
-      font-size: 8pt;
-      font-weight: 700;
-      color: #475569;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-    }
-    .kop-text h2 {
-      margin: 0;
-      font-size: 11pt;
+      font-size: 10pt;
       font-weight: 900;
-      color: #0f172a;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
+      color: #ffffff;
     }
-    .kop-text p {
-      margin: 0;
-      font-size: 6.8pt;
-      color: #64748b;
+    .header-titles p {
+      margin: 1px 0 0 0;
+      font-size: 7pt;
+      color: #c7d2fe;
     }
-
-    /* Judul Dokumen */
-    .doc-title-box {
-      background: linear-gradient(135deg, #f8fafc, #eef2ff);
-      border: 1px solid #cbd5e1;
-      border-left: 4px solid #3730a3;
-      padding: 5px 10px;
+    .header-pill {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 3px 8px;
       border-radius: 6px;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .doc-title-box h1 {
-      margin: 0;
-      font-size: 9.5pt;
-      color: #1e1b4b;
-      font-weight: 900;
-    }
-    .doc-title-box span {
-      font-size: 7.2pt;
-      color: #4338ca;
+      font-size: 6.8pt;
       font-weight: 700;
-      background: #e0e7ff;
-      padding: 2px 6px;
-      border-radius: 4px;
+      color: #e0e7ff;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     /* Grid Layout 2 Kolom */
     .grid-2col {
       display: flex;
-      gap: 8px;
-      flex: 1;
+      gap: 7px;
     }
     .col-left {
-      width: 51%;
+      width: 50%;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 3.5px;
     }
     .col-right {
-      width: 49%;
+      width: 50%;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 3.5px;
     }
 
     /* Section Title */
     .section-title {
-      font-size: 8pt;
+      font-size: 7.8pt;
       font-weight: 800;
-      color: #0f172a;
+      color: #1e1b4b;
       text-transform: uppercase;
       letter-spacing: 0.3px;
-      border-left: 3px solid #4f46e5;
+      border-left: 3px solid #4338ca;
       padding-left: 5px;
-      margin: 3px 0 2px 0;
+      margin: 2px 0 1px 0;
     }
 
     /* Tabel */
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 7.2pt;
+      font-size: 6.8pt;
       margin-bottom: 2px;
     }
     th, td {
       border: 1px solid #cbd5e1;
-      padding: 3px 5px;
+      padding: 2.2px 4px;
       text-align: left;
       vertical-align: middle;
     }
@@ -155,7 +135,7 @@
       color: #0f172a;
       font-weight: 800;
       text-transform: uppercase;
-      font-size: 6.8pt;
+      font-size: 6.5pt;
     }
     tr:nth-child(even) td {
       background-color: #f8fafc;
@@ -164,10 +144,10 @@
     /* Badge */
     .badge {
       display: inline-block;
-      padding: 1px 4px;
-      border-radius: 4px;
+      padding: 1px 3.5px;
+      border-radius: 3px;
       font-weight: 800;
-      font-size: 6.8pt;
+      font-size: 6.5pt;
     }
     .badge-green { background: #dcfce7; color: #166534; border: 0.5px solid #86efac; }
     .badge-yellow { background: #fef9c3; color: #854d0e; border: 0.5px solid #fde047; }
@@ -178,63 +158,64 @@
     .formula-box {
       background: linear-gradient(135deg, #1e1b4b, #0f172a);
       color: #ffffff;
-      padding: 6px 10px;
-      border-radius: 6px;
+      padding: 4px 8px;
+      border-radius: 5px;
       text-align: center;
-      margin: 2px 0;
+      margin: 1.5px 0;
     }
     .formula-title {
-      font-size: 6.8pt;
+      font-size: 6.5pt;
       font-weight: 700;
       color: #cbd5e1;
       text-transform: uppercase;
-      letter-spacing: 0.6px;
+      letter-spacing: 0.5px;
     }
     .formula-math {
-      font-size: 8.5pt;
+      font-size: 8pt;
       font-weight: 900;
       color: #38bdf8;
       margin: 1px 0;
     }
     .formula-desc {
-      font-size: 6.5pt;
+      font-size: 6.2pt;
       color: #94a3b8;
     }
 
     /* Callout */
     .callout {
-      padding: 5px 8px;
-      border-radius: 5px;
-      font-size: 7.2pt;
-      line-height: 1.25;
-      margin: 2px 0;
+      padding: 3.5px 6px;
+      border-radius: 4px;
+      font-size: 6.8pt;
+      line-height: 1.2;
+      margin: 1.5px 0;
     }
     .callout-info { background: #f0fdf4; border-left: 3px solid #16a34a; color: #14532d; }
     .callout-danger { background: #fef2f2; border-left: 3px solid #dc2626; color: #7f1d1d; }
-    .callout-comp { background: #f8fafc; border-left: 3px solid #0284c7; color: #0c4a6e; }
 
-    /* TTD */
-    .ttd-container {
+    /* Simulasi Box */
+    .sim-card {
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 3px 5px;
+      margin-bottom: 2px;
+      background-color: #ffffff;
+      font-size: 6.6pt;
+    }
+    .sim-header {
+      font-weight: 800;
       display: flex;
       justify-content: space-between;
-      margin-top: 6px;
-      padding-top: 4px;
-      border-top: 1px dashed #cbd5e1;
+      margin-bottom: 1px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 1px;
     }
-    .ttd-box {
-      width: 48%;
-      text-align: center;
-      font-size: 7.2pt;
-      line-height: 1.15;
-    }
-    .ttd-space { height: 30px; }
 
     .footer-page {
       border-top: 1px solid #cbd5e1;
-      padding-top: 3px;
+      padding-top: 2.5px;
       display: flex;
       justify-content: space-between;
-      font-size: 6.5pt;
+      font-size: 6.4pt;
       color: #94a3b8;
       margin-top: 2px;
     }
@@ -244,221 +225,232 @@
 
   <div class="page-container">
     
-    <!-- 1. KOP SURAT RESMI -->
-    <div class="header-kop">
-      <div class="logo-box">FC</div>
-      <div class="kop-text">
-        <h4>Pemerintah Provinsi Sumatera Selatan • Dinas Pendidikan</h4>
-        <h2>SMA NEGERI 1 BELITANG</h2>
-        <p>Jalan Mawar No. 01, Gumawang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan 32182</p>
-        <p>Website: kokurikulersman1belitang.site • Pedoman Khusus Tim Admin, Fasilitator &amp; Koordinator</p>
-      </div>
-    </div>
-
-    <!-- 2. JUDUL DOKUMEN -->
-    <div class="doc-title-box">
-      <div>
-        <h1>KRITERIA &amp; PEDOMAN RESMI PENILAIAN HARIAN NON-FIELD TRIP (DAY 1 – 7)</h1>
-      </div>
-      <span>Versi Ringkas (1 Lembar)</span>
-    </div>
-
-    <!-- 3. KONTEN DUA KOLOM -->
-    <div class="grid-2col">
-      
-      <!-- KOLOM KIRI: WAKTU MODUL, RUMUS & KOMPOSISI BOBOT -->
-      <div class="col-left">
-        
-        <!-- Parameter Jam Modul -->
-        <div class="section-title">1. Kedisiplinan Waktu Pengisian Modul (Bobot 20%)</div>
-        <p style="margin: 0 0 3px 0; font-size: 7.2pt; text-align: justify;">
-          Pengisian <strong>Modul Belajar (5 Kartu Riset Mandiri)</strong> wajib dituntaskan di pagi hari sebagai bukti awal keaktifan bekerja. Nilai waktu dihitung otomatis:
-        </p>
-
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 28%; text-align: center;">Jam Submit Modul</th>
-              <th style="width: 18%; text-align: center;">Poin</th>
-              <th style="width: 25%; text-align: center;">Status</th>
-              <th style="width: 29%;">Karakter Kerja Siswa</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">07.00 – 09.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-green">100 Poin</span></td>
-              <td style="text-align: center; font-weight: bold; color: #166534;">Sangat Disiplin</td>
-              <td>Aktif pagi, siap observasi tepat waktu.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">09.01 – 12.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-green">88 Poin</span></td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">Baik</td>
-              <td>Tuntas sebelum jeda siang, ritme tertib.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">12.01 – 15.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-yellow">85 Poin</span></td>
-              <td style="text-align: center; font-weight: bold; color: #854d0e;">Cukup Disiplin</td>
-              <td>Tuntas siang, waktu lapangan mulai berkurang.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">15.01 – 16.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-yellow">80 Poin</span></td>
-              <td style="text-align: center; font-weight: bold; color: #b45309;">Toleransi Sore 1</td>
-              <td>Baru memulai riset lapangan sore hari.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">16.01 – 17.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-orange">70 Poin</span></td>
-              <td style="text-align: center; font-weight: bold; color: #c2410c;">Toleransi Sore 2</td>
-              <td>Waktu observasi/wawancara sangat terbatas.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">17.01 – 18.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-orange">60 Poin</span></td>
-              <td style="text-align: center; font-weight: bold; color: #ea580c;">Mepet Batas Akhir</td>
-              <td>Beresiko tidak sempat observasi mendalam.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">&gt; 18.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-red">50 Poin</span></td>
-              <td style="text-align: center; font-weight: bold; color: #b91c1c;">Terlambat</td>
-              <td>Melewati batas jam riset harian (18.00 WIB).</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Formula Rumus NA -->
-        <div class="formula-box">
-          <div class="formula-title">Rumus Resmi Nilai Akhir Harian (NA) Non-Field Trip:</div>
-          <div class="formula-math">NA = (20% × Waktu Modul) + (30% × LKPD) + (35% × Asesmen) + (15% × Geotag)</div>
-          <div class="formula-desc">Akumulasi skala 0 – 100 otomatis dikonversi ke Peringkat Bintang 1 s.d. Bintang 5.</div>
-        </div>
-
-        <!-- Tabel Komposisi 4 Pilar -->
-        <div class="section-title">2. Matriks Komposisi 4 Pilar Penilaian</div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 32%;">Pilar Penilaian</th>
-              <th style="width: 15%; text-align: center;">Bobot</th>
-              <th style="width: 53%;">Alat Ukur &amp; Standar Mutu</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="font-weight: bold;">Waktu Modul Pagi</td>
-              <td style="text-align: center; font-weight: bold; color: #3730a3;">20%</td>
-              <td>Jam submit modul (skala 50–100 sesuai tabel).</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Kualitas LKPD Lapangan</td>
-              <td style="text-align: center; font-weight: bold; color: #3730a3;">30%</td>
-              <td>Kelengkapan 6 kartu, ketikan mandiri, analisis HOTS.</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Skor Kuis Asesmen CBT</td>
-              <td style="text-align: center; font-weight: bold; color: #3730a3;">35%</td>
-              <td>Skor tes kognitif Bloom C1–C4 (50 soal acak per siswa).</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Google Tagging GPS</td>
-              <td style="text-align: center; font-weight: bold; color: #3730a3;">15%</td>
-              <td>Verifikasi koordinat GPS foto kamera di OKU Timur.</td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-
-      <!-- KOLOM KANAN: GEOTAGGING, TABEL BINTANG, KOMPARASI & TTD -->
-      <div class="col-right">
-        
-        <!-- Integritas Google Tagging -->
-        <div class="section-title">3. Integritas Google Tagging GPS OKU Timur</div>
-        <div class="callout callout-info">
-          <strong>✓ Valid (Skor 100):</strong> Foto kamera langsung berstempel GPS di Kabupaten OKU Timur atau memiliki Dispensasi Domisili resmi Admin.
-        </div>
-        <div class="callout callout-danger">
-          <strong>⚠ Pinalti Galeri / Tanpa GPS (Skor 30 / Bintang 1):</strong> Foto galeri tanpa GPS, foto internet, atau di luar OKU Timur tanpa izin resmi, otomatis terkena <strong>Pinalti Maksimal Bintang 1 (⭐☆☆☆☆)</strong> karena tidak terbukti riset di lapangan.
-        </div>
-
-        <!-- Tabel Konversi Bintang -->
-        <div class="section-title">4. Konversi Nilai Akhir ke Peringkat Bintang</div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 22%; text-align: center;">Nilai Akhir</th>
-              <th style="width: 25%; text-align: center;">Bintang</th>
-              <th style="width: 25%; text-align: center;">Predikat</th>
-              <th style="width: 28%;">Keterangan</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">90.0 – 100.0</td>
-              <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐⭐⭐</td>
-              <td style="text-align: center; font-weight: bold; color: #166534;">Sangat Baik</td>
-              <td>Teladan, disiplin &amp; mendalam.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">80.0 – 89.9</td>
-              <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐⭐☆</td>
-              <td style="text-align: center; font-weight: bold; color: #1e40af;">Baik</td>
-              <td>Tertib &amp; tugas lengkap.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">70.0 – 79.9</td>
-              <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐☆☆</td>
-              <td style="text-align: center; font-weight: bold; color: #854d0e;">Cukup</td>
-              <td>Batas minimal kompetensi.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">60.0 – 69.9</td>
-              <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐☆☆☆</td>
-              <td style="text-align: center; font-weight: bold; color: #c2410c;">Kurang</td>
-              <td>Terlambat / kurang mendalam.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">&lt; 60.0</td>
-              <td style="text-align: center; color: #dc2626; font-weight: bold;">⭐☆☆☆☆</td>
-              <td style="text-align: center; font-weight: bold; color: #b91c1c;">Sangat Kurang</td>
-              <td>Pinalti tanpa geotag / belum tuntas.</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Komparasi dengan Field Trip -->
-        <div class="callout callout-comp">
-          <strong>Catatan Fasilitator (Beda dengan Field Trip):</strong><br>
-          • <strong>Field Trip:</strong> Penilaian 100% berbasis jam pengumpulan tugas (batas 16.00 WIB = Nilai 100) karena siswa dalam rombongan tur bersama guru.<br>
-          • <strong>Non-Field Trip:</strong> Penilaian komposit 4 pilar (Modul Pagi 20%, LKPD 30%, Kuis 35%, Geotag 15%) karena siswa melakukan riset mandiri.
-        </div>
-
-        <!-- Tanda Tangan -->
-        <div class="ttd-container">
-          <div class="ttd-box">
-            <span>Mengetahui,<br><strong>Kepala SMAN 1 Belitang</strong></span>
-            <div class="ttd-space"></div>
-            <span><strong><u>H. DEDY RIDUAN, S.Pd., M.M.</u></strong><br>NIP. 197105151998021002</span>
-          </div>
-          <div class="ttd-box">
-            <span>Belitang, 30 Oktober 2026<br><strong>Koordinator Tim FINCESTEM</strong></span>
-            <div class="ttd-space"></div>
-            <span><strong><u>TIM KURIKULUM SMANSA</u></strong><br>SMAN 1 Belitang, OKU Timur</span>
+    <div>
+      <!-- 1. MODERN CLEAN HEADER (TANPA KOP SURAT) -->
+      <div class="modern-header">
+        <div class="header-left">
+          <div class="badge-icon">NFT</div>
+          <div class="header-titles">
+            <h1>KRITERIA &amp; PEDOMAN RESMI PENILAIAN NON-FIELD TRIP (DAY 1 – 7)</h1>
+            <p>Standar Penilaian Harian Riset Mandiri OKU Timur &amp; Simulasi Perhitungan Siswa</p>
           </div>
         </div>
+        <div class="header-pill">Pedoman Guru &amp; Penilai</div>
+      </div>
 
+      <!-- 2. KONTEN DUA KOLOM ATAS -->
+      <div class="grid-2col">
+        
+        <!-- KOLOM KIRI: WAKTU MODUL, RUMUS & KOMPOSISI BOBOT -->
+        <div class="col-left">
+          
+          <!-- Parameter Jam Modul -->
+          <div class="section-title">1. Kedisiplinan Waktu Modul Pagi (Bobot 20%)</div>
+          <p style="margin: 0 0 2px 0; font-size: 6.8pt; text-align: justify;">
+            Pengisian <strong>Modul Belajar (5 Kartu Riset)</strong> wajib pagi hari sebagai bukti awal bekerja:
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 44%; text-align: center;">Jam Submit Modul</th>
+                <th style="width: 22%; text-align: center;">Poin (20%)</th>
+                <th style="width: 34%;">Status Kedisiplinan</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">07.00 – 09.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">100 Poin</span></td>
+                <td style="color: #166534; font-weight: bold;">Sangat Disiplin (Pagi)</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">09.01 – 12.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">88 Poin</span></td>
+                <td>Baik (Pagi Jelang Siang)</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">12.01 – 15.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-yellow">85 Poin</span></td>
+                <td>Cukup Disiplin (Siang)</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">15.01 – 16.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-yellow">80 Poin</span></td>
+                <td>Toleransi Sore 1</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">16.01 – 17.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-orange">70 Poin</span></td>
+                <td>Toleransi Sore 2</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">17.01 – 18.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-orange">60 Poin</span></td>
+                <td>Mepet Batas Akhir</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">&gt; 18.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-red">50 Poin</span></td>
+                <td style="color: #991b1b; font-weight: bold;">Terlambat</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Formula Rumus NA -->
+          <div class="formula-box">
+            <div class="formula-title">Rumus Resmi Nilai Akhir Harian (NA):</div>
+            <div class="formula-math">NA = (20% × Modul) + (30% × LKPD) + (35% × Asesmen) + (15% × Geotag)</div>
+            <div class="formula-desc">Akumulasi skala 0–100 otomatis dikonversi ke Peringkat Bintang 1 s.d. Bintang 5.</div>
+          </div>
+
+        </div>
+
+        <!-- KOLOM KANAN: BOBOT 4 PILAR, GEOTAGGING & PREDIKAT -->
+        <div class="col-right">
+          
+          <!-- Tabel Komposisi 4 Pilar -->
+          <div class="section-title">2. Matriks Komposisi 4 Pilar Penilaian</div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 38%;">Komponen</th>
+                <th style="width: 18%; text-align: center;">Bobot</th>
+                <th style="width: 44%;">Alat Ukur Mutu</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="font-weight: bold;">Waktu Modul Pagi</td>
+                <td style="text-align: center; font-weight: bold; color: #3730a3;">20%</td>
+                <td>Jam submit modul (50–100 poin).</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Kualitas LKPD</td>
+                <td style="text-align: center; font-weight: bold; color: #3730a3;">30%</td>
+                <td>Kelengkapan 6 kartu ketik mandiri.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Asesmen CBT</td>
+                <td style="text-align: center; font-weight: bold; color: #3730a3;">35%</td>
+                <td>Skor kognitif 50 soal Bloom C1–C4.</td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold;">Google Tagging</td>
+                <td style="text-align: center; font-weight: bold; color: #3730a3;">15%</td>
+                <td>Verifikasi kamera GPS OKU Timur.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Integritas Google Tagging -->
+          <div class="section-title">3. Integritas Google Tagging GPS</div>
+          <div class="callout callout-info">
+            <strong>✓ Valid (Skor 100):</strong> Foto kamera langsung berstempel GPS di Kabupaten OKU Timur.
+          </div>
+          <div class="callout callout-danger">
+            <strong>⚠ Pinalti Foto Galeri (Skor 30 &amp; Maks B1):</strong> Foto galeri tanpa GPS, foto internet, atau di luar OKU Timur tanpa dispensasi otomatis terkena <strong>Pinalti Skor 30 &amp; Maksimal Bintang 1 (⭐☆☆☆☆)</strong>.
+          </div>
+
+          <!-- Tabel Predikat Harian -->
+          <table>
+            <thead>
+              <tr>
+                <th style="text-align: center; width: 28%;">Skor Akhir</th>
+                <th style="text-align: center; width: 36%;">Bintang</th>
+                <th style="width: 36%;">Predikat</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">90.0 – 100.0</td>
+                <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐⭐⭐ (B5)</td>
+                <td style="color: #166534; font-weight: bold;">Sangat Baik / Teladan</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">80.0 – 89.9</td>
+                <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐⭐☆ (B4)</td>
+                <td style="color: #1e40af; font-weight: bold;">Baik / Tertib</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">70.0 – 79.9</td>
+                <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐☆☆ (B3)</td>
+                <td style="color: #854d0e;">Cukup / Standar</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">&lt; 70.0 / Pinalti</td>
+                <td style="text-align: center; color: #dc2626; font-weight: bold;">⭐☆☆☆☆ (B1)</td>
+                <td style="color: #b91c1c; font-weight: bold;">Pinalti / Kurang</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
+
+      <!-- 3. BAGIAN SIMULASI 3 KASUS PERHITUNGAN RIIL SISWA (TERPAMPANG JELAS) -->
+      <div class="section-title" style="margin-top: 4px; border-left-color: #2563eb; color: #1e3a8a;">
+        4. Simulasi 3 Kasus Riil Perhitungan Nilai Siswa (Non-Field Trip)
+      </div>
+
+      <!-- Simulasi 1 -->
+      <div class="sim-card" style="border-left: 3px solid #16a34a;">
+        <div class="sim-header">
+          <span style="color: #166534;">KASUS 1: SISWA DISIPLIN &amp; INVESTIGASI MENDALAM</span>
+          <span class="badge badge-green">HASIL: BINTANG 5 (⭐⭐⭐⭐⭐)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 6.6pt; color: #475569; margin: 1px 0;">
+          <span>• Jam Modul: <strong>08.15 WIB</strong> (Poin: 100)</span>
+          <span>• Nilai LKPD: <strong>92</strong> (Lengkap 6 Kartu)</span>
+          <span>• Asesmen CBT: <strong>90</strong></span>
+          <span>• Geotag: <strong>Valid Belitang</strong> (Skor: 100)</span>
+        </div>
+        <div style="color: #1e3a8a; font-weight: bold; font-size: 6.8pt; background: #f0fdf4; padding: 2px 4px; border-radius: 3px; border: 1px solid #bbf7d0;">
+          Perhitungan: NA = (0.20 × 100) + (0.30 × 92) + (0.35 × 90) + (0.15 × 100) = 20 + 27.6 + 31.5 + 15 = <strong style="color: #15803d; font-size: 7.2pt;">94.1 → BINTANG 5 (⭐⭐⭐⭐⭐)</strong>
+        </div>
+      </div>
+
+      <!-- Simulasi 2 -->
+      <div class="sim-card" style="border-left: 3px solid #d97706;">
+        <div class="sim-header">
+          <span style="color: #92400e;">KASUS 2: SISWA ASESMEN TINGGI TETAPI MODUL SORE HARI</span>
+          <span class="badge badge-yellow">HASIL: BINTANG 4 (⭐⭐⭐⭐☆)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 6.6pt; color: #475569; margin: 1px 0;">
+          <span>• Jam Modul: <strong>16.30 WIB</strong> (Poin: 70)</span>
+          <span>• Nilai LKPD: <strong>80</strong> (Cukup Lengkap)</span>
+          <span>• Asesmen CBT: <strong>86</strong></span>
+          <span>• Geotag: <strong>Valid Belitang</strong> (Skor: 100)</span>
+        </div>
+        <div style="color: #92400e; font-weight: bold; font-size: 6.8pt; background: #fffbeb; padding: 2px 4px; border-radius: 3px; border: 1px solid #fde68a;">
+          Perhitungan: NA = (0.20 × 70) + (0.30 × 80) + (0.35 × 86) + (0.15 × 100) = 14 + 24 + 30.1 + 15 = <strong style="color: #b45309; font-size: 7.2pt;">83.1 → BINTANG 4 (⭐⭐⭐⭐☆)</strong>
+        </div>
+      </div>
+
+      <!-- Simulasi 3 -->
+      <div class="sim-card" style="border-left: 3px solid #dc2626;">
+        <div class="sim-header">
+          <span style="color: #991b1b;">KASUS 3: SISWA TANPA GOOGLE TAGGING (PINALTI FOTO GALERI)</span>
+          <span class="badge badge-red">HASIL: PINALTI BINTANG 1 (⭐☆☆☆☆)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 6.6pt; color: #475569; margin: 1px 0;">
+          <span>• Jam Modul: <strong>08.30 WIB</strong> (Poin: 100)</span>
+          <span>• Nilai LKPD: <strong>85</strong></span>
+          <span>• Asesmen CBT: <strong>80</strong></span>
+          <span>• Geotag: <strong>Foto Galeri / Tanpa GPS</strong> (Pinalti: 30)</span>
+        </div>
+        <div style="color: #991b1b; font-weight: bold; font-size: 6.8pt; background: #fef2f2; padding: 2px 4px; border-radius: 3px; border: 1px solid #fecaca;">
+          Perhitungan: NA = (0.20 × 100) + (0.30 × 85) + (0.35 × 80) + (0.15 × 30) = 20 + 25.5 + 28 + 4.5 = 78.0 → <strong style="color: #b91c1c; font-size: 7.2pt;">Pinalti Geotag Maksimal: BINTANG 1 (⭐☆☆☆☆)</strong>
+        </div>
       </div>
 
     </div>
 
-    <!-- 4. FOOTER DOKUMEN -->
+    <!-- 4. FOOTER DOKUMEN (TANPA TANDA TANGAN) -->
     <div class="footer-page">
-      <span>FINCESTEM 2026 • SMAN 1 Belitang</span>
-      <span>Dokumen Resmi Pedoman Penilaian Non-Field Trip • Standar Operasional Fasilitator &amp; Koordinator</span>
+      <span>FINCESTEM 2026 • Panduan Kriteria Penilaian Non-Field Trip</span>
+      <span>Dokumen Resmi Pedoman Penilaian Riset Mandiri OKU Timur • Standar Guru &amp; Penilai</span>
       <span>Halaman 1 dari 1 (Tunggal)</span>
     </div>
 

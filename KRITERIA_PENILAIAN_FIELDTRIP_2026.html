@@ -31,79 +31,61 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    
-    /* Kop Surat */
-    .header-kop {
-      border-bottom: 2px double #0f172a;
-      padding-bottom: 4px;
+
+    /* Modern Clean Header (Tanpa Kop Surat) */
+    .modern-header {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #064e3b 100%);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header-left {
       display: flex;
       align-items: center;
       gap: 10px;
     }
-    .logo-box {
-      width: 44px;
-      height: 44px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #047857, #064e3b);
+    .badge-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 15pt;
+      font-size: 13pt;
+      letter-spacing: -0.5px;
       flex-shrink: 0;
     }
-    .kop-text {
-      flex: 1;
-      text-align: center;
-    }
-    .kop-text h4 {
+    .header-titles h1 {
       margin: 0;
-      font-size: 8pt;
-      font-weight: 700;
-      color: #475569;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-    }
-    .kop-text h2 {
-      margin: 0;
-      font-size: 11pt;
+      font-size: 10.5pt;
       font-weight: 900;
-      color: #0f172a;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
+      color: #ffffff;
     }
-    .kop-text p {
-      margin: 0;
-      font-size: 6.8pt;
-      color: #64748b;
-    }
-
-    /* Judul Dokumen */
-    .doc-title-box {
-      background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
-      border: 1px solid #a7f3d0;
-      border-left: 4px solid #059669;
-      padding: 5px 10px;
-      border-radius: 6px;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .doc-title-box h1 {
-      margin: 0;
-      font-size: 9.5pt;
-      color: #064e3b;
-      font-weight: 900;
-    }
-    .doc-title-box span {
+    .header-titles p {
+      margin: 1px 0 0 0;
       font-size: 7.2pt;
-      color: #047857;
+      color: #a7f3d0;
+    }
+    .header-pill {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 7pt;
       font-weight: 700;
-      background: #d1fae5;
-      padding: 2px 6px;
-      border-radius: 4px;
+      color: #d1fae5;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     /* Grid Layout 2 Kolom */
@@ -129,7 +111,7 @@
     .section-title {
       font-size: 8pt;
       font-weight: 800;
-      color: #0f172a;
+      color: #064e3b;
       text-transform: uppercase;
       letter-spacing: 0.3px;
       border-left: 3px solid #059669;
@@ -211,23 +193,6 @@
     }
     .callout-info { background: #f0fdf4; border-left: 3px solid #16a34a; color: #14532d; }
     .callout-warning { background: #fffbeb; border-left: 3px solid #f59e0b; color: #78350f; }
-    .callout-comp { background: #f8fafc; border-left: 3px solid #0284c7; color: #0c4a6e; }
-
-    /* TTD */
-    .ttd-container {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 6px;
-      padding-top: 4px;
-      border-top: 1px dashed #cbd5e1;
-    }
-    .ttd-box {
-      width: 48%;
-      text-align: center;
-      font-size: 7.2pt;
-      line-height: 1.15;
-    }
-    .ttd-space { height: 28px; }
 
     .footer-page {
       border-top: 1px solid #cbd5e1;
@@ -244,233 +209,207 @@
 
   <div class="page-container">
     
-    <!-- 1. KOP SURAT RESMI -->
-    <div class="header-kop">
-      <div class="logo-box">FT</div>
-      <div class="kop-text">
-        <h4>Pemerintah Provinsi Sumatera Selatan • Dinas Pendidikan</h4>
-        <h2>SMA NEGERI 1 BELITANG</h2>
-        <p>Jalan Mawar No. 01, Gumawang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan 32182</p>
-        <p>Website: kokurikulersman1belitang.site • Pedoman Khusus Tim Admin, Fasilitator &amp; Koordinator</p>
-      </div>
-    </div>
-
-    <!-- 2. JUDUL DOKUMEN -->
-    <div class="doc-title-box">
-      <div>
-        <h1>KRITERIA &amp; PEDOMAN RESMI PENILAIAN HARIAN FIELD TRIP JAWA (DAY 1 – 7)</h1>
-      </div>
-      <span>Studi Wisata Jawa • Versi Ringkas (1 Lembar)</span>
-    </div>
-
-    <!-- 3. KONTEN DUA KOLOM -->
-    <div class="grid-2col">
-      
-      <!-- KOLOM KIRI: FILOSOFI, TABEL SKEMA RESMI JAM & POIN -->
-      <div class="col-left">
-        
-        <!-- Prinsip Dasar -->
-        <div class="section-title">1. Filosofi &amp; Prinsip Penilaian Field Trip</div>
-        <p style="margin: 0 0 3px 0; font-size: 7.2pt; text-align: justify;">
-          Peserta Field Trip bergerak dalam <strong>rombongan armada bus sekolah</strong> dengan jadwal operasional objek wisata yang ketat (Semarang, Malang, Bromo, Yogyakarta). Oleh karena itu, penilaian harian <strong>100% Murni Berbasis Ketepatan Waktu Pengumpulan Tugas (On-Time Submission)</strong>:
-        </p>
-
-        <!-- Tabel Skema Penilaian Jam Submit -->
-        <div class="section-title">2. Skema Penilaian Resmi Berdasarkan Jam Submit</div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 25%; text-align: center;">Jam Pengumpulan</th>
-              <th style="width: 14%; text-align: center;">Nilai</th>
-              <th style="width: 22%; text-align: center;">Bintang</th>
-              <th style="width: 39%;">Kondisi Lapangan &amp; Status Riset</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">07.00 – 16.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-green">100</span></td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
-              <td><strong>Sangat Baik (Sempurna):</strong> Tuntas di lokasi sebelum jam kunjungan objek ditutup / bus bergeser.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">16.01 – 17.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-green">99</span></td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
-              <td rowspan="5" style="vertical-align: middle;"><strong>Sangat Baik:</strong> Tuntas sore/petang selama perjalanan bus menuju hotel atau singgah di Rest Area tol Trans-Jawa.<br><em>(Nilai berkurang teratur 1 poin setiap 1 jam keterlambatan).</em></td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">17.01 – 18.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-green">98</span></td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">18.01 – 19.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-green">97</span></td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">19.01 – 20.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-green">96</span></td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">20.01 – 21.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-green">95</span></td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">21.01 – 24.00 WIB</td>
-              <td style="text-align: center;"><span class="badge badge-yellow">90 – 94</span></td>
-              <td style="text-align: center; font-weight: bold; color: #b45309;">⭐⭐⭐⭐☆</td>
-              <td><strong>Baik:</strong> Tuntas malam hari setelah check-in hotel/istirahat rombongan (21–22: 94/93, 22–23: 92/91, 23–24: 90).</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">&gt; 24.00 WIB / Besok</td>
-              <td style="text-align: center;"><span class="badge badge-orange">85</span></td>
-              <td style="text-align: center; font-weight: bold; color: #c2410c;">⭐⭐⭐⭐☆</td>
-              <td><strong>Cukup:</strong> Pengumpulan terlambat pada keesokan harinya sebelum kegiatan berikutnya dimulai.</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Formula Rumus NA Field Trip -->
-        <div class="formula-box">
-          <div class="formula-title">Logika Otomatis Sistem FINCESTEM (js/core.js):</div>
-          <div class="formula-math">Nilai Harian FT = Skor Jam Submit (Batas Pukul 16.00 WIB)</div>
-          <div class="formula-desc">Batas waktu standar 16.00 WIB dapat disesuaikan fleksibel per hari oleh Admin/Koordinator.</div>
-        </div>
-
-        <!-- Tabel Konversi Predikat -->
-        <div class="section-title">3. Standar Predikat Nilai Field Trip</div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 25%; text-align: center;">Rentang Skor</th>
-              <th style="width: 25%; text-align: center;">Bintang</th>
-              <th style="width: 25%; text-align: center;">Predikat</th>
-              <th style="width: 25%; text-align: center;">Kelulusan Harian</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">85.0 – 100.0</td>
-              <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐⭐ – ⭐⭐⭐⭐⭐</td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">Mahir</td>
-              <td style="text-align: center; font-weight: bold; color: #15803d;">Tuntas Memuaskan</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">70.0 – 84.9</td>
-              <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐☆☆</td>
-              <td style="text-align: center; font-weight: bold; color: #1e40af;">Cakap</td>
-              <td style="text-align: center; font-weight: bold; color: #1e40af;">Tuntas Standar</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">&lt; 70.0</td>
-              <td style="text-align: center; color: #dc2626; font-weight: bold;">⭐☆☆☆☆ – ⭐⭐☆☆☆</td>
-              <td style="text-align: center; font-weight: bold; color: #dc2626;">Berkembang</td>
-              <td style="text-align: center; font-weight: bold; color: #dc2626;">Perlu Bimbingan</td>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-
-      <!-- KOLOM KANAN: DISPENSASI DARURAT, RUTE 7 HARI, TTD -->
-      <div class="col-right">
-        
-        <!-- Kebijakan Darurat Admin -->
-        <div class="section-title">4. Fitur Khusus: Koreksi Darurat Admin (Emergency Override)</div>
-        <div class="callout callout-warning">
-          <strong>⚡ Dispensasi Khusus Gangguan Lapangan:</strong><br>
-          Jika terjadi kendala sinyal <em>blank-spot</em> seluler (misal di Kaldera Pasir Gunung Bromo, lereng pegunungan, atau rest area terpencil) atau siswa mengalami gangguan kesehatan mendadak:<br>
-          • <strong>Admin / Koordinator</strong> berwenang memasukkan nilai dispensasi manual (override).<br>
-          • Alasan dispensasi wajib dicatat dan otomatis masuk ke dalam sistem audit FINCESTEM.
-        </div>
-
-        <div class="callout callout-info">
-          <strong>✓ Integritas Pengawasan Lapangan (Tanpa Pinalti Geotag):</strong><br>
-          Siswa Field Trip <strong>tidak dikenakan pinalti Google Tagging</strong> karena keberadaan fisik dan aktivitasnya dipantau langsung oleh Guru Pendamping, Fasilitator Bus, dan Tour Leader resmi.
-        </div>
-
-        <!-- Tabel Rute & Destinasi Lapangan 7 Hari -->
-        <div class="section-title">5. Agenda &amp; Objek Riset Field Trip (Day 1 – 7)</div>
-        <table>
-          <thead>
-            <tr>
-              <th style="width: 15%; text-align: center;">Hari</th>
-              <th style="width: 32%;">Fokus Riset Lapangan</th>
-              <th style="width: 53%;">Destinasi &amp; Lokasi Observasi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">Day 1</td>
-              <td>Transportasi &amp; Budgeting</td>
-              <td>Bandara, alur logistik penerbangan &amp; adab musafir.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">Day 2</td>
-              <td>Semarang Heritage</td>
-              <td>Kota Lama Semarang, Lawang Sewu &amp; budaya pesisir.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">Day 3</td>
-              <td>Sains Terapan JTP 1</td>
-              <td>Fisika mekanika, anatomi biologi, iptek wahana edukasi.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">Day 4</td>
-              <td>Vulkanologi Bromo</td>
-              <td>Konservasi Bromo, kearifan lokal Tengger &amp; ekosistem.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">Day 5</td>
-              <td>Arkeologi Prambanan</td>
-              <td>Candi Prambanan, sains arsitektur candi Mataram Kuno.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">Day 6</td>
-              <td>Ekonomi Kreatif Yogya</td>
-              <td>Sentra batik Malioboro, industri pangan lokal &amp; UMKM.</td>
-            </tr>
-            <tr>
-              <td style="text-align: center; font-weight: bold;">Day 7</td>
-              <td>Evaluasi &amp; Refleksi</td>
-              <td>Perjalanan kembali, portofolio akhir &amp; penilaian holistik.</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <!-- Komparasi Singkat -->
-        <div class="callout callout-comp">
-          <strong>Perbandingan dengan Non-Field Trip:</strong><br>
-          • <strong>Field Trip:</strong> Dinilai murni dari jam submit tugas (batas 16.00 WIB = 100).<br>
-          • <strong>Non-Field Trip:</strong> Dinilai dari komposit 4 pilar (Modul Pagi 20%, LKPD 30%, Kuis Asesmen 35%, Geotag GPS OKU Timur 15%).
-        </div>
-
-        <!-- Tanda Tangan -->
-        <div class="ttd-container">
-          <div class="ttd-box">
-            <span>Mengetahui,<br><strong>Kepala SMAN 1 Belitang</strong></span>
-            <div class="ttd-space"></div>
-            <span><strong><u>H. DEDY RIDUAN, S.Pd., M.M.</u></strong><br>NIP. 197105151998021002</span>
-          </div>
-          <div class="ttd-box">
-            <span>Belitang, 30 Oktober 2026<br><strong>Koordinator Tim FINCESTEM</strong></span>
-            <div class="ttd-space"></div>
-            <span><strong><u>TIM KURIKULUM SMANSA</u></strong><br>SMAN 1 Belitang, OKU Timur</span>
+    <div>
+      <!-- 1. MODERN CLEAN HEADER (TANPA KOP SURAT) -->
+      <div class="modern-header">
+        <div class="header-left">
+          <div class="badge-icon">FT</div>
+          <div class="header-titles">
+            <h1>KRITERIA &amp; PEDOMAN RESMI PENILAIAN FIELD TRIP JAWA</h1>
+            <p>Standar Operasional Penilaian Harian Studi Wisata Edukasi (Day 1 – 7)</p>
           </div>
         </div>
-
+        <div class="header-pill">Pedoman Guru &amp; Penilai</div>
       </div>
 
+      <!-- 2. KONTEN DUA KOLOM -->
+      <div class="grid-2col">
+        
+        <!-- KOLOM KIRI: FILOSOFI, TABEL SKEMA RESMI JAM & POIN -->
+        <div class="col-left">
+          
+          <!-- Prinsip Dasar -->
+          <div class="section-title">1. Filosofi &amp; Prinsip Penilaian Field Trip</div>
+          <p style="margin: 0 0 3px 0; font-size: 7.2pt; text-align: justify;">
+            Peserta Field Trip bergerak dalam <strong>rombongan armada bus sekolah</strong> dengan jadwal operasional objek wisata yang ketat (Semarang, Malang, Bromo, Yogyakarta). Oleh karena itu, penilaian harian <strong>100% Murni Berbasis Ketepatan Waktu Pengumpulan Tugas (On-Time Submission)</strong>:
+          </p>
+
+          <!-- Tabel Skema Penilaian Jam Submit -->
+          <div class="section-title">2. Skema Penilaian Resmi Berdasarkan Jam Submit</div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 25%; text-align: center;">Jam Pengumpulan</th>
+                <th style="width: 14%; text-align: center;">Nilai</th>
+                <th style="width: 22%; text-align: center;">Bintang</th>
+                <th style="width: 39%;">Kondisi Lapangan &amp; Status Riset</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">07.00 – 16.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">100</span></td>
+                <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
+                <td><strong>Sangat Baik (Sempurna):</strong> Tuntas di lokasi sebelum jam kunjungan objek ditutup / bus bergeser.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">16.01 – 17.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">99</span></td>
+                <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
+                <td rowspan="5" style="vertical-align: middle;"><strong>Sangat Baik:</strong> Tuntas sore/petang selama perjalanan bus menuju hotel atau singgah di Rest Area tol Trans-Jawa.<br><em>(Nilai berkurang teratur 1 poin setiap 1 jam keterlambatan).</em></td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">17.01 – 18.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">98</span></td>
+                <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">18.01 – 19.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">97</span></td>
+                <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">19.01 – 20.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">96</span></td>
+                <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">20.01 – 21.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-green">95</span></td>
+                <td style="text-align: center; font-weight: bold; color: #15803d;">⭐⭐⭐⭐⭐</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">21.01 – 24.00 WIB</td>
+                <td style="text-align: center;"><span class="badge badge-yellow">90 – 94</span></td>
+                <td style="text-align: center; font-weight: bold; color: #b45309;">⭐⭐⭐⭐☆</td>
+                <td><strong>Baik:</strong> Tuntas malam hari setelah check-in hotel/istirahat rombongan (21–22: 94/93, 22–23: 92/91, 23–24: 90).</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">&gt; 24.00 WIB / Besok</td>
+                <td style="text-align: center;"><span class="badge badge-orange">85</span></td>
+                <td style="text-align: center; font-weight: bold; color: #c2410c;">⭐⭐⭐⭐☆</td>
+                <td><strong>Cukup:</strong> Pengumpulan terlambat pada keesokan harinya sebelum kegiatan berikutnya dimulai.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Formula Rumus NA Field Trip -->
+          <div class="formula-box">
+            <div class="formula-title">Logika Otomatis Sistem FINCESTEM (js/core.js):</div>
+            <div class="formula-math">Nilai Harian FT = Skor Jam Submit (Batas Pukul 16.00 WIB)</div>
+            <div class="formula-desc">Batas waktu standar 16.00 WIB dapat disesuaikan fleksibel per hari oleh Admin/Koordinator.</div>
+          </div>
+
+        </div>
+
+        <!-- KOLOM KANAN: DISPENSASI DARURAT, RUTE 7 HARI, PREDIKAT -->
+        <div class="col-right">
+          
+          <!-- Kebijakan Darurat Admin -->
+          <div class="section-title">3. Koreksi Darurat Admin (Emergency Manual Override)</div>
+          <div class="callout callout-warning">
+            <strong>⚡ Dispensasi Khusus Gangguan Lapangan:</strong><br>
+            Jika terjadi kendala sinyal <em>blank-spot</em> seluler (misal di Kaldera Pasir Gunung Bromo, lereng pegunungan, atau rest area terpencil) atau siswa mengalami gangguan kesehatan mendadak:<br>
+            • <strong>Admin / Koordinator</strong> berwenang memasukkan nilai dispensasi manual (override).<br>
+            • Alasan dispensasi wajib dicatat dan otomatis masuk ke dalam sistem audit FINCESTEM.
+          </div>
+
+          <div class="callout callout-info">
+            <strong>✓ Integritas Pengawasan Lapangan (Bebas Pinalti Geotag):</strong><br>
+            Siswa Field Trip <strong>tidak dikenakan pinalti Google Tagging</strong> karena keberadaan fisik dan aktivitasnya dipantau langsung oleh Guru Pendamping, Fasilitator Bus, dan Tour Leader resmi.
+          </div>
+
+          <!-- Tabel Predikat Harian -->
+          <div class="section-title">4. Standar Predikat Nilai Harian Field Trip</div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 25%; text-align: center;">Rentang Skor</th>
+                <th style="width: 25%; text-align: center;">Bintang</th>
+                <th style="width: 25%; text-align: center;">Predikat</th>
+                <th style="width: 25%; text-align: center;">Kelulusan Harian</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">85.0 – 100.0</td>
+                <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐⭐ – ⭐⭐⭐⭐⭐</td>
+                <td style="text-align: center; font-weight: bold; color: #15803d;">Mahir</td>
+                <td style="text-align: center; font-weight: bold; color: #15803d;">Tuntas Memuaskan</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">70.0 – 84.9</td>
+                <td style="text-align: center; color: #d97706; font-weight: bold;">⭐⭐⭐☆☆</td>
+                <td style="text-align: center; font-weight: bold; color: #1e40af;">Cakap</td>
+                <td style="text-align: center; font-weight: bold; color: #1e40af;">Tuntas Standar</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">&lt; 70.0</td>
+                <td style="text-align: center; color: #dc2626; font-weight: bold;">⭐☆☆☆☆ – ⭐⭐☆☆☆</td>
+                <td style="text-align: center; font-weight: bold; color: #dc2626;">Berkembang</td>
+                <td style="text-align: center; font-weight: bold; color: #dc2626;">Perlu Bimbingan</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Tabel Rute & Destinasi Lapangan 7 Hari -->
+          <div class="section-title">5. Agenda &amp; Objek Riset Field Trip (Day 1 – 7)</div>
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 15%; text-align: center;">Hari</th>
+                <th style="width: 32%;">Fokus Riset Lapangan</th>
+                <th style="width: 53%;">Destinasi &amp; Lokasi Observasi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">Day 1</td>
+                <td>Transportasi &amp; Budgeting</td>
+                <td>Bandara, alur logistik penerbangan &amp; adab musafir.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">Day 2</td>
+                <td>Semarang Heritage</td>
+                <td>Kota Lama Semarang, Lawang Sewu &amp; budaya pesisir.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">Day 3</td>
+                <td>Sains Terapan JTP 1</td>
+                <td>Fisika mekanika, anatomi biologi, iptek wahana edukasi.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">Day 4</td>
+                <td>Vulkanologi Bromo</td>
+                <td>Konservasi Bromo, kearifan lokal Tengger &amp; ekosistem.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">Day 5</td>
+                <td>Arkeologi Prambanan</td>
+                <td>Candi Prambanan, sains arsitektur candi Mataram Kuno.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">Day 6</td>
+                <td>Ekonomi Kreatif Yogya</td>
+                <td>Sentra batik Malioboro, industri pangan lokal &amp; UMKM.</td>
+              </tr>
+              <tr>
+                <td style="text-align: center; font-weight: bold;">Day 7</td>
+                <td>Evaluasi &amp; Refleksi</td>
+                <td>Perjalanan kembali, portofolio akhir &amp; penilaian holistik.</td>
+              </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </div>
     </div>
 
-    <!-- 4. FOOTER DOKUMEN -->
+    <!-- 3. FOOTER DOKUMEN (TANPA TANDA TANGAN) -->
     <div class="footer-page">
-      <span>FINCESTEM 2026 • SMAN 1 Belitang</span>
-      <span>Dokumen Resmi Pedoman Penilaian Field Trip • Standar Operasional Fasilitator &amp; Koordinator</span>
+      <span>FINCESTEM 2026 • Panduan Kriteria Penilaian Field Trip</span>
+      <span>Dokumen Resmi Pedoman Penilaian Studi Wisata Jawa • Standar Operasional Guru &amp; Penilai</span>
       <span>Halaman 1 dari 1 (Tunggal)</span>
     </div>
 

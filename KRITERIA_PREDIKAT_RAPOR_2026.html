@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Standar Predikat & Kriteria Rapor Kokurikuler FINCESTEM 2026</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 8mm 10mm 8mm 10mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      color: #0f172a;
+      line-height: 1.25;
+      font-size: 8pt;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+    }
+    .page-container {
+      width: 100%;
+      height: 281mm; /* Pas 1 lembar A4 */
+      max-height: 281mm;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Modern Clean Header (Tanpa Kop Surat) */
+    .modern-header {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #0f172a 100%);
+      color: #ffffff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #fbbf24, #d97706);
+      color: #78350f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 15pt;
+      flex-shrink: 0;
+    }
+    .header-titles h1 {
+      margin: 0;
+      font-size: 10.5pt;
+      font-weight: 900;
+      letter-spacing: 0.3px;
+      color: #ffffff;
+    }
+    .header-titles p {
+      margin: 1px 0 0 0;
+      font-size: 7.2pt;
+      color: #e0e7ff;
+    }
+    .header-pill {
+      background: rgba(253, 224, 71, 0.2);
+      border: 1px solid rgba(253, 224, 71, 0.4);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 7pt;
+      font-weight: 700;
+      color: #fde047;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Section Banner */
+    .section-banner {
+      background: #f1f5f9;
+      border-left: 4px solid #d97706;
+      padding: 4px 8px;
+      border-radius: 0 6px 6px 0;
+      margin: 3px 0 2px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .section-banner h2 {
+      margin: 0;
+      font-size: 8.5pt;
+      font-weight: 800;
+      color: #92400e;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .section-banner span {
+      font-size: 7pt;
+      font-weight: 700;
+      color: #b45309;
+    }
+
+    /* Predikat Rapor Cards */
+    .rapor-card {
+      border-radius: 6px;
+      padding: 7px 10px;
+      border: 1.5px solid;
+      margin-bottom: 5px;
+    }
+    .rapor-card-mahir {
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border-color: #f59e0b;
+    }
+    .rapor-card-cakap {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      border-color: #10b981;
+    }
+    .rapor-card-berkembang {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border-color: #3b82f6;
+    }
+
+    .rapor-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 3px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding-bottom: 2px;
+    }
+    .rapor-title {
+      font-size: 9pt;
+      font-weight: 900;
+    }
+    .rapor-badge {
+      font-size: 7.2pt;
+      font-weight: 800;
+      padding: 1.5px 7px;
+      border-radius: 12px;
+    }
+    .rapor-desc {
+      font-size: 7.2pt;
+      line-height: 1.28;
+      text-align: justify;
+      margin: 0;
+    }
+
+    /* Pilar 4 Boxes */
+    .pilar-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px;
+      margin-top: 3px;
+    }
+    .pilar-box {
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      padding: 4px 6px;
+      font-size: 7pt;
+      line-height: 1.22;
+    }
+    .pilar-box strong {
+      display: block;
+      margin-bottom: 1px;
+      font-size: 7.4pt;
+    }
+
+    .callout-info {
+      background: #f0fdf4;
+      border-left: 3px solid #16a34a;
+      color: #14532d;
+      padding: 5px 8px;
+      border-radius: 5px;
+      font-size: 7.2pt;
+      line-height: 1.25;
+      margin-top: 4px;
+    }
+
+    .footer-page {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 3px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 6.5pt;
+      color: #94a3b8;
+      margin-top: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="page-container">
+    
+    <div>
+      <!-- 1. MODERN CLEAN HEADER (TANPA KOP SURAT) -->
+      <div class="modern-header">
+        <div class="header-left">
+          <div class="badge-icon">🏆</div>
+          <div class="header-titles">
+            <h1>STANDAR PREDIKAT &amp; AMBANG BATAS RAPOR KOKURIKULER</h1>
+            <p>Konversi Peringkat Bintang, Nilai Rata-Rata, Narasi Capaian Rapor Siswa &amp; Rubrik 4 Pilar</p>
+          </div>
+        </div>
+        <div class="header-pill">Standar Resmi Rapor</div>
+      </div>
+
+      <!-- 2. SECTION PREDIKAT RAPOR -->
+      <div class="section-banner">
+        <h2>1. Ambang Batas Predikat Rapor Kokurikuler (Mahir, Cakap, Berkembang)</h2>
+        <span>Akumulasi Day 1 – 7 (Maksimal 35 Bintang)</span>
+      </div>
+
+      <!-- KARTU 1: MAHIR -->
+      <div class="rapor-card rapor-card-mahir">
+        <div class="rapor-head">
+          <span class="rapor-title" style="color: #78350f;">🏆 1. PREDIKAT MAHIR</span>
+          <div>
+            <span class="rapor-badge" style="background: #fef08a; color: #854d0e; border: 1px solid #fde047; font-weight: 900;">30 – 35 ⭐ Bintang</span>
+            <span class="rapor-badge" style="background: #dcfce7; color: #166534; border: 1px solid #86efac; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: ≥ 85.0</span>
+          </div>
+        </div>
+        <p class="rapor-desc" style="color: #713f12;">
+          <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat. Dalam kreativitas, peserta didik mampu menghasilkan karya orisinal berbasis STEM yang mengangkat nilai dan filosofi budaya lokal, serta menyajikan hasil eksplorasi melalui video dokumenter dan infografis yang menarik, informatif, dan berkualitas. Dalam aspek kewargaan, peserta didik menunjukkan keteladanan dalam menghargai kearifan lokal, menjunjung toleransi, dan menginisiasi kegiatan pelestarian lingkungan. Dalam kemandirian, peserta didik menunjukkan tanggung jawab, disiplin dalam menyelesaikan tugas, integritas, serta pengelolaan keuangan yang jujur dan transparan.
+        </p>
+      </div>
+
+      <!-- KARTU 2: CAKAP -->
+      <div class="rapor-card rapor-card-cakap">
+        <div class="rapor-head">
+          <span class="rapor-title" style="color: #065f46;">🌟 2. PREDIKAT CAKAP</span>
+          <div>
+            <span class="rapor-badge" style="background: #a7f3d0; color: #064e3b; border: 1px solid #6ee7b7; font-weight: 900;">21 – 29 ⭐ Bintang</span>
+            <span class="rapor-badge" style="background: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: 70.0 – 84.9</span>
+          </div>
+        </div>
+        <p class="rapor-desc" style="color: #064e3b;">
+          <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri. Dalam kreativitas, peserta didik mampu menghasilkan karya berbasis STEM yang memadukan kearifan lokal serta menyajikan hasil eksplorasi melalui infografis atau video pendek yang informatif. Dalam aspek kewargaan, peserta didik mampu menghormati keberagaman budaya, menjaga etika dan kesopanan, serta berperan aktif dalam menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mampu mengatur waktu, bertanggung jawab atas barang bawaan, menyelesaikan tugas harian dengan disiplin, dan mengelola anggaran pribadi secara mandiri.
+        </p>
+      </div>
+
+      <!-- KARTU 3: BERKEMBANG -->
+      <div class="rapor-card rapor-card-berkembang">
+        <div class="rapor-head">
+          <span class="rapor-title" style="color: #1e40af;">🌱 3. PREDIKAT BERKEMBANG</span>
+          <div>
+            <span class="rapor-badge" style="background: #bfdbfe; color: #1e3a8a; border: 1px solid #93c5fd; font-weight: 900;">≤ 20 ⭐ Bintang</span>
+            <span class="rapor-badge" style="background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: &lt; 70.0</span>
+          </div>
+        </div>
+        <p class="rapor-desc" style="color: #1e3a8a;">
+          <strong>Narasi Capaian Rapor Siswa:</strong> Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains dan mengevaluasi pembukuan keuangan. Dalam kreativitas, peserta didik mulai mengembangkan karya berbasis STEM dan mempraktikkan keterampilan budaya lokal, meskipun pembuatan video dan infografis masih memerlukan pendampingan. Dalam aspek kewargaan, peserta didik mulai mematuhi aturan dan menghargai nilai-nilai budaya setempat, tetapi masih perlu diingatkan untuk menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mulai belajar mengelola uang saku dan masih memerlukan dorongan untuk menyelesaikan serta mengumpulkan tugas harian tepat waktu.
+        </p>
+      </div>
+
+      <!-- 3. SECTION RUBRIK 4 PILAR -->
+      <div class="section-banner" style="border-left-color: #7c3aed; margin-top: 4px;">
+        <h2 style="color: #5b21b6;">2. Panduan Rubrik 4 Pilar FINCESTEM (Bobot 25% Seimbang Masing-Masing)</h2>
+        <span style="color: #6d28d9; font-weight: bold;">Financial • Culture • Exploration • STEM</span>
+      </div>
+
+      <div class="pilar-grid">
+        <div class="pilar-box" style="background: #fffbeb; border-color: #fde68a;">
+          <strong style="color: #92400e;">1. Pilar Financial (Bobot 25%):</strong>
+          <span style="color: #78350f;">Pengelolaan kas saku pribadi, pembukuan neraca harian yang jujur &amp; transparan, kalkulasi efisiensi konsumsi, serta pemahaman struktur biaya produksi (HPP) komoditas pangan/UMKM.</span>
+        </div>
+        <div class="pilar-box" style="background: #faf5ff; border-color: #e9d5ff;">
+          <strong style="color: #6b21a8;">2. Pilar Culture (Bobot 25%):</strong>
+          <span style="color: #581c87;">Apresiasi sejarah akulturasi &amp; kolonisasi, etika tata krama terhadap sesama &amp; narasumber, tradisi gotong royong sambatan, dan pelestarian warisan budaya nusantara.</span>
+        </div>
+        <div class="pilar-box" style="background: #f0fdf4; border-color: #bbf7d0;">
+          <strong style="color: #166534;">3. Pilar Exploration (Bobot 25%):</strong>
+          <span style="color: #14532d;">Ketangkasan navigasi geospasial lapangan, ketelitian observasi objek fisik/ekosistem, kedisiplinan jam pengumpulan, dan ketahanan fisik dalam menyelesaikan observasi mandiri.</span>
+        </div>
+        <div class="pilar-box" style="background: #eff6ff; border-color: #bfdbfe;">
+          <strong style="color: #1e40af;">4. Pilar STEM (Bobot 25%):</strong>
+          <span style="color: #1e3a8a;">Penerapan sains terapan (mekanika fisika, ekosistem biologi, irigasi tanah), integrasi rekayasa teknologi, pengolahan data matematis, dan logika pemecahan masalah objektif.</span>
+        </div>
+      </div>
+
+      <div class="callout-info">
+        <strong>Petunjuk Penggunaan Guru Fasilitator &amp; Koordinator:</strong> Seluruh perhitungan nilai harian dan akumulasi predikat rapor dikalkulasikan secara otomatis oleh sistem FINCESTEM. Guru Fasilitator bertugas memantau kedisiplinan dan dapat menambahkan catatan deskripsi penguatan karakter pada lembar rapor siswa.
+      </div>
+
+    </div>
+
+    <!-- 4. FOOTER DOKUMEN (TANPA TANDA TANGAN) -->
+    <div class="footer-page">
+      <span>FINCESTEM 2026 • Panduan Standar Predikat &amp; Kriteria Rapor</span>
+      <span>Dokumen Resmi Pedoman Predikat Rapor Kokurikuler • Standar Guru &amp; Penilai</span>
+      <span>Halaman 1 dari 1 (Tunggal)</span>
+    </div>
+
+  </div>
+
+</body>
+</html>

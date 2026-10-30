@@ -1,10 +1,9 @@
 /**
  * FINCESTEM 2026 - Modal Kriteria Penilaian Kokurikuler
- * Menampilkan:
- * 1. Field Trip (Jawa) - Konsep interaktif langsung di layar
- * 2. Non - Field Trip (OKU Timur) - Konsep interaktif & SIMULASI 3 KASUS SISWA + LIVE KALKULATOR
- * 3. Nilai Rapor - Mahir, Cakap, Berkembang beserta kriteria lengkapnya
- * 4. Tombol Download PDF Kriteria Penilaian (2 Halaman Rapi tanpa Kop & tanpa TTD)
+ * Menampilkan 3 Tab Mandiri & Download PDF Masing-Masing:
+ * 1. Field Trip (Jawa) -> Download: KRITERIA_PENILAIAN_FIELDTRIP_2026.pdf (Murni FT 1 Lembar)
+ * 2. Non - Field Trip (OKU Timur) -> Download: KRITERIA_PENILAIAN_NON_FIELDTRIP_2026.pdf (Murni NFT + 3 Simulasi Kasus 1 Lembar)
+ * 3. Nilai Rapor (Mahir, Cakap, Berkembang) -> Download: KRITERIA_PREDIKAT_RAPOR_2026.pdf (Murni Rapor 1 Lembar)
  *
  * KHUSUS: Portal Administrator, Fasilitator & Koordinator
  * (DILARANG KERAS Ditampilkan di Portal Siswa!)
@@ -28,13 +27,13 @@
         <!-- Header Modal -->
         <div class="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between border-b border-indigo-800/60 shrink-0">
           <div class="flex items-center gap-3">
-            <div id="kriteriaIconWrapper" class="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-2xl">fact_check</span>
+            <div id="kriteriaIconWrapper" class="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-2xl">directions_bus</span>
             </div>
             <div>
               <div class="flex items-center gap-2">
                 <span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-400 text-amber-950 tracking-wide uppercase">Pedoman Penilai</span>
-                <span id="kriteriaSubtitle" class="text-xs text-indigo-200 font-medium">FINCESTEM Day 1 – 7</span>
+                <span id="kriteriaSubtitle" class="text-xs text-indigo-200 font-medium">Field Trip (Studi Wisata Jawa)</span>
               </div>
               <h3 id="kriteriaMainTitle" class="font-black text-base sm:text-lg text-white leading-tight mt-0.5">
                 Kriteria Penilaian Kokurikuler
@@ -42,9 +41,9 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" onclick="downloadKriteriaKokurikulerPdf()" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer" title="Download Versi PDF (2 Halaman Rapi)">
+            <button id="btnDownloadHeader" type="button" onclick="downloadKriteriaKokurikulerPdf()" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer" title="Download Versi PDF 1 Lembar Sesuai Tab Aktif">
               <span class="material-symbols-outlined text-base">download</span>
-              <span>Download PDF</span>
+              <span id="btnDownloadHeaderLabel">Download PDF Field Trip</span>
             </button>
             <button type="button" onclick="closeKriteriaKokurikulerModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer" title="Tutup">
               <span class="material-symbols-outlined text-2xl">close</span>
@@ -529,12 +528,12 @@
         <!-- Footer Modal Aksi -->
         <div class="p-4 sm:p-5 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
           <div class="text-[11px] text-slate-500 font-medium text-center sm:text-left">
-            <span>Tersedia dokumen resmi format ringkas 2 halaman tanpa kop &amp; tanpa tanda tangan.</span>
+            <span id="kriteriaFooterNote">Tersedia dokumen resmi format ringkas 1 lembar tanpa kop &amp; tanpa tanda tangan.</span>
           </div>
           <div class="flex items-center gap-2 w-full sm:w-auto">
-            <button type="button" onclick="downloadKriteriaKokurikulerPdf()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-700 hover:bg-indigo-800 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
+            <button id="btnDownloadFooter" type="button" onclick="downloadKriteriaKokurikulerPdf()" class="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer">
               <span class="material-symbols-outlined text-base">download</span>
-              <span>Download PDF Kriteria Penilaian</span>
+              <span id="btnDownloadFooterLabel">Download PDF Kriteria Field Trip (1 Lembar)</span>
             </button>
             <button type="button" onclick="closeKriteriaKokurikulerModal()" class="px-4 py-2.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition-all cursor-pointer">
               <span>Tutup</span>
@@ -619,6 +618,12 @@
     const headerSub = document.getElementById('kriteriaSubtitle');
     const iconWrapper = document.getElementById('kriteriaIconWrapper');
 
+    const btnHeader = document.getElementById('btnDownloadHeader');
+    const labelHeader = document.getElementById('btnDownloadHeaderLabel');
+    const btnFooter = document.getElementById('btnDownloadFooter');
+    const labelFooter = document.getElementById('btnDownloadFooterLabel');
+    const noteFooter = document.getElementById('kriteriaFooterNote');
+
     // Reset styles
     const inactiveClass = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer text-slate-600 hover:text-slate-900 border-transparent';
     if (tabFT) tabFT.className = inactiveClass;
@@ -633,25 +638,49 @@
       if (tabNonFT) tabNonFT.className = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer bg-white text-indigo-900 border-indigo-600 shadow-xs';
       if (contentNonFT) contentNonFT.classList.remove('hidden');
       if (headerSub) headerSub.textContent = 'Non-Field Trip (Riset Mandiri OKU Timur)';
-      if (iconWrapper) iconWrapper.className = 'w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0';
+      if (iconWrapper) {
+        iconWrapper.className = 'w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0';
+        iconWrapper.innerHTML = '<span class="material-symbols-outlined text-2xl">home_pin</span>';
+      }
+      if (btnHeader) btnHeader.className = 'hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer';
+      if (labelHeader) labelHeader.textContent = 'Download PDF Non-Field Trip';
+      if (btnFooter) btnFooter.className = 'flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-indigo-700 hover:bg-indigo-800 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer';
+      if (labelFooter) labelFooter.textContent = 'Download PDF Kriteria Non-Field Trip (1 Lembar)';
+      if (noteFooter) noteFooter.textContent = 'Tersedia dokumen resmi Non-Field Trip 1 lembar memuat rumus, bobot & simulasi 3 kasus siswa.';
       setTimeout(window.runLiveNonFTSimulation, 50);
     } else if (tab === 'rapor') {
       if (tabRapor) tabRapor.className = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer bg-white text-amber-900 border-amber-600 shadow-xs';
       if (contentRapor) contentRapor.classList.remove('hidden');
       if (headerSub) headerSub.textContent = 'Predikat Rapor & Rubrik 4 Pilar';
-      if (iconWrapper) iconWrapper.className = 'w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400/30 text-amber-300 flex items-center justify-center shrink-0';
+      if (iconWrapper) {
+        iconWrapper.className = 'w-10 h-10 rounded-2xl bg-amber-500/20 border border-amber-400/30 text-amber-300 flex items-center justify-center shrink-0';
+        iconWrapper.innerHTML = '<span class="material-symbols-outlined text-2xl">military_tech</span>';
+      }
+      if (btnHeader) btnHeader.className = 'hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer';
+      if (labelHeader) labelHeader.textContent = 'Download PDF Kriteria Rapor';
+      if (btnFooter) btnFooter.className = 'flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-amber-700 hover:bg-amber-800 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer';
+      if (labelFooter) labelFooter.textContent = 'Download PDF Kriteria Rapor (1 Lembar)';
+      if (noteFooter) noteFooter.textContent = 'Tersedia dokumen resmi Predikat Rapor 1 lembar memuat Mahir, Cakap, Berkembang & Rubrik 4 Pilar.';
     } else {
       // default: ft
       if (tabFT) tabFT.className = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer bg-white text-emerald-900 border-emerald-600 shadow-xs';
       if (contentFT) contentFT.classList.remove('hidden');
       if (headerSub) headerSub.textContent = 'Field Trip (Studi Wisata Jawa)';
-      if (iconWrapper) iconWrapper.className = 'w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 flex items-center justify-center shrink-0';
+      if (iconWrapper) {
+        iconWrapper.className = 'w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 flex items-center justify-center shrink-0';
+        iconWrapper.innerHTML = '<span class="material-symbols-outlined text-2xl">directions_bus</span>';
+      }
+      if (btnHeader) btnHeader.className = 'hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer';
+      if (labelHeader) labelHeader.textContent = 'Download PDF Field Trip';
+      if (btnFooter) btnFooter.className = 'flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-bold text-xs flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer';
+      if (labelFooter) labelFooter.textContent = 'Download PDF Kriteria Field Trip (1 Lembar)';
+      if (noteFooter) noteFooter.textContent = 'Tersedia dokumen resmi Field Trip 1 lembar tanpa kop & tanpa tanda tangan.';
     }
   };
 
   window.openKriteriaKokurikulerModal = function(initialTab) {
     const modal = createModalDOM();
-    window.switchKriteriaTab(initialTab || 'nonft');
+    window.switchKriteriaTab(initialTab || 'ft');
     modal.classList.remove('opacity-0', 'pointer-events-none');
     modal.classList.add('opacity-100');
   };
@@ -664,22 +693,16 @@
     }
   };
 
-  // Backward compatibility alias
-  window.openKriteriaModal = window.openKriteriaKokurikulerModal;
-  window.closeKriteriaModal = window.closeKriteriaKokurikulerModal;
-  window.openKriteriaNonFTModal = function() { window.openKriteriaKokurikulerModal('nonft'); };
-  window.openKriteriaFTModal = function() { window.openKriteriaKokurikulerModal('ft'); };
-  window.closeKriteriaNonFTModal = window.closeKriteriaKokurikulerModal;
-
-  window.downloadKriteriaKokurikulerPdf = function() {
+  // Helper trigger unduhan berkas PDF spesifik
+  function triggerPdfDownload(fileName) {
     const isSubdir = window.location.pathname.includes('/admin/') || window.location.pathname.includes('/guru/') || window.location.pathname.includes('/siswa/');
-    const basePdf = isSubdir ? '../KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf' : 'KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf';
+    const basePdf = (isSubdir ? '../' : '') + fileName;
     const freshUrl = basePdf + '?v=' + Date.now();
 
     try {
       const link = document.createElement('a');
       link.href = freshUrl;
-      link.download = 'KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf';
+      link.download = fileName;
       link.target = '_blank';
       document.body.appendChild(link);
       link.click();
@@ -689,9 +712,29 @@
     } catch(e) {
       window.open(freshUrl, '_blank');
     }
+  }
+
+  window.downloadKriteriaKokurikulerPdf = function() {
+    if (currentActiveTab === 'nonft') {
+      triggerPdfDownload('KRITERIA_PENILAIAN_NON_FIELDTRIP_2026.pdf');
+    } else if (currentActiveTab === 'rapor') {
+      triggerPdfDownload('KRITERIA_PREDIKAT_RAPOR_2026.pdf');
+    } else {
+      triggerPdfDownload('KRITERIA_PENILAIAN_FIELDTRIP_2026.pdf');
+    }
   };
 
-  window.openKriteriaNonFTPdf = window.downloadKriteriaKokurikulerPdf;
-  window.openKriteriaFTPdf = window.downloadKriteriaKokurikulerPdf;
+  window.downloadKriteriaFTPdf = function() { triggerPdfDownload('KRITERIA_PENILAIAN_FIELDTRIP_2026.pdf'); };
+  window.downloadKriteriaNonFTPdf = function() { triggerPdfDownload('KRITERIA_PENILAIAN_NON_FIELDTRIP_2026.pdf'); };
+  window.downloadKriteriaRaporPdf = function() { triggerPdfDownload('KRITERIA_PREDIKAT_RAPOR_2026.pdf'); };
+
+  // Backward compatibility alias
+  window.openKriteriaModal = window.openKriteriaKokurikulerModal;
+  window.closeKriteriaModal = window.closeKriteriaKokurikulerModal;
+  window.openKriteriaNonFTModal = function() { window.openKriteriaKokurikulerModal('nonft'); };
+  window.openKriteriaFTModal = function() { window.openKriteriaKokurikulerModal('ft'); };
+  window.closeKriteriaNonFTModal = window.closeKriteriaKokurikulerModal;
+  window.openKriteriaNonFTPdf = function() { triggerPdfDownload('KRITERIA_PENILAIAN_NON_FIELDTRIP_2026.pdf'); };
+  window.openKriteriaFTPdf = function() { triggerPdfDownload('KRITERIA_PENILAIAN_FIELDTRIP_2026.pdf'); };
 
 })(window);
