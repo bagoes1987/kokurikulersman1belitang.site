@@ -49,7 +49,16 @@
       .text-justify {
         text-align: justify;
         text-justify: inter-word;
+        text-align-last: left;
         hyphens: auto;
+      }
+      ol.list-decimal, ul.list-disc {
+        list-style-position: outside;
+      }
+      ol.list-decimal li, ul.list-disc li {
+        text-align: justify;
+        text-justify: inter-word;
+        text-align-last: left;
       }
       .card-readable {
         letter-spacing: -0.01em;
@@ -157,7 +166,7 @@
   <script src="../js/siswa_data.js?v=20261021_v1"></script>
   <script src="../js/core.js?v=20261027_d6_final_v4"></script>
   <script src="../js/modules/materi-fieldtrip.js?v=20261027_d6_final_v4"></script>
-  <script src="../js/modules/materi-nonfieldtrip.js?v=20261029_nft_d2"></script>
+  <script src="../js/modules/materi-nonfieldtrip.js?v=20261030_nft_v3_full"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -193,20 +202,17 @@
             return;
           }
         } else {
-          // TAMPILKAN MODUL BELAJAR NON-FIELD TRIP (Riset Mandiri OKU Timur)
-          if (dayNum === 1 && mainEl) {
-            if (typeof renderDay1NonFieldTripModule === 'function') {
-              renderDay1NonFieldTripModule(mainEl);
-              return;
-            }
+          // TAMPILKAN MODUL BELAJAR NON-FIELD TRIP (Riset Mandiri OKU Timur Day 1 s.d. 7)
+          const nftRenderer = window['renderDay' + dayNum + 'NonFieldTripModule'];
+          if (typeof nftRenderer === 'function' && mainEl) {
+            nftRenderer(mainEl);
+            return;
           }
-          if (dayNum === 2 && mainEl) {
-            if (typeof renderDay2NonFieldTripModule === 'function') {
-              renderDay2NonFieldTripModule(mainEl);
-              return;
-            }
+          if (typeof renderNonFieldTripDayModule === 'function' && mainEl) {
+            renderNonFieldTripDayModule(mainEl, dayNum);
+            return;
           }
-          if (typeof renderGenericNonFieldTripModule === 'function') {
+          if (typeof renderGenericNonFieldTripModule === 'function' && mainEl) {
             renderGenericNonFieldTripModule(mainEl, dayNum);
             return;
           }

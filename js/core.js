@@ -2343,14 +2343,113 @@ const FincestemCore = {
           return '';
         };
 
-        const buildRichDay1MateriCards = function(baseA, baseB, baseC, baseD, baseE) {
-          const clean = (t) => String(t || '').trim().replace(/\\.\\.\\.$/, '');
+        const buildRichDayMateriCards = function(day, baseA, baseB, baseC, baseD, baseE) {
+          const clean = (t) => String(t || '').trim().replace(/\.\.\.$/, '');
           const tA = clean(baseA);
           const tB = clean(baseB);
           const tC = clean(baseC);
           const tD = clean(baseD);
           const tE = clean(baseE);
 
+          day = parseInt(day) || 1;
+
+          if (day === 2) {
+            const expA = (tA.length >= 300) ? tA : ((tA ? tA + '. ' : '') + 'Masyarakat Kabupaten OKU Timur mewarisi kekayaan tujuh unsur kebudayaan universal yang mencakup bahasa daerah Komering dan Jawa, sistem kekerabatan patrilineal dan matrilokal, kesenian daerah, sistem teknologi alsintan, mata pencaharian agrikultur, religi, serta sistem pengetahuan lokal perbintangan pranata mangsa dalam menyelaraskan kalender musim tanam padi.');
+            const expB = (tB.length >= 300) ? tB : ((tB ? tB + '. ' : '') + 'Kearifan budaya gotong royong sambatan dan sinoman sangat mengakar dalam pola kerja sektor ekonomi dan UMKM di OKU Timur. Solidaritas sosial ini mereduksi biaya tenaga kerja saat masa tanam dan panen, membangun ikatan kepercayaan antar-pelaku usaha mikro, serta menumbuhkan ekosistem ekonomi berbasis komunitas yang tangguh terhadap krisis.');
+            const expC = (tC.length >= 300) ? tC : ((tC ? tC + '. ' : '') + 'Sektor agrikultur tanaman padi sawah menjadi tulang punggung perekonomian utama masyarakat OKU Timur. Keberadaan jaringan irigasi primer dan sekunder dari Danau Ranau memungkinkan petani melakukan pola rotasi tanam intensif IP-200 hingga IP-300 per tahun, sekaligus menggerakkan sektor turunan seperti pakan ternak dan penggilingan gabah.');
+            const expD = (tD.length >= 300) ? tD : ((tD ? tD + '. ' : '') + 'Evolusi teknologi pertanian di OKU Timur berkembang pesat dari peralatan tradisional cangkul dan bajak singkal ditarik kerbau menuju modernisasi alsintan seperti traktor roda empat, transplanter penanam bibit, dan combine harvester perontok gabah. Mekanisasi ini didukung oleh pemeliharaan berkala saluran irigasi teknis Belitang.');
+            const expE = (tE.length >= 300) ? tE : ((tE ? tE + '. ' : '') + 'Inovasi budidaya penanaman ramah lingkungan, pemupukan organik presisi, dan otomatisasi mesin pengering gabah (bed dryer) menjadi fokus utama peningkatan keterampilan teknis petani OKU Timur guna meminimalkan susut panen (losses), meningkatkan rendemen giling, dan menjaga mutu beras premium di pasar regional.');
+
+            return {
+              cardA: { title: 'Hakikat Budaya & 7 Unsur Universal OKU Timur', text: expA, source: '1. Buku Antropologi & Kebudayaan Nusantara SMA Kelas X.\n2. Kajian Budaya Lokal Komering, Disdikbud OKU Timur.' },
+              cardB: { title: 'Hubungan Budaya dengan Ekonomi & UMKM', text: expB, source: '1. Jurnal Sosiologi Ekonomi Pedesaan Sumatera Selatan.\n2. Modul Kewirausahaan Berbasis Kearifan Lokal.' },
+              cardC: { title: 'Sistem Mata Pencaharian Sektor Agrikultur', text: expC, source: '1. Dinas Pertanian & Ketahanan Pangan Kab. OKU Timur.\n2. BPS OKU Timur Dalam Angka.' },
+              cardD: { title: 'Sistem Teknologi Alsintan & Jaringan Irigasi', text: expD, source: '1. Balai Besar Wilayah Sungai Sumatera VIII (Irigasi Komering).\n2. Pedoman Mekanisasi Pertanian Kementan RI.' },
+              cardE: { title: 'Inovasi Penanaman, Pascapanen & Keterampilan', text: expE, source: '1. Riset Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel.\n2. Petunjuk Teknis Pascapanen Padi Modern.' }
+            };
+          }
+
+          if (day === 3) {
+            const expA = (tA.length >= 300) ? tA : ((tA ? tA + '. ' : '') + 'Varietas padi unggul seperti Inpari 32 dan Ciherang menjadi pilihan utama petani OKU Timur karena memiliki potensi hasil panen tinggi dan daya tahan kuat terhadap serangan hama wereng serta penyakit hawar daun. Penerapan kalender tanam serentak sangat krusial guna memutus rantai siklus organisme pengganggu tanaman.');
+            const expB = (tB.length >= 300) ? tB : ((tB ? tB + '. ' : '') + 'Kilang penggilingan beras modern (RMU) di Belitang memanfaatkan kombinasi mesin husker pemecah kulit gabah, separator pemisah gabah hampa, dan mesin polisher penyosoh bertingkat. Teknologi ini mampu meminimalkan butir patah (broken rice) dan menghasilkan beras premium dengan derajat sosoh mencapai 95-100%.');
+            const expC = (tC.length >= 300) ? tC : ((tC ? tC + '. ' : '') + 'Penggunaan mesin pengering mekanis sistem bed dryer berkapasitas besar mampu menurunkan kadar air gabah secara homogen dari 22-25% saat panen menjadi 14% standar giling tanpa bergantung cuaca. Ini mencegah tumbuhnya jamur aflatoksin dan menekan susut bobot pascapanen gabah secara drastis dibanding jemur terpal.');
+            const expD = (tD.length >= 300) ? tD : ((tD ? tD + '. ' : '') + 'Kalkulasi rendemen giling gabah kering panen (GKP) menjadi beras rata-rata berkisar 60-65% dengan residu 20% sekam dan 10% bekatul. Pengusaha RMU memperhitungkan biaya bahan bakar pengeringan, listrik motor penggerak, dan upah operator guna menentukan harga beli gabah petani serta margin keuntungan per kilogram beras kemasan.');
+            const expE = (tE.length >= 300) ? tE : ((tE ? tE + '. ' : '') + 'Limbah sekam padi dari proses penggilingan diolah menjadi arang sekam sebagai pembenah tanah organik kaya silika, bahan bakar biomassa burner pengering gabah, serta bahan baku briket energi terbarukan. Pemanfaatan limbah ini menciptakan nilai tambah ekonomi sirkular sekaligus mencegah pencemaran lingkungan sentra RMU.');
+
+            return {
+              cardA: { title: 'Karakteristik Varietas Padi Unggulan & Musim Tanam', text: expA, source: '1. Panduan Budidaya Padi Sawah, Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel.\n2. Dinas Pertanian Kab. OKU Timur: Data Produktivitas Varietas Padi.' },
+              cardB: { title: 'Teknologi Kilang Penggilingan Beras Modern (RMU)', text: expB, source: '1. Pedoman Teknis Standardisasi Kilang Padi Modern, Kementerian Pertanian RI.\n2. Jurnal Teknologi Industri Pertanian: Efisiensi RMU Sentra Belitang.' },
+              cardC: { title: 'Pengeringan Mekanis (Bed Dryer) vs Penjemuran Konvensional', text: expC, source: '1. Petunjuk Operasional Mesin Pengering Gabah, Balai Besar Alsintan Kementan.\n2. Riset Pascapanen Tanaman Pangan: Analisis Mutu Gabah Kering Giling (GKG).' },
+              cardD: { title: 'Perhitungan Rendemen Giling & Biaya Operasional RMU', text: expD, source: '1. Analisis Kelayakan Finansial Kilang Padi, Jurnal Manajemen Agribisnis.\n2. Pedoman Penetapan HPP Beras & Gabah Badan Pangan Nasional (Bapanas).' },
+              cardE: { title: 'Pemanfaatan Limbah Biomassa Sekam & Hilirisasi Turunan', text: expE, source: '1. Pemanfaatan Biomassa Pertanian untuk Energi Terbarukan, Kementerian ESDM.\n2. Panduan Pembuatan Pupuk Organik & Arang Sekam, Ditjen PSP Kementan.' }
+            };
+          }
+
+          if (day === 4) {
+            const expA = (tA.length >= 300) ? tA : ((tA ? tA + '. ' : '') + 'Kabupaten OKU Timur memiliki keragaman produk pangan lokal unggulan berbasis beras, singkong, pisang, dan ikan air tawar seperti sale patin, keripik pisang tanduk, lempok, dan dodol tape. Pemetaan klaster UMKM pangan olahan membantu penguatan identitas kuliner daerah dan memperluas daya serap bahan baku lokal petani.');
+            const expB = (tB.length >= 300) ? tB : ((tB ? tB + '. ' : '') + 'Kelayakan produk UMKM pangan mensyaratkan kepatuhan terhadap prinsip Cara Produksi Pangan Industri Rumah Tangga yang Baik (CPPB-IRT), kepemilikan sertifikat izin edar P-IRT dari Dinas Kesehatan, serta sertifikasi halal resmi dari BPJPH Kementerian Agama guna menjamin keamanan konsumsi dan memperluas kepercayaan konsumen pasar ritel modern.');
+            const expC = (tC.length >= 300) ? tC : ((tC ? tC + '. ' : '') + 'Rantai pasok produk pangan OKU Timur menghubungkan petani produsen, pengepul desa, penggilingan, industri pengolahan, hingga distributor grosir dan ritel. Kelancaran konektivitas jalan poros Belitang-Martapura serta efisiensi manajemen armada angkut menjadi penentu kestabilan harga dan keutuhan kualitas pasokan komoditas pangan daerah.');
+            const expD = (tD.length >= 300) ? tD : ((tD ? tD + '. ' : '') + 'Penetapan Harga Pokok Penjualan (HPP) produk olahan UMKM dihitung secara teliti dengan menjumlahkan biaya bahan baku langsung, biaya tenaga kerja produksi, biaya kemasan, dan overhead pabrik. Margin keuntungan ditargetkan 20-35% dengan mempertimbangkan daya beli target pasar dan persaingan harga produk sejenis di pasar lokal.');
+            const expE = (tE.length >= 300) ? tE : ((tE ? tE + '. ' : '') + 'Strategi pemasaran terpadu (omnichannel) menggabungkan display penjualan fisik di pasar-pasar rakyat Gumawang, Belitang, dan Martapura dengan etalase digital melalui e-commerce, media sosial TikTok/Instagram, dan marketplace lokal. Pemanfaatan konten storytelling kearifan pangan lokal terbukti melipatgandakan jangkauan pesanan hingga luar provinsi.');
+
+            return {
+              cardA: { title: 'Pemetaan Komoditas Pangan Lokal & Olahan Khas', text: expA, source: '1. Direktori UMKM Pangan Lokal Kabupaten OKU Timur, Dinas Koperasi & UKM.\n2. Profil Potensi Kuliner dan Olahan Hasil Tani Sumatera Selatan.' },
+              cardB: { title: 'Standardisasi Higienitas, Uji Mutu & Izin Edar P-IRT Halal', text: expB, source: '1. Peraturan BPOM tentang Pedoman Penerbitan Sertifikat Produksi PIRT.\n2. Standar Halal Indonesia, Badan Penyelenggara Jaminan Produk Halal (BPJPH).' },
+              cardC: { title: 'Rantai Pasok (Supply Chain) & Logistik Agribisnis', text: expC, source: '1. Cetak Biru Logistik Nasional Sektor Agribisnis, Bappenas RI.\n2. Jurnal Logistik & Rantai Pasok Pedesaan Sumatera Bagian Selatan.' },
+              cardD: { title: 'Penetapan Biaya Produksi, HPP & Margin UMKM', text: expD, source: '1. Modul Akuntansi Sederhana dan Penetapan Biaya untuk UMKM, Kemenkop UKM.\n2. Buku Analisis Finansial Usaha Mikro Kecil, BNI Entrepreneur Center.' },
+              cardE: { title: 'Pemasaran Omnichannel Fisik & Digital E-Commerce', text: expE, source: '1. Panduan Transformasi Digital UMKM Pangan, Kementerian Kominfo RI.\n2. Studi Pemasaran Omnichannel Produk Lokal, Pusat Kajian Ekonomi Kreatif.' }
+            };
+          }
+
+          if (day === 5) {
+            const expA = (tA.length >= 300) ? tA : ((tA ? tA + '. ' : '') + 'Implementasi Quick Response Code Indonesian Standard (QRIS) di sentra perdagangan Belitang dan Martapura telah memfasilitasi transaksi non-tunai yang cepat, higienis, dan tercatat otomatis. Merchant UMKM mendapatkan kemudahan rekonsiliasi kas harian, mengurangi risiko peredaran uang palsu, dan membangun riwayat transaksi yang bankable.');
+            const expB = (tB.length >= 300) ? tB : ((tB ? tB + '. ' : '') + 'Layanan Keuangan Tanpa Kantor dalam Rangka Keuangan Inklusif (Laku Pandai) melalui agen-agen perbankan seperti BRILink, BNI Agen46, dan Mandiri Agen menjangkau pelosok desa di OKU Timur yang jauh dari kantor cabang bank. Keberadaan agen ini mempermudah setoran tunai, transfer hasil panen petani, serta pembayaran tagihan listrik secara instan di tingkat RT/RW.');
+            const expC = (tC.length >= 300) ? tC : ((tC ? tC + '. ' : '') + 'Edukasi risiko pembiayaan keuangan sangat penting untuk melindungi masyarakat petani dan pelaku UMKM dari jeratan pinjaman online (pinjol) ilegal serta rentenir desa yang membebankan bunga harian mencekik. Pemahaman mengenai ciri legalitas fintek terdaftar OJK dan simulasi kemampuan bayar angsuran mencegah terjadinya gagal bayar dan penyitaan aset produksi.');
+            const expD = (tD.length >= 300) ? tD : ((tD ? tD + '. ' : '') + 'Pemanfaatan aplikasi pencatatan keuangan digital berbasis smartphone (seperti BukuKas, BukuWarung, atau SIAPIK BI) mempermudah pelaku usaha tani mencatat transaksi piutang gabah, pengeluaran pupuk, dan laba operasional secara real-time. Laporan laba rugi yang rapi menjadi syarat utama saat mengajukan Kredit Usaha Rakyat (KUR) berbunga rendah ke perbankan.');
+            const expE = (tE.length >= 300) ? tE : ((tE ? tE + '. ' : '') + 'Literasi keamanan digital mencakup disiplin menjaga kerahasiaan nomor PIN, Password, kode OTP (One-Time Password), serta nomor CVV kartu debit. Siswa dan masyarakat diedukasi untuk mengenali modus penipuan online phising rekayasa sosial, tidak sembarangan mengunduh file APK mencurigakan, dan rutin mengganti kode akses perbankan digital.');
+
+            return {
+              cardA: { title: 'Kajian Sistem Pembayaran Digital & QRIS Daerah', text: expA, source: '1. Panduan Implementasi QRIS untuk Merchant UMKM, Bank Indonesia.\n2. Publikasi Blueprint Sistem Pembayaran Indonesia 2025, Bank Indonesia.' },
+              cardB: { title: 'Jaringan Keuangan Inklusif & Agen Laku Pandai Pedesaan', text: expB, source: '1. Regulasi OJK tentang Layanan Keuangan Tanpa Kantor (Laku Pandai).\n2. Statistik Perkembangan Jaringan Agen Laku Pandai Pedesaan, OJK Regional 7.' },
+              cardC: { title: 'Analisis Profil Risiko Finansial & Bahaya Pinjol Ilegal', text: expC, source: '1. Siaran Pers Satgas Pemberantasan Aktivitas Keuangan Ilegal (Satgas PASTI), OJK.\n2. Buku Pedoman Cerdas Mengelola Utang & Menghindari Pinjol Ilegal, OJK RI.' },
+              cardD: { title: 'Aplikasi Pembukuan Kas Digital Berbasis Smartphone', text: expD, source: '1. Petunjuk Penggunaan Aplikasi SIAPIK, Bank Indonesia.\n2. Modul Pelatihan Akuntansi Digital untuk Petani Milenial.' },
+              cardE: { title: 'Literasi Keamanan Siber Perbankan & Perlindungan Data', text: expE, source: '1. Surat Edaran BSSN tentang Panduan Keamanan Transaksi Finansial Digital.\n2. Undang-Undang RI Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi.' }
+            };
+          }
+
+          if (day === 6) {
+            const expA = (tA.length >= 300) ? tA : ((tA ? tA + '. ' : '') + 'Sistem saluran irigasi teknis Belitang yang terhubung dengan Bendung Perjaya dan Danau Ranau merupakan aset vital ketahanan pangan OKU Timur. Konservasi sempadan saluran, pembersihan endapan sedimen lumpur berkala, serta larangan pembuangan limbah domestik dan pestisida ke saluran primer wajib dijaga demi menjamin suplai debit air bersih yang merata hingga petak sawah tersier.');
+            const expB = (tB.length >= 300) ? tB : ((tB ? tB + '. ' : '') + 'Pertanian ramah lingkungan memprioritaskan reduksi ketergantungan pupuk kimia sintetis berlebih melalui substitusi pupuk organik padat dan cair, kompos jerami sawah, serta pestisida nabati berbasis tanaman lokal. Praktik ini memulihkan kesuburan mikroba tanah sawah, mencegah degradasi pH tanah gambut/aluvial, dan menjaga kualitas kesehatan ekosistem persawahan Belitang.');
+            const expC = (tC.length >= 300) ? tC : ((tC ? tC + '. ' : '') + 'Masyarakat agraris Belitang mewarisi nilai-nilai kearifan lokal dalam menjaga keharmonisan tanah dan air melalui tradisi sedekah bumi, doa bersama jelang buka pintu air tanam, serta aturan adat tentang pemeliharaan sumber mata air dan pepohonan peneduh saluran irigasi. Nilai-nilai budaya ini menguatkan tanggung jawab kolektif menjaga keberlanjutan daya dukung lingkungan hidup.');
+            const expD = (tD.length >= 300) ? tD : ((tD ? tD + '. ' : '') + 'Perubahan iklim global memicu anomali cuaca ekstrem berupa kekeringan El Nino dan banjir bandang La Nina yang mengancam siklus tanam padi OKU Timur. Strategi mitigasi mencakup penyesuaian jadwal kalender tanam dinamis berbasis citra satelit BMKG, penggunaan benih toleran kekeringan/rendaman, serta pembangunan embung tampungan air desa.');
+            const expE = (tE.length >= 300) ? tE : ((tE ? tE + '. ' : '') + 'Siswa kokurikuler merancang program aksi nyata pelestarian lingkungan di lingkungan madrasah/sekolah dan tempat tinggal, seperti gerakan hemat air, pemilahan sampah organik untuk kompos sekolah, penanaman pohon buah penyerap emisi karbon, serta kampanye edukasi anti-buang makanan (food waste) guna mendukung ketahanan pangan lestari.');
+
+            return {
+              cardA: { title: 'Kelestarian Ekosistem Irigasi & Konservasi Air Komering', text: expA, source: '1. BBWS Sumatera VIII: Pengelolaan DAS Komering.\n2. Modul Konservasi Sumber Daya Air Pertanian Berkelanjutan.' },
+              cardB: { title: 'Pertanian Ramah Lingkungan & Manajemen Limbah Kimia', text: expB, source: '1. Pedoman Pengendalian Hama Terpadu (PHT), Ditjen Perlindungan Tanaman Kementan.\n2. Petunjuk Pembuatan Pupuk Hayati & Pestisida Nabati, BPTP.' },
+              cardC: { title: 'Kearifan Ekologis Budaya Belitang & Keserasian Alam', text: expC, source: '1. Kajian Kearifan Lokal OKU Timur, Balai Pelestarian Nilai Budaya.\n2. Jurnal Ekologi Budaya dan Pembangunan Berkelanjutan Sumsel.' },
+              cardD: { title: 'Mitigasi Perubahan Iklim & Antisipasi Hidrometeorologi', text: expD, source: '1. Dinamika Atmosfer dan Kalender Tanam Dinamis, BMKG & Balitbangtan.\n2. Rencana Aksi Adaptasi Iklim Sektor Pertanian, Kementan RI.' },
+              cardE: { title: 'Rancangan Aksi Siswa Peduli Lingkungan & Ketahanan Pangan', text: expE, source: '1. Panduan Sekolah Adiwiyata & Gerakan Peduli Lingkungan, KLHK & Kemendikbud.\n2. Standar Proyek Penguatan Profil Pelajar Pancasila.' }
+            };
+          }
+
+          if (day === 7) {
+            const expA = (tA.length >= 300) ? tA : ((tA ? tA + '. ' : '') + 'Kajian sintesis komprehensif mengintegrasikan seluruh pengalaman riset mandiri 7 hari: Pilar Financial (tata kelola kas dan perbankan digital), Industry (modernisasi kilang padi dan rantai pasok UMKM), Culture (kearifan lokal gotong royong dan kesenian Komering), serta Environment & STEM (teknologi irigasi, efisiensi energi, dan konservasi alam OKU Timur) sebagai satu kesatuan pengetahuan yang utuh.');
+            const expB = (tB.length >= 300) ? tB : ((tB ? tB + '. ' : '') + 'Refleksi mendalam terhadap transformasi diri selama pelaksanaan kegiatan non-field trip mencakup penguatan dimensi Beriman dan Bertakwa kepada Tuhan YME (mensyukuri karunia alam OKU Timur), Mandiri (disiplin riset tanpa pengawasan langsung), Bernalar Kritis (menguji data lapangan), Gotong Royong (bekerja sama dengan fasilitator), serta Kreatif (merumuskan solusi inovatif).');
+            const expC = (tC.length >= 300) ? tC : ((tC ? tC + '. ' : '') + 'Penyusunan proposal rencana aksi nyata yang aplikatif bagi kemajuan wilayah Belitang dan Kabupaten OKU Timur, seperti pendirian kelompok usaha rintisan pemuda desa, digitalisasi promosi produk unggulan pertanian lokal, atau kampanye literasi keuangan cerdas bagi rekan sebaya di sekolah dan lingkungan karang taruna.');
+            const expD = (tD.length >= 300) ? tD : ((tD ? tD + '. ' : '') + 'Pemeriksaan kompilasi seluruh data luaran riset mandiri: kelengkapan 5 modul belajar digital (35 kartu riset), pengisian lembar kerja investigasi LKPD, sertifikat skor asesmen kompetensi harian, serta konfirmasi persetujuan catatan pembimbingan dari Fasilitator Pembina SMAN 1 Belitang sebagai syarat penilaian rapot kokurikuler resmi.');
+            const expE = (tE.length >= 300) ? tE : ((tE ? tE + '. ' : '') + 'Portofolio hasil riset mandiri tujuh hari ditata sebagai dokumen akademik resmi yang menghimpun seluruh lembar kerja lapangan terverifikasi, sintesis modul kajian, hasil penilaian asesmen digital, serta bukti foto dokumentasi lapangan. Dokumen ini menjadi portofolio portofolio autentik yang membuktikan pencapaian kompetensi holistik siswa dalam kurikulum kokurikuler FINCESTEM 2026.');
+
+            return {
+              cardA: { title: 'Evaluasi Sintesis Integratif 4 Pilar FINCESTEM', text: expA, source: '1. Kerangka Kurikulum Kokurikuler FINCESTEM 2026, SMAN 1 Belitang.\n2. Naskah Akademik Pendekatan STEM Terpadu Berbasis Kearifan Lokal.' },
+              cardB: { title: 'Refleksi Diri, Karakter & Profil Pelajar Pancasila', text: expB, source: '1. Panduan Karakter Profil Pelajar Pancasila, BSKAP Kemendikbudristek.\n2. Pedoman Refleksi Pembelajaran Berdiferensiasi, Ditjen GTK.' },
+              cardC: { title: 'Penyusunan Rencana Aksi Nyata Kemajuan Daerah', text: expC, source: '1. Pedoman Perencanaan Pembangunan Pemuda, Bappeda Litbang OKU Timur.\n2. Panduan Inkubasi Kewirausahaan Muda Berbasis Potensi Lokal, Kemenpora.' },
+              cardD: { title: 'Kompilasi Data Luaran, Validasi Fasil & Evaluasi', text: expD, source: '1. Buku Panduan Penilaian dan Asesmen Kokurikuler FINCESTEM 2026.\n2. Standar Operasional Prosedur Verifikasi Dokumen Pembelajaran.' },
+              cardE: { title: 'Penataan Portofolio Hasil Riset Mandiri 7 Hari', text: expE, source: '1. Petunjuk Teknis Penilaian Portofolio Kokurikuler SMAN 1 Belitang.\n2. Standar Penilaian Pendidikan Berbasis Portofolio, BSKAP Kemendikbudristek.' }
+            };
+          }
+
+          // Default Day 1
           const expA = (tA.length >= 300) ? tA : ((tA ? tA + '. ' : '') + 'Kajian mendalam mengenai kegiatan ekonomi menegaskan keterkaitan organik antara sektor primer (pertanian, peternakan, perikanan sebagai penyedia bahan mentah), sektor sekunder (industri olahan dan manufaktur yang meningkatkan nilai tambah komoditas), serta sektor tersier (jaringan distribusi, perdagangan, dan perbankan yang menghubungkan produsen dengan konsumen secara berkelanjutan di Kabupaten OKU Timur).');
           const expB = (tB.length >= 300) ? tB : ((tB ? tB + '. ' : '') + 'Literasi finansial mencakup pemahaman komprehensif terhadap 5 pilar tata kelola arus kas: pencatatan berkala seluruh transaksi masuk dan keluar, disiplin memisahkan rekening operasional usaha dari kas konsumsi pribadi, pembentukan dana darurat minimal 3 bulan beban tetap, pemilihan instrumen pembiayaan produktif formal, serta mitigasi risiko terhadap skema pinjaman informal yang merugikan.');
           const expC = (tC.length >= 300) ? tC : ((tC ? tC + '. ' : '') + 'Bank Indonesia menjalankan fungsi strategis dalam memelihara stabilitas nilai tukar rupiah dan mengawal kelancaran sistem pembayaran nasional. Integrasi instrumen nontunai modern seperti QRIS dan BI-FAST terbukti mempercepat perputaran ekonomi lokal, menekan biaya administrasi transaksi perbankan, serta memperluas inklusi keuangan bagi pelaku UMKM di pasar-pasar rakyat OKU Timur.');
@@ -2366,29 +2465,14 @@ const FincestemCore = {
           };
         };
 
-        const buildRichDay2MateriCards = function(baseA, baseB, baseC, baseD, baseE) {
-          const clean = (t) => String(t || '').trim().replace(/\\.\\.\\.$/, '');
-          const tA = clean(baseA);
-          const tB = clean(baseB);
-          const tC = clean(baseC);
-          const tD = clean(baseD);
-          const tE = clean(baseE);
-
-          const expA = (tA.length >= 300) ? tA : ((tA ? tA + '. ' : '') + 'Masyarakat Kabupaten OKU Timur mewarisi kekayaan tujuh unsur kebudayaan universal yang mencakup bahasa daerah Komering dan Jawa, sistem kekerabatan patrilineal dan matrilokal, kesenian daerah, sistem teknologi alsintan, mata pencaharian agrikultur, religi, serta sistem pengetahuan lokal perbintangan pranata mangsa dalam menyelaraskan kalender musim tanam padi.');
-          const expB = (tB.length >= 300) ? tB : ((tB ? tB + '. ' : '') + 'Kearifan budaya gotong royong sambatan dan sinoman sangat mengakar dalam pola kerja sektor ekonomi dan UMKM di OKU Timur. Solidaritas sosial ini mereduksi biaya tenaga kerja saat masa tanam dan panen, membangun ikatan kepercayaan antar-pelaku usaha mikro, serta menumbuhkan ekosistem ekonomi berbasis komunitas yang tangguh terhadap krisis.');
-          const expC = (tC.length >= 300) ? tC : ((tC ? tC + '. ' : '') + 'Sektor agrikultur tanaman padi sawah menjadi tulang punggung perekonomian utama masyarakat OKU Timur. Keberadaan jaringan irigasi primer dan sekunder dari Danau Ranau memungkinkan petani melakukan pola rotasi tanam intensif IP-200 hingga IP-300 per tahun, sekaligus menggerakkan sektor turunan seperti pakan ternak dan penggilingan gabah.');
-          const expD = (tD.length >= 300) ? tD : ((tD ? tD + '. ' : '') + 'Evolusi teknologi pertanian di OKU Timur berkembang pesat dari peralatan tradisional cangkul dan bajak singkal ditarik kerbau menuju modernisasi alsintan seperti traktor roda empat, transplanter penanam bibit, dan combine harvester perontok gabah. Mekanisasi ini didukung oleh pemeliharaan berkala saluran irigasi teknis Belitang.');
-          const expE = (tE.length >= 300) ? tE : ((tE ? tE + '. ' : '') + 'Inovasi budidaya penanaman ramah lingkungan, pemupukan organik presisi, dan otomatisasi mesin pengering gabah (bed dryer) menjadi fokus utama peningkatan keterampilan teknis petani OKU Timur guna meminimalkan susut panen (losses), meningkatkan rendemen giling, dan menjaga mutu beras premium di pasar regional.');
-
-          return {
-            cardA: { title: 'Hakikat Budaya & 7 Unsur Universal OKU Timur', text: expA, source: '1. Buku Antropologi & Kebudayaan Nusantara SMA Kelas X.\n2. Kajian Budaya Lokal Komering, Disdikbud OKU Timur.' },
-            cardB: { title: 'Hubungan Budaya dengan Ekonomi & UMKM', text: expB, source: '1. Jurnal Sosiologi Ekonomi Pedesaan Sumatera Selatan.\n2. Modul Kewirausahaan Berbasis Kearifan Lokal.' },
-            cardC: { title: 'Sistem Mata Pencaharian Sektor Agrikultur', text: expC, source: '1. Dinas Pertanian & Ketahanan Pangan Kab. OKU Timur.\n2. BPS OKU Timur Dalam Angka.' },
-            cardD: { title: 'Sistem Teknologi Alsintan & Jaringan Irigasi', text: expD, source: '1. Balai Besar Wilayah Sungai Sumatera VIII (Irigasi Komering).\n2. Pedoman Mekanisasi Pertanian Kementan RI.' },
-            cardE: { title: 'Inovasi Penanaman, Pascapanen & Keterampilan', text: expE, source: '1. Riset Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel.\n2. Petunjuk Teknis Pascapanen Padi Modern.' }
-          };
+        const buildRichDay1MateriCards = function(baseA, baseB, baseC, baseD, baseE) {
+          return buildRichDayMateriCards(1, baseA, baseB, baseC, baseD, baseE);
         };
 
+        const buildRichDay2MateriCards = function(baseA, baseB, baseC, baseD, baseE) {
+          return buildRichDayMateriCards(2, baseA, baseB, baseC, baseD, baseE);
+        };
+        
         Object.keys(allTasks).forEach(taskKey => {
           const item = allTasks[taskKey];
           if (!item) return;
@@ -2408,12 +2492,9 @@ const FincestemCore = {
               const cText = parsed.conclusion || parsed.summary || parsed.text || 'Riset Mandiri Terverifikasi';
               ftObj = { conclusion: cText, savedAt: savedTime };
               
-              if (day === 1) {
-                const rich = buildRichDay1MateriCards(parsed.cardA?.text || cText, parsed.cardB?.text || cText, parsed.cardC?.text || cText, parsed.cardD?.text || cText, parsed.cardE?.text || cText);
-                nftObj = Object.assign({}, parsed, rich, { day: 1, submitted: true, submittedAt: parsed.submittedAt || savedTime, conclusion: cText });
-              } else if (day === 2) {
-                const rich = buildRichDay2MateriCards(parsed.cardA?.text || cText, parsed.cardB?.text || cText, parsed.cardC?.text || cText, parsed.cardD?.text || cText, parsed.cardE?.text || cText);
-                nftObj = Object.assign({}, parsed, rich, { day: 2, submitted: true, submittedAt: parsed.submittedAt || savedTime, conclusion: cText });
+              if (day >= 1 && day <= 7) {
+                const rich = buildRichDayMateriCards(day, parsed.cardA?.text || cText, parsed.cardB?.text || cText, parsed.cardC?.text || cText, parsed.cardD?.text || cText, parsed.cardE?.text || cText);
+                nftObj = Object.assign({}, parsed, rich, { day: day, submitted: true, submittedAt: parsed.submittedAt || savedTime, conclusion: cText });
               } else {
                 nftObj = Object.assign({}, parsed, { day: day, submitted: true, submittedAt: parsed.submittedAt || savedTime });
               }
@@ -2426,12 +2507,9 @@ const FincestemCore = {
               const tD = extractTopicText(textStr, 'Topik D');
               const tE = extractTopicText(textStr, 'Topik E');
 
-              if (day === 1) {
-                const rich = buildRichDay1MateriCards(tA || textStr, tB || textStr, tC || textStr, tD || textStr, tE || textStr);
-                nftObj = Object.assign({ day: 1, submitted: true, submittedAt: savedTime, conclusion: textStr }, rich);
-              } else if (day === 2) {
-                const rich = buildRichDay2MateriCards(tA || textStr, tB || textStr, tC || textStr, tD || textStr, tE || textStr);
-                nftObj = Object.assign({ day: 2, submitted: true, submittedAt: savedTime, conclusion: textStr }, rich);
+              if (day >= 1 && day <= 7) {
+                const rich = buildRichDayMateriCards(day, tA || textStr, tB || textStr, tC || textStr, tD || textStr, tE || textStr);
+                nftObj = Object.assign({ day: day, submitted: true, submittedAt: savedTime, conclusion: textStr }, rich);
               } else {
                 nftObj = { day: day, submitted: true, submittedAt: savedTime, conclusion: textStr };
               }
