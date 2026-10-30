@@ -1185,7 +1185,7 @@
 
     const isSubmitted = !!(saved && (saved.submitted || saved.submittedAt));
     const d2DefaultLKPDFields = {
-      interviewerName: 'Bagas Arya',
+      interviewerName: studentName || 'Peserta Non-Field Trip',
       interviewDate: new Date().toISOString().split('T')[0],
       location: 'Belitang, Kabupaten OKU Timur',
       sectorKey: 'pangan',

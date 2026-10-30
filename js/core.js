@@ -2295,6 +2295,14 @@ const FincestemCore = {
 
         const taskMap = data.task_map || {};
         const records = Array.isArray(data.records) ? data.records : [];
+        let currentStudentName = 'Peserta Non-Field Trip';
+        try {
+          const uRaw = localStorage.getItem('fincestem_user');
+          if (uRaw) {
+            const uObj = JSON.parse(uRaw);
+            if (uObj && uObj.name) currentStudentName = uObj.name;
+          }
+        } catch(e) {}
 
         const parseContent = function(raw) {
           if (!raw) return null;
@@ -2554,7 +2562,7 @@ const FincestemCore = {
               submitted: true,
               submittedAt: savedTime,
               summary: strContent || 'Observasi & Wawancara Lapangan Day 2 Terverifikasi',
-              interviewerName: 'Bagas Arya',
+              interviewerName: currentStudentName,
               interviewDate: new Date().toISOString().split('T')[0],
               location: bLoc || 'Belitang, Kabupaten OKU Timur',
               sectorKey: 'pangan',
