@@ -1339,27 +1339,27 @@
 
           if (!hasMat) {
             for (const id of idList) {
-              if (localStorage.getItem(`fincestem_materi_day${d}_` + id)) { hasMat = true; break; }
+              if (localStorage.getItem(`fincestem_materi_nft_day${d}_` + id) || localStorage.getItem(`fincestem_materi_day${d}_` + id)) { hasMat = true; break; }
             }
           }
           if (!hasLk) {
             for (const id of idList) {
-              if (localStorage.getItem(`fincestem_lkpd_day${d}_` + id)) { hasLk = true; break; }
+              if (localStorage.getItem(`fincestem_lkpd_nft_day${d}_` + id) || localStorage.getItem(`fincestem_lkpd_day${d}_` + id)) { hasLk = true; break; }
             }
           }
           if (!hasAs) {
             for (const id of idList) {
-              if (localStorage.getItem(`fincestem_asesmen_day${d}_` + id)) { hasAs = true; break; }
+              if (localStorage.getItem(`fincestem_asesmen_nft_day${d}_` + id) || localStorage.getItem(`fincestem_asesmen_day${d}_` + id)) { hasAs = true; break; }
             }
           }
           if (!hasDk) {
             for (const id of idList) {
-              if (localStorage.getItem(`fincestem_dok_day${d}_` + id)) { hasDk = true; break; }
+              if (localStorage.getItem(`fincestem_dok_nft_day${d}_` + id) || localStorage.getItem(`fincestem_dok_day${d}_` + id)) { hasDk = true; break; }
             }
           }
           if (!hasRf) {
             for (const id of idList) {
-              if (localStorage.getItem(`fincestem_refleksi_day${d}_` + id)) { hasRf = true; break; }
+              if (localStorage.getItem(`fincestem_refleksi_nft_day${d}_` + id) || localStorage.getItem(`fincestem_refl_nft_day${d}_` + id) || localStorage.getItem(`fincestem_refleksi_day${d}_` + id)) { hasRf = true; break; }
             }
           }
 

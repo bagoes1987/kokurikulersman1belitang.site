@@ -325,13 +325,42 @@
             return parsed;
           }
           const recGrade = (prog.records || []).find(r => Number(r.day_number) === Number(dayNum));
-          const score = (recGrade && recGrade.score) ? parseFloat(recGrade.score) : 95;
+          let sc = (recGrade && recGrade.score) ? parseFloat(recGrade.score) : null;
+          if (sc === null && t.score !== null && !isNaN(t.score)) sc = parseFloat(t.score);
+          if (sc === null) {
+            const m = String(t.content || '').match(/Skor\s*(\d+(?:\.\d+)?)/i);
+            if (m) sc = parseFloat(m[1]);
+          }
+          if (sc === null) sc = 95;
+
+          const rawSummary = String(t.content || '');
+          let correctCount = Math.round((sc / 100) * 50);
+          let totalQuestions = 50;
+          let wrongCount = totalQuestions - correctCount;
+          let durationMins = 28;
+
+          const mCorr = rawSummary.match(/\((\d+)\/(\d+)\s*Benar\)/i);
+          if (mCorr) {
+            correctCount = parseInt(mCorr[1], 10);
+            totalQuestions = parseInt(mCorr[2], 10);
+            wrongCount = Math.max(0, totalQuestions - correctCount);
+          }
+
+          const mDur = rawSummary.match(/Waktu:\s*(\d+)\s*mnt/i);
+          if (mDur) durationMins = parseInt(mDur[1], 10);
+
           return {
             day: dayNum,
             submitted: true,
-            score: score,
-            predicate: (score >= 88) ? 'Sangat Baik' : 'Baik',
-            summary: String(t.content || 'Asesmen Mandiri Terverifikasi')
+            score: sc,
+            scoreScale4: (sc / 25).toFixed(2),
+            predicate: (sc >= 88) ? 'Sangat Baik' : 'Baik',
+            correctCount: correctCount,
+            wrongCount: wrongCount,
+            totalQuestions: totalQuestions,
+            durationSpentSeconds: durationMins * 60,
+            violationCount: 0,
+            summary: rawSummary || `Asesmen Day ${dayNum} Terverifikasi: Skor ${sc}/100`
           };
         }
       }
