@@ -64,17 +64,22 @@
   window.syncMentorshipMultiPCNow = function() {
     if (!window.FincestemMentorship) return;
     const lbl = document.getElementById('lblSyncMentorshipBtn');
+    const lblTop = document.getElementById('lblTopSyncMentorshipBtn');
     if (lbl) lbl.textContent = 'Menyinkronkan...';
+    if (lblTop) lblTop.textContent = 'Menyinkronkan...';
 
     // Tarik dari server dulu (merge aman), lalu kirim gabungan lokal + server kembali ke database
     window.FincestemMentorship.syncFromServer(function() {
       window.FincestemMentorship.syncToServer(function(res) {
         if (lbl) lbl.textContent = 'Sinkronkan Server (Multi-PC)';
+        if (lblTop) lblTop.textContent = 'Sinkronkan Server (Multi-PC)';
         renderMentorshipStats();
         switchMentorshipSubTab(currentSubTab);
+        if (typeof window.renderAdminMatrixView === 'function') window.renderAdminMatrixView();
+        if (typeof window.renderAdminCards === 'function') window.renderAdminCards();
         if (window.FincestemCore && FincestemCore.ui) {
           if (res && res.success) {
-            FincestemCore.ui.toast('Data Pembagian Siswa Binaan berhasil disinkronkan antar-PC ke Server!', 'success');
+            FincestemCore.ui.toast('Data Pembagian Siswa Binaan & Guru berhasil disinkronkan antar-PC ke Server!', 'success');
           } else {
             FincestemCore.ui.toast('Data lokal telah diperbarui.', 'info');
           }
