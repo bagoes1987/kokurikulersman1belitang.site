@@ -4472,11 +4472,14 @@ const FincestemCore = {
     getAssignments: function(callback) {
       const self = this;
       if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/settings.php?action=get_role_assignments')
+        fetch(FincestemCore.api.base + '/settings.php?action=get_role_assignments&_t=' + Date.now(), { cache: 'no-store' })
           .then(r => r.json())
           .then(res => {
             if (res && res.success && res.data) {
               localStorage.setItem('fincestem_role_assignments', JSON.stringify(res.data));
+              if (res.data.mentorship_state && window.FincestemMentorship && typeof window.FincestemMentorship.applyServerState === 'function') {
+                window.FincestemMentorship.applyServerState(res.data.mentorship_state);
+              }
               if (callback) callback(res.data);
             } else {
               self.getLocalAssignments(callback);
@@ -4493,6 +4496,9 @@ const FincestemCore = {
       try {
         const stored = localStorage.getItem('fincestem_role_assignments');
         if (stored) data = JSON.parse(stored);
+        if (data && data.mentorship_state && window.FincestemMentorship && typeof window.FincestemMentorship.applyServerState === 'function') {
+          window.FincestemMentorship.applyServerState(data.mentorship_state);
+        }
       } catch (e) {}
       if (callback) callback(data);
       return data;
@@ -4503,8 +4509,37 @@ const FincestemCore = {
       return String(name).trim().toUpperCase().replace(/^KELAS\s+/i, '');
     },
 
+    getStudentCoordinator: function(nisn, className) {
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+        const info = window.FincestemMentorship.getMentorsForStudent(nisn, className);
+        if (info && info.coordinator && info.coordinator !== '-') {
+          return info.coordinator;
+        }
+      }
+      return this.getClassCoordinator(className);
+    },
+
+    getStudentFacilitator: function(nisn, className) {
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+        const info = window.FincestemMentorship.getMentorsForStudent(nisn, className);
+        if (info && info.facilitators && info.facilitators.length > 0) {
+          return info.facilitators.join('\n');
+        }
+        if (info && info.facilitator && info.facilitator !== '-') {
+          return info.facilitator;
+        }
+      }
+      return this.getClassFacilitator(className);
+    },
+
     getClassCoordinator: function(className) {
       if (!className) return 'Drs. H. Koordinator FINCESTEM';
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
+        const mClass = window.FincestemMentorship.getMentorsForClass(className);
+        if (mClass && Array.isArray(mClass.coordinators) && mClass.coordinators.length > 0) {
+          return mClass.coordinators.join('\n');
+        }
+      }
       const normTarget = this.normalizeClassName(className);
       const local = this.getLocalAssignments();
       const matches = (local.coordinators || []).filter(c => this.normalizeClassName(c.class_name) === normTarget);
@@ -4524,6 +4559,12 @@ const FincestemCore = {
 
     getClassFacilitator: function(className) {
       if (!className) return 'Tim Fasilitator SMAN 1 Belitang';
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
+        const mClass = window.FincestemMentorship.getMentorsForClass(className);
+        if (mClass && Array.isArray(mClass.facilitators) && mClass.facilitators.length > 0) {
+          return mClass.facilitators.join('\n');
+        }
+      }
       const normTarget = this.normalizeClassName(className);
       const local = this.getLocalAssignments();
       const matches = (local.facilitators || []).filter(f => this.normalizeClassName(f.class_name) === normTarget);
@@ -4709,6 +4750,97 @@ const FincestemCore = {
 
     getLocalCoordinatorData: function(coordUser, callback) {
       const local = this.getLocalAssignments();
+      const allStudents = window.FincestemMasterStudents || [];
+
+      // Prioritaskan data Pembagian Siswa Binaan (FincestemMentorship)
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function') {
+        const assignMap = window.FincestemMentorship.getAssignmentsMap();
+        const roleMap = window.FincestemMentorship.getTeacherRoleMap();
+        const linkedMap = window.FincestemMentorship.getFacilitatorCoordinatorsMap ? window.FincestemMentorship.getFacilitatorCoordinatorsMap() : {};
+        const allTeachers = window.FincestemMentorship.getAllTeachers();
+
+        let directNisns = Array.isArray(assignMap[coordUser]) ? assignMap[coordUser].slice() : [];
+        // Juga cek fasilitator yang ditautkan ke koordinator ini
+        Object.keys(linkedMap).forEach(fasilUser => {
+          if (linkedMap[fasilUser] === coordUser && Array.isArray(assignMap[fasilUser])) {
+            directNisns = directNisns.concat(assignMap[fasilUser]);
+          }
+        });
+        directNisns = [...new Set(directNisns.map(x => String(x).trim()).filter(Boolean))];
+
+        if (directNisns.length > 0) {
+          const nisnSet = new Set(directNisns);
+          const students = allStudents.filter(s => nisnSet.has(String(s.nisn).trim()));
+          const coordClasses = FincestemCore.sortClasses([...new Set(students.map(s => s.class).filter(Boolean))]);
+
+          // Cari fasilitator yang membina siswa-siswa di kelompok/kelas binaan koordinator ini
+          const fasils = [];
+          const fasilPerformance = [];
+          allTeachers.forEach(t => {
+            if (t.username === coordUser) return;
+            const tRole = roleMap[t.username] || t.mentorship_role || 'NON_FIELD_TRIP';
+            if (tRole === 'KOORDINATOR') return;
+            const fNisns = (assignMap[t.username] || []).filter(n => nisnSet.has(String(n).trim()));
+            if (fNisns.length > 0 || linkedMap[t.username] === coordUser) {
+              const fStudents = allStudents.filter(s => (assignMap[t.username] || []).includes(String(s.nisn).trim()));
+              const fClasses = [...new Set(fStudents.map(s => s.class).filter(Boolean))].join(', ') || 'Kelompok Binaan';
+              fasils.push({
+                teacher_username: t.username,
+                teacher_name: t.nama_guru,
+                class_name: fClasses
+              });
+              fasilPerformance.push({
+                teacher_username: t.username,
+                teacher_name: t.nama_guru,
+                class_name: fClasses,
+                total_students: fStudents.length,
+                graded_count: 0,
+                unreviewed_count: fStudents.length,
+                last_activity: null,
+                coordinator_rating: null,
+                coordinator_notes: ''
+              });
+            }
+          });
+
+          const out = {
+            classes: coordClasses,
+            facilitators: fasils,
+            fasil_performance: fasilPerformance,
+            students: students.map(s => {
+              let stProg = null;
+              try {
+                const pStr = localStorage.getItem('fincestem_progress_' + s.nisn);
+                if (pStr) stProg = JSON.parse(pStr);
+              } catch (e) {}
+              const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+                ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+                : (s.zone || 'FINCESTEM OKU TIMUR');
+              return {
+                nisn: s.nisn,
+                name: s.nama,
+                class_name: s.class,
+                nis: s.nis,
+                zone: z,
+                is_field_trip: String(z).toUpperCase().includes('LUAR'),
+                completed_days: stProg ? (stProg.completed_days || 0) : 0,
+                percentage: stProg ? (stProg.percentage || 0) : 0,
+                task_status: stProg ? (FincestemCore.progress.getDayStatus(stProg, 1)) : 'belum_mulai',
+                avg_score: stProg ? stProg.average_score : null,
+                final_score: null
+              };
+            }),
+            summary: {
+              total_classes: coordClasses.length,
+              total_facilitators: fasils.length,
+              total_students: students.length
+            }
+          };
+          if (callback) callback(out);
+          return out;
+        }
+      }
+
       const coordClasses = FincestemCore.sortClasses(
         (local.coordinators || [])
           .filter(c => c.teacher_username === coordUser)
@@ -4716,7 +4848,6 @@ const FincestemCore = {
       );
 
       const fasils = (local.facilitators || []).filter(f => coordClasses.includes(f.class_name));
-      const allStudents = window.FincestemMasterStudents || [];
       const students = allStudents.filter(s => coordClasses.includes(s.class));
 
       const fasilPerformance = fasils.map(f => {
@@ -4800,6 +4931,40 @@ const FincestemCore = {
     },
 
     getLocalFacilitatorData: function(fasilUser, callback) {
+      const allStudents = window.FincestemMasterStudents || [];
+
+      // Prioritaskan data Pembagian Siswa Binaan (FincestemMentorship)
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function') {
+        const assignMap = window.FincestemMentorship.getAssignmentsMap();
+        const binaanNisns = assignMap[fasilUser] || [];
+        if (Array.isArray(binaanNisns) && binaanNisns.length > 0) {
+          const nisnSet = new Set(binaanNisns.map(n => String(n).trim()));
+          const students = allStudents.filter(s => nisnSet.has(String(s.nisn).trim()));
+          const classSet = [...new Set(students.map(s => s.class).filter(Boolean))];
+          const classLabel = classSet.length === 1 ? classSet[0] : ('Kelompok Binaan (' + classSet.join(', ') + ')');
+          const out = {
+            assignment: { teacher_username: fasilUser, class_name: classLabel },
+            class_name: classLabel,
+            students: students.map(s => {
+              const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
+                ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
+                : (s.zone || 'FINCESTEM OKU TIMUR');
+              return {
+                nisn: s.nisn,
+                name: s.nama,
+                class_name: s.class,
+                nis: s.nis,
+                photo_url: s.photo_url,
+                zone: z,
+                is_field_trip: String(z).toUpperCase().includes('LUAR')
+              };
+            })
+          };
+          if (callback) callback(out);
+          return out;
+        }
+      }
+
       const local = this.getLocalAssignments();
       const assignment = (local.facilitators || []).find(f => f.teacher_username === fasilUser);
       if (!assignment) {
@@ -4808,7 +4973,6 @@ const FincestemCore = {
         return empty;
       }
 
-      const allStudents = window.FincestemMasterStudents || [];
       const students = allStudents.filter(s => s.class === assignment.class_name);
       const out = {
         assignment: assignment,

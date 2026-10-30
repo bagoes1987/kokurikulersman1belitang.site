@@ -859,6 +859,25 @@
     <!-- TAB 3: PENUGASAN PEMBINA & PEMBAGIAN ZONA -->
     <div id="panelAdminZones" class="hidden flex flex-col gap-3">
 
+      <!-- BANNER SINKRONISASI PEMBAGIAN SISWA BINAAN -->
+      <div class="p-4 rounded-3xl bg-gradient-to-r from-indigo-50 via-teal-50 to-emerald-50 border border-teal-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+            <span class="material-symbols-outlined text-xl">supervisor_account</span>
+          </div>
+          <div class="flex flex-col gap-0.5">
+            <h4 class="font-extrabold text-xs sm:text-sm text-slate-900">Terintegrasi Penuh dengan Pembagian Siswa Binaan</h4>
+            <p class="text-[11px] text-slate-600 leading-relaxed">
+              Nama <strong>Koordinator</strong> dan <strong>Fasilitator</strong> pada <strong>Dasbor Siswa</strong> serta <strong>Kartu Login Siswa</strong> kini otomatis mengikuti data dari menu <strong>Pembagian Siswa Binaan</strong>.
+            </p>
+          </div>
+        </div>
+        <button type="button" onclick="switchAdmTab('mentorship')" class="px-4 py-2.5 rounded-2xl bg-teal-700 hover:bg-teal-800 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0">
+          <span class="material-symbols-outlined text-sm">group_add</span>
+          <span>Atur Pembagian Siswa Binaan</span>
+        </button>
+      </div>
+
       <!-- SUB-NAVIGASI SEGMENTED CONTROL -->
       <div class="bg-surface-container-lowest p-1.5 rounded-2xl border border-outline-variant/30 flex items-center gap-1 shadow-2xs">
         <button id="btnSubTab_matrix" onclick="switchPenugasanSubTab('matrix')" class="flex-1 py-2 px-2.5 text-center text-xs font-bold rounded-xl transition-all cursor-pointer bg-[#0875D1] text-white shadow-xs flex items-center justify-center gap-1.5">
@@ -3022,12 +3041,12 @@
   </div>
 
   <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
-  <script src="../js/guru_data.js?v=20261015_ft_full"></script>
-  <script src="../js/core.js?v=20261030_reset_fix_v1"></script>
+  <script src="../js/guru_data.js?v=20261030_binaan_v2"></script>
+  <script src="../js/core.js?v=20261030_binaan_v2"></script>
   <script src="../js/data/bank-soal-nonfieldtrip.js?v=20261029_nft_bs2"></script>
   <script src="../js/modules/admin-banksoal.js?v=20261029_nft_bs2"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261030_dedup_v1"></script>
-  <script src="../js/modules/admin-mentorship.js?v=20261030_dedup_v1"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v2"></script>
+  <script src="../js/modules/admin-mentorship.js?v=20261030_binaan_v2"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
   <script>
     let adminCurrentGrade = 'ALL';
@@ -6190,8 +6209,35 @@
       let text = `DAFTAR AKUN KOORDINATOR & FASILITATOR SMAN 1 BELITANG 2026\n\n`;
       classes.forEach((cls, idx) => {
         const norm = (cls || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
-        const coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
-        const fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+        let coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+        let fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+
+        // Gabungkan / Prioritaskan data dari Pembagian Siswa Binaan (FincestemMentorship)
+        if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
+          const mClass = window.FincestemMentorship.getMentorsForClass(cls);
+          if (mClass) {
+            if (Array.isArray(mClass.coordinators) && mClass.coordinators.length > 0) {
+              coordMatches = mClass.coordinators.map(cName => {
+                const tObj = teachers.find(x => x.nama_guru === cName);
+                return {
+                  teacher_username: tObj ? (tObj.username || tObj.nip) : cName,
+                  teacher_name: cName,
+                  class_name: cls
+                };
+              });
+            }
+            if (Array.isArray(mClass.facilitators) && mClass.facilitators.length > 0) {
+              fasilMatches = mClass.facilitators.map(fName => {
+                const tObj = teachers.find(x => x.nama_guru === fName);
+                return {
+                  teacher_username: tObj ? (tObj.username || tObj.nip) : fName,
+                  teacher_name: fName,
+                  class_name: cls
+                };
+              });
+            }
+          }
+        }
 
         text += `[${cls}]\n`;
         // Koordinator
@@ -6284,8 +6330,35 @@
           gradeBorder = 'border-purple-200/80';
         }
 
-        const coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
-        const fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+        let coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+        let fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
+
+        // Gabungkan / Prioritaskan data dari Pembagian Siswa Binaan (FincestemMentorship)
+        if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
+          const mClass = window.FincestemMentorship.getMentorsForClass(cls);
+          if (mClass) {
+            if (Array.isArray(mClass.coordinators) && mClass.coordinators.length > 0) {
+              coordMatches = mClass.coordinators.map(cName => {
+                const tObj = teachers.find(x => x.nama_guru === cName);
+                return {
+                  teacher_username: tObj ? (tObj.username || tObj.nip) : cName,
+                  teacher_name: cName,
+                  class_name: cls
+                };
+              });
+            }
+            if (Array.isArray(mClass.facilitators) && mClass.facilitators.length > 0) {
+              fasilMatches = mClass.facilitators.map(fName => {
+                const tObj = teachers.find(x => x.nama_guru === fName);
+                return {
+                  teacher_username: tObj ? (tObj.username || tObj.nip) : fName,
+                  teacher_name: fName,
+                  class_name: cls
+                };
+              });
+            }
+          }
+        }
 
         // Render Kartu Koordinator
         let coordItemsHtml = '';
@@ -8118,8 +8191,39 @@
       renderAdminCards();
     }
 
-    // Mengambil data Koordinator dan Fasilitator 1 & 2 per Rombel
-    function getRombelStaffInfo(className) {
+    // Mengambil data Koordinator dan Fasilitator per Siswa berdasarkan Pembagian Siswa Binaan (dengan fallback per Rombel)
+    function getRombelStaffInfo(className, studentNisn) {
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function' && studentNisn) {
+        const mentorInfo = window.FincestemMentorship.getMentorsForStudent(studentNisn, className);
+        if (mentorInfo && ((mentorInfo.coordinator && mentorInfo.coordinator !== '-') || (mentorInfo.facilitators && mentorInfo.facilitators.length > 0))) {
+          const fasils = Array.isArray(mentorInfo.facilitators) ? mentorInfo.facilitators : [];
+          return {
+            coordinator: mentorInfo.coordinator || '-',
+            facilitator1: fasils.length > 0 ? fasils[0] : (mentorInfo.facilitator || '-'),
+            facilitator2: fasils.length > 1 ? fasils[1] : '',
+            facilitatorDisplay: fasils.length > 1
+              ? `<div>1. ${fasils[0]}</div><div>2. ${fasils[1]}</div>`
+              : `<div>${fasils[0] || mentorInfo.facilitator || '-'}</div>`
+          };
+        }
+      }
+
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForClass === 'function') {
+        const classMentors = window.FincestemMentorship.getMentorsForClass(className);
+        if (classMentors && ((classMentors.coordinators && classMentors.coordinators.length > 0) || (classMentors.facilitators && classMentors.facilitators.length > 0))) {
+          const fasils = classMentors.facilitators || [];
+          const coords = classMentors.coordinators || [];
+          return {
+            coordinator: coords.length > 0 ? coords.join(', ') : '-',
+            facilitator1: fasils.length > 0 ? fasils[0] : '-',
+            facilitator2: fasils.length > 1 ? fasils[1] : '',
+            facilitatorDisplay: fasils.length > 1
+              ? `<div>1. ${fasils[0]}</div><div>2. ${fasils[1]}</div>`
+              : `<div>${fasils[0] || '-'}</div>`
+          };
+        }
+      }
+
       const local = (FincestemCore.assignments && FincestemCore.assignments.getLocalAssignments) 
         ? FincestemCore.assignments.getLocalAssignments() 
         : { coordinators: [], facilitators: [] };
@@ -8133,12 +8237,15 @@
       // Fasilitator (Fasil 1 & Fasil 2)
       const fasilMatches = (local.facilitators || []).filter(f => (f.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
       const fasil1 = fasilMatches.length > 0 ? fasilMatches[0].teacher_name : '-';
-      const fasil2 = fasilMatches.length > 1 ? fasilMatches[1].teacher_name : '-';
+      const fasil2 = fasilMatches.length > 1 ? fasilMatches[1].teacher_name : '';
 
       return {
         coordinator: coordName,
         facilitator1: fasil1,
-        facilitator2: fasil2
+        facilitator2: fasil2,
+        facilitatorDisplay: fasil2
+          ? `<div>1. ${fasil1}</div><div>2. ${fasil2}</div>`
+          : `<div>${fasil1}</div>`
       };
     }
 
@@ -8205,7 +8312,7 @@
 
       let html = '';
       displayList.forEach(s => {
-        const staff = getRombelStaffInfo(s.class);
+        const staff = getRombelStaffInfo(s.class, s.nisn);
         const username = s.nisn || '-';
         const password = s.nis || '-';
 
@@ -8269,8 +8376,7 @@
                     <td class="font-bold text-black py-0.5 align-top">Fasilitator</td>
                     <td class="text-center font-bold text-black py-0.5 align-top">:</td>
                     <td colspan="2" class="font-bold text-black py-0.5">
-                      <div>1. ${staff.facilitator1}</div>
-                      <div>2. ${staff.facilitator2}</div>
+                      ${staff.facilitatorDisplay}
                     </td>
                   </tr>
                 </tbody>
@@ -8351,7 +8457,7 @@
         pagesHtml += `
           <div class="print-page ${!isLastPage ? 'page-break-card' : ''}" style="width: 100%; box-sizing: border-box; padding: 2mm 1mm; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: minmax(59.5mm, auto); gap: 4mm 5mm;">
             ${pageCards.map((s) => {
-              const staff = getRombelStaffInfo(s.class);
+              const staff = getRombelStaffInfo(s.class, s.nisn);
               const username = s.nisn || '-';
               const password = s.nis || '-';
 
@@ -8419,8 +8525,7 @@
                             <td style="color: #000000; font-weight: bold; padding: 1px 0; vertical-align: top;">Fasilitator</td>
                             <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0; vertical-align: top;">:</td>
                             <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0;">
-                              <div>1. ${staff.facilitator1}</div>
-                              <div>2. ${staff.facilitator2}</div>
+                              ${staff.facilitatorDisplay}
                             </td>
                           </tr>
                         </tbody>

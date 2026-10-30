@@ -32,6 +32,14 @@
   window.initAdminMentorshipView = function() {
     renderMentorshipStats();
     switchMentorshipSubTab(currentSubTab);
+    if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+      window.FincestemMentorship.syncFromServer(function(changed) {
+        if (changed) {
+          renderMentorshipStats();
+          switchMentorshipSubTab(currentSubTab);
+        }
+      });
+    }
   };
 
   window.switchMentorshipSubTab = function(tab) {
@@ -183,33 +191,71 @@
     }
 
     if (cardEl) {
-      cardEl.innerHTML = `
-        <div class="flex items-center justify-between gap-4 flex-wrap">
-          <div class="flex items-center gap-3">
-            <div class="w-12 h-12 rounded-2xl bg-[#0875D1]/15 text-[#0875D1] flex items-center justify-center font-black text-lg border border-[#0875D1]/30 shrink-0">
-              ${(tObj.nama_guru || 'G').charAt(0).toUpperCase()}
-            </div>
-            <div class="flex flex-col">
-              <div class="flex items-center gap-2 flex-wrap">
-                <h4 class="font-extrabold text-sm sm:text-base text-slate-800">${escapeHtml(tObj.nama_guru)}</h4>
-                ${roleBadgeHtml}
-              </div>
-              <div class="flex items-center gap-3 text-xs text-slate-500 font-medium mt-0.5 flex-wrap">
-                <span>NIP: <strong>${escapeHtml(tObj.nip || '-')}</strong></span>
-                <span>Kode: <strong>${escapeHtml(tObj.kode_guru_display || tObj.kode_guru || '-')}</strong></span>
-                <span>Mapel: <strong>${escapeHtml(tObj.mata_pelajaran || '-')}</strong></span>
-                <span>User: <strong class="text-slate-700">${escapeHtml(tObj.username || '-')}</strong></span>
-              </div>
-            </div>
-          </div>
+      let linkedCoordHtml = '';
+      if (currentRole !== 'KOORDINATOR') {
+        const linkedCoord = window.FincestemMentorship.getFacilitatorCoordinator
+          ? window.FincestemMentorship.getFacilitatorCoordinator(selectedTeacherKey)
+          : null;
+        const currentCoordKey = linkedCoord ? String(linkedCoord.coordinator_key).toLowerCase() : '';
+        const coordTeachers = [...teachers].sort((a, b) => {
+          const rA = window.FincestemMentorship.getTeacherRole(a.username || a.nip || a.kode_guru) === 'KOORDINATOR';
+          const rB = window.FincestemMentorship.getTeacherRole(b.username || b.nip || b.kode_guru) === 'KOORDINATOR';
+          if (rA && !rB) return -1;
+          if (!rA && rB) return 1;
+          return (a.nama_guru || '').localeCompare(b.nama_guru || '');
+        });
+        let coordOpts = '<option value="">-- Pilih Guru Koordinator Pendamping Kelompok Ini --</option>';
+        coordTeachers.forEach(ct => {
+          const ck = String(ct.username || ct.nip || ct.kode_guru).toLowerCase();
+          if (ck === selectedTeacherKey) return;
+          const isKoord = window.FincestemMentorship.getTeacherRole(ck) === 'KOORDINATOR';
+          const selAttr = (ck === currentCoordKey) ? 'selected' : '';
+          coordOpts += `<option value="${ck}" ${selAttr}>${isKoord ? '🎯 [Koord] ' : ''}${escapeHtml(ct.nama_guru)}</option>`;
+        });
 
-          <!-- Opsi Ganti Kategori Peran -->
-          <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 border border-slate-200">
-            <span class="text-[10.5px] font-bold text-slate-500 px-2">Set Peran:</span>
-            <button type="button" onclick="setMentorTeacherRoleAction('FIELD_TRIP')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${currentRole === 'FIELD_TRIP' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-slate-600 hover:bg-slate-200'}">Field Trip</button>
-            <button type="button" onclick="setMentorTeacherRoleAction('NON_FIELD_TRIP')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${currentRole === 'NON_FIELD_TRIP' ? 'bg-teal-700 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'}">Non-FT</button>
-            <button type="button" onclick="setMentorTeacherRoleAction('KOORDINATOR')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${currentRole === 'KOORDINATOR' ? 'bg-cyan-700 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'}">Koord</button>
+        linkedCoordHtml = `
+          <div class="mt-3 pt-3 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+            <div class="flex items-center gap-1.5 text-slate-600 font-bold">
+              <span class="material-symbols-outlined text-base text-cyan-600">supervisor_account</span>
+              <span>Koordinator Pendamping Kelompok Binaan Ini:</span>
+            </div>
+            <select id="selectMentorLinkedCoordinator" onchange="onChangeFacilitatorCoordinator(this.value)" class="w-full sm:w-80 px-3 py-1.5 rounded-xl border border-cyan-200 bg-cyan-50/50 text-xs font-extrabold text-slate-800 outline-none focus:border-cyan-600">
+              ${coordOpts}
+            </select>
           </div>
+        `;
+      }
+
+      cardEl.innerHTML = `
+        <div class="flex flex-col">
+          <div class="flex items-center justify-between gap-4 flex-wrap">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-[#0875D1]/15 text-[#0875D1] flex items-center justify-center font-black text-lg border border-[#0875D1]/30 shrink-0">
+                ${(tObj.nama_guru || 'G').charAt(0).toUpperCase()}
+              </div>
+              <div class="flex flex-col">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <h4 class="font-extrabold text-sm sm:text-base text-slate-800">${escapeHtml(tObj.nama_guru)}</h4>
+                  ${roleBadgeHtml}
+                </div>
+                <div class="flex items-center gap-3 text-xs text-slate-500 font-medium mt-0.5 flex-wrap">
+                  <span>NIP: <strong>${escapeHtml(tObj.nip || '-')}</strong></span>
+                  <span>Kode: <strong>${escapeHtml(tObj.kode_guru_display || tObj.kode_guru || '-')}</strong></span>
+                  <span>Mapel: <strong>${escapeHtml(tObj.mata_pelajaran || '-')}</strong></span>
+                  <span>User: <strong class="text-slate-700">${escapeHtml(tObj.username || '-')}</strong></span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Opsi Ganti Kategori Peran -->
+            <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 border border-slate-200">
+              <span class="text-[10.5px] font-bold text-slate-500 px-2">Set Peran:</span>
+              <button type="button" onclick="setMentorTeacherRoleAction('FIELD_TRIP')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${currentRole === 'FIELD_TRIP' ? 'bg-amber-500 text-slate-950 shadow-xs' : 'text-slate-600 hover:bg-slate-200'}">Field Trip</button>
+              <button type="button" onclick="setMentorTeacherRoleAction('NON_FIELD_TRIP')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${currentRole === 'NON_FIELD_TRIP' ? 'bg-teal-700 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'}">Non-FT</button>
+              <button type="button" onclick="setMentorTeacherRoleAction('KOORDINATOR')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${currentRole === 'KOORDINATOR' ? 'bg-cyan-700 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-200'}">Koord</button>
+            </div>
+          </div>
+          ${linkedCoordHtml}
         </div>
       `;
     }
@@ -249,13 +295,20 @@
             ? `<span class="px-2 py-0.5 rounded-full text-[10.5px] font-black bg-amber-500 text-slate-950">🚌 Field Trip</span>`
             : `<span class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800 border border-teal-200">🏫 Non-FT</span>`;
 
+          const mInfo = window.FincestemMentorship.getMentorsForStudent
+            ? window.FincestemMentorship.getMentorsForStudent(s.nisn, s.class || s.rombel)
+            : { coordinator_single: '-', facilitator1: '-' };
+          const partnerLabel = (currentRole === 'KOORDINATOR')
+            ? `Fasil: ${escapeHtml(mInfo.facilitator1 || '-')}`
+            : `Koord: ${escapeHtml(mInfo.coordinator_single || '-')}`;
+
           html += `
             <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition-colors">
               <td class="py-2.5 px-3 text-center font-bold text-slate-400 text-xs">${idx + 1}</td>
               <td class="py-2.5 px-3 font-mono font-bold text-slate-600 text-xs">${escapeHtml(s.nisn || '-')}</td>
               <td class="py-2.5 px-3 font-extrabold text-slate-800 text-xs">
                 <span>${escapeHtml(s.nama || '-')}</span>
-                <span class="text-[10px] text-slate-400 font-semibold block">${escapeHtml(s.gender || '')}</span>
+                <span class="text-[10px] text-slate-500 font-semibold block">${escapeHtml(s.gender || '')} • <span class="text-[#0875D1]">${partnerLabel}</span></span>
               </td>
               <td class="py-2.5 px-3 font-bold text-slate-700 text-xs">${escapeHtml(s.class || s.rombel || '-')}</td>
               <td class="py-2.5 px-3 text-center">${badge}</td>
@@ -271,6 +324,13 @@
       }
     }
   }
+
+  window.onChangeFacilitatorCoordinator = function(coordKey) {
+    if (!selectedTeacherKey || !window.FincestemMentorship) return;
+    window.FincestemMentorship.setFacilitatorCoordinator(selectedTeacherKey, coordKey);
+    renderMentorshipStats();
+    renderPlottingView();
+  };
 
   window.setMentorTeacherRoleAction = function(role) {
     if (!selectedTeacherKey || !window.FincestemMentorship) return;
@@ -413,7 +473,8 @@
     const listContainer = document.getElementById('modalStudentListContainer');
     const countInfo = document.getElementById('modalSelectedCountInfo');
     const allStudents = window.FincestemMasterStudents || [];
-    const assignedNisns = window.FincestemMentorship.getAllAssignedNisns();
+    const targetRole = window.FincestemMentorship.getTeacherRole(selectedTeacherKey);
+    const roleFilterType = (targetRole === 'KOORDINATOR') ? 'KOORDINATOR' : 'FASILITATOR';
     const currentMentorNisns = new Set(window.FincestemMentorship.getAssignedNisnsForTeacher(selectedTeacherKey));
 
     if (!listContainer) return;
@@ -426,7 +487,8 @@
       const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
         ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
         : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
-      const isAssigned = assignedNisns.has(sNisn);
+      const existingSameRole = window.FincestemMentorship.getTeacherForStudent(sNisn, roleFilterType);
+      const isAssignedSameRole = !!existingSameRole;
       const isAlreadyInThisTeacher = currentMentorNisns.has(sNisn);
 
       // Jangan tampilkan yang sudah ada di guru ini
@@ -448,7 +510,7 @@
       // Filter Kategori
       if (studentModalFilter.category === 'FIELD_TRIP' && !isFT) return false;
       if (studentModalFilter.category === 'NON_FIELD_TRIP' && isFT) return false;
-      if (studentModalFilter.category === 'UNASSIGNED' && isAssigned) return false;
+      if (studentModalFilter.category === 'UNASSIGNED' && isAssignedSameRole) return false;
 
       // Filter Search
       if (studentModalFilter.search) {
@@ -482,13 +544,12 @@
       const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
         ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
         : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
-      const isAssignedToOther = assignedNisns.has(sNisn);
+      const otherT = window.FincestemMentorship.getTeacherForStudent(sNisn, roleFilterType);
       const isChecked = modalSelectedNisns.has(sNisn);
 
       let otherMentorBadge = '';
-      if (isAssignedToOther) {
-        const otherT = window.FincestemMentorship.getTeacherForStudent(sNisn);
-        otherMentorBadge = `<span class="text-[9.5px] px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 font-bold border border-rose-200" title="Akan dipindahkan dari pembina lama">Pindah dari: ${escapeHtml(otherT ? otherT.teacher_name : 'Guru Lain')}</span>`;
+      if (otherT) {
+        otherMentorBadge = `<span class="text-[9.5px] px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 font-bold border border-rose-200" title="Akan dipindahkan dari pembina lama">Pindah dari: ${escapeHtml(otherT.teacher_name)}</span>`;
       }
 
       html += `

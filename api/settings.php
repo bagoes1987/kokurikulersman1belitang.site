@@ -290,8 +290,32 @@ function ensureRoleTables($pdo) {
         }
     } catch (Exception $eFt) {}
 
+    try {
+        $pdo->exec("CREATE TABLE IF NOT EXISTS `app_settings` (`key_name` VARCHAR(50) PRIMARY KEY, `value` LONGTEXT, `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci");
+        $pdo->exec("ALTER TABLE `app_settings` MODIFY COLUMN `value` LONGTEXT");
+    } catch (Exception $eAppSet) {}
+
     @touch($lockFile);
     $checked = true;
+}
+
+function getMentorshipState($pdo) {
+    try {
+        $stmt = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'mentorship_state_v1' LIMIT 1");
+        $stmt->execute();
+        $raw = $stmt->fetchColumn();
+        if ($raw) {
+            $decoded = json_decode($raw, true);
+            if (is_array($decoded)) {
+                return [
+                    'assignments'     => isset($decoded['assignments']) && is_array($decoded['assignments']) ? $decoded['assignments'] : [],
+                    'teacher_roles'   => isset($decoded['teacher_roles']) && is_array($decoded['teacher_roles']) ? $decoded['teacher_roles'] : [],
+                    'custom_teachers' => isset($decoded['custom_teachers']) && is_array($decoded['custom_teachers']) ? $decoded['custom_teachers'] : []
+                ];
+            }
+        }
+    } catch (Exception $e) {}
+    return ['assignments' => [], 'teacher_roles' => [], 'custom_teachers' => []];
 }
 
 function buildCustomZonesLookup($pdo) {
@@ -466,26 +490,231 @@ if ($method === 'GET') {
             jsonResponse(true, 'Data guru berhasil dimuat', ['teachers' => $teachers]);
         }
 
-        // Ambil penugasan peran Koordinator & Fasilitator
+        // Ambil penugasan peran Koordinator & Fasilitator + Pembagian Siswa Binaan (Mentorship)
         if ($action === 'get_role_assignments') {
             $coordinators = $pdo->query("SELECT * FROM `class_coordinators` ORDER BY `teacher_username` ASC, `class_name` ASC")->fetchAll();
             $facilitators = $pdo->query("SELECT * FROM `class_facilitators` ORDER BY `class_name` ASC, `teacher_username` ASC")->fetchAll();
             $evaluations  = $pdo->query("SELECT * FROM `facilitator_evaluations` ORDER BY `evaluation_date` DESC")->fetchAll();
             $finalGrades  = $pdo->query("SELECT * FROM `student_final_grades` ORDER BY `class_name` ASC, `student_nisn` ASC")->fetchAll();
+            $mentorship   = getMentorshipState($pdo);
 
             jsonResponse(true, 'Data penugasan peran berhasil dimuat', [
-                'coordinators' => $coordinators,
-                'facilitators' => $facilitators,
-                'evaluations'  => $evaluations,
-                'final_grades' => $finalGrades
+                'coordinators'     => $coordinators,
+                'facilitators'     => $facilitators,
+                'evaluations'      => $evaluations,
+                'final_grades'     => $finalGrades,
+                'mentorship_state' => $mentorship
             ]);
         }
 
-        // Ambil data khusus Koordinator yang sedang login
+        if ($action === 'get_mentorship_data') {
+            jsonResponse(true, 'Data pembagian siswa binaan berhasil dimuat', getMentorshipState($pdo));
+        }
+
+        // Ambil data khusus Koordinator yang sedang login (Utamakan Pembagian Siswa Binaan)
         if ($action === 'get_coordinator_data') {
             $coordUser = trim($_GET['coordinator_user'] ?? '');
             if (!$coordUser) {
                 jsonResponse(false, 'Username Koordinator wajib ditentukan!', null, 400);
+            }
+
+            $mState = getMentorshipState($pdo);
+            $mAssigns = $mState['assignments'] ?? [];
+            $cleanCoord = strtolower($coordUser);
+
+            // Cek apakah koordinator ini memiliki siswa binaan di mentorship_state_v1
+            $mentorNisns = [];
+            $mentorFacilitators = [];
+            foreach ($mAssigns as $tKey => $entry) {
+                if (!is_array($entry)) continue;
+                $tKeyLower = strtolower(trim((string)$tKey));
+                $linkedCoord = strtolower(trim((string)($entry['coordinator_key'] ?? '')));
+                $role = strtoupper(trim((string)($entry['teacher_role'] ?? '')));
+                $nisns = isset($entry['student_nisns']) && is_array($entry['student_nisns']) ? $entry['student_nisns'] : [];
+
+                if ($tKeyLower === $cleanCoord) {
+                    foreach ($nisns as $n) {
+                        if (trim((string)$n) !== '') $mentorNisns[] = trim((string)$n);
+                    }
+                } elseif ($linkedCoord === $cleanCoord && !empty($nisns)) {
+                    foreach ($nisns as $n) {
+                        if (trim((string)$n) !== '') $mentorNisns[] = trim((string)$n);
+                    }
+                    $mentorFacilitators[$tKeyLower] = [
+                        'teacher_username' => $tKeyLower,
+                        'teacher_name'     => $entry['teacher_name'] ?? $tKeyLower,
+                        'student_nisns'    => array_values(array_unique(array_map('trim', $nisns)))
+                    ];
+                }
+            }
+            $mentorNisns = array_values(array_unique($mentorNisns));
+
+            // Jika Koordinator punya siswa binaan langsung, temukan juga Fasilitator yang membina siswa-siswa tersebut
+            if (!empty($mentorNisns)) {
+                $nisnLookup = array_flip($mentorNisns);
+                foreach ($mAssigns as $tKey => $entry) {
+                    if (!is_array($entry)) continue;
+                    $tKeyLower = strtolower(trim((string)$tKey));
+                    $role = strtoupper(trim((string)($entry['teacher_role'] ?? 'NON_FIELD_TRIP')));
+                    if ($tKeyLower === $cleanCoord || $role === 'KOORDINATOR') continue;
+                    $nisns = isset($entry['student_nisns']) && is_array($entry['student_nisns']) ? $entry['student_nisns'] : [];
+                    $overlap = [];
+                    foreach ($nisns as $n) {
+                        $cn = trim((string)$n);
+                        if ($cn !== '' && isset($nisnLookup[$cn])) $overlap[] = $cn;
+                    }
+                    if (!empty($overlap) && !isset($mentorFacilitators[$tKeyLower])) {
+                        $mentorFacilitators[$tKeyLower] = [
+                            'teacher_username' => $tKeyLower,
+                            'teacher_name'     => $entry['teacher_name'] ?? $tKeyLower,
+                            'student_nisns'    => $overlap
+                        ];
+                    }
+                }
+
+                // Expand NISN variants (padded 10 digit & unpadded)
+                $expandedNisns = [];
+                foreach ($mentorNisns as $n) {
+                    $expandedNisns[] = $n;
+                    $digits = preg_replace('/\D/', '', $n);
+                    if (strlen($digits) >= 8 && strlen($digits) <= 10) {
+                        $expandedNisns[] = str_pad($digits, 10, '0', STR_PAD_LEFT);
+                        $unp = ltrim($digits, '0');
+                        if ($unp) $expandedNisns[] = $unp;
+                    }
+                }
+                $expandedNisns = array_values(array_unique($expandedNisns));
+                $inNisn = implode(',', array_fill(0, count($expandedNisns), '?'));
+
+                $stmtStu = $pdo->prepare("
+                    SELECT u.identifier AS nisn, u.name, u.class_name, u.nis, u.gender, u.zone,
+                           fg.final_score, fg.final_predicate
+                    FROM `users` u
+                    LEFT JOIN `student_final_grades` fg ON u.identifier = fg.student_nisn
+                    WHERE u.identifier IN ($inNisn) AND u.role = 'siswa'
+                    ORDER BY u.class_name ASC, u.name ASC
+                ");
+                $stmtStu->execute($expandedNisns);
+                $students = $stmtStu->fetchAll();
+                $customZonesMap = buildCustomZonesLookup($pdo);
+
+                $progressMap = [];
+                try {
+                    $stmtProg = $pdo->prepare("
+                        SELECT p.student_nisn, p.day_number, p.task_type, p.status, p.score, p.updated_at
+                        FROM `student_progress_eval` p
+                        WHERE p.student_nisn IN ($inNisn)
+                    ");
+                    $stmtProg->execute($expandedNisns);
+                    foreach ($stmtProg->fetchAll() as $pRow) {
+                        $sNisn = $pRow['student_nisn'];
+                        if (!isset($progressMap[$sNisn])) {
+                            $progressMap[$sNisn] = [
+                                'completed_days'  => 0,
+                                'total_submitted' => 0,
+                                'latest_status'   => 'belum_mulai',
+                                'scores'          => [],
+                                'last_active'     => null
+                            ];
+                        }
+                        if ($pRow['status'] === 'completed') $progressMap[$sNisn]['completed_days']++;
+                        if (in_array($pRow['status'], ['submitted', 'reviewed', 'revision', 'completed'])) $progressMap[$sNisn]['total_submitted']++;
+                        $progressMap[$sNisn]['latest_status'] = $pRow['status'];
+                        if ($pRow['score'] > 0) $progressMap[$sNisn]['scores'][] = (float)$pRow['score'];
+                        if (!$progressMap[$sNisn]['last_active'] || strtotime($pRow['updated_at']) > strtotime($progressMap[$sNisn]['last_active'])) {
+                            $progressMap[$sNisn]['last_active'] = $pRow['updated_at'];
+                        }
+                    }
+                } catch (Exception $e) {}
+
+                $classesSet = [];
+                foreach ($students as &$stu) {
+                    $sNisn = $stu['nisn'];
+                    if (!empty($stu['class_name'])) $classesSet[$stu['class_name']] = true;
+                    $stu['zone'] = resolveStudentZoneWithAdminOverride($stu, $customZonesMap);
+                    $stu['is_field_trip'] = (stripos($stu['zone'], 'LUAR') !== false);
+                    $pr = $progressMap[$sNisn] ?? null;
+                    $stu['completed_days'] = $pr ? $pr['completed_days'] : 0;
+                    $stu['percentage'] = min(100, round(($stu['completed_days'] / 7) * 100));
+                    $stu['task_status'] = $pr ? $pr['latest_status'] : 'belum_mulai';
+                    $stu['avg_score'] = ($pr && count($pr['scores']) > 0) ? round(array_sum($pr['scores']) / count($pr['scores']), 1) : null;
+                }
+                unset($stu);
+
+                $classes = array_keys($classesSet);
+                $stmtEval = $pdo->prepare("SELECT * FROM `facilitator_evaluations` WHERE `coordinator_username` = :u");
+                $stmtEval->execute([':u' => $coordUser]);
+                $evalMap = [];
+                foreach ($stmtEval->fetchAll() as $ev) {
+                    $evalMap[strtolower($ev['facilitator_username'])] = $ev;
+                }
+
+                $fasilList = [];
+                $fasilPerformance = [];
+                foreach ($mentorFacilitators as $fKey => $fInfo) {
+                    $fNisnSet = array_flip($fInfo['student_nisns']);
+                    $fStudents = array_filter($students, function($s) use ($fNisnSet) {
+                        $n = trim((string)$s['nisn']);
+                        $unp = ltrim(preg_replace('/\D/', '', $n), '0');
+                        $pad = str_pad($unp, 10, '0', STR_PAD_LEFT);
+                        return isset($fNisnSet[$n]) || isset($fNisnSet[$unp]) || isset($fNisnSet[$pad]);
+                    });
+                    $fClasses = array_values(array_unique(array_filter(array_map(fn($s) => $s['class_name'] ?? '', $fStudents))));
+                    $classLabel = !empty($fClasses) ? implode(', ', array_slice($fClasses, 0, 3)) . (count($fClasses) > 3 ? '...' : '') : 'Kelompok Binaan';
+
+                    foreach ($fClasses as $fc) {
+                        $fasilList[] = [
+                            'teacher_username' => $fInfo['teacher_username'],
+                            'teacher_name'     => $fInfo['teacher_name'],
+                            'class_name'       => $fc
+                        ];
+                    }
+                    if (empty($fClasses)) {
+                        $fasilList[] = [
+                            'teacher_username' => $fInfo['teacher_username'],
+                            'teacher_name'     => $fInfo['teacher_name'],
+                            'class_name'       => 'Kelompok Binaan'
+                        ];
+                    }
+
+                    $gradedCount = 0;
+                    $unreviewedCount = 0;
+                    $lastActivity = null;
+                    foreach ($fStudents as $cs) {
+                        $pr = $progressMap[$cs['nisn']] ?? null;
+                        if ($pr) {
+                            if (in_array($pr['latest_status'], ['reviewed', 'completed'])) $gradedCount++;
+                            elseif (in_array($pr['latest_status'], ['submitted', 'revision'])) $unreviewedCount++;
+                            if ($pr['last_active'] && (!$lastActivity || strtotime($pr['last_active']) > strtotime($lastActivity))) {
+                                $lastActivity = $pr['last_active'];
+                            }
+                        }
+                    }
+                    $eval = $evalMap[$fKey] ?? null;
+                    $fasilPerformance[] = [
+                        'teacher_username'   => $fInfo['teacher_username'],
+                        'teacher_name'       => $fInfo['teacher_name'],
+                        'class_name'         => $classLabel,
+                        'total_students'     => count($fStudents),
+                        'graded_count'       => $gradedCount,
+                        'unreviewed_count'   => $unreviewedCount,
+                        'last_activity'      => $lastActivity,
+                        'coordinator_rating' => $eval ? (int)$eval['rating'] : null,
+                        'coordinator_notes'  => $eval ? $eval['notes'] : ''
+                    ];
+                }
+
+                jsonResponse(true, 'Data portal koordinator (Siswa Binaan) berhasil dimuat', [
+                    'classes'           => $classes,
+                    'facilitators'      => $fasilList,
+                    'fasil_performance' => $fasilPerformance,
+                    'students'          => $students,
+                    'summary'           => [
+                        'total_classes'      => count($classes),
+                        'total_facilitators' => count($mentorFacilitators),
+                        'total_students'     => count($students)
+                    ]
+                ]);
             }
 
             // Kelas yang dikoordinasikan
@@ -650,11 +879,106 @@ if ($method === 'GET') {
             ]);
         }
 
-        // Ambil data khusus Fasilitator yang sedang login (Hanya 1 Kelas Binaan)
+        // Ambil data khusus Fasilitator yang sedang login (Utamakan Pembagian Siswa Binaan)
         if ($action === 'get_facilitator_data') {
             $fasilUser = trim($_GET['facilitator_user'] ?? '');
             if (!$fasilUser) {
                 jsonResponse(false, 'Username Fasilitator wajib ditentukan!', null, 400);
+            }
+
+            $mState = getMentorshipState($pdo);
+            $mAssigns = $mState['assignments'] ?? [];
+            $cleanFasil = strtolower($fasilUser);
+            $mentorEntry = null;
+            foreach ($mAssigns as $tKey => $entry) {
+                if (strtolower(trim((string)$tKey)) === $cleanFasil && is_array($entry) && !empty($entry['student_nisns'])) {
+                    $mentorEntry = $entry;
+                    break;
+                }
+            }
+
+            if ($mentorEntry && !empty($mentorEntry['student_nisns'])) {
+                $expandedNisns = [];
+                foreach ($mentorEntry['student_nisns'] as $n) {
+                    $cn = trim((string)$n);
+                    if ($cn === '') continue;
+                    $expandedNisns[] = $cn;
+                    $digits = preg_replace('/\D/', '', $cn);
+                    if (strlen($digits) >= 8 && strlen($digits) <= 10) {
+                        $expandedNisns[] = str_pad($digits, 10, '0', STR_PAD_LEFT);
+                        $unp = ltrim($digits, '0');
+                        if ($unp) $expandedNisns[] = $unp;
+                    }
+                }
+                $expandedNisns = array_values(array_unique($expandedNisns));
+
+                if (!empty($expandedNisns)) {
+                    $inNisn = implode(',', array_fill(0, count($expandedNisns), '?'));
+                    $stmtStu = $pdo->prepare("
+                        SELECT u.identifier AS nisn, u.name, u.class_name, u.nis, u.gender, u.photo_url, u.zone,
+                               fg.final_score, fg.final_predicate, fg.notes AS final_notes
+                        FROM `users` u
+                        LEFT JOIN `student_final_grades` fg ON u.identifier = fg.student_nisn
+                        WHERE u.identifier IN ($inNisn) AND u.role = 'siswa'
+                        ORDER BY u.class_name ASC, u.name ASC
+                    ");
+                    $stmtStu->execute($expandedNisns);
+                    $students = $stmtStu->fetchAll();
+                    $customZonesMap = buildCustomZonesLookup($pdo);
+
+                    $progressMap = [];
+                    try {
+                        $stmtProg = $pdo->prepare("
+                            SELECT p.student_nisn, p.day_number, p.task_type, p.status, p.score, p.updated_at
+                            FROM `student_progress_eval` p
+                            WHERE p.student_nisn IN ($inNisn)
+                        ");
+                        $stmtProg->execute($expandedNisns);
+                        foreach ($stmtProg->fetchAll() as $pRow) {
+                            $sNisn = $pRow['student_nisn'];
+                            if (!isset($progressMap[$sNisn])) {
+                                $progressMap[$sNisn] = [
+                                    'completed_days'  => 0,
+                                    'total_submitted' => 0,
+                                    'latest_status'   => 'belum_mulai',
+                                    'scores'          => [],
+                                    'last_active'     => null
+                                ];
+                            }
+                            if ($pRow['status'] === 'completed') $progressMap[$sNisn]['completed_days']++;
+                            if (in_array($pRow['status'], ['submitted', 'reviewed', 'revision', 'completed'])) $progressMap[$sNisn]['total_submitted']++;
+                            $progressMap[$sNisn]['latest_status'] = $pRow['status'];
+                            if ($pRow['score'] > 0) $progressMap[$sNisn]['scores'][] = (float)$pRow['score'];
+                            if (!$progressMap[$sNisn]['last_active'] || strtotime($pRow['updated_at']) > strtotime($progressMap[$sNisn]['last_active'])) {
+                                $progressMap[$sNisn]['last_active'] = $pRow['updated_at'];
+                            }
+                        }
+                    } catch (Exception $e) {}
+
+                    foreach ($students as &$stu) {
+                        $sNisn = $stu['nisn'];
+                        $stu['zone'] = resolveStudentZoneWithAdminOverride($stu, $customZonesMap);
+                        $stu['is_field_trip'] = (stripos($stu['zone'], 'LUAR') !== false);
+                        $pr = $progressMap[$sNisn] ?? null;
+                        $stu['completed_days'] = $pr ? $pr['completed_days'] : 0;
+                        $stu['percentage'] = min(100, round(($stu['completed_days'] / 7) * 100));
+                        $stu['task_status'] = $pr ? $pr['latest_status'] : 'belum_mulai';
+                        $stu['avg_score'] = ($pr && count($pr['scores']) > 0) ? round(array_sum($pr['scores']) / count($pr['scores']), 1) : null;
+                    }
+                    unset($stu);
+
+                    $assignmentObj = [
+                        'teacher_username' => $fasilUser,
+                        'teacher_name'     => $mentorEntry['teacher_name'] ?? $fasilUser,
+                        'class_name'       => 'Binaan Anda'
+                    ];
+
+                    jsonResponse(true, 'Data siswa binaan berhasil dimuat', [
+                        'assignment' => $assignmentObj,
+                        'class_name' => 'Binaan Anda',
+                        'students'   => $students
+                    ]);
+                }
             }
 
             $stmt = $pdo->prepare("SELECT * FROM `class_facilitators` WHERE `teacher_username` = :u LIMIT 1");
@@ -1543,6 +1867,25 @@ if ($method === 'POST') {
                 $stmt->execute([':n' => $nisn]);
             }
             jsonResponse(true, "Koreksi darurat berhasil dihapus. Penilaian Day {$dayNum} dikembalikan ke kalkulasi waktu otomatis.");
+        }
+
+        // O. SIMPAN PEMBAGIAN SISWA BINAAN (MENTORSHIP FASILITATOR & KOORDINATOR)
+        if ($action === 'save_mentorship_data') {
+            $current = getMentorshipState($pdo);
+            if (isset($input['assignments']) && is_array($input['assignments'])) {
+                $current['assignments'] = $input['assignments'];
+            }
+            if (isset($input['teacher_roles']) && is_array($input['teacher_roles'])) {
+                $current['teacher_roles'] = $input['teacher_roles'];
+            }
+            if (isset($input['custom_teachers']) && is_array($input['custom_teachers'])) {
+                $current['custom_teachers'] = $input['custom_teachers'];
+            }
+
+            $stmtSave = $pdo->prepare("REPLACE INTO `app_settings` (`key_name`, `value`) VALUES ('mentorship_state_v1', :val)");
+            $stmtSave->execute([':val' => json_encode($current, JSON_UNESCAPED_UNICODE)]);
+
+            jsonResponse(true, 'Data Pembagian Siswa Binaan berhasil disinkronkan ke server.', $current);
         }
 
         jsonResponse(false, 'Aksi tidak valid', null, 400);

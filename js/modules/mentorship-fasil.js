@@ -194,6 +194,8 @@
         // Set role jika disediakan
         if (teacherData.role_category) {
           this.setTeacherRole(cleanUser, teacherData.role_category);
+        } else {
+          this.syncToServer();
         }
 
         return { success: true, teacher: newTeacher, message: 'Guru baru berhasil ditambahkan ke sistem!' };
@@ -219,11 +221,99 @@
 
         // Hapus juga assignment binaannya
         this.clearTeacherAssignments(identifier);
+        this.syncToServer();
 
         return true;
       } catch (e) {
         return false;
       }
+    },
+
+    /**
+     * SINKRONISASI REAL-TIME KE DATABASE SERVER (cPanel / MySQL)
+     */
+    getApiBase: function() {
+      if (window.FincestemCore && FincestemCore.api && FincestemCore.api.base) {
+        return FincestemCore.api.base;
+      }
+      return '../api';
+    },
+
+    syncToServer: function(callback) {
+      if (!window.location || !window.location.protocol.startsWith('http')) {
+        if (callback) callback({ success: true });
+        return;
+      }
+      try {
+        const assignments = this.getAssignmentsMap();
+        let teacherRoles = {};
+        try {
+          const rawR = localStorage.getItem(STORAGE_KEY_TEACHER_ROLES);
+          if (rawR) teacherRoles = JSON.parse(rawR) || {};
+        } catch (eR) {}
+        let customTeachers = [];
+        try {
+          const rawC = localStorage.getItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS);
+          if (rawC) customTeachers = JSON.parse(rawC) || [];
+        } catch (eC) {}
+
+        fetch(this.getApiBase() + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'save_mentorship_data',
+            assignments: assignments,
+            teacher_roles: teacherRoles,
+            custom_teachers: customTeachers
+          })
+        })
+          .then(r => r.json())
+          .then(res => { if (callback) callback(res); })
+          .catch(() => { if (callback) callback({ success: false }); });
+      } catch (e) {
+        if (callback) callback({ success: false });
+      }
+    },
+
+    applyServerState: function(state) {
+      if (!state || typeof state !== 'object') return false;
+      let updated = false;
+      try {
+        if (state.assignments && typeof state.assignments === 'object' && Object.keys(state.assignments).length > 0) {
+          localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(state.assignments));
+          updated = true;
+        }
+        if (state.teacher_roles && typeof state.teacher_roles === 'object' && Object.keys(state.teacher_roles).length > 0) {
+          localStorage.setItem(STORAGE_KEY_TEACHER_ROLES, JSON.stringify(state.teacher_roles));
+          updated = true;
+        }
+        if (Array.isArray(state.custom_teachers) && state.custom_teachers.length > 0) {
+          localStorage.setItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS, JSON.stringify(state.custom_teachers));
+          updated = true;
+        }
+      } catch (e) {}
+      return updated;
+    },
+
+    syncFromServer: function(callback) {
+      const self = this;
+      if (!window.location || !window.location.protocol.startsWith('http')) {
+        if (callback) callback(false);
+        return;
+      }
+      fetch(this.getApiBase() + '/settings.php?action=get_mentorship_data&_t=' + Date.now(), { cache: 'no-store' })
+        .then(r => r.json())
+        .then(res => {
+          if (res && res.success && res.data) {
+            const changed = self.applyServerState(res.data);
+            if (callback) callback(changed, res.data);
+          } else {
+            if (callback) callback(false);
+          }
+        })
+        .catch(() => {
+          if (callback) callback(false);
+        });
     },
 
     /**
@@ -264,6 +354,14 @@
         if (raw) map = JSON.parse(raw) || {};
         map[canonicalKey] = roleCategory;
         localStorage.setItem(STORAGE_KEY_TEACHER_ROLES, JSON.stringify(map));
+
+        // Sinkronkan juga role di dalam assignments map jika sudah ada
+        const assignMap = this.getAssignmentsMap();
+        if (assignMap[canonicalKey]) {
+          assignMap[canonicalKey].teacher_role = roleCategory;
+          localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(assignMap));
+        }
+        this.syncToServer();
       } catch (e) {}
     },
 
@@ -286,11 +384,60 @@
     saveAssignmentsMap: function(map) {
       try {
         localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(map));
+        this.syncToServer();
         return true;
       } catch (e) {
         console.error('Gagal simpan assignments map:', e);
         return false;
       }
+    },
+
+    setFacilitatorCoordinator: function(facilitatorIdentifier, coordinatorIdentifier) {
+      if (!facilitatorIdentifier) return false;
+      const fasilObj = this.findTeacherByIdentifier(facilitatorIdentifier);
+      const fasilKey = fasilObj
+        ? String(fasilObj.username || fasilObj.nip || fasilObj.kode_guru).trim().toLowerCase()
+        : String(facilitatorIdentifier).trim().toLowerCase();
+      const fasilName = fasilObj ? fasilObj.nama_guru : fasilKey;
+      const fasilRole = this.getTeacherRole(fasilKey);
+
+      const map = this.getAssignmentsMap();
+      if (!map[fasilKey]) {
+        map[fasilKey] = {
+          teacher_name: fasilName,
+          teacher_role: fasilRole,
+          student_nisns: []
+        };
+      }
+
+      if (!coordinatorIdentifier) {
+        delete map[fasilKey].coordinator_key;
+        delete map[fasilKey].coordinator_name;
+      } else {
+        const coordObj = this.findTeacherByIdentifier(coordinatorIdentifier);
+        const coordKey = coordObj
+          ? String(coordObj.username || coordObj.nip || coordObj.kode_guru).trim().toLowerCase()
+          : String(coordinatorIdentifier).trim().toLowerCase();
+        const coordName = coordObj ? coordObj.nama_guru : coordKey;
+        map[fasilKey].coordinator_key = coordKey;
+        map[fasilKey].coordinator_name = coordName;
+      }
+      map[fasilKey].updated_at = new Date().toISOString();
+      return this.saveAssignmentsMap(map);
+    },
+
+    getFacilitatorCoordinator: function(facilitatorIdentifier) {
+      if (!facilitatorIdentifier) return null;
+      const fasilKey = this.resolveCanonicalKey(facilitatorIdentifier);
+      const map = this.getAssignmentsMap();
+      const entry = map[fasilKey] || map[String(facilitatorIdentifier).trim().toLowerCase()];
+      if (entry && entry.coordinator_key) {
+        return {
+          coordinator_key: entry.coordinator_key,
+          coordinator_name: entry.coordinator_name || entry.coordinator_key
+        };
+      }
+      return null;
     },
 
     getAssignedNisnsForTeacher: function(teacherIdentifier) {
@@ -316,6 +463,22 @@
           });
         }
       });
+
+      // Jika guru ini adalah Koordinator, gabungkan juga siswa dari Fasilitator yang ditautkan ke Koordinator ini
+      const role = this.getTeacherRole(cleanKey);
+      if (role === 'KOORDINATOR') {
+        Object.values(map).forEach(entry => {
+          if (entry && entry.coordinator_key && keysToCheck.has(String(entry.coordinator_key).toLowerCase())) {
+            if (Array.isArray(entry.student_nisns)) {
+              entry.student_nisns.forEach(n => {
+                const sN = String(n).trim();
+                if (sN) nisnSet.add(sN);
+              });
+            }
+          }
+        });
+      }
+
       return Array.from(nisnSet);
     },
 
@@ -324,7 +487,18 @@
       if (!nisns || !nisns.length) return [];
 
       const allStudents = window.FincestemMasterStudents || [];
-      const nisnSet = new Set(nisns.map(n => String(n).trim()));
+      const nisnSet = new Set();
+      nisns.forEach(n => {
+        const clean = String(n).trim();
+        if (!clean) return;
+        nisnSet.add(clean);
+        const digits = clean.replace(/\D/g, '');
+        if (digits.length >= 8 && digits.length <= 10) {
+          nisnSet.add(digits.padStart(10, '0'));
+          const unp = digits.replace(/^0+/, '');
+          if (unp) nisnSet.add(unp);
+        }
+      });
 
       return allStudents.filter(s => {
         const cleanNisn = String(s.nisn || '').trim();
@@ -342,6 +516,7 @@
 
       const teacherName = tObj ? tObj.nama_guru : cleanKey;
       const teacherRole = this.getTeacherRole(cleanKey);
+      const isTargetKoord = (teacherRole === 'KOORDINATOR');
 
       // Pastikan entry guru ada
       if (!map[cleanKey]) {
@@ -350,23 +525,32 @@
           teacher_role: teacherRole,
           student_nisns: []
         };
+      } else {
+        map[cleanKey].teacher_name = teacherName;
+        map[cleanKey].teacher_role = teacherRole;
       }
 
-      // Gabungkan NISN baru (set unik) termasuk yang sebelumnya ada di alias guru ini
-      const existingSet = new Set(this.getAssignedNisnsForTeacher(cleanKey));
+      // Gabungkan NISN baru (set unik) dari entry langsung guru ini
+      const currentDirect = Array.isArray(map[cleanKey].student_nisns) ? map[cleanKey].student_nisns : [];
+      const existingSet = new Set(currentDirect.map(n => String(n).trim()).filter(Boolean));
       nisnArray.forEach(n => {
         const sN = String(n).trim();
         if (sN) existingSet.add(sN);
       });
 
-      // Lepas NISN ini dari guru lain (dan bersihkan key alias duplikat dari guru yang sama)
+      // Lepas NISN ini hanya dari guru lain yang memiliki KATEGORI PERAN SAMA
+      // (Sehingga 1 siswa bisa memiliki 1 Guru Fasilitator DAN 1 Guru Koordinator sekaligus!)
       const aliasSet = new Set(tObj && Array.isArray(tObj.aliases) ? tObj.aliases : []);
       Object.keys(map).forEach(otherKey => {
         if (otherKey !== cleanKey) {
           if (aliasSet.has(otherKey.toLowerCase())) {
             delete map[otherKey];
           } else if (Array.isArray(map[otherKey].student_nisns)) {
-            map[otherKey].student_nisns = map[otherKey].student_nisns.filter(n => !existingSet.has(String(n).trim()));
+            const otherRole = this.getTeacherRole(otherKey);
+            const isOtherKoord = (otherRole === 'KOORDINATOR');
+            if (isTargetKoord === isOtherKoord) {
+              map[otherKey].student_nisns = map[otherKey].student_nisns.filter(n => !existingSet.has(String(n).trim()));
+            }
           }
         }
       });
@@ -423,23 +607,136 @@
       return changed ? this.saveAssignmentsMap(map) : false;
     },
 
-    getTeacherForStudent: function(nisn) {
+    getTeacherForStudent: function(nisn, filterRole) {
       if (!nisn) return null;
       const cleanNisn = String(nisn).trim();
+      const digits = cleanNisn.replace(/\D/g, '');
+      const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : cleanNisn;
+      const unpadded = digits.replace(/^0+/, '') || cleanNisn;
       const map = this.getAssignmentsMap();
 
       for (const [tKey, entry] of Object.entries(map)) {
         if (entry && Array.isArray(entry.student_nisns)) {
-          if (entry.student_nisns.includes(cleanNisn)) {
+          const role = this.getTeacherRole(tKey);
+          if (filterRole === 'KOORDINATOR' && role !== 'KOORDINATOR') continue;
+          if (filterRole === 'FASILITATOR' && role === 'KOORDINATOR') continue;
+
+          if (
+            entry.student_nisns.includes(cleanNisn) ||
+            entry.student_nisns.includes(padded) ||
+            entry.student_nisns.includes(unpadded)
+          ) {
+            const tObj = this.findTeacherByIdentifier(tKey);
             return {
               teacher_key: tKey,
-              teacher_name: entry.teacher_name || tKey,
-              teacher_role: entry.teacher_role || 'NON_FIELD_TRIP'
+              teacher_name: (tObj && tObj.nama_guru) || entry.teacher_name || tKey,
+              teacher_role: role,
+              coordinator_key: entry.coordinator_key || '',
+              coordinator_name: entry.coordinator_name || ''
             };
           }
         }
       }
       return null;
+    },
+
+    /**
+     * Mengambil Nama Koordinator & Fasilitator Siswa Berdasarkan Pembagian Siswa Binaan
+     * Digunakan untuk Dashboard Siswa, Cetak Kartu Siswa, dan Rekap Admin.
+     */
+    getMentorsForStudent: function(nisn, studentClass) {
+      const result = {
+        coordinator_name: '',
+        coordinator_key: '',
+        facilitator_name: '',
+        facilitator_key: '',
+        facilitator1: '-',
+        facilitator2: '-',
+        coordinator_single: '-'
+      };
+      if (!nisn) return result;
+
+      const cleanNisn = String(nisn).trim();
+      const digits = cleanNisn.replace(/\D/g, '');
+      const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : cleanNisn;
+      const unpadded = digits.replace(/^0+/, '') || cleanNisn;
+      const map = this.getAssignmentsMap();
+
+      const fasilNames = [];
+      const coordNames = [];
+
+      for (const [tKey, entry] of Object.entries(map)) {
+        if (!entry || !Array.isArray(entry.student_nisns)) continue;
+        if (
+          entry.student_nisns.includes(cleanNisn) ||
+          entry.student_nisns.includes(padded) ||
+          entry.student_nisns.includes(unpadded)
+        ) {
+          const role = this.getTeacherRole(tKey);
+          const tObj = this.findTeacherByIdentifier(tKey);
+          const tName = (tObj && tObj.nama_guru) || entry.teacher_name || tKey;
+
+          if (role === 'KOORDINATOR') {
+            if (tName && !coordNames.includes(tName)) coordNames.push(tName);
+            if (!result.coordinator_key) result.coordinator_key = tKey;
+          } else {
+            if (tName && !fasilNames.includes(tName)) fasilNames.push(tName);
+            if (!result.facilitator_key) result.facilitator_key = tKey;
+
+            // Cek apakah Fasilitator ini memiliki Koordinator Pendamping yang ditautkan
+            if (entry.coordinator_key || entry.coordinator_name) {
+              const cObj = entry.coordinator_key ? this.findTeacherByIdentifier(entry.coordinator_key) : null;
+              const cName = (cObj && cObj.nama_guru) || entry.coordinator_name || entry.coordinator_key;
+              if (cName && !coordNames.includes(cName)) coordNames.push(cName);
+              if (!result.coordinator_key && entry.coordinator_key) result.coordinator_key = entry.coordinator_key;
+            }
+          }
+        }
+      }
+
+      if (coordNames.length > 0) {
+        result.coordinator_name = coordNames.join('\n');
+        result.coordinator_single = coordNames.join(', ');
+      }
+      if (fasilNames.length > 0) {
+        result.facilitator_name = fasilNames.join('\n');
+        result.facilitator1 = fasilNames[0] || '-';
+        result.facilitator2 = fasilNames[1] || '-';
+      }
+
+      return result;
+    },
+
+    /**
+     * Mengambil Ringkasan Koordinator & Fasilitator untuk suatu Rombel berdasarkan Pembagian Siswa Binaan
+     */
+    getMentorsForClass: function(className) {
+      const allStudents = window.FincestemMasterStudents || [];
+      const normTarget = String(className || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+      const classStudents = allStudents.filter(s => {
+        const sNorm = String(s.class || s.rombel || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        return sNorm === normTarget;
+      });
+
+      const coords = new Set();
+      const fasils = new Set();
+
+      classStudents.forEach(s => {
+        const m = this.getMentorsForStudent(s.nisn, className);
+        if (m.coordinator_name) {
+          m.coordinator_name.split('\n').forEach(c => { if (c.trim()) coords.add(c.trim()); });
+        }
+        if (m.facilitator_name) {
+          m.facilitator_name.split('\n').forEach(f => { if (f.trim()) fasils.add(f.trim()); });
+        }
+      });
+
+      return {
+        coordinators: Array.from(coords),
+        facilitators: Array.from(fasils),
+        coordinator_text: coords.size > 0 ? Array.from(coords).join('\n') : '',
+        facilitator_text: fasils.size > 0 ? Array.from(fasils).join('\n') : ''
+      };
     },
 
     getAllAssignedNisns: function() {
@@ -520,16 +817,9 @@
         return;
       }
 
-      const teachers = this.getTeachers();
-      const cleanKey = String(teacherIdentifier).trim().toLowerCase();
-      const tObj = teachers.find(t => 
-        String(t.username).toLowerCase() === cleanKey ||
-        String(t.nip).toLowerCase() === cleanKey ||
-        String(t.kode_guru).toLowerCase() === cleanKey
-      );
+      const tObj = this.findTeacherByIdentifier(teacherIdentifier);
       const teacherName = tObj ? tObj.nama_guru : teacherIdentifier;
       const teacherRole = this.getTeacherRole(teacherIdentifier);
-      const roleLabel = teacherRole === 'FIELD_TRIP' ? 'Pendamping Field Trip' : 'Fasilitator Non-Field Trip';
 
       // Buat container print khusus di memory
       let printEl = document.getElementById('printAreaMentorCards');
@@ -546,70 +836,86 @@
       for (let i = 0; i < students.length; i += CARDS_PER_PAGE) {
         const pageCards = students.slice(i, i + CARDS_PER_PAGE);
         const isLastPage = (i + CARDS_PER_PAGE) >= students.length;
-        const pageNum = Math.floor(i / CARDS_PER_PAGE) + 1;
-        const totalPages = Math.ceil(students.length / CARDS_PER_PAGE);
 
         pagesHtml += `
-          <div class="card-page ${!isLastPage ? 'page-break-card' : ''} p-4 bg-white text-slate-900" style="page-break-after: ${!isLastPage ? 'always' : 'auto'}; break-after: ${!isLastPage ? 'page' : 'auto'};">
-            
-            <!-- HEADER KOP HALAMAN CETAK -->
-            <div class="border-b-2 border-slate-800 pb-2 mb-3 flex items-center justify-between">
-              <div class="flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-teal-800 text-white flex items-center justify-center font-black text-sm">F</div>
-                <div>
-                  <h3 class="font-black text-xs uppercase tracking-wider text-slate-900 leading-tight">Kartu Login Peserta Kokurikuler FINCESTEM 2026</h3>
-                  <p class="text-[10px] text-slate-600 font-medium">Pembina: <strong>${escapeHtml(teacherName)}</strong> (${roleLabel})</p>
-                </div>
-              </div>
-              <div class="text-right text-[10px] text-slate-500 font-bold">
-                <span>Hal ${pageNum} dari ${totalPages} • Total: ${students.length} Siswa</span>
-              </div>
-            </div>
+          <div class="print-page ${!isLastPage ? 'page-break-card' : ''}" style="width: 100%; box-sizing: border-box; padding: 2mm 1mm; display: grid; grid-template-columns: repeat(2, 1fr); grid-auto-rows: minmax(59.5mm, auto); gap: 4mm 5mm; page-break-after: ${!isLastPage ? 'always' : 'auto'}; break-after: ${!isLastPage ? 'page' : 'auto'};">
+            ${pageCards.map((s) => {
+              const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+                ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
+                : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
+              const username = s.nisn || '-';
+              const password = s.nis || s.password || (s.nisn ? s.nisn.slice(-6) : '123456');
+              const mentorInfo = this.getMentorsForStudent(s.nisn, s.class || s.rombel);
+              const coordLabel = mentorInfo.coordinator_single !== '-' ? mentorInfo.coordinator_single : (teacherRole === 'KOORDINATOR' ? teacherName : '-');
+              const fasil1Label = mentorInfo.facilitator1 !== '-' ? mentorInfo.facilitator1 : (teacherRole !== 'KOORDINATOR' ? teacherName : '-');
+              const fasil2Label = mentorInfo.facilitator2 || '-';
 
-            <!-- GRID KARTU (2 KOLOM X 5 BARIS = 10 KARTU PER LEMBAR F4) -->
-            <div class="grid grid-cols-2 gap-2 text-xs">
-              ${pageCards.map((s) => {
-                const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
-                  ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
-                  : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
-                const badgeText = isFT ? '🚌 Field Trip' : '🏫 Non-Field Trip';
-                const badgeBg = isFT ? 'background-color: #f59e0b; color: #000;' : 'background-color: #0d9488; color: #fff;';
-                const pwd = s.password || (s.nisn ? s.nisn.slice(-6) : '123456');
-
-                return `
-                  <div style="border: 1.5px solid #334155; border-radius: 10px; padding: 7px; display: flex; flex-direction: column; justify-content: space-between; height: 130px; box-sizing: border-box; background: #fff;">
-                    <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px dashed #cbd5e1; padding-bottom: 4px;">
-                      <span style="font-size: 8.5px; font-weight: 900; color: #0f172a; text-transform: uppercase;">SMAN 1 BELITANG</span>
-                      <span style="font-size: 8px; font-weight: 800; padding: 1px 5px; border-radius: 4px; ${badgeBg}">${badgeText}</span>
-                    </div>
-
-                    <div style="display: flex; gap: 8px; align-items: center; margin-top: 3px;">
-                      <div style="width: 36px; height: 36px; border-radius: 8px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 14px; color: #475569; shrink: 0;">
-                        ${(s.nama || 'S').charAt(0).toUpperCase()}
-                      </div>
-                      <div style="min-width: 0; flex: 1;">
-                        <h4 style="font-size: 10.5px; font-weight: 900; color: #0f172a; margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                          ${escapeHtml(s.nama || '-')}
-                        </h4>
-                        <div style="font-size: 8.5px; color: #475569; font-weight: 600;">
-                          <span>NISN: <strong>${escapeHtml(s.nisn || '-')}</strong></span> • <span>${escapeHtml(s.class || s.rombel || '-')}</span>
-                        </div>
+              return `
+                <div style="border: 1px dashed #64748b; padding: 1.5mm; box-sizing: border-box; background: #ffffff; page-break-inside: avoid;">
+                  <div style="border: 1.5px solid #000000; border-radius: 6px; padding: 6px 9px; box-sizing: border-box; background: #ffffff; display: flex; flex-direction: column; justify-content: space-between; font-family: Arial, Helvetica, sans-serif; height: 56.5mm; overflow: hidden; color: #000000;">
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 7px; border-bottom: 1.5px solid #000000; padding-bottom: 3.5px; text-align: center;">
+                      <img src="../logo%20smansa%20png.png" style="width: 25px; height: 30px; object-fit: contain;" onerror="this.src='../LOGO SMAN1 BELITANG.png'">
+                      <div style="line-height: 1.15; color: #000000;">
+                        <div style="font-size: 11.5px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; color: #000000;">KARTU LOGIN</div>
+                        <div style="font-size: 9.5px; font-weight: bold; color: #000000;">Kegiatan Kokurikuler SMAN 1 Belitang</div>
+                        <div style="font-size: 8.5px; color: #000000; font-weight: 600;">Tahun Pelajaran 2026/2027</div>
                       </div>
                     </div>
 
-                    <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 3px 6px; display: flex; justify-content: space-between; align-items: center; margin-top: 3px; font-size: 8.5px;">
-                      <div>User: <strong style="color: #0f172a;">${escapeHtml(s.nisn || '-')}</strong></div>
-                      <div>Pass: <strong style="color: #0f172a; font-family: monospace;">${escapeHtml(pwd)}</strong></div>
+                    <div style="padding: 3px 0; font-size: 9px; line-height: 1.25; color: #000000;">
+                      <table style="width: 100%; border-collapse: collapse; font-family: Arial, Helvetica, sans-serif;">
+                        <tbody>
+                          <tr>
+                            <td style="width: 58px; color: #000000; font-weight: bold; padding: 1px 0; white-space: nowrap;">Nama Siswa</td>
+                            <td style="width: 8px; text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
+                            <td style="font-weight: 900; color: #000000; text-transform: uppercase; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(s.nama || '-')}</td>
+                            <td rowspan="2" style="vertical-align: top; text-align: right; padding-left: 6px; width: 82px;">
+                              <div style="border: 1.5px solid #000000; border-radius: 4px; padding: 2px 4px; text-align: center; background: #ffffff; display: block; box-sizing: border-box;">
+                                <div style="font-size: 7.5px; font-weight: 900; letter-spacing: 0.5px; text-transform: uppercase; color: #000000; white-space: nowrap; line-height: 1.1;">
+                                  ${isFT ? 'FIELD TRIP' : 'NON-FIELD TRIP'}
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td style="color: #000000; font-weight: bold; padding: 1px 0;">Kelas</td>
+                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
+                            <td style="font-weight: 900; color: #000000; padding: 1px 0;">${escapeHtml(s.class || s.rombel || '-')}</td>
+                          </tr>
+                          <tr>
+                            <td style="color: #000000; font-weight: bold; padding: 1px 0;">Username</td>
+                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
+                            <td colspan="2" style="font-family: 'Courier New', Courier, monospace; font-weight: 900; font-size: 10px; color: #000000; padding: 1px 0; letter-spacing: 0.5px;">${escapeHtml(username)}</td>
+                          </tr>
+                          <tr>
+                            <td style="color: #000000; font-weight: bold; padding: 1px 0;">Password</td>
+                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
+                            <td colspan="2" style="font-family: 'Courier New', Courier, monospace; font-weight: 900; font-size: 10px; color: #000000; padding: 1px 0; letter-spacing: 0.5px;">${escapeHtml(password)}</td>
+                          </tr>
+                          <tr>
+                            <td style="color: #000000; font-weight: bold; padding: 1px 0;">Koordinator</td>
+                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
+                            <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(coordLabel)}</td>
+                          </tr>
+                          <tr>
+                            <td style="color: #000000; font-weight: bold; padding: 1px 0; vertical-align: top;">Fasilitator</td>
+                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0; vertical-align: top;">:</td>
+                            <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0;">
+                              <div>1. ${escapeHtml(fasil1Label)}</div>
+                              <div>2. ${escapeHtml(fasil2Label)}</div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
                     </div>
 
-                    <div style="font-size: 7.5px; color: #64748b; text-align: center; margin-top: 2px;">
-                      Pembina: <strong>${escapeHtml(teacherName)}</strong>
+                    <div style="border-top: 1px solid #000000; padding-top: 2px; text-align: center; font-size: 8px; color: #000000; font-weight: bold;">
+                      Alamat Website: https://kokurikulersman1belitang.site/
                     </div>
                   </div>
-                `;
-              }).join('')}
-            </div>
-
+                </div>
+              `;
+            }).join('')}
           </div>
         `;
       }

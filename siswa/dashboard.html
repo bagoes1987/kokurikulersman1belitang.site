@@ -982,7 +982,9 @@
   </div>
 
   <script src="../js/siswa_data.js?v=20261026_d6_v1"></script>
-  <script src="../js/core.js?v=20261030_reset_fix_v1"></script>
+  <script src="../js/guru_data.js?v=20261030_binaan_v2"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v2"></script>
+  <script src="../js/core.js?v=20261030_binaan_v2"></script>
   <script>
     let currentStudent = null;
     let daysSchedule = [];
@@ -1111,18 +1113,19 @@
         });
       }
 
-      // Koordinator & Fasilitator Kelas (Sinkronisasi Otomatis dari Admin & cPanel)
+      // Koordinator & Fasilitator berdasarkan Pembagian Siswa Binaan (Sinkronisasi Otomatis dari Admin & cPanel)
       const studentClass = s.class || s.class_name || user.class || '';
+      const studentNisn = s.nisn || s.identifier || user.nisn || '';
 
-      let initialCoord = (FincestemCore.assignments && FincestemCore.assignments.getClassCoordinator)
-        ? FincestemCore.assignments.getClassCoordinator(studentClass)
+      let initialCoord = (FincestemCore.assignments && FincestemCore.assignments.getStudentCoordinator)
+        ? FincestemCore.assignments.getStudentCoordinator(studentNisn, studentClass)
         : '';
       if (!initialCoord || initialCoord === 'Drs. H. Koordinator FINCESTEM') {
         initialCoord = user.coordinator_name || (classInfo && classInfo.coordinator_name) || 'Drs. H. Koordinator FINCESTEM';
       }
 
-      let initialFasil = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      let initialFasil = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+        ? FincestemCore.assignments.getStudentFacilitator(studentNisn, studentClass)
         : '';
       if (!initialFasil || initialFasil === 'Tim Fasilitator SMAN 1 Belitang') {
         initialFasil = user.facilitator_name || (classInfo && classInfo.facilitator_name) || 'Tim Fasilitator SMAN 1 Belitang';
@@ -1135,11 +1138,15 @@
         currentStudent.facilitator_name = initialFasil;
       }
 
-      // Sinkronkan penugasan koordinator & fasilitator terbaru dari server cPanel secara asinkron
+      // Sinkronkan penugasan Pembagian Siswa Binaan (Koordinator & Fasilitator) terbaru dari server cPanel secara asinkron
       if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
         FincestemCore.assignments.getAssignments(function() {
-          const freshCoord = FincestemCore.assignments.getClassCoordinator(studentClass);
-          const freshFasil = FincestemCore.assignments.getClassFacilitator(studentClass);
+          const freshCoord = FincestemCore.assignments.getStudentCoordinator
+            ? FincestemCore.assignments.getStudentCoordinator(studentNisn, studentClass)
+            : FincestemCore.assignments.getClassCoordinator(studentClass);
+          const freshFasil = FincestemCore.assignments.getStudentFacilitator
+            ? FincestemCore.assignments.getStudentFacilitator(studentNisn, studentClass)
+            : FincestemCore.assignments.getClassFacilitator(studentClass);
           if (freshCoord && freshCoord !== 'Drs. H. Koordinator FINCESTEM') {
             renderStaffVerticalList('userCoordinatorContainer', freshCoord, 'Drs. H. Koordinator FINCESTEM');
             if (currentStudent) currentStudent.coordinator_name = freshCoord;
@@ -1157,7 +1164,7 @@
             }
             const fbName = document.getElementById('feedbackFasilName');
             if (fbName && (!fbName.textContent || fbName.textContent.includes('Fasilitator'))) {
-              fbName.textContent = freshFasil;
+              fbName.textContent = freshFasil.replace(/\n+/g, ', ');
             }
           }
         });
