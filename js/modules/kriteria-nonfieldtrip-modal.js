@@ -673,8 +673,22 @@
 
   window.downloadKriteriaKokurikulerPdf = function() {
     const isSubdir = window.location.pathname.includes('/admin/') || window.location.pathname.includes('/guru/') || window.location.pathname.includes('/siswa/');
-    const pdfUrl = isSubdir ? '../KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf' : 'KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf';
-    window.open(pdfUrl, '_blank');
+    const basePdf = isSubdir ? '../KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf' : 'KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf';
+    const freshUrl = basePdf + '?v=' + Date.now();
+
+    try {
+      const link = document.createElement('a');
+      link.href = freshUrl;
+      link.download = 'KRITERIA_PENILAIAN_KOKURIKULER_2026.pdf';
+      link.target = '_blank';
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(function() {
+        if (link.parentNode) link.parentNode.removeChild(link);
+      }, 100);
+    } catch(e) {
+      window.open(freshUrl, '_blank');
+    }
   };
 
   window.openKriteriaNonFTPdf = window.downloadKriteriaKokurikulerPdf;
