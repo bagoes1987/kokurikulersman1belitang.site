@@ -4485,6 +4485,9 @@
         }
       } else if (type === 'refleksi') {
         const ftCfg = (isFieldTrip && FIELD_TRIP_DAYS_CONFIG) ? FIELD_TRIP_DAYS_CONFIG[Number(day.day_number)] : null;
+        const nftCfg = (!isFieldTrip && window.FincestemCore && FincestemCore.schedule && FincestemCore.schedule.nonFieldTripDaysConfig)
+          ? FincestemCore.schedule.nonFieldTripDaysConfig[Number(day.day_number)]
+          : null;
         const isFTDay5Refl = isFTDay5 && Number(day.day_number) === 5;
         const isNFTDay1Refl = !isFieldTrip && Number(day.day_number) === 1;
 
@@ -4494,9 +4497,11 @@
               ? 'Jurnal Refleksi Sesi 1: Eksplorasi Candi Prambanan'
               : (ftCfg 
                   ? ftCfg.refl_title 
-                  : (isNFTDay1Refl
-                      ? 'Jurnal Refleksi Day 1: Fondasi Ekonomi & Potensi OKU Timur'
-                      : `Jurnal Refleksi Mandiri - Day ${day.day_number}`)));
+                  : (nftCfg
+                      ? nftCfg.refl_title
+                      : (isNFTDay1Refl
+                          ? 'Jurnal Refleksi Day 1: Fondasi Ekonomi & Potensi OKU Timur'
+                          : `Jurnal Refleksi Mandiri - Day ${day.day_number}`))));
         icon.textContent = 'psychology';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0';
 
@@ -4506,27 +4511,33 @@
               ? 'Jurnal Refleksi Sesi 1: Eksplorasi Candi Prambanan (Pilar Exploration)'
               : (ftCfg 
                   ? `Jurnal Refleksi Day ${day.day_number} Field Trip` 
-                  : (isNFTDay1Refl
-                      ? 'Refleksi Pembelajaran Day 1'
-                      : 'Refleksi Belajar Siswa')));
+                  : (nftCfg
+                      ? `Refleksi Pembelajaran Day ${day.day_number}`
+                      : (isNFTDay1Refl
+                          ? 'Refleksi Pembelajaran Day 1'
+                          : 'Refleksi Belajar Siswa'))));
         const reflPrompt = isTrial 
           ? 'Cobalah mengetikkan refleksi atau harapan Anda selama mengikuti program FINCESTEM 2026 ini.' 
           : (isFTDay5Refl
               ? 'Refleksikan wawasan eksplorasi cagar budaya Candi Prambanan yang Anda peroleh: apa nilai sejarah, arsitektur batu andesit, atau kerja sama tim yang paling berkesan? <div class="mt-1 text-purple-900 font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm text-amber-600">lock_open</span><span>Catatan: Setelah Jurnal Refleksi ini disimpan, Sesi 2: Seni Membatik (Sentra Benang Ratu) akan otomatis TERBUKA!</span></div>'
               : (ftCfg 
                   ? ftCfg.refl_prompt 
-                  : (isNFTDay1Refl
-                      ? 'Setelah mempelajari kegiatan ekonomi, literasi finansial, dan pemetaan potensi daerah hari ini, bagaimana Anda akan menerapkan kebiasaan mengelola keuangan dengan bijak dalam kehidupan sehari-hari sekaligus memanfaatkan peluang potensi ekonomi yang ada di Kabupaten OKU Timur?'
-                      : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?')));
+                  : (nftCfg
+                      ? nftCfg.refl_prompt
+                      : (isNFTDay1Refl
+                          ? 'Setelah mempelajari kegiatan ekonomi, literasi finansial, dan pemetaan potensi daerah hari ini, bagaimana Anda akan menerapkan kebiasaan mengelola keuangan dengan bijak dalam kehidupan sehari-hari sekaligus memanfaatkan peluang potensi ekonomi yang ada di Kabupaten OKU Timur?'
+                          : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?'))));
         const reflPlaceholder = isTrial 
           ? 'Contoh: Saya siap dan antusias mengikuti seluruh rangkaian riset kokurikuler FINCESTEM...' 
           : (isFTDay5Refl
               ? 'Tuliskan cerita dan refleksi mendalam Anda terkait pengalaman dan pembelajaran eksplorasi Candi Prambanan di sini (minimal beberapa kalimat)...'
               : (ftCfg 
                   ? `Tuliskan cerita dan refleksi mendalam Anda terkait pengalaman dan pembelajaran Day ${day.day_number} di sini...` 
-                  : (isNFTDay1Refl
-                      ? 'Silakan tuliskan pendapat, pengalaman, dan rencana Anda berdasarkan materi yang telah dipelajari. Jawablah sesuai pemahaman dan kondisi kehidupan sehari-hari Anda.'
-                      : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...')));
+                  : (nftCfg
+                      ? nftCfg.refl_placeholder
+                      : (isNFTDay1Refl
+                          ? 'Silakan tuliskan pendapat, pengalaman, dan rencana Anda berdasarkan materi yang telah dipelajari. Jawablah sesuai pemahaman dan kondisi kehidupan sehari-hari Anda.'
+                          : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...'))));
 
         body.innerHTML = `
           <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100 flex flex-col gap-1 text-slate-800">

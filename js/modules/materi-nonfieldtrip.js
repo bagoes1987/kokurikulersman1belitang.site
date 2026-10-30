@@ -765,7 +765,7 @@
                 <span>Non-Field Trip • Day 2</span>
               </span>
               <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-400 text-amber-950">
-                Pilar Culture &amp; Humaniora
+                Pilar Culture, Financial &amp; STEM
               </span>
             </div>
             <span id="badgeNftD2Status" class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-emerald-400 text-slate-950 font-black shadow-xs' : 'bg-white/20 text-white'}">
@@ -775,10 +775,10 @@
 
           <div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              Modul Riset Day 2: Budaya &amp; Sistem Mata Pencaharian Masyarakat OKU Timur
+              Modul Riset Day 2: Budaya, Sistem Mata Pencaharian &amp; Modernisasi Teknologi Pertanian OKU Timur
             </h2>
             <p class="text-xs sm:text-sm text-indigo-100/90 leading-relaxed font-medium mt-1">
-              Kajian Antropologis Hakikat Kebudayaan, 7 Unsur Universal Kebudayaan, serta Ragam Sistem Mata Pencaharian Daerah
+              Kajian Antropologis Hakikat Kebudayaan, 7 Unsur Universal, Ragam Mata Pencaharian Daerah, serta Sistem Peralatan, Mekanisasi Alsintan &amp; Jaringan Irigasi Pertanian
             </p>
           </div>
 
@@ -810,12 +810,12 @@
             <span>PETUNJUK RISET MANDIRI DAY 2 (INQUIRY-BASED LEARNING):</span>
           </div>
           <p class="text-xs leading-relaxed text-amber-950/90">
-            Sebagai peserta <strong>Non-Field Trip</strong>, Anda diwajibkan melakukan investigasi pustaka dan observasi mandiri mengenai <strong>Budaya dan Sistem Mata Pencaharian Masyarakat OKU Timur</strong> dari buku sosiologi/antropologi, modul kurikulum, portal BPS, dan dokumen resmi Pemkab OKU Timur.
+            Sebagai peserta <strong>Non-Field Trip</strong>, Anda diwajibkan melakukan investigasi pustaka dan analisis mandiri mengenai <strong>Kebudayaan, Sistem Mata Pencaharian, serta Sistem Peralatan &amp; Teknologi Pertanian Masyarakat OKU Timur</strong> dari buku sosiologi/antropologi, jurnal agroteknologi, data BPS, dan dokumen resmi kedinasan.
           </p>
           <ul class="text-[11.5px] text-amber-950/90 space-y-1 list-disc list-inside font-medium pt-1">
             <li>Tuntaskan <strong>5 Kartu Riset (A, B, C, D, E)</strong> dengan analisis kritis dan kalimat orisinal Anda sendiri.</li>
             <li>Setiap kartu wajib memenuhi <strong>minimal 300 karakter analisis mendalam</strong> (anti-copy paste kalimat berulang).</li>
-            <li>Wajib mencantumkan <strong>Sumber Rujukan Valid (minimal 20 karakter)</strong> pada setiap kartu yang Anda kerjakan.</li>
+            <li>Wajib mencantumkan <strong>Sumber Rujukan Valid (minimal 20 karakter)</strong> pada setiap kartu yang Anda kerjakan. Anda dapat mencantumkan lebih dari satu rujukan dengan menekan tombol <strong>+ Tambah Rujukan Lain</strong>.</li>
             <li>Tombol simpan dan kirim ke Fasilitator baru akan aktif setelah <strong>kelima kartu berstatus hijau (100% lengkap)</strong>.</li>
           </ul>
         </div>
@@ -839,14 +839,14 @@
         <!-- ======================================================== -->
         <form id="formNftDay2Cards" onsubmit="event.preventDefault();" class="flex flex-col gap-5">
           
-          <!-- KARTU A: HAKIKAT BUDAYA & HUBUNGAN DENGAN EKONOMI -->
+          <!-- KARTU A: HAKIKAT BUDAYA & 7 UNSUR UNIVERSAL DI OKU TIMUR -->
           <div id="cardBoxD2_A" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-3.5 transition-all">
             <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
               <div class="flex items-center gap-2.5">
                 <span class="w-9 h-9 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-black text-sm shrink-0">A</span>
                 <div>
-                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Hakikat Budaya &amp; Hubungannya dengan Mata Pencaharian</h3>
-                  <span class="text-[11px] text-slate-500 font-medium">Pengertian Budaya (Koentjaraningrat/Tylor), Nilai Tradisi &amp; Etos Kerja Ekonomi</span>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Hakikat Budaya &amp; 7 Unsur Kebudayaan Universal di OKU Timur</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Pengertian Budaya (Koentjaraningrat/Tylor), 7 Unsur Universal &amp; Potret Multikultural Belitang</span>
                 </div>
               </div>
               <span id="badgeCardStatusD2_A" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
@@ -856,16 +856,16 @@
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 flex flex-col gap-1">
               <span class="font-bold text-slate-900 text-[11px]">Poin Wajib yang Harus Anda Cari &amp; Analisis:</span>
               <ol class="list-decimal list-inside text-[11px] text-slate-600 space-y-0.5 leading-relaxed font-medium">
-                <li>Pengertian kebudayaan secara etimologis (budi-daya / <em>colere</em>) dan menurut antropolog (Koentjaraningrat / E.B. Tylor) sebagai keseluruhan sistem gagasan, tindakan, dan hasil karya cipta manusia.</li>
-                <li>Bagaimana nilai budaya, etos kerja, kearifan lokal, dan norma sosial memotivasi cara masyarakat bekerja dan mencari nafkah.</li>
-                <li>Hubungan timbal balik: bagaimana pola mata pencaharian (seperti tradisi bercocok tanam) melahirkan budaya gotong royong, musyawarah, dan upacara adat di masyarakat.</li>
+                <li>Pengertian kebudayaan secara etimologis (<em>budi-daya / colere</em>) dan menurut para antropolog (Koentjaraningrat &amp; E.B. Tylor) sebagai keseluruhan sistem ide, gagasan, tindakan, dan hasil karya cipta manusia.</li>
+                <li>Telaah 7 unsur kebudayaan universal (Koentjaraningrat): Bahasa, Sistem Pengetahuan, Organisasi Sosial, Sistem Mata Pencaharian, Sistem Peralatan Hidup &amp; Teknologi, Sistem Religi/Kepercayaan, dan Kesenian.</li>
+                <li>Realitas keberagaman budaya di OKU Timur: perpaduan harmonis antara suku asli Komering dan warga transmigran (Jawa, Bali, Sunda) di wilayah Belitang dan sekitarnya dalam menciptakan kearifan lokal dan modal sosial yang rukun.</li>
               </ol>
             </div>
 
             <!-- Kolom Esai Analisis Siswa -->
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">Tuliskan Sintesis Materi Hasil Analisis Anda Sendiri:</label>
-              <textarea id="nftD2TextA" rows="6" oninput="onNftD2CardInput('A')" placeholder="Uraikan hasil kajian mandiri Anda mengenai pengertian budaya, peran nilai budaya dalam etos kerja, serta keterkaitan erat antara tradisi kebudayaan dengan sistem mata pencaharian hidup masyarakat... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataA.text || ''}</textarea>
+              <textarea id="nftD2TextA" rows="6" oninput="onNftD2CardInput('A')" placeholder="Uraikan hasil kajian mandiri Anda mengenai hakikat kebudayaan, 7 unsur kebudayaan universal menurut antropolog, serta potret nyata kerukunan masyarakat multikultural di Kabupaten OKU Timur... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataA.text || ''}</textarea>
               <div class="flex items-center justify-between text-[11px] font-medium pt-0.5">
                 <span id="msgValidationD2_A" class="text-rose-600 font-semibold">Minimal 300 karakter</span>
                 <span id="counterD2_A" class="text-slate-400 font-bold">0 / 300</span>
@@ -891,14 +891,14 @@
             </div>
           </div>
 
-          <!-- KARTU B: 7 UNSUR UNIVERSAL KEBUDAYAAN DI OKU TIMUR -->
+          <!-- KARTU B: HUBUNGAN BUDAYA DENGAN EKONOMI, UMKM & PEKERJAAN FORMAL -->
           <div id="cardBoxD2_B" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-3.5 transition-all">
             <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
               <div class="flex items-center gap-2.5">
                 <span class="w-9 h-9 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-black text-sm shrink-0">B</span>
                 <div>
-                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">7 Unsur Kebudayaan Universal dalam Kehidupan Multikultural OKU Timur</h3>
-                  <span class="text-[11px] text-slate-500 font-medium">Bahasa, Pengetahuan, Sosial, Mata Pencaharian, Teknologi, Religi &amp; Kesenian</span>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Hubungan Budaya dengan Kegiatan Ekonomi, UMKM &amp; Pekerjaan Formal</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Kearifan Lokal Penggerak Etos Kerja, Pasar Gumawang, Industri Olahan Pangan &amp; Profesi Formal</span>
                 </div>
               </div>
               <span id="badgeCardStatusD2_B" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
@@ -907,15 +907,15 @@
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 flex flex-col gap-1">
               <span class="font-bold text-slate-900 text-[11px]">Poin Wajib yang Harus Anda Cari &amp; Analisis:</span>
               <ol class="list-decimal list-inside text-[11px] text-slate-600 space-y-0.5 leading-relaxed font-medium">
-                <li>Uraian 7 unsur kebudayaan universal (Koentjaraningrat): Bahasa, Sistem Pengetahuan, Organisasi Sosial, Sistem Mata Pencaharian, Peralatan Hidup &amp; Teknologi, Sistem Religi/Kepercayaan, dan Kesenian.</li>
-                <li>Realitas keberagaman budaya di OKU Timur: perpaduan harmonis budaya suku asli Komering dan warga transmigran (Jawa, Bali, Sunda) di wilayah Belitang dan sekitarnya.</li>
-                <li>Contoh sistem pengetahuan lokal (seperti penanggalan musim tanam/pranata mangsa, kearifan pengelolaan tanah, atau sistem musyawarah desa).</li>
+                <li>Bagaimana nilai tradisi, norma sosial, dan kearifan lokal (seperti gotong royong lumbung desa, arisan rukun warga, dan musyawarah mufakat) memotivasi etos kerja dan produktivitas ekonomi masyarakat.</li>
+                <li>Profil sektor perdagangan pasar tradisional (seperti Pasar Gumawang Belitang &amp; Pasar Martapura), sektor jasa transportasi logistik, dan industri rumah tangga pengolahan pangan lokal (kerupuk kemplang, rengginang, pandai besi).</li>
+                <li>Peran tenaga kerja formal (Aparatur Sipil Negara/ASN, Guru, Tenaga Kesehatan, Karyawan BUMN/Bank/Perusahaan Swasta) dalam pelayanan publik dan stabilitas sosial-ekonomi OKU Timur.</li>
               </ol>
             </div>
 
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">Tuliskan Sintesis Materi Hasil Analisis Anda Sendiri:</label>
-              <textarea id="nftD2TextB" rows="6" oninput="onNftD2CardInput('B')" placeholder="Uraikan pemahaman mendalam Anda mengenai 7 unsur kebudayaan universal serta bagaimana wujud nyata kehidupan multikultural masyarakat OKU Timur dalam kehidupan sehari-hari... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataB.text || ''}</textarea>
+              <textarea id="nftD2TextB" rows="6" oninput="onNftD2CardInput('B')" placeholder="Uraikan analisis Anda mengenai pengaruh nilai budaya terhadap etos kerja, geliat pasar tradisional dan UMKM olahan pangan lokal, serta peranan tenaga kerja formal dalam memajukan perekonomian OKU Timur... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataB.text || ''}</textarea>
               <div class="flex items-center justify-between text-[11px] font-medium pt-0.5">
                 <span id="msgValidationD2_B" class="text-rose-600 font-semibold">Minimal 300 karakter</span>
                 <span id="counterD2_B" class="text-slate-400 font-bold">0 / 300</span>
@@ -933,21 +933,21 @@
                   <span>+ Tambah Rujukan Lain</span>
                 </button>
               </div>
-              <textarea id="nftD2SourceB" rows="2" oninput="onNftD2CardInput('B')" placeholder="Contoh rujukan:&#10;1. Profil Kebudayaan dan Pariwisata Kabupaten OKU Timur (Disbudpar OKU Timur)&#10;2. Jurnal Antropologi Indonesia / Buku Sejarah Transmigrasi Belitang" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataB.source || ''}</textarea>
+              <textarea id="nftD2SourceB" rows="2" oninput="onNftD2CardInput('B')" placeholder="Contoh rujukan:&#10;1. Dinas Perdagangan dan Perindustrian OKU Timur / BKPSDM OKU Timur&#10;2. BPS OKU Timur (Publikasi Statistik Ketenagakerjaan & Perdagangan Daerah)" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataB.source || ''}</textarea>
               <div class="flex items-center justify-between text-[10.5px]">
                 <span id="msgSourceD2_B" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan. Minimal 20 karakter.</span>
               </div>
             </div>
           </div>
 
-          <!-- KARTU C: MATA PENCAHARIAN PERTANIAN PANGAN & PERKEBUNAN -->
+          <!-- KARTU C: SISTEM MATA PENCAHARIAN SEKTOR AGRIKULTUR UNGGULAN -->
           <div id="cardBoxD2_C" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-3.5 transition-all">
             <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
               <div class="flex items-center gap-2.5">
                 <span class="w-9 h-9 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-black text-sm shrink-0">C</span>
                 <div>
-                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Mata Pencaharian Sektor Pertanian Pangan &amp; Perkebunan</h3>
-                  <span class="text-[11px] text-slate-500 font-medium">Padi Sawah Irigasi Teknis, Rotasi Palawija, serta Perkebunan Karet &amp; Sawit</span>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan OKU Timur</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Pertanian Padi Sawah Irigasi, Rotasi Palawija, Perkebunan Karet/Sawit &amp; Perikanan-Peternakan</span>
                 </div>
               </div>
               <span id="badgeCardStatusD2_C" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
@@ -956,15 +956,15 @@
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 flex flex-col gap-1">
               <span class="font-bold text-slate-900 text-[11px]">Poin Wajib yang Harus Anda Cari &amp; Analisis:</span>
               <ol class="list-decimal list-inside text-[11px] text-slate-600 space-y-0.5 leading-relaxed font-medium">
-                <li>Karakteristik sistem mata pencaharian petani padi sawah irigasi teknis di OKU Timur sebagai lumbung pangan utama Sumatera Selatan.</li>
-                <li>Pola rotasi tanam padi dan tanaman palawija (jagung, kedelai, cabai) dalam menjaga ketahanan pangan dan pendapatan petani.</li>
-                <li>Profil komoditas perkebunan rakyat (karet dan kelapa sawit): alur budidaya/penyadapan, pemasaran, dan pengaruh fluktuasi harga komoditas terhadap ekonomi keluarga tani.</li>
+                <li>Karakteristik sistem mata pencaharian petani padi sawah di OKU Timur sebagai lumbung pangan utama Sumatera Selatan serta pola rotasi tanaman palawija (jagung, kedelai, cabai).</li>
+                <li>Profil komoditas perkebunan rakyat (karet dan kelapa sawit): alur budidaya/penyadapan, pemasaran hasil getah/TBS, dan pengaruh fluktuasi harga komoditas terhadap ekonomi keluarga tani.</li>
+                <li>Potensi mata pencaharian pembudidaya ikan air tawar (sentra kolam patin dan lele) serta sistem peternakan pedesaan (sapi potong dan unggas) di Kabupaten OKU Timur.</li>
               </ol>
             </div>
 
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">Tuliskan Sintesis Materi Hasil Analisis Anda Sendiri:</label>
-              <textarea id="nftD2TextC" rows="6" oninput="onNftD2CardInput('C')" placeholder="Uraikan hasil analisis Anda mengenai mata pencaharian petani sawah padi di Belitang, peranan saluran irigasi teknis Komering, serta potensi perkebunan karet dan sawit di OKU Timur... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataC.text || ''}</textarea>
+              <textarea id="nftD2TextC" rows="6" oninput="onNftD2CardInput('C')" placeholder="Uraikan pemahaman komprehensif Anda mengenai mata pencaharian petani sawah padi di Belitang, perputaran ekonomi komoditas perkebunan karet/sawit, serta potensi budidaya ikan patin dan peternakan sapi di OKU Timur... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataC.text || ''}</textarea>
               <div class="flex items-center justify-between text-[11px] font-medium pt-0.5">
                 <span id="msgValidationD2_C" class="text-rose-600 font-semibold">Minimal 300 karakter</span>
                 <span id="counterD2_C" class="text-slate-400 font-bold">0 / 300</span>
@@ -982,21 +982,21 @@
                   <span>+ Tambah Rujukan Lain</span>
                 </button>
               </div>
-              <textarea id="nftD2SourceC" rows="2" oninput="onNftD2CardInput('C')" placeholder="Contoh rujukan:&#10;1. Dinas Pertanian Kabupaten OKU Timur / BPS OKU Timur Dalam Angka (Sektor Pertanian)&#10;2. Modul Geografi / Ekonomi Pertanian SMA" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataC.source || ''}</textarea>
+              <textarea id="nftD2SourceC" rows="2" oninput="onNftD2CardInput('C')" placeholder="Contoh rujukan:&#10;1. Dinas Pertanian Kabupaten OKU Timur / BPS OKU Timur Dalam Angka (Sektor Pertanian & Peternakan)&#10;2. Dinas Perikanan dan Peternakan OKU Timur / Sentra Patin Komering" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataC.source || ''}</textarea>
               <div class="flex items-center justify-between text-[10.5px]">
                 <span id="msgSourceD2_C" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan. Minimal 20 karakter.</span>
               </div>
             </div>
           </div>
 
-          <!-- KARTU D: PERIKANAN, PETERNAKAN & INDUSTRI RUMAH TANGGA -->
+          <!-- KARTU D: SISTEM TEKNOLOGI & PERALATAN PERTANIAN: DARI TRADISIONAL KE ALSINTAN MODERN & IRIGASI -->
           <div id="cardBoxD2_D" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-3.5 transition-all">
             <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
               <div class="flex items-center gap-2.5">
                 <span class="w-9 h-9 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-black text-sm shrink-0">D</span>
                 <div>
-                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Mata Pencaharian Sektor Perikanan, Peternakan &amp; Industri Rumah Tangga</h3>
-                  <span class="text-[11px] text-slate-500 font-medium">Budidaya Patin-Lele, Peternakan Sapi, Industri Kemplang/Rengginang &amp; Pandai Besi</span>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Sistem Teknologi &amp; Peralatan Pertanian: Dari Tradisional ke Alsintan Modern &amp; Jaringan Irigasi</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Perkakas Tradisional, Mesin Traktor/Transplanter/Combine &amp; Infrastruktur Irigasi Komering</span>
                 </div>
               </div>
               <span id="badgeCardStatusD2_D" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
@@ -1005,15 +1005,15 @@
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 flex flex-col gap-1">
               <span class="font-bold text-slate-900 text-[11px]">Poin Wajib yang Harus Anda Cari &amp; Analisis:</span>
               <ol class="list-decimal list-inside text-[11px] text-slate-600 space-y-0.5 leading-relaxed font-medium">
-                <li>Potensi mata pencaharian pembudidaya ikan air tawar (patin, lele, nila) dan sistem peternakan (sapi potong, kambing, unggas) di pedesaan OKU Timur.</li>
-                <li>Profil industri rumah tangga (<em>home industry</em>) pengolahan pangan lokal (seperti kerupuk kemplang, sale pisang, rengginang, tahu-tempe) dan kerajinan pandai besi.</li>
-                <li>Analisis nilai tambah ekonomi (<em>added value</em>) dari pengolahan bahan mentah pertanian/perikanan menjadi produk olahan bernilai jual tinggi.</li>
+                <li>Pengertian sistem peralatan dan teknologi: peralihan dari peralatan dan perkakas tradisional (cangkul, ani-ani, bajak singkal sapi/kerbau) menuju mekanisasi modern (traktor roda 2/roda 4, mesin tanam <em>transplanter</em>, dan <em>combine harvester</em>).</li>
+                <li>Analisis efisiensi mekanisasi pertanian: perbandingan waktu kerja, biaya operasional, dan produktivitas hasil panen antara cara manual tradisional vs alat mesin pertanian (alsintan) modern.</li>
+                <li>Peran vital infrastruktur dan jaringan irigasi teknis Komering (saluran primer, sekunder, tersier, dan sistem buka-tutup pintu air bendung) dalam mengairi puluhan ribu hektar sawah sepanjang tahun di OKU Timur.</li>
               </ol>
             </div>
 
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">Tuliskan Sintesis Materi Hasil Analisis Anda Sendiri:</label>
-              <textarea id="nftD2TextD" rows="6" oninput="onNftD2CardInput('D')" placeholder="Tuliskan analisis komprehensif Anda mengenai budidaya perikanan air tawar, sistem peternakan sapi/kambing, serta geliat industri rumah tangga lokal dalam mengolah hasil pangan daerah... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataD.text || ''}</textarea>
+              <textarea id="nftD2TextD" rows="6" oninput="onNftD2CardInput('D')" placeholder="Uraikan hasil analisis Anda mengenai transformasi dari perkakas tradisional ke mesin alsintan modern (traktor, transplanter, combine harvester), analisis efisiensi biaya/waktunya, serta fungsi strategis jaringan irigasi Komering... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataD.text || ''}</textarea>
               <div class="flex items-center justify-between text-[11px] font-medium pt-0.5">
                 <span id="msgValidationD2_D" class="text-rose-600 font-semibold">Minimal 300 karakter</span>
                 <span id="counterD2_D" class="text-slate-400 font-bold">0 / 300</span>
@@ -1031,21 +1031,21 @@
                   <span>+ Tambah Rujukan Lain</span>
                 </button>
               </div>
-              <textarea id="nftD2SourceD" rows="2" oninput="onNftD2CardInput('D')" placeholder="Contoh rujukan:&#10;1. Dinas Perikanan dan Peternakan OKU Timur / Data Sentra Ikan Patin OKU Timur&#10;2. Profil UMKM & Industri Rumah Tangga Dinas Koperasi & UKM OKU Timur" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataD.source || ''}</textarea>
+              <textarea id="nftD2SourceD" rows="2" oninput="onNftD2CardInput('D')" placeholder="Contoh rujukan:&#10;1. Balai Besar Wilayah Sungai (BBWS) Sumatera VIII / Data Teknis Jaringan Irigasi Komering&#10;2. Modul Mekanisasi dan Alat Mesin Pertanian (Kementerian Pertanian RI / Dinas Pertanian OKU Timur)" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataD.source || ''}</textarea>
               <div class="flex items-center justify-between text-[10.5px]">
                 <span id="msgSourceD2_D" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan. Minimal 20 karakter.</span>
               </div>
             </div>
           </div>
 
-          <!-- KARTU E: PERDAGANGAN, JASA & PEKERJAAN FORMAL -->
+          <!-- KARTU E: INOVASI PENANAMAN, PASCAPANEN, OTOMATISASI DIGITAL & KETERAMPILAN PETANI -->
           <div id="cardBoxD2_E" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-3.5 transition-all">
             <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
               <div class="flex items-center gap-2.5">
                 <span class="w-9 h-9 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-black text-sm shrink-0">E</span>
                 <div>
-                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Mata Pencaharian Sektor Perdagangan, Jasa &amp; Pekerjaan Formal</h3>
-                  <span class="text-[11px] text-slate-500 font-medium">Pasar Gumawang, Logistik Pertanian, Agen Perbankan Digital &amp; Profesi ASN/Swasta</span>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Inovasi Penanaman, Pascapanen, Otomatisasi Pertanian &amp; Keterampilan Teknis Petani OKU Timur</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Teknologi Tanam Jajar Legowo, Mesin Pengering/RMU, Otomatisasi Drone/IT &amp; Keterampilan Petani</span>
                 </div>
               </div>
               <span id="badgeCardStatusD2_E" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
@@ -1054,15 +1054,15 @@
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 flex flex-col gap-1">
               <span class="font-bold text-slate-900 text-[11px]">Poin Wajib yang Harus Anda Cari &amp; Analisis:</span>
               <ol class="list-decimal list-inside text-[11px] text-slate-600 space-y-0.5 leading-relaxed font-medium">
-                <li>Peran pasar tradisional (Pasar Gumawang Belitang, Pasar Martapura) dan pusat grosir dalam sirkulasi perputaran uang dan rantai pasok daerah.</li>
-                <li>Perkembangan sektor jasa pedesaan: transportasi dan logistik hasil panen, bengkel alat mesin pertanian (alsintan), serta agen perbankan digital (seperti BRILink/BUMDes).</li>
-                <li>Peran tenaga kerja formal (Aparatur Sipil Negara/ASN, Guru, Tenaga Kesehatan/Medis, Karyawan BUMN/Bank/Perusahaan Swasta) dalam pelayanan publik dan stabilitas sosial-ekonomi OKU Timur.</li>
+                <li>Penerapan teknologi budidaya padi unggul (sistem tanam jajar legowo, persemaian modern sistem tray/dapog, benih bersertifikat) dan teknologi pascapanen (<em>combine harvester</em>, mesin pengering <em>bed dryer</em>, serta <em>Rice Milling Unit</em> modern) guna menekan angka susut panen (<em>losses</em>).</li>
+                <li>Pemanfaatan teknologi informasi dan otomatisasi pertanian: drone semprot pupuk/pestisida, kalender tanam terpadu (Katam digital BMKG/Kementan), sensor kelembaban tanah, dan digitalisasi pemasaran hasil tani.</li>
+                <li>Kesiapan pengetahuan dan keterampilan teknis (<em>skill</em>) petani OKU Timur dalam mengoperasikan alsintan, merawat mesin, serta tantangan regenerasi petani muda (<em>smart farming</em>) di era modern.</li>
               </ol>
             </div>
 
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">Tuliskan Sintesis Materi Hasil Analisis Anda Sendiri:</label>
-              <textarea id="nftD2TextE" rows="6" oninput="onNftD2CardInput('E')" placeholder="Uraikan pemikiran Anda mengenai pusat perdagangan Belitang, perkembangan jasa transportasi/perbankan desa, serta peranan krusial tenaga kerja formal dalam memajukan OKU Timur... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataE.text || ''}</textarea>
+              <textarea id="nftD2TextE" rows="6" oninput="onNftD2CardInput('E')" placeholder="Uraikan pemikiran kritis Anda mengenai teknologi budidaya jajar legowo, modernisasi pascapanen RMU, pemanfaatan drone/IT pertanian, serta pentingnya peningkatan keterampilan teknis bagi generasi petani muda OKU Timur... (Minimal 300 karakter)" class="w-full p-3.5 rounded-2xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs leading-relaxed text-slate-900 resize-y transition-all">${dataE.text || ''}</textarea>
               <div class="flex items-center justify-between text-[11px] font-medium pt-0.5">
                 <span id="msgValidationD2_E" class="text-rose-600 font-semibold">Minimal 300 karakter</span>
                 <span id="counterD2_E" class="text-slate-400 font-bold">0 / 300</span>
@@ -1080,7 +1080,7 @@
                   <span>+ Tambah Rujukan Lain</span>
                 </button>
               </div>
-              <textarea id="nftD2SourceE" rows="2" oninput="onNftD2CardInput('E')" placeholder="Contoh rujukan:&#10;1. Dinas Perdagangan dan Perindustrian OKU Timur / BKPSDM OKU Timur&#10;2. BPS OKU Timur (Publikasi Statistik Ketenagakerjaan & Perdagangan Daerah)" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataE.source || ''}</textarea>
+              <textarea id="nftD2SourceE" rows="2" oninput="onNftD2CardInput('E')" placeholder="Contoh rujukan:&#10;1. Balai Penerapan Standar Instrumen Pertanian (BPSIP) Sumsel / Riset Budaya & Smart Farming&#10;2. Publikasi Ilmiah Agroteknologi Pertanian / Dinas Pertanian OKU Timur" class="w-full p-3 rounded-2xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-medium text-slate-800 resize-y leading-relaxed transition-all">${dataE.source || ''}</textarea>
               <div class="flex items-center justify-between text-[10.5px]">
                 <span id="msgSourceD2_E" class="text-slate-400 font-medium">Bisa mencantumkan lebih dari 1 rujukan. Minimal 20 karakter.</span>
               </div>
@@ -1300,11 +1300,11 @@
       studentName: u.name || '',
       studentNisn: cleanNisn,
       studentClass: u.class || u.class_name || '',
-      cardA: { title: 'Hakikat Budaya & Keterkaitan Ekonomi', text: document.getElementById('nftD2TextA').value.trim(), source: document.getElementById('nftD2SourceA').value.trim() },
-      cardB: { title: '7 Unsur Kebudayaan Universal OKU Timur', text: document.getElementById('nftD2TextB').value.trim(), source: document.getElementById('nftD2SourceB').value.trim() },
-      cardC: { title: 'Mata Pencaharian Pertanian Pangan & Perkebunan', text: document.getElementById('nftD2TextC').value.trim(), source: document.getElementById('nftD2SourceC').value.trim() },
-      cardD: { title: 'Mata Pencaharian Perikanan, Peternakan & UMKM', text: document.getElementById('nftD2TextD').value.trim(), source: document.getElementById('nftD2SourceD').value.trim() },
-      cardE: { title: 'Mata Pencaharian Perdagangan, Jasa & Formal', text: document.getElementById('nftD2TextE').value.trim(), source: document.getElementById('nftD2SourceE').value.trim() }
+      cardA: { title: 'Hakikat Budaya & 7 Unsur Universal OKU Timur', text: document.getElementById('nftD2TextA').value.trim(), source: document.getElementById('nftD2SourceA').value.trim() },
+      cardB: { title: 'Hubungan Budaya dengan Ekonomi, UMKM & Pekerjaan Formal', text: document.getElementById('nftD2TextB').value.trim(), source: document.getElementById('nftD2SourceB').value.trim() },
+      cardC: { title: 'Sistem Mata Pencaharian Sektor Agrikultur Unggulan', text: document.getElementById('nftD2TextC').value.trim(), source: document.getElementById('nftD2SourceC').value.trim() },
+      cardD: { title: 'Sistem Teknologi, Alsintan Modern & Jaringan Irigasi', text: document.getElementById('nftD2TextD').value.trim(), source: document.getElementById('nftD2SourceD').value.trim() },
+      cardE: { title: 'Inovasi Budidaya, Pascapanen, Otomatisasi & Keterampilan Petani', text: document.getElementById('nftD2TextE').value.trim(), source: document.getElementById('nftD2SourceE').value.trim() }
     };
 
     const summaryText = `Riset Mandiri Day 2 Non-Field Trip Terverifikasi (5 Kartu Lengkap):\n` +
@@ -1345,7 +1345,7 @@
             Modul Day 2 Berhasil Disimpan &amp; Terkirim!
           </h3>
           <p class="text-xs text-slate-600 leading-relaxed mt-1">
-            Selamat! 5 Kartu Riset Budaya &amp; Mata Pencaharian OKU Timur telah lengkap dan diserahkan ke Fasilitator. Akses menuju <strong>Lembar Kerja (LKPD) Day 2</strong> sekarang telah terbuka!
+            Selamat! 5 Kartu Riset Budaya, Mata Pencaharian &amp; Teknologi Pertanian OKU Timur telah lengkap dan diserahkan ke Fasilitator. Akses menuju <strong>Lembar Kerja (LKPD) Day 2</strong> sekarang telah terbuka!
           </p>
         </div>
 

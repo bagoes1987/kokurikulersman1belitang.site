@@ -767,7 +767,7 @@ const FincestemCore = {
       return [
         { day_number: 0, title: 'Day 0: Simulasi & Gladi Bersih FINCESTEM', theme: 'Orientasi Sistem, Pengisian LKPD, Asesmen & Unggah Dokumentasi', date: today, date_formatted: 'Hari Ini (Simulasi)', start_time: '06:00', end_time: '23:59', is_active: 1, auto_schedule: 0, description: 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM (mempelajari materi modul simulasi, mengisi instrumen LKPD latihan, mengerjakan kuis asesmen uji coba, mengisi jurnal refleksi mandiri, serta mengunggah foto dokumentasi) sebelum pelaksanaan riset lapangan sesungguhnya.' },
         { day_number: 1, title: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur', theme: 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah', date: '2026-11-09', date_formatted: '09 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 0, description: 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.' },
-        { day_number: 2, title: 'Day 2: Eksplorasi Sains & Ekosistem Irigasi', theme: 'STEM Sains & Konservasi Lingkungan Belitang', date: '2026-11-10', date_formatted: '10 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pengambilan sampel kualitas air saluran irigasi, identifikasi flora-fauna sawah pasang surut.' },
+        { day_number: 2, title: 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur', theme: 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering', date: '2026-11-10', date_formatted: 'Selasa, 10 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 0, description: 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.' },
         { day_number: 3, title: 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan', theme: 'Teknologi Pertanian Modern & Mekanisasi', date: '2026-11-11', date_formatted: '11 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Observasi mekanisasi pengolahan pascapanen, pengoperasian sensor lingkungan dan dokumentasi teknologi.' },
         { day_number: 4, title: 'Day 4: Literasi Finansial & Rantai Pasok Pangan', theme: 'Financial Literacy & Ekonomi Agrikultur', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Analisis biaya produksi, wawancara harga pasar komoditas beras, serta simulasi manajemen modal usaha tani.' },
         { day_number: 5, title: 'Day 5: Eksplorasi Budaya & Etnosains Nusantara', theme: 'Culture & Kearifan Lokal Komunitas Multikultural', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Wawancara tetua adat, kajian tradisi gotong royong lumbung desa, dan pencatatan nilai-nilai budaya.' },
@@ -994,6 +994,17 @@ const FincestemCore = {
         refl_title: 'Jurnal Refleksi Day 1: Fondasi Ekonomi & Potensi OKU Timur',
         refl_prompt: 'Setelah mempelajari kegiatan ekonomi, literasi finansial, dan pemetaan potensi daerah hari ini, bagaimana Anda akan menerapkan kebiasaan mengelola keuangan dengan bijak dalam kehidupan sehari-hari sekaligus memanfaatkan peluang potensi ekonomi yang ada di Kabupaten OKU Timur?',
         refl_placeholder: 'Silakan tuliskan pendapat, pengalaman, dan rencana Anda berdasarkan materi yang telah dipelajari. Jawablah sesuai pemahaman dan kondisi kehidupan sehari-hari Anda.'
+      },
+      2: {
+        day_number: 2,
+        title: 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur',
+        theme: 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering',
+        date_formatted: 'Selasa, 10 November 2026',
+        time_range: '07.00 - 18.00 WIB',
+        description: 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.',
+        refl_title: 'Jurnal Refleksi Day 2: Budaya, Mata Pencaharian & Teknologi Pertanian',
+        refl_prompt: 'Setelah mempelajari hakikat kebudayaan, keragaman mata pencaharian, dan modernisasi teknologi pertanian hari ini, bagaimana Anda melihat peran budaya gotong royong dan adopsi mesin pertanian dalam memajukan kesejahteraan masyarakat Kabupaten OKU Timur?',
+        refl_placeholder: 'Silakan tuliskan pendapat, pengalaman, dan pandangan Anda mengenai perpaduan budaya kerja sama warga dan kemajuan teknologi pertanian di OKU Timur...'
       }
     },
 
@@ -1069,6 +1080,18 @@ const FincestemCore = {
             d.description = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.';
           }
           // Pastikan Day 1 Non-Field Trip selalu terbuka (is_open: true) untuk pengujian & pengerjaan siswa
+          if (d.auto_schedule === undefined || d.auto_schedule === null || Number(d.auto_schedule) === 1) {
+            d.auto_schedule = 0;
+            d.is_active = 1;
+          }
+        }
+        // Auto-sinkronisasi Day 2 Non-Field Trip jika di DB / cache masih tersimpan data usang Eksplorasi Sains Irigasi
+        if (Number(d.day_number) === 2) {
+          if (String(d.title).includes('Eksplorasi Sains') || String(d.theme).includes('Saluran Irigasi')) {
+            d.title = 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur';
+            d.theme = 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering';
+            d.description = 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.';
+          }
           if (d.auto_schedule === undefined || d.auto_schedule === null || Number(d.auto_schedule) === 1) {
             d.auto_schedule = 0;
             d.is_active = 1;
