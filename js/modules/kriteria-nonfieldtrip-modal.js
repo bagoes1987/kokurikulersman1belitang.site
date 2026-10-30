@@ -2,7 +2,7 @@
  * FINCESTEM 2026 - Modal Kriteria Penilaian Kokurikuler
  * Menampilkan:
  * 1. Field Trip (Jawa) - Konsep interaktif langsung di layar
- * 2. Non - Field Trip (OKU Timur) - Konsep interaktif langsung di layar
+ * 2. Non - Field Trip (OKU Timur) - Konsep interaktif & SIMULASI 3 KASUS SISWA + LIVE KALKULATOR
  * 3. Nilai Rapor - Mahir, Cakap, Berkembang beserta kriteria lengkapnya
  * 4. Tombol Download PDF Kriteria Penilaian (2 Halaman Rapi tanpa Kop & tanpa TTD)
  *
@@ -23,7 +23,7 @@
     modal.id = 'modalKriteriaKokurikuler';
     modal.className = 'fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-2.5 sm:p-5 transition-all duration-300 opacity-0 pointer-events-none';
     modal.innerHTML = `
-      <div class="bg-white rounded-3xl max-w-3xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-scale-up">
+      <div class="bg-white rounded-3xl max-w-4xl w-full max-h-[94vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden animate-scale-up">
         
         <!-- Header Modal -->
         <div class="p-4 sm:p-5 bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white flex items-center justify-between border-b border-indigo-800/60 shrink-0">
@@ -42,7 +42,7 @@
             </div>
           </div>
           <div class="flex items-center gap-2">
-            <button type="button" onclick="downloadKriteriaKokurikulerPdf()" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer" title="Download Versi PDF (2 Halaman Rapi)">
+            <button type="button" onclick="downloadKriteriaKokurikulerPdf()" class="hidden sm:inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-sm cursor-pointer" title="Download Versi PDF (2 Halaman Rapi)">
               <span class="material-symbols-outlined text-base">download</span>
               <span>Download PDF</span>
             </button>
@@ -287,6 +287,137 @@
               </ul>
             </div>
 
+            <!-- ==================== 5. SIMULASI KASUS PERHITUNGAN NILAI SISWA ==================== -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-slate-50 to-indigo-50/40 border border-indigo-200 flex flex-col gap-3">
+              <div class="flex items-center justify-between">
+                <span class="font-black text-slate-900 flex items-center gap-1.5 text-xs sm:text-sm">
+                  <span class="material-symbols-outlined text-base text-indigo-600">calculate</span>
+                  <span>5. Simulasi 3 Kasus Riil Perhitungan Nilai Siswa (Non-Field Trip):</span>
+                </span>
+                <span class="text-[10px] font-extrabold text-indigo-800 bg-indigo-100 px-2 py-0.5 rounded-md border border-indigo-300">Contoh Lapangan</span>
+              </div>
+
+              <!-- Kartu Simulasi 1 -->
+              <div class="p-3 sm:p-3.5 rounded-xl bg-white border border-emerald-300 shadow-xs flex flex-col gap-1.5">
+                <div class="flex flex-wrap items-center justify-between gap-1">
+                  <span class="font-black text-xs text-emerald-950 flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <span>KASUS 1: SISWA DISIPLIN &amp; INVESTIGASI MENDALAM</span>
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+                    HASIL: BINTANG 5 (⭐⭐⭐⭐⭐)
+                  </span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-600 bg-emerald-50/40 p-2 rounded-lg border border-emerald-100">
+                  <div>• Jam Modul: <strong class="text-slate-900">08.15 WIB</strong> (Poin: 100)</div>
+                  <div>• Nilai LKPD: <strong class="text-slate-900">92</strong> (6 Kartu)</div>
+                  <div>• Nilai Asesmen: <strong class="text-slate-900">90</strong></div>
+                  <div>• Geotag: <strong class="text-emerald-700">Valid Belitang</strong> (100)</div>
+                </div>
+                <div class="text-[11.5px] font-bold text-indigo-900 bg-indigo-50/80 px-2.5 py-1.5 rounded-lg border border-indigo-200">
+                  Perhitungan: NA = (0.20 × 100) + (0.30 × 92) + (0.35 × 90) + (0.15 × 100) = 20 + 27.6 + 31.5 + 15 = <span class="text-emerald-700 font-black">94.1 → BINTANG 5 (⭐⭐⭐⭐⭐)</span>
+                </div>
+              </div>
+
+              <!-- Kartu Simulasi 2 -->
+              <div class="p-3 sm:p-3.5 rounded-xl bg-white border border-amber-300 shadow-xs flex flex-col gap-1.5">
+                <div class="flex flex-wrap items-center justify-between gap-1">
+                  <span class="font-black text-xs text-amber-950 flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                    <span>KASUS 2: ASESMEN TINGGI TETAPI MODUL SORE HARI</span>
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-800 border border-amber-300">
+                    HASIL: BINTANG 4 (⭐⭐⭐⭐☆)
+                  </span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-600 bg-amber-50/40 p-2 rounded-lg border border-amber-100">
+                  <div>• Jam Modul: <strong class="text-slate-900">16.30 WIB</strong> (Poin: 70)</div>
+                  <div>• Nilai LKPD: <strong class="text-slate-900">80</strong> (Cukup)</div>
+                  <div>• Nilai Asesmen: <strong class="text-slate-900">86</strong></div>
+                  <div>• Geotag: <strong class="text-emerald-700">Valid Belitang</strong> (100)</div>
+                </div>
+                <div class="text-[11.5px] font-bold text-amber-950 bg-amber-50/80 px-2.5 py-1.5 rounded-lg border border-amber-200">
+                  Perhitungan: NA = (0.20 × 70) + (0.30 × 80) + (0.35 × 86) + (0.15 × 100) = 14 + 24 + 30.1 + 15 = <span class="text-amber-800 font-black">83.1 → BINTANG 4 (⭐⭐⭐⭐☆)</span>
+                </div>
+              </div>
+
+              <!-- Kartu Simulasi 3 -->
+              <div class="p-3 sm:p-3.5 rounded-xl bg-white border border-rose-300 shadow-xs flex flex-col gap-1.5">
+                <div class="flex flex-wrap items-center justify-between gap-1">
+                  <span class="font-black text-xs text-rose-950 flex items-center gap-1.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+                    <span>KASUS 3: TANPA GOOGLE TAGGING (PINALTI FOTO GALERI)</span>
+                  </span>
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-300">
+                    HASIL: PINALTI BINTANG 1 (⭐☆☆☆☆)
+                  </span>
+                </div>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] text-slate-600 bg-rose-50/40 p-2 rounded-lg border border-rose-100">
+                  <div>• Jam Modul: <strong class="text-slate-900">08.30 WIB</strong> (Poin: 100)</div>
+                  <div>• Nilai LKPD: <strong class="text-slate-900">85</strong></div>
+                  <div>• Nilai Asesmen: <strong class="text-slate-900">80</strong></div>
+                  <div>• Geotag: <strong class="text-rose-700">Foto Galeri / Tanpa GPS</strong> (30)</div>
+                </div>
+                <div class="text-[11.5px] font-bold text-rose-950 bg-rose-50/80 px-2.5 py-1.5 rounded-lg border border-rose-200">
+                  Perhitungan: NA = (0.20 × 100) + (0.30 × 85) + (0.35 × 80) + (0.15 × 30) = 20 + 25.5 + 28 + 4.5 = 78.0 → <span class="text-rose-800 font-black">Pinalti Geotag Maksimal: BINTANG 1 (⭐☆☆☆☆)</span>
+                </div>
+              </div>
+
+              <!-- LIVE INTERACTIVE CALCULATOR UNTUK GURU -->
+              <div class="p-4 rounded-xl bg-gradient-to-br from-indigo-950 via-slate-900 to-indigo-950 text-white flex flex-col gap-3 shadow-md border border-indigo-700/60 mt-1">
+                <div class="flex items-center justify-between">
+                  <span class="font-black text-xs sm:text-sm text-sky-200 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base text-sky-400">tune</span>
+                    <span>Kalkulator Simulasi Interaktif (Coba Langsung):</span>
+                  </span>
+                  <span class="text-[10px] font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30 px-2 py-0.5 rounded">Live Real-time</span>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 text-xs">
+                  <div>
+                    <label class="block text-[10.5px] font-bold text-indigo-200 mb-1">Jam Modul (20%):</label>
+                    <select id="simJamModul" onchange="runLiveNonFTSimulation()" class="w-full bg-slate-800 border border-indigo-400/40 rounded-lg p-2 text-white font-bold text-xs focus:ring-2 focus:ring-sky-400 outline-none cursor-pointer">
+                      <option value="100">07.00 – 09.00 WIB (100 Poin)</option>
+                      <option value="88">09.01 – 12.00 WIB (88 Poin)</option>
+                      <option value="85">12.01 – 15.00 WIB (85 Poin)</option>
+                      <option value="80">15.01 – 16.00 WIB (80 Poin)</option>
+                      <option value="70">16.01 – 17.00 WIB (70 Poin)</option>
+                      <option value="60">17.01 – 18.00 WIB (60 Poin)</option>
+                      <option value="50">&gt; 18.00 WIB (50 Poin)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-[10.5px] font-bold text-indigo-200 mb-1">Skor LKPD (30%):</label>
+                    <input id="simSkorLKPD" type="number" min="0" max="100" value="85" oninput="runLiveNonFTSimulation()" class="w-full bg-slate-800 border border-indigo-400/40 rounded-lg p-2 text-white font-bold text-xs focus:ring-2 focus:ring-sky-400 outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-[10.5px] font-bold text-indigo-200 mb-1">Skor Asesmen (35%):</label>
+                    <input id="simSkorAsesmen" type="number" min="0" max="100" value="85" oninput="runLiveNonFTSimulation()" class="w-full bg-slate-800 border border-indigo-400/40 rounded-lg p-2 text-white font-bold text-xs focus:ring-2 focus:ring-sky-400 outline-none">
+                  </div>
+                  <div>
+                    <label class="block text-[10.5px] font-bold text-indigo-200 mb-1">Google Tagging (15%):</label>
+                    <select id="simGeotag" onchange="runLiveNonFTSimulation()" class="w-full bg-slate-800 border border-indigo-400/40 rounded-lg p-2 text-white font-bold text-xs focus:ring-2 focus:ring-sky-400 outline-none cursor-pointer">
+                      <option value="100">Valid Kamera OKU Timur (100)</option>
+                      <option value="30">Foto Galeri / Tanpa GPS (Pinalti 30)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Hasil Kalkulasi Interaktif -->
+                <div class="p-3 rounded-xl bg-black/50 border border-sky-400/30 flex flex-wrap items-center justify-between gap-2 text-xs">
+                  <div class="flex items-center gap-2">
+                    <span class="text-slate-300">Rincian Komposit:</span>
+                    <span id="simResFormula" class="font-mono text-sky-300 font-bold text-xs">(20.0) + (25.5) + (29.8) + (15.0)</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span id="simResScore" class="font-black text-sm text-yellow-300">Nilai Akhir: 90.3</span>
+                    <span id="simResStars" class="px-2.5 py-0.5 rounded-full bg-amber-400 text-amber-950 font-black text-xs">⭐⭐⭐⭐⭐ Bintang 5</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
           </div>
 
           <!-- ==================== TAB 3: NILAI RAPOR ==================== -->
@@ -418,6 +549,63 @@
     return modal;
   }
 
+  window.runLiveNonFTSimulation = function() {
+    const wModulEl = document.getElementById('simJamModul');
+    const sLKPDEl = document.getElementById('simSkorLKPD');
+    const sAsesEl = document.getElementById('simSkorAsesmen');
+    const sGeoEl = document.getElementById('simGeotag');
+
+    if (!wModulEl || !sLKPDEl || !sAsesEl || !sGeoEl) return;
+
+    const wModul = parseFloat(wModulEl.value) || 100;
+    const sLKPD = Math.max(0, Math.min(100, parseFloat(sLKPDEl.value) || 0));
+    const sAses = Math.max(0, Math.min(100, parseFloat(sAsesEl.value) || 0));
+    const sGeo = parseFloat(sGeoEl.value) || 100;
+
+    const partModul = 0.20 * wModul;
+    const partLKPD = 0.30 * sLKPD;
+    const partAses = 0.35 * sAses;
+    const partGeo = 0.15 * sGeo;
+
+    const na = Math.round((partModul + partLKPD + partAses + partGeo) * 10) / 10;
+
+    let starLabel = '⭐⭐⭐⭐⭐ Bintang 5';
+    let badgeColor = 'bg-amber-400 text-amber-950';
+
+    if (sGeo === 30) {
+      starLabel = '⭐☆☆☆☆ Pinalti Bintang 1';
+      badgeColor = 'bg-rose-500 text-white';
+    } else {
+      if (na >= 90) {
+        starLabel = '⭐⭐⭐⭐⭐ Bintang 5 (Sangat Baik)';
+        badgeColor = 'bg-amber-400 text-amber-950';
+      } else if (na >= 80) {
+        starLabel = '⭐⭐⭐⭐☆ Bintang 4 (Baik)';
+        badgeColor = 'bg-amber-300 text-amber-950';
+      } else if (na >= 70) {
+        starLabel = '⭐⭐⭐☆☆ Bintang 3 (Cukup)';
+        badgeColor = 'bg-sky-400 text-slate-900';
+      } else if (na >= 60) {
+        starLabel = '⭐⭐☆☆☆ Bintang 2 (Kurang)';
+        badgeColor = 'bg-orange-400 text-slate-900';
+      } else {
+        starLabel = '⭐☆☆☆☆ Bintang 1 (Sangat Kurang)';
+        badgeColor = 'bg-rose-500 text-white';
+      }
+    }
+
+    const formulaEl = document.getElementById('simResFormula');
+    const scoreEl = document.getElementById('simResScore');
+    const starsEl = document.getElementById('simResStars');
+
+    if (formulaEl) formulaEl.textContent = `(${partModul.toFixed(1)}) + (${partLKPD.toFixed(1)}) + (${partAses.toFixed(1)}) + (${partGeo.toFixed(1)})`;
+    if (scoreEl) scoreEl.textContent = `Nilai Akhir: ${na.toFixed(1)}`;
+    if (starsEl) {
+      starsEl.textContent = starLabel;
+      starsEl.className = `px-2.5 py-0.5 rounded-full font-black text-xs ${badgeColor}`;
+    }
+  };
+
   window.switchKriteriaTab = function(tab) {
     currentActiveTab = tab;
     const tabFT = document.getElementById('tabBtn_FT');
@@ -446,6 +634,7 @@
       if (contentNonFT) contentNonFT.classList.remove('hidden');
       if (headerSub) headerSub.textContent = 'Non-Field Trip (Riset Mandiri OKU Timur)';
       if (iconWrapper) iconWrapper.className = 'w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0';
+      setTimeout(window.runLiveNonFTSimulation, 50);
     } else if (tab === 'rapor') {
       if (tabRapor) tabRapor.className = 'px-3.5 sm:px-4 py-2.5 rounded-t-xl transition-all border-b-2 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap cursor-pointer bg-white text-amber-900 border-amber-600 shadow-xs';
       if (contentRapor) contentRapor.classList.remove('hidden');
@@ -462,7 +651,7 @@
 
   window.openKriteriaKokurikulerModal = function(initialTab) {
     const modal = createModalDOM();
-    window.switchKriteriaTab(initialTab || 'ft');
+    window.switchKriteriaTab(initialTab || 'nonft');
     modal.classList.remove('opacity-0', 'pointer-events-none');
     modal.classList.add('opacity-100');
   };

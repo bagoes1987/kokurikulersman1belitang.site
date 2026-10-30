@@ -6,7 +6,7 @@
   <style>
     @page {
       size: A4 portrait;
-      margin: 8mm 10mm 8mm 10mm;
+      margin: 7mm 9mm 7mm 9mm;
     }
     * {
       box-sizing: border-box;
@@ -16,16 +16,16 @@
     body {
       font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
       color: #0f172a;
-      line-height: 1.25;
-      font-size: 8pt;
+      line-height: 1.22;
+      font-size: 7.6pt;
       margin: 0;
       padding: 0;
       background-color: #ffffff;
     }
     .page-sheet {
       width: 100%;
-      height: 281mm;
-      max-height: 281mm;
+      height: 283mm;
+      max-height: 283mm;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -41,12 +41,12 @@
     .modern-header {
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
       color: #ffffff;
-      padding: 8px 12px;
+      padding: 7px 12px;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     }
     .header-left {
@@ -55,8 +55,8 @@
       gap: 10px;
     }
     .badge-icon {
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       border-radius: 8px;
       background: linear-gradient(135deg, #38bdf8, #0284c7);
       color: #ffffff;
@@ -64,20 +64,20 @@
       align-items: center;
       justify-content: center;
       font-weight: 900;
-      font-size: 13pt;
+      font-size: 12pt;
       letter-spacing: -0.5px;
       flex-shrink: 0;
     }
     .header-titles h1 {
       margin: 0;
-      font-size: 10pt;
+      font-size: 9.8pt;
       font-weight: 900;
       letter-spacing: 0.3px;
       color: #f8fafc;
     }
     .header-titles p {
       margin: 1px 0 0 0;
-      font-size: 7.2pt;
+      font-size: 7pt;
       color: #94a3b8;
     }
     .header-pill {
@@ -85,7 +85,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       padding: 3px 8px;
       border-radius: 6px;
-      font-size: 7pt;
+      font-size: 6.8pt;
       font-weight: 700;
       color: #38bdf8;
       text-transform: uppercase;
@@ -96,16 +96,16 @@
     .section-banner {
       background: #f1f5f9;
       border-left: 4px solid #0284c7;
-      padding: 4px 8px;
+      padding: 3px 8px;
       border-radius: 0 6px 6px 0;
-      margin: 4px 0 3px 0;
+      margin: 3px 0 2px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
     .section-banner h2 {
       margin: 0;
-      font-size: 8.5pt;
+      font-size: 8.2pt;
       font-weight: 800;
       color: #0f172a;
       text-transform: uppercase;
@@ -120,25 +120,25 @@
     /* Grid Layouts */
     .grid-2col {
       display: flex;
-      gap: 8px;
+      gap: 7px;
     }
     .col-half {
       width: 50%;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 3px;
     }
 
     /* Tables */
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 7.2pt;
+      font-size: 7pt;
       margin-bottom: 2px;
     }
     th, td {
       border: 1px solid #cbd5e1;
-      padding: 3px 5px;
+      padding: 2.5px 4.5px;
       text-align: left;
       vertical-align: middle;
     }
@@ -147,7 +147,7 @@
       color: #0f172a;
       font-weight: 800;
       text-transform: uppercase;
-      font-size: 6.8pt;
+      font-size: 6.6pt;
     }
     tr:nth-child(even) td {
       background-color: #fbfcfd;
@@ -159,7 +159,7 @@
       padding: 1px 4px;
       border-radius: 4px;
       font-weight: 800;
-      font-size: 6.8pt;
+      font-size: 6.6pt;
     }
     .badge-green { background: #dcfce7; color: #166534; border: 0.5px solid #86efac; }
     .badge-yellow { background: #fef9c3; color: #854d0e; border: 0.5px solid #fde047; }
@@ -168,23 +168,23 @@
 
     /* Callout Boxes */
     .callout {
-      padding: 4px 7px;
+      padding: 3.5px 6.5px;
       border-radius: 5px;
-      font-size: 7.1pt;
-      line-height: 1.25;
-      margin: 2px 0;
+      font-size: 6.8pt;
+      line-height: 1.22;
+      margin: 1.5px 0;
     }
     .callout-info { background: #f0fdf4; border-left: 3px solid #16a34a; color: #14532d; }
     .callout-warning { background: #fffbeb; border-left: 3px solid #f59e0b; color: #78350f; }
     .callout-danger { background: #fef2f2; border-left: 3px solid #dc2626; color: #7f1d1d; }
-    .callout-dark { background: #0f172a; color: #f8fafc; border-radius: 6px; padding: 5px 8px; text-align: center; }
+    .callout-dark { background: #0f172a; color: #f8fafc; border-radius: 5px; padding: 4px 7px; text-align: center; }
 
     /* Predikat Rapor Cards */
     .rapor-card {
-      border-radius: 6px;
-      padding: 6px 8px;
+      border-radius: 5px;
+      padding: 4.5px 7px;
       border: 1px solid;
-      margin-bottom: 4px;
+      margin-bottom: 3px;
     }
     .rapor-card-mahir {
       background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
@@ -203,21 +203,21 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 2px;
+      margin-bottom: 1.5px;
     }
     .rapor-title {
-      font-size: 8.5pt;
+      font-size: 8pt;
       font-weight: 900;
     }
     .rapor-badge {
-      font-size: 7.2pt;
+      font-size: 6.8pt;
       font-weight: 800;
-      padding: 1px 6px;
-      border-radius: 12px;
+      padding: 1px 5px;
+      border-radius: 10px;
     }
     .rapor-desc {
-      font-size: 7.1pt;
-      line-height: 1.25;
+      font-size: 6.8pt;
+      line-height: 1.22;
       text-align: justify;
       margin: 0;
     }
@@ -226,29 +226,48 @@
     .pilar-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 5px;
-      margin-top: 3px;
+      gap: 4px;
+      margin-top: 2px;
     }
     .pilar-box {
       border: 1px solid #cbd5e1;
       border-radius: 5px;
-      padding: 4px 6px;
-      font-size: 7pt;
-      line-height: 1.2;
+      padding: 3.5px 5.5px;
+      font-size: 6.8pt;
+      line-height: 1.18;
     }
     .pilar-box strong {
       display: block;
       margin-bottom: 1px;
-      font-size: 7.2pt;
+      font-size: 7pt;
+    }
+
+    /* Simulasi Box */
+    .sim-card {
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      padding: 3.5px 6px;
+      margin-bottom: 2.5px;
+      background-color: #ffffff;
+      font-size: 6.8pt;
+    }
+    .sim-header {
+      font-weight: 800;
+      color: #0f172a;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5px;
+      border-bottom: 1px dashed #cbd5e1;
+      padding-bottom: 1px;
     }
 
     /* Footer Clean */
     .footer-sheet {
       border-top: 1px solid #cbd5e1;
-      padding-top: 3px;
+      padding-top: 2.5px;
       display: flex;
       justify-content: space-between;
-      font-size: 6.8pt;
+      font-size: 6.5pt;
       color: #64748b;
       margin-top: auto;
     }
@@ -278,8 +297,8 @@
         <span style="color: #047857; font-weight: bold;">100% Berbasis Jam Pengumpulan Tugas (On-Time Submission)</span>
       </div>
 
-      <p style="margin: 0 0 3px 0; font-size: 7.2pt; text-align: justify;">
-        Peserta Field Trip bergerak dalam <strong>rombongan armada bus sekolah</strong> dengan jadwal operasional objek wisata yang ketat (Semarang, Malang, Bromo, Yogyakarta). Oleh karena itu, penilaian harian dinilai <strong>murni dari ketepatan waktu pengumpulan tugas</strong>:
+      <p style="margin: 0 0 2px 0; font-size: 7pt; text-align: justify;">
+        Peserta Field Trip bergerak dalam <strong>rombongan armada bus sekolah</strong> dengan jadwal operasional objek wisata yang ketat (Semarang, Malang, Bromo, Yogyakarta). Oleh karena itu, penilaian harian dinilai <strong>murni dari ketepatan waktu pengumpulan tugas</strong> (batas standar: pukul 16.00 WIB):
       </p>
 
       <table>
@@ -319,7 +338,7 @@
         </tbody>
       </table>
 
-      <div class="grid-2col" style="margin-top: 2px;">
+      <div class="grid-2col" style="margin-top: 1.5px;">
         <div class="col-half">
           <div class="callout callout-warning">
             <strong>⚡ Koreksi Darurat Admin (Emergency Manual Override):</strong><br>
@@ -335,20 +354,20 @@
       </div>
 
       <!-- BAGIAN 2: NON-FIELD TRIP -->
-      <div class="section-banner" style="border-left-color: #4f46e5; margin-top: 5px;">
+      <div class="section-banner" style="border-left-color: #4f46e5; margin-top: 4px;">
         <h2 style="color: #1e1b4b;">2. Kriteria Penilaian Harian Non-Field Trip (Riset OKU Timur)</h2>
         <span style="color: #4338ca; font-weight: bold;">Komposit 4 Pilar (Modul 20%, LKPD 30%, Kuis 35%, Geotag 15%)</span>
       </div>
 
-      <div class="callout-dark" style="margin-bottom: 3px;">
-        <span style="font-size: 7.2pt; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Rumus Resmi Nilai Akhir Harian (NA) Non-Field Trip:</span><br>
-        <span style="font-size: 8.8pt; font-weight: 900; color: #38bdf8;">NA = (20% × Waktu Modul) + (30% × LKPD) + (35% × Asesmen) + (15% × Geotag)</span>
+      <div class="callout-dark" style="margin-bottom: 2.5px;">
+        <span style="font-size: 6.8pt; color: #94a3b8; font-weight: bold; text-transform: uppercase;">Rumus Resmi Nilai Akhir Harian (NA) Non-Field Trip:</span><br>
+        <span style="font-size: 8.5pt; font-weight: 900; color: #38bdf8;">NA = (20% × Waktu Modul) + (30% × LKPD) + (35% × Asesmen) + (15% × Geotag)</span>
       </div>
 
       <div class="grid-2col">
         <!-- Kolom Kiri: Parameter Modul Pagi -->
         <div class="col-half">
-          <div style="font-weight: 800; font-size: 7.2pt; color: #1e1b4b; margin-bottom: 1px;">
+          <div style="font-weight: 800; font-size: 7pt; color: #1e1b4b; margin-bottom: 1px;">
             A. Kedisiplinan Jam Pengisian Modul Pagi (Bobot 20%):
           </div>
           <table>
@@ -401,7 +420,7 @@
 
         <!-- Kolom Kanan: LKPD, Asesmen & Geotag -->
         <div class="col-half">
-          <div style="font-weight: 800; font-size: 7.2pt; color: #1e1b4b; margin-bottom: 1px;">
+          <div style="font-weight: 800; font-size: 7pt; color: #1e1b4b; margin-bottom: 1px;">
             B. Komponen Penilaian Lapangan &amp; Asesmen:
           </div>
           <table>
@@ -431,7 +450,7 @@
             </tbody>
           </table>
 
-          <div class="callout callout-danger" style="margin-top: 3px;">
+          <div class="callout callout-danger" style="margin-top: 2px;">
             <strong>⚠ Sanksi Pinalti Geotagging (Skor 30 &amp; Maksimal Bintang 1):</strong><br>
             Foto galeri tanpa koordinat GPS, foto comot internet, atau foto di luar OKU Timur tanpa dispensasi resmi otomatis terkena <strong>Pinalti Skor Geotag = 30 dan Maksimal Peringkat Bintang 1 (⭐☆☆☆☆)</strong> karena tidak terbukti terjun observasi ke lapangan!
           </div>
@@ -449,7 +468,7 @@
   </div>
 
 
-  <!-- ==================== HALAMAN 2: PREDIKAT RAPOR & RUBRIK 4 PILAR ==================== -->
+  <!-- ==================== HALAMAN 2: PREDIKAT RAPOR, RUBRIK 4 PILAR & SIMULASI SISWA ==================== -->
   <div class="page-sheet">
     <div>
       
@@ -459,7 +478,7 @@
           <div class="badge-icon" style="background: linear-gradient(135deg, #fbbf24, #d97706); color: #78350f;">🏆</div>
           <div class="header-titles">
             <h1>STANDAR PREDIKAT &amp; AMBANG BATAS RAPOR KOKURIKULER</h1>
-            <p>Konversi Peringkat Bintang, Nilai Rata-Rata, Narasi Capaian Rapor Siswa &amp; Rubrik 4 Pilar</p>
+            <p>Konversi Peringkat Bintang, Nilai Rata-Rata, Narasi Capaian Rapor Siswa &amp; Simulasi Riil</p>
           </div>
         </div>
         <div class="header-pill" style="color: #fde047; border-color: rgba(253, 224, 71, 0.3);">Standar Resmi Rapor</div>
@@ -477,7 +496,7 @@
           <span class="rapor-title" style="color: #78350f;">🏆 1. PREDIKAT MAHIR</span>
           <div>
             <span class="rapor-badge" style="background: #fef08a; color: #854d0e; border: 1px solid #fde047; font-weight: 900;">30 – 35 ⭐ Bintang</span>
-            <span class="rapor-badge" style="background: #dcfce7; color: #166534; border: 1px solid #86efac; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: ≥ 85.0</span>
+            <span class="rapor-badge" style="background: #dcfce7; color: #166534; border: 1px solid #86efac; font-weight: 900; margin-left: 2px;">Nilai Rata-rata: ≥ 85.0</span>
           </div>
         </div>
         <p class="rapor-desc" style="color: #713f12;">
@@ -491,7 +510,7 @@
           <span class="rapor-title" style="color: #065f46;">🌟 2. PREDIKAT CAKAP</span>
           <div>
             <span class="rapor-badge" style="background: #a7f3d0; color: #064e3b; border: 1px solid #6ee7b7; font-weight: 900;">21 – 29 ⭐ Bintang</span>
-            <span class="rapor-badge" style="background: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: 70.0 – 84.9</span>
+            <span class="rapor-badge" style="background: #e0f2fe; color: #075985; border: 1px solid #7dd3fc; font-weight: 900; margin-left: 2px;">Nilai Rata-rata: 70.0 – 84.9</span>
           </div>
         </div>
         <p class="rapor-desc" style="color: #064e3b;">
@@ -505,7 +524,7 @@
           <span class="rapor-title" style="color: #1e40af;">🌱 3. PREDIKAT BERKEMBANG</span>
           <div>
             <span class="rapor-badge" style="background: #bfdbfe; color: #1e3a8a; border: 1px solid #93c5fd; font-weight: 900;">≤ 20 ⭐ Bintang</span>
-            <span class="rapor-badge" style="background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; font-weight: 900; margin-left: 3px;">Nilai Rata-rata: &lt; 70.0</span>
+            <span class="rapor-badge" style="background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; font-weight: 900; margin-left: 2px;">Nilai Rata-rata: &lt; 70.0</span>
           </div>
         </div>
         <p class="rapor-desc" style="color: #1e3a8a;">
@@ -514,32 +533,85 @@
       </div>
 
       <!-- BAGIAN 4: RUBRIK 4 PILAR -->
-      <div class="section-banner" style="border-left-color: #7c3aed; margin-top: 4px;">
-        <h2 style="color: #5b21b6;">4. Panduan Rubrik 4 Pilar FINCESTEM (Bobot Seimbang 25% Masing-Masing)</h2>
-        <span style="color: #6d28d9; font-weight: bold;">Fondasi Penilaian Karakter &amp; Portofolio</span>
+      <div class="section-banner" style="border-left-color: #7c3aed; margin-top: 3px;">
+        <h2 style="color: #5b21b6;">4. Panduan Rubrik 4 Pilar FINCESTEM (Bobot 25% Seimbang Masing-Masing)</h2>
+        <span style="color: #6d28d9; font-weight: bold;">Financial • Culture • Exploration • STEM</span>
       </div>
 
       <div class="pilar-grid">
         <div class="pilar-box" style="background: #fffbeb; border-color: #fde68a;">
-          <strong style="color: #92400e;">1. Pilar Financial (Bobot 25%)</strong>
-          <span style="color: #78350f;">Pengelolaan kas saku pribadi, pembukuan neraca harian yang jujur &amp; transparan, kalkulasi efisiensi konsumsi, serta pemahaman struktur biaya produksi (HPP) komoditas lokal/umkm.</span>
+          <strong style="color: #92400e;">1. Financial (25%):</strong>
+          <span style="color: #78350f;">Pengelolaan kas saku pribadi, pembukuan neraca harian transparan, kalkulasi efisiensi, dan pemahaman HPP.</span>
         </div>
         <div class="pilar-box" style="background: #faf5ff; border-color: #e9d5ff;">
-          <strong style="color: #6b21a8;">2. Pilar Culture (Bobot 25%)</strong>
-          <span style="color: #581c87;">Apresiasi sejarah akulturasi &amp; kolonisasi, etika tata krama terhadap sesama &amp; narasumber, tradisi gotong royong sambatan, dan pelestarian warisan budaya nusantara.</span>
+          <strong style="color: #6b21a8;">2. Culture (25%):</strong>
+          <span style="color: #581c87;">Apresiasi sejarah akulturasi, tata krama sopan santun warga/narasumber, gotong royong sambatan, dan warisan budaya.</span>
         </div>
         <div class="pilar-box" style="background: #f0fdf4; border-color: #bbf7d0;">
-          <strong style="color: #166534;">3. Pilar Exploration (Bobot 25%)</strong>
-          <span style="color: #14532d;">Ketangkasan navigasi geospasial lapangan, ketelitian observasi objek fisik/ekosistem, kedisiplinan jam pengumpulan, dan ketahanan fisik dalam menyelesaikan observasi mandiri.</span>
+          <strong style="color: #166534;">3. Exploration (25%):</strong>
+          <span style="color: #14532d;">Ketangkasan navigasi lapangan, observasi lingkungan/irigasi, kedisiplinan submit tugas, dan ketahanan fisik.</span>
         </div>
         <div class="pilar-box" style="background: #eff6ff; border-color: #bfdbfe;">
-          <strong style="color: #1e40af;">4. Pilar STEM (Bobot 25%)</strong>
-          <span style="color: #1e3a8a;">Penerapan sains terapan (mekanika fisika, ekosistem biologi, irigasi tanah), integrasi rekayasa teknologi, pengolahan data matematis, dan logika pemecahan masalah objektif.</span>
+          <strong style="color: #1e40af;">4. STEM (25%):</strong>
+          <span style="color: #1e3a8a;">Penerapan sains terapan (mekanika/ekosistem), integrasi teknologi, pengolahan data numerik, dan penalaran ilmiah.</span>
         </div>
       </div>
 
-      <div class="callout callout-info" style="margin-top: 5px;">
-        <strong>Catatan Penggunaan Guru Fasilitator &amp; Koordinator:</strong> Seluruh perhitungan nilai harian dan akumulasi predikat rapor dihitung otomatis oleh sistem aplikasi FINCESTEM. Guru Fasilitator bertugas memantau kedisiplinan dan dapat memberikan catatan deskripsi penguatan karakter pada lembar rapor siswa.
+      <!-- BAGIAN 5: SIMULASI 3 KASUS SISWA (KEMBALI ADA) -->
+      <div class="section-banner" style="border-left-color: #2563eb; margin-top: 3px;">
+        <h2 style="color: #1e3a8a;">5. Simulasi 3 Kasus Riil Perhitungan Nilai Siswa (Non-Field Trip)</h2>
+        <span style="color: #1d4ed8; font-weight: bold;">Contoh Pembuktian Rumus NA Lapangan</span>
+      </div>
+
+      <!-- Simulasi 1 -->
+      <div class="sim-card" style="border-left: 3px solid #16a34a;">
+        <div class="sim-header">
+          <span style="color: #166534;">KASUS 1: SISWA DISIPLIN &amp; INVESTIGASI MENDALAM</span>
+          <span class="badge badge-green">HASIL: BINTANG 5 (⭐⭐⭐⭐⭐)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 6.6pt; color: #475569;">
+          <span>• Jam Modul: <strong>08.15 WIB</strong> (Poin: 100)</span>
+          <span>• LKPD: <strong>92</strong> (Lengkap 6 Kartu)</span>
+          <span>• Asesmen CBT: <strong>90</strong></span>
+          <span>• Geotag: <strong>Valid Belitang</strong> (100)</span>
+        </div>
+        <div style="color: #1e3a8a; font-weight: bold; font-size: 6.7pt; margin-top: 1px;">
+          Perhitungan: NA = (0.20 × 100) + (0.30 × 92) + (0.35 × 90) + (0.15 × 100) = 20 + 27.6 + 31.5 + 15 = <span style="color: #15803d; font-weight: 900;">94.1 → BINTANG 5 (⭐⭐⭐⭐⭐)</span>
+        </div>
+      </div>
+
+      <!-- Simulasi 2 -->
+      <div class="sim-card" style="border-left: 3px solid #d97706;">
+        <div class="sim-header">
+          <span style="color: #92400e;">KASUS 2: ASESMEN TINGGI TETAPI MODUL SORE HARI</span>
+          <span class="badge badge-yellow">HASIL: BINTANG 4 (⭐⭐⭐⭐☆)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 6.6pt; color: #475569;">
+          <span>• Jam Modul: <strong>16.30 WIB</strong> (Poin: 70)</span>
+          <span>• LKPD: <strong>80</strong> (Cukup Lengkap)</span>
+          <span>• Asesmen CBT: <strong>86</strong></span>
+          <span>• Geotag: <strong>Valid Belitang</strong> (100)</span>
+        </div>
+        <div style="color: #92400e; font-weight: bold; font-size: 6.7pt; margin-top: 1px;">
+          Perhitungan: NA = (0.20 × 70) + (0.30 × 80) + (0.35 × 86) + (0.15 × 100) = 14 + 24 + 30.1 + 15 = <span style="color: #b45309; font-weight: 900;">83.1 → BINTANG 4 (⭐⭐⭐⭐☆)</span>
+        </div>
+      </div>
+
+      <!-- Simulasi 3 -->
+      <div class="sim-card" style="border-left: 3px solid #dc2626;">
+        <div class="sim-header">
+          <span style="color: #991b1b;">KASUS 3: TANPA GOOGLE TAGGING (PINALTI FOTO GALERI)</span>
+          <span class="badge badge-red">HASIL: PINALTI BINTANG 1 (⭐☆☆☆☆)</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 6.6pt; color: #475569;">
+          <span>• Jam Modul: <strong>08.30 WIB</strong> (Poin: 100)</span>
+          <span>• LKPD: <strong>85</strong></span>
+          <span>• Asesmen CBT: <strong>80</strong></span>
+          <span>• Geotag: <strong>Foto Galeri / Tanpa GPS</strong> (Pinalti: 30)</span>
+        </div>
+        <div style="color: #991b1b; font-weight: bold; font-size: 6.7pt; margin-top: 1px;">
+          Perhitungan: NA = (0.20 × 100) + (0.30 × 85) + (0.35 × 80) + (0.15 × 30) = 20 + 25.5 + 28 + 4.5 = 78.0 → <span style="color: #b91c1c; font-weight: 900;">Pinalti Geotag Maksimal: BINTANG 1 (⭐☆☆☆☆)</span>
+        </div>
       </div>
 
     </div>
@@ -547,7 +619,7 @@
     <!-- Clean Footer Halaman 2 -->
     <div class="footer-sheet">
       <span>FINCESTEM 2026 • Panduan &amp; Kriteria Penilaian Kokurikuler</span>
-      <span>Halaman 2: Standar Ambang Batas Predikat Rapor &amp; Rubrik 4 Pilar</span>
+      <span>Halaman 2: Standar Ambang Batas Predikat Rapor, Rubrik 4 Pilar &amp; Simulasi Siswa</span>
       <span>Hal 2 / 2</span>
     </div>
   </div>
