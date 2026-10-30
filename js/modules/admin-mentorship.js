@@ -90,19 +90,23 @@
       let optHtml = '<option value="">-- Pilih Guru Fasilitator / Koordinator --</option>';
 
       // Urutkan: Guru yang sudah ada binaan di atas, lalu abjad
-      const map = window.FincestemMentorship.getAssignmentsMap();
       const sortedTeachers = [...teachers].sort((a, b) => {
         const kA = String(a.username || a.nip || a.kode_guru).toLowerCase();
         const kB = String(b.username || b.nip || b.kode_guru).toLowerCase();
-        const countA = (map[kA] && map[kA].student_nisns) ? map[kA].student_nisns.length : 0;
-        const countB = (map[kB] && map[kB].student_nisns) ? map[kB].student_nisns.length : 0;
+        const countA = window.FincestemMentorship.getAssignedNisnsForTeacher(kA).length;
+        const countB = window.FincestemMentorship.getAssignedNisnsForTeacher(kB).length;
         if (countA !== countB) return countB - countA; // yang terbanyak di atas
         return (a.nama_guru || '').localeCompare(b.nama_guru || '');
       });
 
+      const seenOptionNames = new Set();
       sortedTeachers.forEach(t => {
+        const normName = String(t.nama_guru || '').replace(/\s+/g, ' ').trim().toUpperCase();
+        if (!normName || seenOptionNames.has(normName)) return;
+        seenOptionNames.add(normName);
+
         const k = String(t.username || t.nip || t.kode_guru).toLowerCase();
-        const count = (map[k] && map[k].student_nisns) ? map[k].student_nisns.length : 0;
+        const count = window.FincestemMentorship.getAssignedNisnsForTeacher(k).length;
         const role = window.FincestemMentorship.getTeacherRole(k);
         const roleBadge = role === 'FIELD_TRIP' ? '🚌 FT' : (role === 'KOORDINATOR' ? '🎯 Koord' : '🏫 Non-FT');
         const countText = count > 0 ? `(${count} Siswa)` : '(0 Siswa)';
@@ -192,7 +196,7 @@
               </div>
               <div class="flex items-center gap-3 text-xs text-slate-500 font-medium mt-0.5 flex-wrap">
                 <span>NIP: <strong>${escapeHtml(tObj.nip || '-')}</strong></span>
-                <span>Kode: <strong>${escapeHtml(tObj.kode_guru || '-')}</strong></span>
+                <span>Kode: <strong>${escapeHtml(tObj.kode_guru_display || tObj.kode_guru || '-')}</strong></span>
                 <span>Mapel: <strong>${escapeHtml(tObj.mata_pelajaran || '-')}</strong></span>
                 <span>User: <strong class="text-slate-700">${escapeHtml(tObj.username || '-')}</strong></span>
               </div>
@@ -272,7 +276,7 @@
     if (!selectedTeacherKey || !window.FincestemMentorship) return;
     window.FincestemMentorship.setTeacherRole(selectedTeacherKey, role);
     renderMentorshipStats();
-    renderSelectedTeacherDetail();
+    renderPlottingView();
   };
 
   window.removeStudentFromMentorAction = function(nisn) {
@@ -280,7 +284,7 @@
     if (confirm(`Lepaskan siswa dengan NISN ${nisn} dari tanggung jawab guru ini?`)) {
       window.FincestemMentorship.removeStudentFromTeacher(selectedTeacherKey, nisn);
       renderMentorshipStats();
-      renderSelectedTeacherDetail();
+      renderPlottingView();
     }
   };
 
@@ -289,7 +293,7 @@
     if (confirm('Kosongkan semua daftar siswa binaan dari guru ini?')) {
       window.FincestemMentorship.clearTeacherAssignments(selectedTeacherKey);
       renderMentorshipStats();
-      renderSelectedTeacherDetail();
+      renderPlottingView();
     }
   };
 
@@ -608,7 +612,7 @@
     filtered.forEach((t, idx) => {
       const k = String(t.username || t.nip || t.kode_guru).toLowerCase();
       const role = window.FincestemMentorship.getTeacherRole(k);
-      const studentCount = (map[k] && map[k].student_nisns) ? map[k].student_nisns.length : 0;
+      const studentCount = window.FincestemMentorship.getAssignedNisnsForTeacher(k).length;
       const isCustom = !!t.is_custom;
 
       let roleBadge = '';

@@ -15,43 +15,138 @@
   const STORAGE_KEY_ASSIGNMENTS = 'fincestem_mentorship_assignments';
   const STORAGE_KEY_TEACHER_ROLES = 'fincestem_mentorship_teacher_roles';
   const STORAGE_KEY_CUSTOM_TEACHERS = 'fincestem_custom_teachers';
+  const STORAGE_KEY_MENTOR_CUSTOM_TEACHERS = 'fincestem_mentorship_custom_teachers';
+
+  function normalizeTeacherName(name) {
+    return String(name || '').replace(/\s+/g, ' ').trim().toUpperCase();
+  }
 
   const MentorshipModule = {
 
     /**
      * ==========================================
-     * 1. DATA GURU (MASTER 116 + CUSTOM TAMBAHAN)
+     * 1. DATA GURU (MASTER UNIK 86 GURU + CUSTOM TAMBAHAN)
      * ==========================================
      */
     getTeachers: function() {
-      // 1. Ambil 116 Guru Master Bawaan SMAN 1 Belitang
+      // 1. Ambil Guru Master Bawaan SMAN 1 Belitang (116 baris penugasan -> 86 guru unik)
       let masterList = Array.isArray(window.FincestemMasterTeachers) ? window.FincestemMasterTeachers : [];
       
       // 2. Ambil Guru Tambahan Manual dari LocalStorage
       let customList = [];
       try {
-        const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_TEACHERS);
-        if (raw) {
-          const parsed = JSON.parse(raw);
-          if (Array.isArray(parsed)) customList = parsed;
+        const rawMentorCustom = localStorage.getItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS);
+        if (rawMentorCustom) {
+          const parsed = JSON.parse(rawMentorCustom);
+          if (Array.isArray(parsed)) customList = customList.concat(parsed);
+        }
+        const rawLegacyCustom = localStorage.getItem(STORAGE_KEY_CUSTOM_TEACHERS);
+        if (rawLegacyCustom) {
+          const parsedLegacy = JSON.parse(rawLegacyCustom);
+          if (Array.isArray(parsedLegacy)) customList = customList.concat(parsedLegacy);
         }
       } catch (e) {
         console.warn('Gagal membaca custom teachers:', e);
       }
 
-      // Gabungkan master + custom (hindari duplikasi berdasarkan kode/username)
-      const combined = [...masterList];
-      customList.forEach(ct => {
-        const exists = combined.some(t => 
-          String(t.kode_guru).toUpperCase() === String(ct.kode_guru).toUpperCase() ||
-          String(t.username).toLowerCase() === String(ct.username).toLowerCase()
-        );
-        if (!exists) {
-          combined.push(ct);
+      const rawAll = [...masterList, ...customList];
+      const uniqueTeachers = [];
+      const indexByName = new Map();
+      const indexByUser = new Map();
+      const indexByNip = new Map();
+
+      rawAll.forEach(item => {
+        if (!item || !item.nama_guru) return;
+        const normName = normalizeTeacherName(item.nama_guru);
+        const normUser = String(item.username || '').trim().toLowerCase();
+        const normNip = (item.nip && String(item.nip).trim() !== '-') ? String(item.nip).trim().toLowerCase() : '';
+        const normKode = String(item.kode_guru || '').trim();
+
+        let existingIdx = -1;
+        if (normName && indexByName.has(normName)) {
+          existingIdx = indexByName.get(normName);
+        } else if (normUser && indexByUser.has(normUser)) {
+          existingIdx = indexByUser.get(normUser);
+        } else if (normNip && indexByNip.has(normNip)) {
+          existingIdx = indexByNip.get(normNip);
+        }
+
+        if (existingIdx === -1) {
+          const cloned = Object.assign({}, item, {
+            no: uniqueTeachers.length + 1,
+            kode_guru_list: normKode ? [normKode] : [],
+            kode_guru_display: normKode || '-',
+            mapel_list: (item.mata_pelajaran && item.mata_pelajaran !== '-') ? [String(item.mata_pelajaran).trim()] : [],
+            tugas_list: (item.tugas_tambahan && item.tugas_tambahan !== '-') ? [String(item.tugas_tambahan).trim()] : [],
+            aliases: []
+          });
+          if (normUser) cloned.aliases.push(normUser);
+          if (normNip && !cloned.aliases.includes(normNip)) cloned.aliases.push(normNip);
+          if (normKode && !cloned.aliases.includes(normKode.toLowerCase())) cloned.aliases.push(normKode.toLowerCase());
+
+          const newIdx = uniqueTeachers.length;
+          uniqueTeachers.push(cloned);
+          if (normName) indexByName.set(normName, newIdx);
+          if (normUser) indexByUser.set(normUser, newIdx);
+          if (normNip) indexByNip.set(normNip, newIdx);
+        } else {
+          // Gabungkan baris penugasan ganda (mapel / kode_guru / tugas_tambahan) ke 1 akun guru unik
+          const existing = uniqueTeachers[existingIdx];
+          if (normKode && !existing.kode_guru_list.includes(normKode)) {
+            existing.kode_guru_list.push(normKode);
+            existing.kode_guru_display = existing.kode_guru_list.join(', ');
+          }
+          const mapelStr = String(item.mata_pelajaran || '').trim();
+          if (mapelStr && mapelStr !== '-' && !existing.mapel_list.includes(mapelStr)) {
+            existing.mapel_list.push(mapelStr);
+            existing.mata_pelajaran = existing.mapel_list.join(', ');
+          }
+          const tugasStr = String(item.tugas_tambahan || '').trim();
+          if (tugasStr && tugasStr !== '-' && !existing.tugas_list.includes(tugasStr)) {
+            existing.tugas_list.push(tugasStr);
+            existing.tugas_tambahan = existing.tugas_list.join(' • ');
+          }
+          if ((!existing.nip || existing.nip === '-') && normNip) {
+            existing.nip = String(item.nip).trim();
+          }
+          if (normUser && !existing.aliases.includes(normUser)) {
+            existing.aliases.push(normUser);
+            indexByUser.set(normUser, existingIdx);
+          }
+          if (normNip && !existing.aliases.includes(normNip)) {
+            existing.aliases.push(normNip);
+            indexByNip.set(normNip, existingIdx);
+          }
+          if (normKode && !existing.aliases.includes(normKode.toLowerCase())) {
+            existing.aliases.push(normKode.toLowerCase());
+          }
         }
       });
 
-      return combined;
+      return uniqueTeachers;
+    },
+
+    findTeacherByIdentifier: function(identifier) {
+      if (!identifier) return null;
+      const cleanKey = String(identifier).trim().toLowerCase();
+      const normName = normalizeTeacherName(identifier);
+      const teachers = this.getTeachers();
+      return teachers.find(t =>
+        String(t.username || '').toLowerCase() === cleanKey ||
+        String(t.nip || '').toLowerCase() === cleanKey ||
+        String(t.kode_guru || '').toLowerCase() === cleanKey ||
+        (Array.isArray(t.aliases) && t.aliases.includes(cleanKey)) ||
+        normalizeTeacherName(t.nama_guru) === normName
+      ) || null;
+    },
+
+    resolveCanonicalKey: function(identifier) {
+      if (!identifier) return '';
+      const found = this.findTeacherByIdentifier(identifier);
+      if (found) {
+        return String(found.username || found.nip || found.kode_guru).trim().toLowerCase();
+      }
+      return String(identifier).trim().toLowerCase();
     },
 
     saveNewTeacher: function(teacherData) {
@@ -83,13 +178,13 @@
         created_at: new Date().toISOString()
       };
 
-      // Simpan ke storage custom teachers
+      // Simpan ke storage custom teachers mentorship
       try {
         let customList = [];
-        const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_TEACHERS);
+        const raw = localStorage.getItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS);
         if (raw) customList = JSON.parse(raw) || [];
         customList.push(newTeacher);
-        localStorage.setItem(STORAGE_KEY_CUSTOM_TEACHERS, JSON.stringify(customList));
+        localStorage.setItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS, JSON.stringify(customList));
 
         // Update runtime window.FincestemMasterTeachers agar langsung bisa login
         if (Array.isArray(window.FincestemMasterTeachers)) {
@@ -112,7 +207,7 @@
       const cleanId = String(identifier).trim().toLowerCase();
       try {
         let customList = [];
-        const raw = localStorage.getItem(STORAGE_KEY_CUSTOM_TEACHERS);
+        const raw = localStorage.getItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS);
         if (raw) customList = JSON.parse(raw) || [];
 
         const filtered = customList.filter(t => 
@@ -120,7 +215,7 @@
           String(t.kode_guru).trim().toLowerCase() !== cleanId
         );
 
-        localStorage.setItem(STORAGE_KEY_CUSTOM_TEACHERS, JSON.stringify(filtered));
+        localStorage.setItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS, JSON.stringify(filtered));
 
         // Hapus juga assignment binaannya
         this.clearTeacherAssignments(identifier);
@@ -140,36 +235,34 @@
     getTeacherRole: function(teacherIdentifier) {
       if (!teacherIdentifier) return 'NON_FIELD_TRIP';
       const cleanKey = String(teacherIdentifier).trim().toLowerCase();
+      const canonicalKey = this.resolveCanonicalKey(teacherIdentifier);
       try {
         const raw = localStorage.getItem(STORAGE_KEY_TEACHER_ROLES);
         if (raw) {
           const map = JSON.parse(raw);
+          if (map && map[canonicalKey]) return map[canonicalKey];
           if (map && map[cleanKey]) return map[cleanKey];
         }
       } catch (e) {}
 
       // Fallback deteksi dari tugas tambahan bawaan
-      const teachers = this.getTeachers();
-      const found = teachers.find(t => 
-        String(t.username).toLowerCase() === cleanKey ||
-        String(t.nip).toLowerCase() === cleanKey ||
-        String(t.kode_guru).toLowerCase() === cleanKey
-      );
+      const found = this.findTeacherByIdentifier(teacherIdentifier);
       if (found) {
         const tt = String(found.tugas_tambahan || '').toUpperCase();
-        if (tt.includes('KOORD')) return 'KOORDINATOR';
+        const mp = String(found.mata_pelajaran || '').toUpperCase();
+        if (tt.includes('KOORD') || mp.includes('KOORD')) return 'KOORDINATOR';
       }
       return 'NON_FIELD_TRIP';
     },
 
     setTeacherRole: function(teacherIdentifier, roleCategory) {
       if (!teacherIdentifier) return;
-      const cleanKey = String(teacherIdentifier).trim().toLowerCase();
+      const canonicalKey = this.resolveCanonicalKey(teacherIdentifier);
       try {
         let map = {};
         const raw = localStorage.getItem(STORAGE_KEY_TEACHER_ROLES);
         if (raw) map = JSON.parse(raw) || {};
-        map[cleanKey] = roleCategory;
+        map[canonicalKey] = roleCategory;
         localStorage.setItem(STORAGE_KEY_TEACHER_ROLES, JSON.stringify(map));
       } catch (e) {}
     },
@@ -203,12 +296,27 @@
     getAssignedNisnsForTeacher: function(teacherIdentifier) {
       if (!teacherIdentifier) return [];
       const cleanKey = String(teacherIdentifier).trim().toLowerCase();
+      const tObj = this.findTeacherByIdentifier(teacherIdentifier);
       const map = this.getAssignmentsMap();
-      const entry = map[cleanKey];
-      if (entry && Array.isArray(entry.student_nisns)) {
-        return entry.student_nisns;
+      const keysToCheck = new Set([cleanKey]);
+      if (tObj) {
+        const canon = String(tObj.username || tObj.nip || tObj.kode_guru).trim().toLowerCase();
+        if (canon) keysToCheck.add(canon);
+        if (Array.isArray(tObj.aliases)) {
+          tObj.aliases.forEach(a => keysToCheck.add(String(a).toLowerCase()));
+        }
       }
-      return [];
+      const nisnSet = new Set();
+      keysToCheck.forEach(k => {
+        const entry = map[k];
+        if (entry && Array.isArray(entry.student_nisns)) {
+          entry.student_nisns.forEach(n => {
+            const sN = String(n).trim();
+            if (sN) nisnSet.add(sN);
+          });
+        }
+      });
+      return Array.from(nisnSet);
     },
 
     getStudentsForTeacher: function(teacherIdentifier) {
@@ -226,16 +334,12 @@
 
     assignStudentsToTeacher: function(teacherIdentifier, nisnArray) {
       if (!teacherIdentifier || !Array.isArray(nisnArray)) return false;
-      const cleanKey = String(teacherIdentifier).trim().toLowerCase();
+      const tObj = this.findTeacherByIdentifier(teacherIdentifier);
+      const cleanKey = tObj
+        ? String(tObj.username || tObj.nip || tObj.kode_guru).trim().toLowerCase()
+        : String(teacherIdentifier).trim().toLowerCase();
       const map = this.getAssignmentsMap();
 
-      // Temukan info nama guru
-      const teachers = this.getTeachers();
-      const tObj = teachers.find(t => 
-        String(t.username).toLowerCase() === cleanKey ||
-        String(t.nip).toLowerCase() === cleanKey ||
-        String(t.kode_guru).toLowerCase() === cleanKey
-      );
       const teacherName = tObj ? tObj.nama_guru : cleanKey;
       const teacherRole = this.getTeacherRole(cleanKey);
 
@@ -248,17 +352,22 @@
         };
       }
 
-      // Gabungkan NISN baru (set unik)
-      const existingSet = new Set(map[cleanKey].student_nisns);
+      // Gabungkan NISN baru (set unik) termasuk yang sebelumnya ada di alias guru ini
+      const existingSet = new Set(this.getAssignedNisnsForTeacher(cleanKey));
       nisnArray.forEach(n => {
         const sN = String(n).trim();
         if (sN) existingSet.add(sN);
       });
 
-      // Lepas NISN ini dari guru lain jika ada (1 siswa 1 guru pembina utama)
+      // Lepas NISN ini dari guru lain (dan bersihkan key alias duplikat dari guru yang sama)
+      const aliasSet = new Set(tObj && Array.isArray(tObj.aliases) ? tObj.aliases : []);
       Object.keys(map).forEach(otherKey => {
-        if (otherKey !== cleanKey && Array.isArray(map[otherKey].student_nisns)) {
-          map[otherKey].student_nisns = map[otherKey].student_nisns.filter(n => !existingSet.has(String(n).trim()));
+        if (otherKey !== cleanKey) {
+          if (aliasSet.has(otherKey.toLowerCase())) {
+            delete map[otherKey];
+          } else if (Array.isArray(map[otherKey].student_nisns)) {
+            map[otherKey].student_nisns = map[otherKey].student_nisns.filter(n => !existingSet.has(String(n).trim()));
+          }
         }
       });
 
@@ -270,27 +379,48 @@
 
     removeStudentFromTeacher: function(teacherIdentifier, nisn) {
       if (!teacherIdentifier || !nisn) return false;
-      const cleanKey = String(teacherIdentifier).trim().toLowerCase();
+      const tObj = this.findTeacherByIdentifier(teacherIdentifier);
+      const cleanKey = tObj
+        ? String(tObj.username || tObj.nip || tObj.kode_guru).trim().toLowerCase()
+        : String(teacherIdentifier).trim().toLowerCase();
       const cleanNisn = String(nisn).trim();
       const map = this.getAssignmentsMap();
-
-      if (map[cleanKey] && Array.isArray(map[cleanKey].student_nisns)) {
-        map[cleanKey].student_nisns = map[cleanKey].student_nisns.filter(n => String(n).trim() !== cleanNisn);
-        map[cleanKey].updated_at = new Date().toISOString();
-        return this.saveAssignmentsMap(map);
+      const keysToCheck = new Set([cleanKey, String(teacherIdentifier).trim().toLowerCase()]);
+      if (tObj && Array.isArray(tObj.aliases)) {
+        tObj.aliases.forEach(a => keysToCheck.add(String(a).toLowerCase()));
       }
-      return false;
+
+      let changed = false;
+      keysToCheck.forEach(k => {
+        if (map[k] && Array.isArray(map[k].student_nisns)) {
+          map[k].student_nisns = map[k].student_nisns.filter(n => String(n).trim() !== cleanNisn);
+          map[k].updated_at = new Date().toISOString();
+          changed = true;
+        }
+      });
+      return changed ? this.saveAssignmentsMap(map) : false;
     },
 
     clearTeacherAssignments: function(teacherIdentifier) {
       if (!teacherIdentifier) return false;
-      const cleanKey = String(teacherIdentifier).trim().toLowerCase();
+      const tObj = this.findTeacherByIdentifier(teacherIdentifier);
+      const cleanKey = tObj
+        ? String(tObj.username || tObj.nip || tObj.kode_guru).trim().toLowerCase()
+        : String(teacherIdentifier).trim().toLowerCase();
       const map = this.getAssignmentsMap();
-      if (map[cleanKey]) {
-        delete map[cleanKey];
-        return this.saveAssignmentsMap(map);
+      const keysToCheck = new Set([cleanKey, String(teacherIdentifier).trim().toLowerCase()]);
+      if (tObj && Array.isArray(tObj.aliases)) {
+        tObj.aliases.forEach(a => keysToCheck.add(String(a).toLowerCase()));
       }
-      return false;
+
+      let changed = false;
+      keysToCheck.forEach(k => {
+        if (map[k]) {
+          delete map[k];
+          changed = true;
+        }
+      });
+      return changed ? this.saveAssignmentsMap(map) : false;
     },
 
     getTeacherForStudent: function(nisn) {

@@ -3026,8 +3026,8 @@
   <script src="../js/core.js?v=20261030_reset_fix_v1"></script>
   <script src="../js/data/bank-soal-nonfieldtrip.js?v=20261029_nft_bs2"></script>
   <script src="../js/modules/admin-banksoal.js?v=20261029_nft_bs2"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261029_v2"></script>
-  <script src="../js/modules/admin-mentorship.js?v=20261029_v2"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261030_dedup_v1"></script>
+  <script src="../js/modules/admin-mentorship.js?v=20261030_dedup_v1"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
   <script>
     let adminCurrentGrade = 'ALL';
@@ -6476,24 +6476,17 @@
       // 1. Populate Guru Koordinator Dropdown (Deduplikasi 86 Guru Unik)
       const select = document.getElementById('adminCoordSelectTeacher');
       if (select) {
-        const teachers = window.FincestemMasterTeachers || [];
-        const seen = new Set();
-        const uniqueTeachers = [];
-        teachers.forEach(t => {
-          const key = String(t.username || t.nip || t.nama_guru).trim().toLowerCase();
-          if (!seen.has(key)) {
-            seen.add(key);
-            uniqueTeachers.push(t);
-          }
-        });
+        const uniqueTeachers = (window.FincestemMentorship && typeof window.FincestemMentorship.getTeachers === 'function')
+          ? window.FincestemMentorship.getTeachers().slice()
+          : (window.FincestemMasterTeachers || []).slice();
 
         // Urutkan yang Koordinator Projek lebih dulu
         uniqueTeachers.sort((a, b) => {
-          const aKoord = (a.tugas_tambahan || '').toUpperCase().includes('KOORDINATOR');
-          const bKoord = (b.tugas_tambahan || '').toUpperCase().includes('KOORDINATOR');
+          const aKoord = (a.tugas_tambahan || '').toUpperCase().includes('KOORD') || (a.mata_pelajaran || '').toUpperCase().includes('KOORD');
+          const bKoord = (b.tugas_tambahan || '').toUpperCase().includes('KOORD') || (b.mata_pelajaran || '').toUpperCase().includes('KOORD');
           if (aKoord && !bKoord) return -1;
           if (!aKoord && bKoord) return 1;
-          return a.nama_guru.localeCompare(b.nama_guru);
+          return (a.nama_guru || '').localeCompare(b.nama_guru || '');
         });
 
         const curVal = select.value;
@@ -6501,8 +6494,8 @@
         uniqueTeachers.forEach(t => {
           const opt = document.createElement('option');
           opt.value = t.username || t.nip || t.kode_guru;
-          const isKoord = (t.tugas_tambahan || '').toUpperCase().includes('KOORDINATOR');
-          opt.textContent = `${isKoord ? '⭐ ' : ''}${t.nama_guru} (${t.kode_guru}) - ${t.mata_pelajaran}`;
+          const isKoord = (t.tugas_tambahan || '').toUpperCase().includes('KOORD') || (t.mata_pelajaran || '').toUpperCase().includes('KOORD');
+          opt.textContent = `${isKoord ? '⭐ ' : ''}${t.nama_guru} (${t.kode_guru_display || t.kode_guru}) - ${t.mata_pelajaran}`;
           opt.setAttribute('data-name', t.nama_guru);
           opt.setAttribute('data-nip', t.nip);
           opt.setAttribute('data-kode', t.kode_guru);
@@ -6876,23 +6869,16 @@
       // 2. Populate Teacher Dropdown (86 Guru Unik)
       const selTeacher = document.getElementById('adminFasilSelectTeacher');
       if (selTeacher && selTeacher.children.length <= 1) {
-        const teachers = window.FincestemMasterTeachers || [];
-        const seen = new Set();
-        const uniqueTeachers = [];
-        teachers.forEach(t => {
-          const key = String(t.username || t.nip || t.nama_guru).trim().toLowerCase();
-          if (!seen.has(key)) {
-            seen.add(key);
-            uniqueTeachers.push(t);
-          }
-        });
-        uniqueTeachers.sort((a, b) => a.nama_guru.localeCompare(b.nama_guru));
+        const uniqueTeachers = (window.FincestemMentorship && typeof window.FincestemMentorship.getTeachers === 'function')
+          ? window.FincestemMentorship.getTeachers().slice()
+          : (window.FincestemMasterTeachers || []).slice();
+        uniqueTeachers.sort((a, b) => (a.nama_guru || '').localeCompare(b.nama_guru || ''));
 
         selTeacher.innerHTML = '<option value="">-- Pilih Guru Pengajar --</option>';
         uniqueTeachers.forEach(t => {
           const opt = document.createElement('option');
           opt.value = t.username || t.nip || t.kode_guru;
-          opt.textContent = `${t.nama_guru} (${t.kode_guru}) - ${t.mata_pelajaran}`;
+          opt.textContent = `${t.nama_guru} (${t.kode_guru_display || t.kode_guru}) - ${t.mata_pelajaran}`;
           opt.setAttribute('data-name', t.nama_guru);
           opt.setAttribute('data-nip', t.nip);
           opt.setAttribute('data-kode', t.kode_guru);
