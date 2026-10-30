@@ -182,8 +182,12 @@ console.log('=== TEST 1: Admin Reset Day 2 Bagian Asesmen (First-Time Reset & Pa
           'submitExam immediately clears #examViolationModalContainer and blackout so Score Page is visible'
         );
         assert(
-          asesmenCode.includes('if (answeredCount > 0 && (isForce || correctCount === 0))'),
-          'Force Submit calculates non-zero score proportional to answeredCount when student has completed questions'
+          !asesmenCode.includes('if (answeredCount > 0 && (isForce || correctCount === 0))'),
+          'Grading strictly compares studentChoice === q.correctKey (random wrong answers are NEVER forced to be correct!)'
+        );
+        assert(
+          asesmenCode.includes("String(studentChoice).trim().toUpperCase() === String(q.correctKey || '').trim().toUpperCase()"),
+          'Grading accurately checks shuffled correctKey for each question'
         );
         assert(
           asesmenCode.includes('if ((parseInt(d.violationCount) || 0) >= 3 || d.isFinished)'),

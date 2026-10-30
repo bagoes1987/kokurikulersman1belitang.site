@@ -89,7 +89,8 @@
   }
 
   /**
-   * Bangun Paket 50 Soal dari Bank 200 (10 Soal x 5 Indikator, Seimbang Rata C1-C4)
+   * Bangun Paket 50 Soal dari Bank 200 (10 Soal x 5 Indikator, Seimbang Rata)
+   * Soal dan urutan pilihan ganda (A, B, C, D, E) diacak setiap sesi baru atau setelah reset!
    */
   function generateStudentPackage(dayNum, cleanNisn) {
     const storageKey = `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`;
@@ -98,14 +99,20 @@
       localStorage.removeItem(`fincestem_pkg_nft_asesmen_d${dayNum}_${cleanNisn}`);
       const savedPkg = localStorage.getItem(storageKey);
       if (savedPkg) {
-        return JSON.parse(savedPkg);
+        const parsedPkg = JSON.parse(savedPkg);
+        if (Array.isArray(parsedPkg) && parsedPkg.length === 50) {
+          return parsedPkg;
+        }
       }
     } catch(e) {}
 
     const allBank = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(dayNum)) || [];
     if (!allBank.length) return [];
 
-    const rng = getSeededRandom(`fincestem_nft_day_${dayNum}_nisn_${cleanNisn}`);
+    // Gunakan kombinasi NISN + timestamp + random salt agar setiap kali ujian dimulai ulang / direset,
+    // 50 butir soal dan posisi opsi (A-E) teracak baru!
+    const sessionSalt = `${Date.now()}_${Math.random().toString(36).slice(2)}`;
+    const rng = getSeededRandom(`fincestem_nft_day_${dayNum}_nisn_${cleanNisn}_salt_${sessionSalt}`);
 
     // Kelompokkan 40 soal per indikator (A, B, C, D, E)
     const grouped = { 'A': [], 'B': [], 'C': [], 'D': [], 'E': [] };
@@ -245,7 +252,10 @@
       return;
     }
 
-    // Ambil atau bangkitkan paket 50 soal
+    // Ambil draft pengerjaan yang sedang berjalan terlebih dahulu (dan bersihkan jika baru direset)
+    loadDraftProgress();
+
+    // Ambil atau bangkitkan paket 50 soal (jika belum ada paket di localStorage atau baru direset, bangkitkan acak baru!)
     examState.pkg = generateStudentPackage(dayNum, examState.cleanNisn);
     if (!examState.pkg || !examState.pkg.length) {
       alert('Bank soal Day ' + dayNum + ' belum tersedia di sistem.');
@@ -255,9 +265,6 @@
 
     // Rekam baseline ukuran layar fisik perangkat
     recordHardwareScreenBaseline();
-
-    // Cek draft pengerjaan yang sedang berjalan
-    loadDraftProgress();
 
     // Render layar selamat datang / mulai ujian atau lanjut mengerjakan
     if (examState.isExamActive && !examState.isExamFinished) {
@@ -2227,7 +2234,7 @@
       }
     } catch(eDraft) {}
 
-    // Hitung soal yang sudah diselesaikan (dijawab) dan jawaban benar
+    // Hitung soal yang sudah diselesaikan (dijawab) dan jawaban benar secara MURNI berdasarkan Kunci Jawaban
     let answeredCount = 0;
     let correctCount = 0;
     const totalQuestions = (examState.pkg && examState.pkg.length) ? examState.pkg.length : 50;
@@ -2241,14 +2248,6 @@
         }
       }
     });
-
-    // Jika siswa sudah menyelesaikan minimal 1 soal tetapi terkena Pengiriman Paksa (atau jawaban belum tepat),
-    // pastikan nilai dihitung dari jumlah soal yang sudah diselesaikan agar tidak menjadi 0!
-    if (answeredCount > 0 && (isForce || correctCount === 0)) {
-      if (correctCount < answeredCount) {
-        correctCount = answeredCount;
-      }
-    }
 
     const wrongCount = Math.max(0, answeredCount - correctCount);
     const score = Math.round((correctCount / totalQuestions) * 100);
