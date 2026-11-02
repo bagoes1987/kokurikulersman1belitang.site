@@ -2199,20 +2199,51 @@
       // Deteksi kategori siswa: Field Trip vs Non-Field Trip (100% mengikuti pengaturan Admin)
       const isFieldTrip = isStudentFieldTripFasil(nisn);
 
-      // Nilai otomatis awal berdasarkan kalkulasi jam kirim
-      const autoScore = (FincestemCore.fieldTripRules && FincestemCore.fieldTripRules.calculateFieldTripScore)
-        ? FincestemCore.fieldTripRules.calculateFieldTripScore(dayNum, null, nisn)
-        : { score: 95, stars: 5, predicate: 'Sangat Baik' };
-      const autoFb = (FincestemCore.feedback && FincestemCore.feedback.generateThemedFeedback)
-        ? FincestemCore.feedback.generateThemedFeedback(dayNum, autoScore.stars || 5, isFieldTrip, autoScore.score || 95)
-        : 'Kerja sama tim dan analisis data lapangan sangat memuaskan.';
+      // Cari tahu apakah siswa ini BENAR-BENAR sudah mengerjakan Day 0 (Simulasi)
+      let hasStudentD0Work = false;
+      let storedD0Lkpd = null;
+      let storedD0Asesmen = null;
+      let storedD0Refl = null;
 
-      let fin = autoScore.score || 95;
-      let cul = autoScore.score || 95;
-      let exp = autoScore.score || 95;
-      let stem = autoScore.score || 95;
+      if (dayNum === 0) {
+        const candidateIds = [nisn, String(nisn).replace(/^0+/, ''), String(nisn).padStart(10, '0')];
+        const allStu = window.FincestemMasterStudents || [];
+        const stuObj = allStu.find(s => String(s.nisn).trim() === String(nisn).trim() || String(s.nis).trim() === String(nisn).trim());
+        if (stuObj) {
+          if (stuObj.nis) candidateIds.push(stuObj.nis);
+          if (stuObj.username) candidateIds.push(stuObj.username);
+        }
+
+        for (const cid of candidateIds) {
+          if (!storedD0Lkpd) storedD0Lkpd = localStorage.getItem('fincestem_lkpd_nft_day0_' + cid) || localStorage.getItem('fincestem_lkpd_day0_' + cid);
+          if (!storedD0Asesmen) storedD0Asesmen = localStorage.getItem('fincestem_asesmen_nft_day0_' + cid) || localStorage.getItem('fincestem_asesmen_day0_' + cid);
+          if (!storedD0Refl) storedD0Refl = localStorage.getItem('fincestem_refleksi_nft_day0_' + cid) || localStorage.getItem('fincestem_refl_nft_day0_' + cid) || localStorage.getItem('fincestem_refleksi_day0_' + cid);
+        }
+
+        if (storedD0Lkpd || storedD0Asesmen || storedD0Refl) {
+          hasStudentD0Work = true;
+        }
+      }
+
+      // Nilai otomatis awal: untuk Day 0 yang belum dikerjakan, HARUS KOSONG (0 / -)
+      const autoScore = (dayNum === 0 && !hasStudentD0Work)
+        ? { score: 0, stars: 0, predicate: 'Belum Ada', reason: 'Belum ada pengerjaan simulasi' }
+        : ((FincestemCore.fieldTripRules && FincestemCore.fieldTripRules.calculateFieldTripScore)
+            ? FincestemCore.fieldTripRules.calculateFieldTripScore(dayNum, null, nisn)
+            : { score: 95, stars: 5, predicate: 'Sangat Baik' });
+
+      const autoFb = (dayNum === 0 && !hasStudentD0Work)
+        ? ''
+        : ((FincestemCore.feedback && FincestemCore.feedback.generateThemedFeedback)
+            ? FincestemCore.feedback.generateThemedFeedback(dayNum, autoScore.stars || 5, isFieldTrip, autoScore.score || 95)
+            : 'Kerja sama tim dan analisis data lapangan sangat memuaskan.');
+
+      let fin = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
+      let cul = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
+      let exp = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
+      let stem = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
       let fb = autoFb;
-      let st = 'completed';
+      let st = (dayNum === 0 && !hasStudentD0Work) ? 'belum_mulai' : 'completed';
 
       // Update Banner Panduan Matriks Keseimbangan 4 Pilar & Kartu Fokus
       const titleEl = document.getElementById('modalPillarFocusTitle');
@@ -2284,21 +2315,32 @@
             } catch(e) {}
           }
 
-          let currentScore = autoScore.score || 95;
-          let currentStars = autoScore.stars || 5;
-          let currentPred = 'Mahir';
+          if (dayNum === 0) {
+            if (prog && prog.records && prog.records.some(r => parseInt(r.day_number) === 0)) {
+              hasStudentD0Work = true;
+            }
+            if (prog && prog.task_map && (prog.task_map['0_lkpd'] || prog.task_map['0_asesmen'] || prog.task_map['0_refleksi'] || prog.task_map['0_feedback'])) {
+              hasStudentD0Work = true;
+            }
+          }
+
+          let currentScore = (dayNum === 0 && !hasStudentD0Work) ? '-' : (autoScore.score || 95);
+          let currentStars = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.stars || 5);
+          let currentPred = (dayNum === 0 && !hasStudentD0Work) ? 'Belum Ada' : 'Mahir';
           const pRaw = autoScore.predicate || '';
-          if (pRaw.toLowerCase().includes('mahir') || pRaw.toLowerCase().includes('sangat baik') || currentScore >= 85) currentPred = 'Mahir';
-          else if (pRaw.toLowerCase().includes('cakap') || pRaw.toLowerCase().includes('baik') || currentScore >= 70) currentPred = 'Cakap';
-          else currentPred = 'Berkembang';
-          let currentTime = autoScore.time_formatted || 'Tuntas Tepat Waktu';
-          let currentStatus = 'completed';
+          if (dayNum !== 0 || hasStudentD0Work) {
+            if (pRaw.toLowerCase().includes('mahir') || pRaw.toLowerCase().includes('sangat baik') || currentScore >= 85) currentPred = 'Mahir';
+            else if (pRaw.toLowerCase().includes('cakap') || pRaw.toLowerCase().includes('baik') || currentScore >= 70) currentPred = 'Cakap';
+            else currentPred = 'Berkembang';
+          }
+          let currentTime = (dayNum === 0 && !hasStudentD0Work) ? 'Belum Ada Pengumpulan' : (autoScore.time_formatted || 'Tuntas Tepat Waktu');
+          let currentStatus = (dayNum === 0 && !hasStudentD0Work) ? 'belum_mulai' : 'completed';
 
           if (prog && prog.records) {
             const r = prog.records.find(x => parseInt(x.day_number) === dayNum);
             if (r) {
-              if (r.score) currentScore = parseFloat(r.score);
-              if (r.stars) currentStars = parseInt(r.stars);
+              if (r.score !== undefined && r.score !== null) currentScore = parseFloat(r.score);
+              if (r.stars !== undefined && r.stars !== null) currentStars = parseInt(r.stars);
               if (r.predicate) {
                 const rpL = String(r.predicate).toLowerCase();
                 if (rpL.includes('mahir') || rpL.includes('sangat baik') || currentScore >= 85) currentPred = 'Mahir';
@@ -2322,6 +2364,16 @@
                   }
                 } catch(e) {}
               }
+            } else if (dayNum === 0 && hasStudentD0Work) {
+              // Siswa sudah mengerjakan kuis gladi bersih tapi belum dinilai manual oleh fasilitator
+              currentStatus = 'submitted';
+              st = 'submitted';
+              currentScore = 100;
+              currentStars = 5;
+              currentPred = 'Mahir';
+              fin = 100; cul = 100; exp = 100; stem = 100;
+              fb = 'Siswa telah menyelesaikan simulasi gladi bersih.';
+              currentTime = 'Selesai Gladi Bersih';
             }
           }
 
@@ -2336,25 +2388,26 @@
           if (elTime) elTime.textContent = `${currentTime} • ${autoScore.reason || 'Sesuai Batas Jam Kegiatan'}`;
           const elStatus = document.getElementById('heroAutoStatusBadge');
           if (elStatus) {
-            elStatus.textContent = currentStatus.toUpperCase();
+            elStatus.textContent = (currentStatus === 'belum_mulai' ? 'BELUM MULAI' : currentStatus.toUpperCase());
             if (currentStatus === 'completed') elStatus.className = 'px-3 py-1 rounded-xl text-[10.5px] font-black bg-emerald-400 text-emerald-950 border border-emerald-300 shadow-xs shrink-0 flex items-center gap-1';
             else if (currentStatus === 'revision') elStatus.className = 'px-3 py-1 rounded-xl text-[10.5px] font-black bg-rose-400 text-rose-950 border border-rose-300 shadow-xs shrink-0 flex items-center gap-1';
-            else elStatus.className = 'px-3 py-1 rounded-xl text-[10.5px] font-black bg-amber-400 text-amber-950 border border-amber-300 shadow-xs shrink-0 flex items-center gap-1';
+            else if (currentStatus === 'submitted') elStatus.className = 'px-3 py-1 rounded-xl text-[10.5px] font-black bg-amber-400 text-amber-950 border border-amber-300 shadow-xs shrink-0 flex items-center gap-1';
+            else elStatus.className = 'px-3 py-1 rounded-xl text-[10.5px] font-bold bg-slate-200 text-slate-700 border border-slate-300 shadow-xs shrink-0 flex items-center gap-1';
           }
 
           // Update 4 Pilar Card Stat Display
           const elFin = document.getElementById('valDisplayFin');
-          if (elFin) elFin.textContent = fin;
+          if (elFin) elFin.textContent = (dayNum === 0 && !hasStudentD0Work) ? '-' : fin;
           const elCul = document.getElementById('valDisplayCul');
-          if (elCul) elCul.textContent = cul;
+          if (elCul) elCul.textContent = (dayNum === 0 && !hasStudentD0Work) ? '-' : cul;
           const elExp = document.getElementById('valDisplayExp');
-          if (elExp) elExp.textContent = exp;
+          if (elExp) elExp.textContent = (dayNum === 0 && !hasStudentD0Work) ? '-' : exp;
           const elStem = document.getElementById('valDisplayStem');
-          if (elStem) elStem.textContent = stem;
+          if (elStem) elStem.textContent = (dayNum === 0 && !hasStudentD0Work) ? '-' : stem;
 
           // Update Feedback Text Display
           const elFb = document.getElementById('displayAutoFeedbackText');
-          if (elFb) elFb.textContent = `"${fb}"`;
+          if (elFb) elFb.textContent = fb ? `"${fb}"` : (dayNum === 0 && !hasStudentD0Work ? '"Belum ada pengumpulan tugas simulasi."' : '""');
 
           document.getElementById('gradeFinancial').value = fin;
           document.getElementById('gradeCulture').value = cul;
@@ -2364,7 +2417,11 @@
 
           // Set radio status
           const radio = document.querySelector(`input[name="evalStatusRadio"][value="${st}"]`);
-          if (radio) radio.checked = true;
+          if (radio) {
+            radio.checked = true;
+          } else {
+            document.querySelectorAll('input[name="evalStatusRadio"]').forEach(r => r.checked = false);
+          }
 
           // Pratinjau Pekerjaan Siswa (Non-Field Trip Day 1–7 & Field Trip Day 1–7)
           const lkpdPreviewEl = document.getElementById('modalGradingLkpdPreview');
@@ -2374,54 +2431,70 @@
 
             if (dayNum === 0) {
               // PREVIEW SIMULASI & GLADI BERSIH (DAY 0)
-              try {
-                const storedD0Lkpd = localStorage.getItem('fincestem_lkpd_nft_day0_' + nisn) || localStorage.getItem('fincestem_lkpd_day0_' + nisn);
-                const storedD0Asesmen = localStorage.getItem('fincestem_asesmen_nft_day0_' + nisn) || localStorage.getItem('fincestem_asesmen_day0_' + nisn);
-                const storedD0Refl = localStorage.getItem('fincestem_refleksi_nft_day0_' + nisn) || localStorage.getItem('fincestem_refl_nft_day0_' + nisn) || localStorage.getItem('fincestem_refleksi_day0_' + nisn);
-
-                let d0Score = 100;
-                if (storedD0Asesmen) {
-                  try {
-                    const pa = JSON.parse(storedD0Asesmen);
-                    if (pa && pa.score !== undefined) d0Score = parseFloat(pa.score);
-                  } catch(e) {}
-                }
-
+              if (!hasStudentD0Work) {
+                // JIKA SISWA BELUM PERNAH MENGERJAKAN DAY 0 -> TAMPILKAN KOSONG!
                 lkpdPreviewEl.innerHTML = `
-                  <div class="p-4 rounded-2xl bg-gradient-to-br from-amber-50 via-teal-50 to-emerald-50 border-2 border-amber-300 text-xs flex flex-col gap-3 shadow-xs">
-                    <div class="flex items-center justify-between border-b border-amber-200/80 pb-2 flex-wrap gap-2">
-                      <span class="font-extrabold text-amber-950 flex items-center gap-1.5 text-xs sm:text-sm">
-                        <span>🎮</span>
-                        <span>Lembar Kerja Simulasi &amp; Gladi Bersih (Day 0)</span>
-                      </span>
-                      <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-amber-400 text-amber-950 shadow-2xs">
-                        Uji Coba Latihan
-                      </span>
-                    </div>
-
-                    <p class="text-[11px] text-amber-900 leading-relaxed">
-                      Mode simulasi ini disiapkan agar fasilitator dapat mencoba alur penilaian sebelum kegiatan resmi dimulai: memeriksa pemahaman 4 pilar, memberikan poin/bintang, dan menulis catatan umpan balik yang langsung tampil di dasbor siswa.
-                    </p>
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-                      <div class="p-2.5 rounded-xl bg-white border border-amber-200 flex flex-col gap-1">
-                        <span class="font-bold text-slate-800 flex items-center gap-1">
-                          <span class="material-symbols-outlined text-xs text-amber-600">task_alt</span>
-                          <span>Status Pengerjaan Kuis Simulasi:</span>
-                        </span>
-                        <span class="font-extrabold text-emerald-700 text-xs">${storedD0Asesmen ? '✓ Kuis Terkirim (Skor: ' + d0Score + ')' : '• Siswa dalam Uji Coba Latihan'}</span>
-                      </div>
-                      <div class="p-2.5 rounded-xl bg-white border border-teal-200 flex flex-col gap-1">
-                        <span class="font-bold text-slate-800 flex items-center gap-1">
-                          <span class="material-symbols-outlined text-xs text-teal-600">rate_review</span>
-                          <span>Jurnal Refleksi Simulasi:</span>
-                        </span>
-                        <span class="font-semibold text-slate-700 text-xs truncate">${storedD0Refl ? (JSON.parse(storedD0Refl)?.catatan || 'Refleksi gladi bersih tersimpan') : 'Gladi Bersih Instrumen FINCESTEM'}</span>
-                      </div>
-                    </div>
+                  <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-center text-slate-500 text-xs flex flex-col items-center justify-center gap-2">
+                    <span class="material-symbols-outlined text-4xl text-slate-300">hourglass_empty</span>
+                    <span class="font-extrabold text-sm text-slate-700">Siswa Belum Mengerjakan Simulasi Day 0</span>
+                    <p class="text-slate-400 text-xs max-w-md">Belum ada pengumpulan lembar kerja, kuis gladi bersih, atau refleksi dari siswa ini. Riwayat pengerjaan simulasi hanya terisi bagi akun siswa yang sudah menyelesaikan uji coba.</p>
                   </div>
                 `;
-              } catch(e) {}
+              } else {
+                // HANYA JIKA SISWA SUDAH MENGERJAKAN UJI COBA (CONTOH: BAGAS, ARYA, RIFKI)
+                try {
+                  let d0Score = 100;
+                  if (storedD0Asesmen) {
+                    try {
+                      const pa = JSON.parse(storedD0Asesmen);
+                      if (pa && pa.score !== undefined) d0Score = parseFloat(pa.score);
+                    } catch(e) {}
+                  }
+
+                  let reflText = 'Refleksi gladi bersih telah diisi oleh siswa.';
+                  if (storedD0Refl) {
+                    try {
+                      const pr = JSON.parse(storedD0Refl);
+                      reflText = pr.catatan || pr.text || reflText;
+                    } catch(e) {}
+                  }
+
+                  lkpdPreviewEl.innerHTML = `
+                    <div class="p-4 rounded-2xl bg-gradient-to-br from-amber-50 via-teal-50 to-emerald-50 border-2 border-amber-300 text-xs flex flex-col gap-3 shadow-xs">
+                      <div class="flex items-center justify-between border-b border-amber-200/80 pb-2 flex-wrap gap-2">
+                        <span class="font-extrabold text-amber-950 flex items-center gap-1.5 text-xs sm:text-sm">
+                          <span>🎮</span>
+                          <span>Hasil Pengerjaan Simulasi Gladi Bersih (Day 0)</span>
+                        </span>
+                        <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-amber-400 text-amber-950 shadow-2xs">
+                          Sudah Mengerjakan
+                        </span>
+                      </div>
+
+                      <p class="text-[11px] text-amber-900 leading-relaxed">
+                        Siswa ini telah menyelesaikan rangkaian gladi bersih simulasi Day 0. Anda dapat memberikan penilaian dan catatan umpan balik di bawah.
+                      </p>
+
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                        <div class="p-2.5 rounded-xl bg-white border border-amber-200 flex flex-col gap-1">
+                          <span class="font-bold text-slate-800 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs text-amber-600">task_alt</span>
+                            <span>Kuis Asesmen Simulasi:</span>
+                          </span>
+                          <span class="font-extrabold text-emerald-700 text-xs">✓ Kuis Terkirim (Skor: ${d0Score}/100)</span>
+                        </div>
+                        <div class="p-2.5 rounded-xl bg-white border border-teal-200 flex flex-col gap-1">
+                          <span class="font-bold text-slate-800 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs text-teal-600">rate_review</span>
+                            <span>Jurnal Refleksi Siswa:</span>
+                          </span>
+                          <span class="font-medium text-slate-700 text-xs">${reflText}</span>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                } catch(e) {}
+              }
             } else if (dayNum >= 1 && dayNum <= 7) {
               try {
                 const storedNftLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + nisn);
