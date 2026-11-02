@@ -4612,6 +4612,65 @@
           : null;
         const isFTDay5Refl = isFTDay5 && Number(day.day_number) === 5;
         const isNFTDay1Refl = !isFieldTrip && Number(day.day_number) === 1;
+        const isNFTDay3Refl = !isFieldTrip && Number(day.day_number) === 3;
+
+        // Deteksi Sektor Khusus Non-Field Trip Day 3
+        let nftDay3Sector = 'pertanian';
+        if (isNFTDay3Refl) {
+          try {
+            const sId = (studentProgress && studentProgress.student_id) || (currentUser && (currentUser.nisn || currentUser.identifier)) || '';
+            const cleanId = String(sId).trim();
+            const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanId);
+            if (localSec && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(localSec)) {
+              nftDay3Sector = localSec;
+            } else {
+              const rawLkpd = localStorage.getItem('fincestem_lkpd_nft_day3_' + cleanId) || localStorage.getItem('fincestem_lkpd_day3_' + cleanId);
+              if (rawLkpd) {
+                const p = JSON.parse(rawLkpd);
+                if (p && p.sector && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(p.sector)) {
+                  nftDay3Sector = p.sector;
+                }
+              }
+            }
+          } catch(e) {}
+        }
+
+        const NFT_DAY3_REFLEKSI_CONFIG = {
+          pertanian: {
+            title: 'Jurnal Refleksi Day 3: Pertanian Padi Sawah',
+            heading: 'Refleksi Analisis STEM: Sektor Pertanian Padi Sawah & Tanaman Pangan',
+            badge: 'Sektor: Pertanian Padi Sawah',
+            icon: 'agriculture',
+            prompt: 'Setelah Anda melakukan observasi tanah aluvial sawah, mengaudit mesin alsintan (traktor/combine harvester), mewawancarai kendala operasional dan solusi praktis narasumber petani padi, serta menghitung modal dan estimasi laba usahatani hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Pelajaran atau nilai perjuangan apa yang paling membuka sudut pandang Anda mengenai kehidupan nyata petani padi di OKU Timur?<br><strong>2. Integrasi STEM:</strong> Bagaimana perpaduan Sains tanah/air, Teknologi mesin alsintan, Rekayasa praktis lapangan, dan Matematika finansial dapat membantu petani menekan biaya dan meningkatkan produktivitas usahataninya?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai hasil pengamatan sawah, temuan wawancara solusi cerdas petani padi, dan peran pendekatan STEM dalam memajukan pertanian pangan OKU Timur (minimal 25 kata)...'
+          },
+          perkebunan: {
+            title: 'Jurnal Refleksi Day 3: Perkebunan Karet & Sawit',
+            heading: 'Refleksi Analisis STEM: Sektor Perkebunan Karet & Kelapa Sawit',
+            badge: 'Sektor: Perkebunan Karet & Kelapa Sawit',
+            icon: 'forest',
+            prompt: 'Setelah Anda mengamati kondisi pohon, mengaudit peralatan sadap/panen (pisau sadap, dodos/egrek), mewawancarai kendala pembekuan getah lateks/kualitas TBS sawit serta solusi kreatif praktisi kebun, dan menghitung kalkulasi finansial hasil panen hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Nilai ketekunan dan kerja keras apa yang Anda teladani dari petani perkebunan karet/sawit yang Anda temui?<br><strong>2. Integrasi STEM:</strong> Bagaimana integrasi 4 Pilar STEM dapat membantu petani kebun menghadapi kendala musim hujan, menjaga mutu lateks/sawit, dan memaksimalkan pendapatan keluarga mereka?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai observasi kebun, wawancara teknik praktisi menghadapi kendala sadap/panen, dan bagaimana STEM meningkatkan efisiensi kebun rakyat OKU Timur (minimal 25 kata)...'
+          },
+          perikanan: {
+            title: 'Jurnal Refleksi Day 3: Budidaya Perikanan Patin & Lele',
+            heading: 'Refleksi Analisis STEM: Sektor Budidaya Perikanan Patin & Lele',
+            badge: 'Sektor: Budidaya Perikanan Patin & Lele',
+            icon: 'phishing',
+            prompt: 'Setelah Anda memeriksa parameter kualitas air kolam (kadar oksigen DO/warna air), mengaudit pompa air/kincir aerasi, mewawancarai trik pembudidaya mengatasi nafsu makan ikan dan penyakit, serta menghitung rasio FCR pakan dan margin laba panen hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Pemahaman baru apa yang Anda dapatkan tentang ketelitian sains kualitas air dan manajemen kolam dalam budidaya patin/lele di OKU Timur?<br><strong>2. Integrasi STEM:</strong> Bagaimana penerapan teknologi aerasi dan rekayasa formulasi pakan alternatif berbasis STEM dapat membantu pembudidaya menekan beban biaya pelet komersial?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai pengamatan kolam ikan, solusi kreatif pembudidaya menghadapi kendala air/pakan pelet, serta kalkulasi FCR dan efisiensi finansial (minimal 25 kata)...'
+          },
+          peternakan: {
+            title: 'Jurnal Refleksi Day 3: Peternakan Sapi & Unggas',
+            heading: 'Refleksi Analisis STEM: Sektor Peternakan Sapi Potong & Unggas',
+            badge: 'Sektor: Peternakan Sapi Potong & Unggas',
+            icon: 'pets',
+            prompt: 'Setelah Anda mengamati kondisi kesehatan ternak, mengidentifikasi mesin chopper atau instalasi kandang/silase, mewawancarai solusi peternak menangani bau kandang atau ketersediaan pakan hijauan, serta menghitung biaya pakan dan pertambahan bobot hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Sikap tanggung jawab dan ketekunan apa yang Anda pelajari dari peternak lokal dalam merawat ternak dan menjaga kebersihan kandang?<br><strong>2. Integrasi STEM:</strong> Bagaimana integrasi mesin chopper, teknologi fermentasi pakan jerami lokal, dan kalkulasi matematika nutrisi (STEM) dapat membantu peternak meningkatkan keuntungan secara berkelanjutan?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai pengamatan kandang ternak, inovasi pakan fermentasi peternak lokal, dan bagaimana pendekatan STEM mendukung kemandirian peternakan OKU Timur (minimal 25 kata)...'
+          }
+        };
+
+        const d3SecCfg = isNFTDay3Refl ? (NFT_DAY3_REFLEKSI_CONFIG[nftDay3Sector] || NFT_DAY3_REFLEKSI_CONFIG.pertanian) : null;
 
         title.textContent = isTrial 
           ? 'Jurnal Refleksi Mandiri (Gladi Bersih)' 
@@ -4619,11 +4678,13 @@
               ? 'Jurnal Refleksi Sesi 1: Eksplorasi Candi Prambanan'
               : (ftCfg 
                   ? ftCfg.refl_title 
-                  : (nftCfg
-                      ? nftCfg.refl_title
-                      : (isNFTDay1Refl
-                          ? 'Jurnal Refleksi Day 1: Fondasi Ekonomi & Potensi OKU Timur'
-                          : `Jurnal Refleksi Mandiri - Day ${day.day_number}`))));
+                  : (isNFTDay3Refl
+                      ? d3SecCfg.title
+                      : (nftCfg
+                          ? nftCfg.refl_title
+                          : (isNFTDay1Refl
+                              ? 'Jurnal Refleksi Day 1: Fondasi Ekonomi & Potensi OKU Timur'
+                              : `Jurnal Refleksi Mandiri - Day ${day.day_number}`)))));
         icon.textContent = 'psychology';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center shrink-0';
 
@@ -4633,38 +4694,50 @@
               ? 'Jurnal Refleksi Sesi 1: Eksplorasi Candi Prambanan (Pilar Exploration)'
               : (ftCfg 
                   ? `Jurnal Refleksi Day ${day.day_number} Field Trip` 
-                  : (nftCfg
-                      ? `Refleksi Pembelajaran Day ${day.day_number}`
-                      : (isNFTDay1Refl
-                          ? 'Refleksi Pembelajaran Day 1'
-                          : 'Refleksi Belajar Siswa'))));
+                  : (isNFTDay3Refl
+                      ? d3SecCfg.heading
+                      : (nftCfg
+                          ? `Refleksi Pembelajaran Day ${day.day_number}`
+                          : (isNFTDay1Refl
+                              ? 'Refleksi Pembelajaran Day 1'
+                              : 'Refleksi Belajar Siswa')))));
         const reflPrompt = isTrial 
           ? 'Bagaimana menurut mu aplikasi kegiatan kokurikuler SMAN 1 Belitang tahun 2026 ini?' 
           : (isFTDay5Refl
               ? 'Refleksikan wawasan eksplorasi cagar budaya Candi Prambanan yang Anda peroleh: apa nilai sejarah, arsitektur batu andesit, atau kerja sama tim yang paling berkesan? <div class="mt-1 text-purple-900 font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm text-amber-600">lock_open</span><span>Catatan: Setelah Jurnal Refleksi ini disimpan, Sesi 2: Seni Membatik (Sentra Benang Ratu) akan otomatis TERBUKA!</span></div>'
               : (ftCfg 
                   ? ftCfg.refl_prompt 
-                  : (nftCfg
-                      ? nftCfg.refl_prompt
-                      : (isNFTDay1Refl
-                          ? 'Setelah mempelajari kegiatan ekonomi, literasi finansial, dan pemetaan potensi daerah hari ini, bagaimana Anda akan menerapkan kebiasaan mengelola keuangan dengan bijak dalam kehidupan sehari-hari sekaligus memanfaatkan peluang potensi ekonomi yang ada di Kabupaten OKU Timur?'
-                          : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?'))));
+                  : (isNFTDay3Refl
+                      ? d3SecCfg.prompt
+                      : (nftCfg
+                          ? nftCfg.refl_prompt
+                          : (isNFTDay1Refl
+                              ? 'Setelah mempelajari kegiatan ekonomi, literasi finansial, dan pemetaan potensi daerah hari ini, bagaimana Anda akan menerapkan kebiasaan mengelola keuangan dengan bijak dalam kehidupan sehari-hari sekaligus memanfaatkan peluang potensi ekonomi yang ada di Kabupaten OKU Timur?'
+                              : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?')))));
         const reflPlaceholder = isTrial 
           ? 'Tuliskan pendapat, kesan, dan penilaian Anda mengenai aplikasi kegiatan kokurikuler SMAN 1 Belitang tahun 2026 ini...' 
           : (isFTDay5Refl
               ? 'Tuliskan cerita dan refleksi mendalam Anda terkait pengalaman dan pembelajaran eksplorasi Candi Prambanan di sini (minimal beberapa kalimat)...'
               : (ftCfg 
                   ? `Tuliskan cerita dan refleksi mendalam Anda terkait pengalaman dan pembelajaran Day ${day.day_number} di sini...` 
-                  : (nftCfg
-                      ? nftCfg.refl_placeholder
-                      : (isNFTDay1Refl
-                          ? 'Silakan tuliskan pendapat, pengalaman, dan rencana Anda berdasarkan materi yang telah dipelajari. Jawablah sesuai pemahaman dan kondisi kehidupan sehari-hari Anda.'
-                          : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...'))));
+                  : (isNFTDay3Refl
+                      ? d3SecCfg.placeholder
+                      : (nftCfg
+                          ? nftCfg.refl_placeholder
+                          : (isNFTDay1Refl
+                              ? 'Silakan tuliskan pendapat, pengalaman, dan rencana Anda berdasarkan materi yang telah dipelajari. Jawablah sesuai pemahaman dan kondisi kehidupan sehari-hari Anda.'
+                              : 'Refleksikan tantangan, kerja sama kelompok, dan pelajaran yang didapat...')))));
 
         body.innerHTML = `
-          <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100 flex flex-col gap-1 text-slate-800">
+          <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-100 flex flex-col gap-2 text-slate-800">
+            ${isNFTDay3Refl ? `
+              <div class="flex items-center gap-1.5 self-start px-2.5 py-1 rounded-xl bg-purple-200/80 text-purple-950 font-black text-xs">
+                <span class="material-symbols-outlined text-sm">${d3SecCfg.icon}</span>
+                <span>${d3SecCfg.badge}</span>
+              </div>
+            ` : ''}
             <span class="font-bold text-sm text-purple-900">${reflTitle}</span>
-            <p class="text-xs sm:text-sm leading-relaxed text-slate-600">${reflPrompt}</p>
+            <div class="text-xs sm:text-sm leading-relaxed text-slate-600">${reflPrompt}</div>
           </div>
           <div class="flex flex-col gap-1.5">
             <label class="font-bold text-sm text-slate-800">Jurnal Refleksi Siswa:</label>
@@ -5535,6 +5608,13 @@
           content: note,
           submitted_at: new Date().toISOString()
         };
+        if (!isFieldTrip && Number(dayNumber) === 3) {
+          try {
+            const cleanId = String(studentNisn).trim();
+            const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanId);
+            if (localSec) refleksiPayload.sector = localSec;
+          } catch(eSec) {}
+        }
         const idList = getStudentStorageIdentifiers();
         idList.forEach(id => {
           if (isFieldTrip) {

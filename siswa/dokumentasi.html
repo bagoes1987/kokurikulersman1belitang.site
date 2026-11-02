@@ -600,7 +600,84 @@
       const d = (dayNum !== undefined && dayNum !== null) ? parseInt(dayNum) : 1;
       const groupKey = cat.isFieldTrip ? 'fieldTrip' : 'nonFieldTrip';
       const cfgGroup = DAY_ACTIVITIES_CONFIG[groupKey] || DAY_ACTIVITIES_CONFIG.fieldTrip;
-      return cfgGroup[d] || cfgGroup[1];
+      const baseCfg = cfgGroup[d] || cfgGroup[1];
+
+      // Penyesuaian Sektor Spesifik Day 3 Non-Field Trip
+      if (cat.isNonFieldTrip && d === 3) {
+        let sec = 'pertanian';
+        try {
+          const user = FincestemCore.auth.getUser() || {};
+          const nisn = user.nisn || user.identifier || '';
+          const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + nisn);
+          if (localSec && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(localSec)) {
+            sec = localSec;
+          } else {
+            const rawLkpd = localStorage.getItem('fincestem_lkpd_nft_day3_' + nisn) || localStorage.getItem('fincestem_lkpd_day3_' + nisn);
+            if (rawLkpd) {
+              const p = JSON.parse(rawLkpd);
+              if (p && p.sector && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(p.sector)) {
+                sec = p.sector;
+              }
+            }
+          }
+        } catch(e) {}
+
+        const NFT_DOK_SECTOR_CONFIG = {
+          pertanian: {
+            title: 'Day 3: Observasi Lapangan Sektor Pertanian Padi Sawah',
+            theme: 'Sains Lahan Aluvial & Padi, Audit Alsintan Traktor/Combine & Wawancara Narasumber Petani',
+            defaultPillar: 'STEM',
+            fileSlug: 'Observasi_Pertanian_Padi',
+            pillars: {
+              STEM: 'STEM (Sains Tanah Aluvial & Fisiologi Padi Sawah)',
+              Financial: 'Financial (Kalkulasi Modal Usahatani & HPP Gabah)',
+              Culture: 'Culture (Sistem Gotong Royong / Sambatan Tani OKU Timur)',
+              Exploration: 'Exploration (Audit Alsintan Traktor, Combine & Lahan Sawah)'
+            }
+          },
+          perkebunan: {
+            title: 'Day 3: Observasi Lapangan Sektor Perkebunan Karet & Sawit',
+            theme: 'Sains Tegakan Pohon/Lateks/TBS, Audit Alat Sadap/Dodos & Wawancara Praktisi Kebun',
+            defaultPillar: 'STEM',
+            fileSlug: 'Observasi_Perkebunan_Karet_Sawit',
+            pillars: {
+              STEM: 'STEM (Sains Lateks Karet / Mutu Tandan Buah Segar Sawit)',
+              Financial: 'Financial (Analisis Modal Pupuk, Biaya Sadap & Pendapatan)',
+              Culture: 'Culture (Tradisi Penyadapan Pagi Buta Belitang)',
+              Exploration: 'Exploration (Teknologi Alat Sadap, Dodos/Egrek & Kebun)'
+            }
+          },
+          perikanan: {
+            title: 'Day 3: Observasi Lapangan Sektor Budidaya Perikanan Patin & Lele',
+            theme: 'Sains Parameter Air Kolam (DO/Suhu), Audit Mesin Pompa/Kincir & Wawancara Pembudidaya',
+            defaultPillar: 'STEM',
+            fileSlug: 'Observasi_Perikanan_Patin_Lele',
+            pillars: {
+              STEM: 'STEM (Sains Oksigen Terlarut, Suhu & Kesehatan Ikan)',
+              Financial: 'Financial (Kalkulasi Rasio Pakan FCR & Biaya Energi)',
+              Culture: 'Culture (Kemandirian Sentra Perikanan Air Tawar Belitang)',
+              Exploration: 'Exploration (Sistem Sirkulasi Pompa, Aerator & Kolam Patin/Lele)'
+            }
+          },
+          peternakan: {
+            title: 'Day 3: Observasi Lapangan Sektor Peternakan Sapi Potong & Unggas',
+            theme: 'Sains Fisiologi Ternak/Kandang, Audit Mesin Chopper/Pakan & Wawancara Peternak',
+            defaultPillar: 'STEM',
+            fileSlug: 'Observasi_Peternakan_Sapi_Unggas',
+            pillars: {
+              STEM: 'STEM (Sains Pencernaan Ruminansia/Unggas & Nutrisi Pakan)',
+              Financial: 'Financial (Kalkulasi Biaya Pakan Silase & Pertambahan Bobot)',
+              Culture: 'Culture (Integrasi Limbah Jerami Sawah dengan Peternakan)',
+              Exploration: 'Exploration (Teknologi Chopper Rumput, Kandang & Sanitasi)'
+            }
+          }
+        };
+
+        const secCfg = NFT_DOK_SECTOR_CONFIG[sec] || NFT_DOK_SECTOR_CONFIG.pertanian;
+        return Object.assign({}, baseCfg, secCfg);
+      }
+
+      return baseCfg;
     }
 
     function setupDayContext(dayNum) {
@@ -731,6 +808,55 @@
             subTitle = 'Dokumentasi Momen Emas & Kenangan Terbaik 2026';
             subTheme = 'Potret Persahabatan, Lanskap Destinasi Favorit & Pengalaman Riset Tak Terlupakan';
           }
+        }
+
+        // Penyesuaian khusus Day 3 Non-Field Trip (Observasi Sektor: Pertanian / Perkebunan / Perikanan / Peternakan)
+        if (cat.isNonFieldTrip && Number(dayNum) === 3) {
+          const user = FincestemCore.auth.getUser() || {};
+          const nisn = user.nisn || user.identifier || '';
+          let sec = 'pertanian';
+          try {
+            const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + nisn);
+            if (localSec && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(localSec)) {
+              sec = localSec;
+            } else {
+              const rawLkpd = localStorage.getItem('fincestem_lkpd_nft_day3_' + nisn) || localStorage.getItem('fincestem_lkpd_day3_' + nisn);
+              if (rawLkpd) {
+                const p = JSON.parse(rawLkpd);
+                if (p && p.sector && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(p.sector)) {
+                  sec = p.sector;
+                }
+              }
+            }
+          } catch(e) {}
+
+          const NFT_DOK_SECTOR_MAP = {
+            pertanian: {
+              badge: 'SEKTOR PERTANIAN PADI SAWAH',
+              title: 'Dokumentasi Observasi: Pertanian Padi Sawah & Tanaman Pangan',
+              theme: 'Bukti Foto Kondisi Tanah Aluvial/Tanaman Padi, Audit Traktor/Combine Harvester & Wawancara Petani Padi'
+            },
+            perkebunan: {
+              badge: 'SEKTOR PERKEBUNAN KARET & SAWIT',
+              title: 'Dokumentasi Observasi: Perkebunan Karet & Kelapa Sawit',
+              theme: 'Bukti Foto Tegakan Pohon/Lateks/TBS, Audit Alat Sadap/Dodos & Wawancara Praktisi Kebun'
+            },
+            perikanan: {
+              badge: 'SEKTOR BUDIDAYA PERIKANAN PATIN & LELE',
+              title: 'Dokumentasi Observasi: Budidaya Perikanan Air Tawar Patin & Lele',
+              theme: 'Bukti Foto Kualitas Air Kolam (DO/Suhu), Audit Mesin Pompa/Kincir Aerator & Wawancara Pembudidaya'
+            },
+            peternakan: {
+              badge: 'SEKTOR PETERNAKAN SAPI & UNGGAS',
+              title: 'Dokumentasi Observasi: Peternakan Sapi Potong & Unggas',
+              theme: 'Bukti Foto Kesehatan Ternak/Kandang, Audit Mesin Chopper Rumput/Silase & Wawancara Peternak'
+            }
+          };
+
+          const sData = NFT_DOK_SECTOR_MAP[sec] || NFT_DOK_SECTOR_MAP.pertanian;
+          dayBadge = `DAY 3 • ${sData.badge}`;
+          subTitle = sData.title;
+          subTheme = sData.theme;
         }
 
         descEl.innerHTML = `
