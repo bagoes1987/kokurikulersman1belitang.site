@@ -78,6 +78,39 @@
     "desc": "Sistem jajar legowo, RMU modern/bed dryer, penekanan susut panen, adopsi drone sprayer, Katam BMKG, dan smart farming."
   }
 ];
+  window.NFT_BANK_SOAL_INDICATORS_DAY3 = [
+  {
+    "code": "A",
+    "key": "pilar_science",
+    "name": "Pilar Science: Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas",
+    "desc": "Kondisi fisik alam, parameter kualitas air/tanah, siklus fisiologis dan kesehatan komoditas unggulan OKU Timur."
+  },
+  {
+    "code": "B",
+    "key": "pilar_technology",
+    "name": "Pilar Technology: Mesin, Peralatan Alsintan & Audit Efisiensi Kerja",
+    "desc": "Identifikasi mesin kerja, alsintan modern/tradisional, mekanisasi hulu-hilir, dan audit efisiensi teknologi lapangan."
+  },
+  {
+    "code": "C",
+    "key": "pilar_engineering",
+    "name": "Pilar Engineering: Troubleshooting Kendala & Rekayasa Solusi Praktis Lapangan",
+    "desc": "Analisis problem teknis operasional narasumber dan modifikasi rekayasa kreatif solusi tepat guna yang diterapkan praktisi."
+  },
+  {
+    "code": "D",
+    "key": "pilar_mathematics",
+    "name": "Pilar Mathematics: Analisis Finansial, HPP, Pendapatan & Kalkulasi Laba-Rugi",
+    "desc": "Kalkulasi modal operasional, volume panen, HPP, FCR/efisiensi pakan, dan analisis laba-rugi agribisnis riil."
+  },
+  {
+    "code": "E",
+    "key": "pilar_stem_integration",
+    "name": "Pilar STEM Integration: Sintesis Solusi Terpadu, Produktivitas & Keberlanjutan",
+    "desc": "Keterpaduan 4 pilar STEM dalam meningkatkan produktivitas, ketahanan ekonomi, dan keberlanjutan usaha agro-maritim OKU Timur."
+  }
+];
+
 
   window.NFT_BANK_SOAL_CONFIG = {
     totalQuestionsInBank: 200,
@@ -14046,15 +14079,7022 @@
     "correct": "D",
     "explanation": "Modernisasi terintegrasi dari olah tanah hingga pascapanen menekan biaya usaha tani, menekan susut panen, melipatgandakan indeks pertanaman, dan memperkokoh kedaulatan pangan nasional."
   }
+],
+    3: [
+  {
+    "id": 1,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 1,
+    "question": "Kondisi tanah sawah di sepanjang jaringan irigasi Belitang didominasi oleh tanah aluvial dan glei humus. Mengapa tekstur tanah lempung berdebu (silty clay loam) sangat ideal bagi budidaya padi sawah di OKU Timur?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Karena memiliki permeabilitas sangat tinggi sehingga air cepat hilang meresap ke dalam tanah"
+      },
+      {
+        "key": "B",
+        "text": "Karena mampu menahan air (water holding capacity) dan mengikat unsur hara pupuk dengan sangat baik pada kondisi tergenang"
+      },
+      {
+        "key": "C",
+        "text": "Karena tanah tersebut tidak membutuhkan pemupukan nitrogen dan fosfat sama sekali sepanjang musim tanam"
+      },
+      {
+        "key": "D",
+        "text": "Karena tekstur berpasirnya mempermudah akar padi menembus hingga kedalaman 3 meter di bawah tanah"
+      },
+      {
+        "key": "E",
+        "text": "Karena struktur tanahnya selalu kering dan retak sehingga memicu pembungaan padi lebih cepat"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Tanah aluvial dan lempung glei humus di Belitang memiliki pori mikro melimpah yang mampu menahan air dan kapasitas tukar kation (KTK) tinggi, sangat cocok untuk padi sawah yang membutuhkan genangan air macak-macak."
+  },
+  {
+    "id": 2,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Air irigasi primer Belitang berasal dari Sungai Komering yang dibendung di Bendung Perjaya. Mengapa endapan lumpur halus (sedimen) yang terbawa aliran air irigasi Komering berdampak positif bagi kesuburan fisik dan kimia tanah sawah?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Lumpur sedimen sungai mengendapkan mineral kaya hara alami yang menyuburkan dan memperkaya lapisan olah tanah"
+      },
+      {
+        "key": "B",
+        "text": "Lumpur sedimen berfungsi menaikkan pH tanah hingga mencapai kondisi sangat basa (pH > 9.0)"
+      },
+      {
+        "key": "C",
+        "text": "Endapan lumpur membuat saluran irigasi cepat dangkal sehingga aliran air berhenti permanen"
+      },
+      {
+        "key": "D",
+        "text": "Lumpur sedimen mematikan seluruh mikroorganisme tanah sehingga sawah steril dari bakteri"
+      },
+      {
+        "key": "E",
+        "text": "Sedimen lumpur menghilangkan kebutuhan pengolahan tanah bajak pada musim tanam berikutnya"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Air Sungai Komering membawa sedimen vulkanik halus dari hulu pegunungan Bukit Barisan dan Danau Ranau yang kaya unsur hara mineral alami, membantu menyuburkan lapisan top-soil sawah Belitang."
+  },
+  {
+    "id": 3,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 3,
+    "question": "Pada fase vegetatif aktif (umur 15-35 HST), tanaman padi membutuhkan unsur nitrogen (N) dalam jumlah tinggi. Namun jika petani di OKU Timur memupuk urea secara berlebihan saat musim hujan, dampak biologis apa yang paling rentan terjadi pada tanaman padi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Batang padi menjadi sangat kaku dan bulir gabah menjadi hampa"
+      },
+      {
+        "key": "B",
+        "text": "Jaringan dinding sel tanaman menjadi sukulen (lunak dan berair), sehingga rentan rebah dan mudah diserang jamur blas serta wereng"
+      },
+      {
+        "key": "C",
+        "text": "Akar padi berhenti menyerap air dan tanah menjadi sangat gembur seketika"
+      },
+      {
+        "key": "D",
+        "text": "Tanaman padi langsung memasuki fase pematangan bulir dalam waktu 5 hari"
+      },
+      {
+        "key": "E",
+        "text": "Daun padi berubah warna menjadi ungu kehitaman akibat keracunan klorofil"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pemupukan Nitrogen (Urea) berlebih menyebabkan pembelahan sel cepat dengan dinding sel tipis (sukulen), mengundang ledakan hama wereng coklat dan infeksi jamur blas (Pyricularia oryzae), serta memicu tanaman mudah roboh (rebah)."
+  },
+  {
+    "id": 4,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 4,
+    "question": "Dalam siklus hidup padi, fase pengisian bulir gabah (generatif matang susu hingga matang penuh) sangat dipengaruhi oleh intensitas radiasi sinar matahari. Proses fisiologis apa yang paling dominan berlangsung pada fase ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Respirasi anaerobik di dalam perakaran untuk memecah lignin batang"
+      },
+      {
+        "key": "B",
+        "text": "Translokasi hasil fotosintesis (fotosintat berupa glukosa dan pati) dari daun bendera ke dalam bulir gabah"
+      },
+      {
+        "key": "C",
+        "text": "Pembentukan anakan produktif baru di pangkal batang bawah"
+      },
+      {
+        "key": "D",
+        "text": "Penyerapan unsur hara mikro boron untuk memperpanjang pelepah daun"
+      },
+      {
+        "key": "E",
+        "text": "Penguapan kutikula daun untuk mendinginkan suhu air sawah di sekitarnya"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Daun bendera bertindak sebagai produsen utama fotosintat pada fase generatif, di mana karbohidrat hasil fotosintesis ditranslokasikan secara masif untuk mengisi bulir gabah hingga padat berisi."
+  },
+  {
+    "id": 5,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Petani di Belitang sering mengamati serangan hama penggerek batang padi (Scirpophaga incertulas). Jika serangan larva hama ini terjadi pada fase generatif (saat malai keluar), gejala kerusakan spesifik yang tampak di sawah disebut...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sundep, di mana pucuk tanaman padi menguning dan mati pada fase anakan"
+      },
+      {
+        "key": "B",
+        "text": "Beluk, di mana malai padi keluar berwarna putih hampa dan mudah dicabut karena pangkalnya terpotong gerekan larva"
+      },
+      {
+        "key": "C",
+        "text": "Hawar daun bakteri, di mana tepi daun mengering bergelombang seperti terbakar"
+      },
+      {
+        "key": "D",
+        "text": "Kerdil rumput, di mana tanaman menjadi kerdil dan anakan tumbuh menyerupai rumput liar"
+      },
+      {
+        "key": "E",
+        "text": "Tungro, di mana daun padi berubah warna menjadi jingga kekuningan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Serangan penggerek batang pada fase anakan disebut 'sundep' (daun tengah mati), sedangkan pada fase keluarnya malai disebut 'beluk' (malai putih hampa, tegak, dan mudah dicabut)."
+  },
+  {
+    "id": 6,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Kondisi pH tanah sawah ideal untuk penyerapan unsur hara makro (N, P, K) secara optimum pada tanaman padi di Belitang berkisar antara...",
+    "options": [
+      {
+        "key": "A",
+        "text": "pH 3.0 - 4.0 (sangat masam ekstrem)"
+      },
+      {
+        "key": "B",
+        "text": "pH 5.5 - 6.8 (agak masam hingga netral)"
+      },
+      {
+        "key": "C",
+        "text": "pH 8.5 - 10.0 (sangat basa)"
+      },
+      {
+        "key": "D",
+        "text": "pH 1.0 - 2.5 (asam sulfat pekat)"
+      },
+      {
+        "key": "E",
+        "text": "pH tanah tidak memiliki pengaruh apapun terhadap ketersediaan hara bagi akar tanaman"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pada rentang pH 5.5 - 6.8, ketersediaan hara esensial seperti Nitrogen, Fosfor, dan Kalium berada dalam bentuk ion terlarut yang paling mudah diserap oleh bulu akar padi tanpa terfiksasi logam berat."
+  },
+  {
+    "id": 7,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 7,
+    "question": "Suhu udara dan kelembaban nisbi tinggi (>85%) saat musim penghujan di OKU Timur memicu ledakan penyakit jamur blas (Pyricularia oryzae). Bagian tanaman padi manakah yang menjadi sasaran utama spora jamur ini saat menyerang malai?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tudung akar primer di bawah lapisan lumpur"
+      },
+      {
+        "key": "B",
+        "text": "Leher malai (blas leher / neck blast), yang menyebabkan pembuluh nutrisi membusuk dan bulir patah atau hampa"
+      },
+      {
+        "key": "C",
+        "text": "Ujung serbuk sari sebelum terjadi penyerbukan"
+      },
+      {
+        "key": "D",
+        "text": "Stomata batang terbawah yang terendam air"
+      },
+      {
+        "key": "E",
+        "text": "Lapisan lilin pada pelepah daun terluar"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Blas leher menyerang nodus/leher malai padi sehingga jaringan pengangkut menghitam membusuk, mengakibatkan pasokan nutrisi ke bulir terputus total dan malai menjadi hampa rebah."
+  },
+  {
+    "id": 8,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 8,
+    "question": "Penggenangan air sawah secara terus-menerus (continuous flooding) sedalam 15 cm tanpa jeda pengeringan dapat menyebabkan kondisi anaerobik ekstrem pada tanah. Apa akibat negatif fenomena reduksi kimia ini terhadap akar padi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Akar padi membesar dan menyerap nitrogen dalam bentuk nitrat lebih banyak"
+      },
+      {
+        "key": "B",
+        "text": "Terbentuknya gas beracun asam sulfida (H2S) dan keracunan besi (Fe2+), yang ditandai dengan perakaran membusuk berwarna hitam pekat"
+      },
+      {
+        "key": "C",
+        "text": "Tanah menjadi cepat kering dan memadat menyerupai batu"
+      },
+      {
+        "key": "D",
+        "text": "Pertumbuhan lumut sawah terhenti secara total"
+      },
+      {
+        "key": "E",
+        "text": "Jumlah anakan produktif meningkat hingga 80 anakan per rumpun"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Genangan air terlalu dalam tanpa drainase memicu penurunan potensial redoks tanah, menghasilkan senyawa reduksi toksik (H2S dan Fe2+) yang meracuni dan mematikan sistem perakaran padi."
+  },
+  {
+    "id": 9,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Varietas unggul Inpari 32 HDB banyak dibudidayakan petani Belitang karena memiliki ketahanan terhadap salah satu penyakit bakteri mematikan. Penyakit apakah yang dimaksud dengan kode HDB?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hawar Daun Bakteri (bacterial leaf blight) yang disebabkan oleh kuman Xanthomonas oryzae"
+      },
+      {
+        "key": "B",
+        "text": "Hama Penggerek Batang Hitam"
+      },
+      {
+        "key": "C",
+        "text": "Hibrida Daun Bergaris"
+      },
+      {
+        "key": "D",
+        "text": "Hama Wereng Coklat Biotipe 4"
+      },
+      {
+        "key": "E",
+        "text": "Hawar Jamur Bulir Beras"
+      }
+    ],
+    "correct": "A",
+    "explanation": "HDB merupakan singkatan dari Hawar Daun Bakteri (kresek) yang disebabkan oleh Xanthomonas oryzae pv. oryzae, patogen bakteri paling merusak daun padi pada musim penghujan."
+  },
+  {
+    "id": 10,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Dalam konsep ekologi pertanian sawah di OKU Timur, mengapa keberadaan laba-laba serigala (Lycosa pseudoannulata) dan kepik mirid (Cyrtorhinus lividipennis) di petakan sawah sangat dijaga oleh petani terlatih PHT?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Karena keduanya merupakan musuh alami predator yang memangsa wereng batang coklat dan telurnya"
+      },
+      {
+        "key": "B",
+        "text": "Karena serangga tersebut memakan gulma teki yang tumbuh di pematang sawah"
+      },
+      {
+        "key": "C",
+        "text": "Karena serangga tersebut menghasilkan kotoran yang dapat menjadi pupuk urea alami"
+      },
+      {
+        "key": "D",
+        "text": "Karena keberadaannya menjadi indikator bahwa air sawah mengandung pestisida dosis tinggi"
+      },
+      {
+        "key": "E",
+        "text": "Karena kedua serangga tersebut membantu proses penyerbukan malai padi di pagi hari"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Lycosa pseudoannulata (laba-laba pemburu) dan Cyrtorhinus lividipennis merupakan agen hayati pengendali alami yang sangat efektif memangsa nimfa dan telur wereng coklat di ekosistem sawah."
+  },
+  {
+    "id": 11,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 1,
+    "question": "Traktor roda dua (hand tractor) tipe rotary sangat populer di kalangan petani sawah Belitang pada tahap pengolahan tanah kedua. Apa fungsi mekanis utama dari pisau rotary pada traktor tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membalik bongkahan tanah lapisan bawah ke permukaan sedalam 50 cm"
+      },
+      {
+        "key": "B",
+        "text": "Mencacah, menghaluskan gumpalan tanah, dan melumpurkan tanah (puddling) agar siap ditanami bibit padi"
+      },
+      {
+        "key": "C",
+        "text": "Menyedot air keluar dari saluran drainase pembuang"
+      },
+      {
+        "key": "D",
+        "text": "Menancapkan bibit padi secara otomatis pada jarak tanam 20 cm"
+      },
+      {
+        "key": "E",
+        "text": "Menyemprotkan herbisida cair ke seluruh hamparan gulma"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pisau rotary berputar cepat mencacah bongkahan tanah hasil bajak singkal dan mencampurnya dengan air sehingga tercipta lapisan lumpur homogen (puddling) yang sempurna untuk persemaian dan tanam bibit."
+  },
+  {
+    "id": 12,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Penggunaan mesin panen combine harvester di sentra padi OKU Timur telah merevolusi proses panen. Tiga tahapan panen apa sajakah yang diintegrasikan secara serentak oleh mesin combine harvester dalam satu kali jalan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membajak sawah, menanam bibit, dan menyiram air"
+      },
+      {
+        "key": "B",
+        "text": "Memotong batang padi (reaping), merontokkan bulir gabah (threshing), dan membersihkan gabah dari kotoran jerami (cleaning)"
+      },
+      {
+        "key": "C",
+        "text": "Menggiling gabah menjadi beras, memoles beras, dan mengemas karung 50 kg"
+      },
+      {
+        "key": "D",
+        "text": "Menyemprot pestisida, memupuk urea, dan mengukur kadar asam tanah"
+      },
+      {
+        "key": "E",
+        "text": "Mengeringkan gabah, memisahkan dedak, dan membakar sekam sisa"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Combine harvester menggabungkan 3 fungsi utama: pemotongan tegakan jerami padi (reaper), perontokan bulir gabah dari malai (thresher), dan pembersihan dari sekam/debu kotoran (cleaner) langsung di sawah."
+  },
+  {
+    "id": 13,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 3,
+    "question": "Secara teknologis, salah satu keunggulan terbesar penggunaan combine harvester dibandingkan metode panen manual sabit dan gebot di Belitang adalah penurunan tingkat kehilangan hasil (losses). Berapa penurunan susut panen tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Dari susut manual 8% - 11% berhasil ditekan menjadi di bawah 2% - 3%"
+      },
+      {
+        "key": "B",
+        "text": "Dari susut 50% berhasil ditekan menjadi 45%"
+      },
+      {
+        "key": "C",
+        "text": "Sama sekali tidak ada perbedaan tingkat kehilangan hasil gabah"
+      },
+      {
+        "key": "D",
+        "text": "Combine harvester justru meningkatkan susut panen hingga mencapai 25%"
+      },
+      {
+        "key": "E",
+        "text": "Susut panen hanya berkurang apabila panen dilakukan saat malam hari"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Penelitian Litbang Pertanian membuktikan panen manual (sabit, tumpuk, angkut, gebot terpal) menimbulkan losses 8-11%, sedangkan combine harvester modern mampu menekan losses hingga <2-3%."
+  },
+  {
+    "id": 14,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Alat mesin transplanter (jarwo transplanter) menggunakan teknologi penanaman pola Jajar Legowo secara otomatis. Apa keunggulan agronomis dan mekanis dari pola tanam jajar legowo 2:1 atau 4:1?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghilangkan populasi tanaman hingga 75% dari luasan lahan"
+      },
+      {
+        "key": "B",
+        "text": "Menciptakan efek tanaman pinggir (border effect) yang memaksimalkan penyerapan cahaya matahari dan mempermudah pemeliharaan"
+      },
+      {
+        "key": "C",
+        "text": "Mengharuskan petani menambah kebutuhan air genangan setinggi 40 cm"
+      },
+      {
+        "key": "D",
+        "text": "Mencegah traktor roda empat masuk ke petakan sawah"
+      },
+      {
+        "key": "E",
+        "text": "Mengharuskan jarak tanam seragam tanpa adanya lorong kosong"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pola jajar legowo memberikan ruang terbuka (lorong) yang memberikan efek border effect bagi rumpun pinggir sehingga fotosintesis maksimal, anakan lebih produktif, dan sirkulasi udara baik untuk menekan hama."
+  },
+  {
+    "id": 15,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 5,
+    "question": "Pompa air sentrifugal (alkon) berbahan bakar bensin sering diandalkan petani sawah tadah hujan di OKU Timur saat kemarau. Komponen mekanis apakah yang berputar di dalam rumah pompa untuk menghasilkan gaya sentrifugal penghisap air?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Klep hisap karet (foot valve)"
+      },
+      {
+        "key": "B",
+        "text": "Impeller (kipas sudu putar)"
+      },
+      {
+        "key": "C",
+        "text": "Busi pemantik api"
+      },
+      {
+        "key": "D",
+        "text": "Karburator membran"
+      },
+      {
+        "key": "E",
+        "text": "Piston silinder blok"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Impeller yang diputar poros motor penggerak menciptakan tekanan rendah di pusat dan gaya sentrifugal yang melempar cairan ke tepi rumah pompa (volute), menghasilkan aliran hisap dan dorong air yang deras."
+  },
+  {
+    "id": 16,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Sprayer elektrik bertenaga baterai litium kini hampir sepenuhnya menggantikan sprayer pompa punggung manual di kalangan petani Belitang. Apa keunggulan teknologi sprayer elektrik terhadap efisiensi kerja petani?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tekanan semprotan konstan dan stabil tanpa perlu menguras tenaga pemompaan tangan, menghasilkan droplet butiran semprot yang merata"
+      },
+      {
+        "key": "B",
+        "text": "Dapat beroperasi tanpa perlu menggunakan cairan air pelarut"
+      },
+      {
+        "key": "C",
+        "text": "Membuat cairan racun pestisida dapat bertahan di udara selama berminggu-minggu"
+      },
+      {
+        "key": "D",
+        "text": "Menambah bobot tangki semprot menjadi 5 kali lebih berat"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah racun kimia sintetis menjadi pupuk organik cair seketika"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pompa diafragma elektrik berdaya baterai menjaga tekanan semprotan tetap stabil (3-4 bar), menghasilkan ukuran droplet homogen sehingga persebaran larutan obat lebih efektif dan tenaga petani hemat."
+  },
+  {
+    "id": 17,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Pada traktor roda empat (four-wheel tractor) yang digunakan untuk pembajakan sawah skala luas di Belitang, alat tambahan (implement) apa yang dipasang di bagian belakang untuk membalik tanah keras pertama kali?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bajak piringan (disc plow) atau bajak singkal (moldboard plow)"
+      },
+      {
+        "key": "B",
+        "text": "Mesin perontok padi (power thresher)"
+      },
+      {
+        "key": "C",
+        "text": "Pompa alkon hisap 2 dim"
+      },
+      {
+        "key": "D",
+        "text": "Gergaji rantai pemotong kayu"
+      },
+      {
+        "key": "E",
+        "text": "Blower pengering gabah berbahan bakar sekam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Disc plow atau moldboard plow yang disambungkan pada 3-point hitch traktor roda 4 berfungsi memotong, mengangkat, dan membalik lapisan tanah keras sedalam 20-30 cm pada pengolahan tanah primer."
+  },
+  {
+    "id": 18,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Di pabrik penggilingan padi modern (RMU) di Belitang, teknologi pemisah kotoran dan batu berdasarkan perbedaan berat jenis gabah dengan partikel asing dinamakan mesin...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Destoner separator"
+      },
+      {
+        "key": "B",
+        "text": "Rotary tiller"
+      },
+      {
+        "key": "C",
+        "text": "Husker rubber roll"
+      },
+      {
+        "key": "D",
+        "text": "Rice polisher mist"
+      },
+      {
+        "key": "E",
+        "text": "Color sorter laser"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Destoner memisahkan kerikil, batu kecil, dan pasir dari butiran gabah menggunakan prinsip getaran ayakan dan aliran hembusan udara berdasarkan perbedaan massa jenis partikel."
+  },
+  {
+    "id": 19,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Alat pengukur kadar air gabah digital (grain moisture meter) adalah teknologi wajib bagi bakul gabah dan petani di OKU Timur sebelum transaksi. Mengapa gabah kering panen (GKP) harus dikeringkan hingga kadar air 14% (GKG)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Agar butiran gabah hancur menjadi tepung saat digiling"
+      },
+      {
+        "key": "B",
+        "text": "Agar gabah aman disimpan lama tanpa ditumbuhi jamur Aspergillus dan menghasilkan rendemen beras utuh yang tinggi saat digiling"
+      },
+      {
+        "key": "C",
+        "text": "Agar bobot timbangan gabah bertambah berat secara signifikan"
+      },
+      {
+        "key": "D",
+        "text": "Agar beras yang dihasilkan berubah warna menjadi kuning keemasan"
+      },
+      {
+        "key": "E",
+        "text": "Karena pada kadar air 14% seluruh hama wereng hidup subur di karung"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Kadar air 14% adalah standar baku Gabah Kering Giling (GKG): mencegah pertumbuhan jamur mikotoksin, menghentikan perkecambahan biji, dan membuat beras tidak mudah patah saat dikuliti di mesin huller."
+  },
+  {
+    "id": 20,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Beberapa kelompok tani maju di Belitang mulai mengadopsi teknologi drone pertanian (agricultural drone). Fungsi utama drone tersebut dalam efisiensi operasional usaha tani padi adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengangkut karung gabah seberat 1 ton langsung dari sawah ke rumah"
+      },
+      {
+        "key": "B",
+        "text": "Penyemprotan pupuk cair/pestisida presisi tinggi dalam waktu singkat (1 hektar hanya 10-15 menit) dan pemetaan multispektral kesehatan daun"
+      },
+      {
+        "key": "C",
+        "text": "Membajak tanah sawah pada malam hari"
+      },
+      {
+        "key": "D",
+        "text": "Memompa air dari dalam tanah sedalam 100 meter"
+      },
+      {
+        "key": "E",
+        "text": "Menggantikan seluruh peranan sinar matahari untuk proses fotosintesis"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Agricultural drone mampu menyemprotkan larutan pupuk/pestisida secara ultra-low volume (ULV) dengan ketinggian dan kecepatan presisi, menghemat waktu (1 ha hanya ~10 menit), air, dan mencegah paparan racun ke petani."
+  },
+  {
+    "id": 21,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 1,
+    "question": "Pada petakan sawah yang letaknya jauh di ujung saluran tersier (petak hilir) dan sering terlambat menerima air, rekayasa pintu air sederhana yang paling efektif dilakukan petani adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membuat sodetan pipa paralon (PVC) bertingkat dengan klep buka-tutup fleksibel di tanggul tersier untuk mengatur debit gravitasi"
+      },
+      {
+        "key": "B",
+        "text": "Menjebol seluruh tanggul saluran sekunder agar air meluap ke jalan raya"
+      },
+      {
+        "key": "C",
+        "text": "Menutup rapat petakan sawah dengan semen cor permanen"
+      },
+      {
+        "key": "D",
+        "text": "Menebang semua pohon pelindung di pinggir jalan raya"
+      },
+      {
+        "key": "E",
+        "text": "Mengganti tanaman padi dengan pohon jati berakar tunjang"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pemasangan pipa PVC intake dengan sistem stop-log atau penutup klep fleksibel memungkinkan pembagian air berbasis gravitasi yang teratur tanpa merusak struktur tanggul tanah saluran irigasi."
+  },
+  {
+    "id": 22,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 2,
+    "question": "Ketika tanah sawah di Belitang terlalu becek dan berlumpur dalam (>40 cm) saat musim hujan, roda karet combine harvester atau traktor rentan terperosok (ambles). Trik rekayasa mekanis apa yang diterapkan operator alsintan di lapangan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memasang roda sirip besi tambahan (cage wheel) atau memperlebar tapak roda rantai crawler karet (wide track) untuk memperluas bidang kontak beban"
+      },
+      {
+        "key": "B",
+        "text": "Mengurangi oli mesin hingga mesin traktor berjalan lambat"
+      },
+      {
+        "key": "C",
+        "text": "Menambah beban pemberat semen pada moncong depan traktor"
+      },
+      {
+        "key": "D",
+        "text": "Mengempeskan seluruh ban traktor hingga velg menyentuh lumpur"
+      },
+      {
+        "key": "E",
+        "text": "Menarik traktor dengan mobil sedan dari jalan aspal"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sesuai hukum fisika tekanan (P = F/A), memperlebar tapak roda (wide track crawler atau cage wheel) akan memperbesar luas permukaan (A), sehingga tekanan beban traktor ke lumpur mengecil dan mesin tidak mudah ambles."
+  },
+  {
+    "id": 23,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Metode rekayasa pengairan berselang (Alternate Wetting and Drying / AWD) dianjurkan di kawasan irigasi Belitang. Bagaimana rancangan instalasi sederhana alat pemantau air AWD (tabung pipa pengamat) di petakan sawah?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pipa paralon berlubang diameter 4 inch ditancapkan sedalam 15-20 cm ke dalam lumpur sawah untuk mengamati kedalaman muka air di bawah permukaan tanah"
+      },
+      {
+        "key": "B",
+        "text": "Pipa besi ditanam sedalam 10 meter dan dihubungkan ke menara air desa"
+      },
+      {
+        "key": "C",
+        "text": "Menggunakan gelas ukur laboratorium yang diletakkan mengapung di atas daun padi"
+      },
+      {
+        "key": "D",
+        "text": "Memasang termometer air raksa di tengah pematang sawah"
+      },
+      {
+        "key": "E",
+        "text": "Membuat sumur bor beton selebar 2 meter di setiap sudut petakan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Teknologi AWD menggunakan pipa paralon berpohon lubang pori (pani pipe) yang ditancapkan sedalam 15-20 cm. Petani hanya mengairi kembali jika air di dalam pipa surut hingga 15 cm di bawah permukaan tanah, hemat air hingga 25%."
+  },
+  {
+    "id": 24,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 4,
+    "question": "Untuk menanggulangi serangan hama tikus sawah (Rattus argentiventer) secara ramah lingkungan tanpa racun berbahaya, kelompok tani di Belitang menerapkan rekayasa Trap Barrier System (TBS). Bagian rancangan apakah yang menjadi penarik tikus ke perangkap?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Petak tanaman perangkap yang ditanam 2-3 minggu lebih awal dari hamparan utama dan dikelilingi pagar plastik berpasang bubu perangkap satu arah"
+      },
+      {
+        "key": "B",
+        "text": "Lampu petromaks berkekuatan 1000 watt yang dinyalakan sepanjang malam"
+      },
+      {
+        "key": "C",
+        "text": "Penebaran bangkai tikus yang dibakar di sekeliling pematang"
+      },
+      {
+        "key": "D",
+        "text": "Pemasangan kawat beraliran listrik tegangan tinggi dari kabel PLN rumah"
+      },
+      {
+        "key": "E",
+        "text": "Parit yang diisi solar dan oli bekas setinggi 10 cm"
+      }
+    ],
+    "correct": "A",
+    "explanation": "TBS memanfaatkan sifat alami tikus yang tertarik pada tanaman padi stadium bunting/generatif lebih awal. Pagar plastik memblokir akses tikus dan mengarahkannya masuk ke perangkap bubu kawat satu arah (multi-catch trap)."
+  },
+  {
+    "id": 25,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Setelah panen padi, petani sering dihadapkan pada limbah jerami yang menumpuk di petakan sawah. Rekayasa pengolahan limbah jerami yang paling berkelanjutan dan meningkatkan bahan organik tanah adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membakar seluruh jerami di tengah sawah hingga menimbulkan asap tebal dan abu hangus"
+      },
+      {
+        "key": "B",
+        "text": "Pencacahan jerami dan aplikasi dekomposer mikroba selulolitik (pengomposan in-situ) saat pengolahan tanah pertama"
+      },
+      {
+        "key": "C",
+        "text": "Membuang seluruh tumpukan jerami ke dalam saluran irigasi sekunder BK"
+      },
+      {
+        "key": "D",
+        "text": "Menimbun jerami dengan aspal cair agar tidak terurai"
+      },
+      {
+        "key": "E",
+        "text": "Menyemprotkan herbisida dosis mematikan ke tumpukan jerami"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pengomposan jerami in-situ menggunakan dekomposer mikroba mengembalikan hara Kalium (K) dan silika organik ke tanah, memperbaiki struktur agregat tanah sawah, dan menghindari polusi asap pembakaran."
+  },
+  {
+    "id": 26,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 6,
+    "question": "Untuk mengatasi kendala pengeringan gabah saat cuaca mendung atau musim hujan di OKU Timur, rekayasa alat pengering gabah tepat guna (flat-bed dryer) memanfaatkan sumber energi biomassa lokal berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sekam padi kering sisa penggilingan yang dibakar dalam tungku pembakar siklon hemat asap"
+      },
+      {
+        "key": "B",
+        "text": "Batu bara curah impor"
+      },
+      {
+        "key": "C",
+        "text": "Tenaga nuklir mikro portabel"
+      },
+      {
+        "key": "D",
+        "text": "Bahan bakar minyak tanah murni"
+      },
+      {
+        "key": "E",
+        "text": "Kompor gas elpiji 3 kg bersubsidi sebanyak 100 tabung sekaligus"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Tungku biomassa flat-bed dryer memanfaatkan sekam padi (husk) yang melimpah dan gratis di sentra penggilingan Belitang sebagai bahan bakar pemanas udara hembus blower, sangat ekonomis dan efisien."
+  },
+  {
+    "id": 27,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Saluran irigasi cacing (parit drainase internal di petak sawah) sengaja dibuat melintang di tengah sawah berlumpur sebelum pengeringan menjelang panen. Apa tujuan rekayasa hidrologis parit cacing ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mempercepat pembuangan air permukaan sehingga tanah sawah mengeras merata dan aman dilalui roda combine harvester saat panen"
+      },
+      {
+        "key": "B",
+        "text": "Menenggelamkan tanaman padi ke dalam lumpur sedalam 1 meter"
+      },
+      {
+        "key": "C",
+        "text": "Tempat membiakkan keong mas agar memakan batang padi"
+      },
+      {
+        "key": "D",
+        "text": "Menahan air setinggi mungkin agar gabah tetap basah kuyup"
+      },
+      {
+        "key": "E",
+        "text": "Menghalangi sinar matahari agar tidak mengenai permukaan tanah"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Parit cacing (internal field drain) mengeringkan kelebihan air petakan 7-10 hari sebelum panen, memadatkan daya dukung tanah (bearing capacity) agar mesin combine harvester tidak ambles dan pematangan gabah serentak."
+  },
+  {
+    "id": 28,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 8,
+    "question": "Petani kreatif di Belitang sering memodifikasi stang sprayer elektrik dengan memasang 'double nozzle' atau '4 nozzle boom'. Tujuan rekayasa teknis modifikasi ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menambah lebar bentang semprotan sehingga cakupan areal per langkah kaki petani menjadi lebih luas dan waktu kerja lebih cepat"
+      },
+      {
+        "key": "B",
+        "text": "Membuat cairan semprotan keluar berwujud es beku"
+      },
+      {
+        "key": "C",
+        "text": "Menguras baterai aki sprayer dalam waktu 1 menit"
+      },
+      {
+        "key": "D",
+        "text": "Mengurangi tekanan pompa hingga air berhenti mengalir"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah arah semprotan hanya mengarah ke wajah penyemprot"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Boom multi-nozzle memperluas swath width semprotan (dari 1 meter menjadi 2-2.5 meter), menghemat waktu aplikasi hingga 50% dan menjaga dosis semprotan tetap merata pada hamparan kanopi padi."
+  },
+  {
+    "id": 29,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 9,
+    "question": "Pada sawah lebak peralihan di tepian Sungai Belitang yang rentan luapan banjir mendadak, rekayasa pertanaman apa yang diterapkan petani adaptif?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengatur waktu tanam mundur mengikuti surutnya air lebak dan menggunakan varietas toleran rendaman seperti Inpara atau Inpari 30 Ciherang Sub-1"
+      },
+      {
+        "key": "B",
+        "text": "Membangun tembok beton setinggi 10 meter mengelilingi setiap petak sawah"
+      },
+      {
+        "key": "C",
+        "text": "Menanam padi di dalam karung goni yang digantung di tiang bambu"
+      },
+      {
+        "key": "D",
+        "text": "Menyedot habis seluruh air sungai Komering menggunakan selang plastik"
+      },
+      {
+        "key": "E",
+        "text": "Membiarkan sawah telantar dan beralih menambang pasir"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Varietas Sub-1 (seperti Inpari 30 Ciherang Sub-1) memiliki gen SUB1A yang mampu menahan dormansi respirasi saat terendam total hingga 14 hari, dipadukan penyesuaian kalender pola tanam pasang-surut lebak."
+  },
+  {
+    "id": 30,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 10,
+    "question": "Pemasangan jaring kasa plastik biru di sekeliling persemaian bibit padi di Belitang merupakan rekayasa proteksi fisik sederhana. Fungsi utama penghalang fisik ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mencegah migrasi vektor hama wereng batang coklat dan serangan burung gereja pada bibit muda"
+      },
+      {
+        "key": "B",
+        "text": "Menghalangi masuknya oksigen ke bibit padi"
+      },
+      {
+        "key": "C",
+        "text": "Menyerap panas matahari agar tanah persemaian mendidih"
+      },
+      {
+        "key": "D",
+        "text": "Membuat bibit padi tumbuh berwarna biru"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah petani lain melihat varietas padi yang ditanam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Penyekatan fisik dengan jaring waring/kasa mesh halus melindungi bibit muda dari serangan serangga vektor virus (wereng hijau/coklat), tikus, dan burung gereja saat cadangan makanan biji masih rentan."
+  },
+  {
+    "id": 31,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 1,
+    "question": "Seorang petani di BK 10 Belitang melakukan ubinan sebelum panen dengan petak ukur standar BPS seluas 2,5 m × 2,5 m (luas 6,25 m²). Dari petak ubinan tersebut diperoleh gabah bersih seberat 4,5 kg. Berapakah estimasi produktivitas panen per hektar (1 ha = 10.000 m²)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "4,5 ton / ha"
+      },
+      {
+        "key": "B",
+        "text": "7,2 ton / ha"
+      },
+      {
+        "key": "C",
+        "text": "9,0 ton / ha"
+      },
+      {
+        "key": "D",
+        "text": "5,8 ton / ha"
+      },
+      {
+        "key": "E",
+        "text": "11,2 ton / ha"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Rumus produktivitas ubinan: (Hasil ubinan × 10.000) / Luas ubinan = (4,5 kg × 10.000) / 6,25 m² = 45.000 / 6,25 = 7.200 kg = 7,2 ton/ha."
+  },
+  {
+    "id": 32,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Pak Joko menggarap 1 hektar sawah dengan rincian biaya operasional: olah tanah traktor Rp 1.200.000, benih 25 kg Rp 350.000, pupuk NPK & Urea Rp 2.200.000, pestisida Rp 850.000, tenaga kerja tanam & rawat Rp 2.400.000, dan sewa combine harvester Rp 1.500.000. Berapakah total modal pengeluaran Pak Joko?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 6.500.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 8.500.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 10.200.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 7.800.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 12.000.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Total Modal = 1.200.000 + 350.000 + 2.200.000 + 850.000 + 2.400.000 + 1.500.000 = Rp 8.500.000."
+  },
+  {
+    "id": 33,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Dari lahan 1 hektar tersebut, Pak Joko berhasil memanen 6.000 kg Gabah Kering Panen (GKP) dan menjualnya langsung ke tengkulak dengan harga Rp 6.500 per kg. Berapakah total pendapatan kotor yang diterima Pak Joko?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 32.500.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 39.000.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 45.000.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 28.000.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 52.000.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Total Pendapatan Kotor = Volume Hasil Panen × Harga Jual = 6.000 kg × Rp 6.500/kg = Rp 39.000.000."
+  },
+  {
+    "id": 34,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Berdasarkan data soal nomor 32 dan 33 (Total Modal Rp 8.500.000 dan Pendapatan Kotor Rp 39.000.000), berapakah laba bersih (keuntungan) yang diperoleh Pak Joko dalam satu musim tanam?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 30.500.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 25.000.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 39.000.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 18.500.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 32.000.000"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Laba Bersih = Pendapatan Kotor - Total Modal = Rp 39.000.000 - Rp 8.500.000 = Rp 30.500.000."
+  },
+  {
+    "id": 35,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Harga Pokok Produksi (HPP) per kg gabah menggambarkan modal riil yang dikeluarkan petani untuk memproduksi 1 kg gabah. Jika total biaya modal Rp 8.500.000 dan hasil panen 6.000 kg, berapakah HPP per kg gabah Pak Joko?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 1.417 per kg"
+      },
+      {
+        "key": "B",
+        "text": "Rp 3.500 per kg"
+      },
+      {
+        "key": "C",
+        "text": "Rp 5.200 per kg"
+      },
+      {
+        "key": "D",
+        "text": "Rp 850 per kg"
+      },
+      {
+        "key": "E",
+        "text": "Rp 2.100 per kg"
+      }
+    ],
+    "correct": "A",
+    "explanation": "HPP per kg = Total Biaya Produksi / Total Volume Panen = Rp 8.500.000 / 6.000 kg = Rp 1.416,67 (dibulatkan Rp 1.417/kg). Karena harga jual Rp 6.500/kg, petani menikmati margin keuntungan yang sangat sehat."
+  },
+  {
+    "id": 36,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Kebutuhan pupuk Urea (46% N) rekomendasi dinas pertanian untuk sawah irigasi Belitang adalah 200 kg/ha. Jika harga pupuk Urea bersubsidi Rp 2.250 per kg dan pupuk nonsubsidi Rp 7.500 per kg, berapa selisih penghematan biaya pupuk yang dinikmati petani jika mendapatkan alokasi pupuk subsidi secara penuh?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 450.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 1.050.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 1.500.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 800.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 2.250.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Biaya nonsubsidi: 200 kg × Rp 7.500 = Rp 1.500.000. Biaya subsidi: 200 kg × Rp 2.250 = Rp 450.000. Selisih penghematan = Rp 1.500.000 - Rp 450.000 = Rp 1.050.000."
+  },
+  {
+    "id": 37,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 7,
+    "question": "Sistem sewa combine harvester di pedesaan OKU Timur ada dua skema: (1) Sewa tunai Rp 1.300.000/ha atau (2) Sistem bagi hasil gabah (bawon) 1 karung untuk operator setiap 10 karung panen (1:10). Jika total hasil panen adalah 80 karung gabah (nilai per karung Rp 350.000), skema mana yang lebih hemat bagi petani?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Skema bawon 1:10 lebih hemat Rp 1.500.000"
+      },
+      {
+        "key": "B",
+        "text": "Skema sewa tunai lebih hemat Rp 1.500.000 (biaya tunai Rp 1.300.000 vs bawon Rp 2.800.000)"
+      },
+      {
+        "key": "C",
+        "text": "Kedua skema menghasilkan biaya yang sama persis"
+      },
+      {
+        "key": "D",
+        "text": "Skema bawon lebih hemat karena tidak memerlukan uang tunai di awal panen"
+      },
+      {
+        "key": "E",
+        "text": "Skema tunai lebih boros Rp 500.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Biaya bawon 1:10 dari 80 karung = 8 karung untuk mesin. Nilai uang bawon: 8 karung × Rp 350.000 = Rp 2.800.000. Dibanding sewa tunai Rp 1.300.000, petani berhemat Rp 1.500.000 jika memilih sewa tunai."
+  },
+  {
+    "id": 38,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 8,
+    "question": "Pada proses penggilingan padi di RMU Belitang, 5.000 kg Gabah Kering Giling (GKG) menghasilkan 3.250 kg beras putih kualitas medium. Berapakah persentase rendemen beras giling tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "55%"
+      },
+      {
+        "key": "B",
+        "text": "65%"
+      },
+      {
+        "key": "C",
+        "text": "75%"
+      },
+      {
+        "key": "D",
+        "text": "60%"
+      },
+      {
+        "key": "E",
+        "text": "70%"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Rendemen beras = (Total Beras / Total GKG) × 100% = (3.250 / 5.000) × 100% = 65%."
+  },
+  {
+    "id": 39,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 9,
+    "question": "Rasio Penerimaan terhadap Biaya (R/C Ratio) digunakan untuk mengukur kelayakan finansial usaha tani padi. Jika Total Penerimaan Rp 39.000.000 dan Total Biaya Rp 8.500.000, berapakah nilai R/C rasionya dan apa kesimpulannya?",
+    "options": [
+      {
+        "key": "A",
+        "text": "R/C = 0,22 (Usaha tani merugi dan tidak layak dilanjutkan)"
+      },
+      {
+        "key": "B",
+        "text": "R/C = 4,59 (Usaha tani sangat menguntungkan dan sangat layak secara ekonomis karena R/C > 1)"
+      },
+      {
+        "key": "C",
+        "text": "R/C = 1,00 (Usaha tani berada pada titik impas tanpa untung rugi)"
+      },
+      {
+        "key": "D",
+        "text": "R/C = 2,50 (Usaha tani defisit modal)"
+      },
+      {
+        "key": "E",
+        "text": "R/C tidak dapat dihitung karena tidak ada data penyusutan traktor"
+      }
+    ],
+    "correct": "B",
+    "explanation": "R/C Ratio = Total Revenue / Total Cost = 39.000.000 / 8.500.000 = 4,59. Karena nilai R/C jauh di atas 1, usaha tani padi ini menghasilkan Rp 4,59 penerimaan untuk setiap Rp 1,00 modal yang diinvestasikan."
+  },
+  {
+    "id": 40,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 10,
+    "question": "Seorang petani membeli benih bersertifikat label biru isi 5 kg sebanyak 5 kantong dengan harga Rp 75.000 per kantong. Luas sawah 1 hektar membutuhkan 25 kg benih. Jika daya kecambah benih pada label tertera 90%, berapa butir benih yang diperkirakan berkecambah normal dari setiap 100 butir benih yang disemai?",
+    "options": [
+      {
+        "key": "A",
+        "text": "50 butir"
+      },
+      {
+        "key": "B",
+        "text": "75 butir"
+      },
+      {
+        "key": "C",
+        "text": "90 butir"
+      },
+      {
+        "key": "D",
+        "text": "100 butir"
+      },
+      {
+        "key": "E",
+        "text": "10 butir"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Daya kecambah 90% menunjukkan secara matematis bahwa dari 100 benih yang diuji/disemai, 90 butir dijamin tumbuh normal menjadi kecambah berakar sehat."
+  },
+  {
+    "id": 41,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 1,
+    "question": "Kecamatan Belitang dikenal dengan program Indeks Pertanaman (IP) Padi 300 (tanam dan panen padi 3 kali setahun). Bagaimana keterpaduan 4 pilar STEM memungkinkan penerapan IP 300 berjalan sukses tanpa mengeringkan saluran irigasi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sains varietas genjah (100 hari) + Teknologi mekanisasi traktor & combine panen cepat + Rekayasa jadwal giliran air saluran BK + Matematika manajemen kas modal tanam"
+      },
+      {
+        "key": "B",
+        "text": "Menghilangkan penggunaan pupuk dan membiarkan rumput liar tumbuh lebat"
+      },
+      {
+        "key": "C",
+        "text": "Hanya mengandalkan doa tanpa menggunakan traktor dan benih unggul"
+      },
+      {
+        "key": "D",
+        "text": "Menggunakan pestisida kimia berdosis 10 kali lipat setiap hari"
+      },
+      {
+        "key": "E",
+        "text": "Mengganti padi dengan jagung manis pada musim ketiga"
+      }
+    ],
+    "correct": "A",
+    "explanation": "IP 300 adalah mahakarya integrasi STEM: Sains (varietas umur pendek 100-105 HST), Teknologi (mekanisasi percepatan olah tanah dan panen), Rekayasa (manajemen hidrologi gilir air BK), dan Matematika (kalkulasi cash-flow perputaran panen)."
+  },
+  {
+    "id": 42,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 2,
+    "question": "Dalam mewujudkan pertanian presisi (precision agriculture) di OKU Timur, data ubinan matematika, citra sensor drone (teknologi), uji kesuburan tanah (sains), dan saluran irigasi otomatis (rekayasa) disatukan untuk mencapai tujuan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memaksimalkan efisiensi input pupuk/air, meminimalkan biaya modal, dan melipatgandakan keuntungan bersih petani secara berkelanjutan"
+      },
+      {
+        "key": "B",
+        "text": "Menghapuskan tenaga kerja manusia sepenuhnya dari seluruh desa"
+      },
+      {
+        "key": "C",
+        "text": "Menaikkan harga beras di pasar hingga tidak terjangkau masyarakat"
+      },
+      {
+        "key": "D",
+        "text": "Membuat seluruh sawah menjadi objek wisata swafoto"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah lahan persawahan menjadi kawasan perumahan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pertanian presisi berbasis STEM memastikan setiap kilogram pupuk dan liter air diaplikasikan sesuai kebutuhan nyata tanaman di lapangan, menekan biaya produksi dan menjaga kelestarian agroekosistem."
+  },
+  {
+    "id": 43,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 3,
+    "question": "Kombinasi antara budidaya padi sawah dengan pemeliharaan ikan nila/mas di sela tanaman padi dikenal dengan sistem 'Mina Padi'. Mengapa sistem terpadu STEM ini menguntungkan secara ekologis dan finansial di Belitang?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ikan memakan hama wereng yang jatuh ke air, kotoran ikan menjadi pupuk organik, gulma berkurang, dan petani mendapat panen ganda (padi dan ikan)"
+      },
+      {
+        "key": "B",
+        "text": "Ikan memakan seluruh batang dan daun padi hingga habis tak tersisa"
+      },
+      {
+        "key": "C",
+        "text": "Air sawah menjadi kering karena diserap oleh tubuh ikan"
+      },
+      {
+        "key": "D",
+        "text": "Tanaman padi berubah menjadi tanaman air yang tidak berbunga"
+      },
+      {
+        "key": "E",
+        "text": "Petani tidak perlu lagi mengairi sawah dari saluran irigasi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Mina Padi adalah simbiotik mutualisme STEM: ikan memangsa hama/wereng dan mengaerasi air dengan pergerakannya, feses ikan menjadi pupuk organik hayati, menekan biaya pestisida dan memberi pendapatan ganda."
+  },
+  {
+    "id": 44,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Penerapan sistem PHT (Pengendalian Hama Terpadu) berbasis STEM mengajarkan petani untuk tidak menyemprot racun kimia saat populasi predator alami masih mencukupi. Manfaat ekonomi-matematis langsung bagi petani adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghemat pengeluaran modal pembelian pestisida hingga jutaan rupiah dan mencegah resistensi hama"
+      },
+      {
+        "key": "B",
+        "text": "Membuat harga gabah turun drastis di tingkat penebas"
+      },
+      {
+        "key": "C",
+        "text": "Mengharuskan petani menyewa satpam sawah untuk menjaga predator"
+      },
+      {
+        "key": "D",
+        "text": "Menambah durasi kerja petani di sawah menjadi 24 jam sehari"
+      },
+      {
+        "key": "E",
+        "text": "Menghilangkan hak petani mendapatkan kuota pupuk bersubsidi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "PHT rasional mengeliminasi semprotan pestisida yang sia-sia, menghemat jutaan rupiah modal tunai petani, melindungi kesehatan petani, dan mencegah ledakan resistensi hama sekunder."
+  },
+  {
+    "id": 45,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Upaya stabilisasi harga gabah saat panen raya di OKU Timur dilakukan melalui integrasi teknologi lumbung pangan modern (Food Estate) dan resi gudang. Keuntungan sistem resi gudang bagi petani kecil adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Petani dapat menyimpan gabah keringnya di gudang berstandar saat harga anjlok, memperoleh surat bukti simpan (resi), dan menggunakannya sebagai jaminan pinjaman modal di bank"
+      },
+      {
+        "key": "B",
+        "text": "Gabah petani disita tanpa ganti rugi oleh dinas perdagangan"
+      },
+      {
+        "key": "C",
+        "text": "Petani dipaksa membagikan gabahnya secara gratis kepada tengkulak"
+      },
+      {
+        "key": "D",
+        "text": "Gudang menahan gabah hingga membusuk dan berjamur"
+      },
+      {
+        "key": "E",
+        "text": "Petani dilarang menanam padi kembali pada musim berikutnya"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sistem Resi Gudang (SRG) melindungi petani dari jebakan harga jatuh saat panen raya: gabah disimpan aman di fasilitas drying & storage terstandar, dan sertifikat resi dapat diagunkan ke bank untuk likuiditas tunai."
+  },
+  {
+    "id": 46,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 6,
+    "question": "Pemanfaatan sekam padi sebagai bahan baku pembuatan biochar (arang sekam berpori) yang dicampur pupuk kandang sapi merupakan sintesis rekayasa dan sains tanah. Apa fungsi biochar bagi tanah sawah Belitang?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Berfungsi sebagai pembenah tanah (soil conditioner) penyimpan air dan hara dalam jangka panjang serta tempat hidup mikroba bermanfaat"
+      },
+      {
+        "key": "B",
+        "text": "Membuat tanah menjadi keras seperti batu bata bangunan"
+      },
+      {
+        "key": "C",
+        "text": "Menghilangkan seluruh kandungan hara nitrogen dalam tanah"
+      },
+      {
+        "key": "D",
+        "text": "Menaikkan suhu tanah hingga mencapai 80 derajat Celcius"
+      },
+      {
+        "key": "E",
+        "text": "Membuat air irigasi berubah warna menjadi hitam pekat beracun"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Biochar sekam padi memiliki luas permukaan spesifik sangat tinggi dan pori mikro stabil yang menjadi 'rumah' bagi mikroba pengurai hara dan menahan air di zona perakaran, memulihkan kesehatan tanah sawah intensif."
+  },
+  {
+    "id": 47,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Kemitraan antara Gabungan Kelompok Tani (Gapoktan) Belitang dengan BUMDes dalam pengelolaan alsintan bersama (UPJA / Unit Pelayanan Jasa Alsintan) bertujuan memecahkan masalah matematika ekonomi petani berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tingginya biaya investasi pembelian alat traktor/combine yang tidak terjangkau petani perseorangan dengan menyediakan jasa sewa murah dan terkoordinasi"
+      },
+      {
+        "key": "B",
+        "text": "Kewajiban petani membayar pajak alsintan ke luar negeri"
+      },
+      {
+        "key": "C",
+        "text": "Pembagian utang traktor kepada seluruh warga desa secara merata"
+      },
+      {
+        "key": "D",
+        "text": "Pemberian sanksi denda jika petani tidak menyewa traktor Gapoktan"
+      },
+      {
+        "key": "E",
+        "text": "Pelarangan petani membeli alat semprot tangan sendiri"
+      }
+    ],
+    "correct": "A",
+    "explanation": "UPJA membagi biaya modal investasi mesin mahal (capital expenditure) melalui layanan sewa bersama yang terjangkau bagi petani gurem, memaksimalkan utilisasi alat dan mendatangkan pendapatan bagi kas kelompok."
+  },
+  {
+    "id": 48,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Penggunaan varietas padi aromatik lokal atau beras khusus (beras merah dan beras hitam organik) yang dikembangkan di sebagian kawasan Belitang memiliki orientasi nilai tambah pasar karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memiliki harga jual per kg 2 hingga 3 kali lebih tinggi dibanding beras medium biasa, membuka segmen pasar kesehatan bernilai ekonomi tinggi"
+      },
+      {
+        "key": "B",
+        "text": "Tidak memerlukan air dan sinar matahari sama sekali saat ditanam"
+      },
+      {
+        "key": "C",
+        "text": "Hanya boleh dikonsumsi oleh keluarga petani itu sendiri"
+      },
+      {
+        "key": "D",
+        "text": "Dapat dipanen setiap 10 hari sekali sepanjang tahun"
+      },
+      {
+        "key": "E",
+        "text": "Menghasilkan rendemen beras sebesar 100% tanpa adanya sekam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Diversifikasi ke beras organik dan fungsional (beras merah/hitam indeks glikemik rendah) menerapkan kalkulasi margin tinggi: meski perawatan lebih teliti, harga jualnya mencapai Rp 20.000-25.000/kg dibanding beras biasa."
+  },
+  {
+    "id": 49,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Jaringan irigasi Belitang memiliki pintu pembagi air di setiap bangunan bagi (BK 1 s.d. BK 32). Bagaimana integrasi matematika dan rekayasa hidrolika diterapkan oleh petugas PPA (Petugas Operasi & Pemeliharaan Air)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Membuka pintu air berdasarkan rumus debit Q = A × V (Luas bukaan pintu × Kecepatan aliran) disesuaikan dengan luas hektar sawah yang membutuhkan air di petak tersier"
+      },
+      {
+        "key": "B",
+        "text": "Membuka seluruh pintu air setinggi-tingginya setiap hari tanpa pengukuran"
+      },
+      {
+        "key": "C",
+        "text": "Menutup rapat semua pintu air selama musim kemarau berlangsung"
+      },
+      {
+        "key": "D",
+        "text": "Mengalirkan air hanya ke sawah milik kerabat petugas irigasi"
+      },
+      {
+        "key": "E",
+        "text": "Mengukur debit air hanya menggunakan perkiraan pandangan mata tanpa mistar ukur"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Petugas irigasi membaca peilschaal (papan duga muka air) dan mengalkulasi debit Q (m3/detik) sesuai bukaan pintu dan luas baku sawah hilir, memastikan distribusi air proporsional dan adil."
+  },
+  {
+    "id": 50,
+    "day": 3,
+    "sector": "pertanian",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Sebagai lumbung pangan utama Provinsi Sumatera Selatan dan penopang pangan nasional, Kabupaten OKU Timur menerapkan pendekatan STEM berkelanjutan untuk menghadapi tantangan perubahan iklim global. Langkah strategis manakah yang paling mencerminkan keterpaduan 4 pilar STEM tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Modernisasi irigasi hemat air (AWD) + Alsintan ramah emisi + Pupuk berimbang berbasis uji tanah + Sistem peringatan dini iklim digital"
+      },
+      {
+        "key": "B",
+        "text": "Mengalihkan seluruh lahan sawah irigasi teknis menjadi kawasan tambang pasir"
+      },
+      {
+        "key": "C",
+        "text": "Menghentikan seluruh penggunaan mesin dan kembali ke metode bertani seratus tahun lalu"
+      },
+      {
+        "key": "D",
+        "text": "Mengimpor seluruh beras dari luar negeri dan membiarkan sawah mengering"
+      },
+      {
+        "key": "E",
+        "text": "Membakar jerami sawah secara massal setiap akhir musim panen"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kedaulatan pangan OKU Timur berkelanjutan dibangun di atas 4 pilar STEM: Sains (iklim & varietas adaptif), Teknologi (alsintan presisi & IoT cuaca), Rekayasa (modernisasi tata kelola air irigasi Komering), dan Matematika (kalkulasi efisiensi input & margin petani)."
+  },
+  {
+    "id": 51,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 1,
+    "question": "Mengapa penyadapan pohon karet (Hevea brasiliensis) di perkebunan rakyat OKU Timur dianjurkan dilakukan pada pagi hari buta antara pukul 05.00 hingga 07.30 WIB?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Karena pada siang hari getah karet membeku di dalam batang dan tidak bisa mengalir"
+      },
+      {
+        "key": "B",
+        "text": "Karena tekanan turgor sel tanaman dan pembuluh lateks mencapai titik tertinggi pada pagi hari saat transpirasi daun masih rendah, menghasilkan aliran getah paling deras"
+      },
+      {
+        "key": "C",
+        "text": "Karena serangga penyerbuk karet hanya aktif sebelum matahari terbit"
+      },
+      {
+        "key": "D",
+        "text": "Karena pohon karet menyerap sinar matahari hanya pada malam hari"
+      },
+      {
+        "key": "E",
+        "text": "Agar petani terhindar dari panas terik matahari tanpa alasan fisiologis tanaman"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pada pagi hari, pohon karet memiliki tekanan turgor sel maksimal karena serapan air malam hari tinggi dan kehilangan air lewat transpirasi belum terjadi, sehingga getah mengalir lebih lancar dan volume lateks maksimal."
+  },
+  {
+    "id": 52,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Dalam pembekuan getah karet mangkok di OKU Timur, penggunaan asam format (asam semut) sangat disarankan dibandingkan tawas atau cuka para oplosan. Mengapa asam semut lebih unggul secara sains kimia bahan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Karena asam semut menjaga elastisitas, kekuatan tarik polimer karet (koagulasi sempurna), dan tidak merusak molekul karet alam saat diolah di pabrik crumb rubber"
+      },
+      {
+        "key": "B",
+        "text": "Karena asam semut membuat bobot getah bertambah menjadi 5 kali lipat lebih berat"
+      },
+      {
+        "key": "C",
+        "text": "Karena asam semut mengubah getah karet menjadi senyawa plastik keras"
+      },
+      {
+        "key": "D",
+        "text": "Karena asam semut memiliki aroma harum bunga mawar yang disukai pabrik"
+      },
+      {
+        "key": "E",
+        "text": "Karena asam semut memutihkan getah karet seketika tanpa proses pengeringan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Asam format menurunkan pH lateks ke titik isoelektrik (pH 4.7) secara alami dan bersih, mempertahankan integritas rantai polimer poliisoprena, sedangkan tawas/asam sulfat merusak elastisitas dan menyebabkan karet rapuh/busuk."
+  },
+  {
+    "id": 53,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 3,
+    "question": "Pada tanaman kelapa sawit (Elaeis guineensis), kriteria panen matang fisiologis Tandan Buah Segar (TBS) yang siap dipanen oleh pekebun di OKU Timur ditandai dengan...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Seluruh pelepah daun sawit mengering dan jatuh ke tanah"
+      },
+      {
+        "key": "B",
+        "text": "Lepasnya (membrondol) minimal 5 butir buah sawit dari tandannya ke piringan pohon secara alami"
+      },
+      {
+        "key": "C",
+        "text": "Warna kulit buah sawit masih berwarna hijau pekat mengkilap"
+      },
+      {
+        "key": "D",
+        "text": "Tandan buah berbau harum seperti minyak wangi"
+      },
+      {
+        "key": "E",
+        "text": "Batang pohon sawit mengeluarkan getah putih dari kulitnya"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Standar kematangan fraksi 2 TBS adalah terlepasnya (brondol) 5-10 butir buah di piringan, menandakan kandungan asam lemak bebas (FFA) masih rendah dan rendemen minyak sawit (CPO) mencapai titik optimum."
+  },
+  {
+    "id": 54,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 4,
+    "question": "Penyakit jamur akar putih (Rigidoporus microporus) pada tanaman karet di OKU Timur sering menyebar melalui kontak akar antar-pohon di dalam tanah. Gejala visual awal apa yang tampak pada tajuk kanopi pohon karet yang terserang?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Daun berubah menjadi biru terang dan batang mengeluarkan busa"
+      },
+      {
+        "key": "B",
+        "text": "Daun menjadi kusam, layu menguning perlahan, cabang ranting mati pucuk (die back), dan pembuluh lateks mengering"
+      },
+      {
+        "key": "C",
+        "text": "Pohon langsung berbuah lebat sebanyak 10 kali lipat"
+      },
+      {
+        "key": "D",
+        "text": "Kulit batang mengelupas menyerupai kertas putih tanpa kerusakan akar"
+      },
+      {
+        "key": "E",
+        "text": "Akar pohon memanjang menembus permukaan tanah hingga setinggi 1 meter"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Jamur akar putih merusak jaringan korteks perakaran sehingga penyerapan air dan hara terhenti, mengakibatkan kanopi daun menguning kusam, rontok, ranting mati pucuk, dan aliran getah berhenti drastis."
+  },
+  {
+    "id": 55,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Jenis tanah di perkebunan karet dan sawit rakyat OKU Timur umumnya berjenis Podsolik Merah Kuning (Ultisol). Sifat kimia utama tanah Ultisol yang harus diperbaiki oleh pekebun dengan pengapuran (dolomit) adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tingkat kemasaman tanah tinggi (pH < 4.5) disertai kejenuhan aluminium (Al) yang tinggi dan ketersediaan fosfat rendah"
+      },
+      {
+        "key": "B",
+        "text": "Kandungan garam dapur (NaCl) yang sangat pekat seperti air laut"
+      },
+      {
+        "key": "C",
+        "text": "Kandungan hara kalsium yang terlalu berlebihan hingga meracuni akar"
+      },
+      {
+        "key": "D",
+        "text": "Tanah tidak mampu menyerap pupuk kandang sama sekali"
+      },
+      {
+        "key": "E",
+        "text": "Kondisi tanah yang selalu tergenang air setinggi 1 meter sepanjang tahun"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Tanah Ultisol bereaksi masam dengan fiksasi Fosfat tinggi oleh Al dan Fe. Pemberian kapur dolomit (CaMg(CO3)2) menaikkan pH tanah, mengendapkan racun aluminium bebas, serta memasok hara Kalsium dan Magnesium."
+  },
+  {
+    "id": 56,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Ketika musim hujan lebat berlangsung terus-menerus di OKU Timur, petani karet sering terpaksa meliburkan penyadapan. Alasan sains biologi dan ekonomi di balik tindakan ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Air hujan yang mengalir di batang akan menghanyutkan lateks keluar mangkok dan memicu infeksi penyakit bidang sadap (mouldy rot / Ceratocystis fimbriata)"
+      },
+      {
+        "key": "B",
+        "text": "Pohon karet tidak dapat menghasilkan getah sama sekali saat cuaca dingin"
+      },
+      {
+        "key": "C",
+        "text": "Getah karet akan mengeras menjadi batu di dalam pembuluh kulit"
+      },
+      {
+        "key": "D",
+        "text": "Air hujan menyebabkan daun karet rontok secara permanen"
+      },
+      {
+        "key": "E",
+        "text": "Pisau sadap akan berkarat dalam hitungan detik jika terkena air hujan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Menyadap saat batang basah kuyup menyebabkan lateks meluber keluar alur terbuang bersama air hujan, serta air yang menggenangi irisan sadap membuka pintu masuk spora jamur kanker garis (mouldy rot) yang merusak kulit pulihan."
+  },
+  {
+    "id": 57,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 7,
+    "question": "Kedalaman irisan penyadapan kulit pohon karet yang benar adalah berkisar 1 hingga 1,5 mm sebelum menyentuh kambium. Apa bahaya fisiologis jika irisan sadap terlalu dalam melukai lapisan kambium?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kulit pulihan akan tumbuh bergelombang, berbenjol-benjol, dan merusak bidang sadap berikutnya sehingga pohon tidak dapat disadap kembali"
+      },
+      {
+        "key": "B",
+        "text": "Getah lateks akan berubah warna menjadi merah pekat"
+      },
+      {
+        "key": "C",
+        "text": "Pohon karet akan langsung tumbang ke tanah"
+      },
+      {
+        "key": "D",
+        "text": "Kambium yang terluka akan memicu tumbuhnya buah kelapa sawit"
+      },
+      {
+        "key": "E",
+        "text": "Pohon karet menjadi kebal terhadap semua jenis penyakit jamur"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kambium adalah jaringan meristematik pembentuk kulit baru. Jika kambium teriris luka, proses regenerasi kulit terganggu dan membentuk tonjolan kayu (burr/benjol) yang membuat bidang sadap masa depan rusak total."
+  },
+  {
+    "id": 58,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Pada tanaman kelapa sawit, penyakit busuk pangkal batang yang paling ditakuti pekebun di Sumatera Selatan disebabkan oleh infeksi jamur patogen tular-tanah bernama...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ganoderma boninense"
+      },
+      {
+        "key": "B",
+        "text": "Escherichia coli"
+      },
+      {
+        "key": "C",
+        "text": "Saccharomyces cerevisiae"
+      },
+      {
+        "key": "D",
+        "text": "Rhizopus oryzae"
+      },
+      {
+        "key": "E",
+        "text": "Lactobacillus bulgaricus"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Ganoderma boninense adalah jamur basidiomisetes penyebab busuk pangkal batang kelapa sawit yang mendegradasi lignin batang, mengakibatkan pohon roboh dan kematian tanaman sawit."
+  },
+  {
+    "id": 59,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Pohon karet mengalami fenomena alamiah 'gugur daun semu' pada musim kemarau di OKU Timur. Apa fungsi adaptasi fisiologis pengguguran daun tersebut bagi kelangsungan hidup pohon karet?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengurangi laju transpirasi (penguapan air) secara drastis untuk menghemat cadangan air tanah yang menipis"
+      },
+      {
+        "key": "B",
+        "text": "Mempercepat pembusukan batang bawah pohon"
+      },
+      {
+        "key": "C",
+        "text": "Menghilangkan seluruh cadangan getah lateks di dalam batang"
+      },
+      {
+        "key": "D",
+        "text": "Memancing serangga rayap memakan daun kering di tanah"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah sinar matahari mengenai batang pohon"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pengguguran daun saat kemarau (wintering) merupakan strategi adaptasi morfofisiologis tanaman karet untuk meminimalkan luas permukaan transpirasi sehingga pohon terhindar dari kematian akibat kekeringan (water stress)."
+  },
+  {
+    "id": 60,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 10,
+    "question": "Unsur hara Kalium (K) dan Magnesium (Mg) sangat krusial bagi pohon kelapa sawit yang sudah menghasilkan (TM). Gejala defisiensi Magnesium pada daun sawit di lapangan tampak sebagai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bercak oranye kekuningan cerah pada anak daun tua yang terkena sinar matahari penuh (orange spotting)"
+      },
+      {
+        "key": "B",
+        "text": "Batang sawit membengkok membentuk huruf S"
+      },
+      {
+        "key": "C",
+        "text": "Akar sawit membusuk dan mengeluarkan bau minyak tanah"
+      },
+      {
+        "key": "D",
+        "text": "Daun muda tumbuh melingkar seperti spiral obat nyamuk"
+      },
+      {
+        "key": "E",
+        "text": "Seluruh tandan buah rontok sebelum berbunga"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Defisiensi Magnesium (Mg) menyebabkan klorosis kuning-oranye terang pada daun-daun tua pelepah bawah yang terkena sinar matahari, menurunkan laju fotosintesis dan pembentukan minyak pada TBS."
+  },
+  {
+    "id": 61,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 1,
+    "question": "Pisau sadap karet memiliki desain bilah melengkung khusus dengan alur pembuka kulit. Mengapa sudut kemiringan irisan sadap pada bidang sadap karet direkomendasikan sebesar 30° hingga 40° terhadap garis horizontal?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Agar cairan lateks dapat mengalir lancar mengikuti alur irisan menuju talang dan mangkok tanpa meluber ke sisi lain batang"
+      },
+      {
+        "key": "B",
+        "text": "Agar pisau sadap tidak cepat aus terkena getah"
+      },
+      {
+        "key": "C",
+        "text": "Agar getah lateks menguap ke udara sebelum sampai mangkok"
+      },
+      {
+        "key": "D",
+        "text": "Agar kulit pohon karet terkelupas habis dalam satu kali sadap"
+      },
+      {
+        "key": "E",
+        "text": "Hanya sebagai gaya pemotongan tanpa pengaruh aliran cairan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kemiringan alur 30°-40° ke arah talang memanfaatkan gaya gravitasi secara optimal agar lateks mengalir cepat ke mangkok tanpa tercecer ke kulit pohon, serta memotong jumlah pembuluh lateks maksimal yang tersusun spiral 3,7° ke kanan."
+  },
+  {
+    "id": 62,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Untuk memanen Tandan Buah Segar (TBS) kelapa sawit pada pohon muda berumur 3-7 tahun dengan ketinggian di bawah 3 meter, alat panen mekanis yang paling tepat dan efisien digunakan pekebun adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Dodos (alat pahat pemotong bertangkai pipa baja pendek bermata tajam lebar)"
+      },
+      {
+        "key": "B",
+        "text": "Egrek bergagang pipa teleskopik 12 meter"
+      },
+      {
+        "key": "C",
+        "text": "Gergaji mesin pembelah kayu (chainsaw)"
+      },
+      {
+        "key": "D",
+        "text": "Traktor roda empat bajak singkal"
+      },
+      {
+        "key": "E",
+        "text": "Cangkul tanah bergagang kayu"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Dodos adalah alat dorong berbilah baja tajam dengan gagang pendek (1.5 - 2.5 m) yang sangat lincah untuk memotong tangkai TBS dan pelepah penyangga pada tanaman sawit muda (umur <7-8 tahun)."
+  },
+  {
+    "id": 63,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Ketika pohon sawit sudah berumur tua (>10 tahun) dengan ketinggian tajuk mencapai 8 hingga 14 meter, pekebun beralih menggunakan teknologi panen berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Egrek (pisau sabit melengkung) yang disambung dengan pipa aluminium/fiberglass teleskopik ringan yang dapat diatur panjangnya"
+      },
+      {
+        "key": "B",
+        "text": "Memanjat pohon menggunakan tali tambang setiap kali panen"
+      },
+      {
+        "key": "C",
+        "text": "Menembak tangkai buah sawit menggunakan senapan angin"
+      },
+      {
+        "key": "D",
+        "text": "Menebang pohon sawit tersebut agar buahnya jatuh"
+      },
+      {
+        "key": "E",
+        "text": "Menunggu tandan sawit busuk dan jatuh sendiri ke tanah"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Egrek bergagang galah sambung aluminium atau karbon/fiberglass ringan memungkinkan tenaga pemanen menjangkau dan mengait tangkai buah sawit tinggi dari permukaan tanah dengan cepat dan aman."
+  },
+  {
+    "id": 64,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 4,
+    "question": "Alat angkut gerobak sorong dorong roda satu (angkong) sangat vital di dalam kebun sawit dan karet OKU Timur. Komponen apa yang paling menentukan keandalan angkong saat melintasi jalan rintisan kebun yang bertanah lunak atau berakar?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ban angin/karet bervolume lebar dengan bantalan bearing roda yang kokoh untuk meredam goncangan dan menahan beban berat"
+      },
+      {
+        "key": "B",
+        "text": "Cat bodi angkong yang berwarna mengkilap"
+      },
+      {
+        "key": "C",
+        "text": "Klakson listrik bertenaga baterai"
+      },
+      {
+        "key": "D",
+        "text": "Spion belakang pada pegangan tangan"
+      },
+      {
+        "key": "E",
+        "text": "Layar GPS digital pada bak angkut"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Ban karet pneumatik bertapak lebar dan as roda ber-bearing presisi mendistribusikan beban 100-150 kg TBS/getah di jalan rintisan bertanah liat tanpa membuat roda selip atau amblas."
+  },
+  {
+    "id": 65,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Untuk menimbang hasil sadap karet atau TBS sawit di tempat penimbangan hasil (TPH) kebun, pekebun OKU Timur mengandalkan timbangan gantung dacin atau timbangan digital gantung crane scale. Mengapa timbangan digital gantung semakin diminati?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Hasil timbang angka presisi langsung tampil di layar LCD, meminimalkan potensi kecurangan atau salah baca bandul timbangan manual"
+      },
+      {
+        "key": "B",
+        "text": "Dapat menambah bobot getah secara otomatis tanpa diketahui pembeli"
+      },
+      {
+        "key": "C",
+        "text": "Dapat menimbang benda gaib di dalam kebun"
+      },
+      {
+        "key": "D",
+        "text": "Tidak membutuhkan gaya gravitasi bumi saat bekerja"
+      },
+      {
+        "key": "E",
+        "text": "Membuat getah karet langsung kering seketika saat ditimbang"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Timbangan digital gantung dengan sensor load cell presisi tinggi memberikan kepastian data angka riil (transparansi), mencegah perdebatan antara pekebun dan pedagang pengumpul terkait posisi bandul dacin."
+  },
+  {
+    "id": 66,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Pada mangkok sadap karet, penggunaan mangkok berbahan plastik tebal polipropilena (PP) atau aluminium kini menggantikan mangkok batok kelapa tradisional di OKU Timur. Apa keunggulan teknologi mangkok sadap plastik PP?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Permukaan dalam licin dan tidak berpori sehingga gumpalan karet beku (lump) sangat mudah dilepaskan dan mangkok mudah dibersihkan"
+      },
+      {
+        "key": "B",
+        "text": "Dapat mengeluarkan bau wangi yang menarik serangga"
+      },
+      {
+        "key": "C",
+        "text": "Dapat meleleh saat terkena getah karet panas"
+      },
+      {
+        "key": "D",
+        "text": "Mangkok plastik dapat menyerap air hujan secara otomatis"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah getah karet menjadi bahan baku ban mobil seketika"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Mangkok plastik PP berpermukaan halus antilengket dan higienis, mencegah getah meresap ke pori-pori (seperti pada batok kelapa berjamur), menghasilkan bekuan mangkok (lump) yang bersih dan kadar kotoran rendah."
+  },
+  {
+    "id": 67,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 7,
+    "question": "Pekebun sawit modern di OKU Timur memanfaatkan gancu (kait tarik) besi baja bertangkai pendek. Fungsi mekanis alat gancu dalam proses panen sawit adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menancapkan ujung kait runcing ke tandan buah berduri untuk mengangkat dan melempar TBS ke dalam angkong tanpa melukai telapak tangan pemanen"
+      },
+      {
+        "key": "B",
+        "text": "Menebang pelepah sawit kering di atas pohon"
+      },
+      {
+        "key": "C",
+        "text": "Menggali lubang tanam bibit kelapa sawit"
+      },
+      {
+        "key": "D",
+        "text": "Mengukur kadar minyak sawit di laboratorium pabrik"
+      },
+      {
+        "key": "E",
+        "text": "Menyemprotkan herbisida gulma piringan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Gancu panen sawit (loading hook) berfungsi sebagai pengungkit ergonomis untuk mengangkat dan memindahkan TBS berduri tajam seberat 15-30 kg dengan aman, cepat, dan mencegah cedera tangan pemanen."
+  },
+  {
+    "id": 68,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 8,
+    "question": "Dalam pengendalian gulma gulma berdaun lebar dan alang-alang di piringan sawit, pekebun menggunakan nozzle semprot khusus tipe 'deflector' atau 'polijet'. Keunggulan teknologi nozzle deflector ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghasilkan semprotan berbentuk kipas lebar bertekanan rendah dengan butiran droplet besar (kasar) sehingga herbisida tidak melayang terbawa angin ke daun sawit (anti-drift)"
+      },
+      {
+        "key": "B",
+        "text": "Menghasilkan semprotan berputar menyerupai angin tornado"
+      },
+      {
+        "key": "C",
+        "text": "Mengubah cairan herbisida menjadi uap panas mendidih"
+      },
+      {
+        "key": "D",
+        "text": "Membuat gulma alang-alang tumbuh lebih lebat"
+      },
+      {
+        "key": "E",
+        "text": "Menyemprotkan cairan hanya dalam jarak 1 centimeter"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Nozzle deflector/VLV menghasilkan droplet besar pada tekanan rendah (1 bar), mencegah melayangnya butiran kabut racun ke pelepah bawah sawit muda (drift), sehingga aman bagi tanaman pokok."
+  },
+  {
+    "id": 69,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 9,
+    "question": "Aplikasi ponsel pintar (smartphone) pemantau harga lelang komoditas karet harian yang dikembangkan kelompok UPPB di OKU Timur merupakan adopsi teknologi digital. Manfaat utama teknologi informasi ini bagi pekebun rakyat adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memberikan transparansi harga pasar lelang resmi pabrik sehingga pekebun tidak mudah dipermainkan harga oleh tengkulak nakal"
+      },
+      {
+        "key": "B",
+        "text": "Menyadap getah karet dari jarak jauh secara otomatis"
+      },
+      {
+        "key": "C",
+        "text": "Mengisi baterai ponsel menggunakan getah karet"
+      },
+      {
+        "key": "D",
+        "text": "Menghilangkan kewajiban petani merawat kebunnya"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah mata uang rupiah menjadi mata uang asing"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Transparansi harga lelang karet bokar harian melalui WhatsApp/aplikasi digital memperkuat posisi tawar (bargaining position) pekebun, memastikan mereka menjual dengan harga wajar sesuai kadar karet kering (KKK)."
+  },
+  {
+    "id": 70,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 10,
+    "question": "Pada pabrik pengolahan kelapa sawit (PKS) tempat petani OKU Timur menjual TBS, teknologi pemisahan minyak sawit kasar (CPO) dari serabut dan cangkang menggunakan mesin pemeras bertekanan ulir raksasa yang disebut...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Screw press machine"
+      },
+      {
+        "key": "B",
+        "text": "Thresher combine"
+      },
+      {
+        "key": "C",
+        "text": "Huller roll"
+      },
+      {
+        "key": "D",
+        "text": "Rotary dryer"
+      },
+      {
+        "key": "E",
+        "text": "Stone crusher"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Screw press bekerja dengan poros ulir ganda yang menekan massa brondolan sawit yang telah dilumatkan (digester), memeras keluar cairan minyak CPO dan memisahkan serat sabut serta biji/inti sawit (kernel)."
+  },
+  {
+    "id": 71,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 1,
+    "question": "Untuk mengatasi kendala getah karet hanyut dan rusak saat hujan pagi hari, pekebun inovatif di OKU Timur memasang rekayasa pelindung bidang sadap (rain gutter). Bahan sederhana apa yang digunakan untuk membuat talang pelindung ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Plastik lembaran fleksibel atau ban dalam bekas yang ditempelkan di atas alur sadap melingkari batang dengan lem aspal/perekat khusus sebagai penepis air hujan"
+      },
+      {
+        "key": "B",
+        "text": "Membungkus seluruh pohon dengan kain terpal tebal"
+      },
+      {
+        "key": "C",
+        "text": "Menebang pohon karet hingga tersisa tingginya 1 meter"
+      },
+      {
+        "key": "D",
+        "text": "Memasang payung besi permanen di atas setiap puncak tajuk pohon karet"
+      },
+      {
+        "key": "E",
+        "text": "Mengalirkan listrik kawat panas ke permukaan batang pohon"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Rain gutter (talang tudung hujan) dari plastik sintetis/karet yang dilekatkan di atas bidang irisan sadap berfungsi membelokkan aliran air batang (stemflow) ke sisi lain pohon, menjaga mangkok sadap tetap kering saat hujan rintik."
+  },
+  {
+    "id": 72,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Di kebun karet dan sawit yang memiliki kemiringan lahan (lereng bergelombang), pekebun membuat parit rorak (silt pit) di antara barisan pohon. Apa fungsi teknik rekayasa konservasi tanah dan air rorak tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menjebak aliran air permukaan (runoff), menampung sedimen hara tanah yang tererosi, dan meresapkan air hujan ke dalam profil perakaran tanaman"
+      },
+      {
+        "key": "B",
+        "text": "Tempat membuang limbah plastik dan sampah beracun kebun"
+      },
+      {
+        "key": "C",
+        "text": "Membuat tanah lereng longsor dan terbawa banjir"
+      },
+      {
+        "key": "D",
+        "text": "Mencegah sinar matahari masuk ke dalam permukaan kebun"
+      },
+      {
+        "key": "E",
+        "text": "Sebagai saluran pembuang agar kebun menjadi kering kerontang"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Rorak (parit buntu berukuran 2 m × 0.4 m × 0.5 m) memotong panjang lereng, memperlambat kecepatan limpasan air hujan, mengendapkan pupuk dan tanah subur yang hanyut, serta menjadi kantong resapan air tanah saat kemarau."
+  },
+  {
+    "id": 73,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Pada kebun sawit rakyat di lahan gambut dangkal atau rawa pasang surut OKU Timur, rekayasa drainase tata air mikro dilakukan dengan membuat parit primer, sekunder, dan tersier yang dilengkapi pintu air (water gate). Tujuan pemasangan pintu air tersebut adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menjaga tinggi muka air tanah konstan pada kedalaman 50-70 cm di bawah permukaan tanah agar akar sawit tidak tergenang membusuk dan tanah tidak kering terbakar"
+      },
+      {
+        "key": "B",
+        "text": "Mengeringkan seluruh air hingga tanah gambut retak dan ambles"
+      },
+      {
+        "key": "C",
+        "text": "Menenggelamkan tanaman sawit hingga setinggi pucuk daun"
+      },
+      {
+        "key": "D",
+        "text": "Membiarkan air laut masuk mencemari sumur warga"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah buah sawit dipanen oleh pemiliknya"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pengaturan pintu air (water control) menjaga batas ambang muka air tanah 50-70 cm: mencegah subsidensi gambut dan bahaya kebakaran saat kemarau, sekaligus mencegah anoksia (kebusukan akar) saat musim penghujan."
+  },
+  {
+    "id": 74,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 4,
+    "question": "Kendala umum pengangkutan panen TBS sawit dari dalam blok kebun ke TPH adalah jalan rintisan yang becek dan licin saat hujan. Rekayasa jalan panen ramah lingkungan berbiaya murah yang diterapkan pekebun adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemasangan titi panen dari batang kayu bulat lokal atau susunan pelepah sawit kering di sepanjang alur lintasan angkong sorong"
+      },
+      {
+        "key": "B",
+        "text": "Mengecor seluruh jalan kebun dengan aspal hotmix tebal"
+      },
+      {
+        "key": "C",
+        "text": "Menggali jurang sedalam 5 meter di sepanjang jalan kebun"
+      },
+      {
+        "key": "D",
+        "text": "Menghamparkan garam dapur di atas tanah becek"
+      },
+      {
+        "key": "E",
+        "text": "Membakar ban bekas di sepanjang jalan rintisan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Titi panen kayu dan penataan tumpukan pelepah sawit kering (pruning pile) di alur pikul/lintasan berfungsi sebagai bantalan roda angkong, mendistribusikan beban angkut dan mencegah roda terbenam ke dalam tanah becek."
+  },
+  {
+    "id": 75,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Untuk menghasilkan bekuan getah karet mangkok (lump) yang bersih dan bernilai jual tinggi, rekayasa bak pembeku berpetak sekat aluminium diterapkan oleh kelompok tani UPPB di Belitang. Apa keunggulan teknis bak bersekat ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Lateks membeku dengan ketebalan dan ukuran seragam, bebas dari serpihan kayu dan kotoran tanah, serta mudah diangin-anginkan"
+      },
+      {
+        "key": "B",
+        "text": "Dapat membekukan getah karet tanpa menggunakan asam koagulan sama sekali"
+      },
+      {
+        "key": "C",
+        "text": "Membuat getah karet berubah menjadi logam perak"
+      },
+      {
+        "key": "D",
+        "text": "Mencegah getah karet dijual ke pabrik pengolahan"
+      },
+      {
+        "key": "E",
+        "text": "Mengurangi kadar karet kering menjadi di bawah 10%"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bak koagulasi bersekat membagi lateks cair menjadi lempengan beku berukuran standar dan ketebalan merata (uniform), mempermudah pengeluaran serum air dan menghasilkan bokar bersih berstandar SNI."
+  },
+  {
+    "id": 76,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 6,
+    "question": "Pekebun sawit di OKU Timur melakukan penyusunan pelepah sisa pangkasan (pruning) secara teratur pada gawangan mati membentuk tumpukan memanjang (letter U atau L). Manfaat rekayasa penataan biomassa pelepah ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Biomassa pelepah terurai lambat menjadi pupuk organik kompos alami, menahan kelembaban tanah, dan jalur gawangan hidup tetap bersih untuk jalan panen"
+      },
+      {
+        "key": "B",
+        "text": "Mengundang hama tikus dan babi hutan bersarang di dalam kebun"
+      },
+      {
+        "key": "C",
+        "text": "Mencegah petani lain memasuki kebun sawit"
+      },
+      {
+        "key": "D",
+        "text": "Membuat tanah kebun menjadi tandus dan gersang"
+      },
+      {
+        "key": "E",
+        "text": "Mempercepat tumbuhnya tanaman ilalang di antara pohon sawit"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Susunan pelepah di gawangan mati (pruning heap) menyumbang hara Kalium organik saat lapuk, mengendalikan erosi tanah, dan menjaga gawangan hidup (jalur panen) tetap leluasa untuk pengangkutan TBS."
+  },
+  {
+    "id": 77,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Dalam peremajaan pohon karet tua (replanting), rekayasa lubang tanam standar perkebunan berukuran 60 cm × 60 cm × 60 cm sengaja dipersiapkan sebulan sebelum tanam bibit okulasi. Mengapa tanah galian lapisan atas (top soil) dipisahkan dari lapisan bawah (sub soil)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tanah top soil yang kaya bahan organik akan dicampur pupuk dasar kandang dan dimasukkan kembali terlebih dahulu ke dasar lubang untuk zona perakaran bibit muda"
+      },
+      {
+        "key": "B",
+        "text": "Tanah top soil akan dibuang keluar kebun karena mengandung racun"
+      },
+      {
+        "key": "C",
+        "text": "Agar lubang tanam terisi air hujan hingga meluap"
+      },
+      {
+        "key": "D",
+        "text": "Tanah sub soil akan digunakan untuk membuat batu bata bangunan"
+      },
+      {
+        "key": "E",
+        "text": "Pemisahan tanah hanya tradisi tanpa tujuan agronomis"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pemisahan top soil (tanah hitam subur) bertujuan menempatkannya kembali di zona jelajah akar bibit setelah dicampur pupuk dasar fosfat/kandang, merangsang perakaran tunggang dan lateral menembus tanah tanpa hambatan."
+  },
+  {
+    "id": 78,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Modifikasi sudut kemiringan mata dodos panen sawit oleh pandai besi lokal di Belitang disesuaikan dengan kelengkungan tangkai tandan TBS. Efek mekanis rancangan bilah melengkung sedikit cekung ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Gaya dorong pemanen terpusat tepat pada tangkai buah dengan sekali hentak tanpa melukai pangkal pelepah mahkota pohon yang masih produktif"
+      },
+      {
+        "key": "B",
+        "text": "Membuat dodos patah saat membentur pelepah sawit"
+      },
+      {
+        "key": "C",
+        "text": "Menambah beban berat dodos menjadi 20 kilogram"
+      },
+      {
+        "key": "D",
+        "text": "Mencegah tandan buah sawit terpotong dari pohon"
+      },
+      {
+        "key": "E",
+        "text": "Membuat bilah dodos memantul dan melukai kaki pemanen"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bilah dodos berprofil semi-cekung (hollow curve) mengunci tangkai tandan saat didorong, memotong serat tangkai dengan efisiensi gaya geser maksimal dan mencegah rusaknya pelepah penyangga buah muda berikutnya."
+  },
+  {
+    "id": 79,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Untuk merangsang pemulihan kulit pohon karet yang telah disadap, pekebun mengoleskan formula pasta pelindung luka bidang sadap berbahan ter atau fungisida sistemik. Rekayasa perawatan ini bertujuan untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mencegah infeksi spora jamur pada sel meristem kambium dan mempercepat pembentukan kulit pulihan yang mulus rata"
+      },
+      {
+        "key": "B",
+        "text": "Membuat getah karet berhenti mengalir selamanya"
+      },
+      {
+        "key": "C",
+        "text": "Mengubah batang karet menjadi pohon berkayu jati"
+      },
+      {
+        "key": "D",
+        "text": "Mencegah getah karet diambil oleh petani tetangga"
+      },
+      {
+        "key": "E",
+        "text": "Menghilangkan kulit pohon karet agar kayunya gundul"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Aplikasi fungisida pasta penutup luka bidang sadap (wound dressing) bertindak sebagai plester antiseptik pelindung kambium dari jamur Ceratocystis, memicu regenerasi kambium menghasilkan kulit pulihan berkualitas prima."
+  },
+  {
+    "id": 80,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Pada perkebunan kelapa sawit rakyat di OKU Timur, penanaman tanaman kacangan penutup tanah (Legume Cover Crop / LCC seperti Mucuna bracteata) di antara gawangan pohon sawit muda merupakan rekayasa biologi tanah. Apa manfaat integratif LCC tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menambat nitrogen bebas dari udara melalui bintil akar Rhizobium, menekan pertumbuhan gulma alang-alang, mencegah erosi tanah, dan menjaga kelembaban lahan"
+      },
+      {
+        "key": "B",
+        "text": "Menghisap seluruh cadangan air kebun hingga tanah retak"
+      },
+      {
+        "key": "C",
+        "text": "Membuat pohon sawit terlilit hingga mati kekeringan"
+      },
+      {
+        "key": "D",
+        "text": "Mengundang hama babi hutan berkembang biak massal"
+      },
+      {
+        "key": "E",
+        "text": "Menghalangi pekebun masuk ke dalam kebunnya sendiri"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Mucuna bracteata menutupi tanah secara rapat (biomulsa hidup), menyumbang ratusan kg Nitrogen organik per hektar lewat fiksasi simbiotik bintil akar, menghemat biaya pupuk urea dan biaya pembersihan herbisida."
+  },
+  {
+    "id": 81,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 1,
+    "question": "Pak Wayan memiliki 2 hektar kebun karet produktif di OKU Timur. Dalam satu minggu penyadapan (4 kali sadap), diperoleh getah mangkok beku (lump basah) seberat 320 kg. Berapakah estimasi produksi getah lump basah Pak Wayan dalam waktu satu bulan (4 minggu)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "640 kg"
+      },
+      {
+        "key": "B",
+        "text": "1.280 kg"
+      },
+      {
+        "key": "C",
+        "text": "960 kg"
+      },
+      {
+        "key": "D",
+        "text": "1.600 kg"
+      },
+      {
+        "key": "E",
+        "text": "2.400 kg"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Produksi bulanan = 320 kg/minggu × 4 minggu = 1.280 kg getah lump basah."
+  },
+  {
+    "id": 82,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Getah lump basah Pak Wayan seberat 1.280 kg memiliki Kadar Karet Kering (KKK) sebesar 50% setelah diangin-anginkan. Jika harga lelang karet resmi di UPPB adalah Rp 12.000 per kg getah beku KKK 50%, berapakah total pendapatan kotor Pak Wayan bulan tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 7.680.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 15.360.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 12.000.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 18.500.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 9.200.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pendapatan Kotor = Total Volume (kg) × Harga per kg = 1.280 kg × Rp 12.000 = Rp 15.360.000."
+  },
+  {
+    "id": 83,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Untuk merawat kebun karet 2 hektar tersebut, Pak Wayan mengeluarkan biaya bulanan: asam semut pembeku Rp 240.000, pembersihan piringan herbisida Rp 350.000, pupuk NPK berimbang Rp 1.200.000, dan upah buruh sadap bagi hasil 1/3 bagian dari pendapatan kotor (Rp 15.360.000 : 3 = Rp 5.120.000). Berapakah total biaya pengeluaran modal Pak Wayan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 1.790.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 6.910.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 5.120.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 8.200.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 4.500.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Total Modal Pengeluaran = 240.000 + 350.000 + 1.200.000 + 5.120.000 = Rp 6.910.000."
+  },
+  {
+    "id": 84,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Berdasarkan data soal nomor 82 dan 83 (Pendapatan Kotor Rp 15.360.000 dan Total Biaya Rp 6.910.000), berapakah laba bersih (keuntungan) yang diterima Pak Wayan sebagai pemilik kebun dalam bulan tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 8.450.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 10.240.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 6.910.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 7.500.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 12.000.000"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Laba Bersih = Pendapatan Kotor - Total Pengeluaran = Rp 15.360.000 - Rp 6.910.000 = Rp 8.450.000."
+  },
+  {
+    "id": 85,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Seorang pekebun kelapa sawit di OKU Timur memanen 2 hektar kebun sawitnya dengan rotasi panen setiap 2 minggu sekali (2 kali panen per bulan). Pada putaran panen pertama diperoleh 2,4 ton TBS dan putaran kedua diperoleh 2,8 ton TBS. Jika harga TBS di pabrik kelapa sawit adalah Rp 2.500 per kg (1 ton = 1.000 kg), berapakah pendapatan kotor pekebun dalam satu bulan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 6.000.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 13.000.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 10.500.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 15.200.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 18.000.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Total TBS bulanan = 2,4 ton + 2,8 ton = 5,2 ton = 5.200 kg. Pendapatan Kotor = 5.200 kg × Rp 2.500/kg = Rp 13.000.000."
+  },
+  {
+    "id": 86,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Dari pendapatan kotor panen sawit Rp 13.000.000 tersebut, pekebun mengeluarkan biaya: upah dodos pemanen Rp 200 per kg (Rp 1.040.000), ongkos sewa truk pikap angkut TBS ke pabrik Rp 250 per kg (Rp 1.300.000), dan alokasi tabungan pupuk NPK bulanan Rp 1.500.000. Berapakah laba bersih yang diterima pekebun sawit tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 9.160.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 8.000.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 10.460.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 7.500.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 11.200.000"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Total Biaya = 1.040.000 + 1.300.000 + 1.500.000 = Rp 3.840.000. Laba Bersih = Rp 13.000.000 - Rp 3.840.000 = Rp 9.160.000."
+  },
+  {
+    "id": 87,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 7,
+    "question": "Pekebun sawit menimbang 100 tandan TBS dan mencatat total berat timbangan sebesar 1.800 kg. Berapakah Berat Janjang Rata-rata (BJR) kelapa sawit tersebut dan kategori apakah tandan tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "BJR = 18 kg / tandan (Kategori TBS kelas prima dan matang optimal)"
+      },
+      {
+        "key": "B",
+        "text": "BJR = 1,8 kg / tandan (Kategori tandan buah pasir)"
+      },
+      {
+        "key": "C",
+        "text": "BJR = 50 kg / tandan (Kategori buah raksasa)"
+      },
+      {
+        "key": "D",
+        "text": "BJR = 8 kg / tandan (Kategori buah belum layak panen)"
+      },
+      {
+        "key": "E",
+        "text": "BJR tidak dapat ditentukan tanpa data kadar air minyak"
+      }
+    ],
+    "correct": "A",
+    "explanation": "BJR = Total Berat / Jumlah Tandan = 1.800 kg / 100 tandan = 18 kg/tandan. BJR 18 kg merupakan bobot ideal tanaman sawit umur prima (8-14 tahun) dengan rendemen minyak tinggi."
+  },
+  {
+    "id": 88,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Jika seorang pekebun karet menjual getah beku langsung ke pedagang perantara desa dengan kadar karet kotor dihargai Rp 8.000/kg, sedangkan jika menjual lewat UPPB lelang resmi dihargai Rp 12.000/kg. Berapa selisih keuntungan yang hilang jika pekebun menjual 1.280 kg getahnya ke pedagang perantara desa?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 2.500.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 5.120.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 4.000.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 3.840.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 6.200.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Selisih harga = Rp 12.000 - Rp 8.000 = Rp 4.000 per kg. Selisih keuntungan yang hilang = 1.280 kg × Rp 4.000 = Rp 5.120.000 dalam satu bulan."
+  },
+  {
+    "id": 89,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Dosis pupuk NPK kebun sawit adalah 2,5 kg per pohon per tahun. Jika kerapatan populasi tanaman sawit adalah 136 pohon per hektar dan kebun Pak Ahmad seluas 2 hektar, berapa total kebutuhan pupuk NPK Pak Ahmad dalam satu tahun?",
+    "options": [
+      {
+        "key": "A",
+        "text": "340 kg"
+      },
+      {
+        "key": "B",
+        "text": "680 kg"
+      },
+      {
+        "key": "C",
+        "text": "500 kg"
+      },
+      {
+        "key": "D",
+        "text": "1.000 kg"
+      },
+      {
+        "key": "E",
+        "text": "272 kg"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Total pohon = 2 ha × 136 pohon/ha = 272 pohon. Kebutuhan pupuk per tahun = 272 pohon × 2,5 kg/pohon = 680 kg NPK."
+  },
+  {
+    "id": 90,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Nilai Return on Investment (ROI) kebun sawit Pak Ahmad dengan total keuntungan bersih tahunan Rp 110.000.000 dari total modal operasional tahunan sebesar Rp 46.000.000 adalah sebesar...",
+    "options": [
+      {
+        "key": "A",
+        "text": "ROI = 239% (Investasi menghasilkan keuntungan lebih dari dua kali lipat modal operasional)"
+      },
+      {
+        "key": "B",
+        "text": "ROI = 41% (Investasi merugi)"
+      },
+      {
+        "key": "C",
+        "text": "ROI = 100% (Titik impas)"
+      },
+      {
+        "key": "D",
+        "text": "ROI = 50% (Kurang menguntungkan)"
+      },
+      {
+        "key": "E",
+        "text": "ROI tidak dapat dihitung tanpa nilai beli tanah"
+      }
+    ],
+    "correct": "A",
+    "explanation": "ROI = (Laba Bersih / Total Biaya Modal) × 100% = (110.000.000 / 46.000.000) × 100% = 239,13%."
+  },
+  {
+    "id": 91,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 1,
+    "question": "Program Integrasi Sapi-Sawit (SISKA) di perkebunan rakyat OKU Timur merupakan sintesis ekologis dan ekonomis berbasis STEM. Bagaimana hubungan mutualisme antara ternak sapi dan kebun kelapa sawit dalam sistem ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sapi memakan gulma rumput di sela pohon sawit (menghemat herbisida), kotoran sapi difermentasi menjadi pupuk organik tanah, dan pelepah sawit dicacah menjadi pakan ternak"
+      },
+      {
+        "key": "B",
+        "text": "Sapi merusak seluruh akar sawit dan memakan tandan buah sawit hingga habis"
+      },
+      {
+        "key": "C",
+        "text": "Kotoran sapi membuat pohon sawit mati terbakar gas amonia"
+      },
+      {
+        "key": "D",
+        "text": "Sapi digunakan untuk menarik dodos pemotong buah sawit dari atas pohon"
+      },
+      {
+        "key": "E",
+        "text": "Pohon sawit menghasilkan racun yang mematikan sapi seketika"
+      }
+    ],
+    "correct": "A",
+    "explanation": "SISKA menerapkan prinsip sirkular ekonomi: gulma piringan dimanfaatkan sebagai pakan grazing sapi, kotoran sapi dikembalikan sebagai pupuk organik penyubur tanah, dan pelepah/bungkil inti sawit (BIS) menjadi konsentrat pakan sapi."
+  },
+  {
+    "id": 92,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 2,
+    "question": "Untuk memutus rantai tengkulak dan sistem 'ijon' yang merugikan pekebun karet di pedesaan OKU Timur, solusi kelembagaan berbasis matematika dan teknologi yang paling efektif adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mendirikan Unit Pengolahan dan Pemasaran Bokar (UPPB) yang mengumpulkan getah bersih berstandar, melakukan uji KKK laboratorium, dan menggelar lelang terbuka langsung ke pabrik ban"
+      },
+      {
+        "key": "B",
+        "text": "Melarang seluruh pabrik pengolahan karet beroperasi di Sumatera Selatan"
+      },
+      {
+        "key": "C",
+        "text": "Menebang seluruh pohon karet dan membiarkan lahan menjadi semak belukar"
+      },
+      {
+        "key": "D",
+        "text": "Mewajibkan petani meminjam uang rentenir dengan bunga 50% per bulan"
+      },
+      {
+        "key": "E",
+        "text": "Menimbun getah karet di dasar sungai Komering"
+      }
+    ],
+    "correct": "A",
+    "explanation": "UPPB mengonsolidasikan pasokan bokar bersih petani dalam volume skala industri, melakukan uji KKK objektif, dan mengadakan sistem lelang mingguan yang menciptakan harga kompetitif tertinggi langsung dari pabrik crumb rubber."
+  },
+  {
+    "id": 93,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Pada masa Tanaman Belum Menghasilkan (TBM usia 1-3 tahun) di kebun sawit/karet baru, bagaimana pendekatan rekayasa agronomis dan matematika finansial untuk menjaga arus kas (cash flow) pekebun tetap positif?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menerapkan tumpangsari tanaman sela semusim bernilai ekonomi seperti jagung pipil, kedelai, atau semangka di sela gawangan lebar sebelum kanopi sawit menutup"
+      },
+      {
+        "key": "B",
+        "text": "Menjual seluruh tanah kebun kepada investor asing"
+      },
+      {
+        "key": "C",
+        "text": "Membiarkan kebun tanpa perawatan hingga pohon berbuah sendiri"
+      },
+      {
+        "key": "D",
+        "text": "Mengambil pinjaman bank tanpa ada rencana usaha yang jelas"
+      },
+      {
+        "key": "E",
+        "text": "Menyemprotkan zat pengatur tumbuh agar sawit berbuah dalam 2 minggu"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sistem tumpangsari intercropping pada masa TBM memanfaatkan intensitas sinar matahari di sela barisan 9 m × 9 m, mendatangkan pemasukan kas berkala dari panen jagung/palawija, sekaligus membersihkan gulma."
+  },
+  {
+    "id": 94,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 4,
+    "question": "Praktek pembekuan karet mangkok menggunakan tawas (aluminium sulfat) masih sering ditemukan pada sebagian petani tradisional karena murah. Mengapa pabrik industri ban menolak atau memberikan potongan harga drastis (denda potongan timbangan) pada getah ber-tawas?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ion aluminium dan sulfat merusak elastisitas polimer, membuat karet berbau busuk menyengat, menyerap air berlebihan (bobot semu), dan merusak mesin vulkanisasi ban"
+      },
+      {
+        "key": "B",
+        "text": "Karena tawas membuat getah karet menjadi terlalu lunak dan berwujud cair selamanya"
+      },
+      {
+        "key": "C",
+        "text": "Karena tawas merupakan racun mematikan yang dilarang oleh dinas kesehatan"
+      },
+      {
+        "key": "D",
+        "text": "Karena getah ber-tawas memicu ledakan di dalam oven pabrik"
+      },
+      {
+        "key": "E",
+        "text": "Penolakan pabrik hanya alasan sepihak tanpa dasar pengujian sains polimer"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Tawas menahan kadar air tinggi (bobot palsu), menimbulkan bau busuk amonia/sulfur, dan menurunkan plastisitas retensi (PRI) karet alam, sehingga mutu Standard Indonesian Rubber (SIR 20) anjlok."
+  },
+  {
+    "id": 95,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Sertifikasi Indonesian Sustainable Palm Oil (ISPO) kini diwajibkan bagi pekebun kelapa sawit rakyat di OKU Timur. Aspek kepatuhan STEM manakah yang menjadi syarat mutlak dalam audit ISPO?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Legalitas lahan bukan kawasan hutan, konservasi sempadan sungai, penolakan pembukaan lahan dengan membakar (zero burning), dan pengelolaan limbah serta keselamatan kerja"
+      },
+      {
+        "key": "B",
+        "text": "Kewajiban menanam pohon sawit di pinggir ruang kelas sekolah"
+      },
+      {
+        "key": "C",
+        "text": "Kewajiban menjual seluruh hasil panen secara barter dengan beras"
+      },
+      {
+        "key": "D",
+        "text": "Larangan menggunakan alat timbangan digital di kebun"
+      },
+      {
+        "key": "E",
+        "text": "Kewajiban menebang seluruh pohon sawit setiap 5 tahun sekali"
+      }
+    ],
+    "correct": "A",
+    "explanation": "ISPO memastikan pengelolaan sawit berkelanjutan: legalitas SHM/STDB, larangan membuka lahan dengan membakar (zero burning), proteksi sempadan sungai dari pestisida, dan penggunaan APD keselamatan kerja."
+  },
+  {
+    "id": 96,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Pemanfaatan tandan kosong kelapa sawit (tankos / EFB) dari pabrik PKS sebagai mulsa organik di sekeliling piringan pohon sawit di OKU Timur merupakan penerapan bioteknologi tanah. Manfaat utama mulsa tankos adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memasok hara Kalium organik dalam jumlah masif, mempertahankan kelembaban tanah saat kemarau, dan menekan pertumbuhan gulma piringan"
+      },
+      {
+        "key": "B",
+        "text": "Membuat pohon sawit berhenti menghasilkan buah"
+      },
+      {
+        "key": "C",
+        "text": "Menimbulkan kebakaran lahan secara spontan di musim hujan"
+      },
+      {
+        "key": "D",
+        "text": "Mengubah tanah kebun menjadi rawa gambut dalam"
+      },
+      {
+        "key": "E",
+        "text": "Membuat buah sawit berukuran sekecil biji jagung"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Tankos kaya unsur K (hingga 1.5-2.0% K2O setara pupuk MOP), berfungsi sebagai insulasi kelembaban tanah di piringan, dan melepaskan bahan organik hara lambat (slow release) bagi akar sawit."
+  },
+  {
+    "id": 97,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 7,
+    "question": "Dalam program Peremajaan Sawit Rakyat (PSR) di OKU Timur, petani menggunakan bibit sawit unggul kultur jaringan bersertifikat (seperti Dami Mas, Topaz, atau Marihat). Mengapa penggunaan bibit bersertifikat sangat menentukan nasib finansial pekebun selama 25 tahun ke depan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bibit unggul tenera bersertifikat menjamin produktivitas CPO tinggi (>25-30 ton TBS/ha/tahun) dengan tempurung tipis dan daging buah tebal, sedangkan bibit liar 'cabutan' menghasilkan buah dura berkadar minyak rendah dan sering mandul"
+      },
+      {
+        "key": "B",
+        "text": "Karena bibit bersertifikat dapat menghasilkan buah emas murni"
+      },
+      {
+        "key": "C",
+        "text": "Karena bibit bersertifikat tidak perlu diberi pupuk dan air selama hidupnya"
+      },
+      {
+        "key": "D",
+        "text": "Hanya sebagai formalitas dokumen tanpa ada perbedaan produksi buah di lapangan"
+      },
+      {
+        "key": "E",
+        "text": "Bibit bersertifikat dapat langsung dipanen pada umur 3 bulan setelah tanam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kelapa sawit adalah investasi jangka panjang 25 tahun: bibit palsu (dura/ilegal) berpotensi menghasilkan janjang kosong atau rendemen minyak <14%, memicu kerugian ratusan juta rupiah dibanding bibit unggul tenera bersertifikat."
+  },
+  {
+    "id": 98,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Penerapan sistem sadap bertahap d/3 (sadap tiga hari sekali) dengan stimulan gas etilen pada pohon karet klon unggul di OKU Timur merupakan inovasi manajemen penyadapan. Keunggulan kombinasi ini terhadap pohon dan ekonomi adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memperpanjang umur ekonomis pohon (kulit awet), menghemat biaya upah buruh sadap, dan mempertahankan produksi getah tetap tinggi"
+      },
+      {
+        "key": "B",
+        "text": "Membuat getah karet menyemprot keluar seperti air mancur tanpa henti"
+      },
+      {
+        "key": "C",
+        "text": "Mengakibatkan pohon karet mengalami kekeringan alur sadap (KAS) secara instan"
+      },
+      {
+        "key": "D",
+        "text": "Mengharuskan penyadapan dilakukan pada tengah hari tepat pukul 12.00"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan pertumbuhan daun karet secara permanen"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sistem frekuensi rendah (d/3 atau d/4) dengan stimulan etefon menghemat pemakaian kulit pohon hingga 30%, mencegah stres metabolik KAS (Kering Alur Sadap), dan memangkas waktu kerja petani."
+  },
+  {
+    "id": 99,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Diversifikasi hilirisasi karet di tingkat kelompok pemuda desa OKU Timur, seperti pembuatan paving block karet atau bantalan dermaga perahu, bertujuan untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menciptakan nilai tambah industri olahan di desa, menyerap tenaga kerja lokal, dan mengurangi ketergantungan pada fluktuasi harga ekspor mentah dunia"
+      },
+      {
+        "key": "B",
+        "text": "Menghilangkan industri crumb rubber di perkotaan"
+      },
+      {
+        "key": "C",
+        "text": "Mewajibkan seluruh jalan desa diganti dengan karet mentah"
+      },
+      {
+        "key": "D",
+        "text": "Membuat harga beras di pasar menjadi turun drastis"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah getah karet diekspor ke luar wilayah Sumatera"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Hilirisasi produk karet di pedesaan mengonversi lateks mentah berharga rendah menjadi produk manufaktur bernilai tambah tinggi, mengamankan pendapatan ekonomi lokal dari guncangan pasar global."
+  },
+  {
+    "id": 100,
+    "day": 3,
+    "sector": "perkebunan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Sebagai sektor perkebunan penopang ekonomi keluarga pedesaan di OKU Timur, pengelolaan kebun karet dan kelapa sawit rakyat yang tangguh terhadap tantangan ekonomi masa depan menuntut integrasi 4 pilar STEM berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sains pemuliaan klon/pupuk presisi + Teknologi panen mekanis ergonomis + Rekayasa konservasi rorak/rain gutter + Matematika analisis cash-flow & lelang UPPB transparan"
+      },
+      {
+        "key": "B",
+        "text": "Penebangan seluruh kebun sawit dan karet untuk dijadikan arena balap motor"
+      },
+      {
+        "key": "C",
+        "text": "Bergantung sepenuhnya pada bantuan pinjaman utang tengkulak tanpa pencatatan keuangan"
+      },
+      {
+        "key": "D",
+        "text": "Menghentikan pemupukan dan membiarkan pohon bersaing dengan semak belukar"
+      },
+      {
+        "key": "E",
+        "text": "Membakar lahan perkebunan setiap pergantian musim panen"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Ketahanan perkebunan rakyat OKU Timur bertumpu pada STEM terpadu: Sains (klon unggul dan agronomi nutrisi), Teknologi (dodos/egrek presisi), Rekayasa (konservasi rorak dan rain gutter), dan Matematika (kalkulasi KKK dan efisiensi lelang kolektif)."
+  },
+  {
+    "id": 101,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 1,
+    "question": "Di sentra budidaya perikanan air tawar Belitang, kadar Oksigen Terlarut (Dissolved Oxygen / DO) di kolam patin sangat dipantau oleh pembudidaya. Berapa batas ambang DO minimum yang aman untuk pertumbuhan optimal ikan patin (Pangasianodon hypophthalmus)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "DO < 0,5 mg/L (kondisi anoksia)"
+      },
+      {
+        "key": "B",
+        "text": "DO minimal 3,0 hingga 5,0 mg/L (ppm)"
+      },
+      {
+        "key": "C",
+        "text": "DO harus tepat 0 mg/L karena patin tidak bernapas menggunakan insang"
+      },
+      {
+        "key": "D",
+        "text": "DO minimal 80 mg/L hingga air berbuih putih pekat"
+      },
+      {
+        "key": "E",
+        "text": "Kadar oksigen air kolam tidak berpengaruh terhadap nafsu makan dan metabolisme ikan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Ikan patin membutuhkan konsentrasi oksigen terlarut (DO) minimal 3.0-5.0 ppm untuk menjaga laju metabolisme, pencernaan pakan, dan respirasi insang. Jika DO < 2.0 ppm, patin akan stres, mogok makan, dan menggantung di permukaan."
+  },
+  {
+    "id": 102,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Pada subuh hari (pukul 04.00 - 05.30 WIB), ikan patin di kolam tanah sering terlihat berenang menggantung di permukaan air dan megap-megap menghirup udara. Fenomena penurunan DO air kolam secara drastis saat fajar ini terjadi karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pada malam hari fitoplankton, ikan, dan bakteri lumpur dasar sama-sama mengonsumsi oksigen untuk respirasi tanpa adanya fotosintesis penghasil oksigen"
+      },
+      {
+        "key": "B",
+        "text": "Air saluran irigasi membeku menjadi kristal es di malam hari"
+      },
+      {
+        "key": "C",
+        "text": "Ikan patin sengaja tidur di atas permukaan air untuk menghangatkan badan"
+      },
+      {
+        "key": "D",
+        "text": "Suhu udara dingin mengubah air kolam menjadi gas nitrogen"
+      },
+      {
+        "key": "E",
+        "text": "Kandungan garam air kolam tiba-tiba meningkat drastis saat fajar"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pada malam hari, reaksi fotosintesis berhenti karena tidak ada sinar matahari, sementara respirasi seluruh biomassa kolam (plankton, ikan, bakteri pengurai) berjalan terus menyerap oksigen, memicu DO drop di titik terendah saat subuh."
+  },
+  {
+    "id": 103,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Penumpukan sisa pakan pelet dan feses di dasar kolam tanah memicu terbentuknya senyawa amonia toksik (NH3). Hubungan antara nilai pH air kolam dengan tingkat toksisitas amonia bebas (un-ionized ammonia / NH3) adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Semakin tinggi pH air (semakin basa > 8.5), proporsi amonia bebas beracun (NH3) semakin besar dan berbahaya bagi insang ikan dibanding ion amonium (NH4+)"
+      },
+      {
+        "key": "B",
+        "text": "Semakin tinggi pH air, amonia akan berubah menjadi oksigen murni"
+      },
+      {
+        "key": "C",
+        "text": "Tingkat pH tidak memiliki hubungan apapun dengan keberadaan amonia"
+      },
+      {
+        "key": "D",
+        "text": "Amonia hanya beracun apabila pH air berada pada angka netral 7.0"
+      },
+      {
+        "key": "E",
+        "text": "Pada pH basa, seluruh amonia mengkristal menjadi garam meja"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kesetimbangan kimia: NH4+ + OH- <-> NH3 + H2O. Saat pH air meningkat (basa), ion OH- berlebih menggeser reaksi ke kanan membentuk gas amonia bebas (NH3) yang sangat toksik dan merusak lamela insang ikan."
+  },
+  {
+    "id": 104,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 4,
+    "question": "Ikan lele (Clarias gariepinus) mampu bertahan hidup pada kolam dengan kadar oksigen terlarut relatif rendah dibandingkan ikan patin atau mas. Organ adaptasi biologis apa yang memungkinkan lele menghirup oksigen langsung dari udara?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Paru-paru ganda"
+      },
+      {
+        "key": "B",
+        "text": "Organ arboresen (labirin tambahan di rongga insang atas)"
+      },
+      {
+        "key": "C",
+        "text": "Kantung udara di dalam lambung"
+      },
+      {
+        "key": "D",
+        "text": "Kumis sungut peraba di moncong bibir"
+      },
+      {
+        "key": "E",
+        "text": "Sisik lendir tebal di sekujur tubuh"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Ikan lele memiliki organ pernapasan tambahan berupa arborescent organ (struktur bercabang mirip karang pada lengkung insang kedua dan keempat) yang mampu menyerap oksigen langsung dari atmosfer udara bebas."
+  },
+  {
+    "id": 105,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Warna air kolam patin yang ideal di Belitang umumnya berwarna hijau muda kecoklatan terang. Warna ini mengindikasikan dominasi mikroalga fitoplankton yang menguntungkan ekosistem kolam, yaitu...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Chlorella sp. dan Scenedesmus sp. yang memproduksi oksigen terlarut dan menstabilkan suhu air"
+      },
+      {
+        "key": "B",
+        "text": "Ganggang biru beracun Microcystis yang mematikan ikan"
+      },
+      {
+        "key": "C",
+        "text": "Bakteri pembusuk bangkai Clostridium tetani"
+      },
+      {
+        "key": "D",
+        "text": "Endapan karat besi akibat pipa karatan"
+      },
+      {
+        "key": "E",
+        "text": "Pewarna buatan tekstil yang sengaja dituang petani"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Dominasi alga hijau (Chlorophyceae seperti Chlorella) menjaga rantai makanan alami, mengasimilasi amonia berlebih, dan menyuplai oksigen fotosintesis siang hari tanpa menghasilkan toksin geosmin berbau tanah."
+  },
+  {
+    "id": 106,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Bau lumpur / bau tanah (off-flavor / muddy flavor) yang terkadang muncul pada daging ikan patin kolam diakibatkan oleh penyerapan senyawa kimia organik bernama geosmin dan 2-methylisoborneol (MIB). Senyawa ini diproduksi secara alami oleh...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bakteri Actinomycetes dan Cyanobacteria (Blue-Green Algae / BGA) yang tumbuh subur di dasar kolam berlumpur pekat dengan sirkulasi buruk"
+      },
+      {
+        "key": "B",
+        "text": "Pakan pelet pabrikan berkualitas prima"
+      },
+      {
+        "key": "C",
+        "text": "Air hujan murni yang turun dari langit"
+      },
+      {
+        "key": "D",
+        "text": "Vitamin penggemuk ikan yang larut di air"
+      },
+      {
+        "key": "E",
+        "text": "Sinar ultraviolet matahari di siang hari"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Geosmin diproduksi oleh mikroorganisme tanah (Actinomycetes dan BGA seperti Oscillatoria/Anabaena) yang terakumulasi di jaringan lemak ikan patin melalui insang dan sistem pencernaan jika lumpur organik dasar kolam tebal."
+  },
+  {
+    "id": 107,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 7,
+    "question": "Rentang suhu air kolam yang paling optimal untuk laju pencernaan dan metabolisme pertumbuhan ikan patin dan lele di kawasan tropis OKU Timur adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "10°C - 15°C (suhu dingin pegunungan salju)"
+      },
+      {
+        "key": "B",
+        "text": "27°C - 30°C (suhu hangat tropis stabil)"
+      },
+      {
+        "key": "C",
+        "text": "45°C - 50°C (suhu air panas mendidih)"
+      },
+      {
+        "key": "D",
+        "text": "0°C - 4°C (suhu lemari es)"
+      },
+      {
+        "key": "E",
+        "text": "Suhu air kolam tidak memiliki pengaruh terhadap aktivitas enzim pencernaan ikan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pada rentang suhu 27-30°C, aktivitas enzim protease, amilase, dan lipase di dalam usus ikan bekerja pada laju tertinggi, mengoptimalkan penyerapan asam amino pakan menjadi daging tanpa memicu stres termal."
+  },
+  {
+    "id": 108,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Sifat kanibalisme pada budidaya ikan lele sering menyebabkan tingkat kematian (mortalitas) tinggi pada fase pendederan benih. Faktor lingkungan dan biologis apa yang paling memicu terjadinya kanibalisme lele?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ukuran benih yang tidak seragam (kurang penyortiran/grading berkala) serta keterlambatan pemberian pakan pelet"
+      },
+      {
+        "key": "B",
+        "text": "Kadar oksigen kolam yang terlalu jenuh melimpah"
+      },
+      {
+        "key": "C",
+        "text": "Pemberian air irigasi yang terlalu jernih"
+      },
+      {
+        "key": "D",
+        "text": "Penggunaan kolam terpal bundar"
+      },
+      {
+        "key": "E",
+        "text": "Pencahayaan lampu malam di atas kolam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Ikan lele adalah karnivora oportunis bergigi pemotong; jika ukuran tubuh berbeda dan pakan terlambat, lele yang berukuran lebih besar akan memangsa lele yang lebih kecil (kanibalisme dipicu disparitas bobot dan kelaparan)."
+  },
+  {
+    "id": 109,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Penyakit bercak putih (White Spot) yang sering menyerang bibit ikan patin saat pergantian musim di Belitang disebabkan oleh infeksi ektoparasit protozoa bersilia bernama...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ichthyophthirius multifiliis"
+      },
+      {
+        "key": "B",
+        "text": "Xanthomonas oryzae"
+      },
+      {
+        "key": "C",
+        "text": "Rigidoporus microporus"
+      },
+      {
+        "key": "D",
+        "text": "Aedes aegypti"
+      },
+      {
+        "key": "E",
+        "text": "Anopheles sundaicus"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Ichthyophthirius multifiliis (parasit 'Ich') menembus lendir epidermis dan insang ikan, membentuk bintik kista putih (trofont) yang memicu iritasi hebat, napas terengah-engah, dan kematian massal pada benih."
+  },
+  {
+    "id": 110,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Dalam uji kualitas air kimia sederhana, nilai pH air kolam yang tiba-tiba anjlok di bawah 6.0 saat hujan deras pertama di awal musim hujan disebabkan oleh fenomena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Limpasan air hujan yang membawa senyawa asam dari atmosfer dan oksidasi pirit (FeS2) dari tanggul tanah kolam yang terpapar udara kering"
+      },
+      {
+        "key": "B",
+        "text": "Air hujan mengandung kalsium karbonat berkonsentrasi tinggi"
+      },
+      {
+        "key": "C",
+        "text": "Ikan patin mengeluarkan racun asam dari dalam insangnya"
+      },
+      {
+        "key": "D",
+        "text": "Fitoplankton membelah diri menjadi 100 kali lipat dalam satu detik"
+      },
+      {
+        "key": "E",
+        "text": "Bakteri pengurai berhenti bernapas selamanya"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Tanggul tanah yang mengandung pirit (senyawa besi sulfida) yang teroksidasi saat kemarau akan tercuci air hujan menghasilkan asam sulfat (H2SO4), menurunkan pH kolam secara mendadak (acid shock)."
+  },
+  {
+    "id": 111,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 1,
+    "question": "Kincir air tambak (paddle wheel aerator) bertenaga motor listrik banyak dipasang di kolam patin intensif Belitang. Bagaimana prinsip kerja mekanis kincir air dalam meningkatkan kadar oksigen terlarut (DO)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sudu-sudu daun kincir berputar memecah permukaan air kolam menjadi cipratan butiran halus (droplet) dan mengaduk massa air, memperluas kontak udara-air untuk transfer difusi oksigen"
+      },
+      {
+        "key": "B",
+        "text": "Kincir menghasilkan gas oksigen murni melalui reaksi fusi nuklir"
+      },
+      {
+        "key": "C",
+        "text": "Kincir mendinginkan air kolam hingga mendekati titik beku 0°C"
+      },
+      {
+        "key": "D",
+        "text": "Kincir menyedot kotoran ikan dan mengeluarkannya ke awan"
+      },
+      {
+        "key": "E",
+        "text": "Kincir berfungsi sebagai hiasan lampu air di malam hari"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Paddle wheel menciptakan turbulensi dan cipratan air masif ke udara bebas, meningkatkan luas bidang kontak antarmuka udara-cairan sehingga difusi transfer molekul oksigen (O2) dari udara ke air berlangsung cepat."
+  },
+  {
+    "id": 112,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Mesin pembuat pakan pelet mandiri (pelletizer extruder) mulai banyak dioperasikan kelompok pembudidaya ikan di Belitang. Bagian komponen mesin apakah yang bertugas memadatkan, memanaskan (cooking), dan mencetak adonan pakan menjadi butiran pelet apung?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ulir sekrup tekan (screw barrel) dan cetakan berpori (die cutter)"
+      },
+      {
+        "key": "B",
+        "text": "Klep ban dalam mobil"
+      },
+      {
+        "key": "C",
+        "text": "Tangki bensin karburator"
+      },
+      {
+        "key": "D",
+        "text": "Baling-baling kipas angin"
+      },
+      {
+        "key": "E",
+        "text": "Saringan kain kasa nyamuk"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sistem screw extruder menghasilkan tekanan mekanik dan panas gesekan tinggi yang menggelatinisasi pati pakan, lalu adonan ditekan keluar melalui die plate berlubang dan dipotong pisau putar (cutter) menjadi pelet apung."
+  },
+  {
+    "id": 113,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 3,
+    "question": "Pompa air celup (submersible pump) banyak dipilih pembudidaya kolam terpal dibandingkan pompa hisap di atas tanggul. Keunggulan mekanis pompa submersible adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bekerja langsung di dalam cairan tanpa membutuhkan pancingan air awal (self-priming), bebas resiko kavitasi, dan suara putaran motor sangat hening di bawah air"
+      },
+      {
+        "key": "B",
+        "text": "Dapat memompa air tanpa membutuhkan kabel aliran listrik"
+      },
+      {
+        "key": "C",
+        "text": "Mampu memanaskan air kolam hingga mendidih"
+      },
+      {
+        "key": "D",
+        "text": "Membuat ikan lele berenang lebih cepat"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah air keruh menjadi air sirup manis"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pompa submersible terendam langsung di dasar cairan sehingga tekanan hisap selalu positif (tidak butuh pancingan/foot valve) dan air sekitar berfungsi sebagai pendingin alami motor listrik, menjadikannya sangat efisien."
+  },
+  {
+    "id": 114,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Alat digital DO Meter (Dissolved Oxygen Meter) portabel dengan sensor probe polarografik digunakan pembudidaya ikan maju di Belitang untuk mengukur...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kadar oksigen terlarut dalam satuan mg/L (ppm) secara cepat dan akurat di berbagai kedalaman air kolam"
+      },
+      {
+        "key": "B",
+        "text": "Jumlah ekor ikan yang ada di dalam kolam tanah"
+      },
+      {
+        "key": "C",
+        "text": "Berat timbangan pakan pelet di dalam karung"
+      },
+      {
+        "key": "D",
+        "text": "Kadar gula darah ikan patin"
+      },
+      {
+        "key": "E",
+        "text": "Kandungan minyak tanah di dasar lumpur"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sensor membran DO meter mengukur arus listrik mikro hasil reduksi elektrokimia gas oksigen yang berdifusi menembus membran Teflon elektroda, menampilkan konsentrasi O2 terlarut secara digital dalam hitungan detik."
+  },
+  {
+    "id": 115,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Pemberian pakan otomatis berbasis pengatur waktu digital (automatic fish feeder timer) mulai diterapkan pada kolam patin pembesaran. Keuntungan teknologi otomasi pakan ini terhadap efisiensi budidaya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Jadwal dan takaran pelet keluar tepat waktu secara merata dengan frekuensi teratur, menekan pakan terbuang (overfeeding) dan memperbaiki FCR"
+      },
+      {
+        "key": "B",
+        "text": "Menggandakan nafsu makan ikan hingga 100 kali lipat"
+      },
+      {
+        "key": "C",
+        "text": "Menghilangkan kebutuhan air di dalam kolam"
+      },
+      {
+        "key": "D",
+        "text": "Membuat ikan patin tumbuh tanpa perlu mengonsumsi protein"
+      },
+      {
+        "key": "E",
+        "text": "Menggantikan seluruh peranan pembersihan kolam tanah"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Auto-feeder melontarkan pelet dalam porsi presisi dan frekuensi terjadwal (misal 4-6 kali/hari), mencegah lonjakan sisa pakan mengendap di dasar kolam, menjaga stabilitas kualitas air, dan meningkatkan konversi pakan (FCR)."
+  },
+  {
+    "id": 116,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Alat grading (ayakan sortasi benih lele berbahan aluminium berlubang bulat presisi) digunakan peternak lele di Belitang secara berkala. Apa fungsi teknologi sortasi ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memisahkan benih lele ke dalam kelompok ukuran seragam (misal ukuran 5-7 cm, 7-9 cm) untuk mencegah kanibalisme dan memastikan pertumbuhan merata"
+      },
+      {
+        "key": "B",
+        "text": "Membersihkan kotoran lendir pada kumis lele"
+      },
+      {
+        "key": "C",
+        "text": "Menghitung berat badan ikan secara otomatis"
+      },
+      {
+        "key": "D",
+        "text": "Mewarnai kulit ikan lele menjadi kuning keemasan"
+      },
+      {
+        "key": "E",
+        "text": "Memotong duri patil ikan lele agar tidak menyengat"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bak sortir berpori (grader) menyaring lele berdasarkan diameter kepala dan tubuh secara mekanis dalam air, mengelompokkan benih dalam fraksi ukuran homogen untuk mengeliminasi pemangsaan sesama lele (kanibalisme)."
+  },
+  {
+    "id": 117,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Pada kolam terpal bioflok, teknologi Root Blower atau Pompa Udara Diafragma (aerator hi-blow) dipadukan dengan selang berpori (uniring / diffuser hose) di dasar kolam. Apa keunggulan aerasi uniring dibanding batu aerasi bulat biasa?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menghasilkan gelembung udara mikro (micro-bubble) dalam jumlah sangat padat yang melayang lebih lama di air, memaksimalkan transfer oksigen dan mengaduk flok bakteri"
+      },
+      {
+        "key": "B",
+        "text": "Menghisap air kolam keluar hingga habis"
+      },
+      {
+        "key": "C",
+        "text": "Mengeluarkan gelembung gas elpiji pembakar"
+      },
+      {
+        "key": "D",
+        "text": "Membuat air kolam membeku menjadi es balok"
+      },
+      {
+        "key": "E",
+        "text": "Menangkap ikan lele langsung ke daratan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Diffuser selang pori uniring menghasilkan gelembung mikro (diameter <1 mm) dengan luas permukaan kontak sangat besar dan laju apung lambat, mentransfer oksigen dengan efisiensi tinggi serta menjaga bioflok tetap melayang."
+  },
+  {
+    "id": 118,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Dalam penanganan panen ikan patin hidup untuk pasar luar kota (Palembang atau Lampung), teknologi sistem transportasi basah menggunakan tong beroksigen murni (live fish transport system). Fungsi penambahan es batu dalam dosis terkontrol saat pengangkutan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menurunkan suhu air ke 18-20°C untuk membius ikan secara metabolik (hipotermia ringan), memperlambat respirasi dan ekskresi amonia sehingga kelangsungan hidup tinggi"
+      },
+      {
+        "key": "B",
+        "text": "Membekukan ikan agar menjadi ikan asin"
+      },
+      {
+        "key": "C",
+        "text": "Mengubah air menjadi air sirup buah"
+      },
+      {
+        "key": "D",
+        "text": "Menambah bobot timbangan ikan menjadi 3 kali lipat"
+      },
+      {
+        "key": "E",
+        "text": "Membunuh seluruh bakteri saluran pencernaan manusia"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Suhu dingin (18-20°C) menidurkan ikan secara fisiologis (anestesi suhu), menekan konsumsi oksigen basal hingga 50%, dan meminimalkan ekskresi feses serta amonia beracun selama perjalanan darat jarak jauh."
+  },
+  {
+    "id": 119,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Refraktometer salinitas atau TDS Meter digital (Total Dissolved Solids) di kolam pembenihan patin berfungsi untuk mengukur...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Konsentrasi total padatan zat terlarut dan mineral elektrolit di dalam air kolam pemijahan"
+      },
+      {
+        "key": "B",
+        "text": "Panjang kumis induk ikan patin jantan"
+      },
+      {
+        "key": "C",
+        "text": "Kadar minyak goreng pada pelet pakan"
+      },
+      {
+        "key": "D",
+        "text": "Kedalaman lumpur tanah kolam"
+      },
+      {
+        "key": "E",
+        "text": "Kecepatan renang ikan patin dewasa"
+      }
+    ],
+    "correct": "A",
+    "explanation": "TDS meter mengukur konduktivitas listrik larutan yang dikonversi ke satuan ppm zat padat terlarut (garam mineral, elektrolit), parameter penting untuk mengontrol osmoregulasi telur dan larva benih ikan."
+  },
+  {
+    "id": 120,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Di industri pengolahan ikan patin Belitang, mesin skinning machine (alat pengupas kulit patin otomatis) dan mesin fillet digunakan untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memisahkan daging putih patin bebas duri dari kulit dan lemak secara higienis berstandar ekspor dalam hitungan detik per ekor"
+      },
+      {
+        "key": "B",
+        "text": "Menghidupkan kembali ikan patin yang sudah mati"
+      },
+      {
+        "key": "C",
+        "text": "Menggiling seluruh ikan beserta tulangnya menjadi tepung terigu"
+      },
+      {
+        "key": "D",
+        "text": "Menyuntikkan cairan pengawet berbahaya ke dalam daging ikan"
+      },
+      {
+        "key": "E",
+        "text": "Mencetak pelet pakan dari kulit ikan mentah"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Skinning machine mengupas lapisan kulit berlendir dan lemak bawah kulit patin secara presisi, menghasilkan produk fillet daging putih (dori lokal) berkualitas tinggi untuk industri restoran dan pasar swalayan."
+  },
+  {
+    "id": 121,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 1,
+    "question": "Untuk menghemat biaya listrik dan pengadaan kincir mekanik yang mahal, pembudidaya kreatif di Belitang merakit sistem aerasi venturi pipa paralon (venturi injector). Prinsip rekayasa fluida apakah yang mendasari alat ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Penyempitan pipa (leher venturi) meningkatkan kecepatan aliran air dari pompa dan menurunkan tekanan statis, sehingga udara luar terhisap otomatis melalui lubang selang dan bercampur menjadi gelembung oksigen"
+      },
+      {
+        "key": "B",
+        "text": "Pipa paralon dipanaskan dengan kompor hingga memancarkan gas oksigen"
+      },
+      {
+        "key": "C",
+        "text": "Menggunakan magnet buatan untuk menarik partikel udara dari awan"
+      },
+      {
+        "key": "D",
+        "text": "Pipa paralon berputar menyerupai kincir angin"
+      },
+      {
+        "key": "E",
+        "text": "Menyumbat aliran air agar tekanan pompa meledak di dalam kolam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Hukum Bernoulli dan efek Venturi: ketika cairan bertekanan melewati nozzle konstriksi sempit, kecepatan fluida meningkat drastis menyebabkan penurunan tekanan (vakum parsial) yang menghisap udara atmosfer masuk ke air."
+  },
+  {
+    "id": 122,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Pada kolam tanah tradisional patin di Belitang, pembudidaya membuat saluran 'kemalir' (parit dasar kolam yang melandai ke arah pintu pengeluaran monik). Apa fungsi rekayasa hidrologis kemalir tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mempermudah pengeringan dasar kolam, pengendapan limbah lumpur ke titik tengah, dan mempermudah pemanenan ikan karena ikan terkonsentrasi di parit saat air disurutkan"
+      },
+      {
+        "key": "B",
+        "text": "Tempat ikan patin bertelur di atas batu karang"
+      },
+      {
+        "key": "C",
+        "text": "Mencegah air saluran irigasi masuk ke dalam kolam"
+      },
+      {
+        "key": "D",
+        "text": "Menyembunyikan ikan dari pandangan pembudidaya"
+      },
+      {
+        "key": "E",
+        "text": "Sebagai saluran pembuang agar ikan hanyut ke sungai"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kemalir adalah cekungan parit di dasar kolam dengan kemiringan 1-2% menuju kobakan panen (catch basin), memfasilitasi pengurasan lumpur endapan amonia dan memudahkan penangkapan ikan secara efisien tanpa melukai fisik ikan."
+  },
+  {
+    "id": 123,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 3,
+    "question": "Penerapan sistem Bioflok pada kolam bundar terpal lele di Belitang mengintegrasikan mikroba heterotrof dengan penambahan sumber karbon organik (molase tetes tebu / bekatul). Tujuan rekayasa bioproses ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mendorong bakteri heterotrof mengubah limbah amonia beracun menjadi gumpalan protein flok sel tunggal yang dapat dimakan kembali oleh lele sebagai pakan alami (daur ulang pakan)"
+      },
+      {
+        "key": "B",
+        "text": "Membuat air kolam berubah menjadi manis seperti sirup tebu"
+      },
+      {
+        "key": "C",
+        "text": "Membunuh seluruh bakteri menguntungkan di dalam kolam terpal"
+      },
+      {
+        "key": "D",
+        "text": "Menghilangkan kebutuhan aerasi oksigen di kolam bundar"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan pertumbuhan ikan lele agar berukuran mini"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Rasio C:N dinaikkan (>10:1) dengan molase sehingga bakteri aerob mengasimilasi amonium terlarut menjadi protein sel mikroba (flok). Ini mengendalikan amonia tanpa pergantian air (zero-water exchange) dan menghemat biaya pakan pelet."
+  },
+  {
+    "id": 124,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Untuk melindungi kolam budidaya dari serangan hama pemangsa seperti berang-berang (lutra), biawak, dan ular air di pedesaan Belitang, rekayasa pagar pengaman fisik yang paling efektif adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemasangan pagar jaring waring nilon keliling setinggi 1 meter dengan bagian bawah ditanam ke dalam tanah dan dipasangi jaring penutup atas anti-burung"
+      },
+      {
+        "key": "B",
+        "text": "Menebarkan racun sianida ke seluruh saluran irigasi desa"
+      },
+      {
+        "key": "C",
+        "text": "Menyalakan petasan sepanjang malam tanpa henti"
+      },
+      {
+        "key": "D",
+        "text": "Membiarkan kolam tanpa air selama pemeliharaan"
+      },
+      {
+        "key": "E",
+        "text": "Menimbun pematang kolam dengan pecahan kaca tajam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pagar waring tertanam (fencing net) memblokir lintasan merayap predator air (biawak, linsang) dan jaring atas (bird net) mencegah serangan burung bangau pemangsa benih ikan."
+  },
+  {
+    "id": 125,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Pintu pengeluaran air sistem 'Monik' bersekat papan kayu ganda (double board gate) sering dibangun pada kolam tanah perikanan Belitang. Ruang di antara kedua papan diisi tanah liat padat. Apa keunggulan rekayasa pintu monik ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memungkinkan pengaturan ketinggian air kolam secara fleksibel dan pembuangan air dasar kolam yang kotor (bottom drainage) tanpa menguras lapisan air atas yang kaya oksigen"
+      },
+      {
+        "key": "B",
+        "text": "Pintu monik dapat membuka sendiri menggunakan tenaga surya tanpa operator"
+      },
+      {
+        "key": "C",
+        "text": "Mengubah air tawar menjadi air payau secara instan"
+      },
+      {
+        "key": "D",
+        "text": "Menahan seluruh air kolam agar tidak pernah surut selamanya"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah pembudidaya melihat dasar kolamnya sendiri"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pintu monik dengan papan celah bawah membuang endapan lumpur hipolimnion dasar yang miskin oksigen dan kaya gas beracun, sementara lapisan air permukaan (epilimnion) yang beroksigen tetap terjaga di dalam kolam."
+  },
+  {
+    "id": 126,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Dalam budidaya lele intensif sistem Resirkulasi (Recirculating Aquaculture System / RAS) skala pembenihan, air kolam dilewatkan melalui filter mekanis dan filter biologis. Komponen apakah yang menjadi media tumbuh bakteri nitrifikasi pada filter biologis?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bioball plastik berpori, batu apung, atau jaring nelayan bekas yang memiliki luas permukaan spesifik tinggi untuk koloni bakteri Nitrosomonas dan Nitrobacter"
+      },
+      {
+        "key": "B",
+        "text": "Kepingan kaca cermin datar"
+      },
+      {
+        "key": "C",
+        "text": "Lumpur limbah septic tank"
+      },
+      {
+        "key": "D",
+        "text": "Logam seng atap rumah"
+      },
+      {
+        "key": "E",
+        "text": "Minyak goreng bekas kemasan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bioball atau biomedia kaldnes berstruktur kisi-kisi menyediakan area permukaan luas (specific surface area) bagi biofilm bakteri nitrifikasi pengoksidasi amonia menjadi nitrit lalu nitrat yang relatif tidak berbahaya."
+  },
+  {
+    "id": 127,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Untuk mengatasi kekeruhan lumpur pekat akibat pasokan air irigasi yang baru dialirkan dari saluran primer, rekayasa kolam pengendapan (sedimentation pond / tandon air) dibuat sebelum air masuk ke kolam budidaya. Fungsi tandon pengendapan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengendapkan lumpur suspensi kasar, menstabilkan suhu air, dan melakukan sterilisasi air awal sebelum dialirkan ke kolam pembesaran"
+      },
+      {
+        "key": "B",
+        "text": "Menghilangkan seluruh volume air hingga kolam kering"
+      },
+      {
+        "key": "C",
+        "text": "Memanaskan air kolam menjadi uap panas"
+      },
+      {
+        "key": "D",
+        "text": "Tempat memelihara buaya muara"
+      },
+      {
+        "key": "E",
+        "text": "Mewajibkan air kolam diberi deterjen busa"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kolam tandon sedimentasi memperlambat kecepatan aliran (laminar) sehingga partikel lumpur dan suspended solids mengendap secara gravitasi, menyuplai air jernih stabil dan higienis ke kolam budidaya."
+  },
+  {
+    "id": 128,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Pada kolam terpal bulat bioflok lele, pipa pembuangan tengah (central drain) dirancang dengan kemiringan dasar kolam kerucut 5-10° ke arah tengah. Apa tujuan rancangan hidrodinamika kerucut dasar ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Gaya pusaran air aerasi mendorong seluruh kotoran padat dan feses ikan mengumpul otomatis tepat di lubang pembuangan tengah (self-cleaning effect)"
+      },
+      {
+        "key": "B",
+        "text": "Membuat ikan lele terperangkap dan tidak bisa berenang"
+      },
+      {
+        "key": "C",
+        "text": "Mencegah kolam terpal bocor di bagian sambungan"
+      },
+      {
+        "key": "D",
+        "text": "Mengharuskan petani menyedot kotoran dengan mulut"
+      },
+      {
+        "key": "E",
+        "text": "Mengurangi volume kapasitas air kolam hingga tersisa 10%"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Dasar konikal (v-shape conical bottom) dipadukan putaran arus aerator menghasilkan gaya sentripetal (teacups effect) yang mengkonsentrasikan endapan feses ke central drain untuk diflushing harian dengan cepat."
+  },
+  {
+    "id": 129,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Pembuatan pakan pelet mandiri sering terkendala daya apung (buoyancy) yang rendah sehingga pelet cepat tenggelam dan membusuk di dasar kolam. Trik rekayasa formulasi pakan lokal agar pelet dapat mengapung lebih lama adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menambahkan bahan perekat tinggi karbohidrat (tepung tapioka/onggok) yang dimasak matang (gelatinisasi) dan pemanasan tekanan pada proses pencetakan"
+      },
+      {
+        "key": "B",
+        "text": "Mencampurkan batu kerikil ke dalam adonan pelet"
+      },
+      {
+        "key": "C",
+        "text": "Merendam pelet di dalam air es sebelum ditebar"
+      },
+      {
+        "key": "D",
+        "text": "Mengurangi kandungan protein pelet menjadi 0%"
+      },
+      {
+        "key": "E",
+        "text": "Mencampur adonan pakan dengan minyak pelumas oli mesin"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Gelatinisasi pati dari tepung tapioka membentuk matriks polimer pengikat berpori udara mikro saat mengalami ekspansi suhu tinggi di extruder, menurunkan densitas pelet sehingga mampu mengapung stabil."
+  },
+  {
+    "id": 130,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Pemasangan tanaman air eceng gondok (Eichhornia crassipes) atau kangkung air dalam kurungan bambu terapung di sudut kolam tanah patin merupakan rekayasa fitoremediasi. Fungsi ekologis tanaman air tersebut adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyerap kelebihan unsur hara nitrogen (amonia/nitrat) dan fosfat terlarut, menekan pertumbuhan alga beracun, dan menjadi peneduh alami bagi ikan saat siang terik"
+      },
+      {
+        "key": "B",
+        "text": "Menghabiskan seluruh oksigen air kolam hingga ikan mati"
+      },
+      {
+        "key": "C",
+        "text": "Menghalangi pergerakan perahu panen petani"
+      },
+      {
+        "key": "D",
+        "text": "Mengeluarkan getah beracun yang mematikan ikan lele"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah air tawar menjadi air laut asin"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Fitoremediasi terkendali (dalam sekat kurungan maks 10% luas kolam) memanfaatkan akar tanaman air untuk menyerap nitrat dan fosfat organik berlebih (biofilter alami), menjaga air tetap segar dan tidak berbau."
+  },
+  {
+    "id": 131,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 1,
+    "question": "Seorang pembudidaya ikan patin di Belitang menebar 10.000 ekor benih patin di kolam tanah seluas 400 m². Selama 6 bulan masa pemeliharaan, total pakan pelet pabrikan yang dihabiskan adalah 6.500 kg. Saat panen diperoleh total bobot ikan patin seberat 5.000 kg. Berapakah nilai Feed Conversion Ratio (FCR) budidaya tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "FCR = 0,77"
+      },
+      {
+        "key": "B",
+        "text": "FCR = 1,30"
+      },
+      {
+        "key": "C",
+        "text": "FCR = 2,50"
+      },
+      {
+        "key": "D",
+        "text": "FCR = 1,85"
+      },
+      {
+        "key": "E",
+        "text": "FCR = 3,10"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Rumus FCR = Total Pakan Diberikan (kg) / Total Pertambahan Bobot Ikan (kg) = 6.500 kg / 5.000 kg = 1,30. FCR 1,30 tergolong sangat efisien (dibutuhkan 1,3 kg pakan untuk menghasilkan 1 kg daging patin)."
+  },
+  {
+    "id": 132,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Dari penebaran awal 10.000 ekor benih patin tersebut, saat panen diperoleh 9.000 ekor ikan hidup dengan rata-rata bobot 0,55 kg per ekor (total 5.000 kg). Berapakah Tingkat Kelangsungan Hidup (Survival Rate / SR) ikan patin tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "SR = 70%"
+      },
+      {
+        "key": "B",
+        "text": "SR = 80%"
+      },
+      {
+        "key": "C",
+        "text": "SR = 90%"
+      },
+      {
+        "key": "D",
+        "text": "SR = 95%"
+      },
+      {
+        "key": "E",
+        "text": "SR = 60%"
+      }
+    ],
+    "correct": "C",
+    "explanation": "Rumus Survival Rate (SR) = (Jumlah Ikan Panen / Jumlah Benih Awal) × 100% = (9.000 / 10.000) × 100% = 90%."
+  },
+  {
+    "id": 133,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Rincian biaya modal operasional satu siklus pemeliharaan patin 5.000 kg: pembelian 10.000 benih Rp 2.500.000, pakan pelet 6.500 kg @ Rp 10.500/kg (Rp 68.250.000), token listrik & solar aerasi Rp 3.000.000, probiotik & kapur Rp 1.500.000, serta upah tenaga kerja Rp 4.000.000. Berapakah total modal pengeluaran pembudidaya?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 79.250.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 70.750.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 85.000.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 68.250.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 92.500.000"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Total Biaya Modal = 2.500.000 + 68.250.000 + 3.000.000 + 1.500.000 + 4.000.000 = Rp 79.250.000."
+  },
+  {
+    "id": 134,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Jika seluruh hasil panen patin seberat 5.000 kg tersebut dijual langsung ke pedagang pengumpul pasar Palembang dengan harga Rp 19.000 per kg, berapakah total pendapatan kotor yang diperoleh pembudidaya?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 85.000.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 95.000.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 100.000.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 79.250.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 110.000.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pendapatan Kotor = Volume Hasil Panen × Harga Jual = 5.000 kg × Rp 19.000/kg = Rp 95.000.000."
+  },
+  {
+    "id": 135,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Berdasarkan data soal nomor 133 dan 134 (Total Modal Rp 79.250.000 dan Pendapatan Kotor Rp 95.000.000), berapakah laba bersih yang dinikmati pembudidaya patin tersebut dalam satu siklus panen?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 15.750.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 25.000.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 12.500.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 18.250.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 30.000.000"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Laba Bersih = Pendapatan Kotor - Total Modal = Rp 95.000.000 - Rp 79.250.000 = Rp 15.750.000."
+  },
+  {
+    "id": 136,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 6,
+    "question": "Harga Pokok Produksi (HPP) per kg ikan patin mencerminkan biaya modal riil per kilogram ikan yang dihasilkan. Berapakah HPP per kg ikan patin pembudidaya di atas (Total Modal Rp 79.250.000 / Hasil Panen 5.000 kg)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 15.850 per kg"
+      },
+      {
+        "key": "B",
+        "text": "Rp 19.000 per kg"
+      },
+      {
+        "key": "C",
+        "text": "Rp 12.500 per kg"
+      },
+      {
+        "key": "D",
+        "text": "Rp 10.500 per kg"
+      },
+      {
+        "key": "E",
+        "text": "Rp 17.500 per kg"
+      }
+    ],
+    "correct": "A",
+    "explanation": "HPP per kg = Total Biaya Modal / Total Panen = Rp 79.250.000 / 5.000 kg = Rp 15.850 per kg. Karena harga jual Rp 19.000/kg, pembudidaya menikmati marjin keuntungan Rp 3.150 per kg."
+  },
+  {
+    "id": 137,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Berapa persentase kontribusi biaya pakan pelet pabrikan (Rp 68.250.000) terhadap total modal pengeluaran budidaya patin (Rp 79.250.000)?",
+    "options": [
+      {
+        "key": "A",
+        "text": "50,0%"
+      },
+      {
+        "key": "B",
+        "text": "86,1%"
+      },
+      {
+        "key": "C",
+        "text": "25,5%"
+      },
+      {
+        "key": "D",
+        "text": "60,0%"
+      },
+      {
+        "key": "E",
+        "text": "98,0%"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Proporsi Biaya Pakan = (68.250.000 / 79.250.000) × 100% = 86,11%. Fakta matematis ini membuktikan pakan adalah komponen biaya terbesar (>80%) dalam agribisnis perikanan."
+  },
+  {
+    "id": 138,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Jika pembudidaya berhasil menekan FCR dari 1,30 menjadi 1,10 berkat pembuatan pakan pelet mandiri lokal yang bermutu, berapa kilogram pakan pelet yang berhasil dihemat untuk menghasilkan 5.000 kg ikan patin?",
+    "options": [
+      {
+        "key": "A",
+        "text": "500 kg pakan"
+      },
+      {
+        "key": "B",
+        "text": "1.000 kg pakan (senilai lebih dari Rp 10.000.000 penghematan modal)"
+      },
+      {
+        "key": "C",
+        "text": "2.000 kg pakan"
+      },
+      {
+        "key": "D",
+        "text": "250 kg pakan"
+      },
+      {
+        "key": "E",
+        "text": "100 kg pakan"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Kebutuhan pakan pada FCR 1,30 = 5.000 × 1,30 = 6.500 kg. Kebutuhan pakan pada FCR 1,10 = 5.000 × 1,10 = 5.500 kg. Penghematan pakan = 6.500 - 5.500 = 1.000 kg pakan."
+  },
+  {
+    "id": 139,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Kepadatan tebar benih lele di kolam bioflok bulat diameter 3 meter (luas alas 7,06 m² dengan tinggi air 1 meter = volume ~7 m³) adalah 1.000 ekor per m³. Berapa total benih lele yang ditebar di dalam kolam terpal bulat tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "2.000 ekor"
+      },
+      {
+        "key": "B",
+        "text": "7.000 ekor"
+      },
+      {
+        "key": "C",
+        "text": "14.000 ekor"
+      },
+      {
+        "key": "D",
+        "text": "5.000 ekor"
+      },
+      {
+        "key": "E",
+        "text": "1.000 ekor"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Volume air kolam = 7 m³. Kepadatan tebar = 1.000 ekor/m³. Total benih = 7 m³ × 1.000 ekor/m³ = 7.000 ekor benih lele."
+  },
+  {
+    "id": 140,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Titik Impas Produksi (BEP Unit dalam kg) menunjukkan volume panen minimal yang harus dihasilkan agar pembudidaya tidak merugi. Jika Total Biaya Tetap & Variabel adalah Rp 79.250.000 dan harga jual pasar Rp 19.000/kg, berapa BEP volume panen patin tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "2.500 kg"
+      },
+      {
+        "key": "B",
+        "text": "4.171 kg"
+      },
+      {
+        "key": "C",
+        "text": "5.000 kg"
+      },
+      {
+        "key": "D",
+        "text": "6.200 kg"
+      },
+      {
+        "key": "E",
+        "text": "3.000 kg"
+      }
+    ],
+    "correct": "B",
+    "explanation": "BEP (Volume) = Total Biaya / Harga Jual per Satuan = Rp 79.250.000 / Rp 19.000 = 4.171,05 kg (dibulatkan 4.171 kg). Panen di atas 4.171 kg memberikan laba bersih bagi pembudidaya."
+  },
+  {
+    "id": 141,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 1,
+    "question": "Kecamatan Belitang dan sekitarnya telah ditetapkan sebagai kawasan Kampung Perikanan Budidaya Patin Nasional di Sumatera Selatan. Bagaimana keterpaduan 4 pilar STEM memperkuat daya saing kawasan perikanan patin Belitang?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sains biologi kualitas air + Teknologi kincir aerasi & mesin pelet apung + Rekayasa kolam sirkulasi monik + Matematika analisis efisiensi FCR dan rantai pasok industri fillet"
+      },
+      {
+        "key": "B",
+        "text": "Menghentikan budidaya kolam dan beralih menangkap ikan liar di sungai"
+      },
+      {
+        "key": "C",
+        "text": "Membuang seluruh limbah kolam langsung ke pemukiman penduduk"
+      },
+      {
+        "key": "D",
+        "text": "Hanya mengandalkan pakan bangkai ayam tanpa pengujian gizi"
+      },
+      {
+        "key": "E",
+        "text": "Menjual seluruh kolam tanah untuk dijadikan lapangan parkir"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kemajuan Kampung Patin Belitang ditopang integrasi STEM menyeluruh: formulasi pakan sains lokal, teknologi aerasi hemat listrik, rekayasa tata air irigasi BK, dan perhitungan manajemen bisnis FCR yang ketat."
+  },
+  {
+    "id": 142,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 2,
+    "question": "Untuk mengatasi ketergantungan pembudidaya pada pakan pelet pabrikan yang mahal, kelompok perikanan mandiri di OKU Timur memproduksi 'Pakan Mandiri Berbasis Bahan Baku Lokal'. Bahan baku pertanian lokal apa saja yang diintegrasikan secara sains nutrisi?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Dedak bekatul padi Belitang (sumber karbohidrat), bungkil kedelai/kelapa, tepung ikan rucah lokal, dan limbah ampas tahu hasil industri rumah tangga"
+      },
+      {
+        "key": "B",
+        "text": "Serbuk gergaji kayu dan semen bangunan"
+      },
+      {
+        "key": "C",
+        "text": "Batu bata merah yang ditumbuk halus"
+      },
+      {
+        "key": "D",
+        "text": "Minyak tanah dan oli bekas traktor"
+      },
+      {
+        "key": "E",
+        "text": "Daun karet kering yang dibakar"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Formulasi pakan mandiri memadukan potensi agrikultur lokal OKU Timur: dedak padi penggilingan Belitang (energi), ampas tahu/kedelai (protein nabati), dan tepung ikan (protein hewani) dengan kadar protein total 28-30%."
+  },
+  {
+    "id": 143,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 3,
+    "question": "Hilirisasi produk perikanan patin di Belitang tidak hanya menjual ikan segar berkepala, tetapi diolah menjadi produk olahan bernilai tambah tinggi. Bentuk produk olahan turunan patin tersebut meliputi...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Fillet daging putih dori, kerupuk kemplang ikan khas Belitang, abon ikan patin, dan keripik kulit ikan krispi"
+      },
+      {
+        "key": "B",
+        "text": "Batu bata bangunan dan genteng atap rumah"
+      },
+      {
+        "key": "C",
+        "text": "Bahan bakar bensin oktan 98"
+      },
+      {
+        "key": "D",
+        "text": "Cat dinding tembok tahan air"
+      },
+      {
+        "key": "E",
+        "text": "Kain tenun sutra alami"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Hilirisasi patin (zero waste processing) mengolah daging menjadi fillet dan abon, kulit menjadi keripik renyah, dan sisa tulang diolah menjadi tepung kalsium pupuk/pakan, melipatgandakan margin ekonomi UMKM desa."
+  },
+  {
+    "id": 144,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Pemanfaatan lumpur dasar kolam patin yang kaya endapan bahan organik setelah masa panen sebagai pupuk tanaman sayuran dan sawah di sekitarnya merupakan penerapan konsep...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Ekonomi sirkular terpadu (Integrated Agri-Aquaculture) yang menghemat pupuk kimia dan mencegah pencemaran lingkungan sungai"
+      },
+      {
+        "key": "B",
+        "text": "Pemborosan tenaga kerja yang tidak memiliki nilai ilmiah"
+      },
+      {
+        "key": "C",
+        "text": "Pencemaran lahan sawah dengan racun mematikan"
+      },
+      {
+        "key": "D",
+        "text": "Tindakan melanggar hukum perikanan"
+      },
+      {
+        "key": "E",
+        "text": "Penyebab tanaman sayuran mati kekeringan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Lumpur kolam (fish pond sediment) mengandung Nitrogen, Fosfor, dan bahan organik tinggi dari sisa pakan/feses, menjadikannya pupuk bioslurry alami penyubur tanaman pangan tanpa biaya."
+  },
+  {
+    "id": 145,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Dalam mengatasi bau lumpur (geosmin) pada ikan patin sebelum dipasarkan ke restoran bintang lima, rekayasa penanganan pascapanen yang wajib dilakukan pembudidaya adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemberokan (purging) ikan di dalam bak air mengalir bersih dan jernih selama 24-48 jam tanpa pakan agar kotoran lumpur di insang dan pencernaan terbilas tuntas"
+      },
+      {
+        "key": "B",
+        "text": "Merendam ikan hidup di dalam cairan pemutih pakaian"
+      },
+      {
+        "key": "C",
+        "text": "Menjemur ikan patin hidup di bawah terik matahari hingga layu"
+      },
+      {
+        "key": "D",
+        "text": "Menyemprotkan parfum wangi ke dalam insang ikan"
+      },
+      {
+        "key": "E",
+        "text": "Merebus ikan hidup di air mendidih"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pemberokan (depuration/purging) di kolam air mengalir bersih (aerasi tinggi tanpa pakan) memfasilitasi pelepasan molekul geosmin/MIB dari jaringan lemak dan insang ikan lewat osmoregulasi alami."
+  },
+  {
+    "id": 146,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Penerapan sistem sertifikasi Cara Budidaya Ikan yang Baik (CBIB) dari Kementerian Kelautan dan Perikanan di sentra kolam OKU Timur mewajibkan kepatuhan terhadap...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Keamanan pangan (bebas residu antibiotik terlarang dan logam berat), biosekuriti kolam, kelestarian lingkungan, dan kesejahteraan hewan"
+      },
+      {
+        "key": "B",
+        "text": "Kewajiban memberi pakan ikan dengan daging sapi impor"
+      },
+      {
+        "key": "C",
+        "text": "Larangan menjual ikan di pasar lokal Belitang"
+      },
+      {
+        "key": "D",
+        "text": "Kewajiban mengganti air kolam setiap 1 jam sekali"
+      },
+      {
+        "key": "E",
+        "text": "Penggunaan kolam dari kaca akuarium raksasa"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sertifikasi CBIB menjamin mutu produk perikanan: melarang antibiotik berbahaya (seperti chloramphenicol), menjamin sumber air tidak tercemar pestisida sawah, dan menerapkan standar sanitasi peralatan."
+  },
+  {
+    "id": 147,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 7,
+    "question": "Integrasi teknologi budidaya Aquaponik (memadukan kolam lele terpal dengan instalasi hidroponik sayuran kangkung/selada di atasnya) di pekarangan rumah pedesaan Belitang menerapkan siklus nitrogen sains berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Amonia air kolam diubah bakteri nitrifikasi menjadi nitrat yang diserap akar sayuran sebagai pupuk cair alami, dan air yang bersih kembali mengalir ke kolam ikan"
+      },
+      {
+        "key": "B",
+        "text": "Sayuran kangkung memakan anak ikan lele yang berenang di bawahnya"
+      },
+      {
+        "key": "C",
+        "text": "Akar sayuran mengeluarkan racun yang mematikan ikan lele"
+      },
+      {
+        "key": "D",
+        "text": "Ikan lele melompat memakan daun selada di atas pipa"
+      },
+      {
+        "key": "E",
+        "text": "Air kolam menguap habis dalam waktu 5 menit"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Aquaponik menyatukan resirkulasi tertutup: limbah amonia feses ikan dikonversi biofilter menjadi nitrat (NO3-) yang diserap akar tanaman sayuran, menghasilkan panen protein ikan dan sayuran segar hemat air."
+  },
+  {
+    "id": 148,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Penggunaan aplikasi digital pencatat kualitas air dan logbook pakan berbasis Internet of Things (IoT) pada sentra patin modern membantu pembudidaya dalam...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemantauan real-time kadar DO, suhu, dan pH kolam dari ponsel pintar serta pemberian peringatan dini (alarm) saat aerator padam"
+      },
+      {
+        "key": "B",
+        "text": "Menangkap ikan patin secara otomatis ke dalam ember"
+      },
+      {
+        "key": "C",
+        "text": "Mengisi air kolam tanpa menggunakan pipa"
+      },
+      {
+        "key": "D",
+        "text": "Mengubah ikan lele menjadi ikan hias koi"
+      },
+      {
+        "key": "E",
+        "text": "Menghilangkan kebutuhan listrik pompa air"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Smart aquaculture IoT dengan sensor online mendeteksi penurunan DO berbahaya secara real-time dan memicu sakelar otomatis menyalakan kincir aerator cadangan, mencegah insiden kematian massal ikan di malam hari."
+  },
+  {
+    "id": 149,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Pembentukan Koperasi Perikanan Terpadu di Belitang yang mengelola pasokan pakan pabrik secara grosir, pabrik es balok bersama, dan armada truk pendingin bertujuan memecahkan masalah matematika finansial berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menekan harga beli pakan pelet eceran yang mahal dan memotong biaya logistik pemasaran agar margin keuntungan pembudidaya meningkat"
+      },
+      {
+        "key": "B",
+        "text": "Mewajibkan pembudidaya menyumbangkan seluruh ikan hasil panennya"
+      },
+      {
+        "key": "C",
+        "text": "Melarang warga makan ikan patin di rumah"
+      },
+      {
+        "key": "D",
+        "text": "Mengambil alih kepemilikan tanah warga desa secara paksa"
+      },
+      {
+        "key": "E",
+        "text": "Mengharuskan transaksi ikan menggunakan mata uang emas murni"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Koperasi perikanan menciptakan economies of scale (skala ekonomi): pembelian pakan skala kontainer mendapatkan diskon pabrik, fasilitas cold chain bersama menjaga kesegaran ikan, dan negosiasi pasar lebih solid."
+  },
+  {
+    "id": 150,
+    "day": 3,
+    "sector": "perikanan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Keberlanjutan sentra perikanan patin dan lele di Kabupaten OKU Timur di masa depan ditentukan oleh sinergi 4 pilar STEM yang harmonis dengan lingkungan sekitarnya. Indikator keberhasilan utama dari sinergi ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Produktivitas tinggi dengan FCR rendah, efisiensi air saluran irigasi BK, bebas residu kimia, dan peningkatan kesejahteraan ekonomi keluarga pembudidaya"
+      },
+      {
+        "key": "B",
+        "text": "Menutup seluruh saluran irigasi pertanian demi kepentingan kolam ikan semata"
+      },
+      {
+        "key": "C",
+        "text": "Mencemari sungai Komering dengan limbah bangkai ikan"
+      },
+      {
+        "key": "D",
+        "text": "Menjual seluruh kolam ikan kepada pihak luar daerah"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan inovasi mesin dan kembali ke metode penangkapan liar"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Keberhasilan perikanan STEM OKU Timur mencakup efisiensi biokonversi pakan (FCR < 1.2), kepatuhan tata air irigasi bersama petani padi, kemandirian bahan baku lokal, dan profitabilitas finansial yang berkelanjutan."
+  },
+  {
+    "id": 151,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 1,
+    "question": "Sapi potong tergolong hewan ruminansia (memamah biak) dengan lambung majemuk terdiri dari 4 bagian. Bagian lambung manakah yang berfungsi sebagai ruang fermentasi utama tempat hidup miliaran bakteri dan protozoa pengurai serat selulosa pakan hijauan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Abomasum (lambung sejati tempat sekresi enzim asam lambung)"
+      },
+      {
+        "key": "B",
+        "text": "Rumen (perut handuk berkapasitas terbesar tempat fermentasi mikroba anaerobik)"
+      },
+      {
+        "key": "C",
+        "text": "Omasum (perut buku tempat penyerapan air)"
+      },
+      {
+        "key": "D",
+        "text": "Retikulum (perut jala tempat penyaring partikel kasar)"
+      },
+      {
+        "key": "E",
+        "text": "Kantung empedu penyimpan cairan hati"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Rumen adalah kompartemen terbesar (mencapai 80% volume lambung) yang menyediakan lingkungan anaerobik ideal bagi koloni bakteri selulolitik dan protozoa untuk mencerna serat kasar pakan (selulosa dan hemiselulosa) menjadi Volatile Fatty Acids (VFA) sebagai energi utama sapi."
+  },
+  {
+    "id": 152,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Dalam ilmu nutrisi ternak sapi potong di OKU Timur, kebutuhan pakan hijauan segar (seperti rumput gajah odot) per hari dihitung berdasarkan persentase bobot badan hidup ternak, yaitu sebesar...",
+    "options": [
+      {
+        "key": "A",
+        "text": "1% - 2% dari bobot badan hidup"
+      },
+      {
+        "key": "B",
+        "text": "10% - 12% dari bobot badan hidup"
+      },
+      {
+        "key": "C",
+        "text": "50% dari bobot badan hidup"
+      },
+      {
+        "key": "D",
+        "text": "100% (sama dengan berat badannya sendiri)"
+      },
+      {
+        "key": "E",
+        "text": "Sapi tidak membutuhkan pakan hijauan apabila sudah diberi air minum"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Standar fisiologis ruminansia: konsumsi pakan hijauan segar adalah 10-12% dari bobot badan ternak (atau setara 2.5-3.0% bahan kering / dry matter) ditambah konsentrat penguat 1-2% bobot badan untuk mengoptimalkan penggemukan."
+  },
+  {
+    "id": 153,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 3,
+    "question": "Rumput Gajah Odot (Pennisetum purpureum cv. Mott) menjadi pakan hijauan favorit peternak sapi dan kambing di Belitang. Keunggulan sains agronomis rumput odot dibanding rumput liar lapangan adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Kadar protein kasar tinggi (12-14%), tekstur batang lunak dan daun lebat tanpa bulu tajam sehingga sangat disukai ternak (palatabilitas tinggi)"
+      },
+      {
+        "key": "B",
+        "text": "Dapat tumbuh subur di dalam ruangan tanpa sinar matahari"
+      },
+      {
+        "key": "C",
+        "text": "Mengandung racun sianida yang membius sapi"
+      },
+      {
+        "key": "D",
+        "text": "Hanya dapat dipanen sekali seumur hidup lalu mati"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah air kencing sapi menjadi susu murni"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Rumput odot memiliki ruas batang pendek dan empuk, rasio daun-batang tinggi, bebas bulu gatal, palatabilitas istimewa, serta protein kasar mencapai 14%, jauh melampaui rumput alam (6-8% PK)."
+  },
+  {
+    "id": 154,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Pemberian daun leguminosa seperti Gamal (Gliricidia sepium) atau Lamtoro (Leucaena leucocephala) pada ternak sapi potong sangat penting dalam ransum pakan karena berfungsi sebagai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sumber protein nabati tinggi (20-25% PK) dan asam amino esensial yang meningkatkan sintesis protein daging sapi"
+      },
+      {
+        "key": "B",
+        "text": "Pewarna alami agar kotoran sapi berwarna hijau"
+      },
+      {
+        "key": "C",
+        "text": "Bahan pengawet kimia sintetis"
+      },
+      {
+        "key": "D",
+        "text": "Pengganti air minum ternak"
+      },
+      {
+        "key": "E",
+        "text": "Obat penenang agar sapi tertidur lelap"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Leguminosa pohon (gamal/lamtoro/kaliandra) bertindak sebagai konsentrat hijau alami kaya protein (20-25% Crude Protein) dan mineral, memacu perkembangbiakan mikroba rumen dan mempercepat pertambahan bobot badan harian."
+  },
+  {
+    "id": 155,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Penyakit Mulut dan Kuku (PMK / Foot and Mouth Disease) pada sapi disebabkan oleh infeksi virus dari famili Picornaviridae (Aphthovirus). Gejala klinis spesifik apa yang tampak pada sapi yang terjangkit di lapangan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bulu sapi rontok seluruhnya dan mata memancarkan cahaya merah"
+      },
+      {
+        "key": "B",
+        "text": "Hipersalivasi (air liur berbusa menggantung berlebihan), luka lepuh vesikel pada lidah, gusi, dan celah kuku yang menyebabkan sapi pincang dan enggan berdiri"
+      },
+      {
+        "key": "C",
+        "text": "Sapi melompat-lompat setinggi 3 meter tanpa henti"
+      },
+      {
+        "key": "D",
+        "text": "Tanduk sapi memanjang dan membengkok ke belakang"
+      },
+      {
+        "key": "E",
+        "text": "Sapi tidak dapat buang air kencing selamanya"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Virus PMK menyerang epitelial mukosa mulut (vesikel/lepuh pada lidah, bibir, gusi) yang memicu hipersalivasi (drooling) hebat dan lesi pada koronet celah teracak kuku yang menyebabkan kepincangan parah."
+  },
+  {
+    "id": 156,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Pemberian pakan konsentrat berbutir halus (seperti dedak bekatul dan jagung giling) dalam jumlah berlebihan tanpa diimbangi pakan hijauan berserat kasar dapat memicu gangguan pencernaan mematikan pada sapi, yaitu...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Asidosis rumen (penurunan drastis pH cairan rumen di bawah 5.5 akibat produksi asam laktat berlebih)"
+      },
+      {
+        "key": "B",
+        "text": "Penyakit rabies anjing gila"
+      },
+      {
+        "key": "C",
+        "text": "Pembesaran kantung empedu"
+      },
+      {
+        "key": "D",
+        "text": "Patah tulang rusuk"
+      },
+      {
+        "key": "E",
+        "text": "Pertumbuhan gigi taring karnivora"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pati fermentable berlebih difermentasi cepat oleh Streptococcus bovis menghasilkan asam laktat masif, menjatuhkan pH rumen (asidosis), mematikan flora rumen pengurai serat, dan dapat memicu kematian mendadak."
+  },
+  {
+    "id": 157,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 7,
+    "question": "Pada unggas (ayam pedaging / broiler), pakan yang ditelan utuh tanpa dikunyah akan dicerna secara mekanik di dalam organ pencernaan berlapis otot tebal yang sering dibantu oleh butiran kerikil (grit), yaitu...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tembolok (crop)"
+      },
+      {
+        "key": "B",
+        "text": "Gizzard (empedal / ampela)"
+      },
+      {
+        "key": "C",
+        "text": "Proventrikulus (lambung kelenjar)"
+      },
+      {
+        "key": "D",
+        "text": "Sekum (usus buntu ganda)"
+      },
+      {
+        "key": "E",
+        "text": "Kloaka (saluran pembuangan akhir)"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Gizzard (ampela) memiliki dinding otot polos tebal berkontraksi kuat dan lapisan keratin koilin yang menggilas dan menghancurkan butiran biji pakan secara mekanik dengan bantuan partikel grit keras."
+  },
+  {
+    "id": 158,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Parasit cacing hati (Fasciola gigantica) sering menyerang sapi potong yang digembalakan di areal persawahan atau rawa lebak OKU Timur. Mengapa keberadaan siput air tawar kecil (Lymnaea rubiginosa) menjadi kunci penularan cacing hati ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Siput bertindak sebagai inang perantara (intermediate host) tempat larva cacing berkembang biak sebelum membentuk kista metaserkaria yang menempel pada rumput air"
+      },
+      {
+        "key": "B",
+        "text": "Siput memakan hati sapi secara langsung dari dalam tanah"
+      },
+      {
+        "key": "C",
+        "text": "Siput mengeluarkan racun kimia yang mengubah rumput menjadi beracun"
+      },
+      {
+        "key": "D",
+        "text": "Siput menyuntikkan telur cacing ke dalam pembuluh darah sapi lewat gigitan"
+      },
+      {
+        "key": "E",
+        "text": "Siput hanya memakan kotoran sapi tanpa ada kaitan siklus cacing"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Fasciola gigantica membutuhkan siput Lymnaea sebagai inang perantara untuk siklus miracidium -> sporokista -> redia -> serkaria. Serkaria berenang keluar dan mengenkistasi menjadi metaserkaria infektif pada rumput hijauan."
+  },
+  {
+    "id": 159,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Pemberian garam dapur (NaCl) dan mineral blok jilat (mineral lick block) di dalam kandang sapi potong di Belitang bertujuan untuk memenuhi kebutuhan sains faal berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Keseimbangan elektrolit tubuh, merangsang nafsu makan, dan mencukupi kebutuhan mineral mikro (Kalsium, Fosfor, Seng, Selenium)"
+      },
+      {
+        "key": "B",
+        "text": "Membuat daging sapi berasa asin saat disembelih"
+      },
+      {
+        "key": "C",
+        "text": "Menghentikan sistem pencernaan sapi"
+      },
+      {
+        "key": "D",
+        "text": "Mencegah sapi meminum air"
+      },
+      {
+        "key": "E",
+        "text": "Mengubah warna kulit sapi menjadi belang putih"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Mineral blok memasok natrium, klorida, kalsium, dan mikromineral esensial yang memelihara tekanan osmotik sel, memacu sekresi saliva penyangga pH rumen, dan mencegah defisiensi mineral (pica/jilat kandang)."
+  },
+  {
+    "id": 160,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "A",
+    "indicatorKey": "pilar_science",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Ketika sapi betina mengalami masa birahi (estrus), peternak harus segera melapor ke petugas mantri inseminator untuk dilakukan kawin suntik. Tanda-tanda fisiologis birahi 3A pada sapi betina adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Abang (vulva memerah), Abu (vulva bengkak/hangat), dan Anget (keluar lendir bening kental serta sapi gelisah diam dinaiki sapi lain)"
+      },
+      {
+        "key": "B",
+        "text": "Ambles, Amuk, dan Anjlok"
+      },
+      {
+        "key": "C",
+        "text": "Aman, Adem, dan Anteng tanpa bergerak"
+      },
+      {
+        "key": "D",
+        "text": "Anak, Ayah, dan Asuh"
+      },
+      {
+        "key": "E",
+        "text": "Asin, Asem, dan Amis pada kencing sapi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Tanda birahi klasik pada sapi adalah '3A' (Abang, Abuh, Anget): vulva merah membengkak dan hangat, sekresi lendir estrus serviks yang jernih elastis, serta refleks diam saat dinaiki (standing heat)."
+  },
+  {
+    "id": 161,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 1,
+    "question": "Mesin perajang rumput (chopper pakan) bertenaga motor bensin 6,5 HP sangat banyak digunakan kelompok peternak sapi di Belitang. Apa fungsi teknologi mekanik mesin chopper dalam penyediaan pakan ternak?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mencacah batang rumput gajah, jerami, dan pelepah menjadi ukuran pendek (2-5 cm) agar mudah dikunyah ternak dan meminimalkan pakan terbuang"
+      },
+      {
+        "key": "B",
+        "text": "Memasak rumput hingga matang mendidih"
+      },
+      {
+        "key": "C",
+        "text": "Menghilangkan seluruh kandungan serat dari dalam rumput"
+      },
+      {
+        "key": "D",
+        "text": "Mengubah rumput menjadi butiran beras putih"
+      },
+      {
+        "key": "E",
+        "text": "Menyemprotkan pakan langsung ke dalam mulut sapi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pisau putar chopper berkecepatan tinggi merajang batang hijauan berserat kasar menjadi fraksi seragam (2-5 cm), memperluas luas permukaan untuk fermentasi mikroba rumen dan menekan pakan tercecer dari palung pakan."
+  },
+  {
+    "id": 162,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Teknologi Inseminasi Buatan (IB / Kawin Suntik) pada sapi potong di OKU Timur menggunakan sperma beku (straw semen). Di dalam wadah apa straw semen beku tersebut disimpan agar sel sperma tetap hidup dorman selama bertahun-tahun?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Tabung termos cryogenic berisi nitrogen cair pada suhu -196°C"
+      },
+      {
+        "key": "B",
+        "text": "Kotak styrofoam berisi es batu biasa pada suhu 0°C"
+      },
+      {
+        "key": "C",
+        "text": "Kulkas rumah tangga pada suhu 4°C"
+      },
+      {
+        "key": "D",
+        "text": "Minyak goreng panas pada suhu 100°C"
+      },
+      {
+        "key": "E",
+        "text": "Botol kaca kedap udara pada suhu kamar"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Nitrogen cair cair pada suhu kriogenik ekstrem (-196°C) menghentikan seluruh aktivitas metabolisme sel sperma (vitrifikasi dorman total) tanpa merusak membran sel, sehingga spermatozoa hidup kembali saat di-thawing."
+  },
+  {
+    "id": 163,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Sebelum straw semen beku dimasukkan ke dalam uterus sapi menggunakan alat insemination gun, tahapan teknologi apakah yang wajib dilakukan oleh mantri IB?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Thawing (pencairan kembali) di dalam wadah air hangat bersuhu 37°C selama 30 detik untuk mengaktifkan kembali motilitas sperma"
+      },
+      {
+        "key": "B",
+        "text": "Membakar straw di atas api kompor selama 5 menit"
+      },
+      {
+        "key": "C",
+        "text": "Merendam straw di dalam cairan alkohol 70%"
+      },
+      {
+        "key": "D",
+        "text": "Menjemur straw di bawah terik sinar matahari selama 2 jam"
+      },
+      {
+        "key": "E",
+        "text": "Mengocok straw hingga cairan semen berbuih putih"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Thawing terstandar dalam penangas air suhu fisiologis tubuh sapi (37°C selama 30 detik) mencairkan kristal krioprotektan secara cepat dan aman, mengembalikan motilitas progresif spermatozoa secara optimum."
+  },
+  {
+    "id": 164,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C2",
+    "numberInIndicator": 4,
+    "question": "Untuk memperkirakan bobot badan sapi hidup tanpa timbangan jembatan yang mahal, peternak di pedesaan Belitang menggunakan teknologi pita ukur ternak (rondo meter / weight tape). Bagian tubuh sapi manakah yang diukur lingkarannya?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Lingkar dada tepat di belakang sendi bahu siku kaki depan sapi"
+      },
+      {
+        "key": "B",
+        "text": "Panjang ekor sapi dari pangkal ke ujung rambut"
+      },
+      {
+        "key": "C",
+        "text": "Lingkar leher di bawah daun telinga"
+      },
+      {
+        "key": "D",
+        "text": "Jarak antara ujung tanduk kanan dan kiri"
+      },
+      {
+        "key": "E",
+        "text": "Lingkar pergelangan kaki belakang sapi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Lingkar dada (heart girth) memiliki korelasi matematis-biometris paling kuat (r > 0.95) dengan massa total tubuh ruminansia besar (rumus Schoorl atau Winter), dikonversi langsung pada skala pita ukur menjadi kg."
+  },
+  {
+    "id": 165,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Pada kandang ayam broiler modern semi-closed house di OKU Timur, sistem tempat minum otomatis menggunakan teknologi 'nipple drinker'. Apa keunggulan teknologi nipple drinker dibanding mangkok minum terbuka?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Air minum selalu tertutup higienis di dalam pipa, air hanya menetes saat disentuh paruh ayam, sehingga litter sekam lantai kandang tetap kering dan bebas bau amonia"
+      },
+      {
+        "key": "B",
+        "text": "Dapat mengeluarkan minuman jus buah secara otomatis"
+      },
+      {
+        "key": "C",
+        "text": "Membuat ayam berhenti minum air selamanya"
+      },
+      {
+        "key": "D",
+        "text": "Mengharuskan peternak menuang air satu per satu dengan tangan"
+      },
+      {
+        "key": "E",
+        "text": "Mengalirkan air mendidih untuk merebus bulu ayam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Nipple valve stainless steel menyuplai air secara higienis saat ditekan paruh ayam tanpa tumpahan (drip-free), mencegah litter sekam basah, dan menekan pembentukan gas amonia dari kotoran ayam."
+  },
+  {
+    "id": 166,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Mesin penetas telur otomatis (egg incubator) bertenaga listrik yang dirakit peternak unggas lokal Belitang dilengkapi sistem 'automatic egg turner'. Mengapa telur unggas harus diputar posisinya secara berkala setiap 2-4 jam sekali?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mencegah embrio anak ayam menempel pada selaput cangkang dalam dan memastikan distribusi panas merata ke seluruh permukaan telur"
+      },
+      {
+        "key": "B",
+        "text": "Agar telur matang seperti telur rebus"
+      },
+      {
+        "key": "C",
+        "text": "Membuat anak ayam pusing saat menetas"
+      },
+      {
+        "key": "D",
+        "text": "Mengubah telur ayam menjadi telur bebek"
+      },
+      {
+        "key": "E",
+        "text": "Mempercepat cangkang telur pecah dalam waktu 1 hari"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Pembalikan telur (tilting 45°) meniru perilaku alami induk ayam mengerami telur, mencegah adhesi membran korioalantois ke dinding cangkang bagian dalam, dan menjamin perkembangan vaskular embrio normal."
+  },
+  {
+    "id": 167,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 7,
+    "question": "Timbangan ternak digital portabel jenis 'bars scale' (dua batang sensor load cell yang diletakkan di bawah lantai kandang jepit) memudahkan penimbangan sapi di Belitang. Keunggulan fitur 'animal lock filter' pada timbangan digital tersebut adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Algoritma mikrokontroler mampu mengunci angka bobot riil sapi secara stabil dan akurat meskipun sapi bergerak-gerak aktif di atas lantai timbangan"
+      },
+      {
+        "key": "B",
+        "text": "Mengikat kaki sapi dengan medan magnet kuat"
+      },
+      {
+        "key": "C",
+        "text": "Menambah timbangan sapi secara otomatis sebesar 50 kg"
+      },
+      {
+        "key": "D",
+        "text": "Mengeluarkan sengatan listrik jika sapi melangkah keluar"
+      },
+      {
+        "key": "E",
+        "text": "Membuat sapi pingsan saat ditimbang"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Fitur hold/animal lock menggunakan filter rata-rata bergerak digital (moving average algorithm) yang mengeliminasi fluktuasi sinyal getaran dinamis akibat pergerakan kaki sapi, menghasilkan pembacaan massa statis yang presisi."
+  },
+  {
+    "id": 168,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 8,
+    "question": "Dalam program vaksinasi massal PMK dan pemberian vitamin ternak sapi di OKU Timur, petugas peternakan menggunakan alat suntik otomatis (automatic repeat syringe). Keuntungan teknologi ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Dosis obat/vaksin terisi ulang otomatis dari botol dengan takaran mililiter yang sama persis untuk ratusan ekor ternak secara cepat dan steril"
+      },
+      {
+        "key": "B",
+        "text": "Dapat menyuntik sapi dari jarak jauh 100 meter"
+      },
+      {
+        "key": "C",
+        "text": "Menyuntik sapi tanpa menggunakan jarum logam"
+      },
+      {
+        "key": "D",
+        "text": "Mengubah cairan vaksin menjadi gas udara"
+      },
+      {
+        "key": "E",
+        "text": "Membuat sapi kebal terhadap semua jenis penyakit seumur hidup dalam satu detik"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Continuous repeat syringe dengan selang hisap langsung dari botol ampul memastikan akurasi kalibrasi volume dosis (misal 5 ml per ekor) secara konsisten dan mempercepat operasional vaksinasi populasi ratusan sapi."
+  },
+  {
+    "id": 169,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Pada peternakan ayam petelur (layer) di OKU Timur, lampu penerangan kandang diatur menggunakan sensor pengatur waktu otomatis (photoperiod light timer) selama 16 jam terang. Tujuan sains teknologi pencahayaan ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Merangsang kelenjar hipofisis otak ayam memproduksi hormon gonadotropin untuk mempertahankan ovulasi dan produksi telur yang stabil setiap hari"
+      },
+      {
+        "key": "B",
+        "text": "Mencegah ayam tidur sepanjang malam agar ayam lelah"
+      },
+      {
+        "key": "C",
+        "text": "Memanaskan kandang hingga ayam berkeringat"
+      },
+      {
+        "key": "D",
+        "text": "Membuat warna cangkang telur menjadi warna-warni"
+      },
+      {
+        "key": "E",
+        "text": "Sebagai lampu penerangan jalan bagi warga desa"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Fotoperiodisme 16 jam cahaya merangsang fotoreseptor retina mata ayam, mentransmisikan sinyal ke hipotalamus untuk mensekresikan GnRH yang memicu pelepasan FSH dan LH dari kelenjar pituitari untuk pembentukan kuning telur."
+  },
+  {
+    "id": 170,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "B",
+    "indicatorKey": "pilar_technology",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Alat Dehorner elektrik (cautery dehorner) digunakan peternak sapi modern untuk menghilangkan kuncup tanduk pada pedet (anak sapi) usia di bawah 1 bulan. Manfaat teknologi dehorning ini terhadap manajemen pemeliharaan sapi di kandang komunal adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mencegah luka cedera akibat saling seruduk antar-sapi, mempermudah penanganan ternak, dan menghemat ruang palung pakan"
+      },
+      {
+        "key": "B",
+        "text": "Mengurangi berat badan sapi menjadi lebih ringan"
+      },
+      {
+        "key": "C",
+        "text": "Menghentikan pertumbuhan bulu sapi selamanya"
+      },
+      {
+        "key": "D",
+        "text": "Mengubah sapi jantan menjadi sapi betina"
+      },
+      {
+        "key": "E",
+        "text": "Membuat sapi tidak membutuhkan pakan hijauan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kauterisasi kuncup tanduk (debudding) secara higienis pada pedet muda menghilangkan bahaya trauma luka tanduk pada ternak lain dan peternak, menurunkan agresivitas saat makan bersama di palung pakan."
+  },
+  {
+    "id": 171,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 1,
+    "question": "Untuk mengantisipasi kelangkaan rumput hijauan segar di musim kemarau, peternak sapi di Belitang menerapkan rekayasa pembuatan silase rumput odot dalam drum plastik kedap udara (silo). Kondisi anaerobik mutlak dan penambahan molase diperlukan agar...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bakteri Asam Laktat (BAL) memfermentasi gula menjadi asam laktat, menurunkan pH ke 3.8-4.2 sehingga pakan awet berbulan-bulan tanpa membusuk"
+      },
+      {
+        "key": "B",
+        "text": "Jamur pembusuk tumbuh subur menghancurkan pakan"
+      },
+      {
+        "key": "C",
+        "text": "Rumput odot berubah menjadi bahan bakar solar"
+      },
+      {
+        "key": "D",
+        "text": "Kadar air rumput menguap habis dalam waktu 1 menit"
+      },
+      {
+        "key": "E",
+        "text": "Drum plastik meleleh karena reaksi kimia panas"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Fermentasi silase anaerobik menstimulasi bakteri Lactobacillus plantarum mengubah karbohidrat terlarut menjadi asam laktat. Asam ini mengawetkan biomassa pakan pada pH asam stabil (3.8-4.2) dan mencegah jamur pembusuk."
+  },
+  {
+    "id": 172,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 2,
+    "question": "Limbah jerami padi kering melimpah ruah di Belitang saat panen raya namun memiliki kecernaan rendah (kadar lignin tinggi). Rekayasa biokimia 'Amoniasi Jerami' menggunakan larutan urea (4% bobot jerami) dalam kantong plastik tertutup bertujuan untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memutus ikatan lignoselulosa dan lignohemiselulosa pada dinding sel jerami serta meningkatkan kandungan nitrogen (protein kasar setara 8-10%)"
+      },
+      {
+        "key": "B",
+        "text": "Membakar jerami menjadi abu pupuk hitam"
+      },
+      {
+        "key": "C",
+        "text": "Membuat jerami berubah menjadi biji beras utuh"
+      },
+      {
+        "key": "D",
+        "text": "Menghilangkan seluruh aroma jerami agar tidak dimakan sapi"
+      },
+      {
+        "key": "E",
+        "text": "Mengeringkan jerami hingga rapuh seperti kerupuk"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Gas amonia (NH3) yang terhidrolisis dari urea meregangkan dan merenggangkan ikatan lignoselulosa dinding sel jerami yang keras, melunakkan tekstur jerami, meningkatkan kecernaan rumen, dan mendongkrak protein kasar."
+  },
+  {
+    "id": 173,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Instalasi biodigester kubah beton (fixed dome biogas) dibangun peternak sapi di pedesaan OKU Timur untuk mengolah kotoran feses sapi. Gas utama apa yang dihasilkan oleh bakteri metanogen dalam reaktor anaerobik tersebut dan dapat dimanfaatkan sebagai bahan bakar kompor memasak?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Gas Oksigen (O2)"
+      },
+      {
+        "key": "B",
+        "text": "Gas Metana (CH4 sekitar 55-65%) dan Karbondioksida (CO2)"
+      },
+      {
+        "key": "C",
+        "text": "Gas Karbon Monoksida (CO beracun)"
+      },
+      {
+        "key": "D",
+        "text": "Gas Helium pengisi balon udara"
+      },
+      {
+        "key": "E",
+        "text": "Gas Klorin pemutih air"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Bakteri metanogenik (Methanobacterium) merombak asam asetat dan hidrogen dari feses dalam kondisi anaerob menghasilkan biogas yang didominasi gas metana (CH4 60%) yang memiliki nilai kalor tinggi untuk bahan bakar api biru."
+  },
+  {
+    "id": 174,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 4,
+    "question": "Produk sampingan berupa lumpur keluaran dari instalasi biodigester biogas (bio-slurry) memiliki nilai guna agronomis tinggi bagi petani OKU Timur karena...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Merupakan pupuk organik cair dan padat berkualitas prima yang kaya hara makro (NPK), bebas patogen penyakit, dan tidak berbau menyengat untuk memupuk sawah dan sayuran"
+      },
+      {
+        "key": "B",
+        "text": "Merupakan racun berbahaya yang harus ditimbun di bawah semen"
+      },
+      {
+        "key": "C",
+        "text": "Hanya dapat dibuang ke dalam saluran irigasi primer"
+      },
+      {
+        "key": "D",
+        "text": "Dapat mengeras menjadi bahan pembuat semen cor"
+      },
+      {
+        "key": "E",
+        "text": "Mengandung zat asam sulfat pekat yang mematikan tanaman"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Bio-slurry (lumpur biogas) telah terfermentasi sempurna sehingga bebas biji gulma dan bakteri fekal patogen, kaya asam amino dan unsur N-P-K terlarut yang sangat siap diserap perakaran tanaman sawah."
+  },
+  {
+    "id": 175,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Rancangan lantai kandang sapi potong yang ideal di Belitang dibuat dengan kemiringan lereng 2° hingga 3° (kemiringan 2-3 cm per 1 meter panjang lantai) ke arah parit pembuangan belakang. Apa fungsi rekayasa sipil kandang ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Memastikan air kencing (urin) dan air pencucian kandang mengalir gravitasi secara cepat ke saluran pembuangan, menjaga lantai tempat sapi tidur tetap kering dan bersih"
+      },
+      {
+        "key": "B",
+        "text": "Membuat sapi terpeleset dan jatuh ke parit"
+      },
+      {
+        "key": "C",
+        "text": "Mencegah sapi berdiri tegak saat malam hari"
+      },
+      {
+        "key": "D",
+        "text": "Agar palung pakan sapi terendam air kencing"
+      },
+      {
+        "key": "E",
+        "text": "Hanya variasi estetika tukang bangunan tanpa fungsi sanitasi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kemiringan lantai kandang 2-3% menjamin drainase urin dan air feses bekerja gravitasi dengan sempurna, mencegah lantai becek berbau yang memicu kuku busuk (foot rot) dan menjaga kenyamanan istirahat ternak."
+  },
+  {
+    "id": 176,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Palung pakan (manger) sapi yang dirancang dengan bibir pembatas depan lebih tinggi 40-50 cm dari dasar lantai tempat berdiri sapi dan dinding melengkung memiliki tujuan ergonomis...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mencegah rumput cacahan terlempar tercecer ke lantai terinjak kaki sapi dan memudahkan pembersihan sisa pakan"
+      },
+      {
+        "key": "B",
+        "text": "Menghalangi kepala sapi agar tidak bisa menjangkau pakan"
+      },
+      {
+        "key": "C",
+        "text": "Tempat sapi meletakkan kakinya saat makan"
+      },
+      {
+        "key": "D",
+        "text": "Menampung air hujan dari atap kandang"
+      },
+      {
+        "key": "E",
+        "text": "Mencegah peternak memberi pakan konsentrat"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Desain palung pakan semi-cekung dengan bibir pembatas proporsional menahan rumput cacahan agar tidak tercecer keluar oleh kibasan moncong sapi, menekan waste pakan hingga <5%."
+  },
+  {
+    "id": 177,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 7,
+    "question": "Orientasi membujur bangunan kandang sapi potong yang benar di daerah beriklim tropis seperti OKU Timur adalah menghadap ke arah Barat - Timur. Alasan rekayasa termal arsitektur kandang ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Meminimalkan paparan radiasi panas langsung sinar matahari siang terik ke dalam badan kandang, sekaligus memungkinkan sinar matahari pagi masuk untuk membunuh kuman lantai"
+      },
+      {
+        "key": "B",
+        "text": "Mengikuti arah tiupan angin badai topan"
+      },
+      {
+        "key": "C",
+        "text": "Membuat kandang menjadi gelap gulita sepanjang hari"
+      },
+      {
+        "key": "D",
+        "text": "Agar atap kandang cepat berkarat"
+      },
+      {
+        "key": "E",
+        "text": "Hanya sebagai adat kebiasaan warga tanpa pengaruh mikroklimat"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sumbu memanjang Timur-Barat membatasi bidang atap dan dinding kandang yang terpapar sinar matahari terik zenith (siang hari), menjaga kandang tetap sejuk dan mencegah stres panas (heat stress) pada sapi."
+  },
+  {
+    "id": 178,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 8,
+    "question": "Untuk mengatasi bau kotoran kandang ayam broiler yang mengganggu pemukiman di pedesaan, peternak mencampurkan serbuk gergaji/sekam padi dengan kultur probiotik bakteri dekomposer (seperti EM4 peternakan) pada alas sekam (litter). Apa fungsi rekayasa biokimia litter tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Bakteri probiotik mengurai asam urat feses secara aerobik sehingga konversi menjadi gas amonia berbau menyengat terhambat dan litter tetap kering"
+      },
+      {
+        "key": "B",
+        "text": "Membuat kotoran ayam berubah menjadi serbuk emas"
+      },
+      {
+        "key": "C",
+        "text": "Membuat ayam berhenti buang kotoran"
+      },
+      {
+        "key": "D",
+        "text": "Membakar sekam menjadi bara api pemanas"
+      },
+      {
+        "key": "E",
+        "text": "Menimbulkan uap parfum sintetis dari kotoran"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Probiotik fermentatif mengasimilasi nitrogen feses dan menurunkan aktivitas enzim urease yang merombak asam urat menjadi gas amonia, menekan bau busuk kandang hingga 80% dan mencegah penyakit pernapasan unggas (CRD)."
+  },
+  {
+    "id": 179,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 9,
+    "question": "Penyekatan kandang jepit (crush chute / handling crate) berbahan pipa besi galvanis kokoh dirancang peternak sapi potong di Belitang. Fungsi utama fasilitas kandang jepit ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mengunci pergerakan tubuh sapi secara aman tanpa melukai ternak saat pelaksanaan Inseminasi Buatan, vaksinasi, pemasangan eartag, dan pemeriksaan kebuntingan"
+      },
+      {
+        "key": "B",
+        "text": "Menjepit sapi hingga kurus dan tidak bisa makan"
+      },
+      {
+        "key": "C",
+        "text": "Tempat memotong daging sapi menjadi kemasan kaleng"
+      },
+      {
+        "key": "D",
+        "text": "Menghukum sapi yang tidak mau memakan rumput odot"
+      },
+      {
+        "key": "E",
+        "text": "Menahan sapi agar tidak bisa tidur selama pemeliharaan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kandang jepit dengan pintu pengunci leher (head bail) memfiksasi posisi tubuh sapi dengan aman dan tenang, melindungi petugas medis hewan dari tendangan/serudukan sapi saat tindakan rektal IB atau vaksinasi."
+  },
+  {
+    "id": 180,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "C",
+    "indicatorKey": "pilar_engineering",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 10,
+    "question": "Dalam penampungan air minum sapi potong, pemasangan bak air otomatis berpengapung pelampung (automatic float water trough) memastikan ketersediaan air minum secara 'ad libitum' (tak terbatas). Mengapa air minum sapi wajib ad libitum?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sapi membutuhkan 40-60 liter air per hari untuk proses metabolisme rumen, produksi saliva pencernaan, dan pembentukan jaringan daging; kekurangan air langsung menurunkan konsumsi pakan"
+      },
+      {
+        "key": "B",
+        "text": "Agar perut sapi membesar terisi air tanpa perlu makan rumput"
+      },
+      {
+        "key": "C",
+        "text": "Untuk mendinginkan tubuh sapi agar tidak berkeringat"
+      },
+      {
+        "key": "D",
+        "text": "Membuat sapi buang air kecil setiap 5 menit sekali"
+      },
+      {
+        "key": "E",
+        "text": "Air minum hanya pelengkap yang tidak wajib disediakan setiap hari"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Air adalah 60-70% komponen tubuh ternak dan medium fermentasi rumen. Akses air bersih ad-libitum (sepanjang waktu) via katup pelampung menjaga efisiensi metabolisme ransum dan mencegah dehidrasi."
+  },
+  {
+    "id": 181,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 1,
+    "question": "Pak Sugeng membeli seekor sapi bakalan jantan peranakan Simmental seberat 300 kg seharga Rp 14.000.000. Setelah dipelihara selama 180 hari (6 bulan), bobot sapi mencapai 480 kg saat dijual menjelang Idul Adha. Berapakah Pertambahan Bobot Badan Harian (Average Daily Gain / ADG) sapi Pak Sugeng?",
+    "options": [
+      {
+        "key": "A",
+        "text": "ADG = 0,50 kg / hari"
+      },
+      {
+        "key": "B",
+        "text": "ADG = 1,00 kg / hari"
+      },
+      {
+        "key": "C",
+        "text": "ADG = 1,80 kg / hari"
+      },
+      {
+        "key": "D",
+        "text": "ADG = 2,50 kg / hari"
+      },
+      {
+        "key": "E",
+        "text": "ADG = 0,30 kg / hari"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pertambahan total bobot = 480 kg - 300 kg = 180 kg. Durasi pemeliharaan = 180 hari. ADG = 180 kg / 180 hari = 1,00 kg per hari (pencapaian penggemukan unggul)."
+  },
+  {
+    "id": 182,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 2,
+    "question": "Sapi seberat 480 kg tersebut laku terjual sebagai hewan kurban dengan harga Rp 55.000 per kg bobot hidup. Berapakah total pendapatan kotor yang diterima Pak Sugeng dari penjualan sapi tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 21.000.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 26.400.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 24.000.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 28.500.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 32.000.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Pendapatan Kotor = Bobot Sapi (kg) × Harga per kg = 480 kg × Rp 55.000/kg = Rp 26.400.000."
+  },
+  {
+    "id": 183,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Total rincian biaya modal pengeluaran Pak Sugeng selama 180 hari: harga beli bakalan Rp 14.000.000, konsentrat dedak & ampas tahu Rp 4.500.000, pakan hijauan & silase jerami Rp 1.800.000, vitamin, obat cacing & vaksin Rp 400.000, dan upah tenaga rawat Rp 1.200.000. Berapakah total modal pengeluaran Pak Sugeng?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 18.500.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 21.900.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 24.200.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 20.000.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 26.000.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Total Modal Pengeluaran = 14.000.000 + 4.500.000 + 1.800.000 + 400.000 + 1.200.000 = Rp 21.900.000."
+  },
+  {
+    "id": 184,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 4,
+    "question": "Berdasarkan data soal nomor 182 dan 183 (Pendapatan Kotor Rp 26.400.000 dan Total Modal Rp 21.900.000), berapakah laba bersih yang diperoleh Pak Sugeng dari seekor sapi kurban tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 4.500.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 6.400.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 5.200.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 7.500.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 8.000.000"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Laba Bersih = Pendapatan Kotor - Total Modal = Rp 26.400.000 - Rp 21.900.000 = Rp 4.500.000 per ekor sapi."
+  },
+  {
+    "id": 185,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 5,
+    "question": "Jika Pak Sugeng memelihara 5 ekor sapi dengan performa dan perhitungan biaya yang sama persis, berapa total keuntungan bersih yang dikantongi Pak Sugeng dalam waktu 6 bulan pemeliharaan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 15.000.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 22.500.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 20.000.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 32.500.000"
+      },
+      {
+        "key": "E",
+        "text": "Rp 25.000.000"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Total Keuntungan Bersih (5 ekor) = 5 ekor × Rp 4.500.000 = Rp 22.500.000."
+  },
+  {
+    "id": 186,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 6,
+    "question": "Biaya pakan per penambahan bobot (Feed Cost per Kilogram Gain) mengukur biaya pakan yang dikeluarkan untuk menaikkan 1 kg bobot badan sapi. Jika total biaya pakan selama 180 hari adalah Rp 6.300.000 dan penambahan bobot sapi adalah 180 kg, berapakah Feed Cost per kg gain sapi tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 25.000 per kg"
+      },
+      {
+        "key": "B",
+        "text": "Rp 35.000 per kg"
+      },
+      {
+        "key": "C",
+        "text": "Rp 45.000 per kg"
+      },
+      {
+        "key": "D",
+        "text": "Rp 55.000 per kg"
+      },
+      {
+        "key": "E",
+        "text": "Rp 18.000 per kg"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Feed Cost per kg Gain = Total Biaya Pakan / Penambahan Bobot = Rp 6.300.000 / 180 kg = Rp 35.000/kg. Karena harga jual daging hidup Rp 55.000/kg, peternak untung Rp 20.000 dari setiap kilogram daging yang ditambahkan."
+  },
+  {
+    "id": 187,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Seorang peternak ayam pedaging (broiler) memelihara 1.000 ekor ayam selama 35 hari. Total pakan yang dihabiskan adalah 3.200 kg dan menghasilkan total berat panen ayam hidup sebesar 2.000 kg. Berapakah nilai FCR ayam broiler tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "FCR = 1,20"
+      },
+      {
+        "key": "B",
+        "text": "FCR = 1,60"
+      },
+      {
+        "key": "C",
+        "text": "FCR = 2,10"
+      },
+      {
+        "key": "D",
+        "text": "FCR = 1,85"
+      },
+      {
+        "key": "E",
+        "text": "FCR = 0,95"
+      }
+    ],
+    "correct": "B",
+    "explanation": "FCR Broiler = Total Pakan / Total Bobot Panen = 3.200 kg / 2.000 kg = 1,60 (standar efisiensi prima ayam pedaging komersial)."
+  },
+  {
+    "id": 188,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Dalam usaha pemotongan sapi di RPH Belitang, seekor sapi jantan seberat 450 kg menghasilkan karkas daging dan tulang sebesar 52% dari bobot hidup. Berapakah berat karkas yang diperoleh dari sapi tersebut?",
+    "options": [
+      {
+        "key": "A",
+        "text": "180 kg"
+      },
+      {
+        "key": "B",
+        "text": "234 kg"
+      },
+      {
+        "key": "C",
+        "text": "285 kg"
+      },
+      {
+        "key": "D",
+        "text": "310 kg"
+      },
+      {
+        "key": "E",
+        "text": "200 kg"
+      }
+    ],
+    "correct": "B",
+    "explanation": "Persentase karkas 52%: Berat Karkas = 450 kg × 52% = 234 kg karkas daging-tulang."
+  },
+  {
+    "id": 189,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 9,
+    "question": "Biaya jasa mantri inseminator untuk kawin suntik (Inseminasi Buatan) sapi di OKU Timur adalah Rp 100.000 per kali suntik. Jika seekor sapi betina bunting dalam sekali suntik (service per conception / S/C = 1,0), berapa biaya pembuahan yang dikeluarkan peternak?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Rp 100.000"
+      },
+      {
+        "key": "B",
+        "text": "Rp 300.000"
+      },
+      {
+        "key": "C",
+        "text": "Rp 500.000"
+      },
+      {
+        "key": "D",
+        "text": "Rp 50.000"
+      },
+      {
+        "key": "E",
+        "text": "Gratis bersubsidi total"
+      }
+    ],
+    "correct": "A",
+    "explanation": "S/C = 1,0 berarti sapi berhasil bunting hanya dengan 1 kali dosis IB, sehingga biaya perkawinan sangat efisien yaitu tepat Rp 100.000 tanpa perlu suntik ulang."
+  },
+  {
+    "id": 190,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "D",
+    "indicatorKey": "pilar_mathematics",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Kalkulasi Revenue-Cost Ratio (R/C) penggemukan sapi Pak Sugeng dengan Total Penerimaan Rp 26.400.000 dan Total Biaya Rp 21.900.000 menghasilkan nilai R/C sebesar...",
+    "options": [
+      {
+        "key": "A",
+        "text": "R/C = 0,83 (Usaha merugi)"
+      },
+      {
+        "key": "B",
+        "text": "R/C = 1,21 (Usaha efisien dan menguntungkan secara finansial karena R/C > 1)"
+      },
+      {
+        "key": "C",
+        "text": "R/C = 2,50"
+      },
+      {
+        "key": "D",
+        "text": "R/C = 1,00 (Titik impas)"
+      },
+      {
+        "key": "E",
+        "text": "R/C tidak dapat dihitung"
+      }
+    ],
+    "correct": "B",
+    "explanation": "R/C Ratio = Total Penerimaan / Total Biaya = 26.400.000 / 21.900.000 = 1,205 (dibulatkan 1,21). Setiap Rp 1 modal menghasilkan Rp 1,21 penerimaan, menunjukkan profitabilitas positif."
+  },
+  {
+    "id": 191,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 1,
+    "question": "Konsep Sistem Integrasi Tanaman-Ternak (Crop-Livestock Integration System / CLS) berbasis Zero Waste di Belitang menghubungkan secara langsung sawah padi dan kandang sapi. Bagaimana siklus materi hara berputar dalam ekosistem STEM ini?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Limbah jerami sawah diolah menjadi pakan silase sapi -> kotoran sapi diolah di biodigester menjadi energi biogas dan pupuk organik bioslurry -> pupuk diaplikasikan kembali menyuburkan sawah padi"
+      },
+      {
+        "key": "B",
+        "text": "Sapi memakan gabah yang baru dipanen hingga habis di lumbung"
+      },
+      {
+        "key": "C",
+        "text": "Petani membakar kotoran sapi dan membuang jerami ke sungai"
+      },
+      {
+        "key": "D",
+        "text": "Sawah dipenuhi kotoran mentah hingga padi mati layu"
+      },
+      {
+        "key": "E",
+        "text": "Sapi dilarang diberi makan sisa tanaman pertanian"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sistem bio-siklus tertutup (zero waste CLS) mengubah limbah menjadi sumber daya: jerami padi menjadi pakan serat ternak, dan limbah kotoran sapi diproses menjadi energi biogas ramah lingkungan serta pupuk bioslurry penyubur tanah sawah."
+  },
+  {
+    "id": 192,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 2,
+    "question": "Penggunaan semen beku sapi Belgian Blue atau Simmental pada program Inseminasi Buatan di OKU Timur bertujuan menghasilkan pedet silangan berotot ganda (double muscling). Apa dampak ekonomi-matematis bagi peternak rakyat?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pertambahan bobot harian (ADG) meningkat tajam (>1,2-1,5 kg/hari) dan persentase karkas daging naik hingga 60%, sehingga nilai jual sapi potong berumur 2 tahun mencapai di atas Rp 30-40 juta"
+      },
+      {
+        "key": "B",
+        "text": "Membuat harga jual pedet menjadi anjlok di pasar hewan"
+      },
+      {
+        "key": "C",
+        "text": "Mengharuskan sapi diberi pakan roti manis setiap hari"
+      },
+      {
+        "key": "D",
+        "text": "Sapi silangan tidak bisa menghasilkan kotoran biogas"
+      },
+      {
+        "key": "E",
+        "text": "Sapi menjadi bertubuh kerdil seperti kambing"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Genetik sapi unggul eksotis hasil IB melipatgandakan efisiensi konversi pakan menjadi massa otot daging (muscling), mendongkrak ADG dan persentase karkas kualitatif yang bernilai jual sangat tinggi."
+  },
+  {
+    "id": 193,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 3,
+    "question": "Pengolahan kotoran puyuh atau ayam (manure) menjadi pakan maggot lalat Black Soldier Fly (BSF / Hermetia illucens) di pedesaan Belitang merupakan penerapan biokonversi STEM. Larva maggot BSF yang dipanen berfungsi sebagai...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pakan sumber protein hewani tinggi (40-45% PK) untuk ikan dan unggas lokal yang menghemat biaya pakan pelet komersial secara signifikan"
+      },
+      {
+        "key": "B",
+        "text": "Racun pembasmi hama serangga di sawah"
+      },
+      {
+        "key": "C",
+        "text": "Bahan pembuat batu bata bangunan"
+      },
+      {
+        "key": "D",
+        "text": "Pewarna buatan minuman sirup"
+      },
+      {
+        "key": "E",
+        "text": "Pengganti air minum ternak sapi"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Maggot BSF mendegradasi kotoran unggas secara higienis dan cepat, mengonversi limbah bau menjadi biomassa larva berprotein tinggi (42% protein kasar) yang sangat ideal sebagai pakan subtitusi ikan dan ayam."
+  },
+  {
+    "id": 194,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 4,
+    "question": "Penerapan biosekuriti 3 zona (zona merah/kotor, zona kuning/peralihan, dan zona hijau/bersih) pada peternakan sapi dan unggas di OKU Timur bertujuan untuk...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Mencegah masuk dan menyebarnya agen penyakit menular (seperti virus PMK dan flu burung) ke dalam kawanan ternak melalui desinfeksi kendaraan, alas kaki, dan isolasi tamu luar"
+      },
+      {
+        "key": "B",
+        "text": "Mewajibkan warna dinding kandang dicat tiga warna berbeda"
+      },
+      {
+        "key": "C",
+        "text": "Melarang peternak memberi pakan di zona hijau"
+      },
+      {
+        "key": "D",
+        "text": "Mengharuskan ternak berpindah kandang setiap 10 menit sekali"
+      },
+      {
+        "key": "E",
+        "text": "Membagi jatah pakan sapi berdasarkan warna kulit"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Sistem zonasi biosekuriti membatasi transmisi patogen: kendaraan dan tamu disemprot desinfektan di zona merah, pekerja berganti alas kaki/sepatu boot di zona kuning, dan area kandang steril berada di zona hijau."
+  },
+  {
+    "id": 195,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 5,
+    "question": "Pembuatan 'Bank Pakan Hijauan' (Fodder Bank) di kawasan kelompok peternak Belitang dengan menanam kebun rumput odot dan pakchong di sepanjang tanggul saluran tersier irigasi bertujuan memecahkan masalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Krisis pakan saat musim kemarau dan memangkas waktu kerja peternak dalam mencari rumput (ngarit) dari 4 jam menjadi hanya 30 menit per hari"
+      },
+      {
+        "key": "B",
+        "text": "Kewajiban peternak menjual tanah sawah miliknya"
+      },
+      {
+        "key": "C",
+        "text": "Menyumbat saluran air irigasi dengan rumput"
+      },
+      {
+        "key": "D",
+        "text": "Mewajibkan sapi digembalakan di jalan raya"
+      },
+      {
+        "key": "E",
+        "text": "Menghilangkan rumput liar di seluruh wilayah Sumatera Selatan"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kebun hijauan terpadu (bank pakan) di lahan marjinal/tanggul irigasi menjamin ketersediaan hijauan berkualitas sepanjang tahun (year-round feed supply) dekat kandang, menghemat drastis tenaga dan waktu ngarit peternak."
+  },
+  {
+    "id": 196,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 6,
+    "question": "Penggunaan probiotik bakteri asam laktat dalam air minum ayam broiler (seperti Lactobacillus acidophilus) terbukti mampu menggantikan fungsi Antibiotik Growth Promoter (AGP) yang telah dilarang pemerintah. Keuntungan sains kesehatan pangan dari sistem ini adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Menyehatkan mikroflora usus ayam, meningkatkan penyerapan nutrisi, dan menghasilkan daging ayam sehat yang bebas residu kimia antibiotik bagi konsumen"
+      },
+      {
+        "key": "B",
+        "text": "Membuat ayam pedaging dapat terbang tinggi ke angkasa"
+      },
+      {
+        "key": "C",
+        "text": "Menghilangkan bulu ayam secara otomatis sebelum disembelih"
+      },
+      {
+        "key": "D",
+        "text": "Membuat daging ayam terasa pedas secara alami"
+      },
+      {
+        "key": "E",
+        "text": "Mengharuskan ayam diberi makan es krim"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Probiotik melakukan kompetisi eksklusi (competitive exclusion) melawan patogen Salmonella/E. coli di usus unggas, menjaga vili usus tetap sehat tanpa memicu resistensi antimikroba (AMR) pada manusia pemakan daging."
+  },
+  {
+    "id": 197,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C3",
+    "numberInIndicator": 7,
+    "question": "Hilirisasi limbah kotoran sapi menjadi pupuk organik butiran granul (bokashi granul) yang dikemas karung 25 kg berlabel oleh kelompok pemuda tani Belitang menciptakan peluang bisnis berupa...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pemberian nilai tambah ekonomi limbah kandang menjadi produk komersial siap pakai yang diminati pekebun sawit dan petani hortikultura"
+      },
+      {
+        "key": "B",
+        "text": "Kewajiban membagikan pupuk secara gratis ke luar pulau"
+      },
+      {
+        "key": "C",
+        "text": "Penyebab tanah pertanian menjadi beracun"
+      },
+      {
+        "key": "D",
+        "text": "Larangan petani menggunakan pupuk kandang"
+      },
+      {
+        "key": "E",
+        "text": "Menghentikan produksi gas elpiji nasional"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Granulasi pupuk kompos kotoran sapi (bokashi granul) mempermudah aplikasi mekanis di kebun sawit/sayuran, menaikkan harga jual dari Rp 200/kg mentah menjadi Rp 1.500-2.000/kg olahan berlabel."
+  },
+  {
+    "id": 198,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 8,
+    "question": "Penerapan sistem kandang koloni baterai vs kandang umbaran (free-range) pada ayam petelur lokal di OKU Timur dianalisis menggunakan matematika efisiensi pakan dan mortalitas. Keunggulan sistem baterai teratur dalam produksi telur komersial adalah...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Pencatatan produksi telur per ekor lebih akurat (culling ayam afkir mudah), konsumsi pakan terukur hemat, dan telur tidak kotor terkena kotoran lantai"
+      },
+      {
+        "key": "B",
+        "text": "Membuat ayam menghasilkan telur setiap 10 menit sekali"
+      },
+      {
+        "key": "C",
+        "text": "Ayam tidak membutuhkan sinar matahari dan udara"
+      },
+      {
+        "key": "D",
+        "text": "Mengharuskan ayam bertelur di luar kandang"
+      },
+      {
+        "key": "E",
+        "text": "Menghilangkan kebutuhan vaksinasi ayam"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Kandang baterai individu/sekat memfasilitasi seleksi matematis ayam afkir (kurang produktif), mencegah telur terinjak/kanibalisme telur, dan membatasi pemborosan energi kinetik ayam sehingga pakan terkonversi maksimal ke telur."
+  },
+  {
+    "id": 199,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 9,
+    "question": "Pembentukan Koperasi Peternak Sapi Potong di OKU Timur yang terhubung dengan lembaga perbankan syariah / KUR (Kredit Usaha Rakyat) Peternakan memecahkan kendala permodalan pengadaan bakalan sapi melalui...",
+    "options": [
+      {
+        "key": "A",
+        "text": "Penyediaan akses pembiayaan berbunga rendah dengan jaminan ternak dan asuransi sapi (AUTS / Asuransi Usaha Ternak Sapi) dari risiko kematian penyakit"
+      },
+      {
+        "key": "B",
+        "text": "Kewajiban peternak menyerahkan seluruh sapinya tanpa imbalan"
+      },
+      {
+        "key": "C",
+        "text": "Pemberian pinjaman uang palsu"
+      },
+      {
+        "key": "D",
+        "text": "Larangan peternak menjual sapi saat hari raya qurban"
+      },
+      {
+        "key": "E",
+        "text": "Penyitaan kandang sapi milik warga desa"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Skema KUR Klaster Peternakan dipadukan asuransi AUTS memproteksi modal peternak dari risiko kematian ternak akibat PMK/bisa racun, membuka akses pembiayaan skala 5-10 ekor bakalan penggemukan per keluarga."
+  },
+  {
+    "id": 200,
+    "day": 3,
+    "sector": "peternakan",
+    "indicatorCode": "E",
+    "indicatorKey": "sintesis_stem_terpadu",
+    "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
+    "cognitiveLevel": "C4",
+    "numberInIndicator": 10,
+    "question": "Visi OKU Timur sebagai lumbung pangan dan sentra protein hewani berkelanjutan menuntut lulusan generasi muda SMAN 1 Belitang menguasai 4 pilar STEM dalam dunia peternakan modern. Kombinasi pilar manakah yang paling menjamin kemandirian peternak masa depan?",
+    "options": [
+      {
+        "key": "A",
+        "text": "Sains fisiologi nutrisi & IB + Teknologi chopper & milking/grading + Rekayasa silase pakan & biodigester biogas + Matematika kalkulasi ADG, FCR & margin laba kurban"
+      },
+      {
+        "key": "B",
+        "text": "Menghentikan peternakan sapi dan menggantinya dengan ternak dinosaurus"
+      },
+      {
+        "key": "C",
+        "text": "Menyerahkan seluruh hewan ternak ke negara asing"
+      },
+      {
+        "key": "D",
+        "text": "Hanya mengandalkan rumput liar pinggir jalan tanpa pencatatan bobot timbangan"
+      },
+      {
+        "key": "E",
+        "text": "Membakar kandang sapi saat terjadi wabah penyakit"
+      }
+    ],
+    "correct": "A",
+    "explanation": "Masa depan peternakan mandiri bertumpu pada generasi melek STEM: menguasai sains biologi dan bioteknologi reproduksi IB, memanfaatkan teknologi alsintan peternakan, menerapkan rekayasa pakan awet dan energi biogas, serta menguasai akuntansi kalkulasi finansial bisnis ternak."
+  }
 ]
   };
 
   /**
    * Helper: Mengambil bank soal berdasarkan day
    */
-  window.getNftBankSoalByDay = function(dayNum) {
+  window.getNftBankSoalByDay = function(dayNum, sectorKey) {
     dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (parseInt(dayNum) || 1);
-    return (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[dayNum]) || [];
+    const dayQuestions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[dayNum]) || [];
+    if (dayNum === 3 && sectorKey) {
+      const filtered = dayQuestions.filter(q => q.sector === sectorKey);
+      return filtered.length ? filtered : dayQuestions;
+    }
+    return dayQuestions;
   };
 
   /**
@@ -14064,6 +21104,9 @@
     dayNum = parseInt(dayNum) || 1;
     if (dayNum === 2 && window.NFT_BANK_SOAL_INDICATORS_DAY2) {
       return window.NFT_BANK_SOAL_INDICATORS_DAY2;
+    }
+    if (dayNum === 3 && window.NFT_BANK_SOAL_INDICATORS_DAY3) {
+      return window.NFT_BANK_SOAL_INDICATORS_DAY3;
     }
     return window.NFT_BANK_SOAL_INDICATORS || [];
   };

@@ -93,7 +93,10 @@
    * Soal dan urutan pilihan ganda (A, B, C, D, E) diacak setiap sesi baru atau setelah reset!
    */
   function generateStudentPackage(dayNum, cleanNisn) {
-    const storageKey = `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`;
+    let selectedSector = (dayNum === 3) ? getStudentDay3Sector(cleanNisn) : '';
+    const storageKey = (dayNum === 3)
+      ? `fincestem_pkg_nft_asesmen_v2_d3_${selectedSector}_${cleanNisn}`
+      : `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`;
     const expectedLength = (dayNum === 0) ? 10 : 50;
     try {
       // Bersihkan cache paket v1 lama jika ada
@@ -102,12 +105,18 @@
       if (savedPkg) {
         const parsedPkg = JSON.parse(savedPkg);
         if (Array.isArray(parsedPkg) && parsedPkg.length === expectedLength) {
-          return parsedPkg;
+          if (dayNum === 3) {
+            if (parsedPkg[0] && (!parsedPkg[0].sector || parsedPkg[0].sector === selectedSector)) {
+              return parsedPkg;
+            }
+          } else {
+            return parsedPkg;
+          }
         }
       }
     } catch(e) {}
 
-    const allBank = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(dayNum)) || [];
+    const allBank = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(dayNum, (dayNum === 3 ? selectedSector : undefined))) || [];
     if (!allBank.length) return [];
 
     // Gunakan kombinasi NISN + timestamp + random salt agar setiap kali ujian dimulai ulang / direset,
@@ -141,6 +150,47 @@
           indicatorCode: origQ.indicatorCode,
           indicatorName: origQ.indicatorName,
           cognitiveLevel: origQ.cognitiveLevel || 'C2',
+          question: origQ.question,
+          options: remappedOptions,
+          correctKey: newCorrectKey,
+          explanation: origQ.explanation || ''
+        };
+      });
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(pkgWithShuffledChoices));
+      } catch(e) {}
+      return pkgWithShuffledChoices;
+    }
+
+    // KHUSUS DAY 3 OBSERVASI LAPANGAN (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
+    if (dayNum === 3) {
+      const chosen50 = [...allBank];
+      const mixed50 = seededShuffle(chosen50, rng);
+      const pkgWithShuffledChoices = mixed50.map((origQ, qIdx) => {
+        const choiceRng = getSeededRandom(`q_choice_d3_${cleanNisn}_${origQ.id}_${qIdx}_salt_${sessionSalt}`);
+        const shuffledOptions = seededShuffle([...origQ.options], choiceRng);
+        
+        let newCorrectKey = 'A';
+        const remappedOptions = shuffledOptions.map((opt, oIdx) => {
+          const letter = ['A', 'B', 'C', 'D', 'E'][oIdx];
+          if (opt.key === origQ.correct) {
+            newCorrectKey = letter;
+          }
+          return {
+            key: letter,
+            text: opt.text
+          };
+        });
+
+        return {
+          id: origQ.id,
+          displayNumber: qIdx + 1,
+          day: 3,
+          sector: origQ.sector || selectedSector,
+          indicatorCode: origQ.indicatorCode,
+          indicatorKey: origQ.indicatorKey,
+          indicatorName: origQ.indicatorName,
+          cognitiveLevel: origQ.cognitiveLevel || 'C3',
           question: origQ.question,
           options: remappedOptions,
           correctKey: newCorrectKey,
@@ -274,6 +324,10 @@
       alert('Sesi login tidak terdeteksi. Silakan login kembali.');
       window.location.replace('index.html');
       return;
+    }
+
+    if (dayNum === 3) {
+      examState.selectedSector = getStudentDay3Sector(examState.cleanNisn);
     }
 
     // Cek Prasyarat: Modul Belajar & LKPD Day N harus selesai
@@ -561,13 +615,27 @@
     const studentNisn = examState.cleanNisn;
     const studentClass = examState.student?.class || examState.student?.class_name || 'Kelas X';
     const isDay0 = (examState.dayNum === 0);
-    const dayBadgeText = isDay0 ? 'Non-Field Trip • Day 0 (Simulasi)' : `Non-Field Trip • Day ${examState.dayNum}`;
-    const examHeading = isDay0 ? 'Kuis Asesmen Simulasi &amp; Gladi Bersih' : `Kuis Asesmen Kompetensi Day ${examState.dayNum}`;
+    const isDay3 = (examState.dayNum === 3);
+    const currentSectorKey = examState.selectedSector || (isDay3 ? getStudentDay3Sector(studentNisn) : '');
+    const currentSectorName = isDay3 ? (NFT_DAY3_SECTOR_MAP[currentSectorKey] || 'Pertanian Padi Sawah & Tanaman Pangan') : '';
+
+    const dayBadgeText = isDay0
+      ? 'Non-Field Trip • Day 0 (Simulasi)'
+      : (isDay3
+          ? `Non-Field Trip • Day 3`
+          : `Non-Field Trip • Day ${examState.dayNum}`);
+    const examHeading = isDay0
+      ? 'Kuis Asesmen Simulasi &amp; Gladi Bersih'
+      : (isDay3
+          ? `Kuis Asesmen Lapangan: ${currentSectorName}`
+          : `Kuis Asesmen Kompetensi Day ${examState.dayNum}`);
     const examSubtitle = isDay0
       ? 'Uji coba pemahaman sistem, 4 pilar FINCESTEM, etika riset, dan pengenalan fitur ujian digital.'
       : (examState.dayNum === 2
           ? 'Uji pemahaman komprehensif Taksonomi Bloom C1-C5 berbasis 5 modul riset mandiri OKU Timur.'
-          : 'Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.');
+          : (isDay3
+              ? `Uji pemahaman 4 Pilar STEM (Sains, Teknologi, Rekayasa & Matematika) khusus sektor ${currentSectorName} di OKU Timur.`
+              : 'Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.'));
 
     root.innerHTML = `
       <div class="max-w-xl mx-auto w-full p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xl flex flex-col gap-5 my-6 animate-scale-up">
@@ -608,6 +676,15 @@
               <strong class="truncate text-white">${escapeHtml(studentClass)}</strong>
             </div>
           </div>
+          ${isDay3 ? `
+            <div class="px-3.5 py-2.5 rounded-2xl bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-between gap-2 shadow-sm">
+              <div class="flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base">psychology</span>
+                <span>Sektor Pilihan Anda:</span>
+              </div>
+              <span class="px-2.5 py-0.5 rounded-full bg-slate-950 text-amber-300 font-extrabold text-[11px] uppercase tracking-wider">${escapeHtml(currentSectorName)}</span>
+            </div>
+          ` : ''}
         </div>
 
         <!-- SPESIFIKASI DAN ATURAN UJIAN (EXAM RULES) -->
@@ -1464,6 +1541,34 @@
   let shieldBound = false;
   let isTabAway = false;
   let isViolationModalOpen = false;
+
+  const NFT_DAY3_SECTOR_MAP = {
+    'pertanian': 'Pertanian Padi Sawah & Tanaman Pangan',
+    'perkebunan': 'Perkebunan Karet & Kelapa Sawit',
+    'perikanan': 'Budidaya Perikanan Air Tawar Patin & Lele',
+    'peternakan': 'Peternakan Sapi Potong & Unggas'
+  };
+
+  function getStudentDay3Sector(cleanNisn) {
+    try {
+      const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
+      if (localSec && NFT_DAY3_SECTOR_MAP[localSec]) return localSec;
+      
+      const rawLkpd = localStorage.getItem('fincestem_lkpd_nft_day3_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day3_' + cleanNisn);
+      if (rawLkpd) {
+        const p = JSON.parse(rawLkpd);
+        if (p && p.sector && NFT_DAY3_SECTOR_MAP[p.sector]) return p.sector;
+      }
+
+      const rawMat = localStorage.getItem('fincestem_materi_nft_day3_' + cleanNisn) || localStorage.getItem('fincestem_materi_day3_' + cleanNisn);
+      if (rawMat) {
+        const m = JSON.parse(rawMat);
+        if (m && m.sector && NFT_DAY3_SECTOR_MAP[m.sector]) return m.sector;
+      }
+    } catch(e) {}
+    return 'pertanian';
+  }
+
   let lastViolationTime = 0;
   let screenIntegrityWatchdogInterval = null;
   let outsideFocusEscalationInterval = null;
@@ -2091,6 +2196,8 @@
     const u = examState.student || {};
     const officialPayload = {
       day: examState.dayNum,
+      sector: examState.selectedSector || undefined,
+      sectorName: (examState.dayNum === 3 && examState.selectedSector) ? NFT_DAY3_SECTOR_MAP[examState.selectedSector] : undefined,
       submitted: true,
       submittedAt: new Date().toISOString(),
       studentName: u.name || '',
@@ -2170,6 +2277,12 @@
           <h3 class="font-black text-xl sm:text-2xl text-slate-900 mt-2">
             Hasil Kuis Asesmen ${Number(dayNum) === 0 ? 'Day 0 (Simulasi)' : ('Day ' + dayNum)}
           </h3>
+          ${(Number(dayNum) === 3 && (result.sectorName || result.sector || examState.selectedSector)) ? `
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-900 text-xs font-black mt-1.5">
+              <span class="material-symbols-outlined text-sm text-teal-700">agriculture</span>
+              <span>Sektor: ${escapeHtml(result.sectorName || NFT_DAY3_SECTOR_MAP[result.sector] || NFT_DAY3_SECTOR_MAP[examState.selectedSector] || 'Pertanian Padi Sawah')}</span>
+            </div>
+          ` : ''}
           <p class="text-xs text-slate-500 font-medium mt-0.5">
             ${isForceSubmitted
               ? `Lembar ujian <strong>${escapeHtml(studentName)}</strong> telah dikumpulkan paksa dan dinilai berdasarkan <strong>${answeredCount} soal</strong> yang telah diselesaikan.`
