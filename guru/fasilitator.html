@@ -1318,14 +1318,17 @@
       </div>
 
       <!-- Detail Siswa Target -->
-      <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col gap-1">
-        <span class="text-[11px] font-bold text-amber-800 uppercase tracking-wider">Siswa Target Buka Kunci:</span>
+      <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col gap-1.5">
+        <div class="flex items-center justify-between gap-1 flex-wrap">
+          <span class="text-[11px] font-bold text-amber-800 uppercase tracking-wider">Siswa Target Buka Kunci:</span>
+          <span id="fasilUnlockJalurBadge"></span>
+        </div>
         <h4 id="fasilUnlockStudentName" class="text-sm font-black text-slate-900 truncate">-</h4>
         <span id="fasilUnlockStudentMeta" class="text-xs text-slate-600 font-medium">NISN: - • Kelas -</span>
         <input type="hidden" id="fasilUnlockTargetNisn" value="">
       </div>
 
-      <!-- Pilih Hari Pelaksanaan -->
+      <!-- Pilih Hari Pelaksanaan (Dinamis: Field Trip vs Non-Field Trip) -->
       <div class="flex flex-col gap-1.5 text-xs">
         <label class="font-bold text-on-surface">Pilih Hari Pengerjaan yang Ingin Dibuka:</label>
         <select id="fasilUnlockTargetDay" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-bold bg-white text-on-surface outline-none focus:border-[#006a61]">
@@ -1348,35 +1351,35 @@
             <input type="checkbox" id="fasilUnlockCompLkpd" checked class="w-4 h-4 rounded text-[#006a61] focus:ring-0">
             <div class="flex flex-col">
               <span class="font-bold text-on-surface text-xs">Lembar Kerja Peserta Didik (LKPD)</span>
-              <span class="text-[10.5px] text-on-surface-variant">Buka isian observasi, budgeting uang saku, dan analisis lapangan</span>
+              <span id="fasilUnlockCompLkpdDesc" class="text-[10.5px] text-on-surface-variant">Buka isian observasi, budgeting uang saku, dan analisis lapangan</span>
             </div>
           </label>
           <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
             <input type="checkbox" id="fasilUnlockCompRefleksi" checked class="w-4 h-4 rounded text-[#006a61] focus:ring-0">
             <div class="flex flex-col">
               <span class="font-bold text-on-surface text-xs">Jurnal Refleksi Mandiri (Tahap 5)</span>
-              <span class="text-[10.5px] text-on-surface-variant">Buka isian catatan refleksi harian siswa di dashboard</span>
+              <span id="fasilUnlockCompRefleksiDesc" class="text-[10.5px] text-on-surface-variant">Buka isian catatan refleksi harian siswa di dashboard</span>
             </div>
           </label>
           <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
             <input type="checkbox" id="fasilUnlockCompMateri" checked class="w-4 h-4 rounded text-[#006a61] focus:ring-0">
             <div class="flex flex-col">
               <span class="font-bold text-on-surface text-xs">Resume / Kesimpulan Modul Belajar (Tahap 1)</span>
-              <span class="text-[10.5px] text-on-surface-variant">Buka isian pemahaman modul di halaman materi</span>
+              <span id="fasilUnlockCompMateriDesc" class="text-[10.5px] text-on-surface-variant">Buka isian pemahaman modul di halaman materi</span>
             </div>
           </label>
           <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
             <input type="checkbox" id="fasilUnlockCompAsesmen" class="w-4 h-4 rounded text-[#006a61] focus:ring-0">
             <div class="flex flex-col">
               <span class="font-bold text-on-surface text-xs">Kuis Asesmen Harian (Tahap 3)</span>
-              <span class="text-[10.5px] text-on-surface-variant">Reset jawaban kuis asesmen pilihan ganda/esai</span>
+              <span id="fasilUnlockCompAsesmenDesc" class="text-[10.5px] text-on-surface-variant">Reset jawaban kuis asesmen pilihan ganda/esai</span>
             </div>
           </label>
           <label class="flex items-center gap-2.5 p-1.5 rounded-xl hover:bg-white cursor-pointer transition-all">
             <input type="checkbox" id="fasilUnlockCompFoto" class="w-4 h-4 rounded text-[#006a61] focus:ring-0">
             <div class="flex flex-col">
               <span class="font-bold text-rose-800 text-xs">Izin Unggah Susulan / Reset Foto Dokumentasi</span>
-              <span class="text-[10.5px] text-rose-600">Dispensasi khusus jika foto salah/blur atau jadwal sudah tertutup</span>
+              <span id="fasilUnlockCompFotoDesc" class="text-[10.5px] text-rose-600">Dispensasi khusus jika foto salah/blur atau jadwal sudah tertutup</span>
             </div>
           </label>
         </div>
@@ -3413,6 +3416,77 @@
       document.getElementById('fasilUnlockTargetNisn').value = targetNisn;
       document.getElementById('fasilUnlockStudentName').textContent = studentName || 'Siswa';
       document.getElementById('fasilUnlockStudentMeta').textContent = studentMeta ? ('NISN: ' + targetNisn + ' • ' + studentMeta) : ('NISN: ' + targetNisn);
+
+      const isFT = isStudentFieldTripFasil(targetNisn);
+
+      // Tampilkan Badge Jalur Siswa (Field Trip vs Non-Field Trip)
+      const badgeContainer = document.getElementById('fasilUnlockJalurBadge');
+      if (badgeContainer) {
+        badgeContainer.innerHTML = isFT
+          ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-100 text-amber-950 border border-amber-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-[12px] text-amber-700">directions_bus</span> 🚌 Field Trip</span>`
+          : `<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-teal-100 text-teal-950 border border-teal-300 flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-[12px] text-teal-700">school</span> 🏫 Non-Field Trip</span>`;
+      }
+
+      // Dinamiskan Opsi Hari Pengerjaan Sesuai Jalur Siswa
+      const selectDay = document.getElementById('fasilUnlockTargetDay');
+      if (selectDay) {
+        if (isFT) {
+          selectDay.innerHTML = `
+            <option value="1">Day 1 - Keberangkatan &amp; Budgeting Finansial (Belitang - Semarang)</option>
+            <option value="2">Day 2 - AKPOL Semarang &amp; Lawang Sewu</option>
+            <option value="3">Day 3 - Eksplorasi Sains JTP1, Kebun Apel &amp; Museum Angkut Batu</option>
+            <option value="4">Day 4 - Gunung Bromo &amp; Budaya Suku Tengger</option>
+            <option value="5">Day 5 - Candi Prambanan, Praktik Membatik &amp; Kampus UNY (STEM)</option>
+            <option value="6">Day 6 - Pabrik Bakpia Jogja &amp; Pantai Drini (Geologi Karst)</option>
+            <option value="7">Day 7 - Evaluasi Akhir &amp; Perjalanan Pulang Belitang</option>
+            <option value="0">Day 0 - Gladi Bersih (Simulasi)</option>
+          `;
+        } else {
+          selectDay.innerHTML = `
+            <option value="1">Day 1 - Fondasi Ekonomi, Literasi Finansial &amp; Potensi OKU Timur</option>
+            <option value="2">Day 2 - Budaya, Sistem Pencaharian &amp; Modernisasi Alsintan OKU Timur</option>
+            <option value="3">Day 3 - Analisis STEM Pertanian &amp; Sektor Unggulan OKU Timur</option>
+            <option value="4">Day 4 - Kewirausahaan UMKM, Rantai Pasok (Supply Chain) &amp; Logistik</option>
+            <option value="5">Day 5 - Inklusi Keuangan Digital, Layanan Bank &amp; Keamanan Transaksi</option>
+            <option value="6">Day 6 - Konservasi Lingkungan, Keberlanjutan Ekosistem &amp; Budaya Lokal</option>
+            <option value="7">Day 7 - Evaluasi Komprehensif, Sintesis 7 Hari &amp; Portofolio FINCESTEM</option>
+            <option value="0">Day 0 - Gladi Bersih (Simulasi)</option>
+          `;
+        }
+      }
+
+      // Dinamiskan Keterangan Komponen Tugas Sesuai Jalur
+      const lblLkpd = document.getElementById('fasilUnlockCompLkpdDesc');
+      if (lblLkpd) {
+        lblLkpd.textContent = isFT
+          ? 'Buka isian lembar kerja observasi, budgeting uang saku, dan analisis destinasi Field Trip'
+          : 'Buka form laporan riset mandiri, analisis lapangan, & observasi narasumber lokal OKU Timur';
+      }
+      const lblRefleksi = document.getElementById('fasilUnlockCompRefleksiDesc');
+      if (lblRefleksi) {
+        lblRefleksi.textContent = isFT
+          ? 'Buka isian catatan refleksi harian siswa di dashboard'
+          : 'Buka isian catatan refleksi riset harian siswa di dashboard';
+      }
+      const lblMateri = document.getElementById('fasilUnlockCompMateriDesc');
+      if (lblMateri) {
+        lblMateri.textContent = isFT
+          ? 'Buka isian pemahaman modul di halaman materi'
+          : 'Buka form telaah modul riset, 3 kartu resume ilmiah, & sitasi sumber rujukan';
+      }
+      const lblAsesmen = document.getElementById('fasilUnlockCompAsesmenDesc');
+      if (lblAsesmen) {
+        lblAsesmen.textContent = isFT
+          ? 'Reset jawaban kuis asesmen harian pilihan ganda/esai'
+          : 'Reset jawaban kuis asesmen riset harian Non-Field Trip (OKU Timur)';
+      }
+      const lblFoto = document.getElementById('fasilUnlockCompFotoDesc');
+      if (lblFoto) {
+        lblFoto.textContent = isFT
+          ? 'Dispensasi khusus jika foto salah/blur atau jadwal sudah tertutup'
+          : 'Dispensasi susulan unggah foto riset mandiri di wilayah OKU Timur (geotagging GPS)';
+      }
+
       if (targetDay !== undefined && targetDay !== null) {
         document.getElementById('fasilUnlockTargetDay').value = String(targetDay);
       }

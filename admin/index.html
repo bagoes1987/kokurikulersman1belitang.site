@@ -2537,6 +2537,51 @@
           </div>
         </div>
 
+        <!-- KARTU KONTAK WHATSAPP SISWA & ORANG TUA DI MODAL ADMIN -->
+        <div id="modalAdminContactContainer" class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col gap-2 text-xs">
+          <div class="flex items-center justify-between gap-1 flex-wrap">
+            <span class="font-extrabold text-emerald-950 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-emerald-600">contact_phone</span>
+              <span>Kontak WhatsApp Siswa &amp; Orang Tua</span>
+            </span>
+            <span id="modalAdminContactBadge" class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-white border border-emerald-300 text-emerald-900 shadow-2xs">
+              Belum Diisi
+            </span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] pt-0.5">
+            <!-- WA Siswa -->
+            <div class="bg-white/90 p-2.5 rounded-xl border border-emerald-100 flex flex-col justify-between gap-1.5">
+              <div>
+                <span class="text-slate-400 text-[10px] font-bold">WA Siswa:</span>
+                <strong id="modalAdminContactSiswa" class="text-slate-900 text-xs block mt-0.5">-</strong>
+              </div>
+              <a id="btnAdminChatSiswa" href="#" target="_blank" class="hidden py-1.5 px-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10.5px] text-center flex items-center justify-center gap-1 shadow-2xs transition-all active:scale-95">
+                <span class="material-symbols-outlined text-xs">chat</span> <span>Chat Siswa</span>
+              </a>
+            </div>
+            <!-- WA Ayah -->
+            <div class="bg-white/90 p-2.5 rounded-xl border border-blue-100 flex flex-col justify-between gap-1.5">
+              <div>
+                <span class="text-slate-400 text-[10px] font-bold">WA Ayah:</span>
+                <strong id="modalAdminContactAyah" class="text-slate-900 text-xs block mt-0.5">-</strong>
+              </div>
+              <a id="btnAdminChatAyah" href="#" target="_blank" class="hidden py-1.5 px-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10.5px] text-center flex items-center justify-center gap-1 shadow-2xs transition-all active:scale-95">
+                <span class="material-symbols-outlined text-xs">person</span> <span>Chat Ayah</span>
+              </a>
+            </div>
+            <!-- WA Ibu -->
+            <div class="bg-white/90 p-2.5 rounded-xl border border-pink-100 flex flex-col justify-between gap-1.5">
+              <div>
+                <span class="text-slate-400 text-[10px] font-bold">WA Ibu:</span>
+                <strong id="modalAdminContactIbu" class="text-slate-900 text-xs block mt-0.5">-</strong>
+              </div>
+              <a id="btnAdminChatIbu" href="#" target="_blank" class="hidden py-1.5 px-2 rounded-lg bg-pink-600 hover:bg-pink-700 text-white font-bold text-[10.5px] text-center flex items-center justify-center gap-1 shadow-2xs transition-all active:scale-95">
+                <span class="material-symbols-outlined text-xs">person_3</span> <span>Chat Ibu</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
         <!-- KARTU INFORMASI KESEHATAN SISWA DI MODAL ADMIN -->
         <div id="modalAdminHealthContainer" class="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200/80 flex flex-col gap-2 text-xs">
           <div class="flex items-center justify-between gap-1 flex-wrap">
@@ -3163,6 +3208,12 @@
             if (typeof renderAdminMatrixView === 'function' && currentPenugasanSubTab === 'matrix') {
               renderAdminMatrixView();
             }
+          });
+        }
+        // Sinkronisasi kontak WhatsApp siswa & orang tua dari server
+        if (FincestemCore.studentContacts && FincestemCore.studentContacts.getAllContacts) {
+          FincestemCore.studentContacts.getAllContacts(function() {
+            renderAdminStudentList();
           });
         }
       } else {
@@ -5143,6 +5194,45 @@
           ? FincestemCore.zones.isLocationExempt(s.nisn) 
           : false;
 
+        // Kontak WhatsApp Siswa & Ortu (1 Baris Ringkas untuk Admin)
+        let adminContactsHtml = '';
+        try {
+          let c = null;
+          const rawC = localStorage.getItem('fincestem_student_contacts_' + s.nisn);
+          if (rawC) c = JSON.parse(rawC);
+          if (!c) {
+            const allRaw = localStorage.getItem('fincestem_all_student_contacts');
+            if (allRaw) {
+              const allC = JSON.parse(allRaw);
+              if (allC && allC[s.nisn]) c = allC[s.nisn];
+            }
+          }
+          if (c && (c.wa_siswa || c.wa_ayah || c.wa_ibu)) {
+            let items = [];
+            if (c.wa_siswa) {
+              let num = String(c.wa_siswa).replace(/\D/g, '');
+              if (num.startsWith('0')) num = '62' + num.slice(1);
+              const msg = `Assalamu'alaikum wr. wb.\nHalo ${s.nama || 'Peserta Didik'} (${s.class || ''}), perkenalkan saya Administrator FINCESTEM SMAN 1 Belitang.\nIzin menghubungi terkait koordinasi kegiatan kokurikuler Anda.`;
+              items.push(`<a href="https://wa.me/${num}?text=${encodeURIComponent(msg)}" target="_blank" class="flex-1 min-w-0 py-1 px-1.5 rounded-lg text-[9.5px] sm:text-[10px] font-black bg-emerald-50 hover:bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center justify-center gap-1 shadow-2xs transition-all text-center" title="Chat WA Siswa (${c.wa_siswa})"><span class="material-symbols-outlined text-[12px] text-emerald-700 shrink-0">chat</span> <span class="truncate">WA Siswa</span></a>`);
+            }
+            if (c.wa_ayah) {
+              let numA = String(c.wa_ayah).replace(/\D/g, '');
+              if (numA.startsWith('0')) numA = '62' + numA.slice(1);
+              const msgA = `Assalamu'alaikum wr. wb.\nYth. Bapak Orang Tua / Wali dari ${s.nama || 'Peserta Didik'} (${s.class || ''}),\n\nPerkenalkan saya Administrator FINCESTEM SMAN 1 Belitang.`;
+              items.push(`<a href="https://wa.me/${numA}?text=${encodeURIComponent(msgA)}" target="_blank" class="flex-1 min-w-0 py-1 px-1.5 rounded-lg text-[9.5px] sm:text-[10px] font-bold bg-blue-50 hover:bg-blue-100 text-blue-900 border border-blue-200 flex items-center justify-center gap-1 shadow-2xs transition-all text-center" title="Chat WA Ayah (${c.wa_ayah})"><span class="material-symbols-outlined text-[12px] text-blue-700 shrink-0">person</span> <span class="truncate">WA Ayah</span></a>`);
+            }
+            if (c.wa_ibu) {
+              let numI = String(c.wa_ibu).replace(/\D/g, '');
+              if (numI.startsWith('0')) numI = '62' + numI.slice(1);
+              const msgI = `Assalamu'alaikum wr. wb.\nYth. Ibu Orang Tua / Wali dari ${s.nama || 'Peserta Didik'} (${s.class || ''}),\n\nPerkenalkan saya Administrator FINCESTEM SMAN 1 Belitang.`;
+              items.push(`<a href="https://wa.me/${numI}?text=${encodeURIComponent(msgI)}" target="_blank" class="flex-1 min-w-0 py-1 px-1.5 rounded-lg text-[9.5px] sm:text-[10px] font-bold bg-pink-50 hover:bg-pink-100 text-pink-900 border border-pink-200 flex items-center justify-center gap-1 shadow-2xs transition-all text-center" title="Chat WA Ibu (${c.wa_ibu})"><span class="material-symbols-outlined text-[12px] text-pink-700 shrink-0">person_3</span> <span class="truncate">WA Ibu</span></a>`);
+            }
+            if (items.length > 0) {
+              adminContactsHtml = `<div class="flex items-center gap-1.5 w-full pt-1.5">${items.join('')}</div>`;
+            }
+          }
+        } catch (e) {}
+
         card.innerHTML = `
           <!-- Baris 1: Foto + Nama Siswa + Gender (Wrap-Safe di HP) -->
           <div class="flex items-center justify-between gap-2">
@@ -5163,6 +5253,8 @@
               </div>
             </div>
           </div>
+
+          ${adminContactsHtml}
 
           <!-- Baris 2: Quick Zone Toggle + Izin Domisili + Tombol Detail -->
           <div class="flex items-center justify-between pt-2 border-t border-outline-variant/15 gap-2 flex-wrap">
@@ -5242,6 +5334,9 @@
 
       if (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.syncZones === 'function') {
         FincestemCore.zones.syncZones(function() {
+          if (FincestemCore.studentContacts && FincestemCore.studentContacts.getAllContacts) {
+            FincestemCore.studentContacts.getAllContacts();
+          }
           if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
             window.FincestemMentorship.syncFromServer(function() {
               finishSync();
@@ -5344,6 +5439,87 @@
         : (s.zone || 'FINCESTEM OKU TIMUR');
       updateModalZoneButtonsUI(zoneName);
       updateModalExemptionUI(s.nisn);
+
+      // Kontak WhatsApp Siswa & Orang Tua di Modal Admin
+      const renderAdminContactModalInfo = function(c) {
+        const elContactBadge = document.getElementById('modalAdminContactBadge');
+        const elContactSiswa = document.getElementById('modalAdminContactSiswa');
+        const elContactAyah = document.getElementById('modalAdminContactAyah');
+        const elContactIbu = document.getElementById('modalAdminContactIbu');
+        const btnChatS = document.getElementById('btnAdminChatSiswa');
+        const btnChatA = document.getElementById('btnAdminChatAyah');
+        const btnChatI = document.getElementById('btnAdminChatIbu');
+
+        const hasContact = c && (c.wa_siswa || c.wa_ayah || c.wa_ibu);
+        if (elContactBadge) {
+          elContactBadge.textContent = hasContact ? 'Tersedia' : 'Belum Diisi';
+          elContactBadge.className = hasContact
+            ? 'px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-white border border-emerald-300 text-emerald-900 shadow-2xs'
+            : 'px-2 py-0.5 rounded-md text-[10px] font-bold uppercase bg-slate-100 border border-slate-200 text-slate-500 shadow-2xs';
+        }
+
+        if (elContactSiswa) elContactSiswa.textContent = (c && c.wa_siswa) ? c.wa_siswa : '-';
+        if (elContactAyah) elContactAyah.textContent = (c && c.wa_ayah) ? c.wa_ayah : '-';
+        if (elContactIbu) elContactIbu.textContent = (c && c.wa_ibu) ? c.wa_ibu : '-';
+
+        if (btnChatS) {
+          if (c && c.wa_siswa) {
+            let num = String(c.wa_siswa).replace(/\D/g, '');
+            if (num.startsWith('0')) num = '62' + num.slice(1);
+            const msg = `Assalamu'alaikum wr. wb.\nHalo ${s.nama || 'Peserta Didik'} (${s.class || ''}), perkenalkan saya Administrator FINCESTEM SMAN 1 Belitang.\nIzin menghubungi terkait koordinasi kegiatan kokurikuler Anda. Terima kasih.\nWassalamu'alaikum wr. wb.`;
+            btnChatS.href = `https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+            btnChatS.classList.remove('hidden');
+          } else {
+            btnChatS.classList.add('hidden');
+          }
+        }
+
+        if (btnChatA) {
+          if (c && c.wa_ayah) {
+            let numA = String(c.wa_ayah).replace(/\D/g, '');
+            if (numA.startsWith('0')) numA = '62' + numA.slice(1);
+            const msgA = `Assalamu'alaikum wr. wb.\nYth. Bapak Orang Tua / Wali dari ${s.nama || 'Peserta Didik'} (${s.class || ''}),\n\nPerkenalkan saya Administrator FINCESTEM SMAN 1 Belitang.\nIzin menghubungi Bapak terkait pendampingan kegiatan belajar kokurikuler ananda. Terima kasih atas kerja sama dan dukungannya.\n\nWassalamu'alaikum wr. wb.`;
+            btnChatA.href = `https://wa.me/${numA}?text=${encodeURIComponent(msgA)}`;
+            btnChatA.classList.remove('hidden');
+          } else {
+            btnChatA.classList.add('hidden');
+          }
+        }
+
+        if (btnChatI) {
+          if (c && c.wa_ibu) {
+            let numI = String(c.wa_ibu).replace(/\D/g, '');
+            if (numI.startsWith('0')) numI = '62' + numI.slice(1);
+            const msgI = `Assalamu'alaikum wr. wb.\nYth. Ibu Orang Tua / Wali dari ${s.nama || 'Peserta Didik'} (${s.class || ''}),\n\nPerkenalkan saya Administrator FINCESTEM SMAN 1 Belitang.\nIzin menghubungi Ibu terkait pendampingan kegiatan belajar kokurikuler ananda. Terima kasih atas kerja sama dan dukungannya.\n\nWassalamu'alaikum wr. wb.`;
+            btnChatI.href = `https://wa.me/${numI}?text=${encodeURIComponent(msgI)}`;
+            btnChatI.classList.remove('hidden');
+          } else {
+            btnChatI.classList.add('hidden');
+          }
+        }
+      };
+
+      // 1. Baca kontak dari cache lokal
+      let cachedC = null;
+      try {
+        const rawC = localStorage.getItem('fincestem_student_contacts_' + s.nisn);
+        if (rawC) cachedC = JSON.parse(rawC);
+        if (!cachedC) {
+          const allRaw = localStorage.getItem('fincestem_all_student_contacts');
+          if (allRaw) {
+            const allC = JSON.parse(allRaw);
+            if (allC && allC[s.nisn]) cachedC = allC[s.nisn];
+          }
+        }
+      } catch (e) {}
+      renderAdminContactModalInfo(cachedC);
+
+      // 2. Ambil pembaruan terkini dari server
+      if (FincestemCore.studentContacts && FincestemCore.studentContacts.getContacts) {
+        FincestemCore.studentContacts.getContacts(s.nisn, function(serverC) {
+          if (serverC) renderAdminContactModalInfo(serverC);
+        });
+      }
 
       // Muat Status Kesehatan Siswa
       let adminStuHealth = null;
