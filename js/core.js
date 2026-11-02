@@ -1739,6 +1739,11 @@ const FincestemCore = {
         FincestemCore.auth.setUser(u, u.role || 'siswa');
       }
 
+      // 4.b. Sinkronkan dengan modul pembagian siswa binaan jika aktif
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.syncToServer === 'function') {
+        window.FincestemMentorship.syncToServer();
+      }
+
       // 5. Kirim sinkronisasi ke backend MySQL cPanel
       if (window.location.protocol.startsWith('http')) {
         fetch(FincestemCore.api.base + '/settings.php', {

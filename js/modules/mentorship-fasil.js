@@ -314,7 +314,8 @@
             action: 'save_mentorship_data',
             assignments: assignments,
             teacher_roles: teacherRoles,
-            custom_teachers: customTeachers
+            custom_teachers: customTeachers,
+            student_zones: (function() { try { const z = localStorage.getItem('fincestem_student_zones_map'); return z ? (JSON.parse(z) || {}) : {}; } catch(e) { return {}; } })()
           })
         })
           .then(r => r.json())
@@ -392,6 +393,40 @@
           if (JSON.stringify(localCust) !== JSON.stringify(mergedCust)) {
             localStorage.setItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS, JSON.stringify(mergedCust));
             updated = true;
+          }
+        }
+
+        // 4. Smart Merge & Sinkronisasi Zona Siswa (Field Trip vs Non-Field Trip)
+        if (state.student_zones && typeof state.student_zones === 'object') {
+          let localZones = {};
+          try {
+            const rawZ = localStorage.getItem('fincestem_student_zones_map');
+            if (rawZ) localZones = JSON.parse(rawZ) || {};
+          } catch (eZ) {}
+          const mergedZones = Object.assign({}, localZones, state.student_zones);
+          if (JSON.stringify(localZones) !== JSON.stringify(mergedZones)) {
+            localStorage.setItem('fincestem_student_zones_map', JSON.stringify(mergedZones));
+            updated = true;
+          }
+          Object.keys(state.student_zones).forEach(n => {
+            const z = state.student_zones[n];
+            if (z) {
+              try { localStorage.setItem('fincestem_student_zone_' + n, z); } catch (e) {}
+            }
+          });
+          if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
+            window.FincestemMasterStudents.forEach(s => {
+              const sNisn = String(s.nisn || '').trim();
+              const sNis = String(s.nis || '').trim();
+              const rawDigits = sNisn.replace(/\D/g, '');
+              const padded = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
+              const unpadded = rawDigits.replace(/^0+/, '');
+              const z = mergedZones[sNisn] || mergedZones[padded] || (unpadded ? mergedZones[unpadded] : null) || mergedZones[sNis];
+              if (z) {
+                s.zone = z;
+                s.is_field_trip = String(z).toUpperCase().includes('LUAR');
+              }
+            });
           }
         }
       } catch (e) {}

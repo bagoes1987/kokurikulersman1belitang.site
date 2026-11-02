@@ -68,6 +68,10 @@
     if (lbl) lbl.textContent = 'Menyinkronkan...';
     if (lblTop) lblTop.textContent = 'Menyinkronkan...';
 
+    if (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.syncZones === 'function') {
+      FincestemCore.zones.syncZones();
+    }
+
     // Tarik dari server dulu (merge aman), lalu kirim gabungan lokal + server kembali ke database
     window.FincestemMentorship.syncFromServer(function() {
       window.FincestemMentorship.syncToServer(function(res) {
@@ -77,9 +81,11 @@
         switchMentorshipSubTab(currentSubTab);
         if (typeof window.renderAdminMatrixView === 'function') window.renderAdminMatrixView();
         if (typeof window.renderAdminCards === 'function') window.renderAdminCards();
+        if (typeof window.renderAdminStudentList === 'function') window.renderAdminStudentList();
+        if (typeof window.renderAdminRekapView === 'function') window.renderAdminRekapView();
         if (window.FincestemCore && FincestemCore.ui) {
           if (res && res.success) {
-            FincestemCore.ui.toast('Data Pembagian Siswa Binaan & Guru berhasil disinkronkan antar-PC ke Server!', 'success');
+            FincestemCore.ui.toast('Data Pembagian Siswa Binaan, Guru & Zona Siswa berhasil disinkronkan antar-PC ke Server!', 'success');
           } else {
             FincestemCore.ui.toast('Data lokal telah diperbarui.', 'info');
           }

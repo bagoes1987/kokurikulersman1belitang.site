@@ -299,7 +299,47 @@ function ensureRoleTables($pdo) {
     $checked = true;
 }
 
+function buildAllStudentZonesMap($pdo) {
+    $studentZones = [];
+    try {
+        $stmtUsers = $pdo->query("SELECT `identifier`, `nis`, `zone` FROM `users` WHERE `role` = 'siswa' AND `zone` IS NOT NULL AND `zone` != ''");
+        while ($row = $stmtUsers->fetch()) {
+            $z = trim($row['zone']);
+            $id = trim($row['identifier'] ?? '');
+            $nis = trim($row['nis'] ?? '');
+            if ($id) {
+                $studentZones[$id] = $z;
+                $cleanId = preg_replace('/\D/', '', $id);
+                if (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) {
+                    $studentZones[str_pad($cleanId, 10, '0', STR_PAD_LEFT)] = $z;
+                    $studentZones[ltrim($cleanId, '0')] = $z;
+                }
+            }
+            if ($nis) $studentZones[$nis] = $z;
+        }
+    } catch (Exception $e) {}
+
+    try {
+        $stmtCust = $pdo->query("SELECT `nisn`, `zone` FROM `student_custom_zones`");
+        while ($r = $stmtCust->fetch()) {
+            if (!empty($r['nisn']) && !empty($r['zone'])) {
+                $n = trim($r['nisn']);
+                $z = trim($r['zone']);
+                $studentZones[$n] = $z;
+                $cleanN = preg_replace('/\D/', '', $n);
+                if (strlen($cleanN) >= 8 && strlen($cleanN) <= 10) {
+                    $studentZones[str_pad($cleanN, 10, '0', STR_PAD_LEFT)] = $z;
+                    $studentZones[ltrim($cleanN, '0')] = $z;
+                }
+            }
+        }
+    } catch (Exception $e) {}
+
+    return $studentZones;
+}
+
 function getMentorshipState($pdo) {
+    $result = ['assignments' => [], 'teacher_roles' => [], 'custom_teachers' => [], 'student_zones' => []];
     try {
         $stmt = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'mentorship_state_v1' LIMIT 1");
         $stmt->execute();
@@ -307,15 +347,16 @@ function getMentorshipState($pdo) {
         if ($raw) {
             $decoded = json_decode($raw, true);
             if (is_array($decoded)) {
-                return [
-                    'assignments'     => isset($decoded['assignments']) && is_array($decoded['assignments']) ? $decoded['assignments'] : [],
-                    'teacher_roles'   => isset($decoded['teacher_roles']) && is_array($decoded['teacher_roles']) ? $decoded['teacher_roles'] : [],
-                    'custom_teachers' => isset($decoded['custom_teachers']) && is_array($decoded['custom_teachers']) ? $decoded['custom_teachers'] : []
-                ];
+                $result['assignments']     = isset($decoded['assignments']) && is_array($decoded['assignments']) ? $decoded['assignments'] : [];
+                $result['teacher_roles']   = isset($decoded['teacher_roles']) && is_array($decoded['teacher_roles']) ? $decoded['teacher_roles'] : [];
+                $result['custom_teachers'] = isset($decoded['custom_teachers']) && is_array($decoded['custom_teachers']) ? $decoded['custom_teachers'] : [];
             }
         }
     } catch (Exception $e) {}
-    return ['assignments' => [], 'teacher_roles' => [], 'custom_teachers' => []];
+
+    // Selalu sertakan pemetaan zona siswa terkini agar antar-laptop langsung tersinkronkan
+    $result['student_zones'] = buildAllStudentZonesMap($pdo);
+    return $result;
 }
 
 function buildCustomZonesLookup($pdo) {
@@ -838,44 +879,7 @@ if ($method === 'GET') {
         $zoneCounts = $stmtZone->fetchAll(PDO::FETCH_KEY_PAIR);
 
         // 3. Ambil seluruh pemetaan zona per-siswa yang telah ditentukan (individual overrides)
-        $studentZones = [];
-        try {
-            $stmtStudents = $pdo->query("
-                SELECT `identifier`, `nis`, `zone`
-                FROM `users`
-                WHERE `role` = 'siswa' AND `zone` IS NOT NULL AND `zone` != ''
-            ");
-            while ($row = $stmtStudents->fetch()) {
-                $z = trim($row['zone']);
-                $id = trim($row['identifier'] ?? '');
-                $nis = trim($row['nis'] ?? '');
-                if ($id) {
-                    $studentZones[$id] = $z;
-                    $cleanId = preg_replace('/\D/', '', $id);
-                    if (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) {
-                        $studentZones[str_pad($cleanId, 10, '0', STR_PAD_LEFT)] = $z;
-                        $studentZones[ltrim($cleanId, '0')] = $z;
-                    }
-                }
-                if ($nis) $studentZones[$nis] = $z;
-            }
-        } catch (Exception $e) {}
-
-        try {
-            $stmtCust = $pdo->query("SELECT `nisn`, `zone` FROM `student_custom_zones`");
-            while ($r = $stmtCust->fetch()) {
-                if (!empty($r['nisn']) && !empty($r['zone'])) {
-                    $n = trim($r['nisn']);
-                    $z = trim($r['zone']);
-                    $studentZones[$n] = $z;
-                    $cleanN = preg_replace('/\D/', '', $n);
-                    if (strlen($cleanN) >= 8 && strlen($cleanN) <= 10) {
-                        $studentZones[str_pad($cleanN, 10, '0', STR_PAD_LEFT)] = $z;
-                        $studentZones[ltrim($cleanN, '0')] = $z;
-                    }
-                }
-            }
-        } catch (Exception $e) {}
+        $studentZones = buildAllStudentZonesMap($pdo);
 
         // 4. Role Assignments (Coordinators & Facilitators)
         $coordinators = [];
@@ -1664,10 +1668,30 @@ if ($method === 'POST') {
                 }
             }
 
+            // Sinkronkan juga pemetaan zona siswa jika dikirim dari browser
+            if (isset($input['student_zones']) && is_array($input['student_zones'])) {
+                try {
+                    $stmtCust = $pdo->prepare("
+                        INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES (:nisn, :z)
+                        ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`), `updated_at` = CURRENT_TIMESTAMP
+                    ");
+                    foreach ($input['student_zones'] as $sNisn => $sZone) {
+                        $sNisn = trim((string)$sNisn);
+                        $sZone = trim((string)$sZone);
+                        if ($sNisn !== '' && $sZone !== '') {
+                            $stmtCust->execute([':nisn' => $sNisn, ':z' => $sZone]);
+                        }
+                    }
+                } catch (Exception $eZ) {}
+            }
+
             $current['last_synced_at'] = gmdate('c');
 
             $stmtSave = $pdo->prepare("REPLACE INTO `app_settings` (`key_name`, `value`) VALUES ('mentorship_state_v1', :val)");
             $stmtSave->execute([':val' => json_encode($current, JSON_UNESCAPED_UNICODE)]);
+
+            // Pastikan respon balik selalu menyertakan peta zona siswa teranyar
+            $current['student_zones'] = buildAllStudentZonesMap($pdo);
 
             jsonResponse(true, 'Data Pembagian Siswa Binaan berhasil disinkronkan ke server.', $current);
         }

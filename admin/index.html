@@ -5143,6 +5143,9 @@
       FincestemCore.zones.setStudentZone(nisn, newZone, function(res) {
         renderAdminStudentList();
         if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+        if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
+        if (typeof renderPlottingView === 'function') renderPlottingView();
+        if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
         const shortName = newZone.includes('LUAR') ? 'FIELD TRIP' : 'NON-FIELD TRIP';
         FincestemCore.ui.toast(`Kategori siswa ${nisn} berhasil diubah ke ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
@@ -5549,6 +5552,9 @@
         updateModalZoneButtonsUI(targetZone);
         renderAdminStudentList();
         if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+        if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
+        if (typeof renderPlottingView === 'function') renderPlottingView();
+        if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
         const shortName = targetZone.includes('LUAR') ? 'LUAR OKU TIMUR' : 'OKU TIMUR';
         FincestemCore.ui.toast(`Zona siswa berhasil diperbarui menjadi ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
@@ -5623,6 +5629,9 @@
         handleSearchStudentForZone();
         renderAdminStudentList();
         if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+        if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
+        if (typeof renderPlottingView === 'function') renderPlottingView();
+        if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
         const shortName = targetZone.includes('LUAR') ? 'LUAR OKU TIMUR' : 'OKU TIMUR';
         FincestemCore.ui.toast(`Zona siswa ${nisn} berhasil diubah ke ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
