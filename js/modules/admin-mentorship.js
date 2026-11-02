@@ -143,12 +143,21 @@
       const prevVal = select.value;
       let optHtml = '<option value="">-- Pilih Guru Fasilitator / Koordinator --</option>';
 
+      // Pra-hitung jumlah binaan & role setiap guru (O(1) cache) sebelum sorting
+      const teacherCounts = new Map();
+      const teacherRoles = new Map();
+      teachers.forEach(t => {
+        const k = String(t.username || t.nip || t.kode_guru).toLowerCase();
+        teacherCounts.set(k, window.FincestemMentorship.getAssignedNisnsForTeacher(k).length);
+        teacherRoles.set(k, window.FincestemMentorship.getTeacherRole(k));
+      });
+
       // Urutkan: Guru yang sudah ada binaan di atas, lalu abjad
       const sortedTeachers = [...teachers].sort((a, b) => {
         const kA = String(a.username || a.nip || a.kode_guru).toLowerCase();
         const kB = String(b.username || b.nip || b.kode_guru).toLowerCase();
-        const countA = window.FincestemMentorship.getAssignedNisnsForTeacher(kA).length;
-        const countB = window.FincestemMentorship.getAssignedNisnsForTeacher(kB).length;
+        const countA = teacherCounts.get(kA) || 0;
+        const countB = teacherCounts.get(kB) || 0;
         if (countA !== countB) return countB - countA; // yang terbanyak di atas
         return (a.nama_guru || '').localeCompare(b.nama_guru || '');
       });
@@ -160,8 +169,8 @@
         seenOptionNames.add(normName);
 
         const k = String(t.username || t.nip || t.kode_guru).toLowerCase();
-        const count = window.FincestemMentorship.getAssignedNisnsForTeacher(k).length;
-        const role = window.FincestemMentorship.getTeacherRole(k);
+        const count = teacherCounts.get(k) || 0;
+        const role = teacherRoles.get(k) || 'NON_FIELD_TRIP';
         const roleBadge = role === 'FIELD_TRIP' ? '🚌 FT' : (role === 'KOORDINATOR' ? '🎯 Koord' : '🏫 Non-FT');
         const countText = count > 0 ? `(${count} Siswa)` : '(0 Siswa)';
 
@@ -444,6 +453,7 @@
       selRombel.innerHTML = rOpts;
     }
 
+    modalVisibleLimit = 80;
     modal.classList.remove('hidden');
     renderModalStudentsList();
   };
@@ -454,20 +464,28 @@
     modalSelectedNisns.clear();
   };
 
+  let modalStudentSearchDebounce = null;
+  let modalVisibleLimit = 80;
+
   window.onModalStudentFilterChange = function() {
-    const selRombel = document.getElementById('modalFilterRombel');
-    const selCat = document.getElementById('modalFilterCategory');
-    const inSearch = document.getElementById('modalSearchStudent');
+    clearTimeout(modalStudentSearchDebounce);
+    modalStudentSearchDebounce = setTimeout(function() {
+      const selRombel = document.getElementById('modalFilterRombel');
+      const selCat = document.getElementById('modalFilterCategory');
+      const inSearch = document.getElementById('modalSearchStudent');
 
-    studentModalFilter.rombel = selRombel ? selRombel.value : 'ALL';
-    studentModalFilter.category = selCat ? selCat.value : 'ALL';
-    studentModalFilter.search = inSearch ? inSearch.value.trim().toLowerCase() : '';
+      studentModalFilter.rombel = selRombel ? selRombel.value : 'ALL';
+      studentModalFilter.category = selCat ? selCat.value : 'ALL';
+      studentModalFilter.search = inSearch ? inSearch.value.trim().toLowerCase() : '';
+      modalVisibleLimit = 80; // Reset pagination limit saat filter berubah
 
-    renderModalStudentsList();
+      renderModalStudentsList();
+    }, 100);
   };
 
   window.setModalGradeFilter = function(grade) {
     studentModalFilter.grade = grade;
+    modalVisibleLimit = 80;
     ['ALL', 'X', 'XI', 'XII'].forEach(g => {
       const btn = document.getElementById('btnModalGrade_' + g);
       if (btn) {
@@ -479,59 +497,141 @@
     renderModalStudentsList();
   };
 
+  window.loadMoreModalStudents = function() {
+    modalVisibleLimit += 100;
+    renderModalStudentsList();
+  };
+
   function renderModalStudentsList() {
     const listContainer = document.getElementById('modalStudentListContainer');
     const countInfo = document.getElementById('modalSelectedCountInfo');
     const allStudents = window.FincestemMasterStudents || [];
-    const targetRole = window.FincestemMentorship.getTeacherRole(selectedTeacherKey);
-    const roleFilterType = (targetRole === 'KOORDINATOR') ? 'KOORDINATOR' : 'FASILITATOR';
-    const currentMentorNisns = new Set(window.FincestemMentorship.getAssignedNisnsForTeacher(selectedTeacherKey));
-
     if (!listContainer) return;
 
-    // Filter Siswa
-    const filtered = allStudents.filter(s => {
-      const sNisn = String(s.nisn || '').trim();
-      const sClass = (s.class || s.rombel || '').toUpperCase();
-      const sLvl = String(s.level || '').toUpperCase();
-      const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
-        ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
-        : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
-      const existingSameRole = window.FincestemMentorship.getTeacherForStudent(sNisn, roleFilterType);
-      const isAssignedSameRole = !!existingSameRole;
-      const isAlreadyInThisTeacher = currentMentorNisns.has(sNisn);
+    // 1. Ambil target role guru yang sedang aktif
+    const targetRole = window.FincestemMentorship.getTeacherRole(selectedTeacherKey);
+    const roleFilterType = (targetRole === 'KOORDINATOR') ? 'KOORDINATOR' : 'FASILITATOR';
 
-      // Jangan tampilkan yang sudah ada di guru ini
-      if (isAlreadyInThisTeacher) return false;
+    // 2. OPTIMASI TINGGI (O(1)): Cache data assignment & zona sekali saja sebelum loop!
+    const assignMap = window.FincestemMentorship.getAssignmentsMap();
+    const currentMentorNisns = new Set();
+    const otherMentorByNisn = new Map(); // cleanNisn -> { teacher_key, teacher_name }
+
+    // Indeks guru dan siswa binaannya sekali saja
+    for (const [tKey, entry] of Object.entries(assignMap)) {
+      if (!entry || !Array.isArray(entry.student_nisns)) continue;
+      const r = window.FincestemMentorship.getTeacherRole(tKey);
+      const isTarget = (tKey === selectedTeacherKey);
+
+      if (isTarget) {
+        entry.student_nisns.forEach(n => {
+          const sN = String(n).trim();
+          if (sN) {
+            currentMentorNisns.add(sN);
+            const digits = sN.replace(/\D/g, '');
+            if (digits) {
+              currentMentorNisns.add(digits.padStart(10, '0'));
+              currentMentorNisns.add(digits.replace(/^0+/, ''));
+            }
+          }
+        });
+      } else {
+        const isSameCategoryRole = (roleFilterType === 'KOORDINATOR') ? (r === 'KOORDINATOR') : (r !== 'KOORDINATOR');
+        if (isSameCategoryRole) {
+          const tObj = window.FincestemMentorship.findTeacherByIdentifier(tKey);
+          const tInfo = {
+            teacher_key: tKey,
+            teacher_name: (tObj && tObj.nama_guru) || entry.teacher_name || tKey
+          };
+          entry.student_nisns.forEach(n => {
+            const sN = String(n).trim();
+            if (sN) {
+              otherMentorByNisn.set(sN, tInfo);
+              const digits = sN.replace(/\D/g, '');
+              if (digits) {
+                otherMentorByNisn.set(digits.padStart(10, '0'), tInfo);
+                otherMentorByNisn.set(digits.replace(/^0+/, ''), tInfo);
+              }
+            }
+          });
+        }
+      }
+    }
+
+    // Cache zona siswa dari localStorage sekali saja
+    let studentZonesMap = {};
+    try {
+      const zRaw = localStorage.getItem('fincestem_student_zones_map');
+      if (zRaw) studentZonesMap = JSON.parse(zRaw) || {};
+    } catch(e) {}
+
+    // Helper O(1) cek Field Trip tanpa panggil getStudentZone berulang-ulang
+    const checkIsFT = (sNisn, sObj) => {
+      const rawDigits = sNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+      const z = studentZonesMap[sNisn] || studentZonesMap[paddedNisn] || (unpaddedNisn ? studentZonesMap[unpaddedNisn] : null) || sObj.zone;
+      if (z) {
+        const zUp = String(z).toUpperCase();
+        return zUp.includes('LUAR') || zUp.includes('FIELD') || zUp.includes('TRIP');
+      }
+      return (sObj.zone === 'FINCESTEM LUAR OKU TIMUR' || sObj.is_field_trip === true);
+    };
+
+    // 3. Filter data siswa dengan O(1) checks
+    const gradeFilter = studentModalFilter.grade;
+    const rombelFilter = studentModalFilter.rombel;
+    const catFilter = studentModalFilter.category;
+    const searchFilter = studentModalFilter.search;
+
+    const normRombel = (rombelFilter !== 'ALL') ? rombelFilter.replace(/^KELAS\s+/i, '').trim().toUpperCase() : null;
+
+    const filtered = [];
+    for (let i = 0; i < allStudents.length; i++) {
+      const s = allStudents[i];
+      const sNisn = String(s.nisn || '').trim();
+
+      // Cek apakah sudah dibina oleh guru ini
+      if (currentMentorNisns.has(sNisn)) continue;
 
       // Filter Tingkat
-      if (studentModalFilter.grade !== 'ALL') {
-        const g = String(studentModalFilter.grade).trim().toUpperCase();
-        if (sLvl !== g && !sClass.includes(' ' + g + '.') && !sClass.startsWith(g + '.')) return false;
+      const sClass = (s.class || s.rombel || '').toUpperCase();
+      if (gradeFilter !== 'ALL') {
+        const sLvl = String(s.level || '').toUpperCase();
+        if (sLvl !== gradeFilter && !sClass.includes(' ' + gradeFilter + '.') && !sClass.startsWith(gradeFilter + '.')) continue;
       }
 
       // Filter Rombel
-      if (studentModalFilter.rombel !== 'ALL') {
-        const normR = studentModalFilter.rombel.replace(/^KELAS\s+/i, '').trim().toUpperCase();
+      if (normRombel !== null) {
         const normS = sClass.replace(/^KELAS\s+/i, '').trim().toUpperCase();
-        if (normS !== normR) return false;
+        if (normS !== normRombel) continue;
       }
+
+      // Cek FT dan pembina lain O(1)
+      const isFT = checkIsFT(sNisn, s);
+      const otherT = otherMentorByNisn.get(sNisn) || null;
+      const isAssignedSameRole = (otherT !== null);
 
       // Filter Kategori
-      if (studentModalFilter.category === 'FIELD_TRIP' && !isFT) return false;
-      if (studentModalFilter.category === 'NON_FIELD_TRIP' && isFT) return false;
-      if (studentModalFilter.category === 'UNASSIGNED' && isAssignedSameRole) return false;
+      if (catFilter === 'FIELD_TRIP' && !isFT) continue;
+      if (catFilter === 'NON_FIELD_TRIP' && isFT) continue;
+      if (catFilter === 'UNASSIGNED' && isAssignedSameRole) continue;
 
       // Filter Search
-      if (studentModalFilter.search) {
-        const q = studentModalFilter.search;
-        const matchName = (s.nama || '').toLowerCase().includes(q);
-        const matchNisn = sNisn.includes(q);
-        if (!matchName && !matchNisn) return false;
+      if (searchFilter) {
+        const matchName = (s.nama || '').toLowerCase().includes(searchFilter);
+        const matchNisn = sNisn.includes(searchFilter);
+        if (!matchName && !matchNisn) continue;
       }
 
-      return true;
-    });
+      // Simpan objek dengan metadata terhitung untuk menghindari hitung ulang saat render HTML
+      filtered.push({
+        s,
+        sNisn,
+        isFT,
+        otherT
+      });
+    }
 
     if (countInfo) {
       countInfo.innerHTML = `Terpilih: <strong class="text-[#0875D1] font-black">${modalSelectedNisns.size}</strong> siswa | Menampilkan ${filtered.length} siswa`;
@@ -548,13 +648,15 @@
       return;
     }
 
+    // 4. Render Chunk Cepat (Max modalVisibleLimit siswa terlebih dahulu untuk jaminan 60 FPS!)
+    const visibleChunk = filtered.slice(0, modalVisibleLimit);
     let html = '';
-    filtered.forEach(s => {
-      const sNisn = String(s.nisn || '').trim();
-      const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
-        ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
-        : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
-      const otherT = window.FincestemMentorship.getTeacherForStudent(sNisn, roleFilterType);
+    for (let i = 0; i < visibleChunk.length; i++) {
+      const item = visibleChunk[i];
+      const s = item.s;
+      const sNisn = item.sNisn;
+      const isFT = item.isFT;
+      const otherT = item.otherT;
       const isChecked = modalSelectedNisns.has(sNisn);
 
       let otherMentorBadge = '';
@@ -579,7 +681,19 @@
           </div>
         </label>
       `;
-    });
+    }
+
+    if (filtered.length > modalVisibleLimit) {
+      const remaining = filtered.length - modalVisibleLimit;
+      html += `
+        <div class="p-3 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-300 flex flex-col items-center gap-1.5 mt-1">
+          <span class="text-xs text-slate-500 font-medium">Menampilkan ${visibleChunk.length} dari ${filtered.length} siswa (masih ada ${remaining} siswa lainnya).</span>
+          <button type="button" onclick="loadMoreModalStudents()" class="px-4 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 active:scale-95 text-slate-800 font-bold text-xs transition-all cursor-pointer">
+            Tampilkan 100 Siswa Lagi (+100)
+          </button>
+        </div>
+      `;
+    }
 
     listContainer.innerHTML = html;
   }

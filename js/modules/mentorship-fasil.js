@@ -21,14 +21,31 @@
     return String(name || '').replace(/\s+/g, ' ').trim().toUpperCase();
   }
 
+  // In-Memory High-Performance Caches untuk mencegah ribuan JSON.parse & query localStorage berulang
+  let _cachedTeachersList = null;
+  let _cachedTeacherIdentifierIndex = null;
+  let _cachedTeacherRolesMap = null;
+  let _cachedAssignmentsMap = null;
+
+  function invalidateMentorshipCache() {
+    _cachedTeachersList = null;
+    _cachedTeacherIdentifierIndex = null;
+    _cachedTeacherRolesMap = null;
+    _cachedAssignmentsMap = null;
+  }
+
   const MentorshipModule = {
+    invalidateCache: invalidateMentorshipCache,
 
     /**
      * ==========================================
      * 1. DATA GURU (MASTER UNIK 86 GURU + CUSTOM TAMBAHAN)
      * ==========================================
      */
-    getTeachers: function() {
+    getTeachers: function(forceFresh) {
+      if (!forceFresh && _cachedTeachersList !== null) {
+        return _cachedTeachersList;
+      }
       // 1. Ambil Guru Master Bawaan SMAN 1 Belitang (116 baris penugasan -> 86 guru unik)
       let masterList = Array.isArray(window.FincestemMasterTeachers) ? window.FincestemMasterTeachers : [];
       
@@ -123,6 +140,28 @@
         }
       });
 
+      _cachedTeachersList = uniqueTeachers;
+
+      // Bangun lookup index O(1) identifier -> teacher object
+      const identMap = new Map();
+      uniqueTeachers.forEach(t => {
+        const u = String(t.username || '').trim().toLowerCase();
+        const nip = String(t.nip || '').trim().toLowerCase();
+        const kode = String(t.kode_guru || '').trim().toLowerCase();
+        const normName = normalizeTeacherName(t.nama_guru);
+        if (u) identMap.set(u, t);
+        if (nip && nip !== '-') identMap.set(nip, t);
+        if (kode && kode !== '-') identMap.set(kode, t);
+        if (normName) identMap.set(normName, t);
+        if (Array.isArray(t.aliases)) {
+          t.aliases.forEach(a => {
+            const cleanA = String(a || '').trim().toLowerCase();
+            if (cleanA) identMap.set(cleanA, t);
+          });
+        }
+      });
+      _cachedTeacherIdentifierIndex = identMap;
+
       return uniqueTeachers;
     },
 
@@ -130,7 +169,17 @@
       if (!identifier) return null;
       const cleanKey = String(identifier).trim().toLowerCase();
       const normName = normalizeTeacherName(identifier);
+
+      if (_cachedTeacherIdentifierIndex) {
+        const found = _cachedTeacherIdentifierIndex.get(cleanKey) || _cachedTeacherIdentifierIndex.get(normName);
+        if (found) return found;
+      }
+
       const teachers = this.getTeachers();
+      if (_cachedTeacherIdentifierIndex) {
+        const found = _cachedTeacherIdentifierIndex.get(cleanKey) || _cachedTeacherIdentifierIndex.get(normName);
+        if (found) return found;
+      }
       return teachers.find(t =>
         String(t.username || '').toLowerCase() === cleanKey ||
         String(t.nip || '').toLowerCase() === cleanKey ||
@@ -283,6 +332,7 @@
 
     applyServerState: function(state) {
       if (!state || typeof state !== 'object') return false;
+      invalidateMentorshipCache();
       let updated = false;
       try {
         // 1. Smart Merge Assignments per-Guru (Multi-PC Safe)
@@ -399,14 +449,18 @@
       if (!teacherIdentifier) return 'NON_FIELD_TRIP';
       const cleanKey = String(teacherIdentifier).trim().toLowerCase();
       const canonicalKey = this.resolveCanonicalKey(teacherIdentifier);
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY_TEACHER_ROLES);
-        if (raw) {
-          const map = JSON.parse(raw);
-          if (map && map[canonicalKey]) return map[canonicalKey];
-          if (map && map[cleanKey]) return map[cleanKey];
+
+      if (_cachedTeacherRolesMap === null) {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY_TEACHER_ROLES);
+          _cachedTeacherRolesMap = raw ? (JSON.parse(raw) || {}) : {};
+        } catch (e) {
+          _cachedTeacherRolesMap = {};
         }
-      } catch (e) {}
+      }
+
+      if (_cachedTeacherRolesMap[canonicalKey]) return _cachedTeacherRolesMap[canonicalKey];
+      if (_cachedTeacherRolesMap[cleanKey]) return _cachedTeacherRolesMap[cleanKey];
 
       // Fallback deteksi dari tugas tambahan bawaan
       const found = this.findTeacherByIdentifier(teacherIdentifier);
@@ -427,12 +481,13 @@
         if (raw) map = JSON.parse(raw) || {};
         map[canonicalKey] = roleCategory;
         localStorage.setItem(STORAGE_KEY_TEACHER_ROLES, JSON.stringify(map));
+        _cachedTeacherRolesMap = map;
 
         // Sinkronkan juga role di dalam assignments map jika sudah ada
         const assignMap = this.getAssignmentsMap();
         if (assignMap[canonicalKey]) {
           assignMap[canonicalKey].teacher_role = roleCategory;
-          localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(assignMap));
+          this.saveAssignmentsMap(assignMap);
         }
         this.syncToServer();
       } catch (e) {}
@@ -443,18 +498,26 @@
      * 2. PEMETAAN SISWA BINAAN (MENTOR ASSIGNMENTS)
      * ==========================================
      */
-    getAssignmentsMap: function() {
+    getAssignmentsMap: function(forceFresh) {
+      if (!forceFresh && _cachedAssignmentsMap !== null) {
+        return _cachedAssignmentsMap;
+      }
       try {
         const raw = localStorage.getItem(STORAGE_KEY_ASSIGNMENTS);
         if (raw) {
           const map = JSON.parse(raw);
-          if (map && typeof map === 'object') return map;
+          if (map && typeof map === 'object') {
+            _cachedAssignmentsMap = map;
+            return map;
+          }
         }
       } catch (e) {}
-      return {};
+      _cachedAssignmentsMap = {};
+      return _cachedAssignmentsMap;
     },
 
     saveAssignmentsMap: function(map) {
+      _cachedAssignmentsMap = map;
       try {
         localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(map));
         this.syncToServer();
