@@ -205,8 +205,8 @@
       <div onclick="switchFasTab('biodata')" class="p-3.5 mx-3 my-2 rounded-2xl bg-gradient-to-b from-slate-800/90 via-slate-800/70 to-slate-900/95 border border-slate-700/80 hover:border-teal-400/60 shadow-xl shadow-slate-950/40 transition-all cursor-pointer group" title="Buka Biodata & Profil Saya">
         <div class="flex items-center gap-3">
           <!-- Foto Profil / Avatar Fasilitator dengan Frame Elegan & Status Ring -->
-          <div class="relative w-12 h-12 rounded-xl bg-slate-950 border border-teal-400/40 group-hover:border-teal-300 shadow-md shrink-0 overflow-hidden flex items-center justify-center transition-all">
-            <img id="fasUserSidePhoto" src="" alt="Foto Profil" class="hidden w-full h-full object-cover">
+          <div style="width:48px;height:48px;min-width:48px;min-height:48px;max-width:48px;max-height:48px;" class="relative w-12 h-12 rounded-xl bg-slate-950 border border-teal-400/40 group-hover:border-teal-300 shadow-md shrink-0 overflow-hidden flex items-center justify-center transition-all">
+            <img id="fasUserSidePhoto" src="" alt="Foto Profil" style="width:48px;height:48px;min-width:48px;min-height:48px;max-width:48px;max-height:48px;" class="hidden w-full h-full object-cover">
             <div id="fasUserSideAvatarFallback" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-500/20 to-slate-800 text-teal-300">
               <span class="material-symbols-outlined text-2xl text-teal-300 group-hover:scale-110 transition-transform">co_present</span>
             </div>
@@ -316,48 +316,51 @@
           <div class="absolute -left-10 -top-10 w-36 h-36 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
 
           <div class="relative z-10 flex flex-col gap-3">
-            <!-- Baris Atas: Foto Profil + Info Nama & NIP + Tombol Kelola Profil Rapi -->
-            <div class="flex items-center justify-between gap-3">
-              <div class="flex items-center gap-3 sm:gap-4 min-w-0">
-                <!-- Frame Foto Profil Fasilitator dengan Indikator Aktif -->
-                <div onclick="toggleFasilEditBiodata(true)" class="relative w-13 h-13 sm:w-16 sm:h-16 rounded-2xl bg-slate-950 border-2 border-teal-400/40 hover:border-teal-300 shadow-md shrink-0 overflow-hidden flex items-center justify-center transition-all cursor-pointer group" title="Klik untuk membuka Biodata & Foto Profil">
-                  <img id="fasUserMainPhoto" src="" alt="Foto Fasilitator" class="hidden w-full h-full object-cover">
-                  <div id="fasUserMainAvatarFallback" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-500/20 to-slate-800 text-teal-300">
-                    <span class="material-symbols-outlined text-2xl sm:text-3xl group-hover:scale-110 transition-transform">co_present</span>
-                  </div>
-                  <!-- Indikator Online/Aktif -->
-                  <span class="absolute bottom-0.5 right-0.5 w-2.5 h-2.5 sm:w-3 sm:h-3 bg-emerald-400 border-2 border-slate-900 rounded-full" title="Status: Aktif"></span>
+            <!-- Bagian Atas: Foto Profil Ukuran Tetap Presisi + Nama Lengkap + Badge Guru Fasilitator -->
+            <div class="flex items-start gap-3.5 sm:gap-4 min-w-0">
+              <!-- Frame Foto Profil Fasilitator (Terkunci Ketat 64x64px, Tidak Akan Melebar) -->
+              <div onclick="toggleFasilEditBiodata(true)" style="width:64px;height:64px;min-width:64px;min-height:64px;max-width:64px;max-height:64px;" class="w-16 h-16 rounded-2xl bg-slate-950 border-2 border-teal-400/40 hover:border-teal-300 shadow-md shrink-0 overflow-hidden flex items-center justify-center transition-all cursor-pointer group" title="Klik untuk mengelola Biodata & Foto Profil">
+                <img id="fasUserMainPhoto" src="" alt="Foto Fasilitator" style="width:64px;height:64px;min-width:64px;min-height:64px;max-width:64px;max-height:64px;" class="hidden w-full h-full object-cover">
+                <div id="fasUserMainAvatarFallback" class="w-full h-full flex items-center justify-center bg-gradient-to-br from-teal-500/20 to-slate-800 text-teal-300">
+                  <span class="material-symbols-outlined text-3xl group-hover:scale-110 transition-transform">co_present</span>
                 </div>
-
-                <!-- Nama Lengkap & Mapel & NIP -->
-                <div class="min-w-0">
-                  <h2 id="fasUserNameMain" class="text-sm sm:text-base font-black text-white leading-snug break-words" title="Nama Lengkap Fasilitator">Fasilitator Kokurikuler</h2>
-                  <p id="fasUserMetaMain" class="text-[11px] sm:text-xs text-teal-200/90 font-medium truncate mt-0.5">Pembina Kokurikuler FINCESTEM</p>
-                  <p id="fasUserMainNip" class="text-[10px] sm:text-[11px] text-teal-300/80 font-mono truncate hidden mt-0.5"></p>
-                </div>
+                <!-- Indikator Online/Aktif -->
+                <span class="absolute bottom-0.5 right-0.5 w-3 h-3 bg-emerald-400 border-2 border-slate-900 rounded-full" title="Status: Aktif"></span>
               </div>
 
-              <!-- Tombol Kelola Profil Terintegrasi di Sudut Kanan Atas -->
-              <button type="button" onclick="toggleFasilEditBiodata(true)" class="shrink-0 px-3 py-1.5 rounded-xl bg-teal-500/20 hover:bg-teal-500/35 text-teal-200 hover:text-white border border-teal-400/40 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-95" title="Buka Formulir Edit Biodata & Foto">
-                <span class="material-symbols-outlined text-sm text-teal-300">edit_square</span>
-                <span class="hidden sm:inline">Kelola Profil</span>
-                <span class="sm:hidden">Edit</span>
-              </button>
+              <!-- Nama Lengkap Tanpa Terpotong & Jabatan -->
+              <div class="flex-1 min-w-0">
+                <h2 id="fasUserNameMain" class="text-sm sm:text-lg font-black text-white leading-snug break-words" title="Nama Lengkap Fasilitator">Fasilitator Kokurikuler</h2>
+                <div class="flex items-center gap-2 flex-wrap mt-0.5">
+                  <p id="fasUserMetaMain" class="text-xs text-teal-200/90 font-medium truncate">Pembina Kokurikuler FINCESTEM</p>
+                  <span id="fasUserMainNip" class="text-[11px] text-teal-300/80 font-mono hidden"></span>
+                </div>
+
+                <!-- Badge Guru Fasilitator -->
+                <div class="pt-1.5 flex items-center gap-2 flex-wrap">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg text-[10.5px] font-black bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 shadow-2xs">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span>
+                    <span>GURU FASILITATOR</span>
+                  </span>
+                </div>
+              </div>
             </div>
 
-            <!-- Baris Bawah: Badges Terpadu & Rapi (GURU FASILITATOR + BINAAN ANDA + JUMLAH SISWA) -->
-            <div class="pt-2.5 border-t border-slate-700/60 flex items-center gap-2 overflow-x-auto no-scrollbar">
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] sm:text-[10.5px] font-black bg-gradient-to-r from-amber-400 to-amber-500 text-slate-950 shadow-2xs shrink-0 whitespace-nowrap">
-                <span class="w-1.5 h-1.5 rounded-full bg-slate-950 animate-pulse"></span>
-                <span>GURU FASILITATOR</span>
-              </span>
-              <span id="lblAssignedClassName" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10px] sm:text-[10.5px] font-extrabold bg-slate-950/80 text-teal-200 border border-teal-500/30 shrink-0 whitespace-nowrap">
-                <span class="material-symbols-outlined text-xs text-teal-400">domain</span>
-                <span id="lblAssignedClassNameText">Binaan Anda</span>
-              </span>
-              <span id="lblAssignedStudentCount" class="px-2.5 py-1 rounded-lg text-[10px] sm:text-[10.5px] font-black bg-teal-500/25 text-teal-100 border border-teal-400/30 shrink-0 whitespace-nowrap">
-                0 Siswa
-              </span>
+            <!-- Bagian Bawah: Susunan Simetris & Rapi (Binaan Anda + Jumlah Siswa di Kiri & Kelola Profil di Kanan) -->
+            <div class="pt-2 border-t border-slate-700/60 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <span id="lblAssignedClassName" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-[10.5px] font-extrabold bg-slate-950/80 text-teal-200 border border-teal-500/30 shrink-0">
+                  <span class="material-symbols-outlined text-xs text-teal-400">domain</span>
+                  <span id="lblAssignedClassNameText">Binaan Anda</span>
+                </span>
+                <span id="lblAssignedStudentCount" class="px-2.5 py-1 rounded-lg text-[10.5px] font-black bg-teal-500/25 text-teal-100 border border-teal-400/30 shrink-0">
+                  0 Siswa
+                </span>
+              </div>
+              <button type="button" onclick="toggleFasilEditBiodata(true)" class="px-3 py-1 rounded-lg bg-teal-500/20 hover:bg-teal-500/35 text-teal-200 hover:text-white border border-teal-400/40 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer shadow-xs active:scale-95 shrink-0" title="Kelola Biodata, NIP, Nomor WA & Foto Profil">
+                <span class="material-symbols-outlined text-xs text-teal-300">badge</span>
+                <span>Kelola Profil</span>
+              </button>
             </div>
           </div>
         </div>
