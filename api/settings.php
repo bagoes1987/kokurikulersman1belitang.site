@@ -12,6 +12,24 @@ header('Expires: 0');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+function ensureStudentContactsTable($pdo) {
+    static $ensured = false;
+    if ($ensured) return;
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `student_contacts` (
+                `nisn` VARCHAR(50) PRIMARY KEY,
+                `wa_siswa` VARCHAR(30) DEFAULT NULL,
+                `wa_ayah` VARCHAR(30) DEFAULT NULL,
+                `wa_ibu` VARCHAR(30) DEFAULT NULL,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX `idx_sc_nisn` (`nisn`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+        $ensured = true;
+    } catch (Exception $e) {}
+}
+
 function ensureTeacherProfilesTable($pdo) {
     static $ensured = false;
     if ($ensured) return;
@@ -671,6 +689,68 @@ if ($method === 'GET') {
 
             $obj = empty($profiles) ? new stdClass() : $profiles;
             jsonResponse(true, 'Seluruh profil fasilitator berhasil dimuat', ['profiles' => $obj]);
+        }
+
+                // Ambil kontak WhatsApp siswa & orang tua
+        if ($action === 'get_student_contacts') {
+            ensureStudentContactsTable($pdo);
+            $nisn = trim($_GET['nisn'] ?? '');
+            if (!$nisn) jsonResponse(false, 'NISN wajib diisi!', null, 400);
+
+            $contact = null;
+            try {
+                $stmt = $pdo->prepare("SELECT * FROM `student_contacts` WHERE `nisn` = :n LIMIT 1");
+                $stmt->execute([':n' => $nisn]);
+                $contact = $stmt->fetch(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {}
+
+            if (!$contact) {
+                try {
+                    $stmtApp = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'all_student_contacts_json' LIMIT 1");
+                    $stmtApp->execute();
+                    $raw = $stmtApp->fetchColumn();
+                    if ($raw) {
+                        $d = json_decode($raw, true);
+                        if (is_array($d) && isset($d[$nisn])) $contact = $d[$nisn];
+                    }
+                } catch (Exception $eApp) {}
+            }
+
+            jsonResponse(true, 'Kontak siswa berhasil dimuat', $contact ?: null);
+        }
+
+        // Ambil seluruh kontak siswa untuk fasilitator & koordinator
+        if ($action === 'get_all_student_contacts') {
+            ensureStudentContactsTable($pdo);
+            $contacts = [];
+            try {
+                $stmt = $pdo->query("SELECT * FROM `student_contacts`");
+                while ($r = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $contacts[$r['nisn']] = [
+                        'nisn'     => $r['nisn'],
+                        'wa_siswa' => $r['wa_siswa'],
+                        'wa_ayah'  => $r['wa_ayah'],
+                        'wa_ibu'   => $r['wa_ibu']
+                    ];
+                }
+            } catch (Exception $e) {}
+
+            try {
+                $stmtApp = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'all_student_contacts_json' LIMIT 1");
+                $stmtApp->execute();
+                $raw = $stmtApp->fetchColumn();
+                if ($raw) {
+                    $d = json_decode($raw, true);
+                    if (is_array($d)) {
+                        foreach ($d as $k => $v) {
+                            if (!isset($contacts[$k])) $contacts[$k] = $v;
+                        }
+                    }
+                }
+            } catch (Exception $eApp) {}
+
+            $obj = empty($contacts) ? new stdClass() : $contacts;
+            jsonResponse(true, 'Kontak seluruh siswa berhasil dimuat', ['contacts' => $obj]);
         }
 
         // Ambil data seluruh guru & tenaga pendidik (A-Z)
@@ -1746,6 +1826,65 @@ if ($method === 'POST') {
                 $stmt->execute([':n' => $nisn]);
             }
             jsonResponse(true, "Koreksi darurat berhasil dihapus. Penilaian Day {$dayNum} dikembalikan ke kalkulasi waktu otomatis.");
+        }
+
+                // Simpan kontak WhatsApp siswa & orang tua
+        if ($action === 'save_student_contacts') {
+            ensureStudentContactsTable($pdo);
+            $nisn = trim($input['nisn'] ?? '');
+            if (!$nisn) jsonResponse(false, 'NISN siswa wajib diisi!', null, 400);
+
+            $waSiswa = trim($input['wa_siswa'] ?? '');
+            $waAyah  = trim($input['wa_ayah'] ?? '');
+            $waIbu   = trim($input['wa_ibu'] ?? '');
+
+            $stmt = $pdo->prepare("
+                INSERT INTO `student_contacts` (`nisn`, `wa_siswa`, `wa_ayah`, `wa_ibu`)
+                VALUES (:n, :ws, :wa, :wi)
+                ON DUPLICATE KEY UPDATE
+                    `wa_siswa` = VALUES(`wa_siswa`),
+                    `wa_ayah` = VALUES(`wa_ayah`),
+                    `wa_ibu` = VALUES(`wa_ibu`),
+                    `updated_at` = CURRENT_TIMESTAMP
+            ");
+            $stmt->execute([
+                ':n'  => $nisn,
+                ':ws' => $waSiswa,
+                ':wa' => $waAyah,
+                ':wi' => $waIbu
+            ]);
+
+            try {
+                $item = [
+                    'nisn'       => $nisn,
+                    'wa_siswa'   => $waSiswa,
+                    'wa_ayah'    => $waAyah,
+                    'wa_ibu'     => $waIbu,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+                $stmtGet = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'all_student_contacts_json' LIMIT 1");
+                $stmtGet->execute();
+                $raw = $stmtGet->fetchColumn();
+                $cMap = [];
+                if ($raw) {
+                    $d = json_decode($raw, true);
+                    if (is_array($d)) $cMap = $d;
+                }
+                $cMap[$nisn] = $item;
+                $stmtSet = $pdo->prepare("
+                    INSERT INTO `app_settings` (`key_name`, `value`)
+                    VALUES ('all_student_contacts_json', :val)
+                    ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated_at` = CURRENT_TIMESTAMP
+                ");
+                $stmtSet->execute([':val' => json_encode($cMap)]);
+            } catch (Exception $eApp) {}
+
+            jsonResponse(true, 'Nomor WhatsApp siswa dan orang tua berhasil disimpan!', [
+                'nisn'     => $nisn,
+                'wa_siswa' => $waSiswa,
+                'wa_ayah'  => $waAyah,
+                'wa_ibu'   => $waIbu
+            ]);
         }
 
         // P. BIODATA & PROFIL FASILITATOR (Bisa diisi oleh fasilitator & dilihat siswa)

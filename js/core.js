@@ -772,6 +772,108 @@ const FincestemCore = {
     }
   },
 
+    // Modul Kontak WhatsApp Siswa & Orang Tua (Komunikasi Fasilitator & Koordinator)
+  studentContacts: {
+    getContacts: function(nisn, callback) {
+      if (!nisn) { if (callback) callback(null); return null; }
+      const cleanNisn = String(nisn).trim();
+
+      let cached = null;
+      try {
+        const raw = localStorage.getItem('fincestem_student_contacts_' + cleanNisn);
+        if (raw) cached = JSON.parse(raw);
+      } catch (e) {}
+      if (cached && callback) callback(cached);
+
+      if (window.location && window.location.protocol && window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php?action=get_student_contacts&nisn=' + encodeURIComponent(cleanNisn) + '&_t=' + Date.now())
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && res.data) {
+              try {
+                localStorage.setItem('fincestem_student_contacts_' + cleanNisn, JSON.stringify(res.data));
+              } catch (e) {}
+              if (callback) callback(res.data);
+            } else if (!cached && callback) {
+              callback(null);
+            }
+          })
+          .catch(() => { if (!cached && callback) callback(null); });
+      }
+      return cached;
+    },
+
+    getAllContacts: function(callback) {
+      let map = {};
+      try {
+        const raw = localStorage.getItem('fincestem_all_student_contacts');
+        if (raw) map = JSON.parse(raw) || {};
+      } catch (e) {}
+
+      if (!window.location || !window.location.protocol || !window.location.protocol.startsWith('http')) {
+        if (callback) callback(map);
+        return;
+      }
+
+      fetch(FincestemCore.api.base + '/settings.php?action=get_all_student_contacts&_t=' + Date.now())
+        .then(r => r.json())
+        .then(res => {
+          let contacts = {};
+          if (res && res.success && res.data && res.data.contacts) {
+            contacts = res.data.contacts;
+            if (Array.isArray(contacts)) contacts = {};
+            try {
+              localStorage.setItem('fincestem_all_student_contacts', JSON.stringify(contacts));
+            } catch (e) {}
+          }
+          if (callback) callback(contacts);
+        })
+        .catch(() => {
+          if (callback) callback(map);
+        });
+    },
+
+    saveContacts: function(contactData, callback) {
+      if (!contactData || !contactData.nisn) {
+        if (callback) callback({ success: false, message: 'NISN tidak boleh kosong' });
+        return;
+      }
+      const nisn = String(contactData.nisn).trim();
+
+      try {
+        localStorage.setItem('fincestem_student_contacts_' + nisn, JSON.stringify(contactData));
+        let allMap = {};
+        const raw = localStorage.getItem('fincestem_all_student_contacts');
+        if (raw) allMap = JSON.parse(raw) || {};
+        allMap[nisn] = contactData;
+        localStorage.setItem('fincestem_all_student_contacts', JSON.stringify(allMap));
+      } catch (e) {}
+
+      if (window.location && window.location.protocol && window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'save_student_contacts',
+            nisn: nisn,
+            wa_siswa: contactData.wa_siswa || '',
+            wa_ayah: contactData.wa_ayah || '',
+            wa_ibu: contactData.wa_ibu || ''
+          })
+        })
+          .then(r => r.json())
+          .then(res => {
+            if (callback) callback(res);
+          })
+          .catch(() => {
+            if (callback) callback({ success: true, local: true });
+          });
+      } else {
+        if (callback) callback({ success: true, local: true });
+      }
+    }
+  },
+
   // Modul Biodata & Profil Fasilitator (Foto, TTL, No WA, Alamat, NIP)
   teacherProfile: {
     getProfile: function(identifier, callback) {

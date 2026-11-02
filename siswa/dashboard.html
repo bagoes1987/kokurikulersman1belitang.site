@@ -272,6 +272,53 @@
           <span id="bioAlamat" class="font-bold text-slate-900 text-sm sm:text-base mt-0.5 leading-relaxed">-</span>
         </div>
 
+        <!-- KARTU NOMOR WHATSAPP SISWA & ORANG TUA (KOMUNIKASI FASILITATOR & KOORDINATOR) -->
+        <div class="mt-3 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-emerald-50/70 via-teal-50/40 to-cyan-50/50 border border-teal-200/90 shadow-2xs flex flex-col gap-3.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                <span class="material-symbols-outlined text-xl">perm_phone_msg</span>
+              </div>
+              <div>
+                <h4 class="font-black text-sm text-slate-900 leading-tight">Kontak WhatsApp Siswa &amp; Orang Tua</h4>
+                <span class="text-[11px] text-slate-500 font-medium">Digunakan Fasilitator &amp; Koordinator untuk pendampingan dan konsultasi</span>
+              </div>
+            </div>
+            <button type="button" onclick="openStudentContactModal()" class="px-3.5 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-xs cursor-pointer transition-all">
+              <span class="material-symbols-outlined text-sm">edit</span>
+              <span>Isi / Perbarui Kontak</span>
+            </button>
+          </div>
+
+          <!-- Grid Nomor Kontak WhatsApp -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs pt-1">
+            <!-- No. WA Siswa -->
+            <div class="p-3 rounded-xl bg-white border border-teal-100 flex flex-col gap-1">
+              <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-teal-600">smartphone</span>
+                <span>No. WA Siswa (Aktif)</span>
+              </span>
+              <span id="bioContactStudentWa" class="font-extrabold text-slate-800 text-xs sm:text-sm font-mono mt-0.5">-</span>
+            </div>
+            <!-- No. WA Ayah -->
+            <div class="p-3 rounded-xl bg-white border border-teal-100 flex flex-col gap-1">
+              <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-blue-600">person</span>
+                <span>No. WA Ayah</span>
+              </span>
+              <span id="bioContactFatherWa" class="font-extrabold text-slate-800 text-xs sm:text-sm font-mono mt-0.5">-</span>
+            </div>
+            <!-- No. WA Ibu -->
+            <div class="p-3 rounded-xl bg-white border border-teal-100 flex flex-col gap-1">
+              <span class="text-slate-400 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs text-pink-600">person_3</span>
+                <span>No. WA Ibu</span>
+              </span>
+              <span id="bioContactMotherWa" class="font-extrabold text-slate-800 text-xs sm:text-sm font-mono mt-0.5">-</span>
+            </div>
+          </div>
+        </div>
+
         <!-- KARTU INFORMASI KESEHATAN & MEDIS PESERTA DIDIK -->
         <div class="mt-3 p-4 sm:p-5 rounded-2xl bg-gradient-to-br from-rose-50/70 via-red-50/40 to-amber-50/50 border border-rose-200/90 shadow-2xs flex flex-col gap-3.5">
           <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -1280,6 +1327,7 @@
 
       // Muat Informasi Kesehatan Siswa
       loadStudentHealthInfo(s.nisn || s.identifier);
+      loadStudentContactInfo(s.nisn || s.identifier);
     }
 
     function renderStudentZoneUI(studentZone) {
@@ -6430,6 +6478,118 @@
       FincestemCore.ui.toast('Data kesehatan & kontak darurat berhasil disimpan!', 'success');
       closeHealthInfoModal();
     }
+
+        function openStudentContactModal() {
+      const modal = document.getElementById('modalStudentContact');
+      if (!modal) return;
+
+      const studentNisn = currentStudent?.nisn || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
+      let c = null;
+      if (FincestemCore.studentContacts) {
+        c = FincestemCore.studentContacts.getContacts(studentNisn);
+      }
+      if (!c) {
+        try {
+          const raw = localStorage.getItem('fincestem_student_contacts_' + studentNisn);
+          if (raw) c = JSON.parse(raw);
+        } catch(e) {}
+      }
+
+      document.getElementById('inputStudentWa').value = (c && c.wa_siswa) ? c.wa_siswa : '';
+      document.getElementById('inputFatherWa').value = (c && c.wa_ayah) ? c.wa_ayah : '';
+      document.getElementById('inputMotherWa').value = (c && c.wa_ibu) ? c.wa_ibu : '';
+
+      modal.classList.remove('pointer-events-none');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+      });
+    }
+
+    function closeStudentContactModal() {
+      const modal = document.getElementById('modalStudentContact');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      setTimeout(() => {
+        modal.classList.add('pointer-events-none');
+      }, 300);
+    }
+
+    function saveStudentContactInfo() {
+      const studentNisn = currentStudent?.nisn || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
+      if (!studentNisn) {
+        FincestemCore.ui.toast('NISN siswa tidak valid!', 'error');
+        return;
+      }
+
+      const waSiswa = (document.getElementById('inputStudentWa')?.value || '').trim();
+      const waAyah = (document.getElementById('inputFatherWa')?.value || '').trim();
+      const waIbu = (document.getElementById('inputMotherWa')?.value || '').trim();
+
+      if (!waSiswa && !waAyah && !waIbu) {
+        FincestemCore.ui.toast('Harap isi minimal nomor WhatsApp Siswa atau Orang Tua!', 'warning');
+        return;
+      }
+
+      const btnLbl = document.getElementById('lblBtnSaveStudentContact');
+      if (btnLbl) btnLbl.textContent = 'Menyimpan...';
+
+      const payload = {
+        nisn: studentNisn,
+        wa_siswa: waSiswa,
+        wa_ayah: waAyah,
+        wa_ibu: waIbu
+      };
+
+      if (FincestemCore.studentContacts) {
+        FincestemCore.studentContacts.saveContacts(payload, function(res) {
+          if (btnLbl) btnLbl.textContent = 'Simpan Kontak';
+          loadStudentContactInfo(studentNisn);
+          closeStudentContactModal();
+          FincestemCore.ui.toast('Nomor WhatsApp berhasil disimpan!', 'success');
+        });
+      } else {
+        localStorage.setItem('fincestem_student_contacts_' + studentNisn, JSON.stringify(payload));
+        if (btnLbl) btnLbl.textContent = 'Simpan Kontak';
+        loadStudentContactInfo(studentNisn);
+        closeStudentContactModal();
+        FincestemCore.ui.toast('Nomor WhatsApp berhasil disimpan!', 'success');
+      }
+    }
+
+    function loadStudentContactInfo(nisn) {
+      if (!nisn) return;
+      const cleanNisn = String(nisn).trim();
+
+      const applyUI = function(c) {
+        const elSiswa = document.getElementById('bioContactStudentWa');
+        const elAyah = document.getElementById('bioContactFatherWa');
+        const elIbu = document.getElementById('bioContactMotherWa');
+
+        if (elSiswa) elSiswa.textContent = (c && c.wa_siswa) ? c.wa_siswa : '-';
+        if (elAyah) elAyah.textContent = (c && c.wa_ayah) ? c.wa_ayah : '-';
+        if (elIbu) elIbu.textContent = (c && c.wa_ibu) ? c.wa_ibu : '-';
+      };
+
+      let cached = null;
+      try {
+        const raw = localStorage.getItem('fincestem_student_contacts_' + cleanNisn);
+        if (raw) cached = JSON.parse(raw);
+      } catch (e) {}
+      applyUI(cached);
+
+      if (FincestemCore.studentContacts) {
+        FincestemCore.studentContacts.getContacts(cleanNisn, function(c) {
+          if (c) applyUI(c);
+        });
+      }
+    }
+
+    window.openStudentContactModal = openStudentContactModal;
+    window.closeStudentContactModal = closeStudentContactModal;
+    window.saveStudentContactInfo = saveStudentContactInfo;
+    window.loadStudentContactInfo = loadStudentContactInfo;
 
     window.openHealthInfoModal = openHealthInfoModal;
     window.closeHealthInfoModal = closeHealthInfoModal;
