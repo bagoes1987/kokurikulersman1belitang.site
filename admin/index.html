@@ -416,12 +416,18 @@
     <div id="panelAdminUsers" class="flex flex-col gap-3">
       <!-- HEADER PANEL & FILTER KELAS -->
       <div class="bg-surface-container-lowest rounded-3xl p-5 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
-        <div class="flex items-center justify-between">
+        <div class="flex items-center justify-between gap-2 flex-wrap">
           <div>
             <h3 class="font-bold text-sm text-on-surface">Data Peserta Didik Dapodik</h3>
             <span class="text-[11px] text-on-surface-variant">SMAN 1 Belitang &bull; TP 2026/2027</span>
           </div>
-          <span id="dapodikStatusBadge" class="px-2.5 py-1 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800">1.165 Siswa Terdata</span>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="dapodikStatusBadge" class="px-3 py-1 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-900 border border-teal-200">1.165 Siswa</span>
+            <button type="button" onclick="syncStudentDataFromServerNow()" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs transition-all cursor-pointer" title="Sinkronkan data kategori siswa &amp; binaan dari server">
+              <span class="material-symbols-outlined text-base">cloud_sync</span>
+              <span id="lblSyncStudentDataBtn">Sinkronkan Server</span>
+            </button>
+          </div>
         </div>
 
         <!-- TABS TINGKAT KELAS: KELAS X, KELAS XI, KELAS XII, SEMUA KELAS (RESPONSIF MOBILE & DESKTOP) -->
@@ -451,8 +457,19 @@
             <span class="material-symbols-outlined absolute left-3.5 text-slate-400 group-focus-within:text-[#0875D1] transition-colors text-lg pointer-events-none">search</span>
             <input id="adminSearchStudent" type="text" oninput="handleAdminStudentSearch()" placeholder="Cari nama siswa, NISN, NIS, atau asal sekolah..." class="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-white border border-slate-300 text-xs font-medium text-slate-800 placeholder-slate-400 outline-none focus:border-[#0875D1] focus:ring-2 focus:ring-[#0875D1]/20 shadow-2xs transition-all">
           </div>
+          <!-- Dropdown Filter Kategori: Field Trip vs Non-Field Trip -->
+          <div class="relative sm:w-56 flex items-center">
+            <span class="material-symbols-outlined absolute left-3.5 text-slate-400 pointer-events-none text-lg">category</span>
+            <select id="adminFilterZone" onchange="handleAdminStudentSearch()" class="w-full pl-10 pr-8 py-2.5 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-800 outline-none focus:border-[#0875D1] focus:ring-2 focus:ring-[#0875D1]/20 shadow-2xs cursor-pointer appearance-none transition-all">
+              <option value="ALL">Semua Kategori</option>
+              <option value="FIELD_TRIP">🚌 Field Trip</option>
+              <option value="NON_FIELD_TRIP">🏫 Non-Field Trip</option>
+            </select>
+            <span class="material-symbols-outlined absolute right-3 text-slate-400 pointer-events-none text-base">expand_more</span>
+          </div>
+
           <!-- Dropdown Filter Semua Rombel -->
-          <div class="relative sm:w-64 flex items-center">
+          <div class="relative sm:w-56 flex items-center">
             <span class="material-symbols-outlined absolute left-3.5 text-slate-400 pointer-events-none text-lg">meeting_room</span>
             <select id="adminFilterRombel" onchange="handleAdminStudentSearch()" class="w-full pl-10 pr-8 py-2.5 rounded-xl bg-white border border-slate-300 text-xs font-bold text-slate-800 outline-none focus:border-[#0875D1] focus:ring-2 focus:ring-[#0875D1]/20 shadow-2xs cursor-pointer appearance-none transition-all">
               <option value="ALL">Semua Rombel</option>
@@ -3135,7 +3152,10 @@
         }
         if (FincestemCore.zones && FincestemCore.zones.syncZones) {
           FincestemCore.zones.syncZones(function() {
-            renderAdminStudentList();
+            refreshAdminStats();
+            applyStudentFilters();
+            if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+            if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
           });
         }
         if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
@@ -3227,6 +3247,27 @@
       if (elX) elX.innerHTML = `<span class="w-2 h-2 rounded-full bg-blue-500"></span><span>Kelas X (${countX})</span>`;
       if (elXI) elXI.innerHTML = `<span class="w-2 h-2 rounded-full bg-teal-500"></span><span>Kelas XI (${countXI})</span>`;
       if (elXII) elXII.innerHTML = `<span class="w-2 h-2 rounded-full bg-purple-500"></span><span>Kelas XII (${countXII})</span>`;
+
+      // Hitung jumlah riil Field Trip & Non-Field Trip langsung dari data siswa terkini
+      let ftCount = 0;
+      let nonFtCount = 0;
+      list.forEach(s => {
+        const isFT = (FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+          ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class, s.zone)
+          : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
+        if (isFT) ftCount++;
+        else nonFtCount++;
+      });
+
+      const badgeDapodik = document.getElementById('dapodikStatusBadge');
+      if (badgeDapodik) {
+        badgeDapodik.innerHTML = `<strong>${total.toLocaleString('id-ID')} Siswa</strong> (${ftCount} Field Trip • ${nonFtCount} Non-FT)`;
+      }
+
+      const optFT = document.querySelector('#adminFilterZone option[value="FIELD_TRIP"]');
+      const optNonFT = document.querySelector('#adminFilterZone option[value="NON_FIELD_TRIP"]');
+      if (optFT) optFT.textContent = `🚌 Field Trip (${ftCount})`;
+      if (optNonFT) optNonFT.textContent = `🏫 Non-Field Trip (${nonFtCount})`;
 
       renderAdminStudentList();
       renderAdminTeacherList();
@@ -4993,9 +5034,15 @@
       adminCurrentRombel = 'ALL';
     }
 
+    let adminCurrentZoneFilter = 'ALL';
+
     function handleAdminStudentSearch() {
-      adminSearchQuery = (document.getElementById('adminSearchStudent').value || '').trim().toLowerCase();
-      adminCurrentRombel = document.getElementById('adminFilterRombel').value || 'ALL';
+      const qEl = document.getElementById('adminSearchStudent');
+      const rEl = document.getElementById('adminFilterRombel');
+      const zEl = document.getElementById('adminFilterZone');
+      adminSearchQuery = (qEl?.value || '').trim().toLowerCase();
+      adminCurrentRombel = rEl?.value || 'ALL';
+      adminCurrentZoneFilter = zEl?.value || 'ALL';
       adminCurrentPage = 1;
       applyStudentFilters();
     }
@@ -5007,6 +5054,14 @@
         if (adminCurrentGrade !== 'ALL' && s.level !== adminCurrentGrade) return false;
         // Filter Rombel
         if (adminCurrentRombel !== 'ALL' && s.class !== adminCurrentRombel) return false;
+        // Filter Kategori (Field Trip vs Non-Field Trip)
+        if (adminCurrentZoneFilter !== 'ALL') {
+          const isFT = (FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+            ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class, s.zone)
+            : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
+          if (adminCurrentZoneFilter === 'FIELD_TRIP' && !isFT) return false;
+          if (adminCurrentZoneFilter === 'NON_FIELD_TRIP' && isFT) return false;
+        }
         // Search query
         if (adminSearchQuery) {
           const matchNama = (s.nama || '').toLowerCase().includes(adminSearchQuery);
@@ -5141,7 +5196,8 @@
     function toggleStudentZoneQuick(nisn, newZone) {
       if (!FincestemCore.zones) return;
       FincestemCore.zones.setStudentZone(nisn, newZone, function(res) {
-        renderAdminStudentList();
+        refreshAdminStats();
+        applyStudentFilters();
         if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
         if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
         if (typeof renderPlottingView === 'function') renderPlottingView();
@@ -5166,7 +5222,41 @@
       });
     }
 
+    
+    window.syncStudentDataFromServerNow = function() {
+      const lbl = document.getElementById('lblSyncStudentDataBtn');
+      if (lbl) lbl.textContent = 'Menyinkronkan...';
+
+      const finishSync = function() {
+        if (lbl) lbl.textContent = 'Sinkronkan Server';
+        refreshAdminStats();
+        applyStudentFilters();
+        if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+        if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
+        if (typeof renderPlottingView === 'function') renderPlottingView();
+        if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+        if (window.FincestemCore && FincestemCore.ui) {
+          FincestemCore.ui.toast('Data siswa, status Field Trip/Non-FT, dan pembagian binaan berhasil disinkronkan dari server!', 'success');
+        }
+      };
+
+      if (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.syncZones === 'function') {
+        FincestemCore.zones.syncZones(function() {
+          if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+            window.FincestemMentorship.syncFromServer(function() {
+              finishSync();
+            });
+          } else {
+            finishSync();
+          }
+        });
+      } else {
+        finishSync();
+      }
+    };
+
     function changeAdminStudentPage(delta) {
+
       adminCurrentPage += delta;
       renderAdminStudentList();
       const panel = document.getElementById('panelAdminUsers');
@@ -5550,7 +5640,8 @@
       if (!currentModalNisn || !FincestemCore.zones) return;
       FincestemCore.zones.setStudentZone(currentModalNisn, targetZone, function(res) {
         updateModalZoneButtonsUI(targetZone);
-        renderAdminStudentList();
+        refreshAdminStats();
+        applyStudentFilters();
         if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
         if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
         if (typeof renderPlottingView === 'function') renderPlottingView();
@@ -5627,7 +5718,8 @@
       if (!FincestemCore.zones) return;
       FincestemCore.zones.setStudentZone(nisn, targetZone, function(res) {
         handleSearchStudentForZone();
-        renderAdminStudentList();
+        refreshAdminStats();
+        applyStudentFilters();
         if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
         if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
         if (typeof renderPlottingView === 'function') renderPlottingView();

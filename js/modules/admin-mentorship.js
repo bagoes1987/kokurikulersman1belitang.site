@@ -81,6 +81,8 @@
         switchMentorshipSubTab(currentSubTab);
         if (typeof window.renderAdminMatrixView === 'function') window.renderAdminMatrixView();
         if (typeof window.renderAdminCards === 'function') window.renderAdminCards();
+        if (typeof refreshAdminStats === 'function') refreshAdminStats();
+        if (typeof applyStudentFilters === 'function') applyStudentFilters();
         if (typeof window.renderAdminStudentList === 'function') window.renderAdminStudentList();
         if (typeof window.renderAdminRekapView === 'function') window.renderAdminRekapView();
         if (window.FincestemCore && FincestemCore.ui) {
@@ -128,9 +130,12 @@
     const elUnassigned = document.getElementById('mentorStat_unassigned');
     const elTeachers = document.getElementById('mentorStat_teachers');
 
-    if (elTotal) elTotal.textContent = stats.totalStudents.toLocaleString('id-ID');
+    const ftUnassigned = Math.max(0, stats.ftTotal - stats.ftAssigned);
+    const nonFtUnassigned = Math.max(0, stats.nonFtTotal - stats.nonFtAssigned);
+
+    if (elTotal) elTotal.innerHTML = `${stats.totalStudents.toLocaleString('id-ID')} <span class="text-xs font-bold text-teal-300 block sm:inline">(${stats.ftTotal} FT • ${stats.nonFtTotal} Non-FT)</span>`;
     if (elAssigned) elAssigned.textContent = `${stats.totalAssigned} Siswa (${stats.ftAssigned} FT • ${stats.nonFtAssigned} Non-FT)`;
-    if (elUnassigned) elUnassigned.textContent = `${stats.totalUnassigned} Siswa`;
+    if (elUnassigned) elUnassigned.innerHTML = `${stats.totalUnassigned} Siswa <span class="text-xs font-bold text-amber-300 block sm:inline">(${ftUnassigned} FT • ${nonFtUnassigned} Non-FT)</span>`;
     if (elTeachers) elTeachers.textContent = `${stats.activeMentorsCount} Aktif Membina (dari ${stats.totalTeachers} Guru)`;
   }
 
@@ -460,6 +465,13 @@
     }
 
     modalVisibleLimit = 80;
+    const mStats = window.FincestemMentorship ? window.FincestemMentorship.getSummaryStats() : null;
+    if (mStats) {
+      const optFT = document.querySelector('#modalFilterCategory option[value="FIELD_TRIP"]');
+      const optNonFT = document.querySelector('#modalFilterCategory option[value="NON_FIELD_TRIP"]');
+      if (optFT) optFT.textContent = `Hanya Siswa Field Trip 🚌 (${mStats.ftTotal})`;
+      if (optNonFT) optNonFT.textContent = `Hanya Siswa Non-Field Trip 🏫 (${mStats.nonFtTotal})`;
+    }
     modal.classList.remove('hidden');
     renderModalStudentsList();
   };
