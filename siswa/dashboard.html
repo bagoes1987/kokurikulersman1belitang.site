@@ -1241,6 +1241,11 @@
         });
       }
 
+      // Pra-muat seluruh profil fasilitator dari server agar instan & siap tampil saat diklik
+      if (FincestemCore.teacherProfile && typeof FincestemCore.teacherProfile.getAllProfiles === 'function') {
+        FincestemCore.teacherProfile.getAllProfiles();
+      }
+
       // 2. Sinkronkan juga penugasan Koordinator dari server
       if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
         FincestemCore.assignments.getAssignments(function() {

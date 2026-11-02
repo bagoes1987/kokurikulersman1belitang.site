@@ -1554,6 +1554,17 @@
 
           updateFasilSidebarAvatar(cachedPhoto, user.name, user.nip);
 
+          // Auto-push ke server cPanel / MySQL agar profil tersimpan di server & langsung terbaca oleh seluruh siswa
+          try {
+            const rawProf = localStorage.getItem('fincestem_teacher_profile_' + cleanKey);
+            if (rawProf) {
+              const profObj = JSON.parse(rawProf);
+              if (profObj && profObj.nama_lengkap && FincestemCore.teacherProfile) {
+                FincestemCore.teacherProfile.saveProfile(profObj);
+              }
+            }
+          } catch (ePush) {}
+
           // 2. Sinkronkan pembaruan terkini dari server
           if (window.FincestemCore && FincestemCore.teacherProfile) {
             FincestemCore.teacherProfile.getProfile(userKey, function(prof) {

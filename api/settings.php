@@ -12,6 +12,32 @@ header('Expires: 0');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
+function ensureTeacherProfilesTable($pdo) {
+    static $ensured = false;
+    if ($ensured) return;
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `teacher_profiles` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `teacher_username` VARCHAR(100) NOT NULL UNIQUE,
+                `nama_lengkap` VARCHAR(255) DEFAULT NULL,
+                `nip` VARCHAR(50) DEFAULT NULL,
+                `ttl` VARCHAR(150) DEFAULT NULL,
+                `no_wa` VARCHAR(50) DEFAULT NULL,
+                `alamat` TEXT DEFAULT NULL,
+                `jenis_kelamin` VARCHAR(20) DEFAULT 'Laki-laki',
+                `foto_url` MEDIUMTEXT DEFAULT NULL,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX `idx_tp_user` (`teacher_username`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+        try { $pdo->exec("ALTER TABLE `teacher_profiles` ADD COLUMN `jenis_kelamin` VARCHAR(20) DEFAULT 'Laki-laki' AFTER `alamat`"); } catch (Exception $eJk) {}
+        try { $pdo->exec("ALTER TABLE `teacher_profiles` MODIFY COLUMN `foto_url` MEDIUMTEXT DEFAULT NULL"); } catch (Exception $eFt) {}
+        $ensured = true;
+    } catch (Exception $e) {}
+}
+
 function ensureRoleTables($pdo) {
     static $checked = false;
     if ($checked) return;
@@ -548,12 +574,32 @@ if ($method === 'GET') {
 
         // Ambil profil seorang guru / fasilitator
         if ($action === 'get_teacher_profile') {
+            ensureTeacherProfilesTable($pdo);
             $userKey = trim($_GET['username'] ?? $_GET['identifier'] ?? '');
             if (!$userKey) jsonResponse(false, 'Username guru wajib diisi!', null, 400);
 
-            $stmt = $pdo->prepare("SELECT * FROM `teacher_profiles` WHERE `teacher_username` = :u OR `nip` = :u LIMIT 1");
-            $stmt->execute([':u' => $userKey]);
-            $prof = $stmt->fetch(PDO::FETCH_ASSOC);
+            $prof = null;
+            try {
+                $stmt = $pdo->prepare("SELECT * FROM `teacher_profiles` WHERE `teacher_username` = :u OR `nip` = :u OR LOWER(`nama_lengkap`) = LOWER(:u) LIMIT 1");
+                $stmt->execute([':u' => $userKey]);
+                $prof = $stmt->fetch(PDO::FETCH_ASSOC);
+            } catch (Exception $e) {}
+
+            // Fallback redundansi dari app_settings
+            if (!$prof) {
+                try {
+                    $stmtApp = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'all_teacher_profiles_json' LIMIT 1");
+                    $stmtApp->execute();
+                    $valRaw = $stmtApp->fetchColumn();
+                    if ($valRaw) {
+                        $dec = json_decode($valRaw, true);
+                        $kLower = strtolower($userKey);
+                        if (is_array($dec) && isset($dec[$kLower])) {
+                            $prof = $dec[$kLower];
+                        }
+                    }
+                } catch (Exception $eApp) {}
+            }
 
             if (!$prof) {
                 // Fallback cari dari tabel teachers
@@ -568,6 +614,7 @@ if ($method === 'GET') {
                         'ttl'              => '',
                         'no_wa'            => '',
                         'alamat'           => '',
+                        'jenis_kelamin'    => 'Laki-laki',
                         'foto_url'         => ''
                     ];
                 }
@@ -578,6 +625,7 @@ if ($method === 'GET') {
 
         // Ambil seluruh profil fasilitator (untuk modal siswa & pembina)
         if ($action === 'get_all_teacher_profiles') {
+            ensureTeacherProfilesTable($pdo);
             $profiles = [];
             try {
                 $stmt = $pdo->query("SELECT * FROM `teacher_profiles`");
@@ -585,6 +633,7 @@ if ($method === 'GET') {
                     $u = strtolower(trim($row['teacher_username']));
                     $n = strtolower(trim($row['nama_lengkap'] ?? ''));
                     $nip = trim($row['nip'] ?? '');
+                    $alnum = strtolower(preg_replace('/[^a-z0-9]/i', '', $row['nama_lengkap'] ?? ''));
                     $item = [
                         'teacher_username' => $row['teacher_username'],
                         'nama_lengkap'     => $row['nama_lengkap'],
@@ -598,9 +647,28 @@ if ($method === 'GET') {
                     ];
                     if ($u) $profiles[$u] = $item;
                     if ($n) $profiles[$n] = $item;
+                    if ($alnum) $profiles[$alnum] = $item;
                     if ($nip && $nip !== '-') $profiles[$nip] = $item;
                 }
             } catch (Exception $e) {}
+
+            // Fallback / merge dari app_settings
+            try {
+                $stmtApp = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'all_teacher_profiles_json' LIMIT 1");
+                $stmtApp->execute();
+                $valRaw = $stmtApp->fetchColumn();
+                if ($valRaw) {
+                    $dec = json_decode($valRaw, true);
+                    if (is_array($dec)) {
+                        foreach ($dec as $k => $v) {
+                            if (!isset($profiles[$k])) {
+                                $profiles[$k] = $v;
+                            }
+                        }
+                    }
+                }
+            } catch (Exception $eApp) {}
+
             $obj = empty($profiles) ? new stdClass() : $profiles;
             jsonResponse(true, 'Seluruh profil fasilitator berhasil dimuat', ['profiles' => $obj]);
         }
@@ -1682,6 +1750,7 @@ if ($method === 'POST') {
 
         // P. BIODATA & PROFIL FASILITATOR (Bisa diisi oleh fasilitator & dilihat siswa)
         if ($action === 'save_teacher_profile') {
+            ensureTeacherProfilesTable($pdo);
             $u = trim($input['username'] ?? $input['teacher_username'] ?? '');
             if (!$u) jsonResponse(false, 'Username guru wajib diisi!', null, 400);
 
@@ -1721,9 +1790,46 @@ if ($method === 'POST') {
 
             // Selaraskan juga ke tabel teachers jika ada
             try {
-                $stmtT = $pdo->prepare("UPDATE `teachers` SET `nama_guru` = COALESCE(NULLIF(:nama, ''), `nama_guru`), `nip` = COALESCE(NULLIF(:nip, '-'), `nip`) WHERE `username` = :u OR `nip` = :u");
+                $stmtT = $pdo->prepare("UPDATE `teachers` SET `nama_guru` = COALESCE(NULLIF(:nama, ''), `nama_guru`), `nip` = COALESCE(NULLIF(:nip, '-'), `nip` ) WHERE `username` = :u OR `nip` = :u");
                 $stmtT->execute([':nama' => $nama, ':nip' => $nip, ':u' => $u]);
             } catch (Exception $eT) {}
+
+            // Simpan juga ke app_settings sebagai backup multi-device aman
+            try {
+                $savedItem = [
+                    'teacher_username' => $u,
+                    'nama_lengkap'     => $nama,
+                    'nip'              => $nip,
+                    'ttl'              => $ttl,
+                    'no_wa'            => $noWa,
+                    'alamat'           => $alamat,
+                    'jenis_kelamin'    => $jk,
+                    'foto_url'         => $foto,
+                    'updated_at'       => date('Y-m-d H:i:s')
+                ];
+                $stmtAppGet = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'all_teacher_profiles_json' LIMIT 1");
+                $stmtAppGet->execute();
+                $curRaw = $stmtAppGet->fetchColumn();
+                $mapApp = [];
+                if ($curRaw) {
+                    $d = json_decode($curRaw, true);
+                    if (is_array($d)) $mapApp = $d;
+                }
+                $uKey = strtolower($u);
+                $nKey = strtolower($nama);
+                $alnumKey = strtolower(preg_replace('/[^a-z0-9]/i', '', $nama));
+                if ($uKey) $mapApp[$uKey] = $savedItem;
+                if ($nKey) $mapApp[$nKey] = $savedItem;
+                if ($alnumKey) $mapApp[$alnumKey] = $savedItem;
+                if ($nip && $nip !== '-') $mapApp[$nip] = $savedItem;
+
+                $stmtAppSet = $pdo->prepare("
+                    INSERT INTO `app_settings` (`key_name`, `value`)
+                    VALUES ('all_teacher_profiles_json', :val)
+                    ON DUPLICATE KEY UPDATE `value` = VALUES(`value`), `updated_at` = CURRENT_TIMESTAMP
+                ");
+                $stmtAppSet->execute([':val' => json_encode($mapApp)]);
+            } catch (Exception $eAppSave) {}
 
             jsonResponse(true, 'Biodata fasilitator berhasil disimpan!', [
                 'teacher_username' => $u,
