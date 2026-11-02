@@ -592,6 +592,7 @@ if ($method === 'GET') {
                         'ttl'              => $row['ttl'],
                         'no_wa'            => $row['no_wa'],
                         'alamat'           => $row['alamat'],
+                        'jenis_kelamin'    => $row['jenis_kelamin'] ?? 'Laki-laki',
                         'foto_url'         => $row['foto_url'],
                         'updated_at'       => $row['updated_at']
                     ];
@@ -600,7 +601,8 @@ if ($method === 'GET') {
                     if ($nip && $nip !== '-') $profiles[$nip] = $item;
                 }
             } catch (Exception $e) {}
-            jsonResponse(true, 'Seluruh profil fasilitator berhasil dimuat', ['profiles' => $profiles]);
+            $obj = empty($profiles) ? new stdClass() : $profiles;
+            jsonResponse(true, 'Seluruh profil fasilitator berhasil dimuat', ['profiles' => $obj]);
         }
 
         // Ambil data seluruh guru & tenaga pendidik (A-Z)

@@ -1032,6 +1032,17 @@
   <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v2"></script>
   <script src="../js/core.js?v=20261102_day0_v3"></script>
   <script>
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+    }
+    if (!window.escapeHtml) window.escapeHtml = escapeHtml;
+
     let currentStudent = null;
     let daysSchedule = [];
     let studentProgress = null;
@@ -1340,13 +1351,94 @@
 
     /* ========================================================
        MODAL BIODATA & KONTAK FASILITATOR UNTUK SISWA
+       (Desain Mewah Persis Pratinjau Fasilitator, Instan & Lengkap)
        ======================================================== */
+    function findTeacherProfile(rawName, profilesMap) {
+      profilesMap = profilesMap || {};
+      if (Array.isArray(profilesMap)) profilesMap = {};
+      const cleanName = String(rawName || '').trim();
+      const cleanKey = cleanName.toLowerCase();
+      const normClean = cleanKey.replace(/[^a-z0-9]/g, '');
+
+      // 1. Cek kecocokan langsung di map
+      if (profilesMap[cleanKey]) return profilesMap[cleanKey];
+
+      // 2. Cek seluruh key dan isi profilesMap (username, nip, nama_lengkap)
+      for (const k in profilesMap) {
+        if (!Object.prototype.hasOwnProperty.call(profilesMap, k)) continue;
+        const item = profilesMap[k];
+        if (!item) continue;
+        const normK = String(k || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normNama = String(item.nama_lengkap || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const normNip = String(item.nip || '').replace(/[^0-9]/g, '');
+
+        if (normClean === normK || normClean === normNama) return item;
+        if (normNip && (normClean.includes(normNip) || normNip.includes(normClean))) return item;
+        if (normClean.length > 5 && normNama.length > 5) {
+          if (normClean.includes(normNama) || normNama.includes(normClean)) return item;
+        }
+      }
+
+      // 3. Cek localStorage langsung (fincestem_teacher_profile_*)
+      try {
+        const directLs = localStorage.getItem('fincestem_teacher_profile_' + cleanKey);
+        if (directLs) return JSON.parse(directLs);
+      } catch (e) {}
+
+      try {
+        for (let i = 0; i < localStorage.length; i++) {
+          const lsKey = localStorage.key(i);
+          if (lsKey && lsKey.startsWith('fincestem_teacher_profile_')) {
+            const val = JSON.parse(localStorage.getItem(lsKey) || '{}');
+            const valNama = String(val.nama_lengkap || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            if (valNama && normClean && (valNama.includes(normClean) || normClean.includes(valNama))) {
+              return val;
+            }
+          }
+        }
+      } catch (e) {}
+
+      // 4. Cek fallback masterTeachers
+      const masterTeachers = (FincestemCore.teachers && FincestemCore.teachers.getTeachers)
+        ? FincestemCore.teachers.getTeachers()
+        : (window.FincestemMasterTeachers || []);
+
+      const foundT = masterTeachers.find(t => {
+        const tName = String(t.nama_guru || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        const tNip = String(t.nip || '').replace(/[^0-9]/g, '');
+        const tUser = String(t.username || t.kode_guru || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+        return (tName && (normClean.includes(tName) || tName.includes(normClean))) ||
+               (tNip && normClean.includes(tNip)) ||
+               (tUser && normClean === tUser);
+      });
+
+      if (foundT) {
+        const uKey = String(foundT.username || foundT.kode_guru || '').toLowerCase();
+        const nipKey = String(foundT.nip || '').toLowerCase();
+        const nKey = String(foundT.nama_guru || '').toLowerCase();
+        if (profilesMap[uKey]) return profilesMap[uKey];
+        if (profilesMap[nipKey]) return profilesMap[nipKey];
+        if (profilesMap[nKey]) return profilesMap[nKey];
+        return {
+          teacher_username: foundT.username || foundT.kode_guru,
+          nama_lengkap: foundT.nama_guru,
+          nip: foundT.nip || '-',
+          ttl: 'Belum dilengkapi',
+          no_wa: '',
+          alamat: 'Belum dilengkapi',
+          foto_url: '',
+          jenis_kelamin: 'Laki-laki'
+        };
+      }
+
+      return null;
+    }
+
     function openFasilBiodataModal() {
       const modal = document.getElementById('modalFasilBiodata');
       const container = document.getElementById('modalFasilListContainer');
       if (!modal || !container) return;
 
-      container.innerHTML = '<div class="py-6 text-center text-xs text-slate-400">Memuat profil fasilitator...</div>';
       modal.classList.remove('hidden');
       requestAnimationFrame(() => {
         modal.classList.remove('opacity-0');
@@ -1371,6 +1463,13 @@
           assignedFasilName = rawFasil;
         }
       }
+      if (!assignedFasilName) {
+        const containerEl = document.getElementById('userFacilitatorContainer');
+        const containerText = containerEl ? containerEl.innerText.trim() : '';
+        if (containerText && !containerText.includes('Belum Ditentukan') && !containerText.includes('Tim Fasilitator')) {
+          assignedFasilName = containerText;
+        }
+      }
 
       if (!assignedFasilName || assignedFasilName === 'Belum Ditentukan' || assignedFasilName === 'Tim Fasilitator SMAN 1 Belitang') {
         container.innerHTML = `
@@ -1387,54 +1486,27 @@
 
       const fasilList = [assignedFasilName];
 
-      const studentName = currentStudent?.nama || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().name) || 'Peserta Didik';
-
       const renderFasilCards = function(profilesMap) {
         profilesMap = profilesMap || {};
-        const masterTeachers = (FincestemCore.teachers && FincestemCore.teachers.getTeachers)
-          ? FincestemCore.teachers.getTeachers()
-          : (window.FincestemMasterTeachers || []);
+        if (Array.isArray(profilesMap)) profilesMap = {};
 
         let html = '';
         const namesToRender = (fasilList.length > 0) ? fasilList : ['Tim Fasilitator SMAN 1 Belitang'];
 
         namesToRender.forEach((fName, idx) => {
           const cleanName = fName.trim();
-          const cleanKey = cleanName.toLowerCase();
-
-          // Cari profil di map
-          let p = profilesMap[cleanKey] || null;
-          if (!p) {
-            // Coba cari dari nama guru master
-            const foundT = masterTeachers.find(t => 
-              String(t.nama_guru || '').toLowerCase().includes(cleanKey) ||
-              cleanKey.includes(String(t.nama_guru || '').toLowerCase()) ||
-              (t.nip && t.nip !== '-' && cleanKey.includes(String(t.nip).toLowerCase()))
-            );
-            if (foundT) {
-              p = profilesMap[String(foundT.username).toLowerCase()] || 
-                  profilesMap[String(foundT.nip).toLowerCase()] || 
-                  profilesMap[String(foundT.nama_guru).toLowerCase()] || {
-                    nama_lengkap: foundT.nama_guru,
-                    nip: foundT.nip,
-                    ttl: '-',
-                    no_wa: '',
-                    alamat: '-',
-                    foto_url: ''
-                  };
-            }
-          }
+          const p = findTeacherProfile(cleanName, profilesMap);
 
           const namaLengkap = (p && p.nama_lengkap) ? p.nama_lengkap : cleanName;
           const nip = (p && p.nip && p.nip !== '-') ? p.nip : '-';
           const ttl = (p && p.ttl && p.ttl !== '-') ? p.ttl : 'Belum dilengkapi';
           const alamat = (p && p.alamat && p.alamat !== '-') ? p.alamat : 'Belum dilengkapi';
           const noWa = (p && p.no_wa) ? p.no_wa : '';
-          const fotoUrl = (p && p.foto_url) ? p.foto_url : '';
+          const fotoUrl = (p && p.foto_url && p.foto_url.length > 10) ? p.foto_url : '';
 
           const inits = namaLengkap.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || 'FG';
 
-          // Tentukan Sapaan Bapak / Ibu berdasarkan Jenis Kelamin Resmi
+          // Sapaan Bapak/Ibu berdasarkan Jenis Kelamin
           const jk = (p && p.jenis_kelamin) ? p.jenis_kelamin : '';
           let sapaan = 'Bapak/Ibu';
           if (jk === 'Perempuan' || jk === 'P') {
@@ -1442,7 +1514,6 @@
           } else if (jk === 'Laki-laki' || jk === 'L') {
             sapaan = 'Bapak';
           } else {
-            // Heuristik fallback jika fasilitator belum mengatur jenis kelamin
             const lowerN = namaLengkap.toLowerCase();
             if (lowerN.includes('siti') || lowerN.includes('diana') || lowerN.includes('wiwik') || lowerN.includes('putri') || lowerN.includes('tri') || lowerN.includes('dewi') || lowerN.includes('ratna') || lowerN.includes('ani') || lowerN.includes('nur') || lowerN.includes('enny') || lowerN.includes('sri')) {
               sapaan = 'Ibu';
@@ -1451,17 +1522,12 @@
             }
           }
 
-          // Tombol WhatsApp
+          // Tombol WhatsApp Resmi
           let waBtnHtml = '';
           const cleanWa = noWa.replace(/\D/g, '');
           if (cleanWa.length >= 9) {
             let intlWa = cleanWa;
             if (intlWa.startsWith('0')) intlWa = '62' + intlWa.slice(1);
-            // Format kalimat WhatsApp sesuai permintaan pengguna:
-            // Assalamu'alaikum
-            // Izin Bapak/Ibu [Nama Guru], saya ingin berkonsultasi mengenai FINCESTEM.
-            // Terima Kasih
-            // Wassalamualikum
             const waMsg = "Assalamu'alaikum\nIzin " + sapaan + " " + namaLengkap + ", saya ingin berkonsultasi mengenai FINCESTEM.\nTerima Kasih\nWassalamualikum";
             const greeting = encodeURIComponent(waMsg);
             waBtnHtml = `
@@ -1478,6 +1544,7 @@
             `;
           }
 
+          // KARTU TAMPILAN PERSIS PRATINJAU FASILITATOR
           html += `
             <div class="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-3xl p-5 border border-slate-800 shadow-xl flex flex-col gap-4">
               <div class="flex items-start gap-3.5">
@@ -1489,27 +1556,24 @@
                   <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900"></span>
                 </div>
                 <div class="flex flex-col min-w-0 flex-1">
-                  <div class="flex items-center gap-1.5 flex-wrap">
-                    <span class="px-2 py-0.5 rounded-full text-[9.5px] font-black uppercase tracking-wider bg-teal-500 text-slate-950">
-                      Fasilitator Pembina
-                    </span>
-                    ${namesToRender.length > 1 ? `<span class="text-[10px] text-teal-300 font-bold">#${idx + 1}</span>` : ''}
-                  </div>
-                  <h4 class="text-sm sm:text-base font-extrabold text-white leading-snug break-words mt-1">${escapeHtml(namaLengkap)}</h4>
+                  <span class="text-[10px] font-black uppercase tracking-wider text-teal-400">
+                    Fasilitator Pembina
+                  </span>
+                  <h4 class="text-sm font-extrabold text-white leading-snug break-words mt-0.5">${escapeHtml(namaLengkap)}</h4>
                   <span class="text-[11px] text-slate-400 font-mono mt-0.5">NIP: ${escapeHtml(nip)}</span>
                 </div>
               </div>
 
-              <!-- Rincian TTL & Alamat -->
-              <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-2.5 text-xs">
-                <div class="flex items-start gap-2.5">
+              <!-- RINCIAN BIODATA -->
+              <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-2 text-xs">
+                <div class="flex items-start gap-2">
                   <span class="material-symbols-outlined text-sm text-amber-400 shrink-0 mt-0.5">cake</span>
                   <div class="min-w-0">
-                    <span class="text-[10px] text-slate-400 block font-semibold">Tempat, Tanggal Lahir</span>
+                    <span class="text-[10px] text-slate-400 block font-semibold">TTL</span>
                     <span class="font-bold text-slate-200 text-xs">${escapeHtml(ttl)}</span>
                   </div>
                 </div>
-                <div class="flex items-start gap-2.5 border-t border-white/5 pt-2">
+                <div class="flex items-start gap-2 border-t border-white/5 pt-2">
                   <span class="material-symbols-outlined text-sm text-emerald-400 shrink-0 mt-0.5">home_pin</span>
                   <div class="min-w-0">
                     <span class="text-[10px] text-slate-400 block font-semibold">Alamat Domisili</span>
@@ -1518,7 +1582,7 @@
                 </div>
               </div>
 
-              <!-- Tombol WhatsApp -->
+              <!-- TOMBOL CHAT WHATSAPP -->
               ${waBtnHtml}
             </div>
           `;
@@ -1527,13 +1591,21 @@
         container.innerHTML = html;
       };
 
-      // Tarik seluruh profil dari modul teacherProfile
+      // 1. Render INSTAN tanpa jeda/loading dari cache profil lokal
+      let initialMap = {};
+      try {
+        const raw = localStorage.getItem('fincestem_all_teacher_profiles');
+        if (raw) initialMap = JSON.parse(raw) || {};
+      } catch (e) {}
+      renderFasilCards(initialMap);
+
+      // 2. Fetch pembaruan terkini dari server backend secara asinkron
       if (FincestemCore.teacherProfile) {
         FincestemCore.teacherProfile.getAllProfiles(function(map) {
-          renderFasilCards(map);
+          if (map && typeof map === 'object') {
+            renderFasilCards(map);
+          }
         });
-      } else {
-        renderFasilCards({});
       }
     }
 

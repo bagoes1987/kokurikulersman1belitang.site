@@ -1,6 +1,18 @@
 /**
  * FINCESTEM 2026 - Master Core Utilities & Authentication Bridge
  */
+if (typeof window !== "undefined" && !window.escapeHtml) {
+  window.escapeHtml = function(str) {
+    if (!str) return "";
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  };
+}
+
 const FincestemCore = {
   // Helper Urutan Alami Rombel / Kelas (Natural Sorting: X.1 s.d X.11, XI.1 s.d XI.11, XII.1 s.d XII.11)
   sortClasses: function(classList) {
@@ -897,6 +909,7 @@ const FincestemCore = {
             ttl: profileData.ttl,
             no_wa: profileData.no_wa,
             alamat: profileData.alamat,
+            jenis_kelamin: profileData.jenis_kelamin || "Laki-laki",
             foto_url: profileData.foto_url
           })
         })
