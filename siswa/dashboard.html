@@ -1388,7 +1388,6 @@
       const fasilList = [assignedFasilName];
 
       const studentName = currentStudent?.nama || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().name) || 'Peserta Didik';
-      const studentClass = currentStudent?.class || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().class) || '';
 
       const renderFasilCards = function(profilesMap) {
         profilesMap = profilesMap || {};
