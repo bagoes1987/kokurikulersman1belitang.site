@@ -2622,11 +2622,12 @@
 
         // Cek status pengerjaan hari ini
         const dayRecord = records.find(r => Number(r.day_number) === dNum);
-        let hasMateri = isFTDay ? ftStatus.hasMateri : !!taskMap[dNum + '_materi'];
-        let hasLkpd = isFTDay ? ftStatus.hasLkpd : !!taskMap[dNum + '_lkpd'];
-        let hasAsesmen = isFTDay ? ftStatus.hasAsesmen : !!taskMap[dNum + '_asesmen'];
-        let hasDok = isFTDay ? ftStatus.hasDok : !!taskMap[dNum + '_dokumentasi'];
-        let hasRefleksi = isFTDay ? ftStatus.hasRefleksi : !!taskMap[dNum + '_refleksi'];
+        const dayProg = (dNum >= 0 && dNum <= 7) ? getFTProgressStatus(taskMap, dNum) : null;
+        let hasMateri = isFTDay ? ftStatus.hasMateri : (dayProg ? dayProg.hasMateri : !!taskMap[dNum + '_materi']);
+        let hasLkpd = isFTDay ? ftStatus.hasLkpd : (dayProg ? dayProg.hasLkpd : !!taskMap[dNum + '_lkpd']);
+        let hasAsesmen = isFTDay ? ftStatus.hasAsesmen : (dayProg ? dayProg.hasAsesmen : !!taskMap[dNum + '_asesmen']);
+        let hasDok = isFTDay ? ftStatus.hasDok : (dayProg ? dayProg.hasDok : !!taskMap[dNum + '_dokumentasi']);
+        let hasRefleksi = isFTDay ? ftStatus.hasRefleksi : (dayProg ? dayProg.hasRefleksi : !!taskMap[dNum + '_refleksi']);
 
         // Validasi Akses Bertingkat (4-Role Rule):
         // Day N (N > 1) mensyaratkan Day N-1 berstatus Selesai
@@ -2887,7 +2888,7 @@
         const canEdit = access.canEdit;
 
         // Sinkronisasi status alur pengerjaan berurutan Day 1 s.d. Day 7
-        const dayProg = (dNum >= 0 && dNum <= 7) ? getFTProgressStatus(taskMap, dNum) : null;
+        // dayProg sudah dideklarasikan di awal loop
         if (dayProg) {
           hasMateri = dayProg.hasMateri;
           hasLkpd = dayProg.hasLkpd;
