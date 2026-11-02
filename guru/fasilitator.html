@@ -228,9 +228,14 @@
             <span class="w-1.5 h-1.5 rounded-full bg-teal-950 animate-pulse"></span>
             <span>GURU FASILITATOR</span>
           </span>
-          <span id="lblSidebarClassName" class="px-2 py-0.5 rounded-md text-[9.5px] font-bold bg-slate-950 text-teal-200 border border-slate-700">
-            Kelas: -
-          </span>
+          <div class="flex items-center gap-1">
+            <span id="lblSidebarClassName" class="px-2 py-0.5 rounded-md text-[9.5px] font-bold bg-slate-950 text-teal-200 border border-slate-700">
+              Binaan Anda
+            </span>
+            <span id="lblSidebarStudentCount" class="px-2 py-0.5 rounded-md text-[9.5px] font-black bg-teal-500/20 text-teal-300 border border-teal-500/40">
+              0 Siswa
+            </span>
+          </div>
         </div>
       </div>
 
@@ -1434,6 +1439,74 @@
       }
     }
 
+    function updateFasilAvatarUI(photoUrl, name, nip) {
+      // 1. Update Sidebar Card
+      const imgSide = document.getElementById('fasUserSidePhoto');
+      const fallbackSide = document.getElementById('fasUserSideAvatarFallback');
+      const nipSide = document.getElementById('fasUserNipSide');
+      const nameSide = document.getElementById('fasUserName');
+
+      if (imgSide && fallbackSide) {
+        if (photoUrl && photoUrl.trim().length > 10) {
+          imgSide.src = photoUrl;
+          imgSide.classList.remove('hidden');
+          fallbackSide.classList.add('hidden');
+        } else {
+          imgSide.src = '';
+          imgSide.classList.add('hidden');
+          fallbackSide.classList.remove('hidden');
+        }
+      }
+
+      if (nameSide && name) {
+        nameSide.textContent = name;
+      }
+
+      if (nipSide) {
+        if (nip && nip !== '-' && nip !== '') {
+          nipSide.textContent = 'NIP. ' + nip;
+          nipSide.classList.remove('hidden');
+        } else {
+          nipSide.classList.add('hidden');
+        }
+      }
+
+      // 2. Update Main Banner Card
+      const imgMain = document.getElementById('fasUserMainPhoto');
+      const fallbackMain = document.getElementById('fasUserMainAvatarFallback');
+      const nipMain = document.getElementById('fasUserMainNip');
+      const nameMain = document.getElementById('fasUserNameMain');
+
+      if (imgMain && fallbackMain) {
+        if (photoUrl && photoUrl.trim().length > 10) {
+          imgMain.src = photoUrl;
+          imgMain.classList.remove('hidden');
+          fallbackMain.classList.add('hidden');
+        } else {
+          imgMain.src = '';
+          imgMain.classList.add('hidden');
+          fallbackMain.classList.remove('hidden');
+        }
+      }
+
+      if (nameMain && name) {
+        nameMain.textContent = name;
+      }
+
+      if (nipMain) {
+        if (nip && nip !== '-' && nip !== '') {
+          nipMain.textContent = 'NIP. ' + nip;
+          nipMain.classList.remove('hidden');
+        } else {
+          nipMain.classList.add('hidden');
+        }
+      }
+    }
+
+    function updateFasilSidebarAvatar(photoUrl, name, nip) {
+      updateFasilAvatarUI(photoUrl, name, nip);
+    }
+
     function checkFasilAuth() {
       const isAuth = FincestemCore.auth.isLoggedIn();
       const role = FincestemCore.auth.getRole();
@@ -1460,9 +1533,29 @@
           const uMetaMain = document.getElementById('fasUserMetaMain');
           if (uMetaMain) uMetaMain.textContent = user.assignment || user.mapel || 'Pembina Kokurikuler FINCESTEM';
 
-          // Sinkronkan foto profil dan nama ke sidebar
+          // Sinkronkan foto profil dan nama ke sidebar & banner utama secara instan
+          const userKey = user.username || user.nip || user.name || '';
+          const cleanKey = String(userKey).trim().toLowerCase();
+
+          // 1. Baca langsung dari cache lokal agar foto langsung tampil (0 ms delay)
+          let cachedPhoto = '';
+          try {
+            const raw = localStorage.getItem('fincestem_teacher_profile_' + cleanKey);
+            if (raw) {
+              const p = JSON.parse(raw);
+              if (p && p.foto_url) cachedPhoto = p.foto_url;
+              if (p && p.nama_lengkap) {
+                if (uNameSide) uNameSide.textContent = p.nama_lengkap;
+                if (uNameMain) uNameMain.textContent = p.nama_lengkap;
+              }
+              if (p && p.nip && p.nip !== '-') user.nip = p.nip;
+            }
+          } catch (e) {}
+
+          updateFasilSidebarAvatar(cachedPhoto, user.name, user.nip);
+
+          // 2. Sinkronkan pembaruan terkini dari server
           if (window.FincestemCore && FincestemCore.teacherProfile) {
-            const userKey = user.username || user.nip || user.name || '';
             FincestemCore.teacherProfile.getProfile(userKey, function(prof) {
               if (prof) {
                 if (prof.nama_lengkap) {
@@ -1694,9 +1787,9 @@
         if (lblTopClass) lblTopClass.textContent = '🎯 Siswa Binaan Anda';
 
         const lblBannerClass = document.getElementById('lblAssignedClassNameText');
-        if (lblBannerClass) lblBannerClass.textContent = 'Siswa Tanggung Jawab Bimbingan';
+        if (lblBannerClass) lblBannerClass.textContent = 'Binaan Anda';
         const lblBannerCount = document.getElementById('lblAssignedStudentCount');
-        if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa Binaan`;
+        if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa`;
 
         renderAssignedStudentList();
         return;
@@ -1742,7 +1835,7 @@
             const lblBannerClass = document.getElementById('lblAssignedClassNameText');
             if (lblBannerClass) lblBannerClass.textContent = 'Belum Ada Siswa Binaan';
             const lblBannerCount = document.getElementById('lblAssignedStudentCount');
-            if (lblBannerCount) lblBannerCount.textContent = '0 Siswa Binaan';
+            if (lblBannerCount) lblBannerCount.textContent = '0 Siswa';
           }
 
           renderAssignedStudentList();
@@ -3860,7 +3953,7 @@
         }
       }
     }
-    const updateFasilSidebarAvatar = updateFasilAvatarUI;
+    // updateFasilSidebarAvatar dihoist sebagai fungsi mandiri
 
         function toggleFasilEditBiodata(forceOpen) {
       switchFasTab('biodata');
