@@ -1345,7 +1345,7 @@
           let hasRf = !!taskMap[d + '_refleksi'];
 
           if (!hasMat) {
-            for (const id of idList) {
+            for (const id of (idList || [])) {
               if (localStorage.getItem(`fincestem_materi_nft_day${d}_` + id) || localStorage.getItem(`fincestem_materi_day${d}_` + id)) { hasMat = true; break; }
             }
           }
@@ -1887,7 +1887,7 @@
           }
         } catch (e) {}
         if (!daysSchedule || daysSchedule.length === 0) {
-          const defs = FincestemCore.schedule.getFieldTripDefaults();
+          const defs = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
           daysSchedule = defs;
           renderDaysSchedule(defs);
         }
@@ -1902,7 +1902,7 @@
       }, cat);
     }
 
-    let expandedDayNumber = 1;
+    let expandedDayNumber = 0;
 
     function toggleDayAccordion(dayNumber) {
       const dNum = Number(dayNumber);
@@ -2544,16 +2544,28 @@
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
+      const idList = (typeof getStudentStorageIdentifiers === 'function')
+        ? getStudentStorageIdentifiers()
+        : [studentNisn, String(stu.id || ''), String(stu.username || '')].filter(Boolean);
+
       if (!days || !Array.isArray(days) || days.length === 0) {
         days = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
       }
 
+      // JAMINAN MUTLAK: Pastikan Day 0 (Simulasi & Gladi Bersih) SELALU ADA di daftar jadwal siswa!
+      if (!days.some(x => Number(x.day_number) === 0)) {
+        const def0 = (isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults()).find(x => Number(x.day_number) === 0);
+        if (def0) {
+          days.unshift(Object.assign({}, def0, { is_active: 1, is_open: true, status_code: 'OPEN' }));
+        }
+      }
+      days.sort((a, b) => Number(a.day_number) - Number(b.day_number));
+
       container.innerHTML = '';
 
-      // UX Unggulan: Jika Day 0 aktif dan Day 1 belum dimulai (UPCOMING), buka Day 0 secara default agar siswa langsung mencoba gladi bersih
+      // UX Unggulan: Prioritaskan Day 0 terbuka di awal login / gladi bersih siswa
       const d0Obj = days.find(x => Number(x.day_number) === 0);
-      const d1Obj = days.find(x => Number(x.day_number) === 1);
-      if (d0Obj && Number(d0Obj.is_active) === 1 && d1Obj && d1Obj.status_code === 'UPCOMING' && expandedDayNumber === 1) {
+      if (d0Obj && (expandedDayNumber === null || expandedDayNumber === undefined || expandedDayNumber === 1)) {
         expandedDayNumber = 0;
       }
 

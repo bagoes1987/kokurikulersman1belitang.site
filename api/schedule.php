@@ -223,9 +223,10 @@ if ($method === 'GET') {
         $isActive = (int)$r['is_active'];
         $autoSched = (int)$r['auto_schedule'];
 
-        // Jika Day 0 (Day Uji Coba) sedang dinonaktifkan (is_active = 0) dan bukan admin yang meminta, sembunyikan sepenuhnya!
-        if ($dayNum === 0 && $isActive === 0 && $role !== 'admin') {
-            continue;
+        // Day 0 (Day Uji Coba / Simulasi): Selalu sertakan dan pastikan aktif agar gladi bersih berjalan lancar
+        if ($dayNum === 0) {
+            $isActive = 1;
+            $autoSched = 0;
         }
 
         $startDT = new DateTime($dDate . ' ' . $startTime, new DateTimeZone('Asia/Jakarta'));

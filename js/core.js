@@ -1072,6 +1072,14 @@ const FincestemCore = {
       if (!Array.isArray(days)) return [];
       const self = this;
       return days.map(d => {
+        // Jaminan Mutlak: Day 0 (Simulasi & Gladi Bersih) selalu aktif & terbuka untuk latihan siswa
+        if (Number(d.day_number) === 0) {
+          d.is_active = 1;
+          d.auto_schedule = 0;
+          d.is_open = true;
+          d.status_code = 'OPEN';
+          d.status_label = 'Aktivitas Sedang Dibuka';
+        }
         // Auto-sinkronisasi Day 1 Non-Field Trip jika di DB / cache masih tersimpan data usang Orientasi & Pembekalan Riset atau auto_schedule usang
         if (Number(d.day_number) === 1) {
           if (String(d.title).includes('Orientasi') || String(d.theme).includes('Pembekalan')) {
