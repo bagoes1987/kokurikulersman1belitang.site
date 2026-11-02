@@ -3592,7 +3592,7 @@
           } catch(e) {}
         }
 
-        if (hasPhotoUploaded && !isDay0) {
+        if (hasPhotoUploaded) {
           container.innerHTML = `
             <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-400 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm animate-fade-in">
               <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -3601,15 +3601,15 @@
                 </div>
                 <div class="flex flex-col">
                   <div class="flex items-center gap-2">
-                    <span class="font-black text-sm text-emerald-950">Dokumentasi Day ${dayNum} Selesai</span>
+                    <span class="font-black text-sm text-emerald-950">${isDay0 ? 'Dokumentasi Day 0 (Simulasi) Selesai' : `Dokumentasi Day ${dayNum} Selesai`}</span>
                     <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-200 text-emerald-900 uppercase tracking-wide">Tuntas</span>
                   </div>
-                  <span class="text-xs text-slate-600">Foto bukti riset Anda telah tersimpan. Silakan melangkah ke tahap akhir: Jurnal Refleksi Mandiri.</span>
+                  <span class="text-xs text-slate-600">${isDay0 ? 'Foto bukti simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.' : 'Foto bukti riset Anda telah tersimpan. Silakan melangkah ke tahap akhir: Jurnal Refleksi Mandiri.'}</span>
                 </div>
               </div>
               <div class="flex items-center gap-2 w-full sm:w-auto shrink-0">
                 <a href="dashboard.html?day=${dayNum}&task=refleksi" class="flex-1 sm:flex-none py-3 px-4 rounded-xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
-                  <span>Lanjut ke Tahap 5: Jurnal Refleksi Day ${dayNum} &rarr;</span>
+                  <span>${isDay0 ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;' : `Lanjut ke Tahap 5: Jurnal Refleksi Day ${dayNum} &rarr;`}</span>
                 </a>
                 <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-3.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs" title="Tambah Foto Lainnya">
                   <span class="material-symbols-outlined text-base">add_a_photo</span>
@@ -4126,6 +4126,14 @@
           }
         }
 
+        const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+        for (const id of ids) {
+          localStorage.setItem(`fincestem_dok_day${docDayNum}_` + id, 'true');
+          if (!cat.isFieldTrip) {
+            localStorage.setItem(`fincestem_dok_nft_day${docDayNum}_` + id, 'true');
+          }
+        }
+
         // Catat ke progres siswa untuk sinkronisasi aktivitas berurutan
         if (FincestemCore.progress && studentNisn) {
           try {
@@ -4164,8 +4172,8 @@
         renderPhotos();
         renderSessionActionCard(docDayNum);
 
-        // Munculkan modal navigasi ke Tahap 5: Refleksi (Day 1 s.d. 7)
-        if (docDayNum >= 1 && docDayNum <= 7) {
+        // Munculkan modal navigasi ke Tahap 5: Refleksi (Day 0 s.d. 7)
+        if (docDayNum >= 0 && docDayNum <= 7) {
           setTimeout(() => {
             showFtDokSuccessModal(docDayNum);
           }, 350);
@@ -4181,7 +4189,7 @@
     }
 
     function showFtDokSuccessModal(dayNum) {
-      dayNum = dayNum || 1;
+      dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (dayNum || 1);
       const subtitle = document.getElementById('ftDokSuccessSubtitle');
       const nextBtn = document.getElementById('btnFtDokNextRefleksi');
       const nextBtnText = document.getElementById('btnFtDokNextText');
@@ -4416,14 +4424,16 @@
         }
       } else {
         if (subtitle) {
-          subtitle.textContent = `Bukti foto lapangan Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:`;
+          subtitle.textContent = (dayNum === 0)
+            ? 'Foto dokumentasi simulasi Day 0 telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam alur aktivitas simulasi:'
+            : `Bukti foto lapangan Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:`;
         }
         if (nextBtn) {
           nextBtn.href = `dashboard.html?day=${dayNum}&task=refleksi`;
           nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
         }
         if (nextBtnText) {
-          nextBtnText.textContent = 'Lanjut ke Refleksi Mandiri (Tahap 5)';
+          nextBtnText.textContent = (dayNum === 0) ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0' : 'Lanjut ke Refleksi Mandiri (Tahap 5)';
         }
       }
 

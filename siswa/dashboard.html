@@ -1947,7 +1947,7 @@
     }
 
     function getFTSubmitTime(dayNum, taskMap) {
-      dayNum = Number(dayNum) || 1;
+      dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (Number(dayNum) || 1);
       taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
       const t = taskMap[dayNum + '_refleksi'];
       if (t && (t.submitted_at || t.created_at || t.updated_at || t.timestamp)) {
@@ -1975,7 +1975,7 @@
     }
 
     function getFTProgressStatus(taskMap, dayNum) {
-      dayNum = Number(dayNum) || 1;
+      dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (Number(dayNum) || 1);
       taskMap = taskMap || (studentProgress && studentProgress.task_map) || {};
       const records = (studentProgress && studentProgress.records) || [];
       const idList = getStudentStorageIdentifiers();
@@ -2465,7 +2465,7 @@
     }
 
     function showStepLockedModal(targetStep, prereqTitle, prereqAction, dayNum) {
-      dayNum = dayNum || 1;
+      dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (dayNum || 1);
       let modal = document.getElementById('modalStepLocked');
       if (!modal) {
         modal = document.createElement('div');
@@ -3262,9 +3262,10 @@
       if (hasHandledUrlAction) return;
       if (!daysSchedule || daysSchedule.length === 0 || !studentProgress) return;
       const urlParams = new URLSearchParams(window.location.search);
-      const targetDay = parseInt(urlParams.get('day'));
+      const rawDay = urlParams.get('day');
+      const targetDay = (rawDay !== null && rawDay !== undefined && !isNaN(rawDay)) ? parseInt(rawDay) : null;
       const targetTask = urlParams.get('task');
-      if (targetDay) {
+      if (targetDay !== null && !isNaN(targetDay)) {
         hasHandledUrlAction = true;
         // Buka accordion Day yang dituju jika masih tertutup
         const detailEl = document.getElementById('dayDetails_' + targetDay);
