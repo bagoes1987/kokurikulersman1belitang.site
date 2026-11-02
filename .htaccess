@@ -53,12 +53,18 @@ DirectoryIndex index.html index.php
     ExpiresByType application/json "access plus 0 seconds"
 </IfModule>
 
-# 2.1 CACHE-CONTROL HEADERS (Immediate refresh on mobile browsers)
+# 2.1 CACHE-CONTROL HEADERS (Optimized: Fast Navigation + Instant Updates)
 <IfModule mod_headers.c>
-    <FilesMatch "\.(html|htm|js|css|json)$">
+    # HTML, PHP & JSON API: Selalu dapatkan respon terbaru (No Stale Data)
+    <FilesMatch "\.(html|htm|php|json)$">
         Header set Cache-Control "no-cache, no-store, must-revalidate"
         Header set Pragma "no-cache"
         Header set Expires 0
+    </FilesMatch>
+
+    # JS & CSS: Izinkan cache browser dengan revalidasi (Navigasi super cepat tanpa redownload 2.5MB)
+    <FilesMatch "\.(js|css)$">
+        Header set Cache-Control "no-cache, must-revalidate"
     </FilesMatch>
 </IfModule>
 
