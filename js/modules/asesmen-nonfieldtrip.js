@@ -288,19 +288,8 @@
     // Cek apakah siswa sudah pernah menyelesaikan asesmen resmi
     const officialResult = getSavedOfficialAsesmen(dayNum, examState.cleanNisn);
     if (officialResult && (officialResult.submitted || officialResult.score !== undefined)) {
-      // Khusus Day 0 Simulasi: jika sebelumnya terkirim otomatis akibat false-alarm pelanggaran, bersihkan otomatis agar siswa langsung bisa mencoba 10 soal
-      if (dayNum === 0 && (officialResult.isForceSubmitted || (officialResult.note && String(officialResult.note).includes('Pelanggaran')) || (officialResult.violationCount >= 3))) {
-        try {
-          localStorage.removeItem(`fincestem_draft_nft_asesmen_d0_${examState.cleanNisn}`);
-          localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d0_${examState.cleanNisn}`);
-          localStorage.removeItem(`fincestem_pkg_nft_asesmen_d0_${examState.cleanNisn}`);
-          localStorage.removeItem(`fincestem_asesmen_nft_day0_${examState.cleanNisn}`);
-          localStorage.removeItem(`fincestem_asesmen_day0_${examState.cleanNisn}`);
-        } catch(e) {}
-      } else {
-        renderCompletedResultScreen(officialResult);
-        return;
-      }
+      renderCompletedResultScreen(officialResult);
+      return;
     }
 
     // Ambil draft pengerjaan yang sedang berjalan terlebih dahulu (dan bersihkan jika baru direset)
@@ -1942,13 +1931,7 @@
     const cleanReason = reason || 'Membuka Layar Mengambang (Floating Window) / Aplikasi Lain';
     isTabAway = true;
 
-    // KHUSUS DAY 0 SIMULASI: Edukasi simulasi (tidak mencatat pelanggaran nyata, tidak force submit)
-    if (examState.dayNum === 0) {
-      if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast(`💡 Simulasi Exam Shield: Terdeteksi ${cleanReason}. Pada ujian resmi Day 1-7, tindakan ini akan dihitung sebagai pelanggaran (maks. 3x).`, 'warning');
-      }
-      return;
-    }
+
 
     // 1. Gelapkan layar & hapus sementara teks soal dari DOM agar tidak bisa diintip dari balik jendela mengambang
     triggerBlackout(cleanReason);
@@ -2070,15 +2053,7 @@
     if (!examState.isExamActive || examState.isExamFinished) return;
     if (isViolationModalOpen) return;
 
-    // KHUSUS DAY 0 SIMULASI: Jangan tambah hitungan pelanggaran & jangan kunci siswa
-    if (examState.dayNum === 0) {
-      examState.violationCount = 0;
-      updateViolationCounterDisplay();
-      if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('💡 Simulasi Exam Shield: Pada ujian resmi Day 1-7, meninggalkan layar ujian akan dihitung pelanggaran.', 'warning');
-      }
-      return;
-    }
+
 
     const now = Date.now();
     if (now - lastViolationTime < VIOLATION_DEBOUNCE_MS) {
@@ -2466,6 +2441,12 @@
 
         <!-- TOMBOL AKSI KEMBALI -->
         <div class="w-full flex flex-col gap-2 pt-1">
+          ${Number(dayNum) === 0 ? `
+            <button type="button" onclick="window.retryDay0ExamSimulation()" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">refresh</span>
+              <span>Ulangi Simulasi Kuis Day 0 (Coba Lagi)</span>
+            </button>
+          ` : ''}
           <a href="dokumentasi.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
             <span>Lanjut ke Dokumentasi Foto Day ${dayNum}</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
