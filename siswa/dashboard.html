@@ -2897,6 +2897,22 @@
           ? (hasRefleksi || (dayRecord && dayRecord.score)) 
           : (isTrial ? (hasRefleksi || (dayProg && dayProg.hasRefleksi)) : !!(dayRecord && dayRecord.score));
 
+        let labelPenilaian = 'Terkunci';
+        if (canOpenPenilaian) {
+          if (isTrial) {
+            labelPenilaian = hasPenilaian ? '⭐⭐⭐⭐⭐ Bintang 5 (100)' : 'Cek Bintang Simulasi';
+          } else if (isFieldTrip) {
+            if (hasRefleksi || (dayRecord && dayRecord.score)) {
+              const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
+              labelPenilaian = (ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆') + ' Nilai: ' + ftScore.score;
+            } else {
+              labelPenilaian = 'Feedback Lapangan';
+            }
+          } else {
+            labelPenilaian = (dayRecord && dayRecord.score) ? ('✓ Nilai: ' + dayRecord.score) : 'Menunggu Fasil';
+          }
+        }
+
         const getCheckBadge = (isDone, isOpen) => {
           if (isDone) {
             return `<span class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 ml-auto shadow-2xs" title="Selesai"><span class="material-symbols-outlined text-sm font-black">check</span></span>`;
@@ -3215,20 +3231,7 @@
                   </span>
                   <div class="flex flex-col text-left min-w-0">
                     <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">6. Penilaian Fasil</span>
-                    <span class="text-[10px] sm:text-xs ${hasPenilaian ? (isTrial || isFieldTrip ? 'text-amber-950 font-bold' : 'text-emerald-800 font-bold') : (canOpenPenilaian ? 'text-teal-800 font-medium' : 'text-slate-400')} leading-tight mt-0.5 truncate">${
-                      !canOpenPenilaian 
-                        ? 'Terkunci' 
-                        : (isTrial
-                            ? (hasPenilaian ? '⭐⭐⭐⭐⭐ Bintang 5 (100)' : 'Cek Bintang Simulasi')
-                            : (isFieldTrip 
-                                ? ((hasRefleksi || (dayRecord && dayRecord.score))
-                                    ? (function() {
-                                        const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
-                                        return `${ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆'} Nilai: ${ftScore.score}`;
-                                      })()
-                                    : 'Feedback Lapangan')
-                                : ((dayRecord && dayRecord.score) ? `✓ Nilai: ${dayRecord.score}` : 'Menunggu Fasil'))
-                    }</span>
+                    <span class="text-[10px] sm:text-xs ${hasPenilaian ? (isTrial || isFieldTrip ? 'text-amber-950 font-bold' : 'text-emerald-800 font-bold') : (canOpenPenilaian ? 'text-teal-800 font-medium' : 'text-slate-400')} leading-tight mt-0.5 truncate">${labelPenilaian}</span>
                   </div>
                 </div>
                 ${getCheckBadge(hasPenilaian, canOpenPenilaian)}
