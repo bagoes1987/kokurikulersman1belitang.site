@@ -288,8 +288,19 @@
     // Cek apakah siswa sudah pernah menyelesaikan asesmen resmi
     const officialResult = getSavedOfficialAsesmen(dayNum, examState.cleanNisn);
     if (officialResult && (officialResult.submitted || officialResult.score !== undefined)) {
-      renderCompletedResultScreen(officialResult);
-      return;
+      // Khusus Day 0 Simulasi: jika sebelumnya terkirim otomatis akibat false-alarm pelanggaran, bersihkan otomatis agar siswa langsung bisa mencoba 10 soal
+      if (dayNum === 0 && (officialResult.isForceSubmitted || (officialResult.note && String(officialResult.note).includes('Pelanggaran')) || (officialResult.violationCount >= 3))) {
+        try {
+          localStorage.removeItem(`fincestem_draft_nft_asesmen_d0_${examState.cleanNisn}`);
+          localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d0_${examState.cleanNisn}`);
+          localStorage.removeItem(`fincestem_pkg_nft_asesmen_d0_${examState.cleanNisn}`);
+          localStorage.removeItem(`fincestem_asesmen_nft_day0_${examState.cleanNisn}`);
+          localStorage.removeItem(`fincestem_asesmen_day0_${examState.cleanNisn}`);
+        } catch(e) {}
+      } else {
+        renderCompletedResultScreen(officialResult);
+        return;
+      }
     }
 
     // Ambil draft pengerjaan yang sedang berjalan terlebih dahulu (dan bersihkan jika baru direset)
@@ -1599,6 +1610,7 @@
 
   function detectMultiWindowViolation() {
     if (!examState.isExamActive || examState.isExamFinished) return null;
+    if (examState.dayNum === 0) return null; // Mode Simulasi Day 0: Bebas rasio split-screen/floating window
 
     recordHardwareScreenBaseline();
     const screenW = Math.max(baselineMaxScreenW, screen.width || 1, window.outerWidth || 1);
@@ -1685,6 +1697,7 @@
    */
   function startScreenIntegrityWatchdog() {
     if (screenIntegrityWatchdogInterval) clearInterval(screenIntegrityWatchdogInterval);
+    if (examState.dayNum === 0) return; // Mode Simulasi Day 0: Nonaktifkan watchdog agresif
     screenIntegrityWatchdogInterval = setInterval(() => {
       if (!examState.isExamActive || examState.isExamFinished) return;
 
@@ -1810,11 +1823,13 @@
 
     // 6. Deteksi Keluar Layar Penuh (Saat Android membatalkan Fullscreen karena Floating Window / Smart Sidebar muncul!)
     document.addEventListener('fullscreenchange', () => {
+      if (examState.dayNum === 0) return; // Day 0 Simulasi: Jangan anggap keluar fullscreen sebagai pelanggaran
       if (!document.fullscreenElement && examState.isExamActive && !examState.isExamFinished) {
         handleTabExit('Keluar dari Mode Layar Penuh (Indikasi Layar Mengambang / Bilah Samping)');
       }
     });
     document.addEventListener('webkitfullscreenchange', () => {
+      if (examState.dayNum === 0) return; // Day 0 Simulasi: Jangan anggap keluar fullscreen sebagai pelanggaran
       if (!document.webkitFullscreenElement && examState.isExamActive && !examState.isExamFinished) {
         handleTabExit('Keluar dari Mode Layar Penuh (Indikasi Layar Mengambang / Bilah Samping)');
       }
@@ -1876,8 +1891,8 @@
     // Panel Notifikasi Atas, atau Bilah Samping: LANGSUNG gelapkan soal detik itu juga (0ms delay!)
     window.addEventListener('touchcancel', () => {
       activeTouchPoints.clear();
+      if (examState.dayNum === 0) return; // Day 0 Simulasi: Abaikan interupsi touchcancel sistem
       if (examState.isExamActive && !examState.isExamFinished) {
-        // Gelapkan layar seketika pada milidetik ke-0 agar tangkapan layar yang dihasilkan HANYA HITAM!
         triggerBlackout('Interupsi Sistem Terdeteksi (Upaya Screenshot / Panel Notifikasi / Layar Mengambang)');
         handleTabExit('Upaya Tangkapan Layar (Screenshot) / Interupsi Gestur Sistem');
       }
@@ -1885,6 +1900,7 @@
 
     window.addEventListener('pointercancel', () => {
       activeTouchPoints.clear();
+      if (examState.dayNum === 0) return; // Day 0 Simulasi: Abaikan interupsi pointercancel sistem
       if (examState.isExamActive && !examState.isExamFinished) {
         triggerBlackout('Interupsi Sistem Terdeteksi (Upaya Screenshot / Panel Notifikasi / Layar Mengambang)');
         handleTabExit('Upaya Tangkapan Layar (Screenshot) / Interupsi Gestur Sistem');
@@ -1893,6 +1909,7 @@
 
     // 9. Deteksi Mouse Keluar Jendela Browser (PC/Laptop Dual Display / Floating Browser)
     document.addEventListener('mouseleave', () => {
+      if (examState.dayNum === 0) return; // Day 0 Simulasi: Abaikan kursor keluar area
       if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
         triggerBlackout('Kursor mouse keluar dari area lembar asesmen');
       }
@@ -1920,12 +1937,18 @@
    */
   function handleTabExit(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
-    // Jika sedang dalam kondisi melanggar / pop-up peringatan sedang terbuka, jangan hitung ulang!
-    // Tunggu sampai siswa menekan tombol "Lanjut" (dismissExamViolationModal) baru pelanggaran berikutnya bisa dihitung.
     if (isViolationModalOpen || isTabAway) return;
 
     const cleanReason = reason || 'Membuka Layar Mengambang (Floating Window) / Aplikasi Lain';
     isTabAway = true;
+
+    // KHUSUS DAY 0 SIMULASI: Edukasi simulasi (tidak mencatat pelanggaran nyata, tidak force submit)
+    if (examState.dayNum === 0) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast(`💡 Simulasi Exam Shield: Terdeteksi ${cleanReason}. Pada ujian resmi Day 1-7, tindakan ini akan dihitung sebagai pelanggaran (maks. 3x).`, 'warning');
+      }
+      return;
+    }
 
     // 1. Gelapkan layar & hapus sementara teks soal dari DOM agar tidak bisa diintip dari balik jendela mengambang
     triggerBlackout(cleanReason);
@@ -2045,11 +2068,21 @@
 
   function triggerViolation(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
-    if (isViolationModalOpen) return; // Jangan hitung berulang jika modal sedang terbuka (kecuali lewat forceEscalateViolation)
+    if (isViolationModalOpen) return;
+
+    // KHUSUS DAY 0 SIMULASI: Jangan tambah hitungan pelanggaran & jangan kunci siswa
+    if (examState.dayNum === 0) {
+      examState.violationCount = 0;
+      updateViolationCounterDisplay();
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('💡 Simulasi Exam Shield: Pada ujian resmi Day 1-7, meninggalkan layar ujian akan dihitung pelanggaran.', 'warning');
+      }
+      return;
+    }
 
     const now = Date.now();
     if (now - lastViolationTime < VIOLATION_DEBOUNCE_MS) {
-      return; // Batasi interval debounce minimal 2.5 detik
+      return;
     }
     lastViolationTime = now;
 
@@ -2062,6 +2095,7 @@
 
   function forceEscalateViolation(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
+    if (examState.dayNum === 0) return; // Day 0 Simulasi: Jangan eskalasi pelanggaran
     if (examState.violationCount >= 3) return;
     lastViolationTime = Date.now();
     examState.violationCount++;
@@ -2444,6 +2478,19 @@
       </div>
     `;
   }
+
+  window.retryDay0ExamSimulation = function() {
+    if (!confirm('Apakah Anda ingin mencoba ulang simulasi kuis Day 0 dari awal? (Khusus Day 0 gladi bersih, Anda bebas mencoba ulang latihan)')) return;
+    try {
+      const nisn = examState.cleanNisn;
+      localStorage.removeItem(`fincestem_draft_nft_asesmen_d0_${nisn}`);
+      localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d0_${nisn}`);
+      localStorage.removeItem(`fincestem_pkg_nft_asesmen_d0_${nisn}`);
+      localStorage.removeItem(`fincestem_asesmen_nft_day0_${nisn}`);
+      localStorage.removeItem(`fincestem_asesmen_day0_${nisn}`);
+    } catch(e) {}
+    window.location.reload();
+  };
 
   window.initNonFieldTripAsesmenPage = initNonFieldTripAsesmenPage;
 
