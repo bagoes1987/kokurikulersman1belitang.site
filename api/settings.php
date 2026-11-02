@@ -195,12 +195,14 @@ function ensureRoleTables($pdo) {
                 `ttl` VARCHAR(150) DEFAULT NULL,
                 `no_wa` VARCHAR(50) DEFAULT NULL,
                 `alamat` TEXT DEFAULT NULL,
+                `jenis_kelamin` VARCHAR(20) DEFAULT 'Laki-laki',
                 `foto_url` MEDIUMTEXT DEFAULT NULL,
                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 INDEX `idx_tp_user` (`teacher_username`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
         ");
+        try { $pdo->exec("ALTER TABLE `teacher_profiles` ADD COLUMN `jenis_kelamin` VARCHAR(20) DEFAULT 'Laki-laki' AFTER `alamat`"); } catch (Exception $eJk) {}
     } catch (Exception $eTp) {}
 
     // Auto-sync Peserta Field Trip dari file resmi field_trip_students.json (455 Siswa)
@@ -1688,15 +1690,19 @@ if ($method === 'POST') {
             $alamat = trim($input['alamat'] ?? '');
             $foto   = trim($input['foto_url'] ?? '');
 
+            $jk = trim($input['jenis_kelamin'] ?? 'Laki-laki');
+            if ($jk !== 'Perempuan' && $jk !== 'Laki-laki') $jk = 'Laki-laki';
+
             $stmt = $pdo->prepare("
-                INSERT INTO `teacher_profiles` (`teacher_username`, `nama_lengkap`, `nip`, `ttl`, `no_wa`, `alamat`, `foto_url`)
-                VALUES (:u, :nama, :nip, :ttl, :no_wa, :alamat, :foto)
+                INSERT INTO `teacher_profiles` (`teacher_username`, `nama_lengkap`, `nip`, `ttl`, `no_wa`, `alamat`, `jenis_kelamin`, `foto_url`)
+                VALUES (:u, :nama, :nip, :ttl, :no_wa, :alamat, :jk, :foto)
                 ON DUPLICATE KEY UPDATE
                     `nama_lengkap` = VALUES(`nama_lengkap`),
                     `nip` = VALUES(`nip`),
                     `ttl` = VALUES(`ttl`),
                     `no_wa` = VALUES(`no_wa`),
                     `alamat` = VALUES(`alamat`),
+                    `jenis_kelamin` = VALUES(`jenis_kelamin`),
                     `foto_url` = VALUES(`foto_url`),
                     `updated_at` = CURRENT_TIMESTAMP
             ");
@@ -1707,6 +1713,7 @@ if ($method === 'POST') {
                 ':ttl'    => $ttl,
                 ':no_wa'  => $noWa,
                 ':alamat' => $alamat,
+                ':jk'     => $jk,
                 ':foto'   => $foto
             ]);
 
@@ -1723,6 +1730,7 @@ if ($method === 'POST') {
                 'ttl'              => $ttl,
                 'no_wa'            => $noWa,
                 'alamat'           => $alamat,
+                'jenis_kelamin'    => $jk,
                 'foto_url'         => $foto
             ]);
         }

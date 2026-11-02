@@ -1375,13 +1375,36 @@
 
           const inits = namaLengkap.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || 'FG';
 
+          // Tentukan Sapaan Bapak / Ibu berdasarkan Jenis Kelamin Resmi
+          const jk = (p && p.jenis_kelamin) ? p.jenis_kelamin : '';
+          let sapaan = 'Bapak/Ibu';
+          if (jk === 'Perempuan' || jk === 'P') {
+            sapaan = 'Ibu';
+          } else if (jk === 'Laki-laki' || jk === 'L') {
+            sapaan = 'Bapak';
+          } else {
+            // Heuristik fallback jika fasilitator belum mengatur jenis kelamin
+            const lowerN = namaLengkap.toLowerCase();
+            if (lowerN.includes('siti') || lowerN.includes('diana') || lowerN.includes('wiwik') || lowerN.includes('putri') || lowerN.includes('tri') || lowerN.includes('dewi') || lowerN.includes('ratna') || lowerN.includes('ani') || lowerN.includes('nur') || lowerN.includes('enny') || lowerN.includes('sri')) {
+              sapaan = 'Ibu';
+            } else {
+              sapaan = 'Bapak';
+            }
+          }
+
           // Tombol WhatsApp
           let waBtnHtml = '';
           const cleanWa = noWa.replace(/\D/g, '');
           if (cleanWa.length >= 9) {
             let intlWa = cleanWa;
             if (intlWa.startsWith('0')) intlWa = '62' + intlWa.slice(1);
-            const greeting = encodeURIComponent("Assalamu'alaikum / Selamat pagi/siang Bapak/Ibu " + namaLengkap + ", saya " + studentName + (studentClass ? " dari kelas " + studentClass : "") + ", siswa binaan FINCESTEM. Mohon izin berkonsultasi mengenai bimbingan kokurikuler.");
+            // Format kalimat WhatsApp sesuai permintaan pengguna:
+            // Assalamu'alaikum
+            // Izin Bapak/Ibu [Nama Guru], saya ingin berkonsultasi mengenai FINCESTEM.
+            // Terima Kasih
+            // Wassalamualikum
+            const waMsg = "Assalamu'alaikum\nIzin " + sapaan + " " + namaLengkap + ", saya ingin berkonsultasi mengenai FINCESTEM.\nTerima Kasih\nWassalamualikum";
+            const greeting = encodeURIComponent(waMsg);
             waBtnHtml = `
               <a href="https://wa.me/${intlWa}?text=${greeting}" target="_blank" class="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98 transition-all cursor-pointer">
                 <span class="material-symbols-outlined text-base">chat</span>
