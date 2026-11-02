@@ -2183,6 +2183,7 @@ const FincestemCore = {
               localStorage.removeItem(`fincestem_refleksi_nft_day${d}_` + id);
               localStorage.removeItem(`fincestem_refleksi_day${d}_` + id);
               localStorage.removeItem(`fincestem_refl_ft_day${d}_` + id);
+              localStorage.removeItem(`fincestem_refl_nft_day${d}_` + id);
               if (d === 3) {
                 localStorage.removeItem('fincestem_refleksi_ft_d3_sesi2_' + id);
                 localStorage.removeItem('fincestem_refleksi_ft_d3_sesi3_' + id);
@@ -2245,7 +2246,7 @@ const FincestemCore = {
                 const dNisn = String(d.nisn || d.author_nisn || d.uploaded_by || '').trim();
                 const isStudent = idVariations.some(id => dNisn === id || String(d.author || '').toLowerCase().includes(id.toLowerCase()));
                 if (!isStudent) return true;
-                if (targetDay > 0) return !(d.day == targetDay || d.day_number == targetDay);
+                if (targetDay >= 0) return !(d.day == targetDay || d.day_number == targetDay);
                 return false;
               });
             }
@@ -2254,7 +2255,7 @@ const FincestemCore = {
                 const dNisn = String(d.nisn || d.author_nisn || '').trim();
                 const isStudent = idVariations.some(id => dNisn === id);
                 if (!isStudent) return true;
-                if (targetDay > 0) return !(d.day == targetDay || d.day_number == targetDay);
+                if (targetDay >= 0) return !(d.day == targetDay || d.day_number == targetDay);
                 return false;
               });
             }
@@ -2937,7 +2938,7 @@ const FincestemCore = {
                   return true;
                 };
 
-                for (let d = 1; d <= 7; d++) {
+                for (let d = 0; d <= 7; d++) {
                   idVars.forEach(id => {
                     if (!srvHasTask(d, 'asesmen')) {
                       const rawAsesmen = localStorage.getItem(`fincestem_asesmen_nft_day${d}_` + id) || localStorage.getItem(`fincestem_asesmen_day${d}_` + id);
@@ -2977,8 +2978,9 @@ const FincestemCore = {
                       }
                     }
                     if (!srvHasTask(d, 'dokumentasi') && serverResetAt) {
-                      if (resetInfo && (resetInfo.target_day < 0 || parseInt(resetInfo.target_day) === d) && resetInfo.components && resetInfo.components.dokumentasi) {
+                      if (resetInfo && (resetInfo.target_day < 0 || parseInt(resetInfo.target_day) === d) && (!resetInfo.components || resetInfo.components.dokumentasi)) {
                         localStorage.removeItem(`fincestem_dok_nft_day${d}_` + id);
+                        localStorage.removeItem(`fincestem_dok_ft_day${d}_` + id);
                         localStorage.removeItem(`fincestem_dok_day${d}_` + id);
                       }
                     }

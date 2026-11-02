@@ -2832,7 +2832,7 @@
         const canEdit = access.canEdit;
 
         // Sinkronisasi status alur pengerjaan berurutan Day 1 s.d. Day 7
-        const dayProg = (dNum >= 1 && dNum <= 7) ? getFTProgressStatus(taskMap, dNum) : null;
+        const dayProg = (dNum >= 0 && dNum <= 7) ? getFTProgressStatus(taskMap, dNum) : null;
         if (dayProg) {
           hasMateri = dayProg.hasMateri;
           hasLkpd = dayProg.hasLkpd;
