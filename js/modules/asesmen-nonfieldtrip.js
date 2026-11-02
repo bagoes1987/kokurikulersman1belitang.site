@@ -1599,7 +1599,6 @@
 
   function detectMultiWindowViolation() {
     if (!examState.isExamActive || examState.isExamFinished) return null;
-    if (examState.dayNum === 0) return null; // Mode Simulasi Day 0: Bebas rasio split-screen/floating window
 
     recordHardwareScreenBaseline();
     const screenW = Math.max(baselineMaxScreenW, screen.width || 1, window.outerWidth || 1);
@@ -1686,7 +1685,6 @@
    */
   function startScreenIntegrityWatchdog() {
     if (screenIntegrityWatchdogInterval) clearInterval(screenIntegrityWatchdogInterval);
-    if (examState.dayNum === 0) return; // Mode Simulasi Day 0: Nonaktifkan watchdog agresif
     screenIntegrityWatchdogInterval = setInterval(() => {
       if (!examState.isExamActive || examState.isExamFinished) return;
 
@@ -1812,13 +1810,11 @@
 
     // 6. Deteksi Keluar Layar Penuh (Saat Android membatalkan Fullscreen karena Floating Window / Smart Sidebar muncul!)
     document.addEventListener('fullscreenchange', () => {
-      if (examState.dayNum === 0) return; // Day 0 Simulasi: Jangan anggap keluar fullscreen sebagai pelanggaran
       if (!document.fullscreenElement && examState.isExamActive && !examState.isExamFinished) {
         handleTabExit('Keluar dari Mode Layar Penuh (Indikasi Layar Mengambang / Bilah Samping)');
       }
     });
     document.addEventListener('webkitfullscreenchange', () => {
-      if (examState.dayNum === 0) return; // Day 0 Simulasi: Jangan anggap keluar fullscreen sebagai pelanggaran
       if (!document.webkitFullscreenElement && examState.isExamActive && !examState.isExamFinished) {
         handleTabExit('Keluar dari Mode Layar Penuh (Indikasi Layar Mengambang / Bilah Samping)');
       }
@@ -1880,8 +1876,8 @@
     // Panel Notifikasi Atas, atau Bilah Samping: LANGSUNG gelapkan soal detik itu juga (0ms delay!)
     window.addEventListener('touchcancel', () => {
       activeTouchPoints.clear();
-      if (examState.dayNum === 0) return; // Day 0 Simulasi: Abaikan interupsi touchcancel sistem
       if (examState.isExamActive && !examState.isExamFinished) {
+        // Gelapkan layar seketika pada milidetik ke-0 agar tangkapan layar yang dihasilkan HANYA HITAM!
         triggerBlackout('Interupsi Sistem Terdeteksi (Upaya Screenshot / Panel Notifikasi / Layar Mengambang)');
         handleTabExit('Upaya Tangkapan Layar (Screenshot) / Interupsi Gestur Sistem');
       }
@@ -1889,7 +1885,6 @@
 
     window.addEventListener('pointercancel', () => {
       activeTouchPoints.clear();
-      if (examState.dayNum === 0) return; // Day 0 Simulasi: Abaikan interupsi pointercancel sistem
       if (examState.isExamActive && !examState.isExamFinished) {
         triggerBlackout('Interupsi Sistem Terdeteksi (Upaya Screenshot / Panel Notifikasi / Layar Mengambang)');
         handleTabExit('Upaya Tangkapan Layar (Screenshot) / Interupsi Gestur Sistem');
@@ -1898,7 +1893,6 @@
 
     // 9. Deteksi Mouse Keluar Jendela Browser (PC/Laptop Dual Display / Floating Browser)
     document.addEventListener('mouseleave', () => {
-      if (examState.dayNum === 0) return; // Day 0 Simulasi: Abaikan kursor keluar area
       if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
         triggerBlackout('Kursor mouse keluar dari area lembar asesmen');
       }
@@ -1926,12 +1920,12 @@
    */
   function handleTabExit(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
+    // Jika sedang dalam kondisi melanggar / pop-up peringatan sedang terbuka, jangan hitung ulang!
+    // Tunggu sampai siswa menekan tombol "Lanjut" (dismissExamViolationModal) baru pelanggaran berikutnya bisa dihitung.
     if (isViolationModalOpen || isTabAway) return;
 
     const cleanReason = reason || 'Membuka Layar Mengambang (Floating Window) / Aplikasi Lain';
     isTabAway = true;
-
-
 
     // 1. Gelapkan layar & hapus sementara teks soal dari DOM agar tidak bisa diintip dari balik jendela mengambang
     triggerBlackout(cleanReason);
@@ -2051,13 +2045,11 @@
 
   function triggerViolation(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
-    if (isViolationModalOpen) return;
-
-
+    if (isViolationModalOpen) return; // Jangan hitung berulang jika modal sedang terbuka (kecuali lewat forceEscalateViolation)
 
     const now = Date.now();
     if (now - lastViolationTime < VIOLATION_DEBOUNCE_MS) {
-      return;
+      return; // Batasi interval debounce minimal 2.5 detik
     }
     lastViolationTime = now;
 
@@ -2070,7 +2062,6 @@
 
   function forceEscalateViolation(reason) {
     if (!examState.isExamActive || examState.isExamFinished) return;
-    if (examState.dayNum === 0) return; // Day 0 Simulasi: Jangan eskalasi pelanggaran
     if (examState.violationCount >= 3) return;
     lastViolationTime = Date.now();
     examState.violationCount++;
