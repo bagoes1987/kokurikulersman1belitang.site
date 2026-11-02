@@ -858,22 +858,48 @@
 
       if (!nisn) return result;
 
-      // 2. FASILITATOR: Ambil dari Pembagian Siswa Binaan berdasarkan NISN siswa
+      // 2. FASILITATOR: Murni diambil dari Pembagian Siswa Binaan berdasarkan NISN siswa
       const cleanNisn = String(nisn).trim();
       const digits = cleanNisn.replace(/\D/g, '');
       const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : cleanNisn;
       const unpadded = digits.replace(/^0+/, '') || cleanNisn;
       const map = this.getAssignmentsMap();
 
+      const candidateNisns = new Set([cleanNisn, padded, unpadded]);
+      if (studentClass || nisn) {
+        const allStu = window.FincestemMasterStudents || [];
+        const stuObj = allStu.find(s => 
+          String(s.nisn || '').trim() === cleanNisn ||
+          String(s.nis || '').trim() === cleanNisn ||
+          (digits && String(s.nisn || '').replace(/\D/g, '') === digits) ||
+          (digits && String(s.nis || '').replace(/\D/g, '') === digits)
+        );
+        if (stuObj) {
+          if (stuObj.nisn) {
+            const sn = String(stuObj.nisn).trim();
+            candidateNisns.add(sn);
+            candidateNisns.add(sn.padStart(10, '0'));
+            candidateNisns.add(sn.replace(/^0+/, ''));
+          }
+          if (stuObj.nis) {
+            candidateNisns.add(String(stuObj.nis).trim());
+          }
+        }
+      }
+
       const fasilNames = [];
 
       for (const [tKey, entry] of Object.entries(map)) {
         if (!entry || !Array.isArray(entry.student_nisns)) continue;
-        if (
-          entry.student_nisns.includes(cleanNisn) ||
-          entry.student_nisns.includes(padded) ||
-          entry.student_nisns.includes(unpadded)
-        ) {
+        const isMatched = entry.student_nisns.some(storedN => {
+          const sClean = String(storedN || '').trim();
+          const sDigits = sClean.replace(/\D/g, '');
+          return candidateNisns.has(sClean) || 
+                 (sDigits && digits && sDigits === digits) ||
+                 candidateNisns.has(sClean.padStart(10, '0')) ||
+                 candidateNisns.has(sClean.replace(/^0+/, ''));
+        });
+        if (isMatched) {
           const tObj = this.findTeacherByIdentifier(tKey);
           const tName = (tObj && tObj.nama_guru) || entry.teacher_name || tKey;
           if (tName && !fasilNames.includes(tName)) {
@@ -884,11 +910,17 @@
       }
 
       if (fasilNames.length > 0) {
-        result.facilitators = fasilNames;
+        result.facilitators = [fasilNames[0]]; // Fasilitator binaan siswa tunggal
         result.facilitator = fasilNames[0];
-        result.facilitator_name = fasilNames.join('\n');
+        result.facilitator_name = fasilNames[0];
         result.facilitator1 = fasilNames[0] || '-';
         result.facilitator2 = fasilNames.length > 1 ? fasilNames[1] : '-';
+      } else {
+        result.facilitator = 'Belum Ditentukan';
+        result.facilitator_name = 'Belum Ditentukan';
+        result.facilitators = [];
+        result.facilitator1 = '-';
+        result.facilitator2 = '-';
       }
 
       return result;

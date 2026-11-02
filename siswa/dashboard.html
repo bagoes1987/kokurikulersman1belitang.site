@@ -1170,29 +1170,72 @@
         initialCoord = user.coordinator_name || (classInfo && classInfo.coordinator_name) || 'Drs. H. Koordinator FINCESTEM';
       }
 
-      let initialFasil = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
-        ? FincestemCore.assignments.getStudentFacilitator(studentNisn, studentClass)
-        : '';
-      if (!initialFasil || initialFasil === 'Tim Fasilitator SMAN 1 Belitang') {
-        initialFasil = user.facilitator_name || (classInfo && classInfo.facilitator_name) || 'Tim Fasilitator SMAN 1 Belitang';
+      let initialFasil = '';
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+        const m = window.FincestemMentorship.getMentorsForStudent(studentNisn, studentClass);
+        if (m && m.facilitator && m.facilitator !== '-' && m.facilitator !== 'Belum Ditentukan') {
+          initialFasil = m.facilitator;
+        }
+      }
+      if (!initialFasil && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator) {
+        const sf = FincestemCore.assignments.getStudentFacilitator(studentNisn, studentClass);
+        if (sf && !sf.includes('\n') && sf !== 'Tim Fasilitator SMAN 1 Belitang' && sf !== 'Belum Ditentukan') {
+          initialFasil = sf;
+        }
+      }
+      if (!initialFasil || initialFasil.includes('\n') || initialFasil === 'Tim Fasilitator SMAN 1 Belitang') {
+        initialFasil = 'Belum Ditentukan';
       }
 
       renderStaffVerticalList('userCoordinatorContainer', initialCoord, 'Drs. H. Koordinator FINCESTEM');
-      renderStaffVerticalList('userFacilitatorContainer', initialFasil, 'Tim Fasilitator SMAN 1 Belitang');
+      renderStaffVerticalList('userFacilitatorContainer', initialFasil, 'Belum Ditentukan');
       if (currentStudent) {
         currentStudent.coordinator_name = initialCoord;
         currentStudent.facilitator_name = initialFasil;
       }
 
-      // Sinkronkan penugasan Pembagian Siswa Binaan (Koordinator & Fasilitator) terbaru dari server cPanel secara asinkron
+      // Fungsi update UI fasilitator binaan siswa yang reaktif
+      const updateStudentMentorshipUI = function() {
+        let freshFasil = '';
+        if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+          const m = window.FincestemMentorship.getMentorsForStudent(studentNisn, studentClass);
+          if (m && m.facilitator && m.facilitator !== '-' && m.facilitator !== 'Belum Ditentukan') {
+            freshFasil = m.facilitator;
+          }
+        }
+        if (!freshFasil && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator) {
+          const sf = FincestemCore.assignments.getStudentFacilitator(studentNisn, studentClass);
+          if (sf && !sf.includes('\n') && sf !== 'Tim Fasilitator SMAN 1 Belitang') {
+            freshFasil = sf;
+          }
+        }
+        if (!freshFasil || freshFasil.includes('\n')) freshFasil = 'Belum Ditentukan';
+
+        renderStaffVerticalList('userFacilitatorContainer', freshFasil, 'Belum Ditentukan');
+        if (currentStudent) currentStudent.facilitator_name = freshFasil;
+        if (user) {
+          user.facilitator_name = freshFasil;
+          FincestemCore.auth.setUser(user, 'siswa');
+        }
+        const fbName = document.getElementById('feedbackFasilName');
+        if (fbName && (!fbName.textContent || fbName.textContent.includes('Fasilitator') || fbName.textContent.includes('Belum'))) {
+          fbName.textContent = freshFasil;
+        }
+      };
+
+      // 1. Sinkronkan penugasan Pembagian Siswa Binaan secara asinkron dari server cPanel
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+        window.FincestemMentorship.syncFromServer(function() {
+          updateStudentMentorshipUI();
+        });
+      }
+
+      // 2. Sinkronkan juga penugasan Koordinator dari server
       if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
         FincestemCore.assignments.getAssignments(function() {
           const freshCoord = FincestemCore.assignments.getStudentCoordinator
             ? FincestemCore.assignments.getStudentCoordinator(studentNisn, studentClass)
             : FincestemCore.assignments.getClassCoordinator(studentClass);
-          const freshFasil = FincestemCore.assignments.getStudentFacilitator
-            ? FincestemCore.assignments.getStudentFacilitator(studentNisn, studentClass)
-            : FincestemCore.assignments.getClassFacilitator(studentClass);
           if (freshCoord && freshCoord !== 'Drs. H. Koordinator FINCESTEM') {
             renderStaffVerticalList('userCoordinatorContainer', freshCoord, 'Drs. H. Koordinator FINCESTEM');
             if (currentStudent) currentStudent.coordinator_name = freshCoord;
@@ -1201,18 +1244,7 @@
               FincestemCore.auth.setUser(user, 'siswa');
             }
           }
-          if (freshFasil && freshFasil !== 'Tim Fasilitator SMAN 1 Belitang') {
-            renderStaffVerticalList('userFacilitatorContainer', freshFasil, 'Tim Fasilitator SMAN 1 Belitang');
-            if (currentStudent) currentStudent.facilitator_name = freshFasil;
-            if (user) {
-              user.facilitator_name = freshFasil;
-              FincestemCore.auth.setUser(user, 'siswa');
-            }
-            const fbName = document.getElementById('feedbackFasilName');
-            if (fbName && (!fbName.textContent || fbName.textContent.includes('Fasilitator'))) {
-              fbName.textContent = freshFasil.replace(/\n+/g, ', ');
-            }
-          }
+          updateStudentMentorshipUI();
         });
       }
 
@@ -1321,11 +1353,39 @@
         modal.classList.add('opacity-100');
       });
 
-      // Ambil nama fasilitator siswa aktif
-      const rawFasil = currentStudent?.facilitator_name || 
-                       (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().facilitator_name) || 
-                       'Tim Fasilitator SMAN 1 Belitang';
-      const fasilList = rawFasil.split(/[;\n]+/).map(n => n.trim()).filter(Boolean);
+      const studentNisn = currentStudent?.nisn || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
+      const studentClass = currentStudent?.class || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().class) || '';
+
+      // Prioritas 1: Ambil murni dari Pembagian Siswa Binaan
+      let assignedFasilName = '';
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+        const m = window.FincestemMentorship.getMentorsForStudent(studentNisn, studentClass);
+        if (m && m.facilitator && m.facilitator !== '-' && m.facilitator !== 'Belum Ditentukan') {
+          assignedFasilName = m.facilitator;
+        }
+      }
+      if (!assignedFasilName) {
+        const rawFasil = currentStudent?.facilitator_name || 
+                         (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().facilitator_name) || '';
+        if (rawFasil && !rawFasil.includes('\n') && rawFasil !== 'Belum Ditentukan' && rawFasil !== 'Tim Fasilitator SMAN 1 Belitang') {
+          assignedFasilName = rawFasil;
+        }
+      }
+
+      if (!assignedFasilName || assignedFasilName === 'Belum Ditentukan' || assignedFasilName === 'Tim Fasilitator SMAN 1 Belitang') {
+        container.innerHTML = `
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-center flex flex-col items-center justify-center gap-2">
+            <span class="material-symbols-outlined text-4xl text-slate-300">person_off</span>
+            <span class="font-extrabold text-sm text-slate-700">Fasilitator Belum Ditentukan</span>
+            <p class="text-xs text-slate-500 max-w-sm leading-relaxed">
+              Anda belum dimasukkan ke kelompok bimbingan guru fasilitator pada menu <strong>Pembagian Siswa Binaan</strong> oleh Admin. Silakan hubungi Koordinator Kokurikuler atau Wali Kelas Anda.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      const fasilList = [assignedFasilName];
 
       const studentName = currentStudent?.nama || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().name) || 'Peserta Didik';
       const studentClass = currentStudent?.class || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().class) || '';

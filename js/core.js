@@ -4709,14 +4709,15 @@ const FincestemCore = {
     getStudentFacilitator: function(nisn, className) {
       if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
         const info = window.FincestemMentorship.getMentorsForStudent(nisn, className);
-        if (info && info.facilitators && info.facilitators.length > 0) {
-          return info.facilitators.join('\n');
-        }
-        if (info && info.facilitator && info.facilitator !== '-') {
+        if (info && info.facilitator && info.facilitator !== '-' && info.facilitator !== 'Belum Ditentukan') {
           return info.facilitator;
         }
+        if (info && info.facilitators && info.facilitators.length > 0) {
+          return info.facilitators[0];
+        }
       }
-      return this.getClassFacilitator(className);
+      // Fasilitator siswa murni yang sudah diatur di Pembagian Siswa Binaan (jangan fallback ke seluruh kelas)
+      return 'Belum Ditentukan';
     },
 
     getClassCoordinator: function(className) {
