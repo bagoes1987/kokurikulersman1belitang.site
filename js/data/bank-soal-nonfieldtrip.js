@@ -106,341 +106,341 @@
     "id": 1,
     "day": 0,
     "indicatorCode": "A",
-    "indicatorKey": "ind_orientasi_fincestem",
-    "indicatorName": "Orientasi Pilar FINCESTEM 2026",
+    "indicatorKey": "ind_tema_kokurikuler",
+    "indicatorName": "Tema Resmi Kokurikuler 2026",
     "cognitiveLevel": "C1",
     "numberInIndicator": 1,
-    "question": "Program FINCESTEM 2026 di SMAN 1 Belitang memadukan lima bidang keilmuan yang saling terintegrasi dalam pembelajaran kontekstual. Kepanjangan dari akronim FINCESTEM yang tepat adalah...",
+    "question": "Pada halaman beranda web resmi FINCESTEM 2026 SMAN 1 Belitang, apa tema utama kegiatan kokurikuler yang diusung oleh sekolah?",
     "options": [
       {
         "key": "A",
-        "text": "Financial, Culture, Science, Technology, Engineering, and Mathematics"
+        "text": "FINCESTEM SMAN 1 BELITANG : “BELAJAR MELAMPAUI RUANG KELAS”"
       },
       {
         "key": "B",
-        "text": "Fiscal, Communication, Science, Technology, Ecology, and Mechanics"
+        "text": "FINCESTEM 2026 : “MENJELAJAHI CAKRAWALA SAINS NUSANTARA”"
       },
       {
         "key": "C",
-        "text": "Finance, Citizenship, Social, Technique, Environment, and Management"
+        "text": "KOKURIKULER BELITANG : “MENGUKIR PRESTASI MENUJU INDONESIA EMAS”"
       },
       {
         "key": "D",
-        "text": "Financial, Creative, Science, Tourism, Economy, and Mathematics"
+        "text": "FINCESTEM DIGITAL : “TRANSFORMASI PENDIDIKAN GENERASI MILENIAL”"
       },
       {
         "key": "E",
-        "text": "Formal, Culture, Social, Technology, Education, and Mathematics"
+        "text": "SMAN 1 BELITANG : “MERDEKA BELAJAR BERBASIS RISET LABORATORIUM”"
       }
     ],
     "correct": "A",
-    "explanation": "FINCESTEM merupakan akronim resmi dari Financial (Literasi Keuangan), Culture (Kearifan Budaya), Science (Sains Terapan), Technology (Teknologi Digital), Engineering (Rekayasa Desain), dan Mathematics (Pemodelan Matematis)."
+    "explanation": "Pada judul utama beranda web tertulis jelas: FINCESTEM SMAN 1 BELITANG : “BELAJAR MELAMPAUI RUANG KELAS”."
   },
   {
     "id": 2,
     "day": 0,
     "indicatorCode": "A",
-    "indicatorKey": "ind_tujuan_riset",
-    "indicatorName": "Tujuan Riset Mandiri OKU Timur",
-    "cognitiveLevel": "C2",
+    "indicatorKey": "ind_akronim_fincestem",
+    "indicatorName": "Kepanjangan Akronim FINCESTEM",
+    "cognitiveLevel": "C1",
     "numberInIndicator": 2,
-    "question": "Tujuan utama pelaksanaan kegiatan Kokurikuler FINCESTEM bagi kelompok Non-Field Trip di wilayah Kabupaten OKU Timur adalah...",
+    "question": "Berdasarkan penjelasan pada beranda web, kepanjangan resmi dari akronim tema FINCESTEM yang dikembangkan oleh SMA Negeri 1 Belitang adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Menggantikan seluruh ujian akhir semester dengan kegiatan liburan santai di rumah"
+        "text": "Financial, Culture, Ecology, Social, Technology, Education, and Mechanics"
       },
       {
         "key": "B",
-        "text": "Melakukan investigasi ilmiah kontekstual terhadap potensi lokal, UMKM, dan budaya di OKU Timur"
+        "text": "Financial, Culture, Exploration, and STEM (Science, Technology, Engineering, and Mathematics)"
       },
       {
         "key": "C",
-        "text": "Mewajibkan siswa menjual produk komersial secara massal untuk memperoleh omzet pribadi"
+        "text": "Fiscal, Communication, Environment, Science, Tourism, Economy, and Mathematics"
       },
       {
         "key": "D",
-        "text": "Mencatat absensi harian tanpa perlu menghasilkan laporan lembar kerja berbasis data"
+        "text": "Finance, Creative, Exploration, Science, Technique, Environment, and Management"
       },
       {
         "key": "E",
-        "text": "Mengikuti kompetisi olahraga antarkelas di lingkungan sekolah selama satu pekan penuh"
+        "text": "Formal, Culture, Education, Social, Technology, Engineering, and Mathematics"
       }
     ],
     "correct": "B",
-    "explanation": "Riset mandiri Non-Field Trip melatih siswa mengeksplorasi potensi kearifan lokal, komoditas unggulan, rantai pasok ekonomi, dan teknologi terapan di Kabupaten OKU Timur."
+    "explanation": "Di beranda web tertulis: SMA Negeri 1 Belitang mengembangkan kegiatan kokurikuler bertema FINCESTEM (Financial, Culture, Exploration, and STEM)."
   },
   {
     "id": 3,
     "day": 0,
     "indicatorCode": "B",
-    "indicatorKey": "ind_alur_harian",
-    "indicatorName": "Alur Kerja Sistem Berurutan",
+    "indicatorKey": "ind_ruang_pembelajaran",
+    "indicatorName": "Dua Ruang Pembelajaran",
     "cognitiveLevel": "C2",
     "numberInIndicator": 3,
-    "question": "Pada sistem aplikasi FINCESTEM, setiap hari peserta didik wajib menyelesaikan alur instrumen secara berurutan (*cascading*). Urutan pengerjaan yang benar adalah...",
+    "question": "Menurut informasi resmi di beranda web, pelaksanaan kegiatan FINCESTEM SMAN 1 Belitang dibagi menjadi dua ruang pembelajaran, yaitu...",
     "options": [
       {
         "key": "A",
-        "text": "Refleksi -> Asesmen -> LKPD -> Dokumentasi -> Modul Belajar"
+        "text": "FINCESTEM di Dalam Ruang Kelas dan FINCESTEM di Perpustakaan Sekolah"
       },
       {
         "key": "B",
-        "text": "Asesmen -> LKPD -> Modul Belajar -> Dokumentasi -> Refleksi"
+        "text": "FINCESTEM Tatap Muka Teori dan FINCESTEM Ujian Praktik Sekolah"
       },
       {
         "key": "C",
-        "text": "Modul Belajar -> LKPD -> Asesmen -> Dokumentasi Foto -> Refleksi"
+        "text": "FINCESTEM di Kabupaten OKU Timur dan FINCESTEM di Luar Kabupaten OKU Timur"
       },
       {
         "key": "D",
-        "text": "Dokumentasi Foto -> Modul Belajar -> Refleksi -> Asesmen -> LKPD"
+        "text": "FINCESTEM Tingkat Kabupaten OKU Timur dan FINCESTEM Tingkat Provinsi Sumatera Selatan"
       },
       {
         "key": "E",
-        "text": "LKPD -> Asesmen -> Modul Belajar -> Refleksi -> Dokumentasi Foto"
+        "text": "FINCESTEM Ekstrakurikuler Wajib dan FINCESTEM Pembinaan Minat Bakat Siswa"
       }
     ],
     "correct": "C",
-    "explanation": "Alur baku FINCESTEM dimulai dari membaca Modul Belajar (tahap 1), mengisi LKPD (tahap 2), mengerjakan Asesmen Harian (tahap 3), mengunggah Dokumentasi Foto (tahap 4), dan mengisi Jurnal Refleksi Mandiri (tahap 5)."
+    "explanation": "Di beranda web dijelaskan: Pelaksanaannya dibagi menjadi dua ruang pembelajaran, yaitu FINCESTEM di Kabupaten OKU Timur dan FINCESTEM di luar Kabupaten OKU Timur."
   },
   {
     "id": 4,
     "day": 0,
     "indicatorCode": "B",
-    "indicatorKey": "ind_etika_kejujuran",
-    "indicatorName": "Integritas & Etika Akademik",
-    "cognitiveLevel": "C3",
+    "indicatorKey": "ind_4_dimensi_profil",
+    "indicatorName": "4 Dimensi Profil Lulusan",
+    "cognitiveLevel": "C2",
     "numberInIndicator": 4,
-    "question": "Ketika mengisi Lembar Kerja Peserta Didik (LKPD) dan Modul Resume, sikap integritas akademik yang wajib ditunjukkan peserta didik adalah...",
+    "question": "Pada bagian 'Pendekatan Pembelajaran Mendalam' di beranda web, empat dimensi Profil Lulusan yang dikembangkan secara terintegrasi melalui kegiatan FINCESTEM 2026 adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Menyalin secara utuh laporan dari internet tanpa mencantumkan sumber referensi rujukan"
+        "text": "Kejujuran, Kedisiplinan, Tanggung Jawab, dan Kesopanan"
       },
       {
         "key": "B",
-        "text": "Meminta bantuan pihak luar sekolah untuk membuatkan laporan secara instan dan berbayar"
+        "text": "Literasi Numerasi, Penguasaan Bahasa Asing, Keterampilan Digital, dan Olahraga"
       },
       {
         "key": "C",
-        "text": "Mengabaikan fakta di lapangan dan mengarang angka perkiraan biaya fiktif dalam proposal"
+        "text": "Kepemimpinan, Jiwa Wirausaha, Bela Negara, dan Kebugaran Jasmani"
       },
       {
         "key": "D",
-        "text": "Menuliskan data faktual hasil wawancara riil dan menyusun narasi hasil analisis kelompok sendiri"
+        "text": "Penalaran Kritis, Kreativitas, Kewargaan, dan Kemandirian"
       },
       {
         "key": "E",
-        "text": "Mengumpulkan lembar kerja yang persis sama dengan kelompok lain tanpa adanya kolaborasi"
+        "text": "Ketaqwaan, Wawasan Kebangsaan, Kemampuan Berhitung, dan Kesenian Tradisional"
       }
     ],
     "correct": "D",
-    "explanation": "Integritas akademik mengutamakan kejujuran orisinalitas karya, data riil hasil observasi lapangan, serta analisis berbasis fakta tanpa plagiasi atau manipulasi data."
+    "explanation": "Beranda web menegaskan 4 dimensi Profil Lulusan yang dikembangkan meliputi: Penalaran Kritis, Kreativitas, Kewargaan, dan Kemandirian."
   },
   {
     "id": 5,
     "day": 0,
     "indicatorCode": "C",
-    "indicatorKey": "ind_geotagging_gps",
-    "indicatorName": "Validasi Geotagging & Kamera",
+    "indicatorKey": "ind_fokus_asesmen",
+    "indicatorName": "Fokus Utama Asesmen",
     "cognitiveLevel": "C2",
     "numberInIndicator": 5,
-    "question": "Mengapa modul dokumentasi foto pada aplikasi FINCESTEM mewajibkan pengaktifan koordinat lokasi GPS (Geotagging)?",
+    "question": "Di antara dimensi Profil Lulusan yang tercantum pada kartu rincian beranda web, dua dimensi yang ditetapkan secara khusus sebagai 'Fokus Utama Asesmen' adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Untuk menyedot kuota internet peserta didik secara cepat saat pengambilan foto"
+        "text": "Kemandirian dan Komunikasi Siswa"
       },
       {
         "key": "B",
-        "text": "Untuk membagikan lokasi tempat tinggal siswa secara terbuka kepada publik di media sosial"
+        "text": "Kewargaan dan Kepedulian Lingkungan"
       },
       {
         "key": "C",
-        "text": "Untuk membatasi jumlah foto yang boleh diambil peserta didik menjadi satu foto saja per hari"
+        "text": "Ketaqwaan dan Toleransi Budaya"
       },
       {
         "key": "D",
-        "text": "Untuk mengubah warna latar belakang foto menjadi hitam-putih secara otomatis oleh sistem"
+        "text": "Kebugaran Jasmani dan Ketangkasan Logistik"
       },
       {
         "key": "E",
-        "text": "Untuk memverifikasi secara sah bahwa observasi benar-benar dilakukan di lokasi riset yang sesuai"
+        "text": "Penalaran Kritis dan Kreativitas"
       }
     ],
     "correct": "E",
-    "explanation": "Fitur GPS Geotagging dan stempel watermark digital berfungsi membuktikan validitas keaslian riset di titik observasi riil (wilayah OKU Timur) serta mencegah penggunaan foto unduhan internet."
+    "explanation": "Pada kartu dimensi beranda web, dimensi Penalaran Kritis dan Kreativitas secara eksplisit memuat label lencana: 'Fokus Utama Asesmen'."
   },
   {
     "id": 6,
     "day": 0,
     "indicatorCode": "C",
-    "indicatorKey": "ind_exam_shield",
-    "indicatorName": "Prosedur Ujian & Exam Shield",
-    "cognitiveLevel": "C3",
+    "indicatorKey": "ind_pendekatan_pembelajaran",
+    "indicatorName": "Pendekatan Pembelajaran Mendalam",
+    "cognitiveLevel": "C2",
     "numberInIndicator": 6,
-    "question": "Saat mengerjakan kuis Asesmen pada aplikasi FINCESTEM, fitur *Exam Shield* aktif. Apa konsekuensi jika peserta berpindah tab, membuka jendela mengambang, atau meninggalkan halaman ujian melebihi batas toleransi?",
+    "question": "Berdasarkan narasi kurikulum pada beranda web, seluruh rangkaian kegiatan FINCESTEM diperkuat melalui pendekatan pedagogis...",
     "options": [
       {
         "key": "A",
-        "text": "Sistem secara otomatis akan menambahkan waktu ujian selama tiga puluh menit tambahan"
+        "text": "Pembelajaran Klasikal Menghafal Teori (Rote Memorization Approach)"
       },
       {
         "key": "B",
-        "text": "Sistem langsung mematikan perangkat gawai siswa dan merestart sistem operasi ponsel"
+        "text": "Pembelajaran Individual Berbasis Penugasan Rumah (Homework Drill)"
       },
       {
         "key": "C",
-        "text": "Sistem mencatat pelanggaran integritas dan dapat membatalkan atau mengirim ujian secara paksa"
+        "text": "Pendekatan Pembelajaran Mendalam (Deep Learning Approach) berbasis pengalaman nyata"
       },
       {
         "key": "D",
-        "text": "Sistem akan menghapus akun siswa secara permanen dari basis data induk Dapodik sekolah"
+        "text": "Pembelajaran Bersyarat Berorientasi Ujian Akhir Tulis Sekolah semata"
       },
       {
         "key": "E",
-        "text": "Sistem memberikan bocoran kunci jawaban kepada siswa agar ujian cepat diselesaikan"
+        "text": "Pendekatan Tutorial Tatap Muka Ceramah Satu Arah oleh Dewan Guru"
       }
     ],
     "correct": "C",
-    "explanation": "Exam Shield menjaga kejujuran ujian dengan mendeteksi tab switching, window blur, dan floating apps. Jika batas pelanggaran terlampaui, sistem otomatis mengunci dan mensubmit jawaban apa adanya dengan catatan pelanggaran."
+    "explanation": "Di beranda web disebutkan: Seluruh rangkaian FINCESTEM diperkuat melalui Pendekatan Pembelajaran Mendalam (Deep Learning) dengan menempatkan siswa sebagai subjek aktif."
   },
   {
     "id": 7,
     "day": 0,
     "indicatorCode": "D",
-    "indicatorKey": "ind_kolaborasi_tim",
-    "indicatorName": "Kolaborasi & Peran Kelompok",
-    "cognitiveLevel": "C2",
+    "indicatorKey": "ind_rute_luar_daerah",
+    "indicatorName": "Rute Eksplorasi Luar OKU Timur",
+    "cognitiveLevel": "C1",
     "numberInIndicator": 7,
-    "question": "Dalam pelaksanaan proyek riset mandiri kelompok Non-Field Trip, prinsip kolaborasi yang efektif tercermin dari...",
+    "question": "Sesuai deskripsi ruang pembelajaran di beranda web, rute perjalanan pembelajaran bagi peserta didik yang melaksanakan kegiatan di luar Kabupaten OKU Timur meliputi jalur...",
     "options": [
       {
         "key": "A",
-        "text": "Menyerahkan seluruh tugas penyusunan modul, LKPD, dan foto hanya kepada ketua kelompok"
+        "text": "Belitang – Palembang – Lampung – Jakarta – Bandung – Belitang"
       },
       {
         "key": "B",
-        "text": "Bekerja sendiri-sendiri tanpa koordinasi dan mengumpulkan hasil laporan secara terpisah"
+        "text": "Belitang – Medan – Danau Toba – Bukittinggi – Padang – Belitang"
       },
       {
         "key": "C",
-        "text": "Menghindari komunikasi dengan guru fasilitator agar tidak diberikan masukan perbaikan"
+        "text": "Belitang – Jakarta – Surabaya – Denpasar Bali – Lombok – Belitang"
       },
       {
         "key": "D",
-        "text": "Pembagian tugas yang berkeadilan, diskusi aktif, dan saling melengkapi dalam mengkaji instrumen"
+        "text": "Belitang – Semarang – Malang – Bromo – Yogyakarta – Belitang"
       },
       {
         "key": "E",
-        "text": "Menunggu teman lain menyelesaikan tugas terlebih dahulu sebelum ikut menandatangani lembar kerja"
+        "text": "Belitang – Solo – Surabaya – Banyuwangi – Bali – Belitang"
       }
     ],
     "correct": "D",
-    "explanation": "Kolaborasi efektif mengedepankan pembagian peran yang seimbang, komunikasi yang sehat, kerja tim yang sinergis, serta saling mendukung demi kesuksesan riset bersama."
+    "explanation": "Beranda web menyebutkan jalur perjalanan: Belitang–Semarang–Malang–Bromo–Yogyakarta–Belitang."
   },
   {
     "id": 8,
     "day": 0,
     "indicatorCode": "D",
-    "indicatorKey": "ind_bimbingan_fasilitator",
-    "indicatorName": "Bimbingan Guru Fasilitator",
+    "indicatorKey": "ind_lab_alam_oku_timur",
+    "indicatorName": "Laboratorium Riset OKU Timur",
     "cognitiveLevel": "C2",
     "numberInIndicator": 8,
-    "question": "Peran utama Guru Fasilitator yang membina kelompok riset mandiri Non-Field Trip adalah...",
+    "question": "Di beranda web dijelaskan bahwa FINCESTEM di Kabupaten OKU Timur menjadikan potensi daerah sebagai laboratorium pembelajaran nyata. Sektor-sektor lokal yang diobservasi peserta didik meliputi...",
     "options": [
       {
         "key": "A",
-        "text": "Memberikan pendampingan, arahan metodologi, memvalidasi progres harian, dan mengevaluasi karya"
+        "text": "Pertanian, perkebunan, perikanan, kebanksentralan, koperasi, perbankan mini, dan UMKM lokal"
       },
       {
         "key": "B",
-        "text": "Mengerjakan seluruh instrumen LKPD siswa dari awal hingga akhir kegiatan riset"
+        "text": "Industri pertambangan minyak lepas pantai, eksplorasi batubara, dan manufaktur berat"
       },
       {
         "key": "C",
-        "text": "Mengawasi gerak-gerik siswa selama 24 jam non-stop di rumah masing-masing siswa"
+        "text": "Perdagangan ekspor-impor kontainer pelabuhan samudra dan galangan kapal internasional"
       },
       {
         "key": "D",
-        "text": "Menghapus data hasil penelitian siswa apabila terjadi sedikit kesalahan ketik"
+        "text": "Pusat bursa efek komoditas global, pasar saham luar negeri, dan korporasi multinasional"
       },
       {
         "key": "E",
-        "text": "Memaksa siswa mengubah topik riset setiap hari tanpa persetujuan tim kelompok"
+        "text": "Industri penerbangan komersial dan perakitan satelit telekomunikasi antariksa"
       }
     ],
     "correct": "A",
-    "explanation": "Guru Fasilitator bertindak sebagai pembimbing dan pendamping yang mengarahkan proses riset, memonitor ketercapaian 4 pilar FINCESTEM, serta memberikan umpan balik konstruktif."
+    "explanation": "Di beranda web tertulis: Peserta didik mengkaji aspek finansial melalui kebanksentralan, koperasi, perbankan mini, ekonomi lokal, serta observasi terhadap pertanian, perkebunan, dan perikanan."
   },
   {
     "id": 9,
     "day": 0,
     "indicatorCode": "E",
-    "indicatorKey": "ind_jurnal_refleksi",
-    "indicatorName": "Fungsi Jurnal Refleksi Mandiri",
-    "cognitiveLevel": "C4",
+    "indicatorKey": "ind_makna_kewargaan",
+    "indicatorName": "Makna Dimensi Kewargaan",
+    "cognitiveLevel": "C2",
     "numberInIndicator": 9,
-    "question": "Mengapa pengisian Jurnal Refleksi Mandiri di akhir setiap hari kegiatan sangat penting bagi peserta didik?",
+    "question": "Menurut rincian kartu dimensi Profil Lulusan pada beranda web, peserta didik yang memiliki dimensi 'Kewargaan' ditandai dengan kemampuan...",
     "options": [
       {
         "key": "A",
-        "text": "Hanya sebagai formalitas syarat penutup tanpa ada kaitan dengan pembelajaran siswa"
+        "text": "Menghafal seluruh nama pejabat daerah dan pasal undang-undang secara tepat"
       },
       {
         "key": "B",
-        "text": "Untuk mengevaluasi diri, menyadari hikmah pembelajaran, dan merencanakan langkah esok hari"
+        "text": "Menginternalisasi kearifan lokal, menghargai keberagaman budaya, serta aktif menjaga kelestarian lingkungan"
       },
       {
         "key": "C",
-        "text": "Untuk membandingkan kelemahan teman satu kelompok agar mendapatkan nilai lebih tinggi"
+        "text": "Memenangkan pemilihan ketua organisasi kesiswaan tingkat kabupaten secara mutlak"
       },
       {
         "key": "D",
-        "text": "Untuk memperpanjang durasi waktu penggunaan gawai di malam hari sebelum istirahat"
+        "text": "Membayar pajak penghasilan usaha secara tepat waktu setiap awal bulan kalender"
       },
       {
         "key": "E",
-        "text": "Untuk mencurahkan keluh kesah yang tidak berkaitan dengan tema pembelajaran kokurikuler"
+        "text": "Mengutamakan kepentingan kelompok pribadi di atas ketertiban masyarakat umum"
       }
     ],
     "correct": "B",
-    "explanation": "Refleksi merupakan tahapan metakognisi krusial di mana siswa merenungkan apa yang telah dipelajari, tantangan yang dihadapi, serta rencana tindak lanjut untuk pertumbuhan karakter dan kompetensi."
+    "explanation": "Pada kartu Kewargaan tertulis: Mampu menginternalisasi kearifan lokal, menghargai keberagaman budaya nusantara, serta aktif menjaga kelestarian lingkungan eksplorasi."
   },
   {
     "id": 10,
     "day": 0,
     "indicatorCode": "E",
-    "indicatorKey": "ind_keselamatan_k3",
-    "indicatorName": "Keselamatan & Kesiapan Lapangan",
-    "cognitiveLevel": "C3",
+    "indicatorKey": "ind_makna_kemandirian",
+    "indicatorName": "Makna Dimensi Kemandirian",
+    "cognitiveLevel": "C2",
     "numberInIndicator": 10,
-    "question": "Saat melakukan observasi lapangan ke pelaku UMKM atau lokasi riset di Kabupaten OKU Timur, hal yang paling wajib diperhatikan adalah...",
+    "question": "Berdasarkan rincian kartu dimensi Profil Lulusan pada beranda web, penguasaan dimensi 'Kemandirian' peserta didik tercermin dari kemampuan...",
     "options": [
       {
         "key": "A",
-        "text": "Memasuki tempat produksi tanpa izin pemilik demi mendapatkan foto dokumentasi yang unik"
+        "text": "Mengerjakan seluruh tugas kelompok seorang diri tanpa melibatkan rekan satu tim"
       },
       {
         "key": "B",
-        "text": "Mengabaikan keselamatan berkendara di jalan raya demi mengejar tenggat waktu pengumpulan"
+        "text": "Membawa perlengkapan logistik mewah secara berlebihan saat kegiatan observasi"
       },
       {
         "key": "C",
-        "text": "Mengubah data keuangan pemilik usaha tanpa memberitahukan kepada narasumber terkait"
+        "text": "Menolak menerima saran perbaikan ataupun bimbingan dari guru fasilitator"
       },
       {
         "key": "D",
-        "text": "Menghentikan wawancara secara mendadak saat narasumber sedang memberikan penjelasan penting"
+        "text": "Menuntut nilai sempurna tanpa perlu menunjukkan bukti catatan pengamatan riil"
       },
       {
         "key": "E",
-        "text": "Berperilaku sopan santun, mematuhi tata tertib, memakai seragam/identitas resmi, dan menjaga K3"
+        "text": "Mengelola waktu, regulasi diri, kedisiplinan logistik, serta bertanggung jawab penuh atas tugas"
       }
     ],
     "correct": "E",
-    "explanation": "Etika observasi lapangan dan keselamatan kerja (K3) mewajibkan siswa beridentitas jelas, santun, mematuhi aturan setempat, mengutamakan keselamatan diri, serta meminta izin saat wawancara dan pengambilan foto."
+    "explanation": "Pada kartu Kemandirian tertulis: Mampu mengelola waktu, regulasi diri, kedisiplinan logistik, serta bertanggung jawab penuh atas tugas individu maupun kelompok."
   }
 ],
     1: [

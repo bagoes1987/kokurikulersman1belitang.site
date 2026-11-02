@@ -2937,26 +2937,26 @@
           <div class="flex flex-col gap-2">
             <label class="text-xs font-bold text-slate-800 leading-snug flex items-center gap-1.5">
               <span class="w-5 h-5 rounded-md bg-teal-800 text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
-              <span>Identitas Tim &amp; Rencana Objek Riset di OKU Timur:</span>
+              <span>Apa tema kegiatan kokurikuler SMAN 1 Belitang tahun 2026?</span>
             </label>
             <p class="text-[11px] text-slate-500 leading-tight">
-              Tuliskan nama anggota kelompok Anda dan sektor / komoditas lokal yang direncanakan untuk diobservasi (contoh: Pertanian Padi Sawah di Belitang, UMKM Keripik Pisang, Budidaya Ikan Patin, KUD, dsb).
+              Lihat judul resmi kegiatan kokurikuler yang tertera pada bagian atas beranda web aplikasi FINCESTEM SMAN 1 Belitang.
             </p>
-            <textarea id="nftD0LkpdQ1" rows="3" ${!canEdit ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${!canEdit ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Tuliskan nama tim kelompok, kelas, dan topik riset mandiri Anda di sini...">${savedAnswers.q1}</textarea>
-            <span id="nftD0LkpdQ1Counter" class="text-[10.5px] text-slate-400">Minimal 15 karakter</span>
+            <textarea id="nftD0LkpdQ1" rows="3" ${!canEdit ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${!canEdit ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Tuliskan tema kegiatan kokurikuler SMAN 1 Belitang tahun 2026 di sini...">${savedAnswers.q1}</textarea>
+            <span id="nftD0LkpdQ1Counter" class="text-[10.5px] text-slate-400">Minimal 10 karakter</span>
           </div>
 
           <!-- PERTANYAAN 2 -->
           <div class="flex flex-col gap-2 pt-2 border-t border-slate-100">
             <label class="text-xs font-bold text-slate-800 leading-snug flex items-center gap-1.5">
               <span class="w-5 h-5 rounded-md bg-teal-800 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
-              <span>Kesiapan Perlengkapan &amp; Pembagian Tugas Kelompok:</span>
+              <span>Sebutkan 4 dimensi Profil Lulusan pada kegiatan kokurikuler SMAN 1 Belitang tahun 2026!</span>
             </label>
             <p class="text-[11px] text-slate-500 leading-tight">
-              Sebutkan perlengkapan riset yang Anda siapkan (kamera smartphone aktif GPS, lembar catatan wawancara, seragam sekolah) dan pembagian peran anggota dalam tim saat observasi.
+              Lihat 4 kartu dimensi yang dikembangkan pada bagian 'Pendekatan Pembelajaran Mendalam' di beranda web aplikasi.
             </p>
-            <textarea id="nftD0LkpdQ2" rows="3" ${!canEdit ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${!canEdit ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Tuliskan perlengkapan yang disiapkan dan pembagian tugas kelompok...">${savedAnswers.q2}</textarea>
-            <span id="nftD0LkpdQ2Counter" class="text-[10.5px] text-slate-400">Minimal 15 karakter</span>
+            <textarea id="nftD0LkpdQ2" rows="3" ${!canEdit ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${!canEdit ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Tuliskan 4 dimensi Profil Lulusan (contoh: Penalaran Kritis, ...) di sini...">${savedAnswers.q2}</textarea>
+            <span id="nftD0LkpdQ2Counter" class="text-[10.5px] text-slate-400">Minimal 10 karakter</span>
           </div>
 
           <!-- STATUS & TOMBOL SUBMIT -->
@@ -2992,8 +2992,8 @@
       const updateCounter = (el, cEl) => {
         if (!el || !cEl) return;
         const len = el.value.trim().length;
-        if (len < 15) {
-          cEl.textContent = `Kurang ${15 - len} karakter lagi (Minimal 15 karakter).`;
+        if (len < 10) {
+          cEl.textContent = `Kurang ${10 - len} karakter lagi (Minimal 10 karakter).`;
           cEl.className = 'text-[10.5px] text-rose-600 font-semibold';
         } else {
           cEl.textContent = `✓ ${len} karakter (Cukup).`;
@@ -3010,7 +3010,7 @@
     const q1 = (document.getElementById('nftD0LkpdQ1')?.value || '').trim();
     const q2 = (document.getElementById('nftD0LkpdQ2')?.value || '').trim();
 
-    if (q1.length < 15) {
+    if (q1.length < 10) {
       if (window.FincestemCore && FincestemCore.ui) {
         FincestemCore.ui.toast('Pertanyaan 1 minimal 15 karakter sebelum LKPD dikirim!', 'warning');
       } else {
@@ -3019,7 +3019,7 @@
       return;
     }
 
-    if (q2.length < 15) {
+    if (q2.length < 10) {
       if (window.FincestemCore && FincestemCore.ui) {
         FincestemCore.ui.toast('Pertanyaan 2 minimal 15 karakter sebelum LKPD dikirim!', 'warning');
       } else {
