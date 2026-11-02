@@ -2177,13 +2177,19 @@
           </p>
         </div>
 
-        <!-- KOTAK SKOR ANGKA -->
+        <!-- KOTAK SKOR ANGKA & BINTANG -->
         <div class="w-full p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1 items-center justify-center shadow-inner">
-          <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Nilai Akhir Anda</span>
+          <span class="text-xs text-slate-400 font-bold uppercase tracking-wider">Nilai Akhir ${Number(dayNum) === 0 ? 'Simulasi' : 'Asesmen'}</span>
+          <div class="text-2xl sm:text-3xl tracking-widest text-amber-500 font-black mt-0.5">
+            ${score >= 90 ? '⭐⭐⭐⭐⭐' : (score >= 80 ? '⭐⭐⭐⭐☆' : (score >= 70 ? '⭐⭐⭐☆☆' : (score >= 60 ? '⭐⭐☆☆☆' : '⭐☆☆☆☆')))}
+          </div>
           <span class="text-4xl sm:text-5xl font-black ${isPassed ? 'text-teal-800' : 'text-amber-800'} tracking-tight">
             ${score}
           </span>
-          <span class="text-[11px] text-slate-500 font-semibold">Dihitung dari ${answeredCount} / ${totalQuestions} Soal Diselesaikan</span>
+          <span class="text-xs font-bold text-amber-900 bg-amber-100 px-3 py-0.5 rounded-full border border-amber-300">
+            ${score >= 90 ? '5 Bintang · Sangat Baik' : (score >= 80 ? '4 Bintang · Baik' : (score >= 70 ? '3 Bintang · Cukup' : 'Perlu Peningkatan'))}
+          </span>
+          <span class="text-[11px] text-slate-500 font-semibold mt-0.5">Dihitung dari ${answeredCount} / ${totalQuestions} Soal Diselesaikan</span>
         </div>
 
         <!-- STATISTIK RINCIAN -->

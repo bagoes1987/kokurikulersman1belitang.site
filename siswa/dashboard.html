@@ -2170,6 +2170,27 @@
        ======================================================== */
     function calculateNonFTDayAudit(dayNum, taskMap, student) {
       const d = parseInt(dayNum);
+      if (d === 0) {
+        return {
+          dayNumber: 0,
+          hasPhoto: true,
+          hasGeotag: true,
+          isInsideOKUTimur: true,
+          hasRefleksi: true,
+          isRefleksiValid: true,
+          wordCount: 30,
+          hasLkpd: true,
+          hasAsesmen: true,
+          penalties: [],
+          passes: [{ item: 'Simulasi Gladi Bersih', desc: 'Rangkaian instrumen latihan berhasil diselesaikan dengan predikat sangat baik.' }],
+          recommendedStars: 5,
+          overallGrade: 'A',
+          summaryText: 'Simulasi Gladi Bersih Selesai (Bintang 5)',
+          subFormatted: 'Selesai Tepat Waktu',
+          isTimeLate: false,
+          hasSubmitTime: true
+        };
+      }
       const user = FincestemCore.auth.getUser() || {};
       const nisn = student ? (student.nisn || student.identifier) : (user.nisn || user.identifier);
       const cleanNisn = String(nisn || '').trim();
@@ -2760,13 +2781,35 @@
 
         let dayProgressBadge = '';
         if (isTrial) {
-          dayProgressBadge = `
-            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
-              GLADI BERSIH
-            </span>
-          `;
-        }
-        if (dayRecord && dayRecord.score) {
+          const isD0Done = hasRefleksi || (dayProg && dayProg.hasRefleksi);
+          if (isD0Done) {
+            dayProgressBadge = `
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
+                GLADI BERSIH
+              </span>
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-amber-600">stars</span>
+                ⭐⭐⭐⭐⭐ Bintang 5 (Skor: 100)
+              </span>
+            `;
+          } else if (hasLkpd || hasAsesmen || hasDok || hasMateri) {
+            dayProgressBadge = `
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
+                GLADI BERSIH
+              </span>
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 border border-teal-300 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
+                Dalam Proses
+              </span>
+            `;
+          } else {
+            dayProgressBadge = `
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
+                GLADI BERSIH
+              </span>
+            `;
+          }
+        } else if (dayRecord && dayRecord.score) {
           dayProgressBadge += `
             <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-1 shadow-2xs">
               <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
@@ -2852,7 +2895,7 @@
 
         const hasPenilaian = isFieldTrip 
           ? (hasRefleksi || (dayRecord && dayRecord.score)) 
-          : !!(dayRecord && dayRecord.score);
+          : (isTrial ? (hasRefleksi || (dayProg && dayProg.hasRefleksi)) : !!(dayRecord && dayRecord.score));
 
         const getCheckBadge = (isDone, isOpen) => {
           if (isDone) {
@@ -2901,12 +2944,12 @@
 
         const nilaiBtnClass = canOpenPenilaian 
           ? (hasPenilaian
-              ? (isFieldTrip ? 'bg-amber-100/90 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-2xs cursor-pointer' : 'bg-emerald-50/90 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-2xs cursor-pointer')
+              ? (isFieldTrip || isTrial ? 'bg-amber-100/90 hover:bg-amber-200 text-amber-950 border border-amber-300 shadow-2xs cursor-pointer' : 'bg-emerald-50/90 hover:bg-emerald-100 text-emerald-950 border border-emerald-300 shadow-2xs cursor-pointer')
               : 'bg-teal-50 hover:bg-teal-100 text-teal-950 border border-teal-200/80 shadow-2xs cursor-pointer') 
           : 'bg-slate-100 text-slate-400 border border-slate-200 cursor-not-allowed opacity-80';
         const nilaiIconClass = canOpenPenilaian 
           ? (hasPenilaian
-              ? (isFieldTrip ? 'bg-amber-500 text-slate-950' : 'bg-emerald-600 text-white') 
+              ? (isFieldTrip || isTrial ? 'bg-amber-500 text-slate-950' : 'bg-emerald-600 text-white') 
               : 'bg-teal-600 text-white') 
           : 'bg-slate-300 text-slate-500';
 
@@ -3172,17 +3215,19 @@
                   </span>
                   <div class="flex flex-col text-left min-w-0">
                     <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">6. Penilaian Fasil</span>
-                    <span class="text-[10px] sm:text-xs ${hasPenilaian ? (isFieldTrip ? 'text-amber-950 font-bold' : 'text-emerald-800 font-bold') : (canOpenPenilaian ? 'text-teal-800 font-medium' : 'text-slate-400')} leading-tight mt-0.5 truncate">${
+                    <span class="text-[10px] sm:text-xs ${hasPenilaian ? (isTrial || isFieldTrip ? 'text-amber-950 font-bold' : 'text-emerald-800 font-bold') : (canOpenPenilaian ? 'text-teal-800 font-medium' : 'text-slate-400')} leading-tight mt-0.5 truncate">${
                       !canOpenPenilaian 
                         ? 'Terkunci' 
-                        : (isFieldTrip 
-                            ? ((hasRefleksi || (dayRecord && dayRecord.score))
-                                ? (function() {
-                                    const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
-                                    return `${ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆'} Nilai: ${ftScore.score}`;
-                                  })()
-                                : 'Feedback Lapangan')
-                            : ((dayRecord && dayRecord.score) ? `✓ Nilai: ${dayRecord.score}` : 'Menunggu Fasil'))
+                        : (isTrial
+                            ? (hasPenilaian ? '⭐⭐⭐⭐⭐ Bintang 5 (100)' : 'Cek Bintang Simulasi')
+                            : (isFieldTrip 
+                                ? ((hasRefleksi || (dayRecord && dayRecord.score))
+                                    ? (function() {
+                                        const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
+                                        return `${ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆'} Nilai: ${ftScore.score}`;
+                                      })()
+                                    : 'Feedback Lapangan')
+                                : ((dayRecord && dayRecord.score) ? `✓ Nilai: ${dayRecord.score}` : 'Menunggu Fasil'))
                     }</span>
                   </div>
                 </div>
@@ -4648,24 +4693,126 @@
         const dayRec = records.find(r => Number(r.day_number) === Number(day.day_number));
 
         if (isTrial) {
-          body.innerHTML = `
-            <div class="p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col gap-3">
-              <div class="flex items-center justify-between gap-2 flex-wrap">
-                <span class="text-xs sm:text-sm font-bold text-amber-950">Status Evaluasi:</span>
-                <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-amber-200 text-amber-900 uppercase">SIMULASI GLADI BERSIH</span>
+          const day0Prog = getFTProgressStatus(taskMap, 0);
+          const isD0Done = (day0Prog && day0Prog.hasRefleksi) || (savedTask && (savedTask.status === 'completed' || savedTask.status === 'submitted'));
+          let d0CbtScore = 100;
+          try {
+            for (const id of getStudentStorageIdentifiers()) {
+              const rawA = localStorage.getItem('fincestem_asesmen_nft_day0_' + id) || localStorage.getItem('fincestem_asesmen_day0_' + id);
+              if (rawA) {
+                const pA = JSON.parse(rawA);
+                if (pA && pA.score !== undefined) {
+                  d0CbtScore = parseFloat(pA.score);
+                  break;
+                }
+              }
+            }
+          } catch(e) {}
+          if (taskMap['0_asesmen'] && taskMap['0_asesmen'].score !== undefined) {
+            d0CbtScore = parseFloat(taskMap['0_asesmen'].score);
+          }
+
+          if (isD0Done) {
+            body.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/15 via-teal-500/10 to-emerald-500/15 border border-amber-300 flex flex-col gap-4 shadow-xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-amber-600 text-lg">verified</span>
+                    Status Evaluasi Simulasi (Gladi Bersih):
+                  </span>
+                  <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-400 text-slate-950 uppercase tracking-wide shadow-2xs">
+                    ⭐⭐⭐⭐⭐ BINTANG 5
+                  </span>
+                </div>
+
+                <!-- Big Star Box -->
+                <div class="p-4 rounded-2xl bg-white border border-amber-200/80 shadow-xs flex flex-col items-center justify-center text-center gap-2">
+                  <div class="text-3xl sm:text-4xl tracking-widest text-amber-500 font-black">
+                    ⭐⭐⭐⭐⭐
+                  </div>
+                  <div class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
+                    Skor Simulasi: 100 / 100 <span class="text-amber-700 text-base font-extrabold">· Sangat Baik (A)</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-1">
+                    <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
+                      ✓ Gladi Bersih 5 Tahap Sukses &amp; Tuntas
+                    </span>
+                    <span class="text-[11px] text-slate-500 font-medium">
+                      Kuis Asesmen CBT: ${d0CbtScore}/100 &bull; Modul, LKPD, Foto &amp; Refleksi Lengkap
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 4 Pilar Penilaian Simulasi -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                    <span class="block text-slate-500 font-bold text-[11px]">Sains &amp; Lingkungan</span>
+                    <span class="text-base font-black text-emerald-600">100 (⭐ 5)</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                    <span class="block text-slate-500 font-bold text-[11px]">Teknologi Digital</span>
+                    <span class="text-base font-black text-emerald-600">100 (⭐ 5)</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                    <span class="block text-slate-500 font-bold text-[11px]">Literasi Finansial</span>
+                    <span class="text-base font-black text-emerald-600">100 (⭐ 5)</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                    <span class="block text-slate-500 font-bold text-[11px]">Budaya &amp; Karakter</span>
+                    <span class="text-base font-black text-emerald-600">100 (⭐ 5)</span>
+                  </div>
+                </div>
+
+                <!-- Catatan Evaluasi Fasilitator -->
+                <div class="flex flex-col gap-1.5">
+                  <span class="text-xs sm:text-sm font-bold text-amber-950">Catatan &amp; Feedback Fasilitator:</span>
+                  <p class="text-xs sm:text-sm text-amber-950 leading-relaxed italic bg-white/90 p-3.5 rounded-xl border border-amber-200/80 font-medium">
+                    "Luar biasa! Anda telah berhasil menuntaskan seluruh 5 instrumen simulasi FINCESTEM (Modul Belajar, Lembar Kerja LKPD, Kuis Asesmen CBT 10 Soal, Dokumentasi Foto, dan Jurnal Refleksi). Penguasaan fitur aplikasi Anda sangat baik dan Anda siap 100% mengikuti kegiatan kokurikuler SMAN 1 Belitang tahun 2026!"
+                  </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-amber-200/60">
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Tim Fasilitator:</span>
+                    <span class="font-extrabold text-slate-800">Tim Fasilitator Kokurikuler SMAN 1 Belitang</span>
+                  </div>
+                  <span class="text-emerald-700 font-bold self-start sm:self-auto shrink-0 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Status: Gladi Bersih Tuntas ✓</span>
+                </div>
               </div>
-              <div class="flex items-center justify-between p-3.5 rounded-xl bg-white border border-amber-300">
-                <span class="font-bold text-amber-950 text-sm">Skor Simulasi:</span>
-                <span class="text-lg font-black text-amber-700">100 / 100 (Sangat Baik - A)</span>
+            `;
+          } else {
+            body.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-slate-50 border border-slate-200 flex flex-col gap-4">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-amber-600 text-lg">pending</span>
+                    Status Evaluasi Simulasi (Gladi Bersih):
+                  </span>
+                  <span class="px-3 py-1 rounded-xl text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">
+                    Simulasi Belum Tuntas
+                  </span>
+                </div>
+                <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col items-center justify-center text-center gap-2">
+                  <div class="text-2xl sm:text-3xl tracking-widest text-slate-300 font-black">
+                    ☆☆☆☆☆
+                  </div>
+                  <div class="text-base sm:text-lg font-bold text-slate-700 leading-tight">
+                    Rating Bintang Terbuka Setelah 5 Tahap Simulasi Tuntas
+                  </div>
+                  <p class="text-xs text-slate-500 max-w-md">
+                    Selesaikan seluruh 5 rangkaian aktivitas uji coba (Modul, LKPD, Kuis Asesmen CBT, Unggah Foto, dan Jurnal Refleksi) untuk membuka <strong>Penilaian Bintang 5 Simulasi</strong>.
+                  </p>
+                </div>
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-slate-200">
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Tim Fasilitator:</span>
+                    <span class="font-extrabold text-slate-800">Tim Fasilitator Kokurikuler SMAN 1 Belitang</span>
+                  </div>
+                  <span class="text-amber-700 font-bold self-start sm:self-auto shrink-0 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">Harap Tuntaskan Tahap 1 s.d. 5</span>
+                </div>
               </div>
-              <div class="flex flex-col gap-1.5">
-                <span class="text-xs sm:text-sm font-bold text-amber-950">Catatan Simulasi:</span>
-                <p class="text-sm text-amber-950 leading-relaxed italic bg-white/90 p-3 rounded-xl border border-amber-200 font-medium">
-                  "Selamat! Anda telah mencoba seluruh alur aktivitas FINCESTEM pada sesi Gladi Bersih ini. Siapkan diri dan tim Anda untuk riset lapangan sesungguhnya."
-                </p>
-              </div>
-            </div>
-          `;
+            `;
+          }
         } else if (isFieldTrip) {
           // ==========================================
           // CABANG 1: SISWA FIELD TRIP

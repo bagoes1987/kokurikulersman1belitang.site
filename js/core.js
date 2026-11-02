@@ -3632,7 +3632,21 @@ const FincestemCore = {
     isDayStudentTasksDone: function(prog, dayNum) {
       if (!prog) return false;
       const d = parseInt(dayNum);
-      if (d <= 0) return true;
+      if (d < 0) return true;
+      if (d === 0) {
+        const tm0 = prog.task_map || {};
+        if (tm0['0_refleksi'] && (tm0['0_refleksi'].status === 'submitted' || tm0['0_refleksi'].status === 'completed')) return true;
+        if (tm0['0_materi'] && tm0['0_lkpd'] && tm0['0_asesmen'] && tm0['0_dokumentasi'] && tm0['0_refleksi']) return true;
+        try {
+          const u = FincestemCore.auth.getUser() || {};
+          const id = String(u.nisn || u.identifier || '').trim();
+          if (id) {
+            const rawRefl = localStorage.getItem('fincestem_refleksi_nft_day0_' + id) || localStorage.getItem('fincestem_refl_nft_day0_' + id);
+            if (rawRefl) return true;
+          }
+        } catch(e) {}
+        return false;
+      }
 
       let isFt = true;
       try {
