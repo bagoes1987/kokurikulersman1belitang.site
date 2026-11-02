@@ -184,6 +184,25 @@ function ensureRoleTables($pdo) {
         ");
     } catch (Exception $e) {}
 
+    // Tabel Biodata & Profil Fasilitator (Bisa diisi oleh fasilitator & dilihat siswa)
+    try {
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `teacher_profiles` (
+                `id` INT AUTO_INCREMENT PRIMARY KEY,
+                `teacher_username` VARCHAR(100) NOT NULL UNIQUE,
+                `nama_lengkap` VARCHAR(255) DEFAULT NULL,
+                `nip` VARCHAR(50) DEFAULT NULL,
+                `ttl` VARCHAR(150) DEFAULT NULL,
+                `no_wa` VARCHAR(50) DEFAULT NULL,
+                `alamat` TEXT DEFAULT NULL,
+                `foto_url` MEDIUMTEXT DEFAULT NULL,
+                `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                INDEX `idx_tp_user` (`teacher_username`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+        ");
+    } catch (Exception $eTp) {}
+
     // Auto-sync Peserta Field Trip dari file resmi field_trip_students.json (455 Siswa)
     try {
         $ftFile = __DIR__ . '/../field_trip_students.json';
@@ -523,6 +542,63 @@ if ($method === 'GET') {
             } else {
                 jsonResponse(false, 'Siswa tidak ditemukan di database', null, 404);
             }
+        }
+
+        // Ambil profil seorang guru / fasilitator
+        if ($action === 'get_teacher_profile') {
+            $userKey = trim($_GET['username'] ?? $_GET['identifier'] ?? '');
+            if (!$userKey) jsonResponse(false, 'Username guru wajib diisi!', null, 400);
+
+            $stmt = $pdo->prepare("SELECT * FROM `teacher_profiles` WHERE `teacher_username` = :u OR `nip` = :u LIMIT 1");
+            $stmt->execute([':u' => $userKey]);
+            $prof = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$prof) {
+                // Fallback cari dari tabel teachers
+                $stmtT = $pdo->prepare("SELECT * FROM `teachers` WHERE `username` = :u OR `nip` = :u OR `kode_guru` = :u LIMIT 1");
+                $stmtT->execute([':u' => $userKey]);
+                $tRow = $stmtT->fetch(PDO::FETCH_ASSOC);
+                if ($tRow) {
+                    $prof = [
+                        'teacher_username' => $tRow['username'],
+                        'nama_lengkap'     => $tRow['nama_guru'],
+                        'nip'              => $tRow['nip'],
+                        'ttl'              => '',
+                        'no_wa'            => '',
+                        'alamat'           => '',
+                        'foto_url'         => ''
+                    ];
+                }
+            }
+
+            jsonResponse(true, 'Profil guru berhasil dimuat', $prof ?: null);
+        }
+
+        // Ambil seluruh profil fasilitator (untuk modal siswa & pembina)
+        if ($action === 'get_all_teacher_profiles') {
+            $profiles = [];
+            try {
+                $stmt = $pdo->query("SELECT * FROM `teacher_profiles`");
+                while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                    $u = strtolower(trim($row['teacher_username']));
+                    $n = strtolower(trim($row['nama_lengkap'] ?? ''));
+                    $nip = trim($row['nip'] ?? '');
+                    $item = [
+                        'teacher_username' => $row['teacher_username'],
+                        'nama_lengkap'     => $row['nama_lengkap'],
+                        'nip'              => $row['nip'],
+                        'ttl'              => $row['ttl'],
+                        'no_wa'            => $row['no_wa'],
+                        'alamat'           => $row['alamat'],
+                        'foto_url'         => $row['foto_url'],
+                        'updated_at'       => $row['updated_at']
+                    ];
+                    if ($u) $profiles[$u] = $item;
+                    if ($n) $profiles[$n] = $item;
+                    if ($nip && $nip !== '-') $profiles[$nip] = $item;
+                }
+            } catch (Exception $e) {}
+            jsonResponse(true, 'Seluruh profil fasilitator berhasil dimuat', ['profiles' => $profiles]);
         }
 
         // Ambil data seluruh guru & tenaga pendidik (A-Z)
@@ -1598,6 +1674,57 @@ if ($method === 'POST') {
                 $stmt->execute([':n' => $nisn]);
             }
             jsonResponse(true, "Koreksi darurat berhasil dihapus. Penilaian Day {$dayNum} dikembalikan ke kalkulasi waktu otomatis.");
+        }
+
+        // P. BIODATA & PROFIL FASILITATOR (Bisa diisi oleh fasilitator & dilihat siswa)
+        if ($action === 'save_teacher_profile') {
+            $u = trim($input['username'] ?? $input['teacher_username'] ?? '');
+            if (!$u) jsonResponse(false, 'Username guru wajib diisi!', null, 400);
+
+            $nama   = trim($input['nama_lengkap'] ?? '');
+            $nip    = trim($input['nip'] ?? '-');
+            $ttl    = trim($input['ttl'] ?? '');
+            $noWa   = trim($input['no_wa'] ?? '');
+            $alamat = trim($input['alamat'] ?? '');
+            $foto   = trim($input['foto_url'] ?? '');
+
+            $stmt = $pdo->prepare("
+                INSERT INTO `teacher_profiles` (`teacher_username`, `nama_lengkap`, `nip`, `ttl`, `no_wa`, `alamat`, `foto_url`)
+                VALUES (:u, :nama, :nip, :ttl, :no_wa, :alamat, :foto)
+                ON DUPLICATE KEY UPDATE
+                    `nama_lengkap` = VALUES(`nama_lengkap`),
+                    `nip` = VALUES(`nip`),
+                    `ttl` = VALUES(`ttl`),
+                    `no_wa` = VALUES(`no_wa`),
+                    `alamat` = VALUES(`alamat`),
+                    `foto_url` = VALUES(`foto_url`),
+                    `updated_at` = CURRENT_TIMESTAMP
+            ");
+            $stmt->execute([
+                ':u'      => $u,
+                ':nama'   => $nama,
+                ':nip'    => $nip,
+                ':ttl'    => $ttl,
+                ':no_wa'  => $noWa,
+                ':alamat' => $alamat,
+                ':foto'   => $foto
+            ]);
+
+            // Selaraskan juga ke tabel teachers jika ada
+            try {
+                $stmtT = $pdo->prepare("UPDATE `teachers` SET `nama_guru` = COALESCE(NULLIF(:nama, ''), `nama_guru`), `nip` = COALESCE(NULLIF(:nip, '-'), `nip`) WHERE `username` = :u OR `nip` = :u");
+                $stmtT->execute([':nama' => $nama, ':nip' => $nip, ':u' => $u]);
+            } catch (Exception $eT) {}
+
+            jsonResponse(true, 'Biodata fasilitator berhasil disimpan!', [
+                'teacher_username' => $u,
+                'nama_lengkap'     => $nama,
+                'nip'              => $nip,
+                'ttl'              => $ttl,
+                'no_wa'            => $noWa,
+                'alamat'           => $alamat,
+                'foto_url'         => $foto
+            ]);
         }
 
         // O. SIMPAN PEMBAGIAN SISWA BINAAN (MENTORSHIP FASILITATOR & KOORDINATOR - MULTI-PC SAFE MERGE)

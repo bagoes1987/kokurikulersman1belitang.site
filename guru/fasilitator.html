@@ -243,6 +243,10 @@
           <span class="material-symbols-outlined text-lg">directions_bus</span>
           <span>Rekap Jalur Peserta</span>
         </button>
+        <button id="btnSideFasBiodata" onclick="switchFasTab('biodata')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-teal-300 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg text-teal-400">badge</span>
+          <span>Biodata &amp; Profil Saya</span>
+        </button>
         <button id="btnSideFasKriteriaKokurikuler" onclick="openKriteriaKokurikulerModal()" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-indigo-300 hover:text-white hover:bg-slate-800/80 cursor-pointer">
           <span class="material-symbols-outlined text-lg text-indigo-400">fact_check</span>
           <span>Kriteria Penilaian Kokurikuler</span>
@@ -640,6 +644,173 @@
               <!-- Populated by JS -->
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB BIODATA & PROFIL FASILITATOR (BISA DIISI FASIL & DILIHAT SISWA) -->
+    <div id="panelFasBiodata" class="hidden flex flex-col gap-5">
+      <!-- HEADER BANNER BIODATA -->
+      <div class="bg-gradient-to-br from-teal-900 via-slate-900 to-slate-950 text-white rounded-3xl p-5 sm:p-6 border border-teal-800/50 shadow-xl flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-300 flex items-center justify-center border border-teal-500/30 shrink-0">
+            <span class="material-symbols-outlined text-2xl">badge</span>
+          </div>
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-teal-400 text-teal-950">
+              Profil Pembina Resmi
+            </span>
+            <h3 class="text-base sm:text-lg font-black text-white mt-0.5">Biodata &amp; Kontak Fasilitator Kokurikuler</h3>
+          </div>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed">
+          Informasi ini akan ditampilkan kepada seluruh peserta didik binaan Anda di <strong>Portal Siswa</strong> agar mereka dapat mengenal pembimbingnya dengan akrab serta berkonsultasi mengenai LKPD, riset, atau kendala lapangan secara santun via WhatsApp.
+        </p>
+      </div>
+
+      <!-- GRID DUA KOLOM: FORM EDIT & LIVE PREVIEW SISWA -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+        
+        <!-- KOLOM KIRI: FORMULIR BIODATA FASILITATOR (7 KOLOM) -->
+        <div class="lg:col-span-7 bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h4 class="font-extrabold text-sm text-slate-800 flex items-center gap-2">
+              <span class="material-symbols-outlined text-teal-700 text-lg">edit</span>
+              <span>Edit Biodata Anda</span>
+            </h4>
+            <span class="text-[11px] font-semibold text-slate-400">*Wajib &amp; Terbaca Siswa</span>
+          </div>
+
+          <!-- BAGIAN UPLOAD FOTO PROFIL -->
+          <div class="flex items-center gap-4 p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
+            <div class="relative shrink-0">
+              <img id="fasilFotoPreview" src="" alt="Foto" class="hidden w-20 h-20 rounded-2xl object-cover border-2 border-teal-600 shadow-sm">
+              <div id="fasilFotoFallback" class="w-20 h-20 rounded-2xl bg-gradient-to-br from-teal-700 to-teal-900 text-white flex flex-col items-center justify-center font-black text-2xl shadow-sm border border-teal-600">
+                <span id="fasilFotoFallbackInitials">FG</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1.5 flex-1 min-w-0">
+              <span class="text-xs font-bold text-slate-800">Foto Profil Fasilitator</span>
+              <p class="text-[11px] text-slate-500 leading-tight">Gunakan foto rapi berseragam/formal. Ukuran otomatis dioptimalkan agar ringan dibuka siswa.</p>
+              <div class="flex items-center gap-2 pt-1 flex-wrap">
+                <input type="file" id="fasilFotoInput" accept="image/*" class="hidden" onchange="handleFasilFotoSelected(event)">
+                <button type="button" onclick="document.getElementById('fasilFotoInput').click()" class="px-3 py-1.5 rounded-xl bg-teal-700 hover:bg-teal-800 active:scale-95 text-white font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer shadow-2xs">
+                  <span class="material-symbols-outlined text-sm">photo_camera</span>
+                  <span>Pilih / Ganti Foto</span>
+                </button>
+                <button type="button" id="btnHapusFotoFasil" onclick="handleFasilFotoRemoved()" class="hidden px-2.5 py-1.5 rounded-xl bg-slate-200 hover:bg-rose-100 hover:text-rose-700 text-slate-600 font-semibold text-xs transition-all cursor-pointer">
+                  <span>Hapus</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- FORM INPUT BIODATA LENGKAP -->
+          <div class="flex flex-col gap-3">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap &amp; Gelar Resmi</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3 text-slate-400 text-base">person</span>
+                <input id="fasilBioNama" type="text" oninput="updateFasilLivePreview()" placeholder="Contoh: Neti Diana, S.Pd., M.Si." class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 transition-all">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">NIP (Nomor Induk Pegawai)</label>
+                <div class="relative flex items-center">
+                  <span class="material-symbols-outlined absolute left-3 text-slate-400 text-base">badge</span>
+                  <input id="fasilBioNip" type="text" oninput="updateFasilLivePreview()" placeholder="NIP atau tanda (-)" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-800 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 transition-all">
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Tempat, Tanggal Lahir (TTL)</label>
+                <div class="relative flex items-center">
+                  <span class="material-symbols-outlined absolute left-3 text-slate-400 text-base">cake</span>
+                  <input id="fasilBioTtl" type="text" oninput="updateFasilLivePreview()" placeholder="Contoh: Belitang, 15 Januari 1985" class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-800 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 transition-all">
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp Aktif</label>
+              <div class="relative flex items-center">
+                <span class="material-symbols-outlined absolute left-3 text-emerald-600 text-base">chat</span>
+                <input id="fasilBioWa" type="text" oninput="updateFasilLivePreview()" placeholder="Contoh: 081234567890 atau +62812..." class="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 transition-all">
+              </div>
+              <span class="text-[10.5px] text-slate-400 mt-1 block">Siswa dapat langsung mengklik tombol chat WhatsApp untuk berkonsultasi mengenai bimbingan.</span>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Alamat Domisili / Tempat Tinggal</label>
+              <div class="relative flex items-start">
+                <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-base">home_pin</span>
+                <textarea id="fasilBioAlamat" rows="2" oninput="updateFasilLivePreview()" placeholder="Contoh: Desa Gumawang, RT 02/01, Kec. Belitang, Kab. OKU Timur" class="w-full pl-9 pr-3.5 py-2 rounded-xl border border-slate-200 bg-white text-xs font-medium text-slate-800 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-600/20 transition-all"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <!-- TOMBOL SIMPAN -->
+          <div class="pt-2 border-t border-slate-100 flex items-center justify-end">
+            <button type="button" onclick="saveFasilBiodata()" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-teal-700 hover:bg-teal-800 active:scale-95 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">save</span>
+              <span id="lblSaveFasilBio">Simpan Biodata Profil</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- KOLOM KANAN: PRATINJAU KARTU SISWA (5 KOLOM) -->
+        <div class="lg:col-span-5 flex flex-col gap-3 sticky top-20">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-black uppercase text-slate-500 tracking-wider flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-teal-600">visibility</span>
+              <span>Tampilan di Portal Siswa</span>
+            </span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800">Pratinjau Live</span>
+          </div>
+
+          <!-- KARTU TAMPILAN SISWA MEWAH -->
+          <div class="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-3xl p-5 border border-slate-800 shadow-xl flex flex-col gap-4">
+            <div class="flex items-start gap-3.5">
+              <div class="relative shrink-0">
+                <img id="previewFotoImg" src="" alt="Foto" class="hidden w-16 h-16 rounded-2xl object-cover border-2 border-teal-400 shadow-md">
+                <div id="previewFotoFallback" class="w-16 h-16 rounded-2xl bg-teal-500/30 text-teal-200 flex items-center justify-center font-black text-xl border border-teal-400/40 shadow-inner">
+                  <span id="previewFallbackInitials">FG</span>
+                </div>
+                <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900"></span>
+              </div>
+              <div class="flex flex-col min-w-0 flex-1">
+                <span class="text-[10px] font-black uppercase tracking-wider text-teal-400">Fasilitator Pembina</span>
+                <h4 id="previewNama" class="text-sm font-extrabold text-white leading-snug break-words">Fasilitator Guru</h4>
+                <span id="previewNip" class="text-[11px] text-slate-400 font-mono mt-0.5">NIP: -</span>
+              </div>
+            </div>
+
+            <!-- RINCIAN BIODATA -->
+            <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-2 text-xs">
+              <div class="flex items-start gap-2">
+                <span class="material-symbols-outlined text-sm text-amber-400 shrink-0 mt-0.5">cake</span>
+                <div class="min-w-0">
+                  <span class="text-[10px] text-slate-400 block font-semibold">TTL</span>
+                  <span id="previewTtl" class="font-bold text-slate-200 text-xs">-</span>
+                </div>
+              </div>
+              <div class="flex items-start gap-2 border-t border-white/5 pt-2">
+                <span class="material-symbols-outlined text-sm text-emerald-400 shrink-0 mt-0.5">home_pin</span>
+                <div class="min-w-0">
+                  <span class="text-[10px] text-slate-400 block font-semibold">Alamat Domisili</span>
+                  <span id="previewAlamat" class="font-medium text-slate-300 text-[11.5px] leading-snug">-</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- TOMBOL CHAT WHATSAPP PREVIEW -->
+            <a id="previewBtnWa" href="#" target="_blank" class="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer pointer-events-none opacity-60">
+              <span class="material-symbols-outlined text-base">chat</span>
+              <span>Hubungi via WhatsApp</span>
+            </a>
+            <span class="text-[10px] text-slate-400 text-center font-medium">Siswa dapat langsung mengklik tombol ini dari dasbor siswa mereka.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1270,7 +1441,8 @@
         { key: 'presensi', sideBtnId: 'btnSideFasPresensi', panelId: 'panelFasPresensi', title: 'Presensi Lapangan Siswa' },
         { key: 'galeri', sideBtnId: 'btnSideFasGaleri', panelId: 'panelFasGaleri', title: 'Galeri Foto Riset Siswa' },
         { key: 'materi', sideBtnId: 'btnSideFasMateri', panelId: 'panelFasMateri', title: 'Rubrik 4 Pilar & Predikat Rapor' },
-        { key: 'rekap', sideBtnId: 'btnSideFasRekap', panelId: 'panelFasRekap', title: 'Rekap Jalur Peserta' }
+        { key: 'rekap', sideBtnId: 'btnSideFasRekap', panelId: 'panelFasRekap', title: 'Rekap Jalur Peserta' },
+        { key: 'biodata', sideBtnId: 'btnSideFasBiodata', panelId: 'panelFasBiodata', title: 'Biodata & Profil Fasilitator' }
       ];
 
       tabs.forEach(t => {
@@ -1303,6 +1475,9 @@
       }
       if (tab === 'rekap') {
         renderFasRekapView();
+      }
+      if (tab === 'biodata') {
+        loadFasBiodataView();
       }
     }
 
@@ -3381,6 +3556,214 @@
         if (btnAll) btnAll.className = 'flex-1 py-1.5 text-xs font-bold rounded-xl transition-all bg-[#006a61] text-white shadow-2xs cursor-pointer';
         if (viewBinaan) viewBinaan.classList.add('hidden');
         if (viewAll) viewAll.classList.remove('hidden');
+      }
+    }
+
+    
+    /* ========================================================
+       MODUL BIODATA & PROFIL FASILITATOR (FOTO, TTL, WA, ALAMAT)
+       ======================================================== */
+    let fasilCurrentPhotoDataUrl = '';
+
+    function loadFasBiodataView() {
+      const user = FincestemCore.auth.getUser();
+      if (!user) return;
+      const userKey = user.username || user.nip || user.name || '';
+
+      const nameInput = document.getElementById('fasilBioNama');
+      const nipInput = document.getElementById('fasilBioNip');
+      const ttlInput = document.getElementById('fasilBioTtl');
+      const waInput = document.getElementById('fasilBioWa');
+      const alamatInput = document.getElementById('fasilBioAlamat');
+
+      // Ambil data profil dari FincestemCore.teacherProfile
+      if (FincestemCore.teacherProfile) {
+        FincestemCore.teacherProfile.getProfile(userKey, function(prof) {
+          const p = prof || {};
+          if (nameInput) nameInput.value = p.nama_lengkap || user.name || '';
+          if (nipInput) nipInput.value = (p.nip && p.nip !== '-') ? p.nip : (user.nip || '-');
+          if (ttlInput) ttlInput.value = p.ttl || '';
+          if (waInput) waInput.value = p.no_wa || '';
+          if (alamatInput) alamatInput.value = p.alamat || '';
+          if (p.foto_url) {
+            fasilCurrentPhotoDataUrl = p.foto_url;
+            setFasilFotoPreviewUI(p.foto_url);
+          } else {
+            fasilCurrentPhotoDataUrl = '';
+            setFasilFotoPreviewUI('');
+          }
+          updateFasilLivePreview();
+        });
+      } else {
+        if (nameInput) nameInput.value = user.name || '';
+        if (nipInput) nipInput.value = user.nip || '-';
+        updateFasilLivePreview();
+      }
+    }
+
+    function setFasilFotoPreviewUI(dataUrl) {
+      const img = document.getElementById('fasilFotoPreview');
+      const fallback = document.getElementById('fasilFotoFallback');
+      const btnHapus = document.getElementById('btnHapusFotoFasil');
+      const initials = document.getElementById('fasilFotoFallbackInitials');
+      const name = document.getElementById('fasilBioNama')?.value || 'FG';
+      const inits = name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || 'FG';
+
+      if (dataUrl) {
+        if (img) { img.src = dataUrl; img.classList.remove('hidden'); }
+        if (fallback) fallback.classList.add('hidden');
+        if (btnHapus) btnHapus.classList.remove('hidden');
+      } else {
+        if (img) { img.src = ''; img.classList.add('hidden'); }
+        if (fallback) { fallback.classList.remove('hidden'); if (initials) initials.textContent = inits; }
+        if (btnHapus) btnHapus.classList.add('hidden');
+      }
+    }
+
+    function handleFasilFotoSelected(e) {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        FincestemCore.ui.toast('Harap pilih file gambar (JPG, PNG, atau WEBP)!', 'error');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const rawUrl = evt.target.result;
+        // Kompresi via HTML5 Canvas agar ringan & hemat bandwidth
+        const tempImg = new Image();
+        tempImg.onload = function() {
+          const maxDim = 500;
+          let w = tempImg.width;
+          let h = tempImg.height;
+          if (w > h && w > maxDim) {
+            h = Math.round((h * maxDim) / w);
+            w = maxDim;
+          } else if (h > maxDim) {
+            w = Math.round((w * maxDim) / h);
+            h = maxDim;
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(tempImg, 0, 0, w, h);
+          const compressed = canvas.toDataURL('image/jpeg', 0.82);
+
+          fasilCurrentPhotoDataUrl = compressed;
+          setFasilFotoPreviewUI(compressed);
+          updateFasilLivePreview();
+          FincestemCore.ui.toast('Foto berhasil dimuat. Klik Simpan Biodata untuk menerapkan.', 'info');
+        };
+        tempImg.src = rawUrl;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function handleFasilFotoRemoved() {
+      fasilCurrentPhotoDataUrl = '';
+      const input = document.getElementById('fasilFotoInput');
+      if (input) input.value = '';
+      setFasilFotoPreviewUI('');
+      updateFasilLivePreview();
+      FincestemCore.ui.toast('Foto profil dihapus.', 'info');
+    }
+
+    function updateFasilLivePreview() {
+      const name = document.getElementById('fasilBioNama')?.value.trim() || 'Nama Fasilitator';
+      const nip = document.getElementById('fasilBioNip')?.value.trim() || '-';
+      const ttl = document.getElementById('fasilBioTtl')?.value.trim() || 'Belum diisi';
+      const wa = document.getElementById('fasilBioWa')?.value.trim() || '';
+      const alamat = document.getElementById('fasilBioAlamat')?.value.trim() || 'Belum diisi';
+
+      const prevNama = document.getElementById('previewNama');
+      const prevNip = document.getElementById('previewNip');
+      const prevTtl = document.getElementById('previewTtl');
+      const prevAlamat = document.getElementById('previewAlamat');
+      const prevBtnWa = document.getElementById('previewBtnWa');
+      const prevImg = document.getElementById('previewFotoImg');
+      const prevFallback = document.getElementById('previewFotoFallback');
+      const prevInitials = document.getElementById('previewFallbackInitials');
+
+      if (prevNama) prevNama.textContent = name;
+      if (prevNip) prevNip.textContent = `NIP: ${nip}`;
+      if (prevTtl) prevTtl.textContent = ttl;
+      if (prevAlamat) prevAlamat.textContent = alamat;
+
+      const inits = name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || 'FG';
+      if (prevInitials) prevInitials.textContent = inits;
+
+      if (fasilCurrentPhotoDataUrl) {
+        if (prevImg) { prevImg.src = fasilCurrentPhotoDataUrl; prevImg.classList.remove('hidden'); }
+        if (prevFallback) prevFallback.classList.add('hidden');
+      } else {
+        if (prevImg) { prevImg.src = ''; prevImg.classList.add('hidden'); }
+        if (prevFallback) prevFallback.classList.remove('hidden');
+      }
+
+      if (prevBtnWa) {
+        const cleanWa = wa.replace(/\D/g, '');
+        if (cleanWa.length >= 9) {
+          let intlWa = cleanWa;
+          if (intlWa.startsWith('0')) intlWa = '62' + intlWa.slice(1);
+          prevBtnWa.href = `https://wa.me/${intlWa}?text=${encodeURIComponent("Assalamu'alaikum / Halo Bapak/Ibu " + name + ", saya ingin berkonsultasi mengenai FINCESTEM.")}`;
+          prevBtnWa.classList.remove('pointer-events-none', 'opacity-60');
+        } else {
+          prevBtnWa.href = '#';
+          prevBtnWa.classList.add('pointer-events-none', 'opacity-60');
+        }
+      }
+    }
+
+    function saveFasilBiodata() {
+      const user = FincestemCore.auth.getUser();
+      if (!user) return;
+      const userKey = user.username || user.nip || user.name || '';
+
+      const name = (document.getElementById('fasilBioNama')?.value || '').trim();
+      const nip = (document.getElementById('fasilBioNip')?.value || '-').trim();
+      const ttl = (document.getElementById('fasilBioTtl')?.value || '').trim();
+      const wa = (document.getElementById('fasilBioWa')?.value || '').trim();
+      const alamat = (document.getElementById('fasilBioAlamat')?.value || '').trim();
+      const lbl = document.getElementById('lblSaveFasilBio');
+
+      if (!name) {
+        FincestemCore.ui.toast('Nama lengkap wajib diisi!', 'error');
+        return;
+      }
+
+      if (lbl) lbl.textContent = 'Menyimpan...';
+
+      const payload = {
+        username: userKey,
+        nama_lengkap: name,
+        nip: nip,
+        ttl: ttl,
+        no_wa: wa,
+        alamat: alamat,
+        foto_url: fasilCurrentPhotoDataUrl || ''
+      };
+
+      if (FincestemCore.teacherProfile) {
+        FincestemCore.teacherProfile.saveProfile(payload, function(res) {
+          if (lbl) lbl.textContent = 'Simpan Biodata Profil';
+          if (res && res.success) {
+            FincestemCore.ui.toast('Biodata fasilitator berhasil disimpan! Siswa kini dapat melihat profil Anda.', 'success');
+            // Update nama di sidebar dan banner
+            const nameEl = document.getElementById('fasUserName');
+            const mainNameEl = document.getElementById('fasUserNameMain');
+            if (nameEl) nameEl.textContent = name;
+            if (mainNameEl) mainNameEl.textContent = name;
+            user.name = name;
+            if (nip && nip !== '-') user.nip = nip;
+            FincestemCore.auth.setUser(user, 'fasilitator');
+          } else {
+            FincestemCore.ui.toast('Biodata tersimpan di perangkat lokal.', 'info');
+          }
+        });
       }
     }
 

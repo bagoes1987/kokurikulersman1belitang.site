@@ -204,6 +204,11 @@
             <div id="userFacilitatorContainer" class="flex flex-col gap-1 mt-1.5 min-w-0">
               <span id="userFacilitator" class="font-bold text-white text-xs sm:text-sm">Tim Fasilitator SMAN 1 Belitang</span>
             </div>
+            <!-- Tombol Kenali & Kontak Fasilitator -->
+            <button type="button" onclick="openFasilBiodataModal()" class="mt-2 w-full py-1.5 px-3 rounded-xl bg-teal-400/25 hover:bg-teal-400/40 text-teal-100 font-extrabold text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-2xs border border-teal-300/30">
+              <span class="material-symbols-outlined text-sm text-teal-300">badge</span>
+              <span>Kenali &amp; Kontak Fasilitator</span>
+            </button>
           </div>
         </div>
       </div>
@@ -527,6 +532,47 @@
 
       <div class="flex items-center justify-end gap-2 pt-2 border-t border-slate-100">
         <button onclick="closeDayActivityModal()" class="px-4 py-2 rounded-xl bg-slate-100 text-slate-700 font-bold text-xs hover:bg-slate-200 transition-all cursor-pointer">
+          Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL BIODATA & KONTAK FASILITATOR UNTUK SISWA -->
+  <div id="modalFasilBiodata" class="fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-200 flex flex-col gap-4 relative my-auto max-h-[90vh] overflow-y-auto">
+      
+      <!-- Header Modal -->
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-2xl bg-teal-50 text-teal-700 flex items-center justify-center shrink-0 border border-teal-200">
+            <span class="material-symbols-outlined text-xl">contact_phone</span>
+          </div>
+          <div>
+            <h3 class="font-extrabold text-sm sm:text-base text-slate-900 leading-tight">Biodata Fasilitator Pembina</h3>
+            <span class="text-[11px] text-slate-500 font-medium">Kenali guru pembimbing kokurikuler Anda</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeFasilBiodataModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-xl">close</span>
+        </button>
+      </div>
+
+      <!-- Container Kartu Fasilitator (Bisa 1 atau Lebih) -->
+      <div id="modalFasilListContainer" class="flex flex-col gap-4">
+        <!-- Rendered dynamically by JS -->
+      </div>
+
+      <!-- Pesan Etika Santun Hubungi Guru -->
+      <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200/80 text-[11px] text-amber-900 flex items-start gap-2 leading-relaxed">
+        <span class="material-symbols-outlined text-amber-600 text-base shrink-0 mt-0.5">sentiment_satisfied</span>
+        <div>
+          <strong>Etika Menghubungi Guru:</strong> Ucapkan salam, sebutkan nama lengkap dan kelas Anda, serta gunakan bahasa yang sopan dan santun saat berkonsultasi via WhatsApp.
+        </div>
+      </div>
+
+      <div class="pt-1">
+        <button type="button" onclick="closeFasilBiodataModal()" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs transition-all cursor-pointer">
           Tutup
         </button>
       </div>
@@ -1258,6 +1304,163 @@
           FincestemCore.ui.toast(res.message || 'Foto tersimpan di perangkat ini.', 'success');
         }
       });
+    }
+
+    /* ========================================================
+       MODAL BIODATA & KONTAK FASILITATOR UNTUK SISWA
+       ======================================================== */
+    function openFasilBiodataModal() {
+      const modal = document.getElementById('modalFasilBiodata');
+      const container = document.getElementById('modalFasilListContainer');
+      if (!modal || !container) return;
+
+      container.innerHTML = '<div class="py-6 text-center text-xs text-slate-400">Memuat profil fasilitator...</div>';
+      modal.classList.remove('hidden');
+      requestAnimationFrame(() => {
+        modal.classList.remove('opacity-0');
+        modal.classList.add('opacity-100');
+      });
+
+      // Ambil nama fasilitator siswa aktif
+      const rawFasil = currentStudent?.facilitator_name || 
+                       (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().facilitator_name) || 
+                       'Tim Fasilitator SMAN 1 Belitang';
+      const fasilList = rawFasil.split(/[;\n]+/).map(n => n.trim()).filter(Boolean);
+
+      const studentName = currentStudent?.nama || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().name) || 'Peserta Didik';
+      const studentClass = currentStudent?.class || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().class) || '';
+
+      const renderFasilCards = function(profilesMap) {
+        profilesMap = profilesMap || {};
+        const masterTeachers = (FincestemCore.teachers && FincestemCore.teachers.getTeachers)
+          ? FincestemCore.teachers.getTeachers()
+          : (window.FincestemMasterTeachers || []);
+
+        let html = '';
+        const namesToRender = (fasilList.length > 0) ? fasilList : ['Tim Fasilitator SMAN 1 Belitang'];
+
+        namesToRender.forEach((fName, idx) => {
+          const cleanName = fName.trim();
+          const cleanKey = cleanName.toLowerCase();
+
+          // Cari profil di map
+          let p = profilesMap[cleanKey] || null;
+          if (!p) {
+            // Coba cari dari nama guru master
+            const foundT = masterTeachers.find(t => 
+              String(t.nama_guru || '').toLowerCase().includes(cleanKey) ||
+              cleanKey.includes(String(t.nama_guru || '').toLowerCase()) ||
+              (t.nip && t.nip !== '-' && cleanKey.includes(String(t.nip).toLowerCase()))
+            );
+            if (foundT) {
+              p = profilesMap[String(foundT.username).toLowerCase()] || 
+                  profilesMap[String(foundT.nip).toLowerCase()] || 
+                  profilesMap[String(foundT.nama_guru).toLowerCase()] || {
+                    nama_lengkap: foundT.nama_guru,
+                    nip: foundT.nip,
+                    ttl: '-',
+                    no_wa: '',
+                    alamat: '-',
+                    foto_url: ''
+                  };
+            }
+          }
+
+          const namaLengkap = (p && p.nama_lengkap) ? p.nama_lengkap : cleanName;
+          const nip = (p && p.nip && p.nip !== '-') ? p.nip : '-';
+          const ttl = (p && p.ttl && p.ttl !== '-') ? p.ttl : 'Belum dilengkapi';
+          const alamat = (p && p.alamat && p.alamat !== '-') ? p.alamat : 'Belum dilengkapi';
+          const noWa = (p && p.no_wa) ? p.no_wa : '';
+          const fotoUrl = (p && p.foto_url) ? p.foto_url : '';
+
+          const inits = namaLengkap.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || 'FG';
+
+          // Tombol WhatsApp
+          let waBtnHtml = '';
+          const cleanWa = noWa.replace(/\D/g, '');
+          if (cleanWa.length >= 9) {
+            let intlWa = cleanWa;
+            if (intlWa.startsWith('0')) intlWa = '62' + intlWa.slice(1);
+            const greeting = encodeURIComponent("Assalamu'alaikum / Selamat pagi/siang Bapak/Ibu " + namaLengkap + ", saya " + studentName + (studentClass ? " dari kelas " + studentClass : "") + ", siswa binaan FINCESTEM. Mohon izin berkonsultasi mengenai bimbingan kokurikuler.");
+            waBtnHtml = `
+              <a href="https://wa.me/${intlWa}?text=${greeting}" target="_blank" class="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-extrabold text-xs flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-98 transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-base">chat</span>
+                <span>Hubungi via WhatsApp</span>
+              </a>
+            `;
+          } else {
+            waBtnHtml = `
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 text-center text-[11px] text-slate-500 font-medium">
+                Nomor WhatsApp belum dicantumkan oleh fasilitator.
+              </div>
+            `;
+          }
+
+          html += `
+            <div class="bg-gradient-to-b from-slate-900 to-slate-950 text-white rounded-3xl p-5 border border-slate-800 shadow-xl flex flex-col gap-4">
+              <div class="flex items-start gap-3.5">
+                <div class="relative shrink-0">
+                  ${fotoUrl 
+                    ? `<img src="${fotoUrl}" alt="Foto" class="w-16 h-16 rounded-2xl object-cover border-2 border-teal-400 shadow-md">`
+                    : `<div class="w-16 h-16 rounded-2xl bg-teal-500/30 text-teal-200 flex items-center justify-center font-black text-xl border border-teal-400/40 shadow-inner">${inits}</div>`
+                  }
+                  <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-slate-900"></span>
+                </div>
+                <div class="flex flex-col min-w-0 flex-1">
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="px-2 py-0.5 rounded-full text-[9.5px] font-black uppercase tracking-wider bg-teal-500 text-slate-950">
+                      Fasilitator Pembina
+                    </span>
+                    ${namesToRender.length > 1 ? `<span class="text-[10px] text-teal-300 font-bold">#${idx + 1}</span>` : ''}
+                  </div>
+                  <h4 class="text-sm sm:text-base font-extrabold text-white leading-snug break-words mt-1">${escapeHtml(namaLengkap)}</h4>
+                  <span class="text-[11px] text-slate-400 font-mono mt-0.5">NIP: ${escapeHtml(nip)}</span>
+                </div>
+              </div>
+
+              <!-- Rincian TTL & Alamat -->
+              <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col gap-2.5 text-xs">
+                <div class="flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-sm text-amber-400 shrink-0 mt-0.5">cake</span>
+                  <div class="min-w-0">
+                    <span class="text-[10px] text-slate-400 block font-semibold">Tempat, Tanggal Lahir</span>
+                    <span class="font-bold text-slate-200 text-xs">${escapeHtml(ttl)}</span>
+                  </div>
+                </div>
+                <div class="flex items-start gap-2.5 border-t border-white/5 pt-2">
+                  <span class="material-symbols-outlined text-sm text-emerald-400 shrink-0 mt-0.5">home_pin</span>
+                  <div class="min-w-0">
+                    <span class="text-[10px] text-slate-400 block font-semibold">Alamat Domisili</span>
+                    <span class="font-medium text-slate-300 text-[11.5px] leading-snug">${escapeHtml(alamat)}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tombol WhatsApp -->
+              ${waBtnHtml}
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      };
+
+      // Tarik seluruh profil dari modul teacherProfile
+      if (FincestemCore.teacherProfile) {
+        FincestemCore.teacherProfile.getAllProfiles(function(map) {
+          renderFasilCards(map);
+        });
+      } else {
+        renderFasilCards({});
+      }
+    }
+
+    function closeFasilBiodataModal() {
+      const modal = document.getElementById('modalFasilBiodata');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 250);
     }
 
     function toggleBiodataSection() {

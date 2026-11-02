@@ -760,6 +760,159 @@ const FincestemCore = {
     }
   },
 
+  // Modul Biodata & Profil Fasilitator (Foto, TTL, No WA, Alamat, NIP)
+  teacherProfile: {
+    getProfile: function(identifier, callback) {
+      if (!identifier) {
+        if (callback) callback(null);
+        return null;
+      }
+      const cleanKey = String(identifier).trim().toLowerCase();
+
+      // 1. Cek penyimpanan lokal
+      try {
+        const raw = localStorage.getItem('fincestem_teacher_profile_' + cleanKey);
+        if (raw) {
+          const prof = JSON.parse(raw);
+          if (callback) callback(prof);
+          return prof;
+        }
+      } catch (e) {}
+
+      // 2. Cek peta seluruh profil guru
+      try {
+        const allRaw = localStorage.getItem('fincestem_all_teacher_profiles');
+        if (allRaw) {
+          const map = JSON.parse(allRaw) || {};
+          if (map[cleanKey]) {
+            if (callback) callback(map[cleanKey]);
+            return map[cleanKey];
+          }
+        }
+      } catch (e) {}
+
+      // 3. Fallback info guru dasar dari master data
+      const masterTeachers = (FincestemCore.teachers && FincestemCore.teachers.getTeachers)
+        ? FincestemCore.teachers.getTeachers()
+        : (window.FincestemMasterTeachers || []);
+      const found = masterTeachers.find(t => 
+        String(t.username || '').toLowerCase() === cleanKey ||
+        String(t.nip || '').toLowerCase() === cleanKey ||
+        String(t.nama_guru || '').toLowerCase() === cleanKey ||
+        String(t.kode_guru || '').toLowerCase() === cleanKey
+      );
+
+      const defaultProf = found ? {
+        teacher_username: found.username || found.kode_guru,
+        nama_lengkap: found.nama_guru,
+        nip: found.nip || '-',
+        ttl: '-',
+        no_wa: '-',
+        alamat: '-',
+        foto_url: ''
+      } : null;
+
+      // 4. Ambil dari server cPanel jika online
+      if (window.location && window.location.protocol && window.location.protocol.startsWith('http') && callback) {
+        fetch(FincestemCore.api.base + '/settings.php?action=get_teacher_profile&username=' + encodeURIComponent(cleanKey) + '&_t=' + Date.now())
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && res.data) {
+              try {
+                localStorage.setItem('fincestem_teacher_profile_' + cleanKey, JSON.stringify(res.data));
+              } catch (e) {}
+              callback(res.data);
+            } else {
+              callback(defaultProf);
+            }
+          })
+          .catch(() => callback(defaultProf));
+      } else if (callback) {
+        callback(defaultProf);
+      }
+
+      return defaultProf;
+    },
+
+    getAllProfiles: function(callback) {
+      if (!window.location || !window.location.protocol || !window.location.protocol.startsWith('http')) {
+        let map = {};
+        try {
+          const raw = localStorage.getItem('fincestem_all_teacher_profiles');
+          if (raw) map = JSON.parse(raw) || {};
+        } catch (e) {}
+        if (callback) callback(map);
+        return;
+      }
+      fetch(FincestemCore.api.base + '/settings.php?action=get_all_teacher_profiles&_t=' + Date.now())
+        .then(r => r.json())
+        .then(res => {
+          if (res && res.success && res.data && res.data.profiles) {
+            try {
+              localStorage.setItem('fincestem_all_teacher_profiles', JSON.stringify(res.data.profiles));
+            } catch (e) {}
+            if (callback) callback(res.data.profiles);
+          } else {
+            if (callback) callback({});
+          }
+        })
+        .catch(() => { if (callback) callback({}); });
+    },
+
+    saveProfile: function(profileData, callback) {
+      if (!profileData || !profileData.username) {
+        if (callback) callback({ success: false, message: 'Username tidak boleh kosong' });
+        return;
+      }
+      const cleanKey = String(profileData.username).trim().toLowerCase();
+      try {
+        localStorage.setItem('fincestem_teacher_profile_' + cleanKey, JSON.stringify(profileData));
+        if (profileData.nip && profileData.nip !== '-') {
+          localStorage.setItem('fincestem_teacher_profile_' + String(profileData.nip).toLowerCase(), JSON.stringify(profileData));
+        }
+        if (profileData.nama_lengkap) {
+          localStorage.setItem('fincestem_teacher_profile_' + String(profileData.nama_lengkap).toLowerCase(), JSON.stringify(profileData));
+        }
+
+        // Simpan ke peta global lokal
+        let allMap = {};
+        const raw = localStorage.getItem('fincestem_all_teacher_profiles');
+        if (raw) allMap = JSON.parse(raw) || {};
+        allMap[cleanKey] = profileData;
+        if (profileData.nip && profileData.nip !== '-') allMap[String(profileData.nip).toLowerCase()] = profileData;
+        if (profileData.nama_lengkap) allMap[String(profileData.nama_lengkap).toLowerCase()] = profileData;
+        localStorage.setItem('fincestem_all_teacher_profiles', JSON.stringify(allMap));
+      } catch (e) {}
+
+      // Kirim ke server MySQL backend
+      if (window.location && window.location.protocol && window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/settings.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'save_teacher_profile',
+            username: profileData.username,
+            nama_lengkap: profileData.nama_lengkap,
+            nip: profileData.nip,
+            ttl: profileData.ttl,
+            no_wa: profileData.no_wa,
+            alamat: profileData.alamat,
+            foto_url: profileData.foto_url
+          })
+        })
+          .then(r => r.json())
+          .then(res => {
+            if (callback) callback(res);
+          })
+          .catch(() => {
+            if (callback) callback({ success: true, local: true });
+          });
+      } else {
+        if (callback) callback({ success: true, local: true });
+      }
+    }
+  },
+
   // Modul Jadwal Eksplor FINCESTEM Day 1 s.d. Day 7 & Day 0 (Gladi Bersih)
   schedule: {
     getDefaults: function() {
