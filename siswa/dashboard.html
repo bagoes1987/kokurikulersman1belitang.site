@@ -670,6 +670,78 @@
     </div>
   </div>
 
+  <!-- MODAL INPUT KONTAK WHATSAPP SISWA & ORANG TUA -->
+  <div id="modalStudentContact" onclick="if (event.target === this) closeStudentContactModal()" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-all duration-300">
+    <div class="w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Header Modal -->
+      <div class="px-5 py-4 bg-gradient-to-r from-teal-600 to-emerald-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center shrink-0">
+            <span class="material-symbols-outlined text-xl">perm_phone_msg</span>
+          </div>
+          <div>
+            <h3 class="font-black text-sm sm:text-base leading-tight">Kontak WhatsApp Siswa &amp; Ortu</h3>
+            <p class="text-[11px] text-teal-100">Komunikasi dengan Fasilitator &amp; Koordinator</p>
+          </div>
+        </div>
+        <button type="button" onclick="closeStudentContactModal()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-all cursor-pointer">
+          <span class="material-symbols-outlined text-lg">close</span>
+        </button>
+      </div>
+
+      <!-- Form Body Modal -->
+      <div class="p-5 overflow-y-auto flex flex-col gap-4 text-xs sm:text-sm">
+        <div>
+          <label for="inputStudentWa" class="block font-bold text-slate-800 text-xs mb-1">
+            No. WhatsApp Siswa (Aktif) *
+          </label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-slate-400 text-base">smartphone</span>
+            <input type="tel" id="inputStudentWa" placeholder="Contoh: 081234567890" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-1 focus:ring-teal-600 text-xs font-semibold outline-none transition-all">
+          </div>
+          <span class="text-[10.5px] text-slate-400 mt-1 block">Nomor WhatsApp di HP Anda untuk konsultasi &amp; pendampingan guru.</span>
+        </div>
+
+        <div>
+          <label for="inputFatherWa" class="block font-bold text-slate-800 text-xs mb-1">
+            No. WhatsApp Ayah
+          </label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-slate-400 text-base">person</span>
+            <input type="tel" id="inputFatherWa" placeholder="Contoh: 0813xxxxxxxx" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-1 focus:ring-teal-600 text-xs font-semibold outline-none transition-all">
+          </div>
+        </div>
+
+        <div>
+          <label for="inputMotherWa" class="block font-bold text-slate-800 text-xs mb-1">
+            No. WhatsApp Ibu
+          </label>
+          <div class="relative flex items-center">
+            <span class="material-symbols-outlined absolute left-3 text-slate-400 text-base">person_3</span>
+            <input type="tel" id="inputMotherWa" placeholder="Contoh: 0815xxxxxxxx" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 focus:border-teal-600 focus:ring-1 focus:ring-teal-600 text-xs font-semibold outline-none transition-all">
+          </div>
+        </div>
+
+        <div class="p-3 rounded-2xl bg-teal-50 border border-teal-200 text-teal-900 text-xs leading-relaxed flex items-start gap-2">
+          <span class="material-symbols-outlined text-sm text-teal-700 shrink-0 mt-0.5">verified_user</span>
+          <span>Nomor kontak ini bersifat resmi untuk Fasilitator &amp; Koordinator FINCESTEM SMAN 1 Belitang jika ada kendala bimbingan atau situasi darurat.</span>
+        </div>
+      </div>
+
+      <!-- Footer Modal -->
+      <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-end gap-2">
+        <button type="button" onclick="closeStudentContactModal()" class="px-4 py-2 rounded-xl text-slate-600 hover:bg-slate-200/80 text-xs font-bold transition-all cursor-pointer">
+          Batal
+        </button>
+        <button type="button" onclick="saveStudentContactInfo()" class="px-5 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-extrabold shadow-sm transition-all flex items-center gap-1.5 cursor-pointer">
+          <span class="material-symbols-outlined text-sm">save</span>
+          <span id="lblBtnSaveStudentContact">Simpan Kontak</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- MODAL INPUT KESEHATAN SISWA -->
   <div id="modalHealthInfo" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 opacity-0 pointer-events-none transition-all duration-300">
     <div class="w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden flex flex-col max-h-[90vh] animate-in fade-in zoom-in-95 duration-200">
