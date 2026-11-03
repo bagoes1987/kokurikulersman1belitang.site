@@ -3980,12 +3980,16 @@ const FincestemCore = {
         prog.completed_days = completedDaysSet.size;
         prog.percentage = Math.min(100, Math.round((prog.completed_days / 7) * 100));
 
-        const scoreList = prog.records.filter(r => r.score > 0).map(r => r.score);
-        if (scoreList.length > 0) {
-          prog.average_score = Math.round((scoreList.reduce((a, b) => a + b, 0) / scoreList.length) * 10) / 10;
-          if (prog.average_score >= 85.0) prog.predicate = 'Mahir';
-          else if (prog.average_score >= 70.0) prog.predicate = 'Cakap';
-          else prog.predicate = 'Berkembang';
+        // Jangan hitung Day 0 (simulasi) ke nilai rapor rata-rata
+        const scoreList = prog.records.filter(r => r.score > 0 && parseInt(r.day_number) >= 1 && parseInt(r.day_number) <= 7).map(r => r.score);
+        const day7Rec = prog.records.find(r => parseInt(r.day_number) === 7 && r.score !== null && r.score !== undefined && r.score !== '');
+        if (day7Rec) {
+          prog.average_score = parseFloat(day7Rec.score);
+          prog.predicate = day7Rec.predicate || (prog.average_score >= 85.0 ? 'Mahir' : (prog.average_score >= 70.0 ? 'Cakap' : 'Berkembang'));
+        } else {
+          // Sebelum Day 7 resmi dinilai, nilai rapor siswa belum ada
+          prog.average_score = null;
+          prog.predicate = null;
         }
 
         localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));

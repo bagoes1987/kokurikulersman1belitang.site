@@ -1979,27 +1979,23 @@
             statVBadge.textContent = 'Belum Dimulai';
           }
         } else {
-          const isFasilGraded = !!(prog.average_score && prog.predicate);
-          if (isFasilGraded) {
-            statAvgEl.textContent = prog.average_score;
-            statPredEl.textContent = `• ${prog.predicate}`;
+          // Siswa Non-Field Trip: Rapor HANYA tampil jika Day 7 telah resmi dievaluasi oleh Guru Fasilitator
+          const day7Eval = taskMap['7_final'] || taskMap['7_general'] || records.find(r => Number(r.day_number) === 7 && r.score !== null && r.score !== undefined && r.score !== '');
+          const hasOfficialDay7 = !!(day7Eval && day7Eval.score !== null && day7Eval.score !== undefined && day7Eval.score !== '');
+
+          if (hasOfficialDay7) {
+            const sc = parseFloat(day7Eval.score);
+            const rawPr = day7Eval.predicate ? day7Eval.predicate.toUpperCase().replace(/\s*\(.*\)/, '').trim() : '';
+            const pr = rawPr || (sc >= 85 ? 'MAHIR' : (sc >= 70 ? 'CAKAP' : 'BERKEMBANG'));
+            statAvgEl.textContent = sc;
+            statPredEl.textContent = '• ' + pr;
             statVBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800 shadow-2xs';
             statVBadge.textContent = 'Divalidasi Guru';
-          } else if (allDaysDone) {
-            statAvgEl.textContent = avgScore;
-            statPredEl.textContent = `• Estimasi ${category}`;
-            statVBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-amber-100 text-amber-800 shadow-2xs';
-            statVBadge.textContent = 'Menunggu Final Guru';
-          } else if (avgScore > 0) {
-            statAvgEl.textContent = avgScore;
-            statPredEl.textContent = `• Dalam Proses`;
-            statVBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-slate-100 text-slate-700 shadow-2xs';
-            statVBadge.textContent = 'Riset Berjalan';
           } else {
             statAvgEl.textContent = '-';
-            statPredEl.textContent = 'Belum Ada Nilai';
+            statPredEl.textContent = 'Belum Ada (Menunggu Day 7)';
             statVBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-slate-100 text-slate-600 shadow-2xs';
-            statVBadge.textContent = 'Belum Dimulai';
+            statVBadge.textContent = 'Menunggu Evaluasi Day 7';
           }
         }
       }
@@ -2202,8 +2198,12 @@
         const narrasi = NARRASI_RAPOR[activePred] || NARRASI_RAPOR.CAKAP;
         const isFasilValidated = (!isFieldTrip && (hasOfficialDay7 || (prog.average_score && prog.predicate)));
 
-        // Jika seluruh hari telah selesai, buka lipatan accordion otomatis agar siswa langsung melihat nilai
-        toggleReportCardAccordion(true);
+        // Buka accordion otomatis HANYA jika Field Trip atau Non-Field Trip sudah resmi dinilai Day 7
+        if (isFieldTrip || hasOfficialDay7) {
+          toggleReportCardAccordion(true);
+        } else {
+          toggleReportCardAccordion(false);
+        }
 
         if (isFieldTrip) {
           // --- SISWA FIELD TRIP (OTOMATIS KELUAR RESMI) ---
@@ -2332,58 +2332,98 @@
             }
 
           } else {
-            // Belum Divalidasi Fasilitator: Tampilkan Gambaran Nilai Rapor Sementara
+            // Belum Divalidasi Fasilitator: Nilai Rapor Resmi MASIH KOSONG karena belum Day 7 / belum dinilai fasilitator
             if (subTitleEl) {
-              subTitleEl.textContent = 'Non-Field Trip • Gambaran Sementara Menunggu Nilai Final Fasilitator';
+              subTitleEl.textContent = 'Non-Field Trip • Menunggu Pengesahan Nilai Rapor Day 7';
             }
             if (badgeEl) {
-              badgeEl.className = 'text-xs font-bold text-amber-900 bg-amber-100 px-3 py-1 rounded-full border border-amber-300 shadow-2xs flex items-center gap-1.5';
+              badgeEl.className = 'text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1 rounded-full border border-slate-300 shadow-2xs flex items-center gap-1.5';
               badgeEl.innerHTML = `
-                <span class="material-symbols-outlined text-sm text-amber-700">hourglass_top</span>
-                <span>Gambaran Nilai Rapor (Menunggu Final Fasilitator)</span>
+                <span class="material-symbols-outlined text-sm text-slate-500">schedule</span>
+                <span>Belum Dinilai (Menunggu Day 7)</span>
               `;
             }
 
             if (bodyEl) {
               bodyEl.innerHTML = `
-                <!-- Kotak Info Khusus Non-Field Trip (Rata Kanan Kiri) -->
-                <div class="p-3 rounded-2xl bg-amber-50/90 border border-amber-200/90 flex items-start gap-2.5">
-                  <span class="material-symbols-outlined text-amber-700 text-xl shrink-0 mt-0.5">notification_important</span>
-                  <p class="text-[12px] sm:text-[12.5px] text-amber-950 leading-relaxed text-justify">
-                    <strong>Gambaran Capaian Sementara:</strong> Seluruh rangkaian instrumen Day 1 s.d. Day 7 telah terkumpul. Berikut adalah estimasi predikat dan narasi capaian rapor berdasarkan kalkulasi sistem. Nilai resmi dan pengesahan rapor akhir akan disahkan setelah verifikasi final oleh Guru Fasilitator Kelas.
+                <!-- Kotak Pemberitahuan Nilai Rapor Belum Ada -->
+                <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/90 flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-indigo-600 text-xl shrink-0 mt-0.5">info</span>
+                  <p class="text-[12px] sm:text-[12.5px] text-slate-700 leading-relaxed text-justify">
+                    <strong>Pemberitahuan Rapor Kokurikuler:</strong> Nilai Akhir dan Predikat Rapor Kokurikuler 4 Pilar (Mahir, Cakap, Berkembang) saat ini masih kosong karena pelaksanaan belum mencapai Day 7 atau belum disahkan oleh Guru Fasilitator. Nilai resmi akan diterbitkan setelah evaluasi tuntas di Day 7.
                   </p>
                 </div>
 
-                <!-- Banner Estimasi Predikat -->
-                <div class="p-4 rounded-2xl ${category === 'MAHIR' ? 'bg-gradient-to-r from-amber-500/15 via-amber-400/10 to-transparent border-amber-300 text-amber-950' : (category === 'CAKAP' ? 'bg-gradient-to-r from-emerald-500/15 via-emerald-400/10 to-transparent border-emerald-300 text-emerald-950' : 'bg-gradient-to-r from-blue-500/15 via-blue-400/10 to-transparent border-blue-300 text-blue-950')} border flex items-center justify-between gap-3 flex-wrap shadow-2xs">
+                <!-- Banner Status Menunggu Evaluasi Day 7 (Nilai Kosong / -) -->
+                <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-100 via-slate-50 to-white border border-slate-200 flex items-center justify-between gap-3 flex-wrap shadow-2xs">
                   <div class="flex items-center gap-3">
-                    <span class="text-3xl">${category === 'MAHIR' ? '🏆' : (category === 'CAKAP' ? '🌟' : '🌱')}</span>
+                    <span class="text-3xl text-slate-400">⏳</span>
                     <div class="flex flex-col">
-                      <span class="text-[11px] font-black uppercase tracking-wider ${category === 'MAHIR' ? 'text-amber-800' : (category === 'CAKAP' ? 'text-emerald-800' : 'text-blue-800')}">Estimasi Predikat Rapor</span>
-                      <h4 class="text-xl sm:text-2xl font-black leading-tight">${category}</h4>
+                      <span class="text-[11px] font-black uppercase tracking-wider text-slate-500">Predikat Rapor Kokurikuler</span>
+                      <h4 class="text-xl sm:text-2xl font-black text-slate-700 leading-tight">Belum Ada Nilai</h4>
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
                     <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200/80 text-center shadow-2xs">
-                      <span class="block text-[10px] font-bold text-slate-500 uppercase">Estimasi Bintang</span>
-                      <span class="text-sm font-black text-amber-600">⭐ ${totalStars} / 35</span>
+                      <span class="block text-[10px] font-bold text-slate-500 uppercase">Total Bintang</span>
+                      <span class="text-sm font-black text-slate-400">-</span>
                     </div>
                     <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200/80 text-center shadow-2xs">
-                      <span class="block text-[10px] font-bold text-slate-500 uppercase">Estimasi Nilai</span>
-                      <span class="text-sm font-black text-slate-800">${avgScore}</span>
+                      <span class="block text-[10px] font-bold text-slate-500 uppercase">Nilai Akhir</span>
+                      <span class="text-sm font-black text-slate-400">-</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Kotak Estimasi Narasi Rapor (Rata Kanan Kiri / Justified) -->
-                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2">
-                  <span class="text-xs font-bold text-slate-600 uppercase tracking-wider flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-sm text-primary">description</span>
-                    Estimasi Narasi Capaian Rapor (Profil Lulusan &amp; FINCESTEM)
-                  </span>
-                  <p class="text-[13px] sm:text-[13.5px] text-slate-800 leading-relaxed text-justify font-normal pt-1">
-                    ${narrasi}
-                  </p>
+                <!-- 3 Kartu Matriks Ambang Batas Rapor Sebagai Referensi Siswa -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+                  <!-- 1. MAHIR -->
+                  <div class="p-3 rounded-2xl bg-gradient-to-b from-amber-50/90 to-amber-100/50 border border-amber-300 flex flex-col gap-1.5 shadow-2xs">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs sm:text-[13px] font-black text-amber-950 flex items-center gap-1">
+                        <span>🏆</span> MAHIR
+                      </span>
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-200 text-amber-950 border border-amber-300">
+                        30 – 35 ⭐
+                      </span>
+                    </div>
+                    <span class="text-[11px] font-bold text-amber-800">Nilai Rata-rata: ≥ 85.0</span>
+                    <p class="text-[11.5px] text-amber-950 leading-relaxed text-justify mt-0.5">
+                      ${NARRASI_RAPOR.MAHIR}
+                    </p>
+                  </div>
+
+                  <!-- 2. CAKAP -->
+                  <div class="p-3 rounded-2xl bg-gradient-to-b from-emerald-50/90 to-emerald-100/50 border border-emerald-300 flex flex-col gap-1.5 shadow-2xs">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs sm:text-[13px] font-black text-emerald-950 flex items-center gap-1">
+                        <span>🌟</span> CAKAP
+                      </span>
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-200 text-emerald-950 border border-emerald-300">
+                        21 – 29 ⭐
+                      </span>
+                    </div>
+                    <span class="text-[11px] font-bold text-emerald-800">Nilai Rata-rata: 70.0 – 84.9</span>
+                    <p class="text-[11.5px] text-emerald-950 leading-relaxed text-justify mt-0.5">
+                      ${NARRASI_RAPOR.CAKAP}
+                    </p>
+                  </div>
+
+                  <!-- 3. BERKEMBANG -->
+                  <div class="p-3 rounded-2xl bg-gradient-to-b from-blue-50/90 to-blue-100/50 border border-blue-300 flex flex-col gap-1.5 shadow-2xs">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs sm:text-[13px] font-black text-blue-950 flex items-center gap-1">
+                        <span>🌱</span> BERKEMBANG
+                      </span>
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-blue-200 text-blue-950 border border-blue-300">
+                        &le; 20 ⭐
+                      </span>
+                    </div>
+                    <span class="text-[11px] font-bold text-blue-800">Nilai Rata-rata: &lt; 70.0</span>
+                    <p class="text-[11.5px] text-blue-950 leading-relaxed text-justify mt-0.5">
+                      ${NARRASI_RAPOR.BERKEMBANG}
+                    </p>
+                  </div>
                 </div>
               `;
             }

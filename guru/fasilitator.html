@@ -1498,6 +1498,13 @@
   <script src="../js/core.js?v=20261030_binaan_v2"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
   <script>
+    // Kamus Narasi Resmi Rapor Kokurikuler Sesuai Kriteria Admin & SK Kelulusan
+    window.FINCESTEM_NARRASI_RAPOR = {
+      MAHIR: "Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat. Dalam kreativitas, peserta didik mampu menghasilkan karya orisinal berbasis STEM yang mengangkat nilai dan filosofi budaya lokal, serta menyajikan hasil eksplorasi melalui video dokumenter dan infografis yang menarik, informatif, dan berkualitas. Dalam aspek kewargaan, peserta didik menunjukkan keteladanan dalam menghargai kearifan lokal, menjunjung toleransi, dan menginisiasi kegiatan pelestarian lingkungan. Dalam kemandirian, peserta didik menunjukkan tanggung jawab, disiplin dalam menyelesaikan tugas, integritas, serta pengelolaan keuangan yang jujur dan transparan.",
+      CAKAP: "Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri. Dalam kreativitas, peserta didik mampu menghasilkan karya berbasis STEM yang memadukan kearifan lokal serta menyajikan hasil eksplorasi melalui infografis atau video pendek yang informatif. Dalam aspek kewargaan, peserta didik mampu menghormati keberagaman budaya, menjaga etika dan kesopanan, serta berperan aktif dalam menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mampu mengatur waktu, bertanggung jawab atas barang bawaan, menyelesaikan tugas harian dengan disiplin, dan mengelola anggaran pribadi secara mandiri.",
+      BERKEMBANG: "Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains dan mengevaluasi pembukuan keuangan. Dalam kreativitas, peserta didik mulai mengembangkan karya berbasis STEM dan mempraktikkan keterampilan budaya lokal, meskipun pembuatan video dan infografis masih memerlukan pendampingan. Dalam aspek kewargaan, peserta didik mulai mematuhi aturan dan menghargai nilai-nilai budaya setempat, tetapi masih perlu diingatkan untuk menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mulai belajar mengelola uang saku dan masih memerlukan dorongan untuk menyelesaikan serta mengumpulkan tugas harian tepat waktu."
+    };
+
     let assignedClass = null;
     let assignedStudents = [];
     let fasStudentSearchQuery = '';
@@ -3704,8 +3711,11 @@
         }
       }
 
+      // Pastikan predikat resmi terdefinisi dengan tepat
+      const pred = avg >= 85 ? 'Mahir' : (avg >= 70 ? 'Cakap' : 'Berkembang');
       const user = FincestemCore.auth.getUser();
       const fasilName = (user && user.name) || 'Tim Fasilitator SMAN 1 Belitang';
+      const narrasiDict = window.FINCESTEM_NARRASI_RAPOR || {};
 
       if (FincestemCore.progress) {
         FincestemCore.progress.submitEvaluation(targetNisn, {
@@ -3717,7 +3727,7 @@
           score_exploration: sExp,
           score_stem: sStem,
           predicate: pred,
-          feedback: fb || (dayNum === 7 ? (FINCESTEM_NARRASI_RAPOR[pred.toUpperCase()] || 'Rapor akhir kokurikuler 4 pilar.') : (dayNum === 0 ? 'Simulasi penilaian dan gladi bersih sangat baik.' : 'Umpan balik fasilitator.')),
+          feedback: fb || (dayNum === 7 ? (narrasiDict[pred.toUpperCase()] || 'Rapor akhir kokurikuler 4 pilar.') : (dayNum === 0 ? 'Simulasi penilaian dan gladi bersih sangat baik.' : 'Umpan balik fasilitator.')),
           status: status,
           facilitator_name: fasilName
         }, function() {

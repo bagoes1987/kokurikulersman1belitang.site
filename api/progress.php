@@ -202,7 +202,8 @@ if ($method === 'GET') {
                     $submittedTasks[$d . '_' . $t] = true;
                 }
 
-                if ($r['score'] !== null && is_numeric($r['score']) && (float)$r['score'] > 0) {
+                // Day 0 adalah gladi bersih simulasi, jangan masukkan ke daftar skor Day 1-7
+                if ($d >= 1 && $d <= 7 && $r['score'] !== null && is_numeric($r['score']) && (float)$r['score'] > 0) {
                     $scores[] = (float)$r['score'];
                 }
 
@@ -272,15 +273,19 @@ if ($method === 'GET') {
                 $avgScore = round((float)$day7Eval['score'], 1);
                 $predicate = !empty($day7Eval['predicate']) ? $day7Eval['predicate'] : ($avgScore >= 85 ? 'Mahir' : ($avgScore >= 70 ? 'Cakap' : 'Berkembang'));
             } else {
-                $avgScore = count($scores) > 0 ? round(array_sum($scores) / count($scores), 1) : null;
-                $predicate = 'Belum Ada';
-                if ($avgScore !== null) {
-                    if ($avgScore >= 85) $predicate = 'Mahir';
-                    elseif ($avgScore >= 70) $predicate = 'Cakap';
-                    else $predicate = 'Berkembang';
-                } elseif ($completedCount >= 7 || $percentage >= 100) {
-                    $avgScore = 95.0;
-                    $predicate = 'Mahir';
+                if ($isFieldTrip) {
+                    // Field Trip: Nilai otomatis kalkulasi sistem jika sudah tuntas 7 hari
+                    if ($completedCount >= 7) {
+                        $avgScore = count($scores) > 0 ? round(array_sum($scores) / count($scores), 1) : 95.0;
+                        $predicate = $avgScore >= 85 ? 'Mahir' : ($avgScore >= 70 ? 'Cakap' : 'Berkembang');
+                    } else {
+                        $avgScore = null;
+                        $predicate = null;
+                    }
+                } else {
+                    // Non-Field Trip: Rapor resmi Kokurikuler HARUS KOSONG (null) sampai Day 7 resmi dinilai Fasilitator!
+                    $avgScore = null;
+                    $predicate = null;
                 }
             }
 
