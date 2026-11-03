@@ -70,13 +70,18 @@ if ($action === 'list') {
     $stmt->execute($params);
     $rows = $stmt->fetchAll();
 
-    // Pastikan field source, has_geotag, dan day konsisten di setiap row serta bebas duplikasi
+    // Pastikan field source, has_geotag, dan day konsisten di setiap row serta bebas duplikasi (id, url, day+title)
     $seenIds = [];
+    $seenUrls = [];
+    $seenTitles = [];
     $media = [];
     foreach ($rows as $r) {
         $id = (int)($r['id'] ?? 0);
         if ($id > 0 && isset($seenIds[$id])) continue;
         if ($id > 0) $seenIds[$id] = true;
+
+        $urlKey = trim($r['file_url'] ?? '');
+        if (!empty($urlKey) && isset($seenUrls[$urlKey])) continue;
 
         $src = !empty($r['source']) ? $r['source'] : (!empty($r['gps_location']) ? 'camera' : 'gallery');
         $hasGps = (isset($r['has_geotag']) && $r['has_geotag'] !== null) 
@@ -108,6 +113,13 @@ if ($action === 'list') {
         }
         $r['day'] = $dayNum;
         $r['day_number'] = $dayNum;
+
+        $titleKey = $dayNum . '_' . strtolower(trim($r['title'] ?? ''));
+        if (!empty($r['title']) && isset($seenTitles[$titleKey])) continue;
+
+        if (!empty($urlKey)) $seenUrls[$urlKey] = true;
+        if (!empty($r['title'])) $seenTitles[$titleKey] = true;
+
         $media[] = $r;
     }
 

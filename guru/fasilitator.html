@@ -3660,12 +3660,45 @@
         const sPad = sCln.padStart(10, '0');
         const sIds = new Set([sRaw, sCln, sUnp, sPad].filter(Boolean));
 
-        const studentDocs = docs.filter(d => {
+        const targetDay = (dayNum === 0 || dayNum === '0') ? 0 : (parseInt(dayNum) || 0);
+
+        // 1. Filter milik siswa ini & hari yang sedang dinilai
+        const studentRawDocs = docs.filter(d => {
           const dRaw = String(d.nisn || d.uploaded_by_nisn || d.author_nisn || '').trim();
           const dCln = dRaw.replace(/\D/g, '');
           const dUnp = dCln.replace(/^0+/, '');
           const dPad = dCln.padStart(10, '0');
-          return sIds.has(dRaw) || sIds.has(dCln) || sIds.has(dUnp) || sIds.has(dPad);
+          const isMine = sIds.has(dRaw) || sIds.has(dCln) || sIds.has(dUnp) || sIds.has(dPad);
+          if (!isMine) return false;
+
+          let dDay = (d.day !== undefined && d.day !== null) ? parseInt(d.day) : ((d.day_number !== undefined && d.day_number !== null) ? parseInt(d.day_number) : -1);
+          if (dDay < 0) {
+            const txt = (d.title || '') + ' ' + (d.caption || '') + ' ' + (d.url || '');
+            const m = txt.match(/day[_\-\s]*([0-7])/i);
+            dDay = m ? parseInt(m[1]) : 0;
+          }
+          return dDay === targetDay;
+        });
+
+        // 2. DEDUPLIKASI KETAT: Prioritaskan versi server doc-srv- dan hilangkan duplikasi URL / ID / Judul
+        const seenIds = new Set();
+        const seenUrls = new Set();
+        const seenTitles = new Set();
+        const studentDocs = [];
+
+        studentRawDocs.forEach(p => {
+          const pId = String(p.id || '').trim();
+          const pUrl = String(p.url || p.file_url || '').trim();
+          const pTitle = String(p.title || '').trim().toLowerCase();
+
+          if (pId && seenIds.has(pId)) return;
+          if (pUrl && seenUrls.has(pUrl)) return;
+          if (pTitle && seenTitles.has(pTitle)) return;
+
+          studentDocs.push(p);
+          if (pId) seenIds.add(pId);
+          if (pUrl) seenUrls.add(pUrl);
+          if (pTitle) seenTitles.add(pTitle);
         });
 
         // Deteksi kategori siswa: Non-Field Trip vs Field Trip
@@ -3712,11 +3745,11 @@
           }
         }
 
-        // Render Kotak Rekomendasi Bintang Sistem
+        // Render Kotak Rekomendasi Bintang Sistem (Format Simetris Proporsional Sempurna)
         if (recContainer) {
           if (studentDocs.length === 0) {
             recContainer.innerHTML = `
-              <div class="p-2.5 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center gap-2 text-xs">
+              <div class="p-3 rounded-2xl bg-slate-100 border border-slate-200 text-slate-700 flex items-center gap-2 text-xs">
                 <span class="material-symbols-outlined text-slate-500 text-base">info</span>
                 <span class="text-[11px]">Belum ada dokumentasi untuk sesi ini. Rekomendasi status: <strong>Submitted / Menunggu Koreksi</strong>.</span>
               </div>
@@ -3724,85 +3757,91 @@
           } else if (isNonFieldTrip && hasOutsideOKUTimurGeotag) {
             // SISWA NON-FIELD TRIP GEOTAG DI LUAR OKU TIMUR -> REKOMENDASI BINTANG 1
             recContainer.innerHTML = `
-              <div class="p-3.5 rounded-2xl bg-rose-50/90 border border-rose-300 text-rose-950 flex flex-col gap-2.5 shadow-xs">
-                <div class="flex items-center justify-between gap-2 flex-wrap">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2.5 py-1 rounded-xl bg-rose-600 text-white font-black text-xs flex items-center gap-1 shadow-2xs">
-                      <span class="text-sm">⭐☆☆☆☆</span>
-                      <span>Bintang 1</span>
-                    </span>
-                    <span class="px-2 py-0.5 rounded-lg bg-rose-200/90 text-rose-900 font-extrabold text-[10px] uppercase tracking-wide">Penalti Lokasi (Luar OKU Timur)</span>
+              <div class="p-3.5 rounded-2xl bg-rose-50/90 border border-rose-300 text-rose-950 flex flex-col gap-3 shadow-xs">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white shadow-2xs">
+                    <span class="text-xs">⭐☆☆☆☆</span>
+                    <span class="text-xs font-black">Bintang 1</span>
                   </div>
-                  <button type="button" onclick="applyStarRecommendation(1, 'outside_okut')" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 cursor-pointer transition-all ml-auto">
-                    <span class="material-symbols-outlined text-sm">wrong_location</span>
-                    <span>Terapkan Nilai ⭐1</span>
-                  </button>
+                  <span class="px-2.5 py-1 rounded-xl bg-rose-100 text-rose-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-rose-300">
+                    Penalti Lokasi (Luar OKU Timur)
+                  </span>
                 </div>
-                <div class="text-[11.5px] text-rose-900 bg-white/70 p-2.5 rounded-xl border border-rose-200/70 leading-relaxed">
+                <div class="text-[11.5px] text-rose-950 bg-white/80 p-3 rounded-xl border border-rose-200/80 leading-relaxed">
                   Titik GPS (${outsideCoordSample}) terdeteksi di luar batas resmi Kab. OKU Timur. Siswa Non-Field Trip tanpa izin dispensasi wajib berkegiatan di OKU Timur. Rekomendasi nilai: <strong>Bintang 1 / Status Revisi</strong>.
                 </div>
+                <button type="button" onclick="applyStarRecommendation(1, 'outside_okut')" class="w-full py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white font-extrabold text-xs shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">wrong_location</span>
+                  <span>Terapkan Rekomendasi Nilai ⭐1</span>
+                </button>
               </div>
             `;
           } else if (isNonFieldTrip && geotagDocs.length === 0 && galleryDocs.length > 0) {
             // SISWA NON-FIELD TRIP HANYA UPLOAD DARI GALERI -> REKOMENDASI BINTANG 1
             recContainer.innerHTML = `
-              <div class="p-3.5 rounded-2xl bg-rose-50/90 border border-rose-300 text-rose-950 flex flex-col gap-2.5 shadow-xs">
-                <div class="flex items-center justify-between gap-2 flex-wrap">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2.5 py-1 rounded-xl bg-rose-600 text-white font-black text-xs flex items-center gap-1 shadow-2xs">
-                      <span class="text-sm">⭐☆☆☆☆</span>
-                      <span>Bintang 1</span>
-                    </span>
-                    <span class="px-2 py-0.5 rounded-lg bg-rose-200/90 text-rose-900 font-extrabold text-[10px] uppercase tracking-wide">Penalti Galeri (Non-Field Trip)</span>
+              <div class="p-3.5 rounded-2xl bg-rose-50/90 border border-rose-300 text-rose-950 flex flex-col gap-3 shadow-xs">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white shadow-2xs">
+                    <span class="text-xs">⭐☆☆☆☆</span>
+                    <span class="text-xs font-black">Bintang 1</span>
                   </div>
-                  <button type="button" onclick="applyStarRecommendation(1, 'gallery')" class="px-3.5 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 cursor-pointer transition-all ml-auto">
-                    <span class="material-symbols-outlined text-sm">star</span>
-                    <span>Terapkan Nilai ⭐1</span>
-                  </button>
+                  <span class="px-2.5 py-1 rounded-xl bg-rose-100 text-rose-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-rose-300">
+                    Penalti Galeri (Non-Field Trip)
+                  </span>
                 </div>
-                <div class="text-[11.5px] text-rose-900 bg-white/70 p-2.5 rounded-xl border border-rose-200/70 leading-relaxed">
+                <div class="text-[11.5px] text-rose-950 bg-white/80 p-3 rounded-xl border border-rose-200/80 leading-relaxed">
                   Siswa Non-Field Trip mengunggah foto via Galeri tanpa stempel GPS Geotag live. Rekomendasi nilai: <strong>Bintang 1 / Status Revisi</strong>.
                 </div>
+                <button type="button" onclick="applyStarRecommendation(1, 'gallery')" class="w-full py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-[0.99] text-white font-extrabold text-xs shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">star</span>
+                  <span>Terapkan Rekomendasi Nilai ⭐1</span>
+                </button>
               </div>
             `;
           } else if (geotagDocs.length > 0) {
-            // ADA FOTO BER-GEOTAG -> REKOMENDASI BINTANG 5 (LETAK PROPOSIONAL & LEGA)
+            // ADA FOTO BER-GEOTAG -> REKOMENDASI BINTANG 5 (LETAK SIMETRIS, RAPI & LEGA)
             recContainer.innerHTML = `
-              <div class="p-3.5 rounded-2xl bg-emerald-50/90 border border-emerald-300 text-emerald-950 flex flex-col gap-2.5 shadow-xs">
-                <div class="flex items-center justify-between gap-2 flex-wrap">
-                  <div class="flex items-center gap-2">
-                    <span class="px-2.5 py-1 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center gap-1 shadow-2xs">
-                      <span class="text-sm">⭐⭐⭐⭐⭐</span>
-                      <span>Bintang 5</span>
-                    </span>
-                    <span class="px-2 py-0.5 rounded-lg bg-emerald-200/90 text-emerald-900 font-extrabold text-[10px] uppercase tracking-wide">${isFieldTrip ? 'Field Trip (GPS Aktif)' : 'Geotag OKU Timur Valid'}</span>
+              <div class="p-3.5 rounded-2xl bg-emerald-50/90 border border-emerald-300 text-emerald-950 flex flex-col gap-3 shadow-xs">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white shadow-2xs">
+                    <span class="text-xs">⭐⭐⭐⭐⭐</span>
+                    <span class="text-xs font-black">Bintang 5</span>
                   </div>
-                  <button type="button" onclick="applyStarRecommendation(5)" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-bold text-xs shadow-xs flex items-center gap-1.5 cursor-pointer transition-all ml-auto">
-                    <span class="material-symbols-outlined text-sm">verified</span>
-                    <span>Terapkan Nilai ⭐5</span>
-                  </button>
+                  <span class="px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-emerald-300">
+                    ${isFieldTrip ? 'Field Trip (GPS Aktif)' : 'Geotag OKU Timur Valid'}
+                  </span>
                 </div>
-                <div class="text-[11.5px] text-emerald-900 bg-white/70 p-2.5 rounded-xl border border-emerald-200/70 leading-relaxed">
+                <div class="text-[11.5px] text-emerald-950 bg-white/80 p-3 rounded-xl border border-emerald-200/80 leading-relaxed">
                   ${isFieldTrip 
                     ? 'Dokumentasi Field Trip terekam dengan GPS satelit di rute perjalanan.' 
                     : 'Foto Kamera Geotagging live di lokasi riset terverifikasi otentik dalam wilayah OKU Timur.'}
                 </div>
+                <button type="button" onclick="applyStarRecommendation(5)" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-[0.99] text-white font-extrabold text-xs shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">verified</span>
+                  <span>Terapkan Rekomendasi Nilai ⭐5</span>
+                </button>
               </div>
             `;
           } else {
             // Field trip via galeri
             recContainer.innerHTML = `
-              <div class="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-300 text-amber-950 flex flex-col gap-2 shadow-xs">
-                <div class="flex items-center gap-2">
-                  <span class="px-2.5 py-1 rounded-xl bg-amber-500 text-white font-black text-xs flex items-center gap-1 shadow-2xs">
-                    <span class="text-sm">⭐⭐⭐☆☆</span>
-                    <span>Bintang 3</span>
+              <div class="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-300 text-amber-950 flex flex-col gap-3 shadow-xs">
+                <div class="flex items-center justify-between gap-2">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 text-white shadow-2xs">
+                    <span class="text-xs">⭐⭐⭐☆☆</span>
+                    <span class="text-xs font-black">Bintang 3</span>
+                  </div>
+                  <span class="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-amber-300">
+                    Unggahan Galeri (Field Trip)
                   </span>
-                  <span class="px-2 py-0.5 rounded-lg bg-amber-200/90 text-amber-900 font-extrabold text-[10px] uppercase tracking-wide">Unggahan Galeri (Field Trip)</span>
                 </div>
-                <div class="text-[11.5px] text-amber-900 bg-white/70 p-2.5 rounded-xl border border-amber-200/70 leading-relaxed">
+                <div class="text-[11.5px] text-amber-950 bg-white/80 p-3 rounded-xl border border-amber-200/80 leading-relaxed">
                   Dokumentasi Field Trip via galeri tanpa GPS satelit langsung. Periksa kesesuaian LKPD dan catatan lapangan.
                 </div>
+                <button type="button" onclick="applyStarRecommendation(3, 'fieldtrip_gallery')" class="w-full py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 active:scale-[0.99] text-white font-extrabold text-xs shadow-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">star_half</span>
+                  <span>Terapkan Rekomendasi Nilai ⭐3</span>
+                </button>
               </div>
             `;
           }
@@ -3854,7 +3893,7 @@
       }
 
       if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list&nisn=' + encodeURIComponent(nisn))
+        fetch(FincestemCore.api.base + '/dokumentasi.php?action=list&nisn=' + encodeURIComponent(nisn) + '&_t=' + Date.now())
           .then(r => r.json())
           .then(res => {
             if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
