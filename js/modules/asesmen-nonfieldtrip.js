@@ -1580,26 +1580,39 @@
   const ESCALATION_INTERVAL_MS = 6000; // Jika tetap di layar mengambang > 6 detik -> penalti beruntun otomatis!
   let activeTouchPoints = new Set();
 
+  let baselineInitialInnerW = 0;
+  let baselineInitialInnerH = 0;
+
   /**
-   * 1. KALIBRASI DIMENSI FISIK LAYAR PERANGKAT (ANTI-SPOOF SCREEN.WIDTH DI ANDROID FREEFORM)
+   * 1. KALIBRASI DIMENSI FISIK LAYAR PERANGKAT (ANTI-SPOOF & KALIBRASI MULTI-PERANGKAT)
    */
   function recordHardwareScreenBaseline() {
     try {
+      const scrW = Math.max(screen.width || 0, screen.availWidth || 0);
+      const scrH = Math.max(screen.height || 0, screen.availHeight || 0);
+      const winW = window.innerWidth || document.documentElement.clientWidth || 0;
+      const winH = window.innerHeight || document.documentElement.clientHeight || 0;
+
       const savedW = parseInt(sessionStorage.getItem('fincestem_hw_screen_w') || '0', 10);
       const savedH = parseInt(sessionStorage.getItem('fincestem_hw_screen_h') || '0', 10);
-      const curW = Math.max(screen.width || 0, screen.availWidth || 0, window.outerWidth || 0, window.innerWidth || 0);
-      const curH = Math.max(screen.height || 0, screen.availHeight || 0, window.outerHeight || 0, window.innerHeight || 0);
-      baselineMaxScreenW = Math.max(baselineMaxScreenW, savedW, curW);
-      baselineMaxScreenH = Math.max(baselineMaxScreenH, savedH, curH);
+      const savedInitW = parseInt(sessionStorage.getItem('fincestem_init_win_w') || '0', 10);
+      const savedInitH = parseInt(sessionStorage.getItem('fincestem_init_win_h') || '0', 10);
+
+      baselineMaxScreenW = Math.max(baselineMaxScreenW, savedW, scrW, winW);
+      baselineMaxScreenH = Math.max(baselineMaxScreenH, savedH, scrH, winH);
+
+      if (!baselineInitialInnerW || winW > baselineInitialInnerW) baselineInitialInnerW = Math.max(winW, savedInitW);
+      if (!baselineInitialInnerH || winH > baselineInitialInnerH) baselineInitialInnerH = Math.max(winH, savedInitH);
+
       if (baselineMaxScreenW > 0) sessionStorage.setItem('fincestem_hw_screen_w', String(baselineMaxScreenW));
       if (baselineMaxScreenH > 0) sessionStorage.setItem('fincestem_hw_screen_h', String(baselineMaxScreenH));
+      if (baselineInitialInnerW > 0) sessionStorage.setItem('fincestem_init_win_w', String(baselineInitialInnerW));
+      if (baselineInitialInnerH > 0) sessionStorage.setItem('fincestem_init_win_h', String(baselineInitialInnerH));
     } catch (e) {}
   }
 
   /**
    * 2. KUNCI LAYAR PENUH MUTLAK (MANDATORY FULLSCREEN LOCK)
-   * Di Android, mode Fullscreen memblokir Smart Sidebar dan langsung keluar (memicu fullscreenchange)
-   * begitu ada aplikasi Layar Mengambang (Floating Window) yang dibuka di atas browser!
    */
   function ensureExamFullscreenOnGesture() {
     try {
@@ -1618,10 +1631,7 @@
   }
 
   /**
-   * 3. AUTO-BLUR & HAPUS TEKS SOAL SAAT IDLE TANPA SENTUHAN (ANTI-SCREENSHOT TOMBOL FISIK & ANTI-INTIP)
-   * Saat siswa melepas tangan dari layar untuk menekan tombol Power + Volume Down (Screenshot HP)
-   * atau mengetik di jendela Google mengambang, dalam 3.5 detik tanpa sentuhan teks soal otomatis diganti
-   * teks kunci pengaman dan diburamkan sehingga hasil tangkapan layar tidak memuat soal!
+   * 3. AUTO-BLUR & HAPUS TEKS SOAL SAAT IDLE TANPA SENTUHAN
    */
   function stopQuestionIdleBlurTimer() {
     if (questionIdleBlurTimeout) {
@@ -1639,31 +1649,158 @@
 
   /**
    * 4. DETEKSI KETAT LAYAR MENGAMBANG (FLOATING WINDOW), SPLIT SCREEN & KEYBOARD PENCARIAN GOOGLE
+   * Bekerja akurat pada semua tipe smartphone (Android berbagai brand & iPhone) serta Laptop/PC.
    */
   function checkPreExamMultiWindow() {
+    recordHardwareScreenBaseline();
+    const winW = window.innerWidth || document.documentElement.clientWidth || 0;
+    const winH = window.innerHeight || document.documentElement.clientHeight || 0;
+    const scrW = Math.max(baselineMaxScreenW, screen.width || 0, screen.availWidth || 0);
+    const scrH = Math.max(baselineMaxScreenH, screen.height || 0, screen.availHeight || 0);
+
+    // 1. Picture-in-Picture
+    if (document.pictureInPictureElement) {
+      try { document.exitPictureInPicture(); } catch(e) {}
+      return 'Jendela Mengambang (Picture-in-Picture)';
+    }
+
+    // 2. Layar Ganda / Multi-Monitor
+    if (window.screen && window.screen.isExtended) {
+      return 'Layar Ganda / Multi-Monitor Terhubung';
+    }
+
+    const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || ('ontouchstart' in window) || (scrW <= 1024 && scrH <= 1024);
+
+    if (isMobile) {
+      // Smartphone minimal lebar 300px dan tinggi 420px untuk 1 layar penuh
+      if (winW < 300 || winH < 420) {
+        return 'Layar Mengambang (Floating Window / Pop-up View Kecil)';
+      }
+
+      const isPortrait = scrH >= scrW;
+      if (isPortrait) {
+        // Split Screen vertikal: tinggi browser terpotong < 58% dari tinggi layar
+        if (scrH > 0 && (winH / scrH < 0.58)) {
+          return 'Layar Belah (Split Screen) / Layar Terpotong Vertikal';
+        }
+        // Floating window: lebar browser terpotong < 78% dari lebar layar
+        if (scrW > 0 && (winW / scrW < 0.78)) {
+          return 'Layar Mengambang (Floating Window - Lebar Layar Menyusut)';
+        }
+      } else {
+        // Split Screen horizontal
+        if (scrW > 0 && (winW / scrW < 0.65)) {
+          return 'Layar Belah (Split Screen) Landscape';
+        }
+      }
+    } else {
+      // Desktop / Laptop: wajib minimal 75% lebar dan 68% tinggi layar
+      if (scrW > 0 && scrH > 0) {
+        if ((winW / scrW < 0.75) || (winH / scrH < 0.68)) {
+          return 'Jendela Browser Diperkecil / Layar Belah Desktop (Wajib Layar Penuh)';
+        }
+      }
+    }
+
     return null;
   }
 
   function detectMultiWindowViolation() {
     if (!examState.isExamActive || examState.isExamFinished) return null;
+
+    recordHardwareScreenBaseline();
+    const winW = window.innerWidth || document.documentElement.clientWidth || 0;
+    const winH = window.innerHeight || document.documentElement.clientHeight || 0;
+    const scrW = Math.max(baselineMaxScreenW, screen.width || 0, screen.availWidth || 0);
+    const scrH = Math.max(baselineMaxScreenH, screen.height || 0, screen.availHeight || 0);
+
+    // 1. Picture-in-Picture
     if (document.pictureInPictureElement) {
       try { document.exitPictureInPicture(); } catch(e) {}
       return 'Jendela Mengambang (Picture-in-Picture)';
     }
+
+    // 2. Layar Ganda / Multi-Monitor
+    if (window.screen && window.screen.isExtended) {
+      return 'Layar Ganda / Multi-Monitor Terhubung';
+    }
+
+    const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
+    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || ('ontouchstart' in window) || (scrW <= 1024 && scrH <= 1024);
+
+    if (isMobile) {
+      // A. Browser FINCESTEM sendiri berada di Jendela Mengambang (Freeform / Floating Pop-up)
+      if (winW < 300 || winH < 420) {
+        return 'Layar Mengambang (Floating Window / Pop-up View)';
+      }
+
+      const isPortrait = scrH >= scrW;
+      if (isPortrait) {
+        // Split Screen: tinggi menyusut drastis karena layar dibagi dengan aplikasi lain
+        if (scrH > 0 && (winH / scrH < 0.58)) {
+          return 'Layar Belah (Split Screen) / Layar Terpotong Vertikal';
+        }
+        // Floating window lebar menyusut
+        if (scrW > 0 && (winW / scrW < 0.78)) {
+          return 'Layar Mengambang (Floating Window - Lebar Layar Menyusut)';
+        }
+      } else {
+        if (scrW > 0 && (winW / scrW < 0.65)) {
+          return 'Layar Belah (Split Screen) Landscape';
+        }
+      }
+
+      // B. Deteksi Keyboard Virtual pada Layar Mengambang
+      // Pada soal pilihan ganda FINCESTEM tidak ada input form. Jika keyboard muncul (visualViewport anjlok),
+      // siswa sedang mengetik pada jendela pencarian Google mengambang, smart sidebar, atau chat!
+      if (window.visualViewport && baselineInitialInnerH > 0) {
+        const vvH = window.visualViewport.height;
+        const activeEl = document.activeElement;
+        const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+        if (!isInput && vvH < baselineInitialInnerH * 0.60) {
+          return 'Aktivitas Keyboard pada Layar Mengambang (Floating Search/Google)';
+        }
+      }
+    } else {
+      // Desktop / Laptop
+      if (scrW > 0 && scrH > 0) {
+        if ((winW / scrW < 0.75) || (winH / scrH < 0.68)) {
+          return 'Jendela Browser Diperkecil / Layar Mengambang Desktop';
+        }
+      }
+    }
+
     return null;
   }
 
   /**
-   * 5. WATCHDOG INTEGRITAS LAYAR & FOKUS REALTIME
+   * 5. WATCHDOG INTEGRITAS LAYAR & FOKUS REALTIME (INTERVAL 350ms)
    */
   function startScreenIntegrityWatchdog() {
     if (screenIntegrityWatchdogInterval) clearInterval(screenIntegrityWatchdogInterval);
     screenIntegrityWatchdogInterval = setInterval(() => {
       if (!examState.isExamActive || examState.isExamFinished) return;
-      if (document.hidden) {
-        handleTabExit('Meninggalkan layar asesmen / membuka aplikasi lain');
+
+      // 1. Cek Layar Mengambang (Floating Window) & Split Screen fisik
+      const multiWinReason = detectMultiWindowViolation();
+      if (multiWinReason) {
+        handleTabExit(multiWinReason);
+        return;
       }
-    }, 1000);
+
+      // 2. Cek apakah dokumen kehilangan fokus (misal mengetuk jendela mengambang di atas browser)
+      if (typeof document.hasFocus === 'function' && !document.hasFocus()) {
+        handleTabExit('Mengetuk Layar Mengambang (Floating Window) / Kehilangan Fokus Ujian');
+        return;
+      }
+
+      // 3. Cek document.hidden (berpindah tab / aplikasi)
+      if (document.hidden) {
+        handleTabExit('Meninggalkan lembar asesmen / membuka aplikasi lain');
+        return;
+      }
+    }, 350);
   }
 
   function stopScreenIntegrityWatchdog() {
@@ -1679,13 +1816,9 @@
   }
 
   /**
-   * 6. ESCALATION WATCHDOG: HANYA NAIK JIKA LAYAR MENGAMBANG MASIH TERBUKA & POP-UP BELUM MUNCUL
-   * Catatan Penting: Selama pop-up Peringatan (1/3 atau 2/3) sedang terbuka dan menunggu siswa menekan
-   * tombol "Tutup Layar Mengambang & Lanjut", JANGAN naikkan pelanggaran otomatis menjadi 2/3 atau 3/3!
-   * Setiap 1x kejadian melanggar hanya dihitung tepat +1 pelanggaran.
+   * 6. ESCALATION WATCHDOG
    */
   function startContinuousEscalationWatchdog(reason) {
-    // Nonaktifkan eskalasi otomatis beruntun saat pop-up sedang terbuka agar 1x melanggar = tepat 1/3 (bukan langsung 3/3)!
     stopContinuousEscalationWatchdog();
   }
 
@@ -1766,12 +1899,22 @@
       });
     }
 
-    // 6. Penanganan Fullscreen (Aman tanpa false-alarm saat scrolling HP)
+    // 6. Penanganan Fullscreen & Deteksi Keluar Layar Penuh
     document.addEventListener('fullscreenchange', () => {
-      // Tidak langsung menuduh pelanggaran agar gestur scroll browser HP tidak memicu penalti
+      if (examState.isExamActive && !examState.isExamFinished) {
+        const violationReason = detectMultiWindowViolation();
+        if (violationReason) {
+          handleTabExit(violationReason);
+        }
+      }
     });
     document.addEventListener('webkitfullscreenchange', () => {
-      // Tidak langsung menuduh pelanggaran
+      if (examState.isExamActive && !examState.isExamFinished) {
+        const violationReason = detectMultiWindowViolation();
+        if (violationReason) {
+          handleTabExit(violationReason);
+        }
+      }
     });
 
     // 7. Pengendalian Sentuhan Layar & Reset Timer Idle
@@ -2095,7 +2238,14 @@
   }
 
   window.dismissExamViolationModal = function() {
-    // 1. Paksa masuk kembali ke Mode Layar Penuh (Fullscreen)
+    // 1. Verifikasi apakah siswa masih membuka Layar Mengambang / Split Screen
+    const stillViolating = detectMultiWindowViolation();
+    if (stillViolating) {
+      alert('⚠️ AKSES DITOLAK!\n\nSistem mendeteksi Anda MASIH menggunakan: ' + stillViolating + '.\n\nHarap TUTUP semua aplikasi mengambang (Floating Window) atau Split Screen dan kembalikan browser ke 1 Layar Penuh sebelum melanjutkan!');
+      return;
+    }
+
+    // 2. Paksa masuk kembali ke Mode Layar Penuh (Fullscreen)
     ensureExamFullscreenOnGesture();
 
     stopExamAlarmLoop();
