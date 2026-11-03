@@ -3768,22 +3768,22 @@
           `;
         } else {
           container.innerHTML = `
-            <div class="p-4 sm:p-5 rounded-3xl ${isDay0 ? 'bg-gradient-to-br from-amber-500/10 via-orange-500/10 to-teal-500/10 border-2 border-amber-400' : 'bg-surface-container-lowest border-2 border-primary/40'} flex items-center justify-between gap-3 shadow-xs">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl ${isDay0 ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white' : 'bg-primary/10 text-primary'} flex items-center justify-center shrink-0 shadow-xs">
+            <div class="p-4 sm:p-5 rounded-3xl ${isDay0 ? 'bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-teal-500/10 border-2 border-amber-400' : 'bg-surface-container-lowest border-2 border-primary/40'} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+              <div class="flex items-start sm:items-center gap-3 w-full sm:w-auto">
+                <div class="w-12 h-12 rounded-2xl ${isDay0 ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-amber-500/20' : 'bg-primary/10 text-primary'} flex items-center justify-center shrink-0 shadow-xs">
                   <span class="material-symbols-outlined text-2xl">${isDay0 ? 'science' : 'photo_camera'}</span>
                 </div>
-                <div class="flex flex-col">
-                  <div class="flex items-center gap-2">
-                    <span class="font-black text-xs sm:text-sm text-on-surface">${isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : `Dokumentasi Foto Day ${dayNum}`}</span>
-                    ${isDay0 ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide">Uji Coba</span>' : ''}
+                <div class="flex flex-col gap-1 min-w-0">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="font-black text-sm text-slate-900 leading-snug">${isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : `Dokumentasi Foto Day ${dayNum}`}</span>
+                    ${isDay0 ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide border border-amber-500 shadow-2xs shrink-0">Uji Coba</span>' : ''}
                   </div>
-                  <span class="text-[11px] text-slate-500">${isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini'}</span>
+                  <span class="text-xs text-slate-600 leading-relaxed">${isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini'}</span>
                 </div>
               </div>
-              <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-xl ${isDay0 ? 'bg-amber-600 hover:bg-amber-700' : 'bg-primary hover:bg-primary/90'} text-white font-extrabold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0">
-                <span class="material-symbols-outlined text-base">add_a_photo</span>
-                <span>${isDay0 ? 'Ambil Foto Simulasi' : 'Ambil Foto'}</span>
+              <button type="button" onclick="toggleUploadModal(true)" class="w-full sm:w-auto py-3 px-5 rounded-2xl ${isDay0 ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-amber-600/30' : 'bg-primary hover:bg-primary/90'} text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer shrink-0">
+                <span class="material-symbols-outlined text-lg">add_a_photo</span>
+                <span class="whitespace-nowrap">${isDay0 ? 'Ambil Foto Simulasi' : 'Ambil Foto'}</span>
               </button>
             </div>
           `;
