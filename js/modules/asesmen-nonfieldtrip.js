@@ -1024,14 +1024,14 @@
         <div id="examQuestionCard" onclick="window.wakeUpQuestionCard()" ontouchstart="window.wakeUpQuestionCard()" class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col gap-4 relative overflow-hidden">
           
           <!-- OVERLAY BLUR OTOMATIS ANTI-INTIP LAYAR MENGAMBANG (AKTIF JIKA DIAM > 8 DETIK) -->
-          <div id="examIdleBlurNotice" style="display: none;" onclick="window.wakeUpQuestionCard(); event.stopPropagation();" class="absolute inset-0 z-20 bg-slate-900/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white cursor-pointer select-none">
+          <div id="examIdleBlurNotice" style="display: none;" onclick="window.wakeUpQuestionCard(true); event.stopPropagation();" class="absolute inset-0 z-20 bg-slate-900/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white cursor-pointer select-none">
             <div class="w-12 h-12 rounded-2xl bg-teal-500/20 border border-teal-400 text-teal-300 flex items-center justify-center mb-2.5 shadow-lg">
               <span class="material-symbols-outlined text-2xl animate-bounce">touch_app</span>
             </div>
             <h4 class="font-black text-sm sm:text-base text-white">Proteksi Fokus Aktif (Anti-Layar Mengambang)</h4>
             <p class="text-[11.5px] text-slate-200 max-w-xs mt-1 leading-relaxed">
               Soal disembunyikan otomatis saat layar tidak disentuh agar tidak dapat dibaca melalui aplikasi mengambang.<br>
-              <strong class="text-amber-300 underline mt-1 inline-block">Ketuk di sini untuk membuka tampilan soal</strong>
+              <span class="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shadow-md"><span class="material-symbols-outlined text-sm">warning</span><span>Kembali ke Lembar Soal</span></span>
             </p>
           </div>
 
@@ -1591,10 +1591,11 @@
   let questionIdleBlurTimeout = null;
   let baselineMaxScreenW = 0;
   let baselineMaxScreenH = 0;
-  const VIOLATION_DEBOUNCE_MS = 2500; // Minimal 2.5 detik jeda antar-pelanggaran
-  const QUESTION_IDLE_BLUR_MS = 3500; // 3.5 detik tanpa sentuhan -> langsung sembunyikan soal (anti-screenshot & anti-intip)
-  const ESCALATION_INTERVAL_MS = 6000; // Jika tetap di layar mengambang > 6 detik -> penalti beruntun otomatis!
+  const VIOLATION_DEBOUNCE_MS = 2000; // Minimal 2.0 detik jeda antar-pelanggaran
+  const QUESTION_IDLE_BLUR_MS = 5500; // 5.5 detik tanpa sentuhan -> langsung sembunyikan soal (anti-layar mengambang & anti-intip)
+  const ESCALATION_INTERVAL_MS = 4000; // 4 detik setelah tirai muncul tanpa respon -> catat pelanggaran otomatis!
   let activeTouchPoints = new Set();
+  let questionIdleEscalationTimeout = null;
 
   let baselineInitialInnerW = 0;
   let baselineInitialInnerH = 0;
@@ -1664,6 +1665,10 @@
       clearTimeout(questionIdleBlurTimeout);
       questionIdleBlurTimeout = null;
     }
+    if (questionIdleEscalationTimeout) {
+      clearTimeout(questionIdleEscalationTimeout);
+      questionIdleEscalationTimeout = null;
+    }
     const notice = document.getElementById('examIdleBlurNotice');
     const qt = document.getElementById('examQuestionText');
     const ol = document.getElementById('examOptionsList');
@@ -1680,6 +1685,10 @@
     if (questionIdleBlurTimeout) {
       clearTimeout(questionIdleBlurTimeout);
       questionIdleBlurTimeout = null;
+    }
+    if (questionIdleEscalationTimeout) {
+      clearTimeout(questionIdleEscalationTimeout);
+      questionIdleEscalationTimeout = null;
     }
     const notice = document.getElementById('examIdleBlurNotice');
     const qt = document.getElementById('examQuestionText');
@@ -1702,10 +1711,24 @@
       if (n) n.style.display = 'flex';
       if (q) q.style.filter = 'blur(16px)';
       if (o) o.style.filter = 'blur(12px)';
+
+      // Jika siswa tetap diam di jendela mengambang dan tidak merespons dalam 4 detik setelah tirai muncul:
+      // OTOMATIS CATAT PELANGGARAN (+1) & NYALAKAN SIRINE!
+      if (questionIdleEscalationTimeout) clearTimeout(questionIdleEscalationTimeout);
+      questionIdleEscalationTimeout = setTimeout(() => {
+        if (!examState.isExamActive || examState.isExamFinished || isViolationModalOpen || isTabAway) return;
+        handleTabExit('Terdeteksi Menggunakan Layar Mengambang / Tidak Merespons Lembar Asesmen');
+      }, ESCALATION_INTERVAL_MS);
+
     }, QUESTION_IDLE_BLUR_MS);
   }
 
-  window.wakeUpQuestionCard = function() {
+  window.wakeUpQuestionCard = function(isFromNoticeClick) {
+    if (isFromNoticeClick) {
+      // Siswa membuka layar mengambang dan mencoba membuka kembali soal: CATAT PELANGGARAN SEGERA!
+      handleTabExit('Terdeteksi Aktivitas Layar Mengambang / Kehilangan Fokus Lembar Soal');
+      return;
+    }
     resetQuestionIdleBlurTimer();
     ensureExamFullscreenOnGesture();
   };
@@ -1821,7 +1844,7 @@
         const vvH = window.visualViewport.height;
         const activeEl = document.activeElement;
         const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
-        if (!isInput && vvH < baselineInitialInnerH * 0.60) {
+        if (!isInput && (baselineInitialInnerH - vvH > 130 || vvH < baselineInitialInnerH * 0.76)) {
           return 'Aktivitas Keyboard pada Layar Mengambang (Floating Search/Google)';
         }
       }
@@ -1991,7 +2014,35 @@
       }
     });
 
-    // 7. Pengendalian Sentuhan Layar & Reset Timer Idle
+    // 7. Deteksi Penggeseran Bilah Samping (Smart Sidebar) & Pembukaan Layar Mengambang via touchcancel
+    window.addEventListener('touchcancel', (e) => {
+      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
+        handleTabExit('Membuka Bilah Samping (Smart Sidebar) / Layar Mengambang');
+      }
+    }, true);
+
+    document.addEventListener('touchcancel', (e) => {
+      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
+        handleTabExit('Membuka Bilah Samping (Smart Sidebar) / Layar Mengambang');
+      }
+    }, true);
+
+    // 8. Deteksi Pelepasan Fokus Dokumen (Focusout ke Layar Mengambang)
+    document.addEventListener('focusout', (e) => {
+      setTimeout(() => {
+        if (typeof document.hasFocus === 'function' && !document.hasFocus() && examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
+          handleTabExit('Mengetuk Layar Mengambang (Floating Window) / Kehilangan Fokus Ujian');
+        }
+      }, 50);
+    }, true);
+
+    window.addEventListener('pagehide', () => {
+      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
+        handleTabExit('Meninggalkan lembar asesmen / membuka aplikasi lain');
+      }
+    });
+
+    // 9. Pengendalian Sentuhan Layar & Reset Timer Idle
     window.addEventListener('touchstart', () => {
       if (examState.isExamActive && !examState.isExamFinished && !isTabAway && !isViolationModalOpen) {
         resetQuestionIdleBlurTimer();
