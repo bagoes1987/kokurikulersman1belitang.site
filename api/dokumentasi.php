@@ -9,6 +9,11 @@ require_once __DIR__ . '/db.php';
 $action = $_GET['action'] ?? 'list';
 $pdo = getDB();
 
+// Auto-fix: Pastikan seluruh dokumentasi simulasi/gladi bersih terpetakan ke day = 0
+try {
+    $pdo->exec("UPDATE `dokumentasi_media` SET `day` = 0 WHERE (`title` LIKE '%simulasi%' OR `title` LIKE '%gladi%' OR `title` LIKE '%ujicoba%' OR `title` LIKE '%uji coba%') AND (`day` != 0 OR `day` IS NULL)");
+} catch (Exception $e) {}
+
 if ($action === 'list') {
     $where = [];
     $params = [];
@@ -91,8 +96,11 @@ if ($action === 'list') {
         $r['has_geotag'] = $hasGps;
 
         $dayNum = (isset($r['day']) && $r['day'] !== null && $r['day'] !== '') ? (int)$r['day'] : -1;
-        if ($dayNum < 0) {
-            $txt = ($r['title'] ?? '') . ' ' . ($r['caption'] ?? '') . ' ' . ($r['file_url'] ?? '');
+        $txt = ($r['title'] ?? '') . ' ' . ($r['caption'] ?? '') . ' ' . ($r['file_url'] ?? '');
+        $isSimulasi = (stripos($txt, 'simulasi') !== false || stripos($txt, 'gladi') !== false || stripos($txt, 'uji coba') !== false || stripos($txt, 'ujicoba') !== false);
+        if ($isSimulasi) {
+            $dayNum = 0;
+        } else if ($dayNum < 0) {
             if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
                 $dayNum = (int)$m[1];
             } else if (stripos($txt, 'akpol') !== false || stripos($txt, 'lawang sewu') !== false || stripos($txt, 'semarang') !== false) {
@@ -149,8 +157,10 @@ if ($action === 'add') {
 
     $rawDay = $input['day'] ?? $input['day_number'] ?? null;
     $day = ($rawDay !== null && $rawDay !== '') ? (int)$rawDay : -1;
-    if ($day < 0) {
-        $txt = $title . ' ' . $caption . ' ' . $fileUrl;
+    $txt = $title . ' ' . $caption . ' ' . $fileUrl;
+    if (stripos($txt, 'simulasi') !== false || stripos($txt, 'gladi') !== false || stripos($txt, 'uji coba') !== false || stripos($txt, 'ujicoba') !== false) {
+        $day = 0;
+    } else if ($day < 0) {
         if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
             $day = (int)$m[1];
         } else if (stripos($txt, 'akpol') !== false || stripos($txt, 'lawang sewu') !== false) {

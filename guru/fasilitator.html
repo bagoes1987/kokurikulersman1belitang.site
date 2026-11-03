@@ -2542,7 +2542,7 @@
             if (prog && prog.records && prog.records.some(r => parseInt(r.day_number) === 0)) {
               hasStudentD0Work = true;
             }
-            if (prog && prog.task_map && (prog.task_map['0_lkpd'] || prog.task_map['0_asesmen'] || prog.task_map['0_refleksi'] || prog.task_map['0_feedback'])) {
+            if (prog && prog.task_map && (prog.task_map['0_materi'] || prog.task_map['0_lkpd'] || prog.task_map['0_asesmen'] || prog.task_map['0_dokumentasi'] || prog.task_map['0_refleksi'] || prog.task_map['0_feedback'])) {
               hasStudentD0Work = true;
             }
           }
@@ -2675,64 +2675,173 @@
 
             if (dayNum === 0) {
               // PREVIEW SIMULASI & GLADI BERSIH (DAY 0)
-              if (!hasStudentD0Work) {
-                // JIKA SISWA BELUM PERNAH MENGERJAKAN DAY 0 -> TAMPILKAN KOSONG!
+              const taskMap = (prog && prog.task_map) || {};
+
+              // 1. Modul Materi Day 0
+              let d0Mat = taskMap['0_materi'] ? taskMap['0_materi'].content : null;
+              if (typeof d0Mat === 'string') { try { d0Mat = JSON.parse(d0Mat); } catch(e){} }
+              if (!d0Mat) {
+                for (const cid of candidateIds) {
+                  const raw = localStorage.getItem('fincestem_materi_nft_day0_' + cid);
+                  if (raw) { try { d0Mat = JSON.parse(raw); if (d0Mat) break; } catch(e){} }
+                }
+              }
+
+              // 2. LKPD Day 0
+              let d0Lkpd = taskMap['0_lkpd'] ? taskMap['0_lkpd'].content : null;
+              if (typeof d0Lkpd === 'string') { try { d0Lkpd = JSON.parse(d0Lkpd); } catch(e){} }
+              if (!d0Lkpd && storedD0Lkpd) { try { d0Lkpd = JSON.parse(storedD0Lkpd); } catch(e){} }
+
+              // 3. Asesmen CBT Day 0
+              let d0Asesmen = taskMap['0_asesmen'] ? taskMap['0_asesmen'].content : null;
+              if (typeof d0Asesmen === 'string') { try { d0Asesmen = JSON.parse(d0Asesmen); } catch(e){} }
+              if (!d0Asesmen && storedD0Asesmen) { try { d0Asesmen = JSON.parse(storedD0Asesmen); } catch(e){} }
+
+              // 4. Dokumentasi Day 0
+              let d0Dok = taskMap['0_dokumentasi'] ? taskMap['0_dokumentasi'].content : null;
+              if (typeof d0Dok === 'string') { try { d0Dok = JSON.parse(d0Dok); } catch(e){} }
+
+              // 5. Refleksi Day 0
+              let d0Refl = taskMap['0_refleksi'] ? taskMap['0_refleksi'].content : null;
+              let reflText = '';
+              if (typeof d0Refl === 'string') {
+                try {
+                  const pr = JSON.parse(d0Refl);
+                  reflText = pr.catatan || pr.text || pr.content || d0Refl;
+                } catch(e) {
+                  reflText = d0Refl;
+                }
+              } else if (d0Refl && typeof d0Refl === 'object') {
+                reflText = d0Refl.catatan || d0Refl.text || d0Refl.content || '';
+              }
+              if (!reflText && storedD0Refl) {
+                try {
+                  const pr = JSON.parse(storedD0Refl);
+                  reflText = pr.catatan || pr.text || pr.content || storedD0Refl;
+                } catch(e) {
+                  reflText = storedD0Refl;
+                }
+              }
+
+              const hasAnyD0Work = hasStudentD0Work || !!d0Mat || !!d0Lkpd || !!d0Asesmen || !!d0Dok || !!reflText;
+
+              if (!hasAnyD0Work) {
                 lkpdPreviewEl.innerHTML = `
                   <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-center text-slate-500 text-xs flex flex-col items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-4xl text-slate-300">hourglass_empty</span>
                     <span class="font-extrabold text-sm text-slate-700">Siswa Belum Mengerjakan Simulasi Day 0</span>
-                    <p class="text-slate-400 text-xs max-w-md">Belum ada pengumpulan lembar kerja, kuis gladi bersih, atau refleksi dari siswa ini. Riwayat pengerjaan simulasi hanya terisi bagi akun siswa yang sudah menyelesaikan uji coba.</p>
+                    <p class="text-slate-400 text-xs max-w-md">Belum ada pengumpulan lembar kerja, kuis gladi bersih, foto, atau refleksi dari siswa ini di server.</p>
                   </div>
                 `;
               } else {
-                // HANYA JIKA SISWA SUDAH MENGERJAKAN UJI COBA (CONTOH: BAGAS, ARYA, RIFKI)
                 try {
                   let d0Score = 100;
-                  if (storedD0Asesmen) {
-                    try {
-                      const pa = JSON.parse(storedD0Asesmen);
-                      if (pa && pa.score !== undefined) d0Score = parseFloat(pa.score);
-                    } catch(e) {}
+                  let cbtSummary = 'Kuis asesmen simulasi selesai.';
+                  if (d0Asesmen && d0Asesmen.score !== undefined) {
+                    d0Score = parseFloat(d0Asesmen.score);
+                    if (d0Asesmen.summary) cbtSummary = d0Asesmen.summary;
+                    else if (d0Asesmen.correctCount !== undefined) {
+                      cbtSummary = `${d0Asesmen.correctCount}/${d0Asesmen.totalQuestions || 10} Soal Benar • Waktu: ${Math.round((d0Asesmen.durationSpentSeconds || 60)/60)} mnt`;
+                    }
                   }
 
-                  let reflText = 'Refleksi gladi bersih telah diisi oleh siswa.';
-                  if (storedD0Refl) {
-                    try {
-                      const pr = JSON.parse(storedD0Refl);
-                      reflText = pr.catatan || pr.text || reflText;
-                    } catch(e) {}
+                  let lkpdItemsHtml = '';
+                  if (d0Lkpd) {
+                    const qMap = typeof d0Lkpd === 'object' ? (d0Lkpd.answers || d0Lkpd) : {};
+                    const qEntries = Object.entries(qMap).filter(([k]) => k !== 'submitted' && k !== 'day' && k !== 'submittedAt');
+                    if (qEntries.length > 0) {
+                      lkpdItemsHtml = qEntries.map(([k, v], idx) => {
+                        const qLabel = k === 'q1' ? '1. Pendekatan Sains & Teknologi' : (k === 'q2' ? '2. Alur Integrasi 4 Pilar' : `Jawaban Pertanyaan ${idx + 1}`);
+                        return `
+                          <div class="p-2.5 rounded-xl bg-white border border-teal-200 flex flex-col gap-1">
+                            <span class="font-bold text-teal-900 text-[11px]">${qLabel}:</span>
+                            <p class="text-slate-700 text-xs leading-relaxed italic bg-teal-50/50 p-2 rounded-lg border border-teal-100">"${String(v || '-').replace(/</g, '&lt;')}"</p>
+                          </div>
+                        `;
+                      }).join('');
+                    }
+                  }
+
+                  let matSummaryHtml = '';
+                  if (d0Mat) {
+                    const sumText = d0Mat.summary || d0Mat.conclusion || d0Mat.text || (typeof d0Mat === 'string' ? d0Mat : '');
+                    if (sumText) {
+                      matSummaryHtml = `
+                        <div class="p-2.5 rounded-xl bg-white border border-emerald-200 flex flex-col gap-1">
+                          <span class="font-bold text-emerald-900 text-[11px] flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs text-emerald-600">menu_book</span>
+                            <span>1. Resume Modul Belajar (Day 0):</span>
+                          </span>
+                          <p class="text-slate-700 text-xs leading-relaxed italic bg-emerald-50/50 p-2 rounded-lg border border-emerald-100">"${String(sumText).replace(/</g, '&lt;')}"</p>
+                        </div>
+                      `;
+                    }
                   }
 
                   lkpdPreviewEl.innerHTML = `
-                    <div class="p-4 rounded-2xl bg-gradient-to-br from-amber-50 via-teal-50 to-emerald-50 border-2 border-amber-300 text-xs flex flex-col gap-3 shadow-xs">
-                      <div class="flex items-center justify-between border-b border-amber-200/80 pb-2 flex-wrap gap-2">
-                        <span class="font-extrabold text-amber-950 flex items-center gap-1.5 text-xs sm:text-sm">
+                    <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-50 via-teal-50 to-emerald-50 border-2 border-emerald-300 text-xs flex flex-col gap-3 shadow-xs">
+                      <div class="flex items-center justify-between border-b border-emerald-200/80 pb-2.5 flex-wrap gap-2">
+                        <span class="font-extrabold text-emerald-950 flex items-center gap-1.5 text-xs sm:text-sm">
                           <span>🎮</span>
                           <span>Hasil Pengerjaan Simulasi Gladi Bersih (Day 0)</span>
                         </span>
-                        <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-amber-400 text-amber-950 shadow-2xs">
-                          Sudah Mengerjakan
+                        <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-emerald-500 text-white shadow-2xs">
+                          Terekam Lengkap di Server ✓
                         </span>
                       </div>
 
-                      <p class="text-[11px] text-amber-900 leading-relaxed">
-                        Siswa ini telah menyelesaikan rangkaian gladi bersih simulasi Day 0. Anda dapat memberikan penilaian dan catatan umpan balik di bawah.
+                      <p class="text-[11.5px] text-emerald-950 leading-relaxed font-medium">
+                        Berikut rincian pengerjaan tugas simulasi peserta didik dari HP mereka. Anda dapat meninjau hasil jawaban, skor CBT, dan foto dokumentasi di bawah untuk memberikan penilaian &amp; umpan balik:
                       </p>
 
-                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
-                        <div class="p-2.5 rounded-xl bg-white border border-amber-200 flex flex-col gap-1">
-                          <span class="font-bold text-slate-800 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-xs text-amber-600">task_alt</span>
-                            <span>Kuis Asesmen Simulasi:</span>
-                          </span>
-                          <span class="font-extrabold text-emerald-700 text-xs">✓ Kuis Terkirim (Skor: ${d0Score}/100)</span>
+                      <div class="flex flex-col gap-2.5">
+                        ${matSummaryHtml}
+
+                        ${lkpdItemsHtml ? `
+                          <div class="flex flex-col gap-1.5">
+                            <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
+                              <span class="material-symbols-outlined text-xs text-teal-600">assignment</span>
+                              <span>2. Lembar Kerja Peserta Didik (LKPD Day 0):</span>
+                            </span>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                              ${lkpdItemsHtml}
+                            </div>
+                          </div>
+                        ` : ''}
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
+                          <!-- Kuis CBT -->
+                          <div class="p-2.5 rounded-xl bg-white border border-amber-200 flex flex-col gap-1">
+                            <span class="font-bold text-slate-800 flex items-center gap-1">
+                              <span class="material-symbols-outlined text-xs text-amber-600">task_alt</span>
+                              <span>3. Kuis Asesmen CBT (10 Soal):</span>
+                            </span>
+                            <div class="flex items-center gap-2">
+                              <span class="text-lg font-black ${d0Score >= 70 ? 'text-emerald-700' : 'text-amber-700'}">${d0Score} / 100</span>
+                              <span class="text-[10px] px-2 py-0.5 rounded-md ${d0Score >= 70 ? 'bg-emerald-100 text-emerald-800 font-bold' : 'bg-amber-100 text-amber-800 font-bold'}">${d0Score >= 85 ? 'Sangat Baik' : (d0Score >= 70 ? 'Baik' : 'Perlu Evaluasi')}</span>
+                            </div>
+                            <span class="text-[10.5px] text-slate-500 leading-snug">${cbtSummary}</span>
+                          </div>
+
+                          <!-- Jurnal Refleksi -->
+                          <div class="p-2.5 rounded-xl bg-white border border-purple-200 flex flex-col gap-1">
+                            <span class="font-bold text-slate-800 flex items-center gap-1">
+                              <span class="material-symbols-outlined text-xs text-purple-600">rate_review</span>
+                              <span>5. Jurnal Refleksi Siswa:</span>
+                            </span>
+                            <p class="text-slate-700 text-xs italic bg-purple-50/60 p-2 rounded-lg border border-purple-100 leading-relaxed font-medium">
+                              "${reflText ? reflText.replace(/</g, '&lt;') : 'Belum mengisi catatan refleksi.'}"
+                            </p>
+                          </div>
                         </div>
-                        <div class="p-2.5 rounded-xl bg-white border border-teal-200 flex flex-col gap-1">
-                          <span class="font-bold text-slate-800 flex items-center gap-1">
-                            <span class="material-symbols-outlined text-xs text-teal-600">rate_review</span>
-                            <span>Jurnal Refleksi Siswa:</span>
-                          </span>
-                          <span class="font-medium text-slate-700 text-xs">${reflText}</span>
+
+                        <!-- Status Dokumentasi Foto -->
+                        <div class="p-2.5 rounded-xl bg-white/90 border border-slate-200 flex items-center justify-between gap-2">
+                          <div class="flex items-center gap-2 min-w-0">
+                            <span class="material-symbols-outlined text-emerald-600 text-base shrink-0">photo_camera</span>
+                            <span class="text-[11.5px] font-bold text-slate-800 truncate">4. Dokumentasi Foto Lapangan Day 0:</span>
+                          </div>
+                          <span class="text-[10.5px] text-emerald-700 font-extrabold shrink-0">Lihat Inspeksi Foto di Bawah &darr;</span>
                         </div>
                       </div>
                     </div>
@@ -2741,15 +2850,28 @@
               }
             } else if (dayNum >= 1 && dayNum <= 7) {
               try {
+                const taskMap = (prog && prog.task_map) || {};
+                let srvLkpd = taskMap[dayNum + '_lkpd'] ? taskMap[dayNum + '_lkpd'].content : null;
+                if (typeof srvLkpd === 'string') { try { srvLkpd = JSON.parse(srvLkpd); } catch(e){} }
+                let srvMat = taskMap[dayNum + '_materi'] ? taskMap[dayNum + '_materi'].content : null;
+                if (typeof srvMat === 'string') { try { srvMat = JSON.parse(srvMat); } catch(e){} }
+                let srvAsesmen = taskMap[dayNum + '_asesmen'] ? taskMap[dayNum + '_asesmen'].content : null;
+                if (typeof srvAsesmen === 'string') { try { srvAsesmen = JSON.parse(srvAsesmen); } catch(e){} }
+                let srvRefl = taskMap[dayNum + '_refleksi'] ? taskMap[dayNum + '_refleksi'].content : null;
+                if (typeof srvRefl === 'string') { try { srvRefl = JSON.parse(srvRefl); } catch(e){} }
+
                 const storedNftLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + nisn);
                 const storedNftMat = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + nisn);
                 const storedNftAsesmen = localStorage.getItem(`fincestem_asesmen_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + nisn);
                 const storedNftRefl = localStorage.getItem(`fincestem_refleksi_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_refl_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_refleksi_day${dayNum}_` + nisn);
 
-                if (!isFieldTrip && (storedNftLkpd || storedNftMat || storedNftAsesmen || storedNftRefl)) {
+                const nftLkpd = srvLkpd || (storedNftLkpd ? JSON.parse(storedNftLkpd) : null);
+                const nftMat = srvMat || (storedNftMat ? JSON.parse(storedNftMat) : null);
+                const nftAsesmen = srvAsesmen || (storedNftAsesmen ? JSON.parse(storedNftAsesmen) : null);
+                const nftRefl = srvRefl || (storedNftRefl ? JSON.parse(storedNftRefl) : null);
+
+                if (!isFieldTrip && (nftLkpd || nftMat || nftAsesmen || nftRefl)) {
                   renderedNftPreview = true;
-                  const nftLkpd = storedNftLkpd ? JSON.parse(storedNftLkpd) : null;
-                  const nftMat = storedNftMat ? JSON.parse(storedNftMat) : null;
 
                   let cardsHtml = '';
                   if (nftMat) {
@@ -3768,8 +3890,10 @@
           if (!isMine) return false;
 
           let dDay = (d.day !== undefined && d.day !== null) ? parseInt(d.day) : ((d.day_number !== undefined && d.day_number !== null) ? parseInt(d.day_number) : -1);
-          if (dDay < 0) {
-            const txt = (d.title || '') + ' ' + (d.caption || '') + ' ' + (d.url || '');
+          const txt = ((d.title || '') + ' ' + (d.caption || '') + ' ' + (d.url || '')).toLowerCase();
+          if (txt.includes('simulasi') || txt.includes('gladi') || txt.includes('uji coba') || txt.includes('ujicoba')) {
+            dDay = 0;
+          } else if (dDay < 0) {
             const m = txt.match(/day[_\-\s]*([0-7])/i);
             dDay = m ? parseInt(m[1]) : 0;
           }
