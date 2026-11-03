@@ -2565,19 +2565,6 @@
     `;
   }
 
-  window.retryDay0ExamSimulation = function() {
-    if (!confirm('Apakah Anda ingin mencoba ulang simulasi kuis Day 0 dari awal? (Khusus Day 0 gladi bersih, Anda bebas mencoba ulang latihan)')) return;
-    try {
-      const nisn = examState.cleanNisn;
-      localStorage.removeItem(`fincestem_draft_nft_asesmen_d0_${nisn}`);
-      localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d0_${nisn}`);
-      localStorage.removeItem(`fincestem_pkg_nft_asesmen_d0_${nisn}`);
-      localStorage.removeItem(`fincestem_asesmen_nft_day0_${nisn}`);
-      localStorage.removeItem(`fincestem_asesmen_day0_${nisn}`);
-    } catch(e) {}
-    window.location.reload();
-  };
-
   window.initNonFieldTripAsesmenPage = initNonFieldTripAsesmenPage;
 
 })(window);
