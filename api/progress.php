@@ -388,7 +388,7 @@ if ($method === 'POST') {
             // Jika refleksi dikirim (tahap 5 tuntas), pastikan status harian langsung 'completed' dan dinilai otomatis jika belum ada nilai manual
             if ($taskType === 'refleksi' && $dayNum >= 1 && $dayNum <= 7) {
                 try {
-                    $checkGrade = $pdo->prepare("SELECT `score`, `status` FROM `student_progress_eval` WHERE `student_nisn` = :nisn AND `day_number` = :d AND `task_type` = 'general'");
+                    $checkGrade = $pdo->prepare("SELECT `score`, `status` FROM `student_progress_eval` WHERE `student_nisn` = :nisn AND `day_number` = :d AND `task_type` IN ('general', 'final')");
                     $checkGrade->execute([':nisn' => $canonicalNisn, ':d' => $dayNum]);
                     $existingGrade = $checkGrade->fetch();
                     if (!$existingGrade || empty($existingGrade['score'])) {
@@ -544,10 +544,10 @@ if ($method === 'POST') {
             $inIds = "'" . implode("','", array_map('addslashes', $allIds)) . "'";
 
             if ($dayNum >= 0) {
-                $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `day_number` = :d AND `task_type` = 'general'");
+                $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `day_number` = :d AND `task_type` IN ('general', 'final')");
                 $stmt->execute([':d' => $dayNum]);
             } else {
-                $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `task_type` = 'general'");
+                $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `task_type` IN ('general', 'final')");
             }
 
             jsonResponse(true, "Penilaian evaluasi siswa (NISN {$nisn}) berhasil dikembalikan ke standar awal sistem!", [
@@ -625,7 +625,7 @@ if ($method === 'POST') {
             }
             if (!empty($typeClauses)) {
                 // Jika salah satu komponen hari di-reset, hapus juga rekap general (auto-grade) hari tersebut agar status hari kembali aktif/dalam proses
-                $typeClauses[] = "(`task_type` = 'general')";
+                $typeClauses[] = "(`task_type` IN ('general', 'final'))";
             }
 
             $deletedEval = 0;
@@ -814,7 +814,7 @@ if ($method === 'POST') {
                 $typeClauses[] = "(`task_type` = 'dokumentasi' OR `task_type` LIKE 'dok%' OR `task_type` LIKE '%dok%')";
             }
             if (!empty($typeClauses)) {
-                $typeClauses[] = "(`task_type` = 'general')";
+                $typeClauses[] = "(`task_type` IN ('general', 'final'))";
             }
             $whereType = !empty($typeClauses) ? ('(' . implode(' OR ', $typeClauses) . ')') : '';
             if ($resetMateri && $resetLkpd && $resetAsesmen && $resetRefleksi && $resetDok) {
