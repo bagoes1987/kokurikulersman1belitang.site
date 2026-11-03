@@ -59,7 +59,8 @@
       mentorshipSyncTimer = setInterval(function() {
         const panel = document.getElementById('panelAdminMentorship');
         const modal = document.getElementById('modalAssignStudents');
-        const isModalOpen = modal && !modal.classList.contains('hidden');
+        const modalQuick = document.getElementById('modalQuickAssignTeacherSingleOrBatch');
+        const isModalOpen = (modal && !modal.classList.contains('hidden')) || (modalQuick && !modalQuick.classList.contains('hidden'));
         if (panel && !panel.classList.contains('hidden') && !document.hidden && !isModalOpen) {
           if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
             window.FincestemMentorship.syncFromServer(function(changed) {
