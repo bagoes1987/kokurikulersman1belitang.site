@@ -3776,7 +3776,7 @@
           return dDay === targetDay;
         });
 
-        // 2. DEDUPLIKASI KETAT & NORMALISASI PATH FOTO
+        // 2. DEDUPLIKASI KETAT & MULTI-FINGERPRINT (HILANGKAN DUPLIKASI BASE64 LOKAL VS SERVER)
         const seenFingerprints = new Set();
         const studentDocs = [];
 
@@ -3787,19 +3787,35 @@
           const normUrl = pUrl.replace(/^https?:\/\/[^\/]+/i, '').replace(/^(\.\.\/|\/)+/, '').toLowerCase();
           const pTitle = String(p.title || '').trim().toLowerCase();
           const pDate = String(p.date || p.created_at || '').trim();
+          const pGps = String(p.gps_location || p.gps || '').trim();
 
-          // Ekstrak nama file gambar jika tersimpan di server
+          // Ekstrak nama file gambar fisik jika tersimpan di server
           const baseMatch = normUrl.match(/([^\/\?#]+\.(?:jpe?g|png|webp|gif))/i);
           const baseFile = baseMatch ? baseMatch[1] : '';
 
-          // Buat fingerprint unik berdasarkan nama file fisik atau kombinasi tanggal + judul
-          const fp = baseFile ? ('file:' + baseFile) : (pDate ? ('time:' + pDate + '_' + pTitle) : ('url:' + normUrl));
+          // Kumpulkan seluruh kandidat kunci pengenal unik
+          const candidateKeys = [];
+          if (pId) candidateKeys.push('id:' + pId);
+          if (baseFile) candidateKeys.push('file:' + baseFile);
+          if (pDate) {
+            const cleanDate = pDate.replace(/[T]/g, ' ').substring(0, 19);
+            candidateKeys.push('time:' + cleanDate);
+            if (pTitle) candidateKeys.push('time_title:' + cleanDate + '_' + pTitle);
+          }
+          if (pGps) {
+            const coords = pGps.match(/(-?\d+\.\d{2,3})\d*\s*,\s*(-?\d+\.\d{2,3})\d*/);
+            if (coords) candidateKeys.push('gps:' + coords[1] + ',' + coords[2]);
+          }
+          if (normUrl && !normUrl.startsWith('data:')) {
+            candidateKeys.push('url:' + normUrl);
+          }
 
-          if (seenFingerprints.has(fp)) return;
-          if (pId && seenFingerprints.has('id:' + pId)) return;
+          // Jika SALAH SATU kunci sudah pernah dicatat, item ini adalah duplikat foto yang sama
+          const isDuplicate = candidateKeys.some(k => seenFingerprints.has(k));
+          if (isDuplicate) return;
 
-          seenFingerprints.add(fp);
-          if (pId) seenFingerprints.add('id:' + pId);
+          // Daftarkan semua kunci agar data dari sumber lain (lokal vs server) otomatis tereliminasi
+          candidateKeys.forEach(k => seenFingerprints.add(k));
           studentDocs.push(p);
         });
 
@@ -3860,12 +3876,12 @@
             // SISWA NON-FIELD TRIP GEOTAG DI LUAR OKU TIMUR -> REKOMENDASI BINTANG 1
             recContainer.innerHTML = `
               <div class="p-3.5 rounded-2xl bg-rose-50/90 border border-rose-300 text-rose-950 flex flex-col gap-3 shadow-xs">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white shadow-2xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white shadow-2xs shrink-0">
                     <span class="text-xs">⭐☆☆☆☆</span>
                     <span class="text-xs font-black">Bintang 1</span>
                   </div>
-                  <span class="px-2.5 py-1 rounded-xl bg-rose-100 text-rose-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-rose-300">
+                  <span class="px-2.5 py-1 rounded-xl bg-rose-100 text-rose-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-rose-300 shrink-0 text-center">
                     Penalti Lokasi (Luar OKU Timur)
                   </span>
                 </div>
@@ -3882,12 +3898,12 @@
             // SISWA NON-FIELD TRIP HANYA UPLOAD DARI GALERI -> REKOMENDASI BINTANG 1
             recContainer.innerHTML = `
               <div class="p-3.5 rounded-2xl bg-rose-50/90 border border-rose-300 text-rose-950 flex flex-col gap-3 shadow-xs">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white shadow-2xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-rose-600 text-white shadow-2xs shrink-0">
                     <span class="text-xs">⭐☆☆☆☆</span>
                     <span class="text-xs font-black">Bintang 1</span>
                   </div>
-                  <span class="px-2.5 py-1 rounded-xl bg-rose-100 text-rose-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-rose-300">
+                  <span class="px-2.5 py-1 rounded-xl bg-rose-100 text-rose-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-rose-300 shrink-0 text-center">
                     Penalti Galeri (Non-Field Trip)
                   </span>
                 </div>
@@ -3904,12 +3920,12 @@
             // ADA FOTO BER-GEOTAG -> REKOMENDASI BINTANG 5 (LETAK SIMETRIS, RAPI & LEGA)
             recContainer.innerHTML = `
               <div class="p-3.5 rounded-2xl bg-emerald-50/90 border border-emerald-300 text-emerald-950 flex flex-col gap-3 shadow-xs">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white shadow-2xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 text-white shadow-2xs shrink-0">
                     <span class="text-xs">⭐⭐⭐⭐⭐</span>
                     <span class="text-xs font-black">Bintang 5</span>
                   </div>
-                  <span class="px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-emerald-300">
+                  <span class="px-2.5 py-1 rounded-xl bg-emerald-100 text-emerald-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-emerald-300 shrink-0 text-center">
                     ${isFieldTrip ? 'Field Trip (GPS Aktif)' : 'Geotag OKU Timur Valid'}
                   </span>
                 </div>
@@ -3928,12 +3944,12 @@
             // Field trip via galeri
             recContainer.innerHTML = `
               <div class="p-3.5 rounded-2xl bg-amber-50/90 border border-amber-300 text-amber-950 flex flex-col gap-3 shadow-xs">
-                <div class="flex items-center justify-between gap-2">
-                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 text-white shadow-2xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap sm:flex-nowrap">
+                  <div class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-500 text-white shadow-2xs shrink-0">
                     <span class="text-xs">⭐⭐⭐☆☆</span>
                     <span class="text-xs font-black">Bintang 3</span>
                   </div>
-                  <span class="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-amber-300">
+                  <span class="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-900 font-extrabold text-[10.5px] uppercase tracking-wide border border-amber-300 shrink-0 text-center">
                     Unggahan Galeri (Field Trip)
                   </span>
                 </div>

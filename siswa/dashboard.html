@@ -1355,6 +1355,11 @@
         if (fbName && (!fbName.textContent || fbName.textContent.includes('Fasilitator') || fbName.textContent.includes('Belum'))) {
           fbName.textContent = freshFasil;
         }
+        // Jika modal aktivitas/gladi bersih sedang terbuka, segarkan tampilannya
+        const dModal = document.getElementById('modalDayActivity');
+        if (dModal && !dModal.classList.contains('pointer-events-none') && typeof currentModalDay !== 'undefined' && currentModalDay !== null) {
+          try { openDayActivityModal(currentModalDay); } catch(e) {}
+        }
       };
 
       // 1. Sinkronkan penugasan Pembagian Siswa Binaan secara asinkron dari server cPanel
@@ -4022,6 +4027,40 @@
       openDayActivityModal(day, type, false);
     }
 
+    // Helper resolusi fasilitator aktif siswa dari modul Pembagian Siswa Binaan
+    function getStudentActiveFasilName(targetNisn, targetClass) {
+      const u = FincestemCore.auth.getUser() || {};
+      const nisn = String(targetNisn || currentStudent?.nisn || u.nisn || u.identifier || '').trim();
+      const sClass = String(targetClass || currentStudent?.class || u.class || '').trim();
+
+      // 1. Prioritas Utama: Modul Pembagian Siswa Binaan (Mentorship Multi-PC)
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function' && nisn) {
+        const m = window.FincestemMentorship.getMentorsForStudent(nisn, sClass);
+        if (m && m.facilitator && m.facilitator !== '-' && m.facilitator !== 'Belum Ditentukan') {
+          return m.facilitator;
+        }
+      }
+
+      // 2. Ambil dari currentStudent jika sudah terisi nama spesifik
+      if (currentStudent && currentStudent.facilitator_name && currentStudent.facilitator_name !== 'Belum Ditentukan' && currentStudent.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang') {
+        return currentStudent.facilitator_name;
+      }
+
+      // 3. Ambil dari session akun user
+      if (u.facilitator_name && u.facilitator_name !== 'Belum Ditentukan' && u.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang') {
+        return u.facilitator_name;
+      }
+
+      // 4. Ambil dari container DOM jika ada
+      const containerEl = document.getElementById('userFacilitatorContainer');
+      const containerText = containerEl ? containerEl.innerText.trim() : '';
+      if (containerText && !containerText.includes('Belum Ditentukan') && !containerText.includes('Tim Fasilitator')) {
+        return containerText;
+      }
+
+      return 'Tim Fasilitator SMAN 1 Belitang';
+    }
+
     function formatFacilitatorDisplay(rawName) {
       if (!rawName) return '<span class="font-extrabold text-slate-900">Tim Fasilitator SMAN 1 Belitang</span>';
       const text = String(rawName).trim();
@@ -5331,7 +5370,12 @@
             const manualPred = (dayRec && dayRec.predicate) ? dayRec.predicate : (manualScore >= 85 ? 'Mahir (A)' : (manualScore >= 70 ? 'Cakap (B)' : 'Berkembang (C)'));
             const manualFb = (dayRec && dayRec.feedback) ? dayRec.feedback : ((dayGeneralTask && dayGeneralTask.feedback) ? dayGeneralTask.feedback : 'Catatan evaluasi simulasi dari fasilitator.');
             const manualStatus = (dayRec && dayRec.status) ? dayRec.status : ((dayGeneralTask && dayGeneralTask.status) ? dayGeneralTask.status : 'completed');
-            const manualFasil = (dayRec && dayRec.facilitator_name) ? dayRec.facilitator_name : ((dayGeneralTask && dayGeneralTask.facilitator_name) ? dayGeneralTask.facilitator_name : (currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'));
+            const activeAssignedFasil = getStudentActiveFasilName(cleanNisn, studentClass);
+            const manualFasil = (dayRec && dayRec.facilitator_name && dayRec.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && dayRec.facilitator_name !== 'Belum Ditentukan') 
+              ? dayRec.facilitator_name 
+              : ((dayGeneralTask && dayGeneralTask.facilitator_name && dayGeneralTask.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && dayGeneralTask.facilitator_name !== 'Belum Ditentukan') 
+                ? dayGeneralTask.facilitator_name 
+                : activeAssignedFasil);
 
             const sFin = (dayRec && dayRec.score_financial !== undefined && dayRec.score_financial !== null) ? dayRec.score_financial : manualScore;
             const sCul = (dayRec && dayRec.score_culture !== undefined && dayRec.score_culture !== null) ? dayRec.score_culture : manualScore;
@@ -5398,8 +5442,8 @@
 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-emerald-200/60">
                   <div class="flex flex-col min-w-0">
-                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh:</span>
-                    <span class="font-extrabold text-slate-800">${manualFasil}</span>
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
+                    ${formatFacilitatorDisplay(manualFasil)}
                   </div>
                   <span class="${manualStatus === 'revision' ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-emerald-700 bg-emerald-50 border-emerald-200'} font-bold self-start sm:self-auto shrink-0 px-2.5 py-1 rounded-lg border">
                     ${manualStatus === 'revision' ? 'Status: Perlu Revisi' : 'Status: Telah Dinilai Resmi ✓'}
@@ -5468,8 +5512,8 @@
 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-amber-200/60">
                   <div class="flex flex-col min-w-0">
-                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Tim Fasilitator:</span>
-                    <span class="font-extrabold text-slate-800">Tim Fasilitator Kokurikuler SMAN 1 Belitang</span>
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Fasilitator Pembina:</span>
+                    ${formatFacilitatorDisplay(activeAssignedFasil)}
                   </div>
                   <span class="text-emerald-700 font-bold self-start sm:self-auto shrink-0 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Status: Gladi Bersih Tuntas ✓</span>
                 </div>
@@ -5500,8 +5544,8 @@
                 </div>
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-slate-200">
                   <div class="flex flex-col min-w-0">
-                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Tim Fasilitator:</span>
-                    <span class="font-extrabold text-slate-800">Tim Fasilitator Kokurikuler SMAN 1 Belitang</span>
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Fasilitator Pembina:</span>
+                    ${formatFacilitatorDisplay(getStudentActiveFasilName(cleanNisn, studentClass))}
                   </div>
                   <span class="text-amber-700 font-bold self-start sm:self-auto shrink-0 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-200">Harap Tuntaskan Tahap 1 s.d. 5</span>
                 </div>
@@ -5514,7 +5558,7 @@
           // Otomatis Bintang 5 atau 4 dengan perhitungan poin berdasarkan kecepatan pengumpulan / emergency override
           // ==========================================
           const isDayDone = FincestemCore.progress.isDayStudentTasksDone(studentProgress, day.day_number);
-          const fasilName = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+          const fasilName = getStudentActiveFasilName(cleanNisn, studentClass);
           const ftSubmitTime = getFTSubmitTime(day.day_number, taskMap);
           const ftScore = FincestemCore.progress.calculateFieldTripScore(day.day_number, ftSubmitTime, cleanNisn);
 
