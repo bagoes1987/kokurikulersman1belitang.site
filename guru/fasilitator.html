@@ -1969,17 +1969,27 @@
             }
           } catch(e) {}
         }
-        let latestStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : (prog ? FincestemCore.progress.getDayStatus(prog, 1) : (stu.task_status || 'belum_mulai'));
+        const isAllDone = (completedDays >= 7 || percentage >= 100);
+        let latestFeedbackStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : null;
+        let day1Status = prog ? FincestemCore.progress.getDayStatus(prog, 1) : null;
+        let rawStatus = latestFeedbackStatus || day1Status || (stu.task_status || 'belum_mulai');
 
-        if (completedDays >= 7 || percentage >= 100) {
-          latestStatus = 'completed';
+        let studentCategoryStatus = 'belum_mulai';
+        if (isAllDone) {
+          studentCategoryStatus = 'completed';
+        } else if (rawStatus === 'submitted') {
+          studentCategoryStatus = 'submitted';
+        } else if (completedDays > 0) {
+          studentCategoryStatus = 'in_progress';
+        } else {
+          studentCategoryStatus = 'belum_mulai';
         }
 
-        if (latestStatus === 'completed') countCompleted++;
-        else if (latestStatus === 'submitted') countSubmitted++;
+        if (isAllDone) countCompleted++;
+        else if (studentCategoryStatus === 'submitted') countSubmitted++;
         else countNotStarted++;
 
-        return { stu, prog, isFT, completedDays, percentage, avgScore, latestStatus };
+        return { stu, prog, isFT, completedDays, percentage, avgScore, latestStatus: rawStatus, isAllDone, studentCategoryStatus };
       });
 
       const bJalurAll = document.getElementById('badgeJalurAllCount');
@@ -2015,9 +2025,9 @@
       }
       if (fasStatusFilter !== 'all') {
         filteredMeta = filteredMeta.filter(m => {
-          if (fasStatusFilter === 'completed') return m.latestStatus === 'completed';
-          if (fasStatusFilter === 'submitted') return m.latestStatus === 'submitted';
-          if (fasStatusFilter === 'belum_mulai') return m.latestStatus === 'belum_mulai' || (!m.latestStatus && m.completedDays === 0);
+          if (fasStatusFilter === 'completed') return m.isAllDone;
+          if (fasStatusFilter === 'submitted') return m.studentCategoryStatus === 'submitted';
+          if (fasStatusFilter === 'belum_mulai') return m.completedDays === 0 && m.studentCategoryStatus !== 'submitted';
           return true;
         });
       }
@@ -2068,21 +2078,24 @@
       filteredMeta.forEach(m => {
         const { stu, prog, completedDays, percentage, avgScore, latestStatus } = m;
 
-        let badgeStatusClass = 'bg-slate-100 text-slate-700';
+        let badgeStatusClass = 'bg-slate-100 text-slate-700 border border-slate-200';
         let badgeStatusText = 'Belum Mulai';
 
-        if (latestStatus === 'completed') {
-          badgeStatusClass = 'bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold shadow-2xs';
-          badgeStatusText = 'Completed';
+        if (completedDays >= 7 || percentage >= 100) {
+          badgeStatusClass = 'bg-emerald-100 text-emerald-950 border border-emerald-300 font-black shadow-2xs';
+          badgeStatusText = '🏆 Tuntas 7 Hari';
+        } else if (completedDays > 0) {
+          badgeStatusClass = 'bg-teal-100 text-teal-950 border border-teal-300 font-black shadow-2xs';
+          badgeStatusText = `Day ${completedDays} Selesai (${completedDays}/7)`;
+        } else if (latestStatus === 'submitted') {
+          badgeStatusClass = 'bg-amber-100 text-amber-950 border border-amber-300 font-bold';
+          badgeStatusText = 'Menunggu Koreksi';
         } else if (latestStatus === 'revision') {
           badgeStatusClass = 'bg-rose-100 text-rose-900 border border-rose-300 font-bold';
           badgeStatusText = 'Perlu Revisi';
         } else if (latestStatus === 'reviewed') {
           badgeStatusClass = 'bg-blue-100 text-blue-900 border border-blue-300 font-bold';
           badgeStatusText = 'Reviewed';
-        } else if (latestStatus === 'submitted') {
-          badgeStatusClass = 'bg-amber-100 text-amber-900 border border-amber-300 font-bold';
-          badgeStatusText = 'Submitted';
         }
 
         // Hitung Nilai Akhir Rapor Siswa secara sinkron
