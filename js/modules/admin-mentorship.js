@@ -19,7 +19,7 @@
     window.escapeHtml = escapeHtml;
   }
 
-  let currentSubTab = 'plotting'; // 'plotting' atau 'teachers'
+  let currentSubTab = 'allstudents'; // 'allstudents', 'plotting', atau 'teachers'
   let selectedTeacherKey = null;
   let modalSelectedNisns = new Set();
   let studentModalFilter = {
@@ -28,6 +28,19 @@
     category: 'UNASSIGNED', // 'ALL', 'FIELD_TRIP', 'NON_FIELD_TRIP', 'UNASSIGNED'
     search: ''
   };
+
+  // State Sub-Tab 1: Rekap Status Siswa (Belum vs Sudah Ada Fasil)
+  let mentorAllStudentsFilter = {
+    status: 'ALL',       // 'ALL', 'UNASSIGNED', 'ASSIGNED'
+    category: 'ALL',     // 'ALL', 'FIELD_TRIP', 'NON_FIELD_TRIP'
+    grade: 'ALL',        // 'ALL', 'X', 'XI', 'XII'
+    rombel: 'ALL',
+    search: ''
+  };
+  let mentorAllCurrentPage = 1;
+  let mentorAllPerPage = 100;
+  let mentorBatchSelectedNisns = new Set();
+  let targetQuickAssignNisns = [];
 
   let mentorshipSyncTimer = null;
 
@@ -98,46 +111,677 @@
 
   window.switchMentorshipSubTab = function(tab) {
     currentSubTab = tab;
+    const btnAll = document.getElementById('btnSubTabMentor_allstudents');
     const btnPlot = document.getElementById('btnSubTabMentor_plotting');
     const btnTeach = document.getElementById('btnSubTabMentor_teachers');
+    const viewAll = document.getElementById('subviewMentor_allstudents');
     const viewPlot = document.getElementById('subviewMentor_plotting');
     const viewTeach = document.getElementById('subviewMentor_teachers');
 
-    if (tab === 'plotting') {
-      if (btnPlot) btnPlot.className = 'flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#0875D1] text-white shadow-xs transition-all cursor-pointer';
-      if (btnTeach) btnTeach.className = 'flex-1 py-2 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer';
-      if (viewPlot) viewPlot.classList.remove('hidden');
-      if (viewTeach) viewTeach.classList.add('hidden');
+    const activeBtnClass = 'flex-1 py-2.5 px-3 text-xs font-bold rounded-xl bg-[#0875D1] text-white shadow-xs transition-all cursor-pointer';
+    const inactiveBtnClass = 'flex-1 py-2.5 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer';
+
+    if (btnAll) btnAll.className = (tab === 'allstudents') ? activeBtnClass : inactiveBtnClass;
+    if (btnPlot) btnPlot.className = (tab === 'plotting') ? activeBtnClass : inactiveBtnClass;
+    if (btnTeach) btnTeach.className = (tab === 'teachers') ? activeBtnClass : inactiveBtnClass;
+
+    if (viewAll) viewAll.classList.toggle('hidden', tab !== 'allstudents');
+    if (viewPlot) viewPlot.classList.toggle('hidden', tab !== 'plotting');
+    if (viewTeach) viewTeach.classList.toggle('hidden', tab !== 'teachers');
+
+    if (tab === 'allstudents') {
+      renderAllStudentsMentorshipView();
+    } else if (tab === 'plotting') {
       renderPlottingView();
-    } else {
-      if (btnPlot) btnPlot.className = 'flex-1 py-2 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer';
-      if (btnTeach) btnTeach.className = 'flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#0875D1] text-white shadow-xs transition-all cursor-pointer';
-      if (viewPlot) viewPlot.classList.add('hidden');
-      if (viewTeach) viewTeach.classList.remove('hidden');
+    } else if (tab === 'teachers') {
       renderTeachersListView();
     }
   };
 
   /**
-   * RENDER STATISTIK KPI RINGKASAN
+   * RENDER STATISTIK KPI RINGKASAN & FILTER COUNTERS
    */
   function renderMentorshipStats() {
     if (!window.FincestemMentorship) return;
     const stats = window.FincestemMentorship.getSummaryStats();
 
+    // Kartu 1: Field Trip
+    const elFtTotal = document.getElementById('mentorStat_ftTotal');
+    const elFtAssigned = document.getElementById('mentorStat_ftAssigned');
+    const elFtUnassigned = document.getElementById('mentorStat_ftUnassigned');
+    if (elFtTotal) elFtTotal.textContent = `${stats.ftTotal} Siswa`;
+    if (elFtAssigned) elFtAssigned.textContent = `${stats.ftAssigned} Siswa`;
+    if (elFtUnassigned) elFtUnassigned.textContent = `${stats.ftUnassigned} Siswa`;
+
+    // Kartu 2: Non-Field Trip
+    const elNonFtTotal = document.getElementById('mentorStat_nonFtTotal');
+    const elNonFtAssigned = document.getElementById('mentorStat_nonFtAssigned');
+    const elNonFtUnassigned = document.getElementById('mentorStat_nonFtUnassigned');
+    if (elNonFtTotal) elNonFtTotal.textContent = `${stats.nonFtTotal} Siswa`;
+    if (elNonFtAssigned) elNonFtAssigned.textContent = `${stats.nonFtAssigned} Siswa`;
+    if (elNonFtUnassigned) elNonFtUnassigned.textContent = `${stats.nonFtUnassigned} Siswa`;
+
+    // Kartu 3: Total Semua Siswa
     const elTotal = document.getElementById('mentorStat_total');
     const elAssigned = document.getElementById('mentorStat_assigned');
     const elUnassigned = document.getElementById('mentorStat_unassigned');
+    if (elTotal) elTotal.textContent = `${stats.totalStudents.toLocaleString('id-ID')} Siswa`;
+    if (elAssigned) elAssigned.textContent = `${stats.totalAssigned} Siswa`;
+    if (elUnassigned) elUnassigned.textContent = `${stats.totalUnassigned} Siswa`;
+
+    // Kartu 4: Guru Pembina Aktif
     const elTeachers = document.getElementById('mentorStat_teachers');
+    if (elTeachers) elTeachers.textContent = `${stats.activeMentorsCount} Aktif (dari ${stats.totalTeachers} Guru)`;
 
-    const ftUnassigned = Math.max(0, stats.ftTotal - stats.ftAssigned);
-    const nonFtUnassigned = Math.max(0, stats.nonFtTotal - stats.nonFtAssigned);
+    // Counter badge pada kontrol filter Sub-Tab 1
+    const lblCountAll = document.getElementById('lblCountStatus_ALL');
+    const lblCountUn = document.getElementById('lblCountStatus_UNASSIGNED');
+    const lblCountAs = document.getElementById('lblCountStatus_ASSIGNED');
+    const lblCatFt = document.getElementById('lblCountCat_FT');
+    const lblCatNonFt = document.getElementById('lblCountCat_NON_FT');
 
-    if (elTotal) elTotal.innerHTML = `${stats.totalStudents.toLocaleString('id-ID')} <span class="text-xs font-bold text-teal-300 block sm:inline">(${stats.ftTotal} FT • ${stats.nonFtTotal} Non-FT)</span>`;
-    if (elAssigned) elAssigned.textContent = `${stats.totalAssigned} Siswa (${stats.ftAssigned} FT • ${stats.nonFtAssigned} Non-FT)`;
-    if (elUnassigned) elUnassigned.innerHTML = `${stats.totalUnassigned} Siswa <span class="text-xs font-bold text-amber-300 block sm:inline">(${ftUnassigned} FT • ${nonFtUnassigned} Non-FT)</span>`;
-    if (elTeachers) elTeachers.textContent = `${stats.activeMentorsCount} Aktif Membina (dari ${stats.totalTeachers} Guru)`;
+    if (lblCountAll) lblCountAll.textContent = stats.totalStudents.toLocaleString('id-ID');
+    if (lblCountUn) lblCountUn.textContent = stats.totalUnassigned.toLocaleString('id-ID');
+    if (lblCountAs) lblCountAs.textContent = stats.totalAssigned.toLocaleString('id-ID');
+    if (lblCatFt) lblCatFt.textContent = String(stats.ftTotal);
+    if (lblCatNonFt) lblCatNonFt.textContent = String(stats.nonFtTotal);
   }
+
+  /**
+   * FILTER CEPAT DARI KARTU KPI METRIK ATAS
+   */
+  window.quickFilterMentorStudents = function(status, category) {
+    mentorAllStudentsFilter.status = status || 'ALL';
+    mentorAllStudentsFilter.category = category || 'ALL';
+    mentorAllCurrentPage = 1;
+    switchMentorshipSubTab('allstudents');
+    updateMentorFilterButtonsUI();
+    renderAllStudentsMentorshipView();
+  };
+
+  function updateMentorFilterButtonsUI() {
+    // Update tombol Status Binaan
+    const btnAll = document.getElementById('btnMentorFilterStatus_ALL');
+    const btnUn = document.getElementById('btnMentorFilterStatus_UNASSIGNED');
+    const btnAs = document.getElementById('btnMentorFilterStatus_ASSIGNED');
+
+    if (btnAll) {
+      btnAll.className = (mentorAllStudentsFilter.status === 'ALL')
+        ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-[#0875D1] text-white shadow-2xs transition-all cursor-pointer'
+        : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all cursor-pointer';
+    }
+    if (btnUn) {
+      btnUn.className = (mentorAllStudentsFilter.status === 'UNASSIGNED')
+        ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 shadow-2xs transition-all cursor-pointer flex items-center gap-1'
+        : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-300 hover:bg-amber-100 transition-all cursor-pointer flex items-center gap-1';
+    }
+    if (btnAs) {
+      btnAs.className = (mentorAllStudentsFilter.status === 'ASSIGNED')
+        ? 'px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-600 text-white shadow-2xs transition-all cursor-pointer flex items-center gap-1'
+        : 'px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all cursor-pointer flex items-center gap-1';
+    }
+
+    // Update tombol Kategori Jalur
+    const btnCatAll = document.getElementById('btnMentorFilterCat_ALL');
+    const btnCatFt = document.getElementById('btnMentorFilterCat_FIELD_TRIP');
+    const btnCatNonFt = document.getElementById('btnMentorFilterCat_NON_FIELD_TRIP');
+
+    if (btnCatAll) {
+      btnCatAll.className = (mentorAllStudentsFilter.category === 'ALL')
+        ? 'px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-2xs transition-all cursor-pointer'
+        : 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200 transition-all cursor-pointer';
+    }
+    if (btnCatFt) {
+      btnCatFt.className = (mentorAllStudentsFilter.category === 'FIELD_TRIP')
+        ? 'px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-500 text-slate-950 shadow-2xs transition-all cursor-pointer flex items-center gap-1'
+        : 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200 transition-all cursor-pointer flex items-center gap-1';
+    }
+    if (btnCatNonFt) {
+      btnCatNonFt.className = (mentorAllStudentsFilter.category === 'NON_FIELD_TRIP')
+        ? 'px-2.5 py-1 rounded-lg text-xs font-bold bg-teal-700 text-white shadow-2xs transition-all cursor-pointer flex items-center gap-1'
+        : 'px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200 transition-all cursor-pointer flex items-center gap-1';
+    }
+  }
+
+  window.setMentorAllStudentsStatusFilter = function(status) {
+    mentorAllStudentsFilter.status = status;
+    mentorAllCurrentPage = 1;
+    updateMentorFilterButtonsUI();
+    renderAllStudentsMentorshipView();
+  };
+
+  window.setMentorAllStudentsCatFilter = function(cat) {
+    mentorAllStudentsFilter.category = cat;
+    mentorAllCurrentPage = 1;
+    updateMentorFilterButtonsUI();
+    renderAllStudentsMentorshipView();
+  };
+
+  window.onMentorAllStudentsFilterChange = function() {
+    const selGrade = document.getElementById('selectMentorFilterGrade');
+    const selRombel = document.getElementById('selectMentorFilterRombel');
+    const inSearch = document.getElementById('searchMentorAllStudents');
+
+    mentorAllStudentsFilter.grade = selGrade ? selGrade.value : 'ALL';
+    mentorAllStudentsFilter.rombel = selRombel ? selRombel.value : 'ALL';
+    mentorAllStudentsFilter.search = inSearch ? inSearch.value.trim().toLowerCase() : '';
+    mentorAllCurrentPage = 1;
+    renderAllStudentsMentorshipView();
+  };
+
+  window.resetMentorAllStudentsFilters = function() {
+    mentorAllStudentsFilter = {
+      status: 'ALL',
+      category: 'ALL',
+      grade: 'ALL',
+      rombel: 'ALL',
+      search: ''
+    };
+    mentorAllCurrentPage = 1;
+    const selGrade = document.getElementById('selectMentorFilterGrade');
+    const selRombel = document.getElementById('selectMentorFilterRombel');
+    const inSearch = document.getElementById('searchMentorAllStudents');
+    if (selGrade) selGrade.value = 'ALL';
+    if (selRombel) selRombel.value = 'ALL';
+    if (inSearch) inSearch.value = '';
+    updateMentorFilterButtonsUI();
+    renderAllStudentsMentorshipView();
+  };
+
+  window.onMentorPerPageChange = function() {
+    const sel = document.getElementById('selectMentorPerPage');
+    if (sel) {
+      mentorAllPerPage = parseInt(sel.value, 10) || 100;
+      mentorAllCurrentPage = 1;
+      renderAllStudentsMentorshipView();
+    }
+  };
+
+  window.changeMentorAllStudentsPage = function(delta) {
+    mentorAllCurrentPage += delta;
+    renderAllStudentsMentorshipView();
+  };
+
+  /**
+   * ==========================================
+   * SUB-TAB 1: REKAP STATUS SEMUA SISWA
+   * (BELUM VS SUDAH ADA FASILITATOR)
+   * ==========================================
+   */
+  function renderAllStudentsMentorshipView() {
+    if (!window.FincestemMentorship) return;
+    const allStudents = window.FincestemMasterStudents || [];
+    const tableBody = document.getElementById('tableBodyMentorAllStudents');
+    const pageInfo = document.getElementById('mentorAllStudentsPageInfo');
+    const lblCurPage = document.getElementById('lblMentorCurrentPage');
+    const btnPrev = document.getElementById('btnMentorPrevPage');
+    const btnNext = document.getElementById('btnMentorNextPage');
+    const selRombel = document.getElementById('selectMentorFilterRombel');
+
+    if (!tableBody) return;
+
+    // Populate dropdown Rombel jika belum terisi
+    if (selRombel && selRombel.options.length <= 1) {
+      let rOpts = '<option value="ALL">Semua Kelas (33 Rombel)</option>';
+      ['X', 'XI', 'XII'].forEach(lvl => {
+        for (let i = 1; i <= 11; i++) {
+          rOpts += `<option value="KELAS ${lvl}.${i}">Kelas ${lvl}.${i}</option>`;
+        }
+      });
+      selRombel.innerHTML = rOpts;
+    }
+
+    // 1. O(1) Cache Data Guru & Assignments
+    const assignMap = window.FincestemMentorship.getAssignmentsMap();
+    const teachers = window.FincestemMentorship.getTeachers();
+
+    const teacherMap = new Map();
+    teachers.forEach(t => {
+      const k = String(t.username || t.nip || t.kode_guru).toLowerCase();
+      teacherMap.set(k, t);
+    });
+
+    const fasilitatorByNisn = new Map();
+    const coordinatorByNisn = new Map();
+
+    for (const [tKey, entry] of Object.entries(assignMap)) {
+      if (!entry || !Array.isArray(entry.student_nisns)) continue;
+      const role = window.FincestemMentorship.getTeacherRole(tKey);
+      const tObj = teacherMap.get(tKey) || window.FincestemMentorship.findTeacherByIdentifier(tKey);
+      const tName = (tObj && tObj.nama_guru) || entry.teacher_name || tKey;
+      const tInfo = { teacher_key: tKey, teacher_name: tName, teacher_role: role };
+
+      entry.student_nisns.forEach(rawN => {
+        const sN = String(rawN || '').trim();
+        if (!sN) return;
+        const digits = sN.replace(/\D/g, '');
+        const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : sN;
+        const unp = digits.replace(/^0+/, '') || sN;
+
+        const targetMap = (role === 'KOORDINATOR') ? coordinatorByNisn : fasilitatorByNisn;
+        targetMap.set(sN, tInfo);
+        targetMap.set(padded, tInfo);
+        if (unp) targetMap.set(unp, tInfo);
+      });
+    }
+
+    // 2. O(1) Cache Zona Siswa
+    const zMap = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones._getZonesMap)
+      ? FincestemCore.zones._getZonesMap()
+      : {};
+
+    const checkIsFT = (sNisn, sObj) => {
+      const rawDigits = sNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+      const z = zMap[sNisn] || zMap[paddedNisn] || (unpaddedNisn ? zMap[unpaddedNisn] : null) || sObj.zone;
+      if (z) {
+        const zUp = String(z).toUpperCase();
+        return zUp.includes('LUAR') || zUp.includes('FIELD') || zUp.includes('TRIP');
+      }
+      return (sObj.zone === 'FINCESTEM LUAR OKU TIMUR' || sObj.is_field_trip === true);
+    };
+
+    // 3. Cache Koordinator Rombel dari Data Koordinator & Fasil
+    let coordByClass = new Map();
+    try {
+      const local = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getLocalAssignments)
+        ? FincestemCore.assignments.getLocalAssignments()
+        : JSON.parse(localStorage.getItem('fincestem_role_assignments') || '{}');
+      (local.coordinators || []).forEach(c => {
+        const normC = String(c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        if (normC && (c.teacher_name || c.teacher_username)) {
+          coordByClass.set(normC, c.teacher_name || c.teacher_username);
+        }
+      });
+    } catch(e) {}
+
+    // 4. Filter Siswa
+    const statusFilter = mentorAllStudentsFilter.status;
+    const catFilter = mentorAllStudentsFilter.category;
+    const gradeFilter = mentorAllStudentsFilter.grade;
+    const rombelFilter = mentorAllStudentsFilter.rombel;
+    const searchFilter = mentorAllStudentsFilter.search;
+
+    const normRombel = (rombelFilter !== 'ALL') ? rombelFilter.replace(/^KELAS\s+/i, '').trim().toUpperCase() : null;
+
+    const filtered = [];
+    for (let i = 0; i < allStudents.length; i++) {
+      const s = allStudents[i];
+      const sNisn = String(s.nisn || '').trim();
+      const sClass = (s.class || s.rombel || '').toUpperCase();
+      const sClassNorm = sClass.replace(/^KELAS\s+/i, '').trim().toUpperCase();
+
+      // Cek Fasilitator & Koordinator O(1)
+      const fasilObj = fasilitatorByNisn.get(sNisn) || null;
+      const hasFasil = (fasilObj !== null);
+      const coordObj = coordinatorByNisn.get(sNisn) || null;
+      const coordName = (coordObj && coordObj.teacher_name) || coordByClass.get(sClassNorm) || '-';
+
+      // Cek Status
+      if (statusFilter === 'UNASSIGNED' && hasFasil) continue;
+      if (statusFilter === 'ASSIGNED' && !hasFasil) continue;
+
+      // Cek Field Trip
+      const isFT = checkIsFT(sNisn, s);
+      if (catFilter === 'FIELD_TRIP' && !isFT) continue;
+      if (catFilter === 'NON_FIELD_TRIP' && isFT) continue;
+
+      // Cek Tingkat
+      if (gradeFilter !== 'ALL') {
+        const sLvl = String(s.level || '').toUpperCase();
+        if (sLvl !== gradeFilter && !sClass.includes(' ' + gradeFilter + '.') && !sClass.startsWith(gradeFilter + '.')) continue;
+      }
+
+      // Cek Rombel
+      if (normRombel !== null && sClassNorm !== normRombel) continue;
+
+      // Cek Pencarian
+      if (searchFilter) {
+        const matchName = (s.nama || '').toLowerCase().includes(searchFilter);
+        const matchNisn = sNisn.includes(searchFilter);
+        const matchFasil = (fasilObj && (fasilObj.teacher_name || '').toLowerCase().includes(searchFilter));
+        const matchCoord = (coordName && coordName.toLowerCase().includes(searchFilter));
+        if (!matchName && !matchNisn && !matchFasil && !matchCoord) continue;
+      }
+
+      filtered.push({
+        s,
+        sNisn,
+        isFT,
+        fasilObj,
+        hasFasil,
+        coordName
+      });
+    }
+
+    // 5. Pagination Calculation
+    const totalRecords = filtered.length;
+    const totalPages = Math.max(1, Math.ceil(totalRecords / mentorAllPerPage));
+    if (mentorAllCurrentPage > totalPages) mentorAllCurrentPage = totalPages;
+    if (mentorAllCurrentPage < 1) mentorAllCurrentPage = 1;
+
+    const startIndex = (mentorAllCurrentPage - 1) * mentorAllPerPage;
+    const endIndex = Math.min(startIndex + mentorAllPerPage, totalRecords);
+    const visibleChunk = filtered.slice(startIndex, endIndex);
+
+    if (pageInfo) {
+      if (totalRecords === 0) {
+        pageInfo.textContent = 'Menampilkan 0 dari 0 siswa';
+      } else {
+        pageInfo.textContent = `Menampilkan ${startIndex + 1} - ${endIndex} dari ${totalRecords.toLocaleString('id-ID')} siswa`;
+      }
+    }
+    if (lblCurPage) lblCurPage.textContent = `Hal ${mentorAllCurrentPage} / ${totalPages}`;
+    if (btnPrev) btnPrev.disabled = (mentorAllCurrentPage <= 1);
+    if (btnNext) btnNext.disabled = (mentorAllCurrentPage >= totalPages);
+
+    if (totalRecords === 0) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="8" class="p-10 text-center text-slate-400 text-xs">
+            <span class="material-symbols-outlined text-4xl text-slate-300 block mb-1">search_off</span>
+            <span class="font-extrabold text-sm text-slate-700">Tidak ada data siswa yang cocok dengan filter.</span>
+            <p class="text-slate-400 text-[11px] mt-1">Coba ubah status binaan atau reset filter di atas.</p>
+            <button type="button" onclick="resetMentorAllStudentsFilters()" class="mt-2.5 px-4 py-1.5 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-800 font-bold text-xs inline-flex items-center gap-1 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-sm">restart_alt</span>
+              <span>Reset Filter</span>
+            </button>
+          </td>
+        </tr>
+      `;
+      updateMentorBatchToolbar();
+      return;
+    }
+
+    // 6. Render Tabel Rows
+    let html = '';
+    for (let i = 0; i < visibleChunk.length; i++) {
+      const item = visibleChunk[i];
+      const s = item.s;
+      const sNisn = item.sNisn;
+      const isFT = item.isFT;
+      const hasFasil = item.hasFasil;
+      const fasilObj = item.fasilObj;
+      const coordName = item.coordName;
+      const isChecked = mentorBatchSelectedNisns.has(sNisn);
+      const rowNum = startIndex + i + 1;
+
+      // Badge Jalur Kegiatan
+      const badgeJalur = isFT
+        ? `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-500 text-slate-950 inline-flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">directions_bus</span><span>Field Trip</span></span>`
+        : `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-teal-100 text-teal-900 border border-teal-200 inline-flex items-center gap-1"><span class="material-symbols-outlined text-xs">school</span><span>Non-FT</span></span>`;
+
+      // Status & Fasilitator Badge
+      let fasilBadge = '';
+      if (hasFasil) {
+        fasilBadge = `
+          <div class="flex items-center gap-1.5 py-0.5">
+            <span class="px-2.5 py-1 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 flex items-center gap-1.5 shadow-2xs">
+              <span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
+              <span class="font-extrabold truncate max-w-[200px]" title="${escapeHtml(fasilObj.teacher_name)}">${escapeHtml(fasilObj.teacher_name)}</span>
+            </span>
+          </div>
+        `;
+      } else {
+        fasilBadge = `
+          <div class="flex items-center gap-1.5 py-0.5">
+            <span class="px-2.5 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1.5 shadow-2xs">
+              <span class="material-symbols-outlined text-sm text-amber-700">warning</span>
+              <span>⚠️ BELUM ADA FASILITATOR</span>
+            </span>
+          </div>
+        `;
+      }
+
+      // Koordinator Info
+      const coordHtml = (coordName && coordName !== '-')
+        ? `<span class="text-xs font-bold text-slate-700 flex items-center gap-1"><span class="material-symbols-outlined text-sm text-[#0875D1]">assignment_ind</span><span class="truncate max-w-[160px]" title="${escapeHtml(coordName)}">${escapeHtml(coordName)}</span></span>`
+        : `<span class="text-slate-300 font-bold">-</span>`;
+
+      html += `
+        <tr class="border-b border-slate-100 hover:bg-blue-50/40 transition-colors ${isChecked ? 'bg-blue-50/60' : ''}">
+          <td class="py-2.5 px-3 text-center">
+            <input type="checkbox" data-nisn="${escapeHtml(sNisn)}" onchange="toggleMentorStudentRowCheckbox('${escapeHtml(sNisn)}', this.checked)" ${isChecked ? 'checked' : ''} class="chk-student-row w-3.5 h-3.5 rounded text-[#0875D1] cursor-pointer">
+          </td>
+          <td class="py-2.5 px-2 text-center font-bold text-slate-400 text-xs">${rowNum}</td>
+          <td class="py-2.5 px-3">
+            <div class="flex flex-col">
+              <span class="font-extrabold text-xs text-slate-800">${escapeHtml(s.nama || '-')}</span>
+              <span class="text-[10px] text-slate-400 font-medium">${escapeHtml(s.gender || '')}</span>
+            </div>
+          </td>
+          <td class="py-2.5 px-3">
+            <div class="flex flex-col">
+              <span class="font-mono font-bold text-slate-700 text-xs">${escapeHtml(sNisn)}</span>
+              <span class="text-[10.5px] font-semibold text-slate-500">${escapeHtml(s.class || s.rombel || '-')}</span>
+            </div>
+          </td>
+          <td class="py-2.5 px-3 text-center">${badgeJalur}</td>
+          <td class="py-2.5 px-3">${fasilBadge}</td>
+          <td class="py-2.5 px-3">${coordHtml}</td>
+          <td class="py-2.5 px-3 text-center">
+            <button type="button" onclick="openSingleStudentAssignModal('${escapeHtml(sNisn)}')" class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer shadow-2xs ${hasFasil ? 'bg-slate-100 hover:bg-slate-200 text-slate-700' : 'bg-[#0875D1] hover:bg-blue-700 text-white'}">
+              <span>${hasFasil ? 'Ganti Guru' : '+ Tetapkan Guru'}</span>
+            </button>
+          </td>
+        </tr>
+      `;
+    }
+
+    tableBody.innerHTML = html;
+    updateMentorBatchToolbar();
+  }
+
+  /**
+   * BATCH ACTIONS & SELECTION FOR SUB-TAB 1
+   */
+  window.toggleMentorBatchSelectAll = function(checked) {
+    const tableBody = document.getElementById('tableBodyMentorAllStudents');
+    if (!tableBody) return;
+    const cbs = tableBody.querySelectorAll('input.chk-student-row');
+    cbs.forEach(cb => {
+      cb.checked = checked;
+      const n = cb.getAttribute('data-nisn');
+      if (n) {
+        if (checked) mentorBatchSelectedNisns.add(n);
+        else mentorBatchSelectedNisns.delete(n);
+      }
+    });
+    updateMentorBatchToolbar();
+  };
+
+  window.toggleMentorStudentRowCheckbox = function(nisn, checked) {
+    if (checked) mentorBatchSelectedNisns.add(nisn);
+    else mentorBatchSelectedNisns.delete(nisn);
+    updateMentorBatchToolbar();
+  };
+
+  function updateMentorBatchToolbar() {
+    const lblCount = document.getElementById('lblMentorBatchSelectedCount');
+    const btnAssign = document.getElementById('btnBatchAssignMentor');
+    const btnClear = document.getElementById('btnBatchClearMentor');
+    const chkPage = document.getElementById('chkMentorBatchSelectAll');
+    const chkHeader = document.getElementById('chkMentorHeaderAll');
+
+    const count = mentorBatchSelectedNisns.size;
+    if (lblCount) lblCount.textContent = `${count} siswa terpilih`;
+    if (btnAssign) btnAssign.disabled = (count === 0);
+    if (btnClear) btnClear.disabled = (count === 0);
+
+    const tableBody = document.getElementById('tableBodyMentorAllStudents');
+    if (tableBody) {
+      const cbs = tableBody.querySelectorAll('input.chk-student-row');
+      const allChecked = cbs.length > 0 && Array.from(cbs).every(cb => cb.checked);
+      if (chkPage) chkPage.checked = allChecked;
+      if (chkHeader) chkHeader.checked = allChecked;
+    }
+  }
+
+  window.openBatchAssignModalAction = function() {
+    if (mentorBatchSelectedNisns.size === 0) {
+      alert('Pilih minimal 1 siswa terlebih dahulu!');
+      return;
+    }
+    const allStudents = window.FincestemMasterStudents || [];
+    const nisnList = Array.from(mentorBatchSelectedNisns);
+    const infoList = [];
+    const nisnSet = new Set(nisnList);
+
+    allStudents.forEach(s => {
+      const n = String(s.nisn || '').trim();
+      if (nisnSet.has(n)) {
+        infoList.push({ nisn: n, nama: s.nama, class: s.class || s.rombel });
+      }
+    });
+
+    openQuickAssignModal(nisnList, infoList);
+  };
+
+  window.openSingleStudentAssignModal = function(nisn) {
+    if (!nisn) return;
+    const allStudents = window.FincestemMasterStudents || [];
+    const sObj = allStudents.find(s => String(s.nisn || '').trim() === String(nisn).trim());
+    const infoList = sObj ? [{ nisn: sObj.nisn, nama: sObj.nama, class: sObj.class || sObj.rombel }] : [{ nisn: nisn, nama: nisn }];
+    openQuickAssignModal([String(nisn).trim()], infoList);
+  };
+
+  window.batchClearMentorAction = function() {
+    if (mentorBatchSelectedNisns.size === 0) return;
+    if (!confirm(`Lepaskan ${mentorBatchSelectedNisns.size} siswa terpilih dari seluruh guru pembina saat ini?`)) {
+      return;
+    }
+    const map = window.FincestemMentorship.getAssignmentsMap();
+    const nisnSet = new Set(mentorBatchSelectedNisns);
+    let changed = false;
+
+    Object.keys(map).forEach(tKey => {
+      if (map[tKey] && Array.isArray(map[tKey].student_nisns)) {
+        const before = map[tKey].student_nisns.length;
+        map[tKey].student_nisns = map[tKey].student_nisns.filter(n => !nisnSet.has(String(n).trim()));
+        if (map[tKey].student_nisns.length !== before) {
+          map[tKey].updated_at = new Date().toISOString();
+          changed = true;
+        }
+      }
+    });
+
+    if (changed) {
+      window.FincestemMentorship.saveAssignmentsMap(map);
+      mentorBatchSelectedNisns.clear();
+      renderMentorshipStats();
+      renderAllStudentsMentorshipView();
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Siswa terpilih berhasil dilepaskan dari pembina.', 'info');
+      }
+    }
+  };
+
+  /**
+   * QUICK ASSIGN MODAL (SINGLE / BATCH)
+   */
+  window.openQuickAssignModal = function(nisnList, studentInfoList) {
+    targetQuickAssignNisns = nisnList || [];
+    if (targetQuickAssignNisns.length === 0) return;
+
+    const modal = document.getElementById('modalQuickAssignTeacherSingleOrBatch');
+    const badgeCount = document.getElementById('quickAssignStudentCountBadge');
+    const targetListEl = document.getElementById('quickAssignTargetStudentList');
+    const selectTeacher = document.getElementById('quickAssignSelectTeacher');
+
+    if (badgeCount) badgeCount.textContent = `${targetQuickAssignNisns.length} Siswa`;
+
+    if (targetListEl) {
+      if (studentInfoList && studentInfoList.length) {
+        targetListEl.innerHTML = studentInfoList.slice(0, 10).map(s => 
+          `<div class="flex items-center justify-between py-0.5 border-b border-slate-100 last:border-0">
+             <span class="truncate max-w-[240px] font-bold text-slate-800">${escapeHtml(s.nama || s.nisn)}</span>
+             <span class="text-[10.5px] text-slate-400 font-mono">${escapeHtml(s.class || s.rombel || s.nisn)}</span>
+           </div>`
+        ).join('') + (studentInfoList.length > 10 ? `<div class="text-[10px] text-slate-400 pt-1">+ ${studentInfoList.length - 10} siswa lainnya...</div>` : '');
+      } else {
+        targetListEl.textContent = `${targetQuickAssignNisns.length} siswa terpilih`;
+      }
+    }
+
+    // Populate Select Teacher dengan jumlah binaan saat ini
+    if (selectTeacher && window.FincestemMentorship) {
+      const teachers = window.FincestemMentorship.getTeachers();
+      const teacherCounts = new Map();
+      const teacherRoles = new Map();
+      teachers.forEach(t => {
+        const k = String(t.username || t.nip || t.kode_guru).toLowerCase();
+        teacherCounts.set(k, window.FincestemMentorship.getAssignedNisnsForTeacher(k).length);
+        teacherRoles.set(k, window.FincestemMentorship.getTeacherRole(k));
+      });
+
+      // Urutkan berdasarkan beban terkecil dulu agar pembagian merata
+      const sorted = [...teachers].sort((a, b) => {
+        const kA = String(a.username || a.nip || a.kode_guru).toLowerCase();
+        const kB = String(b.username || b.nip || b.kode_guru).toLowerCase();
+        const countA = teacherCounts.get(kA) || 0;
+        const countB = teacherCounts.get(kB) || 0;
+        if (countA !== countB) return countA - countB;
+        return (a.nama_guru || '').localeCompare(b.nama_guru || '');
+      });
+
+      let optHtml = '<option value="">-- Pilih Guru Pembina / Fasilitator --</option>';
+      const seenNames = new Set();
+      sorted.forEach(t => {
+        const normName = String(t.nama_guru || '').replace(/\s+/g, ' ').trim().toUpperCase();
+        if (!normName || seenNames.has(normName)) return;
+        seenNames.add(normName);
+
+        const k = String(t.username || t.nip || t.kode_guru).toLowerCase();
+        const count = teacherCounts.get(k) || 0;
+        const role = teacherRoles.get(k) || 'NON_FIELD_TRIP';
+        const roleBadge = role === 'FIELD_TRIP' ? '🚌 FT' : (role === 'KOORDINATOR' ? '🎯 Koord' : '🏫 Non-FT');
+        optHtml += `<option value="${k}">${t.nama_guru} [${roleBadge}] (${count} Binaan)</option>`;
+      });
+
+      selectTeacher.innerHTML = optHtml;
+    }
+
+    if (modal) modal.classList.remove('hidden');
+  };
+
+  window.closeQuickAssignModal = function() {
+    const modal = document.getElementById('modalQuickAssignTeacherSingleOrBatch');
+    if (modal) modal.classList.add('hidden');
+    targetQuickAssignNisns = [];
+  };
+
+  window.submitQuickAssignModalAction = function() {
+    const select = document.getElementById('quickAssignSelectTeacher');
+    const teacherKey = select ? select.value : '';
+    if (!teacherKey) {
+      alert('Pilih guru pembina terlebih dahulu dari daftar dropdown!');
+      return;
+    }
+    if (!targetQuickAssignNisns || targetQuickAssignNisns.length === 0) {
+      alert('Tidak ada siswa yang dipilih.');
+      closeQuickAssignModal();
+      return;
+    }
+
+    const success = window.FincestemMentorship.assignStudentsToTeacher(teacherKey, targetQuickAssignNisns);
+    if (success) {
+      const tObj = window.FincestemMentorship.findTeacherByIdentifier(teacherKey);
+      const tName = (tObj && tObj.nama_guru) || teacherKey;
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast(`Berhasil menetapkan ${targetQuickAssignNisns.length} siswa ke ${tName}!`, 'success');
+      } else {
+        alert(`Berhasil menetapkan ${targetQuickAssignNisns.length} siswa ke ${tName}!`);
+      }
+      closeQuickAssignModal();
+      mentorBatchSelectedNisns.clear();
+      renderMentorshipStats();
+      renderAllStudentsMentorshipView();
+      if (currentSubTab === 'plotting') renderPlottingView();
+    } else {
+      alert('Gagal menetapkan siswa.');
+    }
+  };
 
   /**
    * ==========================================

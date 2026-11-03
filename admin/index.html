@@ -2069,45 +2069,311 @@
           </div>
         </div>
 
-        <!-- 4 KARTU METRIK RINGKASAN -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3 border-t border-slate-800/80 text-xs">
-          <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
-            <span class="text-slate-400 text-[10px] font-bold uppercase">Total Siswa</span>
-            <strong id="mentorStat_total" class="text-base text-white font-black mt-0.5">1.165</strong>
-            <span class="text-[10px] text-slate-400">Master Dapodik</span>
+        <!-- 4 KARTU METRIK RINGKASAN FIELD TRIP & NON-FIELD TRIP -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-3 border-t border-slate-800/80 text-xs">
+          <!-- KARTU 1: FIELD TRIP -->
+          <div class="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-amber-400 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base">directions_bus</span>
+                  <span>1. Siswa Field Trip</span>
+                </span>
+                <span id="mentorStat_ftTotal" class="text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">0 Siswa</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 mt-2.5 pt-2 border-t border-amber-500/20">
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-xs">check_circle</span> Sudah Ada
+                  </span>
+                  <strong id="mentorStat_ftAssigned" class="text-sm font-black text-emerald-300 mt-0.5">0 Siswa</strong>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-amber-300 font-bold flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-xs">pending</span> Belum Diplot
+                  </span>
+                  <strong id="mentorStat_ftUnassigned" class="text-sm font-black text-amber-200 mt-0.5">0 Siswa</strong>
+                </div>
+              </div>
+            </div>
+            <button type="button" onclick="quickFilterMentorStudents('UNASSIGNED', 'FIELD_TRIP')" class="mt-2.5 w-full py-2 px-2.5 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 active:scale-95 text-amber-300 font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-amber-500/30 shadow-xs">
+              <span class="material-symbols-outlined text-sm">filter_alt</span>
+              <span>Lihat FT Belum Diplot</span>
+            </button>
           </div>
-          <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
-            <span class="text-emerald-400 text-[10px] font-bold uppercase">Sudah Ada Pembina</span>
-            <strong id="mentorStat_assigned" class="text-base text-emerald-300 font-black mt-0.5">0 Siswa</strong>
-            <span class="text-[10px] text-emerald-400/80 font-medium">Terbagi dalam bimbingan</span>
+
+          <!-- KARTU 2: NON-FIELD TRIP -->
+          <div class="p-3.5 rounded-2xl bg-teal-500/10 border border-teal-500/30 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-teal-400 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base">school</span>
+                  <span>2. Siswa Non-Field Trip</span>
+                </span>
+                <span id="mentorStat_nonFtTotal" class="text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-teal-500/20 text-teal-300">0 Siswa</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 mt-2.5 pt-2 border-t border-teal-500/20">
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-xs">check_circle</span> Sudah Ada
+                  </span>
+                  <strong id="mentorStat_nonFtAssigned" class="text-sm font-black text-emerald-300 mt-0.5">0 Siswa</strong>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-amber-300 font-bold flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-xs">pending</span> Belum Diplot
+                  </span>
+                  <strong id="mentorStat_nonFtUnassigned" class="text-sm font-black text-amber-200 mt-0.5">0 Siswa</strong>
+                </div>
+              </div>
+            </div>
+            <button type="button" onclick="quickFilterMentorStudents('UNASSIGNED', 'NON_FIELD_TRIP')" class="mt-2.5 w-full py-2 px-2.5 rounded-xl bg-teal-500/20 hover:bg-teal-500/30 active:scale-95 text-teal-300 font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-teal-500/30 shadow-xs">
+              <span class="material-symbols-outlined text-sm">filter_alt</span>
+              <span>Lihat Non-FT Belum Diplot</span>
+            </button>
           </div>
-          <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
-            <span class="text-amber-400 text-[10px] font-bold uppercase">Belum Punya Pembina</span>
-            <strong id="mentorStat_unassigned" class="text-base text-amber-300 font-black mt-0.5">1.165 Siswa</strong>
-            <span class="text-[10px] text-amber-400/80 font-medium">Perlu diplot ke guru</span>
+
+          <!-- KARTU 3: TOTAL SELURUH SISWA -->
+          <div class="p-3.5 rounded-2xl bg-white/5 border border-white/10 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-slate-300 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base">groups</span>
+                  <span>Total Seluruh Siswa</span>
+                </span>
+                <span id="mentorStat_total" class="text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-white/10 text-white">1.165 Siswa</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 mt-2.5 pt-2 border-t border-white/10">
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-emerald-400 font-bold flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-xs">done_all</span> Sudah Diplot
+                  </span>
+                  <strong id="mentorStat_assigned" class="text-sm font-black text-emerald-300 mt-0.5">0 Siswa</strong>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-rose-400 font-bold flex items-center gap-0.5">
+                    <span class="material-symbols-outlined text-xs">person_alert</span> Belum Diplot
+                  </span>
+                  <strong id="mentorStat_unassigned" class="text-sm font-black text-rose-300 mt-0.5">1.165 Siswa</strong>
+                </div>
+              </div>
+            </div>
+            <button type="button" onclick="quickFilterMentorStudents('ALL', 'ALL')" class="mt-2.5 w-full py-2 px-2.5 rounded-xl bg-white/10 hover:bg-white/15 active:scale-95 text-slate-200 font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-white/10 shadow-xs">
+              <span class="material-symbols-outlined text-sm">visibility</span>
+              <span>Tampilkan Semua Siswa</span>
+            </button>
           </div>
-          <div class="p-3 rounded-2xl bg-white/5 border border-white/10 flex flex-col">
-            <span class="text-cyan-400 text-[10px] font-bold uppercase">Guru Pembina Aktif</span>
-            <strong id="mentorStat_teachers" class="text-base text-cyan-300 font-black mt-0.5">0 Guru</strong>
-            <span class="text-[10px] text-slate-400 font-medium">Dari 116+ Guru Sistem</span>
+
+          <!-- KARTU 4: GURU FASILITATOR AKTIF -->
+          <div class="p-3.5 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex flex-col justify-between shadow-sm">
+            <div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-cyan-400 text-[11px] font-black uppercase tracking-wider flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-base">badge</span>
+                  <span>Guru Fasilitator</span>
+                </span>
+                <span class="text-[11px] font-extrabold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300">116+ Guru</span>
+              </div>
+              <div class="mt-2.5 pt-2 border-t border-cyan-500/20 flex flex-col">
+                <span class="text-[10px] text-cyan-300/80 font-bold">Fasilitator Aktif Membina:</span>
+                <strong id="mentorStat_teachers" class="text-sm font-black text-cyan-200 mt-0.5">0 Guru Aktif</strong>
+              </div>
+            </div>
+            <button type="button" onclick="switchMentorshipSubTab('teachers')" class="mt-2.5 w-full py-2 px-2.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 active:scale-95 text-cyan-200 font-bold text-[11px] flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-cyan-500/30 shadow-xs">
+              <span class="material-symbols-outlined text-sm">manage_accounts</span>
+              <span>Kelola 116+ Guru</span>
+            </button>
           </div>
         </div>
       </div>
 
       <!-- SUB-TAB NAVIGASI MODUL MENTORSHIP -->
-      <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800">
-        <button type="button" id="btnSubTabMentor_plotting" onclick="switchMentorshipSubTab('plotting')" class="flex-1 py-2 px-3 text-xs font-bold rounded-xl bg-[#0875D1] text-white shadow-xs transition-all cursor-pointer">
+      <div class="flex items-center gap-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 flex-wrap sm:flex-nowrap">
+        <button type="button" id="btnSubTabMentor_allstudents" onclick="switchMentorshipSubTab('allstudents')" class="flex-1 py-2.5 px-3 text-xs font-bold rounded-xl bg-[#0875D1] text-white shadow-xs transition-all cursor-pointer">
+          <span class="flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-base">fact_check</span>
+            <span>1. Rekap Status Siswa (Belum vs Sudah Ada Fasil)</span>
+          </span>
+        </button>
+        <button type="button" id="btnSubTabMentor_plotting" onclick="switchMentorshipSubTab('plotting')" class="flex-1 py-2.5 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
           <span class="flex items-center justify-center gap-1.5">
             <span class="material-symbols-outlined text-base">assignment_ind</span>
-            <span>1. Plotting &amp; Pembagian Siswa Binaan</span>
+            <span>2. Plotting per-Guru Pembina</span>
           </span>
         </button>
-        <button type="button" id="btnSubTabMentor_teachers" onclick="switchMentorshipSubTab('teachers')" class="flex-1 py-2 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+        <button type="button" id="btnSubTabMentor_teachers" onclick="switchMentorshipSubTab('teachers')" class="flex-1 py-2.5 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
           <span class="flex items-center justify-center gap-1.5">
             <span class="material-symbols-outlined text-base">badge</span>
-            <span>2. Data 116 Guru &amp; Tambah Guru Baru</span>
+            <span>3. Data 116 Guru &amp; Tambah Guru Baru</span>
           </span>
         </button>
+      </div>
+
+      <!-- SUB-VIEW 1: REKAP STATUS SEMUA SISWA (BELUM VS SUDAH ADA FASIL) -->
+      <div id="subviewMentor_allstudents" class="flex flex-col gap-3.5">
+        
+        <!-- BAR KONTROL FILTER & SEARCH -->
+        <div class="p-4 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3.5">
+          <!-- BARIS 1: FILTER STATUS PEMBINAAN & JALUR KEGIATAN -->
+          <div class="flex flex-wrap items-center justify-between gap-3">
+            <!-- Filter Status Binaan -->
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[10.5px] font-extrabold uppercase text-slate-400 mr-1 flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs">tune</span> Status:
+              </span>
+              <button type="button" id="btnMentorFilterStatus_ALL" onclick="setMentorAllStudentsStatusFilter('ALL')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-[#0875D1] text-white shadow-2xs transition-all cursor-pointer">
+                Semua Siswa (<span id="lblCountStatus_ALL">1.165</span>)
+              </button>
+              <button type="button" id="btnMentorFilterStatus_UNASSIGNED" onclick="setMentorAllStudentsStatusFilter('UNASSIGNED')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-50 text-amber-700 border border-amber-300 hover:bg-amber-100 transition-all cursor-pointer flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-amber-600">warning</span>
+                <span>⚠️ Belum Ada Fasil (<span id="lblCountStatus_UNASSIGNED">0</span>)</span>
+              </button>
+              <button type="button" id="btnMentorFilterStatus_ASSIGNED" onclick="setMentorAllStudentsStatusFilter('ASSIGNED')" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition-all cursor-pointer flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span>
+                <span>✅ Sudah Ada Fasil (<span id="lblCountStatus_ASSIGNED">0</span>)</span>
+              </button>
+            </div>
+
+            <!-- Filter Jalur Field Trip vs Non-Field Trip -->
+            <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 border border-slate-200">
+              <span class="text-[10.5px] font-bold text-slate-500 px-1.5">Jalur:</span>
+              <button type="button" id="btnMentorFilterCat_ALL" onclick="setMentorAllStudentsCatFilter('ALL')" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-2xs transition-all cursor-pointer">
+                Semua
+              </button>
+              <button type="button" id="btnMentorFilterCat_FIELD_TRIP" onclick="setMentorAllStudentsCatFilter('FIELD_TRIP')" class="px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200 transition-all cursor-pointer flex items-center gap-1">
+                <span>🚌 FT</span>
+                <span id="lblCountCat_FT" class="text-[10px] px-1 rounded-md bg-amber-100 text-amber-800 font-black">0</span>
+              </button>
+              <button type="button" id="btnMentorFilterCat_NON_FIELD_TRIP" onclick="setMentorAllStudentsCatFilter('NON_FIELD_TRIP')" class="px-2.5 py-1 rounded-lg text-xs font-bold text-slate-600 hover:bg-slate-200 transition-all cursor-pointer flex items-center gap-1">
+                <span>🏫 Non-FT</span>
+                <span id="lblCountCat_NON_FT" class="text-[10px] px-1 rounded-md bg-teal-100 text-teal-800 font-black">0</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- BARIS 2: FILTER TINGKAT, ROMBEL & SEARCH INPUT -->
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-2.5 pt-2.5 border-t border-slate-100 items-center">
+            <!-- Filter Tingkat -->
+            <div class="sm:col-span-2">
+              <select id="selectMentorFilterGrade" onchange="onMentorAllStudentsFilterChange()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-[#0875D1]">
+                <option value="ALL">Semua Tingkat</option>
+                <option value="X">Kelas X</option>
+                <option value="XI">Kelas XI</option>
+                <option value="XII">Kelas XII</option>
+              </select>
+            </div>
+
+            <!-- Filter Rombel -->
+            <div class="sm:col-span-3">
+              <select id="selectMentorFilterRombel" onchange="onMentorAllStudentsFilterChange()" class="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 outline-none focus:border-[#0875D1]">
+                <option value="ALL">Semua Kelas (33 Rombel)</option>
+              </select>
+            </div>
+
+            <!-- Search Box -->
+            <div class="sm:col-span-5 relative">
+              <span class="material-symbols-outlined absolute left-3 top-2.5 text-slate-400 text-base">search</span>
+              <input type="text" id="searchMentorAllStudents" oninput="onMentorAllStudentsFilterChange()" placeholder="Cari Nama Siswa, NISN, atau Fasilitator..." class="w-full pl-9 pr-3 py-2 rounded-xl border border-slate-200 text-xs font-semibold outline-none focus:border-[#0875D1] bg-slate-50 focus:bg-white">
+            </div>
+
+            <!-- Tombol Reset -->
+            <div class="sm:col-span-2 flex justify-end">
+              <button type="button" onclick="resetMentorAllStudentsFilters()" class="w-full py-2 px-3 rounded-xl border border-slate-200 hover:bg-slate-100 active:scale-95 text-slate-600 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer" title="Reset Semua Filter">
+                <span class="material-symbols-outlined text-sm">restart_alt</span>
+                <span>Reset Filter</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- BATCH ACTION BAR / TOOLBAR AKSI MASAL -->
+        <div id="barMentorBatchAction" class="p-3.5 rounded-2xl bg-gradient-to-r from-slate-900 to-teal-950 text-white border border-slate-800 shadow-md flex items-center justify-between gap-3 flex-wrap">
+          <div class="flex items-center gap-3">
+            <label class="flex items-center gap-2 cursor-pointer select-none">
+              <input type="checkbox" id="chkMentorBatchSelectAll" onchange="toggleMentorBatchSelectAll(this.checked)" class="w-4 h-4 rounded text-[#0875D1] focus:ring-0 cursor-pointer">
+              <span class="text-xs font-bold text-slate-200">Pilih Semua di Halaman Ini</span>
+            </label>
+            <span class="text-slate-600">|</span>
+            <span id="lblMentorBatchSelectedCount" class="text-xs font-extrabold text-teal-300">
+              0 siswa terpilih
+            </span>
+          </div>
+
+          <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" id="btnBatchAssignMentor" onclick="openBatchAssignModalAction()" disabled class="px-4 py-2 rounded-xl bg-[#0875D1] hover:bg-blue-600 active:scale-95 text-white font-bold text-xs flex items-center gap-1.5 shadow-sm transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+              <span class="material-symbols-outlined text-sm">person_add</span>
+              <span>+ Tetapkan Siswa Terpilih ke Guru...</span>
+            </button>
+            <button type="button" id="btnBatchClearMentor" onclick="batchClearMentorAction()" disabled class="px-3 py-2 rounded-xl bg-rose-600/80 hover:bg-rose-700 active:scale-95 text-white font-bold text-xs flex items-center gap-1 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed" title="Lepaskan siswa terpilih dari pembina saat ini">
+              <span class="material-symbols-outlined text-sm">person_remove</span>
+              <span>Lepas Pembina</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- TABEL REKAP STATUS SISWA -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+          <div class="p-4 border-b border-slate-100 flex items-center justify-between gap-2 flex-wrap bg-slate-50/60">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-teal-700 text-lg">fact_check</span>
+              <h3 class="font-black text-sm text-slate-800">Master Data Status Pembagian Siswa Binaan</h3>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span id="mentorAllStudentsPageInfo" class="font-bold text-slate-500">Menampilkan 0 - 0 dari 0 siswa</span>
+            </div>
+          </div>
+
+          <div class="overflow-x-auto max-h-[620px] overflow-y-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="sticky top-0 bg-slate-100 text-slate-600 font-extrabold uppercase text-[10px] border-b border-slate-200 z-10">
+                <tr>
+                  <th class="py-3 px-3 text-center w-10">
+                    <input type="checkbox" id="chkMentorHeaderAll" onchange="toggleMentorBatchSelectAll(this.checked)" class="w-3.5 h-3.5 rounded text-[#0875D1] cursor-pointer">
+                  </th>
+                  <th class="py-3 px-2 text-center w-12">No</th>
+                  <th class="py-3 px-3 min-w-[200px]">Nama Siswa</th>
+                  <th class="py-3 px-3 w-32">NISN &amp; Rombel</th>
+                  <th class="py-3 px-3 text-center w-36">Jalur Kegiatan</th>
+                  <th class="py-3 px-3 min-w-[240px]">Guru Fasilitator</th>
+                  <th class="py-3 px-3 min-w-[180px]">Koordinator</th>
+                  <th class="py-3 px-3 text-center w-32">Aksi Cepat</th>
+                </tr>
+              </thead>
+              <tbody id="tableBodyMentorAllStudents">
+                <!-- Injeksi JS -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- PAGINATION BAR -->
+          <div class="p-3.5 bg-slate-50 border-t border-slate-200 flex items-center justify-between gap-3 flex-wrap text-xs">
+            <div class="flex items-center gap-2 text-slate-500 font-semibold">
+              <span>Tampilkan:</span>
+              <select id="selectMentorPerPage" onchange="onMentorPerPageChange()" class="px-2 py-1 rounded-lg border border-slate-200 bg-white font-bold text-slate-700 outline-none">
+                <option value="50">50 Siswa</option>
+                <option value="100" selected>100 Siswa</option>
+                <option value="200">200 Siswa</option>
+                <option value="500">500 Siswa</option>
+              </select>
+              <span>per halaman</span>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <button type="button" id="btnMentorPrevPage" onclick="changeMentorAllStudentsPage(-1)" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                <span class="material-symbols-outlined text-sm">chevron_left</span>
+                <span>Sebelumnya</span>
+              </button>
+              <span id="lblMentorCurrentPage" class="px-3 py-1.5 rounded-xl bg-slate-200/80 font-black text-slate-800 text-xs">
+                Hal 1 / 1
+              </span>
+              <button type="button" id="btnMentorNextPage" onclick="changeMentorAllStudentsPage(1)" class="px-3 py-1.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed">
+                <span>Selanjutnya</span>
+                <span class="material-symbols-outlined text-sm">chevron_right</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- SUB-VIEW 1: PLOTTING SISWA BINAAN -->
@@ -2355,6 +2621,68 @@
           <button type="button" onclick="submitAddTeacherManualForm()" class="px-5 py-2.5 rounded-xl bg-teal-700 hover:bg-teal-800 active:scale-95 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer">
             <span class="material-symbols-outlined text-base">save</span>
             <span>Simpan &amp; Aktifkan Akun</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MODAL 3: TETAPKAN / GANTI GURU PEMBINA CEPAT (SINGLE / BATCH) -->
+    <div id="modalQuickAssignTeacherSingleOrBatch" class="hidden fixed inset-0 z-[9999] bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-3 sm:p-5">
+      <div class="bg-white rounded-3xl max-w-lg w-full shadow-2xl border border-slate-200 overflow-hidden animate-scale-up flex flex-col max-h-[90vh]">
+        
+        <div class="p-4 sm:p-5 bg-gradient-to-r from-slate-900 to-teal-950 text-white flex items-center justify-between border-b border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-300 flex items-center justify-center font-black">
+              <span class="material-symbols-outlined text-xl">assignment_ind</span>
+            </div>
+            <div>
+              <h3 class="font-extrabold text-sm sm:text-base text-white">Tetapkan Guru Pembina</h3>
+              <p class="text-[11px] text-teal-200">Plotting siswa binaan secara cepat</p>
+            </div>
+          </div>
+          <button type="button" onclick="closeQuickAssignModal()" class="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-xl">close</span>
+          </button>
+        </div>
+
+        <div class="p-4 sm:p-5 flex flex-col gap-4 overflow-y-auto text-xs">
+          <!-- Info Target Siswa -->
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5">
+            <div class="flex items-center justify-between">
+              <span class="text-[10.5px] font-black uppercase tracking-wider text-slate-400">Target Siswa:</span>
+              <span id="quickAssignStudentCountBadge" class="px-2 py-0.5 rounded-full text-[10.5px] font-black bg-blue-100 text-blue-800">1 Siswa</span>
+            </div>
+            <div id="quickAssignTargetStudentList" class="font-bold text-slate-700 max-h-24 overflow-y-auto text-xs leading-relaxed">
+              <!-- Injeksi JS -->
+            </div>
+          </div>
+
+          <!-- Pilihan Guru Pembina -->
+          <div>
+            <label class="block font-black text-slate-700 mb-1.5 uppercase text-[10.5px]">
+              Pilih Guru Pembina / Fasilitator / Koordinator: <span class="text-rose-500">*</span>
+            </label>
+            <select id="quickAssignSelectTeacher" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 font-bold text-xs text-slate-800 outline-none focus:border-[#0875D1] shadow-2xs">
+              <option value="">-- Memuat daftar guru... --</option>
+            </select>
+            <p class="text-[10.5px] text-slate-400 mt-1">Guru diurutkan berdasarkan yang paling sedikit beban binaannya.</p>
+          </div>
+
+          <!-- Opsi Konfirmasi -->
+          <div class="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-[11px] flex items-start gap-2">
+            <span class="material-symbols-outlined text-amber-600 text-base shrink-0 mt-0.5">info</span>
+            <span>Jika siswa sebelumnya sudah memiliki pembina lain dengan peran yang sama, siswa akan dipindahkan secara otomatis ke guru terpilih.</span>
+          </div>
+        </div>
+
+        <div class="p-4 bg-slate-50 border-t border-slate-200 flex items-center justify-end gap-2">
+          <button type="button" onclick="closeQuickAssignModal()" class="px-4 py-2.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 font-bold text-xs transition-all cursor-pointer">
+            Batal
+          </button>
+          <button type="button" onclick="submitQuickAssignModalAction()" class="px-5 py-2.5 rounded-xl bg-[#0875D1] hover:bg-blue-600 active:scale-95 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">check</span>
+            <span>Simpan &amp; Tetapkan Sekarang</span>
           </button>
         </div>
 
