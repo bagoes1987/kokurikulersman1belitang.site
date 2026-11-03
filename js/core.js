@@ -3952,6 +3952,47 @@ const FincestemCore = {
       });
     },
 
+    resetEvaluation: function(nisn, dayNum, callback) {
+      this.getStudentProgress(nisn, function(prog) {
+        if (prog) {
+          const d = parseInt(dayNum);
+          if (!isNaN(d) && d >= 0) {
+            if (Array.isArray(prog.records)) {
+              prog.records = prog.records.filter(r => !(parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'lkpd')));
+            }
+            if (prog.task_map) {
+              delete prog.task_map[d + '_general'];
+            }
+            if (prog.latest_feedback && parseInt(prog.latest_feedback.day_number) === d) {
+              prog.latest_feedback = null;
+            }
+          }
+          localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(prog));
+        }
+
+        if (window.location.protocol.startsWith('http')) {
+          fetch(FincestemCore.api.base + '/progress.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              action: 'reset_evaluation',
+              student_nisn: nisn,
+              day_number: dayNum
+            })
+          })
+            .then(r => r.json())
+            .then(res => {
+              if (callback) callback(res);
+            })
+            .catch(() => {
+              if (callback) callback({ success: true });
+            });
+        } else {
+          if (callback) callback({ success: true });
+        }
+      });
+    },
+
     isDayCompleted: function(prog, dayNum) {
       if (!prog) return false;
       const d = parseInt(dayNum);

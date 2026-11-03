@@ -508,6 +508,36 @@ if ($method === 'POST') {
             ]);
         }
 
+        // B.2. Reset penilaian manual fasilitator kembali ke aturan awal sistem Field Trip
+        if ($action === 'reset_evaluation' || $action === 'delete_evaluation') {
+            $nisn = trim($input['student_nisn'] ?? $input['nisn'] ?? '');
+            $rawDay = $input['day_number'] ?? null;
+            $dayNum = ($rawDay !== null && $rawDay !== '') ? (int)$rawDay : -1;
+
+            if (!$nisn) {
+                jsonResponse(false, 'NISN target evaluasi wajib diisi!', null, 400);
+            }
+
+            $cleanNisn = preg_replace('/[^A-Za-z0-9]/', '', $nisn);
+            $unpadded = ltrim($cleanNisn, '0');
+            $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
+            $allIds = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
+            $inIds = "'" . implode("','", array_map('addslashes', $allIds)) . "'";
+
+            if ($dayNum >= 0) {
+                $stmt = $pdo->prepare("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `day_number` = :d AND `task_type` = 'general'");
+                $stmt->execute([':d' => $dayNum]);
+            } else {
+                $pdo->exec("DELETE FROM `student_progress_eval` WHERE `student_nisn` IN ($inIds) AND `task_type` = 'general'");
+            }
+
+            jsonResponse(true, "Penilaian evaluasi siswa (NISN {$nisn}) berhasil dikembalikan ke standar awal sistem!", [
+                'student_nisn' => $nisn,
+                'day_number'   => $dayNum,
+                'reset'        => true
+            ]);
+        }
+
         // C. Reset data pengerjaan siswa spesifik (fleksibel: per-menu, per-hari, atau total)
         if ($action === 'reset_student') {
             $nisn = trim($input['student_nisn'] ?? $input['nisn'] ?? '');
