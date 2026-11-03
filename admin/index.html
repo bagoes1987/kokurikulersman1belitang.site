@@ -8800,23 +8800,26 @@
       const coordMatches = (local.coordinators || []).filter(c => (c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase() === norm);
       const coordName = coordMatches.length > 0 ? coordMatches[0].teacher_name : '-';
 
-      // 2. FASILITATOR: Diambil dari Pembagian Siswa Binaan berdasarkan NISN Siswa
-      let fasil1 = '-';
-      let fasil2 = '-';
+      // 2. FASILITATOR: Murni diambil dari Pembagian Siswa Binaan (1 Siswa = 1 Fasil)
+      let fasilName = '-';
 
       if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function' && studentNisn) {
         const mentorInfo = window.FincestemMentorship.getMentorsForStudent(studentNisn, className);
         if (mentorInfo) {
-          fasil1 = mentorInfo.facilitator1 || '-';
-          fasil2 = mentorInfo.facilitator2 || '-';
+          if (mentorInfo.facilitator && mentorInfo.facilitator !== 'Belum Ditentukan' && mentorInfo.facilitator !== '-') {
+            fasilName = mentorInfo.facilitator;
+          } else if (mentorInfo.facilitator1 && mentorInfo.facilitator1 !== '-') {
+            fasilName = mentorInfo.facilitator1;
+          }
         }
       }
 
       return {
         coordinator: coordName,
-        facilitator1: fasil1,
-        facilitator2: fasil2,
-        facilitatorDisplay: `<div>1. ${fasil1}</div><div>2. ${fasil2}</div>`
+        facilitator: fasilName,
+        facilitator1: fasilName,
+        facilitator2: '-',
+        facilitatorDisplay: fasilName
       };
     }
 
@@ -8944,9 +8947,9 @@
                     <td colspan="2" class="font-bold text-black py-0.5">${staff.coordinator}</td>
                   </tr>
                   <tr>
-                    <td class="font-bold text-black py-0.5 align-top">Fasilitator</td>
-                    <td class="text-center font-bold text-black py-0.5 align-top">:</td>
-                    <td colspan="2" class="font-bold text-black py-0.5">
+                    <td class="font-bold text-black py-0.5 whitespace-nowrap">Fasilitator</td>
+                    <td class="text-center font-bold text-black py-0.5">:</td>
+                    <td colspan="2" class="font-bold text-black py-0.5 overflow-hidden text-ellipsis whitespace-nowrap">
                       ${staff.facilitatorDisplay}
                     </td>
                   </tr>
@@ -9093,9 +9096,9 @@
                             <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${staff.coordinator}</td>
                           </tr>
                           <tr>
-                            <td style="color: #000000; font-weight: bold; padding: 1px 0; vertical-align: top;">Fasilitator</td>
-                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0; vertical-align: top;">:</td>
-                            <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0;">
+                            <td style="color: #000000; font-weight: bold; padding: 1px 0; white-space: nowrap;">Fasilitator</td>
+                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
+                            <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
                               ${staff.facilitatorDisplay}
                             </td>
                           </tr>

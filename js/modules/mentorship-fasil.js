@@ -893,6 +893,8 @@
 
       for (const [tKey, entry] of Object.entries(map)) {
         if (!entry || !Array.isArray(entry.student_nisns)) continue;
+        const tRole = this.getTeacherRole(tKey);
+        if (tRole === 'KOORDINATOR') continue;
         const isMatched = entry.student_nisns.some(storedN => {
           const sClean = String(storedN || '').trim();
           const sDigits = sClean.replace(/\D/g, '');
@@ -912,14 +914,14 @@
       }
 
       if (fasilNames.length > 0) {
-        result.facilitators = [fasilNames[0]]; // Fasilitator binaan siswa tunggal
+        result.facilitators = [fasilNames[0]]; // Fasilitator binaan siswa tunggal (1 Siswa = 1 Fasil)
         result.facilitator = fasilNames[0];
         result.facilitator_name = fasilNames[0];
         result.facilitator1 = fasilNames[0] || '-';
-        result.facilitator2 = fasilNames.length > 1 ? fasilNames[1] : '-';
+        result.facilitator2 = '-';
       } else {
-        result.facilitator = 'Belum Ditentukan';
-        result.facilitator_name = 'Belum Ditentukan';
+        result.facilitator = '-';
+        result.facilitator_name = '-';
         result.facilitators = [];
         result.facilitator1 = '-';
         result.facilitator2 = '-';
@@ -1128,11 +1130,10 @@
                             <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(coordLabel)}</td>
                           </tr>
                           <tr>
-                            <td style="color: #000000; font-weight: bold; padding: 1px 0; vertical-align: top;">Fasilitator</td>
-                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0; vertical-align: top;">:</td>
-                            <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0;">
-                              <div>1. ${escapeHtml(fasil1Label)}</div>
-                              <div>2. ${escapeHtml(fasil2Label)}</div>
+                            <td style="color: #000000; font-weight: bold; padding: 1px 0; white-space: nowrap;">Fasilitator</td>
+                            <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
+                            <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                              ${escapeHtml(teacherName || fasil1Label || '-')}
                             </td>
                           </tr>
                         </tbody>
