@@ -1892,6 +1892,74 @@ const FincestemCore = {
         });
     },
 
+    // In-memory O(1) high-speed cache
+    _cachedZonesMap: null,
+    _cachedExemptionsMap: null,
+    _masterNisnMap: null,
+    _recentLocalZoneOverrides: {},
+
+    _buildMasterIndex: function() {
+      if (this._masterNisnMap) return;
+      const map = new Map();
+      const list = window.FincestemMasterStudents;
+      if (Array.isArray(list)) {
+        for (let i = 0; i < list.length; i++) {
+          const s = list[i];
+          if (!s) continue;
+          if (s.nisn) {
+            const raw = String(s.nisn).trim();
+            map.set(raw, s);
+            const digits = raw.replace(/\D/g, '');
+            if (digits) {
+              if (digits.length >= 8 && digits.length <= 10) map.set(digits.padStart(10, '0'), s);
+              const unp = digits.replace(/^0+/, '');
+              if (unp) map.set(unp, s);
+            }
+          }
+          if (s.nis) {
+            const rawNis = String(s.nis).trim();
+            if (rawNis) map.set(rawNis, s);
+          }
+        }
+      }
+      this._masterNisnMap = map;
+    },
+
+    findMasterStudent: function(identifier) {
+      if (!identifier) return null;
+      this._buildMasterIndex();
+      const clean = String(identifier).trim();
+      return this._masterNisnMap ? (this._masterNisnMap.get(clean) || null) : null;
+    },
+
+    _getZonesMap: function() {
+      if (this._cachedZonesMap !== null) return this._cachedZonesMap;
+      try {
+        const mapStr = localStorage.getItem('fincestem_student_zones_map');
+        this._cachedZonesMap = mapStr ? (JSON.parse(mapStr) || {}) : {};
+      } catch (e) {
+        this._cachedZonesMap = {};
+      }
+      return this._cachedZonesMap;
+    },
+
+    _getExemptionsMap: function() {
+      if (this._cachedExemptionsMap !== null) return this._cachedExemptionsMap;
+      try {
+        const mapStr = localStorage.getItem('fincestem_location_exemptions_map');
+        this._cachedExemptionsMap = mapStr ? (JSON.parse(mapStr) || {}) : {};
+      } catch (e) {
+        this._cachedExemptionsMap = {};
+      }
+      return this._cachedExemptionsMap;
+    },
+
+    invalidateZoneCache: function() {
+      this._cachedZonesMap = null;
+      this._cachedExemptionsMap = null;
+      this._masterNisnMap = null;
+    },
+
     getStudentZone: function(nisn, className, defaultZone) {
       if (!nisn) return defaultZone || 'FINCESTEM OKU TIMUR';
       const cleanNisn = String(nisn).trim();
@@ -1899,27 +1967,31 @@ const FincestemCore = {
       const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
       const unpaddedNisn = rawDigits.replace(/^0+/, '');
 
-      // 1. Cek peta sinkronisasi server yang tersimpan di browser (Prioritas Tertinggi: Hasil input Admin)
-      try {
-        const mapStr = localStorage.getItem('fincestem_student_zones_map');
-        if (mapStr) {
-          const map = JSON.parse(mapStr);
-          if (map) {
-            const z = map[cleanNisn] || map[paddedNisn] || (unpaddedNisn ? map[unpaddedNisn] : null);
-            if (z) return z;
-          }
+      // 1. Cek perubahan lokal terkini (Recent Local Override)
+      if (this._recentLocalZoneOverrides) {
+        const ovr = this._recentLocalZoneOverrides[cleanNisn] || 
+                    this._recentLocalZoneOverrides[paddedNisn] || 
+                    (unpaddedNisn ? this._recentLocalZoneOverrides[unpaddedNisn] : null);
+        if (ovr && (Date.now() - ovr.time < 300000)) {
+          return ovr.zone;
         }
-      } catch (e) {}
+      }
 
-      // 2. Cek penyimpanan lokal individual per siswa
-      try {
-        const stored = localStorage.getItem('fincestem_student_zone_' + cleanNisn) ||
-                       localStorage.getItem('fincestem_student_zone_' + paddedNisn) ||
-                       (unpaddedNisn ? localStorage.getItem('fincestem_student_zone_' + unpaddedNisn) : null);
-        if (stored) return stored;
-      } catch (e) {}
+      // 2. Cek peta sinkronisasi dari in-memory cache (O(1) lookup - 0ms)
+      const map = this._getZonesMap();
+      const z = map[cleanNisn] || map[paddedNisn] || (unpaddedNisn ? map[unpaddedNisn] : null);
+      if (z) return z;
 
-      // 3. Cek user session aktif di browser jika cocok
+      // 3. Cek master list resmi di memori via index O(1)
+      this._buildMasterIndex();
+      if (this._masterNisnMap) {
+        const found = this._masterNisnMap.get(cleanNisn) || 
+                      this._masterNisnMap.get(paddedNisn) || 
+                      (unpaddedNisn ? this._masterNisnMap.get(unpaddedNisn) : null);
+        if (found && found.zone) return found.zone;
+      }
+
+      // 4. Cek user session aktif di browser jika cocok
       try {
         const u = FincestemCore.auth.getUser();
         if (u && u.zone) {
@@ -1930,17 +2002,6 @@ const FincestemCore = {
           }
         }
       } catch (e) {}
-
-      // 4. Cek master list resmi di memori (Daftar Peserta Excel)
-      if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
-        const found = window.FincestemMasterStudents.find(s => 
-          String(s.nisn).trim() === cleanNisn || 
-          String(s.nisn).trim() === paddedNisn || 
-          String(s.nis).trim() === cleanNisn ||
-          (unpaddedNisn && String(s.nisn).trim().replace(/^0+/, '') === unpaddedNisn)
-        );
-        if (found && found.zone) return found.zone;
-      }
 
       // 5. Cek pengaturan zona kelas
       if (className) {
@@ -1968,25 +2029,40 @@ const FincestemCore = {
       const unpaddedNisn = rawDigits.replace(/^0+/, '');
       const isFT = String(zone || '').toUpperCase().includes('LUAR');
 
-      // 1. Simpan individual key (raw, padded, unpadded)
+      // 1. Simpan di proteksi perubahan lokal terkini
+      if (!this._recentLocalZoneOverrides) this._recentLocalZoneOverrides = {};
+      const ovrEntry = { zone: zone, time: Date.now() };
+      this._recentLocalZoneOverrides[cleanNisn] = ovrEntry;
+      if (paddedNisn) this._recentLocalZoneOverrides[paddedNisn] = ovrEntry;
+      if (unpaddedNisn) this._recentLocalZoneOverrides[unpaddedNisn] = ovrEntry;
+
+      // 2. Simpan individual key (raw, padded, unpadded)
       try {
         localStorage.setItem('fincestem_student_zone_' + cleanNisn, zone);
         if (paddedNisn) localStorage.setItem('fincestem_student_zone_' + paddedNisn, zone);
         if (unpaddedNisn) localStorage.setItem('fincestem_student_zone_' + unpaddedNisn, zone);
       } catch (e) {}
 
-      // 2. Simpan ke peta sinkronisasi
+      // 3. Simpan ke in-memory map & localStorage
+      const map = this._getZonesMap();
+      map[cleanNisn] = zone;
+      if (paddedNisn) map[paddedNisn] = zone;
+      if (unpaddedNisn) map[unpaddedNisn] = zone;
       try {
-        let map = {};
-        const mapStr = localStorage.getItem('fincestem_student_zones_map');
-        if (mapStr) map = JSON.parse(mapStr);
-        map[cleanNisn] = zone;
-        if (paddedNisn) map[paddedNisn] = zone;
-        if (unpaddedNisn) map[unpaddedNisn] = zone;
         localStorage.setItem('fincestem_student_zones_map', JSON.stringify(map));
       } catch (e) {}
 
-      // 3. Update master list di memori (sinkronkan zone & is_field_trip)
+      // 4. Update master list di memori O(1) (sinkronkan zone & is_field_trip)
+      this._buildMasterIndex();
+      if (this._masterNisnMap) {
+        const found = this._masterNisnMap.get(cleanNisn) || 
+                      this._masterNisnMap.get(paddedNisn) || 
+                      (unpaddedNisn ? this._masterNisnMap.get(unpaddedNisn) : null);
+        if (found) {
+          found.zone = zone;
+          found.is_field_trip = isFT;
+        }
+      }
       if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
         const found = window.FincestemMasterStudents.find(s =>
           String(s.nisn).trim() === cleanNisn ||
@@ -2000,19 +2076,35 @@ const FincestemCore = {
         }
       }
 
-      // 4. Update session user jika sedang login sebagai siswa ini
-      const u = FincestemCore.auth.getUser();
-      if (u && (String(u.nisn).trim() === cleanNisn || String(u.nisn).trim() === paddedNisn || String(u.identifier).trim() === cleanNisn || String(u.nis).trim() === cleanNisn)) {
-        u.zone = zone;
-        FincestemCore.auth.setUser(u, u.role || 'siswa');
+      // 5. Update session user jika sedang login sebagai siswa ini
+      try {
+        const u = FincestemCore.auth.getUser();
+        if (u && (String(u.nisn).trim() === cleanNisn || String(u.nisn).trim() === paddedNisn || String(u.identifier).trim() === cleanNisn || String(u.nis).trim() === cleanNisn)) {
+          u.zone = zone;
+          FincestemCore.auth.setUser(u, u.role || 'siswa');
+        }
+      } catch (e) {}
+
+      // 6. Sinkronkan ke modul pembagian siswa binaan
+      if (window.FincestemMentorship) {
+        if (typeof window.FincestemMentorship.invalidateCache === 'function') {
+          window.FincestemMentorship.invalidateCache();
+        }
+        if (typeof window.FincestemMentorship.syncToServer === 'function') {
+          window.FincestemMentorship.syncToServer();
+        }
       }
 
-      // 4.b. Sinkronkan dengan modul pembagian siswa binaan jika aktif
-      if (window.FincestemMentorship && typeof window.FincestemMentorship.syncToServer === 'function') {
-        window.FincestemMentorship.syncToServer();
+      // 7. RESPONS INSTAN KE UI (0ms callback - tidak menunggu jaringan)
+      if (callback) {
+        try {
+          callback({ success: true, zone: zone });
+        } catch (cbErr) {
+          console.error('Error in setStudentZone callback:', cbErr);
+        }
       }
 
-      // 5. Kirim sinkronisasi ke backend MySQL cPanel
+      // 8. Kirim sinkronisasi ke backend MySQL cPanel di latar belakang (asinkron)
       if (window.location.protocol.startsWith('http')) {
         fetch(FincestemCore.api.base + '/settings.php', {
           method: 'POST',
@@ -2022,16 +2114,9 @@ const FincestemCore = {
             nisn: cleanNisn,
             zone: zone
           })
-        })
-        .then(r => r.json())
-        .then(res => {
-          if (callback) callback(res);
-        })
-        .catch(() => {
-          if (callback) callback({ success: true, local: true, zone: zone });
+        }).catch(err => {
+          console.warn('Background sync setStudentZone failed, saved locally:', err);
         });
-      } else {
-        if (callback) callback({ success: true, local: true, zone: zone });
       }
     },
 
@@ -2042,15 +2127,10 @@ const FincestemCore = {
       const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
       const unpaddedNisn = rawDigits.replace(/^0+/, '');
 
-      try {
-        const mapStr = localStorage.getItem('fincestem_location_exemptions_map');
-        if (mapStr) {
-          const map = JSON.parse(mapStr);
-          if (map) {
-            if (map[cleanNisn] || map[paddedNisn] || (unpaddedNisn && map[unpaddedNisn])) return true;
-          }
-        }
-      } catch (e) {}
+      const map = this._getExemptionsMap();
+      const ex = map[cleanNisn] || map[paddedNisn] || (unpaddedNisn ? map[unpaddedNisn] : null);
+      if (ex === true || ex === '1' || ex === 1) return true;
+      if (ex === false || ex === '0' || ex === 0) return false;
 
       // Fallback check local individual flag
       try {
@@ -2071,13 +2151,7 @@ const FincestemCore = {
       const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : cleanNisn;
       const unpaddedNisn = rawDigits.replace(/^0+/, '');
 
-      // Update local optimistic immediately
-      let map = {};
-      try {
-        const mapStr = localStorage.getItem('fincestem_location_exemptions_map');
-        if (mapStr) map = JSON.parse(mapStr) || {};
-      } catch (e) {}
-
+      const map = this._getExemptionsMap();
       if (targetExempt) {
         map[cleanNisn] = 1;
         map[paddedNisn] = 1;
@@ -2091,7 +2165,16 @@ const FincestemCore = {
       }
       try { localStorage.setItem('fincestem_location_exemptions_map', JSON.stringify(map)); } catch (e) {}
 
-      // Kirim sinkronisasi ke backend cPanel
+      // Respons instan ke UI
+      if (callback) {
+        try {
+          callback({ success: true, is_location_exempt: !!targetExempt });
+        } catch (cbErr) {
+          console.error('Error in toggleLocationExemption callback:', cbErr);
+        }
+      }
+
+      // Kirim sinkronisasi ke backend cPanel di latar belakang
       if (window.location.protocol.startsWith('http')) {
         fetch(FincestemCore.api.base + '/settings.php', {
           method: 'POST',
@@ -2101,16 +2184,9 @@ const FincestemCore = {
             nisn: cleanNisn,
             exempt: targetExempt ? 1 : 0
           })
-        })
-        .then(r => r.json())
-        .then(res => {
-          if (callback) callback(res);
-        })
-        .catch(() => {
-          if (callback) callback({ success: true, localOnly: true, is_location_exempt: !!targetExempt });
+        }).catch(err => {
+          console.warn('Background sync toggleLocationExemption failed:', err);
         });
-      } else {
-        if (callback) callback({ success: true, localOnly: true, is_location_exempt: !!targetExempt });
       }
     },
 

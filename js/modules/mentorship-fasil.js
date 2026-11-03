@@ -403,7 +403,9 @@
             const rawZ = localStorage.getItem('fincestem_student_zones_map');
             if (rawZ) localZones = JSON.parse(rawZ) || {};
           } catch (eZ) {}
-          const mergedZones = Object.assign({}, localZones, state.student_zones);
+          // JANGAN menimpa perubahan lokal yang baru saja disimpan oleh Admin
+          // Server state digabungkan dulu, lalu localZones menimpa (local takes priority)
+          const mergedZones = Object.assign({}, state.student_zones, localZones);
           if (JSON.stringify(localZones) !== JSON.stringify(mergedZones)) {
             localStorage.setItem('fincestem_student_zones_map', JSON.stringify(mergedZones));
             updated = true;
@@ -985,11 +987,19 @@
       let ftAssigned = 0;
       let nonFtAssigned = 0;
 
-      allStudents.forEach(s => {
-        const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
-          ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel, s.zone)
-          : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
+      const zMap = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones._getZonesMap) ? FincestemCore.zones._getZonesMap() : null;
+
+      for (let i = 0; i < allStudents.length; i++) {
+        const s = allStudents[i];
         const sNisn = String(s.nisn || '').trim();
+        let isFT = false;
+        if (zMap && zMap[sNisn]) {
+          isFT = String(zMap[sNisn]).toUpperCase().includes('LUAR');
+        } else if (window.FincestemCore && FincestemCore.zones) {
+          isFT = FincestemCore.zones.isFieldTripStudent(sNisn, s.class || s.rombel, s.zone);
+        } else {
+          isFT = (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
+        }
         const isMapped = assignedNisns.has(sNisn);
 
         if (isFT) {
@@ -999,7 +1009,7 @@
           nonFtTotal++;
           if (isMapped) nonFtAssigned++;
         }
-      });
+      }
 
       // Hitung guru yang sudah punya binaan
       let activeMentorsCount = 0;

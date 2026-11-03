@@ -30,6 +30,7 @@
   <!-- Legacy & Web Crawler Image Fallback -->
   <link rel="image_src" href="https://kokurikulersman1belitang.site/og-banner.jpg">
   <script>
+    var currentModalNisn = null;
     // Clean URL: Hapus index.html dari address bar browser
     (function() {
       try {
@@ -3299,13 +3300,16 @@
       if (elXI) elXI.innerHTML = `<span class="w-2 h-2 rounded-full bg-teal-500"></span><span>Kelas XI (${countXI})</span>`;
       if (elXII) elXII.innerHTML = `<span class="w-2 h-2 rounded-full bg-purple-500"></span><span>Kelas XII (${countXII})</span>`;
 
-      // Hitung jumlah riil Field Trip & Non-Field Trip langsung dari data siswa terkini
+      // Hitung jumlah riil Field Trip & Non-Field Trip langsung dari data siswa terkini (O(1) Memory)
       let ftCount = 0;
       let nonFtCount = 0;
+      const zMap = (FincestemCore.zones && FincestemCore.zones._getZonesMap) 
+        ? FincestemCore.zones._getZonesMap() 
+        : {};
       list.forEach(s => {
-        const isFT = (FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
-          ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class, s.zone)
-          : (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
+        const sNisn = String(s.nisn || '').trim();
+        const z = zMap[sNisn] || s.zone;
+        const isFT = z ? String(z).toUpperCase().includes('LUAR') : (s.is_field_trip === true);
         if (isFT) ftCount++;
         else nonFtCount++;
       });
@@ -5170,7 +5174,13 @@
       prevBtn.disabled = adminCurrentPage === 1;
       nextBtn.disabled = adminCurrentPage === totalPages;
 
-    let currentModalNisn = null;
+    // currentModalNisn is managed globally
+
+    let allContactsMap = {};
+    try {
+      const allRaw = localStorage.getItem('fincestem_all_student_contacts');
+      if (allRaw) allContactsMap = JSON.parse(allRaw) || {};
+    } catch(e) {}
 
     pageItems.forEach((s, idx) => {
         const card = document.createElement('div');
@@ -5194,18 +5204,13 @@
           ? FincestemCore.zones.isLocationExempt(s.nisn) 
           : false;
 
-        // Kontak WhatsApp Siswa & Ortu (1 Baris Ringkas untuk Admin)
+        // Kontak WhatsApp Siswa & Ortu (1 Baris Ringkas untuk Admin - Fast Lookup)
         let adminContactsHtml = '';
         try {
-          let c = null;
-          const rawC = localStorage.getItem('fincestem_student_contacts_' + s.nisn);
-          if (rawC) c = JSON.parse(rawC);
+          let c = allContactsMap[s.nisn] || null;
           if (!c) {
-            const allRaw = localStorage.getItem('fincestem_all_student_contacts');
-            if (allRaw) {
-              const allC = JSON.parse(allRaw);
-              if (allC && allC[s.nisn]) c = allC[s.nisn];
-            }
+            const rawC = localStorage.getItem('fincestem_student_contacts_' + s.nisn);
+            if (rawC) c = JSON.parse(rawC);
           }
           if (c && (c.wa_siswa || c.wa_ayah || c.wa_ibu)) {
             let items = [];
