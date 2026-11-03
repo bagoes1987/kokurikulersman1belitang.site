@@ -951,14 +951,14 @@
             <span id="modalPillarFocusTitle" class="text-[10.5px] font-bold text-teal-800 truncate">Matriks 4 Pilar</span>
           </div>
           <select id="gradeTargetDay" onchange="onTargetDayChange(this.value)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold bg-white text-slate-800 focus:border-[#006a61] focus:ring-1 focus:ring-[#006a61]/30 outline-none transition-all shadow-2xs">
-            <option value="1">Day 1: Fondasi Ekonomi, Literasi Finansial &amp; Potensi OKU Timur</option>
-            <option value="2">Day 2: Eksplorasi Sains &amp; Ekosistem Irigasi</option>
-            <option value="3">Day 3: Rekayasa Teknologi &amp; Pengukuran Lapangan</option>
-            <option value="4">Day 4: Literasi Finansial &amp; Rantai Pasok Pangan</option>
-            <option value="5">Day 5: Eksplorasi Budaya &amp; Etnosains Nusantara</option>
-            <option value="6">Day 6: Sintesis Data &amp; Penyusunan LKPD</option>
-            <option value="7">Day 7: Gelar Karya Ilmiah, Presentasi &amp; Refleksi</option>
-            <option value="0">Day 0: Uji Coba / Simulasi Gladi Bersih</option>
+            <option value="0" class="font-extrabold text-amber-700 bg-amber-50">🎮 Day 0 : Simulasi</option>
+            <option value="1">💰 Day 1: FINANCIAL</option>
+            <option value="2">🏛️ Day 2: CULTURE</option>
+            <option value="3">🔬 Day 3: STEM</option>
+            <option value="4">🧭 Day 4: EXPLORATION</option>
+            <option value="5">🎬 Day 5: Produksi Video Lapangan: Finansial &amp; Budaya</option>
+            <option value="6">🎥 Day 6: Produksi Video Lapangan: Eksplorasi &amp; STEM</option>
+            <option value="7">🏆 Day 7: Final Editing, Link Video YouTube &amp; Audit Kas</option>
           </select>
           <p id="modalPillarFocusDesc" class="text-[10.5px] text-slate-500 leading-tight">
             Pedoman penilaian instrumen &amp; LKPD harian siswa.
@@ -1136,6 +1136,41 @@
                 <input type="radio" name="evalStatusRadio" id="statusRadioSubmitted" value="submitted" class="text-amber-600 focus:ring-0">
                 <span class="font-bold text-amber-900">Submitted</span>
               </label>
+            </div>
+          </div>
+
+          <!-- Box Deteksi Nilai Rapor Kokurikuler Siswa (Khusus Day 7) -->
+          <div id="boxDay7ReportDetection" class="hidden p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/10 border-2 border-emerald-400 flex flex-col gap-2.5 shadow-xs mb-3">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="text-xs font-black text-slate-800 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-emerald-700 text-lg">workspace_premium</span>
+                <span>Deteksi Nilai Rapor Kokurikuler Siswa (Otomatis Sistem):</span>
+              </span>
+              <span id="badgeDay7ReportPredicate" class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase tracking-wider shadow-2xs">
+                MAHIR
+              </span>
+            </div>
+            <div class="flex items-center justify-between gap-2 bg-white/90 p-3 rounded-xl border border-emerald-200 text-xs">
+              <div class="flex flex-col">
+                <span class="text-[10.5px] font-bold text-slate-500">Skor Rapor Akhir (Rata-rata 4 Pilar):</span>
+                <span id="textDay7ReportAvg" class="text-xl font-black text-emerald-800">95 / 100</span>
+              </div>
+              <div class="text-right">
+                <span class="text-[10.5px] font-bold text-slate-500">Standar Predikat Rapor:</span>
+                <span id="textDay7ReportStandard" class="text-xs font-extrabold text-slate-700 block">≥85 Mahir | 70-84 Cakap | &lt;70 Berkembang</span>
+              </div>
+            </div>
+            <div class="flex flex-col gap-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-black text-emerald-950">Penjabaran Keterangan Capaian Rapor Siswa:</span>
+                <button type="button" onclick="applyDay7NarrativeToFeedback()" class="text-[10.5px] text-teal-800 font-extrabold hover:underline cursor-pointer flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[13px]">content_paste</span>
+                  <span>Salin ke Catatan Guru</span>
+                </button>
+              </div>
+              <p id="descDay7ReportNarrative" class="text-[11px] text-slate-800 bg-white/95 p-3 rounded-xl border border-emerald-200/80 leading-relaxed text-justify font-medium">
+                Peserta didik menunjukkan penguasaan sangat tinggi dan mandiri pada 4 dimensi FINCESTEM (Finansial, Budaya, Eksplorasi, STEM) dengan inisiatif riset unggul, analisis kritis, serta karya dokumenter video yang inspiratif.
+              </p>
             </div>
           </div>
 
@@ -1358,14 +1393,14 @@
       <div class="flex flex-col gap-1.5 text-xs">
         <label class="font-bold text-on-surface">Pilih Hari Pengerjaan yang Ingin Dibuka:</label>
         <select id="fasilUnlockTargetDay" class="w-full px-3 py-2.5 rounded-xl border border-outline-variant/50 text-xs font-bold bg-white text-on-surface outline-none focus:border-[#006a61]">
-          <option value="1">Day 1 - Keberangkatan &amp; Budgeting Finansial</option>
-          <option value="2">Day 2 - AKPOL Semarang &amp; Lawang Sewu</option>
-          <option value="3">Day 3 - Eksplorasi Sains &amp; Agro Pertanian Batu</option>
-          <option value="4">Day 4 - Gunung Bromo &amp; Budaya Tengger</option>
-          <option value="5">Day 5 - Candi Prambanan, Praktik Membatik &amp; Kampus UNY (STEM &amp; Exploration)</option>
-          <option value="6">Day 6 - Pabrik Bakpia Jogja &amp; Pantai Drini (Exploration &amp; Financial)</option>
-          <option value="7">Day 7 - Evaluasi Akhir &amp; Perjalanan Pulang</option>
-          <option value="0">Day 0 - Gladi Bersih (Simulasi)</option>
+          <option value="0" class="font-extrabold text-amber-700 bg-amber-50">🎮 Day 0 : Simulasi</option>
+          <option value="1">💰 Day 1: FINANCIAL</option>
+          <option value="2">🏛️ Day 2: CULTURE</option>
+          <option value="3">🔬 Day 3: STEM</option>
+          <option value="4">🧭 Day 4: EXPLORATION</option>
+          <option value="5">🎬 Day 5: Produksi Video Lapangan: Finansial &amp; Budaya</option>
+          <option value="6">🎥 Day 6: Produksi Video Lapangan: Eksplorasi &amp; STEM</option>
+          <option value="7">🏆 Day 7: Final Editing, Link Video YouTube &amp; Audit Kas</option>
         </select>
       </div>
 
@@ -3651,7 +3686,8 @@
           score_culture: sCul,
           score_exploration: sExp,
           score_stem: sStem,
-          feedback: fb || (dayNum === 0 ? 'Simulasi penilaian dan gladi bersih sangat baik.' : 'Umpan balik fasilitator.'),
+          predicate: pred,
+          feedback: fb || (dayNum === 7 ? (FINCESTEM_NARRASI_RAPOR[pred.toUpperCase()] || 'Rapor akhir kokurikuler 4 pilar.') : (dayNum === 0 ? 'Simulasi penilaian dan gladi bersih sangat baik.' : 'Umpan balik fasilitator.')),
           status: status,
           facilitator_name: fasilName
         }, function() {
@@ -3724,9 +3760,12 @@
           document.getElementById('gradeExploration').value = recExp;
           document.getElementById('gradeSTEM').value = recStem;
 
+          const avg7 = Math.round((recFin + recCul + recExp + recStem) / 4);
+          const pred7 = avg7 >= 85 ? 'Mahir' : (avg7 >= 70 ? 'Cakap' : 'Berkembang');
+          const narr7 = FINCESTEM_NARRASI_RAPOR[pred7.toUpperCase()] || FINCESTEM_NARRASI_RAPOR.CAKAP;
           const fbEl = document.getElementById('gradeFeedbackInput');
-          if (fbEl && !fbEl.value) {
-            fbEl.value = 'Rekomendasi nilai rapor 4 pilar dihitung dari akumulasi tugas Day 1 s.d. Day 6 serta video YouTube dan audit kas Day 7.';
+          if (fbEl) {
+            fbEl.value = narr7;
           }
 
           updateLiveManualGradingPreview();
@@ -3973,14 +4012,14 @@
           `;
         } else {
           selectDay.innerHTML = `
-            <option value="1">Day 1 - Fondasi Ekonomi, Literasi Finansial &amp; Potensi OKU Timur</option>
-            <option value="2">Day 2 - Budaya, Sistem Pencaharian &amp; Modernisasi Alsintan OKU Timur</option>
-            <option value="3">Day 3 - Analisis STEM Pertanian &amp; Sektor Unggulan OKU Timur</option>
-            <option value="4">Day 4 - Kewirausahaan UMKM, Rantai Pasok (Supply Chain) &amp; Logistik</option>
-            <option value="5">Day 5 - Inklusi Keuangan Digital, Layanan Bank &amp; Keamanan Transaksi</option>
-            <option value="6">Day 6 - Konservasi Lingkungan, Keberlanjutan Ekosistem &amp; Budaya Lokal</option>
-            <option value="7">Day 7 - Evaluasi Komprehensif, Sintesis 7 Hari &amp; Portofolio FINCESTEM</option>
-            <option value="0">Day 0 - Gladi Bersih (Simulasi)</option>
+            <option value="0" class="font-extrabold text-amber-700 bg-amber-50">🎮 Day 0 : Simulasi</option>
+            <option value="1">💰 Day 1: FINANCIAL</option>
+            <option value="2">🏛️ Day 2: CULTURE</option>
+            <option value="3">🔬 Day 3: STEM</option>
+            <option value="4">🧭 Day 4: EXPLORATION</option>
+            <option value="5">🎬 Day 5: Produksi Video Lapangan: Finansial &amp; Budaya</option>
+            <option value="6">🎥 Day 6: Produksi Video Lapangan: Eksplorasi &amp; STEM</option>
+            <option value="7">🏆 Day 7: Final Editing, Link Video YouTube &amp; Audit Kas</option>
           `;
         }
       }
@@ -4164,6 +4203,23 @@
       submitGrading();
     }
 
+    const FINCESTEM_NARRASI_RAPOR = {
+      MAHIR: "Peserta didik menunjukkan penguasaan sangat tinggi dan mandiri pada 4 dimensi FINCESTEM (Finansial, Budaya, Eksplorasi, STEM) dengan inisiatif riset unggul, analisis kritis, serta karya dokumenter video yang inspiratif.",
+      CAKAP: "Peserta didik mampu menerapkan konsep 4 dimensi FINCESTEM secara baik dan bertanggung jawab, menyelesaikan karya proyek serta laporan keuangan dengan tertib dan terstruktur.",
+      BERKEMBANG: "Peserta didik mulai memahami konsep dasar 4 dimensi FINCESTEM, masih memerlukan pendampingan berkala dalam ketelitian pembukuan kas, eksplorasi sains, serta konsistensi pengumpulan karya tepat waktu."
+    };
+
+    function applyDay7NarrativeToFeedback() {
+      const descEl = document.getElementById('descDay7ReportNarrative');
+      const fbInput = document.getElementById('gradeFeedbackInput');
+      if (descEl && fbInput) {
+        fbInput.value = descEl.textContent.trim();
+        if (window.FincestemCore && FincestemCore.ui) {
+          FincestemCore.ui.toast('Penjabaran narasi capaian rapor berhasil disalin ke catatan guru!', 'info');
+        }
+      }
+    }
+
     function updateLiveManualGradingPreview() {
       const targetNisn = document.getElementById('modalGradingTargetNisn')?.value;
       const isFieldTrip = isStudentFieldTripFasil(targetNisn);
@@ -4189,12 +4245,10 @@
       }
 
       let stars = 5;
-      let pred = 'Mahir (A)';
-      if (avg >= 85) { stars = 5; pred = 'Mahir (A)'; }
-      else if (avg >= 70) { stars = 4; pred = 'Cakap (B)'; }
-      else if (avg >= 55) { stars = 3; pred = 'Berkembang (C)'; }
-      else if (avg >= 40) { stars = 2; pred = 'Perlu Bimbingan (D)'; }
-      else { stars = 1; pred = 'Revisi / Penalti'; }
+      let pred = 'Mahir';
+      if (avg >= 85) { stars = 5; pred = 'Mahir'; }
+      else if (avg >= 70) { stars = 4; pred = 'Cakap'; }
+      else { stars = Math.max(1, Math.min(3, Math.round(avg / 25))); pred = 'Berkembang'; }
 
       const badgeScore = document.getElementById('manualGradeLiveScore');
       const badgeStars = document.getElementById('manualGradeLiveStars');
@@ -4206,7 +4260,36 @@
       const elStars = document.getElementById('heroAutoStars');
       if (elStars) elStars.textContent = '⭐'.repeat(stars) + '☆'.repeat(Math.max(0, 5 - stars));
       const elPred = document.getElementById('heroAutoPredicate');
-      if (elPred) elPred.textContent = pred;
+      if (elPred) elPred.textContent = (dayNum === 7) ? `Rapor: ${pred}` : pred;
+
+      // KHUSUS DAY 7: DETEKSI RAPOR KOKURIKULER LIVE
+      const boxReportDet = document.getElementById('boxDay7ReportDetection');
+      if (boxReportDet) {
+        if (dayNum === 7) {
+          boxReportDet.classList.remove('hidden');
+          const badgePred = document.getElementById('badgeDay7ReportPredicate');
+          const textAvg = document.getElementById('textDay7ReportAvg');
+          const descNarrative = document.getElementById('descDay7ReportNarrative');
+
+          const upperPred = pred.toUpperCase();
+          if (badgePred) {
+            badgePred.textContent = upperPred;
+            if (upperPred === 'MAHIR') {
+              badgePred.className = 'px-3 py-1 rounded-xl text-xs font-black bg-amber-500 text-slate-950 uppercase tracking-wider shadow-2xs border border-amber-600';
+            } else if (upperPred === 'CAKAP') {
+              badgePred.className = 'px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase tracking-wider shadow-2xs border border-emerald-700';
+            } else {
+              badgePred.className = 'px-3 py-1 rounded-xl text-xs font-black bg-blue-600 text-white uppercase tracking-wider shadow-2xs border border-blue-700';
+            }
+          }
+          if (textAvg) textAvg.textContent = `${avg} / 100 (${stars} Bintang ⭐)`;
+          if (descNarrative) {
+            descNarrative.textContent = FINCESTEM_NARRASI_RAPOR[upperPred] || FINCESTEM_NARRASI_RAPOR.CAKAP;
+          }
+        } else {
+          boxReportDet.classList.add('hidden');
+        }
+      }
     }
 
     // FUNGSI INSPEKSI DOKUMENTASI SISWA OLEH FASILITATOR

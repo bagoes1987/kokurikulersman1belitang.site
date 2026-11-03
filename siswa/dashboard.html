@@ -2060,6 +2060,21 @@
     function renderKokurikulerReportCard(prog, meta) {
       const { completedDaysCount, totalStars, avgScore, allDaysDone, isFieldTrip, category } = meta;
 
+      const records = (prog && prog.records) || [];
+      const taskMap = (prog && prog.task_map) || {};
+      const day7Eval = taskMap['7_final'] || taskMap['7_general'] || records.find(r => Number(r.day_number) === 7 && r.score !== null && r.score !== undefined && r.score !== '');
+      const hasOfficialDay7 = !!(day7Eval && day7Eval.score !== null && day7Eval.score !== undefined && day7Eval.score !== '');
+
+      let finalReportScore = avgScore;
+      let finalReportPred = category;
+      let finalReportStars = totalStars;
+      if (hasOfficialDay7) {
+        finalReportScore = parseFloat(day7Eval.score);
+        const rawPred = day7Eval.predicate ? day7Eval.predicate.toUpperCase().replace(/\s*\(.*\)/, '').trim() : '';
+        finalReportPred = rawPred || (finalReportScore >= 85 ? 'MAHIR' : (finalReportScore >= 70 ? 'CAKAP' : 'BERKEMBANG'));
+        finalReportStars = Math.max(1, Math.min(35, Math.round(finalReportScore / 100 * 35)));
+      }
+
       const NARRASI_RAPOR = {
         BERKEMBANG: "Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains dan mengevaluasi pembukuan keuangan. Dalam kreativitas, peserta didik mulai mengembangkan karya berbasis STEM dan mempraktikkan keterampilan budaya lokal, meskipun pembuatan video dan infografis masih memerlukan pendampingan. Dalam aspek kewargaan, peserta didik mulai mematuhi aturan dan menghargai nilai-nilai budaya setempat, tetapi masih perlu diingatkan untuk menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mulai belajar mengelola uang saku dan masih memerlukan dorongan untuk menyelesaikan serta mengumpulkan tugas harian tepat waktu.",
         CAKAP: "Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri. Dalam kreativitas, peserta didik mampu menghasilkan karya berbasis STEM yang memadukan kearifan lokal serta menyajikan hasil eksplorasi melalui infografis atau video pendek yang informatif. Dalam aspek kewargaan, peserta didik mampu menghormati keberagaman budaya, menjaga etika dan kesopanan, serta berperan aktif dalam menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mampu mengatur waktu, bertanggung jawab atas barang bawaan, menyelesaikan tugas harian dengan disiplin, dan mengelola anggaran pribadi secara mandiri.",
@@ -2075,7 +2090,7 @@
         fasilFooterEl.textContent = (prog.latest_feedback && prog.latest_feedback.facilitator_name) || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
       }
 
-      if (!allDaysDone) {
+      if (!allDaysDone && !hasOfficialDay7) {
         // =========================================================================
         // KONDISI 1: DAY 1 S.D. 7 BELUM SELESAI (MATRIKS AMBANG BATAS RAPOR KOKURIKULER)
         // =========================================================================
@@ -2183,8 +2198,9 @@
         // =========================================================================
         // KONDISI 2: DAY 1 S.D. 7 SUDAH SELESAI (NILAI RAPOR AKHIR RESMI / ESTIMASI)
         // =========================================================================
-        const narrasi = NARRASI_RAPOR[category] || NARRASI_RAPOR.CAKAP;
-        const isFasilValidated = (!isFieldTrip && prog.average_score && prog.predicate);
+        const activePred = hasOfficialDay7 ? finalReportPred : category;
+        const narrasi = NARRASI_RAPOR[activePred] || NARRASI_RAPOR.CAKAP;
+        const isFasilValidated = (!isFieldTrip && (hasOfficialDay7 || (prog.average_score && prog.predicate)));
 
         // Jika seluruh hari telah selesai, buka lipatan accordion otomatis agar siswa langsung melihat nilai
         toggleReportCardAccordion(true);
@@ -2256,25 +2272,51 @@
             if (bodyEl) {
               bodyEl.innerHTML = `
                 <!-- Banner Predikat Rapor Mahir/Cakap/Berkembang -->
-                <div class="p-4 rounded-2xl ${category === 'MAHIR' ? 'bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-transparent border-amber-300 text-amber-950' : (category === 'CAKAP' ? 'bg-gradient-to-r from-emerald-500/20 via-emerald-400/10 to-transparent border-emerald-300 text-emerald-950' : 'bg-gradient-to-r from-blue-500/20 via-blue-400/10 to-transparent border-blue-300 text-blue-950')} border flex items-center justify-between gap-3 flex-wrap shadow-2xs">
+                <div class="p-4 rounded-2xl ${activePred === 'MAHIR' ? 'bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-transparent border-amber-300 text-amber-950' : (activePred === 'CAKAP' ? 'bg-gradient-to-r from-emerald-500/20 via-emerald-400/10 to-transparent border-emerald-300 text-emerald-950' : 'bg-gradient-to-r from-blue-500/20 via-blue-400/10 to-transparent border-blue-300 text-blue-950')} border flex items-center justify-between gap-3 flex-wrap shadow-2xs">
                   <div class="flex items-center gap-3">
-                    <span class="text-3xl">${category === 'MAHIR' ? '🏆' : (category === 'CAKAP' ? '🌟' : '🌱')}</span>
+                    <span class="text-3xl">${activePred === 'MAHIR' ? '🏆' : (activePred === 'CAKAP' ? '🌟' : '🌱')}</span>
                     <div class="flex flex-col">
-                      <span class="text-[11px] font-black uppercase tracking-wider ${category === 'MAHIR' ? 'text-amber-800' : (category === 'CAKAP' ? 'text-emerald-800' : 'text-blue-800')}">Predikat Rapor Kokurikuler</span>
-                      <h4 class="text-xl sm:text-2xl font-black leading-tight">${category}</h4>
+                      <span class="text-[11px] font-black uppercase tracking-wider ${activePred === 'MAHIR' ? 'text-amber-800' : (activePred === 'CAKAP' ? 'text-emerald-800' : 'text-blue-800')}">Predikat Rapor Kokurikuler</span>
+                      <h4 class="text-xl sm:text-2xl font-black leading-tight">${activePred}</h4>
                     </div>
                   </div>
                   <div class="flex items-center gap-2">
                     <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200/80 text-center shadow-2xs">
                       <span class="block text-[10px] font-bold text-slate-500 uppercase">Total Bintang</span>
-                      <span class="text-sm font-black text-amber-600">⭐ ${totalStars} / 35</span>
+                      <span class="text-sm font-black text-amber-600">⭐ ${hasOfficialDay7 ? finalReportStars : totalStars} / 35</span>
                     </div>
                     <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200/80 text-center shadow-2xs">
                       <span class="block text-[10px] font-bold text-slate-500 uppercase">Nilai Akhir</span>
-                      <span class="text-sm font-black text-slate-800">${prog.average_score || avgScore}</span>
+                      <span class="text-sm font-black text-slate-800">${hasOfficialDay7 ? finalReportScore : (prog.average_score || avgScore)}</span>
                     </div>
                   </div>
                 </div>
+
+                ${hasOfficialDay7 ? `
+                <!-- 4 Pilar Rapor Kokurikuler Siswa Non-Field Trip -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                  <div class="p-2.5 rounded-xl bg-white border border-amber-200 shadow-2xs flex flex-col items-center justify-center gap-0.5">
+                    <span class="material-symbols-outlined text-amber-600 text-base">account_balance_wallet</span>
+                    <span class="block text-slate-500 font-bold text-[10.5px]">Finansial</span>
+                    <span class="text-sm sm:text-base font-black text-amber-700">${day7Eval.score_financial || finalReportScore}</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-purple-200 shadow-2xs flex flex-col items-center justify-center gap-0.5">
+                    <span class="material-symbols-outlined text-purple-600 text-base">theater_comedy</span>
+                    <span class="block text-slate-500 font-bold text-[10.5px]">Budaya</span>
+                    <span class="text-sm sm:text-base font-black text-purple-700">${day7Eval.score_culture || finalReportScore}</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-emerald-200 shadow-2xs flex flex-col items-center justify-center gap-0.5">
+                    <span class="material-symbols-outlined text-emerald-600 text-base">explore</span>
+                    <span class="block text-slate-500 font-bold text-[10.5px]">Eksplorasi</span>
+                    <span class="text-sm sm:text-base font-black text-emerald-700">${day7Eval.score_exploration || finalReportScore}</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-blue-200 shadow-2xs flex flex-col items-center justify-center gap-0.5">
+                    <span class="material-symbols-outlined text-blue-600 text-base">science</span>
+                    <span class="block text-slate-500 font-bold text-[10.5px]">STEM</span>
+                    <span class="text-sm sm:text-base font-black text-blue-700">${day7Eval.score_stem || finalReportScore}</span>
+                  </div>
+                </div>
+                ` : ''}
 
                 <!-- Kotak Narasi Rapor Resmi (Rata Kanan Kiri / Justified) -->
                 <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2">
@@ -3967,11 +4009,29 @@
 
       // Siswa Non-Field Trip Day 1 yang dapat diakses tidak boleh dipaksa mode readonly
       const isDay1ActiveNonFt = (!isFieldTrip && Number(dayNumber) === 1 && access.canAccess);
-      if (!access.canEdit && !isDay1ActiveNonFt) {
-        if (type === 'penilaian') {
-          openDayActivityModal(day, type, true);
+
+      // Selalu ambil data penilaian teranyar dari server agar feedback & nilai guru langsung tampil instan tanpa lag/cache
+      if (type === 'penilaian') {
+        const currentUser = FincestemCore.auth.getUser() || {};
+        const stu = currentStudent || currentUser;
+        const cleanNisn = String(stu.nisn || stu.identifier || currentUser.nisn || currentUser.identifier || '').trim();
+        const isReadOnlyMode = (!access.canEdit && !isDay1ActiveNonFt);
+
+        if (cleanNisn && FincestemCore.progress) {
+          FincestemCore.progress.getStudentProgress(cleanNisn, function(freshProg) {
+            if (freshProg) {
+              studentProgress = freshProg;
+              renderStudentProgressView(freshProg);
+            }
+            openDayActivityModal(day, 'penilaian', isReadOnlyMode);
+          });
           return;
         }
+        openDayActivityModal(day, 'penilaian', isReadOnlyMode);
+        return;
+      }
+
+      if (!access.canEdit && !isDay1ActiveNonFt) {
         FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} ditutup oleh Admin (Hanya Lihat). Pengumpulan tugas dinonaktifkan.`, 'warning');
         if (type === 'lkpd') {
           window.location.href = (isFieldTrip && Number(dayNumber) === 6) ? 'lkpd.html?day=6&sesi=1&readonly=1' : ('lkpd.html?day=' + dayNumber + '&readonly=1');
@@ -5346,7 +5406,7 @@
         const dayRec = records.find(r => Number(r.day_number) === Number(day.day_number) && r.score !== null && r.score !== undefined && r.score !== '')
                     || records.find(r => Number(r.day_number) === Number(day.day_number) && (r.task_type === 'general' || r.task_type === 'lkpd'))
                     || records.find(r => Number(r.day_number) === Number(day.day_number));
-        const dayGeneralTask = taskMap[day.day_number + '_general'] || taskMap[day.day_number + '_lkpd'];
+        const dayGeneralTask = taskMap[day.day_number + '_final'] || taskMap[day.day_number + '_general'] || taskMap[day.day_number + '_lkpd'];
 
         if (isTrial) {
           const activeAssignedFasil = getStudentActiveFasilName(cleanNisn, studentClass);
@@ -5422,23 +5482,20 @@
                   </div>
                 </div>
 
-                <!-- 4 Pilar Penilaian Simulasi -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
-                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                    <span class="block text-slate-500 font-bold text-[11px]">Sains &amp; Lingkungan</span>
-                    <span class="text-base font-black text-emerald-600">${sStem} (⭐ ${Math.max(1, Math.min(5, Math.round(sStem / 20)))})</span>
+                <!-- Aspek Penilaian Simulasi: Kesiapan Teknis & Gladi Bersih -->
+                <div class="p-3.5 rounded-2xl bg-white border border-emerald-200/80 shadow-2xs flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-2xl">sports_esports</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-xs sm:text-sm font-extrabold text-slate-900">Kesiapan Simulasi Gladi Bersih &amp; Fitur Aplikasi</span>
+                      <span class="text-[11px] text-slate-500">Aspek tunggal Day 0: Orientasi modul, LKPD latihan, kuis CBT &amp; refleksi</span>
+                    </div>
                   </div>
-                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                    <span class="block text-slate-500 font-bold text-[11px]">Teknologi Digital</span>
-                    <span class="text-base font-black text-emerald-600">${sExp} (⭐ ${Math.max(1, Math.min(5, Math.round(sExp / 20)))})</span>
-                  </div>
-                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                    <span class="block text-slate-500 font-bold text-[11px]">Literasi Finansial</span>
-                    <span class="text-base font-black text-emerald-600">${sFin} (⭐ ${Math.max(1, Math.min(5, Math.round(sFin / 20)))})</span>
-                  </div>
-                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                    <span class="block text-slate-500 font-bold text-[11px]">Budaya &amp; Karakter</span>
-                    <span class="text-base font-black text-emerald-600">${sCul} (⭐ ${Math.max(1, Math.min(5, Math.round(sCul / 20)))})</span>
+                  <div class="text-right shrink-0">
+                    <span class="text-lg sm:text-xl font-black text-emerald-700">${manualScore}</span>
+                    <span class="text-[10px] text-slate-400 block font-bold">⭐ ${manualStars} Bintang</span>
                   </div>
                 </div>
 
@@ -5492,23 +5549,20 @@
                   </div>
                 </div>
 
-                <!-- 4 Pilar Penilaian Simulasi -->
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
-                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                    <span class="block text-slate-500 font-bold text-[11px]">Sains &amp; Lingkungan</span>
-                    <span class="text-base font-black text-emerald-600">100 (⭐ 5)</span>
+                <!-- Aspek Penilaian Simulasi: Kesiapan Teknis & Gladi Bersih -->
+                <div class="p-3.5 rounded-2xl bg-white border border-amber-200/80 shadow-2xs flex items-center justify-between gap-3">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-700 flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-2xl">sports_esports</span>
+                    </div>
+                    <div class="flex flex-col">
+                      <span class="text-xs sm:text-sm font-extrabold text-slate-900">Kesiapan Simulasi Gladi Bersih &amp; Fitur Aplikasi</span>
+                      <span class="text-[11px] text-slate-500">Seluruh 5 instrumen simulasi tuntas diselesaikan dengan sempurna</span>
+                    </div>
                   </div>
-                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                    <span class="block text-slate-500 font-bold text-[11px]">Teknologi Digital</span>
-                    <span class="text-base font-black text-emerald-600">100 (⭐ 5)</span>
-                  </div>
-                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                    <span class="block text-slate-500 font-bold text-[11px]">Literasi Finansial</span>
-                    <span class="text-base font-black text-emerald-600">100 (⭐ 5)</span>
-                  </div>
-                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                    <span class="block text-slate-500 font-bold text-[11px]">Budaya &amp; Karakter</span>
-                    <span class="text-base font-black text-emerald-600">100 (⭐ 5)</span>
+                  <div class="text-right shrink-0">
+                    <span class="text-lg sm:text-xl font-black text-amber-700">100</span>
+                    <span class="text-[10px] text-slate-400 block font-bold">⭐ 5 Bintang</span>
                   </div>
                 </div>
 
@@ -5701,44 +5755,322 @@
           if (isGradedByTeacher) {
             const scoreNum = parseFloat(effectiveRec.score);
             const starsCount = Math.max(1, Math.min(5, Math.round(scoreNum / 20)));
-            body.innerHTML = `
-              <div class="p-4 sm:p-5 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col gap-3.5">
-                <div class="flex items-center justify-between gap-2 flex-wrap">
-                  <span class="text-xs sm:text-sm font-bold text-emerald-950 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-emerald-600 text-lg">verified</span>
-                    Status Evaluasi Fasilitator:
-                  </span>
-                  <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-emerald-200 text-emerald-900 uppercase">
-                    TELAH DINILAI RESMI
-                  </span>
-                </div>
+            const dNum = Number(day.day_number);
 
-                <!-- Score Box -->
-                <div class="p-4 rounded-2xl bg-white border border-emerald-200/80 shadow-xs flex flex-col items-center justify-center text-center gap-1.5">
-                  <div class="text-2xl text-amber-500 font-black tracking-widest">
-                    ${'⭐'.repeat(starsCount)}${'☆'.repeat(5 - starsCount)}
-                  </div>
-                  <div class="text-xl sm:text-2xl font-black text-emerald-800">
-                    Skor: ${effectiveRec.score} / 100 <span class="text-sm font-extrabold text-emerald-600">(${effectiveRec.predicate || 'A'})</span>
-                  </div>
-                </div>
+            const RAPOR_NARASI_TEXTS = {
+              MAHIR: "Peserta didik menunjukkan penguasaan sangat tinggi dan mandiri pada 4 dimensi FINCESTEM (Finansial, Budaya, Eksplorasi, STEM) dengan inisiatif riset unggul, analisis kritis, serta karya dokumenter video yang inspiratif.",
+              CAKAP: "Peserta didik mampu menerapkan konsep 4 dimensi FINCESTEM secara baik dan bertanggung jawab, menyelesaikan karya proyek serta laporan keuangan dengan tertib dan terstruktur.",
+              BERKEMBANG: "Peserta didik mulai memahami konsep dasar 4 dimensi FINCESTEM, masih memerlukan pendampingan berkala dalam ketelitian pembukuan kas, eksplorasi sains, serta konsistensi pengumpulan karya tepat waktu."
+            };
 
-                <!-- Umpan Balik Guru -->
-                <div class="flex flex-col gap-1.5">
-                  <span class="text-xs sm:text-sm font-bold text-emerald-950">Catatan &amp; Umpan Balik Fasilitator:</span>
-                  <p class="text-sm text-emerald-950 leading-relaxed italic bg-white/90 p-3.5 rounded-xl border border-emerald-200/60 font-medium">
-                    "${effectiveRec.feedback || 'Pertahankan kekompakan tim, kedisiplinan pencatatan data lapangan, dan kualitas dokumentasi autentik di wilayah riset.'}"
-                  </p>
-                </div>
+            const rawPred = effectiveRec.predicate || (scoreNum >= 85 ? 'Mahir' : (scoreNum >= 70 ? 'Cakap' : 'Berkembang'));
+            const cleanPred = rawPred.replace(/\s*\(.*\)/, '').trim();
+            const upperPred = cleanPred.toUpperCase();
+            const narrativeDesc = RAPOR_NARASI_TEXTS[upperPred] || RAPOR_NARASI_TEXTS.CAKAP;
 
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200/60">
-                  <div class="flex flex-col min-w-0">
-                    <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
-                    ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+            if (dNum === 7) {
+              // ========================================================
+              // DAY 7: PUNCAK NILAI AKHIR RAPOR KOKURIKULER 4 PILAR
+              // ========================================================
+              const sFin = (effectiveRec.score_financial !== undefined && effectiveRec.score_financial !== null) ? effectiveRec.score_financial : scoreNum;
+              const sCul = (effectiveRec.score_culture !== undefined && effectiveRec.score_culture !== null) ? effectiveRec.score_culture : scoreNum;
+              const sExp = (effectiveRec.score_exploration !== undefined && effectiveRec.score_exploration !== null) ? effectiveRec.score_exploration : scoreNum;
+              const sStem = (effectiveRec.score_stem !== undefined && effectiveRec.score_stem !== null) ? effectiveRec.score_stem : scoreNum;
+
+              body.innerHTML = `
+                <div class="p-4 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-500/10 via-emerald-500/10 to-teal-500/15 border-2 border-emerald-400 flex flex-col gap-4 shadow-md">
+                  <!-- Header Sertifikat Rapor -->
+                  <div class="flex items-center justify-between gap-2 flex-wrap border-b border-emerald-200/70 pb-3">
+                    <div class="flex items-center gap-2.5">
+                      <div class="w-11 h-11 rounded-2xl bg-amber-500 text-white flex items-center justify-center shadow-md">
+                        <span class="material-symbols-outlined text-2xl">workspace_premium</span>
+                      </div>
+                      <div>
+                        <h4 class="text-xs font-black uppercase text-amber-900 tracking-wider">Hasil Akhir Rapor Kokurikuler</h4>
+                        <span class="text-sm sm:text-base font-black text-slate-900 leading-tight">4 Pilar FINCESTEM 2026</span>
+                      </div>
+                    </div>
+                    <span class="px-3 py-1.5 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase tracking-wider shadow-2xs flex items-center gap-1">
+                      <span class="material-symbols-outlined text-sm">verified</span>
+                      <span>DISAHKAN FASILITATOR</span>
+                    </span>
+                  </div>
+
+                  <!-- Big Score & Predicate Banner -->
+                  <div class="p-4 sm:p-5 rounded-2xl bg-white border border-emerald-300 shadow-sm flex flex-col items-center justify-center text-center gap-2">
+                    <div class="text-2xl sm:text-3xl tracking-widest text-amber-500 font-black">
+                      ${'⭐'.repeat(starsCount)}${'☆'.repeat(5 - starsCount)}
+                    </div>
+                    <div class="flex items-center gap-2 flex-wrap justify-center">
+                      <span class="text-2xl sm:text-3xl font-black text-slate-900">Nilai Rapor: ${scoreNum}</span>
+                      <span class="px-3 py-1 rounded-xl text-sm font-black ${upperPred === 'MAHIR' ? 'bg-amber-100 text-amber-950 border border-amber-300' : (upperPred === 'CAKAP' ? 'bg-emerald-100 text-emerald-950 border border-emerald-300' : 'bg-blue-100 text-blue-950 border border-blue-300')} uppercase">
+                        PREDIKAT: ${upperPred}
+                      </span>
+                    </div>
+                    <span class="text-xs text-slate-500 font-semibold">Skala 100 · Disahkan Berdasarkan Evaluasi Komprehensif 7 Hari Riset</span>
+                  </div>
+
+                  <!-- LENGKAP 4 PILAR RAPOR -->
+                  <div>
+                    <span class="block text-[11px] font-black uppercase tracking-wider text-slate-600 mb-2">Rincian Capaian 4 Pilar FINCESTEM:</span>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                      <div class="p-3 rounded-2xl bg-white border border-amber-200 shadow-2xs flex flex-col items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-amber-600 text-lg">account_balance_wallet</span>
+                        <span class="text-[10.5px] font-bold text-slate-600">Literasi Finansial</span>
+                        <span class="text-base sm:text-lg font-black text-amber-800">${sFin}</span>
+                        <span class="text-[10px] text-slate-400 font-semibold">⭐ ${Math.max(1, Math.min(5, Math.round(sFin / 20)))} Bintang</span>
+                      </div>
+                      <div class="p-3 rounded-2xl bg-white border border-purple-200 shadow-2xs flex flex-col items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-purple-600 text-lg">theater_comedy</span>
+                        <span class="text-[10.5px] font-bold text-slate-600">Budaya &amp; Karakter</span>
+                        <span class="text-base sm:text-lg font-black text-purple-800">${sCul}</span>
+                        <span class="text-[10px] text-slate-400 font-semibold">⭐ ${Math.max(1, Math.min(5, Math.round(sCul / 20)))} Bintang</span>
+                      </div>
+                      <div class="p-3 rounded-2xl bg-white border border-emerald-200 shadow-2xs flex flex-col items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-emerald-600 text-lg">explore</span>
+                        <span class="text-[10.5px] font-bold text-slate-600">Eksplorasi Lingkungan</span>
+                        <span class="text-base sm:text-lg font-black text-emerald-800">${sExp}</span>
+                        <span class="text-[10px] text-slate-400 font-semibold">⭐ ${Math.max(1, Math.min(5, Math.round(sExp / 20)))} Bintang</span>
+                      </div>
+                      <div class="p-3 rounded-2xl bg-white border border-blue-200 shadow-2xs flex flex-col items-center justify-center gap-1">
+                        <span class="material-symbols-outlined text-blue-600 text-lg">science</span>
+                        <span class="text-[10.5px] font-bold text-slate-600">Sains &amp; STEM</span>
+                        <span class="text-base sm:text-lg font-black text-blue-800">${sStem}</span>
+                        <span class="text-[10px] text-slate-400 font-semibold">⭐ ${Math.max(1, Math.min(5, Math.round(sStem / 20)))} Bintang</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Penjabaran Keterangan Capaian Rapor Siswa -->
+                  <div class="p-4 rounded-2xl bg-white border border-emerald-200 flex flex-col gap-1.5 shadow-2xs">
+                    <span class="text-xs font-black text-emerald-950 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-sm text-emerald-700">description</span>
+                      <span>Penjabaran Keterangan Capaian Rapor Kokurikuler:</span>
+                    </span>
+                    <p class="text-xs sm:text-[13px] text-slate-800 leading-relaxed text-justify font-normal">
+                      ${narrativeDesc}
+                    </p>
+                  </div>
+
+                  <!-- Catatan & Umpan Balik Guru -->
+                  <div class="flex flex-col gap-1.5">
+                    <span class="text-xs font-bold text-slate-700">Catatan &amp; Umpan Balik Fasilitator:</span>
+                    <p class="text-xs sm:text-sm text-slate-800 leading-relaxed italic bg-white p-3.5 rounded-xl border border-slate-200 font-medium">
+                      "${effectiveRec.feedback || 'Selamat atas dedikasi dan tuntasnya seluruh tahapan kokurikuler FINCESTEM SMAN 1 Belitang tahun 2026!'}"
+                    </p>
+                  </div>
+
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-emerald-200">
+                    <div class="flex flex-col min-w-0">
+                      <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Fasilitator Pembina:</span>
+                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+                    </div>
+                    <span class="text-emerald-700 font-black self-start sm:self-auto shrink-0 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Rapor Resmi Terverifikasi ✓</span>
                   </div>
                 </div>
-              </div>
-            `;
+              `;
+            } else if (dNum === 5) {
+              // DAY 5: 2 PILAR (VIDEO FINANSIAL & BUDAYA)
+              const sFin = (effectiveRec.score_financial !== undefined && effectiveRec.score_financial !== null) ? effectiveRec.score_financial : scoreNum;
+              const sCul = (effectiveRec.score_culture !== undefined && effectiveRec.score_culture !== null) ? effectiveRec.score_culture : scoreNum;
+
+              body.innerHTML = `
+                <div class="p-4 sm:p-5 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col gap-4">
+                  <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <span class="text-xs sm:text-sm font-bold text-emerald-950 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-emerald-600 text-lg">verified</span>
+                      Status Evaluasi Video Lapangan Day 5:
+                    </span>
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-emerald-200 text-emerald-900 uppercase">
+                      TELAH DINILAI RESMI
+                    </span>
+                  </div>
+
+                  <!-- Score Box -->
+                  <div class="p-4 rounded-2xl bg-white border border-emerald-200 shadow-xs flex flex-col items-center justify-center text-center gap-1.5">
+                    <div class="text-2xl text-amber-500 font-black tracking-widest">
+                      ${'⭐'.repeat(starsCount)}${'☆'.repeat(5 - starsCount)}
+                    </div>
+                    <div class="text-xl sm:text-2xl font-black text-emerald-800">
+                      Rata-rata Skor: ${scoreNum} / 100 <span class="text-sm font-extrabold text-emerald-600">(${effectiveRec.predicate || 'A'})</span>
+                    </div>
+                  </div>
+
+                  <!-- 2 Pilar Video -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div class="p-3 rounded-2xl bg-white border border-amber-200 shadow-2xs flex items-center justify-between gap-3">
+                      <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-amber-600 text-xl">account_balance_wallet</span>
+                        <div class="flex flex-col">
+                          <span class="text-xs font-bold text-slate-800">Video Pilar Finansial</span>
+                          <span class="text-[10.5px] text-slate-500">Wawancara ekonomi &amp; potensi kas</span>
+                        </div>
+                      </div>
+                      <span class="text-base font-black text-amber-700">${sFin}</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white border border-purple-200 shadow-2xs flex items-center justify-between gap-3">
+                      <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-purple-600 text-xl">theater_comedy</span>
+                        <div class="flex flex-col">
+                          <span class="text-xs font-bold text-slate-800">Video Pilar Budaya</span>
+                          <span class="text-[10.5px] text-slate-500">Kearifan lokal &amp; tradisi daerah</span>
+                        </div>
+                      </div>
+                      <span class="text-base font-black text-purple-700">${sCul}</span>
+                    </div>
+                  </div>
+
+                  <!-- Catatan Guru -->
+                  <div class="flex flex-col gap-1.5">
+                    <span class="text-xs sm:text-sm font-bold text-emerald-950">Catatan &amp; Umpan Balik Fasilitator:</span>
+                    <p class="text-xs sm:text-sm text-emerald-950 leading-relaxed italic bg-white/90 p-3.5 rounded-xl border border-emerald-200 font-medium">
+                      "${effectiveRec.feedback || 'Kualitas rekaman video lapangan dan kedalaman wawancara sangat baik.'}"
+                    </p>
+                  </div>
+
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200">
+                    <div class="flex flex-col min-w-0">
+                      <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
+                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+                    </div>
+                  </div>
+                </div>
+              `;
+            } else if (dNum === 6) {
+              // DAY 6: 2 PILAR (VIDEO EKSPLORASI & STEM)
+              const sExp = (effectiveRec.score_exploration !== undefined && effectiveRec.score_exploration !== null) ? effectiveRec.score_exploration : scoreNum;
+              const sStem = (effectiveRec.score_stem !== undefined && effectiveRec.score_stem !== null) ? effectiveRec.score_stem : scoreNum;
+
+              body.innerHTML = `
+                <div class="p-4 sm:p-5 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col gap-4">
+                  <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <span class="text-xs sm:text-sm font-bold text-emerald-950 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-emerald-600 text-lg">verified</span>
+                      Status Evaluasi Video Lapangan Day 6:
+                    </span>
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-emerald-200 text-emerald-900 uppercase">
+                      TELAH DINILAI RESMI
+                    </span>
+                  </div>
+
+                  <!-- Score Box -->
+                  <div class="p-4 rounded-2xl bg-white border border-emerald-200 shadow-xs flex flex-col items-center justify-center text-center gap-1.5">
+                    <div class="text-2xl text-amber-500 font-black tracking-widest">
+                      ${'⭐'.repeat(starsCount)}${'☆'.repeat(5 - starsCount)}
+                    </div>
+                    <div class="text-xl sm:text-2xl font-black text-emerald-800">
+                      Rata-rata Skor: ${scoreNum} / 100 <span class="text-sm font-extrabold text-emerald-600">(${effectiveRec.predicate || 'A'})</span>
+                    </div>
+                  </div>
+
+                  <!-- 2 Pilar Video -->
+                  <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                    <div class="p-3 rounded-2xl bg-white border border-emerald-200 shadow-2xs flex items-center justify-between gap-3">
+                      <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-emerald-600 text-xl">explore</span>
+                        <div class="flex flex-col">
+                          <span class="text-xs font-bold text-slate-800">Video Pilar Eksplorasi</span>
+                          <span class="text-[10.5px] text-slate-500">Bentang alam persawahan &amp; GPS</span>
+                        </div>
+                      </div>
+                      <span class="text-base font-black text-emerald-700">${sExp}</span>
+                    </div>
+                    <div class="p-3 rounded-2xl bg-white border border-blue-200 shadow-2xs flex items-center justify-between gap-3">
+                      <div class="flex items-center gap-2.5">
+                        <span class="material-symbols-outlined text-blue-600 text-xl">science</span>
+                        <div class="flex flex-col">
+                          <span class="text-xs font-bold text-slate-800">Video Pilar STEM</span>
+                          <span class="text-[10.5px] text-slate-500">Mekanisme mesin RMU &amp; alsintan</span>
+                        </div>
+                      </div>
+                      <span class="text-base font-black text-blue-700">${sStem}</span>
+                    </div>
+                  </div>
+
+                  <!-- Catatan Guru -->
+                  <div class="flex flex-col gap-1.5">
+                    <span class="text-xs sm:text-sm font-bold text-emerald-950">Catatan &amp; Umpan Balik Fasilitator:</span>
+                    <p class="text-xs sm:text-sm text-emerald-950 leading-relaxed italic bg-white/90 p-3.5 rounded-xl border border-emerald-200 font-medium">
+                      "${effectiveRec.feedback || 'Rekaman observasi sains dan dokumentasi bentang alam tersaji dengan jelas.'}"
+                    </p>
+                  </div>
+
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200">
+                    <div class="flex flex-col min-w-0">
+                      <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
+                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+                    </div>
+                  </div>
+                </div>
+              `;
+            } else {
+              // ========================================================
+              // DAY 1 s.d. 4: PENILAIAN 1 PILAR TUNGGAL
+              // ========================================================
+              const pillarConfigs = {
+                1: { title: 'Pilar Literasi Finansial (Financial)', icon: 'account_balance_wallet', desc: 'Pemetaan Potensi Ekonomi & Arus Kas', color: 'amber' },
+                2: { title: 'Pilar Budaya & Kearifan Lokal (Culture)', icon: 'theater_comedy', desc: 'Nilai Tradisi & Identitas Multikultural OKU Timur', color: 'purple' },
+                3: { title: 'Pilar Sains & Rekayasa Teknologi (STEM)', icon: 'science', desc: 'Inovasi RMU & Rekayasa Mesin Pertanian', color: 'blue' },
+                4: { title: 'Pilar Eksplorasi Lingkungan (Exploration)', icon: 'explore', desc: 'Bentang Alam Irigasi Komering & Analisis GPS', color: 'emerald' }
+              };
+              const pCfg = pillarConfigs[dNum] || { title: `Pilar Utama Day ${dNum}`, icon: 'school', desc: 'Riset Mandiri Lapangan', color: 'emerald' };
+
+              body.innerHTML = `
+                <div class="p-4 sm:p-5 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col gap-4">
+                  <div class="flex items-center justify-between gap-2 flex-wrap">
+                    <span class="text-xs sm:text-sm font-bold text-emerald-950 flex items-center gap-1.5">
+                      <span class="material-symbols-outlined text-emerald-600 text-lg">verified</span>
+                      Status Evaluasi Fasilitator (Day ${dNum}):
+                    </span>
+                    <span class="px-2.5 py-1 rounded-lg text-xs font-black bg-emerald-200 text-emerald-900 uppercase">
+                      TELAH DINILAI RESMI
+                    </span>
+                  </div>
+
+                  <!-- Score Box -->
+                  <div class="p-4 rounded-2xl bg-white border border-emerald-200 shadow-xs flex flex-col items-center justify-center text-center gap-1.5">
+                    <div class="text-2xl text-amber-500 font-black tracking-widest">
+                      ${'⭐'.repeat(starsCount)}${'☆'.repeat(5 - starsCount)}
+                    </div>
+                    <div class="text-xl sm:text-2xl font-black text-emerald-800">
+                      Skor: ${scoreNum} / 100 <span class="text-sm font-extrabold text-emerald-600">(${effectiveRec.predicate || 'A'})</span>
+                    </div>
+                  </div>
+
+                  <!-- 1 Pilar Box Tunggal Sesuai Hari -->
+                  <div class="p-3.5 rounded-2xl bg-white border border-${pCfg.color}-300 shadow-2xs flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-xl bg-${pCfg.color}-50 text-${pCfg.color}-700 flex items-center justify-center shrink-0 border border-${pCfg.color}-200">
+                        <span class="material-symbols-outlined text-2xl">${pCfg.icon}</span>
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="text-xs sm:text-sm font-extrabold text-slate-900">${pCfg.title}</span>
+                        <span class="text-[11px] text-slate-500">${pCfg.desc}</span>
+                      </div>
+                    </div>
+                    <div class="text-right shrink-0">
+                      <span class="text-lg sm:text-xl font-black text-emerald-700">${scoreNum}</span>
+                      <span class="text-[10px] text-slate-400 block font-bold">⭐ ${starsCount} Bintang</span>
+                    </div>
+                  </div>
+
+                  <!-- Catatan Guru -->
+                  <div class="flex flex-col gap-1.5">
+                    <span class="text-xs sm:text-sm font-bold text-emerald-950">Catatan &amp; Umpan Balik Fasilitator:</span>
+                    <p class="text-xs sm:text-sm text-emerald-950 leading-relaxed italic bg-white/90 p-3.5 rounded-xl border border-emerald-200 font-medium">
+                      "${effectiveRec.feedback || 'Pertahankan ketelitian pencatatan data dan ketepatan waktu pengumpulan tugas.'}"
+                    </p>
+                  </div>
+
+                  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200">
+                    <div class="flex flex-col min-w-0">
+                      <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
+                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+                    </div>
+                  </div>
+                </div>
+              `;
+            }
           } else {
             // Belum dinilai guru -> Jalankan Pra-Evaluasi Kualitas Otomatis
             const audit = calculateNonFTDayAudit(day.day_number, taskMap, currentStudent);

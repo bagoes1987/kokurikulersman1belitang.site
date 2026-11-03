@@ -257,16 +257,31 @@ if ($method === 'GET') {
                 }
             }
 
-            $avgScore = count($scores) > 0 ? round(array_sum($scores) / count($scores), 1) : null;
-            $predicate = 'Belum Ada';
-            if ($avgScore !== null) {
-                if ($avgScore >= 88) $predicate = 'Sangat Baik (A)';
-                elseif ($avgScore >= 75) $predicate = 'Baik (B)';
-                elseif ($avgScore >= 65) $predicate = 'Cukup (C)';
-                else $predicate = 'Perlu Bimbingan (D)';
-            } elseif ($completedCount >= 7 || $percentage >= 100) {
-                $avgScore = 95.0;
-                $predicate = 'Sangat Baik (A)';
+            // Prioritaskan nilai resmi Day 7 jika telah dinilai Fasilitator (Rapor Kokurikuler)
+            $day7Eval = $taskMap['7_final'] ?? $taskMap['7_general'] ?? null;
+            if (!$day7Eval) {
+                foreach ($records as $r) {
+                    if ((int)$r['day_number'] === 7 && $r['score'] !== null && $r['score'] !== '') {
+                        $day7Eval = $r;
+                        break;
+                    }
+                }
+            }
+
+            if ($day7Eval && $day7Eval['score'] !== null && $day7Eval['score'] !== '') {
+                $avgScore = round((float)$day7Eval['score'], 1);
+                $predicate = !empty($day7Eval['predicate']) ? $day7Eval['predicate'] : ($avgScore >= 85 ? 'Mahir' : ($avgScore >= 70 ? 'Cakap' : 'Berkembang'));
+            } else {
+                $avgScore = count($scores) > 0 ? round(array_sum($scores) / count($scores), 1) : null;
+                $predicate = 'Belum Ada';
+                if ($avgScore !== null) {
+                    if ($avgScore >= 85) $predicate = 'Mahir';
+                    elseif ($avgScore >= 70) $predicate = 'Cakap';
+                    else $predicate = 'Berkembang';
+                } elseif ($completedCount >= 7 || $percentage >= 100) {
+                    $avgScore = 95.0;
+                    $predicate = 'Mahir';
+                }
             }
 
             jsonResponse(true, 'Data progres siswa berhasil diambil', [
@@ -461,10 +476,9 @@ if ($method === 'POST') {
             }
 
             if ($score !== null && !$predicate) {
-                if ($score >= 88) $predicate = 'Sangat Baik (A)';
-                elseif ($score >= 75) $predicate = 'Baik (B)';
-                elseif ($score >= 65) $predicate = 'Cukup (C)';
-                else $predicate = 'Perlu Bimbingan (D)';
+                if ($score >= 85) $predicate = 'Mahir';
+                elseif ($score >= 70) $predicate = 'Cakap';
+                else $predicate = 'Berkembang';
             }
 
             $stmt = $pdo->prepare("
