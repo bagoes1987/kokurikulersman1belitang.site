@@ -1751,120 +1751,118 @@
       const user = FincestemCore.auth.getUser();
       const fasilUser = (user && user.username) || (user && user.nip) || (user && user.kode) || '';
 
-      // Sinkronkan seluruh peta zonasi/jalur siswa dari Admin secara real-time
-      if (FincestemCore.zones && FincestemCore.zones.syncZones) {
-        FincestemCore.zones.syncZones(function(syncedData) {
-          if (syncedData && syncedData.student_zones && Array.isArray(assignedStudents) && assignedStudents.length > 0) {
-            const sz = syncedData.student_zones;
-            assignedStudents.forEach(s => {
-              const sNisn = String(s.nisn || '').trim();
-              const rawD = sNisn.replace(/\D/g, '');
-              const padD = (rawD.length >= 8 && rawD.length <= 10) ? rawD.padStart(10, '0') : sNisn;
-              const unpD = rawD.replace(/^0+/, '');
-              const z = sz[sNisn] || sz[padD] || (unpD ? sz[unpD] : null) || (s.nis ? sz[String(s.nis).trim()] : null);
-              if (z) {
-                s.zone = z;
-                s.is_field_trip = String(z).toUpperCase().includes('LUAR');
-              }
-            });
-            renderAssignedStudentList();
-            const secRekap = document.getElementById('secFasRekap');
-            if (secRekap && !secRekap.classList.contains('hidden')) {
-              renderFasRekapView();
+      const applyStudents = function() {
+        const teacherCandidates = [
+          fasilUser,
+          user && user.username,
+          user && user.nip,
+          user && user.kode,
+          user && user.name,
+          user && user.nama_guru,
+          user && user.identifier
+        ].filter(Boolean);
+
+        let mentorStudents = [];
+        if (window.FincestemMentorship) {
+          for (const cand of teacherCandidates) {
+            const list = window.FincestemMentorship.getStudentsForTeacher(cand);
+            if (list && list.length > 0) {
+              mentorStudents = list;
+              break;
             }
           }
-        });
-      }
+        }
 
-      // Sinkronkan seluruh foto profil siswa dari server cPanel secara asinkron
-      if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
-        FincestemCore.profile.syncPhotos(function(updated) {
-          if (updated && assignedStudents && assignedStudents.length > 0) {
-            renderAssignedStudentList();
-          }
-        });
-      }
+        if (mentorStudents && mentorStudents.length > 0) {
+          assignedClass = 'Binaan Anda';
+          assignedStudents = mentorStudents.map(s => {
+            const isFT = isStudentFieldTripFasil(s.nisn, s);
+            return {
+              nisn: s.nisn,
+              name: s.nama,
+              class_name: s.class || s.rombel || '-',
+              nis: s.nis,
+              photo_url: s.photo_url,
+              zone: isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR',
+              is_field_trip: isFT
+            };
+          });
 
-      // 0. Cek apakah guru ini memiliki Siswa Binaan Khusus dari Modul Mentorship (Lintas Kelas)
-      const teacherKey = String(fasilUser || '').trim().toLowerCase();
-      const mentorStudents = (window.FincestemMentorship && teacherKey) ? window.FincestemMentorship.getStudentsForTeacher(teacherKey) : [];
+          const lblSidebarClass = document.getElementById('lblSidebarClassName');
+          if (lblSidebarClass) lblSidebarClass.textContent = 'Binaan Anda';
+          const lblSidebarCount = document.getElementById('lblSidebarStudentCount');
+          if (lblSidebarCount) lblSidebarCount.textContent = `${assignedStudents.length} Siswa`;
 
-      if (mentorStudents && mentorStudents.length > 0) {
-        assignedClass = 'Binaan Anda';
-        assignedStudents = mentorStudents.map(s => {
-          const isFT = isStudentFieldTripFasil(s.nisn, s);
-          return {
-            nisn: s.nisn,
-            name: s.nama,
-            class_name: s.class || s.rombel || '-',
-            nis: s.nis,
-            photo_url: s.photo_url,
-            zone: isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR',
-            is_field_trip: isFT
-          };
-        });
+          const lblTopClass = document.getElementById('lblAssignedClassNameTop');
+          if (lblTopClass) lblTopClass.textContent = '🎯 Siswa Binaan Anda';
 
-        const lblSidebarClass = document.getElementById('lblSidebarClassName');
-        if (lblSidebarClass) lblSidebarClass.textContent = 'Binaan Anda';
-        const lblSidebarCount = document.getElementById('lblSidebarStudentCount');
-        if (lblSidebarCount) lblSidebarCount.textContent = `${assignedStudents.length} Siswa`;
-
-        const lblTopClass = document.getElementById('lblAssignedClassNameTop');
-        if (lblTopClass) lblTopClass.textContent = '🎯 Siswa Binaan Anda';
-
-        const lblBannerClass = document.getElementById('lblAssignedClassNameText');
-        if (lblBannerClass) lblBannerClass.textContent = 'Binaan Anda';
-        const lblBannerCount = document.getElementById('lblAssignedStudentCount');
-        if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa`;
-
-        renderAssignedStudentList();
-        return;
-      }
-
-      if (FincestemCore.assignments) {
-        FincestemCore.assignments.getFacilitatorData(fasilUser, function(data) {
-          if (data && data.class_name) {
-            assignedClass = data.class_name;
-            assignedStudents = (data.students || []).map(s => {
-              const isFT = isStudentFieldTripFasil(s.nisn, s);
-              return Object.assign({}, s, {
-                zone: isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR',
-                is_field_trip: isFT
-              });
-            });
-            
-            const lblSidebarClass = document.getElementById('lblSidebarClassName');
-            if (lblSidebarClass) lblSidebarClass.textContent = assignedClass;
-            const lblSidebarCount = document.getElementById('lblSidebarStudentCount');
-            if (lblSidebarCount) lblSidebarCount.textContent = `${assignedStudents.length} Siswa`;
-
-            const lblTopClass = document.getElementById('lblAssignedClassNameTop');
-            if (lblTopClass) lblTopClass.textContent = assignedClass;
-
-            const lblBannerClass = document.getElementById('lblAssignedClassNameText');
-            if (lblBannerClass) lblBannerClass.textContent = assignedClass;
-            const lblBannerCount = document.getElementById('lblAssignedStudentCount');
-            if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa`;
-          } else {
-            // Jika belum memiliki siswa binaan yang terpetakan oleh admin
-            assignedClass = 'Belum Ada Siswa Binaan';
-            assignedStudents = [];
-            
-            const lblSidebarClass = document.getElementById('lblSidebarClassName');
-            if (lblSidebarClass) lblSidebarClass.textContent = 'Belum Ada Binaan';
-            const lblSidebarCount = document.getElementById('lblSidebarStudentCount');
-            if (lblSidebarCount) lblSidebarCount.textContent = '0 Siswa';
-
-            const lblTopClass = document.getElementById('lblAssignedClassNameTop');
-            if (lblTopClass) lblTopClass.textContent = 'Belum Ada Siswa Binaan';
-
-            const lblBannerClass = document.getElementById('lblAssignedClassNameText');
-            if (lblBannerClass) lblBannerClass.textContent = 'Belum Ada Siswa Binaan';
-            const lblBannerCount = document.getElementById('lblAssignedStudentCount');
-            if (lblBannerCount) lblBannerCount.textContent = '0 Siswa';
-          }
+          const lblBannerClass = document.getElementById('lblAssignedClassNameText');
+          if (lblBannerClass) lblBannerClass.textContent = 'Binaan Anda';
+          const lblBannerCount = document.getElementById('lblAssignedStudentCount');
+          if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa`;
 
           renderAssignedStudentList();
+          return;
+        }
+
+        if (FincestemCore.assignments) {
+          FincestemCore.assignments.getFacilitatorData(fasilUser, function(data) {
+            if (data && data.class_name && Array.isArray(data.students) && data.students.length > 0) {
+              assignedClass = data.class_name;
+              assignedStudents = data.students.map(s => {
+                const isFT = isStudentFieldTripFasil(s.nisn, s);
+                return Object.assign({}, s, {
+                  zone: isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR',
+                  is_field_trip: isFT
+                });
+              });
+              
+              const lblSidebarClass = document.getElementById('lblSidebarClassName');
+              if (lblSidebarClass) lblSidebarClass.textContent = assignedClass;
+              const lblSidebarCount = document.getElementById('lblSidebarStudentCount');
+              if (lblSidebarCount) lblSidebarCount.textContent = `${assignedStudents.length} Siswa`;
+
+              const lblTopClass = document.getElementById('lblAssignedClassNameTop');
+              if (lblTopClass) lblTopClass.textContent = assignedClass;
+
+              const lblBannerClass = document.getElementById('lblAssignedClassNameText');
+              if (lblBannerClass) lblBannerClass.textContent = assignedClass;
+              const lblBannerCount = document.getElementById('lblAssignedStudentCount');
+              if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa`;
+            } else if (assignedStudents.length === 0) {
+              assignedClass = 'Belum Ada Siswa Binaan';
+              assignedStudents = [];
+              const lblSidebarClass = document.getElementById('lblSidebarClassName');
+              if (lblSidebarClass) lblSidebarClass.textContent = 'Belum Ada Binaan';
+              const lblSidebarCount = document.getElementById('lblSidebarStudentCount');
+              if (lblSidebarCount) lblSidebarCount.textContent = '0 Siswa';
+            }
+            renderAssignedStudentList();
+          });
+        }
+      };
+
+      // 1. Terapkan data lokal langsung seketika
+      applyStudents();
+
+      // 2. Sinkronkan pembagian siswa binaan dari server secara real-time
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+        window.FincestemMentorship.syncFromServer(function(changed) {
+          applyStudents();
+        });
+      }
+
+      // 3. Sinkronkan peta zonasi siswa
+      if (FincestemCore.zones && FincestemCore.zones.syncZones) {
+        FincestemCore.zones.syncZones(function() {
+          applyStudents();
+        });
+      }
+
+      // 4. Sinkronkan foto profil
+      if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
+        FincestemCore.profile.syncPhotos(function(updated) {
+          if (updated) renderAssignedStudentList();
         });
       }
     }
@@ -1916,10 +1914,19 @@
       renderAssignedStudentList();
     }
 
+    let _cachedFasAllContacts = null;
+
     function renderAssignedStudentList() {
       const container = document.getElementById('containerFasStudentCards');
       if (!container) return;
       container.innerHTML = '';
+
+      if (_cachedFasAllContacts === null) {
+        try {
+          const rawAll = localStorage.getItem('fincestem_all_student_contacts');
+          if (rawAll) _cachedFasAllContacts = JSON.parse(rawAll);
+        } catch (e) { _cachedFasAllContacts = {}; }
+      }
 
       let countAll = assignedStudents.length;
       let countJalurFT = 0;
@@ -2152,18 +2159,14 @@
           ? `<img src="${savedPhoto}" alt="Foto" class="w-10 h-10 rounded-2xl object-cover border border-outline-variant/40 shrink-0" onerror="this.outerHTML='<div class=\\'w-10 h-10 rounded-2xl bg-teal-50 text-[#006a61] flex items-center justify-center font-bold text-sm shrink-0\\'><span class=\\'material-symbols-outlined text-lg\\'>person</span></div>'">` 
           : `<div class="w-10 h-10 rounded-2xl bg-teal-50 text-[#006a61] flex items-center justify-center font-bold text-sm shrink-0"><span class="material-symbols-outlined text-lg">person</span></div>`;
 
-        // Kontak WA Siswa, Ayah, Ibu dalam 1 baris lurus hemat tempat & pesan sapaan resmi
+        // Kontak WA Siswa, Ayah, Ibu (Dioptimalkan O(1) dari cache luar tanpa parse ulang)
         let contactsHtml = '';
         try {
           let c = null;
           const rawC = localStorage.getItem('fincestem_student_contacts_' + stu.nisn);
           if (rawC) c = JSON.parse(rawC);
-          if (!c) {
-            const allRaw = localStorage.getItem('fincestem_all_student_contacts');
-            if (allRaw) {
-              const allC = JSON.parse(allRaw);
-              if (allC && allC[stu.nisn]) c = allC[stu.nisn];
-            }
+          if (!c && _cachedFasAllContacts && _cachedFasAllContacts[stu.nisn]) {
+            c = _cachedFasAllContacts[stu.nisn];
           }
           if (c && (c.wa_siswa || c.wa_ayah || c.wa_ibu)) {
             const fasilFullName = getFasilOfficialFullName();

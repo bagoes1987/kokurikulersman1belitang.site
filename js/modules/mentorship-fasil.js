@@ -620,16 +620,25 @@
       const map = this.getAssignmentsMap();
       const keysToCheck = new Set([cleanKey]);
       if (tObj) {
-        const canon = String(tObj.username || tObj.nip || tObj.kode_guru).trim().toLowerCase();
-        if (canon) keysToCheck.add(canon);
+        if (tObj.username) keysToCheck.add(String(tObj.username).trim().toLowerCase());
+        if (tObj.nip && tObj.nip !== '-') keysToCheck.add(String(tObj.nip).trim().toLowerCase());
+        if (tObj.kode_guru && tObj.kode_guru !== '-') keysToCheck.add(String(tObj.kode_guru).trim().toLowerCase());
+        if (tObj.nama_guru) {
+          keysToCheck.add(String(tObj.nama_guru).trim().toLowerCase());
+          const normN = normalizeTeacherName(tObj.nama_guru);
+          if (normN) keysToCheck.add(normN);
+        }
         if (Array.isArray(tObj.aliases)) {
           tObj.aliases.forEach(a => keysToCheck.add(String(a).toLowerCase()));
         }
       }
       const nisnSet = new Set();
-      keysToCheck.forEach(k => {
+      Object.keys(map).forEach(k => {
         const entry = map[k];
-        if (entry && Array.isArray(entry.student_nisns)) {
+        if (!entry) return;
+        const entryMatch = keysToCheck.has(k) ||
+          (tObj && entry.teacher_name && normalizeTeacherName(entry.teacher_name) === normalizeTeacherName(tObj.nama_guru));
+        if (entryMatch && Array.isArray(entry.student_nisns)) {
           entry.student_nisns.forEach(n => {
             const sN = String(n).trim();
             if (sN) nisnSet.add(sN);
