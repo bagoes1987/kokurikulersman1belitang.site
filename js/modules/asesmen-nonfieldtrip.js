@@ -883,23 +883,39 @@
       return;
     }
 
-    // Paksa masuk Mode Layar Penuh (Fullscreen) untuk memblokir Floating Window / Smart Sidebar
-    ensureExamFullscreenOnGesture();
+    const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
+    const isAndroid = /Android/i.test(ua);
+    const isFsSupported = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
 
-    activateVolume100Watchdog();
-    primeAudioElements();
-    examState.isExamActive = true;
-    examState.isExamFinished = false;
-    if (!examState.startTime) {
-      examState.startTime = new Date();
-      examState.remainingSeconds = examState.durationSeconds;
+    const proceedStartExam = function() {
+      activateVolume100Watchdog();
+      primeAudioElements();
+      examState.isExamActive = true;
+      examState.isExamFinished = false;
+      if (!examState.startTime) {
+        examState.startTime = new Date();
+        examState.remainingSeconds = examState.durationSeconds;
+      }
+      saveDraftProgress();
+      startExamTimer();
+      renderExamScreen();
+      bindExamShieldListeners();
+      startScreenIntegrityWatchdog();
+      resetQuestionIdleBlurTimer();
+    };
+
+    if (isAndroid && isFsSupported) {
+      ensureExamFullscreenOnGesture(function(ok) {
+        if (!ok) {
+          alert('⚠️ GAGAL MASUK LAYAR PENUH!\n\nTutup semua aplikasi mengambang (Floating Window / PIP / TikTok / Bilah Samping) dan maksimalkan browser ke 1 Layar Penuh sebelum memulai asesmen!');
+          return;
+        }
+        proceedStartExam();
+      });
+    } else {
+      ensureExamFullscreenOnGesture();
+      proceedStartExam();
     }
-    saveDraftProgress();
-    startExamTimer();
-    renderExamScreen();
-    bindExamShieldListeners();
-    startScreenIntegrityWatchdog();
-    resetQuestionIdleBlurTimer();
   };
 
   /**
@@ -1614,20 +1630,30 @@
   /**
    * 2. KUNCI LAYAR PENUH MUTLAK (MANDATORY FULLSCREEN LOCK)
    */
-  function ensureExamFullscreenOnGesture() {
+  function ensureExamFullscreenOnGesture(callback) {
     try {
       const docEl = document.documentElement;
       const isFs = !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
-      if (!isFs) {
-        if (docEl.requestFullscreen) {
-          docEl.requestFullscreen({ navigationUI: 'hide' }).catch(() => {});
-        } else if (docEl.webkitRequestFullscreen) {
-          docEl.webkitRequestFullscreen();
-        } else if (docEl.msRequestFullscreen) {
-          docEl.msRequestFullscreen();
+      if (isFs) {
+        if (callback) callback(true);
+        return;
+      }
+      const req = docEl.requestFullscreen || docEl.webkitRequestFullscreen || docEl.msRequestFullscreen;
+      if (req) {
+        const p = req.call(docEl, { navigationUI: 'hide' });
+        if (p && typeof p.then === 'function') {
+          p.then(() => {
+            if (callback) callback(true);
+          }).catch((err) => {
+            if (callback) callback(false, err);
+          });
+          return;
         }
       }
-    } catch (e) {}
+      if (callback) callback(true);
+    } catch (e) {
+      if (callback) callback(false, e);
+    }
   }
 
   /**
@@ -1638,6 +1664,16 @@
       clearTimeout(questionIdleBlurTimeout);
       questionIdleBlurTimeout = null;
     }
+    const notice = document.getElementById('examIdleBlurNotice');
+    const qt = document.getElementById('examQuestionText');
+    const ol = document.getElementById('examOptionsList');
+    if (notice) notice.style.display = 'none';
+    if (qt && !isTabAway && !isViolationModalOpen) {
+      qt.style.filter = 'none';
+    }
+    if (ol && !isTabAway && !isViolationModalOpen) {
+      ol.style.filter = 'none';
+    }
   }
 
   function resetQuestionIdleBlurTimer() {
@@ -1645,7 +1681,34 @@
       clearTimeout(questionIdleBlurTimeout);
       questionIdleBlurTimeout = null;
     }
+    const notice = document.getElementById('examIdleBlurNotice');
+    const qt = document.getElementById('examQuestionText');
+    const ol = document.getElementById('examOptionsList');
+    if (notice) notice.style.display = 'none';
+    if (qt && !isTabAway && !isViolationModalOpen) {
+      qt.style.filter = 'none';
+    }
+    if (ol && !isTabAway && !isViolationModalOpen) {
+      ol.style.filter = 'none';
+    }
+
+    if (!examState.isExamActive || examState.isExamFinished) return;
+
+    questionIdleBlurTimeout = setTimeout(() => {
+      if (!examState.isExamActive || examState.isExamFinished || isViolationModalOpen || isTabAway) return;
+      const n = document.getElementById('examIdleBlurNotice');
+      const q = document.getElementById('examQuestionText');
+      const o = document.getElementById('examOptionsList');
+      if (n) n.style.display = 'flex';
+      if (q) q.style.filter = 'blur(16px)';
+      if (o) o.style.filter = 'blur(12px)';
+    }, QUESTION_IDLE_BLUR_MS);
   }
+
+  window.wakeUpQuestionCard = function() {
+    resetQuestionIdleBlurTimer();
+    ensureExamFullscreenOnGesture();
+  };
 
   /**
    * 4. DETEKSI KETAT LAYAR MENGAMBANG (FLOATING WINDOW), SPLIT SCREEN & KEYBOARD PENCARIAN GOOGLE
@@ -1789,13 +1852,24 @@
         return;
       }
 
-      // 2. Cek apakah dokumen kehilangan fokus (misal mengetuk jendela mengambang di atas browser)
+      // 2. Cek apakah keluar dari Layar Penuh (Pada Android, membuka Floating Window / Smart Sidebar otomatis membatalkan Fullscreen!)
+      const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
+      const isAndroid = /Android/i.test(ua);
+      const isFsSupported = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+      const isCurrentlyFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+
+      if (isAndroid && isFsSupported && !isCurrentlyFs && !isViolationModalOpen) {
+        handleTabExit('Membuka Layar Mengambang (Floating Window) / Keluar dari Layar Penuh');
+        return;
+      }
+
+      // 3. Cek apakah dokumen kehilangan fokus (misal mengetuk jendela mengambang di atas browser)
       if (typeof document.hasFocus === 'function' && !document.hasFocus()) {
         handleTabExit('Mengetuk Layar Mengambang (Floating Window) / Kehilangan Fokus Ujian');
         return;
       }
 
-      // 3. Cek document.hidden (berpindah tab / aplikasi)
+      // 4. Cek document.hidden (berpindah tab / aplikasi)
       if (document.hidden) {
         handleTabExit('Meninggalkan lembar asesmen / membuka aplikasi lain');
         return;
@@ -1899,20 +1973,20 @@
       });
     }
 
-    // 6. Penanganan Fullscreen & Deteksi Keluar Layar Penuh
+    // 6. Penanganan Fullscreen & Deteksi Keluar Layar Penuh (Membuka Floating Window)
     document.addEventListener('fullscreenchange', () => {
-      if (examState.isExamActive && !examState.isExamFinished) {
-        const violationReason = detectMultiWindowViolation();
-        if (violationReason) {
-          handleTabExit(violationReason);
+      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
+        const isCurrentlyFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+        if (!isCurrentlyFs) {
+          handleTabExit('Membuka Layar Mengambang (Floating Window) / Keluar dari Layar Penuh');
         }
       }
     });
     document.addEventListener('webkitfullscreenchange', () => {
-      if (examState.isExamActive && !examState.isExamFinished) {
-        const violationReason = detectMultiWindowViolation();
-        if (violationReason) {
-          handleTabExit(violationReason);
+      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
+        const isCurrentlyFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
+        if (!isCurrentlyFs) {
+          handleTabExit('Membuka Layar Mengambang (Floating Window) / Keluar dari Layar Penuh');
         }
       }
     });
@@ -2245,21 +2319,37 @@
       return;
     }
 
-    // 2. Paksa masuk kembali ke Mode Layar Penuh (Fullscreen)
-    ensureExamFullscreenOnGesture();
+    const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
+    const isAndroid = /Android/i.test(ua);
+    const isFsSupported = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
 
-    stopExamAlarmLoop();
-    stopExamVibrationLoop();
-    stopContinuousEscalationWatchdog();
-    isViolationModalOpen = false;
-    isTabAway = false;
-    lastViolationTime = Date.now();
-    const container = document.getElementById('examViolationModalContainer');
-    if (container) container.innerHTML = '';
-    removeBlackout();
-    updateViolationCounterDisplay();
-    resetQuestionIdleBlurTimer();
-    try { window.focus(); } catch(e) {}
+    if (isAndroid && isFsSupported) {
+      ensureExamFullscreenOnGesture(function(ok) {
+        if (!ok) {
+          alert('⚠️ GAGAL MASUK LAYAR PENUH!\n\nSistem mendeteksi masih ada aplikasi mengambang (Floating Window / PIP / TikTok). Tutup aplikasi tersebut dan coba lagi!');
+          return;
+        }
+        finishDismiss();
+      });
+    } else {
+      ensureExamFullscreenOnGesture();
+      finishDismiss();
+    }
+
+    function finishDismiss() {
+      stopExamAlarmLoop();
+      stopExamVibrationLoop();
+      stopContinuousEscalationWatchdog();
+      isViolationModalOpen = false;
+      isTabAway = false;
+      lastViolationTime = Date.now();
+      const container = document.getElementById('examViolationModalContainer');
+      if (container) container.innerHTML = '';
+      removeBlackout();
+      updateViolationCounterDisplay();
+      resetQuestionIdleBlurTimer();
+      try { window.focus(); } catch(e) {}
+    }
   };
 
   /**
