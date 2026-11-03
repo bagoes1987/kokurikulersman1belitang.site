@@ -2552,12 +2552,6 @@
 
         <!-- TOMBOL AKSI KEMBALI -->
         <div class="w-full flex flex-col gap-2 pt-1">
-          ${Number(dayNum) === 0 ? `
-            <button type="button" onclick="window.retryDay0ExamSimulation()" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">refresh</span>
-              <span>Ulangi Simulasi Kuis Day 0 (Coba Lagi)</span>
-            </button>
-          ` : ''}
           <a href="dokumentasi.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
             <span>Lanjut ke Dokumentasi Foto Day ${dayNum}</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
