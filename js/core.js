@@ -3896,21 +3896,19 @@ const FincestemCore = {
         prog.records.push(newFeedback);
 
         if (!prog.task_map) prog.task_map = {};
-        prog.task_map[newFeedback.day_number + '_' + newFeedback.task_type] = {
+        const taskEvalEntry = {
           status: finalStatus,
           score: score,
+          score_financial: evalData.score_financial,
+          score_culture: evalData.score_culture,
+          score_exploration: evalData.score_exploration,
+          score_stem: evalData.score_stem,
           feedback: newFeedback.feedback,
           facilitator_name: newFeedback.facilitator_name,
           updated_at: newFeedback.updated_at
         };
-        // Sinkronkan juga ke key general agar konsisten di level hari
-        prog.task_map[newFeedback.day_number + '_general'] = {
-          status: finalStatus,
-          score: score,
-          feedback: newFeedback.feedback,
-          facilitator_name: newFeedback.facilitator_name,
-          updated_at: newFeedback.updated_at
-        };
+        prog.task_map[newFeedback.day_number + '_' + newFeedback.task_type] = taskEvalEntry;
+        prog.task_map[newFeedback.day_number + '_general'] = taskEvalEntry;
 
         // Recalculate completed_days: HANYA HARI DENGAN STATUS 'completed'
         let completedDaysSet = new Set();
@@ -3940,10 +3938,17 @@ const FincestemCore = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(Object.assign({ action: 'submit_feedback', student_nisn: nisn }, evalData, { status: finalStatus }))
-          }).catch(() => {});
+          })
+            .then(r => r.json())
+            .then(res => {
+              if (callback) callback({ success: true, progress: prog, server: res });
+            })
+            .catch(() => {
+              if (callback) callback({ success: true, progress: prog });
+            });
+        } else {
+          if (callback) callback({ success: true, progress: prog });
         }
-
-        if (callback) callback({ success: true, progress: prog });
       });
     },
 

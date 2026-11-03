@@ -2552,23 +2552,38 @@
           let currentTime = (dayNum === 0 && !hasStudentD0Work) ? 'Belum Ada Pengumpulan' : (autoScore.time_formatted || 'Tuntas Tepat Waktu');
           let currentStatus = (dayNum === 0 && !hasStudentD0Work) ? 'belum_mulai' : 'completed';
 
-          if (prog && prog.records) {
-            const r = prog.records.find(x => parseInt(x.day_number) === dayNum && x.score !== null && x.score !== undefined && x.score !== '')
-                   || prog.records.find(x => parseInt(x.day_number) === dayNum && (x.task_type === 'general' || x.task_type === 'lkpd'))
-                   || prog.records.find(x => parseInt(x.day_number) === dayNum);
+          if (prog) {
+            const taskMap = prog.task_map || {};
+            const records = prog.records || [];
+
+            // Prioritaskan penilaian fasilitator (general / memiliki skor 4 pilar)
+            const r = records.find(x => parseInt(x.day_number) === dayNum && x.task_type === 'general')
+                   || taskMap[dayNum + '_general']
+                   || records.find(x => parseInt(x.day_number) === dayNum && x.score_financial !== undefined && x.score_financial !== null)
+                   || records.find(x => parseInt(x.day_number) === dayNum && x.score !== null && x.score !== undefined && x.score !== '')
+                   || records.find(x => parseInt(x.day_number) === dayNum);
+
             if (r) {
-              if (r.score !== undefined && r.score !== null) currentScore = parseFloat(r.score);
+              if (r.score !== undefined && r.score !== null && r.score !== '') currentScore = parseFloat(r.score);
               if (r.stars !== undefined && r.stars !== null) currentStars = parseInt(r.stars);
+              else if (currentScore > 0) currentStars = Math.max(1, Math.min(5, Math.round(currentScore / 20)));
+
               if (r.predicate) {
                 const rpL = String(r.predicate).toLowerCase();
                 if (rpL.includes('mahir') || rpL.includes('sangat baik') || currentScore >= 85) currentPred = 'Mahir';
                 else if (rpL.includes('cakap') || rpL.includes('baik') || currentScore >= 70) currentPred = 'Cakap';
                 else currentPred = 'Berkembang';
+              } else if (currentScore > 0) {
+                currentPred = currentScore >= 85 ? 'Mahir' : (currentScore >= 70 ? 'Cakap' : 'Berkembang');
               }
-              if (r.score_financial !== undefined && r.score_financial !== null) fin = r.score_financial;
-              if (r.score_culture !== undefined && r.score_culture !== null) cul = r.score_culture;
-              if (r.score_exploration !== undefined && r.score_exploration !== null) exp = r.score_exploration;
-              if (r.score_stem !== undefined && r.score_stem !== null) stem = r.score_stem;
+
+              // Gunakan nilai 4 pilar riil jika ada, atau skor riil saat ini (JANGAN PERNAH HARDCODE 95!)
+              const fallbackVal = (!isNaN(currentScore) && currentScore > 0) ? currentScore : (autoScore.score || 80);
+              fin = (r.score_financial !== undefined && r.score_financial !== null && r.score_financial !== '') ? parseFloat(r.score_financial) : fallbackVal;
+              cul = (r.score_culture !== undefined && r.score_culture !== null && r.score_culture !== '') ? parseFloat(r.score_culture) : fallbackVal;
+              exp = (r.score_exploration !== undefined && r.score_exploration !== null && r.score_exploration !== '') ? parseFloat(r.score_exploration) : fallbackVal;
+              stem = (r.score_stem !== undefined && r.score_stem !== null && r.score_stem !== '') ? parseFloat(r.score_stem) : fallbackVal;
+
               if (r.feedback) fb = r.feedback;
               if (r.status) st = r.status;
               currentStatus = st;
