@@ -212,10 +212,10 @@ if ($method === 'GET') {
             }
 
             for ($d = 1; $d <= 7; $d++) {
-                $genRec = $taskMap[$d . '_general'] ?? null;
+                $genRec = $taskMap[$d . '_general'] ?? $taskMap[$d . '_lkpd'] ?? null;
                 $reflRec = $taskMap[$d . '_refleksi'] ?? null;
                 if (!$isFieldTrip) {
-                    // Non-Field Trip: Hari tuntas hanya jika kelima instrumen (materi, lkpd, asesmen, dokumentasi, refleksi) lengkap
+                    // Non-Field Trip: Hari tuntas hanya jika kelima instrumen (materi, lkpd, asesmen, dokumentasi, refleksi) lengkap ATAU jika fasilitator sudah memberi nilai manual
                     $hasAll5 = isset($taskMap[$d . '_materi'])
                         && isset($taskMap[$d . '_lkpd'])
                         && isset($taskMap[$d . '_asesmen'])
@@ -434,7 +434,8 @@ if ($method === 'POST') {
         // B. Fasilitator / Admin memberikan nilai dan umpan balik (feedback)
         if ($action === 'submit_grade' || $action === 'submit_feedback') {
             $nisn        = trim($input['student_nisn'] ?? $input['nisn'] ?? '');
-            $dayNum      = (int)($input['day_number'] ?? 1);
+            $rawDay      = $input['day_number'] ?? null;
+            $dayNum      = ($rawDay !== null && $rawDay !== '') ? (int)$rawDay : 1;
             $taskType    = trim($input['task_type'] ?? 'general');
             $score       = isset($input['score']) && $input['score'] !== '' ? (float)$input['score'] : null;
             $predicate   = trim($input['predicate'] ?? '');

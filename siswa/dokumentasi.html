@@ -2818,8 +2818,10 @@
               return (p.author && currentUser && (p.author === currentUser.name || p.author === currentUser.group));
             });
 
-            // ANTI-DUPLIKASI OTOMATIS: Jangan tampilkan foto ganda untuk hari & foto yang sama
+            // ANTI-DUPLIKASI OTOMATIS: Dedup ketat berdasarkan ID, URL, dan (Day + Judul Foto)
             const seenKeys = new Set();
+            const seenIds = new Set();
+            const seenUrls = new Set();
             const uniqueDocs = [];
             let changed = false;
 
@@ -2830,15 +2832,20 @@
                 p.day_number = properDay;
                 changed = true;
               }
-              const key = properDay + '_' + String(p.title || '').trim().toLowerCase();
-              if (String(p.id).startsWith('doc-srv-')) {
-                // Versi resmi server selalu diprioritaskan
-                uniqueDocs.push(p);
-                seenKeys.add(key);
-              } else if (!seenKeys.has(key)) {
-                uniqueDocs.push(p);
-                seenKeys.add(key);
-              }
+              const pId = String(p.id || '').trim();
+              const pUrl = String(p.url || p.file_url || '').trim();
+              const cleanTitle = String(p.title || '').trim().toLowerCase();
+              const key = properDay + '_' + cleanTitle;
+
+              // Hindari foto dobel/ganda dari berbagai sumber (server ataupun draft lokal)
+              if (pId && seenIds.has(pId)) return;
+              if (pUrl && seenUrls.has(pUrl)) return;
+              if (cleanTitle && seenKeys.has(key)) return;
+
+              uniqueDocs.push(p);
+              if (pId) seenIds.add(pId);
+              if (pUrl) seenUrls.add(pUrl);
+              if (cleanTitle) seenKeys.add(key);
             });
 
             if (changed) {
@@ -2872,7 +2879,7 @@
                 const cleanMyNisn = myNisn.replace(/^0+/, '');
                 const idList = [myNisn, cleanMyNisn, currentUser.nis, currentUser.identifier].filter(Boolean).map(String);
 
-                const serverDocs = res.data.map(d => {
+                const rawServerDocs = res.data.map(d => {
                   const docDay = getPhotoDay(d);
                   return {
                     id: 'doc-srv-' + d.id,
@@ -2891,6 +2898,22 @@
                     gps_location: d.gps_location || '',
                     date: d.created_at || '-'
                   };
+                });
+
+                // Deduplikasi data server sebelum disimpan
+                const seenSrvIds = new Set();
+                const seenSrvUrls = new Set();
+                const seenSrvKeys = new Set();
+                const serverDocs = [];
+                rawServerDocs.forEach(s => {
+                  const sKey = s.day + '_' + String(s.title || '').trim().toLowerCase();
+                  if (s.id && seenSrvIds.has(s.id)) return;
+                  if (s.url && seenSrvUrls.has(s.url)) return;
+                  if (s.title && seenSrvKeys.has(sKey)) return;
+                  serverDocs.push(s);
+                  if (s.id) seenSrvIds.add(s.id);
+                  if (s.url) seenSrvUrls.add(s.url);
+                  if (s.title) seenSrvKeys.add(sKey);
                 });
 
                 // Bersihkan foto milik akun lain dan hapus duplikasi lokal base64 jika sudah ada versi server

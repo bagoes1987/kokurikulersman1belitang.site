@@ -3102,8 +3102,10 @@
           cardDesc = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.';
         }
 
-        // Cek status pengerjaan hari ini
-        const dayRecord = records.find(r => Number(r.day_number) === dNum);
+        // Cek status pengerjaan hari ini (prioritaskan record yang memiliki nilai/evaluasi fasilitator)
+        const dayRecord = records.find(r => Number(r.day_number) === dNum && r.score !== null && r.score !== undefined && r.score !== '')
+                       || records.find(r => Number(r.day_number) === dNum && (r.task_type === 'general' || r.task_type === 'lkpd'))
+                       || records.find(r => Number(r.day_number) === dNum);
         const dayProg = (dNum >= 0 && dNum <= 7) ? getFTProgressStatus(taskMap, dNum) : null;
         let hasMateri = isFTDay ? ftStatus.hasMateri : (dayProg ? dayProg.hasMateri : !!taskMap[dNum + '_materi']);
         let hasLkpd = isFTDay ? ftStatus.hasLkpd : (dayProg ? dayProg.hasLkpd : !!taskMap[dNum + '_lkpd']);
@@ -3276,41 +3278,62 @@
 
         let dayProgressBadge = '';
         if (isTrial) {
-          const isD0Done = hasRefleksi || (dayProg && dayProg.hasRefleksi);
-          if (isD0Done) {
+          if (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined && dayRecord.score !== '') {
             dayProgressBadge = `
               <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
                 GLADI BERSIH
               </span>
-              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 shadow-2xs">
-                <span class="material-symbols-outlined text-sm text-amber-600">stars</span>
-                ⭐⭐⭐⭐⭐ Bintang 5 (Skor: 100)
-              </span>
-            `;
-          } else if (hasLkpd || hasAsesmen || hasDok || hasMateri) {
-            dayProgressBadge = `
-              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
-                GLADI BERSIH
-              </span>
-              <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 border border-teal-300 flex items-center gap-1 shadow-2xs">
-                <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
-                Dalam Proses
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+                Nilai Fasilitator: ${dayRecord.score} (${dayRecord.predicate || 'A'})
               </span>
             `;
           } else {
-            dayProgressBadge = `
-              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
-                GLADI BERSIH
+            const isD0Done = hasRefleksi || (dayProg && dayProg.hasRefleksi);
+            if (isD0Done) {
+              dayProgressBadge = `
+                <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
+                  GLADI BERSIH
+                </span>
+                <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1 shadow-2xs">
+                  <span class="material-symbols-outlined text-sm text-amber-600">stars</span>
+                  ⭐⭐⭐⭐⭐ Bintang 5 (Skor: 100)
+                </span>
+              `;
+            } else if (hasLkpd || hasAsesmen || hasDok || hasMateri) {
+              dayProgressBadge = `
+                <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
+                  GLADI BERSIH
+                </span>
+                <span class="px-2.5 py-0.5 rounded-lg text-xs font-bold bg-teal-100 text-teal-900 border border-teal-300 flex items-center gap-1 shadow-2xs">
+                  <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
+                  Dalam Proses
+                </span>
+              `;
+            } else {
+              dayProgressBadge = `
+                <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-amber-400 text-slate-950 border border-amber-500 shadow-2xs uppercase tracking-wide">
+                  GLADI BERSIH
+                </span>
+              `;
+            }
+          }
+        } else if (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined && dayRecord.score !== '') {
+          if (dayRecord.status === 'revision') {
+            dayProgressBadge += `
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-rose-100 text-rose-900 border border-rose-300 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-rose-600">sync_problem</span>
+                Perlu Revisi (Skor: ${dayRecord.score})
+              </span>
+            `;
+          } else {
+            dayProgressBadge += `
+              <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-1 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+                Nilai Fasilitator: ${dayRecord.score} (${dayRecord.predicate || 'A'})
               </span>
             `;
           }
-        } else if (dayRecord && dayRecord.score) {
-          dayProgressBadge += `
-            <span class="px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300/60 flex items-center gap-1 shadow-2xs">
-              <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
-              Nilai: ${dayRecord.score} (${dayRecord.predicate || 'A'})
-            </span>
-          `;
         } else if (isFieldTrip && (hasRefleksi || (isFTDay && ftStatus && ftStatus.hasRefleksi))) {
           const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
           const starsText = ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆';
@@ -3389,22 +3412,28 @@
         const canOpenPenilaian = canInteract && (!dayProg || dayProg.canPenilaian);
 
         const hasPenilaian = isFieldTrip 
-          ? (hasRefleksi || (dayRecord && dayRecord.score)) 
-          : (isTrial ? (hasRefleksi || (dayProg && dayProg.hasRefleksi)) : !!(dayRecord && dayRecord.score));
+          ? (hasRefleksi || (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined)) 
+          : (isTrial ? (hasRefleksi || (dayProg && dayProg.hasRefleksi) || (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined)) : !!(dayRecord && dayRecord.score !== null && dayRecord.score !== undefined));
 
         let labelPenilaian = 'Terkunci';
         if (canOpenPenilaian) {
           if (isTrial) {
-            labelPenilaian = hasPenilaian ? '⭐⭐⭐⭐⭐ Bintang 5 (100)' : 'Cek Bintang Simulasi';
+            if (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined) {
+              labelPenilaian = `✓ Nilai: ${dayRecord.score} (${dayRecord.predicate || 'A'})`;
+            } else {
+              labelPenilaian = hasPenilaian ? '⭐⭐⭐⭐⭐ Bintang 5 (100)' : 'Cek Bintang Simulasi';
+            }
           } else if (isFieldTrip) {
-            if (hasRefleksi || (dayRecord && dayRecord.score)) {
+            if (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined) {
+              labelPenilaian = `✓ Nilai Fasil: ${dayRecord.score}`;
+            } else if (hasRefleksi || (isFTDay && ftStatus && ftStatus.hasRefleksi)) {
               const ftScore = FincestemCore.progress.calculateFieldTripScore(dNum, getFTSubmitTime(dNum, taskMap), studentNisn);
               labelPenilaian = (ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆') + ' Nilai: ' + ftScore.score;
             } else {
               labelPenilaian = 'Feedback Lapangan';
             }
           } else {
-            labelPenilaian = (dayRecord && dayRecord.score) ? ('✓ Nilai: ' + dayRecord.score) : 'Menunggu Fasil';
+            labelPenilaian = (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined) ? ('✓ Nilai: ' + dayRecord.score) : 'Menunggu Fasil';
           }
         }
 
@@ -6238,11 +6267,15 @@
       const records = prog.records || [];
       const taskMap = prog.task_map || {};
 
-      // Loop 7 hari
-      for (let i = 1; i <= 7; i++) {
-        const rec = records.find(r => Number(r.day_number) === i);
+      // Loop Day 0 (Gladi Bersih) s.d. Day 7 (Riset Kokurikuler)
+      for (let i = 0; i <= 7; i++) {
+        const rec = records.find(r => Number(r.day_number) === i && r.score !== null && r.score !== undefined && r.score !== '')
+                 || records.find(r => Number(r.day_number) === i && (r.task_type === 'general' || r.task_type === 'lkpd'))
+                 || records.find(r => Number(r.day_number) === i);
         const daySched = daysSchedule.find(d => Number(d.day_number) === i);
-        const dayTitle = daySched ? daySched.title : `Day ${i}: Eksplorasi Riset`;
+        const isD0 = (i === 0);
+        const defaultTitle = isD0 ? 'Day 0: Simulasi Teknis & Gladi Bersih SMAN 1 Belitang' : `Day ${i}: Eksplorasi Riset`;
+        const dayTitle = daySched ? daySched.title : defaultTitle;
 
         const row = document.createElement('div');
         row.className = 'p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2.5';
@@ -6250,28 +6283,59 @@
         let scoreHtml = '';
         let note = '';
 
-        if (isFieldTrip) {
-          const isDone = FincestemCore.progress.isDayStudentTasksDone(prog, i);
-          if (isDone) {
-            const ftScore = FincestemCore.progress.calculateFieldTripScore(i, getFTSubmitTime(i, taskMap), studentNisn);
-            const starsText = ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆';
-            scoreHtml = `
-              <span class="px-3 py-1 rounded-xl text-xs font-black ${ftScore.stars === 5 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-teal-100 text-teal-900 border-teal-300'} border">
-                ${starsText} Nilai: ${ftScore.score} · ${ftScore.predicate}
-              </span>
-            `;
-            note = ftScore.is_emergency_override
-              ? `Koreksi Khusus Kebijakan Admin: ${ftScore.reason}`
-              : `Aktivitas Day ${i} selesai pada ${ftScore.time_formatted}. ${ftScore.reason}.`;
-          } else {
-            scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Menunggu Pengerjaan</span>';
-            note = `Selesaikan seluruh aktivitas dan jurnal refleksi Day ${i} untuk memperoleh verifikasi otomatis nilai lapangan.`;
-          }
-        } else {
-          if (rec && rec.score) {
+        if (isD0) {
+          if (rec && rec.score !== null && rec.score !== undefined && rec.score !== '') {
             scoreHtml = `
               <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
-                Nilai: ${rec.score} · ${rec.predicate || 'Sangat Baik'}
+                Nilai Fasilitator: ${rec.score} · ${rec.predicate || 'Mahir'}
+              </span>
+            `;
+            note = rec.feedback || 'Evaluasi simulasi gladi bersih telah dinilai dan diverifikasi oleh fasilitator.';
+          } else {
+            const hasD0Work = taskMap['0_lkpd'] || taskMap['0_asesmen'] || taskMap['0_refleksi'] || taskMap['0_materi'];
+            if (hasD0Work) {
+              scoreHtml = `
+                <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300">
+                  ⭐⭐⭐⭐⭐ Bintang 5 (Skor: 100)
+                </span>
+              `;
+              note = 'Aktivitas gladi bersih selesai dikerjakan siswa. Menunggu review lanjutan tim fasilitator.';
+            } else {
+              scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Belum Dikerjakan</span>';
+              note = 'Simulasi pra-keberangkatan instrumen FINCESTEM.';
+            }
+          }
+        } else if (isFieldTrip) {
+          if (rec && rec.score !== null && rec.score !== undefined && rec.score !== '') {
+            scoreHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+                Nilai Fasilitator: ${rec.score} · ${rec.predicate || 'Mahir'}
+              </span>
+            `;
+            note = rec.feedback || 'Aktivitas lapangan telah dinilai dan diverifikasi oleh tim fasilitator.';
+          } else {
+            const isDone = FincestemCore.progress.isDayStudentTasksDone(prog, i);
+            if (isDone) {
+              const ftScore = FincestemCore.progress.calculateFieldTripScore(i, getFTSubmitTime(i, taskMap), studentNisn);
+              const starsText = ftScore.stars === 5 ? '⭐⭐⭐⭐⭐' : '⭐⭐⭐⭐☆';
+              scoreHtml = `
+                <span class="px-3 py-1 rounded-xl text-xs font-black ${ftScore.stars === 5 ? 'bg-amber-100 text-amber-900 border-amber-300' : 'bg-teal-100 text-teal-900 border-teal-300'} border">
+                  ${starsText} Nilai: ${ftScore.score} · ${ftScore.predicate}
+                </span>
+              `;
+              note = ftScore.is_emergency_override
+                ? `Koreksi Khusus Kebijakan Admin: ${ftScore.reason}`
+                : `Aktivitas Day ${i} selesai pada ${ftScore.time_formatted}. ${ftScore.reason}.`;
+            } else {
+              scoreHtml = '<span class="text-slate-400 font-semibold italic text-xs">Menunggu Pengerjaan</span>';
+              note = `Selesaikan seluruh aktivitas dan jurnal refleksi Day ${i} untuk memperoleh verifikasi otomatis nilai lapangan.`;
+            }
+          }
+        } else {
+          if (rec && rec.score !== null && rec.score !== undefined && rec.score !== '') {
+            scoreHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300">
+                Nilai Fasilitator: ${rec.score} · ${rec.predicate || 'Sangat Baik'}
               </span>
             `;
             note = rec.feedback || 'Aktivitas lapangan telah diverifikasi oleh tim fasilitator kokurikuler.';

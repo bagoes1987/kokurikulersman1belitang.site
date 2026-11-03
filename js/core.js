@@ -3874,8 +3874,9 @@ const FincestemCore = {
           finalStatus = 'completed';
         }
 
+        const targetDay = (evalData.day_number === 0 || evalData.day_number === '0') ? 0 : (parseInt(evalData.day_number) || 1);
         const newFeedback = {
-          day_number: parseInt(evalData.day_number) || 1,
+          day_number: targetDay,
           task_type: evalData.task_type || 'general',
           score: score,
           predicate: predicate,
@@ -3891,14 +3892,24 @@ const FincestemCore = {
 
         prog.latest_feedback = newFeedback;
         if (!Array.isArray(prog.records)) prog.records = [];
-        prog.records = prog.records.filter(r => !(parseInt(r.day_number) === newFeedback.day_number && r.task_type === newFeedback.task_type));
+        prog.records = prog.records.filter(r => !(parseInt(r.day_number) === newFeedback.day_number && (r.task_type === newFeedback.task_type || r.task_type === 'general' || r.task_type === 'lkpd')));
         prog.records.push(newFeedback);
 
         if (!prog.task_map) prog.task_map = {};
         prog.task_map[newFeedback.day_number + '_' + newFeedback.task_type] = {
           status: finalStatus,
           score: score,
-          feedback: newFeedback.feedback
+          feedback: newFeedback.feedback,
+          facilitator_name: newFeedback.facilitator_name,
+          updated_at: newFeedback.updated_at
+        };
+        // Sinkronkan juga ke key general agar konsisten di level hari
+        prog.task_map[newFeedback.day_number + '_general'] = {
+          status: finalStatus,
+          score: score,
+          feedback: newFeedback.feedback,
+          facilitator_name: newFeedback.facilitator_name,
+          updated_at: newFeedback.updated_at
         };
 
         // Recalculate completed_days: HANYA HARI DENGAN STATUS 'completed'

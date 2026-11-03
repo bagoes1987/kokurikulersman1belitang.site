@@ -62,6 +62,7 @@ if ($action === 'list') {
             OR LPAD(d.uploaded_by_nisn, 10, '0') = LPAD(u.identifier, 10, '0')
         )
         $whereSql
+        GROUP BY d.id
         ORDER BY d.created_at DESC
         LIMIT $limit
     ";
@@ -69,8 +70,14 @@ if ($action === 'list') {
     $stmt->execute($params);
     $rows = $stmt->fetchAll();
 
-    // Pastikan field source, has_geotag, dan day konsisten di setiap row
-    $media = array_map(function($r) {
+    // Pastikan field source, has_geotag, dan day konsisten di setiap row serta bebas duplikasi
+    $seenIds = [];
+    $media = [];
+    foreach ($rows as $r) {
+        $id = (int)($r['id'] ?? 0);
+        if ($id > 0 && isset($seenIds[$id])) continue;
+        if ($id > 0) $seenIds[$id] = true;
+
         $src = !empty($r['source']) ? $r['source'] : (!empty($r['gps_location']) ? 'camera' : 'gallery');
         $hasGps = (isset($r['has_geotag']) && $r['has_geotag'] !== null) 
             ? (int)$r['has_geotag'] 
@@ -78,8 +85,8 @@ if ($action === 'list') {
         $r['source'] = $src;
         $r['has_geotag'] = $hasGps;
 
-        $dayNum = !empty($r['day']) ? (int)$r['day'] : 0;
-        if ($dayNum <= 0) {
+        $dayNum = (isset($r['day']) && $r['day'] !== null && $r['day'] !== '') ? (int)$r['day'] : -1;
+        if ($dayNum < 0) {
             $txt = ($r['title'] ?? '') . ' ' . ($r['caption'] ?? '') . ' ' . ($r['file_url'] ?? '');
             if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
                 $dayNum = (int)$m[1];
@@ -96,13 +103,13 @@ if ($action === 'list') {
             } else if (stripos($txt, 'bakpia') !== false) {
                 $dayNum = 7;
             } else {
-                $dayNum = 1;
+                $dayNum = 0;
             }
         }
         $r['day'] = $dayNum;
         $r['day_number'] = $dayNum;
-        return $r;
-    }, $rows);
+        $media[] = $r;
+    }
 
     jsonResponse(true, 'Dokumentasi berhasil diambil', $media);
 }
@@ -128,8 +135,9 @@ if ($action === 'add') {
     }
     $uploadedBy  = trim($input['uploaded_by'] ?? '');
 
-    $day = (int)($input['day'] ?? $input['day_number'] ?? 0);
-    if ($day <= 0) {
+    $rawDay = $input['day'] ?? $input['day_number'] ?? null;
+    $day = ($rawDay !== null && $rawDay !== '') ? (int)$rawDay : -1;
+    if ($day < 0) {
         $txt = $title . ' ' . $caption . ' ' . $fileUrl;
         if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
             $day = (int)$m[1];
@@ -146,7 +154,7 @@ if ($action === 'add') {
         } else if (stripos($txt, 'bakpia') !== false) {
             $day = 7;
         } else {
-            $day = 1;
+            $day = 0;
         }
     }
 
@@ -155,7 +163,7 @@ if ($action === 'add') {
     }
 
     // Anti-duplikasi di server: Jika foto serupa baru saja diunggah oleh siswa ini dalam 25 detik terakhir
-    if (!empty($uploadedBy) && $day > 0) {
+    if (!empty($uploadedBy) && $day >= 0) {
         try {
             $checkDup = $pdo->prepare("
                 SELECT `id`, `file_url`, `day` 
