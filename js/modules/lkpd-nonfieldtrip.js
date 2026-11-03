@@ -3220,24 +3220,24 @@
       focus: 'Kunjungan kilang padi / RMU lokal, observasi mesin pengering/penggiling, kalkulasi rendemen gabah ke beras, dan analisis biaya pengolahan.'
     },
     4: {
-      title: 'Day 4: Kewirausahaan UMKM & Rantai Pasok Lokal',
-      theme: 'Analisis Supply Chain, Logistik Distribusi & Margin Keuntungan Usaha',
-      focus: 'Investigasi alur pasok komoditas dari petani/produsen ke pasar konsumen, struktur biaya logistik, dan penetapan harga jual produk.'
+      title: 'Day 4: Ekosistem Irigasi Komering, Bendungan Perjaya & Air',
+      theme: 'Ekosistem Irigasi Komering, Bendungan Perjaya & Analisis Bentang Alam Geospasial',
+      focus: 'Eksplorasi bentang alam, geospasial, pemetaan titik koordinat GPS, dan infrastruktur tata kelola air persawahan OKU Timur: Jaringan Irigasi Komering dan Bendungan Perjaya.'
     },
     5: {
-      title: 'Day 5: Inklusi Keuangan Digital & Perbankan Desa',
-      theme: 'Penetrasi Transaksi Digital (QRIS, Agen Bank, EDC) & Akses Finansial Desa',
-      focus: 'Observasi akses perbankan tanpa kantor, tantangan sinyal/literasi digital pedagang pasar desa, dan mitigasi risiko penipuan finansial.'
+      title: 'Day 5: Produksi Video Lapangan: Finansial & Budaya',
+      theme: 'Pengambilan Footage Video: Wawancara Ekonomi Pasar/UMKM & Dokumentasi Kearifan Budaya Lokal',
+      focus: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar FINANCIAL (transaksi, modal pedagang, QRIS) dan CULTURE (arsitektur tradisional, tatakrama Komering, gotong royong warga).'
     },
     6: {
-      title: 'Day 6: Konservasi Lingkungan & Budaya Pertanian Belitang',
-      theme: 'Keberlanjutan Ekosistem, Efisiensi Pupuk & Kearifan Lokal Pertanian OKU Timur',
-      focus: 'Kajian keberlanjutan tanah, efisiensi penggunaan pupuk bersubsidi/organik, dan pengelolaan limbah jerami/sekam padi.'
+      title: 'Day 6: Produksi Video Lapangan: Eksplorasi & STEM',
+      theme: 'Pengambilan Footage Video: Lanskap Bentang Sawah, Stempel GPS & Mesin Alsintan Pertanian',
+      focus: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar EXPLORATION (bentang alam sawah, saluran air, GPS) dan STEM (mesin traktor, combine harvester, penggilingan padi RMU).'
     },
     7: {
-      title: 'Day 7: Evaluasi Akhir & Penyusunan Laporan Portofolio FINCESTEM',
-      theme: 'Sintesis Hasil Riset 7 Hari, Rekomendasi Kebijakan & Portofolio Karya',
-      focus: 'Penyusunan simpulan komprehensif, rekomendasi konkret bagi stakeholder lokal OKU Timur, dan penyusunan portofolio mandiri.'
+      title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas',
+      theme: 'Editing Video Dokumenter, Publikasi Link YouTube, Audit Kas & Evaluasi Akhir 4 Pilar',
+      focus: 'Penggabungan video dokumenter utuh (durasi 3-5 menit) di HP (CapCut/VN), pengunggahan ke YouTube, penyerahan link video riset di portal, serta penyusunan laporan rekonsiliasi tutup buku kas riset mandiri.'
     }
   };
 
@@ -3333,6 +3333,847 @@
       }
     }
   };
+
+  
+
+  // =========================================================================
+  // INSTRUMEN LKPD DAY 4: EXPLORATION (IRIGASI KOMERING & BENTANG ALAM)
+  // =========================================================================
+  function renderNonFieldTripDay4LKPD(isReadOnly) {
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
+      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+    // Cek data tersimpan
+    let saved = null;
+    try {
+      const raw = localStorage.getItem('fincestem_lkpd_nft_day4_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day4_' + cleanNisn);
+      if (raw) saved = JSON.parse(raw);
+    } catch(e) {}
+    if (!saved) {
+      try {
+        const d = localStorage.getItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn);
+        if (d) saved = JSON.parse(d);
+      } catch(e) {}
+    }
+    saved = saved || {};
+
+    const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
+    const readOnlyMode = isReadOnly || isSubmitted;
+
+    mainEl.innerHTML = `
+      <div class="max-w-4xl mx-auto px-3 sm:px-4 py-6 space-y-6">
+        <!-- Banner Header -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 text-white border border-emerald-700/40 shadow-xl relative overflow-hidden">
+          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-emerald-200 text-xs font-black uppercase tracking-wider mb-2">
+                <span>🧭 DAY 4 • PILAR EXPLORATION</span>
+              </div>
+              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Ekosistem Irigasi Komering, Bendungan Perjaya & Bentang Alam</h1>
+              <p class="text-xs sm:text-sm text-emerald-200/90 mt-1">Eksplorasi Geospasial, Pemetaan Koordinat GPS, dan Tata Kelola Air Persawahan OKU Timur</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-right shrink-0">
+              <div class="text-[11px] text-emerald-200 font-medium">Peserta Didik:</div>
+              <div class="text-xs sm:text-sm font-black text-white">${escapeHtml(studentName)}</div>
+              <div class="text-[11px] text-emerald-300 font-bold">NISN: ${escapeHtml(studentNisn)} • ${escapeHtml(studentClass)}</div>
+              <div class="text-[10px] text-emerald-200 mt-1 font-medium">Fasilitator: ${escapeHtml(fasilName)}</div>
+            </div>
+          </div>
+        </div>
+
+        ${isSubmitted ? `
+          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-900 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-emerald-700 text-2xl">check_circle</span>
+              <div>
+                <h4 class="font-extrabold text-xs sm:text-sm text-emerald-950">LKPD Day 4 Telah Berhasil Diserahkan!</h4>
+                <p class="text-[11px] text-emerald-800">Tersimpan resmi pada sistem. Anda dapat melihat kembali isian di bawah ini.</p>
+              </div>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full bg-emerald-200 text-emerald-950 font-black">Diserahkan</span>
+          </div>
+        ` : ''}
+
+        <form id="formNftLkpdDay4" onsubmit="event.preventDefault(); submitNonFieldTripDay4LKPD();" class="space-y-6">
+          <!-- Blok 1: Geospasial & Titik Pengamatan -->
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-700">pin_drop</span>
+              <span>1. Identifikasi Titik Pengamatan & Geospasial Lapangan</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Nama Desa / Lokasi Saluran Air:</label>
+                <input id="nftD4Location" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.location || '')}" placeholder="Contoh: Desa Sidomulyo / Saluran BK 10 Belitang" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Koordinat GPS (Latitude / Longitude) & Elevasi (Mdpl):</label>
+                <input id="nftD4Gps" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.gps || '')}" placeholder="Contoh: -4.1352° S, 104.5821° E • 45 mdpl" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Tingkatan / Hierarki Saluran Irigasi yang Diamati:</label>
+              <select id="nftD4ChannelType" ${readOnlyMode ? 'disabled' : ''} class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-bold">
+                <option value="primer" ${saved.channel_type === 'primer' ? 'selected' : ''}>Saluran Primer (Saluran Induk Belitang / Aliran Utama dari Perjaya)</option>
+                <option value="sekunder" ${saved.channel_type === 'sekunder' ? 'selected' : ''}>Saluran Sekunder (Saluran Cabang Antar-Blok / Penyuplai Desa)</option>
+                <option value="tersier" ${saved.channel_type === 'tersier' || !saved.channel_type ? 'selected' : ''}>Saluran Tersier (Saluran Pembagi Langsung Menuju Petak Sawah)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Blok 2: Karakteristik Aliran Air & Gravitasi -->
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-700">water_drop</span>
+              <span>2. Arsitektur Fisik, Pintu Air & Aliran Berbasis Gravitasi</span>
+            </h3>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Konstruksi Saluran & Kondisi Pintu Pengatur Air:</label>
+              <textarea id="nftD4Physical" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Deskripsikan apakah dinding saluran berupa pasangan semen beton atau tanah, keberadaan pintu ulir gerak pengatur debit air, dan kondisi kebersihan saluran dari sampah atau endapan lumpur... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">${escapeHtml(saved.physical || '')}</textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Analisis Peranan Gaya Gravitasi & Kemiringan Kontur Tanah:</label>
+              <textarea id="nftD4Gravity" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Jelaskan bagaimana kemiringan alami lahan OKU Timur memungkinkan air mengalir secara kontinu dari hulu Bendungan Perjaya tanpa pompa listrik besar... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">${escapeHtml(saved.gravity || '')}</textarea>
+            </div>
+          </div>
+
+          <!-- Blok 3: Kelembagaan P3A & Mitigasi Risiko -->
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-700">groups</span>
+              <span>3. Kelembagaan P3A, Jadwal Gilir Air & Solusi Pemeliharaan Saluran</span>
+            </h3>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Sistem Giliran Air & Kerja Sama Petani Pemakai Air (P3A):</label>
+              <textarea id="nftD4P3a" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Bagaimana perkumpulan petani pemakai air mengatur jadwal pembagian air saat musim kemarau agar tidak terjadi konflik antar-petani? (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">${escapeHtml(saved.p3a || '')}</textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Ide Inovasi Siswa untuk Mencegah Sedimentasi Lumpur & Menjaga Kebersihan Saluran:</label>
+              <textarea id="nftD4Solution" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Tuliskan gagasan konkret Anda dalam menjaga kelancaran saluran irigasi sawah di lingkungan Anda... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">${escapeHtml(saved.solution || '')}</textarea>
+            </div>
+          </div>
+
+          ${!readOnlyMode ? `
+            <div class="flex items-center justify-between gap-3 pt-2">
+              <button type="button" onclick="saveNonFieldTripDay4Draft()" class="px-5 py-2.5 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-black flex items-center gap-2 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-sm">bookmark</span>
+                <span>Simpan Draf</span>
+              </button>
+              <button type="submit" class="px-6 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black flex items-center gap-2 cursor-pointer transition-all shadow-md">
+                <span class="material-symbols-outlined text-sm">send</span>
+                <span>Serahkan Jawaban LKPD Day 4</span>
+              </button>
+            </div>
+          ` : ''}
+        </form>
+      </div>
+    `;
+  }
+
+  function saveNonFieldTripDay4Draft() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const data = {
+      location: document.getElementById('nftD4Location')?.value.trim() || '',
+      gps: document.getElementById('nftD4Gps')?.value.trim() || '',
+      channel_type: document.getElementById('nftD4ChannelType')?.value || 'tersier',
+      physical: document.getElementById('nftD4Physical')?.value.trim() || '',
+      gravity: document.getElementById('nftD4Gravity')?.value.trim() || '',
+      p3a: document.getElementById('nftD4P3a')?.value.trim() || '',
+      solution: document.getElementById('nftD4Solution')?.value.trim() || '',
+      updated_at: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn, JSON.stringify(data));
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Draf LKPD Day 4 berhasil disimpan!', 'success');
+    } catch(e) {}
+  }
+
+  function submitNonFieldTripDay4LKPD() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const data = {
+      location: document.getElementById('nftD4Location')?.value.trim() || '',
+      gps: document.getElementById('nftD4Gps')?.value.trim() || '',
+      channel_type: document.getElementById('nftD4ChannelType')?.value || 'tersier',
+      physical: document.getElementById('nftD4Physical')?.value.trim() || '',
+      gravity: document.getElementById('nftD4Gravity')?.value.trim() || '',
+      p3a: document.getElementById('nftD4P3a')?.value.trim() || '',
+      solution: document.getElementById('nftD4Solution')?.value.trim() || '',
+      submitted: true,
+      submitted_at: new Date().toISOString()
+    };
+
+    if (!data.location || !data.physical || !data.gravity || !data.solution) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Harap lengkapi seluruh isian pengamatan LKPD Day 4 sebelum menyerahkan.', 'warning');
+      return;
+    }
+
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day4_' + cleanNisn, JSON.stringify(data));
+      if (window.FincestemCore && FincestemCore.progress) {
+        FincestemCore.progress.saveTaskRecord(cleanNisn, 4, 'lkpd', data, 100);
+      }
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('LKPD Day 4 Berhasil Diserahkan Resmi!', 'success');
+      renderNonFieldTripDay4LKPD(true);
+    } catch(e) {}
+  }
+
+
+  // =========================================================================
+  // INSTRUMEN LKPD DAY 5: PRODUKSI VIDEO (FINANSIAL & BUDAYA)
+  // =========================================================================
+  function renderNonFieldTripDay5LKPD(isReadOnly) {
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
+      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+    let saved = null;
+    try {
+      const raw = localStorage.getItem('fincestem_lkpd_nft_day5_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day5_' + cleanNisn);
+      if (raw) saved = JSON.parse(raw);
+    } catch(e) {}
+    if (!saved) {
+      try {
+        const d = localStorage.getItem('fincestem_lkpd_nft_day5_draft_' + cleanNisn);
+        if (d) saved = JSON.parse(d);
+      } catch(e) {}
+    }
+    saved = saved || {};
+
+    const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
+    const readOnlyMode = isReadOnly || isSubmitted;
+
+    mainEl.innerHTML = `
+      <div class="max-w-4xl mx-auto px-3 sm:px-4 py-6 space-y-6">
+        <!-- Banner Header -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-950 via-slate-900 to-purple-950 text-white border border-amber-700/40 shadow-xl relative overflow-hidden">
+          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-amber-200 text-xs font-black uppercase tracking-wider mb-2">
+                <span>🎬 DAY 5 • PRODUKSI VIDEO (BAGIAN 1)</span>
+              </div>
+              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Produksi Video Lapangan: Finansial & Budaya</h1>
+              <p class="text-xs sm:text-sm text-amber-200/90 mt-1">Log Storyboard & Pengambilan Footage HP: Wawancara Ekonomi Pasar & Kearifan Budaya OKU Timur</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-right shrink-0">
+              <div class="text-[11px] text-amber-200 font-medium">Peserta Didik:</div>
+              <div class="text-xs sm:text-sm font-black text-white">${escapeHtml(studentName)}</div>
+              <div class="text-[11px] text-amber-300 font-bold">NISN: ${escapeHtml(studentNisn)} • ${escapeHtml(studentClass)}</div>
+              <div class="text-[10px] text-amber-200 mt-1 font-medium">Fasilitator: ${escapeHtml(fasilName)}</div>
+            </div>
+          </div>
+        </div>
+
+        ${isSubmitted ? `
+          <div class="p-4 rounded-2xl bg-amber-50 border border-amber-300 text-amber-950 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-amber-700 text-2xl">check_circle</span>
+              <div>
+                <h4 class="font-extrabold text-xs sm:text-sm text-amber-950">Log Rekaman Video Day 5 Telah Berhasil Diserahkan!</h4>
+                <p class="text-[11px] text-amber-800">Tersimpan rapi di sistem. Klip video siap Anda gunakan saat proses editing di Day 7.</p>
+              </div>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full bg-amber-200 text-amber-950 font-black">Diserahkan</span>
+          </div>
+        ` : ''}
+
+        <form id="formNftLkpdDay5" onsubmit="event.preventDefault(); submitNonFieldTripDay5LKPD();" class="space-y-6">
+          <!-- Blok 1: Log Rekaman Video Finansial -->
+          <div class="p-5 rounded-3xl bg-white border border-amber-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-amber-950 flex items-center gap-2">
+              <span class="material-symbols-outlined text-amber-700">payments</span>
+              <span>1. Log Rekaman Video Pilar Financial (Ekonomi & Transaksi)</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Narasumber / Pedagang / UMKM yang Diwawancarai:</label>
+                <input id="nftD5FinSubject" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.fin_subject || '')}" placeholder="Contoh: Pak Budi (Pedagang Sayur Pasar Belitang)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-amber-600 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Durasi Klip & Nama File Video HP:</label>
+                <input id="nftD5FinFile" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.fin_file || '')}" placeholder="Contoh: 45 detik • VID_FIN_01.mp4" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-amber-600 outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Adegan Rekaman Finansial (Wawancara Modal/QRIS/Transaksi Belanja):</label>
+              <textarea id="nftD5FinDesc" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Ceritakan interaksi yang Anda rekam: pertanyaan modal, perputaran omzet harian pedagang, atau adegan transaksi belanja siswa beserta struk nota... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-amber-600 outline-none">${escapeHtml(saved.fin_desc || '')}</textarea>
+            </div>
+          </div>
+
+          <!-- Blok 2: Log Rekaman Video Culture -->
+          <div class="p-5 rounded-3xl bg-white border border-purple-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-purple-950 flex items-center gap-2">
+              <span class="material-symbols-outlined text-purple-700">theater_comedy</span>
+              <span>2. Log Rekaman Video Pilar Culture (Kearifan Budaya & Adat)</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Objek Budaya / Tokoh Masyarakat yang Direkam:</label>
+                <input id="nftD5CulSubject" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.cul_subject || '')}" placeholder="Contoh: Rumah Panggung Kayu Komering / Tetua Desa" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-purple-600 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Durasi Klip & Nama File Video HP:</label>
+                <input id="nftD5CulFile" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.cul_file || '')}" placeholder="Contoh: 50 detik • VID_CUL_01.mp4" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-purple-600 outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Adegan Rekaman Budaya (Nilai Santun Tabik Bun / Gotong Royong):</label>
+              <textarea id="nftD5CulDesc" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Ceritakan adegan budaya yang Anda rekam: sapaan hormat adat Komering, kebersamaan gotong royong warga desa, atau keunikan seni/arsitektur lokal... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-purple-600 outline-none">${escapeHtml(saved.cul_desc || '')}</textarea>
+            </div>
+          </div>
+
+          <!-- Blok 3: Draf Suara Latar (Voice-Over) -->
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-700">mic</span>
+              <span>3. Draf Teks Suara Latar (Voice-Over) Pilar Finansial & Budaya</span>
+            </h3>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Naskah Kalimat yang Akan Anda Ucapkan saat Mengisi Suara Video:</label>
+              <textarea id="nftD5Voiceover" rows="4" ${readOnlyMode ? 'readonly' : ''} placeholder="Tuliskan naskah suara pengantar Anda saat klip pilar Financial dan Culture tayang di video dokumenter... (Minimal 120 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-amber-600 outline-none">${escapeHtml(saved.voiceover || '')}</textarea>
+            </div>
+          </div>
+
+          ${!readOnlyMode ? `
+            <div class="flex items-center justify-between gap-3 pt-2">
+              <button type="button" onclick="saveNonFieldTripDay5Draft()" class="px-5 py-2.5 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-black flex items-center gap-2 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-sm">bookmark</span>
+                <span>Simpan Draf</span>
+              </button>
+              <button type="submit" class="px-6 py-2.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-black flex items-center gap-2 cursor-pointer transition-all shadow-md">
+                <span class="material-symbols-outlined text-sm">send</span>
+                <span>Serahkan Log Video Day 5</span>
+              </button>
+            </div>
+          ` : ''}
+        </form>
+      </div>
+    `;
+  }
+
+  function saveNonFieldTripDay5Draft() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const data = {
+      fin_subject: document.getElementById('nftD5FinSubject')?.value.trim() || '',
+      fin_file: document.getElementById('nftD5FinFile')?.value.trim() || '',
+      fin_desc: document.getElementById('nftD5FinDesc')?.value.trim() || '',
+      cul_subject: document.getElementById('nftD5CulSubject')?.value.trim() || '',
+      cul_file: document.getElementById('nftD5CulFile')?.value.trim() || '',
+      cul_desc: document.getElementById('nftD5CulDesc')?.value.trim() || '',
+      voiceover: document.getElementById('nftD5Voiceover')?.value.trim() || '',
+      updated_at: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day5_draft_' + cleanNisn, JSON.stringify(data));
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Draf LKPD Day 5 berhasil disimpan!', 'success');
+    } catch(e) {}
+  }
+
+  function submitNonFieldTripDay5LKPD() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const data = {
+      fin_subject: document.getElementById('nftD5FinSubject')?.value.trim() || '',
+      fin_file: document.getElementById('nftD5FinFile')?.value.trim() || '',
+      fin_desc: document.getElementById('nftD5FinDesc')?.value.trim() || '',
+      cul_subject: document.getElementById('nftD5CulSubject')?.value.trim() || '',
+      cul_file: document.getElementById('nftD5CulFile')?.value.trim() || '',
+      cul_desc: document.getElementById('nftD5CulDesc')?.value.trim() || '',
+      voiceover: document.getElementById('nftD5Voiceover')?.value.trim() || '',
+      submitted: true,
+      submitted_at: new Date().toISOString()
+    };
+
+    if (!data.fin_subject || !data.fin_desc || !data.cul_subject || !data.cul_desc || !data.voiceover) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Harap lengkapi log rekaman video Financial dan Culture sebelum menyerahkan.', 'warning');
+      return;
+    }
+
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day5_' + cleanNisn, JSON.stringify(data));
+      if (window.FincestemCore && FincestemCore.progress) {
+        FincestemCore.progress.saveTaskRecord(cleanNisn, 5, 'lkpd', data, 100);
+      }
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Log Rekaman Video Day 5 Berhasil Diserahkan Resmi!', 'success');
+      renderNonFieldTripDay5LKPD(true);
+    } catch(e) {}
+  }
+
+
+  // =========================================================================
+  // INSTRUMEN LKPD DAY 6: PRODUKSI VIDEO (EKSPLORASI & STEM)
+  // =========================================================================
+  function renderNonFieldTripDay6LKPD(isReadOnly) {
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
+      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+    let saved = null;
+    try {
+      const raw = localStorage.getItem('fincestem_lkpd_nft_day6_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day6_' + cleanNisn);
+      if (raw) saved = JSON.parse(raw);
+    } catch(e) {}
+    if (!saved) {
+      try {
+        const d = localStorage.getItem('fincestem_lkpd_nft_day6_draft_' + cleanNisn);
+        if (d) saved = JSON.parse(d);
+      } catch(e) {}
+    }
+    saved = saved || {};
+
+    const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
+    const readOnlyMode = isReadOnly || isSubmitted;
+
+    mainEl.innerHTML = `
+      <div class="max-w-4xl mx-auto px-3 sm:px-4 py-6 space-y-6">
+        <!-- Banner Header -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-teal-950 via-slate-900 to-blue-950 text-white border border-teal-700/40 shadow-xl relative overflow-hidden">
+          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-cyan-200 text-xs font-black uppercase tracking-wider mb-2">
+                <span>🎥 DAY 6 • PRODUKSI VIDEO (BAGIAN 2)</span>
+              </div>
+              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Produksi Video Lapangan: Eksplorasi & STEM</h1>
+              <p class="text-xs sm:text-sm text-cyan-200/90 mt-1">Log Storyboard & Footage HP: Lanskap Sawah Belitang, Stempel GPS & Mesin Alsintan Pertanian</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-right shrink-0">
+              <div class="text-[11px] text-cyan-200 font-medium">Peserta Didik:</div>
+              <div class="text-xs sm:text-sm font-black text-white">${escapeHtml(studentName)}</div>
+              <div class="text-[11px] text-cyan-300 font-bold">NISN: ${escapeHtml(studentNisn)} • ${escapeHtml(studentClass)}</div>
+              <div class="text-[10px] text-cyan-200 mt-1 font-medium">Fasilitator: ${escapeHtml(fasilName)}</div>
+            </div>
+          </div>
+        </div>
+
+        ${isSubmitted ? `
+          <div class="p-4 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-teal-700 text-2xl">check_circle</span>
+              <div>
+                <h4 class="font-extrabold text-xs sm:text-sm text-teal-950">Log Rekaman Video Day 6 Telah Berhasil Diserahkan!</h4>
+                <p class="text-[11px] text-teal-800">Semua klip pilar Exploration & STEM telah terarsip. Siap untuk proses editing final di Day 7.</p>
+              </div>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full bg-teal-200 text-teal-950 font-black">Diserahkan</span>
+          </div>
+        ` : ''}
+
+        <form id="formNftLkpdDay6" onsubmit="event.preventDefault(); submitNonFieldTripDay6LKPD();" class="space-y-6">
+          <!-- Blok 1: Log Rekaman Video Exploration -->
+          <div class="p-5 rounded-3xl bg-white border border-emerald-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-emerald-950 flex items-center gap-2">
+              <span class="material-symbols-outlined text-emerald-700">explore</span>
+              <span>1. Log Rekaman Video Pilar Exploration (Bentang Alam & Koordinat GPS)</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Lokasi Lanskap Sawah / Saluran Irigasi yang Direkam:</label>
+                <input id="nftD6ExpLocation" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.exp_location || '')}" placeholder="Contoh: Hamparan Persawahan BK 9 / Pintu Air Primer" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-teal-600 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Durasi Klip & Nama File Video HP (dengan Stempel GPS):</label>
+                <input id="nftD6ExpFile" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.exp_file || '')}" placeholder="Contoh: 40 detik • VID_EXP_GPS.mp4" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-teal-600 outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Adegan Rekaman Bentang Alam & Geospasial:</label>
+              <textarea id="nftD6ExpDesc" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Ceritakan panorama bentang alam yang Anda rekam: arah aliran air, topografi persawahan, pembacaan koordinat satelit GPS dan ketinggian mdpl pada kamera... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-teal-600 outline-none">${escapeHtml(saved.exp_desc || '')}</textarea>
+            </div>
+          </div>
+
+          <!-- Blok 2: Log Rekaman Video STEM -->
+          <div class="p-5 rounded-3xl bg-white border border-blue-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-blue-950 flex items-center gap-2">
+              <span class="material-symbols-outlined text-blue-700">precision_manufacturing</span>
+              <span>2. Log Rekaman Video Pilar STEM (Mesin Alsintan & Sains)</span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Mesin Pertanian / Objek Sains yang Direkam:</label>
+                <input id="nftD6StemMachine" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.stem_machine || '')}" placeholder="Contoh: Combine Harvester / Traktor Roda 4 / Mesin RMU" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Durasi Klip & Nama File Video HP:</label>
+                <input id="nftD6StemFile" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.stem_file || '')}" placeholder="Contoh: 45 detik • VID_STEM_ALSINTAN.mp4" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 outline-none">
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Deskripsi Adegan Rekaman Sains & Mekanisasi Alsintan:</label>
+              <textarea id="nftD6StemDesc" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Jelaskan cara kerja mekanis alsintan yang Anda rekam: bagaimana mesin mengolah tanah/memanen padi, pemisahan gabah, atau penjelasan sains kualitas tanah/air... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-blue-600 outline-none">${escapeHtml(saved.stem_desc || '')}</textarea>
+            </div>
+          </div>
+
+          <!-- Blok 3: Draf Suara Latar (Voice-Over) -->
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm space-y-4">
+            <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-700">mic</span>
+              <span>3. Draf Teks Suara Latar (Voice-Over) Pilar Eksplorasi & STEM</span>
+            </h3>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Naskah Kalimat yang Akan Anda Ucapkan saat Mengisi Suara Video:</label>
+              <textarea id="nftD6Voiceover" rows="4" ${readOnlyMode ? 'readonly' : ''} placeholder="Tuliskan naskah suara pengantar Anda saat klip pilar Exploration dan STEM tayang di video dokumenter... (Minimal 120 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-teal-600 outline-none">${escapeHtml(saved.voiceover || '')}</textarea>
+            </div>
+          </div>
+
+          ${!readOnlyMode ? `
+            <div class="flex items-center justify-between gap-3 pt-2">
+              <button type="button" onclick="saveNonFieldTripDay6Draft()" class="px-5 py-2.5 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-black flex items-center gap-2 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-sm">bookmark</span>
+                <span>Simpan Draf</span>
+              </button>
+              <button type="submit" class="px-6 py-2.5 rounded-2xl bg-teal-600 hover:bg-teal-700 text-white text-xs font-black flex items-center gap-2 cursor-pointer transition-all shadow-md">
+                <span class="material-symbols-outlined text-sm">send</span>
+                <span>Serahkan Log Video Day 6</span>
+              </button>
+            </div>
+          ` : ''}
+        </form>
+      </div>
+    `;
+  }
+
+  function saveNonFieldTripDay6Draft() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const data = {
+      exp_location: document.getElementById('nftD6ExpLocation')?.value.trim() || '',
+      exp_file: document.getElementById('nftD6ExpFile')?.value.trim() || '',
+      exp_desc: document.getElementById('nftD6ExpDesc')?.value.trim() || '',
+      stem_machine: document.getElementById('nftD6StemMachine')?.value.trim() || '',
+      stem_file: document.getElementById('nftD6StemFile')?.value.trim() || '',
+      stem_desc: document.getElementById('nftD6StemDesc')?.value.trim() || '',
+      voiceover: document.getElementById('nftD6Voiceover')?.value.trim() || '',
+      updated_at: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day6_draft_' + cleanNisn, JSON.stringify(data));
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Draf LKPD Day 6 berhasil disimpan!', 'success');
+    } catch(e) {}
+  }
+
+  function submitNonFieldTripDay6LKPD() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const data = {
+      exp_location: document.getElementById('nftD6ExpLocation')?.value.trim() || '',
+      exp_file: document.getElementById('nftD6ExpFile')?.value.trim() || '',
+      exp_desc: document.getElementById('nftD6ExpDesc')?.value.trim() || '',
+      stem_machine: document.getElementById('nftD6StemMachine')?.value.trim() || '',
+      stem_file: document.getElementById('nftD6StemFile')?.value.trim() || '',
+      stem_desc: document.getElementById('nftD6StemDesc')?.value.trim() || '',
+      voiceover: document.getElementById('nftD6Voiceover')?.value.trim() || '',
+      submitted: true,
+      submitted_at: new Date().toISOString()
+    };
+
+    if (!data.exp_location || !data.exp_desc || !data.stem_machine || !data.stem_desc || !data.voiceover) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Harap lengkapi log rekaman video Exploration dan STEM sebelum menyerahkan.', 'warning');
+      return;
+    }
+
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day6_' + cleanNisn, JSON.stringify(data));
+      if (window.FincestemCore && FincestemCore.progress) {
+        FincestemCore.progress.saveTaskRecord(cleanNisn, 6, 'lkpd', data, 100);
+      }
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Log Rekaman Video Day 6 Berhasil Diserahkan Resmi!', 'success');
+      renderNonFieldTripDay6LKPD(true);
+    } catch(e) {}
+  }
+
+
+  // =========================================================================
+  // INSTRUMEN LKPD DAY 7: FINAL EDITING, LINK VIDEO YOUTUBE & AUDIT KAS
+  // =========================================================================
+  function renderNonFieldTripDay7LKPD(isReadOnly) {
+    const mainEl = document.querySelector('main');
+    if (!mainEl) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
+      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+
+    let saved = null;
+    try {
+      const raw = localStorage.getItem('fincestem_lkpd_nft_day7_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day7_' + cleanNisn);
+      if (raw) saved = JSON.parse(raw);
+    } catch(e) {}
+    if (!saved) {
+      try {
+        const d = localStorage.getItem('fincestem_lkpd_nft_day7_draft_' + cleanNisn);
+        if (d) saved = JSON.parse(d);
+      } catch(e) {}
+    }
+    saved = saved || {};
+
+    const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
+    const readOnlyMode = isReadOnly || isSubmitted;
+
+    // Helper extract YouTube Video ID
+    function getYoutubeId(url) {
+      if (!url) return '';
+      const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+      return m ? m[1] : '';
+    }
+    const currentVideoId = getYoutubeId(saved.youtube_url || '');
+
+    mainEl.innerHTML = `
+      <div class="max-w-4xl mx-auto px-3 sm:px-4 py-6 space-y-6">
+        <!-- Banner Header Puncak -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-950 via-slate-900 to-indigo-950 text-white border border-amber-700/40 shadow-xl relative overflow-hidden">
+          <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-amber-200 text-xs font-black uppercase tracking-wider mb-2">
+                <span>🌟 DAY 7 • PUNCAK RISET MANDIRI (SINTESIS 4 PILAR)</span>
+              </div>
+              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Final Editing, Link Video YouTube & Rekonsiliasi Kas</h1>
+              <p class="text-xs sm:text-sm text-amber-200/90 mt-1">Pengumpulan Karya Video Dokumenter YouTube, Tutup Buku Kas & Penilaian Akhir Rapor Fasil</p>
+            </div>
+            <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-right shrink-0">
+              <div class="text-[11px] text-amber-200 font-medium">Peserta Didik:</div>
+              <div class="text-xs sm:text-sm font-black text-white">${escapeHtml(studentName)}</div>
+              <div class="text-[11px] text-amber-300 font-bold">NISN: ${escapeHtml(studentNisn)} • ${escapeHtml(studentClass)}</div>
+              <div class="text-[10px] text-amber-200 mt-1 font-medium">Fasilitator: ${escapeHtml(fasilName)}</div>
+            </div>
+          </div>
+        </div>
+
+        ${isSubmitted ? `
+          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-emerald-700 text-2xl">check_circle</span>
+              <div>
+                <h4 class="font-extrabold text-xs sm:text-sm text-emerald-950">Portofolio Final Day 7 Telah Berhasil Diserahkan!</h4>
+                <p class="text-[11px] text-emerald-800">Tautan video YouTube dan rekonsiliasi kas telah masuk ke dasbor guru fasilitator untuk penilaian rapor akhir.</p>
+              </div>
+            </div>
+            <span class="text-xs px-3 py-1 rounded-full bg-emerald-200 text-emerald-950 font-black">Tuntas</span>
+          </div>
+        ` : ''}
+
+        <form id="formNftLkpdDay7" onsubmit="event.preventDefault(); submitNonFieldTripDay7LKPD();" class="space-y-6">
+          <!-- Blok 1: Penyerahan Video Dokumenter YouTube -->
+          <div class="p-5 rounded-3xl bg-white border border-rose-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                <span class="material-symbols-outlined text-rose-600">smart_display</span>
+                <span>1. Penyerahan Karya Video Dokumenter Riset (YouTube)</span>
+              </h3>
+              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">Durasi 3–5 Menit</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Judul Video Dokumenter Karya Anda:</label>
+                <input id="nftD7VideoTitle" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.video_title || '')}" placeholder="Contoh: Harmoni Lumbung Pangan Belitang: Eksplorasi 4 Pilar FINCESTEM 2026" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-1">Aplikasi Video Editor yang Digunakan:</label>
+                <select id="nftD7VideoApp" ${readOnlyMode ? 'disabled' : ''} class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none font-bold">
+                  <option value="CapCut" ${saved.video_app === 'CapCut' || !saved.video_app ? 'selected' : ''}>CapCut Mobile</option>
+                  <option value="VN Video Editor" ${saved.video_app === 'VN Video Editor' ? 'selected' : ''}>VN Video Editor</option>
+                  <option value="Canva" ${saved.video_app === 'Canva' ? 'selected' : ''}>Canva</option>
+                  <option value="KineMaster" ${saved.video_app === 'KineMaster' ? 'selected' : ''}>KineMaster</option>
+                  <option value="Lainnya" ${saved.video_app === 'Lainnya' ? 'selected' : ''}>Aplikasi Lainnya</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Tautan / URL Link Video YouTube Resmi (Bisa Publik / Unlisted):</label>
+              <div class="flex gap-2">
+                <input id="nftD7YoutubeUrl" type="url" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.youtube_url || '')}" placeholder="https://youtu.be/... atau https://www.youtube.com/watch?v=..." class="flex-1 px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none font-mono">
+                <button type="button" onclick="previewNftDay7Youtube()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs flex items-center gap-1.5 cursor-pointer shrink-0">
+                  <span class="material-symbols-outlined text-sm">play_circle</span>
+                  <span>Tes Putar</span>
+                </button>
+              </div>
+              <p class="text-[10.5px] text-slate-500 mt-1">💡 Tips: Pastikan setelan video di YouTube Anda disetel <strong>Publik</strong> atau <strong>Tidak Terdaftar (Unlisted)</strong> agar guru fasilitator bisa menontonnya langsung.</p>
+            </div>
+
+            <!-- YouTube Preview Player Container -->
+            <div id="nftD7PlayerContainer" class="${currentVideoId ? '' : 'hidden'} mt-3 p-3 rounded-2xl bg-slate-900 border border-slate-800">
+              <div class="text-[11px] font-bold text-rose-300 mb-2 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">play_arrow</span>
+                <span>Pratinjau Pemutar Video YouTube:</span>
+              </div>
+              <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-inner">
+                <iframe id="nftD7IframePlayer" src="${currentVideoId ? 'https://www.youtube-nocookie.com/embed/' + currentVideoId : ''}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Sinopsis & Deskripsi Temuan Riset 4 Pilar (Financial, Culture, Exploration, STEM):</label>
+              <textarea id="nftD7Synopsis" rows="4" ${readOnlyMode ? 'readonly' : ''} placeholder="Tuliskan sinopsis video dokumenter Anda: pesan utama karya, bagaimana pilar Finansial, Budaya, Eksplorasi bentang alam, dan STEM terhubung menjadi satu kesatuan di OKU Timur... (Minimal 150 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none">${escapeHtml(saved.synopsis || '')}</textarea>
+            </div>
+          </div>
+
+          <!-- Blok 2: Rekonsiliasi Tutup Buku Kas Riset Mandiri -->
+          <div class="p-5 rounded-3xl bg-white border border-emerald-200 shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
+                <span class="material-symbols-outlined text-emerald-700">account_balance_wallet</span>
+                <span>2. Rekonsiliasi Tutup Buku Kas & Audit Anggaran Riset</span>
+              </h3>
+              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Audit Finansial</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200">
+                <label class="block text-[11px] font-extrabold text-amber-950 mb-1">Rencana Anggaran Awal (Rp):</label>
+                <input id="nftD7KasAwal" type="number" oninput="recalcNftDay7Kas()" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.kas_awal || '150000')}" class="w-full px-2.5 py-1.5 text-xs font-black rounded-lg border border-amber-300 bg-white outline-none">
+              </div>
+              <div class="p-3 rounded-2xl bg-rose-50/70 border border-rose-200">
+                <label class="block text-[11px] font-extrabold text-rose-950 mb-1">Total Realisasi Belanja 7 Hari (Rp):</label>
+                <input id="nftD7KasRealisasi" type="number" oninput="recalcNftDay7Kas()" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.kas_realisasi || '120000')}" class="w-full px-2.5 py-1.5 text-xs font-black rounded-lg border border-rose-300 bg-white outline-none">
+              </div>
+              <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200">
+                <label class="block text-[11px] font-extrabold text-emerald-950 mb-1">Sisa Saldo Kas Riil (Rp):</label>
+                <input id="nftD7KasSisa" type="text" readonly value="${escapeHtml(saved.kas_sisa || '30000')}" class="w-full px-2.5 py-1.5 text-xs font-black rounded-lg border border-emerald-300 bg-emerald-100/60 text-emerald-950 outline-none">
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Rincian Pengeluaran Terbesar & Bukti Pembukuan Kas:</label>
+              <textarea id="nftD7KasRincian" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Contoh: Bensin motor keliling observasi irigasi Rp 40.000, konsumsi wawancara Rp 50.000, kuota internet upload video Rp 30.000. Seluruh nota tersimpan... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">${escapeHtml(saved.kas_rincian || '')}</textarea>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1">Refleksi Pembelajaran Finansial (Manajemen Uang Mandiri):</label>
+              <textarea id="nftD7KasRefleksi" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Pelajaran berharga apa yang Anda dapatkan dalam mengendalikan pengeluaran dan disiplin mencatat kas harian selama 7 hari riset? (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">${escapeHtml(saved.kas_refleksi || '')}</textarea>
+            </div>
+          </div>
+
+          ${!readOnlyMode ? `
+            <div class="flex items-center justify-between gap-3 pt-2">
+              <button type="button" onclick="saveNonFieldTripDay7Draft()" class="px-5 py-2.5 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-black flex items-center gap-2 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-sm">bookmark</span>
+                <span>Simpan Draf</span>
+              </button>
+              <button type="submit" class="px-6 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black flex items-center gap-2 cursor-pointer transition-all shadow-md">
+                <span class="material-symbols-outlined text-sm">rocket_launch</span>
+                <span>Serahkan Karya Final Day 7</span>
+              </button>
+            </div>
+          ` : ''}
+        </form>
+      </div>
+    `;
+  }
+
+  function previewNftDay7Youtube() {
+    const url = document.getElementById('nftD7YoutubeUrl')?.value.trim() || '';
+    if (!url) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Masukkan link video YouTube terlebih dahulu.', 'warning');
+      return;
+    }
+    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    const videoId = m ? m[1] : '';
+    const container = document.getElementById('nftD7PlayerContainer');
+    const iframe = document.getElementById('nftD7IframePlayer');
+    if (videoId && container && iframe) {
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + videoId;
+      container.classList.remove('hidden');
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Pemutar YouTube berhasil dimuat!', 'success');
+    } else {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Format URL YouTube tidak valid. Contoh valid: https://youtu.be/... atau https://www.youtube.com/watch?v=...', 'danger');
+    }
+  }
+
+  function recalcNftDay7Kas() {
+    const awal = parseInt(document.getElementById('nftD7KasAwal')?.value) || 0;
+    const realisasi = parseInt(document.getElementById('nftD7KasRealisasi')?.value) || 0;
+    const sisa = awal - realisasi;
+    const elSisa = document.getElementById('nftD7KasSisa');
+    if (elSisa) {
+      elSisa.value = (sisa >= 0 ? '' : '-') + 'Rp ' + Math.abs(sisa).toLocaleString('id-ID');
+    }
+  }
+
+  function saveNonFieldTripDay7Draft() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const data = {
+      video_title: document.getElementById('nftD7VideoTitle')?.value.trim() || '',
+      video_app: document.getElementById('nftD7VideoApp')?.value || 'CapCut',
+      youtube_url: document.getElementById('nftD7YoutubeUrl')?.value.trim() || '',
+      synopsis: document.getElementById('nftD7Synopsis')?.value.trim() || '',
+      kas_awal: document.getElementById('nftD7KasAwal')?.value || '0',
+      kas_realisasi: document.getElementById('nftD7KasRealisasi')?.value || '0',
+      kas_sisa: document.getElementById('nftD7KasSisa')?.value || 'Rp 0',
+      kas_rincian: document.getElementById('nftD7KasRincian')?.value.trim() || '',
+      kas_refleksi: document.getElementById('nftD7KasRefleksi')?.value.trim() || '',
+      updated_at: new Date().toISOString()
+    };
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day7_draft_' + cleanNisn, JSON.stringify(data));
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Draf LKPD Day 7 berhasil disimpan!', 'success');
+    } catch(e) {}
+  }
+
+  function submitNonFieldTripDay7LKPD() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const data = {
+      video_title: document.getElementById('nftD7VideoTitle')?.value.trim() || '',
+      video_app: document.getElementById('nftD7VideoApp')?.value || 'CapCut',
+      youtube_url: document.getElementById('nftD7YoutubeUrl')?.value.trim() || '',
+      synopsis: document.getElementById('nftD7Synopsis')?.value.trim() || '',
+      kas_awal: document.getElementById('nftD7KasAwal')?.value || '0',
+      kas_realisasi: document.getElementById('nftD7KasRealisasi')?.value || '0',
+      kas_sisa: document.getElementById('nftD7KasSisa')?.value || 'Rp 0',
+      kas_rincian: document.getElementById('nftD7KasRincian')?.value.trim() || '',
+      kas_refleksi: document.getElementById('nftD7KasRefleksi')?.value.trim() || '',
+      submitted: true,
+      submitted_at: new Date().toISOString()
+    };
+
+    if (!data.video_title || !data.youtube_url || !data.synopsis || !data.kas_rincian || !data.kas_refleksi) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Harap lengkapi tautan video YouTube, sinopsis, dan laporan kas sebelum menyerahkan.', 'warning');
+      return;
+    }
+
+    try {
+      localStorage.setItem('fincestem_lkpd_nft_day7_' + cleanNisn, JSON.stringify(data));
+      if (window.FincestemCore && FincestemCore.progress) {
+        FincestemCore.progress.saveTaskRecord(cleanNisn, 7, 'lkpd', data, 100);
+      }
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Karya Final Riset Mandiri Day 7 Berhasil Diserahkan Resmi!', 'success');
+      renderNonFieldTripDay7LKPD(true);
+    } catch(e) {}
+  }
+
 
   function renderNonFieldTripGenericLKPD(dayNum, isReadOnly) {
     dayNum = parseInt(dayNum) || 2;
@@ -4128,6 +4969,14 @@
       renderNonFieldTripDay2LKPD(isReadOnly);
     } else if (dayNum === 3) {
       renderNonFieldTripDay3LKPD(isReadOnly);
+    } else if (dayNum === 4) {
+      renderNonFieldTripDay4LKPD(isReadOnly);
+    } else if (dayNum === 5) {
+      renderNonFieldTripDay5LKPD(isReadOnly);
+    } else if (dayNum === 6) {
+      renderNonFieldTripDay6LKPD(isReadOnly);
+    } else if (dayNum === 7) {
+      renderNonFieldTripDay7LKPD(isReadOnly);
     } else {
       renderNonFieldTripGenericLKPD(dayNum, isReadOnly);
     }
@@ -4138,6 +4987,20 @@
   window.renderNonFieldTripDay1LKPD = renderNonFieldTripDay1LKPD;
   window.renderNonFieldTripDay2LKPD = renderNonFieldTripDay2LKPD;
   window.renderNonFieldTripDay3LKPD = renderNonFieldTripDay3LKPD;
+  window.renderNonFieldTripDay4LKPD = renderNonFieldTripDay4LKPD;
+  window.renderNonFieldTripDay5LKPD = renderNonFieldTripDay5LKPD;
+  window.renderNonFieldTripDay6LKPD = renderNonFieldTripDay6LKPD;
+  window.renderNonFieldTripDay7LKPD = renderNonFieldTripDay7LKPD;
   window.renderNonFieldTripGenericLKPD = renderNonFieldTripGenericLKPD;
+  window.saveNonFieldTripDay4Draft = saveNonFieldTripDay4Draft;
+  window.submitNonFieldTripDay4LKPD = submitNonFieldTripDay4LKPD;
+  window.saveNonFieldTripDay5Draft = saveNonFieldTripDay5Draft;
+  window.submitNonFieldTripDay5LKPD = submitNonFieldTripDay5LKPD;
+  window.saveNonFieldTripDay6Draft = saveNonFieldTripDay6Draft;
+  window.submitNonFieldTripDay6LKPD = submitNonFieldTripDay6LKPD;
+  window.saveNonFieldTripDay7Draft = saveNonFieldTripDay7Draft;
+  window.submitNonFieldTripDay7LKPD = submitNonFieldTripDay7LKPD;
+  window.previewNftDay7Youtube = previewNftDay7Youtube;
+  window.recalcNftDay7Kas = recalcNftDay7Kas;
 
 })(window);

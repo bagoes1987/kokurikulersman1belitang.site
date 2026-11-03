@@ -1037,15 +1037,28 @@ const FincestemCore = {
         { day_number: 1, title: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur', theme: 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah', date: '2026-11-09', date_formatted: '09 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 0, description: 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.' },
         { day_number: 2, title: 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur', theme: 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering', date: '2026-11-10', date_formatted: 'Selasa, 10 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 0, description: 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.' },
         { day_number: 3, title: 'Day 3: Analisis STEM pada Pertanian & Sektor Unggulan OKU Timur', theme: 'Kajian Lapangan Sains, Teknologi Alsintan, Rekayasa Irigasi & Matematika Usahatani', date: '2026-11-11', date_formatted: '11 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Investigasi terpadu 4 pilar STEM (Science, Technology, Engineering, Mathematics) pada sektor pilihan: Pertanian Padi Sawah, Perkebunan Karet/Sawit, Perikanan Patin/Lele, atau Peternakan Sapi/Unggas di Kabupaten OKU Timur.' },
-        { day_number: 4, title: 'Day 4: Literasi Finansial & Rantai Pasok Pangan', theme: 'Financial Literacy & Ekonomi Agrikultur', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Analisis biaya produksi, wawancara harga pasar komoditas beras, serta simulasi manajemen modal usaha tani.' },
-        { day_number: 5, title: 'Day 5: Eksplorasi Budaya & Etnosains Nusantara', theme: 'Culture & Kearifan Lokal Komunitas Multikultural', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Wawancara tetua adat, kajian tradisi gotong royong lumbung desa, dan pencatatan nilai-nilai budaya.' },
-        { day_number: 6, title: 'Day 6: Sintesis Data & Penyusunan Instrumen LKPD', theme: 'Data Science & Penyusunan Laporan Proyek', date: '2026-11-14', date_formatted: '14 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pengolahan data statistik hasil observasi 4 pilar, input laporan akhir, dan upload berkas LKPD.' },
-        { day_number: 7, title: 'Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi', theme: 'Diseminasi Temuan & Refleksi Kokurikuler', date: '2026-11-15', date_formatted: '15 November 2026', start_time: '07:00', end_time: '20:00', is_active: 0, auto_schedule: 1, description: 'Pameran poster riset, presentasi di depan dewan penguji dan fasilitator, serta pengisian lembar refleksi mandiri.' }
+        { day_number: 4, title: 'Day 4: EXPLORATION', theme: 'Ekosistem Irigasi Komering, Bendungan Perjaya & Analisis Bentang Alam Geospasial', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Eksplorasi bentang alam, geospasial, pemetaan titik koordinat GPS, dan infrastruktur tata kelola air persawahan OKU Timur: Jaringan Irigasi Komering dan Bendungan Perjaya.' },
+        { day_number: 5, title: 'Day 5: Produksi Video Lapangan: Finansial & Budaya', theme: 'Pengambilan Footage Video: Wawancara Ekonomi Pasar/UMKM & Dokumentasi Kearifan Budaya Lokal', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar FINANCIAL (transaksi, modal pedagang, QRIS) dan CULTURE (arsitektur tradisional, tatakrama Komering, gotong royong warga).' },
+        { day_number: 6, title: 'Day 6: Produksi Video Lapangan: Eksplorasi & STEM', theme: 'Pengambilan Footage Video: Lanskap Bentang Sawah, Stempel GPS & Mesin Alsintan Pertanian', date: '2026-11-14', date_formatted: '14 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar EXPLORATION (bentang alam sawah, saluran air, GPS) dan STEM (mesin traktor, combine harvester, penggilingan padi RMU).' },
+        { day_number: 7, title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas', theme: 'Editing Video Dokumenter, Publikasi Link YouTube, Audit Kas & Evaluasi Akhir 4 Pilar', date: '2026-11-15', date_formatted: '15 November 2026', start_time: '07:00', end_time: '20:00', is_active: 0, auto_schedule: 1, description: 'Penggabungan video dokumenter utuh (durasi 3-5 menit) di HP (CapCut/VN), pengunggahan ke YouTube, penyerahan link video riset di portal, serta penyusunan laporan rekonsiliasi tutup buku kas riset mandiri.' }
       ];
     },
 
     // Rekap Tabel Keseimbangan 4 Pilar (Day 1 s.d. Day 7) untuk Field Trip
     // Acuan Resmi Penilaian Imbang & Terukur (25% Financial, 25% Culture, 25% Exploration, 25% STEM)
+    // Matriks Keseimbangan 4 Pilar Non-Field Trip (Riset Mandiri OKU Timur)
+    // Acuan Resmi: Bobot 25% Tiap Pilar (12 Porsi Penilaian Seimbang)
+    nonFieldTripBalanceMatrix: {
+      0: { day: 0, pilar: 'SIMULASI', label: 'Simulasi Teknis', weight: '-', focus: 'Gladi bersih sistem & alur pengisian instrumen aplikasi.' },
+      1: { day: 1, pilar: 'FINANCIAL', label: 'Financial (Literasi Keuangan)', weight: '25%', focus: 'Literasi keuangan, pemetaan potensi ekonomi & rencana anggaran kas.' },
+      2: { day: 2, pilar: 'CULTURE', label: 'Culture (Kearifan Lokal)', weight: '25%', focus: 'Kearifan lokal Komering, tradisi & sistem mata pencaharian daerah.' },
+      3: { day: 3, pilar: 'STEM', label: 'STEM (Sains & Alsintan)', weight: '25%', focus: 'Teknologi pertanian, alsintan modern & rekayasa pangan lokal.' },
+      4: { day: 4, pilar: 'EXPLORATION', label: 'Exploration (Bentang Alam)', weight: '25%', focus: 'Bentang alam persawahan, geospasial & ekosistem irigasi Komering.' },
+      5: { day: 5, pilar: 'FINANCIAL & CULTURE', label: 'Financial & Culture (Video)', weight: '25%', focus: 'Footage rekaman video wawancara ekonomi/UMKM & kearifan budaya.' },
+      6: { day: 6, pilar: 'EXPLORATION & STEM', label: 'Exploration & STEM (Video)', weight: '25%', focus: 'Footage rekaman video bentang alam, koordinat GPS & mesin pertanian.' },
+      7: { day: 7, pilar: 'SINTESIS 4 PILAR', label: 'Sintesis 4 Pilar (Final)', weight: '25%', focus: 'Editing kompilasi video dokumenter YouTube & rekonsiliasi kas.' }
+    },
+
     fourPillarsBalanceMatrix: {
       1: { day: 1, pilar: 'FINANCIAL', label: 'Financial (Literasi Keuangan)', weight: '25%', destination: 'Belitang → Tol Trans-Jawa → Semarang', focus: 'Journey Budgeting: Alokasi uang saku 7 hari & pembukuan kas.' },
       2: { day: 2, pilar: 'CULTURE & STEM', label: 'Culture & STEM', weight: '25%', destination: 'AKPOL Semarang & Lawang Sewu', focus: 'Karakter & Rekayasa: Disiplin Bhayangkara AKPOL & arsitektur pendingin alami Lawang Sewu.' },
@@ -1146,258 +1159,10 @@ const FincestemCore = {
         refl_title: 'Jurnal Refleksi Hari Ketiga (Petik Apel, Jatim Park 1 & Museum Angkut)',
         refl_prompt: 'Ceritakan pengalaman Anda di hari ketiga: keseruan memetik apel segar di kebun petani Batu, wawasan sains fisika terapan di Jatim Park 1, kekaguman melihat evolusi transportasi di Museum Angkut, serta bagaimana Anda mempersiapkan fisik menghadapi ekspedisi dini hari ke Gunung Bromo!'
       },
-      4: {
-        day_number: 4,
-        title: 'HARI KE-4: WISATA GUNUNG BROMO – YOGYAKARTA',
-        theme: 'Wisata Gunung Bromo & Perjalanan Menuju Yogyakarta',
-        date_formatted: 'Kamis, 12 November 2026',
-        time_range: '03.30 - Selesai WIB',
-        route_lines: [
-          ['Transit Bromo', 'Gunung Bromo', 'Pasir Berbisik'],
-          ['Padang Savana', 'Kawah Bromo', 'Sukapura'],
-          ['Sukapura–Yogyakarta', 'Hotel Yogyakarta']
-        ],
-        route: 'Transit Bromo → Gunung Bromo → Pasir Berbisik → Padang Savana → Kawah Bromo → Menuju Sukapura → Sukapura–Yogyakarta → Hotel Yogyakarta',
-        description: 'Pukul 03.30 WIB tiba di tempat transit Sukapura, bersiap naik armada Jeep menuju kaldera Bromo (Sunrise, Pasir Berbisik, Savana, Kawah). Setelahnya bertolak menuju Yogyakarta dan check-in hotel.',
-        sessions: [
-          { time: '03.30 – 04.30', title: 'Persiapan & Perpindahan ke Jeep', location: 'Transit Bromo', icon: 'airport_shuttle', highlight: 'stone' },
-          { time: '04.30 – 05.30', title: 'Menikmati Sunrise Bromo', location: 'Gunung Bromo', icon: 'wb_sunny', highlight: 'amber' },
-          { time: '06.00 – 07.00', title: 'Kunjungan Pasir Berbisik', location: 'Pasir Berbisik', icon: 'grain', highlight: 'yellow' },
-          { time: '07.15 – 08.15', title: 'Sarapan Pagi di Savana', location: 'Padang Savana', icon: 'grass', highlight: 'lime' },
-          { time: '08.30 – 10.00', title: 'Kunjungan Kawah Bromo', location: 'Kawah Bromo', icon: 'volcano', highlight: 'rose' },
-          { time: '10.00 – 12.30', title: 'Perjalanan Turun Sukapura', location: 'Menuju Sukapura', icon: 'shower', highlight: 'slate' },
-          { time: '13.00 – 14.00', title: 'Makan Siang', location: 'Restoran Lokal', icon: 'lunch_dining', highlight: 'orange' },
-          { time: '14.00 – 18.30', title: 'Perjalanan Menuju Yogyakarta', location: 'Sukapura–Yogyakarta', icon: 'directions_bus', highlight: 'indigo' },
-          { time: '18.30 – Selesai', title: 'Cek in Hotel Yogyakarta & Makan Malam', location: 'Hotel Yogyakarta', icon: 'hotel', highlight: 'emerald' }
-        ],
-        refl_title: 'Jurnal Refleksi Hari Keempat (Ekspedisi Bromo → Yogyakarta)',
-        refl_prompt: 'Ceritakan pengalaman Anda di hari keempat: momen takjub menembus dinginnya malam dengan armada jeep menuju sunrise Penanjakan Bromo, sensasi melintasi Pasir Berbisik dan Padang Savana, trekking menuju kawah aktif Bromo, kekaguman adat Suku Tengger, serta perjalanan panjang menuju kota istimewa Yogyakarta!'
-      },
-      5: {
-        day_number: 5,
-        title: 'HARI KE-5: CANDI PRAMBANAN, BATIK & KAMPUS UNY',
-        theme: 'Sains Kimia Lilin Batik, Geometri Candi Prambanan & Inspirasi Studi Lanjut UNY',
-        date_formatted: 'Jumat, 13 November 2026',
-        time_range: '06.00 - Selesai WIB',
-        route_lines: [
-          ['Hotel', 'Candi Prambanan', 'Praktik Batik Benang Ratu'],
-          ['Restoran Lokal', 'Kampus UNY', 'Malioboro / Hotel']
-        ],
-        route: 'Hotel → Candi Prambanan → Praktik Membatik Benang Ratu → Restoran Lokal → Kampus UNY → Malioboro → Hotel Yogyakarta',
-        description: 'Setelah sarapan pagi di hotel, rombongan mengeksplorasi megastruktur & geometri Candi Prambanan, mempraktikkan sains kimia malam batik di Batik Benang Ratu, makan siang, dilanjutkan kunjungan edukasi kampus & inspirasi studi lanjut di UNY serta menikmati suasana budaya Malioboro.',
-        sessions: [
-          { time: '06.00 – 07.30', title: 'Sarapan Pagi di Hotel', location: 'Hotel Yogyakarta', icon: 'free_breakfast', highlight: 'orange' },
-          { time: '08.00 – 10.30', title: 'Megastruktur & Geometri Candi Prambanan', location: 'Candi Prambanan', icon: 'temple_hindu', highlight: 'purple' },
-          { time: '11.00 – 12.45', title: 'Praktik Membatik & Sains Kimia Lilin Malam', location: 'Batik Benang Ratu', icon: 'palette', highlight: 'amber' },
-          { time: '13.00 – 14.00', title: 'Makan Siang', location: 'Restoran Lokal', icon: 'lunch_dining', highlight: 'orange' },
-          { time: '14.30 – 17.00', title: 'Kunjungan Edukasi Kampus & Inspirasi UNY', location: 'Kampus UNY Yogyakarta', icon: 'school', highlight: 'blue' },
-          { time: '17.30 – 20.30', title: 'Observasi Budaya & Relaksasi Malioboro', location: 'Kawasan Malioboro', icon: 'storefront', highlight: 'amber' },
-          { time: '20.30 – Selesai', title: 'Kembali ke Hotel Yogyakarta & Istirahat', location: 'Hotel Yogyakarta', icon: 'hotel', highlight: 'emerald' }
-        ],
-        refl_title: 'Jurnal Refleksi Hari Kelima (Prambanan, Batik & Kampus UNY)',
-        refl_prompt: 'Refleksikan apa yang Anda peroleh hari ini: (1) Sains kimiawi sifat hidrofobik lilin malam (wax barrier) dan proses fiksasi pewarna kain batik di Benang Ratu, (2) Kajian struktur simetri geometri dan sejarah relief Candi Prambanan, serta (3) Refleksi kunjungan edukasi kampus UNY dan motivasi studi lanjut jurusan impian Anda!'
-      },
-      6: {
-        day_number: 6,
-        title: 'HARI KE-6: PABRIK BAKPIA JOGKEM, PANTAI DRINI & PULANG',
-        theme: 'Akulturasi Budaya & Finansial Industri Bakpia, Ekosistem Karst Bahari Pantai Drini & Perjalanan Pulang',
-        date_formatted: 'Sabtu, 14 November 2026',
-        time_range: '06.30 - Selesai WIB',
-        route_lines: [
-          ['Pabrik Bakpia Jogkem', 'Pantai Drini Gunungkidul', 'Drini Park'],
-          ['Restoran Lokal', 'Yogyakarta–Belitang']
-        ],
-        route: 'Hotel → Pabrik Bakpia Jogkem → Pantai Drini Gunungkidul → Drini Park → Restoran Lokal → Perjalanan Pulang Belitang',
-        description: 'Setelah sarapan pagi dan check-out hotel, rombongan mengunjungi Pabrik Bakpia Jogkem untuk observasi open kitchen, akulturasi budaya Cina-Indonesia, literasi finansial/HPP/omzet dan belanja cerdas, dilanjutkan eksplorasi bentang alam karst & ekosistem bahari Pantai Drini serta Drini Park. Malam hari rombongan bertolak pulang menuju Belitang.',
-        sessions: [
-          { time: '06.30 – 07.30', title: 'Sarapan & Check-out Hotel', location: 'Hotel Yogyakarta', icon: 'free_breakfast', highlight: 'orange' },
-          { time: '08.00 – 10.00', title: 'Akulturasi Budaya & Literasi Finansial Pabrik Bakpia Jogkem', location: 'Pabrik Bakpia Jogkem', icon: 'bakery_dining', highlight: 'amber' },
-          { time: '11.30 – 13.30', title: 'Eksplorasi Ekosistem & Karst Pantai Drini', location: 'Pantai Drini Gunungkidul', icon: 'beach_access', highlight: 'cyan' },
-          { time: '13.30 – 15.00', title: 'Observasi Tata Kelola Wisata Drini Park', location: 'Drini Park Gunungkidul', icon: 'attractions', highlight: 'teal' },
-          { time: '15.30 – 17.00', title: 'Makan Sore & Manajemen Belanja Oleh-Oleh Cerdas', location: 'Pusat Belanja Jogja', icon: 'shopping_bag', highlight: 'amber' },
-          { time: '18.00 – 19.30', title: 'Makan Malam', location: 'Restoran Lokal', icon: 'dinner_dining', highlight: 'orange' },
-          { time: '19.30 – Selesai', title: 'Perjalanan Pulang Menuju Belitang', location: 'Yogyakarta–Belitang', icon: 'directions_bus', highlight: 'indigo' }
-        ],
-        refl_title: 'Jurnal Refleksi Hari Keenam (Pabrik Bakpia Jogkem, Pantai Drini & Perjalanan Pulang)',
-        refl_prompt: 'Ceritakan pengalaman Anda di hari keenam: (1) Wawasan akulturasi budaya Cina–Indonesia pada kuliner bakpia, inovasi rasa, open kitchen, penetapan HPP, margin laba dan omzet di Pabrik Bakpia Jogkem, (2) Observasi morfologi batuan karst dan ekosistem bahari Pantai Drini, serta (3) Manajemen belanja oleh-oleh cerdas untuk keluarga berbasis sisa uang saku sebelum bertolak menuju Belitang!'
-      },
-      7: {
-        day_number: 7,
-        title: 'HARI KE-7: TIBA DI BELITANG',
-        theme: 'Transit Restoran Tol, Sarapan & Tiba di SMAN 1 Belitang',
-        date_formatted: 'Minggu, 15 November 2026',
-        time_range: '06.00 - Selesai WIB',
-        route_lines: [
-          ['Tol Trans-Sumatera', 'Restoran Lokal (Transit)'],
-          ['Tempat Penjemputan', 'SMAN 1 Belitang']
-        ],
-        route: 'Tol Trans-Sumatera → Restoran Lokal (Transit) → Tempat Penjemputan SMAN 1 Belitang',
-        description: 'Pada pagi hari, rombongan transit di restoran lokal jalan tol untuk sarapan dan beristirahat sejenak. Perjalanan dilanjutkan menuju Belitang, diperkirakan tiba di SMAN 1 Belitang pada siang hari.',
-        sessions: [
-          { time: '06.00 – 08.00', title: 'Transit Sarapan & Istirahat', location: 'Restoran Lokal Tol', icon: 'free_breakfast', highlight: 'orange' },
-          { time: '08.00 – 12.00', title: 'Perjalanan Menuju Belitang', location: 'Perjalanan Menuju Belitang', icon: 'directions_bus', highlight: 'indigo' },
-          { time: '12.00 – Selesai', title: 'Tiba di Tempat Penjemputan SMAN 1 Belitang', location: 'SMAN 1 Belitang', icon: 'home', highlight: 'emerald' }
-        ],
-        refl_title: 'Jurnal Refleksi Penutup (7 Hari Ekspedisi Field Trip)',
-        refl_prompt: 'Tuliskan refleksi penutup komprehensif Anda setelah menjalani 7 hari ekspedisi Field Trip FINCESTEM: perubahan cara pandang Anda dalam mengelola finansial, nilai kedisiplinan dan kerja sama kelompok yang dipelajari, serta kenangan paling berharga yang akan Anda bawa selamanya!'
-      }
-    },
-
-    nonFieldTripDaysConfig: {
-      0: {
-        day_number: 0,
-        title: 'Day 0: Simulasi & Gladi Bersih FINCESTEM',
-        theme: 'Orientasi Sistem, Pengisian LKPD, Asesmen & Unggah Dokumentasi',
-        date_formatted: 'Hari Ini (Simulasi)',
-        time_range: '06.00 - 23.59 WIB',
-        description: 'Sesi uji coba dan orientasi teknis bagi peserta didik untuk memahami dan mencoba seluruh alur menu FINCESTEM sebelum pelaksanaan riset lapangan sesungguhnya.'
-      },
-      1: {
-        day_number: 1,
-        title: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur',
-        theme: 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah',
-        date_formatted: 'Senin, 09 November 2026',
-        time_range: '07.00 - 18.00 WIB',
-        description: 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.',
-        refl_title: 'Jurnal Refleksi Day 1: Fondasi Ekonomi & Potensi OKU Timur',
-        refl_prompt: 'Setelah mempelajari kegiatan ekonomi, literasi finansial, dan pemetaan potensi daerah hari ini, bagaimana Anda akan menerapkan kebiasaan mengelola keuangan dengan bijak dalam kehidupan sehari-hari sekaligus memanfaatkan peluang potensi ekonomi yang ada di Kabupaten OKU Timur?',
-        refl_placeholder: 'Silakan tuliskan pendapat, pengalaman, dan rencana Anda berdasarkan materi yang telah dipelajari. Jawablah sesuai pemahaman dan kondisi kehidupan sehari-hari Anda.'
-      },
-      2: {
-        day_number: 2,
-        title: 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur',
-        theme: 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering',
-        date_formatted: 'Selasa, 10 November 2026',
-        time_range: '07.00 - 18.00 WIB',
-        description: 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.',
-        refl_title: 'Jurnal Refleksi Day 2: Budaya, Mata Pencaharian & Teknologi Pertanian',
-        refl_prompt: 'Setelah mempelajari hakikat kebudayaan, keragaman mata pencaharian, dan modernisasi teknologi pertanian hari ini, bagaimana Anda melihat peran budaya gotong royong dan adopsi mesin pertanian dalam memajukan kesejahteraan masyarakat Kabupaten OKU Timur?',
-        refl_placeholder: 'Silakan tuliskan pendapat, pengalaman, dan pandangan Anda mengenai perpaduan budaya kerja sama warga dan kemajuan teknologi pertanian di OKU Timur...'
-      },
-      3: {
-        day_number: 3,
-        title: 'Day 3: Analisis STEM pada Pertanian & Sektor Unggulan OKU Timur',
-        theme: 'Kajian Lapangan Sains, Teknologi Alsintan, Rekayasa Irigasi & Matematika Usahatani',
-        date_formatted: 'Rabu, 11 November 2026',
-        time_range: '07.00 - 18.00 WIB',
-        description: 'Investigasi terpadu 4 pilar STEM (Science, Technology, Engineering, Mathematics) pada sektor pilihan: Pertanian Padi Sawah, Perkebunan Karet/Sawit, Perikanan Patin/Lele, atau Peternakan Sapi/Unggas di Kabupaten OKU Timur.',
-        refl_title: 'Jurnal Refleksi Day 3: Analisis STEM Pertanian & Sektor Unggulan',
-        refl_prompt: 'Setelah menganalisis sains lahan/bibit, teknologi mesin, rekayasa pengairan, dan kalkulasi matematika finansial hari ini, bagaimana pendekatan STEM dapat membantu meningkatkan hasil panen dan pendapatan keluarga petani/peternak di daerah Anda?',
-        refl_placeholder: 'Silakan tuliskan refleksi mendalam Anda mengenai manfaat nyata penerapan konsep STEM dalam memecahkan masalah pertanian atau sektor unggulan di sekitar Anda...'
-      }
-    },
-
-    getFieldTripDayConfig: function(dayNum) {
-      return this.fieldTripDaysConfig ? this.fieldTripDaysConfig[Number(dayNum)] : null;
-    },
-
-    getNonFieldTripDayConfig: function(dayNum) {
-      return this.nonFieldTripDaysConfig ? this.nonFieldTripDaysConfig[Number(dayNum)] : null;
-    },
-
-    // Evaluasi status keterbukaan hari (Tutup Paksa jika is_active = 0, Buka Manual jika auto_schedule = 0, atau Otomatis)
-    evaluateDayStatus: function(d, refDate) {
-      const isActive = Number(d.is_active);
-      const autoSched = Number(d.auto_schedule);
-
-      // 1. Jika is_active == 0, MUTLAK DITUTUP PAKSA
-      if (isActive === 0) {
-        d.is_open = false;
-        d.status_code = 'MANUAL_CLOSED';
-        d.status_label = 'Ditutup Manual oleh Admin';
-        return d;
-      }
-
-      // 2. Jika auto_schedule == 0 dan is_active == 1, BUKA MANUAL OLEH ADMIN
-      if (autoSched === 0) {
-        d.is_open = true;
-        d.status_code = 'OPEN';
-        d.status_label = 'Terbuka (Manual Admin)';
-        return d;
-      }
-
-      // 3. Otomatis: Bandingkan waktu saat ini dengan rentang tanggal dan jam
-      try {
-        const now = refDate ? new Date(refDate) : new Date();
-        const dDateStr = d.date; // Format YYYY-MM-DD
-        const sTime = d.start_time ? (d.start_time.length === 5 ? d.start_time + ':00' : d.start_time) : '07:00:00';
-        const eTime = d.end_time ? (d.end_time.length === 5 ? d.end_time + ':00' : d.end_time) : '18:00:00';
-
-        const startDT = new Date(`${dDateStr}T${sTime}`);
-        const endDT = new Date(`${dDateStr}T${eTime}`);
-
-        if (now < startDT) {
-          d.is_open = false;
-          d.status_code = 'UPCOMING';
-          d.status_label = `Akan dibuka ${d.date_formatted || dDateStr} pukul ${sTime.substring(0, 5)}`;
-        } else if (now > endDT) {
-          d.is_open = false;
-          d.status_code = 'EXPIRED';
-          d.status_label = 'Waktu Pelaksanaan Telah Berakhir';
-        } else {
-          d.is_open = true;
-          d.status_code = 'OPEN';
-          d.status_label = 'Aktivitas Sedang Berlangsung';
-        }
-      } catch (e) {
-        d.is_open = (isActive === 1);
-        d.status_code = d.is_open ? 'OPEN' : 'MANUAL_CLOSED';
-        d.status_label = d.is_open ? 'Terbuka' : 'Ditutup Manual oleh Admin';
-      }
-      return d;
-    },
-
-    evaluateScheduleList: function(days, serverTime) {
-      if (!Array.isArray(days)) return [];
-      const self = this;
-      return days.map(d => {
-        // Jaminan Mutlak: Day 0 (Simulasi & Gladi Bersih) selalu aktif & terbuka untuk latihan siswa
-        if (Number(d.day_number) === 0) {
-          d.is_active = 1;
-          d.auto_schedule = 0;
-          d.is_open = true;
-          d.status_code = 'OPEN';
-          d.status_label = 'Aktivitas Sedang Dibuka';
-        }
-        // Auto-sinkronisasi Day 1 Non-Field Trip jika di DB / cache masih tersimpan data usang Orientasi & Pembekalan Riset atau auto_schedule usang
-        if (Number(d.day_number) === 1) {
-          if (String(d.title).includes('Orientasi') || String(d.theme).includes('Pembekalan')) {
-            d.title = 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur';
-            d.theme = 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah';
-            d.description = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.';
-          }
-          // Pastikan Day 1 Non-Field Trip selalu terbuka (is_open: true) untuk pengujian & pengerjaan siswa
-          if (d.auto_schedule === undefined || d.auto_schedule === null || Number(d.auto_schedule) === 1) {
-            d.auto_schedule = 0;
-            d.is_active = 1;
-          }
-        }
-        // Auto-sinkronisasi Day 2 Non-Field Trip jika di DB / cache masih tersimpan data usang Eksplorasi Sains Irigasi
-        if (Number(d.day_number) === 2) {
-          if (String(d.title).includes('Eksplorasi Sains') || String(d.theme).includes('Saluran Irigasi')) {
-            d.title = 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur';
-            d.theme = 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering';
-            d.description = 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.';
-          }
-          if (d.auto_schedule === undefined || d.auto_schedule === null || Number(d.auto_schedule) === 1) {
-            d.auto_schedule = 0;
-            d.is_active = 1;
-          }
-        }
-        return self.evaluateDayStatus(d, serverTime);
-      });
-    },
-
-    getFieldTripDefaults: function() {
-      const configs = this.fieldTripDaysConfig || {};
-      const dates = [
-        '2026-11-09',
-        '2026-11-10',
-        '2026-11-11',
-        '2026-11-12',
-        '2026-11-13',
-        '2026-11-14',
-        '2026-11-15'
+      4: { day_number: 4, title: 'Day 4: EXPLORATION', theme: 'Ekosistem Irigasi Komering, Bendungan Perjaya & Analisis Bentang Alam Geospasial', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Eksplorasi bentang alam, geospasial, pemetaan titik koordinat GPS, dan infrastruktur tata kelola air persawahan OKU Timur: Jaringan Irigasi Komering dan Bendungan Perjaya.' },
+        { day_number: 5, title: 'Day 5: Produksi Video Lapangan: Finansial & Budaya', theme: 'Pengambilan Footage Video: Wawancara Ekonomi Pasar/UMKM & Dokumentasi Kearifan Budaya Lokal', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar FINANCIAL (transaksi, modal pedagang, QRIS) dan CULTURE (arsitektur tradisional, tatakrama Komering, gotong royong warga).' },
+        { day_number: 6, title: 'Day 6: Produksi Video Lapangan: Eksplorasi & STEM', theme: 'Pengambilan Footage Video: Lanskap Bentang Sawah, Stempel GPS & Mesin Alsintan Pertanian', date: '2026-11-14', date_formatted: '14 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar EXPLORATION (bentang alam sawah, saluran air, GPS) dan STEM (mesin traktor, combine harvester, penggilingan padi RMU).' },
+        { day_number: 7, title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas', theme: 'Editing Video Dokumenter, Publikasi Link YouTube, Audit Kas & Evaluasi Akhir 4 Pilar', date: '2026-11-15', date_formatted: '15 November 2026', start_time: '07:00', end_time: '20:00', is_active: 0, auto_schedule: 1, description: 'Penggabungan video dokumenter utuh (durasi 3-5 menit) di HP (CapCut/VN), pengunggahan ke YouTube, penyerahan link video riset di portal, serta penyusunan laporan rekonsiliasi tutup buku kas riset mandiri.' }
       ];
       const times = [
         { start: '07:00', end: '23:59' },

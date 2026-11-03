@@ -652,335 +652,226 @@
 
     4: {
       dayNum: 4,
-      title: 'Modul Riset Day 4: Kewirausahaan UMKM, Rantai Pasok (Supply Chain) & Logistik Daerah',
-      theme: 'Pilar Financial & Industry',
-      gradientClass: 'from-amber-950 via-slate-900 to-teal-950 border-amber-700/40',
-      tagColorClass: 'bg-white/20 text-amber-100',
-      badgeColorClass: 'bg-teal-400 text-teal-950',
-      subtitle: 'Investigasi Klaster UMKM Unggulan, Pemetaan Rantai Pasok Daerah (Supply Chain), Komponen Biaya Logistik & Transportasi, Kalkulasi Harga Pokok Penjualan (HPP), serta Strategi Pemasaran Digital',
-      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda ditugaskan meneliti <strong>Ekosistem Rantai Pasok & Kewirausahaan UMKM di OKU Timur</strong>, mencakup alur distribusi barang dagangan dari produsen desa hingga pasar grosir, struktur ongkos angkut, dan strategi penetapan margin laba yang sehat.',
+      title: 'Modul Riset Day 4: Ekosistem Irigasi Komering, Bendungan Perjaya & Bentang Alam OKU Timur',
+      theme: 'Pilar Exploration & Spatial Science',
+      gradientClass: 'from-emerald-950 via-slate-900 to-cyan-950 border-emerald-700/40',
+      tagColorClass: 'bg-white/20 text-emerald-100',
+      badgeColorClass: 'bg-emerald-400 text-emerald-950',
+      subtitle: 'Kajian Geospasial Sistem Irigasi Komering, Pemetaan Elevasi Kontur & Topografi, Arsitektur Hidrolika Bendungan Perjaya, serta Perekaman Koordinat GPS Lapangan',
+      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda ditugaskan melakukan eksplorasi bentang alam dan infrastruktur tata kelola air persawahan OKU Timur: <strong>Sistem Jaringan Irigasi Komering dan Bendungan Perjaya</strong> sebagai urat nadi ketahanan pangan daerah. Pelajari elevasi tanah, hierarki saluran primer/sekunder/tersier, serta titik koordinat GPS wilayah Anda.',
       cards: [
         {
           key: 'A',
-          title: 'Klaster UMKM Olahan Pangan & Kerajinan Unggulan OKU Timur',
-          subtitle: 'Kemplang Ikan, Olahan Daging Patin, Sale Pisang, Kerupuk & Legalitas NIB / PIRT',
+          title: 'Arsitektur Hidrolika Bendungan Perjaya & Jaringan Irigasi Komering',
+          subtitle: 'Sejarah, Konstruksi Bendung Gerak, Kapasitas Debit & Hierarki Saluran Primer Menuju Belitang',
           guidedPoints: [
-            'Pemetaan ragam produk olahan pangan lokal berbasis komoditas pertanian dan perikanan air tawar di sentra Belitang, Gumawang, dan Martapura.',
-            'Pentingnya pengurusan legalitas usaha resmi: Nomor Induk Berusaha (NIB OSS), sertifikasi halal BPJPH, dan izin edar pangan industri rumah tangga (PIRT).',
-            'Tantangan konsistensi mutu rasa, kebersihan kemasan kedap udara, dan masa simpan produk agar mampu menembus rak pajang pasar ritel modern.'
+            'Fungsi strategis Bendungan Perjaya di Sungai Komering dalam membagi air baku untuk ribuan hektar sawah beririgasi teknis di Kabupaten OKU Timur.',
+            'Struktur bendung gerak dengan pintu radial hidrolis untuk mengendalikan elevasi muka air dan debit banjir.',
+            'Hierarki pembagian saluran air: Saluran Primer Komering (Saluran Induk Belitang), Saluran Sekunder pembagi antar-blok, dan Saluran Tersier pembawa langsung ke petak sawah petani.'
           ],
-          placeholder: 'Uraikan hasil analisis Anda mengenai jenis klaster UMKM olahan pangan unggulan di OKU Timur dan langkah-langkah pemenuhan legalitas izin edar NIB serta PIRT... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Dinas Koperasi dan UKM Kabupaten OKU Timur, Profil Klaster Usaha Mikro\n2. Panduan Penerbitan NIB dan Sertifikasi Halal Kementerian Agama RI',
-          defaultExp: 'Dinamika UMKM di Kabupaten OKU Timur bertumpu pada hilirisasi komoditas lokal, seperti klaster pengolahan kemplang dan kerupuk ikan, sale pisang, olahan daging patin asap, serta produk olahan beras ketan. Peningkatan daya saing produk lokal menuntut legalitas izin edar P-IRT dan sertifikasi halal resmi agar mampu menembus jaringan ritel modern dan memperluas pangsa pasar ke luar kabupaten.',
-          defaultSources: '1. Dinas Koperasi dan UKM Kabupaten OKU Timur, Profil Klaster UMKM Daerah.\n2. Panduan Pendampingan Legalitas Usaha Mikro, Kementerian Koperasi dan UKM RI.'
+          placeholder: 'Tuliskan hasil kajian mandiri Anda mengenai peranan Bendungan Perjaya, cara kerja pembagian debit air di Sungai Komering, serta struktur hierarki saluran irigasi primer hingga tersier... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Dokumen Profil Balai Besar Wilayah Sungai (BBWS) Sumatera VIII.\n2. Laporan Teknis Dinas PU Pengairan dan Pemukiman Kabupaten OKU Timur.',
+          defaultExp: 'Bendungan Perjaya yang dibangun melintasi Sungai Komering merupakan kunci keberhasilan predikat lumbung pangan Sumatera Selatan bagi OKU Timur. Melalui pintu bendung gerak hidrolis, debit Sungai Komering dialirkan menuju Saluran Induk Belitang (primer) berkapasitas puluhan meter kubik per detik, yang kemudian didistribusikan secara teratur melalui saluran sekunder dan tersier ke petak sawah petani.',
+          defaultSources: '1. Profil Infrastruktur Sumber Daya Air, BBWS Sumatera VIII.\n2. Statistik Pengairan dan Pertanian Daerah, BPS Kabupaten OKU Timur.'
         },
         {
           key: 'B',
-          title: 'Pemetaan Rantai Pasok (Supply Chain) dari Petani ke Konsumen',
-          subtitle: 'Petani Produsen, Penebas/Pengepul Desa, Distributor Grosir Pasar & Pengecer',
+          title: 'Analisis Geospasial, Kontur Elevasi & Perekaman Koordinat GPS',
+          subtitle: 'Pemanfaatan Gaya Gravitasi Air, Penentuan Ketinggian (Mdpl) & Pembacaan Koordinat Kamera HP',
           guidedPoints: [
-            'Pemetaan simpul alur perjalanan barang hasil panen dari lahan sawah/kebun menuju tangan konsumen akhir di dalam dan luar kabupaten.',
-            'Analisis posisi tawar petani saat bertransaksi dengan pedagang pengumpul (penebas) dan faktor penyebab disparitas harga komoditas.',
-            'Strategi pemendekan rantai pasok melalui kemitraan KUD atau platform transaksi langsung agar petani memperoleh bagian keuntungan yang lebih adil.'
+            'Prinsip aliran irigasi berbasis gaya gravitasi bumi dengan kemiringan kontur tanah dari daerah hulu Perjaya (elevasi lebih tinggi) menuju dataran rendah Belitang.',
+            'Penggunaan fitur GPS pada smartphone untuk mencatat koordinat lintang (latitude), bujur (longitude), dan ketinggian lokasi pengamatan dari permukaan laut (mdpl).',
+            'Analisis spasial mengenai bagaimana jarak dari saluran primer memengaruhi ketersediaan debit air bagi sawah di ujung hilir.'
           ],
-          placeholder: 'Tuliskan hasil kajian Anda mengenai struktur rantai pasok agrikultur di OKU Timur dan strategi memendekkan rantai distribusi agar harga lebih menguntungkan petani... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Manajemen Rantai Pasok Agribisnis (Agribusiness Supply Chain Management)\n2. Kajian Tataniaga Komoditas Pertanian Pangan, Bappeda OKU Timur',
-          defaultExp: 'Struktur rantai pasok komoditas agrikultur di OKU Timur mencakup simpul berjenjang dari petani produsen, pedagang pengepul desa, penggilingan padi, distributor grosir Pasar Gumawang, hingga pedagang pengecer keliling. Pemendekan rantai pasok melalui saluran penjualan langsung atau kemitraan KUD terbukti mampu memberikan marjin harga yang lebih adil dan menguntungkan bagi petani lokal.',
-          defaultSources: '1. Buku Manajemen Rantai Pasok Agribisnis (Agribusiness Supply Chain Management).\n2. Kajian Tataniaga Komoditas Pangan Pokok, Bappeda OKU Timur.'
+          placeholder: 'Tuliskan analisis geospasial Anda mengenai kemiringan kontur tanah OKU Timur, peranan gravitasi dalam aliran irigasi, serta pentingnya titik koordinat lokasi riset... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Peta Rupa Bumi Indonesia (RBI) Lembar Belitang, Badan Informasi Geospasial (BIG).\n2. Atlas Geografis dan Topografi Kabupaten OKU Timur.',
+          defaultExp: 'Topografi Kabupaten OKU Timur yang memiliki kelandaian bertahap dari arah barat daya menuju timur laut memungkinkan sistem irigasi Komering beroperasi sepenuhnya mengandalkan gaya gravitasi tanpa pompa berkekuatan tinggi. Melalui stempel GPS smartphone, koordinat titik riset dan ketinggian mdpl dapat dicatat secara akurat untuk memetakan jaringan pengairan.',
+          defaultSources: '1. Peta Topografi & Kontur Elevasi OKU Timur, BIG.\n2. Jurnal Geografi Lingkungan dan Sumber Daya Lahan Basah.'
         },
         {
           key: 'C',
-          title: 'Struktur Biaya Logistik, Armada Transportasi & Kondisi Jalan',
-          subtitle: 'Komponen BBM, Tarif Bongkar Muat, Armada Truk Desa & Hambatan Jalan Penghubung',
+          title: 'Tata Kelola Pembagian Air, Organisasi P3A & Mitigasi Risiko',
+          subtitle: 'Jadwal Gilir Air, Mitigasi Sedimentasi Lumpur & Kelembagaan Petani Pemakai Air',
           guidedPoints: [
-            'Rincian komponen biaya logistik: konsumsi bahan bakar minyak (BBM), upah buruh bongkar-muat, penyusutan armada, dan resiko susut barang di perjalanan.',
-            'Kondisi infrastruktur jalan penghubung antar-kecamatan dan jalan poros desa di OKU Timur terhadap kecepatan distribusi barang dagangan.',
-            'Solusi mengatasi hambatan transportasi saat musim penghujan (kondisi jalan tanah licin) agar pasokan barang ke pasar tidak tersendat.'
+            'Peran organisasi Perkumpulan Petani Pemakai Air (P3A) dalam merundingkan jadwal buka-tutup pintu air secara adil dan demokratis.',
+            'Tantangan sedimentasi lumpur endapan Sungai Komering serta kegiatan gotong royong pembersihan gulma eceng gondok di saluran sekunder.',
+            'Mitigasi anomali iklim (El Nino kekeringan vs La Nina potensi luapan banjir) dalam menjamin keberlangsungan indeks pertanaman (IP) padi 200 hingga 300.'
           ],
-          placeholder: 'Uraikan hasil telaah Anda mengenai komponen biaya transportasi barang di pedesaan OKU Timur dan pengaruh kondisi jalan terhadap kelancaran distribusi logistik... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Laporan Kinerja Logistik Daerah dan Konektivitas Wilayah, Kemenhub RI\n2. Publikasi Statistik Transportasi dan Infrastruktur BPS Kabupaten OKU Timur',
-          defaultExp: 'Efisiensi logistik daerah dipengaruhi secara signifikan oleh kondisi infrastruktur jalan penghubung antar-desa serta ketersediaan armada transportasi angkutan barang yang memadai. Biaya logistik rata-rata menyerap 15% hingga 20% dari total biaya operasional perdagangan komoditas di OKU Timur, sehingga perbaikan akses jalan sentra produksi menjadi kunci vital stabilitas harga pangan.',
-          defaultSources: '1. Laporan Kinerja Logistik Daerah dan Konektivitas Antar-Wilayah, Kemenhub RI.\n2. Publikasi Statistik Transportasi dan Komunikasi Daerah BPS OKU Timur.'
-        },
-        {
-          key: 'D',
-          title: 'Kalkulasi Harga Pokok Penjualan (HPP) & Margin Keuntungan Wajar',
-          subtitle: 'Biaya Tetap (Fixed Cost), Biaya Variabel (Variable Cost), Titik Impas (BEP) & Margin Laba',
-          guidedPoints: [
-            'Cara menghitung Biaya Tetap (sewa tempat, penyusutan alat) dan Biaya Variabel (bahan baku, upah harian, kemasan) dalam proses produksi pangan.',
-            'Rumus kalkulasi Harga Pokok Penjualan (HPP) per unit produk untuk memastikan harga jual berada di atas ambang titik impas (Break Even Point / BEP).',
-            'Penetapan persentase margin keuntungan bersih (misal 20-30%) yang rasional dengan mempertimbangkan daya beli masyarakat dan harga pesaing di pasar lokal.'
-          ],
-          placeholder: 'Tuliskan hasil analisis Anda mengenai metode penghitungan HPP per unit, pemilahan biaya tetap vs variabel, serta penentuan margin keuntungan yang sehat bagi UMKM... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Akuntansi Manajemen dan Penetapan Biaya Produksi Usaha Mikro\n2. Modul Pelatihan Literasi Keuangan Praktis Rumah BUMN',
-          defaultExp: 'Keterampilan menghitung Harga Pokok Penjualan (HPP) merupakan fondasi mutlak kelangsungan usaha mikro, yang dihitung dengan mengakumulasi seluruh biaya bahan baku, tenaga kerja langsung, dan overhead operasional dibagi jumlah unit produk. Penetapan margin laba bersih sebesar 20-30% di atas HPP menjaga keseimbangan antara daya beli konsumen dengan keberlanjutan arus kas pelaku usaha.',
-          defaultSources: '1. Buku Akuntansi Manajemen & Penetapan Biaya Produksi untuk Usaha Kecil.\n2. Modul Pelatihan Literasi Keuangan Praktis Rumah BUMN.'
-        },
-        {
-          key: 'E',
-          title: 'Pemasaran Digital, Media Sosial & Kemitraan Komersial',
-          subtitle: 'Katalog WhatsApp Business, Google Profil Bisnis (Maps), Media Sosial & Ritel Lokal',
-          guidedPoints: [
-            'Pemanfaatan fitur katalog gratis WhatsApp Business dan media sosial (Instagram, TikTok) untuk memperluas jangkauan promosi produk olahan lokal.',
-            'Pentingnya mendaftarkan titik lokasi toko/unit usaha pada Google Profil Bisnis (Google Maps) agar mudah ditemukan pelanggan dan pembeli dari luar daerah.',
-            'Peluang membangun kemitraan konsinyasi dengan pusat oleh-oleh, minimarket lokal, dan platform e-commerce demi meningkatkan omzet penjualan.'
-          ],
-          placeholder: 'Uraikan hasil kajian Anda mengenai strategi pemanfaatan pemasaran digital gratis (WhatsApp Business, Google Maps, medsos) untuk menaikkan penjualan produk UMKM OKU Timur... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Panduan Transformasi Digital UMKM Indonesia, Kementerian Kominfo RI\n2. Buku Strategi Pemasaran Digital untuk Usaha Mikro dan Pemula',
-          defaultExp: 'Akselerasi pemasaran digital membuka peluang ekspansi pasar bagi produk UMKM OKU Timur melampaui batas geografis kecamatan. Pemanfaatan kanal media sosial interaktif, katalog WhatsApp Business, serta pendaftaran titik lokasi pada Google Maps mempermudah pemesanan langsung dari konsumen luar kota dan meningkatkan kredibilitas citra merek produk olahan lokal secara profesional.',
-          defaultSources: '1. Panduan Transformasi Digital UMKM Indonesia, Kementerian Kominfo RI.\n2. Buku Strategi Pemasaran Digital Berbiaya Murah untuk Wirausaha Pemula.'
+          placeholder: 'Tuliskan pemahaman Anda mengenai peran kelembagaan P3A, pembagian gilir air, serta mitigasi sedimentasi pada saluran irigasi... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Peraturan Daerah Tata Kelola Perkumpulan Petani Pemakai Air (P3A) OKU Timur.\n2. Panduan Pengelolaan Irigasi Partisipatif, Kementerian PUPR.',
+          defaultExp: 'Keberhasilan jaringan irigasi Komering sangat bergantung pada kelembagaan Perkumpulan Petani Pemakai Air (P3A) yang mengatur jadwal giliran pasokan air petak sawah saat kemarau tiba. Perawatan berkala terhadap sedimentasi lumpur dan sampah gulma dilakukan lewat gotong royong saluran tersier agar kapasitas tampung debit air tetap optimal.',
+          defaultSources: '1. Panduan Pengelolaan Irigasi Partisipatif Petani, KemenPUPR.\n2. Laporan Musyawarah P3A Daerah Irigasi Komering.'
         }
       ]
     },
 
     5: {
       dayNum: 5,
-      title: 'Modul Riset Day 5: Inklusi Keuangan Digital, Layanan Perbankan Tanpa Kantor & Keamanan Transaksi',
-      theme: 'Pilar Financial & Technology',
-      gradientClass: 'from-purple-900 via-slate-900 to-indigo-950 border-purple-700/40',
-      tagColorClass: 'bg-white/20 text-purple-100',
-      badgeColorClass: 'bg-emerald-400 text-slate-950',
-      subtitle: 'Kajian Penetrasi Agen Perbankan Laku Pandai Pedesaan, Adopsi Transaksi QRIS, Tantangan Kesenjangan Digital, Mitigasi Risiko Kejahatan Siber Finansial, serta Penyaluran Kredit Usaha Rakyat (KUR)',
-      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda ditugaskan meneliti <strong>Inklusi Finansial & Keamanan Transaksi Digital di OKU Timur</strong>, mencakup operasional agen bank tanpa kantor (Laku Pandai), pemanfaatan QRIS di pasar desa, serta langkah pencegahan terhadap penipuan siber dan pinjol ilegal.',
+      title: 'Modul Riset Day 5: Produksi Video Lapangan: Finansial & Budaya',
+      theme: 'Pilar Financial & Culture (Produksi Video Riset)',
+      gradientClass: 'from-amber-950 via-slate-900 to-purple-950 border-amber-700/40',
+      tagColorClass: 'bg-white/20 text-amber-100',
+      badgeColorClass: 'bg-amber-400 text-amber-950',
+      subtitle: 'Panduan Teknis Perekaman Video HP: Wawancara Ekonomi Pasar/UMKM Lokal, Bukti Pembukuan Transaksi Belanja, Tata Krama Adat Komering, dan Akulturasi Budaya Desa',
+      inquiryIntro: 'Hari ini adalah <strong>Hari Produksi Rekaman Video Lapangan Bagian 1</strong>. Anda ditugaskan mengambil rekaman video berkualitas menggunakan kamera HP untuk mendokumentasikan dua pilar utama: <strong>FINANCIAL</strong> (kegiatan ekonomi, wawancara pedagang, transaksi tunai/QRIS) dan <strong>CULTURE</strong> (kearifan lokal, etika sosial, tradisi dan kebersamaan warga OKU Timur). Ikuti panduan adegan di bawah ini!',
       cards: [
         {
           key: 'A',
-          title: 'Layanan Agen Perbankan Laku Pandai di Pedesaan OKU Timur',
-          subtitle: 'Agen BRILink, Mandiri Agen, BNI Agen46 & Akses Finansial Tanpa Kantor Fisik',
+          title: 'Panduan Rekaman Video Pilar Financial (Ekonomi & Transaksi)',
+          subtitle: 'Pengambilan Adegan Wawancara Pedagang/UMKM (30-60 Detik) & Bukti Transaksi Belanja',
           guidedPoints: [
-            'Konsep Layanan Keuangan Tanpa Kantor dalam Rangka Keuangan Inklusif (Laku Pandai) yang digagas Otoritas Jasa Keuangan (OJK) dan perbankan nasional.',
-            'Peran warung kelontong mitra agen perbankan dalam menyediakan layanan transfer, setor tunai, tarik tunai, dan pembayaran tagihan listrik/air di pelosok desa.',
-            'Keuntungan agen bank bagi masyarakat pedesaan dalam memangkas ongkos transportasi dan waktu antre dibandingkan menuju kantor bank di kota kecamatan.'
+            'Wawancara pedagang warung/toko/pasar Belitang mengenai perputaran modal, margin laba barang, atau penggunaan metode pembayaran non-tunai (QRIS).',
+            'Rekaman close-up transaksi pembelian siswa (pembayaran tunai/QRIS) beserta bukti struk/nota belanja harian untuk kebutuhan riset.',
+            'Teknik audio jernih: posisikan mikrofon HP dekat dengan narasumber (jarak 50-80 cm) dan hindari kebisingan angin berlebih.'
           ],
-          placeholder: 'Uraikan hasil telaah Anda mengenai fungsi agen Laku Pandai (BRILink, Mandiri Agen) di pedesaan OKU Timur dalam mempermudah akses transaksi masyarakat... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Otoritas Jasa Keuangan (OJK), Roadmap Pengembangan Keuangan Inklusif Indonesia\n2. Buku Panduan Agen Perbankan Laku Pandai, Bank Indonesia',
-          defaultExp: 'Layanan perbankan tanpa kantor fisik (Laku Pandai) melalui kemitraan Agen BRILink, Mandiri Agen, dan BNI Agen46 menjadi ujung tombak inklusi finansial di desa-desa OKU Timur. Keberadaan agen perbankan di warung kelontong mempermudah masyarakat pedesaan melakukan transfer perbankan, setor tabungan, hingga pencairan bantuan sosial tanpa harus menempuh jarak jauh ke kantor cabang perbankan.',
-          defaultSources: '1. Otoritas Jasa Keuangan (OJK), Roadmap Pengembangan Keuangan Inklusif Nasional.\n2. Buku Panduan Agen Perbankan Laku Pandai, Bank Indonesia.'
+          placeholder: 'Tuliskan deskripsi adegan video pilar Financial yang telah Anda rekam: nama pedagang, lokasi warung/pasar, topik permodalan/omzet yang ditanyakan, serta ringkasan percakapan... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Hasil rekaman wawancara lapangan dengan pedagang Pasar Belitang.\n2. Bukti nota/struk belanja harian riset siswa.',
+          defaultExp: 'Perekaman video pilar Financial difokuskan pada wawancara pedagang sembako di pasar tradisional mengenai fluktuasi harga komoditas pangan pokok, perputaran modal harian, serta adopsi pembayaran digital QRIS perbankan. Siswa juga mendokumentasikan transaksi belanja riil dengan bukti fisik struk pembukuan kas.',
+          defaultSources: '1. Log Rekaman Video Lapangan HP (Folder FIN_VIDEO_D5).\n2. Struk dan Nota Pembelian Kebutuhan Riset Harian.'
         },
         {
           key: 'B',
-          title: 'Adopsi Pembayaran Digital Berbasis QRIS di Pasar Tradisional',
-          subtitle: 'Standarisasi Kode QR Nasional, Efisiensi Transaksi & Perlindungan dari Uang Palsu',
+          title: 'Panduan Rekaman Video Pilar Culture (Kearifan Lokal & Adat)',
+          subtitle: 'Dokumentasi Tata Krama Tabik Bun, Arsitektur Rumah Komering & Kehidupan Harmonis Desa',
           guidedPoints: [
-            'Pengertian standarisasi QRIS sebagai satu kode pembayaran universal yang dapat dibaca oleh seluruh aplikasi perbankan mobile dan dompet elektronik (e-wallet).',
-            'Tingkat adopsi dan respon pedagang pasar tradisional (seperti Pasar Gumawang dan Martapura) dalam menerapkan pembayaran nontunai menggunakan QRIS.',
-            'Manfaat nyata penggunaan QRIS: menghindari kerugian akibat menerima uang kertas palsu, tidak perlu pusing mencari uang kembalian receh, dan dana penjualan langsung masuk rekening.'
+            'Rekaman interaksi sosial yang santun mencerminkan kearifan lokal Komering (ucapan tabik pun/sapaan hormat saat bertamu).',
+            'Dokumentasi visual arsitektur rumah panggung tradisional Komering atau keunikan ornamen rumah warga transmigran (Jawa/Bali/Sunda).',
+            'Wawancara singkat tokoh adat/sesepuh warga tentang nilai gotong royong dan sejarah perkembangan desa.'
           ],
-          placeholder: 'Tuliskan hasil analisis Anda mengenai manfaat penerapan QRIS bagi pedagang pasar tradisional di OKU Timur dalam hal keamanan, efisiensi, dan akuntabilitas keuangan... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Publikasi Bank Indonesia: Standarisasi QRIS dan Transformasi Pembayaran Nontunai\n2. Jurnal Ekonomi dan Kebijakan Publik Daerah',
-          defaultExp: 'Adopsi Quick Response Code Indonesian Standard (QRIS) di pasar tradisional dan kios pedagang OKU Timur memodernisasi cara bertransaksi masyarakat dari tunai menuju nontunai yang higienis dan aman. QRIS mengeliminasi risiko peredaran uang kertas palsu, memangkas kebutuhan uang kembalian pecahan kecil, serta memberikan rekam jejak transaksi keuangan yang tercatat rapi secara digital.',
-          defaultSources: '1. Publikasi Bank Indonesia: Standarisasi QRIS & Transformasi Sistem Pembayaran Digital.\n2. Jurnal Ekonomi dan Kebijakan Publik Indonesia.'
+          placeholder: 'Tuliskan deskripsi adegan video pilar Culture yang telah Anda rekam: lokasi rumah adat/warga, tokoh yang diwawancarai, nilai kearifan lokal atau tradisi yang diangkat... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Hasil rekaman wawancara tokoh adat/sesepuh warga setempat.\n2. Observasi visual budaya dan rumah tradisional desa.',
+          defaultExp: 'Perekaman video pilar Culture mengangkat kehangatan sapaan santun adat Komering dan keharmonisan hidup bersama warga transmigran di Belitang. Kamera merekam detail arsitektur rumah kayu tradisional bertiang tinggi serta penjelasan tetua warga mengenai tradisi rembuk desa dan gotong royong lumbung bersama.',
+          defaultSources: '1. Log Rekaman Video Lapangan HP (Folder CULT_VIDEO_D5).\n2. Catatan Wawancara Tokoh Masyarakat & Tetua Adat Desa.'
         },
         {
           key: 'C',
-          title: 'Tantangan Infrastruktur Internet & Literasi Digital Masyarakat Desa',
-          subtitle: 'Konektivitas Jaringan 4G, Kuota Data, Kepemilikan Smartphone & Hambatan Generasi Tua',
+          title: 'Manajemen File Footage HP, Storyboard & Draf Narasi Suara',
+          subtitle: 'Pengecekan Kualitas Klip, Resolusi Kamera (1080p/720p) & Draf Naskah Voice-Over',
           guidedPoints: [
-            'Kondisi jangkauan sinyal internet seluler di area persawahan dan permukiman desa transmigrasi di Kabupaten OKU Timur.',
-            'Kendala pengoperasian aplikasi perbankan digital bagi masyarakat kelompok usia dewasa dan lansia yang belum terbiasa dengan menu teknologi perbankan.',
-            'Peran pendampingan generasi muda terdidik dalam membimbing keluarga dan lingkungan sekitar agar percaya diri bertransaksi secara digital.'
+            'Pemeriksaan kualitas rekaman video: stabil (tidak goyang berlebih), pencahayaan cukup (pagi/sore hari), dan suara narasumber terdengar jelas.',
+            'Penyimpanan klip video secara teratur di folder galeri HP khusus proyek FINCESTEM dengan penamaan file yang mudah dikenali.',
+            'Penyusunan kerangka teks suara latar (voice-over) yang menghubungkan analisis pilar Finansial dan pilar Budaya untuk diedit pada Day 7.'
           ],
-          placeholder: 'Uraikan hasil telaah Anda mengenai kendala sinyal internet di pedalaman OKU Timur, hambatan adaptasi teknologi generasi tua, dan solusi pendampingan literasi digital... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Laporan Pemerataan Jaringan Telekomunikasi Pedesaan, Kemkominfo RI\n2. Studi Kesenjangan Digital Masyarakat Agrikultur BPS Sumatera Selatan',
-          defaultExp: 'Keberhasilan digitalisasi transaksi finansial di pedesaan sangat bergantung pada stabilitas jaringan telekomunikasi seluler dan tingkat literasi digital masyarakat. Kendala blank spot sinyal internet di sejumlah desa pelosok serta resistensi pedagang generasi tua terhadap aplikasi perbankan menjadi tantangan riil yang membutuhkan edukasi berkelanjutan dan pendampingan generasi muda.',
-          defaultSources: '1. Laporan Cakupan Infrastruktur Jaringan Telekomunikasi Pedesaan, Kemkominfo RI.\n2. Studi Kesenjangan Digital Masyarakat Agrikultur, BPS Sumatera Selatan.'
-        },
-        {
-          key: 'D',
-          title: 'Mitigasi Risiko Kejahatan Siber Finansial & Pinjol Ilegal',
-          subtitle: 'Kerahasiaan Kode OTP, Password/PIN, Phishing APK Paket & Bahaya Pinjaman Bunga Mencekik',
-          guidedPoints: [
-            'Ragam modus penipuan rekayasa sosial (social engineering): tautan file APK undangan/kurir palsu, pencurian kode OTP melalui telepon hadiah, dan akun rekening perantara.',
-            'Prinsip keamanan bertransaksi digital: tidak pernah membagikan kode OTP atau PIN kepada pihak mana pun, serta rutin mengganti kata sandi aplikasi perbankan.',
-            'Karakteristik pinjaman online ilegal (tidak terdaftar OJK, suku bunga harian mencekik, intimidasi penagihan dengan menyadap nomor kontak HP) dan cara menghindarinya.'
-          ],
-          placeholder: 'Tuliskan hasil kajian Anda mengenai langkah-langkah melindungi diri dari penipuan siber perbankan (phishing/OTP) serta bahaya jeratan utang pinjol ilegal di pedesaan... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Panduan Keamanan Siber Finansial Satgas PASTI Otoritas Jasa Keuangan (OJK RI)\n2. Publikasi Badan Siber dan Sandi Negara (BSSN) tentang Transaksi Digital Aman',
-          defaultExp: 'Meningkatnya akses digital masyarakat harus diimbangi dengan kewaspadaan ketat terhadap kejahatan siber finansial seperti phising bermodus undangan pernikahan/APK paket, pencurian kode OTP, dan jeratan pinjaman online ilegal. Edukasi keamanan data pribadi, disiplin menjaga kerahasiaan PIN transaksi, dan kehati-hatian memverifikasi legalitas entitas OJK menjadi perisai utama perlindungan nasabah.',
-          defaultSources: '1. Panduan Keamanan Siber Finansial Satgas PASTI (Pemberantasan Aktivitas Keuangan Ilegal) OJK.\n2. Publikasi Badan Siber dan Sandi Negara (BSSN) tentang Keamanan Transaksi Digital.'
-        },
-        {
-          key: 'E',
-          title: 'Peran Lembaga Keuangan Formal & Akses Kredit Usaha Rakyat (KUR)',
-          subtitle: 'Bank Sumsel Babel, Bank BUMN, Bunga Subsidi 6% & Syarat Kelayakan Usaha Petani',
-          guidedPoints: [
-            'Peran Bank Pembangunan Daerah (Bank Sumsel Babel) dan Bank Himbara dalam menyediakan pembiayaan modal kerja sektor pertanian di OKU Timur.',
-            'Kebijakan Kredit Usaha Rakyat (KUR) berbunga subsidi rendah (6% per tahun) yang ditujukan untuk pengadaan benih, pupuk, alsintan, dan modal dagang.',
-            'Persyaratan kelayakan administrasi usaha agar petani dan pedagang kecil memenuhi kriteria perbankan (bankable) tanpa terbebani agunan fisik berat.'
-          ],
-          placeholder: 'Uraikan hasil analisis Anda mengenai peran program KUR dalam melepaskan petani OKU Timur dari jeratan rentenir serta kemudahan syarat kredit yang disediakan perbankan formal... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Peraturan Menteri Koordinator Perekonomian tentang Pedoman Penyaluran KUR\n2. Laporan Penyaluran KUR Sektor Pertanian Provinsi Sumatera Selatan',
-          defaultExp: 'Akses permodalan formal melalui skema Kredit Usaha Rakyat (KUR) berbunga subsidi 6% per tahun memegang peranan vital dalam melepaskan petani dan pedagang kecil dari ketergantungan pelepas uang informal. Bank Sumsel Babel dan bank BUMN mitra terus memperluas jangkauan KUR agrikultur dengan persyaratan administratif sederhana untuk mendukung permodalan musim tanam berkelanjutan.',
-          defaultSources: '1. Peraturan Menteri Koordinator Bidang Perekonomian tentang Pedoman Pelaksanaan KUR.\n2. Laporan Penyaluran KUR Pertanian Provinsi Sumatera Selatan.'
+          placeholder: 'Tuliskan daftar klip video yang berhasil direkam hari ini (nama file, durasi, ringkasan adegan) serta draf kalimat narasi suara latar yang Anda siapkan... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Log catatan durasi dan daftar file video di memori HP.\n2. Draf naskah skrip narasi video dokumenter kokurikuler.',
+          defaultExp: 'Seluruh footage video Day 5 diarsipkan dalam folder penyimpanan internal dengan resolusi 1080p pada kecepatan 30 fps. Naskah narasi suara latar (voice-over) disusun dengan menekankan sinergi antara kerja keras ekonomi masyarakat pedesaan dan keteguhan memegang nilai moral budaya leluhur.',
+          defaultSources: '1. Manajemen Galeri Media Smartphone Peserta Didik.\n2. Draf Naskah Skrip Suara Dokumenter FINCESTEM 2026.'
         }
       ]
     },
 
     6: {
       dayNum: 6,
-      title: 'Modul Riset Day 6: Konservasi Lingkungan, Keberlanjutan Ekosistem Pertanian & Budaya Belitang',
-      theme: 'Pilar Nature & Culture',
-      gradientClass: 'from-emerald-950 via-slate-900 to-teal-950 border-emerald-700/40',
-      tagColorClass: 'bg-white/20 text-emerald-100',
-      badgeColorClass: 'bg-amber-400 text-amber-950',
-      subtitle: 'Kajian Pemeliharaan Kesuburan Tanah Sawah, Efisiensi Pupuk Berimbang, Pengelolaan Limbah Jerami Tanpa Bakar, Pelestarian Saluran Irigasi Teknis, serta Adaptasi Pertanian Menghadapi Iklim Ekstrem',
-      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda ditugaskan meneliti <strong>Keberlanjutan Ekosistem Lingkungan & Budaya Tani Belitang</strong>, mencakup konservasi hara tanah sawah, pemanfaatan limbah jerami tanpa bakar, serta kearifan lokal pengelolaan air irigasi menghadapi anomali iklim global.',
+      title: 'Modul Riset Day 6: Produksi Video Lapangan: Eksplorasi & STEM',
+      theme: 'Pilar Exploration & STEM (Produksi Video Riset)',
+      gradientClass: 'from-teal-950 via-slate-900 to-blue-950 border-teal-700/40',
+      tagColorClass: 'bg-white/20 text-teal-100',
+      badgeColorClass: 'bg-cyan-400 text-cyan-950',
+      subtitle: 'Panduan Teknis Perekaman Video HP: Lanskap Persawahan Belitang, Saluran Irigasi Komering, Stempel Koordinat GPS/Elevasi, dan Mekanisasi Alat Mesin Pertanian (Alsintan)',
+      inquiryIntro: 'Hari ini adalah <strong>Hari Produksi Rekaman Video Lapangan Bagian 2</strong>. Anda ditugaskan mengambil rekaman video menggunakan HP untuk mendokumentasikan dua pilar berikutnya: <strong>EXPLORATION</strong> (pemandangan bentang alam sawah, pintu air irigasi, pembacaan koordinat GPS) dan <strong>STEM</strong> (sains tanah/air dan operasional mesin alsintan traktor/combine/RMU).',
       cards: [
         {
           key: 'A',
-          title: 'Keberlanjutan Kesuburan Tanah Sawah & Konservasi Lahan',
-          subtitle: 'Kandungan Bahan Organik (C-Organik), Struktur Humus Tanah & Erosi Tanggul Saluran',
+          title: 'Panduan Rekaman Video Pilar Exploration (Bentang Alam & GPS)',
+          subtitle: 'Pengambilan Panorama Lanskap Sawah, Saluran Primer/Sekunder & Pembacaan Koordinat GPS',
           guidedPoints: [
-            'Kondisi kesuburan tanah sawah intensif di OKU Timur setelah digunakan menanam padi secara terus-menerus selama puluhan tahun.',
-            'Bahaya penurunan kandungan bahan organik (C-Organik di bawah 2%) dan pemadatan tanah akibat jarang mengaplikasikan pupuk kandang atau kompos alami.',
-            'Metode konservasi tanggul saluran irigasi tanah dari erosi longsor melalui penanaman rumput penguat tebing dan vegetasi penyangga.'
+            'Perekaman lanskap bentang alam sawah terhampar luas di Belitang dengan teknik pergerakan kamera panning mendatar secara perlahan dan halus.',
+            'Dokumentasi pintu air irigasi saluran primer/sekunder disertai rekaman aplikasi kamera GPS timestamp yang memunculkan koordinat lintang, bujur, dan elevasi (mdpl).',
+            'Perekaman aliran air yang mengalir secara alami mengandalkan gaya gravitasi bumi menuju petak persawahan.'
           ],
-          placeholder: 'Uraikan hasil analisis Anda mengenai kondisi kesuburan tanah sawah di OKU Timur dan langkah-langkah konservasi tanah agar tidak mengalami degradasi hara... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel, Riset Kesuburan Lahan Sawah\n2. Pedoman Konservasi Tanah dan Air Lahan Pertanian, Kementan RI',
-          defaultExp: 'Intensifikasi penanaman padi sawah sepanjang tahun menuntut perhatian serius terhadap keberlanjutan kesuburan tanah dan pelestarian struktur lapisan olah. Penurunan kandungan C-Organik tanah sawah akibat minimnya asupan pupuk kandang dapat memicu kejenuhan tanah, sehingga konservasi lahan melalui rotasi bahan organik dan pemeliharaan tebing saluran irigasi menjadi kunci produktivitas jangka panjang.',
-          defaultSources: '1. Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel, Riset Pengelolaan Kesuburan Lahan Sawah.\n2. Pedoman Konservasi Tanah dan Air Lahan Pertanian, Kementan RI.'
+          placeholder: 'Tuliskan deskripsi adegan video pilar Exploration yang Anda rekam: lokasi saluran air/persawahan, koordinat GPS yang tercatat, dan gambaran bentang alam sekitarnya... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Hasil rekaman video geospasial kamera HP dengan stempel GPS.\n2. Pengamatan langsung pada saluran irigasi persawahan Belitang.',
+          defaultExp: 'Footage pilar Exploration menampilkan pemandangan luas persawahan hijau Belitang dan derasnya aliran air pada saluran irigasi sekunder. Kamera merekam stempel koordinat satelit GPS secara nyata yang menunjukkan elevasi topografi tanah dan posisi geografis petak sawah yang menjadi objek riset.',
+          defaultSources: '1. Log Rekaman Video Kamera GPS (Folder EXP_VIDEO_D6).\n2. Catatan Geospasial Titik Koordinat Pengamatan Lapangan.'
         },
         {
           key: 'B',
-          title: 'Efisiensi Pupuk Kimia Bersubsidi vs Aplikasi Pupuk Organik & Hayati',
-          subtitle: 'Urea, NPK Phonska, Mikroba Pengurai, Pupuk Kandang Fermentasi & Penghematan Biaya',
+          title: 'Panduan Rekaman Video Pilar STEM (Sains & Mesin Alsintan)',
+          subtitle: 'Dokumentasi Operasi Mesin Traktor/Combine Harvester/RMU & Analisis Sains Pertanian',
           guidedPoints: [
-            'Sistem distribusi alokasi pupuk bersubsidi (Urea dan NPK Phonska) melalui sistem elektronik e-Alokasi Kementerian Pertanian.',
-            'Dampak negatif pemakaian pupuk kimia sintetis berlebihan terhadap peningkatan keasaman tanah sawah dan musnahnya cacing serta mikroba penyubur tanah.',
-            'Teknik pembuatan pupuk organik bokashi/kompos terfermentasi dan pupuk hayati cair sebagai penyubur alami yang ramah lingkungan dan hemat biaya produksi.'
+            'Rekaman mesin alsintan yang sedang bekerja di sawah (traktor roda putar, combine harvester pemotong padi) atau mesin penggilingan padi (RMU).',
+            'Penjelasan sains visual: proses pemisahan gabah dan sekam pada mesin, mekanisme pembajakan tanah, atau pengujian tekstur tanah sawah basah.',
+            'Pencatatan estimasi efisiensi mekanisasi alsintan (kecepatan pengerjaan lahan per jam dibanding tenaga manual).'
           ],
-          placeholder: 'Tuliskan hasil kajian Anda mengenai dampak buruk pemupukan kimia berlebih serta manfaat memadukan pupuk organik bokashi untuk efisiensi biaya usaha tani... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Penelitian Tanah (Balittanah) Kementan RI, Rekomendasi Pemupukan Berimbang\n2. Petunjuk Teknis Pembuatan Pupuk Kompos Kelompok Tani',
-          defaultExp: 'Ketergantungan berlebihan pada pupuk kimia sintetis (Urea dan NPK) tanpa diimbangi bahan organik dapat merusak keseimbangan mikroorganisme tanah dan meningkatkan resistensi patogen tanaman. Penerapan konsep pemupukan berimbang dengan memadukan pupuk kimia presisi bersama pupuk organik kompos dan pupuk hayati lokal terbukti mampu menekan biaya input saprotan hingga 20% sekaligus memperbaiki pH tanah sawah.',
-          defaultSources: '1. Balai Penelitian Tanah (Balittanah) Kementan RI, Rekomendasi Pemupukan Berimbang.\n2. Petunjuk Teknis Pembuatan Pupuk Kompos dan Pupuk Organik Cair Kelompok Tani.'
+          placeholder: 'Tuliskan deskripsi adegan video pilar STEM yang Anda rekam: jenis mesin alsintan yang diamati, cara kerja mekanisnya, penjelasan sains yang Anda sampaikan... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Hasil rekaman operasional alat mesin pertanian (alsintan) di sawah/RMU.\n2. Penjelasan teknis mekanik/operator mesin pertanian setempat.',
+          defaultExp: 'Video pilar STEM mendokumentasikan mesin combine harvester yang sedang memanen padi dengan memadukan fungsi pemotong, perontok bulir gabah, dan pembersih jerami secara simultan. Siswa merekam detail mekanisme bilah pisau dan blower angin serta menjelaskan efisiensi waktu kerja alsintan modern.',
+          defaultSources: '1. Log Rekaman Video Alsintan HP (Folder STEM_VIDEO_D6).\n2. Panduan Spesifikasi Mesin Pertanian Modern dari Operator.'
         },
         {
           key: 'C',
-          title: 'Pengelolaan Limbah Pertanian Berkelanjutan (Jerami Tanpa Bakar)',
-          subtitle: 'Larangan Bakar Jerami di Sawah, Mulsa Alami, Biogas & Fermentasi Pakan Silase Sapi',
+          title: 'Kurasi Klip Footage, Manajemen File & Kesiapan Editing Final',
+          subtitle: 'Penyortiran Adegan Terbaik Day 5 & Day 6 untuk Digabungkan Menjadi Video Utuh Day 7',
           guidedPoints: [
-            'Dampak merusak dari kebiasaan membakar jerami pascapanen di sawah: kabut asap polusi udara, hilangnya unsur hara nitrogen alami, dan kematian mikroba tanah.',
-            'Teknik dekomposisi jerami langsung di petak sawah menggunakan larutan mikroba pengurai cepat sebelum proses pengolahan tanah dimulai.',
-            'Pemanfaatan jerami padi sebagai bahan baku pakan fermentasi (silase) untuk ternak sapi potong pada masa kemarau paceklik rumput hijau.'
+            'Memilah klip video terbaik dari Day 5 (Finansial & Budaya) dan Day 6 (Eksplorasi & STEM) dengan total durasi bahan mentah 5-8 menit.',
+            'Memastikan setiap adegan memiliki durasi minimal 5-10 detik yang stabil agar mudah dipotong dan ditransisikan saat proses editing.',
+            'Pengecekan kesiapan aplikasi video editor di HP (CapCut / VN / Canva / KineMaster) untuk proses editing puncak pada Day 7.'
           ],
-          placeholder: 'Uraikan hasil analisis Anda mengenai bahaya membakar jerami di sawah dan solusi pemanfaatan jerami sebagai mulsa organik serta pakan fermentasi sapi... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Peraturan Pengendalian Pencemaran dan Larangan Pembakaran Lahan Pertanian\n2. Jurnal Teknologi Pengolahan Limbah Biomassa Pertanian Tropis',
-          defaultExp: 'Praktik membakar jerami pascapanen harus dihentikan karena merusak keanekaragaman hayati tanah, memicu emisi gas rumah kaca, dan menghilangkan potensi pengembalian unsur hara kalium alami ke tanah sawah. Pemanfaatan limbah jerami sebagai mulsa organik, pengomposan dengan dekomposer in-situ, serta pengolahan silase pakan ternak menciptakan integrasi pertanian-peternakan yang ramah lingkungan.',
-          defaultSources: '1. Peraturan Daerah tentang Pengendalian Pencemaran dan Larangan Pembakaran Lahan Pertanian.\n2. Jurnal Teknologi Pengolahan Limbah Biomassa Pertanian Tropis.'
-        },
-        {
-          key: 'D',
-          title: 'Kearifan Lokal Konservasi Air Irigasi Belitang & Tradisi Sambatan',
-          subtitle: 'Kelembagaan Ulu-Ulu Pembagi Air, Jadwal Buka Pintu, Gotong Royong Tanggul & Norma Sosial',
-          guidedPoints: [
-            'Peran dan fungsi kelembagaan petugas ulu-ulu dalam mengatur giliran debit aliran air ke petak sawah petani secara musyawarah dan adil.',
-            'Tradisi gotong royong kerja bakti sambatan membersihkan sedimen lumpur dan eceng gondok di sepanjang saluran sekunder dan tersier irigasi Belitang.',
-            'Norma sosial dan sanksi adat pedesaan dalam memelihara kebersihan sumber mata air dan larangan membuang sampah domestik ke saluran irigasi Komering.'
-          ],
-          placeholder: 'Tuliskan hasil kajian Anda mengenai kearifan lokal petugas ulu-ulu dalam membagi air irigasi serta tradisi gotong royong membersihkan saluran irigasi di Belitang... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Kearifan Lokal Tata Kelola Air Pertanian Tradisional Nusantara\n2. Laporan Pengelolaan Sumber Daya Air BBWS Sumatera VIII',
-          defaultExp: 'Kearifan lokal sistem kelembagaan pengatur air (ulu-ulu) di kawasan Belitang memadukan tata tertib adat dengan manajemen teknis hidrologi dalam pembagian debit air irigasi secara berkeadilan. Nilai luhur gotong royong kerja bakti membersihkan saluran tersier dari gulma dan endapan lumpur secara kolektif menjaga kontinuitas pasokan air sawah sekaligus memelihara kerukunan antar-warga desa.',
-          defaultSources: '1. Buku Kearifan Lokal Tata Kelola Air Pertanian Nusantara.\n2. Laporan Pengelolaan Sumber Daya Air Balai Besar Wilayah Sungai (BBWS) Sumatera VIII.'
-        },
-        {
-          key: 'E',
-          title: 'Pertanian Berkelanjutan (Sustainable Agriculture) Menghadapi Iklim Ekstrem',
-          subtitle: 'Antisipasi El Nino / La Nina, Embung Cadangan Air & Model Pertanian Cerdas Iklim (CSA)',
-          guidedPoints: [
-            'Dampak anomali cuaca global (kemarau panjang El Nino dan curah hujan ekstrem La Nina) terhadap kalender musim tanam padi di Kabupaten OKU Timur.',
-            'Pembangunan embung penampung air hujan dan sumur bor resapan sebagai sumber cadangan air kritis saat debit saluran irigasi menyusut di musim kemarau.',
-            'Konsep penerapan Climate-Smart Agriculture (CSA): pemilihan bibit toleran kekeringan/genangan dan penyesuaian pola tanam berbasis informasi prakiraan cuaca BMKG.'
-          ],
-          placeholder: 'Uraikan hasil analisis Anda mengenai ancaman perubahan iklim terhadap sawah OKU Timur serta langkah adaptasi pertanian cerdas iklim (embung air dan bibit tahan cuaca)... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Publikasi BMKG: Panduan Informasi Iklim Sektor Pertanian Tanaman Pangan\n2. Pedoman Adaptasi Perubahan Iklim Pertanian Berkelanjutan, Bappenas RI',
-          defaultExp: 'Anomali iklim global seperti kemarau panjang El Nino dan curah hujan ekstrem La Nina menuntut transformasi sistem pertanian OKU Timur menuju model Climate-Smart Agriculture (CSA). Pembangunan embung penampung air terpadu, adopsi varietas padi tahan genangan dan kekeringan, serta pengaturan pola tanam berbasis data prakiraan cuaca BMKG menjadi strategi adaptif mutlak ketahanan pangan daerah.',
-          defaultSources: '1. Publikasi BMKG tentang Panduan Iklim dan Musim Tanam Sektor Pertanian.\n2. Pedoman Adaptasi Perubahan Iklim Pertanian Berkelanjutan Bappenas RI.'
+          placeholder: 'Tuliskan daftar total klip yang siap Anda bawa ke tahap editing Day 7, aplikasi editor yang akan digunakan, dan konsep alur cerita video dokumenter Anda... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Daftar inventarisasi file klip video tersimpan di HP.\n2. Rencana alur cerita (timeline) video dokumenter FINCESTEM.',
+          defaultExp: 'Kurasi klip telah menyelesaikan seleksi 12 potongan rekaman terbaik yang mewakili keseimbangan 4 pilar FINCESTEM. Seluruh footage telah dipindahkan ke timeline proyek aplikasi editing video CapCut/VN dan siap diberikan teks intro, transisi halus, serta narasi suara pada Day 7.',
+          defaultSources: '1. Master Folder Video Kokurikuler di Memori Eksternal HP.\n2. Rencana Alur Editing Video Portofolio FINCESTEM 2026.'
         }
       ]
     },
 
     7: {
       dayNum: 7,
-      title: 'Modul Riset Day 7: Evaluasi Komprehensif, Sintesis Pembelajaran 7 Hari & Portofolio FINCESTEM',
-      theme: 'Pilar Financial, Industry, Nature, Culture, STEM',
-      gradientClass: 'from-cyan-950 via-slate-900 to-indigo-950 border-cyan-700/40',
-      tagColorClass: 'bg-white/20 text-cyan-100',
-      badgeColorClass: 'bg-emerald-400 text-slate-950',
-      subtitle: 'Sintesis Holistik Empat Pilar FINCESTEM, Refleksi Kritis Pengalaman Riset Lapangan, Formulasi Rekomendasi Solutif bagi Stakeholder Daerah, Rencana Aksi Wirausaha Pemuda & Penyusunan Dokumen Portofolio Resmi',
-      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda ditugaskan menyelesaikan <strong>Sintesis Evaluasi Akhir & Penyusunan Portofolio Riset FINCESTEM 2026</strong>, merefleksikan seluruh temuan lapangan Day 1 s.d. Day 6, menyusun rekomendasi kebijakan bagi daerah, serta merumuskan rencana aksi kewirausahaan masa depan.',
+      title: 'Modul Riset Day 7: Final Editing, Link Video YouTube & Audit Kas',
+      theme: 'Sintesis Komprehensif 4 Pilar FINCESTEM',
+      gradientClass: 'from-amber-950 via-slate-900 to-indigo-950 border-amber-700/40',
+      tagColorClass: 'bg-white/20 text-amber-100',
+      badgeColorClass: 'bg-rose-400 text-rose-950',
+      subtitle: 'Panduan Penggabungan Video Dokumenter Riset (CapCut/VN), Tata Cara Unggah YouTube (Publik/Unlisted), Penginputan Link Video di FINCESTEM, serta Rekonsiliasi Tutup Buku Kas Riset Mandiri',
+      inquiryIntro: 'Selamat datang di <strong>Hari Puncak Riset Mandiri FINCESTEM 2026!</strong> Hari ini Anda akan menyatukan rekaman video Day 5 dan Day 6 menjadi 1 karya video dokumenter utuh (durasi 3–5 menit), mengunggahnya ke YouTube, menyalin tautan link video ke formulir pengumpulan aplikasi, serta menyusun laporan rekonsiliasi tutup buku kas riset mandiri.',
       cards: [
         {
           key: 'A',
-          title: 'Sintesis Integratif Empat Pilar FINCESTEM di Kabupaten OKU Timur',
-          subtitle: 'Keterpaduan Dimensi Financial, Industry/STEM, Nature & Culture dalam Realitas Nyata',
+          title: 'Panduan Pascaproduksi & Editing Video di HP (CapCut / VN / Canva)',
+          subtitle: 'Penggabungan 4 Pilar, Penambahan Teks Identitas, Narasi Suara Latar & Musik Bebas Copyright',
           guidedPoints: [
-            'Analisis bagaimana pilar Budaya (Culture) gotong royong sambatan mempengaruhi efisiensi pilar Finansial (Financial) dalam menekan biaya operasional usaha tani.',
-            'Keterkaitan erat antara pilar Alam (Nature) saluran irigasi Danau Ranau dengan pilar Teknologi (STEM) mekanisasi alsintan dalam mendorong produktivitas lumbung pangan.',
-            'Kesimpulan ilmiah bahwa kemajuan agrobisnis daerah harus berdiri kokoh di atas keseimbangan kelestarian ekosistem alam dan jati diri budaya lokal.'
+            'Langkah penggabungan klip video Day 5 (Finansial & Budaya) dan Day 6 (Eksplorasi & STEM) ke dalam timeline berurutan dengan durasi akhir 3 hingga 5 menit.',
+            'Penambahan teks judul pada intro video: Judul Riset, Nama Lengkap Siswa, NISN, Kelas, Nama Fasilitator, dan Logo SMAN 1 Belitang.',
+            'Penyisipan rekaman suara penjelasan (voice-over) yang jernih, transisi adegan yang rapi, serta pemilihan musik latar dengan volume proporsional (20-30%).',
+            'Ekspor hasil video dengan resolusi standar YouTube 720p atau 1080p Full HD.'
           ],
-          placeholder: 'Uraikan sintesis integratif Anda mengenai bagaimana pilar budaya, finansial, alam, dan teknologi saling menopang kemajuan Kabupaten OKU Timur... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Panduan Kurikulum Kokurikuler FINCESTEM 2026 SMAN 1 Belitang\n2. Jurnal Pendidikan Karakter Berbasis Masalah Nyata Lingkungan Daerah',
-          defaultExp: 'Sintesis menyeluruh pembelajaran 7 hari FINCESTEM membuktikan bahwa kemajuan agrobisnis di OKU Timur tidak dapat dipisahkan dari sinergi empat pilar: nilai luhur budaya gotong royong (Culture) memperkuat modal sosial dan efisiensi biaya (Financial), yang bersinergi dengan kelestarian ekosistem tanah dan air (Nature), serta akselerasi mekanisasi dan teknologi presisi (STEM) guna mewujudkan kemakmuran daerah yang berkeadilan.',
-          defaultSources: '1. Buku Panduan Kurikulum Kokurikuler FINCESTEM 2026, SMAN 1 Belitang.\n2. Jurnal Pendidikan Karakter Berbasis Masalah Nyata Lingkungan Daerah.'
+          placeholder: 'Tuliskan laporan proses editing video Anda: aplikasi yang digunakan, judul video dokumenter yang dipilih, durasi akhir video, dan kendala teknis yang berhasil diatasi... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Hasil ekspor file video final pada memori smartphone.\n2. Lembar kerja storyboard dan skrip narasi video.',
+          defaultExp: 'Proses editing video dokumenter diselesaikan menggunakan aplikasi CapCut mobile dengan merangkai adegan 4 pilar secara harmonis. Video diawali opening title kartu identitas siswa dan SMAN 1 Belitang, narasi voice-over penjelasan 4 pilar berurutan, latar audio instrumen bebas copyright, dan diekspor pada resolusi Full HD 1080p.',
+          defaultSources: '1. File Master Video Dokumenter FINCESTEM 2026 (MP4 Full HD).\n2. Catatan Riwayat Editing Proyek Video CapCut/VN.'
         },
         {
           key: 'B',
-          title: 'Refleksi Kritis Pengalaman Riset & Transformasi Karakter Siswa',
-          subtitle: 'Pembelajaran Kontekstual Berbasis Masalah Nyata, Daya Tangguh & Empati Sosial',
+          title: 'Panduan Unggah ke YouTube & Pengisian Link Tautan Resmi',
+          subtitle: 'Setelan Privasi YouTube (Publik / Unlisted), Penyalinan URL Video & Penulisan Sinopsis Riset',
           guidedPoints: [
-            'Evaluasi jujur terhadap perubahan sudut pandang (mindset) siswa setelah mengamati langsung kerja keras para petani, pengelola kilang padi, dan pedagang pasar.',
-            'Refleksi mengenai keterampilan baru yang berhasil dikuasai selama riset mandiri: kemampuan observasi investigatif, analisis data ekonomi, dan penulisan ilmiah orisinal.',
-            'Komitmen personal siswa dalam menerapkan kedisiplinan mengelola keuangan pribadi serta menghargai jerih payah produsen pangan penopang kehidupan.'
+            'Prosedur mengunggah file video ke channel YouTube pribadi/kelompok menggunakan aplikasi YouTube di smartphone.',
+            'Pemilihan setelan visibilitas: disarankan opsi Publik atau "Tidak Terdaftar" (Unlisted - hanya yang memiliki tautan yang bisa menonton agar privasi siswa terjaga).',
+            'Penyalinan tautan resmi video (contoh: https://youtu.be/... atau https://www.youtube.com/watch?v=...) dan penempelan pada formulir LKPD Day 7 aplikasi FINCESTEM.',
+            'Penyusunan sinopsis temuan riset (deskripsi 2-3 paragraf) yang menjelaskan intisari riset 4 pilar di OKU Timur.'
           ],
-          placeholder: 'Tuliskan refleksi mendalam Anda mengenai perubahan cara pandang, keterampilan baru yang didapat, dan komitmen kedisiplinan diri setelah menyelesaikan riset 7 hari... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Panduan Pembelajaran Berbasis Riset Kontekstual Kemendikbudristek\n2. Modul Refleksi Diri dan Pembentukan Profil Pelajar Pancasila',
-          defaultExp: 'Pembelajaran mandiri selama tujuh hari memberikan transformasi karakter mendalam bagi siswa, menumbuhkan empati sosial dan rasa hormat yang tulus atas jerih payah para petani dan pelaku UMKM penopang ketahanan pangan daerah. Pengalaman investigasi lapangan melatih kemampuan berpikir kritis, ketelitian observasi ilmiah, serta kematangan kedisiplinan diri dalam mengelola sumber daya secara bertanggung jawab.',
-          defaultSources: '1. Panduan Pembelajaran Berbasis Proyek (Project-Based Learning) Kemendikbudristek.\n2. Modul Refleksi Diri dan Pembentukan Karakter Pelajar Pancasila.'
+          placeholder: 'Tuliskan link YouTube video karya Anda, judul video di YouTube, serta sinopsis ringkas temuan riset 4 pilar yang Anda sajikan dalam video... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. URL Link Video YouTube Resmi karya peserta didik.\n2. Deskripsi dan sinopsis tayangan video di YouTube.',
+          defaultExp: 'Video dokumenter telah berhasil diunggah ke YouTube dengan status visibilitas Unlisted sehingga dewan fasilitator dapat langsung mengakses dan menilai melalui tautan resmi yang disematkan pada portal FINCESTEM. Sinopsis video menguraikan korelasi antara kekuatan ekonomi daerah, kearifan budaya leluhur, bentang alam irigasi, dan modernisasi teknologi pertanian.',
+          defaultSources: '1. Tautan URL Video YouTube Karya Siswa (https://youtu.be/...).\n2. Deskripsi Publikasi Video pada Channel YouTube.'
         },
         {
           key: 'C',
-          title: 'Formulasi Rekomendasi Solutif bagi Pemangku Kepentingan OKU Timur',
-          subtitle: 'Usulan Kebijakan Distribusi Pupuk, Pemeliharaan Irigasi Tersier & Regenerasi Petani Muda',
+          title: 'Rekonsiliasi Tutup Buku Kas & Audit Keuangan Riset Mandiri',
+          subtitle: 'Pencocokan Rencana Anggaran Day 1 vs Realisasi Pengeluaran Nyata & Sisa Saldo Kas',
           guidedPoints: [
-            'Rekomendasi konkret perbaikan sistem penyaluran kuota pupuk subsidi dan percepatan pemeliharaan tanggul pintu air irigasi tersier desa.',
-            'Usulan program pendampingan intensif bagi klaster UMKM pelosok dalam hal kemasan kedap udara, branding modern, dan fasilitasi sertifikasi halal resmi.',
-            'Inisiatif pembentukan forum pemuda agribisnis milenial daerah guna menarik minat generasi muda terdidik untuk berwirausaha membangun kampung halaman.'
+            'Pencatatan rekapitulasi seluruh pengeluaran riil selama 7 hari pelaksanaan riset (transportasi lokal, konsumsi, pembelian alat/kuota, dan biaya observasi).',
+            'Perhitungan selisih antara Rencana Anggaran Biaya (RAB) yang disusun pada Day 1 dengan realisasi belanja fisik lapangan.',
+            'Penetapan sisa saldo kas akhir serta refleksi mandiri mengenai efektivitas pengelolaan uang dan disiplin anggaran dalam kehidupan sehari-hari.'
           ],
-          placeholder: 'Uraikan rekomendasi solutif yang Anda ajukan bagi pemerintah daerah, dinas pertanian, dan kelompok tani demi kemajuan agribisnis di OKU Timur... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Rencana Pembangunan Jangka Menengah Daerah (RPJMD) Kabupaten OKU Timur\n2. Naskah Kebijakan Ketahanan Pangan dan Pemberdayaan Petani Muda Daerah',
-          defaultExp: 'Berdasarkan temuan riset faktual, rekomendasi kebijakan yang diajukan bagi pemangku kepentingan OKU Timur mencakup: optimalisasi pemeliharaan berkala tanggul dan pintu air irigasi tersier, penguatan penyuluhan teknologi pupuk organik mandiri untuk menekan kelangkaan pupuk subsidi, serta penyediaan ruang inkubasi wirausaha muda agrikultur guna menarik minat generasi terdidik membangun daerah.',
-          defaultSources: '1. Dokumen Rencana Pembangunan Jangka Menengah Daerah (RPJMD) Kabupaten OKU Timur.\n2. Naskah Kebijakan Publik Ketahanan Pangan dan Pemberdayaan Petani Muda Daerah.'
-        },
-        {
-          key: 'D',
-          title: 'Penyusunan Rencana Aksi Kewirausahaan Muda Berbasis Potensi Lokal',
-          subtitle: 'Gagasan Ide Bisnis Olahan Pangan, Estimasi Modal Awal & Strategi Promosi Digital',
-          guidedPoints: [
-            'Gagasan ide bisnis inovatif yang potensial dirintis generasi muda dengan mengolah komoditas unggulan lokal (padi organik, olahan ikan, limbah jerami).',
-            'Rancangan operasional sederhana: penghitungan estimasi modal awal, penentuan Harga Pokok Penjualan (HPP), dan pemilihan target segmen konsumen.',
-            'Strategi promosi dan penjualan menggunakan platform media sosial, marketplace lokal, dan layanan pesan antar yang efisien dan minim modal.'
-          ],
-          placeholder: 'Tuliskan rancangan ide bisnis kreatif berbasis potensi lokal OKU Timur yang ingin Anda rintis, mencakup produk, estimasi modal, dan strategi pemasarannya... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Panduan Penyusunan Rencana Bisnis Sederhana (Business Plan) untuk Pemula\n2. Modul Kewirausahaan Terapan SMA/SMK Kemendikbudristek',
-          defaultExp: 'Rencana aksi kewirausahaan masa depan difokuskan pada pengembangan produk hilirisasi bernilai tambah tinggi, seperti inovasi kemasan beras organik premium personal size dan camilan olahan pangan berbahan baku lokal dengan pemasaran e-commerce. Perencanaan bisnis ini memadukan kalkulasi modal yang terukur, kepatuhan legalitas higienis, serta strategi promosi digital yang adaptif terhadap tren pasar modern.',
-          defaultSources: '1. Buku Panduan Penyusunan Business Plan Sederhana untuk Wirausaha Pemula.\n2. Modul Kewirausahaan Terapan SMK/SMA Direktorat PSMA Kemendikbudristek.'
-        },
-        {
-          key: 'E',
-          title: 'Penataan Portofolio Hasil Riset Mandiri 7 Hari sebagai Dokumen Resmi',
-          subtitle: 'Sistematika Laporan Akhir, Bukti Autentik LKPD, Lampiran Foto Geotagging & Lembar Pengesahan',
-          guidedPoints: [
-            'Sistematika penataan dokumen portofolio akhir: Cover resmi identitas, Lembar Pengesahan Fasilitator Pembina, Resume 5 Modul Belajar, Rekap LKPD, dan Catatan Jurnal Refleksi.',
-            'Kelengkapan lampiran autentik: bukti foto dokumentasi lapangan ber-geotagging dan lembar catatan wawancara narasumber usaha.',
-            'Pencapaian penilaian portofolio sebagai bukti kelulusan program kokurikuler resmi FINCESTEM 2026 dengan predikat kompetensi memuaskan.'
-          ],
-          placeholder: 'Uraikan hasil penataan portofolio riset mandiri 7 hari Anda, kelengkapan berkas lampiran foto, serta makna portofolio ini bagi kelulusan akademik Anda... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Petunjuk Teknis Penilaian Portofolio Kokurikuler SMAN 1 Belitang\n2. Standar Penilaian Pendidikan Berbasis Portofolio, BSKAP Kemendikbudristek',
-          defaultExp: 'Portofolio hasil riset mandiri tujuh hari ditata sebagai dokumen akademik resmi yang menghimpun seluruh lembar kerja lapangan terverifikasi, sintesis modul kajian, hasil penilaian asesmen digital, serta bukti foto dokumentasi lapangan. Dokumen ini menjadi portofolio portofolio autentik yang membuktikan pencapaian kompetensi holistik siswa dalam kurikulum kokurikuler FINCESTEM 2026.',
-          defaultSources: '1. Petunjuk Teknis Penilaian Portofolio Kokurikuler SMAN 1 Belitang.\n2. Standar Penilaian Pendidikan Berbasis Portofolio, BSKAP Kemendikbudristek.'
+          placeholder: 'Tuliskan rekapitulasi tutup buku kas riset Anda: total dana awal, total realisasi pengeluaran 7 hari, sisa saldo kas riil, serta pelajaran penting dalam mengelola keuangan... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Lembar Rekonsiliasi Kas Mandiri dan Nota Bukti Pengeluaran 7 Hari.\n2. Rencana Anggaran Biaya (RAB) Day 1 di Aplikasi FINCESTEM.',
+          defaultExp: 'Rekonsiliasi pembukuan kas riset mandiri menunjukkan seluruh pengeluaran selama 7 hari tercatat tertib dengan bukti kuitansi nota terlampir. Perbandingan antara rencana anggaran Day 1 dengan realisasi riil menunjukkan efisiensi belanja yang terukur dan menghasilkan sisa saldo kas yang dikembalikan sebagai tabungan pribadi siswa.',
+          defaultSources: '1. Buku Kas Pembantu Pengeluaran Riset 7 Hari Siswa.\n2. Rekapitulasi Nota/Kuitansi Belanja Fisik Lapangan.'
         }
       ]
     }
+
   };
 
   // Helper untuk menambah nomor rujukan otomatis (+ Tambah Rujukan Lain)
