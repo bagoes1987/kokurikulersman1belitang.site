@@ -3418,7 +3418,7 @@
         const canOpenAsesmen = canInteract && (!dayProg || dayProg.canAsesmen);
         const canOpenDok = canInteract && (!dayProg || dayProg.canDok);
         const canOpenRefleksi = canInteract && (!dayProg || dayProg.canRefleksi);
-        const canOpenPenilaian = canInteract && (!dayProg || dayProg.canPenilaian);
+        const canOpenPenilaian = isTrial ? true : (canInteract && (!dayProg || dayProg.canPenilaian));
 
         const hasPenilaian = isFieldTrip 
           ? (hasRefleksi || (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined)) 
@@ -3429,8 +3429,10 @@
           if (isTrial) {
             if (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined) {
               labelPenilaian = `✓ Nilai: ${dayRecord.score} (${dayRecord.predicate || 'A'})`;
+            } else if (hasPenilaian || (dayProg && dayProg.canPenilaian)) {
+              labelPenilaian = '⭐⭐⭐⭐⭐ Bintang 5 (100)';
             } else {
-              labelPenilaian = hasPenilaian ? '⭐⭐⭐⭐⭐ Bintang 5 (100)' : 'Cek Bintang Simulasi';
+              labelPenilaian = 'Cek Status Penilaian';
             }
           } else if (isFieldTrip) {
             if (dayRecord && dayRecord.score !== null && dayRecord.score !== undefined) {
@@ -3877,7 +3879,13 @@
 
     function handleActivityClick(dayNumber, type) {
       const dNum = Number(dayNumber);
-      const day = daysSchedule.find(d => Number(d.day_number) === dNum);
+      let day = daysSchedule.find(d => Number(d.day_number) === dNum);
+      if (!day && dNum === 0) {
+        const uDef = FincestemCore.auth.getUser() || {};
+        const zUpper = String(uDef.zone || '').toUpperCase();
+        const isFtDef = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+        day = (isFtDef ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults()).find(d => Number(d.day_number) === 0);
+      }
       if (!day) return;
 
       const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
@@ -3941,8 +3949,8 @@
           return;
         }
 
-        // Tahap 6: Penilaian butuh Refleksi selesai
-        if (type === 'penilaian' && !progStatus.canPenilaian) {
+        // Tahap 6: Penilaian butuh Refleksi selesai (khusus Day 1-7, Day 0 simulasi selalu dapat diklik untuk cek status)
+        if (type === 'penilaian' && dNum > 0 && !progStatus.canPenilaian) {
           showStepLockedModal('Nilai & Feedback Guru', `Tahap 5: Jurnal Refleksi Mandiri Day ${dNum}`, () => { handleActivityClick(dNum, 'refleksi'); }, dNum);
           return;
         }
@@ -4150,10 +4158,12 @@
       ` : '';
 
       const currentUser = FincestemCore.auth.getUser() || {};
-      const cleanNisn = String(currentUser.nisn || currentUser.identifier || '').trim();
+      const stu = currentStudent || currentUser;
+      const cleanNisn = String(stu.nisn || stu.identifier || currentUser.nisn || currentUser.identifier || '').trim();
+      const studentClass = stu.class || stu.class_name || currentUser.class || currentUser.class_name || '';
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(cleanNisn, currentUser.class || currentUser.class_name, currentUser.zone)
-        : (currentUser.zone || 'FINCESTEM OKU TIMUR');
+        ? FincestemCore.zones.getStudentZone(cleanNisn, studentClass, stu.zone || currentUser.zone)
+        : (stu.zone || currentUser.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
@@ -5339,6 +5349,7 @@
         const dayGeneralTask = taskMap[day.day_number + '_general'] || taskMap[day.day_number + '_lkpd'];
 
         if (isTrial) {
+          const activeAssignedFasil = getStudentActiveFasilName(cleanNisn, studentClass);
           const day0Prog = getFTProgressStatus(taskMap, 0);
           const isD0Done = (day0Prog && day0Prog.hasRefleksi) || (savedTask && (savedTask.status === 'completed' || savedTask.status === 'submitted'));
           let d0CbtScore = 100;
@@ -5370,7 +5381,6 @@
             const manualPred = (dayRec && dayRec.predicate) ? dayRec.predicate : (manualScore >= 85 ? 'Mahir (A)' : (manualScore >= 70 ? 'Cakap (B)' : 'Berkembang (C)'));
             const manualFb = (dayRec && dayRec.feedback) ? dayRec.feedback : ((dayGeneralTask && dayGeneralTask.feedback) ? dayGeneralTask.feedback : 'Catatan evaluasi simulasi dari fasilitator.');
             const manualStatus = (dayRec && dayRec.status) ? dayRec.status : ((dayGeneralTask && dayGeneralTask.status) ? dayGeneralTask.status : 'completed');
-            const activeAssignedFasil = getStudentActiveFasilName(cleanNisn, studentClass);
             const manualFasil = (dayRec && dayRec.facilitator_name && dayRec.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && dayRec.facilitator_name !== 'Belum Ditentukan') 
               ? dayRec.facilitator_name 
               : ((dayGeneralTask && dayGeneralTask.facilitator_name && dayGeneralTask.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && dayGeneralTask.facilitator_name !== 'Belum Ditentukan') 
