@@ -2050,21 +2050,39 @@ if ($method === 'POST') {
                 }
             }
 
-            // Sinkronkan juga pemetaan zona siswa jika dikirim dari browser
+            // Sinkronkan pemetaan zona siswa (Dioptimalkan: hanya update data yang benar-benar berubah untuk mencegah ratusan query berulang)
             if (isset($input['student_zones']) && is_array($input['student_zones'])) {
                 try {
-                    $stmtCust = $pdo->prepare("
-                        INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES (:nisn, :z)
-                        ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`), `updated_at` = CURRENT_TIMESTAMP
-                    ");
+                    $stmtExisting = $pdo->query("SELECT `nisn`, `zone` FROM `student_custom_zones`");
+                    $existingMap = $stmtExisting ? $stmtExisting->fetchAll(PDO::FETCH_KEY_PAIR) : [];
+
+                    $toUpdate = [];
                     foreach ($input['student_zones'] as $sNisn => $sZone) {
                         $sNisn = trim((string)$sNisn);
                         $sZone = trim((string)$sZone);
                         if ($sNisn !== '' && $sZone !== '') {
-                            $stmtCust->execute([':nisn' => $sNisn, ':z' => $sZone]);
+                            if (!isset($existingMap[$sNisn]) || $existingMap[$sNisn] !== $sZone) {
+                                $toUpdate[$sNisn] = $sZone;
+                            }
                         }
                     }
-                } catch (Exception $eZ) {}
+
+                    if (!empty($toUpdate)) {
+                        $stmtCust = $pdo->prepare("
+                            INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES (:nisn, :z)
+                            ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`), `updated_at` = CURRENT_TIMESTAMP
+                        ");
+                        $pdo->beginTransaction();
+                        foreach ($toUpdate as $sNisn => $sZone) {
+                            $stmtCust->execute([':nisn' => $sNisn, ':z' => $sZone]);
+                        }
+                        $pdo->commit();
+                    }
+                } catch (Exception $eZ) {
+                    if ($pdo->inTransaction()) {
+                        $pdo->rollBack();
+                    }
+                }
             }
 
             $current['last_synced_at'] = gmdate('c');

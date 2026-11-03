@@ -86,27 +86,38 @@
       FincestemCore.zones.syncZones();
     }
 
-    // Tarik dari server dulu (merge aman), lalu kirim gabungan lokal + server kembali ke database
-    window.FincestemMentorship.syncFromServer(function() {
-      window.FincestemMentorship.syncToServer(function(res) {
-        if (lbl) lbl.textContent = 'Sinkronkan Server (Multi-PC)';
-        if (lblTop) lblTop.textContent = 'Sinkronkan Server (Multi-PC)';
+    // Tarik dan gabungkan data antar-PC dari server secara aman & responsif tanpa membekukan browser
+    window.FincestemMentorship.syncFromServer(function(changed) {
+      if (lbl) lbl.textContent = 'Sinkronkan Server (Multi-PC)';
+      if (lblTop) lblTop.textContent = 'Sinkronkan Server (Multi-PC)';
+
+      // Perbarui UI secara non-blocking di frame berikutnya
+      requestAnimationFrame(function() {
         renderMentorshipStats();
         switchMentorshipSubTab(currentSubTab);
-        if (typeof window.renderAdminMatrixView === 'function') window.renderAdminMatrixView();
-        if (typeof window.renderAdminCards === 'function') window.renderAdminCards();
-        if (typeof refreshAdminStats === 'function') refreshAdminStats();
-        if (typeof applyStudentFilters === 'function') applyStudentFilters();
-        if (typeof window.renderAdminStudentList === 'function') window.renderAdminStudentList();
-        if (typeof window.renderAdminRekapView === 'function') window.renderAdminRekapView();
-        if (window.FincestemCore && FincestemCore.ui) {
-          if (res && res.success) {
-            FincestemCore.ui.toast('Data Pembagian Siswa Binaan, Guru & Zona Siswa berhasil disinkronkan antar-PC ke Server!', 'success');
-          } else {
-            FincestemCore.ui.toast('Data lokal telah diperbarui.', 'info');
-          }
+
+        // Hanya perbarui tab lain JIKA tab tersebut sedang aktif terbuka di layar
+        const pStudents = document.getElementById('panelAdminStudents');
+        if (pStudents && !pStudents.classList.contains('hidden')) {
+          if (typeof applyStudentFilters === 'function') applyStudentFilters();
+        }
+        const pMatrix = document.getElementById('panelAdminMatrix');
+        if (pMatrix && !pMatrix.classList.contains('hidden')) {
+          if (typeof window.renderAdminMatrixView === 'function') window.renderAdminMatrixView();
+        }
+        const pCards = document.getElementById('panelAdminCards');
+        if (pCards && !pCards.classList.contains('hidden')) {
+          if (typeof window.renderAdminCards === 'function') window.renderAdminCards();
+        }
+        const pRekap = document.getElementById('panelAdminRekap');
+        if (pRekap && !pRekap.classList.contains('hidden')) {
+          if (typeof window.renderAdminRekapView === 'function') window.renderAdminRekapView();
         }
       });
+
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Data Pembagian Siswa Binaan berhasil disinkronkan antar-PC!', 'success');
+      }
     });
   };
 

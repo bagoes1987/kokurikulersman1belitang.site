@@ -1021,17 +1021,20 @@
         </div>
 
         <!-- KARTU BUTIR SOAL SATU PER SATU -->
-        <div id="examQuestionCard" onclick="window.wakeUpQuestionCard()" ontouchstart="window.wakeUpQuestionCard()" class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col gap-4 relative overflow-hidden">
+        <div id="examQuestionCard" class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col gap-4 relative overflow-hidden">
           
-          <!-- OVERLAY BLUR OTOMATIS ANTI-INTIP LAYAR MENGAMBANG (AKTIF JIKA DIAM > 8 DETIK) -->
-          <div id="examIdleBlurNotice" style="display: none;" onclick="window.wakeUpQuestionCard(true); event.stopPropagation();" class="absolute inset-0 z-20 bg-slate-900/80 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white cursor-pointer select-none">
-            <div class="w-12 h-12 rounded-2xl bg-teal-500/20 border border-teal-400 text-teal-300 flex items-center justify-center mb-2.5 shadow-lg">
-              <span class="material-symbols-outlined text-2xl animate-bounce">touch_app</span>
+          <!-- OVERLAY BLUR OTOMATIS ANTI-INTIP LAYAR MENGAMBANG (AKTIF JIKA DIAM > 4 DETIK) -->
+          <div id="examIdleBlurNotice" style="display: none;" onclick="event.stopPropagation(); window.wakeUpQuestionCard(true);" ontouchstart="event.stopPropagation(); window.wakeUpQuestionCard(true);" class="absolute inset-0 z-20 bg-slate-900/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white cursor-pointer select-none">
+            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 text-amber-300 flex items-center justify-center mb-2.5 shadow-lg">
+              <span class="material-symbols-outlined text-2xl animate-bounce">warning</span>
             </div>
             <h4 class="font-black text-sm sm:text-base text-white">Proteksi Fokus Aktif (Anti-Layar Mengambang)</h4>
             <p class="text-[11.5px] text-slate-200 max-w-xs mt-1 leading-relaxed">
               Soal disembunyikan otomatis saat layar tidak disentuh agar tidak dapat dibaca melalui aplikasi mengambang.<br>
-              <span class="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shadow-md"><span class="material-symbols-outlined text-sm">warning</span><span>Kembali ke Lembar Soal</span></span>
+              <span onclick="event.stopPropagation(); window.wakeUpQuestionCard(true);" ontouchstart="event.stopPropagation(); window.wakeUpQuestionCard(true);" class="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shadow-md cursor-pointer hover:bg-amber-300 active:scale-95 transition-all">
+                <span class="material-symbols-outlined text-sm">lock_reset</span>
+                <span>Ketuk di sini untuk membuka tampilan soal (Catat Pelanggaran)</span>
+              </span>
             </p>
           </div>
 
@@ -1592,8 +1595,8 @@
   let baselineMaxScreenW = 0;
   let baselineMaxScreenH = 0;
   const VIOLATION_DEBOUNCE_MS = 2000; // Minimal 2.0 detik jeda antar-pelanggaran
-  const QUESTION_IDLE_BLUR_MS = 5500; // 5.5 detik tanpa sentuhan -> langsung sembunyikan soal (anti-layar mengambang & anti-intip)
-  const ESCALATION_INTERVAL_MS = 4000; // 4 detik setelah tirai muncul tanpa respon -> catat pelanggaran otomatis!
+  const QUESTION_IDLE_BLUR_MS = 4000; // 4.0 detik tanpa sentuhan -> langsung sembunyikan soal (anti-layar mengambang & anti-intip)
+  const ESCALATION_INTERVAL_MS = 2500; // 2.5 detik setelah tirai muncul tanpa respon -> catat pelanggaran otomatis!
   let activeTouchPoints = new Set();
   let questionIdleEscalationTimeout = null;
 
@@ -1766,17 +1769,17 @@
 
       const isPortrait = scrH >= scrW;
       if (isPortrait) {
-        // Split Screen vertikal: tinggi browser terpotong < 58% dari tinggi layar
-        if (scrH > 0 && (winH / scrH < 0.58)) {
+        // Split Screen vertikal: tinggi browser terpotong < 85% dari tinggi layar
+        if (scrH > 0 && (winH / scrH < 0.85)) {
           return 'Layar Belah (Split Screen) / Layar Terpotong Vertikal';
         }
-        // Floating window: lebar browser terpotong < 78% dari lebar layar
-        if (scrW > 0 && (winW / scrW < 0.78)) {
+        // Floating window: lebar browser terpotong < 85% dari lebar layar
+        if (scrW > 0 && (winW / scrW < 0.85)) {
           return 'Layar Mengambang (Floating Window - Lebar Layar Menyusut)';
         }
       } else {
         // Split Screen horizontal
-        if (scrW > 0 && (winW / scrW < 0.65)) {
+        if (scrW > 0 && (winW / scrW < 0.80)) {
           return 'Layar Belah (Split Screen) Landscape';
         }
       }
@@ -1824,15 +1827,15 @@
       const isPortrait = scrH >= scrW;
       if (isPortrait) {
         // Split Screen: tinggi menyusut drastis karena layar dibagi dengan aplikasi lain
-        if (scrH > 0 && (winH / scrH < 0.58)) {
+        if (scrH > 0 && (winH / scrH < 0.85)) {
           return 'Layar Belah (Split Screen) / Layar Terpotong Vertikal';
         }
         // Floating window lebar menyusut
-        if (scrW > 0 && (winW / scrW < 0.78)) {
+        if (scrW > 0 && (winW / scrW < 0.85)) {
           return 'Layar Mengambang (Floating Window - Lebar Layar Menyusut)';
         }
       } else {
-        if (scrW > 0 && (winW / scrW < 0.65)) {
+        if (scrW > 0 && (winW / scrW < 0.80)) {
           return 'Layar Belah (Split Screen) Landscape';
         }
       }
