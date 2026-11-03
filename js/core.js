@@ -3238,7 +3238,7 @@ const FincestemCore = {
       if (window.location.protocol.startsWith('http')) {
         const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
         const timer = controller ? setTimeout(() => controller.abort(), 4000) : null;
-        fetch(FincestemCore.api.base + '/progress.php?nisn=' + encodeURIComponent(nisn), {
+        fetch(FincestemCore.api.base + '/progress.php?nisn=' + encodeURIComponent(nisn) + '&_t=' + Date.now(), {
           signal: controller ? controller.signal : undefined
         })
           .then(r => r.json())

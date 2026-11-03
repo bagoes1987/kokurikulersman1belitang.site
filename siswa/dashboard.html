@@ -1193,9 +1193,13 @@
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
           checkDeviceActiveSession();
+          loadStudentProgress();
         }
       });
-      window.addEventListener('focus', checkDeviceActiveSession);
+      window.addEventListener('focus', () => {
+        checkDeviceActiveSession();
+        loadStudentProgress();
+      });
     });
 
     function renderStaffVerticalList(containerId, namesString, defaultName) {
@@ -5284,13 +5288,16 @@
         `;
       } else if (type === 'penilaian') {
         title.textContent = isTrial 
-          ? 'Simulasi Feedback & Evaluasi Fasilitator Kokurikuler' 
+          ? 'Feedback & Evaluasi Fasilitator Kokurikuler' 
           : 'Penilaian Fasilitator';
         icon.textContent = 'stars';
         iconBox.className = 'w-10 h-10 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0';
 
         const records = (studentProgress && studentProgress.records) || [];
-        const dayRec = records.find(r => Number(r.day_number) === Number(day.day_number));
+        const dayRec = records.find(r => Number(r.day_number) === Number(day.day_number) && r.score !== null && r.score !== undefined && r.score !== '')
+                    || records.find(r => Number(r.day_number) === Number(day.day_number) && (r.task_type === 'general' || r.task_type === 'lkpd'))
+                    || records.find(r => Number(r.day_number) === Number(day.day_number));
+        const dayGeneralTask = taskMap[day.day_number + '_general'] || taskMap[day.day_number + '_lkpd'];
 
         if (isTrial) {
           const day0Prog = getFTProgressStatus(taskMap, 0);
@@ -5312,7 +5319,95 @@
             d0CbtScore = parseFloat(taskMap['0_asesmen'].score);
           }
 
-          if (isD0Done) {
+          // Cek apakah fasilitator sudah memberi penilaian / evaluasi manual
+          const hasManualGrading = (dayRec && dayRec.score !== null && dayRec.score !== undefined && dayRec.score !== '') ||
+                                   (dayGeneralTask && dayGeneralTask.score !== null && dayGeneralTask.score !== undefined && dayGeneralTask.score !== '');
+
+          if (hasManualGrading) {
+            const manualScore = (dayRec && dayRec.score !== null && dayRec.score !== undefined && dayRec.score !== '') 
+              ? parseFloat(dayRec.score) 
+              : parseFloat(dayGeneralTask.score);
+            const manualStars = Math.max(1, Math.min(5, Math.round(manualScore / 20)));
+            const manualPred = (dayRec && dayRec.predicate) ? dayRec.predicate : (manualScore >= 85 ? 'Mahir (A)' : (manualScore >= 70 ? 'Cakap (B)' : 'Berkembang (C)'));
+            const manualFb = (dayRec && dayRec.feedback) ? dayRec.feedback : ((dayGeneralTask && dayGeneralTask.feedback) ? dayGeneralTask.feedback : 'Catatan evaluasi simulasi dari fasilitator.');
+            const manualStatus = (dayRec && dayRec.status) ? dayRec.status : ((dayGeneralTask && dayGeneralTask.status) ? dayGeneralTask.status : 'completed');
+            const manualFasil = (dayRec && dayRec.facilitator_name) ? dayRec.facilitator_name : ((dayGeneralTask && dayGeneralTask.facilitator_name) ? dayGeneralTask.facilitator_name : (currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang'));
+
+            const sFin = (dayRec && dayRec.score_financial !== undefined && dayRec.score_financial !== null) ? dayRec.score_financial : manualScore;
+            const sCul = (dayRec && dayRec.score_culture !== undefined && dayRec.score_culture !== null) ? dayRec.score_culture : manualScore;
+            const sExp = (dayRec && dayRec.score_exploration !== undefined && dayRec.score_exploration !== null) ? dayRec.score_exploration : manualScore;
+            const sStem = (dayRec && dayRec.score_stem !== undefined && dayRec.score_stem !== null) ? dayRec.score_stem : manualScore;
+
+            body.innerHTML = `
+              <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/15 via-teal-500/10 to-emerald-500/15 border border-emerald-300 flex flex-col gap-4 shadow-xs">
+                <div class="flex items-center justify-between gap-2 flex-wrap">
+                  <span class="text-xs sm:text-sm font-extrabold text-slate-800 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-emerald-600 text-lg">verified</span>
+                    Status Evaluasi Fasilitator (Day 0):
+                  </span>
+                  <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase tracking-wide shadow-2xs">
+                    ${'⭐'.repeat(manualStars)} BINTANG ${manualStars}
+                  </span>
+                </div>
+
+                <!-- Big Star Box -->
+                <div class="p-4 rounded-2xl bg-white border border-emerald-200/80 shadow-xs flex flex-col items-center justify-center text-center gap-2">
+                  <div class="text-3xl sm:text-4xl tracking-widest text-amber-500 font-black">
+                    ${'⭐'.repeat(manualStars)}${'☆'.repeat(5 - manualStars)}
+                  </div>
+                  <div class="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
+                    Nilai Fasilitator: ${manualScore} / 100 <span class="text-emerald-700 text-base font-extrabold">· ${manualPred}</span>
+                  </div>
+                  <div class="flex flex-col items-center gap-1">
+                    <span class="text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">
+                      ✓ Dinilai Manual oleh Fasilitator Kokurikuler
+                    </span>
+                    <span class="text-[11px] text-slate-500 font-medium">
+                      Kuis Asesmen CBT: ${d0CbtScore}/100 &bull; Modul, LKPD, Foto &amp; Refleksi Terverifikasi
+                    </span>
+                  </div>
+                </div>
+
+                <!-- 4 Pilar Penilaian Simulasi -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                    <span class="block text-slate-500 font-bold text-[11px]">Sains &amp; Lingkungan</span>
+                    <span class="text-base font-black text-emerald-600">${sStem} (⭐ ${Math.max(1, Math.min(5, Math.round(sStem / 20)))})</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                    <span class="block text-slate-500 font-bold text-[11px]">Teknologi Digital</span>
+                    <span class="text-base font-black text-emerald-600">${sExp} (⭐ ${Math.max(1, Math.min(5, Math.round(sExp / 20)))})</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                    <span class="block text-slate-500 font-bold text-[11px]">Literasi Finansial</span>
+                    <span class="text-base font-black text-emerald-600">${sFin} (⭐ ${Math.max(1, Math.min(5, Math.round(sFin / 20)))})</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                    <span class="block text-slate-500 font-bold text-[11px]">Budaya &amp; Karakter</span>
+                    <span class="text-base font-black text-emerald-600">${sCul} (⭐ ${Math.max(1, Math.min(5, Math.round(sCul / 20)))})</span>
+                  </div>
+                </div>
+
+                <!-- Catatan Evaluasi Fasilitator -->
+                <div class="flex flex-col gap-1.5">
+                  <span class="text-xs sm:text-sm font-bold text-amber-950">Catatan &amp; Feedback Fasilitator:</span>
+                  <p class="text-xs sm:text-sm text-slate-800 leading-relaxed italic bg-white/95 p-3.5 rounded-xl border border-emerald-200/80 font-medium">
+                    "${manualFb}"
+                  </p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-emerald-200/60">
+                  <div class="flex flex-col min-w-0">
+                    <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh:</span>
+                    <span class="font-extrabold text-slate-800">${manualFasil}</span>
+                  </div>
+                  <span class="${manualStatus === 'revision' ? 'text-rose-700 bg-rose-50 border-rose-200' : 'text-emerald-700 bg-emerald-50 border-emerald-200'} font-bold self-start sm:self-auto shrink-0 px-2.5 py-1 rounded-lg border">
+                    ${manualStatus === 'revision' ? 'Status: Perlu Revisi' : 'Status: Telah Dinilai Resmi ✓'}
+                  </span>
+                </div>
+              </div>
+            `;
+          } else if (isD0Done) {
             body.innerHTML = `
               <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-500/15 via-teal-500/10 to-emerald-500/15 border border-amber-300 flex flex-col gap-4 shadow-xs">
                 <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -5545,10 +5640,12 @@
           //   Pinalti Foto tanpa Google Tagging -> Rekomendasi Bintang 1
           //   Pinalti Refleksi kurang / < 25 kata -> Rekomendasi Bintang 1
           // ==========================================
-          const isGradedByTeacher = dayRec && (dayRec.score !== undefined && dayRec.score !== null && dayRec.score !== '');
+          const isGradedByTeacher = (dayRec && dayRec.score !== undefined && dayRec.score !== null && dayRec.score !== '') ||
+                                   (dayGeneralTask && dayGeneralTask.score !== undefined && dayGeneralTask.score !== null && dayGeneralTask.score !== '');
+          const effectiveRec = (dayRec && dayRec.score !== undefined && dayRec.score !== null && dayRec.score !== '') ? dayRec : dayGeneralTask;
 
           if (isGradedByTeacher) {
-            const scoreNum = parseFloat(dayRec.score);
+            const scoreNum = parseFloat(effectiveRec.score);
             const starsCount = Math.max(1, Math.min(5, Math.round(scoreNum / 20)));
             body.innerHTML = `
               <div class="p-4 sm:p-5 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col gap-3.5">
@@ -5568,7 +5665,7 @@
                     ${'⭐'.repeat(starsCount)}${'☆'.repeat(5 - starsCount)}
                   </div>
                   <div class="text-xl sm:text-2xl font-black text-emerald-800">
-                    Skor: ${dayRec.score} / 100 <span class="text-sm font-extrabold text-emerald-600">(${dayRec.predicate || 'A'})</span>
+                    Skor: ${effectiveRec.score} / 100 <span class="text-sm font-extrabold text-emerald-600">(${effectiveRec.predicate || 'A'})</span>
                   </div>
                 </div>
 
@@ -5576,14 +5673,14 @@
                 <div class="flex flex-col gap-1.5">
                   <span class="text-xs sm:text-sm font-bold text-emerald-950">Catatan &amp; Umpan Balik Fasilitator:</span>
                   <p class="text-sm text-emerald-950 leading-relaxed italic bg-white/90 p-3.5 rounded-xl border border-emerald-200/60 font-medium">
-                    "${dayRec.feedback || 'Pertahankan kekompakan tim, kedisiplinan pencatatan data lapangan, dan kualitas dokumentasi autentik di wilayah riset.'}"
+                    "${effectiveRec.feedback || 'Pertahankan kekompakan tim, kedisiplinan pencatatan data lapangan, dan kualitas dokumentasi autentik di wilayah riset.'}"
                   </p>
                 </div>
 
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200/60">
                   <div class="flex flex-col min-w-0">
                     <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
-                    ${formatFacilitatorDisplay(dayRec.facilitator_name || currentStudent?.facilitator_name)}
+                    ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
                   </div>
                 </div>
               </div>
