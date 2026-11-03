@@ -51,8 +51,8 @@
       const studentName = activeUser.name || 'Peserta Field Trip';
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
-      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+        ? FincestemCore.assignments.getStudentFacilitator(activeUser.nisn || activeUser.identifier, studentClass)
         : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
       // Ambil simpanan sebelumnya jika ada
@@ -803,8 +803,8 @@
       const studentName = activeUser.name || 'Peserta Field Trip';
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
-      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+        ? FincestemCore.assignments.getStudentFacilitator(activeUser.nisn || activeUser.identifier, studentClass)
         : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
       const cleanNisn = String(studentNisn).trim();
 
@@ -1605,8 +1605,8 @@
       const studentName = activeUser.name || 'Peserta Field Trip';
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
-      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+        ? FincestemCore.assignments.getStudentFacilitator(activeUser.nisn || activeUser.identifier, studentClass)
         : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
       const cleanNisn = String(studentNisn).trim();
 
@@ -3484,8 +3484,8 @@
       const studentName = activeUser.name || 'Peserta Field Trip';
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
-      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+        ? FincestemCore.assignments.getStudentFacilitator(activeUser.nisn || activeUser.identifier, studentClass)
         : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
       const cleanNisn = String(studentNisn).trim();
@@ -4691,8 +4691,8 @@
       const studentName = u.name || 'Peserta Field Trip';
       const studentNisn = u.nisn || u.identifier || '-';
       const studentClass = u.class || u.class_name || 'Kelas X';
-      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+        ? FincestemCore.assignments.getStudentFacilitator(u.nisn || u.identifier, studentClass)
         : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
       const cleanNisn = String(studentNisn).trim();
@@ -5332,8 +5332,8 @@
       const studentName = activeUser.name || 'Peserta Field Trip';
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
-      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+        ? FincestemCore.assignments.getStudentFacilitator(activeUser.nisn || activeUser.identifier, studentClass)
         : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
       const cleanNisn = String(studentNisn).trim();
@@ -5659,8 +5659,8 @@
       const studentName = u.name || 'Peserta Field Trip';
       const studentNisn = u.nisn || u.identifier || '-';
       const studentClass = u.class || u.class_name || 'Kelas X';
-      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-        ? FincestemCore.assignments.getClassFacilitator(studentClass)
+      const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+        ? FincestemCore.assignments.getStudentFacilitator(u.nisn || u.identifier, studentClass)
         : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
       const cleanNisn = String(studentNisn).trim();
@@ -6185,4 +6185,4 @@
     window.calculateD7CashBalance = calculateD7CashBalance;
     window.saveFtDay7LKPD = saveFtDay7LKPD;
     window.showFtD7LkpdModal = showFtD7LkpdModal;
-    window.closeFtD7LkpdModal = closeFtD7LkpdModal;
+    window.closeFtD7LkpdModal = closeFtD7LkpdModal;

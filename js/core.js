@@ -4955,17 +4955,25 @@ const FincestemCore = {
     },
 
     getStudentFacilitator: function(nisn, className) {
-      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
-        const info = window.FincestemMentorship.getMentorsForStudent(nisn, className);
+      const sNisn = String(nisn || '').trim();
+      const sClass = String(className || '').trim();
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function' && sNisn) {
+        const info = window.FincestemMentorship.getMentorsForStudent(sNisn, sClass);
         if (info && info.facilitator && info.facilitator !== '-' && info.facilitator !== 'Belum Ditentukan') {
           return info.facilitator;
         }
-        if (info && info.facilitators && info.facilitators.length > 0) {
+        if (info && Array.isArray(info.facilitators) && info.facilitators.length > 0) {
           return info.facilitators[0];
         }
       }
-      // Fasilitator siswa murni yang sudah diatur di Pembagian Siswa Binaan (jangan fallback ke seluruh kelas)
-      return 'Belum Ditentukan';
+      try {
+        const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+        if (u && u.facilitator_name && u.facilitator_name !== 'Belum Ditentukan' && u.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && !u.facilitator_name.includes('\n')) {
+          return u.facilitator_name;
+        }
+      } catch (e) {}
+
+      return 'Tim Fasilitator SMAN 1 Belitang';
     },
 
     getClassCoordinator: function(className) {

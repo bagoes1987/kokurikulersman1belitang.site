@@ -56,8 +56,8 @@
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
-    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-      ? FincestemCore.assignments.getClassFacilitator(studentClass)
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
       : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
     // PRASYARAT WAJIB: Cek apakah Modul Day 1 (5 Kartu Riset) sudah tuntas diserahkan
@@ -1108,8 +1108,8 @@
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
-    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-      ? FincestemCore.assignments.getClassFacilitator(studentClass)
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
       : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
     // PRASYARAT WAJIB: Cek apakah Modul Day 2 (5 Kartu Riset) sudah tuntas diserahkan
@@ -2281,8 +2281,8 @@
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
-    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-      ? FincestemCore.assignments.getClassFacilitator(studentClass)
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
       : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
     // PRASYARAT WAJIB: Cek apakah Modul Day 3 (5 Kartu Riset + Kesimpulan) sudah tuntas diserahkan
@@ -3344,8 +3344,8 @@
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
-    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-      ? FincestemCore.assignments.getClassFacilitator(studentClass)
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
       : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
     const curr = NFT_DAYS_CURRICULUM[dayNum] || {
@@ -3835,8 +3835,8 @@
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
-    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-      ? FincestemCore.assignments.getClassFacilitator(studentClass)
+    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
+      ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
       : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
     // Cek Prasyarat Modul Belajar Day 0

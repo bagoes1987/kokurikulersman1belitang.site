@@ -165,6 +165,7 @@
 
   <script src="../js/siswa_data.js?v=20261021_v1"></script>
   <script src="../js/core.js?v=20261030_reset_fix_v1"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261103_binaan_v5"></script>
   <script src="../js/modules/materi-fieldtrip.js?v=20261027_d6_final_v4"></script>
   <script src="../js/modules/materi-nonfieldtrip.js?v=20261030_nft_v3_full"></script>
   <script>
@@ -221,6 +222,13 @@
 
       // Render instan awal
       renderActiveMateriModule();
+
+      // Sinkronkan data pembagian siswa binaan dari server cPanel secara asinkron
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+        window.FincestemMentorship.syncFromServer(function() {
+          renderActiveMateriModule();
+        });
+      }
 
       // Sinkronisasi data progres server di background, dan re-render seketika jika data terhidrasi
       if (FincestemCore.progress) {

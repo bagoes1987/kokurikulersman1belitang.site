@@ -1031,9 +1031,21 @@
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
-    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-      ? FincestemCore.assignments.getClassFacilitator(studentClass)
-      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+    let fasilName = '';
+    if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+      const m = window.FincestemMentorship.getMentorsForStudent(cleanNisn, studentClass);
+      if (m && m.facilitator && m.facilitator !== '-' && m.facilitator !== 'Belum Ditentukan') {
+        fasilName = m.facilitator;
+      }
+    }
+    if (!fasilName && window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator) {
+      const sf = FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass);
+      if (sf && sf !== 'Belum Ditentukan' && sf !== 'Tim Fasilitator SMAN 1 Belitang') fasilName = sf;
+    }
+    if (!fasilName && u.facilitator_name && u.facilitator_name !== 'Belum Ditentukan' && u.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && !u.facilitator_name.includes('\n')) {
+      fasilName = u.facilitator_name;
+    }
+    if (!fasilName) fasilName = 'Tim Fasilitator SMAN 1 Belitang';
 
     // Cek apakah data Day ini sudah pernah dikirim resmi sebelumnya
     let savedOfficial = null;
@@ -1781,9 +1793,21 @@
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
-    const fasilName = (window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-      ? FincestemCore.assignments.getClassFacilitator(studentClass)
-      : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+    let fasilName = '';
+    if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+      const m = window.FincestemMentorship.getMentorsForStudent(cleanNisn, studentClass);
+      if (m && m.facilitator && m.facilitator !== '-' && m.facilitator !== 'Belum Ditentukan') {
+        fasilName = m.facilitator;
+      }
+    }
+    if (!fasilName && window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator) {
+      const sf = FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass);
+      if (sf && sf !== 'Belum Ditentukan' && sf !== 'Tim Fasilitator SMAN 1 Belitang') fasilName = sf;
+    }
+    if (!fasilName && u.facilitator_name && u.facilitator_name !== 'Belum Ditentukan' && u.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && !u.facilitator_name.includes('\n')) {
+      fasilName = u.facilitator_name;
+    }
+    if (!fasilName) fasilName = 'Tim Fasilitator SMAN 1 Belitang';
 
     let savedOfficial = null;
     try {
