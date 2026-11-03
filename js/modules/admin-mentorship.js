@@ -605,10 +605,12 @@
     const chkPage = document.getElementById('chkMentorBatchSelectAll');
     const chkHeader = document.getElementById('chkMentorHeaderAll');
 
+    const btnPrint = document.getElementById('btnBatchPrintMentor');
     const count = mentorBatchSelectedNisns.size;
     if (lblCount) lblCount.textContent = `${count} siswa terpilih`;
     if (btnAssign) btnAssign.disabled = (count === 0);
     if (btnClear) btnClear.disabled = (count === 0);
+    if (btnPrint) btnPrint.disabled = (count === 0);
 
     const tableBody = document.getElementById('tableBodyMentorAllStudents');
     if (tableBody) {
@@ -675,6 +677,235 @@
       if (window.FincestemCore && FincestemCore.ui) {
         FincestemCore.ui.toast('Siswa terpilih berhasil dilepaskan dari pembina.', 'info');
       }
+    }
+  };
+
+  /**
+   * CETAK KARTU SISWA BINAAN TERPILIH / SESUAI FILTER
+   */
+  window.printSelectedMentorCardsAction = function() {
+    if (mentorBatchSelectedNisns.size === 0) {
+      alert('Pilih minimal 1 siswa terlebih dahulu untuk dicetak kartunya!');
+      return;
+    }
+    const allStudents = window.FincestemMasterStudents || [];
+    const nisnSet = new Set(mentorBatchSelectedNisns);
+    const selectedList = allStudents.filter(s => nisnSet.has(String(s.nisn || '').trim()));
+
+    if (window.FincestemMentorship && typeof window.FincestemMentorship.printMentorCardsCustom === 'function') {
+      window.FincestemMentorship.printMentorCardsCustom({
+        students: selectedList,
+        title: `Kartu_Binaan_${selectedList.length}_Siswa_Terpilih`
+      });
+    }
+  };
+
+  window.printFilteredMentorCardsAction = function() {
+    if (window.FincestemMentorship && typeof window.FincestemMentorship.printMentorCardsCustom === 'function') {
+      let titleParts = ['Kartu_Binaan'];
+      if (mentorAllStudentsFilter.grade !== 'ALL') titleParts.push('Kelas_' + mentorAllStudentsFilter.grade);
+      if (mentorAllStudentsFilter.rombel !== 'ALL') titleParts.push(mentorAllStudentsFilter.rombel.replace(/\s+/g, '_'));
+      if (mentorAllStudentsFilter.category !== 'ALL') titleParts.push(mentorAllStudentsFilter.category);
+      if (mentorAllStudentsFilter.status !== 'ALL') titleParts.push(mentorAllStudentsFilter.status);
+
+      window.FincestemMentorship.printMentorCardsCustom({
+        className: mentorAllStudentsFilter.rombel,
+        grade: mentorAllStudentsFilter.grade,
+        category: mentorAllStudentsFilter.category,
+        status: mentorAllStudentsFilter.status,
+        title: titleParts.join('_')
+      });
+    }
+  };
+
+  /**
+   * MODAL CETAK KARTU SISWA BINAAN FLEKSIBEL (PER-KELAS, FIELD TRIP, NON-FIELD TRIP, PER-GURU)
+   */
+  let modalPrintCatState = 'ALL';
+
+  window.openPrintMentorCardsModal = function() {
+    const modal = document.getElementById('modalPrintMentorCardsOptions');
+    if (!modal) return;
+
+    modalPrintCatState = 'ALL';
+    updateModalPrintCatButtonsUI();
+
+    const selRombel = document.getElementById('selectModalPrintRombel');
+    const selGrade = document.getElementById('selectModalPrintGrade');
+    const selTeacher = document.getElementById('selectModalPrintTeacher');
+    const selStatus = document.getElementById('selectModalPrintStatus');
+
+    if (selGrade) selGrade.value = 'ALL';
+    if (selStatus) selStatus.value = 'ALL';
+
+    // Populate Rombel jika belum terisi
+    if (selRombel && selRombel.options.length <= 1) {
+      let rOpts = '<option value="ALL">Semua Kelas (33 Rombel)</option>';
+      ['X', 'XI', 'XII'].forEach(lvl => {
+        for (let i = 1; i <= 11; i++) {
+          rOpts += `<option value="KELAS ${lvl}.${i}">Kelas ${lvl}.${i}</option>`;
+        }
+      });
+      selRombel.innerHTML = rOpts;
+    }
+    if (selRombel) selRombel.value = 'ALL';
+
+    // Populate Guru
+    if (selTeacher && window.FincestemMentorship) {
+      const teachers = window.FincestemMentorship.getTeachers();
+      let tOpts = '<option value="ALL">-- Semua Guru Pembina (Seluruh Siswa) --</option>';
+      const seenNames = new Set();
+      teachers.forEach(t => {
+        const normName = String(t.nama_guru || '').trim().toUpperCase();
+        if (!normName || seenNames.has(normName)) return;
+        seenNames.add(normName);
+        const k = String(t.username || t.nip || t.kode_guru).toLowerCase();
+        const role = window.FincestemMentorship.getTeacherRole(k);
+        const roleBadge = role === 'FIELD_TRIP' ? '🚌 FT' : (role === 'KOORDINATOR' ? '🎯 Koord' : '🏫 Non-FT');
+        tOpts += `<option value="${k}">${t.nama_guru} [${roleBadge}]</option>`;
+      });
+      selTeacher.innerHTML = tOpts;
+      selTeacher.value = 'ALL';
+    }
+
+    modal.classList.remove('hidden');
+    updateModalPrintSummary();
+  };
+
+  window.closePrintMentorCardsModal = function() {
+    const modal = document.getElementById('modalPrintMentorCardsOptions');
+    if (modal) modal.classList.add('hidden');
+  };
+
+  window.setModalPrintCategory = function(cat) {
+    modalPrintCatState = cat;
+    updateModalPrintCatButtonsUI();
+    updateModalPrintSummary();
+  };
+
+  function updateModalPrintCatButtonsUI() {
+    const btnAll = document.getElementById('btnModalPrintCat_ALL');
+    const btnFT = document.getElementById('btnModalPrintCat_FIELD_TRIP');
+    const btnNonFT = document.getElementById('btnModalPrintCat_NON_FIELD_TRIP');
+
+    if (btnAll) btnAll.className = (modalPrintCatState === 'ALL')
+      ? 'py-2 text-center text-xs font-bold rounded-lg bg-[#0875D1] text-white shadow-2xs transition-all cursor-pointer'
+      : 'py-2 text-center text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-200 transition-all cursor-pointer';
+
+    if (btnFT) btnFT.className = (modalPrintCatState === 'FIELD_TRIP')
+      ? 'py-2 text-center text-xs font-bold rounded-lg bg-amber-500 text-slate-950 shadow-2xs transition-all cursor-pointer flex items-center justify-center gap-1'
+      : 'py-2 text-center text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-200 transition-all cursor-pointer flex items-center justify-center gap-1';
+
+    if (btnNonFT) btnNonFT.className = (modalPrintCatState === 'NON_FIELD_TRIP')
+      ? 'py-2 text-center text-xs font-bold rounded-lg bg-teal-700 text-white shadow-2xs transition-all cursor-pointer flex items-center justify-center gap-1'
+      : 'py-2 text-center text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-200 transition-all cursor-pointer flex items-center justify-center gap-1';
+  }
+
+  window.onModalPrintFilterChanged = function() {
+    updateModalPrintSummary();
+  };
+
+  window.updateModalPrintSummary = function() {
+    const lblSummary = document.getElementById('lblModalPrintSummary');
+    if (!lblSummary || !window.FincestemMasterStudents) return;
+
+    const allStudents = window.FincestemMasterStudents || [];
+    const selGrade = document.getElementById('selectModalPrintGrade');
+    const selRombel = document.getElementById('selectModalPrintRombel');
+    const selTeacher = document.getElementById('selectModalPrintTeacher');
+    const selStatus = document.getElementById('selectModalPrintStatus');
+
+    const gradeVal = selGrade ? selGrade.value : 'ALL';
+    const rombelVal = selRombel ? selRombel.value : 'ALL';
+    const teacherVal = selTeacher ? selTeacher.value : 'ALL';
+    const statusVal = selStatus ? selStatus.value : 'ALL';
+
+    const zMap = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones._getZonesMap)
+      ? FincestemCore.zones._getZonesMap()
+      : {};
+
+    const checkIsFT = (sNisn, sObj) => {
+      const rawDigits = sNisn.replace(/\D/g, '');
+      const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
+      const unpaddedNisn = rawDigits.replace(/^0+/, '');
+      const z = zMap[sNisn] || zMap[paddedNisn] || (unpaddedNisn ? zMap[unpaddedNisn] : null) || sObj.zone;
+      if (z) {
+        const zUp = String(z).toUpperCase();
+        return zUp.includes('LUAR') || zUp.includes('FIELD') || zUp.includes('TRIP');
+      }
+      return (sObj.zone === 'FINCESTEM LUAR OKU TIMUR' || sObj.is_field_trip === true);
+    };
+
+    const targetTeacherNisns = (teacherVal !== 'ALL' && window.FincestemMentorship)
+      ? new Set(window.FincestemMentorship.getAssignedNisnsForTeacher(teacherVal))
+      : null;
+
+    const assignedNisns = window.FincestemMentorship ? window.FincestemMentorship.getAllAssignedNisns() : new Set();
+    const targetClass = (rombelVal !== 'ALL') ? rombelVal.replace(/^KELAS\s+/i, '').trim().toUpperCase() : null;
+
+    let matchCount = 0;
+    for (let i = 0; i < allStudents.length; i++) {
+      const s = allStudents[i];
+      const sNisn = String(s.nisn || '').trim();
+      const sClassRaw = (s.class || s.rombel || '').toUpperCase();
+      const sClassNorm = sClassRaw.replace(/^KELAS\s+/i, '').trim();
+
+      if (targetTeacherNisns && !targetTeacherNisns.has(sNisn)) continue;
+
+      if (gradeVal !== 'ALL') {
+        const sLvl = String(s.level || '').toUpperCase();
+        if (sLvl !== gradeVal && !sClassRaw.includes(' ' + gradeVal + '.') && !sClassRaw.startsWith(gradeVal + '.')) continue;
+      }
+
+      if (targetClass && sClassNorm !== targetClass) continue;
+
+      const isFT = checkIsFT(sNisn, s);
+      if (modalPrintCatState === 'FIELD_TRIP' && !isFT) continue;
+      if (modalPrintCatState === 'NON_FIELD_TRIP' && isFT) continue;
+
+      const isMapped = assignedNisns.has(sNisn);
+      if (statusVal === 'ASSIGNED' && !isMapped) continue;
+      if (statusVal === 'UNASSIGNED' && isMapped) continue;
+
+      matchCount++;
+    }
+
+    const pages = Math.ceil(matchCount / 10);
+    lblSummary.innerHTML = `<span class="text-teal-900 font-extrabold">${matchCount} kartu siswa</span> (${pages} lembar Folio/F4)`;
+  };
+
+  window.executeModalPrintMentorCardsAction = function() {
+    const selGrade = document.getElementById('selectModalPrintGrade');
+    const selRombel = document.getElementById('selectModalPrintRombel');
+    const selTeacher = document.getElementById('selectModalPrintTeacher');
+    const selStatus = document.getElementById('selectModalPrintStatus');
+
+    const gradeVal = selGrade ? selGrade.value : 'ALL';
+    const rombelVal = selRombel ? selRombel.value : 'ALL';
+    const teacherVal = selTeacher ? selTeacher.value : 'ALL';
+    const statusVal = selStatus ? selStatus.value : 'ALL';
+
+    let titleParts = ['Kartu_Binaan'];
+    if (rombelVal !== 'ALL') titleParts.push(rombelVal.replace(/\s+/g, '_'));
+    else if (gradeVal !== 'ALL') titleParts.push('Kelas_' + gradeVal);
+
+    if (modalPrintCatState !== 'ALL') titleParts.push(modalPrintCatState);
+    if (teacherVal !== 'ALL') {
+      const tObj = window.FincestemMentorship.findTeacherByIdentifier(teacherVal);
+      titleParts.push((tObj && tObj.nama_guru ? tObj.nama_guru : teacherVal).replace(/\s+/g, '_'));
+    }
+
+    const ok = window.FincestemMentorship.printMentorCardsCustom({
+      category: modalPrintCatState,
+      grade: gradeVal,
+      className: rombelVal,
+      teacherKey: teacherVal,
+      status: statusVal,
+      title: titleParts.join('_')
+    });
+
+    if (ok) {
+      closePrintMentorCardsModal();
     }
   };
 

@@ -1038,18 +1038,92 @@
 
     /**
      * ==========================================
-     * 4. CETAK KARTU KHUSUS SISWA BINAAN GURU
+     * 4. CETAK KARTU KHUSUS SISWA BINAAN GURU / FLEKSIBEL (PER-KELAS, FIELD TRIP, NON-FIELD TRIP)
      * ==========================================
      */
     printMentorStudentCards: function(teacherIdentifier) {
-      const students = this.getStudentsForTeacher(teacherIdentifier);
-      if (!students || !students.length) {
-        alert('Guru ini belum memiliki siswa binaan untuk dicetak kartunya!');
-        return;
-      }
-
       const tObj = this.findTeacherByIdentifier(teacherIdentifier);
       const teacherName = tObj ? tObj.nama_guru : teacherIdentifier;
+      return this.printMentorCardsCustom({
+        teacherKey: teacherIdentifier,
+        title: `Kartu_Binaan_${teacherName}`
+      });
+    },
+
+    printMentorCardsCustom: function(options) {
+      options = options || {};
+      let students = options.students;
+
+      if (!Array.isArray(students)) {
+        const allStudents = window.FincestemMasterStudents || [];
+        const zMap = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones._getZonesMap)
+          ? FincestemCore.zones._getZonesMap()
+          : {};
+
+        const checkIsFT = (sNisn, sObj) => {
+          const rawDigits = sNisn.replace(/\D/g, '');
+          const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
+          const unpaddedNisn = rawDigits.replace(/^0+/, '');
+          const z = zMap[sNisn] || zMap[paddedNisn] || (unpaddedNisn ? zMap[unpaddedNisn] : null) || sObj.zone;
+          if (z) {
+            const zUp = String(z).toUpperCase();
+            return zUp.includes('LUAR') || zUp.includes('FIELD') || zUp.includes('TRIP');
+          }
+          return (sObj.zone === 'FINCESTEM LUAR OKU TIMUR' || sObj.is_field_trip === true);
+        };
+
+        const targetTeacher = (options.teacherKey && options.teacherKey !== 'ALL') ? String(options.teacherKey).toLowerCase() : null;
+        const targetTeacherNisns = targetTeacher ? new Set(this.getAssignedNisnsForTeacher(targetTeacher)) : null;
+
+        const targetGrade = (options.grade && options.grade !== 'ALL') ? String(options.grade).toUpperCase() : null;
+        const targetClass = (options.className && options.className !== 'ALL')
+          ? options.className.replace(/^KELAS\s+/i, '').trim().toUpperCase()
+          : null;
+
+        const targetCategory = options.category || 'ALL'; // 'ALL', 'FIELD_TRIP', 'NON_FIELD_TRIP'
+        const targetStatus = options.status || 'ALL';     // 'ALL', 'ASSIGNED', 'UNASSIGNED'
+
+        const assignedNisns = this.getAllAssignedNisns();
+
+        students = allStudents.filter(s => {
+          const sNisn = String(s.nisn || '').trim();
+          const sClassRaw = (s.class || s.rombel || '').toUpperCase();
+          const sClassNorm = sClassRaw.replace(/^KELAS\s+/i, '').trim();
+
+          // Filter Guru
+          if (targetTeacherNisns && !targetTeacherNisns.has(sNisn)) return false;
+
+          // Filter Tingkat
+          if (targetGrade) {
+            const sLvl = String(s.level || '').toUpperCase();
+            if (sLvl !== targetGrade && !sClassRaw.includes(' ' + targetGrade + '.') && !sClassRaw.startsWith(targetGrade + '.')) return false;
+          }
+
+          // Filter Kelas / Rombel
+          if (targetClass && sClassNorm !== targetClass) return false;
+
+          // Filter Jalur (Field Trip vs Non-Field Trip)
+          const isFT = checkIsFT(sNisn, s);
+          if (targetCategory === 'FIELD_TRIP' && !isFT) return false;
+          if (targetCategory === 'NON_FIELD_TRIP' && isFT) return false;
+
+          // Filter Status Binaan
+          const isMapped = assignedNisns.has(sNisn);
+          if (targetStatus === 'ASSIGNED' && !isMapped) return false;
+          if (targetStatus === 'UNASSIGNED' && isMapped) return false;
+
+          return true;
+        });
+      }
+
+      if (!students || !students.length) {
+        if (window.FincestemCore && FincestemCore.ui) {
+          FincestemCore.ui.toast('Tidak ada siswa yang sesuai filter untuk dicetak kartunya!', 'warning');
+        } else {
+          alert('Tidak ada siswa yang sesuai filter untuk dicetak kartunya!');
+        }
+        return false;
+      }
 
       // Gunakan container #printAreaCards di level body agar tampil saat @media print
       let printEl = document.getElementById('printAreaCards');
@@ -1078,9 +1152,10 @@
               const username = s.nisn || '-';
               const password = s.nis || s.password || (s.nisn ? s.nisn.slice(-6) : '123456');
               const mentorInfo = this.getMentorsForStudent(s.nisn, s.class || s.rombel);
-              const coordLabel = mentorInfo.coordinator_single || '-';
-              const fasil1Label = teacherName || mentorInfo.facilitator1 || '-';
-              const fasil2Label = '-';
+              const coordLabel = mentorInfo.coordinator_single || mentorInfo.coordinator || '-';
+              const fasilName = mentorInfo.facilitator1 && mentorInfo.facilitator1 !== '-'
+                ? mentorInfo.facilitator1
+                : (mentorInfo.facilitator && mentorInfo.facilitator !== 'Belum Ditentukan' && mentorInfo.facilitator !== '-' ? mentorInfo.facilitator : '-');
 
               return `
                 <div style="border: 1px dashed #64748b; padding: 1.5mm; box-sizing: border-box; background: #ffffff; page-break-inside: avoid;">
@@ -1133,7 +1208,7 @@
                             <td style="color: #000000; font-weight: bold; padding: 1px 0; white-space: nowrap;">Fasilitator</td>
                             <td style="text-align: center; font-weight: bold; color: #000000; padding: 1px 0;">:</td>
                             <td colspan="2" style="font-weight: 800; color: #000000; padding: 1px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-                              ${escapeHtml(teacherName || fasil1Label || '-')}
+                              ${escapeHtml(fasilName)}
                             </td>
                           </tr>
                         </tbody>
@@ -1153,13 +1228,14 @@
 
       printEl.innerHTML = pagesHtml;
 
-      // Panggil Dialog Print Browser
+      const title = options.title || 'Kartu_Siswa_Binaan';
       const originalTitle = document.title;
-      document.title = `Kartu_Login_Binaan_${teacherName.replace(/\s+/g, '_')}`;
+      document.title = title.replace(/\s+/g, '_');
       window.print();
       setTimeout(() => {
         document.title = originalTitle;
       }, 1000);
+      return true;
     }
   };
 
