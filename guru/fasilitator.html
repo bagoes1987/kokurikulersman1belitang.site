@@ -1140,36 +1140,66 @@
           </div>
 
           <!-- Box Deteksi Nilai Rapor Kokurikuler Siswa (Khusus Day 7) -->
-          <div id="boxDay7ReportDetection" class="hidden p-4 rounded-2xl bg-gradient-to-r from-amber-500/10 via-emerald-500/10 to-teal-500/10 border-2 border-emerald-400 flex flex-col gap-2.5 shadow-xs mb-3">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <span class="text-xs font-black text-slate-800 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-emerald-700 text-lg">workspace_premium</span>
-                <span>Deteksi Nilai Rapor Kokurikuler Siswa (Otomatis Sistem):</span>
-              </span>
-              <span id="badgeDay7ReportPredicate" class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase tracking-wider shadow-2xs">
-                MAHIR
+          <div id="boxDay7ReportDetection" class="hidden p-4 rounded-3xl bg-gradient-to-br from-amber-500/10 via-emerald-500/10 to-teal-500/15 border-2 border-emerald-400 flex flex-col gap-3.5 shadow-sm mb-3.5">
+            <!-- Header Kartu Deteksi -->
+            <div class="flex items-center justify-between gap-2 flex-wrap pb-2.5 border-b border-emerald-200/80">
+              <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shadow-xs">
+                  <span class="material-symbols-outlined text-lg">workspace_premium</span>
+                </div>
+                <div>
+                  <h5 class="text-xs font-black text-slate-900 leading-tight">Deteksi Nilai Rapor Kokurikuler Siswa</h5>
+                  <span class="text-[10.5px] text-slate-500 font-semibold">Kalkulasi Otomatis Standar Resmi FINCESTEM SMAN 1 Belitang</span>
+                </div>
+              </div>
+              <span id="badgeDay7ReportPredicate" class="px-3.5 py-1 rounded-xl text-xs font-black bg-amber-500 text-slate-950 uppercase tracking-wider shadow-2xs border border-amber-600">
+                🏆 MAHIR
               </span>
             </div>
-            <div class="flex items-center justify-between gap-2 bg-white/90 p-3 rounded-xl border border-emerald-200 text-xs">
-              <div class="flex flex-col">
-                <span class="text-[10.5px] font-bold text-slate-500">Skor Rapor Akhir (Rata-rata 4 Pilar):</span>
-                <span id="textDay7ReportAvg" class="text-xl font-black text-emerald-800">95 / 100</span>
+
+            <!-- Grid 2 Kolom Rapi: Skor Rapor & Standar Ambang Batas -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <!-- Kolom 1: Skor Rapor Akhir Siswa -->
+              <div class="p-3.5 rounded-2xl bg-white border border-emerald-200 shadow-2xs flex flex-col items-center justify-center text-center gap-1">
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-500">Skor Rapor Akhir (Rata-rata 4 Pilar)</span>
+                <span id="textDay7ReportAvg" class="text-2xl font-black text-emerald-800 leading-none">95 / 100</span>
+                <span id="textDay7ReportStars" class="text-xs font-extrabold text-amber-500 tracking-wide mt-1">⭐⭐⭐⭐⭐ (Bintang 5)</span>
               </div>
-              <div class="text-right">
-                <span class="text-[10.5px] font-bold text-slate-500">Standar Predikat Rapor:</span>
-                <span id="textDay7ReportStandard" class="text-xs font-extrabold text-slate-700 block">≥85 Mahir | 70-84 Cakap | &lt;70 Berkembang</span>
+
+              <!-- Kolom 2: Standar Ambang Batas Resmi Rapor (Pill Badge Rapi) -->
+              <div class="p-3 rounded-2xl bg-white border border-emerald-200 shadow-2xs flex flex-col justify-center gap-1.5">
+                <span class="text-[10px] font-black uppercase tracking-wider text-slate-500">Standar Ambang Batas Predikat Rapor:</span>
+                <div class="flex flex-col gap-1 text-[11px]">
+                  <div id="rowStdMahir" class="flex items-center justify-between px-2.5 py-1 rounded-lg bg-amber-50 border border-amber-200 text-amber-950 transition-all">
+                    <span class="flex items-center gap-1 font-black"><span>🏆</span> Mahir</span>
+                    <span class="text-[10.5px] font-extrabold text-amber-800">Skor ≥ 85.0 (30–35 ⭐)</span>
+                  </div>
+                  <div id="rowStdCakap" class="flex items-center justify-between px-2.5 py-1 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-950 transition-all">
+                    <span class="flex items-center gap-1 font-black"><span>🌟</span> Cakap</span>
+                    <span class="text-[10.5px] font-extrabold text-emerald-800">Skor 70.0 – 84.9 (21–29 ⭐)</span>
+                  </div>
+                  <div id="rowStdBerkembang" class="flex items-center justify-between px-2.5 py-1 rounded-lg bg-blue-50 border border-blue-200 text-blue-950 transition-all">
+                    <span class="flex items-center gap-1 font-black"><span>🌱</span> Berkembang</span>
+                    <span class="text-[10.5px] font-extrabold text-blue-800">Skor &lt; 70.0 (≤ 20 ⭐)</span>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="flex flex-col gap-1">
-              <div class="flex items-center justify-between">
-                <span class="text-[11px] font-black text-emerald-950">Penjabaran Keterangan Capaian Rapor Siswa:</span>
-                <button type="button" onclick="applyDay7NarrativeToFeedback()" class="text-[10.5px] text-teal-800 font-extrabold hover:underline cursor-pointer flex items-center gap-1">
+
+            <!-- Penjabaran Narasi Capaian Rapor Siswa -->
+            <div class="p-3.5 rounded-2xl bg-white border border-emerald-200 flex flex-col gap-1.5 shadow-2xs">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="text-xs font-black text-emerald-950 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-emerald-700">description</span>
+                  <span>Penjabaran Narasi Capaian Rapor (Profil Lulusan):</span>
+                </span>
+                <button type="button" onclick="applyDay7NarrativeToFeedback()" class="px-2.5 py-1 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 text-[10.5px] font-extrabold border border-teal-200 transition-all cursor-pointer flex items-center gap-1 shadow-2xs">
                   <span class="material-symbols-outlined text-[13px]">content_paste</span>
                   <span>Salin ke Catatan Guru</span>
                 </button>
               </div>
-              <p id="descDay7ReportNarrative" class="text-[11px] text-slate-800 bg-white/95 p-3 rounded-xl border border-emerald-200/80 leading-relaxed text-justify font-medium">
-                Peserta didik menunjukkan penguasaan sangat tinggi dan mandiri pada 4 dimensi FINCESTEM (Finansial, Budaya, Eksplorasi, STEM) dengan inisiatif riset unggul, analisis kritis, serta karya dokumenter video yang inspiratif.
+              <p id="descDay7ReportNarrative" class="text-xs sm:text-[12.5px] text-slate-800 leading-relaxed text-justify font-normal bg-slate-50/70 p-3 rounded-xl border border-slate-200 mt-1">
+                Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat. Dalam kreativitas, peserta didik mampu menghasilkan karya orisinal berbasis STEM yang mengangkat nilai dan filosofi budaya lokal, serta menyajikan hasil eksplorasi melalui video dokumenter dan infografis yang menarik, informatif, dan berkualitas. Dalam aspek kewargaan, peserta didik menunjukkan keteladanan dalam menghargai kearifan lokal, menjunjung toleransi, dan menginisiasi kegiatan pelestarian lingkungan. Dalam kemandirian, peserta didik menunjukkan tanggung jawab, disiplin dalam menyelesaikan tugas, integritas, serta pengelolaan keuangan yang jujur dan transparan.
               </p>
             </div>
           </div>
@@ -4204,9 +4234,9 @@
     }
 
     const FINCESTEM_NARRASI_RAPOR = {
-      MAHIR: "Peserta didik menunjukkan penguasaan sangat tinggi dan mandiri pada 4 dimensi FINCESTEM (Finansial, Budaya, Eksplorasi, STEM) dengan inisiatif riset unggul, analisis kritis, serta karya dokumenter video yang inspiratif.",
-      CAKAP: "Peserta didik mampu menerapkan konsep 4 dimensi FINCESTEM secara baik dan bertanggung jawab, menyelesaikan karya proyek serta laporan keuangan dengan tertib dan terstruktur.",
-      BERKEMBANG: "Peserta didik mulai memahami konsep dasar 4 dimensi FINCESTEM, masih memerlukan pendampingan berkala dalam ketelitian pembukuan kas, eksplorasi sains, serta konsistensi pengumpulan karya tepat waktu."
+      MAHIR: "Peserta didik mampu menganalisis data hasil eksplorasi lapangan secara mendalam dan objektif, memecahkan masalah melalui integrasi sains dan teknologi, serta mengevaluasi penggunaan anggaran keuangan secara tepat. Dalam kreativitas, peserta didik mampu menghasilkan karya orisinal berbasis STEM yang mengangkat nilai dan filosofi budaya lokal, serta menyajikan hasil eksplorasi melalui video dokumenter dan infografis yang menarik, informatif, dan berkualitas. Dalam aspek kewargaan, peserta didik menunjukkan keteladanan dalam menghargai kearifan lokal, menjunjung toleransi, dan menginisiasi kegiatan pelestarian lingkungan. Dalam kemandirian, peserta didik menunjukkan tanggung jawab, disiplin dalam menyelesaikan tugas, integritas, serta pengelolaan keuangan yang jujur dan transparan.",
+      CAKAP: "Peserta didik mampu menganalisis data hasil eksplorasi lapangan, memahami prinsip dasar STEM, serta menyusun pembukuan keuangan secara logis dan mandiri. Dalam kreativitas, peserta didik mampu menghasilkan karya berbasis STEM yang memadukan kearifan lokal serta menyajikan hasil eksplorasi melalui infografis atau video pendek yang informatif. Dalam aspek kewargaan, peserta didik mampu menghormati keberagaman budaya, menjaga etika dan kesopanan, serta berperan aktif dalam menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mampu mengatur waktu, bertanggung jawab atas barang bawaan, menyelesaikan tugas harian dengan disiplin, dan mengelola anggaran pribadi secara mandiri.",
+      BERKEMBANG: "Peserta didik mulai mampu mengumpulkan data hasil eksplorasi lapangan dan memahami konsep dasar STEM, tetapi masih memerlukan bimbingan dalam menganalisis fenomena sains dan mengevaluasi pembukuan keuangan. Dalam kreativitas, peserta didik mulai mengembangkan karya berbasis STEM dan mempraktikkan keterampilan budaya lokal, meskipun pembuatan video dan infografis masih memerlukan pendampingan. Dalam aspek kewargaan, peserta didik mulai mematuhi aturan dan menghargai nilai-nilai budaya setempat, tetapi masih perlu diingatkan untuk menjaga kelestarian lingkungan. Dalam kemandirian, peserta didik mulai belajar mengelola uang saku dan masih memerlukan dorongan untuk menyelesaikan serta mengumpulkan tugas harian tepat waktu."
     };
 
     function applyDay7NarrativeToFeedback() {
@@ -4273,16 +4303,36 @@
 
           const upperPred = pred.toUpperCase();
           if (badgePred) {
-            badgePred.textContent = upperPred;
             if (upperPred === 'MAHIR') {
-              badgePred.className = 'px-3 py-1 rounded-xl text-xs font-black bg-amber-500 text-slate-950 uppercase tracking-wider shadow-2xs border border-amber-600';
+              badgePred.innerHTML = '🏆 MAHIR';
+              badgePred.className = 'px-3.5 py-1 rounded-xl text-xs font-black bg-amber-500 text-slate-950 uppercase tracking-wider shadow-2xs border border-amber-600';
             } else if (upperPred === 'CAKAP') {
-              badgePred.className = 'px-3 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase tracking-wider shadow-2xs border border-emerald-700';
+              badgePred.innerHTML = '🌟 CAKAP';
+              badgePred.className = 'px-3.5 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase tracking-wider shadow-2xs border border-emerald-700';
             } else {
-              badgePred.className = 'px-3 py-1 rounded-xl text-xs font-black bg-blue-600 text-white uppercase tracking-wider shadow-2xs border border-blue-700';
+              badgePred.innerHTML = '🌱 BERKEMBANG';
+              badgePred.className = 'px-3.5 py-1 rounded-xl text-xs font-black bg-blue-600 text-white uppercase tracking-wider shadow-2xs border border-blue-700';
             }
           }
-          if (textAvg) textAvg.textContent = `${avg} / 100 (${stars} Bintang ⭐)`;
+          if (textAvg) textAvg.textContent = `${avg} / 100`;
+          const textStars = document.getElementById('textDay7ReportStars');
+          if (textStars) textStars.textContent = `${'⭐'.repeat(stars)} (${stars} Bintang)`;
+
+          // Highlight the active standard row
+          const rMahir = document.getElementById('rowStdMahir');
+          const rCakap = document.getElementById('rowStdCakap');
+          const rBerk = document.getElementById('rowStdBerkembang');
+          [rMahir, rCakap, rBerk].forEach(r => {
+            if (r) r.classList.remove('ring-2', 'ring-emerald-500', 'font-black', 'bg-white', 'shadow-2xs');
+          });
+          if (upperPred === 'MAHIR' && rMahir) {
+            rMahir.classList.add('ring-2', 'ring-amber-500', 'font-black', 'bg-white', 'shadow-2xs');
+          } else if (upperPred === 'CAKAP' && rCakap) {
+            rCakap.classList.add('ring-2', 'ring-emerald-500', 'font-black', 'bg-white', 'shadow-2xs');
+          } else if (rBerk) {
+            rBerk.classList.add('ring-2', 'ring-blue-500', 'font-black', 'bg-white', 'shadow-2xs');
+          }
+
           if (descNarrative) {
             descNarrative.textContent = FINCESTEM_NARRASI_RAPOR[upperPred] || FINCESTEM_NARRASI_RAPOR.CAKAP;
           }
