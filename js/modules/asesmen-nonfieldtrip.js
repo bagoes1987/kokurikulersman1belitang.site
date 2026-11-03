@@ -1022,21 +1022,6 @@
 
         <!-- KARTU BUTIR SOAL SATU PER SATU -->
         <div id="examQuestionCard" class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col gap-4 relative overflow-hidden">
-          
-          <!-- OVERLAY BLUR OTOMATIS ANTI-INTIP LAYAR MENGAMBANG (AKTIF JIKA DIAM > 4 DETIK) -->
-          <div id="examIdleBlurNotice" style="display: none;" onclick="event.stopPropagation(); window.wakeUpQuestionCard(true);" ontouchstart="event.stopPropagation(); window.wakeUpQuestionCard(true);" class="absolute inset-0 z-20 bg-slate-900/85 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center text-white cursor-pointer select-none">
-            <div class="w-12 h-12 rounded-2xl bg-amber-500/20 border border-amber-400 text-amber-300 flex items-center justify-center mb-2.5 shadow-lg">
-              <span class="material-symbols-outlined text-2xl animate-bounce">warning</span>
-            </div>
-            <h4 class="font-black text-sm sm:text-base text-white">Proteksi Fokus Aktif (Anti-Layar Mengambang)</h4>
-            <p class="text-[11.5px] text-slate-200 max-w-xs mt-1 leading-relaxed">
-              Soal disembunyikan otomatis saat layar tidak disentuh agar tidak dapat dibaca melalui aplikasi mengambang.<br>
-              <span onclick="event.stopPropagation(); window.wakeUpQuestionCard(true);" ontouchstart="event.stopPropagation(); window.wakeUpQuestionCard(true);" class="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-amber-400 text-slate-950 font-black text-xs shadow-md cursor-pointer hover:bg-amber-300 active:scale-95 transition-all">
-                <span class="material-symbols-outlined text-sm">lock_reset</span>
-                <span>Ketuk di sini untuk membuka tampilan soal (Catat Pelanggaran)</span>
-              </span>
-            </p>
-          </div>
 
           <!-- BAR INFORMASI NOMOR SOAL & INDIKATOR -->
           <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
@@ -1672,67 +1657,13 @@
       clearTimeout(questionIdleEscalationTimeout);
       questionIdleEscalationTimeout = null;
     }
-    const notice = document.getElementById('examIdleBlurNotice');
-    const qt = document.getElementById('examQuestionText');
-    const ol = document.getElementById('examOptionsList');
-    if (notice) notice.style.display = 'none';
-    if (qt && !isTabAway && !isViolationModalOpen) {
-      qt.style.filter = 'none';
-    }
-    if (ol && !isTabAway && !isViolationModalOpen) {
-      ol.style.filter = 'none';
-    }
   }
 
   function resetQuestionIdleBlurTimer() {
-    if (questionIdleBlurTimeout) {
-      clearTimeout(questionIdleBlurTimeout);
-      questionIdleBlurTimeout = null;
-    }
-    if (questionIdleEscalationTimeout) {
-      clearTimeout(questionIdleEscalationTimeout);
-      questionIdleEscalationTimeout = null;
-    }
-    const notice = document.getElementById('examIdleBlurNotice');
-    const qt = document.getElementById('examQuestionText');
-    const ol = document.getElementById('examOptionsList');
-    if (notice) notice.style.display = 'none';
-    if (qt && !isTabAway && !isViolationModalOpen) {
-      qt.style.filter = 'none';
-    }
-    if (ol && !isTabAway && !isViolationModalOpen) {
-      ol.style.filter = 'none';
-    }
-
-    if (!examState.isExamActive || examState.isExamFinished) return;
-
-    questionIdleBlurTimeout = setTimeout(() => {
-      if (!examState.isExamActive || examState.isExamFinished || isViolationModalOpen || isTabAway) return;
-      const n = document.getElementById('examIdleBlurNotice');
-      const q = document.getElementById('examQuestionText');
-      const o = document.getElementById('examOptionsList');
-      if (n) n.style.display = 'flex';
-      if (q) q.style.filter = 'blur(16px)';
-      if (o) o.style.filter = 'blur(12px)';
-
-      // Jika siswa tetap diam di jendela mengambang dan tidak merespons dalam 4 detik setelah tirai muncul:
-      // OTOMATIS CATAT PELANGGARAN (+1) & NYALAKAN SIRINE!
-      if (questionIdleEscalationTimeout) clearTimeout(questionIdleEscalationTimeout);
-      questionIdleEscalationTimeout = setTimeout(() => {
-        if (!examState.isExamActive || examState.isExamFinished || isViolationModalOpen || isTabAway) return;
-        handleTabExit('Terdeteksi Menggunakan Layar Mengambang / Tidak Merespons Lembar Asesmen');
-      }, ESCALATION_INTERVAL_MS);
-
-    }, QUESTION_IDLE_BLUR_MS);
+    stopQuestionIdleBlurTimer();
   }
 
-  window.wakeUpQuestionCard = function(isFromNoticeClick) {
-    if (isFromNoticeClick) {
-      // Siswa membuka layar mengambang dan mencoba membuka kembali soal: CATAT PELANGGARAN SEGERA!
-      handleTabExit('Terdeteksi Aktivitas Layar Mengambang / Kehilangan Fokus Lembar Soal');
-      return;
-    }
-    resetQuestionIdleBlurTimer();
+  window.wakeUpQuestionCard = function() {
     ensureExamFullscreenOnGesture();
   };
 
@@ -1769,17 +1700,17 @@
 
       const isPortrait = scrH >= scrW;
       if (isPortrait) {
-        // Split Screen vertikal: tinggi browser terpotong < 85% dari tinggi layar
-        if (scrH > 0 && (winH / scrH < 0.85)) {
+        // Split Screen vertikal: tinggi browser terpotong drastis (< 60% dari tinggi layar)
+        if (scrH > 0 && (winH / scrH < 0.60)) {
           return 'Layar Belah (Split Screen) / Layar Terpotong Vertikal';
         }
-        // Floating window: lebar browser terpotong < 85% dari lebar layar
-        if (scrW > 0 && (winW / scrW < 0.85)) {
+        // Floating window: lebar browser terpotong drastis (< 70% dari lebar layar)
+        if (scrW > 0 && (winW / scrW < 0.70)) {
           return 'Layar Mengambang (Floating Window - Lebar Layar Menyusut)';
         }
       } else {
         // Split Screen horizontal
-        if (scrW > 0 && (winW / scrW < 0.80)) {
+        if (scrW > 0 && (winW / scrW < 0.65)) {
           return 'Layar Belah (Split Screen) Landscape';
         }
       }
@@ -1826,16 +1757,16 @@
 
       const isPortrait = scrH >= scrW;
       if (isPortrait) {
-        // Split Screen: tinggi menyusut drastis karena layar dibagi dengan aplikasi lain
-        if (scrH > 0 && (winH / scrH < 0.85)) {
+        // Split Screen: tinggi menyusut drastis karena layar dibagi dengan aplikasi lain (< 60%)
+        if (scrH > 0 && (winH / scrH < 0.60)) {
           return 'Layar Belah (Split Screen) / Layar Terpotong Vertikal';
         }
-        // Floating window lebar menyusut
-        if (scrW > 0 && (winW / scrW < 0.85)) {
+        // Floating window lebar menyusut drastis (< 70%)
+        if (scrW > 0 && (winW / scrW < 0.70)) {
           return 'Layar Mengambang (Floating Window - Lebar Layar Menyusut)';
         }
       } else {
-        if (scrW > 0 && (winW / scrW < 0.80)) {
+        if (scrW > 0 && (winW / scrW < 0.65)) {
           return 'Layar Belah (Split Screen) Landscape';
         }
       }
@@ -1878,29 +1809,18 @@
         return;
       }
 
-      // 2. Cek apakah keluar dari Layar Penuh (Pada Android, membuka Floating Window / Smart Sidebar otomatis membatalkan Fullscreen!)
-      const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
-      const isAndroid = /Android/i.test(ua);
-      const isFsSupported = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
-      const isCurrentlyFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-
-      if (isAndroid && isFsSupported && !isCurrentlyFs && !isViolationModalOpen) {
-        handleTabExit('Membuka Layar Mengambang (Floating Window) / Keluar dari Layar Penuh');
-        return;
-      }
-
-      // 3. Cek apakah dokumen kehilangan fokus (misal mengetuk jendela mengambang di atas browser)
+      // 2. Cek apakah dokumen kehilangan fokus (mengetuk jendela mengambang di atas browser / berpindah aplikasi)
       if (typeof document.hasFocus === 'function' && !document.hasFocus()) {
-        handleTabExit('Mengetuk Layar Mengambang (Floating Window) / Kehilangan Fokus Ujian');
+        handleTabExit('Kehilangan Fokus Ujian / Berpindah Aplikasi');
         return;
       }
 
-      // 4. Cek document.hidden (berpindah tab / aplikasi)
+      // 3. Cek document.hidden (berpindah tab / meminimalkan browser)
       if (document.hidden) {
         handleTabExit('Meninggalkan lembar asesmen / membuka aplikasi lain');
         return;
       }
-    }, 350);
+    }, 500);
   }
 
   function stopScreenIntegrityWatchdog() {
