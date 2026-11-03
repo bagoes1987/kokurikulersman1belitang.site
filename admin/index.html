@@ -3642,9 +3642,20 @@
         if (FincestemCore.zones && FincestemCore.zones.syncZones) {
           FincestemCore.zones.syncZones(function() {
             refreshAdminStats();
-            applyStudentFilters();
-            if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
-            if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
+            requestAnimationFrame(function() {
+              const pStudents = document.getElementById('panelAdminStudents');
+              if (pStudents && !pStudents.classList.contains('hidden')) {
+                applyStudentFilters();
+              }
+              const pRekap = document.getElementById('panelAdminRekap');
+              if (pRekap && !pRekap.classList.contains('hidden')) {
+                if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+              }
+              const pMentorship = document.getElementById('panelAdminMentorship');
+              if (pMentorship && !pMentorship.classList.contains('hidden')) {
+                if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
+              }
+            });
           });
         }
         if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
@@ -5769,12 +5780,25 @@
 
       const finishSync = function() {
         if (lbl) lbl.textContent = 'Sinkronkan Server';
-        refreshAdminStats();
-        applyStudentFilters();
-        if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
-        if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
-        if (typeof renderPlottingView === 'function') renderPlottingView();
-        if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+        
+        requestAnimationFrame(function() {
+          refreshAdminStats();
+          const pStudents = document.getElementById('panelAdminStudents');
+          if (pStudents && !pStudents.classList.contains('hidden')) {
+            applyStudentFilters();
+          }
+          const pRekap = document.getElementById('panelAdminRekap');
+          if (pRekap && !pRekap.classList.contains('hidden')) {
+            if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+          }
+          const pMentorship = document.getElementById('panelAdminMentorship');
+          if (pMentorship && !pMentorship.classList.contains('hidden')) {
+            if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
+            if (typeof renderPlottingView === 'function') renderPlottingView();
+            if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+          }
+        });
+
         if (window.FincestemCore && FincestemCore.ui) {
           FincestemCore.ui.toast('Data siswa, status Field Trip/Non-FT, dan pembagian binaan berhasil disinkronkan dari server!', 'success');
         }
@@ -8290,13 +8314,18 @@
       let grandTotalClassesWithFT = 0;
       let gradeFTCounts = { 'X': 0, 'XI': 0, 'XII': 0 };
 
+      // Pre-grouping siswa per rombel O(N) untuk kecepatan rendering instan tanpa freeze
+      const studentsByClass = new Map();
+      allStudents.forEach(s => {
+        const sClass = (s.class || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        if (!studentsByClass.has(sClass)) studentsByClass.set(sClass, []);
+        studentsByClass.get(sClass).push(s);
+      });
+
       // Compute statistics for all 33 classes
       const classStats = classList.map(clsName => {
         const normTarget = clsName.replace(/^KELAS\s+/i, '').trim().toUpperCase();
-        const studentsInClass = allStudents.filter(s => {
-          const sClass = (s.class || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
-          return sClass === normTarget;
-        });
+        const studentsInClass = studentsByClass.get(normTarget) || [];
 
         const ftStudents = studentsInClass.filter(s => {
           const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)

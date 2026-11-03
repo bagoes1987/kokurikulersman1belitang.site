@@ -1064,33 +1064,40 @@
           </p>
         </div>
 
-        <!-- PANEL EDIT MANUAL / DISPENSASI KHUSUS (COLLAPSIBLE / TERSEMBUNYI SECARA DEFAULT) -->
-        <div id="sectionManualGradingOverride" class="hidden flex flex-col gap-3 p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200">
-          <div class="flex items-center justify-between">
-            <span class="text-xs font-black text-amber-950 flex items-center gap-1">
-              <span class="material-symbols-outlined text-sm text-amber-700">tune</span>
-              <span>Penyesuaian Nilai Manual (Dispensasi Guru)</span>
+        <!-- PANEL EDIT MANUAL / DISPENSASI KHUSUS (TERBUKA STANDBY SETIAP SAAT) -->
+        <div id="sectionManualGradingOverride" class="flex flex-col gap-3 p-4 rounded-2xl bg-amber-50/80 border border-amber-200 shadow-2xs">
+          <div class="flex items-center justify-between flex-wrap gap-2">
+            <span class="text-xs font-black text-amber-950 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base text-amber-700">tune</span>
+              <span>Form Penilaian Manual 4 Pilar (Dispensasi & Koreksi Guru)</span>
             </span>
-            <button type="button" onclick="toggleFasilManualEdit()" class="text-[10px] text-amber-700 hover:text-amber-900 font-bold">Tutup Panel</button>
+            <div id="manualGradeLiveBadge" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-600 text-white font-extrabold text-[11px] shadow-2xs">
+              <span id="manualGradeLiveStars">⭐⭐⭐⭐⭐ (5 Bintang)</span>
+              <span>•</span>
+              <span id="manualGradeLiveScore">Skor: 100</span>
+            </div>
           </div>
+          <p class="text-[11px] text-amber-900/80 leading-relaxed">
+            Fasilitator dapat mengisi atau menyesuaikan angka 4 pilar di bawah ini. Skor rata-rata 4 pilar harian akan otomatis terkonversi menjadi <strong>Bintang Siswa (1 - 5 ⭐)</strong> dan langsung tampil di dashboard siswa.
+          </p>
 
           <!-- Input Manual 4 Pilar -->
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <div>
-              <label class="block text-[10px] font-bold text-amber-900 mb-0.5">Financial</label>
-              <input id="gradeFinancial" type="number" min="0" max="100" placeholder="0-100" class="w-full px-2 py-1.5 rounded-lg border border-amber-300 bg-white text-center font-bold text-xs outline-none">
+              <label class="block text-[10.5px] font-black text-amber-950 mb-0.5">💰 Financial (0-100)</label>
+              <input id="gradeFinancial" type="number" min="0" max="100" oninput="updateLiveManualGradingPreview()" placeholder="0-100" class="w-full px-2 py-2 rounded-xl border border-amber-300 bg-white text-center font-black text-sm outline-none focus:ring-2 focus:ring-amber-500">
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-purple-900 mb-0.5">Culture</label>
-              <input id="gradeCulture" type="number" min="0" max="100" placeholder="0-100" class="w-full px-2 py-1.5 rounded-lg border border-purple-300 bg-white text-center font-bold text-xs outline-none">
+              <label class="block text-[10.5px] font-black text-purple-950 mb-0.5">🏛️ Culture (0-100)</label>
+              <input id="gradeCulture" type="number" min="0" max="100" oninput="updateLiveManualGradingPreview()" placeholder="0-100" class="w-full px-2 py-2 rounded-xl border border-purple-300 bg-white text-center font-black text-sm outline-none focus:ring-2 focus:ring-purple-500">
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-emerald-900 mb-0.5">Exploration</label>
-              <input id="gradeExploration" type="number" min="0" max="100" placeholder="0-100" class="w-full px-2 py-1.5 rounded-lg border border-emerald-300 bg-white text-center font-bold text-xs outline-none">
+              <label class="block text-[10.5px] font-black text-emerald-950 mb-0.5">🧭 Exploration (0-100)</label>
+              <input id="gradeExploration" type="number" min="0" max="100" oninput="updateLiveManualGradingPreview()" placeholder="0-100" class="w-full px-2 py-2 rounded-xl border border-emerald-300 bg-white text-center font-black text-sm outline-none focus:ring-2 focus:ring-emerald-500">
             </div>
             <div>
-              <label class="block text-[10px] font-bold text-blue-900 mb-0.5">STEM</label>
-              <input id="gradeSTEM" type="number" min="0" max="100" placeholder="0-100" class="w-full px-2 py-1.5 rounded-lg border border-blue-300 bg-white text-center font-bold text-xs outline-none">
+              <label class="block text-[10.5px] font-black text-blue-950 mb-0.5">🔬 STEM (0-100)</label>
+              <input id="gradeSTEM" type="number" min="0" max="100" oninput="updateLiveManualGradingPreview()" placeholder="0-100" class="w-full px-2 py-2 rounded-xl border border-blue-300 bg-white text-center font-black text-sm outline-none focus:ring-2 focus:ring-blue-500">
             </div>
           </div>
 
@@ -2621,6 +2628,10 @@
             document.querySelectorAll('input[name="evalStatusRadio"]').forEach(r => r.checked = false);
           }
 
+          if (typeof updateLiveManualGradingPreview === 'function') {
+            updateLiveManualGradingPreview();
+          }
+
           // Pratinjau Pekerjaan Siswa (Non-Field Trip Day 1–7 & Field Trip Day 1–7)
           const lkpdPreviewEl = document.getElementById('modalGradingLkpdPreview');
           if (lkpdPreviewEl) {
@@ -3628,7 +3639,40 @@
       const elFb = document.getElementById('displayAutoFeedbackText');
       if (elFb) elFb.textContent = `"${fbText}"`;
 
-      FincestemCore.ui.toast(`Rekomendasi Bintang ${stars} (Skor ${score} / Status ${status.toUpperCase()}) diterapkan!`, stars === 1 ? 'warning' : 'success');
+      if (typeof updateLiveManualGradingPreview === 'function') {
+        updateLiveManualGradingPreview();
+      }
+
+      // Langsung simpan nilai resmi ke database & tampilkan ke siswa
+      submitGrading();
+    }
+
+    function updateLiveManualGradingPreview() {
+      const fin = parseInt(document.getElementById('gradeFinancial')?.value) || 0;
+      const cul = parseInt(document.getElementById('gradeCulture')?.value) || 0;
+      const exp = parseInt(document.getElementById('gradeExploration')?.value) || 0;
+      const stem = parseInt(document.getElementById('gradeSTEM')?.value) || 0;
+      const avg = Math.round((fin + cul + exp + stem) / 4);
+
+      let stars = 5;
+      let pred = 'Mahir (A)';
+      if (avg >= 85) { stars = 5; pred = 'Mahir (A)'; }
+      else if (avg >= 70) { stars = 4; pred = 'Cakap (B)'; }
+      else if (avg >= 55) { stars = 3; pred = 'Berkembang (C)'; }
+      else if (avg >= 40) { stars = 2; pred = 'Perlu Bimbingan (D)'; }
+      else { stars = 1; pred = 'Revisi / Penalti'; }
+
+      const badgeScore = document.getElementById('manualGradeLiveScore');
+      const badgeStars = document.getElementById('manualGradeLiveStars');
+      if (badgeScore) badgeScore.textContent = `Skor: ${avg} (${pred})`;
+      if (badgeStars) badgeStars.textContent = `${'⭐'.repeat(stars)}${'☆'.repeat(5 - stars)} (${stars} Bintang)`;
+
+      const elScore = document.getElementById('heroAutoScoreNumber');
+      if (elScore) elScore.textContent = avg;
+      const elStars = document.getElementById('heroAutoStars');
+      if (elStars) elStars.textContent = '⭐'.repeat(stars) + '☆'.repeat(Math.max(0, 5 - stars));
+      const elPred = document.getElementById('heroAutoPredicate');
+      if (elPred) elPred.textContent = pred;
     }
 
     // FUNGSI INSPEKSI DOKUMENTASI SISWA OLEH FASILITATOR
@@ -3680,25 +3724,31 @@
           return dDay === targetDay;
         });
 
-        // 2. DEDUPLIKASI KETAT: Prioritaskan versi server doc-srv- dan hilangkan duplikasi URL / ID / Judul
-        const seenIds = new Set();
-        const seenUrls = new Set();
-        const seenTitles = new Set();
+        // 2. DEDUPLIKASI KETAT & NORMALISASI PATH FOTO
+        const seenFingerprints = new Set();
         const studentDocs = [];
 
         studentRawDocs.forEach(p => {
           const pId = String(p.id || '').trim();
-          const pUrl = String(p.url || p.file_url || '').trim();
+          let pUrl = String(p.url || p.file_url || '').trim();
+          // Normalisasi URL: hilangkan http://domain, ../, dan leading /
+          const normUrl = pUrl.replace(/^https?:\/\/[^\/]+/i, '').replace(/^(\.\.\/|\/)+/, '').toLowerCase();
           const pTitle = String(p.title || '').trim().toLowerCase();
+          const pDate = String(p.date || p.created_at || '').trim();
 
-          if (pId && seenIds.has(pId)) return;
-          if (pUrl && seenUrls.has(pUrl)) return;
-          if (pTitle && seenTitles.has(pTitle)) return;
+          // Ekstrak nama file gambar jika tersimpan di server
+          const baseMatch = normUrl.match(/([^\/\?#]+\.(?:jpe?g|png|webp|gif))/i);
+          const baseFile = baseMatch ? baseMatch[1] : '';
 
+          // Buat fingerprint unik berdasarkan nama file fisik atau kombinasi tanggal + judul
+          const fp = baseFile ? ('file:' + baseFile) : (pDate ? ('time:' + pDate + '_' + pTitle) : ('url:' + normUrl));
+
+          if (seenFingerprints.has(fp)) return;
+          if (pId && seenFingerprints.has('id:' + pId)) return;
+
+          seenFingerprints.add(fp);
+          if (pId) seenFingerprints.add('id:' + pId);
           studentDocs.push(p);
-          if (pId) seenIds.add(pId);
-          if (pUrl) seenUrls.add(pUrl);
-          if (pTitle) seenTitles.add(pTitle);
         });
 
         // Deteksi kategori siswa: Non-Field Trip vs Field Trip
@@ -3899,6 +3949,8 @@
             if (res && res.success && Array.isArray(res.data) && res.data.length > 0) {
               const serverDocs = res.data.map(d => ({
                 id: 'doc-srv-' + d.id,
+                day: d.day,
+                day_number: d.day,
                 title: d.title,
                 caption: d.caption,
                 url: d.file_url,
