@@ -9047,12 +9047,12 @@
     let currentModalRekapClass = '';
 
     function initAdminRekapView() {
+      renderAdminRekapView();
       if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
         FincestemCore.assignments.getAssignments(function() {
-          renderAdminRekapView();
+          requestAnimationFrame(renderAdminRekapView);
         });
       }
-      renderAdminRekapView();
     }
 
     function filterRekapGrade(grade) {
@@ -9122,24 +9122,69 @@
         studentsByClass.get(sClass).push(s);
       });
 
-      // Compute statistics for all 33 classes
+      // 1. Pre-build inverted mentor map for instant O(1) facilitator lookup
+      const mentorMap = (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function')
+        ? window.FincestemMentorship.getAssignmentsMap()
+        : {};
+      const studentMentorLookup = new Map();
+      for (const [tKey, entry] of Object.entries(mentorMap)) {
+        if (!entry || !Array.isArray(entry.student_nisns)) continue;
+        const tName = entry.teacher_name || tKey;
+        entry.student_nisns.forEach(nisn => {
+          const cleanN = String(nisn || '').trim();
+          if (!cleanN) return;
+          if (!studentMentorLookup.has(cleanN)) studentMentorLookup.set(cleanN, new Set());
+          studentMentorLookup.get(cleanN).add(tName);
+          const digits = cleanN.replace(/\D/g, '');
+          if (digits) {
+            if (digits.length >= 8 && digits.length <= 10) {
+              const pad = digits.padStart(10, '0');
+              if (!studentMentorLookup.has(pad)) studentMentorLookup.set(pad, new Set());
+              studentMentorLookup.get(pad).add(tName);
+            }
+            const unp = digits.replace(/^0+/, '');
+            if (unp) {
+              if (!studentMentorLookup.has(unp)) studentMentorLookup.set(unp, new Set());
+              studentMentorLookup.get(unp).add(tName);
+            }
+          }
+        });
+      }
+
+      // 2. Pre-build coordinators map
+      const coordMap = new Map();
+      try {
+        const local = (FincestemCore.assignments && FincestemCore.assignments.getLocalAssignments)
+          ? FincestemCore.assignments.getLocalAssignments()
+          : {};
+        (local.coordinators || []).forEach(c => {
+          const norm = String(c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+          if (!coordMap.has(norm)) coordMap.set(norm, new Set());
+          const cName = c.teacher_name || c.teacher_username;
+          if (cName) coordMap.get(norm).add(cName);
+        });
+      } catch (e) {}
+
+      // Compute statistics for all 33 classes in a single high-speed pass (<5ms)
       const classStats = classList.map(clsName => {
         const normTarget = clsName.replace(/^KELAS\s+/i, '').trim().toUpperCase();
         const studentsInClass = studentsByClass.get(normTarget) || [];
 
-        const ftStudents = studentsInClass.filter(s => {
-          const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-            ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
-            : (s.zone || 'FINCESTEM OKU TIMUR');
-          const zUpper = String(z).toUpperCase();
-          return zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
-        });
-        const nonFtStudents = studentsInClass.filter(s => {
-          const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-            ? FincestemCore.zones.getStudentZone(s.nisn, s.class, s.zone)
-            : (s.zone || 'FINCESTEM OKU TIMUR');
-          const zUpper = String(z).toUpperCase();
-          return !(zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP'));
+        const ftStudents = [];
+        const nonFtStudents = [];
+        const fasilsSet = new Set();
+
+        studentsInClass.forEach(s => {
+          const isFT = (FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+            ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class, s.zone)
+            : String(s.zone || '').toUpperCase().includes('LUAR');
+          if (isFT) ftStudents.push(s);
+          else nonFtStudents.push(s);
+
+          const sNisn = String(s.nisn || '').trim();
+          const sNis = String(s.nis || '').trim();
+          const m = studentMentorLookup.get(sNisn) || (sNis ? studentMentorLookup.get(sNis) : null);
+          if (m) m.forEach(name => fasilsSet.add(name));
         });
 
         const level = clsName.includes('KELAS X.') ? 'X' : (clsName.includes('KELAS XI.') ? 'XI' : 'XII');
@@ -9154,13 +9199,9 @@
         window._rekapGradeNonFTCounts[level] = (window._rekapGradeNonFTCounts[level] || 0) + nonFtStudents.length;
         window._rekapGradeTotalCounts[level] = (window._rekapGradeTotalCounts[level] || 0) + studentsInClass.length;
 
-        const coord = (FincestemCore.assignments && FincestemCore.assignments.getClassCoordinator)
-          ? FincestemCore.assignments.getClassCoordinator(clsName)
-          : 'Drs. H. Koordinator FINCESTEM';
-
-        const fasil = (FincestemCore.assignments && FincestemCore.assignments.getClassFacilitator)
-          ? FincestemCore.assignments.getClassFacilitator(clsName)
-          : 'Tim Fasilitator SMAN 1 Belitang';
+        const coordSet = coordMap.get(normTarget);
+        const coord = (coordSet && coordSet.size > 0) ? Array.from(coordSet).join('\n') : 'Drs. H. Koordinator FINCESTEM';
+        const fasil = (fasilsSet.size > 0) ? Array.from(fasilsSet).join('\n') : 'Tim Fasilitator SMAN 1 Belitang';
 
         return {
           className: clsName,

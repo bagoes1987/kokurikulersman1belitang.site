@@ -1802,7 +1802,13 @@ const FincestemCore = {
         }
       } catch (e) {}
 
-      // Default zona: Jika belum diset, kelas X.1 s.d X.6 OKU Timur, lainnya Luar OKU Timur atau default OKU Timur
+      // Kembalikan null jika belum ada pengaturan custom kelas dari Admin
+      return null;
+    },
+
+    getClassInfoWithDefault: function(className) {
+      const custom = this.getClassInfo(className);
+      if (custom) return custom;
       return {
         zone: 'FINCESTEM OKU TIMUR',
         coordinator_name: 'Drs. H. Koordinator FINCESTEM',
@@ -5015,6 +5021,7 @@ const FincestemCore = {
           .then(res => {
             if (res && res.success && res.data) {
               localStorage.setItem('fincestem_role_assignments', JSON.stringify(res.data));
+              self._cachedLocalAssignments = res.data;
               if (res.data.mentorship_state && window.FincestemMentorship && typeof window.FincestemMentorship.applyServerState === 'function') {
                 window.FincestemMentorship.applyServerState(res.data.mentorship_state);
               }
@@ -5029,15 +5036,28 @@ const FincestemCore = {
       }
     },
 
+    _lastAppliedMentorshipJson: null,
+    _cachedLocalAssignments: null,
     getLocalAssignments: function(callback) {
+      if (this._cachedLocalAssignments) {
+        if (callback) callback(this._cachedLocalAssignments);
+        return this._cachedLocalAssignments;
+      }
       let data = { coordinators: [], facilitators: [], evaluations: [], final_grades: [] };
       try {
         const stored = localStorage.getItem('fincestem_role_assignments');
-        if (stored) data = JSON.parse(stored);
-        if (data && data.mentorship_state && window.FincestemMentorship && typeof window.FincestemMentorship.applyServerState === 'function') {
-          window.FincestemMentorship.applyServerState(data.mentorship_state);
+        if (stored) {
+          data = JSON.parse(stored);
+          if (data && data.mentorship_state && window.FincestemMentorship && typeof window.FincestemMentorship.applyServerState === 'function') {
+            const rawStr = JSON.stringify(data.mentorship_state);
+            if (rawStr !== this._lastAppliedMentorshipJson) {
+              this._lastAppliedMentorshipJson = rawStr;
+              window.FincestemMentorship.applyServerState(data.mentorship_state);
+            }
+          }
         }
       } catch (e) {}
+      this._cachedLocalAssignments = data;
       if (callback) callback(data);
       return data;
     },

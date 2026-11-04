@@ -26,11 +26,13 @@
   let _cachedTeacherIdentifierIndex = null;
   let _cachedTeacherRolesMap = null;
   let _cachedAssignmentsMap = null;
+  let _cachedStudentMentorIndex = null;
 
   function invalidateMentorshipCache(keepAssignments) {
     _cachedTeachersList = null;
     _cachedTeacherIdentifierIndex = null;
     _cachedTeacherRolesMap = null;
+    _cachedStudentMentorIndex = null;
     if (!keepAssignments) {
       _cachedAssignmentsMap = null;
     }
@@ -890,6 +892,31 @@
       return null;
     },
 
+    _buildStudentMentorIndex: function() {
+      if (_cachedStudentMentorIndex) return _cachedStudentMentorIndex;
+      const map = this.getAssignmentsMap();
+      const index = new Map();
+      for (const [tKey, entry] of Object.entries(map)) {
+        if (!entry || !Array.isArray(entry.student_nisns)) continue;
+        const tObj = this.findTeacherByIdentifier(tKey);
+        const tName = (tObj && tObj.nama_guru) || entry.teacher_name || tKey;
+        const rec = { tKey, tName };
+        entry.student_nisns.forEach(storedN => {
+          const sClean = String(storedN || '').trim();
+          if (!sClean) return;
+          index.set(sClean, rec);
+          const sDigits = sClean.replace(/\D/g, '');
+          if (sDigits) {
+            if (sDigits.length >= 8 && sDigits.length <= 10) index.set(sDigits.padStart(10, '0'), rec);
+            const unp = sDigits.replace(/^0+/, '');
+            if (unp) index.set(unp, rec);
+          }
+        });
+      }
+      _cachedStudentMentorIndex = index;
+      return _cachedStudentMentorIndex;
+    },
+
     /**
      * Mengambil Nama Koordinator (dari Data Koordinator & Fasil per Kelas)
      * & Fasilitator Siswa (dari Pembagian Siswa Binaan per NISN)
@@ -936,10 +963,12 @@
       const digits = cleanNisn.replace(/\D/g, '');
       const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : cleanNisn;
       const unpadded = digits.replace(/^0+/, '') || cleanNisn;
-      const map = this.getAssignmentsMap();
 
-      const candidateNisns = new Set([cleanNisn, padded, unpadded]);
-      if (studentClass || nisn) {
+      const sIndex = this._buildStudentMentorIndex();
+      let match = sIndex.get(cleanNisn) || sIndex.get(padded) || sIndex.get(unpadded);
+
+      if (!match && (studentClass || nisn)) {
+        const candidateNisns = new Set([cleanNisn, padded, unpadded]);
         const allStu = window.FincestemMasterStudents || [];
         const stuObj = allStu.find(s => 
           String(s.nisn || '').trim() === cleanNisn ||
@@ -958,37 +987,18 @@
             candidateNisns.add(String(stuObj.nis).trim());
           }
         }
-      }
-
-      const fasilNames = [];
-
-      for (const [tKey, entry] of Object.entries(map)) {
-        if (!entry || !Array.isArray(entry.student_nisns)) continue;
-        const tRole = this.getTeacherRole(tKey);
-        const isMatched = entry.student_nisns.some(storedN => {
-          const sClean = String(storedN || '').trim();
-          const sDigits = sClean.replace(/\D/g, '');
-          return candidateNisns.has(sClean) || 
-                 (sDigits && digits && sDigits === digits) ||
-                 candidateNisns.has(sClean.padStart(10, '0')) ||
-                 candidateNisns.has(sClean.replace(/^0+/, ''));
-        });
-        if (isMatched) {
-          const tObj = this.findTeacherByIdentifier(tKey);
-          const tName = (tObj && tObj.nama_guru) || entry.teacher_name || tKey;
-          if (tName && !fasilNames.includes(tName)) {
-            fasilNames.push(tName);
-          }
-          if (!result.facilitator_key) result.facilitator_key = tKey;
+        for (const cand of candidateNisns) {
+          if (sIndex.has(cand)) { match = sIndex.get(cand); break; }
         }
       }
 
-      if (fasilNames.length > 0) {
-        result.facilitators = [fasilNames[0]]; // Fasilitator binaan siswa tunggal (1 Siswa = 1 Fasil)
-        result.facilitator = fasilNames[0];
-        result.facilitator_name = fasilNames[0];
-        result.facilitator1 = fasilNames[0] || '-';
+      if (match) {
+        result.facilitators = [match.tName];
+        result.facilitator = match.tName;
+        result.facilitator_name = match.tName;
+        result.facilitator1 = match.tName;
         result.facilitator2 = '-';
+        result.facilitator_key = match.tKey;
       } else {
         result.facilitator = '-';
         result.facilitator_name = '-';
@@ -1006,29 +1016,39 @@
     getMentorsForClass: function(className) {
       const allStudents = window.FincestemMasterStudents || [];
       const normTarget = String(className || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
-      const classStudents = allStudents.filter(s => {
-        const sNorm = String(s.class || s.rombel || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
-        return sNorm === normTarget;
-      });
-
       const coords = new Set();
       const fasils = new Set();
 
-      classStudents.forEach(s => {
-        const m = this.getMentorsForStudent(s.nisn, className);
-        if (m.coordinator_name) {
-          m.coordinator_name.split('\n').forEach(c => { if (c.trim()) coords.add(c.trim()); });
-        }
-        if (m.facilitator_name) {
-          m.facilitator_name.split('\n').forEach(f => { if (f.trim()) fasils.add(f.trim()); });
+      // 1. Koordinator kelas dari data penugasan koordinator
+      try {
+        const local = (FincestemCore.assignments && FincestemCore.assignments.getLocalAssignments)
+          ? FincestemCore.assignments.getLocalAssignments()
+          : {};
+        (local.coordinators || []).forEach(c => {
+          const cNorm = String(c.class_name || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+          if (cNorm === normTarget && (c.teacher_name || c.teacher_username)) {
+            coords.add(c.teacher_name || c.teacher_username);
+          }
+        });
+      } catch (e) {}
+
+      // 2. Fasilitator kelas via inverted index O(1) per siswa
+      const sIndex = this._buildStudentMentorIndex();
+      allStudents.forEach(s => {
+        const sNorm = String(s.class || s.rombel || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        if (sNorm === normTarget) {
+          const sNisn = String(s.nisn || '').trim();
+          const sNis = String(s.nis || '').trim();
+          const m = sIndex.get(sNisn) || (sNis ? sIndex.get(sNis) : null);
+          if (m && m.tName) fasils.add(m.tName);
         }
       });
 
       return {
         coordinators: Array.from(coords),
         facilitators: Array.from(fasils),
-        coordinator_text: coords.size > 0 ? Array.from(coords).join('\n') : '',
-        facilitator_text: fasils.size > 0 ? Array.from(fasils).join('\n') : ''
+        coordinator_text: coords.size > 0 ? Array.from(coords).join('\n') : 'Drs. H. Koordinator FINCESTEM',
+        facilitator_text: fasils.size > 0 ? Array.from(fasils).join('\n') : 'Tim Fasilitator SMAN 1 Belitang'
       };
     },
 
