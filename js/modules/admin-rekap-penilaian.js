@@ -99,7 +99,16 @@
    * Inisialisasi Modul & Sinkronisasi Pertama Kali
    */
   function initAdminRekapPenilaian(forceRefresh) {
+    // Sinkronkan pemetaan siswa binaan termutakhir dari server multi-PC
+    if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+      window.FincestemMentorship.syncFromServer(function() {
+        processEnrichedData();
+        renderAllViews();
+      });
+    }
+
     if (state.isLoaded && !forceRefresh) {
+      processEnrichedData();
       renderAllViews();
       return;
     }
@@ -166,28 +175,58 @@
   /**
    * Gabungkan master siswa, pemetaan fasilitator, dan progres backend
    */
+  function getStudentNormalizedClass(s) {
+    if (!s) return '';
+    return String(s.class || s.kelas || s.class_name || s.rombel || '').replace(/^KELAS\s+/i, '').trim();
+  }
+
+  /**
+   * Gabungkan master siswa, pemetaan binaan fasilitator, dan progres backend
+   */
   function processEnrichedData() {
     const students = getMasterStudents();
     const teachers = getMasterTeachers();
-    const assignMap = getAssignmentsMap();
 
-    // Buat index pencarian fasilitator berdasarkan NISN siswa
+    // 1. Buat mapping siswa ke guru binaan secara akurat dari modul Mentorship resmi
     const studentToMentorMap = {};
-    Object.keys(assignMap).forEach(teacherKey => {
-      const entry = assignMap[teacherKey];
-      if (entry && Array.isArray(entry.student_nisns)) {
-        const teacherName = (entry.teacher && entry.teacher.nama_guru) || teacherKey;
-        entry.student_nisns.forEach(nisn => {
-          studentToMentorMap[String(nisn).trim()] = {
-            teacherKey: teacherKey,
-            teacherName: teacherName,
-            teacher: entry.teacher
+
+    teachers.forEach(tc => {
+      const key = String(tc.username || tc.nip || tc.kode_guru).trim().toLowerCase();
+      let rawBinaan = [];
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getStudentsForTeacher === 'function') {
+        rawBinaan = window.FincestemMentorship.getStudentsForTeacher(key) || [];
+        if (!rawBinaan.length && tc.nama_guru) {
+          rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.nama_guru) || [];
+        }
+      }
+      rawBinaan.forEach(st => {
+        const nisn = String(st.nisn || st.identifier || '').trim();
+        if (nisn) {
+          studentToMentorMap[nisn] = {
+            teacherKey: key,
+            teacherName: tc.nama_guru,
+            teacher: tc
           };
-        });
+        }
+      });
+    });
+
+    // Fallback: jika ada siswa yang belum masuk map, periksa findMentorForStudent
+    students.forEach(st => {
+      const nisn = String(st.nisn || st.identifier || '').trim();
+      if (!studentToMentorMap[nisn] && window.FincestemMentorship && typeof window.FincestemMentorship.findMentorForStudent === 'function') {
+        const m = window.FincestemMentorship.findMentorForStudent(nisn);
+        if (m && m.teacher_name) {
+          studentToMentorMap[nisn] = {
+            teacherKey: m.teacher_key,
+            teacherName: m.teacher_name,
+            teacher: m.teacher
+          };
+        }
       }
     });
 
-    // 1. Perkaya data setiap siswa
+    // 2. Perkaya data setiap siswa
     const enriched = students.map(st => {
       const nisn = String(st.nisn || st.identifier || '').trim();
       const srvSumm = state.serverStudents[nisn] || null;
@@ -277,33 +316,54 @@
     });
     state.enrichedStudents = enriched;
 
-    // 2. Kalkulasi Metrik Kinerja Setiap Guru Fasilitator (116 Guru)
-    const fasilMetrics = teachers.map((tc, idx) => {
-      const tKey = String(tc.kode_guru || tc.username || tc.nama_guru).trim();
-      const assignment = assignMap[tKey] || null;
-      const assignedNisns = (assignment && Array.isArray(assignment.student_nisns)) ? assignment.student_nisns.map(n => String(n).trim()) : [];
-      const assignedClasses = (assignment && Array.isArray(assignment.classes)) ? assignment.classes : [];
+    // Index enriched students by NISN untuk lookup kilat
+    const enrichedByNisn = {};
+    enriched.forEach(e => {
+      enrichedByNisn[e.nisn] = e;
+    });
 
-      // Dapatkan data siswa binaan guru ini
-      const binaanStudents = enriched.filter(st => assignedNisns.includes(st.nisn));
-      const totalBinaan = binaanStudents.length;
+    // 3. Kalkulasi Metrik Kinerja Setiap Guru Fasilitator
+    const fasilMetrics = teachers.map((tc, idx) => {
+      const key = String(tc.username || tc.nip || tc.kode_guru).trim().toLowerCase();
+      let rawBinaan = [];
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.getStudentsForTeacher === 'function') {
+        rawBinaan = window.FincestemMentorship.getStudentsForTeacher(key) || [];
+        if (!rawBinaan.length && tc.nama_guru) {
+          rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.nama_guru) || [];
+        }
+      }
+
+      // Ambil daftar kelas binaan unik dan siswa binaan yang diperkaya
+      const classCounts = {};
+      const binaanEnriched = [];
+      rawBinaan.forEach(s => {
+        const cls = getStudentNormalizedClass(s) || 'Tanpa Kelas';
+        classCounts[cls] = (classCounts[cls] || 0) + 1;
+        const sNisn = String(s.nisn || s.identifier || '').trim();
+        if (sNisn && enrichedByNisn[sNisn]) {
+          binaanEnriched.push(enrichedByNisn[sNisn]);
+        }
+      });
+
+      const classesList = Object.keys(classCounts).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+      const totalBinaan = rawBinaan.length;
 
       // Siswa yang sudah mengumpulkan setidaknya 1 tugas
-      const submittedStudents = binaanStudents.filter(st => st.totalSubmissions > 0);
+      const submittedStudents = binaanEnriched.filter(st => st.totalSubmissions > 0);
       const submittedCount = submittedStudents.length;
       const submittedPct = totalBinaan > 0 ? Math.round((submittedCount / totalBinaan) * 100) : 0;
 
       // Siswa yang sudah dinilai fasil (setidaknya 1 hari atau Day 7)
-      const gradedStudents = binaanStudents.filter(st => st.totalGradedDays > 0);
+      const gradedStudents = binaanEnriched.filter(st => st.totalGradedDays > 0);
       const gradedCount = gradedStudents.length;
       const gradedPct = totalBinaan > 0 ? Math.round((gradedCount / totalBinaan) * 100) : 0;
 
       // Siswa yang sudah mengumpulkan tugas namun BELUM DINILAI fasil (Antrean)
-      const pendingStudents = binaanStudents.filter(st => st.hasPendingDay);
+      const pendingStudents = binaanEnriched.filter(st => st.hasPendingDay);
       const pendingCount = pendingStudents.length;
 
       // Siswa yang tuntas Day 7
-      const day7DoneCount = binaanStudents.filter(st => st.finalScore !== null).length;
+      const day7DoneCount = binaanEnriched.filter(st => st.finalScore !== null).length;
 
       // Tentukan status kinerja guru
       let statusKinerja = 'TERTUNDA';
@@ -326,10 +386,10 @@
 
       return {
         no: idx + 1,
-        teacherKey: tKey,
+        teacherKey: key,
         nama_guru: tc.nama_guru || '-',
-        nip: tc.nip || '-',
-        classes: assignedClasses,
+        nip: tc.nip && tc.nip !== '-' ? tc.nip : (tc.kode_guru || '-'),
+        classes: classesList,
         totalBinaan: totalBinaan,
         submittedCount: submittedCount,
         submittedPct: submittedPct,
@@ -343,12 +403,10 @@
         statusColor: statusColor
       };
     });
+
     state.facilitatorStats = fasilMetrics;
   }
 
-  /**
-   * Render seluruh bagian UI Rekap Penilaian & Rapor
-   */
   function renderAllViews() {
     renderKPIHeaderCards();
     if (state.currentSubTab === 'monitoring') {
@@ -1288,7 +1346,15 @@
   window.initAdminRekapPenilaian = initAdminRekapPenilaian;
   window.FincestemAdminRekapPenilaian = {
     init: initAdminRekapPenilaian,
-    refresh: function() { fetchRekapDataFromServer(); },
+    refresh: function() {
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+        window.FincestemMentorship.syncFromServer(function() {
+          fetchRekapDataFromServer();
+        });
+      } else {
+        fetchRekapDataFromServer();
+      }
+    },
     getState: function() { return state; }
   };
 
