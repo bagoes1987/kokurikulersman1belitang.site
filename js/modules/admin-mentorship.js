@@ -376,10 +376,16 @@
         const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : sN;
         const unp = digits.replace(/^0+/, '') || sN;
 
-        const targetMap = (role === 'KOORDINATOR') ? coordinatorByNisn : fasilitatorByNisn;
-        targetMap.set(sN, tInfo);
-        targetMap.set(padded, tInfo);
-        if (unp) targetMap.set(unp, tInfo);
+        // Siswa yang diplot ke guru manapun (termasuk guru berkategori Koordinator) MEMILIKI FASILITATOR BINAAN!
+        fasilitatorByNisn.set(sN, tInfo);
+        fasilitatorByNisn.set(padded, tInfo);
+        if (unp) fasilitatorByNisn.set(unp, tInfo);
+
+        if (role === 'KOORDINATOR') {
+          coordinatorByNisn.set(sN, tInfo);
+          coordinatorByNisn.set(padded, tInfo);
+          if (unp) coordinatorByNisn.set(unp, tInfo);
+        }
       });
     }
 
@@ -1027,6 +1033,7 @@
       renderMentorshipStats();
       renderAllStudentsMentorshipView();
       if (currentSubTab === 'plotting') renderPlottingView();
+      if (currentSubTab === 'rekap_fasil' && typeof window.renderRekapFasilView === 'function') window.renderRekapFasilView();
     } else {
       alert('Gagal menetapkan siswa.');
     }
@@ -1447,25 +1454,22 @@
           }
         });
       } else {
-        const isSameCategoryRole = (roleFilterType === 'KOORDINATOR') ? (r === 'KOORDINATOR') : (r !== 'KOORDINATOR');
-        if (isSameCategoryRole) {
-          const tObj = window.FincestemMentorship.findTeacherByIdentifier(tKey);
-          const tInfo = {
-            teacher_key: tKey,
-            teacher_name: (tObj && tObj.nama_guru) || entry.teacher_name || tKey
-          };
-          entry.student_nisns.forEach(n => {
-            const sN = String(n).trim();
-            if (sN) {
-              otherMentorByNisn.set(sN, tInfo);
-              const digits = sN.replace(/\D/g, '');
-              if (digits) {
-                otherMentorByNisn.set(digits.padStart(10, '0'), tInfo);
-                otherMentorByNisn.set(digits.replace(/^0+/, ''), tInfo);
-              }
+        const tObj = window.FincestemMentorship.findTeacherByIdentifier(tKey);
+        const tInfo = {
+          teacher_key: tKey,
+          teacher_name: (tObj && tObj.nama_guru) || entry.teacher_name || tKey
+        };
+        entry.student_nisns.forEach(n => {
+          const sN = String(n).trim();
+          if (sN) {
+            otherMentorByNisn.set(sN, tInfo);
+            const digits = sN.replace(/\D/g, '');
+            if (digits) {
+              otherMentorByNisn.set(digits.padStart(10, '0'), tInfo);
+              otherMentorByNisn.set(digits.replace(/^0+/, ''), tInfo);
             }
-          });
-        }
+          }
+        });
       }
     }
 
@@ -1671,6 +1675,7 @@
       closeAssignStudentModal();
       renderMentorshipStats();
       renderPlottingView();
+      if (typeof window.renderRekapFasilView === 'function') window.renderRekapFasilView();
     } else {
       alert('Gagal menetapkan siswa.');
     }

@@ -226,6 +226,15 @@
       let rawBinaan = [];
       if (window.FincestemMentorship && typeof window.FincestemMentorship.getStudentsForTeacher === 'function') {
         rawBinaan = window.FincestemMentorship.getStudentsForTeacher(key) || [];
+        if (!rawBinaan.length && tc.nip && tc.nip !== '-') {
+          rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.nip) || [];
+        }
+        if (!rawBinaan.length && tc.username) {
+          rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.username) || [];
+        }
+        if (!rawBinaan.length && tc.kode_guru && tc.kode_guru !== '-') {
+          rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.kode_guru) || [];
+        }
         if (!rawBinaan.length && tc.nama_guru) {
           rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.nama_guru) || [];
         }
@@ -359,6 +368,15 @@
       let rawBinaan = [];
       if (window.FincestemMentorship && typeof window.FincestemMentorship.getStudentsForTeacher === 'function') {
         rawBinaan = window.FincestemMentorship.getStudentsForTeacher(key) || [];
+        if (!rawBinaan.length && tc.nip && tc.nip !== '-') {
+          rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.nip) || [];
+        }
+        if (!rawBinaan.length && tc.username) {
+          rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.username) || [];
+        }
+        if (!rawBinaan.length && tc.kode_guru && tc.kode_guru !== '-') {
+          rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.kode_guru) || [];
+        }
         if (!rawBinaan.length && tc.nama_guru) {
           rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.nama_guru) || [];
         }

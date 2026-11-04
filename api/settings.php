@@ -2026,8 +2026,8 @@ if ($method === 'POST') {
                             $inCount = isset($incomingEntry['student_nisns']) && is_array($incomingEntry['student_nisns']) ? count($incomingEntry['student_nisns']) : 0;
                             $exCount = isset($existingEntry['student_nisns']) && is_array($existingEntry['student_nisns']) ? count($existingEntry['student_nisns']) : 0;
 
-                            // Gunakan data terbaru, atau jika belum ada timestamp, utamakan yang sudah berisi siswa binaan
-                            if ($inTime >= $exTime && ($inTime > 0 || $inCount >= $exCount)) {
+                            // Gunakan data terbaru (toleransi clock drift 120 detik), atau utamakan data yang memiliki binaan / perubahan eksplisit
+                            if ($inTime >= ($exTime - 120) || $inCount >= $exCount || ($inCount > 0 && $exCount == 0)) {
                                 $current['assignments'][$cleanKey] = $incomingEntry;
                             }
                         }

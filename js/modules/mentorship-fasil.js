@@ -36,6 +36,17 @@
 
   const MentorshipModule = {
     invalidateCache: invalidateMentorshipCache,
+    findMentorForStudent: function(nisn) {
+      const res = this.getTeacherForStudent(nisn);
+      if (!res) return null;
+      const tObj = this.findTeacherByIdentifier(res.teacher_key);
+      return {
+        teacher_key: res.teacher_key,
+        teacher_name: res.teacher_name,
+        teacher_role: res.teacher_role,
+        teacher: tObj
+      };
+    },
 
     /**
      * ==========================================
@@ -288,7 +299,7 @@
       return '../api';
     },
 
-    syncToServer: function(callback) {
+    syncToServer: function(callback, isAdminSave) {
       if (!window.location || !window.location.protocol.startsWith('http')) {
         if (callback) callback({ success: true });
         return;
@@ -312,6 +323,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'save_mentorship_data',
+            replace_all: !!isAdminSave,
             assignments: assignments,
             teacher_roles: teacherRoles,
             custom_teachers: customTeachers,
@@ -342,22 +354,47 @@
         const mergedAssigns = Object.assign({}, localAssigns);
         let assignChanged = false;
 
-        Object.keys(serverAssigns).forEach(tKey => {
-          const sEntry = serverAssigns[tKey];
-          if (!sEntry || typeof sEntry !== 'object') return;
-          const lEntry = mergedAssigns[tKey];
-          if (!lEntry) {
-            mergedAssigns[tKey] = sEntry;
-            assignChanged = true;
-          } else {
-            const sTime = sEntry.updated_at ? Date.parse(sEntry.updated_at) || 0 : 0;
-            const lTime = lEntry.updated_at ? Date.parse(lEntry.updated_at) || 0 : 0;
-            if (sTime >= lTime && JSON.stringify(lEntry) !== JSON.stringify(sEntry)) {
+        let totalServerStudents = 0;
+        Object.values(serverAssigns).forEach(e => {
+          if (e && Array.isArray(e.student_nisns)) totalServerStudents += e.student_nisns.length;
+        });
+        let totalLocalStudents = 0;
+        Object.values(localAssigns).forEach(e => {
+          if (e && Array.isArray(e.student_nisns)) totalLocalStudents += e.student_nisns.length;
+        });
+
+        // Proteksi: jika server memiliki banyak siswa binaan sedangkan lokal kosong, ambil server utuh!
+        if (totalServerStudents > 0 && totalLocalStudents === 0) {
+          mergedAssigns = Object.assign({}, serverAssigns);
+          assignChanged = true;
+        } else {
+          Object.keys(serverAssigns).forEach(tKey => {
+            const sEntry = serverAssigns[tKey];
+            if (!sEntry || typeof sEntry !== 'object') return;
+            const lEntry = mergedAssigns[tKey];
+            if (!lEntry) {
               mergedAssigns[tKey] = sEntry;
               assignChanged = true;
+            } else {
+              const sCount = Array.isArray(sEntry.student_nisns) ? sEntry.student_nisns.length : 0;
+              const lCount = Array.isArray(lEntry.student_nisns) ? lEntry.student_nisns.length : 0;
+              const sTime = sEntry.updated_at ? Date.parse(sEntry.updated_at) || 0 : 0;
+              const lTime = lEntry.updated_at ? Date.parse(lEntry.updated_at) || 0 : 0;
+
+              // Ambil server jika ada data siswa sedangkan lokal kosong, atau server lebih baru, atau server lebih lengkap
+              if (sCount > 0 && lCount === 0) {
+                mergedAssigns[tKey] = sEntry;
+                assignChanged = true;
+              } else if (sTime >= lTime && JSON.stringify(lEntry) !== JSON.stringify(sEntry)) {
+                mergedAssigns[tKey] = sEntry;
+                assignChanged = true;
+              } else if (sCount > lCount) {
+                mergedAssigns[tKey] = sEntry;
+                assignChanged = true;
+              }
             }
-          }
-        });
+          });
+        }
 
         if (assignChanged) {
           localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(mergedAssigns));
@@ -559,11 +596,11 @@
       return _cachedAssignmentsMap;
     },
 
-    saveAssignmentsMap: function(map) {
+    saveAssignmentsMap: function(map, isAdminSave) {
       _cachedAssignmentsMap = map;
       try {
         localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(map));
-        this.syncToServer();
+        this.syncToServer(null, isAdminSave !== false);
         return true;
       } catch (e) {
         console.error('Gagal simpan assignments map:', e);
@@ -704,7 +741,6 @@
 
       const teacherName = tObj ? tObj.nama_guru : cleanKey;
       const teacherRole = this.getTeacherRole(cleanKey);
-      const isTargetKoord = (teacherRole === 'KOORDINATOR');
 
       // Pastikan entry guru ada
       if (!map[cleanKey]) {
@@ -721,32 +757,37 @@
       // Gabungkan NISN baru (set unik) dari entry langsung guru ini
       const currentDirect = Array.isArray(map[cleanKey].student_nisns) ? map[cleanKey].student_nisns : [];
       const existingSet = new Set(currentDirect.map(n => String(n).trim()).filter(Boolean));
+      const newlyAddedNisns = new Set();
       nisnArray.forEach(n => {
         const sN = String(n).trim();
-        if (sN) existingSet.add(sN);
+        if (sN) {
+          existingSet.add(sN);
+          newlyAddedNisns.add(sN);
+        }
       });
 
-      // Lepas NISN ini hanya dari guru lain yang memiliki KATEGORI PERAN SAMA
-      // (Sehingga 1 siswa bisa memiliki 1 Guru Fasilitator DAN 1 Guru Koordinator sekaligus!)
+      // Lepas NISN ini dari guru pembina lain (1 siswa dibina oleh 1 Guru Fasilitator Utama)
+      // Perbarui juga timestamp pada guru lain yang terkena pelepasan siswa
+      const nowIso = new Date().toISOString();
       const aliasSet = new Set(tObj && Array.isArray(tObj.aliases) ? tObj.aliases : []);
       Object.keys(map).forEach(otherKey => {
         if (otherKey !== cleanKey) {
           if (aliasSet.has(otherKey.toLowerCase())) {
             delete map[otherKey];
           } else if (Array.isArray(map[otherKey].student_nisns)) {
-            const otherRole = this.getTeacherRole(otherKey);
-            const isOtherKoord = (otherRole === 'KOORDINATOR');
-            if (isTargetKoord === isOtherKoord) {
-              map[otherKey].student_nisns = map[otherKey].student_nisns.filter(n => !existingSet.has(String(n).trim()));
+            const beforeCount = map[otherKey].student_nisns.length;
+            map[otherKey].student_nisns = map[otherKey].student_nisns.filter(n => !newlyAddedNisns.has(String(n).trim()));
+            if (map[otherKey].student_nisns.length !== beforeCount) {
+              map[otherKey].updated_at = nowIso;
             }
           }
         }
       });
 
       map[cleanKey].student_nisns = Array.from(existingSet);
-      map[cleanKey].updated_at = new Date().toISOString();
+      map[cleanKey].updated_at = nowIso;
 
-      return this.saveAssignmentsMap(map);
+      return this.saveAssignmentsMap(map, true);
     },
 
     removeStudentFromTeacher: function(teacherIdentifier, nisn) {
@@ -813,7 +854,6 @@
         if (entry && Array.isArray(entry.student_nisns)) {
           const role = this.getTeacherRole(tKey);
           if (filterRole === 'KOORDINATOR' && role !== 'KOORDINATOR') continue;
-          if (filterRole === 'FASILITATOR' && role === 'KOORDINATOR') continue;
 
           if (
             entry.student_nisns.includes(cleanNisn) ||
@@ -909,7 +949,6 @@
       for (const [tKey, entry] of Object.entries(map)) {
         if (!entry || !Array.isArray(entry.student_nisns)) continue;
         const tRole = this.getTeacherRole(tKey);
-        if (tRole === 'KOORDINATOR') continue;
         const isMatched = entry.student_nisns.some(storedN => {
           const sClean = String(storedN || '').trim();
           const sDigits = sClean.replace(/\D/g, '');
