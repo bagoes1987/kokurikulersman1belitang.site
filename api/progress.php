@@ -128,9 +128,26 @@ if ($method === 'GET') {
             ");
             $dayRecords = $stmtDays ? $stmtDays->fetchAll(PDO::FETCH_ASSOC) : [];
 
+            // 3. Sertakan data pembagian siswa binaan (mentorship) dari app_settings agar rekap selalu sinkron
+            $mentorship = ['assignments' => [], 'teacher_roles' => [], 'custom_teachers' => []];
+            try {
+                $stmtM = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'mentorship_state_v1' LIMIT 1");
+                $stmtM->execute();
+                $rawM = $stmtM->fetchColumn();
+                if ($rawM) {
+                    $decM = json_decode($rawM, true);
+                    if (is_array($decM)) {
+                        $mentorship['assignments']     = isset($decM['assignments']) && is_array($decM['assignments']) ? $decM['assignments'] : [];
+                        $mentorship['teacher_roles']   = isset($decM['teacher_roles']) && is_array($decM['teacher_roles']) ? $decM['teacher_roles'] : [];
+                        $mentorship['custom_teachers'] = isset($decM['custom_teachers']) && is_array($decM['custom_teachers']) ? $decM['custom_teachers'] : [];
+                    }
+                }
+            } catch (Exception $eM) {}
+
             jsonResponse(true, 'Rekapitulasi penilaian berhasil dimuat', [
                 'students'    => $studentSummaries,
                 'days'        => $dayRecords,
+                'mentorship'  => $mentorship,
                 'server_time' => date('Y-m-d H:i:s')
             ]);
             exit;

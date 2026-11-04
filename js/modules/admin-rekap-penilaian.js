@@ -182,6 +182,12 @@
           });
         }
         state.serverDays = dMap;
+        if (json.data && json.data.mentorship) {
+          state.serverMentorship = json.data.mentorship;
+          if (window.FincestemMentorship && typeof window.FincestemMentorship.applyServerState === 'function') {
+            window.FincestemMentorship.applyServerState(json.data.mentorship);
+          }
+        }
         state.lastSyncTime = new Date();
         state.isLoaded = true;
 
@@ -237,6 +243,42 @@
         }
         if (!rawBinaan.length && tc.nama_guru) {
           rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.nama_guru) || [];
+        }
+      }
+      if (!rawBinaan.length) {
+        const assignsMap = (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function')
+          ? window.FincestemMentorship.getAssignmentsMap()
+          : (state.serverMentorship && state.serverMentorship.assignments ? state.serverMentorship.assignments : {});
+        const candidateKeys = [key, tc.username, tc.nip, tc.kode_guru, tc.nama_guru].filter(Boolean).map(k => String(k).trim().toLowerCase());
+        let matchedEntry = null;
+        for (const ck of candidateKeys) {
+          if (assignsMap[ck]) { matchedEntry = assignsMap[ck]; break; }
+        }
+        if (!matchedEntry && tc.nama_guru) {
+          const normName = tc.nama_guru.toLowerCase().replace(/[^a-z]/g, '');
+          for (const ak of Object.keys(assignsMap)) {
+            const entry = assignsMap[ak];
+            if (entry && entry.teacher_name && entry.teacher_name.toLowerCase().replace(/[^a-z]/g, '') === normName) {
+              matchedEntry = entry;
+              break;
+            }
+          }
+        }
+        if (matchedEntry && Array.isArray(matchedEntry.student_nisns) && matchedEntry.student_nisns.length > 0) {
+          const nisnSet = new Set(matchedEntry.student_nisns.map(n => String(n).trim()));
+          rawBinaan = students.filter(s => {
+            const sn = String(s.nisn || s.identifier || '').trim();
+            const unp = sn.replace(/^0+/, '');
+            const pad = (sn.length >= 8 && sn.length <= 10) ? sn.padStart(10, '0') : sn;
+            return nisnSet.has(sn) || nisnSet.has(unp) || nisnSet.has(pad);
+          });
+          if (rawBinaan.length === 0) {
+            rawBinaan = matchedEntry.student_nisns.map(n => ({
+              nisn: n,
+              name: 'Siswa ' + n,
+              class: 'Binaan'
+            }));
+          }
         }
       }
       rawBinaan.forEach(st => {
@@ -379,6 +421,42 @@
         }
         if (!rawBinaan.length && tc.nama_guru) {
           rawBinaan = window.FincestemMentorship.getStudentsForTeacher(tc.nama_guru) || [];
+        }
+      }
+      if (!rawBinaan.length) {
+        const assignsMap = (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function')
+          ? window.FincestemMentorship.getAssignmentsMap()
+          : (state.serverMentorship && state.serverMentorship.assignments ? state.serverMentorship.assignments : {});
+        const candidateKeys = [key, tc.username, tc.nip, tc.kode_guru, tc.nama_guru].filter(Boolean).map(k => String(k).trim().toLowerCase());
+        let matchedEntry = null;
+        for (const ck of candidateKeys) {
+          if (assignsMap[ck]) { matchedEntry = assignsMap[ck]; break; }
+        }
+        if (!matchedEntry && tc.nama_guru) {
+          const normName = tc.nama_guru.toLowerCase().replace(/[^a-z]/g, '');
+          for (const ak of Object.keys(assignsMap)) {
+            const entry = assignsMap[ak];
+            if (entry && entry.teacher_name && entry.teacher_name.toLowerCase().replace(/[^a-z]/g, '') === normName) {
+              matchedEntry = entry;
+              break;
+            }
+          }
+        }
+        if (matchedEntry && Array.isArray(matchedEntry.student_nisns) && matchedEntry.student_nisns.length > 0) {
+          const nisnSet = new Set(matchedEntry.student_nisns.map(n => String(n).trim()));
+          rawBinaan = students.filter(s => {
+            const sn = String(s.nisn || s.identifier || '').trim();
+            const unp = sn.replace(/^0+/, '');
+            const pad = (sn.length >= 8 && sn.length <= 10) ? sn.padStart(10, '0') : sn;
+            return nisnSet.has(sn) || nisnSet.has(unp) || nisnSet.has(pad);
+          });
+          if (rawBinaan.length === 0) {
+            rawBinaan = matchedEntry.student_nisns.map(n => ({
+              nisn: n,
+              name: 'Siswa ' + n,
+              class: 'Binaan'
+            }));
+          }
         }
       }
 

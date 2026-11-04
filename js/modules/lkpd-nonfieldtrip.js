@@ -4682,16 +4682,40 @@
 
     // Cek Prasyarat Modul Belajar Day 0
     let hasMateri = false;
-    try {
-      const rawM = localStorage.getItem('fincestem_materi_nft_day0_' + cleanNisn) ||
-                   localStorage.getItem('fincestem_materi_day0_' + cleanNisn);
-      if (rawM) {
-        const pM = JSON.parse(rawM);
-        if (pM && (pM.submitted || pM.summary || pM.conclusion)) hasMateri = true;
-      }
-    } catch(e) {}
+    const checkCandidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      checkCandidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) checkCandidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    for (const cid of checkCandidateIds) {
+      try {
+        const rawM = localStorage.getItem('fincestem_materi_nft_day0_' + cid) ||
+                     localStorage.getItem('fincestem_materi_day0_' + cid);
+        if (rawM) {
+          const pM = JSON.parse(rawM);
+          if (pM && (pM.submitted || pM.summary || pM.conclusion || pM.cardA)) {
+            hasMateri = true;
+            break;
+          }
+        }
+      } catch(e) {}
+    }
     if (!hasMateri && window.currentStudentProgress && window.currentStudentProgress.task_map) {
       if (window.currentStudentProgress.task_map['0_materi']) hasMateri = true;
+    }
+    if (!hasMateri) {
+      try {
+        for (const cid of checkCandidateIds) {
+          const progRaw = localStorage.getItem('fincestem_progress_' + cid);
+          if (progRaw) {
+            const p = JSON.parse(progRaw);
+            if (p && p.task_map && p.task_map['0_materi']) {
+              hasMateri = true;
+              break;
+            }
+          }
+        }
+      } catch(eProg) {}
     }
 
     if (!hasMateri && !isReadOnly) {
@@ -4989,17 +5013,28 @@
       submittedAt: new Date().toISOString()
     };
 
-    try {
-      localStorage.setItem('fincestem_lkpd_nft_day0_' + cleanNisn, JSON.stringify(payload));
-      localStorage.setItem('fincestem_lkpd_day0_' + cleanNisn, JSON.stringify(payload));
-    } catch(e) {}
+    const saveCandidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      saveCandidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) saveCandidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    saveCandidateIds.forEach(id => {
+      try {
+        localStorage.setItem('fincestem_lkpd_nft_day0_' + id, JSON.stringify(payload));
+        localStorage.setItem('fincestem_lkpd_day0_' + id, JSON.stringify(payload));
+      } catch(e) {}
+    });
 
     if (window.FincestemCore && FincestemCore.progress && cleanNisn) {
-      FincestemCore.progress.submitTask(cleanNisn, 0, 'lkpd', answers, function() {
-        if (window.FincestemCore.ui) {
-          FincestemCore.ui.toast('LKPD Simulasi Day 0 Berhasil Dikirim! Tahap 3: Asesmen CBT kini terbuka.', 'success');
-        }
-      });
+      if (typeof FincestemCore.progress.submitTask === 'function') {
+        FincestemCore.progress.submitTask(cleanNisn, 0, 'lkpd', answers, function() {
+          if (window.FincestemCore.ui) {
+            FincestemCore.ui.toast('LKPD Simulasi Day 0 Berhasil Dikirim! Tahap 3: Asesmen CBT kini terbuka.', 'success');
+          }
+        });
+      } else if (typeof FincestemCore.progress.saveTaskProgress === 'function') {
+        FincestemCore.progress.saveTaskProgress(0, 'lkpd', answers);
+      }
     }
 
     const modal = document.createElement('div');

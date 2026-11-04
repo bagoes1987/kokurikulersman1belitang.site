@@ -2074,22 +2074,30 @@
       conclusion: resumeAns
     };
 
+    const idList = new Set([cleanNisn]);
     if (cleanNisn) {
-      localStorage.setItem('fincestem_materi_nft_day0_' + cleanNisn, JSON.stringify(payload));
-      localStorage.setItem('fincestem_materi_day0_' + cleanNisn, JSON.stringify(payload));
+      const unp = cleanNisn.replace(/^0+/, '');
+      idList.add(unp);
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) idList.add(cleanNisn.padStart(10, '0'));
     }
+    idList.forEach(id => {
+      try {
+        localStorage.setItem('fincestem_materi_nft_day0_' + id, JSON.stringify(payload));
+        localStorage.setItem('fincestem_materi_day0_' + id, JSON.stringify(payload));
+      } catch(e) {}
+    });
 
     // Rekam progress tahap 1 tuntas
-    if (window.FincestemCore && FincestemCore.progress) {
-      FincestemCore.progress.saveTaskProgress(0, 'materi', {
-        completed: true,
-        score: 100,
-        content: payload
-      }, function() {
-        if (window.FincestemCore && FincestemCore.ui) {
-          FincestemCore.ui.toast('Simulasi Modul Day 0 Selesai! LKPD kini terbuka.', 'success');
-        }
-      });
+    if (window.FincestemCore && FincestemCore.progress && cleanNisn) {
+      if (typeof FincestemCore.progress.submitTask === 'function') {
+        FincestemCore.progress.submitTask(cleanNisn, 0, 'materi', payload, function() {
+          if (window.FincestemCore && FincestemCore.ui) {
+            FincestemCore.ui.toast('Simulasi Modul Day 0 Selesai! LKPD kini terbuka.', 'success');
+          }
+        });
+      } else if (typeof FincestemCore.progress.saveTaskProgress === 'function') {
+        FincestemCore.progress.saveTaskProgress(0, 'materi', payload);
+      }
     }
 
     // Modal transisi rapi ke LKPD Day 0

@@ -3775,6 +3775,12 @@ const FincestemCore = {
       }
     },
 
+    saveTaskProgress: function(dayNumber, taskType, data, callback) {
+      const u = (FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const nisn = u.nisn || u.identifier || '';
+      return this.submitTask(nisn, dayNumber, taskType, data, callback);
+    },
+
     submitTask: function(nisn, dayNumber, taskType, content, callback) {
       const self = this;
       this.getLocalProgress(nisn, function(prog) {
@@ -4196,9 +4202,10 @@ const FincestemCore = {
         for (const id of idList) {
           // Refleksi valid
           const reflFt = localStorage.getItem(`fincestem_refleksi_ft_day${d}_` + id);
+          const reflNft = localStorage.getItem(`fincestem_refleksi_nft_day${d}_` + id);
           const reflNonFt = localStorage.getItem(`fincestem_refleksi_day${d}_` + id);
-          if (reflFt || reflNonFt) {
-            const raw = reflFt || reflNonFt;
+          if (reflFt || reflNft || reflNonFt) {
+            const raw = reflFt || reflNft || reflNonFt;
             try {
               const p = JSON.parse(raw);
               if (p && (p.submitted || p.content || (typeof p === 'string' && p.trim().length > 10))) return true;

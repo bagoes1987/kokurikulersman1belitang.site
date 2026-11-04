@@ -1854,6 +1854,7 @@
         loadFacilitatorClassData();
         if (FincestemCore.studentContacts) {
           FincestemCore.studentContacts.getAllContacts(function() {
+            window.assignedStudents = assignedStudents;
             renderAssignedStudentList();
           });
         }
@@ -2072,6 +2073,7 @@
           const lblBannerCount = document.getElementById('lblAssignedStudentCount');
           if (lblBannerCount) lblBannerCount.textContent = `${assignedStudents.length} Siswa`;
 
+          window.assignedStudents = assignedStudents;
           renderAssignedStudentList();
           return;
         }
@@ -5521,8 +5523,25 @@
 
       const user = FincestemCore.auth.getUser();
       const fasilUser = (user && user.username) || (user && user.nip) || (user && user.kode) || '';
-      const teacherKey = String(fasilUser || '').trim().toLowerCase();
-      const mentorStudents = (window.FincestemMentorship && teacherKey) ? window.FincestemMentorship.getStudentsForTeacher(teacherKey) : [];
+      const teacherCandidates = [
+        fasilUser,
+        user && user.username,
+        user && user.nip,
+        user && user.kode,
+        user && user.name,
+        user && user.nama_guru
+      ].filter(Boolean);
+
+      let mentorStudents = [];
+      if (window.FincestemMentorship) {
+        for (const cand of teacherCandidates) {
+          const list = window.FincestemMentorship.getStudentsForTeacher(cand);
+          if (list && list.length > 0) {
+            mentorStudents = list;
+            break;
+          }
+        }
+      }
 
       let studentsInBinaan = [];
       if (mentorStudents && mentorStudents.length > 0) {

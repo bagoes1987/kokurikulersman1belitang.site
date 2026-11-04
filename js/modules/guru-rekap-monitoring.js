@@ -116,7 +116,39 @@
     if (!container) return;
 
     // Ambil daftar siswa binaan yang sedang aktif di halaman
-    const stuList = Array.isArray(window.assignedStudents) ? window.assignedStudents : [];
+    let stuList = Array.isArray(window.assignedStudents) && window.assignedStudents.length > 0 ? window.assignedStudents : [];
+    if (stuList.length === 0) {
+      const user = (window.FincestemCore && FincestemCore.auth) ? FincestemCore.auth.getUser() : null;
+      const teacherCandidates = [
+        user && user.username,
+        user && user.nip,
+        user && user.kode,
+        user && user.name,
+        user && user.nama_guru
+      ].filter(Boolean);
+      if (window.FincestemMentorship) {
+        for (const cand of teacherCandidates) {
+          const list = window.FincestemMentorship.getStudentsForTeacher(cand);
+          if (list && list.length > 0) {
+            stuList = list.map(s => {
+              const isFT = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+                ? FincestemCore.zones.isFieldTripStudent(s.nisn)
+                : String(s.zone || '').toUpperCase().includes('LUAR');
+              return {
+                nisn: s.nisn,
+                name: s.nama || s.name,
+                class_name: s.class || s.rombel || '-',
+                nis: s.nis,
+                zone: s.zone,
+                is_field_trip: isFT
+              };
+            });
+            window.assignedStudents = stuList;
+            break;
+          }
+        }
+      }
+    }
     
     let countMahir = 0;
     let countCakap = 0;
@@ -469,9 +501,33 @@
 
         const fasilRows = coordFasils.map((tc, i) => {
           const tKey = String(tc.username || tc.nip || tc.kode_guru).trim().toLowerCase();
-          const binaan = (window.FincestemMentorship && typeof window.FincestemMentorship.getStudentsForTeacher === 'function')
-            ? window.FincestemMentorship.getStudentsForTeacher(tKey)
-            : [];
+          let binaan = [];
+          if (window.FincestemMentorship && typeof window.FincestemMentorship.getStudentsForTeacher === 'function') {
+            binaan = window.FincestemMentorship.getStudentsForTeacher(tKey) || [];
+            if (!binaan.length && tc.nip && tc.nip !== '-') binaan = window.FincestemMentorship.getStudentsForTeacher(tc.nip) || [];
+            if (!binaan.length && tc.username) binaan = window.FincestemMentorship.getStudentsForTeacher(tc.username) || [];
+            if (!binaan.length && tc.kode_guru && tc.kode_guru !== '-') binaan = window.FincestemMentorship.getStudentsForTeacher(tc.kode_guru) || [];
+            if (!binaan.length && tc.nama_guru) binaan = window.FincestemMentorship.getStudentsForTeacher(tc.nama_guru) || [];
+          }
+          if (!binaan.length) {
+            const assignsMap = (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function')
+              ? window.FincestemMentorship.getAssignmentsMap() : {};
+            const candidateKeys = [tKey, tc.username, tc.nip, tc.kode_guru, tc.nama_guru].filter(Boolean).map(k => String(k).trim().toLowerCase());
+            let matchedEntry = null;
+            for (const ck of candidateKeys) {
+              if (assignsMap[ck]) { matchedEntry = assignsMap[ck]; break; }
+            }
+            if (matchedEntry && Array.isArray(matchedEntry.student_nisns) && matchedEntry.student_nisns.length > 0) {
+              const allStudents = window.FincestemMasterStudents || [];
+              const nisnSet = new Set(matchedEntry.student_nisns.map(n => String(n).trim()));
+              binaan = allStudents.filter(s => {
+                const sn = String(s.nisn || s.identifier || '').trim();
+                const unp = sn.replace(/^0+/, '');
+                const pad = (sn.length >= 8 && sn.length <= 10) ? sn.padStart(10, '0') : sn;
+                return nisnSet.has(sn) || nisnSet.has(unp) || nisnSet.has(pad);
+              });
+            }
+          }
 
           const classCounts = {};
           let submittedCount = 0;

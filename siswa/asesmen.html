@@ -180,7 +180,7 @@
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
-      if (isFieldTrip) {
+      if (isFieldTrip && dayNum > 0) {
         alert('Halaman asesmen 50 soal pilihan ganda ini dikhususkan untuk peserta Non-Field Trip. Anda akan dialihkan ke dashboard.');
         window.location.replace('dashboard.html');
         return;

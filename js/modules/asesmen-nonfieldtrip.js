@@ -374,46 +374,64 @@
   }
 
   function checkPrerequisiteMateri(dayNum, cleanNisn) {
-    try {
-      const rawM = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn) ||
-                   localStorage.getItem(`fincestem_materi_day${dayNum}_` + cleanNisn);
-      if (rawM) {
-        const p = JSON.parse(rawM);
-        if (p && (p.submitted || p.cardA || p.conclusion)) return true;
-      }
-    } catch(e) {}
+    const candidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    for (const cid of candidateIds) {
+      try {
+        const rawM = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + cid) ||
+                     localStorage.getItem(`fincestem_materi_day${dayNum}_` + cid);
+        if (rawM) {
+          const p = JSON.parse(rawM);
+          if (p && (p.submitted || p.cardA || p.conclusion || p.summary)) return true;
+        }
+      } catch(e) {}
+    }
     if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
       if (window.currentStudentProgress.task_map[`${dayNum}_materi`]) return true;
     }
-    try {
-      const pRaw = localStorage.getItem('fincestem_progress_' + cleanNisn);
-      if (pRaw) {
-        const p = JSON.parse(pRaw);
-        if (p && p.task_map && p.task_map[`${dayNum}_materi`]) return true;
-      }
-    } catch(e) {}
+    for (const cid of candidateIds) {
+      try {
+        const pRaw = localStorage.getItem('fincestem_progress_' + cid);
+        if (pRaw) {
+          const p = JSON.parse(pRaw);
+          if (p && p.task_map && p.task_map[`${dayNum}_materi`]) return true;
+        }
+      } catch(e) {}
+    }
     return false;
   }
 
   function checkPrerequisiteLkpd(dayNum, cleanNisn) {
-    try {
-      const rawLk = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + cleanNisn) ||
-                    localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + cleanNisn);
-      if (rawLk) {
-        const p = JSON.parse(rawLk);
-        if (p && (p.submitted || p.submittedAt)) return true;
-      }
-    } catch(e) {}
+    const candidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    for (const cid of candidateIds) {
+      try {
+        const rawLk = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + cid) ||
+                      localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + cid);
+        if (rawLk) {
+          const p = JSON.parse(rawLk);
+          if (p && (p.submitted || p.submittedAt || p.answers)) return true;
+        }
+      } catch(e) {}
+    }
     if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
       if (window.currentStudentProgress.task_map[`${dayNum}_lkpd`]) return true;
     }
-    try {
-      const pRaw = localStorage.getItem('fincestem_progress_' + cleanNisn);
-      if (pRaw) {
-        const p = JSON.parse(pRaw);
-        if (p && p.task_map && p.task_map[`${dayNum}_lkpd`]) return true;
-      }
-    } catch(e) {}
+    for (const cid of candidateIds) {
+      try {
+        const pRaw = localStorage.getItem('fincestem_progress_' + cid);
+        if (pRaw) {
+          const p = JSON.parse(pRaw);
+          if (p && p.task_map && p.task_map[`${dayNum}_lkpd`]) return true;
+        }
+      } catch(e) {}
+    }
     return false;
   }
 
