@@ -514,6 +514,23 @@
           classesList.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
         } catch(e) {}
       }
+      // Fallback tambahan: jika rawBinaan masih kosong namun classesList ditemukan dari rombel, ambil siswa rombel tersebut
+      if (rawBinaan.length === 0 && classesList.length > 0) {
+        const clsSet = new Set(classesList.map(c => String(c).toUpperCase().replace(/^KELAS\s+/i, '').trim()));
+        rawBinaan = students.filter(s => {
+          const sc = getStudentNormalizedClass(s).toUpperCase();
+          return clsSet.has(sc);
+        });
+        rawBinaan.forEach(s => {
+          const sNisn = String(s.nisn || s.identifier || '').trim();
+          const unp = sNisn.replace(/^0+/, '');
+          const pad = (sNisn.length >= 8 && sNisn.length <= 10) ? sNisn.padStart(10, '0') : sNisn;
+          const enr = (sNisn && enrichedByNisn[sNisn]) || (unp && enrichedByNisn[unp]) || (pad && enrichedByNisn[pad]);
+          if (enr && !binaanEnriched.includes(enr)) {
+            binaanEnriched.push(enr);
+          }
+        });
+      }
       const totalBinaan = rawBinaan.length;
 
       // Siswa yang sudah mengumpulkan setidaknya 1 tugas

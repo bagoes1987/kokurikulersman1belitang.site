@@ -347,13 +347,13 @@
 
     applyServerState: function(state) {
       if (!state || typeof state !== 'object') return false;
-      invalidateMentorshipCache();
+      invalidateMentorshipCache(true);
       let updated = false;
       try {
         // 1. Smart Merge Assignments per-Guru (Multi-PC Safe)
         const localAssigns = this.getAssignmentsMap(true);
         const serverAssigns = (state.assignments && typeof state.assignments === 'object') ? state.assignments : {};
-        const mergedAssigns = Object.assign({}, localAssigns);
+        let mergedAssigns = Object.assign({}, localAssigns);
         let assignChanged = false;
 
         let totalServerStudents = 0;
@@ -455,7 +455,7 @@
             localStorage.setItem('fincestem_student_zones_map', JSON.stringify(mergedZones));
             updated = true;
           }
-          Object.keys(state.student_zones).forEach(n => {
+          Object.keys(mergedZones).forEach(n => {
             const z = state.student_zones[n];
             if (z) {
               try { localStorage.setItem('fincestem_student_zone_' + n, z); } catch (e) {}
@@ -732,10 +732,19 @@
         }
       });
 
-      return allStudents.filter(s => {
+      const matched = allStudents.filter(s => {
         const cleanNisn = String(s.nisn || '').trim();
-        return nisnSet.has(cleanNisn);
+        const sNis = String(s.nis || '').trim();
+        return nisnSet.has(cleanNisn) || (sNis && nisnSet.has(sNis));
       });
+      if (matched.length > 0) return matched;
+      return nisns.map(n => ({
+        nisn: n,
+        nama: 'Siswa ' + n,
+        name: 'Siswa ' + n,
+        class: 'Binaan',
+        rombel: 'Binaan'
+      }));
     },
 
     assignStudentsToTeacher: function(teacherIdentifier, nisnArray) {

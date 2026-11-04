@@ -531,10 +531,11 @@
       const isChecked = mentorBatchSelectedNisns.has(sNisn);
       const rowNum = startIndex + i + 1;
 
-      // Badge Jalur Kegiatan
+      // Badge Jalur Kegiatan - Tombol Interaktif Satu-Klik untuk Ubah FT <-> Non-FT Seketika
+      const targetZoneToggle = isFT ? 'FINCESTEM OKU TIMUR' : 'FINCESTEM LUAR OKU TIMUR';
       const badgeJalur = isFT
-        ? `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-500 text-slate-950 inline-flex items-center gap-1 shadow-2xs"><span class="material-symbols-outlined text-xs">directions_bus</span><span>Field Trip</span></span>`
-        : `<span class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-teal-100 text-teal-900 border border-teal-200 inline-flex items-center gap-1"><span class="material-symbols-outlined text-xs">school</span><span>Non-FT</span></span>`;
+        ? `<button type="button" onclick="toggleMentorStudentZoneAction('${escapeHtml(sNisn)}', '${targetZoneToggle}')" class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 inline-flex items-center gap-1 shadow-2xs cursor-pointer transition-all border border-amber-600/30" title="Klik untuk beralih ke Non-Field Trip (Sekolah)"><span class="material-symbols-outlined text-xs">directions_bus</span><span>Field Trip</span><span class="material-symbols-outlined text-[10px] ml-0.5 opacity-60">sync</span></button>`
+        : `<button type="button" onclick="toggleMentorStudentZoneAction('${escapeHtml(sNisn)}', '${targetZoneToggle}')" class="px-2.5 py-1 rounded-full text-[11px] font-bold bg-teal-100 hover:bg-teal-200 active:scale-95 text-teal-900 border border-teal-300 inline-flex items-center gap-1 shadow-2xs cursor-pointer transition-all" title="Klik untuk beralih ke Field Trip"><span class="material-symbols-outlined text-xs">school</span><span>Non-FT</span><span class="material-symbols-outlined text-[10px] ml-0.5 opacity-60">sync</span></button>`;
 
       // Status & Fasilitator Badge
       let fasilBadge = '';
@@ -634,6 +635,10 @@
     if (btnAssign) btnAssign.disabled = (count === 0);
     if (btnClear) btnClear.disabled = (count === 0);
     if (btnPrint) btnPrint.disabled = (count === 0);
+    const btnSetNonFT = document.getElementById('btnBatchSetNonFT');
+    const btnSetFT = document.getElementById('btnBatchSetFT');
+    if (btnSetNonFT) btnSetNonFT.disabled = (count === 0);
+    if (btnSetFT) btnSetFT.disabled = (count === 0);
 
     const tableBody = document.getElementById('tableBodyMentorAllStudents');
     if (tableBody) {
@@ -643,6 +648,56 @@
       if (chkHeader) chkHeader.checked = allChecked;
     }
   }
+
+
+  window.toggleMentorStudentZoneAction = function(nisn, targetZone) {
+    if (!nisn || !window.FincestemCore || !FincestemCore.zones) return;
+    const isToFT = String(targetZone).toUpperCase().includes('LUAR');
+    const label = isToFT ? 'Field Trip (Luar OKU Timur)' : 'Non-Field Trip (Riset OKU Timur)';
+    FincestemCore.zones.setStudentZone(nisn, targetZone, function() {
+      renderAllStudentsMentorshipView();
+      renderMentorshipStats();
+      if (currentSubTab === 'plotting') renderPlottingView();
+      if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+      if (typeof window.refreshAdminStats === 'function') window.refreshAdminStats();
+      if (typeof applyStudentFilters === 'function') applyStudentFilters();
+      if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast(`Kategori siswa NISN ${nisn} berhasil dialihkan ke ${label}!`, 'success');
+      }
+    });
+  };
+
+  window.batchSetStudentZoneAction = function(targetZone) {
+    if (!mentorBatchSelectedNisns || mentorBatchSelectedNisns.size === 0) {
+      alert('Pilih minimal 1 siswa terlebih dahulu!');
+      return;
+    }
+    const isToFT = String(targetZone).toUpperCase().includes('LUAR');
+    const label = isToFT ? 'Field Trip (Luar OKU Timur)' : 'Non-Field Trip (Riset OKU Timur)';
+    const selectedNisns = Array.from(mentorBatchSelectedNisns);
+
+    if (!confirm(`Ubah ${selectedNisns.length} siswa terpilih menjadi "${label}"?`)) {
+      return;
+    }
+
+    selectedNisns.forEach(nisn => {
+      FincestemCore.zones.setStudentZone(nisn, targetZone);
+    });
+
+    renderAllStudentsMentorshipView();
+    renderMentorshipStats();
+    if (currentSubTab === 'plotting') renderPlottingView();
+    if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+    if (typeof window.refreshAdminStats === 'function') window.refreshAdminStats();
+    if (typeof applyStudentFilters === 'function') applyStudentFilters();
+    if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+    if (window.FincestemCore && FincestemCore.ui) {
+      FincestemCore.ui.toast(`Berhasil memindahkan ${selectedNisns.length} siswa ke ${label}!`, 'success');
+    } else {
+      alert(`Berhasil memindahkan ${selectedNisns.length} siswa ke ${label}!`);
+    }
+  };
 
   window.openBatchAssignModalAction = function() {
     if (mentorBatchSelectedNisns.size === 0) {
@@ -1221,9 +1276,10 @@
         let html = '';
         sortedStudents.forEach((s, idx) => {
           const isFT = isStudentFTMentor(s);
+          const targetDetailZone = isFT ? 'FINCESTEM OKU TIMUR' : 'FINCESTEM LUAR OKU TIMUR';
           const badge = isFT
-            ? `<span class="px-2 py-0.5 rounded-full text-[10.5px] font-black bg-amber-500 text-slate-950">🚌 Field Trip</span>`
-            : `<span class="px-2 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 text-teal-800 border border-teal-200">🏫 Non-FT</span>`;
+            ? `<button type="button" onclick="toggleMentorStudentZoneAction('${s.nisn}', '${targetDetailZone}')" class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 inline-flex items-center gap-1 shadow-2xs cursor-pointer transition-all border border-amber-600/30" title="Klik untuk beralih ke Non-Field Trip"><span>🚌 Field Trip</span><span class="material-symbols-outlined text-[10px] opacity-60">sync</span></button>`
+            : `<button type="button" onclick="toggleMentorStudentZoneAction('${s.nisn}', '${targetDetailZone}')" class="px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-teal-100 hover:bg-teal-200 active:scale-95 text-teal-800 border border-teal-200 inline-flex items-center gap-1 shadow-2xs cursor-pointer transition-all" title="Klik untuk beralih ke Field Trip"><span>🏫 Non-FT</span><span class="material-symbols-outlined text-[10px] opacity-60">sync</span></button>`;
 
           const mInfo = window.FincestemMentorship.getMentorsForStudent
             ? window.FincestemMentorship.getMentorsForStudent(s.nisn, s.class || s.rombel)
@@ -1586,7 +1642,7 @@
             <div class="flex flex-col min-w-0">
               <div class="flex items-center gap-1.5 flex-wrap">
                 <span class="font-extrabold text-xs text-slate-800 truncate">${escapeHtml(s.nama || '-')}</span>
-                ${isFT ? '<span class="px-1.5 py-0.2 rounded text-[9px] font-black bg-amber-500 text-slate-950">🚌 FT</span>' : '<span class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-teal-100 text-teal-800 border border-teal-200">🏫 Non-FT</span>'}
+                ${isFT ? `<button type="button" onclick="event.preventDefault(); event.stopPropagation(); toggleMentorStudentZoneAction('${sNisn}', 'FINCESTEM OKU TIMUR');" class="px-1.5 py-0.2 rounded text-[9px] font-black bg-amber-500 hover:bg-amber-400 text-slate-950 cursor-pointer shadow-2xs" title="Klik untuk beralih ke Non-FT">🚌 FT</button>` : `<button type="button" onclick="event.preventDefault(); event.stopPropagation(); toggleMentorStudentZoneAction('${sNisn}', 'FINCESTEM LUAR OKU TIMUR');" class="px-1.5 py-0.2 rounded text-[9px] font-bold bg-teal-100 hover:bg-teal-200 text-teal-800 border border-teal-200 cursor-pointer shadow-2xs" title="Klik untuk beralih ke Field Trip">🏫 Non-FT</button>`}
                 ${otherMentorBadge}
               </div>
               <div class="text-[10.5px] text-slate-500 font-medium">

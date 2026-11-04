@@ -1466,9 +1466,21 @@ if ($method === 'POST') {
                 jsonResponse(false, 'Nama kelas/rombel wajib dipilih!', null, 400);
             }
 
-            $stmt = $pdo->prepare("UPDATE `users` SET `zone` = :z WHERE `class_name` = :c AND `role` = 'siswa'");
-            $stmt->execute([':z' => $zone, ':c' => $className]);
+            $cleanC = preg_replace('/^KELAS\s+/i', '', $className);
+            $stmt = $pdo->prepare("UPDATE `users` SET `zone` = :z WHERE (`class_name` = :c OR `class_name` = :c2) AND `role` = 'siswa'");
+            $stmt->execute([':z' => $zone, ':c' => $className, ':c2' => $cleanC]);
             $count = $stmt->rowCount();
+
+            // Simpan juga di student_custom_zones untuk seluruh siswa rombel ini
+            try {
+                $stmtStu = $pdo->prepare("SELECT `identifier`, `nis` FROM `users` WHERE (`class_name` = :c OR `class_name` = :c2) AND `role` = 'siswa'");
+                $stmtStu->execute([':c' => $className, ':c2' => $cleanC]);
+                $stmtInsCust = $pdo->prepare("INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES (:id, :z) ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`), `updated_at` = CURRENT_TIMESTAMP");
+                while ($stRow = $stmtStu->fetch()) {
+                    if (!empty($stRow['identifier'])) $stmtInsCust->execute([':id' => trim($stRow['identifier']), ':z' => $zone]);
+                    if (!empty($stRow['nis'])) $stmtInsCust->execute([':id' => trim($stRow['nis']), ':z' => $zone]);
+                }
+            } catch (Exception $eCust) {}
 
             jsonResponse(true, "Berhasil mengatur zona '{$zone}' untuk rombel {$className} ({$count} siswa).");
         }

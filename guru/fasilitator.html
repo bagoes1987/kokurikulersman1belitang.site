@@ -657,17 +657,21 @@
 
         <!-- Quick Stats Kelas Binaan -->
         <div class="grid grid-cols-3 gap-2 pt-2 border-t border-amber-200/50 text-center">
-          <div class="p-2.5 rounded-2xl bg-white/80 border border-amber-200/60 shadow-2xs">
-            <span class="text-[10px] font-bold text-amber-800">🚌 Field Trip</span>
-            <div id="fasRekapCountFT" class="text-base font-black text-amber-600 mt-0.5">0</div>
-          </div>
-          <div class="p-2.5 rounded-2xl bg-white/80 border border-emerald-200/60 shadow-2xs">
-            <span class="text-[10px] font-bold text-emerald-800">🏫 Non-Field Trip</span>
-            <div id="fasRekapCountNonFT" class="text-base font-black text-emerald-600 mt-0.5">0</div>
-          </div>
           <div class="p-2.5 rounded-2xl bg-white/80 border border-slate-200/60 shadow-2xs">
-            <span class="text-[10px] font-bold text-slate-700">👥 Total Kelas</span>
-            <div id="fasRekapCountTotal" class="text-base font-black text-slate-800 mt-0.5">0</div>
+            <span class="text-[10px] font-bold text-slate-700">👥 Total Binaan</span>
+            <div id="fasRekapCountTotal" class="text-base font-black text-slate-800 mt-0.5">0 Siswa</div>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-amber-50/80 border border-amber-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-amber-800">⚠️ Menunggu Dinilai</span>
+            <div id="fasRekapCountPending" class="text-base font-black text-amber-600 mt-0.5">0 Siswa</div>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-emerald-50/80 border border-emerald-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-emerald-800">✅ Sudah Dinilai</span>
+            <div id="fasRekapCountGraded" class="text-base font-black text-emerald-600 mt-0.5">0 Siswa</div>
+          </div>
+          <div class="p-2.5 rounded-2xl bg-slate-50/80 border border-slate-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-slate-500">⏳ Belum Kumpul</span>
+            <div id="fasRekapCountUnstarted" class="text-base font-black text-slate-600 mt-0.5">0 Siswa</div>
           </div>
         </div>
       </div>
@@ -694,13 +698,25 @@
 
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs">
+        <!-- Filter Status Penilaian Rekap Binaan -->
+        <div class="flex items-center gap-1.5 flex-wrap pb-1">
+          <button type="button" id="btnFasRekapFilterAll" onclick="setFasRekapFilter('all')" class="px-3 py-1 rounded-xl text-xs font-black bg-slate-900 text-white shadow-2xs cursor-pointer transition-all">Semua</button>
+          <button type="button" id="btnFasRekapFilterPending" onclick="setFasRekapFilter('pending')" class="px-3 py-1 rounded-xl text-xs font-bold bg-amber-50 text-amber-800 border border-amber-300 hover:bg-amber-100 cursor-pointer transition-all">⚠️ Belum Dinilai</button>
+          <button type="button" id="btnFasRekapFilterGraded" onclick="setFasRekapFilter('graded')" class="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100 cursor-pointer transition-all">✅ Sudah Dinilai</button>
+          <button type="button" id="btnFasRekapFilterUnstarted" onclick="setFasRekapFilter('unstarted')" class="px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 border border-slate-300 hover:bg-slate-200 cursor-pointer transition-all">⏳ Belum Kumpul</button>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
             <thead class="bg-surface-container-high/60 text-on-surface font-extrabold uppercase text-[10px] border-b border-outline-variant/30">
               <tr>
                 <th class="py-2 px-2 text-center w-8">No</th>
-                <th class="py-2 px-2.5">NISN</th>
-                <th class="py-2 px-2.5">Nama Siswa</th>
-                <th class="py-2 px-2 text-center w-8">L/P</th>
-                <th class="py-2 px-2 text-center">Jalur Riset</th>
+                <th class="py-2 px-2.5">Siswa</th>
+                <th class="py-2 px-2">Kelas</th>
+                <th class="py-2 px-2 text-center">Jalur</th>
+                <th class="py-2 px-2 text-center">Tugas Masuk</th>
+                <th class="py-2 px-2 text-center">Status Penilaian</th>
+                <th class="py-2 px-2 text-center">Nilai Rapor</th>
+                <th class="py-2 px-2 text-center">Aksi</th>
               </tr>
             </thead>
             <tbody id="fasRekapBinaanTableBody" class="divide-y divide-outline-variant/10 text-xs">
@@ -5516,6 +5532,30 @@
       }
     }
 
+    let fasRekapStatusFilter = "all";
+    window.setFasRekapFilter = function(filter) {
+      fasRekapStatusFilter = filter;
+      const btns = {
+        all: document.getElementById("btnFasRekapFilterAll"),
+        pending: document.getElementById("btnFasRekapFilterPending"),
+        graded: document.getElementById("btnFasRekapFilterGraded"),
+        unstarted: document.getElementById("btnFasRekapFilterUnstarted")
+      };
+      Object.keys(btns).forEach(k => {
+        if (!btns[k]) return;
+        if (k === filter) {
+          btns[k].className = "px-3 py-1 rounded-xl text-xs font-black bg-slate-900 text-white shadow-2xs cursor-pointer transition-all";
+        } else if (k === "pending") {
+          btns[k].className = "px-3 py-1 rounded-xl text-xs font-bold bg-amber-50 text-amber-800 border border-amber-300 hover:bg-amber-100 cursor-pointer transition-all";
+        } else if (k === "graded") {
+          btns[k].className = "px-3 py-1 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100 cursor-pointer transition-all";
+        } else {
+          btns[k].className = "px-3 py-1 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 border border-slate-300 hover:bg-slate-200 cursor-pointer transition-all";
+        }
+      });
+      renderFasRekapView();
+    };
+
     function renderFasRekapView() {
       const allStudents = window.FincestemMasterStudents || [];
       const currentClass = assignedClass || 'KELAS X.1';
@@ -5553,55 +5593,152 @@
         });
       }
 
-      const ftStudents = studentsInBinaan.filter(s => isStudentFieldTripFasil(s.nisn, s));
-      const nonFtStudents = studentsInBinaan.filter(s => !isStudentFieldTripFasil(s.nisn, s));
+      // Analisis status pengerjaan & penilaian setiap siswa binaan
+      let countPending = 0;
+      let countGraded = 0;
+      let countUnstarted = 0;
+
+      const enrichedBinaan = studentsInBinaan.map(s => {
+        const isFT = isStudentFieldTripFasil(s.nisn, s);
+        let prog = null;
+        try {
+          const pStr = localStorage.getItem('fincestem_progress_' + s.nisn);
+          if (pStr) prog = JSON.parse(pStr);
+        } catch (e) {}
+
+        let submittedDays = 0;
+        let gradedDays = 0;
+        let hasPending = false;
+        let finalScore = prog ? prog.average_score : null;
+
+        if (prog && Array.isArray(prog.records)) {
+          prog.records.forEach(r => {
+            if (r.status === 'submitted' || ['materi', 'lkpd', 'asesmen', 'refleksi', 'dokumentasi'].includes(r.task_type)) {
+              submittedDays++;
+            }
+            if (r.score !== null && r.score !== undefined && r.score !== '') {
+              gradedDays++;
+            }
+          });
+        }
+
+        if (prog && prog.task_map) {
+          for (let d = 1; d <= 7; d++) {
+            const hasDaily = prog.task_map[d + '_lkpd'] || prog.task_map[d + '_materi'] || prog.task_map[d + '_asesmen'] || prog.task_map[d + '_refleksi'];
+            if (hasDaily) {
+              const dRec = prog.records ? prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'final')) : null;
+              if (!dRec || dRec.score === null || dRec.score === undefined || dRec.score === '') {
+                hasPending = true;
+              }
+            }
+          }
+        }
+
+        let statusCategory = 'unstarted';
+        if (hasPending) {
+          statusCategory = 'pending';
+          countPending++;
+        } else if (gradedDays > 0 || (prog && prog.completed_days >= 7)) {
+          statusCategory = 'graded';
+          countGraded++;
+        } else if (submittedDays > 0) {
+          statusCategory = 'pending';
+          countPending++;
+        } else {
+          statusCategory = 'unstarted';
+          countUnstarted++;
+        }
+
+        return {
+          student: s,
+          isFT: isFT,
+          submittedDays: submittedDays,
+          gradedDays: gradedDays,
+          hasPending: hasPending,
+          statusCategory: statusCategory,
+          finalScore: finalScore
+        };
+      });
 
       // Update counters
-      const elFT = document.getElementById('fasRekapCountFT');
-      const elNonFT = document.getElementById('fasRekapCountNonFT');
       const elTotal = document.getElementById('fasRekapCountTotal');
+      const elPending = document.getElementById('fasRekapCountPending');
+      const elGraded = document.getElementById('fasRekapCountGraded');
+      const elUnstarted = document.getElementById('fasRekapCountUnstarted');
       const elTitle = document.getElementById('fasRekapBinaanTitle');
       const elBadge = document.getElementById('fasRekapBinaanBadge');
 
-      if (elFT) elFT.textContent = `${ftStudents.length} Siswa`;
-      if (elNonFT) elNonFT.textContent = `${nonFtStudents.length} Siswa`;
       if (elTotal) elTotal.textContent = `${studentsInBinaan.length} Siswa`;
+      if (elPending) elPending.textContent = `${countPending} Siswa`;
+      if (elGraded) elGraded.textContent = `${countGraded} Siswa`;
+      if (elUnstarted) elUnstarted.textContent = `${countUnstarted} Siswa`;
       if (elTitle) {
         elTitle.textContent = (mentorStudents && mentorStudents.length > 0)
-          ? 'Daftar Siswa Binaan & Tanggung Jawab Anda'
+          ? 'Daftar Siswa Binaan & Rekap Penilaian Anda'
           : `Daftar Siswa ${currentClass}`;
       }
-      if (elBadge) elBadge.textContent = `${ftStudents.length} Field Trip (${studentsInBinaan.length} Total)`;
+      if (elBadge) elBadge.textContent = `${countPending} Menunggu • ${countGraded} Selesai Dinilai`;
 
-      // Sort: FT first, then by name
-      const sortedBinaan = [...studentsInBinaan].sort((a, b) => {
-        const aIsFT = isStudentFieldTripFasil(a.nisn, a);
-        const bIsFT = isStudentFieldTripFasil(b.nisn, b);
-        if (aIsFT && !bIsFT) return -1;
-        if (!aIsFT && bIsFT) return 1;
-        return (a.nama || '').localeCompare(b.nama || '');
+      // Filter sesuai tab status aktif di Rekap
+      let filteredList = enrichedBinaan;
+      if (fasRekapStatusFilter === 'pending') {
+        filteredList = filteredList.filter(item => item.statusCategory === 'pending');
+      } else if (fasRekapStatusFilter === 'graded') {
+        filteredList = filteredList.filter(item => item.statusCategory === 'graded');
+      } else if (fasRekapStatusFilter === 'unstarted') {
+        filteredList = filteredList.filter(item => item.statusCategory === 'unstarted');
+      }
+
+      // Sort: Pending first, then by name
+      filteredList.sort((a, b) => {
+        if (a.hasPending && !b.hasPending) return -1;
+        if (!a.hasPending && b.hasPending) return 1;
+        return (a.student.nama || '').localeCompare(b.student.nama || '');
       });
 
       // Render Binaan Table
       const tbBinaan = document.getElementById('fasRekapBinaanTableBody');
       if (tbBinaan) {
-        if (sortedBinaan.length === 0) {
-          tbBinaan.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400 text-xs">Belum ada data siswa untuk kelas ini.</td></tr>`;
+        if (filteredList.length === 0) {
+          tbBinaan.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400 text-xs">Tidak ada siswa yang sesuai kriteria filter tersebut.</td></tr>`;
         } else {
           let htmlBinaan = '';
-          sortedBinaan.forEach((s, idx) => {
-            const isFT = isStudentFieldTripFasil(s.nisn, s);
+          filteredList.forEach((item, idx) => {
+            const s = item.student;
+            const isFT = item.isFT;
             const badge = isFT
-              ? `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-white shadow-2xs">🚌 Field Trip</span>`
-              : `<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-900 border border-teal-200">🏫 Non-Field Trip</span>`;
+              ? `<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-slate-950 shadow-2xs">🚌 Field Trip</span>`
+              : `<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-900 border border-teal-200">🏫 Non-FT</span>`;
+
+            let statusBadge = '';
+            let actionBtn = '';
+            if (item.statusCategory === 'pending') {
+              statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>Belum Dinilai</span>`;
+              actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, 1)" class="px-3 py-1 rounded-xl text-xs font-black bg-[#0875D1] hover:bg-blue-600 text-white shadow-2xs cursor-pointer active:scale-95 transition-all">Nilai Sekarang</button>`;
+            } else if (item.statusCategory === 'graded') {
+              statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">✅ Sudah Dinilai</span>`;
+              actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, 1)" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">Lihat/Ubah</button>`;
+            } else {
+              statusBadge = `<span class="text-slate-400 text-xs italic">Belum Kumpul</span>`;
+              actionBtn = `<span class="text-slate-300 text-xs font-semibold">-</span>`;
+            }
+
+            const scoreDisplay = (item.finalScore !== null && !isNaN(item.finalScore)) ? `<span class="font-black text-slate-800 text-xs">${item.finalScore}</span>` : `<span class="text-slate-400 text-xs">-</span>`;
+            const submittedDisplay = item.submittedDays > 0 ? `<span class="font-bold text-slate-700 text-xs">${item.submittedDays} Hari</span>` : `<span class="text-slate-400 text-xs">0 Hari</span>`;
 
             htmlBinaan += `
-              <tr class="${isFT ? 'bg-amber-50/30' : ''} hover:bg-slate-50 transition-colors">
-                <td class="py-2 px-2 text-center font-bold text-slate-400">${idx + 1}</td>
-                <td class="py-2 px-2.5 font-medium text-slate-600">${s.nisn || '-'}</td>
-                <td class="py-2 px-2.5 font-bold text-slate-800">${s.nama || '-'}</td>
-                <td class="py-2 px-2 text-center font-medium text-slate-600">${s.gender || '-'}</td>
-                <td class="py-2 px-2 text-center whitespace-nowrap">${badge}</td>
+              <tr class="${item.hasPending ? 'bg-amber-50/40' : ''} hover:bg-slate-50 transition-colors">
+                <td class="py-2.5 px-2 text-center font-bold text-slate-400">${idx + 1}</td>
+                <td class="py-2.5 px-2.5">
+                  <div class="font-extrabold text-slate-800 text-xs">${escapeHtml(s.nama || '-')}</div>
+                  <div class="font-mono text-[10.5px] text-slate-400">${escapeHtml(s.nisn || '-')}</div>
+                </td>
+                <td class="py-2.5 px-2 font-bold text-slate-600 text-xs">${escapeHtml(s.class || s.rombel || currentClass)}</td>
+                <td class="py-2.5 px-2 text-center whitespace-nowrap">${badge}</td>
+                <td class="py-2.5 px-2 text-center">${submittedDisplay}</td>
+                <td class="py-2.5 px-2 text-center whitespace-nowrap">${statusBadge}</td>
+                <td class="py-2.5 px-2 text-center">${scoreDisplay}</td>
+                <td class="py-2.5 px-2 text-center whitespace-nowrap">${actionBtn}</td>
               </tr>
             `;
           });

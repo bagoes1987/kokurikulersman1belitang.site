@@ -1820,6 +1820,35 @@ const FincestemCore = {
       map[className] = Object.assign(map[className] || {}, info);
       localStorage.setItem('fincestem_class_settings', JSON.stringify(map));
 
+      // Jika zona rombel diatur, perbarui seluruh siswa di kelas ini secara langsung
+      if (info && info.zone) {
+        const targetZone = info.zone;
+        const isFT = String(targetZone).toUpperCase().includes('LUAR');
+        const normC = String(className).replace(/^KELAS\s+/i, '').trim().toUpperCase();
+        const allStudents = window.FincestemMasterStudents || [];
+        const zMap = (this._getZonesMap) ? this._getZonesMap() : {};
+
+        allStudents.forEach(s => {
+          const sClass = String(s.class || s.rombel || '').replace(/^KELAS\s+/i, '').trim().toUpperCase();
+          if (sClass === normC) {
+            s.zone = targetZone;
+            s.is_field_trip = isFT;
+            const sn = String(s.nisn || '').trim();
+            if (sn) {
+              zMap[sn] = targetZone;
+              const cl = sn.replace(/\D/g, '');
+              if (cl.length >= 8 && cl.length <= 10) zMap[cl.padStart(10, '0')] = targetZone;
+              const un = cl.replace(/^0+/, '');
+              if (un) zMap[un] = targetZone;
+            }
+          }
+        });
+
+        try {
+          localStorage.setItem('fincestem_student_zones_map', JSON.stringify(zMap));
+        } catch (e) {}
+      }
+
       // Jika user yang sedang login adalah di kelas ini, perbarui datanya
       const u = FincestemCore.auth.getUser();
       if (u && u.class === className) {
@@ -2039,13 +2068,10 @@ const FincestemCore = {
       const z = map[cleanNisn] || map[paddedNisn] || (unpaddedNisn ? map[unpaddedNisn] : null);
       if (z) return z;
 
-      // 3. Cek master list resmi di memori via index O(1)
-      this._buildMasterIndex();
-      if (this._masterNisnMap) {
-        const found = this._masterNisnMap.get(cleanNisn) || 
-                      this._masterNisnMap.get(paddedNisn) || 
-                      (unpaddedNisn ? this._masterNisnMap.get(unpaddedNisn) : null);
-        if (found && found.zone) return found.zone;
+      // 3. Cek pengaturan zona kelas / rombel dari Admin (LEBIH TINGGI daripada bawaan statis master data)
+      if (className) {
+        const classInfo = this.getClassInfo(className);
+        if (classInfo && classInfo.zone) return classInfo.zone;
       }
 
       // 4. Cek user session aktif di browser jika cocok
@@ -2060,10 +2086,13 @@ const FincestemCore = {
         }
       } catch (e) {}
 
-      // 5. Cek pengaturan zona kelas
-      if (className) {
-        const classInfo = this.getClassInfo(className);
-        if (classInfo && classInfo.zone) return classInfo.zone;
+      // 5. Cek master list resmi di memori via index O(1) (bawaan default)
+      this._buildMasterIndex();
+      if (this._masterNisnMap) {
+        const found = this._masterNisnMap.get(cleanNisn) || 
+                      this._masterNisnMap.get(paddedNisn) || 
+                      (unpaddedNisn ? this._masterNisnMap.get(unpaddedNisn) : null);
+        if (found && found.zone) return found.zone;
       }
 
       return defaultZone || 'FINCESTEM OKU TIMUR';
@@ -2145,7 +2174,7 @@ const FincestemCore = {
       // 6. Sinkronkan ke modul pembagian siswa binaan
       if (window.FincestemMentorship) {
         if (typeof window.FincestemMentorship.invalidateCache === 'function') {
-          window.FincestemMentorship.invalidateCache();
+          window.FincestemMentorship.invalidateCache(true);
         }
         if (typeof window.FincestemMentorship.syncToServer === 'function') {
           window.FincestemMentorship.syncToServer();
