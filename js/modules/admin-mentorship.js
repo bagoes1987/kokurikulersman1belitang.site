@@ -125,9 +125,11 @@
     currentSubTab = tab;
     const btnAll = document.getElementById('btnSubTabMentor_allstudents');
     const btnPlot = document.getElementById('btnSubTabMentor_plotting');
+    const btnRekap = document.getElementById('btnSubTabMentor_rekap_fasil');
     const btnTeach = document.getElementById('btnSubTabMentor_teachers');
     const viewAll = document.getElementById('subviewMentor_allstudents');
     const viewPlot = document.getElementById('subviewMentor_plotting');
+    const viewRekap = document.getElementById('subviewMentor_rekap_fasil');
     const viewTeach = document.getElementById('subviewMentor_teachers');
 
     const activeBtnClass = 'flex-1 py-2.5 px-3 text-xs font-bold rounded-xl bg-[#0875D1] text-white shadow-xs transition-all cursor-pointer';
@@ -135,16 +137,20 @@
 
     if (btnAll) btnAll.className = (tab === 'allstudents') ? activeBtnClass : inactiveBtnClass;
     if (btnPlot) btnPlot.className = (tab === 'plotting') ? activeBtnClass : inactiveBtnClass;
+    if (btnRekap) btnRekap.className = (tab === 'rekap_fasil') ? activeBtnClass : inactiveBtnClass;
     if (btnTeach) btnTeach.className = (tab === 'teachers') ? activeBtnClass : inactiveBtnClass;
 
     if (viewAll) viewAll.classList.toggle('hidden', tab !== 'allstudents');
     if (viewPlot) viewPlot.classList.toggle('hidden', tab !== 'plotting');
+    if (viewRekap) viewRekap.classList.toggle('hidden', tab !== 'rekap_fasil');
     if (viewTeach) viewTeach.classList.toggle('hidden', tab !== 'teachers');
 
     if (tab === 'allstudents') {
       renderAllStudentsMentorshipView();
     } else if (tab === 'plotting') {
       renderPlottingView();
+    } else if (tab === 'rekap_fasil') {
+      renderRekapFasilView();
     } else if (tab === 'teachers') {
       renderTeachersListView();
     }
@@ -1825,5 +1831,731 @@
       alert(res.message);
     }
   };
+
+
+  /* ==========================================================================
+     SUB-TAB 3: REKAP SISWA BINAAN PER-FASILITATOR (BISA CETAK)
+     ========================================================================== */
+
+  let rekapFasilCachedData = [];
+  let rekapSelectedTeacherKey = null;
+
+  function getStudentNormalizedClass(s) {
+    if (!s) return '';
+    return String(s.class || s.kelas || s.class_name || s.rombel || '').replace(/^KELAS\s+/i, '').trim();
+  }
+
+  function isStudentFieldTripRekap(s) {
+    if (!s) return false;
+    const z = String(s.zone || s.zona || '').toUpperCase();
+    return z.includes('LUAR') || z.includes('FIELD') || z.includes('TRIP');
+  }
+
+  window.renderRekapFasilView = function() {
+    if (!window.FincestemMentorship) return;
+
+    const allTeachers = window.FincestemMentorship.getTeachers() || [];
+
+    // Kumpulkan data rekap per fasilitator
+    let totalAssignedStudents = 0;
+    let totalAssignedFT = 0;
+    let totalAssignedNonFT = 0;
+    let activeTeachersCount = 0;
+    const allClassesSet = new Set();
+
+    rekapFasilCachedData = allTeachers.map(t => {
+      const key = String(t.username || t.nip || t.kode_guru).trim().toLowerCase();
+      const students = window.FincestemMentorship.getStudentsForTeacher(key) || [];
+      const role = window.FincestemMentorship.getTeacherRole(key) || (t.tugas_tambahan === 'KEPALA SEKOLAH' ? 'KEPALA SEKOLAH' : 'FASILITATOR');
+
+      const classCounts = {};
+      let ftCount = 0;
+      students.forEach(s => {
+        const cls = getStudentNormalizedClass(s) || 'Tanpa Kelas';
+        classCounts[cls] = (classCounts[cls] || 0) + 1;
+        allClassesSet.add(cls);
+        if (isStudentFieldTripRekap(s)) ftCount++;
+      });
+
+      const totalCount = students.length;
+      if (totalCount > 0) {
+        activeTeachersCount++;
+        totalAssignedStudents += totalCount;
+        totalAssignedFT += ftCount;
+        totalAssignedNonFT += (totalCount - ftCount);
+      }
+
+      return {
+        key: key,
+        rawTeacher: t,
+        nama_guru: t.nama_guru || 'Tanpa Nama',
+        nip: t.nip && t.nip !== '-' ? t.nip : (t.kode_guru || '-'),
+        mata_pelajaran: t.mata_pelajaran || 'Fasilitator',
+        role: role,
+        students: students,
+        total: totalCount,
+        ftCount: ftCount,
+        nonFtCount: totalCount - ftCount,
+        classCounts: classCounts,
+        classesList: Object.keys(classCounts).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
+      };
+    });
+
+    // Urutkan default: Guru dengan binaan terbanyak di atas, lalu abjad nama
+    rekapFasilCachedData.sort((a, b) => {
+      if (b.total !== a.total) return b.total - a.total;
+      return a.nama_guru.localeCompare(b.nama_guru);
+    });
+
+    // 1. Update KPI Summary Cards
+    const elTotalT = document.getElementById('rekapFasilKpiTotalTeachers');
+    const elActiveT = document.getElementById('rekapFasilKpiActiveTeachers');
+    const elTotalS = document.getElementById('rekapFasilKpiTotalAssignedStudents');
+    const elSubS = document.getElementById('rekapFasilKpiAssignedSub');
+    const elAvgLoad = document.getElementById('rekapFasilKpiAverageLoad');
+
+    if (elTotalT) elTotalT.textContent = `${allTeachers.length} Guru`;
+    if (elActiveT) elActiveT.textContent = `${activeTeachersCount} Guru`;
+    if (elTotalS) elTotalS.textContent = `${totalAssignedStudents} Siswa`;
+    if (elSubS) elSubS.textContent = `🚌 ${totalAssignedFT} Field Trip • 🌾 ${totalAssignedNonFT} Non-FT`;
+    const avg = activeTeachersCount > 0 ? (totalAssignedStudents / activeTeachersCount).toFixed(1) : '0';
+    if (elAvgLoad) elAvgLoad.textContent = `${avg} Siswa/Guru`;
+
+    // 2. Populate Dropdown Filter Kelas
+    const selClass = document.getElementById('selectFilterRekapClass');
+    if (selClass) {
+      const curCls = selClass.value || 'ALL';
+      const sortedClasses = Array.from(allClassesSet).filter(Boolean).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+      let clsHtml = '<option value="ALL">Semua Kelas</option>';
+      sortedClasses.forEach(c => {
+        clsHtml += `<option value="${escapeHtml(c)}" ${curCls === c ? 'selected' : ''}>Kelas ${escapeHtml(c)}</option>`;
+      });
+      selClass.innerHTML = clsHtml;
+    }
+
+    // 3. Populate Dropdown Pemilih Guru Spesifik
+    const selTeacher = document.getElementById('selectRekapTeacher');
+    if (selTeacher) {
+      const curTeacherVal = selTeacher.value;
+      let optHtml = '<option value="">-- Pilih Guru Fasilitator untuk Rincian &amp; Cetak Lembar --</option>';
+      rekapFasilCachedData.forEach(t => {
+        const clsLabel = t.classesList.length > 0 ? ` • Kelas: ${t.classesList.join(', ')}` : '';
+        const countLabel = t.total > 0 ? ` (${t.total} Siswa${clsLabel})` : ' (0 Siswa)';
+        optHtml += `<option value="${escapeHtml(t.key)}" ${curTeacherVal === t.key ? 'selected' : ''}>${escapeHtml(t.nama_guru)}${escapeHtml(countLabel)}</option>`;
+      });
+      selTeacher.innerHTML = optHtml;
+    }
+
+    // 4. Render Master Table
+    filterRekapFasilTable();
+
+    // 5. Render Detail Guru jika sebelumnya sudah terpilih
+    if (rekapSelectedTeacherKey) {
+      renderRekapTeacherDetail(rekapSelectedTeacherKey);
+    } else {
+      closeRekapTeacherDetail();
+    }
+  };
+
+  function filterRekapFasilTable() {
+    const searchInput = document.getElementById('inputSearchRekapFasil');
+    const searchVal = searchInput ? searchInput.value.toLowerCase().trim() : '';
+    const statusVal = document.getElementById('selectFilterRekapStatus')?.value || 'ASSIGNED_ONLY';
+    const classVal = document.getElementById('selectFilterRekapClass')?.value || 'ALL';
+    const tbody = document.getElementById('tableBodyMasterRekapFasil');
+    const tfoot = document.getElementById('tableFootMasterRekapFasil');
+    if (!tbody) return;
+
+    let filtered = rekapFasilCachedData.filter(t => {
+      // Filter status
+      if (statusVal === 'ASSIGNED_ONLY' && t.total === 0) return false;
+      if (statusVal === 'ZERO_ONLY' && t.total > 0) return false;
+
+      // Filter kelas
+      if (classVal !== 'ALL') {
+        if (!t.classesList.includes(classVal)) return false;
+      }
+
+      // Filter pencarian teks (nama, nip, atau kelas)
+      if (searchVal) {
+        const matchName = t.nama_guru.toLowerCase().includes(searchVal);
+        const matchNip = String(t.nip).toLowerCase().includes(searchVal);
+        const matchClass = t.classesList.some(c => c.toLowerCase().includes(searchVal));
+        if (!matchName && !matchNip && !matchClass) return false;
+      }
+
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" class="py-10 text-center text-slate-400">
+            <span class="material-symbols-outlined text-4xl block mb-1 text-slate-300">search_off</span>
+            <span class="font-bold text-slate-600">Tidak ada data fasilitator yang cocok.</span>
+            <p class="text-[11px] text-slate-400 mt-0.5">Coba sesuaikan kata kunci pencarian atau ubah opsi filter di atas.</p>
+          </td>
+        </tr>
+      `;
+      if (tfoot) tfoot.innerHTML = '';
+      return;
+    }
+
+    let sumStudents = 0;
+    let sumFT = 0;
+    let sumNonFT = 0;
+
+    let rowsHtml = '';
+    filtered.forEach((t, i) => {
+      sumStudents += t.total;
+      sumFT += t.ftCount;
+      sumNonFT += t.nonFtCount;
+
+      // Badges kelas yang dibina
+      let classBadgesHtml = '';
+      if (t.classesList.length > 0) {
+        classBadgesHtml = '<div class="flex items-center gap-1.5 flex-wrap">';
+        t.classesList.forEach(cls => {
+          const cCount = t.classCounts[cls] || 0;
+          classBadgesHtml += `<span class="px-2 py-0.5 rounded-md text-[10.5px] font-black bg-indigo-50 text-indigo-900 border border-indigo-200" title="${cCount} siswa di kelas ${escapeHtml(cls)}">${escapeHtml(cls)} <span class="text-indigo-600 font-extrabold">(${cCount})</span></span>`;
+        });
+        classBadgesHtml += '</div>';
+      } else {
+        classBadgesHtml = '<span class="text-[11px] text-slate-400 italic">Belum ada binaan</span>';
+      }
+
+      const roleBadge = t.role === 'KOORDINATOR'
+        ? '<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-purple-100 text-purple-800 border border-purple-200">Koordinator</span>'
+        : (t.role === 'KEPALA SEKOLAH' 
+            ? '<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300">Kepsek</span>'
+            : '<span class="px-2 py-0.5 rounded-md text-[10px] font-black bg-teal-100 text-teal-800 border border-teal-200">Fasilitator</span>');
+
+      rowsHtml += `
+        <tr class="hover:bg-slate-50/80 transition-colors border-b border-slate-100 ${t.total === 0 ? 'opacity-60 bg-slate-50/40' : ''}">
+          <td class="py-3 px-3 text-center font-bold text-slate-500">${i + 1}</td>
+          <td class="py-3 px-3">
+            <div class="flex flex-col">
+              <span class="font-extrabold text-slate-900 text-xs sm:text-[13px] hover:text-indigo-700 cursor-pointer" onclick="selectAndFocusRekapTeacher('${escapeHtml(t.key)}')">${escapeHtml(t.nama_guru)}</span>
+              <span class="text-[10.5px] text-slate-400">NIP: ${escapeHtml(t.nip)} &bull; ${escapeHtml(t.mata_pelajaran)}</span>
+            </div>
+          </td>
+          <td class="py-3 px-3 text-center">${roleBadge}</td>
+          <td class="py-3 px-3">${classBadgesHtml}</td>
+          <td class="py-3 px-3 text-center">
+            ${t.total > 0 
+              ? `<span class="px-3 py-1 rounded-xl text-xs font-black bg-indigo-600 text-white shadow-2xs">${t.total} Siswa</span>`
+              : '<span class="px-2 py-0.5 rounded-lg text-[11px] font-bold text-slate-400 bg-slate-100 border border-slate-200">0 Siswa</span>'}
+          </td>
+          <td class="py-3 px-3 text-center">
+            ${t.total > 0
+              ? `<div class="flex items-center justify-center gap-1.5 text-[10.5px]">
+                  <span class="px-1.5 py-0.5 rounded bg-amber-50 text-amber-900 font-extrabold border border-amber-200" title="Field Trip">${t.ftCount} FT</span>
+                  <span class="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-900 font-extrabold border border-emerald-200" title="Non-Field Trip">${t.nonFtCount} NFT</span>
+                </div>`
+              : '<span class="text-[10.5px] text-slate-400">-</span>'}
+          </td>
+          <td class="py-3 px-3 text-center">
+            <div class="flex items-center justify-center gap-1.5">
+              <button type="button" onclick="selectAndFocusRekapTeacher('${escapeHtml(t.key)}')" class="px-2.5 py-1 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-extrabold text-[11px] flex items-center gap-1 border border-indigo-200 transition-all cursor-pointer" title="Lihat rincian nama-nama siswa binaan guru ini">
+                <span class="material-symbols-outlined text-sm">visibility</span>
+                <span>Rincian</span>
+              </button>
+              ${t.total > 0 ? `
+              <button type="button" onclick="printRekapSingleFasil('${escapeHtml(t.key)}')" class="px-2 py-1 rounded-lg bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-700 font-extrabold text-[11px] flex items-center gap-1 border border-slate-200 transition-all cursor-pointer" title="Cetak Lembar Pembinaan Guru Ini">
+                <span class="material-symbols-outlined text-sm text-indigo-600">print</span>
+                <span>Cetak</span>
+              </button>` : ''}
+            </div>
+          </td>
+        </tr>
+      `;
+    });
+    tbody.innerHTML = rowsHtml;
+
+    if (tfoot) {
+      tfoot.innerHTML = `
+        <tr>
+          <td colspan="4" class="py-3 px-3 text-right uppercase tracking-wider font-extrabold text-slate-600">
+            TOTAL KESELURUHAN (${filtered.length} Guru):
+          </td>
+          <td class="py-3 px-3 text-center text-indigo-900 font-black text-sm">${sumStudents} Siswa</td>
+          <td class="py-3 px-3 text-center text-slate-700 text-xs">
+            <span class="text-amber-800 font-extrabold">${sumFT} FT</span> • <span class="text-emerald-800 font-extrabold">${sumNonFT} NFT</span>
+          </td>
+          <td></td>
+        </tr>
+      `;
+    }
+  };
+
+  function onRekapTeacherSelectChange() {
+    const sel = document.getElementById('selectRekapTeacher');
+    const key = sel ? sel.value : '';
+    if (key) {
+      selectAndFocusRekapTeacher(key);
+    } else {
+      closeRekapTeacherDetail();
+    }
+  };
+
+  function selectAndFocusRekapTeacher(key) {
+    rekapSelectedTeacherKey = key;
+    const sel = document.getElementById('selectRekapTeacher');
+    if (sel && sel.value !== key) {
+      sel.value = key;
+    }
+    renderRekapTeacherDetail(key);
+
+    const cardDetail = document.getElementById('containerRekapTeacherDetail');
+    if (cardDetail) {
+      cardDetail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  };
+
+  function closeRekapTeacherDetail() {
+    rekapSelectedTeacherKey = null;
+    const sel = document.getElementById('selectRekapTeacher');
+    if (sel) sel.value = '';
+    const container = document.getElementById('containerRekapTeacherDetail');
+    if (container) container.classList.add('hidden');
+  };
+
+  function renderRekapTeacherDetail(key) {
+    const container = document.getElementById('containerRekapTeacherDetail');
+    if (!container) return;
+
+    const teacherData = rekapFasilCachedData.find(t => t.key === key);
+    if (!teacherData) {
+      container.classList.add('hidden');
+      return;
+    }
+
+    container.classList.remove('hidden');
+
+    const elInit = document.getElementById('detailRekapTeacherInitial');
+    const elName = document.getElementById('detailRekapTeacherName');
+    const elNip = document.getElementById('detailRekapTeacherNip');
+    const elTotal = document.getElementById('detailRekapTeacherTotalStudents');
+    const elBreak = document.getElementById('detailRekapTeacherBreakdown');
+    const elRole = document.getElementById('detailRekapTeacherRoleBadge');
+    const elClasses = document.getElementById('detailRekapTeacherClassBadges');
+    const tbody = document.getElementById('tableBodyRekapTeacherStudents');
+
+    if (elInit) elInit.textContent = (teacherData.nama_guru || 'G').charAt(0).toUpperCase();
+    if (elName) elName.textContent = teacherData.nama_guru;
+    if (elNip) elNip.textContent = teacherData.nip;
+    if (elTotal) elTotal.textContent = `${teacherData.total} Siswa`;
+    if (elBreak) elBreak.textContent = `🚌 ${teacherData.ftCount} Field Trip • 🌾 ${teacherData.nonFtCount} Non-FT`;
+    if (elRole) {
+      elRole.textContent = teacherData.role;
+      elRole.className = teacherData.role === 'KOORDINATOR'
+        ? 'px-2 py-0.5 rounded-md text-[10px] font-black bg-purple-100 text-purple-800 border border-purple-200'
+        : 'px-2 py-0.5 rounded-md text-[10px] font-black bg-indigo-100 text-indigo-800 border border-indigo-200';
+    }
+
+    if (elClasses) {
+      if (teacherData.classesList.length > 0) {
+        elClasses.innerHTML = teacherData.classesList.map(c => `
+          <span class="px-2 py-0.5 rounded-md text-[10.5px] font-black bg-white text-indigo-800 border border-indigo-200 shadow-2xs">
+            Kelas ${escapeHtml(c)} (${teacherData.classCounts[c]} siswa)
+          </span>
+        `).join('');
+      } else {
+        elClasses.innerHTML = '<span class="text-[11px] text-slate-400 italic">Belum ada siswa binaan yang di-assign.</span>';
+      }
+    }
+
+    if (tbody) {
+      if (teacherData.students.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-8 text-center text-slate-400">
+              <span class="material-symbols-outlined text-3xl block mb-1">person_off</span>
+              Guru ini belum memiliki siswa binaan. Anda dapat membagikan siswa di tab <strong>2. Plotting per-Guru Pembina</strong>.
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = teacherData.students.map((s, idx) => {
+          const isFT = isStudentFieldTripRekap(s);
+          const sClass = getStudentNormalizedClass(s) || '-';
+          return `
+            <tr class="hover:bg-slate-50 transition-colors border-b border-slate-100">
+              <td class="py-2.5 px-3 text-center font-bold text-slate-500">${idx + 1}</td>
+              <td class="py-2.5 px-3 font-mono text-[11px] text-slate-600">${escapeHtml(s.nisn || '-')}</td>
+              <td class="py-2.5 px-3 font-mono text-[11px] text-slate-600">${escapeHtml(s.nis || '-')}</td>
+              <td class="py-2.5 px-3 font-bold text-slate-800">${escapeHtml(s.nama || s.name || '-')}</td>
+              <td class="py-2.5 px-3 text-center font-extrabold text-indigo-700">${escapeHtml(sClass)}</td>
+              <td class="py-2.5 px-3 text-center">
+                ${isFT 
+                  ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-amber-100 text-amber-900 border border-amber-300">Field Trip</span>'
+                  : '<span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300">Non-Field Trip</span>'}
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+    }
+  }
+
+  /* ==========================================================================
+     CETAK DOKUMEN RESMI REKAPITULASI (A4 LANDSCAPE & PORTRAIT PRINT-READY)
+     ========================================================================== */
+
+  // Helper template Kop Resmi SMAN 1 Belitang
+  function getPrintKopHeaderHtml() {
+    return `
+      <div style="border-bottom: 3px double #000; padding-bottom: 6px; margin-bottom: 12px; text-align: center; line-height: 1.25;">
+        <div style="font-size: 13pt; font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;">PEMERINTAH PROVINSI SUMATERA SELATAN</div>
+        <div style="font-size: 12pt; font-weight: bold; text-transform: uppercase;">DINAS PENDIDIKAN</div>
+        <div style="font-size: 16pt; font-weight: 900; text-transform: uppercase; margin: 2px 0;">SMA NEGERI 1 BELITANG</div>
+        <div style="font-size: 8.5pt; color: #1e293b;">Jl. Siliwangi No. 01, Gumawang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan 32382</div>
+        <div style="font-size: 8.5pt; color: #1e293b;">NPSN: 10606456 | Akreditasi: A | Laman: kokurikulersman1belitang.site</div>
+      </div>
+    `;
+  }
+
+  // 1. Cetak Rekapitulasi Seluruh Fasilitator
+  function printRekapAllFasil() {
+    if (!rekapFasilCachedData || rekapFasilCachedData.length === 0) {
+      if (window.renderRekapFasilView) window.renderRekapFasilView();
+    }
+
+    const printWin = window.open('', '_blank');
+    if (!printWin) {
+      alert('Pop-up terblokir oleh browser. Harap izinkan pop-up untuk mencetak dokumen!');
+      return;
+    }
+
+    const activeList = rekapFasilCachedData.filter(t => t.total > 0);
+    const zeroList = rekapFasilCachedData.filter(t => t.total === 0);
+
+    let grandStudents = 0;
+    let grandFT = 0;
+    let grandNonFT = 0;
+
+    const rowsHtml = activeList.map((t, idx) => {
+      grandStudents += t.total;
+      grandFT += t.ftCount;
+      grandNonFT += t.nonFtCount;
+
+      const classesStr = t.classesList.map(c => `${c} (${t.classCounts[c]})`).join(', ');
+
+      return `
+        <tr>
+          <td style="text-align: center;">${idx + 1}</td>
+          <td>
+            <strong>${escapeHtml(t.nama_guru)}</strong><br>
+            <span style="font-size: 8pt; color: #475569;">NIP. ${escapeHtml(t.nip)}</span>
+          </td>
+          <td style="text-align: center;">${escapeHtml(t.role)}</td>
+          <td>${escapeHtml(classesStr || '-')}</td>
+          <td style="text-align: center; font-weight: bold;">${t.total}</td>
+          <td style="text-align: center;">${t.ftCount}</td>
+          <td style="text-align: center;">${t.nonFtCount}</td>
+          <td style="text-align: left; font-size: 8pt; color: #94a3b8; height: 28px;">${idx + 1}. .........</td>
+        </tr>
+      `;
+    }).join('');
+
+    const dateStr = new Date().toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    const docHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Rekapitulasi_Siswa_Binaan_Fasilitator_2026</title>
+  <style>
+    @page { size: A4 landscape; margin: 12mm 15mm; }
+    body { font-family: Arial, sans-serif; font-size: 9pt; color: #000; margin: 0; padding: 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 8.5pt; }
+    th, td { border: 1px solid #333; padding: 5px 6px; }
+    th { background-color: #f1f5f9; text-transform: uppercase; font-size: 8pt; }
+    .kpi-bar { display: flex; justify-content: space-between; background: #f8fafc; border: 1px solid #cbd5e1; padding: 8px 12px; margin-bottom: 8px; font-size: 8.5pt; }
+    .signature-row { display: flex; justify-content: space-between; margin-top: 25px; page-break-inside: avoid; }
+    .sig-box { width: 42%; text-align: center; }
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  ${getPrintKopHeaderHtml()}
+
+  <div style="text-align: center; margin-bottom: 12px;">
+    <div style="font-size: 11pt; font-weight: bold; text-transform: uppercase; text-decoration: underline;">
+      REKAPITULASI PENUGASAN SISWA BINAAN FASILITATOR KOKURIKULER
+    </div>
+    <div style="font-size: 9pt; margin-top: 2px;">
+      Tahun Pelajaran 2026/2027 • Tema: Finansial, Budaya &amp; STEM
+    </div>
+  </div>
+
+  <div class="kpi-bar">
+    <div><strong>Total Guru Aktif:</strong> ${activeList.length} Orang</div>
+    <div><strong>Total Siswa Terbagi:</strong> ${grandStudents} Siswa</div>
+    <div><strong>Rincian Jalur:</strong> ${grandFT} Peserta Field Trip &bull; ${grandNonFT} Peserta Non-Field Trip</div>
+    <div><strong>Dicetak Pada:</strong> ${dateStr}</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25px;">No</th>
+        <th>Nama Guru Fasilitator &amp; NIP</th>
+        <th style="width: 85px;">Peran</th>
+        <th>Rombel / Kelas yang Dibina (Jml Siswa)</th>
+        <th style="width: 55px;">Total Binaan</th>
+        <th style="width: 50px;">Field Trip</th>
+        <th style="width: 50px;">Non-FT</th>
+        <th style="width: 90px;">Tanda Tangan</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rowsHtml}
+    </tbody>
+    <tfoot>
+      <tr style="font-weight: bold; background: #f8fafc;">
+        <td colspan="4" style="text-align: right; text-transform: uppercase;">Total Keseluruhan:</td>
+        <td style="text-align: center;">${grandStudents}</td>
+        <td style="text-align: center;">${grandFT}</td>
+        <td style="text-align: center;">${grandNonFT}</td>
+        <td></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="signature-row">
+    <div class="sig-box">
+      <div>Mengetahui,</div>
+      <div style="margin-bottom: 50px;">Koordinator Kokurikuler</div>
+      <div style="font-weight: bold; text-decoration: underline;">TIM KOORDINATOR PROJEK</div>
+      <div>SMAN 1 Belitang</div>
+    </div>
+    <div class="sig-box">
+      <div>Belitang, ${dateStr}</div>
+      <div style="margin-bottom: 50px;">Kepala SMA Negeri 1 Belitang</div>
+      <div style="font-weight: bold; text-decoration: underline;">HERI PRIYANTO, S.Pd., M.Pd.</div>
+      <div>NIP. 198105052007011014</div>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      setTimeout(function() { window.print(); }, 400);
+    };
+  </script>
+</body>
+</html>`;
+
+    printWin.document.open();
+    printWin.document.write(docHtml);
+    printWin.document.close();
+  };
+
+  // 2. Cetak Lembar Siswa Binaan Khusus Guru Tertentu
+  function printRekapSingleFasil(targetKey) {
+    const key = targetKey || rekapSelectedTeacherKey;
+    if (!key) {
+      alert('Pilih guru fasilitator terlebih dahulu untuk mencetak lembar pembinaannya!');
+      return;
+    }
+
+    const t = rekapFasilCachedData.find(item => item.key === key);
+    if (!t) {
+      alert('Data guru tidak ditemukan!');
+      return;
+    }
+
+    if (!t.students || t.students.length === 0) {
+      alert(`Guru ${t.nama_guru} belum memiliki siswa binaan untuk dicetak.`);
+      return;
+    }
+
+    const printWin = window.open('', '_blank');
+    if (!printWin) {
+      alert('Pop-up terblokir oleh browser. Harap izinkan pop-up untuk mencetak dokumen!');
+      return;
+    }
+
+    const classesStr = t.classesList.map(c => `${c} (${t.classCounts[c]} siswa)`).join(', ');
+
+    const rowsHtml = t.students.map((s, idx) => {
+      const isFT = isStudentFieldTripRekap(s);
+      const cls = getStudentNormalizedClass(s) || '-';
+      const gender = s.gender || s.jk || '-';
+
+      return `
+        <tr>
+          <td style="text-align: center;">${idx + 1}</td>
+          <td style="text-align: center; font-family: monospace;">${escapeHtml(s.nisn || '-')}</td>
+          <td style="text-align: center; font-family: monospace;">${escapeHtml(s.nis || '-')}</td>
+          <td><strong>${escapeHtml(s.nama || s.name || '-')}</strong></td>
+          <td style="text-align: center;">${escapeHtml(gender)}</td>
+          <td style="text-align: center; font-weight: bold;">${escapeHtml(cls)}</td>
+          <td style="text-align: center;">${isFT ? 'Field Trip' : 'Non-Field Trip'}</td>
+          <td style="text-align: left; font-size: 8pt; color: #94a3b8; height: 26px;">${idx + 1}. .........</td>
+        </tr>
+      `;
+    }).join('');
+
+    const dateStr = new Date().toLocaleDateString('id-ID', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    });
+
+    const docHtml = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lembar_Binaan_${escapeHtml(t.nama_guru.replace(/\s+/g, '_'))}</title>
+  <style>
+    @page { size: A4 portrait; margin: 12mm 15mm; }
+    body { font-family: Arial, sans-serif; font-size: 9.5pt; color: #000; margin: 0; padding: 0; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 8.5pt; }
+    th, td { border: 1px solid #333; padding: 5px 6px; }
+    th { background-color: #f1f5f9; text-transform: uppercase; font-size: 8pt; }
+    .info-box { background: #f8fafc; border: 1px solid #cbd5e1; padding: 10px 14px; margin-bottom: 10px; font-size: 9pt; line-height: 1.5; }
+    .signature-row { display: flex; justify-content: space-between; margin-top: 30px; page-break-inside: avoid; }
+    .sig-box { width: 45%; text-align: center; }
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  ${getPrintKopHeaderHtml()}
+
+  <div style="text-align: center; margin-bottom: 12px;">
+    <div style="font-size: 11pt; font-weight: bold; text-transform: uppercase; text-decoration: underline;">
+      LEMBAR PENUGASAN SISWA BINAAN FASILITATOR KOKURIKULER
+    </div>
+    <div style="font-size: 9pt; margin-top: 2px;">
+      Tahun Pelajaran 2026/2027 • Tema: Finansial, Budaya &amp; STEM
+    </div>
+  </div>
+
+  <div class="info-box">
+    <table style="width: 100%; border: none; margin: 0; font-size: 9pt;">
+      <tr style="border: none;">
+        <td style="border: none; width: 140px; padding: 2px 0;"><strong>Nama Guru Pembina</strong></td>
+        <td style="border: none; width: 15px; padding: 2px 0;">:</td>
+        <td style="border: none; padding: 2px 0;"><strong>${escapeHtml(t.nama_guru)}</strong></td>
+        <td style="border: none; width: 120px; padding: 2px 0;"><strong>Total Binaan</strong></td>
+        <td style="border: none; width: 15px; padding: 2px 0;">:</td>
+        <td style="border: none; padding: 2px 0;"><strong>${t.total} Siswa</strong></td>
+      </tr>
+      <tr style="border: none;">
+        <td style="border: none; padding: 2px 0;">NIP / Kode Guru</td>
+        <td style="border: none; padding: 2px 0;">:</td>
+        <td style="border: none; padding: 2px 0;">${escapeHtml(t.nip)}</td>
+        <td style="border: none; padding: 2px 0;">Rincian Jalur</td>
+        <td style="border: none; padding: 2px 0;">:</td>
+        <td style="border: none; padding: 2px 0;">${t.ftCount} Field Trip &bull; ${t.nonFtCount} Non-FT</td>
+      </tr>
+      <tr style="border: none;">
+        <td style="border: none; padding: 2px 0;">Kelas yang Dibina</td>
+        <td style="border: none; padding: 2px 0;">:</td>
+        <td colspan="4" style="border: none; padding: 2px 0;"><strong>${escapeHtml(classesStr || '-')}</strong></td>
+      </tr>
+    </table>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25px;">No</th>
+        <th style="width: 75px;">NISN</th>
+        <th style="width: 60px;">NIS</th>
+        <th>Nama Lengkap Siswa</th>
+        <th style="width: 35px;">L/P</th>
+        <th style="width: 65px;">Kelas</th>
+        <th style="width: 90px;">Jalur Kegiatan</th>
+        <th style="width: 85px;">Paraf / Kehadiran</th>
+      </tr>
+    </thead>
+    <tbody>
+      ${rowsHtml}
+    </tbody>
+  </table>
+
+  <div class="signature-row">
+    <div class="sig-box">
+      <div>Mengetahui,</div>
+      <div style="margin-bottom: 50px;">Koordinator Kokurikuler</div>
+      <div style="font-weight: bold; text-decoration: underline;">TIM KOORDINATOR PROJEK</div>
+      <div>SMAN 1 Belitang</div>
+    </div>
+    <div class="sig-box">
+      <div>Belitang, ${dateStr}</div>
+      <div style="margin-bottom: 50px;">Guru Fasilitator Pembina</div>
+      <div style="font-weight: bold; text-decoration: underline;">${escapeHtml(t.nama_guru)}</div>
+      <div>NIP. ${escapeHtml(t.nip)}</div>
+    </div>
+  </div>
+
+  <script>
+    window.onload = function() {
+      setTimeout(function() { window.print(); }, 400);
+    };
+  </script>
+</body>
+</html>`;
+
+    printWin.document.open();
+    printWin.document.write(docHtml);
+    printWin.document.close();
+  };
+
+  // 3. Ekspor Data Rekap Fasilitator ke format CSV
+  function exportRekapFasilCSV() {
+    if (!rekapFasilCachedData || rekapFasilCachedData.length === 0) {
+      if (window.renderRekapFasilView) window.renderRekapFasilView();
+    }
+
+    const csvRows = [
+      ['NO', 'NAMA_GURU', 'NIP', 'MATA_PELAJARAN', 'PERAN', 'KELAS_DIBINA', 'TOTAL_BINAAN', 'FIELD_TRIP', 'NON_FIELD_TRIP']
+    ];
+
+    rekapFasilCachedData.forEach((t, i) => {
+      const classesStr = t.classesList.map(c => `${c} (${t.classCounts[c]})`).join('; ');
+      csvRows.push([
+        i + 1,
+        `"${(t.nama_guru || '').replace(/"/g, '""')}"`,
+        `"${(t.nip || '').replace(/"/g, '""')}"`,
+        `"${(t.mata_pelajaran || '').replace(/"/g, '""')}"`,
+        `"${(t.role || '').replace(/"/g, '""')}"`,
+        `"${classesStr.replace(/"/g, '""')}"`,
+        t.total,
+        t.ftCount,
+        t.nonFtCount
+      ]);
+    });
+
+    const csvContent = '\uFEFF' + csvRows.map(e => e.join(',')).join('\r\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'REKAP_SISWA_BINAAN_FASILITATOR_SMAN1BELITANG_2026.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+
+  window.filterRekapFasilTable = filterRekapFasilTable;
+  window.onRekapTeacherSelectChange = onRekapTeacherSelectChange;
+  window.selectAndFocusRekapTeacher = selectAndFocusRekapTeacher;
+  window.closeRekapTeacherDetail = closeRekapTeacherDetail;
+  window.printRekapAllFasil = printRekapAllFasil;
+  window.printRekapSingleFasil = printRekapSingleFasil;
+  window.exportRekapFasilCSV = exportRekapFasilCSV;
 
 })(window);

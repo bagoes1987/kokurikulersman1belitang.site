@@ -2196,19 +2196,25 @@
         <button type="button" id="btnSubTabMentor_allstudents" onclick="switchMentorshipSubTab('allstudents')" class="flex-1 py-2.5 px-3 text-xs font-bold rounded-xl bg-[#0875D1] text-white shadow-xs transition-all cursor-pointer">
           <span class="flex items-center justify-center gap-1.5">
             <span class="material-symbols-outlined text-base">fact_check</span>
-            <span>1. Rekap Status Siswa (Belum vs Sudah Ada Fasil)</span>
+            <span>1. Status Siswa</span>
           </span>
         </button>
         <button type="button" id="btnSubTabMentor_plotting" onclick="switchMentorshipSubTab('plotting')" class="flex-1 py-2.5 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
           <span class="flex items-center justify-center gap-1.5">
             <span class="material-symbols-outlined text-base">assignment_ind</span>
-            <span>2. Plotting per-Guru Pembina</span>
+            <span>2. Plotting per-Guru</span>
+          </span>
+        </button>
+        <button type="button" id="btnSubTabMentor_rekap_fasil" onclick="switchMentorshipSubTab('rekap_fasil')" class="flex-1 py-2.5 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
+          <span class="flex items-center justify-center gap-1.5">
+            <span class="material-symbols-outlined text-base text-amber-400">table_chart</span>
+            <span>3. Rekap Binaan per-Fasil (Bisa Cetak)</span>
           </span>
         </button>
         <button type="button" id="btnSubTabMentor_teachers" onclick="switchMentorshipSubTab('teachers')" class="flex-1 py-2.5 px-3 text-xs font-semibold rounded-xl text-slate-400 hover:text-slate-200 transition-all cursor-pointer">
           <span class="flex items-center justify-center gap-1.5">
             <span class="material-symbols-outlined text-base">badge</span>
-            <span>3. Data 116 Guru &amp; Tambah Guru Baru</span>
+            <span>4. Data 116 Guru</span>
           </span>
         </button>
       </div>
@@ -2456,7 +2462,219 @@
 
       </div>
 
-      <!-- SUB-VIEW 2: KELOLA DATA GURU & TAMBAH GURU BARU -->
+      <!-- SUB-VIEW 3: REKAP SISWA BINAAN PER-FASILITATOR (BISA CETAK) -->
+      <div id="subviewMentor_rekap_fasil" class="hidden flex flex-col gap-4">
+        
+        <!-- HEADER & TOMBOL AKSI CETAK CEPAT -->
+        <div class="bg-gradient-to-r from-indigo-900 via-slate-900 to-slate-900 text-white rounded-3xl p-5 sm:p-6 border border-indigo-800 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div class="flex items-center gap-3.5">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 flex items-center justify-center shrink-0 shadow-inner">
+              <span class="material-symbols-outlined text-2xl">table_chart</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded-full bg-indigo-500/30 text-indigo-200 border border-indigo-400/30 text-[10px] font-black uppercase tracking-wider">Rekapitulasi Pembinaan</span>
+                <span class="text-[11px] text-slate-400 font-medium">TP 2026/2027</span>
+              </div>
+              <h3 class="text-base sm:text-lg font-black text-white leading-tight mt-0.5">Rekap Siswa Binaan per-Fasilitator</h3>
+              <p class="text-xs text-slate-300 mt-1 max-w-2xl leading-relaxed">
+                Pantau pembagian beban pembinaan guru, sebaran kelas/rombel, rincian per-fasilitator, serta cetak dokumen resmi rekapitulasi.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap shrink-0">
+            <button type="button" onclick="exportRekapFasilCSV()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold text-xs flex items-center gap-2 shadow-xs transition-all cursor-pointer" title="Unduh data tabel rekap ke format CSV / Excel">
+              <span class="material-symbols-outlined text-base text-emerald-400">download</span>
+              <span>Ekspor CSV</span>
+            </button>
+            <button type="button" onclick="printRekapAllFasil()" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 active:scale-95 text-white font-extrabold text-xs flex items-center gap-2 shadow-md transition-all cursor-pointer" title="Cetak seluruh tabel rekapitulasi fasilitator ke kertas A4 / Simpan PDF">
+              <span class="material-symbols-outlined text-base text-amber-300">print</span>
+              <span>Cetak Rekap Seluruh Fasilitator</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 KPI SUMMARY CARDS -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+          <div class="p-4 rounded-2xl bg-white border border-slate-200 shadow-2xs flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-slate-500 uppercase">Total Guru Master</span>
+              <span class="material-symbols-outlined text-slate-400 text-lg">badge</span>
+            </div>
+            <span id="rekapFasilKpiTotalTeachers" class="text-xl sm:text-2xl font-black text-slate-800 mt-0.5">0</span>
+            <span class="text-[10.5px] text-slate-400">Guru Terdaftar di Sistem</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white border border-emerald-200 shadow-2xs flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-emerald-700 uppercase">Fasilitator Aktif</span>
+              <span class="material-symbols-outlined text-emerald-500 text-lg">how_to_reg</span>
+            </div>
+            <span id="rekapFasilKpiActiveTeachers" class="text-xl sm:text-2xl font-black text-emerald-600 mt-0.5">0</span>
+            <span class="text-[10.5px] text-slate-400">Memiliki Siswa Binaan</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white border border-blue-200 shadow-2xs flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-blue-700 uppercase">Siswa Terbagi</span>
+              <span class="material-symbols-outlined text-blue-500 text-lg">groups</span>
+            </div>
+            <span id="rekapFasilKpiTotalAssignedStudents" class="text-xl sm:text-2xl font-black text-blue-600 mt-0.5">0</span>
+            <span id="rekapFasilKpiAssignedSub" class="text-[10.5px] text-slate-400">0 Field Trip • 0 Non-FT</span>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-white border border-purple-200 shadow-2xs flex flex-col gap-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-purple-700 uppercase">Rata-Rata Beban</span>
+              <span class="material-symbols-outlined text-purple-500 text-lg">calculate</span>
+            </div>
+            <span id="rekapFasilKpiAverageLoad" class="text-xl sm:text-2xl font-black text-purple-600 mt-0.5">0</span>
+            <span class="text-[10.5px] text-slate-400">Siswa per Guru Pembina</span>
+          </div>
+        </div>
+
+        <!-- BAGIAN 1: RINCIAN PER-FASILITATOR & CETAK INDIVIDUAL -->
+        <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col gap-3.5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-indigo-600 text-xl">person_search</span>
+              <div>
+                <h4 class="text-xs sm:text-sm font-black text-slate-800">Rincian Siswa Binaan per-Fasilitator Tertentu</h4>
+                <p class="text-[11px] text-slate-500">Pilih nama guru fasilitator untuk melihat rincian nama siswa, rombel, dan mencetak lembar pembinaannya.</p>
+              </div>
+            </div>
+
+            <div class="w-full sm:w-96">
+              <select id="selectRekapTeacher" onchange="onRekapTeacherSelectChange()" class="w-full px-3.5 py-2.5 rounded-xl border border-indigo-200 bg-indigo-50/50 text-xs font-extrabold text-slate-800 outline-none focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 cursor-pointer">
+                <option value="">-- Pilih Guru Fasilitator untuk Rincian &amp; Cetak Lembar --</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- KOTAK PROFIL & DAFTAR SISWA GURU TERPILIH (Dinamis: Tampil jika dipilih) -->
+          <div id="containerRekapTeacherDetail" class="hidden flex flex-col gap-3 pt-3 border-t border-slate-100">
+            <!-- Header Kartu Guru Terpilih -->
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-50 via-indigo-50/40 to-slate-50 border border-indigo-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-xl bg-indigo-600 text-white font-black text-base flex items-center justify-center shrink-0 shadow-xs">
+                  <span id="detailRekapTeacherInitial">G</span>
+                </div>
+                <div class="flex flex-col">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span id="detailRekapTeacherName" class="text-sm font-black text-slate-900">-</span>
+                    <span id="detailRekapTeacherRoleBadge" class="px-2 py-0.5 rounded-md text-[10px] font-black bg-indigo-100 text-indigo-800 border border-indigo-200">Fasilitator</span>
+                  </div>
+                  <div class="flex items-center gap-3 text-[11px] text-slate-500 mt-0.5 flex-wrap">
+                    <span>NIP: <strong id="detailRekapTeacherNip" class="text-slate-700">-</strong></span>
+                    <span>•</span>
+                    <span>Total Binaan: <strong id="detailRekapTeacherTotalStudents" class="text-indigo-700 font-extrabold">0 Siswa</strong></span>
+                    <span>•</span>
+                    <span>Rincian: <strong id="detailRekapTeacherBreakdown" class="text-slate-700">0 FT, 0 Non-FT</strong></span>
+                  </div>
+                  <div class="flex items-center gap-1.5 mt-1.5 flex-wrap">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase">Kelas yang Dibina:</span>
+                    <div id="detailRekapTeacherClassBadges" class="flex items-center gap-1 flex-wrap">
+                      <!-- Badges kelas dinamis -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                <button type="button" onclick="printRekapSingleFasil()" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-extrabold text-xs flex items-center gap-1.5 shadow-xs transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-sm text-amber-300">print</span>
+                  <span>Cetak Lembar Pembinaan Guru Ini</span>
+                </button>
+                <button type="button" onclick="closeRekapTeacherDetail()" class="p-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold transition-all cursor-pointer" title="Tutup Rincian">
+                  <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Tabel Daftar Siswa Binaan Guru Terpilih -->
+            <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
+              <div class="overflow-x-auto max-h-[380px] overflow-y-auto">
+                <table class="w-full text-left text-xs border-collapse">
+                  <thead class="sticky top-0 bg-slate-100 text-slate-600 font-extrabold uppercase text-[10px] border-b border-slate-200">
+                    <tr>
+                      <th class="py-2.5 px-3 text-center w-12">No</th>
+                      <th class="py-2.5 px-3 w-32">NISN</th>
+                      <th class="py-2.5 px-3 w-28">NIS</th>
+                      <th class="py-2.5 px-3">Nama Lengkap Siswa</th>
+                      <th class="py-2.5 px-3 text-center w-28">Kelas</th>
+                      <th class="py-2.5 px-3 text-center w-36">Jalur Kegiatan</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableBodyRekapTeacherStudents">
+                    <!-- Dinamis -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAGIAN 2: TABEL MASTER REKAP SELURUH FASILITATOR -->
+        <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden flex flex-col gap-0">
+          <!-- Bar Kontrol Filter Tabel -->
+          <div class="p-4 border-b border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 flex-wrap">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-slate-700 text-xl">view_list</span>
+              <div>
+                <h4 class="text-xs sm:text-sm font-black text-slate-800">Tabel Master Rekap Seluruh Fasilitator</h4>
+                <p class="text-[11px] text-slate-400">Daftar lengkap seluruh guru pembina beserta jumlah binaan dan rombel kelasnya.</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
+              <!-- Search Input -->
+              <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 text-xs w-full sm:w-60">
+                <span class="material-symbols-outlined text-slate-400 text-base">search</span>
+                <input type="text" id="inputSearchRekapFasil" oninput="filterRekapFasilTable()" placeholder="Cari nama guru / kelas..." class="w-full bg-transparent font-medium text-slate-800 outline-none">
+              </div>
+
+              <!-- Filter Status Binaan -->
+              <select id="selectFilterRekapStatus" onchange="filterRekapFasilTable()" class="px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 outline-none cursor-pointer">
+                <option value="ALL">Semua Guru (116)</option>
+                <option value="ASSIGNED_ONLY" selected>Hanya yang Memiliki Binaan (Aktif)</option>
+                <option value="ZERO_ONLY">Guru Belum Ada Binaan</option>
+              </select>
+
+              <!-- Filter Kelas -->
+              <select id="selectFilterRekapClass" onchange="filterRekapFasilTable()" class="px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 outline-none cursor-pointer">
+                <option value="ALL">Semua Kelas</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabel Master -->
+          <div class="overflow-x-auto max-h-[600px] overflow-y-auto">
+            <table class="w-full text-left text-xs border-collapse">
+              <thead class="sticky top-0 bg-slate-50 text-slate-500 font-extrabold uppercase text-[10px] border-b border-slate-200 shadow-2xs">
+                <tr>
+                  <th class="py-3 px-3 text-center w-12">No</th>
+                  <th class="py-3 px-3">Nama Guru Fasilitator &amp; NIP</th>
+                  <th class="py-3 px-3 text-center w-28">Peran</th>
+                  <th class="py-3 px-3">Kelas yang Dibina</th>
+                  <th class="py-3 px-3 text-center w-28">Total Binaan</th>
+                  <th class="py-3 px-3 text-center w-36">Rincian Jalur</th>
+                  <th class="py-3 px-3 text-center w-40">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="tableBodyMasterRekapFasil">
+                <!-- Baris dinamis diinjeksi via JS -->
+              </tbody>
+              <tfoot id="tableFootMasterRekapFasil" class="bg-slate-100 text-slate-800 font-black text-xs border-t-2 border-slate-300">
+                <!-- Baris total dinamis -->
+              </tfoot>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SUB-VIEW 4: KELOLA DATA GURU & TAMBAH GURU BARU -->
       <div id="subviewMentor_teachers" class="hidden flex flex-col gap-3.5">
         
         <div class="p-4 rounded-3xl bg-white border border-slate-200 shadow-sm flex items-center justify-between gap-3 flex-wrap">
@@ -3562,7 +3780,7 @@
   <script src="../js/data/bank-soal-nonfieldtrip.js?v=20261029_nft_bs2"></script>
   <script src="../js/modules/admin-banksoal.js?v=20261029_nft_bs2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v4"></script>
-  <script src="../js/modules/admin-mentorship.js?v=20261030_binaan_v4"></script>
+  <script src="../js/modules/admin-mentorship.js?v=20261104_rekap_fasil_v1"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
   <script>
     let adminCurrentGrade = 'ALL';
