@@ -1083,6 +1083,9 @@
         }
       }
 
+      const totalAssignedStudents = ftAssigned + nonFtAssigned;
+      const totalUnassignedStudents = Math.max(0, allStudents.length - totalAssignedStudents);
+
       // Hitung guru yang sudah punya binaan
       let activeMentorsCount = 0;
       Object.values(map).forEach(e => {
@@ -1093,14 +1096,14 @@
 
       return {
         totalStudents: allStudents.length,
-        totalAssigned: assignedNisns.size,
-        totalUnassigned: allStudents.length - assignedNisns.size,
+        totalAssigned: totalAssignedStudents,
+        totalUnassigned: totalUnassignedStudents,
         ftTotal: ftTotal,
         ftAssigned: ftAssigned,
-        ftUnassigned: ftTotal - ftAssigned,
+        ftUnassigned: Math.max(0, ftTotal - ftAssigned),
         nonFtTotal: nonFtTotal,
         nonFtAssigned: nonFtAssigned,
-        nonFtUnassigned: nonFtTotal - nonFtAssigned,
+        nonFtUnassigned: Math.max(0, nonFtTotal - nonFtAssigned),
         totalTeachers: teachers.length,
         activeMentorsCount: activeMentorsCount
       };
