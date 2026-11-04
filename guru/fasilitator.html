@@ -266,6 +266,14 @@
           <span class="material-symbols-outlined text-lg">directions_bus</span>
           <span>Rekap Jalur Peserta</span>
         </button>
+        <button id="btnSideFasRekapBinaan" onclick="switchFasTab('rekap_binaan')" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-slate-400 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg text-emerald-400">fact_check</span>
+          <span>Rekap Rapor Siswa Binaan</span>
+        </button>
+        <button id="btnSideFasMonitoringKoord" onclick="switchFasTab('monitoring_koord')" class="hidden w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-amber-300 hover:text-white hover:bg-slate-800/80 cursor-pointer">
+          <span class="material-symbols-outlined text-lg text-amber-400">supervisor_account</span>
+          <span>Monitoring Koordinator</span>
+        </button>
         <button id="btnSideFasKriteriaKokurikuler" onclick="openKriteriaKokurikulerModal()" class="w-full px-3.5 py-2.5 rounded-xl flex items-center gap-3 transition-all text-left text-indigo-300 hover:text-white hover:bg-slate-800/80 cursor-pointer">
           <span class="material-symbols-outlined text-lg text-indigo-400">fact_check</span>
           <span>Kriteria Penilaian Kokurikuler</span>
@@ -396,25 +404,57 @@
         </button>
       </div>
 
+      <!-- RINGKASAN KPI STATUS PENILAIAN SISWA BINAAN -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <div onclick="filterFasByStatus('all')" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-2xs cursor-pointer hover:border-teal-500/50 transition-all">
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Total Binaan</span>
+            <span id="kpiCardTotalBinaan" class="text-xl font-black text-slate-800">0</span>
+          </div>
+          <span class="material-symbols-outlined text-teal-600 text-2xl">group</span>
+        </div>
+        <div onclick="filterFasByStatus('submitted')" class="bg-amber-50/70 p-3 rounded-2xl border border-amber-300/80 flex items-center justify-between shadow-2xs cursor-pointer hover:bg-amber-100/70 transition-all">
+          <div>
+            <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">⚠️ Belum Dinilai</span>
+            <span id="kpiCardPendingBinaan" class="text-xl font-black text-amber-600">0</span>
+          </div>
+          <span class="material-symbols-outlined text-amber-600 text-2xl animate-pulse">pending_actions</span>
+        </div>
+        <div onclick="filterFasByStatus('completed')" class="bg-emerald-50/70 p-3 rounded-2xl border border-emerald-300/80 flex items-center justify-between shadow-2xs cursor-pointer hover:bg-emerald-100/70 transition-all">
+          <div>
+            <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">✓ Sudah Dinilai</span>
+            <span id="kpiCardDoneBinaan" class="text-xl font-black text-emerald-600">0</span>
+          </div>
+          <span class="material-symbols-outlined text-emerald-600 text-2xl">check_circle</span>
+        </div>
+        <div onclick="filterFasByStatus('belum_mulai')" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-2xs cursor-pointer hover:border-slate-400 transition-all">
+          <div>
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Belum Kumpul</span>
+            <span id="kpiCardUnstartedBinaan" class="text-xl font-black text-slate-500">0</span>
+          </div>
+          <span class="material-symbols-outlined text-slate-400 text-2xl">hourglass_empty</span>
+        </div>
+      </div>
+
       <!-- Segmented Status Filter Tabs -->
       <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold">
         <button id="btnFasFilterAll" onclick="filterFasByStatus('all')" class="px-3 py-1.5 rounded-xl bg-[#006a61] text-white shadow-2xs whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
-          <span>Semua Status</span>
+          <span>Semua Binaan</span>
           <span id="badgeCountAll" class="px-1.5 py-0.2 rounded-md bg-white/20 text-[10px]">0</span>
+        </button>
+        <button id="btnFasFilterSubmitted" onclick="filterFasByStatus('submitted')" class="px-3 py-1.5 rounded-xl bg-surface-container-lowest text-amber-900 border border-amber-300 hover:bg-amber-50 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
+          <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+          <span>⚠️ Belum Dinilai</span>
+          <span id="badgeCountSubmitted" class="px-1.5 py-0.2 rounded-md bg-amber-100 text-[10px] text-amber-900 font-black">0</span>
         </button>
         <button id="btnFasFilterCompleted" onclick="filterFasByStatus('completed')" class="px-3 py-1.5 rounded-xl bg-surface-container-lowest text-emerald-800 border border-outline-variant/30 hover:bg-emerald-50 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-          <span>Completed</span>
+          <span>✓ Sudah Dinilai</span>
           <span id="badgeCountCompleted" class="px-1.5 py-0.2 rounded-md bg-emerald-100 text-[10px]">0</span>
-        </button>
-        <button id="btnFasFilterSubmitted" onclick="filterFasByStatus('submitted')" class="px-3 py-1.5 rounded-xl bg-surface-container-lowest text-amber-800 border border-outline-variant/30 hover:bg-amber-50 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
-          <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-          <span>Submitted</span>
-          <span id="badgeCountSubmitted" class="px-1.5 py-0.2 rounded-md bg-amber-100 text-[10px]">0</span>
         </button>
         <button id="btnFasFilterNotStarted" onclick="filterFasByStatus('belum_mulai')" class="px-3 py-1.5 rounded-xl bg-surface-container-lowest text-slate-700 border border-outline-variant/30 hover:bg-slate-100 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
           <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
-          <span>Belum Mulai</span>
+          <span>Belum Mengerjakan</span>
           <span id="badgeCountNotStarted" class="px-1.5 py-0.2 rounded-md bg-slate-100 text-[10px]">0</span>
         </button>
       </div>
@@ -692,6 +732,137 @@
               </tr>
             </thead>
             <tbody id="fasRekapAllTableBody" class="divide-y divide-outline-variant/10 text-xs">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: REKAPITULASI PENILAIAN & RAPOR SISWA BINAAN (UNTUK FASILITATOR) -->
+    <div id="panelFasRekapBinaan" class="hidden flex flex-col gap-4">
+      <div class="bg-gradient-to-r from-teal-800/10 via-teal-600/5 to-transparent rounded-3xl p-5 border border-teal-300/60 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-[#006a61] text-white flex items-center justify-center shrink-0 shadow-md">
+            <span class="material-symbols-outlined text-2xl">fact_check</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-sm sm:text-base text-slate-800">Rekap Rapor Siswa Binaan Anda</h3>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-600 text-white shadow-2xs">Resmi 2026</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Nilai 4 Pilar (Finansial, Budaya, Eksplorasi, STEM) &amp; Predikat Kelulusan Kokurikuler</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="exportRekapBinaanCSV()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">download</span>
+            <span>Ekspor Excel</span>
+          </button>
+          <button onclick="printRekapBinaanFasil()" class="px-3.5 py-2 rounded-xl bg-[#006a61] hover:bg-teal-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">print</span>
+            <span>Cetak Rekap (A4)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Badges Distribusi Predikat Rapor Binaan -->
+      <div class="flex items-center gap-2 flex-wrap bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/30 text-xs">
+        <span class="font-bold text-slate-500">Distribusi Predikat:</span>
+        <span id="lblFasCountMahir" class="px-2.5 py-1 rounded-full font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">0 Mahir</span>
+        <span id="lblFasCountCakap" class="px-2.5 py-1 rounded-full font-bold bg-sky-100 text-sky-800 border border-sky-200">0 Cakap</span>
+        <span id="lblFasCountBerkembang" class="px-2.5 py-1 rounded-full font-bold bg-amber-100 text-amber-800 border border-amber-200">0 Berkembang</span>
+        <span id="lblFasCountPending" class="px-2.5 py-1 rounded-full font-semibold bg-slate-100 text-slate-600 border border-slate-200">0 Menunggu Day 7</span>
+      </div>
+
+      <div class="flex items-center justify-between px-1">
+        <span id="lblFasRekapBinaanCount" class="text-xs font-bold text-slate-500">Memuat data siswa binaan...</span>
+      </div>
+
+      <!-- Tabel Rapor Binaan -->
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/25 shadow-2xs overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-surface-container-high/60 border-b border-outline-variant/30 text-[10.5px] font-black uppercase tracking-wider text-slate-500">
+                <th class="px-3 py-2.5 text-center w-8">No</th>
+                <th class="px-3 py-2.5">Nama &amp; NISN Siswa</th>
+                <th class="px-3 py-2.5">Kelas</th>
+                <th class="px-3 py-2.5">Jalur</th>
+                <th class="px-3 py-2.5 text-center">Finansial</th>
+                <th class="px-3 py-2.5 text-center">Budaya</th>
+                <th class="px-3 py-2.5 text-center">Eksplorasi</th>
+                <th class="px-3 py-2.5 text-center">STEM</th>
+                <th class="px-3 py-2.5 text-center">Akhir</th>
+                <th class="px-3 py-2.5 text-center">Predikat</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyFasRekapBinaan">
+              <!-- Populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: PANEL MONITORING KOORDINATOR (KHUSUS GURU KOORDINATOR) -->
+    <div id="panelFasMonitoringKoord" class="hidden flex flex-col gap-4">
+      <div class="bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent rounded-3xl p-5 border border-amber-300/60 shadow-xs flex flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md">
+            <span class="material-symbols-outlined text-2xl">supervisor_account</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-sm sm:text-base text-slate-800">Panel Monitoring Koordinator Kokurikuler</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-500 text-white shadow-2xs">Koordinator</span>
+            </div>
+            <p class="text-xs text-slate-500 mt-0.5">Pantau kinerja penilaian para guru fasilitator dan antrean siswa yang belum dinilai</p>
+          </div>
+        </div>
+
+        <!-- 4 KPI Cards Koordinator -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 border-t border-amber-200/50">
+          <div class="bg-white p-3 rounded-2xl border border-amber-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Fasilitator Binaan</span>
+            <span id="kpiCoordTotalFasil" class="text-xl font-black text-slate-800">0 Guru</span>
+          </div>
+          <div class="bg-white p-3 rounded-2xl border border-amber-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">Siswa Wilayah</span>
+            <span id="kpiCoordTotalStudents" class="text-xl font-black text-slate-800">0 Siswa</span>
+          </div>
+          <div class="bg-white p-3 rounded-2xl border border-amber-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-emerald-700 uppercase tracking-wider block">Penilaian Selesai</span>
+            <span id="kpiCoordAvgGrading" class="text-xl font-black text-emerald-600">0%</span>
+          </div>
+          <div class="bg-white p-3 rounded-2xl border border-amber-200/60 shadow-2xs">
+            <span class="text-[10px] font-bold text-amber-700 uppercase tracking-wider block">⚠️ Belum Dinilai</span>
+            <span id="kpiCoordPending" class="text-xl font-black text-amber-600">0</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabel Fasilitator Binaan Koordinator -->
+      <div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/25 shadow-2xs overflow-hidden">
+        <div class="p-3.5 border-b border-outline-variant/20 flex items-center justify-between">
+          <h4 class="font-black text-xs text-slate-800">Daftar Guru Fasilitator &amp; Status Penilaian</h4>
+          <span class="text-[11px] text-slate-400">Pembaruan Real-Time</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-surface-container-high/60 border-b border-outline-variant/30 text-[10.5px] font-black uppercase tracking-wider text-slate-500">
+                <th class="px-3 py-2.5 text-center w-8">No</th>
+                <th class="px-3 py-2.5">Guru Fasilitator</th>
+                <th class="px-3 py-2.5">Kelas Binaan</th>
+                <th class="px-3 py-2.5 text-center">Jml Siswa</th>
+                <th class="px-3 py-2.5 w-36">% Penilaian</th>
+                <th class="px-3 py-2.5 text-center">Antrean Belum Dinilai</th>
+                <th class="px-3 py-2.5 text-center w-28">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyCoordFasilList">
               <!-- Populated by JS -->
             </tbody>
           </table>
@@ -1497,6 +1668,7 @@
   <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v2"></script>
   <script src="../js/core.js?v=20261030_binaan_v2"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
+  <script src="../js/modules/guru-rekap-monitoring.js?v=20261104_v1"></script>
   <script>
     // Kamus Narasi Resmi Rapor Kokurikuler Sesuai Kriteria Admin & SK Kelulusan
     window.FINCESTEM_NARRASI_RAPOR = {
@@ -1744,6 +1916,8 @@
     function switchFasTab(tab) {
       const tabs = [
         { key: 'penilaian', sideBtnId: 'btnSideFasPenilaian', panelId: 'panelFasPenilaian', title: 'Penilaian & Rapor Siswa' },
+        { key: 'rekap_binaan', sideBtnId: 'btnSideFasRekapBinaan', panelId: 'panelFasRekapBinaan', title: 'Rekap Rapor Siswa Binaan' },
+        { key: 'monitoring_koord', sideBtnId: 'btnSideFasMonitoringKoord', panelId: 'panelFasMonitoringKoord', title: 'Panel Monitoring Koordinator' },
         { key: 'presensi', sideBtnId: 'btnSideFasPresensi', panelId: 'panelFasPresensi', title: 'Presensi Lapangan Siswa' },
         { key: 'galeri', sideBtnId: 'btnSideFasGaleri', panelId: 'panelFasGaleri', title: 'Galeri Foto Riset Siswa' },
         { key: 'materi', sideBtnId: 'btnSideFasMateri', panelId: 'panelFasMateri', title: 'Rubrik 4 Pilar & Predikat Rapor' },
@@ -1781,6 +1955,12 @@
       }
       if (tab === 'rekap') {
         renderFasRekapView();
+      }
+      if (tab === 'rekap_binaan' && typeof window.renderFasRekapBinaanView === 'function') {
+        window.renderFasRekapBinaanView();
+      }
+      if (tab === 'monitoring_koord' && typeof window.renderFasMonitoringKoordView === 'function') {
+        window.renderFasMonitoringKoordView();
       }
       if (tab === 'biodata') {
         loadFasBiodataView();
@@ -2068,22 +2248,46 @@
           } catch(e) {}
         }
         const isAllDone = (completedDays >= 7 || percentage >= 100);
-        let latestFeedbackStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : null;
-        let day1Status = prog ? FincestemCore.progress.getDayStatus(prog, 1) : null;
-        let rawStatus = latestFeedbackStatus || day1Status || (stu.task_status || 'belum_mulai');
+        
+        // Deteksi akurat apakah ada tugas siswa yang belum dinilai (antrean)
+        let hasPendingTask = false;
+        let hasAnyGraded = false;
+        let hasAnySubmission = false;
 
-        let studentCategoryStatus = 'belum_mulai';
-        if (isAllDone) {
-          studentCategoryStatus = 'completed';
-        } else if (rawStatus === 'submitted') {
-          studentCategoryStatus = 'submitted';
-        } else if (completedDays > 0) {
-          studentCategoryStatus = 'in_progress';
-        } else {
-          studentCategoryStatus = 'belum_mulai';
+        if (prog && prog.records) {
+          prog.records.forEach(r => {
+            if (r.status === 'submitted' || ['materi', 'lkpd', 'asesmen', 'refleksi', 'dokumentasi'].includes(r.task_type)) {
+              hasAnySubmission = true;
+            }
+            if (r.score !== null && r.score !== undefined && r.score !== '') {
+              hasAnyGraded = true;
+            }
+          });
         }
 
-        if (isAllDone) countCompleted++;
+        for (let d = 1; d <= 7; d++) {
+          const dRec = prog && prog.records ? prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'final')) : null;
+          const hasDailySub = prog && prog.task_map ? (prog.task_map[d + '_lkpd'] || prog.task_map[d + '_materi'] || prog.task_map[d + '_asesmen'] || prog.task_map[d + '_refleksi']) : null;
+          if (hasDailySub) {
+            hasAnySubmission = true;
+            if (!dRec || dRec.score === null || dRec.score === undefined || dRec.score === '') {
+              hasPendingTask = true;
+            }
+          }
+        }
+
+        let studentCategoryStatus = 'belum_mulai';
+        if (hasPendingTask) {
+          studentCategoryStatus = 'submitted'; // Belum dinilai / antrean
+        } else if (isAllDone || hasAnyGraded) {
+          studentCategoryStatus = 'completed'; // Sudah dinilai
+        } else if (hasAnySubmission) {
+          studentCategoryStatus = 'submitted';
+        } else {
+          studentCategoryStatus = 'belum_mulai'; // Belum mengerjakan
+        }
+
+        if (studentCategoryStatus === 'completed') countCompleted++;
         else if (studentCategoryStatus === 'submitted') countSubmitted++;
         else countNotStarted++;
 
@@ -2105,6 +2309,16 @@
       if (bSub) bSub.textContent = countSubmitted;
       const bNot = document.getElementById('badgeCountNotStarted');
       if (bNot) bNot.textContent = countNotStarted;
+
+      // Update KPI Cards di atas filter
+      const elKpiTot = document.getElementById('kpiCardTotalBinaan');
+      const elKpiPend = document.getElementById('kpiCardPendingBinaan');
+      const elKpiDone = document.getElementById('kpiCardDoneBinaan');
+      const elKpiUn = document.getElementById('kpiCardUnstartedBinaan');
+      if (elKpiTot) elKpiTot.textContent = countAll;
+      if (elKpiPend) elKpiPend.textContent = countSubmitted;
+      if (elKpiDone) elKpiDone.textContent = countCompleted;
+      if (elKpiUn) elKpiUn.textContent = countNotStarted;
 
       let filteredMeta = studentMetaList;
       if (fasJalurFilter !== 'all') {
