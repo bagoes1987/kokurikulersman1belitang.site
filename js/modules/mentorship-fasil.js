@@ -337,7 +337,7 @@
       let updated = false;
       try {
         // 1. Smart Merge Assignments per-Guru (Multi-PC Safe)
-        const localAssigns = this.getAssignmentsMap();
+        const localAssigns = this.getAssignmentsMap(true);
         const serverAssigns = (state.assignments && typeof state.assignments === 'object') ? state.assignments : {};
         const mergedAssigns = Object.assign({}, localAssigns);
         let assignChanged = false;
@@ -361,6 +361,7 @@
 
         if (assignChanged) {
           localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(mergedAssigns));
+          _cachedAssignmentsMap = mergedAssigns;
           updated = true;
         }
 
@@ -375,6 +376,7 @@
           const mergedRoles = Object.assign({}, localRoles, serverRoles);
           if (JSON.stringify(localRoles) !== JSON.stringify(mergedRoles)) {
             localStorage.setItem(STORAGE_KEY_TEACHER_ROLES, JSON.stringify(mergedRoles));
+            _cachedTeacherRolesMap = mergedRoles;
             updated = true;
           }
         }
@@ -392,6 +394,8 @@
           const mergedCust = Array.from(custMap.values());
           if (JSON.stringify(localCust) !== JSON.stringify(mergedCust)) {
             localStorage.setItem(STORAGE_KEY_MENTOR_CUSTOM_TEACHERS, JSON.stringify(mergedCust));
+            _cachedTeachersList = null;
+            _cachedTeacherIdentifierIndex = null;
             updated = true;
           }
         }
@@ -432,6 +436,7 @@
           }
         }
       } catch (e) {}
+      invalidateMentorshipCache();
       return updated;
     },
 
@@ -447,7 +452,7 @@
           if (res && res.success && res.data) {
             const serverAssigns = (res.data.assignments && typeof res.data.assignments === 'object') ? res.data.assignments : {};
             const serverRoles = (res.data.teacher_roles && typeof res.data.teacher_roles === 'object') ? res.data.teacher_roles : {};
-            const localAssignsBefore = self.getAssignmentsMap();
+            const localAssignsBefore = self.getAssignmentsMap(true);
             let localRolesBefore = {};
             try {
               const r = localStorage.getItem(STORAGE_KEY_TEACHER_ROLES);
@@ -459,6 +464,7 @@
                                      Object.keys(localRolesBefore).some(k => !serverRoles[k]);
 
             const changed = self.applyServerState(res.data);
+            invalidateMentorshipCache();
 
             if (hasUnsyncedLocal) {
               self.syncToServer(function() {

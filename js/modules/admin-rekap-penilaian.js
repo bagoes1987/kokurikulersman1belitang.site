@@ -122,54 +122,85 @@
     state.isLoading = true;
     updateSyncButtonState(true);
 
-    fetch('../api/progress.php?action=admin_recap')
+    const apiBase = (window.FincestemCore && FincestemCore.api && FincestemCore.api.base) ? FincestemCore.api.base : '../api';
+
+    const pRecap = fetch(apiBase + '/progress.php?action=admin_recap')
       .then(res => res.json())
-      .then(json => {
-        state.isLoading = false;
-        updateSyncButtonState(false);
-
-        if (json && json.success && json.data) {
-          const sMap = {};
-          if (Array.isArray(json.data.students)) {
-            json.data.students.forEach(s => {
-              if (s && s.student_nisn) {
-                sMap[String(s.student_nisn).trim()] = s;
-              }
-            });
-          }
-          state.serverStudents = sMap;
-
-          const dMap = {};
-          if (Array.isArray(json.data.days)) {
-            json.data.days.forEach(d => {
-              if (d && d.student_nisn && d.day_number) {
-                const key = `${String(d.student_nisn).trim()}_${d.day_number}`;
-                dMap[key] = d;
-              }
-            });
-          }
-          state.serverDays = dMap;
-          state.lastSyncTime = new Date();
-          state.isLoaded = true;
-
-          processEnrichedData();
-          renderAllViews();
-          if (typeof callback === 'function') callback(true);
-        } else {
-          // Fallback jika API gagal atau kosong
-          processEnrichedData();
-          renderAllViews();
-          if (typeof callback === 'function') callback(false);
-        }
-      })
       .catch(err => {
-        console.warn('[AdminRekapPenilaian] Gagal menarik data backend, menggunakan fallback:', err);
-        state.isLoading = false;
-        updateSyncButtonState(false);
+        console.warn('[AdminRekapPenilaian] Gagal menarik data backend:', err);
+        return null;
+      });
+
+    const pMentorship = new Promise((resolve) => {
+      let resolved = false;
+      const timer = setTimeout(() => {
+        if (!resolved) {
+          resolved = true;
+          resolve(null);
+        }
+      }, 5000);
+
+      if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+        window.FincestemMentorship.syncFromServer(function(changed, data) {
+          if (!resolved) {
+            resolved = true;
+            clearTimeout(timer);
+            resolve(data);
+          }
+        });
+      } else {
+        if (!resolved) {
+          resolved = true;
+          clearTimeout(timer);
+          resolve(null);
+        }
+      }
+    });
+
+    Promise.all([pRecap, pMentorship]).then(([json, mentorData]) => {
+      state.isLoading = false;
+      updateSyncButtonState(false);
+
+      if (json && json.success && json.data) {
+        const sMap = {};
+        if (Array.isArray(json.data.students)) {
+          json.data.students.forEach(s => {
+            if (s && s.student_nisn) {
+              sMap[String(s.student_nisn).trim()] = s;
+            }
+          });
+        }
+        state.serverStudents = sMap;
+
+        const dMap = {};
+        if (Array.isArray(json.data.days)) {
+          json.data.days.forEach(d => {
+            if (d && d.student_nisn && d.day_number) {
+              const key = `${String(d.student_nisn).trim()}_${d.day_number}`;
+              dMap[key] = d;
+            }
+          });
+        }
+        state.serverDays = dMap;
+        state.lastSyncTime = new Date();
+        state.isLoaded = true;
+
+        processEnrichedData();
+        renderAllViews();
+        if (typeof callback === 'function') callback(true);
+      } else {
         processEnrichedData();
         renderAllViews();
         if (typeof callback === 'function') callback(false);
-      });
+      }
+    }).catch(err => {
+      console.warn('[AdminRekapPenilaian] Exception in fetchRekapDataFromServer:', err);
+      state.isLoading = false;
+      updateSyncButtonState(false);
+      processEnrichedData();
+      renderAllViews();
+      if (typeof callback === 'function') callback(false);
+    });
   }
 
   /**
@@ -345,7 +376,26 @@
         }
       });
 
-      const classesList = Object.keys(classCounts).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+      let classesList = Object.keys(classCounts).sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+
+      // Fallback: periksa penugasan per-rombel di FincestemCore.assignments jika belum ada di mentorship
+      if (classesList.length === 0 && window.FincestemCore && FincestemCore.assignments && typeof FincestemCore.assignments.getLocalAssignments === 'function') {
+        try {
+          const local = FincestemCore.assignments.getLocalAssignments() || {};
+          const allAssigned = [...(local.facilitators || []), ...(local.coordinators || [])];
+          allAssigned.forEach(as => {
+            const mUser = String(as.teacher_username || '').toLowerCase();
+            const mName = String(as.teacher_name || '').toLowerCase();
+            if (mUser === key || (tc.nama_guru && mName.includes(tc.nama_guru.toLowerCase()))) {
+              const cls = String(as.class_name || '').replace(/^KELAS\s+/i, '').trim();
+              if (cls && !classesList.includes(cls)) {
+                classesList.push(cls);
+              }
+            }
+          });
+          classesList.sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+        } catch(e) {}
+      }
       const totalBinaan = rawBinaan.length;
 
       // Siswa yang sudah mengumpulkan setidaknya 1 tugas
@@ -403,6 +453,15 @@
         statusColor: statusColor
       };
     });
+
+    // Urutkan fasilitator: Guru yang memiliki binaan di atas (bina terbanyak lebih dulu), lalu abjad
+    fasilMetrics.sort((a, b) => {
+      if (a.totalBinaan > 0 && b.totalBinaan === 0) return -1;
+      if (b.totalBinaan > 0 && a.totalBinaan === 0) return 1;
+      if (b.totalBinaan !== a.totalBinaan) return b.totalBinaan - a.totalBinaan;
+      return a.nama_guru.localeCompare(b.nama_guru);
+    });
+    fasilMetrics.forEach((f, i) => f.no = i + 1);
 
     state.facilitatorStats = fasilMetrics;
   }
@@ -539,7 +598,8 @@
 
     // Filter Status Kinerja
     if (stFilter !== 'ALL') {
-      if (stFilter === 'COMPLETE') list = list.filter(f => f.statusKinerja === 'SELESAI');
+      if (stFilter === 'ASSIGNED') list = list.filter(f => f.totalBinaan > 0);
+      else if (stFilter === 'COMPLETE') list = list.filter(f => f.statusKinerja === 'SELESAI');
       else if (stFilter === 'ACTIVE') list = list.filter(f => f.statusKinerja === 'PROSES');
       else if (stFilter === 'PENDING') list = list.filter(f => f.pendingCount > 0);
       else if (stFilter === 'NONE') list = list.filter(f => f.statusKinerja === 'TERTUNDA');

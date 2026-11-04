@@ -1665,10 +1665,10 @@
 
   <script src="../js/siswa_data.js?v=20261030_binaan_v2"></script>
   <script src="../js/guru_data.js?v=20261030_binaan_v2"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v2"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261104_v5"></script>
   <script src="../js/core.js?v=20261030_binaan_v2"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
-  <script src="../js/modules/guru-rekap-monitoring.js?v=20261104_v1"></script>
+  <script src="../js/modules/guru-rekap-monitoring.js?v=20261104_v2"></script>
   <script>
     // Kamus Narasi Resmi Rapor Kokurikuler Sesuai Kriteria Admin & SK Kelulusan
     window.FINCESTEM_NARRASI_RAPOR = {
@@ -2248,13 +2248,16 @@
           } catch(e) {}
         }
         const isAllDone = (completedDays >= 7 || percentage >= 100);
-        
+        let latestFeedbackStatus = prog && prog.latest_feedback ? prog.latest_feedback.status : null;
+        let day1Status = (prog && typeof FincestemCore !== 'undefined' && FincestemCore.progress) ? FincestemCore.progress.getDayStatus(prog, 1) : null;
+        let rawStatus = latestFeedbackStatus || day1Status || (stu.task_status || 'belum_mulai');
+
         // Deteksi akurat apakah ada tugas siswa yang belum dinilai (antrean)
         let hasPendingTask = false;
         let hasAnyGraded = false;
         let hasAnySubmission = false;
 
-        if (prog && prog.records) {
+        if (prog && Array.isArray(prog.records)) {
           prog.records.forEach(r => {
             if (r.status === 'submitted' || ['materi', 'lkpd', 'asesmen', 'refleksi', 'dokumentasi'].includes(r.task_type)) {
               hasAnySubmission = true;
@@ -2265,13 +2268,15 @@
           });
         }
 
-        for (let d = 1; d <= 7; d++) {
-          const dRec = prog && prog.records ? prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'final')) : null;
-          const hasDailySub = prog && prog.task_map ? (prog.task_map[d + '_lkpd'] || prog.task_map[d + '_materi'] || prog.task_map[d + '_asesmen'] || prog.task_map[d + '_refleksi']) : null;
-          if (hasDailySub) {
-            hasAnySubmission = true;
-            if (!dRec || dRec.score === null || dRec.score === undefined || dRec.score === '') {
-              hasPendingTask = true;
+        if (prog && prog.task_map) {
+          for (let d = 1; d <= 7; d++) {
+            const hasDailySub = prog.task_map[d + '_lkpd'] || prog.task_map[d + '_materi'] || prog.task_map[d + '_asesmen'] || prog.task_map[d + '_refleksi'];
+            if (hasDailySub) {
+              hasAnySubmission = true;
+              const dRec = prog.records ? prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'final')) : null;
+              if (!dRec || dRec.score === null || dRec.score === undefined || dRec.score === '') {
+                hasPendingTask = true;
+              }
             }
           }
         }
@@ -2279,10 +2284,13 @@
         let studentCategoryStatus = 'belum_mulai';
         if (hasPendingTask) {
           studentCategoryStatus = 'submitted'; // Belum dinilai / antrean
+          rawStatus = 'submitted';
         } else if (isAllDone || hasAnyGraded) {
           studentCategoryStatus = 'completed'; // Sudah dinilai
+          rawStatus = isAllDone ? 'completed' : (rawStatus === 'submitted' ? 'completed' : rawStatus);
         } else if (hasAnySubmission) {
           studentCategoryStatus = 'submitted';
+          rawStatus = 'submitted';
         } else {
           studentCategoryStatus = 'belum_mulai'; // Belum mengerjakan
         }
@@ -2337,9 +2345,9 @@
       }
       if (fasStatusFilter !== 'all') {
         filteredMeta = filteredMeta.filter(m => {
-          if (fasStatusFilter === 'completed') return m.isAllDone;
+          if (fasStatusFilter === 'completed') return m.studentCategoryStatus === 'completed';
           if (fasStatusFilter === 'submitted') return m.studentCategoryStatus === 'submitted';
-          if (fasStatusFilter === 'belum_mulai') return m.completedDays === 0 && m.studentCategoryStatus !== 'submitted';
+          if (fasStatusFilter === 'belum_mulai') return m.studentCategoryStatus === 'belum_mulai';
           return true;
         });
       }
