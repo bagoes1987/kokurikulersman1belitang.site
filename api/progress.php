@@ -79,10 +79,62 @@ function ensureProgressTable($pdo) {
 if ($method === 'GET') {
     $nisn = trim($_GET['nisn'] ?? '');
     $className = trim($_GET['class_name'] ?? '');
+    $action = trim($_GET['action'] ?? '');
 
     try {
         $pdo = getDB();
         ensureProgressTable($pdo);
+
+        // A. Rekapitulasi Penilaian Real-Time untuk Admin Portal
+        if ($action === 'admin_recap') {
+            // 1. Ringkasan per siswa
+            $stmt = $pdo->query("
+                SELECT 
+                    `student_nisn`,
+                    COUNT(DISTINCT CONCAT(`day_number`, '_', `task_type`)) as total_submissions,
+                    COUNT(DISTINCT CASE WHEN `score` IS NOT NULL AND `score` != '' THEN `day_number` END) as graded_days_count,
+                    AVG(CASE WHEN `score` IS NOT NULL AND `score` != '' AND `day_number` BETWEEN 1 AND 7 THEN `score` END) as avg_score,
+                    MAX(CASE WHEN `day_number` = 7 AND `score` IS NOT NULL AND `score` != '' THEN `score` END) as day7_score,
+                    MAX(CASE WHEN `day_number` = 7 AND `score` IS NOT NULL AND `score` != '' THEN `predicate` END) as day7_predicate,
+                    MAX(CASE WHEN `day_number` = 7 THEN `score_financial` END) as day7_fin,
+                    MAX(CASE WHEN `day_number` = 7 THEN `score_culture` END) as day7_cul,
+                    MAX(CASE WHEN `day_number` = 7 THEN `score_exploration` END) as day7_exp,
+                    MAX(CASE WHEN `day_number` = 7 THEN `score_stem` END) as day7_stem,
+                    MAX(`facilitator_name`) as latest_facilitator,
+                    MAX(`updated_at`) as last_active
+                FROM `student_progress_eval`
+                GROUP BY `student_nisn`
+            ");
+            $studentSummaries = $stmt ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+
+            // 2. Detail matriks per hari (Day 1 - 7)
+            $stmtDays = $pdo->query("
+                SELECT 
+                    `student_nisn`,
+                    `day_number`,
+                    MAX(CASE WHEN `score` IS NOT NULL AND `score` != '' THEN `score` END) as score,
+                    MAX(CASE WHEN `predicate` IS NOT NULL AND `predicate` != '' THEN `predicate` END) as predicate,
+                    MAX(`score_financial`) as fin,
+                    MAX(`score_culture`) as cul,
+                    MAX(`score_exploration`) as exp,
+                    MAX(`score_stem`) as stem,
+                    MAX(CASE WHEN `status` = 'completed' THEN 'completed' WHEN `status` = 'submitted' THEN 'submitted' ELSE `status` END) as status,
+                    MAX(`facilitator_name`) as facilitator_name,
+                    COUNT(DISTINCT CASE WHEN `task_type` IN ('materi', 'lkpd', 'asesmen', 'refleksi', 'dokumentasi') THEN `task_type` END) as student_tasks_count,
+                    MAX(`updated_at`) as updated_at
+                FROM `student_progress_eval`
+                WHERE `day_number` BETWEEN 1 AND 7
+                GROUP BY `student_nisn`, `day_number`
+            ");
+            $dayRecords = $stmtDays ? $stmtDays->fetchAll(PDO::FETCH_ASSOC) : [];
+
+            jsonResponse(true, 'Rekapitulasi penilaian berhasil dimuat', [
+                'students'    => $studentSummaries,
+                'days'        => $dayRecords,
+                'server_time' => date('Y-m-d H:i:s')
+            ]);
+            exit;
+        }
 
         if ($nisn) {
             // Ambil data reset_at termutakhir (spesifik siswa atau grup/global reset)

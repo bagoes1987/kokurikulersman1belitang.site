@@ -275,6 +275,10 @@
               <span class="material-symbols-outlined text-lg text-slate-400 group-hover:text-amber-400">calendar_month</span>
               <span class="flex-1 truncate">Jadwal &amp; Penilaian</span>
             </button>
+            <button id="btnTabAdm_evalrecap" onclick="switchAdmTab('evalrecap')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
+              <span class="material-symbols-outlined text-lg text-sky-400 group-hover:text-sky-300">analytics</span>
+              <span class="flex-1 truncate">Rekap Penilaian &amp; Rapor</span>
+            </button>
             <button id="btnTabAdm_rekap" onclick="switchAdmTab('rekap')" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all text-left group text-slate-300 hover:bg-slate-800 hover:text-white">
               <span class="material-symbols-outlined text-lg text-amber-400 group-hover:text-amber-300">directions_bus</span>
               <span class="flex-1 truncate">Rekap Jalur Peserta</span>
@@ -1424,6 +1428,407 @@
         <!-- Populated by JavaScript -->
       </div>
 
+    </div>
+
+    <!-- TAB: REKAPITULASI PENILAIAN & RAPOR KOKURIKULER REAL-TIME -->
+    <div id="panelAdminEvalrecap" class="hidden flex flex-col gap-4">
+      
+      <!-- HEADER REKAP PENILAIAN & SINKRONISASI -->
+      <div class="bg-gradient-to-r from-sky-600/10 via-blue-600/5 to-transparent rounded-3xl p-5 sm:p-6 border border-sky-300/60 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 rounded-2xl bg-[#0875D1] text-white flex items-center justify-center shrink-0 shadow-md">
+            <span class="material-symbols-outlined text-2xl">analytics</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="font-black text-base sm:text-lg text-slate-800 leading-tight">Rekapitulasi Penilaian &amp; Rapor Kokurikuler</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-emerald-500 text-white shadow-2xs">Real-Time</span>
+            </div>
+            <p class="text-xs text-slate-500 font-medium mt-0.5">Monitoring pengerjaan siswa, progres penilaian 116 fasilitator, antrean evaluasi, dan nilai rapor 4 pilar</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 flex-wrap sm:flex-nowrap">
+          <button id="btnSyncRekapPenilaian" onclick="FincestemAdminRekapPenilaian.refresh()" class="px-4 py-2.5 rounded-xl bg-[#0875D1] hover:bg-blue-600 text-white font-bold text-xs flex items-center gap-2 shadow-sm transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">sync</span>
+            <span id="lblSyncRekapPenilaian">Sinkronkan Real-Time</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- RINGKASAN METRIK KPI UTAMA (5 KARTU) -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+        <!-- 1. Total Siswa Terdaftar -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col justify-between">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Siswa</span>
+          <div class="flex items-baseline gap-1.5 mt-2">
+            <span id="kpiRekapTotalStudents" class="text-2xl font-black text-slate-800 leading-none">1.165</span>
+            <span class="text-[10px] text-slate-400 font-semibold">Aktif</span>
+          </div>
+          <span class="text-[10px] text-slate-400 mt-2">455 FT • 710 Non-FT</span>
+        </div>
+
+        <!-- 2. Rata-rata Pengerjaan Siswa -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col justify-between">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Progres Pengerjaan</span>
+          <div class="flex items-baseline gap-1.5 mt-2">
+            <span id="kpiRekapAvgProgress" class="text-2xl font-black text-sky-600 leading-none">0%</span>
+            <span class="text-[10px] text-slate-400 font-semibold">Rata-rata</span>
+          </div>
+          <span class="text-[10px] text-slate-400 mt-2">Tugas dari 35 Instrumen</span>
+        </div>
+
+        <!-- 3. Penilaian Fasilitator Selesai -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col justify-between">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Penilaian Fasil</span>
+          <div class="flex items-baseline gap-1.5 mt-2">
+            <span id="kpiRekapFasilDone" class="text-lg font-black text-emerald-600 leading-none">0%</span>
+          </div>
+          <span class="text-[10px] text-slate-400 mt-2">Siswa Binaan Dinilai</span>
+        </div>
+
+        <!-- 4. Antrean Belum Dinilai -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col justify-between">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Antrean Belum Dinilai</span>
+          <div class="flex items-baseline gap-1.5 mt-2">
+            <span id="kpiRekapPendingGrading" class="text-2xl font-black text-slate-800 leading-none">0</span>
+            <span class="text-[10px] text-slate-400 font-semibold">Tugas</span>
+          </div>
+          <span class="text-[10px] text-amber-600 font-semibold mt-2">Menunggu Nilai Guru</span>
+        </div>
+
+        <!-- 5. Rapor Kokurikuler Terbit -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col justify-between col-span-2 sm:col-span-1">
+          <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Rapor Day 7 Siap</span>
+          <div class="flex items-baseline gap-1.5 mt-2">
+            <span id="kpiRekapRaporReady" class="text-2xl font-black text-indigo-600 leading-none">0 Siswa</span>
+          </div>
+          <span id="lblRekapLastSyncTime" class="text-[10px] text-slate-400 mt-2 truncate">Sinkron Terakhir: -</span>
+        </div>
+      </div>
+
+      <!-- NAV SUB-TAB (3 TAB: 1. MONITORING FASIL, 2. MATRIKS HARIAN, 3. RAPOR KOKURIKULER) -->
+      <div class="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto no-scrollbar">
+        <button id="btnAdmRekapSub_monitoring" onclick="switchAdminRekapSubTab('monitoring')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all bg-[#0875D1] text-white shadow-sm border border-blue-400/40 shrink-0">
+          <span class="material-symbols-outlined text-base">supervised_user_circle</span>
+          <span>1. Monitoring Kinerja Fasil &amp; Siswa</span>
+        </button>
+        <button id="btnAdmRekapSub_matrix" onclick="switchAdminRekapSubTab('matrix')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100 bg-white border border-slate-200 shrink-0">
+          <span class="material-symbols-outlined text-base">view_timeline</span>
+          <span>2. Matriks Penilaian Real-Time (Per Kelas &amp; Hari)</span>
+        </button>
+        <button id="btnAdmRekapSub_rapor" onclick="switchAdminRekapSubTab('rapor')" class="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all text-slate-600 hover:text-slate-900 hover:bg-slate-100 bg-white border border-slate-200 shrink-0">
+          <span class="material-symbols-outlined text-base">fact_check</span>
+          <span>3. Rekap Rapor Kokurikuler (4 Pilar &amp; Predikat)</span>
+        </button>
+      </div>
+
+      <!-- VIEW SUB-TAB 1: MONITORING KINERJA FASILITATOR -->
+      <div id="viewAdmRekapSub_monitoring" class="flex flex-col gap-3">
+        <!-- Filter Tab 1 -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div class="flex items-center gap-2 w-full sm:w-auto">
+            <span class="text-xs font-bold text-slate-500 whitespace-nowrap">Filter Status:</span>
+            <select onchange="filterMonitoringFasilStatus(this.value)" class="text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+              <option value="ALL">Semua Kinerja Guru</option>
+              <option value="PENDING">Ada Antrean Belum Dinilai</option>
+              <option value="COMPLETE">Tuntas 100%</option>
+              <option value="ACTIVE">Sedang Aktif Menilai</option>
+              <option value="NONE">Belum Ada Nilai Sama Sekali</option>
+            </select>
+          </div>
+          <div class="relative w-full sm:w-80">
+            <input type="text" oninput="filterMonitoringFasilSearch(this.value)" placeholder="Cari nama guru fasilitator / NIP..." class="w-full text-xs font-medium pl-9 pr-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white transition-all">
+            <span class="material-symbols-outlined text-slate-400 text-sm absolute left-3 top-2.5">search</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between px-1">
+          <span id="lblCountMonitoringFasil" class="text-xs font-bold text-slate-500">Memuat data fasilitator...</span>
+          <span class="text-[11px] text-slate-400">Pembaruan otomatis dari server</span>
+        </div>
+
+        <!-- Tabel Fasilitator -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50/90 border-b border-slate-200 text-[11px] font-black uppercase tracking-wider text-slate-500">
+                  <th class="px-4 py-3 text-center w-12">No</th>
+                  <th class="px-4 py-3">Guru Fasilitator</th>
+                  <th class="px-4 py-3">Kelas Binaan</th>
+                  <th class="px-4 py-3 text-center">Jml Binaan</th>
+                  <th class="px-4 py-3 w-40">% Siswa Kumpul</th>
+                  <th class="px-4 py-3 w-40">% Dinilai Fasil</th>
+                  <th class="px-4 py-3 text-center">Antrean Belum Dinilai</th>
+                  <th class="px-4 py-3 text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyRekapMonitoringFasil">
+                <!-- Diisi JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW SUB-TAB 2: MATRIKS PENILAIAN REAL-TIME -->
+      <div id="viewAdmRekapSub_matrix" class="hidden flex flex-col gap-3">
+        <!-- Baris Filter Matriks Lengkap -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col gap-3">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2.5">
+            <!-- Filter Kelas -->
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Kelas</label>
+              <select id="selRekapMatrixKelas" onchange="onMatrixFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Kelas</option>
+              </select>
+            </div>
+            <!-- Filter Hari -->
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Hari (Day)</label>
+              <select id="selRekapMatrixHari" onchange="onMatrixFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Hari (Overview)</option>
+                <option value="1">Day 1</option>
+                <option value="2">Day 2</option>
+                <option value="3">Day 3</option>
+                <option value="4">Day 4</option>
+                <option value="5">Day 5</option>
+                <option value="6">Day 6</option>
+                <option value="7">Day 7 (Rapor)</option>
+              </select>
+            </div>
+            <!-- Filter Jalur -->
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Jalur</label>
+              <select id="selRekapMatrixCategory" onchange="onMatrixFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Jalur</option>
+                <option value="FIELD_TRIP">Field Trip</option>
+                <option value="NON_FIELD_TRIP">Non-Field Trip</option>
+              </select>
+            </div>
+            <!-- Filter Fasilitator -->
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Fasilitator</label>
+              <select id="selRekapMatrixFasil" onchange="onMatrixFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Fasilitator</option>
+              </select>
+            </div>
+            <!-- Filter Status -->
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Status Penilaian</label>
+              <select id="selRekapMatrixStatus" onchange="onMatrixFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Status</option>
+                <option value="PENDING">Menunggu Dinilai (⏱)</option>
+                <option value="GRADED">Sudah Dinilai (✓)</option>
+                <option value="NOT_SUBMITTED">Belum Mengerjakan</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="relative w-full">
+            <input type="text" id="inpRekapMatrixSearch" oninput="onMatrixFilterChange()" placeholder="Cari berdasarkan NISN atau Nama Siswa..." class="w-full text-xs font-medium pl-9 pr-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white transition-all">
+            <span class="material-symbols-outlined text-slate-400 text-sm absolute left-3 top-2.5">search</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between px-1">
+          <span id="lblCountMatrixSiswa" class="text-xs font-bold text-slate-500">Memuat data siswa...</span>
+          <div class="flex items-center gap-2">
+            <button id="btnPrevPageMatrixSiswa" onclick="pageMatrixPrev()" class="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 cursor-pointer">
+              <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+            <span id="lblPageMatrixSiswa" class="text-xs font-bold text-slate-600">Hal 1 dari 1</span>
+            <button id="btnNextPageMatrixSiswa" onclick="pageMatrixNext()" class="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 cursor-pointer">
+              <span class="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabel Matriks Real-Time -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50/90 border-b border-slate-200 text-[11px] font-black uppercase tracking-wider text-slate-500">
+                  <th class="px-4 py-3 text-center w-12">No</th>
+                  <th class="px-4 py-3">Nama &amp; NISN Siswa</th>
+                  <th class="px-4 py-3">Kelas &amp; Jalur</th>
+                  <th class="px-4 py-3">Fasilitator</th>
+                  <th class="px-4 py-3 w-40">% Pengerjaan</th>
+                  <th class="px-4 py-3">Matriks Hari (Day 1 - 7)</th>
+                  <th class="px-4 py-3 text-center">Aktif Terakhir</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyRekapMatrixSiswa">
+                <!-- Diisi JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW SUB-TAB 3: REKAP RAPOR KOKURIKULER (4 PILAR & PREDIKAT RESMI) -->
+      <div id="viewAdmRekapSub_rapor" class="hidden flex flex-col gap-3">
+        <!-- Header Rapor & Baris Tombol Cetak / Ekspor -->
+        <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col gap-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 pb-3">
+            <div>
+              <h4 class="font-black text-sm text-slate-800">Rekapitulasi Nilai Akhir &amp; Predikat Rapor</h4>
+              <p class="text-[11px] text-slate-500 font-medium">Kriteria Resmi: Mahir (&ge;85), Cakap (70 - 84.9), Berkembang (&lt;70)</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="exportRekapRaporCSV()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-base">download</span>
+                <span>Ekspor Excel/CSV</span>
+              </button>
+              <button onclick="printRekapRaporKokurikuler()" class="px-3.5 py-2 rounded-xl bg-[#0875D1] hover:bg-blue-600 text-white font-bold text-xs flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-base">print</span>
+                <span>Cetak Rapor Rekap (A4)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Filter Rapor -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Kelas</label>
+              <select id="selRekapRaporKelas" onchange="onRaporFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Kelas</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Predikat</label>
+              <select id="selRekapRaporPredikat" onchange="onRaporFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Predikat</option>
+                <option value="Mahir">Mahir (&ge;85)</option>
+                <option value="Cakap">Cakap (70 - 84.9)</option>
+                <option value="Berkembang">Berkembang (&lt;70)</option>
+                <option value="BELUM_ADA">Menunggu Penilaian Day 7</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Jalur</label>
+              <select id="selRekapRaporCategory" onchange="onRaporFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Jalur</option>
+                <option value="FIELD_TRIP">Field Trip</option>
+                <option value="NON_FIELD_TRIP">Non-Field Trip</option>
+              </select>
+            </div>
+            <div>
+              <label class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">Fasilitator</label>
+              <select id="selRekapRaporFasil" onchange="onRaporFilterChange()" class="w-full text-xs font-semibold px-2.5 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+                <option value="ALL">Semua Fasilitator</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="relative w-full">
+            <input type="text" id="inpRekapRaporSearch" oninput="onRaporFilterChange()" placeholder="Cari NISN atau Nama Siswa..." class="w-full text-xs font-medium pl-9 pr-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white transition-all">
+            <span class="material-symbols-outlined text-slate-400 text-sm absolute left-3 top-2.5">search</span>
+          </div>
+
+          <!-- Badges Distribusi Predikat -->
+          <div class="flex items-center gap-2 pt-1 flex-wrap">
+            <span class="text-xs font-bold text-slate-500">Distribusi Predikat:</span>
+            <span id="badgeCountRaporMahir" class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">0 Mahir</span>
+            <span id="badgeCountRaporCakap" class="px-2.5 py-1 rounded-full text-xs font-bold bg-sky-100 text-sky-800 border border-sky-200">0 Cakap</span>
+            <span id="badgeCountRaporBerkembang" class="px-2.5 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-200">0 Berkembang</span>
+            <span id="badgeCountRaporPending" class="px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">0 Menunggu Day 7</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between px-1">
+          <span id="lblCountRaporSiswa" class="text-xs font-bold text-slate-500">Memuat data rapor...</span>
+          <div class="flex items-center gap-2">
+            <button id="btnPrevPageRaporSiswa" onclick="pageRaporPrev()" class="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 cursor-pointer">
+              <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+            <span id="lblPageRaporSiswa" class="text-xs font-bold text-slate-600">Hal 1 dari 1</span>
+            <button id="btnNextPageRaporSiswa" onclick="pageRaporNext()" class="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 cursor-pointer">
+              <span class="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tabel Rapor 4 Pilar -->
+        <div class="bg-white rounded-2xl border border-slate-200/80 shadow-2xs overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50/90 border-b border-slate-200 text-[11px] font-black uppercase tracking-wider text-slate-500">
+                  <th class="px-4 py-3 text-center w-12">No</th>
+                  <th class="px-4 py-3">Nama &amp; NISN Siswa</th>
+                  <th class="px-4 py-3">Kelas</th>
+                  <th class="px-4 py-3">Guru Fasilitator</th>
+                  <th class="px-4 py-3 text-center">Finansial</th>
+                  <th class="px-4 py-3 text-center">Budaya</th>
+                  <th class="px-4 py-3 text-center">Eksplorasi</th>
+                  <th class="px-4 py-3 text-center">STEM</th>
+                  <th class="px-4 py-3 text-center">Nilai Akhir</th>
+                  <th class="px-4 py-3 text-center">Predikat</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyRekapRaporSiswa">
+                <!-- Diisi JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MODAL POPUP: DETAIL ANTREAN BELUM DINILAI FASILITATOR -->
+    <div id="modalAntreanPenilaianFasil" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs hidden">
+      <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl border border-slate-200 overflow-hidden">
+        <!-- Header Modal -->
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center font-bold">
+              <span class="material-symbols-outlined text-xl">pending_actions</span>
+            </div>
+            <div>
+              <h3 id="lblModalAntreanFasilName" class="font-black text-sm text-slate-800 leading-tight">Nama Fasilitator</h3>
+              <p id="lblModalAntreanCount" class="text-xs text-amber-600 font-bold mt-0.5">0 Siswa Menunggu Penilaian</p>
+            </div>
+          </div>
+          <button onclick="closeModalAntreanFasil()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors">
+            <span class="material-symbols-outlined text-xl">close</span>
+          </button>
+        </div>
+
+        <!-- Body Modal (Tabel Siswa) -->
+        <div class="p-5 overflow-y-auto flex-1">
+          <div class="border border-slate-200 rounded-xl overflow-hidden">
+            <table class="w-full text-left border-collapse">
+              <thead>
+                <tr class="bg-slate-50 border-b border-slate-200 text-[10px] font-black uppercase text-slate-400">
+                  <th class="px-3 py-2 text-center w-8">No</th>
+                  <th class="px-3 py-2">Nama Siswa</th>
+                  <th class="px-3 py-2">NISN</th>
+                  <th class="px-3 py-2">Kelas</th>
+                  <th class="px-3 py-2">Hari Tugas Menunggu</th>
+                </tr>
+              </thead>
+              <tbody id="tbodyModalAntreanSiswa">
+                <!-- Populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Footer Modal -->
+        <div class="p-4 border-t border-slate-100 bg-slate-50 flex items-center justify-between gap-3">
+          <button onclick="copyReminderWaFasil()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-2 shadow-2xs transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-sm">content_copy</span>
+            <span>Salin Pesan Pengingat WhatsApp</span>
+          </button>
+          <button onclick="closeModalAntreanFasil()" class="px-4 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs transition-all cursor-pointer">
+            Tutup
+          </button>
+        </div>
+      </div>
     </div>
 
     <!-- TAB: REKAP PESERTA FIELD TRIP PER KELAS -->
@@ -3782,6 +4187,7 @@
   <script src="../js/modules/mentorship-fasil.js?v=20261030_binaan_v4"></script>
   <script src="../js/modules/admin-mentorship.js?v=20261104_rekap_fasil_v1"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
+  <script src="../js/modules/admin-rekap-penilaian.js?v=20261104_v1"></script>
   <script>
     let adminCurrentGrade = 'ALL';
     let adminSearchQuery = '';
@@ -4007,6 +4413,7 @@
       mentorship: 'Pembagian Siswa Binaan (Mentorship Fasilitator)',
       cards: 'Cetak Kartu Login Siswa (Folio/F4/HVS)',
       schedule: 'Jadwal & Penilaian (Day 1 - 7)',
+      evalrecap: 'Rekap Penilaian & Rapor Kokurikuler',
       rekap: 'Rekap Jalur Peserta',
       gallery: 'Galeri Foto Riset',
       banksoal: 'Bank Soal Asesmen (Non-Field Trip)',
@@ -4016,7 +4423,7 @@
     };
 
     function switchAdmTab(tab) {
-      const allTabs = ['users', 'teachers', 'zones', 'mentorship', 'cards', 'schedule', 'rekap', 'reset', 'config', 'backup', 'gallery', 'banksoal'];
+      const allTabs = ['users', 'teachers', 'zones', 'mentorship', 'cards', 'schedule', 'evalrecap', 'rekap', 'reset', 'config', 'backup', 'gallery', 'banksoal'];
       
       // Update Title Breadcrumb di Header Atas
       const activeTitleEl = document.getElementById('adminActiveMenuTitle');
@@ -4049,6 +4456,7 @@
         toggleAdminSidebar(false);
       }
 
+      if (tab === 'evalrecap' && typeof initAdminRekapPenilaian === 'function') initAdminRekapPenilaian();
       if (tab === 'teachers') initAdminTeacherModule();
       if (tab === 'cards') initAdminCardsView();
       if (tab === 'schedule') {
