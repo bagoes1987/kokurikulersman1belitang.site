@@ -4665,14 +4665,14 @@
   }
 
     // =========================================================================
-  // LKPD LATIHAN & SIMULASI KHUSUS DAY 0 (NON-FIELD TRIP)
+    // LKPD LATIHAN & SIMULASI OBSERVASI LAPANGAN KHUSUS DAY 0
   // =========================================================================
   function renderNonFieldTripDay0LKPD(isReadOnly) {
     const mainEl = document.querySelector('main');
     if (!mainEl) return;
 
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
-    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentName = u.name || 'Peserta Kokurikuler';
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
@@ -4726,7 +4726,15 @@
     }
 
     // Ambil data LKPD Day 0 yang tersimpan sebelumnya
-    let savedAnswers = { q1: '', q2: '' };
+    let saved = {
+      nama_tempat: '',
+      kecamatan: '',
+      nama_narasumber: '',
+      kontak_narasumber: '',
+      sektor_ekonomi: 'Primer',
+      produk_dijual: '',
+      kendala_dihadapi: ''
+    };
     let isSubmitted = false;
     try {
       const raw = localStorage.getItem('fincestem_lkpd_nft_day0_' + cleanNisn) ||
@@ -4734,13 +4742,14 @@
       if (raw) {
         const p = JSON.parse(raw);
         if (p) {
-          if (p.answers) {
-            savedAnswers.q1 = p.answers.q1 || '';
-            savedAnswers.q2 = p.answers.q2 || '';
-          } else {
-            savedAnswers.q1 = p.q1 || '';
-            savedAnswers.q2 = p.q2 || '';
-          }
+          const ans = p.answers || p;
+          saved.nama_tempat = ans.nama_tempat || ans.tempat || '';
+          saved.kecamatan = ans.kecamatan || '';
+          saved.nama_narasumber = ans.nama_narasumber || ans.narasumber || '';
+          saved.kontak_narasumber = ans.kontak_narasumber || ans.kontak || ans.no_wa || '';
+          saved.sektor_ekonomi = ans.sektor_ekonomi || ans.sektor || 'Primer';
+          saved.produk_dijual = ans.produk_dijual || ans.produk || '';
+          saved.kendala_dihadapi = ans.kendala_dihadapi || ans.kendala || '';
           if (p.submitted || p.submittedAt) isSubmitted = true;
         }
       }
@@ -4748,8 +4757,16 @@
 
     const canEdit = !isReadOnly && !isSubmitted;
 
+    const kecamatanList = [
+      'Belitang', 'Belitang II', 'Belitang III', 'Belitang Madang Raya',
+      'Buay Madang', 'Buay Madang Timur', 'Martapura', 'BP Peliung',
+      'BP Bangsa Raja', 'Madang Suku I', 'Madang Suku II', 'Madang Suku III',
+      'Cempaka', 'Semendawai Barat', 'Semendawai Suku III', 'Semendawai Timur',
+      'Jayapura', 'Bunga Mayang'
+    ];
+
     mainEl.innerHTML = `
-      <div class="flex flex-col gap-4 max-w-lg mx-auto w-full pb-16">
+      <div class="flex flex-col gap-4 max-w-xl mx-auto w-full pb-16">
         
         <!-- HEADER KOP DAY 0 -->
         <div class="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-teal-800 via-teal-900 to-slate-950 text-white shadow-lg border border-teal-700/50 flex flex-col gap-3">
@@ -4759,16 +4776,16 @@
               <span>Day 0 • Simulasi LKPD</span>
             </span>
             <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/15 text-teal-100 border border-white/20">
-              Riset Mandiri OKU Timur
+              Observasi Lapangan Simulasi
             </span>
           </div>
 
           <div>
             <h1 class="font-black text-xl sm:text-2xl leading-tight">
-              Lembar Kerja Peserta Didik (Uji Coba)
+              Lembar Kerja Observasi Lapangan (Simulasi)
             </h1>
             <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium mt-1">
-              Latihan simulasi pengisian instrumen lembar kerja kelompok sebelum pelaksanaan observasi lapangan hari pertama.
+              Simulasi pendataan profil tempat usaha, narasumber, sektor ekonomi, produk, dan kendala operasional seperti pelaksanaan Day 1.
             </p>
           </div>
 
@@ -4790,62 +4807,118 @@
           </div>
         </div>
 
-        <!-- PETUNJUK PENGERJAAN LATIHAN -->
-        <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 text-xs flex items-start gap-3 shadow-2xs">
-          <span class="material-symbols-outlined text-amber-600 text-xl shrink-0 mt-0.5">info</span>
-          <div class="flex flex-col gap-0.5">
-            <strong class="font-bold text-xs text-amber-900">Petunjuk Gladi Bersih LKPD:</strong>
-            <p class="text-[11.5px] text-slate-700 leading-relaxed text-justify">
-              Jawablah 2 pertanyaan latihan di bawah ini untuk membiasakan diri dengan formulir LKPD digital. Setelah dikirim, sistem akan otomatis membuka <strong>Tahap 3: Asesmen Simulasi (10 Soal)</strong>.
-            </p>
-          </div>
-        </div>
-
-        <!-- FORMULIR LKPD 2 PERTANYAAN -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-4">
+        <!-- FORMULIR LKPD SIMULASI OBSERVASI LAPANGAN -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col gap-5">
           
-          <!-- PERTANYAAN 1 -->
-          <div class="flex flex-col gap-2">
-            <label class="text-xs font-bold text-slate-800 leading-snug flex items-center gap-1.5">
-              <span class="w-5 h-5 rounded-md bg-teal-800 text-white text-[10px] font-black flex items-center justify-center shrink-0">1</span>
-              <span>Apa tema kegiatan kokurikuler SMAN 1 Belitang tahun 2026?</span>
-            </label>
-            <p class="text-[11px] text-slate-500 leading-tight">
-              Lihat judul resmi kegiatan kokurikuler yang tertera pada bagian atas beranda web aplikasi FINCESTEM SMAN 1 Belitang.
-            </p>
-            <textarea id="nftD0LkpdQ1" rows="3" ${!canEdit ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${!canEdit ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Tuliskan tema kegiatan kokurikuler SMAN 1 Belitang tahun 2026 di sini...">${savedAnswers.q1}</textarea>
-            <span id="nftD0LkpdQ1Counter" class="text-[10.5px] text-slate-400">Minimal 10 karakter</span>
+          <!-- BAGIAN 1: PROFIL TEMPAT OBSERVASI -->
+          <div class="flex flex-col gap-3">
+            <div class="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+              <span class="w-7 h-7 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">1</span>
+              <div>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-900">Profil Tempat Observasi</h4>
+                <p class="text-[11px] text-slate-500">Informasi entitas atau badan usaha yang dikunjungi</p>
+              </div>
+            </div>
+
+            <!-- Nama Tempat / Usaha -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold text-slate-700">Nama Tempat / Badan Usaha yang Dikunjungi: <span class="text-rose-500">*</span></label>
+              <input type="text" id="nftD0LkpdTempat" value="${escapeHtml(saved.nama_tempat)}" ${!canEdit ? 'readonly' : ''} placeholder="Contoh: Toko Beras Makmur / Bengkel Las Mandiri / Usaha Tani Sejahtera" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none ${!canEdit ? 'bg-slate-100 text-slate-600' : 'bg-white'}">
+            </div>
+
+            <!-- Pilihan Kecamatan di OKU Timur -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold text-slate-700">Pilihan Kecamatan di OKU Timur: <span class="text-rose-500">*</span></label>
+              <select id="nftD0LkpdKecamatan" ${!canEdit ? 'disabled' : ''} class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none ${!canEdit ? 'bg-slate-100 text-slate-600' : 'bg-white'}">
+                <option value="">-- Pilih Kecamatan Lokasi Observasi --</option>
+                ${kecamatanList.map(kec => `
+                  <option value="${kec}" ${saved.kecamatan === kec ? 'selected' : ''}>Kecamatan ${kec}</option>
+                `).join('')}
+              </select>
+            </div>
+
+            <!-- Nama Narasumber -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold text-slate-700">Nama Narasumber (Pemilik / Pengelola): <span class="text-rose-500">*</span></label>
+              <input type="text" id="nftD0LkpdNarasumber" value="${escapeHtml(saved.nama_narasumber)}" ${!canEdit ? 'readonly' : ''} placeholder="Contoh: Bapak H. Sukardi / Ibu Siti Aminah" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none ${!canEdit ? 'bg-slate-100 text-slate-600' : 'bg-white'}">
+            </div>
+
+            <!-- No Kontak / WA Narasumber -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold text-slate-700">No. Kontak / WhatsApp Narasumber: <span class="text-rose-500">*</span></label>
+              <input type="text" id="nftD0LkpdKontak" value="${escapeHtml(saved.kontak_narasumber)}" ${!canEdit ? 'readonly' : ''} placeholder="Contoh: 0812-3456-7890" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none ${!canEdit ? 'bg-slate-100 text-slate-600' : 'bg-white'}">
+            </div>
           </div>
 
-          <!-- PERTANYAAN 2 -->
-          <div class="flex flex-col gap-2 pt-2 border-t border-slate-100">
-            <label class="text-xs font-bold text-slate-800 leading-snug flex items-center gap-1.5">
-              <span class="w-5 h-5 rounded-md bg-teal-800 text-white text-[10px] font-black flex items-center justify-center shrink-0">2</span>
-              <span>Sebutkan 4 dimensi Profil Lulusan pada kegiatan kokurikuler SMAN 1 Belitang tahun 2026!</span>
-            </label>
-            <p class="text-[11px] text-slate-500 leading-tight">
-              Lihat 4 kartu dimensi yang dikembangkan pada bagian 'Pendekatan Pembelajaran Mendalam' di beranda web aplikasi.
-            </p>
-            <textarea id="nftD0LkpdQ2" rows="3" ${!canEdit ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${!canEdit ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Tuliskan 4 dimensi Profil Lulusan (contoh: Penalaran Kritis, ...) di sini...">${savedAnswers.q2}</textarea>
-            <span id="nftD0LkpdQ2Counter" class="text-[10.5px] text-slate-400">Minimal 10 karakter</span>
+          <!-- BAGIAN 2: SEKTOR EKONOMI & AKTIVITAS PRODUKSI -->
+          <div class="flex flex-col gap-3 pt-2 border-t border-slate-100">
+            <div class="flex items-center gap-2 border-b border-slate-100 pb-2.5">
+              <span class="w-7 h-7 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">2</span>
+              <div>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-900">Sektor Ekonomi &amp; Analisis Usaha</h4>
+                <p class="text-[11px] text-slate-500">Klasifikasi kegiatan ekonomi, komoditas, dan kendala</p>
+              </div>
+            </div>
+
+            <!-- Sektor Ekonomi: Primer, Sekunder, Tersier -->
+            <div class="flex flex-col gap-2">
+              <label class="text-xs font-bold text-slate-700">Klasifikasi Sektor Ekonomi: <span class="text-rose-500">*</span></label>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <label class="p-3 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-teal-50/50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                  <input type="radio" name="nftD0Sektor" value="Primer" ${saved.sektor_ekonomi === 'Primer' ? 'checked' : ''} ${!canEdit ? 'disabled' : ''} class="text-teal-800 focus:ring-teal-500">
+                  <div class="flex flex-col text-xs">
+                    <span class="font-bold text-slate-900">Primer</span>
+                    <span class="text-[10px] text-slate-500">Pertanian, Peternakan, Bahan Alam</span>
+                  </div>
+                </label>
+
+                <label class="p-3 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-teal-50/50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                  <input type="radio" name="nftD0Sektor" value="Sekunder" ${saved.sektor_ekonomi === 'Sekunder' ? 'checked' : ''} ${!canEdit ? 'disabled' : ''} class="text-teal-800 focus:ring-teal-500">
+                  <div class="flex flex-col text-xs">
+                    <span class="font-bold text-slate-900">Sekunder</span>
+                    <span class="text-[10px] text-slate-500">Pengolahan, Manufaktur, Pangan</span>
+                  </div>
+                </label>
+
+                <label class="p-3 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-teal-50/50 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-50">
+                  <input type="radio" name="nftD0Sektor" value="Tersier" ${saved.sektor_ekonomi === 'Tersier' ? 'checked' : ''} ${!canEdit ? 'disabled' : ''} class="text-teal-800 focus:ring-teal-500">
+                  <div class="flex flex-col text-xs">
+                    <span class="font-bold text-slate-900">Tersier</span>
+                    <span class="text-[10px] text-slate-500">Perdagangan, Jasa, Toko, Kuliner</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- Produk yang Dijual -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold text-slate-700">Produk / Barang / Jasa yang Dijual: <span class="text-rose-500">*</span></label>
+              <textarea id="nftD0LkpdProduk" rows="2" ${!canEdit ? 'readonly' : ''} placeholder="Contoh: Beras premium kemasan 5kg, bekatul, dan pakan ternak" class="w-full p-3 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none ${!canEdit ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${escapeHtml(saved.produk_dijual)}</textarea>
+            </div>
+
+            <!-- Kendala yang Dihadapi -->
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold text-slate-700">Kendala yang Dihadapi oleh Pelaku Usaha: <span class="text-rose-500">*</span></label>
+              <textarea id="nftD0LkpdKendala" rows="2" ${!canEdit ? 'readonly' : ''} placeholder="Contoh: Fluktuasi harga gabah basah saat panen raya, kendala cuaca hujan saat pengeringan, dan biaya solar mesin pengering" class="w-full p-3 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none ${!canEdit ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${escapeHtml(saved.kendala_dihadapi)}</textarea>
+            </div>
           </div>
 
           <!-- STATUS & TOMBOL SUBMIT -->
           ${isSubmitted ? `
-            <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-between gap-3 text-xs mt-2">
+            <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-between gap-3 text-xs mt-2">
               <div class="flex items-center gap-2 text-emerald-950 font-bold">
-                <span class="material-symbols-outlined text-emerald-600 text-lg">check_circle</span>
-                <span>LKPD Latihan Day 0 Berhasil Dikirim!</span>
+                <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
+                <span>LKPD Day 0 Berhasil Dikirim ke Fasilitator!</span>
               </div>
-              <a href="asesmen.html?day=0" class="px-3.5 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1 shrink-0">
-                <span>Lanjut ke Asesmen (10 Soal)</span>
+              <a href="asesmen.html?day=0" class="px-4 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer">
+                <span>Lanjut ke Asesmen Day 0</span>
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
               </a>
             </div>
           ` : `
             <button type="button" onclick="submitDay0NonFieldTripLKPD()" id="btnSubmitD0Lkpd" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-2">
               <span class="material-symbols-outlined text-lg">send</span>
-              <span>Kirim LKPD Latihan &amp; Buka Asesmen Day 0</span>
+              <span>Simpan &amp; Kirim ke Fasilitator (Lanjut ke Asesmen)</span>
             </button>
           `}
 
@@ -4853,56 +4926,62 @@
 
       </div>
     `;
-
-    if (canEdit) {
-      const q1El = document.getElementById('nftD0LkpdQ1');
-      const q1C = document.getElementById('nftD0LkpdQ1Counter');
-      const q2El = document.getElementById('nftD0LkpdQ2');
-      const q2C = document.getElementById('nftD0LkpdQ2Counter');
-
-      const updateCounter = (el, cEl) => {
-        if (!el || !cEl) return;
-        const len = el.value.trim().length;
-        if (len < 10) {
-          cEl.textContent = `Kurang ${10 - len} karakter lagi (Minimal 10 karakter).`;
-          cEl.className = 'text-[10.5px] text-rose-600 font-semibold';
-        } else {
-          cEl.textContent = `✓ ${len} karakter (Cukup).`;
-          cEl.className = 'text-[10.5px] text-emerald-600 font-bold';
-        }
-      };
-
-      if (q1El && q1C) q1El.addEventListener('input', () => updateCounter(q1El, q1C));
-      if (q2El && q2C) q2El.addEventListener('input', () => updateCounter(q2El, q2C));
-    }
   }
 
   window.submitDay0NonFieldTripLKPD = function() {
-    const q1 = (document.getElementById('nftD0LkpdQ1')?.value || '').trim();
-    const q2 = (document.getElementById('nftD0LkpdQ2')?.value || '').trim();
+    const tempat = (document.getElementById('nftD0LkpdTempat')?.value || '').trim();
+    const kecamatan = (document.getElementById('nftD0LkpdKecamatan')?.value || '').trim();
+    const narasumber = (document.getElementById('nftD0LkpdNarasumber')?.value || '').trim();
+    const kontak = (document.getElementById('nftD0LkpdKontak')?.value || '').trim();
+    const sektorRadio = document.querySelector('input[name="nftD0Sektor"]:checked');
+    const sektor = sektorRadio ? sektorRadio.value : 'Primer';
+    const produk = (document.getElementById('nftD0LkpdProduk')?.value || '').trim();
+    const kendala = (document.getElementById('nftD0LkpdKendala')?.value || '').trim();
 
-    if (q1.length < 10) {
-      if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Pertanyaan 1 minimal 15 karakter sebelum LKPD dikirim!', 'warning');
-      } else {
-        alert('Pertanyaan 1 minimal 15 karakter sebelum LKPD dikirim!');
-      }
+    if (!tempat || tempat.length < 3) {
+      alert('Nama tempat / badan usaha minimal 3 karakter!');
+      document.getElementById('nftD0LkpdTempat')?.focus();
       return;
     }
-
-    if (q2.length < 10) {
-      if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Pertanyaan 2 minimal 15 karakter sebelum LKPD dikirim!', 'warning');
-      } else {
-        alert('Pertanyaan 2 minimal 15 karakter sebelum LKPD dikirim!');
-      }
+    if (!kecamatan) {
+      alert('Pilih kecamatan lokasi observasi di OKU Timur!');
+      document.getElementById('nftD0LkpdKecamatan')?.focus();
+      return;
+    }
+    if (!narasumber || narasumber.length < 3) {
+      alert('Nama narasumber minimal 3 karakter!');
+      document.getElementById('nftD0LkpdNarasumber')?.focus();
+      return;
+    }
+    if (!kontak || kontak.length < 5) {
+      alert('No kontak/WA narasumber minimal 5 karakter!');
+      document.getElementById('nftD0LkpdKontak')?.focus();
+      return;
+    }
+    if (!produk || produk.length < 5) {
+      alert('Deskripsi produk yang dijual minimal 5 karakter!');
+      document.getElementById('nftD0LkpdProduk')?.focus();
+      return;
+    }
+    if (!kendala || kendala.length < 5) {
+      alert('Deskripsi kendala yang dihadapi minimal 5 karakter!');
+      document.getElementById('nftD0LkpdKendala')?.focus();
       return;
     }
 
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
 
-    const answers = { q1, q2 };
+    const answers = {
+      nama_tempat: tempat,
+      kecamatan: kecamatan,
+      nama_narasumber: narasumber,
+      kontak_narasumber: kontak,
+      sektor_ekonomi: sektor,
+      produk_dijual: produk,
+      kendala_dihadapi: kendala
+    };
+
     const payload = {
       submitted: true,
       day: 0,
@@ -4918,7 +4997,7 @@
     if (window.FincestemCore && FincestemCore.progress && cleanNisn) {
       FincestemCore.progress.submitTask(cleanNisn, 0, 'lkpd', answers, function() {
         if (window.FincestemCore.ui) {
-          FincestemCore.ui.toast('LKPD Latihan Day 0 Berhasil Dikirim! Tahap 3: Asesmen Simulasi (10 Soal) kini terbuka.', 'success');
+          FincestemCore.ui.toast('LKPD Simulasi Day 0 Berhasil Dikirim! Tahap 3: Asesmen CBT kini terbuka.', 'success');
         }
       });
     }
@@ -4932,19 +5011,19 @@
         </div>
         <div>
           <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-teal-100 text-teal-900">
-            Tahap 2 Tuntas • Simulasi LKPD
+            Tahap 2 Tuntas • LKPD Day 0
           </span>
           <h3 class="font-black text-lg sm:text-xl text-slate-900 mt-1">
             LKPD Day 0 Berhasil Dikirim!
           </h3>
           <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">
-            Laporan latihan lembar kerja telah terekam. Tahap berikutnya adalah mencoba <strong>Asesmen Simulasi (10 Soal CBT Pilihan Ganda)</strong> dengan fitur timer dan Exam Shield.
+            Data observasi profil tempat dan sektor ekonomi telah terekam resmi. Tahap selanjutnya adalah mencoba <strong>Asesmen Simulasi (10 Soal CBT Pilihan Ganda)</strong>.
           </p>
         </div>
 
         <div class="w-full flex flex-col gap-2 pt-2">
           <a href="asesmen.html?day=0" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-            <span>Lanjut ke Tahap 3: Asesmen (10 Soal)</span>
+            <span>Lanjut ke Tahap 3: Asesmen Day 0</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">

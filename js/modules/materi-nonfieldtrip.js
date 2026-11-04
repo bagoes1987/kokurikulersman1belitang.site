@@ -1675,12 +1675,12 @@
   }
 
   // =========================================================================
-  // 6B. MODUL ORIENTASI & SIMULASI KHUSUS DAY 0 (GLADI BERSIH NON-FIELD TRIP)
+      // 6B. MODUL ORIENTASI & SIMULASI KHUSUS DAY 0 (GLADI BERSIH ALUR FINCESTEM)
   // =========================================================================
   function renderDay0NonFieldTripModule(container) {
     if (!container) return;
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
-    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentName = u.name || 'Peserta Kokurikuler';
     const studentNisn = u.nisn || u.identifier || '-';
     const studentClass = u.class || u.class_name || 'Kelas X';
     const cleanNisn = String(studentNisn).trim();
@@ -1708,36 +1708,41 @@
     } catch(e) {}
 
     const isSubmitted = !!(savedOfficial && (savedOfficial.submitted || savedOfficial.summary || savedOfficial.conclusion));
-    const savedText = (savedOfficial && (savedOfficial.summary || savedOfficial.conclusion || savedOfficial.text)) || '';
+    const cardAData = (savedOfficial && savedOfficial.cardA) || { answer: '', sources: [''] };
+    const cardBData = (savedOfficial && savedOfficial.cardB) || { answer: '', sources: [''] };
+    const savedResume = (savedOfficial && (savedOfficial.summary || savedOfficial.conclusion || savedOfficial.text)) || '';
+
+    const sourcesA = (Array.isArray(cardAData.sources) && cardAData.sources.length > 0) ? cardAData.sources : [''];
+    const sourcesB = (Array.isArray(cardBData.sources) && cardBData.sources.length > 0) ? cardBData.sources : [''];
 
     container.innerHTML = `
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-5 max-w-3xl mx-auto w-full pb-16">
         <!-- BANNER HEADER DAY 0 -->
-        <div class="rounded-3xl p-5 sm:p-6 bg-gradient-to-br from-amber-600 via-amber-700 to-slate-900 text-white shadow-lg border border-amber-500/50 flex flex-col gap-3">
+        <div class="rounded-3xl p-5 sm:p-7 bg-gradient-to-br from-amber-600 via-amber-700 to-slate-900 text-white shadow-xl border border-amber-500/50 flex flex-col gap-4">
           <div class="flex items-center justify-between gap-2 flex-wrap">
-            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-300 text-slate-950 flex items-center gap-1 shadow-2xs">
+            <span class="px-3.5 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-300 text-slate-950 flex items-center gap-1.5 shadow-sm">
               <span class="material-symbols-outlined text-sm">model_training</span>
               <span>Day 0 • Gladi Bersih</span>
             </span>
-            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white/15 text-amber-100 border border-white/20">
-              Orientasi Sistem Non-Field Trip
+            <span class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-white/15 text-amber-100 border border-white/20">
+              Simulasi Alur &amp; Orientasi Web Kokurikuler
             </span>
           </div>
 
           <div>
             <h1 class="font-black text-xl sm:text-2xl leading-tight">
-              Panduan &amp; Orientasi Riset Mandiri FINCESTEM 2026
+              Alur Pengerjaan Harian &amp; Orientasi FINCESTEM 2026/2027
             </h1>
-            <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium mt-1">
-              Simulasi alur menyeluruh bagi peserta didik Non-Field Trip di wilayah Kabupaten OKU Timur sebelum pelaksanaan hari pertama.
+            <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium mt-1.5">
+              Pelajari alur pengerjaan 6 tahap harian, pahami tema serta 4 dimensi profil lulusan, dan lakukan simulasi pengisian instrumen sebelum pelaksanaan kegiatan resmi.
             </p>
           </div>
 
           <!-- IDENTITAS SISWA & FASILITATOR -->
-          <div class="p-3 sm:p-3.5 rounded-2xl bg-black/20 border border-white/10 flex items-center justify-between gap-3 text-xs flex-wrap">
-            <div class="flex items-center gap-2.5 min-w-0">
-              <div class="w-9 h-9 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-base">person</span>
+          <div class="p-3 sm:p-4 rounded-2xl bg-black/25 border border-white/10 flex items-center justify-between gap-3 text-xs flex-wrap">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-10 h-10 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center shrink-0 shadow-inner">
+                <span class="material-symbols-outlined text-lg">person</span>
               </div>
               <div class="flex flex-col min-w-0">
                 <span class="font-extrabold text-white truncate text-xs sm:text-sm">${studentName}</span>
@@ -1751,181 +1756,377 @@
           </div>
         </div>
 
-        <!-- 3 KARTU KONSEPTUAL ORIENTASI -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-4">
-          <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
-            <span class="w-8 h-8 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-base">account_tree</span>
+        <!-- 1. ALUR PENGERJAAN HARIAN WEB KOKURIKULER (INFOGRAFIS 6 TAHAP) -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col gap-4">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+            <span class="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center shrink-0 font-bold">
+              <span class="material-symbols-outlined text-lg">timeline</span>
             </span>
             <div>
-              <h3 class="font-black text-sm text-slate-900">1. Integrasi 4 Pilar FINCESTEM 2026</h3>
-              <p class="text-[11px] text-slate-500">Keterpaduan lintas disiplin ilmu riset kontekstual</p>
+              <h3 class="font-black text-sm sm:text-base text-slate-900">1. Alur Pengerjaan Harian Web Kokurikuler SMAN 1 Belitang</h3>
+              <p class="text-[11px] text-slate-500">Urutan berurutan (cascading stages) yang wajib diselesaikan setiap hari kegiatan</p>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-justify">
-            <div class="p-3 rounded-2xl bg-teal-50/70 border border-teal-200/80 flex flex-col gap-1">
-              <strong class="text-teal-900 font-extrabold flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">payments</span> Financial &amp; Economics
-              </strong>
-              <p class="text-slate-600 leading-relaxed text-[11.5px]">
-                Mempelajari literasi keuangan, perhitungan HPP, margin laba, sistem pembayaran non-tunai (QRIS), dan analisis rantai pasok ekonomi di OKU Timur.
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <!-- Tahap 1 -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="w-7 h-7 rounded-xl bg-teal-800 text-white font-black text-xs flex items-center justify-center">1</span>
+                <span class="text-[10px] font-black uppercase text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">Tahap 1</span>
+              </div>
+              <strong class="text-slate-900 text-xs font-bold">Modul Belajar Digital</strong>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Membaca pengantar modul, menjawab pertanyaan pemantik Card A &amp; Card B beserta sumber referensi, serta menyusun resume pemahaman awal.
               </p>
             </div>
 
-            <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex flex-col gap-1">
-              <strong class="text-amber-900 font-extrabold flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">temple_buddhist</span> Culture &amp; Society
-              </strong>
-              <p class="text-slate-600 leading-relaxed text-[11.5px]">
-                Menggali kearifan lokal Komering &amp; Jawa transmigran, etika bermasyarakat, gotong royong, dan nilai-nilai sosial budaya pedesaan.
+            <!-- Tahap 2 -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="w-7 h-7 rounded-xl bg-teal-800 text-white font-black text-xs flex items-center justify-center">2</span>
+                <span class="text-[10px] font-black uppercase text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">Tahap 2</span>
+              </div>
+              <strong class="text-slate-900 text-xs font-bold">LKPD Observasi Lapangan</strong>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Melakukan observasi lapangan, mendata profil tempat usaha, kecamatan di OKU Timur, narasumber, sektor ekonomi, produk, dan kendala operasional.
               </p>
             </div>
 
-            <div class="p-3 rounded-2xl bg-blue-50/70 border border-blue-200/80 flex flex-col gap-1">
-              <strong class="text-blue-900 font-extrabold flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">science</span> Science &amp; Technology
-              </strong>
-              <p class="text-slate-600 leading-relaxed text-[11.5px]">
-                Memanfaatkan pendekatan sains pengamatan (kualitas tanah, air, fermentasi) dan teknologi digital (GPS Geotagging, Google Form, aplikasi FINCESTEM).
+            <!-- Tahap 3 -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="w-7 h-7 rounded-xl bg-teal-800 text-white font-black text-xs flex items-center justify-center">3</span>
+                <span class="text-[10px] font-black uppercase text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">Tahap 3</span>
+              </div>
+              <strong class="text-slate-900 text-xs font-bold">Asesmen Harian (CBT)</strong>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Menyelesaikan kuis pilihan ganda terstandar CBT (10 soal pada Day 0) untuk menguji penguasaan materi harian dengan proteksi timer.
               </p>
             </div>
 
-            <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200/80 flex flex-col gap-1">
-              <strong class="text-emerald-900 font-extrabold flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">precision_manufacturing</span> Engineering &amp; Math
-              </strong>
-              <p class="text-slate-600 leading-relaxed text-[11.5px]">
-                Menganalisis efisiensi mekanisasi alat pertanian/produksi, pemodelan matematis proyeksi panen, dan perancangan solusi inovatif.
+            <!-- Tahap 4 -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="w-7 h-7 rounded-xl bg-teal-800 text-white font-black text-xs flex items-center justify-center">4</span>
+                <span class="text-[10px] font-black uppercase text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">Tahap 4</span>
+              </div>
+              <strong class="text-slate-900 text-xs font-bold">Dokumentasi Geotagging GPS</strong>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Mengambil foto autentik di lokasi observasi melalui kamera HP berstempel watermark otomatis dan koordinat satelit GPS real-time.
+              </p>
+            </div>
+
+            <!-- Tahap 5 -->
+            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col gap-2 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="w-7 h-7 rounded-xl bg-teal-800 text-white font-black text-xs flex items-center justify-center">5</span>
+                <span class="text-[10px] font-black uppercase text-teal-800 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">Tahap 5</span>
+              </div>
+              <strong class="text-slate-900 text-xs font-bold">Jurnal Refleksi Mandiri</strong>
+              <p class="text-slate-600 text-[11px] leading-relaxed">
+                Menjawab pernyataan refleksi evaluasi diri tentang pemahaman alur kokurikuler, kerja sama kelompok, dan komitmen belajar.
+              </p>
+            </div>
+
+            <!-- Tahap 6 -->
+            <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 flex flex-col gap-2 relative overflow-hidden">
+              <div class="flex items-center justify-between">
+                <span class="w-7 h-7 rounded-xl bg-amber-500 text-slate-950 font-black text-xs flex items-center justify-center">6</span>
+                <span class="text-[10px] font-black uppercase text-amber-900 bg-amber-100 px-2 py-0.5 rounded-md border border-amber-300">Tahap 6</span>
+              </div>
+              <strong class="text-slate-900 text-xs font-bold">Penilaian Guru Fasilitator</strong>
+              <p class="text-slate-700 text-[11px] leading-relaxed">
+                Guru pembina memeriksa seluruh berkas tugas harian, memberikan skor angka, bintang, predikat (Mahir/Cakap/Berkembang), dan umpan balik pembinaan.
               </p>
             </div>
           </div>
         </div>
 
-        <!-- ALUR SISTEM BERURUTAN (CASCADING) -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-3">
-          <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
-            <span class="w-8 h-8 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-base">alt_route</span>
+        <!-- 2. TEMA DAN DIMENSI KEGIATAN KOKURIKULER SMAN 1 BELITANG -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col gap-5">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+            <span class="w-9 h-9 rounded-xl bg-teal-50 text-teal-800 flex items-center justify-center shrink-0 font-bold">
+              <span class="material-symbols-outlined text-lg">school</span>
             </span>
             <div>
-              <h3 class="font-black text-sm text-slate-900">2. Alur Pengerjaan Harian Berurutan (*Cascading*)</h3>
-              <p class="text-[11px] text-slate-500">Sistem otomatis membuka instrumen secara bertahap</p>
+              <h3 class="font-black text-sm sm:text-base text-slate-900">2. Tema dan Dimensi Kegiatan Kokurikuler SMAN 1 Belitang</h3>
+              <p class="text-[11px] text-slate-500">Pahami konsep dasar sebelum menjawab pertanyaan Card A dan Card B</p>
             </div>
           </div>
 
-          <div class="flex flex-col gap-2 text-xs">
-            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">1</span>
+          <!-- KONTEN RINGKAS TEMA & 4 PILAR -->
+          <div class="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-200 text-xs text-slate-800 leading-relaxed flex flex-col gap-2.5">
+            <div class="flex items-start gap-2">
+              <span class="material-symbols-outlined text-emerald-700 text-base shrink-0 mt-0.5">verified</span>
               <div>
-                <strong class="text-slate-900 block font-bold">Modul Belajar Digital</strong>
-                <p class="text-slate-600 text-[11.5px] leading-relaxed">Membaca materi pengantar dan menyelesaikan kartu riset mandiri.</p>
+                <strong class="text-emerald-950 font-bold">Tema Resmi Tahun Ajaran 2026-2027:</strong>
+                <p class="text-slate-700 mt-0.5">
+                  <em>"Kewirausahaan dan Eksplorasi Potensi Lokal Berbasis Pendekatan FINCESTEM (Financial Literacy, Culture, Exploration, Science, Technology, Engineering, &amp; Mathematics) untuk Membangun Kemandirian dan Karakter Profil Pelajar SMAN 1 Belitang"</em>
+                </p>
               </div>
             </div>
-
-            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">2</span>
+            <div class="flex items-start gap-2 pt-2 border-t border-emerald-200/60">
+              <span class="material-symbols-outlined text-emerald-700 text-base shrink-0 mt-0.5">auto_stories</span>
               <div>
-                <strong class="text-slate-900 block font-bold">Lembar Kerja Peserta Didik (LKPD)</strong>
-                <p class="text-slate-600 text-[11.5px] leading-relaxed">Mengisi instrumen observasi lapangan dan rancangan anggaran kelompok.</p>
+                <strong class="text-emerald-950 font-bold">4 Dimensi Profil Lulusan yang Dikembangkan:</strong>
+                <ol class="list-decimal list-inside text-slate-700 mt-1 space-y-0.5">
+                  <li><strong>Financial Literacy</strong> (Literasi Keuangan, pembukuan kas, kalkulasi HPP, margin laba, dan transaksi bijak)</li>
+                  <li><strong>Culture</strong> (Kearifan lokal, etika sosial bermasyarakat, pelestarian warisan budaya daerah)</li>
+                  <li><strong>Exploration</strong> (Investigasi observasi langsung ke lapangan, wawancara narasumber, dan pencarian fakta)</li>
+                  <li><strong>STEM</strong> (Penerapan Sains, Teknologi digital, Rekayasa alat/metode, dan Matematika terapan)</li>
+                </ol>
               </div>
             </div>
+          </div>
 
-            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">3</span>
-              <div>
-                <strong class="text-slate-900 block font-bold">Kuis Asesmen CBT (Exam Shield)</strong>
-                <p class="text-slate-600 text-[11.5px] leading-relaxed">Mengerjakan kuis objektif dengan sistem pengaman anti-contek dan timer.</p>
-              </div>
+          <!-- CARD A: TEMA KEGIATAN KOKURIKULER -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-3">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-teal-800 text-white">
+                Card A
+              </span>
+              <span class="text-[11px] text-slate-500 font-semibold">Wajib diisi • Minimal 20 Karakter</span>
             </div>
 
-            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">4</span>
-              <div>
-                <strong class="text-slate-900 block font-bold">Dokumentasi Foto Geotagging GPS</strong>
-                <p class="text-slate-600 text-[11.5px] leading-relaxed">Mengunggah foto autentik di lapangan dengan watermark koordinat otomatis.</p>
+            <label class="text-xs font-extrabold text-slate-900 leading-snug">
+              Apa Tema Kegiatan kokurikuler tahun ajaran 2026-2027?
+            </label>
+
+            <textarea id="nftD0CardAAnswer" rows="3" ${isSubmitted ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${isSubmitted ? 'bg-slate-100 text-slate-600' : 'bg-white'}" placeholder="Tuliskan tema kegiatan kokurikuler tahun ajaran 2026-2027 (minimal 20 karakter)...">${cardAData.answer || ''}</textarea>
+            <span id="nftD0CardACounter" class="text-[11px] text-slate-500 font-medium">Minimal 20 karakter.</span>
+
+            <!-- SUMBER REFERENSI CARD A (BISA LEBIH DARI 1) -->
+            <div class="flex flex-col gap-2 pt-2 border-t border-slate-200">
+              <div class="flex items-center justify-between">
+                <label class="text-[11.5px] font-bold text-slate-700 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-teal-700">bookmark</span>
+                  <span>Sumber Referensi (Bisa memasukkan lebih dari 1 sumber):</span>
+                </label>
+                ${!isSubmitted ? `
+                  <button type="button" onclick="addDay0SourceField('A')" class="px-2.5 py-1 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-[11px] flex items-center gap-1 border border-teal-200 cursor-pointer transition-all">
+                    <span class="material-symbols-outlined text-xs">add</span>
+                    <span>Tambah Sumber</span>
+                  </button>
+                ` : ''}
+              </div>
+
+              <div id="nftD0CardASourcesContainer" class="flex flex-col gap-2">
+                ${sourcesA.map((s, idx) => `
+                  <div class="flex items-center gap-2 source-item-a">
+                    <input type="text" value="${escapeHtml(s)}" ${isSubmitted ? 'readonly' : ''} placeholder="Contoh: Dokumen Panduan Kurikulum Kokurikuler 2026 / Arahan Fasilitator / Beranda Web" class="input-source-a flex-1 px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none ${isSubmitted ? 'bg-slate-100 text-slate-600' : 'bg-white'}">
+                    ${(!isSubmitted && sourcesA.length > 1) ? `
+                      <button type="button" onclick="removeDay0SourceField(this)" class="w-8 h-8 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs font-bold border border-rose-200 cursor-pointer shrink-0">
+                        &times;
+                      </button>
+                    ` : ''}
+                  </div>
+                `).join('')}
               </div>
             </div>
+          </div>
 
-            <div class="flex items-start gap-3 p-2.5 rounded-2xl bg-slate-50 border border-slate-200">
-              <span class="w-6 h-6 rounded-lg bg-teal-800 text-white font-black text-xs flex items-center justify-center shrink-0">5</span>
-              <div>
-                <strong class="text-slate-900 block font-bold">Jurnal Refleksi Mandiri</strong>
-                <p class="text-slate-600 text-[11.5px] leading-relaxed">Menuliskan evaluasi diri dan makna pembelajaran yang diperoleh.</p>
+          <!-- CARD B: 4 DIMENSI PROFIL LULUSAN -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-3">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <span class="px-2.5 py-1 rounded-lg text-xs font-black uppercase tracking-wider bg-teal-800 text-white">
+                Card B
+              </span>
+              <span class="text-[11px] text-slate-500 font-semibold">Wajib diisi • Minimal 20 Karakter</span>
+            </div>
+
+            <label class="text-xs font-extrabold text-slate-900 leading-snug">
+              Sebutkan 4 Dimensi Profil Lulusan Kegiatan kokurikuler tahun ajaran 2026-2027!
+            </label>
+
+            <textarea id="nftD0CardBAnswer" rows="3" ${isSubmitted ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none transition-all ${isSubmitted ? 'bg-slate-100 text-slate-600' : 'bg-white'}" placeholder="Sebutkan dan jelaskan secara singkat 4 dimensi profil lulusan (minimal 20 karakter)...">${cardBData.answer || ''}</textarea>
+            <span id="nftD0CardBCounter" class="text-[11px] text-slate-500 font-medium">Minimal 20 karakter.</span>
+
+            <!-- SUMBER REFERENSI CARD B (BISA LEBIH DARI 1) -->
+            <div class="flex flex-col gap-2 pt-2 border-t border-slate-200">
+              <div class="flex items-center justify-between">
+                <label class="text-[11.5px] font-bold text-slate-700 flex items-center gap-1">
+                  <span class="material-symbols-outlined text-sm text-teal-700">bookmark</span>
+                  <span>Sumber Referensi (Bisa memasukkan lebih dari 1 sumber):</span>
+                </label>
+                ${!isSubmitted ? `
+                  <button type="button" onclick="addDay0SourceField('B')" class="px-2.5 py-1 rounded-lg bg-teal-50 hover:bg-teal-100 text-teal-800 font-bold text-[11px] flex items-center gap-1 border border-teal-200 cursor-pointer transition-all">
+                    <span class="material-symbols-outlined text-xs">add</span>
+                    <span>Tambah Sumber</span>
+                  </button>
+                ` : ''}
+              </div>
+
+              <div id="nftD0CardBSourcesContainer" class="flex flex-col gap-2">
+                ${sourcesB.map((s, idx) => `
+                  <div class="flex items-center gap-2 source-item-b">
+                    <input type="text" value="${escapeHtml(s)}" ${isSubmitted ? 'readonly' : ''} placeholder="Contoh: Modul Belajar FINCESTEM 2026 / Paparan Sosialisasi / Buku Catatan" class="input-source-b flex-1 px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none ${isSubmitted ? 'bg-slate-100 text-slate-600' : 'bg-white'}">
+                    ${(!isSubmitted && sourcesB.length > 1) ? `
+                      <button type="button" onclick="removeDay0SourceField(this)" class="w-8 h-8 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs font-bold border border-rose-200 cursor-pointer shrink-0">
+                        &times;
+                      </button>
+                    ` : ''}
+                  </div>
+                `).join('')}
               </div>
             </div>
           </div>
         </div>
 
-        <!-- FORM LATIHAN PENGISIAN MODUL DAY 0 -->
-        <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col gap-3">
-          <div class="flex items-center gap-2.5 border-b border-slate-100 pb-3">
-            <span class="w-8 h-8 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center shrink-0">
-              <span class="material-symbols-outlined text-base">edit_note</span>
+        <!-- 3. RESUME SIMULASI DAY 0 -->
+        <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-xs flex flex-col gap-3">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+            <span class="w-9 h-9 rounded-xl bg-amber-50 text-amber-800 flex items-center justify-center shrink-0 font-bold">
+              <span class="material-symbols-outlined text-lg">edit_note</span>
             </span>
             <div>
-              <h3 class="font-black text-sm text-slate-900">3. Simulasi Pengisian Resume Modul</h3>
-              <p class="text-[11px] text-slate-500">Tuliskan pemahaman singkat Anda sebagai latihan</p>
+              <h3 class="font-black text-sm sm:text-base text-slate-900">3. Resume Simulasi Modul Day 0</h3>
+              <p class="text-[11px] text-slate-500">Tuliskan kesimpulan dan kesiapan kelompok Anda sebelum lanjut ke LKPD</p>
             </div>
           </div>
 
           <div class="flex flex-col gap-2">
             <label class="text-xs font-bold text-slate-700">
-              Catatan Orientasi &amp; Kesiapan Riset Kelompok Anda:
+              Rangkuman Pemahaman Alur &amp; Kesiapan Riset Kokurikuler:
             </label>
-            <textarea id="nftD0MateriSummary" rows="3" ${isSubmitted ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none transition-all ${isSubmitted ? 'bg-slate-50 text-slate-600' : 'bg-white'}" placeholder="Contoh: Saya dan kelompok siap melaksanakan riset mandiri FINCESTEM 2026 di OKU Timur dengan jujur, disiplin, dan berkolaborasi secara kompak...">${savedText}</textarea>
+            <textarea id="nftD0MateriSummary" rows="3" ${isSubmitted ? 'readonly' : ''} class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none transition-all ${isSubmitted ? 'bg-slate-100 text-slate-600' : 'bg-white'}" placeholder="Contoh: Kami memahami bahwa kegiatan kokurikuler SMAN 1 Belitang mengintegrasikan 4 pilar FINCESTEM dengan 6 tahapan harian mulai dari Modul, LKPD, Asesmen, Dokumentasi, Refleksi hingga Penilaian Guru...">${savedResume}</textarea>
             <span id="nftD0MateriCounter" class="text-[11px] text-slate-500 font-medium">Minimal 20 karakter untuk simulasi latihan.</span>
           </div>
 
           ${isSubmitted ? `
-            <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-between gap-3 text-xs mt-1">
+            <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 flex items-center justify-between gap-3 text-xs mt-2">
               <div class="flex items-center gap-2 text-emerald-950 font-bold">
-                <span class="material-symbols-outlined text-emerald-600 text-lg">check_circle</span>
+                <span class="material-symbols-outlined text-emerald-600 text-xl">check_circle</span>
                 <span>Modul Simulasi Day 0 telah selesai diselesaikan!</span>
               </div>
-              <a href="lkpd.html?day=0" class="px-3 py-1.5 rounded-xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1 shrink-0">
-                <span>Buka LKPD Day 0</span>
+              <a href="lkpd.html?day=0" class="px-4 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs shadow-xs transition-all flex items-center gap-1.5 shrink-0 cursor-pointer">
+                <span>Lanjut ke LKPD Day 0</span>
                 <span class="material-symbols-outlined text-sm">arrow_forward</span>
               </a>
             </div>
           ` : `
-            <button type="button" onclick="submitDay0NonFieldTripMateri()" id="btnSubmitD0Materi" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-1">
+            <button type="button" onclick="submitDay0NonFieldTripMateri()" id="btnSubmitD0Materi" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer mt-2">
               <span class="material-symbols-outlined text-lg">done_all</span>
-              <span>Selesaikan Simulasi Modul &amp; Buka LKPD Day 0</span>
+              <span>Simpan &amp; Buka LKPD Day 0 (Lanjut ke Tahap 2)</span>
             </button>
           `}
         </div>
       </div>
     `;
 
-    // Pasang listener input counter jika belum submit
+    // Pasang listener real-time counter karakter jika belum submit
     if (!isSubmitted) {
-      const txt = document.getElementById('nftD0MateriSummary');
-      const counter = document.getElementById('nftD0MateriCounter');
-      if (txt && counter) {
-        txt.addEventListener('input', () => {
-          const len = txt.value.trim().length;
-          if (len < 20) {
-            counter.textContent = `Kurang ${20 - len} karakter lagi (Minimal 20 karakter).`;
-            counter.className = 'text-[11px] text-rose-600 font-semibold';
-          } else {
-            counter.textContent = `✓ ${len} karakter (Memenuhi syarat).`;
-            counter.className = 'text-[11px] text-emerald-600 font-bold';
-          }
-        });
-      }
+      const attachCounter = (txtId, counterId, minLen) => {
+        const txt = document.getElementById(txtId);
+        const counter = document.getElementById(counterId);
+        if (txt && counter) {
+          txt.addEventListener('input', () => {
+            const len = txt.value.trim().length;
+            if (len < minLen) {
+              counter.textContent = `Kurang ${minLen - len} karakter lagi (Minimal ${minLen} karakter).`;
+              counter.className = 'text-[11px] text-rose-600 font-semibold';
+            } else {
+              counter.textContent = `✓ ${len} karakter (Memenuhi syarat).`;
+              counter.className = 'text-[11px] text-emerald-600 font-bold';
+            }
+          });
+        }
+      };
+
+      attachCounter('nftD0CardAAnswer', 'nftD0CardACounter', 20);
+      attachCounter('nftD0CardBAnswer', 'nftD0CardBCounter', 20);
+      attachCounter('nftD0MateriSummary', 'nftD0MateriCounter', 20);
     }
   }
 
+  // Helper Dinamis Tambah/Hapus Sumber Referensi Card A & Card B
+  window.addDay0SourceField = function(cardType) {
+    const containerId = cardType === 'A' ? 'nftD0CardASourcesContainer' : 'nftD0CardBSourcesContainer';
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    const row = document.createElement('div');
+    row.className = `flex items-center gap-2 source-item-${cardType.toLowerCase()}`;
+    row.innerHTML = `
+      <input type="text" placeholder="Masukkan sumber referensi tambahan..." class="input-source-${cardType.toLowerCase()} flex-1 px-3 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-teal-500 focus:outline-none bg-white">
+      <button type="button" onclick="removeDay0SourceField(this)" class="w-8 h-8 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center text-xs font-bold border border-rose-200 cursor-pointer shrink-0" title="Hapus sumber ini">
+        &times;
+      </button>
+    `;
+    container.appendChild(row);
+  };
+
+  window.removeDay0SourceField = function(btn) {
+    if (!btn) return;
+    const row = btn.closest('.source-item-a, .source-item-b');
+    if (row) row.remove();
+  };
+
   window.submitDay0NonFieldTripMateri = function() {
-    const txt = document.getElementById('nftD0MateriSummary');
-    const val = (txt ? txt.value.trim() : '');
-    if (val.length < 20) {
+    const cardAAns = (document.getElementById('nftD0CardAAnswer')?.value || '').trim();
+    const cardBAns = (document.getElementById('nftD0CardBAnswer')?.value || '').trim();
+    const resumeAns = (document.getElementById('nftD0MateriSummary')?.value || '').trim();
+
+    // Validasi Card A (min 20 karakter)
+    if (cardAAns.length < 20) {
       if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Catatan simulasi minimal 20 karakter sebelum ditandai selesai!', 'warning');
+        FincestemCore.ui.toast('Card A: Jawaban tema kokurikuler minimal 20 karakter!', 'warning');
       } else {
-        alert('Catatan simulasi minimal 20 karakter sebelum ditandai selesai!');
+        alert('Card A: Jawaban tema kokurikuler minimal 20 karakter!');
       }
+      document.getElementById('nftD0CardAAnswer')?.focus();
+      return;
+    }
+
+    // Ambil sumber Card A
+    const sourcesA = [];
+    document.querySelectorAll('.input-source-a').forEach(inp => {
+      const v = inp.value.trim();
+      if (v) sourcesA.push(v);
+    });
+    if (sourcesA.length === 0) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Card A: Harap isi setidaknya 1 sumber referensi!', 'warning');
+      } else {
+        alert('Card A: Harap isi setidaknya 1 sumber referensi!');
+      }
+      return;
+    }
+
+    // Validasi Card B (min 20 karakter)
+    if (cardBAns.length < 20) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Card B: Jawaban 4 dimensi profil lulusan minimal 20 karakter!', 'warning');
+      } else {
+        alert('Card B: Jawaban 4 dimensi profil lulusan minimal 20 karakter!');
+      }
+      document.getElementById('nftD0CardBAnswer')?.focus();
+      return;
+    }
+
+    // Ambil sumber Card B
+    const sourcesB = [];
+    document.querySelectorAll('.input-source-b').forEach(inp => {
+      const v = inp.value.trim();
+      if (v) sourcesB.push(v);
+    });
+    if (sourcesB.length === 0) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Card B: Harap isi setidaknya 1 sumber referensi!', 'warning');
+      } else {
+        alert('Card B: Harap isi setidaknya 1 sumber referensi!');
+      }
+      return;
+    }
+
+    // Validasi Resume (min 20 karakter)
+    if (resumeAns.length < 20) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Resume Simulasi minimal 20 karakter!', 'warning');
+      } else {
+        alert('Resume Simulasi minimal 20 karakter!');
+      }
+      document.getElementById('nftD0MateriSummary')?.focus();
       return;
     }
 
@@ -1935,8 +2136,16 @@
     const payload = {
       submitted: true,
       day: 0,
-      summary: val,
-      conclusion: val,
+      cardA: {
+        answer: cardAAns,
+        sources: sourcesA
+      },
+      cardB: {
+        answer: cardBAns,
+        sources: sourcesB
+      },
+      summary: resumeAns,
+      conclusion: resumeAns,
       submittedAt: new Date().toISOString()
     };
 
@@ -1948,7 +2157,7 @@
     if (window.FincestemCore && FincestemCore.progress && cleanNisn) {
       FincestemCore.progress.submitTask(cleanNisn, 0, 'materi', payload, function() {
         if (window.FincestemCore.ui) {
-          FincestemCore.ui.toast('Simulasi Modul Day 0 Selesai! Tahap 2: LKPD Latihan sekarang terbuka.', 'success');
+          FincestemCore.ui.toast('Simulasi Modul Day 0 Selesai! Tahap 2: LKPD Observasi kini terbuka.', 'success');
         }
       });
     }
@@ -1959,17 +2168,17 @@
     modal.innerHTML = `
       <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 text-center flex flex-col items-center gap-3.5 animate-scale-up">
         <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-800 flex items-center justify-center font-black shadow-inner">
-          <span class="material-symbols-outlined text-3xl">task_alt</span>
+          <span class="material-symbols-outlined text-3xl">verified</span>
         </div>
         <div>
           <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-amber-100 text-amber-900">
-            Tahap 1 Tuntas • Simulasi Modul
+            Tahap 1 Tuntas • Modul Day 0
           </span>
           <h3 class="font-black text-lg sm:text-xl text-slate-900 mt-1">
             Modul Day 0 Berhasil Diselesaikan!
           </h3>
           <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">
-            Bagus sekali! Anda telah memahami konsep 4 pilar FINCESTEM dan alur sistem. Tahap selanjutnya adalah mencoba <strong>LKPD Latihan Day 0</strong> (2 pertanyaan singkat).
+            Bagus sekali! Anda telah memahami alur 6 tahap harian dan konsep tema &amp; 4 pilar. Tahap selanjutnya adalah melakukan <strong>LKPD Observasi Lapangan Day 0</strong>.
           </p>
         </div>
 

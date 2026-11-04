@@ -3089,20 +3089,20 @@
             let renderedNftPreview = false;
 
             if (dayNum === 0) {
-              // PREVIEW SIMULASI & GLADI BERSIH (DAY 0)
+              // PREVIEW FORMAT BARU DAY 0 KOKURIKULER SMAN 1 BELITANG
               const taskMap = (prog && prog.task_map) || {};
 
-              // 1. Modul Materi Day 0
+              // 1. Modul Materi Day 0 (Card A, Card B, Resume)
               let d0Mat = taskMap['0_materi'] ? taskMap['0_materi'].content : null;
               if (typeof d0Mat === 'string') { try { d0Mat = JSON.parse(d0Mat); } catch(e){} }
               if (!d0Mat) {
                 for (const cid of candidateIds) {
-                  const raw = localStorage.getItem('fincestem_materi_nft_day0_' + cid);
+                  const raw = localStorage.getItem('fincestem_materi_nft_day0_' + cid) || localStorage.getItem('fincestem_materi_day0_' + cid);
                   if (raw) { try { d0Mat = JSON.parse(raw); if (d0Mat) break; } catch(e){} }
                 }
               }
 
-              // 2. LKPD Day 0
+              // 2. LKPD Day 0 (Observasi Tempat, Kecamatan, Narasumber, Kontak, Sektor, Produk, Kendala)
               let d0Lkpd = taskMap['0_lkpd'] ? taskMap['0_lkpd'].content : null;
               if (typeof d0Lkpd === 'string') { try { d0Lkpd = JSON.parse(d0Lkpd); } catch(e){} }
               if (!d0Lkpd && storedD0Lkpd) { try { d0Lkpd = JSON.parse(storedD0Lkpd); } catch(e){} }
@@ -3145,7 +3145,7 @@
                   <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 text-center text-slate-500 text-xs flex flex-col items-center justify-center gap-2">
                     <span class="material-symbols-outlined text-4xl text-slate-300">hourglass_empty</span>
                     <span class="font-extrabold text-sm text-slate-700">Siswa Belum Mengerjakan Simulasi Day 0</span>
-                    <p class="text-slate-400 text-xs max-w-md">Belum ada pengumpulan lembar kerja, kuis gladi bersih, foto, atau refleksi dari siswa ini di server.</p>
+                    <p class="text-slate-400 text-xs max-w-md">Belum ada pengumpulan modul, LKPD observasi, kuis gladi bersih, foto, atau refleksi dari siswa ini di server.</p>
                   </div>
                 `;
               } else {
@@ -3160,45 +3160,127 @@
                     }
                   }
 
-                  let lkpdItemsHtml = '';
-                  if (d0Lkpd) {
-                    const qMap = typeof d0Lkpd === 'object' ? (d0Lkpd.answers || d0Lkpd) : {};
-                    const qEntries = Object.entries(qMap).filter(([k]) => k !== 'submitted' && k !== 'day' && k !== 'submittedAt');
-                    if (qEntries.length > 0) {
-                      lkpdItemsHtml = qEntries.map(([k, v], idx) => {
-                        const qLabel = k === 'q1' ? '1. Pendekatan Sains & Teknologi' : (k === 'q2' ? '2. Alur Integrasi 4 Pilar' : `Jawaban Pertanyaan ${idx + 1}`);
-                        return `
-                          <div class="p-2.5 rounded-xl bg-white border border-teal-200 flex flex-col gap-1">
-                            <span class="font-bold text-teal-900 text-[11px]">${qLabel}:</span>
-                            <p class="text-slate-700 text-xs leading-relaxed italic bg-teal-50/50 p-2 rounded-lg border border-teal-100">"${String(v || '-').replace(/</g, '&lt;')}"</p>
-                          </div>
-                        `;
-                      }).join('');
+                  // 1. Render Modul Belajar (Card A, Card B, Resume)
+                  let cardAHtml = '';
+                  let cardBHtml = '';
+                  let resumeHtml = '';
+                  if (d0Mat) {
+                    if (d0Mat.cardA && d0Mat.cardA.answer) {
+                      const sources = Array.isArray(d0Mat.cardA.sources) ? d0Mat.cardA.sources.filter(Boolean) : [];
+                      const sourceBadges = sources.map(s => `<span class="inline-block px-2 py-0.5 rounded-md text-[10.5px] bg-teal-100 text-teal-800 border border-teal-200 font-semibold mr-1 mb-1">📌 ${escapeHtml(s)}</span>`).join('');
+                      cardAHtml = `
+                        <div class="p-3 rounded-2xl bg-white border border-teal-200 flex flex-col gap-1.5 shadow-2xs">
+                          <span class="font-bold text-teal-950 text-xs flex items-center gap-1.5">
+                            <span class="px-2 py-0.5 rounded-md bg-teal-800 text-white text-[10px] font-black">Card A</span>
+                            <span>Tema Kegiatan Kokurikuler TP 2026-2027:</span>
+                          </span>
+                          <p class="text-slate-700 text-xs leading-relaxed italic bg-teal-50/50 p-2.5 rounded-xl border border-teal-100 font-medium">
+                            "${escapeHtml(d0Mat.cardA.answer)}"
+                          </p>
+                          ${sourceBadges ? `
+                            <div class="flex flex-wrap items-center gap-1 pt-1">
+                              <span class="text-[10px] font-bold text-slate-500 mr-1">Sumber:</span>
+                              ${sourceBadges}
+                            </div>
+                          ` : ''}
+                        </div>
+                      `;
+                    }
+
+                    if (d0Mat.cardB && d0Mat.cardB.answer) {
+                      const sources = Array.isArray(d0Mat.cardB.sources) ? d0Mat.cardB.sources.filter(Boolean) : [];
+                      const sourceBadges = sources.map(s => `<span class="inline-block px-2 py-0.5 rounded-md text-[10.5px] bg-teal-100 text-teal-800 border border-teal-200 font-semibold mr-1 mb-1">📌 ${escapeHtml(s)}</span>`).join('');
+                      cardBHtml = `
+                        <div class="p-3 rounded-2xl bg-white border border-teal-200 flex flex-col gap-1.5 shadow-2xs">
+                          <span class="font-bold text-teal-950 text-xs flex items-center gap-1.5">
+                            <span class="px-2 py-0.5 rounded-md bg-teal-800 text-white text-[10px] font-black">Card B</span>
+                            <span>4 Dimensi Profil Lulusan Kegiatan:</span>
+                          </span>
+                          <p class="text-slate-700 text-xs leading-relaxed italic bg-teal-50/50 p-2.5 rounded-xl border border-teal-100 font-medium">
+                            "${escapeHtml(d0Mat.cardB.answer)}"
+                          </p>
+                          ${sourceBadges ? `
+                            <div class="flex flex-wrap items-center gap-1 pt-1">
+                              <span class="text-[10px] font-bold text-slate-500 mr-1">Sumber:</span>
+                              ${sourceBadges}
+                            </div>
+                          ` : ''}
+                        </div>
+                      `;
+                    }
+
+                    const sumText = d0Mat.summary || d0Mat.conclusion || d0Mat.text || '';
+                    if (sumText) {
+                      resumeHtml = `
+                        <div class="p-3 rounded-2xl bg-white border border-amber-200 flex flex-col gap-1.5 shadow-2xs">
+                          <span class="font-bold text-amber-950 text-xs flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm text-amber-600">edit_note</span>
+                            <span>Resume Simulasi Modul Day 0:</span>
+                          </span>
+                          <p class="text-slate-700 text-xs leading-relaxed italic bg-amber-50/50 p-2.5 rounded-xl border border-amber-100 font-medium">
+                            "${escapeHtml(sumText)}"
+                          </p>
+                        </div>
+                      `;
                     }
                   }
 
-                  let matSummaryHtml = '';
-                  if (d0Mat) {
-                    const sumText = d0Mat.summary || d0Mat.conclusion || d0Mat.text || (typeof d0Mat === 'string' ? d0Mat : '');
-                    if (sumText) {
-                      matSummaryHtml = `
-                        <div class="p-2.5 rounded-xl bg-white border border-emerald-200 flex flex-col gap-1">
-                          <span class="font-bold text-emerald-900 text-[11px] flex items-center gap-1">
-                            <span class="material-symbols-outlined text-xs text-emerald-600">menu_book</span>
-                            <span>1. Resume Modul Belajar (Day 0):</span>
-                          </span>
-                          <p class="text-slate-700 text-xs leading-relaxed italic bg-emerald-50/50 p-2 rounded-lg border border-emerald-100">"${String(sumText).replace(/</g, '&lt;')}"</p>
+                  // 2. Render LKPD Observasi Lapangan Day 0
+                  let lkpdObsHtml = '';
+                  if (d0Lkpd) {
+                    const ans = d0Lkpd.answers || d0Lkpd;
+                    if (ans.nama_tempat || ans.tempat || ans.kecamatan) {
+                      lkpdObsHtml = `
+                        <div class="p-3.5 rounded-2xl bg-white border border-teal-200 flex flex-col gap-2.5 shadow-2xs">
+                          <div class="flex items-center justify-between border-b border-teal-100 pb-2">
+                            <span class="font-black text-teal-950 text-xs flex items-center gap-1.5">
+                              <span class="material-symbols-outlined text-sm text-teal-700">store</span>
+                              <span>Hasil Observasi Lapangan: ${escapeHtml(ans.nama_tempat || ans.tempat || '-')}</span>
+                            </span>
+                            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-teal-700 text-white">
+                              Kec. ${escapeHtml(ans.kecamatan || 'Belitang')}
+                            </span>
+                          </div>
+
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                            <div class="p-2 rounded-xl bg-slate-50 border border-slate-200">
+                              <span class="text-[10px] text-slate-500 font-bold block uppercase">Narasumber &amp; Kontak:</span>
+                              <strong class="text-slate-900 text-xs block mt-0.5">${escapeHtml(ans.nama_narasumber || ans.narasumber || '-')}</strong>
+                              <span class="text-[11px] text-teal-700 font-semibold">${escapeHtml(ans.kontak_narasumber || ans.kontak || ans.no_wa || '-')}</span>
+                            </div>
+
+                            <div class="p-2 rounded-xl bg-slate-50 border border-slate-200">
+                              <span class="text-[10px] text-slate-500 font-bold block uppercase">Klasifikasi Sektor:</span>
+                              <span class="inline-block px-2 py-0.5 rounded-md text-[11px] font-extrabold bg-blue-100 text-blue-800 border border-blue-200 mt-1">
+                                Sektor ${escapeHtml(ans.sektor_ekonomi || ans.sektor || 'Primer')}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div class="flex flex-col gap-1 text-xs">
+                            <span class="text-[10px] text-slate-500 font-bold uppercase">Produk yang Dijual:</span>
+                            <p class="p-2 rounded-xl bg-slate-50 border border-slate-200 text-slate-700 text-xs leading-relaxed font-medium">
+                              ${escapeHtml(ans.produk_dijual || ans.produk || '-')}
+                            </p>
+                          </div>
+
+                          <div class="flex flex-col gap-1 text-xs">
+                            <span class="text-[10px] text-slate-500 font-bold uppercase">Kendala yang Dihadapi:</span>
+                            <p class="p-2 rounded-xl bg-rose-50/60 border border-rose-200 text-rose-950 text-xs leading-relaxed font-medium">
+                              ${escapeHtml(ans.kendala_dihadapi || ans.kendala || '-')}
+                            </p>
+                          </div>
                         </div>
                       `;
                     }
                   }
 
                   lkpdPreviewEl.innerHTML = `
-                    <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-50 via-teal-50 to-emerald-50 border-2 border-emerald-300 text-xs flex flex-col gap-3 shadow-xs">
+                    <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-amber-50 via-teal-50 to-emerald-50 border-2 border-emerald-300 text-xs flex flex-col gap-3.5 shadow-xs">
                       <div class="flex items-center justify-between border-b border-emerald-200/80 pb-2.5 flex-wrap gap-2">
                         <span class="font-extrabold text-emerald-950 flex items-center gap-1.5 text-xs sm:text-sm">
                           <span>🎮</span>
-                          <span>Hasil Pengerjaan Simulasi Gladi Bersih (Day 0)</span>
+                          <span>Hasil Pengerjaan Day 0 (Simulasi &amp; Gladi Bersih Alur)</span>
                         </span>
                         <span class="px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-emerald-500 text-white shadow-2xs">
                           Terekam Lengkap di Server ✓
@@ -3206,27 +3288,36 @@
                       </div>
 
                       <p class="text-[11.5px] text-emerald-950 leading-relaxed font-medium">
-                        Berikut rincian pengerjaan tugas simulasi peserta didik dari HP mereka. Anda dapat meninjau hasil jawaban, skor CBT, dan foto dokumentasi di bawah untuk memberikan penilaian &amp; umpan balik:
+                        Berikut rincian pengerjaan tugas simulasi peserta didik sesuai format alur baru (Modul Card A &amp; B, LKPD Observasi, Kuis CBT, Foto, dan Refleksi):
                       </p>
 
-                      <div class="flex flex-col gap-2.5">
-                        ${matSummaryHtml}
-
-                        ${lkpdItemsHtml ? `
-                          <div class="flex flex-col gap-1.5">
-                            <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
-                              <span class="material-symbols-outlined text-xs text-teal-600">assignment</span>
-                              <span>2. Lembar Kerja Peserta Didik (LKPD Day 0):</span>
-                            </span>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                              ${lkpdItemsHtml}
-                            </div>
+                      <div class="flex flex-col gap-3">
+                        <!-- 1. Modul Belajar (Card A, Card B, Resume) -->
+                        <div class="flex flex-col gap-2">
+                          <span class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm text-teal-700">menu_book</span>
+                            <span>1. Modul Belajar Day 0 (Alur, Tema, &amp; Dimensi Profil Lulusan):</span>
+                          </span>
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            ${cardAHtml || '<div class="p-3 rounded-2xl bg-white border border-slate-200 text-slate-400 italic">Card A belum diisi</div>'}
+                            ${cardBHtml || '<div class="p-3 rounded-2xl bg-white border border-slate-200 text-slate-400 italic">Card B belum diisi</div>'}
                           </div>
-                        ` : ''}
+                          ${resumeHtml}
+                        </div>
 
+                        <!-- 2. LKPD Observasi Lapangan -->
+                        <div class="flex flex-col gap-1.5">
+                          <span class="font-extrabold text-slate-900 text-xs flex items-center gap-1.5">
+                            <span class="material-symbols-outlined text-sm text-teal-700">assignment</span>
+                            <span>2. Lembar Kerja Peserta Didik (LKPD Observasi Lapangan):</span>
+                          </span>
+                          ${lkpdObsHtml || '<div class="p-3 rounded-2xl bg-white border border-slate-200 text-slate-400 italic">LKPD belum diisi</div>'}
+                        </div>
+
+                        <!-- 3 & 5. Kuis CBT & Refleksi -->
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[11px]">
                           <!-- Kuis CBT -->
-                          <div class="p-2.5 rounded-xl bg-white border border-amber-200 flex flex-col gap-1">
+                          <div class="p-3 rounded-2xl bg-white border border-amber-200 flex flex-col gap-1 shadow-2xs">
                             <span class="font-bold text-slate-800 flex items-center gap-1">
                               <span class="material-symbols-outlined text-xs text-amber-600">task_alt</span>
                               <span>3. Kuis Asesmen CBT (10 Soal):</span>
@@ -3239,19 +3330,19 @@
                           </div>
 
                           <!-- Jurnal Refleksi -->
-                          <div class="p-2.5 rounded-xl bg-white border border-purple-200 flex flex-col gap-1">
+                          <div class="p-3 rounded-2xl bg-white border border-purple-200 flex flex-col gap-1 shadow-2xs">
                             <span class="font-bold text-slate-800 flex items-center gap-1">
                               <span class="material-symbols-outlined text-xs text-purple-600">rate_review</span>
-                              <span>5. Jurnal Refleksi Siswa:</span>
+                              <span>5. Jurnal Refleksi Pemahaman Alur:</span>
                             </span>
-                            <p class="text-slate-700 text-xs italic bg-purple-50/60 p-2 rounded-lg border border-purple-100 leading-relaxed font-medium">
-                              "${reflText ? reflText.replace(/</g, '&lt;') : 'Belum mengisi catatan refleksi.'}"
+                            <p class="text-slate-700 text-xs italic bg-purple-50/60 p-2 rounded-xl border border-purple-100 leading-relaxed font-medium">
+                              "${reflText ? escapeHtml(reflText) : 'Belum mengisi catatan refleksi.'}"
                             </p>
                           </div>
                         </div>
 
                         <!-- Status Dokumentasi Foto -->
-                        <div class="p-2.5 rounded-xl bg-white/90 border border-slate-200 flex items-center justify-between gap-2">
+                        <div class="p-3 rounded-2xl bg-white/90 border border-slate-200 flex items-center justify-between gap-2 shadow-2xs">
                           <div class="flex items-center gap-2 min-w-0">
                             <span class="material-symbols-outlined text-emerald-600 text-base shrink-0">photo_camera</span>
                             <span class="text-[11.5px] font-bold text-slate-800 truncate">4. Dokumentasi Foto Lapangan Day 0:</span>
@@ -3261,7 +3352,9 @@
                       </div>
                     </div>
                   `;
-                } catch(e) {}
+                } catch(e) {
+                  console.error('Error rendering D0 detail:', e);
+                }
               }
             } else if (dayNum >= 1 && dayNum <= 7) {
               try {

@@ -187,6 +187,7 @@
       function renderActiveMateriModule() {
         // SMART ROUTER MODUL BELAJAR: FIELD TRIP VS NON-FIELD TRIP
         if (isFieldTrip) {
+          if (dayNum === 0 && mainEl) { renderDay0NonFieldTripModule(mainEl); return; }
           // TAMPILKAN MODUL BELAJAR FIELD TRIP (Day 1 s.d. 7 UTUH TERKUNCI)
           if (dayNum === 1 && mainEl) { renderDay1FieldTripModule(mainEl); return; }
           if (dayNum === 2 && mainEl) { renderDay2FieldTripModule(mainEl); return; }
