@@ -167,7 +167,7 @@
   <script src="../js/core.js?v=20261030_reset_fix_v1"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261103_binaan_v5"></script>
   <script src="../js/modules/materi-fieldtrip.js?v=20261027_d6_final_v4"></script>
-  <script src="../js/modules/materi-nonfieldtrip.js?v=20261030_nft_v3_full"></script>
+  <script src="../js/modules/materi-nonfieldtrip.js?v=20261104_day0_v2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -250,21 +250,7 @@
         });
       }
 
-      if (dayNum === 0) {
-        const banner = document.createElement('div');
-        banner.className = 'p-4 rounded-3xl bg-amber-500/15 border border-amber-400 text-amber-950 flex items-center gap-3 shadow-xs';
-        banner.innerHTML = `
-          <div class="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
-            <span class="material-symbols-outlined text-xl">model_training</span>
-          </div>
-          <div class="flex flex-col min-w-0">
-            <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Day 0 • Gladi Bersih</span>
-            <span class="text-sm font-extrabold leading-snug">Modul Simulasi &amp; Orientasi Sistem FINCESTEM</span>
-            <p class="text-xs text-slate-600 mt-0.5 leading-relaxed">Pelajari contoh materi 4 pilar di bawah ini sebagai latihan sebelum kegiatan riset lapangan resmi dimulai.</p>
-          </div>
-        `;
-        if (mainEl) mainEl.insertBefore(banner, mainEl.firstChild);
-      }
+// Day 0 banner is cleanly rendered inside renderDay0NonFieldTripModule
 
       FincestemCore.schedule.getSchedule(function(days) {
         const d = days.find(x => x.day_number === dayNum);
