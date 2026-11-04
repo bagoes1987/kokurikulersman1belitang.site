@@ -1850,6 +1850,10 @@
             </div>
           </div>
           <div class="flex items-center gap-2 shrink-0">
+            <button onclick="switchAdmTab('mentorship')" class="py-2.5 px-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer border border-slate-300 shadow-2xs" title="Beralih ke Pembagian Siswa Binaan">
+              <span class="material-symbols-outlined text-base text-teal-600">supervised_user_circle</span>
+              <span>Kelola Binaan</span>
+            </button>
             <button onclick="exportRekapFieldTripToCSV()" class="py-2.5 px-3.5 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface font-bold text-xs flex items-center gap-1.5 transition-all cursor-pointer border border-outline-variant/30 shadow-2xs">
               <span class="material-symbols-outlined text-base text-emerald-600">download</span>
               <span>Ekspor CSV</span>
@@ -1882,6 +1886,101 @@
             <span class="text-[11px] font-bold text-indigo-800">Total Siswa Dapodik</span>
             <span id="rekapStatTotalMaster" class="text-xl font-black text-indigo-600 mt-0.5">1.165 Siswa</span>
             <span class="text-[10px] text-slate-500 mt-0.5">Kelas X, XI, dan XII</span>
+          </div>
+        </div>
+        <!-- RINCIAN PER TINGKAT ANGKATAN (X, XI, XII) -->
+        <div class="pt-3 border-t border-amber-200/50">
+          <div class="text-[11px] font-black uppercase tracking-wider text-slate-600 mb-2 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-base text-amber-600">bar_chart</span>
+            <span>Rincian Jalur Peserta per Tingkat Angkatan (Kelas X, XI, XII)</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <!-- ANGKATAN KELAS X -->
+            <div onclick="filterRekapGrade('X')" class="p-3.5 rounded-2xl bg-white/90 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+                  <span class="font-black text-xs text-slate-800">Tingkat Kelas X (11 Rombel)</span>
+                </div>
+                <span id="rekapGradeX_total" class="text-xs font-black text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg">0 Siswa</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-100 text-xs">
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-amber-700 font-bold flex items-center gap-1">
+                    <span>🚌 Field Trip</span>
+                  </span>
+                  <span id="rekapGradeX_ft" class="text-xs font-black text-amber-600 mt-0.5">0 Siswa</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+                    <span>🏫 Non-FT</span>
+                  </span>
+                  <span id="rekapGradeX_nonFt" class="text-xs font-black text-emerald-600 mt-0.5">0 Siswa</span>
+                </div>
+              </div>
+              <div class="text-[10px] text-blue-600 font-bold mt-2 flex items-center gap-1 group-hover:underline">
+                <span>Klik untuk saring Kelas X</span>
+                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+              </div>
+            </div>
+
+            <!-- ANGKATAN KELAS XI -->
+            <div onclick="filterRekapGrade('XI')" class="p-3.5 rounded-2xl bg-white/90 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+                  <span class="font-black text-xs text-slate-800">Tingkat Kelas XI (11 Rombel)</span>
+                </div>
+                <span id="rekapGradeXI_total" class="text-xs font-black text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg">0 Siswa</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-100 text-xs">
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-amber-700 font-bold flex items-center gap-1">
+                    <span>🚌 Field Trip</span>
+                  </span>
+                  <span id="rekapGradeXI_ft" class="text-xs font-black text-amber-600 mt-0.5">0 Siswa</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+                    <span>🏫 Non-FT</span>
+                  </span>
+                  <span id="rekapGradeXI_nonFt" class="text-xs font-black text-emerald-600 mt-0.5">0 Siswa</span>
+                </div>
+              </div>
+              <div class="text-[10px] text-amber-600 font-bold mt-2 flex items-center gap-1 group-hover:underline">
+                <span>Klik untuk saring Kelas XI</span>
+                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+              </div>
+            </div>
+
+            <!-- ANGKATAN KELAS XII -->
+            <div onclick="filterRekapGrade('XII')" class="p-3.5 rounded-2xl bg-white/90 border border-slate-200 hover:border-amber-400 hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                  <span class="font-black text-xs text-slate-800">Tingkat Kelas XII (11 Rombel)</span>
+                </div>
+                <span id="rekapGradeXII_total" class="text-xs font-black text-slate-700 bg-slate-100 px-2 py-0.5 rounded-lg">0 Siswa</span>
+              </div>
+              <div class="grid grid-cols-2 gap-2 mt-2 pt-2 border-t border-slate-100 text-xs">
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-amber-700 font-bold flex items-center gap-1">
+                    <span>🚌 Field Trip</span>
+                  </span>
+                  <span id="rekapGradeXII_ft" class="text-xs font-black text-amber-600 mt-0.5">0 Siswa</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[10px] text-emerald-700 font-bold flex items-center gap-1">
+                    <span>🏫 Non-FT</span>
+                  </span>
+                  <span id="rekapGradeXII_nonFt" class="text-xs font-black text-emerald-600 mt-0.5">0 Siswa</span>
+                </div>
+              </div>
+              <div class="text-[10px] text-emerald-600 font-bold mt-2 flex items-center gap-1 group-hover:underline">
+                <span>Klik untuk saring Kelas XII</span>
+                <span class="material-symbols-outlined text-xs">arrow_forward</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2464,6 +2563,10 @@
           </div>
 
           <div class="flex items-center gap-2 flex-wrap">
+            <button type="button" onclick="switchAdmTab('rekap')" class="px-3.5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer" title="Buka Rekapitulasi Jalur Siswa (Field Trip & Non-Field Trip) per Angkatan dan 33 Rombel">
+              <span class="material-symbols-outlined text-base">directions_bus</span>
+              <span>Rekap Jalur (33 Kelas &amp; Angkatan)</span>
+            </button>
             <button type="button" id="btnManualSyncMentorship" onclick="syncMentorshipMultiPCNow()" class="px-3.5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white font-bold text-xs flex items-center gap-1.5 shadow-md transition-all cursor-pointer" title="Sinkronkan data Pembagian Siswa Binaan antar PC Kantor & Laptop ke Server Database">
               <span class="material-symbols-outlined text-base">cloud_sync</span>
               <span id="lblSyncMentorshipBtn">Sinkronkan Server (Multi-PC)</span>
@@ -9008,6 +9111,8 @@
       let grandTotalNonFT = 0;
       let grandTotalClassesWithFT = 0;
       let gradeFTCounts = { 'X': 0, 'XI': 0, 'XII': 0 };
+      window._rekapGradeNonFTCounts = { 'X': 0, 'XI': 0, 'XII': 0 };
+      window._rekapGradeTotalCounts = { 'X': 0, 'XI': 0, 'XII': 0 };
 
       // Pre-grouping siswa per rombel O(N) untuk kecepatan rendering instan tanpa freeze
       const studentsByClass = new Map();
@@ -9042,8 +9147,12 @@
         grandTotalNonFT += nonFtStudents.length;
         if (ftStudents.length > 0) {
           grandTotalClassesWithFT++;
-          gradeFTCounts[level] = (gradeFTCounts[level] || 0) + ftStudents.length;
         }
+        gradeFTCounts[level] = (gradeFTCounts[level] || 0) + ftStudents.length;
+        if (!window._rekapGradeNonFTCounts) window._rekapGradeNonFTCounts = { 'X': 0, 'XI': 0, 'XII': 0 };
+        if (!window._rekapGradeTotalCounts) window._rekapGradeTotalCounts = { 'X': 0, 'XI': 0, 'XII': 0 };
+        window._rekapGradeNonFTCounts[level] = (window._rekapGradeNonFTCounts[level] || 0) + nonFtStudents.length;
+        window._rekapGradeTotalCounts[level] = (window._rekapGradeTotalCounts[level] || 0) + studentsInClass.length;
 
         const coord = (FincestemCore.assignments && FincestemCore.assignments.getClassCoordinator)
           ? FincestemCore.assignments.getClassCoordinator(clsName)
@@ -9086,6 +9195,23 @@
       if (btnXI) btnXI.textContent = `Kelas XI (${gradeFTCounts['XI'] || 0} FT)`;
       if (btnXII) btnXII.textContent = `Kelas XII (${gradeFTCounts['XII'] || 0} FT)`;
 
+      // Update kartu rincian per-angkatan (X, XI, XII)
+      ['X', 'XI', 'XII'].forEach(lvl => {
+        const tot = (window._rekapGradeTotalCounts && window._rekapGradeTotalCounts[lvl]) || 0;
+        const ft = gradeFTCounts[lvl] || 0;
+        const nonFt = (window._rekapGradeNonFTCounts && window._rekapGradeNonFTCounts[lvl]) || 0;
+        const ftPct = tot > 0 ? ((ft / tot) * 100).toFixed(1) : '0';
+        const nonFtPct = tot > 0 ? ((nonFt / tot) * 100).toFixed(1) : '0';
+
+        const elTot = document.getElementById('rekapGrade' + lvl + '_total');
+        const elFt = document.getElementById('rekapGrade' + lvl + '_ft');
+        const elNonFt = document.getElementById('rekapGrade' + lvl + '_nonFt');
+
+        if (elTot) elTot.textContent = tot + ' Siswa';
+        if (elFt) elFt.textContent = ft + ' Siswa (' + ftPct + '%)';
+        if (elNonFt) elNonFt.textContent = nonFt + ' Siswa (' + nonFtPct + '%)';
+      });
+
       // Filter classes by level and search query
       let filteredStats = classStats.filter(item => {
         if (currentRekapGradeFilter !== 'ALL' && item.level !== currentRekapGradeFilter) {
@@ -9120,11 +9246,13 @@
 
       let html = '';
       filteredStats.forEach((item, index) => {
+        const ftPct = item.total > 0 ? ((item.ftCount / item.total) * 100).toFixed(0) : 0;
+        const nonFtPct = item.total > 0 ? ((item.nonFtCount / item.total) * 100).toFixed(0) : 0;
         const ftBadge = item.ftCount > 0
-          ? `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-100 text-amber-800 border border-amber-200">${item.ftCount} Siswa</span>`
+          ? `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-100 text-amber-800 border border-amber-200">${item.ftCount} Siswa (${ftPct}%)</span>`
           : `<span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-400">0</span>`;
 
-        const nonFtBadge = `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">${item.nonFtCount} Siswa</span>`;
+        const nonFtBadge = `<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">${item.nonFtCount} Siswa (${nonFtPct}%)</span>`;
 
         const coordFormatted = (item.coordinator || 'Drs. H. Koordinator FINCESTEM')
           .split('\n')
