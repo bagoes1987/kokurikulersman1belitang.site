@@ -4183,12 +4183,10 @@
   <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
   <script src="../js/guru_data.js?v=20261030_binaan_v4"></script>
   <script src="../js/core.js?v=20261030_binaan_v4"></script>
-  <script src="../js/data/bank-soal-nonfieldtrip.js?v=20261029_nft_bs2"></script>
-  <script src="../js/modules/admin-banksoal.js?v=20261029_nft_bs2"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261104_dualrole_v1"></script>
-  <script src="../js/modules/admin-mentorship.js?v=20261104_dualrole_v1"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261104_dualrole_v2"></script>
+  <script src="../js/modules/admin-mentorship.js?v=20261104_dualrole_v2"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
-  <script src="../js/modules/admin-rekap-penilaian.js?v=20261104_dualrole_v1"></script>
+  <script src="../js/modules/admin-rekap-penilaian.js?v=20261104_dualrole_v2"></script>
   <script>
     let adminCurrentGrade = 'ALL';
     let adminSearchQuery = '';
@@ -4244,6 +4242,47 @@
       }
     }
 
+        // Lazy load Bank Soal Non-Field Trip module saat dibutuhkan
+    let _bankSoalLoading = false;
+    let _bankSoalLoaded = false;
+    function loadAdminBankSoalModule(callback) {
+      if (_bankSoalLoaded && typeof initAdminBankSoalView === 'function') {
+        if (callback) callback();
+        return;
+      }
+      if (_bankSoalLoading) {
+        const checkInterval = setInterval(() => {
+          if (_bankSoalLoaded) {
+            clearInterval(checkInterval);
+            if (callback) callback();
+          }
+        }, 100);
+        return;
+      }
+      _bankSoalLoading = true;
+      const s1 = document.createElement('script');
+      s1.src = '../js/data/bank-soal-nonfieldtrip.js?v=20261104_nft_bs3';
+      s1.onload = function() {
+        const s2 = document.createElement('script');
+        s2.src = '../js/modules/admin-banksoal.js?v=20261104_nft_bs3';
+        s2.onload = function() {
+          _bankSoalLoading = false;
+          _bankSoalLoaded = true;
+          if (callback) callback();
+        };
+        s2.onerror = function() {
+          _bankSoalLoading = false;
+          console.error('Gagal memuat modul admin-banksoal.js');
+        };
+        document.body.appendChild(s2);
+      };
+      s1.onerror = function() {
+        _bankSoalLoading = false;
+        console.error('Gagal memuat bank-soal-nonfieldtrip.js');
+      };
+      document.body.appendChild(s1);
+    }
+
     function checkAdminAuth() {
       const isAuth = FincestemCore.auth.isLoggedIn();
       const role = FincestemCore.auth.getRole();
@@ -4258,31 +4297,36 @@
         if (portalContent) portalContent.classList.remove('hidden');
         refreshAdminStats();
 
-        // Sinkronisasi foto & zona siswa dari server cPanel secara real-time
-        if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
-          FincestemCore.profile.syncPhotos(function() {
+        // 1. Sinkronkan pembagian siswa binaan (Mentorship) dari server database multi-PC
+        if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
+          window.FincestemMentorship.syncFromServer(function(changed) {
+            if (changed) {
+              const pMentorship = document.getElementById('panelAdminMentorship');
+              if (pMentorship && !pMentorship.classList.contains('hidden') && typeof renderMentorshipStats === 'function') {
+                renderMentorshipStats();
+              }
+            }
+          });
+        }
+
+        // 2. Debounced Student List Render agar tidak thrashing DOM berkali-kali
+        let _stListRenderTimer = null;
+        function debouncedStudentListRender() {
+          if (_stListRenderTimer) cancelAnimationFrame(_stListRenderTimer);
+          _stListRenderTimer = requestAnimationFrame(() => {
             renderAdminStudentList();
           });
         }
+
+        // 3. Sinkronkan zona siswa dari server
         if (FincestemCore.zones && FincestemCore.zones.syncZones) {
           FincestemCore.zones.syncZones(function() {
             refreshAdminStats();
-            requestAnimationFrame(function() {
-              const pStudents = document.getElementById('panelAdminStudents');
-              if (pStudents && !pStudents.classList.contains('hidden')) {
-                applyStudentFilters();
-              }
-              const pRekap = document.getElementById('panelAdminRekap');
-              if (pRekap && !pRekap.classList.contains('hidden')) {
-                if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
-              }
-              const pMentorship = document.getElementById('panelAdminMentorship');
-              if (pMentorship && !pMentorship.classList.contains('hidden')) {
-                if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
-              }
-            });
+            debouncedStudentListRender();
           });
         }
+
+        // 4. Sinkronkan penugasan rombel
         if (FincestemCore.assignments && FincestemCore.assignments.getAssignments) {
           FincestemCore.assignments.getAssignments(function() {
             if (typeof renderAdminMatrixView === 'function' && currentPenugasanSubTab === 'matrix') {
@@ -4290,11 +4334,23 @@
             }
           });
         }
-        // Sinkronisasi kontak WhatsApp siswa & orang tua dari server
+
+        // 5. Sinkronkan kontak WhatsApp secara non-blocking
         if (FincestemCore.studentContacts && FincestemCore.studentContacts.getAllContacts) {
-          FincestemCore.studentContacts.getAllContacts(function() {
-            renderAdminStudentList();
-          });
+          setTimeout(() => {
+            FincestemCore.studentContacts.getAllContacts(function() {
+              debouncedStudentListRender();
+            });
+          }, 300);
+        }
+
+        // 6. Sinkronkan foto secara tertunda setelah UI interaktif
+        if (FincestemCore.profile && FincestemCore.profile.syncPhotos) {
+          setTimeout(() => {
+            FincestemCore.profile.syncPhotos(function() {
+              debouncedStudentListRender();
+            });
+          }, 1000);
         }
       } else {
         if (layoutWrapper) layoutWrapper.classList.add('hidden');
@@ -4485,7 +4541,11 @@
       if (tab === 'reset') initAdminResetView();
       if (tab === 'gallery') renderAdminGallery();
       if (tab === 'mentorship' && typeof initAdminMentorshipView === 'function') initAdminMentorshipView();
-      if (tab === 'banksoal' && typeof initAdminBankSoalView === 'function') initAdminBankSoalView();
+      if (tab === 'banksoal') {
+        loadAdminBankSoalModule(function() {
+          if (typeof initAdminBankSoalView === 'function') initAdminBankSoalView();
+        });
+      }
       if (tab === 'backup') loadTelemetryLogs();
     }
 

@@ -89,29 +89,42 @@
    * Mengambil pemetaan mentorship guru -> siswa
    */
   function getAssignmentsMap() {
+    if (state.serverMentorship && state.serverMentorship.assignments && Object.keys(state.serverMentorship.assignments).length > 0) {
+      return state.serverMentorship.assignments;
+    }
     if (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function') {
-      return window.FincestemMentorship.getAssignmentsMap();
+      const local = window.FincestemMentorship.getAssignmentsMap();
+      if (local && Object.keys(local).length > 0) return local;
     }
     return {};
+  }
+
+  function renderLoadingState() {
+    const container = document.getElementById('tblMonitoringFasilBody');
+    if (container && (!state.facilitatorStats || state.facilitatorStats.length === 0)) {
+      container.innerHTML = `
+        <tr>
+          <td colspan="8" class="text-center py-12 text-slate-500">
+            <div class="inline-flex items-center gap-3">
+              <span class="material-symbols-outlined text-2xl text-[#0875D1] animate-spin">progress_activity</span>
+              <span class="text-sm font-bold text-slate-700">Memuat data kinerja fasilitator dan siswa binaan dari server...</span>
+            </div>
+          </td>
+        </tr>
+      `;
+    }
   }
 
   /**
    * Inisialisasi Modul & Sinkronisasi Pertama Kali
    */
   function initAdminRekapPenilaian(forceRefresh) {
-    // Sinkronkan pemetaan siswa binaan termutakhir dari server multi-PC
-    if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
-      window.FincestemMentorship.syncFromServer(function() {
-        processEnrichedData();
-        renderAllViews();
-      });
-    }
-
     if (state.isLoaded && !forceRefresh) {
       processEnrichedData();
       renderAllViews();
       return;
     }
+    renderLoadingState();
     fetchRekapDataFromServer();
   }
 
@@ -246,9 +259,12 @@
         }
       }
       if (!rawBinaan.length) {
-        const assignsMap = (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function')
-          ? window.FincestemMentorship.getAssignmentsMap()
-          : (state.serverMentorship && state.serverMentorship.assignments ? state.serverMentorship.assignments : {});
+        let assignsMap = {};
+        if (state.serverMentorship && state.serverMentorship.assignments && Object.keys(state.serverMentorship.assignments).length > 0) {
+          assignsMap = state.serverMentorship.assignments;
+        } else if (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function') {
+          assignsMap = window.FincestemMentorship.getAssignmentsMap() || {};
+        }
         const candidateKeys = [key, tc.username, tc.nip, tc.kode_guru, tc.nama_guru].filter(Boolean).map(k => String(k).trim().toLowerCase());
         let matchedEntry = null;
         for (const ck of candidateKeys) {
@@ -424,9 +440,12 @@
         }
       }
       if (!rawBinaan.length) {
-        const assignsMap = (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function')
-          ? window.FincestemMentorship.getAssignmentsMap()
-          : (state.serverMentorship && state.serverMentorship.assignments ? state.serverMentorship.assignments : {});
+        let assignsMap = {};
+        if (state.serverMentorship && state.serverMentorship.assignments && Object.keys(state.serverMentorship.assignments).length > 0) {
+          assignsMap = state.serverMentorship.assignments;
+        } else if (window.FincestemMentorship && typeof window.FincestemMentorship.getAssignmentsMap === 'function') {
+          assignsMap = window.FincestemMentorship.getAssignmentsMap() || {};
+        }
         const candidateKeys = [key, tc.username, tc.nip, tc.kode_guru, tc.nama_guru].filter(Boolean).map(k => String(k).trim().toLowerCase());
         let matchedEntry = null;
         for (const ck of candidateKeys) {
@@ -467,8 +486,11 @@
         const cls = getStudentNormalizedClass(s) || 'Tanpa Kelas';
         classCounts[cls] = (classCounts[cls] || 0) + 1;
         const sNisn = String(s.nisn || s.identifier || '').trim();
-        if (sNisn && enrichedByNisn[sNisn]) {
-          binaanEnriched.push(enrichedByNisn[sNisn]);
+        const unp = sNisn.replace(/^0+/, '');
+        const pad = (sNisn.length >= 8 && sNisn.length <= 10) ? sNisn.padStart(10, '0') : sNisn;
+        const enr = (sNisn && enrichedByNisn[sNisn]) || (unp && enrichedByNisn[unp]) || (pad && enrichedByNisn[pad]);
+        if (enr) {
+          binaanEnriched.push(enr);
         }
       });
 

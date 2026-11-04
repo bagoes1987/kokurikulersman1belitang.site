@@ -27,11 +27,13 @@
   let _cachedTeacherRolesMap = null;
   let _cachedAssignmentsMap = null;
 
-  function invalidateMentorshipCache() {
+  function invalidateMentorshipCache(keepAssignments) {
     _cachedTeachersList = null;
     _cachedTeacherIdentifierIndex = null;
     _cachedTeacherRolesMap = null;
-    _cachedAssignmentsMap = null;
+    if (!keepAssignments) {
+      _cachedAssignmentsMap = null;
+    }
   }
 
   const MentorshipModule = {
@@ -396,9 +398,11 @@
           });
         }
 
-        if (assignChanged) {
-          localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(mergedAssigns));
+        if (assignChanged || (serverAssigns && Object.keys(serverAssigns).length > 0)) {
           _cachedAssignmentsMap = mergedAssigns;
+          try {
+            localStorage.setItem(STORAGE_KEY_ASSIGNMENTS, JSON.stringify(mergedAssigns));
+          } catch (e) {}
           updated = true;
         }
 
@@ -473,7 +477,7 @@
           }
         }
       } catch (e) {}
-      invalidateMentorshipCache();
+      invalidateMentorshipCache(true);
       return updated;
     },
 
@@ -579,19 +583,22 @@
      * ==========================================
      */
     getAssignmentsMap: function(forceFresh) {
-      if (!forceFresh && _cachedAssignmentsMap !== null) {
+      if (!forceFresh && _cachedAssignmentsMap !== null && typeof _cachedAssignmentsMap === 'object' && Object.keys(_cachedAssignmentsMap).length > 0) {
         return _cachedAssignmentsMap;
       }
       try {
         const raw = localStorage.getItem(STORAGE_KEY_ASSIGNMENTS);
         if (raw) {
           const map = JSON.parse(raw);
-          if (map && typeof map === 'object') {
+          if (map && typeof map === 'object' && Object.keys(map).length > 0) {
             _cachedAssignmentsMap = map;
             return map;
           }
         }
       } catch (e) {}
+      if (_cachedAssignmentsMap && typeof _cachedAssignmentsMap === 'object') {
+        return _cachedAssignmentsMap;
+      }
       _cachedAssignmentsMap = {};
       return _cachedAssignmentsMap;
     },
