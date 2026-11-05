@@ -1416,17 +1416,12 @@ const FincestemCore = {
           d.status_code = 'OPEN';
           d.status_label = 'Aktivitas Sedang Dibuka';
         }
-        // Auto-sinkronisasi Day 1 Non-Field Trip jika di DB / cache masih tersimpan data usang Orientasi & Pembekalan Riset atau auto_schedule usang
+        // Auto-sinkronisasi Day 1 Non-Field Trip jika di DB / cache masih tersimpan data usang Orientasi & Pembekalan Riset
         if (Number(d.day_number) === 1) {
           if (String(d.title).includes('Orientasi') || String(d.theme).includes('Pembekalan')) {
             d.title = 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur';
             d.theme = 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah';
             d.description = 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.';
-          }
-          // Pastikan Day 1 Non-Field Trip selalu terbuka (is_open: true) untuk pengujian & pengerjaan siswa
-          if (d.auto_schedule === undefined || d.auto_schedule === null || Number(d.auto_schedule) === 1) {
-            d.auto_schedule = 0;
-            d.is_active = 1;
           }
         }
         // Auto-sinkronisasi Day 2 Non-Field Trip jika di DB / cache masih tersimpan data usang Eksplorasi Sains Irigasi
@@ -1435,10 +1430,6 @@ const FincestemCore = {
             d.title = 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur';
             d.theme = 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering';
             d.description = 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.';
-          }
-          if (d.auto_schedule === undefined || d.auto_schedule === null || Number(d.auto_schedule) === 1) {
-            d.auto_schedule = 0;
-            d.is_active = 1;
           }
         }
         return self.evaluateDayStatus(d, serverTime);
@@ -1666,7 +1657,12 @@ const FincestemCore = {
       const d = days.find(x => Number(x.day_number) === num);
       if (d) {
         d.is_active = actNum;
-        if (actNum === 0) {
+        if (actNum === 1) {
+          d.auto_schedule = 0;
+          d.is_open = true;
+          d.status_code = 'OPEN';
+          d.status_label = 'Terbuka (Manual Admin)';
+        } else {
           d.is_open = false;
           d.status_code = 'MANUAL_CLOSED';
           d.status_label = 'Ditutup Manual oleh Admin';
@@ -1683,7 +1679,7 @@ const FincestemCore = {
         fetch(FincestemCore.api.base + '/schedule.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'toggle_day', category: cat, day_number: num, is_active: actNum })
+          body: JSON.stringify({ action: 'toggle_day', category: cat, day_number: num, is_active: actNum, auto_schedule: (actNum === 1 ? 0 : (d ? d.auto_schedule : 1)) })
         })
         .then(r => r.json())
         .then(res => {

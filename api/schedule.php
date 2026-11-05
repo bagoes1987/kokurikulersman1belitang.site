@@ -319,6 +319,22 @@ if ($method === 'POST') {
         }
     }
 
+    // AKSI MASTER 1B: TUTUP SEMUA HARI DAY 1 - 7 (KUNCI PAKSA DARI ADMIN)
+    if ($action === 'close_all_days') {
+        try {
+            $pdo = getDB();
+            ensureDaySchedulesTable($pdo);
+            $pdo->exec("UPDATE `{$tableName}` SET `is_active` = 0 WHERE `day_number` >= 1 AND `day_number` <= 7");
+
+            jsonResponse(true, 'Semua Jadwal Utama Day 1 s.d. Day 7 (' . ($category === 'field_trip' ? 'Field Trip' : 'Non-Field Trip') . ') berhasil DITUTUP PAKSA!', [
+                'category' => $category,
+                'status'   => 'ALL_CLOSED'
+            ]);
+        } catch (Exception $e) {
+            jsonResponse(false, 'Gagal menutup jadwal: ' . $e->getMessage(), null, 500);
+        }
+    }
+
     // AKSI MASTER 2: KEMBALIKAN KE JADWAL ASLI (09 - 15 NOVEMBER 2026, 07:00 - 18:00 WIB)
     if ($action === 'reset_official_schedule') {
         try {
@@ -409,13 +425,22 @@ if ($method === 'POST') {
         try {
             $pdo = getDB();
             ensureDaySchedulesTable($pdo);
-            $stmt = $pdo->prepare("UPDATE `{$tableName}` SET `is_active` = :act WHERE `day_number` = :d");
-            $stmt->execute([':act' => $isActive, ':d' => $dayNum]);
+            if ($isActive === 1) {
+                // Ketika admin memilih BUKA, set is_active = 1 DAN auto_schedule = 0
+                // agar hari langsung TERBUKA tanpa terhalang jam/tanggal masa depan
+                $stmt = $pdo->prepare("UPDATE `{$tableName}` SET `is_active` = 1, `auto_schedule` = 0 WHERE `day_number` = :d");
+                $stmt->execute([':d' => $dayNum]);
+            } else {
+                // Ketika admin memilih TUTUP paksa
+                $stmt = $pdo->prepare("UPDATE `{$tableName}` SET `is_active` = 0 WHERE `day_number` = :d");
+                $stmt->execute([':d' => $dayNum]);
+            }
 
             jsonResponse(true, 'Status Day ' . $dayNum . ' (' . ($category === 'field_trip' ? 'Field Trip' : 'Non-Field Trip') . ') berhasil diubah menjadi ' . ($isActive ? 'Buka' : 'Tutup (Paksa)'), [
                 'day_number' => $dayNum,
                 'category'   => $category,
                 'is_active'  => $isActive,
+                'auto_schedule' => ($isActive === 1 ? 0 : 1),
                 'is_open'    => ($isActive === 1)
             ]);
         } catch (Exception $e) {

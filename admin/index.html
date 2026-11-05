@@ -7473,7 +7473,12 @@
       const d = adminScheduleList.find(x => x.day_number === Number(dayNumber));
       if (d) {
         d.is_active = isOpen ? 1 : 0;
-        if (!isOpen) {
+        if (isOpen) {
+          d.auto_schedule = 0;
+          d.is_open = true;
+          const chkAuto = document.getElementById('chkDayAuto_' + dayNumber);
+          if (chkAuto) chkAuto.checked = false;
+        } else {
           d.is_open = false;
         }
       }
@@ -7534,10 +7539,17 @@
       if (!Array.isArray(adminScheduleList)) return;
       adminScheduleList.forEach(d => {
         d.is_active = isOpen ? 1 : 0;
-        if (!isOpen) d.is_open = false;
+        if (isOpen) {
+          d.auto_schedule = 0;
+          d.is_open = true;
+        } else {
+          d.is_open = false;
+        }
         const chk = document.getElementById('chkDayActive_' + d.day_number);
         const lbl = document.getElementById('labelDayActive_' + d.day_number);
+        const chkAuto = document.getElementById('chkDayAuto_' + d.day_number);
         if (chk) chk.checked = isOpen;
+        if (chkAuto && isOpen) chkAuto.checked = false;
         if (lbl) {
           lbl.textContent = isOpen ? 'BUKA' : 'TUTUP';
           lbl.className = 'ml-2 text-xs font-bold ' + (isOpen ? 'text-emerald-700' : 'text-slate-400');
@@ -7547,9 +7559,28 @@
       const cat = currentAdminScheduleCategory || 'field_trip';
       const catLabel = (cat === 'field_trip') ? 'Field Trip' : 'Non-Field Trip';
 
-      FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
-        FincestemCore.ui.toast(`Seluruh hari (${catLabel}) berhasil diatur menjadi ${isOpen ? 'TERBUKA' : 'TERKUNCI PAKSA'}!`, 'info');
-      }, cat);
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: isOpen ? 'open_all_days' : 'close_all_days',
+            category: cat
+          })
+        }).then(r => r.json()).then(() => {
+          FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
+            FincestemCore.ui.toast(`Seluruh hari (${catLabel}) berhasil ${isOpen ? 'DIBUKA SERENTAK' : 'DITUTUP PAKSA'}!`, isOpen ? 'success' : 'info');
+          }, cat);
+        }).catch(() => {
+          FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
+            FincestemCore.ui.toast(`Seluruh hari (${catLabel}) berhasil ${isOpen ? 'DIBUKA SERENTAK' : 'DITUTUP PAKSA'}!`, isOpen ? 'success' : 'info');
+          }, cat);
+        });
+      } else {
+        FincestemCore.schedule.saveSchedule(adminScheduleList, function() {
+          FincestemCore.ui.toast(`Seluruh hari (${catLabel}) berhasil ${isOpen ? 'DIBUKA SERENTAK' : 'DITUTUP PAKSA'}!`, isOpen ? 'success' : 'info');
+        }, cat);
+      }
     }
 
     // Handler Master Tombol 1: Buka Semua Jadwal Utama D1-D7 untuk Coba di HP

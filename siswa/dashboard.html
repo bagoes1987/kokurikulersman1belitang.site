@@ -3136,10 +3136,15 @@
 
       container.innerHTML = '';
 
-      // UX Unggulan: Prioritaskan Day 0 terbuka di awal login / gladi bersih siswa
-      const d0Obj = days.find(x => Number(x.day_number) === 0);
-      if (d0Obj && (expandedDayNumber === null || expandedDayNumber === undefined || expandedDayNumber === 1)) {
-        expandedDayNumber = 0;
+      // Pilih hari yang terbuka: jika belum dipilih, buka hari yang aktif dan belum selesai
+      if (expandedDayNumber === null || expandedDayNumber === undefined) {
+        const openIncompleteDay = days.find(x => x.is_open && !FincestemCore.progress.isDayStudentTasksDone(studentProgress, Number(x.day_number)));
+        if (openIncompleteDay) {
+          expandedDayNumber = Number(openIncompleteDay.day_number);
+        } else {
+          const firstOpen = days.find(x => x.is_open);
+          expandedDayNumber = (firstOpen !== undefined) ? Number(firstOpen.day_number) : 0;
+        }
       }
 
       const taskMap = (studentProgress && studentProgress.task_map) || {};
@@ -3955,6 +3960,14 @@
           setTimeout(() => {
             handleActivityClick(targetDay, targetTask);
           }, 350);
+        }
+
+        // Hapus query params dari address bar agar saat HP di-refresh tidak membuka ulang modal Day 0 / aktivitas
+        if (window.history && window.history.replaceState) {
+          try {
+            const cleanUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+          } catch (e) {}
         }
       }
     }
