@@ -378,13 +378,19 @@
 
         // Siswa yang diplot ke guru manapun (termasuk guru berkategori Koordinator) MEMILIKI FASILITATOR BINAAN!
         fasilitatorByNisn.set(sN, tInfo);
-        fasilitatorByNisn.set(padded, tInfo);
-        if (unp) fasilitatorByNisn.set(unp, tInfo);
+        if (digits) {
+          fasilitatorByNisn.set(digits, tInfo);
+          if (digits.length >= 8 && digits.length <= 10) fasilitatorByNisn.set(digits.padStart(10, '0'), tInfo);
+          if (unp) fasilitatorByNisn.set(unp, tInfo);
+        }
 
         if (role === 'KOORDINATOR') {
           coordinatorByNisn.set(sN, tInfo);
-          coordinatorByNisn.set(padded, tInfo);
-          if (unp) coordinatorByNisn.set(unp, tInfo);
+          if (digits) {
+            coordinatorByNisn.set(digits, tInfo);
+            if (digits.length >= 8 && digits.length <= 10) coordinatorByNisn.set(digits.padStart(10, '0'), tInfo);
+            if (unp) coordinatorByNisn.set(unp, tInfo);
+          }
         }
       });
     }
@@ -433,13 +439,17 @@
     for (let i = 0; i < allStudents.length; i++) {
       const s = allStudents[i];
       const sNisn = String(s.nisn || '').trim();
+      const sNis = String(s.nis || '').trim();
+      const digits = sNisn.replace(/\D/g, '');
+      const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : sNisn;
+      const unp = digits.replace(/^0+/, '');
       const sClass = (s.class || s.rombel || '').toUpperCase();
       const sClassNorm = sClass.replace(/^KELAS\s+/i, '').trim().toUpperCase();
 
       // Cek Fasilitator & Koordinator O(1)
-      const fasilObj = fasilitatorByNisn.get(sNisn) || null;
+      const fasilObj = fasilitatorByNisn.get(sNisn) || (digits ? fasilitatorByNisn.get(digits) : null) || fasilitatorByNisn.get(padded) || (unp ? fasilitatorByNisn.get(unp) : null) || (sNis ? fasilitatorByNisn.get(sNis) : null);
       const hasFasil = (fasilObj !== null);
-      const coordObj = coordinatorByNisn.get(sNisn) || null;
+      const coordObj = coordinatorByNisn.get(sNisn) || (digits ? coordinatorByNisn.get(digits) : null) || coordinatorByNisn.get(padded) || (unp ? coordinatorByNisn.get(unp) : null) || (sNis ? coordinatorByNisn.get(sNis) : null);
       const coordName = (coordObj && coordObj.teacher_name) || coordByClass.get(sClassNorm) || '-';
 
       // Cek Status
@@ -941,7 +951,9 @@
       if (modalPrintCatState === 'FIELD_TRIP' && !isFT) continue;
       if (modalPrintCatState === 'NON_FIELD_TRIP' && isFT) continue;
 
-      const isMapped = assignedNisns.has(sNisn);
+      const isMapped = (window.FincestemMentorship && typeof window.FincestemMentorship.isStudentAssigned === 'function')
+        ? window.FincestemMentorship.isStudentAssigned(s)
+        : assignedNisns.has(sNisn);
       if (statusVal === 'ASSIGNED' && !isMapped) continue;
       if (statusVal === 'UNASSIGNED' && isMapped) continue;
 

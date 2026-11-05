@@ -1408,13 +1408,15 @@ const FincestemCore = {
       if (!Array.isArray(days)) return [];
       const self = this;
       return days.map(d => {
-        // Jaminan Mutlak: Day 0 (Simulasi & Gladi Bersih) selalu aktif & terbuka untuk latihan siswa
+        // Day 0 (Simulasi & Gladi Bersih): Status terbuka/tutup dikendalikan oleh is_active dari Admin
         if (Number(d.day_number) === 0) {
-          d.is_active = 1;
+          const act = (d.is_active !== undefined && d.is_active !== null) ? Number(d.is_active) : 1;
+          d.is_active = act;
           d.auto_schedule = 0;
-          d.is_open = true;
-          d.status_code = 'OPEN';
-          d.status_label = 'Aktivitas Sedang Dibuka';
+          d.is_open = (act === 1);
+          d.status_code = d.is_open ? 'OPEN' : 'MANUAL_CLOSED';
+          d.status_label = d.is_open ? 'Aktivitas Sedang Dibuka' : 'Ditutup Manual oleh Admin';
+          return d;
         }
         // Auto-sinkronisasi Day 1 Non-Field Trip jika di DB / cache masih tersimpan data usang Orientasi & Pembekalan Riset
         if (Number(d.day_number) === 1) {
@@ -1789,16 +1791,19 @@ const FincestemCore = {
 
   // Modul Pengaturan Zona & Pembina
   zones: {
+    _cachedClassSettingsMap: null,
     getClassInfo: function(className) {
-      try {
-        const stored = localStorage.getItem('fincestem_class_settings');
-        if (stored) {
-          const map = JSON.parse(stored);
-          if (map && map[className]) return map[className];
+      if (this._cachedClassSettingsMap === null) {
+        try {
+          const stored = localStorage.getItem('fincestem_class_settings');
+          this._cachedClassSettingsMap = stored ? (JSON.parse(stored) || {}) : {};
+        } catch (e) {
+          this._cachedClassSettingsMap = {};
         }
-      } catch (e) {}
-
-      // Kembalikan null jika belum ada pengaturan custom kelas dari Admin
+      }
+      if (this._cachedClassSettingsMap && this._cachedClassSettingsMap[className]) {
+        return this._cachedClassSettingsMap[className];
+      }
       return null;
     },
 
@@ -1820,6 +1825,7 @@ const FincestemCore = {
       } catch (e) {}
 
       map[className] = Object.assign(map[className] || {}, info);
+      this._cachedClassSettingsMap = map;
       localStorage.setItem('fincestem_class_settings', JSON.stringify(map));
 
       // Jika zona rombel diatur, perbarui seluruh siswa di kelas ini secara langsung
@@ -4257,12 +4263,13 @@ const FincestemCore = {
 
       // Day 0 (Trial / Gladi)
       if (d === 0) {
+        const isAct = sched ? (Number(sched.is_active) === 1 && Boolean(sched.is_open)) : true;
         return {
-          canAccess: true,
-          canEdit: isOpenByAdmin,
-          isOpen: isOpenByAdmin,
+          canAccess: isAct,
+          canEdit: isAct,
+          isOpen: isAct,
           isPreviousCompleted: true,
-          reason: isOpenByAdmin ? '' : 'Day Uji Coba ditutup oleh Admin (Hanya Lihat).'
+          reason: isAct ? '' : 'Aktivitas Day 0 (Simulasi) sedang ditutup oleh Admin.'
         };
       }
 

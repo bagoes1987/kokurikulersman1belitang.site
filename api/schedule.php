@@ -223,9 +223,8 @@ if ($method === 'GET') {
         $isActive = (int)$r['is_active'];
         $autoSched = (int)$r['auto_schedule'];
 
-        // Day 0 (Day Uji Coba / Simulasi): Selalu sertakan dan pastikan aktif agar gladi bersih berjalan lancar
+        // Day 0 (Day Uji Coba / Simulasi): Mode manual penuh, status terbuka/tutup dikendalikan oleh is_active dari Admin
         if ($dayNum === 0) {
-            $isActive = 1;
             $autoSched = 0;
         }
 

@@ -7317,6 +7317,15 @@
           : 'Saat <strong>NONAKTIF</strong>, Day 0 disembunyikan sepenuhnya dari peserta didik &amp; fasilitator sehingga tidak mengganggu kegiatan resmi.';
       }
 
+      // Juga sinkronkan sakelar kartu Day 0 di daftar jadwal jika tampil
+      const chk0 = document.getElementById('chkDayActive_0');
+      const lbl0 = document.getElementById('labelDayActive_0');
+      if (chk0) chk0.checked = isActive;
+      if (lbl0) {
+        lbl0.textContent = isActive ? 'BUKA' : 'TUTUP';
+        lbl0.className = 'ml-2 text-xs font-bold ' + (isActive ? 'text-emerald-700' : 'text-slate-400');
+      }
+
       FincestemCore.schedule.toggleTrialDay(isActive, function(res) {
         FincestemCore.ui.toast(
           isActive 
@@ -7485,6 +7494,25 @@
 
       const cat = currentAdminScheduleCategory || 'field_trip';
       const catLabel = (cat === 'field_trip') ? 'Field Trip' : 'Non-Field Trip';
+
+      // Jika Day 0, sinkronkan juga master trial banner switch di atas
+      if (Number(dayNumber) === 0) {
+        const chkMaster = document.getElementById('chkMasterTrialDay');
+        if (chkMaster) chkMaster.checked = isOpen;
+        const badgeMaster = document.getElementById('badgeTrialStatus');
+        if (badgeMaster) {
+          badgeMaster.textContent = isOpen ? 'AKTIF' : 'NONAKTIF';
+          badgeMaster.className = isOpen 
+            ? 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs' 
+            : 'px-2.5 py-0.5 rounded-lg text-xs font-black bg-slate-200 text-slate-700 border border-slate-300 shadow-2xs';
+        }
+        const textMaster = document.getElementById('textTrialExplain');
+        if (textMaster) {
+          textMaster.innerHTML = isOpen 
+            ? 'Saat <strong>AKTIF</strong>, Day 0 muncul di dashboard siswa &amp; guru untuk latihan simulasi. Matikan sakelar ini saat kegiatan resmi dimulai.' 
+            : 'Saat <strong>NONAKTIF</strong>, Day 0 disembunyikan sepenuhnya dari peserta didik &amp; fasilitator sehingga tidak mengganggu kegiatan resmi.';
+        }
+      }
 
       // Simpan perubahan secara langsung seketika
       FincestemCore.schedule.toggleDay(dayNumber, isOpen, function(res) {

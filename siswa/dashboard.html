@@ -3125,11 +3125,11 @@
         days = isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults();
       }
 
-      // JAMINAN MUTLAK: Pastikan Day 0 (Simulasi & Gladi Bersih) SELALU ADA di daftar jadwal siswa!
+      // Pastikan Day 0 (Simulasi & Gladi Bersih) ada di daftar jadwal siswa
       if (!days.some(x => Number(x.day_number) === 0)) {
         const def0 = (isFieldTrip ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults()).find(x => Number(x.day_number) === 0);
         if (def0) {
-          days.unshift(Object.assign({}, def0, { is_active: 1, is_open: true, status_code: 'OPEN' }));
+          days.unshift(def0);
         }
       }
       days.sort((a, b) => Number(a.day_number) - Number(b.day_number));
@@ -3143,7 +3143,7 @@
           expandedDayNumber = Number(openIncompleteDay.day_number);
         } else {
           const firstOpen = days.find(x => x.is_open);
-          expandedDayNumber = (firstOpen !== undefined) ? Number(firstOpen.day_number) : 0;
+          expandedDayNumber = (firstOpen !== undefined) ? Number(firstOpen.day_number) : 1;
         }
       }
 

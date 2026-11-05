@@ -1057,10 +1057,43 @@
       const set = new Set();
       Object.values(map).forEach(entry => {
         if (entry && Array.isArray(entry.student_nisns)) {
-          entry.student_nisns.forEach(n => set.add(String(n).trim()));
+          entry.student_nisns.forEach(n => {
+            const raw = String(n || '').trim();
+            if (!raw) return;
+            set.add(raw);
+            const digits = raw.replace(/\D/g, '');
+            if (digits) {
+              set.add(digits);
+              if (digits.length >= 8 && digits.length <= 10) set.add(digits.padStart(10, '0'));
+              const unp = digits.replace(/^0+/, '');
+              if (unp) set.add(unp);
+            }
+          });
         }
       });
       return set;
+    },
+
+    isStudentAssigned: function(sOrNisn, optNis) {
+      let nisn = '', nis = '';
+      if (typeof sOrNisn === 'object' && sOrNisn !== null) {
+        nisn = String(sOrNisn.nisn || '').trim();
+        nis = String(sOrNisn.nis || '').trim();
+      } else {
+        nisn = String(sOrNisn || '').trim();
+        nis = String(optNis || '').trim();
+      }
+      const sIndex = this._buildStudentMentorIndex();
+      if (nisn && sIndex.has(nisn)) return true;
+      const digits = nisn ? nisn.replace(/\D/g, '') : '';
+      if (digits) {
+        if (sIndex.has(digits)) return true;
+        if (digits.length >= 8 && digits.length <= 10 && sIndex.has(digits.padStart(10, '0'))) return true;
+        const unp = digits.replace(/^0+/, '');
+        if (unp && sIndex.has(unp)) return true;
+      }
+      if (nis && sIndex.has(nis)) return true;
+      return false;
     },
 
     /**
@@ -1081,9 +1114,15 @@
 
       const zMap = (window.FincestemCore && FincestemCore.zones && FincestemCore.zones._getZonesMap) ? FincestemCore.zones._getZonesMap() : null;
 
+      const sIndex = this._buildStudentMentorIndex();
       for (let i = 0; i < allStudents.length; i++) {
         const s = allStudents[i];
         const sNisn = String(s.nisn || '').trim();
+        const sNis = String(s.nis || '').trim();
+        const digits = sNisn.replace(/\D/g, '');
+        const padded = (digits.length >= 8 && digits.length <= 10) ? digits.padStart(10, '0') : sNisn;
+        const unp = digits.replace(/^0+/, '');
+
         let isFT = false;
         if (zMap && zMap[sNisn]) {
           isFT = String(zMap[sNisn]).toUpperCase().includes('LUAR');
@@ -1092,7 +1131,7 @@
         } else {
           isFT = (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
         }
-        const isMapped = assignedNisns.has(sNisn);
+        const isMapped = sIndex.has(sNisn) || (digits && sIndex.has(digits)) || sIndex.has(padded) || (unp && sIndex.has(unp)) || (sNis && sIndex.has(sNis));
 
         if (isFT) {
           ftTotal++;
@@ -1201,7 +1240,7 @@
           if (targetCategory === 'NON_FIELD_TRIP' && isFT) return false;
 
           // Filter Status Binaan
-          const isMapped = assignedNisns.has(sNisn);
+          const isMapped = this.isStudentAssigned(s);
           if (targetStatus === 'ASSIGNED' && !isMapped) return false;
           if (targetStatus === 'UNASSIGNED' && isMapped) return false;
 
