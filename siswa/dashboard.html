@@ -3134,15 +3134,23 @@
       }
       days.sort((a, b) => Number(a.day_number) - Number(b.day_number));
 
+      // Saring daftar hari: Jika Day 0 diset NONAKTIF (is_active = 0) oleh Admin, SEMBUNYIKAN SEPENUHNYA dari siswa!
+      const visibleDays = days.filter(d => {
+        if (Number(d.day_number) === 0 && Number(d.is_active) === 0) {
+          return false;
+        }
+        return true;
+      });
+
       container.innerHTML = '';
 
       // Pilih hari yang terbuka: jika belum dipilih, buka hari yang aktif dan belum selesai
-      if (expandedDayNumber === null || expandedDayNumber === undefined) {
-        const openIncompleteDay = days.find(x => x.is_open && !FincestemCore.progress.isDayStudentTasksDone(studentProgress, Number(x.day_number)));
+      if (expandedDayNumber === null || expandedDayNumber === undefined || (expandedDayNumber === 0 && !visibleDays.some(x => Number(x.day_number) === 0))) {
+        const openIncompleteDay = visibleDays.find(x => x.is_open && !FincestemCore.progress.isDayStudentTasksDone(studentProgress, Number(x.day_number)));
         if (openIncompleteDay) {
           expandedDayNumber = Number(openIncompleteDay.day_number);
         } else {
-          const firstOpen = days.find(x => x.is_open);
+          const firstOpen = visibleDays.find(x => x.is_open);
           expandedDayNumber = (firstOpen !== undefined) ? Number(firstOpen.day_number) : 1;
         }
       }
@@ -3150,7 +3158,7 @@
       const taskMap = (studentProgress && studentProgress.task_map) || {};
       const records = (studentProgress && studentProgress.records) || [];
 
-      days.forEach(d => {
+      visibleDays.forEach(d => {
         try {
           const dNum = Number(d.day_number);
           const isTrial = (dNum === 0);
@@ -3982,6 +3990,10 @@
         day = (isFtDef ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults()).find(d => Number(d.day_number) === 0);
       }
       if (!day) return;
+      if (dNum === 0 && Number(day.is_active) === 0) {
+        FincestemCore.ui.toast('Aktivitas Day 0 (Simulasi) telah disembunyikan dan ditutup oleh Admin.', 'info');
+        return;
+      }
 
       const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
 
