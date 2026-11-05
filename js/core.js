@@ -4305,11 +4305,11 @@ const FincestemCore = {
       // Day 1: CAN_ACCESS_DAY_1 = (ADMIN_DAY_1 == OPEN)
       if (d === 1) {
         return {
-          canAccess: true,
+          canAccess: isOpenByAdmin,
           canEdit: isOpenByAdmin,
           isOpen: isOpenByAdmin,
           isPreviousCompleted: true,
-          reason: isOpenByAdmin ? '' : (sched ? sched.status_label : 'Day 1 ditutup oleh Admin (Hanya Lihat).')
+          reason: isOpenByAdmin ? '' : (sched ? sched.status_label : 'Aktivitas Day 1 ditutup oleh Admin (Hanya Lihat).')
         };
       }
 

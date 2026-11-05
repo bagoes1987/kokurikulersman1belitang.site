@@ -3787,11 +3787,11 @@
               <button onclick="handleActivityClick(${dNum}, 'materi')" class="p-2.5 sm:p-3 rounded-2xl ${materiBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
                 <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
                   <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${materiIconClass} flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-base sm:text-lg">menu_book</span>
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenMateri && !hasMateri ? 'lock' : 'menu_book'}</span>
                   </span>
                   <div class="flex flex-col text-left min-w-0">
                     <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">1. Modul Belajar</span>
-                    <span class="text-[10px] sm:text-xs ${hasMateri ? 'text-emerald-700 font-bold' : (canOpenMateri ? 'text-amber-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasMateri ? '✓ Resume Selesai' : 'Baca &amp; Resume'}</span>
+                    <span class="text-[10px] sm:text-xs ${hasMateri ? 'text-emerald-700 font-bold' : (canOpenMateri ? 'text-amber-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasMateri ? '✓ Resume Selesai' : (canOpenMateri ? 'Baca &amp; Resume' : 'Terkunci')}</span>
                   </div>
                 </div>
                 ${getCheckBadge(hasMateri, canOpenMateri)}
