@@ -6190,3 +6190,439 @@
     window.saveFtDay7LKPD = saveFtDay7LKPD;
     window.showFtD7LkpdModal = showFtD7LkpdModal;
     window.closeFtD7LkpdModal = closeFtD7LkpdModal;
+
+    /* ========================================================
+       LKPD DIGITAL KHUSUS FIELD TRIP DAY 0 (SIMULASI BUDGETING)
+       Tema: Simulasi Rencana Anggaran Uang Saku & Diagnosis Finansial
+       ======================================================== */
+    function renderFieldTripDay0LKPD(isReadOnly) {
+      const mainEl = document.querySelector('main');
+      if (!mainEl) return;
+
+      const user = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+
+      // Cek Prasyarat Modul Day 0
+      let hasMateri = false;
+      for (const id of idVars) {
+        try {
+          const rawM = localStorage.getItem('fincestem_materi_ft_day0_' + id) || localStorage.getItem('fincestem_materi_day0_' + id);
+          if (rawM) {
+            const p = JSON.parse(rawM);
+            if (p && (p.conclusion || p.text || p.submitted)) { hasMateri = true; break; }
+          }
+        } catch(e) {}
+      }
+      if (!hasMateri && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        if (window.currentStudentProgress.task_map['0_materi']) hasMateri = true;
+      }
+
+      const isTester = !!(
+        user.is_tester ||
+        (localStorage.getItem('fincestem_admin_testing_session') === 'true') ||
+        (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn))
+      );
+
+      // Ambil data LKPD tersimpan
+      let saved = null;
+      for (const id of idVars) {
+        try {
+          const raw = localStorage.getItem('fincestem_lkpd_ft_day0_' + id) || localStorage.getItem('fincestem_lkpd_day0_' + id);
+          if (raw) {
+            saved = JSON.parse(raw);
+            if (saved) break;
+          }
+        } catch(e) {}
+      }
+      saved = saved || {};
+      const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
+      const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTester);
+      const isFormLocked = isReadOnly || isSubmitted || isLockedByPrereq;
+      const readOnlyAttr = isFormLocked ? 'disabled' : '';
+
+      const formatDots = (num) => {
+        const n = parseInt(num) || 0;
+        return n.toLocaleString('id-ID');
+      };
+
+      const parseNum = (str) => {
+        if (!str) return 0;
+        return parseInt(String(str).replace(/[^0-9]/g, '')) || 0;
+      };
+
+      mainEl.innerHTML = `
+        <div class="max-w-2xl mx-auto flex flex-col gap-4 animate-fade-in pb-16">
+          <!-- HERO CARD -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-700 via-teal-800 to-slate-900 p-5 sm:p-6 text-white shadow-lg border border-teal-500/30">
+            <div class="relative z-10 flex flex-col gap-2">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/20 text-teal-100 border border-white/30 backdrop-blur-xs">
+                  Day 0 &bull; Simulasi LKPD
+                </span>
+                <span id="ftD0LkpdBadge" class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${isSubmitted ? 'bg-emerald-400 text-slate-950' : 'bg-amber-400 text-slate-950'}">
+                  ${isSubmitted ? 'Tuntas Diserahkan &check;' : 'Draf Simulasi'}
+                </span>
+              </div>
+              <h1 class="text-lg sm:text-xl font-black text-white leading-tight mt-1">
+                RENCANA ANGGARAN UANG SAKU PRIBADI (PERSONAL TRAVEL BUDGET)
+              </h1>
+              <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium">
+                Simulasi penyusunan dan pengelolaan uang saku pribadi secara mandiri, bijak, dan terencana sebelum keberangkatan field trip.
+              </p>
+            </div>
+            <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+          </div>
+
+          <!-- BANNER TERKUNCI JIKA BELUM SELESAI MODUL -->
+          ${isLockedByPrereq ? `
+            <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 text-amber-950 flex flex-col gap-3 shadow-xs">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+                  <span class="material-symbols-outlined text-2xl">lock</span>
+                </div>
+                <div>
+                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Prasyarat Alur Day 0</span>
+                  <h3 class="text-base font-black text-amber-950">Selesaikan Modul Belajar Day 0 Terlebih Dahulu!</h3>
+                </div>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+                Sesuai alur pengerjaan berurutan Day 0 (Modul &rarr; LKPD &rarr; Dokumentasi &rarr; Asesmen &rarr; Refleksi &rarr; Penilaian), Anda wajib membaca Modul Belajar dan menyimpan Resume sebelum dapat mengisi formulir anggaran uang saku ini.
+              </p>
+              <div>
+                <a href="materi.html?day=0" class="px-5 py-3 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-md transition-all">
+                  <span class="material-symbols-outlined text-base">menu_book</span>
+                  <span>Buka Modul Belajar Day 0 Sekarang</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </a>
+              </div>
+            </div>
+          ` : ''}
+
+          <!-- BAGIAN 1: TOTAL UANG SAKU -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-primary font-black text-sm sm:text-base border-b border-surface-container pb-2">
+              <span class="material-symbols-outlined text-xl text-teal-600">account_balance_wallet</span>
+              <span>Bagian 1: Perkiraan Total Uang Saku yang Dibawa</span>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Tuliskan perkiraan nominal uang saku murni yang Anda bawa untuk keperluan pribadi selama perjalanan (misal: jajan snack, oleh-oleh, atau kebutuhan darurat).
+            </p>
+            <div class="p-3.5 rounded-2xl bg-teal-50/60 border border-teal-200 flex flex-col gap-1.5">
+              <label for="ftD0TotalSaku" class="text-xs font-black text-teal-950">Nominal Total Uang Saku (Rp):</label>
+              <div class="relative">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-xs font-black text-slate-500">Rp</span>
+                <input id="ftD0TotalSaku" type="text" inputmode="numeric" ${readOnlyAttr} placeholder="Contoh: 750.000" value="${saved.totalSaku ? formatDots(saved.totalSaku) : ''}" oninput="handleFtD0BudgetInput(this)" class="w-full pl-10 pr-3.5 py-3 rounded-xl border border-outline-variant/50 text-sm font-extrabold text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100 transition-all ${isFormLocked ? 'bg-slate-100 text-slate-600' : 'bg-white'}">
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: POS ALOKASI PENGELUARAN -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-primary font-black text-sm sm:text-base border-b border-surface-container pb-2">
+              <span class="material-symbols-outlined text-xl text-blue-600">pie_chart</span>
+              <span>Bagian 2: Rencana Alokasi Pengeluaran Uang Saku</span>
+            </div>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Bagi uang saku Anda ke dalam 4 pos pengeluaran utama secara bijak dan seimbang:
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Pos 1: Konsumsi / Snack -->
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-black text-slate-900">1. Snack &amp; Minuman</span>
+                  <span class="text-[10px] text-slate-500">Maks. 35%</span>
+                </div>
+                <div class="relative mt-1">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rp</span>
+                  <input id="ftD0PlanKonsumsi" type="text" inputmode="numeric" ${readOnlyAttr} placeholder="0" value="${saved.planKonsumsi ? formatDots(saved.planKonsumsi) : ''}" oninput="handleFtD0BudgetInput(this)" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-teal-600 transition-all ${isFormLocked ? 'bg-slate-100' : 'bg-white'}">
+                </div>
+              </div>
+
+              <!-- Pos 2: Oleh-Oleh Khas -->
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-black text-slate-900">2. Oleh-Oleh Keluarga</span>
+                  <span class="text-[10px] text-slate-500">Maks. 40%</span>
+                </div>
+                <div class="relative mt-1">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rp</span>
+                  <input id="ftD0PlanOlehOleh" type="text" inputmode="numeric" ${readOnlyAttr} placeholder="0" value="${saved.planOlehOleh ? formatDots(saved.planOlehOleh) : ''}" oninput="handleFtD0BudgetInput(this)" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-teal-600 transition-all ${isFormLocked ? 'bg-slate-100' : 'bg-white'}">
+                </div>
+              </div>
+
+              <!-- Pos 3: Tiket Wahana Edukasi Tambahan -->
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-black text-slate-900">3. Wahana Tambahan</span>
+                  <span class="text-[10px] text-slate-500">Maks. 20%</span>
+                </div>
+                <div class="relative mt-1">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">Rp</span>
+                  <input id="ftD0PlanEdukasi" type="text" inputmode="numeric" ${readOnlyAttr} placeholder="0" value="${saved.planEdukasi ? formatDots(saved.planEdukasi) : ''}" oninput="handleFtD0BudgetInput(this)" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-teal-600 transition-all ${isFormLocked ? 'bg-slate-100' : 'bg-white'}">
+                </div>
+              </div>
+
+              <!-- Pos 4: Dana Darurat -->
+              <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 flex flex-col gap-1">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-black text-emerald-950">4. Dana Darurat</span>
+                  <span class="text-[10px] font-black text-emerald-700">Wajib &ge; 10%</span>
+                </div>
+                <div class="relative mt-1">
+                  <span class="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-emerald-600">Rp</span>
+                  <input id="ftD0PlanEmergency" type="text" inputmode="numeric" ${readOnlyAttr} placeholder="0" value="${saved.planEmergency ? formatDots(saved.planEmergency) : ''}" oninput="handleFtD0BudgetInput(this)" class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-emerald-300 text-xs sm:text-sm font-bold text-slate-900 outline-none focus:border-emerald-600 transition-all ${isFormLocked ? 'bg-slate-100' : 'bg-white'}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BAGIAN 3: DIAGNOSIS KESEHATAN FINANSIAL SISTEM -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+            <div class="flex items-center justify-between border-b border-surface-container pb-2">
+              <span class="flex items-center gap-2 text-primary font-black text-sm sm:text-base">
+                <span class="material-symbols-outlined text-xl text-amber-600">health_and_safety</span>
+                <span>Bagian 3: Diagnosis Kesehatan Anggaran Otomatis</span>
+              </span>
+              <span id="ftD0DiagPill" class="px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide bg-slate-100 text-slate-700">
+                Menunggu Input
+              </span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 text-center text-xs font-bold">
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                <span class="text-[10.5px] text-slate-500 block">Total Uang Saku</span>
+                <span id="ftD0DispTotal" class="text-xs sm:text-sm font-black text-slate-900">Rp 0</span>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                <span class="text-[10.5px] text-slate-500 block">Total Alokasi</span>
+                <span id="ftD0DispAllocated" class="text-xs sm:text-sm font-black text-blue-900">Rp 0</span>
+              </div>
+              <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200">
+                <span class="text-[10.5px] text-slate-500 block">Sisa / Defisit</span>
+                <span id="ftD0DispDiff" class="text-xs sm:text-sm font-black text-emerald-700">Rp 0</span>
+              </div>
+            </div>
+
+            <!-- Pesan Kesimpulan Sistem -->
+            <div id="ftD0DiagBox" class="p-3.5 rounded-2xl bg-slate-100 text-slate-700 text-xs sm:text-sm leading-relaxed flex flex-col gap-1">
+              <span class="font-bold text-slate-900">Masukkan nominal uang saku dan alokasi pos di atas.</span>
+              <span class="text-[11.5px] text-slate-600">Sistem akan secara otomatis menganalisis apakah pola anggaran Anda: <strong>Bijak &amp; Terencana</strong>, <strong>Cukup/Waspada</strong>, atau <strong>Boros/Berisiko</strong>.</span>
+            </div>
+          </div>
+
+          <!-- BAGIAN 4: KOMITMEN FINANSIAL -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+            <div class="flex items-center gap-2 text-primary font-black text-sm sm:text-base border-b border-surface-container pb-2">
+              <span class="material-symbols-outlined text-xl text-purple-600">verified</span>
+              <span>Bagian 4: Komitmen Disiplin Finansial Selama Perjalanan</span>
+            </div>
+            <div class="flex flex-col gap-1.5">
+              <label for="ftD0Commitment" class="text-xs font-bold text-slate-800">Pernyataan Komitmen Siswa:</label>
+              <textarea id="ftD0Commitment" rows="2.5" ${readOnlyAttr} placeholder="Contoh: Saya berkomitmen untuk memprioritaskan kebutuhan esensial, tidak boros jajan, dan menjaga dana darurat tetap utuh hingga kepulangan..." class="w-full p-3 rounded-2xl border border-outline-variant/40 text-xs sm:text-sm text-slate-900 outline-none focus:border-teal-600 focus:ring-2 focus:ring-teal-100 transition-all ${isFormLocked ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${saved.commitment || ''}</textarea>
+            </div>
+
+            <div class="pt-2">
+              ${isSubmitted ? `
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <a href="dokumentasi.html?day=0" class="flex-1 py-3.5 px-4 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all">
+                    <span>Lanjut ke Tahap 3: Dokumentasi Foto Day 0 &rarr;</span>
+                  </a>
+                  <a href="dashboard.html" class="py-3 px-4 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm text-center">
+                    Dashboard
+                  </a>
+                </div>
+              ` : (isLockedByPrereq ? `
+                <div class="p-3 rounded-2xl bg-slate-100 text-slate-500 font-bold text-xs text-center">
+                  Formulir terkunci sampai Modul Belajar Day 0 diselesaikan.
+                </div>
+              ` : `
+                <button type="button" onclick="saveFtDay0LKPD()" class="w-full py-3.5 px-4 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-base">send</span>
+                  <span>Kirim Rencana Anggaran LKPD Day 0 &amp; Buka Dokumentasi</span>
+                </button>
+              `)}
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Trigger perhitungan awal jika sudah ada data tersimpan
+      updateFtD0BudgetDiagnosis();
+    }
+
+    function handleFtD0BudgetInput(el) {
+      if (!el) return;
+      const raw = el.value.replace(/[^0-9]/g, '');
+      const n = parseInt(raw) || 0;
+      el.value = n ? n.toLocaleString('id-ID') : '';
+      updateFtD0BudgetDiagnosis();
+    }
+
+    function updateFtD0BudgetDiagnosis() {
+      const getVal = id => {
+        const el = document.getElementById(id);
+        if (!el) return 0;
+        return parseInt(String(el.value).replace(/[^0-9]/g, '')) || 0;
+      };
+
+      const total = getVal('ftD0TotalSaku');
+      const konsumsi = getVal('ftD0PlanKonsumsi');
+      const olehOleh = getVal('ftD0PlanOlehOleh');
+      const edukasi = getVal('ftD0PlanEdukasi');
+      const darurat = getVal('ftD0PlanEmergency');
+
+      const allocated = konsumsi + olehOleh + edukasi + darurat;
+      const diff = total - allocated;
+
+      const dispTotal = document.getElementById('ftD0DispTotal');
+      const dispAlloc = document.getElementById('ftD0DispAllocated');
+      const dispDiff = document.getElementById('ftD0DispDiff');
+      const pill = document.getElementById('ftD0DiagPill');
+      const box = document.getElementById('ftD0DiagBox');
+
+      if (dispTotal) dispTotal.textContent = 'Rp ' + total.toLocaleString('id-ID');
+      if (dispAlloc) dispAlloc.textContent = 'Rp ' + allocated.toLocaleString('id-ID');
+      if (dispDiff) {
+        dispDiff.textContent = (diff < 0 ? '- Rp ' : 'Rp ') + Math.abs(diff).toLocaleString('id-ID');
+        dispDiff.className = `text-xs sm:text-sm font-black ${diff < 0 ? 'text-rose-600' : 'text-emerald-700'}`;
+      }
+
+      if (!pill || !box) return;
+
+      if (total === 0) {
+        pill.textContent = 'Menunggu Input';
+        pill.className = 'px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide bg-slate-100 text-slate-700';
+        box.className = 'p-3.5 rounded-2xl bg-slate-100 text-slate-700 text-xs sm:text-sm leading-relaxed flex flex-col gap-1';
+        box.innerHTML = '<span class="font-bold text-slate-900">Masukkan nominal uang saku dan alokasi pos di atas.</span><span class="text-[11.5px] text-slate-600">Sistem akan secara otomatis menganalisis kesehatan anggaran Anda.</span>';
+        return;
+      }
+
+      if (diff < 0) {
+        pill.textContent = 'Defisit / Terlalu Boros';
+        pill.className = 'px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide bg-rose-100 text-rose-800 border border-rose-300';
+        box.className = 'p-3.5 rounded-2xl bg-rose-50 border border-rose-200 text-rose-950 text-xs sm:text-sm leading-relaxed flex flex-col gap-1';
+        box.innerHTML = `<span class="font-bold text-rose-900">&times; Peringatan Defisit: Alokasi Melebihi Uang Saku!</span><span class="text-[11.5px] text-rose-800">Total alokasi belanja Anda melebihi uang saku sebesar Rp ${Math.abs(diff).toLocaleString('id-ID')}. Harap kurangi pos jajan atau oleh-oleh agar seimbang.</span>`;
+      } else if (darurat >= (total * 0.1) && diff >= 0) {
+        pill.textContent = 'Bijak & Terencana';
+        pill.className = 'px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide bg-emerald-100 text-emerald-800 border border-emerald-300';
+        box.className = 'p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-950 text-xs sm:text-sm leading-relaxed flex flex-col gap-1';
+        box.innerHTML = `<span class="font-bold text-emerald-900">&check; Pola Anggaran Sangat Bijak &amp; Sehat!</span><span class="text-[11.5px] text-emerald-800">Anda berhasil menyisihkan Dana Darurat minimal 10% (Rp ${darurat.toLocaleString('id-ID')}) dan menjaga arus kas tidak defisit. Pertahankan komitmen ini di lapangan!</span>`;
+      } else {
+        pill.textContent = 'Perlu Disempurnakan';
+        pill.className = 'px-2.5 py-1 rounded-full text-[11px] font-black uppercase tracking-wide bg-amber-100 text-amber-900 border border-amber-300';
+        box.className = 'p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 text-xs sm:text-sm leading-relaxed flex flex-col gap-1';
+        box.innerHTML = `<span class="font-bold text-amber-900">&bull; Dana Darurat Masih Kurang:</span><span class="text-[11.5px] text-amber-800">Alokasi Dana Darurat Anda belum mencapai 10% dari total uang saku. Sisihkan minimal Rp ${Math.round(total * 0.1).toLocaleString('id-ID')} untuk cadangan darurat di perjalanan.</span>`;
+      }
+    }
+
+    function saveFtDay0LKPD() {
+      const getVal = id => {
+        const el = document.getElementById(id);
+        if (!el) return 0;
+        return parseInt(String(el.value).replace(/[^0-9]/g, '')) || 0;
+      };
+
+      const total = getVal('ftD0TotalSaku');
+      const konsumsi = getVal('ftD0PlanKonsumsi');
+      const olehOleh = getVal('ftD0PlanOlehOleh');
+      const edukasi = getVal('ftD0PlanEdukasi');
+      const darurat = getVal('ftD0PlanEmergency');
+      const commitment = (document.getElementById('ftD0Commitment')?.value || '').trim();
+
+      if (total <= 0) {
+        FincestemCore.ui.toast('Harap masukkan perkiraan nominal total uang saku Anda!', 'warning');
+        document.getElementById('ftD0TotalSaku')?.focus();
+        return;
+      }
+      if ((konsumsi + olehOleh + edukasi + darurat) <= 0) {
+        FincestemCore.ui.toast('Harap isi pembagian pos alokasi pengeluaran Anda!', 'warning');
+        return;
+      }
+      if (!commitment || commitment.length < 5) {
+        FincestemCore.ui.toast('Harap tuliskan pernyataan komitmen finansial Anda!', 'warning');
+        document.getElementById('ftD0Commitment')?.focus();
+        return;
+      }
+
+      const user = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+
+      const allocated = konsumsi + olehOleh + edukasi + darurat;
+      const diff = total - allocated;
+      const isBijak = (darurat >= (total * 0.1)) && (diff >= 0);
+
+      const payload = {
+        submitted: true,
+        totalSaku: total,
+        total_saku: total,
+        planKonsumsi: konsumsi,
+        planOlehOleh: olehOleh,
+        planEdukasi: edukasi,
+        planEmergency: darurat,
+        commitment: commitment,
+        statusAnggaran: isBijak ? 'Bijak & Terencana' : (diff < 0 ? 'Defisit/Boros' : 'Cukup'),
+        summary: `[LKPD Uang Saku Day 0] Total: Rp ${total.toLocaleString('id-ID')} | Darurat: Rp ${darurat.toLocaleString('id-ID')} | Status: ${isBijak ? 'Bijak & Terencana' : 'Cukup'}`,
+        submitted_at: new Date().toISOString()
+      };
+
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day0_' + id, JSON.stringify(payload));
+          localStorage.setItem('fincestem_lkpd_day0_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+        FincestemCore.progress.submitTask(cleanNisn, 0, 'lkpd', payload, function() {
+          FincestemCore.ui.toast('Rencana Anggaran Uang Saku Day 0 Berhasil Diserahkan!', 'success');
+          showFtD0SuccessModal();
+        });
+      } else {
+        FincestemCore.ui.toast('Rencana Anggaran Uang Saku Day 0 Berhasil Diserahkan!', 'success');
+        showFtD0SuccessModal();
+      }
+    }
+
+    function showFtD0SuccessModal() {
+      const modal = document.createElement('div');
+      modal.className = 'fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm animate-fade-in';
+      modal.innerHTML = `
+        <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border border-slate-200 text-center flex flex-col items-center gap-3.5 animate-scale-up">
+          <div class="w-16 h-16 rounded-3xl bg-teal-100 text-teal-800 flex items-center justify-center font-black shadow-inner">
+            <span class="material-symbols-outlined text-3xl">savings</span>
+          </div>
+          <div>
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-teal-100 text-teal-900">
+              LKPD Day 0 Tuntas
+            </span>
+            <h3 class="font-black text-lg sm:text-xl text-slate-900 mt-1">
+              Rencana Anggaran Uang Saku Disetujui!
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">
+              Simulasi perencanaan uang saku pribadi Anda telah tersimpan rapi. Silakan lanjut ke <strong>Tahap 3: Unggah Foto Dokumentasi Kesiapan</strong> untuk menguji fitur kamera aplikasi.
+            </p>
+          </div>
+          <div class="w-full flex flex-col gap-2 pt-2">
+            <a href="dokumentasi.html?day=0" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">photo_camera</span>
+              <span>Lanjut ke Dokumentasi Foto (Tahap 3) &rarr;</span>
+            </a>
+            <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
+              <span>Kembali ke Beranda Dashboard</span>
+            </a>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+    }
+
+    window.renderFieldTripDay0LKPD = renderFieldTripDay0LKPD;
+    window.handleFtD0BudgetInput = handleFtD0BudgetInput;
+    window.updateFtD0BudgetDiagnosis = updateFtD0BudgetDiagnosis;
+    window.saveFtDay0LKPD = saveFtDay0LKPD;
+    window.showFtD0SuccessModal = showFtD0SuccessModal;

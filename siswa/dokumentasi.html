@@ -3760,12 +3760,12 @@
                     <span class="font-black text-sm text-emerald-950">${isDay0 ? 'Dokumentasi Day 0 (Simulasi) Selesai' : `Dokumentasi Day ${dayNum} Selesai`}</span>
                     <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-200 text-emerald-900 uppercase tracking-wide">Tuntas</span>
                   </div>
-                  <span class="text-xs text-slate-600">${isDay0 ? 'Foto bukti simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.' : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `Foto bukti dokumentasi telah tersimpan. Silakan lanjut ke Tahap 3: Lembar Kerja (LKPD Video) Day ${dayNum}.` : (!cat.isFieldTrip ? `Foto bukti riset Anda telah tersimpan. Silakan lanjut ke Tahap 4: Kuis Asesmen Day ${dayNum}.` : 'Foto bukti riset Anda telah tersimpan. Silakan melangkah ke tahap akhir: Jurnal Refleksi Mandiri.'))}</span>
+                  <span class="text-xs text-slate-600">${(isDay0 && cat.isFieldTrip) ? 'Foto bukti kesiapan Day 0 telah tersimpan. Silakan lanjut ke Tahap 4: Asesmen 10 Soal Esai Day 0.' : (isDay0 ? 'Foto bukti simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.' : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `Foto bukti dokumentasi telah tersimpan. Silakan lanjut ke Tahap 3: Lembar Kerja (LKPD Video) Day ${dayNum}.` : (!cat.isFieldTrip ? `Foto bukti riset Anda telah tersimpan. Silakan lanjut ke Tahap 4: Kuis Asesmen Day ${dayNum}.` : 'Foto bukti riset Anda telah tersimpan. Silakan melangkah ke tahap akhir: Jurnal Refleksi Mandiri.'))}</span>
                 </div>
               </div>
               <div class="flex items-center gap-2 w-full sm:w-auto shrink-0">
-                <a href="${isDay0 ? `dashboard.html?day=${dayNum}&task=refleksi` : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `lkpd.html?day=${dayNum}` : (!cat.isFieldTrip ? `asesmen.html?day=${dayNum}` : `dashboard.html?day=${dayNum}&task=refleksi`))}" class="flex-1 sm:flex-none py-3 px-4 rounded-xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
-                  <span>${isDay0 ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;' : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `Lanjut ke Tahap 3: LKPD Video Day ${dayNum} &rarr;` : (!cat.isFieldTrip ? `Lanjut ke Tahap 4: Kuis Asesmen Day ${dayNum} &rarr;` : `Lanjut ke Tahap 5: Jurnal Refleksi Day ${dayNum} &rarr;`))}</span>
+                <a href="${(isDay0 && cat.isFieldTrip) ? `dashboard.html?day=0&task=asesmen` : (isDay0 ? `dashboard.html?day=${dayNum}&task=refleksi` : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `lkpd.html?day=${dayNum}` : (!cat.isFieldTrip ? `asesmen.html?day=${dayNum}` : `dashboard.html?day=${dayNum}&task=refleksi`)))}" class="flex-1 sm:flex-none py-3 px-4 rounded-xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
+                  <span>${(isDay0 && cat.isFieldTrip) ? 'Lanjut ke Tahap 4: Asesmen Day 0 &rarr;' : (isDay0 ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;' : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `Lanjut ke Tahap 3: LKPD Video Day ${dayNum} &rarr;` : (!cat.isFieldTrip ? `Lanjut ke Tahap 4: Kuis Asesmen Day ${dayNum} &rarr;` : `Lanjut ke Tahap 5: Jurnal Refleksi Day ${dayNum} &rarr;`)))}</span>
                 </a>
                 <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-3.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs" title="Tambah Foto Lainnya">
                   <span class="material-symbols-outlined text-base">add_a_photo</span>
@@ -4579,27 +4579,34 @@
           }
         }
       } else {
+        const isFtDay0 = cat.isFieldTrip && (dayNum === 0);
         const isNonFtD5D6 = !cat.isFieldTrip && (dayNum === 5 || dayNum === 6);
         const isNonFtDay1To7 = !cat.isFieldTrip && (dayNum >= 1 && dayNum <= 7);
         if (subtitle) {
-          subtitle.textContent = (dayNum === 0)
-            ? 'Foto dokumentasi simulasi Day 0 telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam alur aktivitas simulasi:'
-            : (isNonFtD5D6
-                ? `Bukti foto riset Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke Tahap 3: Lembar Kerja (LKPD Video):`
-                : `Bukti foto lapangan Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:`);
+          subtitle.textContent = isFtDay0
+            ? 'Bukti foto kesiapan Day 0 Anda telah tersimpan. Silakan lanjutkan ke Tahap 4: Asesmen 10 Soal Esai Kesiapan Lapangan:'
+            : ((dayNum === 0)
+                ? 'Foto dokumentasi simulasi Day 0 telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam alur aktivitas simulasi:'
+                : (isNonFtD5D6
+                    ? `Bukti foto riset Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke Tahap 3: Lembar Kerja (LKPD Video):`
+                    : `Bukti foto lapangan Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:`));
         }
         if (nextBtn) {
-          nextBtn.href = isNonFtD5D6
-            ? `lkpd.html?day=${dayNum}`
-            : (isNonFtDay1To7 ? `asesmen.html?day=${dayNum}` : `dashboard.html?day=${dayNum}&task=refleksi`);
+          nextBtn.href = isFtDay0
+            ? `dashboard.html?day=0&task=asesmen`
+            : (isNonFtD5D6
+                ? `lkpd.html?day=${dayNum}`
+                : (isNonFtDay1To7 ? `asesmen.html?day=${dayNum}` : `dashboard.html?day=${dayNum}&task=refleksi`));
           nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
         }
         if (nextBtnText) {
-          nextBtnText.textContent = (dayNum === 0)
-            ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0'
-            : (isNonFtD5D6
-                ? `Lanjut ke Tahap 3: LKPD Video Day ${dayNum} →`
-                : (isNonFtDay1To7 ? `Lanjut ke Kuis Asesmen Day ${dayNum} (Tahap 4)` : 'Lanjut ke Refleksi Mandiri (Tahap 5)'));
+          nextBtnText.textContent = isFtDay0
+            ? 'Lanjut ke Tahap 4: Asesmen Day 0 →'
+            : ((dayNum === 0)
+                ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0'
+                : (isNonFtD5D6
+                    ? `Lanjut ke Tahap 3: LKPD Video Day ${dayNum} →`
+                    : (isNonFtDay1To7 ? `Lanjut ke Kuis Asesmen Day ${dayNum} (Tahap 4)` : 'Lanjut ke Refleksi Mandiri (Tahap 5)')));
         }
       }
 

@@ -2733,21 +2733,30 @@
 
       // Cascading logic berurutan mutlak
       const isFtDay7 = isFieldTrip && dayNum === 7;
+      const isFtDay0 = isFieldTrip && dayNum === 0;
       const isNonFtD5D6 = !isFieldTrip && (dayNum === 5 || dayNum === 6);
       const isNonFtOrderedDay = !isFieldTrip && (dayNum >= 1 && dayNum <= 7);
       let canLkpd = isNonFtD5D6 ? (hasMateri && hasDok) : hasMateri;
       let canDok = isNonFtD5D6
         ? hasMateri
-        : (isNonFtOrderedDay
+        : (isFtDay0
             ? (hasMateri && hasLkpd)
-            : (isFtDay7 ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen)));
+            : (isNonFtOrderedDay
+                ? (hasMateri && hasLkpd)
+                : (isFtDay7 ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen))));
       let canAsesmen = isNonFtD5D6
         ? (hasMateri && hasDok && hasLkpd)
-        : (isNonFtOrderedDay
+        : (isFtDay0
             ? (hasMateri && hasLkpd && hasDok)
-            : (hasMateri && hasLkpd));
-      let canRefleksi = isFtDay7 ? (hasMateri && hasLkpd && hasDok) : (hasMateri && hasLkpd && hasAsesmen && hasDok);
-      let canPenilaian = isFtDay7 ? (hasMateri && hasLkpd && hasDok && hasRefleksi) : (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi);
+            : (isNonFtOrderedDay
+                ? (hasMateri && hasLkpd && hasDok)
+                : (hasMateri && hasLkpd)));
+      let canRefleksi = isFtDay0
+        ? (hasMateri && hasLkpd && hasDok && hasAsesmen)
+        : (isFtDay7 ? (hasMateri && hasLkpd && hasDok) : (hasMateri && hasLkpd && hasAsesmen && hasDok));
+      let canPenilaian = isFtDay0
+        ? (hasMateri && hasLkpd && hasDok && hasAsesmen && hasRefleksi)
+        : (isFtDay7 ? (hasMateri && hasLkpd && hasDok && hasRefleksi) : (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi));
 
       return {
         hasMateri,
@@ -2756,15 +2765,19 @@
           : (hasLkpd && hasMateri),
         hasAsesmen: isNonFtD5D6
           ? (hasAsesmen && hasDok && hasLkpd && hasMateri)
-          : (isNonFtOrderedDay
+          : (isFtDay0
               ? (hasAsesmen && hasDok && hasLkpd && hasMateri)
-              : (isFtDay7 ? (hasLkpd && hasMateri) : (hasAsesmen && hasLkpd && hasMateri))),
+              : (isNonFtOrderedDay
+                  ? (hasAsesmen && hasDok && hasLkpd && hasMateri)
+                  : (isFtDay7 ? (hasLkpd && hasMateri) : (hasAsesmen && hasLkpd && hasMateri)))),
         hasDok: isNonFtD5D6
           ? (hasDok && hasMateri)
-          : (isNonFtOrderedDay
+          : ((isNonFtOrderedDay || isFtDay0)
               ? (hasDok && hasLkpd && hasMateri)
               : (isFtDay7 ? (hasDok && hasLkpd && hasMateri) : (hasDok && hasAsesmen && hasLkpd && hasMateri))),
-        hasRefleksi: (isFtDay7 ? (hasRefleksi && hasDok && hasLkpd && hasMateri) : (hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri)),
+        hasRefleksi: isFtDay0
+          ? (hasRefleksi && hasAsesmen && hasDok && hasLkpd && hasMateri)
+          : (isFtDay7 ? (hasRefleksi && hasDok && hasLkpd && hasMateri) : (hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri)),
         canLkpd,
         canAsesmen,
         canDok,
@@ -3847,7 +3860,9 @@
               </span>
               <span class="text-[11px] sm:text-xs ${isFieldTrip ? 'text-amber-900/90' : 'text-teal-900/90'} leading-relaxed font-medium">
                 ${isTrial 
-                  ? 'Bebas mencoba seluruh 5 instrumen latihan (Modul, LKPD Uji Coba, Kuis Latihan, Unggah Foto, dan Refleksi) sebelum pelaksanaan kegiatan sesungguhnya.' 
+                  ? (isFieldTrip
+                      ? '<strong>1. Modul Belajar</strong> (Orientasi FINCESTEM) &rarr; <strong>2. LKPD</strong> (Simulasi Uang Saku) &rarr; <strong>3. Dokumentasi</strong> (Foto Kesiapan Bebas) &rarr; <strong>4. Asesmen</strong> (10 Soal Esai) &rarr; <strong>5. Jurnal Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong>.'
+                      : 'Bebas mencoba seluruh 5 instrumen latihan (Modul, LKPD Uji Coba, Kuis Latihan, Unggah Foto, dan Refleksi) sebelum pelaksanaan kegiatan sesungguhnya.') 
                   : (isFieldTrip
                     ? ((isFTDay && dNum === 2)
                         ? '<strong>Sesi 1:</strong> Modul &amp; LKPD AKPOL &rarr; Unggah Dokumentasi AKPOL &rarr; <strong>Sesi 2:</strong> Modul &amp; LKPD Lawang Sewu &rarr; Unggah Dokumentasi Lawang Sewu &rarr; <strong>Tahap Akhir:</strong> Jurnal Refleksi Day 2.'
@@ -3879,7 +3894,50 @@
                 ${getCheckBadge(hasMateri, canOpenMateri)}
               </button>
 
-              ${(!isFieldTrip && (dNum === 5 || dNum === 6)) ? `
+              ${(isFieldTrip && dNum === 0) ? `
+              <!-- KHUSUS FIELD TRIP DAY 0: 1. Modul -> 2. LKPD -> 3. Dokumentasi -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian -->
+              <!-- 2. LKPD DIGITAL -->
+              <button onclick="handleActivityClick(${dNum}, 'lkpd')" class="p-2.5 sm:p-3 rounded-2xl ${lkpdBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${lkpdIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenLkpd ? 'lock' : 'edit_document'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">2. LKPD Digital</span>
+                    <span class="text-[10px] sm:text-xs ${hasLkpd ? 'text-emerald-700 font-bold' : (canOpenLkpd ? 'text-teal-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasLkpd ? '✓ LKPD Terkirim' : (canOpenLkpd ? 'Isi Rencana Saku' : 'Terkunci')}</span>
+                  </div>
+                </div>
+                ${getCheckBadge(hasLkpd, canOpenLkpd)}
+              </button>
+
+              <!-- 3. DOKUMENTASI FOTO -->
+              <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 sm:p-3 rounded-2xl ${dokBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${dokIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenDok ? 'lock' : 'photo_camera'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">3. Dokumentasi</span>
+                    <span class="text-[10px] sm:text-xs ${hasDok ? 'text-emerald-700 font-bold' : (canOpenDok ? 'text-pink-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasDok ? '✓ Foto Terunggah' : (canOpenDok ? 'Unggah Foto' : 'Terkunci')}</span>
+                  </div>
+                </div>
+                ${getCheckBadge(hasDok, canOpenDok)}
+              </button>
+
+              <!-- 4. ASESMEN (10 SOAL ESAI) -->
+              <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 sm:p-3 rounded-2xl ${asesmenBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${asesmenIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenAsesmen ? 'lock' : 'fact_check'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">4. Asesmen</span>
+                    <span class="text-[10px] sm:text-xs ${hasAsesmen ? 'text-emerald-700 font-bold' : (canOpenAsesmen ? 'text-blue-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasAsesmen ? '✓ 10 Esai Selesai' : (canOpenAsesmen ? '10 Soal Esai' : 'Terkunci')}</span>
+                  </div>
+                </div>
+                ${getCheckBadge(hasAsesmen, canOpenAsesmen)}
+              </button>
+              ` : (!isFieldTrip && (dNum === 5 || dNum === 6)) ? `
               <!-- KHUSUS NON-FIELD TRIP DAY 5 & 6: 1. Modul -> 2. Dokumentasi -> 3. LKPD -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian -->
               <!-- 2. DOKUMENTASI FOTO -->
               <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 sm:p-3 rounded-2xl ${dokBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
@@ -4177,13 +4235,46 @@
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
 
-      // VALIDASI ALUR BERURUTAN: DAY 1 S.D. 7 (SEMUA SISWA) & DAY 0 (SIMULASI NON-FIELD TRIP)
-      if ((dNum >= 1 && dNum <= 7) || (dNum === 0 && !isFieldTrip)) {
+      // VALIDASI ALUR BERURUTAN: DAY 1 S.D. 7 (SEMUA SISWA) & DAY 0 (SEMUA SISWA)
+      if ((dNum >= 1 && dNum <= 7) || dNum === 0) {
         const progStatus = getFTProgressStatus(null, dNum);
+        const isFtDay0 = isFieldTrip && dNum === 0;
         const isNonFtD5D6 = !isFieldTrip && (dNum === 5 || dNum === 6);
         const isNonFtOrderedDay = !isFieldTrip && (dNum >= 1 && dNum <= 7);
 
-        if (isNonFtD5D6) {
+        if (isFtDay0) {
+          // Khusus Field Trip Day 0: 1. Modul -> 2. LKPD -> 3. Dokumentasi -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian
+          if (type === 'lkpd' && !progStatus.canLkpd) {
+            showStepLockedModal('LKPD Digital', `Tahap 1: Modul Belajar & Resume FINCESTEM Day 0`, () => { window.location.href = `materi.html?day=0`; }, 0);
+            return;
+          }
+          if (type === 'dokumentasi' && !progStatus.canDok) {
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Dokumentasi Foto', `Tahap 1: Modul Belajar & Resume FINCESTEM Day 0`, () => { window.location.href = `materi.html?day=0`; }, 0);
+            } else {
+              showStepLockedModal('Dokumentasi Foto', `Tahap 2: Rencana Uang Saku (LKPD) Day 0`, () => { window.location.href = `lkpd.html?day=0`; }, 0);
+            }
+            return;
+          }
+          if (type === 'asesmen' && !progStatus.canAsesmen) {
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume FINCESTEM Day 0`, () => { window.location.href = `materi.html?day=0`; }, 0);
+            } else if (!progStatus.hasLkpd) {
+              showStepLockedModal('Kuis Asesmen', `Tahap 2: Rencana Uang Saku (LKPD) Day 0`, () => { window.location.href = `lkpd.html?day=0`; }, 0);
+            } else {
+              showStepLockedModal('Kuis Asesmen', `Tahap 3: Dokumentasi Foto Kesiapan Day 0`, () => { window.location.href = `dokumentasi.html?day=0`; }, 0);
+            }
+            return;
+          }
+          if (type === 'refleksi' && !progStatus.canRefleksi) {
+            if (!progStatus.hasDok) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 3: Dokumentasi Foto Kesiapan Day 0`, () => { window.location.href = `dokumentasi.html?day=0`; }, 0);
+            } else {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 4: Asesmen 10 Soal Esai Day 0`, () => { handleActivityClick(0, 'asesmen'); }, 0);
+            }
+            return;
+          }
+        } else if (isNonFtD5D6) {
           // Khusus Non-Field Trip Day 5 & 6:
           // Alur Wajib: 1. Modul -> 2. Dokumentasi -> 3. LKPD -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian
 
@@ -4536,6 +4627,7 @@
         : (stu.zone || currentUser.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+      const isFTDay0 = isFieldTrip && Number(day.day_number) === 0;
       const isFTDay1 = isFieldTrip && Number(day.day_number) === 1;
       const isFTDay2 = isFieldTrip && Number(day.day_number) === 2;
       const isFTDay3 = isFieldTrip && Number(day.day_number) === 3;
@@ -4545,7 +4637,107 @@
       const isFTDay7 = isFieldTrip && Number(day.day_number) === 7;
 
       if (type === 'asesmen') {
-        if (isFTDay1) {
+        if (isFTDay0) {
+          title.textContent = 'Asesmen Day 0: Orientasi & Kesiapan Lapangan Field Trip (10 Soal Esai)';
+          icon.textContent = 'fact_check';
+          iconBox.className = 'w-10 h-10 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0';
+
+          let ftAsesmen = null;
+          const idList = getStudentStorageIdentifiers();
+          for (const id of idList) {
+            try {
+              const raw = localStorage.getItem('fincestem_asesmen_ft_day0_' + id) || localStorage.getItem('fincestem_asesmen_day0_' + id);
+              if (raw) {
+                const parsed = JSON.parse(raw);
+                if (parsed && (parsed.submitted || parsed.answers || parsed.score !== undefined)) {
+                  ftAsesmen = parsed;
+                  break;
+                }
+              }
+            } catch(e) {}
+          }
+
+          const isSubmitted = ftAsesmen && ftAsesmen.submitted;
+          const savedAnswers = (ftAsesmen && ftAsesmen.answers) || {};
+          const isModalReadOnly = isReadOnly || isSubmitted;
+          const fieldDisabled = isModalReadOnly ? 'disabled' : '';
+
+          const essayQuestions = [
+            { id: 1, title: '1. Apa kepanjangan dari tema kegiatan kokurikuler FINCESTEM di SMAN 1 Belitang?', placeholder: 'Tuliskan kepanjangan dari FINCESTEM...' },
+            { id: 2, title: '2. Apa nama biro perjalanan fieldtrip 2026 ini?', placeholder: 'Tuliskan nama biro perjalanan wisata resmi kegiatan ini...' },
+            { id: 3, title: '3. Kamu berada di bus berapa?', placeholder: 'Tuliskan nomor bus rombongan Anda (misal: Bus 1, Bus 2, dst)...' },
+            { id: 4, title: '4. Siapa nama guru pembimbing di busmu?', placeholder: 'Tuliskan nama bapak/ibu guru pendamping di bus Anda...' },
+            { id: 5, title: '5. Siapa nama fasilitatormu?', placeholder: 'Tuliskan nama guru fasilitator pembimbing kelompok Anda...' },
+            { id: 6, title: '6. Sebutkan kota atau destinasi utama yang paling ingin kamu kunjungi dalam perjalanan ini!', placeholder: 'Tuliskan kota atau objek wisata yang paling ingin Anda eksplorasi...' },
+            { id: 7, title: '7. Perlengkapan pribadi atau obat-obatan apa yang wajib kamu siapkan di tas kecil/kabin bus?', placeholder: 'Tuliskan perlengkapan pribadi, jaket, atau obat khusus yang Anda siapkan...' },
+            { id: 8, title: '8. Apa aturan penting yang harus dipatuhi selama berada di dalam bus dan di tempat penginapan/hotel?', placeholder: 'Tuliskan aturan ketertiban, kebersihan, dan keselamatan bersama...' },
+            { id: 9, title: '9. Dari 4 dimensi profil lulusan (Kemandirian, Penalaran Kritis, Kreativitas, Kewargaan), dimensi mana yang ingin kamu kembangkan selama perjalanan?', placeholder: 'Tuliskan dimensi profil lulusan yang paling ingin Anda latih dan alasannya...' },
+            { id: 10, title: '10. Apa harapanmu ketika fieldtrip nanti sudah dimulai?', placeholder: 'Tuliskan harapan, kesan, atau doa Anda untuk kelancaran perjalanan ini...' }
+          ];
+
+          let qHtml = essayQuestions.map((q) => {
+            const rawVal = savedAnswers['q' + q.id] || '';
+            const cleanVal = (typeof rawVal === 'string' ? rawVal : '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return `
+              <div class="p-3.5 rounded-2xl bg-white border border-slate-200/90 shadow-2xs flex flex-col gap-1.5">
+                <label for="ftAsesmenEssayQ${q.id}" class="font-bold text-xs sm:text-sm text-slate-900 leading-snug">${q.title}</label>
+                <textarea id="ftAsesmenEssayQ${q.id}" rows="2" ${fieldDisabled} placeholder="${q.placeholder}" class="w-full p-3 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-900 leading-relaxed outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100 transition-all ${isModalReadOnly ? 'bg-slate-100 text-slate-600' : 'bg-white'}">${cleanVal}</textarea>
+              </div>
+            `;
+          }).join('');
+
+          let statusBanner = '';
+          if (isSubmitted) {
+            statusBanner = `
+              <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-between gap-2 flex-wrap">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
+                  <div class="flex flex-col">
+                    <span class="font-black text-xs sm:text-sm text-emerald-950">Asesmen Esai Day 0 Selesai!</span>
+                    <span class="text-[11px] text-emerald-700">10 Jawaban tersimpan &bull; Nilai: 100/100 &bull; Tahap 5 (Jurnal Refleksi) telah terbuka.</span>
+                  </div>
+                </div>
+                <div class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white font-black text-xs sm:text-sm shadow-2xs">
+                  Selesai ✓ (100)
+                </div>
+              </div>
+            `;
+          }
+
+          body.innerHTML = `
+            <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col gap-1 text-slate-800">
+              <span class="font-bold text-sm text-amber-950">Asesmen Orientasi &amp; Kesiapan Lapangan Field Trip (10 Soal Esai)</span>
+              <p class="text-xs sm:text-sm leading-relaxed text-slate-600">
+                Jawablah 10 pertanyaan esai singkat di bawah ini untuk memastikan kesiapan administrasi, rombongan bus, dan pemahaman Anda terhadap kegiatan Field Trip SMAN 1 Belitang.
+              </p>
+            </div>
+
+            ${statusBanner}
+
+            <div class="flex flex-col gap-3">
+              ${qHtml}
+            </div>
+
+            ${isSubmitted ? `
+              <div class="flex flex-col sm:flex-row gap-2 pt-2">
+                <button type="button" onclick="closeDayActivityModal(); handleActivityClick(0, 'refleksi');" class="flex-1 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">psychology</span>
+                  <span>Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
+                  Tutup
+                </button>
+              </div>
+            ` : (readOnlyBanner ? readOnlyBanner : `
+              <div class="pt-2">
+                <button type="button" onclick="saveStudentNote(0, 'asesmen')" class="w-full py-3.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
+                  <span class="material-symbols-outlined text-lg">send</span>
+                  <span>Kirim 10 Jawaban Asesmen &amp; Buka Refleksi</span>
+                </button>
+              </div>
+            `)}
+          `;
+        } else if (isFTDay1) {
           title.textContent = 'Asesmen Day 1 (Pengenalan Kru & Pembimbing Field Trip)';
           icon.textContent = 'fact_check';
           iconBox.className = 'w-10 h-10 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0';
@@ -5636,7 +5828,9 @@
                               ? 'Refleksi Pembelajaran Day 1'
                               : 'Refleksi Belajar Siswa')))));
         const reflPrompt = isTrial 
-          ? 'Apakah kamu sudah memahami alur Kegiatan Kokurikuler SMAN 1 Belitang?' 
+          ? (isFieldTrip 
+              ? 'Apakah anda sudah siap untuk kegiatan filtrip? Ceritakan kesiapan fisik, mental, serta hal apa yang paling ingin Anda pelajari selama perjalanan!' 
+              : 'Apakah kamu sudah memahami alur Kegiatan Kokurikuler SMAN 1 Belitang?') 
           : (isFTDay5Refl
               ? 'Refleksikan wawasan eksplorasi cagar budaya Candi Prambanan yang Anda peroleh: apa nilai sejarah, arsitektur batu andesit, atau kerja sama tim yang paling berkesan? <div class="mt-1 text-purple-900 font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm text-amber-600">lock_open</span><span>Catatan: Setelah Jurnal Refleksi ini disimpan, Sesi 2: Seni Membatik (Sentra Benang Ratu) akan otomatis TERBUKA!</span></div>'
               : (ftCfg 
@@ -5649,7 +5843,9 @@
                               ? 'Setelah mempelajari kegiatan ekonomi, literasi finansial, dan pemetaan potensi daerah hari ini, bagaimana Anda akan menerapkan kebiasaan mengelola keuangan dengan bijak dalam kehidupan sehari-hari sekaligus memanfaatkan peluang potensi ekonomi yang ada di Kabupaten OKU Timur?'
                               : 'Apa pengalaman dan nilai berharga yang Anda peroleh selama kegiatan riset FINCESTEM hari ini?')))));
         const reflPlaceholder = isTrial 
-          ? '' 
+          ? (isFieldTrip
+              ? 'Tuliskan kesiapan Anda menyambut kegiatan field trip (misal: kesiapan fisik, perlengkapan yang disiapkan, dan antusiasme belajar di lapangan)...'
+              : '') 
           : (isFTDay5Refl
               ? 'Tuliskan cerita dan refleksi mendalam Anda terkait pengalaman dan pembelajaran eksplorasi Candi Prambanan di sini (minimal beberapa kalimat)...'
               : (ftCfg 
@@ -6567,6 +6763,7 @@
         : (stu.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+      const isFTDay0 = isFieldTrip && Number(dayNumber) === 0;
       const isFTDay1 = isFieldTrip && Number(dayNumber) === 1;
       const isFTDay2 = isFieldTrip && Number(dayNumber) === 2;
       const isFTDay3 = isFieldTrip && Number(dayNumber) === 3;
@@ -6576,7 +6773,52 @@
       const isFTDay7 = isFieldTrip && Number(dayNumber) === 7;
 
       let note = '';
-      if (type === 'asesmen' && isFTDay1) {
+      if (type === 'asesmen' && isFTDay0) {
+        const answers = {};
+        let missing = false;
+        for (let i = 1; i <= 10; i++) {
+          const val = (document.getElementById('ftAsesmenEssayQ' + i)?.value || '').trim();
+          if (!val) { missing = true; }
+          answers['q' + i] = val;
+        }
+
+        if (missing) {
+          FincestemCore.ui.toast('Harap jawab seluruh 10 pertanyaan esai asesmen Day 0!', 'warning');
+          return;
+        }
+
+        const asesmenPayload = {
+          submitted: true,
+          type: 'essay',
+          score: 100,
+          totalQuestions: 10,
+          answers: answers,
+          submitted_at: new Date().toISOString()
+        };
+
+        const idList = getStudentStorageIdentifiers();
+        idList.forEach(id => {
+          localStorage.setItem('fincestem_asesmen_ft_day0_' + id, JSON.stringify(asesmenPayload));
+          localStorage.setItem('fincestem_asesmen_day0_' + id, JSON.stringify(asesmenPayload));
+        });
+
+        note = `Asesmen Esai Day 0 (Kesiapan Field Trip):\n1. ${answers.q1}\n2. ${answers.q2}\n3. ${answers.q3}\n4. ${answers.q4}\n5. ${answers.q5}\n6. ${answers.q6}\n7. ${answers.q7}\n8. ${answers.q8}\n9. ${answers.q9}\n10. ${answers.q10}`;
+
+        if (studentProgress && studentProgress.task_map) {
+          studentProgress.task_map['0_asesmen'] = { status: 'submitted', content: note };
+        }
+
+        FincestemCore.progress.submitTask(studentNisn, 0, 'asesmen', note, function() {
+          FincestemCore.ui.toast('Asesmen Esai Day 0 Berhasil Dikirim! Nilai: 100 / 100. Tahap 5 (Jurnal Refleksi) sekarang telah dibuka.', 'success');
+          loadStudentProgress();
+          closeDayActivityModal();
+          setTimeout(() => {
+            handleActivityClick(0, 'refleksi');
+          }, 600);
+        });
+
+        return;
+      } else if (type === 'asesmen' && isFTDay1) {
         const q1 = (document.getElementById('ftAsesmenEssayQ1')?.value || '').trim();
         const q2 = (document.getElementById('ftAsesmenEssayQ2')?.value || '').trim();
         const q3 = (document.getElementById('ftAsesmenEssayQ3')?.value || '').trim();

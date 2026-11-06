@@ -6187,3 +6187,197 @@
     window.renderDay7FieldTripModule = renderDay7FieldTripModule;
     window.saveDay7MateriConclusion = saveDay7MateriConclusion;
     window.handleGoToLkpdDay7 = handleGoToLkpdDay7;
+    /* ========================================================
+       MODUL BELAJAR DIGITAL KHUSUS FIELD TRIP DAY 0 (SIMULASI)
+       Tema: Orientasi Kokurikuler FINCESTEM SMAN 1 Belitang
+       "Belajar Melampaui Ruang Kelas" & Dimensi Profil Lulusan
+       ======================================================== */
+    function renderDay0FieldTripModule(mainEl) {
+      if (!mainEl) return;
+      const user = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+
+      let savedResume = '';
+      let isResumeSubmitted = false;
+      for (const id of idVars) {
+        try {
+          const raw = localStorage.getItem('fincestem_materi_ft_day0_' + id) || localStorage.getItem('fincestem_materi_day0_' + id);
+          if (raw) {
+            const p = JSON.parse(raw);
+            if (p && (p.conclusion || p.text || p.submitted)) {
+              savedResume = p.conclusion || p.text || '';
+              isResumeSubmitted = true;
+              break;
+            }
+          }
+        } catch(e) {}
+      }
+
+      mainEl.innerHTML = `
+        <div class="flex flex-col gap-4 animate-fade-in pb-16">
+          <!-- HERO CARD DAY 0 -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-amber-600 via-amber-700 to-slate-900 p-5 sm:p-6 text-white shadow-lg border border-amber-400/30">
+            <div class="relative z-10 flex flex-col gap-2">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <span class="px-3 py-1 rounded-full text-[11px] font-black uppercase tracking-wider bg-white/20 text-amber-100 border border-white/30 backdrop-blur-xs">
+                  Day 0 &bull; Simulasi &amp; Orientasi
+                </span>
+                <span class="text-xs font-bold text-amber-200">
+                  SMAN 1 Belitang 2026
+                </span>
+              </div>
+              <h1 class="text-lg sm:text-xl font-black text-white leading-tight mt-1">
+                KOKURIKULER FINCESTEM: BELAJAR MELAMPAUI RUANG KELAS
+              </h1>
+              <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
+                Orientasi konsep pembelajaran mendalam berbasis pengalaman nyata (*experiential learning*) dan 4 dimensi profil lulusan SMAN 1 Belitang.
+              </p>
+            </div>
+            <div class="absolute -right-6 -bottom-6 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none"></div>
+          </div>
+
+          <!-- KARTU MATERI 1: KONSEP DASAR FINCESTEM -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-900 font-black text-sm sm:text-base border-b border-surface-container pb-2">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">school</span>
+              </span>
+              <span>1. Konsep &amp; Ruang Pembelajaran FINCESTEM</span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-2.5 font-medium text-justify">
+              <p>
+                <strong>SMA Negeri 1 Belitang</strong> mengembangkan kegiatan kokurikuler bertema <strong>FINCESTEM</strong> (<em>Financial, Culture, Exploration, and STEM</em>) sebagai pembelajaran berbasis pengalaman yang mengintegrasikan literasi finansial, kebudayaan, eksplorasi, serta <em>Science, Technology, Engineering, and Mathematics</em>.
+              </p>
+              <p>
+                Pelaksanaannya dibagi menjadi dua ruang pembelajaran, yaitu <strong>FINCESTEM di Kabupaten OKU Timur</strong> dan <strong>FINCESTEM di luar Kabupaten OKU Timur</strong>.
+              </p>
+            </div>
+          </div>
+
+          <!-- KARTU MATERI 2: PENDEKATAN PEMBELAJARAN & PROFIL LULUSAN -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3">
+            <div class="flex items-center gap-2.5 text-amber-900 font-black text-sm sm:text-base border-b border-surface-container pb-2">
+              <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">psychology</span>
+              </span>
+              <span>2. Pendekatan Pembelajaran &amp; Profil Lulusan</span>
+            </div>
+            <div class="text-xs sm:text-sm text-slate-700 leading-relaxed space-y-2.5 font-medium text-justify">
+              <p>
+                Kegiatan FINCESTEM dilaksanakan melalui <strong>Pendekatan Pembelajaran Mendalam</strong> yang memberikan pengalaman belajar kontekstual dan bermakna. Peserta didik terlibat secara aktif dalam mengamati, mengeksplorasi, mengumpulkan dan menganalisis informasi, menghasilkan gagasan dan karya, serta melakukan refleksi berdasarkan pengalaman nyata.
+              </p>
+              <p>
+                Melalui proses tersebut, kegiatan FINCESTEM diarahkan untuk mengembangkan dimensi Profil Lulusan yang meliputi:
+              </p>
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <div class="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-950 flex items-center gap-2 text-xs font-bold">
+                  <span class="material-symbols-outlined text-base text-amber-600">lightbulb</span>
+                  <span>Penalaran Kritis</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-teal-50 border border-teal-200 text-teal-950 flex items-center gap-2 text-xs font-bold">
+                  <span class="material-symbols-outlined text-base text-teal-600">palette</span>
+                  <span>Kreativitas</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-blue-50 border border-blue-200 text-blue-950 flex items-center gap-2 text-xs font-bold">
+                  <span class="material-symbols-outlined text-base text-blue-600">public</span>
+                  <span>Kewargaan</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-purple-50 border border-purple-200 text-purple-950 flex items-center gap-2 text-xs font-bold">
+                  <span class="material-symbols-outlined text-base text-purple-600">self_improvement</span>
+                  <span>Kemandirian</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- KARTU 3: RESUME MANDIRI SISWA -->
+          <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/25 shadow-sm flex flex-col gap-3.5">
+            <div class="flex items-center justify-between border-b border-surface-container pb-2">
+              <div class="flex items-center gap-2 text-primary font-black text-sm sm:text-base">
+                <span class="material-symbols-outlined text-xl text-amber-600">edit_note</span>
+                <span>Tugas Resume Mandiri Day 0</span>
+              </div>
+              ${isResumeSubmitted ? `
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  Tuntas &check;
+                </span>
+              ` : ''}
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label for="ftMateriDay0Conclusion" class="text-xs sm:text-sm font-extrabold text-slate-900 leading-snug">
+                Pertanyaan Resume:
+              </label>
+              <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200 text-xs sm:text-sm font-bold text-amber-950">
+                Apa tema kegiatan kokurikuler SMAN 1 Belitang?
+              </div>
+              <p class="text-[11px] sm:text-xs text-slate-500 mt-0.5">
+                Tuliskan pemahaman Anda mengenai tema kokurikuler SMAN 1 Belitang di atas (minimal 1 kalimat berbobot):
+              </p>
+              <textarea id="ftMateriDay0Conclusion" rows="3" ${isResumeSubmitted ? 'disabled' : ''} placeholder="Contoh: Tema kegiatan kokurikuler SMAN 1 Belitang adalah FINCESTEM (Financial, Culture, Exploration, and STEM) sebagai pembelajaran berbasis pengalaman..." class="w-full p-3 rounded-2xl border border-outline-variant/40 text-xs sm:text-sm text-slate-900 outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-200 transition-all ${isResumeSubmitted ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : 'bg-white'}">${savedResume}</textarea>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-2 pt-1">
+              ${isResumeSubmitted ? `
+                <button type="button" onclick="window.location.href='lkpd.html?day=0'" class="flex-1 py-3 px-4 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+                  <span>Lanjut ke Tahap 2: LKPD Uang Saku Day 0</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </button>
+              ` : `
+                <button type="button" onclick="saveDay0MateriConclusion()" class="flex-1 py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+                  <span class="material-symbols-outlined text-base">check_circle</span>
+                  <span>Simpan Resume Modul &amp; Buka LKPD Day 0</span>
+                </button>
+              `}
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function saveDay0MateriConclusion() {
+      const txt = document.getElementById('ftMateriDay0Conclusion');
+      const val = txt ? txt.value.trim() : '';
+      if (!val || val.length < 5) {
+        FincestemCore.ui.toast('Harap tuliskan jawaban resume tema kokurikuler SMAN 1 Belitang terlebih dahulu!', 'warning');
+        if (txt) txt.focus();
+        return;
+      }
+
+      const user = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
+
+      const payload = {
+        submitted: true,
+        conclusion: val,
+        submitted_at: new Date().toISOString()
+      };
+
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_materi_ft_day0_' + id, JSON.stringify(payload));
+          localStorage.setItem('fincestem_materi_day0_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+        FincestemCore.progress.submitTask(cleanNisn, 0, 'materi', payload, function() {
+          FincestemCore.ui.toast('Resume Modul Day 0 berhasil disimpan! Tahap 2 (LKPD Uang Saku) sekarang terbuka.', 'success');
+          setTimeout(() => {
+            window.location.href = 'lkpd.html?day=0';
+          }, 800);
+        });
+      } else {
+        FincestemCore.ui.toast('Resume Modul Day 0 berhasil disimpan! Tahap 2 (LKPD Uang Saku) sekarang terbuka.', 'success');
+        setTimeout(() => {
+          window.location.href = 'lkpd.html?day=0';
+        }, 800);
+      }
+    }
+
+    window.renderDay0FieldTripModule = renderDay0FieldTripModule;
+    window.saveDay0MateriConclusion = saveDay0MateriConclusion;
