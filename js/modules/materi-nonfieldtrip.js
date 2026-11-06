@@ -652,55 +652,397 @@
 
     4: {
       dayNum: 4,
-      title: 'Modul Riset Day 4: Ekosistem Irigasi Komering, Bendungan Perjaya & Bentang Alam OKU Timur',
-      theme: 'Pilar Exploration & Spatial Science',
+      title: 'Modul Riset Day 4: Eksplorasi Peralatan, Perlengkapan Kerja & Mekanisasi Sektor Unggulan Berbasis STEM',
+      theme: 'Pilar Exploration & STEM in Action',
       gradientClass: 'from-emerald-950 via-slate-900 to-cyan-950 border-emerald-700/40',
       tagColorClass: 'bg-white/20 text-emerald-100',
       badgeColorClass: 'bg-emerald-400 text-emerald-950',
-      subtitle: 'Kajian Geospasial Sistem Irigasi Komering, Pemetaan Elevasi Kontur & Topografi, Arsitektur Hidrolika Bendungan Perjaya, serta Perekaman Koordinat GPS Lapangan',
-      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda ditugaskan melakukan eksplorasi bentang alam dan infrastruktur tata kelola air persawahan OKU Timur: <strong>Sistem Jaringan Irigasi Komering dan Bendungan Perjaya</strong> sebagai urat nadi ketahanan pangan daerah. Pelajari elevasi tanah, hierarki saluran primer/sekunder/tersier, serta titik koordinat GPS wilayah Anda.',
+      subtitle: 'Kajian Komprehensif Peralatan Kerja, Perlengkapan Pelindung, Mesin Mekanisasi & Analisis 4 Dimensi STEM (Science, Technology, Engineering, Mathematics) pada Sektor Pilihan Day 3',
+      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, pada Day 4 ini Anda melanjutkan eksplorasi dari <strong>sektor unggulan yang telah Anda pilih di Day 3</strong>. Fokus utama Anda adalah membedah <strong>peralatan, perlengkapan kerja, dan mesin mekanisasi</strong> yang digunakan pelaku usaha, lalu mengaitkan cara kerja setiap peralatan tersebut secara langsung dengan <strong>4 dimensi STEM: Science (Sains), Technology (Teknologi), Engineering (Rekayasa), dan Mathematics (Matematika)</strong>.',
+      sectors: {
+        pertanian: {
+          key: 'pertanian',
+          name: 'Pertanian Padi Sawah & Tanaman Pangan',
+          icon: 'agriculture',
+          badge: 'Alsintan Sawah & RMU Padi',
+          cards: [
+            {
+              key: 'A',
+              title: 'Eksplorasi Peralatan, Perlengkapan Kerja & Alsintan Padi Sawah',
+              subtitle: 'Inventarisasi Alat Pengolahan Tanah, Tanam, Perawatan, Panen, Pascapanen & Alat Pelindung Diri (APD)',
+              guidedPoints: [
+                'Identifikasi peralatan pengolahan lahan dan tanam padi di OKU Timur: perbandingan alat tradisional (cangkul, bajak singkal, caplak kayu) dengan alsintan modern (Traktor Tangan / Hand Tractor, Traktor Roda Empat, dan Rice Transplanter).',
+                'Peralatan perawatan tanaman dan pengendalian OPT: Knapsack Sprayer manual vs Elektrik/Baterai, Drone Sprayer pertanian, pompa air irigasi, serta perlengkapan kerja petani (sepatu boot lumpur, masker respirator pestisida, sarung tangan karet, caping/topi pelindung UV).',
+                'Mesin panen dan pengolahan pascapanen: sabit bergerigi dan Power Thresher (perontok gabah) vs Combine Harvester (potong-rontok-bersih terpadu), serta mesin penggilingan Rice Milling Unit (RMU) dua fase (Husker & Polisher) dan Bed Dryer.'
+              ],
+              placeholder: 'Tuliskan inventarisasi lengkap peralatan, perlengkapan kerja (APD), dan mesin alsintan yang digunakan pada sektor Pertanian Padi Sawah dari tahap olah tanah hingga pascapanen... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Teknis Alat dan Mesin Pertanian (Alsintan) Padi, Kementerian Pertanian RI.\n2. Observasi Lapangan UPJA (Usaha Pelayanan Jasa Alsintan) Kabupaten OKU Timur.',
+              defaultExp: 'Sektor pertanian padi sawah di Kabupaten OKU Timur mengintegrasikan berbagai peralatan dan perlengkapan kerja mulai dari hulu hingga hilir. Pada tahap pengolahan tanah digunakan Hand Tractor beroda besi (cage wheel) dan traktor roda empat; tahap perawatan memakai electric knapsack sprayer beserta perlengkapan APD (sepatu boot, masker respirator, sarung tangan); sedangkan tahap panen dan pascapanen mengandalkan Combine Harvester beroda crawler serta mesin penggilingan RMU modern.',
+              defaultSources: '1. Katalog Alat dan Mesin Pertanian (Alsintan) Tanaman Pangan, Kementerian Pertanian RI.\n2. Data UPJA Dinas Pertanian Kabupaten OKU Timur.'
+            },
+            {
+              key: 'B',
+              title: 'Analisis SCIENCE: Prinsip Fisika, Kimia & Biologi pada Peralatan Pertanian',
+              subtitle: 'Hukum Tekanan Hidrostatis & Permukaan Roda, Gaya Sentrifugal, Atomisasi Fluida & Biologi Benih/Gabah',
+              guidedPoints: [
+                'Prinsip Fisika Mekanika Tanah & Tekanan (P = F / A): Mengapa roda rantai (crawler track) pada Combine Harvester dan roda besi bersirip (cage wheel) pada traktor memperluas bidang tekan (A) sehingga tekanan ke lumpur sawah mengecil dan mesin tidak amblas.',
+                'Prinsip Fisika Fluida & Gaya Sentrifugal: Bagaimana tekanan pompa pada nozzle sprayer mengubah cairan pupuk/pestisida menjadi butiran kabut halus (atomisasi aerosol) agar menempel merata di stomata daun, serta gaya sentrifugal & hembusan angin blower pada drum thresher yang memisahkan gabah bernas (massa jenis besar) dari gabah hampa.',
+                'Prinsip Kimia & Biologi Pascapanen: Proses pembakaran hidrokarbon (solar/bensin) pada mesin penggerak, pengendalian kadar air gabah (14%) pada mesin pengering (dryer) untuk menghentikan respirasi biologis jamur Aspergillus, serta gesekan karet roll husker yang mengupas sekam tanpa memecahkan endosperma beras.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai prinsip Sains (Fisika, Kimia, Biologi) yang bekerja di balik peralatan dan perlengkapan pertanian padi sawah... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Fisika Terapan dan Mekanika Pertanian, IPB Press.\n2. Jurnal Keteknikan Pertanian: Analisis Fisika Perontokan dan Pengeringan Gabah.',
+              defaultExp: 'Secara ilmiah (Science), peralatan pertanian bekerja menggunakan hukum fisika, kimia, dan biologi terapan. Roda crawler Combine Harvester menerapkan rumus tekanan P = F/A di mana perluasan penampang sabuk rantai menurunkan tekanan tanah sehingga mesin seberat 2 ton tidak tenggelam di lumpur. Mesin thresher memanfaatkan gaya sentrifugal dan perbedaan massa jenis pada blower angin untuk memisahkan bulir padi bernas dari jerami hampa, sedangkan nozzle sprayer menerapkan prinsip fluida Bernoulli untuk menghasilkan kabut mikroskopis.',
+              defaultSources: '1. Buku Mekanika Tanah dan Fisika Alat Pertanian, Fakultas Teknologi Pertanian.\n2. Jurnal Teknik Pertanian: Prinsip Aerodinamika Pemisahan Gabah.'
+            },
+            {
+              key: 'C',
+              title: 'Analisis TECHNOLOGY: Sistem Penggerak, Transmisi, Material & Otomasi Alsintan',
+              subtitle: 'Motor Diesel 4-Tak, Pompa Hidrolik, Baterai Lithium Sprayer, Sensor Moisture Meter & GPS',
+              guidedPoints: [
+                'Teknologi motor penggerak: penggunaan mesin diesel 4-tak berpendingin air (radiator/hopper) pada traktor dan Combine Harvester yang menghasilkan torsi besar pada putaran rendah, serta sistem transmisi roda gigi (gearbox), kopling kemudi, dan V-belt.',
+                'Teknologi energi elektrik dan penyemprotan presisi: peralihan sprayer pompa tangan manual ke sprayer elektrik berbasis baterai Lithium/Aki kering 12V dengan pompa diafragma otomatis, hingga teknologi Drone Pertanian dengan pemetaan GPS waypoint.',
+                'Teknologi instrumen ukur dan material: penggunaan alat Grain Moisture Meter digital (sensor kapasitansi dielektrik) untuk mengukur persentase kadar air gabah secara instan, serta material baja tahan karat (stainless steel) dan karet poliuretan pada komponen RMU.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai aspek Teknologi (sistem mesin, transmisi, kelistrikan, sensor digital, dan material) pada peralatan pertanian padi... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Modul Teknologi Motor Penggerak dan Mekanisasi Pertanian, Balai Besar Pengembangan Mekanisasi Pertanian.\n2. Jurnal Otomasi dan Instrumentasi Pertanian Presisi.',
+              defaultExp: 'Dari sisi Teknologi, peralatan pertanian modern di OKU Timur menerapkan inovasi motor diesel 4-tak injeksi langsung yang hemat solar namun bertorsi tinggi, dipadukan sistem hidrolik pengangkat meja potong (header) pada Combine Harvester. Pada perawatan tanaman, petani beralih ke teknologi sprayer elektrik bertenaga baterai 12V DC dan pompa diafragma bertekanan konstan, sedangkan di tingkat RMU digunakan sensor digital Grain Moisture Meter untuk menguji kadar air gabah secara presisi.',
+              defaultSources: '1. Balai Besar Pengembangan Mekanisasi Pertanian (BBPektan) Kementan RI.\n2. Buku Teknologi Alat dan Mesin Pascapanen Padi.'
+            },
+            {
+              key: 'D',
+              title: 'Analisis ENGINEERING: Rancang Bangun Mekanis, Ergonomi & Konstruksi Alat',
+              subtitle: 'Desain Sirip Bajak, Mekanisme Cutter Bar, Konstruksi Silinder Perontok & Ergonomi Operator',
+              guidedPoints: [
+                'Rekayasa rancang bangun pengolahan tanah: desain lengkungan bajak singkal (moldboard plow) dan susunan pisau putar (rotary blade) yang dirancang dengan sudut potong khusus agar mampu membalik tanah liat sawah sekaligus membenamkan jerami.',
+                'Rekayasa mekanisme panen terpadu pada Combine Harvester: sinkronisasi gerak reel pengait batang padi, pisau potong bolak-balik (reciprocating cutter bar), ulir pembawa (auger), silinder perontok bergigi (threshing drum), dan saringan getar (vibrating sieve).',
+                'Rekayasa ergonomi dan keselamatan kerja: desain tangki sprayer yang mengikuti lekuk punggung manusia, posisi tuas kopling kemudi traktor yang mudah dijangkau tangan, serta prosedur perawatan rekayasa (pelumasan oli gardan, pengaturan ketegangan sabuk V-belt, dan pengasahan mata sabit/pisau).'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai aspek Engineering (rancang bangun mekanis, sudut pisau/bajak, ergonomi alat, dan rekayasa perawatan) pada peralatan pertanian... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Rancang Bangun dan Rekayasa Alat Mesin Pertanian, UGM Press.\n2. Pedoman Pemeliharaan dan Rekayasa Teknis Alsintan UPJA.',
+              defaultExp: 'Dalam dimensi Engineering (Rekayasa), setiap lekukan dan komponen alat pertanian dirancang secara presisi. Bajak singkal dan pisau rotary dirancang dengan sudut kemiringan spesifik untuk meminimalkan hambatan gesek tanah liat. Pada Combine Harvester, rekayasa mekanis menyatukan lima proses sekaligus (pengaitan, pemotongan cutter bar, pengangkutan auger, perontokan drum, dan pembersihan ayakan getar) dalam satu sasis seimbang dengan pusat gravitasi rendah agar stabil di medan berlumpur.',
+              defaultSources: '1. Buku Rekayasa dan Rancang Bangun Mesin Pertanian, UGM Press.\n2. Jurnal Ergonomi dan Keselamatan Kerja Pertanian.'
+            },
+            {
+              key: 'E',
+              title: 'Analisis MATHEMATICS: Kalkulasi Kapasitas Kerja, Konsumsi BBM & Efisiensi Biaya',
+              subtitle: 'Perhitungan Jam Kerja per Hektar, Rasio BBM Solar/Bensin, Susut Panen (Losses) & Sewa Alat vs Manual',
+              guidedPoints: [
+                'Perhitungan Kapasitas Kerja Efektif Alat (Ha/jam atau jam/Ha): membandingkan waktu olah tanah 1 hektar menggunakan cangkul manual (30–40 Hari Orang Kerja) vs Hand Tractor (12–16 jam atau 2 hari) vs Traktor Roda Empat (3–4 jam).',
+                'Kalkulasi konsumsi energi/BBM dan kapasitas panen: kebutuhan solar traktor (sekitar 15–20 liter/Ha) atau Combine Harvester (25–30 liter/Ha dengan waktu panen hanya 2–3 jam/Ha), serta penurunan angka kehilangan hasil (losses) dari 8–10% (cara gebot manual) menjadi di bawah 2% dengan Combine.',
+                'Analisis matematis penghematan biaya operasional petani: perbandingan total biaya sewa alsintan per hektar (misal Rp 1.200.000/Ha olah tanah atau Rp 2.200.000/Ha panen Combine) dibandingkan upah tenaga buruh manual, serta perhitungan titik impas (Break Even Point) bagi pemilik alat.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai perhitungan Matematika (kapasitas kerja per jam/Ha, konsumsi BBM, persentase susut panen, dan perbandingan biaya sewa alat vs manual)... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Analisis Ekonomi dan Kapasitas Kerja Alsintan Padi Sawah, Litbang Pertanian.\n2. Wawancara Tarif Sewa UPJA dan Kalkulasi Usaha Tani Kabupaten OKU Timur.',
+              defaultExp: 'Secara Matematis, mekanisasi peralatan pertanian memberikan lompatan efisiensi waktu dan biaya yang terukur jelas. Pengolahan lahan 1 hektar dengan traktor tangan membutuhkan sekitar 15 liter solar (Rp 102.000) dan selesai dalam 2 hari kerja dengan biaya sewa Rp 1.200.000/Ha, menghemat lebih dari 40% dibanding upah cangkul manual. Pada saat panen, Combine Harvester memangkas waktu panen 1 hektar menjadi 2,5 jam dan menekan susut tercecer (losses) hingga selisih 6% atau menyelamatkan sekitar 360 kg gabah senilai Rp 2.340.000 per hektar.',
+              defaultSources: '1. Jurnal Sosial Ekonomi Pertanian: Analisis Efisiensi Biaya Alsintan Padi.\n2. Standar Tarif Jasa Alsintan UPJA Kabupaten OKU Timur.'
+            }
+          ]
+        },
+        perkebunan: {
+          key: 'perkebunan',
+          name: 'Perkebunan Karet & Kelapa Sawit',
+          icon: 'forest',
+          badge: 'Alat Sadap Karet & Panen TBS Sawit',
+          cards: [
+            {
+              key: 'A',
+              title: 'Eksplorasi Peralatan & Perlengkapan Kerja Perkebunan Karet dan Sawit',
+              subtitle: 'Inventarisasi Pisau Sadap, Mangkok Lateks, Dodos, Egrek Galah Teleskopik, Angkong & APD Pekebun',
+              guidedPoints: [
+                'Peralatan utama perkebunan karet rakyat di OKU Timur: pisau sadap tarik/dorong (jebong), mal ukur kemiringan sadap, talang sadap seng/aliminium, mangkok penampung lateks (cup), cincin kawat penyangga, serta bak pembekuan koagulum.',
+                'Peralatan utama panen dan perawatan kelapa sawit: Dodos (pahat bergagang untuk pohon sawit rendah < 5 meter), Egrek (sabit lengkung bergalah panjang untuk pohon tinggi > 5 meter), galah bambu vs galah pipa aluminium/fiber teleskopik, kampak potong tangkai, dan tojok besi pengangkat tandan.',
+                'Peralatan angkut kebun dan Alat Pelindung Diri (APD): gerobak dorong satu roda (angkong/lori), keranjang rotan/goni, timbangan gantung/duduk digital TBS, serta APD wajib pekebun (helm proyek pelindung kejatuhan brondolan/pelepah, kacamata safety, sepatu boot anti-duri, sarung tangan kulit, dan lampu kepala/headlamp untuk penyadap subuh).'
+              ],
+              placeholder: 'Tuliskan inventarisasi lengkap peralatan sadap karet, peralatan panen kelapa sawit, alat angkut kebun, serta perlengkapan APD yang digunakan pekebun di OKU Timur... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Teknis Peralatan Penyadapan Karet dan Panen Kelapa Sawit, Ditjen Perkebunan.\n2. Observasi Lapangan Perkebunan Rakyat Kabupaten OKU Timur.',
+              defaultExp: 'Sektor perkebunan karet dan kelapa sawit di OKU Timur menggunakan perangkat kerja spesifik yang menentukan produktivitas panen. Pada kebun karet digunakan pisau sadap jebong berbilah tajam, talang seng, mangkok sadap plastik, dan lampu kepala (headlamp) untuk menyadap dini hari. Pada kebun kelapa sawit digunakan dodos untuk tanaman muda, egrek bergalah pipa aluminium teleskopik untuk tanaman tinggi, tojok besi, gerobak angkong untuk evakuasi TBS, serta APD berupa helm safety, kacamata pelindung mata dari serbuk sari/duri, dan sepatu boot.',
+              defaultSources: '1. Pedoman Teknis Budidaya dan Panen Kelapa Sawit & Karet, Ditjen Perkebunan Kementan RI.\n2. Pusat Penelitian Karet Sembawa & PPKS Medan.'
+            },
+            {
+              key: 'B',
+              title: 'Analisis SCIENCE: Prinsip Fisika, Kimia & Biologi pada Alat Perkebunan',
+              subtitle: 'Anatomi Pembuluh Lateks & Kambium, Kimia Koagulasi Asam Semut, Mekanika Torsi Galah & Pesawat Sederhana',
+              guidedPoints: [
+                'Prinsip Biologi Anatomi Tanaman pada Pisau Sadap: kulit pohon karet memiliki jaringan pembuluh lateks (laticifer) yang tersusun miring dari kiri bawah ke kanan atas; mata pisau sadap harus mengiris kulit sedalam 1–1,5 mm sebelum menyentuh lapisan kambium agar getah mengalir deras dari tekanan turgor sel tanpa merusak kambium kayu.',
+                'Prinsip Kimia Koagulasi pada Wadah Pembeku Lateks: lateks segar merupakan koloid karet bermuatan negatif (pH ±6,9); penambahan koagulan asam format (asam semut HCOOH) atau asam sitrat ramah lingkungan dalam bak pembeku menurunkan pH ke titik isoelektrik (±4,7) sehingga partikel karet menggumpal sempurna tanpa bau busuk.',
+                'Prinsip Fisika Mekanika pada Egrek, Tojok & Angkong: galah egrek menerapkan konsep momen gaya/torsi dan kelenturan elastisitas pipa, sedangkan gerobak angkong menerapkan hukum Pesawat Sederhana Tuas Jenis Kedua (roda sebagai titik tumpu, muatan TBS di tengah, dan tangan pendorong sebagai kuasa) yang melipatgandakan keuntungan mekanis.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai prinsip Sains (Biologi anatomi kambium, Kimia pembekuan lateks, dan Fisika pesawat sederhana/torsi) pada peralatan perkebunan... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Biologi Fisiologi Lateks dan Kimia Pengolahan Karet, Balai Penelitian Sembawa.\n2. Fisika Mekanika Terapan pada Alat Panen Perkebunan.',
+              defaultExp: 'Peralatan perkebunan bekerja selaras dengan prinsip Science (Biologi, Kimia, dan Fisika). Ketajaman dan bentuk siku pisau sadap dirancang mengikuti biologi anatomi pohon karet agar memotong pembuluh lateks tanpa melukai jaringan meristem kambium. Dalam bak pembeku, proses kimia penurunan pH menggunakan asam format menetralkan muatan ion protein pelindung koloid lateks. Sementara itu, gerobak angkong dan tojok sawit menerapkan fisika pesawat sederhana pengungkit yang memperkecil gaya angkat beban tandan sawit seberat 25–40 kg.',
+              defaultSources: '1. Monograf Penyadapan dan Pengolahan Karet Rakyat, Balit Sembawa.\n2. Fisika Dasar: Mekanika Torsi dan Pesawat Sederhana dalam Agrikultur.'
+            },
+            {
+              key: 'C',
+              title: 'Analisis TECHNOLOGY: Inovasi Material Baja Karbon, Galah Teleskopik & Alat Modern',
+              subtitle: 'Metalurgi Baja Pegas Egrek, Pipa Aluminium Alloy/Carbon Fiber, Mesin Potong Rumput & Timbangan Digital',
+              guidedPoints: [
+                'Teknologi metalurgi mata pisau sadap, dodos, dan egrek: penggunaan baja karbon tinggi (high carbon spring steel) yang melalui proses penempaan dan penyepuhan panas (heat treatment/quenching) agar bilah memiliki kekerasan tinggi, tidak mudah tumpul saat menebas pelepah sawit keras, namun tidak getas/patah.',
+                'Teknologi galah panen modern: inovasi penggantian galah bambu berat dengan pipa Aluminium Alloy High-Grade atau Carbon Fiber bersistem pengunci teleskopik (klem pengunci cepat 2–3 tingkat hingga panjang 12–15 meter) yang jauh lebih ringan, lurus, dan tahan karat.',
+                'Teknologi mesin perawatan kebun dan transaksi: penggunaan mesin potong rumput gendong (brush cutter 2-tak/4-tak) untuk pembersihan piringan pohon, sprayer herbisida elektrik, serta timbangan digital elektronik (load cell) pada pengumpulan hasil panen TBS dan bokar.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai aspek Teknologi (material baja karbon, galah teleskopik aluminium/fiber, mesin perawatan kebun, dan sensor timbangan) pada perkebunan... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Inovasi Peralatan Panen Kelapa Sawit Modern, Pusat Penelitian Kelapa Sawit (PPKS).\n2. Teknologi Material Metalurgi Alat Pertanian dan Perkebunan.',
+              defaultExp: 'Aspek Teknologi pada peralatan perkebunan tampak nyata pada inovasi material dan mekanisasi. Mata egrek dan dodos modern dibuat dari baja pegas karbon tinggi (spring steel) melalui perlakuan panas presisi sehingga tajam lebih lama. Galah panen telah berevolusi dari bambu konvensional menuju galah teleskopik berbahan Aluminium Alloy atau serat karbon (Carbon Fiber) yang mereduksi bobot alat hingga 50%, dilengkapi klem pengunci sambungan cepat serta timbangan load cell digital untuk akurasi transaksi TBS.',
+              defaultSources: '1. Jurnal Penelitian Kelapa Sawit: Evolusi Teknologi Alat Panen Egrek dan Galah, PPKS.\n2. Buku Teknologi Bahan dan Metalurgi Alat Pertanian.'
+            },
+            {
+              key: 'D',
+              title: 'Analisis ENGINEERING: Rancang Bangun Sudut Alat, Ergonomi & Konstruksi Mekanis',
+              subtitle: 'Desain Sudut Lengkung Egrek, Geometri Alur Sadap 30–45°, Keseimbangan Angkong & Perawatan Batu Asah',
+              guidedPoints: [
+                'Rekayasa geometri pisau sadap karet: bentuk ujung pisau sadap berbentuk huruf V/U berparuh pengarah dirancang agar penyadap dapat menjaga ketebalan irisan kulit (1,5–2 mm per sadap) dengan sudut kemiringan alur sadap 30° hingga 45° sehingga aliran getah cepat masuk ke talang tanpa meluber.',
+                'Rekayasa lengkung mata egrek dan lebar mata dodos: sudut kelengkungan sabit egrek dirancang khusus agar saat ditarik dari bawah ke atas langsung mengunci pangkal pelepah/tangkai tandan sawit dengan satu hentakan tarik, sedangkan lebar mata dodos (8–14 cm) disesuaikan dengan umur pohon agar tidak melukai batang.',
+                'Rekayasa ergonomi dan pemeliharaan alat: penggunaan ban hidup bertekanan angin atau ban mati karet padat pada angkong untuk melewati jalan kebun bergelombang, serta teknik pengasahan pisau sadap dan egrek menggunakan batu asah silikon karbida berair untuk menjaga sudut ketajaman mikro.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai aspek Engineering (rekayasa bentuk sudut pisau sadap/egrek, desain ergonomi angkong, dan teknik pemeliharaan alat kebun)... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Kajian Ergonomi dan Rekayasa Desain Alat Panen Kelapa Sawit, Jurnal Teknik Industri.\n2. Standar Operasional Penyadapan Karet dan Perawatan Pisau Sadap.',
+              defaultExp: 'Dari sudut pandang Engineering (Rekayasa), geometri alat perkebunan dirancang sangat fungsional. Pisau sadap memiliki paruh penuntun (guide) di ujungnya untuk membatasi kedalaman sayatan kulit agar konstan 1,5 mm dan sudut miring 30°–45°. Sabit egrek dirancang dengan sudut lengkung spesifik terhadap poros galah sehingga gaya tarik vertikal pemanen langsung berubah menjadi gaya iris melintang pada tangkai tandan sawit, dipadukan desain angkong beroda tunggal yang lincah bermanuver di jalan setapak kebun.',
+              defaultSources: '1. Jurnal Keteknikan Pertanian dan Ergonomi Alat Panen Sawit.\n2. Panduan Teknis Sadap Karet Berkelanjutan, Ditjenbun.'
+            },
+            {
+              key: 'E',
+              title: 'Analisis MATHEMATICS: Kalkulasi Kapasitas Panen, Norma Kerja & Efisiensi Biaya Alat',
+              subtitle: 'Perhitungan Jumlah Pohon per Jam, Konsumsi Kulit Karet, Kapasitas Angkut Angkong & Umur Ekonomis Alat',
+              guidedPoints: [
+                'Perhitungan kapasitas kerja penyadapan karet: rata-rata waktu sadap 1 pohon karet menggunakan pisau sadap tajam (30–45 detik/pohon), sehingga dalam 4 jam kerja pagi seorang penyadap mampu menyelesaikan 300–400 pohon, serta perhitungan konsumsi kulit karet per tahun (irisan 1,5 mm x 150 hari sadap = 22,5 cm/tahun) agar kulit pulihan bertahan >15 tahun.',
+                'Perhitungan produktivitas panen sawit dengan Egrek Teleskopik & Angkong: perbandingan output pemanen menggunakan galah aluminium ringan (mampu memanen 1,5–2,5 ton TBS/hari atau 80–120 tandan) dibandingkan galah bambu berat, serta kapasitas sekali angkut angkong (3–4 tandan setara 80–100 kg) yang menghemat tenaga pikul.',
+                'Kalkulasi biaya investasi dan penyusutan alat: menghitung total modal pembelian perlengkapan kebun (harga egrek + galah Rp 650.000, angkong Rp 550.000, pisau sadap + mangkok Rp 350.000), umur pakai alat (2–5 tahun), dan biaya penyusutan alat per bulan terhadap pendapatan bersih pekebun.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai perhitungan Matematika (kapasitas pohon/jam, ketebalan konsumsi kulit sadap, tonase angkut angkong, dan efisiensi biaya investasi alat kebun)... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Analisis Norma Kerja dan Produktivitas Pemanen Kelapa Sawit & Karet, PPKS / Balit Sembawa.\n2. Wawancara Kalkulasi Biaya Peralatan Pekebun Rakyat Kabupaten OKU Timur.',
+              defaultExp: 'Melalui analisis Mathematics, efisiensi peralatan perkebunan dapat dihitung secara presisi. Pada kebun karet, ketebalan irisan pisau sadap 1,5 mm dengan frekuensi sadap d/2 (150 hari/tahun) menghabiskan 22,5 cm kulit per tahun, menjamin siklus sadap berkelanjutan. Pada kebun sawit, penggunaan galah egrek aluminium dan gerobak angkong berkapasitas 100 kg meningkatkan produktivitas pemanen dari 1 ton menjadi 2 ton TBS per hari, sehingga investasi pembelian alat senilai Rp 1.200.000 dapat kembali modal (BEP) hanya dalam waktu kurang dari satu bulan panen.',
+              defaultSources: '1. Standar Norma Kerja dan Kapasitas Panen Perkebunan, Ditjen Perkebunan.\n2. Analisis Finansial Usaha Perkebunan Rakyat Kabupaten OKU Timur.'
+            }
+          ]
+        },
+        perikanan: {
+          key: 'perikanan',
+          name: 'Budidaya Perikanan Air Tawar (Patin & Lele)',
+          icon: 'phishing',
+          badge: 'Alat Kualitas Air, Aerator & Kolam Ikan',
+          cards: [
+            {
+              key: 'A',
+              title: 'Eksplorasi Peralatan, Perlengkapan & Mesin Budidaya Perikanan Air Tawar',
+              subtitle: 'Inventarisasi Pompa Air, Kincir/Blower Aerasi, pH/TDS Meter, Mesin Pelet, Bak Grading & Jaring Panen',
+              guidedPoints: [
+                'Peralatan konstruksi dan tata air kolam di OKU Timur: pompa air sentrifugal/submersible (celup), jaringan pipa PVC inlet dan pipa monik/sifon outlet pembuangan lumpur dasar, serta terpal HDPE/geomembran pada kolam bundar maupun kolam tanah.',
+                'Peralatan pemantauan kualitas air dan pemberian pakan: pH Meter digital, TDS/Thermometer digital, DO (Dissolved Oxygen) kit, timbangan pakan, mesin pencetak pelet mandiri (pelletizer) & penepung bahan baku, atau alat pelontar pakan otomatis (auto-feeder).',
+                'Peralatan aerasi, penyortiran, dan panen: kincir air (paddle wheel aerator), blower aerasi (root blower/hi-blow) dengan selang batu aerasi/uniring, bak sortir ukuran ikan (grading basket berlubang milimeter), jaring tarik (seine net), serok halus (scoop net), tabung oksigen, dan sepatu boot/waders kolam.'
+              ],
+              placeholder: 'Tuliskan inventarisasi lengkap peralatan tata air, alat ukur kualitas air, mesin aerasi/pakan, serta perlengkapan sortir dan panen pada budidaya ikan Patin/Lele... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Petunjuk Teknis Peralatan Budidaya Ikan Air Tawar (Patin & Lele), Kementerian Kelautan dan Perikanan (KKP).\n2. Observasi Lapangan Sentra Perikanan Air Tawar Kabupaten OKU Timur.',
+              defaultExp: 'Budidaya perikanan air tawar patin dan lele di OKU Timur ditopang oleh peralatan teknis mulai dari persiapan air hingga panen. Peralatan utama meliputi pompa air sentrifugal dan pipa sifon PVC untuk sirkulasi air, pH meter dan termometer digital untuk pemantauan kualitas air, mesin kincir air (paddle wheel) atau hi-blow aerator untuk suplai oksigen, mesin pencetak pelet mandiri, keranjang grading berlubang untuk sortir ukuran benih, serta jaring tarik (waring) dan tabung oksigen untuk pengemasan panen.',
+              defaultSources: '1. Pedoman Teknis Sarana dan Prasarana Budidaya Ikan Air Tawar, KKP RI.\n2. Dinas Perikanan dan Peternakan Kabupaten OKU Timur.'
+            },
+            {
+              key: 'B',
+              title: 'Analisis SCIENCE: Prinsip Fisika, Kimia & Biologi pada Peralatan Perikanan',
+              subtitle: 'Difusi Oksigen Terlarut (DO), Prinsip Elektrokimia pH, Tekanan Hidrostatis Sifon & Biologi Metabolisme Ikan',
+              guidedPoints: [
+                'Prinsip Fisika & Kimia Difusi Gas pada Aerator/Kincir Air: percikan air dari daun kincir atau gelembung mikro dari selang uniring memperluas luas permukaan kontak antara air dan udara atmosfer, mempercepat laju difusi gas Oksigen (O2) ke dalam air (menjaga DO > 4 mg/L) sekaligus melepaskan gas beracun Amonia (NH3) dan H2S ke udara.',
+                'Prinsip Fisika Tekanan Hidrostatis (P = rho * g * h) dan Bejana Berhubungan pada Pipa Sifon/Outlet Dasar: mengapa pipa pembuangan sistem monik/central drain memanfaatkan tekanan kolom air untuk menyedot endapan kotoran feses ikan dan sisa pakan di dasar kolam secara otomatis tanpa menguras seluruh air.',
+                'Prinsip Kimia Elektroda pada pH Meter & Biologi Ikan pada Alat Grading: bagaimana sensor elektroda kaca pH meter mendeteksi konsentrasi ion Hidrogen (H+) di air kolam (ideal pH 6,5–8,0), serta fungsi biologis keranjang grading dalam memisahkan ukuran lele/patin agar tidak terjadi sifat kanibalisme dan kompetisi pakan.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai prinsip Sains (Fisika difusi oksigen & tekanan hidrostatis sifon, Kimia pH air, dan Biologi metabolisme/kanibalisme ikan) pada alat perikanan... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Kualitas Air dan Fisika-Kimia Akuakultur, IPB Press.\n2. Jurnal Akuakultur Indonesia: Dinamika Oksigen Terlarut dan Sistem Aerasi Kolam.',
+              defaultExp: 'Secara ilmiah (Science), peralatan perikanan bekerja mengendalikan parameter fisika, kimia, dan biologi ekosistem kolam. Kincir air dan diffuser aerator menerapkan hukum difusi gas Fick dengan memecah air menjadi butiran halus agar oksigen atmosfer larut cepat ke dalam air (DO > 5 ppm) dan menguapkan gas amonia beracun. Pipa central drain menerapkan hukum tekanan hidrostatis P = rho.g.h untuk mendorong endapan lumpur dasar keluar secara gravitasi, sedangkan bak sortir (grading) mencegah stres biologis dan sifat kanibalisme pada benih lele.',
+              defaultSources: '1. Buku Pengelolaan Kualitas Air dalam Budidaya Perairan, IPB Press.\n2. Jurnal Riset Akuakultur: Efektivitas Aerasi dan Sistem Central Drain.'
+            },
+            {
+              key: 'C',
+              title: 'Analisis TECHNOLOGY: Motor Pompa, Sensor Kualitas Air Digital, Pelet Terapung & Auto-Feeder',
+              subtitle: 'Pompa Submersible Magnetik, Sensor Elektroda Digital, Ekstruder Pelet & Timer Otomatis',
+              guidedPoints: [
+                'Teknologi pompa air dan aerasi elektrik: penggunaan motor listrik induksi kedap air pada pompa celup (submersible pump) dan pompa sentrifugal berimpeler tertutup, serta teknologi kompresor membran elektromagnetik (hi-blow) dan selang mikropori (aerotube/uniring) yang menghasilkan gelembung udara ukuran mikron.',
+                'Teknologi instrumentasi digital akuakultur: penggunaan pH meter digital dan TDS/EC meter berbasis mikrokontroler yang mengubah sinyal potensial listrik dan konduktivitas ion terlarut menjadi angka digital akurat dalam hitungan detik dibandingkan kertas lakmus manual.',
+                'Teknologi mesin pakan (Pelletizer/Extruder) dan Auto-Feeder: teknologi ulir penekan bertekanan dan suhu tinggi pada mesin pencetak pelet yang membuat pati mengalami gelatinisasi sehingga pelet dapat mengapung di air, serta penggunaan timer digital dan motor pelontar sentrifugal pada alat pemberi pakan otomatis.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai aspek Teknologi (motor pompa/blower, selang mikropori, sensor pH/TDS digital, mesin ekstruder pelet, dan auto-feeder) pada perikanan... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Teknologi dan Instrumentasi Akuakultur Modern, Balai Riset Perikanan Budidaya Air Tawar.\n2. Jurnal Rekayasa dan Teknologi Mesin Pakan Ikan.',
+              defaultExp: 'Dari sisi Teknologi, pembudidaya ikan di OKU Timur memanfaatkan inovasi pompa air berefisiensi tinggi, aerator hi-blow dengan selang nanopori (uniring), serta alat ukur digital pH dan TDS meter berbasis sensor mikroelektronik. Dalam penyediaan pakan, teknologi mesin pencetak pelet (extruder/pelletizer) memanfaatkan panas gesekan ulir (screw) untuk mencetak pelet apung bernutrisi seimbang, yang dapat dikombinasikan dengan teknologi auto-feeder berpengatur waktu (timer) digital.',
+              defaultSources: '1. Balai Riset Perikanan Budidaya Air Tawar dan Penyuluhan Perikanan (BRPBATPP).\n2. Buku Teknologi Rekayasa Akuakultur dan Mesin Pakan.'
+            },
+            {
+              key: 'D',
+              title: 'Analisis ENGINEERING: Rancang Bangun Kolam, Hidrodinamika Kincir, Pipa Sifon & Alat Grading',
+              subtitle: 'Desain Kemiringan Dasar Kolam (Central Drain), Sudut Daun Kincir, Konstruksi Bak Sortir & Jaring Halus',
+              guidedPoints: [
+                'Rekayasa konstruksi kolam dan pemipaan (plumbing engineering): desain dasar kolam berbentuk kerucut miring (kemiringan 2–5%) menuju titik tengah (central drain) yang terhubung dengan pipa tegak luar (standpipe) sehingga ketinggian muka air kolam dapat diatur hanya dengan memiringkan pipa luar.',
+                'Rekayasa mekanis daun kincir (paddle wheel) dan mesin pelet: desain sudut kemiringan dan lubang-lubang pada kipas kincir air beserta pelampung HDPE agar menghasilkan arus memutar di kolam yang mengumpulkan kotoran ke titik tengah, serta desain saringan cetakan (die plate) baja berlubang 2 mm, 3 mm, dan 4 mm pada mesin pelet sesuai bukaan mulut ikan.',
+                'Rekayasa alat sortir (grading) dan panen ramah ikan: desain keranjang/meja sortir dengan kisi-kisi pipa aluminium/plastik halus berjarak presisi (ukuran 3-5 cm, 5-7 cm, 7-9 cm) serta jaring panen tanpa simpul (knotless net) agar kulit dan lendir ikan patin/lele tidak lecet dan bebas infeksi jamur.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai aspek Engineering (rancang bangun central drain, hidrodinamika kincir air, cetakan mesin pelet, dan desain alat sortir/jaring ramah ikan)... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Rekayasa Konstruksi Kolam dan Wadah Budidaya Perikanan, KKP.\n2. Jurnal Keteknikan Perikanan: Desain Hidrodinamika Aerator dan Grading Ikan.',
+              defaultExp: 'Dimensi Engineering (Rekayasa) pada peralatan perikanan terlihat pada rancang bangun sistem central drain dan pipa standpipe luar yang menerapkan mekanika fluida untuk membuang limbah dasar kolam secara praktis. Kipas kincir air dirancang secara hidrodinamis untuk menciptakan arus melingkar yang menyapu endapan ke pusat pembuangan. Selain itu, alat grading dan jaring panen tanpa simpul (knotless) direkayasa dengan permukaan licin tanpa sudut tajam agar tidak menggores lapisan mukus (lendir pelindung) tubuh ikan.',
+              defaultSources: '1. Petunjuk Teknis Konstruksi Kolam Terpal dan Tanah Sistem Central Drain, KKP.\n2. Jurnal Teknik Perikanan dan Kelautan: Rekayasa Wadah Akuakultur.'
+            },
+            {
+              key: 'E',
+              title: 'Analisis MATHEMATICS: Kalkulasi Debit Pompa, Konsumsi Listrik, FCR Pakan & Efisiensi Biaya',
+              subtitle: 'Perhitungan Volume Air Kolam, Lama Pengisian Pompa, Biaya kWh Aerator & Penghematan Mesin Pelet Mandiri',
+              guidedPoints: [
+                'Perhitungan geometri volume kolam dan waktu kerja pompa air: menghitung volume air kolam persegi panjang ($V = p \\times l \\times t$) atau kolam bundar ($V = \\pi \\times r^2 \\times t$), lalu membaginya dengan kapasitas debit pompa (liter/menit atau $m^3$/jam) untuk menentukan berapa jam pompa harus dinyalakan saat pergantian air.',
+                'Kalkulasi konsumsi energi listrik (kWh) peralatan perikanan: menghitung biaya listrik bulanan pompa dan aerator/blower (Daya Watt $\\times$ Jam nyala per hari $\\times$ 30 hari $\\div$ 1.000 $\\times$ Tarif Rp/kWh) terhadap peningkatan padat tebar dan tingkat kelulushidupan ikan (Survival Rate / SR > 90%).',
+                'Analisis matematis efisiensi mesin pakan dan FCR (Feed Conversion Ratio): membandingkan biaya produksi pakan mandiri menggunakan mesin pencetak pelet (Rp 7.500–8.500/kg) vs harga pakan pabrik (Rp 12.000–13.500/kg), serta bagaimana takaran timbangan pakan akurat menjaga rasio FCR di angka 1,0–1,2 sehingga menghemat jutaan rupiah per siklus panen.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai perhitungan Matematika (volume kolam vs debit pompa, kalkulasi kWh listrik aerator, rasio FCR timbangan pakan, dan penghematan mesin pelet)... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Analisis Usaha dan Kalkulasi Teknis Budidaya Ikan Patin & Lele, KKP.\n2. Wawancara Perhitungan Biaya Operasional Pembudidaya Ikan Kabupaten OKU Timur.',
+              defaultExp: 'Pendekatan Mathematics memungkinkan pembudidaya ikan menghitung efisiensi setiap peralatan secara eksak. Misalnya, untuk mengisi kolam berukuran 10 m x 5 m dengan kedalaman air 1,2 m (volume 60 m3 = 60.000 liter) menggunakan pompa berdebit 500 liter/menit dibutuhkan waktu tepat 120 menit (2 jam). Penggunaan blower aerasi berdaya 100 Watt selama 24 jam hanya menghabiskan 2,4 kWh/hari (sekitar Rp 3.500/hari), namun mampu melipatgandakan padat tebar ikan hingga 2 kali lipat dan menjaga nilai FCR pakan tetap efisien di angka 1,1.',
+              defaultSources: '1. Pedoman Analisis Finansial dan Teknis Budidaya Ikan Air Tawar, KKP.\n2. Data Statistik Perikanan Budidaya Kabupaten OKU Timur.'
+            }
+          ]
+        },
+        peternakan: {
+          key: 'peternakan',
+          name: 'Peternakan Sapi Potong & Unggas',
+          icon: 'pets',
+          badge: 'Mesin Chopper, Kandang & Biogas',
+          cards: [
+            {
+              key: 'A',
+              title: 'Eksplorasi Peralatan, Perlengkapan & Mesin Peternakan Sapi dan Unggas',
+              subtitle: 'Inventarisasi Mesin Chopper Rumput, Drum Silase, Nipple Drinker, Pemanas Brooder, Biogas & APD Kandang',
+              guidedPoints: [
+                'Peralatan pengolahan pakan dan pemeliharaan sapi potong di OKU Timur: sabit rumput, Mesin Pencacah Hijauan Pakan Ternak (Chopper Machine), tong/drum plastik kedap udara (silo) untuk fermentasi silase, gerobak dorong pakan, sekop pembersih kotoran, pompa semprot desinfektan (power sprayer), dan timbangan ternak / pita ukur lingkar dada (Rondo).',
+                'Peralatan dan perlengkapan kandang unggas (ayam petelur/pedaging & itik): tempat pakan gantung/talang (feeder), instalasi air minum otomatis (Nipple Drinker & regulator tekanan air), pemanas anak ayam (Gasolec/Brooder pemanas infra merah), kipas sirkulasi udara (exhaust fan/blower), termohigrometer kandang, serta egg tray (rak telur).',
+                'Peralatan pengolahan limbah dan kesehatan ternak: instalasi reaktor Biogas (kubah biodigester, pipa penyalur gas metana, manometer tekanan, kompor biogas), alat suntik vaksinasi otomatis (socorex syringe), gun Inseminasi Buatan (IB) beserta termos nitrogen cair, serta APD peternak (sepatu boot kandang, masker amonia, wearpack, dan sarung tangan lateks).'
+              ],
+              placeholder: 'Tuliskan inventarisasi lengkap peralatan pengolahan pakan (mesin chopper, drum silase), peralatan kandang unggas/sapi, instalasi biogas, serta perlengkapan APD peternakan... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Teknis Sarana dan Peralatan Peternakan Sapi Potong & Unggas, Ditjen PKH Kementan RI.\n2. Observasi Lapangan Peternakan Rakyat Kabupaten OKU Timur.',
+              defaultExp: 'Sektor peternakan sapi potong dan unggas di Kabupaten OKU Timur menggunakan rangkaian peralatan produktif mulai dari penyediaan pakan hingga sanitasi kandang. Pada peternakan sapi digunakan mesin pencacah rumput (chopper), tong plastik kedap udara untuk fermentasi silase, pita ukur bobot badan, serta instalasi reaktor biogas pengolah limbah kotoran. Pada peternakan unggas digunakan sistem minum otomatis nipple drinker, pemanas brooder DOC, termohigrometer, alat suntik vaksin socorex, serta perlengkapan APD biosekuriti kandang.',
+              defaultSources: '1. Direktorat Jenderal Peternakan dan Kesehatan Hewan (Ditjen PKH) Kementan RI.\n2. Dinas Perikanan dan Peternakan Kabupaten OKU Timur.'
+            },
+            {
+              key: 'B',
+              title: 'Analisis SCIENCE: Prinsip Fisika, Kimia & Biologi pada Peralatan Peternakan',
+              subtitle: 'Biologi Fermentasi Anaerob Silase & Biogas, Fisika Katup Nipple Drinker, Termodinamika Brooder & Biosekuriti',
+              guidedPoints: [
+                'Prinsip Biologi & Kimia pada Mesin Chopper dan Drum Silase: pencacahan rumput gajah/jerami oleh mesin chopper menjadi ukuran 2–3 cm memperluas permukaan serat selulosa sehingga mudah dicerna mikroba rumen sapi; penyimpanan dalam drum silase kedap udara memicu bakteri asam laktat (Lactobacillus) melakukan fermentasi anaerob yang menurunkan pH ke 3,8–4,2 sehingga pakan awet berbulan-bulan.',
+                'Prinsip Fisika Mekanika Fluida & Termodinamika di Kandang: katup Nipple Drinker bekerja berdasarkan hukum tekanan hidrostatis dan tegangan permukaan air (air hanya menetes saat pin baja dipatok paruh ayam sehingga litter sekam tetap kering bebas gas amonia NH3); sedangkan pemanas Brooder menerapkan perpindahan kalor radiasi dan konveksi untuk menjaga suhu tubuh DOC (32°–34°C).',
+                'Prinsip Biokimia Metanogenesis pada Reaktor Biogas & Kriogenik Termos IB: bakteri metanogenik menguraikan bahan organik kotoran sapi di dalam tabung biodigester anaerob menghasilkan gas Metana ($CH_4$) sebagai bahan bakar bersih; sedangkan termos Inseminasi Buatan menggunakan Nitrogen cair bersuhu ekstrem (-196°C) untuk membekukan dan menjaga daya hidup sel sperma sapi unggul.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai prinsip Sains (Biologi pencernaan rumen & fermentasi anaerob, Kimia biogas/amonia, dan Fisika katup nipple/termodinamika brooder) pada alat peternakan... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Ilmu Nutrisi Ruminansia dan Bioteknologi Fermentasi Pakan, IPB Press.\n2. Fisika Lingkungan Kandang dan Teknologi Biogas Peternakan.',
+              defaultExp: 'Setiap peralatan peternakan bekerja di atas prinsip Science yang kuat. Mesin chopper memperkecil ukuran partikel hijauan agar enzim mikroba rumen sapi bekerja optimal, sementara tong silase menciptakan kondisi anaerob bagi bakteri asam laktat untuk mengawetkan pakan secara biologis. Pada kandang unggas, katup nipple drinker menerapkan fisika tekanan fluida satu arah untuk mencegah tumpahan air pemicu gas amonia (NH3), sedangkan biodigester memanfaatkan reaksi biokimia metanogenesis untuk mengubah limbah kotoran menjadi energi gas metana (CH4).',
+              defaultSources: '1. Buku Teknologi Pengolahan Pakan dan Limbah Peternakan, Fakultas Peternakan UGM.\n2. Jurnal Ilmu Ternak dan Veteriner: Biosekuriti dan Mikroklimat Kandang.'
+            },
+            {
+              key: 'C',
+              title: 'Analisis TECHNOLOGY: Mesin Penggerak Chopper, Otomasi Kandang & Bioteknologi IB',
+              subtitle: 'Motor Bensin/Diesel Chopper, Sistem Regulator Nipple, Kipas Exhaust Otomatis & Inseminasi Buatan',
+              guidedPoints: [
+                'Teknologi mesin pencacah pakan (Chopper) dan pengaduk konsentrat (Mixer): penggunaan mesin penggerak bensin 5,5–7 HP atau motor diesel yang memutar poros utama berkecepatan 1.500–2.800 RPM melalui transmisi puli dan sabuk V-belt untuk mencacah batang rumput gajah, tebon jagung, dan pelepah sawit secara cepat.',
+                'Teknologi otomasi mikroklimat kandang unggas: integrasi sensor suhu digital (thermostat), kipas hisap (exhaust fan), dan tirai kandang untuk mengatur sirkulasi udara otomatis, serta sistem perpipaan Nipple Drinker bertekanan rendah yang dilengkapi regulator air dan tabung medikator pencampur vitamin otomatis (Dosatron).',
+                'Teknologi reproduksi dan kesehatan veteriner: penggunaan peralatan Inseminasi Buatan (IB) modern (kontainer kriogenik vakum berlapis ganda, straw semen beku, dan insemination gun stainless steel) serta alat suntik vaksinasi berulang otomatis (automatic repeater syringe) yang mengatur dosis mililiter secara presisi.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai aspek Teknologi (mesin penggerak chopper, sistem perpipaan nipple otomatis, pengatur suhu kandang, dan teknologi peralatan IB/vaksinasi)... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Modul Mekanisasi dan Otomasi Peralatan Peternakan Modern, Kementan RI.\n2. Buku Teknologi Reproduksi Inseminasi Buatan dan Manajemen Kandang.',
+              defaultExp: 'Dari dimensi Teknologi, modernisasi peternakan di OKU Timur ditandai oleh penggunaan mesin chopper berpenggerak motor bensin/diesel 6,5 HP yang mampu mencacah ratusan kilogram rumput dalam waktu singkat. Di sektor perunggasan, teknologi instalasi nipple drinker ber-regulator tekanan dan medikator otomatis menjamin suplai air minum higienis ke ribuan ekor ayam sekaligus, sedangkan teknologi kontainer nitrogen cair vakum dan gun Inseminasi Buatan memungkinkan peningkatan mutu genetik sapi potong lokal menjadi sapi unggul Simental dan Limousin.',
+              defaultSources: '1. Balai Besar Inseminasi Buatan (BBIB) & Ditjen PKH Kementan RI.\n2. Jurnal Teknologi Peternakan dan Mekanisasi Pakan.'
+            },
+            {
+              key: 'D',
+              title: 'Analisis ENGINEERING: Rancang Bangun Pisau Chopper, Konstruksi Kandang & Biodigester',
+              subtitle: 'Desain Rotor Pisau Baja, Kemiringan Lantai Kandang Sapi, Konstruksi Kubah Biogas & Ergonomi Alat',
+              guidedPoints: [
+                'Rekayasa mekanis Mesin Chopper: susunan pisau putar (moving blades) dari baja karbon tinggi yang dipasang miring terhadap pisau tetap (counter blade) pada piringan flywheel berat (roda gila) untuk menciptakan efek gunting berkecepatan tinggi sekaligus gaya lontar sentrifugal menuju corong keluar.',
+                'Rekayasa konstruksi kandang sehat dan instalasi air/pakan: desain kemiringan lantai kandang sapi (kemiringan 2°–5° ke arah selokan belakang) agar urine dan air cucian langsung mengalir ke bak penampungan tanpa menggenangi kuku sapi, serta rekayasa ketinggian gantung pipa nipple drinker yang dapat dinaikkan bertahap sesuai pertambahan tinggi punggung ayam.',
+                'Rekayasa konstruksi reaktor Biogas (Fixed Dome / Floating Drum): rancang bangun kubah beton kedap gas di bawah tanah dengan pipa inlet pengaduk (slurry mixer), ruang fermentasi anaerob, pipa penyalur gas ber-water trap (penjebak uap air), dan lubang pengeluaran ampas organik (bio-slurry) yang siap dijadikan pupuk.'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai aspek Engineering (rekayasa susunan pisau/flywheel mesin chopper, desain kemiringan lantai kandang, ketinggian nipple, dan konstruksi kubah biogas)... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Rancang Bangun Mesin Pencacah Pakan dan Konstruksi Kandang Ternak.\n2. Pedoman Teknis Rekayasa Instalasi Biogas Skala Rumah Tangga, Kementerian ESDM.',
+              defaultExp: 'Dalam tinjauan Engineering (Rekayasa), mesin chopper mengandalkan desain piringan roda gila (flywheel) yang menyimpan momen inersia putaran dan susunan pisau baja bersudut miring (heliks) agar pemotongan batang rumput keras berlangsung mulus tanpa menghentikan mesin. Konstruksi lantai kandang sapi direkayasa dengan kemiringan terukur menuju parit saluran bio-slurry yang terhubung langsung ke kubah reaktor biogas kedap udara, menciptakan sistem rekayasa terpadu tanpa limbah (zero-waste engineering).',
+              defaultSources: '1. Jurnal Keteknikan Pertanian: Analisis Rancang Bangun Mesin Chopper Pakan Ternak.\n2. Pedoman Teknis Konstruksi Kandang dan Biogas, Kementan RI.'
+            },
+            {
+              key: 'E',
+              title: 'Analisis MATHEMATICS: Kalkulasi Kapasitas Chopper, Ransum Pakan, ADG & Efisiensi Biaya',
+              subtitle: 'Perhitungan Kg/Jam Mesin Chopper, Kebutuhan Pakan 10% Bobot Sapi, Konversi Pakan Unggas & Penghematan Biogas',
+              guidedPoints: [
+                'Perhitungan kapasitas kerja Mesin Chopper vs Sabit Manual: mesin chopper mampu mencacah 500–1.000 kg rumput per jam dengan konsumsi bensin hanya ±1 liter (Rp 10.000), dibandingkan mencacah manual dengan golok/sabit yang membutuhkan waktu 3–4 jam kerja melelahkan untuk 200 kg rumput.',
+                'Kalkulasi matematis kebutuhan pakan harian dan pertambahan bobot sapi (ADG - Average Daily Gain): menghitung ransum hijauan segar sebesar 10% dari bobot badan sapi (misal sapi 300 kg butuh 30 kg hijauan/hari; untuk 10 ekor sapi dibutuhkan 300 kg/hari atau 9 ton/bulan), serta estimasi bobot sapi dari rumus Schrool menggunakan pita ukur lingkar dada ($\\text{Bobot} = (\\text{LD} + 22)^2 / 100$) dan perhitungan ADG $(W_t - W_0) / t$.',
+                'Analisis efisiensi biaya peralatan kandang dan energi biogas: perbandingan pemakaian Nipple Drinker yang menghemat tenaga kerja angkat air hingga 80% dan menekan angka kematian unggas, serta penghematan ekonomi reaktor biogas dari 3–4 ekor sapi yang menghasilkan $\\pm 2\\text{ m}^3$ gas/hari (setara penghematan 3–4 tabung gas LPG 3 kg per bulan bagi keluarga peternak).'
+              ],
+              placeholder: 'Tuliskan analisis mendalam mengenai perhitungan Matematika (kapasitas kg/jam mesin chopper, rumus ransum 10% bobot badan, rumus bobot pita ukur/ADG, dan penghematan biaya LPG/tenaga kerja)... (Minimal 300 karakter)',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Analisis Matematis Ransum Pakan, Bobot Badan (Rumus Schrool) dan Usaha Peternakan, Ditjen PKH.\n2. Wawancara Kalkulasi Operasional Peternak Sapi/Unggas Kabupaten OKU Timur.',
+              defaultExp: 'Melalui perhitungan Mathematics, manfaat mekanisasi peralatan peternakan dapat dikuantifikasi secara akurat. Seekor sapi berbobot 350 kg membutuhkan pakan hijauan 10% bobot badan (35 kg/hari); untuk kandang berisi 10 ekor sapi diperlukan 350 kg/hari yang dapat dicacah menggunakan mesin chopper hanya dalam waktu 25–30 menit dengan biaya BBM kurang dari Rp 7.000. Selain itu, penggunaan pakan silase terukur meningkatkan pertambahan bobot harian (ADG) sapi mencapai 0,9–1,2 kg/hari, sedangkan instalasi biogas menghemat pengeluaran bahan bakar dapur peternak hingga Rp 100.000 per bulan.',
+              defaultSources: '1. Pedoman Perhitungan Ransum dan Evaluasi Produktivitas Sapi Potong, Ditjen PKH.\n2. Jurnal Sosial Ekonomi Peternakan: Efisiensi Mesin Chopper dan Biogas.'
+            }
+          ]
+        }
+      },
       cards: [
         {
           key: 'A',
-          title: 'Arsitektur Hidrolika Bendungan Perjaya & Jaringan Irigasi Komering',
-          subtitle: 'Sejarah, Konstruksi Bendung Gerak, Kapasitas Debit & Hierarki Saluran Primer Menuju Belitang',
+          title: 'Eksplorasi Peralatan, Perlengkapan Kerja & Mesin Mekanisasi Sektor Pilihan',
+          subtitle: 'Inventarisasi Alat Tradisional vs Mesin Modern, Fungsi Operasional & Alat Pelindung Diri (APD)',
           guidedPoints: [
-            'Fungsi strategis Bendungan Perjaya di Sungai Komering dalam membagi air baku untuk ribuan hektar sawah beririgasi teknis di Kabupaten OKU Timur.',
-            'Struktur bendung gerak dengan pintu radial hidrolis untuk mengendalikan elevasi muka air dan debit banjir.',
-            'Hierarki pembagian saluran air: Saluran Primer Komering (Saluran Induk Belitang), Saluran Sekunder pembagi antar-blok, dan Saluran Tersier pembawa langsung ke petak sawah petani.'
+            'Identifikasi seluruh peralatan utama, perkakas tangan, dan mesin mekanisasi yang digunakan pelaku usaha pada sektor pilihan Anda (Pertanian / Perkebunan / Perikanan / Peternakan) dari tahap awal hingga panen/pascapanen.',
+            'Perbandingan peralatan tradisional dengan peralatan/mesin modern yang kini digunakan masyarakat di Kabupaten OKU Timur.',
+            'Inventarisasi perlengkapan keselamatan dan Alat Pelindung Diri (APD) seperti sepatu boot, helm/topi pelindung, masker respirator, sarung tangan, dan kacamata kerja.'
           ],
-          placeholder: 'Tuliskan hasil kajian mandiri Anda mengenai peranan Bendungan Perjaya, cara kerja pembagian debit air di Sungai Komering, serta struktur hierarki saluran irigasi primer hingga tersier... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Dokumen Profil Balai Besar Wilayah Sungai (BBWS) Sumatera VIII.\n2. Laporan Teknis Dinas PU Pengairan dan Pemukiman Kabupaten OKU Timur.',
-          defaultExp: 'Bendungan Perjaya yang dibangun melintasi Sungai Komering merupakan kunci keberhasilan predikat lumbung pangan Sumatera Selatan bagi OKU Timur. Melalui pintu bendung gerak hidrolis, debit Sungai Komering dialirkan menuju Saluran Induk Belitang (primer) berkapasitas puluhan meter kubik per detik, yang kemudian didistribusikan secara teratur melalui saluran sekunder dan tersier ke petak sawah petani.',
-          defaultSources: '1. Profil Infrastruktur Sumber Daya Air, BBWS Sumatera VIII.\n2. Statistik Pengairan dan Pertanian Daerah, BPS Kabupaten OKU Timur.'
+          placeholder: 'Tuliskan inventarisasi lengkap peralatan, perlengkapan kerja (APD), dan mesin mekanisasi yang digunakan pada sektor pilihan Anda... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Teknis Alat dan Mesin Sektor Agrikultur, Kementerian Pertanian / KKP RI.\n2. Observasi Lapangan Pelaku Usaha di Kabupaten OKU Timur.',
+          defaultExp: 'Eksplorasi peralatan dan perlengkapan kerja pada sektor unggulan di Kabupaten OKU Timur mencakup perpaduan perkakas manual, mesin mekanisasi modern, serta perlengkapan Alat Pelindung Diri (APD) yang menunjang produktivitas dan keselamatan kerja dari hulu hingga hilir.',
+          defaultSources: '1. Pedoman Teknis Mekanisasi dan Peralatan Agrikultur, Kementerian Pertanian RI.\n2. Data Observasi Lapangan Kabupaten OKU Timur.'
         },
         {
           key: 'B',
-          title: 'Analisis Geospasial, Kontur Elevasi & Perekaman Koordinat GPS',
-          subtitle: 'Pemanfaatan Gaya Gravitasi Air, Penentuan Ketinggian (Mdpl) & Pembacaan Koordinat Kamera HP',
+          title: 'Analisis SCIENCE: Prinsip Fisika, Kimia & Biologi pada Peralatan Kerja',
+          subtitle: 'Hukum Tekanan, Mekanika Fluida, Gaya Sentrifugal, Reaksi Kimia & Proses Biologis Komoditas',
           guidedPoints: [
-            'Prinsip aliran irigasi berbasis gaya gravitasi bumi dengan kemiringan kontur tanah dari daerah hulu Perjaya (elevasi lebih tinggi) menuju dataran rendah Belitang.',
-            'Penggunaan fitur GPS pada smartphone untuk mencatat koordinat lintang (latitude), bujur (longitude), dan ketinggian lokasi pengamatan dari permukaan laut (mdpl).',
-            'Analisis spasial mengenai bagaimana jarak dari saluran primer memengaruhi ketersediaan debit air bagi sawah di ujung hilir.'
+            'Prinsip Fisika yang bekerja pada alat (seperti rumus tekanan permukaan P = F/A pada roda traktor/combine, pesawat sederhana tuas pada angkong/tojok, tekanan hidrostatis pipa kolam, atau gaya sentrifugal perontok/pencacah).',
+            'Prinsip Kimia yang terkait dengan pengoperasian alat (pembakaran BBM pada motor, kimia koagulasi asam pada bak lateks, pengukuran pH air, atau pembentukan gas metana pada biogas).',
+            'Prinsip Biologi yang dijaga oleh alat (menjaga kambium pohon karet saat disadap, mencegah kanibalisme ikan dengan bak grading, fermentasi bakteri asam laktat pada drum silase, atau menjaga viabilitas benih/gabah).'
           ],
-          placeholder: 'Tuliskan analisis geospasial Anda mengenai kemiringan kontur tanah OKU Timur, peranan gravitasi dalam aliran irigasi, serta pentingnya titik koordinat lokasi riset... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Peta Rupa Bumi Indonesia (RBI) Lembar Belitang, Badan Informasi Geospasial (BIG).\n2. Atlas Geografis dan Topografi Kabupaten OKU Timur.',
-          defaultExp: 'Topografi Kabupaten OKU Timur yang memiliki kelandaian bertahap dari arah barat daya menuju timur laut memungkinkan sistem irigasi Komering beroperasi sepenuhnya mengandalkan gaya gravitasi tanpa pompa berkekuatan tinggi. Melalui stempel GPS smartphone, koordinat titik riset dan ketinggian mdpl dapat dicatat secara akurat untuk memetakan jaringan pengairan.',
-          defaultSources: '1. Peta Topografi & Kontur Elevasi OKU Timur, BIG.\n2. Jurnal Geografi Lingkungan dan Sumber Daya Lahan Basah.'
+          placeholder: 'Tuliskan analisis mendalam mengenai prinsip Sains (Fisika, Kimia, Biologi) yang bekerja di balik peralatan dan perlengkapan pada sektor pilihan Anda... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Fisika dan Biologi Terapan dalam Keteknikan Pertanian.\n2. Jurnal Sains Terapan Agrikultur Indonesia.',
+          defaultExp: 'Secara ilmiah (Science), peralatan kerja pada sektor unggulan menerapkan hukum fisika mekanika dan fluida untuk memperingan beban kerja, prinsip kimia dalam pengolahan hasil dan bahan bakar, serta prinsip biologi fisiologis untuk menjaga mutu tanaman, ikan, maupun ternak.',
+          defaultSources: '1. Buku Sains Terapan dan Mekanika Alat Pertanian.\n2. Jurnal Penelitian Keteknikan Agrikultur.'
         },
         {
           key: 'C',
-          title: 'Tata Kelola Pembagian Air, Organisasi P3A & Mitigasi Risiko',
-          subtitle: 'Jadwal Gilir Air, Mitigasi Sedimentasi Lumpur & Kelembagaan Petani Pemakai Air',
+          title: 'Analisis TECHNOLOGY: Sistem Penggerak, Transmisi, Material & Sensor Alat',
+          subtitle: 'Motor Diesel/Bensin/Listrik, Inovasi Material Baja/Aluminium/HDPE & Instrumentasi Digital',
           guidedPoints: [
-            'Peran organisasi Perkumpulan Petani Pemakai Air (P3A) dalam merundingkan jadwal buka-tutup pintu air secara adil dan demokratis.',
-            'Tantangan sedimentasi lumpur endapan Sungai Komering serta kegiatan gotong royong pembersihan gulma eceng gondok di saluran sekunder.',
-            'Mitigasi anomali iklim (El Nino kekeringan vs La Nina potensi luapan banjir) dalam menjamin keberlangsungan indeks pertanaman (IP) padi 200 hingga 300.'
+            'Teknologi sumber penggerak dan transmisi tenaga pada mesin (motor diesel 4-tak, motor bensin, motor listrik pompa/blower, baterai lithium sprayer, gearbox, puli, dan V-belt).',
+            'Teknologi material pembentuk alat (baja karbon tinggi tahan aus pada mata pisau/egrek/chopper, pipa aluminium alloy/carbon fiber teleskopik, atau terpal geomembran HDPE).',
+            'Teknologi instrumentasi ukur dan otomasi (sensor Grain Moisture Meter, pH/TDS meter digital, timbangan digital load cell, thermostat, atau katup otomatis nipple drinker).'
           ],
-          placeholder: 'Tuliskan pemahaman Anda mengenai peran kelembagaan P3A, pembagian gilir air, serta mitigasi sedimentasi pada saluran irigasi... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Peraturan Daerah Tata Kelola Perkumpulan Petani Pemakai Air (P3A) OKU Timur.\n2. Panduan Pengelolaan Irigasi Partisipatif, Kementerian PUPR.',
-          defaultExp: 'Keberhasilan jaringan irigasi Komering sangat bergantung pada kelembagaan Perkumpulan Petani Pemakai Air (P3A) yang mengatur jadwal giliran pasokan air petak sawah saat kemarau tiba. Perawatan berkala terhadap sedimentasi lumpur dan sampah gulma dilakukan lewat gotong royong saluran tersier agar kapasitas tampung debit air tetap optimal.',
-          defaultSources: '1. Panduan Pengelolaan Irigasi Partisipatif Petani, KemenPUPR.\n2. Laporan Musyawarah P3A Daerah Irigasi Komering.'
+          placeholder: 'Tuliskan analisis mendalam mengenai aspek Teknologi (sistem penggerak, transmisi, material modern, dan sensor digital) pada peralatan sektor pilihan Anda... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Katalog Teknologi Mekanisasi dan Instrumentasi Pertanian Modern.\n2. Jurnal Teknologi dan Rekayasa Mesin Agrikultur.',
+          defaultExp: 'Dari aspek Teknologi, peralatan modern mengintegrasikan motor penggerak hemat energi, sistem transmisi mekanis/hidrolik, material logam baja karbon dan polimer tahan karat, serta sensor digital presisi untuk meningkatkan akurasi dan kecepatan kerja.',
+          defaultSources: '1. Balai Besar Pengembangan Mekanisasi Pertanian (BBPektan).\n2. Jurnal Teknologi dan Instrumentasi Agrikultur.'
+        },
+        {
+          key: 'D',
+          title: 'Analisis ENGINEERING: Rancang Bangun Mekanis, Ergonomi & Pemeliharaan Alat',
+          subtitle: 'Geometri Sudut Pisau/Bajak/Kincir, Konstruksi Sasis, Kenyamanan Operator & Perawatan Teknis',
+          guidedPoints: [
+            'Rekayasa rancang bangun dan geometri komponen utama (sudut kemiringan mata bajak/pisau sadap/egrek/chopper, mekanisme cutter bar, desain hidrodinamika kincir air, atau konstruksi central drain/biodigester).',
+            'Rekayasa ergonomi dan keselamatan pengguna (keseimbangan titik berat alat, desain gendongan/pegangan peredam getaran, dan kemudahan manuver di medan lapangan).',
+            'Rekayasa pemeliharaan dan troubleshooting teknis (pengasahan berkala, pelumasan oli/gemuk bearing, penyetelan ketegangan sabuk, dan pembersihan pascakerja agar alat berumur panjang).'
+          ],
+          placeholder: 'Tuliskan analisis mendalam mengenai aspek Engineering (rancang bangun mekanis, sudut pisau/komponen, ergonomi, dan perawatan teknis) pada peralatan sektor pilihan Anda... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Rancang Bangun dan Ergonomi Alat Mesin Pertanian.\n2. Pedoman Pemeliharaan Teknis Peralatan Lapangan.',
+          defaultExp: 'Dalam dimensi Engineering (Rekayasa), setiap peralatan dirancang dengan geometri sudut potong, distribusi beban sasis, dan fitur ergonomi yang presisi agar aman dioperasikan, mudah dirawat, dan tahan menghadapi medan kerja lapangan.',
+          defaultSources: '1. Buku Rekayasa dan Rancang Bangun Alat Pertanian, UGM Press.\n2. Jurnal Ergonomi dan Keselamatan Kerja.'
+        },
+        {
+          key: 'E',
+          title: 'Analisis MATHEMATICS: Kalkulasi Kapasitas Kerja, Konsumsi Energi & Efisiensi Biaya',
+          subtitle: 'Perhitungan Output per Jam, Pemakaian BBM/Listrik, Penurunan Losses & Perbandingan Biaya Manual',
+          guidedPoints: [
+            'Perhitungan kapasitas kerja efektif peralatan (hektar per jam, pohon per jam, meter kubik air per jam, atau kilogram pakan per jam) dibandingkan kecepatan kerja tenaga manual.',
+            'Kalkulasi konsumsi bahan bakar (liter solar/bensin) atau daya listrik (kWh) per siklus operasional alat.',
+            'Analisis matematis penghematan biaya operasional, penurunan persentase kehilangan hasil (losses), serta perhitungan titik impas (Break Even Point) investasi peralatan.'
+          ],
+          placeholder: 'Tuliskan analisis mendalam mengenai perhitungan Matematika (kapasitas kerja per jam, konsumsi BBM/listrik, dan perbandingan efisiensi biaya alat vs manual)... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Analisis Ekonomi dan Kapasitas Kerja Mekanisasi Agrikultur.\n2. Wawancara Kalkulasi Biaya Operasional Pelaku Usaha di Kabupaten OKU Timur.',
+          defaultExp: 'Melalui analisis Mathematics, penggunaan peralatan mekanis terbukti meningkatkan kapasitas kerja per jam secara berlipat ganda, menghemat biaya tenaga kerja dan konsumsi energi per unit produk, serta menekan kehilangan hasil panen secara signifikan.',
+          defaultSources: '1. Jurnal Sosial Ekonomi Pertanian: Analisis Efisiensi Mekanisasi.\n2. Data Kalkulasi Usaha Lapangan Kabupaten OKU Timur.'
         }
       ]
     },
@@ -1012,18 +1354,20 @@
       return { title: c.title || defaultTitle, text: text, source: source };
     };
 
-    // Khusus Day 3: Deteksi Sektor Pilihan Siswa
+    // Khusus Day 3 & Day 4: Deteksi Sektor Pilihan Siswa
     let selectedSector = 'pertanian';
-    if (dayNum === 3) {
+    if (dayNum === 3 || dayNum === 4) {
       if (savedOfficial && savedOfficial.selectedSector && cfg.sectors && cfg.sectors[savedOfficial.selectedSector]) {
         selectedSector = savedOfficial.selectedSector;
       } else {
-        const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
+        const localSec = (dayNum === 4)
+          ? (localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn))
+          : localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
         if (localSec && cfg.sectors && cfg.sectors[localSec]) selectedSector = localSec;
       }
     }
 
-    const activeCards = (dayNum === 3 && cfg.sectors && cfg.sectors[selectedSector])
+    const activeCards = ((dayNum === 3 || dayNum === 4) && cfg.sectors && cfg.sectors[selectedSector])
       ? cfg.sectors[selectedSector].cards
       : cfg.cards;
 
@@ -1126,8 +1470,8 @@
           </ul>
         </div>
 
-        ${dayNum === 3 ? `
-          <!-- CARD PILIHAN SEKTOR KHUSUS DAY 3 (PERSONALIZED STEM TRACK) -->
+        ${(dayNum === 3 || dayNum === 4) ? `
+          <!-- CARD PILIHAN SEKTOR KHUSUS DAY ${dayNum} (PERSONALIZED STEM TRACK) -->
           <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-emerald-50 via-teal-50/50 to-white border-2 border-emerald-500/50 shadow-sm flex flex-col gap-3.5">
             <div class="flex items-center justify-between gap-2 border-b border-emerald-200/80 pb-3 flex-wrap">
               <div class="flex items-center gap-2.5">
@@ -1135,8 +1479,8 @@
                   <span class="material-symbols-outlined text-xl">hub</span>
                 </span>
                 <div>
-                  <h3 class="font-black text-sm sm:text-base text-emerald-950 leading-tight">Pilih Sektor Riset Unggulan OKU Timur:</h3>
-                  <p class="text-xs text-emerald-800/90 font-medium">Pilih 1 sektor yang paling relevan dengan lingkungan Anda untuk dianalisis melalui 4 pilar STEM</p>
+                  <h3 class="font-black text-sm sm:text-base text-emerald-950 leading-tight">${dayNum === 4 ? 'Sektor Eksplorasi Peralatan &amp; Perlengkapan Kerja (Melanjutkan Pilihan Day 3):' : 'Pilih Sektor Riset Unggulan OKU Timur:'}</h3>
+                  <p class="text-xs text-emerald-800/90 font-medium">${dayNum === 4 ? 'Sistem otomatis mendeteksi sektor pilihan Anda di Day 3. Analisis peralatan kerja sektor ini dengan 4 dimensi STEM!' : 'Pilih 1 sektor yang paling relevan dengan lingkungan Anda untuk dianalisis melalui 4 pilar STEM'}</p>
                 </div>
               </div>
               <span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-600 text-white shadow-2xs">
@@ -1146,14 +1490,15 @@
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
               ${[
-                { key: 'pertanian', name: 'Pertanian Padi Sawah', badge: 'Lumbung Pangan Komering', icon: 'agriculture', desc: 'Padi Sawah, Saluran Irigasi BK, Traktor/Combine & Ubinan HPP' },
-                { key: 'perkebunan', name: 'Perkebunan Rakyat', badge: 'Karet & Kelapa Sawit', icon: 'forest', desc: 'Lateks Karet, Panen TBS Sawit, Rorak Lahan & Laba Pekebun' },
-                { key: 'perikanan', name: 'Perikanan Air Tawar', badge: 'Sentra Patin & Lele Sumsel', icon: 'phishing', desc: 'Budidaya Patin/Lele, Kualitas Air, Kincir Aerasi & FCR Pakan' },
-                { key: 'peternakan', name: 'Peternakan Pedesaan', badge: 'Sapi Potong & Unggas', icon: 'pets', desc: 'Sapi Potong, Unggas, Silase Pakan, Chopper, Biogas & ADG' }
+                { key: 'pertanian', name: 'Pertanian Padi Sawah', badge: dayNum === 4 ? 'Alsintan Sawah & RMU' : 'Lumbung Pangan Komering', icon: 'agriculture', desc: dayNum === 4 ? 'Traktor, Sprayer, Combine Harvester, RMU & APD Sawah dalam Analisis STEM' : 'Padi Sawah, Saluran Irigasi BK, Traktor/Combine & Ubinan HPP' },
+                { key: 'perkebunan', name: 'Perkebunan Rakyat', badge: dayNum === 4 ? 'Alat Sadap & Panen TBS' : 'Karet & Kelapa Sawit', icon: 'forest', desc: dayNum === 4 ? 'Pisau Sadap, Mangkok Lateks, Dodos, Egrek Teleskopik & Angkong dalam Analisis STEM' : 'Lateks Karet, Panen TBS Sawit, Rorak Lahan & Laba Pekebun' },
+                { key: 'perikanan', name: 'Perikanan Air Tawar', badge: dayNum === 4 ? 'Aerator & Alat Kualitas Air' : 'Sentra Patin & Lele Sumsel', icon: 'phishing', desc: dayNum === 4 ? 'Pompa Air, Kincir Aerasi, pH/TDS Meter, Mesin Pelet & Grading dalam Analisis STEM' : 'Budidaya Patin/Lele, Kualitas Air, Kincir Aerasi & FCR Pakan' },
+                { key: 'peternakan', name: 'Peternakan Pedesaan', badge: dayNum === 4 ? 'Mesin Chopper & Biogas' : 'Sapi Potong & Unggas', icon: 'pets', desc: dayNum === 4 ? 'Mesin Chopper Pakan, Drum Silase, Nipple Drinker, Brooder & Biogas dalam Analisis STEM' : 'Sapi Potong, Unggas, Silase Pakan, Chopper, Biogas & ADG' }
               ].map(sec => {
                 const isActive = (selectedSector === sec.key);
+                const clickHandler = dayNum === 4 ? `selectDay4Sector('${sec.key}')` : `selectDay3Sector('${sec.key}')`;
                 return `
-                  <div onclick="selectDay3Sector('${sec.key}')" class="p-3.5 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${isActive ? 'bg-white border-emerald-600 ring-2 ring-emerald-500/30 shadow-md' : 'bg-white/80 border-slate-200 hover:border-teal-400 hover:bg-white shadow-2xs'}">
+                  <div onclick="${clickHandler}" class="p-3.5 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${isActive ? 'bg-white border-emerald-600 ring-2 ring-emerald-500/30 shadow-md' : 'bg-white/80 border-slate-200 hover:border-teal-400 hover:bg-white shadow-2xs'}">
                     <div class="flex items-start justify-between gap-2">
                       <div class="w-10 h-10 rounded-xl ${isActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center shrink-0 shadow-2xs">
                         <span class="material-symbols-outlined text-2xl">${sec.icon}</span>
@@ -1180,9 +1525,9 @@
           <div class="flex items-center justify-between text-xs font-bold">
             <span class="text-slate-700 flex items-center gap-1.5">
               <span class="material-symbols-outlined text-sm text-teal-600">checklist</span>
-              <span>Progres Kelengkapan Kartu Riset ${dayNum === 3 ? '&amp; Kesimpulan ' : ''}Day ${dayNum}:</span>
+              <span>Progres Kelengkapan Kartu Riset &amp; Kesimpulan Day ${dayNum}:</span>
             </span>
-            <span id="lblNftD${dayNum}ProgressCount" class="font-black text-teal-800">0 / ${dayNum === 3 ? '6' : '5'} Terpenuhi</span>
+            <span id="lblNftD${dayNum}ProgressCount" class="font-black text-teal-800">0 / 6 Terpenuhi</span>
           </div>
           <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
             <div id="barNftD${dayNum}Progress" class="h-full bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full transition-all duration-300" style="width: 0%"></div>
@@ -1580,6 +1925,8 @@
     let curSec = 'pertanian';
     if (dayNum === 3) {
       curSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
+    } else if (dayNum === 4) {
+      curSec = localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
     }
 
     const officialPayload = {
@@ -1593,7 +1940,7 @@
       userConclusion: concVal
     };
 
-    const activeCardsForSubmit = (dayNum === 3 && cfg.sectors && cfg.sectors[curSec])
+    const activeCardsForSubmit = ((dayNum === 3 || dayNum === 4) && cfg.sectors && cfg.sectors[curSec])
       ? cfg.sectors[curSec].cards
       : cfg.cards;
 
@@ -2158,6 +2505,29 @@
     const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
     if (mainEl && typeof renderNonFieldTripDayModule === 'function') {
       renderNonFieldTripDayModule(mainEl, 3);
+    }
+  };
+
+  window.selectDay4Sector = function(sectorKey) {
+    if (window[`isNftD4Submitted`]) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Sektor ini telah dikirim resmi bersama laporan riset Day 4 Anda.', 'info');
+      }
+      return;
+    }
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+    localStorage.setItem('fincestem_nft_sector_d4_' + cleanNisn, sectorKey);
+
+    const cfg4 = (window.NFT_MATERI_CONFIG && window.NFT_MATERI_CONFIG[4]) || {};
+    const secName = (cfg4.sectors && cfg4.sectors[sectorKey]) ? cfg4.sectors[sectorKey].name : sectorKey;
+    if (window.FincestemCore && FincestemCore.ui) {
+      FincestemCore.ui.toast('Sektor eksplorasi peralatan Day 4 diubah ke: ' + secName + '. Kartu analisis STEM telah disesuaikan!', 'success');
+    }
+
+    const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
+    if (mainEl && typeof renderNonFieldTripDayModule === 'function') {
+      renderNonFieldTripDayModule(mainEl, 4);
     }
   };
 

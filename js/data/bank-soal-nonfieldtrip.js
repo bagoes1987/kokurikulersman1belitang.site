@@ -21087,10 +21087,57 @@
   /**
    * Helper: Mengambil bank soal berdasarkan day
    */
+  window.NFT_BANK_SOAL_INDICATORS_DAY4 = [
+  {
+    "code": "A",
+    "key": "eksplorasi_peralatan_apd",
+    "name": "Eksplorasi Peralatan, Perlengkapan Kerja & APD Sektor Pilihan",
+    "desc": "Identifikasi fungsi peralatan utama, perkakas pendukung, dan Alat Pelindung Diri (APD) pada sektor unggulan OKU Timur."
+  },
+  {
+    "code": "B",
+    "key": "analisis_science_alat",
+    "name": "Analisis Science: Prinsip Fisika, Kimia & Biologi pada Peralatan",
+    "desc": "Prinsip tekanan permukaan, mekanika fluida, gaya sentrifugal, reaksi kimia, dan biologi pada cara kerja peralatan."
+  },
+  {
+    "code": "C",
+    "key": "analisis_technology_alat",
+    "name": "Analisis Technology: Sistem Penggerak, Material & Sensor Alat",
+    "desc": "Mesin penggerak diesel/bensin/listrik, sistem transmisi, metalurgi material baja/aluminium, dan instrumentasi digital."
+  },
+  {
+    "code": "D",
+    "key": "analisis_engineering_alat",
+    "name": "Analisis Engineering: Rancang Bangun Mekanis, Ergonomi & Perawatan",
+    "desc": "Geometri sudut mata pisau/bajak/kincir, konstruksi mekanis, desain ergonomi operator, dan pemeliharaan teknis alat."
+  },
+  {
+    "code": "E",
+    "key": "analisis_mathematics_alat",
+    "name": "Analisis Mathematics: Kalkulasi Kapasitas Kerja, Energi & Efisiensi Biaya",
+    "desc": "Perhitungan kapasitas kerja per jam/hektar, konsumsi BBM/listrik, penurunan susut panen, dan efisiensi biaya operasional."
+  }
+];
+
   window.getNftBankSoalByDay = function(dayNum, sectorKey) {
     dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (parseInt(dayNum) || 1);
-    const dayQuestions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[dayNum]) || [];
-    if (dayNum === 3 && sectorKey) {
+    let dayQuestions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[dayNum]) || [];
+    if (dayNum === 4 && (!dayQuestions || dayQuestions.length === 0)) {
+      const d3Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
+      const indMap4 = {
+        'A': 'Analisis Science: Prinsip Fisika, Kimia & Biologi pada Peralatan',
+        'B': 'Analisis Technology: Sistem Penggerak, Material & Mekanisasi Alat',
+        'C': 'Analisis Engineering: Rancang Bangun Mekanis, Ergonomi & Perawatan Alat',
+        'D': 'Analisis Mathematics: Kalkulasi Kapasitas Kerja, Energi & Efisiensi Biaya Alat',
+        'E': 'Integrasi 4 Dimensi STEM pada Peralatan & Perlengkapan Sektor Pilihan'
+      };
+      dayQuestions = d3Questions.map(q => Object.assign({}, q, {
+        day: 4,
+        indicatorName: indMap4[q.indicatorCode] || q.indicatorName
+      }));
+    }
+    if ((dayNum === 3 || dayNum === 4) && sectorKey) {
       const filtered = dayQuestions.filter(q => q.sector === sectorKey);
       return filtered.length ? filtered : dayQuestions;
     }
@@ -21107,6 +21154,9 @@
     }
     if (dayNum === 3 && window.NFT_BANK_SOAL_INDICATORS_DAY3) {
       return window.NFT_BANK_SOAL_INDICATORS_DAY3;
+    }
+    if (dayNum === 4 && window.NFT_BANK_SOAL_INDICATORS_DAY4) {
+      return window.NFT_BANK_SOAL_INDICATORS_DAY4;
     }
     return window.NFT_BANK_SOAL_INDICATORS || [];
   };

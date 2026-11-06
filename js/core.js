@@ -1037,7 +1037,7 @@ const FincestemCore = {
         { day_number: 1, title: 'Day 1: Fondasi Ekonomi, Literasi Finansial & Pemetaan Potensi OKU Timur', theme: 'Kajian Konseptual 3 Sektor Ekonomi, Kebanksentralan, Perkoperasian & Komoditas Unggulan Daerah', date: '2026-11-09', date_formatted: '09 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 0, description: 'Riset pustaka mandiri mengenai kegiatan ekonomi, literasi finansial, sistem pembayaran Bank Indonesia, tata kelola badan usaha/koperasi, serta pemetaan potensi sektor unggulan Kabupaten OKU Timur.' },
         { day_number: 2, title: 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur', theme: 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering', date: '2026-11-10', date_formatted: 'Selasa, 10 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 0, description: 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.' },
         { day_number: 3, title: 'Day 3: Analisis STEM pada Pertanian & Sektor Unggulan OKU Timur', theme: 'Kajian Lapangan Sains, Teknologi Alsintan, Rekayasa Irigasi & Matematika Usahatani', date: '2026-11-11', date_formatted: '11 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Investigasi terpadu 4 pilar STEM (Science, Technology, Engineering, Mathematics) pada sektor pilihan: Pertanian Padi Sawah, Perkebunan Karet/Sawit, Perikanan Patin/Lele, atau Peternakan Sapi/Unggas di Kabupaten OKU Timur.' },
-        { day_number: 4, title: 'Day 4: EXPLORATION', theme: 'Ekosistem Irigasi Komering, Bendungan Perjaya & Analisis Bentang Alam Geospasial', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Eksplorasi bentang alam, geospasial, pemetaan titik koordinat GPS, dan infrastruktur tata kelola air persawahan OKU Timur: Jaringan Irigasi Komering dan Bendungan Perjaya.' },
+        { day_number: 4, title: 'Day 4: EXPLORATION', theme: 'Eksplorasi Peralatan, Perlengkapan Kerja & Analisis 4 Dimensi STEM Sektor Pilihan', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics (STEM).' },
         { day_number: 5, title: 'Day 5: Produksi Video Lapangan: Finansial & Budaya', theme: 'Pengambilan Footage Video: Wawancara Ekonomi Pasar/UMKM & Dokumentasi Kearifan Budaya Lokal', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar FINANCIAL (transaksi, modal pedagang, QRIS) dan CULTURE (arsitektur tradisional, tatakrama Komering, gotong royong warga).' },
         { day_number: 6, title: 'Day 6: Produksi Video Lapangan: Eksplorasi & STEM', theme: 'Pengambilan Footage Video: Lanskap Bentang Sawah, Stempel GPS & Mesin Alsintan Pertanian', date: '2026-11-14', date_formatted: '14 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar EXPLORATION (bentang alam sawah, saluran air, GPS) dan STEM (mesin traktor, combine harvester, penggilingan padi RMU).' },
         { day_number: 7, title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas', theme: 'Editing Video Dokumenter, Publikasi Link YouTube, Audit Kas & Evaluasi Akhir 4 Pilar', date: '2026-11-15', date_formatted: '15 November 2026', start_time: '07:00', end_time: '20:00', is_active: 0, auto_schedule: 1, description: 'Penggabungan video dokumenter utuh (durasi 3-5 menit) di HP (CapCut/VN), pengunggahan ke YouTube, penyerahan link video riset di portal, serta penyusunan laporan rekonsiliasi tutup buku kas riset mandiri.' }
@@ -1053,7 +1053,7 @@ const FincestemCore = {
       1: { day: 1, pilar: 'FINANCIAL', label: 'Financial (Literasi Keuangan)', weight: '25%', focus: 'Literasi keuangan, pemetaan potensi ekonomi & rencana anggaran kas.' },
       2: { day: 2, pilar: 'CULTURE', label: 'Culture (Kearifan Lokal)', weight: '25%', focus: 'Kearifan lokal Komering, tradisi & sistem mata pencaharian daerah.' },
       3: { day: 3, pilar: 'STEM', label: 'STEM (Sains & Alsintan)', weight: '25%', focus: 'Teknologi pertanian, alsintan modern & rekayasa pangan lokal.' },
-      4: { day: 4, pilar: 'EXPLORATION', label: 'Exploration (Bentang Alam)', weight: '25%', focus: 'Bentang alam persawahan, geospasial & ekosistem irigasi Komering.' },
+      4: { day: 4, pilar: 'EXPLORATION', label: 'Exploration (Peralatan & STEM)', weight: '25%', focus: 'Eksplorasi peralatan, perlengkapan kerja & analisis 4 dimensi STEM sektor pilihan.' },
       5: { day: 5, pilar: 'FINANCIAL & CULTURE', label: 'Financial & Culture (Video)', weight: '25%', focus: 'Footage rekaman video wawancara ekonomi/UMKM & kearifan budaya.' },
       6: { day: 6, pilar: 'EXPLORATION & STEM', label: 'Exploration & STEM (Video)', weight: '25%', focus: 'Footage rekaman video bentang alam, koordinat GPS & mesin pertanian.' },
       7: { day: 7, pilar: 'SINTESIS 4 PILAR', label: 'Sintesis 4 Pilar (Final)', weight: '25%', focus: 'Editing kompilasi video dokumenter YouTube & rekonsiliasi kas.' }
@@ -1301,13 +1301,13 @@ const FincestemCore = {
       4: {
         day_number: 4,
         title: 'Day 4: EXPLORATION',
-        theme: 'Ekosistem Irigasi Komering, Bendungan Perjaya & Analisis Bentang Alam Geospasial',
+        theme: 'Eksplorasi Peralatan, Perlengkapan Kerja & Analisis 4 Dimensi STEM Sektor Pilihan',
         date_formatted: 'Kamis, 12 November 2026',
         time_range: '07.00 - 18.00 WIB',
-        description: 'Eksplorasi bentang alam, geospasial, pemetaan titik koordinat GPS, dan infrastruktur tata kelola air persawahan OKU Timur: Jaringan Irigasi Komering dan Bendungan Perjaya.',
-        refl_title: 'Jurnal Refleksi Day 4: Eksplorasi Bentang Alam & Irigasi Komering',
-        refl_prompt: 'Setelah mempelajari bentang alam, koordinat geospasial, dan arsitektur irigasi Bendungan Perjaya hari ini, bagaimana pemahaman sistem pengairan membantu Anda menghargai kekayaan geografis dan tata kelola air di OKU Timur?',
-        refl_placeholder: 'Tuliskan refleksi Anda mengenai bentang alam dan jaringan irigasi di wilayah Anda...'
+        description: 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics (STEM).',
+        refl_title: 'Jurnal Refleksi Day 4: Eksplorasi Peralatan & Analisis STEM Sektor Pilihan',
+        refl_prompt: 'Setelah mengeksplorasi peralatan dan perlengkapan kerja pada sektor pilihan Anda serta mengaitkannya dengan Science, Technology, Engineering, dan Mathematics (STEM) hari ini, bagaimana peralatan yang tepat guna dapat meningkatkan keselamatan, efisiensi waktu, dan hasil kerja masyarakat di OKU Timur?',
+        refl_placeholder: 'Tuliskan refleksi Anda mengenai peralatan kerja dan penerapan 4 dimensi STEM pada sektor yang Anda amati...'
       },
       5: {
         day_number: 5,
@@ -1432,6 +1432,14 @@ const FincestemCore = {
             d.title = 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur';
             d.theme = 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering';
             d.description = 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.';
+          }
+        }
+        // Auto-sinkronisasi Day 4 Non-Field Trip ke konsep Eksplorasi Peralatan & Analisis STEM
+        if (Number(d.day_number) === 4 && !d.route) {
+          if (String(d.title).includes('Rantai Pasok') || String(d.theme).includes('Irigasi Komering') || String(d.theme).includes('Economic') || String(d.theme).includes('Agrikultur')) {
+            d.title = 'Day 4: EXPLORATION';
+            d.theme = 'Eksplorasi Peralatan, Perlengkapan Kerja & Analisis 4 Dimensi STEM Sektor Pilihan';
+            d.description = 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics (STEM).';
           }
         }
         return self.evaluateDayStatus(d, serverTime);

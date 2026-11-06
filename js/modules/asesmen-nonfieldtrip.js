@@ -93,9 +93,9 @@
    * Soal dan urutan pilihan ganda (A, B, C, D, E) diacak setiap sesi baru atau setelah reset!
    */
   function generateStudentPackage(dayNum, cleanNisn) {
-    let selectedSector = (dayNum === 3) ? getStudentDay3Sector(cleanNisn) : '';
-    const storageKey = (dayNum === 3)
-      ? `fincestem_pkg_nft_asesmen_v2_d3_${selectedSector}_${cleanNisn}`
+    let selectedSector = (dayNum === 3 || dayNum === 4) ? getStudentDay3Sector(cleanNisn, dayNum) : '';
+    const storageKey = (dayNum === 3 || dayNum === 4)
+      ? `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${selectedSector}_${cleanNisn}`
       : `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`;
     const expectedLength = (dayNum === 0) ? 10 : 50;
     try {
@@ -105,7 +105,7 @@
       if (savedPkg) {
         const parsedPkg = JSON.parse(savedPkg);
         if (Array.isArray(parsedPkg) && parsedPkg.length === expectedLength) {
-          if (dayNum === 3) {
+          if (dayNum === 3 || dayNum === 4) {
             if (parsedPkg[0] && (!parsedPkg[0].sector || parsedPkg[0].sector === selectedSector)) {
               return parsedPkg;
             }
@@ -116,7 +116,7 @@
       }
     } catch(e) {}
 
-    const allBank = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(dayNum, (dayNum === 3 ? selectedSector : undefined))) || [];
+    const allBank = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(dayNum, ((dayNum === 3 || dayNum === 4) ? selectedSector : undefined))) || [];
     if (!allBank.length) return [];
 
     // Gunakan kombinasi NISN + timestamp + random salt agar setiap kali ujian dimulai ulang / direset,
@@ -162,12 +162,12 @@
       return pkgWithShuffledChoices;
     }
 
-    // KHUSUS DAY 3 OBSERVASI LAPANGAN (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
-    if (dayNum === 3) {
+    // KHUSUS DAY 3 & DAY 4 (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
+    if (dayNum === 3 || dayNum === 4) {
       const chosen50 = [...allBank];
-      const mixed50 = seededShuffle(chosen50, rng);
+      const mixed50 = seededShuffle(chosen50, rng).slice(0, 50);
       const pkgWithShuffledChoices = mixed50.map((origQ, qIdx) => {
-        const choiceRng = getSeededRandom(`q_choice_d3_${cleanNisn}_${origQ.id}_${qIdx}_salt_${sessionSalt}`);
+        const choiceRng = getSeededRandom(`q_choice_d${dayNum}_${cleanNisn}_${origQ.id}_${qIdx}_salt_${sessionSalt}`);
         const shuffledOptions = seededShuffle([...origQ.options], choiceRng);
         
         let newCorrectKey = 'A';
@@ -185,7 +185,7 @@
         return {
           id: origQ.id,
           displayNumber: qIdx + 1,
-          day: 3,
+          day: dayNum,
           sector: origQ.sector || selectedSector,
           indicatorCode: origQ.indicatorCode,
           indicatorKey: origQ.indicatorKey,
@@ -326,8 +326,8 @@
       return;
     }
 
-    if (dayNum === 3) {
-      examState.selectedSector = getStudentDay3Sector(examState.cleanNisn);
+    if (dayNum === 3 || dayNum === 4) {
+      examState.selectedSector = getStudentDay3Sector(examState.cleanNisn, dayNum);
     }
 
     // Cek Prasyarat: Modul Belajar, LKPD, & Dokumentasi (khusus Day 1-7) harus selesai
@@ -683,8 +683,10 @@
     const studentClass = examState.student?.class || examState.student?.class_name || 'Kelas X';
     const isDay0 = (examState.dayNum === 0);
     const isDay3 = (examState.dayNum === 3);
-    const currentSectorKey = examState.selectedSector || (isDay3 ? getStudentDay3Sector(studentNisn) : '');
-    const currentSectorName = isDay3 ? (NFT_DAY3_SECTOR_MAP[currentSectorKey] || 'Pertanian Padi Sawah & Tanaman Pangan') : '';
+    const isDay4 = (examState.dayNum === 4);
+    const isSectorDay = (isDay3 || isDay4);
+    const currentSectorKey = examState.selectedSector || (isSectorDay ? getStudentDay3Sector(studentNisn, examState.dayNum) : '');
+    const currentSectorName = isSectorDay ? (NFT_DAY3_SECTOR_MAP[currentSectorKey] || 'Pertanian Padi Sawah & Tanaman Pangan') : '';
 
     const dayBadgeText = isDay0
       ? 'Non-Field Trip • Day 0 (Simulasi)'
@@ -695,14 +697,18 @@
       ? 'Kuis Asesmen Simulasi &amp; Gladi Bersih'
       : (isDay3
           ? `Kuis Asesmen Lapangan: ${currentSectorName}`
-          : `Kuis Asesmen Kompetensi Day ${examState.dayNum}`);
+          : (isDay4
+              ? `Asesmen Eksplorasi Alat &amp; STEM: ${currentSectorName}`
+              : `Kuis Asesmen Kompetensi Day ${examState.dayNum}`));
     const examSubtitle = isDay0
       ? 'Uji coba pemahaman sistem, 4 pilar FINCESTEM, etika riset, dan pengenalan fitur ujian digital.'
       : (examState.dayNum === 2
           ? 'Uji pemahaman komprehensif Taksonomi Bloom C1-C5 berbasis 5 modul riset mandiri OKU Timur.'
           : (isDay3
               ? `Uji pemahaman 4 Pilar STEM (Sains, Teknologi, Rekayasa & Matematika) khusus sektor ${currentSectorName} di OKU Timur.`
-              : 'Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.'));
+              : (isDay4
+                  ? `Uji kemampuan analisis peralatan, perlengkapan kerja, dan mekanisasi pada sektor ${currentSectorName} dikaitkan dengan 4 dimensi STEM (Science, Technology, Engineering & Mathematics).`
+                  : 'Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.')));
 
     root.innerHTML = `
       <div class="max-w-xl mx-auto w-full p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xl flex flex-col gap-5 my-6 animate-scale-up">
@@ -743,7 +749,7 @@
               <strong class="truncate text-white">${escapeHtml(studentClass)}</strong>
             </div>
           </div>
-          ${isDay3 ? `
+          ${isSectorDay ? `
             <div class="px-3.5 py-2.5 rounded-2xl bg-amber-400 text-slate-950 font-black text-xs flex items-center justify-between gap-2 shadow-sm">
               <div class="flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-base">psychology</span>
@@ -1620,21 +1626,35 @@
     'peternakan': 'Peternakan Sapi Potong & Unggas'
   };
 
-  function getStudentDay3Sector(cleanNisn) {
+  function getStudentDay3Sector(cleanNisn, dayNum) {
     try {
+      if (Number(dayNum) === 4) {
+        const localSec4 = localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn);
+        if (localSec4 && NFT_DAY3_SECTOR_MAP[localSec4]) return localSec4;
+        const rawLkpd4 = localStorage.getItem('fincestem_lkpd_nft_day4_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day4_' + cleanNisn);
+        if (rawLkpd4) {
+          const p4 = JSON.parse(rawLkpd4);
+          if (p4 && (p4.sectorKey || p4.sector) && NFT_DAY3_SECTOR_MAP[p4.sectorKey || p4.sector]) return p4.sectorKey || p4.sector;
+        }
+        const rawMat4 = localStorage.getItem('fincestem_materi_nft_day4_' + cleanNisn) || localStorage.getItem('fincestem_materi_day4_' + cleanNisn);
+        if (rawMat4) {
+          const m4 = JSON.parse(rawMat4);
+          if (m4 && (m4.selectedSector || m4.sector) && NFT_DAY3_SECTOR_MAP[m4.selectedSector || m4.sector]) return m4.selectedSector || m4.sector;
+        }
+      }
       const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
       if (localSec && NFT_DAY3_SECTOR_MAP[localSec]) return localSec;
       
       const rawLkpd = localStorage.getItem('fincestem_lkpd_nft_day3_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day3_' + cleanNisn);
       if (rawLkpd) {
         const p = JSON.parse(rawLkpd);
-        if (p && p.sector && NFT_DAY3_SECTOR_MAP[p.sector]) return p.sector;
+        if (p && (p.sectorKey || p.sector) && NFT_DAY3_SECTOR_MAP[p.sectorKey || p.sector]) return p.sectorKey || p.sector;
       }
 
       const rawMat = localStorage.getItem('fincestem_materi_nft_day3_' + cleanNisn) || localStorage.getItem('fincestem_materi_day3_' + cleanNisn);
       if (rawMat) {
         const m = JSON.parse(rawMat);
-        if (m && m.sector && NFT_DAY3_SECTOR_MAP[m.sector]) return m.sector;
+        if (m && (m.selectedSector || m.sector) && NFT_DAY3_SECTOR_MAP[m.selectedSector || m.sector]) return m.selectedSector || m.sector;
       }
     } catch(e) {}
     return 'pertanian';
@@ -2478,7 +2498,7 @@
     const officialPayload = {
       day: examState.dayNum,
       sector: examState.selectedSector || undefined,
-      sectorName: (examState.dayNum === 3 && examState.selectedSector) ? NFT_DAY3_SECTOR_MAP[examState.selectedSector] : undefined,
+      sectorName: ((examState.dayNum === 3 || examState.dayNum === 4) && examState.selectedSector) ? NFT_DAY3_SECTOR_MAP[examState.selectedSector] : undefined,
       submitted: true,
       submittedAt: new Date().toISOString(),
       studentName: u.name || '',
@@ -2558,7 +2578,7 @@
           <h3 class="font-black text-xl sm:text-2xl text-slate-900 mt-2">
             Hasil Kuis Asesmen ${Number(dayNum) === 0 ? 'Day 0 (Simulasi)' : ('Day ' + dayNum)}
           </h3>
-          ${(Number(dayNum) === 3 && (result.sectorName || result.sector || examState.selectedSector)) ? `
+          ${((Number(dayNum) === 3 || Number(dayNum) === 4) && (result.sectorName || result.sector || examState.selectedSector)) ? `
             <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-900 text-xs font-black mt-1.5">
               <span class="material-symbols-outlined text-sm text-teal-700">agriculture</span>
               <span>Sektor: ${escapeHtml(result.sectorName || NFT_DAY3_SECTOR_MAP[result.sector] || NFT_DAY3_SECTOR_MAP[examState.selectedSector] || 'Pertanian Padi Sawah')}</span>
