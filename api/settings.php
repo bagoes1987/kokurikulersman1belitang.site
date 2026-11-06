@@ -959,9 +959,16 @@ if ($method === 'GET') {
             $mState = getMentorshipState($pdo);
             $mAssigns = $mState['assignments'] ?? [];
             $cleanFasil = strtolower($fasilUser);
+            $fasilAliases = [$cleanFasil];
+            if ($cleanFasil === '198309302009041002' || $cleanFasil === '85l') {
+                $fasilAliases = ['198309302009041002', '85l'];
+            }
             $mentorEntry = null;
             foreach ($mAssigns as $tKey => $entry) {
-                if (strtolower(trim((string)$tKey)) === $cleanFasil && is_array($entry) && !empty($entry['student_nisns'])) {
+                $normTKey = strtolower(trim((string)$tKey));
+                $isAliasMatch = in_array($normTKey, $fasilAliases, true) ||
+                    (in_array('198309302009041002', $fasilAliases, true) && isset($entry['teacher_name']) && stripos($entry['teacher_name'], 'TITO DADANG PRASETYO') !== false);
+                if ($isAliasMatch && is_array($entry) && !empty($entry['student_nisns'])) {
                     $mentorEntry = $entry;
                     break;
                 }

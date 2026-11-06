@@ -948,17 +948,7 @@
       return;
     }
 
-    // Kalibrasi dan cek apakah saat ini siswa sedang membuka Layar Mengambang / Split Screen sebelum mulai
     recordHardwareScreenBaseline();
-    const preCheckViolation = checkPreExamMultiWindow();
-    if (preCheckViolation) {
-      alert('⚠️ TERDETEKSI LAYAR MENGAMBANG / SPLIT SCREEN!\n\nSistem mendeteksi: ' + preCheckViolation + '.\n\nAnda DILARANG memulai asesmen menggunakan Layar Mengambang (Floating Window) atau Layar Belah (Split Screen). Tutup semua aplikasi mengambang dan maksimalkan browser ke 1 Layar Penuh!');
-      return;
-    }
-
-    const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
-    const isAndroid = /Android/i.test(ua);
-    const isFsSupported = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
 
     const proceedStartExam = function() {
       activateVolume100Watchdog();
@@ -977,18 +967,9 @@
       resetQuestionIdleBlurTimer();
     };
 
-    if (isAndroid && isFsSupported) {
-      ensureExamFullscreenOnGesture(function(ok) {
-        if (!ok) {
-          alert('⚠️ GAGAL MASUK LAYAR PENUH!\n\nTutup semua aplikasi mengambang (Floating Window / PIP / TikTok / Bilah Samping) dan maksimalkan browser ke 1 Layar Penuh sebelum memulai asesmen!');
-          return;
-        }
-        proceedStartExam();
-      });
-    } else {
-      ensureExamFullscreenOnGesture();
-      proceedStartExam();
-    }
+    // Upayakan layar penuh secara non-blocking agar tidak gagal pada browser HP Android/iOS tertentu
+    ensureExamFullscreenOnGesture();
+    proceedStartExam();
   };
 
   /**
@@ -1755,154 +1736,50 @@
   };
 
   /**
-   * 4. DETEKSI KETAT LAYAR MENGAMBANG (FLOATING WINDOW), SPLIT SCREEN & KEYBOARD PENCARIAN GOOGLE
-   * Bekerja akurat pada semua tipe smartphone (Android berbagai brand & iPhone) serta Laptop/PC.
+   * 4. DETEKSI LAYAR MENGAMBANG (FLOATING WINDOW) & PICTURE-IN-PICTURE
+   * Dikemas ramah terhadap seluruh resolusi/DPR layar smartphone Android & iOS agar bebas false-positive.
    */
   function checkPreExamMultiWindow() {
-    recordHardwareScreenBaseline();
-    const winW = window.innerWidth || document.documentElement.clientWidth || 0;
-    const winH = window.innerHeight || document.documentElement.clientHeight || 0;
-    const scrW = Math.max(baselineMaxScreenW, screen.width || 0, screen.availWidth || 0);
-    const scrH = Math.max(baselineMaxScreenH, screen.height || 0, screen.availHeight || 0);
-
-    // 1. Picture-in-Picture
     if (document.pictureInPictureElement) {
       try { document.exitPictureInPicture(); } catch(e) {}
       return 'Jendela Mengambang (Picture-in-Picture)';
     }
-
-    // 2. Layar Ganda / Multi-Monitor
-    if (window.screen && window.screen.isExtended) {
-      return 'Layar Ganda / Multi-Monitor Terhubung';
-    }
-
-    const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || ('ontouchstart' in window) || (scrW <= 1024 && scrH <= 1024);
-
-    if (isMobile) {
-      // Smartphone minimal lebar 300px dan tinggi 420px untuk 1 layar penuh
-      if (winW < 300 || winH < 420) {
-        return 'Layar Mengambang (Floating Window / Pop-up View Kecil)';
-      }
-
-      const isPortrait = scrH >= scrW;
-      if (isPortrait) {
-        // Split Screen vertikal: tinggi browser terpotong drastis (< 60% dari tinggi layar)
-        if (scrH > 0 && (winH / scrH < 0.60)) {
-          return 'Layar Belah (Split Screen) / Layar Terpotong Vertikal';
-        }
-        // Floating window: lebar browser terpotong drastis (< 70% dari lebar layar)
-        if (scrW > 0 && (winW / scrW < 0.70)) {
-          return 'Layar Mengambang (Floating Window - Lebar Layar Menyusut)';
-        }
-      } else {
-        // Split Screen horizontal
-        if (scrW > 0 && (winW / scrW < 0.65)) {
-          return 'Layar Belah (Split Screen) Landscape';
-        }
-      }
-    } else {
-      // Desktop / Laptop: wajib minimal 75% lebar dan 68% tinggi layar
-      if (scrW > 0 && scrH > 0) {
-        if ((winW / scrW < 0.75) || (winH / scrH < 0.68)) {
-          return 'Jendela Browser Diperkecil / Layar Belah Desktop (Wajib Layar Penuh)';
-        }
-      }
-    }
-
     return null;
   }
 
   function detectMultiWindowViolation() {
     if (!examState.isExamActive || examState.isExamFinished) return null;
 
-    recordHardwareScreenBaseline();
-    const winW = window.innerWidth || document.documentElement.clientWidth || 0;
-    const winH = window.innerHeight || document.documentElement.clientHeight || 0;
-    const scrW = Math.max(baselineMaxScreenW, screen.width || 0, screen.availWidth || 0);
-    const scrH = Math.max(baselineMaxScreenH, screen.height || 0, screen.availHeight || 0);
-
-    // 1. Picture-in-Picture
     if (document.pictureInPictureElement) {
       try { document.exitPictureInPicture(); } catch(e) {}
       return 'Jendela Mengambang (Picture-in-Picture)';
     }
 
-    // 2. Layar Ganda / Multi-Monitor
-    if (window.screen && window.screen.isExtended) {
-      return 'Layar Ganda / Multi-Monitor Terhubung';
-    }
-
-    const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(ua) || ('ontouchstart' in window) || (scrW <= 1024 && scrH <= 1024);
-
-    if (isMobile) {
-      // A. Browser FINCESTEM sendiri berada di Jendela Mengambang (Freeform / Floating Pop-up)
-      if (winW < 300 || winH < 420) {
-        return 'Layar Mengambang (Floating Window / Pop-up View)';
-      }
-
-      const isPortrait = scrH >= scrW;
-      if (isPortrait) {
-        // Split Screen: tinggi menyusut drastis karena layar dibagi dengan aplikasi lain (< 60%)
-        if (scrH > 0 && (winH / scrH < 0.60)) {
-          return 'Layar Belah (Split Screen) / Layar Terpotong Vertikal';
-        }
-        // Floating window lebar menyusut drastis (< 70%)
-        if (scrW > 0 && (winW / scrW < 0.70)) {
-          return 'Layar Mengambang (Floating Window - Lebar Layar Menyusut)';
-        }
-      } else {
-        if (scrW > 0 && (winW / scrW < 0.65)) {
-          return 'Layar Belah (Split Screen) Landscape';
-        }
-      }
-
-      // B. Deteksi Keyboard Virtual pada Layar Mengambang
-      // Pada soal pilihan ganda FINCESTEM tidak ada input form. Jika keyboard muncul (visualViewport anjlok),
-      // siswa sedang mengetik pada jendela pencarian Google mengambang, smart sidebar, atau chat!
-      if (window.visualViewport && baselineInitialInnerH > 0) {
-        const vvH = window.visualViewport.height;
-        const activeEl = document.activeElement;
-        const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
-        if (!isInput && (baselineInitialInnerH - vvH > 130 || vvH < baselineInitialInnerH * 0.76)) {
-          return 'Aktivitas Keyboard pada Layar Mengambang (Floating Search/Google)';
-        }
-      }
-    } else {
-      // Desktop / Laptop
-      if (scrW > 0 && scrH > 0) {
-        if ((winW / scrW < 0.75) || (winH / scrH < 0.68)) {
-          return 'Jendela Browser Diperkecil / Layar Mengambang Desktop';
-        }
-      }
+    const winW = window.innerWidth || document.documentElement.clientWidth || 0;
+    const winH = window.innerHeight || document.documentElement.clientHeight || 0;
+    if (winW > 0 && winH > 0 && (winW < 180 || winH < 180)) {
+      return 'Layar Mengambang (Floating Pop-up Mini)';
     }
 
     return null;
   }
 
   /**
-   * 5. WATCHDOG INTEGRITAS LAYAR & FOKUS REALTIME (INTERVAL 350ms)
+   * 5. WATCHDOG INTEGRITAS LAYAR & TAB REALTIME (INTERVAL 500ms)
    */
   function startScreenIntegrityWatchdog() {
     if (screenIntegrityWatchdogInterval) clearInterval(screenIntegrityWatchdogInterval);
     screenIntegrityWatchdogInterval = setInterval(() => {
-      if (!examState.isExamActive || examState.isExamFinished) return;
+      if (!examState.isExamActive || examState.isExamFinished || isViolationModalOpen) return;
 
-      // 1. Cek Layar Mengambang (Floating Window) & Split Screen fisik
+      // 1. Cek Picture-in-Picture / jendela mini ekstrem
       const multiWinReason = detectMultiWindowViolation();
       if (multiWinReason) {
         handleTabExit(multiWinReason);
         return;
       }
 
-      // 2. Cek apakah dokumen kehilangan fokus (mengetuk jendela mengambang di atas browser / berpindah aplikasi)
-      if (typeof document.hasFocus === 'function' && !document.hasFocus()) {
-        handleTabExit('Kehilangan Fokus Ujian / Berpindah Aplikasi');
-        return;
-      }
-
-      // 3. Cek document.hidden (berpindah tab / meminimalkan browser)
+      // 2. Cek document.hidden (berpindah tab / meminimalkan browser / membuka aplikasi lain)
       if (document.hidden) {
         handleTabExit('Meninggalkan lembar asesmen / membuka aplikasi lain');
         return;
@@ -1976,75 +1853,10 @@
       }
     });
 
-    // 4. Deteksi Blur/Focus (Saat siswa mengetuk Layar Mengambang Google / Smart Sidebar / Screenshot HP)
-    window.addEventListener('blur', () => {
-      handleTabExit('Mengetuk Layar Mengambang (Floating Window) / Kehilangan Fokus Ujian');
-    });
-
+    // 4. Deteksi fokus kembali ke layar asesmen
     window.addEventListener('focus', () => {
       handleTabReturn('Kembali ke layar asesmen');
     });
-
-    // 5. Deteksi Perubahan Ukuran Layar & VisualViewport (Resize / Split Screen / Keyboard Layar Mengambang)
-    window.addEventListener('resize', () => {
-      if (examState.isExamActive && !examState.isExamFinished) {
-        const violationReason = detectMultiWindowViolation();
-        if (violationReason) {
-          handleTabExit(violationReason);
-        }
-      }
-    });
-
-    if (window.visualViewport) {
-      window.visualViewport.addEventListener('resize', () => {
-        if (examState.isExamActive && !examState.isExamFinished) {
-          const violationReason = detectMultiWindowViolation();
-          if (violationReason) {
-            handleTabExit(violationReason);
-          }
-        }
-      });
-    }
-
-    // 6. Penanganan Fullscreen & Deteksi Keluar Layar Penuh (Membuka Floating Window)
-    document.addEventListener('fullscreenchange', () => {
-      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
-        const isCurrentlyFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-        if (!isCurrentlyFs) {
-          handleTabExit('Membuka Layar Mengambang (Floating Window) / Keluar dari Layar Penuh');
-        }
-      }
-    });
-    document.addEventListener('webkitfullscreenchange', () => {
-      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
-        const isCurrentlyFs = !!(document.fullscreenElement || document.webkitFullscreenElement);
-        if (!isCurrentlyFs) {
-          handleTabExit('Membuka Layar Mengambang (Floating Window) / Keluar dari Layar Penuh');
-        }
-      }
-    });
-
-    // 7. Deteksi Penggeseran Bilah Samping (Smart Sidebar) & Pembukaan Layar Mengambang via touchcancel
-    window.addEventListener('touchcancel', (e) => {
-      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
-        handleTabExit('Membuka Bilah Samping (Smart Sidebar) / Layar Mengambang');
-      }
-    }, true);
-
-    document.addEventListener('touchcancel', (e) => {
-      if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
-        handleTabExit('Membuka Bilah Samping (Smart Sidebar) / Layar Mengambang');
-      }
-    }, true);
-
-    // 8. Deteksi Pelepasan Fokus Dokumen (Focusout ke Layar Mengambang)
-    document.addEventListener('focusout', (e) => {
-      setTimeout(() => {
-        if (typeof document.hasFocus === 'function' && !document.hasFocus() && examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
-          handleTabExit('Mengetuk Layar Mengambang (Floating Window) / Kehilangan Fokus Ujian');
-        }
-      }, 50);
-    }, true);
 
     window.addEventListener('pagehide', () => {
       if (examState.isExamActive && !examState.isExamFinished && !isViolationModalOpen) {
@@ -2052,7 +1864,7 @@
       }
     });
 
-    // 9. Pengendalian Sentuhan Layar & Reset Timer Idle
+    // 5. Pengendalian Sentuhan Layar & Reset Timer Idle
     window.addEventListener('touchstart', () => {
       if (examState.isExamActive && !examState.isExamFinished && !isTabAway && !isViolationModalOpen) {
         resetQuestionIdleBlurTimer();
@@ -2073,19 +1885,23 @@
       activeTouchPoints.clear();
     }, true);
 
-    // 8. Deteksi Mouse Masuk/Keluar (Aman untuk PC/Laptop)
+    // 6. Deteksi Mouse Masuk (Aman untuk PC/Laptop)
     document.addEventListener('mouseenter', () => {
       if (examState.isExamActive && !examState.isExamFinished && !isTabAway && !isViolationModalOpen) {
         removeBlackout();
       }
     });
 
-    // 10. Klik pada overlay blackout untuk memaksa Fullscreen & kembali ke ujian
+    // 7. Klik pada overlay blackout untuk memaksa kembali ke ujian
     const bo = document.getElementById('examShieldFullBlackout');
     if (bo) {
       bo.onclick = function() {
-        ensureExamFullscreenOnGesture();
-        handleTabReturn('Kembali dari pelepasan fokus layar');
+        if (isViolationModalOpen) {
+          window.dismissExamViolationModal();
+        } else {
+          ensureExamFullscreenOnGesture();
+          handleTabReturn('Kembali dari pelepasan fokus layar');
+        }
       };
     }
   }
@@ -2250,6 +2066,10 @@
   function showViolationModal(count, reason) {
     isViolationModalOpen = true;
 
+    // Sembunyikan overlay blackout sementara modal pelanggaran tampil agar tombol di dalam modal tidak tertutup
+    const bo = document.getElementById('examShieldFullBlackout');
+    if (bo) bo.style.display = 'none';
+
     // Jika pelanggaran sudah mencapai 3/3 (batas maksimal), LANGSUNG kirim paksa & buka halaman nilai
     // tanpa menunggu setTimeout (karena setTimeout dibekukan oleh Android saat tab di belakang layar mengambang!)
     if (count >= 3) {
@@ -2296,8 +2116,8 @@
     }
 
     container.innerHTML = `
-      <div id="examViolationModal" class="fixed inset-0 z-[2147483647] flex items-center justify-center p-4 animate-emergency-strobe select-none">
-        <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border-2 ${count >= 2 ? 'border-rose-500' : 'border-amber-500'} flex flex-col items-center text-center gap-4 animate-scale-up">
+      <div id="examViolationModal" style="z-index: 2147483647; pointer-events: auto;" class="fixed inset-0 z-[2147483647] flex items-center justify-center p-4 animate-emergency-strobe select-none">
+        <div class="bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full shadow-2xl border-2 ${count >= 2 ? 'border-rose-500' : 'border-amber-500'} flex flex-col items-center text-center gap-4 animate-scale-up pointer-events-auto">
           
           <!-- BEACON STROBO DARURAT ATAS -->
           <div class="w-full py-2 px-3 rounded-2xl bg-rose-700 text-white text-[11px] font-black uppercase tracking-wider flex items-center justify-center gap-2 animate-pulse shadow-md">
@@ -2341,12 +2161,12 @@
           <!-- TOMBOL AKSI DISMISS ATAU FORCE SUBMIT COUNTDOWN -->
           <div class="w-full pt-1">
             ${count < 3 ? `
-              <button type="button" onclick="window.dismissExamViolationModal()" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer">
+              <button type="button" id="btnDismissViolationModal" onclick="window.dismissExamViolationModal()" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer pointer-events-auto">
                 <span class="material-symbols-outlined text-base">fullscreen</span>
                 <span>Tutup Layar Mengambang &amp; Lanjut 1 Layar Penuh</span>
               </button>
             ` : `
-              <button type="button" onclick="window.forceFinishViolationExamNow && window.forceFinishViolationExamNow()" class="w-full p-3.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer">
+              <button type="button" onclick="window.forceFinishViolationExamNow && window.forceFinishViolationExamNow()" class="w-full p-3.5 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs flex items-center justify-center gap-2 shadow-md cursor-pointer pointer-events-auto">
                 <div class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 <span>Mengirim Paksa &amp; Membuka Halaman Nilai...</span>
               </button>
@@ -2373,44 +2193,24 @@
   }
 
   window.dismissExamViolationModal = function() {
-    // 1. Verifikasi apakah siswa masih membuka Layar Mengambang / Split Screen
-    const stillViolating = detectMultiWindowViolation();
-    if (stillViolating) {
-      alert('⚠️ AKSES DITOLAK!\n\nSistem mendeteksi Anda MASIH menggunakan: ' + stillViolating + '.\n\nHarap TUTUP semua aplikasi mengambang (Floating Window) atau Split Screen dan kembalikan browser ke 1 Layar Penuh sebelum melanjutkan!');
-      return;
-    }
+    // Langsung hentikan sirine, getaran, dan tutup pop-up pelanggaran tanpa memblokir siswa
+    stopExamAlarmLoop();
+    stopExamVibrationLoop();
+    stopContinuousEscalationWatchdog();
+    isViolationModalOpen = false;
+    isTabAway = false;
+    lastViolationTime = Date.now();
 
-    const ua = (window.navigator && window.navigator.userAgent) || (typeof navigator !== 'undefined' ? navigator.userAgent : '') || '';
-    const isAndroid = /Android/i.test(ua);
-    const isFsSupported = !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen);
+    const container = document.getElementById('examViolationModalContainer');
+    if (container) container.innerHTML = '';
 
-    if (isAndroid && isFsSupported) {
-      ensureExamFullscreenOnGesture(function(ok) {
-        if (!ok) {
-          alert('⚠️ GAGAL MASUK LAYAR PENUH!\n\nSistem mendeteksi masih ada aplikasi mengambang (Floating Window / PIP / TikTok). Tutup aplikasi tersebut dan coba lagi!');
-          return;
-        }
-        finishDismiss();
-      });
-    } else {
-      ensureExamFullscreenOnGesture();
-      finishDismiss();
-    }
+    removeBlackout();
+    updateViolationCounterDisplay();
+    resetQuestionIdleBlurTimer();
 
-    function finishDismiss() {
-      stopExamAlarmLoop();
-      stopExamVibrationLoop();
-      stopContinuousEscalationWatchdog();
-      isViolationModalOpen = false;
-      isTabAway = false;
-      lastViolationTime = Date.now();
-      const container = document.getElementById('examViolationModalContainer');
-      if (container) container.innerHTML = '';
-      removeBlackout();
-      updateViolationCounterDisplay();
-      resetQuestionIdleBlurTimer();
-      try { window.focus(); } catch(e) {}
-    }
+    // Upayakan layar penuh secara non-blocking
+    ensureExamFullscreenOnGesture();
+    try { window.focus(); } catch(e) {}
   };
 
   /**

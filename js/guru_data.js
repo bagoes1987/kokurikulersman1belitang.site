@@ -954,11 +954,11 @@ window.FincestemMasterTeachers = [
     "no": 87,
     "kode_guru": "85L",
     "nama_guru": "TITO DADANG PRASETYO,S.Pd",
-    "nip": "-",
+    "nip": "198309302009041002",
     "mata_pelajaran": "BK",
     "jabatan": "Guru Mata Pelajaran",
     "tugas_tambahan": "-",
-    "username": "85l",
+    "username": "198309302009041002",
     "password": "Fincestem2026!"
   },
   {

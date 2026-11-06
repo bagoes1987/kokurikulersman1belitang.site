@@ -90,6 +90,11 @@
       rawAll.forEach(item => {
         if (!item || !item.nama_guru) return;
         const normName = normalizeTeacherName(item.nama_guru);
+        // Auto-heal NIP & Username untuk TITO DADANG PRASETYO,S.Pd (85L -> 198309302009041002)
+        if (String(item.kode_guru || '').toUpperCase() === '85L' || normName.includes('TITO DADANG PRASETYO')) {
+          if (!item.nip || item.nip === '-') item.nip = '198309302009041002';
+          if (!item.username || String(item.username).toLowerCase() === '85l') item.username = '198309302009041002';
+        }
         const normUser = String(item.username || '').trim().toLowerCase();
         const normNip = (item.nip && String(item.nip).trim() !== '-') ? String(item.nip).trim().toLowerCase() : '';
         const normKode = String(item.kode_guru || '').trim();
@@ -115,6 +120,10 @@
           if (normUser) cloned.aliases.push(normUser);
           if (normNip && !cloned.aliases.includes(normNip)) cloned.aliases.push(normNip);
           if (normKode && !cloned.aliases.includes(normKode.toLowerCase())) cloned.aliases.push(normKode.toLowerCase());
+          if (String(item.kode_guru || '').toUpperCase() === '85L' || normName.includes('TITO DADANG PRASETYO')) {
+            if (!cloned.aliases.includes('85l')) cloned.aliases.push('85l');
+            if (!cloned.aliases.includes('198309302009041002')) cloned.aliases.push('198309302009041002');
+          }
 
           const newIdx = uniqueTeachers.length;
           uniqueTeachers.push(cloned);
