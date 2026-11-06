@@ -1410,6 +1410,158 @@ const FincestemCore = {
       return d;
     },
 
+    // ============================================================================
+    // MANAJEMEN AKUN SISWA UJI COBA TERBATAS (VIP TESTER WHITELIST — ANTI BOCOR)
+    // ============================================================================
+    isTesterStudent: function(nisn) {
+      try {
+        if (window.location.pathname && window.location.pathname.indexOf('/admin') !== -1) {
+          return false;
+        }
+        const u = (FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+        const targetNisn = String(nisn || u.nisn || u.identifier || '').trim();
+        if (!targetNisn) return false;
+        const cleanTarget = targetNisn.replace(/^0+/, '');
+        const rawList = localStorage.getItem('fincestem_tester_nisns');
+        if (rawList) {
+          const list = JSON.parse(rawList);
+          if (Array.isArray(list)) {
+            const found = list.some(item => {
+              const s = String(item || '').trim();
+              return s === targetNisn || (cleanTarget && s.replace(/^0+/, '') === cleanTarget);
+            });
+            if (found) return true;
+          }
+        }
+        if (u && u.is_tester && (!nisn || String(u.nisn || u.identifier || '').trim() === targetNisn)) {
+          return true;
+        }
+      } catch (e) {}
+      return false;
+    },
+
+    getTesterStudents: function(callback) {
+      let cached = [];
+      try {
+        const raw = localStorage.getItem('fincestem_tester_students');
+        if (raw) cached = JSON.parse(raw) || [];
+      } catch (e) {}
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php?_t=' + Date.now() + '&role=admin', { cache: 'no-store' })
+          .then(r => r.json())
+          .then(data => {
+            if (data && data.success && data.data && Array.isArray(data.data.tester_students)) {
+              localStorage.setItem('fincestem_tester_students', JSON.stringify(data.data.tester_students));
+              localStorage.setItem('fincestem_tester_nisns', JSON.stringify(data.data.tester_nisns || []));
+              if (callback) callback(data.data.tester_students);
+              return;
+            }
+            if (callback) callback(cached);
+          })
+          .catch(() => { if (callback) callback(cached); });
+      } else {
+        if (callback) callback(cached);
+      }
+    },
+
+    addTesterStudent: function(studentObj, callback) {
+      if (!studentObj || !studentObj.nisn) {
+        if (callback) callback({ success: false, message: 'NISN siswa tidak valid' });
+        return;
+      }
+      const cleanNisn = String(studentObj.nisn).trim();
+      const entry = {
+        nisn: cleanNisn,
+        nis: String(studentObj.nis || '').trim(),
+        student_name: String(studentObj.name || studentObj.student_name || '').trim(),
+        class_name: String(studentObj.class || studentObj.class_name || '').trim(),
+        zone: String(studentObj.zone || 'FINCESTEM OKU TIMUR').trim()
+      };
+
+      try {
+        let list = JSON.parse(localStorage.getItem('fincestem_tester_students') || '[]');
+        list = list.filter(x => String(x.nisn).trim() !== cleanNisn && String(x.nisn).trim().replace(/^0+/, '') !== cleanNisn.replace(/^0+/, ''));
+        list.unshift(entry);
+        localStorage.setItem('fincestem_tester_students', JSON.stringify(list));
+        localStorage.setItem('fincestem_tester_nisns', JSON.stringify(list.map(x => String(x.nisn).trim())));
+      } catch (e) {}
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(Object.assign({ action: 'add_tester' }, entry))
+        })
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && res.data) {
+              if (Array.isArray(res.data.tester_students)) {
+                localStorage.setItem('fincestem_tester_students', JSON.stringify(res.data.tester_students));
+              }
+              if (Array.isArray(res.data.tester_nisns)) {
+                localStorage.setItem('fincestem_tester_nisns', JSON.stringify(res.data.tester_nisns));
+              }
+            }
+            if (callback) callback(res);
+          })
+          .catch(() => { if (callback) callback({ success: true, local: true }); });
+      } else {
+        if (callback) callback({ success: true, local: true });
+      }
+    },
+
+    removeTesterStudent: function(nisn, callback) {
+      const cleanNisn = String(nisn || '').trim();
+      try {
+        let list = JSON.parse(localStorage.getItem('fincestem_tester_students') || '[]');
+        list = list.filter(x => String(x.nisn).trim() !== cleanNisn && String(x.nisn).trim().replace(/^0+/, '') !== cleanNisn.replace(/^0+/, ''));
+        localStorage.setItem('fincestem_tester_students', JSON.stringify(list));
+        localStorage.setItem('fincestem_tester_nisns', JSON.stringify(list.map(x => String(x.nisn).trim())));
+      } catch (e) {}
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'remove_tester', nisn: cleanNisn })
+        })
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && res.data) {
+              if (Array.isArray(res.data.tester_students)) {
+                localStorage.setItem('fincestem_tester_students', JSON.stringify(res.data.tester_students));
+              }
+              if (Array.isArray(res.data.tester_nisns)) {
+                localStorage.setItem('fincestem_tester_nisns', JSON.stringify(res.data.tester_nisns));
+              }
+            }
+            if (callback) callback(res);
+          })
+          .catch(() => { if (callback) callback({ success: true, local: true }); });
+      } else {
+        if (callback) callback({ success: true, local: true });
+      }
+    },
+
+    clearAllTesterStudents: function(callback) {
+      localStorage.setItem('fincestem_tester_students', '[]');
+      localStorage.setItem('fincestem_tester_nisns', '[]');
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/schedule.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'clear_all_testers' })
+        })
+          .then(r => r.json())
+          .then(res => { if (callback) callback(res); })
+          .catch(() => { if (callback) callback({ success: true, local: true }); });
+      } else {
+        if (callback) callback({ success: true, local: true });
+      }
+    },
+
     evaluateScheduleList: function(days, serverTime) {
       if (!Array.isArray(days)) return [];
       const self = this;
@@ -1464,6 +1616,27 @@ const FincestemCore = {
             d.description = 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.';
           }
         }
+        // Simpan status asli agar akun siswa reguler tidak pernah terpengaruh status bypass tester
+        if (d.orig_is_active === undefined) d.orig_is_active = d.is_active;
+        if (d.orig_auto_schedule === undefined) d.orig_auto_schedule = d.auto_schedule;
+
+        const currUser = (FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+        const isStudentTester = (!currUser.role || currUser.role === 'siswa') && self.isTesterStudent(currUser.nisn || currUser.identifier);
+
+        if (isStudentTester) {
+          d.is_active = 1;
+          d.auto_schedule = 0;
+          d.is_open = true;
+          d.status_code = 'OPEN';
+          d.status_label = '🧪 Terbuka (Akun Uji Coba Admin)';
+          d.is_tester_bypass = true;
+          return d;
+        } else if (d.is_tester_bypass) {
+          d.is_active = (d.orig_is_active !== undefined) ? d.orig_is_active : 0;
+          d.auto_schedule = (d.orig_auto_schedule !== undefined) ? d.orig_auto_schedule : 1;
+          delete d.is_tester_bypass;
+        }
+
         return self.evaluateDayStatus(d, serverTime);
       });
     },
@@ -1541,7 +1714,8 @@ const FincestemCore = {
           cat = 'non_field_trip';
         }
       }
-      const catParam = '&category=' + encodeURIComponent(cat);
+      const nisnParam = (u && (u.nisn || u.identifier)) ? ('&nisn=' + encodeURIComponent(String(u.nisn || u.identifier).trim())) : '';
+      const catParam = '&category=' + encodeURIComponent(cat) + nisnParam;
       const storageKey = 'fincestem_schedules_' + cat;
 
       if (window.location.protocol.startsWith('http')) {
@@ -1557,6 +1731,12 @@ const FincestemCore = {
                 if (def0) {
                   daysList.unshift(def0);
                 }
+              }
+              if (Array.isArray(data.data.tester_students)) {
+                localStorage.setItem('fincestem_tester_students', JSON.stringify(data.data.tester_students));
+              }
+              if (Array.isArray(data.data.tester_nisns)) {
+                localStorage.setItem('fincestem_tester_nisns', JSON.stringify(data.data.tester_nisns));
               }
               const evaluated = self.evaluateScheduleList(daysList, data.data.server_time);
               localStorage.setItem(storageKey, JSON.stringify(evaluated));
@@ -4370,6 +4550,20 @@ const FincestemCore = {
     },
 
     canAccessDay: function(dayNum, prog, daysSchedule) {
+      try {
+        const u = (FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+        const nisn = u.nisn || u.identifier || '';
+        if (nisn && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(nisn)) {
+          return {
+            canAccess: true,
+            canEdit: true,
+            isOpen: true,
+            isPreviousCompleted: true,
+            isTester: true,
+            reason: ''
+          };
+        }
+      } catch (eTester) {}
       const d = parseInt(dayNum);
       const sched = (daysSchedule || []).find(s => parseInt(s.day_number) === d);
       const isOpenByAdmin = sched ? Boolean(sched.is_open) : true;

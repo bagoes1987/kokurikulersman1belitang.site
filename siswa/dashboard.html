@@ -1149,7 +1149,7 @@
   <script src="../js/siswa_data.js?v=20261026_d6_v1"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261106_video_d56_v2"></script>
+  <script src="../js/core.js?v=20261106_tester_v1"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -2710,6 +2710,24 @@
         }
       }
 
+      const isTesterAccountActive = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function')
+        ? FincestemCore.schedule.isTesterStudent(studentNisn)
+        : false;
+      if (isTesterAccountActive) {
+        return {
+          hasMateri,
+          hasLkpd,
+          hasAsesmen,
+          hasDok,
+          hasRefleksi,
+          canLkpd: true,
+          canAsesmen: true,
+          canDok: true,
+          canRefleksi: true,
+          canPenilaian: true
+        };
+      }
+
       // Cascading logic berurutan mutlak
       const isFtDay7 = isFieldTrip && dayNum === 7;
       const isNonFtOrderedDay = !isFieldTrip && (dayNum >= 1 && dayNum <= 7);
@@ -3152,6 +3170,37 @@
       });
 
       container.innerHTML = '';
+      const isCurrentStudentTester = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function')
+        ? FincestemCore.schedule.isTesterStudent(studentNisn)
+        : false;
+      if (isCurrentStudentTester) {
+        const isFromAdminSession = localStorage.getItem('fincestem_admin_testing_session') === 'true';
+        const testerBanner = document.createElement('div');
+        testerBanner.className = 'p-4 rounded-3xl bg-gradient-to-r from-purple-900 via-indigo-900 to-teal-900 text-white border-2 border-amber-400 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-3';
+        testerBanner.innerHTML = `
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-amber-400 text-slate-950 font-black flex items-center justify-center shrink-0 shadow-xs">
+              <span class="material-symbols-outlined text-xl">science</span>
+            </div>
+            <div class="flex flex-col gap-0.5">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black text-[10px] uppercase tracking-wider">VIP TESTER AKTIF</span>
+                <h4 class="font-extrabold text-xs sm:text-sm text-white">Mode Akun Uji Coba Admin (Bebas Buka Day 0 – Day 7)</h4>
+              </div>
+              <p class="text-[11px] text-purple-100 leading-relaxed">
+                Akun ini dipilih Admin untuk pengecekan sistem. Seluruh Hari (Day 0–7) &amp; instrumen terbuka penuh khusus di akun ini, sedangkan akun siswa lainnya <strong>tetap terkunci aman sesuai jadwal</strong>.
+              </p>
+            </div>
+          </div>
+          ${isFromAdminSession ? `
+            <button type="button" onclick="returnToAdminFromTester()" class="px-4 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0">
+              <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
+              <span>Kembali ke Portal Admin</span>
+            </button>
+          ` : ''}
+        `;
+        container.appendChild(testerBanner);
+      }
 
       // Pilih hari yang terbuka: jika belum dipilih, buka hari yang aktif dan belum selesai
       if (expandedDayNumber === null || expandedDayNumber === undefined || (expandedDayNumber === 0 && !visibleDays.some(x => Number(x.day_number) === 0))) {
@@ -7347,6 +7396,21 @@
     window.saveStudentContactInfo = saveStudentContactInfo;
     window.loadStudentContactInfo = loadStudentContactInfo;
 
+    function returnToAdminFromTester() {
+      try {
+        const savedAdminUser = localStorage.getItem('fincestem_saved_admin_user');
+        if (savedAdminUser) {
+          localStorage.setItem('fincestem_user', savedAdminUser);
+        } else {
+          localStorage.setItem('fincestem_user', JSON.stringify({ id: 1, name: 'Administrator IT', role: 'admin', identifier: 'admin' }));
+        }
+        localStorage.setItem('fincestem_auth', 'true');
+        localStorage.setItem('fincestem_role', 'admin');
+        localStorage.removeItem('fincestem_admin_testing_session');
+      } catch (e) {}
+      window.location.href = '../admin/index.html';
+    }
+    window.returnToAdminFromTester = returnToAdminFromTester;
     window.openHealthInfoModal = openHealthInfoModal;
     window.closeHealthInfoModal = closeHealthInfoModal;
     window.onHealthConditionChanged = onHealthConditionChanged;

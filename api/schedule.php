@@ -27,6 +27,18 @@ function ensureDaySchedulesTable($pdo) {
     }
 
     try {
+        // 0. Tabel Akun Siswa Uji Coba Terbatas (VIP Tester Whitelist Admin)
+        $pdo->exec("
+            CREATE TABLE IF NOT EXISTS `tester_students` (
+              `nisn` VARCHAR(32) NOT NULL PRIMARY KEY,
+              `nis` VARCHAR(32) DEFAULT '',
+              `student_name` VARCHAR(150) DEFAULT '',
+              `class_name` VARCHAR(50) DEFAULT '',
+              `zone` VARCHAR(100) DEFAULT '',
+              `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        ");
+
         // 1. Tabel Jadwal Non-Field Trip (Reguler OKU Timur)
         $pdo->exec("
             CREATE TABLE IF NOT EXISTS `day_schedules` (
@@ -237,6 +249,30 @@ if ($method === 'GET') {
         array_unshift($rows, $day0Row);
     }
 
+    $testerRows = [];
+    $testerNisns = [];
+    $isReqTester = false;
+    $reqNisn = trim($_GET['nisn'] ?? '');
+    try {
+        if (isset($pdo) && $pdo) {
+            $stmtT = $pdo->query("SELECT * FROM `tester_students` ORDER BY `created_at` DESC");
+            if ($stmtT) {
+                $testerRows = $stmtT->fetchAll(PDO::FETCH_ASSOC);
+                foreach ($testerRows as $tr) {
+                    $tn = trim((string)($tr['nisn'] ?? ''));
+                    if ($tn !== '') {
+                        $testerNisns[] = $tn;
+                        if ($reqNisn !== '' && $role !== 'admin') {
+                            if ($reqNisn === $tn || ltrim($reqNisn, '0') === ltrim($tn, '0')) {
+                                $isReqTester = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } catch (Exception $eTester) {}
+
     $days = [];
     foreach ($rows as $r) {
         $dayNum = (int)$r['day_number'];
@@ -287,8 +323,22 @@ if ($method === 'GET') {
             }
         }
 
+        // Jika siswa yang sedang request terdaftar di Akun Uji Coba (VIP Tester), buka semua hari khusus untuk dirinya
+        $origActive = $isActive;
+        $origAuto = $autoSched;
+        if ($isReqTester) {
+            $isActive = 1;
+            $autoSched = 0;
+            $isOpen = true;
+            $statusCode = 'OPEN';
+            $statusLabel = '🧪 Terbuka (Akun Uji Coba Admin)';
+        }
+
         $days[] = [
-            'id'            => (int)($r['id'] ?? 0),
+            'id'               => (int)($r['id'] ?? 0),
+            'orig_is_active'   => $origActive,
+            'orig_auto_schedule'=> $origAuto,
+            'is_tester_bypass' => $isReqTester,
             'day_number'    => $dayNum,
             'title'         => $r['title'],
             'theme'         => $r['theme'],
@@ -310,7 +360,10 @@ if ($method === 'GET') {
         'server_time' => $now->format('Y-m-d H:i:s'),
         'server_date' => $nowDateStr,
         'category'    => $category,
-        'days'        => $days
+        'days'            => $days,
+        'tester_students' => $testerRows,
+        'tester_nisns'    => $testerNisns,
+        'is_tester'       => $isReqTester
     ]);
 }
 
@@ -323,6 +376,107 @@ if ($method === 'POST') {
     $action = $input['action'] ?? 'update_day';
     $category = strtolower(trim($input['category'] ?? 'non_field_trip'));
     $tableName = ($category === 'field_trip') ? 'day_schedules_field_trip' : 'day_schedules';
+
+    // AKSI KHUSUS TESTER: TAMBAH / HAPUS / RESET DAFTAR AKUN SISWA UJI COBA (VIP TESTER)
+    if ($action === 'add_tester') {
+        $nisn = trim((string)($input['nisn'] ?? ''));
+        $nis = trim((string)($input['nis'] ?? ''));
+        $studentName = trim((string)($input['student_name'] ?? ''));
+        $className = trim((string)($input['class_name'] ?? ''));
+        $zone = trim((string)($input['zone'] ?? 'FINCESTEM OKU TIMUR'));
+
+        if ($nisn === '') {
+            jsonResponse(false, 'NISN siswa wajib diisi!', null, 400);
+        }
+
+        try {
+            $pdo = getDB();
+            ensureDaySchedulesTable($pdo);
+
+            $stmt = $pdo->prepare("
+                INSERT INTO `tester_students` (`nisn`, `nis`, `student_name`, `class_name`, `zone`)
+                VALUES (:nisn, :nis, :name, :cls, :zone)
+                ON DUPLICATE KEY UPDATE
+                    `nis` = VALUES(`nis`),
+                    `student_name` = VALUES(`student_name`),
+                    `class_name` = VALUES(`class_name`),
+                    `zone` = VALUES(`zone`)
+            ");
+            $stmt->execute([
+                ':nisn' => $nisn,
+                ':nis'  => $nis,
+                ':name' => $studentName,
+                ':cls'  => $className,
+                ':zone' => $zone
+            ]);
+
+            // Bebaskan kunci perangkat siswa ini agar Admin bisa tes dari HP/laptop manapun tanpa mengunci HP siswa asli
+            try {
+                $stmtUnl = $pdo->prepare("UPDATE `users` SET `device_id` = NULL, `device_info` = NULL, `device_locked_at` = NULL WHERE `identifier` = :n1 OR `identifier` = :n2");
+                $stmtUnl->execute([':n1' => $nisn, ':n2' => ltrim($nisn, '0')]);
+            } catch (Exception $eUnl) {}
+
+            $rowsT = $pdo->query("SELECT * FROM `tester_students` ORDER BY `created_at` DESC")->fetchAll(PDO::FETCH_ASSOC);
+            $nisnsT = array_values(array_filter(array_map(function($r) { return trim((string)($r['nisn'] ?? '')); }, $rowsT)));
+
+            jsonResponse(true, 'Siswa ' . ($studentName ?: $nisn) . ' berhasil ditambahkan sebagai Akun Uji Coba (VIP Tester)! Seluruh Day 0–7 kini terbuka khusus untuk akun ini.', [
+                'tester_students' => $rowsT,
+                'tester_nisns'    => $nisnsT
+            ]);
+        } catch (Exception $e) {
+            jsonResponse(false, 'Gagal menambahkan siswa uji coba: ' . $e->getMessage(), null, 500);
+        }
+    }
+
+    if ($action === 'remove_tester') {
+        $nisn = trim((string)($input['nisn'] ?? ''));
+        if ($nisn === '') {
+            jsonResponse(false, 'NISN siswa wajib diisi!', null, 400);
+        }
+        try {
+            $pdo = getDB();
+            ensureDaySchedulesTable($pdo);
+
+            $stmt = $pdo->prepare("DELETE FROM `tester_students` WHERE `nisn` = :n1 OR `nisn` = :n2");
+            $stmt->execute([':n1' => $nisn, ':n2' => ltrim($nisn, '0')]);
+
+            // Reset kunci perangkat siswa agar saat siswa asli login di HP-nya tidak terblokir bekas tes Admin
+            try {
+                $stmtUnl = $pdo->prepare("UPDATE `users` SET `device_id` = NULL, `device_info` = NULL, `device_locked_at` = NULL WHERE `identifier` = :n1 OR `identifier` = :n2");
+                $stmtUnl->execute([':n1' => $nisn, ':n2' => ltrim($nisn, '0')]);
+            } catch (Exception $eUnl) {}
+
+            $rowsT = $pdo->query("SELECT * FROM `tester_students` ORDER BY `created_at` DESC")->fetchAll(PDO::FETCH_ASSOC);
+            $nisnsT = array_values(array_filter(array_map(function($r) { return trim((string)($r['nisn'] ?? '')); }, $rowsT)));
+
+            jsonResponse(true, 'Akses Uji Coba siswa berhasil dicabut! Akun siswa kembali mengikuti jadwal resmi.', [
+                'tester_students' => $rowsT,
+                'tester_nisns'    => $nisnsT
+            ]);
+        } catch (Exception $e) {
+            jsonResponse(false, 'Gagal mencabut akses tester: ' . $e->getMessage(), null, 500);
+        }
+    }
+
+    if ($action === 'clear_all_testers') {
+        try {
+            $pdo = getDB();
+            ensureDaySchedulesTable($pdo);
+
+            try {
+                $pdo->exec("UPDATE `users` SET `device_id` = NULL, `device_info` = NULL, `device_locked_at` = NULL WHERE `identifier` IN (SELECT `nisn` FROM `tester_students`)");
+            } catch (Exception $eUnl) {}
+
+            $pdo->exec("DELETE FROM `tester_students`");
+
+            jsonResponse(true, 'Seluruh Akun Uji Coba (VIP Tester) telah dicabut dan dikembalikan ke aturan jadwal resmi!', [
+                'tester_students' => [],
+                'tester_nisns'    => []
+            ]);
+        } catch (Exception $e) {
+            jsonResponse(false, 'Gagal menghapus daftar tester: ' . $e->getMessage(), null, 500);
+        }
+    }
 
     // AKSI MASTER 1: BUKA SEMUA HARI DAY 1 - 7 (UNTUK ADMIN TES & COBA LANGSUNG DI HP)
     if ($action === 'open_all_days') {

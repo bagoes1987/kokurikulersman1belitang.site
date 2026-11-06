@@ -332,9 +332,10 @@
     }
 
     // Cek Prasyarat: Modul Belajar, LKPD, & Dokumentasi (khusus Day 1-7) harus selesai
-    const hasMateri = checkPrerequisiteMateri(dayNum, examState.cleanNisn);
-    const hasLkpd = checkPrerequisiteLkpd(dayNum, examState.cleanNisn);
-    const hasDok = (dayNum >= 1 && dayNum <= 7) ? checkPrerequisiteDok(dayNum, examState.cleanNisn) : true;
+    const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(examState.cleanNisn));
+    const hasMateri = isTesterBypass ? true : checkPrerequisiteMateri(dayNum, examState.cleanNisn);
+    const hasLkpd = isTesterBypass ? true : checkPrerequisiteLkpd(dayNum, examState.cleanNisn);
+    const hasDok = isTesterBypass ? true : ((dayNum >= 1 && dayNum <= 7) ? checkPrerequisiteDok(dayNum, examState.cleanNisn) : true);
 
     if (!hasMateri || !hasLkpd || !hasDok) {
       renderPrerequisiteLockedScreen(hasMateri, hasLkpd, dayNum, hasDok);

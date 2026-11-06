@@ -232,8 +232,21 @@ if ($action === 'login') {
         'reset_at'         => $effectiveResetAt
     ];
 
-    // SINGLE DEVICE LOCK KHUSUS SISWA
+    // CEK APAKAH SISWA TERDAFTAR SEBAGAI AKUN UJI COBA (VIP TESTER ADMIN)
+    $isTesterStudent = false;
     if ($user['role'] === 'siswa') {
+        try {
+            $stmtChkT = $pdo->prepare("SELECT COUNT(*) FROM `tester_students` WHERE `nisn` = :n1 OR `nisn` = :n2");
+            $stmtChkT->execute([':n1' => $user['identifier'], ':n2' => ltrim((string)$user['identifier'], '0')]);
+            if ((int)$stmtChkT->fetchColumn() > 0) {
+                $isTesterStudent = true;
+                $userData['is_tester'] = true;
+            }
+        } catch (Exception $eT) {}
+    }
+
+    // SINGLE DEVICE LOCK KHUSUS SISWA (Bypass jika siswa sedang menjadi Akun Uji Coba Admin agar HP siswa asli tidak terkunci oleh perangkat Admin)
+    if ($user['role'] === 'siswa' && !$isTesterStudent) {
         $deviceId   = trim($input['device_id'] ?? '');
         $deviceInfo = trim($input['device_info'] ?? '');
 

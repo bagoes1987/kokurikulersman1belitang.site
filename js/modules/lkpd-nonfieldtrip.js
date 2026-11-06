@@ -160,7 +160,8 @@
     };
     const rawForm = saved || draft || {};
     const formData = isSubmitted ? Object.assign({}, d1DefaultLKPDFields, rawForm) : rawForm;
-    const isLockedByPrereq = !hasMateri;
+    const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
+    const isLockedByPrereq = !hasMateri && !isTesterBypass;
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
     const readOnlyAttr = isFormLocked ? 'disabled' : '';
     const draftTimeStr = (draft && draft.updatedAt) 
@@ -1203,7 +1204,8 @@
     };
     const rawD2Form = saved || draft || {};
     const formData = isSubmitted ? Object.assign({}, d2DefaultLKPDFields, rawD2Form) : rawD2Form;
-    const isLockedByPrereq = !hasMateri;
+    const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
+    const isLockedByPrereq = !hasMateri && !isTesterBypass;
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
     const readOnlyAttr = isFormLocked ? 'disabled' : '';
     const draftTimeStr = (draft && draft.updatedAt) 
@@ -5143,7 +5145,8 @@
 
     const formData = saved || draft;
     const isSubmitted = !!(saved && (saved.submitted || saved.submittedAt));
-    const isLockedByPrereq = !hasMateri;
+    const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
+    const isLockedByPrereq = !hasMateri && !isTesterBypass;
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
     const readOnlyAttr = isFormLocked ? 'disabled' : '';
     const draftTimeStr = (draft && draft.updatedAt) 
@@ -5635,7 +5638,8 @@
       } catch(eProg) {}
     }
 
-    if (!hasMateri && !isReadOnly) {
+    const isTesterD0 = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
+    if (!hasMateri && !isReadOnly && !isTesterD0) {
       mainEl.innerHTML = `
         <div class="max-w-md mx-auto w-full p-6 rounded-3xl bg-white border border-slate-200 shadow-xl flex flex-col items-center text-center gap-4 my-8 animate-scale-up">
           <div class="w-16 h-16 rounded-3xl bg-amber-100 text-amber-800 flex items-center justify-center font-black shadow-inner">

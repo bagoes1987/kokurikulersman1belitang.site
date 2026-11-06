@@ -390,7 +390,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261106_video_d56_v2"></script>
+  <script src="../js/core.js?v=20261106_tester_v1"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -904,7 +904,8 @@
 
             // Validasi alur berurutan khusus Day 1 s.d. 7 Field Trip
             const studentCategory = getStudentCategoryInfo();
-            if (studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
+            const isTesterDok = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(nisn));
+            if (!isTesterDok && studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
               const ids = [nisn, String(nisn).trim(), String(nisn).trim().replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
 
               if (dayNum === 2) {
