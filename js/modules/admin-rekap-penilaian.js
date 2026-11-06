@@ -390,11 +390,15 @@
         finScore = 95; culScore = 95; expScore = 95; stemScore = 95;
       }
 
+      const isFT = (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function')
+        ? FincestemCore.zones.isFieldTripStudent(nisn, st.class_name || st.class || st.kelas, st.zone)
+        : ((st.category || st.zone || '').toUpperCase().includes('LUAR') || (st.category || '').toUpperCase().includes('FIELD_TRIP') || st.is_field_trip === true);
+
       return {
         nisn: nisn,
         name: st.name || st.nama || '-',
-        className: st.class_name || st.kelas || '-',
-        category: (st.category || '').toUpperCase().includes('FIELD_TRIP') ? 'FIELD_TRIP' : 'NON_FIELD_TRIP',
+        className: st.class_name || st.class || st.kelas || '-',
+        category: isFT ? 'FIELD_TRIP' : 'NON_FIELD_TRIP',
         gender: st.gender || st.jenis_kelamin || '-',
         mentorKey: mentorInfo ? mentorInfo.teacherKey : null,
         mentorName: mentorInfo ? mentorInfo.teacherName : 'Belum Ditentukan',

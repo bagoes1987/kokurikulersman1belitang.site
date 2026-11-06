@@ -450,19 +450,28 @@
             const rawZ = localStorage.getItem('fincestem_student_zones_map');
             if (rawZ) localZones = JSON.parse(rawZ) || {};
           } catch (eZ) {}
-          // JANGAN menimpa perubahan lokal yang baru saja disimpan oleh Admin
-          // Server state digabungkan dulu, lalu localZones menimpa (local takes priority)
-          const mergedZones = Object.assign({}, state.student_zones, localZones);
+
+          // Gabungkan zona dari server sebagai sumber kebenaran lintas PC,
+          // lalu lindungi perubahan manual yang baru saja diklik Admin (< 5 menit) agar tidak tertimpa respon lama
+          const mergedZones = Object.assign({}, localZones, state.student_zones);
+          const now = Date.now();
+          if (window.FincestemCore && FincestemCore.zones && FincestemCore.zones._recentLocalZoneOverrides) {
+            const ovrs = FincestemCore.zones._recentLocalZoneOverrides;
+            Object.keys(ovrs).forEach(k => {
+              const ovr = ovrs[k];
+              if (ovr && (now - ovr.time < 300000)) {
+                mergedZones[k] = ovr.zone;
+              }
+            });
+          }
+
           if (JSON.stringify(localZones) !== JSON.stringify(mergedZones)) {
             localStorage.setItem('fincestem_student_zones_map', JSON.stringify(mergedZones));
             updated = true;
           }
-          Object.keys(mergedZones).forEach(n => {
-            const z = state.student_zones[n];
-            if (z) {
-              try { localStorage.setItem('fincestem_student_zone_' + n, z); } catch (e) {}
-            }
-          });
+          if (window.FincestemCore && FincestemCore.zones) {
+            FincestemCore.zones._cachedZonesMap = mergedZones;
+          }
           if (window.FincestemMasterStudents && Array.isArray(window.FincestemMasterStudents)) {
             window.FincestemMasterStudents.forEach(s => {
               const sNisn = String(s.nisn || '').trim();
@@ -1124,10 +1133,11 @@
         const unp = digits.replace(/^0+/, '');
 
         let isFT = false;
-        if (zMap && zMap[sNisn]) {
-          isFT = String(zMap[sNisn]).toUpperCase().includes('LUAR');
-        } else if (window.FincestemCore && FincestemCore.zones) {
+        if (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function') {
           isFT = FincestemCore.zones.isFieldTripStudent(sNisn, s.class || s.rombel, s.zone);
+        } else if (zMap && (zMap[sNisn] || zMap[padded] || (unp && zMap[unp]))) {
+          const zVal = zMap[sNisn] || zMap[padded] || (unp ? zMap[unp] : '');
+          isFT = String(zVal).toUpperCase().includes('LUAR');
         } else {
           isFT = (s.zone === 'FINCESTEM LUAR OKU TIMUR' || s.is_field_trip === true);
         }

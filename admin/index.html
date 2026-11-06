@@ -4293,11 +4293,11 @@
 
   <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
   <script src="../js/guru_data.js?v=20261030_binaan_v4"></script>
-  <script src="../js/core.js?v=20261030_binaan_v4"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261104_dualrole_v2"></script>
-  <script src="../js/modules/admin-mentorship.js?v=20261104_dualrole_v2"></script>
+  <script src="../js/core.js?v=20261106_zonefix_v6"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261106_zonefix_v6"></script>
+  <script src="../js/modules/admin-mentorship.js?v=20261106_zonefix_v6"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
-  <script src="../js/modules/admin-rekap-penilaian.js?v=20261104_dualrole_v2"></script>
+  <script src="../js/modules/admin-rekap-penilaian.js?v=20261106_zonefix_v6"></script>
   <script>
     let adminCurrentGrade = 'ALL';
     let adminSearchQuery = '';
@@ -4521,16 +4521,21 @@
       checkAdminAuth();
     }
 
-    function refreshAdminStats() {
+    function refreshAdminStats(skipListsRender) {
       const list = window.FincestemMasterStudents || [];
       const total = list.length || 1165;
-      document.getElementById('statTotalSiswa').textContent = total.toLocaleString('id-ID');
+      const elSiswa = document.getElementById('statTotalSiswa');
+      if (elSiswa) elSiswa.textContent = total.toLocaleString('id-ID');
       
       const teacherList = window.FincestemMasterTeachers || [];
       const uniqueTeachers = new Set(teacherList.map(t => t.nama_guru)).size || 86;
       const koordCount = teacherList.filter(t => (t.mata_pelajaran + ' ' + t.tugas_tambahan).toUpperCase().includes('KOORD')).length || 19;
+      const elFasil = document.getElementById('statTotalFasilitator');
+      const elKoord = document.getElementById('statTotalKoordinator');
+      const elKelompok = document.getElementById('statTotalKelompok');
       if (elFasil) elFasil.textContent = uniqueTeachers.toString();
       if (elKoord) elKoord.textContent = koordCount.toString();
+      if (elKelompok && elKelompok.textContent === '0') elKelompok.textContent = '33';
 
       const elAll = document.getElementById('btnGradeAll');
       const elX = document.getElementById('btnGradeX');
@@ -4549,13 +4554,10 @@
       // Hitung jumlah riil Field Trip & Non-Field Trip langsung dari data siswa terkini (O(1) Memory)
       let ftCount = 0;
       let nonFtCount = 0;
-      const zMap = (FincestemCore.zones && FincestemCore.zones._getZonesMap) 
-        ? FincestemCore.zones._getZonesMap() 
-        : {};
       list.forEach(s => {
-        const sNisn = String(s.nisn || '').trim();
-        const z = zMap[sNisn] || s.zone;
-        const isFT = z ? String(z).toUpperCase().includes('LUAR') : (s.is_field_trip === true);
+        const isFT = (FincestemCore.zones && FincestemCore.zones.isFieldTripStudent)
+          ? FincestemCore.zones.isFieldTripStudent(s.nisn, s.class, s.zone)
+          : (s.zone ? String(s.zone).toUpperCase().includes('LUAR') : (s.is_field_trip === true));
         if (isFT) ftCount++;
         else nonFtCount++;
       });
@@ -4570,8 +4572,13 @@
       if (optFT) optFT.textContent = `🚌 Field Trip (${ftCount})`;
       if (optNonFT) optNonFT.textContent = `🏫 Non-Field Trip (${nonFtCount})`;
 
-      renderAdminStudentList();
-      renderAdminTeacherList();
+      if (!skipListsRender) {
+        renderAdminStudentList();
+        const pTeachers = document.getElementById('panelAdminTeachers');
+        if (pTeachers && !pTeachers.classList.contains('hidden')) {
+          renderAdminTeacherList();
+        }
+      }
     }
 
     const ADM_TAB_NAMES = {
@@ -6542,15 +6549,42 @@
       });
     }
 
-    function toggleStudentZoneQuick(nisn, newZone) {
-      if (!FincestemCore.zones) return;
-      FincestemCore.zones.setStudentZone(nisn, newZone, function(res) {
-        refreshAdminStats();
+    function refreshActiveViewsAfterZoneChange() {
+      refreshAdminStats(true);
+      const pUsers = document.getElementById('panelAdminUsers');
+      if (!pUsers || !pUsers.classList.contains('hidden')) {
         applyStudentFilters();
-        if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+      }
+      const pRekap = document.getElementById('panelAdminRekap');
+      if (pRekap && !pRekap.classList.contains('hidden') && typeof renderAdminRekapView === 'function') {
+        renderAdminRekapView();
+      }
+      const modalRekap = document.getElementById('modalRekapClassDetail');
+      if (modalRekap && !modalRekap.classList.contains('opacity-0') && currentModalRekapClass && typeof openRekapClassModal === 'function') {
+        openRekapClassModal(currentModalRekapClass);
+      }
+      const pCards = document.getElementById('panelAdminCards');
+      if (pCards && !pCards.classList.contains('hidden') && typeof renderAdminCards === 'function') {
+        renderAdminCards();
+      }
+      const pZones = document.getElementById('panelAdminZones');
+      if (pZones && !pZones.classList.contains('hidden') && typeof renderAdminZonesView === 'function') {
+        renderAdminZonesView();
+      }
+      const pMentorship = document.getElementById('panelAdminMentorship');
+      if (pMentorship && !pMentorship.classList.contains('hidden')) {
         if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
         if (typeof renderPlottingView === 'function') renderPlottingView();
         if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+        if (typeof renderAllStudentsMentorshipView === 'function') renderAllStudentsMentorshipView();
+        if (typeof window.renderRekapFasilView === 'function') window.renderRekapFasilView();
+      }
+    }
+
+    function toggleStudentZoneQuick(nisn, newZone) {
+      if (!FincestemCore.zones) return;
+      FincestemCore.zones.setStudentZone(nisn, newZone, function(res) {
+        refreshActiveViewsAfterZoneChange();
         const shortName = newZone.includes('LUAR') ? 'FIELD TRIP' : 'NON-FIELD TRIP';
         FincestemCore.ui.toast(`Kategori siswa ${nisn} berhasil diubah ke ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
@@ -7086,12 +7120,7 @@
       if (!currentModalNisn || !FincestemCore.zones) return;
       FincestemCore.zones.setStudentZone(currentModalNisn, targetZone, function(res) {
         updateModalZoneButtonsUI(targetZone);
-        refreshAdminStats();
-        applyStudentFilters();
-        if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
-        if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
-        if (typeof renderPlottingView === 'function') renderPlottingView();
-        if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+        refreshActiveViewsAfterZoneChange();
         const shortName = targetZone.includes('LUAR') ? 'LUAR OKU TIMUR' : 'OKU TIMUR';
         FincestemCore.ui.toast(`Zona siswa berhasil diperbarui menjadi ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
@@ -7164,12 +7193,7 @@
       if (!FincestemCore.zones) return;
       FincestemCore.zones.setStudentZone(nisn, targetZone, function(res) {
         handleSearchStudentForZone();
-        refreshAdminStats();
-        applyStudentFilters();
-        if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
-        if (typeof renderMentorshipStats === 'function') renderMentorshipStats();
-        if (typeof renderPlottingView === 'function') renderPlottingView();
-        if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+        refreshActiveViewsAfterZoneChange();
         const shortName = targetZone.includes('LUAR') ? 'LUAR OKU TIMUR' : 'OKU TIMUR';
         FincestemCore.ui.toast(`Zona siswa ${nisn} berhasil diubah ke ${shortName}! Rekapitulasi diperbarui.`, 'success');
       });
@@ -7690,7 +7714,7 @@
       tbody.innerHTML = '';
 
       rombels.forEach(r => {
-        const info = FincestemCore.zones.getClassInfo(r);
+        const info = FincestemCore.zones.getClassInfoWithDefault ? FincestemCore.zones.getClassInfoWithDefault(r) : (FincestemCore.zones.getClassInfo(r) || { zone: 'FINCESTEM OKU TIMUR', coordinator_name: '', facilitator_name: 'Tim Fasilitator' });
         const gradeLevel = r.includes('XII') ? 'XII' : (r.includes('XI') ? 'XI' : 'X');
         const countInClass = list.filter(s => s.class === r).length;
         const isLuar = (info.zone || '').toUpperCase().includes('LUAR');
@@ -8875,7 +8899,7 @@
       const select = document.getElementById('zoneSelectRombel');
       if (!select || !select.value) return;
       const r = select.value;
-      const info = FincestemCore.zones.getClassInfo(r);
+      const info = FincestemCore.zones.getClassInfoWithDefault ? FincestemCore.zones.getClassInfoWithDefault(r) : (FincestemCore.zones.getClassInfo(r) || { zone: 'FINCESTEM OKU TIMUR' });
       document.getElementById('zoneSelectTargetZone').value = info.zone || 'FINCESTEM OKU TIMUR';
     }
 
@@ -8897,7 +8921,7 @@
         return;
       }
 
-      const cur = FincestemCore.zones.getClassInfo(rombel);
+      const cur = (FincestemCore.zones.getClassInfoWithDefault ? FincestemCore.zones.getClassInfoWithDefault(rombel) : FincestemCore.zones.getClassInfo(rombel)) || {};
       FincestemCore.zones.saveClassInfo(rombel, {
         zone: zone,
         coordinator_name: cur.coordinator_name || '',
@@ -8905,7 +8929,7 @@
       }, function() {
         FincestemCore.ui.toast(`Zona riset untuk ${rombel} berhasil diatur ke ${zone}!`, 'success');
         renderAdminZonesView();
-        renderAdminStudentList();
+        refreshActiveViewsAfterZoneChange();
       });
     }
 
@@ -8914,17 +8938,17 @@
       const rombels = FincestemCore.sortClasses([...new Set(list.filter(s => s.level === grade).map(s => s.class))].filter(Boolean));
 
       rombels.forEach(r => {
-        const cur = FincestemCore.zones.getClassInfo(r);
+        const cur = (FincestemCore.zones.getClassInfoWithDefault ? FincestemCore.zones.getClassInfoWithDefault(r) : FincestemCore.zones.getClassInfo(r)) || {};
         FincestemCore.zones.saveClassInfo(r, {
           zone: targetZone,
-          coordinator_name: cur.coordinator_name,
-          facilitator_name: cur.facilitator_name
+          coordinator_name: cur.coordinator_name || '',
+          facilitator_name: cur.facilitator_name || ''
         });
       });
 
       FincestemCore.ui.toast(`Seluruh ${rombels.length} rombel Kelas ${grade} berhasil diatur ke ${targetZone}!`, 'success');
       renderAdminZonesView();
-      renderAdminStudentList();
+      refreshActiveViewsAfterZoneChange();
     }
 
     function saveAdminConfig() {
@@ -9457,9 +9481,10 @@
           let rowsHtml = '';
           sortedStudents.forEach((s, idx) => {
             const isFT = isStudentFTAdminRekap(s);
+            const nextZoneModal = isFT ? 'FINCESTEM OKU TIMUR' : 'FINCESTEM LUAR OKU TIMUR';
             const statusBadge = isFT
-              ? `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-500 text-white shadow-2xs">🚌 Field Trip</span>`
-              : `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-100 text-teal-900 border border-teal-200">🏫 Non-Field Trip</span>`;
+              ? `<button type="button" onclick="toggleStudentZoneQuick('${s.nisn}', '${nextZoneModal}')" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-amber-500 hover:bg-amber-600 text-white shadow-2xs inline-flex items-center gap-1 cursor-pointer transition-all" title="Klik untuk beralih ke Non-Field Trip"><span>🚌 Field Trip</span><span class="material-symbols-outlined text-[11px] opacity-80">swap_horiz</span></button>`
+              : `<button type="button" onclick="toggleStudentZoneQuick('${s.nisn}', '${nextZoneModal}')" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-teal-100 hover:bg-teal-200 text-teal-900 border border-teal-200 inline-flex items-center gap-1 cursor-pointer transition-all" title="Klik untuk beralih ke Field Trip"><span>🏫 Non-Field Trip</span><span class="material-symbols-outlined text-[11px] opacity-80">swap_horiz</span></button>`;
 
             rowsHtml += `
               <tr class="${isFT ? 'bg-amber-50/30' : ''} hover:bg-slate-50 transition-colors">

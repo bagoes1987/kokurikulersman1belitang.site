@@ -401,6 +401,9 @@
       : {};
 
     const checkIsFT = (sNisn, sObj) => {
+      if (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function') {
+        return FincestemCore.zones.isFieldTripStudent(sNisn, sObj.class || sObj.rombel, sObj.zone);
+      }
       const rawDigits = sNisn.replace(/\D/g, '');
       const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
       const unpaddedNisn = rawDigits.replace(/^0+/, '');
@@ -667,11 +670,29 @@
     FincestemCore.zones.setStudentZone(nisn, targetZone, function() {
       renderAllStudentsMentorshipView();
       renderMentorshipStats();
-      if (currentSubTab === 'plotting') renderPlottingView();
-      if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
-      if (typeof window.refreshAdminStats === 'function') window.refreshAdminStats();
-      if (typeof applyStudentFilters === 'function') applyStudentFilters();
-      if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+      if (currentSubTab === 'plotting') {
+        renderPlottingView();
+        if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+      } else if (currentSubTab === 'rekap_fasil' && typeof window.renderRekapFasilView === 'function') {
+        window.renderRekapFasilView();
+      }
+      const modalAssign = document.getElementById('modalAssignStudents');
+      if (modalAssign && !modalAssign.classList.contains('hidden') && typeof renderModalStudentsList === 'function') {
+        renderModalStudentsList();
+      }
+      if (typeof window.refreshAdminStats === 'function') window.refreshAdminStats(true);
+      const pUsers = document.getElementById('panelAdminUsers');
+      if (pUsers && !pUsers.classList.contains('hidden') && typeof applyStudentFilters === 'function') {
+        applyStudentFilters();
+      }
+      const pRekap = document.getElementById('panelAdminRekap');
+      if (pRekap && !pRekap.classList.contains('hidden') && typeof renderAdminRekapView === 'function') {
+        renderAdminRekapView();
+      }
+      const pCards = document.getElementById('panelAdminCards');
+      if (pCards && !pCards.classList.contains('hidden') && typeof renderAdminCards === 'function') {
+        renderAdminCards();
+      }
       if (window.FincestemCore && FincestemCore.ui) {
         FincestemCore.ui.toast(`Kategori siswa NISN ${nisn} berhasil dialihkan ke ${label}!`, 'success');
       }
@@ -691,17 +712,39 @@
       return;
     }
 
-    selectedNisns.forEach(nisn => {
-      FincestemCore.zones.setStudentZone(nisn, targetZone);
-    });
+    if (FincestemCore.zones && typeof FincestemCore.zones.setStudentZonesBatch === 'function') {
+      FincestemCore.zones.setStudentZonesBatch(selectedNisns, targetZone);
+    } else {
+      selectedNisns.forEach(nisn => {
+        FincestemCore.zones.setStudentZone(nisn, targetZone);
+      });
+    }
 
     renderAllStudentsMentorshipView();
     renderMentorshipStats();
-    if (currentSubTab === 'plotting') renderPlottingView();
-    if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
-    if (typeof window.refreshAdminStats === 'function') window.refreshAdminStats();
-    if (typeof applyStudentFilters === 'function') applyStudentFilters();
-    if (typeof renderAdminRekapView === 'function') renderAdminRekapView();
+    if (currentSubTab === 'plotting') {
+      renderPlottingView();
+      if (typeof renderSelectedTeacherDetail === 'function') renderSelectedTeacherDetail();
+    } else if (currentSubTab === 'rekap_fasil' && typeof window.renderRekapFasilView === 'function') {
+      window.renderRekapFasilView();
+    }
+    const modalAssign = document.getElementById('modalAssignStudents');
+    if (modalAssign && !modalAssign.classList.contains('hidden') && typeof renderModalStudentsList === 'function') {
+      renderModalStudentsList();
+    }
+    if (typeof window.refreshAdminStats === 'function') window.refreshAdminStats(true);
+    const pUsers = document.getElementById('panelAdminUsers');
+    if (pUsers && !pUsers.classList.contains('hidden') && typeof applyStudentFilters === 'function') {
+      applyStudentFilters();
+    }
+    const pRekap = document.getElementById('panelAdminRekap');
+    if (pRekap && !pRekap.classList.contains('hidden') && typeof renderAdminRekapView === 'function') {
+      renderAdminRekapView();
+    }
+    const pCards = document.getElementById('panelAdminCards');
+    if (pCards && !pCards.classList.contains('hidden') && typeof renderAdminCards === 'function') {
+      renderAdminCards();
+    }
     if (window.FincestemCore && FincestemCore.ui) {
       FincestemCore.ui.toast(`Berhasil memindahkan ${selectedNisns.length} siswa ke ${label}!`, 'success');
     } else {
@@ -913,6 +956,9 @@
       : {};
 
     const checkIsFT = (sNisn, sObj) => {
+      if (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function') {
+        return FincestemCore.zones.isFieldTripStudent(sNisn, sObj.class || sObj.rombel, sObj.zone);
+      }
       const rawDigits = sNisn.replace(/\D/g, '');
       const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
       const unpaddedNisn = rawDigits.replace(/^0+/, '');
@@ -1548,8 +1594,11 @@
       if (zRaw) studentZonesMap = JSON.parse(zRaw) || {};
     } catch(e) {}
 
-    // Helper O(1) cek Field Trip tanpa panggil getStudentZone berulang-ulang
+    // Helper O(1) cek Field Trip
     const checkIsFT = (sNisn, sObj) => {
+      if (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function') {
+        return FincestemCore.zones.isFieldTripStudent(sNisn, sObj.class || sObj.rombel, sObj.zone);
+      }
       const rawDigits = sNisn.replace(/\D/g, '');
       const paddedNisn = (rawDigits.length >= 8 && rawDigits.length <= 10) ? rawDigits.padStart(10, '0') : sNisn;
       const unpaddedNisn = rawDigits.replace(/^0+/, '');
@@ -1920,6 +1969,9 @@
 
   function isStudentFieldTripRekap(s) {
     if (!s) return false;
+    if (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function') {
+      return FincestemCore.zones.isFieldTripStudent(s.nisn, s.class || s.rombel || s.kelas, s.zone);
+    }
     const z = String(s.zone || s.zona || '').toUpperCase();
     return z.includes('LUAR') || z.includes('FIELD') || z.includes('TRIP');
   }

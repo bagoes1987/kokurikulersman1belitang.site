@@ -1566,6 +1566,63 @@ if ($method === 'POST') {
             ]);
         }
 
+        // I.1b. BATCH SET STUDENT ZONES (1-REQUEST CEPAT UNTUK BANYAK SISWA SEKALIGUS)
+        if ($action === 'batch_set_student_zones') {
+            $nisns = isset($input['nisns']) && is_array($input['nisns']) ? $input['nisns'] : [];
+            $zone  = trim($input['zone'] ?? 'FINCESTEM OKU TIMUR');
+
+            if (empty($nisns)) {
+                jsonResponse(false, 'Daftar NISN siswa wajib diisi!', null, 400);
+            }
+
+            $stmtUser = $pdo->prepare("
+                UPDATE `users`
+                SET `zone` = :z
+                WHERE (`identifier` = :nisn1 OR `identifier` = :padded OR `identifier` = :unpadded OR `nis` = :nisn2) AND `role` = 'siswa'
+            ");
+            $stmtCust = $pdo->prepare("
+                INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES (:nisn, :z)
+                ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`), `updated_at` = CURRENT_TIMESTAMP
+            ");
+
+            $updatedCount = 0;
+            try {
+                $pdo->beginTransaction();
+                foreach ($nisns as $rawN) {
+                    $n = trim((string)$rawN);
+                    if ($n === '') continue;
+                    $cleanDigits = preg_replace('/\D/', '', $n);
+                    $paddedNisn = (strlen($cleanDigits) >= 8 && strlen($cleanDigits) <= 10) ? str_pad($cleanDigits, 10, '0', STR_PAD_LEFT) : $n;
+                    $unpaddedNisn = ltrim($cleanDigits, '0');
+
+                    $stmtUser->execute([
+                        ':z'        => $zone,
+                        ':nisn1'    => $n,
+                        ':padded'   => $paddedNisn,
+                        ':unpadded' => $unpaddedNisn ?: $n,
+                        ':nisn2'    => $n
+                    ]);
+                    $stmtCust->execute([':nisn' => $n, ':z' => $zone]);
+                    if ($paddedNisn !== $n) {
+                        $stmtCust->execute([':nisn' => $paddedNisn, ':z' => $zone]);
+                    }
+                    if ($unpaddedNisn && $unpaddedNisn !== $n) {
+                        $stmtCust->execute([':nisn' => $unpaddedNisn, ':z' => $zone]);
+                    }
+                    $updatedCount++;
+                }
+                $pdo->commit();
+            } catch (Exception $eBatch) {
+                if ($pdo->inTransaction()) $pdo->rollBack();
+                jsonResponse(false, 'Gagal memproses batch zona siswa: ' . $eBatch->getMessage(), null, 500);
+            }
+
+            jsonResponse(true, "Zona untuk {$updatedCount} siswa berhasil diperbarui menjadi '{$zone}'.", [
+                'updated_count' => $updatedCount,
+                'zone'          => $zone
+            ]);
+        }
+
         // I.2. DISPENSASI DOMISILI LUAR OKU TIMUR (ADMIN WHITELIST BEBAS PINALTI BINTANG 1)
         if ($action === 'toggle_location_exemption') {
             $nisn = trim($input['nisn'] ?? '');
@@ -2084,9 +2141,24 @@ if ($method === 'POST') {
                             INSERT INTO `student_custom_zones` (`nisn`, `zone`) VALUES (:nisn, :z)
                             ON DUPLICATE KEY UPDATE `zone` = VALUES(`zone`), `updated_at` = CURRENT_TIMESTAMP
                         ");
+                        $stmtUserZone = $pdo->prepare("
+                            UPDATE `users`
+                            SET `zone` = :z
+                            WHERE (`identifier` = :nisn1 OR `identifier` = :padded OR `identifier` = :unpadded OR `nis` = :nisn2) AND `role` = 'siswa'
+                        ");
                         $pdo->beginTransaction();
                         foreach ($toUpdate as $sNisn => $sZone) {
                             $stmtCust->execute([':nisn' => $sNisn, ':z' => $sZone]);
+                            $cleanDigits = preg_replace('/\D/', '', $sNisn);
+                            $paddedNisn = (strlen($cleanDigits) >= 8 && strlen($cleanDigits) <= 10) ? str_pad($cleanDigits, 10, '0', STR_PAD_LEFT) : $sNisn;
+                            $unpaddedNisn = ltrim($cleanDigits, '0');
+                            $stmtUserZone->execute([
+                                ':z'        => $sZone,
+                                ':nisn1'    => $sNisn,
+                                ':padded'   => $paddedNisn,
+                                ':unpadded' => $unpaddedNisn ?: $sNisn,
+                                ':nisn2'    => $sNisn
+                            ]);
                         }
                         $pdo->commit();
                     }
