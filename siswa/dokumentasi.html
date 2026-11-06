@@ -390,7 +390,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261107_day0_ft_v2"></script>
+  <script src="../js/core.js?v=20261107_day0_fix_v3"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -3781,6 +3781,30 @@
         }
 
         if (hasPhotoUploaded) {
+          let dokDoneTitle = isDay0 ? 'Dokumentasi Day 0 (Simulasi) Selesai' : ('Dokumentasi Day ' + dayNum + ' Selesai');
+          let dokSuccessMsg = 'Foto bukti riset Anda telah tersimpan. Silakan melangkah ke tahap akhir: Jurnal Refleksi Mandiri.';
+          let dokNextUrl = 'dashboard.html?day=' + dayNum + '&task=refleksi';
+          let dokNextLabel = 'Lanjut ke Tahap 5: Jurnal Refleksi Day ' + dayNum + ' &rarr;';
+
+          if (isDay0 && cat.isFieldTrip) {
+            dokDoneTitle = 'Dokumentasi Day 0 (Field Trip) Selesai';
+            dokSuccessMsg = 'Foto bukti kesiapan Day 0 telah tersimpan. Silakan lanjut ke Tahap 4: Asesmen 10 Soal Esai Day 0.';
+            dokNextUrl = 'dashboard.html?day=0&task=asesmen';
+            dokNextLabel = 'Lanjut ke Tahap 4: Asesmen Day 0 &rarr;';
+          } else if (isDay0) {
+            dokSuccessMsg = 'Foto bukti simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.';
+            dokNextUrl = 'dashboard.html?day=0&task=refleksi';
+            dokNextLabel = 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;';
+          } else if (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6)) {
+            dokSuccessMsg = 'Foto bukti dokumentasi telah tersimpan. Silakan lanjut ke Tahap 3: Lembar Kerja (LKPD Video) Day ' + dayNum + '.';
+            dokNextUrl = 'lkpd.html?day=' + dayNum;
+            dokNextLabel = 'Lanjut ke Tahap 3: LKPD Video Day ' + dayNum + ' &rarr;';
+          } else if (!cat.isFieldTrip) {
+            dokSuccessMsg = 'Foto bukti riset Anda telah tersimpan. Silakan lanjut ke Tahap 4: Kuis Asesmen Day ' + dayNum + '.';
+            dokNextUrl = 'asesmen.html?day=' + dayNum;
+            dokNextLabel = 'Lanjut ke Tahap 4: Kuis Asesmen Day ' + dayNum + ' &rarr;';
+          }
+
           container.innerHTML = `
             <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-400 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm animate-fade-in">
               <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -3789,15 +3813,15 @@
                 </div>
                 <div class="flex flex-col">
                   <div class="flex items-center gap-2">
-                    <span class="font-black text-sm text-emerald-950">${isDay0 ? 'Dokumentasi Day 0 (Simulasi) Selesai' : `Dokumentasi Day ${dayNum} Selesai`}</span>
+                    <span class="font-black text-sm text-emerald-950">${dokDoneTitle}</span>
                     <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-200 text-emerald-900 uppercase tracking-wide">Tuntas</span>
                   </div>
-                  <span class="text-xs text-slate-600">${(isDay0 && cat.isFieldTrip) ? 'Foto bukti kesiapan Day 0 telah tersimpan. Silakan lanjut ke Tahap 4: Asesmen 10 Soal Esai Day 0.' : (isDay0 ? 'Foto bukti simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.' : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `Foto bukti dokumentasi telah tersimpan. Silakan lanjut ke Tahap 3: Lembar Kerja (LKPD Video) Day ${dayNum}.` : (!cat.isFieldTrip ? `Foto bukti riset Anda telah tersimpan. Silakan lanjut ke Tahap 4: Kuis Asesmen Day ${dayNum}.` : 'Foto bukti riset Anda telah tersimpan. Silakan melangkah ke tahap akhir: Jurnal Refleksi Mandiri.'))}</span>
+                  <span class="text-xs text-slate-600">${dokSuccessMsg}</span>
                 </div>
               </div>
               <div class="flex items-center gap-2 w-full sm:w-auto shrink-0">
-                <a href="${(isDay0 && cat.isFieldTrip) ? `dashboard.html?day=0&task=asesmen` : (isDay0 ? `dashboard.html?day=${dayNum}&task=refleksi` : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `lkpd.html?day=${dayNum}` : (!cat.isFieldTrip ? `asesmen.html?day=${dayNum}` : `dashboard.html?day=${dayNum}&task=refleksi`)))}" class="flex-1 sm:flex-none py-3 px-4 rounded-xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
-                  <span>${(isDay0 && cat.isFieldTrip) ? 'Lanjut ke Tahap 4: Asesmen Day 0 &rarr;' : (isDay0 ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;' : (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6) ? `Lanjut ke Tahap 3: LKPD Video Day ${dayNum} &rarr;` : (!cat.isFieldTrip ? `Lanjut ke Tahap 4: Kuis Asesmen Day ${dayNum} &rarr;` : `Lanjut ke Tahap 5: Jurnal Refleksi Day ${dayNum} &rarr;`)))}</span>
+                <a href="${dokNextUrl}" class="flex-1 sm:flex-none py-3 px-4 rounded-xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-sm transition-all text-center">
+                  <span>${dokNextLabel}</span>
                 </a>
                 <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-3.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-300 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer shadow-2xs" title="Tambah Foto Lainnya">
                   <span class="material-symbols-outlined text-base">add_a_photo</span>
