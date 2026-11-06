@@ -1149,7 +1149,7 @@
   <script src="../js/siswa_data.js?v=20261026_d6_v1"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261106_tester_v1"></script>
+  <script src="../js/core.js?v=20261106_tester_v2"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -2452,8 +2452,11 @@
         try {
           const cached = localStorage.getItem('fincestem_schedules_' + cat);
           if (cached) {
-            const parsed = JSON.parse(cached);
+            let parsed = JSON.parse(cached);
             if (Array.isArray(parsed) && parsed.length > 0) {
+              if (FincestemCore.schedule && typeof FincestemCore.schedule.evaluateScheduleList === 'function') {
+                parsed = FincestemCore.schedule.evaluateScheduleList(parsed);
+              }
               daysSchedule = parsed;
               renderDaysSchedule(parsed);
             }
@@ -3161,18 +3164,26 @@
       }
       days.sort((a, b) => Number(a.day_number) - Number(b.day_number));
 
-      // Saring daftar hari: Jika Day 0 diset NONAKTIF (is_active = 0) oleh Admin, SEMBUNYIKAN SEPENUHNYA dari siswa!
+      const isCurrentStudentTester = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function')
+        ? FincestemCore.schedule.isTesterStudent(studentNisn)
+        : false;
+      if (isCurrentStudentTester) {
+        days.forEach(d => {
+          d.is_open = true;
+          d.status_code = 'OPEN';
+          d.status_label = 'Terbuka (VIP Tester)';
+        });
+      }
+
+      // Saring daftar hari: Jika Day 0 diset NONAKTIF (is_active = 0) oleh Admin, SEMBUNYIKAN SEPENUHNYA dari siswa biasa (kecuali VIP Tester)!
       const visibleDays = days.filter(d => {
-        if (Number(d.day_number) === 0 && Number(d.is_active) === 0) {
+        if (!isCurrentStudentTester && Number(d.day_number) === 0 && Number(d.is_active) === 0) {
           return false;
         }
         return true;
       });
 
       container.innerHTML = '';
-      const isCurrentStudentTester = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function')
-        ? FincestemCore.schedule.isTesterStudent(studentNisn)
-        : false;
       if (isCurrentStudentTester) {
         const isFromAdminSession = localStorage.getItem('fincestem_admin_testing_session') === 'true';
         const testerBanner = document.createElement('div');
@@ -4078,7 +4089,13 @@
         day = (isFtDef ? FincestemCore.schedule.getFieldTripDefaults() : FincestemCore.schedule.getDefaults()).find(d => Number(d.day_number) === 0);
       }
       if (!day) return;
-      if (dNum === 0 && Number(day.is_active) === 0) {
+      const _uChk = FincestemCore.auth.getUser() || {};
+      const _sChk = currentStudent || _uChk;
+      const _nisnChk = _sChk.nisn || _sChk.identifier || _uChk.nisn || _uChk.identifier || '';
+      const _isTesterChk = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function')
+        ? FincestemCore.schedule.isTesterStudent(_nisnChk)
+        : false;
+      if (!_isTesterChk && dNum === 0 && Number(day.is_active) === 0) {
         FincestemCore.ui.toast('Aktivitas Day 0 (Simulasi) telah disembunyikan dan ditutup oleh Admin.', 'info');
         return;
       }
@@ -7408,7 +7425,7 @@
         localStorage.setItem('fincestem_role', 'admin');
         localStorage.removeItem('fincestem_admin_testing_session');
       } catch (e) {}
-      window.location.href = '../admin/index.html';
+      window.location.href = '../admin/index.html?tab=schedule';
     }
     window.returnToAdminFromTester = returnToAdminFromTester;
     window.openHealthInfoModal = openHealthInfoModal;

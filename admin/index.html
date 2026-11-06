@@ -4358,7 +4358,7 @@
 
   <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261106_tester_v1"></script>
+  <script src="../js/core.js?v=20261106_tester_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/admin-mentorship.js?v=20261106_zonefix_v6"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
@@ -4394,6 +4394,13 @@
 
       initAdminStudentModule();
       initAdminTeacherModule();
+      try {
+        const urlParamsAdmin = new URLSearchParams(window.location.search);
+        const targetAdminTab = urlParamsAdmin.get('tab');
+        if (targetAdminTab && typeof switchAdmTab === 'function') {
+          setTimeout(() => switchAdmTab(targetAdminTab), 150);
+        }
+      } catch(e) {}
 
       // Sinkronisasi berkala di latar belakang setiap 45 detik jika portal admin aktif & tab terlihat
       setInterval(() => {
@@ -4437,7 +4444,7 @@
       }
       _bankSoalLoading = true;
       const s1 = document.createElement('script');
-      s1.src = '../js/data/bank-soal-nonfieldtrip.js?v=20261106_tester_v1';
+      s1.src = '../js/data/bank-soal-nonfieldtrip.js?v=20261106_tester_v2';
       s1.onload = function() {
         const s2 = document.createElement('script');
         s2.src = '../js/modules/admin-banksoal.js?v=20261104_nft_bs3';
@@ -4472,6 +4479,8 @@
         if (loginSec) loginSec.classList.add('hidden');
         if (portalContent) portalContent.classList.remove('hidden');
         refreshAdminStats();
+        // 0. Inisialisasi daftar VIP Tester
+        if (typeof renderAdminTesterStudentsSection === "function") { try { renderAdminTesterStudentsSection(); } catch(e) {} }
 
         // 1. Sinkronkan pembagian siswa binaan (Mentorship) dari server database multi-PC
         if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
@@ -7755,6 +7764,7 @@
 
       const filtered = list.filter(s => {
         const nisn = String(s.nisn || '').trim();
+        const studentName = String(s.nama || s.name || '').trim();
         const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
           ? FincestemCore.zones.getStudentZone(nisn, s.class, s.zone)
           : (s.zone || 'FINCESTEM OKU TIMUR');
@@ -7765,7 +7775,7 @@
 
         if (!q) return true;
         return (
-          String(s.name || '').toLowerCase().includes(q) ||
+          studentName.toLowerCase().includes(q) ||
           nisn.toLowerCase().includes(q) ||
           String(s.nis || '').toLowerCase().includes(q) ||
           String(s.class || '').toLowerCase().includes(q)
@@ -7783,9 +7793,9 @@
         return;
       }
 
-      const maxShow = 120;
-      filtered.slice(0, maxShow).forEach(s => {
+      filtered.forEach(s => {
         const nisn = String(s.nisn || '').trim();
+        const studentName = String(s.nama || s.name || 'Siswa').trim();
         const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
           ? FincestemCore.zones.getStudentZone(nisn, s.class, s.zone)
           : (s.zone || 'FINCESTEM OKU TIMUR');
@@ -7795,7 +7805,7 @@
 
         const opt = document.createElement('option');
         opt.value = nisn;
-        opt.textContent = `[${s.class}] ${s.name} (${nisn}) — ${catTag}${isAlready ? ' [✓ SUDAH TESTER]' : ''}`;
+        opt.textContent = `[${s.class}] ${studentName} (${nisn}) — ${catTag}${isAlready ? ' [✓ SUDAH TESTER]' : ''}`;
         sel.appendChild(opt);
       });
 
@@ -7833,7 +7843,7 @@
           container.innerHTML = `
             <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200/80 text-xs text-purple-950 flex items-center gap-2.5">
               <span class="material-symbols-outlined text-purple-600 text-lg shrink-0">verified_user</span>
-              <span>Belum ada Akun Siswa Tester yang dipilih. Seluruh 366 siswa saat ini <strong>100% mengikuti aturan jadwal resmi</strong>. Pilih siswa di atas jika Anda ingin menguji coba Day 0–7 secara tertutup.</span>
+              <span>Belum ada Akun Siswa Tester yang dipilih. Seluruh 1.165 siswa saat ini <strong>100% mengikuti aturan jadwal resmi</strong>. Pilih siswa di atas jika Anda ingin menguji coba Day 0–7 secara tertutup.</span>
             </div>
           `;
           return;
@@ -7843,7 +7853,8 @@
         container.innerHTML = arr.map(t => {
           const nisn = String(t.nisn || '').trim();
           const masterStu = masterList.find(s => String(s.nisn).trim() === nisn || String(s.nisn).trim().replace(/^0+/, '') === nisn.replace(/^0+/, '')) || {};
-          const name = t.student_name || masterStu.name || 'Siswa Tester';
+          const rawName = (t.student_name && t.student_name !== 'undefined' && t.student_name !== 'null') ? t.student_name : '';
+          const name = rawName || masterStu.nama || masterStu.name || 'Siswa Tester';
           const cls = t.class_name || masterStu.class || '-';
           const nis = t.nis || masterStu.nis || '-';
           const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
@@ -7856,7 +7867,7 @@
           return `
             <div class="p-3.5 rounded-2xl bg-white border-2 border-purple-300 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div class="flex items-start gap-3 min-w-0">
-                <div class="w-10 h-10 rounded-xl bg-purple-100 text-purple-800 font-black flex items-center justify-center shrink-0 border border-purple-200 text-xs">
+                <div class="px-2.5 py-2 rounded-xl bg-purple-100 text-purple-800 font-black flex items-center justify-center shrink-0 border border-purple-200 text-xs">
                   ${cls}
                 </div>
                 <div class="flex flex-col min-w-0">
@@ -7922,7 +7933,8 @@
       }
 
       const list = window.FincestemMasterStudents || [];
-      const stu = list.find(s => String(s.nisn).trim() === nisn) || { nisn: nisn, name: 'Siswa Tester', class: '-' };
+      const stu = list.find(s => String(s.nisn).trim() === nisn) || { nisn: nisn, nama: 'Siswa Tester', class: '-' };
+      const studentName = String(stu.nama || stu.name || 'Siswa Tester').trim();
       const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
         ? FincestemCore.zones.getStudentZone(nisn, stu.class, stu.zone)
         : (stu.zone || 'FINCESTEM OKU TIMUR');
@@ -7930,11 +7942,13 @@
       FincestemCore.schedule.addTesterStudent({
         nisn: nisn,
         nis: stu.nis || '',
-        name: stu.name || '',
+        name: studentName,
+        student_name: studentName,
         class: stu.class || '',
+        class_name: stu.class || '',
         zone: z
       }, function(res) {
-        FincestemCore.ui.toast(`Berhasil! ${stu.name} (${nisn}) kini menjadi Akun Uji Coba (VIP Tester). Seluruh Day 0–7 terbuka khusus untuk akun ini!`, 'success');
+        FincestemCore.ui.toast(`Berhasil! ${studentName} (${nisn}) kini menjadi Akun Uji Coba (VIP Tester). Seluruh Day 0–7 terbuka khusus untuk akun ini!`, 'success');
         renderAdminTesterStudentsSection();
       });
     }
@@ -7968,6 +7982,7 @@
         return;
       }
 
+      const studentName = String(stu.nama || stu.name || 'Siswa Tester').trim();
       const z = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
         ? FincestemCore.zones.getStudentZone(cleanNisn, stu.class, stu.zone)
         : (stu.zone || 'FINCESTEM OKU TIMUR');
@@ -7989,11 +8004,12 @@
         }
 
         const studentUserObj = Object.assign({}, stu, {
-          id: stu.id || 999,
+          id: stu.id || stu.no || 999,
           identifier: cleanNisn,
           nisn: cleanNisn,
           nis: stu.nis || '',
-          name: stu.name,
+          name: studentName,
+          nama: studentName,
           role: 'siswa',
           class: stu.class,
           class_name: stu.class,
@@ -8020,14 +8036,17 @@
           const list = window.FincestemMasterStudents || [];
           const stu = list.find(s => String(s.nisn).trim() === cleanNisn);
           if (stu) stu.zone = newZone;
+          const studentName = String((stu && (stu.nama || stu.name)) || name || 'Siswa Tester').trim();
           FincestemCore.schedule.addTesterStudent({
             nisn: cleanNisn,
             nis: stu ? stu.nis : '',
-            name: name,
+            name: studentName,
+            student_name: studentName,
             class: stu ? stu.class : '',
+            class_name: stu ? stu.class : '',
             zone: newZone
           }, function() {
-            FincestemCore.ui.toast(`Kategori ${name} berhasil diubah ke ${newLabel}!`, 'success');
+            FincestemCore.ui.toast(`Kategori ${studentName} berhasil diubah ke ${newLabel}!`, 'success');
             renderAdminTesterStudentsSection();
           });
         });

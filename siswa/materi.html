@@ -164,10 +164,10 @@
   </main>
 
   <script src="../js/siswa_data.js?v=20261021_v1"></script>
-  <script src="../js/core.js?v=20261106_tester_v1"></script>
+  <script src="../js/core.js?v=20261106_tester_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_video_d56_v1"></script>
   <script src="../js/modules/materi-fieldtrip.js?v=20261027_d6_final_v4"></script>
-  <script src="../js/modules/materi-nonfieldtrip.js?v=20261106_tester_v1"></script>
+  <script src="../js/modules/materi-nonfieldtrip.js?v=20261106_tester_v2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -253,8 +253,9 @@
 // Day 0 banner is cleanly rendered inside renderDay0NonFieldTripModule
 
       FincestemCore.schedule.getSchedule(function(days) {
+        const isTester = FincestemCore.schedule.isTesterStudent && FincestemCore.schedule.isTesterStudent(user.nisn || user.identifier);
         const d = days.find(x => x.day_number === dayNum);
-        if (d && !d.is_open) {
+        if (!isTester && d && !d.is_open) {
           FincestemCore.ui.toast(`Materi Day ${dayNum} sedang ditutup/terkunci oleh Admin! Mengalihkan ke Dashboard...`, 'error');
           setTimeout(() => {
             window.location.replace('dashboard.html');
