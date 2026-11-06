@@ -330,12 +330,13 @@
       examState.selectedSector = getStudentDay3Sector(examState.cleanNisn);
     }
 
-    // Cek Prasyarat: Modul Belajar & LKPD Day N harus selesai
+    // Cek Prasyarat: Modul Belajar, LKPD, & Dokumentasi (khusus Day 1-7) harus selesai
     const hasMateri = checkPrerequisiteMateri(dayNum, examState.cleanNisn);
     const hasLkpd = checkPrerequisiteLkpd(dayNum, examState.cleanNisn);
+    const hasDok = (dayNum >= 1 && dayNum <= 7) ? checkPrerequisiteDok(dayNum, examState.cleanNisn) : true;
 
-    if (!hasMateri || !hasLkpd) {
-      renderPrerequisiteLockedScreen(hasMateri, hasLkpd, dayNum);
+    if (!hasMateri || !hasLkpd || !hasDok) {
+      renderPrerequisiteLockedScreen(hasMateri, hasLkpd, dayNum, hasDok);
       return;
     }
 
@@ -432,6 +433,51 @@
         }
       } catch(e) {}
     }
+    return false;
+  }
+
+  function checkPrerequisiteDok(dayNum, cleanNisn) {
+    const candidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    for (const cid of candidateIds) {
+      try {
+        if (localStorage.getItem(`fincestem_dok_nft_day${dayNum}_` + cid) === 'true' ||
+            localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + cid) === 'true' ||
+            localStorage.getItem(`fincestem_dok_day${dayNum}_` + cid) === 'true') {
+          return true;
+        }
+      } catch(e) {}
+    }
+    if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+      if (window.currentStudentProgress.task_map[`${dayNum}_dokumentasi`]) return true;
+    }
+    for (const cid of candidateIds) {
+      try {
+        const pRaw = localStorage.getItem('fincestem_progress_' + cid);
+        if (pRaw) {
+          const p = JSON.parse(pRaw);
+          if (p && p.task_map && p.task_map[`${dayNum}_dokumentasi`]) return true;
+        }
+      } catch(e) {}
+    }
+    try {
+      const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+      if (dbStr) {
+        const db = JSON.parse(dbStr);
+        if (Array.isArray(db.documentation)) {
+          const idArr = Array.from(candidateIds);
+          const hasPhoto = db.documentation.some(p => {
+            const docDay = Number(p.day || p.day_number || 0);
+            const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+            return docDay === Number(dayNum) && (idArr.includes(docNisn) || idArr.includes(docNisn.replace(/^0+/, '')));
+          });
+          if (hasPhoto) return true;
+        }
+      }
+    } catch(e) {}
     return false;
   }
 
@@ -582,7 +628,7 @@
   /**
    * LAYAR 1: TERKUNCI OLEH PRASYARAT
    */
-  function renderPrerequisiteLockedScreen(hasMateri, hasLkpd, dayNum) {
+  function renderPrerequisiteLockedScreen(hasMateri, hasLkpd, dayNum, hasDok = true) {
     const root = document.getElementById('examRootContainer');
     if (!root) return;
 
@@ -594,6 +640,9 @@
     } else if (!hasLkpd) {
       lockReason = `Anda wajib menyelesaikan dan mengirimkan <strong>Tahap 2: Lembar Kerja Peserta Didik (LKPD) Day ${dayNum}</strong> terlebih dahulu.`;
       actionBtn = `<a href="lkpd.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka LKPD Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
+    } else if (!hasDok) {
+      lockReason = `Anda wajib menyelesaikan <strong>Tahap 3: Dokumentasi Foto Kegiatan Day ${dayNum}</strong> terlebih dahulu.`;
+      actionBtn = `<a href="dokumentasi.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka Dokumentasi Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
     }
 
     root.innerHTML = `
@@ -2561,17 +2610,19 @@
         <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200 text-teal-950 text-xs text-left flex items-start gap-2.5 leading-relaxed w-full">
           <span class="material-symbols-outlined text-teal-700 text-base shrink-0 mt-0.5">lock_open</span>
           <div>
-            <strong class="block text-teal-900 font-extrabold text-[11.5px]">Tahap 4 &amp; 5 Telah Terbuka:</strong>
+            <strong class="block text-teal-900 font-extrabold text-[11.5px]">${dayNum >= 1 ? 'Tahap 5 Telah Terbuka:' : 'Tahap 4 &amp; 5 Telah Terbuka:'}</strong>
             <p class="text-slate-600 font-medium mt-0.5">
-              Anda kini dapat melanjutkan ke <strong>Dokumentasi Foto Lapangan</strong> dan <strong>Jurnal Refleksi Mandiri Day ${dayNum}</strong> di beranda dashboard.
+              ${dayNum >= 1
+                ? `Anda kini dapat melanjutkan ke <strong>Tahap 5: Jurnal Refleksi Mandiri Day ${dayNum}</strong>.`
+                : `Anda kini dapat melanjutkan ke <strong>Dokumentasi Foto Lapangan</strong> dan <strong>Jurnal Refleksi Mandiri Day ${dayNum}</strong> di beranda dashboard.`}
             </p>
           </div>
         </div>
 
         <!-- TOMBOL AKSI KEMBALI -->
         <div class="w-full flex flex-col gap-2 pt-1">
-          <a href="dokumentasi.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
-            <span>Lanjut ke Dokumentasi Foto Day ${dayNum}</span>
+          <a href="${dayNum >= 1 ? `dashboard.html?day=${dayNum}&task=refleksi` : `dokumentasi.html?day=${dayNum}`}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
+            <span>${dayNum >= 1 ? `Lanjut ke Jurnal Refleksi Day ${dayNum} (Tahap 5)` : `Lanjut ke Dokumentasi Foto Day ${dayNum}`}</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all">

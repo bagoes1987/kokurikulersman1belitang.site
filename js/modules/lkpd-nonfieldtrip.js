@@ -639,8 +639,8 @@
                 </div>
               </div>
               <div class="flex gap-2">
-                <a href="asesmen.html?day=1" class="px-4 py-2.5 rounded-xl bg-teal-800 text-white font-bold text-xs hover:bg-teal-900 flex items-center gap-1.5 shadow-xs">
-                  <span>Lanjut Kuis Asesmen Day 1</span>
+                <a href="dokumentasi.html?day=1" class="px-4 py-2.5 rounded-xl bg-teal-800 text-white font-bold text-xs hover:bg-teal-900 flex items-center gap-1.5 shadow-xs">
+                  <span>Lanjut Dokumentasi Foto Day 1</span>
                   <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </a>
               </div>
@@ -973,13 +973,13 @@
             LKPD 01 Berhasil Disimpan &amp; Terkirim!
           </h3>
           <p class="text-xs text-slate-600 leading-relaxed mt-1">
-            Selamat! Lembar kerja observasi lapangan Day 1 Anda telah lengkap dan diserahkan ke Fasilitator. Tahap berikutnya adalah <strong>Kuis Asesmen Day 1</strong> dan <strong>Unggah Dokumentasi Foto Geotagging OKU Timur</strong>!
+            Selamat! Lembar kerja observasi lapangan Day 1 Anda telah lengkap dan diserahkan ke Fasilitator. Tahap berikutnya adalah <strong>Unggah Dokumentasi Foto Geotagging OKU Timur</strong> dan <strong>Kuis Asesmen Day 1</strong>!
           </p>
         </div>
 
         <div class="w-full flex flex-col gap-2 pt-2">
-          <a href="asesmen.html?day=1" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-            <span>Lanjut Kuis Asesmen Day 1</span>
+          <a href="dokumentasi.html?day=1" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span>Lanjut Dokumentasi Foto Day 1</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
@@ -2149,13 +2149,13 @@
             LKPD 02 Berhasil Disimpan &amp; Terkirim!
           </h3>
           <p class="text-xs text-slate-600 leading-relaxed mt-1">
-            Selamat! Lembar Kerja Wawancara &amp; Observasi Lapangan Day 2 Anda telah lengkap dan diserahkan ke Fasilitator. Tahap berikutnya adalah <strong>Kuis Asesmen Day 2</strong> dan <strong>Unggah Dokumentasi Foto Riset OKU Timur</strong>!
+            Selamat! Lembar Kerja Wawancara &amp; Observasi Lapangan Day 2 Anda telah lengkap dan diserahkan ke Fasilitator. Tahap berikutnya adalah <strong>Unggah Dokumentasi Foto Riset OKU Timur</strong> dan <strong>Kuis Asesmen Day 2</strong>!
           </p>
         </div>
 
         <div class="w-full flex flex-col gap-2 pt-2">
-          <a href="asesmen.html?day=2" class="w-full py-3.5 rounded-2xl bg-indigo-700 hover:bg-indigo-800 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-            <span>Lanjut Kuis Asesmen Day 2</span>
+          <a href="dokumentasi.html?day=2" class="w-full py-3.5 rounded-2xl bg-indigo-700 hover:bg-indigo-800 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span>Lanjut Dokumentasi Foto Day 2</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
@@ -3179,13 +3179,9 @@
         </div>
 
         <div class="w-full flex flex-col gap-2 pt-2">
-          <a href="asesmen.html?day=3" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-            <span>Lanjut ke Kuis Asesmen Day 3</span>
-            <span class="material-symbols-outlined text-base">arrow_forward</span>
-          </a>
-          <a href="dokumentasi.html?day=3" class="w-full py-3 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer">
+          <a href="dokumentasi.html?day=3" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
             <span class="material-symbols-outlined text-base">photo_camera</span>
-            <span>Unggah Foto Observasi Day 3</span>
+            <span>Lanjut ke Dokumentasi Foto Day 3</span>
           </a>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
             <span>Kembali ke Beranda Dashboard</span>
@@ -4501,8 +4497,8 @@
                 </div>
               </div>
               <div class="flex gap-2">
-                <a href="asesmen.html?day=${dayNum}" class="px-4 py-2.5 rounded-xl bg-teal-800 text-white font-bold text-xs hover:bg-teal-900 flex items-center gap-1.5 shadow-xs">
-                  <span>Lanjut Kuis Asesmen Day ${dayNum}</span>
+                <a href="dokumentasi.html?day=${dayNum}" class="px-4 py-2.5 rounded-xl bg-teal-800 text-white font-bold text-xs hover:bg-teal-900 flex items-center gap-1.5 shadow-xs">
+                  <span>Lanjut Dokumentasi Foto Day ${dayNum}</span>
                   <span class="material-symbols-outlined text-sm">arrow_forward</span>
                 </a>
               </div>
@@ -4651,8 +4647,8 @@
         </div>
 
         <div class="w-full flex flex-col gap-2 pt-2">
-          <a href="asesmen.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-            <span>Lanjut Kuis Asesmen Day ${dayNum}</span>
+          <a href="dokumentasi.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span>Lanjut Dokumentasi Foto Day ${dayNum}</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">

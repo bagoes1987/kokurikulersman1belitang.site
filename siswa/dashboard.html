@@ -2712,17 +2712,26 @@
 
       // Cascading logic berurutan mutlak
       const isFtDay7 = isFieldTrip && dayNum === 7;
+      const isNonFtOrderedDay = !isFieldTrip && (dayNum >= 1 && dayNum <= 7);
       let canLkpd = hasMateri;
-      let canAsesmen = hasMateri && hasLkpd;
-      let canDok = isFtDay7 ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen);
+      let canDok = isNonFtOrderedDay
+        ? (hasMateri && hasLkpd)
+        : (isFtDay7 ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen));
+      let canAsesmen = isNonFtOrderedDay
+        ? (hasMateri && hasLkpd && hasDok)
+        : (hasMateri && hasLkpd);
       let canRefleksi = isFtDay7 ? (hasMateri && hasLkpd && hasDok) : (hasMateri && hasLkpd && hasAsesmen && hasDok);
       let canPenilaian = isFtDay7 ? (hasMateri && hasLkpd && hasDok && hasRefleksi) : (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi);
 
       return {
         hasMateri,
         hasLkpd: hasLkpd && hasMateri,
-        hasAsesmen: (isFtDay7 ? (hasLkpd && hasMateri) : (hasAsesmen && hasLkpd && hasMateri)),
-        hasDok: (isFtDay7 ? (hasDok && hasLkpd && hasMateri) : (hasDok && hasAsesmen && hasLkpd && hasMateri)),
+        hasAsesmen: isNonFtOrderedDay
+          ? (hasAsesmen && hasDok && hasLkpd && hasMateri)
+          : (isFtDay7 ? (hasLkpd && hasMateri) : (hasAsesmen && hasLkpd && hasMateri)),
+        hasDok: isNonFtOrderedDay
+          ? (hasDok && hasLkpd && hasMateri)
+          : (isFtDay7 ? (hasDok && hasLkpd && hasMateri) : (hasDok && hasAsesmen && hasLkpd && hasMateri)),
         hasRefleksi: (isFtDay7 ? (hasRefleksi && hasDok && hasLkpd && hasMateri) : (hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri)),
         canLkpd,
         canAsesmen,
@@ -3773,8 +3782,8 @@
                         ? '<strong>Sesi 1:</strong> Modul &amp; LKPD AKPOL &rarr; Unggah Dokumentasi AKPOL &rarr; <strong>Sesi 2:</strong> Modul &amp; LKPD Lawang Sewu &rarr; Unggah Dokumentasi Lawang Sewu &rarr; <strong>Tahap Akhir:</strong> Jurnal Refleksi Day 2.'
                         : '<strong>1. Modul Belajar</strong> (baca &amp; resume) &rarr; <strong>2. LKPD</strong> (lembar kerja) &rarr; <strong>3. Asesmen</strong> (kuis) &rarr; <strong>4. Dokumentasi</strong> (foto) &rarr; <strong>5. Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong> &rarr; <strong>7. Buka Day Berikutnya</strong>.')
                     : (dNum === 1
-                        ? '<strong>1. Modul Riset</strong> (Tuntaskan 5 Kartu Riset Mandiri A s.d. E min. 300 karakter + sumber) &rarr; <strong>2. LKPD 01</strong> (Proposal Riset &amp; RAB Kelompok) &rarr; <strong>3. Asesmen</strong> (Kuis) &rarr; <strong>4. Dokumentasi</strong> (Foto Kamera Geotag OKU Timur) &rarr; <strong>5. Jurnal Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong>.'
-                        : '<strong>1. Modul Belajar</strong> (Riset materi lokal) &rarr; <strong>2. LKPD</strong> (Lembar kerja observasi OKU Timur) &rarr; <strong>3. Asesmen</strong> (Kuis) &rarr; <strong>4. Dokumentasi</strong> (Foto Kamera Geotag OKU Timur) &rarr; <strong>5. Jurnal Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong>.')
+                        ? '<strong>1. Modul Riset</strong> (Tuntaskan 5 Kartu Riset Mandiri A s.d. E min. 300 karakter + sumber) &rarr; <strong>2. LKPD 01</strong> (Proposal Riset &amp; RAB Kelompok) &rarr; <strong>3. Dokumentasi</strong> (Foto Kamera Geotag OKU Timur) &rarr; <strong>4. Asesmen</strong> (Kuis) &rarr; <strong>5. Jurnal Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong>.'
+                        : '<strong>1. Modul Belajar</strong> (Riset materi lokal) &rarr; <strong>2. LKPD</strong> (Lembar kerja observasi OKU Timur) &rarr; <strong>3. Dokumentasi</strong> (Foto Kamera Geotag OKU Timur) &rarr; <strong>4. Asesmen</strong> (Kuis) &rarr; <strong>5. Jurnal Refleksi</strong> &rarr; <strong>6. Penilaian Fasilitator</strong>.')
                     )}
               </span>
             </div>
@@ -3811,6 +3820,35 @@
                 ${getCheckBadge(hasLkpd, canOpenLkpd)}
               </button>
 
+              ${(!isFieldTrip && dNum >= 1 && dNum <= 7) ? `
+              <!-- 3. DOKUMENTASI FOTO (NON-FIELD TRIP DAY 1-7) -->
+              <button onclick="handleActivityClick(${dNum}, 'dokumentasi')" class="p-2.5 sm:p-3 rounded-2xl ${dokBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${dokIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenDok ? 'lock' : 'photo_camera'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">3. Dokumentasi</span>
+                    <span class="text-[10px] sm:text-xs ${hasDok ? 'text-emerald-700 font-bold' : (canOpenDok ? 'text-pink-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasDok ? '✓ Foto Terunggah' : (canOpenDok ? 'Unggah Foto' : 'Terkunci')}</span>
+                  </div>
+                </div>
+                ${getCheckBadge(hasDok, canOpenDok)}
+              </button>
+
+              <!-- 4. ASESMEN (NON-FIELD TRIP DAY 1-7) -->
+              <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 sm:p-3 rounded-2xl ${asesmenBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
+                <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                  <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl ${asesmenIconClass} flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base sm:text-lg">${!canOpenAsesmen ? 'lock' : 'fact_check'}</span>
+                  </span>
+                  <div class="flex flex-col text-left min-w-0">
+                    <span class="text-xs sm:text-sm font-extrabold leading-tight truncate">4. Asesmen</span>
+                    <span class="text-[10px] sm:text-xs ${hasAsesmen ? 'text-emerald-700 font-bold' : (canOpenAsesmen ? 'text-blue-800' : 'text-slate-400')} leading-tight mt-0.5 truncate">${hasAsesmen ? (nftScoreText ? `✓ Skor: ${nftScoreText}` : '✓ Kuis Terkirim') : (canOpenAsesmen ? 'Kerjakan Kuis' : 'Terkunci')}</span>
+                  </div>
+                </div>
+                ${getCheckBadge(hasAsesmen, canOpenAsesmen)}
+              </button>
+              ` : `
               <!-- 3. ASESMEN -->
               <button onclick="handleActivityClick(${dNum}, 'asesmen')" class="p-2.5 sm:p-3 rounded-2xl ${asesmenBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
                 <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
@@ -3838,6 +3876,7 @@
                 </div>
                 ${getCheckBadge(hasDok, canOpenDok)}
               </button>
+              `}
 
               <!-- 5. REFLEKSI -->
               <button onclick="handleActivityClick(${dNum}, 'refleksi')" class="p-2.5 sm:p-3 rounded-2xl ${refleksiBtnClass} flex items-center justify-between gap-2 transition-all shadow-2xs min-w-0">
@@ -4017,6 +4056,7 @@
       // VALIDASI ALUR BERURUTAN: DAY 1 S.D. 7 (SEMUA SISWA) & DAY 0 (SIMULASI NON-FIELD TRIP)
       if ((dNum >= 1 && dNum <= 7) || (dNum === 0 && !isFieldTrip)) {
         const progStatus = getFTProgressStatus(null, dNum);
+        const isNonFtOrderedDay = !isFieldTrip && (dNum >= 1 && dNum <= 7);
 
         // Tahap 2: LKPD butuh Modul
         if (type === 'lkpd' && !progStatus.canLkpd) {
@@ -4024,36 +4064,68 @@
           return;
         }
 
-        // Tahap 3: Asesmen butuh Modul & LKPD
-        if (type === 'asesmen' && !progStatus.canAsesmen) {
-          if (!progStatus.hasMateri) {
-            showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
-          } else {
-            showStepLockedModal('Kuis Asesmen', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+        if (isNonFtOrderedDay) {
+          // Non-Field Trip Day 1-7: 1. Modul -> 2. LKPD -> 3. Dokumentasi -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian
+          if (type === 'dokumentasi' && !progStatus.canDok) {
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Dokumentasi Foto', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
+            } else {
+              showStepLockedModal('Dokumentasi Foto', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+            }
+            return;
           }
-          return;
-        }
 
-        // Tahap 4: Dokumentasi butuh Modul, LKPD & Asesmen
-        if (type === 'dokumentasi' && !progStatus.canDok) {
-          if (!progStatus.hasMateri) {
-            showStepLockedModal('Dokumentasi Foto', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
-          } else if (!progStatus.hasLkpd) {
-            showStepLockedModal('Dokumentasi Foto', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
-          } else {
-            showStepLockedModal('Dokumentasi Foto', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
+          if (type === 'asesmen' && !progStatus.canAsesmen) {
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
+            } else if (!progStatus.hasLkpd) {
+              showStepLockedModal('Kuis Asesmen', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+            } else {
+              showStepLockedModal('Kuis Asesmen', `Tahap 3: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
+            }
+            return;
           }
-          return;
-        }
 
-        // Tahap 5: Refleksi butuh Modul, LKPD, Asesmen & Dokumentasi
-        if (type === 'refleksi' && !progStatus.canRefleksi) {
-          if (!progStatus.canDok) {
-            showStepLockedModal('Jurnal Refleksi', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
-          } else {
-            showStepLockedModal('Jurnal Refleksi', `Tahap 4: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
+          if (type === 'refleksi' && !progStatus.canRefleksi) {
+            if (!progStatus.hasDok) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 3: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
+            } else {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 4: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
+            }
+            return;
           }
-          return;
+        } else {
+          // Tahap 3: Asesmen butuh Modul & LKPD
+          if (type === 'asesmen' && !progStatus.canAsesmen) {
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
+            } else {
+              showStepLockedModal('Kuis Asesmen', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+            }
+            return;
+          }
+
+          // Tahap 4: Dokumentasi butuh Modul, LKPD & Asesmen
+          if (type === 'dokumentasi' && !progStatus.canDok) {
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Dokumentasi Foto', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
+            } else if (!progStatus.hasLkpd) {
+              showStepLockedModal('Dokumentasi Foto', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+            } else {
+              showStepLockedModal('Dokumentasi Foto', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
+            }
+            return;
+          }
+
+          // Tahap 5: Refleksi butuh Modul, LKPD, Asesmen & Dokumentasi
+          if (type === 'refleksi' && !progStatus.canRefleksi) {
+            if (!progStatus.canDok) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
+            } else {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 4: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
+            }
+            return;
+          }
         }
 
         // Tahap 6: Penilaian butuh Refleksi selesai (khusus Day 1-7, Day 0 simulasi selalu dapat diklik untuk cek status)
