@@ -3403,7 +3403,13 @@ const FincestemCore = {
               else bType = 'Koperasi';
             }
 
-            const validDistricts = ['Belitang', 'Belitang Madang Raya', 'Belitang II', 'Belitang III', 'Buay Madang', 'Buay Madang Timur', 'Martapura', 'Madang Suku I', 'Madang Suku II', 'Madang Suku III', 'Semendawai Suku III', 'Semendawai Barat', 'Semendawai Timur', 'Cempaka', 'Jayapura', 'Bunga Mayang', 'BP Peliung', 'BP Bangsa Raja'];
+            const validDistricts = [
+              'Belitang', 'Belitang II', 'Belitang III', 'Belitang Jaya', 'Belitang Madang Raya', 'Belitang Mulya',
+              'Buay Madang', 'Buay Madang Timur', 'Buay Pemuka Bangsa Raja', 'Buay Pemuka Peliung',
+              'Bunga Mayang', 'Cempaka', 'Jayapura', 'Madang Suku I', 'Madang Suku II', 'Madang Suku III',
+              'Martapura', 'Semendawai Barat', 'Semendawai Timur', 'Semendawai Suku III',
+              'BP Peliung', 'BP Bangsa Raja'
+            ];
             let matchedDist = validDistricts.find(d => bLoc.toLowerCase().includes(d.toLowerCase())) || 'Belitang';
 
             const d1FullDefaults = {

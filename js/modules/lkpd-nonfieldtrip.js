@@ -15,10 +15,11 @@
     'Belitang III',
     'Belitang Jaya',
     'Belitang Madang Raya',
+    'Belitang Mulya',
     'Buay Madang',
     'Buay Madang Timur',
-    'Buay Pemuka Peliung',
     'Buay Pemuka Bangsa Raja',
+    'Buay Pemuka Peliung',
     'Bunga Mayang',
     'Cempaka',
     'Jayapura',
@@ -27,10 +28,17 @@
     'Madang Suku III',
     'Martapura',
     'Semendawai Barat',
-    'Semendawai Suku III',
     'Semendawai Timur',
-    'BP Peliung'
+    'Semendawai Suku III'
   ];
+
+  function normalizeDistrictName(dist) {
+    if (!dist) return '';
+    const s = String(dist).trim();
+    if (/^bp\s*peliung/i.test(s)) return 'Buay Pemuka Peliung';
+    if (/^bp\s*bangsa\s*raja/i.test(s)) return 'Buay Pemuka Bangsa Raja';
+    return s;
+  }
 
   // Helper Format Angka Ribuan Rupiah
   function formatRupiahInput(val) {
@@ -163,6 +171,10 @@
     const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
     const isLockedByPrereq = !hasMateri && !isTesterBypass;
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
+    let d2CurDistrict = normalizeDistrictName(val('district') || '');
+    if (!d2CurDistrict && val('location')) {
+      d2CurDistrict = OKU_TIMUR_DISTRICTS.find(d => val('location').toLowerCase().includes(d.toLowerCase())) || '';
+    }
     const readOnlyAttr = isFormLocked ? 'disabled' : '';
     const draftTimeStr = (draft && draft.updatedAt) 
       ? new Date(draft.updatedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) 
@@ -325,7 +337,7 @@
                 <select id="nftD1District" ${readOnlyAttr} onchange="onNftLkpdInput()" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold bg-white text-slate-900">
                   <option value="">-- Pilih Kecamatan di OKU Timur --</option>
                   ${OKU_TIMUR_DISTRICTS.map(kec => `
-                    <option value="${kec}" ${formData?.district === kec ? 'selected' : ''}>Kecamatan ${kec}</option>
+                    <option value="${kec}" ${(formData?.district === kec || normalizeDistrictName(formData?.district) === kec) ? 'selected' : ''}>Kecamatan ${kec}</option>
                   `).join('')}
                 </select>
               </div>
@@ -1391,11 +1403,21 @@
                 <input type="text" id="nftD2_interviewDate" ${readOnlyAttr} value="${val('interviewDate') || 'Selasa, 10 November 2026'}" placeholder="Contoh: Selasa, 10 November 2026" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
               </div>
 
-              <!-- Lokasi Observasi -->
               <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Lokasi Observasi (Desa/Kecamatan di OKU Timur): <span class="text-rose-600">*</span></label>
-                <input type="text" id="nftD2_location" ${readOnlyAttr} value="${val('location')}" placeholder="Contoh: Desa Sidomulyo RT 03 RW 01, Kec. Belitang" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
-                <span id="msgValD2_loc" class="text-[10px] text-slate-400">Minimal 5 karakter</span>
+                <label class="text-xs font-bold text-slate-800">Wilayah Kecamatan di OKU Timur: <span class="text-rose-600">*</span></label>
+                <select id="nftD2_district" ${readOnlyAttr} onchange="onNftDay2DistrictChange(this.value)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-bold text-slate-900 bg-white transition-all">
+                  <option value="">-- Pilih Kecamatan di OKU Timur --</option>
+                  ${OKU_TIMUR_DISTRICTS.map(kec => `
+                    <option value="${kec}" ${(d2CurDistrict === kec || normalizeDistrictName(d2CurDistrict) === kec) ? 'selected' : ''}>Kecamatan ${kec}</option>
+                  `).join('')}
+                </select>
+              </div>
+
+              <!-- Lokasi Observasi (Desa/Dusun/Detail) -->
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-slate-800">Detail Alamat / Desa Lokasi Observasi: <span class="text-rose-600">*</span></label>
+                <input type="text" id="nftD2_location" ${readOnlyAttr} value="${val('location')}" placeholder="Contoh: Desa Sidomulyo RT 03 RW 01" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
+                <span id="msgValD2_loc" class="text-[10px] text-slate-400">Minimal 3 karakter</span>
               </div>
 
               <!-- Pilihan Sektor Mata Pencaharian (Dropdown Dinamis) -->
@@ -1962,6 +1984,7 @@
       updatedAt: new Date().toISOString(),
       interviewerName: document.getElementById('nftD2_interviewerName')?.value.trim() || '',
       interviewDate: document.getElementById('nftD2_interviewDate')?.value.trim() || '',
+      district: document.getElementById('nftD2_district')?.value || '',
       location: document.getElementById('nftD2_location')?.value.trim() || '',
       sectorKey: secKey,
       sectorName: sectorObj.name,
@@ -2359,6 +2382,10 @@
     const isTesterD3 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
     const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTesterD3);
 
+    let d3CurDistrict = normalizeDistrictName(val('district') || '');
+    if (!d3CurDistrict && val('location')) {
+      d3CurDistrict = OKU_TIMUR_DISTRICTS.find(d => val('location').toLowerCase().includes(d.toLowerCase())) || '';
+    }
     const selSector = formData.sectorKey || sectorFromMateri || 'pertanian';
     const sectorObj = NFT_DAY3_SECTOR_DATA[selSector] || NFT_DAY3_SECTOR_DATA.pertanian;
 
@@ -2501,11 +2528,21 @@
                 <span id="msgValD3_nar" class="text-[10px] text-slate-400">Minimal 3 karakter</span>
               </div>
 
-              <!-- Lokasi Observasi -->
               <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Lokasi Observasi (Desa &amp; Jalur/Kecamatan OKU Timur): <span class="text-rose-600">*</span></label>
-                <input type="text" id="nftD3_location" ${readOnlyAttr} value="${val('location')}" placeholder="Contoh: Desa Nusabakti, Irigasi BK 10, Kec. Belitang III" oninput="onNftDay3FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
-                <span id="msgValD3_loc" class="text-[10px] text-slate-400">Minimal 5 karakter</span>
+                <label class="text-xs font-bold text-slate-800">Wilayah Kecamatan di OKU Timur: <span class="text-rose-600">*</span></label>
+                <select id="nftD3_district" ${readOnlyAttr} onchange="onNftDay3DistrictChange(this.value)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 outline-none text-xs font-bold text-slate-900 bg-white transition-all">
+                  <option value="">-- Pilih Kecamatan di OKU Timur --</option>
+                  ${OKU_TIMUR_DISTRICTS.map(kec => `
+                    <option value="${kec}" ${(d3CurDistrict === kec || normalizeDistrictName(d3CurDistrict) === kec) ? 'selected' : ''}>Kecamatan ${kec}</option>
+                  `).join('')}
+                </select>
+              </div>
+
+              <!-- Lokasi Observasi (Desa/Jalur Irigasi Detail) -->
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-slate-800">Detail Alamat / Desa &amp; Jalur Irigasi: <span class="text-rose-600">*</span></label>
+                <input type="text" id="nftD3_location" ${readOnlyAttr} value="${val('location')}" placeholder="Contoh: Desa Nusabakti, Irigasi BK 10" oninput="onNftDay3FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
+                <span id="msgValD3_loc" class="text-[10px] text-slate-400">Minimal 3 karakter</span>
               </div>
 
               <!-- Skala Usaha -->
@@ -2957,6 +2994,18 @@
   };
 
   let day3DraftTimer = null;
+  
+  window.onNftDay3DistrictChange = function(newDist) {
+    const locInput = document.getElementById('nftD3_location');
+    if (locInput && newDist) {
+      if (!locInput.value) {
+        locInput.value = 'Desa ..., Kec. ' + newDist;
+      } else if (!locInput.value.toLowerCase().includes(newDist.toLowerCase())) {
+        locInput.value = locInput.value.replace(/,?\s*Kec\.\s*[^,]+/i, '') + ', Kec. ' + newDist;
+      }
+    }
+    onNftDay3FieldInput();
+  };
   window.onNftDay3FieldInput = function() {
     validateAllDay3CardsUI(false);
     clearTimeout(day3DraftTimer);
@@ -3536,14 +3585,23 @@
               <p class="text-[11px] text-teal-800 font-semibold pt-1">Perlengkapan Keselamatan (APD): ${escapeHtml(guide.apdExamples)}</p>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label class="block text-xs font-bold text-slate-800 mb-1">Lokasi Pengamatan / Desa &amp; Nama Pemilik/Operator Alat: <span class="text-rose-600">*</span></label>
-                <input id="nftD4Location" type="text" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" value="${escapeHtml(saved.location || '')}" placeholder="Contoh: Desa Sidomulyo Belitang • Bpk. Hendra (Operator UPJA)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-medium">
+                <label class="block text-xs font-bold text-slate-800 mb-1">Wilayah Kecamatan di OKU Timur: <span class="text-rose-600">*</span></label>
+                <select id="nftD4District" ${readOnlyMode ? 'disabled' : ''} onchange="onNftDay4DistrictChange(this.value)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-bold">
+                  <option value="">-- Pilih Kecamatan di OKU Timur --</option>
+                  ${OKU_TIMUR_DISTRICTS.map(kec => `
+                    <option value="${kec}" ${(d4CurDistrict === kec || normalizeDistrictName(d4CurDistrict) === kec) ? 'selected' : ''}>Kecamatan ${kec}</option>
+                  `).join('')}
+                </select>
               </div>
               <div>
-                <label class="block text-xs font-bold text-slate-800 mb-1">Koordinat GPS / Spesifikasi Merek &amp; Tipe Alat (Opsional):</label>
-                <input id="nftD4Gps" type="text" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" value="${escapeHtml(saved.gps || '')}" placeholder="Contoh: Yanmar TF 85 / Kubota DC-70 • -4.135° S, 104.582° E" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-medium">
+                <label class="block text-xs font-bold text-slate-800 mb-1">Desa &amp; Pemilik/Operator Alat: <span class="text-rose-600">*</span></label>
+                <input id="nftD4Location" type="text" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" value="${escapeHtml(saved.location || '')}" placeholder="Contoh: Desa Sidomulyo • Bpk. Hendra (UPJA)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-medium">
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-slate-800 mb-1">Koordinat GPS / Merek Alat:</label>
+                <input id="nftD4Gps" type="text" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" value="${escapeHtml(saved.gps || '')}" placeholder="Contoh: Yanmar TF 85 • -4.135° S" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-medium">
               </div>
             </div>
 
@@ -3687,6 +3745,7 @@
       day: 4,
       sectorKey: sectorKey,
       sectorName: guide.name,
+      district: document.getElementById('nftD4District')?.value || '',
       location: location,
       gps: gps,
       mainTools: mainTools,
@@ -3727,6 +3786,18 @@
   }
 
   let day4DraftTimer = null;
+  
+  window.onNftDay4DistrictChange = function(newDist) {
+    const locInput = document.getElementById('nftD4Location');
+    if (locInput && newDist) {
+      if (!locInput.value) {
+        locInput.value = 'Desa ..., Kec. ' + newDist;
+      } else if (!locInput.value.toLowerCase().includes(newDist.toLowerCase())) {
+        locInput.value = locInput.value.replace(/,?\s*Kec\.\s*[^•,]+/i, '') + ' • Kec. ' + newDist;
+      }
+    }
+    onNftDay4FieldInput();
+  };
   window.onNftDay4FieldInput = function() {
     updateNftDay4Counters();
     clearTimeout(day4DraftTimer);
@@ -4365,7 +4436,7 @@
               <div>
                 <label class="block text-xs font-bold text-slate-800 mb-1">Kecamatan Lokasi Objek di OKU Timur: <span class="text-rose-600">*</span></label>
                 <select id="nftVidDistrictD${dayNum}" ${readOnlyMode ? 'disabled' : ''} onchange="onNftVideoLkpdInput(${dayNum})" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none font-bold">
-                  ${OKU_TIMUR_DISTRICTS.map(d => `<option value="${escapeHtml(d)}" ${valDistrict === d ? 'selected' : ''}>Kecamatan ${escapeHtml(d)}</option>`).join('')}
+                  ${OKU_TIMUR_DISTRICTS.map(d => `<option value="${escapeHtml(d)}" ${(valDistrict === d || normalizeDistrictName(valDistrict) === d) ? 'selected' : ''}>Kecamatan ${escapeHtml(d)}</option>`).join('')}
                 </select>
               </div>
             </div>
@@ -5302,7 +5373,7 @@
                 <label class="block font-bold text-slate-800 mb-1">Kecamatan di OKU Timur: <span class="text-red-500">*</span></label>
                 <select id="nftGenDistrict_d${dayNum}" ${readOnlyAttr} class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs font-bold bg-white focus:border-teal-600 outline-none">
                   <option value="">-- Pilih Kecamatan di OKU Timur --</option>
-                  ${OKU_TIMUR_DISTRICTS.map(d => `<option value="${d}" ${formData.district === d ? 'selected' : ''}>Kec. ${d}</option>`).join('')}
+                  ${OKU_TIMUR_DISTRICTS.map(d => `<option value="${d}" ${(formData.district === d || normalizeDistrictName(formData.district) === d) ? 'selected' : ''}>Kec. ${d}</option>`).join('')}
                 </select>
               </div>
 
@@ -5742,13 +5813,7 @@
 
     const canEdit = !isReadOnly && !isSubmitted;
 
-    const kecamatanList = [
-      'Belitang', 'Belitang II', 'Belitang III', 'Belitang Madang Raya',
-      'Buay Madang', 'Buay Madang Timur', 'Martapura', 'BP Peliung',
-      'BP Bangsa Raja', 'Madang Suku I', 'Madang Suku II', 'Madang Suku III',
-      'Cempaka', 'Semendawai Barat', 'Semendawai Suku III', 'Semendawai Timur',
-      'Jayapura', 'Bunga Mayang'
-    ];
+    const kecamatanList = OKU_TIMUR_DISTRICTS;
 
     mainEl.innerHTML = `
       <div class="flex flex-col gap-4 max-w-xl mx-auto w-full pb-16">
@@ -5817,7 +5882,7 @@
               <select id="nftD0LkpdKecamatan" ${!canEdit ? 'disabled' : ''} class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm focus:ring-2 focus:ring-teal-500 focus:outline-none ${!canEdit ? 'bg-slate-100 text-slate-600' : 'bg-white'}">
                 <option value="">-- Pilih Kecamatan Lokasi Observasi --</option>
                 ${kecamatanList.map(kec => `
-                  <option value="${kec}" ${saved.kecamatan === kec ? 'selected' : ''}>Kecamatan ${kec}</option>
+                  <option value="${kec}" ${(saved.kecamatan === kec || normalizeDistrictName(saved.kecamatan) === kec) ? 'selected' : ''}>Kecamatan ${kec}</option>
                 `).join('')}
               </select>
             </div>
@@ -6073,6 +6138,8 @@
   window.collectNftVideoDayData = collectNftVideoDayData;
   window.extractYoutubeVideoId = extractYoutubeVideoId;
   window.NFT_LKPD_VIDEO_SECTORS = NFT_LKPD_VIDEO_SECTORS;
+  window.OKU_TIMUR_DISTRICTS = OKU_TIMUR_DISTRICTS;
+  window.normalizeDistrictName = normalizeDistrictName;
   window.saveNonFieldTripDay4Draft = saveNonFieldTripDay4Draft;
   window.submitNonFieldTripDay4LKPD = submitNonFieldTripDay4LKPD;
   window.saveNonFieldTripDay5Draft = saveNonFieldTripDay5Draft;
