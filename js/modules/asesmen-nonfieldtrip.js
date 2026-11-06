@@ -93,8 +93,9 @@
    * Soal dan urutan pilihan ganda (A, B, C, D, E) diacak setiap sesi baru atau setelah reset!
    */
   function generateStudentPackage(dayNum, cleanNisn) {
-    let selectedSector = (dayNum === 3 || dayNum === 4) ? getStudentDay3Sector(cleanNisn, dayNum) : '';
-    const storageKey = (dayNum === 3 || dayNum === 4)
+    const isSecDay = (dayNum === 3 || dayNum === 4 || dayNum === 5 || dayNum === 6);
+    let selectedSector = isSecDay ? getStudentDay3Sector(cleanNisn, dayNum) : '';
+    const storageKey = isSecDay
       ? `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${selectedSector}_${cleanNisn}`
       : `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`;
     const expectedLength = (dayNum === 0) ? 10 : 50;
@@ -105,7 +106,7 @@
       if (savedPkg) {
         const parsedPkg = JSON.parse(savedPkg);
         if (Array.isArray(parsedPkg) && parsedPkg.length === expectedLength) {
-          if (dayNum === 3 || dayNum === 4) {
+          if (isSecDay) {
             if (parsedPkg[0] && (!parsedPkg[0].sector || parsedPkg[0].sector === selectedSector)) {
               return parsedPkg;
             }
@@ -116,7 +117,7 @@
       }
     } catch(e) {}
 
-    const allBank = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(dayNum, ((dayNum === 3 || dayNum === 4) ? selectedSector : undefined))) || [];
+    const allBank = (window.getNftBankSoalByDay && window.getNftBankSoalByDay(dayNum, (isSecDay ? selectedSector : undefined))) || [];
     if (!allBank.length) return [];
 
     // Gunakan kombinasi NISN + timestamp + random salt agar setiap kali ujian dimulai ulang / direset,
@@ -162,8 +163,8 @@
       return pkgWithShuffledChoices;
     }
 
-    // KHUSUS DAY 3 & DAY 4 (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
-    if (dayNum === 3 || dayNum === 4) {
+    // KHUSUS DAY 3, DAY 4, DAY 5 & DAY 6 (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
+    if (dayNum === 3 || dayNum === 4 || dayNum === 5 || dayNum === 6) {
       const chosen50 = [...allBank];
       const mixed50 = seededShuffle(chosen50, rng).slice(0, 50);
       const pkgWithShuffledChoices = mixed50.map((origQ, qIdx) => {
@@ -326,7 +327,7 @@
       return;
     }
 
-    if (dayNum === 3 || dayNum === 4) {
+    if (dayNum === 3 || dayNum === 4 || dayNum === 5 || dayNum === 6) {
       examState.selectedSector = getStudentDay3Sector(examState.cleanNisn, dayNum);
     }
 
@@ -684,22 +685,26 @@
     const isDay0 = (examState.dayNum === 0);
     const isDay3 = (examState.dayNum === 3);
     const isDay4 = (examState.dayNum === 4);
-    const isSectorDay = (isDay3 || isDay4);
+    const isDay5 = (examState.dayNum === 5);
+    const isDay6 = (examState.dayNum === 6);
+    const isSectorDay = (isDay3 || isDay4 || isDay5 || isDay6);
     const currentSectorKey = examState.selectedSector || (isSectorDay ? getStudentDay3Sector(studentNisn, examState.dayNum) : '');
     const currentSectorName = isSectorDay ? (NFT_DAY3_SECTOR_MAP[currentSectorKey] || 'Pertanian Padi Sawah & Tanaman Pangan') : '';
 
     const dayBadgeText = isDay0
       ? 'Non-Field Trip • Day 0 (Simulasi)'
-      : (isDay3
-          ? `Non-Field Trip • Day 3`
-          : `Non-Field Trip • Day ${examState.dayNum}`);
+      : `Non-Field Trip • Day ${examState.dayNum}`;
     const examHeading = isDay0
       ? 'Kuis Asesmen Simulasi &amp; Gladi Bersih'
       : (isDay3
           ? `Kuis Asesmen Lapangan: ${currentSectorName}`
           : (isDay4
               ? `Asesmen Eksplorasi Alat &amp; STEM: ${currentSectorName}`
-              : `Kuis Asesmen Kompetensi Day ${examState.dayNum}`));
+              : (isDay5
+                  ? `Asesmen Video Observasi &amp; STEM: ${currentSectorName}`
+                  : (isDay6
+                      ? `Asesmen Video Finansial &amp; Inovasi: ${currentSectorName}`
+                      : `Kuis Asesmen Kompetensi Day ${examState.dayNum}`))));
     const examSubtitle = isDay0
       ? 'Uji coba pemahaman sistem, 4 pilar FINCESTEM, etika riset, dan pengenalan fitur ujian digital.'
       : (examState.dayNum === 2
@@ -708,7 +713,11 @@
               ? `Uji pemahaman 4 Pilar STEM (Sains, Teknologi, Rekayasa & Matematika) khusus sektor ${currentSectorName} di OKU Timur.`
               : (isDay4
                   ? `Uji kemampuan analisis peralatan, perlengkapan kerja, dan mekanisasi pada sektor ${currentSectorName} dikaitkan dengan 4 dimensi STEM (Science, Technology, Engineering & Mathematics).`
-                  : 'Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.')));
+                  : (isDay5
+                      ? `Uji pemahaman observasi lapangan, peralatan kerja, dan penerapan 4 unsur STEM (Science, Technology, Engineering, Mathematics) pada video sektor ${currentSectorName}.`
+                      : (isDay6
+                          ? `Uji kemampuan analisis kelayakan finansial (modal, biaya, laba), evaluasi risiko usaha, dan gagasan solusi inovasi FINCESTEM pada video sektor ${currentSectorName}.`
+                          : 'Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.')))));
 
     root.innerHTML = `
       <div class="max-w-xl mx-auto w-full p-5 sm:p-7 rounded-3xl bg-white border border-slate-200 shadow-xl flex flex-col gap-5 my-6 animate-scale-up">
@@ -1601,41 +1610,32 @@
   let isViolationModalOpen = false;
 
   const NFT_DAY3_SECTOR_MAP = {
-    'pertanian': 'Pertanian Padi Sawah & Tanaman Pangan',
+    'pertanian': 'Pertanian Tanaman Pangan & Hortikultura',
     'perkebunan': 'Perkebunan Karet & Kelapa Sawit',
-    'perikanan': 'Budidaya Perikanan Air Tawar Patin & Lele',
-    'peternakan': 'Peternakan Sapi Potong & Unggas'
+    'perikanan': 'Perikanan Budidaya Air Tawar',
+    'peternakan': 'Peternakan Sapi Potong & Unggas',
+    'perdagangan': 'Perdagangan, Pasar, Toko & UMKM Kuliner',
+    'keuangan': 'Koperasi, Agen BRI-Link & Jasa Keuangan',
+    'jasa': 'Jasa Teknik, Bengkel & Produksi Kerajinan'
   };
 
   function getStudentDay3Sector(cleanNisn, dayNum) {
     try {
-      if (Number(dayNum) === 4) {
-        const localSec4 = localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn);
-        if (localSec4 && NFT_DAY3_SECTOR_MAP[localSec4]) return localSec4;
-        const rawLkpd4 = localStorage.getItem('fincestem_lkpd_nft_day4_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day4_' + cleanNisn);
-        if (rawLkpd4) {
-          const p4 = JSON.parse(rawLkpd4);
-          if (p4 && (p4.sectorKey || p4.sector) && NFT_DAY3_SECTOR_MAP[p4.sectorKey || p4.sector]) return p4.sectorKey || p4.sector;
+      const d = Number(dayNum) || 3;
+      const checkDays = (d === 6) ? [6, 5, 4, 3] : (d === 5 ? [5, 4, 3] : (d === 4 ? [4, 3] : [3]));
+      for (const cd of checkDays) {
+        const localSec = localStorage.getItem(`fincestem_nft_sector_d${cd}_` + cleanNisn);
+        if (localSec && NFT_DAY3_SECTOR_MAP[localSec]) return localSec;
+        const rawLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${cd}_` + cleanNisn) || localStorage.getItem(`fincestem_lkpd_day${cd}_` + cleanNisn);
+        if (rawLkpd) {
+          const p = JSON.parse(rawLkpd);
+          if (p && (p.sectorKey || p.sector) && NFT_DAY3_SECTOR_MAP[p.sectorKey || p.sector]) return p.sectorKey || p.sector;
         }
-        const rawMat4 = localStorage.getItem('fincestem_materi_nft_day4_' + cleanNisn) || localStorage.getItem('fincestem_materi_day4_' + cleanNisn);
-        if (rawMat4) {
-          const m4 = JSON.parse(rawMat4);
-          if (m4 && (m4.selectedSector || m4.sector) && NFT_DAY3_SECTOR_MAP[m4.selectedSector || m4.sector]) return m4.selectedSector || m4.sector;
+        const rawMat = localStorage.getItem(`fincestem_materi_nft_day${cd}_` + cleanNisn) || localStorage.getItem(`fincestem_materi_day${cd}_` + cleanNisn);
+        if (rawMat) {
+          const m = JSON.parse(rawMat);
+          if (m && (m.selectedSector || m.sector) && NFT_DAY3_SECTOR_MAP[m.selectedSector || m.sector]) return m.selectedSector || m.sector;
         }
-      }
-      const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
-      if (localSec && NFT_DAY3_SECTOR_MAP[localSec]) return localSec;
-      
-      const rawLkpd = localStorage.getItem('fincestem_lkpd_nft_day3_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day3_' + cleanNisn);
-      if (rawLkpd) {
-        const p = JSON.parse(rawLkpd);
-        if (p && (p.sectorKey || p.sector) && NFT_DAY3_SECTOR_MAP[p.sectorKey || p.sector]) return p.sectorKey || p.sector;
-      }
-
-      const rawMat = localStorage.getItem('fincestem_materi_nft_day3_' + cleanNisn) || localStorage.getItem('fincestem_materi_day3_' + cleanNisn);
-      if (rawMat) {
-        const m = JSON.parse(rawMat);
-        if (m && (m.selectedSector || m.sector) && NFT_DAY3_SECTOR_MAP[m.selectedSector || m.sector]) return m.selectedSector || m.sector;
       }
     } catch(e) {}
     return 'pertanian';

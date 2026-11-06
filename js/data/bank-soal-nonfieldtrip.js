@@ -21120,9 +21120,431 @@
   }
 ];
 
+  window.NFT_BANK_SOAL_INDICATORS_DAY5 = [
+  {
+    "code": "A",
+    "key": "video_science_observasi",
+    "name": "Analisis Video Science: Prinsip Fisika, Kimia & Biologi pada Sektor Pilihan",
+    "desc": "Pemahaman ilmiah proses biologi, kimia, dan fisika pada objek serta peralatan kerja yang ditampilkan dalam video observasi."
+  },
+  {
+    "code": "B",
+    "key": "video_technology_exploration",
+    "name": "Analisis Video Technology & Exploration: Peralatan Kerja, Mesin & Digitalisasi",
+    "desc": "Identifikasi fungsi peralatan, mesin mekanisasi, perangkat transaksi/ukur digital, dan APD keselamatan kerja di lapangan."
+  },
+  {
+    "code": "C",
+    "key": "video_engineering_rekayasa",
+    "name": "Analisis Video Engineering: Rancang Bangun, Tata Ruang & Rekayasa Teknis",
+    "desc": "Evaluasi desain konstruksi, tata letak operasional, rekayasa alat, serta pemecahan masalah teknis di lapangan."
+  },
+  {
+    "code": "D",
+    "key": "video_mathematics_kalkulasi",
+    "name": "Analisis Video Mathematics: Kalkulasi Ukuran, Kapasitas & Produktivitas",
+    "desc": "Perhitungan matematis dimensi lahan/wadah, takaran input, kapasitas kerja per jam, dan produktivitas hasil usaha."
+  },
+  {
+    "code": "E",
+    "key": "video_culture_sintesis",
+    "name": "Pilar Culture & Alur Penyajian Video Observasi STEM Mandiri",
+    "desc": "Nilai etos kerja, kearifan budaya lokal OKU Timur, serta ketepatan urutan penyajian video observasi STEM berdurasi 5–10 menit."
+  }
+];
+
+  window.NFT_BANK_SOAL_INDICATORS_DAY6 = [
+  {
+    "code": "A",
+    "key": "video_fin_modal_biaya",
+    "name": "Analisis Video Financial: Struktur Modal Awal, Biaya Tetap & Biaya Operasional",
+    "desc": "Perhitungan kebutuhan modal investasi, biaya variabel bahan baku/pakan/stok, serta efisiensi pengeluaran usaha."
+  },
+  {
+    "code": "B",
+    "key": "video_fin_hpp_omzet_laba",
+    "name": "Analisis Video Financial: Kalkulasi HPP, Harga Jual, Omzet & Laba Bersih",
+    "desc": "Penentuan Harga Pokok Produksi/Penjualan (HPP), margin keuntungan, fee layanan, R/C ratio, dan laba bersih bulanan."
+  },
+  {
+    "code": "C",
+    "key": "video_evaluasi_kendala_risiko",
+    "name": "Evaluasi Kendala Teknis, Risiko Usaha & Keamanan Operasional",
+    "desc": "Diagnosis kendala lapangan, risiko fluktuasi harga/cuaca/penyakit, pencegahan kerugian/uang palsu, dan mitigasi risiko."
+  },
+  {
+    "code": "D",
+    "key": "video_solusi_inovasi_fincestem",
+    "name": "Gagasan Solusi & Inovasi Nilai Tambah Berbasis STEM + Finansial",
+    "desc": "Perumusan solusi kreatif pengolahan limbah (zero-waste), hilirisasi kemasan produk, serta digitalisasi pembayaran/pembukuan."
+  },
+  {
+    "code": "E",
+    "key": "video_kelayakan_keberlanjutan",
+    "name": "Sintesis Kelayakan Bisnis & Pengembangan Ekonomi Lokal OKU Timur",
+    "desc": "Integrasi 4 pilar FINCESTEM dalam membangun kemandirian usaha masyarakat di Kabupaten OKU Timur."
+  }
+];
+
+  window.NFT_BANK_SOAL_INDICATORS_DAY7 = [
+  {
+    "code": "A",
+    "key": "sintesis_pilar_financial",
+    "name": "Evaluasi Komprehensif Pilar Financial & Rekonsiliasi Kas Riset",
+    "desc": "Audit anggaran riset mandiri, perhitungan laba-rugi usaha, inklusi keuangan, dan manajemen kas."
+  },
+  {
+    "code": "B",
+    "key": "sintesis_pilar_culture",
+    "name": "Evaluasi Komprehensif Pilar Culture & Etos Kerja Multikultural",
+    "desc": "Harmoni sosial budaya Komering dan transmigran, etika pelayanan, serta gotong royong ekonomi desa."
+  },
+  {
+    "code": "C",
+    "key": "sintesis_pilar_exploration",
+    "name": "Evaluasi Komprehensif Pilar Exploration, Geospasial & Peralatan",
+    "desc": "Pemetaan potensi wilayah OKU Timur, jaringan irigasi, serta eksplorasi peralatan dan keselamatan kerja."
+  },
+  {
+    "code": "D",
+    "key": "sintesis_pilar_stem",
+    "name": "Evaluasi Komprehensif 4 Dimensi STEM (Sains, Teknologi, Rekayasa, Matematika)",
+    "desc": "Penerapan terpadu Science, Technology, Engineering, dan Mathematics pada 7 sektor ekonomi lokal."
+  },
+  {
+    "code": "E",
+    "key": "portofolio_video_dokumenter",
+    "name": "Karya Portofolio Video YouTube & Solusi Inovasi Berkelanjutan",
+    "desc": "Standar penyajian karya video observasi-analisis YouTube dan rekomendasi inovasi bagi kemajuan OKU Timur."
+  }
+];
+
+  // Bank Soal Tambahan Khusus Sektor Non-Agrikultur (Perdagangan/UMKM, Koperasi/BRI-Link, Jasa Teknik/Kerajinan)
+  // untuk melengkapi pilihan 7 sektor di Day 5 dan Day 6
+  const EXTRA_SECTOR_QUESTIONS_D56 = [
+    // --- SEKTOR PERDAGANGAN / TOKO / UMKM KULINER (12 SOAL) ---
+    {
+      id: 5001, day: 5, sector: 'perdagangan', indicatorCode: 'A', cognitiveLevel: 'C3',
+      question: 'Dalam video observasi STEM pada usaha toko sembako dan UMKM kuliner, penyimpanan bahan pangan segar di dalam lemari pendingin (chiller) bersuhu 2°C hingga 4°C menerapkan prinsip Sains berupa...',
+      options: [
+        { key: 'A', text: 'Menghambat aktivitas enzim dan laju pembelahan bakteri pembusuk secara termodinamika' },
+        { key: 'B', text: 'Mengubah kandungan air di dalam makanan menjadi lemak jenuh secara permanen' },
+        { key: 'C', text: 'Menghilangkan seluruh massa karbohidrat dan protein dari bahan makanan' },
+        { key: 'D', text: 'Mempercepat proses fermentasi pembusukan oleh jamur udara terbuka' },
+        { key: 'E', text: 'Menaikkan suhu titik didih minyak goreng di dalam kemasan plastik' }
+      ],
+      correct: 'A',
+      explanation: 'Suhu dingin (0–4°C) memperlambat metabolisme mikroorganisme patogen dan reaksi enzimatik sehingga kesegaran pangan bertahan lebih lama.'
+    },
+    {
+      id: 5002, day: 5, sector: 'perdagangan', indicatorCode: 'A', cognitiveLevel: 'C3',
+      question: 'Produk UMKM kerupuk kemplang dan rengginang khas OKU Timur wajib dikemas rapat menggunakan plastik tebal kedap udara. Secara kimia pangan, tujuan utama penutupan rapat tersebut adalah...',
+      options: [
+        { key: 'A', text: 'Mencegah penyerapan uap air udara (higroskopis) dan oksidasi minyak penyebab bau tengik' },
+        { key: 'B', text: 'Menambah berat timbangan kerupuk melalui penguapan udara panas matahari' },
+        { key: 'C', text: 'Mengubah warna kerupuk menjadi gelap akibat pantulan cahaya lampu toko' },
+        { key: 'D', text: 'Mempercepat pelunakan tekstur kerupuk sebelum dibeli oleh konsumen' },
+        { key: 'E', text: 'Menurunkan kandungan kalsium dan protein ikan pada adonan kerupuk' }
+      ],
+      correct: 'A',
+      explanation: 'Paparan oksigen dan uap air memicu reaksi oksidasi lipid (ketengikan) serta menurunkan kerenyahan produk kering.'
+    },
+    {
+      id: 5003, day: 5, sector: 'perdagangan', indicatorCode: 'B', cognitiveLevel: 'C3',
+      question: 'Saat menyorot peralatan toko pada segmen Exploration video Day 5, penggunaan timbangan digital meja bekerja menggunakan komponen sensor teknologi yang disebut...',
+      options: [
+        { key: 'A', text: 'Sensor Load Cell yang mengubah gaya tekan beban barang menjadi sinyal listrik digital' },
+        { key: 'B', text: 'Tabung kapiler raksa yang memuai karena perubahan suhu ruangan toko' },
+        { key: 'C', text: 'Bandul batu timbangan kuningan yang digeser secara manual pada lengan besi' },
+        { key: 'D', text: 'Turbin angin mini yang berputar mengikuti hembusan kipas angin etalase' },
+        { key: 'E', text: 'Kertas lakmus indikator yang berubah warna saat terkena bungkus plastik' }
+      ],
+      correct: 'A',
+      explanation: 'Timbangan elektronik modern menggunakan strain gauge load cell untuk mengukur massa barang secara presisi hingga satuan gram.'
+    },
+    {
+      id: 5004, day: 5, sector: 'perdagangan', indicatorCode: 'B', cognitiveLevel: 'C3',
+      question: 'Alat Impulse Heat Sealer yang digunakan pelaku UMKM kuliner di Belitang untuk merekatkan ujung kantong plastik kemasan bekerja dengan prinsip teknologi...',
+      options: [
+        { key: 'A', text: 'Konversi energi listrik menjadi impuls panas sesaat pada pita elemen nikelin untuk melelehkan dan menyatukan polimer plastik' },
+        { key: 'B', text: 'Penyemprotan cairan lem kayu secara otomatis di sepanjang mulut kantong kemasan' },
+        { key: 'C', text: 'Pendinginan ekstrem menggunakan gas nitrogen cair untuk membekukan plastik' },
+        { key: 'D', text: 'Penjahitan benang nilon secara mekanis menggunakan jarum berkecepatan tinggi' },
+        { key: 'E', text: 'Pemotongan plastik menggunakan gelombang suara ultrasonik tanpa daya listrik' }
+      ],
+      correct: 'A',
+      explanation: 'Impulse sealer mengalirkan arus listrik singkat ke kawat pemanas nikelin sehingga lapisan plastik meleleh sesaat dan menyatu kedap udara.'
+    },
+    {
+      id: 5005, day: 5, sector: 'perdagangan', indicatorCode: 'C', cognitiveLevel: 'C4',
+      question: 'Dalam rekayasa tata letak (Layout Engineering) barang di rak toko sembako, penerapan metode FIFO (First In First Out) dilakukan dengan cara...',
+      options: [
+        { key: 'A', text: 'Meletakkan stok barang yang masuk lebih awal di barisan paling depan agar terjual lebih dulu sebelum mendekati masa kedaluwarsa' },
+        { key: 'B', text: 'Menyimpan barang lama di gudang terkunci sampai seluruh barang baru habis terjual' },
+        { key: 'C', text: 'Mencampur barang pangan dengan bahan kimia deterjen di dalam satu wadah terbuka' },
+        { key: 'D', text: 'Menumpuk barang berukuran paling berat di atas barang kemasan kaca yang rapuh' },
+        { key: 'E', text: 'Menjual barang yang baru datang dengan harga dua kali lipat dari barang lama' }
+      ],
+      correct: 'A',
+      explanation: 'Rekayasa display FIFO memastikan rotasi stok berjalan sehat sehingga meminimalkan kerugian akibat produk kedaluwarsa (expired).'
+    },
+    {
+      id: 5006, day: 5, sector: 'perdagangan', indicatorCode: 'C', cognitiveLevel: 'C3',
+      question: 'Desain etalase kaca tertutup pada warung kuliner dan pemakaian penjepit makanan (food tongs) merupakan rekayasa higienitas yang berfungsi untuk...',
+      options: [
+        { key: 'A', text: 'Melindungi makanan matang dari kontaminasi silang debu jalanan, lalat vektor penyakit, dan bakteri tangan' },
+        { key: 'B', text: 'Menyembunyikan makanan agar tidak terlihat oleh pembeli yang lewat di depan warung' },
+        { key: 'C', text: 'Membuat porsi makanan terlihat dua kali lebih besar karena efek cermin cekung' },
+        { key: 'D', text: 'Mengurangi berat bersih makanan agar pedagang memperoleh keuntungan ganda' },
+        { key: 'E', text: 'Menggantikan fungsi kompor gas dalam memasak bahan makanan mentah' }
+      ],
+      correct: 'A',
+      explanation: 'Rekayasa pelindung fisik etalase dan alat penjepit mencegah paparan patogen lingkungan pada makanan siap saji.'
+    },
+    {
+      id: 5007, day: 6, sector: 'perdagangan', indicatorCode: 'B', cognitiveLevel: 'C3',
+      question: 'Seorang pedagang toko sembako membeli 1 karung gula pasir (50 kg) seharga Rp750.000 dan plastik kemasannya Rp25.000. Jika gula tersebut dikemas ukuran 1 kg dan dijual Rp17.500 per kg, berapakah laba bersih yang diperoleh dari 1 karung tersebut?',
+      options: [
+        { key: 'A', text: 'Rp100.000 laba bersih per karung' },
+        { key: 'B', text: 'Rp125.000 laba bersih per karung' },
+        { key: 'C', text: 'Rp75.000 laba bersih per karung' },
+        { key: 'D', text: 'Rp150.000 laba bersih per karung' },
+        { key: 'E', text: 'Rp50.000 laba bersih per karung' }
+      ],
+      correct: 'A',
+      explanation: 'Total Modal = Rp750.000 + Rp25.000 = Rp775.000. Total Penjualan = 50 kg x Rp17.500 = Rp875.000. Laba Bersih = Rp875.000 - Rp775.000 = Rp100.000.'
+    },
+    {
+      id: 5008, day: 6, sector: 'perdagangan', indicatorCode: 'B', cognitiveLevel: 'C4',
+      question: 'Sebuah UMKM kuliner memproduksi 100 bungkus keripik pisang per hari dengan biaya bahan baku dan kemasan Rp8.000 per bungkus serta biaya operasional harian tetap Rp100.000. Jika harga jual ditetapkan Rp12.000 per bungkus dan terjual habis, berapakah keuntungan bersih hariannya?',
+      options: [
+        { key: 'A', text: 'Rp300.000 keuntungan bersih per hari' },
+        { key: 'B', text: 'Rp400.000 keuntungan bersih per hari' },
+        { key: 'C', text: 'Rp200.000 keuntungan bersih per hari' },
+        { key: 'D', text: 'Rp500.000 keuntungan bersih per hari' },
+        { key: 'E', text: 'Rp150.000 keuntungan bersih per hari' }
+      ],
+      correct: 'A',
+      explanation: 'Total Biaya = (100 x Rp8.000) + Rp100.000 = Rp900.000. Total Omzet = 100 x Rp12.000 = Rp1.200.000. Laba Bersih = Rp1.200.000 - Rp900.000 = Rp300.000.'
+    },
+    {
+      id: 5009, day: 6, sector: 'perdagangan', indicatorCode: 'C', cognitiveLevel: 'C4',
+      question: 'Dalam video analisis Day 6 pada sektor perdagangan/warung, salah satu kesalahan manajemen keuangan paling fatal yang sering membuat modal kulakan pedagang habis tanpa disadari adalah...',
+      options: [
+        { key: 'A', text: 'Mencampuradukkan uang kas perputaran modal toko dengan pengeluaran konsumsi pribadi rumah tangga tanpa pencatatan' },
+        { key: 'B', text: 'Mencatat setiap barang yang keluar dan masuk ke dalam buku inventaris harian' },
+        { key: 'C', text: 'Menyediakan fasilitas pembayaran non-tunai QRIS di meja kasir toko' },
+        { key: 'D', text: 'Memisahkan rekening tabungan khusus modal kulakan dengan uang belanja dapur' },
+        { key: 'E', text: 'Memeriksa tanggal kedaluwarsa barang secara rutin setiap akhir pekan' }
+      ],
+      correct: 'A',
+      explanation: 'Ketidakjelasan batas antara kas usaha dan uang pribadi menyebabkan modal kerja tergerus untuk konsumsi rumah tangga (prive tak terkontrol).'
+    },
+    {
+      id: 5010, day: 6, sector: 'perdagangan', indicatorCode: 'D', cognitiveLevel: 'C4',
+      question: 'Solusi inovasi berbasis STEM dan Finansial yang paling tepat diusulkan dalam video Day 6 untuk meningkatkan daya saing produk UMKM kuliner lokal OKU Timur adalah...',
+      options: [
+        { key: 'A', text: 'Menerapkan pengemasan kedap udara (standing pouch ber-seal) lengkap dengan label komposisi/PIRT, pencatatan HPP digital, dan pembayaran QRIS' },
+        { key: 'B', text: 'Mengurangi takaran bahan baku utama secara diam-diam tanpa mengubah harga jual' },
+        { key: 'C', text: 'Membungkus produk dengan kertas koran bekas agar biaya produksi lebih murah' },
+        { key: 'D', text: 'Menolak pembeli yang ingin memesan secara grosir melalui aplikasi pesan singkat' },
+        { key: 'E', text: 'Menjual produk hanya pada satu jam tertentu di malam hari tanpa papan nama' }
+      ],
+      correct: 'A',
+      explanation: 'Inovasi kemasan food-grade berlabel meningkatkan masa simpan (shelf-life) dan nilai jual, sementara QRIS & pembukuan digital merapikan arus kas.'
+    },
+
+    // --- SEKTOR KOPERASI / AGEN BRI-LINK / JASA KEUANGAN (12 SOAL) ---
+    {
+      id: 5011, day: 5, sector: 'keuangan', indicatorCode: 'A', cognitiveLevel: 'C3',
+      question: 'Pada video observasi Day 5 di gerai Agen BRI-Link / Koperasi, alat pendeteksi keaslian uang kertas menggunakan lampu khusus yang bekerja berdasarkan prinsip Fisika Optik, yaitu...',
+      options: [
+        { key: 'A', text: 'Memancarkan gelombang sinar Ultraviolet (UV) yang memendarkan tinta fosfor dan benang pengaman khusus pada uang Rupiah asli' },
+        { key: 'B', text: 'Menggunakan sinar-X berenergi tinggi untuk menembus dompet kulit milik nasabah' },
+        { key: 'C', text: 'Memanaskan lembaran uang kertas hingga suhu 200°C untuk menguji kekuatan serat kapas' },
+        { key: 'D', text: 'Menimbang berat satu lembar uang kertas menggunakan neraca pegas mekanik' },
+        { key: 'E', text: 'Mencelupkan uang kertas ke dalam larutan asam kuat untuk melihat perubahan warna' }
+      ],
+      correct: 'A',
+      explanation: 'Uang Rupiah asli memiliki fitur keamanan tak kasatmata berupa tinta fluorescent yang berpendar terang di bawah paparan sinar UV (panjang gelombang ~365 nm).'
+    },
+    {
+      id: 5012, day: 5, sector: 'keuangan', indicatorCode: 'A', cognitiveLevel: 'C3',
+      question: 'Printer struk bukti transaksi di gerai Agen BRI-Link dapat mencetak tulisan hitam dengan cepat tanpa menggunakan pita tinta maupun katrid tinta cair. Prinsip Sains Kimia yang bekerja pada kertas struk tersebut adalah...',
+      options: [
+        { key: 'A', text: 'Kertas berlapis senyawa kimia termokromik (thermal paper) yang bereaksi berubah warna menjadi hitam saat disentuh kepala pemanas (thermal head)' },
+        { key: 'B', text: 'Kertas menyerap partikel karbon hitam secara magnetis dari udara di sekitar mesin EDC' },
+        { key: 'C', text: 'Mesin menyemprotkan serbuk arang kayu mikroskopis dari baterai internal printer' },
+        { key: 'D', text: 'Tulisan terbentuk akibat goresan pisau baja tajam yang mengelupas lapisan kertas' },
+        { key: 'E', text: 'Sinar lampu ruangan membakar permukaan kertas secara merata melalui lensa kaca' }
+      ],
+      correct: 'A',
+      explanation: 'Kertas termal dilapisi leuco dye dan asam pengembang yang bereaksi kimia menghasilkan warna gelap ketika dipanaskan secara selektif oleh elemen thermal printhead.'
+    },
+    {
+      id: 5013, day: 5, sector: 'keuangan', indicatorCode: 'B', cognitiveLevel: 'C3',
+      question: 'Perangkat mesin EDC (Electronic Data Capture) dan aplikasi BRILink Mobile yang ditunjukkan pada video Day 5 menerapkan teknologi keamanan informasi perbankan berupa...',
+      options: [
+        { key: 'A', text: 'Pembacaan chip kartu terenkripsi, otentikasi PIN nasabah, dan transmisi data real-time melalui jaringan seluler/internet ke server bank' },
+        { key: 'B', text: 'Penyimpanan seluruh nomor PIN nasabah secara terbuka di layar spanduk depan gerai' },
+        { key: 'C', text: 'Pengiriman uang fisik melalui pipa bawah tanah dari desa menuju kantor pusat bank' },
+        { key: 'D', text: 'Pencatatan saldo tabungan nasabah hanya di atas selembar kertas karton tanpa sistem server' },
+        { key: 'E', text: 'Penggunaan gelombang radio AM terbuka yang dapat disadap oleh televisi warga sekitar' }
+      ],
+      correct: 'A',
+      explanation: 'Transaksi elektronik agen perbankan dilindungi enkripsi kriptografi ujung-ke-ujung (end-to-end encryption), verifikasi chip EMV, dan PIN 6 digit.'
+    },
+    {
+      id: 5014, day: 5, sector: 'keuangan', indicatorCode: 'C', cognitiveLevel: 'C4',
+      question: 'Dalam aspek Engineering (Rekayasa Keamanan & Layanan) pada gerai Agen BRI-Link atau Koperasi Simpan Pinjam, desain tata letak loket yang baik wajib menerapkan...',
+      options: [
+        { key: 'A', text: 'Penempatan kamera CCTV yang mengawasi area serah-terima uang, laci brankas terkunci aman, dan privasi keypad saat nasabah menekan PIN' },
+        { key: 'B', text: 'Meletakkan tumpukan uang tunai puluhan juta rupiah di meja luar tanpa pengawasan' },
+        { key: 'C', text: 'Memasang cermin besar tepat di belakang nasabah agar orang lain melihat PIN yang diketik' },
+        { key: 'D', text: 'Menempatkan mesin EDC di ruang gelap tanpa penerangan lampu dan sinyal internet' },
+        { key: 'E', text: 'Mengizinkan siapa saja membuka laci brankas kas tanpa izin pengelola gerai' }
+      ],
+      correct: 'A',
+      explanation: 'Rekayasa ruang layanan keuangan mikro harus mengutamakan keamanan fisik kas (brankas/teralis), pemantauan visual (CCTV), dan perlindungan privasi PIN nasabah.'
+    },
+    {
+      id: 5015, day: 6, sector: 'keuangan', indicatorCode: 'A', cognitiveLevel: 'C4',
+      question: 'Dalam analisis Pilar Financial video Day 6 pada usaha Agen BRI-Link, yang dimaksud dengan manajemen keseimbangan modal likuiditas ganda adalah...',
+      options: [
+        { key: 'A', text: 'Menjaga ketersediaan saldo uang elektronik di rekening bank (untuk melayani transfer/setor tunai) sekaligus uang tunai fisik di laci kas (untuk melayani tarik tunai)' },
+        { key: 'B', text: 'Menukarkan seluruh modal uang tunai menjadi barang sembako yang disimpan di gudang' },
+        { key: 'C', text: 'Mengosongkan saldo rekening bank hingga nol rupiah setiap pagi saat membuka gerai' },
+        { key: 'D', text: 'Menolak seluruh nasabah yang ingin melakukan penarikan uang tunai hasil panen' },
+        { key: 'E', text: 'Meminjamkan seluruh modal kerja agen kepada satu orang tanpa batas waktu pengembalian' }
+      ],
+      correct: 'A',
+      explanation: 'Agen Laku Pandai/BRI-Link harus memutar modal secara seimbang antara saldo digital di rekening dan uang kartal fisik di laci agar kedua jenis transaksi (setor & tarik) tidak terhambat.'
+    },
+    {
+      id: 5016, day: 6, sector: 'keuangan', indicatorCode: 'B', cognitiveLevel: 'C3',
+      question: 'Sebuah gerai Agen BRI-Link di Belitang melayani rata-rata 60 transaksi per hari dengan keuntungan bersih (fee agen setelah bagi hasil bank) rata-rata Rp2.500 per transaksi. Jika biaya kuota internet, listrik, dan kertas struk adalah Rp600.000 per bulan (30 hari kerja), berapakah laba bersih bulanan agen tersebut?',
+      options: [
+        { key: 'A', text: 'Rp3.900.000 laba bersih per bulan' },
+        { key: 'B', text: 'Rp4.500.000 laba bersih per bulan' },
+        { key: 'C', text: 'Rp2.800.000 laba bersih per bulan' },
+        { key: 'D', text: 'Rp5.100.000 laba bersih per bulan' },
+        { key: 'E', text: 'Rp1.500.000 laba bersih per bulan' }
+      ],
+      correct: 'A',
+      explanation: 'Pendapatan Fee Harian = 60 x Rp2.500 = Rp150.000. Pendapatan 30 hari = Rp4.500.000. Laba Bersih = Rp4.500.000 - Rp600.000 = Rp3.900.000.'
+    },
+    {
+      id: 5017, day: 6, sector: 'keuangan', indicatorCode: 'C', cognitiveLevel: 'C4',
+      question: 'Modus penipuan yang sering mengincar gerai transaksi keuangan adalah pelaku menunjukkan tangkapan layar (screenshot) bukti transfer palsu hasil editan lalu meminta uang tunai segera diserahkan. Prosedur rekayasa keamanan (SOP) yang wajib dilakukan agen adalah...',
+      options: [
+        { key: 'A', text: 'Wajib memeriksa mutasi saldo masuk secara langsung di aplikasi/mesin resmi milik agen sendiri sebelum menyerahkan uang tunai sepeser pun' },
+        { key: 'B', text: 'Langsung memberikan uang tunai karena pelaku terlihat terburu-buru dan berpakaian rapi' },
+        { key: 'C', text: 'Mempercayai foto bukti transfer di layar HP pelaku tanpa mengecek rekening agen' },
+        { key: 'D', text: 'Mematikan kamera CCTV saat melayani transaksi penarikan tunai dalam jumlah besar' },
+        { key: 'E', text: 'Menyerahkan kartu ATM dan PIN milik agen kepada pelanggan untuk dicek sendiri' }
+      ],
+      correct: 'A',
+      explanation: 'Prinsip verifikasi mutasi real-time di perangkat milik agen sendiri adalah benteng utama mencegah penipuan struk/screenshot palsu.'
+    },
+    {
+      id: 5018, day: 6, sector: 'keuangan', indicatorCode: 'D', cognitiveLevel: 'C4',
+      question: 'Pada Koperasi Simpan Pinjam atau KUD di OKU Timur, inovasi berbasis STEM dan Finansial yang dapat diterapkan untuk mencegah kredit macet dan meningkatkan kepercayaan anggota adalah...',
+      options: [
+        { key: 'A', text: 'Digitalisasi pembukuan simpanan dan angsuran anggota secara transparan, analisis kelayakan usaha peminjam (5C), serta pengingat jadwal angsuran otomatis' },
+        { key: 'B', text: 'Memberikan pinjaman besar tanpa mencatat identitas dan kemampuan bayar peminjam' },
+        { key: 'C', text: 'Menghapuskan pelaksanaan Rapat Anggota Tahunan (RAT) dan laporan keuangan' },
+        { key: 'D', text: 'Menetapkan bunga pinjaman harian setinggi mungkin seperti pinjaman online ilegal' },
+        { key: 'E', text: 'Menyimpan seluruh catatan utang-piutang hanya berdasarkan ingatan pengurus' }
+      ],
+      correct: 'A',
+      explanation: 'Transparansi pencatatan digital dan penilaian kelayakan kredit menjaga kesehatan arus kas koperasi dan meningkatkan partisipasi anggota.'
+    },
+
+    // --- SEKTOR JASA TEKNIK / BENGKEL / PRODUKSI KERAJINAN (12 SOAL) ---
+    {
+      id: 5019, day: 5, sector: 'jasa', indicatorCode: 'A', cognitiveLevel: 'C3',
+      question: 'Ketika seorang mekanik bengkel motor/alsintan menggunakan kunci bergagang panjang untuk membuka baut mesin yang sangat keras, mekanik tersebut menerapkan prinsip Fisika Mekanika yaitu...',
+      options: [
+        { key: 'A', text: 'Momen gaya (Torsi = Gaya x Lengan Kuasa), di mana semakin panjang gagang kunci maka gaya tangan yang dibutuhkan semakin ringan' },
+        { key: 'B', text: 'Hukum pemantulan cahaya cermin datar pada permukaan logam kunci pas' },
+        { key: 'C', text: 'Perpindahan kalor secara radiasi elektromagnetik tanpa melalui zat perantara' },
+        { key: 'D', text: 'Tekanan osmotik cairan di dalam ban karet kendaraan bermotor' },
+        { key: 'E', text: 'Reaksi fotosintesis pengubahan gas karbon dioksida di ruang bengkel' }
+      ],
+      correct: 'A',
+      explanation: 'Rumus torsi (tau = F . r) membuktikan bahwa perpanjangan lengan kuasa (r) melipatgandakan momen putar untuk membuka baut berkarat/keras.'
+    },
+    {
+      id: 5020, day: 5, sector: 'jasa', indicatorCode: 'A', cognitiveLevel: 'C3',
+      question: 'Pada bengkel las listrik di OKU Timur, pekerja wajib mengenakan topeng/kacamata las gelap dan sarung tangan kulit tebal. Secara Sains Fisika dan Kesehatan Kerja (K3), alat pelindung diri tersebut melindungi pekerja dari...',
+      options: [
+        { key: 'A', text: 'Radiasi sinar Ultraviolet (UV) dan Inframerah intensitas tinggi dari busur listrik yang dapat membakar kornea mata (arc eye) serta percikan logam cair' },
+        { key: 'B', text: 'Tiupan angin sepoi-sepoi dari halaman depan bengkel saat cuaca cerah' },
+        { key: 'C', text: 'Getaran suara musik dari radio yang dinyalakan di ruang tunggu pelanggan' },
+        { key: 'D', text: 'Penurunan suhu ruangan akibat penggunaan kipas angin dinding' },
+        { key: 'E', text: 'Pantulan warna cat tembok bengkel yang berwarna hijau muda' }
+      ],
+      correct: 'A',
+      explanation: 'Busur las listrik menghasilkan suhu ribuan derajat Celsius serta radiasi UV/IR kuat yang berbahaya bagi retina/kornea mata dan kulit.'
+    },
+    {
+      id: 5021, day: 5, sector: 'jasa', indicatorCode: 'B', cognitiveLevel: 'C3',
+      question: 'Penggunaan Mesin Las Inverter modern berbasis transistor IGBT pada usaha bengkel las di pedesaan memiliki keunggulan teknologi dibandingkan trafo las gulungan tembaga kuno, yaitu...',
+      options: [
+        { key: 'A', text: 'Konsumsi daya listrik (Watt) jauh lebih hemat, ukuran mesin ringan portabel, dan nyala busur api pengelasan lebih stabil' },
+        { key: 'B', text: 'Dapat menyala tanpa menggunakan sumber energi listrik maupun genset sama sekali' },
+        { key: 'C', text: 'Memiliki bobot mesin lebih dari 200 kilogram sehingga tidak bisa dipindahkan' },
+        { key: 'D', text: 'Menggunakan bahan bakar kayu bakar untuk melelehkan besi baja tebal' },
+        { key: 'E', text: 'Hanya bisa digunakan untuk menyambung bahan kertas dan kain tekstil' }
+      ],
+      correct: 'A',
+      explanation: 'Teknologi inverter switching frekuensi tinggi (IGBT) meningkatkan efisiensi daya listrik secara drastis dan memangkas bobot trafo.'
+    },
+    {
+      id: 5022, day: 5, sector: 'jasa', indicatorCode: 'D', cognitiveLevel: 'C3',
+      question: 'Seorang pengrajin teralis besi dan meubel kayu di Belitang hendak membuat bingkai persegi panjang berukuran panjang 120 cm dan lebar 80 cm dengan sambungan sudut potong miring (miter). Berapakah sudut kemiringan potong pada setiap ujung batang agar membentuk sudut siku-siku 90° yang presisi?',
+      options: [
+        { key: 'A', text: '45 derajat pada masing-masing ujung batang yang bertemu' },
+        { key: 'B', text: '15 derajat pada masing-masing ujung batang yang bertemu' },
+        { key: 'C', text: '75 derajat pada masing-masing ujung batang yang bertemu' },
+        { key: 'D', text: '120 derajat pada masing-masing ujung batang yang bertemu' },
+        { key: 'E', text: '180 derajat sejajar lurus tanpa kemiringan potong' }
+      ],
+      correct: 'A',
+      explanation: 'Dua ujung batang yang dipotong miring 45° apabila dipertemukan akan membentuk sudut siku-siku tepat 90° (45° + 45° = 90°).'
+    },
+    {
+      id: 5023, day: 6, sector: 'jasa', indicatorCode: 'B', cognitiveLevel: 'C3',
+      question: 'Sebuah bengkel las menerima pesanan pembuatan kanopi besi dengan nilai kontrak Rp6.500.000. Biaya pembelian besi hollow, atap spandek, kawat las, cat, dan listrik menghabiskan Rp4.200.000, serta upah pembantu tukang Rp800.000. Berapakah laba bersih pemilik bengkel dari proyek tersebut?',
+      options: [
+        { key: 'A', text: 'Rp1.500.000 laba bersih proyek' },
+        { key: 'B', text: 'Rp2.300.000 laba bersih proyek' },
+        { key: 'C', text: 'Rp1.000.000 laba bersih proyek' },
+        { key: 'D', text: 'Rp3.100.000 laba bersih proyek' },
+        { key: 'E', text: 'Rp800.000 laba bersih proyek' }
+      ],
+      correct: 'A',
+      explanation: 'Total Biaya = Rp4.200.000 + Rp800.000 = Rp5.000.000. Laba Bersih = Rp6.500.000 - Rp5.000.000 = Rp1.500.000.'
+    },
+    {
+      id: 5024, day: 6, sector: 'jasa', indicatorCode: 'D', cognitiveLevel: 'C4',
+      question: 'Dalam video analisis Day 6 pada sektor jasa bengkel/kerajinan, inovasi pengelolaan tempat kerja metode 5R (Ringkas, Rapi, Resik, Rawat, Rajin) dan pemanfaatan limbah potongan bahan (scrap) memberikan dampak positif berupa...',
+      options: [
+        { key: 'A', text: 'Mempercepat waktu pencarian kunci/perkakas kerja, mencegah kecelakaan kerja K3, dan menghasilkan pendapatan tambahan dari produk kerajinan sisa bahan' },
+        { key: 'B', text: 'Membuat mekanik kesulitan menemukan kunci pas karena semua alat disembunyikan' },
+        { key: 'C', text: 'Mengharuskan bengkel membeli peralatan baru setiap hari meskipun alat lama masih bagus' },
+        { key: 'D', text: 'Membuang seluruh oli bekas ke saluran irigasi sawah di belakang bengkel' },
+        { key: 'E', text: 'Menurunkan kepercayaan pelanggan karena bengkel terlihat terlalu bersih dan rapi' }
+      ],
+      correct: 'A',
+      explanation: 'Manajemen bengkel 5R memangkas waktu terbuang (motion waste), meningkatkan keselamatan K3, dan ekonomi sirkular (scrap craft) menambah laba.'
+    }
+  ];
+
   window.getNftBankSoalByDay = function(dayNum, sectorKey) {
     dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (parseInt(dayNum) || 1);
     let dayQuestions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[dayNum]) || [];
+
     if (dayNum === 4 && (!dayQuestions || dayQuestions.length === 0)) {
       const d3Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
       const indMap4 = {
@@ -21137,6 +21559,127 @@
         indicatorName: indMap4[q.indicatorCode] || q.indicatorName
       }));
     }
+
+    // KHUSUS DAY 5 (VIDEO OBSERVASI CULTURE, EXPLORATION ALAT & 4 UNSUR STEM 7 SEKTOR)
+    if (dayNum === 5 && (!dayQuestions || dayQuestions.length === 0)) {
+      const d3Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
+      const d1Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[1]) || [];
+      const d2Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[2]) || [];
+      const indMap5 = {
+        'A': 'Analisis Video Science: Prinsip Fisika, Kimia & Biologi pada Sektor Pilihan',
+        'B': 'Analisis Video Technology & Exploration: Peralatan Kerja, Mesin & Digitalisasi',
+        'C': 'Analisis Video Engineering: Rancang Bangun, Tata Ruang & Rekayasa Teknis',
+        'D': 'Analisis Video Mathematics: Kalkulasi Ukuran, Kapasitas & Produktivitas',
+        'E': 'Pilar Culture & Alur Penyajian Video Observasi STEM Mandiri'
+      };
+
+      if (sectorKey && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(sectorKey)) {
+        const secPool = d3Questions.filter(q => q.sector === sectorKey);
+        dayQuestions = secPool.map(q => Object.assign({}, q, {
+          day: 5,
+          indicatorName: indMap5[q.indicatorCode] || q.indicatorName
+        }));
+      } else if (sectorKey && ['perdagangan', 'keuangan', 'jasa'].includes(sectorKey)) {
+        const extraSec = EXTRA_SECTOR_QUESTIONS_D56.filter(q => q.sector === sectorKey);
+        // Padukan soal khusus sektor (Perdagangan/BRI-Link/Jasa) dengan soal ekonomi/teknologi/budaya OKU Timur agar genap >= 50 soal
+        const econPool = [
+          ...d1Questions.filter(q => q.indicatorCode === 'A' || q.indicatorCode === 'C' || q.indicatorCode === 'D' || q.indicatorCode === 'E').slice(0, 35),
+          ...d2Questions.filter(q => q.indicatorCode === 'B' || q.indicatorCode === 'D').slice(0, 25)
+        ];
+        const combined = [...extraSec, ...econPool];
+        const codes = ['A', 'B', 'C', 'D', 'E'];
+        dayQuestions = combined.map((q, idx) => {
+          const code = q.indicatorCode && indMap5[q.indicatorCode] ? q.indicatorCode : codes[idx % 5];
+          return Object.assign({}, q, {
+            id: 5100 + idx,
+            day: 5,
+            sector: sectorKey,
+            indicatorCode: code,
+            indicatorName: indMap5[code]
+          });
+        });
+      } else {
+        dayQuestions = d3Questions.map(q => Object.assign({}, q, {
+          day: 5,
+          indicatorName: indMap5[q.indicatorCode] || q.indicatorName
+        }));
+      }
+    }
+
+    // KHUSUS DAY 6 (VIDEO ANALISIS FINANCIAL, EVALUASI KENDALA & SOLUSI INOVASI 7 SEKTOR)
+    if (dayNum === 6 && (!dayQuestions || dayQuestions.length === 0)) {
+      const d3Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
+      const d1Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[1]) || [];
+      const indMap6 = {
+        'A': 'Analisis Video Financial: Struktur Modal Awal, Biaya Tetap & Biaya Operasional',
+        'B': 'Analisis Video Financial: Kalkulasi HPP, Harga Jual, Omzet & Laba Bersih',
+        'C': 'Evaluasi Kendala Teknis, Risiko Usaha & Keamanan Operasional',
+        'D': 'Gagasan Solusi & Inovasi Nilai Tambah Berbasis STEM + Finansial',
+        'E': 'Sintesis Kelayakan Bisnis & Pengembangan Ekonomi Lokal OKU Timur'
+      };
+
+      if (sectorKey && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(sectorKey)) {
+        const secPool = d3Questions.filter(q => q.sector === sectorKey);
+        const finPool = d1Questions.filter(q => q.indicatorCode === 'A' || q.indicatorCode === 'B').slice(0, 20);
+        const combined = [...secPool, ...finPool];
+        dayQuestions = combined.map((q, idx) => {
+          const code = q.indicatorCode && indMap6[q.indicatorCode] ? q.indicatorCode : ['A', 'B', 'C', 'D', 'E'][idx % 5];
+          return Object.assign({}, q, {
+            id: 6100 + idx,
+            day: 6,
+            sector: sectorKey,
+            indicatorCode: code,
+            indicatorName: indMap6[code]
+          });
+        });
+      } else if (sectorKey && ['perdagangan', 'keuangan', 'jasa'].includes(sectorKey)) {
+        const extraSec = EXTRA_SECTOR_QUESTIONS_D56.filter(q => q.sector === sectorKey);
+        const finPool = d1Questions.filter(q => q.indicatorCode === 'A' || q.indicatorCode === 'B' || q.indicatorCode === 'C' || q.indicatorCode === 'D' || q.indicatorCode === 'E').slice(0, 50);
+        const combined = [...extraSec, ...finPool];
+        dayQuestions = combined.map((q, idx) => {
+          const code = q.indicatorCode && indMap6[q.indicatorCode] ? q.indicatorCode : ['A', 'B', 'C', 'D', 'E'][idx % 5];
+          return Object.assign({}, q, {
+            id: 6500 + idx,
+            day: 6,
+            sector: sectorKey,
+            indicatorCode: code,
+            indicatorName: indMap6[code]
+          });
+        });
+      } else {
+        const combined = [...d1Questions.slice(0, 100), ...d3Questions.slice(0, 100)];
+        dayQuestions = combined.map((q, idx) => {
+          const code = ['A', 'B', 'C', 'D', 'E'][idx % 5];
+          return Object.assign({}, q, {
+            id: 6800 + idx,
+            day: 6,
+            indicatorCode: code,
+            indicatorName: indMap6[code]
+          });
+        });
+      }
+    }
+
+    // KHUSUS DAY 7 (SINTESIS 4 PILAR FINCESTEM & REKONSILIASI KAS)
+    if (dayNum === 7 && (!dayQuestions || dayQuestions.length === 0)) {
+      const d1Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[1]) || [];
+      const d2Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[2]) || [];
+      const d3Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
+      const indMap7 = {
+        'A': 'Evaluasi Komprehensif Pilar Financial & Rekonsiliasi Kas Riset',
+        'B': 'Evaluasi Komprehensif Pilar Culture & Etos Kerja Multikultural',
+        'C': 'Evaluasi Komprehensif Pilar Exploration, Geospasial & Peralatan',
+        'D': 'Evaluasi Komprehensif 4 Dimensi STEM (Sains, Teknologi, Rekayasa, Matematika)',
+        'E': 'Karya Portofolio Video YouTube & Solusi Inovasi Berkelanjutan'
+      };
+      const poolA = d1Questions.slice(0, 40).map(q => Object.assign({}, q, { day: 7, indicatorCode: 'A', indicatorName: indMap7.A }));
+      const poolB = d2Questions.slice(0, 40).map(q => Object.assign({}, q, { day: 7, indicatorCode: 'B', indicatorName: indMap7.B }));
+      const poolC = d2Questions.slice(120, 160).map(q => Object.assign({}, q, { day: 7, indicatorCode: 'C', indicatorName: indMap7.C }));
+      const poolD = d3Questions.slice(0, 40).map(q => Object.assign({}, q, { day: 7, indicatorCode: 'D', indicatorName: indMap7.D }));
+      const poolE = d1Questions.slice(160, 200).map(q => Object.assign({}, q, { day: 7, indicatorCode: 'E', indicatorName: indMap7.E }));
+      dayQuestions = [...poolA, ...poolB, ...poolC, ...poolD, ...poolE];
+    }
+
     if ((dayNum === 3 || dayNum === 4) && sectorKey) {
       const filtered = dayQuestions.filter(q => q.sector === sectorKey);
       return filtered.length ? filtered : dayQuestions;
@@ -21157,6 +21700,15 @@
     }
     if (dayNum === 4 && window.NFT_BANK_SOAL_INDICATORS_DAY4) {
       return window.NFT_BANK_SOAL_INDICATORS_DAY4;
+    }
+    if (dayNum === 5 && window.NFT_BANK_SOAL_INDICATORS_DAY5) {
+      return window.NFT_BANK_SOAL_INDICATORS_DAY5;
+    }
+    if (dayNum === 6 && window.NFT_BANK_SOAL_INDICATORS_DAY6) {
+      return window.NFT_BANK_SOAL_INDICATORS_DAY6;
+    }
+    if (dayNum === 7 && window.NFT_BANK_SOAL_INDICATORS_DAY7) {
+      return window.NFT_BANK_SOAL_INDICATORS_DAY7;
     }
     return window.NFT_BANK_SOAL_INDICATORS || [];
   };

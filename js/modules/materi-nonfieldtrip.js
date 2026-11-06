@@ -1257,6 +1257,10 @@
   function renderNonFieldTripDayModule(container, dayNum) {
     dayNum = parseInt(dayNum) || 1;
     if (!container) return;
+    if (dayNum === 5 || dayNum === 6) {
+      renderDay5Or6VideoModule(container, dayNum);
+      return;
+    }
 
     const cfg = NFT_MATERI_CONFIG[dayNum] || NFT_MATERI_CONFIG[1];
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
@@ -2484,7 +2488,1224 @@
     if (mainEl) renderDay0NonFieldTripModule(mainEl);
   };
 
-    // 7. EKSPOR FUNGSI KE WINDOW GLOBAL (SEMUA HARI DAY 0 S.D. DAY 7)
+    
+  // =========================================================================
+  // 6C. PANDUAN VIDEO OBSERVASI & ANALISIS FINCESTEM 7 SEKTOR (DAY 5 & DAY 6)
+  // Durasi Video: 5 - 10 Menit | Tanpa Wawancara Narasumber | Upload YouTube
+  // =========================================================================
+  const NFT_VIDEO_SECTORS_GUIDE = {
+    pertanian: {
+      key: 'pertanian',
+      name: 'Pertanian Tanaman Pangan & Hortikultura',
+      shortName: '🌾 Pertanian',
+      badge: 'Sawah Padi, Jagung & Sayuran',
+      icon: 'agriculture',
+      objectExamples: 'Lahan Sawah Padi Irigasi BK, Kebun Jagung/Cabai/Sayuran, Gudang Alsintan atau Kilang Padi (RMU) di OKU Timur',
+      day5: {
+        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Pertanian',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera tanpa mewawancarai petani/pemilik lahan. Anda menyorot lokasi persawahan/pertanian dan peralatan kerja, lalu menjelaskan langsung kaitan Culture, Exploration Alat, serta 4 Unsur STEM (Science, Technology, Engineering, Mathematics).',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Pertanian',
+            desc: 'Tampil di depan kamera di area persawahan/lahan tani atau tempat alat pertanian. Sebutkan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan nama lokasi lahan/tempat pertanian dan komoditas yang diamati (misal: padi sawah irigasi Belitang).'
+          },
+          {
+            time: '01:00 – 02:15',
+            title: '2. Penjelasan Pilar Culture (Budaya Kerja & Kearifan Lokal Tani)',
+            desc: 'Sorot suasana sekitar lahan sawah dan jelaskan secara mandiri budaya kerja petani di OKU Timur: tradisi gotong royong (sambatan/rewang), disiplin waktu turun ke sawah pagi hari, pembagian air irigasi bersama (P3A/Mitra Cai), atau sistem tanam serempak.'
+          },
+          {
+            time: '02:15 – 03:45',
+            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan, Mesin & APD Pertanian)',
+            desc: 'Arahkan kamera menyorot langsung peralatan/mesin pertanian yang ada di lokasi (seperti cangkul, sabit bergerigi, sprayer elektrik, traktor tangan/rotary, pompa air, combine harvester, atau mesin giling RMU) beserta perlengkapan keselamatan kerja (APD: sepatu boot lumpur, caping/topi lebar, masker, sarung tangan).'
+          },
+          {
+            time: '03:45 – 06:30',
+            title: '4. Bedah Inti 4 Unsur STEM pada Pertanian (Science, Technology, Engineering, Mathematics)',
+            desc: 'Sambil menunjuk tanaman dan peralatan di lapangan, jelaskan keempat unsur STEM secara berurutan sesuai panduan di bawah ini (Sains biologi/fisika/kimia lahan & alat, Teknologi mekanisasi/benih, Rekayasa irigasi/jajar legowo/desain alat, dan Matematika kapasitas kerja & hasil panen).'
+          },
+          {
+            time: '06:30 – 08:30',
+            title: '5. Gambaran Umum Alur Produksi Pertanian dari Hulu ke Hilir',
+            desc: 'Jelaskan secara ringkas tahapan proses kerja di lokasi tersebut: mulai dari pengolahan tanah, penyemaian, penanaman, pemupukan, pengendalian hama, hingga pemanenan dan penggilingan gabah menjadi beras.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
+            desc: 'Rangkum manfaat penerapan ilmu STEM dan peralatan modern dalam meringankan beban kerja petani di OKU Timur, lalu tutup video dengan salam santun.'
+          }
+        ],
+        stemPoints: {
+          science: 'Jelaskan proses fotosintesis tanaman padi/sayuran, peran unsur hara pupuk (N, P, K) dan pH tanah sawah, siklus biologi hama/gulma, serta prinsip Fisika tekanan permukaan (P = F/A) pada roda besi traktor/crawler combine agar tidak amblas di lumpur dan tekanan udara/fluida pada nozzle sprayer.',
+          technology: 'Jelaskan teknologi alat dan budidaya yang diamati: peralihan dari sabit/cangkul manual ke mesin Traktor Tangan, Sprayer Elektrik baterai Lithium, Combine Harvester, atau Mesin Penggilingan Padi (RMU), serta penggunaan varietas benih unggul bersertifikat (Inpari/Ciherang).',
+          engineering: 'Jelaskan rekayasa tata ruang dan rancang bangun alat: rekayasa pola tanam Jajar Legowo (2:1 atau 4:1) untuk ruang tumbuh dan cahaya matahari, rekayasa saluran irigasi gravitasi (tersier/kuarter), serta desain kemiringan mata bajak/pisau pemotong mesin panen.',
+          mathematics: 'Jelaskan hitungan matematis di lapangan: luas lahan (hektar atau rante), jarak tanam (misal 25 cm x 25 cm), takaran dosis pupuk per hektar, perbandingan kecepatan kerja mesin vs tenaga manual (jam/hektar), serta estimasi tonase hasil panen gabah per hektar.'
+        }
+      },
+      day6: {
+        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Pertanian',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda kembali menjelaskan mandiri di depan kamera (tanpa wawancara narasumber) dengan memfokuskan bahasan pada perhitungan ekonomi/finansial usaha tani, analisis risiko/kendala lapangan, serta gagasan inovasi berbasis STEM & Finansial.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan & Kilas Balik Objek Pertanian yang Diamati',
+            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini membedah kelayakan Finansial, Kendala Risiko, dan Solusi Inovasi FINCESTEM pada objek pertanian yang Anda amati.'
+          },
+          {
+            time: '01:00 – 03:30',
+            title: '2. Analisis Pilar Financial (Modal Awal, Biaya Operasional, HPP & Keuntungan)',
+            desc: 'Jelaskan di depan kamera rincian perputaran uang usaha tani per musim tanam: estimasi modal beli benih, pupuk, pestisida, BBM/sewa alsintan, upah panen, hingga perhitungan total penjualan gabah/beras (Omzet) dikurangi total biaya untuk mendapatkan Laba Bersih petani.'
+          },
+          {
+            time: '03:30 – 06:00',
+            title: '3. Evaluasi Kendala Teknis, Risiko Alam & Masalah Pemasaran',
+            desc: 'Tunjukkan kondisi di lapangan dan analisis kendala nyata yang dihadapi usaha pertanian tersebut: serangan hama wereng/tikus/jamur, cuaca ekstrem (banjir/kekeringan), kelangkaan/mahalnya pupuk, kerusakan mesin alsintan, atau anjloknya harga gabah basah saat panen raya.'
+          },
+          {
+            time: '06:00 – 08:30',
+            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
+            desc: 'Paparkan ide solusi kreatif Anda sebagai pelajar SMAN 1 Belitang: pemanfaatan jerami/sekam menjadi kompos/arang sekam (biochar), penggunaan pestisida nabati ramah lingkungan, pengeringan gabah/hilirisasi beras kemasan berlabel untuk menaikkan nilai jual, serta pencatatan pembukuan keuangan tani.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '5. Kesimpulan Akhir Kelayakan Usaha & Penutup',
+            desc: 'Simpulkan apakah usaha pertanian tersebut layak dan menguntungkan secara finansial jika dikelola dengan inovasi STEM yang tepat, lalu tutup video dengan salam.'
+          }
+        ],
+        finPoints: {
+          financial: 'Uraikan estimasi biaya tetap & biaya variabel per hektar/musim (benih, pupuk, obat pertanian, sewa traktor/combine, tenaga kerja), harga jual Gabah Kering Panen (GKP) vs Beras per kg, serta perhitungan Laba Bersih dan R/C Ratio.',
+          constraints: 'Identifikasi masalah utama: penyusutan hasil panen (losses), serangan organisme pengganggu tanaman (OPT), ketergantungan pada tengkulak saat panen raya, atau tingginya biaya perawatan mesin.',
+          innovation: 'Usulkan inovasi nilai tambah (added value): pengolahan gabah menjadi beras premium kemasan 5 kg/10 kg berlabel lokal OKU Timur, pemanfaatan limbah sekam/bekatul untuk pakan/pupuk organik, serta adopsi pembayaran/pencatatan kas digital.'
+        }
+      }
+    },
+
+    perkebunan: {
+      key: 'perkebunan',
+      name: 'Perkebunan Karet, Sawit & Komoditas',
+      shortName: '🌴 Perkebunan',
+      badge: 'Karet, Kelapa Sawit, Singkong & Buah',
+      icon: 'forest',
+      objectExamples: 'Kebun Karet Rakyat, Kebun Kelapa Sawit, Lahan Singkong/Tebu, atau Kebun Buah (Duku/Jeruk/Semangka) di OKU Timur',
+      day5: {
+        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Perkebunan',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda menjelaskan secara mandiri di area kebun (karet/sawit/buah) tanpa wawancara narasumber. Sorot pohon/tanaman kebun dan peralatan sadap/panen, lalu kupas aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Perkebunan',
+            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta tunjukkan lokasi kebun yang diamati (misal: kebun karet atau kelapa sawit rakyat di kecamatan Anda).'
+          },
+          {
+            time: '01:00 – 02:15',
+            title: '2. Penjelasan Pilar Culture (Etos Kerja Pekebun & Tradisi Lokal)',
+            desc: 'Jelaskan budaya kerja pekebun di OKU Timur: disiplin menyadap karet sejak subuh agar aliran lateks maksimal, budaya merawat piringan pohon, sistem bagi hasil kebun, atau kebersamaan saat panen dan penimbangan komoditas.'
+          },
+          {
+            time: '02:15 – 03:45',
+            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan Sadap/Panen & APD Kebun)',
+            desc: 'Sorot langsung peralatan kerja perkebunan: pisau sadap karet, talang dan mangkok lateks, bak pembeku, dodos, egrek bergalah aluminium/teleskopik, tojok besi, dan gerobak angkong, beserta APD pekebun (helm pelindung kepala, sepatu boot tinggi anti-duri/ular, sarung tangan karet/kulit, senter kepala).'
+          },
+          {
+            time: '03:45 – 06:30',
+            title: '4. Bedah Inti 4 Unsur STEM pada Perkebunan (Science, Technology, Engineering, Mathematics)',
+            desc: 'Tunjukkan pohon dan alat perkebunan sambil memaparkan analisis Science, Technology, Engineering, dan Mathematics secara sistematis sesuai panduan sektor perkebunan di bawah.'
+          },
+          {
+            time: '06:30 – 08:30',
+            title: '5. Gambaran Umum Proses Pemeliharaan, Panen & Pascapanen Kebun',
+            desc: 'Jelaskan alur kerja di kebun: mulai dari pembersihan gulma piringan, pemupukan, proses penyadapan getah lateks / pemotongan tandan buah segar (TBS) sawit, pembekuan getah, hingga pengangkutan ke tempat pengumpulan.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
+            desc: 'Simpulkan peran penting pemahaman sains tanaman dan ketepatan rekayasa alat panen dalam menjaga umur tanaman perkebunan, lalu tutup dengan salam.'
+          }
+        ],
+        stemPoints: {
+          science: 'Jelaskan biologi pembuluh lateks dan tekanan turgor sel pohon karet yang tinggi di pagi hari (serta keharusan menjaga lapisan kambium batang), kriteria kematangan fisiologis buah sawit (brondolan merah-oranye kaya minyak CPO), kimia pembekuan (koagulasi) lateks dengan asam semut/asap cair, serta fisika tuas pengungkit pada angkong/tojok.',
+          technology: 'Jelaskan teknologi peralatan kebun: penggunaan galah Egrek berbahan pipa Aluminium Alloy / Carbon Fiber yang ringan dan kaku dibanding bambu tradisional, baja karbon tinggi (per baja) pada mata dodos/pisau sadap, serta penggunaan bibit klon karet unggul (PB 260/IRR) atau bibit sawit bersertifikat.',
+          engineering: 'Jelaskan rekayasa teknik di kebun: desain sudut kemiringan alur sadap karet (30°–45°) agar getah mengalir lancar ke mangkok tanpa merusak kayu, pola tanam segitiga sama sisi (mata lima) pada sawit agar tajuk daun mendapat cahaya merata, serta pembuatan lubang rorak penahan air dan kompos.',
+          mathematics: 'Jelaskan perhitungan matematis kebun: populasi jumlah pohon per hektar (misal 130–143 pohon sawit/ha atau 450–500 pohon karet/ha), siklus rotasi panen (sadap 2 hari sekali atau panen sawit tiap 10–14 hari), berat rata-rata per tandan (kg), serta estimasi tonase hasil per bulan.'
+        }
+      },
+      day6: {
+        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Perkebunan',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda membedah secara mandiri perhitungan biaya perawatan & pendapatan kebun, kendala fluktuasi harga/mutu komoditas, serta gagasan inovasi nilai tambah berbasis STEM dan Finansial.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan & Kilas Balik Objek Perkebunan',
+            desc: 'Sampaikan salam, identitas lengkap (Nama, NISN, Kelas, Fasilitator), dan tujuan video Day 6 untuk menganalisis aspek Finansial, Kendala, dan Solusi Inovasi pada kebun yang diamati.'
+          },
+          {
+            time: '01:00 – 03:30',
+            title: '2. Analisis Pilar Financial (Biaya Perawatan, Panen, Harga Jual & Laba Bersih)',
+            desc: 'Uraikan di depan kamera perhitungan ekonomi kebun per bulan: biaya pupuk NPK/Dolomit, herbisida, asam pembeku karet, upah penyadap/pemanen dan angkut, dibandingkan dengan hasil penjualan bokar/TBS sawit (kg x harga per kg) hingga diperoleh pendapatan bersih pekebun.'
+          },
+          {
+            time: '03:30 – 06:00',
+            title: '3. Evaluasi Kendala Lapangan & Risiko Usaha Perkebunan',
+            desc: 'Jelaskan kendala nyata di kebun tersebut: penyakit gugur daun/jamur akar putih pada karet, penurunan produksi saat musim gugur daun/kemarau (trek), potongan timbangan (refraksi kadar air), kerusakan alat panen, atau fluktuasi harga karet/sawit dunia.'
+          },
+          {
+            time: '06:00 – 08:30',
+            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
+            desc: 'Paparkan solusi inovatif Anda: penerapan bokar bersih (tanpa tatal/tanah) dengan pembeku asap cair agar kadar karet kering (KKK) tinggi dan dihargai mahal melalui Unit Pengolahan dan Pemasaran Bokar (UPPB/Lelang), pemanfaatan pelepah sawit cacah untuk pakan ternak/kompos, serta pola tumpang sari (intercropping).'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '5. Kesimpulan Akhir & Penutup Video',
+            desc: 'Rangkum bagaimana kombinasi manajemen mutu STEM dan tata kelola keuangan yang sehat mampu meningkatkan kesejahteraan pekebun OKU Timur, lalu tutup video.'
+          }
+        ],
+        finPoints: {
+          financial: 'Jelaskan rincian biaya pemeliharaan kebun (pupuk, perawatan piringan, perawatan alat), sistem bagi hasil atau upah panen, pengaruh persentase Kadar Karet Kering (KKK) / rendemen sawit terhadap harga jual per kg, serta hitungan laba bersih bulanan.',
+          constraints: 'Analisis masalah utama: harga jual rendah akibat mutu bokar basah/kotor, serangan penyakit kulit sadap (kering alur sadap / KAS), mahalnya pupuk kimia, atau jalan kebun rusak saat musim hujan.',
+          innovation: 'Gagasan inovasi: penggunaan koagulan ramah lingkungan (asap cair/asam format) untuk menghasilkan bokar bersih bernilai jual premium, penjualan kolektif lewat UPPB/Koperasi Desa, serta diversifikasi pendapatan kebun.'
+        }
+      }
+    },
+
+    peternakan: {
+      key: 'peternakan',
+      name: 'Peternakan Sapi, Kambing & Unggas',
+      shortName: '🐄 Peternakan',
+      badge: 'Sapi Potong, Kambing, Ayam & Bebek',
+      icon: 'pets',
+      objectExamples: 'Kandang Sapi Potong/Penggemukan, Kandang Kambing/Domba, Peternakan Ayam Petelur/Pedaging (Broiler), atau Budidaya Bebek/Itik di OKU Timur',
+      day5: {
+        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Peternakan',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di area kandang/peternakan tanpa wawancara pemilik. Sorot ternak, konstruksi kandang, dan peralatan pakan/sanitasi, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Peternakan',
+            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan lokasi kandang dan jenis hewan ternak yang Anda amati (sapi potong, kambing, ayam petelur/pedaging, atau bebek).'
+          },
+          {
+            time: '01:00 – 02:15',
+            title: '2. Penjelasan Pilar Culture (Budaya Kerja Peternak & Etika Pemeliharaan)',
+            desc: 'Jelaskan kebiasaan dan budaya kerja peternak di OKU Timur: kedisiplinan jadwal pemberian pakan dan minum pagi-sore, kebersihan sanitasi kandang agar tidak mengganggu warga sekitar, serta tradisi tabungan ternak keluarga untuk masa depan/hari raya.'
+          },
+          {
+            time: '02:15 – 03:45',
+            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan Pakan, Kandang & APD Peternak)',
+            desc: 'Sorot langsung peralatan peternakan di lokasi: sabit rumput, mesin pencacah rumput (chopper), tong/drum fermentasi silase, tempat pakan/minum otomatis (nipple drinker), pemanas brooder/kipas kandang, sprayer desinfektan, sekop kotoran, serta APD (sepatu boot kandang, masker penahan bau amonia, sarung tangan).'
+          },
+          {
+            time: '03:45 – 06:30',
+            title: '4. Bedah Inti 4 Unsur STEM pada Peternakan (Science, Technology, Engineering, Mathematics)',
+            desc: 'Sambil menunjukkan kondisi kandang dan pakan, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics sesuai panduan sektor peternakan di bawah.'
+          },
+          {
+            time: '06:30 – 08:30',
+            title: '5. Gambaran Umum Manajemen Pemeliharaan Harian di Kandang',
+            desc: 'Jelaskan alur perawatan ternak harian: penyediaan/pencacahan pakan, pemberian air minum dan vitamin, pembersihan lantai kandang, hingga pengelolaan limbah kotoran ternak.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
+            desc: 'Rangkum bagaimana penerapan sains nutrisi dan rekayasa kandang sehat membuat ternak tumbuh optimal dan bebas penyakit, lalu tutup video dengan salam.'
+          }
+        ],
+        stemPoints: {
+          science: 'Jelaskan biologi sistem pencernaan dan nutrisi ternak (kebutuhan serat hijauan dan protein konsentrat), proses biokimia fermentasi anaerob oleh bakteri asam laktat (Lactobacillus) pada pembuatan pakan silase/fermentasi, pengendalian gas amonia (NH3) dari kotoran, serta biosekuriti pencegahan virus/bakteri.',
+          technology: 'Jelaskan teknologi peternakan yang diamati: Mesin Chopper pencacah rumput berpenggerak motor bensin/diesel, instalasi air minum otomatis (Nipple Drinker), alat pengatur suhu pemanas (Brooder/Thermostat), teknologi Inseminasi Buatan (IB/kawin suntik) bibit unggul, atau reaktor Biogas.',
+          engineering: 'Jelaskan rekayasa konstruksi kandang dan alat: desain kemiringan lantai kandang (2°–5°) agar urine dan air cucian langsung mengalir ke saluran pembuangan sehingga kuku/lantai tetap kering, rekayasa ventilasi atap (monitor) untuk sirkulasi udara segar, serta desain pisau putar pada mesin chopper.',
+          mathematics: 'Jelaskan perhitungan matematis di kandang: takaran pakan harian (misal hijauan 10% dari bobot badan sapi, atau gram pakan per ekor ayam), kapasitas kandang (jumlah ekor per meter persegi), estimasi pertambahan bobot harian (ADG) atau persentase produksi telur harian (Hen Day Production).'
+        }
+      },
+      day6: {
+        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Peternakan',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda menganalisis secara mandiri struktur modal bibit/bakalan, biaya pakan harian, potensi keuntungan penjualan ternak/telur, kendala penyakit/pakan, serta solusi inovasi Zero-Waste berbasis STEM & Finansial.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan & Kilas Balik Objek Peternakan',
+            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan jelaskan fokus video Day 6 yaitu membedah analisis Finansial, Risiko Usaha, dan Inovasi Nilai Tambah pada peternakan yang diamati.'
+          },
+          {
+            time: '01:00 – 03:30',
+            title: '2. Analisis Pilar Financial (Modal Bibit, Biaya Pakan, Harga Jual & Laba Bersih)',
+            desc: 'Paparkan di depan kamera perhitungan ekonomi peternakan: harga beli bibit/bakalan (DOC/pedet/bakalan sapi), biaya pakan harian (komponen biaya terbesar 60–70%), biaya obat/vaksin & listrik, dibandingkan dengan harga jual panen ternak/telur hingga didapat Laba Bersih.'
+          },
+          {
+            time: '03:30 – 06:00',
+            title: '3. Evaluasi Kendala Teknis, Risiko Penyakit & Fluktuasi Harga Pakan',
+            desc: 'Analisis tantangan nyata yang dihadapi peternak: mahalnya harga pakan konsentrat/pelet pabrikan, kesulitan mencari rumput segar saat musim kemarau, risiko penyakit ternak (PMK, kembung/bloat, tetelo/flu burung), atau bau limbah kotoran kandang.'
+          },
+          {
+            time: '06:00 – 08:30',
+            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
+            desc: 'Sampaikan ide inovasi Anda: pembuatan Bank Pakan Silase/Fermentasi dari limbah jerami padi atau pelepah sawit lokal OKU Timur untuk memangkas biaya pakan, pengolahan kotoran ternak menjadi Pupuk Organik Kompos/Bokashi Granul bernilai jual atau Biogas, serta budidaya Maggot BSF sebagai pakan alternatif unggas.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '5. Kesimpulan Akhir & Penutup Video',
+            desc: 'Simpulkan kelayakan finansial usaha peternakan tersebut dan bagaimana inovasi pengolahan pakan/limbah mampu melipatgandakan keuntungan peternak, lalu tutup video.'
+          }
+        ],
+        finPoints: {
+          financial: 'Hitung rincian modal pembelian bibit/bakalan, total biaya pakan selama satu siklus pemeliharaan, biaya kesehatan/operasional, rasio konversi pakan (FCR), total penerimaan penjualan, serta keuntungan bersih peternak.',
+          constraints: 'Identifikasi kendala kritis: kenaikan harga pakan pabrikan yang menggerus margin laba, risiko kematian (mortalitas) akibat cuaca/penyakit, serta belum optimalnya pengolahan limbah kotoran.',
+          innovation: 'Usulkan inovasi konkret: substitusi pakan dengan silase/fermentasi bahan baku lokal (jerami/dedak/bungkil), komersialisasi pupuk kandang bokashi kemasan karung untuk petani kebun, dan manajemen pencatatan keuangan kandang.'
+        }
+      }
+    },
+
+    perikanan: {
+      key: 'perikanan',
+      name: 'Perikanan Budidaya Air Tawar',
+      shortName: '🐟 Perikanan',
+      badge: 'Kolam Patin, Lele, Nila & Gurame',
+      icon: 'phishing',
+      objectExamples: 'Kolam Tanah/Terpal Budidaya Ikan Patin, Lele, Nila, Gurame, Tempat Pembenihan Ikan, atau Usaha Pengolahan Ikan (Pindang/Asap/Kemplang) di OKU Timur',
+      day5: {
+        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Perikanan',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda menjelaskan mandiri di tepi kolam perikanan tanpa mewawancarai pemilik kolam. Sorot konstruksi kolam, air, ikan, dan peralatan perikanan, lalu uraikan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Kolam Perikanan',
+            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan lokasi kolam budidaya dan jenis ikan air tawar yang diamati (patin, lele, nila, atau gurame).'
+          },
+          {
+            time: '01:00 – 02:15',
+            title: '2. Penjelasan Pilar Culture (Budaya Budidaya Ikan & Kuliner Khas Komering)',
+            desc: 'Jelaskan budaya masyarakat OKU Timur dalam memelihara ikan air tawar sebagai sumber protein utama dan bahan baku kuliner khas daerah (seperti pindang patin, tempoyak, pempek, dan kerupuk kemplang ikan), serta ketekunan pembudidaya menjaga kualitas air kolam.'
+          },
+          {
+            time: '02:15 – 03:45',
+            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan Kolam, Aerasi, Pakan & APD)',
+            desc: 'Sorot langsung peralatan perikanan di lokasi: pompa air listrik/alkon, pipa pemasukan (inlet) dan pembuangan (outlet/central drain), kincir air/blower aerator, jaring waring/hapa, bak sortir ukuran ikan (grading), timbangan pakan, alat ukur pH/suhu air, serta APD (sepatu boot air, topi/wearpack, sarung tangan).'
+          },
+          {
+            time: '03:45 – 06:30',
+            title: '4. Bedah Inti 4 Unsur STEM pada Perikanan (Science, Technology, Engineering, Mathematics)',
+            desc: 'Sambil menunjuk air kolam dan peralatan budidaya, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics sesuai panduan sektor perikanan di bawah.'
+          },
+          {
+            time: '06:30 – 08:30',
+            title: '5. Gambaran Umum Tahapan Budidaya Ikan dari Tebar Benih hingga Panen',
+            desc: 'Jelaskan siklus kerja di kolam: pengeringan dan pengapuran dasar kolam, pengisian air dan penumbuhan plankton, penebaran benih (bibit), jadwal pemberian pelet harian, penyortiran ukuran (grading), hingga pemanenan.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
+            desc: 'Rangkum betapa pentingnya pengendalian kualitas air berbasis sains dan rekayasa kolam bagi keberhasilan panen ikan di OKU Timur, lalu tutup dengan salam.'
+          }
+        ],
+        stemPoints: {
+          science: 'Jelaskan parameter fisika, kimia, dan biologi ekosistem kolam: kadar oksigen terlarut (DO > 5 ppm), derajat keasaman air (pH ideal 6,5–8,0), bahaya racun gas amonia (NH3) dari sisa pakan dan kotoran ikan di dasar kolam, peran fitoplankton/probiotik, serta sifat biologis ikan (seperti kanibalisme pada lele jika ukuran tidak seragam).',
+          technology: 'Jelaskan teknologi akuakultur yang diamati: pompa air submersible/sentrifugal, kincir air atau aerator blower untuk menyuplai oksigen, teknologi pelet terapung hasil mesin ekstruder (agar pakan tidak tenggelam membusuk di lumpur), sensor pH/TDS meter digital, atau mesin pencetak pelet mandiri.',
+          engineering: 'Jelaskan rekayasa rancang bangun kolam: konstruksi pematang/tanggul kolam tanah atau rangka kolam terpal bundar/persegi, desain kemiringan dasar kolam menuju pipa pembuangan tengah (central drain / pipa sifon standpipe) yang memanfaatkan tekanan hidrostatis untuk membuang endapan lumpur kotor, serta desain keranjang grading ramah lendir ikan.',
+          mathematics: 'Jelaskan perhitungan matematis kolam: rumus volume air kolam (Panjang x Lebar x Kedalaman air, atau phi x r^2 x t), kepadatan tebar benih per meter persegi (misal 20–30 ekor patin/m2 atau 100 ekor lele/m2), persentase takaran pakan harian (3%–5% dari biomassa bobot ikan), serta tingkat kelulushidupan (Survival Rate / SR).'
+        }
+      },
+      day6: {
+        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Perikanan',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda menganalisis secara mandiri modal benih, biaya pakan pelet, perhitungan FCR & keuntungan panen ikan, kendala kualitas air/harga pakan, serta gagasan inovasi pakan mandiri dan hilirisasi olahan ikan.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan & Kilas Balik Objek Perikanan',
+            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini memfokuskan analisis pada Pilar Financial, Kendala Risiko, dan Solusi Inovasi FINCESTEM di sektor perikanan.'
+          },
+          {
+            time: '01:00 – 03:30',
+            title: '2. Analisis Pilar Financial (Modal Benih, Biaya Pakan/FCR, Omzet Panen & Laba Bersih)',
+            desc: 'Jelaskan di depan kamera rincian finansial satu siklus panen (3–6 bulan): biaya pembelian ribuan ekor benih ikan, total karung pakan pelet yang dihabiskan (beserta nilai FCR), biaya listrik pompa/kapur/probiotik, dibandingkan dengan hasil penjualan tonase ikan segar (kg x harga per kg) hingga diperoleh Laba Bersih.'
+          },
+          {
+            time: '03:30 – 06:00',
+            title: '3. Evaluasi Kendala Lapangan & Risiko Budidaya Ikan',
+            desc: 'Analisis kendala nyata yang dihadapi pembudidaya: tingginya harga pelet pabrikan yang mencapai 70% dari biaya produksi, perubahan pH air mendadak saat hujan deras yang memicu stres/kematian ikan, penyakit jamur/bakteri Aeromonas, atau harga jual ikan mentah yang ditekan tengkulak.'
+          },
+          {
+            time: '06:00 – 08:30',
+            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
+            desc: 'Paparkan solusi inovatif Anda: pembuatan pelet mandiri berbahan baku lokal (dedak halus, tepung ikan rucah, bungkil kedelai/ampas tahu, atau budidaya Maggot BSF & Azolla) untuk menghemat biaya pakan hingga 30%, aplikasi sistem Bioflok/Probiotik EM4 perikanan, serta pengolahan hasil panen menjadi produk bernilai tambah tinggi (fillet patin beku, bakso ikan, abon, atau kemplang).'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '5. Kesimpulan Akhir & Penutup Video',
+            desc: 'Simpulkan kelayakan usaha perikanan tersebut dan bagaimana efisiensi FCR pakan serta hilirisasi produk olahan mampu mendongkrak keuntungan pembudidaya di OKU Timur, lalu tutup video.'
+          }
+        ],
+        finPoints: {
+          financial: 'Uraikan perhitungan biaya benih, total biaya pakan pelet, perhitungan Feed Conversion Ratio (FCR = Total Pakan kg / Total Bobot Panen Ikan kg), Harga Pokok Produksi (HPP) per kg ikan vs harga jual pasar, serta Laba Bersih per siklus.',
+          constraints: 'Identifikasi masalah utama: mahalnya harga pakan komersial, kematian benih di awal tebar, penurunan kualitas air (amonia tinggi/DO rendah), serta fluktuasi harga jual ikan konsumsi.',
+          innovation: 'Usulkan inovasi STEM-Finansial: pakan alternatif berprotein tinggi (Maggot BSF / Azolla / pelet mandiri), manajemen air probiotik/central drain untuk menekan FCR ke angka 1,0–1,2, serta diversifikasi produk olahan ikan khas OKU Timur.'
+        }
+      }
+    },
+
+    perdagangan: {
+      key: 'perdagangan',
+      name: 'Perdagangan, Pasar, Toko & UMKM Kuliner',
+      shortName: '🏪 Perdagangan & UMKM',
+      badge: 'Pasar, Toko Sembako, Warung & Kuliner',
+      icon: 'storefront',
+      objectExamples: 'Toko Sembako/Grosir, Kios Pasar Tradisional (Gumawang/Martapura/Belitang), Warung Makan/UMKM Kuliner, Toko Bangunan, atau Toko Sarana Pertanian di OKU Timur',
+      day5: {
+        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Perdagangan / UMKM',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di lokasi toko/warung/tempat usaha UMKM tanpa mewawancarai pemilik/pedagang. Sorot penataan barang, peralatan dagang/produksi, dan fasilitas pembayaran, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Toko / UMKM',
+            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan nama toko/warung/unit UMKM, lokasi desa/kecamatan, dan jenis barang dagangan atau produk kuliner yang dijual.'
+          },
+          {
+            time: '01:00 – 02:15',
+            title: '2. Penjelasan Pilar Culture (Etika Pelayanan, Kejujuran Dagang & Budaya Konsumen Lokal)',
+            desc: 'Jelaskan budaya pelayanan di tempat usaha tersebut: keramahan menyapa pembeli (senyum, sapa, santun adat lokal), kejujuran takaran timbangan, keunikan cita rasa kuliner lokal yang disukai warga OKU Timur, serta hubungan saling percaya antara pedagang dan pelanggan tetap.'
+          },
+          {
+            time: '02:15 – 03:45',
+            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan Ukur, Display, Kemasan & Higienitas)',
+            desc: 'Sorot langsung peralatan kerja di toko/UMKM: timbangan digital/mekanik, mesin kasir/kalkulator, barcode QRIS, etalase kaca/rak display barang, lemari pendingin (showcase/freezer), alat pengemas (hand sealer/vacuum sealer), kompor/alat masak UMKM, serta perlengkapan kebersihan/APD (celemek/apron, sarung tangan plastik makanan, penjepit makanan, masker).'
+          },
+          {
+            time: '03:45 – 06:30',
+            title: '4. Bedah Inti 4 Unsur STEM pada Perdagangan & UMKM (Science, Technology, Engineering, Mathematics)',
+            desc: 'Sambil menunjuk produk dan peralatan toko/UMKM, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics sesuai panduan sektor perdagangan di bawah.'
+          },
+          {
+            time: '06:30 – 08:30',
+            title: '5. Gambaran Umum Alur Pengadaan Stok, Penyimpanan & Pelayanan Pembeli',
+            desc: 'Jelaskan bagaimana alur operasional usaha tersebut berjalan setiap hari: mulai dari belanja bahan baku/stok barang dari distributor, pemeriksaan kualitas, penataan di rak/etalase, hingga proses melayani transaksi pembeli.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
+            desc: 'Rangkum bagaimana penerapan sains pengawetan produk, teknologi timbangan/kasir digital, dan tata ruang toko membuat usaha perdagangan/UMKM berjalan higienis dan profesional, lalu tutup video.'
+          }
+        ],
+        stemPoints: {
+          science: 'Jelaskan aspek Sains pada produk dan penyimpanan: pengendalian suhu dingin (termodinamika lemari pendingin/freezer 0°–4°C) untuk menghambat pertumbuhan bakteri pembusuk pada bahan pangan/minuman, perlindungan produk kering (beras/tepung/kerupuk) dari kelembaban udara dan jamur (oksidasi/ketengikan minyak), serta standar higienitas pangan.',
+          technology: 'Jelaskan teknologi perdagangan yang digunakan: pemakaian Timbangan Digital bersensor Load Cell yang akurat hingga satuan gram, mesin perekat kemasan plastik (Impulse Heat Sealer), penggunaan kode pembayaran digital QRIS / aplikasi kasir POS di smartphone, serta pemanfaatan media sosial (WhatsApp/Facebook/Instagram) untuk katalog dan pesan-antar.',
+          engineering: 'Jelaskan rekayasa tata letak (Layout Engineering) dan kemasan: rekayasa penataan rak barang dengan prinsip FIFO (First In First Out — barang yang masuk lebih dulu diletakkan di bagian depan agar terjual lebih dulu sebelum kedaluwarsa), pengelompokan barang sesuai kategori, sirkulasi udara/pencahayaan ruang toko, serta desain kemasan kedap udara.',
+          mathematics: 'Jelaskan penerapan Matematika di toko/UMKM: konversi satuan berat dan volume (ton, kuintal, karung 50 kg, lusin, gros ke eceran kilogram/ons/liter), perhitungan stok persediaan minimum (reorder point) agar barang laris tidak kehabisan, serta kecepatan perputaran barang harian.'
+        }
+      },
+      day6: {
+        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Perdagangan / UMKM',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda membedah secara mandiri perputaran modal kulakan/bahan baku, perhitungan Harga Pokok Penjualan (HPP), margin keuntungan per produk, kendala persaingan/barang rusak, serta inovasi digitalisasi dan kemasan UMKM.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan & Kilas Balik Objek Perdagangan / UMKM',
+            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini mengupas tuntas analisis Finansial, Risiko Usaha, dan Inovasi Pengembangan pada toko/UMKM yang diamati.'
+          },
+          {
+            time: '01:00 – 03:30',
+            title: '2. Analisis Pilar Financial (Modal Kulakan, HPP, Margin Keuntungan & Omzet Harian)',
+            desc: 'Jelaskan di depan kamera perhitungan keuangan toko/UMKM: modal belanja stok barang/bahan baku (HPP), biaya operasional (listrik freezer/lampu, plastik kemasan, gas, transportasi), cara menentukan harga jual (persentase markup/margin laba per item, misal 10%–30%), hingga estimasi omzet kotor dan Laba Bersih bulanan.'
+          },
+          {
+            time: '03:30 – 06:00',
+            title: '3. Evaluasi Kendala Usaha, Risiko Barang Rusak & Persaingan Pasar',
+            desc: 'Analisis kendala nyata yang dihadapi usaha tersebut: risiko barang kedaluwarsa/ penyusutan (shrinkage) atau makanan basi jika tidak habis terjual, kenaikan harga bahan baku pokok dari distributor, piutang pembeli yang kasbon/macet, pencatatan uang usaha yang masih tercampur dengan uang dapur keluarga, atau persaingan dengan ritel modern/toko online.'
+          },
+          {
+            time: '06:00 – 08:30',
+            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
+            desc: 'Paparkan gagasan solusi Anda: pemisahan tegas antara rekening/kas usaha dengan keuangan pribadi rumah tangga, penerapan pembukuan kas harian digital, inovasi pengemasan modern berlabel merek dan izin PIRT/Halal agar tahan lama dan bernilai jual lebih tinggi, penyediaan pembayaran non-tunai QRIS, serta layanan pesan-antar (delivery order) via WhatsApp Bisnis.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '5. Kesimpulan Akhir & Penutup Video',
+            desc: 'Simpulkan kelayakan finansial toko/UMKM tersebut dan bagaimana inovasi manajemen stok STEM serta disiplin pembukuan keuangan dapat membuat usaha naik kelas, lalu tutup video.'
+          }
+        ],
+        finPoints: {
+          financial: 'Jelaskan perhitungan Harga Pokok Penjualan (HPP), selisih harga beli grosir vs harga jual eceran (Margin Laba Kotor), biaya operasional bulanan, perhitungan titik impas (Break Even Point / BEP), serta estimasi Laba Bersih usaha.',
+          constraints: 'Identifikasi masalah utama: tercampurnya uang modal usaha dengan pengeluaran pribadi keluarga, barang rusak/kedaluwarsa karena kurang kontrol stok, piutang/bon pelanggan yang menghambat perputaran kas, atau kemasan produk yang masih sederhana.',
+          innovation: 'Usulkan inovasi konkret: manajemen stok FIFO terstruktur, redesain kemasan kedap udara berlabel menarik untuk memperpanjang masa simpan (shelf-life), adopsi pembayaran QRIS, dan promosi digital lokal.'
+        }
+      }
+    },
+
+    keuangan: {
+      key: 'keuangan',
+      name: 'Koperasi, Agen BRI-Link & Jasa Keuangan',
+      shortName: '🏦 Koperasi & BRI-Link',
+      badge: 'Agen BRI-Link, Koperasi, BUMDes & Bank',
+      icon: 'account_balance',
+      objectExamples: 'Gerai Agen BRI-Link / Agen Laku Pandai Perbankan, Koperasi Simpan Pinjam / KUD / Koperasi Sekolah, atau Unit Jasa Keuangan BUMDes di OKU Timur',
+      day5: {
+        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Koperasi / BRI-Link',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di lokasi gerai Agen BRI-Link / Koperasi / BUMDes tanpa mewawancarai pengelola/nasabah. Sorot ruang layanan, spanduk tarif/informasi, dan perangkat transaksi, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Koperasi / Agen BRI-Link',
+            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan nama gerai Agen BRI-Link / Koperasi / BUMDes, lokasi desa/kecamatan, dan jenis layanan keuangan yang tersedia bagi warga.'
+          },
+          {
+            time: '01:00 – 02:15',
+            title: '2. Penjelasan Pilar Culture (Budaya Kepercayaan, Inklusi Keuangan & Kekeluargaan)',
+            desc: 'Jelaskan nilai budaya di lembaga keuangan mikro/agen perbankan desa: pentingnya integritas dan kepercayaan (trust) dalam memegang amanah uang masyarakat, asas kekeluargaan dan gotong royong pada koperasi, serta bagaimana kehadiran Agen BRI-Link/Koperasi membantu petani dan warga desa bertransaksi dekat rumah tanpa harus jauh ke bank di pusat kota.'
+          },
+          {
+            time: '02:15 – 03:45',
+            title: '3. Penjelasan Pilar Exploration (Sorot Perangkat Transaksi, Keamanan & Sarana Layanan)',
+            desc: 'Sorot langsung peralatan kerja di gerai (tanpa merekam data rahasia/PIN nasabah): mesin EDC (Electronic Data Capture) / Android POS, printer struk termal Bluetooth, mesin penghitung uang (money counter), lampu UV pendeteksi uang asli/palsu, brankas/laci kas berpelindung, kamera pengawas CCTV, papan informasi tarif resmi, serta buku/aplikasi register transaksi.'
+          },
+          {
+            time: '03:45 – 06:30',
+            title: '4. Bedah Inti 4 Unsur STEM pada Koperasi & BRI-Link (Science, Technology, Engineering, Mathematics)',
+            desc: 'Sambil menunjuk perangkat layanan di lokasi, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics pada jasa keuangan sesuai panduan di bawah.'
+          },
+          {
+            time: '06:30 – 08:30',
+            title: '5. Gambaran Umum Alur Layanan Transaksi Keuangan Masyarakat',
+            desc: 'Jelaskan ragam layanan yang berjalan setiap hari: setor dan tarik tunai tabungan, transfer antarbank, pembayaran tagihan listrik PLN/token, BPJS, cicilan, top-up dompet digital, penyaluran bantuan pemerintah, atau layanan simpanan dan pinjaman modal usaha di koperasi.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
+            desc: 'Simpulkan peran teknologi finansial (fintech) dan sains pengamanan uang dalam mempercepat perputaran ekonomi masyarakat pedesaan OKU Timur, lalu tutup video.'
+          }
+        ],
+        stemPoints: {
+          science: 'Jelaskan prinsip Sains (Fisika Optik & Kimia Material) pada peralatan keuangan: pemanfaatan gelombang sinar Ultraviolet (UV) untuk memendarkan tinta fosfor dan benang pengaman saat menguji keaslian uang kertas Rupiah (3D: Dilihat, Diraba, Diterawang), serta reaksi kimia pemanasan pada kertas struk termal (thermal paper) yang mencetak tulisan tanpa tinta cair.',
+          technology: 'Jelaskan Teknologi Finansial (Fintech & Telekomunikasi) yang bekerja: sistem mesin EDC dan aplikasi mobile banking agen yang membaca chip kartu ATM/debit, transmisi data transaksi terenkripsi secara real-time melalui jaringan seluler 4G/Wi-Fi ke server pusat bank, pemindaian kode matriks QRIS, serta printer termal nirkabel (Bluetooth).',
+          engineering: 'Jelaskan Rekayasa Sistem Keamanan & Tata Ruang Layanan (Security & Service Engineering): desain tata letak meja loket berteralis/kaca pelindung, penempatan sudut pandang kamera CCTV yang mengawasi area transaksi, penyimpanan brankas kas yang aman, serta rekayasa alur antrean dan verifikasi berlapis (kartu + PIN + bukti struk cetak) agar bebas salah kirim.',
+          mathematics: 'Jelaskan penerapan Matematika Keuangan di gerai: ketelitian menghitung nominal pecahan uang tunai dengan cepat, perhitungan struktur biaya administrasi (fee) per tingkatan nominal transaksi, perhitungan persentase jasa simpan-pinjam atau pembagian Sisa Hasil Usaha (SHU) di koperasi, serta rekonsiliasi pencocokan saldo kas fisik vs saldo mutasi digital.'
+        }
+      },
+      day6: {
+        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Koperasi / BRI-Link',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda menganalisis secara mandiri manajemen modal likuiditas (saldo rekening vs uang tunai di laci), perhitungan pendapatan dari fee transaksi/SHU, evaluasi risiko uang palsu/penipuan/kredit macet, serta solusi inovasi literasi keuangan.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan & Kilas Balik Objek Koperasi / Agen BRI-Link',
+            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini membedah model bisnis Finansial, Manajemen Risiko, dan Inovasi Layanan pada Agen BRI-Link / Koperasi yang diamati.'
+          },
+          {
+            time: '01:00 – 03:30',
+            title: '2. Analisis Pilar Financial (Manajemen Modal Likuiditas, Fee Transaksi/SHU & Laba Bersih)',
+            desc: 'Jelaskan di depan kamera bagaimana usaha jasa keuangan memperoleh keuntungan: keseimbangan modal kerja antara Saldo Mengendap di Rekening Bank (untuk melayani setor tunai/transfer) dan Uang Tunai Fisik di Laci (untuk melayani tarik tunai), perhitungan pendapatan dari biaya admin (fee per transaksi x jumlah transaksi harian, dikurangi bagi hasil fee ke bank pusat), serta biaya operasional (kuota internet, kertas struk, listrik) hingga didapat Laba Bersih bulanan.'
+          },
+          {
+            time: '03:30 – 06:00',
+            title: '3. Evaluasi Kendala Operasional & Risiko Keamanan Keuangan',
+            desc: 'Analisis risiko dan kendala nyata di lapangan: gangguan sinyal internet/server bank saat jam sibuk, kehabisan uang tunai (likuiditas) saat musim panen raya ketika banyak petani tarik tunai besar, risiko peredaran uang palsu, modus penipuan bukti transfer palsu (struk editan), atau risiko kredit macet (NPL) pada pinjaman koperasi.'
+          },
+          {
+            time: '06:00 – 08:30',
+            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
+            desc: 'Paparkan solusi inovatif Anda: penerapan SOP ketat "Cek Mutasi Masuk di Aplikasi Sebelum Serahkan Uang Tunai" dan wajib uji lampu UV pada setiap uang masuk, penyediaan koneksi internet cadangan (dual-provider), sistem pencatatan buku kas ganda (digital & manual) untuk tutup buku harian, serta edukasi literasi keuangan dan tabungan hasil panen bagi warga desa.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '5. Kesimpulan Akhir & Penutup Video',
+            desc: 'Simpulkan kelayakan finansial usaha Agen BRI-Link/Koperasi tersebut dan perannya sebagai penggerak inklusi keuangan di Kabupaten OKU Timur, lalu tutup video.'
+          }
+        ],
+        finPoints: {
+          financial: 'Uraikan manajemen perputaran modal likuiditas (kas tunai vs saldo rekening), rata-rata jumlah transaksi harian dikalikan tarif jasa (fee admin) atau margin jasa simpan-pinjam koperasi, biaya operasional bulanan, serta estimasi Laba Bersih.',
+          constraints: 'Identifikasi risiko utama: ketidakseimbangan kas saat penarikan tunai membludak, gangguan jaringan internet/EDC error, ancaman uang palsu dan penipuan rekayasa sosial (social engineering), atau tunggakan angsuran anggota koperasi.',
+          innovation: 'Usulkan inovasi STEM-Finansial: protokol verifikasi mutasi real-time & detektor UV wajib, integrasi layanan pembayaran berbagai tagihan satu pintu (one-stop payment), pembukuan rekonsiliasi kas harian otomatis, dan program edukasi gemar menabung/anti-pinjol ilegal.'
+        }
+      }
+    },
+
+    jasa: {
+      key: 'jasa',
+      name: 'Jasa Teknik, Bengkel & Produksi Kerajinan',
+      shortName: '🔧 Jasa & Kerajinan',
+      badge: 'Bengkel Motor/Alsintan, Las & Kerajinan',
+      icon: 'build',
+      objectExamples: 'Bengkel Sepeda Motor/Mobil/Alsintan, Bengkel Las & Bubut, Usaha Pertukangan/Meubel Kayu, Percetakan/Fotokopi, Barbershop/Salon, atau Produksi Kerajinan/Batu Bata di OKU Timur',
+      day5: {
+        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Jasa Teknik / Kerajinan',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di lokasi bengkel/tempat jasa teknik/produksi kerajinan tanpa mewawancarai mekanik/pemilik. Sorot peralatan kerja, mesin, dan proses pengerjaan, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Usaha Jasa / Kerajinan',
+            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan nama bengkel/usaha jasa teknik/kerajinan, lokasi desa/kecamatan, dan jenis layanan atau produk yang dikerjakan.'
+          },
+          {
+            time: '01:00 – 02:15',
+            title: '2. Penjelasan Pilar Culture (Etos Kerja Ketelitian, Kejujuran Servis & Kepuasan Pelanggan)',
+            desc: 'Jelaskan budaya kerja pada usaha jasa/teknik tersebut: ketelitian dan kesabaran dalam mendiagnosis kerusakan atau merakit produk, kejujuran mengganti suku cadang asli (tidak membohongi pelanggan), ketepatan waktu pengerjaan, serta budaya menjaga kerapian tempat kerja.'
+          },
+          {
+            time: '02:15 – 03:45',
+            title: '3. Penjelasan Pilar Exploration (Sorot Perkakas Kerja, Mesin & APD Keselamatan Kerja K3)',
+            desc: 'Sorot langsung peralatan kerja di lokasi: kunci pas/ring/shock (torsi), kompresor udara, mesin las listrik (inverter), gerinda tangan, mesin bor/gergaji ukir, alat ukur (jangka sorong/mikrometer/multimeter/meteran), serta Alat Pelindung Diri (APD K3: topeng/kacamata las, kacamata pelindung percikan gerinda, sarung tangan kulit, sepatu safety/tertutup, masker debu/asap).'
+          },
+          {
+            time: '03:45 – 06:30',
+            title: '4. Bedah Inti 4 Unsur STEM pada Jasa Teknik & Kerajinan (Science, Technology, Engineering, Mathematics)',
+            desc: 'Sambil menunjuk peralatan bengkel/produksi, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics sesuai panduan sektor jasa teknik di bawah.'
+          },
+          {
+            time: '06:30 – 08:30',
+            title: '5. Gambaran Umum Alur Pengerjaan Servis / Produksi dari Awal hingga Selesai',
+            desc: 'Jelaskan tahapan kerja di tempat tersebut: mulai dari penerimaan pesanan/pemeriksaan keluhan pelanggan, pengukuran bahan/pembongkaran komponen, proses perbaikan/perakitan/pengelasan, hingga uji coba akhir (quality control).'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
+            desc: 'Rangkum bagaimana penguasaan ilmu fisika mekanika, teknologi mesin perkakas, dan keselamatan kerja K3 menjadi kunci utama keberhasilan usaha jasa teknik/kerajinan di OKU Timur, lalu tutup video.'
+          }
+        ],
+        stemPoints: {
+          science: 'Jelaskan prinsip Sains (Fisika & Kimia) yang bekerja: hukum momen gaya/torsi (tau = F x r) saat mengencangkan baut dengan kunci bergagang panjang, hukum Boyle dan tekanan udara pada tabung kompresor, perpindahan panas dan peleburan logam (metalurgi) oleh busur listrik pada mesin las, fungsi kimia oli pelumas untuk mengurangi gaya gesek dan keausan mesin, serta bahaya sinar UV/percikan api tanpa APD.',
+          technology: 'Jelaskan Teknologi Peralatan yang digunakan: mesin las inverter hemat daya berbasis komponen elektronika IGBT, perkakas listrik putaran tinggi (power tools: gerinda, bor listrik, impact wrench baterai), kompresor otomatis ber-pressure switch, atau alat scanner injeksi/multimeter digital.',
+          engineering: 'Jelaskan Rekayasa Teknik (Mechanical & Structural Engineering): proses troubleshooting (mencari sumber kerusakan mesin secara sistematis), rekayasa penyambungan rangka besi/kayu dengan sudut siku presisi agar konstruksi kuat menahan beban, serta penataan papan perkakas (tool rack) yang ergonomis.',
+          mathematics: 'Jelaskan perhitungan Matematika Teknik di lapangan: ketelitian pengukuran dimensi bahan dalam satuan milimeter (mm), sentimeter, atau inci menggunakan meteran/jangka sorong, perhitungan sudut potong (45° atau 90°), rasio perbandingan campuran bahan (misal cat dengan tiner atau semen dengan pasir), serta estimasi waktu pengerjaan per unit.'
+        }
+      },
+      day6: {
+        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Jasa Teknik / Kerajinan',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda menganalisis secara mandiri struktur biaya investasi alat, biaya bahan habis pakai/suku cadang, tarif jasa keahlian, kendala operasional/K3, serta gagasan inovasi layanan berbasis STEM & Finansial.',
+        segments: [
+          {
+            time: '00:00 – 01:00',
+            title: '1. Pembukaan & Kilas Balik Objek Jasa Teknik / Kerajinan',
+            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini membedah analisis Finansial, Evaluasi Kendala, dan Solusi Inovasi pada usaha jasa teknik/bengkel/kerajinan yang diamati.'
+          },
+          {
+            time: '01:00 – 03:30',
+            title: '2. Analisis Pilar Financial (Modal Peralatan, Biaya Bahan/Suku Cadang, Tarif Jasa & Laba)',
+            desc: 'Jelaskan di depan kamera perhitungan keuangan usaha jasa/kerajinan: investasi awal pembelian mesin/perkakas kerja (dan biaya penyusutan/perawatannya), biaya variabel bahan habis pakai (kawat las, mata gerinda, oli, suku cadang, kayu/besi, tagihan listrik), cara menentukan tarif ongkos jasa servis/harga jual produk, hingga estimasi pendapatan kotor dan Laba Bersih bulanan.'
+          },
+          {
+            time: '03:30 – 06:00',
+            title: '3. Evaluasi Kendala Teknis, Risiko Kecelakaan Kerja (K3) & Pemasaran',
+            desc: 'Analisis kendala nyata yang dihadapi usaha tersebut: pemadaman listrik atau daya listrik tidak stabil saat mengelas/mengoperasikan mesin, keausan/kerusakan mata perkakas, kenaikan harga bahan baku besi/suku cadang, kurangnya kesadaran memakai APD lengkap (risiko sakit mata/terluka), atau fluktuasi jumlah pelanggan harian.'
+          },
+          {
+            time: '06:00 – 08:30',
+            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
+            desc: 'Paparkan gagasan solusi Anda: penerapan standar Keselamatan dan Kesehatan Kerja (K3) wajib dan penataan bengkel metode 5R (Ringkas, Rapi, Resik, Rawat, Rajin) agar kerja lebih cepat dan aman, daur ulang sisa potongan besi/kayu (scrap) menjadi produk kerajinan bernilai jual tambahan, pemberian garansi servis dan pengingat servis berkala via WhatsApp, serta pencatatan nota digital.'
+          },
+          {
+            time: '08:30 – 10:00',
+            title: '5. Kesimpulan Akhir & Penutup Video',
+            desc: 'Simpulkan kelayakan finansial usaha jasa teknik/kerajinan tersebut dan bagaimana kombinasi keahlian STEM, disiplin K3, serta manajemen keuangan yang rapi dapat mengembangkan usaha, lalu tutup video.'
+          }
+        ],
+        finPoints: {
+          financial: 'Uraikan pemisahan antara harga modal suku cadang/bahan baku dengan pendapatan murni Ongkos Jasa Keahlian, perhitungan biaya listrik & perawatan alat (penyusutan), serta kalkulasi Laba Bersih bulanan.',
+          constraints: 'Identifikasi masalah utama: risiko kecelakaan kerja akibat abai memakai APD (kacamata las/gerinda), penumpukan limbah sisa bahan/oli bekas, keterbatasan peralatan modern, atau pencatatan keuangan yang belum rapi.',
+          innovation: 'Usulkan inovasi STEM-Finansial: tata kelola bengkel standar 5R & K3, pemanfaatan limbah potongan bahan menjadi produk kreatif bernilai ekonomis, katalog portofolio hasil karya/jasa di media sosial, serta sistem kartu pelanggan/pengingat servis.'
+        }
+      }
+    }
+  };
+
+  window.NFT_VIDEO_SECTORS_GUIDE = NFT_VIDEO_SECTORS_GUIDE;
+
+  // Render Modul Khusus Day 5 & Day 6: Panduan Interaktif Video 7 Sektor + Form Resume Rencana Video
+  function renderDay5Or6VideoModule(container, dayNum) {
+    dayNum = parseInt(dayNum) || 5;
+    if (!container) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+
+    let fasilName = '';
+    if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+      const m = window.FincestemMentorship.getMentorsForStudent(cleanNisn, studentClass);
+      if (m && m.facilitator && m.facilitator !== '-' && m.facilitator !== 'Belum Ditentukan') {
+        fasilName = m.facilitator;
+      }
+    }
+    if (!fasilName && window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator) {
+      const sf = FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass);
+      if (sf && sf !== 'Belum Ditentukan' && sf !== 'Tim Fasilitator SMAN 1 Belitang') fasilName = sf;
+    }
+    if (!fasilName && u.facilitator_name && u.facilitator_name !== 'Belum Ditentukan' && u.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && !u.facilitator_name.includes('\n')) {
+      fasilName = u.facilitator_name;
+    }
+    if (!fasilName) fasilName = 'Tim Fasilitator SMAN 1 Belitang';
+
+    let savedOfficial = null;
+    try {
+      const rawOff = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn) ||
+                     localStorage.getItem(`fincestem_materi_day${dayNum}_` + cleanNisn);
+      if (rawOff) savedOfficial = JSON.parse(rawOff);
+    } catch (e) {}
+
+    if (!savedOfficial) {
+      try {
+        const storedP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+        if (storedP) {
+          const prog = JSON.parse(storedP);
+          const tMap = (prog && prog.task_map) ? prog.task_map[`${dayNum}_materi`] : null;
+          if (tMap && tMap.content) {
+            let c = tMap.content;
+            if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
+              try { c = JSON.parse(c); } catch(e) {}
+            }
+            if (typeof c === 'object' && c) {
+              savedOfficial = c;
+            } else if (typeof c === 'string' && c.trim()) {
+              savedOfficial = { day: dayNum, submitted: true, conclusion: c, summary: c };
+            }
+          }
+        }
+      } catch(eHyd) {}
+    }
+
+    let draft = {};
+    try {
+      const rawDraft = localStorage.getItem(`fincestem_draft_nft_materi_d${dayNum}_` + cleanNisn);
+      if (rawDraft) draft = JSON.parse(rawDraft);
+    } catch (e) {}
+
+    const isSubmitted = !!(savedOfficial && (savedOfficial.submitted || savedOfficial.submittedAt || savedOfficial.conclusion || savedOfficial.summary));
+    window[`isNftD${dayNum}Submitted`] = isSubmitted;
+
+    // Deteksi sektor pilihan siswa (bisa dari Day 5/6, atau warisan dari Day 4/3)
+    let selectedSector = 'pertanian';
+    const candidateSec = (savedOfficial && savedOfficial.selectedSector) ||
+                         (draft && draft.selectedSector) ||
+                         localStorage.getItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn) ||
+                         localStorage.getItem('fincestem_nft_sector_d5_' + cleanNisn) ||
+                         localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) ||
+                         localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
+    if (candidateSec && NFT_VIDEO_SECTORS_GUIDE[candidateSec]) {
+      selectedSector = candidateSec;
+    }
+
+    const secGuide = NFT_VIDEO_SECTORS_GUIDE[selectedSector] || NFT_VIDEO_SECTORS_GUIDE.pertanian;
+    const dayGuide = (dayNum === 6) ? secGuide.day6 : secGuide.day5;
+
+    const savedObjectName = (savedOfficial && savedOfficial.objectName) || (draft && draft.objectName) || '';
+    const savedConclusion = (savedOfficial && (savedOfficial.userConclusion || savedOfficial.conclusion || savedOfficial.summary)) ||
+                            (draft && draft.conclusion) || '';
+
+    const isDay5 = (dayNum === 5);
+    const headerGradient = isDay5
+      ? 'from-amber-900 via-teal-950 to-slate-950 border-amber-600/40'
+      : 'from-teal-900 via-indigo-950 to-slate-950 border-teal-600/40';
+    const badgeColor = isDay5 ? 'bg-amber-400 text-slate-950' : 'bg-cyan-400 text-slate-950';
+
+    const sectorKeys = ['pertanian', 'perkebunan', 'peternakan', 'perikanan', 'perdagangan', 'keuangan', 'jasa'];
+
+    container.innerHTML = `
+      <div class="flex flex-col gap-5 pb-12 max-w-4xl mx-auto w-full">
+
+        <!-- BANNER STATUS TERKIRIM JIKA SUDAH SUBMIT -->
+        ${isSubmitted ? `
+          <div class="p-4 sm:p-5 rounded-3xl bg-emerald-500/15 border-2 border-emerald-400 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-inner">
+                <span class="material-symbols-outlined text-2xl">verified</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-black uppercase text-emerald-800 tracking-wider">Modul Panduan Video Day ${dayNum} Tuntas</span>
+                <h3 class="text-sm sm:text-base font-black text-emerald-950">Resume &amp; Rencana Video Day ${dayNum} Telah Tersimpan Resmi ✓</h3>
+                <p class="text-xs text-emerald-800/90 font-medium mt-0.5 leading-relaxed">
+                  Sektor Pilihan: <strong>${escapeHtml(secGuide.name)}</strong>. Anda tetap dapat membaca panduan urutan video di bawah ini atau langsung menuju LKPD Day ${dayNum} untuk mengumpulkan link YouTube.
+                </p>
+              </div>
+            </div>
+            <a href="lkpd.html?day=${dayNum}" class="px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-sm shrink-0 flex items-center gap-1.5 cursor-pointer transition-all">
+              <span>Buka LKPD Day ${dayNum}</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+        ` : ''}
+
+        <!-- HEADER MODUL PANDUAN VIDEO DAY 5 / DAY 6 -->
+        <div class="bg-gradient-to-br ${headerGradient} rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col gap-3.5 border">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/15 text-amber-200 backdrop-blur-md flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm">smart_display</span>
+                <span>Non-Field Trip • Modul Day ${dayNum}</span>
+              </span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${badgeColor}">
+                ${isDay5 ? 'Video Observasi Lapangan & 4 Unsur STEM (5–10 Menit)' : 'Video Analisis Finansial, Risiko & Inovasi (5–10 Menit)'}
+              </span>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-white/20 text-white'}">
+              ${isSubmitted ? '✓ Modul Selesai' : 'Panduan Produksi Video YouTube'}
+            </span>
+          </div>
+
+          <div>
+            <h1 class="font-black text-xl sm:text-2xl leading-tight">
+              ${isDay5
+                ? 'Modul Day 5: Panduan Pembuatan Video Observasi Culture, Exploration Alat & Penerapan STEM'
+                : 'Modul Day 6: Panduan Pembuatan Video Analisis Financial, Evaluasi Kendala & Inovasi Solusi'}
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-200/95 leading-relaxed font-medium mt-1.5 text-justify">
+              ${isDay5
+                ? 'Pada Day 5 ini, Anda ditugaskan membuat video observasi lapangan berdurasi minimal 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube. Pilih salah satu dari 7 sektor usaha di bawah ini untuk memunculkan panduan urutan isi video menit demi menit!'
+                : 'Pada Day 6 ini, Anda melanjutkan pembuatan video analisis berdurasi minimal 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube dengan fokus membedah perputaran modal/keuntungan (Financial), kendala usaha, dan solusi inovasi FINCESTEM pada sektor pilihan Anda.'}
+            </p>
+          </div>
+
+          <!-- IDENTITAS SISWA & FASILITATOR -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-white/15 text-xs">
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-slate-300 text-[10px] font-medium">Nama Peserta Didik</span>
+              <span class="font-extrabold truncate text-white">${escapeHtml(studentName)}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-slate-300 text-[10px] font-medium">NISN / Identitas</span>
+              <span class="font-extrabold truncate text-white">${escapeHtml(studentNisn)}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-slate-300 text-[10px] font-medium">Kelas / Rombel</span>
+              <span class="font-extrabold truncate text-white">${escapeHtml(studentClass)}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-slate-300 text-[10px] font-medium">Guru Fasilitator</span>
+              <span class="font-extrabold truncate text-white">${escapeHtml(fasilName)}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ATURAN TEKNIS VIDEO YOUTUBE (5-10 MENIT, TANPA WAWANCARA) -->
+        <div class="p-4 sm:p-5 rounded-3xl bg-rose-50 border-2 border-rose-200 text-rose-950 flex flex-col gap-2.5 shadow-2xs">
+          <div class="flex items-center gap-2 font-black text-xs sm:text-sm text-rose-900">
+            <span class="material-symbols-outlined text-rose-600 text-lg">videocam</span>
+            <span>KETENTUAN WAJIB PEMBUATAN VIDEO YOUTUBE DAY ${dayNum}:</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
+            <div class="p-3 rounded-2xl bg-white border border-rose-200 flex items-start gap-2.5">
+              <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 font-black text-xs flex items-center justify-center shrink-0">5-10m</span>
+              <div class="text-xs">
+                <strong class="text-slate-900 block">Durasi Minimal 5–10 Menit</strong>
+                <span class="text-slate-600 text-[11px] leading-snug">Rekam penjelasan secara utuh dan runtut mengikuti panduan menit ke menit.</span>
+              </div>
+            </div>
+            <div class="p-3 rounded-2xl bg-white border border-rose-200 flex items-start gap-2.5">
+              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 font-black text-xs flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-base">person_Check</span>
+              </span>
+              <div class="text-xs">
+                <strong class="text-slate-900 block">Tanpa Wawancara Narasumber</strong>
+                <span class="text-slate-600 text-[11px] leading-snug">Tidak perlu mewawancarai pemilik usaha. Anda sendiri yang menjelaskan &amp; menyorot objek/alat!</span>
+              </div>
+            </div>
+            <div class="p-3 rounded-2xl bg-white border border-rose-200 flex items-start gap-2.5">
+              <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 font-black text-xs flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-base">cloud_upload</span>
+              </span>
+              <div class="text-xs">
+                <strong class="text-slate-900 block">Upload ke YouTube</strong>
+                <span class="text-slate-600 text-[11px] leading-snug">Setel visibilitas ke <strong>Publik</strong> atau <strong>Tidak Terdaftar (Unlisted)</strong>, lalu kirim link-nya di LKPD.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LANGKAH 1: PILIH MENU SEKTOR USAHA (7 PILIHAN INTERAKTIF) -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-teal-500/50 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-black text-sm shadow-xs">1</span>
+              <div>
+                <h2 class="font-black text-sm sm:text-base text-slate-900">Pilih Sektor Objek Video Anda (Klik Salah Satu Menu):</h2>
+                <p class="text-[11px] text-slate-500 font-medium">Begitu Anda memilih menu sektor di bawah ini, panduan urutan video dan materi bahasan akan otomatis menyesuaikan!</p>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-black bg-teal-100 text-teal-900 border border-teal-300">
+              Terpilih: ${escapeHtml(secGuide.shortName)}
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2.5">
+            ${sectorKeys.map(k => {
+              const s = NFT_VIDEO_SECTORS_GUIDE[k];
+              const isAct = (k === selectedSector);
+              return `
+                <button type="button" onclick="selectNftVideoSector(${dayNum}, '${k}')" class="text-left p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-2 ${isAct ? 'bg-teal-50/70 border-teal-600 ring-2 ring-teal-500/30 shadow-md' : 'bg-white border-slate-200 hover:border-teal-400 hover:bg-slate-50/60'}">
+                  <div class="flex items-center justify-between gap-1.5 w-full">
+                    <span class="w-9 h-9 rounded-xl ${isAct ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center shrink-0">
+                      <span class="material-symbols-outlined text-xl">${s.icon}</span>
+                    </span>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${isAct ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-600'}">${isAct ? '✓ Aktif' : 'Pilih'}</span>
+                  </div>
+                  <div>
+                    <div class="font-black text-xs sm:text-sm text-slate-900 leading-tight">${s.shortName}</div>
+                    <div class="text-[10.5px] text-slate-500 font-medium mt-0.5 line-clamp-1">${s.badge}</div>
+                  </div>
+                </button>
+              `;
+            }).join('')}
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-teal-50/80 border border-teal-200 text-xs text-teal-950 flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-teal-700 text-lg shrink-0 mt-0.5">location_on</span>
+            <div>
+              <strong class="font-black">Contoh Objek / Tempat yang Bisa Direkam pada Sektor ${escapeHtml(secGuide.name)}:</strong>
+              <p class="text-teal-900/90 mt-0.5 leading-relaxed">${escapeHtml(secGuide.objectExamples)}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- LANGKAH 2: PANDUAN URUTAN ISI VIDEO (STORYBOARD MENIT KE MENIT SESUAI SEKTOR) -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-amber-400/70 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm shadow-xs">2</span>
+              <div>
+                <h2 class="font-black text-sm sm:text-base text-slate-900">${escapeHtml(dayGuide.focusTitle)}</h2>
+                <p class="text-[11px] text-slate-600 font-medium">Ikuti urutan langkah menit demi menit berikut saat Anda berbicara dan mengambil gambar di lapangan:</p>
+              </div>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-950 border border-amber-300">
+              Durasi Total: 5 – 10 Menit
+            </span>
+          </div>
+
+          <p class="text-xs text-slate-700 bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200 leading-relaxed font-medium text-justify">
+            💡 <strong>Intisari Tugas Video Day ${dayNum}:</strong> ${escapeHtml(dayGuide.summaryFocus)}
+          </p>
+
+          <!-- Daftar Segmen Menit ke Menit -->
+          <div class="grid grid-cols-1 gap-3">
+            ${dayGuide.segments.map((seg, idx) => `
+              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 flex flex-col sm:flex-row sm:items-start gap-3 hover:border-amber-400 transition-all">
+                <div class="px-3 py-1.5 rounded-xl bg-slate-900 text-amber-300 font-mono font-black text-xs shrink-0 self-start flex items-center gap-1.5 shadow-2xs">
+                  <span class="material-symbols-outlined text-sm">schedule</span>
+                  <span>${escapeHtml(seg.time)}</span>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <h4 class="font-black text-xs sm:text-sm text-slate-900">${escapeHtml(seg.title)}</h4>
+                  <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">${escapeHtml(seg.desc)}</p>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <!-- Rincian Materi Spesifik Sektor yang Harus Dijelaskan di Dalam Video -->
+          ${isDay5 ? `
+            <div class="mt-2 pt-4 border-t border-slate-200 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-teal-700 text-lg">science</span>
+                <h3 class="font-black text-xs sm:text-sm text-slate-900">ConTek / Panduan Materi 4 Unsur STEM Sektor ${escapeHtml(secGuide.shortName)} (Untuk Dijelaskan pada Menit 03:45 – 06:30):</h3>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1">
+                  <div class="font-black text-sky-950 flex items-center gap-1.5">
+                    <span class="w-5 h-5 rounded-md bg-sky-600 text-white flex items-center justify-center text-[11px]">S</span>
+                    <span>SCIENCE (Sains — Fisika, Kimia, Biologi)</span>
+                  </div>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.stemPoints.science)}</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200 space-y-1">
+                  <div class="font-black text-teal-950 flex items-center gap-1.5">
+                    <span class="w-5 h-5 rounded-md bg-teal-600 text-white flex items-center justify-center text-[11px]">T</span>
+                    <span>TECHNOLOGY (Teknologi Alat &amp; Digital)</span>
+                  </div>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.stemPoints.technology)}</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
+                  <div class="font-black text-amber-950 flex items-center gap-1.5">
+                    <span class="w-5 h-5 rounded-md bg-amber-600 text-white flex items-center justify-center text-[11px]">E</span>
+                    <span>ENGINEERING (Rekayasa Desain &amp; Konstruksi)</span>
+                  </div>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.stemPoints.engineering)}</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-1">
+                  <div class="font-black text-purple-950 flex items-center gap-1.5">
+                    <span class="w-5 h-5 rounded-md bg-purple-600 text-white flex items-center justify-center text-[11px]">M</span>
+                    <span>MATHEMATICS (Kalkulasi &amp; Efisiensi)</span>
+                  </div>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.stemPoints.mathematics)}</p>
+                </div>
+              </div>
+            </div>
+          ` : `
+            <div class="mt-2 pt-4 border-t border-slate-200 flex flex-col gap-3">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-teal-700 text-lg">payments</span>
+                <h3 class="font-black text-xs sm:text-sm text-slate-900">ConTek / Panduan Materi Analisis Finansial &amp; Inovasi Sektor ${escapeHtml(secGuide.shortName)} (Untuk Dijelaskan di Video Day 6):</h3>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
+                  <div class="font-black text-emerald-950 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base text-emerald-700">account_balance_wallet</span>
+                    <span>1. Analisis Pilar Financial</span>
+                  </div>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.finPoints.financial)}</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1">
+                  <div class="font-black text-rose-950 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base text-rose-700">warning</span>
+                    <span>2. Evaluasi Kendala &amp; Risiko</span>
+                  </div>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.finPoints.constraints)}</p>
+                </div>
+                <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1">
+                  <div class="font-black text-indigo-950 flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-base text-indigo-700">lightbulb</span>
+                    <span>3. Solusi &amp; Inovasi FINCESTEM</span>
+                  </div>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.finPoints.innovation)}</p>
+                </div>
+              </div>
+            </div>
+          `}
+        </div>
+
+        <!-- LANGKAH 3: FORM RESUME & RENCANA ALUR VIDEO SISWA (SYARAT MEMBUKA LKPD) -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
+            <div class="flex items-center gap-2.5">
+              <span class="w-9 h-9 rounded-2xl bg-teal-800 text-white flex items-center justify-center font-black text-sm shadow-xs">3</span>
+              <div>
+                <h2 class="font-black text-sm sm:text-base text-slate-900">Isi Resume &amp; Rencana Video Day ${dayNum} Anda</h2>
+                <p class="text-[11px] text-slate-500 font-medium">Tuliskan objek yang akan Anda rekam beserta ringkasan poin penjelasan Anda untuk membuka LKPD Day ${dayNum}.</p>
+              </div>
+            </div>
+            <span id="badgeVideoModStatusD${dayNum}" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black ${isSubmitted ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}">
+              ${isSubmitted ? '✓ Tersimpan Resmi' : 'Wajib Diisi'}
+            </span>
+          </div>
+
+          <input type="hidden" id="nftVideoModSectorD${dayNum}" value="${escapeHtml(selectedSector)}">
+
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs font-bold text-slate-800">
+              Nama Objek / Tempat Usaha pada Sektor ${escapeHtml(secGuide.shortName)} yang Akan/Telah Anda Rekam: <span class="text-rose-600">*</span>
+            </label>
+            <input type="text" id="nftVideoModObjectD${dayNum}" value="${escapeHtml(savedObjectName)}" ${isSubmitted ? 'readonly' : ''} oninput="onNftVideoModInput(${dayNum})" placeholder="Contoh: ${escapeHtml(secGuide.objectExamples.split(',')[0])} di Desa ..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 outline-none ${isSubmitted ? 'bg-slate-50 text-slate-700' : 'bg-white'}">
+          </div>
+
+          <div class="flex flex-col gap-1.5">
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <label class="text-xs font-bold text-slate-800">
+                ${isDay5
+                  ? 'Resume Rencana Alur Video Day 5 (Peralatan yang Disorot & Poin Science, Technology, Engineering, Mathematics yang Dijelaskan):'
+                  : 'Resume Rencana Alur Video Day 6 (Rincian Modal/Laba Financial, Kendala Usaha & Ide Solusi Inovasi yang Dijelaskan):'} <span class="text-rose-600">*</span>
+              </label>
+              <span id="counterVideoModD${dayNum}" class="text-[11px] font-bold text-slate-500">Min. 80 karakter</span>
+            </div>
+            <textarea id="nftVideoModResumeD${dayNum}" rows="5" ${isSubmitted ? 'readonly' : ''} oninput="onNftVideoModInput(${dayNum})" placeholder="${isDay5
+              ? 'Tuliskan ringkasan rencana isi video Day 5 Anda: peralatan apa saja yang akan Anda tunjukkan di kamera, serta apa poin Sains, Teknologi, Rekayasa (Engineering), dan Matematika yang akan Anda jelaskan pada sektor ' + secGuide.shortName + '... (Minimal 80 karakter)'
+              : 'Tuliskan ringkasan rencana isi video Day 6 Anda: bagaimana gambaran modal, biaya operasional, dan keuntungan usaha tersebut, apa kendala utamanya, serta apa ide inovasi STEM & Finansial yang Anda tawarkan... (Minimal 80 karakter)'}" class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm leading-relaxed focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 outline-none ${isSubmitted ? 'bg-slate-50 text-slate-700' : 'bg-white'}">${escapeHtml(savedConclusion)}</textarea>
+            <span id="msgVideoModValidationD${dayNum}" class="text-[11px] text-slate-500 font-medium">Minimal 80 karakter (sekitar 15–20 kata).</span>
+          </div>
+
+          ${isSubmitted ? `
+            <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <button type="button" onclick="enableEditNftVideoMod(${dayNum})" class="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-sm">edit</span>
+                <span>Ubah Sektor / Edit Resume Modul</span>
+              </button>
+              <a href="lkpd.html?day=${dayNum}" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-base">smart_display</span>
+                <span>Lanjut ke LKPD Day ${dayNum} (Kirim Link YouTube)</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </a>
+            </div>
+          ` : `
+            <div class="pt-2">
+              <button type="button" id="btnSubmitVideoModD${dayNum}" onclick="submitNftVideoModule(${dayNum})" class="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-teal-700 to-emerald-600 hover:from-teal-800 hover:to-emerald-700 active:scale-[0.99] text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-lg">check_circle</span>
+                <span>Simpan Resume Modul Day ${dayNum} &amp; Lanjut ke LKPD</span>
+              </button>
+            </div>
+          `}
+        </div>
+
+      </div>
+    `;
+
+    setTimeout(() => {
+      updateNftVideoModCounter(dayNum);
+    }, 40);
+  }
+
+  function updateNftVideoModCounter(dayNum) {
+    const resumeEl = document.getElementById(`nftVideoModResumeD${dayNum}`);
+    const cntEl = document.getElementById(`counterVideoModD${dayNum}`);
+    const msgEl = document.getElementById(`msgVideoModValidationD${dayNum}`);
+    if (!resumeEl) return;
+    const len = resumeEl.value.trim().length;
+    if (cntEl) {
+      cntEl.textContent = len >= 80 ? `✓ ${len} / 80 karakter` : `${len} / 80 karakter`;
+      cntEl.className = len >= 80 ? 'text-[11px] font-black text-emerald-700' : 'text-[11px] font-bold text-slate-500';
+    }
+    if (msgEl) {
+      if (len >= 80) {
+        msgEl.textContent = '✓ Resume rencana video telah memenuhi batas minimal karakter.';
+        msgEl.className = 'text-[11px] text-emerald-700 font-bold';
+      } else {
+        msgEl.textContent = len === 0
+          ? 'Wajib diisi minimal 80 karakter sebelum lanjut ke LKPD.'
+          : `Kurang ${80 - len} karakter lagi (Minimal 80 karakter).`;
+        msgEl.className = 'text-[11px] text-rose-600 font-semibold';
+      }
+    }
+  }
+
+  window.onNftVideoModInput = function(dayNum) {
+    updateNftVideoModCounter(dayNum);
+    try {
+      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const cleanNisn = String(u.nisn || u.identifier || '').trim();
+      if (!cleanNisn) return;
+      const sectorKey = document.getElementById(`nftVideoModSectorD${dayNum}`)?.value || 'pertanian';
+      const objectName = document.getElementById(`nftVideoModObjectD${dayNum}`)?.value || '';
+      const conclusion = document.getElementById(`nftVideoModResumeD${dayNum}`)?.value || '';
+      localStorage.setItem(`fincestem_draft_nft_materi_d${dayNum}_` + cleanNisn, JSON.stringify({
+        day: dayNum,
+        selectedSector: sectorKey,
+        objectName: objectName,
+        conclusion: conclusion,
+        updatedAt: new Date().toISOString()
+      }));
+    } catch (e) {}
+  };
+
+  window.selectNftVideoSector = function(dayNum, sectorKey) {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+    const objVal = document.getElementById(`nftVideoModObjectD${dayNum}`)?.value || '';
+    const resVal = document.getElementById(`nftVideoModResumeD${dayNum}`)?.value || '';
+
+    try {
+      localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn, sectorKey);
+      localStorage.setItem(`fincestem_draft_nft_materi_d${dayNum}_` + cleanNisn, JSON.stringify({
+        day: dayNum,
+        selectedSector: sectorKey,
+        objectName: objVal,
+        conclusion: resVal,
+        updatedAt: new Date().toISOString()
+      }));
+      // Jika sudah pernah submit, perbarui juga pilihan sektor di record tersimpan agar tampilan langsung berubah
+      const rawOff = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn);
+      if (rawOff) {
+        const parsed = JSON.parse(rawOff);
+        parsed.selectedSector = sectorKey;
+        localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn, JSON.stringify(parsed));
+      }
+    } catch (e) {}
+
+    const sGuide = NFT_VIDEO_SECTORS_GUIDE[sectorKey] || NFT_VIDEO_SECTORS_GUIDE.pertanian;
+    if (window.FincestemCore && FincestemCore.ui) {
+      FincestemCore.ui.toast(`Panduan Video Day ${dayNum} disesuaikan ke sektor: ${sGuide.name}`, 'info');
+    }
+
+    const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
+    if (mainEl) renderDay5Or6VideoModule(mainEl, dayNum);
+  };
+
+  window.enableEditNftVideoMod = function(dayNum) {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+    try {
+      const rawOff = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn);
+      if (rawOff) {
+        const parsed = JSON.parse(rawOff);
+        localStorage.setItem(`fincestem_draft_nft_materi_d${dayNum}_` + cleanNisn, JSON.stringify({
+          day: dayNum,
+          selectedSector: parsed.selectedSector || 'pertanian',
+          objectName: parsed.objectName || '',
+          conclusion: parsed.userConclusion || parsed.conclusion || ''
+        }));
+        delete parsed.submitted;
+        delete parsed.submittedAt;
+        localStorage.removeItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn);
+      }
+    } catch (e) {}
+    window[`isNftD${dayNum}Submitted`] = false;
+    const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
+    if (mainEl) renderDay5Or6VideoModule(mainEl, dayNum);
+  };
+
+  window.submitNftVideoModule = function(dayNum) {
+    dayNum = parseInt(dayNum) || 5;
+    const sectorKey = document.getElementById(`nftVideoModSectorD${dayNum}`)?.value || 'pertanian';
+    const objectName = (document.getElementById(`nftVideoModObjectD${dayNum}`)?.value || '').trim();
+    const resumeText = (document.getElementById(`nftVideoModResumeD${dayNum}`)?.value || '').trim();
+
+    if (objectName.length < 3) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Tuliskan nama objek atau tempat usaha yang akan Anda rekam (minimal 3 karakter)!', 'warning');
+      } else {
+        alert('Tuliskan nama objek atau tempat usaha yang akan Anda rekam!');
+      }
+      document.getElementById(`nftVideoModObjectD${dayNum}`)?.focus();
+      return;
+    }
+
+    if (resumeText.length < 80) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast(`Resume rencana video Day ${dayNum} minimal 80 karakter (saat ini ${resumeText.length} karakter).`, 'warning');
+      } else {
+        alert(`Resume rencana video Day ${dayNum} minimal 80 karakter!`);
+      }
+      document.getElementById(`nftVideoModResumeD${dayNum}`)?.focus();
+      return;
+    }
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+    const secGuide = NFT_VIDEO_SECTORS_GUIDE[sectorKey] || NFT_VIDEO_SECTORS_GUIDE.pertanian;
+
+    const summaryFull = `[Modul Video Day ${dayNum} - ${secGuide.name}] Objek: ${objectName} | Rencana Alur Video: ${resumeText}`;
+    const nowIso = new Date().toISOString();
+
+    const payload = {
+      day: dayNum,
+      isVideoModule: true,
+      selectedSector: sectorKey,
+      sectorName: secGuide.name,
+      objectName: objectName,
+      userConclusion: resumeText,
+      conclusion: summaryFull,
+      summary: summaryFull,
+      submitted: true,
+      submittedAt: nowIso,
+      studentName: u.name || '',
+      studentNisn: cleanNisn,
+      studentClass: u.class || u.class_name || '',
+      cardA: {
+        title: `Rencana Video Day ${dayNum} (${secGuide.shortName}): ${objectName}`,
+        text: resumeText,
+        source: `Observasi Lapangan Mandiri Sektor ${secGuide.name} - Kabupaten OKU Timur`
+      }
+    };
+
+    try {
+      localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn, sectorKey);
+      localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn, JSON.stringify(payload));
+      localStorage.setItem(`fincestem_materi_day${dayNum}_` + cleanNisn, JSON.stringify(payload));
+      localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + cleanNisn, JSON.stringify({ conclusion: summaryFull, savedAt: nowIso }));
+    } catch (e) {}
+
+    window[`isNftD${dayNum}Submitted`] = true;
+
+    const onDone = function() {
+      showSuccessNftMateriModalUnified(dayNum);
+      const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
+      if (mainEl) renderDay5Or6VideoModule(mainEl, dayNum);
+    };
+
+    if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+      FincestemCore.progress.submitTask(cleanNisn, dayNum, 'materi', payload, function() {
+        onDone();
+      });
+    } else {
+      onDone();
+    }
+  };
+
+
+  // 7. EKSPOR FUNGSI KE WINDOW GLOBAL (SEMUA HARI DAY 0 S.D. DAY 7)
   window.selectDay3Sector = function(sectorKey) {
     if (window[`isNftD3Submitted`]) {
       if (window.FincestemCore && FincestemCore.ui) {
