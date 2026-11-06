@@ -1149,7 +1149,7 @@
   <script src="../js/siswa_data.js?v=20261026_d6_v1"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261106_tester_v2"></script>
+  <script src="../js/core.js?v=20261107_day0_ft_v2"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -2736,26 +2736,24 @@
       const isFtDay0 = isFieldTrip && dayNum === 0;
       const isNonFtD5D6 = !isFieldTrip && (dayNum === 5 || dayNum === 6);
       const isNonFtOrderedDay = !isFieldTrip && (dayNum >= 1 && dayNum <= 7);
-      let canLkpd = isNonFtD5D6 ? (hasMateri && hasDok) : hasMateri;
-      let canDok = isNonFtD5D6
+      let canLkpd = isFtDay0 ? true : (isNonFtD5D6 ? (hasMateri && hasDok) : hasMateri);
+      let canDok = isFtDay0 ? true : (isNonFtD5D6
         ? hasMateri
-        : (isFtDay0
+        : (isNonFtOrderedDay
             ? (hasMateri && hasLkpd)
-            : (isNonFtOrderedDay
-                ? (hasMateri && hasLkpd)
-                : (isFtDay7 ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen))));
+            : (isFtDay7 ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen))));
       let canAsesmen = isNonFtD5D6
         ? (hasMateri && hasDok && hasLkpd)
         : (isFtDay0
-            ? (hasMateri && hasLkpd && hasDok)
+            ? (hasDok || hasLkpd || hasMateri)
             : (isNonFtOrderedDay
                 ? (hasMateri && hasLkpd && hasDok)
                 : (hasMateri && hasLkpd)));
       let canRefleksi = isFtDay0
-        ? (hasMateri && hasLkpd && hasDok && hasAsesmen)
+        ? (hasAsesmen || hasDok || hasLkpd)
         : (isFtDay7 ? (hasMateri && hasLkpd && hasDok) : (hasMateri && hasLkpd && hasAsesmen && hasDok));
       let canPenilaian = isFtDay0
-        ? (hasMateri && hasLkpd && hasDok && hasAsesmen && hasRefleksi)
+        ? true
         : (isFtDay7 ? (hasMateri && hasLkpd && hasDok && hasRefleksi) : (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi));
 
       return {
@@ -4243,37 +4241,8 @@
         const isNonFtOrderedDay = !isFieldTrip && (dNum >= 1 && dNum <= 7);
 
         if (isFtDay0) {
-          // Khusus Field Trip Day 0: 1. Modul -> 2. LKPD -> 3. Dokumentasi -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian
-          if (type === 'lkpd' && !progStatus.canLkpd) {
-            showStepLockedModal('LKPD Digital', `Tahap 1: Modul Belajar & Resume FINCESTEM Day 0`, () => { window.location.href = `materi.html?day=0`; }, 0);
-            return;
-          }
-          if (type === 'dokumentasi' && !progStatus.canDok) {
-            if (!progStatus.hasMateri) {
-              showStepLockedModal('Dokumentasi Foto', `Tahap 1: Modul Belajar & Resume FINCESTEM Day 0`, () => { window.location.href = `materi.html?day=0`; }, 0);
-            } else {
-              showStepLockedModal('Dokumentasi Foto', `Tahap 2: Rencana Uang Saku (LKPD) Day 0`, () => { window.location.href = `lkpd.html?day=0`; }, 0);
-            }
-            return;
-          }
-          if (type === 'asesmen' && !progStatus.canAsesmen) {
-            if (!progStatus.hasMateri) {
-              showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume FINCESTEM Day 0`, () => { window.location.href = `materi.html?day=0`; }, 0);
-            } else if (!progStatus.hasLkpd) {
-              showStepLockedModal('Kuis Asesmen', `Tahap 2: Rencana Uang Saku (LKPD) Day 0`, () => { window.location.href = `lkpd.html?day=0`; }, 0);
-            } else {
-              showStepLockedModal('Kuis Asesmen', `Tahap 3: Dokumentasi Foto Kesiapan Day 0`, () => { window.location.href = `dokumentasi.html?day=0`; }, 0);
-            }
-            return;
-          }
-          if (type === 'refleksi' && !progStatus.canRefleksi) {
-            if (!progStatus.hasDok) {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 3: Dokumentasi Foto Kesiapan Day 0`, () => { window.location.href = `dokumentasi.html?day=0`; }, 0);
-            } else {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 4: Asesmen 10 Soal Esai Day 0`, () => { handleActivityClick(0, 'asesmen'); }, 0);
-            }
-            return;
-          }
+          // Khusus Field Trip Day 0: Simulasi ramah & mudah (Modul -> LKPD -> Dokumentasi -> Asesmen -> Refleksi -> Penilaian)
+          // Siswa bebas mencoba seluruh menu Day 0 tanpa terblokir pesan terkunci
         } else if (isNonFtD5D6) {
           // Khusus Non-Field Trip Day 5 & 6:
           // Alur Wajib: 1. Modul -> 2. Dokumentasi -> 3. LKPD -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian
@@ -4432,7 +4401,7 @@
         return;
       }
 
-      if (!access.canEdit && !isDay1ActiveNonFt) {
+      if (!access.canEdit && !isDay1ActiveNonFt && !isFieldTrip && dNum > 0) {
         FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} ditutup oleh Admin (Hanya Lihat). Pengumpulan tugas dinonaktifkan.`, 'warning');
         if (type === 'lkpd') {
           window.location.href = (isFieldTrip && Number(dayNumber) === 6) ? 'lkpd.html?day=6&sesi=1&readonly=1' : ('lkpd.html?day=' + dayNumber + '&readonly=1');

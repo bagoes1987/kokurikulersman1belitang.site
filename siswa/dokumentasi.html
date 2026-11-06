@@ -390,7 +390,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261106_tester_v2"></script>
+  <script src="../js/core.js?v=20261107_day0_ft_v2"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -690,9 +690,9 @@
 
       const descEl = document.getElementById('docPageDesc');
       if (descEl && actConfig) {
-        let dayBadge = (dayNum === 0) ? 'DAY 0 • SIMULASI' : `DAY ${dayNum} • ${cat.isFieldTrip ? 'FIELD TRIP' : 'NON-FIELD TRIP'}`;
-        let subTitle = actConfig.title;
-        let subTheme = actConfig.theme;
+        let dayBadge = (dayNum === 0) ? (cat.isFieldTrip ? 'DAY 0 • PRA-KEBERANGKATAN FIELD TRIP' : 'DAY 0 • SIMULASI') : `DAY ${dayNum} • ${cat.isFieldTrip ? 'FIELD TRIP' : 'NON-FIELD TRIP'}`;
+        let subTitle = (dayNum === 0 && cat.isFieldTrip) ? 'Dokumentasi Kesiapan Pra-Keberangkatan Field Trip' : actConfig.title;
+        let subTheme = (dayNum === 0 && cat.isFieldTrip) ? 'Foto Bukti Kesiapan Koper, Tas, Seragam, atau Perlengkapan (Bebas Radius Wilayah)' : actConfig.theme;
 
       if (cat.isFieldTrip && Number(dayNum) === 2) {
           const user = FincestemCore.auth.getUser() || {};
@@ -894,6 +894,11 @@
         FincestemCore.schedule.getSchedule(function(days) {
           FincestemCore.progress.getStudentProgress(nisn, function(prog) {
             const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
+            // Jaminan Mutlak: Day 0 (Simulasi/Gladi Bersih) selalu dapat diakses dan diedit
+            if (dayNum === 0) {
+              access.canAccess = true;
+              access.canEdit = true;
+            }
             if (!access.canAccess) {
               FincestemCore.ui.toast(`Dokumentasi Day ${dayNum} belum dapat diakses! Harap selesaikan dan tunggu penetapan status 'Completed' dari Fasilitator pada Day ${dayNum - 1}.`, 'error');
               setTimeout(() => {
@@ -1118,14 +1123,20 @@
               }
             }
             let canEdit = access.canEdit;
-            if (studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
+            // Peserta Field Trip (Day 0 s.d. Day 7) selalu memiliki izin unggah / edit tanpa terblokir status tutup
+            if (studentCategory.isFieldTrip && (dayNum >= 0 && dayNum <= 7)) {
               canEdit = true;
             }
-            // Siswa Non-Field Trip Day 1 yang memiliki hak akses diberikan izin edit (tidak terkunci read-only)
-            if (!studentCategory.isFieldTrip && dayNum === 1 && access.canAccess) {
+            // Siswa Non-Field Trip Day 0 & Day 1 yang memiliki hak akses diberikan izin edit
+            if (!studentCategory.isFieldTrip && (dayNum === 0 || dayNum === 1) && access.canAccess) {
               canEdit = true;
             }
-            if (!canEdit || isReadOnlyUrl) {
+            // Jaminan Mutlak Khusus Field Trip Day 0: Jangan pernah dikunci ke mode read-only
+            if (studentCategory.isFieldTrip && dayNum === 0) {
+              canEdit = true;
+              window.isDayReadOnlyMode = false;
+            }
+            if (!canEdit || (isReadOnlyUrl && !(studentCategory.isFieldTrip && dayNum === 0))) {
               window.isDayReadOnlyMode = true;
               // Sembunyikan tombol tambah foto jika mode hanya lihat
               const upBtns = document.querySelectorAll('button[onclick="toggleUploadModal(true)"]');
@@ -1199,10 +1210,18 @@
         const actContainer = document.getElementById('uploadActionsContainer');
         if (actContainer) actContainer.classList.remove('hidden');
 
-        // WAJIB: SETIAP KALI USER INGIN FOTO DOKUMENTASI, LOKASI RELOAD OTOMATIS!
-        // Jangan mengunci data dokumentasi sebelumnya, GPS harus menyesuaikan lokasi real terkini.
-        currentGPS = null;
-        updateCameraButtonState('LOCATING');
+        const cat = getStudentCategoryInfo();
+        const urlParams = new URLSearchParams(window.location.search);
+        const dayParam = urlParams.get('day');
+        const isFtDay0 = cat.isFieldTrip && (dayParam === '0');
+
+        if (isFtDay0) {
+          applyFallbackGPS('Persiapan Pra-Keberangkatan Field Trip');
+          updateCameraButtonState('READY', { desa: 'Persiapan Field Trip' });
+        } else {
+          currentGPS = null;
+          updateCameraButtonState('LOCATING');
+        }
 
         const icon = document.getElementById('gpsStatusIcon');
         const title = document.getElementById('gpsStatusTitle');
@@ -1235,7 +1254,19 @@
             const dayParam = urlParams.get('day');
             const isDay0 = (dayParam === '0');
 
-            if (isDay0) {
+            if (isDay0 && cat.isFieldTrip) {
+              policyEl.innerHTML = `
+                <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs flex items-start gap-2.5 shadow-2xs">
+                  <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">luggage</span>
+                  <div class="flex flex-col">
+                    <span class="font-extrabold text-amber-950 text-xs">Day 0: Dokumentasi Kesiapan Pra-Keberangkatan Field Trip</span>
+                    <span class="text-[11px] text-amber-900 leading-relaxed mt-0.5">
+                      Unggah foto bukti persiapan Anda (koper, ransel, seragam, atau perlengkapan pribadi). <strong>Bebas tanpa batasan wilayah GPS OKU Timur vs Luar OKU Timur</strong>. Foto dapat diambil langsung via Kamera HP atau dipilih dari Galeri.
+                    </span>
+                  </div>
+                </div>
+              `;
+            } else if (isDay0) {
               policyEl.innerHTML = `
                 <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-xs flex items-start gap-2.5 shadow-2xs">
                   <span class="material-symbols-outlined text-amber-700 text-lg shrink-0 mt-0.5">science</span>
@@ -1337,32 +1368,29 @@
     }
 
     function triggerCameraCapture() {
-      // 1. Jika masih mencari koordinat pertama kali dan belum ada titik fallback
-      if (gpsLockState === 'LOCATING' && !currentGPS) {
-        FincestemCore.ui.toast('⏳ Sedang mengunci titik satelit GPS HP Anda... Kamera akan segera aktif!', 'info');
-        requestGPSCoordinates(false, false);
-        return;
-      }
+      const cat = getStudentCategoryInfo();
+      const urlParams = new URLSearchParams(window.location.search);
+      const isDay0 = (urlParams.get('day') === '0');
 
-      // 2. Jika GPS error atau belum ada koordinat, gunakan fallback titik acuan SMAN 1 Belitang otomatis
+      // Jaminan responsif: jika GPS belum terkunci, segera pasang koordinat acuan agar kamera langsung terbuka tanpa lag
       if (!currentGPS) {
-        applyFallbackGPS('GPS dialihkan ke titik acuan SMAN 1 Belitang');
+        applyFallbackGPS((isDay0 && cat.isFieldTrip) ? 'Titik koordinat kesiapan Field Trip aktif' : 'Titik koordinat acuan SMAN 1 Belitang aktif');
       }
 
-      // 3. Pastikan alamat terisi
+      // Pastikan alamat terisi
       if (!currentGPS.address) {
         currentGPS.address = {
-          desa: 'Desa Rantau Jaya',
-          kec: 'Kec. Belitang Madang Raya',
-          kab: 'Kab. OKU Timur',
+          desa: (isDay0 && cat.isFieldTrip) ? 'Persiapan Field Trip' : 'Desa Rantau Jaya',
+          kec: (isDay0 && cat.isFieldTrip) ? 'Pra-Keberangkatan' : 'Kec. Belitang Madang Raya',
+          kab: (isDay0 && cat.isFieldTrip) ? 'SMAN 1 Belitang' : 'Kab. OKU Timur',
           prov: 'Sumatera Selatan',
-          line1: 'Desa Rantau Jaya, Kec. Belitang Madang Raya',
-          line2: 'Kab. OKU Timur, Sumatera Selatan',
-          fullText: 'Desa Rantau Jaya, Kec. Belitang Madang Raya, Kab. OKU Timur, Sumatera Selatan'
+          line1: (isDay0 && cat.isFieldTrip) ? 'Persiapan Pra-Keberangkatan' : 'Desa Rantau Jaya, Kec. Belitang Madang Raya',
+          line2: (isDay0 && cat.isFieldTrip) ? 'SMAN 1 Belitang, Sumatera Selatan' : 'Kab. OKU Timur, Sumatera Selatan',
+          fullText: (isDay0 && cat.isFieldTrip) ? 'Persiapan Pra-Keberangkatan Field Trip 2026, SMAN 1 Belitang' : 'Desa Rantau Jaya, Kec. Belitang Madang Raya, Kab. OKU Timur, Sumatera Selatan'
         };
       }
 
-      // 4. Langsung picu pembukaan kamera HP
+      // Langsung picu pembukaan kamera HP
       const cam = document.getElementById('modalPhotoCameraInput');
       if (cam) cam.click();
     }
@@ -2148,11 +2176,15 @@
             currentGPS.isInsideOKUTimur = isInsideOKUTimur(currentGPS.lat, currentGPS.lng);
           }
           const disp = addrObj.fullText || addrObj;
-          const statusTag = isInsideOKUTimur(currentGPS.lat, currentGPS.lng)
-            ? '🟢 DALAM WILAYAH OKU TIMUR'
-            : '🔴 LUAR WILAYAH OKU TIMUR';
+          const catInfo = getStudentCategoryInfo();
+          const isFt = catInfo.isFieldTrip;
+          const statusTag = isFt 
+            ? '🟢 LOKASI VALID (FIELD TRIP)'
+            : (isInsideOKUTimur(currentGPS.lat, currentGPS.lng)
+                ? '🟢 DALAM WILAYAH OKU TIMUR'
+                : '🔴 LUAR WILAYAH OKU TIMUR');
           if (sub) {
-            sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
+            sub.innerHTML = `📍 <strong>${disp}</strong> (±${currentGPS.accuracy}m)<br><span class="inline-block mt-0.5 text-[10px] font-extrabold px-2 py-0.5 rounded-full ${statusTag.includes('DALAM') || statusTag.includes('VALID') ? 'bg-emerald-500/20 text-emerald-700' : 'bg-rose-500/20 text-rose-700 border border-rose-400/30'}">${statusTag}</span>`;
           }
           updateCameraButtonState('READY', addrObj);
         });
@@ -3782,15 +3814,15 @@
                 </div>
                 <div class="flex flex-col gap-1 min-w-0">
                   <div class="flex items-center gap-2 flex-wrap">
-                    <span class="font-black text-sm text-slate-900 leading-snug">${isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : `Dokumentasi Foto Day ${dayNum}`}</span>
-                    ${isDay0 ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide border border-amber-500 shadow-2xs shrink-0">Uji Coba</span>' : ''}
+                    <span class="font-black text-sm text-slate-900 leading-snug">${(isDay0 && cat.isFieldTrip) ? 'Dokumentasi Kesiapan Pra-Keberangkatan Field Trip' : (isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : `Dokumentasi Foto Day ${dayNum}`)}</span>
+                    ${isDay0 ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide border border-amber-500 shadow-2xs shrink-0">' + (cat.isFieldTrip ? 'Field Trip' : 'Uji Coba') + '</span>' : ''}
                   </div>
-                  <span class="text-xs text-slate-600 leading-relaxed">${isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini'}</span>
+                  <span class="text-xs text-slate-600 leading-relaxed">${(isDay0 && cat.isFieldTrip) ? 'Unggah bukti foto persiapan koper, ransel, seragam, atau perlengkapan (Bebas radius wilayah)' : (isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini')}</span>
                 </div>
               </div>
               <button type="button" onclick="toggleUploadModal(true)" class="w-full sm:w-auto py-3 px-5 rounded-2xl ${isDay0 ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-amber-600/30' : 'bg-primary hover:bg-primary/90'} text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer shrink-0">
-                <span class="material-symbols-outlined text-lg">add_a_photo</span>
-                <span class="whitespace-nowrap">${isDay0 ? 'Ambil Foto Simulasi' : 'Ambil Foto'}</span>
+                <span class="material-symbols-outlined text-xl">add_a_photo</span>
+                <span class="whitespace-nowrap">${(isDay0 && cat.isFieldTrip) ? 'Ambil / Unggah Foto Kesiapan' : (isDay0 ? 'Ambil Foto Simulasi' : 'Ambil Foto')}</span>
               </button>
             </div>
           `;
