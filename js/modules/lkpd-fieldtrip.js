@@ -164,7 +164,8 @@
       }
 
       const isSubmitted = saved && saved.submitted;
-      const isLockedByPrereq = !hasMateri;
+      const isTesterFt1 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
+      const isLockedByPrereq = !hasMateri && !isTesterFt1;
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
@@ -3010,7 +3011,8 @@
       }
 
       const isSubmitted = !!(saved && saved.submitted);
-      const isLockedByPrereq = !hasMateri;
+      const isTesterFt4 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
+      const isLockedByPrereq = !hasMateri && !isTesterFt4;
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
@@ -3506,7 +3508,8 @@
         }
       }
 
-      const isS1RefleksiDone = checkIsD5Sesi1RefleksiDone(cleanNisn);
+      const isTesterFt5 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
+      const isS1RefleksiDone = isTesterFt5 ? true : checkIsD5Sesi1RefleksiDone(cleanNisn);
       const isS2MateriDone = checkIsD5Sesi2MateriDone(cleanNisn);
 
       // Cek status LKPD Sesi 2 Batik
@@ -3608,7 +3611,7 @@
       }
 
       const isSubmitted = !!(saved && saved.submitted);
-      const isLockedByPrereq = (currentD5LkpdSession === 1) ? !hasMateriPrambanan : false;
+      const isLockedByPrereq = (currentD5LkpdSession === 1) ? (!hasMateriPrambanan && !isTesterFt5) : false;
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
@@ -5374,7 +5377,8 @@
       }
 
       const isSubmitted = saved && saved.submitted;
-      const isLockedByPrereq = !hasMateri;
+      const isTesterFtGen = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
+      const isLockedByPrereq = !hasMateri && !isTesterFtGen;
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 

@@ -2356,7 +2356,8 @@
     }
 
     const formData = isSubmitted ? (saved || {}) : (draft || {});
-    const isLockedByPrereq = (!hasMateri && !isSubmitted);
+    const isTesterD3 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
+    const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTesterD3);
 
     const selSector = formData.sectorKey || sectorFromMateri || 'pertanian';
     const sectorObj = NFT_DAY3_SECTOR_DATA[selSector] || NFT_DAY3_SECTOR_DATA.pertanian;
@@ -4106,6 +4107,7 @@
   function extractYoutubeVideoId(url) {
     if (!url) return '';
     const str = String(url).trim();
+    if (/^[a-zA-Z0-9_-]{11}$/.test(str)) return str;
     const m = str.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|live\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
     return m ? m[1] : '';
   }
@@ -4170,7 +4172,12 @@
     const segments = isDay5 ? secGuide.day5Segments : secGuide.day6Segments;
 
     const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at || saved.submittedAt);
-    const isLockedByPrereq = !hasMateri && !isSubmitted;
+    const isTester = !!(
+      (u && u.is_tester) ||
+      (localStorage.getItem('fincestem_admin_testing_session') === 'true') ||
+      (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn))
+    );
+    const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTester);
     const readOnlyMode = isReadOnly || isSubmitted || isLockedByPrereq;
 
     const valObjectName = saved.objectName || saved.placeName || saved.fin_subject || saved.exp_location || (materiObj && materiObj.objectName) || '';
@@ -4740,6 +4747,17 @@
       return;
     }
 
+    // Tampilkan status submitting di tombol agar siswa mendapat visual respons instan
+    const submitBtn = document.querySelector(`#formNftVideoLkpdD${dayNum} button[type="submit"]`);
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.classList.add('opacity-70', 'pointer-events-none');
+      submitBtn.innerHTML = `
+        <span class="material-symbols-outlined text-base animate-spin">progress_activity</span>
+        <span>Menyerahkan LKPD Day ${dayNum}...</span>
+      `;
+    }
+
     const nowIso = new Date().toISOString();
     data.studentName = u.name || '';
     data.studentNisn = cleanNisn;
@@ -4749,13 +4767,29 @@
     data.submittedAt = nowIso;
     data.summary = `[LKPD Video Day ${dayNum} - ${data.sectorName}] Judul: ${data.video_title} (${data.video_duration}) | YouTube: ${data.youtube_url}`;
 
-    try {
-      localStorage.setItem(`fincestem_lkpd_nft_day${dayNum}_` + cleanNisn, JSON.stringify(data));
-      localStorage.setItem(`fincestem_lkpd_day${dayNum}_` + cleanNisn, JSON.stringify(data));
-      localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn, data.sectorKey);
-    } catch(e) {}
+    // Simpan ke seluruh variasi NISN/ID siswa
+    const nisnVariants = [
+      cleanNisn,
+      cleanNisn.replace(/^0+/, ''),
+      cleanNisn.padStart(10, '0'),
+      String(u.nis || '').trim(),
+      String(u.identifier || '').trim()
+    ].filter(Boolean);
 
+    nisnVariants.forEach(key => {
+      try {
+        localStorage.setItem(`fincestem_lkpd_nft_day${dayNum}_` + key, JSON.stringify(data));
+        localStorage.setItem(`fincestem_lkpd_day${dayNum}_` + key, JSON.stringify(data));
+        localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + key, data.sectorKey);
+        localStorage.removeItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + key);
+      } catch(e) {}
+    });
+
+    let isDoneTriggered = false;
     const onDone = function() {
+      if (isDoneTriggered) return;
+      isDoneTriggered = true;
+
       if (window.FincestemCore && FincestemCore.ui) {
         FincestemCore.ui.toast(`Link Video YouTube & LKPD Day ${dayNum} Berhasil Diserahkan Resmi!`, 'success');
       }
@@ -4796,14 +4830,20 @@
       document.body.appendChild(modal);
     };
 
+    // Safety timeout 3500ms agar jika jaringan lambat / offline, UI tetap berhasil merespons
+    const safetyTimer = setTimeout(onDone, 3500);
+
     if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
       FincestemCore.progress.submitTask(cleanNisn, dayNum, 'lkpd', data, function() {
+        clearTimeout(safetyTimer);
         onDone();
       });
     } else if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.saveTaskRecord === 'function') {
+      clearTimeout(safetyTimer);
       FincestemCore.progress.saveTaskRecord(cleanNisn, dayNum, 'lkpd', data, 100);
       onDone();
     } else {
+      clearTimeout(safetyTimer);
       onDone();
     }
   }
@@ -6027,6 +6067,12 @@
   window.renderNonFieldTripDay6LKPD = renderNonFieldTripDay6LKPD;
   window.renderNonFieldTripDay7LKPD = renderNonFieldTripDay7LKPD;
   window.renderNonFieldTripGenericLKPD = renderNonFieldTripGenericLKPD;
+  window.renderNonFieldTripVideoDayLKPD = renderNonFieldTripVideoDayLKPD;
+  window.submitNonFieldTripVideoDayLKPD = submitNonFieldTripVideoDayLKPD;
+  window.saveNonFieldTripVideoDayDraft = saveNonFieldTripVideoDayDraft;
+  window.collectNftVideoDayData = collectNftVideoDayData;
+  window.extractYoutubeVideoId = extractYoutubeVideoId;
+  window.NFT_LKPD_VIDEO_SECTORS = NFT_LKPD_VIDEO_SECTORS;
   window.saveNonFieldTripDay4Draft = saveNonFieldTripDay4Draft;
   window.submitNonFieldTripDay4LKPD = submitNonFieldTripDay4LKPD;
   window.saveNonFieldTripDay5Draft = saveNonFieldTripDay5Draft;

@@ -2610,7 +2610,7 @@
                         localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
-              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined || p.answers || p.content || p.businessName)) {
+              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined || p.answers || p.content || p.businessName || p.isVideoLkpd || p.youtube_url)) {
                 hasLkpd = true;
                 break;
               }
