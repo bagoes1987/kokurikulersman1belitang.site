@@ -4183,6 +4183,55 @@
     return m ? m[1] : '';
   }
 
+  /* ========================================================
+     HELPER PRASYARAT NON-FIELD TRIP (URUTAN DAY 5 & 6)
+     Urutan: Modul -> Dokumentasi -> LKPD -> Asesmen -> Refleksi -> Penilaian
+     ======================================================== */
+  function checkNftPrerequisiteDok(dayNum, cleanNisn) {
+    const candidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    for (const cid of candidateIds) {
+      try {
+        if (localStorage.getItem(`fincestem_dok_nft_day${dayNum}_` + cid) === 'true' ||
+            localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + cid) === 'true' ||
+            localStorage.getItem(`fincestem_dok_day${dayNum}_` + cid) === 'true') {
+          return true;
+        }
+      } catch(e) {}
+    }
+    if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+      if (window.currentStudentProgress.task_map[`${dayNum}_dokumentasi`]) return true;
+    }
+    for (const cid of candidateIds) {
+      try {
+        const pRaw = localStorage.getItem('fincestem_progress_' + cid);
+        if (pRaw) {
+          const p = JSON.parse(pRaw);
+          if (p && p.task_map && p.task_map[`${dayNum}_dokumentasi`]) return true;
+        }
+      } catch(e) {}
+    }
+    try {
+      const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+      if (dbStr) {
+        const db = JSON.parse(dbStr);
+        if (Array.isArray(db.documentation)) {
+          const idArr = Array.from(candidateIds);
+          const hasPhoto = db.documentation.some(p => {
+            const docDay = Number(p.day || p.day_number || 0);
+            const docNisn = String(p.nisn || p.author_nisn || p.uploaded_by || '').trim();
+            return docDay === Number(dayNum) && (idArr.includes(docNisn) || idArr.includes(docNisn.replace(/^0+/, '')));
+          });
+          if (hasPhoto) return true;
+        }
+      }
+    } catch(e) {}
+    return false;
+  }
+
   function renderNonFieldTripVideoDayLKPD(dayNum, isReadOnly) {
     dayNum = (parseInt(dayNum) === 6) ? 6 : 5;
     const isDay5 = (dayNum === 5);
@@ -4248,7 +4297,8 @@
       (localStorage.getItem('fincestem_admin_testing_session') === 'true') ||
       (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn))
     );
-    const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTester);
+    const hasDok = isTester ? true : checkNftPrerequisiteDok(dayNum, cleanNisn);
+    const isLockedByPrereq = (!hasMateri || !hasDok) && !isSubmitted && !isTester;
     const readOnlyMode = isReadOnly || isSubmitted || isLockedByPrereq;
 
     const valObjectName = saved.objectName || saved.placeName || saved.fin_subject || saved.exp_location || (materiObj && materiObj.objectName) || '';
@@ -4278,7 +4328,7 @@
     mainEl.innerHTML = `
       <div class="max-w-4xl mx-auto px-3 sm:px-4 py-6 space-y-6 pb-16">
 
-        <!-- PERINGATAN PRASYARAT MODUL JIKA BELUM SELESAI -->
+        <!-- PERINGATAN PRASYARAT JIKA BELUM SELESAI -->
         ${isLockedByPrereq ? `
           <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm">
             <div class="flex items-center gap-3">
@@ -4287,18 +4337,30 @@
               </div>
               <div class="flex flex-col">
                 <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Prasyarat Alur Day ${dayNum}</span>
-                <h3 class="text-base sm:text-lg font-black text-amber-950">Selesaikan Modul Panduan Video Day ${dayNum} Terlebih Dahulu!</h3>
+                <h3 class="text-base sm:text-lg font-black text-amber-950">
+                  ${!hasMateri ? `Selesaikan Modul Panduan Video Day ${dayNum} Terlebih Dahulu!` : `Unggah Dokumentasi Foto Day ${dayNum} Terlebih Dahulu!`}
+                </h3>
               </div>
             </div>
             <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-              Silakan buka <strong>Modul Belajar Day ${dayNum}</strong>, pilih menu sektor usaha Anda, baca panduan urutan isi video menit ke menit, dan simpan Resume Rencana Video Anda agar formulir LKPD ini terbuka.
+              ${!hasMateri
+                ? `Silakan buka <strong>Modul Belajar Day ${dayNum}</strong>, pilih menu sektor usaha Anda, pelajari panduan urutan video menit ke menit, dan simpan Resume Rencana Video Anda agar formulir LKPD ini terbuka.`
+                : `Sesuai alur pengerjaan berurutan Day ${dayNum} (Modul &rarr; Dokumentasi &rarr; LKPD &rarr; Asesmen &rarr; Refleksi &rarr; Penilaian), Anda wajib mengunggah foto bukti dokumentasi riset lapangan Day ${dayNum} terlebih dahulu sebelum mengisi dan mengirimkan formulir LKPD Video ini.`}
             </p>
             <div>
-              <a href="materi.html?day=${dayNum}" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-md transition-all">
-                <span class="material-symbols-outlined text-base">menu_book</span>
-                <span>Buka Modul Panduan Video Day ${dayNum} Sekarang</span>
-                <span class="material-symbols-outlined text-base">arrow_forward</span>
-              </a>
+              ${!hasMateri ? `
+                <a href="materi.html?day=${dayNum}" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-md transition-all">
+                  <span class="material-symbols-outlined text-base">menu_book</span>
+                  <span>Buka Modul Panduan Video Day ${dayNum} Sekarang</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </a>
+              ` : `
+                <a href="dokumentasi.html?day=${dayNum}" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-md transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Buka Dokumentasi Foto Day ${dayNum} Sekarang</span>
+                  <span class="material-symbols-outlined text-base">arrow_forward</span>
+                </a>
+              `}
             </div>
           </div>
         ` : ''}
@@ -4884,13 +4946,9 @@
             </p>
           </div>
           <div class="w-full flex flex-col gap-2 pt-2">
-            <a href="dokumentasi.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">photo_camera</span>
-              <span>Lanjut ke Dokumentasi Kegiatan Day ${dayNum}</span>
-            </a>
-            <a href="asesmen.html?day=${dayNum}" class="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-sm">quiz</span>
-              <span>Buka Kuis Asesmen Day ${dayNum}</span>
+            <a href="asesmen.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">fact_check</span>
+              <span>Lanjut ke Tahap 4: Kuis Asesmen Day ${dayNum} &rarr;</span>
             </a>
             <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
               <span>Kembali ke Beranda Dashboard</span>

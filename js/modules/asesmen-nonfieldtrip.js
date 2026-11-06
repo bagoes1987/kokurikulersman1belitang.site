@@ -636,15 +636,30 @@
 
     let lockReason = '';
     let actionBtn = '';
-    if (!hasMateri) {
-      lockReason = `Anda wajib menyelesaikan <strong>Tahap 1: Modul Belajar &amp; Resume Riset Day ${dayNum}</strong> terlebih dahulu.`;
-      actionBtn = `<a href="materi.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka Modul Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
-    } else if (!hasLkpd) {
-      lockReason = `Anda wajib menyelesaikan dan mengirimkan <strong>Tahap 2: Lembar Kerja Peserta Didik (LKPD) Day ${dayNum}</strong> terlebih dahulu.`;
-      actionBtn = `<a href="lkpd.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka LKPD Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
-    } else if (!hasDok) {
-      lockReason = `Anda wajib menyelesaikan <strong>Tahap 3: Dokumentasi Foto Kegiatan Day ${dayNum}</strong> terlebih dahulu.`;
-      actionBtn = `<a href="dokumentasi.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka Dokumentasi Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
+    const isNftD5orD6 = (dayNum === 5 || dayNum === 6);
+    if (isNftD5orD6) {
+      // Urutan Day 5-6 Non-Field Trip: 1. Modul -> 2. Dokumentasi -> 3. LKPD -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian
+      if (!hasMateri) {
+        lockReason = `Anda wajib menyelesaikan <strong>Tahap 1: Modul Belajar &amp; Panduan Video Day ${dayNum}</strong> terlebih dahulu.`;
+        actionBtn = `<a href="materi.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka Modul Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
+      } else if (!hasDok) {
+        lockReason = `Anda wajib menyelesaikan <strong>Tahap 2: Dokumentasi Foto Riset Lapangan Day ${dayNum}</strong> terlebih dahulu.`;
+        actionBtn = `<a href="dokumentasi.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka Dokumentasi Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
+      } else if (!hasLkpd) {
+        lockReason = `Anda wajib menyelesaikan dan mengirimkan <strong>Tahap 3: Lembar Kerja Peserta Didik (LKPD Video) Day ${dayNum}</strong> terlebih dahulu.`;
+        actionBtn = `<a href="lkpd.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka LKPD Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
+      }
+    } else {
+      if (!hasMateri) {
+        lockReason = `Anda wajib menyelesaikan <strong>Tahap 1: Modul Belajar &amp; Resume Riset Day ${dayNum}</strong> terlebih dahulu.`;
+        actionBtn = `<a href="materi.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka Modul Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
+      } else if (!hasLkpd) {
+        lockReason = `Anda wajib menyelesaikan dan mengirimkan <strong>Tahap 2: Lembar Kerja Peserta Didik (LKPD) Day ${dayNum}</strong> terlebih dahulu.`;
+        actionBtn = `<a href="lkpd.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka LKPD Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
+      } else if (!hasDok) {
+        lockReason = `Anda wajib menyelesaikan <strong>Tahap 3: Dokumentasi Foto Kegiatan Day ${dayNum}</strong> terlebih dahulu.`;
+        actionBtn = `<a href="dokumentasi.html?day=${dayNum}" class="px-6 py-3 rounded-2xl bg-teal-800 text-white font-black text-xs sm:text-sm shadow-md flex items-center justify-center gap-2"><span>Buka Dokumentasi Day ${dayNum}</span><span class="material-symbols-outlined text-base">arrow_forward</span></a>`;
+      }
     }
 
     root.innerHTML = `
