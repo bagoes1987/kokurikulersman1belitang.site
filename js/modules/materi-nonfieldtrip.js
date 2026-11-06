@@ -1049,8 +1049,8 @@
 
     5: {
       dayNum: 5,
-      title: 'Modul Riset Day 5: Produksi Video Lapangan: Finansial & Budaya',
-      theme: 'Pilar Financial & Culture (Produksi Video Riset)',
+      title: 'Modul Riset Day 5: Video Observasi YouTube (5–10 Menit): Penerapan STEM & Eksplorasi Alat',
+      theme: 'Pilar Culture, Exploration & STEM (Video YouTube 7 Sektor)',
       gradientClass: 'from-amber-950 via-slate-900 to-purple-950 border-amber-700/40',
       tagColorClass: 'bg-white/20 text-amber-100',
       badgeColorClass: 'bg-amber-400 text-amber-950',
@@ -1104,8 +1104,8 @@
 
     6: {
       dayNum: 6,
-      title: 'Modul Riset Day 6: Produksi Video Lapangan: Eksplorasi & STEM',
-      theme: 'Pilar Exploration & STEM (Produksi Video Riset)',
+      title: 'Modul Riset Day 6: Video Analisis YouTube (5–10 Menit): Finansial, Kendala & Solusi Inovasi',
+      theme: 'Pilar Financial, Evaluasi Kendala & Solusi Inovasi FINCESTEM (Video YouTube 7 Sektor)',
       gradientClass: 'from-teal-950 via-slate-900 to-blue-950 border-teal-700/40',
       tagColorClass: 'bg-white/20 text-teal-100',
       badgeColorClass: 'bg-cyan-400 text-cyan-950',

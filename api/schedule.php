@@ -57,8 +57,8 @@ function ensureDaySchedulesTable($pdo) {
                 (2, 'Day 2: Eksplorasi Sains & Ekosistem Irigasi', 'STEM Sains & Konservasi Lingkungan Belitang', '2026-11-10', '07:00:00', '18:00:00', 0, 1, 'Pengambilan sampel kualitas air saluran irigasi, identifikasi flora-fauna sawah pasang surut.'),
                 (3, 'Day 3: Rekayasa Teknologi & Pengukuran Lapangan', 'Teknologi Pertanian Modern & Mekanisasi', '2026-11-11', '07:00:00', '18:00:00', 0, 1, 'Observasi mekanisasi pengolahan pascapanen, pengoperasian sensor lingkungan dan dokumentasi teknologi.'),
                 (4, 'Day 4: EXPLORATION', 'Eksplorasi Peralatan, Perlengkapan Kerja & Analisis 4 Dimensi STEM Sektor Pilihan', '2026-11-12', '07:00:00', '18:00:00', 0, 1, 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics (STEM).'),
-                (5, 'Day 5: Eksplorasi Budaya & Etnosains Nusantara', 'Culture & Kearifan Lokal Komunitas Multikultural', '2026-11-13', '07:00:00', '18:00:00', 0, 1, 'Wawancara tetua adat, kajian tradisi gotong royong lumbung desa, dan pencatatan nilai-nilai budaya.'),
-                (6, 'Day 6: Sintesis Data & Penyusunan Instrumen LKPD', 'Data Science & Penyusunan Laporan Proyek', '2026-11-14', '07:00:00', '18:00:00', 0, 1, 'Pengolahan data statistik hasil observasi 4 pilar, input laporan akhir, dan upload berkas LKPD.'),
+                (5, 'Day 5: Video Observasi YouTube (5–10 Menit): Penerapan STEM & Eksplorasi Alat', 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Culture, Exploration (Peralatan) & 4 Unsur STEM', '2026-11-13', '07:00:00', '18:00:00', 0, 1, 'Pembuatan video observasi lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas Culture, Exploration peralatan kerja, serta penerapan Science, Technology, Engineering, dan Mathematics (STEM).'),
+                (6, 'Day 6: Video Analisis YouTube (5–10 Menit): Finansial, Kendala & Solusi Inovasi', 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Analisis Finansial, Evaluasi Kendala & Solusi FINCESTEM', '2026-11-14', '07:00:00', '18:00:00', 0, 1, 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.'),
                 (7, 'Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi', 'Diseminasi Temuan & Refleksi Kokurikuler', '2026-11-15', '07:00:00', '20:00:00', 0, 1, 'Pameran poster riset, presentasi di depan dewan penguji dan fasilitator, serta pengisian lembar refleksi mandiri.')
             ");
         } else {
@@ -84,6 +84,21 @@ function ensureDaySchedulesTable($pdo) {
                     `theme` = 'Eksplorasi Peralatan, Perlengkapan Kerja & Analisis 4 Dimensi STEM Sektor Pilihan',
                     `description` = 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics (STEM).'
                 WHERE `day_number` = 4 AND (`title` LIKE '%Rantai Pasok%' OR `theme` LIKE '%Irigasi Komering%' OR `theme` LIKE '%Financial%')
+            ");
+            // Auto-update Day 5 & Day 6 Non-Field Trip ke konsep Video YouTube 5-10 Menit (7 Sektor)
+            $pdo->exec("
+                UPDATE `day_schedules`
+                SET `title` = 'Day 5: Video Observasi YouTube (5–10 Menit): Penerapan STEM & Eksplorasi Alat',
+                    `theme` = 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Culture, Exploration (Peralatan) & 4 Unsur STEM',
+                    `description` = 'Pembuatan video observasi lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas Culture, Exploration peralatan kerja, serta penerapan Science, Technology, Engineering, dan Mathematics (STEM).'
+                WHERE `day_number` = 5 AND `title` NOT LIKE '%Video Observasi YouTube%'
+            ");
+            $pdo->exec("
+                UPDATE `day_schedules`
+                SET `title` = 'Day 6: Video Analisis YouTube (5–10 Menit): Finansial, Kendala & Solusi Inovasi',
+                    `theme` = 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Analisis Finansial, Evaluasi Kendala & Solusi FINCESTEM',
+                    `description` = 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.'
+                WHERE `day_number` = 6 AND `title` NOT LIKE '%Video Analisis YouTube%'
             ");
         }
 

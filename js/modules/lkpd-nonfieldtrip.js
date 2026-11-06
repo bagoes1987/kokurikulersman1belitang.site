@@ -3221,14 +3221,14 @@
       focus: 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics.'
     },
     5: {
-      title: 'Day 5: Produksi Video Lapangan: Finansial & Budaya',
-      theme: 'Pengambilan Footage Video: Wawancara Ekonomi Pasar/UMKM & Dokumentasi Kearifan Budaya Lokal',
-      focus: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar FINANCIAL (transaksi, modal pedagang, QRIS) dan CULTURE (arsitektur tradisional, tatakrama Komering, gotong royong warga).'
+      title: 'Day 5: Video Observasi YouTube (5–10 Menit): Penerapan STEM & Eksplorasi Alat',
+      theme: 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Culture, Exploration (Peralatan) & 4 Unsur STEM',
+      focus: 'Pembuatan video observasi lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas Culture, Exploration peralatan kerja, serta penerapan Science, Technology, Engineering, dan Mathematics (STEM).'
     },
     6: {
-      title: 'Day 6: Produksi Video Lapangan: Eksplorasi & STEM',
-      theme: 'Pengambilan Footage Video: Lanskap Bentang Sawah, Stempel GPS & Mesin Alsintan Pertanian',
-      focus: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar EXPLORATION (bentang alam sawah, saluran air, GPS) dan STEM (mesin traktor, combine harvester, penggilingan padi RMU).'
+      title: 'Day 6: Video Analisis YouTube (5–10 Menit): Finansial, Kendala & Solusi Inovasi',
+      theme: 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Analisis Finansial, Evaluasi Kendala & Solusi FINCESTEM',
+      focus: 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.'
     },
     7: {
       title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas',

@@ -1044,8 +1044,8 @@ const FincestemCore = {
         { day_number: 2, title: 'Day 2: Budaya, Sistem Mata Pencaharian & Modernisasi Teknologi Pertanian OKU Timur', theme: 'Kajian 7 Unsur Budaya, Mata Pencaharian Agrikultur, Alsintan Modern & Jaringan Irigasi Komering', date: '2026-11-10', date_formatted: 'Selasa, 10 November 2026', start_time: '07:00', end_time: '18:00', is_active: 1, auto_schedule: 0, description: 'Investigasi antropologis dan teknologi: hakikat budaya, sistem mata pencaharian pertanian pangan, perkebunan, perikanan/peternakan, UMKM lokal, serta adopsi alat mesin pertanian (alsintan) dan jaringan irigasi di Kabupaten OKU Timur.' },
         { day_number: 3, title: 'Day 3: Analisis STEM pada Pertanian & Sektor Unggulan OKU Timur', theme: 'Kajian Lapangan Sains, Teknologi Alsintan, Rekayasa Irigasi & Matematika Usahatani', date: '2026-11-11', date_formatted: '11 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Investigasi terpadu 4 pilar STEM (Science, Technology, Engineering, Mathematics) pada sektor pilihan: Pertanian Padi Sawah, Perkebunan Karet/Sawit, Perikanan Patin/Lele, atau Peternakan Sapi/Unggas di Kabupaten OKU Timur.' },
         { day_number: 4, title: 'Day 4: EXPLORATION', theme: 'Eksplorasi Peralatan, Perlengkapan Kerja & Analisis 4 Dimensi STEM Sektor Pilihan', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics (STEM).' },
-        { day_number: 5, title: 'Day 5: Produksi Video Lapangan: Finansial & Budaya', theme: 'Pengambilan Footage Video: Wawancara Ekonomi Pasar/UMKM & Dokumentasi Kearifan Budaya Lokal', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar FINANCIAL (transaksi, modal pedagang, QRIS) dan CULTURE (arsitektur tradisional, tatakrama Komering, gotong royong warga).' },
-        { day_number: 6, title: 'Day 6: Produksi Video Lapangan: Eksplorasi & STEM', theme: 'Pengambilan Footage Video: Lanskap Bentang Sawah, Stempel GPS & Mesin Alsintan Pertanian', date: '2026-11-14', date_formatted: '14 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar EXPLORATION (bentang alam sawah, saluran air, GPS) dan STEM (mesin traktor, combine harvester, penggilingan padi RMU).' },
+        { day_number: 5, title: 'Day 5: Video Observasi YouTube (5–10 Menit): Penerapan STEM & Eksplorasi Alat', theme: 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Culture, Exploration (Peralatan) & 4 Unsur STEM', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pembuatan video observasi lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan (Pertanian, Perkebunan, Peternakan, Perikanan, Perdagangan/UMKM, Koperasi/BRI-Link, atau Jasa/Bengkel), membahas Culture, Exploration peralatan kerja, serta penerapan Science, Technology, Engineering, dan Mathematics (STEM).' },
+        { day_number: 6, title: 'Day 6: Video Analisis YouTube (5–10 Menit): Finansial, Kendala & Solusi Inovasi', theme: 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Analisis Finansial, Evaluasi Kendala & Solusi FINCESTEM', date: '2026-11-14', date_formatted: '14 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.' },
         { day_number: 7, title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas', theme: 'Editing Video Dokumenter, Publikasi Link YouTube, Audit Kas & Evaluasi Akhir 4 Pilar', date: '2026-11-15', date_formatted: '15 November 2026', start_time: '07:00', end_time: '20:00', is_active: 0, auto_schedule: 1, description: 'Penggabungan video dokumenter utuh (durasi 3-5 menit) di HP (CapCut/VN), pengunggahan ke YouTube, penyerahan link video riset di portal, serta penyusunan laporan rekonsiliasi tutup buku kas riset mandiri.' }
       ];
     },
@@ -1060,8 +1060,8 @@ const FincestemCore = {
       2: { day: 2, pilar: 'CULTURE', label: 'Culture (Kearifan Lokal)', weight: '25%', focus: 'Kearifan lokal Komering, tradisi & sistem mata pencaharian daerah.' },
       3: { day: 3, pilar: 'STEM', label: 'STEM (Sains & Alsintan)', weight: '25%', focus: 'Teknologi pertanian, alsintan modern & rekayasa pangan lokal.' },
       4: { day: 4, pilar: 'EXPLORATION', label: 'Exploration (Peralatan & STEM)', weight: '25%', focus: 'Eksplorasi peralatan, perlengkapan kerja & analisis 4 dimensi STEM sektor pilihan.' },
-      5: { day: 5, pilar: 'FINANCIAL & CULTURE', label: 'Financial & Culture (Video)', weight: '25%', focus: 'Footage rekaman video wawancara ekonomi/UMKM & kearifan budaya.' },
-      6: { day: 6, pilar: 'EXPLORATION & STEM', label: 'Exploration & STEM (Video)', weight: '25%', focus: 'Footage rekaman video bentang alam, koordinat GPS & mesin pertanian.' },
+      5: { day: 5, pilar: 'STEM & EXPLORATION (VIDEO)', label: 'Video YouTube STEM & Eksplorasi (5–10 Menit)', weight: '25%', focus: 'Video observasi mandiri YouTube (5–10 menit) 7 sektor pilihan: Culture, Peralatan & 4 Unsur STEM.' },
+      6: { day: 6, pilar: 'FINANCIAL & SOLUSI (VIDEO)', label: 'Video YouTube Finansial & Inovasi (5–10 Menit)', weight: '25%', focus: 'Video analisis mandiri YouTube (5–10 menit) 7 sektor pilihan: Finansial, Kendala & Solusi FINCESTEM.' },
       7: { day: 7, pilar: 'SINTESIS 4 PILAR', label: 'Sintesis 4 Pilar (Final)', weight: '25%', focus: 'Editing kompilasi video dokumenter YouTube & rekonsiliasi kas.' }
     },
 
@@ -1317,25 +1317,25 @@ const FincestemCore = {
       },
       5: {
         day_number: 5,
-        title: 'Day 5: Produksi Video Lapangan: Finansial & Budaya',
-        theme: 'Pengambilan Footage Video: Wawancara Ekonomi Pasar/UMKM & Dokumentasi Kearifan Budaya Lokal',
+        title: 'Day 5: Video Observasi YouTube (5–10 Menit): Penerapan STEM & Eksplorasi Alat',
+        theme: 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Culture, Exploration (Peralatan) & 4 Unsur STEM',
         date_formatted: 'Jumat, 13 November 2026',
         time_range: '07.00 - 18.00 WIB',
-        description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar FINANCIAL (transaksi, modal pedagang, QRIS) dan CULTURE (arsitektur tradisional, tatakrama Komering, gotong royong warga).' ,
-        refl_title: 'Jurnal Refleksi Day 5: Pengalaman Rekaman Video Finansial & Budaya',
-        refl_prompt: 'Bagaimana pengalaman Anda saat berinteraksi langsung merekam wawancara pedagang dan mendokumentasikan budaya warga hari ini? Pelajaran berharga apa yang Anda dapatkan?',
-        refl_placeholder: 'Tuliskan pengalaman lapangan dan kesan Anda saat mengambil footage video hari ini...'
+        description: 'Pembuatan video observasi lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan (Pertanian, Perkebunan, Peternakan, Perikanan, Perdagangan/UMKM, Koperasi/BRI-Link, atau Jasa/Bengkel), membahas Culture, Exploration peralatan kerja, serta penerapan Science, Technology, Engineering, dan Mathematics (STEM).',
+        refl_title: 'Jurnal Refleksi Day 5: Pengalaman Membuat Video Observasi YouTube (STEM & Eksplorasi)',
+        refl_prompt: 'Bagaimana pengalaman Anda saat mengamati objek usaha dan menjelaskan langsung di depan kamera mengenai peralatan kerja serta penerapan Science, Technology, Engineering, dan Mathematics (STEM) hari ini? Pelajaran berharga apa yang Anda dapatkan?',
+        refl_placeholder: 'Tuliskan pengalaman lapangan dan kesan Anda saat membuat video observasi STEM hari ini...'
       },
       6: {
         day_number: 6,
-        title: 'Day 6: Produksi Video Lapangan: Eksplorasi & STEM',
-        theme: 'Pengambilan Footage Video: Lanskap Bentang Sawah, Stempel GPS & Mesin Alsintan Pertanian',
+        title: 'Day 6: Video Analisis YouTube (5–10 Menit): Finansial, Kendala & Solusi Inovasi',
+        theme: 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Analisis Finansial, Evaluasi Kendala & Solusi FINCESTEM',
         date_formatted: 'Sabtu, 14 November 2026',
         time_range: '07.00 - 18.00 WIB',
-        description: 'Produksi rekaman video lapangan (shotlist video HP) untuk mendokumentasikan pilar EXPLORATION (bentang alam sawah, saluran air, GPS) dan STEM (mesin traktor, combine harvester, penggilingan padi RMU).' ,
-        refl_title: 'Jurnal Refleksi Day 6: Pengalaman Rekaman Video Eksplorasi & STEM',
-        refl_prompt: 'Apa tantangan dan temuan paling menarik saat Anda merekam teknologi alsintan dan bentang alam hari ini? Bagaimana teknologi memudahkan kehidupan petani OKU Timur?',
-        refl_placeholder: 'Tuliskan refleksi observasi teknologi dan sains bentang alam Anda hari ini...'
+        description: 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.',
+        refl_title: 'Jurnal Refleksi Day 6: Pengalaman Membuat Video Analisis YouTube (Finansial & Solusi Inovasi)',
+        refl_prompt: 'Apa temuan paling menarik saat Anda menganalisis perputaran finansial (modal, biaya, laba), kendala usaha, serta merumuskan ide solusi inovasi FINCESTEM dalam video YouTube Anda hari ini?',
+        refl_placeholder: 'Tuliskan refleksi analisis finansial dan gagasan inovasi usaha Anda hari ini...'
       },
       7: {
         day_number: 7,
@@ -1446,6 +1446,22 @@ const FincestemCore = {
             d.title = 'Day 4: EXPLORATION';
             d.theme = 'Eksplorasi Peralatan, Perlengkapan Kerja & Analisis 4 Dimensi STEM Sektor Pilihan';
             d.description = 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics (STEM).';
+          }
+        }
+        // Auto-sinkronisasi Day 5 Non-Field Trip ke konsep Video Observasi YouTube (5-10 Menit): Penerapan STEM & Eksplorasi Alat
+        if (Number(d.day_number) === 5 && !d.route) {
+          if (!String(d.title).includes('Video Observasi YouTube')) {
+            d.title = 'Day 5: Video Observasi YouTube (5–10 Menit): Penerapan STEM & Eksplorasi Alat';
+            d.theme = 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Culture, Exploration (Peralatan) & 4 Unsur STEM';
+            d.description = 'Pembuatan video observasi lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan (Pertanian, Perkebunan, Peternakan, Perikanan, Perdagangan/UMKM, Koperasi/BRI-Link, atau Jasa/Bengkel), membahas Culture, Exploration peralatan kerja, serta penerapan Science, Technology, Engineering, dan Mathematics (STEM).';
+          }
+        }
+        // Auto-sinkronisasi Day 6 Non-Field Trip ke konsep Video Analisis YouTube (5-10 Menit): Finansial, Kendala & Solusi Inovasi
+        if (Number(d.day_number) === 6 && !d.route) {
+          if (!String(d.title).includes('Video Analisis YouTube')) {
+            d.title = 'Day 6: Video Analisis YouTube (5–10 Menit): Finansial, Kendala & Solusi Inovasi';
+            d.theme = 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Analisis Finansial, Evaluasi Kendala & Solusi FINCESTEM';
+            d.description = 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.';
           }
         }
         return self.evaluateDayStatus(d, serverTime);
