@@ -123,8 +123,6 @@ if ($action === 'login') {
             }
         } catch (Exception $et) {}
     }
-    }
-    }
 
     if (!$user) {
         jsonResponse(false, 'Akun atau NISN "' . htmlspecialchars($identifier) . '" tidak ditemukan dalam sistem Dapodik SMAN 1 Belitang!');
