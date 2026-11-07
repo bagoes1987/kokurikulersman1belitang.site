@@ -56,6 +56,87 @@ function ensureTeacherProfilesTable($pdo) {
     } catch (Exception $e) {}
 }
 
+
+function seedMasterTeachersIfEmpty($pdo) {
+    try {
+        $count = (int)$pdo->query("SELECT COUNT(*) FROM `teachers`")->fetchColumn();
+        if ($count >= 100) {
+            return;
+        }
+
+        $teachers = [];
+        $jsonPath = __DIR__ . '/guru_data.json';
+        if (file_exists($jsonPath)) {
+            $raw = file_get_contents($jsonPath);
+            $teachers = json_decode($raw, true) ?: [];
+        }
+
+        if (empty($teachers)) {
+            $jsPath = dirname(__DIR__) . '/js/guru_data.js';
+            if (file_exists($jsPath)) {
+                $jsContent = file_get_contents($jsPath);
+                if (preg_match('/window\.FincestemMasterTeachers\s*=\s*(\[[\s\S]*?\]);/', $jsContent, $m)) {
+                    $teachers = json_decode($m[1], true) ?: [];
+                }
+            }
+        }
+
+        if (empty($teachers)) return;
+
+        $stmtT = $pdo->prepare("
+            INSERT INTO `teachers` (`kode_guru`, `nama_guru`, `nip`, `mata_pelajaran`, `jabatan`, `tugas_tambahan`, `username`, `password`)
+            VALUES (:kode_guru, :nama_guru, :nip, :mata_pelajaran, :jabatan, :tugas_tambahan, :username, :password)
+            ON DUPLICATE KEY UPDATE 
+                `nama_guru` = VALUES(`nama_guru`),
+                `nip` = VALUES(`nip`),
+                `mata_pelajaran` = VALUES(`mata_pelajaran`),
+                `jabatan` = VALUES(`jabatan`),
+                `tugas_tambahan` = VALUES(`tugas_tambahan`),
+                `password` = VALUES(`password`)
+        ");
+
+        $stmtU = $pdo->prepare("
+            INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `zone`)
+            VALUES (:identifier, '', :pwd, :name, 'fasilitator', '-', '-', 'L', 'FINCESTEM OKU TIMUR')
+            ON DUPLICATE KEY UPDATE 
+                `name` = VALUES(`name`),
+                `role` = IF(`role` = 'admin', 'admin', 'fasilitator')
+        ");
+
+        foreach ($teachers as $t) {
+            $kode = trim($t['kode_guru'] ?? '');
+            $nama = trim($t['nama_guru'] ?? '');
+            $nip  = trim($t['nip'] ?? '-');
+            $mapel= trim($t['mata_pelajaran'] ?? '-');
+            $jab  = trim($t['jabatan'] ?? 'Guru Mata Pelajaran');
+            $tgs  = trim($t['tugas_tambahan'] ?? '-');
+            $user = trim($t['username'] ?? ($nip !== '-' ? $nip : $kode));
+            $pwd  = trim($t['password'] ?? 'Fincestem2026!');
+
+            if (!$kode || !$user) continue;
+
+            $stmtT->execute([
+                ':kode_guru'      => $kode,
+                ':nama_guru'      => $nama,
+                ':nip'            => $nip,
+                ':mata_pelajaran' => $mapel,
+                ':jabatan'        => $jab,
+                ':tugas_tambahan' => $tgs,
+                ':username'       => $user,
+                ':password'       => $pwd
+            ]);
+
+            try {
+                $stmtU->execute([
+                    ':identifier' => $user,
+                    ':pwd'        => $pwd,
+                    ':name'       => $nama
+                ]);
+            } catch (Exception $eU) {}
+        }
+    } catch (Exception $e) {}
+}
+
 function ensureRoleTables($pdo) {
     static $checked = false;
     if ($checked) return;
@@ -755,6 +836,7 @@ if ($method === 'GET') {
 
         // Ambil data seluruh guru & tenaga pendidik (A-Z)
         if ($action === 'get_teachers') {
+            seedMasterTeachersIfEmpty($pdo);
             $teachers = $pdo->query("SELECT * FROM `teachers` ORDER BY `nama_guru` ASC")->fetchAll();
             jsonResponse(true, 'Data guru berhasil dimuat', ['teachers' => $teachers]);
         }

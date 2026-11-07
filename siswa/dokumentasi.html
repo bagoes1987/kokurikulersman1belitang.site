@@ -222,8 +222,8 @@
           <div id="uploadPolicyNotice" class="mb-2"></div>
 
           <!-- Input Kamera HP (capture="environment") dan File Picker Galeri -->
-          <input id="modalPhotoCameraInput" type="file" accept="image/*" capture="environment" class="hidden" onchange="handlePhotoFileSelected(event, 'camera')">
-          <input id="modalPhotoFileInput" type="file" accept="image/*" class="hidden" onchange="handlePhotoFileSelected(event, 'gallery')">
+          <input id="modalPhotoCameraInput" type="file" accept="image/*" capture="environment" style="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;width:1px;height:1px;" onchange="handlePhotoFileSelected(event, 'camera')">
+          <input id="modalPhotoFileInput" type="file" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;width:1px;height:1px;" onchange="handlePhotoFileSelected(event, 'gallery')">
 
           <!-- Tombol Pilihan Pengambilan Foto -->
           <div id="uploadActionsContainer" class="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
@@ -872,7 +872,7 @@
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    function initDokumentasiPage() {
       // Mulai kunci GPS di latar belakang agar sudah siap saat tombol kamera ditekan
       if (navigator.geolocation) {
         try { requestGPSCoordinates(false); } catch(e) {}
@@ -1169,7 +1169,13 @@
       syncDocumentationFromServer(function() {
         renderPhotos();
       });
-    });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initDokumentasiPage);
+    } else {
+      initDokumentasiPage();
+    }
 
     function getStudentCategoryInfo() {
       const user = FincestemCore.auth.getUser() || {};
@@ -1390,9 +1396,14 @@
         };
       }
 
-      // Langsung picu pembukaan kamera HP
+      updateCameraButtonState('READY', currentGPS.address);
+
+      // Langsung picu pembukaan kamera HP dengan reset value terlebih dahulu
       const cam = document.getElementById('modalPhotoCameraInput');
-      if (cam) cam.click();
+      if (cam) {
+        cam.value = '';
+        cam.click();
+      }
     }
 
     function triggerFilePicker() {
@@ -2257,7 +2268,7 @@
               applyFallbackGPS(errMsg);
               if (forceToast) FincestemCore.ui.toast(errMsg, 'warning');
             },
-            { enableHighAccuracy: false, timeout: 4500, maximumAge: 0 }
+            { enableHighAccuracy: false, timeout: 2500, maximumAge: 0 }
           );
         }
       }, 4500);
@@ -2403,7 +2414,7 @@
     }
 
     function renderGeotaggedWatermark(img, gps, studentInfo, callback) {
-      const maxDimension = 1600;
+      const maxDimension = 1200;
       let w = img.naturalWidth || img.width;
       let h = img.naturalHeight || img.height;
 
@@ -2584,7 +2595,7 @@
         ctx.restore();
 
         try {
-          const resultDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+          const resultDataUrl = canvas.toDataURL('image/jpeg', 0.72);
           callback(resultDataUrl);
         } catch (e) {
           console.error('Canvas export error:', e);
@@ -2660,7 +2671,7 @@
     let selectedPhotoHasGeotag = false;
 
     function renderCleanGalleryPhoto(img, callback) {
-      const maxDimension = 1600;
+      const maxDimension = 1200;
       let w = img.naturalWidth || img.width;
       let h = img.naturalHeight || img.height;
 
@@ -2682,7 +2693,7 @@
       ctx.drawImage(img, 0, 0, w, h);
 
       try {
-        const resultDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+        const resultDataUrl = canvas.toDataURL('image/jpeg', 0.72);
         callback(resultDataUrl);
       } catch (e) {
         console.error('Gallery canvas export error:', e);
@@ -4168,25 +4179,55 @@
           date: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
         };
 
+        // 1. Simpan tanda kelulusan aktivitas dokumentasi terlebih dahulu (prioritas mutlak agar tidak terhalang kuota)
         try {
-          let db = {};
-          const stored = localStorage.getItem('fincestem_db_2026_v1');
-          if (stored) db = JSON.parse(stored);
-          if (!Array.isArray(db.documentation)) db.documentation = [];
-          db.documentation.unshift(newPhoto);
-          // Batasi maksimal 20 item foto di storage lokal agar tidak QuotaExceededError
-          if (db.documentation.length > 20) {
-            db.documentation = db.documentation.slice(0, 20);
-          }
-          localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
-
           const cleanNisn = String(studentNisn).trim();
           const idList = [studentNisn, cleanNisn, cleanNisn.replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
           idList.forEach(id => {
-            localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + id, 'true');
-            localStorage.setItem('fincestem_dok_nft_day' + docDayNum + '_' + id, 'true');
-            localStorage.setItem('fincestem_dok_day' + docDayNum + '_' + id, 'true');
+            try {
+              localStorage.setItem('fincestem_dok_ft_day' + docDayNum + '_' + id, 'true');
+              localStorage.setItem('fincestem_dok_nft_day' + docDayNum + '_' + id, 'true');
+              localStorage.setItem('fincestem_dok_day' + docDayNum + '_' + id, 'true');
+            } catch(eSub) {}
           });
+        } catch (eFlags) {}
+
+        // 2. Simpan foto ke database lokal dengan manajemen memori cerdas anti-QuotaExceeded
+        try {
+          let db = {};
+          const stored = localStorage.getItem('fincestem_db_2026_v1');
+          if (stored) {
+            try { db = JSON.parse(stored); } catch(ep) { db = {}; }
+          }
+          if (!Array.isArray(db.documentation)) db.documentation = [];
+
+          db.documentation.unshift(newPhoto);
+
+          // Batasi maksimal 15 item foto lokal
+          if (db.documentation.length > 15) {
+            db.documentation = db.documentation.slice(0, 15);
+          }
+
+          // Bersihkan string base64 untuk foto ke-3 dan seterusnya agar ukuran localStorage tetap di bawah 1MB
+          db.documentation.forEach((pItem, pIdx) => {
+            if (pIdx >= 2 && pItem && pItem.url && pItem.url.startsWith('data:image')) {
+              pItem.url = ''; // Simpan metadata saja, foto fisik aman di server
+            }
+          });
+
+          try {
+            localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(db));
+          } catch(eQuota) {
+            console.warn('Quota exceeded on full db, saving metadata only:', eQuota);
+            const metaOnlyDb = {
+              ...db,
+              documentation: db.documentation.map(p => ({
+                ...p,
+                url: (p.url && (p.url.startsWith('http') || p.url.startsWith('../uploads'))) ? p.url : ''
+              }))
+            };
+            try { localStorage.setItem('fincestem_db_2026_v1', JSON.stringify(metaOnlyDb)); } catch(eMeta) {}
+          }
         } catch (e) {
           console.error('Save to local storage error:', e);
         }

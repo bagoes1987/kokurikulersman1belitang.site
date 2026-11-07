@@ -247,6 +247,12 @@ if ($action === 'deploy') {
             $pdo->exec("INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `agama`, `birth_info`, `address`, `parent_father`, `parent_mother`, `parent_job`, `school_origin`, `zone`) VALUES ('0110014922', '14922', '14922', 'ROYAN MAULANA', 'siswa', 'X', 'KELAS X.4', 'L', 'ISLAM', 'OKU TIMUR , 22 Januari 2011', 'TRIYOSO, RT:001, RW:001, Kec:BELITANG, Kab:OGAN KOMERING ULU TIMUR, Kode POS:32382', 'ISMANAN', 'ANA NURJANAH', 'PETANI', 'SMP ISLAM TERPADU QURRATA A\'YUN', 'FINCESTEM LUAR OKU TIMUR')");
         }
         $logs[] = "Sinkronisasi database akun siswa M.FADHIL RAMLI & ROYAN MAULANA sukses.";
+        // Auto-seed data seluruh 116 guru ke tabel teachers
+        require_once __DIR__ . '/settings.php';
+        if (function_exists('seedMasterTeachersIfEmpty')) {
+            seedMasterTeachersIfEmpty($pdo);
+            $logs[] = "Sinkronisasi database 116 guru sukses.";
+        }
     } catch (Exception $eSync) {
         $logs[] = "Catatan sinkronisasi siswa: " . $eSync->getMessage();
     }

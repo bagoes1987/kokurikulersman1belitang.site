@@ -72,7 +72,7 @@ if ($action === 'login') {
         $user = $stmt->fetch();
     }
 
-    // Fallback: jika tidak ditemukan di tabel users, cek tabel teachers
+                // Fallback: jika tidak ditemukan di tabel users, cek tabel teachers / master JSON
     if (!$user && ($role === 'fasilitator' || $role === 'koordinator' || $role === 'guru' || empty($role))) {
         try {
             $tStmt = $pdo->prepare("SELECT * FROM `teachers` WHERE `username` = :id OR `nip` = :id OR `kode_guru` = :id LIMIT 1");
@@ -89,19 +89,41 @@ if ($action === 'login') {
                     'assignment'    => $tRow['tugas_tambahan'] !== '-' ? $tRow['tugas_tambahan'] : "Guru {$tRow['mata_pelajaran']} ({$tRow['kode_guru']})",
                     'zone'          => 'FINCESTEM OKU TIMUR'
                 ];
-            } elseif ($identifier === '198309302009041002' || strtolower($identifier) === '85l') {
-                $user = [
-                    'id'            => 87,
-                    'identifier'    => '198309302009041002',
-                    'nis'           => '',
-                    'name'          => 'TITO DADANG PRASETYO,S.Pd',
-                    'role'          => $role ?: 'fasilitator',
-                    'password_hash' => 'Fincestem2026!',
-                    'assignment'    => 'Guru BK (85L)',
-                    'zone'          => 'FINCESTEM OKU TIMUR'
-                ];
+            } else {
+                // Lookup dari master guru_data.json
+                $cleanIdLower = strtolower(trim($identifier));
+                $jsonPath = __DIR__ . '/guru_data.json';
+                $teachersList = [];
+                if (file_exists($jsonPath)) {
+                    $teachersList = json_decode(file_get_contents($jsonPath), true) ?: [];
+                }
+                foreach ($teachersList as $gt) {
+                    $gtUser = strtolower(trim($gt['username'] ?? ''));
+                    $gtNip  = strtolower(trim($gt['nip'] ?? ''));
+                    $gtKode = strtolower(trim($gt['kode_guru'] ?? ''));
+                    if ($cleanIdLower === $gtUser || ($gtNip !== '-' && $cleanIdLower === $gtNip) || $cleanIdLower === $gtKode || ($gtKode === '85l' && ($cleanIdLower === '198309302009041002' || $cleanIdLower === '85l'))) {
+                        $user = [
+                            'id'            => 1000 + (int)($gt['no'] ?? 1),
+                            'identifier'    => $gt['username'],
+                            'nis'           => '',
+                            'name'          => $gt['nama_guru'],
+                            'role'          => $role ?: 'fasilitator',
+                            'password_hash' => $gt['password'] ?? 'Fincestem2026!',
+                            'assignment'    => ($gt['tugas_tambahan'] ?? '-') !== '-' ? $gt['tugas_tambahan'] : "Guru {$gt['mata_pelajaran']} ({$gt['kode_guru']})",
+                            'zone'          => 'FINCESTEM OKU TIMUR'
+                        ];
+                        // Auto-insert ke MySQL
+                        try {
+                            $inT = $pdo->prepare("INSERT IGNORE INTO `teachers` (`kode_guru`, `nama_guru`, `nip`, `mata_pelajaran`, `jabatan`, `tugas_tambahan`, `username`, `password`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                            $inT->execute([$gt['kode_guru'], $gt['nama_guru'], $gt['nip'] ?? '-', $gt['mata_pelajaran'], $gt['jabatan'] ?? 'Guru Mata Pelajaran', $gt['tugas_tambahan'] ?? '-', $gt['username'], $gt['password'] ?? 'Fincestem2026!']);
+                        } catch (Exception $eInT) {}
+                        break;
+                    }
+                }
             }
         } catch (Exception $et) {}
+    }
+    }
     }
 
     if (!$user) {
@@ -125,7 +147,12 @@ if ($action === 'login') {
         $validPassword = true;
     } elseif ($user['role'] === 'siswa' && ($password === $user['identifier'] || ($user['nis'] === '14922' && ($password === '3105533980' || $password === '0110014922')))) {
         $validPassword = true;
-    } elseif ($userIsTeacher && (in_array($password, ['Fincestem2026!', 'fasilitator', 'koordinator', 'guru']) || strtolower($password) === strtolower($user['identifier']) || strtolower($password) === strtolower($identifier))) {
+    } elseif ($userIsTeacher && (
+        in_array($password, ['Fincestem2026!', 'fasilitator', 'koordinator', 'guru']) || 
+        strtolower($password) === strtolower($user['identifier'] ?? '') || 
+        strtolower($password) === strtolower($identifier) ||
+        (isset($user['password_hash']) && ($password === $user['password_hash'] || password_verify($password, $user['password_hash'])))
+    )) {
         $validPassword = true;
     }
 

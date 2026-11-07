@@ -5835,9 +5835,11 @@ const FincestemCore = {
         const stored = localStorage.getItem('fincestem_custom_teachers');
         if (stored) {
           const customList = healTeacherList(JSON.parse(stored));
-          if (Array.isArray(customList) && customList.length > 0) {
+          if (Array.isArray(customList) && customList.length >= 100) {
             window.FincestemMasterTeachers = customList;
             return customList;
+          } else {
+            try { localStorage.removeItem('fincestem_custom_teachers'); } catch(e) {}
           }
         }
       } catch (e) {}
@@ -5934,7 +5936,7 @@ const FincestemCore = {
       fetch(FincestemCore.api.base + '/settings.php?action=get_teachers&_t=' + Date.now())
         .then(r => r.json())
         .then(res => {
-          if (res.success && Array.isArray(res.data?.teachers) && res.data.teachers.length > 0) {
+          if (res.success && Array.isArray(res.data?.teachers) && res.data.teachers.length >= 100) {
             window.FincestemMasterTeachers = res.data.teachers;
             try {
               localStorage.setItem('fincestem_custom_teachers', JSON.stringify(res.data.teachers));
