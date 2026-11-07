@@ -247,11 +247,67 @@ if ($action === 'deploy') {
             $pdo->exec("INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `agama`, `birth_info`, `address`, `parent_father`, `parent_mother`, `parent_job`, `school_origin`, `zone`) VALUES ('0110014922', '14922', '14922', 'ROYAN MAULANA', 'siswa', 'X', 'KELAS X.4', 'L', 'ISLAM', 'OKU TIMUR , 22 Januari 2011', 'TRIYOSO, RT:001, RW:001, Kec:BELITANG, Kab:OGAN KOMERING ULU TIMUR, Kode POS:32382', 'ISMANAN', 'ANA NURJANAH', 'PETANI', 'SMP ISLAM TERPADU QURRATA A\'YUN', 'FINCESTEM LUAR OKU TIMUR')");
         }
         $logs[] = "Sinkronisasi database akun siswa M.FADHIL RAMLI & ROYAN MAULANA sukses.";
-        // Auto-seed data seluruh 116 guru ke tabel teachers
-        require_once __DIR__ . '/settings.php';
-        if (function_exists('seedMasterTeachersIfEmpty')) {
-            seedMasterTeachersIfEmpty($pdo);
+        // Auto-seed data seluruh 116 guru ke tabel teachers jika belum lengkap
+        try {
+            $countT = (int)$pdo->query("SELECT COUNT(*) FROM `teachers`")->fetchColumn();
+            if ($countT < 100) {
+                $jsonPath = __DIR__ . '/guru_data.json';
+                if (file_exists($jsonPath)) {
+                    $rawJson = file_get_contents($jsonPath);
+                    $teachersList = json_decode($rawJson, true) ?: [];
+                    if (!empty($teachersList)) {
+                        $stmtT = $pdo->prepare("
+                            INSERT INTO `teachers` (`kode_guru`, `nama_guru`, `nip`, `mata_pelajaran`, `jabatan`, `tugas_tambahan`, `username`, `password`)
+                            VALUES (:kode_guru, :nama_guru, :nip, :mata_pelajaran, :jabatan, :tugas_tambahan, :username, :password)
+                            ON DUPLICATE KEY UPDATE 
+                                `nama_guru` = VALUES(`nama_guru`),
+                                `nip` = VALUES(`nip`),
+                                `mata_pelajaran` = VALUES(`mata_pelajaran`),
+                                `jabatan` = VALUES(`jabatan`),
+                                `tugas_tambahan` = VALUES(`tugas_tambahan`),
+                                `password` = VALUES(`password`)
+                        ");
+                        $stmtU = $pdo->prepare("
+                            INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `zone`)
+                            VALUES (:identifier, '', :pwd, :name, 'fasilitator', '-', '-', 'L', 'FINCESTEM OKU TIMUR')
+                            ON DUPLICATE KEY UPDATE 
+                                `name` = VALUES(`name`),
+                                `role` = IF(`role` = 'admin', 'admin', 'fasilitator')
+                        ");
+                        foreach ($teachersList as $t) {
+                            $kode = trim($t['kode_guru'] ?? '');
+                            $nama = trim($t['nama_guru'] ?? '');
+                            $nip  = trim($t['nip'] ?? '-');
+                            $mapel= trim($t['mata_pelajaran'] ?? '-');
+                            $jab  = trim($t['jabatan'] ?? 'Guru Mata Pelajaran');
+                            $tgs  = trim($t['tugas_tambahan'] ?? '-');
+                            $userT= trim($t['username'] ?? ($nip !== '-' ? $nip : $kode));
+                            $pwdT = trim($t['password'] ?? 'Fincestem2026!');
+                            if (!$kode || !$userT) continue;
+                            $stmtT->execute([
+                                ':kode_guru'      => $kode,
+                                ':nama_guru'      => $nama,
+                                ':nip'            => $nip,
+                                ':mata_pelajaran' => $mapel,
+                                ':jabatan'        => $jab,
+                                ':tugas_tambahan' => $tgs,
+                                ':username'       => $userT,
+                                ':password'       => $pwdT
+                            ]);
+                            try {
+                                $stmtU->execute([
+                                    ':identifier' => $userT,
+                                    ':pwd'        => $pwdT,
+                                    ':name'       => $nama
+                                ]);
+                            } catch (Exception $eUser) {}
+                        }
+                    }
+                }
+            }
             $logs[] = "Sinkronisasi database 116 guru sukses.";
+        } catch (Exception $eGuru) {
+            $logs[] = "Catatan sinkronisasi guru: " . $eGuru->getMessage();
         }
     } catch (Exception $eSync) {
         $logs[] = "Catatan sinkronisasi siswa: " . $eSync->getMessage();
