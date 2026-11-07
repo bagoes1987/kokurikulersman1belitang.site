@@ -58,11 +58,13 @@ if ($action === 'login') {
     $paddedId = (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) ? str_pad($cleanId, 10, '0', STR_PAD_LEFT) : $identifier;
 
     // Resolusi cerdas untuk NISN duplikat Dapodik 3105533980 (M.FADHIL RAMLI & ROYAN MAULANA):
-    if (($identifier === '3105533980' || $cleanId === '3105533980' || $identifier === '14922' || $identifier === '0110014922') && ($password === '14922' || $password === '3105533980' || $password === '0110014922')) {
+    if ($identifier === '14922' || $identifier === '0110014922' || ($cleanId === '3105533980' && $password === '14922')) {
+        // ROYAN MAULANA (Kelas X.4, NIS 14922, NISN 0110014922)
         $rStmt = $pdo->prepare("SELECT * FROM `users` WHERE `nis` = '14922' OR `name` LIKE '%ROYAN MAULANA%' LIMIT 1");
         $rStmt->execute();
         $user = $rStmt->fetch();
-    } elseif (($identifier === '3105533980' || $cleanId === '3105533980' || $identifier === '14418') && ($password === '14418' || $password === '3105533980')) {
+    } elseif ($identifier === '14418' || $cleanId === '3105533980' || ($cleanId === '3105533980' && ($password === '14418' || $password === '3105533980'))) {
+        // M.FADHIL RAMLI (Kelas XI.10, NIS 14418, NISN 3105533980)
         $fStmt = $pdo->prepare("SELECT * FROM `users` WHERE `nis` = '14418' OR `name` LIKE '%FADHIL RAMLI%' LIMIT 1");
         $fStmt->execute();
         $user = $fStmt->fetch();
