@@ -554,31 +554,31 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "A. Kegiatan Ekonomi",
     "cognitiveLevel": "C1",
     "numberInIndicator": 3,
-    "question": "Lembaga atau perorangan yang menjalankan fungsi menyampaikan barang dari produsen kepada konsumen disebut...",
+    "question": "Kios Sarana Pertanian Resmi (Kios Pupuk & Obat Tani) dan UMKM Dagang & Jasa Perorangan yang menyalurkan sarana produksi tani kepada petani di desa menjalankan fungsi...",
     "options": [
       {
         "key": "A",
-        "text": "Konsumen pemakai produk"
+        "text": "Produksi ekstraktif bahan mentah tambang"
       },
       {
         "key": "B",
-        "text": "Produsen pembuat barang"
+        "text": "Konsumsi akhir barang kebutuhan pribadi"
       },
       {
         "key": "C",
-        "text": "Distributor penyalur barang"
+        "text": "Distribusi barang dan jasa pada sektor tersier"
       },
       {
         "key": "D",
-        "text": "Investor penanam modal"
+        "text": "Pengolahan bahan mentah menjadi beras giling"
       },
       {
         "key": "E",
-        "text": "Fasilitator pendamping desa"
+        "text": "Eksplorasi sumber daya alam perkebunan"
       }
     ],
     "correct": "C",
-    "explanation": "Distributor adalah pihak atau lembaga yang bertugas menyalurkan barang/jasa dari produsen hingga sampai ke konsumen."
+    "explanation": "Kios sarana pertanian dan UMKM dagang bertindak sebagai distributor pada sektor tersier yang menyalurkan barang dari produsen ke petani/konsumen."
   },
   {
     "id": 4,
@@ -588,31 +588,31 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "A. Kegiatan Ekonomi",
     "cognitiveLevel": "C1",
     "numberInIndicator": 4,
-    "question": "Sektor perekonomian yang kegiatannya mengambil dan mengelola sumber daya alam secara langsung tanpa pengolahan pabrik adalah...",
+    "question": "Di Kabupaten OKU Timur, unit usaha yang tergolong dalam Sektor Primer karena menghasilkan atau mengambil bahan mentah langsung dari alam adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Sektor industri sekunder"
+        "text": "Pabrik Penggilingan Padi (RMU) dan pabrik tepung"
       },
       {
         "key": "B",
-        "text": "Sektor pelayanan tersier"
+        "text": "Layanan Agen BRILink dan Koperasi Simpan Pinjam"
       },
       {
         "key": "C",
-        "text": "Sektor teknologi kuartener"
+        "text": "Kios Sarana Pertanian Resmi dan Toko Kelontong"
       },
       {
         "key": "D",
-        "text": "Sektor ekstraktif primer"
+        "text": "Peternakan Sapi Mandiri, Peternakan Kambing, dan Kelompok Usaha Tani Mandiri / Petani Padi"
       },
       {
         "key": "E",
-        "text": "Sektor keuangan perbankan"
+        "text": "BUMDes Unit Pengolahan Pangan dan Industri Kerupuk Ikan"
       }
     ],
     "correct": "D",
-    "explanation": "Sektor primer mencakup pemanfaatan langsung sumber daya alam seperti pertanian, perikanan, kehutanan, dan pertambangan."
+    "explanation": "Sektor primer mencakup budidaya pertanian padi, Peternakan Sapi Mandiri, Peternakan Kambing, dan perikanan yang menghasilkan bahan baku mentah."
   },
   {
     "id": 5,
@@ -622,31 +622,31 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "A. Kegiatan Ekonomi",
     "cognitiveLevel": "C1",
     "numberInIndicator": 5,
-    "question": "Kelompok aktivitas ekonomi yang bertugas mengolah bahan mentah menjadi bahan setengah jadi atau barang jadi adalah...",
+    "question": "Aktivitas ekonomi di OKU Timur yang mengolah bahan mentah menjadi bahan bernilai tambah lebih tinggi (Sektor Sekunder) dicontohkan oleh...",
     "options": [
       {
         "key": "A",
-        "text": "Sektor pertanian primer"
+        "text": "Peternakan Kambing rakyat dan kolam bibit ikan patin"
       },
       {
         "key": "B",
-        "text": "Sektor perdagangan tersier"
+        "text": "Kios pupuk bersubsidi dan Agen Laku Pandai BRILink"
       },
       {
         "key": "C",
-        "text": "Sektor agribisnis hulu"
+        "text": "Pedagang sayur keliling di pasar tradisional Gumawang"
       },
       {
         "key": "D",
-        "text": "Sektor pertambangan migas"
+        "text": "Petani padi sawah irigasi teknis Belitang saat panen"
       },
       {
         "key": "E",
-        "text": "Sektor manufaktur sekunder"
+        "text": "Pabrik Penggilingan Padi (Rice Milling Unit / RMU) dan UMKM Industri Pengolahan Tahu & Tempe"
       }
     ],
     "correct": "E",
-    "explanation": "Sektor sekunder berfokus pada industri manufaktur dan pengolahan bahan mentah menjadi barang setengah jadi atau barang jadi."
+    "explanation": "Sektor sekunder berfokus pada industri pengolahan seperti Pabrik Penggilingan Padi (RMU) dan UMKM Industri Tahu & Tempe yang mengolah bahan mentah menjadi barang jadi."
   },
   {
     "id": 6,
@@ -656,31 +656,31 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "A. Kegiatan Ekonomi",
     "cognitiveLevel": "C1",
     "numberInIndicator": 6,
-    "question": "Aktivitas usaha yang bergerak di bidang penyediaan layanan, transportasi, dan kenyamanan tanpa menghasilkan barang fisik tergolong...",
+    "question": "Contoh badan usaha atau kelembagaan di pedesaan OKU Timur yang beroperasi di Sektor Tersier (Jasa, Perdagangan, dan Keuangan) adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Sektor jasa layanan tersier"
+        "text": "Layanan Keuangan Tanpa Kantor (Agen BRILink / Mandiri / BNI) dan Koperasi Simpan Pinjam (KSP)"
       },
       {
         "key": "B",
-        "text": "Sektor agraris pedesaan"
+        "text": "Peternakan Sapi Mandiri dan kebun karet rakyat"
       },
       {
         "key": "C",
-        "text": "Sektor industri kerajinan"
+        "text": "Pabrik Penggilingan Padi (RMU) dan pengrajin tahu-tempe"
       },
       {
         "key": "D",
-        "text": "Sektor ekstraktif tambang"
+        "text": "Kelompok Tani / Gapoktan budidaya benih padi sawah"
       },
       {
         "key": "E",
-        "text": "Sektor perkebunan rakyat"
+        "text": "Kolam pembibitan ikan patin dan lele air tawar"
       }
     ],
     "correct": "A",
-    "explanation": "Sektor tersier adalah sektor yang menyediakan layanan atau jasa non-fisik seperti perbankan, transportasi, pariwisata, dan perdagangan."
+    "explanation": "Sektor tersier menyediakan jasa transaksi perbankan (Agen BRILink/BNI/Mandiri), Koperasi Simpan Pinjam (KSP), dan perdagangan langsung ke masyarakat."
   },
   {
     "id": 7,
@@ -860,31 +860,31 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "A. Kegiatan Ekonomi",
     "cognitiveLevel": "C2",
     "numberInIndicator": 12,
-    "question": "Keterkaitan erat antara proses produksi dan distribusi dalam sistem pasar bahan pangan pokok tercermin pada kenyataan bahwa...",
+    "question": "Kelompok Tani / Gapoktan (Gabungan Kelompok Tani) dan Kelompok Usaha Tani Mandiri / Petani Padi di Belitang merupakan kelembagaan sektor primer yang berfungsi...",
     "options": [
       {
         "key": "A",
-        "text": "Distribusi dapat berjalan mandiri tanpa memerlukan pasokan barang dari produsen"
+        "text": "Mengorganisasi budidaya padi, pembagian air irigasi, dan pengadaan sarana produksi bersama"
       },
       {
         "key": "B",
-        "text": "Barang yang diproduksi tidak akan bernilai guna jika tidak disalurkan ke konsumen"
+        "text": "Membangun jaringan perbankan internasional untuk transaksi valuta asing"
       },
       {
         "key": "C",
-        "text": "Produsen selalu menerima pembayaran tunai sebelum proses pengiriman berlangsung"
+        "text": "Menggantikan peran seluruh agen ekspedisi dan transportasi antarpulau"
       },
       {
         "key": "D",
-        "text": "Konsumen hanya membeli barang yang diproduksi langsung di pekarangan rumahnya"
+        "text": "Memonopoli penjualan sembako eceran di seluruh pasar tradisional"
       },
       {
         "key": "E",
-        "text": "Proses produksi baru dimulai setelah seluruh barang di tangan pengecer habis terjual"
+        "text": "Mengimpor beras premium dari luar negeri untuk menekan harga lokal"
       }
     ],
-    "correct": "B",
-    "explanation": "Produksi dan distribusi saling bergantung; tanpa distribusi yang efektif, barang produksi tidak sampai ke konsumen dan kehilangan nilai guna."
+    "correct": "A",
+    "explanation": "Kelompok Tani / Gapoktan mengoordinasikan kegiatan budidaya di tingkat lapangan (sektor primer), jadwal tanam, irigasi, dan sarana produksi."
   },
   {
     "id": 13,
@@ -4838,7 +4838,7 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "D. Badan Usaha dan Koperasi",
     "cognitiveLevel": "C2",
     "numberInIndicator": 9,
-    "question": "Lembaga usaha yang seluruh atau sebagian modalnya dimiliki oleh pemerintah desa dan masyarakat desa adalah...",
+    "question": "Badan usaha pedesaan yang dapat memiliki berbagai unit seperti BUMDes - Unit Budidaya Pertanian / Perikanan Desa, BUMDes - Unit Pengolahan Pangan & Industri Desa, dan BUMDes - Unit Pasar Desa & Jasa Keuangan Mikro adalah...",
     "options": [
       {
         "key": "A",
@@ -4850,11 +4850,11 @@ window.NFT_BANK_SOAL_DAYS = {
       },
       {
         "key": "C",
-        "text": "Lembaga Keuangan Mikro Syariah"
+        "text": "Lembaga Keuangan Mikro Syariah Internasional"
       },
       {
         "key": "D",
-        "text": "Badan Usaha Milik Desa"
+        "text": "Badan Usaha Milik Desa (BUMDes)"
       },
       {
         "key": "E",
@@ -4862,7 +4862,7 @@ window.NFT_BANK_SOAL_DAYS = {
       }
     ],
     "correct": "D",
-    "explanation": "BUMDes (Badan Usaha Milik Desa) adalah badan usaha yang modalnya dimiliki desa untuk mendayagunakan potensi ekonomi dan meningkatkan kesejahteraan warga desa."
+    "explanation": "BUMDes adalah badan usaha milik desa yang modalnya bersumber dari desa dan dapat mengelola unit usaha primer, sekunder, maupun tersier secara terpadu."
   },
   {
     "id": 130,
@@ -5076,11 +5076,11 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "D. Badan Usaha dan Koperasi",
     "cognitiveLevel": "C2",
     "numberInIndicator": 16,
-    "question": "Peran strategis Badan Usaha Milik Desa dalam perekonomian pedesaan Belitang diwujudkan melalui...",
+    "question": "Peran strategis Badan Usaha Milik Desa (BUMDes) di OKU Timur yang mengelola unit usaha Sektor Primer dan Sektor Tersier secara terpadu terlihat pada...",
     "options": [
       {
         "key": "A",
-        "text": "Pengelolaan unit usaha desa seperti air bersih, pasar desa, dan persewaan alsintan"
+        "text": "BUMDes - Unit Budidaya Pertanian / Perikanan Desa dan BUMDes - Unit Pasar Desa & Jasa Keuangan Mikro"
       },
       {
         "key": "B",
@@ -5100,7 +5100,7 @@ window.NFT_BANK_SOAL_DAYS = {
       }
     ],
     "correct": "A",
-    "explanation": "BUMDes mengoptimalkan aset desa dan potensi lokal (pengelolaan air, kios pasar, persewaan alat mesin pertanian) guna menambah Pendapatan Asli Desa."
+    "explanation": "BUMDes di desa-desa OKU Timur dapat mengembangkan unit budidaya (sektor primer) sekaligus unit pengelolaan pasar desa dan jasa keuangan mikro (sektor tersier)."
   },
   {
     "id": 137,
@@ -5144,7 +5144,7 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "D. Badan Usaha dan Koperasi",
     "cognitiveLevel": "C3",
     "numberInIndicator": 18,
-    "question": "Peran koperasi simpan pinjam dalam memberdayakan petani kecil di pedesaan OKU Timur adalah...",
+    "question": "Koperasi Simpan Pinjam (KSP) sebagai bagian dari Sektor Tersier di OKU Timur memberdayakan pelaku usaha mikro dengan cara...",
     "options": [
       {
         "key": "A",
@@ -5156,7 +5156,7 @@ window.NFT_BANK_SOAL_DAYS = {
       },
       {
         "key": "C",
-        "text": "Menyediakan akses pembiayaan modal musim tanam dengan bunga adil dan terjangkau"
+        "text": "Menyediakan akses pembiayaan modal usaha dan likuiditas dengan bunga adil dan terjangkau"
       },
       {
         "key": "D",
@@ -5168,7 +5168,7 @@ window.NFT_BANK_SOAL_DAYS = {
       }
     ],
     "correct": "C",
-    "explanation": "Koperasi simpan pinjam menyediakan likuiditas modal dengan prosedur ramah dan bunga wajar, melindungi petani dari pemerasan rentenir berkedok calo."
+    "explanation": "KSP pada sektor tersier berperan vital memperkuat permodalan petani, peternak, dan pedagang pasar dengan bunga adil dan prosedur kekeluargaan."
   },
   {
     "id": 139,
@@ -5212,7 +5212,7 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "D. Badan Usaha dan Koperasi",
     "cognitiveLevel": "C3",
     "numberInIndicator": 20,
-    "question": "Keberadaan Koperasi Unit Desa yang bermitra dengan kilang padi modern menciptakan dampak positif berupa...",
+    "question": "Koperasi Unit Desa (KUD) - Unit Budidaya Pertanian yang bermitra dengan Pabrik Penggilingan Padi (Rice Milling Unit / RMU) di Belitang menciptakan dampak positif berupa...",
     "options": [
       {
         "key": "A",
@@ -5232,11 +5232,11 @@ window.NFT_BANK_SOAL_DAYS = {
       },
       {
         "key": "E",
-        "text": "Petani memiliki kepastian pasar penjualan gabah dengan standar timbangan adil"
+        "text": "Petani memiliki kepastian pasar penjualan gabah dengan standar timbangan adil dan harga stabil"
       }
     ],
     "correct": "E",
-    "explanation": "Kemitraan KUD dan kilang padi memastikan kepastian serapan hasil panen, akurasi timbangan, dan harga jual wajar bagi petani anggota."
+    "explanation": "Kemitraan KUD budidaya (sektor primer) dan pabrik penggilingan padi RMU (sektor sekunder) menjamin kepastian pasar dan harga stabil bagi petani."
   },
   {
     "id": 141,
@@ -6164,31 +6164,31 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "E. Kegiatan dan Potensi Sektor Ekonomi OKU Timur",
     "cognitiveLevel": "C1",
     "numberInIndicator": 8,
-    "question": "Jenis hewan ternak berkaki empat yang banyak dibudidayakan oleh masyarakat pedesaan OKU Timur sebagai tabungan hidup adalah...",
+    "question": "Jenis usaha peternakan rakyat di Sektor Primer yang banyak diusahakan masyarakat pedesaan OKU Timur sebagai aset produktif dan pupuk hayati adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Unta padang pasir"
+        "text": "Peternakan unta padang pasir dan keledai impor"
       },
       {
         "key": "B",
-        "text": "Kuda pacuan impor"
+        "text": "Penangkaran buaya muara dan ular sanca"
       },
       {
         "key": "C",
-        "text": "Sapi (potong/perah), kambing/domba, serta unggas (ayam/bebek)"
+        "text": "Peternakan Sapi Mandiri dan Peternakan Kambing"
       },
       {
         "key": "D",
-        "text": "Rusa kutub kutub"
+        "text": "Peternakan kuda pacuan impor Eropa"
       },
       {
         "key": "E",
-        "text": "Zebra padang rumput"
+        "text": "Peternakan rusa kutub salju"
       }
     ],
     "correct": "C",
-    "explanation": "Peternakan rakyat di OKU Timur mencakup ruminansia (peternakan sapi Bali/PO, kambing/domba) serta unggas (ayam broiler/petelur dan bebek/itik sawah komering)."
+    "explanation": "Peternakan Sapi Mandiri dan Peternakan Kambing merupakan komoditas peternakan rakyat utama di OKU Timur yang bernilai ekonomi tinggi."
   },
   {
     "id": 169,
@@ -6198,7 +6198,7 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "E. Kegiatan dan Potensi Sektor Ekonomi OKU Timur",
     "cognitiveLevel": "C2",
     "numberInIndicator": 9,
-    "question": "Pabrik penggilingan padi terintegrasi yang dilengkapi mesin pembersih gabah, pengeringan, dan pengemasan beras disebut...",
+    "question": "Pabrik pengolahan gabah menjadi beras putih kemasan di Sektor Sekunder yang dilengkapi mesin pembersih, pengering (dryer), dan pemoles di OKU Timur dikenal sebagai...",
     "options": [
       {
         "key": "A",
@@ -6214,7 +6214,7 @@ window.NFT_BANK_SOAL_DAYS = {
       },
       {
         "key": "D",
-        "text": "Rice Milling Unit terpadu"
+        "text": "Pabrik Penggilingan Padi (Rice Milling Unit / RMU)"
       },
       {
         "key": "E",
@@ -6222,7 +6222,7 @@ window.NFT_BANK_SOAL_DAYS = {
       }
     ],
     "correct": "D",
-    "explanation": "Rice Milling Unit (RMU) adalah unit penggilingan padi modern yang memproses gabah kering giling menjadi beras kemasan berkualitas."
+    "explanation": "Pabrik Penggilingan Padi (RMU) adalah pilar industri sekunder di OKU Timur yang mengolah gabah hasil panen menjadi beras siap konsumsi."
   },
   {
     "id": 170,
@@ -6232,31 +6232,31 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "E. Kegiatan dan Potensi Sektor Ekonomi OKU Timur",
     "cognitiveLevel": "C2",
     "numberInIndicator": 10,
-    "question": "Produk olahan makanan khas dari perikanan dan pertanian yang banyak diproduksi industri rumah tangga di OKU Timur adalah...",
+    "question": "Usaha pengolahan pangan Sektor Sekunder skala mikro di OKU Timur yang memanfaatkan hasil perikanan dan pertanian lokal meliputi...",
     "options": [
       {
         "key": "A",
-        "text": "Dodol apel dan sari apel"
+        "text": "Dodol apel dan sari apel Malang"
       },
       {
         "key": "B",
-        "text": "Gudeg nangka dan bakpia kacang"
+        "text": "Gudeg nangka dan bakpia kacang Jogja"
       },
       {
         "key": "C",
-        "text": "Bika ambon dan bolu meranti"
+        "text": "Bika ambon dan bolu meranti Medan"
       },
       {
         "key": "D",
-        "text": "Asinan sayur dan manisan pala"
+        "text": "Asinan sayur dan manisan pala Bogor"
       },
       {
         "key": "E",
-        "text": "Kemplang ikan dan rengginang"
+        "text": "Industri Rumah Tangga Pangan (Kerupuk Ikan / Keripik) dan UMKM Industri Pengolahan Tahu & Tempe"
       }
     ],
     "correct": "E",
-    "explanation": "Industri rumah tangga di OKU Timur menghasilkan kemplang/kerupuk ikan patin, rengginang beras ketan, dan sale pisang."
+    "explanation": "Industri Rumah Tangga Pangan (Kerupuk Ikan/Keripik) dan UMKM Tahu-Tempe mengolah bahan mentah perikanan/kedelai menjadi produk bernilai tambah di OKU Timur."
   },
   {
     "id": 171,
@@ -6436,11 +6436,11 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "E. Kegiatan dan Potensi Sektor Ekonomi OKU Timur",
     "cognitiveLevel": "C2",
     "numberInIndicator": 16,
-    "question": "Peran agen perbankan Laku Pandai di pelosok desa Belitang dalam mendorong inklusi keuangan masyarakat adalah...",
+    "question": "Layanan Keuangan Tanpa Kantor (Agen BRILink / Mandiri / BNI) di pelosok desa OKU Timur tergolong ke dalam Sektor Tersier karena berperan dalam...",
     "options": [
       {
         "key": "A",
-        "text": "Mendekatkan layanan setor, tarik tunai, dan transfer tanpa harus pergi ke kantor bank kota"
+        "text": "Mendekatkan layanan setor, tarik tunai, dan transfer perbankan tanpa harus pergi ke kantor bank kota"
       },
       {
         "key": "B",
@@ -6460,7 +6460,7 @@ window.NFT_BANK_SOAL_DAYS = {
       }
     ],
     "correct": "A",
-    "explanation": "Agen bank di desa menghemat waktu dan ongkos transportasi warga desa untuk menabung, membayar tagihan, atau menarik uang tunai secara aman."
+    "explanation": "Agen BRILink/Mandiri/BNI adalah agen Laku Pandai pada sektor tersier yang menyediakan akses layanan perbankan formal langsung di desa-desa OKU Timur."
   },
   {
     "id": 177,
@@ -6470,31 +6470,31 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "E. Kegiatan dan Potensi Sektor Ekonomi OKU Timur",
     "cognitiveLevel": "C3",
     "numberInIndicator": 17,
-    "question": "Keterkaitan antara keberadaan sentra pasar Gumawang dengan kelancaran rantai pasok barang di OKU Timur adalah...",
+    "question": "Pedagang Pasar Tradisional / Toko Kelontong Grosir di sentra pasar Gumawang OKU Timur tergolong Sektor Tersier yang berperan sebagai...",
     "options": [
       {
         "key": "A",
-        "text": "Sebagai tempat penyimpanan seluruh cadangan beras nasional milik perum bulog"
+        "text": "Tempat penyimpanan seluruh cadangan beras nasional milik perum bulog"
       },
       {
         "key": "B",
-        "text": "Sebagai titik temu pedagang pengumpul hasil bumi dan distributor sembako antarkota"
+        "text": "Titik temu distribusi barang antara produsen hasil bumi, distributor grosir, dan konsumen akhir"
       },
       {
         "key": "C",
-        "text": "Sebagai kawasan industri pengolahan baja dan perakitan mesin kapal laut"
+        "text": "Kawasan industri manufaktur perakitan mesin mobil dan kapal laut"
       },
       {
         "key": "D",
-        "text": "Sebagai lokasi penukaran mata uang asing resmi bagi wisatawan mancanegara"
+        "text": "Lokasi penukaran mata uang asing resmi bagi wisatawan mancanegara"
       },
       {
         "key": "E",
-        "text": "Sebagai pusat pelelangan kayu hutan lindung dari pegunungan bukit barisan"
+        "text": "Pusat pelelangan kayu hutan lindung dari pegunungan bukit barisan"
       }
     ],
     "correct": "B",
-    "explanation": "Pasar Gumawang berfungsi sebagai simpul distribusi utama di mana komoditas pertanian dikumpulkan untuk dikirim ke luar daerah, dan barang pabrik disalurkan ke warung-warung desa."
+    "explanation": "Pedagang pasar tradisional dan toko grosir di Gumawang menjalankan fungsi distribusi dan perdagangan (sektor tersier) terbesar di OKU Timur."
   },
   {
     "id": 178,
@@ -7278,7 +7278,7 @@ window.NFT_BANK_SOAL_DAYS = {
     "correct": "E",
     "explanation": "Visi masa depan OKU Timur berpusat pada pertanian cerdas (smart agriculture), hilirisasi industri pengolahan pangan, dan penguatan ekosistem keuangan pedesaan."
   }
-],
+    ],
 
 2: [
   {

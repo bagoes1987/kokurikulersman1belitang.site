@@ -333,7 +333,7 @@
     }
 
     // Cek Prasyarat: Modul Belajar, LKPD, & Dokumentasi (khusus Day 1-7) harus selesai
-    const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(examState.cleanNisn));
+    const isTesterBypass = (window.FincestemCore && window.FincestemCore.schedule && typeof window.FincestemCore.schedule.isTesterStudent === 'function' && window.FincestemCore.schedule.isTesterStudent(examState.cleanNisn));
     const hasMateri = isTesterBypass ? true : checkPrerequisiteMateri(dayNum, examState.cleanNisn);
     const hasLkpd = isTesterBypass ? true : checkPrerequisiteLkpd(dayNum, examState.cleanNisn);
     const hasDok = isTesterBypass ? true : ((dayNum >= 1 && dayNum <= 7) ? checkPrerequisiteDok(dayNum, examState.cleanNisn) : true);
@@ -2341,7 +2341,7 @@
       candidateSubmitIds.add(examState.cleanNisn.replace(/^0+/, ''));
       if (examState.cleanNisn.length >= 8 && examState.cleanNisn.length <= 10) candidateSubmitIds.add(examState.cleanNisn.padStart(10, '0'));
     }
-    const uAuth = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const uAuth = (window.FincestemCore && window.FincestemCore.auth && window.FincestemCore.auth.getUser()) || {};
     if (uAuth.identifier) candidateSubmitIds.add(String(uAuth.identifier).trim());
     if (uAuth.nis) candidateSubmitIds.add(String(uAuth.nis).trim());
     if (uAuth.nisn) candidateSubmitIds.add(String(uAuth.nisn).trim());
