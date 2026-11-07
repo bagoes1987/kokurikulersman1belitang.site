@@ -129,7 +129,7 @@
           subtitle: 'Lumbung Padi, Perkebunan, UMKM Belitang & Peluang Wirausaha Masa Depan',
           guidedPoints: [
             'Keunggulan komparatif mutlak Kabupaten OKU Timur sebagai salah satu lumbung pangan utama Provinsi Sumatera Selatan melalui hamparan sawah beririgasi teknis Belitang.',
-            'Potensi sektor perkebunan rakyat (karet, kelapa sawit), peternakan rakyat terpadu (sapi potong/perah, kambing, domba, unggas ayam & bebek), perikanan budidaya air tawar (kolam patin/lele), serta jaringan perdagangan UMKM, Koperasi, dan Agen BRILink pedesaan.',
+            'Potensi sektor perkebunan rakyat (karet, kelapa sawit), peternakan rakyat terpadu (peternakan sapi, kambing, domba, unggas ayam & bebek), perikanan budidaya air tawar (kolam patin/lele), serta jaringan perdagangan UMKM, Koperasi, dan Agen BRILink pedesaan.',
             'Dinamika perdagangan pasar tradisional (seperti Pasar Gumawang), geliat UMKM pengolahan hasil panen, serta analisis peluang wirausaha agribisnis masa depan bagi generasi muda daerah.'
           ],
           placeholder: 'Uraikan profil riil perekonomian Kabupaten OKU Timur: keunggulan lumbung pangan, komoditas unggulan perkebunan, denyut UMKM lokal, serta peluang inovasi bisnis yang menjanjikan bagi pemuda... (Minimal 300 karakter)',
@@ -185,7 +185,7 @@
           guidedPoints: [
             'Karakteristik sistem mata pencaharian budidaya padi sawah intensif dengan pola tanam IP-200 hingga IP-300 per tahun yang ditopang saluran irigasi teknis.',
             'Karakteristik mata pencaharian perkebunan rakyat (karet alam dan kelapa sawit) serta dinamika penyesuaian keluarga petani saat menghadapi anomali harga getah.',
-            'Diversifikasi usaha tani terpadu melalui perikanan kolam air tawar (patin/lele) dan peternakan sapi potong sebagai pilar stabilitas pendapatan harian keluarga.'
+            'Diversifikasi usaha tani terpadu melalui perikanan kolam air tawar (patin/lele) dan peternakan sapi sebagai pilar stabilitas pendapatan harian keluarga.'
           ],
           placeholder: 'Uraikan hasil riset Anda mengenai sistem mata pencaharian agrikultur unggulan di OKU Timur: pola rotasi tanam padi sawah, perkebunan karet, dan diversifikasi perikanan air tawar... (Minimal 300 karakter)',
           sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Dinas Pertanian dan Ketahanan Pangan Kabupaten OKU Timur, Laporan Kinerja Sektor Agrikultur\n2. BPS OKU Timur Dalam Angka',
@@ -503,7 +503,7 @@
                 'Prosedur pencegahan penyakit menular ternak (Penyakit Mulut dan Kuku / PMK pada sapi, flu burung / ND pada ayam) melalui sanitasi kandang, isolasi karantina, dan vaksinasi berkala.'
               ],
               placeholder: 'Uraikan hasil kajian sains Anda mengenai sistem pencernaan sapi, cara kerja fermentasi jerami silase, pencegahan stres panas ayam, dan vaksinasi PMK di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Penelitian Ternak (Balitnak) Ciawi, Pedoman Nutrisi dan Pakan Sapi Potong\n2. Petunjuk Teknis Pengendalian Penyakit Mulut dan Kuku (PMK), Kementan RI',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Penelitian Ternak (Balitnak) Ciawi, Pedoman Nutrisi dan Pakan Peternakan Sapi\n2. Petunjuk Teknis Pengendalian Penyakit Mulut dan Kuku (PMK), Kementan RI',
               defaultExp: 'Kajian sains peternakan di perdesaan OKU Timur menekankan optimalisasi jerami padi sawah yang melimpah melalui fermentasi anaerobik menggunakan bakteri asam laktat dan molase. Proses silase ini meningkatkan kecernaan serat kasar di dalam rumen sapi serta menyediakan cadangan pakan bernutrisi saat musim kemarau, sekaligus penerapan sanitasi kandang yang ketat guna membendung penularan virus PMK.',
               defaultSources: '1. Publikasi Balai Penelitian Ternak (Balitnak): Teknologi Pengolahan Limbah Pertanian untuk Pakan Ruminansia.\n2. Petunjuk Teknis Manajemen Kesehatan Ternak, Dinas Peternakan dan Perikanan OKU Timur.'
             },
@@ -533,23 +533,23 @@
                 'Desain bak fermentasi pupuk kompos kotoran sapi padat (solid manure) menjadi pupuk bokashi siap pakai untuk menyuburkan lahan sawah padi di sekitar kandang (konsep circular zero waste).'
               ],
               placeholder: 'Uraikan hasil analisis rekayasa Anda mengenai instalasi reaktor biogas dari kotoran sapi, desain lantai miring pemisah urine, dan bak fermentasi kompos kandang di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Rancang Bangun Reaktor Biogas Skala Rumah Tangga Peternak, Kementerian ESDM\n2. Petunjuk Teknis Konstruksi Kandang Sapi Potong Sehat dan Ramah Lingkungan',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Rancang Bangun Reaktor Biogas Skala Rumah Tangga Peternak, Kementerian ESDM\n2. Petunjuk Teknis Konstruksi Kandang Peternakan Sapi Sehat dan Ramah Lingkungan',
               defaultExp: 'Rekayasa instalasi reaktor biogas kotoran sapi di perdesaan OKU Timur memberikan manfaat ganda dalam hal sanitasi lingkungan dan penyediaan energi alternatif terbarukan. Gas metana yang dihasilkan dialirkan langsung ke kompor masak petani untuk menghemat elpiji, sementara desain lantai kandang berkemiringan khusus memisahkan urine sapi menuju parit fermentasi pupuk cair tanaman pangan.',
               defaultSources: '1. Pedoman Rancang Bangun Instalasi Biogas Peternakan Berkelanjutan, Kementerian ESDM.\n2. Pedoman Konstruksi Kandang Sehat Ruminansia, Direktorat Jenderal Peternakan dan Kesehatan Hewan.'
             },
             {
               key: 'D',
               title: 'Mathematics: Kalkulasi Pertambahan Bobot Harian (ADG), FCR Ayam & Margin Keuntungan',
-              subtitle: 'Rumus ADG Sapi Potong (kg/hari), Rasio Pakan FCR Ayam Broiler, Modal Bakalan & Nilai Jual Qurban',
+              subtitle: 'Rumus ADG Peternakan Sapi (kg/hari), Rasio Pakan FCR Ayam Broiler, Modal Bakalan & Nilai Jual Qurban',
               guidedPoints: [
-                'Rumus perhitungan Pertambahan Bobot Badan Harian (Average Daily Gain / ADG) sapi: bobot akhir dikurangi bobot awal dibagi durasi hari masa penggemukan (target ideal sapi potong 0,8 - 1,2 kg/hari).',
+                'Rumus perhitungan Pertambahan Bobot Badan Harian (Average Daily Gain / ADG) sapi: bobot akhir dikurangi bobot awal dibagi durasi hari masa penggemukan (target ideal peternakan sapi 0,8 - 1,2 kg/hari).',
                 'Rumus rasio konversi pakan ternak unggas (FCR ayam broiler): total pakan dikonsumsi dibagi total bobot daging panen (target FCR 1,5 - 1,6 pada umur panen 35 hari bobot 2 kg).',
                 'Kalkulasi rincian modal usaha penggemukan sapi bakalan lokal di OKU Timur: pembelian bibit bakalan bobot 250 kg (Rp13,0 jt), pakan konsentrat dedak + obat 4 bulan (Rp3,3 jt), dan tenaga kerja (Rp700 rb) dengan total modal Rp17.000.000.',
                 'Perhitungan hasil penjualan sapi bobot 380 kg saat momen Idul Adha atau pasar ternak (harga jual Rp22.500.000), laba bersih usahatani (Rp5.500.000 per ekor), dan rasio kelayakan R/C ratio usahatani.'
               ],
               placeholder: 'Tuliskan hasil perhitungan matematis Anda mengenai rumus ADG sapi, target FCR ayam, rincian modal bakalan sapi, total penerimaan penjualan qurban, dan laba bersihnya... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. BPS Kabupaten OKU Timur, Populasi Ternak dan Analisis Usaha Penggemukan Sapi\n2. Buku Analisis Finansial Usaha Peternakan Sapi Potong dan Unggas Pedesaan',
-              defaultExp: 'Kalkulasi matematis pada usaha penggemukan sapi potong di Belitang menunjukkan capaian ADG rata-rata 0,95 kg per hari dengan perlakuan pakan konsentrat dedak dan silase jerami. Selama periode penggemukan 120 hari dengan total modal produksi Rp17.000.000 per ekor, penjualan sapi berbobot 380 kg pada momen hari raya menghasilkan penerimaan Rp22.500.000 dengan keuntungan bersih Rp5.500.000 per ekor.',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. BPS Kabupaten OKU Timur, Populasi Ternak dan Analisis Usaha Penggemukan Sapi\n2. Buku Analisis Finansial Usaha Peternakan Sapi dan Unggas Pedesaan',
+              defaultExp: 'Kalkulasi matematis pada usaha peternakan sapi di Belitang menunjukkan capaian ADG rata-rata 0,95 kg per hari dengan perlakuan pakan konsentrat dedak dan silase jerami. Selama periode penggemukan 120 hari dengan total modal produksi Rp17.000.000 per ekor, penjualan sapi berbobot 380 kg pada momen hari raya menghasilkan penerimaan Rp22.500.000 dengan keuntungan bersih Rp5.500.000 per ekor.',
               defaultSources: '1. BPS Kabupaten OKU Timur: Statistik Peternakan dan Penjualan Hewan Qurban.\n2. Laporan Analisis Finansial Peternakan Rakyat, Fakultas Peternakan Universitas Gadjah Mada.'
             },
             {
@@ -905,13 +905,13 @@
               title: 'Eksplorasi Peralatan, Perlengkapan & Mesin Peternakan Terpadu (Sapi, Kambing & Unggas)',
               subtitle: 'Inventarisasi Mesin Chopper Rumput, Drum Silase, Nipple Drinker, Pemanas Brooder, Biogas & APD Kandang',
               guidedPoints: [
-                'Peralatan pengolahan pakan dan pemeliharaan sapi potong di OKU Timur: sabit rumput, Mesin Pencacah Hijauan Pakan Ternak (Chopper Machine), tong/drum plastik kedap udara (silo) untuk fermentasi silase, gerobak dorong pakan, sekop pembersih kotoran, pompa semprot desinfektan (power sprayer), dan timbangan ternak / pita ukur lingkar dada (Rondo).',
+                'Peralatan pengolahan pakan dan pemeliharaan pada peternakan sapi di OKU Timur: sabit rumput, Mesin Pencacah Hijauan Pakan Ternak (Chopper Machine), tong/drum plastik kedap udara (silo) untuk fermentasi silase, gerobak dorong pakan, sekop pembersih kotoran, pompa semprot desinfektan (power sprayer), dan timbangan ternak / pita ukur lingkar dada (Rondo).',
                 'Peralatan dan perlengkapan kandang unggas (ayam petelur/pedaging & itik): tempat pakan gantung/talang (feeder), instalasi air minum otomatis (Nipple Drinker & regulator tekanan air), pemanas anak ayam (Gasolec/Brooder pemanas infra merah), kipas sirkulasi udara (exhaust fan/blower), termohigrometer kandang, serta egg tray (rak telur).',
                 'Peralatan pengolahan limbah dan kesehatan ternak: instalasi reaktor Biogas (kubah biodigester, pipa penyalur gas metana, manometer tekanan, kompor biogas), alat suntik vaksinasi otomatis (socorex syringe), gun Inseminasi Buatan (IB) beserta termos nitrogen cair, serta APD peternak (sepatu boot kandang, masker amonia, wearpack, dan sarung tangan lateks).'
               ],
               placeholder: 'Tuliskan inventarisasi lengkap peralatan pengolahan pakan (mesin chopper, drum silase), peralatan kandang unggas/sapi, instalasi biogas, serta perlengkapan APD peternakan... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Teknis Sarana dan Peralatan Peternakan Sapi Potong & Unggas, Ditjen PKH Kementan RI.\n2. Observasi Lapangan Peternakan Rakyat Kabupaten OKU Timur.',
-              defaultExp: 'Sektor peternakan sapi potong dan unggas di Kabupaten OKU Timur menggunakan rangkaian peralatan produktif mulai dari penyediaan pakan hingga sanitasi kandang. Pada peternakan sapi digunakan mesin pencacah rumput (chopper), tong plastik kedap udara untuk fermentasi silase, pita ukur bobot badan, serta instalasi reaktor biogas pengolah limbah kotoran. Pada peternakan unggas digunakan sistem minum otomatis nipple drinker, pemanas brooder DOC, termohigrometer, alat suntik vaksin socorex, serta perlengkapan APD biosekuriti kandang.',
+              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Teknis Sarana dan Peralatan Peternakan Sapi & Unggas, Ditjen PKH Kementan RI.\n2. Observasi Lapangan Peternakan Rakyat Kabupaten OKU Timur.',
+              defaultExp: 'Sektor peternakan sapi dan unggas di Kabupaten OKU Timur menggunakan rangkaian peralatan produktif mulai dari penyediaan pakan hingga sanitasi kandang. Pada peternakan sapi digunakan mesin pencacah rumput (chopper), tong plastik kedap udara untuk fermentasi silase, pita ukur bobot badan, serta instalasi reaktor biogas pengolah limbah kotoran. Pada peternakan unggas digunakan sistem minum otomatis nipple drinker, pemanas brooder DOC, termohigrometer, alat suntik vaksin socorex, serta perlengkapan APD biosekuriti kandang.',
               defaultSources: '1. Direktorat Jenderal Peternakan dan Kesehatan Hewan (Ditjen PKH) Kementan RI.\n2. Dinas Perikanan dan Peternakan Kabupaten OKU Timur.'
             },
             {
@@ -939,7 +939,7 @@
               ],
               placeholder: 'Tuliskan analisis mendalam mengenai aspek Teknologi (mesin penggerak chopper, sistem perpipaan nipple otomatis, pengatur suhu kandang, dan teknologi peralatan IB/vaksinasi)... (Minimal 300 karakter)',
               sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Modul Mekanisasi dan Otomasi Peralatan Peternakan Modern, Kementan RI.\n2. Buku Teknologi Reproduksi Inseminasi Buatan dan Manajemen Kandang.',
-              defaultExp: 'Dari dimensi Teknologi, modernisasi peternakan di OKU Timur ditandai oleh penggunaan mesin chopper berpenggerak motor bensin/diesel 6,5 HP yang mampu mencacah ratusan kilogram rumput dalam waktu singkat. Di sektor perunggasan, teknologi instalasi nipple drinker ber-regulator tekanan dan medikator otomatis menjamin suplai air minum higienis ke ribuan ekor ayam sekaligus, sedangkan teknologi kontainer nitrogen cair vakum dan gun Inseminasi Buatan memungkinkan peningkatan mutu genetik sapi potong lokal menjadi sapi unggul Simental dan Limousin.',
+              defaultExp: 'Dari dimensi Teknologi, modernisasi peternakan di OKU Timur ditandai oleh penggunaan mesin chopper berpenggerak motor bensin/diesel 6,5 HP yang mampu mencacah ratusan kilogram rumput dalam waktu singkat. Di sektor perunggasan, teknologi instalasi nipple drinker ber-regulator tekanan dan medikator otomatis menjamin suplai air minum higienis ke ribuan ekor ayam sekaligus, sedangkan teknologi kontainer nitrogen cair vakum dan gun Inseminasi Buatan memungkinkan peningkatan mutu genetik ternak sapi lokal menjadi sapi unggul Simental dan Limousin.',
               defaultSources: '1. Balai Besar Inseminasi Buatan (BBIB) & Ditjen PKH Kementan RI.\n2. Jurnal Teknologi Peternakan dan Mekanisasi Pakan.'
             },
             {
@@ -968,7 +968,7 @@
               placeholder: 'Tuliskan analisis mendalam mengenai perhitungan Matematika (kapasitas kg/jam mesin chopper, rumus ransum 10% bobot badan, rumus bobot pita ukur/ADG, dan penghematan biaya LPG/tenaga kerja)... (Minimal 300 karakter)',
               sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Analisis Matematis Ransum Pakan, Bobot Badan (Rumus Schrool) dan Usaha Peternakan, Ditjen PKH.\n2. Wawancara Kalkulasi Operasional Peternak Sapi/Unggas Kabupaten OKU Timur.',
               defaultExp: 'Melalui perhitungan Mathematics, manfaat mekanisasi peralatan peternakan dapat dikuantifikasi secara akurat. Seekor sapi berbobot 350 kg membutuhkan pakan hijauan 10% bobot badan (35 kg/hari); untuk kandang berisi 10 ekor sapi diperlukan 350 kg/hari yang dapat dicacah menggunakan mesin chopper hanya dalam waktu 25–30 menit dengan biaya BBM kurang dari Rp 7.000. Selain itu, penggunaan pakan silase terukur meningkatkan pertambahan bobot harian (ADG) sapi mencapai 0,9–1,2 kg/hari, sedangkan instalasi biogas menghemat pengeluaran bahan bakar dapur peternak hingga Rp 100.000 per bulan.',
-              defaultSources: '1. Pedoman Perhitungan Ransum dan Evaluasi Produktivitas Sapi Potong, Ditjen PKH.\n2. Jurnal Sosial Ekonomi Peternakan: Efisiensi Mesin Chopper dan Biogas.'
+              defaultSources: '1. Pedoman Perhitungan Ransum dan Evaluasi Produktivitas Peternakan Sapi, Ditjen PKH.\n2. Jurnal Sosial Ekonomi Peternakan: Efisiensi Mesin Chopper dan Biogas.'
             }
           ]
         }
@@ -1497,7 +1497,7 @@
                 { key: 'pertanian', name: 'Pertanian Padi Sawah', badge: dayNum === 4 ? 'Alsintan Sawah & RMU' : 'Lumbung Pangan Komering', icon: 'agriculture', desc: dayNum === 4 ? 'Traktor, Sprayer, Combine Harvester, RMU & APD Sawah dalam Analisis STEM' : 'Padi Sawah, Saluran Irigasi BK, Traktor/Combine & Ubinan HPP' },
                 { key: 'perkebunan', name: 'Perkebunan Rakyat', badge: dayNum === 4 ? 'Alat Sadap & Panen TBS' : 'Karet & Kelapa Sawit', icon: 'forest', desc: dayNum === 4 ? 'Pisau Sadap, Mangkok Lateks, Dodos, Egrek Teleskopik & Angkong dalam Analisis STEM' : 'Lateks Karet, Panen TBS Sawit, Rorak Lahan & Laba Pekebun' },
                 { key: 'perikanan', name: 'Perikanan Air Tawar', badge: dayNum === 4 ? 'Aerator & Alat Kualitas Air' : 'Sentra Patin & Lele Sumsel', icon: 'phishing', desc: dayNum === 4 ? 'Pompa Air, Kincir Aerasi, pH/TDS Meter, Mesin Pelet & Grading dalam Analisis STEM' : 'Budidaya Patin/Lele, Kualitas Air, Kincir Aerasi & FCR Pakan' },
-                { key: 'peternakan', name: 'Peternakan Pedesaan', badge: dayNum === 4 ? 'Mesin Chopper & Biogas' : 'Sapi Potong & Unggas', icon: 'pets', desc: dayNum === 4 ? 'Mesin Chopper Pakan, Drum Silase, Nipple Drinker, Brooder & Biogas dalam Analisis STEM' : 'Sapi Potong, Unggas, Silase Pakan, Chopper, Biogas & ADG' }
+                { key: 'peternakan', name: 'Peternakan Pedesaan', badge: dayNum === 4 ? 'Mesin Chopper & Biogas' : 'Peternakan Sapi & Unggas', icon: 'pets', desc: dayNum === 4 ? 'Mesin Chopper Pakan, Drum Silase, Nipple Drinker, Brooder & Biogas dalam Analisis STEM' : 'Peternakan Sapi, Unggas, Silase Pakan, Chopper, Biogas & ADG' }
               ].map(sec => {
                 const isActive = (selectedSector === sec.key);
                 const clickHandler = dayNum === 4 ? `selectDay4Sector('${sec.key}')` : `selectDay3Sector('${sec.key}')`;
@@ -2672,9 +2672,9 @@
       key: 'peternakan',
       name: 'Peternakan Sapi, Kambing & Unggas',
       shortName: '🐄 Peternakan',
-      badge: 'Sapi Potong, Kambing, Ayam & Bebek',
+      badge: 'Peternakan Sapi, Kambing, Ayam & Bebek',
       icon: 'pets',
-      objectExamples: 'Kandang Sapi Potong/Penggemukan, Kandang Kambing/Domba, Peternakan Ayam Petelur/Pedaging (Broiler), atau Budidaya Bebek/Itik di OKU Timur',
+      objectExamples: 'Peternakan Sapi, Kandang Kambing/Domba, Peternakan Ayam Petelur/Pedaging (Broiler), atau Budidaya Bebek/Itik di OKU Timur',
       day5: {
         focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Peternakan',
         summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di area kandang/peternakan tanpa wawancara pemilik. Sorot ternak, konstruksi kandang, dan peralatan pakan/sanitasi, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
@@ -2682,7 +2682,7 @@
           {
             time: '00:00 – 01:00',
             title: '1. Pembukaan, Identitas Diri & Profil Lokasi Peternakan',
-            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan lokasi kandang dan jenis hewan ternak yang Anda amati (sapi potong, kambing, ayam petelur/pedaging, atau bebek).'
+            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan lokasi kandang dan jenis hewan ternak yang Anda amati (peternakan sapi, kambing, ayam petelur/pedaging, atau bebek).'
           },
           {
             time: '01:00 – 02:15',

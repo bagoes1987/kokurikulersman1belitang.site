@@ -6187,7 +6187,7 @@
       }
     ],
     "correct": "C",
-    "explanation": "Peternakan rakyat di OKU Timur mencakup ruminansia (sapi potong Bali/PO, kambing/domba) serta unggas (ayam broiler/petelur dan bebek/itik sawah komering)."
+    "explanation": "Peternakan rakyat di OKU Timur mencakup ruminansia (peternakan sapi Bali/PO, kambing/domba) serta unggas (ayam broiler/petelur dan bebek/itik sawah komering)."
   },
   {
     "id": 169,
@@ -10789,7 +10789,7 @@
     "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
     "cognitiveLevel": "C3",
     "numberInIndicator": 24,
-    "question": "Peternak ruminansia (sapi potong dan kambing) di OKU Timur yang menyiapkan hewan ternaknya untuk momen penjualan Idul Adha menerapkan program penggemukan (fattening) dengan cara...",
+    "question": "Peternak ruminansia (peternakan sapi dan kambing) di OKU Timur yang menyiapkan hewan ternaknya untuk momen penjualan Idul Adha menerapkan program penggemukan (fattening) dengan cara...",
     "options": [
       {
         "key": "A",
@@ -20779,7 +20779,7 @@
     "options": [
       {
         "key": "A",
-        "text": "Pertambahan bobot harian (ADG) meningkat tajam (>1,2-1,5 kg/hari) dan persentase karkas daging naik hingga 60%, sehingga nilai jual sapi potong berumur 2 tahun mencapai di atas Rp 30-40 juta"
+        "text": "Pertambahan bobot harian (ADG) meningkat tajam (>1,2-1,5 kg/hari) dan persentase karkas daging naik hingga 60%, sehingga nilai jual hasil peternakan sapi berumur 2 tahun mencapai di atas Rp 30-40 juta"
       },
       {
         "key": "B",

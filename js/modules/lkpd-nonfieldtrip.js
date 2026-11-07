@@ -1059,7 +1059,7 @@
       cultureTheme: 'Pengetahuan pemeliharaan terpadu, keterampilan keluarga, dan etos kerja peternak',
       badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
       questions: [
-        { id: 1, text: 'Jenis ternak apa yang dipelihara (sapi potong/perah, kambing/domba, ayam broiler/petelur/kampung, atau bebek/itik) dan apa tujuan pemeliharaannya?', hint: 'Kaji jenis komoditas ternak lokal OKU Timur, tujuan budidaya (penggemukan/fattening, tabungan Idul Adha, produksi telur konsumsi harian, kemitraan broiler, atau bibit)...' },
+        { id: 1, text: 'Jenis ternak apa yang dipelihara (peternakan sapi, kambing/domba, ayam broiler/petelur/kampung, atau bebek/itik) dan apa tujuan pemeliharaannya?', hint: 'Kaji jenis komoditas ternak lokal OKU Timur, tujuan budidaya (penggemukan/fattening, tabungan Idul Adha, produksi telur konsumsi harian, kemitraan broiler, atau bibit)...' },
         { id: 2, text: 'Bagaimana Bapak/Ibu menentukan jenis ransum pakan dan manajemen perawatan ternak harian?', hint: 'Kaji mencari rumput hijauan odot/gajah, fermentasi amoniasi jerami padi sawah melimpah Belitang, konsentrat dedak padi lokal, pakan pelet, jadwal minum, dan sanitasi kandang...' },
         { id: 3, text: 'Apakah keterampilan beternak diperoleh dari tradisi keluarga turun-temurun, kelompok ternak, atau bimbingan penyuluh/mantri peternakan?', hint: 'Kaji kebiasaan beternak keluarga, kemitraan peternakan ayam, paguyuban peternak, atau bimbingan poskeswan/mantri inseminator OKU Timur...' },
         { id: 4, text: 'Bagaimana pembagian tugas keluarga dalam memberi pakan, membersihkan kandang, dan menjaga biosekuriti kesehatan ternak?', hint: 'Kaji peran ayah/ibu/anak dalam mencari pakan hijauan, pemberian makan terjadwal, pembersihan kotoran ternak, dan pencegahan wabah penyakit (seperti PMK atau flu burung)...' },
@@ -4007,9 +4007,9 @@
       key: 'peternakan',
       name: 'Peternakan Sapi, Kambing & Unggas',
       shortName: '🐄 Peternakan',
-      badge: 'Sapi Potong, Kambing, Ayam & Bebek',
+      badge: 'Peternakan Sapi, Kambing, Ayam & Bebek',
       icon: 'pets',
-      examples: 'Kandang Sapi Potong/Penggemukan, Kandang Kambing/Domba, Peternakan Ayam Petelur/Pedaging, atau Budidaya Bebek',
+      examples: 'Peternakan Sapi, Kandang Kambing/Domba, Peternakan Ayam Petelur/Pedaging, atau Budidaya Bebek',
       day5Segments: [
         '00:00–01:00 | Pembukaan, Identitas Diri (Nama, NISN, Kelas, Fasilitator) & Profil Lokasi Kandang Peternakan',
         '01:00–02:15 | Penjelasan Pilar Culture (Disiplin Jadwal Pakan, Sanitasi Lingkungan & Budaya Tabungan Ternak)',
