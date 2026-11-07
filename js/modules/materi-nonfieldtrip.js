@@ -172,78 +172,100 @@
       gradientClass: 'from-indigo-900 via-slate-900 to-teal-950 border-indigo-700/40',
       tagColorClass: 'bg-white/20 text-indigo-100',
       badgeColorClass: 'bg-amber-400 text-amber-950',
-      subtitle: 'Kajian Antropologis Hakikat Kebudayaan, Tujuh Unsur Universal, Ragam Mata Pencaharian Daerah, serta Sistem Peralatan, Mekanisasi Alsintan Modern & Jaringan Irigasi Pertanian OKU Timur',
-      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda diwajibkan melakukan investigasi pustaka dan analisis mandiri mengenai <strong>Kebudayaan, Sistem Mata Pencaharian, serta Sistem Peralatan &amp; Teknologi Pertanian Masyarakat OKU Timur</strong> dari buku antropologi, jurnal agroteknologi, data BPS, dan dokumen resmi kedinasan.',
+      subtitle: 'Penelusuran Mandiri: Hakikat Kebudayaan, 7 Unsur Universal, Ragam Mata Pencaharian Daerah, serta Sistem Peralatan, Mekanisasi Alsintan Modern & Penerapan Terpadu di OKU Timur',
+      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda tidak disajikan teks materi siap saji di layar. Anda <strong>diwajibkan meneliti dan mencari materi sendiri</strong> dari berbagai sumber (buku teks sosiologi/antropologi kurikulum merdeka, modul agroteknologi kementan, publikasi BPS OKU Timur, dinas pertanian, maupun jurnal ilmiah). Jawablah pertanyaan pada setiap kolom jawaban dan cantumkan sumber rujukan yang Anda temukan (dapat lebih dari 1 sumber).',
       cards: [
         {
           key: 'A',
-          title: 'Hakikat Budaya & 7 Unsur Universal OKU Timur',
-          subtitle: 'Bahasa Daerah, Religi, Sistem Kekerabatan & Akulturasi Harmonis Komering-Transmigran',
-          guidedPoints: [
-            'Hakikat kebudayaan menurut para ahli (E.B. Tylor, Koentjaraningrat, Selo Soemardjan) sebagai sistem gagasan, tindakan, dan artefak karya cipta manusia.',
-            'Uraian dan identifikasi nyata Tujuh Unsur Kebudayaan Universal (Bahasa, Pengetahuan, Organisasi Sosial, Peralatan Hidup, Mata Pencaharian, Religi, Kesenian) dalam konteks masyarakat OKU Timur.',
-            'Karakteristik akulturasi budaya yang harmonis antara masyarakat pribumi Komering dengan masyarakat transmigran (Jawa, Bali, Sunda) dalam menciptakan kohesi sosial pedesaan.'
+          title: 'A. Budaya dan Unsur-Unsur Kebudayaan',
+          subtitle: 'Pengertian Budaya & Tujuh Unsur Kebudayaan Universal',
+          taskInstruction: 'Sebutkan pengertian, jelaskan, dan berikan contoh:',
+          items: [
+            '1. Pengertian budaya (definisi umum & menurut para ahli)',
+            '2. Unsur-unsur budaya (Tujuh Unsur Kebudayaan Universal):\n   - Bahasa\n   - Sistem pengetahuan\n   - Organisasi sosial\n   - Sistem mata pencaharian\n   - Sistem teknologi dan peralatan\n   - Sistem religi dan kepercayaan\n   - Kesenian'
           ],
-          placeholder: 'Tuliskan hasil kajian mandiri Anda mengenai hakikat kebudayaan, pemetaan tujuh unsur universal di OKU Timur, serta keharmonisan akulturasi antar-suku bangsa di pedesaan... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Buku Antropologi SMA Kelas X Kurikulum Merdeka (Kemdikbudristek)\n2. Kajian Profil Budaya Daerah Komering, Disdikbud Kabupaten OKU Timur',
+          guidedPoints: [
+            'Sebutkan pengertian, jelaskan, dan berikan contoh:\n1. Pengertian budaya (definisi umum & menurut para ahli)\n2. Unsur-unsur budaya (Tujuh Unsur Kebudayaan Universal):\n   - Bahasa\n   - Sistem pengetahuan\n   - Organisasi sosial\n   - Sistem mata pencaharian\n   - Sistem teknologi dan peralatan\n   - Sistem religi dan kepercayaan\n   - Kesenian'
+          ],
+          placeholder: 'Ketikkan jawaban hasil penelusuran Anda mengenai pengertian budaya dan rincian tujuh unsur kebudayaan universal (bahasa, pengetahuan, organisasi sosial, mata pencaharian, teknologi, religi, kesenian) di sini... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Tuliskan sumber rujukan materi Anda (Bisa lebih dari 1 sumber, tekan tombol "+ Tambah Sumber Rujukan Lain"):\n1. Contoh: Buku Teks Antropologi/Sosiologi SMA Kelas X Kurikulum Merdeka (Kemdikbudristek)',
           defaultExp: 'Masyarakat Kabupaten OKU Timur mewarisi kekayaan tujuh unsur kebudayaan universal yang mencakup bahasa daerah Komering dan Jawa, sistem kekerabatan patrilineal dan matrilokal, kesenian daerah, sistem teknologi alsintan, mata pencaharian agrikultur, religi, serta sistem pengetahuan lokal perbintangan pranata mangsa dalam menyelaraskan kalender musim tanam padi.',
-          defaultSources: '1. Buku Antropologi & Kebudayaan Nusantara SMA Kelas X.\n2. Kajian Budaya Lokal Komering, Disdikbud OKU Timur.'
+          defaultSources: '1. Buku Antropologi & Kebudayaan Nusantara SMA Kelas X Kurikulum Merdeka.\n2. Kajian Budaya Lokal Komering, Disdikbud OKU Timur.'
         },
         {
           key: 'B',
-          title: 'Hubungan Budaya dengan Kegiatan Ekonomi, UMKM & Etos Kerja',
-          subtitle: 'Tradisi Sambatan, Sinoman, Gotong Royong & Solidaritas Sosial Usaha Mikro',
-          guidedPoints: [
-            'Keterkaitan erat antara nilai kearifan budaya lokal dengan pola perilaku ekonomi, etos kerja, dan relasi bisnis masyarakat pedesaan.',
-            'Tradisi gotong royong sambatan (bantu mengolah sawah tanpa upah uang) dan sinoman dalam mengurangi beban biaya operasional tenaga kerja dan memperkuat ketahanan keluarga.',
-            'Pembentukan modal sosial berbasis kepercayaan (trust) antar-pelaku UMKM pedesaan yang menumbuhkan ekosistem ekonomi berbasis komunitas yang tangguh terhadap krisis.'
+          title: 'B. Hubungan Budaya dengan Kegiatan Ekonomi dan Mata Pencaharian',
+          subtitle: 'Nilai Budaya, Etos Kerja, Kearifan Gotong Royong (Sambatan/Sinoman) & Modal Sosial',
+          taskInstruction: 'Jelaskan dan berikan contoh:',
+          items: [
+            '1. Hubungan budaya dengan kegiatan ekonomi dan mata pencaharian',
+            '2. Pengaruh nilai budaya dan etos kerja terhadap aktivitas mata pencaharian masyarakat',
+            '3. Kearifan lokal gotong royong (tradisi sambatan dan sinoman) dalam menekan biaya dan memperkuat ketahanan ekonomi',
+            '4. Pembentukan modal sosial berbasis kepercayaan (trust) dalam relasi ekonomi pedesaan'
           ],
-          placeholder: 'Uraikan hasil analisis Anda mengenai bagaimana tradisi gotong royong sambatan menekan biaya usaha tani, membangun ikatan kepercayaan bisnis UMKM, dan membentuk etos kerja masyarakat OKU Timur... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Jurnal Sosiologi Ekonomi Pedesaan Sumatera Selatan\n2. Modul Kewirausahaan Berbasis Kearifan Lokal Kemendikbud',
+          guidedPoints: [
+            'Jelaskan dan berikan contoh:\n1. Hubungan budaya dengan kegiatan ekonomi dan mata pencaharian\n2. Pengaruh nilai budaya dan etos kerja terhadap aktivitas mata pencaharian masyarakat\n3. Kearifan lokal gotong royong (tradisi sambatan dan sinoman) dalam menekan biaya dan memperkuat ketahanan ekonomi\n4. Pembentukan modal sosial berbasis kepercayaan (trust) dalam relasi ekonomi pedesaan'
+          ],
+          placeholder: 'Ketikkan jawaban hasil penelusuran Anda mengenai hubungan budaya dengan kegiatan ekonomi, pengaruh etos kerja, tradisi sambatan/sinoman, dan modal sosial berbasis kepercayaan di sini... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Tuliskan sumber rujukan materi Anda (Bisa lebih dari 1 sumber, tekan tombol "+ Tambah Sumber Rujukan Lain"):\n1. Contoh: Jurnal Sosiologi Ekonomi Pedesaan Sumatera Selatan / Modul Kewirausahaan Berbasis Kearifan Lokal',
           defaultExp: 'Kearifan budaya gotong royong sambatan dan sinoman sangat mengakar dalam pola kerja sektor ekonomi dan UMKM di OKU Timur. Solidaritas sosial ini mereduksi biaya tenaga kerja saat masa tanam dan panen, membangun ikatan kepercayaan antar-pelaku usaha mikro, serta menumbuhkan ekosistem ekonomi berbasis komunitas yang tangguh terhadap krisis.',
-          defaultSources: '1. Jurnal Sosiologi Ekonomi Pedesaan Sumatera Selatan.\n2. Modul Kewirausahaan Berbasis Kearifan Lokal.'
+          defaultSources: '1. Jurnal Sosiologi Ekonomi Pedesaan Sumatera Selatan.\n2. Modul Kewirausahaan Berbasis Kearifan Lokal Kemendikbudristek.'
         },
         {
           key: 'C',
-          title: 'Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan',
-          subtitle: 'Padi Sawah Irigasi Teknis, Perkebunan Karet, Sawit & Kolam Air Tawar',
-          guidedPoints: [
-            'Karakteristik sistem mata pencaharian budidaya padi sawah intensif dengan pola tanam IP-200 hingga IP-300 per tahun yang ditopang saluran irigasi teknis.',
-            'Karakteristik mata pencaharian perkebunan rakyat (karet alam dan kelapa sawit) serta dinamika penyesuaian keluarga petani saat menghadapi anomali harga getah.',
-            'Diversifikasi usaha tani terpadu melalui perikanan kolam air tawar (patin/lele) dan peternakan sapi sebagai pilar stabilitas pendapatan harian keluarga.'
+          title: 'C. Sistem Mata Pencaharian Masyarakat OKU Timur',
+          subtitle: 'Pertanian Pangan, Perkebunan, Perikanan-Peternakan, Perdagangan-Jasa, & Industri Rumah Tangga',
+          taskInstruction: 'Jelaskan karakteristik dan berikan contoh di OKU Timur:',
+          items: [
+            '1. Pertanian tanaman pangan (padi sawah irigasi Belitang, palawija)',
+            '2. Perkebunan (karet alam, kelapa sawit rakyat)',
+            '3. Perikanan dan peternakan (kolam patin/lele, peternakan sapi mandiri, peternakan kambing)',
+            '4. Perdagangan dan jasa (kios sarana tani, pasar tradisional, agen bank/BRILink, jasa angkut)',
+            '5. Industri rumah tangga dan pekerjaan formal (penggilingan padi RMU, pabrik tahu-tempe, kerupuk, guru, ASN/BUMDes)'
           ],
-          placeholder: 'Uraikan hasil riset Anda mengenai sistem mata pencaharian agrikultur unggulan di OKU Timur: pola rotasi tanam padi sawah, perkebunan karet, dan diversifikasi perikanan air tawar... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Dinas Pertanian dan Ketahanan Pangan Kabupaten OKU Timur, Laporan Kinerja Sektor Agrikultur\n2. BPS OKU Timur Dalam Angka',
-          defaultExp: 'Sektor agrikultur tanaman padi sawah menjadi tulang punggung perekonomian utama masyarakat OKU Timur. Keberadaan jaringan irigasi primer dan sekunder dari Danau Ranau memungkinkan petani melakukan pola rotasi tanam intensif IP-200 hingga IP-300 per tahun, sekaligus menggerakkan sektor turunan seperti pakan ternak dan penggilingan gabah.',
+          guidedPoints: [
+            'Jelaskan karakteristik dan berikan contoh di OKU Timur:\n1. Pertanian tanaman pangan (padi sawah irigasi Belitang, palawija)\n2. Perkebunan (karet alam, kelapa sawit rakyat)\n3. Perikanan dan peternakan (kolam patin/lele, peternakan sapi mandiri, peternakan kambing)\n4. Perdagangan dan jasa (kios sarana tani, pasar tradisional, agen bank/BRILink, jasa angkut)\n5. Industri rumah tangga dan pekerjaan formal (penggilingan padi RMU, pabrik tahu-tempe, kerupuk, guru, ASN/BUMDes)'
+          ],
+          placeholder: 'Ketikkan jawaban hasil penelusuran Anda mengenai 5 sektor mata pencaharian masyarakat OKU Timur (pangan, perkebunan, perikanan/peternakan, perdagangan/jasa, dan industri rumah tangga/pekerjaan formal) di sini... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Tuliskan sumber rujukan data Anda (Bisa lebih dari 1 sumber, tekan tombol "+ Tambah Sumber Rujukan Lain"):\n1. Contoh: Badan Pusat Statistik (BPS) Kabupaten OKU Timur, OKU Timur Dalam Angka',
+          defaultExp: 'Sektor agrikultur tanaman padi sawah menjadi tulang punggung perekonomian utama masyarakat OKU Timur. Keberadaan jaringan irigasi primer dan sekunder dari Danau Ranau memungkinkan petani melakukan pola rotasi tanam intensif IP-200 hingga IP-300 per tahun, disokong perkebunan karet/sawit, budidaya perikanan air tawar, peternakan sapi/kambing, serta UMKM kilang padi RMU.',
           defaultSources: '1. Dinas Pertanian & Ketahanan Pangan Kab. OKU Timur.\n2. BPS OKU Timur Dalam Angka.'
         },
         {
           key: 'D',
-          title: 'Sistem Teknologi Peralatan Pertanian (Alsintan) & Jaringan Irigasi',
-          subtitle: 'Evolusi dari Bajak Tradisional ke Traktor Roda 4, Combine Harvester & Saluran Komering',
-          guidedPoints: [
-            'Sejarah transformasi peralatan pertanian di OKU Timur dari alat mekanik konvensional (cangkul, bajak singkal ditarik kerbau/sapi) menuju mekanisasi alsintan modern bermesin diesel.',
-            'Efisiensi kerja, penghematan waktu panen, dan pengurangan biaya operasional berkat adopsi traktor roda empat, transplanter penanam bibit, dan mesin perontok combine harvester.',
-            'Sistem jaringan irigasi teknis Belitang (aliran primer, sekunder, tersier dari Danau Ranau) dan tata kelola pembagian giliran air oleh petugas ulu-ulu sawah.'
+          title: 'D. Sistem Teknologi dan Peralatan Pertanian, Perkebunan, Peternakan & Pengolahan',
+          subtitle: 'Peralatan Tradisional, Mekanisasi Alsintan, Irigasi, Pascapanen & Otomatisasi IT',
+          taskInstruction: 'Sebutkan pengertian, klasifikasi, dan berikan contoh:',
+          items: [
+            '1. Pengertian sistem teknologi dan peralatan',
+            '2. Jenis teknologi pada sektor pertanian, perkebunan, peternakan, dan agroindustri/pengolahan:\n   - Peralatan dan perkakas tradisional (cangkul, sabit, bajak singkal, ani-ani)\n   - Mesin dan mekanisasi pertanian (traktor roda 2 & 4, mesin transplanter)\n   - Infrastruktur dan jaringan irigasi (Bendung Perjaya, saluran primer & sekunder BK Belitang)\n   - Teknologi penanaman padi (benih unggul, jajar legowo, pemupukan presisi)\n   - Teknologi panen dan pascapanen (combine harvester, bed dryer, penggilingan RMU)\n   - Teknologi informasi dan otomatisasi pertanian (timbangan digital, QRIS/BRILink, pemasaran digital)'
           ],
-          placeholder: 'Tuliskan hasil kajian Anda mengenai sejarah modernisasi alsintan di OKU Timur, efisiensi combine harvester, serta manajemen pembagian air pada saluran irigasi teknis Belitang... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Besar Wilayah Sungai (BBWS) Sumatera VIII, Profil Jaringan Irigasi Komering\n2. Pedoman Mekanisasi dan Modernisasi Alsintan, Kementerian Pertanian RI',
-          defaultExp: 'Evolusi teknologi pertanian di OKU Timur berkembang pesat dari peralatan tradisional cangkul dan bajak singkal ditarik kerbau menuju modernisasi alsintan seperti traktor roda empat, transplanter penanam bibit, dan combine harvester perontok gabah. Mekanisasi ini didukung oleh pemeliharaan berkala saluran irigasi teknis Belitang.',
-          defaultSources: '1. Balai Besar Wilayah Sungai Sumatera VIII (Irigasi Komering).\n2. Pedoman Mekanisasi Pertanian Kementan RI.'
+          guidedPoints: [
+            'Sebutkan pengertian, klasifikasi, dan berikan contoh:\n1. Pengertian sistem teknologi dan peralatan\n2. Jenis teknologi pada sektor pertanian, perkebunan, peternakan, dan agroindustri/pengolahan:\n   - Peralatan dan perkakas tradisional (cangkul, sabit, bajak singkal, ani-ani)\n   - Mesin dan mekanisasi pertanian (traktor roda 2 & 4, mesin transplanter)\n   - Infrastruktur dan jaringan irigasi (Bendung Perjaya, saluran primer & sekunder BK Belitang)\n   - Teknologi penanaman padi (benih unggul, jajar legowo, pemupukan presisi)\n   - Teknologi panen dan pascapanen (combine harvester, bed dryer, penggilingan RMU)\n   - Teknologi informasi dan otomatisasi pertanian (timbangan digital, QRIS/BRILink, pemasaran digital)'
+          ],
+          placeholder: 'Ketikkan jawaban hasil penelusuran Anda mengenai pengertian sistem teknologi dan peralatan serta 6 klasifikasi teknologi dari tradisional hingga otomatisasi modern di sini... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Tuliskan sumber rujukan materi Anda (Bisa lebih dari 1 sumber, tekan tombol "+ Tambah Sumber Rujukan Lain"):\n1. Contoh: Pedoman Pemanfaatan Alat dan Mesin Pertanian (Alsintan) Kementan RI / BBWS Sumatera VIII',
+          defaultExp: 'Evolusi teknologi pertanian di OKU Timur berkembang pesat dari peralatan tradisional cangkul dan bajak singkal ditarik kerbau menuju modernisasi alsintan seperti traktor roda empat, transplanter penanam bibit, dan combine harvester perontok gabah. Mekanisasi ini didukung oleh pemeliharaan berkala saluran irigasi teknis Belitang dan inovasi pengeringan gabah bed dryer.',
+          defaultSources: '1. Balai Besar Wilayah Sungai Sumatera VIII (Irigasi Komering).\n2. Pedoman Mekanisasi Pertanian, Kementerian Pertanian RI.'
         },
         {
           key: 'E',
-          title: 'Inovasi Penanaman, Pascapanen, Otomatisasi & Keterampilan Petani',
-          subtitle: 'Pengering Bed Dryer, Pemupukan Presisi, Penurunan Susut Panen (Losses) & Petani Muda',
-          guidedPoints: [
-            'Inovasi teknik budidaya penanaman benih unggul bersertifikat dan pemupukan organik presisi guna memelihara kesuburan hara tanah sawah jangka panjang.',
-            'Penerapan teknologi mesin pengering gabah otomatis (bed dryer/vertical dryer) dalam mencegah pembusukan dan butir berkecambah pada musim penghujan.',
-            'Peningkatan keterampilan teknis (up-skilling) petani lokal dalam pengoperasian dan pemeliharaan mesin pertanian, serta strategi memikat minat generasi muda terdidik menjadi petani milenial.'
+          title: 'E. Keterampilan Teknis & Penerapan Teknologi Terpadu di OKU Timur',
+          subtitle: 'Keterampilan Petani, Integrasi Sektor Day 1 (Padi-Sapi-RMU-Ikan) & Peran Petani Milenial',
+          taskInstruction: 'Uraikan dan berikan contoh penerapan nyata di OKU Timur:',
+          items: [
+            '1. Pengetahuan dan keterampilan teknis petani (olah lahan, deteksi hama WBC/kresek, perawatan alsintan)',
+            '2. Peran generasi muda (petani milenial) dalam mengadopsi teknologi pertanian',
+            '3. Penerapan teknologi pertanian, perkebunan, peternakan, dan agroindustri di OKU Timur',
+            '4. Sistem integrasi terpadu (crop-livestock system): jerami panen untuk pakan sapi/kambing, kotoran ternak untuk pupuk organik sawah, serta dedak RMU untuk kolam ikan'
           ],
-          placeholder: 'Uraikan hasil analisis Anda mengenai inovasi teknologi penanaman, otomatisasi pengeringan gabah bed dryer, serta pentingnya penguasaan keterampilan teknis bagi petani muda OKU Timur... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Riset Balai Pengkajian Teknologi Pertanian (BPTP) Balitbangtan Sumatera Selatan\n2. Petunjuk Teknis Penanganan Pascapanen Padi Modern, Kementan RI',
-          defaultExp: 'Inovasi budidaya penanaman ramah lingkungan, pemupukan organik presisi, dan otomatisasi mesin pengering gabah (bed dryer) menjadi fokus utama peningkatan keterampilan teknis petani OKU Timur guna meminimalkan susut panen (losses), meningkatkan rendemen giling, dan menjaga mutu beras premium di pasar regional.',
-          defaultSources: '1. Riset Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel.\n2. Petunjuk Teknis Pascapanen Padi Modern.'
+          guidedPoints: [
+            'Uraikan dan berikan contoh penerapan nyata di OKU Timur:\n1. Pengetahuan dan keterampilan teknis petani (olah lahan, deteksi hama WBC/kresek, perawatan alsintan)\n2. Peran generasi muda (petani milenial) dalam mengadopsi teknologi pertanian\n3. Penerapan teknologi pertanian, perkebunan, peternakan, dan agroindustri di OKU Timur\n4. Sistem integrasi terpadu (crop-livestock system): jerami panen untuk pakan sapi/kambing, kotoran ternak untuk pupuk organik sawah, serta dedak RMU untuk kolam ikan'
+          ],
+          placeholder: 'Ketikkan jawaban hasil penelusuran Anda mengenai keterampilan teknis petani, peran petani milenial, dan penerapan nyata sistem integrasi terpadu di OKU Timur di sini... (Minimal 300 karakter)',
+          sourcePlaceholder: 'Tuliskan sumber rujukan materi Anda (Bisa lebih dari 1 sumber, tekan tombol "+ Tambah Sumber Rujukan Lain"):\n1. Contoh: Riset Balai Pengkajian Teknologi Pertanian (BPTP) Balitbangtan Sumsel',
+          defaultExp: 'Peningkatan keterampilan teknis petani OKU Timur berfokus pada efisiensi pemupukan presisi, pengoperasian mesin modern, serta integrasi sistem pertanian-peternakan terpadu (crop-livestock system). Sinergi ini mengolah jerami sisa panen menjadi pakan fermentasi sapi/kambing, mengolah kotoran menjadi pupuk kompos, serta menyalurkan dedak RMU untuk perikanan air tawar guna menciptakan ekonomi sirkular desa.',
+          defaultSources: '1. Riset Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel.\n2. Petunjuk Teknis Pascapanen Padi Modern, Kementan RI.'
         }
       ]
     },
