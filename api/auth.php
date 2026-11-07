@@ -5,6 +5,89 @@
  */
 require_once __DIR__ . '/db.php';
 
+/**
+ * Memeriksa apakah perangkat yang mengakses adalah perangkat fisik yang sama dengan yang tercatat di database
+ * Mencegah false-positive kicked / device locked ketika OS Android membersihkan storage atau berganti browser internal
+ */
+function isSameStudentDevice($currentDbDeviceId, $currentDbDeviceInfo, $newDeviceId, $newDeviceInfo) {
+    if (empty($currentDbDeviceId)) {
+        return true; // Belum pernah mengunci perangkat
+    }
+    // 1. Device ID string persis identik
+    if ($currentDbDeviceId === $newDeviceId) {
+        return true;
+    }
+
+    // 2. Cek Cookie tahan 1 tahun dari header HTTP request
+    if (!empty($_COOKIE['fincestem_did']) && $_COOKIE['fincestem_did'] === $currentDbDeviceId) {
+        return true;
+    }
+
+    // 3. Ekstrak hardware signature: dev_{hw}_{time}_{rand}
+    // Contoh format baru: dev_393x873c8_m7...
+    $dbParts  = explode('_', (string)$currentDbDeviceId);
+    $newParts = explode('_', (string)$newDeviceId);
+
+    $dbHw  = (count($dbParts) >= 4) ? $dbParts[1] : '';
+    $newHw = (count($newParts) >= 4) ? $newParts[1] : '';
+
+    $oldDev = strtolower((string)$currentDbDeviceInfo);
+    $newDev = strtolower((string)$newDeviceInfo);
+
+    $oldIsAndroid = str_contains($oldDev, 'android') || str_contains($oldDev, 'oppo') || str_contains($oldDev, 'samsung') || str_contains($oldDev, 'xiaomi') || str_contains($oldDev, 'vivo') || str_contains($oldDev, 'realme') || str_contains($oldDev, 'infinix') || str_contains($oldDev, 'tecno') || str_contains($oldDev, 'itel');
+    $newIsAndroid = str_contains($newDev, 'android') || str_contains($newDev, 'oppo') || str_contains($newDev, 'samsung') || str_contains($newDev, 'xiaomi') || str_contains($newDev, 'vivo') || str_contains($newDev, 'realme') || str_contains($newDev, 'infinix') || str_contains($newDev, 'tecno') || str_contains($newDev, 'itel');
+
+    $oldIsIos = str_contains($oldDev, 'iphone') || str_contains($oldDev, 'ipad') || str_contains($oldDev, 'ios');
+    $newIsIos = str_contains($newDev, 'iphone') || str_contains($newDev, 'ipad') || str_contains($newDev, 'ios');
+
+    $oldIsPc = str_contains($oldDev, 'windows') || str_contains($oldDev, 'mac') || str_contains($oldDev, 'pc') || str_contains($oldDev, 'laptop') || str_contains($oldDev, 'linux');
+    $newIsPc = str_contains($newDev, 'windows') || str_contains($newDev, 'mac') || str_contains($newDev, 'pc') || str_contains($newDev, 'laptop') || str_contains($newDev, 'linux');
+
+    // Jika kategori platform/OS berbeda total (misal HP vs Laptop, atau iPhone vs Android) -> PASTI PERANGKAT BERBEDA!
+    if (($oldIsAndroid && !$newIsAndroid) || ($oldIsIos && !$newIsIos) || ($oldIsPc && !$newIsPc)) {
+        return false;
+    }
+    if ((!$oldIsAndroid && $newIsAndroid) || (!$oldIsIos && $newIsIos) || (!$oldIsPc && $newIsPc)) {
+        return false;
+    }
+
+    // Jika keduanya memiliki nama model spesifik dan berbeda (misal OPPO vs Samsung) -> PASTI PERANGKAT BERBEDA!
+    if (!empty($currentDbDeviceInfo) && !empty($newDeviceInfo)) {
+        $oldModel = trim($currentDbDeviceInfo);
+        $newModel = trim($newDeviceInfo);
+        $isOldGeneric = in_array(strtolower($oldModel), ['hp android (google chrome)', 'unknown device (browser)', 'android (google chrome)', 'perangkat']);
+        $isNewGeneric = in_array(strtolower($newModel), ['hp android (google chrome)', 'unknown device (browser)', 'android (google chrome)', 'perangkat']);
+        if (!$isOldGeneric && !$isNewGeneric && strcasecmp($oldModel, $newModel) !== 0) {
+            return false;
+        }
+    }
+
+    // Jika keduanya memiliki hardware hash (resolusi + core CPU) dan nilainya sama
+    if (!empty($dbHw) && !empty($newHw) && $dbHw !== 'gen' && $dbHw === $newHw) {
+        return true;
+    }
+
+    // 4. Jika nama model HP spesifik dan persis sama (misal 'OPPO CPH2239 (Google Chrome)' === 'OPPO CPH2239 (Google Chrome)')
+    if (!empty($currentDbDeviceInfo) && !empty($newDeviceInfo)) {
+        $oldModel = trim($currentDbDeviceInfo);
+        $newModel = trim($newDeviceInfo);
+        if (strcasecmp($oldModel, $newModel) === 0 && 
+            !in_array(strtolower($oldModel), ['hp android (google chrome)', 'unknown device (browser)', 'android (google chrome)', 'perangkat'])) {
+            return true;
+        }
+    }
+
+    // 5. Toleransi Pemulihan Pertama Kali (One-Time Upgrade):
+    // Jika data di database masih format lama (tanpa hardware hash, count < 4),
+    // dan perangkat baru adalah kategori OS yang sama (misal sama-sama Android Chrome)
+    if (count($dbParts) < 4 && $oldIsAndroid && $newIsAndroid) {
+        return true;
+    }
+
+    return false;
+}
+
+
 $action = $_GET['action'] ?? 'login';
 
 if ($action === 'login') {
@@ -377,13 +460,31 @@ if ($action === 'login') {
                         ]);
                     } catch (Exception $e2) {}
                 }
-            } elseif ($currentDbDeviceId === $deviceId) {
-                // Perangkat sama -> Perbarui device_info jika sebelumnya masih generik (misal 'K')
-                if ($deviceInfo && (!str_contains($currentDbDeviceInfo, ' ') || $currentDbDeviceInfo === 'K (Google Chrome)')) {
-                    try {
-                        $stmtUp = $pdo->prepare("UPDATE `users` SET `device_info` = :dinfo WHERE `id` = :uid");
-                        $stmtUp->execute([':dinfo' => $deviceInfo, ':uid' => $user['id']]);
-                    } catch (Exception $eUp) {}
+
+                if (!headers_sent()) {
+                    setcookie('fincestem_did', $deviceId, [
+                        'expires'  => time() + (86400 * 365),
+                        'path'     => '/',
+                        'samesite' => 'Lax'
+                    ]);
+                }
+            } elseif ($currentDbDeviceId === $deviceId || isSameStudentDevice($currentDbDeviceId, $currentDbDeviceInfo, $deviceId, $deviceInfo)) {
+                // Perangkat sama (atau false-positive recovery di HP yang sama) -> Perbarui device_id & device_info ke signature termutakhir
+                try {
+                    $stmtUp = $pdo->prepare("UPDATE `users` SET `device_id` = :did, `device_info` = :dinfo, `device_locked_at` = NOW() WHERE `id` = :uid");
+                    $stmtUp->execute([
+                        ':did'   => $deviceId,
+                        ':dinfo' => $deviceInfo ?: $currentDbDeviceInfo,
+                        ':uid'   => $user['id']
+                    ]);
+                } catch (Exception $eUp) {}
+
+                if (!headers_sent()) {
+                    setcookie('fincestem_did', $deviceId, [
+                        'expires'  => time() + (86400 * 365),
+                        'path'     => '/',
+                        'samesite' => 'Lax'
+                    ]);
                 }
             } else {
                 // Mencoba login di perangkat kedua yang berbeda -> TOLAK LOGIN
@@ -457,8 +558,9 @@ if ($action === 'reset_device') {
 
 // AKSI VERIFIKASI SESI PERANGKAT AKTIF (REMOTE AUTO-LOGOUT)
 if ($action === 'check_session') {
-    $nisn     = trim($_GET['nisn'] ?? '');
-    $deviceId = trim($_GET['device_id'] ?? '');
+    $nisn       = trim($_GET['nisn'] ?? '');
+    $deviceId   = trim($_GET['device_id'] ?? '');
+    $deviceInfo = trim($_GET['device_info'] ?? '');
 
     if (!$nisn || !$deviceId) {
         jsonResponse(true, 'OK', ['valid' => true]);
@@ -474,9 +576,37 @@ if ($action === 'check_session') {
         $row = $stmt->fetch();
 
         if ($row) {
-            $currentDbDev = $row['device_id'];
-            // Jika ada device_id di database dan TIDAK SAMA dengan device ini -> HP/device ini harus di-LOGOUT!
+            $currentDbDev  = $row['device_id'];
+            $currentDbInfo = $row['device_info'];
+
+            // Jika ada device_id di database dan TIDAK SAMA dengan device ini
             if (!empty($currentDbDev) && $currentDbDev !== $deviceId) {
+                // Periksa apakah ini perangkat fisik yang sama (toleransi storage reset / in-app browser)
+                if (isSameStudentDevice($currentDbDev, $currentDbInfo, $deviceId, $deviceInfo)) {
+                    // Perangkat sama -> sinkronkan device_id di database dan perbarui cookie
+                    try {
+                        $upStmt = $pdo->prepare("UPDATE `users` SET `device_id` = :did, `device_info` = :dinfo WHERE (`identifier` = :id OR `identifier` = :padded OR `nis` = :nis) AND `role` = 'siswa'");
+                        $upStmt->execute([
+                            ':did'    => $deviceId,
+                            ':dinfo'  => $deviceInfo ?: $currentDbInfo,
+                            ':id'     => $nisn,
+                            ':padded' => $paddedId,
+                            ':nis'    => $nisn
+                        ]);
+                    } catch (Exception $eSync) {}
+
+                    if (!headers_sent()) {
+                        setcookie('fincestem_did', $deviceId, [
+                            'expires'  => time() + (86400 * 365),
+                            'path'     => '/',
+                            'samesite' => 'Lax'
+                        ]);
+                    }
+
+                    jsonResponse(true, 'Sesi disinkronkan pada perangkat yang sama', ['valid' => true, 'synced' => true]);
+                }
+
+                // Benar-benar perangkat lain -> KICK OUT!
                 jsonResponse(false, 'Akun Anda telah login di perangkat lain (' . ($row['device_info'] ?: 'Perangkat Baru') . '). Sesi pada perangkat ini telah dinonaktifkan.', [
                     'kicked'       => true,
                     'new_device'   => $row['device_info'] ?: 'Perangkat Baru'

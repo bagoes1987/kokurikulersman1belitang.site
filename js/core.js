@@ -276,12 +276,50 @@ const FincestemCore = {
       return { success: false, message: 'Peran pengguna tidak valid.' };
     },
     getDeviceId: function() {
-      let did = localStorage.getItem('fincestem_device_id');
+      // 1. Cek penyimpanan lokal
+      let did = '';
+      try { did = localStorage.getItem('fincestem_device_id') || ''; } catch (e) {}
+
+      // 2. Jika kosong di localStorage, cek sessionStorage
       if (!did) {
-        // Generate persistent UUID for this device/browser
-        did = 'dev_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 10);
-        localStorage.setItem('fincestem_device_id', did);
+        try { did = sessionStorage.getItem('fincestem_device_id') || ''; } catch (e) {}
       }
+
+      // 3. Jika kosong, pulihkan dari Cookie tahan 1 tahun (365 hari)
+      if (!did && typeof document !== 'undefined') {
+        try {
+          const m = document.cookie.match(/(?:^|;\s*)fincestem_did=([^;]+)/);
+          if (m && m[1]) {
+            did = decodeURIComponent(m[1]);
+          }
+        } catch (eCook) {}
+      }
+
+      // 4. Hitung hardware signature hash stabil (resolusi layar min & max, cpu cores)
+      let hw = 'gen';
+      try {
+        if (typeof screen !== 'undefined') {
+          const w = Math.min(screen.width || 0, screen.height || 0);
+          const h = Math.max(screen.width || 0, screen.height || 0);
+          const cores = (typeof navigator !== 'undefined' && navigator.hardwareConcurrency) ? navigator.hardwareConcurrency : 4;
+          hw = w + 'x' + h + 'c' + cores;
+        }
+      } catch (eHw) {}
+
+      // 5. Jika belum ada di penyimpanan manapun, generate persistent UUID dengan Hardware Signature Hash stabil
+      if (!did) {
+        did = 'dev_' + hw + '_' + Date.now().toString(36) + '_' + Math.random().toString(36).substring(2, 8);
+      }
+
+      // 6. Sinkronkan ke SEMUA penyimpanan (localStorage, sessionStorage, dan Cookie 365 hari)
+      try { localStorage.setItem('fincestem_device_id', did); } catch (e) {}
+      try { sessionStorage.setItem('fincestem_device_id', did); } catch (e) {}
+      if (typeof document !== 'undefined' && did) {
+        try {
+          document.cookie = 'fincestem_did=' + encodeURIComponent(did) + '; max-age=31536000; path=/; SameSite=Lax';
+        } catch (eC) {}
+      }
+
       return did;
     },
     getDeviceInfo: function() {
@@ -430,7 +468,8 @@ const FincestemCore = {
         return;
       }
       if (window.location.protocol.startsWith('http')) {
-        fetch(FincestemCore.api.base + '/auth.php?action=check_session&nisn=' + encodeURIComponent(nisn) + '&device_id=' + encodeURIComponent(deviceId))
+        const deviceInfo = this.getDeviceInfo();
+        fetch(FincestemCore.api.base + '/auth.php?action=check_session&nisn=' + encodeURIComponent(nisn) + '&device_id=' + encodeURIComponent(deviceId) + '&device_info=' + encodeURIComponent(deviceInfo))
           .then(r => r.json())
           .then(res => {
             if (callback) callback(res);
@@ -480,10 +519,12 @@ const FincestemCore = {
 
     async login(identifier, password, role) {
       try {
+        const deviceId = FincestemCore.auth.getDeviceId();
+        const deviceInfo = FincestemCore.auth.getDeviceInfo();
         const res = await fetch(this.base + '/auth.php?action=login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ identifier, password, role })
+          body: JSON.stringify({ identifier, password, role, device_id: deviceId, device_info: deviceInfo })
         });
         if (res.ok) {
           const json = await res.json();
