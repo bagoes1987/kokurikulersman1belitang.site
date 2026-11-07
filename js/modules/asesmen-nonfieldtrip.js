@@ -96,11 +96,12 @@
     const isSecDay = (dayNum === 3 || dayNum === 4 || dayNum === 5 || dayNum === 6);
     let selectedSector = isSecDay ? getStudentDay3Sector(cleanNisn, dayNum) : '';
     const storageKey = isSecDay
-      ? `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${selectedSector}_${cleanNisn}`
-      : `fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`;
+      ? `fincestem_pkg_nft_asesmen_v3_d${dayNum}_${selectedSector}_${cleanNisn}`
+      : `fincestem_pkg_nft_asesmen_v3_d${dayNum}_${cleanNisn}`;
     const expectedLength = (dayNum === 0) ? 10 : 50;
     try {
-      // Bersihkan cache paket v1 lama jika ada
+      // Bersihkan cache paket v1 & v2 lama jika ada
+      localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`);
       localStorage.removeItem(`fincestem_pkg_nft_asesmen_d${dayNum}_${cleanNisn}`);
       const savedPkg = localStorage.getItem(storageKey);
       if (savedPkg) {
@@ -212,19 +213,19 @@
       }
     });
 
-    const isDay2 = (dayNum === 2);
-    const cognitiveQuota = isDay2 ? {
+    const isDay1or2 = (dayNum === 1 || dayNum === 2);
+    const cognitiveQuota = isDay1or2 ? {
       'A': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
       'B': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
       'C': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
       'D': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
       'E': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 }
     } : {
-      'A': { C1: 3, C2: 2, C3: 3, C4: 2 },
-      'B': { C1: 2, C2: 3, C3: 2, C4: 3 },
-      'C': { C1: 3, C2: 3, C3: 2, C4: 2 },
-      'D': { C1: 2, C2: 2, C3: 3, C4: 3 },
-      'E': { C1: 3, C2: 2, C3: 2, C4: 3 }
+      'A': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
+      'B': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
+      'C': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
+      'D': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 },
+      'E': { C1: 2, C2: 2, C3: 2, C4: 2, C5: 2 }
     };
 
     const chosen50 = [];
@@ -240,7 +241,7 @@
       });
 
       let pickedForThisInd = [];
-      const levelsToPick = isDay2 ? ['C1', 'C2', 'C3', 'C4', 'C5'] : ['C1', 'C2', 'C3', 'C4'];
+      const levelsToPick = isDay1or2 ? ['C1', 'C2', 'C3', 'C4', 'C5'] : ['C1', 'C2', 'C3', 'C4', 'C5'];
       levelsToPick.forEach(lvl => {
         const count = quota[lvl] || 2;
         const shuf = seededShuffle(byCog[lvl] || [], rng);
@@ -549,6 +550,7 @@
 
   function loadDraftProgress() {
     const draftKey = `fincestem_draft_nft_asesmen_d${examState.dayNum}_${examState.cleanNisn}`;
+    const pkgKeyV3 = `fincestem_pkg_nft_asesmen_v3_d${examState.dayNum}_${examState.cleanNisn}`;
     const pkgKeyV2 = `fincestem_pkg_nft_asesmen_v2_d${examState.dayNum}_${examState.cleanNisn}`;
     const pkgKeyV1 = `fincestem_pkg_nft_asesmen_d${examState.dayNum}_${examState.cleanNisn}`;
     try {
@@ -579,6 +581,7 @@
 
           if (shouldClearStaleDraft) {
             localStorage.removeItem(draftKey);
+            localStorage.removeItem(pkgKeyV3);
             localStorage.removeItem(pkgKeyV2);
             localStorage.removeItem(pkgKeyV1);
             examState.answers = {};
