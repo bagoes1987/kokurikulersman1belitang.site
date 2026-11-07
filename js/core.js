@@ -148,9 +148,13 @@ const FincestemCore = {
             const sCleanNisn = sNisn.replace(/\\D/g, '');
             const sUnpadded = sCleanNisn.replace(/^0+/, '');
 
-            // Dukung NISN ganda Dapodik 3105533980 untuk ROYAN MAULANA (NIS 14922)
-            if (sNis === '14922' && (cleanId === '3105533980' || cleanId === '0110014922' || cleanId === '110014922' || cleanId === '14922')) {
-              return true;
+            // Dukung pemisahan cerdas NISN/NIS untuk ROYAN MAULANA (NIS 14922) dan M.FADHIL RAMLI (NIS 14418)
+            if (sNis === '14922') {
+              if (cleanId === '14922' || cleanId === '0110014922' || cleanId === '110014922') return true;
+              if (cleanId === '3105533980' && pwd === '14922') return true;
+            }
+            if (sNis === '14418') {
+              if (cleanId === '14418' || cleanId === '3105533980') return true;
             }
 
             return sNisn === paddedId || 
@@ -169,7 +173,7 @@ const FincestemCore = {
 
           // Password harus berupa NIS siswa (atau NISN)
           const validNis = String(found.nis || '').trim();
-          if (pwd !== validNis && pwd !== String(found.nisn).trim() && !(found.nis === '14922' && (pwd === '3105533980' || pwd === '0110014922'))) {
+          if (pwd !== validNis && pwd !== String(found.nisn).trim() && !(found.nis === '14922' && (pwd === '14922' || pwd === '0110014922')) && !(found.nis === '14418' && (pwd === '14418' || pwd === '3105533980'))) {
             return { success: false, message: 'Kata sandi salah! Masukkan nomor NIS (Nomor Induk Siswa) Anda.' };
           }
 

@@ -143,7 +143,11 @@ if ($action === 'login') {
         $validPassword = true;
     } elseif (password_verify($password, $user['password_hash'])) {
         $validPassword = true;
-    } elseif ($user['role'] === 'siswa' && ($password === $user['identifier'] || ($user['nis'] === '14922' && ($password === '3105533980' || $password === '0110014922')))) {
+    } elseif ($user['role'] === 'siswa' && (
+        $password === $user['identifier'] || 
+        ($user['nis'] === '14922' && ($password === '14922' || $password === '0110014922')) || 
+        ($user['nis'] === '14418' && ($password === '14418' || $password === '3105533980'))
+    )) {
         $validPassword = true;
     } elseif ($userIsTeacher && (
         in_array($password, ['Fincestem2026!', 'fasilitator', 'koordinator', 'guru']) || 
