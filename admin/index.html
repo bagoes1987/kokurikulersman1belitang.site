@@ -4356,9 +4356,9 @@
     <!-- Rendered dynamically for @media print -->
   </div>
 
-  <script src="../js/siswa_data.js?v=20261015_ft_full"></script>
+  <script src="../js/siswa_data.js?v=20261107_v9_fadhil_royan"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261107_v1"></script>
+  <script src="../js/core.js?v=20261107_v9_fadhil_royan"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/admin-mentorship.js?v=20261106_zonefix_v6"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
@@ -5852,7 +5852,7 @@
 
       resetSelectedStudentNisn = nisn;
       const list = window.FincestemMasterStudents || [];
-      const s = list.find(item => String(item.nisn).trim() === String(nisn).trim());
+      const s = list.find(item => (nis && String(item.nis).trim() === String(nis).trim()) || String(item.nisn).trim() === String(nisn).trim());
       if (!s) return;
 
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
@@ -6778,7 +6778,7 @@
       }
     }
 
-    function openStudentDetail(nisn) {
+    function openStudentDetail(nisn, nis) {
       const list = window.FincestemMasterStudents || [];
       const s = list.find(item => String(item.nisn).trim() === String(nisn).trim());
       if (!s) return;
@@ -7889,7 +7889,7 @@
               </div>
 
               <div class="flex items-center gap-1.5 flex-wrap shrink-0">
-                <button type="button" onclick="handleLoginAsTesterStudent('${nisn}')" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] flex items-center gap-1 shadow-2xs cursor-pointer transition-all" title="Langsung masuk dan uji coba aplikasi sebagai siswa ini">
+                <button type="button" onclick="handleLoginAsTesterStudent('${nisn}', '${s.nis}')" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-[11px] flex items-center gap-1 shadow-2xs cursor-pointer transition-all" title="Langsung masuk dan uji coba aplikasi sebagai siswa ini">
                   <span class="material-symbols-outlined text-sm">login</span>
                   <span>Login &amp; Tes Sekarang</span>
                 </button>
@@ -7973,10 +7973,11 @@
       });
     }
 
-    function handleLoginAsTesterStudent(nisn) {
+    function handleLoginAsTesterStudent(nisn, nis) {
       const cleanNisn = String(nisn || '').trim();
       const list = window.FincestemMasterStudents || [];
-      const stu = list.find(s => String(s.nisn).trim() === cleanNisn || String(s.nisn).trim().replace(/^0+/, '') === cleanNisn.replace(/^0+/, ''));
+      const cleanNis = String(nis || '').trim();
+        const stu = list.find(s => (cleanNis && String(s.nis).trim() === cleanNis) || String(s.nisn).trim() === cleanNisn || String(s.nisn).trim().replace(/^0+/, '') === cleanNisn.replace(/^0+/, ''));
       if (!stu) {
         FincestemCore.ui.toast('Data siswa tidak ditemukan!', 'error');
         return;

@@ -142,11 +142,23 @@ const FincestemCore = {
         // 1. Cek Master Data 1.165 Siswa Dapodik
         const masterList = window.FincestemMasterStudents || [];
         if (Array.isArray(masterList) && masterList.length > 0) {
-          const matches = masterList.filter(s => 
-            String(s.nisn).trim() === paddedId || 
-            String(s.nisn).trim() === cleanId || 
-            String(s.nis).trim() === cleanId
-          );
+          const matches = masterList.filter(s => {
+            const sNisn = String(s.nisn || '').trim();
+            const sNis = String(s.nis || '').trim();
+            const sCleanNisn = sNisn.replace(/\\D/g, '');
+            const sUnpadded = sCleanNisn.replace(/^0+/, '');
+
+            // Dukung NISN ganda Dapodik 3105533980 untuk ROYAN MAULANA (NIS 14922)
+            if (sNis === '14922' && (cleanId === '3105533980' || cleanId === '0110014922' || cleanId === '110014922' || cleanId === '14922')) {
+              return true;
+            }
+
+            return sNisn === paddedId || 
+                   sNisn === cleanId || 
+                   sCleanNisn === cleanId || 
+                   (sUnpadded && sUnpadded === cleanId.replace(/^0+/, '')) ||
+                   sNis === cleanId;
+          });
 
           if (matches.length === 0) {
             return { success: false, message: 'NISN ' + id + ' tidak terdaftar dalam database Dapodik SMAN 1 Belitang!' };
@@ -157,7 +169,7 @@ const FincestemCore = {
 
           // Password harus berupa NIS siswa (atau NISN)
           const validNis = String(found.nis || '').trim();
-          if (pwd !== validNis && pwd !== String(found.nisn).trim()) {
+          if (pwd !== validNis && pwd !== String(found.nisn).trim() && !(found.nis === '14922' && (pwd === '3105533980' || pwd === '0110014922'))) {
             return { success: false, message: 'Kata sandi salah! Masukkan nomor NIS (Nomor Induk Siswa) Anda.' };
           }
 
