@@ -6175,7 +6175,7 @@
       },
       {
         "key": "C",
-        "text": "Sapi potong dan kambing"
+        "text": "Sapi (potong/perah), kambing/domba, serta unggas (ayam/bebek)"
       },
       {
         "key": "D",
@@ -6187,7 +6187,7 @@
       }
     ],
     "correct": "C",
-    "explanation": "Peternakan sapi potong (seperti sapi PO dan Bali) serta kambing merupakan komoditas ternak utama pedesaan di OKU Timur."
+    "explanation": "Peternakan rakyat di OKU Timur mencakup ruminansia (sapi potong Bali/PO, kambing/domba) serta unggas (ayam broiler/petelur dan bebek/itik sawah komering)."
   },
   {
     "id": 169,
@@ -6911,7 +6911,7 @@
     "indicatorName": "Potensi Sektor Ekonomi Kabupaten OKU Timur",
     "cognitiveLevel": "C3",
     "numberInIndicator": 30,
-    "question": "Sapi potong milik peternak di OKU Timur dibeli dengan harga bibit Rp12.000.000. Setelah digemukkan selama 8 bulan dengan pakan jerami fermentasi dan ampas tahu, sapi laku Rp20.000.000 dengan biaya pakan Rp3.500.000. Keuntungan peternak adalah...",
+    "question": "Seekor sapi bakalan milik peternak rakyat di OKU Timur dibeli dengan modal bibit Rp12.000.000. Setelah digemukkan selama 8 bulan dengan pakan fermentasi jerami sawah dan ampas tahu dedak Belitang, sapi laku Rp20.000.000 dengan total biaya pakan Rp3.500.000. Berapakah keuntungan bersih peternak tersebut?",
     "options": [
       {
         "key": "A",
@@ -7183,7 +7183,7 @@
     "indicatorName": "Potensi Sektor Ekonomi Kabupaten OKU Timur",
     "cognitiveLevel": "C4",
     "numberInIndicator": 38,
-    "question": "Mendiagnosis kendala peternak sapi potong pedesaan dalam mengembangkan skala usaha menjadi peternakan modern komersial adalah...",
+    "question": "Mendiagnosis kendala umum peternak rakyat (ruminansia sapi/kambing dan unggas ayam/bebek) di pedesaan OKU Timur dalam mengembangkan skala usaha menjadi peternakan modern komersial adalah...",
     "options": [
       {
         "key": "A",
@@ -10211,7 +10211,7 @@
     "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
     "cognitiveLevel": "C1",
     "numberInIndicator": 7,
-    "question": "Bangsa sapi potong pedaging yang paling banyak dipelihara secara turun-temurun oleh para petani di pedesaan Belitang adalah...",
+    "question": "Bangsa ternak sapi pedaging yang paling adaptif dan banyak dipelihara secara turun-temurun oleh peternak di pedesaan Belitang OKU Timur adalah...",
     "options": [
       {
         "key": "A",
@@ -10313,7 +10313,7 @@
     "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
     "cognitiveLevel": "C2",
     "numberInIndicator": 10,
-    "question": "Sistem integrasi tanaman padi sawah dan ternak sapi potong (crop-livestock integration) di Belitang memberikan keuntungan simbiosis berupa...",
+    "question": "Sistem integrasi tanaman pangan padi sawah dan peternakan rakyat (crop-livestock integration) di Belitang OKU Timur memberikan keuntungan simbiosis berupa...",
     "options": [
       {
         "key": "A",
@@ -10789,7 +10789,7 @@
     "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
     "cognitiveLevel": "C3",
     "numberInIndicator": 24,
-    "question": "Peternak sapi potong di OKU Timur yang menyiapkan sapinya untuk penjualan Idul Adha menerapkan program penggemukan (fattening) dengan cara...",
+    "question": "Peternak ruminansia (sapi potong dan kambing) di OKU Timur yang menyiapkan hewan ternaknya untuk momen penjualan Idul Adha menerapkan program penggemukan (fattening) dengan cara...",
     "options": [
       {
         "key": "A",
@@ -11299,7 +11299,7 @@
     "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
     "cognitiveLevel": "C5",
     "numberInIndicator": 39,
-    "question": "Menilai keberhasilan program Inseminasi Buatan (IB) kawin suntik pada sapi potong di OKU Timur, faktor kunci keberhasilan di tingkat peternak adalah...",
+    "question": "Menilai keberhasilan program Inseminasi Buatan (IB) kawin suntik pada ternak sapi dan kambing di OKU Timur, faktor kunci keberhasilan di tingkat peternak adalah...",
     "options": [
       {
         "key": "A",
@@ -19340,7 +19340,7 @@
     "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
     "cognitiveLevel": "C2",
     "numberInIndicator": 1,
-    "question": "Sapi potong tergolong hewan ruminansia (memamah biak) dengan lambung majemuk terdiri dari 4 bagian. Bagian lambung manakah yang berfungsi sebagai ruang fermentasi utama tempat hidup miliaran bakteri dan protozoa pengurai serat selulosa pakan hijauan?",
+    "question": "Ternak ruminansia (seperti sapi dan kambing/domba) tergolong hewan memamah biak dengan lambung majemuk terdiri dari 4 bagian. Bagian lambung manakah yang berfungsi sebagai ruang fermentasi utama tempat hidup miliaran mikroba pengurai serat selulosa hijauan pakan?",
     "options": [
       {
         "key": "A",
@@ -19375,7 +19375,7 @@
     "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
     "cognitiveLevel": "C3",
     "numberInIndicator": 2,
-    "question": "Dalam ilmu nutrisi ternak sapi potong di OKU Timur, kebutuhan pakan hijauan segar (seperti rumput gajah odot) per hari dihitung berdasarkan persentase bobot badan hidup ternak, yaitu sebesar...",
+    "question": "Dalam ilmu nutrisi ternak ruminansia (sapi dan kambing) di OKU Timur, kebutuhan pakan hijauan segar (seperti rumput gajah odot) per hari dihitung berdasarkan persentase bobot badan hidup ternak, yaitu sebesar...",
     "options": [
       {
         "key": "A",
@@ -19445,7 +19445,7 @@
     "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
     "cognitiveLevel": "C3",
     "numberInIndicator": 4,
-    "question": "Pemberian daun leguminosa seperti Gamal (Gliricidia sepium) atau Lamtoro (Leucaena leucocephala) pada ternak sapi potong sangat penting dalam ransum pakan karena berfungsi sebagai...",
+    "question": "Pemberian daun leguminosa seperti Gamal (Gliricidia sepium) atau Lamtoro (Leucaena leucocephala) pada ternak ruminansia (sapi dan kambing) sangat penting dalam ransum pakan karena berfungsi sebagai...",
     "options": [
       {
         "key": "A",
@@ -19585,7 +19585,7 @@
     "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
     "cognitiveLevel": "C4",
     "numberInIndicator": 8,
-    "question": "Parasit cacing hati (Fasciola gigantica) sering menyerang sapi potong yang digembalakan di areal persawahan atau rawa lebak OKU Timur. Mengapa keberadaan siput air tawar kecil (Lymnaea rubiginosa) menjadi kunci penularan cacing hati ini?",
+    "question": "Parasit cacing hati (Fasciola gigantica) dapat menyerang ternak ruminansia (sapi, kerbau, kambing) yang digembalakan di areal persawahan atau rawa lebak OKU Timur. Mengapa keberadaan siput air tawar kecil (Lymnaea rubiginosa) menjadi kunci penularan cacing hati ini?",
     "options": [
       {
         "key": "A",
@@ -19620,7 +19620,7 @@
     "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
     "cognitiveLevel": "C3",
     "numberInIndicator": 9,
-    "question": "Pemberian garam dapur (NaCl) dan mineral blok jilat (mineral lick block) di dalam kandang sapi potong di Belitang bertujuan untuk memenuhi kebutuhan sains faal berupa...",
+    "question": "Pemberian garam dapur (NaCl) dan mineral blok jilat (mineral lick block) di dalam kandang ternak ruminansia (sapi dan kambing) di Belitang bertujuan untuk memenuhi kebutuhan sains faal berupa...",
     "options": [
       {
         "key": "A",
@@ -19725,7 +19725,7 @@
     "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
     "cognitiveLevel": "C3",
     "numberInIndicator": 2,
-    "question": "Teknologi Inseminasi Buatan (IB / Kawin Suntik) pada sapi potong di OKU Timur menggunakan sperma beku (straw semen). Di dalam wadah apa straw semen beku tersebut disimpan agar sel sperma tetap hidup dorman selama bertahun-tahun?",
+    "question": "Teknologi Inseminasi Buatan (IB / Kawin Suntik) pada ternak sapi di OKU Timur menggunakan sperma beku (straw semen). Di dalam wadah apa straw semen beku tersebut disimpan agar sel sperma tetap hidup dorman selama bertahun-tahun?",
     "options": [
       {
         "key": "A",
@@ -20180,7 +20180,7 @@
     "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
     "cognitiveLevel": "C3",
     "numberInIndicator": 5,
-    "question": "Rancangan lantai kandang sapi potong yang ideal di Belitang dibuat dengan kemiringan lereng 2° hingga 3° (kemiringan 2-3 cm per 1 meter panjang lantai) ke arah parit pembuangan belakang. Apa fungsi rekayasa sipil kandang ini?",
+    "question": "Rancangan lantai kandang ternak (sapi dan kambing) yang ideal di Belitang dibuat dengan kemiringan lereng 2° hingga 3° (kemiringan 2-3 cm per 1 meter panjang lantai) ke arah parit pembuangan belakang. Apa fungsi rekayasa sipil kandang ini?",
     "options": [
       {
         "key": "A",
@@ -20250,7 +20250,7 @@
     "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
     "cognitiveLevel": "C4",
     "numberInIndicator": 7,
-    "question": "Orientasi membujur bangunan kandang sapi potong yang benar di daerah beriklim tropis seperti OKU Timur adalah menghadap ke arah Barat - Timur. Alasan rekayasa termal arsitektur kandang ini adalah...",
+    "question": "Orientasi membujur bangunan kandang ternak (sapi, kambing, maupun unggas) yang benar di daerah beriklim tropis seperti OKU Timur adalah menghadap ke arah Barat - Timur. Alasan rekayasa termal arsitektur kandang ini adalah...",
     "options": [
       {
         "key": "A",
@@ -20320,7 +20320,7 @@
     "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
     "cognitiveLevel": "C4",
     "numberInIndicator": 9,
-    "question": "Penyekatan kandang jepit (crush chute / handling crate) berbahan pipa besi galvanis kokoh dirancang peternak sapi potong di Belitang. Fungsi utama fasilitas kandang jepit ini adalah...",
+    "question": "Penyekatan kandang jepit (crush chute / handling crate) berbahan pipa besi galvanis kokoh dirancang peternak sapi dan ruminansia di Belitang. Fungsi utama fasilitas kandang jepit ini adalah...",
     "options": [
       {
         "key": "A",
@@ -20355,7 +20355,7 @@
     "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
     "cognitiveLevel": "C3",
     "numberInIndicator": 10,
-    "question": "Dalam penampungan air minum sapi potong, pemasangan bak air otomatis berpengapung pelampung (automatic float water trough) memastikan ketersediaan air minum secara 'ad libitum' (tak terbatas). Mengapa air minum sapi wajib ad libitum?",
+    "question": "Dalam penampungan air minum ternak (sapi dan kambing), pemasangan bak air otomatis berpengapung pelampung (automatic float waterer) memastikan ketersediaan air minum secara 'ad libitum' (tak terbatas). Mengapa air minum ternak wajib ad libitum?",
     "options": [
       {
         "key": "A",
@@ -21020,7 +21020,7 @@
     "indicatorName": "Sintesis Solusi STEM Terpadu (Inovasi & Keberlanjutan Sektor Unggulan OKU Timur)",
     "cognitiveLevel": "C4",
     "numberInIndicator": 9,
-    "question": "Pembentukan Koperasi Peternak Sapi Potong di OKU Timur yang terhubung dengan lembaga perbankan syariah / KUR (Kredit Usaha Rakyat) Peternakan memecahkan kendala permodalan pengadaan bakalan sapi melalui...",
+    "question": "Pembentukan Koperasi Peternak Rakyat (Sapi, Kambing & Unggas) di OKU Timur yang terhubung dengan lembaga perbankan mikro / program KUR Peternakan memecahkan kendala permodalan pengadaan bibit dan pakan melalui...",
     "options": [
       {
         "key": "A",

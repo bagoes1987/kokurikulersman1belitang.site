@@ -1055,28 +1055,28 @@
     },
     peternakan: {
       key: 'peternakan',
-      name: 'Peternakan (Sapi Potong, Kambing & Unggas)',
-      cultureTheme: 'Pengetahuan pemeliharaan, keterampilan keluarga, dan kebiasaan kerja',
+      name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba & Unggas: Ayam/Bebek)',
+      cultureTheme: 'Pengetahuan pemeliharaan terpadu, keterampilan keluarga, dan etos kerja peternak',
       badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
       questions: [
-        { id: 1, text: 'Jenis ternak apa yang dipelihara dan apa tujuan pemeliharaannya?', hint: 'Kaji jenis ternak (sapi Bali/PO, kambing, ayam petelur) dan tujuannya (tabungan qurban, pembibitan, atau usaha pokok)...' },
-        { id: 2, text: 'Bagaimana Bapak/Ibu menentukan jenis pakan dan cara perawatan ternak?', hint: 'Kaji mencari rumput hijauan, jerami fermentasi amoniasi, konsentrat dedak, jadwal minum, dan kebersihan kandang...' },
-        { id: 3, text: 'Apakah keterampilan beternak diperoleh dari keluarga atau belajar dari peternak lain?', hint: 'Kaji kebiasaan beternak turun-temurun, kursus peternakan, atau bimbingan mantri hewan/inseminator...' },
-        { id: 4, text: 'Bagaimana pembagian tugas keluarga dalam memberi pakan, membersihkan kandang, dan merawat ternak?', hint: 'Kaji peran bapak mencari pakan, ibu/anak memberi makan sore dan membersihkan kotoran kandang...' },
-        { id: 5, text: 'Apakah ada teknologi yang digunakan untuk meningkatkan kesehatan atau produktivitas ternak?', hint: 'Kaji teknologi kawin suntik (Inseminasi Buatan/IB), mesin pencacah pakan (chopper), atau vitamin penggemukan...' }
+        { id: 1, text: 'Jenis ternak apa yang dipelihara (sapi potong/perah, kambing/domba, ayam broiler/petelur/kampung, atau bebek/itik) dan apa tujuan pemeliharaannya?', hint: 'Kaji jenis komoditas ternak lokal OKU Timur, tujuan budidaya (penggemukan/fattening, tabungan Idul Adha, produksi telur konsumsi harian, kemitraan broiler, atau bibit)...' },
+        { id: 2, text: 'Bagaimana Bapak/Ibu menentukan jenis ransum pakan dan manajemen perawatan ternak harian?', hint: 'Kaji mencari rumput hijauan odot/gajah, fermentasi amoniasi jerami padi sawah melimpah Belitang, konsentrat dedak padi lokal, pakan pelet, jadwal minum, dan sanitasi kandang...' },
+        { id: 3, text: 'Apakah keterampilan beternak diperoleh dari tradisi keluarga turun-temurun, kelompok ternak, atau bimbingan penyuluh/mantri peternakan?', hint: 'Kaji kebiasaan beternak keluarga, kemitraan peternakan ayam, paguyuban peternak, atau bimbingan poskeswan/mantri inseminator OKU Timur...' },
+        { id: 4, text: 'Bagaimana pembagian tugas keluarga dalam memberi pakan, membersihkan kandang, dan menjaga biosekuriti kesehatan ternak?', hint: 'Kaji peran ayah/ibu/anak dalam mencari pakan hijauan, pemberian makan terjadwal, pembersihan kotoran ternak, dan pencegahan wabah penyakit (seperti PMK atau flu burung)...' },
+        { id: 5, text: 'Apakah ada peralatan atau teknologi yang digunakan untuk meningkatkan efisiensi dan kesehatan ternak?', hint: 'Kaji teknologi mesin perajang chopper pakan, kawin suntik (Inseminasi Buatan/IB), kandang panggung kambing, instalasi nipple drinker ayam, penghangat brooder, atau pemanfaatan kotoran jadi biogas/pupuk bokashi sawah...' }
       ]
     },
     perdagangan: {
       key: 'perdagangan',
-      name: 'Perdagangan & Jasa (Pasar Tradisional, Toko, Bengkel & Transportasi)',
-      cultureTheme: 'Kepercayaan, komunikasi, dan hubungan sosial',
+      name: 'Perdagangan & UMKM (Pasar Gumawang/Martapura, Toko Sembako, Kios Saprotan & Kuliner Lokal)',
+      cultureTheme: 'Kepercayaan, komunikasi, etika niaga, dan modal sosial pelanggan',
       badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-300',
       questions: [
-        { id: 1, text: 'Barang atau jasa apa yang Bapak/Ibu tawarkan kepada pelanggan?', hint: 'Kaji jenis dagangan sembako, hasil bumi pasar Gumawang, pakaian, atau jasa bengkel alsintan/transportasi logistik...' },
-        { id: 2, text: 'Bagaimana Bapak/Ibu membangun kepercayaan dan menjaga hubungan baik dengan pelanggan?', hint: 'Kaji kejujuran timbangan, keramahan tegur sapa, kualitas barang konsisten, dan harga bersahabat...' },
-        { id: 3, text: 'Apakah kebiasaan atau hubungan sosial masyarakat memengaruhi kegiatan jual beli? Bagaimana contohnya?', hint: 'Kaji sistem langganan warga sekampung, arisan pedagang, atau sistem tempo/kredit bayar saat panen...' },
-        { id: 4, text: 'Apakah Bapak/Ibu menggunakan media sosial, pembayaran digital, atau aplikasi untuk menjalankan usaha?', hint: 'Kaji pemesanan lewat WhatsApp, penggunaan QRIS perbankan digital, EDC agen bank, atau pencatatan digital...' },
-        { id: 5, text: 'Bagaimana cara Bapak/Ibu menghadapi persaingan usaha dan perubahan kebutuhan pelanggan?', hint: 'Kaji strategi menjaga stok barang lengkap, layanan ramah cepat, penataan toko menarik, atau pesan-antar...' }
+        { id: 1, text: 'Barang dagangan atau produk apa yang Bapak/Ibu sediakan kepada pelanggan di wilayah ini?', hint: 'Kaji jenis dagangan sembako, sarana produksi tani/pupuk/benih (saprotan), hasil bumi pasar Gumawang/Martapura, kuliner olahan lokal, atau pakaian/jasa...' },
+        { id: 2, text: 'Bagaimana Bapak/Ibu membangun kepercayaan dan menjaga hubungan langganan dengan para pembeli?', hint: 'Kaji kejujuran timbangan/takaran, keramahan tegur sapa khas warga, kepastian ketersediaan stok barang, dan harga bersahabat...' },
+        { id: 3, text: 'Apakah musim panen padi/sawit/karet memengaruhi omzet penjualan toko atau kios Bapak/Ibu?', hint: 'Kaji lonjakan daya beli petani saat panen raya rendeng/gadu, sistem tempo/kredit bayar saat panen padi, dan perputaran arus kas pedagang...' },
+        { id: 4, text: 'Apakah Bapak/Ibu sudah menggunakan media sosial, layanan transaksi nontunai (QRIS), atau layanan perbankan digital?', hint: 'Kaji transaksi QRIS bank, pemesanan via WhatsApp, kerja sama agen perbankan, atau pembukuan keuangan toko...' },
+        { id: 5, text: 'Bagaimana cara Bapak/Ibu menghadapi persaingan dagang dan perubahan kebutuhan belanja konsumen saat ini?', hint: 'Kaji strategi melengkapi varian barang, pelayanan antar pesanan ke rumah, kenyamanan toko, dan adaptasi harga...' }
       ]
     },
     industri: {
@@ -1094,15 +1094,15 @@
     },
     formal: {
       key: 'formal',
-      name: 'Pekerjaan Formal (Aparatur Sipil Negara, Guru, Nakes, BUMN/Bank & Swasta)',
-      cultureTheme: 'Etika, tanggung jawab, disiplin, dan kerja sama',
+      name: 'Lembaga Keuangan Mikro, Koperasi, Agen BRILink & Layanan Publik',
+      cultureTheme: 'Integritas, etika pelayanan, inklusi keuangan desa, dan tanggung jawab profesional',
       badgeColor: 'bg-violet-100 text-violet-800 border-violet-300',
       questions: [
-        { id: 1, text: 'Apa tugas dan tanggung jawab utama Bapak/Ibu dalam pekerjaan ini?', hint: 'Kaji rincian tugas pelayanan publik, administrasi kedinasan, mendidik siswa, melayani kesehatan, atau operasional kantor...' },
-        { id: 2, text: 'Nilai atau etika apa yang harus diterapkan ketika melayani masyarakat atau bekerja dalam organisasi?', hint: 'Kaji etika ramah 5S (Senyum, Salam, Sapa, Sopan, Santun), integritas, profesionalisme kerja, dan kejujuran...' },
-        { id: 3, text: 'Bagaimana disiplin waktu dan tanggung jawab memengaruhi hasil pekerjaan?', hint: 'Kaji ketepatan jam kerja/absensi, kepatuhan SOP, ketuntasan berkas layanan warga, dan evaluasi pimpinan...' },
-        { id: 4, text: 'Bagaimana kerja sama dan komunikasi dilakukan dengan rekan kerja?', hint: 'Kaji rapat koordinasi rutin, musyawarah mufakat internal, kekompakan tim kerja, dan budaya saling menghargai...' },
-        { id: 5, text: 'Bagaimana perkembangan teknologi mengubah cara Bapak/Ibu menyelesaikan pekerjaan?', hint: 'Kaji digitalisasi aplikasi pelaporan kedinasan, tanda tangan elektronik, sistem informasi pelayanan, atau rapat online...' }
+        { id: 1, text: 'Apa tugas, peranan pokok, atau layanan utama yang Bapak/Ibu sediakan bagi masyarakat pedesaan OKU Timur?', hint: 'Kaji layanan inklusi perbankan (tarik tunai bansos/transfer hasil panen via Agen BRILink/Laku Pandai, permodalan Koperasi Tani/KUD, simpan pinjam desa, atau pelayanan administrasi/pendidikan/kesehatan)...' },
+        { id: 2, text: 'Nilai, etika, dan prinsip kejujuran apa yang wajib dijaga dalam melayani transaksi keuangan atau kebutuhan warga?', hint: 'Kaji ketelitian nominal uang, keamanan PIN/data nasabah, transparansi biaya administrasi, keramahan pelayanan 5S, dan integritas...' },
+        { id: 3, text: 'Bagaimana peran layanan ini dalam membantu petani dan warga desa yang tempat tinggalnya jauh dari kantor cabang bank di kota?', hint: 'Kaji penghematan ongkos dan waktu transportasi warga desa ke Belitang/Martapura, pencairan cepat bantuan pemerintah, dan kemudahan modal...' },
+        { id: 4, text: 'Bagaimana pengelolaan likuiditas uang kas, pembukuan harian, dan koordinasi dengan lembaga induk perbankan/pemerintah?', hint: 'Kaji ketersediaan modal tunai agen/koperasi saat masa panen raya atau bantuan cair, penggunaan mesin EDC/aplikasi digital, dan rekonsiliasi saldo...' },
+        { id: 5, text: 'Bagaimana perkembangan teknologi digital (EDC, mobile banking, sistem informasi online) mengubah kecepatan dan kemudahan layanan Bapak/Ibu?', hint: 'Kaji keandalan sinyal internet di pedesaan, kemudahan transaksi digital 24 jam, pencatatan otomatis transaksi, dan tantangan teknis lapangan...' }
       ]
     }
   };
@@ -1430,10 +1430,10 @@
                   <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi, Palawija Jagung/Kedelai)</option>
                   <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan (Karet Rakyat, Kelapa Sawit)</option>
                   <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>3. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele, Nila)</option>
-                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>4. Peternakan (Sapi Potong, Kambing, Unggas)</option>
-                  <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>5. Perdagangan &amp; Jasa (Pasar Gumawang / Martapura, Toko, Bengkel Alsintan, Logistik)</option>
+                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>4. Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba, Ayam Broiler/Petelur &amp; Bebek)</option>
+                  <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>5. Perdagangan &amp; UMKM (Pasar Gumawang / Martapura, Toko Sembako, Kios Saprotan &amp; Kuliner Lokal)</option>
                   <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>6. Industri Rumah Tangga (Olahan Kerupuk Kemplang, Rengginang, Pandai Besi, Makanan Lokal)</option>
-                  <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Pekerjaan Formal (Aparatur Sipil Negara/ASN, Guru, Nakes, BUMN/Bank/Swasta)</option>
+                  <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Lembaga Keuangan Mikro, Koperasi, Agen BRILink &amp; Layanan Publik</option>
                 </select>
                 <p class="text-[11px] text-indigo-900/80 leading-relaxed font-medium mt-0.5">
                   <em>*Catatan: Begitu Anda memilih sektor di atas, Kartu 3 (Pertanyaan Khusus) akan otomatis menampilkan 5 pertanyaan yang sesuai dengan sektor profesi narasumber Anda.</em>
@@ -2269,26 +2269,26 @@
     },
     peternakan: {
       key: 'peternakan',
-      name: 'Peternakan Pedesaan (Sapi Potong & Unggas)',
-      badge: 'Sektor Peternakan',
+      name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba & Unggas/Ayam/Bebek)',
+      badge: 'Sektor Peternakan Umum OKU Timur',
       icon: 'pets',
       colorClass: 'amber',
-      scalePlaceholder: 'Contoh: 8 Ekor Sapi Potong / 500 Ekor Ayam Broiler',
-      scaleLabel: 'Populasi Ternak (Jumlah Ekor):',
-      sainsA1Label: '1. Kondisi Kandang, Sirkulasi Udara & Sanitasi Lingkungan:',
-      sainsA1Hint: 'Amati dan tanyakan: konstruksi lantai kandang (semen bersekat / panggung tanah), kelancaran sirkulasi udara dan cahaya matahari, kebersihan tempat pakan/minum, serta drainase limbah kotoran...',
-      sainsA2Label: '2. Kondisi Fisik Ternak, Bobot Badan & Kualitas Pakan:',
-      sainsA2Hint: 'Amati dan tanyakan: postur dan kegemukan ternak, kilau bulu ternak, nafsu makan, serta jenis pakan yang diberikan (rumput gajah odot, jerami fermentasi, konsentrat dedak/bekatul)...',
-      tekB1Label: '1. Identifikasi Mesin & Teknologi Peternakan yang Digunakan:',
-      tekB1Hint: 'Catat teknologi yang diamati: mesin perajang pakan (chopper rumput), teknologi Inseminasi Buatan (kawin suntik/IB), tong/terpal silase fermentasi anaerob, instalasi biogas kotoran ternak...',
-      tekB2Label: '2. Status Kepemilikan Mesin, Energi & Biaya Operasional:',
-      tekB2Hint: 'Tanyakan ke peternak: biaya bensin mesin chopper, biaya jasa mantri inseminator suntik IB, atau biaya pengadaan konsentrat/vitamin penggemuk ternak...',
-      engC1Label: '1. Kendala Teknis Lapangan yang Dihadapi Peternak:',
-      engC1Hint: 'Tanyakan ke peternak: Apa masalah teknis paling menantang dalam beternak? (Misal: pasokan rumput hijauan langka saat musim kemarau, bau kotoran mengundang lalat dekat pemukiman, ternak lambat menambah bobot)...',
-      engC2Label: '2. Solusi Rekayasa Praktis yang Diterapkan oleh Peternak:',
-      engC2Hint: 'Tanyakan dan catat solusinya: Bagaimana teknik khusus yang diterapkan peternak? (Misal: mengolah amoniasi fermentasi jerami padi melimpah sisa panen, memanfaatkan kotoran menjadi pupuk kompos organik, modifikasi palung pakan hemat tercecer)...',
+      scalePlaceholder: 'Contoh: 6 Ekor Sapi / 20 Ekor Kambing / 1.000 Ekor Ayam Broiler / 250 Ekor Bebek Petelur',
+      scaleLabel: 'Populasi Ternak yang Dikelola (Jumlah Ekor):',
+      sainsA1Label: '1. Kondisi Kandang, Sirkulasi Udara, Sanitasi & Biosekuriti Lingkungan:',
+      sainsA1Hint: 'Amati dan tanyakan: konstruksi lantai kandang (semen bersekat untuk sapi, panggung kayu/bambu untuk kambing, sistem postal sekam/baterai untuk unggas ayam/bebek), kelancaran sirkulasi udara dan sinar matahari pagi, kebersihan tempat pakan/minum, serta pengelolaan limbah kotoran...',
+      sainsA2Label: '2. Kondisi Fisik Ternak, Laju Pertumbuhan/Produksi & Manajemen Nutrisi Pakan:',
+      sainsA2Hint: 'Amati dan tanyakan: postur dan bobot ternak, kebersihan bulu, nafsu makan, produksi harian (daging, telur, susu), serta formula ransum pakan (rumput gajah odot, jerami padi sawah fermentasi, dedak bekatul Belitang, konsentrat, ampas tahu)...',
+      tekB1Label: '1. Identifikasi Peralatan Kerja, Mesin & Teknologi Peternakan yang Digunakan:',
+      tekB1Hint: 'Catat peralatan dan teknologi yang diamati: mesin pencacah rumput/chopper bertenaga bensin/listrik, teknologi kawin suntik (Inseminasi Buatan/IB), drum/silase fermentasi anaerob pakan, instalasi nipple drinker unggas, pemanas gasolec/brooder, timbangan gantung/palet digital, atau instalasi biogas kotoran ternak...',
+      tekB2Label: '2. Status Kepemilikan Peralatan/Mesin, Sumber Energi & Biaya Operasional:',
+      tekB2Hint: 'Tanyakan ke peternak: biaya operasional BBM/listrik untuk mesin chopper atau pemanas DOC, biaya jasa mantri inseminator suntik IB / vaksinasi, atau biaya pengadaan konsentrat dedak/pelet pakan per periode pemeliharaan...',
+      engC1Label: '1. Kendala Teknis Lapangan yang Dihadapi Peternak di OKU Timur:',
+      engC1Hint: 'Tanyakan ke peternak: Kendala teknis apa yang paling menantang? (Misal: pasokan rumput hijauan menipis saat kemarau sawah, bau kotoran kandang dekat permukiman, penyakit musiman seperti PMK sapi atau ND/flu burung ayam, fluktuasi harga pakan konsentrat, atau bibit bakalan mahal)...',
+      engC2Label: '2. Solusi Rekayasa Praktis & Inovasi yang Diterapkan oleh Peternak:',
+      engC2Hint: 'Tanyakan dan catat solusinya: Bagaimana rekayasa praktis yang diterapkan peternak? (Misal: mengolah amoniasi jerami padi melimpah sisa panen sawah Belitang menjadi silase awet, mencampur probiotik pada sekam/litter kandang penekan amonia bau kotoran, merakit instalasi pembuangan kotoran ke bak biogas/kompos pupuk sawah, atau merancang palung pakan anti-cecer)...',
       engC3Label: '3. Evaluasi & Catatan Siswa terhadap Solusi Rekayasa Peternak:',
-      engC3Hint: 'Tuliskan catatan analisis Anda: Apakah teknik pengolahan pakan/limbah peternak tersebut terbukti mampu memangkas waktu mencari rumput dan menekan biaya pakan?'
+      engC3Hint: 'Tuliskan catatan analisis Anda: Apakah teknik pengolahan pakan silase, rekayasa kandang sehat, atau pemanfaatan limbah kotoran menjadi pupuk/biogas terbukti efektif memangkas biaya pemeliharaan dan ramah lingkungan?'
     }
   };
 
@@ -2514,7 +2514,7 @@
                   <option value="pertanian" ${selSector === 'pertanian' ? 'selected' : ''}>1. Pertanian Padi Sawah (Lumbung Pangan Komering, Irigasi BK, Traktor/Combine)</option>
                   <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet &amp; Kelapa Sawit, Sadap Lateks, Panen TBS)</option>
                   <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>3. Perikanan Air Tawar (Sentra Kolam Patin &amp; Lele Belitang, Aerator &amp; Pakan)</option>
-                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>4. Peternakan Pedesaan (Sapi Potong &amp; Unggas, Silase Pakan, Chopper &amp; Biogas)</option>
+                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>4. Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba, Ayam Broiler/Petelur &amp; Bebek, Silase Pakan, Chopper &amp; Biogas)</option>
                 </select>
                 <p class="text-[11px] text-emerald-900/80 leading-relaxed font-medium mt-0.5">
                   <em>*Catatan: Seluruh panduan observasi Sains, Teknologi, dan Rekayasa di bawah ini otomatis menyesuaikan dengan sektor yang Anda pilih.</em>
@@ -3426,15 +3426,15 @@
     },
     peternakan: {
       key: 'peternakan',
-      name: 'Peternakan Sapi Potong & Unggas',
+      name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba & Unggas: Ayam/Bebek)',
       icon: 'pets',
-      badge: 'Mesin Chopper, Otomasi Kandang & Biogas',
-      examples: 'Mesin Pencacah Rumput (Chopper Machine), Tong/Drum Fermentasi Silase, Pita Ukur Bobot Sapi (Rondo) / Timbangan Ternak, Instalasi Minum Otomatis (Nipple Drinker), Pemanas Anak Ayam (Brooder/Gasolec), Kipas Exhaust Fan, Reaktor Biogas, atau Alat Suntik Vaksin Socorex & Gun Inseminasi Buatan (IB)',
+      badge: 'Alat & Mesin Peternakan Terpadu OKU Timur',
+      examples: 'Mesin Pencacah Rumput/Hijauan (Chopper Machine), Drum Fermentasi Silase, Timbangan Palet Sapi / Timbangan Gantung Digital Unggas, Pita Ukur Bobot (Rondo), Instalasi Minum Otomatis (Nipple Drinker Unggas & Automatic Waterer Sapi/Kambing), Pemanas Anak Ayam (Brooder Gasolec/Listrik), Kandang Panggung Kambing, Reaktor Biogas, Tempat Telur (Egg Tray), atau Spuit Vaksin Ternak Socorex & Gun Inseminasi Buatan (IB)',
       apdExamples: 'Sepatu boot kandang anti-slip, masker respirator penangkal gas amonia & debu pakan, sarung tangan lateks/karet, wearpack biosekuriti, kacamata pelindung saat mencacah rumput',
-      sciencePrompt: 'Jelaskan prinsip Fisika, Kimia, dan Biologi pada alat peternakan yang Anda amati! (Contoh: biologi perluasan permukaan serat rumput hasil cacahan mesin chopper agar mudah dicerna mikroba rumen sapi, fermentasi anaerob bakteri asam laktat di drum silase, fisika katup tekanan air nipple drinker agar sekam kering bebas amonia, termodinamika radiasi pemanas brooder DOC, atau biokimia metanogenesis CH4 pada reaktor biogas).',
+      sciencePrompt: 'Jelaskan prinsip Fisika, Kimia, dan Biologi pada alat peternakan yang Anda amati! (Contoh: biologi perluasan permukaan serat rumput hasil cacahan mesin chopper agar mudah dicerna mikroba rumen sapi atau tembolok ayam, biokimia fermentasi anaerob bakteri asam laktat di drum silase jerami padi, fisika katup tekanan air nipple drinker agar sekam kering bebas amonia, termodinamika radiasi pemanas brooder DOC, atau biokimia metanogenesis CH4 pada reaktor biogas kotoran ternak).',
       techPrompt: 'Jelaskan teknologi mesin penggerak, sistem otomasi, atau bioteknologi pada peralatan tersebut! (Contoh: motor bensin/diesel 5,5–7 HP dengan transmisi puli V-belt pada mesin chopper, regulator tekanan air & medikator otomatis pada perpipaan nipple drinker, thermostat pengatur kipas exhaust kandang, atau termos kriogenik nitrogen cair -196°C pada peralatan Inseminasi Buatan).',
-      engPrompt: 'Jelaskan rancang bangun mekanis (Engineering), konstruksi pisau/kandang/reaktor, ergonomi, serta cara perawatannya! (Contoh: susunan pisau baja karbon miring pada roda gila/flywheel mesin chopper dan corong lontar sentrifugal, desain kemiringan lantai kandang sapi 2°–5° menuju selokan bio-slurry, pengaturan tinggi pipa nipple sesuai umur ayam, atau konstruksi kubah beton kedap gas pada biodigester).',
-      mathPrompt: 'Tuliskan perhitungan Matematika kapasitas kerja alat, kebutuhan ransum/ADG, dan perbandingan efisiensi biaya memakai alat tersebut! (Contoh: kapasitas cacah mesin chopper [500–1.000 kg rumput/jam dengan ±1 liter bensin] dibandingkan sabit manual, perhitungan ransum harian 10% bobot badan sapi, estimasi bobot dengan rumus Schrool & ADG, atau penghematan tabung LPG dari instalasi biogas).'
+      engPrompt: 'Jelaskan rancang bangun mekanis (Engineering), konstruksi pisau/kandang/reaktor, ergonomi, serta cara perawatannya! (Contoh: susunan pisau baja karbon miring pada roda gila/flywheel mesin chopper dan corong lontar sentrifugal, desain lantai panggung bilah kayu/bambu kandang kambing berjarak 1,5 cm agar kotoran jatuh, kemiringan lantai kandang sapi 2°–5° menuju selokan bio-slurry, pengaturan tinggi pipa nipple sesuai umur ayam, atau konstruksi kubah beton kedap gas pada biodigester).',
+      mathPrompt: 'Tuliskan perhitungan Matematika kapasitas kerja alat, kebutuhan ransum/ADG, dan perbandingan efisiensi biaya memakai alat tersebut! (Contoh: kapasitas cacah mesin chopper [600–1.000 kg rumput/jam dengan ±1 liter bensin] dibandingkan sabit manual, perhitungan ransum harian 10% bobot badan sapi atau FCR ayam broiler 1,5–1,6, estimasi bobot dengan rumus Schrool & ADG, atau penghematan tabung LPG dari instalasi biogas).'
     }
   };
 

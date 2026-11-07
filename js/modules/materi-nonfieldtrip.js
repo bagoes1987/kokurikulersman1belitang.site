@@ -129,7 +129,7 @@
           subtitle: 'Lumbung Padi, Perkebunan, UMKM Belitang & Peluang Wirausaha Masa Depan',
           guidedPoints: [
             'Keunggulan komparatif mutlak Kabupaten OKU Timur sebagai salah satu lumbung pangan utama Provinsi Sumatera Selatan melalui hamparan sawah beririgasi teknis Belitang.',
-            'Potensi sektor perkebunan rakyat (karet, kelapa sawit), peternakan sapi potong terpadu, dan perikanan budidaya air tawar (kolam patin/lele).',
+            'Potensi sektor perkebunan rakyat (karet, kelapa sawit), peternakan rakyat terpadu (sapi potong/perah, kambing, domba, unggas ayam & bebek), perikanan budidaya air tawar (kolam patin/lele), serta jaringan perdagangan UMKM, Koperasi, dan Agen BRILink pedesaan.',
             'Dinamika perdagangan pasar tradisional (seperti Pasar Gumawang), geliat UMKM pengolahan hasil panen, serta analisis peluang wirausaha agribisnis masa depan bagi generasi muda daerah.'
           ],
           placeholder: 'Uraikan profil riil perekonomian Kabupaten OKU Timur: keunggulan lumbung pangan, komoditas unggulan perkebunan, denyut UMKM lokal, serta peluang inovasi bisnis yang menjanjikan bagi pemuda... (Minimal 300 karakter)',
@@ -487,10 +487,10 @@
         },
         peternakan: {
           key: 'peternakan',
-          name: 'Peternakan Sapi & Unggas',
+          name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing & Unggas)',
           badge: 'Ternak & Bioenergi Pedesaan',
           icon: 'pets',
-          desc: 'Sapi Potong, Unggas, Fermentasi Jerami Silase, Chopper Pakan, Reaktor Biogas & ADG',
+          desc: 'Sapi, Kambing, Unggas Ayam & Bebek, Fermentasi Jerami Silase, Chopper Pakan, Reaktor Biogas & ADG/FCR',
           cards: [
             {
               key: 'A',
@@ -896,13 +896,13 @@
         },
         peternakan: {
           key: 'peternakan',
-          name: 'Peternakan Sapi Potong & Unggas',
+          name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing & Unggas)',
           icon: 'pets',
           badge: 'Mesin Chopper, Kandang & Biogas',
           cards: [
             {
               key: 'A',
-              title: 'Eksplorasi Peralatan, Perlengkapan & Mesin Peternakan Sapi dan Unggas',
+              title: 'Eksplorasi Peralatan, Perlengkapan & Mesin Peternakan Terpadu (Sapi, Kambing & Unggas)',
               subtitle: 'Inventarisasi Mesin Chopper Rumput, Drum Silase, Nipple Drinker, Pemanas Brooder, Biogas & APD Kandang',
               guidedPoints: [
                 'Peralatan pengolahan pakan dan pemeliharaan sapi potong di OKU Timur: sabit rumput, Mesin Pencacah Hijauan Pakan Ternak (Chopper Machine), tong/drum plastik kedap udara (silo) untuk fermentasi silase, gerobak dorong pakan, sekop pembersih kotoran, pompa semprot desinfektan (power sprayer), dan timbangan ternak / pita ukur lingkar dada (Rondo).',

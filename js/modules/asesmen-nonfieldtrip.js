@@ -1629,9 +1629,9 @@
     'pertanian': 'Pertanian Tanaman Pangan & Hortikultura',
     'perkebunan': 'Perkebunan Karet & Kelapa Sawit',
     'perikanan': 'Perikanan Budidaya Air Tawar',
-    'peternakan': 'Peternakan Sapi Potong & Unggas',
+    'peternakan': 'Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba & Unggas)',
     'perdagangan': 'Perdagangan, Pasar, Toko & UMKM Kuliner',
-    'keuangan': 'Koperasi, Agen BRI-Link & Jasa Keuangan',
+    'keuangan': 'Koperasi, Agen BRILink & Keuangan Mikro OKU Timur',
     'jasa': 'Jasa Teknik, Bengkel & Produksi Kerajinan'
   };
 
