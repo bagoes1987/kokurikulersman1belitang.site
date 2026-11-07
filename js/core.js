@@ -469,7 +469,9 @@ const FincestemCore = {
       }
       if (window.location.protocol.startsWith('http')) {
         const deviceInfo = this.getDeviceInfo();
-        fetch(FincestemCore.api.base + '/auth.php?action=check_session&nisn=' + encodeURIComponent(nisn) + '&device_id=' + encodeURIComponent(deviceId) + '&device_info=' + encodeURIComponent(deviceInfo))
+        fetch(FincestemCore.api.base + '/auth.php?action=check_session&nisn=' + encodeURIComponent(nisn) + '&device_id=' + encodeURIComponent(deviceId) + '&device_info=' + encodeURIComponent(deviceInfo), {
+          credentials: 'include'
+        })
           .then(r => r.json())
           .then(res => {
             if (callback) callback(res);
@@ -523,6 +525,7 @@ const FincestemCore = {
         const deviceInfo = FincestemCore.auth.getDeviceInfo();
         const res = await fetch(this.base + '/auth.php?action=login', {
           method: 'POST',
+          credentials: 'include',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ identifier, password, role, device_id: deviceId, device_info: deviceInfo })
         });

@@ -1149,7 +1149,7 @@
   <script src="../js/siswa_data.js?v=20261107_v9_fadhil_royan"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261107_devlock_fix"></script>
+  <script src="../js/core.js?v=20261108_smart_devlock_v3"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -1167,9 +1167,15 @@
     let studentProgress = null;
     let isBiodataExpanded = false;
 
+    let lastSessionCheck = 0;
     // Verifikasi Sesi Device Aktif (Otomatis Logout jika login di HP/Laptop lain)
-    function checkDeviceActiveSession() {
+    function checkDeviceActiveSession(force) {
       if (!FincestemCore.auth.isLoggedIn()) return;
+      const now = Date.now();
+      // Throttle pengecekan minimal 45 detik agar tidak spam saat app switch / keyboard popup
+      if (!force && (now - lastSessionCheck < 45000)) return;
+      lastSessionCheck = now;
+
       FincestemCore.auth.checkSession(function(res) {
         if (!res.success && res.data && res.data.kicked) {
           const newDev = res.data.new_device || 'Perangkat Lain';
@@ -1183,22 +1189,18 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-      checkDeviceActiveSession();
+      checkDeviceActiveSession(true);
       loadStudentProfile();
       loadDaysSchedule();
       loadStudentProgress();
 
-      // Cek berkala setiap 25 detik dan saat aplikasi kembali dibuka dari background
-      setInterval(checkDeviceActiveSession, 60000);
+      // Cek berkala setiap 60 detik dan saat aplikasi kembali dibuka dari background (ter-throttle)
+      setInterval(() => checkDeviceActiveSession(false), 60000);
       document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
-          checkDeviceActiveSession();
+          checkDeviceActiveSession(false);
           loadStudentProgress();
         }
-      });
-      window.addEventListener('focus', () => {
-        checkDeviceActiveSession();
-        loadStudentProgress();
       });
     });
 

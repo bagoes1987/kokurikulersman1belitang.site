@@ -1649,32 +1649,46 @@
           <!-- ======================================================== -->
           <!-- KARTU 1: IDENTITAS KEGIATAN & PROFIL NARASUMBER          -->
           <!-- ======================================================== -->
-          <div id="cardBoxLkpdD2_1" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-4 transition-all">
+          <div id="cardBoxLkpdD2_1" class="p-4 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-4 transition-all">
             <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
               <div class="flex items-center gap-2.5">
                 <span class="w-9 h-9 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-black text-sm shrink-0">1</span>
                 <div>
                   <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Identitas Kegiatan &amp; Profil Narasumber Lapangan</h3>
-                  <span class="text-[11px] text-slate-500 font-medium">Bagian A: Lokasi Observasi, Sektor Mata Pencaharian &amp; Data Narasumber</span>
+                  <span class="text-[11px] text-slate-500 font-medium">Bagian A: Pilihan Sektor, Lokasi Observasi &amp; Data Narasumber</span>
                 </div>
               </div>
               <span id="badgeCardStatusLkpdD2_1" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+            <!-- LANGKAH 1: PILIHAN SEKTOR MATA PENCAHARIAN (DITARUH PALING ATAS) -->
+            <div class="flex flex-col gap-2 bg-gradient-to-br from-indigo-50 via-indigo-50/70 to-blue-50/50 p-4 sm:p-5 rounded-2xl border-2 border-indigo-200 shadow-xs">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <label for="nftD2_sectorKey" class="text-xs sm:text-sm font-black text-indigo-950 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-indigo-700 text-lg">category</span>
+                  <span>Langkah 1: Pilih Sektor Mata Pencaharian Tempat Observasi <span class="text-rose-600">*</span></span>
+                </label>
+                <span class="text-[10.5px] font-extrabold text-indigo-800 bg-white px-2.5 py-0.5 rounded-full border border-indigo-200 shadow-2xs">1 dari 7 Sektor Pilihan</span>
+              </div>
+              <select id="nftD2_sectorKey" ${readOnlyAttr} onchange="onNftDay2SectorChange(this.value)" class="w-full p-3 rounded-xl border-2 border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs sm:text-sm font-bold text-indigo-950 bg-white cursor-pointer transition-all shadow-2xs">
+                <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang &amp; Palawija)</option>
+                <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
+                <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Sapi Mandiri &amp; Peternakan Kambing</option>
+                <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele &amp; Nila)</option>
+                <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (Pabrik Penggilingan Padi / RMU, UMKM Tahu-Tempe, Kerupuk Kemplang)</option>
+                <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi / Pupuk &amp; Obat Tani, Pasar Tradisional / Grosir Sembako)</option>
+                <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Jasa Keuangan &amp; Jasa Perorangan (Layanan Keuangan Tanpa Kantor / Agen BRILink, Koperasi Simpan Pinjam / KSP, BUMDes)</option>
+              </select>
+              <p class="text-[11px] text-indigo-900 leading-relaxed font-semibold mt-0.5 flex items-start gap-1.5">
+                <span class="material-symbols-outlined text-indigo-600 text-sm shrink-0">info</span>
+                <span>Pilih sektor terlebih dahulu. Seluruh label formulir di bawah, 5 pertanyaan wawancara khusus (Card 3), dan 9 aspek lembar observasi (Card 4) akan otomatis menyesuaikan istilahnya dengan sektor pilihan Anda.</span>
+              </p>
+            </div>
+
+            <!-- LANGKAH 2: DATA IDENTITAS & LOKASI OBSERVASI (GRID RESPONSIF) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 pt-1">
               
-              <!-- Nama Pewawancara -->
-              <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Nama Pewawancara / Anggota Kelompok:</label>
-                <input type="text" id="nftD2_interviewerName" ${readOnlyAttr} value="${val('interviewerName') || studentName}" placeholder="Ketik nama Anda dan rekan kelompok..." oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
-              </div>
-
-              <!-- Hari & Tanggal -->
-              <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Hari &amp; Tanggal Wawancara:</label>
-                <input type="text" id="nftD2_interviewDate" ${readOnlyAttr} value="${val('interviewDate') || 'Selasa, 10 November 2026'}" placeholder="Contoh: Selasa, 10 November 2026" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
-              </div>
-
+              <!-- Wilayah Kecamatan di OKU Timur -->
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Wilayah Kecamatan di OKU Timur: <span class="text-rose-600">*</span></label>
                 <select id="nftD2_district" ${readOnlyAttr} onchange="onNftDay2DistrictChange(this.value)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 outline-none text-xs font-bold text-slate-900 bg-white transition-all">
@@ -1685,31 +1699,29 @@
                 </select>
               </div>
 
-              <!-- Pilihan Sektor Mata Pencaharian (Dropdown Dinamis Selaras Day 1) -->
-              <div class="flex flex-col gap-1 sm:col-span-2 lg:col-span-3 bg-indigo-50/70 p-4 rounded-2xl border border-indigo-200/90 shadow-2xs">
-                <label class="text-xs font-extrabold text-indigo-950 flex items-center justify-between">
-                  <span>Pilih Sektor Mata Pencaharian Tempat Observasi Anda: <span class="text-rose-600">*</span></span>
-                  <span class="text-[10.5px] font-bold text-indigo-700 bg-white px-2 py-0.5 rounded-lg border border-indigo-200">1 dari 7 Sektor Pilihan</span>
-                </label>
-                <select id="nftD2_sectorKey" ${readOnlyAttr} onchange="onNftDay2SectorChange(this.value)" class="w-full p-3 rounded-xl border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs font-bold text-indigo-950 bg-white cursor-pointer transition-all">
-                  <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang &amp; Palawija)</option>
-                  <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
-                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Sapi Mandiri &amp; Peternakan Kambing</option>
-                  <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele &amp; Nila)</option>
-                  <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (Pabrik Penggilingan Padi / RMU, UMKM Tahu-Tempe, Kerupuk Kemplang)</option>
-                  <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi / Pupuk &amp; Obat Tani, Pasar Tradisional / Grosir Sembako)</option>
-                  <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Jasa Keuangan &amp; Jasa Perorangan (Layanan Keuangan Tanpa Kantor / Agen BRILink, Koperasi Simpan Pinjam / KSP, BUMDes)</option>
-                </select>
-                <p class="text-[11px] text-indigo-900/90 leading-relaxed font-medium mt-1">
-                  <em>*Form Identitas, Wawancara Khusus (Card 3), dan Lembar Observasi (Card 4) akan otomatis menyesuaikan istilah dan daftar pertanyaannya sesuai sektor pilihan Anda di atas.</em>
-                </p>
-              </div>
-
               <!-- Lokasi Observasi (Dinamis per Sektor) -->
               <div class="flex flex-col gap-1">
                 <label id="lblD2_location" class="text-xs font-bold text-slate-800">Detail Alamat / Desa Lokasi Observasi: <span class="text-rose-600">*</span></label>
                 <input type="text" id="nftD2_location" ${readOnlyAttr} value="${val('location')}" placeholder="Contoh: Desa Sidomulyo RT 03 RW 01" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
                 <span id="msgValD2_loc" class="text-[10px] text-slate-400">Minimal 3 karakter</span>
+              </div>
+
+              <!-- Data Penunjang Khusus Sektor (Dinamis per Sektor) -->
+              <div class="flex flex-col gap-1">
+                <label id="lblD2_specExtra" class="text-xs font-bold text-slate-800">Data Penunjang Usaha / Kapasitas:</label>
+                <input type="text" id="nftD2_specExtra" ${readOnlyAttr} value="${val('specExtra')}" placeholder="Contoh: Luas lahan, jumlah populasi ternak, atau kapasitas produksi" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
+              </div>
+
+              <!-- Nama Pewawancara -->
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-slate-800">Nama Pewawancara / Anggota Kelompok:</label>
+                <input type="text" id="nftD2_interviewerName" ${readOnlyAttr} value="${val('interviewerName') || studentName}" placeholder="Ketik nama Anda dan rekan kelompok..." oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
+              </div>
+
+              <!-- Hari & Tanggal -->
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-slate-800">Hari &amp; Tanggal Wawancara:</label>
+                <input type="text" id="nftD2_interviewDate" ${readOnlyAttr} value="${val('interviewDate') || 'Selasa, 10 November 2026'}" placeholder="Contoh: Selasa, 10 November 2026" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
               </div>
 
               <!-- Nama/Inisial Narasumber (Dinamis per Sektor) -->
@@ -1726,16 +1738,10 @@
               </div>
 
               <!-- Lama Menjalankan Pekerjaan (Dinamis per Sektor) -->
-              <div class="flex flex-col gap-1">
+              <div class="flex flex-col gap-1 sm:col-span-2 lg:col-span-1">
                 <label id="lblD2_duration" class="text-xs font-bold text-slate-800">Lama Menjalankan Pekerjaan: <span class="text-rose-600">*</span></label>
                 <input type="text" id="nftD2_durationWorking" ${readOnlyAttr} value="${val('durationWorking')}" placeholder="Contoh: 18 Tahun (Sejak 2008)" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
                 <span id="msgValD2_dur" class="text-[10px] text-slate-400">Minimal 3 karakter</span>
-              </div>
-
-              <!-- Data Penunjang Khusus Sektor (Dinamis per Sektor) -->
-              <div class="flex flex-col gap-1">
-                <label id="lblD2_specExtra" class="text-xs font-bold text-slate-800">Data Penunjang Usaha / Kapasitas:</label>
-                <input type="text" id="nftD2_specExtra" ${readOnlyAttr} value="${val('specExtra')}" placeholder="Contoh: Luas lahan, jumlah populasi ternak, atau kapasitas produksi" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
               </div>
 
             </div>

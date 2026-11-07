@@ -6,6 +6,32 @@
 require_once __DIR__ . '/db.php';
 
 /**
+ * Helper: Normalisasi nama model perangkat (menghapus nama aplikasi browser di dalam kurung)
+ * Misal: "Samsung Galaxy (Google Chrome)" -> "samsung galaxy"
+ *        "Samsung Galaxy (Samsung Internet)" -> "samsung galaxy"
+ */
+function cleanDeviceBrand($info) {
+    if (empty($info)) return '';
+    $cleaned = trim(preg_replace('/\s*\([^)]*\)/', '', (string)$info));
+    return strtolower($cleaned);
+}
+
+/**
+ * Helper: Ekstrak resolusi layar dan core CPU dari hash hardware
+ */
+function parseScreenHash($hw) {
+    if (empty($hw) || $hw === 'gen') return null;
+    if (preg_match('/^(\d+)x(\d+)(?:c(\d+))?$/', $hw, $m)) {
+        return [
+            'w'     => (int)$m[1],
+            'h'     => (int)$m[2],
+            'cores' => isset($m[3]) ? (int)$m[3] : null
+        ];
+    }
+    return null;
+}
+
+/**
  * Memeriksa apakah perangkat yang mengakses adalah perangkat fisik yang sama dengan yang tercatat di database
  * Mencegah false-positive kicked / device locked ketika OS Android membersihkan storage atau berganti browser internal
  */
@@ -22,14 +48,6 @@ function isSameStudentDevice($currentDbDeviceId, $currentDbDeviceInfo, $newDevic
     if (!empty($_COOKIE['fincestem_did']) && $_COOKIE['fincestem_did'] === $currentDbDeviceId) {
         return true;
     }
-
-    // 3. Ekstrak hardware signature: dev_{hw}_{time}_{rand}
-    // Contoh format baru: dev_393x873c8_m7...
-    $dbParts  = explode('_', (string)$currentDbDeviceId);
-    $newParts = explode('_', (string)$newDeviceId);
-
-    $dbHw  = (count($dbParts) >= 4) ? $dbParts[1] : '';
-    $newHw = (count($newParts) >= 4) ? $newParts[1] : '';
 
     $oldDev = strtolower((string)$currentDbDeviceInfo);
     $newDev = strtolower((string)$newDeviceInfo);
@@ -51,36 +69,49 @@ function isSameStudentDevice($currentDbDeviceId, $currentDbDeviceInfo, $newDevic
         return false;
     }
 
-    // Jika keduanya memiliki nama model spesifik dan berbeda (misal OPPO vs Samsung) -> PASTI PERANGKAT BERBEDA!
-    if (!empty($currentDbDeviceInfo) && !empty($newDeviceInfo)) {
-        $oldModel = trim($currentDbDeviceInfo);
-        $newModel = trim($newDeviceInfo);
-        $isOldGeneric = in_array(strtolower($oldModel), ['hp android (google chrome)', 'unknown device (browser)', 'android (google chrome)', 'perangkat']);
-        $isNewGeneric = in_array(strtolower($newModel), ['hp android (google chrome)', 'unknown device (browser)', 'android (google chrome)', 'perangkat']);
-        if (!$isOldGeneric && !$isNewGeneric && strcasecmp($oldModel, $newModel) !== 0) {
+    // 3. Ekstrak Brand Fisik (mengabaikan nama browser di dalam kurung)
+    $brandOld = cleanDeviceBrand($currentDbDeviceInfo);
+    $brandNew = cleanDeviceBrand($newDeviceInfo);
+
+    $isOldGeneric = empty($brandOld) || in_array($brandOld, ['hp android', 'unknown device', 'android', 'perangkat']);
+    $isNewGeneric = empty($brandNew) || in_array($brandNew, ['hp android', 'unknown device', 'android', 'perangkat']);
+
+    // Jika dua-duanya punya nama brand spesifik dan berbeda (misal OPPO vs Samsung, atau Vivo vs Xiaomi) -> PASTI BEDA PERANGKAT!
+    if (!$isOldGeneric && !$isNewGeneric && $brandOld !== $brandNew) {
+        return false;
+    }
+
+    // Jika dua-duanya punya nama brand spesifik yang SAMA (misal sama-sama "samsung galaxy" atau "oppo cph2239")
+    if (!$isOldGeneric && !$isNewGeneric && $brandOld === $brandNew) {
+        return true;
+    }
+
+    // 4. Ekstrak hardware hash: dev_{hw}_{time}_{rand}
+    $dbParts  = explode('_', (string)$currentDbDeviceId);
+    $newParts = explode('_', (string)$newDeviceId);
+
+    $dbHw  = (count($dbParts) >= 4) ? $dbParts[1] : '';
+    $newHw = (count($newParts) >= 4) ? $newParts[1] : '';
+
+    $screenDb  = parseScreenHash($dbHw);
+    $screenNew = parseScreenHash($newHw);
+
+    if ($screenDb && $screenNew) {
+        $wDiff = abs($screenDb['w'] - $screenNew['w']);
+        $hDiff = abs($screenDb['h'] - $screenNew['h']);
+
+        // Lebar layar fisik pada HP adalah identitas perangkat unik (360, 390, 393, 412, dst.)
+        if ($wDiff <= 8 && $hDiff <= 160) {
+            return true; // Resolusi fisik sama -> Perangkat yang sama!
+        } else {
+            // Lebar layar berbeda signifikan (misal 360px vs 412px) -> PERANGKAT BERBEDA!
             return false;
         }
     }
 
-    // Jika keduanya memiliki hardware hash (resolusi + core CPU) dan nilainya sama
-    if (!empty($dbHw) && !empty($newHw) && $dbHw !== 'gen' && $dbHw === $newHw) {
-        return true;
-    }
-
-    // 4. Jika nama model HP spesifik dan persis sama (misal 'OPPO CPH2239 (Google Chrome)' === 'OPPO CPH2239 (Google Chrome)')
-    if (!empty($currentDbDeviceInfo) && !empty($newDeviceInfo)) {
-        $oldModel = trim($currentDbDeviceInfo);
-        $newModel = trim($newDeviceInfo);
-        if (strcasecmp($oldModel, $newModel) === 0 && 
-            !in_array(strtolower($oldModel), ['hp android (google chrome)', 'unknown device (browser)', 'android (google chrome)', 'perangkat'])) {
-            return true;
-        }
-    }
-
-    // 5. Toleransi Pemulihan Pertama Kali (One-Time Upgrade):
-    // Jika data di database masih format lama (tanpa hardware hash, count < 4),
-    // dan perangkat baru adalah kategori OS yang sama (misal sama-sama Android Chrome)
-    if (count($dbParts) < 4 && $oldIsAndroid && $newIsAndroid) {
+    // 5. Toleransi Pemulihan (Fallback yang aman):
+    // Jika keduanya adalah Android atau keduanya iOS atau keduanya PC, dan TIDAK ADA bukti pertentangan:
+    if (($oldIsAndroid && $newIsAndroid) || ($oldIsIos && $newIsIos) || ($oldIsPc && $newIsPc)) {
         return true;
     }
 
