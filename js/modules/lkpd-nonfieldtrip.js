@@ -40,6 +40,16 @@
     return s;
   }
 
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   // Helper Format Angka Ribuan Rupiah
   function formatRupiahInput(val) {
     if (!val && val !== 0) return '';
@@ -195,9 +205,10 @@
     const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
     const isLockedByPrereq = !hasMateri && !isTesterBypass;
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
-    let d2CurDistrict = normalizeDistrictName(val('district') || '');
-    if (!d2CurDistrict && val('location')) {
-      d2CurDistrict = OKU_TIMUR_DISTRICTS.find(d => val('location').toLowerCase().includes(d.toLowerCase())) || '';
+    const val = function(k) { return (formData && formData[k] !== undefined && formData[k] !== null) ? formData[k] : ''; };
+    let d1CurDistrict = normalizeDistrictName(val('district') || '');
+    if (!d1CurDistrict && val('location')) {
+      d1CurDistrict = OKU_TIMUR_DISTRICTS.find(function(d) { return String(val('location')).toLowerCase().includes(d.toLowerCase()); }) || '';
     }
     const readOnlyAttr = isFormLocked ? 'disabled' : '';
     const draftTimeStr = (draft && draft.updatedAt) 
@@ -343,7 +354,7 @@
             <!-- Nama Entitas Usaha -->
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">Nama Tempat / Badan Usaha yang Dikunjungi: <span class="text-rose-500">*</span></label>
-              <input type="text" id="nftD1BusinessName" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${formData?.businessName || ''}" placeholder="Contoh: KUD Tani Makmur / Agen BRILink Berkah Jaya / BUMDes Mandiri Sejahtera / Toko Pupuk Barokah" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold text-slate-900">
+              <input type="text" id="nftD1BusinessName" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('businessName') || ''}" placeholder="Contoh: KUD Tani Makmur / Agen BRILink Berkah Jaya / BUMDes Mandiri Sejahtera / Toko Pupuk Barokah" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold text-slate-900">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -352,12 +363,12 @@
                 <label class="text-xs font-bold text-slate-800">Jenis Badan Usaha / Kelembagaan: <span class="text-rose-500">*</span></label>
                 <select id="nftD1BusinessType" ${readOnlyAttr} onchange="onNftLkpdInput()" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold bg-white text-slate-900">
                   <option value="">-- Pilih Jenis Badan Usaha --</option>
-                  <option value="Koperasi" ${formData?.businessType === 'Koperasi' ? 'selected' : ''}>Koperasi (KUD / KSP / Koperasi Konsumen)</option>
-                  <option value="BUMDes" ${formData?.businessType === 'BUMDes' ? 'selected' : ''}>BUMDes (Badan Usaha Milik Desa)</option>
-                  <option value="Agen Laku Pandai" ${formData?.businessType === 'Agen Laku Pandai' ? 'selected' : ''}>Layanan Perbankan Tanpa Kantor (Agen BRILink / Mandiri / BNI)</option>
-                  <option value="Pasar Tradisional" ${formData?.businessType === 'Pasar Tradisional' ? 'selected' : ''}>Pedagang Pasar Tradisional / Toko Grosir</option>
-                  <option value="UMKM Perorangan" ${formData?.businessType === 'UMKM Perorangan' ? 'selected' : ''}>UMKM / Usaha Dagang Perorangan</option>
-                  <option value="Kemitraan Swasta" ${formData?.businessType === 'Kemitraan Swasta' ? 'selected' : ''}>Kemitraan Perusahaan Swasta (Inti-Plasma)</option>
+                  <option value="Koperasi" ${val('businessType') === 'Koperasi' ? 'selected' : ''}>Koperasi (KUD / KSP / Koperasi Konsumen)</option>
+                  <option value="BUMDes" ${val('businessType') === 'BUMDes' ? 'selected' : ''}>BUMDes (Badan Usaha Milik Desa)</option>
+                  <option value="Agen Laku Pandai" ${val('businessType') === 'Agen Laku Pandai' ? 'selected' : ''}>Layanan Perbankan Tanpa Kantor (Agen BRILink / Mandiri / BNI)</option>
+                  <option value="Pasar Tradisional" ${val('businessType') === 'Pasar Tradisional' ? 'selected' : ''}>Pedagang Pasar Tradisional / Toko Grosir</option>
+                  <option value="UMKM Perorangan" ${val('businessType') === 'UMKM Perorangan' ? 'selected' : ''}>UMKM / Usaha Dagang Perorangan</option>
+                  <option value="Kemitraan Swasta" ${val('businessType') === 'Kemitraan Swasta' ? 'selected' : ''}>Kemitraan Perusahaan Swasta (Inti-Plasma)</option>
                 </select>
               </div>
 
@@ -367,7 +378,7 @@
                 <select id="nftD1District" ${readOnlyAttr} onchange="onNftLkpdInput()" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold bg-white text-slate-900">
                   <option value="">-- Pilih Kecamatan di OKU Timur --</option>
                   ${OKU_TIMUR_DISTRICTS.map(kec => `
-                    <option value="${kec}" ${(formData?.district === kec || normalizeDistrictName(formData?.district) === kec) ? 'selected' : ''}>Kecamatan ${kec}</option>
+                    <option value="${kec}" ${(val('district') === kec || normalizeDistrictName(val('district')) === kec) ? 'selected' : ''}>Kecamatan ${kec}</option>
                   `).join('')}
                 </select>
               </div>
@@ -377,15 +388,15 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Alamat Dusun / Desa: <span class="text-rose-500">*</span></label>
-                <input type="text" id="nftD1Village" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${formData?.village || ''}" placeholder="Contoh: Desa Gumawang / Desa Sidodadi" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
+                <input type="text" id="nftD1Village" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('village') || ''}" placeholder="Contoh: Desa Gumawang / Desa Sidodadi" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
               </div>
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Nama Narasumber &amp; Peran: <span class="text-rose-500">*</span></label>
-                <input type="text" id="nftD1Interviewee" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${formData?.interviewee || ''}" placeholder="Contoh: Bpk. H. Sutrisno (Pengelola Agen / Ketua)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
+                <input type="text" id="nftD1Interviewee" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('interviewee') || ''}" placeholder="Contoh: Bpk. H. Sutrisno (Pengelola Agen / Ketua)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
               </div>
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Nomor Kontak / WhatsApp Narasumber:</label>
-                <input type="text" id="nftD1Contact" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${formData?.contact || ''}" placeholder="08xxxxxxxxxx (Untuk verifikasi fasilitator)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
+                <input type="text" id="nftD1Contact" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('contact') || ''}" placeholder="08xxxxxxxxxx (Untuk verifikasi fasilitator)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
               </div>
             </div>
           </div>
@@ -411,23 +422,23 @@
                 <label class="text-xs font-bold text-slate-800">Sektor Ekonomi Utama: <span class="text-rose-500">*</span></label>
                 <select id="nftD1SectorType" ${readOnlyAttr} onchange="onNftLkpdInput()" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold bg-white text-slate-900">
                   <option value="">-- Pilih Sektor Aktivitas --</option>
-                  <option value="Sektor Primer" ${formData?.sectorType === 'Sektor Primer' ? 'selected' : ''}>Sektor Primer (Penghasil bahan mentah: Padi, Karet, Ikan, Jagung)</option>
-                  <option value="Sektor Sekunder" ${formData?.sectorType === 'Sektor Sekunder' ? 'selected' : ''}>Sektor Sekunder (Pengolahan/Pabrik: RMU Padi, Pengolahan Makanan)</option>
-                  <option value="Sektor Tersier" ${formData?.sectorType === 'Sektor Tersier' ? 'selected' : ''}>Sektor Tersier (Jasa Keuangan, Agen BRILink, Perdagangan Kios)</option>
+                  <option value="Sektor Primer" ${val('sectorType') === 'Sektor Primer' ? 'selected' : ''}>Sektor Primer (Penghasil bahan mentah: Padi, Karet, Ikan, Jagung)</option>
+                  <option value="Sektor Sekunder" ${val('sectorType') === 'Sektor Sekunder' ? 'selected' : ''}>Sektor Sekunder (Pengolahan/Pabrik: RMU Padi, Pengolahan Makanan)</option>
+                  <option value="Sektor Tersier" ${val('sectorType') === 'Sektor Tersier' ? 'selected' : ''}>Sektor Tersier (Jasa Keuangan, Agen BRILink, Perdagangan Kios)</option>
                 </select>
               </div>
 
               <!-- Komoditas / Produk yang Dikelola -->
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Komoditas / Produk Utama yang Diperjualbelikan: <span class="text-rose-500">*</span></label>
-                <input type="text" id="nftD1Commodity" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${formData?.commodity || ''}" placeholder="Contoh: Saldo perbankan &amp; transfer tunai, Gabah/Beras, Pupuk bersubsidi, Sembako" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-semibold">
+                <input type="text" id="nftD1Commodity" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('commodity') || ''}" placeholder="Contoh: Saldo perbankan &amp; transfer tunai, Gabah/Beras, Pupuk bersubsidi, Sembako" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-semibold">
               </div>
             </div>
 
             <!-- Analisis Alur Aliran Barang & Jasa -->
             <div class="flex flex-col gap-1 pt-1">
               <label class="text-xs font-bold text-slate-800">Uraikan Rantai Kegiatan Ekonomi (Dari Mana Pasokan Masuk &amp; Bagaimana Disalurkan): <span class="text-rose-500">*</span></label>
-              <textarea id="nftD1ActivityChain" rows="3" ${readOnlyAttr} oninput="onNftLkpdInput()" placeholder="Jelaskan secara terperinci: dari mana barang dagangan atau modal diperoleh (aliran produksi/pasokan) dan bagaimana mekanisme penyalurannya kepada konsumen akhir di OKU Timur..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs leading-relaxed text-slate-900 resize-y">${formData?.activityChain || ''}</textarea>
+              <textarea id="nftD1ActivityChain" rows="3" ${readOnlyAttr} oninput="onNftLkpdInput()" placeholder="Jelaskan secara terperinci: dari mana barang dagangan atau modal diperoleh (aliran produksi/pasokan) dan bagaimana mekanisme penyalurannya kepada konsumen akhir di OKU Timur..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs leading-relaxed text-slate-900 resize-y">${val('activityChain') || ''}</textarea>
               <span class="text-[10.5px] text-slate-400 font-medium">Deskripsikan keterkaitan antara produsen, distributor, dan konsumen akhir di lapangan.</span>
             </div>
           </div>
@@ -451,13 +462,13 @@
               <!-- Profil Konsumen Utama -->
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Siapa Saja Pengguna Layanan / Pembeli Utama? <span class="text-rose-500">*</span></label>
-                <input type="text" id="nftD1CustomerProfile" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${formData?.customerProfile || ''}" placeholder="Contoh: Petani sawah padi irigasi, ibu rumah tangga, buruh panen, pedagang keliling" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
+                <input type="text" id="nftD1CustomerProfile" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('customerProfile') || ''}" placeholder="Contoh: Petani sawah padi irigasi, ibu rumah tangga, buruh panen, pedagang keliling" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
               </div>
 
               <!-- Puncak Keramaian / Siklus Musim Panen -->
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Kapan Usaha Ini Berada pada Puncak Keramaian? <span class="text-rose-500">*</span></label>
-                <input type="text" id="nftD1PeakSeason" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${formData?.peakSeason || ''}" placeholder="Contoh: Musim panen raya padi (Maret-April), tanggal 1-5 saat pencairan bansos, atau hari pasar" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
+                <input type="text" id="nftD1PeakSeason" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('peakSeason') || ''}" placeholder="Contoh: Musim panen raya padi (Maret-April), tanggal 1-5 saat pencairan bansos, atau hari pasar" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
               </div>
             </div>
 
@@ -466,7 +477,7 @@
               <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
                 <span class="font-bold text-slate-800 text-xs">Perkiraan Jumlah Transaksi / Pelanggan per HARI: <span class="text-rose-500">*</span></span>
                 <div class="flex items-center gap-2">
-                  <input type="number" id="nftD1CustomersDaily" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formData?.customersDaily || ''}" placeholder="Misal: 35" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-black text-slate-900 text-sm outline-none focus:border-teal-600">
+                  <input type="number" id="nftD1CustomersDaily" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${val('customersDaily') || ''}" placeholder="Misal: 35" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-black text-slate-900 text-sm outline-none focus:border-teal-600">
                   <span class="text-xs font-bold text-slate-600 shrink-0">Orang / Transaksi</span>
                 </div>
               </div>
@@ -474,7 +485,7 @@
               <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200 flex flex-col justify-center">
                 <span class="text-[11px] font-bold text-teal-800">Estimasi Transaksi per BULAN (x30 Hari):</span>
                 <span id="lblNftD1CustomersMonthly" class="text-base font-black text-teal-950 mt-0.5">
-                  ${formData?.customersMonthly ? formData.customersMonthly.toLocaleString('id-ID') : '0'} Transaksi / Bulan
+                  ${val('customersMonthly') ? formData.customersMonthly.toLocaleString('id-ID') : '0'} Transaksi / Bulan
                 </span>
               </div>
             </div>
@@ -499,14 +510,14 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
                 <span class="font-bold text-slate-800 text-xs">Pemasukan Kotor (Omzet) per HARI (Rp): <span class="text-rose-500">*</span></span>
-                <input type="text" id="nftD1IncomeDaily" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formatRupiahInput(formData?.incomeDaily)}" placeholder="Contoh: 1.500.000" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-black text-slate-900 text-sm outline-none focus:border-teal-600">
+                <input type="text" id="nftD1IncomeDaily" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formatRupiahInput(val('incomeDaily'))}" placeholder="Contoh: 1.500.000" class="w-full p-2.5 rounded-xl border border-slate-300 bg-white font-black text-slate-900 text-sm outline-none focus:border-teal-600">
                 <span class="text-[10px] text-slate-500">Omzet kotor harian dari narasumber</span>
               </div>
 
               <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200 flex flex-col justify-center">
                 <span class="text-[11px] font-bold text-emerald-800">Proyeksi Pemasukan per BULAN (x30):</span>
                 <span id="lblNftD1IncomeMonthly" class="text-sm sm:text-base font-black text-emerald-950 mt-0.5">
-                  Rp ${formData?.incomeMonthly ? formData.incomeMonthly.toLocaleString('id-ID') : '0'}
+                  Rp ${val('incomeMonthly') ? formData.incomeMonthly.toLocaleString('id-ID') : '0'}
                 </span>
                 <span class="text-[10px] text-emerald-700/80">Dihitung otomatis</span>
               </div>
@@ -514,7 +525,7 @@
               <div class="p-3.5 rounded-2xl bg-emerald-50/80 border border-emerald-200 flex flex-col justify-center">
                 <span class="text-[11px] font-bold text-emerald-800">Proyeksi Pemasukan per TAHUN (x365):</span>
                 <span id="lblNftD1IncomeYearly" class="text-sm sm:text-base font-black text-emerald-950 mt-0.5">
-                  Rp ${formData?.incomeYearly ? formData.incomeYearly.toLocaleString('id-ID') : '0'}
+                  Rp ${val('incomeYearly') ? formData.incomeYearly.toLocaleString('id-ID') : '0'}
                 </span>
                 <span class="text-[10px] text-emerald-700/80">Skala perputaran tahunan</span>
               </div>
@@ -526,15 +537,15 @@
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
                   <span class="text-[11.5px] font-semibold text-slate-700">1. Modal Kulakan / Stok Barang (Rp/Bln):</span>
-                  <input type="text" id="nftD1CostMaterials" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formatRupiahInput(formData?.costMaterials)}" placeholder="Misal: 25.000.000" class="w-full p-2 rounded-xl border border-slate-300 font-bold text-slate-900 text-xs bg-white">
+                  <input type="text" id="nftD1CostMaterials" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formatRupiahInput(val('costMaterials'))}" placeholder="Misal: 25.000.000" class="w-full p-2 rounded-xl border border-slate-300 font-bold text-slate-900 text-xs bg-white">
                 </div>
                 <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
                   <span class="text-[11.5px] font-semibold text-slate-700">2. Beban Listrik, Kuota EDC &amp; Sewa (Rp/Bln):</span>
-                  <input type="text" id="nftD1CostOperational" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formatRupiahInput(formData?.costOperational)}" placeholder="Misal: 750.000" class="w-full p-2 rounded-xl border border-slate-300 font-bold text-slate-900 text-xs bg-white">
+                  <input type="text" id="nftD1CostOperational" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formatRupiahInput(val('costOperational'))}" placeholder="Misal: 750.000" class="w-full p-2 rounded-xl border border-slate-300 font-bold text-slate-900 text-xs bg-white">
                 </div>
                 <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1">
                   <span class="text-[11.5px] font-semibold text-slate-700">3. Gaji Karyawan / Jasa Pengelola (Rp/Bln):</span>
-                  <input type="text" id="nftD1CostWages" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formatRupiahInput(formData?.costWages)}" placeholder="Misal: 1.500.000" class="w-full p-2 rounded-xl border border-slate-300 font-bold text-slate-900 text-xs bg-white">
+                  <input type="text" id="nftD1CostWages" ${readOnlyAttr} oninput="recalcNftFinancials()" value="${formatRupiahInput(val('costWages'))}" placeholder="Misal: 1.500.000" class="w-full p-2 rounded-xl border border-slate-300 font-bold text-slate-900 text-xs bg-white">
                 </div>
               </div>
             </div>
@@ -548,7 +559,7 @@
                 <div class="flex flex-col">
                   <span class="text-[11px] font-medium text-teal-200">Estimasi Laba Bersih Bulanan (Omzet - Total Beban):</span>
                   <span id="lblNftD1NetProfit" class="text-base sm:text-lg font-black text-teal-300">
-                    Rp ${formData?.netProfitMonthly ? formData.netProfitMonthly.toLocaleString('id-ID') : '0'} / Bulan
+                    Rp ${val('netProfitMonthly') ? formData.netProfitMonthly.toLocaleString('id-ID') : '0'} / Bulan
                   </span>
                 </div>
               </div>
@@ -578,19 +589,19 @@
               <label class="text-xs font-bold text-slate-800">Metode Pembayaran yang Dilayani di Lokasi (Pilih yang sesuai): <span class="text-rose-500">*</span></label>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
                 <label class="p-3 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                  <input type="checkbox" id="chkPayCash" ${readOnlyAttr} onchange="onNftLkpdInput()" ${(formData?.payments || []).includes('Tunai') ? 'checked' : ''} class="w-4 h-4 text-teal-600 rounded">
+                  <input type="checkbox" id="chkPayCash" ${readOnlyAttr} onchange="onNftLkpdInput()" ${(val('payments') || []).includes('Tunai') ? 'checked' : ''} class="w-4 h-4 text-teal-600 rounded">
                   <span class="font-semibold text-slate-800">Uang Tunai Kertas</span>
                 </label>
                 <label class="p-3 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                  <input type="checkbox" id="chkPayQris" ${readOnlyAttr} onchange="onNftLkpdInput()" ${(formData?.payments || []).includes('QRIS') ? 'checked' : ''} class="w-4 h-4 text-teal-600 rounded">
+                  <input type="checkbox" id="chkPayQris" ${readOnlyAttr} onchange="onNftLkpdInput()" ${(val('payments') || []).includes('QRIS') ? 'checked' : ''} class="w-4 h-4 text-teal-600 rounded">
                   <span class="font-semibold text-slate-800">QRIS Bank Indonesia</span>
                 </label>
                 <label class="p-3 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                  <input type="checkbox" id="chkPayEdc" ${readOnlyAttr} onchange="onNftLkpdInput()" ${(formData?.payments || []).includes('EDC') ? 'checked' : ''} class="w-4 h-4 text-teal-600 rounded">
+                  <input type="checkbox" id="chkPayEdc" ${readOnlyAttr} onchange="onNftLkpdInput()" ${(val('payments') || []).includes('EDC') ? 'checked' : ''} class="w-4 h-4 text-teal-600 rounded">
                   <span class="font-semibold text-slate-800">Mesin EDC / Gesek ATM</span>
                 </label>
                 <label class="p-3 rounded-xl border border-slate-200 flex items-center gap-2 cursor-pointer hover:bg-slate-50">
-                  <input type="checkbox" id="chkPayTransfer" ${readOnlyAttr} onchange="onNftLkpdInput()" ${(formData?.payments || []).includes('Transfer') ? 'checked' : ''} class="w-4 h-4 text-teal-600 rounded">
+                  <input type="checkbox" id="chkPayTransfer" ${readOnlyAttr} onchange="onNftLkpdInput()" ${(val('payments') || []).includes('Transfer') ? 'checked' : ''} class="w-4 h-4 text-teal-600 rounded">
                   <span class="font-semibold text-slate-800">Transfer Mobile Banking</span>
                 </label>
               </div>
@@ -601,10 +612,10 @@
               <label class="text-xs font-bold text-slate-800">Bagaimana Cara Pemilik / Pengelola Mencatat Transaksi Keuangannya? <span class="text-rose-500">*</span></label>
               <select id="nftD1Bookkeeping" ${readOnlyAttr} onchange="onNftLkpdInput()" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold bg-white text-slate-900">
                 <option value="">-- Pilih Sistem Pencatatan Keuangan --</option>
-                <option value="Manual Buku Tulis" ${formData?.bookkeeping === 'Manual Buku Tulis' ? 'selected' : ''}>Masih manual ditulis tangan di buku kas / nota kertas</option>
-                <option value="Aplikasi Digital Kasir" ${formData?.bookkeeping === 'Aplikasi Digital Kasir' ? 'selected' : ''}>Sudah menggunakan aplikasi kasir digital di HP / Komputer</option>
-                <option value="Sistem Perbankan / EDC Otomatis" ${formData?.bookkeeping === 'Sistem Perbankan / EDC Otomatis' ? 'selected' : ''}>Tercatat otomatis melalui mutasi mesin EDC agen / rekening bank</option>
-                <option value="Belum Ada Pembukuan Rutin" ${formData?.bookkeeping === 'Belum Ada Pembukuan Rutin' ? 'selected' : ''}>Belum ada pembukuan resmi (hanya hitungan ingatan pemilik)</option>
+                <option value="Manual Buku Tulis" ${val('bookkeeping') === 'Manual Buku Tulis' ? 'selected' : ''}>Masih manual ditulis tangan di buku kas / nota kertas</option>
+                <option value="Aplikasi Digital Kasir" ${val('bookkeeping') === 'Aplikasi Digital Kasir' ? 'selected' : ''}>Sudah menggunakan aplikasi kasir digital di HP / Komputer</option>
+                <option value="Sistem Perbankan / EDC Otomatis" ${val('bookkeeping') === 'Sistem Perbankan / EDC Otomatis' ? 'selected' : ''}>Tercatat otomatis melalui mutasi mesin EDC agen / rekening bank</option>
+                <option value="Belum Ada Pembukuan Rutin" ${val('bookkeeping') === 'Belum Ada Pembukuan Rutin' ? 'selected' : ''}>Belum ada pembukuan resmi (hanya hitungan ingatan pemilik)</option>
               </select>
             </div>
           </div>
@@ -627,13 +638,13 @@
             <!-- Kendala Utama Narasumber -->
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">1. Apa Kendala Finansial &amp; Operasional Terbesar yang Dihadapi Narasumber? <span class="text-rose-500">*</span></label>
-              <textarea id="nftD1Problems" rows="3" ${readOnlyAttr} oninput="onNftLkpdInput()" placeholder="Contoh: Piutang nasabah/pelanggan yang macet karena menunggu panen, fluktuasi harga pupuk/beras, keterbatasan saldo tunai agen perbankan, atau sinyal internet sering terputus..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs leading-relaxed text-slate-900 resize-y">${formData?.problems || ''}</textarea>
+              <textarea id="nftD1Problems" rows="3" ${readOnlyAttr} oninput="onNftLkpdInput()" placeholder="Contoh: Piutang nasabah/pelanggan yang macet karena menunggu panen, fluktuasi harga pupuk/beras, keterbatasan saldo tunai agen perbankan, atau sinyal internet sering terputus..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs leading-relaxed text-slate-900 resize-y">${val('problems') || ''}</textarea>
             </div>
 
             <!-- Solusi Inovatif Siswa -->
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">2. Solusi atau Gagasan Inovatif yang Kelompok Anda Berikan untuk Usaha Tersebut: <span class="text-rose-500">*</span></label>
-              <textarea id="nftD1Solutions" rows="4" ${readOnlyAttr} oninput="onNftLkpdInput()" placeholder="Tuliskan analisis dan saran Anda (misal: pentingnya menyisihkan dana darurat usaha, pemanfaatan QRIS untuk mencegah uang palsu, strategi pemisahan uang pribadi dan uang usaha, atau pembukuan digital sederhana)... (Minimal 100 karakter)" class="w-full p-3.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs leading-relaxed text-slate-900 resize-y">${formData?.solutions || ''}</textarea>
+              <textarea id="nftD1Solutions" rows="4" ${readOnlyAttr} oninput="onNftLkpdInput()" placeholder="Tuliskan analisis dan saran Anda (misal: pentingnya menyisihkan dana darurat usaha, pemanfaatan QRIS untuk mencegah uang palsu, strategi pemisahan uang pribadi dan uang usaha, atau pembukuan digital sederhana)... (Minimal 100 karakter)" class="w-full p-3.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs leading-relaxed text-slate-900 resize-y">${val('solutions') || ''}</textarea>
               <div class="flex items-center justify-between text-[11px] font-medium pt-0.5">
                 <span id="msgNftD1SolutionsValidation" class="text-slate-400">Minimal 100 karakter analisis ilmiah</span>
                 <span id="counterNftD1Solutions" class="text-slate-400 font-bold">0 / 100</span>
@@ -711,13 +722,13 @@
   }
 
   // 2. KALKULATOR INTERAKTIF ARUS KAS LAPANGAN
-  window.recalcNftFinancials = function() {
-    const incomeDaily = parseRupiahNumber(document.getElementById('nftD1IncomeDaily')?.value);
-    const customersDaily = parseInt(document.getElementById('nftD1CustomersDaily')?.value, 10) || 0;
+  function recalcNftFinancials() {
+    const incomeDaily = parseRupiahNumber((document.getElementById('nftD1IncomeDaily') ? document.getElementById('nftD1IncomeDaily').value : ''));
+    const customersDaily = parseInt((document.getElementById('nftD1CustomersDaily') ? document.getElementById('nftD1CustomersDaily').value : ''), 10) || 0;
 
-    const costMat = parseRupiahNumber(document.getElementById('nftD1CostMaterials')?.value);
-    const costOp = parseRupiahNumber(document.getElementById('nftD1CostOperational')?.value);
-    const costWage = parseRupiahNumber(document.getElementById('nftD1CostWages')?.value);
+    const costMat = parseRupiahNumber((document.getElementById('nftD1CostMaterials') ? document.getElementById('nftD1CostMaterials').value : ''));
+    const costOp = parseRupiahNumber((document.getElementById('nftD1CostOperational') ? document.getElementById('nftD1CostOperational').value : ''));
+    const costWage = parseRupiahNumber((document.getElementById('nftD1CostWages') ? document.getElementById('nftD1CostWages').value : ''));
 
     // Hitung Proyeksi Bulanan & Tahunan
     const incomeMonthly = incomeDaily * 30;
@@ -755,7 +766,8 @@
 
     // Auto-save draft
     saveNftLkpdDraftThrottled();
-  };
+  }
+  window.recalcNftFinancials = recalcNftFinancials;
 
   function evaluateSolutionsCounter() {
     const solEl = document.getElementById('nftD1Solutions');
@@ -793,32 +805,32 @@
       const cleanNisn = String(u.nisn || u.identifier || '').trim();
       if (!cleanNisn) return { success: false };
 
-      const incomeDaily = parseRupiahNumber(document.getElementById('nftD1IncomeDaily')?.value);
-      const customersDaily = parseInt(document.getElementById('nftD1CustomersDaily')?.value, 10) || 0;
-      const costMat = parseRupiahNumber(document.getElementById('nftD1CostMaterials')?.value);
-      const costOp = parseRupiahNumber(document.getElementById('nftD1CostOperational')?.value);
-      const costWage = parseRupiahNumber(document.getElementById('nftD1CostWages')?.value);
+      const incomeDaily = parseRupiahNumber((document.getElementById('nftD1IncomeDaily') ? document.getElementById('nftD1IncomeDaily').value : ''));
+      const customersDaily = parseInt((document.getElementById('nftD1CustomersDaily') ? document.getElementById('nftD1CustomersDaily').value : ''), 10) || 0;
+      const costMat = parseRupiahNumber((document.getElementById('nftD1CostMaterials') ? document.getElementById('nftD1CostMaterials').value : ''));
+      const costOp = parseRupiahNumber((document.getElementById('nftD1CostOperational') ? document.getElementById('nftD1CostOperational').value : ''));
+      const costWage = parseRupiahNumber((document.getElementById('nftD1CostWages') ? document.getElementById('nftD1CostWages').value : ''));
 
       const payments = [];
-      if (document.getElementById('chkPayCash')?.checked) payments.push('Tunai');
-      if (document.getElementById('chkPayQris')?.checked) payments.push('QRIS');
-      if (document.getElementById('chkPayEdc')?.checked) payments.push('EDC');
-      if (document.getElementById('chkPayTransfer')?.checked) payments.push('Transfer');
+      if (Boolean(document.getElementById('chkPayCash') && document.getElementById('chkPayCash').checked)) payments.push('Tunai');
+      if (Boolean(document.getElementById('chkPayQris') && document.getElementById('chkPayQris').checked)) payments.push('QRIS');
+      if (Boolean(document.getElementById('chkPayEdc') && document.getElementById('chkPayEdc').checked)) payments.push('EDC');
+      if (Boolean(document.getElementById('chkPayTransfer') && document.getElementById('chkPayTransfer').checked)) payments.push('Transfer');
 
       const now = new Date();
       const draftObj = {
         updatedAt: now.toISOString(),
-        businessName: document.getElementById('nftD1BusinessName')?.value.trim() || '',
-        businessType: document.getElementById('nftD1BusinessType')?.value || '',
-        district: document.getElementById('nftD1District')?.value || '',
-        village: document.getElementById('nftD1Village')?.value.trim() || '',
-        interviewee: document.getElementById('nftD1Interviewee')?.value.trim() || '',
-        contact: document.getElementById('nftD1Contact')?.value.trim() || '',
-        sectorType: document.getElementById('nftD1SectorType')?.value || '',
-        commodity: document.getElementById('nftD1Commodity')?.value.trim() || '',
-        activityChain: document.getElementById('nftD1ActivityChain')?.value.trim() || '',
-        customerProfile: document.getElementById('nftD1CustomerProfile')?.value.trim() || '',
-        peakSeason: document.getElementById('nftD1PeakSeason')?.value.trim() || '',
+        businessName: (document.getElementById('nftD1BusinessName') ? document.getElementById('nftD1BusinessName').value : '').trim() || '',
+        businessType: (document.getElementById('nftD1BusinessType') ? document.getElementById('nftD1BusinessType').value : '') || '',
+        district: (document.getElementById('nftD1District') ? document.getElementById('nftD1District').value : '') || '',
+        village: (document.getElementById('nftD1Village') ? document.getElementById('nftD1Village').value : '').trim() || '',
+        interviewee: (document.getElementById('nftD1Interviewee') ? document.getElementById('nftD1Interviewee').value : '').trim() || '',
+        contact: (document.getElementById('nftD1Contact') ? document.getElementById('nftD1Contact').value : '').trim() || '',
+        sectorType: (document.getElementById('nftD1SectorType') ? document.getElementById('nftD1SectorType').value : '') || '',
+        commodity: (document.getElementById('nftD1Commodity') ? document.getElementById('nftD1Commodity').value : '').trim() || '',
+        activityChain: (document.getElementById('nftD1ActivityChain') ? document.getElementById('nftD1ActivityChain').value : '').trim() || '',
+        customerProfile: (document.getElementById('nftD1CustomerProfile') ? document.getElementById('nftD1CustomerProfile').value : '').trim() || '',
+        peakSeason: (document.getElementById('nftD1PeakSeason') ? document.getElementById('nftD1PeakSeason').value : '').trim() || '',
         customersDaily: customersDaily,
         customersMonthly: customersDaily * 30,
         incomeDaily: incomeDaily,
@@ -830,9 +842,9 @@
         totalExpensesMonthly: costMat + costOp + costWage,
         netProfitMonthly: (incomeDaily * 30) - (costMat + costOp + costWage),
         payments: payments,
-        bookkeeping: document.getElementById('nftD1Bookkeeping')?.value || '',
-        problems: document.getElementById('nftD1Problems')?.value.trim() || '',
-        solutions: document.getElementById('nftD1Solutions')?.value.trim() || ''
+        bookkeeping: (document.getElementById('nftD1Bookkeeping') ? document.getElementById('nftD1Bookkeeping').value : '') || '',
+        problems: (document.getElementById('nftD1Problems') ? document.getElementById('nftD1Problems').value : '').trim() || '',
+        solutions: (document.getElementById('nftD1Solutions') ? document.getElementById('nftD1Solutions').value : '').trim() || ''
       };
 
       localStorage.setItem('fincestem_draft_nft_lkpd_d1_' + cleanNisn, JSON.stringify(draftObj));
@@ -875,21 +887,21 @@
 
   // 4. SUBMIT RESMI LKPD DAY 1 KE FASILITATOR & AKTIFKAN PROGRESS SISTEM
   window.submitNonFieldTripDay1LKPD = function() {
-    const businessName = document.getElementById('nftD1BusinessName')?.value.trim();
-    const businessType = document.getElementById('nftD1BusinessType')?.value;
-    const district = document.getElementById('nftD1District')?.value;
-    const village = document.getElementById('nftD1Village')?.value.trim();
-    const interviewee = document.getElementById('nftD1Interviewee')?.value.trim();
-    const sectorType = document.getElementById('nftD1SectorType')?.value;
-    const commodity = document.getElementById('nftD1Commodity')?.value.trim();
-    const activityChain = document.getElementById('nftD1ActivityChain')?.value.trim();
-    const customerProfile = document.getElementById('nftD1CustomerProfile')?.value.trim();
-    const peakSeason = document.getElementById('nftD1PeakSeason')?.value.trim();
-    const incomeDaily = parseRupiahNumber(document.getElementById('nftD1IncomeDaily')?.value);
-    const customersDaily = parseInt(document.getElementById('nftD1CustomersDaily')?.value, 10) || 0;
-    const bookkeeping = document.getElementById('nftD1Bookkeeping')?.value;
-    const problems = document.getElementById('nftD1Problems')?.value.trim();
-    const solutions = document.getElementById('nftD1Solutions')?.value.trim();
+    const businessName = (document.getElementById('nftD1BusinessName') ? document.getElementById('nftD1BusinessName').value : '').trim();
+    const businessType = (document.getElementById('nftD1BusinessType') ? document.getElementById('nftD1BusinessType').value : '');
+    const district = (document.getElementById('nftD1District') ? document.getElementById('nftD1District').value : '');
+    const village = (document.getElementById('nftD1Village') ? document.getElementById('nftD1Village').value : '').trim();
+    const interviewee = (document.getElementById('nftD1Interviewee') ? document.getElementById('nftD1Interviewee').value : '').trim();
+    const sectorType = (document.getElementById('nftD1SectorType') ? document.getElementById('nftD1SectorType').value : '');
+    const commodity = (document.getElementById('nftD1Commodity') ? document.getElementById('nftD1Commodity').value : '').trim();
+    const activityChain = (document.getElementById('nftD1ActivityChain') ? document.getElementById('nftD1ActivityChain').value : '').trim();
+    const customerProfile = (document.getElementById('nftD1CustomerProfile') ? document.getElementById('nftD1CustomerProfile').value : '').trim();
+    const peakSeason = (document.getElementById('nftD1PeakSeason') ? document.getElementById('nftD1PeakSeason').value : '').trim();
+    const incomeDaily = parseRupiahNumber((document.getElementById('nftD1IncomeDaily') ? document.getElementById('nftD1IncomeDaily').value : ''));
+    const customersDaily = parseInt((document.getElementById('nftD1CustomersDaily') ? document.getElementById('nftD1CustomersDaily').value : ''), 10) || 0;
+    const bookkeeping = (document.getElementById('nftD1Bookkeeping') ? document.getElementById('nftD1Bookkeeping').value : '');
+    const problems = (document.getElementById('nftD1Problems') ? document.getElementById('nftD1Problems').value : '').trim();
+    const solutions = (document.getElementById('nftD1Solutions') ? document.getElementById('nftD1Solutions').value : '').trim();
 
     // Validasi Wajib
     const missing = [];
@@ -934,15 +946,15 @@
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
 
-    const costMat = parseRupiahNumber(document.getElementById('nftD1CostMaterials')?.value);
-    const costOp = parseRupiahNumber(document.getElementById('nftD1CostOperational')?.value);
-    const costWage = parseRupiahNumber(document.getElementById('nftD1CostWages')?.value);
+    const costMat = parseRupiahNumber((document.getElementById('nftD1CostMaterials') ? document.getElementById('nftD1CostMaterials').value : ''));
+    const costOp = parseRupiahNumber((document.getElementById('nftD1CostOperational') ? document.getElementById('nftD1CostOperational').value : ''));
+    const costWage = parseRupiahNumber((document.getElementById('nftD1CostWages') ? document.getElementById('nftD1CostWages').value : ''));
 
     const payments = [];
-    if (document.getElementById('chkPayCash')?.checked) payments.push('Tunai');
-    if (document.getElementById('chkPayQris')?.checked) payments.push('QRIS');
-    if (document.getElementById('chkPayEdc')?.checked) payments.push('EDC');
-    if (document.getElementById('chkPayTransfer')?.checked) payments.push('Transfer');
+    if (Boolean(document.getElementById('chkPayCash') && document.getElementById('chkPayCash').checked)) payments.push('Tunai');
+    if (Boolean(document.getElementById('chkPayQris') && document.getElementById('chkPayQris').checked)) payments.push('QRIS');
+    if (Boolean(document.getElementById('chkPayEdc') && document.getElementById('chkPayEdc').checked)) payments.push('EDC');
+    if (Boolean(document.getElementById('chkPayTransfer') && document.getElementById('chkPayTransfer').checked)) payments.push('Transfer');
 
     const officialLkpd = {
       day: 1,
@@ -957,7 +969,7 @@
       village: village,
       location: `${village}, Kec. ${district}, OKU Timur`,
       interviewee: interviewee,
-      contact: document.getElementById('nftD1Contact')?.value.trim() || '-',
+      contact: (document.getElementById('nftD1Contact') ? document.getElementById('nftD1Contact').value : '').trim() || '-',
       sectorType: sectorType,
       commodity: commodity,
       activityChain: activityChain,
@@ -1275,6 +1287,10 @@
 
     // Helper isi nilai
     const val = (k) => (formData && formData[k] !== undefined) ? formData[k] : '';
+    let d2CurDistrict = normalizeDistrictName(val('district') || '');
+    if (!d2CurDistrict && val('location')) {
+      d2CurDistrict = OKU_TIMUR_DISTRICTS.find(function(d) { return String(val('location')).toLowerCase().includes(d.toLowerCase()); }) || '';
+    }
 
     mainEl.innerHTML = `
       <div class="flex flex-col gap-4 sm:gap-5 pb-12">
@@ -1811,7 +1827,7 @@
   };
 
   // Evaluasi Validasi Realtime & Hitung Progres
-  window.onNftDay2FieldInput = function(shouldSave = true) {
+  function onNftDay2FieldInput(shouldSave = true) {
     let card1Valid = true;
     let card2Valid = true;
     let card3Valid = true;
@@ -1972,7 +1988,8 @@
     if (shouldSave) {
       saveNftDay2DraftThrottled();
     }
-  };
+  }
+  window.onNftDay2FieldInput = onNftDay2FieldInput;
 
   function updateCardStatusBadgeD2(cardNum, isValid) {
     const badge = document.getElementById(`badgeCardStatusLkpdD2_${cardNum}`);
@@ -2428,14 +2445,13 @@
     const isTesterD3 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
     const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTesterD3);
 
+    const val = (k) => (formData && formData[k] !== undefined) ? formData[k] : '';
     let d3CurDistrict = normalizeDistrictName(val('district') || '');
     if (!d3CurDistrict && val('location')) {
       d3CurDistrict = OKU_TIMUR_DISTRICTS.find(d => val('location').toLowerCase().includes(d.toLowerCase())) || '';
     }
     const selSector = formData.sectorKey || sectorFromMateri || 'pertanian';
     const sectorObj = NFT_DAY3_SECTOR_DATA[selSector] || NFT_DAY3_SECTOR_DATA.pertanian;
-
-    const val = (k) => (formData && formData[k] !== undefined) ? formData[k] : '';
 
     const draftTimeStr = draft && draft.updatedAt 
       ? new Date(draft.updatedAt).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) 
@@ -2969,7 +2985,7 @@
   // ========================================================
   // FUNGSI KALKULATOR FINANSIAL DAY 3
   // ========================================================
-  window.calcDay3Financials = function() {
+  function calcDay3Financials() {
     const seed = parseFloat(document.getElementById('nftD3_costSeed')?.value) || 0;
     const feed = parseFloat(document.getElementById('nftD3_costFeedFertilizer')?.value) || 0;
     const energy = parseFloat(document.getElementById('nftD3_costEnergyMachine')?.value) || 0;
@@ -3014,7 +3030,8 @@
     }
 
     onNftDay3FieldInput();
-  };
+  }
+  window.calcDay3Financials = calcDay3Financials;
 
   // ========================================================
   // REAL-TIME INPUT & VALIDATION HANDLERS
@@ -3052,13 +3069,14 @@
     }
     onNftDay3FieldInput();
   };
-  window.onNftDay3FieldInput = function() {
+  function onNftDay3FieldInput() {
     validateAllDay3CardsUI(false);
     clearTimeout(day3DraftTimer);
     day3DraftTimer = setTimeout(() => {
       saveNftDay3DraftImmediate(false);
     }, 800);
-  };
+  }
+  window.onNftDay3FieldInput = onNftDay3FieldInput;
 
   function collectFormDataD3() {
     const valOf = (id) => (document.getElementById(id)?.value || '').trim();
@@ -3518,6 +3536,10 @@
       'pertanian';
     const selectedSector = NFT_DAY4_TOOL_GUIDE[defaultSector] ? defaultSector : 'pertanian';
     const guide = NFT_DAY4_TOOL_GUIDE[selectedSector];
+    let d4CurDistrict = normalizeDistrictName(saved.district || '');
+    if (!d4CurDistrict && saved.location) {
+      d4CurDistrict = OKU_TIMUR_DISTRICTS.find(function(d) { return String(saved.location).toLowerCase().includes(d.toLowerCase()); }) || '';
+    }
 
     const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
     const readOnlyMode = isReadOnly || isSubmitted;
