@@ -390,7 +390,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261107_v9_fadhil_royan"></script>
+  <script src="../js/core.js?v=20261107_v12_mobile_compat"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -2856,7 +2856,7 @@
             const currentUser = FincestemCore.auth.getUser();
             const myNisn = currentUser ? String(currentUser.nisn || currentUser.identifier || '').trim() : '';
             const cleanMyNisn = myNisn.replace(/^0+/, '');
-            const idList = [myNisn, cleanMyNisn, currentUser?.nis, currentUser?.identifier].filter(Boolean).map(String);
+            const idList = [myNisn, cleanMyNisn, (currentUser && currentUser.nis), (currentUser && currentUser.identifier)].filter(Boolean).map(String);
 
             // ISOLASI KETAT PRIVASI: Hanya tampilkan foto yang diunggah oleh akun siswa ini!
             const studentDocs = db.documentation.filter(p => {
@@ -4289,7 +4289,7 @@
         if (cat.isFieldTrip && docDayNum === 3) {
           const urlParams = new URLSearchParams(window.location.search);
           let sesiParam = urlParams.get('sesi');
-          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          const ids = [studentNisn, String(studentNisn).trim(), (user && user.nis), (user && user.identifier)].filter(Boolean);
 
           let hasDokApel = false;
           let hasDokJatim = false;
@@ -4319,7 +4319,7 @@
         }
 
         if (cat.isFieldTrip && docDayNum === 4) {
-          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          const ids = [studentNisn, String(studentNisn).trim(), (user && user.nis), (user && user.identifier)].filter(Boolean);
           for (const id of ids) {
             localStorage.setItem('fincestem_dok_ft_day4_' + id, 'true');
           }
@@ -4328,7 +4328,7 @@
         if (cat.isFieldTrip && docDayNum === 2) {
           const urlParams = new URLSearchParams(window.location.search);
           const sesiParam = urlParams.get('sesi');
-          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          const ids = [studentNisn, String(studentNisn).trim(), (user && user.nis), (user && user.identifier)].filter(Boolean);
           let hasDokAkpol = false;
           for (const id of ids) {
             if (localStorage.getItem('fincestem_dok_ft_day2_akpol_' + id) === 'true') {
@@ -4350,7 +4350,7 @@
         if (cat.isFieldTrip && docDayNum === 6) {
           const urlParams = new URLSearchParams(window.location.search);
           const sesiParam = urlParams.get('sesi');
-          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          const ids = [studentNisn, String(studentNisn).trim(), (user && user.nis), (user && user.identifier)].filter(Boolean);
           const isSesi2 = (sesiParam === '2');
           for (const id of ids) {
             if (isSesi2) {
@@ -4366,7 +4366,7 @@
         if (cat.isFieldTrip && docDayNum === 7) {
           const urlParams = new URLSearchParams(window.location.search);
           const sesiParam = urlParams.get('sesi');
-          const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+          const ids = [studentNisn, String(studentNisn).trim(), (user && user.nis), (user && user.identifier)].filter(Boolean);
           const isSesi2 = (sesiParam === '2');
           for (const id of ids) {
             if (isSesi2) {
@@ -4379,7 +4379,7 @@
           }
         }
 
-        const ids = [studentNisn, String(studentNisn).trim(), user?.nis, user?.identifier].filter(Boolean);
+        const ids = [studentNisn, String(studentNisn).trim(), (user && user.nis), (user && user.identifier)].filter(Boolean);
         for (const id of ids) {
           localStorage.setItem(`fincestem_dok_day${docDayNum}_` + id, 'true');
           if (!cat.isFieldTrip) {

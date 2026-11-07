@@ -4358,7 +4358,7 @@
 
   <script src="../js/siswa_data.js?v=20261107_v9_fadhil_royan"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261107_v9_fadhil_royan"></script>
+  <script src="../js/core.js?v=20261107_v12_mobile_compat"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/admin-mentorship.js?v=20261106_zonefix_v6"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
@@ -5988,8 +5988,8 @@
     }
 
     function updateResetScopeUI() {
-      const isPerDay = document.getElementById('scopeRadioPerDay')?.checked;
-      const isTrialOnly = document.getElementById('scopeRadioTrial')?.checked;
+      const isPerDay = (document.getElementById('scopeRadioPerDay') && document.getElementById('scopeRadioPerDay').checked);
+      const isTrialOnly = (document.getElementById('scopeRadioTrial') && document.getElementById('scopeRadioTrial').checked);
       const chkPhoto = document.getElementById('chkResetFotoProfil');
       const boxPhoto = document.getElementById('boxResetFotoProfil');
       const selectorBox = document.getElementById('resetPerDaySelectorBox');
@@ -6017,7 +6017,7 @@
       const badge = document.getElementById('badgeSelectedResetDay');
       if (badge) {
         if (isPerDay) {
-          const val = parseInt(document.getElementById('resetSelectTargetDay')?.value || '1');
+          const val = parseInt((document.getElementById('resetSelectTargetDay') ? document.getElementById('resetSelectTargetDay').value : "") || '1');
           badge.textContent = `Mode: Reset Per-Day (Day ${val})`;
           badge.className = 'text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-full border border-teal-200';
         } else if (isTrialOnly) {
@@ -6080,15 +6080,15 @@
       };
 
       if (actionType === 'per_day') {
-        const selDay = parseInt(document.getElementById('resetSelectTargetDay')?.value || '1');
+        const selDay = parseInt((document.getElementById('resetSelectTargetDay') ? document.getElementById('resetSelectTargetDay').value : "") || '1');
         targetDay = isNaN(selDay) ? 1 : selDay;
         scope = (targetDay === 0) ? 'trial_only' : ('day_' + targetDay);
         comp = {
-          materi: !!document.getElementById('chkResetMateri')?.checked,
-          lkpd: !!document.getElementById('chkResetLkpd')?.checked,
-          asesmen: !!document.getElementById('chkResetAsesmen')?.checked,
-          refleksi: !!document.getElementById('chkResetRefleksi')?.checked,
-          dokumentasi: !!document.getElementById('chkResetDokumentasi')?.checked,
+          materi: !!(document.getElementById('chkResetMateri') && document.getElementById('chkResetMateri').checked),
+          lkpd: !!(document.getElementById('chkResetLkpd') && document.getElementById('chkResetLkpd').checked),
+          asesmen: !!(document.getElementById('chkResetAsesmen') && document.getElementById('chkResetAsesmen').checked),
+          refleksi: !!(document.getElementById('chkResetRefleksi') && document.getElementById('chkResetRefleksi').checked),
+          dokumentasi: !!(document.getElementById('chkResetDokumentasi') && document.getElementById('chkResetDokumentasi').checked),
           foto_profil: false
         };
       } else if (actionType === 'trial_only') {
@@ -6114,10 +6114,10 @@
           foto_profil: true
         };
       } else if (actionType === 'selective') {
-        const isPerDayScope = document.getElementById('scopeRadioPerDay')?.checked;
-        const isTrialScope = document.getElementById('scopeRadioTrial')?.checked;
+        const isPerDayScope = (document.getElementById('scopeRadioPerDay') && document.getElementById('scopeRadioPerDay').checked);
+        const isTrialScope = (document.getElementById('scopeRadioTrial') && document.getElementById('scopeRadioTrial').checked);
         if (isPerDayScope) {
-          const selDay = parseInt(document.getElementById('resetSelectTargetDay')?.value || '1');
+          const selDay = parseInt((document.getElementById('resetSelectTargetDay') ? document.getElementById('resetSelectTargetDay').value : "") || '1');
           targetDay = isNaN(selDay) ? 1 : selDay;
           scope = (targetDay === 0) ? 'trial_only' : ('day_' + targetDay);
         } else if (isTrialScope) {
@@ -6128,12 +6128,12 @@
           targetDay = -1;
         }
         comp = {
-          materi: !!document.getElementById('chkResetMateri')?.checked,
-          lkpd: !!document.getElementById('chkResetLkpd')?.checked,
-          asesmen: !!document.getElementById('chkResetAsesmen')?.checked,
-          refleksi: !!document.getElementById('chkResetRefleksi')?.checked,
-          dokumentasi: !!document.getElementById('chkResetDokumentasi')?.checked,
-          foto_profil: (!isTrialScope && !isPerDayScope) && !!document.getElementById('chkResetFotoProfil')?.checked
+          materi: !!(document.getElementById('chkResetMateri') && document.getElementById('chkResetMateri').checked),
+          lkpd: !!(document.getElementById('chkResetLkpd') && document.getElementById('chkResetLkpd').checked),
+          asesmen: !!(document.getElementById('chkResetAsesmen') && document.getElementById('chkResetAsesmen').checked),
+          refleksi: !!(document.getElementById('chkResetRefleksi') && document.getElementById('chkResetRefleksi').checked),
+          dokumentasi: !!(document.getElementById('chkResetDokumentasi') && document.getElementById('chkResetDokumentasi').checked),
+          foto_profil: (!isTrialScope && !isPerDayScope) && !!(document.getElementById('chkResetFotoProfil') && document.getElementById('chkResetFotoProfil').checked)
         };
       }
 
@@ -6292,7 +6292,7 @@
 
     function confirmResetCurrentModalStudentPerDay() {
       if (!currentModalNisn) return;
-      const selDay = parseInt(document.getElementById('modalStudentResetDaySelect')?.value || '1');
+      const selDay = parseInt((document.getElementById('modalStudentResetDaySelect') ? document.getElementById('modalStudentResetDaySelect').value : "") || '1');
       const list = window.FincestemMasterStudents || [];
       const s = list.find(item => String(item.nisn).trim() === String(currentModalNisn).trim());
       const name = s ? s.nama : currentModalNisn;
@@ -6428,9 +6428,9 @@
       const qEl = document.getElementById('adminSearchStudent');
       const rEl = document.getElementById('adminFilterRombel');
       const zEl = document.getElementById('adminFilterZone');
-      adminSearchQuery = (qEl?.value || '').trim().toLowerCase();
-      adminCurrentRombel = rEl?.value || 'ALL';
-      adminCurrentZoneFilter = zEl?.value || 'ALL';
+      adminSearchQuery = ((qEl ? qEl.value : "") || '').trim().toLowerCase();
+      adminCurrentRombel = (rEl ? rEl.value : "") || 'ALL';
+      adminCurrentZoneFilter = (zEl ? zEl.value : "") || 'ALL';
       adminCurrentPage = 1;
       applyStudentFilters();
     }
@@ -6924,7 +6924,7 @@
           document.getElementById('modalStudentProgressBadge').textContent = `${prog.percentage || 0}% Selesai`;
           document.getElementById('modalStudentAvgScore').textContent = `${prog.average_score || '-'} (${prog.predicate || 'A'})`;
           document.getElementById('modalStudentDays').textContent = `${prog.completed_days || 0} / 7 Hari`;
-          const fb = prog.latest_feedback?.feedback || 'Belum ada catatan khusus dari fasilitator.';
+          const fb = (prog.latest_feedback && prog.latest_feedback.feedback) || 'Belum ada catatan khusus dari fasilitator.';
           document.getElementById('modalStudentFeedbackText').textContent = `"${fb}"`;
         });
       }
@@ -7164,10 +7164,10 @@
       const selStars = document.getElementById('selEmgStars');
       const inpReason = document.getElementById('inpEmgReason');
 
-      const d = parseInt(selDay?.value) || 1;
-      const score = parseFloat(inpScore?.value) || 100;
-      const stars = parseInt(selStars?.value) || 5;
-      const reason = (inpReason?.value || '').trim() || 'Dispensasi Darurat Lapangan (Kebijakan Admin)';
+      const d = parseInt((selDay ? selDay.value : "")) || 1;
+      const score = parseFloat((inpScore ? inpScore.value : "")) || 100;
+      const stars = parseInt((selStars ? selStars.value : "")) || 5;
+      const reason = ((inpReason ? inpReason.value : "") || '').trim() || 'Dispensasi Darurat Lapangan (Kebijakan Admin)';
 
       FincestemCore.zones.saveStudentEmergencyGrading(currentModalNisn, d, score, stars, reason, function(ok) {
         renderModalStudentEmergencyOverview(currentModalNisn);
@@ -7179,7 +7179,7 @@
     function deleteModalStudentEmergencyGrading() {
       if (!currentModalNisn) return;
       const selDay = document.getElementById('selEmgDay');
-      const d = parseInt(selDay?.value) || 1;
+      const d = parseInt((selDay ? selDay.value : "")) || 1;
 
       if (!confirm(`Kembalikan penilaian Day ${d} untuk siswa ${currentModalNisn} ke perhitungan otomatis jam pengumpulan?`)) return;
 
@@ -7753,8 +7753,8 @@
     function populateTesterStudentSelect() {
       const sel = document.getElementById('selTesterStudentCandidate');
       if (!sel) return;
-      const q = (document.getElementById('inpSearchTesterStudent')?.value || '').trim().toLowerCase();
-      const catFilter = document.getElementById('selFilterTesterCategory')?.value || 'ALL';
+      const q = ((document.getElementById('inpSearchTesterStudent') ? document.getElementById('inpSearchTesterStudent').value : "") || '').trim().toLowerCase();
+      const catFilter = (document.getElementById('selFilterTesterCategory') ? document.getElementById('selFilterTesterCategory').value : "") || 'ALL';
       const list = window.FincestemMasterStudents || [];
 
       let currentTesterNisns = [];
@@ -8747,7 +8747,7 @@
       let list = Object.values(map);
 
       // Filter by Search Query
-      const q = (document.getElementById('searchCoordInput')?.value || '').trim().toLowerCase();
+      const q = ((document.getElementById('searchCoordInput') ? document.getElementById('searchCoordInput').value : "") || '').trim().toLowerCase();
       if (q) {
         list = list.filter(coord => {
           const nameMatch = (coord.name || '').toLowerCase().includes(q);
@@ -9118,7 +9118,7 @@
       const containerGuru = document.getElementById('containerFasilGuruView');
       if (!tbody || !containerTable || !containerGuru) return;
 
-      const q = (document.getElementById('searchFasilInput')?.value || '').trim().toLowerCase();
+      const q = ((document.getElementById('searchFasilInput') ? document.getElementById('searchFasilInput').value : "") || '').trim().toLowerCase();
 
       if (badge) badge.textContent = `${currentAdminFasils.length} Guru Tertugaskan`;
 

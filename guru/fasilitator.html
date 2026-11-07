@@ -1682,7 +1682,7 @@
   <script src="../js/siswa_data.js?v=20261107_v11_fix_fasil_auth"></script>
   <script src="../js/guru_data.js?v=20261107_v11_fix_fasil_auth"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261107_v11_fix_fasil_auth"></script>
-  <script src="../js/core.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/core.js?v=20261107_v12_mobile_compat"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261107_v11_fix_fasil_auth"></script>
   <script src="../js/modules/guru-rekap-monitoring.js?v=20261107_v11_fix_fasil_auth"></script>
   <script>
@@ -2662,7 +2662,7 @@
               </div>
             </div>
 
-            ${prog?.latest_feedback?.feedback ? `
+            ${(prog && prog.latest_feedback && prog.latest_feedback.feedback) ? `
               <p class="text-[10.5px] text-on-surface-variant italic truncate mt-0.5">
                 "${prog.latest_feedback.feedback}"
               </p>
@@ -3460,7 +3460,7 @@
                     if (nftMat.isVideoModule || ((dayNum === 5 || dayNum === 6) && !nftMat.cardB)) {
                       const secLabel = nftMat.sectorName || nftMat.selectedSector || 'Sektor Pilihan';
                       const objLabel = nftMat.objectName || '-';
-                      const resText = nftMat.userConclusion || nftMat.conclusion || nftMat.summary || nftMat.cardA?.text || '-';
+                      const resText = nftMat.userConclusion || nftMat.conclusion || nftMat.summary || (nftMat.cardA && nftMat.cardA.text) || '-';
                       cardsHtml = `
                         <div class="mt-2 flex flex-col gap-1.5 border-t border-teal-200 pt-2">
                           <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -3478,11 +3478,11 @@
                       `;
                     } else {
                       const cards = [
-                        { key: 'A', data: nftMat.cardA, name: nftMat.cardA?.title ? `A: ${nftMat.cardA.title}` : `Kartu Riset A (Day ${dayNum})` },
-                        { key: 'B', data: nftMat.cardB, name: nftMat.cardB?.title ? `B: ${nftMat.cardB.title}` : `Kartu Riset B (Day ${dayNum})` },
-                        { key: 'C', data: nftMat.cardC, name: nftMat.cardC?.title ? `C: ${nftMat.cardC.title}` : `Kartu Riset C (Day ${dayNum})` },
-                        { key: 'D', data: nftMat.cardD, name: nftMat.cardD?.title ? `D: ${nftMat.cardD.title}` : `Kartu Riset D (Day ${dayNum})` },
-                        { key: 'E', data: nftMat.cardE, name: nftMat.cardE?.title ? `E: ${nftMat.cardE.title}` : `Kartu Riset E (Day ${dayNum})` }
+                        { key: 'A', data: nftMat.cardA, name: (nftMat.cardA && nftMat.cardA.title) ? `A: ${nftMat.cardA.title}` : `Kartu Riset A (Day ${dayNum})` },
+                        { key: 'B', data: nftMat.cardB, name: (nftMat.cardB && nftMat.cardB.title) ? `B: ${nftMat.cardB.title}` : `Kartu Riset B (Day ${dayNum})` },
+                        { key: 'C', data: nftMat.cardC, name: (nftMat.cardC && nftMat.cardC.title) ? `C: ${nftMat.cardC.title}` : `Kartu Riset C (Day ${dayNum})` },
+                        { key: 'D', data: nftMat.cardD, name: (nftMat.cardD && nftMat.cardD.title) ? `D: ${nftMat.cardD.title}` : `Kartu Riset D (Day ${dayNum})` },
+                        { key: 'E', data: nftMat.cardE, name: (nftMat.cardE && nftMat.cardE.title) ? `E: ${nftMat.cardE.title}` : `Kartu Riset E (Day ${dayNum})` }
                       ];
                       cardsHtml = `
                         <div class="mt-2 flex flex-col gap-1.5 border-t border-teal-200 pt-2">
@@ -3495,10 +3495,10 @@
                               <div class="bg-white/95 p-2 rounded-xl border border-teal-200 flex flex-col gap-1">
                                 <div class="flex items-center justify-between gap-1">
                                   <strong class="text-teal-900 truncate">${c.name}</strong>
-                                  <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-100 text-teal-800 font-bold shrink-0">${c.data?.text ? c.data.text.length : 0} Karakter</span>
+                                  <span class="text-[9px] px-1.5 py-0.2 rounded bg-teal-100 text-teal-800 font-bold shrink-0">${(c.data && c.data.text) ? c.data.text.length : 0} Karakter</span>
                                 </div>
-                                <p class="text-slate-600 line-clamp-3 italic">"${c.data?.text || '-'}"</p>
-                                <div class="text-[9.5px] text-slate-600 font-medium bg-teal-50/60 p-1.5 rounded-lg border border-teal-100/80 whitespace-pre-line line-clamp-3" title="${c.data?.source || '-'}">📚 <strong>Rujukan:</strong><br>${c.data?.source || '-'}</div>
+                                <p class="text-slate-600 line-clamp-3 italic">"${(c.data && c.data.text) || '-'}"</p>
+                                <div class="text-[9.5px] text-slate-600 font-medium bg-teal-50/60 p-1.5 rounded-lg border border-teal-100/80 whitespace-pre-line line-clamp-3" title="${(c.data && c.data.source) || '-'}">📚 <strong>Rujukan:</strong><br>${(c.data && c.data.source) || '-'}</div>
                               </div>
                             `).join('')}
                           </div>
@@ -4779,15 +4779,15 @@
     }
 
     function updateLiveManualGradingPreview() {
-      const targetNisn = document.getElementById('modalGradingTargetNisn')?.value;
+      const targetNisn = (document.getElementById('modalGradingTargetNisn') ? document.getElementById('modalGradingTargetNisn').value : "");
       const isFieldTrip = isStudentFieldTripFasil(targetNisn);
-      const rawVal = document.getElementById('gradeTargetDay')?.value;
+      const rawVal = (document.getElementById('gradeTargetDay') ? document.getElementById('gradeTargetDay').value : "");
       const dayNum = (rawVal === '0' || rawVal === 0) ? 0 : (parseInt(rawVal) || 1);
 
-      const fin = parseInt(document.getElementById('gradeFinancial')?.value) || 0;
-      const cul = parseInt(document.getElementById('gradeCulture')?.value) || 0;
-      const exp = parseInt(document.getElementById('gradeExploration')?.value) || 0;
-      const stem = parseInt(document.getElementById('gradeSTEM')?.value) || 0;
+      const fin = parseInt((document.getElementById('gradeFinancial') ? document.getElementById('gradeFinancial').value : "")) || 0;
+      const cul = parseInt((document.getElementById('gradeCulture') ? document.getElementById('gradeCulture').value : "")) || 0;
+      const exp = parseInt((document.getElementById('gradeExploration') ? document.getElementById('gradeExploration').value : "")) || 0;
+      const stem = parseInt((document.getElementById('gradeSTEM') ? document.getElementById('gradeSTEM').value : "")) || 0;
 
       let avg = 0;
       if (!isFieldTrip) {
@@ -5522,7 +5522,7 @@
       const fallback = document.getElementById('fasilFotoFallback');
       const btnHapus = document.getElementById('btnHapusFotoFasil');
       const initials = document.getElementById('fasilFotoFallbackInitials');
-      const name = document.getElementById('fasilBioNama')?.value || 'FG';
+      const name = (document.getElementById('fasilBioNama') ? document.getElementById('fasilBioNama').value : "") || 'FG';
       const inits = name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() || 'FG';
 
       if (dataUrl) {
@@ -5571,7 +5571,7 @@
 
           fasilCurrentPhotoDataUrl = compressed;
           setFasilFotoPreviewUI(compressed);
-          updateFasilSidebarAvatar(compressed, document.getElementById('fasilBioNama')?.value || '', document.getElementById('fasilBioNip')?.value || '');
+          updateFasilSidebarAvatar(compressed, (document.getElementById('fasilBioNama') ? document.getElementById('fasilBioNama').value : "") || '', (document.getElementById('fasilBioNip') ? document.getElementById('fasilBioNip').value : "") || '');
           updateFasilLivePreview();
           FincestemCore.ui.toast('Foto berhasil dimuat. Klik Simpan Biodata untuk menerapkan.', 'info');
         };
@@ -5585,7 +5585,7 @@
       const input = document.getElementById('fasilFotoInput');
       if (input) input.value = '';
       setFasilFotoPreviewUI('');
-      updateFasilSidebarAvatar('', document.getElementById('fasilBioNama')?.value || '', document.getElementById('fasilBioNip')?.value || '');
+      updateFasilSidebarAvatar('', (document.getElementById('fasilBioNama') ? document.getElementById('fasilBioNama').value : "") || '', (document.getElementById('fasilBioNip') ? document.getElementById('fasilBioNip').value : "") || '');
       updateFasilLivePreview();
       FincestemCore.ui.toast('Foto profil dihapus.', 'info');
     }
@@ -5609,13 +5609,13 @@
     }
 
     function updateFasilLivePreview() {
-      const name = document.getElementById('fasilBioNama')?.value.trim() || 'Nama Fasilitator';
-      const nip = document.getElementById('fasilBioNip')?.value.trim() || '-';
-      const ttl = document.getElementById('fasilBioTtl')?.value.trim() || 'Belum diisi';
-      const wa = document.getElementById('fasilBioWa')?.value.trim() || '';
-      const alamat = document.getElementById('fasilBioAlamat')?.value.trim() || 'Belum diisi';
+      const name = (document.getElementById('fasilBioNama') ? document.getElementById('fasilBioNama').value : "").trim() || 'Nama Fasilitator';
+      const nip = (document.getElementById('fasilBioNip') ? document.getElementById('fasilBioNip').value : "").trim() || '-';
+      const ttl = (document.getElementById('fasilBioTtl') ? document.getElementById('fasilBioTtl').value : "").trim() || 'Belum diisi';
+      const wa = (document.getElementById('fasilBioWa') ? document.getElementById('fasilBioWa').value : "").trim() || '';
+      const alamat = (document.getElementById('fasilBioAlamat') ? document.getElementById('fasilBioAlamat').value : "").trim() || 'Belum diisi';
 
-      const jk = document.querySelector('input[name="fasilBioJk"]:checked')?.value || 'Laki-laki';
+      const jk = (document.querySelector('input[name="fasilBioJk"]:checked') ? document.querySelector('input[name="fasilBioJk"]:checked').value : "") || 'Laki-laki';
       const sapaan = jk === 'Perempuan' ? 'Ibu' : 'Bapak';
 
       const prevNama = document.getElementById('previewNama');
@@ -5668,11 +5668,11 @@
       if (!user) return;
       const userKey = user.username || user.nip || user.name || '';
 
-      const name = (document.getElementById('fasilBioNama')?.value || '').trim();
-      const nip = (document.getElementById('fasilBioNip')?.value || '-').trim();
-      const ttl = (document.getElementById('fasilBioTtl')?.value || '').trim();
-      const wa = (document.getElementById('fasilBioWa')?.value || '').trim();
-      const alamat = (document.getElementById('fasilBioAlamat')?.value || '').trim();
+      const name = ((document.getElementById('fasilBioNama') ? document.getElementById('fasilBioNama').value : "") || '').trim();
+      const nip = ((document.getElementById('fasilBioNip') ? document.getElementById('fasilBioNip').value : "") || '-').trim();
+      const ttl = ((document.getElementById('fasilBioTtl') ? document.getElementById('fasilBioTtl').value : "") || '').trim();
+      const wa = ((document.getElementById('fasilBioWa') ? document.getElementById('fasilBioWa').value : "") || '').trim();
+      const alamat = ((document.getElementById('fasilBioAlamat') ? document.getElementById('fasilBioAlamat').value : "") || '').trim();
       const lbl = document.getElementById('lblSaveFasilBio');
 
       if (!name) {
@@ -5682,7 +5682,7 @@
 
       if (lbl) lbl.textContent = 'Menyimpan...';
 
-      const jk = document.querySelector('input[name="fasilBioJk"]:checked')?.value || 'Laki-laki';
+      const jk = (document.querySelector('input[name="fasilBioJk"]:checked') ? document.querySelector('input[name="fasilBioJk"]:checked').value : "") || 'Laki-laki';
       const payload = {
         username: userKey,
         nama_lengkap: name,

@@ -19,8 +19,8 @@ const FincestemCore = {
     if (!Array.isArray(classList)) return [];
     const romanMap = { 'X': 10, 'XI': 11, 'XII': 12, 'VII': 7, 'VIII': 8, 'IX': 9 };
     return [...classList].sort((a, b) => {
-      const strA = typeof a === 'string' ? a : (a?.class || a?.class_name || '');
-      const strB = typeof b === 'string' ? b : (b?.class || b?.class_name || '');
+      const strA = typeof a === 'string' ? a : ((a && (a.class || a.class_name)) || '');
+      const strB = typeof b === 'string' ? b : ((b && (b.class || b.class_name)) || '');
 
       const parse = (str) => {
         const clean = String(str || '').replace(/^kelas\s+/i, '').trim();
@@ -3313,7 +3313,7 @@ const FincestemCore = {
               ftObj = { conclusion: cText, savedAt: savedTime };
               
               if (day >= 1 && day <= 7) {
-                const rich = buildRichDayMateriCards(day, parsed.cardA?.text || cText, parsed.cardB?.text || cText, parsed.cardC?.text || cText, parsed.cardD?.text || cText, parsed.cardE?.text || cText);
+                const rich = buildRichDayMateriCards(day, (parsed.cardA && parsed.cardA.text) || cText, (parsed.cardB && parsed.cardB.text) || cText, (parsed.cardC && parsed.cardC.text) || cText, (parsed.cardD && parsed.cardD.text) || cText, (parsed.cardE && parsed.cardE.text) || cText);
                 nftObj = Object.assign({}, parsed, rich, { day: day, submitted: true, submittedAt: parsed.submittedAt || savedTime, conclusion: cText });
               } else {
                 nftObj = Object.assign({}, parsed, { day: day, submitted: true, submittedAt: parsed.submittedAt || savedTime });
@@ -3383,7 +3383,7 @@ const FincestemCore = {
             writeLocal('fincestem_materi_ft_day6_', { conclusion: cText, savedAt: savedTime });
           } else if (type === 'lkpd') {
             let lkpdObj = parsed;
-            let strContent = (typeof parsed === 'string') ? parsed : (parsed?.summary || parsed?.conclusion || '');
+            let strContent = (typeof parsed === 'string') ? parsed : ((parsed && parsed.summary) || (parsed && parsed.conclusion) || '');
 
             let bName = '';
             let bType = '';
@@ -3543,7 +3543,7 @@ const FincestemCore = {
             writeLocal('fincestem_lkpd_ft_day6_', parsed);
           } else if (type === 'asesmen') {
             let asesmenObj = parsed;
-            const rawStr = (typeof parsed === 'string') ? parsed : (parsed?.summary || parsed?.note || '');
+            const rawStr = (typeof parsed === 'string') ? parsed : ((parsed && parsed.summary) || (parsed && parsed.note) || '');
             let sc = (item.score !== null && !isNaN(item.score)) ? parseFloat(item.score) : null;
             if (sc === null && typeof parsed === 'object' && parsed && parsed.score !== undefined) {
               sc = parseFloat(parsed.score);
@@ -5940,7 +5940,7 @@ const FincestemCore = {
       fetch(FincestemCore.api.base + '/settings.php?action=get_teachers&_t=' + Date.now())
         .then(r => r.json())
         .then(res => {
-          if (res.success && Array.isArray(res.data?.teachers) && res.data.teachers.length >= 100) {
+          if (res.success && Array.isArray((res.data && res.data.teachers)) && res.data.teachers.length >= 100) {
             window.FincestemMasterTeachers = res.data.teachers;
             try {
               localStorage.setItem('fincestem_custom_teachers', JSON.stringify(res.data.teachers));

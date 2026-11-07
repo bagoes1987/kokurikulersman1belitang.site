@@ -1149,7 +1149,7 @@
   <script src="../js/siswa_data.js?v=20261107_v9_fadhil_royan"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261107_v9_fadhil_royan"></script>
+  <script src="../js/core.js?v=20261107_v12_mobile_compat"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -1474,7 +1474,7 @@
         event.target.value = '';
         if (res.success) {
           FincestemCore.ui.toast('Foto profil berhasil diunggah & tersinkron!', 'success');
-          const targetUrl = res.photo_url || res.data?.photo_url;
+          const targetUrl = res.photo_url || (res.data && res.data.photo_url);
           renderProfilePhoto(nisn, targetUrl);
           if (currentStudent) currentStudent.photo_url = targetUrl;
         } else {
@@ -1579,8 +1579,8 @@
         modal.classList.add('opacity-100');
       });
 
-      const studentNisn = currentStudent?.nisn || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
-      const studentClass = currentStudent?.class || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().class) || '';
+      const studentNisn = (currentStudent && currentStudent.nisn) || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
+      const studentClass = (currentStudent && currentStudent.class) || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().class) || '';
 
       // Prioritas 1: Ambil murni dari Pembagian Siswa Binaan
       let assignedFasilName = '';
@@ -1591,7 +1591,7 @@
         }
       }
       if (!assignedFasilName) {
-        const rawFasil = currentStudent?.facilitator_name || 
+        const rawFasil = (currentStudent && currentStudent.facilitator_name) || 
                          (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().facilitator_name) || '';
         if (rawFasil && !rawFasil.includes('\n') && rawFasil !== 'Belum Ditentukan' && rawFasil !== 'Tim Fasilitator SMAN 1 Belitang') {
           assignedFasilName = rawFasil;
@@ -1797,8 +1797,8 @@
       // Average score, predicate & Kokurikuler Report Card
       const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent?.class || currentStudent?.class_name, currentStudent?.zone)
-        : (currentStudent?.zone || 'FINCESTEM OKU TIMUR');
+        ? FincestemCore.zones.getStudentZone(studentNisn, (currentStudent && currentStudent.class) || (currentStudent && currentStudent.class_name), (currentStudent && currentStudent.zone))
+        : ((currentStudent && currentStudent.zone) || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
@@ -2083,7 +2083,7 @@
       const fasilFooterEl = document.getElementById('feedbackFasilName');
 
       if (fasilFooterEl) {
-        fasilFooterEl.textContent = (prog.latest_feedback && prog.latest_feedback.facilitator_name) || currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+        fasilFooterEl.textContent = (prog.latest_feedback && prog.latest_feedback.facilitator_name) || (currentStudent && currentStudent.facilitator_name) || 'Tim Fasilitator SMAN 1 Belitang';
       }
 
       if (!allDaysDone && !hasOfficialDay7) {
@@ -2874,7 +2874,7 @@
       let reflText = '';
       const reflTask = (taskMap && taskMap[d + '_refleksi']) || null;
       if (reflTask) {
-        reflText = typeof reflTask.content === 'string' ? reflTask.content : (reflTask.content?.content || '');
+        reflText = typeof reflTask.content === 'string' ? reflTask.content : ((reflTask.content && reflTask.content.content) || '');
       }
       if (!reflText) {
         for (const id of idList) {
@@ -2963,7 +2963,7 @@
         // Cek apakah siswa memiliki izin dispensasi domisili luar OKU Timur dari Admin
         const isLocExempt = (FincestemCore.zones && FincestemCore.zones.isLocationExempt)
           ? (FincestemCore.zones.isLocationExempt(cleanNisn) || FincestemCore.zones.isLocationExempt(user.nis) || FincestemCore.zones.isLocationExempt(user.identifier))
-          : !!(student?.is_location_exempt || user?.is_location_exempt);
+          : !!((student && student.is_location_exempt) || (user && user.is_location_exempt));
 
         if (isLocExempt) {
           // DISPENSASI ADMIN: Siswa tinggal di luar OKU Timur atas izin Admin -> BEBAS PINALTI!
@@ -4468,8 +4468,8 @@
     // Helper resolusi fasilitator aktif siswa dari modul Pembagian Siswa Binaan
     function getStudentActiveFasilName(targetNisn, targetClass) {
       const u = FincestemCore.auth.getUser() || {};
-      const nisn = String(targetNisn || currentStudent?.nisn || u.nisn || u.identifier || '').trim();
-      const sClass = String(targetClass || currentStudent?.class || u.class || '').trim();
+      const nisn = String(targetNisn || (currentStudent && currentStudent.nisn) || u.nisn || u.identifier || '').trim();
+      const sClass = String(targetClass || (currentStudent && currentStudent.class) || u.class || '').trim();
 
       // 1. Prioritas Utama: Modul Pembagian Siswa Binaan (Mentorship Multi-PC)
       if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function' && nisn) {
@@ -6338,7 +6338,7 @@
                   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium pt-2 border-t border-emerald-200">
                     <div class="flex flex-col min-w-0">
                       <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Fasilitator Pembina:</span>
-                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || (currentStudent && currentStudent.facilitator_name))}
                     </div>
                     <span class="text-emerald-700 font-black self-start sm:self-auto shrink-0 bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">Rapor Resmi Terverifikasi ✓</span>
                   </div>
@@ -6406,7 +6406,7 @@
                   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200">
                     <div class="flex flex-col min-w-0">
                       <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
-                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || (currentStudent && currentStudent.facilitator_name))}
                     </div>
                   </div>
                 </div>
@@ -6473,7 +6473,7 @@
                   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200">
                     <div class="flex flex-col min-w-0">
                       <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
-                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || (currentStudent && currentStudent.facilitator_name))}
                     </div>
                   </div>
                 </div>
@@ -6540,7 +6540,7 @@
                   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-emerald-800 font-semibold pt-2 border-t border-emerald-200">
                     <div class="flex flex-col min-w-0">
                       <span class="text-emerald-700 font-bold text-[11px] uppercase tracking-wider">Dinilai oleh Fasilitator:</span>
-                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || currentStudent?.facilitator_name)}
+                      ${formatFacilitatorDisplay(effectiveRec.facilitator_name || (currentStudent && currentStudent.facilitator_name))}
                     </div>
                   </div>
                 </div>
@@ -6695,7 +6695,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-500 font-medium pt-2 border-t border-slate-200/60">
                   <div class="flex flex-col min-w-0">
                     <span class="text-slate-500 font-bold text-[11px] uppercase tracking-wider">Fasilitator Kelas:</span>
-                    ${formatFacilitatorDisplay(currentStudent?.facilitator_name)}
+                    ${formatFacilitatorDisplay((currentStudent && currentStudent.facilitator_name))}
                   </div>
                 </div>
               </div>
@@ -6746,7 +6746,7 @@
         const answers = {};
         let missing = false;
         for (let i = 1; i <= 10; i++) {
-          const val = (document.getElementById('ftAsesmenEssayQ' + i)?.value || '').trim();
+          const val = ((document.getElementById('ftAsesmenEssayQ' + i) ? document.getElementById('ftAsesmenEssayQ' + i).value : "") || '').trim();
           if (!val) { missing = true; }
           answers['q' + i] = val;
         }
@@ -6788,11 +6788,11 @@
 
         return;
       } else if (type === 'asesmen' && isFTDay1) {
-        const q1 = (document.getElementById('ftAsesmenEssayQ1')?.value || '').trim();
-        const q2 = (document.getElementById('ftAsesmenEssayQ2')?.value || '').trim();
-        const q3 = (document.getElementById('ftAsesmenEssayQ3')?.value || '').trim();
-        const q4 = (document.getElementById('ftAsesmenEssayQ4')?.value || '').trim();
-        const q5 = (document.getElementById('ftAsesmenEssayQ5')?.value || '').trim();
+        const q1 = ((document.getElementById('ftAsesmenEssayQ1') ? document.getElementById('ftAsesmenEssayQ1').value : "") || '').trim();
+        const q2 = ((document.getElementById('ftAsesmenEssayQ2') ? document.getElementById('ftAsesmenEssayQ2').value : "") || '').trim();
+        const q3 = ((document.getElementById('ftAsesmenEssayQ3') ? document.getElementById('ftAsesmenEssayQ3').value : "") || '').trim();
+        const q4 = ((document.getElementById('ftAsesmenEssayQ4') ? document.getElementById('ftAsesmenEssayQ4').value : "") || '').trim();
+        const q5 = ((document.getElementById('ftAsesmenEssayQ5') ? document.getElementById('ftAsesmenEssayQ5').value : "") || '').trim();
 
         if (!q1 || !q2 || !q3 || !q4 || !q5) {
           FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan esai asesmen Day 1!', 'warning');
@@ -6865,11 +6865,11 @@
         closeDayActivityModal();
         return;
       } else if (type === 'asesmen' && isFTDay3) {
-        const q1 = document.querySelector('input[name="ftD3Mcq_q1"]:checked')?.value || '';
-        const q2 = document.querySelector('input[name="ftD3Mcq_q2"]:checked')?.value || '';
-        const q3 = document.querySelector('input[name="ftD3Mcq_q3"]:checked')?.value || '';
-        const q4 = document.querySelector('input[name="ftD3Mcq_q4"]:checked')?.value || '';
-        const q5 = document.querySelector('input[name="ftD3Mcq_q5"]:checked')?.value || '';
+        const q1 = (document.querySelector('input[name="ftD3Mcq_q1"]:checked') ? document.querySelector('input[name="ftD3Mcq_q1"]:checked').value : "") || '';
+        const q2 = (document.querySelector('input[name="ftD3Mcq_q2"]:checked') ? document.querySelector('input[name="ftD3Mcq_q2"]:checked').value : "") || '';
+        const q3 = (document.querySelector('input[name="ftD3Mcq_q3"]:checked') ? document.querySelector('input[name="ftD3Mcq_q3"]:checked').value : "") || '';
+        const q4 = (document.querySelector('input[name="ftD3Mcq_q4"]:checked') ? document.querySelector('input[name="ftD3Mcq_q4"]:checked').value : "") || '';
+        const q5 = (document.querySelector('input[name="ftD3Mcq_q5"]:checked') ? document.querySelector('input[name="ftD3Mcq_q5"]:checked').value : "") || '';
 
         if (!q1 || !q2 || !q3 || !q4 || !q5) {
           FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan pilihan ganda asesmen Day 3!', 'warning');
@@ -6913,11 +6913,11 @@
         closeDayActivityModal();
         return;
       } else if (type === 'asesmen' && isFTDay4) {
-        const q1 = document.querySelector('input[name="ftD4Mcq_q1"]:checked')?.value || '';
-        const q2 = document.querySelector('input[name="ftD4Mcq_q2"]:checked')?.value || '';
-        const q3 = document.querySelector('input[name="ftD4Mcq_q3"]:checked')?.value || '';
-        const q4 = document.querySelector('input[name="ftD4Mcq_q4"]:checked')?.value || '';
-        const q5 = document.querySelector('input[name="ftD4Mcq_q5"]:checked')?.value || '';
+        const q1 = (document.querySelector('input[name="ftD4Mcq_q1"]:checked') ? document.querySelector('input[name="ftD4Mcq_q1"]:checked').value : "") || '';
+        const q2 = (document.querySelector('input[name="ftD4Mcq_q2"]:checked') ? document.querySelector('input[name="ftD4Mcq_q2"]:checked').value : "") || '';
+        const q3 = (document.querySelector('input[name="ftD4Mcq_q3"]:checked') ? document.querySelector('input[name="ftD4Mcq_q3"]:checked').value : "") || '';
+        const q4 = (document.querySelector('input[name="ftD4Mcq_q4"]:checked') ? document.querySelector('input[name="ftD4Mcq_q4"]:checked').value : "") || '';
+        const q5 = (document.querySelector('input[name="ftD4Mcq_q5"]:checked') ? document.querySelector('input[name="ftD4Mcq_q5"]:checked').value : "") || '';
 
         if (!q1 || !q2 || !q3 || !q4 || !q5) {
           FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan pilihan ganda asesmen Day 4!', 'warning');
@@ -6961,11 +6961,11 @@
         closeDayActivityModal();
         return;
       } else if (type === 'asesmen' && isFTDay5) {
-        const q1 = document.querySelector('input[name="ftD5Mcq_q1"]:checked')?.value || '';
-        const q2 = document.querySelector('input[name="ftD5Mcq_q2"]:checked')?.value || '';
-        const q3 = document.querySelector('input[name="ftD5Mcq_q3"]:checked')?.value || '';
-        const q4 = document.querySelector('input[name="ftD5Mcq_q4"]:checked')?.value || '';
-        const q5 = document.querySelector('input[name="ftD5Mcq_q5"]:checked')?.value || '';
+        const q1 = (document.querySelector('input[name="ftD5Mcq_q1"]:checked') ? document.querySelector('input[name="ftD5Mcq_q1"]:checked').value : "") || '';
+        const q2 = (document.querySelector('input[name="ftD5Mcq_q2"]:checked') ? document.querySelector('input[name="ftD5Mcq_q2"]:checked').value : "") || '';
+        const q3 = (document.querySelector('input[name="ftD5Mcq_q3"]:checked') ? document.querySelector('input[name="ftD5Mcq_q3"]:checked').value : "") || '';
+        const q4 = (document.querySelector('input[name="ftD5Mcq_q4"]:checked') ? document.querySelector('input[name="ftD5Mcq_q4"]:checked').value : "") || '';
+        const q5 = (document.querySelector('input[name="ftD5Mcq_q5"]:checked') ? document.querySelector('input[name="ftD5Mcq_q5"]:checked').value : "") || '';
 
         if (!q1 || !q2 || !q3 || !q4 || !q5) {
           FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan pilihan ganda asesmen Day 5!', 'warning');
@@ -7009,11 +7009,11 @@
         closeDayActivityModal();
         return;
       } else if (type === 'asesmen' && isFTDay6) {
-        const q1 = document.querySelector('input[name="ftD6Mcq_q1"]:checked')?.value || '';
-        const q2 = document.querySelector('input[name="ftD6Mcq_q2"]:checked')?.value || '';
-        const q3 = document.querySelector('input[name="ftD6Mcq_q3"]:checked')?.value || '';
-        const q4 = document.querySelector('input[name="ftD6Mcq_q4"]:checked')?.value || '';
-        const q5 = document.querySelector('input[name="ftD6Mcq_q5"]:checked')?.value || '';
+        const q1 = (document.querySelector('input[name="ftD6Mcq_q1"]:checked') ? document.querySelector('input[name="ftD6Mcq_q1"]:checked').value : "") || '';
+        const q2 = (document.querySelector('input[name="ftD6Mcq_q2"]:checked') ? document.querySelector('input[name="ftD6Mcq_q2"]:checked').value : "") || '';
+        const q3 = (document.querySelector('input[name="ftD6Mcq_q3"]:checked') ? document.querySelector('input[name="ftD6Mcq_q3"]:checked').value : "") || '';
+        const q4 = (document.querySelector('input[name="ftD6Mcq_q4"]:checked') ? document.querySelector('input[name="ftD6Mcq_q4"]:checked').value : "") || '';
+        const q5 = (document.querySelector('input[name="ftD6Mcq_q5"]:checked') ? document.querySelector('input[name="ftD6Mcq_q5"]:checked').value : "") || '';
 
         if (!q1 || !q2 || !q3 || !q4 || !q5) {
           FincestemCore.ui.toast('Harap jawab seluruh 5 pertanyaan pilihan ganda asesmen Day 6!', 'warning');
@@ -7183,8 +7183,8 @@
 
       const studentNisn = currentStudent ? (currentStudent.nisn || currentStudent.identifier || '') : '';
       const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-        ? FincestemCore.zones.getStudentZone(studentNisn, currentStudent?.class || currentStudent?.class_name, currentStudent?.zone)
-        : (currentStudent?.zone || 'FINCESTEM OKU TIMUR');
+        ? FincestemCore.zones.getStudentZone(studentNisn, (currentStudent && currentStudent.class) || (currentStudent && currentStudent.class_name), (currentStudent && currentStudent.zone))
+        : ((currentStudent && currentStudent.zone) || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
@@ -7214,7 +7214,7 @@
        ======================================================== */
     function openFeedbackHistoryModal() {
       const modal = document.getElementById('modalFeedbackHistory');
-      const prog = studentProgress || FincestemCore.progress.getDefaultProgress(currentStudent?.nisn);
+      const prog = studentProgress || FincestemCore.progress.getDefaultProgress((currentStudent && currentStudent.nisn));
 
       const u = FincestemCore.auth.getUser() || {};
       const stu = currentStudent || u;
@@ -7234,7 +7234,7 @@
           document.getElementById('modalRecapPredicate').textContent = 'Belum Dinilai Guru';
           document.getElementById('modalRecapScore').textContent = '-';
         }
-        const recapFasilRaw = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+        const recapFasilRaw = (currentStudent && currentStudent.facilitator_name) || 'Tim Fasilitator SMAN 1 Belitang';
         let rParts = [];
         if (recapFasilRaw.includes('\n')) rParts = recapFasilRaw.split('\n');
         else if (recapFasilRaw.includes(' / ')) rParts = recapFasilRaw.split(' / ');
@@ -7250,7 +7250,7 @@
       } else {
         document.getElementById('modalRecapPredicate').textContent = prog.predicate || 'Dalam Proses';
         document.getElementById('modalRecapScore').textContent = prog.average_score || '-';
-        const recapFasilRaw = currentStudent?.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang';
+        const recapFasilRaw = (currentStudent && currentStudent.facilitator_name) || 'Tim Fasilitator SMAN 1 Belitang';
         let rParts = [];
         if (recapFasilRaw.includes('\n')) rParts = recapFasilRaw.split('\n');
         else if (recapFasilRaw.includes(' / ')) rParts = recapFasilRaw.split(' / ');
@@ -7464,7 +7464,7 @@
     }
 
     function onHealthConditionChanged() {
-      const selected = document.querySelector('input[name="healthConditionRadio"]:checked')?.value || 'sehat';
+      const selected = (document.querySelector('input[name="healthConditionRadio"]:checked') ? document.querySelector('input[name="healthConditionRadio"]:checked').value : "") || 'sehat';
       const fieldsBox = document.getElementById('healthDiseaseFields');
       const labelSehat = document.getElementById('labelHealthSehat');
       const labelSakit = document.getElementById('labelHealthSakit');
@@ -7558,28 +7558,28 @@
 
     function saveStudentHealthInfo(event) {
       if (event) event.preventDefault();
-      const condition = document.querySelector('input[name="healthConditionRadio"]:checked')?.value || 'sehat';
-      const disease = (document.getElementById('inputDiseaseName')?.value || '').trim();
-      const medication = (document.getElementById('inputMedicationName')?.value || '').trim();
-      const bloodType = document.getElementById('selectBloodType')?.value || 'Belum Tahu';
-      const emergencyPhone = (document.getElementById('inputEmergencyPhone')?.value || '').trim();
+      const condition = (document.querySelector('input[name="healthConditionRadio"]:checked') ? document.querySelector('input[name="healthConditionRadio"]:checked').value : "") || 'sehat';
+      const disease = ((document.getElementById('inputDiseaseName') ? document.getElementById('inputDiseaseName').value : "") || '').trim();
+      const medication = ((document.getElementById('inputMedicationName') ? document.getElementById('inputMedicationName').value : "") || '').trim();
+      const bloodType = (document.getElementById('selectBloodType') ? document.getElementById('selectBloodType').value : "") || 'Belum Tahu';
+      const emergencyPhone = ((document.getElementById('inputEmergencyPhone') ? document.getElementById('inputEmergencyPhone').value : "") || '').trim();
 
       if (condition === 'sakit') {
         if (!disease || disease.length < 3) {
           FincestemCore.ui.toast('Harap sebutkan nama penyakit / keluhan yang sering kambuh!', 'warning');
-          document.getElementById('inputDiseaseName')?.focus();
+          { var _fEl = document.getElementById('inputDiseaseName'); if (_fEl) _fEl.focus(); };
           return;
         }
         if (!medication || medication.length < 2) {
           FincestemCore.ui.toast('Harap tuliskan nama obat pribadi yang dibutuhkan / wajib dibawa!', 'warning');
-          document.getElementById('inputMedicationName')?.focus();
+          { var _fEl = document.getElementById('inputMedicationName'); if (_fEl) _fEl.focus(); };
           return;
         }
       }
 
       if (!emergencyPhone || emergencyPhone.length < 7) {
         FincestemCore.ui.toast('Harap masukkan No. WhatsApp Darurat Orang Tua / Wali (minimal 7 digit)!', 'warning');
-        document.getElementById('inputEmergencyPhone')?.focus();
+        { var _fEl = document.getElementById('inputEmergencyPhone'); if (_fEl) _fEl.focus(); };
         return;
       }
 
@@ -7623,7 +7623,7 @@
       const modal = document.getElementById('modalStudentContact');
       if (!modal) return;
 
-      const studentNisn = currentStudent?.nisn || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
+      const studentNisn = (currentStudent && currentStudent.nisn) || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
       let c = null;
       if (FincestemCore.studentContacts) {
         c = FincestemCore.studentContacts.getContacts(studentNisn);
@@ -7657,15 +7657,15 @@
     }
 
     function saveStudentContactInfo() {
-      const studentNisn = currentStudent?.nisn || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
+      const studentNisn = (currentStudent && currentStudent.nisn) || (FincestemCore.auth.getUser() && FincestemCore.auth.getUser().nisn) || '';
       if (!studentNisn) {
         FincestemCore.ui.toast('NISN siswa tidak valid!', 'error');
         return;
       }
 
-      const waSiswa = (document.getElementById('inputStudentWa')?.value || '').trim();
-      const waAyah = (document.getElementById('inputFatherWa')?.value || '').trim();
-      const waIbu = (document.getElementById('inputMotherWa')?.value || '').trim();
+      const waSiswa = ((document.getElementById('inputStudentWa') ? document.getElementById('inputStudentWa').value : "") || '').trim();
+      const waAyah = ((document.getElementById('inputFatherWa') ? document.getElementById('inputFatherWa').value : "") || '').trim();
+      const waIbu = ((document.getElementById('inputMotherWa') ? document.getElementById('inputMotherWa').value : "") || '').trim();
 
       if (!waSiswa && !waAyah && !waIbu) {
         FincestemCore.ui.toast('Harap isi minimal nomor WhatsApp Siswa atau Orang Tua!', 'warning');
