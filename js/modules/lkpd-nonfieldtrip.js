@@ -1130,96 +1130,247 @@
   // ========================================================
   // DATA PERTANYAAN KHUSUS SEKTOR DAY 2 NON-FIELD TRIP
   // ========================================================
+  // ========================================================
+  // DATA PERTANYAAN KHUSUS SEKTOR DAY 2 NON-FIELD TRIP
+  // Fokus: Budaya, Nilai Sosial, Kearifan Lokal & Mata Pencaharian
+  // ========================================================
   const NFT_DAY2_SECTOR_DATA = {
     pangan: {
       key: 'pangan',
-      name: 'Pertanian Tanaman Pangan (Padi Sawah & Palawija)',
-      cultureTheme: 'Pengetahuan musim, keterampilan bertani, dan gotong royong',
+      name: 'Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang & Palawija)',
+      cultureTheme: 'Pengetahuan musim, etos kerja sawah, tradisi sambatan & modernisasi alsintan',
       badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+      labels: {
+        locLabel: 'Nama Blok Irigasi BK / Hamparan Sawah:',
+        locPlaceholder: 'Contoh: Blok Sawah BK 9, Desa Sidodadi',
+        narLabel: 'Nama Petani / Ketua Poktan:',
+        narPlaceholder: 'Contoh: Bapak Sukardi (Ketua Poktan Mulyo Tani)',
+        durLabel: 'Lama Mengelola Usaha Tani:',
+        durPlaceholder: 'Contoh: 18 Tahun Mengelola Sawah (Sejak 2008)',
+        extraLabel: 'Luas Lahan Garapan & Pola Tanam:',
+        extraPlaceholder: 'Contoh: 1,5 Hektar (Pola IP-200 Rendeng-Gadu)'
+      },
       questions: [
-        { id: 1, text: 'Bagaimana Bapak/Ibu menentukan waktu yang tepat untuk mengolah lahan, menanam, dan memanen?', hint: 'Kaji metode penentuan jadwal musim tanam, kalender pranata mangsa/musim hujan, atau jadwal giliran air irigasi Komering...' },
-        { id: 2, text: 'Apakah ada pengetahuan lokal atau pengalaman orang tua yang masih digunakan dalam bertani?', hint: 'Kaji kearifan lokal seperti tanda-tanda alam, ritual selamatan wiwit/sedekah bumi, atau nasihat leluhur tani...' },
-        { id: 3, text: 'Bagaimana bentuk kerja sama atau gotong royong yang dilakukan selama kegiatan pertanian?', hint: 'Kaji tradisi sambatan/rewang, gotong royong membersihkan parit tersier, atau giliran tenaga tanam/panen...' },
-        { id: 4, text: 'Bagaimana penggunaan traktor, mesin tanam (transplanter), atau mesin panen (combine harvester) mengubah cara bertani?', hint: 'Kaji perbandingan waktu kerja manual vs mesin, biaya sewa alsintan, dan penghematan tenaga kerja...' },
-        { id: 5, text: 'Apakah generasi muda di lingkungan ini masih tertarik bekerja di bidang pertanian? Mengapa?', hint: 'Kaji pandangan narasumber mengenai regenerasi petani muda, kendala minat pemuda, atau peluang smart farming...' }
+        { id: 1, text: 'Bagaimana Bapak/Ibu menentukan waktu yang tepat untuk mengolah lahan, semai bibit, dan memanen? Apakah masih mempedomani tanda alam (pranata mangsa) atau jadwal giliran air irigasi Komering?', hint: 'Kaji metode penentuan jadwal musim tanam, kalender pranata mangsa/musim hujan, atau jadwal giliran air irigasi Komering...' },
+        { id: 2, text: 'Bagaimana bentuk kerja sama tolong-menolong (tradisi sambatan) yang masih berjalan saat musim tanam atau panen? Bagaimana tradisi ini membantu meringankan biaya upah kerja?', hint: 'Kaji tradisi sambatan/rewang, gotong royong membersihkan parit tersier, atau giliran tenaga tanam/panen...' },
+        { id: 3, text: 'Apakah di lingkungan petani sini masih ada tradisi syukuran panen, sedekah bumi, atau doa tolak bala sebelum turun ke sawah? Apa makna nilai tersebut bagi ketenangan batin petani?', hint: 'Kaji kearifan lokal seperti tanda-tanda alam, ritual selamatan wiwit/sedekah bumi, atau nasihat leluhur tani...' },
+        { id: 4, text: 'Bagaimana kehadiran traktor roda 4 dan mesin panen combine harvester mengubah kebiasaan dan kecepatan bertani Bapak/Ibu dibanding zaman dahulu?', hint: 'Kaji perbandingan waktu kerja manual vs mesin, biaya sewa alsintan, dan penghematan tenaga kerja...' },
+        { id: 5, text: 'Bagaimana Bapak/Ibu mewariskan pengetahuan dan keterampilan bertani kepada generasi muda? Apakah pemuda di lingkungan ini masih berminat meneruskan mata pencaharian sawah ini?', hint: 'Kaji pandangan narasumber mengenai regenerasi petani muda, kendala minat pemuda, atau peluang smart farming...' }
+      ],
+      obsHints: [
+        'Amati kondisi fisik petak sawah, pematang, dan kejernihan serta debit aliran air saluran irigasi BK...',
+        'Catat daftar perkakas tradisional (cangkul, sabit, caping) berdampingan dengan mesin alsintan (traktor/combine)...',
+        'Uraikan kronologi proses kerja petani di sawah dari pagi hingga petang yang Anda saksikan langsung...',
+        'Amati ketangkasan gerak tangan petani, cara menyemai bibit, membajak, atau mencabut gulma sawah...',
+        'Amati interaksi sosial, tegur sapa antar-petani di pematang, dan suasana tolong-menolong di sawah...',
+        'Amati nilai kesabaran, busana kerja penahan terik, atau kebiasaan makan bekal bersama di gubuk sawah...',
+        'Catat cara pengoperasian mesin alsintan traktor/combine atau pompa air alkon di petak sawah...',
+        'Amati kendala fisik lapangan yang terlihat, seperti lumpur dalam, serangan keong/wereng, atau air macet...',
+        'Amati upaya pemilahan gabah bernas, pemanfaatan jerami sisa panen, dan kebersihan parit sawah...'
       ]
     },
     perkebunan: {
       key: 'perkebunan',
-      name: 'Perkebunan (Karet & Kelapa Sawit)',
-      cultureTheme: 'Pengalaman budidaya, kebiasaan kerja, dan pengetahuan tanaman',
+      name: 'Perkebunan Rakyat (Karet Alam & Kelapa Sawit)',
+      cultureTheme: 'Kedisiplinan subuh menderes, tradisi bagi hasil kebun, dan daya tahan ekonomi',
       badgeColor: 'bg-lime-100 text-lime-800 border-lime-300',
+      labels: {
+        locLabel: 'Lokasi Kebun Karet / Kelapa Sawit:',
+        locPlaceholder: 'Contoh: Kebun Karet Desa Batumarta Unit VI',
+        narLabel: 'Nama Pemilik Kebun / Petani Penyadap:',
+        narPlaceholder: 'Contoh: Bapak Wayan Subrata / Pak Joko',
+        durLabel: 'Lama Menekuni Usaha Perkebunan:',
+        durPlaceholder: 'Contoh: 15 Tahun Menyadap Karet',
+        extraLabel: 'Luas Kebun & Frekuensi Panen:',
+        extraPlaceholder: 'Contoh: 2 Hektar (Deres 2 hari sekali / Panen sawit 2 minggu sekali)'
+      },
       questions: [
-        { id: 1, text: 'Jenis tanaman perkebunan apa yang dibudidayakan dan mengapa tanaman tersebut dipilih?', hint: 'Kaji alasan memilih karet atau kelapa sawit (kondisi tanah, kestabilan panen mingguan/bulanan, atau warisan keluarga)...' },
-        { id: 2, text: 'Bagaimana Bapak/Ibu mempelajari cara merawat tanaman agar menghasilkan panen yang baik?', hint: 'Kaji teknik menyadap getah karet yang benar, pemupukan sawit, pembersihan piringan pohon, dan pengendalian hama...' },
-        { id: 3, text: 'Apakah pengalaman keluarga atau petani lain memengaruhi cara Bapak/Ibu mengelola kebun?', hint: 'Kaji transfer keterampilan berkebun dari orang tua, sharing pengalaman antarpetani kebun, atau panduan penyuluh...' },
-        { id: 4, text: 'Bagaimana perubahan harga, cuaca, dan teknologi memengaruhi kegiatan perkebunan?', hint: 'Kaji pengaruh fluktuasi harga getah/TBS sawit, musim hujan (getah hanyut), dan penggunaan pisau sadap/alat dodos modern...' },
-        { id: 5, text: 'Bagaimana pengetahuan perkebunan diwariskan kepada anak atau generasi muda?', hint: 'Kaji apakah anak diajarkan merawat kebun sendiri, menyerahkan ke buruh upahan, atau beralih profesi lain...' }
-      ]
-    },
-    perikanan: {
-      key: 'perikanan',
-      name: 'Perikanan Air Tawar (Kolam Patin, Lele & Nila)',
-      cultureTheme: 'Pengetahuan air, pengalaman budidaya, dan keterampilan pemeliharaan',
-      badgeColor: 'bg-cyan-100 text-cyan-800 border-cyan-300',
-      questions: [
-        { id: 1, text: 'Jenis ikan apa yang dipelihara atau ditangkap, dan mengapa memilih jenis tersebut?', hint: 'Kaji jenis komoditas kolam (patin Belitang, lele sangkuriang, gurami) dan alasan kemudahan pasar/daya tahan ikan...' },
-        { id: 2, text: 'Bagaimana Bapak/Ibu mengetahui kondisi air yang baik bagi ikan?', hint: 'Kaji cara mengamati warna air kehijauan, bau kolam, sirkulasi saluran irigasi, atau penggunaan alat ukur pH/suhu...' },
-        { id: 3, text: 'Apakah ada pengalaman atau pengetahuan lokal yang digunakan untuk menentukan waktu pemberian pakan dan pemeliharaan ikan?', hint: 'Kaji jadwal pemberian pakan pagi-sore, penggunaan pakan fermentasi/magot lokal, dan insting perawatan kolam...' },
-        { id: 4, text: 'Apakah Bapak/Ibu menggunakan teknologi seperti aerator, pompa, atau alat pengukur kualitas air?', hint: 'Kaji peralatan mekanis pompa sirkulasi air, kincir aerator oksigen, filter kolam, atau masih alami...' },
-        { id: 5, text: 'Apa tantangan utama dalam kegiatan perikanan dan bagaimana cara mengatasinya?', hint: 'Kaji mahalnya harga pakan pelet pabrikan, serangan hama/jamur ikan, fluktuasi harga jual di pasar, dan solusinya...' }
+        { id: 1, text: 'Mengapa pekerjaan menyadap karet harus dilakukan saat subuh/pagi buta? Nilai ketekunan dan kedisiplinan apa yang dituntut dari seorang petani kebun setiap harinya?', hint: 'Kaji alasan memilih waktu subuh, ketahanan dingin/gelap, dan kedisiplinan kerja harian pekebun...' },
+        { id: 2, text: 'Dari siapa Bapak/Ibu pertama kali mempelajari teknik menyadap kulit pohon karet (deres) atau memanen sawit agar pohon tidak rusak dan getahnya melimpah?', hint: 'Kaji teknik menyadap getah karet yang benar, pemupukan sawit, pembersihan piringan pohon, dan pengendalian hama...' },
+        { id: 3, text: 'Apakah kebun ini dikelola sendiri bersama keluarga atau ada sistem bagi hasil (paroan) dengan warga lain? Bagaimana aturan kepercayaan itu dijaga?', hint: 'Kaji sistem bagi hasil paroan, pembagian tugas keluarga, dan keterikatan sosial antar-pekebun...' },
+        { id: 4, text: 'Bagaimana kebiasaan keluarga menyiasati kebutuhan hidup ketika harga getah karet atau sawit anjlok? Kearifan apa yang diajarkan agar keuangan keluarga tetap stabil?', hint: 'Kaji strategi bertahan saat anomali harga getah, pekerjaan sambilan, atau simpanan tabungan keluarga...' },
+        { id: 5, text: 'Bagaimana pengetahuan merawat kebun diwariskan kepada anak atau generasi muda? Apakah anak muda sekarang berminat merawat kebun keluarga ini?', hint: 'Kaji apakah anak diajarkan merawat kebun sendiri, menyerahkan ke buruh upahan, atau beralih profesi lain...' }
+      ],
+      obsHints: [
+        'Amati kondisi kebersihan kebun, kerapian barisan pohon karet/sawit, dan kelembapan udara pagi...',
+        'Catat peralatan sadap (pisau deres, mangkok getah, dodos/egrek sawit, talang getah, botol cuka)...',
+        'Uraikan urutan kerja penyadap dari pohon pertama hingga pengumpulan getah beku (bokar) di bak penampungan...',
+        'Amati ketelitian sudut torehan pisau sadap narasumber agar tidak mengenai lapisan kayu pohon...',
+        'Amati bentuk kerja sama keluarga atau buruh sadap dalam mengangkut hasil panen getah/sawit...',
+        'Amati kebiasaan bangun pagi, pakaian kerja kebun tertutup anti-nyamuk, dan keuletan narasumber...',
+        'Catat peralatan timbangan, gerobak dorong, atau kendaraan roda dua yang dimodifikasi untuk angkut getah...',
+        'Amati kendala nyata di kebun, seperti nyamuk, getah hanyut kena hujan, atau rumput liar/gulma tebal...',
+        'Amati cara menjaga kelestarian pohon, pemupukan berkala, dan penanganan cairan pembeku getah...'
       ]
     },
     peternakan: {
       key: 'peternakan',
-      name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba & Unggas: Ayam/Bebek)',
-      cultureTheme: 'Pengetahuan pemeliharaan terpadu, keterampilan keluarga, dan etos kerja peternak',
+      name: 'Peternakan Sapi Mandiri & Peternakan Kambing',
+      cultureTheme: 'Falsafah ketelatenan merumat ternak, integrasi pakan sawah, dan tabungan keluarga',
       badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
+      labels: {
+        locLabel: 'Lokasi Kandang Usaha Ternak:',
+        locPlaceholder: 'Contoh: Kandang Sapi Mandiri Desa Karang Binangun',
+        narLabel: 'Nama Peternak / Pemilik Ternak:',
+        narPlaceholder: 'Contoh: Bapak H. Suparman / Mas Danu',
+        durLabel: 'Lama Menjalankan Usaha Peternakan:',
+        durPlaceholder: 'Contoh: 12 Tahun Beternak Sapi & Kambing',
+        extraLabel: 'Populasi Ternak (Jumlah Ekor):',
+        extraPlaceholder: 'Contoh: 8 Ekor Sapi Bali/Limousin & 12 Ekor Kambing Jawarandu'
+      },
       questions: [
-        { id: 1, text: 'Jenis ternak apa yang dipelihara (peternakan sapi, kambing/domba, ayam broiler/petelur/kampung, atau bebek/itik) dan apa tujuan pemeliharaannya?', hint: 'Kaji jenis komoditas ternak lokal OKU Timur, tujuan budidaya (penggemukan/fattening, tabungan Idul Adha, produksi telur konsumsi harian, kemitraan broiler, atau bibit)...' },
-        { id: 2, text: 'Bagaimana Bapak/Ibu menentukan jenis ransum pakan dan manajemen perawatan ternak harian?', hint: 'Kaji mencari rumput hijauan odot/gajah, fermentasi amoniasi jerami padi sawah melimpah Belitang, konsentrat dedak padi lokal, pakan pelet, jadwal minum, dan sanitasi kandang...' },
-        { id: 3, text: 'Apakah keterampilan beternak diperoleh dari tradisi keluarga turun-temurun, kelompok ternak, atau bimbingan penyuluh/mantri peternakan?', hint: 'Kaji kebiasaan beternak keluarga, kemitraan peternakan ayam, paguyuban peternak, atau bimbingan poskeswan/mantri inseminator OKU Timur...' },
-        { id: 4, text: 'Bagaimana pembagian tugas keluarga dalam memberi pakan, membersihkan kandang, dan menjaga biosekuriti kesehatan ternak?', hint: 'Kaji peran ayah/ibu/anak dalam mencari pakan hijauan, pemberian makan terjadwal, pembersihan kotoran ternak, dan pencegahan wabah penyakit (seperti PMK atau flu burung)...' },
-        { id: 5, text: 'Apakah ada peralatan atau teknologi yang digunakan untuk meningkatkan efisiensi dan kesehatan ternak?', hint: 'Kaji teknologi mesin perajang chopper pakan, kawin suntik (Inseminasi Buatan/IB), kandang panggung kambing, instalasi nipple drinker ayam, penghangat brooder, atau pemanfaatan kotoran jadi biogas/pupuk bokashi sawah...' }
+        { id: 1, text: 'Masyarakat sering menyebut beternak butuh sikap telaten (sabar dan teliti). Kebiasaan harian apa yang wajib dilakukan dari pagi hingga malam dalam merawat ternak?', hint: 'Kaji falsafah merumat ternak, kebersihan kandang, pemberian pakan comboran, dan kepedulian peternak...' },
+        { id: 2, text: 'Bagaimana Bapak/Ibu memanfaatkan limbah jerami padi sawah dan dedak penggilingan beras sebagai pakan ternak? Bagaimana cara mengolah pakan agar ternak cepat gemuk?', hint: 'Kaji mencari rumput hijauan, fermentasi amoniasi jerami padi sawah melimpah Belitang, dan konsentrat dedak padi...' },
+        { id: 3, text: 'Apakah memelihara ternak ini diniatkan sebagai tabungan keluarga (biaya sekolah anak/kurban Idul Adha)? Bagaimana peran ternak dalam ketahanan ekonomi keluarga?', hint: 'Kaji ternak sebagai aset tabungan hidup keluarga petani, antisipasi kebutuhan mendadak, dan nilai ibadah...' },
+        { id: 4, text: 'Apakah Bapak/Ibu tergabung dalam kelompok peternak atau dibantu petugas penyuluh/mantri hewan (kawin suntik/IB)? Bagaimana kerja sama jika ada ternak yang sakit?', hint: 'Kaji paguyuban peternak, peran mantri hewan poskeswan dalam inseminasi buatan, dan solidaritas peternak...' },
+        { id: 5, text: 'Apakah generasi muda di sekitar sini tertarik membantu mencari rumput (ngarit) atau beternak sapi/kambing? Bagaimana cara memotivasi pemuda agar melirik peternakan modern?', hint: 'Kaji minat pemuda sekitar, tantangan gengsi generasi muda, dan potensi peternakan kambing/sapi modern...' }
+      ],
+      obsHints: [
+        'Amati kebersihan kandang, sirkulasi udara, pencahayaan alami, dan jarak kandang dari rumah tinggal...',
+        'Catat peralatan kandang (mesin chopper perajang rumput, sabit ngarit, ember minum, sekop kotoran)...',
+        'Uraikan rutinitas kerja peternak: membersihkan kandang, meracik comboran dedak, hingga memberi rumput...',
+        'Amati ketelitian peternak memeriksa nafsu makan ternak, kilau bulu, dan keaktifan gerak sapi/kambing...',
+        'Amati pembagian tugas antar-anggota keluarga peternak (siapa mencari rumput, memberi pakan, dll)...',
+        'Amati rasa kasih sayang peternak membelai ternaknya dan doa keselamatan hewan peliharaan...',
+        'Catat teknologi yang digunakan: mesin chopper pakan, instalasi air minum otomatis, atau suntik vitamin...',
+        'Amati kendala nyata: bau kotoran kandang, lalat, mahalnya konsentrat, atau sulitnya rumput di kemarau...',
+        'Amati pengolahan kotoran ternak (apakah dikeringkan jadi pupuk kompos sawah atau instalasi biogas)...'
       ]
     },
-    perdagangan: {
-      key: 'perdagangan',
-      name: 'Perdagangan & UMKM (Pasar Gumawang/Martapura, Toko Sembako, Kios Saprotan & Kuliner Lokal)',
-      cultureTheme: 'Kepercayaan, komunikasi, etika niaga, dan modal sosial pelanggan',
-      badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-300',
+    perikanan: {
+      key: 'perikanan',
+      name: 'Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele & Nila)',
+      cultureTheme: 'Pengetahuan air irigasi, tradisi panen bedah kolam, dan efisiensi pakan lokal',
+      badgeColor: 'bg-cyan-100 text-cyan-800 border-cyan-300',
+      labels: {
+        locLabel: 'Lokasi Sentra Kolam Ikan:',
+        locPlaceholder: 'Contoh: Kolam Patin Desa Nusa Bakti / Sidodadi',
+        narLabel: 'Nama Pembudidaya Ikan:',
+        narPlaceholder: 'Contoh: Bapak Nyoman / Pak Rudi Hartono',
+        durLabel: 'Lama Menekuni Budidaya Ikan:',
+        durPlaceholder: 'Contoh: 10 Tahun Budidaya Ikan Patin',
+        extraLabel: 'Jumlah Kolam & Jenis Ikan Utama:',
+        extraPlaceholder: 'Contoh: 5 Petak Kolam Tanah (Komoditas Utama Ikan Patin & Lele)'
+      },
       questions: [
-        { id: 1, text: 'Barang dagangan atau produk apa yang Bapak/Ibu sediakan kepada pelanggan di wilayah ini?', hint: 'Kaji jenis dagangan sembako, sarana produksi tani/pupuk/benih (saprotan), hasil bumi pasar Gumawang/Martapura, kuliner olahan lokal, atau pakaian/jasa...' },
-        { id: 2, text: 'Bagaimana Bapak/Ibu membangun kepercayaan dan menjaga hubungan langganan dengan para pembeli?', hint: 'Kaji kejujuran timbangan/takaran, keramahan tegur sapa khas warga, kepastian ketersediaan stok barang, dan harga bersahabat...' },
-        { id: 3, text: 'Apakah musim panen padi/sawit/karet memengaruhi omzet penjualan toko atau kios Bapak/Ibu?', hint: 'Kaji lonjakan daya beli petani saat panen raya rendeng/gadu, sistem tempo/kredit bayar saat panen padi, dan perputaran arus kas pedagang...' },
-        { id: 4, text: 'Apakah Bapak/Ibu sudah menggunakan media sosial, layanan transaksi nontunai (QRIS), atau layanan perbankan digital?', hint: 'Kaji transaksi QRIS bank, pemesanan via WhatsApp, kerja sama agen perbankan, atau pembukuan keuangan toko...' },
-        { id: 5, text: 'Bagaimana cara Bapak/Ibu menghadapi persaingan dagang dan perubahan kebutuhan belanja konsumen saat ini?', hint: 'Kaji strategi melengkapi varian barang, pelayanan antar pesanan ke rumah, kenyamanan toko, dan adaptasi harga...' }
+        { id: 1, text: 'Bagaimana Bapak/Ibu mengetahui kondisi air kolam sedang sehat atau beracun hanya dari melihat warna, bau, atau riak airnya? Dari siapa keahlian membaca air ini diperoleh?', hint: 'Kaji kepekaan membaca kondisi air kolam kehijauan, pergerakan ikan di permukaan, dan sirkulasi air...' },
+        { id: 2, text: 'Bagaimana suasana kerja sama dan gotong royong saat panen raya kolam ikan (bedah kolam)? Apakah melibatkan tetangga sekitar dan tradisi syukuran makan bersama?', hint: 'Kaji tradisi bedah kolam, bantuan tetangga menarik jaring, dan makan bersama ikan bakar khas desa...' },
+        { id: 3, text: 'Harga pakan pelet pabrik terkenal mahal. Inovasi pakan lokal apa (seperti ampas tahu, dedak padi RMU, atau magot) yang diracik sendiri untuk menekan biaya produksi?', hint: 'Kaji racikan pakan mandiri memanfaatkan dedak padi melimpah Belitang atau limbah industri tahu...' },
+        { id: 4, text: 'Bagaimana pembudidaya ikan berkoordinasi dengan petugas pintu air irigasi Belitang dan petani sawah agar kolam selalu mendapatkan pasokan air yang lancar?', hint: 'Kaji koordinasi pembagian air irigasi dengan ulu-ulu sawah dan pemeliharaan parit pembuangan...' },
+        { id: 5, text: 'Apakah usaha budidaya ikan ini menarik minat generasi muda di Belitang? Keterampilan digital baru apa (seperti penjualan online) yang bisa dikembangkan pemuda?', hint: 'Kaji peran pemuda dalam pemasaran digital, pengiriman ikan segar ke kota, atau pengolahan fillet patin...' }
+      ],
+      obsHints: [
+        'Amati bentuk fisik kolam (tanah galian atau terpal), warna air kehijauan, dan tanggul kolam...',
+        'Catat peralatan kolam (jaring serok, mesin pompa alkon, selang buang air, baskom pakan, timbangan)...',
+        'Uraikan alur kerja harian: pengecekan pintu air, penaburan pakan terjadwal, dan pembersihan permukaan kolam...',
+        'Amati kejelian narasumber mengatur pola tebar pakan agar merata dan tidak ada pelet yang terbuang percuma...',
+        'Amati interaksi narasumber dengan pekerja kolam atau pembeli/tengkulak ikan yang datang...',
+        'Amati kebiasaan bersabar menunggu ikan makan dan kehati-hatian berjalan di pematang kolam licin...',
+        'Catat teknologi mekanis: kincir aerator oksigen, pompa sirkulasi air, atau lampu perangkap serangga malam...',
+        'Amati kendala nyata: ancaman hama burung/bingsang, kematian bibit saat cuaca panas, atau air surut...',
+        'Amati cara menjaga mutu ikan agar tidak berbau lumpur dan pemanfaatan lumpur kolam untuk pupuk tanaman...'
       ]
     },
     industri: {
       key: 'industri',
-      name: 'Industri Rumah Tangga (Olahan Pangan Kemplang/Rengginang & Kerajinan)',
-      cultureTheme: 'Resep lokal, keterampilan pengolahan, dan tradisi konsumsi',
+      name: 'Agro-Industri Penggilingan Padi (RMU) & Pengolahan Pangan',
+      cultureTheme: 'Etos industri pedesaan, menjaga mutu beras Belitang, dan sirkular limbah sekam/dedak',
       badgeColor: 'bg-rose-100 text-rose-800 border-rose-300',
+      labels: {
+        locLabel: 'Nama Kilang Padi (RMU) / Unit Pengolahan:',
+        locPlaceholder: 'Contoh: Kilang Padi RMU Berkah Tani / Sentra Kerupuk Kemplang',
+        narLabel: 'Nama Pemilik Kilang / Pengelola Usaha:',
+        narPlaceholder: 'Contoh: Bapak H. Darmawan / Ibu Yuliana',
+        durLabel: 'Lama Mengoperasikan Usaha Pengolahan:',
+        durPlaceholder: 'Contoh: 16 Tahun Beroperasi di Belitang',
+        extraLabel: 'Kapasitas Pengolahan / Produksi Harian:',
+        extraPlaceholder: 'Contoh: 8 Ton Gabah / Hari (Beras Kemasan Premium) / 100 kg Kemplang'
+      },
       questions: [
-        { id: 1, text: 'Produk apa yang dibuat dan dari mana bahan bakunya diperoleh?', hint: 'Kaji produk olahan (kerupuk kemplang ikan, rengginang, tahu-tempe, kerajinan) dan asal pasokan bahan bakunya...' },
-        { id: 2, text: 'Apakah produk tersebut menggunakan resep, teknik, atau tradisi lokal yang diwariskan keluarga?', hint: 'Kaji resep rahasia keluarga, racikan bumbu khas Belitang/Komering, dan teknik pengolahan tradisional...' },
-        { id: 3, text: 'Bagaimana proses pengolahan dilakukan untuk menjaga rasa, mutu, dan kebersihan produk?', hint: 'Kaji tahapan higienis pembuatan, proses penjemuran panas matahari, penggorengan pasir/minyak, dan penyortiran...' },
-        { id: 4, text: 'Apakah ada perubahan pada resep, peralatan, kemasan, atau cara pemasaran dari waktu ke waktu?', hint: 'Kaji penggunaan mesin adonan/pemotong otomatis, kemasan plastik klip berlabel merk, atau promosi online...' },
-        { id: 5, text: 'Bagaimana usaha ini membantu meningkatkan nilai ekonomi bahan baku lokal dan pendapatan keluarga?', hint: 'Kaji kenaikan nilai jual dari ikan/beras mentah menjadi makanan olahan siap saji dan serapan tenaga kerja tetangga...' }
+        { id: 1, text: 'Bagaimana Bapak/Ibu membangun ikatan saling percaya dengan petani yang menjual gabahnya ke kilang ini? Mengapa kejujuran timbangan dan keadilan harga sangat dijaga?', hint: 'Kaji hubungan kepercayaan bisnis beras, kejujuran timbangan, dan kepastian pembayaran kepada petani...' },
+        { id: 2, text: 'Hanya dengan meremas segenggam gabah atau menggigitnya, bagaimana Bapak/Ibu bisa tahu kadar air dan kualitas gabah tersebut? Dari mana ilmu tersebut dipelajari?', hint: 'Kaji insting tradisional memeriksa kadar air gabah, rendemen beras kepala, dan butir mengapur...' },
+        { id: 3, text: 'Dahulu gabah hanya dijemur di bawah terik matahari. Bagaimana kehadiran mesin pengering bed dryer mengubah kebiasaan kerja kilang ini, terutama saat musim penghujan?', hint: 'Kaji transformasi dari jemur manual di lantai semen ke mesin pengering mekanis bed dryer/vertical dryer...' },
+        { id: 4, text: 'Limbah sekam padi dan dedak halus biasanya disalurkan ke mana? Bagaimana kilang ini bekerja sama dengan peternak sapi dan pembudidaya ikan di sekitar desa?', hint: 'Kaji pemanfaatan dedak bekatul untuk pakan ternak/ikan dan sekam untuk bahan bakar batu bata...' },
+        { id: 5, text: 'Apakah usaha penggilingan padi ini merupakan rintisan keluarga turun-temurun? Bagaimana generasi muda dilatih mengoperasikan mesin dan mengelola pembukuan usaha?', hint: 'Kaji regenerasi keluarga pemilik kilang padi, pembagian tugas, dan pembukuan arus kas usaha...' }
+      ],
+      obsHints: [
+        'Amati tata letak kilang padi: area penerimaan gabah, lantai jemur semen, dan ruang mesin giling...',
+        'Catat mesin industri yang ada: mesin bed dryer, husker pemecah kulit, polisher penyosoh, penjahit karung...',
+        'Uraikan alur pengolahan: dari penimbangan gabah basah, pengeringan, penggilingan, hingga beras masuk karung...',
+        'Amati keterampilan operator menyetel kerapatan roll husker dan ketelitian mengecek butir beras patah...',
+        'Amati komunikasi pekerja kilang dengan sopir truk angkut gabah dan petani yang datang menjual gabah...',
+        'Amati etos disiplin kerja kilang: ketahanan terhadap debu sekam, kebisingan mesin, dan ketepatan waktu...',
+        'Catat teknologi modern: timbangan digital duduk, conveyor pemindah beras, dan mesin jahit karung cepat...',
+        'Amati kendala industri: debu sekam beterbangan, mati lampu PLN, atau kadar air gabah terlalu basah...',
+        'Amati penanganan limbah: penumpukan sekam untuk pembakaran batu bata dan pengarungan dedak halus...'
+      ]
+    },
+    perdagangan: {
+      key: 'perdagangan',
+      name: 'Perdagangan (Kios Sarana Pertanian Resmi & Toko Sembako Pasar)',
+      cultureTheme: 'Etika niaga, sistem kepercayaan utang tempo panen, dan modal sosial pelanggan',
+      badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-300',
+      labels: {
+        locLabel: 'Nama Kios Saprotan / Toko / Los Pasar:',
+        locPlaceholder: 'Contoh: Kios Pupuk & Obat Tani Resmi Tani Makmur, Pasar Gumawang',
+        narLabel: 'Nama Pemilik Kios / Pedagang:',
+        narPlaceholder: 'Contoh: Bapak Ahmad Fauzi / Ibu Endang',
+        durLabel: 'Lama Berdagang di Wilayah Ini:',
+        durPlaceholder: 'Contoh: 14 Tahun Melayani Petani Belitang',
+        extraLabel: 'Jenis Komoditas Dagangan Pokok:',
+        extraPlaceholder: 'Contoh: Pupuk NPK Phonska, Benih Padi Inpari 32, Pestisida & Sembako'
+      },
+      questions: [
+        { id: 1, text: 'Banyak petani mengambil pupuk atau benih dulu dan membayarnya setelah panen (sistem tempo). Nilai kepercayaan dan kekeluargaan apa yang membuat sistem ini bisa bertahan?', hint: 'Kaji sistem tempo bayar saat panen, risiko piutang macet, dan modal sosial saling percaya...' },
+        { id: 2, text: 'Bagaimana prinsip kejujuran dalam menakar timbangan dan menentukan harga? Nilai moral apa yang diajarkan orang tua agar toko membawa berkah bagi pelanggan?', hint: 'Kaji etika berdagang, ketepatan timbangan, dan kepuasan pelanggan tetap...' },
+        { id: 3, text: 'Apakah kios pupuk/toko ini sering jadi tempat bertukar informasi antar-petani mengenai serangan hama atau harga panen? Bagaimana peran sosial toko ini di desa?', hint: 'Kaji kios sebagai ruang publik petukaran informasi agronomi dan keluh kesah petani...' },
+        { id: 4, text: 'Bagaimana perputaran keuangan kios saat musim tanam (banyak piutang) dibandingkan saat musim panen raya? Bagaimana kiat pedagang menjaga kas modal agar tidak macet?', hint: 'Kaji manajemen arus kas pedagang dalam menghadapi siklus musiman pertanian padi...' },
+        { id: 5, text: 'Apakah pelanggan petani di sini sudah mulai membayar menggunakan QRIS atau transfer bank? Bagaimana anak muda membantu toko menerapkan pencatatan digital?', hint: 'Kaji adopsi pembayaran digital di toko dan keterlibatan anak muda dalam pembukuan kas...' }
+      ],
+      obsHints: [
+        'Amati penataan barang di kios/toko: tumpukan karung pupuk, botol obat hama di etalase, atau sembako...',
+        'Catat peralatan niaga: timbangan gantung/duduk/digital, kalkulator kasir, nota kontan, dan rak barang...',
+        'Uraikan alur pelayanan pembeli: menyapa petani, memberi konsultasi obat hama yang pas, hingga pembayaran...',
+        'Amati pengetahuan pedagang saat menjelaskan dosis pemupukan dan cara pakai racun rumput kepada petani...',
+        'Amati kehangatan interaksi sosial: tegur sapa khas pedesaan, tawar-menawar santun, dan canda tawa warga...',
+        'Amati nilai amanah dan kejujuran: ketelitian mengembalikan uang kembalian dan mengecek segel kemasan asli...',
+        'Catat teknologi transaksi: mesin EDC mini ATM, stiker QRIS di meja, atau smartphone pemesanan via WA...',
+        'Amati kendala niaga: keterbatasan stok pupuk subsidi, petani telat bayar utang tempo, atau persaingan harga...',
+        'Amati upaya toko menjaga mutu: menjaga pupuk agar tidak lembap/menggumpal dan kebersihan lingkungan toko...'
       ]
     },
     formal: {
       key: 'formal',
-      name: 'Lembaga Keuangan Mikro, Koperasi, Agen BRILink & Layanan Publik',
-      cultureTheme: 'Integritas, etika pelayanan, inklusi keuangan desa, dan tanggung jawab profesional',
+      name: 'Jasa Keuangan Mikro (Layanan Tanpa Kantor / Agen BRILink, KSP & BUMDes)',
+      cultureTheme: 'Inklusi perbankan desa, integritas menjaga rahasia nasabah, dan fungsi penolong petani',
       badgeColor: 'bg-violet-100 text-violet-800 border-violet-300',
+      labels: {
+        locLabel: 'Nama Gerai Agen / Kantor KSP / BUMDes:',
+        locPlaceholder: 'Contoh: Gerai Agen BRILink Berkah Jaya / KSP Sahabat Tani Desa Sidodadi',
+        narLabel: 'Nama Agen / Pengelola Layanan:',
+        narPlaceholder: 'Contoh: Mas Bagus Pratama / Mbak Wulandari',
+        durLabel: 'Lama Mengelola Layanan Keuangan:',
+        durPlaceholder: 'Contoh: 7 Tahun Menjadi Agen BRILink',
+        extraLabel: 'Layanan Transaksi Utama & Perangkat:',
+        extraPlaceholder: 'Contoh: Tarik Tunai Panen/Bansos, Transfer Pupuk, Mesin EDC & Android'
+      },
       questions: [
-        { id: 1, text: 'Apa tugas, peranan pokok, atau layanan utama yang Bapak/Ibu sediakan bagi masyarakat pedesaan OKU Timur?', hint: 'Kaji layanan inklusi perbankan (tarik tunai bansos/transfer hasil panen via Agen BRILink/Laku Pandai, permodalan Koperasi Tani/KUD, simpan pinjam desa, atau pelayanan administrasi/pendidikan/kesehatan)...' },
-        { id: 2, text: 'Nilai, etika, dan prinsip kejujuran apa yang wajib dijaga dalam melayani transaksi keuangan atau kebutuhan warga?', hint: 'Kaji ketelitian nominal uang, keamanan PIN/data nasabah, transparansi biaya administrasi, keramahan pelayanan 5S, dan integritas...' },
-        { id: 3, text: 'Bagaimana peran layanan ini dalam membantu petani dan warga desa yang tempat tinggalnya jauh dari kantor cabang bank di kota?', hint: 'Kaji penghematan ongkos dan waktu transportasi warga desa ke Belitang/Martapura, pencairan cepat bantuan pemerintah, dan kemudahan modal...' },
-        { id: 4, text: 'Bagaimana pengelolaan likuiditas uang kas, pembukuan harian, dan koordinasi dengan lembaga induk perbankan/pemerintah?', hint: 'Kaji ketersediaan modal tunai agen/koperasi saat masa panen raya atau bantuan cair, penggunaan mesin EDC/aplikasi digital, dan rekonsiliasi saldo...' },
-        { id: 5, text: 'Bagaimana perkembangan teknologi digital (EDC, mobile banking, sistem informasi online) mengubah kecepatan dan kemudahan layanan Bapak/Ibu?', hint: 'Kaji keandalan sinyal internet di pedesaan, kemudahan transaksi digital 24 jam, pencatatan otomatis transaksi, dan tantangan teknis lapangan...' }
+        { id: 1, text: 'Petani desa sering merasa segan atau jauh jika harus ke kantor bank di kota. Nilai keramahan apa yang Bapak/Ibu terapkan agar warga merasa nyaman bertransaksi di gerai ini?', hint: 'Kaji kedekatan emosional agen dengan warga desa dan kemudahan akses perbankan mikro...' },
+        { id: 2, text: 'Dalam memegang uang warga dan memasukkan nomor PIN, bagaimana Bapak/Ibu menjaga integritas dan membuktikan bahwa gerai ini amanah serta dapat dipercaya 100%?', hint: 'Kaji etika kerahasiaan perbankan, kehati-hatian input nominal, dan perlindungan privasi nasabah desa...' },
+        { id: 3, text: 'Saat panen raya padi atau pencairan bantuan pemerintah (PKH/Bansos), bagaimana suasana antrean warga desa? Tradisi tolong-menolong apa yang terlihat saat warga antre?', hint: 'Kaji fenomena antrean warga desa, interaksi sosial di gerai, dan kesabaran melayani lansia...' },
+        { id: 4, text: 'Bagaimana Bapak/Ibu mengatasi kendala saat mesin EDC offline atau sinyal internet di desa sedang lambat sementara warga sangat butuh uang tunai mendesak?', hint: 'Kaji kendala teknis jaringan internet di pedesaan dan kiat agen menjaga kepercayaan warga...' },
+        { id: 5, text: 'Bagaimana peran gerai ini dalam mengedukasi warga agar membiasakan diri menabung untuk masa depan dan tidak tergiur pinjaman rentenir atau pinjol ilegal?', hint: 'Kaji literasi keuangan desa, peran mengikis rentenir sawah, dan edukasi menabung sejak dini...' }
+      ],
+      obsHints: [
+        'Amati tata letak gerai: papan nama resmi agen bank, meja kasir pembatas, dan kursi tunggu nasabah...',
+        'Catat peralatan operasional: mesin EDC perbankan, smartphone aplikasi perbankan, printer struk mini, laci uang...',
+        'Uraikan alur transaksi: nasabah datang menyebutkan kebutuhan, gesek kartu ATM, verifikasi PIN, hingga cetak struk...',
+        'Amati ketelitian agen menghitung lembaran uang kertas, mengecek keaslian uang, dan memasukkan nominal angka...',
+        'Amati komunikasi ramah agen saat membantu petani lansia yang belum lancar bertransaksi digital...',
+        'Amati etika menjaga privasi: melindungi kerahasiaan nomor PIN nasabah dari pandangan orang lain...',
+        'Catat teknologi perbankan digital: koneksi sinyal seluler/wifi, aplikasi mobile banking, dan mesin EDC...',
+        'Amati kendala nyata: sinyal internet ngadat, stok uang tunai habis saat panen raya, atau listrik padam...',
+        'Amati kerapian arsip nota struk, penataan uang tunai di brankas kecil, dan kepatuhan prosedur operasional...'
       ]
     }
   };
@@ -1534,36 +1685,36 @@
                 </select>
               </div>
 
-              <!-- Lokasi Observasi (Desa/Dusun/Detail) -->
+              <!-- Pilihan Sektor Mata Pencaharian (Dropdown Dinamis Selaras Day 1) -->
+              <div class="flex flex-col gap-1 sm:col-span-2 lg:col-span-3 bg-indigo-50/70 p-4 rounded-2xl border border-indigo-200/90 shadow-2xs">
+                <label class="text-xs font-extrabold text-indigo-950 flex items-center justify-between">
+                  <span>Pilih Sektor Mata Pencaharian Tempat Observasi Anda: <span class="text-rose-600">*</span></span>
+                  <span class="text-[10.5px] font-bold text-indigo-700 bg-white px-2 py-0.5 rounded-lg border border-indigo-200">1 dari 7 Sektor Pilihan</span>
+                </label>
+                <select id="nftD2_sectorKey" ${readOnlyAttr} onchange="onNftDay2SectorChange(this.value)" class="w-full p-3 rounded-xl border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs font-bold text-indigo-950 bg-white cursor-pointer transition-all">
+                  <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang &amp; Palawija)</option>
+                  <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
+                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Sapi Mandiri &amp; Peternakan Kambing</option>
+                  <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele &amp; Nila)</option>
+                  <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (Pabrik Penggilingan Padi / RMU, UMKM Tahu-Tempe, Kerupuk Kemplang)</option>
+                  <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi / Pupuk &amp; Obat Tani, Pasar Tradisional / Grosir Sembako)</option>
+                  <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Jasa Keuangan &amp; Jasa Perorangan (Layanan Keuangan Tanpa Kantor / Agen BRILink, Koperasi Simpan Pinjam / KSP, BUMDes)</option>
+                </select>
+                <p class="text-[11px] text-indigo-900/90 leading-relaxed font-medium mt-1">
+                  <em>*Form Identitas, Wawancara Khusus (Card 3), dan Lembar Observasi (Card 4) akan otomatis menyesuaikan istilah dan daftar pertanyaannya sesuai sektor pilihan Anda di atas.</em>
+                </p>
+              </div>
+
+              <!-- Lokasi Observasi (Dinamis per Sektor) -->
               <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Detail Alamat / Desa Lokasi Observasi: <span class="text-rose-600">*</span></label>
+                <label id="lblD2_location" class="text-xs font-bold text-slate-800">Detail Alamat / Desa Lokasi Observasi: <span class="text-rose-600">*</span></label>
                 <input type="text" id="nftD2_location" ${readOnlyAttr} value="${val('location')}" placeholder="Contoh: Desa Sidomulyo RT 03 RW 01" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
                 <span id="msgValD2_loc" class="text-[10px] text-slate-400">Minimal 3 karakter</span>
               </div>
 
-              <!-- Pilihan Sektor Mata Pencaharian (Dropdown Dinamis) -->
-              <div class="flex flex-col gap-1 sm:col-span-2 lg:col-span-3 bg-indigo-50/60 p-3.5 rounded-2xl border border-indigo-200/80">
-                <label class="text-xs font-extrabold text-indigo-950 flex items-center justify-between">
-                  <span>Pilih Sektor Mata Pencaharian Narasumber Anda: <span class="text-rose-600">*</span></span>
-                  <span class="text-[10.5px] font-bold text-indigo-700 bg-white px-2 py-0.5 rounded-lg border border-indigo-200">1 dari 7 Sektor Pilihan</span>
-                </label>
-                <select id="nftD2_sectorKey" ${readOnlyAttr} onchange="onNftDay2SectorChange(this.value)" class="w-full p-2.5 rounded-xl border border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs font-bold text-indigo-950 bg-white cursor-pointer transition-all">
-                  <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi, Palawija Jagung/Kedelai)</option>
-                  <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan (Karet Rakyat, Kelapa Sawit)</option>
-                  <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>3. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele, Nila)</option>
-                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>4. Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba, Ayam Broiler/Petelur &amp; Bebek)</option>
-                  <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>5. Perdagangan &amp; UMKM (Pasar Gumawang / Martapura, Toko Sembako, Kios Saprotan &amp; Kuliner Lokal)</option>
-                  <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>6. Industri Rumah Tangga (Olahan Kerupuk Kemplang, Rengginang, Pandai Besi, Makanan Lokal)</option>
-                  <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Lembaga Keuangan Mikro, Koperasi, Agen BRILink &amp; Layanan Publik</option>
-                </select>
-                <p class="text-[11px] text-indigo-900/80 leading-relaxed font-medium mt-0.5">
-                  <em>*Catatan: Begitu Anda memilih sektor di atas, Kartu 3 (Pertanyaan Khusus) akan otomatis menampilkan 5 pertanyaan yang sesuai dengan sektor profesi narasumber Anda.</em>
-                </p>
-              </div>
-
-              <!-- Nama/Inisial Narasumber -->
+              <!-- Nama/Inisial Narasumber (Dinamis per Sektor) -->
               <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Nama / Inisial Narasumber: <span class="text-rose-600">*</span></label>
+                <label id="lblD2_narasumber" class="text-xs font-bold text-slate-800">Nama / Inisial Narasumber: <span class="text-rose-600">*</span></label>
                 <input type="text" id="nftD2_narasumberName" ${readOnlyAttr} value="${val('narasumberName')}" placeholder="Contoh: Pak Suwarno / Ibu Siti Rahayu" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
                 <span id="msgValD2_nar" class="text-[10px] text-slate-400">Minimal 3 karakter</span>
               </div>
@@ -1574,11 +1725,17 @@
                 <input type="text" id="nftD2_narasumberAge" ${readOnlyAttr} value="${val('narasumberAge')}" placeholder="Contoh: 48 Tahun" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
               </div>
 
-              <!-- Lama Menjalankan Pekerjaan -->
+              <!-- Lama Menjalankan Pekerjaan (Dinamis per Sektor) -->
               <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Lama Menjalankan Pekerjaan: <span class="text-rose-600">*</span></label>
+                <label id="lblD2_duration" class="text-xs font-bold text-slate-800">Lama Menjalankan Pekerjaan: <span class="text-rose-600">*</span></label>
                 <input type="text" id="nftD2_durationWorking" ${readOnlyAttr} value="${val('durationWorking')}" placeholder="Contoh: 18 Tahun (Sejak 2008)" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
                 <span id="msgValD2_dur" class="text-[10px] text-slate-400">Minimal 3 karakter</span>
+              </div>
+
+              <!-- Data Penunjang Khusus Sektor (Dinamis per Sektor) -->
+              <div class="flex flex-col gap-1">
+                <label id="lblD2_specExtra" class="text-xs font-bold text-slate-800">Data Penunjang Usaha / Kapasitas:</label>
+                <input type="text" id="nftD2_specExtra" ${readOnlyAttr} value="${val('specExtra')}" placeholder="Contoh: Luas lahan, jumlah populasi ternak, atau kapasitas produksi" oninput="onNftDay2FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-800 transition-all font-medium">
               </div>
 
             </div>
@@ -1678,27 +1835,8 @@
               <strong>Petunjuk Wajib:</strong> Isi bagian ini berdasarkan <u>fakta nyata yang Anda lihat dan amati sendiri di tempat kerja</u>, bukan sekadar ucapan narasumber. Ketikkan deskripsi hasil pengamatan (minimal 20 karakter per aspek).
             </div>
 
-            <div class="flex flex-col gap-4">
-              ${[
-                { id: 1, title: '1. Kondisi lokasi dan lingkungan kerja', hint: 'Gambarkan kondisi fisik lokasi, kebersihan, suhu udara, luas lahan/kandang/ruang toko, serta keamanan tempat kerja...' },
-                { id: 2, title: '2. Peralatan tradisional dan modern yang digunakan', hint: 'Tuliskan daftar peralatan yang benar-benar ada di depan mata Anda (alat manual dan mesin modern)...' },
-                { id: 3, title: '3. Urutan proses kerja', hint: 'Uraikan kronologi proses dari persiapan awal, pengerjaan inti, hingga penyelesaian yang Anda lihat saat itu...' },
-                { id: 4, title: '4. Pengetahuan atau keterampilan yang tampak digunakan', hint: 'Uraikan ketangkasan tangan, keahlian khusus, ketelitian, atau teknik yang dipraktikkan narasumber...' },
-                { id: 5, title: '5. Bentuk interaksi, komunikasi, atau kerja sama', hint: 'Uraikan bagaimana narasumber berbicara dengan pekerja lain, menyapa tetangga, atau melayani pelanggan...' },
-                { id: 6, title: '6. Kebiasaan atau nilai budaya yang terlihat', hint: 'Uraikan nilai keramahan, gotong royong, kehati-hatian, busana kerja, atau ritual kerja yang tampak...' },
-                { id: 7, title: '7. Penggunaan teknologi dalam pekerjaan', hint: 'Uraikan cara mesin dinyalakan, alat dioperasikan, pemanfaatan listrik/bbm, atau gadget komunikasi...' },
-                { id: 8, title: '8. Kendala atau masalah yang ditemukan saat observasi', hint: 'Uraikan hambatan yang terlihat, misalnya lumpur terlalu dalam, alat macet, bau menyengat, atau kelelahan...' },
-                { id: 9, title: '9. Upaya menjaga mutu, lingkungan, atau keberlanjutan usaha', hint: 'Uraikan cara memilah hasil panen/produk yang bagus, pembuangan limbah, atau perawatan rutin alat...' }
-              ].map(item => `
-                <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 transition-all">
-                  <label class="text-xs font-bold text-slate-900 leading-snug">${item.title} <span class="text-rose-600">*</span></label>
-                  <textarea id="nftD2_obs_${item.id}" ${readOnlyAttr} rows="3" oninput="onNftDay2FieldInput()" placeholder="${item.hint} (Minimal 20 karakter)" class="w-full p-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-900 resize-y transition-all leading-relaxed">${val('obs_' + item.id)}</textarea>
-                  <div class="flex items-center justify-between text-[10.5px]">
-                    <span id="msgValD2_obs_${item.id}" class="text-rose-600 font-medium">Minimal 20 karakter</span>
-                    <span id="cntD2_obs_${item.id}" class="text-slate-400 font-bold">0 / 20</span>
-                  </div>
-                </div>
-              `).join('')}
+            <div id="nftD2_obsAspectsContainer" class="flex flex-col gap-4">
+              <!-- Render otomatis aspek observasi dinamis oleh script renderObservationAspectsD2() -->
             </div>
           </div>
 
@@ -1868,6 +2006,81 @@
     `).join('');
   }
 
+
+  // Helper memperbarui label & placeholder Card 1 sesuai sektor
+  function updateDynamicLabelsD2(sectorKey) {
+    const s = NFT_DAY2_SECTOR_DATA[sectorKey] || NFT_DAY2_SECTOR_DATA.pangan;
+    const l = s.labels || {};
+
+    const elLocLbl = document.getElementById('lblD2_location');
+    const elLocInp = document.getElementById('nftD2_location');
+    if (elLocLbl) elLocLbl.innerHTML = (l.locLabel || 'Detail Alamat / Desa Lokasi Observasi:') + ' <span class="text-rose-600">*</span>';
+    if (elLocInp && l.locPlaceholder) elLocInp.placeholder = l.locPlaceholder;
+
+    const elNarLbl = document.getElementById('lblD2_narasumber');
+    const elNarInp = document.getElementById('nftD2_narasumberName');
+    if (elNarLbl) elNarLbl.innerHTML = (l.narLabel || 'Nama / Inisial Narasumber:') + ' <span class="text-rose-600">*</span>';
+    if (elNarInp && l.narPlaceholder) elNarInp.placeholder = l.narPlaceholder;
+
+    const elDurLbl = document.getElementById('lblD2_duration');
+    const elDurInp = document.getElementById('nftD2_durationWorking');
+    if (elDurLbl) elDurLbl.innerHTML = (l.durLabel || 'Lama Menjalankan Pekerjaan:') + ' <span class="text-rose-600">*</span>';
+    if (elDurInp && l.durPlaceholder) elDurInp.placeholder = l.durPlaceholder;
+
+    const elExtLbl = document.getElementById('lblD2_specExtra');
+    const elExtInp = document.getElementById('nftD2_specExtra');
+    if (elExtLbl) elExtLbl.innerHTML = (l.extraLabel || 'Data Penunjang Usaha:');
+    if (elExtInp && l.extraPlaceholder) elExtInp.placeholder = l.extraPlaceholder;
+  }
+
+  // Helper render 9 aspek observasi lapangan langsung yang beradaptasi per sektor
+  function renderObservationAspectsD2(sectorKey, formData) {
+    const cont = document.getElementById('nftD2_obsAspectsContainer');
+    if (!cont) return;
+
+    const s = NFT_DAY2_SECTOR_DATA[sectorKey] || NFT_DAY2_SECTOR_DATA.pangan;
+    const hints = s.obsHints || [
+      'Gambarkan kondisi fisik lokasi, kebersihan, suhu udara, luas lahan/kandang/ruang toko, serta keamanan tempat kerja...',
+      'Tuliskan daftar peralatan yang benar-benar ada di depan mata Anda (alat manual dan mesin modern)...',
+      'Uraikan kronologi proses dari persiapan awal, pengerjaan inti, hingga penyelesaian yang Anda lihat saat itu...',
+      'Uraikan ketangkasan tangan, keahlian khusus, ketelitian, atau teknik yang dipraktikkan narasumber...',
+      'Uraikan bagaimana narasumber berbicara dengan pekerja lain, menyapa tetangga, atau melayani pelanggan...',
+      'Uraikan kebiasaan keramahan, gotong royong, kehati-hatian, busana kerja, atau ritual kerja yang tampak...',
+      'Uraikan cara mesin dinyalakan, alat dioperasikan, pemanfaatan listrik/bbm, atau gadget komunikasi...',
+      'Uraikan hambatan yang terlihat, misalnya lumpur terlalu dalam, alat macet, bau menyengat, atau kelelahan...',
+      'Uraikan cara memilah hasil panen/produk yang bagus, pembuangan limbah, atau perawatan rutin alat...'
+    ];
+
+    const baseTitles = [
+      '1. Kondisi lokasi dan lingkungan kerja',
+      '2. Peralatan tradisional dan modern yang digunakan',
+      '3. Urutan proses kerja yang sedang berlangsung',
+      '4. Pengetahuan atau keterampilan yang tampak digunakan',
+      '5. Bentuk interaksi sosial, komunikasi, atau kerja sama',
+      '6. Kebiasaan atau nilai budaya kerja yang terlihat',
+      '7. Penggunaan teknologi dalam pekerjaan',
+      '8. Kendala atau masalah yang ditemukan saat observasi',
+      '9. Upaya menjaga mutu produk, lingkungan, atau keberlanjutan usaha'
+    ];
+
+    const valObs = (id) => (formData && formData['obs_' + id] !== undefined) ? formData['obs_' + id] : '';
+
+    cont.innerHTML = baseTitles.map((title, idx) => {
+      const id = idx + 1;
+      const hint = hints[idx] || hints[0];
+      return `
+        <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 transition-all">
+          <label class="text-xs font-bold text-slate-900 leading-snug">${title} <span class="text-rose-600">*</span></label>
+          <textarea id="nftD2_obs_${id}" rows="3" oninput="onNftDay2FieldInput()" placeholder="${hint} (Minimal 20 karakter)" class="w-full p-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-900 resize-y transition-all leading-relaxed">${valObs(id)}</textarea>
+          <div class="flex items-center justify-between text-[10.5px]">
+            <span id="msgValD2_obs_${id}" class="text-rose-600 font-medium">Minimal 20 karakter</span>
+            <span id="cntD2_obs_${id}" class="text-slate-400 font-bold">0 / 20</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
   // Handler saat Sektor di Card 1 diubah
   window.onNftDay2SectorChange = function(newKey) {
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
@@ -1881,7 +2094,9 @@
     } catch(e) {}
 
     draft.sectorKey = newKey;
+    updateDynamicLabelsD2(newKey);
     renderSpecificQuestionsD2(newKey, draft);
+    renderObservationAspectsD2(newKey, draft);
     onNftDay2FieldInput();
   };
 
@@ -2114,6 +2329,7 @@
       narasumberName: document.getElementById('nftD2_narasumberName')?.value.trim() || '',
       narasumberAge: document.getElementById('nftD2_narasumberAge')?.value.trim() || '',
       durationWorking: document.getElementById('nftD2_durationWorking')?.value.trim() || '',
+      specExtra: document.getElementById('nftD2_specExtra')?.value.trim() || '',
       qSpecific: {}
     };
 
