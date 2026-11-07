@@ -1895,6 +1895,9 @@
       window.FincestemMentorship.deleteCustomTeacher(teacherKey);
       renderMentorshipStats();
       renderTeachersListView();
+      if (typeof populateTeacherFilterOptions === 'function') populateTeacherFilterOptions();
+      if (typeof updateTeacherStatBadges === 'function') updateTeacherStatBadges();
+      if (typeof applyTeacherFilters === 'function') applyTeacherFilters();
     }
   };
 
@@ -1949,6 +1952,9 @@
       if (inUser) inUser.value = '';
       renderMentorshipStats();
       renderTeachersListView();
+      if (typeof populateTeacherFilterOptions === 'function') populateTeacherFilterOptions();
+      if (typeof updateTeacherStatBadges === 'function') updateTeacherStatBadges();
+      if (typeof applyTeacherFilters === 'function') applyTeacherFilters();
     } else {
       alert(res.message);
     }

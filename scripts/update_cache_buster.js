@@ -15,7 +15,7 @@ const files = [
 files.forEach(f => {
   if (!fs.existsSync(f)) return;
   let content = fs.readFileSync(f, 'utf8');
-  content = content.replace(/core\.js\?v=[^"'\s]+/g, 'core.js?v=20261107_v12_mobile_compat');
+  content = content.replace(/core\.js\?v=[^"'\s]+/g, 'core.js?v=20261107_v13_windi_custom_teachers');
   fs.writeFileSync(f, content, 'utf8');
-  console.log(f + ': updated cache buster to v=20261107_v12_mobile_compat');
+  console.log(f + ': updated cache buster to v=20261107_v13_windi_custom_teachers');
 });

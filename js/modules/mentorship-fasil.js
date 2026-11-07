@@ -264,6 +264,13 @@
           window.FincestemMasterTeachers.push(newTeacher);
         }
 
+        // Sinkronkan ke modul FincestemCore.teachers agar otomatis masuk ke Menu Data Guru & database MySQL
+        if (window.FincestemCore && FincestemCore.teachers && typeof FincestemCore.teachers.saveTeacher === 'function') {
+          try {
+            FincestemCore.teachers.saveTeacher(newTeacher);
+          } catch(eCore) {}
+        }
+
         // Set role jika disediakan
         if (teacherData.role_category) {
           this.setTeacherRole(cleanUser, teacherData.role_category);

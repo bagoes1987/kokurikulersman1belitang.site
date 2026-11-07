@@ -309,6 +309,56 @@ if ($action === 'deploy') {
         } catch (Exception $eGuru) {
             $logs[] = "Catatan sinkronisasi guru: " . $eGuru->getMessage();
         }
+
+        // Auto-seed custom teachers dari mentorship_state_v1 (Windi Restu, Risa Bella, dll)
+        try {
+            $mStmt = $pdo->prepare("SELECT `value` FROM `app_settings` WHERE `key_name` = 'mentorship_state_v1' LIMIT 1");
+            $mStmt->execute();
+            $mRaw = $mStmt->fetchColumn();
+            if ($mRaw) {
+                $mDec = json_decode($mRaw, true);
+                if (isset($mDec['custom_teachers']) && is_array($mDec['custom_teachers']) && !empty($mDec['custom_teachers'])) {
+                    $stmtMC = $pdo->prepare("
+                        INSERT INTO `teachers` (`kode_guru`, `nama_guru`, `nip`, `mata_pelajaran`, `jabatan`, `tugas_tambahan`, `username`, `password`, `created_at`, `updated_at`)
+                        VALUES (:k, :n, :nip, :m, :j, :t, :u, :p, NOW(), NOW())
+                        ON DUPLICATE KEY UPDATE 
+                            `nama_guru` = VALUES(`nama_guru`),
+                            `mata_pelajaran` = VALUES(`mata_pelajaran`),
+                            `password` = VALUES(`password`)
+                    ");
+                    $stmtMU = $pdo->prepare("
+                        INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `zone`)
+                        VALUES (:u, '', :p, :n, 'fasilitator', '-', '-', 'L', 'FINCESTEM OKU TIMUR')
+                        ON DUPLICATE KEY UPDATE `password_hash` = VALUES(`password_hash`), `name` = VALUES(`name`)
+                    ");
+                    foreach ($mDec['custom_teachers'] as $ct) {
+                        $kode = trim($ct['kode_guru'] ?? '');
+                        $nama = trim($ct['nama_guru'] ?? '');
+                        $nip  = trim($ct['nip'] ?? '-') ?: '-';
+                        $mapel= trim($ct['mata_pelajaran'] ?? 'Fasilitator Kokurikuler') ?: 'Fasilitator Kokurikuler';
+                        $jab  = trim($ct['jabatan'] ?? 'Guru Pendamping') ?: 'Guru Pendamping';
+                        $tgs  = trim($ct['tugas_tambahan'] ?? '-') ?: '-';
+                        $user = trim($ct['username'] ?? '');
+                        $pass = trim($ct['password'] ?? 'Fincestem2026!') ?: 'Fincestem2026!';
+                        if (!$kode || !$nama || !$user) continue;
+                        $stmtMC->execute([
+                            ':k'   => $kode,
+                            ':n'   => $nama,
+                            ':nip' => $nip,
+                            ':m'   => $mapel,
+                            ':j'   => $jab,
+                            ':t'   => $tgs,
+                            ':u'   => $user,
+                            ':p'   => $pass
+                        ]);
+                        try {
+                            $stmtMU->execute([':u' => $user, ':p' => $pass, ':n' => $nama]);
+                        } catch (Exception $eU) {}
+                    }
+                    $logs[] = "Sinkronisasi " . count($mDec['custom_teachers']) . " guru siswa binaan ke database sukses.";
+                }
+            }
+        } catch (Exception $eM) {}
     } catch (Exception $eSync) {
         $logs[] = "Catatan sinkronisasi siswa: " . $eSync->getMessage();
     }

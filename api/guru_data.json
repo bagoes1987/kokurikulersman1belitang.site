@@ -1274,5 +1274,27 @@
     "tugas_tambahan": "-",
     "username": "86c",
     "password": "Fincestem2026!"
+  },
+  {
+    "no": 117,
+    "kode_guru": "G_2642",
+    "nama_guru": "Windi Restu, S.Pd.",
+    "nip": "-",
+    "mata_pelajaran": "Fisika",
+    "jabatan": "Guru Pendamping",
+    "tugas_tambahan": "-",
+    "username": "1060330178",
+    "password": "Fincestem2026!"
+  },
+  {
+    "no": 118,
+    "kode_guru": "G_7288",
+    "nama_guru": "RISA BELLA,S,Pd",
+    "nip": "-",
+    "mata_pelajaran": "PKn",
+    "jabatan": "Guru Pendamping",
+    "tugas_tambahan": "-",
+    "username": "1060330188",
+    "password": "Fincestem2026!"
   }
 ]

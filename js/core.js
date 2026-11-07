@@ -5835,19 +5835,41 @@ const FincestemCore = {
         return arr;
       };
       let baseList = healTeacherList(Array.isArray(window.FincestemMasterTeachers) ? window.FincestemMasterTeachers : []);
+      let list = baseList;
       try {
         const stored = localStorage.getItem('fincestem_custom_teachers');
         if (stored) {
           const customList = healTeacherList(JSON.parse(stored));
           if (Array.isArray(customList) && customList.length >= 100) {
-            window.FincestemMasterTeachers = customList;
-            return customList;
+            list = customList;
           } else {
             try { localStorage.removeItem('fincestem_custom_teachers'); } catch(e) {}
           }
         }
       } catch (e) {}
-      return baseList;
+
+      // Gabungkan custom teachers dari mentorship jika belum ada di list
+      try {
+        const mentorCustom = localStorage.getItem('fincestem_mentorship_custom_teachers');
+        if (mentorCustom) {
+          const mList = JSON.parse(mentorCustom);
+          if (Array.isArray(mList) && mList.length > 0) {
+            const keySet = new Set(list.map(t => String(t.username || t.kode_guru || '').toLowerCase()));
+            mList.forEach(mt => {
+              if (mt && mt.nama_guru && (mt.username || mt.kode_guru)) {
+                const k = String(mt.username || mt.kode_guru).toLowerCase();
+                if (!keySet.has(k)) {
+                  list.push(mt);
+                  keySet.add(k);
+                }
+              }
+            });
+          }
+        }
+      } catch(eM) {}
+
+      window.FincestemMasterTeachers = list;
+      return list;
     },
 
     // Menyimpan / mengedit data guru (lokal + server)

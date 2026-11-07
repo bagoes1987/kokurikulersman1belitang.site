@@ -1,8 +1,3 @@
-/**
- * Master Database Guru SMAN 1 Belitang TP 2026/2027
- * Total: 116 Baris Data Penugasan (Termasuk 19 Koordinator Projek)
- * Kolom: Kode Guru | Nama Guru | NIP | Mata Pelajaran | Jabatan | Tugas Tambahan | Username | Password
- */
 window.FincestemMasterTeachers = [
   {
     "no": 1,
@@ -1278,6 +1273,28 @@ window.FincestemMasterTeachers = [
     "jabatan": "Guru Mata Pelajaran",
     "tugas_tambahan": "-",
     "username": "86c",
+    "password": "Fincestem2026!"
+  },
+  {
+    "no": 117,
+    "kode_guru": "G_2642",
+    "nama_guru": "Windi Restu, S.Pd.",
+    "nip": "-",
+    "mata_pelajaran": "Fisika",
+    "jabatan": "Guru Pendamping",
+    "tugas_tambahan": "-",
+    "username": "1060330178",
+    "password": "Fincestem2026!"
+  },
+  {
+    "no": 118,
+    "kode_guru": "G_7288",
+    "nama_guru": "RISA BELLA,S,Pd",
+    "nip": "-",
+    "mata_pelajaran": "PKn",
+    "jabatan": "Guru Pendamping",
+    "tugas_tambahan": "-",
+    "username": "1060330188",
     "password": "Fincestem2026!"
   }
 ];

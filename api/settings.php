@@ -505,6 +505,71 @@ function getMentorshipState($pdo) {
     return $result;
 }
 
+function syncMentorshipCustomTeachersToDatabase($pdo) {
+    try {
+        $state = getMentorshipState($pdo);
+        $customs = $state['custom_teachers'] ?? [];
+        if (!is_array($customs) || empty($customs)) return;
+
+        $stmtT = $pdo->prepare("
+            INSERT INTO `teachers` (`kode_guru`, `nama_guru`, `nip`, `mata_pelajaran`, `jabatan`, `tugas_tambahan`, `username`, `password`, `created_at`, `updated_at`)
+            VALUES (:k, :n, :nip, :m, :j, :t, :u, :p, NOW(), NOW())
+            ON DUPLICATE KEY UPDATE
+                `nama_guru`       = VALUES(`nama_guru`),
+                `nip`             = VALUES(`nip`),
+                `mata_pelajaran`  = VALUES(`mata_pelajaran`),
+                `jabatan`         = VALUES(`jabatan`),
+                `tugas_tambahan`  = VALUES(`tugas_tambahan`),
+                `username`        = VALUES(`username`),
+                `password`        = VALUES(`password`),
+                `updated_at`      = NOW()
+        ");
+
+        $stmtU = $pdo->prepare("
+            INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `zone`)
+            VALUES (:u, '', :p, :n, 'fasilitator', '-', '-', 'L', 'FINCESTEM OKU TIMUR')
+            ON DUPLICATE KEY UPDATE
+                `password_hash` = VALUES(`password_hash`),
+                `name`          = VALUES(`name`),
+                `role`          = IF(`role` = 'admin', 'admin', 'fasilitator')
+        ");
+
+        foreach ($customs as $ct) {
+            if (!is_array($ct)) continue;
+            $kode = trim($ct['kode_guru'] ?? '');
+            $nama = trim($ct['nama_guru'] ?? '');
+            $nip  = trim($ct['nip'] ?? '-') ?: '-';
+            $mapel= trim($ct['mata_pelajaran'] ?? 'Fasilitator Kokurikuler') ?: 'Fasilitator Kokurikuler';
+            $jab  = trim($ct['jabatan'] ?? 'Guru Pendamping') ?: 'Guru Pendamping';
+            $tgs  = trim($ct['tugas_tambahan'] ?? '-') ?: '-';
+            $user = trim($ct['username'] ?? '');
+            $pass = trim($ct['password'] ?? 'Fincestem2026!') ?: 'Fincestem2026!';
+
+            if (!$kode || !$nama || !$user) continue;
+
+            $stmtT->execute([
+                ':k'   => $kode,
+                ':n'   => $nama,
+                ':nip' => $nip,
+                ':m'   => $mapel,
+                ':j'   => $jab,
+                ':t'   => $tgs,
+                ':u'   => $user,
+                ':p'   => $pass
+            ]);
+
+            try {
+                $stmtU->execute([
+                    ':u' => $user,
+                    ':p' => $pass,
+                    ':n' => $nama
+                ]);
+            } catch (Exception $eU) {}
+        }
+    } catch (Exception $e) {}
+}
+
+
 function buildCustomZonesLookup($pdo) {
     $map = [];
     try {
@@ -837,6 +902,7 @@ if ($method === 'GET') {
         // Ambil data seluruh guru & tenaga pendidik (A-Z)
         if ($action === 'get_teachers') {
             seedMasterTeachersIfEmpty($pdo);
+            syncMentorshipCustomTeachersToDatabase($pdo);
             $teachers = $pdo->query("SELECT * FROM `teachers` ORDER BY `nama_guru` ASC")->fetchAll();
             jsonResponse(true, 'Data guru berhasil dimuat', ['teachers' => $teachers]);
         }
@@ -2206,6 +2272,7 @@ if ($method === 'POST') {
                     }
                     $current['custom_teachers'] = array_values($customMap);
                 }
+                syncMentorshipCustomTeachersToDatabase($pdo);
             }
 
             // Sinkronkan pemetaan zona siswa (Dioptimalkan: hanya update data yang benar-benar berubah untuk mencegah ratusan query berulang)
