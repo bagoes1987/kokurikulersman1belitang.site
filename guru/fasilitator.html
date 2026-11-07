@@ -3502,6 +3502,15 @@
                               </div>
                             `).join('')}
                           </div>
+                          ${nftMat.userConclusion ? `
+                            <div class="mt-2 p-2 rounded-xl bg-amber-50/80 border border-amber-200 text-[10.5px]">
+                              <span class="font-bold text-amber-900 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs text-amber-700">psychology</span>
+                                <span>Kesimpulan Akhir Siswa:</span>
+                              </span>
+                              <p class="text-slate-700 italic leading-relaxed mt-0.5 line-clamp-3">"${escapeHtml(nftMat.userConclusion)}"</p>
+                            </div>
+                          ` : ''}
                         </div>
                       `;
                     }
