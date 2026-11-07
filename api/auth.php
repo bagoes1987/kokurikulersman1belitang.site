@@ -35,6 +35,42 @@ if ($action === 'login') {
         } catch (Exception $eHeal) {}
     }
 
+    // Auto-heal data akun siswa M.FADHIL RAMLI (XI.10) & ROYAN MAULANA (X.4) agar tidak bentrok NISN
+    if ($identifier === '3105533980' || $identifier === '14418' || $identifier === '14922' || $identifier === '0110014922') {
+        try {
+            // Pastikan M. FADHIL RAMLI (XI.10): NISN 3105533980, NIS 14418
+            $pdo->exec("UPDATE `users` SET `identifier` = '3105533980', `nis` = '14418', `name` = 'M.FADHIL RAMLI', `class_name` = 'KELAS XI.10', `grade_level` = 'XI', `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `nis` = '14418' OR `name` LIKE '%FADHIL RAMLI%'");
+
+            // Pastikan ROYAN MAULANA (X.4): NISN 0110014922, NIS 14922
+            $chkR = $pdo->prepare("SELECT id FROM `users` WHERE `nis` = '14922' OR `name` LIKE '%ROYAN MAULANA%' LIMIT 1");
+            $chkR->execute();
+            $rRow = $chkR->fetch();
+            if ($rRow) {
+                $pdo->exec("UPDATE `users` SET `identifier` = '0110014922', `nis` = '14922', `name` = 'ROYAN MAULANA', `class_name` = 'KELAS X.4', `grade_level` = 'X', `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `id` = " . (int)$rRow['id']);
+            } else {
+                $pdo->exec("INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `agama`, `birth_info`, `address`, `parent_father`, `parent_mother`, `parent_job`, `school_origin`, `zone`) VALUES ('0110014922', '14922', '14922', 'ROYAN MAULANA', 'siswa', 'X', 'KELAS X.4', 'L', 'ISLAM', 'OKU TIMUR , 22 Januari 2011', 'TRIYOSO, RT:001, RW:001, Kec:BELITANG, Kab:OGAN KOMERING ULU TIMUR, Kode POS:32382', 'ISMANAN', 'ANA NURJANAH', 'PETANI', 'SMP ISLAM TERPADU QURRATA A\'YUN', 'FINCESTEM LUAR OKU TIMUR')");
+            }
+        } catch (Exception $eSiswaHeal) {}
+    }
+
+    // Auto-heal data akun siswa M.FADHIL RAMLI (XI.10) & ROYAN MAULANA (X.4) agar tidak bentrok NISN
+    if ($identifier === '3105533980' || $identifier === '14418' || $identifier === '14922' || $identifier === '0110014922') {
+        try {
+            // Pastikan M. FADHIL RAMLI (XI.10): NISN 3105533980, NIS 14418
+            $pdo->exec("UPDATE `users` SET `identifier` = '3105533980', `nis` = '14418', `name` = 'M.FADHIL RAMLI', `class_name` = 'KELAS XI.10', `grade_level` = 'XI', `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `nis` = '14418' OR `name` LIKE '%FADHIL RAMLI%'");
+
+            // Pastikan ROYAN MAULANA (X.4): NISN 0110014922, NIS 14922
+            $chkR = $pdo->prepare("SELECT id FROM `users` WHERE `nis` = '14922' OR `name` LIKE '%ROYAN MAULANA%' LIMIT 1");
+            $chkR->execute();
+            $rRow = $chkR->fetch();
+            if ($rRow) {
+                $pdo->exec("UPDATE `users` SET `identifier` = '0110014922', `nis` = '14922', `name` = 'ROYAN MAULANA', `class_name` = 'KELAS X.4', `grade_level` = 'X', `zone` = 'FINCESTEM LUAR OKU TIMUR' WHERE `id` = " . (int)$rRow['id']);
+            } else {
+                $pdo->exec("INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `agama`, `birth_info`, `address`, `parent_father`, `parent_mother`, `parent_job`, `school_origin`, `zone`) VALUES ('0110014922', '14922', '14922', 'ROYAN MAULANA', 'siswa', 'X', 'KELAS X.4', 'L', 'ISLAM', 'OKU TIMUR , 22 Januari 2011', 'TRIYOSO, RT:001, RW:001, Kec:BELITANG, Kab:OGAN KOMERING ULU TIMUR, Kode POS:32382', 'ISMANAN', 'ANA NURJANAH', 'PETANI', 'SMP ISLAM TERPADU QURRATA A\'YUN', 'FINCESTEM LUAR OKU TIMUR')");
+            }
+        } catch (Exception $eSiswaHeal) {}
+    }
+
     // Query user by identifier (mendukung NISN 10 digit padded, atau NIS)
     $cleanId = preg_replace('/\D/', '', $identifier);
     $paddedId = (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) ? str_pad($cleanId, 10, '0', STR_PAD_LEFT) : $identifier;

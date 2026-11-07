@@ -2439,7 +2439,7 @@ window.FincestemMasterStudents = [
     "level": "X",
     "class": "KELAS X.4",
     "nis": "14922",
-    "nisn": "3105533980",
+    "nisn": "0110014922",
     "nama": "ROYAN MAULANA",
     "gender": "L",
     "agama": "ISLAM",

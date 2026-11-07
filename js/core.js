@@ -142,15 +142,18 @@ const FincestemCore = {
         // 1. Cek Master Data 1.165 Siswa Dapodik
         const masterList = window.FincestemMasterStudents || [];
         if (Array.isArray(masterList) && masterList.length > 0) {
-          const found = masterList.find(s => 
+          const matches = masterList.filter(s => 
             String(s.nisn).trim() === paddedId || 
             String(s.nisn).trim() === cleanId || 
             String(s.nis).trim() === cleanId
           );
 
-          if (!found) {
+          if (matches.length === 0) {
             return { success: false, message: 'NISN ' + id + ' tidak terdaftar dalam database Dapodik SMAN 1 Belitang!' };
           }
+
+          // Jika ada lebih dari satu kecocokan, pilih yang NIS-nya sesuai kata sandi input
+          const found = matches.find(s => String(s.nis || '').trim() === pwd || String(s.nisn || '').trim() === pwd) || matches[0];
 
           // Password harus berupa NIS siswa (atau NISN)
           const validNis = String(found.nis || '').trim();
