@@ -1679,12 +1679,12 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261107_v9_fadhil_royan"></script>
-  <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261107_v9_fadhil_royan"></script>
-  <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
-  <script src="../js/modules/guru-rekap-monitoring.js?v=20261104_v2"></script>
+  <script src="../js/siswa_data.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/guru_data.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/core.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/modules/guru-rekap-monitoring.js?v=20261107_v11_fix_fasil_auth"></script>
   <script>
     // Kamus Narasi Resmi Rapor Kokurikuler Sesuai Kriteria Admin & SK Kelulusan
     window.FINCESTEM_NARRASI_RAPOR = {
@@ -1698,6 +1698,21 @@
     let fasStudentSearchQuery = '';
 
     document.addEventListener('DOMContentLoaded', () => {
+      // Pembersihan otomatis jika ada cache korup dari sesi sebelumnya
+      try {
+        const storedT = localStorage.getItem('fincestem_custom_teachers');
+        if (storedT) {
+          const parsedT = JSON.parse(storedT);
+          if (!Array.isArray(parsedT) || parsedT.length < 100) {
+            localStorage.removeItem('fincestem_custom_teachers');
+          }
+        }
+      } catch (e) {}
+
+      if (FincestemCore.teachers && FincestemCore.teachers.syncTeachers) {
+        FincestemCore.teachers.syncTeachers();
+      }
+
       checkFasilAuth();
 
       const pwdInput = document.getElementById('fasilPwdInput');
@@ -1909,20 +1924,61 @@
       btnText.textContent = 'Memverifikasi...';
       btn.classList.add('opacity-80', 'pointer-events-none');
 
-      setTimeout(() => {
-        const res = FincestemCore.auth.validateLogin(id, pwd, 'fasilitator');
+      // 1. Bersihkan segera cache korup lokal jika ada
+      try {
+        const storedT = localStorage.getItem('fincestem_custom_teachers');
+        if (storedT) {
+          const parsedT = JSON.parse(storedT);
+          if (!Array.isArray(parsedT) || parsedT.length < 100) {
+            localStorage.removeItem('fincestem_custom_teachers');
+          }
+        }
+      } catch (e) {}
+
+      // 2. Coba validasi lokal terlebih dahulu
+      const res = FincestemCore.auth.validateLogin(id, pwd, 'fasilitator');
+      if (res && res.success) {
         btnText.textContent = 'Masuk Portal Fasilitator';
         btn.classList.remove('opacity-80', 'pointer-events-none');
-
-        if (!res.success) {
-          FincestemCore.ui.toast(res.message, 'error');
-          return;
-        }
-
         FincestemCore.auth.setUser(res.user, 'fasilitator');
         FincestemCore.ui.toast('Berhasil masuk ke Portal Fasilitator!', 'success');
         checkFasilAuth();
-      }, 400);
+        return;
+      }
+
+      // 3. Fallback online: Panggil langsung API otentikasi backend
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/auth.php?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: id, password: pwd, role: 'fasilitator' })
+        })
+        .then(r => r.json())
+        .then(srvRes => {
+          btnText.textContent = 'Masuk Portal Fasilitator';
+          btn.classList.remove('opacity-80', 'pointer-events-none');
+          if (srvRes && srvRes.success && srvRes.data && srvRes.data.user) {
+            FincestemCore.auth.setUser(srvRes.data.user, 'fasilitator');
+            localStorage.removeItem('fincestem_custom_teachers');
+            if (FincestemCore.teachers && FincestemCore.teachers.syncTeachers) {
+              FincestemCore.teachers.syncTeachers();
+            }
+            FincestemCore.ui.toast('Berhasil masuk ke Portal Fasilitator!', 'success');
+            checkFasilAuth();
+          } else {
+            FincestemCore.ui.toast((srvRes && srvRes.message) ? srvRes.message : (res.message || 'Akun atau kata sandi Fasilitator salah!'), 'error');
+          }
+        })
+        .catch(() => {
+          btnText.textContent = 'Masuk Portal Fasilitator';
+          btn.classList.remove('opacity-80', 'pointer-events-none');
+          FincestemCore.ui.toast(res.message || 'Akun atau kata sandi Fasilitator salah!', 'error');
+        });
+      } else {
+        btnText.textContent = 'Masuk Portal Fasilitator';
+        btn.classList.remove('opacity-80', 'pointer-events-none');
+        FincestemCore.ui.toast(res.message || 'Akun atau kata sandi Fasilitator salah!', 'error');
+      }
     }
 
     function handleFasilLogout() {

@@ -673,11 +673,11 @@
     </div>
   </div>
 
-  <script src="../js/siswa_data.js?v=20261107_v9_fadhil_royan"></script>
-  <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261107_v9_fadhil_royan"></script>
-  <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
+  <script src="../js/siswa_data.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/guru_data.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/modules/mentorship-fasil.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/core.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261107_v11_fix_fasil_auth"></script>
   <script>
     let currentCoordinatorData = null;
     let selectedKoordClassFilter = 'ALL';
@@ -776,20 +776,58 @@
       btnText.textContent = 'Memverifikasi...';
       btn.classList.add('opacity-80', 'pointer-events-none');
 
-      setTimeout(() => {
-        const res = FincestemCore.auth.validateLogin(id, pwd, 'koordinator');
+      try {
+        const storedT = localStorage.getItem('fincestem_custom_teachers');
+        if (storedT) {
+          const parsedT = JSON.parse(storedT);
+          if (!Array.isArray(parsedT) || parsedT.length < 100) {
+            localStorage.removeItem('fincestem_custom_teachers');
+          }
+        }
+      } catch (e) {}
+
+      const res = FincestemCore.auth.validateLogin(id, pwd, 'koordinator');
+      if (res && res.success) {
         btnText.textContent = 'Masuk Portal Koordinator';
         btn.classList.remove('opacity-80', 'pointer-events-none');
-
-        if (!res.success) {
-          FincestemCore.ui.toast(res.message, 'error');
-          return;
-        }
-
         FincestemCore.auth.setUser(res.user, 'koordinator');
         FincestemCore.ui.toast('Berhasil masuk ke Portal Koordinator!', 'success');
         checkKoordAuth();
-      }, 400);
+        return;
+      }
+
+      if (window.location.protocol.startsWith('http')) {
+        fetch(FincestemCore.api.base + '/auth.php?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: id, password: pwd, role: 'koordinator' })
+        })
+        .then(r => r.json())
+        .then(srvRes => {
+          btnText.textContent = 'Masuk Portal Koordinator';
+          btn.classList.remove('opacity-80', 'pointer-events-none');
+          if (srvRes && srvRes.success && srvRes.data && srvRes.data.user) {
+            FincestemCore.auth.setUser(srvRes.data.user, 'koordinator');
+            localStorage.removeItem('fincestem_custom_teachers');
+            if (FincestemCore.teachers && FincestemCore.teachers.syncTeachers) {
+              FincestemCore.teachers.syncTeachers();
+            }
+            FincestemCore.ui.toast('Berhasil masuk ke Portal Koordinator!', 'success');
+            checkKoordAuth();
+          } else {
+            FincestemCore.ui.toast((srvRes && srvRes.message) ? srvRes.message : (res.message || 'Akun atau kata sandi Koordinator salah!'), 'error');
+          }
+        })
+        .catch(() => {
+          btnText.textContent = 'Masuk Portal Koordinator';
+          btn.classList.remove('opacity-80', 'pointer-events-none');
+          FincestemCore.ui.toast(res.message || 'Akun atau kata sandi Koordinator salah!', 'error');
+        });
+      } else {
+        btnText.textContent = 'Masuk Portal Koordinator';
+        btn.classList.remove('opacity-80', 'pointer-events-none');
+        FincestemCore.ui.toast(res.message || 'Akun atau kata sandi Koordinator salah!', 'error');
+      }
     }
 
     function handleKoordLogout() {
