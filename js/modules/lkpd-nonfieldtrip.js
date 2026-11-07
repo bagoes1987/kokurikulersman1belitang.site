@@ -68,28 +68,52 @@
       ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
       : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
+    // Kumpulan identifier siswa yang adaptif (NISN, unpadded, padded, NIS, identifier)
+    const candidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    if (u.identifier) candidateIds.add(String(u.identifier).trim());
+    if (u.nis) candidateIds.add(String(u.nis).trim());
+    if (u.nisn) candidateIds.add(String(u.nisn).trim());
+
     // PRASYARAT WAJIB: Cek apakah Modul Day 1 (5 Kartu Riset) sudah tuntas diserahkan
-    let hasMateri = false;
-    try {
-      const rawM = localStorage.getItem('fincestem_materi_nft_day1_' + cleanNisn) || localStorage.getItem('fincestem_materi_day1_' + cleanNisn);
-      if (rawM) {
-        const p = JSON.parse(rawM);
-        if (p && (p.submitted || p.cardA || p.conclusion)) hasMateri = true;
-      }
-    } catch(e) {}
+    let hasMateri = !!window.isNftD1Submitted;
+    for (const cid of candidateIds) {
+      if (!cid) continue;
+      try {
+        const rawM = localStorage.getItem('fincestem_materi_nft_day1_' + cid) ||
+                     localStorage.getItem('fincestem_materi_day1_' + cid) ||
+                     localStorage.getItem('fincestem_materi_ft_day1_' + cid);
+        if (rawM) {
+          const p = JSON.parse(rawM);
+          if (p && (p.submitted || p.cardA || p.conclusion || p.userConclusion || p.summary)) {
+            hasMateri = true;
+            break;
+          }
+        }
+      } catch(e) {}
+    }
 
     // Fallback verifikasi progress sistem
     if (!hasMateri) {
       if (window.currentStudentProgress && window.currentStudentProgress.task_map && window.currentStudentProgress.task_map['1_materi']) {
         hasMateri = true;
       } else {
-        try {
-          const sp = localStorage.getItem('fincestem_progress_' + cleanNisn);
-          if (sp) {
-            const p = JSON.parse(sp);
-            if (p && p.task_map && p.task_map['1_materi']) hasMateri = true;
-          }
-        } catch(e) {}
+        for (const cid of candidateIds) {
+          if (!cid) continue;
+          try {
+            const sp = localStorage.getItem('fincestem_progress_' + cid);
+            if (sp) {
+              const p = JSON.parse(sp);
+              if (p && p.task_map && p.task_map['1_materi']) {
+                hasMateri = true;
+                break;
+              }
+            }
+          } catch(e) {}
+        }
       }
     }
 
@@ -221,10 +245,16 @@
                 <p class="text-xs text-emerald-800/90 font-medium mt-0.5">Seluruh 6 blok investigasi usaha telah tuntas diverifikasi oleh fasilitator pembina.</p>
               </div>
             </div>
-            <span class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-black shadow-xs shrink-0 flex items-center gap-1">
-              <span class="material-symbols-outlined text-sm">task_alt</span>
-              <span>Laporan Tuntas</span>
-            </span>
+            <div class="flex items-center gap-2 flex-wrap">
+              <a href="dokumentasi.html?day=1" class="px-4 py-2.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs shadow-md flex items-center gap-1.5 transition-all">
+                <span>Lanjut Dokumentasi Foto Day 1</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+              <span class="px-3 py-1.5 rounded-xl bg-emerald-600 text-white text-xs font-black shadow-xs shrink-0 flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm">task_alt</span>
+                <span>Laporan Tuntas</span>
+              </span>
+            </div>
           </div>
         ` : ''}
         
@@ -952,13 +982,29 @@
     // Sintesis singkat untuk kompatibilitas data di tabel
     const summaryText = `Audit Lapangan: ${officialLkpd.businessName} (${officialLkpd.businessType}) - ${officialLkpd.location}. Narasumber: ${officialLkpd.interviewee}. Omzet: Rp ${officialLkpd.incomeMonthly.toLocaleString('id-ID')}/bln, Net Profit: Rp ${officialLkpd.netProfitMonthly.toLocaleString('id-ID')}/bln.`;
 
+    const candidateSubmitIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateSubmitIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateSubmitIds.add(cleanNisn.padStart(10, '0'));
+    }
+    if (u.identifier) candidateSubmitIds.add(String(u.identifier).trim());
+    if (u.nis) candidateSubmitIds.add(String(u.nis).trim());
+    if (u.nisn) candidateSubmitIds.add(String(u.nisn).trim());
+
     try {
-      localStorage.setItem('fincestem_lkpd_nft_day1_' + cleanNisn, JSON.stringify(officialLkpd));
-      localStorage.setItem('fincestem_lkpd_day1_' + cleanNisn, JSON.stringify(officialLkpd));
+      candidateSubmitIds.forEach(id => {
+        if (!id) return;
+        localStorage.setItem('fincestem_lkpd_nft_day1_' + id, JSON.stringify(officialLkpd));
+        localStorage.setItem('fincestem_lkpd_day1_' + id, JSON.stringify(officialLkpd));
+      });
     } catch (e) {}
 
     officialLkpd.summary = summaryText;
     officialLkpd.conclusion = summaryText;
+
+    if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+      window.currentStudentProgress.task_map['1_lkpd'] = { status: 'submitted', content: officialLkpd };
+    }
 
     // Submit ke sistem Core Progress FINCESTEM
     if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.submitTask) {

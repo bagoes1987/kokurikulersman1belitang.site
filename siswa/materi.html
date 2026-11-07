@@ -167,7 +167,7 @@
   <script src="../js/core.js?v=20261107_v13_windi_custom_teachers"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_video_d56_v1"></script>
   <script src="../js/modules/materi-fieldtrip.js?v=20261107_day0_ft"></script>
-  <script src="../js/modules/materi-nonfieldtrip.js?v=20261107_d1_inquiry_clean_v4"></script>
+  <script src="../js/modules/materi-nonfieldtrip.js?v=20261107_d1_flow_fix_v5"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -227,14 +227,20 @@
       // Sinkronkan data pembagian siswa binaan dari server cPanel secara asinkron
       if (window.FincestemMentorship && typeof window.FincestemMentorship.syncFromServer === 'function') {
         window.FincestemMentorship.syncFromServer(function() {
-          renderActiveMateriModule();
+          const hasInputActive = document.querySelector('textarea:focus, input:focus');
+          if (!hasInputActive && !window[`isNftD${dayNum}Submitted`]) {
+            renderActiveMateriModule();
+          }
         });
       }
 
-      // Sinkronisasi data progres server di background, dan re-render seketika jika data terhidrasi
+      // Sinkronisasi data progres server di background
       if (FincestemCore.progress) {
         FincestemCore.progress.getStudentProgress(user.nisn || user.identifier, function(prog) {
-          renderActiveMateriModule();
+          const hasInputActive = document.querySelector('textarea:focus, input:focus');
+          if (!hasInputActive && !window[`isNftD${dayNum}Submitted`]) {
+            renderActiveMateriModule();
+          }
           if (dayNum > 1) {
             FincestemCore.schedule.getSchedule(function(days) {
               const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);

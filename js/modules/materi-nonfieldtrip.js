@@ -1866,22 +1866,33 @@
 
     if (btnSubmit) {
       if (isSubmitted) {
-        btnSubmit.disabled = true;
-        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-emerald-600 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md cursor-default';
+        btnSubmit.disabled = false;
+        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all';
+        btnSubmit.onclick = function() { window.location.href = `lkpd.html?day=${dayNum}`; };
         btnSubmit.innerHTML = `
-          <span class="material-symbols-outlined text-base">verified</span>
-          <span>✓ Riset Day ${dayNum} Telah Terkirim Resmi ke Fasilitator</span>
+          <span>Lanjut ke LKPD Day ${dayNum}</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
         `;
       } else if (completedCount === keys.length && (!hasConc || isConclusionDone)) {
         btnSubmit.disabled = false;
         btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all ring-2 ring-emerald-400/40';
+        btnSubmit.onclick = function() { submitNftDayMateriUnified(dayNum); };
         btnSubmit.innerHTML = `
           <span class="material-symbols-outlined text-base">send</span>
           <span>Simpan &amp; Kirim Riset Day ${dayNum} ke Fasilitator</span>
         `;
+      } else if (completedCount === keys.length && hasConc && !isConclusionDone) {
+        btnSubmit.disabled = true;
+        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition-all shadow-xs';
+        btnSubmit.onclick = null;
+        btnSubmit.innerHTML = `
+          <span class="material-symbols-outlined text-base">lock</span>
+          <span>Lengkapi Kesimpulan Modul (Min 100 Karakter)</span>
+        `;
       } else {
         btnSubmit.disabled = true;
         btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-500 font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition-all shadow-xs';
+        btnSubmit.onclick = null;
         btnSubmit.innerHTML = `
           <span class="material-symbols-outlined text-base">lock</span>
           <span>Lengkapi 5 Kartu Terlebih Dahulu (${completedCount}/5)</span>
@@ -2002,11 +2013,27 @@
     officialPayload.conclusion = summaryText;
     officialPayload.summary = summaryText;
 
+    const candidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    if (u.identifier) candidateIds.add(String(u.identifier).trim());
+    if (u.nis) candidateIds.add(String(u.nis).trim());
+    if (u.nisn) candidateIds.add(String(u.nisn).trim());
+
     try {
-      localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn, JSON.stringify(officialPayload));
-      localStorage.setItem(`fincestem_materi_day${dayNum}_` + cleanNisn, JSON.stringify({ conclusion: summaryText, savedAt: officialPayload.submittedAt }));
-      localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + cleanNisn, JSON.stringify({ conclusion: summaryText, savedAt: officialPayload.submittedAt }));
+      candidateIds.forEach(id => {
+        if (!id) return;
+        localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + id, JSON.stringify(officialPayload));
+        localStorage.setItem(`fincestem_materi_day${dayNum}_` + id, JSON.stringify({ conclusion: summaryText, savedAt: officialPayload.submittedAt }));
+        localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + id, JSON.stringify({ conclusion: summaryText, savedAt: officialPayload.submittedAt }));
+      });
     } catch(e) {}
+
+    if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+      window.currentStudentProgress.task_map[`${dayNum}_materi`] = { status: 'submitted', content: officialPayload };
+    }
 
     window[`isNftD${dayNum}Submitted`] = true;
 

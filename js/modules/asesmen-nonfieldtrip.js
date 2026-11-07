@@ -2336,11 +2336,28 @@
     };
 
     // Simpan ke storage resmi & bersihkan draft pengerjaan
+    const candidateSubmitIds = new Set([examState.cleanNisn]);
+    if (examState.cleanNisn) {
+      candidateSubmitIds.add(examState.cleanNisn.replace(/^0+/, ''));
+      if (examState.cleanNisn.length >= 8 && examState.cleanNisn.length <= 10) candidateSubmitIds.add(examState.cleanNisn.padStart(10, '0'));
+    }
+    const uAuth = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    if (uAuth.identifier) candidateSubmitIds.add(String(uAuth.identifier).trim());
+    if (uAuth.nis) candidateSubmitIds.add(String(uAuth.nis).trim());
+    if (uAuth.nisn) candidateSubmitIds.add(String(uAuth.nisn).trim());
+
     try {
-      localStorage.setItem(`fincestem_asesmen_nft_day${examState.dayNum}_` + examState.cleanNisn, JSON.stringify(officialPayload));
-      localStorage.setItem(`fincestem_asesmen_day${examState.dayNum}_` + examState.cleanNisn, JSON.stringify(officialPayload));
+      candidateSubmitIds.forEach(id => {
+        if (!id) return;
+        localStorage.setItem(`fincestem_asesmen_nft_day${examState.dayNum}_` + id, JSON.stringify(officialPayload));
+        localStorage.setItem(`fincestem_asesmen_day${examState.dayNum}_` + id, JSON.stringify(officialPayload));
+      });
       localStorage.removeItem(draftKey);
     } catch(e) {}
+
+    if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+      window.currentStudentProgress.task_map[`${examState.dayNum}_asesmen`] = { status: 'submitted', content: officialPayload };
+    }
 
     const summaryNote = `Asesmen Day ${examState.dayNum} (Non-Field Trip): Skor ${score}/100 (${answeredCount}/${totalQuestions} Soal Diselesaikan, ${correctCount} Benar). Waktu: ${Math.round(durationSpent/60)} mnt. ${noteReason || ''}`;
     officialPayload.summary = summaryNote;

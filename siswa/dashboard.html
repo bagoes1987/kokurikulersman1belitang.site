@@ -2584,7 +2584,7 @@
                         localStorage.getItem(`fincestem_materi_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
-              if (p && (p.conclusion || p.text || p.content || p.summary || p.cardA)) {
+              if (p && (p.conclusion || p.userConclusion || p.submitted || p.text || p.content || p.summary || p.cardA)) {
                 hasMateri = true;
                 break;
               }
