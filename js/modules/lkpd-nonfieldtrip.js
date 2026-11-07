@@ -337,38 +337,125 @@
         <form id="formNftLkpdDay1" onsubmit="event.preventDefault();" class="flex flex-col gap-4 sm:gap-5">
           
           <!-- ======================================================== -->
-          <!-- BLOK 1: PROFIL TEMPAT KUNJUNGAN & LOKASI OKU TIMUR      -->
+          <!-- BLOK 1: SEKTOR EKONOMI & RANTAI KEGIATAN (3 SEKTOR)       -->
           <!-- ======================================================== -->
           <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-4 transition-all">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
               <div class="flex items-center gap-2.5">
                 <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-xs shrink-0">1</span>
                 <div>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Sektor Ekonomi &amp; Rantai Kegiatan</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Klasifikasi Sektor Primer/Sekunder/Tersier &amp; Alur Produksi-Distribusi-Konsumsi</span>
+                </div>
+              </div>
+              <span class="text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200">Blok Analisis Sektor</span>
+            </div>
+
+            <!-- Panduan Karakteristik Sektor di OKU Timur -->
+            <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-teal-50/80 via-emerald-50/50 to-slate-50 border border-teal-200/90 text-xs text-slate-700 flex flex-col gap-2">
+              <span class="font-extrabold text-teal-950 flex items-center gap-1.5 text-xs sm:text-[13px]">
+                <span class="material-symbols-outlined text-base text-teal-700">info</span>
+                <span>Pedoman Penentuan Sektor Ekonomi di Kabupaten OKU Timur:</span>
+              </span>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-[11px] leading-relaxed">
+                <div class="p-2.5 rounded-xl bg-white border border-teal-100 shadow-2xs flex flex-col gap-1">
+                  <span class="font-bold text-emerald-800 flex items-center gap-1">🌾 Sektor Primer</span>
+                  <span class="text-slate-600">Menghasilkan / mengambil bahan mentah langsung dari alam: Budidaya padi sawah irigasi, kebun karet/sawit, <b>Peternakan Sapi Mandiri</b>, <b>Peternakan Kambing</b>, perikanan air tawar (patin/lele).</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white border border-teal-100 shadow-2xs flex flex-col gap-1">
+                  <span class="font-bold text-cyan-800 flex items-center gap-1">⚙️ Sektor Sekunder</span>
+                  <span class="text-slate-600">Mengolah bahan mentah menjadi barang jadi/setengah jadi bernilai tambah: <b>Pabrik Penggilingan Padi (RMU)</b>, pengolahan tahu-tempe, sentra kerupuk ikan Belitang, pengolahan tepung/pakan.</span>
+                </div>
+                <div class="p-2.5 rounded-xl bg-white border border-teal-100 shadow-2xs flex flex-col gap-1">
+                  <span class="font-bold text-indigo-800 flex items-center gap-1">🏪 Sektor Tersier</span>
+                  <span class="text-slate-600">Layanan jasa keuangan, distribusi logistik, & perdagangan ke konsumen: <b>Layanan Agen BRILink/Bank</b>, Koperasi Simpan Pinjam (KSP), kios sarana pertanian (pupuk/obat), pedagang pasar.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <!-- Sektor Utama -->
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-slate-800">Sektor Ekonomi Utama: <span class="text-rose-500">*</span></label>
+                <select id="nftD1SectorType" ${readOnlyAttr} onchange="onNftD1SectorChange(this.value); onNftLkpdInput();" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold bg-white text-slate-900">
+                  <option value="">-- Pilih Sektor Aktivitas --</option>
+                  <option value="Sektor Primer" ${val('sectorType') === 'Sektor Primer' ? 'selected' : ''}>Sektor Primer (Bahan mentah: Padi, Peternakan Sapi Mandiri, Peternakan Kambing, Ikan, Karet)</option>
+                  <option value="Sektor Sekunder" ${val('sectorType') === 'Sektor Sekunder' ? 'selected' : ''}>Sektor Sekunder (Pengolahan: Pabrik Penggilingan Padi/RMU, Tahu-Tempe, Pangan Olahan)</option>
+                  <option value="Sektor Tersier" ${val('sectorType') === 'Sektor Tersier' ? 'selected' : ''}>Sektor Tersier (Jasa/Keuangan: Agen BRILink/Bank, Koperasi Simpan Pinjam, Kios &amp; Pasar)</option>
+                </select>
+              </div>
+
+              <!-- Komoditas / Produk yang Dikelola -->
+              <div class="flex flex-col gap-1">
+                <label class="text-xs font-bold text-slate-800">Komoditas / Produk Utama yang Dikelola: <span class="text-rose-500">*</span></label>
+                <input type="text" id="nftD1Commodity" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('commodity') || ''}" placeholder="Contoh: Gabah basah / Beras putih kemasan / Jasa transfer tunai / Pakan ternak" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-semibold">
+              </div>
+            </div>
+
+            <!-- Analisis Alur Aliran Barang & Jasa -->
+            <div class="flex flex-col gap-1 pt-1">
+              <label class="text-xs font-bold text-slate-800">Uraikan Rantai Kegiatan Ekonomi (Dari Mana Pasokan Masuk &amp; Bagaimana Disalurkan): <span class="text-rose-500">*</span></label>
+              <textarea id="nftD1ActivityChain" rows="3" ${readOnlyAttr} oninput="onNftLkpdInput()" placeholder="Jelaskan secara terperinci: dari mana barang dagangan atau modal diperoleh (aliran produksi/pasokan) dan bagaimana mekanisme penyalurannya kepada konsumen akhir di OKU Timur..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs leading-relaxed text-slate-900 resize-y">${val('activityChain') || ''}</textarea>
+              <span class="text-[10.5px] text-slate-400 font-medium">Deskripsikan keterkaitan antara produsen, distributor, dan konsumen akhir di lapangan.</span>
+            </div>
+          </div>
+
+          <!-- ======================================================== -->
+          <!-- BLOK 2: PROFIL TEMPAT KUNJUNGAN & LOKASI OKU TIMUR      -->
+          <!-- ======================================================== -->
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-4 transition-all">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-xs shrink-0">2</span>
+                <div>
                   <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Profil &amp; Legalitas Tempat Observasi</h3>
                   <span class="text-[11px] text-slate-500 font-medium">Nama Badan Usaha, Kategori Lembaga, Wilayah &amp; Kontak Narasumber</span>
                 </div>
               </div>
-              <span class="text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200">Blok Identitas</span>
+              <span class="text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200">Blok Identitas Lembaga</span>
             </div>
 
             <!-- Nama Entitas Usaha -->
             <div class="flex flex-col gap-1">
               <label class="text-xs font-bold text-slate-800">Nama Tempat / Badan Usaha yang Dikunjungi: <span class="text-rose-500">*</span></label>
-              <input type="text" id="nftD1BusinessName" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('businessName') || ''}" placeholder="Contoh: KUD Tani Makmur / Agen BRILink Berkah Jaya / BUMDes Mandiri Sejahtera / Toko Pupuk Barokah" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold text-slate-900">
+              <input type="text" id="nftD1BusinessName" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('businessName') || ''}" placeholder="Contoh: Pabrik Penggilingan Padi Berkah / Peternakan Sapi Mandiri Pak Joko / Agen BRILink Berkah Jaya / KUD Tani Makmur" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold text-slate-900">
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <!-- Jenis Badan Usaha -->
+              <!-- Jenis Badan Usaha (Selaras dengan Sektor di Blok 1) -->
               <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Jenis Badan Usaha / Kelembagaan: <span class="text-rose-500">*</span></label>
+                <div class="flex items-center justify-between">
+                  <label class="text-xs font-bold text-slate-800">Jenis Badan Usaha / Kelembagaan: <span class="text-rose-500">*</span></label>
+                  <span id="nftD1BusinessTypeSectorBadge" class="text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">Selaras dengan Sektor</span>
+                </div>
                 <select id="nftD1BusinessType" ${readOnlyAttr} onchange="onNftLkpdInput()" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold bg-white text-slate-900">
-                  <option value="">-- Pilih Jenis Badan Usaha --</option>
-                  <option value="Koperasi" ${val('businessType') === 'Koperasi' ? 'selected' : ''}>Koperasi (KUD / KSP / Koperasi Konsumen)</option>
-                  <option value="BUMDes" ${val('businessType') === 'BUMDes' ? 'selected' : ''}>BUMDes (Badan Usaha Milik Desa)</option>
-                  <option value="Agen Laku Pandai" ${val('businessType') === 'Agen Laku Pandai' ? 'selected' : ''}>Layanan Perbankan Tanpa Kantor (Agen BRILink / Mandiri / BNI)</option>
-                  <option value="Pasar Tradisional" ${val('businessType') === 'Pasar Tradisional' ? 'selected' : ''}>Pedagang Pasar Tradisional / Toko Grosir</option>
-                  <option value="UMKM Perorangan" ${val('businessType') === 'UMKM Perorangan' ? 'selected' : ''}>UMKM / Usaha Dagang Perorangan</option>
-                  <option value="Kemitraan Swasta" ${val('businessType') === 'Kemitraan Swasta' ? 'selected' : ''}>Kemitraan Perusahaan Swasta (Inti-Plasma)</option>
+                  <option value="">-- Pilih Jenis Badan Usaha / Kelembagaan --</option>
+                  
+                  <optgroup id="optgroupPrimer" label="Sektor Primer (Agraris, Peternakan &amp; Budidaya)">
+                    <option value="Peternakan Sapi Mandiri" ${val('businessType') === 'Peternakan Sapi Mandiri' ? 'selected' : ''}>Peternakan Sapi Mandiri</option>
+                    <option value="Peternakan Kambing" ${val('businessType') === 'Peternakan Kambing' ? 'selected' : ''}>Peternakan Kambing</option>
+                    <option value="Kelompok Usaha Tani Mandiri / Petani Padi" ${val('businessType') === 'Kelompok Usaha Tani Mandiri / Petani Padi' ? 'selected' : ''}>Kelompok Usaha Tani Mandiri / Petani Padi</option>
+                    <option value="Kelompok Tani / Gapoktan" ${val('businessType') === 'Kelompok Tani / Gapoktan' ? 'selected' : ''}>Kelompok Tani / Gapoktan (Gabungan Kelompok Tani)</option>
+                    <option value="KUD - Unit Budidaya Pertanian" ${val('businessType') === 'KUD - Unit Budidaya Pertanian' ? 'selected' : ''}>Koperasi Unit Desa (KUD) - Unit Budidaya Pertanian</option>
+                    <option value="BUMDes - Unit Budidaya Pertanian / Perikanan" ${val('businessType') === 'BUMDes - Unit Budidaya Pertanian / Perikanan' ? 'selected' : ''}>BUMDes - Unit Budidaya Pertanian / Perikanan Desa</option>
+                  </optgroup>
+
+                  <optgroup id="optgroupSekunder" label="Sektor Sekunder (Pengolahan, Pabrik &amp; Manufaktur)">
+                    <option value="Pabrik Penggilingan Padi" ${(val('businessType') === 'Pabrik Penggilingan Padi' || val('businessType') === 'Sentra Kilang Padi Swasta') ? 'selected' : ''}>Pabrik Penggilingan Padi (Rice Milling Unit / RMU)</option>
+                    <option value="UMKM Industri Pengolahan Tahu &amp; Tempe" ${(val('businessType') === 'UMKM Industri Pengolahan Tahu & Tempe' || val('businessType') === 'UMKM Industri Pengolahan Tahu &amp; Tempe') ? 'selected' : ''}>UMKM Industri Pengolahan Tahu &amp; Tempe</option>
+                    <option value="Industri Rumah Tangga Pangan" ${val('businessType') === 'Industri Rumah Tangga Pangan' ? 'selected' : ''}>Industri Rumah Tangga Pangan (Kerupuk Ikan / Keripik)</option>
+                    <option value="Koperasi Produksi / Pengolahan Hasil Panen" ${val('businessType') === 'Koperasi Produksi / Pengolahan Hasil Panen' ? 'selected' : ''}>Koperasi Produksi / Pengolahan Hasil Panen</option>
+                    <option value="BUMDes - Unit Pengolahan Pangan &amp; Industri" ${(val('businessType') === 'BUMDes - Unit Pengolahan Pangan & Industri' || val('businessType') === 'BUMDes - Unit Pengolahan Pangan &amp; Industri') ? 'selected' : ''}>BUMDes - Unit Pengolahan Pangan &amp; Industri Desa</option>
+                  </optgroup>
+
+                  <optgroup id="optgroupTersier" label="Sektor Tersier (Jasa, Perdagangan &amp; Keuangan)">
+                    <option value="Layanan Keuangan Tanpa Kantor (Agen BRILink / Mandiri / BNI)" ${(val('businessType') === 'Layanan Keuangan Tanpa Kantor (Agen BRILink / Mandiri / BNI)' || val('businessType') === 'Agen Laku Pandai') ? 'selected' : ''}>Layanan Keuangan Tanpa Kantor (Agen BRILink / Mandiri / BNI)</option>
+                    <option value="Koperasi Simpan Pinjam (KSP)" ${(val('businessType') === 'Koperasi Simpan Pinjam (KSP)' || val('businessType') === 'Koperasi') ? 'selected' : ''}>Koperasi Simpan Pinjam (KSP)</option>
+                    <option value="Kios Sarana Pertanian Resmi (Pupuk &amp; Obat Tani)" ${(val('businessType') === 'Kios Sarana Pertanian Resmi (Pupuk & Obat Tani)' || val('businessType') === 'Kios Sarana Pertanian Resmi (Pupuk &amp; Obat Tani)') ? 'selected' : ''}>Kios Sarana Pertanian Resmi (Kios Pupuk &amp; Obat Tani)</option>
+                    <option value="Pedagang Pasar Tradisional / Toko Kelontong Grosir" ${(val('businessType') === 'Pedagang Pasar Tradisional / Toko Kelontong Grosir' || val('businessType') === 'Pasar Tradisional') ? 'selected' : ''}>Pedagang Pasar Tradisional / Toko Kelontong Grosir</option>
+                    <option value="BUMDes - Unit Pasar Desa &amp; Jasa Keuangan Mikro" ${(val('businessType') === 'BUMDes - Unit Pasar Desa & Jasa Keuangan Mikro' || val('businessType') === 'BUMDes - Unit Pasar Desa &amp; Jasa Keuangan Mikro' || val('businessType') === 'BUMDes') ? 'selected' : ''}>BUMDes - Unit Pasar Desa &amp; Jasa Keuangan Mikro</option>
+                    <option value="UMKM Dagang &amp; Jasa Perorangan" ${(val('businessType') === 'UMKM Dagang & Jasa Perorangan' || val('businessType') === 'UMKM Dagang &amp; Jasa Perorangan' || val('businessType') === 'UMKM Perorangan') ? 'selected' : ''}>UMKM Dagang &amp; Jasa Perorangan</option>
+                  </optgroup>
                 </select>
               </div>
 
@@ -392,54 +479,12 @@
               </div>
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Nama Narasumber &amp; Peran: <span class="text-rose-500">*</span></label>
-                <input type="text" id="nftD1Interviewee" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('interviewee') || ''}" placeholder="Contoh: Bpk. H. Sutrisno (Pengelola Agen / Ketua)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
+                <input type="text" id="nftD1Interviewee" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('interviewee') || ''}" placeholder="Contoh: Bpk. Sutrisno (Peternak / Pengelola / Agen)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
               </div>
               <div class="flex flex-col gap-1">
                 <label class="text-xs font-bold text-slate-800">Nomor Kontak / WhatsApp Narasumber:</label>
                 <input type="text" id="nftD1Contact" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('contact') || ''}" placeholder="08xxxxxxxxxx (Untuk verifikasi fasilitator)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-medium">
               </div>
-            </div>
-          </div>
-
-          <!-- ======================================================== -->
-          <!-- BLOK 2: SEKTOR EKONOMI & ALUR KEGIATAN (3 SEKTOR)       -->
-          <!-- ======================================================== -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-4 transition-all">
-            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div class="flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-xs shrink-0">2</span>
-                <div>
-                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Sektor Ekonomi &amp; Rantai Kegiatan</h3>
-                  <span class="text-[11px] text-slate-500 font-medium">Klasifikasi Sektor Primer/Sekunder/Tersier &amp; Alur Produksi-Distribusi-Konsumsi</span>
-                </div>
-              </div>
-              <span class="text-[11px] font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-lg border border-teal-200">Blok Analisis Sektor</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <!-- Sektor Utama -->
-              <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Sektor Ekonomi Utama: <span class="text-rose-500">*</span></label>
-                <select id="nftD1SectorType" ${readOnlyAttr} onchange="onNftLkpdInput()" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs font-semibold bg-white text-slate-900">
-                  <option value="">-- Pilih Sektor Aktivitas --</option>
-                  <option value="Sektor Primer" ${val('sectorType') === 'Sektor Primer' ? 'selected' : ''}>Sektor Primer (Penghasil bahan mentah: Padi, Karet, Ikan, Jagung)</option>
-                  <option value="Sektor Sekunder" ${val('sectorType') === 'Sektor Sekunder' ? 'selected' : ''}>Sektor Sekunder (Pengolahan/Pabrik: RMU Padi, Pengolahan Makanan)</option>
-                  <option value="Sektor Tersier" ${val('sectorType') === 'Sektor Tersier' ? 'selected' : ''}>Sektor Tersier (Jasa Keuangan, Agen BRILink, Perdagangan Kios)</option>
-                </select>
-              </div>
-
-              <!-- Komoditas / Produk yang Dikelola -->
-              <div class="flex flex-col gap-1">
-                <label class="text-xs font-bold text-slate-800">Komoditas / Produk Utama yang Diperjualbelikan: <span class="text-rose-500">*</span></label>
-                <input type="text" id="nftD1Commodity" ${readOnlyAttr} oninput="onNftLkpdInput()" value="${val('commodity') || ''}" placeholder="Contoh: Saldo perbankan &amp; transfer tunai, Gabah/Beras, Pupuk bersubsidi, Sembako" class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs text-slate-900 font-semibold">
-              </div>
-            </div>
-
-            <!-- Analisis Alur Aliran Barang & Jasa -->
-            <div class="flex flex-col gap-1 pt-1">
-              <label class="text-xs font-bold text-slate-800">Uraikan Rantai Kegiatan Ekonomi (Dari Mana Pasokan Masuk &amp; Bagaimana Disalurkan): <span class="text-rose-500">*</span></label>
-              <textarea id="nftD1ActivityChain" rows="3" ${readOnlyAttr} oninput="onNftLkpdInput()" placeholder="Jelaskan secara terperinci: dari mana barang dagangan atau modal diperoleh (aliran produksi/pasokan) dan bagaimana mekanisme penyalurannya kepada konsumen akhir di OKU Timur..." class="w-full p-3 rounded-xl border border-slate-300 focus:border-teal-600 outline-none text-xs leading-relaxed text-slate-900 resize-y">${val('activityChain') || ''}</textarea>
-              <span class="text-[10.5px] text-slate-400 font-medium">Deskripsikan keterkaitan antara produsen, distributor, dan konsumen akhir di lapangan.</span>
             </div>
           </div>
 
@@ -722,6 +767,20 @@
   }
 
   // 2. KALKULATOR INTERAKTIF ARUS KAS LAPANGAN
+  function onNftD1SectorChange(secVal) {
+    const badge = document.getElementById('nftD1BusinessTypeSectorBadge');
+    if (badge) {
+      if (secVal) {
+        badge.textContent = 'Fokus: ' + secVal;
+        badge.className = 'text-[10px] font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-300';
+      } else {
+        badge.textContent = 'Selaras dengan Sektor';
+        badge.className = 'text-[10px] font-bold text-teal-800 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200';
+      }
+    }
+  }
+  window.onNftD1SectorChange = onNftD1SectorChange;
+
   function recalcNftFinancials() {
     const incomeDaily = parseRupiahNumber((document.getElementById('nftD1IncomeDaily') ? document.getElementById('nftD1IncomeDaily').value : ''));
     const customersDaily = parseInt((document.getElementById('nftD1CustomersDaily') ? document.getElementById('nftD1CustomersDaily').value : ''), 10) || 0;
