@@ -71,7 +71,6 @@ if ($action === 'login') {
         $stmt->execute([':id' => $identifier, ':padded' => $paddedId, ':nis' => $identifier]);
         $user = $stmt->fetch();
     }
-    }
 
     // Fallback: jika tidak ditemukan di tabel users, cek tabel teachers
     if (!$user && ($role === 'fasilitator' || $role === 'koordinator' || $role === 'guru' || empty($role))) {
