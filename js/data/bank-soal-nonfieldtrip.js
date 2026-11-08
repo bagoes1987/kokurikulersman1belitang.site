@@ -21547,6 +21547,25 @@ window.NFT_BANK_SOAL_DAYS = {
     dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (parseInt(dayNum) || 1);
     let dayQuestions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[dayNum]) || [];
 
+    // KHUSUS DAY 2 (SEKTOR ADAPTIF: MODUL A [40] + MODUL B [40] + SPESIFIK SEKTOR [35 / 120])
+    if (dayNum === 2 && sectorKey) {
+      let sec = String(sectorKey).toLowerCase().trim();
+      if (sec === 'pertanian') sec = 'pangan';
+      if (sec === 'jasa') sec = 'industri';
+      if (sec === 'keuangan') sec = 'formal';
+
+      const d2All = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[2]) || [];
+      const poolA = d2All.filter(q => q.indicatorCode === 'A');
+      const poolB = d2All.filter(q => q.indicatorCode === 'B');
+
+      if (sec === 'pangan') {
+        return d2All;
+      } else if (window.NFT_DAY2_SECTOR_QUESTIONS && window.NFT_DAY2_SECTOR_QUESTIONS[sec]) {
+        const secQuestions = window.NFT_DAY2_SECTOR_QUESTIONS[sec];
+        return [...poolA, ...poolB, ...secQuestions];
+      }
+    }
+
     if (dayNum === 4 && (!dayQuestions || dayQuestions.length === 0)) {
       const d3Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
       const indMap4 = {

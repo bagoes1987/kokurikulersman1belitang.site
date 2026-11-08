@@ -1494,6 +1494,9 @@
 
     const selSector = formData.sectorKey || 'pangan';
     const sectorObj = NFT_DAY2_SECTOR_DATA[selSector] || NFT_DAY2_SECTOR_DATA.pangan;
+    try {
+      if (cleanNisn) localStorage.setItem('fincestem_nft_sector_d2_' + cleanNisn, selSector);
+    } catch(e) {}
 
     // Helper isi nilai
     const val = (k) => (formData && formData[k] !== undefined) ? formData[k] : '';
@@ -2091,6 +2094,9 @@
   window.onNftDay2SectorChange = function(newKey) {
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
+    try {
+      if (cleanNisn) localStorage.setItem('fincestem_nft_sector_d2_' + cleanNisn, newKey);
+    } catch(e) {}
 
     // Baca draft tersimpan
     let draft = {};
