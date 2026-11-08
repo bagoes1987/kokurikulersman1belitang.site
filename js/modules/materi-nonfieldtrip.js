@@ -3607,177 +3607,151 @@
   // 6C. PANDUAN VIDEO OBSERVASI & ANALISIS FINCESTEM 7 SEKTOR (DAY 5 & DAY 6)
   // Durasi Video: 5 - 10 Menit | Tanpa Wawancara Narasumber | Upload YouTube
   // =========================================================================
+  // =========================================================================
+  // 6C. PANDUAN VIDEO EKSPLORASI & ANALISIS FINCESTEM 7 SEKTOR (DAY 5 & DAY 6)
+  // Durasi Video: 5 - 10 Menit | Tanpa Wawancara Narasumber | Upload YouTube
+  // =========================================================================
   const NFT_VIDEO_SECTORS_GUIDE = {
     pertanian: {
       key: 'pertanian',
-      name: 'Pertanian Tanaman Pangan & Hortikultura',
-      shortName: '🌾 Pertanian',
-      badge: 'Sawah Padi, Jagung & Sayuran',
+      name: 'Pertanian Padi Sawah & Tanaman Pangan',
+      shortName: '🌾 Pertanian Padi',
+      badge: 'Padi Sawah, Irigasi & Alsintan',
       icon: 'agriculture',
-      objectExamples: 'Lahan Sawah Padi Irigasi BK, Kebun Jagung/Cabai/Sayuran, Gudang Alsintan atau Kilang Padi (RMU) di OKU Timur',
+      objectExamples: 'Lahan Sawah Padi Irigasi BK Belitang, Traktor Pembajak Rotari, Pompa Alkon, Mesin Semprot Elektrik, atau Combine Harvester',
       day5: {
-        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Pertanian',
-        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera tanpa mewawancarai petani/pemilik lahan. Anda menyorot lokasi persawahan/pertanian dan peralatan kerja, lalu menjelaskan langsung kaitan Culture, Exploration Alat, serta 4 Unsur STEM (Science, Technology, Engineering, Mathematics).',
+        focusTitle: 'Panduan Video Day 5: Eksplorasi Mandiri Sains & Teknologi pada Sektor Pertanian Padi',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara narasumber, menyorot langsung lokasi sawah atau alsintan, serta membedah pilar Sains (kondisi tanah aluvial, air irigasi BK, biologi padi & hama) dan pilar Teknologi (traktor rotari, sprayer elektrik, dan combine harvester).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Pertanian',
-            desc: 'Tampil di depan kamera di area persawahan/lahan tani atau tempat alat pertanian. Sebutkan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan nama lokasi lahan/tempat pertanian dan komoditas yang diamati (misal: padi sawah irigasi Belitang).'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Profil Sektor Pilihan di OKU Timur',
+            desc: 'Tampil di depan kamera HP di area persawahan atau lokasi alsintan. Sampaikan salam pembuka, sebutkan Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan profil objek pertanian padi yang Anda amati di OKU Timur.'
           },
           {
-            time: '01:00 – 02:15',
-            title: '2. Penjelasan Pilar Culture (Budaya Kerja & Kearifan Lokal Tani)',
-            desc: 'Sorot suasana sekitar lahan sawah dan jelaskan secara mandiri budaya kerja petani di OKU Timur: tradisi gotong royong (sambatan/rewang), disiplin waktu turun ke sawah pagi hari, pembagian air irigasi bersama (P3A/Mitra Cai), atau sistem tanam serempak.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Sains (Science) Sektor Pertanian Padi',
+            desc: 'Sorot kondisi lapangan dan jelaskan secara mandiri prinsip ilmiahnya: karakteristik tanah aluvial sawah irigasi BK, peran penting air irigasi teknis Komering, kebutuhan hara N-P-K bagi fase vegetatif/generatif padi, fotosintesis, serta siklus hidup hama sawah (wereng/tikus).'
           },
           {
-            time: '02:15 – 03:45',
-            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan, Mesin & APD Pertanian)',
-            desc: 'Arahkan kamera menyorot langsung peralatan/mesin pertanian yang ada di lokasi (seperti cangkul, sabit bergerigi, sprayer elektrik, traktor tangan/rotary, pompa air, combine harvester, atau mesin giling RMU) beserta perlengkapan keselamatan kerja (APD: sepatu boot lumpur, caping/topi lebar, masker, sarung tangan).'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Teknologi (Technology) Sektor Pertanian Padi',
+            desc: 'Arahkan kamera ke peralatan/mesin kerja pertanian: traktor rotary pembajak tanah, tangki semprot elektrik nozzle flat-fan, pompa alkon irigasi, atau combine harvester. Jelaskan fungsi alat, bahan bakar/baterai penggerak, mekanisasi kerja, dan perlengkapan keselamatan kerja (APD: sepatu boot, topi caping, masker).'
           },
           {
-            time: '03:45 – 06:30',
-            title: '4. Bedah Inti 4 Unsur STEM pada Pertanian (Science, Technology, Engineering, Mathematics)',
-            desc: 'Sambil menunjuk tanaman dan peralatan di lapangan, jelaskan keempat unsur STEM secara berurutan sesuai panduan di bawah ini (Sains biologi/fisika/kimia lahan & alat, Teknologi mekanisasi/benih, Rekayasa irigasi/jajar legowo/desain alat, dan Matematika kapasitas kerja & hasil panen).'
-          },
-          {
-            time: '06:30 – 08:30',
-            title: '5. Gambaran Umum Alur Produksi Pertanian dari Hulu ke Hilir',
-            desc: 'Jelaskan secara ringkas tahapan proses kerja di lokasi tersebut: mulai dari pengolahan tanah, penyemaian, penanaman, pemupukan, pengendalian hama, hingga pemanenan dan penggilingan gabah menjadi beras.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
-            desc: 'Rangkum manfaat penerapan ilmu STEM dan peralatan modern dalam meringankan beban kerja petani di OKU Timur, lalu tutup video dengan salam santun.'
+            time: '07:30 – 10:00',
+            title: '4. Analisis Efisiensi Penerapan Teknologi, Kesimpulan Sains-Teknologi & Penutup',
+            desc: 'Jelaskan perbandingan efisiensi kerja mesin pertanian modern vs cara manual tradisional, rangkum pemahaman Sains dan Teknologi yang Anda peroleh, sampaikan pesan edukatif untuk generasi muda tani Belitang, lalu tutup video dengan salam santun.'
           }
         ],
         stemPoints: {
-          science: 'Jelaskan proses fotosintesis tanaman padi/sayuran, peran unsur hara pupuk (N, P, K) dan pH tanah sawah, siklus biologi hama/gulma, serta prinsip Fisika tekanan permukaan (P = F/A) pada roda besi traktor/crawler combine agar tidak amblas di lumpur dan tekanan udara/fluida pada nozzle sprayer.',
-          technology: 'Jelaskan teknologi alat dan budidaya yang diamati: peralihan dari sabit/cangkul manual ke mesin Traktor Tangan, Sprayer Elektrik baterai Lithium, Combine Harvester, atau Mesin Penggilingan Padi (RMU), serta penggunaan varietas benih unggul bersertifikat (Inpari/Ciherang).',
-          engineering: 'Jelaskan rekayasa tata ruang dan rancang bangun alat: rekayasa pola tanam Jajar Legowo (2:1 atau 4:1) untuk ruang tumbuh dan cahaya matahari, rekayasa saluran irigasi gravitasi (tersier/kuarter), serta desain kemiringan mata bajak/pisau pemotong mesin panen.',
-          mathematics: 'Jelaskan hitungan matematis di lapangan: luas lahan (hektar atau rante), jarak tanam (misal 25 cm x 25 cm), takaran dosis pupuk per hektar, perbandingan kecepatan kerja mesin vs tenaga manual (jam/hektar), serta estimasi tonase hasil panen gabah per hektar.'
+          science: 'Sains tanah aluvial sawah, peran pasokan air irigasi saluran sekunder/tersier BK Komering, kebutuhan hara makro (N, P, K) untuk tanaman padi, proses fotosintesis, dan siklus biologi hama tanaman (wereng batang coklat, tikus, sundep).',
+          technology: 'Teknologi alat alsintan: traktor roda 2/4 rotary pengolah tanah, sprayer elektrik bertenaga baterai lithium dengan nozzle flat fan, pompa alkon bensin, dan mesin pemanen combine harvester pemotong-perontok otomatis.',
+          engineering: 'Rekayasa tata kelola saluran air irigasi sawah (sistem gravitasi parit cacing), pola tanam Jajar Legowo (2:1 atau 4:1) untuk sirkulasi udara & sinar matahari, serta desain kemiringan pisau potong perontok gabah.',
+          mathematics: 'Kalkulasi luas lahan (hektar/rante), takaran dosis pupuk per hektar, estimasi kebutuhan bibit padi, perbandingan efisiensi waktu kerja traktor (jam/hektar) vs tenaga manual, serta estimasi tonase hasil panen gabah per petak sawah.'
         }
       },
       day6: {
-        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Pertanian',
-        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda kembali menjelaskan mandiri di depan kamera (tanpa wawancara narasumber) dengan memfokuskan bahasan pada perhitungan ekonomi/finansial usaha tani, analisis risiko/kendala lapangan, serta gagasan inovasi berbasis STEM & Finansial.',
+        focusTitle: 'Panduan Video Day 6: Analisis Rekayasa Solusi Kendala & Matematika Finansial Usaha Tani Padi',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, membedah pilar Rekayasa (trik praktis tata parit sawah, trap barrier system tikus) dan pilar Matematika Finansial (rincian modal BOP 1 Ha, HPP gabah, omzet, dan laba bersih per musim panen).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan & Kilas Balik Objek Pertanian yang Diamati',
-            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini membedah kelayakan Finansial, Kendala Risiko, dan Solusi Inovasi FINCESTEM pada objek pertanian yang Anda amati.'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Kilas Balik Sektor yang Dianalisis',
+            desc: 'Tampil di depan kamera HP. Sampaikan salam, perkenalkan diri (Nama, NISN, Kelas, Fasilitator), dan sampaikan bahwa video Day 6 ini berfokus pada Analisis Rekayasa Solusi Kendala Teknis dan Perhitungan Finansial Usaha Pertanian Padi di Belitang.'
           },
           {
-            time: '01:00 – 03:30',
-            title: '2. Analisis Pilar Financial (Modal Awal, Biaya Operasional, HPP & Keuntungan)',
-            desc: 'Jelaskan di depan kamera rincian perputaran uang usaha tani per musim tanam: estimasi modal beli benih, pupuk, pestisida, BBM/sewa alsintan, upah panen, hingga perhitungan total penjualan gabah/beras (Omzet) dikurangi total biaya untuk mendapatkan Laba Bersih petani.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Rekayasa (Engineering) & Solusi Kendala',
+            desc: 'Tunjukkan kendala nyata di sawah (serangan hama tikus/wereng, kelangkaan pupuk subsidi, gulma cepat tumbuh, atau saluran air tersumbat). Jelaskan rekayasa praktis yang diterapkan petani: perangkap Trap Barrier System (TBS), pemasangan pagar plastik parit, modifikasi pintu air bambu, atau pembuatan biourine/pestisida nabati.'
           },
           {
-            time: '03:30 – 06:00',
-            title: '3. Evaluasi Kendala Teknis, Risiko Alam & Masalah Pemasaran',
-            desc: 'Tunjukkan kondisi di lapangan dan analisis kendala nyata yang dihadapi usaha pertanian tersebut: serangan hama wereng/tikus/jamur, cuaca ekstrem (banjir/kekeringan), kelangkaan/mahalnya pupuk, kerusakan mesin alsintan, atau anjloknya harga gabah basah saat panen raya.'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Matematika Finansial (BOP, HPP, Omzet & Laba)',
+            desc: 'Uraikan rincian modal biaya operasional (BOP) per hektar/musim: sewa lahan/traktor, benih, pupuk, pestisida, upah tanam/semprot, dan bagi hasil panen (bawon 1:8). Hitung HPP per kg gabah, estimasi hasil panen (misal 6 ton GKP x Rp 6.500/kg = Omzet Rp 39 Juta), lalu kurangkan total BOP untuk membuktikan Laba Bersih petani.'
           },
           {
-            time: '06:00 – 08:30',
-            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
-            desc: 'Paparkan ide solusi kreatif Anda sebagai pelajar SMAN 1 Belitang: pemanfaatan jerami/sekam menjadi kompos/arang sekam (biochar), penggunaan pestisida nabati ramah lingkungan, pengeringan gabah/hilirisasi beras kemasan berlabel untuk menaikkan nilai jual, serta pencatatan pembukuan keuangan tani.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '5. Kesimpulan Akhir Kelayakan Usaha & Penutup',
-            desc: 'Simpulkan apakah usaha pertanian tersebut layak dan menguntungkan secara finansial jika dikelola dengan inovasi STEM yang tepat, lalu tutup video dengan salam.'
+            time: '07:30 – 10:00',
+            title: '4. Gagasan Solusi Inovasi Nilai Tambah, Prospek Masa Depan & Penutup',
+            desc: 'Paparkan ide kreatif inovasi FINCESTEM Anda: hilirisasi gabah menjadi beras kemasan 5 kg berlabel merek lokal OKU Timur, pengomposan limbah jerami dengan trichoderma agar hemat pupuk kimia, serta pencatatan kas tani digital. Sampaikan kesimpulan akhir dan tutup video dengan salam.'
           }
         ],
         finPoints: {
-          financial: 'Uraikan estimasi biaya tetap & biaya variabel per hektar/musim (benih, pupuk, obat pertanian, sewa traktor/combine, tenaga kerja), harga jual Gabah Kering Panen (GKP) vs Beras per kg, serta perhitungan Laba Bersih dan R/C Ratio.',
-          constraints: 'Identifikasi masalah utama: penyusutan hasil panen (losses), serangan organisme pengganggu tanaman (OPT), ketergantungan pada tengkulak saat panen raya, atau tingginya biaya perawatan mesin.',
-          innovation: 'Usulkan inovasi nilai tambah (added value): pengolahan gabah menjadi beras premium kemasan 5 kg/10 kg berlabel lokal OKU Timur, pemanfaatan limbah sekam/bekatul untuk pakan/pupuk organik, serta adopsi pembayaran/pencatatan kas digital.'
+          financial: 'Rincian modal operasional prapanen per hektar (olah tanah traktor Rp 1,5 Jt, benih Rp 400 Rb, pupuk & obat Rp 3,5 Jt, upah tenaga kerja Rp 4 Jt), sistem bagi hasil combine/bawon panen, omzet penjualan Gabah Kering Panen (GKP), dan kalkulasi Laba Bersih bersih petani per musim tanam.',
+          constraints: 'Kendala teknis di lapangan: serangan hama tikus dan wereng batang coklat, mahalnya pupuk non-subsidi saat musim tanam tiba, anjloknya harga gabah basah saat panen serempak, dan genangan air saat hujan lebat.',
+          innovation: 'Gagasan inovasi FINCESTEM: hilirisasi gabah menjadi beras kemasan premium berlabel lokal Belitang, pengolahan jerami sisa panen menjadi kompos bio-organik pengganti pupuk kimia, serta pembukuan kas tani berbasis aplikasi mobile.'
         }
       }
     },
 
     perkebunan: {
       key: 'perkebunan',
-      name: 'Perkebunan Karet, Sawit & Komoditas',
+      name: 'Perkebunan Karet, Sawit & Komoditas Rakyat',
       shortName: '🌴 Perkebunan',
-      badge: 'Karet, Kelapa Sawit, Singkong & Buah',
+      badge: 'Karet, Kelapa Sawit & Komoditas',
       icon: 'forest',
-      objectExamples: 'Kebun Karet Rakyat, Kebun Kelapa Sawit, Lahan Singkong/Tebu, atau Kebun Buah (Duku/Jeruk/Semangka) di OKU Timur',
+      objectExamples: 'Kebun Karet Rakyat Desa, Perkebunan Kelapa Sawit, Lahan Singkong Gajah, atau Kebun Buah Lokal di OKU Timur',
       day5: {
-        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Perkebunan',
-        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda menjelaskan secara mandiri di area kebun (karet/sawit/buah) tanpa wawancara narasumber. Sorot pohon/tanaman kebun dan peralatan sadap/panen, lalu kupas aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        focusTitle: 'Panduan Video Day 5: Eksplorasi Mandiri Sains & Teknologi pada Sektor Perkebunan',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara narasumber, menyorot langsung area kebun dan peralatan kerja, serta membedah pilar Sains (tekanan turgor lateks pagi hari, reaksi asam semut, fotosintesis kelapa sawit) dan pilar Teknologi (pisau sadap malaya, mangkok lateks, galah egrek, angkong lori sawit, dan APD).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Perkebunan',
-            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta tunjukkan lokasi kebun yang diamati (misal: kebun karet atau kelapa sawit rakyat di kecamatan Anda).'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Profil Perkebunan di OKU Timur',
+            desc: 'Tampil di depan kamera HP di lokasi kebun karet/sawit. Sampaikan salam pembuka, sebutkan Nama Lengkap, NISN, Kelas, Fasilitator, dan perkenalkan nama lokasi serta komoditas perkebunan yang Anda amati di OKU Timur.'
           },
           {
-            time: '01:00 – 02:15',
-            title: '2. Penjelasan Pilar Culture (Etos Kerja Pekebun & Tradisi Lokal)',
-            desc: 'Jelaskan budaya kerja pekebun di OKU Timur: disiplin menyadap karet sejak subuh agar aliran lateks maksimal, budaya merawat piringan pohon, sistem bagi hasil kebun, atau kebersamaan saat panen dan penimbangan komoditas.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Sains (Science) Sektor Perkebunan',
+            desc: 'Sorot pohon karet/kelapa sawit dan jelaskan prinsip ilmiahnya: fisiologi pembuluh lateks dan pengaruh tekanan turgor sel di pagi hari, reaksi koagulasi kimia lateks menggunakan asam format (asam semut), biologi kematangan tandan buah segar (TBS) sawit, dan peran unsur hara Kalium & Magnesium.'
           },
           {
-            time: '02:15 – 03:45',
-            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan Sadap/Panen & APD Kebun)',
-            desc: 'Sorot langsung peralatan kerja perkebunan: pisau sadap karet, talang dan mangkok lateks, bak pembeku, dodos, egrek bergalah aluminium/teleskopik, tojok besi, dan gerobak angkong, beserta APD pekebun (helm pelindung kepala, sepatu boot tinggi anti-duri/ular, sarung tangan karet/kulit, senter kepala).'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Teknologi (Technology) Sektor Perkebunan',
+            desc: 'Arahkan kamera ke peralatan kerja perkebunan: pisau sadap malaya, mangkok penampung lateks, galah egrek/dodos panen sawit dari pipa aluminium ringan, gerobak sorong angkong, serta APD wajib (sepatu boot pelindung gigitan ular/duri, sarung tangan karet, dan kacamata pelindung).'
           },
           {
-            time: '03:45 – 06:30',
-            title: '4. Bedah Inti 4 Unsur STEM pada Perkebunan (Science, Technology, Engineering, Mathematics)',
-            desc: 'Tunjukkan pohon dan alat perkebunan sambil memaparkan analisis Science, Technology, Engineering, dan Mathematics secara sistematis sesuai panduan sektor perkebunan di bawah.'
-          },
-          {
-            time: '06:30 – 08:30',
-            title: '5. Gambaran Umum Proses Pemeliharaan, Panen & Pascapanen Kebun',
-            desc: 'Jelaskan alur kerja di kebun: mulai dari pembersihan gulma piringan, pemupukan, proses penyadapan getah lateks / pemotongan tandan buah segar (TBS) sawit, pembekuan getah, hingga pengangkutan ke tempat pengumpulan.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
-            desc: 'Simpulkan peran penting pemahaman sains tanaman dan ketepatan rekayasa alat panen dalam menjaga umur tanaman perkebunan, lalu tutup dengan salam.'
+            time: '07:30 – 10:00',
+            title: '4. Analisis Efisiensi Penerapan Teknologi, Kesimpulan Sains-Teknologi & Penutup',
+            desc: 'Jelaskan bagaimana ketajaman alat sadap/panen dan teknik penyadapan yang tepat dapat menjaga usia produktif pohon perkebunan, rangkum pilar Sains dan Teknologi yang Anda pelajari, lalu tutup video dengan salam santun.'
           }
         ],
         stemPoints: {
-          science: 'Jelaskan biologi pembuluh lateks dan tekanan turgor sel pohon karet yang tinggi di pagi hari (serta keharusan menjaga lapisan kambium batang), kriteria kematangan fisiologis buah sawit (brondolan merah-oranye kaya minyak CPO), kimia pembekuan (koagulasi) lateks dengan asam semut/asap cair, serta fisika tuas pengungkit pada angkong/tojok.',
-          technology: 'Jelaskan teknologi peralatan kebun: penggunaan galah Egrek berbahan pipa Aluminium Alloy / Carbon Fiber yang ringan dan kaku dibanding bambu tradisional, baja karbon tinggi (per baja) pada mata dodos/pisau sadap, serta penggunaan bibit klon karet unggul (PB 260/IRR) atau bibit sawit bersertifikat.',
-          engineering: 'Jelaskan rekayasa teknik di kebun: desain sudut kemiringan alur sadap karet (30°–45°) agar getah mengalir lancar ke mangkok tanpa merusak kayu, pola tanam segitiga sama sisi (mata lima) pada sawit agar tajuk daun mendapat cahaya merata, serta pembuatan lubang rorak penahan air dan kompos.',
-          mathematics: 'Jelaskan perhitungan matematis kebun: populasi jumlah pohon per hektar (misal 130–143 pohon sawit/ha atau 450–500 pohon karet/ha), siklus rotasi panen (sadap 2 hari sekali atau panen sawit tiap 10–14 hari), berat rata-rata per tandan (kg), serta estimasi tonase hasil per bulan.'
+          science: 'Tekanan turgor sel lateks pohon karet di pagi hari yang memicu aliran getah maksimal, reaksi kimia pembekuan lateks menggunakan asam format/cuka getah, fisiologi pematangan karotenoid pada buah kelapa sawit, dan fotosintesis kanopi daun kelapa sawit.',
+          technology: 'Peralatan perkebunan: pisau sadap malaya sudut presisi, cincin talang seng dan mangkok lateks plastik anti-pecah, galah egrek teleskopik serat karbon/aluminium ringan untuk memanen TBS sawit pohon tinggi, serta gerobak sorong angkong bertulang baja.',
+          engineering: 'Rekayasa sudut kemiringan irisan sadap karet (30–40 derajat) agar getah mengalir lancar ke mangkok tanpa merusak kambium pohon, rekayasa talang pelindung air hujan pada batang pohon karet, serta pembuatan jalur rorak terasering kebun sawit.',
+          mathematics: 'Hitungan matematis perkebunan: kerapatan populasi pohon per hektar (karet 450-500 pohon/Ha, sawit 136-143 pohon/Ha), volume tetesan lateks per pohon per hari, estimasi tonase panen TBS sawit per rotasi 14 hari, dan perhitungan kadar karet kering (KKK).'
         }
       },
       day6: {
-        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Perkebunan',
-        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda membedah secara mandiri perhitungan biaya perawatan & pendapatan kebun, kendala fluktuasi harga/mutu komoditas, serta gagasan inovasi nilai tambah berbasis STEM dan Finansial.',
+        focusTitle: 'Panduan Video Day 6: Analisis Rekayasa Solusi Kendala & Matematika Finansial Usaha Perkebunan',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, membedah pilar Rekayasa (talang sadap antiair hujan, jalan rorak kebun) dan pilar Matematika Finansial (biaya pupuk, upah bagi hasil penyadap 60:40 atau 50:50, harga timbang karet/TBS, dan laba bersih bulanan).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan & Kilas Balik Objek Perkebunan',
-            desc: 'Sampaikan salam, identitas lengkap (Nama, NISN, Kelas, Fasilitator), dan tujuan video Day 6 untuk menganalisis aspek Finansial, Kendala, dan Solusi Inovasi pada kebun yang diamati.'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Kilas Balik Sektor yang Dianalisis',
+            desc: 'Tampil di depan kamera HP. Sampaikan salam, perkenalkan diri lengkap, dan sebutkan bahwa video Day 6 ini berfokus pada Analisis Rekayasa Solusi Kendala dan Perhitungan Finansial Usaha Perkebunan Rakyat di OKU Timur.'
           },
           {
-            time: '01:00 – 03:30',
-            title: '2. Analisis Pilar Financial (Biaya Perawatan, Panen, Harga Jual & Laba Bersih)',
-            desc: 'Uraikan di depan kamera perhitungan ekonomi kebun per bulan: biaya pupuk NPK/Dolomit, herbisida, asam pembeku karet, upah penyadap/pemanen dan angkut, dibandingkan dengan hasil penjualan bokar/TBS sawit (kg x harga per kg) hingga diperoleh pendapatan bersih pekebun.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Rekayasa (Engineering) & Solusi Kendala',
+            desc: 'Tunjukkan kendala nyata di kebun (hujan pagi yang mengencerkan getah karet, pohon sawit terlalu tinggi, jalan produksi berlumpur saat musim hujan, atau serangan jamur bidang sadap). Jelaskan rekayasa praktis warga: pemasangan talang plastik payung sadap antiair hujan, pembuatan parit rorak penahan erosi, dan pemanfaatan pelepah sawit untuk mulsa tanah.'
           },
           {
-            time: '03:30 – 06:00',
-            title: '3. Evaluasi Kendala Lapangan & Risiko Usaha Perkebunan',
-            desc: 'Jelaskan kendala nyata di kebun tersebut: penyakit gugur daun/jamur akar putih pada karet, penurunan produksi saat musim gugur daun/kemarau (trek), potongan timbangan (refraksi kadar air), kerusakan alat panen, atau fluktuasi harga karet/sawit dunia.'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Matematika Finansial (BOP, HPP, Omzet & Laba)',
+            desc: 'Uraikan rincian angka ekonomi perkebunan: biaya modal pupuk majemuk NPK, herbisida pembersih piringan pohon, sistem bagi hasil penyadap karet (60% pemilik : 40% penyadap atau 50:50), harga timbangan bokar/TBS di tingkat pengepul desa, total omzet bulanan, dan laba bersih pemilik kebun.'
           },
           {
-            time: '06:00 – 08:30',
-            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
-            desc: 'Paparkan solusi inovatif Anda: penerapan bokar bersih (tanpa tatal/tanah) dengan pembeku asap cair agar kadar karet kering (KKK) tinggi dan dihargai mahal melalui Unit Pengolahan dan Pemasaran Bokar (UPPB/Lelang), pemanfaatan pelepah sawit cacah untuk pakan ternak/kompos, serta pola tumpang sari (intercropping).'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '5. Kesimpulan Akhir & Penutup Video',
-            desc: 'Rangkum bagaimana kombinasi manajemen mutu STEM dan tata kelola keuangan yang sehat mampu meningkatkan kesejahteraan pekebun OKU Timur, lalu tutup video.'
+            time: '07:30 – 10:00',
+            title: '4. Gagasan Solusi Inovasi Nilai Tambah, Prospek Masa Depan & Penutup',
+            desc: 'Paparkan ide kreatif inovasi FINCESTEM Anda: peningkatan kadar karet kering (KKK) dengan koagulan ramah lingkungan tanpa merusak mutu karet, pengolahan pelepah sawit menjadi pakan silase ternak sapi, dan pembukuan keuangan kebun. Simpulkan prospek komoditas ini dan tutup video dengan salam.'
           }
         ],
         finPoints: {
-          financial: 'Jelaskan rincian biaya pemeliharaan kebun (pupuk, perawatan piringan, perawatan alat), sistem bagi hasil atau upah panen, pengaruh persentase Kadar Karet Kering (KKK) / rendemen sawit terhadap harga jual per kg, serta hitungan laba bersih bulanan.',
-          constraints: 'Analisis masalah utama: harga jual rendah akibat mutu bokar basah/kotor, serangan penyakit kulit sadap (kering alur sadap / KAS), mahalnya pupuk kimia, atau jalan kebun rusak saat musim hujan.',
-          innovation: 'Gagasan inovasi: penggunaan koagulan ramah lingkungan (asap cair/asam format) untuk menghasilkan bokar bersih bernilai jual premium, penjualan kolektif lewat UPPB/Koperasi Desa, serta diversifikasi pendapatan kebun.'
+          financial: 'Rincian biaya operasional kebun (pupuk NPK per semester, herbisida pembersih piringan gulma, cuka getah/asam semut), sistem bagi hasil penyadap karet (60:40 atau 50:50), harga jual timbang getah karet/TBS sawit di pabrik atau toke lokal, omzet kotor, dan laba bersih bulanan pemilik kebun.',
+          constraints: 'Kendala riil lapangan: curah hujan tinggi yang menyebabkan getah karet hanyut (gagal sadap), jamur bidang sadap (mouldy rot), penurunan drastis harga komoditas karet alam global, serta jalan poros kebun yang rusak/berlumpur parah saat musim hujan.',
+          innovation: 'Gagasan inovasi FINCESTEM: pemasangan rain-guard (payung pelindung sadap) ekonomis dari plastik bekas, integrasi kebun sawit dengan peternakan sapi (sistem SISKA) untuk menekan biaya herbisida rumput, dan pembentukan kelompok pemasaran bersama (KPB) agar harga jual karet tidak ditekan toke.'
         }
       }
     },
@@ -3786,437 +3760,366 @@
       key: 'peternakan',
       name: 'Peternakan Sapi, Kambing & Unggas',
       shortName: '🐄 Peternakan',
-      badge: 'Peternakan Sapi, Kambing, Ayam & Bebek',
+      badge: 'Sapi, Kambing, Ayam Broiler & Telur',
       icon: 'pets',
-      objectExamples: 'Peternakan Sapi, Kandang Kambing/Domba, Peternakan Ayam Petelur/Pedaging (Broiler), atau Budidaya Bebek/Itik di OKU Timur',
+      objectExamples: 'Kandang Sapi Potong Rakyat, Peternakan Kambing Boer/Etawa, Kandang Ayam Broiler Semi-Closed House, atau Koloni Puyuh di OKU Timur',
       day5: {
-        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Peternakan',
-        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di area kandang/peternakan tanpa wawancara pemilik. Sorot ternak, konstruksi kandang, dan peralatan pakan/sanitasi, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        focusTitle: 'Panduan Video Day 5: Eksplorasi Mandiri Sains & Teknologi pada Sektor Peternakan',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, menyorot langsung fasilitas kandang dan peralatan ternak, serta membedah pilar Sains (fisiologi pencernaan ruminansia/unggas, nutrisi protein pakan konsentrat, biologi pencegahan penyakit) dan pilar Teknologi (mesin chopper pencacah rumput, nipple drinker otomatis, lampu penghangat brooding, dan APD sepatu boot).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Peternakan',
-            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan lokasi kandang dan jenis hewan ternak yang Anda amati (peternakan sapi, kambing, ayam petelur/pedaging, atau bebek).'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Profil Peternakan di OKU Timur',
+            desc: 'Tampil di depan kamera HP di area kandang ternak. Sampaikan salam pembuka, sebutkan Nama Lengkap, NISN, Kelas, Fasilitator, dan perkenalkan nama tempat usaha peternakan serta jenis ternak (sapi potong/kambing/ayam broiler) yang Anda amati di OKU Timur.'
           },
           {
-            time: '01:00 – 02:15',
-            title: '2. Penjelasan Pilar Culture (Budaya Kerja Peternak & Etika Pemeliharaan)',
-            desc: 'Jelaskan kebiasaan dan budaya kerja peternak di OKU Timur: kedisiplinan jadwal pemberian pakan dan minum pagi-sore, kebersihan sanitasi kandang agar tidak mengganggu warga sekitar, serta tradisi tabungan ternak keluarga untuk masa depan/hari raya.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Sains (Science) Sektor Peternakan',
+            desc: 'Sorot hewan ternak dan pakan, lalu jelaskan prinsip ilmiahnya: fisiologi lambung ruminansia (rumen, retikulum, omasum, abomasum) atau saluran cerna unggas, kebutuhan protein kasar pakan (rumput odot, bekatul, konsentrat), biologi vaksinasi/kebersihan kandang, serta sanitasi kotoran ternak.'
           },
           {
-            time: '02:15 – 03:45',
-            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan Pakan, Kandang & APD Peternak)',
-            desc: 'Sorot langsung peralatan peternakan di lokasi: sabit rumput, mesin pencacah rumput (chopper), tong/drum fermentasi silase, tempat pakan/minum otomatis (nipple drinker), pemanas brooder/kipas kandang, sprayer desinfektan, sekop kotoran, serta APD (sepatu boot kandang, masker penahan bau amonia, sarung tangan).'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Teknologi (Technology) Sektor Peternakan',
+            desc: 'Arahkan kamera ke peralatan kandang: mesin chopper pencacah rumput hijauan bermotor bensin/listrik, tempat minum otomatis (nipple drinker), blower kipas ventilasi kandang ayam, lampu pemanas gasolec/brooding, serta APD peternak (sepatu boot karet, masker pernapasan, sarung tangan).'
           },
           {
-            time: '03:45 – 06:30',
-            title: '4. Bedah Inti 4 Unsur STEM pada Peternakan (Science, Technology, Engineering, Mathematics)',
-            desc: 'Sambil menunjukkan kondisi kandang dan pakan, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics sesuai panduan sektor peternakan di bawah.'
-          },
-          {
-            time: '06:30 – 08:30',
-            title: '5. Gambaran Umum Manajemen Pemeliharaan Harian di Kandang',
-            desc: 'Jelaskan alur perawatan ternak harian: penyediaan/pencacahan pakan, pemberian air minum dan vitamin, pembersihan lantai kandang, hingga pengelolaan limbah kotoran ternak.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
-            desc: 'Rangkum bagaimana penerapan sains nutrisi dan rekayasa kandang sehat membuat ternak tumbuh optimal dan bebas penyakit, lalu tutup video dengan salam.'
+            time: '07:30 – 10:00',
+            title: '4. Analisis Efisiensi Penerapan Teknologi, Kesimpulan Sains-Teknologi & Penutup',
+            desc: 'Jelaskan bagaimana mekanisasi pencacah pakan dan sistem minum otomatis mampu mempercepat pertumbuhan bobot harian ternak (ADG) dan menekan angka kematian ternak, simpulkan temuan Sains-Teknologi Anda, lalu tutup video dengan salam santun.'
           }
         ],
         stemPoints: {
-          science: 'Jelaskan biologi sistem pencernaan dan nutrisi ternak (kebutuhan serat hijauan dan protein konsentrat), proses biokimia fermentasi anaerob oleh bakteri asam laktat (Lactobacillus) pada pembuatan pakan silase/fermentasi, pengendalian gas amonia (NH3) dari kotoran, serta biosekuriti pencegahan virus/bakteri.',
-          technology: 'Jelaskan teknologi peternakan yang diamati: Mesin Chopper pencacah rumput berpenggerak motor bensin/diesel, instalasi air minum otomatis (Nipple Drinker), alat pengatur suhu pemanas (Brooder/Thermostat), teknologi Inseminasi Buatan (IB/kawin suntik) bibit unggul, atau reaktor Biogas.',
-          engineering: 'Jelaskan rekayasa konstruksi kandang dan alat: desain kemiringan lantai kandang (2°–5°) agar urine dan air cucian langsung mengalir ke saluran pembuangan sehingga kuku/lantai tetap kering, rekayasa ventilasi atap (monitor) untuk sirkulasi udara segar, serta desain pisau putar pada mesin chopper.',
-          mathematics: 'Jelaskan perhitungan matematis di kandang: takaran pakan harian (misal hijauan 10% dari bobot badan sapi, atau gram pakan per ekor ayam), kapasitas kandang (jumlah ekor per meter persegi), estimasi pertambahan bobot harian (ADG) atau persentase produksi telur harian (Hen Day Production).'
+          science: 'Fisiologi pencernaan hewan ternak ruminansia (fermentasi mikroba rumen sapi/kambing) atau unggas, formula kandungan nutrisi pakan (protein kasar, serat kasar, energi metabolisme), siklus penyebaran parasit/penyakit ternak, dan biokimia pengomposan kotoran ternak.',
+          technology: 'Teknologi peralatan kandang: mesin chopper pencacah rumput hijauan bertenaga bensin/diesel, instalasi nipple drinker saluran pipa PVC otomatis, blower kipas exhaust fan kandang closed house, lampu penghangat gasolec anak ayam (DOC), dan timbangan gantung digital.',
+          engineering: 'Rekayasa konstruksi kandang panggung dengan kemiringan lantai pembuangan feses/urin 5–10 derajat, rekayasa sirkulasi udara ventilasi atap monitor (double roof), serta rancang bangun drum fermentasi pakan silase kedap udara (anaerob).',
+          mathematics: 'Hitungan matematis peternakan: Feed Conversion Ratio (FCR), rata-rata pertambahan bobot badan harian (Average Daily Gain / ADG per kg/hari), takaran persentase pakan hijauan 10% dari bobot tubuh sapi, dan persentase tingkat kematian ternak (mortalitas).'
         }
       },
       day6: {
-        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Peternakan',
-        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda menganalisis secara mandiri struktur modal bibit/bakalan, biaya pakan harian, potensi keuntungan penjualan ternak/telur, kendala penyakit/pakan, serta solusi inovasi Zero-Waste berbasis STEM & Finansial.',
+        focusTitle: 'Panduan Video Day 6: Analisis Rekayasa Solusi Kendala & Matematika Finansial Usaha Peternakan',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, membedah pilar Rekayasa (rekayasa panggung ventilasi kandang, instalasi pipa biogas kotoran) dan pilar Matematika Finansial (modal bibit/DOC, biaya pakan FCR harian, harga jual timbang hidup, dan proyeksi laba panen).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan & Kilas Balik Objek Peternakan',
-            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan jelaskan fokus video Day 6 yaitu membedah analisis Finansial, Risiko Usaha, dan Inovasi Nilai Tambah pada peternakan yang diamati.'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Kilas Balik Sektor yang Dianalisis',
+            desc: 'Tampil di depan kamera HP. Sampaikan salam, perkenalkan diri lengkap, dan sebutkan bahwa video Day 6 ini membedah Analisis Rekayasa Solusi Kendala dan Perhitungan Finansial Usaha Peternakan di OKU Timur.'
           },
           {
-            time: '01:00 – 03:30',
-            title: '2. Analisis Pilar Financial (Modal Bibit, Biaya Pakan, Harga Jual & Laba Bersih)',
-            desc: 'Paparkan di depan kamera perhitungan ekonomi peternakan: harga beli bibit/bakalan (DOC/pedet/bakalan sapi), biaya pakan harian (komponen biaya terbesar 60–70%), biaya obat/vaksin & listrik, dibandingkan dengan harga jual panen ternak/telur hingga didapat Laba Bersih.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Rekayasa (Engineering) & Solusi Kendala',
+            desc: 'Tunjukkan kendala nyata di kandang (bau amonia menyengat yang mengganggu tetangga, lonjakan harga pakan pabrikan, ketersediaan rumput menipis saat musim kemarau, atau serangan lalat kandang). Jelaskan rekayasa solusinya: teknologi silase fermentasi jerami/rumput odot dengan EM4/tetes tebu, pembuatan instalasi biodigester biogas dari kotoran ternak, dan lantai panggung celah kayu/bambu.'
           },
           {
-            time: '03:30 – 06:00',
-            title: '3. Evaluasi Kendala Teknis, Risiko Penyakit & Fluktuasi Harga Pakan',
-            desc: 'Analisis tantangan nyata yang dihadapi peternak: mahalnya harga pakan konsentrat/pelet pabrikan, kesulitan mencari rumput segar saat musim kemarau, risiko penyakit ternak (PMK, kembung/bloat, tetelo/flu burung), atau bau limbah kotoran kandang.'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Matematika Finansial (BOP, HPP, Omzet & Laba)',
+            desc: 'Uraikan rincian modal dan pengeluaran: modal beli bibit bakalan/DOC, biaya pakan harian konsentrat & bekatul, obat/vaksin, biaya listrik/air kandang. Hitung HPP per kg bobot hidup, total pendapatan dari penjualan hewan hidup atau telur, lalu buktikan kalkulasi Laba Bersih yang diperoleh peternak.'
           },
           {
-            time: '06:00 – 08:30',
-            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
-            desc: 'Sampaikan ide inovasi Anda: pembuatan Bank Pakan Silase/Fermentasi dari limbah jerami padi atau pelepah sawit lokal OKU Timur untuk memangkas biaya pakan, pengolahan kotoran ternak menjadi Pupuk Organik Kompos/Bokashi Granul bernilai jual atau Biogas, serta budidaya Maggot BSF sebagai pakan alternatif unggas.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '5. Kesimpulan Akhir & Penutup Video',
-            desc: 'Simpulkan kelayakan finansial usaha peternakan tersebut dan bagaimana inovasi pengolahan pakan/limbah mampu melipatgandakan keuntungan peternak, lalu tutup video.'
+            time: '07:30 – 10:00',
+            title: '4. Gagasan Solusi Inovasi Nilai Tambah, Prospek Masa Depan & Penutup',
+            desc: 'Paparkan gagasan inovasi FINCESTEM Anda: pengolahan limbah kotoran sapi/unggas menjadi pupuk organik padat (kohe) berlabel kemasan 20 kg bernilai jual tinggi, budidaya maggot BSF untuk subtitusi pakan berprotein gratis, serta pembukuan usaha digital. Simpulkan kelayakan bisnis ini dan tutup video dengan salam.'
           }
         ],
         finPoints: {
-          financial: 'Hitung rincian modal pembelian bibit/bakalan, total biaya pakan selama satu siklus pemeliharaan, biaya kesehatan/operasional, rasio konversi pakan (FCR), total penerimaan penjualan, serta keuntungan bersih peternak.',
-          constraints: 'Identifikasi kendala kritis: kenaikan harga pakan pabrikan yang menggerus margin laba, risiko kematian (mortalitas) akibat cuaca/penyakit, serta belum optimalnya pengolahan limbah kotoran.',
-          innovation: 'Usulkan inovasi konkret: substitusi pakan dengan silase/fermentasi bahan baku lokal (jerami/dedak/bungkil), komersialisasi pupuk kandang bokashi kemasan karung untuk petani kebun, dan manajemen pencatatan keuangan kandang.'
+          financial: 'Rincian biaya modal (pembelian bibit bakalan sapi/DOC ayam, biaya pakan konsentrat & bekatul harian, vaksinasi dan vitamin), penerimaan penjualan timbang bobot hidup per kg atau per ekor saat Idul Adha/panen raya, omzet kotor, serta estimasi Laba Bersih peternak.',
+          constraints: 'Kendala riil peternakan: tingginya harga pakan pabrikan (konsentrat/jagung), kesulitan mencari rumput hijauan di musim kemarau, risiko wabah penyakit menular (PMK, LSD, ND), keluhan warga sekitar terkait bau kotoran kandang, dan fluktuasi harga jual daging ayam hidup di tingkat broker.',
+          innovation: 'Gagasan inovasi FINCESTEM: pengolahan limbah kotoran kandang menjadi pupuk organik granul berlabel komersial, integrasi peternakan dengan bank pakan silase drum plastik, serta pemanfaatan maggot black soldier fly (BSF) sebagai sumber protein gratis hemat biaya pakan.'
         }
       }
     },
 
     perikanan: {
       key: 'perikanan',
-      name: 'Perikanan Budidaya Air Tawar',
+      name: 'Budidaya Perikanan Air Tawar',
       shortName: '🐟 Perikanan',
-      badge: 'Kolam Patin, Lele, Nila & Gurame',
+      badge: 'Kolam Patin, Lele, Nila & Gurami',
       icon: 'phishing',
-      objectExamples: 'Kolam Tanah/Terpal Budidaya Ikan Patin, Lele, Nila, Gurame, Tempat Pembenihan Ikan, atau Usaha Pengolahan Ikan (Pindang/Asap/Kemplang) di OKU Timur',
+      objectExamples: 'Kolam Tanah Ikan Patin Minapolitan Belitang, Kolam Terpal Bioflok Lele, atau Kolam Air Mengalir Ikan Nila',
       day5: {
-        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Perikanan',
-        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda menjelaskan mandiri di tepi kolam perikanan tanpa mewawancarai pemilik kolam. Sorot konstruksi kolam, air, ikan, dan peralatan perikanan, lalu uraikan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        focusTitle: 'Panduan Video Day 5: Eksplorasi Mandiri Sains & Teknologi pada Sektor Budidaya Perikanan',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara narasumber, menyorot langsung kolam ikan dan peralatan budidaya, serta membedah pilar Sains (kualitas parameter air DO/pH/suhu, siklus amonia, biologi pakan pelet protein 28-32%) dan pilar Teknologi (pompa aerator/kincir air kincir kincir, genset cadangan listrik, automatic feeder, dan jaring sortir).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Kolam Perikanan',
-            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan lokasi kolam budidaya dan jenis ikan air tawar yang diamati (patin, lele, nila, atau gurame).'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Profil Usaha Perikanan di OKU Timur',
+            desc: 'Tampil di depan kamera HP di tepi kolam budidaya ikan. Sampaikan salam pembuka, sebutkan Nama Lengkap, NISN, Kelas, Fasilitator, dan perkenalkan nama lokasi serta jenis ikan yang dibudidayakan (ikan patin/lele/nila) di kawasan sentra Belitang OKU Timur.'
           },
           {
-            time: '01:00 – 02:15',
-            title: '2. Penjelasan Pilar Culture (Budaya Budidaya Ikan & Kuliner Khas Komering)',
-            desc: 'Jelaskan budaya masyarakat OKU Timur dalam memelihara ikan air tawar sebagai sumber protein utama dan bahan baku kuliner khas daerah (seperti pindang patin, tempoyak, pempek, dan kerupuk kemplang ikan), serta ketekunan pembudidaya menjaga kualitas air kolam.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Sains (Science) Sektor Perikanan',
+            desc: 'Sorot kondisi air kolam dan ikan, lalu jelaskan prinsip ilmiahnya: parameter kualitas air kolam (kadar oksigen terlarut/DO, pH air netral 6,5–8, suhu 28–30°C), siklus perubahan amonia beracun menjadi nitrat oleh bakteri pengurai, serta kebutuhan protein pakan pelet ikan terapung.'
           },
           {
-            time: '02:15 – 03:45',
-            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan Kolam, Aerasi, Pakan & APD)',
-            desc: 'Sorot langsung peralatan perikanan di lokasi: pompa air listrik/alkon, pipa pemasukan (inlet) dan pembuangan (outlet/central drain), kincir air/blower aerator, jaring waring/hapa, bak sortir ukuran ikan (grading), timbangan pakan, alat ukur pH/suhu air, serta APD (sepatu boot air, topi/wearpack, sarung tangan).'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Teknologi (Technology) Sektor Perikanan',
+            desc: 'Arahkan kamera ke peralatan teknologi budidaya: kincir air aerator pemutar oksigen, pompa celup sirkulasi air, blower aerasi sistem bioflok, genset cadangan saat pemadaman PLN, alat pemberi pakan otomatis (auto feeder), serta jaring sortir bertingkat (grading basket).'
           },
           {
-            time: '03:45 – 06:30',
-            title: '4. Bedah Inti 4 Unsur STEM pada Perikanan (Science, Technology, Engineering, Mathematics)',
-            desc: 'Sambil menunjuk air kolam dan peralatan budidaya, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics sesuai panduan sektor perikanan di bawah.'
-          },
-          {
-            time: '06:30 – 08:30',
-            title: '5. Gambaran Umum Tahapan Budidaya Ikan dari Tebar Benih hingga Panen',
-            desc: 'Jelaskan siklus kerja di kolam: pengeringan dan pengapuran dasar kolam, pengisian air dan penumbuhan plankton, penebaran benih (bibit), jadwal pemberian pelet harian, penyortiran ukuran (grading), hingga pemanenan.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
-            desc: 'Rangkum betapa pentingnya pengendalian kualitas air berbasis sains dan rekayasa kolam bagi keberhasilan panen ikan di OKU Timur, lalu tutup dengan salam.'
+            time: '07:30 – 10:00',
+            title: '4. Analisis Efisiensi Penerapan Teknologi, Kesimpulan Sains-Teknologi & Penutup',
+            desc: 'Jelaskan bagaimana pemakaian kincir aerator dan teknologi sortir ikan mampu menekan kanibalisme dan mempercepat siklus panen hingga 3-4 bulan, rangkum temuan Sains-Teknologi Anda, lalu tutup video dengan salam santun.'
           }
         ],
         stemPoints: {
-          science: 'Jelaskan parameter fisika, kimia, dan biologi ekosistem kolam: kadar oksigen terlarut (DO > 5 ppm), derajat keasaman air (pH ideal 6,5–8,0), bahaya racun gas amonia (NH3) dari sisa pakan dan kotoran ikan di dasar kolam, peran fitoplankton/probiotik, serta sifat biologis ikan (seperti kanibalisme pada lele jika ukuran tidak seragam).',
-          technology: 'Jelaskan teknologi akuakultur yang diamati: pompa air submersible/sentrifugal, kincir air atau aerator blower untuk menyuplai oksigen, teknologi pelet terapung hasil mesin ekstruder (agar pakan tidak tenggelam membusuk di lumpur), sensor pH/TDS meter digital, atau mesin pencetak pelet mandiri.',
-          engineering: 'Jelaskan rekayasa rancang bangun kolam: konstruksi pematang/tanggul kolam tanah atau rangka kolam terpal bundar/persegi, desain kemiringan dasar kolam menuju pipa pembuangan tengah (central drain / pipa sifon standpipe) yang memanfaatkan tekanan hidrostatis untuk membuang endapan lumpur kotor, serta desain keranjang grading ramah lendir ikan.',
-          mathematics: 'Jelaskan perhitungan matematis kolam: rumus volume air kolam (Panjang x Lebar x Kedalaman air, atau phi x r^2 x t), kepadatan tebar benih per meter persegi (misal 20–30 ekor patin/m2 atau 100 ekor lele/m2), persentase takaran pakan harian (3%–5% dari biomassa bobot ikan), serta tingkat kelulushidupan (Survival Rate / SR).'
+          science: 'Parameter kualitas air budidaya (oksigen terlarut DO, keasaman pH, suhu, kecerahan warna air), biokimia siklus nitrogen di dasar kolam (amonia kotoran ikan yang diurai oleh bakteri nitrifikasi Nitrosomonas & Nitrobacter), serta biologi nutrisi asam amino pakan pelet.',
+          technology: 'Peralatan teknologi kolam: kincir air aerator bertenaga dinamo listrik, pompa celup submersible, blower aerator selang uniring pada kolam bundar terpal bioflok, sensor digital pH/TDS meter, serta bak/keranjang sortir ikan (grader) berbahan aluminium anti-karat.',
+          engineering: 'Rekayasa konstruksi saluran pemasukan dan pengeluaran air (monik/sistem goyang), rekayasa dasar kolam miring menuju central drain pembuangan lumpur amonia (teknologi bottom drain), serta desain kolam bundar terpal rangka besi wiremesh.',
+          mathematics: 'Hitungan matematis perikanan: padat tebar bibit per meter kubik air (ekor/m³), rasio konversi pakan (FCR target 1.1–1.3), persentase tingkat kelangsungan hidup ikan (Survival Rate / SR minimal 85%), dan estimasi tonase panen ikan per petak kolam.'
         }
       },
       day6: {
-        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Perikanan',
-        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda menganalisis secara mandiri modal benih, biaya pakan pelet, perhitungan FCR & keuntungan panen ikan, kendala kualitas air/harga pakan, serta gagasan inovasi pakan mandiri dan hilirisasi olahan ikan.',
+        focusTitle: 'Panduan Video Day 6: Analisis Rekayasa Solusi Kendala & Matematika Finansial Budidaya Perikanan',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, membedah pilar Rekayasa (sistem drainase sifon dasar kolam, filter sirkulasi air terpal) dan pilar Matematika Finansial (biaya benih/benur, porsi pakan FCR 1.2, harga jual timbang basah per kg, omzet panen, dan laba bersih pembudidaya).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan & Kilas Balik Objek Perikanan',
-            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini memfokuskan analisis pada Pilar Financial, Kendala Risiko, dan Solusi Inovasi FINCESTEM di sektor perikanan.'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Kilas Balik Sektor yang Dianalisis',
+            desc: 'Tampil di depan kamera HP. Sampaikan salam pembuka, perkenalkan diri lengkap, dan sebutkan bahwa video Day 6 ini berfokus pada Analisis Rekayasa Solusi Kendala dan Perhitungan Finansial Usaha Budidaya Ikan di Belitang.'
           },
           {
-            time: '01:00 – 03:30',
-            title: '2. Analisis Pilar Financial (Modal Benih, Biaya Pakan/FCR, Omzet Panen & Laba Bersih)',
-            desc: 'Jelaskan di depan kamera rincian finansial satu siklus panen (3–6 bulan): biaya pembelian ribuan ekor benih ikan, total karung pakan pelet yang dihabiskan (beserta nilai FCR), biaya listrik pompa/kapur/probiotik, dibandingkan dengan hasil penjualan tonase ikan segar (kg x harga per kg) hingga diperoleh Laba Bersih.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Rekayasa (Engineering) & Solusi Kendala',
+            desc: 'Tunjukkan kendala nyata di kolam ikan (penumpukan endapan kotoran amonia di dasar kolam, pemadaman listrik PLN yang mematikan aerator, atau penyakit jamur/bakteri aeromonas saat cuaca mendung). Jelaskan rekayasa solusinya: pipa pembuangan sifon gravitasi tanpa menguras seluruh air, garam krosok dan daun ketapang sebagai antiseptik alami, serta sistem back-up aki/genset otomatis.'
           },
           {
-            time: '03:30 – 06:00',
-            title: '3. Evaluasi Kendala Lapangan & Risiko Budidaya Ikan',
-            desc: 'Analisis kendala nyata yang dihadapi pembudidaya: tingginya harga pelet pabrikan yang mencapai 70% dari biaya produksi, perubahan pH air mendadak saat hujan deras yang memicu stres/kematian ikan, penyakit jamur/bakteri Aeromonas, atau harga jual ikan mentah yang ditekan tengkulak.'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Matematika Finansial (BOP, HPP, Omzet & Laba)',
+            desc: 'Uraikan rincian modal usaha: pembelian benih ikan per ekor, biaya pakan pelet pabrikan (yang menyerap 70-80% dari total modal usaha), biaya listrik pompa, dan probiotik air. Hitung HPP ikan per kg, kalikan dengan harga jual timbang basah di pedagang pengepul pasar, kurangkan total modal, lalu paparkan Laba Bersih yang diperoleh pembudidaya.'
           },
           {
-            time: '06:00 – 08:30',
-            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
-            desc: 'Paparkan solusi inovatif Anda: pembuatan pelet mandiri berbahan baku lokal (dedak halus, tepung ikan rucah, bungkil kedelai/ampas tahu, atau budidaya Maggot BSF & Azolla) untuk menghemat biaya pakan hingga 30%, aplikasi sistem Bioflok/Probiotik EM4 perikanan, serta pengolahan hasil panen menjadi produk bernilai tambah tinggi (fillet patin beku, bakso ikan, abon, atau kemplang).'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '5. Kesimpulan Akhir & Penutup Video',
-            desc: 'Simpulkan kelayakan usaha perikanan tersebut dan bagaimana efisiensi FCR pakan serta hilirisasi produk olahan mampu mendongkrak keuntungan pembudidaya di OKU Timur, lalu tutup video.'
+            time: '07:30 – 10:00',
+            title: '4. Gagasan Solusi Inovasi Nilai Tambah, Prospek Masa Depan & Penutup',
+            desc: 'Paparkan ide kreatif inovasi FINCESTEM Anda: hilirisasi ikan segar menjadi produk olahan bernilai tinggi seperti fillet ikan patin beku, abon ikan nila gurih, atau kerupuk kemplang ikan khas OKU Timur, serta sistem pemasaran langsung ke konsumen lewat media sosial. Simpulkan prospek usaha dan tutup video dengan salam.'
           }
         ],
         finPoints: {
-          financial: 'Uraikan perhitungan biaya benih, total biaya pakan pelet, perhitungan Feed Conversion Ratio (FCR = Total Pakan kg / Total Bobot Panen Ikan kg), Harga Pokok Produksi (HPP) per kg ikan vs harga jual pasar, serta Laba Bersih per siklus.',
-          constraints: 'Identifikasi masalah utama: mahalnya harga pakan komersial, kematian benih di awal tebar, penurunan kualitas air (amonia tinggi/DO rendah), serta fluktuasi harga jual ikan konsumsi.',
-          innovation: 'Usulkan inovasi STEM-Finansial: pakan alternatif berprotein tinggi (Maggot BSF / Azolla / pelet mandiri), manajemen air probiotik/central drain untuk menekan FCR ke angka 1,0–1,2, serta diversifikasi produk olahan ikan khas OKU Timur.'
+          financial: 'Rincian biaya operasional budidaya per siklus (beli benih ikan unggul ukuran 5-7 cm, biaya pakan pelet terapung yang menyerap 70–80% dari total biaya modal, tagihan listrik aerator, vitamin & probiotik), omzet panen ikan timbang basah per kg, serta kalkulasi Laba Bersih pembudidaya.',
+          constraints: 'Kendala teknis budidaya: lonjakan harga pakan pabrikan yang terus naik, ancaman kematian massal ikan akibat penurunan kadar oksigen mendadak saat mati lampu malam hari, penyakit jamur sirip putih/bakteri aeromonas di musim hujan, dan harga jual ikan segar yang fluktuatif di pasar lokal.',
+          innovation: 'Gagasan inovasi FINCESTEM: substitusi pakan menggunakan maggot BSF atau azolla segar berprotein tinggi untuk memangkas biaya pelet hingga 30%, instalasi otomatisasi alarm peringatan dini kadar oksigen, serta hilirisasi daging patin menjadi produk frozen food fillet kemasan vakum berlabel lokal Belitang.'
+        }
+      }
+    },
+
+    industri: {
+      key: 'industri',
+      name: 'Industri Pengolahan, RMU & Pengrajin Lokal',
+      shortName: '⚙️ Industri & Pengolahan',
+      badge: 'Kilang Padi, Pabrik Tahu, Kerupuk & Bengkel',
+      icon: 'factory',
+      objectExamples: 'Kilang Penggilingan Padi (RMU), Pabrik Tahu & Tempe Rumahan, Industri Kerupuk Pasir/Kemplang, atau Bengkel Bubut/Mekanik Mesin di Belitang',
+      day5: {
+        focusTitle: 'Panduan Video Day 5: Eksplorasi Mandiri Sains & Teknologi pada Sektor Industri & Pengolahan',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, menyorot langsung lantai produksi atau mesin kerja industri, serta membedah pilar Sains (reaksi fisika pemisahan massa jenis, fermentasi kedelai, sifat termal pembakaran) dan pilar Teknologi (mesin husker rol karet, polisher beras, boiler uap, mesin press hidrolik/gerinda bubut, dan standar APD).',
+        segments: [
+          {
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Profil Tempat Industri di OKU Timur',
+            desc: 'Tampil di depan kamera HP di area kilang penggilingan padi (RMU), pabrik tahu/kerupuk, atau bengkel mekanik. Sampaikan salam pembuka, Nama Lengkap, NISN, Kelas, Fasilitator, serta perkenalkan profil objek usaha pengolahan yang Anda amati di OKU Timur.'
+          },
+          {
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Sains (Science) Sektor Industri',
+            desc: 'Sorot bahan baku dan proses kerja, lalu jelaskan prinsip ilmiahnya: sains fisika gesekan dan perbedaan massa jenis dalam memisahkan sekam dari beras, proses biokimia fermentasi kedelai menjadi tempe/tahu, sifat termal uap panas boiler perebusan, atau sifat mekanik kekerasan logam pada bengkel mesin.'
+          },
+          {
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Teknologi (Technology) Sektor Industri',
+            desc: 'Arahkan kamera ke mesin-mesin produksi: mesin pemecah kulit gabah (husker rol karet), mesin penyosoh beras (polisher/kebit), mesin ayakan pemisah menir (shifter), boiler uap bertekanan, kompresor udara, atau mesin las listrik inverter, serta APD wajib (masker debu sekam, kacamata pelindung, earplug peredam bising, dan sepatu keselamatan).'
+          },
+          {
+            time: '07:30 – 10:00',
+            title: '4. Analisis Efisiensi Penerapan Teknologi, Kesimpulan Sains-Teknologi & Penutup',
+            desc: 'Jelaskan bagaimana otomatisasi mesin industri mampu mengubah bahan mentah menjadi produk bernilai jual tinggi dalam hitungan jam dengan rendemen maksimal, simpulkan temuan Sains-Teknologi Anda, lalu tutup video dengan salam santun.'
+          }
+        ],
+        stemPoints: {
+          science: 'Prinsip Fisika gesekan dan rotasi diferensial pada rol karet mesin husker untuk mengupas kulit gabah tanpa menghancurkan bulir beras, aerodinamika pemisahan sekam tiupan blower berdasarkan perbedaan massa jenis, termodinamika suhu uap air boiler, atau ilmu metalurgi logam pada bengkel mekanik.',
+          technology: 'Teknologi permesinan pengolahan: mesin husker rol karet ganda, mesin polisher penyosoh kabut beras putih mengkilap, elevator pembawa gabah vertikal, mesin jahit karung elektrik genggam portabel, serta inverter mesin las listrik hemat daya.',
+          engineering: 'Rekayasa layout alur produksi kontinu (dari bak penampung gabah masuk, pembersihan batu, pengupasan, penyosohan hingga pengarungan), rekayasa cerobong pipa siklon pembuangan debu sekam, serta sistem transmisi sabuk puli (v-belt) dinamo listrik.',
+          mathematics: 'Hitungan matematis industri: persentase rendemen giling gabah ke beras (target 65–68%), kalkulasi susut bobot bahan baku, kecepatan kapasitas giling mesin (ton gabah/jam), dan perhitungan kebutuhan energi listrik kVA atau liter solar per hari.'
+        }
+      },
+      day6: {
+        focusTitle: 'Panduan Video Day 6: Analisis Rekayasa Solusi Kendala & Matematika Finansial Sektor Industri & Pengolahan',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, membedah pilar Rekayasa (modifikasi saluran cerobong sekam, tata letak jalur konveyor efisien) dan pilar Matematika Finansial (modal bahan baku harian, tagihan listrik/solar industri, biaya kemasan karung, omzet penjualan produk utama + sampingan, dan laba bersih pengusaha).',
+        segments: [
+          {
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Kilas Balik Sektor yang Dianalisis',
+            desc: 'Tampil di depan kamera HP. Sampaikan salam, perkenalkan diri lengkap, dan sebutkan bahwa video Day 6 ini berfokus pada Analisis Rekayasa Solusi Kendala Produksi dan Perhitungan Finansial Usaha Industri Pengolahan di Belitang.'
+          },
+          {
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Rekayasa (Engineering) & Solusi Kendala',
+            desc: 'Tunjukkan kendala nyata di tempat industri (tingginya persentase beras patah jika gabah masih basah saat musim hujan, polusi debu sekam yang beterbangan, keausan cepat rol karet penggiling, atau limbah air cair tahu). Jelaskan rekayasa solusinya: instalasi pengering flat-bed dryer suhu rendah, siklon filter debu air, dan bak penyaringan limbah cair sederhana sebelum dialirkan ke parit.'
+          },
+          {
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Matematika Finansial (BOP, HPP, Omzet & Laba)',
+            desc: 'Uraikan rincian angka operasional industri: modal beli gabah mentah harian, biaya bahan bakar solar/listrik PLN, ongkos rol karet & perawatan mesin, upah buruh panggul/operator, dan biaya kemasan karung. Hitung total omzet dari penjualan beras kualitas medium/premium serta produk sampingan (dedak/bekatul & sekam), kurangkan seluruh biaya operasional, dan buktikan kalkulasi Laba Bersih yang didapat pengusaha.'
+          },
+          {
+            time: '07:30 – 10:00',
+            title: '4. Gagasan Solusi Inovasi Nilai Tambah, Prospek Masa Depan & Penutup',
+            desc: 'Paparkan ide kreatif inovasi FINCESTEM Anda: pengolahan limbah sekam padi menjadi briket arang biomassa ramah lingkungan, pengemasan beras kemasan vakum 2,5 kg untuk pasar modern, serta pembukuan stok digital. Simpulkan prospek sektor industri pengolahan lokal ini dan tutup video dengan salam.'
+          }
+        ],
+        finPoints: {
+          financial: 'Rincian biaya modal harian (pembelian bahan mentah gabah/kedelai/tepung, tagihan listrik mesin dan bahan bakar solar, upah operator harian, biaya karung dan plastik kemasan), pendapatan dari produk utama ditambah penjualan sampingan (dedak bekatul/ampas tahu), total omzet, dan kalkulasi Laba Bersih bulanan pengusaha.',
+          constraints: 'Kendala operasional industri: tingginya persentase butir patah saat menggiling gabah berkadar air tinggi di musim hujan, kenaikan harga bahan baku impor (kedelai), tingginya biaya penggantian suku cadang mesin yang aus, dan tuntutan standar sanitasi lingkungan dari warga sekitar.',
+          innovation: 'Gagasan inovasi FINCESTEM: pemanfaatan limbah sekam padi menjadi arang briket biomassa pengganti elpiji, pembuatan mesin pengering gabah terpadu (bed dryer) hemat biomassa, serta digitalisasi kemasan produk berlabel SNI untuk menembus jaringan ritel modern.'
         }
       }
     },
 
     perdagangan: {
       key: 'perdagangan',
-      name: 'Perdagangan, Pasar, Toko & UMKM Kuliner',
-      shortName: '🏪 Perdagangan & UMKM',
-      badge: 'Pasar, Toko Sembako, Warung & Kuliner',
+      name: 'Perdagangan Sembako, Saprotan & Pasar',
+      shortName: '🏪 Perdagangan & Pasar',
+      badge: 'Pasar Belitang, Toko Grosir & Saprotan',
       icon: 'storefront',
-      objectExamples: 'Toko Sembako/Grosir, Kios Pasar Tradisional (Gumawang/Martapura/Belitang), Warung Makan/UMKM Kuliner, Toko Bangunan, atau Toko Sarana Pertanian di OKU Timur',
+      objectExamples: 'Toko Grosir/Pengecer Sembako, Kios Saprotan Pertanian (Pupuk/Benih/Pestisida), Lapak Dagang Pasar Tradisional Gumawang/Belitang',
       day5: {
-        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Perdagangan / UMKM',
-        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di lokasi toko/warung/tempat usaha UMKM tanpa mewawancarai pemilik/pedagang. Sorot penataan barang, peralatan dagang/produksi, dan fasilitas pembayaran, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        focusTitle: 'Panduan Video Day 5: Eksplorasi Mandiri Sains & Teknologi pada Sektor Perdagangan & Pasar',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara narasumber, menyorot display barang dagangan dan peralatan operasional toko, serta membedah pilar Sains (pengendalian kelembapan gudang sembako, masa kedaluwarsa, keamanan kimia saprotan) dan pilar Teknologi (timbangan digital presisi, sistem barcode scanner/POS kasir, display pendingin showcase, dan ventilasi gudang).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Toko / UMKM',
-            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan nama toko/warung/unit UMKM, lokasi desa/kecamatan, dan jenis barang dagangan atau produk kuliner yang dijual.'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Profil Toko/Lapak Pasar di OKU Timur',
+            desc: 'Tampil di depan kamera HP di depan toko grosir, kios saprotan, atau lapak pasar tradisional. Sampaikan salam pembuka, Nama Lengkap, NISN, Kelas, Fasilitator, dan perkenalkan nama toko serta jenis komoditas perdagangan yang Anda amati di OKU Timur.'
           },
           {
-            time: '01:00 – 02:15',
-            title: '2. Penjelasan Pilar Culture (Etika Pelayanan, Kejujuran Dagang & Budaya Konsumen Lokal)',
-            desc: 'Jelaskan budaya pelayanan di tempat usaha tersebut: keramahan menyapa pembeli (senyum, sapa, santun adat lokal), kejujuran takaran timbangan, keunikan cita rasa kuliner lokal yang disukai warga OKU Timur, serta hubungan saling percaya antara pedagang dan pelanggan tetap.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Sains (Science) Sektor Perdagangan',
+            desc: 'Sorot barang dagangan di rak dan gudang, lalu jelaskan prinsip ilmiahnya: sains pengawetan bahan pangan kering (kadar air maksimal beras/gula agar terhindar dari jamur aflatoksin), biologi pencegahan kutu beras, faktor suhu dan kelembapan ruang display, serta sifat kimia keamanan penyimpanan botol pestisida/pupuk agar tidak mencemari bahan makanan.'
           },
           {
-            time: '02:15 – 03:45',
-            title: '3. Penjelasan Pilar Exploration (Sorot Peralatan Ukur, Display, Kemasan & Higienitas)',
-            desc: 'Sorot langsung peralatan kerja di toko/UMKM: timbangan digital/mekanik, mesin kasir/kalkulator, barcode QRIS, etalase kaca/rak display barang, lemari pendingin (showcase/freezer), alat pengemas (hand sealer/vacuum sealer), kompor/alat masak UMKM, serta perlengkapan kebersihan/APD (celemek/apron, sarung tangan plastik makanan, penjepit makanan, masker).'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Teknologi (Technology) Sektor Perdagangan',
+            desc: 'Arahkan kamera ke perangkat operasional toko: timbangan komputasi digital bertingkat dengan kalibrasi tera resmi, barcode scanner pembaca kode barang, mesin kasir Point of Sales (POS), kulkas showcase display pendingin minuman/telur, serta kamera CCTV pengawas keamanan toko.'
           },
           {
-            time: '03:45 – 06:30',
-            title: '4. Bedah Inti 4 Unsur STEM pada Perdagangan & UMKM (Science, Technology, Engineering, Mathematics)',
-            desc: 'Sambil menunjuk produk dan peralatan toko/UMKM, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics sesuai panduan sektor perdagangan di bawah.'
-          },
-          {
-            time: '06:30 – 08:30',
-            title: '5. Gambaran Umum Alur Pengadaan Stok, Penyimpanan & Pelayanan Pembeli',
-            desc: 'Jelaskan bagaimana alur operasional usaha tersebut berjalan setiap hari: mulai dari belanja bahan baku/stok barang dari distributor, pemeriksaan kualitas, penataan di rak/etalase, hingga proses melayani transaksi pembeli.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
-            desc: 'Rangkum bagaimana penerapan sains pengawetan produk, teknologi timbangan/kasir digital, dan tata ruang toko membuat usaha perdagangan/UMKM berjalan higienis dan profesional, lalu tutup video.'
+            time: '07:30 – 10:00',
+            title: '4. Analisis Efisiensi Penerapan Teknologi, Kesimpulan Sains-Teknologi & Penutup',
+            desc: 'Jelaskan bagaimana barcode scanner dan timbangan digital mampu mempercepat transaksi antrean pembeli serta mencegah kesalahan perhitungan uang kasir, rangkum pemahaman Sains-Teknologi Anda, lalu tutup video dengan salam santun.'
           }
         ],
         stemPoints: {
-          science: 'Jelaskan aspek Sains pada produk dan penyimpanan: pengendalian suhu dingin (termodinamika lemari pendingin/freezer 0°–4°C) untuk menghambat pertumbuhan bakteri pembusuk pada bahan pangan/minuman, perlindungan produk kering (beras/tepung/kerupuk) dari kelembaban udara dan jamur (oksidasi/ketengikan minyak), serta standar higienitas pangan.',
-          technology: 'Jelaskan teknologi perdagangan yang digunakan: pemakaian Timbangan Digital bersensor Load Cell yang akurat hingga satuan gram, mesin perekat kemasan plastik (Impulse Heat Sealer), penggunaan kode pembayaran digital QRIS / aplikasi kasir POS di smartphone, serta pemanfaatan media sosial (WhatsApp/Facebook/Instagram) untuk katalog dan pesan-antar.',
-          engineering: 'Jelaskan rekayasa tata letak (Layout Engineering) dan kemasan: rekayasa penataan rak barang dengan prinsip FIFO (First In First Out — barang yang masuk lebih dulu diletakkan di bagian depan agar terjual lebih dulu sebelum kedaluwarsa), pengelompokan barang sesuai kategori, sirkulasi udara/pencahayaan ruang toko, serta desain kemasan kedap udara.',
-          mathematics: 'Jelaskan penerapan Matematika di toko/UMKM: konversi satuan berat dan volume (ton, kuintal, karung 50 kg, lusin, gros ke eceran kilogram/ons/liter), perhitungan stok persediaan minimum (reorder point) agar barang laris tidak kehabisan, serta kecepatan perputaran barang harian.'
+          science: 'Ilmu sains ketahanan bahan pangan: pengaruh kelembapan udara (RH) terhadap pertumbuhan jamur pada beras dan tepung, pengawetan bahan makanan pada suhu dingin kulkas (inhibisi bakteri pembusuk), serta kimia sifat bahaya dan penyimpanan aman racun kimia pertanian (pestisida).',
+          technology: 'Teknologi perlengkapan niaga: timbangan digital presisi bersensor load-cell dengan layar komputasi ganda pembeli-penjual, barcode scanner nirkabel Bluetooth, aplikasi kasir Android (POS) terhubung mini printer bluetooth, display showcase berrefrigeran ramah lingkungan, dan kamera CCTV Wi-Fi.',
+          engineering: 'Rekayasa ergonomi penataan rak barang dagangan (sistem First In First Out / FIFO menggunakan rak gravitasi), rekayasa sirkulasi palet kayu beralas papan agar karung beras tidak bersentuhan langsung dengan lantai lembap, serta rancangan zonasi pemisahan barang kimia dan pangan.',
+          mathematics: 'Kalkulasi matematis perdagangan: persentase margin keuntungan barang (5–15% untuk grosir sembako, 15–25% untuk eceran/saprotan), laju perputaran persediaan barang (Inventory Turnover Ratio), kalkulasi potongan harga kuantiti (diskon grosir), dan rekonsiliasi total transaksi kasir harian.'
         }
       },
       day6: {
-        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Perdagangan / UMKM',
-        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda membedah secara mandiri perputaran modal kulakan/bahan baku, perhitungan Harga Pokok Penjualan (HPP), margin keuntungan per produk, kendala persaingan/barang rusak, serta inovasi digitalisasi dan kemasan UMKM.',
+        focusTitle: 'Panduan Video Day 6: Analisis Rekayasa Solusi Kendala & Matematika Finansial Perdagangan Sembako/Pasar',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, membedah pilar Rekayasa (rekayasa rak zonasi produk cepat laku FIFO, proteksi hama gudang) dan pilar Matematika Finansial (modal kulakan grosir, margin keuntungan 5-15%, perputaran stok inventory harian, omzet kotor, dan laba bersih pedagang).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan & Kilas Balik Objek Perdagangan / UMKM',
-            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini mengupas tuntas analisis Finansial, Risiko Usaha, dan Inovasi Pengembangan pada toko/UMKM yang diamati.'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Kilas Balik Sektor yang Dianalisis',
+            desc: 'Tampil di depan kamera HP. Sampaikan salam pembuka, perkenalkan diri lengkap, dan sebutkan bahwa video Day 6 ini berfokus pada Analisis Rekayasa Solusi Kendala Toko dan Perhitungan Finansial Usaha Perdagangan di Belitang.'
           },
           {
-            time: '01:00 – 03:30',
-            title: '2. Analisis Pilar Financial (Modal Kulakan, HPP, Margin Keuntungan & Omzet Harian)',
-            desc: 'Jelaskan di depan kamera perhitungan keuangan toko/UMKM: modal belanja stok barang/bahan baku (HPP), biaya operasional (listrik freezer/lampu, plastik kemasan, gas, transportasi), cara menentukan harga jual (persentase markup/margin laba per item, misal 10%–30%), hingga estimasi omzet kotor dan Laba Bersih bulanan.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Rekayasa (Engineering) & Solusi Kendala',
+            desc: 'Tunjukkan kendala nyata di toko/pasar (barang rusak/kedaluwarsa karena tertumpuk di belakang rak, kebocoran stok atau salah hitung barang, persaingan harga ketat, atau penumpukan utang kasbon pelanggan). Jelaskan rekayasa solusinya: penataan rak bertingkat sistem rotasi FIFO (First In First Out), pelabelan tanggal kadaluwarsa yang mencolok, dan penggunaan aplikasi pencatatan buku kas digital.'
           },
           {
-            time: '03:30 – 06:00',
-            title: '3. Evaluasi Kendala Usaha, Risiko Barang Rusak & Persaingan Pasar',
-            desc: 'Analisis kendala nyata yang dihadapi usaha tersebut: risiko barang kedaluwarsa/ penyusutan (shrinkage) atau makanan basi jika tidak habis terjual, kenaikan harga bahan baku pokok dari distributor, piutang pembeli yang kasbon/macet, pencatatan uang usaha yang masih tercampur dengan uang dapur keluarga, atau persaingan dengan ritel modern/toko online.'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Matematika Finansial (BOP, HPP, Omzet & Laba)',
+            desc: 'Uraikan rincian modal dan alur uang pedagang: modal awal kulakan stok barang dari agen distributor, biaya operasional toko harian (sewa kios, listrik showcase, kantong kresek, kuota kasir, gaji karyawan). Hitung persentase margin laba per jenis barang, kalkulasikan rata-rata omzet penjualan harian/bulanan, kurangkan modal barang dan BOP, lalu tunjukkan Laba Bersih yang diperoleh pedagang.'
           },
           {
-            time: '06:00 – 08:30',
-            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
-            desc: 'Paparkan gagasan solusi Anda: pemisahan tegas antara rekening/kas usaha dengan keuangan pribadi rumah tangga, penerapan pembukuan kas harian digital, inovasi pengemasan modern berlabel merek dan izin PIRT/Halal agar tahan lama dan bernilai jual lebih tinggi, penyediaan pembayaran non-tunai QRIS, serta layanan pesan-antar (delivery order) via WhatsApp Bisnis.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '5. Kesimpulan Akhir & Penutup Video',
-            desc: 'Simpulkan kelayakan finansial toko/UMKM tersebut dan bagaimana inovasi manajemen stok STEM serta disiplin pembukuan keuangan dapat membuat usaha naik kelas, lalu tutup video.'
+            time: '07:30 – 10:00',
+            title: '4. Gagasan Solusi Inovasi Nilai Tambah, Prospek Masa Depan & Penutup',
+            desc: 'Paparkan ide kreatif inovasi FINCESTEM Anda: adopsi pembayaran nontunai QRIS untuk menarik pelanggan muda tanpa repot uang kembalian, penyediaan layanan pesan-antar (delivery) sembako via WhatsApp di sekitar desa, serta kartu loyalitas pelanggan. Simpulkan kelayakan usaha perdagangan ini dan tutup video dengan salam.'
           }
         ],
         finPoints: {
-          financial: 'Jelaskan perhitungan Harga Pokok Penjualan (HPP), selisih harga beli grosir vs harga jual eceran (Margin Laba Kotor), biaya operasional bulanan, perhitungan titik impas (Break Even Point / BEP), serta estimasi Laba Bersih usaha.',
-          constraints: 'Identifikasi masalah utama: tercampurnya uang modal usaha dengan pengeluaran pribadi keluarga, barang rusak/kedaluwarsa karena kurang kontrol stok, piutang/bon pelanggan yang menghambat perputaran kas, atau kemasan produk yang masih sederhana.',
-          innovation: 'Usulkan inovasi konkret: manajemen stok FIFO terstruktur, redesain kemasan kedap udara berlabel menarik untuk memperpanjang masa simpan (shelf-life), adopsi pembayaran QRIS, dan promosi digital lokal.'
+          financial: 'Rincian perputaran modal usaha dagang (modal kerja kulakan barang dagangan sembako/saprotan dari distributor, biaya sewa ruko/lapak pasar, tagihan listrik showcase & lampu toko, biaya plastik kemasan dan transportasi), penetapan margin laba tipis 5–10% untuk grosir vs 15–20% untuk eceran, rata-rata omzet harian, dan kalkulasi Laba Bersih bulanan pedagang.',
+          constraints: 'Kendala riil sektor perdagangan: barang dagangan kedaluwarsa atau rusak/bocor di gudang, fluktuasi harga komoditas sembako yang tiba-tiba naik dari pusat, risiko piutang macet akibat sistem kasbon warga desa, dan persaingan harga dengan toko ritel waralaba modern.',
+          innovation: 'Gagasan inovasi FINCESTEM: integrasi sistem pembayaran digital QRIS dan transfer perbankan, pembuatan grup pemesanan kebutuhan dapur/saprotan via WhatsApp warga desa dengan layanan delivery gratis, serta pembukuan arus kas harian menggunakan aplikasi kasir online.'
         }
       }
     },
 
-    keuangan: {
-      key: 'keuangan',
-      name: 'Koperasi, Agen BRI-Link & Jasa Keuangan',
-      shortName: '🏦 Koperasi & BRI-Link',
-      badge: 'Agen BRI-Link, Koperasi, BUMDes & Bank',
+    formal: {
+      key: 'formal',
+      name: 'Lembaga Finansial, Perbankan/BUMDes & Layanan',
+      shortName: '🏛️ Finansial & Kantor',
+      badge: 'Agen BRI-Link, BUMDes, Koperasi & Layanan',
       icon: 'account_balance',
-      objectExamples: 'Gerai Agen BRI-Link / Agen Laku Pandai Perbankan, Koperasi Simpan Pinjam / KUD / Koperasi Sekolah, atau Unit Jasa Keuangan BUMDes di OKU Timur',
+      objectExamples: 'Gerai Agen BRI-Link / Mandiri Mitra, Kantor Koperasi Simpan Pinjam / BUMDes Desa, atau Loket Layanan Administrasi Keuangan di Belitang',
       day5: {
-        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Koperasi / BRI-Link',
-        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di lokasi gerai Agen BRI-Link / Koperasi / BUMDes tanpa mewawancarai pengelola/nasabah. Sorot ruang layanan, spanduk tarif/informasi, dan perangkat transaksi, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
+        focusTitle: 'Panduan Video Day 5: Eksplorasi Mandiri Sains & Teknologi pada Sektor Layanan Finansial & Lembaga',
+        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, menyorot meja kerja dan perlengkapan transaksi, serta membedah pilar Sains (ergonomi postur kerja, kenyamanan pencahayaan lux, psikologi visual antrean) dan pilar Teknologi (mesin EDC mini ATM, printer thermal struck, aplikasi mobile perbankan/QRIS, serta router UPS proteksi daya).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Koperasi / Agen BRI-Link',
-            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan nama gerai Agen BRI-Link / Koperasi / BUMDes, lokasi desa/kecamatan, dan jenis layanan keuangan yang tersedia bagi warga.'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Profil Gerai Finansial di OKU Timur',
+            desc: 'Tampil di depan kamera HP di gerai agen BRI-Link, loket BUMDes, atau koperasi simpan pinjam. Sampaikan salam pembuka, Nama Lengkap, NISN, Kelas, Fasilitator, dan perkenalkan nama gerai serta perannya dalam melayani inklusi keuangan masyarakat di OKU Timur.'
           },
           {
-            time: '01:00 – 02:15',
-            title: '2. Penjelasan Pilar Culture (Budaya Kepercayaan, Inklusi Keuangan & Kekeluargaan)',
-            desc: 'Jelaskan nilai budaya di lembaga keuangan mikro/agen perbankan desa: pentingnya integritas dan kepercayaan (trust) dalam memegang amanah uang masyarakat, asas kekeluargaan dan gotong royong pada koperasi, serta bagaimana kehadiran Agen BRI-Link/Koperasi membantu petani dan warga desa bertransaksi dekat rumah tanpa harus jauh ke bank di pusat kota.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Sains (Science) Sektor Finansial & Layanan',
+            desc: 'Sorot area kerja gerai dan jelaskan prinsip ilmiahnya: ergonomi sains postur tubuh petugas teller/operator duduk di depan komputer agar terhindar dari cedera muskuloskeletal (RSI), intensitas pencahayaan ruang kerja (standar 300-500 lux) untuk ketelitian membaca angka, serta sains sirkulasi udara dan psikologi penataan antrean yang nyaman bagi nasabah.'
           },
           {
-            time: '02:15 – 03:45',
-            title: '3. Penjelasan Pilar Exploration (Sorot Perangkat Transaksi, Keamanan & Sarana Layanan)',
-            desc: 'Sorot langsung peralatan kerja di gerai (tanpa merekam data rahasia/PIN nasabah): mesin EDC (Electronic Data Capture) / Android POS, printer struk termal Bluetooth, mesin penghitung uang (money counter), lampu UV pendeteksi uang asli/palsu, brankas/laci kas berpelindung, kamera pengawas CCTV, papan informasi tarif resmi, serta buku/aplikasi register transaksi.'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Teknologi (Technology) Sektor Finansial & Layanan',
+            desc: 'Arahkan kamera ke perangkat teknologi perbankan: mesin EDC (Electronic Data Capture) kartu chip debit/ATM, printer kasir thermal cetak bukti struk tanpa tinta, router modem internet Wi-Fi 4G, baterai cadangan UPS (Uninterruptible Power Supply) penahan mati lampu, serta laptop/smartphone untuk aplikasi internet banking.'
           },
           {
-            time: '03:45 – 06:30',
-            title: '4. Bedah Inti 4 Unsur STEM pada Koperasi & BRI-Link (Science, Technology, Engineering, Mathematics)',
-            desc: 'Sambil menunjuk perangkat layanan di lokasi, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics pada jasa keuangan sesuai panduan di bawah.'
-          },
-          {
-            time: '06:30 – 08:30',
-            title: '5. Gambaran Umum Alur Layanan Transaksi Keuangan Masyarakat',
-            desc: 'Jelaskan ragam layanan yang berjalan setiap hari: setor dan tarik tunai tabungan, transfer antarbank, pembayaran tagihan listrik PLN/token, BPJS, cicilan, top-up dompet digital, penyaluran bantuan pemerintah, atau layanan simpanan dan pinjaman modal usaha di koperasi.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
-            desc: 'Simpulkan peran teknologi finansial (fintech) dan sains pengamanan uang dalam mempercepat perputaran ekonomi masyarakat pedesaan OKU Timur, lalu tutup video.'
+            time: '07:30 – 10:00',
+            title: '4. Analisis Efisiensi Penerapan Teknologi, Kesimpulan Sains-Teknologi & Penutup',
+            desc: 'Jelaskan bagaimana mesin EDC dan transaksi digital mampu memangkas waktu warga pelosok desa yang sebelumnya harus menempuh puluhan kilometer ke bank kota, rangkum temuan Sains-Teknologi Anda, lalu tutup video dengan salam santun.'
           }
         ],
         stemPoints: {
-          science: 'Jelaskan prinsip Sains (Fisika Optik & Kimia Material) pada peralatan keuangan: pemanfaatan gelombang sinar Ultraviolet (UV) untuk memendarkan tinta fosfor dan benang pengaman saat menguji keaslian uang kertas Rupiah (3D: Dilihat, Diraba, Diterawang), serta reaksi kimia pemanasan pada kertas struk termal (thermal paper) yang mencetak tulisan tanpa tinta cair.',
-          technology: 'Jelaskan Teknologi Finansial (Fintech & Telekomunikasi) yang bekerja: sistem mesin EDC dan aplikasi mobile banking agen yang membaca chip kartu ATM/debit, transmisi data transaksi terenkripsi secara real-time melalui jaringan seluler 4G/Wi-Fi ke server pusat bank, pemindaian kode matriks QRIS, serta printer termal nirkabel (Bluetooth).',
-          engineering: 'Jelaskan Rekayasa Sistem Keamanan & Tata Ruang Layanan (Security & Service Engineering): desain tata letak meja loket berteralis/kaca pelindung, penempatan sudut pandang kamera CCTV yang mengawasi area transaksi, penyimpanan brankas kas yang aman, serta rekayasa alur antrean dan verifikasi berlapis (kartu + PIN + bukti struk cetak) agar bebas salah kirim.',
-          mathematics: 'Jelaskan penerapan Matematika Keuangan di gerai: ketelitian menghitung nominal pecahan uang tunai dengan cepat, perhitungan struktur biaya administrasi (fee) per tingkatan nominal transaksi, perhitungan persentase jasa simpan-pinjam atau pembagian Sisa Hasil Usaha (SHU) di koperasi, serta rekonsiliasi pencocokan saldo kas fisik vs saldo mutasi digital.'
+          science: 'Prinsip ergonomi kerja (posisi sudut pandang layar monitor, ketinggian meja kasir, kursi ergonomis penyangga punggung), fotometri pencahayaan ruang loket untuk ketelitian membaca digit nominal rupiah, dan sains keamanan enkripsi data perbankan (kriptografi PIN transaksi).',
+          technology: 'Teknologi perangkat finansial mikro: mesin EDC chip EMV & kartu contactless NFC, printer thermal berbasis pemanasan kertas khusus tanpa tinta kimia, teknologi barcode dinamis QRIS Standar Bank Indonesia, dan perangkat catu daya cadangan UPS darurat.',
+          engineering: 'Rekayasa tata letak loket pelayanan terproteksi (penyekat kaca akrilik pengaman, posisi tombol keypad PIN tertutup tudung pelindung pandangan kamera/orang lain), serta rekayasa sistem antrean nomor urut teratur.',
+          mathematics: 'Kalkulasi matematis finansial mikro: perhitungan akumulasi fee per transaksi (Rp 3.000–Rp 5.000 per gesek tunai/transfer), kalkulasi batas kecukupan modal saldo likuiditas harian perputaran kas, dan perhitungan omzet komisi bulanan serta margin bersih.'
         }
       },
       day6: {
-        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Koperasi / BRI-Link',
-        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda menganalisis secara mandiri manajemen modal likuiditas (saldo rekening vs uang tunai di laci), perhitungan pendapatan dari fee transaksi/SHU, evaluasi risiko uang palsu/penipuan/kredit macet, serta solusi inovasi literasi keuangan.',
+        focusTitle: 'Panduan Video Day 6: Analisis Rekayasa Solusi Kendala & Matematika Finansial Jasa Keuangan Mikro',
+        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda tampil mandiri di depan kamera HP tanpa wawancara, membedah pilar Rekayasa (desain proteksi privasi PIN nasabah, SOP verifikasi anti uang palsu) dan pilar Matematika Finansial (modal saldo likuiditas harian, bagi hasil fee transaksi, omzet komisi bulanan, biaya sewa/kuota internet, dan laba bersih pengelola).',
         segments: [
           {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan & Kilas Balik Objek Koperasi / Agen BRI-Link',
-            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini membedah model bisnis Finansial, Manajemen Risiko, dan Inovasi Layanan pada Agen BRI-Link / Koperasi yang diamati.'
+            time: '00:00 – 01:30',
+            title: '1. Pembukaan, Identitas Diri & Kilas Balik Sektor yang Dianalisis',
+            desc: 'Tampil di depan kamera HP. Sampaikan salam pembuka, perkenalkan diri lengkap, dan sebutkan bahwa video Day 6 ini berfokus pada Analisis Rekayasa Solusi Kendala dan Perhitungan Finansial Usaha Lembaga Jasa Keuangan Mikro / Agen Perbankan di Belitang.'
           },
           {
-            time: '01:00 – 03:30',
-            title: '2. Analisis Pilar Financial (Manajemen Modal Likuiditas, Fee Transaksi/SHU & Laba Bersih)',
-            desc: 'Jelaskan di depan kamera bagaimana usaha jasa keuangan memperoleh keuntungan: keseimbangan modal kerja antara Saldo Mengendap di Rekening Bank (untuk melayani setor tunai/transfer) dan Uang Tunai Fisik di Laci (untuk melayani tarik tunai), perhitungan pendapatan dari biaya admin (fee per transaksi x jumlah transaksi harian, dikurangi bagi hasil fee ke bank pusat), serta biaya operasional (kuota internet, kertas struk, listrik) hingga didapat Laba Bersih bulanan.'
+            time: '01:30 – 04:30',
+            title: '2. Penjelasan Mandiri Pilar Rekayasa (Engineering) & Solusi Kendala',
+            desc: 'Tunjukkan kendala nyata di gerai finansial (risiko peredaran uang palsu di malam hari, koneksi internet/sinyal seluler EDC mendadak down saat transaksi berjalan, atau kehabisan uang tunai saat musim panen raya). Jelaskan rekayasa solusinya: penggunaan lampu detektor ultraviolet (UV) dan teknik 3D (dilihat, diraba, diterawang), pemasangan antena penguat sinyal modem ganda (dual-SIM failover), serta manajemen cadangan uang tunai di brankas tersembunyi.'
           },
           {
-            time: '03:30 – 06:00',
-            title: '3. Evaluasi Kendala Operasional & Risiko Keamanan Keuangan',
-            desc: 'Analisis risiko dan kendala nyata di lapangan: gangguan sinyal internet/server bank saat jam sibuk, kehabisan uang tunai (likuiditas) saat musim panen raya ketika banyak petani tarik tunai besar, risiko peredaran uang palsu, modus penipuan bukti transfer palsu (struk editan), atau risiko kredit macet (NPL) pada pinjaman koperasi.'
+            time: '04:30 – 07:30',
+            title: '3. Penjelasan Mandiri Pilar Matematika Finansial (BOP, HPP, Omzet & Laba)',
+            desc: 'Uraikan rincian modal dan keuntungan: modal saldo rekening likuiditas harian (misal Rp 20 Jt – Rp 50 Jt), biaya operasional (kertas thermal struk, pulsa kuota data internet, sewa tempat, listrik). Hitung rata-rata jumlah transaksi per hari (misal 40 transaksi x komisi fee Rp 5.000 = Omzet Rp 200.000/hari atau Rp 6 Jt/bulan), kurangkan BOP, lalu paparkan Laba Bersih yang diperoleh agen pengelola.'
           },
           {
-            time: '06:00 – 08:30',
-            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
-            desc: 'Paparkan solusi inovatif Anda: penerapan SOP ketat "Cek Mutasi Masuk di Aplikasi Sebelum Serahkan Uang Tunai" dan wajib uji lampu UV pada setiap uang masuk, penyediaan koneksi internet cadangan (dual-provider), sistem pencatatan buku kas ganda (digital & manual) untuk tutup buku harian, serta edukasi literasi keuangan dan tabungan hasil panen bagi warga desa.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '5. Kesimpulan Akhir & Penutup Video',
-            desc: 'Simpulkan kelayakan finansial usaha Agen BRI-Link/Koperasi tersebut dan perannya sebagai penggerak inklusi keuangan di Kabupaten OKU Timur, lalu tutup video.'
+            time: '07:30 – 10:00',
+            title: '4. Gagasan Solusi Inovasi Nilai Tambah, Prospek Masa Depan & Penutup',
+            desc: 'Paparkan gagasan inovasi FINCESTEM Anda: integrasi gerai agen BRI-Link/BUMDes dengan layanan pembayaran tagihan listrik/PDAM, cicilan kredit tani, serta pencatatan pembukuan otomatis berbasis aplikasi kasir keuangan. Simpulkan peran vital inklusi keuangan ini bagi kemajuan warga OKU Timur dan tutup video dengan salam.'
           }
         ],
         finPoints: {
-          financial: 'Uraikan manajemen perputaran modal likuiditas (kas tunai vs saldo rekening), rata-rata jumlah transaksi harian dikalikan tarif jasa (fee admin) atau margin jasa simpan-pinjam koperasi, biaya operasional bulanan, serta estimasi Laba Bersih.',
-          constraints: 'Identifikasi risiko utama: ketidakseimbangan kas saat penarikan tunai membludak, gangguan jaringan internet/EDC error, ancaman uang palsu dan penipuan rekayasa sosial (social engineering), atau tunggakan angsuran anggota koperasi.',
-          innovation: 'Usulkan inovasi STEM-Finansial: protokol verifikasi mutasi real-time & detektor UV wajib, integrasi layanan pembayaran berbagai tagihan satu pintu (one-stop payment), pembukuan rekonsiliasi kas harian otomatis, dan program edukasi gemar menabung/anti-pinjol ilegal.'
-        }
-      }
-    },
-
-    jasa: {
-      key: 'jasa',
-      name: 'Jasa Teknik, Bengkel & Produksi Kerajinan',
-      shortName: '🔧 Jasa & Kerajinan',
-      badge: 'Bengkel Motor/Alsintan, Las & Kerajinan',
-      icon: 'build',
-      objectExamples: 'Bengkel Sepeda Motor/Mobil/Alsintan, Bengkel Las & Bubut, Usaha Pertukangan/Meubel Kayu, Percetakan/Fotokopi, Barbershop/Salon, atau Produksi Kerajinan/Batu Bata di OKU Timur',
-      day5: {
-        focusTitle: 'Panduan Video Day 5: Observasi Culture, Exploration Alat & 4 Unsur STEM pada Sektor Jasa Teknik / Kerajinan',
-        summaryFocus: 'Pada video Day 5 (durasi 5–10 menit), Anda tampil mandiri di lokasi bengkel/tempat jasa teknik/produksi kerajinan tanpa mewawancarai mekanik/pemilik. Sorot peralatan kerja, mesin, dan proses pengerjaan, lalu jelaskan aspek Culture, Exploration Alat, dan 4 Unsur STEM.',
-        segments: [
-          {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan, Identitas Diri & Profil Lokasi Usaha Jasa / Kerajinan',
-            desc: 'Sampaikan salam, Nama Lengkap, NISN, Kelas, Nama Guru Fasilitator, serta perkenalkan nama bengkel/usaha jasa teknik/kerajinan, lokasi desa/kecamatan, dan jenis layanan atau produk yang dikerjakan.'
-          },
-          {
-            time: '01:00 – 02:15',
-            title: '2. Penjelasan Pilar Culture (Etos Kerja Ketelitian, Kejujuran Servis & Kepuasan Pelanggan)',
-            desc: 'Jelaskan budaya kerja pada usaha jasa/teknik tersebut: ketelitian dan kesabaran dalam mendiagnosis kerusakan atau merakit produk, kejujuran mengganti suku cadang asli (tidak membohongi pelanggan), ketepatan waktu pengerjaan, serta budaya menjaga kerapian tempat kerja.'
-          },
-          {
-            time: '02:15 – 03:45',
-            title: '3. Penjelasan Pilar Exploration (Sorot Perkakas Kerja, Mesin & APD Keselamatan Kerja K3)',
-            desc: 'Sorot langsung peralatan kerja di lokasi: kunci pas/ring/shock (torsi), kompresor udara, mesin las listrik (inverter), gerinda tangan, mesin bor/gergaji ukir, alat ukur (jangka sorong/mikrometer/multimeter/meteran), serta Alat Pelindung Diri (APD K3: topeng/kacamata las, kacamata pelindung percikan gerinda, sarung tangan kulit, sepatu safety/tertutup, masker debu/asap).'
-          },
-          {
-            time: '03:45 – 06:30',
-            title: '4. Bedah Inti 4 Unsur STEM pada Jasa Teknik & Kerajinan (Science, Technology, Engineering, Mathematics)',
-            desc: 'Sambil menunjuk peralatan bengkel/produksi, jelaskan secara berurutan unsur Science, Technology, Engineering, dan Mathematics sesuai panduan sektor jasa teknik di bawah.'
-          },
-          {
-            time: '06:30 – 08:30',
-            title: '5. Gambaran Umum Alur Pengerjaan Servis / Produksi dari Awal hingga Selesai',
-            desc: 'Jelaskan tahapan kerja di tempat tersebut: mulai dari penerimaan pesanan/pemeriksaan keluhan pelanggan, pengukuran bahan/pembongkaran komponen, proses perbaikan/perakitan/pengelasan, hingga uji coba akhir (quality control).'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '6. Kesimpulan Observasi STEM Day 5 & Penutup Video',
-            desc: 'Rangkum bagaimana penguasaan ilmu fisika mekanika, teknologi mesin perkakas, dan keselamatan kerja K3 menjadi kunci utama keberhasilan usaha jasa teknik/kerajinan di OKU Timur, lalu tutup video.'
-          }
-        ],
-        stemPoints: {
-          science: 'Jelaskan prinsip Sains (Fisika & Kimia) yang bekerja: hukum momen gaya/torsi (tau = F x r) saat mengencangkan baut dengan kunci bergagang panjang, hukum Boyle dan tekanan udara pada tabung kompresor, perpindahan panas dan peleburan logam (metalurgi) oleh busur listrik pada mesin las, fungsi kimia oli pelumas untuk mengurangi gaya gesek dan keausan mesin, serta bahaya sinar UV/percikan api tanpa APD.',
-          technology: 'Jelaskan Teknologi Peralatan yang digunakan: mesin las inverter hemat daya berbasis komponen elektronika IGBT, perkakas listrik putaran tinggi (power tools: gerinda, bor listrik, impact wrench baterai), kompresor otomatis ber-pressure switch, atau alat scanner injeksi/multimeter digital.',
-          engineering: 'Jelaskan Rekayasa Teknik (Mechanical & Structural Engineering): proses troubleshooting (mencari sumber kerusakan mesin secara sistematis), rekayasa penyambungan rangka besi/kayu dengan sudut siku presisi agar konstruksi kuat menahan beban, serta penataan papan perkakas (tool rack) yang ergonomis.',
-          mathematics: 'Jelaskan perhitungan Matematika Teknik di lapangan: ketelitian pengukuran dimensi bahan dalam satuan milimeter (mm), sentimeter, atau inci menggunakan meteran/jangka sorong, perhitungan sudut potong (45° atau 90°), rasio perbandingan campuran bahan (misal cat dengan tiner atau semen dengan pasir), serta estimasi waktu pengerjaan per unit.'
-        }
-      },
-      day6: {
-        focusTitle: 'Panduan Video Day 6: Analisis Financial, Evaluasi Kendala & Solusi Inovasi pada Sektor Jasa Teknik / Kerajinan',
-        summaryFocus: 'Pada video Day 6 (durasi 5–10 menit), Anda menganalisis secara mandiri struktur biaya investasi alat, biaya bahan habis pakai/suku cadang, tarif jasa keahlian, kendala operasional/K3, serta gagasan inovasi layanan berbasis STEM & Finansial.',
-        segments: [
-          {
-            time: '00:00 – 01:00',
-            title: '1. Pembukaan & Kilas Balik Objek Jasa Teknik / Kerajinan',
-            desc: 'Perkenalkan diri (Nama, NISN, Kelas, Fasilitator) dan sampaikan bahwa video Day 6 ini membedah analisis Finansial, Evaluasi Kendala, dan Solusi Inovasi pada usaha jasa teknik/bengkel/kerajinan yang diamati.'
-          },
-          {
-            time: '01:00 – 03:30',
-            title: '2. Analisis Pilar Financial (Modal Peralatan, Biaya Bahan/Suku Cadang, Tarif Jasa & Laba)',
-            desc: 'Jelaskan di depan kamera perhitungan keuangan usaha jasa/kerajinan: investasi awal pembelian mesin/perkakas kerja (dan biaya penyusutan/perawatannya), biaya variabel bahan habis pakai (kawat las, mata gerinda, oli, suku cadang, kayu/besi, tagihan listrik), cara menentukan tarif ongkos jasa servis/harga jual produk, hingga estimasi pendapatan kotor dan Laba Bersih bulanan.'
-          },
-          {
-            time: '03:30 – 06:00',
-            title: '3. Evaluasi Kendala Teknis, Risiko Kecelakaan Kerja (K3) & Pemasaran',
-            desc: 'Analisis kendala nyata yang dihadapi usaha tersebut: pemadaman listrik atau daya listrik tidak stabil saat mengelas/mengoperasikan mesin, keausan/kerusakan mata perkakas, kenaikan harga bahan baku besi/suku cadang, kurangnya kesadaran memakai APD lengkap (risiko sakit mata/terluka), atau fluktuasi jumlah pelanggan harian.'
-          },
-          {
-            time: '06:00 – 08:30',
-            title: '4. Gagasan Solusi & Inovasi Berbasis STEM + Finansial',
-            desc: 'Paparkan gagasan solusi Anda: penerapan standar Keselamatan dan Kesehatan Kerja (K3) wajib dan penataan bengkel metode 5R (Ringkas, Rapi, Resik, Rawat, Rajin) agar kerja lebih cepat dan aman, daur ulang sisa potongan besi/kayu (scrap) menjadi produk kerajinan bernilai jual tambahan, pemberian garansi servis dan pengingat servis berkala via WhatsApp, serta pencatatan nota digital.'
-          },
-          {
-            time: '08:30 – 10:00',
-            title: '5. Kesimpulan Akhir & Penutup Video',
-            desc: 'Simpulkan kelayakan finansial usaha jasa teknik/kerajinan tersebut dan bagaimana kombinasi keahlian STEM, disiplin K3, serta manajemen keuangan yang rapi dapat mengembangkan usaha, lalu tutup video.'
-          }
-        ],
-        finPoints: {
-          financial: 'Uraikan pemisahan antara harga modal suku cadang/bahan baku dengan pendapatan murni Ongkos Jasa Keahlian, perhitungan biaya listrik & perawatan alat (penyusutan), serta kalkulasi Laba Bersih bulanan.',
-          constraints: 'Identifikasi masalah utama: risiko kecelakaan kerja akibat abai memakai APD (kacamata las/gerinda), penumpukan limbah sisa bahan/oli bekas, keterbatasan peralatan modern, atau pencatatan keuangan yang belum rapi.',
-          innovation: 'Usulkan inovasi STEM-Finansial: tata kelola bengkel standar 5R & K3, pemanfaatan limbah potongan bahan menjadi produk kreatif bernilai ekonomis, katalog portofolio hasil karya/jasa di media sosial, serta sistem kartu pelanggan/pengingat servis.'
+          financial: 'Rincian perputaran modal saldo mengendap di rekening bank/kas tunai (likuiditas Rp 20 Jt s.d. Rp 100 Jt), sistem perolehan fee bagi hasil per transaksi (tarik tunai, transfer antarbank, pembayaran cicilan/BPJS/listrik Rp 3.000 s.d. Rp 7.000 per transaksi), biaya operasional (kertas thermal, paket data internet, listrik, sewa kios), serta kalkulasi Laba Bersih bulanan agen.',
+          constraints: 'Kendala operasional lembaga finansial: risiko uang palsu saat jam ramai, gangguan jaringan perbankan pusat (server timeout atau sinyal drop) yang membuat nasabah panik, keterbatasan modal kas tunai saat musim panen raya ketika warga serempak mencairkan hasil penjualan gabah/karet, dan ancaman keamanan perampokan.',
+          innovation: 'Gagasan inovasi FINCESTEM: penggunaan modem router auto-failover dengan dual kartu SIM untuk menjamin nol persen transaksi gagal akibat sinyal, penambahan lampu sensor ultraviolet pemindai rupiah otomatis, serta pengembangan layanan jemput bola setoran pedagang pasar Belitang.'
         }
       }
     }
   };
+
+  // Aliases for backwards compatibility with older stored sector keys
+  NFT_VIDEO_SECTORS_GUIDE.keuangan = NFT_VIDEO_SECTORS_GUIDE.formal;
+  NFT_VIDEO_SECTORS_GUIDE.jasa = NFT_VIDEO_SECTORS_GUIDE.industri;
 
   window.NFT_VIDEO_SECTORS_GUIDE = NFT_VIDEO_SECTORS_GUIDE;
 
@@ -4292,6 +4195,8 @@
                          localStorage.getItem('fincestem_nft_sector_d5_' + cleanNisn) ||
                          localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) ||
                          localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
+    if (candidateSec === 'keuangan') candidateSec = 'formal';
+    if (candidateSec === 'jasa') candidateSec = 'industri';
     if (candidateSec && NFT_VIDEO_SECTORS_GUIDE[candidateSec]) {
       selectedSector = candidateSec;
     }
@@ -4309,7 +4214,7 @@
       : 'from-teal-900 via-indigo-950 to-slate-950 border-teal-600/40';
     const badgeColor = isDay5 ? 'bg-amber-400 text-slate-950' : 'bg-cyan-400 text-slate-950';
 
-    const sectorKeys = ['pertanian', 'perkebunan', 'peternakan', 'perikanan', 'perdagangan', 'keuangan', 'jasa'];
+    const sectorKeys = ['pertanian', 'perkebunan', 'peternakan', 'perikanan', 'industri', 'perdagangan', 'formal'];
 
     container.innerHTML = `
       <div class="flex flex-col gap-5 pb-12 max-w-4xl mx-auto w-full">
@@ -4345,7 +4250,7 @@
                 <span>Non-Field Trip • Modul Day ${dayNum}</span>
               </span>
               <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${badgeColor}">
-                ${isDay5 ? 'Video Observasi Lapangan & 4 Unsur STEM (5–10 Menit)' : 'Video Analisis Finansial, Risiko & Inovasi (5–10 Menit)'}
+                ${isDay5 ? 'Video Eksplorasi Sains & Teknologi Sektor (5–10 Menit)' : 'Video Analisis Rekayasa & Finansial Sektor (5–10 Menit)'}
               </span>
             </div>
             <span class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-white/20 text-white'}">
@@ -4356,13 +4261,13 @@
           <div>
             <h1 class="font-black text-xl sm:text-2xl leading-tight">
               ${isDay5
-                ? 'Modul Day 5: Panduan Pembuatan Video Observasi Culture, Exploration Alat & Penerapan STEM'
-                : 'Modul Day 6: Panduan Pembuatan Video Analisis Financial, Evaluasi Kendala & Inovasi Solusi'}
+                ? 'Modul Day 5: Panduan Pembuatan Video Eksplorasi Sains & Teknologi Sektor'
+                : 'Modul Day 6: Panduan Pembuatan Video Analisis Rekayasa Solusi Kendala & Finansial Sektor'}
             </h1>
             <p class="text-xs sm:text-sm text-slate-200/95 leading-relaxed font-medium mt-1.5 text-justify">
               ${isDay5
-                ? 'Pada Day 5 ini, Anda ditugaskan membuat video observasi lapangan berdurasi minimal 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube. Pilih salah satu dari 7 sektor usaha di bawah ini untuk memunculkan panduan urutan isi video menit demi menit!'
-                : 'Pada Day 6 ini, Anda melanjutkan pembuatan video analisis berdurasi minimal 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube dengan fokus membedah perputaran modal/keuntungan (Financial), kendala usaha, dan solusi inovasi FINCESTEM pada sektor pilihan Anda.'}
+                ? 'Pada Day 5 ini, Anda ditugaskan membuat video eksplorasi mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube. Tampil langsung di depan kamera menyorot objek atau alat kerja serta membedah pilar Sains dan pilar Teknologi dari sektor pilihan Anda!'
+                : 'Pada Day 6 ini, Anda melanjutkan pembuatan video analisis mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube dengan fokus membedah pilar Rekayasa atas kendala lapangan dan pilar Matematika Finansial (BOP, HPP, Omzet, Laba) pada sektor pilihan Anda.'}
             </p>
           </div>
 
@@ -4474,7 +4379,7 @@
               <span class="w-9 h-9 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm shadow-xs">2</span>
               <div>
                 <h2 class="font-black text-sm sm:text-base text-slate-900">${escapeHtml(dayGuide.focusTitle)}</h2>
-                <p class="text-[11px] text-slate-600 font-medium">Ikuti urutan langkah menit demi menit berikut saat Anda berbicara dan mengambil gambar di lapangan:</p>
+                <p class="text-[11px] text-slate-600 font-medium">Ikuti urutan langkah menit demi menit berikut saat Anda berbicara mandiri di depan kamera HP:</p>
               </div>
             </div>
             <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-950 border border-amber-300">
@@ -4507,7 +4412,7 @@
             <div class="mt-2 pt-4 border-t border-slate-200 flex flex-col gap-3">
               <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-teal-700 text-lg">science</span>
-                <h3 class="font-black text-xs sm:text-sm text-slate-900">ConTek / Panduan Materi 4 Unsur STEM Sektor ${escapeHtml(secGuide.shortName)} (Untuk Dijelaskan pada Menit 03:45 – 06:30):</h3>
+                <h3 class="font-black text-xs sm:text-sm text-slate-900">Panduan Poin Penjelasan Sains & Teknologi Sektor ${escapeHtml(secGuide.shortName)} (Untuk Dijelaskan pada Menit 01:30 – 07:30):</h3>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1">
@@ -4601,8 +4506,8 @@
             <div class="flex items-center justify-between gap-2 flex-wrap">
               <label class="text-xs font-bold text-slate-800">
                 ${isDay5
-                  ? 'Resume Rencana Alur Video Day 5 (Peralatan yang Disorot & Poin Science, Technology, Engineering, Mathematics yang Dijelaskan):'
-                  : 'Resume Rencana Alur Video Day 6 (Rincian Modal/Laba Financial, Kendala Usaha & Ide Solusi Inovasi yang Dijelaskan):'} <span class="text-rose-600">*</span>
+                  ? 'Resume Rencana Alur Video Day 5 (Objek/Alat yang Disorot & Poin Sains serta Teknologi yang Dijelaskan):'
+                  : 'Resume Rencana Alur Video Day 6 (Rekayasa Kendala Lapangan & Rincian Modal BOP, HPP, Omzet, Laba yang Dijelaskan):'} <span class="text-rose-600">*</span>
               </label>
               <span id="counterVideoModD${dayNum}" class="text-[11px] font-bold text-slate-500">Min. 80 karakter</span>
             </div>
