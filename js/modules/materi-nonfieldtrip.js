@@ -277,7 +277,7 @@
       gradientClass: 'from-emerald-950 via-slate-900 to-teal-950 border-emerald-700/40',
       tagColorClass: 'bg-white/20 text-emerald-100',
       badgeColorClass: 'bg-amber-400 text-amber-950',
-      subtitle: 'Kajian Terpadu Integrasi Science, Technology, Engineering, dan Mathematics pada Sektor Pertanian Pangan, Perkebunan Rakyat, Perikanan Air Tawar, dan Peternakan Pedesaan Kabupaten OKU Timur',
+      subtitle: 'Kajian Terpadu Integrasi Science, Technology, Engineering, dan Mathematics pada 7 Sektor Unggulan Kabupaten OKU Timur (Pertanian Padi Sawah, Perkebunan Rakyat, Peternakan Rakyat, Perikanan Air Tawar, Agro-Industri Pangan, Perdagangan & Saprotan, dan Jasa Keuangan Mikro)',
       inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda dipersilakan <strong>meneliti 1 dari 7 Sektor Unggulan OKU Timur</strong> melalui 4 pilar STEM (Science, Technology, Engineering, Mathematics). Pilihan sektor secara otomatis mewarisi fokus pilihan Anda di Day 2, dan Anda juga dapat mengubah sektor secara fleksibel sesuai ketersediaan objek observasi di lapangan.',
       sectors: {
         pertanian: {
@@ -1802,8 +1802,11 @@
                   <span class="material-symbols-outlined text-xl">hub</span>
                 </span>
                 <div>
-                  <h3 class="font-black text-sm sm:text-base text-emerald-950 leading-tight">${dayNum === 4 ? 'Sektor Eksplorasi Peralatan &amp; Perlengkapan Kerja (Melanjutkan Pilihan Day 3):' : 'Pilih Sektor Riset Unggulan OKU Timur:'}</h3>
-                  <p class="text-xs text-emerald-800/90 font-medium">${dayNum === 4 ? 'Sistem otomatis mendeteksi sektor pilihan Anda di Day 3. Analisis peralatan kerja sektor ini dengan 4 dimensi STEM!' : 'Pilih 1 sektor yang paling relevan dengan lingkungan Anda untuk dianalisis melalui 4 pilar STEM'}</p>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h3 class="font-black text-sm sm:text-base text-emerald-950 leading-tight">${dayNum === 4 ? 'Sektor Eksplorasi Peralatan &amp; Perlengkapan Kerja (Melanjutkan Pilihan Day 3):' : 'Pilih 1 dari 7 Sektor Riset Unggulan OKU Timur:'}</h3>
+                    <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-400 text-amber-950 border border-amber-500 shadow-2xs">7 Sektor Tersedia</span>
+                  </div>
+                  <p class="text-xs text-emerald-800/90 font-medium mt-0.5">${dayNum === 4 ? 'Sistem otomatis mendeteksi sektor pilihan Anda di Day 3. Analisis peralatan kerja sektor ini dengan 4 dimensi STEM!' : 'Tersedia 7 pilihan sektor lengkap di bawah (Pertanian, Perkebunan, Peternakan, Perikanan, Agro-Industri, Perdagangan &amp; Saprotan, dan Jasa Keuangan Mikro). Silakan gulir/scroll ke bawah untuk memilih sektor yang diinginkan.'}</p>
                 </div>
               </div>
               <span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-600 text-white shadow-2xs">
