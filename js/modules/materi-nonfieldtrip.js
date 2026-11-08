@@ -1809,10 +1809,19 @@
               <span class="text-[11px] text-slate-500 font-medium text-justify">Seluruh kartu wajib mencapai minimal ${(dayNum === 3) ? '80' : '300'} karakter dan mencantumkan sumber rujukan.</span>
             </div>
             
-            <button type="button" id="btnSubmitNftMateriD${dayNum}" onclick="submitNftDayMateriUnified(${dayNum})" disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-300 text-slate-500 font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition-all shadow-xs">
-              <span class="material-symbols-outlined text-base">lock</span>
-              <span>Lengkapi 5 Kartu Terlebih Dahulu</span>
-            </button>
+            <div class="flex items-center gap-2.5 w-full sm:w-auto flex-wrap sm:flex-nowrap">
+              ${!isSubmitted ? `
+                <button type="button" id="btnSaveDraftNftMateriD${dayNum}" onclick="saveNftDraftManualUnified(${dayNum})" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-white hover:bg-slate-50 text-slate-800 border-2 border-slate-300 hover:border-slate-400 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs transition-all cursor-pointer active:scale-95">
+                  <span class="material-symbols-outlined text-base text-amber-600">bookmark</span>
+                  <span>Simpan Draf</span>
+                </button>
+              ` : ''}
+
+              <button type="button" id="btnSubmitNftMateriD${dayNum}" onclick="submitNftDayMateriUnified(${dayNum})" disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-300 text-slate-500 font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition-all shadow-xs">
+                <span class="material-symbols-outlined text-base">lock</span>
+                <span>Lengkapi ${(dayNum === 3) ? '4' : '5'} Kartu Terlebih Dahulu</span>
+              </button>
+            </div>
           </div>
         </form>
 
@@ -2046,6 +2055,30 @@
       saveNftDraftNowUnified(dayNum);
     }, 800);
   }
+
+  window.saveNftDraftManualUnified = function(dayNum) {
+    dayNum = parseInt(dayNum) || 1;
+    saveNftDraftNowUnified(dayNum);
+    const now = new Date();
+    const timeStr = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes()).padStart(2, '0');
+    if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+      FincestemCore.ui.toast(`✓ Draf Modul Day ${dayNum} berhasil disimpan (pukul ${timeStr})!`, 'success');
+    } else {
+      alert(`Draf Modul Day ${dayNum} berhasil disimpan!`);
+    }
+    const btn = document.getElementById(`btnSaveDraftNftMateriD${dayNum}`);
+    if (btn) {
+      const origHtml = btn.innerHTML;
+      btn.innerHTML = `<span class="material-symbols-outlined text-base text-emerald-600">check_circle</span><span class="text-emerald-800">Tersimpan (${timeStr})</span>`;
+      btn.classList.add('border-emerald-500', 'bg-emerald-50/50');
+      setTimeout(() => {
+        if (btn) {
+          btn.innerHTML = origHtml;
+          btn.classList.remove('border-emerald-500', 'bg-emerald-50/50');
+        }
+      }, 2500);
+    }
+  };
 
   function saveNftDraftNowUnified(dayNum) {
     dayNum = parseInt(dayNum) || 1;
