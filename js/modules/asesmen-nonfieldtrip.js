@@ -98,7 +98,7 @@
     const storageKey = isSecDay
       ? `fincestem_pkg_nft_asesmen_v3_d${dayNum}_${selectedSector}_${cleanNisn}`
       : `fincestem_pkg_nft_asesmen_v3_d${dayNum}_${cleanNisn}`;
-    const expectedLength = (dayNum === 0 || dayNum === 4) ? 10 : 50;
+    const expectedLength = (dayNum === 0 || dayNum === 4 || dayNum === 5 || dayNum === 6) ? 10 : 50;
     try {
       // Bersihkan cache paket v1 & v2 lama jika ada
       localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`);
@@ -233,8 +233,8 @@
       return pkgWithShuffledChoices;
     }
 
-        // KHUSUS DAY 4 (10 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
-    if (dayNum === 4) {
+        // KHUSUS DAY 4, DAY 5 & DAY 6 (10 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
+    if (dayNum === 4 || dayNum === 5 || dayNum === 6) {
       const chosen10 = [...allBank];
       const mixed10 = seededShuffle(chosen10, rng).slice(0, 10);
       const pkgWithShuffledChoices = mixed10.map((origQ, qIdx) => {
@@ -274,8 +274,8 @@
       return pkgWithShuffledChoices;
     }
 
-    // KHUSUS DAY 3, DAY 5 & DAY 6 (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
-    if (dayNum === 3 || dayNum === 5 || dayNum === 6) {
+    // KHUSUS DAY 3 (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
+    if (dayNum === 3) {
       const chosen50 = [...allBank];
       const mixed50 = seededShuffle(chosen50, rng).slice(0, 50);
       const pkgWithShuffledChoices = mixed50.map((origQ, qIdx) => {
@@ -424,7 +424,7 @@
     examState.markedDoubt = {};
     examState.currentIdx = 0;
     examState.startTime = null;
-    examState.durationSeconds = (dayNum === 0) ? 900 : ((dayNum === 4) ? 1200 : 3600); // 15 menit Day 0, 20 menit Day 4, 60 menit Day 1,2,3,5,6,7
+    examState.durationSeconds = (dayNum === 0) ? 900 : ((dayNum === 4 || dayNum === 5 || dayNum === 6) ? 1200 : 3600); // 15 menit Day 0, 20 menit Day 4,5,6, 60 menit Day 1,2,3,7
     examState.remainingSeconds = examState.durationSeconds;
     examState.violationCount = 0;
 
@@ -625,7 +625,7 @@
 
           const rawSummary = String(t.content || '');
           let correctCount = Math.round((sc / 100) * 50);
-          let totalQuestions = (dayNum === 0 || dayNum === 4) ? 10 : 50;
+          let totalQuestions = (dayNum === 0 || dayNum === 4 || dayNum === 5 || dayNum === 6) ? 10 : 50;
           let wrongCount = totalQuestions - correctCount;
           let durationMins = 28;
 
@@ -836,9 +836,9 @@
               : (isDay4
                   ? `Asesmen Jelajah Lapangan &amp; Distribusi: ${currentSectorName}`
                   : (isDay5
-                      ? `Asesmen Video Observasi &amp; STEM: ${currentSectorName}`
+                      ? `Asesmen Sains &amp; Teknologi Sektor: ${currentSectorName}`
                       : (isDay6
-                          ? `Asesmen Video Finansial &amp; Inovasi: ${currentSectorName}`
+                          ? `Asesmen Rekayasa &amp; Finansial Sektor: ${currentSectorName}`
                           : `Kuis Asesmen Kompetensi Day ${examState.dayNum}`)))));
     const examSubtitle = isDay0
       ? 'Uji coba pemahaman sistem, 4 pilar FINCESTEM, etika riset, dan pengenalan fitur ujian digital.'
@@ -849,9 +849,9 @@
               : (isDay4
                   ? `Uji pemahaman jelajah lingkungan, akses jalan, pasokan bahan baku, dan alur penjualan produk pada sektor ${currentSectorName} di OKU Timur (10 Soal PG).`
                   : (isDay5
-                      ? `Uji pemahaman observasi lapangan, peralatan kerja, dan penerapan 4 unsur STEM (Science, Technology, Engineering, Mathematics) pada video sektor ${currentSectorName}.`
+                      ? `Uji pemahaman penerapan sains bahan alami, nutrisi/biologi, dan teknologi alat kerja/mekanisasi pada sektor ${currentSectorName} di OKU Timur (10 Soal PG).`
                       : (isDay6
-                          ? `Uji kemampuan analisis kelayakan finansial (modal, biaya, laba), evaluasi risiko usaha, dan gagasan solusi inovasi FINCESTEM pada video sektor ${currentSectorName}.`
+                          ? `Uji pemahaman rekayasa teknis penanganan kendala, analisis biaya operasional, HPP, omzet, dan laba bersih pada sektor ${currentSectorName} di OKU Timur (10 Soal PG).`
                           : 'Uji pemahaman komprehensif berbasis 5 indikator literasi finansial &amp; potensi ekonomi OKU Timur.')))));
 
     root.innerHTML = `
@@ -908,7 +908,7 @@
               </div>
               <p class="text-[11px] text-slate-900 leading-tight font-semibold flex items-center gap-1">
                 <span class="material-symbols-outlined text-xs shrink-0 text-slate-950">info</span>
-                <span>Paket 50 butir soal spesifik otomatis diambil dari sektor observasi LKPD Day ${examState.dayNum} yang telah Anda pilih.</span>
+                <span>Paket ${(isDay0 || isDay4 || isDay5 || isDay6) ? "10" : "50"} butir soal spesifik otomatis diambil dari sektor observasi LKPD Day ${examState.dayNum} yang telah Anda pilih.</span>
               </p>
             </div>
           ` : ''}
@@ -924,12 +924,12 @@
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
               <span class="text-slate-400 text-[10.5px] font-bold uppercase">Jumlah Soal</span>
-              <strong class="text-sm text-slate-900 font-black">${(isDay0 || isDay4) ? "10 Soal PG" : "50 Soal PG"}</strong>
+              <strong class="text-sm text-slate-900 font-black">${(isDay0 || isDay4 || isDay5 || isDay6) ? "10 Soal PG" : "50 Soal PG"}</strong>
               <span class="text-[10.5px] text-slate-500">Pilihan Ganda (A - E)</span>
             </div>
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
               <span class="text-slate-400 text-[10.5px] font-bold uppercase">Durasi Waktu</span>
-              <strong class="text-sm text-teal-800 font-black">${(isDay0 || isDay4) ? (isDay0 ? "15 Menit" : "20 Menit") : "60 Menit"}</strong>
+              <strong class="text-sm text-teal-800 font-black">${(isDay0 || isDay4 || isDay5 || isDay6) ? (isDay0 ? "15 Menit" : "20 Menit") : "60 Menit"}</strong>
               <span class="text-[10.5px] text-slate-500">Mundur otomatis</span>
             </div>
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5 col-span-2 sm:col-span-1">
