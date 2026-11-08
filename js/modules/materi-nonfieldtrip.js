@@ -1794,8 +1794,10 @@
         </div>
 
         ${(dayNum === 3 || dayNum === 4) ? `
-          <!-- CARD PILIHAN SEKTOR KHUSUS DAY ${dayNum} (PERSONALIZED STEM TRACK) -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-emerald-50 via-teal-50/50 to-white border-2 border-emerald-500/50 shadow-sm flex flex-col gap-3.5">
+          <!-- CARD PILIHAN SEKTOR KHUSUS DAY ${dayNum} (RINGKAS & EKSPLISIT: SINGLE FOCUS CARD) -->
+          <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-br from-emerald-50 via-teal-50/40 to-white border-2 border-emerald-500/50 shadow-sm flex flex-col gap-3.5">
+            
+            <!-- HEADER & PANDUAN RINGKAS -->
             <div class="flex items-center justify-between gap-2 border-b border-emerald-200/80 pb-3 flex-wrap">
               <div class="flex items-center gap-2.5">
                 <span class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black text-lg shadow-xs">
@@ -1803,10 +1805,10 @@
                 </span>
                 <div>
                   <div class="flex items-center gap-2 flex-wrap">
-                    <h3 class="font-black text-sm sm:text-base text-emerald-950 leading-tight">${dayNum === 4 ? 'Sektor Eksplorasi Peralatan &amp; Perlengkapan Kerja (Melanjutkan Pilihan Day 3):' : 'Pilih 1 dari 7 Sektor Riset Unggulan OKU Timur:'}</h3>
+                    <h3 class="font-black text-sm sm:text-base text-emerald-950 leading-tight">${dayNum === 4 ? 'Sektor Eksplorasi Peralatan &amp; Perlengkapan Kerja:' : 'Pilih Sektor Riset Unggulan OKU Timur:'}</h3>
                     <span class="px-2.5 py-0.5 rounded-full text-[11px] font-black bg-amber-400 text-amber-950 border border-amber-500 shadow-2xs">7 Sektor Tersedia</span>
                   </div>
-                  <p class="text-xs text-emerald-800/90 font-medium mt-0.5">${dayNum === 4 ? 'Sistem otomatis mendeteksi sektor pilihan Anda di Day 3. Analisis peralatan kerja sektor ini dengan 4 dimensi STEM!' : 'Tersedia 7 pilihan sektor lengkap di bawah (Pertanian, Perkebunan, Peternakan, Perikanan, Agro-Industri, Perdagangan &amp; Saprotan, dan Jasa Keuangan Mikro). Silakan gulir/scroll ke bawah untuk memilih sektor yang diinginkan.'}</p>
+                  <p class="text-xs text-emerald-800/90 font-medium mt-0.5">${dayNum === 4 ? 'Pilih salah satu sektor di dropdown untuk menelaah peralatan kerjanya melalui 4 pilar STEM.' : 'Pilih salah satu sektor di menu dropdown di bawah. Kartu sektor terpilih akan otomatis tampil di bawahnya.'}</p>
                 </div>
               </div>
               <span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-600 text-white shadow-2xs">
@@ -1814,20 +1816,20 @@
               </span>
             </div>
 
-            <!-- DROPDOWN PEMILIH SEKTOR (PILIHAN CEPAT & EKSPLISIT) -->
-            <div class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-emerald-400 shadow-xs flex flex-col gap-2">
+            <!-- DROPDOWN UTAMA PEMILIH SEKTOR -->
+            <div class="p-3 sm:p-3.5 rounded-2xl bg-white border-2 border-emerald-400 shadow-xs flex flex-col gap-1.5">
               <div class="flex items-center justify-between gap-2 flex-wrap">
                 <label for="materiDay${dayNum}SectorSelect" class="font-black text-xs sm:text-sm text-emerald-950 flex items-center gap-2">
-                  <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
-                    <span class="material-symbols-outlined text-base">format_list_bulleted</span>
+                  <span class="w-6 h-6 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-sm">arrow_drop_down_circle</span>
                   </span>
-                  <span>Pilih Sektor Melalui Menu Dropdown:</span>
+                  <span>Pilih Sektor Riset Anda Melalui Dropdown:</span>
                 </label>
-                <span class="text-[11px] text-emerald-800 font-extrabold bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
-                  Bisa Diganti Kapan Saja
+                <span class="text-[10px] sm:text-[11px] text-emerald-800 font-extrabold bg-emerald-100 px-2 py-0.5 rounded-md border border-emerald-300">
+                  Bebas Ganti Sektor
                 </span>
               </div>
-              <select id="materiDay${dayNum}SectorSelect" onchange="${dayNum === 4 ? 'selectDay4Sector(this.value)' : 'selectDay3Sector(this.value)'}" class="w-full p-3 rounded-xl border-2 border-emerald-500 focus:border-emerald-700 bg-emerald-50/50 text-emerald-950 font-black text-xs sm:text-sm shadow-xs outline-none cursor-pointer transition-all">
+              <select id="materiDay${dayNum}SectorSelect" onchange="${dayNum === 4 ? 'selectDay4Sector(this.value)' : 'selectDay3Sector(this.value)'}" class="w-full p-3 rounded-xl border-2 border-emerald-500 focus:border-emerald-700 bg-emerald-50/40 text-emerald-950 font-black text-xs sm:text-sm shadow-xs outline-none cursor-pointer transition-all">
                 <option value="pertanian" ${selectedSector === 'pertanian' ? 'selected' : ''}>1. Sektor Pertanian Padi Sawah (Lumbung Pangan Komering)</option>
                 <option value="perkebunan" ${selectedSector === 'perkebunan' ? 'selected' : ''}>2. Sektor Perkebunan Rakyat (Karet &amp; Kelapa Sawit)</option>
                 <option value="peternakan" ${selectedSector === 'peternakan' ? 'selected' : ''}>3. Sektor Peternakan Rakyat OKU Timur (Sapi, Kambing &amp; Unggas)</option>
@@ -1836,14 +1838,11 @@
                 <option value="perdagangan" ${selectedSector === 'perdagangan' ? 'selected' : ''}>6. Sektor Perdagangan &amp; Saprotan (Kios Pupuk Bersubsidi, Grosir)</option>
                 <option value="formal" ${selectedSector === 'formal' ? 'selected' : ''}>7. Sektor Jasa Keuangan Mikro (Agen BRILink, BUMDes, Jasa Usaha)</option>
               </select>
-              <div class="flex items-center gap-1.5 text-[11px] text-slate-600 font-medium pt-0.5">
-                <span class="material-symbols-outlined text-sm text-emerald-600">info</span>
-                <span>Atau sentuh tombol <strong>"Pilih Sektor Ini"</strong> pada salah satu dari 7 kartu sektor di bawah:</span>
-              </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pt-1">
-              ${[
+            <!-- KARTU FOKUS TUNGGAL SEKTOR TERPILIH (HANYA 1 KARTU INI YANG TAMPIL - RAPI & TIDAK MEMENUHI LAYAR HP) -->
+            ${(() => {
+              const allSecs = [
                 { key: 'pertanian', name: 'Pertanian Padi Sawah', badge: dayNum === 4 ? 'Alsintan Sawah & RMU' : 'Lumbung Pangan Komering', icon: 'agriculture', desc: dayNum === 4 ? 'Traktor, Sprayer, Combine Harvester, RMU & APD Sawah dalam Analisis STEM' : 'Padi Sawah, Saluran Irigasi BK, Traktor/Combine & Ubinan HPP' },
                 { key: 'perkebunan', name: 'Perkebunan Rakyat', badge: dayNum === 4 ? 'Alat Sadap & Panen TBS' : 'Karet & Kelapa Sawit', icon: 'forest', desc: dayNum === 4 ? 'Pisau Sadap, Mangkok Lateks, Dodos, Egrek Teleskopik & Angkong dalam Analisis STEM' : 'Lateks Karet, Panen TBS Sawit, Rorak Lahan & Laba Pekebun' },
                 { key: 'peternakan', name: 'Peternakan Rakyat OKU Timur', badge: dayNum === 4 ? 'Mesin Chopper & Biogas' : 'Sapi, Kambing & Unggas', icon: 'pets', desc: dayNum === 4 ? 'Mesin Chopper Pakan, Drum Silase, Nipple Drinker, Brooder & Biogas dalam Analisis STEM' : 'Peternakan Sapi, Kambing, Unggas/Ayam, Chopper & Silase' },
@@ -1851,32 +1850,38 @@
                 { key: 'industri', name: 'Agro-Industri Pangan', badge: dayNum === 4 ? 'Mesin RMU & Boiler Tahu' : 'Pabrik RMU, Tahu & Kemplang', icon: 'precision_manufacturing', desc: dayNum === 4 ? 'Mesin Husker RMU, Polisher, Boiler Uap, Pemanggang Kemplang & Sealer dalam Analisis STEM' : 'Rendemen Beras RMU, Fermentasi Kedelai, Pemanggangan Kemplang & IPAL' },
                 { key: 'perdagangan', name: 'Perdagangan & Saprotan', badge: dayNum === 4 ? 'Aplikasi POS & Barcode' : 'Kios Saprotan & Grosir', icon: 'storefront', desc: dayNum === 4 ? 'Barcode Scanner POS, Timbangan Digital Platform, Racking Gudang & APD Logistik' : 'Distribusi Pupuk Bersubsidi, Aplikasi i-Pubers, Ergonomi Gudang & Margin ITO' },
                 { key: 'formal', name: 'Jasa Keuangan Mikro', badge: dayNum === 4 ? 'Mesin EDC & Detektor UV' : 'Agen BRILink & BUMDes', icon: 'account_balance', desc: dayNum === 4 ? 'Mesin EDC EMV, Fingerprint Scanner, UPS Back-Up Daya & Brankas Tahan Api' : 'Transmisi 4G/LTE, Kriptografi Chip Kartu, Likuiditas Panen & Inklusi Desa' }
-              ].map(sec => {
-                const isActive = (selectedSector === sec.key);
-                const clickHandler = dayNum === 4 ? `selectDay4Sector('${sec.key}')` : `selectDay3Sector('${sec.key}')`;
-                return `
-                  <div onclick="${clickHandler}" class="p-3.5 sm:p-4 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-2.5 ${isActive ? 'bg-white border-emerald-600 ring-2 ring-emerald-500/30 shadow-md' : 'bg-white/80 border-slate-200 hover:border-teal-400 hover:bg-white shadow-2xs'}">
-                    <div class="flex items-start justify-between gap-2">
-                      <div class="w-10 h-10 rounded-xl ${isActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center shrink-0 shadow-2xs">
+              ];
+              const sec = allSecs.find(s => s.key === selectedSector) || allSecs[0];
+              return `
+                <div class="p-4 sm:p-5 rounded-2xl bg-white border-2 border-emerald-500 ring-2 ring-emerald-500/20 shadow-sm flex flex-col gap-3">
+                  <div class="flex items-start justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-12 h-12 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
                         <span class="material-symbols-outlined text-2xl">${sec.icon}</span>
                       </div>
-                      <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isActive ? 'bg-emerald-100 text-emerald-950 border border-emerald-300' : 'bg-slate-100 text-slate-600'}">${sec.badge}</span>
-                    </div>
-                    <div class="flex flex-col min-w-0">
-                      <h4 class="font-black text-xs sm:text-sm text-slate-900 leading-tight">${sec.name}</h4>
-                      <p class="text-[11px] text-slate-500 leading-relaxed mt-0.5 line-clamp-2">${sec.desc}</p>
-                    </div>
-                    <div class="pt-2 border-t border-slate-100 flex flex-col gap-1.5">
-                      <div class="w-full py-2 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs ${isActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-300 hover:border-emerald-500'}">
-                        <span class="material-symbols-outlined text-base">${isActive ? 'check_circle' : 'ads_click'}</span>
-                        <span>${isActive ? '✓ Sektor Terpilih (Aktif)' : '👉 Klik / Pilih Sektor Ini'}</span>
+                      <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                          <h4 class="font-black text-sm sm:text-base text-slate-900 leading-tight">${sec.name}</h4>
+                          <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-100 text-emerald-950 border border-emerald-300">${sec.badge}</span>
+                        </div>
+                        <p class="text-xs text-slate-600 font-medium mt-1 leading-relaxed">${sec.desc}</p>
                       </div>
-                      ${isActive ? '<span class="text-[10px] text-center text-slate-500 font-medium">Klik kartu lain jika ingin beralih sektor</span>' : ''}
                     </div>
                   </div>
-                `;
-              }).join('')}
-            </div>
+
+                  <div class="pt-2.5 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div class="py-2 px-3 rounded-xl bg-emerald-600 text-white font-black text-xs flex items-center justify-center gap-1.5 shadow-xs">
+                      <span class="material-symbols-outlined text-base">check_circle</span>
+                      <span>✓ Sektor Aktif Terpilih (Siap Diteliti)</span>
+                    </div>
+                    <span class="text-[11px] text-slate-500 font-medium text-center sm:text-right">
+                      Ingin beralih ke sektor lain? Cukup pilih sektor baru di dropdown atas.
+                    </span>
+                  </div>
+                </div>
+              `;
+            })()}
+
           </div>
         ` : ''}
 
