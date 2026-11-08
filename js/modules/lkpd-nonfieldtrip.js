@@ -3899,59 +3899,65 @@
 
   
 
+// =========================================================================
+  // INSTRUMEN LKPD DAY 4 NON-FIELD TRIP: JELAJAH LAPANGAN & ALUR DISTRIBUSI SEKTOR
+  // 7 Sektor Unggulan OKU Timur • Ramah Siswa SMA • 5 Bagian Praktis
   // =========================================================================
-  // INSTRUMEN LKPD DAY 4: PILAR EXPLORATION (EKSPLORASI PERALATAN & STEM)
-  // =========================================================================
-  const NFT_DAY4_TOOL_GUIDE = {
+
+  const NFT_DAY4_EXPLORATION_GUIDE = {
     pertanian: {
       key: 'pertanian',
       name: 'Pertanian Padi Sawah & Tanaman Pangan',
       icon: 'agriculture',
-      badge: 'Alsintan Sawah & RMU Padi',
-      examples: 'Traktor Tangan (Hand Tractor), Traktor Roda 4, Rice Transplanter, Knapsack Sprayer Elektrik, Drone Sprayer, Pompa Irigasi, Power Thresher, Combine Harvester, atau Mesin Penggilingan Padi (RMU)',
-      apdExamples: 'Sepatu boot lumpur, masker respirator pestisida, sarung tangan karet/kain, topi caping/pelindung UV, kacamata kerja, wearpack lengan panjang',
-      sciencePrompt: 'Jelaskan prinsip Fisika, Kimia, dan Biologi pada alat yang Anda amati! (Contoh: bagaimana roda crawler/besi memperluas bidang tekan P = F/A agar tidak amblas di lumpur sawah, prinsip tekanan fluida & atomisasi nozzle sprayer, gaya sentrifugal & hembusan blower pada thresher/combine yang memisahkan gabah bernas dari gabah hampa, atau pengendalian kadar air 14% pada dryer untuk mencegah jamur biologis).',
-      techPrompt: 'Jelaskan teknologi mesin, sumber penggerak, transmisi, dan sensor pada alat tersebut! (Contoh: motor diesel 4-tak berpendingin air, sistem hidrolik pengangkat header combine, pompa diafragma elektrik bertenaga baterai Lithium 12V pada sprayer, transmisi gearbox/V-belt, atau sensor digital Grain Moisture Meter).',
-      engPrompt: 'Jelaskan rancang bangun mekanis (Engineering), desain sudut komponen, ergonomi operator, serta cara perawatannya! (Contoh: desain lengkungan bajak singkal/rotary, mekanisme pisau cutter bar bolak-balik, ergonomi gendongan sprayer/tuas kemudi traktor, serta cara mengatasi kendala selip sabuk, macet lumpur, atau pengasahan mata pisau).',
-      mathPrompt: 'Tuliskan perhitungan Matematika kapasitas kerja alat, konsumsi BBM/energi, dan perbandingan efisiensi biaya memakai alat tersebut dibandingkan cara manual! (Contoh: berapa jam waktu kerja per hektar, berapa liter konsumsi solar/bensin per hektar, berapa persen pengurangan susut tercecer/losses, dan berapa Rupiah penghematan biaya sewa alat dibandingkan upah tenaga buruh manual).'
+      badge: 'Jelajah Sawah & Saluran Irigasi',
+      desc: 'Observasi akses jalan usaha tani, hamparan persawahan irigasi BK, pasokan pupuk/benih, dan rute pengangkutan panen gabah.'
     },
     perkebunan: {
       key: 'perkebunan',
-      name: 'Perkebunan Karet & Kelapa Sawit',
+      name: 'Perkebunan Rakyat (Karet & Kelapa Sawit)',
       icon: 'forest',
-      badge: 'Alat Sadap Karet & Panen TBS Sawit',
-      examples: 'Pisau Sadap Karet (Jebong/Tarik/Dorong), Mangkok & Talang Lateks, Bak Koagulasi Karet, Dodos Sawit, Egrek Galah Teleskopik (Aluminium/Fiber), Tojok Besi, Gerobak Angkong Kebun, Mesin Potong Rumput (Brush Cutter), atau Timbangan Digital TBS',
-      apdExamples: 'Helm safety pelindung kejatuhan TBS/pelepah, kacamata safety anti-serbuk/duri, sepatu boot kebun, sarung tangan kulit tebal, lampu kepala (headlamp) sadap subuh',
-      sciencePrompt: 'Jelaskan prinsip Fisika, Kimia, dan Biologi pada alat yang Anda amati! (Contoh: biologi anatomi jaringan pembuluh lateks & perlindungan kambium batang karet saat diiris pisau sadap, reaksi kimia penurunan pH lateks dengan asam semut di bak pembeku, atau fisika momen gaya/torsi galah egrek dan pesawat sederhana tuas jenis kedua pada gerobak angkong/tojok).',
-      techPrompt: 'Jelaskan teknologi material, mekanisme pengunci, dan mesin pada peralatan tersebut! (Contoh: metalurgi baja karbon tinggi/spring steel pada bilah egrek/dodos/pisau sadap, teknologi pipa galah Aluminium Alloy atau Carbon Fiber teleskopik 2–3 tingkat, mesin potong rumput 4-tak, atau sensor load cell pada timbangan digital TBS).',
-      engPrompt: 'Jelaskan rancang bangun mekanis (Engineering), geometri sudut mata alat, ergonomi kerja, serta cara perawatannya! (Contoh: desain paruh V/U pada pisau sadap untuk menjaga ketebalan irisan 1,5 mm dengan sudut sadap 30°–45°, sudut lengkung sabit egrek pengait pelepah sawit, keseimbangan roda angkong di jalan kebun, serta teknik pengasahan menggunakan batu asah air).',
-      mathPrompt: 'Tuliskan perhitungan Matematika kapasitas panen/sadap, konsumsi kulit/energi, dan efisiensi biaya peralatan tersebut! (Contoh: berapa jumlah pohon karet yang disadap per jam & konsumsi kulit per tahun [1,5 mm x hari sadap], berapa tonase TBS sawit yang terpanen/terangkut per hari dengan egrek & angkong, serta perhitungan harga beli alat dan berapa lama kembali modal/BEP).'
-    },
-    perikanan: {
-      key: 'perikanan',
-      name: 'Budidaya Perikanan Air Tawar (Patin & Lele)',
-      icon: 'phishing',
-      badge: 'Aerator, Pompa & Alat Kualitas Air',
-      examples: 'Pompa Air Sentrifugal/Submersible, Kincir Air (Paddle Wheel Aerator), Blower Aerasi (Hi-Blow & Selang Uniring), Pipa Sifon/Central Drain, pH Meter & TDS/Thermometer Digital, Mesin Pencetak Pelet (Pelletizer), Auto-Feeder, atau Bak Grading Sortir & Jaring Panen',
-      apdExamples: 'Sepatu boot karet/waders kolam anti-air, sarung tangan karet kedap air, topi lapangan, apron pelindung air, kacamata pelindung',
-      sciencePrompt: 'Jelaskan prinsip Fisika, Kimia, dan Biologi pada alat perikanan yang Anda amati! (Contoh: fisika & kimia difusi gas oksigen terlarut DO > 4 mg/L dan pelepasan gas amonia NH3 melalui percikan kincir/gelembung aerator, hukum tekanan hidrostatis P = rho.g.h pada pipa central drain pembuang lumpur dasar, kimia elektroda ion H+ pada pH meter, atau pencegahan kanibalisme biologis lele dengan bak grading).',
-      techPrompt: 'Jelaskan teknologi motor penggerak, membran/pori, dan sensor digital pada alat tersebut! (Contoh: motor induksi kedap air pada pompa submersible, membran elektromagnetik hi-blow dengan selang nanopori uniring, sensor mikroelektronik pada pH/TDS meter digital, ulir ekstruder pemanas pada mesin pelet apung, atau timer digital pada auto-feeder).',
-      engPrompt: 'Jelaskan rancang bangun mekanis (Engineering), desain hidrodinamika/konstruksi alat, serta cara perawatannya! (Contoh: desain kemiringan dasar kolam menuju central drain & pipa standpipe pengatur tinggi air, sudut daun kipas kincir pencipta arus melingkar, ukuran lubang cetakan die mesin pelet [2–4 mm], atau kisi-kisi halus bak grading & jaring knotless agar lendir ikan tidak lecet).',
-      mathPrompt: 'Tuliskan perhitungan Matematika kapasitas debit/energi alat, rasio pakan (FCR), dan efisiensi biaya operasionalnya! (Contoh: perhitungan volume air kolam [p x l x t] dibagi debit pompa untuk mencari lama waktu pengisian air, kalkulasi biaya listrik kWh bulanan aerator/pompa [Watt x Jam / 1000 x Tarif], atau penghematan biaya Rp/kg mencetak pelet sendiri vs pakan pabrik).'
+      badge: 'Jelajah Kebun & Rute Angkut',
+      desc: 'Observasi jalan rintis kebun, drainase lahan, pasokan pupuk/obat herbisida, dan jalur pengiriman getah karet atau buah sawit.'
     },
     peternakan: {
       key: 'peternakan',
-      name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba & Unggas: Ayam/Bebek)',
+      name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing & Ayam)',
       icon: 'pets',
-      badge: 'Alat & Mesin Peternakan Terpadu OKU Timur',
-      examples: 'Mesin Pencacah Rumput/Hijauan (Chopper Machine), Drum Fermentasi Silase, Timbangan Palet Sapi / Timbangan Gantung Digital Unggas, Pita Ukur Bobot (Rondo), Instalasi Minum Otomatis (Nipple Drinker Unggas & Automatic Waterer Sapi/Kambing), Pemanas Anak Ayam (Brooder Gasolec/Listrik), Kandang Panggung Kambing, Reaktor Biogas, Tempat Telur (Egg Tray), atau Spuit Vaksin Ternak Socorex & Gun Inseminasi Buatan (IB)',
-      apdExamples: 'Sepatu boot kandang anti-slip, masker respirator penangkal gas amonia & debu pakan, sarung tangan lateks/karet, wearpack biosekuriti, kacamata pelindung saat mencacah rumput',
-      sciencePrompt: 'Jelaskan prinsip Fisika, Kimia, dan Biologi pada alat peternakan yang Anda amati! (Contoh: biologi perluasan permukaan serat rumput hasil cacahan mesin chopper agar mudah dicerna mikroba rumen sapi atau tembolok ayam, biokimia fermentasi anaerob bakteri asam laktat di drum silase jerami padi, fisika katup tekanan air nipple drinker agar sekam kering bebas amonia, termodinamika radiasi pemanas brooder DOC, atau biokimia metanogenesis CH4 pada reaktor biogas kotoran ternak).',
-      techPrompt: 'Jelaskan teknologi mesin penggerak, sistem otomasi, atau bioteknologi pada peralatan tersebut! (Contoh: motor bensin/diesel 5,5–7 HP dengan transmisi puli V-belt pada mesin chopper, regulator tekanan air & medikator otomatis pada perpipaan nipple drinker, thermostat pengatur kipas exhaust kandang, atau termos kriogenik nitrogen cair -196°C pada peralatan Inseminasi Buatan).',
-      engPrompt: 'Jelaskan rancang bangun mekanis (Engineering), konstruksi pisau/kandang/reaktor, ergonomi, serta cara perawatannya! (Contoh: susunan pisau baja karbon miring pada roda gila/flywheel mesin chopper dan corong lontar sentrifugal, desain lantai panggung bilah kayu/bambu kandang kambing berjarak 1,5 cm agar kotoran jatuh, kemiringan lantai kandang sapi 2°–5° menuju selokan bio-slurry, pengaturan tinggi pipa nipple sesuai umur ayam, atau konstruksi kubah beton kedap gas pada biodigester).',
-      mathPrompt: 'Tuliskan perhitungan Matematika kapasitas kerja alat, kebutuhan ransum/ADG, dan perbandingan efisiensi biaya memakai alat tersebut! (Contoh: kapasitas cacah mesin chopper [600–1.000 kg rumput/jam dengan ±1 liter bensin] dibandingkan sabit manual, perhitungan ransum harian 10% bobot badan sapi atau FCR ayam broiler 1,5–1,6, estimasi bobot dengan rumus Schrool & ADG, atau penghematan tabung LPG dari instalasi biogas).'
+      badge: 'Jelajah Kandang & Lingkungan',
+      desc: 'Observasi posisi kandang ternak, pasokan air minum, ketersediaan pakan hijauan/dedak, dan proses penjualan hewan ternak.'
+    },
+    perikanan: {
+      key: 'perikanan',
+      name: 'Perikanan Air Tawar (Sentra Patin & Lele Belitang)',
+      icon: 'phishing',
+      badge: 'Jelajah Kolam & Sumber Air',
+      desc: 'Observasi akses jalan ke kolam, sumber pasokan air irigasi, pasokan pakan pelet, dan pengangkutan panen ikan segar hidup.'
+    },
+    industri: {
+      key: 'industri',
+      name: 'Agro-Industri Pangan (RMU, Tahu & Kemplang)',
+      icon: 'precision_manufacturing',
+      badge: 'Jelajah Pengolahan & Distribusi',
+      desc: 'Observasi lokasi tempat pengolahan, kelancaran pasokan air bersih/daya listrik, pasokan bahan baku, dan distribusi ke pasar.'
+    },
+    perdagangan: {
+      key: 'perdagangan',
+      name: 'Perdagangan & Saprotan (Kios Pupuk, Bibit & Sembako)',
+      icon: 'storefront',
+      badge: 'Jelajah Letak Kios & Pasar',
+      desc: 'Observasi letak strategis kios di persimpangan jalan poros desa, pasokan barang dari distributor, dan kenyamanan pembeli.'
+    },
+    formal: {
+      key: 'formal',
+      name: 'Jasa Keuangan Mikro (Agen BRILink, BUMDes & Jasa)',
+      icon: 'account_balance',
+      badge: 'Jelajah Layanan & Akses Warga',
+      desc: 'Observasi gerai transaksi keuangan di tengah desa, keamanan tempat, kestabilan sinyal/daya listrik, dan perputaran uang tunai.'
     }
   };
+  window.NFT_DAY4_EXPLORATION_GUIDE = NFT_DAY4_EXPLORATION_GUIDE;
+  // Fallback untuk backward compatibility
+  window.NFT_DAY4_TOOL_GUIDE = NFT_DAY4_EXPLORATION_GUIDE;
 
   function renderNonFieldTripDay4LKPD(isReadOnly) {
     const mainEl = document.querySelector('main');
@@ -3966,7 +3972,20 @@
       ? FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass)
       : (u.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
-    // Cek data tersimpan resmi atau draf
+    // Cek kuncian modul Day 4
+    let hasMateri = false;
+    try {
+      const mD4 = localStorage.getItem('fincestem_materi_d4_' + cleanNisn);
+      if (mD4) {
+        const pm = JSON.parse(mD4);
+        if (pm && (pm.submitted || pm.is_submitted || pm.submitted_at)) hasMateri = true;
+      }
+    } catch(e) {}
+    if (!hasMateri && window.currentStudentProgress && window.currentStudentProgress.task_map && window.currentStudentProgress.task_map['4_materi']) {
+      hasMateri = true;
+    }
+
+    // Ambil data tersimpan resmi atau draf
     let saved = null;
     try {
       const raw = localStorage.getItem('fincestem_lkpd_nft_day4_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day4_' + cleanNisn);
@@ -3980,42 +3999,70 @@
     }
     saved = saved || {};
 
-    // Deteksi sektor pilihan siswa (otomatis terhubung dari Day 3 / Modul Day 4)
+    const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
+    const finalReadOnly = !!(isReadOnly || isSubmitted);
+    const readOnlyAttr = finalReadOnly ? 'readonly' : '';
+    const disabledAttr = finalReadOnly ? 'disabled' : '';
+
+    const isTesterD4 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
+    const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTesterD4);
+
+    // Deteksi sektor pilihan siswa (terhubung otomatis dari Day 3 / Modul Day 4)
     const defaultSector = saved.sectorKey ||
       localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) ||
       localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) ||
       'pertanian';
-    const selectedSector = NFT_DAY4_TOOL_GUIDE[defaultSector] ? defaultSector : 'pertanian';
-    const guide = NFT_DAY4_TOOL_GUIDE[selectedSector];
-    let d4CurDistrict = normalizeDistrictName(saved.district || '');
-    if (!d4CurDistrict && saved.location) {
-      d4CurDistrict = OKU_TIMUR_DISTRICTS.find(function(d) { return String(saved.location).toLowerCase().includes(d.toLowerCase()); }) || '';
+    const selectedSector = NFT_DAY4_EXPLORATION_GUIDE[defaultSector] ? defaultSector : 'pertanian';
+    const guide = NFT_DAY4_EXPLORATION_GUIDE[selectedSector];
+
+    const val = (k, fallback) => (saved[k] !== undefined && saved[k] !== null) ? saved[k] : (fallback || '');
+    let d4CurDistrict = normalizeDistrictName(val('district') || '');
+    if (!d4CurDistrict && val('location')) {
+      d4CurDistrict = OKU_TIMUR_DISTRICTS.find(d => String(val('location')).toLowerCase().includes(d.toLowerCase())) || '';
     }
 
-    const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
-    const readOnlyMode = isReadOnly || isSubmitted;
-
-    // Backward compatibility fallback jika ada data lama
-    const valMainTools = saved.mainTools || saved.techInventory || '';
-    const valSupportTools = saved.supportTools || '';
-    const valScience = saved.scienceAnalysis || saved.gravity || '';
-    const valTech = saved.technologyAnalysis || saved.physical || '';
-    const valEng = saved.engineeringAnalysis || saved.p3a || '';
-    const valMath = saved.mathematicsAnalysis || '';
-    const valConstraints = saved.toolConstraints || '';
-    const valInnovation = saved.studentInnovation || saved.solution || '';
+    // Backward compatibility fallback untuk catatan isian
+    const valRoadNotes = val('roadNotes') || val('toolConstraints') || '';
+    const valEnvNotes = val('envNotes') || val('scienceAnalysis') || '';
+    const valSupplyNotes = val('supplyNotes') || val('technologyAnalysis') || '';
+    const valConclusion = val('conclusion') || val('studentInnovation') || '';
 
     mainEl.innerHTML = `
       <div class="max-w-4xl mx-auto px-3 sm:px-4 py-6 space-y-6">
-        <!-- Banner Header -->
+
+        <!-- BANNER PERINGATAN JIKA PRASYARAT MODUL BELUM TUNTAS -->
+        ${isLockedByPrereq ? `
+          <div class="bg-amber-500/15 border-2 border-amber-400 rounded-3xl p-5 sm:p-6 text-amber-950 flex flex-col gap-3 shadow-sm animate-pulse-once">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                <span class="material-symbols-outlined text-2xl">lock</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Alur Wajib Berurutan Day 4</span>
+                <h3 class="text-base sm:text-lg font-black text-amber-950">LKPD Day 4 Masih Terkunci!</h3>
+              </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+              Sesuai alur kurikulum FINCESTEM Day 4, Anda <strong>wajib menuntaskan 4 Kartu Riset Mandiri di Modul Belajar</strong> sebelum dapat mengisi Lembar Kerja Jelajah Lapangan ini.
+            </p>
+            <div class="pt-1">
+              <a href="materi.html?day=4" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-emerald-800 hover:bg-emerald-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm inline-flex items-center justify-center gap-2 shadow-md transition-all">
+                <span class="material-symbols-outlined text-base">menu_book</span>
+                <span>Buka &amp; Tuntaskan Modul Jelajah Day 4 Sekarang</span>
+              </a>
+            </div>
+          </div>
+        ` : ''}
+
+        <!-- BANNER HEADER -->
         <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-emerald-950 via-slate-900 to-cyan-950 text-white border border-emerald-700/40 shadow-xl relative overflow-hidden">
           <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-emerald-200 text-xs font-black uppercase tracking-wider mb-2">
-                <span>🛠️ DAY 4 • PILAR EXPLORATION (STEM IN ACTION)</span>
+                <span>🗺️ DAY 4 • PILAR EXPLORATION (JELAJAH LAPANGAN)</span>
               </div>
-              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Eksplorasi Peralatan, Perlengkapan Kerja &amp; Analisis 4 Dimensi STEM</h1>
-              <p class="text-xs sm:text-sm text-emerald-200/90 mt-1">Menganalisis peralatan &amp; perlengkapan pada sektor pilihan Day 3 serta mengaitkannya dengan Science, Technology, Engineering &amp; Mathematics</p>
+              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Jelajah Lingkungan &amp; Alur Distribusi Sektor</h1>
+              <p class="text-xs sm:text-sm text-emerald-200/90 mt-1">Mengamati kondisi jalan, lingkungan sekitar, asal pasokan bahan, dan jalur penjualan produk di OKU Timur</p>
             </div>
             <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-right shrink-0">
               <div class="text-[11px] text-emerald-200 font-medium">Peserta Didik:</div>
@@ -4031,315 +4078,477 @@
             <div class="flex items-center gap-3">
               <span class="material-symbols-outlined text-emerald-700 text-2xl">verified</span>
               <div>
-                <h4 class="font-extrabold text-xs sm:text-sm text-emerald-950">LKPD Eksplorasi Peralatan &amp; STEM Day 4 Telah Berhasil Diserahkan!</h4>
-                <p class="text-[11px] text-emerald-800">Tersimpan resmi pada sistem pembinaan fasilitator. Anda dapat melanjutkan ke Asesmen atau Dokumentasi Foto Day 4.</p>
+                <h4 class="font-extrabold text-xs sm:text-sm text-emerald-950">LKPD Jelajah Lapangan Day 4 Telah Berhasil Diserahkan Resmi!</h4>
+                <p class="text-[11px] text-emerald-800">Tersimpan aman pada sistem pembinaan fasilitator. Anda dapat melanjutkan ke Kuis Asesmen Day 4.</p>
               </div>
             </div>
             <a href="asesmen.html?day=4" class="px-4 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white text-xs font-black flex items-center justify-center gap-1.5 shrink-0 shadow-xs">
-              <span>Lanjut Asesmen Day 4</span>
+              <span>Lanjut Asesmen Day 4 (10 Soal PG)</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </a>
           </div>
         ` : ''}
 
-        <!-- Pilihan Sektor (Terhubung Otomatis dari Day 3) -->
+        <!-- PILIHAN SEKTOR UNGGULAN (7 SEKTOR OKU TIMUR) -->
         <div class="p-5 rounded-3xl bg-gradient-to-br from-emerald-50 via-teal-50/40 to-white border-2 border-emerald-500/50 shadow-sm space-y-3.5">
           <div class="flex items-center justify-between gap-2 flex-wrap border-b border-emerald-200/80 pb-3">
             <div class="flex items-center gap-2.5">
               <span class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center font-black shadow-xs">
-                <span class="material-symbols-outlined text-xl">construction</span>
+                <span class="material-symbols-outlined text-xl">${guide.icon}</span>
               </span>
               <div>
-                <h3 class="font-black text-sm sm:text-base text-emerald-950 leading-tight">Sektor Eksplorasi Peralatan Pilihan Anda (Lanjutan Day 3):</h3>
-                <p class="text-xs text-emerald-800/90 font-medium">Pilih atau pastikan sektor di bawah ini sesuai dengan peralatan yang Anda amati di lapangan</p>
+                <span class="text-[10.5px] font-black uppercase text-emerald-800 tracking-wider">Sektor Unggulan Terpilih Day 4</span>
+                <h3 class="font-black text-sm sm:text-base text-slate-900">${guide.name}</h3>
               </div>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-black bg-emerald-600 text-white shadow-2xs">
-              Sektor Aktif: ${escapeHtml(guide.name)}
+            <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300">
+              ${guide.badge}
             </span>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-            ${Object.values(NFT_DAY4_TOOL_GUIDE).map(sec => {
-              const isAct = (sec.key === selectedSector);
-              return `
-                <div onclick="${readOnlyMode ? '' : `onNftDay4SectorChange('${sec.key}')`}" class="p-3 rounded-2xl border-2 transition-all ${readOnlyMode ? 'cursor-default' : 'cursor-pointer'} flex flex-col justify-between gap-2 ${isAct ? 'bg-white border-emerald-600 ring-2 ring-emerald-500/30 shadow-md' : 'bg-white/80 border-slate-200 hover:border-teal-400'}">
-                  <div class="flex items-center justify-between gap-2">
-                    <span class="w-8 h-8 rounded-xl ${isAct ? 'bg-emerald-600 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center">
-                      <span class="material-symbols-outlined text-lg">${sec.icon}</span>
-                    </span>
-                    <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold ${isAct ? 'bg-emerald-100 text-emerald-950 border border-emerald-300' : 'bg-slate-100 text-slate-600'}">${sec.badge}</span>
-                  </div>
-                  <div>
-                    <h4 class="font-black text-xs text-slate-900 leading-snug">${sec.name}</h4>
-                  </div>
-                  <div class="text-[10.5px] font-bold ${isAct ? 'text-emerald-700 font-extrabold' : 'text-slate-400'} flex items-center justify-between pt-1 border-t border-slate-100">
-                    <span>${isAct ? '✓ Sektor Terpilih' : 'Klik untuk Pilih'}</span>
-                    <span class="material-symbols-outlined text-xs">${isAct ? 'check_circle' : 'touch_app'}</span>
-                  </div>
-                </div>
-              `;
-            }).join('')}
+          <div class="flex flex-col gap-1.5">
+            <label class="text-xs font-bold text-slate-700 flex items-center justify-between">
+              <span>Ganti Sektor Jelajah Lapangan (Jika Berbeda dari Day 3):</span>
+              <span class="text-[10px] text-slate-400 font-semibold">Tersinkron otomatis</span>
+            </label>
+            <select id="nftD4_sectorKey" ${disabledAttr} onchange="onNftDay4SectorChange(this.value)" class="w-full p-3 rounded-2xl border-2 border-emerald-500 bg-white font-black text-xs sm:text-sm text-emerald-950 focus:ring-2 focus:ring-emerald-500/30 outline-none cursor-pointer shadow-2xs">
+              <option value="pertanian" ${selectedSector === 'pertanian' ? 'selected' : ''}>1. Sektor Pertanian Padi Sawah &amp; Tanaman Pangan</option>
+              <option value="perkebunan" ${selectedSector === 'perkebunan' ? 'selected' : ''}>2. Sektor Perkebunan Rakyat (Karet &amp; Kelapa Sawit)</option>
+              <option value="peternakan" ${selectedSector === 'peternakan' ? 'selected' : ''}>3. Sektor Peternakan Rakyat OKU Timur (Sapi, Kambing &amp; Ayam)</option>
+              <option value="perikanan" ${selectedSector === 'perikanan' ? 'selected' : ''}>4. Sektor Perikanan Air Tawar (Sentra Patin &amp; Lele Belitang)</option>
+              <option value="industri" ${selectedSector === 'industri' ? 'selected' : ''}>5. Sektor Agro-Industri Pangan (Pabrik RMU, Tahu &amp; Kemplang)</option>
+              <option value="perdagangan" ${selectedSector === 'perdagangan' ? 'selected' : ''}>6. Sektor Perdagangan &amp; Saprotan (Kios Pupuk, Bibit &amp; Sembako)</option>
+              <option value="formal" ${selectedSector === 'formal' ? 'selected' : ''}>7. Sektor Jasa Keuangan Mikro (Agen BRILink, BUMDes &amp; Jasa)</option>
+            </select>
+            <p class="text-[11px] text-slate-500 italic mt-0.5">${guide.desc}</p>
           </div>
-          <input type="hidden" id="nftD4SectorKey" value="${escapeHtml(selectedSector)}">
         </div>
 
-        <form id="formNftLkpdDay4" onsubmit="event.preventDefault(); submitNonFieldTripDay4LKPD();" class="space-y-6">
-          <!-- BLOK 1: IDENTIFIKASI PERALATAN, PERLENGKAPAN & LOKASI PENGAMATAN -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
-              <h3 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
-                <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-xs">1</span>
-                <span>Identifikasi Peralatan, Perlengkapan Kerja &amp; Lokasi Eksplorasi</span>
-              </h3>
-              <span class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-teal-50 text-teal-800 border border-teal-200">Bagian 1</span>
-            </div>
+        <!-- FORM ISIAN LKPD DAY 4 -->
+        <form id="formNftLkpdDay4" onsubmit="return false;" class="space-y-6">
 
-            <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 text-xs text-slate-700 space-y-1">
-              <div class="font-bold text-slate-900 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm text-teal-700">handyman</span>
-                <span>Contoh Peralatan &amp; Mesin pada Sektor ${escapeHtml(guide.name)}:</span>
+          <!-- KARTU 1: BAGIAN A — LOKASI & AKSES JALAN -->
+          <div id="cardBoxLkpdD4_1" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs space-y-4 transition-all">
+            <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-2xl bg-teal-100 text-teal-900 flex items-center justify-center font-black text-sm shrink-0">A</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Bagian A — Identitas Lokasi &amp; Akses Jalan</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Mencatat letak tempat usaha, jarak tempuh, dan kondisi jalan angkut</span>
+                </div>
               </div>
-              <p class="text-[11.5px] text-slate-600 leading-relaxed">${escapeHtml(guide.examples)}</p>
-              <p class="text-[11px] text-teal-800 font-semibold pt-1">Perlengkapan Keselamatan (APD): ${escapeHtml(guide.apdExamples)}</p>
+              <span id="badgeCardStatusLkpdD4_1" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div>
-                <label class="block text-xs font-bold text-slate-800 mb-1">Wilayah Kecamatan di OKU Timur: <span class="text-rose-600">*</span></label>
-                <select id="nftD4District" ${readOnlyMode ? 'disabled' : ''} onchange="onNftDay4DistrictChange(this.value)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-bold">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Kecamatan di OKU Timur: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_district" ${disabledAttr} onchange="onNftDay4DistrictChange(this.value)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 text-xs font-semibold text-slate-800 bg-white">
                   <option value="">-- Pilih Kecamatan di OKU Timur --</option>
-                  ${OKU_TIMUR_DISTRICTS.map(kec => `
-                    <option value="${kec}" ${(d4CurDistrict === kec || normalizeDistrictName(d4CurDistrict) === kec) ? 'selected' : ''}>Kecamatan ${kec}</option>
-                  `).join('')}
+                  ${OKU_TIMUR_DISTRICTS.map(d => `<option value="${d}" ${d4CurDistrict.toLowerCase() === d.toLowerCase() ? 'selected' : ''}>${d}</option>`).join('')}
                 </select>
               </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-800 mb-1">Desa &amp; Pemilik/Operator Alat: <span class="text-rose-600">*</span></label>
-                <input id="nftD4Location" type="text" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" value="${escapeHtml(saved.location || '')}" placeholder="Contoh: Desa Sidomulyo • Bpk. Hendra (UPJA)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-medium">
+
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Nama Lokasi / Desa / Dusun: <span class="text-rose-600">*</span></label>
+                <input type="text" id="nftD4_location" ${readOnlyAttr} value="${escapeHtml(val('location'))}" placeholder="Contoh: Desa Sidomulyo, BK 9" oninput="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 text-xs font-semibold text-slate-800 bg-white">
               </div>
-              <div>
-                <label class="block text-xs font-bold text-slate-800 mb-1">Koordinat GPS / Merek Alat:</label>
-                <input id="nftD4Gps" type="text" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" value="${escapeHtml(saved.gps || '')}" placeholder="Contoh: Yanmar TF 85 • -4.135° S" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none font-medium">
+
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Perkiraan Jarak dari Rumah / Sekolah: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_distanceRange" ${disabledAttr} onchange="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 text-xs font-semibold text-slate-800 bg-white">
+                  <option value="Dekat (&lt; 1 km / 5 menit)" ${val('distanceRange') === 'Dekat (< 1 km / 5 menit)' ? 'selected' : ''}>Dekat (&lt; 1 km / sekitar 5 menit)</option>
+                  <option value="Sedang (1 - 3 km / 10 menit)" ${val('distanceRange') === 'Sedang (1 - 3 km / 10 menit)' ? 'selected' : ''}>Sedang (1 - 3 km / sekitar 10 menit)</option>
+                  <option value="Jauh (&gt; 3 km / lebih dari 15 menit)" ${val('distanceRange') === 'Jauh (> 3 km / lebih dari 15 menit)' ? 'selected' : ''}>Jauh (&gt; 3 km / lebih dari 15 menit)</option>
+                </select>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Kondisi Jalan Menuju Lokasi: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_roadCondition" ${disabledAttr} onchange="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 text-xs font-semibold text-slate-800 bg-white">
+                  <option value="Jalan Aspal Mulus / Hotmix" ${val('roadCondition') === 'Jalan Aspal Mulus / Hotmix' ? 'selected' : ''}>Jalan Aspal Mulus / Hotmix</option>
+                  <option value="Jalan Cor Semen / Beton Desa" ${val('roadCondition') === 'Jalan Cor Semen / Beton Desa' ? 'selected' : ''}>Jalan Cor Semen / Beton Desa</option>
+                  <option value="Jalan Tanah Merah / Berkerikil" ${val('roadCondition') === 'Jalan Tanah Merah / Berkerikil' ? 'selected' : ''}>Jalan Tanah Merah / Berkerikil</option>
+                  <option value="Masuk Gang / Tanggul Sempit" ${val('roadCondition') === 'Masuk Gang / Tanggul Sempit' ? 'selected' : ''}>Masuk Gang / Tanggul Sempit</option>
+                </select>
               </div>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold text-slate-800 mb-1">Daftar Peralatan Utama / Mesin Mekanisasi yang Diamati &amp; Fungsi Operasionalnya: <span class="text-rose-600">*</span></label>
-              <textarea id="nftD4MainTools" rows="3" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" placeholder="Sebutkan nama peralatan utama / mesin yang Anda amati pada sektor ini beserta fungsi dari masing-masing alat saat bekerja... (Minimal 50 karakter)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none leading-relaxed">${escapeHtml(valMainTools)}</textarea>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-800 mb-1">Daftar Perlengkapan Pendukung &amp; Alat Pelindung Diri (APD) yang Dipakai Pekerja: <span class="text-rose-600">*</span></label>
-              <textarea id="nftD4SupportTools" rows="2" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" placeholder="Sebutkan perlengkapan kerja pendukung (wadah, jerigen, keranjang, kunci bengkel) serta APD keselamatan (sepatu boot, helm, masker, sarung tangan) dan fungsinya melindungi pekerja... (Minimal 40 karakter)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none leading-relaxed">${escapeHtml(valSupportTools)}</textarea>
+            <div class="flex flex-col gap-1 pt-1">
+              <label class="text-[11px] font-bold text-slate-700 flex items-center justify-between">
+                <span>Catatan Jalur Akses &amp; Kendaraan Angkut yang Digunakan: <span class="text-rose-600">*</span></span>
+                <span id="countD4_road" class="text-[10px] text-slate-400 font-bold">0 / 25 Karakter</span>
+              </label>
+              <textarea id="nftD4_roadNotes" rows="2" ${readOnlyAttr} oninput="onNftDay4FieldInput()" placeholder="Ceritakan jenis kendaraan yang biasa lewat membawa barang (motor keranjang, pikap, truk) dan apakah jalannya mudah dilewati... (Minimal 25 karakter)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-teal-600 text-xs text-slate-800 font-medium ${finalReadOnly ? 'bg-slate-50' : 'bg-white'}">${escapeHtml(valRoadNotes)}</textarea>
             </div>
           </div>
 
-          <!-- BLOK 2: ANALISIS 4 DIMENSI STEM PADA PERALATAN & PERLENGKAPAN -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-emerald-500/40 shadow-sm space-y-5">
-            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
-              <div>
-                <h3 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
-                  <span class="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xs">2</span>
-                  <span>Analisis 4 Dimensi STEM (Science, Technology, Engineering, Mathematics) pada Alat</span>
-                </h3>
-                <p class="text-[11px] text-slate-500 font-medium mt-0.5">Kaitkan peralatan dan perlengkapan yang Anda pilih di atas dengan keempat unsur STEM secara jelas!</p>
+          <!-- KARTU 2: BAGIAN B — SUASANA LINGKUNGAN SEKITAR -->
+          <div id="cardBoxLkpdD4_2" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs space-y-4 transition-all">
+            <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-2xl bg-cyan-100 text-cyan-900 flex items-center justify-center font-black text-sm shrink-0">B</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Bagian B — Suasana Lingkungan Sekitar &amp; Sumber Daya</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Mengamati keadaan alam sekeliling, kemudahan air bersih, dan pasokan listrik</span>
+                </div>
               </div>
-              <span class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-emerald-100 text-emerald-950 border border-emerald-300">Inti Eksplorasi Day 4</span>
+              <span id="badgeCardStatusLkpdD4_2" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
             </div>
 
-            <!-- 2A. SCIENCE -->
-            <div class="p-4 rounded-2xl bg-sky-50/60 border border-sky-200 space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <label class="text-xs sm:text-sm font-black text-sky-950 flex items-center gap-1.5">
-                  <span class="w-6 h-6 rounded-lg bg-sky-600 text-white flex items-center justify-center text-xs font-black">S</span>
-                  <span>1. Analisis SCIENCE (Sains — Fisika, Kimia &amp; Biologi pada Alat): <span class="text-rose-600">*</span></span>
-                </label>
-                <span id="cntNftD4Science" class="text-[10.5px] font-bold text-slate-500">Min. 60 karakter</span>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Keadaan Sekeliling Lokasi: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_environmentSurroundings" ${disabledAttr} onchange="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-cyan-600 text-xs font-semibold text-slate-800 bg-white">
+                  <option value="Hamparan Persawahan Luas" ${val('environmentSurroundings') === 'Hamparan Persawahan Luas' ? 'selected' : ''}>Hamparan Persawahan Luas</option>
+                  <option value="Pinggir Jalan Raya Poros Ramai" ${val('environmentSurroundings') === 'Pinggir Jalan Raya Poros Ramai' ? 'selected' : ''}>Pinggir Jalan Raya Poros Ramai</option>
+                  <option value="Dekat Parit / Saluran Irigasi BK" ${val('environmentSurroundings') === 'Dekat Parit / Saluran Irigasi BK' ? 'selected' : ''}>Dekat Parit / Saluran Irigasi BK</option>
+                  <option value="Kawasan Pemukiman Warga Desa" ${val('environmentSurroundings') === 'Kawasan Pemukiman Warga Desa' ? 'selected' : ''}>Kawasan Pemukiman Warga Desa</option>
+                  <option value="Areal Perkebunan Terbuka" ${val('environmentSurroundings') === 'Areal Perkebunan Terbuka' ? 'selected' : ''}>Areal Perkebunan Terbuka</option>
+                </select>
               </div>
-              <p class="text-[11px] text-sky-900/90 leading-relaxed">${escapeHtml(guide.sciencePrompt)}</p>
-              <textarea id="nftD4Science" rows="4" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" placeholder="Tuliskan penjelasan dan kaitan peralatan dengan unsur SCIENCE (Fisika, Kimia, Biologi)... (Minimal 60 karakter)" class="w-full p-3 text-xs rounded-xl border border-sky-300 bg-white focus:border-sky-600 outline-none leading-relaxed">${escapeHtml(valScience)}</textarea>
+
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Ketersediaan Pasokan Air: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_waterSupply" ${disabledAttr} onchange="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-cyan-600 text-xs font-semibold text-slate-800 bg-white">
+                  <option value="Sangat Mudah &amp; Melimpah (Irigasi/Sumur Bor)" ${val('waterSupply') === 'Sangat Mudah & Melimpah (Irigasi/Sumur Bor)' ? 'selected' : ''}>Sangat Mudah &amp; Melimpah (Irigasi/Sumur)</option>
+                  <option value="Cukup Tersedia untuk Harian" ${val('waterSupply') === 'Cukup Tersedia untuk Harian' ? 'selected' : ''}>Cukup Tersedia untuk Harian</option>
+                  <option value="Kadang Sulit saat Kemarau Panjang" ${val('waterSupply') === 'Kadang Sulit saat Kemarau Panjang' ? 'selected' : ''}>Kadang Sulit saat Kemarau Panjang</option>
+                </select>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Pasokan Daya Listrik: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_powerSupply" ${disabledAttr} onchange="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-cyan-600 text-xs font-semibold text-slate-800 bg-white">
+                  <option value="Listrik PLN Lancar &amp; Stabil" ${val('powerSupply') === 'Listrik PLN Lancar & Stabil' ? 'selected' : ''}>Listrik PLN Lancar &amp; Stabil</option>
+                  <option value="PLN dengan Cadangan Genset" ${val('powerSupply') === 'PLN dengan Cadangan Genset' ? 'selected' : ''}>PLN dengan Cadangan Genset</option>
+                  <option value="Belum Memerlukan Listrik Besar" ${val('powerSupply') === 'Belum Memerlukan Listrik Besar' ? 'selected' : ''}>Belum Memerlukan Listrik Besar</option>
+                </select>
+              </div>
             </div>
 
-            <!-- 2B. TECHNOLOGY -->
-            <div class="p-4 rounded-2xl bg-teal-50/60 border border-teal-200 space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <label class="text-xs sm:text-sm font-black text-teal-950 flex items-center gap-1.5">
-                  <span class="w-6 h-6 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs font-black">T</span>
-                  <span>2. Analisis TECHNOLOGY (Teknologi — Sistem Penggerak, Material &amp; Otomasi Alat): <span class="text-rose-600">*</span></span>
-                </label>
-                <span id="cntNftD4Tech" class="text-[10.5px] font-bold text-slate-500">Min. 60 karakter</span>
-              </div>
-              <p class="text-[11px] text-teal-900/90 leading-relaxed">${escapeHtml(guide.techPrompt)}</p>
-              <textarea id="nftD4Tech" rows="4" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" placeholder="Tuliskan penjelasan dan kaitan peralatan dengan unsur TECHNOLOGY (Mesin, Material, Sensor, Otomasi)... (Minimal 60 karakter)" class="w-full p-3 text-xs rounded-xl border border-teal-300 bg-white focus:border-teal-600 outline-none leading-relaxed">${escapeHtml(valTech)}</textarea>
-            </div>
-
-            <!-- 2C. ENGINEERING -->
-            <div class="p-4 rounded-2xl bg-amber-50/60 border border-amber-200 space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <label class="text-xs sm:text-sm font-black text-amber-950 flex items-center gap-1.5">
-                  <span class="w-6 h-6 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xs font-black">E</span>
-                  <span>3. Analisis ENGINEERING (Rekayasa — Desain Mekanis, Ergonomi &amp; Perawatan Alat): <span class="text-rose-600">*</span></span>
-                </label>
-                <span id="cntNftD4Eng" class="text-[10.5px] font-bold text-slate-500">Min. 60 karakter</span>
-              </div>
-              <p class="text-[11px] text-amber-900/90 leading-relaxed">${escapeHtml(guide.engPrompt)}</p>
-              <textarea id="nftD4Eng" rows="4" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" placeholder="Tuliskan penjelasan dan kaitan peralatan dengan unsur ENGINEERING (Rancang Bangun, Sudut Pisau/Komponen, Ergonomi & Perawatan)... (Minimal 60 karakter)" class="w-full p-3 text-xs rounded-xl border border-amber-300 bg-white focus:border-amber-600 outline-none leading-relaxed">${escapeHtml(valEng)}</textarea>
-            </div>
-
-            <!-- 2D. MATHEMATICS -->
-            <div class="p-4 rounded-2xl bg-purple-50/60 border border-purple-200 space-y-2">
-              <div class="flex items-center justify-between gap-2">
-                <label class="text-xs sm:text-sm font-black text-purple-950 flex items-center gap-1.5">
-                  <span class="w-6 h-6 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xs font-black">M</span>
-                  <span>4. Analisis MATHEMATICS (Matematika — Kapasitas Kerja, BBM/Energi &amp; Efisiensi Biaya): <span class="text-rose-600">*</span></span>
-                </label>
-                <span id="cntNftD4Math" class="text-[10.5px] font-bold text-slate-500">Min. 60 karakter</span>
-              </div>
-              <p class="text-[11px] text-purple-900/90 leading-relaxed">${escapeHtml(guide.mathPrompt)}</p>
-              <textarea id="nftD4Math" rows="4" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" placeholder="Tuliskan penjelasan dan perhitungan MATHEMATICS pada peralatan (Kapasitas per jam/hektar, konsumsi BBM/listrik, dan perbandingan biaya alat vs manual)... (Minimal 60 karakter)" class="w-full p-3 text-xs rounded-xl border border-purple-300 bg-white focus:border-purple-600 outline-none leading-relaxed">${escapeHtml(valMath)}</textarea>
+            <div class="flex flex-col gap-1 pt-1">
+              <label class="text-[11px] font-bold text-slate-700 flex items-center justify-between">
+                <span>Catatan Suasana Lingkungan &amp; Kebersihan Tempat: <span class="text-rose-600">*</span></span>
+                <span id="countD4_env" class="text-[10px] text-slate-400 font-bold">0 / 25 Karakter</span>
+              </label>
+              <textarea id="nftD4_envNotes" rows="2" ${readOnlyAttr} oninput="onNftDay4FieldInput()" placeholder="Jelaskan suasana di sekeliling tempat usaha (kebersihan, kenyamanan, atau parit air di dekatnya)... (Minimal 25 karakter)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-cyan-600 text-xs text-slate-800 font-medium ${finalReadOnly ? 'bg-slate-50' : 'bg-white'}">${escapeHtml(valEnvNotes)}</textarea>
             </div>
           </div>
 
-          <!-- BLOK 3: EVALUASI KENDALA PERALATAN & IDE MODIFIKASI / INOVASI SISWA -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3">
-              <h3 class="text-sm sm:text-base font-black text-slate-900 flex items-center gap-2">
-                <span class="w-8 h-8 rounded-xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-black text-xs">3</span>
-                <span>Evaluasi Kendala Teknis Peralatan &amp; Ide Inovasi Siswa</span>
-              </h3>
-              <span class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-indigo-50 text-indigo-800 border border-indigo-200">Bagian 3</span>
+          <!-- KARTU 3: BAGIAN C — ALUR MASUK BAHAN & PENJUALAN PRODUK -->
+          <div id="cardBoxLkpdD4_3" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs space-y-4 transition-all">
+            <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-2xl bg-amber-100 text-amber-900 flex items-center justify-center font-black text-sm shrink-0">C</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Bagian C — Alur Masuk Bahan &amp; Penjualan Produk</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Menelusuri dari mana bahan didatangkan dan ke mana hasil usaha dijual</span>
+                </div>
+              </div>
+              <span id="badgeCardStatusLkpdD4_3" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold text-slate-800 mb-1">Kendala / Kerusakan Teknis yang Sering Dialami Pengguna Saat Memakai Alat Tersebut: <span class="text-rose-600">*</span></label>
-              <textarea id="nftD4Constraints" rows="3" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" placeholder="Contoh: Mata pisau cepat tumpul/aus, sabuk V-belt selip saat basah, roda amblas di lumpur dalam, baterai sprayer habis di tengah lahan, atau suku cadang mahal... (Minimal 40 karakter)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-indigo-600 outline-none leading-relaxed">${escapeHtml(valConstraints)}</textarea>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Asal Pasokan Bahan Baku / Barang: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_supplyOrigin" ${disabledAttr} onchange="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-amber-600 text-xs font-semibold text-slate-800 bg-white">
+                  <option value="Kios / Toko Terdekat di Desa" ${val('supplyOrigin') === 'Kios / Toko Terdekat di Desa' ? 'selected' : ''}>Kios / Toko Terdekat di Desa</option>
+                  <option value="Agen Distributor Belitang / Gumawang" ${val('supplyOrigin') === 'Agen Distributor Belitang / Gumawang' ? 'selected' : ''}>Agen Distributor Belitang / Gumawang</option>
+                  <option value="Kiriman Sales Luar Kota / Palembang" ${val('supplyOrigin') === 'Kiriman Sales Luar Kota / Palembang' ? 'selected' : ''}>Kiriman Sales Luar Daerah</option>
+                  <option value="Diambil Sendiri dari Alam / Kebun" ${val('supplyOrigin') === 'Diambil Sendiri dari Alam / Kebun' ? 'selected' : ''}>Diambil Sendiri dari Alam / Kebun</option>
+                </select>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Tujuan Penjualan Hasil Usaha: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_salesTarget" ${disabledAttr} onchange="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-amber-600 text-xs font-semibold text-slate-800 bg-white">
+                  <option value="Warga &amp; Tetangga Sekitar Desa" ${val('salesTarget') === 'Warga & Tetangga Sekitar Desa' ? 'selected' : ''}>Warga &amp; Tetangga Sekitar Desa</option>
+                  <option value="Pembeli Umum yang Melintas di Jalan" ${val('salesTarget') === 'Pembeli Umum yang Melintas di Jalan' ? 'selected' : ''}>Pembeli Umum yang Melintas</option>
+                  <option value="Pengepul / Bakul Bawa Mobil Pikap" ${val('salesTarget') === 'Pengepul / Bakul Bawa Mobil Pikap' ? 'selected' : ''}>Pengepul / Bakul Mobil Pikap</option>
+                  <option value="Pasar Tradisional Belitang / Gumawang" ${val('salesTarget') === 'Pasar Tradisional Belitang / Gumawang' ? 'selected' : ''}>Pasar Belitang / Gumawang</option>
+                </select>
+              </div>
+
+              <div class="flex flex-col gap-1">
+                <label class="text-[11px] font-bold text-slate-700">Cara Pembayaran yang Dipakai: <span class="text-rose-600">*</span></label>
+                <select id="nftD4_paymentMethod" ${disabledAttr} onchange="onNftDay4FieldInput()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-amber-600 text-xs font-semibold text-slate-800 bg-white">
+                  <option value="Pembayaran Tunai (Cash Langsung)" ${val('paymentMethod') === 'Pembayaran Tunai (Cash Langsung)' ? 'selected' : ''}>Pembayaran Tunai (Cash Langsung)</option>
+                  <option value="Transfer Bank / Scan QRIS Digital" ${val('paymentMethod') === 'Transfer Bank / Scan QRIS Digital' ? 'selected' : ''}>Transfer Bank / Scan QRIS</option>
+                  <option value="Bayar Tempo (Nanti Setelah Panen)" ${val('paymentMethod') === 'Bayar Tempo (Nanti Setelah Panen)' ? 'selected' : ''}>Bayar Tempo (Setelah Panen)</option>
+                </select>
+              </div>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold text-slate-800 mb-1">Gagasan Modifikasi / Solusi Perawatan &amp; Kesimpulan STEM Anda: <span class="text-rose-600">*</span></label>
-              <textarea id="nftD4Solution" rows="3" ${readOnlyMode ? 'readonly' : ''} oninput="onNftDay4FieldInput()" placeholder="Tuliskan ide perbaikan/modifikasi alat atau solusi perawatan agar peralatan tersebut bekerja lebih awet, aman, dan menguntungkan pelaku usaha di OKU Timur... (Minimal 60 karakter)" class="w-full px-3.5 py-2.5 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-indigo-600 outline-none leading-relaxed">${escapeHtml(valInnovation)}</textarea>
+            <div class="flex flex-col gap-1 pt-1">
+              <label class="text-[11px] font-bold text-slate-700 flex items-center justify-between">
+                <span>Catatan Alur Masuk &amp; Keluar Barang: <span class="text-rose-600">*</span></span>
+                <span id="countD4_supply" class="text-[10px] text-slate-400 font-bold">0 / 25 Karakter</span>
+              </label>
+              <textarea id="nftD4_supplyNotes" rows="2" ${readOnlyAttr} oninput="onNftDay4FieldInput()" placeholder="Ceritakan dari mana bahan baku diperoleh dan siapa yang paling sering membeli produknya... (Minimal 25 karakter)" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-amber-600 text-xs text-slate-800 font-medium ${finalReadOnly ? 'bg-slate-50' : 'bg-white'}">${escapeHtml(valSupplyNotes)}</textarea>
             </div>
           </div>
 
-          ${!readOnlyMode ? `
-            <div class="p-4 sm:p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3 sticky bottom-4 z-20 backdrop-blur-md bg-white/95">
-              <span id="txtNftD4DraftInfo" class="text-xs text-slate-500 font-medium">Isian otomatis tersimpan sebagai draf di perangkat Anda.</span>
-              <div class="flex items-center gap-2.5 w-full sm:w-auto">
-                <button type="button" onclick="saveNonFieldTripDay4Draft(true)" class="flex-1 sm:flex-none px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-black flex items-center justify-center gap-1.5 cursor-pointer transition-all border border-slate-300">
-                  <span class="material-symbols-outlined text-sm">bookmark</span>
+          <!-- KARTU 4: BAGIAN D — UNGGAH FOTO HASIL JELAJAH HP -->
+          <div id="cardBoxLkpdD4_4" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs space-y-4 transition-all">
+            <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-2xl bg-indigo-100 text-indigo-900 flex items-center justify-center font-black text-sm shrink-0">D</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Bagian D — Dokumentasi Foto Jelajah Lingkungan</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Unggah 1–2 foto kamera HP suasana tempat usaha dan lingkungan sekitarnya</span>
+                </div>
+              </div>
+              <span id="badgeCardStatusLkpdD4_4" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <!-- Foto 1: Tempat Usaha / Jalan Depan -->
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2.5">
+                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-teal-700">photo_camera</span>
+                  <span>1. Foto Tempat Usaha / Jalan Depan (Wajib): <span class="text-rose-600">*</span></span>
+                </span>
+                <input type="file" id="nftD4_filePhoto1" accept="image/*" ${disabledAttr} onchange="onNftDay4PhotoSelected(1)" class="text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-teal-100 file:text-teal-900 cursor-pointer">
+                <div id="previewD4_photo1" class="w-full h-32 rounded-xl bg-slate-200/70 border border-dashed border-slate-300 flex items-center justify-center overflow-hidden">
+                  ${val('photoUrl1') ? `<img src="${val('photoUrl1')}" class="w-full h-full object-cover">` : `<span class="text-[11px] text-slate-400">Belum ada foto dipilih</span>`}
+                </div>
+              </div>
+
+              <!-- Foto 2: Lingkungan Sekitar / Parit / Sawah -->
+              <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-2.5">
+                <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <span class="material-symbols-outlined text-sm text-cyan-700">landscape</span>
+                  <span>2. Foto Lingkungan Sekitar / Alam (Opsional):</span>
+                </span>
+                <input type="file" id="nftD4_filePhoto2" accept="image/*" ${disabledAttr} onchange="onNftDay4PhotoSelected(2)" class="text-xs text-slate-600 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-cyan-100 file:text-cyan-900 cursor-pointer">
+                <div id="previewD4_photo2" class="w-full h-32 rounded-xl bg-slate-200/70 border border-dashed border-slate-300 flex items-center justify-center overflow-hidden">
+                  ${val('photoUrl2') ? `<img src="${val('photoUrl2')}" class="w-full h-full object-cover">` : `<span class="text-[11px] text-slate-400">Belum ada foto dipilih</span>`}
+                </div>
+              </div>
+            </div>
+            <p class="text-[11px] text-slate-500 italic">Tips: Foto ini juga akan otomatis tersimpan untuk memperkaya laporan portofolio FINCESTEM Anda.</p>
+          </div>
+
+          <!-- KARTU 5: BAGIAN E — KESIMPULAN JELAJAH LAPANGAN -->
+          <div id="cardBoxLkpdD4_5" class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs space-y-4 transition-all">
+            <div class="flex items-start justify-between gap-2 border-b border-slate-100 pb-3">
+              <div class="flex items-center gap-2.5">
+                <span class="w-9 h-9 rounded-2xl bg-emerald-100 text-emerald-900 flex items-center justify-center font-black text-sm shrink-0">E</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-tight">Bagian E — Kesimpulan Ringkas Jelajah Lapangan</h3>
+                  <span class="text-[11px] text-slate-500 font-medium">Refleksi nilai strategis tempat usaha dan saran perbaikan fasilitas jalan/lingkungan</span>
+                </div>
+              </div>
+              <span id="badgeCardStatusLkpdD4_5" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0">Belum Lengkap</span>
+            </div>
+
+            <div class="flex flex-col gap-1">
+              <label class="text-[11px] font-bold text-slate-700 flex items-center justify-between">
+                <span>Kesimpulan &amp; Saran Anda: <span class="text-rose-600">*</span></span>
+                <span id="countD4_conc" class="text-[10px] text-slate-400 font-bold">0 / 30 Karakter</span>
+              </label>
+              <textarea id="nftD4_conclusion" rows="3" ${readOnlyAttr} oninput="onNftDay4FieldInput()" placeholder="Tuliskan 2-3 kalimat: apakah posisi tempat usaha ini sudah menguntungkan, dan apa saran perbaikan jalan atau lingkungan di sekitar tempat tersebut... (Minimal 30 karakter)" class="w-full p-3 rounded-xl border border-slate-300 focus:border-emerald-600 text-xs text-slate-800 font-medium ${finalReadOnly ? 'bg-slate-50' : 'bg-white'}">${escapeHtml(valConclusion)}</textarea>
+            </div>
+          </div>
+
+          <!-- FOOTER TOMBOL SIMPAN & KIRIM RESMI -->
+          <div class="p-5 rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex flex-col">
+              <span id="txtNftD4DraftInfo" class="text-xs font-bold text-slate-600">Draf tersimpan otomatis secara berkala</span>
+              <span class="text-[10.5px] text-slate-400 font-medium">Pastikan seluruh Bagian A s.d. E berstatus "✓ Lengkap" sebelum mengirim</span>
+            </div>
+
+            <div class="flex items-center gap-2.5 w-full sm:w-auto">
+              ${!finalReadOnly ? `
+                <button type="button" onclick="saveNonFieldTripDay4Draft(true)" class="flex-1 sm:flex-none px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-base">save</span>
                   <span>Simpan Draf</span>
                 </button>
-                <button type="submit" class="flex-1 sm:flex-none px-6 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md ring-2 ring-emerald-400/40">
+                <button type="button" id="btnSubmitNftLkpdDay4" onclick="submitNonFieldTripDay4LKPD()" class="flex-1 sm:flex-none px-6 py-3 rounded-2xl bg-emerald-700 hover:bg-emerald-800 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all">
                   <span class="material-symbols-outlined text-base">send</span>
-                  <span>Serahkan LKPD Day 4</span>
+                  <span>Kirim Resmi LKPD Day 4</span>
                 </button>
-              </div>
+              ` : `
+                <div class="px-5 py-3 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-950 font-black text-xs flex items-center gap-2">
+                  <span class="material-symbols-outlined text-base text-emerald-700">verified</span>
+                  <span>LKPD Day 4 Telah Terkirim Resmi</span>
+                </div>
+              `}
             </div>
-          ` : ''}
+          </div>
+
         </form>
       </div>
     `;
 
     setTimeout(() => {
-      updateNftDay4Counters();
-    }, 60);
+      validateAllDay4CardsUI(false);
+    }, 100);
   }
+  window.renderNonFieldTripDay4LKPD = renderNonFieldTripDay4LKPD;
 
-  function collectNftDay4Data() {
-    const sectorKey = document.getElementById('nftD4SectorKey')?.value || 'pertanian';
-    const guide = NFT_DAY4_TOOL_GUIDE[sectorKey] || NFT_DAY4_TOOL_GUIDE.pertanian;
-    const location = document.getElementById('nftD4Location')?.value.trim() || '';
-    const gps = document.getElementById('nftD4Gps')?.value.trim() || '';
-    const mainTools = document.getElementById('nftD4MainTools')?.value.trim() || '';
-    const supportTools = document.getElementById('nftD4SupportTools')?.value.trim() || '';
-    const scienceAnalysis = document.getElementById('nftD4Science')?.value.trim() || '';
-    const technologyAnalysis = document.getElementById('nftD4Tech')?.value.trim() || '';
-    const engineeringAnalysis = document.getElementById('nftD4Eng')?.value.trim() || '';
-    const mathematicsAnalysis = document.getElementById('nftD4Math')?.value.trim() || '';
-    const toolConstraints = document.getElementById('nftD4Constraints')?.value.trim() || '';
-    const studentInnovation = document.getElementById('nftD4Solution')?.value.trim() || '';
+  // Real-time photo handling with Base64 preview
+  window.onNftDay4PhotoSelected = function(photoIndex) {
+    const inputEl = document.getElementById('nftD4_filePhoto' + photoIndex);
+    const previewEl = document.getElementById('previewD4_photo' + photoIndex);
+    if (!inputEl || !inputEl.files || !inputEl.files[0]) return;
 
-    return {
-      day: 4,
-      sectorKey: sectorKey,
-      sectorName: guide.name,
-      district: document.getElementById('nftD4District')?.value || '',
-      location: location,
-      gps: gps,
-      mainTools: mainTools,
-      supportTools: supportTools,
-      scienceAnalysis: scienceAnalysis,
-      technologyAnalysis: technologyAnalysis,
-      engineeringAnalysis: engineeringAnalysis,
-      mathematicsAnalysis: mathematicsAnalysis,
-      toolConstraints: toolConstraints,
-      studentInnovation: studentInnovation,
-      // Legacy aliases for backward compatibility with facilitator view
-      physical: technologyAnalysis,
-      gravity: scienceAnalysis,
-      p3a: engineeringAnalysis,
-      solution: studentInnovation,
-      updated_at: new Date().toISOString()
-    };
-  }
-
-  function updateNftDay4Counters() {
-    const bindCnt = (inputId, lblId, minLen) => {
-      const el = document.getElementById(inputId);
-      const lbl = document.getElementById(lblId);
-      if (!el || !lbl) return;
-      const len = el.value.trim().length;
-      if (len >= minLen) {
-        lbl.textContent = `✓ ${len} / ${minLen} karakter`;
-        lbl.className = 'text-[10.5px] font-black text-emerald-700';
-      } else {
-        lbl.textContent = `${len} / ${minLen} karakter`;
-        lbl.className = 'text-[10.5px] font-bold text-slate-500';
+    const file = inputEl.files[0];
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const b64 = e.target.result;
+      if (previewEl) {
+        previewEl.innerHTML = `<img src="${b64}" class="w-full h-full object-cover rounded-xl">`;
       }
+      previewEl.setAttribute('data-photo-url', b64);
+      onNftDay4FieldInput();
     };
-    bindCnt('nftD4Science', 'cntNftD4Science', 60);
-    bindCnt('nftD4Tech', 'cntNftD4Tech', 60);
-    bindCnt('nftD4Eng', 'cntNftD4Eng', 60);
-    bindCnt('nftD4Math', 'cntNftD4Math', 60);
-  }
+    reader.readAsDataURL(file);
+  };
 
   let day4DraftTimer = null;
-  
-  window.onNftDay4DistrictChange = function(newDist) {
-    const locInput = document.getElementById('nftD4Location');
-    if (locInput && newDist) {
-      if (!locInput.value) {
-        locInput.value = 'Desa ..., Kec. ' + newDist;
-      } else if (!locInput.value.toLowerCase().includes(newDist.toLowerCase())) {
-        locInput.value = locInput.value.replace(/,?\s*Kec\.\s*[^•,]+/i, '') + ' • Kec. ' + newDist;
-      }
-    }
-    onNftDay4FieldInput();
-  };
   window.onNftDay4FieldInput = function() {
-    updateNftDay4Counters();
+    validateAllDay4CardsUI(false);
     clearTimeout(day4DraftTimer);
     day4DraftTimer = setTimeout(() => {
       saveNonFieldTripDay4Draft(false);
     }, 800);
   };
 
+  window.onNftDay4DistrictChange = function(newDist) {
+    const locInput = document.getElementById('nftD4_location');
+    if (locInput && newDist) {
+      if (!locInput.value) {
+        locInput.value = 'Desa ..., Kec. ' + newDist;
+      } else if (!locInput.value.toLowerCase().includes(newDist.toLowerCase())) {
+        locInput.value = locInput.value.replace(/,?\s*Kec\.\s*[^,]+/i, '') + ', Kec. ' + newDist;
+      }
+    }
+    onNftDay4FieldInput();
+  };
+
   window.onNftDay4SectorChange = function(newSectorKey) {
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
     const cleanNisn = String(u.nisn || u.identifier || '-').trim();
-    const curData = collectNftDay4Data();
-    curData.sectorKey = newSectorKey;
-    curData.sectorName = (NFT_DAY4_TOOL_GUIDE[newSectorKey] && NFT_DAY4_TOOL_GUIDE[newSectorKey].name) || newSectorKey;
+    saveNonFieldTripDay4Draft(false);
+    localStorage.setItem('fincestem_nft_sector_d4_' + cleanNisn, newSectorKey);
+
+    // Bersihkan cache paket asesmen Day 4 agar soalnya langsung berganti sesuai sektor baru
     try {
-      localStorage.setItem('fincestem_nft_sector_d4_' + cleanNisn, newSectorKey);
-      localStorage.setItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn, JSON.stringify(curData));
+      localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d4_' + cleanNisn);
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d4_') && k.endsWith(cleanNisn)) {
+          localStorage.removeItem(k);
+        }
+      });
     } catch(e) {}
+
     if (window.FincestemCore && FincestemCore.ui) {
-      FincestemCore.ui.toast('Sektor LKPD Day 4 disesuaikan ke: ' + curData.sectorName, 'info');
+      const guide = NFT_DAY4_EXPLORATION_GUIDE[newSectorKey];
+      const secName = guide ? guide.name : newSectorKey;
+      FincestemCore.ui.toast('Sektor LKPD Day 4 diubah ke: ' + secName + '. Instrumen telah disesuaikan!', 'info');
     }
     renderNonFieldTripDay4LKPD(false);
   };
+
+  function collectNftDay4Data() {
+    const valOf = (id) => (document.getElementById(id)?.value || '').trim();
+    const p1El = document.getElementById('previewD4_photo1');
+    const p2El = document.getElementById('previewD4_photo2');
+    const photo1 = (p1El && p1El.getAttribute('data-photo-url')) || (p1El?.querySelector('img')?.src) || '';
+    const photo2 = (p2El && p2El.getAttribute('data-photo-url')) || (p2El?.querySelector('img')?.src) || '';
+
+    const secKey = valOf('nftD4_sectorKey') || 'pertanian';
+    const guide = NFT_DAY4_EXPLORATION_GUIDE[secKey] || NFT_DAY4_EXPLORATION_GUIDE.pertanian;
+
+    return {
+      day: 4,
+      sectorKey: secKey,
+      sectorName: guide.name,
+      district: valOf('nftD4_district'),
+      location: valOf('nftD4_location'),
+      distanceRange: valOf('nftD4_distanceRange'),
+      roadCondition: valOf('nftD4_roadCondition'),
+      roadNotes: valOf('nftD4_roadNotes'),
+      environmentSurroundings: valOf('nftD4_environmentSurroundings'),
+      waterSupply: valOf('nftD4_waterSupply'),
+      powerSupply: valOf('nftD4_powerSupply'),
+      envNotes: valOf('nftD4_envNotes'),
+      supplyOrigin: valOf('nftD4_supplyOrigin'),
+      salesTarget: valOf('nftD4_salesTarget'),
+      paymentMethod: valOf('nftD4_paymentMethod'),
+      supplyNotes: valOf('nftD4_supplyNotes'),
+      photoUrl1: photo1,
+      photoUrl2: photo2,
+      conclusion: valOf('nftD4_conclusion'),
+      // Fallback aliases
+      mainTools: valOf('nftD4_roadNotes'),
+      supportTools: valOf('nftD4_envNotes'),
+      scienceAnalysis: valOf('nftD4_envNotes'),
+      technologyAnalysis: valOf('nftD4_supplyNotes'),
+      engineeringAnalysis: valOf('nftD4_roadNotes'),
+      mathematicsAnalysis: valOf('nftD4_distanceRange'),
+      toolConstraints: valOf('nftD4_roadNotes'),
+      studentInnovation: valOf('nftD4_conclusion'),
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  function validateAllDay4CardsUI(showErrors) {
+    const data = collectNftDay4Data();
+
+    const updateCardUI = (cardNum, isOk) => {
+      const box = document.getElementById('cardBoxLkpdD4_' + cardNum);
+      const badge = document.getElementById('badgeCardStatusLkpdD4_' + cardNum);
+      if (box && badge) {
+        if (isOk) {
+          box.className = 'p-5 sm:p-6 rounded-3xl bg-emerald-50/20 border-2 border-emerald-400 shadow-xs space-y-4 transition-all';
+          badge.className = 'px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs';
+          badge.textContent = '✓ Lengkap';
+        } else {
+          box.className = 'p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs space-y-4 transition-all';
+          badge.className = 'px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0';
+          badge.textContent = 'Belum Lengkap';
+        }
+      }
+    };
+
+    // Card 1: Bagian A
+    const rLen = data.roadNotes.length;
+    const cntR = document.getElementById('countD4_road');
+    if (cntR) cntR.textContent = `${rLen} / 25 Karakter`;
+    const c1Ok = (data.location.length >= 3 && data.district.length >= 2 && rLen >= 25);
+    updateCardUI(1, c1Ok);
+
+    // Card 2: Bagian B
+    const eLen = data.envNotes.length;
+    const cntE = document.getElementById('countD4_env');
+    if (cntE) cntE.textContent = `${eLen} / 25 Karakter`;
+    const c2Ok = (eLen >= 25);
+    updateCardUI(2, c2Ok);
+
+    // Card 3: Bagian C
+    const sLen = data.supplyNotes.length;
+    const cntS = document.getElementById('countD4_supply');
+    if (cntS) cntS.textContent = `${sLen} / 25 Karakter`;
+    const c3Ok = (sLen >= 25);
+    updateCardUI(3, c3Ok);
+
+    // Card 4: Bagian D (Foto HP)
+    // Cek ada photoUrl1 atau siswa sudah pernah simpan
+    const c4Ok = (data.photoUrl1 && data.photoUrl1.length > 50) || (saved && saved.photoUrl1);
+    updateCardUI(4, c4Ok);
+
+    // Card 5: Bagian E
+    const concLen = data.conclusion.length;
+    const cntConc = document.getElementById('countD4_conc');
+    if (cntConc) cntConc.textContent = `${concLen} / 30 Karakter`;
+    const c5Ok = (concLen >= 30);
+    updateCardUI(5, c5Ok);
+
+    return { c1Ok, c2Ok, c3Ok, c4Ok, c5Ok, allOk: (c1Ok && c2Ok && c3Ok && c4Ok && c5Ok) };
+  }
 
   function saveNonFieldTripDay4Draft(showToast) {
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
@@ -4364,15 +4573,13 @@
     const data = collectNftDay4Data();
 
     const missing = [];
-    if (data.location.length < 3) missing.push('Lokasi Pengamatan & Nama Operator/Pemilik Alat');
-    if (data.mainTools.length < 30) missing.push('Daftar Peralatan Utama & Fungsi Operasionalnya');
-    if (data.supportTools.length < 20) missing.push('Daftar Perlengkapan Pendukung & APD');
-    if (data.scienceAnalysis.length < 50) missing.push('Analisis SCIENCE (Sains pada Alat)');
-    if (data.technologyAnalysis.length < 50) missing.push('Analisis TECHNOLOGY (Teknologi pada Alat)');
-    if (data.engineeringAnalysis.length < 50) missing.push('Analisis ENGINEERING (Rekayasa pada Alat)');
-    if (data.mathematicsAnalysis.length < 50) missing.push('Analisis MATHEMATICS (Matematika pada Alat)');
-    if (data.toolConstraints.length < 25) missing.push('Evaluasi Kendala Teknis Peralatan');
-    if (data.studentInnovation.length < 40) missing.push('Gagasan Modifikasi / Solusi Perawatan & Kesimpulan STEM');
+    if (data.location.length < 3) missing.push('Nama Lokasi / Desa di OKU Timur');
+    if (!data.district) missing.push('Kecamatan di OKU Timur');
+    if (data.roadNotes.length < 25) missing.push('Catatan Akses Jalan (Min 25 karakter)');
+    if (data.envNotes.length < 25) missing.push('Catatan Lingkungan Sekitar (Min 25 karakter)');
+    if (data.supplyNotes.length < 25) missing.push('Catatan Alur Masuk & Keluar Barang (Min 25 karakter)');
+    if (!data.photoUrl1 || data.photoUrl1.length < 50) missing.push('Foto Tempat Usaha / Jalan Depan (Bagian D)');
+    if (data.conclusion.length < 30) missing.push('Kesimpulan Jelajah Lapangan (Min 30 karakter)');
 
     if (missing.length > 0) {
       if (window.FincestemCore && FincestemCore.ui) {
@@ -4389,7 +4596,7 @@
     data.submitted = true;
     data.submitted_at = new Date().toISOString();
     data.submittedAt = data.submitted_at;
-    data.summary = `LKPD Day 4 (Eksplorasi Peralatan & STEM - ${data.sectorName}): Alat: ${data.mainTools.substring(0, 80)}... | S-T-E-M Terverifikasi Lengkap.`;
+    data.summary = `LKPD Day 4 (Jelajah Lapangan & Distribusi - ${data.sectorName}): Lokasi: ${data.location} (${data.district}) | Alur Pasokan & Akses Jalan Terverifikasi.`;
 
     try {
       localStorage.setItem('fincestem_lkpd_nft_day4_' + cleanNisn, JSON.stringify(data));
@@ -4399,7 +4606,7 @@
 
     const onDone = function() {
       if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('LKPD Eksplorasi Peralatan & STEM Day 4 Berhasil Diserahkan Resmi!', 'success');
+        FincestemCore.ui.toast('LKPD Jelajah Lapangan Day 4 Berhasil Diserahkan Resmi!', 'success');
       }
       renderNonFieldTripDay4LKPD(true);
       const modal = document.createElement('div');
@@ -4414,20 +4621,16 @@
               LKPD Day 4 Selesai
             </span>
             <h3 class="font-black text-lg sm:text-xl text-slate-900 mt-1">
-              Analisis Peralatan &amp; STEM Terkirim!
+              Laporan Jelajah Lapangan Terkirim!
             </h3>
             <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">
-              Selamat! Laporan eksplorasi peralatan, perlengkapan kerja, dan analisis 4 dimensi STEM (Science, Technology, Engineering, Mathematics) Anda pada sektor <strong>${escapeHtml(data.sectorName)}</strong> telah tersimpan resmi.
+              Selamat! Laporan observasi akses jalan, lingkungan sekitar, dan alur pasokan barang pada sektor <strong>${escapeHtml(data.sectorName)}</strong> telah tersimpan resmi pada pembinaan fasilitator.
             </p>
           </div>
           <div class="w-full flex flex-col gap-2 pt-2">
-            <a href="dokumentasi.html?day=4" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">photo_camera</span>
-              <span>Lanjut ke Dokumentasi Foto Alat Day 4</span>
-            </a>
-            <a href="asesmen.html?day=4" class="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-xs transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-sm">quiz</span>
-              <span>Buka Kuis Asesmen Day 4</span>
+            <a href="asesmen.html?day=4" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">quiz</span>
+              <span>Lanjut ke Kuis Asesmen Day 4 (10 Soal PG)</span>
             </a>
             <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
               <span>Kembali ke Beranda Dashboard</span>
@@ -4446,7 +4649,6 @@
       onDone();
     }
   }
-
 
   // =========================================================================
   // INSTRUMEN LKPD DAY 5 & DAY 6: PENGUMPULAN LINK VIDEO YOUTUBE (5-10 MENIT)

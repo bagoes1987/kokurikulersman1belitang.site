@@ -21543,6 +21543,2264 @@ window.NFT_BANK_SOAL_DAYS = {
     }
   ];
 
+
+  window.NFT_DAY4_SECTOR_QUESTIONS = {
+  "pertanian": [
+    {
+      "id": 4001,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "A",
+      "indicatorName": "Akses & Rute Jalan Usaha Tani",
+      "question": "Mengapa kondisi jalan usaha tani yang sudah diperkeras (cor semen atau timbunan batu) sangat penting bagi kelancaran panen padi di OKU Timur?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Mempermudah kendaraan pikap atau motor pengangkut gabah agar tidak amblas di lumpur saat panen"
+        },
+        {
+          "key": "B",
+          "text": "Agar kecepatan kendaraan bermotor di area persawahan bisa melaju kencang tanpa batas"
+        },
+        {
+          "key": "C",
+          "text": "Mengurangi jumlah petani yang ingin bekerja di sawah karena jalan terlalu bagus"
+        },
+        {
+          "key": "D",
+          "text": "Menghilangkan kebutuhan saluran irigasi di samping petak sawah petani"
+        },
+        {
+          "key": "E",
+          "text": "Membuat harga benih padi di toko pertanian menjadi otomatis turun drastis"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Jalan usaha tani yang kokoh memastikan hasil panen gabah dapat diangkut cepat tanpa risiko kendaraan terperosok ke dalam lumpur."
+    },
+    {
+      "id": 4002,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "A",
+      "indicatorName": "Akses & Rute Jalan Usaha Tani",
+      "question": "Kendaraan apa yang paling umum dan lincah digunakan oleh petani di pedesaan Belitang untuk mengangkut karung gabah dari pematang sawah menuju jalan poros?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Sepeda motor yang dimodifikasi dengan keranjang/obrok samping berbahan kayu atau besi"
+        },
+        {
+          "key": "B",
+          "text": "Mobil sedan keluarga dengan bagasi tertutup"
+        },
+        {
+          "key": "C",
+          "text": "Kereta api barang khusus jalur persawahan"
+        },
+        {
+          "key": "D",
+          "text": "Truk kontainer roda sepuluh berbobot 20 ton"
+        },
+        {
+          "key": "E",
+          "text": "Perahu dayung cepat bertenaga mesin jet"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Sepeda motor obrok adalah alat transportasi paling praktis di jalur pematang dan jalan sempit persawahan pedesaan."
+    },
+    {
+      "id": 4003,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "B",
+      "indicatorName": "Lingkungan Sawah & Sumber Daya Alam",
+      "question": "Sebagian besar persawahan produktif di Kabupaten OKU Timur terletak di sepanjang jaringan irigasi Belitang (BK). Alasan utama pemilihan lokasi tersebut adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Menjamin pasokan air gravitasi yang melimpah sepanjang musim dari Bendungan Perjaya"
+        },
+        {
+          "key": "B",
+          "text": "Dekat dengan kantor pemerintahan ibukota provinsi di Palembang"
+        },
+        {
+          "key": "C",
+          "text": "Menghindari tanah sawah dari terkena sinar matahari langsung"
+        },
+        {
+          "key": "D",
+          "text": "Agar petani tidak perlu menggunakan pupuk dan pestisida sama sekali"
+        },
+        {
+          "key": "E",
+          "text": "Menyediakan tempat memancing ikan gratis bagi masyarakat kota"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Irigasi teknis Bendungan Perjaya mengalirkan air secara gravitasi ke sawah-sawah BK, menjadikan OKU Timur lumbung pangan utama Sumsel."
+    },
+    {
+      "id": 4004,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "B",
+      "indicatorName": "Lingkungan Sawah & Sumber Daya Alam",
+      "question": "Tindakan pelestarian lingkungan yang paling penting dilakukan para petani di sekitar saluran parit irigasi sawah adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Tidak membuang bekas botol/bungkus pestisida dan sampah plastik ke dalam aliran air parit"
+        },
+        {
+          "key": "B",
+          "text": "Menutup aliran parit secara permanen agar air tidak mengalir ke petak sawah lain"
+        },
+        {
+          "key": "C",
+          "text": "Menebangi seluruh pohon peneduh di tepi tanggul jalan agar tanah cepat kering"
+        },
+        {
+          "key": "D",
+          "text": "Mengalirkan air limbah detergen cucian rumah tangga ke saluran irigasi primer"
+        },
+        {
+          "key": "E",
+          "text": "Mendirikan bangunan toko beton permanen tepat di atas tanggul saluran air"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Membuang bekas racun/pestisida ke saluran irigasi dapat mencemari ekosistem air dan meracuni tanaman di petak hilir."
+    },
+    {
+      "id": 4005,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Masuk Sarana Produksi Pertanian",
+      "question": "Petani sawah di desa umumnya memilih membeli pupuk dan benih di kios saprotan resmi di wilayah desa setempat karena...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Jaraknya dekat, menghemat biaya bensin, dan terdaftar dalam alokasi pupuk bersubsidi"
+        },
+        {
+          "key": "B",
+          "text": "Kios desa memberikan hadiah gratis perhiasan emas setiap pembelian satu karung"
+        },
+        {
+          "key": "C",
+          "text": "Hanya kios desa yang boleh menjual produk pertanian di seluruh Indonesia"
+        },
+        {
+          "key": "D",
+          "text": "Kios di kota besar dilarang melayani petani dari luar kecamatan"
+        },
+        {
+          "key": "E",
+          "text": "Semua benih padi di kios desa memiliki masa simpan seumur hidup"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Kios saprotan desa memudahkan petani menebus pupuk subsidi sesuai RDKK dengan biaya transportasi yang sangat hemat."
+    },
+    {
+      "id": 4006,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Masuk Sarana Produksi Pertanian",
+      "question": "Jika seorang petani harus membeli bibit dan pupuk ke kota yang berjarak 25 km setiap pekan, dampak negatif terhadap usahanya adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Biaya transportasi membengkak dan waktu kerja di sawah berkurang di jalan"
+        },
+        {
+          "key": "B",
+          "text": "Kualitas gabah yang dihasilkan sawah otomatis menjadi beraroma wangi"
+        },
+        {
+          "key": "C",
+          "text": "Hasil panen gabah padi meningkat dua kali lipat secara spontan"
+        },
+        {
+          "key": "D",
+          "text": "Mesin traktor di sawah menjadi lebih awet dan tidak perlu bahan bakar solar"
+        },
+        {
+          "key": "E",
+          "text": "Petani tidak perlu lagi membayar pajak bumi dan bangunan"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Jarak yang terlalu jauh meningkatkan biaya angkut logistik dan membuang waktu produktif petani di ladang."
+    },
+    {
+      "id": 4007,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Distribusi & Penjualan Panen",
+      "question": "Setelah gabah dipanen menggunakan mesin Combine Harvester, sebagian besar gabah basah langsung ditimbang di pinggir sawah dan dijual ke...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Penebas/pengepul lokal atau langsung diangkut ke pabrik penggilingan padi (RMU)"
+        },
+        {
+          "key": "B",
+          "text": "Supermarket mewah di pusat ibukota negara"
+        },
+        {
+          "key": "C",
+          "text": "Eksportir kapal pesiar internasional di pelabuhan laut"
+        },
+        {
+          "key": "D",
+          "text": "Apotek untuk dijadikan bahan baku obat kapsul"
+        },
+        {
+          "key": "E",
+          "text": "Bank umum swasta sebagai jaminan tabungan haji"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Penebas dan pabrik RMU lokal membeli gabah langsung di tepi sawah untuk segera dikeringkan dan diproses menjadi beras konsumsi."
+    },
+    {
+      "id": 4008,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Distribusi & Penjualan Panen",
+      "question": "Keberadaan pabrik penggilingan padi (Rice Milling Unit / RMU) yang tersebar di desa-desa OKU Timur memberikan manfaat besar bagi petani, yaitu...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Memotong jalur transportasi pengiriman gabah sehingga biaya angkut lebih murah dan gabah cepat digiling"
+        },
+        {
+          "key": "B",
+          "text": "Mewajibkan petani untuk menjual seluruh tanah sawahnya kepada pemilik pabrik"
+        },
+        {
+          "key": "C",
+          "text": "Menghilangkan peran petani dalam menanam padi di musim berikutnya"
+        },
+        {
+          "key": "D",
+          "text": "Mengubah beras lokal menjadi bahan baku pembuat kendaraan bermotor"
+        },
+        {
+          "key": "E",
+          "text": "Membuat harga beras di pasar dunia ditentukan secara sepihak oleh satu desa"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Pabrik RMU lokal mempermudah pengolahan gabah menjadi beras kemasan tanpa perlu biaya angkut jarak jauh ke luar kota."
+    },
+    {
+      "id": 4009,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Lapangan & Solusi Sederhana",
+      "question": "Saat musim panen raya bertepatan dengan musim hujan lebat, kendala transportasi yang paling sering dialami petani sawah adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Jalan tanah pematang menjadi licin dan berlumpur sehingga mobil pikap tidak bisa masuk"
+        },
+        {
+          "key": "B",
+          "text": "Harga bensin di SPBU desa otomatis mengalami kelangkaan total"
+        },
+        {
+          "key": "C",
+          "text": "Gabah yang baru dipanen otomatis langsung mengering sendiri di pohon"
+        },
+        {
+          "key": "D",
+          "text": "Burung pemakan padi bertambah banyak pada malam hari saat hujan"
+        },
+        {
+          "key": "E",
+          "text": "Sinyal handphone petani menyebabkan air sawah menguap secara mendadak"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Jalan tanah liat yang becek saat hujan lebat menghambat kendaraan pikap dan truk masuk ke titik kumpul penimbangan gabah."
+    },
+    {
+      "id": 4010,
+      "day": 4,
+      "sector": "pertanian",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Lapangan & Solusi Sederhana",
+      "question": "Solusi sederhana dan berbiaya murah yang dapat dilakukan kelompok tani desa untuk menjaga akses jalan sawah tetap bisa dilalui saat musim hujan adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Bergotong royong menimbun titik-titik kubangan jalan dengan pecahan batu bata, sirtu, atau sekam bakar"
+        },
+        {
+          "key": "B",
+          "text": "Menutup jalan secara sepihak agar tidak ada petani lain yang bisa lewat"
+        },
+        {
+          "key": "C",
+          "text": "Menjual seluruh traktor desa untuk membeli mobil balap sport"
+        },
+        {
+          "key": "D",
+          "text": "Membongkar pematang sawah agar air lumpur mengalir ke rumah penduduk"
+        },
+        {
+          "key": "E",
+          "text": "Membiarkan jalan rusak sampai seluruh sawah terendam banjir bandang"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Gotong royong menimbun batu sirtu atau limbah sekam di kubangan jalan adalah solusi mandiri yang sangat efektif bagi petani desa."
+    }
+  ],
+  "perkebunan": [
+    {
+      "id": 4011,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "A",
+      "indicatorName": "Akses & Rute Jalan Perkebunan",
+      "question": "Lokasi kebun karet dan kelapa sawit rakyat di OKU Timur umumnya berada di pinggiran desa. Jalur transportasi utama di dalam kebun biasanya berupa...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Jalan rintis tanah timbunan atau jalan batu yang membelah barisan pohon"
+        },
+        {
+          "key": "B",
+          "text": "Jalan tol lingkar luar dengan gerbang tol otomatis"
+        },
+        {
+          "key": "C",
+          "text": "Jalan layang bertingkat khusus kendaraan roda empat"
+        },
+        {
+          "key": "D",
+          "text": "Saluran air berarus deras untuk mengapungkan tandan sawit"
+        },
+        {
+          "key": "E",
+          "text": "Jalur kabel gantung udara untuk mengangkut getah karet"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Jalan rintis kebun dibuat membelah blok pertanaman agar memudahkan pekerja menyadap lateks dan mengangkut buah sawit."
+    },
+    {
+      "id": 4012,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "A",
+      "indicatorName": "Akses & Rute Jalan Perkebunan",
+      "question": "Kendaraan yang paling sering diandalkan petani karet saat pagi hari untuk membawa ember/tong bekuan getah karet dari tengah kebun ke lapak penimbangan adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Sepeda motor bebek yang dipasangi keranjang kaleng/besi di jok belakang"
+        },
+        {
+          "key": "B",
+          "text": "Bus pariwisata ber-AC"
+        },
+        {
+          "key": "C",
+          "text": "Mobil ambulans desa"
+        },
+        {
+          "key": "D",
+          "text": "Truk derek pengangkat kontainer"
+        },
+        {
+          "key": "E",
+          "text": "Sepeda angin roda satu"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Sepeda motor dengan keranjang samping sangat lincah melewati celah sempit di antara deretan pohon karet."
+    },
+    {
+      "id": 4013,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "B",
+      "indicatorName": "Lingkungan Kebun & Tata Ruang Lahan",
+      "question": "Pada perkebunan kelapa sawit dan karet, fungsi pembuatan parit drainase atau rorak di antara barisan tanaman adalah untuk...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Mengalirkan kelebihan air hujan agar akar tanaman tidak membusuk tergenang air"
+        },
+        {
+          "key": "B",
+          "text": "Tempat pembuangan oli bekas kendaraan para pekerja kebun"
+        },
+        {
+          "key": "C",
+          "text": "Menghalangi sinar matahari agar pohon karet tidak menghasilkan getah"
+        },
+        {
+          "key": "D",
+          "text": "Membuat kebun menjadi licin sehingga pencuri tidak bisa masuk"
+        },
+        {
+          "key": "E",
+          "text": "Mengeringkan seluruh tanah kebun agar menjadi padang pasir"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Parit drainase mengendalikan tinggi muka air tanah agar tanaman perkebunan terbebas dari genangan air yang memicu busuk akar."
+    },
+    {
+      "id": 4014,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "B",
+      "indicatorName": "Lingkungan Kebun & Tata Ruang Lahan",
+      "question": "Kondisi lingkungan di dalam kebun karet yang terjaga kebersihannya dari semak belukar liar (gulma) memberikan keuntungan berupa...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Penyadap karet dapat berjalan leluasa di pagi buta dan aman dari sengatan hewan liar berbisa"
+        },
+        {
+          "key": "B",
+          "text": "Pohon karet otomatis berhenti mengeluarkan daun kering yang berguguran"
+        },
+        {
+          "key": "C",
+          "text": "Tanah kebun langsung berubah menjadi lahan persawahan irigasi"
+        },
+        {
+          "key": "D",
+          "text": "Harga getah karet di pasaran dunia menjadi seratus kali lipat"
+        },
+        {
+          "key": "E",
+          "text": "Karet beku di dalam mangkok mengeras tanpa perlu cairan pembeku"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Piringan pohon yang bersih memudahkan petani menyadap karet saat subuh serta meminimalkan risiko bahaya ular atau serangga."
+    },
+    {
+      "id": 4015,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Pasokan Sarana Perkebunan",
+      "question": "Bahan pembeku getah lateks (seperti asam semut / asam format) dan herbisida gulma biasanya dibeli petani perkebunan di...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Toko saprotan atau kios pertanian di pasar kecamatan terdekat"
+        },
+        {
+          "key": "B",
+          "text": "Toko elektronik yang menjual televisi dan kulkas"
+        },
+        {
+          "key": "C",
+          "text": "Pabrik tekstil pakaian jadi di ibukota"
+        },
+        {
+          "key": "D",
+          "text": "Kantor pos perwakilan antarnegara"
+        },
+        {
+          "key": "E",
+          "text": "Bengkel las karoseri truk besar"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Kios saprotan menyediakan berbagai obat pembeku lateks, pupuk NPK kebun, dan herbisida yang dibutuhkan petani karet/sawit."
+    },
+    {
+      "id": 4016,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Pasokan Sarana Perkebunan",
+      "question": "Mengapa pekebun kelapa sawit disarankan membeli bibit sawit bersertifikat resmi dari penangkar resmi dibanding bibit cabutan liar?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Bibit resmi terjamin keunggulannya, cepat berbuah, dan menghasilkan tandan berbobot berat"
+        },
+        {
+          "key": "B",
+          "text": "Bibit resmi tidak membutuhkan tanah dan pupuk untuk tumbuh dewasa"
+        },
+        {
+          "key": "C",
+          "text": "Bibit cabutan liar dijamin menghasilkan buah emas murni"
+        },
+        {
+          "key": "D",
+          "text": "Bibit resmi bisa langsung dipanen pada hari pertama penanaman"
+        },
+        {
+          "key": "E",
+          "text": "Pemerintah melarang menanam pohon sawit di luar ruangan kaca"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Bibit kelapa sawit unggul bersertifikat memastikan produktivitas TBS tinggi selama 25 tahun masa produktif kebun."
+    },
+    {
+      "id": 4017,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Penjualan Hasil Perkebunan",
+      "question": "Setelah memanen tandan buah segar (TBS) kelapa sawit, petani di OKU Timur umumnya menjual hasil panen tersebut ke...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Lapak timbangan sawit lokal (RAM) atau toke penampung yang memiliki armada truk"
+        },
+        {
+          "key": "B",
+          "text": "Pedagang buah segar eceran di pinggir jalan raya"
+        },
+        {
+          "key": "C",
+          "text": "Warung bakso dan mie ayam di pasar desa"
+        },
+        {
+          "key": "D",
+          "text": "Toko obat dan jamu tradisional di kecamatan"
+        },
+        {
+          "key": "E",
+          "text": "Pengecer pulsa dan kuota internet pedesaan"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Lapak RAM sawit lokal menampung TBS petani dengan timbangan digital sebelum diangkut dalam skala besar ke pabrik PKS."
+    },
+    {
+      "id": 4018,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Penjualan Hasil Perkebunan",
+      "question": "Getah karet rakyat (bokar) yang telah dibekukan dalam kotak atau ember biasanya dipasarkan secara mingguan di...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pasar lelang karet desa atau lapak pedagang pengumpul (toke karet)"
+        },
+        {
+          "key": "B",
+          "text": "Toko emas dan berlian di pusat kota kabupaten"
+        },
+        {
+          "key": "C",
+          "text": "Pabrik rokok dan tembakau di luar pulau"
+        },
+        {
+          "key": "D",
+          "text": "Kantin sekolah setiap jam istirahat pertama"
+        },
+        {
+          "key": "E",
+          "text": "Stasiun pengisian bahan bakar umum (SPBU)"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Toke karet desa atau pasar lelang mingguan menimbang getah beku petani dan membayarnya secara tunai berdasarkan kadar karet kering."
+    },
+    {
+      "id": 4019,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Musim & Solusi Kebun",
+      "question": "Kondisi cuaca hujan terus-menerus di pagi hari menjadi kendala utama bagi petani karet karena...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Air hujan membasahi bidang sadap sehingga lateks meluap dan hanyut terbawa air"
+        },
+        {
+          "key": "B",
+          "text": "Batang pohon karet menjadi terlalu lunak untuk dipegang manusia"
+        },
+        {
+          "key": "C",
+          "text": "Daun pohon karet langsung berganti warna menjadi biru tua"
+        },
+        {
+          "key": "D",
+          "text": "Harga bensin motor petani menjadi naik dua kali lipat saat hujan"
+        },
+        {
+          "key": "E",
+          "text": "Pisau sadap besi otomatis berubah bentuk menjadi melengkung"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Air hujan mengencerkan getah lateks dan menyebabkannya tumpah dari talang sadap, sehingga petani terpaksa libur menyadap."
+    },
+    {
+      "id": 4020,
+      "day": 4,
+      "sector": "perkebunan",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Musim & Solusi Kebun",
+      "question": "Trik sederhana yang sering dilakukan para petani kebun agar jalan rintis pengangkutan buah sawit tidak amblas saat musim hujan adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Menata pelepah sawit kering dan tandan kosong di atas kubangan tanah licin"
+        },
+        {
+          "key": "B",
+          "text": "Menyiram jalan kebun dengan air sabun cair setiap pagi"
+        },
+        {
+          "key": "C",
+          "text": "Menggali jalan kebun hingga kedalaman dua meter"
+        },
+        {
+          "key": "D",
+          "text": "Membakar seluruh pohon di pinggir jalan kebun"
+        },
+        {
+          "key": "E",
+          "text": "Menimbun jalan kebun dengan plastik kresek bekas"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Pelepah sawit dan janjang kosong yang disusun di atas jalan lumpur menjadi landasan alas ban yang sangat efektif mencegah mobil amblas."
+    }
+  ],
+  "peternakan": [
+    {
+      "id": 4021,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "A",
+      "indicatorName": "Akses & Lokasi Kandang Ternak",
+      "question": "Mengapa lokasi kandang sapi atau kambing sebaiknya berjarak minimal 20-30 meter dari rumah tinggal warga sekitar?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Menjaga kenyamanan warga dari aroma kotoran dan mencegah penularan lalat serta penyakit"
+        },
+        {
+          "key": "B",
+          "text": "Agar hewan ternak tidak bisa mendengar suara manusia berbicara"
+        },
+        {
+          "key": "C",
+          "text": "Supaya ternak merasa kesepian dan makan lebih banyak rumput"
+        },
+        {
+          "key": "D",
+          "text": "Mewajibkan peternak untuk berjalan kaki jauh setiap hari"
+        },
+        {
+          "key": "E",
+          "text": "Karena hewan ternak takut dengan lampu penerangan rumah warga"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Jarak yang memadai antara kandang dan rumah menjaga sanitasi lingkungan pemukiman tetap bersih, segar, dan sehat."
+    },
+    {
+      "id": 4022,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "A",
+      "indicatorName": "Akses & Lokasi Kandang Ternak",
+      "question": "Akses jalan menuju kandang peternakan sebaiknya dapat dilalui minimal oleh kendaraan roda tiga atau pikap, dengan tujuan utama...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Mempermudah drop pakan hijauan dalam jumlah besar dan memudahkan evakuasi ternak saat dijual"
+        },
+        {
+          "key": "B",
+          "text": "Membuat ternak terbiasa melihat mobil mewah berlalu lalang"
+        },
+        {
+          "key": "C",
+          "text": "Mengundang wisatawan luar negeri untuk datang berfoto selfie"
+        },
+        {
+          "key": "D",
+          "text": "Agar peternak tidak perlu membersihkan lantai kandang lagi"
+        },
+        {
+          "key": "E",
+          "text": "Menghilangkan kebutuhan saluran air bersih di kandang ternak"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Akses kendaraan memudahkan suplai pakan harian ratusan kilogram serta proses bongkar muat ternak saat transaksi penjualan."
+    },
+    {
+      "id": 4023,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "B",
+      "indicatorName": "Lingkungan Kandang & Ketersediaan Air",
+      "question": "Sumber air bersih yang melimpah sangat mutlak diperlukan di lokasi peternakan sapi dan unggas untuk keperluan...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Air minum ternak sepanjang hari, mencuci tempat pakan, dan memandikan hewan ternak"
+        },
+        {
+          "key": "B",
+          "text": "Mengisi kolam renang khusus anak sapi dan kambing"
+        },
+        {
+          "key": "C",
+          "text": "Menenggelamkan kandang agar ternak bisa mengapung di udara"
+        },
+        {
+          "key": "D",
+          "text": "Menyiram atap kandang saat sedang turun hujan lebat"
+        },
+        {
+          "key": "E",
+          "text": "Membuat rumput pakan berubah menjadi pakan konsentrat otomatis"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Air bersih sangat vital untuk menjaga hidrasi ternak, metabolisme pencernaan, dan kebersihan higienis lingkungan kandang."
+    },
+    {
+      "id": 4024,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "B",
+      "indicatorName": "Lingkungan Kandang & Ketersediaan Air",
+      "question": "Kandang kambing model panggung kayu/bambu dengan lantai bercelah 1-1,5 cm sangat disukai peternak di OKU Timur karena...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Kotoran dan urine kambing langsung jatuh ke bawah sehingga lantai pijakan ternak selalu kering dan bersih"
+        },
+        {
+          "key": "B",
+          "text": "Kambing dapat melihat pemandangan awan di langit dengan lebih jelas"
+        },
+        {
+          "key": "C",
+          "text": "Harga kayu lantai panggung lebih mahal daripada lantai marmer"
+        },
+        {
+          "key": "D",
+          "text": "Kambing tidak bisa buang kotoran jika berada di atas lantai tanah"
+        },
+        {
+          "key": "E",
+          "text": "Kandang panggung tidak membutuhkan atap pelindung panas dan hujan"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Kandang panggung memisahkan ternak dari kotorannya, menjaga kuku kambing dari infeksi bakteri dan menjaga bulu tetap bersih."
+    },
+    {
+      "id": 4025,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Pasokan Pakan & Obat Ternak",
+      "question": "Peternak sapi di OKU Timur sangat diuntungkan oleh lingkungan pertanian sekitarnya, karena bahan pakan murah mudah didapat dari...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Jerami limbah panen sawah dan dedak halus sisa penggilingan pabrik RMU"
+        },
+        {
+          "key": "B",
+          "text": "Rumput laut kering yang diimpor langsung dari laut Jepang"
+        },
+        {
+          "key": "C",
+          "text": "Kue tart dan biskuit cokelat kemasan dari toko roti"
+        },
+        {
+          "key": "D",
+          "text": "Serbuk gergaji kayu lapuk dari pabrik mebel jati"
+        },
+        {
+          "key": "E",
+          "text": "Kertas koran bekas yang dicelupkan ke dalam air teh manis"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Integrasi padi-ternak di OKU Timur memungkinkan peternak memanfaatkan jerami dan dedak padi melimpah sebagai pakan berserat tinggi."
+    },
+    {
+      "id": 4026,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Pasokan Pakan & Obat Ternak",
+      "question": "Untuk ternak ayam petelur atau pedaging, pasokan pakan konsentrat dan obat vitamin umumnya diperoleh peternak dari...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Poultry shop atau toko pakan ternak resmi di kota kecamatan"
+        },
+        {
+          "key": "B",
+          "text": "Warung fotokopi dan alat tulis kantor di depan sekolah"
+        },
+        {
+          "key": "C",
+          "text": "Toko reparasi jam tangan dan kacamata"
+        },
+        {
+          "key": "D",
+          "text": "Kios penjual bensin eceran di pinggir gang"
+        },
+        {
+          "key": "E",
+          "text": "Tempat pembuangan sampah akhir (TPA) kabupaten"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Poultry shop menyediakan pakan komplit pabrikan, vaksin, dan vitamin yang terjamin mutunya untuk pertumbuhan unggas."
+    },
+    {
+      "id": 4027,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Penjualan Hasil Peternakan",
+      "question": "Ketika tiba musim perayaan Idul Adha atau acara aqiqah, alur penjualan hewan ternak sapi dan kambing biasanya terjadi melalui...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pembeli atau panitia kurban datang langsung ke kandang memilih hewan secara langsung"
+        },
+        {
+          "key": "B",
+          "text": "Ternak dikirim melalui paket ekspedisi kilat dalam kardus tertutup"
+        },
+        {
+          "key": "C",
+          "text": "Ternak dilepaskan di tengah jalan raya agar diambil siapa saja"
+        },
+        {
+          "key": "D",
+          "text": "Ternak dijual melalui mesin penjual otomatis (vending machine)"
+        },
+        {
+          "key": "E",
+          "text": "Hewan ditukar dengan kupon pulsa telepon seluler di minimarket"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Pembeli kurban lebih suka melihat kondisi kesehatan ternak langsung di kandang untuk memastikan fisik hewan sempurna tanpa cacat."
+    },
+    {
+      "id": 4028,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Penjualan Hasil Peternakan",
+      "question": "Bagi peternak ayam petelur di desa, produk telur segar setiap sore biasanya didistribusikan ke...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Warung sembako warga desa sekitar dan pedagang langganan di pasar tradisional"
+        },
+        {
+          "key": "B",
+          "text": "Museum barang antik untuk diawetkan selama ratusan tahun"
+        },
+        {
+          "key": "C",
+          "text": "Pabrik pembuatan semen dan beton bangunan"
+        },
+        {
+          "key": "D",
+          "text": "Laboratorium antariksa luar angkasa"
+        },
+        {
+          "key": "E",
+          "text": "Bengkel las sepeda motor dan mobil pick up"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Telur ayam segar disalurkan cepat ke warung sembako desa dan pasar lokal agar cepat sampai ke meja makan konsumen."
+    },
+    {
+      "id": 4029,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "E",
+      "indicatorName": "Pengelolaan Lingkungan & Solusi Mandiri",
+      "question": "Agar kotoran sapi atau kambing yang menumpuk tidak menimbulkan bau dan protes dari tetangga, tindakan cerdas yang dilakukan peternak adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Mengolah kotoran menjadi pupuk kompos organik kering atau dialirkan ke instalasi biogas"
+        },
+        {
+          "key": "B",
+          "text": "Membuang kotoran ternak ke saluran air irigasi sawah saat malam hari"
+        },
+        {
+          "key": "C",
+          "text": "Menyemprotkan parfum wangi ke seluruh tumpukan kotoran basah"
+        },
+        {
+          "key": "D",
+          "text": "Membakar tumpukan kotoran basah hingga menimbulkan asap pekat tebal"
+        },
+        {
+          "key": "E",
+          "text": "Menyembunyikan kotoran ternak di bawah tempat tidur peternak"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Fermentasi kompos atau biogas mengubah limbah berbau menjadi produk pupuk bernilai ekonomis tinggi dan gas masak gratis."
+    },
+    {
+      "id": 4030,
+      "day": 4,
+      "sector": "peternakan",
+      "indicatorCode": "E",
+      "indicatorName": "Pengelolaan Lingkungan & Solusi Mandiri",
+      "question": "Saat musim kemarau panjang rumput hijau di padang rumput mulai mengering, persiapan yang bijak dilakukan peternak sapi adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Menyimpan cadangan pakan fermentasi (silase rumput/jerami) di dalam drum plastik kedap udara"
+        },
+        {
+          "key": "B",
+          "text": "Mengurangi jatah minum ternak menjadi seminggu sekali"
+        },
+        {
+          "key": "C",
+          "text": "Melepaskan sapi berkeliaran di jalan lintas sumatera"
+        },
+        {
+          "key": "D",
+          "text": "Mengecat rumput kering dengan cat semprot warna hijau"
+        },
+        {
+          "key": "E",
+          "text": "Menjual seluruh hewan ternak dengan harga seribu rupiah"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Silase dan jerami fermentasi yang disimpan di drum menjadi lumbung pakan bergizi saat pasokan rumput segar menipis di musim kemarau."
+    }
+  ],
+  "perikanan": [
+    {
+      "id": 4031,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "A",
+      "indicatorName": "Akses Lokasi & Jalan Tambak/Kolam",
+      "question": "Kawasan budidaya ikan patin dan lele di Belitang umumnya berada di dekat jalan yang dapat dilalui mobil pikap. Hal ini bertujuan untuk...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Memudahkan proses panen dan pengangkutan ikan hidup menggunakan drum beroksigen ke pasar"
+        },
+        {
+          "key": "B",
+          "text": "Agar ikan di kolam bisa melihat kendaraan yang melintas setiap menit"
+        },
+        {
+          "key": "C",
+          "text": "Menghindari kolam ikan dari terkena tetesan air hujan"
+        },
+        {
+          "key": "D",
+          "text": "Menurunkan suhu air kolam secara drastis di siang hari"
+        },
+        {
+          "key": "E",
+          "text": "Supaya biaya pembuatan kolam terpal menjadi gratis"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Akses mobil pikap sangat krusial saat panen agar ikan hidup dapat segera dinaikkan ke bak beroksigen dan dibawa segar ke pasar."
+    },
+    {
+      "id": 4032,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "A",
+      "indicatorName": "Akses Lokasi & Jalan Tambak/Kolam",
+      "question": "Berapa jarak ideal antara sumber air utama (saluran irigasi/sungai) dengan petak kolam budidaya ikan?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Dekat dan terhubung pipa/parit gravitasi agar pengisian air kolam hemat biaya listrik pompa"
+        },
+        {
+          "key": "B",
+          "text": "Minimal berjarak 50 km agar air tidak bisa sampai ke kolam"
+        },
+        {
+          "key": "C",
+          "text": "Harus berada di puncak bukit yang kering tanpa pohon"
+        },
+        {
+          "key": "D",
+          "text": "Terletak di bawah dasar laut dengan kedalaman ratusan meter"
+        },
+        {
+          "key": "E",
+          "text": "Menyatu dengan bak penampungan air limbah industri kimia"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Kedekatan dengan saluran irigasi memungkinkan pengisian air kolam secara gravitasi alami tanpa boros bahan bakar pompa."
+    },
+    {
+      "id": 4033,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "B",
+      "indicatorName": "Kualitas Air & Lingkungan Kolam",
+      "question": "Kondisi air saluran irigasi Belitang yang mengalir lancar sangat menguntungkan bagi pembudidaya ikan patin karena...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Menyediakan pasokan oksigen terlarut alami dan mempermudah pergantian air kolam secara berkala"
+        },
+        {
+          "key": "B",
+          "text": "Mengandung racun serangga alami yang membunuh ikan liar"
+        },
+        {
+          "key": "C",
+          "text": "Membuat ikan patin tidak perlu lagi diberi makan pelet"
+        },
+        {
+          "key": "D",
+          "text": "Menjadikan air kolam berbusa tebal dan berwarna hitam pekat"
+        },
+        {
+          "key": "E",
+          "text": "Mempercepat penguapan air kolam hingga dasar kolam retak-retak"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Air yang mengalir segar membawa oksigen terlarut dan membuang sisa amonia kotoran ikan sehingga ikan tumbuh sehat dan rakus makan."
+    },
+    {
+      "id": 4034,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "B",
+      "indicatorName": "Kualitas Air & Lingkungan Kolam",
+      "question": "Pematang kolam tanah di sentra perikanan Belitang umumnya dibangun cukup tinggi dan kokoh. Tujuannya adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Mencegah air kolam meluap saat hujan deras dan mencegah ikan budidaya kabur keluar kolam"
+        },
+        {
+          "key": "B",
+          "text": "Tempat berteduh bagi burung pemangsa ikan di siang hari"
+        },
+        {
+          "key": "C",
+          "text": "Agar sinar matahari tidak bisa menyentuh permukaan air kolam"
+        },
+        {
+          "key": "D",
+          "text": "Mengurangi kedalaman air kolam menjadi setinggi mata kaki"
+        },
+        {
+          "key": "E",
+          "text": "Sebagai lintasan sirkuit balapan motor bagi warga desa"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Tanggul pematang yang tinggi mengamankan investasi puluhan ribu ekor ikan dari bahaya banjir luapan saat musim penghujan."
+    },
+    {
+      "id": 4035,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Pasokan Pakan Pelet & Benih",
+      "question": "Peternak ikan patin dan lele di Belitang umumnya membeli pakan pelet pabrikan dari agen resmi di Gumawang dengan alasan...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Kadar protein pakan terjamin standar laboratorium dan ketersediaan stok pakan selalu kontinu"
+        },
+        {
+          "key": "B",
+          "text": "Pakan pelet pabrikan bisa membuat ikan bertelur emas"
+        },
+        {
+          "key": "C",
+          "text": "Hanya agen resmi yang boleh menjual makanan hewan di pasar"
+        },
+        {
+          "key": "D",
+          "text": "Pakan pelet pabrikan tidak perlu dibayar seumur hidup"
+        },
+        {
+          "key": "E",
+          "text": "Satu butir pelet cukup untuk memberi makan seribu ekor ikan"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Pakan pabrikan bersertifikasi menjamin kandungan nutrisi seimbang sehingga target rasio pakan (FCR) dapat tercapai optimal."
+    },
+    {
+      "id": 4036,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Pasokan Pakan Pelet & Benih",
+      "question": "Bibit ikan patin atau lele ukuran 5-7 cm biasanya didatangkan dari Balai Benih Ikan (BBI) lokal atau pembenih terdekat di Belitang karena...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Waktu tempuh pengiriman singkat sehingga benih tidak stres atau mati kehabisan oksigen di perjalanan"
+        },
+        {
+          "key": "B",
+          "text": "Benih lokal memiliki sirip yang bisa bercahaya di tempat gelap"
+        },
+        {
+          "key": "C",
+          "text": "Benih dari luar kota dilarang berenang di kolam air tawar"
+        },
+        {
+          "key": "D",
+          "text": "Benih lokal tidak membutuhkan air untuk hidup selama berbulan-bulan"
+        },
+        {
+          "key": "E",
+          "text": "Harga kantong plastik pembungkus benih lokal lebih murah"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Jarak tempuh bibit yang dekat menekan tingkat kematian (mortalitas) dan menjaga kondisi benih tetap lincah saat ditebar."
+    },
+    {
+      "id": 4037,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Distribusi & Pemasaran Ikan",
+      "question": "Ke mana sebagian besar hasil panen ikan patin konsumsi dari pembudidaya di OKU Timur didistribusikan?",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pasar ikan Gumawang, pasar induk Jakabaring Palembang, dan warung-warung kuliner pindang/pecel"
+        },
+        {
+          "key": "B",
+          "text": "Toko buku dan alat tulis di ibukota kabupaten"
+        },
+        {
+          "key": "C",
+          "text": "Pabrik pembuatan perhiasan permata dan mutiara"
+        },
+        {
+          "key": "D",
+          "text": "Stasiun pengisian bahan bakar gas alam"
+        },
+        {
+          "key": "E",
+          "text": "Kantor pos pelayanan surat menyurat luar negeri"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Patin Belitang adalah pemasok utama pasar ikan di Palembang dan restoran pindang patin khas Sumatera Selatan."
+    },
+    {
+      "id": 4038,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Distribusi & Pemasaran Ikan",
+      "question": "Agar ikan patin atau lele tetap hidup segar dan tidak lecet saat diangkut mobil pikap menuju pasar luar kota, bak penampungan mobil harus dilengkapi...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Sistem aerasi suplai oksigen murni atau gelembung aerator baterai"
+        },
+        {
+          "key": "B",
+          "text": "Lampu sorot panggung dengan musik suara keras"
+        },
+        {
+          "key": "C",
+          "text": "Potongan es balok sebanyak sembilan puluh persen volume bak"
+        },
+        {
+          "key": "D",
+          "text": "Minyak goreng panas agar ikan langsung matang di jalan"
+        },
+        {
+          "key": "E",
+          "text": "Kipas angin gantung bertenaga tenaga surya"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Aerator tabung oksigen menjaga ketersediaan oksigen air bak selama perjalanan berjam-jam ke pasar induk."
+    },
+    {
+      "id": 4039,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Lingkungan & Solusi Budidaya",
+      "question": "Tantangan kualitas air yang sering muncul saat cuaca panas terik di siang hari kemudian hujan mendadak di malam hari pada kolam ikan adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Perubahan suhu air secara drastis (upwelling) yang menyebabkan ikan kaget dan kekurangan oksigen"
+        },
+        {
+          "key": "B",
+          "text": "Air kolam berubah rasa menjadi manis seperti air gula"
+        },
+        {
+          "key": "C",
+          "text": "Ikan di kolam melompat ke daratan untuk mencari pohon peneduh"
+        },
+        {
+          "key": "D",
+          "text": "Pematang kolam menyusut dan menghilang secara misterius"
+        },
+        {
+          "key": "E",
+          "text": "Seluruh lumut kolam berubah warna menjadi warna perak"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Fluktuasi suhu dan pembalikan massa air dasar (upwelling) dapat menghabiskan oksigen, sehingga perlu aerasi tambahan."
+    },
+    {
+      "id": 4040,
+      "day": 4,
+      "sector": "perikanan",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Lingkungan & Solusi Budidaya",
+      "question": "Langkah praktis yang dilakukan peternak ikan untuk mengatasi masalah penurunan kualitas air kolam yang keruh dan berbau adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Membuang sepertiga air dasar kolam melalui pipa sifon dan menambah air segar dari saluran irigasi"
+        },
+        {
+          "key": "B",
+          "text": "Memberikan pakan pelet sebanyak lima kali lipat dari biasanya"
+        },
+        {
+          "key": "C",
+          "text": "Menaburkan sabun bubuk pencuci pakaian ke dalam kolam"
+        },
+        {
+          "key": "D",
+          "text": "Mengeringkan kolam beserta seluruh ikan di dalamnya di bawah terik matahari"
+        },
+        {
+          "key": "E",
+          "text": "Menutup permukaan kolam dengan terpal hitam rapat tanpa celah"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Sifon air dasar membuang endapan amonia kotoran yang membusuk, lalu digantikan air baru yang kaya oksigen."
+    }
+  ],
+  "industri": [
+    {
+      "id": 4041,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "A",
+      "indicatorName": "Akses Lokasi & Jalan Angkut Industri",
+      "question": "Pabrik penggilingan padi (RMU) atau pabrik tahu-tempe sebaiknya berlokasi di tepi jalan yang memiliki lebar minimal 4 meter dengan konstruksi keras, agar...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Truk pengangkut bahan baku dan mobil pikap distributor dapat berpapasan dan bongkar muat dengan lancar"
+        },
+        {
+          "key": "B",
+          "text": "Para pegawai pabrik bisa memarkir pesawat terbang pribadi di depan pabrik"
+        },
+        {
+          "key": "C",
+          "text": "Mesin penggilingan terdengar jelas oleh warga di seluruh kecamatan"
+        },
+        {
+          "key": "D",
+          "text": "Mewajibkan semua orang yang lewat untuk membeli produk pabrik"
+        },
+        {
+          "key": "E",
+          "text": "Menghilangkan kewajiban pabrik untuk membayar tagihan listrik PLN"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Akses jalan yang lebar dan kokoh menjamin kelancaran truk bermuatan belasan ton tanpa merusak bahu jalan pemukiman."
+    },
+    {
+      "id": 4042,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "A",
+      "indicatorName": "Akses Lokasi & Jalan Angkut Industri",
+      "question": "Fasilitas halaman depan tempat usaha agro-industri pangan (seperti RMU atau pabrik kerupuk) sebaiknya memiliki lantai cor semen luas dengan tujuan...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Sebagai area bongkar muat karung gabah/kedelai dan tempat parkir kendaraan operasional yang aman"
+        },
+        {
+          "key": "B",
+          "text": "Tempat menanam bibit pohon kelapa sawit di depan pintu pabrik"
+        },
+        {
+          "key": "C",
+          "text": "Arena perlombaan sepak bola bagi warga satu kabupaten"
+        },
+        {
+          "key": "D",
+          "text": "Mencegah pembeli datang berkunjung ke pabrik tersebut"
+        },
+        {
+          "key": "E",
+          "text": "Menurunkan berat timbangan barang secara otomatis"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Halaman berlantai semen mempermudah penanganan barang berat dengan gerobak dorong serta menjaga kebersihan bahan pangan."
+    },
+    {
+      "id": 4043,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "B",
+      "indicatorName": "Fasilitas Listrik, Air & Pengelolaan Limbah",
+      "question": "Pasokan air bersih dari sumur bor bertenaga pompa yang jernih dan bebas bau sangat krusial bagi industri tahu dan kemplang karena...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Air bersentuhan langsung dengan bahan makanan dan menentukan kehigienisan serta rasa produk pangan"
+        },
+        {
+          "key": "B",
+          "text": "Air sumur bor otomatis mengubah kedelai menjadi emas murni"
+        },
+        {
+          "key": "C",
+          "text": "Air yang kotor akan membuat mesin penggilingan menjadi lebih cepat berputar"
+        },
+        {
+          "key": "D",
+          "text": "Pemerintah mewajibkan semua pabrik tahu menggunakan air laut asin"
+        },
+        {
+          "key": "E",
+          "text": "Air bersih membuat tahu tidak perlu dimasak di atas kuali panas"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Air adalah bahan baku utama perendaman dan pencucian kedelai; air bersih menjamin tahu tidak mudah basi dan higienis."
+    },
+    {
+      "id": 4044,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "B",
+      "indicatorName": "Fasilitas Listrik, Air & Pengelolaan Limbah",
+      "question": "Pengelola pabrik penggilingan padi (RMU) di Belitang biasanya mengelola limbah sekam (kulit gabah) dengan cara...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Dijual ke peternak ayam untuk alas kandang (sekam sekam) atau dibakar menjadi abu arang sekam"
+        },
+        {
+          "key": "B",
+          "text": "Dibuang ke tengah jalan raya utama agar terlindas mobil"
+        },
+        {
+          "key": "C",
+          "text": "Dihanyutkan ke saluran air irigasi hingga pintu air tersumbat"
+        },
+        {
+          "key": "D",
+          "text": "Dibuang ke halaman rumah tetangga tanpa izin"
+        },
+        {
+          "key": "E",
+          "text": "Disimpan di dalam lemari es pendingin toko"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Sekam padi bernilai ekonomis sebagai alas litter kandang ayam broiler atau biochar media tanam yang menyuburkan tanah."
+    },
+    {
+      "id": 4045,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Bahan Baku Masuk Industri",
+      "question": "Pabrik tahu di OKU Timur umumnya mendatangkan bahan baku biji kedelai kering dari agen distributor di Gumawang secara rutin. Alasan pemilihan distributor ini adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Stok kedelai selalu tersedia dalam karung standar 50 kg dan dapat dikirim langsung ke lokasi pabrik"
+        },
+        {
+          "key": "B",
+          "text": "Kedelai dari Gumawang sudah berbentuk tahu matang siap santap"
+        },
+        {
+          "key": "C",
+          "text": "Hanya kota Gumawang yang boleh menjual kedelai di Indonesia"
+        },
+        {
+          "key": "D",
+          "text": "Pembelian kedelai di agen distributor berhadiah mobil mewah"
+        },
+        {
+          "key": "E",
+          "text": "Kedelai tersebut bisa tumbuh menjadi pohon raksasa pemanjat awan"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Agen grosir Gumawang menyediakan suplai kedelai impor berkualitas tinggi secara konsisten dengan sistem antar langsung."
+    },
+    {
+      "id": 4046,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Bahan Baku Masuk Industri",
+      "question": "Bagi industri penggilingan beras (RMU), sumber pasokan gabah kering panen (GKP) paling utama berasal dari...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Petani sawah di desa-desa sekitar pabrik yang sedang panen raya"
+        },
+        {
+          "key": "B",
+          "text": "Supermarket waralaba di ibukota provinsi Jakarta"
+        },
+        {
+          "key": "C",
+          "text": "Peternak sapi perah di dataran tinggi pegunungan"
+        },
+        {
+          "key": "D",
+          "text": "Toko jam tangan dan kacamata impor"
+        },
+        {
+          "key": "E",
+          "text": "Gudang penyimpanan besi tua dan rongsokan"
+        }
+      ],
+      "correct": "A",
+      "explanation": "RMU di Belitang menyerap gabah langsung dari sawah petani sekitar sehingga biaya logistik gabah sangat murah."
+    },
+    {
+      "id": 4047,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Distribusi Produk Jadi",
+      "question": "Setiap subuh hari, alur penjualan produk tahu segar di sentra industri tahu biasanya dimulai dengan...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pedagang sayur keliling (tukang obrok) dan penjual pasar pagi datang mengambil papan tahu langsung di pabrik"
+        },
+        {
+          "key": "B",
+          "text": "Tahu dikirim menggunakan pesawat kargo internasional ke luar negeri"
+        },
+        {
+          "key": "C",
+          "text": "Tahu dibagikan gratis kepada seluruh penumpang bus malam"
+        },
+        {
+          "key": "D",
+          "text": "Pemilik pabrik mengubur seluruh tahu di dalam tanah selama seminggu"
+        },
+        {
+          "key": "E",
+          "text": "Tahu disimpan di kantor pos untuk menunggu pembeli lelang"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Pedagang sayur keliling mengambil tahu segar di subuh hari agar bisa dijual pagi-pagi ke ibu rumah tangga di berbagai dusun."
+    },
+    {
+      "id": 4048,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Distribusi Produk Jadi",
+      "question": "Beras kemasan premium 5 kg dan 10 kg hasil produksi pabrik RMU modern di OKU Timur dipasarkan melalui...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Toko sembako, agen beras pasar Gumawang, serta dikirim ke pasar induk di Palembang dan Lampung"
+        },
+        {
+          "key": "B",
+          "text": "Toko sepatu olahraga dan pakaian renang"
+        },
+        {
+          "key": "C",
+          "text": "Bengkel tambal ban dan servis knalpot mobil"
+        },
+        {
+          "key": "D",
+          "text": "Bioskop film dan tempat hiburan malam"
+        },
+        {
+          "key": "E",
+          "text": "Toko penjualan pulsa telepon seluler"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Beras Belitang terkenal pulen dan dipasarkan luas ke toko grosir lokal hingga ke pasar induk beras di Palembang dan Lampung."
+    },
+    {
+      "id": 4049,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Lingkungan & Solusi Industri",
+      "question": "Tantangan lingkungan yang harus dikelola dengan baik oleh industri tahu-tempe agar tidak mencemari lingkungan adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Air limbah rebusan kedelai yang berbau jika dibuang langsung ke selokan pemukiman warga"
+        },
+        {
+          "key": "B",
+          "text": "Asap knalpot motor pembeli yang terlalu harum mewangi"
+        },
+        {
+          "key": "C",
+          "text": "Daun pisang pembungkus tempe yang menarik kedatangan burung merpati"
+        },
+        {
+          "key": "D",
+          "text": "Biji kedelai yang melompat sendiri ke atap rumah warga"
+        },
+        {
+          "key": "E",
+          "text": "Lampu penerangan pabrik yang terlalu redup di siang hari"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Air rebusan kedelai memiliki kandungan organik tinggi; jika dibuang sembarangan akan terurai anaerobik dan berbau busuk."
+    },
+    {
+      "id": 4050,
+      "day": 4,
+      "sector": "industri",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Lingkungan & Solusi Industri",
+      "question": "Solusi ramah lingkungan yang tepat untuk menangani limbah cair tahu adalah membuat Instalasi Pengolahan Air Limbah (IPAL) berupa...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Bak pengendapan bertingkat dengan saringan kerikil, arang, dan kolam anaerobik sebelum dialirkan ke parit"
+        },
+        {
+          "key": "B",
+          "text": "Menyiramkan air limbah panas ke tanaman hias di depan balai desa"
+        },
+        {
+          "key": "C",
+          "text": "Memasukkan air limbah tahu ke dalam sumur air minum warga"
+        },
+        {
+          "key": "D",
+          "text": "Menutup selokan dengan terpal agar bau limbah tetap terkurung"
+        },
+        {
+          "key": "E",
+          "text": "Mengeringkan air limbah dengan kipas angin gantung kecil"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Bak pengendap IPAL sederhana menguraikan zat organik air limbah sehingga air yang keluar ke parit umum sudah aman dan tidak berbau."
+    }
+  ],
+  "perdagangan": [
+    {
+      "id": 4051,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "A",
+      "indicatorName": "Letak Strategis Kios & Aksesibilitas",
+      "question": "Kios saprotan (pupuk dan benih) yang berlokasi tepat di persimpangan jalan poros desa sangat disukai petani karena...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Posisinya sangat mudah dilihat, mudah disinggahi saat berangkat/pulang dari sawah, dan dekat jangkauannya"
+        },
+        {
+          "key": "B",
+          "text": "Barang di persimpangan jalan otomatis menjadi gratis tanpa perlu bayar"
+        },
+        {
+          "key": "C",
+          "text": "Petani tidak diperbolehkan membeli barang di tempat yang lurus"
+        },
+        {
+          "key": "D",
+          "text": "Persimpangan jalan tidak pernah terkena hembusan angin dan hujan"
+        },
+        {
+          "key": "E",
+          "text": "Membuat kendaraan petani otomatis berjalan lambat sendiri"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Letak di perlintasan persimpangan meningkatkan visibilitas toko dan memudahkan akses petani yang sedang menuju atau dari ladang."
+    },
+    {
+      "id": 4052,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "A",
+      "indicatorName": "Letak Strategis Kios & Aksesibilitas",
+      "question": "Ketersediaan halaman parkir yang memadai di depan kios perdagangan di pinggir jalan raya pedesaan berfungsi untuk...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Memastikan motor dan pikap pembeli bisa parkir aman tanpa memicu kemacetan di badan jalan utama"
+        },
+        {
+          "key": "B",
+          "text": "Tempat menjemur pakaian keluarga pemilik toko"
+        },
+        {
+          "key": "C",
+          "text": "Mendirikan tenda perkemahan bagi murid sekolah"
+        },
+        {
+          "key": "D",
+          "text": "Menghalangi pemandangan orang yang lewat agar tidak melihat toko"
+        },
+        {
+          "key": "E",
+          "text": "Arena perlombaan balapan sepeda anak-anak balita"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Area parkir yang tertata mencegah kemacetan di jalan poros desa dan memberikan rasa tenang bagi pembeli saat bertransaksi."
+    },
+    {
+      "id": 4053,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "B",
+      "indicatorName": "Tata Letak Toko & Keamanan Lingkungan",
+      "question": "Di dalam kios saprotan, penataan karung pupuk dan benih di atas palet kayu (tidak langsung menyentuh lantai semen) bertujuan untuk...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Mencegah kelembapan lantai semen merembes ke karung yang dapat menyebabkan pupuk menggumpal dan benih rusak"
+        },
+        {
+          "key": "B",
+          "text": "Agar karung pupuk terlihat lebih tinggi dari kepala pemilik toko"
+        },
+        {
+          "key": "C",
+          "text": "Mempermudah tikus bersarang di bawah tumpukan karung"
+        },
+        {
+          "key": "D",
+          "text": "Mengurangi berat timbangan pupuk saat dijual ke petani"
+        },
+        {
+          "key": "E",
+          "text": "Mewajibkan pembeli untuk mengangkat barang dengan tangga"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Palet kayu memberikan sirkulasi udara di bawah karung, melindungi pupuk kimia dari kelembapan semen yang merusak mutu."
+    },
+    {
+      "id": 4054,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "B",
+      "indicatorName": "Tata Letak Toko & Keamanan Lingkungan",
+      "question": "Penerangan lampu yang terang dan pemasangan pintu teralis/rolling door besi yang kokoh di kios perdagangan bertujuan untuk...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Memberikan rasa aman dari potensi pencurian dan memudahkan transaksi saat petang atau malam hari"
+        },
+        {
+          "key": "B",
+          "text": "Menghangatkan barang dagangan agar tidak kedinginan"
+        },
+        {
+          "key": "C",
+          "text": "Menarik perhatian serangga malam masuk ke dalam toko"
+        },
+        {
+          "key": "D",
+          "text": "Membuat toko terlihat seperti museum barang kuno"
+        },
+        {
+          "key": "E",
+          "text": "Mencegah pelanggan masuk berbelanja ke dalam kios"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Keamanan fisik toko melindungi aset inventaris barang dagangan bernilai jutaan rupiah dari risiko tindak kejahatan."
+    },
+    {
+      "id": 4055,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Pasokan Barang Dagangan",
+      "question": "Sebagian besar barang dagangan sembako dan produk kemasan di kios desa dipasok melalui...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Mobil kanvas/boks milik distributor distributor resmi dan belanja kulakan rutin di pasar grosir Gumawang"
+        },
+        {
+          "key": "B",
+          "text": "Pengiriman pesawat tanpa awak (drone) dari luar negeri"
+        },
+        {
+          "key": "C",
+          "text": "Kiriman barang temuan warga dari dasar sungai"
+        },
+        {
+          "key": "D",
+          "text": "Hasil barter dengan barang rongsokan kardus bekas"
+        },
+        {
+          "key": "E",
+          "text": "Pembelian barang lelang sitaan pengadilan setiap hari"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Mobil sales distributor datang terjadwal mengisi stok toko, ditambah belanja mandiri ke pasar grosir kecamatan."
+    },
+    {
+      "id": 4056,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Pasokan Barang Dagangan",
+      "question": "Bagi kios pupuk bersubsidi resmi (KPL), alur penebusan pupuk oleh petani saat ini menggunakan sistem digital yang terhubung dengan...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Aplikasi resmi pemerintah (seperti i-Pubers) dengan menunjukkan KTP asli petani terdaftar"
+        },
+        {
+          "key": "B",
+          "text": "Kupon kertas mainan yang dijual bebas di jalanan"
+        },
+        {
+          "key": "C",
+          "text": "Foto tanda tangan pejabat kelurahan di selembar daun pisang"
+        },
+        {
+          "key": "D",
+          "text": "Sistem undian kuis tebak kata di siaran televisi"
+        },
+        {
+          "key": "E",
+          "text": "Tukar menukar dengan kelereng dan tutup botol"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Aplikasi i-Pubers Kementan memverifikasi KTP petani untuk memastikan pupuk subsidi tepat sasaran sesuai alokasi e-RDKK."
+    },
+    {
+      "id": 4057,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Penjualan & Pelanggan Kios",
+      "question": "Kios saprotan di desa umumnya mengalami lonjakan pembeli paling ramai pada saat...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Menjelang musim tanam serentak (olah tanah) dan jadwal pemupukan pertama tanaman padi"
+        },
+        {
+          "key": "B",
+          "text": "Tengah malam saat seluruh warga desa sedang tertidur lelap"
+        },
+        {
+          "key": "C",
+          "text": "Hari libur tahun baru saat sawah sedang terendam banjir"
+        },
+        {
+          "key": "D",
+          "text": "Musim paceklik ketika tidak ada satu pun petani yang menanam padi"
+        },
+        {
+          "key": "E",
+          "text": "Saat harga pupuk di pasaran naik sepuluh kali lipat"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Kebutuhan sarana produksi pertanian melonjak drastis saat jadwal musim tanam serentak dimulai di wilayah pengairan irigasi."
+    },
+    {
+      "id": 4058,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Penjualan & Pelanggan Kios",
+      "question": "Mayoritas pelanggan kios di pedesaan OKU Timur melakukan pembayaran belanja harian secara tunai, namun sebagian kios modern mulai menyediakan...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pembayaran digital scan QRIS dan transfer perbankan mobile"
+        },
+        {
+          "key": "B",
+          "text": "Pembayaran memakai mata uang dinar emas kuno"
+        },
+        {
+          "key": "C",
+          "text": "Pembayaran dengan berjanji menyanyi di depan toko"
+        },
+        {
+          "key": "D",
+          "text": "Sistem barter barang antik abad pertengahan"
+        },
+        {
+          "key": "E",
+          "text": "Penukaran dengan tiket karcis bioskop lama"
+        }
+      ],
+      "correct": "A",
+      "explanation": "QRIS mempermudah warga dan pemuda desa bertransaksi nontunai tanpa perlu repot mencari uang kembalian pecahan kecil."
+    },
+    {
+      "id": 4059,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Operasional & Solusi Pelayanan",
+      "question": "Tantangan cuaca saat musim hujan yang sering dihadapi oleh pemilik kios di pinggir jalan desa adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Cipratan air dan lumpur dari jalan yang mengotori teras toko serta kendaraan pembeli yang kehujanan"
+        },
+        {
+          "key": "B",
+          "text": "Barang dagangan kaleng di dalam toko mendadak berubah menjadi es"
+        },
+        {
+          "key": "C",
+          "text": "Uang kertas di dalam laci toko luntur warnanya menjadi putih polos"
+        },
+        {
+          "key": "D",
+          "text": "Semua pembeli dilarang keluar rumah oleh undang-undang desa"
+        },
+        {
+          "key": "E",
+          "text": "Toko otomatis terbang terbawa tiupan angin sepoi-sepoi"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Cipratan air kendaraan dan tempias hujan adalah kendala fisik kios pinggir jalan yang memerlukan peneduh tambahan."
+    },
+    {
+      "id": 4060,
+      "day": 4,
+      "sector": "perdagangan",
+      "indicatorCode": "E",
+      "indicatorName": "Tantangan Operasional & Solusi Pelayanan",
+      "question": "Inovasi sederhana yang bisa dipasang pemilik kios untuk meningkatkan kenyamanan pembeli saat musim hujan atau panas terik adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Memasang kanopi/tenda teras di depan toko dan menyediakan tempat duduk tunggu yang bersih"
+        },
+        {
+          "key": "B",
+          "text": "Mengunci pintu toko rapat-rapat saat ada pembeli datang"
+        },
+        {
+          "key": "C",
+          "text": "Menaruh tumpukan sampah basah di depan pintu masuk toko"
+        },
+        {
+          "key": "D",
+          "text": "Mematikan seluruh lampu toko saat hari sedang mendung"
+        },
+        {
+          "key": "E",
+          "text": "Menjual barang dagangan dengan harga dua kali lipat saat hujan"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Kanopi melindungi kendaraan pembeli dari hujan/panas dan membuat pelanggan merasa betah dan nyaman saat berbelanja."
+    }
+  ],
+  "formal": [
+    {
+      "id": 4061,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "A",
+      "indicatorName": "Lokasi Gerai & Kemudahan Jangkauan",
+      "question": "Gerai agen keuangan mikro (seperti Agen BRILink atau BUMDes) yang menyatu dengan toko kelontong di tengah pemukiman desa memberikan keuntungan utama...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Warga desa bisa melakukan transaksi perbankan cukup dengan jalan kaki atau motor tanpa harus menempuh puluhan kilometer ke kota"
+        },
+        {
+          "key": "B",
+          "text": "Mewajibkan semua nasabah untuk membeli seluruh barang di toko kelontong"
+        },
+        {
+          "key": "C",
+          "text": "Meniadakan kebutuhan kantor bank umum di seluruh Indonesia"
+        },
+        {
+          "key": "D",
+          "text": "Membuat uang tabungan nasabah di bank bertambah secara gaib"
+        },
+        {
+          "key": "E",
+          "text": "Menghilangkan fungsi uang rupiah sebagai alat tukar sah"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Inklusi keuangan mikro memangkas jarak geografis warga desa yang jauh dari kantor cabang bank di ibukota kecamatan."
+    },
+    {
+      "id": 4062,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "A",
+      "indicatorName": "Lokasi Gerai & Kemudahan Jangkauan",
+      "question": "Kriteria penempatan lokasi gerai agen perbankan desa yang ideal adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Berada di pinggir jalan yang ramai, dekat pusat keramaian warga, dan mudah diakses sepeda motor"
+        },
+        {
+          "key": "B",
+          "text": "Berada di tengah hutan belantara yang tidak pernah dilalui manusia"
+        },
+        {
+          "key": "C",
+          "text": "Tersembunyi di dalam gua bawah tanah tanpa pintu masuk"
+        },
+        {
+          "key": "D",
+          "text": "Hanya boleh dibuka di puncak menara pemancar sinyal tertinggi"
+        },
+        {
+          "key": "E",
+          "text": "Berlokasi di pulau terpencil tanpa aliran listrik sama sekali"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Lokasi ramai mempermudah warga menemukan gerai, sekaligus menciptakan rasa aman saat nasabah membawa uang tunai."
+    },
+    {
+      "id": 4063,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "B",
+      "indicatorName": "Infrastruktur Sinyal, Listrik & Keamanan",
+      "question": "Mesin EDC (Electronic Data Capture) dan aplikasi transaksi perbankan agen BRILink sangat bergantung pada faktor lingkungan berupa...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Kestabilan sinyal jaringan internet seluler (4G/WiFi) dan ketersediaan daya listrik"
+        },
+        {
+          "key": "B",
+          "text": "Aroma wewangian bunga mawar di dalam ruangan gerai"
+        },
+        {
+          "key": "C",
+          "text": "Suhu ruangan yang harus selalu berada di bawah titik beku es"
+        },
+        {
+          "key": "D",
+          "text": "Warna cat dinding ruangan yang harus berwarna merah menyala"
+        },
+        {
+          "key": "E",
+          "text": "Jumlah kendaraan bermotor yang melintas di depan gerai per jam"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Mesin EDC membutuhkan koneksi data internet yang stabil untuk mengesahkan transaksi PIN kartu debit ke server pusat perbankan."
+    },
+    {
+      "id": 4064,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "B",
+      "indicatorName": "Infrastruktur Sinyal, Listrik & Keamanan",
+      "question": "Untuk mengantisipasi pemadaman listrik berkala yang sering terjadi di daerah pedesaan, persiapan yang bijak dari pengelola gerai adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Menyiapkan perangkat cadangan daya (powerbank atau UPS mini) agar mesin EDC tetap menyala"
+        },
+        {
+          "key": "B",
+          "text": "Menutup gerai selama satu bulan penuh hingga listrik normal"
+        },
+        {
+          "key": "C",
+          "text": "Meminta nasabah menyalakan api unggun di dalam ruangan gerai"
+        },
+        {
+          "key": "D",
+          "text": "Mengganti mesin EDC dengan mesin ketik manual jaman dahulu"
+        },
+        {
+          "key": "E",
+          "text": "Membakar kartu ATM nasabah agar mesin bisa menyala kembali"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Cadangan daya UPS/powerbank menjaga mesin EDC tetap online sehingga pelayanan transaksi warga tidak terputus saat listrik mati."
+    },
+    {
+      "id": 4065,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Likuiditas Kas Uang Tunai",
+      "question": "Pengelola agen BRILink di desa mengelola perputaran saldo uang tunai harian melalui sumber...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Uang masuk dari setoran belanja toko dan penarikan/penyetoran rutin ke kantor bank cabang terdekat"
+        },
+        {
+          "key": "B",
+          "text": "Mencetak uang kertas sendiri menggunakan mesin printer warna"
+        },
+        {
+          "key": "C",
+          "text": "Meminta kiriman uang koin dari bank luar negeri setiap jam"
+        },
+        {
+          "key": "D",
+          "text": "Mengambil uang dari kotak amal masjid tanpa izin pengurus"
+        },
+        {
+          "key": "E",
+          "text": "Meminjam uang mainan monopoli milik anak-anak tetangga"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Manajemen likuiditas kas menggabungkan arus kas toko dengan frekuensi tarik-setor tunai ke rekening bank operasional agen."
+    },
+    {
+      "id": 4066,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "C",
+      "indicatorName": "Alur Likuiditas Kas Uang Tunai",
+      "question": "Pada musim panen raya padi di OKU Timur, jenis transaksi yang paling melonjak di gerai keuangan mikro pedesaan adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Transfer pembayaran gabah dari penebas kepada petani dan penarikan uang tunai hasil panen"
+        },
+        {
+          "key": "B",
+          "text": "Pembelian tiket konser musik rock internasional"
+        },
+        {
+          "key": "C",
+          "text": "Pembayaran pajak kapal pesiar mewah di luar negeri"
+        },
+        {
+          "key": "D",
+          "text": "Pemesanan kamar hotel berbintang lima di benua Eropa"
+        },
+        {
+          "key": "E",
+          "text": "Pengiriman uang receh koin ke museum sejarah nasional"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Musim panen memicu perputaran uang miliaran rupiah di desa melalui transfer hasil penjualan gabah dan penarikan uang belanja modal."
+    },
+    {
+      "id": 4067,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Layanan & Transaksi Warga",
+      "question": "Selain tarik tunai dan transfer antarbank, layanan rutin yang paling sering dimanfaatkan oleh warga pedesaan di agen keuangan mikro adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Pembayaran tagihan listrik PLN, pembelian token listrik, pulsa HP, dan iuran BPJS Kesehatan"
+        },
+        {
+          "key": "B",
+          "text": "Pendaftaran lisensi pilot helikopter komersial"
+        },
+        {
+          "key": "C",
+          "text": "Pembuatan paspor diplomatik antarnegara"
+        },
+        {
+          "key": "D",
+          "text": "Layanan peminjaman senjata api untuk berburu"
+        },
+        {
+          "key": "E",
+          "text": "Pendaftaran lelang lukisan karya seniman terkenal"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Pembayaran tagihan bulanan (PPOB) adalah kebutuhan primer harian warga yang sangat terbantu oleh kehadiran agen desa."
+    },
+    {
+      "id": 4068,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "D",
+      "indicatorName": "Alur Layanan & Transaksi Warga",
+      "question": "Bagi keluarga petani yang memiliki anak sedang menempuh pendidikan kuliah di luar kota (Palembang atau Jawa), keberadaan agen perbankan desa bermanfaat untuk...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Mengirimkan uang saku dan biaya kuliah secara instan dalam hitungan menit tanpa antre lama di bank"
+        },
+        {
+          "key": "B",
+          "text": "Mengirimkan beras dan gabah melalui mesin transfer uang"
+        },
+        {
+          "key": "C",
+          "text": "Menjemput anak kuliah pulang ke desa menggunakan mobil dinas bank"
+        },
+        {
+          "key": "D",
+          "text": "Membuat nilai ujian kuliah anak otomatis menjadi nilai A"
+        },
+        {
+          "key": "E",
+          "text": "Mengubah foto anak menjadi gambar di kartu ATM bank"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Layanan transfer real-time menghubungkan ekonomi pedesaan dengan kebutuhan biaya pendidikan keluarga di perantauan."
+    },
+    {
+      "id": 4069,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "E",
+      "indicatorName": "Privasi, Kenyamanan & Solusi Layanan",
+      "question": "Aspek kenyamanan dan privasi yang sangat penting dijaga oleh pengelola agen keuangan mikro saat nasabah melakukan transaksi uang tunai adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Menyediakan meja transaksi yang rapi dan menjaga kerahasiaan nominal uang serta PIN ATM nasabah dari pandangan orang lain"
+        },
+        {
+          "key": "B",
+          "text": "Mengumumkan nominal uang nasabah menggunakan pengeras suara masjid"
+        },
+        {
+          "key": "C",
+          "text": "Menempelkan nomor PIN ATM nasabah di papan pengumuman desa"
+        },
+        {
+          "key": "D",
+          "text": "Meminta nasabah berteriak saat menyebutkan jumlah uang yang ingin ditarik"
+        },
+        {
+          "key": "E",
+          "text": "Memotret wajah nasabah lalu mengunggahnya ke media sosial"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Privasi nominal saldo dan kerahasiaan PIN adalah standar keamanan utama untuk melindungi nasabah dari tindak kejahatan pengintaian."
+    },
+    {
+      "id": 4070,
+      "day": 4,
+      "sector": "formal",
+      "indicatorCode": "E",
+      "indicatorName": "Privasi, Kenyamanan & Solusi Layanan",
+      "question": "Fasilitas sederhana yang sangat disarankan disediakan di gerai agen keuangan mikro agar warga merasa nyaman saat mengantre adalah...",
+      "options": [
+        {
+          "key": "A",
+          "text": "Tempat duduk antrean yang bersih, kipas angin pendingin ruangan, dan air minum galon"
+        },
+        {
+          "key": "B",
+          "text": "Tempat tidur gantung di atas meja mesin transaksi"
+        },
+        {
+          "key": "C",
+          "text": "Lantai yang dilumuri oli licin agar orang tidak bisa berdiri lama"
+        },
+        {
+          "key": "D",
+          "text": "Ruangan yang sengaja dibuat gelap gulita tanpa lampu"
+        },
+        {
+          "key": "E",
+          "text": "Musik berisik dengan volume pengeras suara maksimal"
+        }
+      ],
+      "correct": "A",
+      "explanation": "Kursi tunggu dan ventilasi yang sejuk membuat nasabah merasa dihargai dan tertib saat menunggu giliran pelayanan transaksi."
+    }
+  ]
+};
+
   window.getNftBankSoalByDay = function(dayNum, sectorKey) {
     dayNum = (dayNum !== undefined && dayNum !== null && !isNaN(dayNum) && Number(dayNum) === 0) ? 0 : (parseInt(dayNum) || 1);
     let dayQuestions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[dayNum]) || [];
@@ -21593,19 +23851,15 @@ window.NFT_BANK_SOAL_DAYS = {
       return defPool.length ? defPool : d3All.slice(0, 50);
     }
 
-    if (dayNum === 4 && (!dayQuestions || dayQuestions.length === 0)) {
-      const d3Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
-      const indMap4 = {
-        'A': 'Analisis Science: Prinsip Fisika, Kimia & Biologi pada Peralatan',
-        'B': 'Analisis Technology: Sistem Penggerak, Material & Mekanisasi Alat',
-        'C': 'Analisis Engineering: Rancang Bangun Mekanis, Ergonomi & Perawatan Alat',
-        'D': 'Analisis Mathematics: Kalkulasi Kapasitas Kerja, Energi & Efisiensi Biaya Alat',
-        'E': 'Integrasi 4 Dimensi STEM pada Peralatan & Perlengkapan Sektor Pilihan'
-      };
-      dayQuestions = d3Questions.map(q => Object.assign({}, q, {
-        day: 4,
-        indicatorName: indMap4[q.indicatorCode] || q.indicatorName
-      }));
+    // KHUSUS DAY 4 (10 SOAL PG JELAJAH LINGKUNGAN & ALUR DISTRIBUSI SESUAI 7 SEKTOR)
+    if (dayNum === 4) {
+      const sec = (sectorKey || 'pertanian').toLowerCase().trim();
+      if (window.NFT_DAY4_SECTOR_QUESTIONS && window.NFT_DAY4_SECTOR_QUESTIONS[sec]) {
+        return window.NFT_DAY4_SECTOR_QUESTIONS[sec];
+      }
+      if (window.NFT_DAY4_SECTOR_QUESTIONS && window.NFT_DAY4_SECTOR_QUESTIONS.pertanian) {
+        return window.NFT_DAY4_SECTOR_QUESTIONS.pertanian;
+      }
     }
 
     // KHUSUS DAY 5 (VIDEO OBSERVASI CULTURE, EXPLORATION ALAT & 4 UNSUR STEM 7 SEKTOR)
@@ -21746,8 +24000,14 @@ window.NFT_BANK_SOAL_DAYS = {
     if (dayNum === 3 && window.NFT_BANK_SOAL_INDICATORS_DAY3) {
       return window.NFT_BANK_SOAL_INDICATORS_DAY3;
     }
-    if (dayNum === 4 && window.NFT_BANK_SOAL_INDICATORS_DAY4) {
-      return window.NFT_BANK_SOAL_INDICATORS_DAY4;
+    if (dayNum === 4) {
+      return {
+        'A': 'Akses Lokasi & Rute Jalan Transportasi',
+        'B': 'Lingkungan Sekitar, Bentang Alam & Sumber Daya',
+        'C': 'Alur Masuk Sarana Produksi & Pasokan Bahan',
+        'D': 'Alur Distribusi, Penjualan & Pasar Produk',
+        'E': 'Tantangan Lapangan, Cuaca & Solusi Sederhana'
+      };
     }
     if (dayNum === 5 && window.NFT_BANK_SOAL_INDICATORS_DAY5) {
       return window.NFT_BANK_SOAL_INDICATORS_DAY5;

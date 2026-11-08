@@ -98,7 +98,7 @@
     const storageKey = isSecDay
       ? `fincestem_pkg_nft_asesmen_v3_d${dayNum}_${selectedSector}_${cleanNisn}`
       : `fincestem_pkg_nft_asesmen_v3_d${dayNum}_${cleanNisn}`;
-    const expectedLength = (dayNum === 0) ? 10 : 50;
+    const expectedLength = (dayNum === 0 || dayNum === 4) ? 10 : 50;
     try {
       // Bersihkan cache paket v1 & v2 lama jika ada
       localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`);
@@ -233,8 +233,49 @@
       return pkgWithShuffledChoices;
     }
 
-    // KHUSUS DAY 3, DAY 4, DAY 5 & DAY 6 (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
-    if (dayNum === 3 || dayNum === 4 || dayNum === 5 || dayNum === 6) {
+        // KHUSUS DAY 4 (10 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
+    if (dayNum === 4) {
+      const chosen10 = [...allBank];
+      const mixed10 = seededShuffle(chosen10, rng).slice(0, 10);
+      const pkgWithShuffledChoices = mixed10.map((origQ, qIdx) => {
+        const choiceRng = getSeededRandom(`q_choice_d${dayNum}_${cleanNisn}_${origQ.id}_${qIdx}_salt_${sessionSalt}`);
+        const shuffledOptions = seededShuffle([...origQ.options], choiceRng);
+        
+        let newCorrectKey = 'A';
+        const remappedOptions = shuffledOptions.map((opt, oIdx) => {
+          const letter = ['A', 'B', 'C', 'D', 'E'][oIdx];
+          if (opt.key === origQ.correct) {
+            newCorrectKey = letter;
+          }
+          return {
+            key: letter,
+            text: opt.text
+          };
+        });
+
+        return {
+          id: origQ.id,
+          displayNumber: qIdx + 1,
+          day: dayNum,
+          sector: origQ.sector || selectedSector,
+          indicatorCode: origQ.indicatorCode,
+          indicatorKey: origQ.indicatorKey,
+          indicatorName: origQ.indicatorName,
+          cognitiveLevel: origQ.cognitiveLevel || 'C3',
+          question: origQ.question,
+          options: remappedOptions,
+          correctKey: newCorrectKey,
+          explanation: origQ.explanation || ''
+        };
+      });
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(pkgWithShuffledChoices));
+      } catch(e) {}
+      return pkgWithShuffledChoices;
+    }
+
+    // KHUSUS DAY 3, DAY 5 & DAY 6 (50 SOAL SPESIFIK SEKTOR TERPILIH, ACAK BUTIR & PILIHAN A-E)
+    if (dayNum === 3 || dayNum === 5 || dayNum === 6) {
       const chosen50 = [...allBank];
       const mixed50 = seededShuffle(chosen50, rng).slice(0, 50);
       const pkgWithShuffledChoices = mixed50.map((origQ, qIdx) => {
@@ -383,7 +424,7 @@
     examState.markedDoubt = {};
     examState.currentIdx = 0;
     examState.startTime = null;
-    examState.durationSeconds = (dayNum === 0) ? 900 : 3600; // 15 menit Day 0, 60 menit Day 1-7
+    examState.durationSeconds = (dayNum === 0) ? 900 : ((dayNum === 4) ? 1200 : 3600); // 15 menit Day 0, 20 menit Day 4, 60 menit Day 1,2,3,5,6,7
     examState.remainingSeconds = examState.durationSeconds;
     examState.violationCount = 0;
 
@@ -584,7 +625,7 @@
 
           const rawSummary = String(t.content || '');
           let correctCount = Math.round((sc / 100) * 50);
-          let totalQuestions = 50;
+          let totalQuestions = (dayNum === 0 || dayNum === 4) ? 10 : 50;
           let wrongCount = totalQuestions - correctCount;
           let durationMins = 28;
 
@@ -793,7 +834,7 @@
           : (isDay3
               ? `Kuis Asesmen Lapangan: ${currentSectorName}`
               : (isDay4
-                  ? `Asesmen Eksplorasi Alat &amp; STEM: ${currentSectorName}`
+                  ? `Asesmen Jelajah Lapangan &amp; Distribusi: ${currentSectorName}`
                   : (isDay5
                       ? `Asesmen Video Observasi &amp; STEM: ${currentSectorName}`
                       : (isDay6
@@ -806,7 +847,7 @@
           : (isDay3
               ? `Uji pemahaman 4 Pilar STEM (Sains, Teknologi, Rekayasa & Matematika) khusus sektor ${currentSectorName} di OKU Timur.`
               : (isDay4
-                  ? `Uji kemampuan analisis peralatan, perlengkapan kerja, dan mekanisasi pada sektor ${currentSectorName} dikaitkan dengan 4 dimensi STEM (Science, Technology, Engineering & Mathematics).`
+                  ? `Uji pemahaman jelajah lingkungan, akses jalan, pasokan bahan baku, dan alur penjualan produk pada sektor ${currentSectorName} di OKU Timur (10 Soal PG).`
                   : (isDay5
                       ? `Uji pemahaman observasi lapangan, peralatan kerja, dan penerapan 4 unsur STEM (Science, Technology, Engineering, Mathematics) pada video sektor ${currentSectorName}.`
                       : (isDay6
@@ -883,12 +924,12 @@
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
               <span class="text-slate-400 text-[10.5px] font-bold uppercase">Jumlah Soal</span>
-              <strong class="text-sm text-slate-900 font-black">50 Soal PG</strong>
+              <strong class="text-sm text-slate-900 font-black">${(isDay0 || isDay4) ? "10 Soal PG" : "50 Soal PG"}</strong>
               <span class="text-[10.5px] text-slate-500">Pilihan Ganda (A - E)</span>
             </div>
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5">
               <span class="text-slate-400 text-[10.5px] font-bold uppercase">Durasi Waktu</span>
-              <strong class="text-sm text-teal-800 font-black">60 Menit</strong>
+              <strong class="text-sm text-teal-800 font-black">${(isDay0 || isDay4) ? (isDay0 ? "15 Menit" : "20 Menit") : "60 Menit"}</strong>
               <span class="text-[10.5px] text-slate-500">Mundur otomatis</span>
             </div>
             <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-0.5 col-span-2 sm:col-span-1">
