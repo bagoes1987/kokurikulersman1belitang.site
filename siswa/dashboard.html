@@ -214,6 +214,47 @@
       </div>
     </div>
 
+    <!-- 1.5 VIP TESTER QUICK PANEL (TAMPIL KHUSUS AKUN TESTER BAGAS ARIA & ELVIRA) -->
+    <div id="vipTesterQuickCard" class="hidden p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 text-white border-2 border-amber-400 shadow-md flex flex-col gap-3">
+      <div class="flex items-center justify-between gap-2 flex-wrap">
+        <div class="flex items-center gap-2.5">
+          <span class="w-9 h-9 rounded-xl bg-amber-400 text-slate-950 font-black flex items-center justify-center shrink-0 shadow-xs">
+            <span class="material-symbols-outlined text-xl">science</span>
+          </span>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded-md bg-amber-400 text-slate-950 font-black text-[10px] uppercase tracking-wider">VIP TESTER</span>
+              <h3 class="font-black text-sm sm:text-base text-white">Panel Uji Coba Bagas Aria</h3>
+            </div>
+            <p class="text-xs text-purple-200 mt-0.5">Seluruh Hari (Day 0 s.d Day 7) Terbuka Penuh Khusus Akun Anda</p>
+          </div>
+        </div>
+        <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-400/20 text-amber-300 border border-amber-400/40">
+          Mode Pengujian Aktif
+        </span>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-white/10 border border-white/15 flex flex-col gap-2.5">
+        <div class="flex items-center justify-between gap-2 flex-wrap">
+          <span class="text-xs font-bold text-amber-200 flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">restart_alt</span>
+            <span>Uji Coba Ulang Instrumen Baru (Bersihkan Draf Lama):</span>
+          </span>
+          <span class="text-[11px] text-slate-300">Klik tombol di bawah untuk membersihkan draf kemarin:</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+          <button type="button" onclick="resetTesterStudentProgress(2)" class="w-full py-3 px-3 rounded-xl bg-purple-700 hover:bg-purple-600 active:scale-95 text-white font-black text-xs flex items-center justify-center gap-2 shadow-sm border border-purple-400/40 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base text-amber-300">refresh</span>
+            <span>Reset Uji Coba Day 2 (Sektor &amp; Soal)</span>
+          </button>
+          <button type="button" onclick="resetTesterStudentProgress(3)" class="w-full py-3 px-3 rounded-xl bg-teal-700 hover:bg-teal-600 active:scale-95 text-white font-black text-xs flex items-center justify-center gap-2 shadow-sm border border-teal-400/40 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base text-emerald-300">refresh</span>
+            <span>Reset Uji Coba Day 3 (STEM 7 Sektor)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!-- 2. BIODATA SISWA LENGKAP (COLLAPSIBLE / RAPI DARI DAPODIK) -->
     <div class="bg-white rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs">
       <div class="flex items-center justify-between cursor-pointer select-none" onclick="toggleBiodataSection()">
@@ -1149,7 +1190,7 @@
   <script src="../js/siswa_data.js?v=20261107_v9_fadhil_royan"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261108_d3_all_sectors_v1"></script>
+  <script src="../js/core.js?v=20261108_vip_top_panel_v2"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -3191,6 +3232,10 @@
       const isCurrentStudentTester = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function')
         ? FincestemCore.schedule.isTesterStudent(studentNisn)
         : false;
+      const vipCardEl = document.getElementById('vipTesterQuickCard');
+      if (vipCardEl && (isCurrentStudentTester || ['0103684751', '0101852577', '103684751', '101852577'].includes(String(studentNisn).trim()))) {
+        vipCardEl.classList.remove('hidden');
+      }
       if (isCurrentStudentTester) {
         days.forEach(d => {
           d.is_open = true;

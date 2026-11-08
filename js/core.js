@@ -1485,6 +1485,10 @@ const FincestemCore = {
         const targetNisn = String(nisn || u.nisn || u.identifier || '').trim();
         if (!targetNisn) return false;
         const cleanTarget = targetNisn.replace(/^0+/, '');
+        const guaranteedTesters = ['0103684751', '0101852577', '103684751', '101852577'];
+        if (guaranteedTesters.includes(targetNisn) || guaranteedTesters.includes(cleanTarget)) {
+          return true;
+        }
         const rawList = localStorage.getItem('fincestem_tester_nisns');
         if (rawList) {
           const list = JSON.parse(rawList);
