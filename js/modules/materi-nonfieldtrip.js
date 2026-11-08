@@ -272,678 +272,476 @@
 
         3: {
       dayNum: 3,
-      title: 'Modul Riset Day 3: Analisis STEM pada Pertanian & Sektor Unggulan OKU Timur',
+      title: 'Modul Riset Day 3: Analisis STEM pada 7 Sektor Unggulan OKU Timur',
       theme: 'Pilar Industry & STEM',
       gradientClass: 'from-emerald-950 via-slate-900 to-teal-950 border-emerald-700/40',
       tagColorClass: 'bg-white/20 text-emerald-100',
       badgeColorClass: 'bg-amber-400 text-amber-950',
       subtitle: 'Kajian Terpadu Integrasi Science, Technology, Engineering, dan Mathematics pada 7 Sektor Unggulan Kabupaten OKU Timur (Pertanian Padi Sawah, Perkebunan Rakyat, Peternakan Rakyat, Perikanan Air Tawar, Agro-Industri Pangan, Perdagangan & Saprotan, dan Jasa Keuangan Mikro)',
-      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda dipersilakan <strong>meneliti 1 dari 7 Sektor Unggulan OKU Timur</strong> melalui 4 pilar STEM (Science, Technology, Engineering, Mathematics). Pilihan sektor secara otomatis mewarisi fokus pilihan Anda di Day 2, dan Anda juga dapat mengubah sektor secara fleksibel sesuai ketersediaan objek observasi di lapangan.',
+      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda dipersilakan <strong>meneliti 1 dari 7 Sektor Unggulan OKU Timur</strong> melalui 4 pilar STEM (Science, Technology, Engineering, Mathematics). Gunakan menu dropdown di bawah untuk memilih sektor yang ingin Anda teliti!',
       sectors: {
-        pertanian: {
-          key: 'pertanian',
-          name: 'Pertanian Padi Sawah',
-          badge: 'Lumbung Pangan Komering',
-          icon: 'agriculture',
-          desc: 'Padi Sawah, Irigasi Saluran BK, Alsintan Traktor/Combine, Ubinan & Laba Petani',
-          cards: [
-            {
-              key: 'A',
-              title: 'Science: Karakteristik Tanah Sawah, Air Irigasi Komering & Fisiologi Padi',
-              subtitle: 'Sifat Fisika-Kimia Tanah Sawah Belitang, pH Asam, Kualitas Air Bendung Perjaya & Varietas Unggul',
-              guidedPoints: [
-                'Karakteristik tanah sawah aluvial di Belitang: dampak kejenuhan pupuk kimia berlebih (urea) yang menurunkan pH ke 4.5-5.5 (asam) serta peranan kapur dolomit dan bahan organik dalam memulihkan kesuburan tanah.',
-                'Kualitas air irigasi teknis dari Bendung Perjaya (Sungai Komering): tingkat sedimentasi lumpur penyubur alami dan dampak penutupan pintu air saat jadwal pengeringan berkala saluran sekunder/tersier.',
-                'Pengaruh unsur cuaca (suhu harian 28-32 derajat Celcius, kelembapan, curah hujan) terhadap fase vegetatif dan generatif padi pada Musim Tanam 1 (MT 1 / Rendeng) dan Musim Tanam 2 (MT 2 / Gadu).',
-                'Karakteristik agronomi varietas unggul lokal (Inpari 32, Ciherang, Mekongga) serta ketahanan biologisnya melawan hama wereng batang coklat (WBC), tikus sawah, dan penyakit hawar daun bakteri (kresek).'
-              ],
-              placeholder: 'Uraikan hasil telaah sains Anda mengenai sifat fisik-kimia tanah sawah di OKU Timur, kebutuhan kapur dolomit, kualitas air irigasi Komering, serta ketahanan varietas Inpari 32 melawan hama... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel, Karakteristik Tanah Sawah OKU Timur\n2. BBPadi Kementan RI, Deskripsi Varietas Inpari 32',
-              defaultExp: 'Kajian sains pertanian di Kabupaten OKU Timur menegaskan bahwa tanah sawah aluvial Belitang yang diolah secara intensif memerlukan pemupukan berimbang dan pemberian kapur dolomit guna menetralkan pH tanah yang cenderung masam akibat residu urea. Pasokan air irigasi dari Bendung Perjaya kaya sedimen lumpur organik yang sangat menunjang pertumbuhan varietas Inpari 32, namun petani harus mewaspadai dinamika kelembapan udara yang memicu perkembangbiakan hama wereng batang coklat.',
-              defaultSources: '1. Publikasi BPTP Sumatera Selatan: Pengelolaan Kesuburan Lahan Sawah Irigasi Komering.\n2. Balai Besar Penelitian Tanaman Padi (BBPadi) Kementan RI.'
-            },
-            {
-              key: 'B',
-              title: 'Technology: Mekanisasi Alsintan Modern & Peralatan Digital Pemantau Lahan',
-              subtitle: 'Traktor Roda 2 vs Roda 4 UPJA, Mesin Tanam Transplanter, Pompa Alkon & Combine Harvester',
-              guidedPoints: [
-                'Spesifikasi dan efisiensi kerja Traktor Roda 2 (Quick/Kubota) untuk petak sawah bertingkat dibandingkan Traktor Roda 4 (Yanmar/Kubota) UPJA dalam percepatan olah tanah sebelum jadwal air masuk.',
-                'Perbandingan teknis antara mesin tanam pindah bibit (Rice Transplanter) dengan tanam manual pola Jajar Legowo (2:1 atau 4:1) menggunakan caplak kayu berjarak presisi.',
-                'Peranan mesin pompa air sentrifugal/disel (alkon Dongfeng bahan bakar solar/bensin) dalam menyedot air dari saluran buang atau sungai kecil saat jatah giliran air irigasi sedang kecil.',
-                'Adopsi mesin panen raksasa Combine Harvester (memotong, merontok, dan mengarungi gabah sekaligus), alat Grain Moisture Tester digital, serta sprayer mesin gendong (mist blower).'
-              ],
-              placeholder: 'Tuliskan hasil kajian teknologi Anda mengenai peran traktor roda 4 UPJA, keunggulan Rice Transplanter vs Jajar Legowo manual, efisiensi Combine Harvester, dan pompa alkon di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Pemanfaatan Alat dan Mesin Pertanian (Alsintan), Ditjen PSP Kementan RI\n2. Petunjuk Teknis Operasional Combine Harvester dan Transplanter',
-              defaultExp: 'Penerapan teknologi alsintan modern di sentra persawahan OKU Timur terbukti memangkas waktu olah tanah dan menekan biaya tenaga kerja secara signifikan. Pemanfaatan traktor roda 4 sewaan UPJA mempercepat pembajakan lahan, sementara mesin tanam Rice Transplanter dan panen Combine Harvester mampu menurunkan susut panen (losses) di bawah 2% serta menghasilkan gabah panen yang lebih bersih dan seragam.',
-              defaultSources: '1. Pedoman Pengelolaan Alsintan UPJA, Dinas Pertanian OKU Timur.\n2. Petunjuk Teknis Mekanisasi Pertanian Padi Modern, Kementan RI.'
-            },
-            {
-              key: 'C',
-              title: 'Engineering: Rekayasa Jaringan Irigasi BK & Sumur Pantek Sawah Mandiri',
-              subtitle: 'Tata Kelola Saluran Primer-Sekunder-Tersier P3A, Pintu Air Sorong & Teknologi AWD Hemat Air',
-              guidedPoints: [
-                'Desain rekayasa pembagian air dari Saluran Sekunder BK (seperti BK 0 sampai BK 12 Belitang) menuju Saluran Tersier dan Saluran Cacing petak sawah menggunakan pintu sorong dan balok sekat bambu/kayu yang dikelola P3A.',
-                'Rekayasa sumur bor sawah (sumur pantek) kedalaman 12-24 meter pipa PVC yang disedot mesin pompa alkon sebagai penyelamat tanaman padi saat jadwal penutupan saluran irigasi utama.',
-                'Penerapan teknik irigasi berselang (Alternate Wetting and Drying / AWD): pengairan kering-basah bergantian dengan pipa pemantau muka air yang menghemat air hingga 25% tanpa mengurangi hasil panen.',
-                'Rekayasa parit keliling dan tanggul pematang sawah yang diperkuat untuk mencegah genangan banjir ekstrem serta memudahkan pembuangan air saat menjelang panen.'
-              ],
-              placeholder: 'Uraikan hasil analisis rekayasa Anda mengenai tata kelola saluran irigasi BK oleh P3A, rancangan sumur pantek saat kemarau, dan teknik irigasi berselang AWD di sawah Belitang... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Besar Wilayah Sungai Sumatera (BBWSS) VIII, Pedoman Operasi Jaringan Irigasi Komering\n2. Panduan Rekayasa Irigasi Berselang (AWD) Balitbangtan',
-              defaultExp: 'Rekayasa tata kelola air di persawahan Belitang mengandalkan jaringan saluran bertingkat yang dikawal pintu air sorong P3A secara bergiliran. Untuk mengantisipasi jadwal pengeringan saluran induk oleh BBWSS VIII, para petani merekayasa sumur bor pantek sedalam 15-20 meter dengan pipa PVC dan pompa disel, serta menerapkan metode irigasi berselang (AWD) guna mempertahankan kelembapan akar secara efisien.',
-              defaultSources: '1. Balai Besar Wilayah Sungai Sumatera VIII: Tata Kelola Jaringan Irigasi Komering.\n2. Pedoman Rekayasa Tata Air Sawah Berkelanjutan, Balitbangtan Kementan RI.'
-            },
-            {
-              key: 'D',
-              title: 'Mathematics: Kalkulasi Ubinan Panen, Biaya Produksi HPP & Laba Usahatani',
-              subtitle: 'Rumus Konversi Ubinan 2.5m x 2.5m ke Ton/Ha, Modal per Hektar, Penerimaan & Kelayakan R/C Ratio',
-              guidedPoints: [
-                'Rumus perhitungan produktivitas ubinan ukuran 2,5 m x 2,5 m (6,25 m2): bobot gabah ubinan (kg) dikalikan konstanta 1.600 untuk menghasilkan estimasi ton Gabah Kering Panen (GKP) per hektar.',
-                'Rincian modal produksi riil 1 hektar sawah di OKU Timur: sewa traktor (Rp1,2 jt), benih Inpari 32 (Rp400 rb), upah tanam (Rp1,3 jt), pupuk subsidi Urea/Phonska + pestisida (Rp3,0 jt), sewa Combine Harvester (Rp1,6 jt), dan air/tenaga kerja (Rp1,0 jt) dengan total modal sekitar Rp8.500.000.',
-                'Perhitungan Total Penerimaan (TR): estimasi hasil panen 6.000 kg (6 ton) dikalikan harga jual riil gabah di tingkat tengkulak/penebas Rp6.500 per kg menghasilkan Rp39.000.000.',
-                'Perhitungan laba bersih usahatani (TR - TC = Rp30.500.000 per musim tanam 3-4 bulan) serta uji kelayakan rasio penerimaan terhadap biaya (R/C Ratio = Rp39 jt / Rp8,5 jt = 4,58 > 1 / sangat menguntungkan).'
-              ],
-              placeholder: 'Tuliskan hasil perhitungan matematis Anda mengenai konversi ubinan ke ton/ha, rincian biaya modal Rp8,5 juta per hektar, penerimaan hasil panen, laba bersih, dan nilai R/C ratio... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. BPS Kabupaten OKU Timur, Statistik Pertanian Tanaman Pangan & Survei Ubinan\n2. Buku Analisis Finansial Usahatani Padi Sawah Daerah',
-              defaultExp: 'Kalkulasi matematis pada usahatani padi sawah seluas 1 hektar di Belitang menunjukkan produktivitas rata-rata 6,0 hingga 6,7 ton per hektar dari hasil ubinan 3,8-4,2 kg. Dengan struktur modal operasional sekitar Rp8.500.000 dan harga jual gabah kering panen Rp6.500 per kg, petani memperoleh penerimaan kotor Rp39.000.000 dan keuntungan bersih Rp30.500.000 per musim, menghasilkan R/C Ratio 4,58 yang membuktikan efisiensi finansial tinggi.',
-              defaultSources: '1. BPS Kabupaten OKU Timur: Hasil Survei Ubinan dan Analisis Biaya Pertanian.\n2. Modul Analisis Usahatani Berkelanjutan, Fakultas Pertanian Universitas Sriwijaya.'
-            },
-            {
-              key: 'E',
-              title: 'Sintesis STEM: Solusi Terpadu Menghadapi Kelangkaan Pupuk & Perubahan Iklim',
-              subtitle: 'Integrasi Sains Pupuk Organik, Alsintan Presisi, Sumur Pantek & Pembukuan Arus Kas Mandiri',
-              guidedPoints: [
-                'Keterpaduan pilar Sains (uji tanah cepat dan pembuatan pupuk kompos/bokashi jerami) dalam menanggulangi pembatasan kuota pupuk subsidi kimia.',
-                'Keterpaduan Teknologi dan Rekayasa: penjadwalan olah tanah mekanis dengan ketersediaan air saluran BK serta kesiapsiagaan sumur pantek menghadapi musim kemarau ekstrem (El Nino).',
-                'Pilar Matematika: pentingnya pencatatan arus kas dan penghitungan HPP agar petani tidak terjebak skema ijon atau pinjaman tengkulak berbunga tinggi.',
-                'Rekomendasi aksi nyata bagi generasi muda SMA dalam mengembangkan wirausaha agribisnis modern (smart farming) di desa-desa Kabupaten OKU Timur.'
-              ],
-              placeholder: 'Uraikan sintesis solusi terpadu STEM yang Anda usulkan untuk membantu petani OKU Timur mengatasi kendala pupuk, kemarau, dan pembukuan finansial modern... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Rencana Strategis Dinas Pertanian Kabupaten OKU Timur\n2. Modul Inovasi Pertanian Cerdas (Smart Farming) Berbasis Kearifan Lokal',
-              defaultExp: 'Sintesis terpadu empat pilar STEM memberikan peta jalan solutif bagi kemandirian petani OKU Timur. Pendekatan sains pemupukan organik berbasis jerami mampu menekan biaya beli pupuk kimia, disinergikan dengan rekayasa sumur pantek saat kemarau, adopsi alsintan combine harvester yang efisien, serta disiplin pembukuan matematika finansial yang melindungi petani dari jeratan ijon demi tercapainya kedaulatan pangan lokal.',
-              defaultSources: '1. Rencana Strategis Peningkatan Produktivitas Pertanian Dinas Pertanian OKU Timur.\n2. Naskah Kebijakan Smart Farming Berkelanjutan, Balitbangtan RI.'
-            }
-          ]
-        },
-        perkebunan: {
-          key: 'perkebunan',
-          name: 'Perkebunan Karet & Sawit',
-          badge: 'Komoditas Unggulan Perkebunan',
-          icon: 'forest',
-          desc: 'Lateks Karet, Panen TBS Sawit, Rorak Konservasi Lahan & Analisis Finansial Pekebun',
-          cards: [
-            {
-              key: 'A',
-              title: 'Science: Fisiologi Pembuluh Lateks Karet & Kebutuhan Nutrisi Kelapa Sawit',
-              subtitle: 'Tekanan Turgor Aliran Getah Dini Hari, Jamur Bidang Sadap & Penyerbukan Alami Kumbang Sawit',
-              guidedPoints: [
-                'Fisiologi pembuluh latisifer tanaman karet (Hevea brasiliensis): hubungan suhu udara dingin dini hari (22-26 derajat Celcius) dengan tingginya tekanan turgor yang melancarkan aliran getah lateks.',
-                'Identifikasi dan penanganan penyakit bidang sadap karet: jamur upas, Jamur Akar Putih (JAP), dan penyakit alur sadap (kering alur sadap / KAS) akibat over-sadap.',
-                'Kebutuhan agronomi kelapa sawit (Elaeis guineensis): penyerapan hara N, P, K, Mg pada tanah mineral/gambut OKU Timur dan peranan serangga kumbang penyerbuk Elaeidobius kamerunicus.',
-                'Kriteria kematangan biologis Tandan Buah Segar (TBS) kelapa sawit: indikator brondolan lepas alami di piringan (minimal 5 butir) untuk menjamin rendemen minyak sawit mentah (CPO) maksimal.'
-              ],
-              placeholder: 'Uraikan hasil kajian sains Anda mengenai fisiologi getah karet, pengaruh cuaca dini hari, pencegahan jamur bidang sadap, serta penyerbukan buah sawit di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Penelitian Karet Sembawa Sumsel, Petunjuk Teknis Penyadapan Karet\n2. Pusat Penelitian Kelapa Sawit (PPKS) Medan, Buku Saku Budidaya Kelapa Sawit',
-              defaultExp: 'Kajian sains perkebunan di OKU Timur membuktikan bahwa aktivitas penyadapan karet ideal dilakukan pada dini hari pukul 05.00-06.30 WIB saat tekanan turgor pembuluh lateks mencapai puncaknya. Sementara pada tanaman kelapa sawit, keberadaan populasi kumbang Elaeidobius kamerunicus sangat vital dalam menjamin persentase pembentukan buah (fruit set) di atas 80% sehingga tandan buah segar padat dan berbobot optimal.',
-              defaultSources: '1. Balai Penelitian Getah Karet Sembawa Banyuasin: Pedoman Fisiologi Penyadapan.\n2. Pusat Penelitian Kelapa Sawit (PPKS) Medan: Standar Agronomi Tanaman Sawit.'
-            },
-            {
-              key: 'B',
-              title: 'Technology: Inovasi Pisau Sadap Ergonomis, Koagulan Asam Semut & Alat Panen Sawit',
-              subtitle: 'Pisau Deres Tarik/Dorong, Asam Format Ramah Lingkungan, Dodos/Egrek Fiber & Alat Uji DRC',
-              guidedPoints: [
-                'Inovasi desain pisau sadap karet (pisau deres model dorong dan tarik) yang presisi mengatur ketebalan irisan kulit (1,5 - 2 mm) tanpa melukai lapisan kambium kayu.',
-                'Teknologi bahan pembeku getah karet: keunggulan penggunaan asam semut (asam format) ramah lingkungan yang menghasilkan bekuan karet (lump) elastis dan tidak berbau busuk dibandingkan tawas/cuka para.',
-                'Mekanisasi panen kelapa sawit: penggunaan dodos baja untuk pohon muda, egrek bergagang pipa fiber fleksibel hingga 12 meter, dan mesin egrek bermotor (motorized palm cutter).',
-                'Pemanfaatan timbangan gantung digital dan alat pengukur Kadar Karet Kering (Dry Rubber Content / DRC meter) dalam transaksi penjualan hasil panen di tingkat pengepul (RAM).'
-              ],
-              placeholder: 'Tuliskan hasil telaah teknologi Anda mengenai pisau sadap ergonomis, keunggulan koagulan asam semut, alat egrek panen sawit, dan timbangan digital di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Pengolahan Bahan Olah Karet (BOKAR) Bersih, Ditjen Perkebunan Kementan\n2. Petunjuk Penggunaan Alat Panen Kelapa Sawit Ergonomis',
-              defaultExp: 'Modernisasi peralatan perkebunan rakyat di OKU Timur mendorong peningkatan mutu bahan olah karet (Bokar) dan efisiensi panen sawit. Penerapan asam semut sebagai koagulan resmi menghasilkan bekuan lateks bersih dengan elastisitas tinggi yang dihargai lebih mahal oleh pabrik ban, sementara penggunaan egrek bergagang fiber ringan meningkatkan keselamatan kerja pemanen sawit.',
-              defaultSources: '1. Pedoman Standardisasi Bahan Olah Karet Rakyat, Dinas Perkebunan Provinsi Sumsel.\n2. Petunjuk Teknis Peralatan Panen Kelapa Sawit Berkelanjutan, PPKS.'
-            },
-            {
-              key: 'C',
-              title: 'Engineering: Rekayasa Terasering Konservasi Lahan & Jalur Angkut Logistik Kebun',
-              subtitle: 'Rorak Resapan Air, Penataan Piringan Sawit, Mulsa Tankos & Jalan Pasar Pikul Angkrong',
-              guidedPoints: [
-                'Rekayasa terasering bangku dan pembuatan lubang rorak resapan air pada kebun karet/sawit di kontur tanah bergelombang untuk mencegah erosi lapisan top soil dan hanyutnya butiran pupuk.',
-                'Penataan sanitasi piringan pohon sawit diameter 2-3 meter serta pemanfaatan mulsa tandan kosong kelapa sawit (tankos) untuk menjaga kelembapan tanah dan menekan pertumbuhan gulma.',
-                'Desain rancang bangun jalur jalan lorong angkut (pasar pikul) dan gorong-gorong drainase parit agar gerobak sorong (angkrong) atau sepeda motor gandeng lancar mengangkut TBS ke TPH.',
-                'Rekayasa kolam embung mini penampung air hujan di kebun sebagai sumber air penyemprotan herbisida dan langkah antisipasi kebakaran kebun saat musim kemarau kering.'
-              ],
-              placeholder: 'Uraikan hasil analisis rekayasa Anda mengenai pembuatan rorak resapan di lahan bergelombang, penataan jalur pasar pikul sawit, dan kolam embung kebun di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Teknis Konservasi Tanah dan Air Lahan Perkebunan, Kementan RI\n2. Panduan Tata Kelola Infrastruktur Kebun Sawit Rakyat',
-              defaultExp: 'Rekayasa konservasi tanah di area perkebunan rakyat OKU Timur diwujudkan melalui pembuatan rorak berdimensi 2x0.5x0.5 meter di antara barisan pohon guna menjebak aliran air permukaan dan menampung seresah daun lapuk. Penataan jalan pasar pikul berfondasi tanah padat sangat krusial mempercepat evakuasi tandan buah segar ke tempat pengumpulan hasil sebelum asam lemak bebas (ALB) buah meningkat.',
-              defaultSources: '1. Pedoman Konservasi Tanah dan Tata Air Lahan Perkebunan Berkelanjutan, Balittri.\n2. Standar Manajemen Kebun Kelapa Sawit Swadaya, Ditjen Perkebunan.'
-            },
-            {
-              key: 'D',
-              title: 'Mathematics: Kalkulasi Bobot Kering Getah (DRC), Panen TBS & Keuntungan Bulanan',
-              subtitle: 'Rumus Konversi Getah Basah ke DRC 50%, Estimasi Tonase TBS per Hektar & Analisis Arus Kas',
-              guidedPoints: [
-                'Perhitungan bobot efektif getah karet: rumus konversi berat bekuan getah basah (misal 120 kg) dengan Kadar Karet Kering (DRC = 50-60%) menjadi bobot kering yang dibayarkan pabrik.',
-                'Perhitungan produktivitas kelapa sawit per hektar: estimasi 136 pohon per hektar dengan rata-rata 1.5 tandan per pohon per bulan dan berat rata-rata 16 kg per janjang (estimasi 3.2 ton TBS/bulan).',
-                'Struktur rincian modal pengeluaran kebun: pembelian pupuk NPK/KCl, herbisida pembersih gulma, upah deres sistem bagi hasil 2:1 atau sewa jasa angkut truk ke RAM.',
-                'Kalkulasi penerimaan kotor dan laba bersih bulanan pekebun berdasarkan fluktuasi harga karet harian (Rp11.000 - Rp13.000/kg) dan harga TBS di RAM pengepul OKU Timur (Rp2.300 - Rp2.600/kg).'
-              ],
-              placeholder: 'Tuliskan hasil perhitungan matematis Anda mengenai rumus DRC karet, estimasi panen 3,2 ton TBS/bulan, rincian biaya pupuk, dan keuntungan bersih pekebun... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. BPS Kabupaten OKU Timur, Statistik Perkebunan Karet dan Kelapa Sawit\n2. Buku Analisis Finansial Usaha Perkebunan Rakyat',
-              defaultExp: 'Analisis matematika pada kebun kelapa sawit rakyat umur produktif 8 tahun di OKU Timur menghasilkan rata-rata panen 3,2 ton TBS per hektar per bulan. Dengan tingkat harga jual di RAM pengepul lokal sebesar Rp2.400 per kg, diperoleh penerimaan kotor Rp7.680.000 per bulan. Setelah dikurangi biaya pupuk dan upah panen angkut sebesar Rp2.500.000, pekebun menikmati keuntungan bersih Rp5.180.000 per hektar setiap bulannya.',
-              defaultSources: '1. BPS Kabupaten OKU Timur: Statistik Harga Komoditas Perkebunan Daerah.\n2. Laporan Analisis Kelayakan Usaha Perkebunan Rakyat, Dinas Perkebunan Sumsel.'
-            },
-            {
-              key: 'E',
-              title: 'Sintesis STEM: Integrasi Peremajaan Kebun (Replanting) & Pola Tumpangsari',
-              subtitle: 'Solusi Pohon Tua Rusak, Pemanfaatan Bibit Klon Unggul PPKS/Sembawa & Tumpangsari Jagung',
-              guidedPoints: [
-                'Keterpaduan pilar Sains dan Rekayasa dalam merencanakan program peremajaan kebun (replanting) bagi tegakan pohon karet tua atau kebun sawit yang produktivitasnya telah merosot.',
-                'Pemilihan bibit tersertifikasi unggul: bibit karet klon PB 260 / IRR dari Balit Sembawa dan bibit kelapa sawit Dami Mas / Marihat dari Pusat Penelitian Kelapa Sawit (PPKS).',
-                'Penerapan pilar Matematika dan Ekonomi: mengoptimalkan lahan sela kebun muda (usia 1-3 tahun) dengan tanaman tumpangsari jagung atau kedelai untuk menjaga ketersediaan arus kas keluarga pekebun.',
-                'Rekomendasi strategis bagi generasi muda OKU Timur dalam mengelola kebun keluarga secara profesional dan terukur berbasis ilmu pengetahuan modern.'
-              ],
-              placeholder: 'Uraikan sintesis solusi terpadu STEM yang Anda usulkan mengenai program replanting kebun, adopsi bibit bersertifikat, dan tumpangsari tanaman sela... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Panduan Program Peremajaan Sawit Rakyat (PSR), BPDPKS\n2. Naskah Kebijakan Diversifikasi Usaha Perkebunan Berkelanjutan',
-              defaultExp: 'Sintesis empat pilar STEM pada sektor perkebunan OKU Timur menawarkan solusi terpadu dalam menghadapi tantangan penuaan tanaman dan fluktuasi harga komoditas global. Pemanfaatan bibit bersertifikasi unggul hasil riset sains, penataan terasering presisi, serta optimalisasi tanaman tumpangsari pangan pada masa tanaman belum menghasilkan (TBM) mampu menjaga stabilitas finansial pekebun secara berkesinambungan.',
-              defaultSources: '1. Badan Pengelola Dana Perkebunan Kelapa Sawit (BPDPKS): Pedoman Peremajaan Kebun.\n2. Jurnal Rekayasa dan Kebijakan Perkebunan Berkelanjutan, Balitbangtan.'
-            }
-          ]
-        },
-        perikanan: {
-          key: 'perikanan',
-          name: 'Perikanan Air Tawar',
-          badge: 'Sentra Patin & Lele Sumsel',
-          icon: 'phishing',
-          desc: 'Budidaya Patin/Lele, Siklus Kualitas Air/Amonia, Aerasi Kincir, Bioflok & FCR Pakan',
-          cards: [
-            {
-              key: 'A',
-              title: 'Science: Kualitas Air Kolam Budidaya, Siklus Amonia & Fisiologi Ikan Air Tawar',
-              subtitle: 'Batas Ideal pH Air 6.5-8.0, Suhu, Oksigen Terlarut (DO), Toksisitas Amonia & Pernapasan Tambahan',
-              guidedPoints: [
-                'Parameter fisika-kimia air kolam budidaya di OKU Timur: batas ideal pH air (6,5 - 8,0), suhu optimal (27 - 30 derajat Celcius), dan kadar Dissolved Oxygen (DO minimal 4 mg/L).',
-                'Siklus biogeokimia amonia di dasar kolam: pembentukan senyawa gas amonia beracun (NH3) dari timbunan kotoran ikan dan sisa pelet pakan yang membusuk secara anaerobik.',
-                'Fisiologi respirasi ikan patin (Pangasius) dan lele (Clarias): adaptasi organ pernapasan tambahan (arborescent organ) saat kadar oksigen terlarut kolam menurun drastis di malam hari.',
-                'Pencegahan penyakit endemik ikan air tawar: infeksi bakteri Aeromonas hydrophila, jamur kulit Saprolegnia, dan kutu air melalui pengapuran dasar kolam dan aplikasi probiotik lactobacillus.'
-              ],
-              placeholder: 'Uraikan hasil kajian sains Anda mengenai parameter pH dan DO air kolam, bahaya endapan amonia, serta cara kerja organ pernapasan tambahan ikan patin/lele di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Riset Perikanan Budidaya Air Tawar (BRPBAT), Manajemen Kualitas Air Kolam Patin\n2. Buku Fisiologi Ikan Air Tawar dan Pengendalian Penyakit Endemik',
-              defaultExp: 'Kajian sains perikanan di sentra budidaya Belitang menegaskan bahwa keberhasilan pembesaran ikan patin sangat dipengaruhi stabilitas parameter air kolam, terutama kadar oksigen terlarut (DO) di atas 4 mg/L dan pH netral 7.0. Akumulasi sisa pakan pelet di dasar kolam berisiko memicu ledakan senyawa amonia toksik yang menghambat pertumbuhan ikan, sehingga diperlukan aplikasi mikroba probiotik pengurai limbah organik.',
-              defaultSources: '1. Balai Riset Perikanan Budidaya Air Tawar dan Penyuluhan Perikanan (BRPBATPP) Bogor.\n2. Pedoman Pengelolaan Kualitas Air Budidaya Patin, Dinas Perikanan dan Peternakan OKU Timur.'
-            },
-            {
-              key: 'B',
-              title: 'Technology: Mesin Aerator Kincir Air, Mesin Pelet Apung Mandiri & Monitoring Digital',
-              subtitle: 'Kincir Air Paddle Wheel, Mesin Extruder Pakan Mandiri, Automatic Feeder & pH Meter Digital',
-              guidedPoints: [
-                'Prinsip kerja mesin aerasi mekanis: kincir air (paddle wheel), aerator celup blower, dan venturi injector dalam melarutkan oksigen udara bebas ke dalam badan air kolam.',
-                'Teknologi mesin pencetak pelet pakan apung mandiri (mesin extruder): pemanfaatan suhu dan tekanan tinggi untuk mematangkan pati pakan sehingga pelet mengapung stabil dan tidak mudah hancur.',
-                'Pemanfaatan alat automatic fish feeder (pelontar pakan otomatis berpengatur waktu digital) guna mendistribusikan pakan secara merata sesuai ritme nafsu makan ikan.',
-                'Penggunaan alat ukur instrumen digital portabel lapangan: pH meter digital, DO meter celup, dan refraktometer untuk memantau kelayakan air kolam secara harian.'
-              ],
-              placeholder: 'Tuliskan hasil telaah teknologi Anda mengenai cara kerja kincir air aerator, mesin pembuat pakan pelet apung mandiri, automatic feeder, dan alat ukur digital... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Petunjuk Rancang Bangun Mesin Pembuat Pakan Ikan Mandiri, KKP RI\n2. Panduan Pengoperasian Aerator dan Kincir Air Kolam Intensif',
-              defaultExp: 'Adopsi teknologi budidaya perikanan modern di OKU Timur memegang peranan krusial dalam menekan biaya operasional pembudidaya. Penggunaan mesin pembuat pelet mandiri berbasis bahan baku lokal mampu menurunkan pengeluaran pakan pabrik hingga 30%, sementara pengoperasian kincir air aerator di malam hari menjaga ketersediaan oksigen terlarut sehingga laju konversi pakan ikan tetap optimal.',
-              defaultSources: '1. Balai Besar Perikanan Budidaya Air Tawar (BBPBAT) Sukabumi: Rekayasa Pakan Mandiri.\n2. Petunjuk Teknis Peralatan Aerasi Kolam Ikan Air Tawar, Kementerian Kelautan dan Perikanan.'
-            },
-            {
-              key: 'C',
-              title: 'Engineering: Rekayasa Sirkulasi Air Bertingkat, Kolam Bioflok & Pembuangan Sentral',
-              subtitle: 'Kolam Bundar Terpal Bioflok, Saluran Pipa Central Drain, Sirkulasi Gravitasi & Kolam Pengendapan',
-              guidedPoints: [
-                'Desain tata letak kolam air mengalir bertingkat yang memanfaatkan perbedaan ketinggian gravitasi dari saluran sekunder irigasi Komering menuju kolam pembesaran.',
-                'Rekayasa kolam bundar terpal berbasis sistem Bioflok: penumbuhan konsorsium mikroorganisme heterotrof pembentuk flok untuk mengubah amonia menjadi gumpalan protein pakan alami ikan.',
-                'Desain instalasi pembuangan kotoran terpusat di dasar kolam (Central Drain / Bottom Drain) dengan pipa siphon bersusun untuk menyedot endapan feses tanpa perlu menguras kolam.',
-                'Rekayasa kolam sedimentasi pengendapan lumpur dan biofilter tanaman eceng gondok sebelum air buangan kolam dialirkan kembali ke saluran umum agar tidak mencemari lingkungan.'
-              ],
-              placeholder: 'Uraikan hasil analisis rekayasa Anda mengenai tata letak saluran gravitasi kolam, cara kerja kolam bundar bioflok, dan sistem pipa central drain di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Rekayasa Konstruksi Kolam Ikan Bioflok, Direktorat Jenderal Perikanan Budidaya\n2. Petunjuk Teknis Pengelolaan Limbah Kolam Budidaya Ikan Berkelanjutan',
-              defaultExp: 'Rekayasa instalasi kolam di kawasan budidaya patin Belitang diarahkan pada efisiensi ruang dan keberlanjutan lingkungan. Penerapan sistem kolam terpal bulat dengan saluran pembuangan sentral (central drain) memudahkan pembuangan endapan lumpur feses setiap pagi secara gravitasi, disinergikan dengan kolam pengendapan tanaman air yang menyaring air buangan sebelum kembali ke badan sungai.',
-              defaultSources: '1. Pedoman Rancang Bangun Kolam Bioflok Budidaya Air Tawar, Ditjen Perikanan Budidaya KKP.\n2. Modul Rekayasa Pengolahan Air dan Limbah Budidaya Perikanan, Institut Pertanian Bogor.'
-            },
-            {
-              key: 'D',
-              title: 'Mathematics: Kalkulasi Nilai FCR, Tingkat Kelangsungan Hidup (SR) & Laba Panen Patin',
-              subtitle: 'Rumus Rasio Konversi Pakan (FCR), Persentase Survival Rate (SR), Modal Pelet & Margin Penjualan',
-              guidedPoints: [
-                'Rumus perhitungan rasio konversi pakan (Feed Conversion Ratio / FCR): bobot total pakan yang dihabiskan dibagi pertambahan bobot total daging ikan (target ideal patin 1.1 - 1.3).',
-                'Rumus tingkat kelangsungan hidup (Survival Rate / SR): jumlah ekor ikan yang dipanen dibagi jumlah benih awal yang ditebar dikalikan 100% (target minimal di atas 85%).',
-                'Kalkulasi struktur modal riil budidaya 1 petak kolam patin (2.000 ekor benih, 1.600 kg pakan pelet, probiotik, dan listrik/bahan bakar pompa air).',
-                'Perhitungan hasil panen (1.500 kg x Rp18.000/kg = Rp27.000.000), pengurangan modal biaya operasional, keuntungan bersih per siklus 6 bulan, dan perhitungan rasio kelayakan R/C ratio.'
-              ],
-              placeholder: 'Tuliskan hasil perhitungan matematis Anda mengenai rumus FCR pakan, target SR 85%, rincian modal 2.000 ekor benih, total penerimaan Rp27 juta, dan laba bersihnya... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. BPS Kabupaten OKU Timur, Statistik Perikanan Budidaya Air Tawar\n2. Buku Panduan Analisis Ekonomi Usaha Budidaya Ikan Patin Skala Rakyat',
-              defaultExp: 'Perhitungan matematis menjadi tolok ukur utama efisiensi budidaya patin di Belitang, di mana angka FCR pakan ditargetkan pada kisaran 1,15-1,25 dengan tingkat kelangsungan hidup (SR) mencapai 88%. Dengan modal produksi Rp18.500.000 untuk 2.000 ekor ikan dan perolehan panen 1.500 kg seharga Rp18.000 per kg, pembudidaya meraih penerimaan Rp27.000.000 dengan laba bersih Rp8.500.000 per siklus kolam.',
-              defaultSources: '1. BPS Kabupaten OKU Timur: Statistik Produksi dan Nilai Tambah Perikanan Air Tawar.\n2. Laporan Analisis Finansial Usaha Budidaya Ikan Air Tawar, Fakultas Perikanan Unsri.'
-            },
-            {
-              key: 'E',
-              title: 'Sintesis STEM: Solusi Efisiensi Biaya Pakan Mandiri & Hilirisasi Produk Olahan Patin',
-              subtitle: 'Formulasi Dedak Padi Lokal, Mesin Pelet Extruder, Sirkulasi Biofilter & Wirausaha Fillet Patin',
-              guidedPoints: [
-                'Keterpaduan pilar Sains nutrisi dan Teknologi mesin pelet: meracik formula pakan mandiri berbahan dedak padi lokal Belitang, tepung ikan rucah, dan bungkil kedelai berprotein 28-30%.',
-                'Keterpaduan Rekayasa dan Lingkungan: penerapan kolam sirkulasi biofilter yang mengurangi frekuensi pergantian air kolam dan menekan risiko stres kematian bibit ikan.',
-                'Pilar Matematika dan Wirausaha: strategi hilirisasi dari sekadar menjual ikan basah segar menjadi produk olahan fillet patin beku, abon ikan, dan kerupuk patin bernilai jual dua kali lipat.',
-                'Peluang kolaborasi siswa dan kelompok pembudidaya ikan dalam membangun ekosistem agribisnis perikanan modern yang tangguh di Kabupaten OKU Timur.'
-              ],
-              placeholder: 'Uraikan sintesis solusi terpadu STEM yang Anda usulkan mengenai formulasi pakan mandiri dedak Belitang, rekayasa sirkulasi air, dan hilirisasi produk olahan patin... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Petunjuk Teknis Hilirisasi Komoditas Patin Nasional, KKP RI\n2. Modul Wirausaha Pengolahan Hasil Perikanan Air Tawar Berkelanjutan',
-              defaultExp: 'Sintesis empat pilar STEM pada sektor perikanan air tawar OKU Timur membuktikan bahwa pemanfaatan dedak padi hasil kilang beras Belitang sebagai bahan baku pelet apung mandiri secara drastis menekan ketergantungan pakan pabrik. Disertai rekayasa sistem pembuangan lumpur sentral dan hilirisasi pengolahan daging patin menjadi produk beku higienis, usaha perikanan lokal mampu berkembang menjadi industri unggulan berdaya saing tinggi.',
-              defaultSources: '1. Pedoman Hilirisasi dan Nilai Tambah Produk Perikanan Budidaya, KKP RI.\n2. Naskah Riset Terapan Formulasi Pakan Berbasis Biomassa Lokal, BRPBAT.'
-            }
-          ]
-        },
-        peternakan: {
-          key: 'peternakan',
-          name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing & Unggas)',
-          badge: 'Ternak & Bioenergi Pedesaan',
-          icon: 'pets',
-          desc: 'Sapi, Kambing, Unggas Ayam & Bebek, Fermentasi Jerami Silase, Chopper Pakan, Reaktor Biogas & ADG/FCR',
-          cards: [
-            {
-              key: 'A',
-              title: 'Science: Nutrisi Ruminansia/Unggas, Fermentasi Jerami Silase & Biosekuriti Ternak',
-              subtitle: 'Mikroba Rumen Sapi, Bakteri Asam Laktat Silase Pakan, Fisiologi Metabolisme Unggas & Vaksinasi PMK',
-              guidedPoints: [
-                'Fisiologi sistem pencernaan poligastrik pada sapi (rumen, retikulum, omasum, abomasum): peranan mikroba rumen dalam mencerna serat kasar selulosa dari limbah hijauan.',
-                'Sains bioteknologi fermentasi pakan ternak: pemanfaatan inokulan bakteri asam laktat (Lactobacillus) dan molase tetes tebu dalam fermentasi jerami padi sawah dan rumput gajah/odot menjadi silase berkualitas tinggi.',
-                'Fisiologi metabolisme ternak unggas (ayam petelur/pedaging): pengaruh stres panas cuaca (heat stress) terhadap penurunan nafsu makan dan penurunan produksi telur/daging.',
-                'Prosedur pencegahan penyakit menular ternak (Penyakit Mulut dan Kuku / PMK pada sapi, flu burung / ND pada ayam) melalui sanitasi kandang, isolasi karantina, dan vaksinasi berkala.'
-              ],
-              placeholder: 'Uraikan hasil kajian sains Anda mengenai sistem pencernaan sapi, cara kerja fermentasi jerami silase, pencegahan stres panas ayam, dan vaksinasi PMK di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Penelitian Ternak (Balitnak) Ciawi, Pedoman Nutrisi dan Pakan Peternakan Sapi\n2. Petunjuk Teknis Pengendalian Penyakit Mulut dan Kuku (PMK), Kementan RI',
-              defaultExp: 'Kajian sains peternakan di perdesaan OKU Timur menekankan optimalisasi jerami padi sawah yang melimpah melalui fermentasi anaerobik menggunakan bakteri asam laktat dan molase. Proses silase ini meningkatkan kecernaan serat kasar di dalam rumen sapi serta menyediakan cadangan pakan bernutrisi saat musim kemarau, sekaligus penerapan sanitasi kandang yang ketat guna membendung penularan virus PMK.',
-              defaultSources: '1. Publikasi Balai Penelitian Ternak (Balitnak): Teknologi Pengolahan Limbah Pertanian untuk Pakan Ruminansia.\n2. Petunjuk Teknis Manajemen Kesehatan Ternak, Dinas Peternakan dan Perikanan OKU Timur.'
-            },
-            {
-              key: 'B',
-              title: 'Technology: Mesin Chopper Perajang Rumput, Inkubator Penetas & Timbangan Digital',
-              subtitle: 'Mesin Perajang Rumput Disel, Mesin Penetas Telur Otomatis, Timbangan Palet Sapi & Nipple Drinker',
-              guidedPoints: [
-                'Prinsip kerja mesin perajang rumput dan limbah jerami (chopper bermesin bensin/disel): memotong hijauan menjadi ukuran seragam (2-5 cm) untuk meningkatkan palatabilitas dan daya cerna sapi.',
-                'Teknologi mesin penetas telur (inkubator digital otomatis): pengaturan suhu thermostat presisi (37,5 - 38,5 derajat Celcius), pemutar rak otomatis (egg turner), dan kelembapan konstan.',
-                'Peralatan timbangan digital ternak: penggunaan timbangan gantung digital untuk ayam dan timbangan palet alas berkapasitas 1 ton untuk memantau kenaikan bobot harian sapi secara akurat.',
-                'Inovasi instalasi air minum otomatis: penggunaan sistem mangkuk klep otomatis (automatic water bowl) pada sapi dan nipple drinker pada kandang ayam yang higienis serta mencegah air terbuang.'
-              ],
-              placeholder: 'Tuliskan hasil telaah teknologi Anda mengenai cara kerja mesin chopper perajang rumput, inkubator penetas telur otomatis, timbangan palet digital, dan instalasi air minum ternak... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Penggunaan Mesin dan Peralatan Peternakan Modern, Kementan RI\n2. Petunjuk Operasional Inkubator Penetas Telur dan Chopper Pakan',
-              defaultExp: 'Pemanfaatan teknologi peralatan peternakan di sentra peternakan OKU Timur meningkatkan efisiensi waktu kerja dan pemantauan bobot ternak. Mesin chopper mekanis mempermudah pencampuran pakan konsentrat dengan hijauan terpotong halus, sementara timbangan palet digital memungkinkan peternak mengukur laju pertumbuhan harian secara presisi tanpa menduga-duga.',
-              defaultSources: '1. Pedoman Mekanisasi dan Peralatan Peternakan Rakyat, Balai Besar Pengujian Alsintan.\n2. Modul Penerapan Teknologi Tepat Guna Peternakan, Balitnak Kementan RI.'
-            },
-            {
-              key: 'C',
-              title: 'Engineering: Rekayasa Reaktor Biogas Kotoran Sapi & Desain Kandang Sehat Drainase Miring',
-              subtitle: 'Instalasi Biogas Kubah Beton, Gas Metana Kompor Petani, Lantai Miring Pemisah Urine & Ventilasi Kandang',
-              guidedPoints: [
-                'Rancang bangun instalasi reaktor Biogas kotoran sapi (model kubah beton fixed dome atau drum tertutup): proses dekomposisi anaerobik menghasilkan gas metana (CH4) sebagai energi kompor memasak rumah tangga peternak.',
-                'Desain lantai kandang panggung sehat berkemiringan 2-3 derajat: pemisahan alami kotoran padat dan urine sapi secara gravitasi menuju parit penampung pupuk organik cair.',
-                'Rekayasa sistem ventilasi udara alami dan tirai buka-tutup pada kandang ayam guna memastikan sirkulasi oksigen lancar dan mengurangi konsentrasi gas amonia berbau menyengat.',
-                'Desain bak fermentasi pupuk kompos kotoran sapi padat (solid manure) menjadi pupuk bokashi siap pakai untuk menyuburkan lahan sawah padi di sekitar kandang (konsep circular zero waste).'
-              ],
-              placeholder: 'Uraikan hasil analisis rekayasa Anda mengenai instalasi reaktor biogas dari kotoran sapi, desain lantai miring pemisah urine, dan bak fermentasi kompos kandang di OKU Timur... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Rancang Bangun Reaktor Biogas Skala Rumah Tangga Peternak, Kementerian ESDM\n2. Petunjuk Teknis Konstruksi Kandang Peternakan Sapi Sehat dan Ramah Lingkungan',
-              defaultExp: 'Rekayasa instalasi reaktor biogas kotoran sapi di perdesaan OKU Timur memberikan manfaat ganda dalam hal sanitasi lingkungan dan penyediaan energi alternatif terbarukan. Gas metana yang dihasilkan dialirkan langsung ke kompor masak petani untuk menghemat elpiji, sementara desain lantai kandang berkemiringan khusus memisahkan urine sapi menuju parit fermentasi pupuk cair tanaman pangan.',
-              defaultSources: '1. Pedoman Rancang Bangun Instalasi Biogas Peternakan Berkelanjutan, Kementerian ESDM.\n2. Pedoman Konstruksi Kandang Sehat Ruminansia, Direktorat Jenderal Peternakan dan Kesehatan Hewan.'
-            },
-            {
-              key: 'D',
-              title: 'Mathematics: Kalkulasi Pertambahan Bobot Harian (ADG), FCR Ayam & Margin Keuntungan',
-              subtitle: 'Rumus ADG Peternakan Sapi (kg/hari), Rasio Pakan FCR Ayam Broiler, Modal Bakalan & Nilai Jual Qurban',
-              guidedPoints: [
-                'Rumus perhitungan Pertambahan Bobot Badan Harian (Average Daily Gain / ADG) sapi: bobot akhir dikurangi bobot awal dibagi durasi hari masa penggemukan (target ideal peternakan sapi 0,8 - 1,2 kg/hari).',
-                'Rumus rasio konversi pakan ternak unggas (FCR ayam broiler): total pakan dikonsumsi dibagi total bobot daging panen (target FCR 1,5 - 1,6 pada umur panen 35 hari bobot 2 kg).',
-                'Kalkulasi rincian modal usaha penggemukan sapi bakalan lokal di OKU Timur: pembelian bibit bakalan bobot 250 kg (Rp13,0 jt), pakan konsentrat dedak + obat 4 bulan (Rp3,3 jt), dan tenaga kerja (Rp700 rb) dengan total modal Rp17.000.000.',
-                'Perhitungan hasil penjualan sapi bobot 380 kg saat momen Idul Adha atau pasar ternak (harga jual Rp22.500.000), laba bersih usahatani (Rp5.500.000 per ekor), dan rasio kelayakan R/C ratio usahatani.'
-              ],
-              placeholder: 'Tuliskan hasil perhitungan matematis Anda mengenai rumus ADG sapi, target FCR ayam, rincian modal bakalan sapi, total penerimaan penjualan qurban, dan laba bersihnya... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. BPS Kabupaten OKU Timur, Populasi Ternak dan Analisis Usaha Penggemukan Sapi\n2. Buku Analisis Finansial Usaha Peternakan Sapi dan Unggas Pedesaan',
-              defaultExp: 'Kalkulasi matematis pada usaha peternakan sapi di Belitang menunjukkan capaian ADG rata-rata 0,95 kg per hari dengan perlakuan pakan konsentrat dedak dan silase jerami. Selama periode penggemukan 120 hari dengan total modal produksi Rp17.000.000 per ekor, penjualan sapi berbobot 380 kg pada momen hari raya menghasilkan penerimaan Rp22.500.000 dengan keuntungan bersih Rp5.500.000 per ekor.',
-              defaultSources: '1. BPS Kabupaten OKU Timur: Statistik Peternakan dan Penjualan Hewan Qurban.\n2. Laporan Analisis Finansial Peternakan Rakyat, Fakultas Peternakan Universitas Gadjah Mada.'
-            },
-            {
-              key: 'E',
-              title: 'Sintesis STEM: Integrasi Tanaman-Ternak (Crop-Livestock System) & Nol Limbah (Zero Waste)',
-              subtitle: 'Sinergi Jerami Padi Sawah, Pakan Ternak Sapi, Pupuk Organik Bokashi & Kemandirian Energi Gas',
-              guidedPoints: [
-                'Keterpaduan 4 pilar STEM dalam sistem integrasi tanaman-ternak (Crop-Livestock System): jerami sisa panen sawah diolah menjadi pakan sapi silase, kotoran sapi diproses menjadi biogas dan pupuk organik sawah.',
-                'Keterpaduan Teknologi dan Rekayasa: penggunaan mesin chopper untuk penyeragaman pakan dan reaktor biogas anaerobik yang mewujudkan prinsip nol limbah (zero waste farming).',
-                'Pilar Matematika dan Efisiensi: kalkulasi penghematan biaya pupuk kimia sawah hingga 40% berkat substitusi pupuk kompos kotoran sapi dan penghematan biaya gas kompor memasak.',
-                'Peluang wirausaha mandiri pemuda pedesaan OKU Timur dalam penyediaan bakalan ternak qurban berstandar kesehatan resmi dan produksi pupuk organik kemasan komersial.'
-              ],
-              placeholder: 'Uraikan sintesis solusi terpadu STEM yang Anda usulkan mengenai integrasi padi-sapi (Crop-Livestock System), penghematan pupuk kompos, biogas, dan wirausaha peternakan... (Minimal 300 karakter)',
-              sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Panduan Pengembangan Sistem Integrasi Tanaman-Ternak (SITT) Kementan RI\n2. Naskah Inovasi Pertanian-Peternakan Sirkular Berkelanjutan',
-              defaultExp: 'Sintesis empat pilar STEM pada sektor peternakan OKU Timur mewujudkan model pertanian sirkular yang sangat menguntungkan melalui sistem integrasi tanaman-ternak (Crop-Livestock Integration). Limbah jerami padi dimanfaatkan sebagai pakan ruminansia berkualitas, sementara kotoran sapi diolah kembali menjadi biogas dan pupuk bokashi penyubur sawah, menciptakan ekosistem usaha mandiri yang bebas limbah dan berkelanjutan.',
-              defaultSources: '1. Pedoman Sistem Integrasi Tanaman-Ternak (SITT), Direktorat Jenderal Peternakan Kementan RI.\n2. Jurnal Ilmu Peternakan dan Pertanian Sirkular Berkelanjutan, Balitnak.'
-            }
-          ]
-        },
-        industri: {
-          key: 'industri',
-          name: 'Agro-Industri Pangan & RMU',
-          badge: 'RMU, Tahu-Tempe & Kemplang',
-          icon: 'precision_manufacturing',
-          desc: 'Penggilingan Padi RMU Belitang, Pabrik Tahu-Tempe, Pemanggangan Kemplang & IPAL Limbah',
-          cards: [
-            {
-              key: 'A',
-              title: 'Science: Karakteristik Fisika-Kimia Bahan Baku, Kadar Air & Bioproses Pengolahan Pangan',
-              subtitle: 'Kadar Air Gabah Kering Giling 14%, Fermentasi Kapang Tempe & Penggumpalan Protein Kedelai Tahu',
-              guidedPoints: [
-                'Standar kadar air gabah kering giling (GKG) 14% berbasis hukum kesetimbangan uap air (higroskopis) untuk mencegah pertumbuhan jamur kapang Aspergillus flavus penghasil aflatoksin selama penyimpanan gabah di gudang RMU.',
-                'Karakteristik fisika-kimia pati beras (rasio amilosa dan amilopektin) terhadap tekstur nasi pulen khas varietas unggul Belitang serta pengaruh tingkat abrasi gesekan roll husker terhadap derajat sosoh beras.',
-                'Bioproses fermentasi kedelai oleh kapang Rhizopus oligosporus pada pembuatan tempe dan kinetika penggumpalan (koagulasi) asam amino protein kedelai menggunakan koagulan asam asetat/kalsium sulfat pada produksi tahu.',
-                'Reaksi gelatinisasi pati tapioka dan ikan belida/tenggiri/gabus pada pemanggangan kerupuk kemplang khas Komering yang menghasilkan struktur kerupuk mekar renyah tanpa minyak jenuh.'
-              ],
-              placeholder: 'Uraikan hasil analisis sains Anda mengenai kadar air bahan baku, biokimia fermentasi kedelai/amilosa beras, dan reaksi pemuaian pati...',
-              sourcePlaceholder: 'Tuliskan sumber referensi ilmiah Anda (minimal 15 karakter)...',
-              defaultExp: 'Kajian sains agro-industri pangan di OKU Timur berpusat pada pengendalian parameter kritis bahan baku. Penggilingan padi modern mensyaratkan kadar air gabah 14% demi mencegah kontaminasi kapang perusak beras. Pada industri tahu-tempe rakyat Belitang, pengendalian suhu fermentasi kapang Rhizopus dan ketepatan pH koagulasi protein kedelai menentukan tekstur dan keawetan produk tanpa bahan pengawet berbahaya. Pada pembuatan kemplang panggang, gelatinisasi pati tapioka optimal menghasilkan kerupuk renyah beraroma khas komoditas lokal Komering.',
-              defaultSources: '1. Pedoman Penanganan Pascapanen & Standardisasi Mutu Gabah/Beras, Kementan RI.\n2. Jurnal Teknologi Pangan & Gizi: Bioproses Pengolahan Kedelai Tradisional.'
-            },
-            {
-              key: 'B',
-              title: 'Technology: Mesin Penggilingan RMU Modern, Boiler Uap & Teknologi Pengolahan UMKM',
-              subtitle: 'Mekanisme Husker Roll Karet, Polisher Beras, Ketel Uap Boiler & Pemanggang Kemplang Inframerah',
-              guidedPoints: [
-                'Prinsip kerja mesin pemecah kulit gabah (rubber roll husker) yang memanfaatkan perbedaan kecepatan putar dua poros rol karet untuk mengelupas kulit sekam tanpa mematahkan butir beras kepala.',
-                'Mekanisme pemoles beras (rice polisher/whitener) berbasis gesekan friksi dan hembusan udara tekan untuk membersihkan lapisan bekatul secara merata dengan derajat sosoh mencapai 95-100%.',
-                'Penerapan teknologi ketel uap (boiler) pada industri tahu pedesaan untuk memasak bubur kedelai dengan efisiensi panas uap tinggi dibanding pemanasan manual kayu bakar langsung.',
-                'Teknologi oven pemanggang kerupuk kemplang berbasis gas/inframerah yang mendistribusikan panas radiasi merata sehingga adonan mengembang sempurna dalam hitungan menit secara higienis.'
-              ],
-              placeholder: 'Jelaskan cara kerja mekanisasi mesin RMU, boiler pemasak tahu, atau oven kemplang yang diamati...',
-              sourcePlaceholder: 'Tuliskan sumber literatur teknologi mesin...',
-              defaultExp: 'Mekanisme teknologi agro-industri di OKU Timur memegang peranan vital dalam meningkatkan efisiensi dan higienitas produk. Penggunaan mesin rubber roll husker dan polisher udara bertekanan di RMU Belitang terbukti meminimalkan butir beras pecah (patah/menir) hingga di bawah 15%. Di sentra tahu Belitang, migrasi dari tungku kayu tradisional ke ketel boiler uap tertutup mempercepat waktu perebusan hingga 40% dan mengurangi emisi jelaga hitam di area kerja produksi.',
-              defaultSources: '1. Buku Panduan Operasional Mesin Penggilingan Padi Terpadu, Balitbangtan.\n2. Modul Rekayasa Peralatan Pengolahan Pangan Skala UMKM, Kementerian Perindustrian.'
-            },
-            {
-              key: 'C',
-              title: 'Engineering: Rancang Bangun Tata Letak (Layout) Pabrik, Ergonomi K3 & Pengolahan IPAL Limbah',
-              subtitle: 'Alur Produksi Searah (Linear Flow), Penanganan Debu Sekam & Instalasi Pengolahan Air Limbah',
-              guidedPoints: [
-                'Rancang bangun tata letak fasilitas pabrik RMU/tahu dengan pola alur lurus (linear flow) dari area bongkar muat bahan mentah, ruang proses mesin utama, hingga gudang pengemasan guna mencegah kontaminasi silang.',
-                'Penerapan Keselamatan dan Kesehatan Kerja (K3) industri: pemasangan cerobong pengumpul debu sekam (cyclone dust collector), masker respirator partikulat, dan pelindung pendengaran dari kebisingan mesin giling.',
-                'Rekayasa Instalasi Pengolahan Air Limbah (IPAL) berbasis sistem anaerob-aerob bertingkat untuk menetralkan Biological Oxygen Demand (BOD) dan Chemical Oxygen Demand (COD) limbah cair whey tahu sebelum dialirkan ke parit.',
-                'Ergonomi penanganan material (manual handling) pada pengangkatan karung beras/kedelai 50 kg menggunakan hand pallet dan conveyor loader guna mencegah cedera muskuloskeletal pekerja.'
-              ],
-              placeholder: 'Analisis rekayasa alur pabrik, pengelolaan limbah IPAL, dan prosedur K3 tenaga kerja...',
-              sourcePlaceholder: 'Tuliskan sumber panduan rekayasa lingkungan dan K3...',
-              defaultExp: 'Rekayasa teknik agro-industri menjamin keberlanjutan operasional dan kelestarian lingkungan OKU Timur. Desain pabrik RMU modern mengintegrasikan blower siklon pemisah debu sekam sehingga lingkungan kerja tetap bersih dan udara tidak mencemari permukiman warga. Pada klaster pengolahan tahu, pembangunan bak IPAL anaerob bertingkat terbukti menurunkan kandungan amonia dan bau menyengat dari limbah whey, bahkan gas metana yang dihasilkan dapat dimanfaatkan kembali sebagai biogas pemanas.'
-            },
-            {
-              key: 'D',
-              title: 'Mathematics: Kalkulasi Rendemen Giling, Biaya Pokok Produksi (HPP) & Titik Impas (BEP)',
-              subtitle: 'Persentase Rendemen Beras 65%, Konversi Kedelai Tahu, HPP per Kg & Titik Impas Operasional',
-              guidedPoints: [
-                'Kalkulasi persentase rendemen beras giling: formula Rendemen = (Berat Beras Bersih / Berat GKG) x 100%, dengan target standar mutu RMU Belitang berkisar antara 63% hingga 68%.',
-                'Perhitungan konversi rasio bahan: 1 kg kedelai menghasilkan 80-100 potong tahu kotak standar atau 1 kg tepung tapioka dicampur 300 gram ikan menghasilkan 40 keping kemplang panggang siap saji.',
-                'Penyusunan Harga Pokok Produksi (HPP) terperinci mencakup biaya bahan baku utama, BBM solar/listrik kWh pabrik, upah tenaga kerja operator, dan penyusutan mesin penggilingan.',
-                'Analisis Titik Impas / Break Even Point (BEP): menghitung BEP unit dan rupiah untuk menentukan kuantum produksi minimum per hari agar usaha pengolahan pangan tidak merugi.'
-              ],
-              placeholder: 'Tuliskan perhitungan matematika rendemen giling, struktur HPP, dan formula BEP usaha...',
-              sourcePlaceholder: 'Tuliskan sumber rujukan analisis finansial UMKM...',
-              defaultExp: 'Analisis matematika produksi membuktikan bahwa keuntungan agro-industri sangat bergantung pada rasio rendemen dan pengendalian biaya energi. Untuk kapasitas giling 5 ton GKG per hari dengan rendemen 65%, RMU menghasilkan 3.250 kg beras super dan 500 kg bekatul. Dengan HPP gabah Rp 6.200/kg dan biaya giling Rp 350/kg, HPP beras giling berada di level Rp 10.076/kg. Penjualan bekatul dan sekam memberikan margin tambahan yang secara signifikan menurunkan batas BEP harian pabrik.'
-            },
-            {
-              key: 'E',
-              title: 'Sintesis Terpadu: Hilirisasi Produk Pangan Unggulan OKU Timur & Ekonomi Sirkular Zero Waste',
-              subtitle: 'Nilai Tambah Beras Premium Belitang, Pemanfaatan Biomassa Sekam & Prospek Wirausaha Muda',
-              guidedPoints: [
-                'Strategi hilirisasi beras curah menjadi beras kemasan premium berlabel SNI dan bermerek lokal OKU Timur guna menangkap margin laba eceran yang 25-35% lebih tinggi dibanding menjual gabah basah ke luar daerah.',
-                'Penerapan ekonomi sirkular zero-waste: pemanfaatan limbah sekam padi sebagai bahan bakar pemanas briket, media tanam arang sekam hidroponik, atau silika abu sekam bernilai ekonomis tinggi.',
-                'Pengolahan ampas padat tahu menjadi pakan ternak sapi/unggas berprotein tinggi atau tempe gembus bernilai gizi, sehingga tidak ada limbah padat yang terbuang sia-sia.',
-                'Peta jalan kewirausahaan muda di OKU Timur dalam memanfaatkan ekosistem digital pemasaran (marketplace/e-commerce) untuk mendistribusikan produk pangan olahan khas daerah ke tingkat nasional.'
-              ],
-              placeholder: 'Tuliskan sintesis integratif Anda mengenai hilirisasi pangan, zero waste, dan prospek wirausaha...',
-              sourcePlaceholder: 'Tuliskan sumber referensi kebijakan daerah atau studi hilirisasi...',
-              defaultExp: 'Sintesis 4 pilar STEM pada sektor agro-industri pangan membuktikan potensi besar hilirisasi pertanian di OKU Timur. Dengan beralih dari sekadar penjual gabah mentah menjadi produsen beras premium kemasan dan aneka olahan pangan bernilai tambah, daerah dapat mengamankan perputaran uang di tingkat lokal. Didukung prinsip circular economy zero-waste yang menyulap limbah sekam menjadi briket bahan bakar dan ampas tahu menjadi pakan ternak bergizi, agro-industri Belitang menjadi motor penggerak ekonomi hijau pedesaan.'
-            }
-          ]
-        },
-        perdagangan: {
-          key: 'perdagangan',
-          name: 'Perdagangan Sarana Pertanian & Sembako',
-          badge: 'Kios Saprotan & Grosir',
-          icon: 'storefront',
-          desc: 'Penebusan Pupuk Bersubsidi i-Pubers, Gudang Palet Kayu, Barcode POS Kasir & Perputaran Stok ITO',
-          cards: [
-            {
-              key: 'A',
-              title: 'Science: Karakteristik Kimia Sarana Pertanian, Sifat Higroskopis & Pengendalian Gudang',
-              subtitle: 'Higroskopisitas Urea, Formulasi NPK Majemuk & Proteksi Bahan Pangan dari Hama Gudang',
-              guidedPoints: [
-                'Sifat higroskopis pupuk Urea [CO(NH2)2] yang sangat mudah mengikat uap air dari udara terbuka sehingga memicu penggumpalan (caking) pada kelembapan relatif (RH) di atas 70%.',
-                'Karakteristik kimia pupuk majemuk NPK (Nitrogen-Fosfor-Kalium) dan pestisida formulasi EC/WP/SC serta persyaratan penyimpanan terpisah dari komoditas pangan untuk mencegah kontaminasi racun.',
-                'Faktor fisika kelembapan dan suhu lantai semen gudang: peranan sirkulasi udara ventilasi silang dan alas palet kayu dalam memblokir kondensasi air tanah ke karung beras/pupuk.',
-                'Biologi hama gudang (kumbang bubuk beras Sitophilus oryzae dan tikus Rattus norvegicus) serta metode perangkap fisik dan sanitasi kimiawi yang aman di area grosir sembako.'
-              ],
-              placeholder: 'Uraikan hasil analisis sains Anda tentang sifat higroskopis pupuk, penyimpanan gudang, dan hama...',
-              sourcePlaceholder: 'Tuliskan sumber ilmiah sains kimia pupuk dan penyimpanan pangan...',
-              defaultExp: 'Kajian sains sektor perdagangan di Belitang berfokus pada ketahanan mutu komoditas sensitif. Sifat higroskopis pupuk Urea menuntut pengelolaan ventilasi gudang yang ketat dengan kelembapan di bawah 70% dan penggunaan palet kayu berjarak minimal 15 cm dari lantai semen agar pupuk tidak mencair dan menggumpal. Pada grosir beras dan sembako, pengendalian biologi terhadap kumbang bubuk padi dan kebersihan sanitasi menjadi prasyarat mutlak dalam mempertahankan mutu fisik dan bobot timbangan komoditas.',
-              defaultSources: '1. Pedoman Teknis Penyimpanan & Penggudangan Pupuk Bersubsidi, PT Pupuk Indonesia.\n2. Standar Nasional Indonesia (SNI) Tata Cara Penggudangan Pangan Serealia.'
-            },
-            {
-              key: 'B',
-              title: 'Technology: Digitalisasi Distribusi, Aplikasi i-Pubers Kementan & Sistem Kasir Barcode POS',
-              subtitle: 'Aplikasi Penebusan Pupuk Subsidi, Cloud POS, Barcode Scanner & Sistem Settlement QRIS',
-              guidedPoints: [
-                'Prinsip integrasi aplikasi i-Pubers (Integrasi Pupuk Bersubsidi) berbasis data e-Alokasi Kementan dengan pencocokan NIK/KTP petani untuk mencegah penyelewengan distribusi pupuk di Belitang.',
-                'Mekanisme teknologi barcode scanner (1D dan 2D QR Code) yang membaca pola garis pantulan sinar laser inframerah untuk mempercepat input data transaksi penjualan kasir grosir.',
-                'Penerapan sistem Point of Sale (POS) berbasis cloud untuk pemantauan stok real-time (live stock audit), peringatan stok minimum, dan laporan penjualan otomatis dari smartphone pemilik.',
-                'Teknologi pembayaran nontunai (QRIS dan EDC Merchant) yang memfasilitasi transaksi aman tanpa uang tunai fisik, memangkas risiko uang palsu, dan mempercepat pencatatan kas harian.'
-              ],
-              placeholder: 'Jelaskan cara kerja aplikasi i-Pubers, software kasir POS, dan teknologi scanner toko...',
-              sourcePlaceholder: 'Tuliskan sumber referensi teknologi digital ritel dan distribusi...',
-              defaultExp: 'Teknologi digital telah merevolusi rantai pasok perdagangan di OKU Timur. Hadirnya aplikasi i-Pubers mewajibkan kios pengecer resmi memverifikasi penebusan pupuk bersubsidi dengan memindai e-KTP dan foto wajah petani, sehingga kuota terdistribusi tepat sasaran. Di level toko sembako grosir, adopsi software POS terhubung barcode scanner mempercepat proses kasir hingga 3 kali lipat dan menyediakan data inventaris akurat untuk mencegah kehabisan stok barang pokok.',
-              defaultSources: '1. Petunjuk Operasional Aplikasi i-Pubers, Kementan & Pupuk Indonesia Holding.\n2. Modul Transformasi Digitalisasi UMKM Ritel Rantai Pasok Modern, Kemenkop UKM.'
-            },
-            {
-              key: 'C',
-              title: 'Engineering: Rancang Bangun Tata Letak Toko/Gudang, Ergonomi Rak & Rantai Logistik FIFO',
-              subtitle: 'Layout Racking Gudang, Standar Palet Ergonomis, Sistem FIFO & Manajemen K3 Bongkar Muat',
-              guidedPoints: [
-                'Rancang bangun sistem racking gudang bertingkat (heavy duty rack) yang memaksimalkan pemanfaatan ruang vertikal dan menyediakan jalur manuver gerobak hand pallet berlebar 1,8-2 meter.',
-                'Penerapan metode pergudangan First-In First-Out (FIFO) dan First-Expired First-Out (FEFO) secara mekanis guna memastikan karung pupuk atau sembako yang masuk lebih awal dijual lebih dulu.',
-                'Ergonomi penanganan beban: prosedur manual handling saat memuat karung 50 kg dari bak truk ke gudang dengan postur tubuh aman (menekuk lutut bukan punggung) guna mencegah cedera tulang belakang.',
-                'Pemasangan instalasi pengaman toko: pintu dorong lipat harmonika baja, kamera CCTV pengawas area kasir & sudut buta gudang, serta penempatan alat pemadam api ringan (APAR).'
-              ],
-              placeholder: 'Analisis rekayasa denah gudang, rotasi FIFO, dan ergonomi bongkar muat pekerja...',
-              sourcePlaceholder: 'Tuliskan sumber panduan rancang gudang dan ergonomi pergudangan...',
-              defaultExp: 'Rekayasa tata letak toko dan gudang sangat menentukan kelancaran arus barang dagangan di OKU Timur. Desain gudang dengan alur lintas berbentuk U (U-flow) memisahkan dermaga bongkar muatan truk dari loket penyerahan barang ke pembeli eceran sehingga tidak terjadi tabrakan arus kerja. Penerapan rak palet berdisiplin FIFO mencegah kerusakan pupuk yang mengendap terlalu lama di dasar tumpukan, sementara penyediaan alat bantu angkong dorong meringankan beban angkut pekerja panggul.',
-              defaultSources: '1. Panduan Standardisasi Tata Kelola Pergudangan & Logistik, Kemenperdagangan RI.\n2. Manual K3 Penanganan Beban Manual Sektor Perdagangan & Ritel, ILO.'
-            },
-            {
-              key: 'D',
-              title: 'Mathematics: Manajemen Persediaan Stok, Perputaran Barang (ITO) & Kalkulasi Margin Laba',
-              subtitle: 'Formula Economic Order Quantity (EOQ), Safety Stock, Rasio ITO & Margin Keuntungan Ritel',
-              guidedPoints: [
-                'Kalkulasi persediaan pengaman (Safety Stock) dan Titik Pemesanan Ulang (Reorder Point / ROP): ROP = (Lead Time Hari x Rata-rata Penjualan Harian) + Safety Stock untuk pupuk Urea/NPK.',
-                'Perhitungan Rasio Perputaran Persediaan / Inventory Turnover (ITO) = Harga Pokok Penjualan / Rata-rata Persediaan, sebagai indikator seberapa cepat modal barang berputar menjadi uang tunai.',
-                'Kalkulasi Margin Laba Kotor (Gross Margin) dan Markup Persentase: membedakan strategi margin tipis perputaran cepat (sembako 3-7%) vs margin moderat saprotan herbisida/benih (12-20%).',
-                'Analisis arus kas modal kerja (Working Capital Cash Flow): menghitung periode pembayaran kredit ke distributor vs penagihan piutang petani saat musim panen tiba.'
-              ],
-              placeholder: 'Tuliskan kalkulasi matematika stok pengaman ROP, perputaran ITO, dan margin keuntungan...',
-              sourcePlaceholder: 'Tuliskan sumber rujukan manajemen keuangan persediaan ritel...',
-              defaultExp: 'Kalkulasi matematika persediaan adalah kunci kelangsungan usaha kios dan grosir di Belitang. Dengan rata-rata penjualan pupuk Urea 10 sak/hari dan waktu tunggu suplai distributor 3 hari plus safety stock 15 sak, reorder point ditetapkan pada level 45 sak. Perputaran stok (ITO) sembako yang tinggi mencapai 20 kali setahun memungkinkan toko grosir mendulang laba bersih optimal meskipun bermain pada marjin tipis 5%, didukung disiplin pencatatan piutang petani yang ketat.',
-              defaultSources: '1. Manajemen Keuangan & Persediaan Usaha Dagang Ritel, Ikatan Akuntan Indonesia.\n2. Riset Manajemen Logistik Rantai Pasok Pupuk Bersubsidi, Pusat Studi Logistik Pertanian.'
-            },
-            {
-              key: 'E',
-              title: 'Sintesis Terpadu: Rantai Pasok Pangan Terintegrasi, Kemitraan Kios Resmi & Ketahanan Pangan',
-              subtitle: 'Jaminan Ketersediaan Pupuk di 20 Kecamatan, Kemitraan Petani-Pedagang & Stabilitas Pasar',
-              guidedPoints: [
-                'Peran strategis jaringan kios saprotan resmi dalam menjaga ketahanan pangan nasional dengan menjamin kepastian pasokan pupuk dan obat pertanian di sentra padi Belitang.',
-                'Pola kemitraan saling menguntungkan antara pedagang grosir hasil bumi dan kelompok tani: penyediaan saprotan dengan sistem pembayaran tunda pascapanen (yarnen) yang transparan dan adil.',
-                'Strategi adaptasi pedagang tradisional terhadap ekspansi ritel modern dan marketplace online melalui keunggulan relasi personal, kemudahan utang modal tani terukur, dan layanan antar jemput barang.',
-                'Peta peluang kewirausahaan generasi muda OKU Timur dalam mengembangkan platform rantai pasok komoditas pertanian berbasis web/aplikasi penghubung langsung produsen ke pasar induk.'
-              ],
-              placeholder: 'Tuliskan sintesis integratif Anda mengenai rantai pasok perdagangan, kemitraan kios, dan stabilitas...',
-              sourcePlaceholder: 'Tuliskan sumber analisis kebijakan perdagangan daerah atau rantai pasok...',
-              defaultExp: 'Sintesis integratif 4 pilar STEM pada sektor perdagangan membuktikan bahwa keberhasilan pertanian OKU Timur tidak dapat dipisahkan dari keandalan rantai pasok saprotan dan sembako. Digitalisasi penebusan pupuk melalui i-Pubers yang dipadukan dengan manajemen tata letak gudang ergonomis dan kalkulasi persediaan akurat mampu mengeliminasi kelangkaan pupuk di masa tanam kritis. Sinergi kemitraan kios resmi dengan petani memperkuat fondasi ketahanan pangan daerah sekaligus memajukan ekonomi kerakyatan Komering.',
-              defaultSources: '1. Naskah Kebijakan Stabilisasi Pasokan & Distribusi Pangan Nasional, Bapanas RI.\n2. Kajian Rantai Pasok Sektor Agribisnis Komering, Bappeda Litbang OKU Timur.'
-            }
-          ]
-        },
-        formal: {
-          key: 'formal',
-          name: 'Jasa Keuangan Mikro & Jasa Perorangan',
-          badge: 'Agen BRILink, BUMDes & Jasa',
-          icon: 'account_balance',
-          desc: 'Transmisi 4G/LTE Mesin EDC, Enkripsi Chip EMV, Likuiditas Kas Panen & Fee-Based Income Desa',
-          cards: [
-            {
-              key: 'A',
-              title: 'Science: Gelombang Mikro Telekomunikasi 4G/LTE, Enkripsi Biometrik & Keamanan Digital',
-              subtitle: 'Fisika Frekuensi 1800/2100 MHz, Sensor Kapasitif Sidik Jari & Kriptografi Chip Kartu EMV',
-              guidedPoints: [
-                'Prinsip fisika perambatan gelombang radio mikro elektromagnetik (microwave frekuensi 1,8-2,1 GHz) yang membawa paket data sinyal mesin EDC perbankan dan smartphone di wilayah pelosok pedesaan OKU Timur.',
-                'Fisika semikonduktor sensor biometrik sidik jari (fingerprint scanner): prinsip pengukuran perbedaan kapasitansi listrik mikro antara lembah dan puncak sidik kulit jari untuk otentikasi bansos PKH.',
-                'Mekanisme kimia elektrokimia baterai lithium-ion pada terminal EDC portabel dan sistem proteksi pengisian daya cerdas guna mencegah overheating saat transaksi beruntun.',
-                'Prinsip sains kriptografi asimetris (RSA/AES 256-bit) pada microchip standar EMV (Europay, Mastercard, Visa) yang menghasilkan Authorization Request Cryptogram (ARQC) dinamis anti-cloning.'
-              ],
-              placeholder: 'Uraikan hasil telaah sains Anda tentang frekuensi sinyal EDC, sensor biometrik, dan kriptografi...',
-              sourcePlaceholder: 'Tuliskan sumber ilmiah sains telekomunikasi dan keamanan data finansial...',
-              defaultExp: 'Kajian sains sektor jasa keuangan mikro pedesaan di Belitang bertumpu pada keandalan infrastruktur gelombang elektromagnetik dan keamanan kriptografi. Mesin EDC memanfaatkan spektrum seluler 4G LTE frekuensi 1800 MHz untuk mengirim paket data transaksi terenkripsi ke server pusat dalam fraksi detik. Pada aspek keamanan, chip kartu debit pintar EMV mengaplikasikan algoritma enkripsi dinamis yang menjamin transaksi perbankan bebas dari penggandaan (skimming), sehingga aman dioperasikan agen desa.',
-              defaultSources: '1. Standar Keamanan Data Industri Kartu Pembayaran (PCI-DSS), Bank Indonesia.\n2. Dasar-dasar Telekomunikasi Seluler & Transmisi Data Nirkabel, Dirjen PPI Kominfo.'
-            },
-            {
-              key: 'B',
-              title: 'Technology: Arsitektur Terminal EDC, Dual-SIM Failover & Ekosistem BRILink Mobile',
-              subtitle: 'Secure Cryptographic Module EDC, Switching Jaringan Perbankan, Printer Thermal & API Host',
-              guidedPoints: [
-                'Arsitektur perangkat keras mesin EDC: prosesor ganda berkemampuan secure cryptoprocessor yang otomatis menghapus memori enkripsi jika casing fisik perangkat dibongkar paksa.',
-                'Teknologi switching jaringan perbankan (ATM Bersama/Prima) dan sistem failover multi-SIM card otomatis (Telkomsel/Indosat/XL) yang memastikan transaksi tetap jalan saat satu operator blank spot.',
-                'Prinsip teknologi printer thermal mini: pemanasan mikro head pin pada kertas peka panas (thermo-reactive paper) tanpa menggunakan tinta cartridge cair untuk mencetak struk bukti bayar.',
-                'Integrasi platform aplikasi perbankan agen (seperti BRILink Mobile / AgenKu BNI) dengan sistem pembayaran tagihan terpusat (PLN token, BPJS, PDAM, pulsa, dan transfer antarbank).'
-              ],
-              placeholder: 'Jelaskan cara kerja terminal EDC, teknologi dual SIM failover, dan aplikasi mobile keagenan...',
-              sourcePlaceholder: 'Tuliskan sumber panduan teknologi mesin transaksi digital perbankan...',
-              defaultExp: 'Adopsi teknologi keuangan di pelosok OKU Timur memungkinkan transaksi perbankan terlaksana setara kantor cabang perkotaan. Terminal EDC perbankan modern dilengkapi teknologi dual SIM dengan modul failover otomatis yang secara instan berpindah ke jaringan seluler terkuat saat terjadi fluktuasi sinyal di pelosok sawah Belitang. Dikombinasikan dengan printer thermal berkecepatan tinggi dan software mobile banking yang intuitif, agen dapat melayani puluhan transaksi warga tanpa hambatan sistem.',
-              defaultSources: '1. Pedoman Teknis Layanan Keuangan Tanpa Kantor (Laku Pandai), Otoritas Jasa Keuangan (OJK).\n2. Manual Operasional Terminal EDC Perbankan & Arsitektur Switching, Bank Sentral.'
-            },
-            {
-              key: 'C',
-              title: 'Engineering: Desain Ruang Pelayanan Ergonomis, Keamanan Fisik Brankas & Redundansi Daya UPS',
-              subtitle: 'Ergonomi Konter Loket, Brankas Baja Tahan Api, CCTV Blind Spot & Sistem Inverter Backup',
-              guidedPoints: [
-                'Rancang bangun meja loket pelayanan (service counter) yang ergonomis dengan tinggi meja 75-80 cm, partisi kaca akrilik pelindung, dan display privasi layar PIN pad nasabah saat input sandi.',
-                'Sistem proteksi fisik brankas uang tunai: penempatan brankas baja berbobot di atas 100 kg yang diangkur baut tanam ke lantai semen, dilengkapi kunci kombinasi digital dan delay lock timer.',
-                'Rekayasa redundansi kelistrikan cadangan: pemasangan Uninterruptible Power Supply (UPS) online murni dan sistem inverter solar/baterai guna mencegah transaksi hang saat pemadaman mendadak PLN.',
-                'Desain tata ruang keamanan: zonasi antrean nasabah dengan pembatas fleksibel, tombol alarm darurat (panic button) tersembunyi, dan integrasi kamera pengawas CCTV multi-channel.'
-              ],
-              placeholder: 'Analisis rekayasa loket layanan, cadangan daya UPS, dan sistem proteksi brankas tunai...',
-              sourcePlaceholder: 'Tuliskan sumber rancang bangun fasilitas perbankan dan K3 perkantoran...',
-              defaultExp: 'Rekayasa teknik loket keagenan keuangan mikro di Belitang mengedepankan aspek keamanan fisik dan kontinuitas layanan. Pemasangan UPS baterai berkapasitas 1200 VA menjadi solusi rekayasa krusial yang mengantisipasi fluktuasi voltase atau padam listrik tiba-tiba, menjamin transaksi transfer tidak menggantung (pending status). Di samping itu, desain konter ergonomis dan penempatan brankas baja berangkur beton memberikan rasa aman maksimal bagi agen maupun nasabah desa yang bertransaksi uang tunai.',
-              defaultSources: '1. Standar Konstruksi Keamanan Fisik Gerai Kas Layanan Perbankan, OJK.\n2. Manual Rekayasa Daya Cadangan & Keselamatan Instalasi Kelistrikan UPS, SNI.'
-            },
-            {
-              key: 'D',
-              title: 'Mathematics: Manajemen Likuiditas Kas Panen, Fee-Based Income & Kalkulasi Titik Impas (BEP)',
-              subtitle: 'Perputaran Kas Rp 100 Juta/Hari, Rasio Fee per Transaksi, Margin Keuntungan & ROI Alat',
-              guidedPoints: [
-                'Manajemen likuiditas kas operasional: kalkulasi buffer kas tunai harian saat musim panen raya padi Belitang (lonjakan penarikan uang hingga Rp 100-200 juta/hari oleh buruh tani/tengkulak).',
-                'Kalkulasi pendapatan berbasis komisi (Fee-Based Income): simulasi rumus Total Fee = Volume Transaksi x Komisi Rata-rata (misal: 80 transaksi/hari x Rp 4.000 fee bersih = Rp 320.000/hari atau Rp 9,6 juta/bulan).',
-                'Analisis biaya operasional harian: kuota paket internet data, biaya kertas rol thermal, konsumsi listrik, dan biaya bunga/opportunity cost saldo kas yang mengendap di rekening operasional.',
-                'Kalkulasi Return on Investment (ROI) dan payback period pengadaan modal awal (pembelian mesin EDC sewa/beli, brankas, meja kasir, dan renovasi gerai).'
-              ],
-              placeholder: 'Tuliskan kalkulasi matematika perputaran uang tunai, komisi fee bulanan, dan analisis ROI...',
-              sourcePlaceholder: 'Tuliskan sumber rujukan analisis keuangan mikro dan kelayakan investasi...',
-              defaultExp: 'Kalkulasi matematika likuiditas kas adalah jantung keberhasilan agen keuangan mikro di OKU Timur. Saat musim panen gabah tiba, perputaran uang tunai melonjak hingga Rp 80-150 juta per hari. Dengan volume 70 transaksi per hari dan bagi hasil fee rata-rata Rp 4.500 per transaksi, agen mendulang pendapatan kotor Rp 9,45 juta per bulan. Setelah dikurangi biaya operasional kuota data dan kertas struk Rp 750 ribu, usaha ini menghasilkan laba bersih stabil dengan ROI tuntas dalam 4-6 bulan pertama.',
-              defaultSources: '1. Pedoman Perhitungan Kelayakan Finansial & Pembukuan Agen Perbankan Mikro, BRI Research.\n2. Manajemen Likuiditas & Arus Kas Lembaga Keuangan Mikro, Ikatan Bankir Indonesia.'
-            },
-            {
-              key: 'E',
-              title: 'Sintesis Terpadu: Inklusi Keuangan Pedesaan Belitang, Layanan Laku Pandai & Akses Modal Tani',
-              subtitle: 'Pemerataan Akses Tarik Tunai PKH, KUR Pertanian Tanpa Calo & Transformasi Ekonomi Desa',
-              guidedPoints: [
-                'Peran transformatif agen keuangan mikro pedesaan dalam memotong biaya transportasi dan waktu warga desa yang sebelumnya harus menempuh 15-30 km ke kantor cabang bank di ibu kota kabupaten.',
-                'Akselerasi penyaluran bantuan sosial pemerintah (PKH, BPNT, BLT Desa) secara transparan dan tepat waktu langsung ke tangan petani dan keluarga prasejahtera di tingkat dusun.',
-                'Fasilitasi penyaluran Kredit Usaha Rakyat (KUR) mikro sektor pertanian dan peternakan dengan pendampingan verifikasi data usaha riil di lapangan tanpa perantara ijon.',
-                'Peta sinergi keagenan dengan BUMDes (Badan Usaha Milik Desa) dalam mewujudkan ekosistem keuangan desa digital (cashless smart village) yang inklusif dan akuntabel di OKU Timur.'
-              ],
-              placeholder: 'Tuliskan sintesis integratif Anda mengenai inklusi finansial, layanan Laku Pandai, dan modal tani...',
-              sourcePlaceholder: 'Tuliskan sumber analisis kebijakan inklusi keuangan desa atau studi BUMDes...',
-              defaultExp: 'Sintesis terpadu 4 pilar STEM pada sektor jasa keuangan mikro membuktikan bahwa teknologi perbankan nir-kantor (Laku Pandai) adalah katalisator utama pemerataan ekonomi OKU Timur. Didukung gelombang mikro seluler yang stabil, terminal EDC berenkripsi tinggi, dan manajemen likuiditas kas yang piawai, agen BRILink dan BUMDes sukses membawa akses permodalan formal ke pelosok sawah dan perkebunan. Fenomena ini membebaskan petani dari jeratan ijon berbunga tinggi serta mempercepat perputaran uang di perdesaan Belitang.',
-              defaultSources: '1. Laporan Nasional Indeks Inklusi & Literasi Keuangan Pedesaan Indonesia, SNKI OJK.\n2. Riset Transformasi Digital & Peran BUMDes dalam Ekonomi Desa OKU Timur, Balitbangda Sumsel.'
-            }
-          ]
-        }
+  pertanian: {
+    key: 'pertanian',
+    name: 'Pertanian Padi Sawah',
+    badge: 'Lumbung Pangan Komering',
+    icon: 'agriculture',
+    desc: 'Padi Sawah, Irigasi Saluran BK, Traktor/Combine & Hasil Panen Gabah',
+    cards: [
+      {
+        key: 'A',
+        title: 'Science (Sains): Kondisi Tanah, Air Irigasi & Pertumbuhan Padi',
+        subtitle: 'Pengamatan Sumber Air Irigasi BK, Kondisi Cuaca & Hama Sawah di Belitang',
+        guidedPoints: [
+          'Amati kondisi tanah sawah dan ketersediaan air irigasi dari saluran sekunder/tersier BK (Sungai Komering).',
+          'Bagaimana pengaruh cuaca harian (musim panas atau musim hujan) terhadap kesuburan tanaman padi?',
+          'Hama apa yang sering ditemukan di sawah (seperti wereng, tikus, atau burung) dan bagaimana dampaknya?'
+        ],
+        placeholder: 'Jelaskan secara ringkas kondisi tanah sawah, sumber air irigasi, serta pengaruh cuaca dan hama terhadap tanaman padi... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Langsung di Sawah BK 10 / Wawancara Petani Padi',
+        defaultExp: 'Tanah sawah di Belitang mendapatkan pasokan air melimpah dari saluran irigasi teknis Bendung Perjaya Komering. Petani menanam varietas padi unggul seperti Inpari 32, namun perlu memperhatikan jadwal buka-tutup pintu air dan mewaspadai hama wereng batang coklat serta burung saat bulir padi mulai berisi.',
+        defaultSources: '1. Pengamatan Saluran Irigasi BK Belitang.\n2. Wawancara Petani Padi Sawah Setempat.'
       },
-      // Default fallback cards points to pertanian
-      cards: [
-        {
-          key: 'A',
-          title: 'Science: Karakteristik Tanah Sawah, Air Irigasi Komering & Fisiologi Padi',
-          subtitle: 'Sifat Fisika-Kimia Tanah Sawah Belitang, pH Asam, Kualitas Air Bendung Perjaya & Varietas Unggul',
-          guidedPoints: [
-            'Karakteristik tanah sawah aluvial di Belitang: dampak kejenuhan pupuk kimia berlebih (urea) yang menurunkan pH ke 4.5-5.5 (asam) serta peranan kapur dolomit dan bahan organik dalam memulihkan kesuburan tanah.',
-            'Kualitas air irigasi teknis dari Bendung Perjaya (Sungai Komering): tingkat sedimentasi lumpur penyubur alami dan dampak penutupan pintu air saat jadwal pengeringan berkala saluran sekunder/tersier.',
-            'Pengaruh unsur cuaca (suhu harian 28-32 derajat Celcius, kelembapan, curah hujan) terhadap fase vegetatif dan generatif padi pada Musim Tanam 1 (MT 1 / Rendeng) dan Musim Tanam 2 (MT 2 / Gadu).',
-            'Karakteristik agronomi varietas unggul lokal (Inpari 32, Ciherang, Mekongga) serta ketahanan biologisnya melawan hama wereng batang coklat (WBC), tikus sawah, dan penyakit hawar daun bakteri (kresek).'
-          ],
-          placeholder: 'Uraikan hasil telaah sains Anda mengenai sifat fisik-kimia tanah sawah di OKU Timur, kebutuhan kapur dolomit, kualitas air irigasi Komering, serta ketahanan varietas Inpari 32 melawan hama... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Pengkajian Teknologi Pertanian (BPTP) Sumsel, Karakteristik Tanah Sawah OKU Timur\n2. BBPadi Kementan RI, Deskripsi Varietas Inpari 32',
-          defaultExp: 'Kajian sains pertanian di Kabupaten OKU Timur menegaskan bahwa tanah sawah aluvial Belitang yang diolah secara intensif memerlukan pemupukan berimbang dan pemberian kapur dolomit guna menetralkan pH tanah yang cenderung masam akibat residu urea. Pasokan air irigasi dari Bendung Perjaya kaya sedimen lumpur organik yang sangat menunjang pertumbuhan varietas Inpari 32, namun petani harus mewaspadai dinamika kelembapan udara yang memicu perkembangbiakan hama wereng batang coklat.',
-          defaultSources: '1. Publikasi BPTP Sumatera Selatan: Pengelolaan Kesuburan Lahan Sawah Irigasi Komering.\n2. Balai Besar Penelitian Tanaman Padi (BBPadi) Kementan RI.'
-        },
-        {
-          key: 'B',
-          title: 'Technology: Mekanisasi Alsintan Modern & Peralatan Digital Pemantau Lahan',
-          subtitle: 'Traktor Roda 2 vs Roda 4 UPJA, Mesin Tanam Transplanter, Pompa Alkon & Combine Harvester',
-          guidedPoints: [
-            'Spesifikasi dan efisiensi kerja Traktor Roda 2 (Quick/Kubota) untuk petak sawah bertingkat dibandingkan Traktor Roda 4 (Yanmar/Kubota) UPJA dalam percepatan olah tanah sebelum jadwal air masuk.',
-            'Perbandingan teknis antara mesin tanam pindah bibit (Rice Transplanter) dengan tanam manual pola Jajar Legowo (2:1 atau 4:1) menggunakan caplak kayu berjarak presisi.',
-            'Peranan mesin pompa air sentrifugal/disel (alkon Dongfeng bahan bakar solar/bensin) dalam menyedot air dari saluran buang atau sungai kecil saat jatah giliran air irigasi sedang kecil.',
-            'Adopsi mesin panen raksasa Combine Harvester (memotong, merontok, dan mengarungi gabah sekaligus), alat Grain Moisture Tester digital, serta sprayer mesin gendong (mist blower).'
-          ],
-          placeholder: 'Tuliskan hasil kajian teknologi Anda mengenai peran traktor roda 4 UPJA, keunggulan Rice Transplanter vs Jajar Legowo manual, efisiensi Combine Harvester, dan pompa alkon di OKU Timur... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Pedoman Pemanfaatan Alat dan Mesin Pertanian (Alsintan), Ditjen PSP Kementan RI\n2. Petunjuk Teknis Operasional Combine Harvester dan Transplanter',
-          defaultExp: 'Penerapan teknologi alsintan modern di sentra persawahan OKU Timur terbukti memangkas waktu olah tanah dan menekan biaya tenaga kerja secara signifikan. Pemanfaatan traktor roda 4 sewaan UPJA mempercepat pembajakan lahan, sementara mesin tanam Rice Transplanter dan panen Combine Harvester mampu menurunkan susut panen (losses) di bawah 2% serta menghasilkan gabah panen yang lebih bersih dan seragam.',
-          defaultSources: '1. Pedoman Pengelolaan Alsintan UPJA, Dinas Pertanian OKU Timur.\n2. Petunjuk Teknis Mekanisasi Pertanian Padi Modern, Kementan RI.'
-        },
-        {
-          key: 'C',
-          title: 'Engineering: Rekayasa Jaringan Irigasi BK & Sumur Pantek Sawah Mandiri',
-          subtitle: 'Tata Kelola Saluran Primer-Sekunder-Tersier P3A, Pintu Air Sorong & Teknologi AWD Hemat Air',
-          guidedPoints: [
-            'Desain rekayasa pembagian air dari Saluran Sekunder BK (seperti BK 0 sampai BK 12 Belitang) menuju Saluran Tersier dan Saluran Cacing petak sawah menggunakan pintu sorong dan balok sekat bambu/kayu yang dikelola P3A.',
-            'Rekayasa sumur bor sawah (sumur pantek) kedalaman 12-24 meter pipa PVC yang disedot mesin pompa alkon sebagai penyelamat tanaman padi saat jadwal penutupan saluran irigasi utama.',
-            'Penerapan teknik irigasi berselang (Alternate Wetting and Drying / AWD): pengairan kering-basah bergantian dengan pipa pemantau muka air yang menghemat air hingga 25% tanpa mengurangi hasil panen.',
-            'Rekayasa parit keliling dan tanggul pematang sawah yang diperkuat untuk mencegah genangan banjir ekstrem serta memudahkan pembuangan air saat menjelang panen.'
-          ],
-          placeholder: 'Uraikan hasil analisis rekayasa Anda mengenai tata kelola saluran irigasi BK oleh P3A, rancangan sumur pantek saat kemarau, dan teknik irigasi berselang AWD di sawah Belitang... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Balai Besar Wilayah Sungai Sumatera (BBWSS) VIII, Pedoman Operasi Jaringan Irigasi Komering\n2. Panduan Rekayasa Irigasi Berselang (AWD) Balitbangtan',
-          defaultExp: 'Rekayasa tata kelola air di persawahan Belitang mengandalkan jaringan saluran bertingkat yang dikawal pintu air sorong P3A secara bergiliran. Untuk mengantisipasi jadwal pengeringan saluran induk oleh BBWSS VIII, para petani merekayasa sumur bor pantek sedalam 15-20 meter dengan pipa PVC dan pompa disel, serta menerapkan metode irigasi berselang (AWD) guna mempertahankan kelembapan akar secara efisien.',
-          defaultSources: '1. Balai Besar Wilayah Sungai Sumatera VIII: Tata Kelola Jaringan Irigasi Komering.\n2. Pedoman Rekayasa Tata Air Sawah Berkelanjutan, Balitbangtan Kementan RI.'
-        },
-        {
-          key: 'D',
-          title: 'Mathematics: Kalkulasi Ubinan Panen, Biaya Produksi HPP & Laba Usahatani',
-          subtitle: 'Rumus Konversi Ubinan 2.5m x 2.5m ke Ton/Ha, Modal per Hektar, Penerimaan & Kelayakan R/C Ratio',
-          guidedPoints: [
-            'Rumus perhitungan produktivitas ubinan ukuran 2,5 m x 2,5 m (6,25 m2): bobot gabah ubinan (kg) dikalikan konstanta 1.600 untuk menghasilkan estimasi ton Gabah Kering Panen (GKP) per hektar.',
-            'Rincian modal produksi riil 1 hektar sawah di OKU Timur: sewa traktor (Rp1,2 jt), benih Inpari 32 (Rp400 rb), upah tanam (Rp1,3 jt), pupuk subsidi Urea/Phonska + pestisida (Rp3,0 jt), sewa Combine Harvester (Rp1,6 jt), dan air/tenaga kerja (Rp1,0 jt) dengan total modal sekitar Rp8.500.000.',
-            'Perhitungan Total Penerimaan (TR): estimasi hasil panen 6.000 kg (6 ton) dikalikan harga jual riil gabah di tingkat tengkulak/penebas Rp6.500 per kg menghasilkan Rp39.000.000.',
-            'Perhitungan laba bersih usahatani (TR - TC = Rp30.500.000 per musim tanam 3-4 bulan) serta uji kelayakan rasio penerimaan terhadap biaya (R/C Ratio = Rp39 jt / Rp8,5 jt = 4,58 > 1 / sangat menguntungkan).'
-          ],
-          placeholder: 'Tuliskan hasil perhitungan matematis Anda mengenai konversi ubinan ke ton/ha, rincian biaya modal Rp8,5 juta per hektar, penerimaan hasil panen, laba bersih, dan nilai R/C ratio... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. BPS Kabupaten OKU Timur, Statistik Pertanian Tanaman Pangan & Survei Ubinan\n2. Buku Analisis Finansial Usahatani Padi Sawah Daerah',
-          defaultExp: 'Kalkulasi matematis pada usahatani padi sawah seluas 1 hektar di Belitang menunjukkan produktivitas rata-rata 6,0 hingga 6,7 ton per hektar dari hasil ubinan 3,8-4,2 kg. Dengan struktur modal operasional sekitar Rp8.500.000 dan harga jual gabah kering panen Rp6.500 per kg, petani memperoleh penerimaan kotor Rp39.000.000 dan keuntungan bersih Rp30.500.000 per musim, menghasilkan R/C Ratio 4,58 yang membuktikan efisiensi finansial tinggi.',
-          defaultSources: '1. BPS Kabupaten OKU Timur: Hasil Survei Ubinan dan Analisis Biaya Pertanian.\n2. Modul Analisis Usahatani Berkelanjutan, Fakultas Pertanian Universitas Sriwijaya.'
-        },
-        {
-          key: 'E',
-          title: 'Sintesis STEM: Solusi Terpadu Menghadapi Kelangkaan Pupuk & Perubahan Iklim',
-          subtitle: 'Integrasi Sains Pupuk Organik, Alsintan Presisi, Sumur Pantek & Pembukuan Arus Kas Mandiri',
-          guidedPoints: [
-            'Keterpaduan pilar Sains (uji tanah cepat dan pembuatan pupuk kompos/bokashi jerami) dalam menanggulangi pembatasan kuota pupuk subsidi kimia.',
-            'Keterpaduan Teknologi dan Rekayasa: penjadwalan olah tanah mekanis dengan ketersediaan air saluran BK serta kesiapsiagaan sumur pantek menghadapi musim kemarau ekstrem (El Nino).',
-            'Pilar Matematika: pentingnya pencatatan arus kas dan penghitungan HPP agar petani tidak terjebak skema ijon atau pinjaman tengkulak berbunga tinggi.',
-            'Rekomendasi aksi nyata bagi generasi muda SMA dalam mengembangkan wirausaha agribisnis modern (smart farming) di desa-desa Kabupaten OKU Timur.'
-          ],
-          placeholder: 'Uraikan sintesis solusi terpadu STEM yang Anda usulkan untuk membantu petani OKU Timur mengatasi kendala pupuk, kemarau, dan pembukuan finansial modern... (Minimal 300 karakter)',
-          sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Rencana Strategis Dinas Pertanian Kabupaten OKU Timur\n2. Modul Inovasi Pertanian Cerdas (Smart Farming) Berbasis Kearifan Lokal',
-          defaultExp: 'Sintesis terpadu empat pilar STEM memberikan peta jalan solutif bagi kemandirian petani OKU Timur. Pendekatan sains pemupukan organik berbasis jerami mampu menekan biaya beli pupuk kimia, disinergikan dengan rekayasa sumur pantek saat kemarau, adopsi alsintan combine harvester yang efisien, serta disiplin pembukuan matematika finansial yang melindungi petani dari jeratan ijon demi tercapainya kedaulatan pangan lokal.',
-          defaultSources: '1. Rencana Strategis Peningkatan Produktivitas Pertanian Dinas Pertanian OKU Timur.\n2. Naskah Kebijakan Smart Farming Berkelanjutan, Balitbangtan RI.'
-        }
-      ]
+      {
+        key: 'B',
+        title: 'Technology (Teknologi): Mesin Alsintan & Alat Kerja Pertanian Modern',
+        subtitle: 'Penggunaan Traktor, Pompa Air Alkon & Mesin Panen Combine Harvester',
+        guidedPoints: [
+          'Alat atau mesin apa saja yang digunakan petani untuk mempermudah kerja (traktor pembajak, pompa alkon, mesin semprot elektrik, atau combine harvester)?',
+          'Apakah mesin tersebut milik sendiri atau menyewa borongan dari UPJA/tetangga per petak sawah?',
+          'Bahan bakar apa yang digunakan mesin tersebut (solar atau bensin) dan bagaimana perawatannya?'
+        ],
+        placeholder: 'Sebutkan mesin/alat kerja yang dipakai petani, fungsi alat tersebut, dan bagaimana petani mengoperasikannya... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Wawancara Operator Mesin Traktor / Buku Paket Prakarya & Kewirausahaan',
+        defaultExp: 'Petani padi di OKU Timur mengandalkan traktor roda dua dan roda empat untuk membajak tanah dengan cepat sebelum jadwal air irigasi masuk. Saat panen tiba, mesin combine harvester digunakan untuk memotong dan merontokkan gabah sekaligus, sehingga panen lebih cepat selesai dan hemat biaya upah tenaga kerja.',
+        defaultSources: '1. Observasi Alat Pertanian di UPJA Belitang.\n2. Wawancara Operator Mesin Combine Harvester.'
+      },
+      {
+        key: 'C',
+        title: 'Engineering (Rekayasa): Trik Praktis & Cara Mengatasi Kendala di Sawah',
+        subtitle: 'Solusi Saluran Air Tersumbat, Tanah Becek & Cara Mengusir Hama Burung',
+        guidedPoints: [
+          'Kendala teknis apa yang paling sering dialami petani di sawah (air irigasi lambat sampai, parit tersumbat, atau serangan burung)?',
+          'Trik atau cara kreatif apa yang dilakukan petani untuk mengatasinya (membuat sodetan pipa darurat, memasang jaring, atau tali kaleng kaleng berbunyi)?',
+          'Apakah solusi sederhana tersebut terbukti efektif membantu tanaman padi tetap aman dan tumbuh subur?'
+        ],
+        placeholder: 'Uraikan kendala lapangan yang dialami petani dan trik/solusi praktis yang mereka terapkan untuk mengatasinya... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Hasil Diskusi dengan Petani Sekitar / Modul Pertanian Terpadu SMA',
+        defaultExp: 'Ketika saluran air tersumbat atau petak sawah di ujung belum terairi, petani membuat sodetan parit kecil darurat dengan pipa paralon penghubung. Untuk mengatasi hama burung pipit saat padi bunting menguning, petani membentangkan tali berlonceng kaleng bekas yang digerakkan dari gubuk sawah untuk menakuti burung.',
+        defaultSources: '1. Pengamatan Praktik Lapangan Petani Belitang.\n2. Catatan Pembelajaran Mandiri Siswa.'
+      },
+      {
+        key: 'D',
+        title: 'Mathematics (Matematika): Perhitungan Modal & Keuntungan Usaha Tani',
+        subtitle: 'Estimasi Biaya Pupuk/Bibit per Petak vs Hasil Penjualan Gabah Panen',
+        guidedPoints: [
+          'Berapa perkiraan biaya modal yang dikeluarkan petani per petak (biaya beli benih, pupuk, solar, dan sewa traktor)?',
+          'Berapa karung/ton gabah yang dihasilkan saat panen dan berapa harga jual per kilogram ke tengkulak/pabrik?',
+          'Hitunglah perkiraan keuntungan bersih: Hasil penjualan dikurangi total biaya modal yang dikeluarkan.'
+        ],
+        placeholder: 'Tuliskan perkiraan modal, hasil panen gabah, dan estimasi keuntungan bersih yang diperoleh petani... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Perhitungan Sederhana Berdasarkan Informasi Petani / Buku Ekonomi SMA',
+        defaultExp: 'Untuk satu hektar sawah, petani mengeluarkan modal sekitar Rp8.000.000 untuk benih padi, pupuk urea/NPK, dan jasa bajak traktor. Hasil panen menghasilkan sekitar 6 ton gabah dengan harga jual Rp6.500/kg (total pendapatan Rp39.000.000). Setelah dikurangi modal, keuntungan bersih petani diperkirakan mencapai Rp30.000.000 per musim tanam.',
+        defaultSources: '1. Estimasi Hasil Panen Petani Belitang.\n2. Data Rata-Rata Harga Gabah Dinas Pertanian OKU Timur.'
+      }
+    ]
+  },
+
+  perkebunan: {
+    key: 'perkebunan',
+    name: 'Perkebunan Rakyat (Karet & Sawit)',
+    badge: 'Komoditas Unggulan Perkebunan',
+    icon: 'forest',
+    desc: 'Lateks Karet, Panen TBS Sawit, Alat Sadap & Estimasi Pendapatan Pekebun',
+    cards: [
+      {
+        key: 'A',
+        title: 'Science (Sains): Karakteristik Tanaman Karet/Sawit & Pengaruh Cuaca',
+        subtitle: 'Pengamatan Batang Pohon, Getah Lateks, Tandan Buah Sawit & Dampak Hujan',
+        guidedPoints: [
+          'Bagaimana kondisi tanaman karet atau kelapa sawit yang diamati (usia pohon, kerapatan tanam, atau kesuburan tanah kebun)?',
+          'Bagaimana pengaruh cuaca hujan terhadap hasil getah karet (mudah hanyut/encer) atau proses panen buah sawit?',
+          'Kendala alam apa yang sering ditemui pekebun (misalnya rumput liar gulma, jamur daun, atau hama babi hutan)?'
+        ],
+        placeholder: 'Jelaskan kondisi pohon karet/sawit, pengaruh cuaca terhadap getah/tandan buah, serta kendala alam yang dihadapi... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan di Kebun Karet/Sawit Warga / Buku Geografi/Biologi SMA',
+        defaultExp: 'Tanaman karet dan kelapa sawit di OKU Timur tumbuh subur di lahan darat. Pada musim hujan, pekebun karet menghadapi kendala getah lateks yang hanyut terbawa air sebelum mengental di mangkok, sedangkan pada kebun sawit hujan membuat jalur pengangkutan buah menjadi becek dan licin.',
+        defaultSources: '1. Pengamatan di Kebun Karet/Sawit Belitang.\n2. Wawancara Pekebun Rakyat Setempat.'
+      },
+      {
+        key: 'B',
+        title: 'Technology (Teknologi): Alat Kerja Khusus Sadap Karet & Panen Sawit',
+        subtitle: 'Penggunaan Pisau Sadap, Mangkok Lateks, Dodos, Egrek & Gerobak Angkong',
+        guidedPoints: [
+          'Alat apa saja yang digunakan pekebun untuk bekerja (pisau sadap lengkung, mangkok getah, dodos, egrek sawit, atau angkong)?',
+          'Bagaimana cara pekebun merawat alat tersebut agar tetap tajam dan tidak cepat rusak (mengasah pisau/dodos)?',
+          'Apakah pekebun menggunakan kendaraan khusus seperti motor modifikasi keranjang gandeng untuk mengangkut hasil kebun?'
+        ],
+        placeholder: 'Sebutkan alat kerja yang digunakan di kebun karet/sawit, fungsinya, dan bagaimana pekebun merawat alat tersebut... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Wawancara Pekebun / Observasi Peralatan Kebun',
+        defaultExp: 'Pekebun karet menggunakan pisau sadap khusus dengan ketajaman tinggi agar kulit batang pohon tidak luka terlalu dalam. Sementara pekebun sawit memakai alat dodos untuk pohon pendek dan tiang egrek teleskopik untuk pohon tinggi, lalu memuat tandan buah segar (TBS) ke gerobak angkong menuju tepi jalan rintisan.',
+        defaultSources: '1. Observasi Alat Panen di Perkebunan Rakyat OKU Timur.\n2. Buku Keterampilan Budidaya Perkebunan.'
+      },
+      {
+        key: 'C',
+        title: 'Engineering (Rekayasa): Trik Praktis Melindungi Hasil Kebun & Jalan Usaha',
+        subtitle: 'Pemasangan Plastik Pelindung Getah, Penataan Pelepah Sawit & Rorak Air',
+        guidedPoints: [
+          'Masalah teknis apa yang sering terjadi di kebun (getah hanyut tersapu air hujan, jalan rintisan licin, atau buah sawit tersangkut)?',
+          'Trik atau solusi rekayasa sederhana apa yang dibuat pekebun (memasang talang seng mini/plastik pelindung di atas mangkok getah, menimbun jalan dengan pecahan batu/pelepah)?',
+          'Apakah cara tersebut berhasil menjaga hasil panen tetap aman?'
+        ],
+        placeholder: 'Uraikan trik kreatif pekebun untuk melindungi hasil panen atau mengatasi jalan kebun yang licin/rusak... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Langsung di Kebun / Diskusi dengan Petani Karet',
+        defaultExp: 'Untuk mencegah getah karet hanyut saat hujan pagi, pekebun memasang plastik pelindung sederhana menyerupai payung kecil di atas mangkok sadap. Pada kebun sawit, pelepah yang dipangkas disusun rapi di antara barisan pohon (rorak pelepah) untuk menahan erosi tanah dan mencegah jalan rintisan menjadi becek lumpur.',
+        defaultSources: '1. Pengamatan Praktik Konservasi Kebun Warga.\n2. Pengalaman Lapangan Pekebun Karet OKU Timur.'
+      },
+      {
+        key: 'D',
+        title: 'Mathematics (Matematika): Hitungan Timbangan & Pendapatan Mingguan Pekebun',
+        subtitle: 'Perhitungan Berat Getah (Kg) / Tonase Sawit dikali Harga Pasar RAM Pengepul',
+        guidedPoints: [
+          'Berapa perkiraan hasil getah karet (kg per minggu) atau tonase sawit (ton per panen 2 mingguan)?',
+          'Berapa harga jual per kg di pengepul lokal (tengkulak atau RAM sawit)?',
+          'Hitung perkiraan pendapatan kotor dan keuntungan bersih setelah dipotong biaya pembeku cuka atau ongkos angkut.'
+        ],
+        placeholder: 'Tuliskan perhitungan berat hasil panen, harga per kg, dan estimasi keuntungan yang diterima pekebun... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Nota Penjualan Hasil Kebun / Daftar Harga Karet & Sawit Lokal',
+        defaultExp: 'Pekebun karet dengan luas 1 hektar rata-rata menghasilkan 60 kg getah beku per minggu. Dengan harga jual Rp11.000 per kg di pedagang pengepul, pendapatan mingguan mencapai Rp660.000 (atau sekitar Rp2.640.000 per bulan). Setelah dipotong biaya asam cuka pembeku Rp50.000, laba bersih pekebun tetap terjaga.',
+        defaultSources: '1. Catatan Penjualan Getah Karet Pengepul Desa.\n2. Informasi Pasar Komoditas Perkebunan OKU Timur.'
+      }
+    ]
+  },
+
+  peternakan: {
+    key: 'peternakan',
+    name: 'Peternakan Rakyat OKU Timur (Sapi, Kambing & Unggas)',
+    badge: 'Ternak & Bioenergi Pedesaan',
+    icon: 'pets',
+    desc: 'Ternak Sapi/Kambing/Ayam, Mesin Chopper Pakan, Pengolahan Kotoran & Laba Penjualan',
+    cards: [
+      {
+        key: 'A',
+        title: 'Science (Sains): Kondisi Ternak, Jenis Pakan Hijau & Kebersihan Kandang',
+        subtitle: 'Pengamatan Kebutuhan Nutrisi Rumput Gajah, Dedak, dan Kesehatan Hewan Ternak',
+        guidedPoints: [
+          'Jenis ternak apa yang diamati (sapi potong, kambing, atau ayam pedaging/petelur)?',
+          'Pakan apa yang diberikan setiap hari (rumput segar, jerami padi, dedak bekatul, atau konsentrat)?',
+          'Bagaimana peternak menjaga kebersihan kandang dan ketersediaan sinar matahari agar hewan tidak mudah terserang penyakit?'
+        ],
+        placeholder: 'Jelaskan jenis hewan ternak, pakan yang diberikan, serta cara peternak menjaga kesehatan hewan dan kandangnya... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan di Kandang Ternak Warga / Buku Biologi/Peternakan SMA',
+        defaultExp: 'Peternak sapi dan kambing di desa-desa OKU Timur memanfaatkan limbah pertanian seperti jerami padi dan rumput gajah sebagai pakan utama. Peternak membersihkan kandang secara rutin setiap pagi agar lantai kandang tidak lembap dan ternak bebas dari infeksi penyakit kuku dan mulut (PMK).',
+        defaultSources: '1. Pengamatan di Peternakan Sapi/Kambing Rakyat Belitang.\n2. Panduan Kesehatan Hewan Dinas Peternakan OKU Timur.'
+      },
+      {
+        key: 'B',
+        title: 'Technology (Teknologi): Alat Bantu Peternakan Modern & Pengolah Pakan',
+        subtitle: 'Mesin Pencacah Rumput (Chopper), Drum Silase & Tempat Minum Otomatis',
+        guidedPoints: [
+          'Alat atau mesin apa yang digunakan peternak (mesin chopper pencacah rumput, drum fermentasi pakan, atau lampu pemanas ayam)?',
+          'Bagaimana mesin tersebut mempermudah dan mempercepat pekerjaan peternak dibanding memotong manual pakai sabit?',
+          'Sumber tenaga apa yang dipakai (mesin bensin, dinamo listrik, atau tenaga manual)?'
+        ],
+        placeholder: 'Sebutkan alat atau mesin kerja yang ada di peternakan, cara kerjanya, dan kemudahan yang dirasakan peternak... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Wawancara Pemilik Ternak / Observasi Mesin Chopper',
+        defaultExp: 'Peternak kini banyak memanfaatkan mesin chopper bermesin bensin 6,5 HP untuk mencacah rumput gajah dan batang jagung menjadi potongan kecil berukuran 2-3 cm. Mesin ini mempersingkat waktu penyiapan pakan dari 2 jam manual menjadi hanya 15 menit, serta memudahkan sapi mencerna pakan.',
+        defaultSources: '1. Observasi Kelompok Ternak Lembu Makmur Belitang.\n2. Modul Prakarya Pengolahan Pakan Ternak.'
+      },
+      {
+        key: 'C',
+        title: 'Engineering (Rekayasa): Pemanfaatan Kotoran Kompos & Trik Cadangan Pakan',
+        subtitle: 'Pengolahan Limbah Kotoran Jadi Pupuk Organik & Pembuatan Silase Fermentasi',
+        guidedPoints: [
+          'Kendala apa yang sering dialami peternak (kesulitan mencari rumput saat kemarau atau penumpukan bau kotoran kandang)?',
+          'Trik rekayasa apa yang diterapkan (membuat fermentasi rumput/silase dalam drum kedap udara, atau mengolah kotoran jadi pupuk kompos tanaman)?',
+          'Bagaimana manfaat solusi tersebut bagi lingkungan sekitar kandang?'
+        ],
+        placeholder: 'Uraikan cara peternak mengolah limbah kotoran atau membuat cadangan pakan awet untuk musim kemarau... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Praktik Pengolahan Kompos di Desa / Artikel Sains Lingkungan',
+        defaultExp: 'Untuk mengantisipasi kelangkaan rumput segar saat musim kemarau, peternak membuat pakan fermentasi (silase) dengan mencampur cacahan rumput, dedak, dan tetes tebu lalu menyimpannya dalam drum plastik tertutup rapat. Selain itu, kotoran kandang dikumpulkan dan difermentasi menjadi pupuk kompos bernilai jual tinggi untuk memupuk sawah.',
+        defaultSources: '1. Pengamatan Pengolahan Silase Pakan Ternak Desa.\n2. Buku Petunjuk Teknis Pembuatan Kompos Organik.'
+      },
+      {
+        key: 'D',
+        title: 'Mathematics (Matematika): Hitungan Modal Pakan vs Nilai Jual Hewan Ternak',
+        subtitle: 'Estimasi Biaya Beli Pakan/Bibit vs Kenaikan Bobot dan Harga Jual Ternak',
+        guidedPoints: [
+          'Berapa perkiraan modal awal beli bibit ternak (pedet sapi, cempe kambing, atau DOC anak ayam)?',
+          'Berapa biaya pakan dan perawatan yang dihabiskan per bulan?',
+          'Berapa harga jual ternak saat sudah besar atau saat Idul Adha/pasar hewan, dan berapa perkiraan keuntungan yang didapat?'
+        ],
+        placeholder: 'Tuliskan perkiraan biaya beli bibit, biaya pakan harian/bulanan, dan estimasi keuntungan penjualan ternak... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Data Penjualan Ternak Warga / Analisis Usaha Agribisnis Ternak',
+        defaultExp: 'Membeli bibit pedet sapi bakalan seharga Rp10.000.000 dipelihara selama 6 bulan dengan biaya pakan tambahan dedak Rp200.000 per bulan (total biaya pakan Rp1.200.000). Saat dijual menjelang Idul Adha seharga Rp16.000.000, peternak memperoleh keuntungan bersih sekitar Rp4.800.000 per ekor sapi.',
+        defaultSources: '1. Wawancara Peternak Sapi Penggemukan Belitang.\n2. Survei Harga Pasar Hewan Gumawang OKU Timur.'
+      }
+    ]
+  },
+
+  perikanan: {
+    key: 'perikanan',
+    name: 'Perikanan Air Tawar (Sentra Patin & Lele Belitang)',
+    badge: 'Sentra Patin & Lele Sumsel',
+    icon: 'phishing',
+    desc: 'Kolam Patin/Lele, Pompa Sirkulasi, Kincir Oksigen & Rasio Untung Penjualan Ikan',
+    cards: [
+      {
+        key: 'A',
+        title: 'Science (Sains): Kondisi Air Kolam, Bibit Ikan & Pencegahan Penyakit',
+        subtitle: 'Pengamatan Kualitas Air Kolam (Terpal/Tanah), Suhu & Kesehatan Bibit Ikan',
+        guidedPoints: [
+          'Jenis ikan apa yang dibudidayakan (ikan patin, lele, nila, atau gurami)?',
+          'Bagaimana kondisi air kolam yang diamati (warna air hijau lumut/cokelat, bau air, atau kedalaman kolam)?',
+          'Bagaimana peternak menjaga ikan agar tidak stres atau terserang jamur dan penyakit kulit?'
+        ],
+        placeholder: 'Jelaskan jenis ikan, kondisi air kolam, serta cara menjaga ikan agar tetap sehat dan cepat besar... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Kolam Ikan Warga Belitang / Buku Biologi/Perikanan SMA',
+        defaultExp: 'Budidaya ikan patin dan lele di Belitang memanfaatkan air irigasi yang stabil. Pembudidaya menjaga air kolam agar berwarna kehijauan karena mengandung plankton alami. Pemberian pakan dilakukan teratur 2 kali sehari pada pagi dan sore hari untuk menjaga daya tahan tubuh ikan dari serangan jamur.',
+        defaultSources: '1. Pengamatan di Sentra Kolam Ikan Patin Belitang.\n2. Wawancara Pembudidaya Ikan Air Tawar Setempat.'
+      },
+      {
+        key: 'B',
+        title: 'Technology (Teknologi): Peralatan Kolam Ikan & Alat Sirkulasi Modern',
+        subtitle: 'Penggunaan Pompa Celup, Kincir Aerasi Oksigen & Jaring Sortir Ukuran',
+        guidedPoints: [
+          'Alat kerja apa saja yang digunakan (pompa sedot air, kincir aerator penghasil oksigen, jaring penyerok, atau baskom sortir)?',
+          'Apa fungsi penting alat-alat tersebut untuk menjaga kelangsungan hidup ikan?',
+          'Berapa lama alat tersebut dinyalakan setiap hari dan bagaimana sumber listrik/energinya?'
+        ],
+        placeholder: 'Sebutkan peralatan yang digunakan pembudidaya ikan, fungsi masing-masing alat, dan cara penggunaannya... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Observasi Alat Kolam / Modul Prakarya Budidaya Ikan',
+        defaultExp: 'Pembudidaya menggunakan pompa celup listrik untuk menguras dan mengisi air kolam dengan cepat. Di kolam ikan patin dengan padat tebar tinggi, kincir aerasi (aerator) dioperasikan pada malam hingga dini hari untuk menambah pasokan gas oksigen terlarut dalam air sehingga ikan tidak megap-megap ke permukaan.',
+        defaultSources: '1. Observasi di Balai Benih Ikan Air Tawar Belitang.\n2. Catatan Kunjungan Kolam Ikan Patin.'
+      },
+      {
+        key: 'C',
+        title: 'Engineering (Rekayasa): Trik Praktis Saluran Pembuangan & Penyortiran Ikan',
+        subtitle: 'Pembuatan Pipa Pembuangan Bawah (Central Drain) & Trik Sortir Ikan Cepat',
+        guidedPoints: [
+          'Masalah teknis apa yang sering terjadi di kolam (air dasar kolam berbau amonia kotoran, atau ikan yang lebih besar memakan ikan kecil)?',
+          'Trik rekayasa apa yang dibuat pembudidaya (membuat pipa pembuangan di tengah kolam / central drain, atau menyekat kolam berdasarkan ukuran bibit)?',
+          'Bagaimana hasil dari penerapan trik praktis tersebut?'
+        ],
+        placeholder: 'Uraikan trik peternak ikan dalam membuang endapan kotoran atau memisahkan ikan sesuai ukuran tubuhnya... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Praktik Budidaya Kolam Terpal / Diskusi dengan Petani Ikan',
+        defaultExp: 'Untuk membuang sisa pakan dan kotoran ikan yang mengendap di dasar kolam tanpa harus menguras seluruh air, pembudidaya membuat sistem pipa tegak (central drain) di tengah kolam. Selain itu, penyortiran rutin setiap dua minggu menggunakan ayakan baskom berlubang dilakukan agar pertumbuhan ikan seragam dan tidak terjadi kanibalisme.',
+        defaultSources: '1. Pengamatan Desain Kolam Terpal Bundar Sistem Bioflok.\n2. Pengalaman Pembudidaya Ikan Lele Desa.'
+      },
+      {
+        key: 'D',
+        title: 'Mathematics (Matematika): Hitungan Modal Pakan Pelet vs Hasil Panen Ikan',
+        subtitle: 'Estimasi Biaya Pembelian Pakan (Sak) dikali Harga Jual Ikan per Kilogram',
+        guidedPoints: [
+          'Berapa biaya pembelian bibit ikan awal dan berapa sak pakan pelet yang dihabiskan sampai panen?',
+          'Berapa total kilogram ikan yang berhasil dipanen dan berapa harga jual per kg ke pasar/pengepul?',
+          'Hitung perkiraan keuntungan bersih: Total hasil penjualan dikurangi modal bibit dan pakan.'
+        ],
+        placeholder: 'Tuliskan perkiraan modal bibit dan pakan, hasil panen kilogram ikan, serta keuntungan yang didapat... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Catatan Penjualan Hasil Panen Ikan / Buku Ekonomi Usaha',
+        defaultExp: 'Menebar 5.000 bibit ikan lele membutuhkan modal bibit Rp1.000.000 dan pakan pelet sebanyak 12 sak seharga Rp4.200.000 (total modal Rp5.200.000). Saat panen menghasilkan 450 kg lele dengan harga jual Rp18.000/kg (total penjualan Rp8.100.000), sehingga pembudidaya memperoleh keuntungan bersih sekitar Rp2.900.000 dalam waktu 2,5 bulan.',
+        defaultSources: '1. Catatan Pembukuan Kelompok Budidaya Ikan Mina Mandiri.\n2. Informasi Harga Ikan Segar Pasar Gumawang.'
+      }
+    ]
+  },
+
+  industri: {
+    key: 'industri',
+    name: 'Agro-Industri Pangan & RMU',
+    badge: 'RMU, Tahu-Tempe & Kemplang',
+    icon: 'precision_manufacturing',
+    desc: 'Penggilingan Padi RMU, Pabrik Tahu-Tempe, Kemplang, Mesin Produksi & Untung Usaha',
+    cards: [
+      {
+        key: 'A',
+        title: 'Science (Sains): Karakteristik Bahan Baku & Proses Perubahan Fisika-Kimia',
+        subtitle: 'Kadar Air Gabah Kering Giling, Fermentasi Ragi Kedelai & Perebusan Tahu',
+        guidedPoints: [
+          'Usaha olahan pangan apa yang diamati (pabrik penggilingan padi RMU, pabrik tahu/tempe, atau kemplang panggang)?',
+          'Bahan baku utama apa yang digunakan dan bagaimana ciri-ciri bahan baku yang berkualitas bagus (misalnya gabah kering, kedelai kuning bersih)?',
+          'Proses perubahan apa yang terjadi selama pengolahan (perendaman air, penggilingan, perebusan, atau fermentasi)?'
+        ],
+        placeholder: 'Jelaskan jenis usaha olahan pangan yang diamati, bahan baku yang dipakai, serta proses perubahannya... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Langsung di Pabrik RMU/Tahu / Buku Kimia/Biologi Terapan',
+        defaultExp: 'Pada pabrik tahu di Belitang, biji kedelai pilihan direndam selama 4 jam hingga mengembang, lalu digiling halus bersama air. Bubur kedelai kemudian dimasak mendidih dan digumpalkan dengan larutan biang cuka alami untuk memisahkan ampas tahu dan sari pati tahu yang siap dicetak padat.',
+        defaultSources: '1. Pengamatan di Pabrik Tahu Tradisional Belitang.\n2. Wawancara Pemilik Usaha Agro-Industri Pangan.'
+      },
+      {
+        key: 'B',
+        title: 'Technology (Teknologi): Mesin Pengolah & Peralatan Mekanisasi Produksi',
+        subtitle: 'Mesin Giling Husker RMU, Mesin Parut, Boiler Uap & Alat Cetak Otomatis',
+        guidedPoints: [
+          'Mesin atau alat modern apa yang dipakai untuk mempercepat proses produksi (mesin giling kedelai, mesin pemecah kulit padi husker, atau boiler uap)?',
+          'Apa keunggulan menggunakan mesin tersebut dibanding cara tradisional zaman dahulu?',
+          'Bagaimana sumber bahan bakar mesin (listrik dinamo, mesin bensin/solar, atau kayu bakar)?'
+        ],
+        placeholder: 'Sebutkan mesin yang digunakan dalam proses produksi, fungsi mesin, dan sumber tenaga penggeraknya... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Wawancara Teknisi Mesin / Modul Prakarya Pengolahan Makanan',
+        defaultExp: 'Pabrik penggilingan padi (RMU) menggunakan mesin husker otomatis untuk memecah kulit gabah menjadi beras pecah kulit, dilanjutkan mesin polisher untuk memutihkan beras. Mesin bertenaga mesin diesel solar ini mampu menggiling hingga 1,5 ton gabah per jam dengan butir beras utuh yang bersih dari dedak.',
+        defaultSources: '1. Observasi Mesin Penggilingan Beras RMU Mitra Belitang.\n2. Buku Petunjuk Pengoperasian Mesin Pengolah Pangan.'
+      },
+      {
+        key: 'C',
+        title: 'Engineering (Rekayasa): Pengaturan Efisiensi Panas & Pengolahan Limbah',
+        subtitle: 'Trik Pengaturan Uap Panas Tungku, Cetakan Presisi & Penanganan Air Limbah',
+        guidedPoints: [
+          'Masalah teknis apa yang dihadapi selama produksi (suhu api tidak stabil, cetakan tidak seragam, atau air limbah berbau)?',
+          'Trik atau solusi rekayasa praktis apa yang diterapkan pengrajin/pemilik usaha (membuat cerobong uap hemat kayu, atau kolam penampungan pengendapan limbah)?',
+          'Bagaimana hasil dari penerapan solusi tersebut terhadap kelancaran usaha?'
+        ],
+        placeholder: 'Uraikan trik pengrajin dalam menjaga kualitas hasil produksi atau cara mengolah limbah sisa produksi... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Alur Produksi Pabrik / Diskusi dengan Pekerja Usaha',
+        defaultExp: 'Pengrajin tahu merekayasa tungku masak menggunakan sistem boiler pipa uap panas bertekanan, sehingga panas merata dan menghemat konsumsi kayu bakar hingga 40%. Air sisa cucian kedelai dialirkan ke bak pengendapan bertingkat sebelum dibuang agar tidak mencemari lingkungan parit desa.',
+        defaultSources: '1. Pengamatan Sistem Sanitasi & Pengolahan Limbah UMKM.\n2. Catatan Rekayasa Tungku Hemat Energi.'
+      },
+      {
+        key: 'D',
+        title: 'Mathematics (Matematika): Hitungan Modal Bahan Baku vs Omzet Penjualan',
+        subtitle: 'Estimasi Biaya Beli Bahan Mentah + Energi vs Jumlah Produk Terjual per Hari',
+        guidedPoints: [
+          'Berapa perkiraan biaya modal yang dikeluarkan setiap hari (membeli kedelai/gabah, kayu bakar/gas, dan upah harian)?',
+          'Berapa banyak produk yang dihasilkan (jumlah papan tahu, karung beras, atau bungkus kemplang) dan harga jual per satuannya?',
+          'Hitung perkiraan laba bersih harian atau bulanan dari usaha pengolahan pangan tersebut.'
+        ],
+        placeholder: 'Tuliskan rincian modal harian, hasil produk jadi yang terjual, serta estimasi keuntungan bersihnya... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Catatan Penjualan Harian Pabrik / Buku Pelajaran Ekonomi Kelas X',
+        defaultExp: 'Pabrik tahu mengolah 100 kg kedelai per hari dengan modal bahan baku Rp1.100.000 ditambah biaya kayu bakar dan operasional Rp200.000 (total modal harian Rp1.300.000). Dari 100 kg kedelai dihasilkan 80 papan tahu seharga Rp22.000 per papan (total omzet Rp1.760.000), menghasilkan laba bersih harian sekitar Rp460.000.',
+        defaultSources: '1. Pembukuan Sederhana Usaha Pembuatan Tahu Sejahtera.\n2. Informasi Rata-Rata Harga Komoditas Pangan OKU Timur.'
+      }
+    ]
+  },
+
+  perdagangan: {
+    key: 'perdagangan',
+    name: 'Perdagangan Sarana Pertanian & Sembako',
+    badge: 'Kios Saprotan & Grosir',
+    icon: 'storefront',
+    desc: 'Kios Pupuk Bersubsidi, Toko Obat Pertanian, Sembako, Timbangan Digital & Margin Untung',
+    cards: [
+      {
+        key: 'A',
+        title: 'Science (Sains): Pengetahuan Jenis Pupuk, Obat Hama & Daya Simpan Barang',
+        subtitle: 'Klasifikasi Pupuk Kimia/Organik, Obat Pembasmi Gulma/Hama & Pengaruh Kelembapan',
+        guidedPoints: [
+          'Jenis barang dagangan apa yang dijual di kios (pupuk bersubsidi urea/NPK, benih bersertifikat, obat semprot pestisida, atau sembako)?',
+          'Apa fungsi dasar dari jenis pupuk atau obat tanaman yang paling laris dibeli petani?',
+          'Bagaimana pedagang menjaga barang dagangan agar tidak rusak akibat kelembapan udara atau panas matahari?'
+        ],
+        placeholder: 'Jelaskan jenis pupuk/sarana pertanian yang dijual, fungsinya bagi tanaman, dan cara penyimpanannya di toko... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan di Kios Saprotan Desa / Buku Paket Kimia/Pertanian SMA',
+        defaultExp: 'Kios sarana pertanian di Belitang melayani kebutuhan pupuk urea untuk pertumbuhan daun dan pupuk NPK Phonska untuk pembentukan buah padi. Pemilik kios menjaga gudang agar tetap kering dengan sirkulasi udara baik supaya karung pupuk tidak menyerap uap air dan tidak menggumpal keras.',
+        defaultSources: '1. Pengamatan di Kios Pupuk Resmi Saprotan Belitang.\n2. Buku Petunjuk Penggunaan Pupuk dan Pestisida Pertanian.'
+      },
+      {
+        key: 'B',
+        title: 'Technology (Teknologi): Peralatan Toko, Timbangan Digital & Aplikasi Kasir',
+        subtitle: 'Penggunaan Timbangan Digital Platform, Troli Angkut & Aplikasi Catatan Penjualan',
+        guidedPoints: [
+          'Alat bantu kerja apa saja yang digunakan di kios/toko (timbangan digital gantung/duduk, troli roda dorong karung, atau mesin kasir/HP)?',
+          'Bagaimana timbangan digital membantu memastikan berat timbangan barang akurat dan tidak merugikan pembeli?',
+          'Apakah toko sudah menggunakan aplikasi pembukuan atau aplikasi i-Pubers untuk menebus pupuk bersubsidi?'
+        ],
+        placeholder: 'Sebutkan alat bantu kerja yang digunakan di toko, fungsinya, dan kemudahan yang diberikan bagi pedagang... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Wawancara Pemilik Toko / Pengamatan Transaksi Kasir',
+        defaultExp: 'Kios saprotan memanfaatkan timbangan digital platform berkapasitas 300 kg untuk menimbang karung pupuk dan benih secara cepat dan presisi. Dalam penyaluran pupuk bersubsidi, pemilik kios memakai smartphone dengan aplikasi i-Pubers berbasis barcode KTP petani yang terhubung langsung ke kementerian.',
+        defaultSources: '1. Observasi Kios Pengecer Pupuk Resmi Bersubsidi Belitang.\n2. Modul Aplikasi Digital Penyaluran Pupuk Kementan.'
+      },
+      {
+        key: 'C',
+        title: 'Engineering (Rekayasa): Penataan Gudang Rapi & Sistem Bongkar Muat Barang',
+        subtitle: 'Penyusunan Palet Kayu Penahan Lembap, Penataan Rak Barang & Jalur Angkut',
+        guidedPoints: [
+          'Kendala apa yang sering dialami di toko atau gudang (ruang sempit, karung pupuk berat sulit dipindahkan, atau risiko barang tertindih rusak)?',
+          'Trik penataan apa yang dibuat pedagang (menyusun karung di atas palet kayu agar tidak menempel lantai semen, membuat rak bertingkat rapi)?',
+          'Bagaimana trik tersebut membuat alur melayani pembeli menjadi lebih cepat dan aman?'
+        ],
+        placeholder: 'Uraikan cara pedagang menata barang di toko/gudang agar rapi, mudah diambil, dan aman dari kerusakan... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Tata Letak Gudang Toko / Diskusi dengan Pekerja Toko',
+        defaultExp: 'Pemilik toko menyusun karung pupuk dengan pola saling mengunci di atas palet kayu setinggi 10 cm dari lantai agar terhindar dari rembesan air tanah. Jalur lorong selebar 1 meter dibuat di tengah gudang agar gerobak sorong dapat keluar-masuk membawa barang tanpa menyenggol tumpukan lain.',
+        defaultSources: '1. Pengamatan Manajemen Pergudangan Toko Pertanian Belitang.\n2. Pedoman Praktis Tata Kelola Kios Dagang.'
+      },
+      {
+        key: 'D',
+        title: 'Mathematics (Matematika): Hitungan Modal Kulakan vs Margin Laba Penjualan',
+        subtitle: 'Estimasi Modal Pembelian Barang Grosir dikali Margin Keuntungan Eceran',
+        guidedPoints: [
+          'Berapa harga modal beli barang dagangan dari distributor grosir pabrik?',
+          'Berapa harga jual eceran ke petani dan berapa selisih keuntungan (margin laba) per karung atau per botol obat?',
+          'Berapa perkiraan total keuntungan bersih per hari atau per bulan yang didapatkan dari toko tersebut?'
+        ],
+        placeholder: 'Tuliskan perbandingan harga beli dan harga jual barang, margin keuntungan, serta estimasi laba toko... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Nota Pembelian Barang / Analisis Keuangan Usaha Dagang Sederhana',
+        defaultExp: 'Kios membeli pupuk non-subsidi seharga Rp280.000 per karung isi 50 kg dan menjualnya kembali seharga Rp305.000 per karung (margin keuntungan Rp25.000 per karung). Jika dalam sehari terjual rata-rata 20 karung ditambah aneka obat pertanian, laba kotor harian mencapai Rp700.000 atau sekitar Rp18.000.000 per bulan.',
+        defaultSources: '1. Catatan Penjualan Kios Pertanian Mitra Tani Belitang.\n2. Simulasi Laporan Laba Rugi Usaha Dagang SMA.'
+      }
+    ]
+  },
+
+  formal: {
+    key: 'formal',
+    name: 'Jasa Keuangan Mikro & Jasa Perorangan',
+    badge: 'Agen BRILink, BUMDes & Jasa',
+    icon: 'account_balance',
+    desc: 'Agen BRILink Desa, Layanan Mesin EDC, Transfer Uang, Sinyal Jaringan & Pendapatan Fee',
+    cards: [
+      {
+        key: 'A',
+        title: 'Science (Sains): Kebutuhan Sinyal Telekomunikasi & Catu Daya Listrik',
+        subtitle: 'Kekuatan Sinyal Jaringan Seluler (4G/LTE), Peran Tower BTS & Stabilitas Arus',
+        guidedPoints: [
+          'Layanan jasa apa yang diamati (agen perbankan mini/BRILink, unit usaha BUMDes, atau jasa fotokopi/servis)?',
+          'Mengapa kestabilan sinyal internet seluler (4G) dan arus listrik sangat penting bagi kelancaran mesin transaksi?',
+          'Apa pengaruh cuaca buruk (hujan petir, mati lampu) terhadap jaringan transaksi perbankan di desa?'
+        ],
+        placeholder: 'Jelaskan peran sinyal jaringan internet dan pasokan listrik dalam mendukung kelancaran layanan jasa transaksi... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan di Agen BRILink Desa / Buku TIK/Fisika Terapan SMA',
+        defaultExp: 'Layanan jasa keuangan mikro seperti Agen BRILink di pedesaan OKU Timur sangat bergantung pada kestabilan sinyal gelombang radio 4G dari menara BTS dan suplai listrik PLN. Ketika cuaca mendung tebal atau hujan petir melanda, kualitas sinyal seluler dapat menurun yang menyebabkan proses pengiriman data transaksi menjadi lambat.',
+        defaultSources: '1. Pengamatan di Agen BRILink Belitang.\n2. Wawancara Pengelola Layanan Jasa Keuangan Mikro.'
+      },
+      {
+        key: 'B',
+        title: 'Technology (Teknologi): Perangkat Mesin EDC & Aplikasi Transaksi Digital',
+        subtitle: 'Penggunaan Terminal Mesin EDC Chip, Kartu Debit, QRIS & Mini Printer Struk',
+        guidedPoints: [
+          'Perangkat teknologi apa yang digunakan untuk melayani nasabah (mesin EDC layar sentuh/tombol, smartphone kasir, atau mini printer bluetooth)?',
+          'Bagaimana cara kerja mesin EDC membaca kartu ATM nasabah secara aman melalui chip atau gesek?',
+          'Berapa detik waktu yang dibutuhkan mesin untuk menyelesaikan satu kali transfer atau tarik tunai?'
+        ],
+        placeholder: 'Sebutkan perangkat teknologi yang dipakai oleh agen, fungsinya, dan kemudahan yang didapat warga desa... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Observasi Transaksi Agen / Modul Literasi Finansial & Perbankan Digital',
+        defaultExp: 'Agen keuangan menggunakan mesin EDC portabel yang dilengkapi pembaca chip kartu ATM, layar input PIN terenkripsi, dan printer termal mini pencetak struk bukti transfer. Transaksi perbankan seperti tarik tunai atau pembayaran tagihan listrik dapat selesai dalam waktu kurang dari 30 detik tanpa warga harus jauh-jauh ke bank kota.',
+        defaultSources: '1. Observasi Mesin Transaksi Perbankan Digital Desa.\n2. Petunjuk Operasional Mesin EDC Bank Mandiri/BRI.'
+      },
+      {
+        key: 'C',
+        title: 'Engineering (Rekayasa): Solusi Daya Cadangan Listrik & Keamanan Brankas Uang',
+        subtitle: 'Penyediaan Baterai Powerbank/UPS, Antena Penguat Sinyal & Brankas Kas',
+        guidedPoints: [
+          'Kendala teknis apa yang sering dialami oleh agen (tiba-tiba mati lampu dari PLN atau sinyal mendadak hilang saat jam sibuk)?',
+          'Trik rekayasa apa yang disiapkan agen (menyediakan UPS/powerbank cadangan, modem wifi kartu kedua, atau brankas ganda penahan maling)?',
+          'Bagaimana kesiapan tersebut menjaga agar pelayanan warga tetap berjalan lancar dan aman?'
+        ],
+        placeholder: 'Uraikan trik agen dalam mengantisipasi mati lampu, sinyal lemah, serta menjaga keamanan uang tunai... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Fasilitas Keamanan Agen / Diskusi dengan Pengelola',
+        defaultExp: 'Untuk mengantisipasi pemadaman listrik berkala di pedesaan, agen menyediakan perangkat UPS atau baterai darurat agar mesin EDC dan printer struk tetap menyala selama 4 jam. Agen juga menggunakan dua kartu SIM dari operator seluler berbeda di dalam mesin untuk otomatis beralih jaringan saat salah satu provider mengalami gangguan sinyal.',
+        defaultSources: '1. Pengamatan Sistem Cadangan Daya Listrik & Jaringan Agen.\n2. Prosedur Standar Operasional Keamanan Agen Keuangan Desa.'
+      },
+      {
+        key: 'D',
+        title: 'Mathematics (Matematika): Hitungan Modal Kas Tunai vs Keuntungan Fee Transaksi',
+        subtitle: 'Estimasi Perputaran Saldo Kas Harian dikali Jumlah Biaya Admin per Transaksi',
+        guidedPoints: [
+          'Berapa perkiraan modal uang tunai dan saldo digital yang harus disiapkan agen setiap pagi?',
+          'Berapa biaya admin (fee) yang dikenakan per transaksi (misalnya Rp5.000 per transfer atau tarik tunai)?',
+          'Berapa jumlah transaksi harian dan berapa perkiraan keuntungan bersih yang didapat agen dalam satu bulan?'
+        ],
+        placeholder: 'Tuliskan perkiraan perputaran modal tunai, biaya fee admin per transaksi, dan estimasi laba bulanan agen... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Laporan Catatan Transaksi Harian / Perhitungan Finansial Sederhana',
+        defaultExp: 'Agen menyiapkan modal kas tunai dan saldo bank sebesar Rp20.000.000 setiap hari untuk melayani rata-rata 40 transaksi warga (tarik tunai panen dan transfer). Dengan membebankan tarif jasa admin rata-rata Rp5.000 per transaksi, agen memperoleh omzet jasa Rp200.000 per hari atau laba bersih sekitar Rp5.500.000 per bulan setelah dipotong biaya pulsa dan kertas struk.',
+        defaultSources: '1. Catatan Buku Kas Harian Agen BRILink Sinar Jaya Belitang.\n2. Simulasi Perhitungan Pendapatan Agen Layanan Keuangan Tanpa Kantor.'
+      }
+    ]
+  }
+}
     },
 
     4: {
@@ -2006,9 +1804,9 @@
 
           <!-- TOMBOL SUBMIT RESMI MODUL -->
           <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3 sticky bottom-4 z-20 backdrop-blur-md bg-white/95">
-            <div class="flex flex-col min-w-0 text-center sm:text-left">
-              <span id="lblSummaryProgressD${dayNum}" class="font-black text-xs sm:text-sm text-slate-900">0 dari 5 Kartu Riset Memenuhi Syarat</span>
-              <span class="text-[11px] text-slate-500 font-medium text-justify">Seluruh kartu wajib mencapai minimal 300 karakter analisis mendalam dan mencantumkan sumber rujukan valid.</span>
+            <div class="flex flex-col text-center sm:text-left">
+              <span id="lblSummaryProgressD${dayNum}" class="font-black text-xs sm:text-sm text-slate-900">0 dari ${(dayNum === 3) ? '4' : '5'} Kartu Riset Memenuhi Syarat</span>
+              <span class="text-[11px] text-slate-500 font-medium text-justify">Seluruh kartu wajib mencapai minimal ${(dayNum === 3) ? '80' : '300'} karakter dan mencantumkan sumber rujukan.</span>
             </div>
             
             <button type="button" id="btnSubmitNftMateriD${dayNum}" onclick="submitNftDayMateriUnified(${dayNum})" disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-300 text-slate-500 font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition-all shadow-xs">
@@ -2051,9 +1849,10 @@
 
       const val = concEl.value.trim();
       const len = val.length;
-      if (countEl) countEl.textContent = `${len} / 100`;
+      const minConc = (dayNum === 3) ? 50 : 100;
+      if (countEl) countEl.textContent = `${len} / ${minConc}`;
 
-      if (isSubmitted || len >= 100) {
+      if (isSubmitted || len >= minConc) {
         if (boxEl) {
           boxEl.classList.remove('border-slate-200', 'border-rose-400');
           boxEl.classList.add('border-emerald-500', 'bg-emerald-50/20');
@@ -2064,7 +1863,7 @@
         }
         if (msgValEl) {
           msgValEl.className = 'text-emerald-700 font-bold';
-          msgValEl.textContent = `✓ ${len} karakter (Memenuhi syarat minimal 100 karakter).`;
+          msgValEl.textContent = `✓ ${len} karakter (Memenuhi syarat minimal ${minConc} karakter).`;
         }
         if (autoSave) saveNftDraftThrottledUnified(dayNum);
         return true;
@@ -2079,7 +1878,7 @@
         }
         if (msgValEl) {
           msgValEl.className = 'text-rose-600 font-semibold';
-          msgValEl.textContent = len === 0 ? 'Wajib diisi minimal 100 karakter.' : `Kurang ${100 - len} karakter lagi (Minimal 100 karakter).`;
+          msgValEl.textContent = len === 0 ? `Wajib diisi minimal ${minConc} karakter.` : `Kurang ${minConc - len} karakter lagi (Minimal ${minConc} karakter).`;
         }
         if (autoSave) saveNftDraftThrottledUnified(dayNum);
         return false;
@@ -2096,23 +1895,26 @@
 
     if (!textEl || !srcEl) return false;
 
-    const valText = validateScientificContent(textEl.value, 300);
-    const valSrc = validateSourceCitation(srcEl.value, 20);
+    const reqMinChars = (dayNum === 3) ? 80 : 300;
+    const reqMinSrc = (dayNum === 3) ? 10 : 20;
+
+    const valText = validateScientificContent(textEl.value, reqMinChars);
+    const valSrc = validateSourceCitation(srcEl.value, reqMinSrc);
 
     const isCardComplete = isSubmitted ? true : (valText.valid && valSrc.valid);
 
     if (valText.valid || isSubmitted) {
       if (countEl) {
-        countEl.textContent = `${Math.max(valText.count, 300)} / 300`;
+        countEl.textContent = `${Math.max(valText.count, reqMinChars)} / ${reqMinChars}`;
         countEl.className = 'text-emerald-700 font-bold';
       }
       if (msgValEl) {
-        msgValEl.textContent = '✓ Analisis ilmiah terverifikasi memenuhi syarat';
+        msgValEl.textContent = '✓ Analisis terverifikasi memenuhi syarat';
         msgValEl.className = 'text-emerald-700 font-semibold';
       }
     } else {
       if (countEl) {
-        countEl.textContent = `${valText.count} / 300`;
+        countEl.textContent = `${valText.count} / ${reqMinChars}`;
         countEl.className = 'text-slate-400 font-bold';
       }
       if (msgValEl) {
@@ -2134,36 +1936,44 @@
     }
 
     if (isCardComplete) {
-      if (boxEl) boxEl.className = 'p-5 sm:p-6 rounded-3xl bg-emerald-50/20 border-2 border-emerald-400 shadow-xs flex flex-col gap-3.5 transition-all';
+      if (boxEl) boxEl.className = 'p-5 sm:p-6 rounded-3xl bg-emerald-50/20 border-2 border-emerald-400 shadow-2xs flex flex-col gap-4 transition-all';
       if (badgeEl) {
+        badgeEl.className = 'px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-emerald-100 text-emerald-800 shrink-0';
         badgeEl.textContent = '✓ Lengkap';
-        badgeEl.className = 'px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-emerald-100 text-emerald-900 border border-emerald-300 shadow-2xs';
       }
     } else {
-      if (boxEl) boxEl.className = 'p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-3.5 transition-all';
+      if (boxEl) boxEl.className = 'p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-2xs flex flex-col gap-4 transition-all';
       if (badgeEl) {
+        badgeEl.className = 'px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-slate-100 text-slate-500 shrink-0';
         badgeEl.textContent = 'Belum Lengkap';
-        badgeEl.className = 'px-2.5 py-1 rounded-xl text-[10.5px] font-black bg-rose-100 text-rose-800 shrink-0';
       }
     }
 
-    if (autoSave && !isSubmitted) {
-      saveNftDraftThrottledUnified(dayNum);
-    }
-
+    if (autoSave) saveNftDraftThrottledUnified(dayNum);
     return isCardComplete;
   }
-
-  // Aliases backward compatibility
-  function evaluateCard(key, autoSave) { return evaluateCardForDay(1, key, autoSave); }
-  function evaluateCardD2(key, updateUI) { return evaluateCardForDay(2, key, false); }
 
   function evaluateAllCardsForDay(dayNum, autoSave) {
     dayNum = parseInt(dayNum) || 1;
     const isSubmitted = !!window[`isNftD${dayNum}Submitted`];
-    const keys = ['A', 'B', 'C', 'D', 'E'];
-    let completedCount = 0;
+    const cfg = NFT_MATERI_CONFIG[dayNum] || NFT_MATERI_CONFIG[1];
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
 
+    let curSec = 'pertanian';
+    if (dayNum === 3) {
+      curSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
+    } else if (dayNum === 4) {
+      curSec = localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
+    }
+
+    const activeCards = ((dayNum === 3 || dayNum === 4) && cfg.sectors && cfg.sectors[curSec])
+      ? cfg.sectors[curSec].cards
+      : (cfg.cards || []);
+    const keys = activeCards.length > 0 ? activeCards.map(c => c.key) : ['A', 'B', 'C', 'D'];
+    const reqMinChars = (dayNum === 3) ? 80 : 300;
+
+    let completedCount = 0;
     keys.forEach(k => {
       if (evaluateCardForDay(dayNum, k, false)) completedCount++;
     });
@@ -2177,7 +1987,7 @@
     let totalCompleted = completedCount + (hasConc && isConclusionDone ? 1 : 0);
 
     if (isSubmitted) {
-      completedCount = 5;
+      completedCount = keys.length;
       totalCompleted = totalItems;
     }
 
@@ -2192,117 +2002,94 @@
     if (lblProg) {
       lblProg.textContent = hasConc
         ? `${totalCompleted} / ${totalItems} Komponen Terpenuhi (${pct}%)`
-        : `${completedCount} / 5 Kartu Terpenuhi (${pct}%)`;
+        : `${completedCount} / ${keys.length} Kartu Terpenuhi (${pct}%)`;
     }
     if (lblSummary) {
       lblSummary.textContent = hasConc
-        ? `${totalCompleted} dari ${totalItems} Komponen (5 Kartu + Kesimpulan) Terpenuhi (${pct}%)`
-        : `${completedCount} dari 5 Kartu Riset Memenuhi Syarat (${pct}%)`;
+        ? `${totalCompleted} dari ${totalItems} Komponen (${keys.length} Kartu + Kesimpulan) Terpenuhi (${pct}%)`
+        : `${completedCount} dari ${keys.length} Kartu Riset Memenuhi Syarat (Minimal ${reqMinChars} Karakter, ${pct}%)`;
     }
 
     if (btnSubmit) {
       if (isSubmitted) {
         btnSubmit.disabled = false;
-        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md cursor-pointer transition-all';
-        btnSubmit.onclick = function() { window.location.href = `lkpd.html?day=${dayNum}`; };
+        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all';
         btnSubmit.innerHTML = `
-          <span>Lanjut ke LKPD Day ${dayNum}</span>
-          <span class="material-symbols-outlined text-base">arrow_forward</span>
+          <span class="material-symbols-outlined text-base">verified</span>
+          <span>Modul Day ${dayNum} Telah Dikirim Resmi</span>
         `;
-      } else if (completedCount === keys.length && (!hasConc || isConclusionDone)) {
+      } else if (totalCompleted === totalItems) {
         btnSubmit.disabled = false;
-        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md transition-all ring-2 ring-emerald-400/40';
+        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-pointer shadow-md hover:shadow-lg transition-all animate-pulse';
         btnSubmit.onclick = function() { submitNftDayMateriUnified(dayNum); };
         btnSubmit.innerHTML = `
           <span class="material-symbols-outlined text-base">send</span>
-          <span>Simpan &amp; Kirim Riset Day ${dayNum} ke Fasilitator</span>
-        `;
-      } else if (completedCount === keys.length && hasConc && !isConclusionDone) {
-        btnSubmit.disabled = true;
-        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-amber-100 text-amber-900 border border-amber-300 font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition-all shadow-xs';
-        btnSubmit.onclick = null;
-        btnSubmit.innerHTML = `
-          <span class="material-symbols-outlined text-base">lock</span>
-          <span>Lengkapi Kesimpulan Modul (Min 100 Karakter)</span>
+          <span>Kirim Resmi Modul Day ${dayNum}</span>
         `;
       } else {
         btnSubmit.disabled = true;
-        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-500 font-black text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition-all shadow-xs';
-        btnSubmit.onclick = null;
+        btnSubmit.className = 'w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm flex items-center justify-center gap-2 cursor-not-allowed transition-all';
         btnSubmit.innerHTML = `
           <span class="material-symbols-outlined text-base">lock</span>
-          <span>Lengkapi 5 Kartu Terlebih Dahulu (${completedCount}/5)</span>
+          <span>Lengkapi ${totalItems - totalCompleted} Komponen Lagi</span>
         `;
       }
     }
   }
 
-  // Aliases backward compatibility
-  function evaluateAllNftCards(autoSave) { evaluateAllCardsForDay(1, autoSave); }
-  function updateDay2OverallProgress() { evaluateAllCardsForDay(2, false); }
-
-  // 5. AUTO-SAVE DRAFT REAL-TIME (THROTTLED 800MS)
-  let draftTimers = {};
+  // 5. PENYIMPANAN DRAFT SEMENTARA (LOCALSTORAGE)
   function saveNftDraftThrottledUnified(dayNum) {
-    if (draftTimers[dayNum]) clearTimeout(draftTimers[dayNum]);
-    draftTimers[dayNum] = setTimeout(() => {
-      saveNftDraftImmediateUnified(dayNum);
+    dayNum = parseInt(dayNum) || 1;
+    if (window[`isNftD${dayNum}Submitted`]) return;
+    clearTimeout(window[`_nftD${dayNum}DraftTimer`]);
+    window[`_nftD${dayNum}DraftTimer`] = setTimeout(() => {
+      saveNftDraftNowUnified(dayNum);
     }, 800);
   }
 
-  function saveNftDraftImmediateUnified(dayNum) {
-    try {
-      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
-      const cleanNisn = String(u.nisn || u.identifier || '').trim();
-      if (!cleanNisn) return;
-
-      const keys = ['A', 'B', 'C', 'D', 'E'];
-      const draftObj = {
-        day: dayNum,
-        updatedAt: new Date().toISOString()
-      };
-
-      keys.forEach(k => {
-        const textEl = document.getElementById(`nftD${dayNum}Text${k}`);
-        const srcEl = document.getElementById(`nftD${dayNum}Source${k}`);
-        draftObj['card' + k] = {
-          text: textEl ? textEl.value : '',
-          source: srcEl ? srcEl.value : ''
-        };
-      });
-
-      const concEl = document.getElementById(`nftD${dayNum}Conclusion`);
-      draftObj.conclusion = concEl ? concEl.value : '';
-      localStorage.setItem(`fincestem_draft_nft_materi_d${dayNum}_` + cleanNisn, JSON.stringify(draftObj));
-    } catch (e) {}
-  }
-
-  // 6. SUBMIT RESMI KE FASILITATOR (DAY 1 S.D. DAY 7)
-  window.submitNftDayMateriUnified = function(dayNum) {
+  function saveNftDraftNowUnified(dayNum) {
     dayNum = parseInt(dayNum) || 1;
+    if (window[`isNftD${dayNum}Submitted`]) return;
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
     const cfg = NFT_MATERI_CONFIG[dayNum] || NFT_MATERI_CONFIG[1];
-    const keys = ['A', 'B', 'C', 'D', 'E'];
-    const invalidKeys = [];
+
+    let curSec = 'pertanian';
+    if (dayNum === 3) {
+      curSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
+    } else if (dayNum === 4) {
+      curSec = localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
+    }
+
+    const activeCards = ((dayNum === 3 || dayNum === 4) && cfg.sectors && cfg.sectors[curSec])
+      ? cfg.sectors[curSec].cards
+      : (cfg.cards || []);
+    const keys = activeCards.length > 0 ? activeCards.map(c => c.key) : ['A', 'B', 'C', 'D'];
+
+    const draft = {
+      updatedAt: new Date().toISOString(),
+      selectedSector: curSec
+    };
 
     keys.forEach(k => {
-      if (!evaluateCardForDay(dayNum, k, false)) invalidKeys.push(k);
+      const textEl = document.getElementById(`nftD${dayNum}Text${k}`);
+      const srcEl = document.getElementById(`nftD${dayNum}Source${k}`);
+      draft['card' + k] = {
+        text: textEl ? textEl.value : '',
+        source: srcEl ? srcEl.value : ''
+      };
     });
 
     const concEl = document.getElementById(`nftD${dayNum}Conclusion`);
-    const concVal = concEl ? concEl.value.trim() : '';
-    if (concEl && concVal.length < 100) {
-      invalidKeys.push('Kesimpulan Modul (Min 100 Karakter)');
-    }
+    if (concEl) draft.conclusion = concEl.value;
 
-    if (invalidKeys.length > 0) {
-      if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
-        FincestemCore.ui.toast(`Kartu ${invalidKeys.join(', ')} belum memenuhi syarat (minimal 300 karakter analisis mendalam & sumber valid)!`, 'error');
-      } else {
-        alert(`Kartu ${invalidKeys.join(', ')} belum memenuhi syarat!`);
-      }
-      return;
-    }
+    localStorage.setItem(`fincestem_draft_nft_materi_d${dayNum}_` + cleanNisn, JSON.stringify(draft));
+  }
 
+  // 6. SUBMISI RESMI KE SERVER (DAY 1 S.D. DAY 7)
+  window.submitNftDayMateriUnified = function(dayNum) {
+    dayNum = parseInt(dayNum) || 1;
+    const cfg = NFT_MATERI_CONFIG[dayNum] || NFT_MATERI_CONFIG[1];
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
 
@@ -2311,6 +2098,33 @@
       curSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
     } else if (dayNum === 4) {
       curSec = localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
+    }
+
+    const activeCardsForSubmit = ((dayNum === 3 || dayNum === 4) && cfg.sectors && cfg.sectors[curSec])
+      ? cfg.sectors[curSec].cards
+      : (cfg.cards || []);
+    const keys = activeCardsForSubmit.length > 0 ? activeCardsForSubmit.map(c => c.key) : ['A', 'B', 'C', 'D'];
+    const reqMinChars = (dayNum === 3) ? 80 : 300;
+    const invalidKeys = [];
+
+    keys.forEach(k => {
+      if (!evaluateCardForDay(dayNum, k, false)) invalidKeys.push(k);
+    });
+
+    const concEl = document.getElementById(`nftD${dayNum}Conclusion`);
+    const minConc = (dayNum === 3) ? 50 : 100;
+    const concVal = concEl ? concEl.value.trim() : '';
+    if (concEl && concVal.length < minConc) {
+      invalidKeys.push(`Kesimpulan (Min ${minConc} Karakter)`);
+    }
+
+    if (invalidKeys.length > 0) {
+      if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+        FincestemCore.ui.toast(`Kartu ${invalidKeys.join(', ')} belum memenuhi syarat (minimal ${reqMinChars} karakter & rujukan terisi)!`, 'error');
+      } else {
+        alert(`Kartu ${invalidKeys.join(', ')} belum memenuhi syarat!`);
+      }
+      return;
     }
 
     const officialPayload = {
@@ -2324,10 +2138,6 @@
       userConclusion: concVal
     };
 
-    const activeCardsForSubmit = ((dayNum === 3 || dayNum === 4) && cfg.sectors && cfg.sectors[curSec])
-      ? cfg.sectors[curSec].cards
-      : cfg.cards;
-
     activeCardsForSubmit.forEach(c => {
       const k = c.key;
       const textEl = document.getElementById(`nftD${dayNum}Text${k}`);
@@ -2339,51 +2149,21 @@
       };
     });
 
-    const summaryText = `Riset Mandiri Day ${dayNum} Non-Field Trip Terverifikasi (5 Kartu Lengkap):\n` +
-      `• Topik A: ${officialPayload.cardA.text.substring(0, 80)}...\n` +
-      `• Topik B: ${officialPayload.cardB.text.substring(0, 80)}...\n` +
-      `• Topik C: ${officialPayload.cardC.text.substring(0, 80)}...\n` +
-      `• Topik D: ${officialPayload.cardD.text.substring(0, 80)}...\n` +
-      `• Topik E: ${officialPayload.cardE.text.substring(0, 80)}...`;
-
-    officialPayload.conclusion = summaryText;
-    officialPayload.summary = summaryText;
-
-    const candidateIds = new Set([cleanNisn]);
-    if (cleanNisn) {
-      candidateIds.add(cleanNisn.replace(/^0+/, ''));
-      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
-    }
-    if (u.identifier) candidateIds.add(String(u.identifier).trim());
-    if (u.nis) candidateIds.add(String(u.nis).trim());
-    if (u.nisn) candidateIds.add(String(u.nisn).trim());
-
-    try {
-      candidateIds.forEach(id => {
-        if (!id) return;
-        localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + id, JSON.stringify(officialPayload));
-        localStorage.setItem(`fincestem_materi_day${dayNum}_` + id, JSON.stringify({ conclusion: summaryText, savedAt: officialPayload.submittedAt }));
-        localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + id, JSON.stringify({ conclusion: summaryText, savedAt: officialPayload.submittedAt }));
-      });
-    } catch(e) {}
-
-    if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
-      window.currentStudentProgress.task_map[`${dayNum}_materi`] = { status: 'submitted', content: officialPayload };
-    }
-
+    // Simpan ke localStorage
+    localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn, JSON.stringify(officialPayload));
     window[`isNftD${dayNum}Submitted`] = true;
 
-    // Submit ke sistem Core Progress FINCESTEM
-    if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.submitTask) {
-      FincestemCore.progress.submitTask(cleanNisn, dayNum, 'materi', officialPayload, function() {
-        showSuccessNftMateriModalUnified(dayNum);
+    // Sinkronkan ke modul progress FincestemCore
+    if (window.FincestemCore && FincestemCore.progress) {
+      FincestemCore.progress.submitTask(cleanNisn, dayNum, 'materi', officialPayload, function(res) {
+        console.log(`[FINCESTEM] Submisi modul Day ${dayNum} berhasil disinkronkan ke server:`, res);
       });
-    } else {
-      showSuccessNftMateriModalUnified(dayNum);
     }
-  };
 
-  // Aliases backward compatibility
+    // Tampilkan modal sukses
+    showSuccessNftMateriModalUnified(dayNum);
+  };
+// Aliases backward compatibility
   window.submitNftDay1Materi = function() { window.submitNftDayMateriUnified(1); };
   window.submitNftDay2Materi = function() { window.submitNftDayMateriUnified(2); };
 
