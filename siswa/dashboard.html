@@ -1149,7 +1149,7 @@
   <script src="../js/siswa_data.js?v=20261107_v9_fadhil_royan"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261108_smart_devlock_v3"></script>
+  <script src="../js/core.js?v=20261108_d3_all_sectors_v1"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -5718,13 +5718,13 @@
             const sId = (studentProgress && studentProgress.student_id) || (currentUser && (currentUser.nisn || currentUser.identifier)) || '';
             const cleanId = String(sId).trim();
             const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanId);
-            if (localSec && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(localSec)) {
+            if (localSec && ['pertanian', 'pangan', 'perkebunan', 'peternakan', 'perikanan', 'industri', 'jasa', 'perdagangan', 'formal', 'keuangan'].includes(localSec)) {
               nftDay3Sector = localSec;
             } else {
               const rawLkpd = localStorage.getItem('fincestem_lkpd_nft_day3_' + cleanId) || localStorage.getItem('fincestem_lkpd_day3_' + cleanId);
               if (rawLkpd) {
                 const p = JSON.parse(rawLkpd);
-                if (p && p.sector && ['pertanian', 'perkebunan', 'perikanan', 'peternakan'].includes(p.sector)) {
+                if (p && (p.sectorKey || p.sector) && ['pertanian', 'pangan', 'perkebunan', 'peternakan', 'perikanan', 'industri', 'jasa', 'perdagangan', 'formal', 'keuangan'].includes(p.sectorKey || p.sector)) {
                   nftDay3Sector = p.sector;
                 }
               }
@@ -5763,7 +5763,47 @@
             badge: 'Sektor: Peternakan Sapi & Unggas',
             icon: 'pets',
             prompt: 'Setelah Anda mengamati kondisi kesehatan ternak, mengidentifikasi mesin chopper atau instalasi kandang/silase, mewawancarai solusi peternak menangani bau kandang atau ketersediaan pakan hijauan, serta menghitung biaya pakan dan pertambahan bobot hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Sikap tanggung jawab dan ketekunan apa yang Anda pelajari dari peternak lokal dalam merawat ternak dan menjaga kebersihan kandang?<br><strong>2. Integrasi STEM:</strong> Bagaimana integrasi mesin chopper, teknologi fermentasi pakan jerami lokal, dan kalkulasi matematika nutrisi (STEM) dapat membantu peternak meningkatkan keuntungan secara berkelanjutan?',
-            placeholder: 'Tuliskan refleksi mendalam Anda mengenai pengamatan kandang ternak, inovasi pakan fermentasi peternak lokal, dan bagaimana pendekatan STEM mendukung kemandirian peternakan OKU Timur (minimal 25 kata)...'
+                        placeholder: 'Tuliskan refleksi mendalam Anda mengenai pengamatan kandang ternak, inovasi pakan fermentasi peternak lokal, dan bagaimana pendekatan STEM mendukung kemandirian peternakan OKU Timur (minimal 25 kata)...'
+          },
+          industri: {
+            title: 'Jurnal Refleksi Day 3: Agro-Industri & Pengolahan Pangan',
+            heading: 'Refleksi Analisis STEM: Sektor Agro-Industri RMU, Tahu-Tempe & Kemplang',
+            badge: 'Sektor: Agro-Industri & Pengolahan Pangan',
+            icon: 'precision_manufacturing',
+            prompt: 'Setelah Anda mengamati proses pengolahan bahan baku pangan (RMU/tahu-tempe/kemplang), mengidentifikasi mesin mekanisasi pabrik, mewawancarai kendala rendemen/limbah dan solusi teknis pelaku usaha, serta menghitung biaya HPP produksi hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Ketelitian dan disiplin apa yang Anda teladani dari para pelaku industri pengolahan pangan lokal dalam mempertahankan mutu produk?<br><strong>2. Integrasi STEM:</strong> Bagaimana sains kadar air, teknologi mesin pengolah, rekayasa IPAL limbah, dan kalkulasi matematika HPP (STEM) mampu mendongkrak daya saing agro-industri OKU Timur?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai pengamatan fasilitas produksi, inovasi efisiensi mesin pengolahan, dan penerapan STEM pada industri pangan lokal (minimal 25 kata)...'
+          },
+          jasa: {
+            title: 'Jurnal Refleksi Day 3: Agro-Industri & Pengolahan Pangan',
+            heading: 'Refleksi Analisis STEM: Sektor Agro-Industri RMU, Tahu-Tempe & Kemplang',
+            badge: 'Sektor: Agro-Industri & Pengolahan Pangan',
+            icon: 'precision_manufacturing',
+            prompt: 'Setelah Anda mengamati proses pengolahan bahan baku pangan (RMU/tahu-tempe/kemplang), mengidentifikasi mesin mekanisasi pabrik, mewawancarai kendala rendemen/limbah dan solusi teknis pelaku usaha, serta menghitung biaya HPP produksi hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Ketelitian dan disiplin apa yang Anda teladani dari para pelaku industri pengolahan pangan lokal dalam mempertahankan mutu produk?<br><strong>2. Integrasi STEM:</strong> Bagaimana sains kadar air, teknologi mesin pengolah, rekayasa IPAL limbah, dan kalkulasi matematika HPP (STEM) mampu mendongkrak daya saing agro-industri OKU Timur?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai pengamatan fasilitas produksi, inovasi efisiensi mesin pengolahan, dan penerapan STEM pada industri pangan lokal (minimal 25 kata)...'
+          },
+          perdagangan: {
+            title: 'Jurnal Refleksi Day 3: Perdagangan & Saprotan',
+            heading: 'Refleksi Analisis STEM: Sektor Perdagangan & Distribusi Logistik',
+            badge: 'Sektor: Perdagangan & Saprotan',
+            icon: 'storefront',
+            prompt: 'Setelah Anda mengamati penyimpanan komoditas di gudang, meneliti aplikasi digital i-Pubers/POS kasir, mewawancarai kendala logistik dan solusi perputaran stok narasumber, serta menghitung margin laba dan perputaran inventaris hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Nilai kejujuran, pelayanan, dan ketangguhan apa yang Anda pelajari dari pelaku perdagangan dan kios saprotan resmi?<br><strong>2. Integrasi STEM:</strong> Bagaimana sains proteksi komoditas, teknologi barcode POS, rekayasa tata letak gudang FIFO, dan matematika perputaran modal (STEM) menjamin stabilitas pasokan pangan pedesaan?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai tata kelola toko/gudang, digitalisasi pencatatan stok, dan peran STEM dalam mempercepat perputaran usaha perdagangan (minimal 25 kata)...'
+          },
+          formal: {
+            title: 'Jurnal Refleksi Day 3: Jasa Keuangan Mikro & Agen BRILink',
+            heading: 'Refleksi Analisis STEM: Sektor Jasa Keuangan Mikro Pedesaan',
+            badge: 'Sektor: Jasa Keuangan Mikro & Agen BRILink',
+            icon: 'account_balance',
+            prompt: 'Setelah Anda mempelajari transmisi data sinyal 4G EDC, mengidentifikasi perangkat transaksi perbankan, mewawancarai strategi manajemen likuiditas uang tunai saat musim panen, serta menghitung kalkulasi fee-based income hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Nilai amanah, integritas finansial, dan keuletan apa yang Anda teladani dari pengelola agen keuangan mikro di desa?<br><strong>2. Integrasi STEM:</strong> Bagaimana sains transmisi data, teknologi mesin EDC aman, rekayasa backup daya UPS, dan kalkulasi matematika likuiditas kas (STEM) memperluas inklusi keuangan pedesaan Belitang?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai operasional agen perbankan mikro desa, keandalan teknologi transaksi, dan bagaimana STEM menjamin kelancaran ekonomi warga (minimal 25 kata)...'
+          },
+          keuangan: {
+            title: 'Jurnal Refleksi Day 3: Jasa Keuangan Mikro & Agen BRILink',
+            heading: 'Refleksi Analisis STEM: Sektor Jasa Keuangan Mikro Pedesaan',
+            badge: 'Sektor: Jasa Keuangan Mikro & Agen BRILink',
+            icon: 'account_balance',
+            prompt: 'Setelah Anda mempelajari transmisi data sinyal 4G EDC, mengidentifikasi perangkat transaksi perbankan, mewawancarai strategi manajemen likuiditas uang tunai saat musim panen, serta menghitung kalkulasi fee-based income hari ini:<br><br><strong>1. Wawasan & Nilai Kerja Keras:</strong> Nilai amanah, integritas finansial, dan keuletan apa yang Anda teladani dari pengelola agen keuangan mikro di desa?<br><strong>2. Integrasi STEM:</strong> Bagaimana sains transmisi data, teknologi mesin EDC aman, rekayasa backup daya UPS, dan kalkulasi matematika likuiditas kas (STEM) memperluas inklusi keuangan pedesaan Belitang?',
+            placeholder: 'Tuliskan refleksi mendalam Anda mengenai operasional agen perbankan mikro desa, keandalan teknologi transaksi, dan bagaimana STEM menjamin kelancaran ekonomi warga (minimal 25 kata)...'
           }
         };
 
