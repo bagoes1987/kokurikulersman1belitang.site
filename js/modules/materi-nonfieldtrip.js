@@ -1814,6 +1814,34 @@
               </span>
             </div>
 
+            <!-- DROPDOWN PEMILIH SEKTOR (PILIHAN CEPAT & EKSPLISIT) -->
+            <div class="p-3.5 sm:p-4 rounded-2xl bg-white border-2 border-emerald-400 shadow-xs flex flex-col gap-2">
+              <div class="flex items-center justify-between gap-2 flex-wrap">
+                <label for="materiDay${dayNum}SectorSelect" class="font-black text-xs sm:text-sm text-emerald-950 flex items-center gap-2">
+                  <span class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-base">format_list_bulleted</span>
+                  </span>
+                  <span>Pilih Sektor Melalui Menu Dropdown:</span>
+                </label>
+                <span class="text-[11px] text-emerald-800 font-extrabold bg-emerald-100 px-2.5 py-0.5 rounded-full border border-emerald-300">
+                  Bisa Diganti Kapan Saja
+                </span>
+              </div>
+              <select id="materiDay${dayNum}SectorSelect" onchange="${dayNum === 4 ? 'selectDay4Sector(this.value)' : 'selectDay3Sector(this.value)'}" class="w-full p-3 rounded-xl border-2 border-emerald-500 focus:border-emerald-700 bg-emerald-50/50 text-emerald-950 font-black text-xs sm:text-sm shadow-xs outline-none cursor-pointer transition-all">
+                <option value="pertanian" ${selectedSector === 'pertanian' ? 'selected' : ''}>1. Sektor Pertanian Padi Sawah (Lumbung Pangan Komering)</option>
+                <option value="perkebunan" ${selectedSector === 'perkebunan' ? 'selected' : ''}>2. Sektor Perkebunan Rakyat (Karet &amp; Kelapa Sawit)</option>
+                <option value="peternakan" ${selectedSector === 'peternakan' ? 'selected' : ''}>3. Sektor Peternakan Rakyat OKU Timur (Sapi, Kambing &amp; Unggas)</option>
+                <option value="perikanan" ${selectedSector === 'perikanan' ? 'selected' : ''}>4. Sektor Perikanan Air Tawar (Sentra Patin &amp; Lele Belitang)</option>
+                <option value="industri" ${selectedSector === 'industri' ? 'selected' : ''}>5. Sektor Agro-Industri Pangan (Pabrik RMU, Tahu &amp; Kemplang)</option>
+                <option value="perdagangan" ${selectedSector === 'perdagangan' ? 'selected' : ''}>6. Sektor Perdagangan &amp; Saprotan (Kios Pupuk Bersubsidi, Grosir)</option>
+                <option value="formal" ${selectedSector === 'formal' ? 'selected' : ''}>7. Sektor Jasa Keuangan Mikro (Agen BRILink, BUMDes, Jasa Usaha)</option>
+              </select>
+              <div class="flex items-center gap-1.5 text-[11px] text-slate-600 font-medium pt-0.5">
+                <span class="material-symbols-outlined text-sm text-emerald-600">info</span>
+                <span>Atau sentuh tombol <strong>"Pilih Sektor Ini"</strong> pada salah satu dari 7 kartu sektor di bawah:</span>
+              </div>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pt-1">
               ${[
                 { key: 'pertanian', name: 'Pertanian Padi Sawah', badge: dayNum === 4 ? 'Alsintan Sawah & RMU' : 'Lumbung Pangan Komering', icon: 'agriculture', desc: dayNum === 4 ? 'Traktor, Sprayer, Combine Harvester, RMU & APD Sawah dalam Analisis STEM' : 'Padi Sawah, Saluran Irigasi BK, Traktor/Combine & Ubinan HPP' },
@@ -1838,9 +1866,12 @@
                       <h4 class="font-black text-xs sm:text-sm text-slate-900 leading-tight">${sec.name}</h4>
                       <p class="text-[11px] text-slate-500 leading-relaxed mt-0.5 line-clamp-2">${sec.desc}</p>
                     </div>
-                    <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[11px] font-bold ${isActive ? 'text-emerald-700 font-extrabold' : 'text-slate-400'}">
-                      <span>${isActive ? '✓ Sektor Terpilih' : 'Klik untuk Memilih'}</span>
-                      <span class="material-symbols-outlined text-sm">${isActive ? 'check_circle' : 'touch_app'}</span>
+                    <div class="pt-2 border-t border-slate-100 flex flex-col gap-1.5">
+                      <div class="w-full py-2 px-3 rounded-xl font-black text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs ${isActive ? 'bg-emerald-600 text-white' : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-300 hover:border-emerald-500'}">
+                        <span class="material-symbols-outlined text-base">${isActive ? 'check_circle' : 'ads_click'}</span>
+                        <span>${isActive ? '✓ Sektor Terpilih (Aktif)' : '👉 Klik / Pilih Sektor Ini'}</span>
+                      </div>
+                      ${isActive ? '<span class="text-[10px] text-center text-slate-500 font-medium">Klik kartu lain jika ingin beralih sektor</span>' : ''}
                     </div>
                   </div>
                 `;
