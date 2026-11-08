@@ -632,6 +632,8 @@
           let shouldClearStaleDraft = false;
           if ((parseInt(d.violationCount) || 0) >= 3 || d.isFinished) {
             shouldClearStaleDraft = true;
+          } else if (d.sector && examState.selectedSector && d.sector !== examState.selectedSector) {
+            shouldClearStaleDraft = true;
           } else {
             const resetInfo = window.currentStudentProgress && window.currentStudentProgress.reset_info;
             if (resetInfo && resetInfo.reset_at) {
@@ -688,6 +690,7 @@
     try {
       const payload = {
         day: examState.dayNum,
+        sector: examState.selectedSector || '',
         startTime: examState.startTime ? examState.startTime.toISOString() : null,
         currentIdx: examState.currentIdx,
         answers: examState.answers,
@@ -850,26 +853,22 @@
             </div>
           </div>
           ${isSectorDay ? `
-            <div class="p-3.5 rounded-2xl bg-amber-400/20 border border-amber-400/40 text-white flex flex-col gap-2 shadow-sm">
+            <div class="p-3.5 rounded-2xl bg-amber-400 text-slate-950 flex flex-col gap-2 shadow-sm border border-amber-300">
               <div class="flex items-center justify-between gap-2 flex-wrap">
-                <div class="flex items-center gap-1.5 text-xs font-black text-amber-300">
-                  <span class="material-symbols-outlined text-base">psychology</span>
-                  <span>Sektor Pilihan Asesmen:</span>
+                <div class="flex items-center gap-1.5 text-xs font-black text-slate-950">
+                  <span class="material-symbols-outlined text-base">lock</span>
+                  <span>Sektor Asesmen (Terkunci Otomatis Sesuai LKPD):</span>
                 </div>
-                <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[11px] uppercase tracking-wider">${escapeHtml(currentSectorName)}</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-slate-950 text-amber-300 font-black text-[10.5px] uppercase tracking-wider shadow-2xs">Sinkronisasi Otomatis</span>
               </div>
-              <div class="flex items-center gap-2">
-                <select id="selectExamSector" onchange="window.handleSwitchExamSector(this.value)" class="w-full text-xs font-bold text-slate-900 bg-white rounded-xl px-2.5 py-2 border border-amber-300 focus:outline-none shadow-xs">
-                  <option value="pangan" ${(currentSectorKey === 'pangan' || currentSectorKey === 'pertanian') ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang &amp; Palawija)</option>
-                  <option value="perkebunan" ${currentSectorKey === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
-                  <option value="peternakan" ${currentSectorKey === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat &amp; Budidaya Ternak (Sapi, Kambing/Domba, &amp; Unggas/Ayam)</option>
-                  <option value="perikanan" ${currentSectorKey === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele &amp; Nila)</option>
-                  <option value="industri" ${(currentSectorKey === 'industri' || currentSectorKey === 'jasa') ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (RMU, Tahu-Tempe, Kemplang)</option>
-                  <option value="perdagangan" ${currentSectorKey === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi, Pasar &amp; Sembako)</option>
-                  <option value="formal" ${(currentSectorKey === 'formal' || currentSectorKey === 'keuangan') ? 'selected' : ''}>7. Jasa Keuangan Mikro &amp; Jasa Perorangan (Agen BRILink, KSP, BUMDes)</option>
-                </select>
+              <div class="px-3.5 py-2.5 rounded-xl bg-slate-950 text-white flex items-center gap-2.5 shadow-2xs">
+                <span class="material-symbols-outlined text-amber-400 text-xl shrink-0">verified</span>
+                <span class="text-xs sm:text-sm font-black truncate">${escapeHtml(currentSectorName)}</span>
               </div>
-              <p class="text-[10.5px] text-teal-200/90 leading-tight">Terhubung dengan pilihan sektor observasi LKPD. Anda dapat menyesuaikannya sebelum ujian dimulai jika diperlukan.</p>
+              <p class="text-[11px] text-slate-900 leading-tight font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-xs shrink-0 text-slate-950">info</span>
+                <span>Paket 50 butir soal spesifik otomatis diambil dari sektor observasi LKPD Day ${examState.dayNum} yang telah Anda pilih.</span>
+              </p>
             </div>
           ` : ''}
         </div>
@@ -1742,9 +1741,11 @@
       const d = Number(dayNum) || 2;
       const checkDays = (d === 2) ? [2] : ((d === 6) ? [6, 5, 4, 3, 2] : (d === 5 ? [5, 4, 3, 2] : (d === 4 ? [4, 3, 2] : [3, 2])));
       for (const cd of checkDays) {
+        // 1. Cek storage sektor langsung
         const localSec = localStorage.getItem(`fincestem_nft_sector_d${cd}_` + cleanNisn);
         if (localSec) return normalizeSectorKey(localSec, d);
 
+        // 2. Cek draft atau payload LKPD tersimpan
         const rawLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${cd}_` + cleanNisn) || localStorage.getItem(`fincestem_lkpd_day${cd}_` + cleanNisn);
         if (rawLkpd) {
           const p = JSON.parse(rawLkpd);
@@ -1757,6 +1758,32 @@
           if (dr && (dr.sectorKey || dr.sector)) return normalizeSectorKey(dr.sectorKey || dr.sector, d);
         }
 
+        // 3. Cek dari sinkronisasi core progress server (jika berpindah gawai)
+        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const taskLkpd = window.currentStudentProgress.task_map[`${cd}_lkpd`];
+          if (taskLkpd && taskLkpd.content) {
+            let c = taskLkpd.content;
+            if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
+              try { c = JSON.parse(c); } catch(e) {}
+            }
+            if (c && (c.sectorKey || c.sector)) return normalizeSectorKey(c.sectorKey || c.sector, d);
+          }
+        }
+
+        const storedProg = localStorage.getItem('fincestem_progress_' + cleanNisn);
+        if (storedProg) {
+          const prog = JSON.parse(storedProg);
+          const taskLkpd = prog && prog.task_map ? prog.task_map[`${cd}_lkpd`] : null;
+          if (taskLkpd && taskLkpd.content) {
+            let c = taskLkpd.content;
+            if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
+              try { c = JSON.parse(c); } catch(e) {}
+            }
+            if (c && (c.sectorKey || c.sector)) return normalizeSectorKey(c.sectorKey || c.sector, d);
+          }
+        }
+
+        // 4. Cek materi
         const rawMat = localStorage.getItem(`fincestem_materi_nft_day${cd}_` + cleanNisn) || localStorage.getItem(`fincestem_materi_day${cd}_` + cleanNisn);
         if (rawMat) {
           const m = JSON.parse(rawMat);
