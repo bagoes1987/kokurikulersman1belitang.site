@@ -278,7 +278,7 @@
       tagColorClass: 'bg-white/20 text-emerald-100',
       badgeColorClass: 'bg-amber-400 text-amber-950',
       subtitle: 'Kajian Terpadu Integrasi Science, Technology, Engineering, dan Mathematics pada Sektor Pertanian Pangan, Perkebunan Rakyat, Perikanan Air Tawar, dan Peternakan Pedesaan Kabupaten OKU Timur',
-      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda dipersilakan <strong>memilih 1 dari 4 Sektor Unggulan OKU Timur</strong> yang paling dekat dengan lingkungan Anda untuk diteliti secara mendalam melalui 4 pilar STEM (Science, Technology, Engineering, Mathematics). Kartu panduan riset di bawah akan otomatis menyesuaikan dengan sektor pilihan Anda.',
+      inquiryIntro: 'Sebagai peserta <strong>Non-Field Trip</strong>, Anda dipersilakan <strong>meneliti 1 dari 7 Sektor Unggulan OKU Timur</strong> melalui 4 pilar STEM (Science, Technology, Engineering, Mathematics). Pilihan sektor secara otomatis mewarisi fokus pilihan Anda di Day 2, dan Anda juga dapat mengubah sektor secara fleksibel sesuai ketersediaan objek observasi di lapangan.',
       sectors: {
         pertanian: {
           key: 'pertanian',
@@ -613,6 +613,255 @@
               sourcePlaceholder: 'Contoh rujukan valid (Minimal 20 karakter):\n1. Panduan Pengembangan Sistem Integrasi Tanaman-Ternak (SITT) Kementan RI\n2. Naskah Inovasi Pertanian-Peternakan Sirkular Berkelanjutan',
               defaultExp: 'Sintesis empat pilar STEM pada sektor peternakan OKU Timur mewujudkan model pertanian sirkular yang sangat menguntungkan melalui sistem integrasi tanaman-ternak (Crop-Livestock Integration). Limbah jerami padi dimanfaatkan sebagai pakan ruminansia berkualitas, sementara kotoran sapi diolah kembali menjadi biogas dan pupuk bokashi penyubur sawah, menciptakan ekosistem usaha mandiri yang bebas limbah dan berkelanjutan.',
               defaultSources: '1. Pedoman Sistem Integrasi Tanaman-Ternak (SITT), Direktorat Jenderal Peternakan Kementan RI.\n2. Jurnal Ilmu Peternakan dan Pertanian Sirkular Berkelanjutan, Balitnak.'
+            }
+          ]
+        },
+        industri: {
+          key: 'industri',
+          name: 'Agro-Industri Pangan & RMU',
+          badge: 'RMU, Tahu-Tempe & Kemplang',
+          icon: 'precision_manufacturing',
+          desc: 'Penggilingan Padi RMU Belitang, Pabrik Tahu-Tempe, Pemanggangan Kemplang & IPAL Limbah',
+          cards: [
+            {
+              key: 'A',
+              title: 'Science: Karakteristik Fisika-Kimia Bahan Baku, Kadar Air & Bioproses Pengolahan Pangan',
+              subtitle: 'Kadar Air Gabah Kering Giling 14%, Fermentasi Kapang Tempe & Penggumpalan Protein Kedelai Tahu',
+              guidedPoints: [
+                'Standar kadar air gabah kering giling (GKG) 14% berbasis hukum kesetimbangan uap air (higroskopis) untuk mencegah pertumbuhan jamur kapang Aspergillus flavus penghasil aflatoksin selama penyimpanan gabah di gudang RMU.',
+                'Karakteristik fisika-kimia pati beras (rasio amilosa dan amilopektin) terhadap tekstur nasi pulen khas varietas unggul Belitang serta pengaruh tingkat abrasi gesekan roll husker terhadap derajat sosoh beras.',
+                'Bioproses fermentasi kedelai oleh kapang Rhizopus oligosporus pada pembuatan tempe dan kinetika penggumpalan (koagulasi) asam amino protein kedelai menggunakan koagulan asam asetat/kalsium sulfat pada produksi tahu.',
+                'Reaksi gelatinisasi pati tapioka dan ikan belida/tenggiri/gabus pada pemanggangan kerupuk kemplang khas Komering yang menghasilkan struktur kerupuk mekar renyah tanpa minyak jenuh.'
+              ],
+              placeholder: 'Uraikan hasil analisis sains Anda mengenai kadar air bahan baku, biokimia fermentasi kedelai/amilosa beras, dan reaksi pemuaian pati...',
+              sourcePlaceholder: 'Tuliskan sumber referensi ilmiah Anda (minimal 15 karakter)...',
+              defaultExp: 'Kajian sains agro-industri pangan di OKU Timur berpusat pada pengendalian parameter kritis bahan baku. Penggilingan padi modern mensyaratkan kadar air gabah 14% demi mencegah kontaminasi kapang perusak beras. Pada industri tahu-tempe rakyat Belitang, pengendalian suhu fermentasi kapang Rhizopus dan ketepatan pH koagulasi protein kedelai menentukan tekstur dan keawetan produk tanpa bahan pengawet berbahaya. Pada pembuatan kemplang panggang, gelatinisasi pati tapioka optimal menghasilkan kerupuk renyah beraroma khas komoditas lokal Komering.',
+              defaultSources: '1. Pedoman Penanganan Pascapanen & Standardisasi Mutu Gabah/Beras, Kementan RI.\n2. Jurnal Teknologi Pangan & Gizi: Bioproses Pengolahan Kedelai Tradisional.'
+            },
+            {
+              key: 'B',
+              title: 'Technology: Mesin Penggilingan RMU Modern, Boiler Uap & Teknologi Pengolahan UMKM',
+              subtitle: 'Mekanisme Husker Roll Karet, Polisher Beras, Ketel Uap Boiler & Pemanggang Kemplang Inframerah',
+              guidedPoints: [
+                'Prinsip kerja mesin pemecah kulit gabah (rubber roll husker) yang memanfaatkan perbedaan kecepatan putar dua poros rol karet untuk mengelupas kulit sekam tanpa mematahkan butir beras kepala.',
+                'Mekanisme pemoles beras (rice polisher/whitener) berbasis gesekan friksi dan hembusan udara tekan untuk membersihkan lapisan bekatul secara merata dengan derajat sosoh mencapai 95-100%.',
+                'Penerapan teknologi ketel uap (boiler) pada industri tahu pedesaan untuk memasak bubur kedelai dengan efisiensi panas uap tinggi dibanding pemanasan manual kayu bakar langsung.',
+                'Teknologi oven pemanggang kerupuk kemplang berbasis gas/inframerah yang mendistribusikan panas radiasi merata sehingga adonan mengembang sempurna dalam hitungan menit secara higienis.'
+              ],
+              placeholder: 'Jelaskan cara kerja mekanisasi mesin RMU, boiler pemasak tahu, atau oven kemplang yang diamati...',
+              sourcePlaceholder: 'Tuliskan sumber literatur teknologi mesin...',
+              defaultExp: 'Mekanisme teknologi agro-industri di OKU Timur memegang peranan vital dalam meningkatkan efisiensi dan higienitas produk. Penggunaan mesin rubber roll husker dan polisher udara bertekanan di RMU Belitang terbukti meminimalkan butir beras pecah (patah/menir) hingga di bawah 15%. Di sentra tahu Belitang, migrasi dari tungku kayu tradisional ke ketel boiler uap tertutup mempercepat waktu perebusan hingga 40% dan mengurangi emisi jelaga hitam di area kerja produksi.',
+              defaultSources: '1. Buku Panduan Operasional Mesin Penggilingan Padi Terpadu, Balitbangtan.\n2. Modul Rekayasa Peralatan Pengolahan Pangan Skala UMKM, Kementerian Perindustrian.'
+            },
+            {
+              key: 'C',
+              title: 'Engineering: Rancang Bangun Tata Letak (Layout) Pabrik, Ergonomi K3 & Pengolahan IPAL Limbah',
+              subtitle: 'Alur Produksi Searah (Linear Flow), Penanganan Debu Sekam & Instalasi Pengolahan Air Limbah',
+              guidedPoints: [
+                'Rancang bangun tata letak fasilitas pabrik RMU/tahu dengan pola alur lurus (linear flow) dari area bongkar muat bahan mentah, ruang proses mesin utama, hingga gudang pengemasan guna mencegah kontaminasi silang.',
+                'Penerapan Keselamatan dan Kesehatan Kerja (K3) industri: pemasangan cerobong pengumpul debu sekam (cyclone dust collector), masker respirator partikulat, dan pelindung pendengaran dari kebisingan mesin giling.',
+                'Rekayasa Instalasi Pengolahan Air Limbah (IPAL) berbasis sistem anaerob-aerob bertingkat untuk menetralkan Biological Oxygen Demand (BOD) dan Chemical Oxygen Demand (COD) limbah cair whey tahu sebelum dialirkan ke parit.',
+                'Ergonomi penanganan material (manual handling) pada pengangkatan karung beras/kedelai 50 kg menggunakan hand pallet dan conveyor loader guna mencegah cedera muskuloskeletal pekerja.'
+              ],
+              placeholder: 'Analisis rekayasa alur pabrik, pengelolaan limbah IPAL, dan prosedur K3 tenaga kerja...',
+              sourcePlaceholder: 'Tuliskan sumber panduan rekayasa lingkungan dan K3...',
+              defaultExp: 'Rekayasa teknik agro-industri menjamin keberlanjutan operasional dan kelestarian lingkungan OKU Timur. Desain pabrik RMU modern mengintegrasikan blower siklon pemisah debu sekam sehingga lingkungan kerja tetap bersih dan udara tidak mencemari permukiman warga. Pada klaster pengolahan tahu, pembangunan bak IPAL anaerob bertingkat terbukti menurunkan kandungan amonia dan bau menyengat dari limbah whey, bahkan gas metana yang dihasilkan dapat dimanfaatkan kembali sebagai biogas pemanas.'
+            },
+            {
+              key: 'D',
+              title: 'Mathematics: Kalkulasi Rendemen Giling, Biaya Pokok Produksi (HPP) & Titik Impas (BEP)',
+              subtitle: 'Persentase Rendemen Beras 65%, Konversi Kedelai Tahu, HPP per Kg & Titik Impas Operasional',
+              guidedPoints: [
+                'Kalkulasi persentase rendemen beras giling: formula Rendemen = (Berat Beras Bersih / Berat GKG) x 100%, dengan target standar mutu RMU Belitang berkisar antara 63% hingga 68%.',
+                'Perhitungan konversi rasio bahan: 1 kg kedelai menghasilkan 80-100 potong tahu kotak standar atau 1 kg tepung tapioka dicampur 300 gram ikan menghasilkan 40 keping kemplang panggang siap saji.',
+                'Penyusunan Harga Pokok Produksi (HPP) terperinci mencakup biaya bahan baku utama, BBM solar/listrik kWh pabrik, upah tenaga kerja operator, dan penyusutan mesin penggilingan.',
+                'Analisis Titik Impas / Break Even Point (BEP): menghitung BEP unit dan rupiah untuk menentukan kuantum produksi minimum per hari agar usaha pengolahan pangan tidak merugi.'
+              ],
+              placeholder: 'Tuliskan perhitungan matematika rendemen giling, struktur HPP, dan formula BEP usaha...',
+              sourcePlaceholder: 'Tuliskan sumber rujukan analisis finansial UMKM...',
+              defaultExp: 'Analisis matematika produksi membuktikan bahwa keuntungan agro-industri sangat bergantung pada rasio rendemen dan pengendalian biaya energi. Untuk kapasitas giling 5 ton GKG per hari dengan rendemen 65%, RMU menghasilkan 3.250 kg beras super dan 500 kg bekatul. Dengan HPP gabah Rp 6.200/kg dan biaya giling Rp 350/kg, HPP beras giling berada di level Rp 10.076/kg. Penjualan bekatul dan sekam memberikan margin tambahan yang secara signifikan menurunkan batas BEP harian pabrik.'
+            },
+            {
+              key: 'E',
+              title: 'Sintesis Terpadu: Hilirisasi Produk Pangan Unggulan OKU Timur & Ekonomi Sirkular Zero Waste',
+              subtitle: 'Nilai Tambah Beras Premium Belitang, Pemanfaatan Biomassa Sekam & Prospek Wirausaha Muda',
+              guidedPoints: [
+                'Strategi hilirisasi beras curah menjadi beras kemasan premium berlabel SNI dan bermerek lokal OKU Timur guna menangkap margin laba eceran yang 25-35% lebih tinggi dibanding menjual gabah basah ke luar daerah.',
+                'Penerapan ekonomi sirkular zero-waste: pemanfaatan limbah sekam padi sebagai bahan bakar pemanas briket, media tanam arang sekam hidroponik, atau silika abu sekam bernilai ekonomis tinggi.',
+                'Pengolahan ampas padat tahu menjadi pakan ternak sapi/unggas berprotein tinggi atau tempe gembus bernilai gizi, sehingga tidak ada limbah padat yang terbuang sia-sia.',
+                'Peta jalan kewirausahaan muda di OKU Timur dalam memanfaatkan ekosistem digital pemasaran (marketplace/e-commerce) untuk mendistribusikan produk pangan olahan khas daerah ke tingkat nasional.'
+              ],
+              placeholder: 'Tuliskan sintesis integratif Anda mengenai hilirisasi pangan, zero waste, dan prospek wirausaha...',
+              sourcePlaceholder: 'Tuliskan sumber referensi kebijakan daerah atau studi hilirisasi...',
+              defaultExp: 'Sintesis 4 pilar STEM pada sektor agro-industri pangan membuktikan potensi besar hilirisasi pertanian di OKU Timur. Dengan beralih dari sekadar penjual gabah mentah menjadi produsen beras premium kemasan dan aneka olahan pangan bernilai tambah, daerah dapat mengamankan perputaran uang di tingkat lokal. Didukung prinsip circular economy zero-waste yang menyulap limbah sekam menjadi briket bahan bakar dan ampas tahu menjadi pakan ternak bergizi, agro-industri Belitang menjadi motor penggerak ekonomi hijau pedesaan.'
+            }
+          ]
+        },
+        perdagangan: {
+          key: 'perdagangan',
+          name: 'Perdagangan Sarana Pertanian & Sembako',
+          badge: 'Kios Saprotan & Grosir',
+          icon: 'storefront',
+          desc: 'Penebusan Pupuk Bersubsidi i-Pubers, Gudang Palet Kayu, Barcode POS Kasir & Perputaran Stok ITO',
+          cards: [
+            {
+              key: 'A',
+              title: 'Science: Karakteristik Kimia Sarana Pertanian, Sifat Higroskopis & Pengendalian Gudang',
+              subtitle: 'Higroskopisitas Urea, Formulasi NPK Majemuk & Proteksi Bahan Pangan dari Hama Gudang',
+              guidedPoints: [
+                'Sifat higroskopis pupuk Urea [CO(NH2)2] yang sangat mudah mengikat uap air dari udara terbuka sehingga memicu penggumpalan (caking) pada kelembapan relatif (RH) di atas 70%.',
+                'Karakteristik kimia pupuk majemuk NPK (Nitrogen-Fosfor-Kalium) dan pestisida formulasi EC/WP/SC serta persyaratan penyimpanan terpisah dari komoditas pangan untuk mencegah kontaminasi racun.',
+                'Faktor fisika kelembapan dan suhu lantai semen gudang: peranan sirkulasi udara ventilasi silang dan alas palet kayu dalam memblokir kondensasi air tanah ke karung beras/pupuk.',
+                'Biologi hama gudang (kumbang bubuk beras Sitophilus oryzae dan tikus Rattus norvegicus) serta metode perangkap fisik dan sanitasi kimiawi yang aman di area grosir sembako.'
+              ],
+              placeholder: 'Uraikan hasil analisis sains Anda tentang sifat higroskopis pupuk, penyimpanan gudang, dan hama...',
+              sourcePlaceholder: 'Tuliskan sumber ilmiah sains kimia pupuk dan penyimpanan pangan...',
+              defaultExp: 'Kajian sains sektor perdagangan di Belitang berfokus pada ketahanan mutu komoditas sensitif. Sifat higroskopis pupuk Urea menuntut pengelolaan ventilasi gudang yang ketat dengan kelembapan di bawah 70% dan penggunaan palet kayu berjarak minimal 15 cm dari lantai semen agar pupuk tidak mencair dan menggumpal. Pada grosir beras dan sembako, pengendalian biologi terhadap kumbang bubuk padi dan kebersihan sanitasi menjadi prasyarat mutlak dalam mempertahankan mutu fisik dan bobot timbangan komoditas.',
+              defaultSources: '1. Pedoman Teknis Penyimpanan & Penggudangan Pupuk Bersubsidi, PT Pupuk Indonesia.\n2. Standar Nasional Indonesia (SNI) Tata Cara Penggudangan Pangan Serealia.'
+            },
+            {
+              key: 'B',
+              title: 'Technology: Digitalisasi Distribusi, Aplikasi i-Pubers Kementan & Sistem Kasir Barcode POS',
+              subtitle: 'Aplikasi Penebusan Pupuk Subsidi, Cloud POS, Barcode Scanner & Sistem Settlement QRIS',
+              guidedPoints: [
+                'Prinsip integrasi aplikasi i-Pubers (Integrasi Pupuk Bersubsidi) berbasis data e-Alokasi Kementan dengan pencocokan NIK/KTP petani untuk mencegah penyelewengan distribusi pupuk di Belitang.',
+                'Mekanisme teknologi barcode scanner (1D dan 2D QR Code) yang membaca pola garis pantulan sinar laser inframerah untuk mempercepat input data transaksi penjualan kasir grosir.',
+                'Penerapan sistem Point of Sale (POS) berbasis cloud untuk pemantauan stok real-time (live stock audit), peringatan stok minimum, dan laporan penjualan otomatis dari smartphone pemilik.',
+                'Teknologi pembayaran nontunai (QRIS dan EDC Merchant) yang memfasilitasi transaksi aman tanpa uang tunai fisik, memangkas risiko uang palsu, dan mempercepat pencatatan kas harian.'
+              ],
+              placeholder: 'Jelaskan cara kerja aplikasi i-Pubers, software kasir POS, dan teknologi scanner toko...',
+              sourcePlaceholder: 'Tuliskan sumber referensi teknologi digital ritel dan distribusi...',
+              defaultExp: 'Teknologi digital telah merevolusi rantai pasok perdagangan di OKU Timur. Hadirnya aplikasi i-Pubers mewajibkan kios pengecer resmi memverifikasi penebusan pupuk bersubsidi dengan memindai e-KTP dan foto wajah petani, sehingga kuota terdistribusi tepat sasaran. Di level toko sembako grosir, adopsi software POS terhubung barcode scanner mempercepat proses kasir hingga 3 kali lipat dan menyediakan data inventaris akurat untuk mencegah kehabisan stok barang pokok.',
+              defaultSources: '1. Petunjuk Operasional Aplikasi i-Pubers, Kementan & Pupuk Indonesia Holding.\n2. Modul Transformasi Digitalisasi UMKM Ritel Rantai Pasok Modern, Kemenkop UKM.'
+            },
+            {
+              key: 'C',
+              title: 'Engineering: Rancang Bangun Tata Letak Toko/Gudang, Ergonomi Rak & Rantai Logistik FIFO',
+              subtitle: 'Layout Racking Gudang, Standar Palet Ergonomis, Sistem FIFO & Manajemen K3 Bongkar Muat',
+              guidedPoints: [
+                'Rancang bangun sistem racking gudang bertingkat (heavy duty rack) yang memaksimalkan pemanfaatan ruang vertikal dan menyediakan jalur manuver gerobak hand pallet berlebar 1,8-2 meter.',
+                'Penerapan metode pergudangan First-In First-Out (FIFO) dan First-Expired First-Out (FEFO) secara mekanis guna memastikan karung pupuk atau sembako yang masuk lebih awal dijual lebih dulu.',
+                'Ergonomi penanganan beban: prosedur manual handling saat memuat karung 50 kg dari bak truk ke gudang dengan postur tubuh aman (menekuk lutut bukan punggung) guna mencegah cedera tulang belakang.',
+                'Pemasangan instalasi pengaman toko: pintu dorong lipat harmonika baja, kamera CCTV pengawas area kasir & sudut buta gudang, serta penempatan alat pemadam api ringan (APAR).'
+              ],
+              placeholder: 'Analisis rekayasa denah gudang, rotasi FIFO, dan ergonomi bongkar muat pekerja...',
+              sourcePlaceholder: 'Tuliskan sumber panduan rancang gudang dan ergonomi pergudangan...',
+              defaultExp: 'Rekayasa tata letak toko dan gudang sangat menentukan kelancaran arus barang dagangan di OKU Timur. Desain gudang dengan alur lintas berbentuk U (U-flow) memisahkan dermaga bongkar muatan truk dari loket penyerahan barang ke pembeli eceran sehingga tidak terjadi tabrakan arus kerja. Penerapan rak palet berdisiplin FIFO mencegah kerusakan pupuk yang mengendap terlalu lama di dasar tumpukan, sementara penyediaan alat bantu angkong dorong meringankan beban angkut pekerja panggul.',
+              defaultSources: '1. Panduan Standardisasi Tata Kelola Pergudangan & Logistik, Kemenperdagangan RI.\n2. Manual K3 Penanganan Beban Manual Sektor Perdagangan & Ritel, ILO.'
+            },
+            {
+              key: 'D',
+              title: 'Mathematics: Manajemen Persediaan Stok, Perputaran Barang (ITO) & Kalkulasi Margin Laba',
+              subtitle: 'Formula Economic Order Quantity (EOQ), Safety Stock, Rasio ITO & Margin Keuntungan Ritel',
+              guidedPoints: [
+                'Kalkulasi persediaan pengaman (Safety Stock) dan Titik Pemesanan Ulang (Reorder Point / ROP): ROP = (Lead Time Hari x Rata-rata Penjualan Harian) + Safety Stock untuk pupuk Urea/NPK.',
+                'Perhitungan Rasio Perputaran Persediaan / Inventory Turnover (ITO) = Harga Pokok Penjualan / Rata-rata Persediaan, sebagai indikator seberapa cepat modal barang berputar menjadi uang tunai.',
+                'Kalkulasi Margin Laba Kotor (Gross Margin) dan Markup Persentase: membedakan strategi margin tipis perputaran cepat (sembako 3-7%) vs margin moderat saprotan herbisida/benih (12-20%).',
+                'Analisis arus kas modal kerja (Working Capital Cash Flow): menghitung periode pembayaran kredit ke distributor vs penagihan piutang petani saat musim panen tiba.'
+              ],
+              placeholder: 'Tuliskan kalkulasi matematika stok pengaman ROP, perputaran ITO, dan margin keuntungan...',
+              sourcePlaceholder: 'Tuliskan sumber rujukan manajemen keuangan persediaan ritel...',
+              defaultExp: 'Kalkulasi matematika persediaan adalah kunci kelangsungan usaha kios dan grosir di Belitang. Dengan rata-rata penjualan pupuk Urea 10 sak/hari dan waktu tunggu suplai distributor 3 hari plus safety stock 15 sak, reorder point ditetapkan pada level 45 sak. Perputaran stok (ITO) sembako yang tinggi mencapai 20 kali setahun memungkinkan toko grosir mendulang laba bersih optimal meskipun bermain pada marjin tipis 5%, didukung disiplin pencatatan piutang petani yang ketat.',
+              defaultSources: '1. Manajemen Keuangan & Persediaan Usaha Dagang Ritel, Ikatan Akuntan Indonesia.\n2. Riset Manajemen Logistik Rantai Pasok Pupuk Bersubsidi, Pusat Studi Logistik Pertanian.'
+            },
+            {
+              key: 'E',
+              title: 'Sintesis Terpadu: Rantai Pasok Pangan Terintegrasi, Kemitraan Kios Resmi & Ketahanan Pangan',
+              subtitle: 'Jaminan Ketersediaan Pupuk di 20 Kecamatan, Kemitraan Petani-Pedagang & Stabilitas Pasar',
+              guidedPoints: [
+                'Peran strategis jaringan kios saprotan resmi dalam menjaga ketahanan pangan nasional dengan menjamin kepastian pasokan pupuk dan obat pertanian di sentra padi Belitang.',
+                'Pola kemitraan saling menguntungkan antara pedagang grosir hasil bumi dan kelompok tani: penyediaan saprotan dengan sistem pembayaran tunda pascapanen (yarnen) yang transparan dan adil.',
+                'Strategi adaptasi pedagang tradisional terhadap ekspansi ritel modern dan marketplace online melalui keunggulan relasi personal, kemudahan utang modal tani terukur, dan layanan antar jemput barang.',
+                'Peta peluang kewirausahaan generasi muda OKU Timur dalam mengembangkan platform rantai pasok komoditas pertanian berbasis web/aplikasi penghubung langsung produsen ke pasar induk.'
+              ],
+              placeholder: 'Tuliskan sintesis integratif Anda mengenai rantai pasok perdagangan, kemitraan kios, dan stabilitas...',
+              sourcePlaceholder: 'Tuliskan sumber analisis kebijakan perdagangan daerah atau rantai pasok...',
+              defaultExp: 'Sintesis integratif 4 pilar STEM pada sektor perdagangan membuktikan bahwa keberhasilan pertanian OKU Timur tidak dapat dipisahkan dari keandalan rantai pasok saprotan dan sembako. Digitalisasi penebusan pupuk melalui i-Pubers yang dipadukan dengan manajemen tata letak gudang ergonomis dan kalkulasi persediaan akurat mampu mengeliminasi kelangkaan pupuk di masa tanam kritis. Sinergi kemitraan kios resmi dengan petani memperkuat fondasi ketahanan pangan daerah sekaligus memajukan ekonomi kerakyatan Komering.',
+              defaultSources: '1. Naskah Kebijakan Stabilisasi Pasokan & Distribusi Pangan Nasional, Bapanas RI.\n2. Kajian Rantai Pasok Sektor Agribisnis Komering, Bappeda Litbang OKU Timur.'
+            }
+          ]
+        },
+        formal: {
+          key: 'formal',
+          name: 'Jasa Keuangan Mikro & Jasa Perorangan',
+          badge: 'Agen BRILink, BUMDes & Jasa',
+          icon: 'account_balance',
+          desc: 'Transmisi 4G/LTE Mesin EDC, Enkripsi Chip EMV, Likuiditas Kas Panen & Fee-Based Income Desa',
+          cards: [
+            {
+              key: 'A',
+              title: 'Science: Gelombang Mikro Telekomunikasi 4G/LTE, Enkripsi Biometrik & Keamanan Digital',
+              subtitle: 'Fisika Frekuensi 1800/2100 MHz, Sensor Kapasitif Sidik Jari & Kriptografi Chip Kartu EMV',
+              guidedPoints: [
+                'Prinsip fisika perambatan gelombang radio mikro elektromagnetik (microwave frekuensi 1,8-2,1 GHz) yang membawa paket data sinyal mesin EDC perbankan dan smartphone di wilayah pelosok pedesaan OKU Timur.',
+                'Fisika semikonduktor sensor biometrik sidik jari (fingerprint scanner): prinsip pengukuran perbedaan kapasitansi listrik mikro antara lembah dan puncak sidik kulit jari untuk otentikasi bansos PKH.',
+                'Mekanisme kimia elektrokimia baterai lithium-ion pada terminal EDC portabel dan sistem proteksi pengisian daya cerdas guna mencegah overheating saat transaksi beruntun.',
+                'Prinsip sains kriptografi asimetris (RSA/AES 256-bit) pada microchip standar EMV (Europay, Mastercard, Visa) yang menghasilkan Authorization Request Cryptogram (ARQC) dinamis anti-cloning.'
+              ],
+              placeholder: 'Uraikan hasil telaah sains Anda tentang frekuensi sinyal EDC, sensor biometrik, dan kriptografi...',
+              sourcePlaceholder: 'Tuliskan sumber ilmiah sains telekomunikasi dan keamanan data finansial...',
+              defaultExp: 'Kajian sains sektor jasa keuangan mikro pedesaan di Belitang bertumpu pada keandalan infrastruktur gelombang elektromagnetik dan keamanan kriptografi. Mesin EDC memanfaatkan spektrum seluler 4G LTE frekuensi 1800 MHz untuk mengirim paket data transaksi terenkripsi ke server pusat dalam fraksi detik. Pada aspek keamanan, chip kartu debit pintar EMV mengaplikasikan algoritma enkripsi dinamis yang menjamin transaksi perbankan bebas dari penggandaan (skimming), sehingga aman dioperasikan agen desa.',
+              defaultSources: '1. Standar Keamanan Data Industri Kartu Pembayaran (PCI-DSS), Bank Indonesia.\n2. Dasar-dasar Telekomunikasi Seluler & Transmisi Data Nirkabel, Dirjen PPI Kominfo.'
+            },
+            {
+              key: 'B',
+              title: 'Technology: Arsitektur Terminal EDC, Dual-SIM Failover & Ekosistem BRILink Mobile',
+              subtitle: 'Secure Cryptographic Module EDC, Switching Jaringan Perbankan, Printer Thermal & API Host',
+              guidedPoints: [
+                'Arsitektur perangkat keras mesin EDC: prosesor ganda berkemampuan secure cryptoprocessor yang otomatis menghapus memori enkripsi jika casing fisik perangkat dibongkar paksa.',
+                'Teknologi switching jaringan perbankan (ATM Bersama/Prima) dan sistem failover multi-SIM card otomatis (Telkomsel/Indosat/XL) yang memastikan transaksi tetap jalan saat satu operator blank spot.',
+                'Prinsip teknologi printer thermal mini: pemanasan mikro head pin pada kertas peka panas (thermo-reactive paper) tanpa menggunakan tinta cartridge cair untuk mencetak struk bukti bayar.',
+                'Integrasi platform aplikasi perbankan agen (seperti BRILink Mobile / AgenKu BNI) dengan sistem pembayaran tagihan terpusat (PLN token, BPJS, PDAM, pulsa, dan transfer antarbank).'
+              ],
+              placeholder: 'Jelaskan cara kerja terminal EDC, teknologi dual SIM failover, dan aplikasi mobile keagenan...',
+              sourcePlaceholder: 'Tuliskan sumber panduan teknologi mesin transaksi digital perbankan...',
+              defaultExp: 'Adopsi teknologi keuangan di pelosok OKU Timur memungkinkan transaksi perbankan terlaksana setara kantor cabang perkotaan. Terminal EDC perbankan modern dilengkapi teknologi dual SIM dengan modul failover otomatis yang secara instan berpindah ke jaringan seluler terkuat saat terjadi fluktuasi sinyal di pelosok sawah Belitang. Dikombinasikan dengan printer thermal berkecepatan tinggi dan software mobile banking yang intuitif, agen dapat melayani puluhan transaksi warga tanpa hambatan sistem.',
+              defaultSources: '1. Pedoman Teknis Layanan Keuangan Tanpa Kantor (Laku Pandai), Otoritas Jasa Keuangan (OJK).\n2. Manual Operasional Terminal EDC Perbankan & Arsitektur Switching, Bank Sentral.'
+            },
+            {
+              key: 'C',
+              title: 'Engineering: Desain Ruang Pelayanan Ergonomis, Keamanan Fisik Brankas & Redundansi Daya UPS',
+              subtitle: 'Ergonomi Konter Loket, Brankas Baja Tahan Api, CCTV Blind Spot & Sistem Inverter Backup',
+              guidedPoints: [
+                'Rancang bangun meja loket pelayanan (service counter) yang ergonomis dengan tinggi meja 75-80 cm, partisi kaca akrilik pelindung, dan display privasi layar PIN pad nasabah saat input sandi.',
+                'Sistem proteksi fisik brankas uang tunai: penempatan brankas baja berbobot di atas 100 kg yang diangkur baut tanam ke lantai semen, dilengkapi kunci kombinasi digital dan delay lock timer.',
+                'Rekayasa redundansi kelistrikan cadangan: pemasangan Uninterruptible Power Supply (UPS) online murni dan sistem inverter solar/baterai guna mencegah transaksi hang saat pemadaman mendadak PLN.',
+                'Desain tata ruang keamanan: zonasi antrean nasabah dengan pembatas fleksibel, tombol alarm darurat (panic button) tersembunyi, dan integrasi kamera pengawas CCTV multi-channel.'
+              ],
+              placeholder: 'Analisis rekayasa loket layanan, cadangan daya UPS, dan sistem proteksi brankas tunai...',
+              sourcePlaceholder: 'Tuliskan sumber rancang bangun fasilitas perbankan dan K3 perkantoran...',
+              defaultExp: 'Rekayasa teknik loket keagenan keuangan mikro di Belitang mengedepankan aspek keamanan fisik dan kontinuitas layanan. Pemasangan UPS baterai berkapasitas 1200 VA menjadi solusi rekayasa krusial yang mengantisipasi fluktuasi voltase atau padam listrik tiba-tiba, menjamin transaksi transfer tidak menggantung (pending status). Di samping itu, desain konter ergonomis dan penempatan brankas baja berangkur beton memberikan rasa aman maksimal bagi agen maupun nasabah desa yang bertransaksi uang tunai.',
+              defaultSources: '1. Standar Konstruksi Keamanan Fisik Gerai Kas Layanan Perbankan, OJK.\n2. Manual Rekayasa Daya Cadangan & Keselamatan Instalasi Kelistrikan UPS, SNI.'
+            },
+            {
+              key: 'D',
+              title: 'Mathematics: Manajemen Likuiditas Kas Panen, Fee-Based Income & Kalkulasi Titik Impas (BEP)',
+              subtitle: 'Perputaran Kas Rp 100 Juta/Hari, Rasio Fee per Transaksi, Margin Keuntungan & ROI Alat',
+              guidedPoints: [
+                'Manajemen likuiditas kas operasional: kalkulasi buffer kas tunai harian saat musim panen raya padi Belitang (lonjakan penarikan uang hingga Rp 100-200 juta/hari oleh buruh tani/tengkulak).',
+                'Kalkulasi pendapatan berbasis komisi (Fee-Based Income): simulasi rumus Total Fee = Volume Transaksi x Komisi Rata-rata (misal: 80 transaksi/hari x Rp 4.000 fee bersih = Rp 320.000/hari atau Rp 9,6 juta/bulan).',
+                'Analisis biaya operasional harian: kuota paket internet data, biaya kertas rol thermal, konsumsi listrik, dan biaya bunga/opportunity cost saldo kas yang mengendap di rekening operasional.',
+                'Kalkulasi Return on Investment (ROI) dan payback period pengadaan modal awal (pembelian mesin EDC sewa/beli, brankas, meja kasir, dan renovasi gerai).'
+              ],
+              placeholder: 'Tuliskan kalkulasi matematika perputaran uang tunai, komisi fee bulanan, dan analisis ROI...',
+              sourcePlaceholder: 'Tuliskan sumber rujukan analisis keuangan mikro dan kelayakan investasi...',
+              defaultExp: 'Kalkulasi matematika likuiditas kas adalah jantung keberhasilan agen keuangan mikro di OKU Timur. Saat musim panen gabah tiba, perputaran uang tunai melonjak hingga Rp 80-150 juta per hari. Dengan volume 70 transaksi per hari dan bagi hasil fee rata-rata Rp 4.500 per transaksi, agen mendulang pendapatan kotor Rp 9,45 juta per bulan. Setelah dikurangi biaya operasional kuota data dan kertas struk Rp 750 ribu, usaha ini menghasilkan laba bersih stabil dengan ROI tuntas dalam 4-6 bulan pertama.',
+              defaultSources: '1. Pedoman Perhitungan Kelayakan Finansial & Pembukuan Agen Perbankan Mikro, BRI Research.\n2. Manajemen Likuiditas & Arus Kas Lembaga Keuangan Mikro, Ikatan Bankir Indonesia.'
+            },
+            {
+              key: 'E',
+              title: 'Sintesis Terpadu: Inklusi Keuangan Pedesaan Belitang, Layanan Laku Pandai & Akses Modal Tani',
+              subtitle: 'Pemerataan Akses Tarik Tunai PKH, KUR Pertanian Tanpa Calo & Transformasi Ekonomi Desa',
+              guidedPoints: [
+                'Peran transformatif agen keuangan mikro pedesaan dalam memotong biaya transportasi dan waktu warga desa yang sebelumnya harus menempuh 15-30 km ke kantor cabang bank di ibu kota kabupaten.',
+                'Akselerasi penyaluran bantuan sosial pemerintah (PKH, BPNT, BLT Desa) secara transparan dan tepat waktu langsung ke tangan petani dan keluarga prasejahtera di tingkat dusun.',
+                'Fasilitasi penyaluran Kredit Usaha Rakyat (KUR) mikro sektor pertanian dan peternakan dengan pendampingan verifikasi data usaha riil di lapangan tanpa perantara ijon.',
+                'Peta sinergi keagenan dengan BUMDes (Badan Usaha Milik Desa) dalam mewujudkan ekosistem keuangan desa digital (cashless smart village) yang inklusif dan akuntabel di OKU Timur.'
+              ],
+              placeholder: 'Tuliskan sintesis integratif Anda mengenai inklusi finansial, layanan Laku Pandai, dan modal tani...',
+              sourcePlaceholder: 'Tuliskan sumber analisis kebijakan inklusi keuangan desa atau studi BUMDes...',
+              defaultExp: 'Sintesis terpadu 4 pilar STEM pada sektor jasa keuangan mikro membuktikan bahwa teknologi perbankan nir-kantor (Laku Pandai) adalah katalisator utama pemerataan ekonomi OKU Timur. Didukung gelombang mikro seluler yang stabil, terminal EDC berenkripsi tinggi, dan manajemen likuiditas kas yang piawai, agen BRILink dan BUMDes sukses membawa akses permodalan formal ke pelosok sawah dan perkebunan. Fenomena ini membebaskan petani dari jeratan ijon berbunga tinggi serta mempercepat perputaran uang di perdesaan Belitang.',
+              defaultSources: '1. Laporan Nasional Indeks Inklusi & Literasi Keuangan Pedesaan Indonesia, SNKI OJK.\n2. Riset Transformasi Digital & Peran BUMDes dalam Ekonomi Desa OKU Timur, Balitbangda Sumsel.'
             }
           ]
         }
@@ -1414,7 +1663,30 @@
         const localSec = (dayNum === 4)
           ? (localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn))
           : localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
-        if (localSec && cfg.sectors && cfg.sectors[localSec]) selectedSector = localSec;
+        if (localSec && cfg.sectors && cfg.sectors[localSec]) {
+          selectedSector = localSec;
+        } else if (dayNum === 3) {
+          // Fallback ke Day 2 jika belum diset di Day 3
+          let d2Sec = localStorage.getItem('fincestem_nft_sector_d2_' + cleanNisn);
+          if (!d2Sec) {
+            try {
+              const rawM2 = localStorage.getItem('fincestem_materi_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_materi_day2_' + cleanNisn);
+              if (rawM2) {
+                const p2 = JSON.parse(rawM2);
+                if (p2 && p2.selectedSector) d2Sec = p2.selectedSector;
+              }
+            } catch(e) {}
+          }
+          if (d2Sec) {
+            let mapped = String(d2Sec).toLowerCase().trim();
+            if (mapped === 'pangan') mapped = 'pertanian';
+            if (mapped === 'jasa') mapped = 'industri';
+            if (mapped === 'keuangan') mapped = 'formal';
+            if (cfg.sectors && cfg.sectors[mapped]) {
+              selectedSector = mapped;
+            }
+          }
+        }
       }
     }
 
@@ -1539,12 +1811,15 @@
               </span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pt-1">
               ${[
                 { key: 'pertanian', name: 'Pertanian Padi Sawah', badge: dayNum === 4 ? 'Alsintan Sawah & RMU' : 'Lumbung Pangan Komering', icon: 'agriculture', desc: dayNum === 4 ? 'Traktor, Sprayer, Combine Harvester, RMU & APD Sawah dalam Analisis STEM' : 'Padi Sawah, Saluran Irigasi BK, Traktor/Combine & Ubinan HPP' },
                 { key: 'perkebunan', name: 'Perkebunan Rakyat', badge: dayNum === 4 ? 'Alat Sadap & Panen TBS' : 'Karet & Kelapa Sawit', icon: 'forest', desc: dayNum === 4 ? 'Pisau Sadap, Mangkok Lateks, Dodos, Egrek Teleskopik & Angkong dalam Analisis STEM' : 'Lateks Karet, Panen TBS Sawit, Rorak Lahan & Laba Pekebun' },
-                { key: 'perikanan', name: 'Perikanan Air Tawar', badge: dayNum === 4 ? 'Aerator & Alat Kualitas Air' : 'Sentra Patin & Lele Sumsel', icon: 'phishing', desc: dayNum === 4 ? 'Pompa Air, Kincir Aerasi, pH/TDS Meter, Mesin Pelet & Grading dalam Analisis STEM' : 'Budidaya Patin/Lele, Kualitas Air, Kincir Aerasi & FCR Pakan' },
-                { key: 'peternakan', name: 'Peternakan Pedesaan', badge: dayNum === 4 ? 'Mesin Chopper & Biogas' : 'Peternakan Sapi & Unggas', icon: 'pets', desc: dayNum === 4 ? 'Mesin Chopper Pakan, Drum Silase, Nipple Drinker, Brooder & Biogas dalam Analisis STEM' : 'Peternakan Sapi, Unggas, Silase Pakan, Chopper, Biogas & ADG' }
+                { key: 'peternakan', name: 'Peternakan Rakyat OKU Timur', badge: dayNum === 4 ? 'Mesin Chopper & Biogas' : 'Sapi, Kambing & Unggas', icon: 'pets', desc: dayNum === 4 ? 'Mesin Chopper Pakan, Drum Silase, Nipple Drinker, Brooder & Biogas dalam Analisis STEM' : 'Peternakan Sapi, Kambing, Unggas/Ayam, Chopper & Silase' },
+                { key: 'perikanan', name: 'Perikanan Air Tawar', badge: dayNum === 4 ? 'Aerator & Alat Kualitas Air' : 'Sentra Patin & Lele Belitang', icon: 'phishing', desc: dayNum === 4 ? 'Pompa Air, Kincir Aerasi, pH/TDS Meter, Mesin Pelet & Grading dalam Analisis STEM' : 'Budidaya Patin/Lele, Kualitas Air, Kincir Aerasi & FCR Pakan' },
+                { key: 'industri', name: 'Agro-Industri Pangan', badge: dayNum === 4 ? 'Mesin RMU & Boiler Tahu' : 'Pabrik RMU, Tahu & Kemplang', icon: 'precision_manufacturing', desc: dayNum === 4 ? 'Mesin Husker RMU, Polisher, Boiler Uap, Pemanggang Kemplang & Sealer dalam Analisis STEM' : 'Rendemen Beras RMU, Fermentasi Kedelai, Pemanggangan Kemplang & IPAL' },
+                { key: 'perdagangan', name: 'Perdagangan & Saprotan', badge: dayNum === 4 ? 'Aplikasi POS & Barcode' : 'Kios Saprotan & Grosir', icon: 'storefront', desc: dayNum === 4 ? 'Barcode Scanner POS, Timbangan Digital Platform, Racking Gudang & APD Logistik' : 'Distribusi Pupuk Bersubsidi, Aplikasi i-Pubers, Ergonomi Gudang & Margin ITO' },
+                { key: 'formal', name: 'Jasa Keuangan Mikro', badge: dayNum === 4 ? 'Mesin EDC & Detektor UV' : 'Agen BRILink & BUMDes', icon: 'account_balance', desc: dayNum === 4 ? 'Mesin EDC EMV, Fingerprint Scanner, UPS Back-Up Daya & Brankas Tahan Api' : 'Transmisi 4G/LTE, Kriptografi Chip Kartu, Likuiditas Panen & Inklusi Desa' }
               ].map(sec => {
                 const isActive = (selectedSector === sec.key);
                 const clickHandler = dayNum === 4 ? `selectDay4Sector('${sec.key}')` : `selectDay3Sector('${sec.key}')`;

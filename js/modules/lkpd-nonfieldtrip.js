@@ -2640,6 +2640,76 @@
       engC3Label: '3. Evaluasi & Catatan Siswa terhadap Solusi Rekayasa Peternak:',
       engC3Hint: 'Tuliskan catatan analisis Anda: Apakah teknik pengolahan pakan silase, rekayasa kandang sehat, atau pemanfaatan limbah kotoran menjadi pupuk/biogas terbukti efektif memangkas biaya pemeliharaan dan ramah lingkungan?'
     }
+  ,
+    industri: {
+      key: 'industri',
+      name: 'Agro-Industri & Pengolahan Pangan (Pabrik Beras RMU, Tahu-Tempe & Kemplang Panggang)',
+      badge: 'Sektor Agro-Industri & Pengolahan',
+      icon: 'precision_manufacturing',
+      colorClass: 'purple',
+      scalePlaceholder: 'Contoh: Penggilingan Padi RMU 5 Ton Gabah / Hari atau Pabrik Tahu 200 Kg Kedelai / Hari',
+      scaleLabel: 'Kapasitas Produksi Harian (Ton / Kg / Unit):',
+      sainsA1Label: '1. Karakteristik Bahan Baku, Kadar Air & Mutu Masukan:',
+      sainsA1Hint: 'Amati dan tanyakan: spesifikasi bahan baku (kadar air gabah kering giling 14%, kualitas kedelai impor/lokal, ikan gabus/tenggiri untuk kemplang Belitang), uji kadar kotoran/hampa, serta pencegahan kontaminasi jamur...',
+      sainsA2Label: '2. Proses Fisika-Kimia/Biologi Pengolahan & Pengendalian Limbah:',
+      sainsA2Hint: 'Amati dan tanyakan: proses pengolahan (polishing friksi beras, fermentasi ragi tempe / penggumpalan protein tahu dengan asam/batu tahu, pemuaian pati kemplang saat dipanggang), serta penanganan limbah (sekam padi, limbah cair tahu di IPAL/biogas)...',
+      tekB1Label: '1. Identifikasi Mesin & Peralatan Pengolahan yang Digunakan:',
+      tekB1Hint: 'Catat mesin yang diamati: mesin husker pemecah kulit gabah, polisher pengayak beras, mesin giling kedelai, boiler uap/ketel pemasak tahu, oven pemanggang kerupuk elektrik/gas, timbangan digital, atau sealer kemasan...',
+      tekB2Label: '2. Tenaga Penggerak Mesin, Konsumsi Energi & Biaya Operasional:',
+      tekB2Hint: 'Tanyakan ke pengelola: daya listrik PLN (kVA/kW) atau konsumsi solar mesin diesel/genset, konsumsi gas LPG / kayu bakar, biaya perawatan pisau/rol karet mesin, serta biaya listrik bulanan...',
+      engC1Label: '1. Kendala Teknis Pengolahan yang Dihadapi Pelaku Usaha:',
+      engC1Hint: 'Tanyakan: Apa kendala teknis terbesar? (Misal: persentase beras patah/menir tinggi, mesin cepat panas, fermentasi gagal saat cuaca lembap, bau limbah cair tahu mengganggu warga, pemanggangan kemplang tidak merata)...',
+      engC2Label: '2. Solusi Rekayasa Praktis & Inovasi Efisiensi yang Diterapkan:',
+      engC2Hint: 'Tanyakan solusinya: Bagaimana rekayasa teknis yang dilakukan? (Misal: pengaturan celah roll karet husker, modifikasi sirkulasi uap ketel, pemanfaatan sekam padi sebagai bahan bakar pemanas, pembuatan bak pengendapan IPAL bertingkat)...',
+      engC3Label: '3. Evaluasi & Catatan Siswa terhadap Solusi Rekayasa Pengolahan:',
+      engC3Hint: 'Tuliskan catatan analisis Anda: Apakah modifikasi teknis dan efisiensi energi terbukti menaikkan rendemen produksi dan mengurangi polusi lingkungan?'
+    },
+    perdagangan: {
+      key: 'perdagangan',
+      name: 'Perdagangan (Kios Sarana Pertanian Resmi, Pasar Tradisional & Grosir Sembako)',
+      badge: 'Sektor Perdagangan & Distribusi',
+      icon: 'storefront',
+      colorClass: 'blue',
+      scalePlaceholder: 'Contoh: Kios Saprotan Resmi 1 Ruko / Grosir Sembako Melayani 15 Toko Pengecer',
+      scaleLabel: 'Skala Operasional / Volume Penjualan Harian:',
+      sainsA1Label: '1. Karakteristik Komoditas, Higroskopisitas & Kondisi Gudang Penyimpanan:',
+      sainsA1Hint: 'Amati dan tanyakan: sifat kimia pupuk (Urea mudah menyerap uap air/higroskopis, NPK menggumpal), penyimpanan karung beras/gula dari kelembaban lantai semen menggunakan palet kayu, sirkulasi ventilasi, dan pengendalian hama gudang (kutu beras, tikus)...',
+      sainsA2Label: '2. Standar Mutu, Masa Kadaluarsa (Expired Date) & Kepatuhan Regulasi:',
+      sainsA2Hint: 'Amati dan tanyakan: pengecekan nomor registrasi Kementan pada pupuk/pestisida, segel karung beras SNI, tanggal kadaluarsa benih/obat-obatan, serta penerapan prinsip rotasi FIFO (First-In First-Out)...',
+      tekB1Label: '1. Identifikasi Peralatan & Aplikasi Digital yang Digunakan:',
+      tekB1Hint: 'Catat peralatan/aplikasi: aplikasi penebusan pupuk bersubsidi (i-Pubers / Rekan), software/aplikasi POS kasir pintar, barcode scanner, timbangan duduk/platform digital, printer nota thermal, sistem pembayaran non-tunai (QRIS / EDC)...',
+      tekB2Label: '2. Keandalan Teknologi, Biaya Langganan & Jaringan Internet:',
+      tekB2Hint: 'Tanyakan: kuota internet/jaringan seluler yang dipakai kasir, biaya sewa platform POS atau fee transaksi QRIS/kartu, serta keandalan alat saat listrik PLN padam...',
+      engC1Label: '1. Kendala Logistik & Teknis Distribusi yang Dihadapi Pedagang:',
+      engC1Hint: 'Tanyakan: Apa kendala logistik terbesar? (Misal: keterlambatan suplai distributor, karung pupuk rusak robek saat bongkar muat, pupuk menggumpal/mengeras di gudang, selisih stok fisik vs catatan aplikasi, sinyal internet offline saat penebusan petani)...',
+      engC2Label: '2. Solusi Rekayasa Tata Ruang & Manajemen Distribusi yang Diterapkan:',
+      engC2Hint: 'Tanyakan solusinya: Bagaimana penataan gudang dan rekayasa stok? (Misal: perbaikan tata letak rak racking vertikal, pemasangan alas palet anti-lembab, backup koneksi seluler multi-operator, pencatatan buffer stock otomatis)...',
+      engC3Label: '3. Evaluasi & Catatan Siswa terhadap Solusi Rekayasa Pedagang:',
+      engC3Hint: 'Tuliskan catatan analisis Anda: Apakah penataan ergonomi gudang dan digitalisasi POS/i-Pubers terbukti mempercepat perputaran barang (inventory turnover) dan mencegah kerugian?'
+    },
+    formal: {
+      key: 'formal',
+      name: 'Jasa Keuangan Mikro & Jasa Perorangan (Agen BRILink, BUMDes, Koperasi & Bengkel)',
+      badge: 'Sektor Jasa Keuangan & Jasa Perorangan',
+      icon: 'account_balance',
+      colorClass: 'indigo',
+      scalePlaceholder: 'Contoh: Transaksi Harian 60-100 Transaksi / Pelayanan Jasa Service 10-15 Unit',
+      scaleLabel: 'Volume Pelayanan / Transaksi Harian (Unit / Nasabah):',
+      sainsA1Label: '1. Prinsip Sains, Telekomunikasi Sinyal & Keamanan Biometrik/Kriptografi:',
+      sainsA1Hint: 'Amati dan tanyakan: transmisi sinyal data 4G/LTE microwave pada mesin EDC/smartphone, sensor biometrik kapasitif sidik jari (fingerprint scanner), enkripsi chip kartu debit EMV, dan stabilitas kelistrikan UPS...',
+      sainsA2Label: '2. Ergonomi Ruang Kerja, Manajemen Antrean & K3 Pelayanan:',
+      sainsA2Hint: 'Amati dan tanyakan: pencahayaan loket transaksi, kenyamanan tempat duduk nasabah, ventilasi ruangan, prosedur privasi kerahasiaan PIN/keamanan brankas uang tunai, dan pengelolaan limbah struk kertas thermal (bebas BPA)...',
+      tekB1Label: '1. Identifikasi Perangkat Keras (Hardware) & Sistem Transaksi:',
+      tekB1Hint: 'Catat perangkat yang digunakan: Mesin EDC perbankan (GPRS/WiFi), smartphone aplikasi Mobile Banking/Keagenan (BRILink Mobile), printer bluetooth thermal, mesin hitung uang dengan detektor UV uang palsu, brankas baja tahan api...',
+      tekB2Label: '2. Biaya Operasional Teknologi, Paket Data & Keandalan Daya:',
+      tekB2Hint: 'Tanyakan: biaya paket data internet multi-SIM card untuk menjamin uptime sinyal, biaya kertas struk thermal, biaya token listrik & perawatan UPS/inverter saat PLN padam...',
+      engC1Label: '1. Kendala Teknis Layanan & Likuiditas Finansial yang Dihadapi Agen/Jasa:',
+      engC1Hint: 'Tanyakan: Apa kendala operasional yang paling menantang? (Misal: kehabisan likuiditas uang tunai mendadak saat musim panen raya gabah Belitang, mesin EDC timeout atau sinyal drop, kertas printer macet, nasabah lupa PIN atau kartu tertelan)...',
+      engC2Label: '2. Solusi Rekayasa Operasional & Manajemen Kas yang Diterapkan:',
+      engC2Hint: 'Tanyakan solusinya: Bagaimana strategi operasional agen? (Misal: sistem perputaran kas bergilir dengan toko grosir tetangga, penggunaan dual provider SIM failover 4G, penempatan antena penguat sinyal directional, pembagian loket cepat setor vs tarik tunai)...',
+      engC3Label: '3. Evaluasi & Catatan Siswa terhadap Solusi Rekayasa Jasa/Agen:',
+      engC3Hint: 'Tuliskan catatan analisis Anda: Apakah inovasi manajemen likuiditas dan dual-koneksi terbukti mempertahankan kepercayaan nasabah desa dan meningkatkan volume fee-based income secara konsisten?'
+    }
   };
 
   window.NFT_DAY3_SECTOR_DATA = NFT_DAY3_SECTOR_DATA;
@@ -2678,6 +2748,27 @@
     const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
     if (localSec && NFT_DAY3_SECTOR_DATA[localSec]) {
       sectorFromMateri = localSec;
+    } else if (!sectorFromMateri || sectorFromMateri === 'pertanian') {
+      // Fallback: warisi pilihan sektor dari Day 2 jika belum diset di Day 3
+      let d2Sec = localStorage.getItem('fincestem_nft_sector_d2_' + cleanNisn);
+      if (!d2Sec) {
+        try {
+          const rawM2 = localStorage.getItem('fincestem_materi_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_materi_day2_' + cleanNisn);
+          if (rawM2) {
+            const p2 = JSON.parse(rawM2);
+            if (p2 && p2.selectedSector) d2Sec = p2.selectedSector;
+          }
+        } catch(e) {}
+      }
+      if (d2Sec) {
+        let mapped = String(d2Sec).toLowerCase().trim();
+        if (mapped === 'pangan') mapped = 'pertanian';
+        if (mapped === 'jasa') mapped = 'industri';
+        if (mapped === 'keuangan') mapped = 'formal';
+        if (NFT_DAY3_SECTOR_DATA[mapped]) {
+          sectorFromMateri = mapped;
+        }
+      }
     }
 
     // Fallback verifikasi progress sistem
@@ -2862,8 +2953,11 @@
                 <select id="nftD3_sectorKey" ${disabledAttr} onchange="onNftDay3SectorChange(this.value)" class="w-full p-2.5 rounded-xl border border-emerald-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs font-bold text-emerald-950 bg-white cursor-pointer transition-all mt-1">
                   <option value="pertanian" ${selSector === 'pertanian' ? 'selected' : ''}>1. Pertanian Padi Sawah (Lumbung Pangan Komering, Irigasi BK, Traktor/Combine)</option>
                   <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet &amp; Kelapa Sawit, Sadap Lateks, Panen TBS)</option>
-                  <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>3. Perikanan Air Tawar (Sentra Kolam Patin &amp; Lele Belitang, Aerator &amp; Pakan)</option>
-                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>4. Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba, Ayam Broiler/Petelur &amp; Bebek, Silase Pakan, Chopper &amp; Biogas)</option>
+                  <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba, Ayam Broiler/Petelur &amp; Bebek)</option>
+                  <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin &amp; Lele Belitang, Aerator &amp; Pakan)</option>
+                  <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (Pabrik Beras RMU, Tahu-Tempe &amp; Kemplang)</option>
+                  <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi, Pasar Tradisional &amp; Grosir Sembako)</option>
+                  <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Jasa Keuangan Mikro &amp; Jasa Perorangan (Agen BRILink, BUMDes, Koperasi &amp; Bengkel)</option>
                 </select>
                 <p class="text-[11px] text-emerald-900/80 leading-relaxed font-medium mt-0.5">
                   <em>*Catatan: Seluruh panduan observasi Sains, Teknologi, dan Rekayasa di bawah ini otomatis menyesuaikan dengan sektor yang Anda pilih.</em>
@@ -3149,6 +3243,9 @@
                     <option value="Ton" ${val('harvestUnit') === 'Ton' ? 'selected' : ''}>Ton</option>
                     <option value="Ekor" ${val('harvestUnit') === 'Ekor' ? 'selected' : ''}>Ekor (Ternak/Unggas)</option>
                     <option value="Liter" ${val('harvestUnit') === 'Liter' ? 'selected' : ''}>Liter (Getah Lateks / Susu)</option>
+                    <option value="Bungkus/Kemasan" ${val('harvestUnit') === 'Bungkus/Kemasan' ? 'selected' : ''}>Bungkus / Kemasan (Produk Industri / Pangan)</option>
+                    <option value="Sak/Zak" ${val('harvestUnit') === 'Sak/Zak' ? 'selected' : ''}>Sak / Zak (Pupuk / Beras Grosir)</option>
+                    <option value="Transaksi/Unit" ${val('harvestUnit') === 'Transaksi/Unit' ? 'selected' : ''}>Transaksi / Unit Jasa (Keuangan Mikro / Service)</option>
                   </select>
                 </div>
 
@@ -3330,6 +3427,16 @@
     // Simpan draf sementara sebelum render ulang
     saveNftDay3DraftImmediate(false);
     localStorage.setItem('fincestem_nft_sector_d3_' + cleanNisn, newSectorKey);
+
+    // Bersihkan cache paket asesmen Day 3 agar otomatis menghasilkan soal sektor yang baru
+    try {
+      localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d3_' + cleanNisn);
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d3_') && k.endsWith(cleanNisn)) {
+          localStorage.removeItem(k);
+        }
+      });
+    } catch(e) {}
 
     const draft = collectFormDataD3();
     draft.sectorKey = newSectorKey;

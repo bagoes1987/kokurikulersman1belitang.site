@@ -1715,25 +1715,26 @@
 
   const NFT_DAY3_SECTOR_MAP = {
     'pangan': 'Pertanian Tanaman Pangan (Padi & Palawija)',
-    'pertanian': 'Pertanian Tanaman Pangan & Hortikultura',
+    'pertanian': 'Pertanian Padi Sawah (Lumbung Pangan Komering)',
     'perkebunan': 'Perkebunan Rakyat (Karet & Sawit)',
-    'peternakan': 'Peternakan Rakyat & Budidaya Ternak (Sapi, Kambing & Unggas)',
-    'perikanan': 'Perikanan Budidaya Air Tawar (Patin & Nila)',
-    'industri': 'Agro-Industri Pangan & RMU / UMKM Olahan',
-    'jasa': 'Agro-Industri Pangan & Jasa Teknik',
-    'perdagangan': 'Perdagangan Pasar & Kios Saprotan Belitang',
-    'formal': 'Jasa Keuangan Mikro & Agen BRILink',
-    'keuangan': 'Koperasi, Agen BRILink & Keuangan Mikro OKU Timur'
+    'peternakan': 'Peternakan Rakyat OKU Timur (Sapi, Kambing & Unggas)',
+    'perikanan': 'Perikanan Budidaya Air Tawar (Patin, Lele & Nila)',
+    'industri': 'Agro-Industri & Pengolahan Pangan (RMU, Tahu-Tempe & Kemplang)',
+    'jasa': 'Agro-Industri & Pengolahan Pangan (RMU, Tahu-Tempe & Kemplang)',
+    'perdagangan': 'Perdagangan (Kios Pupuk/Saprotan Resmi & Grosir Sembako)',
+    'formal': 'Jasa Keuangan Mikro & Jasa Perorangan (Agen BRILink & BUMDes)',
+    'keuangan': 'Jasa Keuangan Mikro & Jasa Perorangan (Agen BRILink & BUMDes)'
   };
 
   function normalizeSectorKey(key, dayNum) {
-    if (!key) return (Number(dayNum) === 2 ? 'pangan' : 'pertanian');
+    const d = Number(dayNum) || 2;
+    if (!key) return (d === 2 ? 'pangan' : 'pertanian');
     const k = String(key).toLowerCase().trim();
-    if (k === 'pertanian' || k === 'pangan') return (Number(dayNum) === 2 ? 'pangan' : 'pertanian');
-    if (k === 'jasa' || k === 'agroindustri' || k === 'industri') return (Number(dayNum) === 2 ? 'industri' : 'jasa');
-    if (k === 'keuangan' || k === 'formal') return (Number(dayNum) === 2 ? 'formal' : 'keuangan');
+    if (k === 'pertanian' || k === 'pangan') return (d === 2 ? 'pangan' : 'pertanian');
+    if (k === 'jasa' || k === 'agroindustri' || k === 'industri') return 'industri';
+    if (k === 'keuangan' || k === 'formal') return 'formal';
     if (NFT_DAY3_SECTOR_MAP[k]) return k;
-    return (Number(dayNum) === 2 ? 'pangan' : 'pertanian');
+    return (d === 2 ? 'pangan' : 'pertanian');
   }
 
   function getStudentDay3Sector(cleanNisn, dayNum) {

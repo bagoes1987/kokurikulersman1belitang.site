@@ -21566,6 +21566,33 @@ window.NFT_BANK_SOAL_DAYS = {
       }
     }
 
+    // KHUSUS DAY 3 (SEKTOR ADAPTIF: 7 SEKTOR UNGGULAN OKU TIMUR x 50 SOAL STEM LENGKAP)
+    if (dayNum === 3) {
+      let sec = sectorKey ? String(sectorKey).toLowerCase().trim() : 'pertanian';
+      if (sec === 'pangan') sec = 'pertanian';
+      if (sec === 'jasa' || sec === 'agroindustri') sec = 'industri';
+      if (sec === 'keuangan') sec = 'formal';
+
+      const d3All = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
+
+      // 1. Cek dari window.NFT_DAY3_SECTOR_QUESTIONS (industri, perdagangan, formal)
+      if (window.NFT_DAY3_SECTOR_QUESTIONS && window.NFT_DAY3_SECTOR_QUESTIONS[sec]) {
+        return window.NFT_DAY3_SECTOR_QUESTIONS[sec];
+      }
+
+      // 2. Cek dari d3All yang difilter berdasarkan sector (pertanian, perkebunan, peternakan, perikanan)
+      const secPool = d3All.filter(q => q.sector === sec);
+      if (secPool.length >= 50) {
+        return secPool;
+      } else if (secPool.length > 0) {
+        return secPool;
+      }
+
+      // 3. Fallback: ambil pertanian
+      const defPool = d3All.filter(q => q.sector === 'pertanian');
+      return defPool.length ? defPool : d3All.slice(0, 50);
+    }
+
     if (dayNum === 4 && (!dayQuestions || dayQuestions.length === 0)) {
       const d3Questions = (window.NFT_BANK_SOAL_DAYS && window.NFT_BANK_SOAL_DAYS[3]) || [];
       const indMap4 = {
