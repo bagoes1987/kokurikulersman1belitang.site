@@ -53,7 +53,10 @@
   // Helper Format Angka Ribuan Rupiah
   function formatRupiahInput(val) {
     if (!val && val !== 0) return '';
-    const num = parseInt(String(val).replace(/\D/g, ''), 10);
+    let raw = String(val).replace(/\D/g, '');
+    raw = raw.replace(/^0+/, '');
+    if (!raw) return '';
+    const num = parseInt(raw, 10);
     if (isNaN(num)) return '';
     return num.toLocaleString('id-ID');
   }
@@ -63,6 +66,9 @@
     const num = parseInt(String(val).replace(/\D/g, ''), 10);
     return isNaN(num) ? 0 : num;
   }
+
+  window.formatRupiahInput = formatRupiahInput;
+  window.parseRupiahNumber = parseRupiahNumber;
 
   // 1. RENDER LKPD DAY 1 NON-FIELD TRIP (INVESTIGASI LAPANGAN EKONOMI & KEUANGAN)
   function renderNonFieldTripDay1LKPD(isReadOnly) {
@@ -2865,6 +2871,15 @@
     const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTesterD3);
 
     const val = (k) => (formData && formData[k] !== undefined) ? formData[k] : '';
+    const valMoney = (k) => {
+      const v = (formData && formData[k] !== undefined) ? formData[k] : '';
+      return formatRupiahInput(v);
+    };
+    const valYield = (k) => {
+      const v = (formData && formData[k] !== undefined) ? formData[k] : '';
+      if (!v || v === 0 || v === '0') return '';
+      return v;
+    };
     let d3CurDistrict = normalizeDistrictName(val('district') || '');
     if (!d3CurDistrict && val('location')) {
       d3CurDistrict = OKU_TIMUR_DISTRICTS.find(d => val('location').toLowerCase().includes(d.toLowerCase())) || '';
@@ -3233,25 +3248,25 @@
                 <!-- Biaya Bibit/Benih -->
                 <div class="flex flex-col gap-1">
                   <label class="text-[11px] font-bold text-slate-700">Biaya Bibit / Benih (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="number" id="nftD3_costSeed" min="0" ${readOnlyAttr} value="${val('costSeed')}" placeholder="Contoh: 750000" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <input type="text" inputmode="numeric" id="nftD3_costSeed" ${readOnlyAttr} value="${valMoney('costSeed')}" placeholder="Contoh: 750.000" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
 
                 <!-- Biaya Pupuk / Pakan -->
                 <div class="flex flex-col gap-1">
                   <label class="text-[11px] font-bold text-slate-700">Biaya Pupuk / Pakan (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="number" id="nftD3_costFeedFertilizer" min="0" ${readOnlyAttr} value="${val('costFeedFertilizer')}" placeholder="Contoh: 2800000" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <input type="text" inputmode="numeric" id="nftD3_costFeedFertilizer" ${readOnlyAttr} value="${valMoney('costFeedFertilizer')}" placeholder="Contoh: 2.800.000" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
 
                 <!-- Biaya Solar/Listrik & Sewa Mesin -->
                 <div class="flex flex-col gap-1">
                   <label class="text-[11px] font-bold text-slate-700">BBM / Listrik &amp; Sewa Mesin (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="number" id="nftD3_costEnergyMachine" min="0" ${readOnlyAttr} value="${val('costEnergyMachine')}" placeholder="Contoh: 1500000" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <input type="text" inputmode="numeric" id="nftD3_costEnergyMachine" ${readOnlyAttr} value="${valMoney('costEnergyMachine')}" placeholder="Contoh: 1.500.000" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
 
                 <!-- Upah Tenaga Kerja -->
                 <div class="flex flex-col gap-1">
                   <label class="text-[11px] font-bold text-slate-700">Upah Tenaga Kerja (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="number" id="nftD3_costLabor" min="0" ${readOnlyAttr} value="${val('costLabor')}" placeholder="Contoh: 1800000" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <input type="text" inputmode="numeric" id="nftD3_costLabor" ${readOnlyAttr} value="${valMoney('costLabor')}" placeholder="Contoh: 1.800.000" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
               </div>
 
@@ -3273,7 +3288,7 @@
                 <!-- Volume Hasil Panen -->
                 <div class="flex flex-col gap-1">
                   <label class="text-[11px] font-bold text-slate-700">Volume Hasil Panen: <span class="text-rose-600">*</span></label>
-                  <input type="number" id="nftD3_harvestYield" min="0" step="any" ${readOnlyAttr} value="${val('harvestYield')}" placeholder="Contoh: 3500" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <input type="number" id="nftD3_harvestYield" min="0" step="any" ${readOnlyAttr} value="${valYield('harvestYield')}" placeholder="Contoh: 3500" onfocus="if (this.value === '0') this.value = '';" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
 
                 <!-- Satuan Panen -->
@@ -3293,7 +3308,7 @@
                 <!-- Harga Jual per Satuan -->
                 <div class="flex flex-col gap-1">
                   <label class="text-[11px] font-bold text-slate-700">Harga Jual per Satuan (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="number" id="nftD3_pricePerUnit" min="0" ${readOnlyAttr} value="${val('pricePerUnit')}" placeholder="Contoh: 6500 (per kg gabah)" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <input type="text" inputmode="numeric" id="nftD3_pricePerUnit" ${readOnlyAttr} value="${valMoney('pricePerUnit')}" placeholder="Contoh: 6.500 (per kg gabah)" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
               </div>
 
@@ -3411,15 +3426,15 @@
   // FUNGSI KALKULATOR FINANSIAL DAY 3
   // ========================================================
   function calcDay3Financials() {
-    const seed = parseFloat(document.getElementById('nftD3_costSeed')?.value) || 0;
-    const feed = parseFloat(document.getElementById('nftD3_costFeedFertilizer')?.value) || 0;
-    const energy = parseFloat(document.getElementById('nftD3_costEnergyMachine')?.value) || 0;
-    const labor = parseFloat(document.getElementById('nftD3_costLabor')?.value) || 0;
+    const seed = parseRupiahNumber(document.getElementById('nftD3_costSeed')?.value);
+    const feed = parseRupiahNumber(document.getElementById('nftD3_costFeedFertilizer')?.value);
+    const energy = parseRupiahNumber(document.getElementById('nftD3_costEnergyMachine')?.value);
+    const labor = parseRupiahNumber(document.getElementById('nftD3_costLabor')?.value);
 
     const totalCost = seed + feed + energy + labor;
 
     const yieldQty = parseFloat(document.getElementById('nftD3_harvestYield')?.value) || 0;
-    const unitPrice = parseFloat(document.getElementById('nftD3_pricePerUnit')?.value) || 0;
+    const unitPrice = parseRupiahNumber(document.getElementById('nftD3_pricePerUnit')?.value);
 
     const totalRevenue = yieldQty * unitPrice;
     const netProfit = totalRevenue - totalCost;
@@ -3516,15 +3531,16 @@
   function collectFormDataD3() {
     const valOf = (id) => (document.getElementById(id)?.value || '').trim();
     const numValOf = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+    const rupValOf = (id) => parseRupiahNumber(document.getElementById(id)?.value);
 
-    const seed = numValOf('nftD3_costSeed');
-    const feed = numValOf('nftD3_costFeedFertilizer');
-    const energy = numValOf('nftD3_costEnergyMachine');
-    const labor = numValOf('nftD3_costLabor');
+    const seed = rupValOf('nftD3_costSeed');
+    const feed = rupValOf('nftD3_costFeedFertilizer');
+    const energy = rupValOf('nftD3_costEnergyMachine');
+    const labor = rupValOf('nftD3_costLabor');
     const totalCost = seed + feed + energy + labor;
 
     const yieldQty = numValOf('nftD3_harvestYield');
-    const unitPrice = numValOf('nftD3_pricePerUnit');
+    const unitPrice = rupValOf('nftD3_pricePerUnit');
     const totalRevenue = yieldQty * unitPrice;
     const netProfit = totalRevenue - totalCost;
 
