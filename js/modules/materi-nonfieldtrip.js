@@ -4266,24 +4266,24 @@
     const sectorKeys = ['pertanian', 'perkebunan', 'peternakan', 'perikanan', 'industri', 'perdagangan', 'formal'];
 
     container.innerHTML = `
-      <div class="flex flex-col gap-5 pb-12 max-w-4xl mx-auto w-full">
+      <div class="flex flex-col gap-6 pb-14 max-w-4xl mx-auto w-full">
 
         <!-- BANNER STATUS TERKIRIM JIKA SUDAH SUBMIT -->
         ${isSubmitted ? `
-          <div class="p-4 sm:p-5 rounded-3xl bg-emerald-500/15 border-2 border-emerald-400 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
-            <div class="flex items-center gap-3">
+          <div class="p-4 sm:p-5 rounded-3xl bg-emerald-500/15 border-2 border-emerald-400 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div class="flex items-center gap-3.5">
               <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-inner">
                 <span class="material-symbols-outlined text-2xl">verified</span>
               </div>
               <div class="flex flex-col">
-                <span class="text-xs font-black uppercase text-emerald-800 tracking-wider">Modul Panduan Video Day ${dayNum} Tuntas</span>
+                <span class="text-[11px] font-black uppercase text-emerald-800 tracking-wider">Modul Panduan Video Day ${dayNum} Tuntas</span>
                 <h3 class="text-sm sm:text-base font-black text-emerald-950">Resume &amp; Rencana Video Day ${dayNum} Telah Tersimpan Resmi ✓</h3>
                 <p class="text-xs text-emerald-800/90 font-medium mt-0.5 leading-relaxed">
-                  Sektor Pilihan: <strong>${escapeHtml(secGuide.name)}</strong>. Anda tetap dapat membaca panduan urutan video di bawah ini atau langsung menuju LKPD Day ${dayNum} untuk mengumpulkan link YouTube.
+                  Sektor Terpilih: <strong>${escapeHtml(secGuide.name)}</strong>. Naskah urutan video menit demi menit di bawah ini siap dijadikan panduan berbicara mandiri di depan kamera.
                 </p>
               </div>
             </div>
-            <a href="lkpd.html?day=${dayNum}" class="px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-sm shrink-0 flex items-center gap-1.5 cursor-pointer transition-all">
+            <a href="lkpd.html?day=${dayNum}" class="w-full sm:w-auto px-5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-sm shrink-0 flex items-center justify-center gap-1.5 cursor-pointer transition-all active:scale-[0.98]">
               <span>Buka LKPD Day ${dayNum}</span>
               <span class="material-symbols-outlined text-sm">arrow_forward</span>
             </a>
@@ -4291,29 +4291,29 @@
         ` : ''}
 
         <!-- HEADER MODUL PANDUAN VIDEO DAY 5 / DAY 6 -->
-        <div class="bg-gradient-to-br ${headerGradient} rounded-3xl p-5 sm:p-6 text-white shadow-xl flex flex-col gap-3.5 border">
-          <div class="flex items-center justify-between gap-2 flex-wrap">
+        <div class="bg-gradient-to-br ${headerGradient} rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col gap-4 border">
+          <div class="flex items-center justify-between gap-2.5 flex-wrap">
             <div class="flex items-center gap-2 flex-wrap">
-              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/15 text-amber-200 backdrop-blur-md flex items-center gap-1.5">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/15 text-amber-200 backdrop-blur-md flex items-center gap-1.5 shadow-2xs">
                 <span class="material-symbols-outlined text-sm">smart_display</span>
                 <span>Non-Field Trip • Modul Day ${dayNum}</span>
               </span>
-              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold ${badgeColor}">
-                ${isDay5 ? 'Video Eksplorasi Sains & Teknologi Sektor (5–10 Menit)' : 'Video Analisis Rekayasa & Finansial Sektor (5–10 Menit)'}
+              <span class="px-3 py-1 rounded-full text-[11px] font-extrabold ${badgeColor} shadow-2xs">
+                ${isDay5 ? 'Video Sains & Teknologi Sektor (5–10 Menit)' : 'Video Rekayasa & Finansial Sektor (5–10 Menit)'}
               </span>
             </div>
             <span class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-white/20 text-white'}">
-              ${isSubmitted ? '✓ Modul Selesai' : 'Panduan Produksi Video YouTube'}
+              ${isSubmitted ? '✓ Modul Selesai' : 'Panduan Naskah Video YouTube'}
             </span>
           </div>
 
           <div>
-            <h1 class="font-black text-xl sm:text-2xl leading-tight">
+            <h1 class="font-black text-xl sm:text-2xl lg:text-3xl leading-tight">
               ${isDay5
-                ? 'Modul Day 5: Panduan Pembuatan Video Eksplorasi Sains & Teknologi Sektor'
-                : 'Modul Day 6: Panduan Pembuatan Video Analisis Rekayasa Solusi Kendala & Finansial Sektor'}
+                ? 'Modul Day 5: Panduan Video Eksplorasi Sains & Teknologi Sektor'
+                : 'Modul Day 6: Panduan Video Analisis Rekayasa Solusi Kendala & Finansial Sektor'}
             </h1>
-            <p class="text-xs sm:text-sm text-slate-200/95 leading-relaxed font-medium mt-1.5 text-justify">
+            <p class="text-xs sm:text-sm text-slate-200/95 leading-relaxed font-medium mt-2 text-justify">
               ${isDay5
                 ? 'Pada Day 5 ini, Anda ditugaskan membuat video eksplorasi mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube. Tampil langsung di depan kamera menyorot objek atau alat kerja serta membedah pilar Sains dan pilar Teknologi dari sektor pilihan Anda!'
                 : 'Pada Day 6 ini, Anda melanjutkan pembuatan video analisis mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube dengan fokus membedah pilar Rekayasa atas kendala lapangan dan pilar Matematika Finansial (BOP, HPP, Omzet, Laba) pada sektor pilihan Anda.'}
@@ -4321,56 +4321,56 @@
           </div>
 
           <!-- IDENTITAS SISWA & FASILITATOR -->
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-3 border-t border-white/15 text-xs">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3.5 border-t border-white/15 text-xs">
             <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-              <span class="text-slate-300 text-[10px] font-medium">Nama Peserta Didik</span>
-              <span class="font-extrabold truncate text-white">${escapeHtml(studentName)}</span>
+              <span class="text-slate-300 text-[10px] font-medium uppercase tracking-wider">Nama Peserta Didik</span>
+              <span class="font-extrabold truncate text-white mt-0.5">${escapeHtml(studentName)}</span>
             </div>
             <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-              <span class="text-slate-300 text-[10px] font-medium">NISN / Identitas</span>
-              <span class="font-extrabold truncate text-white">${escapeHtml(studentNisn)}</span>
+              <span class="text-slate-300 text-[10px] font-medium uppercase tracking-wider">NISN / Identitas</span>
+              <span class="font-extrabold truncate text-white mt-0.5">${escapeHtml(studentNisn)}</span>
             </div>
             <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-              <span class="text-slate-300 text-[10px] font-medium">Kelas / Rombel</span>
-              <span class="font-extrabold truncate text-white">${escapeHtml(studentClass)}</span>
+              <span class="text-slate-300 text-[10px] font-medium uppercase tracking-wider">Kelas / Rombel</span>
+              <span class="font-extrabold truncate text-white mt-0.5">${escapeHtml(studentClass)}</span>
             </div>
             <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
-              <span class="text-slate-300 text-[10px] font-medium">Guru Fasilitator</span>
-              <span class="font-extrabold truncate text-white">${escapeHtml(fasilName)}</span>
+              <span class="text-slate-300 text-[10px] font-medium uppercase tracking-wider">Guru Fasilitator</span>
+              <span class="font-extrabold truncate text-white mt-0.5">${escapeHtml(fasilName)}</span>
             </div>
           </div>
         </div>
 
         <!-- ATURAN TEKNIS VIDEO YOUTUBE (5-10 MENIT, TANPA WAWANCARA) -->
-        <div class="p-4 sm:p-5 rounded-3xl bg-rose-50 border-2 border-rose-200 text-rose-950 flex flex-col gap-2.5 shadow-2xs">
+        <div class="p-4 sm:p-5 rounded-3xl bg-rose-50 border-2 border-rose-200 text-rose-950 flex flex-col gap-3 shadow-2xs">
           <div class="flex items-center gap-2 font-black text-xs sm:text-sm text-rose-900">
             <span class="material-symbols-outlined text-rose-600 text-lg">videocam</span>
-            <span>KETENTUAN WAJIB PEMBUATAN VIDEO YOUTUBE DAY ${dayNum}:</span>
+            <span>3 KETENTUAN WAJIB PEMBUATAN VIDEO YOUTUBE DAY ${dayNum}:</span>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-            <div class="p-3 rounded-2xl bg-white border border-rose-200 flex items-start gap-2.5">
-              <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 font-black text-xs flex items-center justify-center shrink-0">5-10m</span>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <div class="p-3.5 rounded-2xl bg-white border border-rose-200 flex items-start gap-3 shadow-2xs">
+              <span class="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 font-black text-xs flex items-center justify-center shrink-0">5-10m</span>
               <div class="text-xs">
-                <strong class="text-slate-900 block">Durasi Minimal 5–10 Menit</strong>
-                <span class="text-slate-600 text-[11px] leading-snug">Rekam penjelasan secara utuh dan runtut mengikuti panduan menit ke menit.</span>
+                <strong class="text-slate-900 block font-bold">Durasi 5–10 Menit</strong>
+                <span class="text-slate-600 text-[11px] leading-snug">Jelaskan materi secara utuh dan runtut mengikuti 4 segmen panduan menit ke menit.</span>
               </div>
             </div>
-            <div class="p-3 rounded-2xl bg-white border border-rose-200 flex items-start gap-2.5">
-              <span class="w-8 h-8 rounded-xl bg-amber-100 text-amber-800 font-black text-xs flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-base">person_Check</span>
+            <div class="p-3.5 rounded-2xl bg-white border border-rose-200 flex items-start gap-3 shadow-2xs">
+              <span class="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 font-black text-xs flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">person_check</span>
               </span>
               <div class="text-xs">
-                <strong class="text-slate-900 block">Tanpa Wawancara Narasumber</strong>
-                <span class="text-slate-600 text-[11px] leading-snug">Tidak perlu mewawancarai pemilik usaha. Anda sendiri yang menjelaskan &amp; menyorot objek/alat!</span>
+                <strong class="text-slate-900 block font-bold">Mandiri Tanpa Wawancara</strong>
+                <span class="text-slate-600 text-[11px] leading-snug">Tidak mewawancarai pemilik usaha. Anda sendiri yang berbicara menyorot objek/alat kerja!</span>
               </div>
             </div>
-            <div class="p-3 rounded-2xl bg-white border border-rose-200 flex items-start gap-2.5">
-              <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 font-black text-xs flex items-center justify-center shrink-0">
-                <span class="material-symbols-outlined text-base">cloud_upload</span>
+            <div class="p-3.5 rounded-2xl bg-white border border-rose-200 flex items-start gap-3 shadow-2xs">
+              <span class="w-9 h-9 rounded-xl bg-teal-100 text-teal-800 font-black text-xs flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">cloud_upload</span>
               </span>
               <div class="text-xs">
-                <strong class="text-slate-900 block">Upload ke YouTube</strong>
-                <span class="text-slate-600 text-[11px] leading-snug">Setel visibilitas ke <strong>Publik</strong> atau <strong>Tidak Terdaftar (Unlisted)</strong>, lalu kirim link-nya di LKPD.</span>
+                <strong class="text-slate-900 block font-bold">Upload ke YouTube</strong>
+                <span class="text-slate-600 text-[11px] leading-snug">Setel visibilitas ke <strong>Publik</strong> atau <strong>Tidak Terdaftar (Unlisted)</strong>, lalu tempel link di LKPD.</span>
               </div>
             </div>
           </div>
@@ -4378,15 +4378,15 @@
 
         <!-- LANGKAH 1: PILIH MENU SEKTOR USAHA (7 PILIHAN INTERAKTIF) -->
         <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-teal-500/50 shadow-sm flex flex-col gap-4">
-          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
-            <div class="flex items-center gap-2.5">
-              <span class="w-9 h-9 rounded-2xl bg-teal-700 text-white flex items-center justify-center font-black text-sm shadow-xs">1</span>
+          <div class="flex items-center justify-between gap-2.5 border-b border-slate-100 pb-3.5 flex-wrap">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-teal-700 to-teal-900 text-white flex items-center justify-center font-black text-sm shadow-xs">1</span>
               <div>
                 <h2 class="font-black text-sm sm:text-base text-slate-900">Pilih Sektor Objek Video Anda (Klik Salah Satu Menu):</h2>
-                <p class="text-[11px] text-slate-500 font-medium">Begitu Anda memilih menu sektor di bawah ini, panduan urutan video dan materi bahasan akan otomatis menyesuaikan!</p>
+                <p class="text-[11px] text-slate-500 font-medium">Klik sektor yang Anda amati, panduan naskah dan materi menit demi menit di Langkah 2 akan otomatis menyesuaikan!</p>
               </div>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-black bg-teal-100 text-teal-900 border border-teal-300">
+            <span class="px-3.5 py-1.5 rounded-full text-xs font-black bg-teal-100 text-teal-900 border border-teal-300 shadow-2xs">
               Terpilih: ${escapeHtml(secGuide.shortName)}
             </span>
           </div>
@@ -4396,9 +4396,9 @@
               const s = NFT_VIDEO_SECTORS_GUIDE[k];
               const isAct = (k === selectedSector);
               return `
-                <button type="button" onclick="selectNftVideoSector(${dayNum}, '${k}')" class="text-left p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-2 ${isAct ? 'bg-teal-50/70 border-teal-600 ring-2 ring-teal-500/30 shadow-md' : 'bg-white border-slate-200 hover:border-teal-400 hover:bg-slate-50/60'}">
+                <button type="button" onclick="selectNftVideoSector(${dayNum}, '${k}')" class="text-left p-3.5 rounded-2xl border-2 transition-all cursor-pointer flex flex-col justify-between gap-2 ${isAct ? 'bg-teal-50/80 border-teal-600 ring-2 ring-teal-500/30 shadow-md' : 'bg-white border-slate-200 hover:border-teal-400 hover:bg-slate-50/70'}">
                   <div class="flex items-center justify-between gap-1.5 w-full">
-                    <span class="w-9 h-9 rounded-xl ${isAct ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center shrink-0">
+                    <span class="w-9 h-9 rounded-xl ${isAct ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-700'} flex items-center justify-center shrink-0 shadow-2xs">
                       <span class="material-symbols-outlined text-xl">${s.icon}</span>
                     </span>
                     <span class="px-2 py-0.5 rounded-full text-[10px] font-black ${isAct ? 'bg-teal-700 text-white' : 'bg-slate-100 text-slate-600'}">${isAct ? '✓ Aktif' : 'Pilih'}</span>
@@ -4422,116 +4422,160 @@
         </div>
 
         <!-- LANGKAH 2: PANDUAN URUTAN ISI VIDEO (STORYBOARD MENIT KE MENIT SESUAI SEKTOR) -->
-        <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-amber-400/70 shadow-sm flex flex-col gap-4">
-          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
-            <div class="flex items-center gap-2.5">
-              <span class="w-9 h-9 rounded-2xl bg-amber-500 text-slate-950 flex items-center justify-center font-black text-sm shadow-xs">2</span>
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-amber-400/80 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center justify-between gap-2.5 border-b border-slate-100 pb-3.5 flex-wrap">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center font-black text-sm shadow-xs">2</span>
               <div>
                 <h2 class="font-black text-sm sm:text-base text-slate-900">${escapeHtml(dayGuide.focusTitle)}</h2>
-                <p class="text-[11px] text-slate-600 font-medium">Ikuti urutan langkah menit demi menit berikut saat Anda berbicara mandiri di depan kamera HP:</p>
+                <p class="text-[11px] text-slate-600 font-medium">Ikuti 4 urutan langkah menit demi menit berikut saat Anda berbicara mandiri di depan kamera HP:</p>
               </div>
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-black bg-amber-100 text-amber-950 border border-amber-300">
+            <span class="px-3.5 py-1.5 rounded-full text-xs font-black bg-amber-100 text-amber-950 border border-amber-300 shadow-2xs">
               Durasi Total: 5 – 10 Menit
             </span>
           </div>
 
-          <p class="text-xs text-slate-700 bg-amber-50/60 p-3.5 rounded-2xl border border-amber-200 leading-relaxed font-medium text-justify">
-            💡 <strong>Intisari Tugas Video Day ${dayNum}:</strong> ${escapeHtml(dayGuide.summaryFocus)}
-          </p>
+          <!-- BANNER PETUNJUK NASKAH BICARA -->
+          <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-300/80 text-xs text-slate-800 flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-amber-700 text-xl shrink-0 mt-0.5">record_voice_over</span>
+            <div class="leading-relaxed">
+              <strong class="text-amber-950 font-bold block mb-0.5">Petunjuk Naskah Percakapan di Depan Kamera:</strong>
+              <span>Di setiap segmen di bawah ini telah disediakan <strong>Contoh Naskah Bicara Siswa</strong> (kotak bergaris kuning). Anda dapat menghafalkan, membaca langsung, atau memodifikasi kalimat tersebut sesuai dengan objek yang Anda rekam di lapangan!</span>
+            </div>
+          </div>
 
-          <!-- Daftar Segmen Menit ke Menit -->
-          <div class="grid grid-cols-1 gap-3">
+          <!-- DAFTAR SEGMEN MENIT KE MENIT (STORYBOARD MODERN) -->
+          <div class="grid grid-cols-1 gap-4">
             ${dayGuide.segments.map((seg, idx) => `
-              <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/90 flex flex-col sm:flex-row sm:items-start gap-3 hover:border-amber-400 transition-all">
-                <div class="px-3 py-1.5 rounded-xl bg-slate-900 text-amber-300 font-mono font-black text-xs shrink-0 self-start flex items-center gap-1.5 shadow-2xs">
-                  <span class="material-symbols-outlined text-sm">schedule</span>
-                  <span>${escapeHtml(seg.time)}</span>
+              <div class="p-4 sm:p-5 rounded-3xl bg-slate-50/80 border-2 border-slate-200/90 hover:border-amber-400 transition-all flex flex-col gap-3 shadow-2xs">
+                
+                <!-- BARIS ATAS: WAKTU & JUDUL SEGMEN -->
+                <div class="flex items-center justify-between gap-2 border-b border-slate-200/70 pb-2.5 flex-wrap">
+                  <div class="flex items-center gap-2">
+                    <span class="px-3 py-1.5 rounded-xl bg-slate-950 text-amber-300 font-mono font-black text-xs flex items-center gap-1.5 shadow-2xs">
+                      <span class="material-symbols-outlined text-sm">schedule</span>
+                      <span>${escapeHtml(seg.time)}</span>
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-black uppercase tracking-wider bg-slate-200 text-slate-700">
+                      Bagian ${idx + 1} dari 4
+                    </span>
+                  </div>
+                  <span class="text-[11px] font-bold text-slate-500">
+                    ${idx === 0 ? '⏱️ Durasi: ~1.5 Menit' : idx === 3 ? '⏱️ Durasi: ~2.5 Menit' : '⏱️ Durasi: ~3 Menit'}
+                  </span>
                 </div>
-                <div class="flex-1 min-w-0">
-                  <h4 class="font-black text-xs sm:text-sm text-slate-900">${escapeHtml(seg.title)}</h4>
-                  <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">${escapeHtml(seg.desc)}</p>
-                  ${seg.speechScript ? `
-                    <div class="mt-3 p-3.5 rounded-2xl bg-amber-500/10 border-2 border-amber-300 text-xs shadow-2xs">
-                      <div class="flex items-center gap-1.5 font-black text-amber-950 mb-1.5">
-                        <span class="material-symbols-outlined text-base text-amber-700">record_voice_over</span>
-                        <span>Contoh Kalimat / Naskah Bicara di Depan Kamera:</span>
+
+                <!-- JUDUL SEGMEN -->
+                <div>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-snug">${escapeHtml(seg.title)}</h3>
+                </div>
+
+                <!-- PETUNJUK TINDAKAN / SOROTAN KAMERA -->
+                <div class="p-3 rounded-2xl bg-white border border-slate-200/80 text-xs text-slate-700 flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-slate-500 text-base shrink-0 mt-0.5">videocam</span>
+                  <div class="leading-relaxed text-justify">
+                    <strong class="text-slate-900 font-bold block mb-0.5">Fokus Pengambilan Gambar &amp; Penjelasan:</strong>
+                    <span>${escapeHtml(seg.desc)}</span>
+                  </div>
+                </div>
+
+                <!-- KOTAK TELEPROMPTER / NASKAH BICARA SISWA -->
+                ${seg.speechScript ? `
+                  <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50/60 border-2 border-amber-300 text-xs flex flex-col gap-2 shadow-2xs">
+                    <div class="flex items-center justify-between gap-2">
+                      <div class="flex items-center gap-1.5 font-black text-amber-950 text-xs">
+                        <span class="w-6 h-6 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs shadow-2xs">
+                          <span class="material-symbols-outlined text-sm">mic</span>
+                        </span>
+                        <span>Contoh Naskah Bicara di Depan Kamera (Bisa Diikuti / Dimodifikasi):</span>
                       </div>
-                      <p class="italic text-slate-800 leading-relaxed text-[11.5px] bg-white/85 p-2.5 rounded-xl border border-amber-200/70 font-medium text-justify">
-                        "${escapeHtml(seg.speechScript.replace(/\[Nama Siswa\]/g, studentName).replace(/\[Kelas\]/g, studentClass).replace(/\[Nama Fasilitator\]/g, fasilName).replace(/\[Nama Guru Fasilitator\]/g, fasilName).replace(/\[Sektor Pilihan\]/g, secGuide.shortName))}"
-                      </p>
+                      <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-200/80 text-amber-900 shrink-0">
+                        Naskah Bicara
+                      </span>
                     </div>
-                  ` : ''}
-                </div>
+                    <div class="p-3 rounded-xl bg-white/95 border border-amber-200/70 text-slate-800 text-xs sm:text-[12px] leading-relaxed font-medium italic text-justify shadow-inner">
+                      “${escapeHtml(
+                        seg.speechScript
+                          .replace(/\[Nama Siswa\]/g, studentName)
+                          .replace(/\[Kelas\]/g, studentClass)
+                          .replace(/\[Nama Fasilitator\]/g, fasilName)
+                          .replace(/\[Nama Guru Fasilitator\]/g, fasilName)
+                          .replace(/\[Sektor Pilihan\]/g, secGuide.shortName)
+                      )}”
+                    </div>
+                  </div>
+                ` : ''}
+
               </div>
             `).join('')}
           </div>
 
-          <!-- Rincian Materi Spesifik Sektor yang Harus Dijelaskan di Dalam Video -->
+          <!-- RINCIAN MATERI SPESIFIK SEKTOR (CONTEK KHUSUS) -->
           ${isDay5 ? `
-            <div class="mt-2 pt-4 border-t border-slate-200 flex flex-col gap-3">
+            <div class="mt-3 pt-5 border-t border-slate-200 flex flex-col gap-3">
               <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-teal-700 text-lg">science</span>
-                <h3 class="font-black text-xs sm:text-sm text-slate-900">Panduan Poin Penjelasan Sains & Teknologi Sektor ${escapeHtml(secGuide.shortName)} (Untuk Dijelaskan pada Menit 01:30 – 07:30):</h3>
+                <h3 class="font-black text-xs sm:text-sm text-slate-900">Rangkuman Materi Sains &amp; Teknologi Sektor ${escapeHtml(secGuide.shortName)} (Bahan Contekan Siswa):</h3>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200 space-y-1">
-                  <div class="font-black text-sky-950 flex items-center gap-1.5">
-                    <span class="w-5 h-5 rounded-md bg-sky-600 text-white flex items-center justify-center text-[11px]">S</span>
-                    <span>SCIENCE (Sains — Fisika, Kimia, Biologi)</span>
+                <div class="p-4 rounded-2xl bg-sky-50/80 border-2 border-sky-200 space-y-1.5 shadow-2xs">
+                  <div class="font-black text-sky-950 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-sky-600 text-white flex items-center justify-center text-xs font-black shadow-2xs">S</span>
+                    <span class="text-xs sm:text-sm">1. Pilar SCIENCE (Sains Alami &amp; Biologi/Kimia)</span>
                   </div>
-                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.stemPoints.science)}</p>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify pt-1">${escapeHtml(dayGuide.stemPoints.science)}</p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200 space-y-1">
-                  <div class="font-black text-teal-950 flex items-center gap-1.5">
-                    <span class="w-5 h-5 rounded-md bg-teal-600 text-white flex items-center justify-center text-[11px]">T</span>
-                    <span>TECHNOLOGY (Teknologi Alat &amp; Digital)</span>
+                <div class="p-4 rounded-2xl bg-teal-50/80 border-2 border-teal-200 space-y-1.5 shadow-2xs">
+                  <div class="font-black text-teal-950 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-teal-600 text-white flex items-center justify-center text-xs font-black shadow-2xs">T</span>
+                    <span class="text-xs sm:text-sm">2. Pilar TECHNOLOGY (Teknologi Alat &amp; Mesin)</span>
                   </div>
-                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.stemPoints.technology)}</p>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify pt-1">${escapeHtml(dayGuide.stemPoints.technology)}</p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-amber-50/70 border border-amber-200 space-y-1">
-                  <div class="font-black text-amber-950 flex items-center gap-1.5">
-                    <span class="w-5 h-5 rounded-md bg-amber-600 text-white flex items-center justify-center text-[11px]">E</span>
-                    <span>ENGINEERING (Rekayasa Desain &amp; Konstruksi)</span>
+                <div class="p-4 rounded-2xl bg-amber-50/80 border-2 border-amber-200 space-y-1.5 shadow-2xs">
+                  <div class="font-black text-amber-950 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-amber-600 text-white flex items-center justify-center text-xs font-black shadow-2xs">E</span>
+                    <span class="text-xs sm:text-sm">3. Pilar ENGINEERING (Trik Solusi Teknis Lapangan)</span>
                   </div>
-                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.stemPoints.engineering)}</p>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify pt-1">${escapeHtml(dayGuide.stemPoints.engineering)}</p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 space-y-1">
-                  <div class="font-black text-purple-950 flex items-center gap-1.5">
-                    <span class="w-5 h-5 rounded-md bg-purple-600 text-white flex items-center justify-center text-[11px]">M</span>
-                    <span>MATHEMATICS (Kalkulasi &amp; Efisiensi)</span>
+                <div class="p-4 rounded-2xl bg-purple-50/80 border-2 border-purple-200 space-y-1.5 shadow-2xs">
+                  <div class="font-black text-purple-950 flex items-center gap-2">
+                    <span class="w-6 h-6 rounded-lg bg-purple-600 text-white flex items-center justify-center text-xs font-black shadow-2xs">M</span>
+                    <span class="text-xs sm:text-sm">4. Pilar MATHEMATICS (Kalkulasi &amp; Efisiensi Kerja)</span>
                   </div>
-                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.stemPoints.mathematics)}</p>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify pt-1">${escapeHtml(dayGuide.stemPoints.mathematics)}</p>
                 </div>
               </div>
             </div>
           ` : `
-            <div class="mt-2 pt-4 border-t border-slate-200 flex flex-col gap-3">
+            <div class="mt-3 pt-5 border-t border-slate-200 flex flex-col gap-3">
               <div class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-teal-700 text-lg">payments</span>
-                <h3 class="font-black text-xs sm:text-sm text-slate-900">ConTek / Panduan Materi Analisis Finansial &amp; Inovasi Sektor ${escapeHtml(secGuide.shortName)} (Untuk Dijelaskan di Video Day 6):</h3>
+                <h3 class="font-black text-xs sm:text-sm text-slate-900">Rangkuman Materi Rekayasa, Finansial &amp; Inovasi Sektor ${escapeHtml(secGuide.shortName)} (Bahan Contekan Siswa):</h3>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                <div class="p-3.5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-1">
-                  <div class="font-black text-emerald-950 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-base text-emerald-700">account_balance_wallet</span>
-                    <span>1. Analisis Pilar Financial</span>
+                <div class="p-4 rounded-2xl bg-amber-50/80 border-2 border-amber-200 space-y-1.5 shadow-2xs">
+                  <div class="font-black text-amber-950 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg text-amber-700">engineering</span>
+                    <span class="text-xs sm:text-sm">1. Pilar REKAYASA (Kendala &amp; Solusi)</span>
                   </div>
-                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.finPoints.financial)}</p>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify pt-1">${escapeHtml(dayGuide.finPoints.constraints)}</p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-rose-50/70 border border-rose-200 space-y-1">
-                  <div class="font-black text-rose-950 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-base text-rose-700">warning</span>
-                    <span>2. Evaluasi Kendala &amp; Risiko</span>
+                <div class="p-4 rounded-2xl bg-emerald-50/80 border-2 border-emerald-200 space-y-1.5 shadow-2xs">
+                  <div class="font-black text-emerald-950 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg text-emerald-700">account_balance_wallet</span>
+                    <span class="text-xs sm:text-sm">2. Pilar FINANSIAL (BOP, HPP &amp; Laba)</span>
                   </div>
-                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.finPoints.constraints)}</p>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify pt-1">${escapeHtml(dayGuide.finPoints.financial)}</p>
                 </div>
-                <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-1">
-                  <div class="font-black text-indigo-950 flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-base text-indigo-700">lightbulb</span>
-                    <span>3. Solusi &amp; Inovasi FINCESTEM</span>
+                <div class="p-4 rounded-2xl bg-indigo-50/80 border-2 border-indigo-200 space-y-1.5 shadow-2xs">
+                  <div class="font-black text-indigo-950 flex items-center gap-2">
+                    <span class="material-symbols-outlined text-lg text-indigo-700">lightbulb</span>
+                    <span class="text-xs sm:text-sm">3. Solusi &amp; INOVASI Nilai Tambah</span>
                   </div>
-                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify">${escapeHtml(dayGuide.finPoints.innovation)}</p>
+                  <p class="text-slate-700 leading-relaxed text-[11.5px] text-justify pt-1">${escapeHtml(dayGuide.finPoints.innovation)}</p>
                 </div>
               </div>
             </div>
@@ -4540,15 +4584,15 @@
 
         <!-- LANGKAH 3: FORM RESUME & RENCANA ALUR VIDEO SISWA (SYARAT MEMBUKA LKPD) -->
         <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-slate-200 shadow-sm flex flex-col gap-4">
-          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3 flex-wrap">
-            <div class="flex items-center gap-2.5">
-              <span class="w-9 h-9 rounded-2xl bg-teal-800 text-white flex items-center justify-center font-black text-sm shadow-xs">3</span>
+          <div class="flex items-center justify-between gap-2.5 border-b border-slate-100 pb-3.5 flex-wrap">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-teal-800 to-slate-900 text-white flex items-center justify-center font-black text-sm shadow-xs">3</span>
               <div>
                 <h2 class="font-black text-sm sm:text-base text-slate-900">Isi Resume &amp; Rencana Video Day ${dayNum} Anda</h2>
-                <p class="text-[11px] text-slate-500 font-medium">Tuliskan objek yang akan Anda rekam beserta ringkasan poin penjelasan Anda untuk membuka LKPD Day ${dayNum}.</p>
+                <p class="text-[11px] text-slate-500 font-medium">Tuliskan objek yang Anda rekam beserta resume poin penjelasan Anda untuk membuka akses LKPD Day ${dayNum}.</p>
               </div>
             </div>
-            <span id="badgeVideoModStatusD${dayNum}" class="px-2.5 py-1 rounded-xl text-[10.5px] font-black ${isSubmitted ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-900'}">
+            <span id="badgeVideoModStatusD${dayNum}" class="px-3 py-1 rounded-xl text-[11px] font-black ${isSubmitted ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-900 border border-amber-300'}">
               ${isSubmitted ? '✓ Tersimpan Resmi' : 'Wajib Diisi'}
             </span>
           </div>
@@ -4556,24 +4600,28 @@
           <input type="hidden" id="nftVideoModSectorD${dayNum}" value="${escapeHtml(selectedSector)}">
 
           <div class="flex flex-col gap-1.5">
-            <label class="text-xs font-bold text-slate-800">
-              Nama Objek / Tempat Usaha pada Sektor ${escapeHtml(secGuide.shortName)} yang Akan/Telah Anda Rekam: <span class="text-rose-600">*</span>
+            <label class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-sm text-teal-700">place</span>
+              <span>Nama Objek / Tempat Usaha Sektor ${escapeHtml(secGuide.shortName)} yang Direkam:</span>
+              <span class="text-rose-600">*</span>
             </label>
             <input type="text" id="nftVideoModObjectD${dayNum}" value="${escapeHtml(savedObjectName)}" ${isSubmitted ? 'readonly' : ''} oninput="onNftVideoModInput(${dayNum})" placeholder="Contoh: ${escapeHtml(secGuide.objectExamples.split(',')[0])} di Desa ..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-semibold focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 outline-none ${isSubmitted ? 'bg-slate-50 text-slate-700' : 'bg-white'}">
           </div>
 
           <div class="flex flex-col gap-1.5">
             <div class="flex items-center justify-between gap-2 flex-wrap">
-              <label class="text-xs font-bold text-slate-800">
-                ${isDay5
+              <label class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-sm text-amber-700">edit_note</span>
+                <span>${isDay5
                   ? 'Resume Rencana Alur Video Day 5 (Objek/Alat yang Disorot & Poin Sains serta Teknologi yang Dijelaskan):'
-                  : 'Resume Rencana Alur Video Day 6 (Rekayasa Kendala Lapangan & Rincian Modal BOP, HPP, Omzet, Laba yang Dijelaskan):'} <span class="text-rose-600">*</span>
+                  : 'Resume Rencana Alur Video Day 6 (Rekayasa Kendala Lapangan & Rincian Modal BOP, HPP, Omzet, Laba yang Dijelaskan):'}</span>
+                <span class="text-rose-600">*</span>
               </label>
               <span id="counterVideoModD${dayNum}" class="text-[11px] font-bold text-slate-500">Min. 80 karakter</span>
             </div>
             <textarea id="nftVideoModResumeD${dayNum}" rows="5" ${isSubmitted ? 'readonly' : ''} oninput="onNftVideoModInput(${dayNum})" placeholder="${isDay5
-              ? 'Tuliskan ringkasan rencana isi video Day 5 Anda: peralatan apa saja yang akan Anda tunjukkan di kamera, serta apa poin Sains, Teknologi, Rekayasa (Engineering), dan Matematika yang akan Anda jelaskan pada sektor ' + secGuide.shortName + '... (Minimal 80 karakter)'
-              : 'Tuliskan ringkasan rencana isi video Day 6 Anda: bagaimana gambaran modal, biaya operasional, dan keuntungan usaha tersebut, apa kendala utamanya, serta apa ide inovasi STEM & Finansial yang Anda tawarkan... (Minimal 80 karakter)'}" class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm leading-relaxed focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 outline-none ${isSubmitted ? 'bg-slate-50 text-slate-700' : 'bg-white'}">${escapeHtml(savedConclusion)}</textarea>
+              ? 'Tuliskan ringkasan rencana isi video Day 5 Anda: alat atau objek apa yang akan Anda sorot di kamera HP, serta poin Sains dan Teknologi apa yang akan Anda jelaskan pada sektor ' + secGuide.shortName + '... (Minimal 80 karakter)'
+              : 'Tuliskan ringkasan rencana isi video Day 6 Anda: kendala teknis apa yang akan Anda bahas beserta rekayasa solusinya, serta rincian angka modal BOP, HPP, omzet, dan laba bersih pada sektor ' + secGuide.shortName + '... (Minimal 80 karakter)'}" class="w-full p-3.5 rounded-2xl border border-slate-300 text-xs sm:text-sm leading-relaxed focus:border-teal-600 focus:ring-2 focus:ring-teal-500/20 outline-none ${isSubmitted ? 'bg-slate-50 text-slate-700' : 'bg-white'}">${escapeHtml(savedConclusion)}</textarea>
             <span id="msgVideoModValidationD${dayNum}" class="text-[11px] text-slate-500 font-medium">Minimal 80 karakter (sekitar 15–20 kata).</span>
           </div>
 
@@ -4600,6 +4648,7 @@
         </div>
 
       </div>
+
     `;
 
     setTimeout(() => {
