@@ -4430,7 +4430,7 @@
           window.location.href = 'materi.html?day=6&sesi=1';
           return;
         }
-        window.location.href = 'materi.html?day=' + dayNumber;
+        window.location.href = 'materi.html?day=' + dayNumber + '&_t=' + Date.now();
         return;
       }
 
@@ -4481,7 +4481,7 @@
           window.location.href = 'lkpd.html?day=6&sesi=1';
           return;
         }
-        window.location.href = 'lkpd.html?day=' + dayNumber;
+        window.location.href = 'lkpd.html?day=' + dayNumber + '&_t=' + Date.now();
         return;
       }
       if (type === 'dokumentasi') {
@@ -4514,7 +4514,7 @@
       }
 
       if (type === 'asesmen' && !isFieldTrip) {
-        window.location.href = 'asesmen.html?day=' + dayNumber;
+        window.location.href = 'asesmen.html?day=' + dayNumber + '&_t=' + Date.now();
         return;
       }
 

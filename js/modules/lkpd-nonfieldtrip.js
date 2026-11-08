@@ -5149,8 +5149,8 @@
               </div>
               <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">
                 ${isDay5
-                  ? 'LKPD Day 5: Video Observasi Culture, Exploration Alat & Penerapan 4 Unsur STEM'
-                  : 'LKPD Day 6: Video Analisis Financial, Evaluasi Kendala & Gagasan Inovasi FINCESTEM'}
+                  ? 'LKPD Day 5: Video Eksplorasi Sains & Teknologi Sektor (5–10 Menit)'
+                  : 'LKPD Day 6: Video Analisis Rekayasa Solusi Kendala & Finansial Sektor (5–10 Menit)'}
               </h1>
               <p class="text-xs sm:text-sm text-teal-100/90 mt-1 leading-relaxed">
                 ${isDay5
