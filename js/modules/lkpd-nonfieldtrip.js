@@ -5776,6 +5776,9 @@
   // =========================================================================
   // INSTRUMEN LKPD DAY 7: FINAL EDITING, LINK VIDEO YOUTUBE & AUDIT KAS
   // =========================================================================
+    // =========================================================================
+  // INSTRUMEN LKPD DAY 7: VIDEO REFLEKSI (DAY 1–7), BTS & JURNAL REFLEKSI
+  // =========================================================================
   function renderNonFieldTripDay7LKPD(isReadOnly) {
     const mainEl = document.querySelector('main');
     if (!mainEl) return;
@@ -5812,192 +5815,363 @@
       return m ? m[1] : '';
     }
     const currentVideoId = getYoutubeId(saved.youtube_url || '');
+    const currentBtsVideoId = getYoutubeId(saved.bts_youtube_url || '');
+    const isCombined = saved.is_combined !== undefined ? !!saved.is_combined : true;
 
     mainEl.innerHTML = `
       <div class="max-w-4xl mx-auto px-3 sm:px-4 py-6 space-y-6">
-        <!-- Banner Header Puncak -->
-        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-br from-amber-950 via-slate-900 to-indigo-950 text-white border border-amber-700/40 shadow-xl relative overflow-hidden">
+        <!-- Banner Header Puncak Day 7 -->
+        <div class="p-5 sm:p-7 rounded-3xl bg-gradient-to-br from-purple-900 via-indigo-950 to-slate-950 text-white border border-purple-500/40 shadow-xl relative overflow-hidden">
           <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/20 text-amber-200 text-xs font-black uppercase tracking-wider mb-2">
-                <span>🌟 DAY 7 • PUNCAK RISET MANDIRI (SINTESIS 4 PILAR)</span>
+                <span class="material-symbols-outlined text-sm">stars</span>
+                <span>DAY 7 • PUNCAK RISET MANDIRI (GRAND FINALE)</span>
               </div>
-              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Final Editing, Link Video YouTube & Rekonsiliasi Kas</h1>
-              <p class="text-xs sm:text-sm text-amber-200/90 mt-1">Pengumpulan Karya Video Dokumenter YouTube, Tutup Buku Kas & Penilaian Akhir Rapor Fasil</p>
+              <h1 class="text-xl sm:text-2xl font-black text-white tracking-tight">Karya Video Refleksi, BTS &amp; Jurnal Refleksi Day 1–7</h1>
+              <p class="text-xs sm:text-sm text-purple-200/90 mt-1">Pengumpulan Link Video YouTube (Refleksi &amp; BTS) serta Lembar Refleksi Akbar Perjalanan 7 Hari</p>
             </div>
             <div class="bg-white/10 backdrop-blur-md p-3.5 rounded-2xl border border-white/20 text-right shrink-0">
-              <div class="text-[11px] text-amber-200 font-medium">Peserta Didik:</div>
+              <div class="text-[11px] text-purple-200 font-medium uppercase tracking-wider">Peserta Didik:</div>
               <div class="text-xs sm:text-sm font-black text-white">${escapeHtml(studentName)}</div>
               <div class="text-[11px] text-amber-300 font-bold">NISN: ${escapeHtml(studentNisn)} • ${escapeHtml(studentClass)}</div>
-              <div class="text-[10px] text-amber-200 mt-1 font-medium">Fasilitator: ${escapeHtml(fasilName)}</div>
+              <div class="text-[10px] text-purple-200 mt-1 font-medium">Fasilitator: ${escapeHtml(fasilName)}</div>
             </div>
           </div>
         </div>
 
         ${isSubmitted ? `
-          <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-              <span class="material-symbols-outlined text-emerald-700 text-2xl">check_circle</span>
-              <div>
-                <h4 class="font-extrabold text-xs sm:text-sm text-emerald-950">Portofolio Final Day 7 Telah Berhasil Diserahkan!</h4>
-                <p class="text-[11px] text-emerald-800">Tautan video YouTube dan rekonsiliasi kas telah masuk ke dasbor guru fasilitator untuk penilaian rapor akhir.</p>
+          <div class="p-4 sm:p-5 rounded-3xl bg-emerald-500/15 border-2 border-emerald-400 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-inner">
+                <span class="material-symbols-outlined text-2xl">verified</span>
+              </div>
+              <div class="flex flex-col">
+                <div class="flex items-center gap-2">
+                  <span class="text-[11px] font-black uppercase text-emerald-800 tracking-wider">Portofolio Day 7 Telah Terkirim Resmi</span>
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-black bg-emerald-200 text-emerald-950 uppercase">Tuntas ✓</span>
+                </div>
+                <h4 class="font-extrabold text-sm sm:text-base text-emerald-950 mt-0.5">Seluruh Rangkaian Riset Day 1 s.d. Day 7 Telah Selesai Sempurna!</h4>
+                <p class="text-xs text-emerald-800/90 mt-0.5 leading-relaxed">
+                  Tautan video YouTube dan jurnal refleksi 7 hari Anda telah masuk ke portal dewan fasilitator. <strong>Tahap Asesmen Day 7 otomatis tuntas (Nilai 100/100 - Bebas Kuis).</strong>
+                </p>
               </div>
             </div>
-            <span class="text-xs px-3 py-1 rounded-full bg-emerald-200 text-emerald-950 font-black">Tuntas</span>
+            <div class="flex items-center gap-2 w-full sm:w-auto shrink-0">
+              <button type="button" onclick="window.enableEditNftDay7Lkpd()" class="px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs transition-all cursor-pointer">
+                Edit Kembali
+              </button>
+              <a href="dashboard.html" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer">
+                <span>Buka Dasbor Rapor</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+            </div>
           </div>
         ` : ''}
 
         <form id="formNftLkpdDay7" onsubmit="event.preventDefault(); submitNonFieldTripDay7LKPD();" class="space-y-6">
-          <!-- Blok 1: Penyerahan Video Dokumenter YouTube -->
-          <div class="p-5 rounded-3xl bg-white border border-rose-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
-                <span class="material-symbols-outlined text-rose-600">smart_display</span>
-                <span>1. Penyerahan Karya Video Dokumenter Riset (YouTube)</span>
-              </h3>
-              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800">Durasi 3–5 Menit</span>
+          <!-- BAGIAN 1: PENYERAHAN LINK YOUTUBE (REFLEKSI & BTS) -->
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-purple-200 shadow-sm flex flex-col gap-4">
+            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3.5 flex-wrap">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center justify-center font-black text-sm shadow-xs">1</span>
+                <div>
+                  <h3 class="text-sm sm:text-base font-black text-slate-900">Penyerahan Karya Video YouTube (Refleksi Day 1–7 &amp; BTS)</h3>
+                  <p class="text-[11px] text-slate-500 font-medium">Unggah video karya Anda ke YouTube, lalu tempelkan tautan resmi link-nya pada kolom di bawah:</p>
+                </div>
+              </div>
+              <span class="text-[10.5px] font-extrabold px-3 py-1 rounded-full bg-purple-100 text-purple-900 border border-purple-200">
+                Durasi 5 – 8 Menit
+              </span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="space-y-4">
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Judul Video Dokumenter Karya Anda:</label>
-                <input id="nftD7VideoTitle" type="text" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.video_title || '')}" placeholder="Contoh: Harmoni Lumbung Pangan Belitang: Eksplorasi 4 Pilar FINCESTEM 2026" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none">
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">Judul Video YouTube Karya Anda:</label>
+                <input
+                  id="nftD7VideoTitle"
+                  type="text"
+                  ${readOnlyMode ? 'readonly' : ''}
+                  value="${escapeHtml(saved.video_title || '')}"
+                  placeholder="Contoh: Kilas Balik Riset Mandiri 7 Hari FINCESTEM &amp; Behind The Scene - [Nama Anda]"
+                  class="w-full px-4 py-3 text-xs font-semibold rounded-2xl border border-slate-300 ${readOnlyMode ? 'bg-slate-100 text-slate-600' : 'bg-slate-50 focus:bg-white focus:border-purple-600'} outline-none transition-all"
+                />
               </div>
+
               <div>
-                <label class="block text-xs font-bold text-slate-700 mb-1">Aplikasi Video Editor yang Digunakan:</label>
-                <select id="nftD7VideoApp" ${readOnlyMode ? 'disabled' : ''} class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none font-bold">
-                  <option value="CapCut" ${saved.video_app === 'CapCut' || !saved.video_app ? 'selected' : ''}>CapCut Mobile</option>
-                  <option value="VN Video Editor" ${saved.video_app === 'VN Video Editor' ? 'selected' : ''}>VN Video Editor</option>
-                  <option value="Canva" ${saved.video_app === 'Canva' ? 'selected' : ''}>Canva</option>
-                  <option value="KineMaster" ${saved.video_app === 'KineMaster' ? 'selected' : ''}>KineMaster</option>
-                  <option value="Lainnya" ${saved.video_app === 'Lainnya' ? 'selected' : ''}>Aplikasi Lainnya</option>
-                </select>
+                <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                  Link Tautan Video Refleksi Utama (YouTube):
+                </label>
+                <div class="relative">
+                  <span class="material-symbols-outlined text-rose-600 absolute left-3.5 top-3 text-lg">smart_display</span>
+                  <input
+                    id="nftD7YoutubeUrl"
+                    type="url"
+                    ${readOnlyMode ? 'readonly' : ''}
+                    value="${escapeHtml(saved.youtube_url || '')}"
+                    placeholder="https://youtu.be/... atau https://www.youtube.com/watch?v=..."
+                    oninput="updateD7YoutubePreview()"
+                    class="w-full pl-11 pr-4 py-3 text-xs font-mono font-bold rounded-2xl border border-slate-300 ${readOnlyMode ? 'bg-slate-100 text-slate-600' : 'bg-slate-50 focus:bg-white focus:border-purple-600'} outline-none transition-all"
+                  />
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1">Setel visibilitas video di YouTube sebagai <strong>Publik</strong> atau <strong>Tidak Terdaftar (Unlisted)</strong> agar guru fasilitator dapat langsung menonton.</p>
               </div>
+
+              <!-- Checkbox: Gabung vs Pisah Video BTS -->
+              <div class="p-3.5 rounded-2xl bg-purple-50/70 border border-purple-200 text-xs">
+                <label class="flex items-start sm:items-center gap-2.5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    id="nftD7IsCombinedVideo"
+                    ${isCombined ? 'checked' : ''}
+                    ${readOnlyMode ? 'disabled' : ''}
+                    onchange="toggleD7BtsUrlField(this.checked)"
+                    class="w-4 h-4 rounded text-purple-600 focus:ring-purple-500 mt-0.5 sm:mt-0"
+                  />
+                  <span class="font-bold text-purple-950">
+                    Video Refleksi dan Cuplikan Behind The Scene (BTS) sudah digabung menjadi 1 video utuh di YouTube (Disarankan)
+                  </span>
+                </label>
+              </div>
+
+              <!-- Kolom Tambahan Jika Video BTS Dipisah -->
+              <div id="nftD7BtsUrlContainer" class="${isCombined ? 'hidden' : ''} space-y-1.5 pt-1">
+                <label class="block text-xs font-bold text-slate-700">
+                  Link Tautan Video BTS / Bloopers Tersendiri (YouTube):
+                </label>
+                <div class="relative">
+                  <span class="material-symbols-outlined text-amber-600 absolute left-3.5 top-3 text-lg">theater_comedy</span>
+                  <input
+                    id="nftD7BtsYoutubeUrl"
+                    type="url"
+                    ${readOnlyMode ? 'readonly' : ''}
+                    value="${escapeHtml(saved.bts_youtube_url || '')}"
+                    placeholder="https://youtu.be/... (Link terpisah khusus video BTS/Bloopers)"
+                    oninput="updateD7YoutubePreview()"
+                    class="w-full pl-11 pr-4 py-3 text-xs font-mono font-bold rounded-2xl border border-slate-300 ${readOnlyMode ? 'bg-slate-100 text-slate-600' : 'bg-slate-50 focus:bg-white focus:border-purple-600'} outline-none transition-all"
+                  />
+                </div>
+              </div>
+
+              <!-- Preview Player YouTube Live -->
+              <div id="nftD7PreviewContainer" class="${currentVideoId ? '' : 'hidden'} mt-3 p-4 rounded-2xl bg-slate-900 text-white flex flex-col gap-2">
+                <div class="flex items-center justify-between text-xs text-slate-300 font-bold">
+                  <span class="flex items-center gap-1.5">
+                    <span class="material-symbols-outlined text-rose-500 text-base">play_circle</span>
+                    <span>Pratinjau Video YouTube Terverifikasi:</span>
+                  </span>
+                  <span class="text-[11px] text-emerald-400 font-mono">✓ ID: <span id="nftD7PreviewVideoId">${currentVideoId}</span></span>
+                </div>
+                <div class="aspect-video w-full rounded-xl overflow-hidden bg-black shadow-inner">
+                  <iframe
+                    id="nftD7IframePreview"
+                    src="${currentVideoId ? 'https://www.youtube.com/embed/' + currentVideoId : ''}"
+                    class="w-full h-full border-0"
+                    allowfullscreen
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  ></iframe>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- BAGIAN 2: JURNAL REFLEKSI PRIBADI PERJALANAN DAY 1 S.D. DAY 7 -->
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-indigo-200 shadow-sm flex flex-col gap-5">
+            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-3.5 flex-wrap">
+              <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-600 to-indigo-700 text-white flex items-center justify-center font-black text-sm shadow-xs">2</span>
+                <div>
+                  <h3 class="text-sm sm:text-base font-black text-slate-900">Jurnal Refleksi Akbar Perjalanan Riset Day 1 s.d. Day 7</h3>
+                  <p class="text-[11px] text-slate-500 font-medium">Jawablah 3 pertanyaan reflektif berikut dengan jujur berdasarkan pengalaman nyata yang Anda rasakan:</p>
+                </div>
+              </div>
+              <span class="text-[10.5px] font-extrabold px-3 py-1 rounded-full bg-indigo-100 text-indigo-900 border border-indigo-200">
+                Refleksi Holistik 4 Pilar
+              </span>
             </div>
 
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Tautan / URL Link Video YouTube Resmi (Bisa Publik / Unlisted):</label>
-              <div class="flex gap-2">
-                <input id="nftD7YoutubeUrl" type="url" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.youtube_url || '')}" placeholder="https://youtu.be/... atau https://www.youtube.com/watch?v=..." class="flex-1 px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none font-mono">
-                <button type="button" onclick="previewNftDay7Youtube()" class="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-xs flex items-center gap-1.5 cursor-pointer shrink-0">
-                  <span class="material-symbols-outlined text-sm">play_circle</span>
-                  <span>Tes Putar</span>
+            <!-- PERTANYAAN 1 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-slate-800 leading-snug">
+                  1. Pengalaman Lapangan &amp; Pembuatan Video Mandiri (Day 1–6):
+                  <span class="block text-[11px] text-slate-500 font-normal mt-0.5">Momen apa yang paling berkesan, seru, atau menantang selama Anda menjalani riset mandiri (terutama saat observasi lapangan dan berbicara sendiri di depan kamera HP)?</span>
+                </label>
+                <span id="nftD7Refl1Counter" class="text-[11px] font-mono font-bold text-slate-500 shrink-0 ml-2">0 / 80</span>
+              </div>
+              <textarea
+                id="nftD7Refl1"
+                rows="4"
+                ${readOnlyMode ? 'readonly' : ''}
+                oninput="updateD7CharCounter(this, 'nftD7Refl1Counter')"
+                placeholder="Ceritakan pengalaman lapangan Anda: suka duka saat observasi, bagaimana mengatasi rasa malu/canggung berbicara di depan kamera HP, serta momen seru yang dialami... (Minimal 80 karakter)"
+                class="w-full p-4 rounded-2xl border border-slate-300 ${readOnlyMode ? 'bg-slate-100 text-slate-600' : 'bg-slate-50 focus:bg-white focus:border-indigo-600'} text-xs leading-relaxed outline-none transition-all"
+              >${escapeHtml(saved.refl_pengalaman || '')}</textarea>
+            </div>
+
+            <!-- PERTANYAAN 2 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-slate-800 leading-snug">
+                  2. Wawasan Baru &amp; Perubahan Pola Pikir:
+                  <span class="block text-[11px] text-slate-500 font-normal mt-0.5">Pengetahuan baru atau keterampilan apa yang paling mengubah cara pandang Anda (terkait pengelolaan keuangan/anggaran, teknologi alat kerja, atau potensi unggulan masyarakat di OKU Timur)?</span>
+                </label>
+                <span id="nftD7Refl2Counter" class="text-[11px] font-mono font-bold text-slate-500 shrink-0 ml-2">0 / 80</span>
+              </div>
+              <textarea
+                id="nftD7Refl2"
+                rows="4"
+                ${readOnlyMode ? 'readonly' : ''}
+                oninput="updateD7CharCounter(this, 'nftD7Refl2Counter')"
+                placeholder="Tuliskan wawasan baru yang Anda dapatkan: pemahaman arus kas, integrasi STEM dalam mata pencaharian warga desa, dan pentingnya inovasi produk lokal... (Minimal 80 karakter)"
+                class="w-full p-4 rounded-2xl border border-slate-300 ${readOnlyMode ? 'bg-slate-100 text-slate-600' : 'bg-slate-50 focus:bg-white focus:border-indigo-600'} text-xs leading-relaxed outline-none transition-all"
+              >${escapeHtml(saved.refl_wawasan || '')}</textarea>
+            </div>
+
+            <!-- PERTANYAAN 3 -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label class="block text-xs font-bold text-slate-800 leading-snug">
+                  3. Pesan Kesan &amp; Evaluasi Diri untuk Masa Depan:
+                  <span class="block text-[11px] text-slate-500 font-normal mt-0.5">Apa pesan dan kesan Anda untuk diri sendiri dan guru fasilitator pembimbing setelah berhasil menyelesaikan seluruh tantangan 7 hari riset mandiri ini?</span>
+                </label>
+                <span id="nftD7Refl3Counter" class="text-[11px] font-mono font-bold text-slate-500 shrink-0 ml-2">0 / 80</span>
+              </div>
+              <textarea
+                id="nftD7Refl3"
+                rows="4"
+                ${readOnlyMode ? 'readonly' : ''}
+                oninput="updateD7CharCounter(this, 'nftD7Refl3Counter')"
+                placeholder="Tuliskan apresiasi kepada guru fasilitator, kebanggaan atas kemandirian Anda, serta tekad untuk terus berkontribusi memajukan daerah sekitar... (Minimal 80 karakter)"
+                class="w-full p-4 rounded-2xl border border-slate-300 ${readOnlyMode ? 'bg-slate-100 text-slate-600' : 'bg-slate-50 focus:bg-white focus:border-indigo-600'} text-xs leading-relaxed outline-none transition-all"
+              >${escapeHtml(saved.refl_pesan || '')}</textarea>
+            </div>
+          </div>
+
+          <!-- TOMBOL AKSI SUBMIT / DRAFT -->
+          <div class="p-5 rounded-3xl bg-white border border-slate-200 shadow-sm flex items-center justify-between gap-3 flex-wrap">
+            ${isSubmitted ? `
+              <div class="flex items-center gap-2 text-xs font-bold text-emerald-800">
+                <span class="material-symbols-outlined text-emerald-600 text-lg">check_circle</span>
+                <span>Portofolio Day 7 Telah Terkirim Resmi (Asesmen Otomatis 100/100)</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <button
+                  type="button"
+                  onclick="window.enableEditNftDay7Lkpd()"
+                  class="px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+                >
+                  Edit Kembali
                 </button>
+                <a
+                  href="dashboard.html"
+                  class="px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>Buka Dasbor Rapor Akhir</span>
+                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                </a>
               </div>
-              <p class="text-[10.5px] text-slate-500 mt-1">💡 Tips: Pastikan setelan video di YouTube Anda disetel <strong>Publik</strong> atau <strong>Tidak Terdaftar (Unlisted)</strong> agar guru fasilitator bisa menontonnya langsung.</p>
-            </div>
-
-            <!-- YouTube Preview Player Container -->
-            <div id="nftD7PlayerContainer" class="${currentVideoId ? '' : 'hidden'} mt-3 p-3 rounded-2xl bg-slate-900 border border-slate-800">
-              <div class="text-[11px] font-bold text-rose-300 mb-2 flex items-center gap-1.5">
-                <span class="material-symbols-outlined text-sm">play_arrow</span>
-                <span>Pratinjau Pemutar Video YouTube:</span>
-              </div>
-              <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-inner">
-                <iframe id="nftD7IframePlayer" src="${currentVideoId ? 'https://www.youtube-nocookie.com/embed/' + currentVideoId : ''}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Sinopsis & Deskripsi Temuan Riset 4 Pilar (Financial, Culture, Exploration, STEM):</label>
-              <textarea id="nftD7Synopsis" rows="4" ${readOnlyMode ? 'readonly' : ''} placeholder="Tuliskan sinopsis video dokumenter Anda: pesan utama karya, bagaimana pilar Finansial, Budaya, Eksplorasi bentang alam, dan STEM terhubung menjadi satu kesatuan di OKU Timur... (Minimal 150 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-rose-600 outline-none">${escapeHtml(saved.synopsis || '')}</textarea>
-            </div>
-          </div>
-
-          <!-- Blok 2: Rekonsiliasi Tutup Buku Kas Riset Mandiri -->
-          <div class="p-5 rounded-3xl bg-white border border-emerald-200 shadow-sm space-y-4">
-            <div class="flex items-center justify-between">
-              <h3 class="text-sm font-black text-slate-900 flex items-center gap-2">
-                <span class="material-symbols-outlined text-emerald-700">account_balance_wallet</span>
-                <span>2. Rekonsiliasi Tutup Buku Kas & Audit Anggaran Riset</span>
-              </h3>
-              <span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">Audit Finansial</span>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200">
-                <label class="block text-[11px] font-extrabold text-amber-950 mb-1">Rencana Anggaran Awal (Rp):</label>
-                <input id="nftD7KasAwal" type="number" oninput="recalcNftDay7Kas()" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.kas_awal || '150000')}" class="w-full px-2.5 py-1.5 text-xs font-black rounded-lg border border-amber-300 bg-white outline-none">
-              </div>
-              <div class="p-3 rounded-2xl bg-rose-50/70 border border-rose-200">
-                <label class="block text-[11px] font-extrabold text-rose-950 mb-1">Total Realisasi Belanja 7 Hari (Rp):</label>
-                <input id="nftD7KasRealisasi" type="number" oninput="recalcNftDay7Kas()" ${readOnlyMode ? 'readonly' : ''} value="${escapeHtml(saved.kas_realisasi || '120000')}" class="w-full px-2.5 py-1.5 text-xs font-black rounded-lg border border-rose-300 bg-white outline-none">
-              </div>
-              <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200">
-                <label class="block text-[11px] font-extrabold text-emerald-950 mb-1">Sisa Saldo Kas Riil (Rp):</label>
-                <input id="nftD7KasSisa" type="text" readonly value="${escapeHtml(saved.kas_sisa || '30000')}" class="w-full px-2.5 py-1.5 text-xs font-black rounded-lg border border-emerald-300 bg-emerald-100/60 text-emerald-950 outline-none">
-              </div>
-            </div>
-
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Rincian Pengeluaran Terbesar & Bukti Pembukuan Kas:</label>
-              <textarea id="nftD7KasRincian" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Contoh: Bensin motor keliling observasi irigasi Rp 40.000, konsumsi wawancara Rp 50.000, kuota internet upload video Rp 30.000. Seluruh nota tersimpan... (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">${escapeHtml(saved.kas_rincian || '')}</textarea>
-            </div>
-            <div>
-              <label class="block text-xs font-bold text-slate-700 mb-1">Refleksi Pembelajaran Finansial (Manajemen Uang Mandiri):</label>
-              <textarea id="nftD7KasRefleksi" rows="3" ${readOnlyMode ? 'readonly' : ''} placeholder="Pelajaran berharga apa yang Anda dapatkan dalam mengendalikan pengeluaran dan disiplin mencatat kas harian selama 7 hari riset? (Minimal 100 karakter)" class="w-full px-3 py-2 text-xs rounded-xl border border-slate-300 bg-slate-50 focus:bg-white focus:border-emerald-600 outline-none">${escapeHtml(saved.kas_refleksi || '')}</textarea>
-            </div>
-          </div>
-
-          ${!readOnlyMode ? `
-            <div class="flex items-center justify-between gap-3 pt-2">
-              <button type="button" onclick="saveNonFieldTripDay7Draft()" class="px-5 py-2.5 rounded-2xl bg-slate-200 hover:bg-slate-300 text-slate-800 text-xs font-black flex items-center gap-2 cursor-pointer transition-all">
-                <span class="material-symbols-outlined text-sm">bookmark</span>
-                <span>Simpan Draf</span>
+            ` : `
+              <button
+                type="button"
+                onclick="saveDraftNonFieldTripDay7LKPD()"
+                class="px-5 py-3 rounded-2xl border border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+              >
+                <span class="material-symbols-outlined text-base text-slate-600">save</span>
+                <span>Simpan Draf Saja</span>
               </button>
-              <button type="submit" class="px-6 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-black flex items-center gap-2 cursor-pointer transition-all shadow-md">
-                <span class="material-symbols-outlined text-sm">rocket_launch</span>
-                <span>Serahkan Karya Final Day 7</span>
+
+              <button
+                type="submit"
+                class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-indigo-800 hover:from-purple-800 hover:to-indigo-900 active:scale-[0.98] text-white text-xs font-black shadow-lg shadow-purple-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span class="material-symbols-outlined text-lg">rocket_launch</span>
+                <span>Kirim &amp; Serahkan Portofolio Day 7</span>
               </button>
-            </div>
-          ` : ''}
+            `}
+          </div>
         </form>
       </div>
     `;
+
+    // Initialize char counters
+    setTimeout(() => {
+      ['nftD7Refl1', 'nftD7Refl2', 'nftD7Refl3'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) updateD7CharCounter(el, id + 'Counter');
+      });
+    }, 50);
   }
 
-  function previewNftDay7Youtube() {
-    const url = document.getElementById('nftD7YoutubeUrl')?.value.trim() || '';
-    if (!url) {
-      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Masukkan link video YouTube terlebih dahulu.', 'warning');
-      return;
+  // Helper live character counter
+  window.updateD7CharCounter = function(textareaEl, counterId) {
+    if (!textareaEl) return;
+    const cntEl = document.getElementById(counterId);
+    if (!cntEl) return;
+    const len = (textareaEl.value || '').trim().length;
+    cntEl.textContent = (len >= 80 ? '✓ ' : '') + len + ' / 80';
+    cntEl.className = 'text-[11px] font-mono font-bold ' + (len >= 80 ? 'text-emerald-700' : 'text-amber-700');
+  };
+
+  // Helper toggle BTS URL input
+  window.toggleD7BtsUrlField = function(isCombined) {
+    const btsCont = document.getElementById('nftD7BtsUrlContainer');
+    if (btsCont) {
+      if (isCombined) btsCont.classList.add('hidden');
+      else btsCont.classList.remove('hidden');
     }
-    const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-    const videoId = m ? m[1] : '';
-    const container = document.getElementById('nftD7PlayerContainer');
-    const iframe = document.getElementById('nftD7IframePlayer');
-    if (videoId && container && iframe) {
-      iframe.src = 'https://www.youtube-nocookie.com/embed/' + videoId;
-      container.classList.remove('hidden');
-      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Pemutar YouTube berhasil dimuat!', 'success');
+  };
+
+  // Helper YouTube preview
+  window.updateD7YoutubePreview = function() {
+    const urlEl = document.getElementById('nftD7YoutubeUrl');
+    const previewCont = document.getElementById('nftD7PreviewContainer');
+    const iframeEl = document.getElementById('nftD7IframePreview');
+    const idEl = document.getElementById('nftD7PreviewVideoId');
+    if (!urlEl || !previewCont || !iframeEl) return;
+
+    function extractYtId(url) {
+      if (!url) return '';
+      const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+      return m ? m[1] : '';
+    }
+
+    const yId = extractYtId(urlEl.value.trim());
+    if (yId) {
+      iframeEl.src = 'https://www.youtube.com/embed/' + yId;
+      if (idEl) idEl.textContent = yId;
+      previewCont.classList.remove('hidden');
     } else {
-      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Format URL YouTube tidak valid. Contoh valid: https://youtu.be/... atau https://www.youtube.com/watch?v=...', 'danger');
+      iframeEl.src = '';
+      previewCont.classList.add('hidden');
     }
-  }
+  };
 
-  function recalcNftDay7Kas() {
-    const awal = parseInt(document.getElementById('nftD7KasAwal')?.value) || 0;
-    const realisasi = parseInt(document.getElementById('nftD7KasRealisasi')?.value) || 0;
-    const sisa = awal - realisasi;
-    const elSisa = document.getElementById('nftD7KasSisa');
-    if (elSisa) {
-      elSisa.value = (sisa >= 0 ? '' : '-') + 'Rp ' + Math.abs(sisa).toLocaleString('id-ID');
-    }
-  }
-
-  function saveNonFieldTripDay7Draft() {
+  // Enable edit mode
+  window.enableEditNftDay7Lkpd = function() {
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
     const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    try {
+      localStorage.removeItem('fincestem_lkpd_nft_day7_' + cleanNisn);
+      localStorage.removeItem('fincestem_lkpd_day7_' + cleanNisn);
+    } catch(e) {}
+    renderNonFieldTripDay7LKPD(false);
+  };
+
+  // Save Draft
+  function saveDraftNonFieldTripDay7LKPD() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+    const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const isCombinedEl = document.getElementById('nftD7IsCombinedVideo');
     const data = {
-      video_title: document.getElementById('nftD7VideoTitle')?.value.trim() || '',
-      video_app: document.getElementById('nftD7VideoApp')?.value || 'CapCut',
-      youtube_url: document.getElementById('nftD7YoutubeUrl')?.value.trim() || '',
-      synopsis: document.getElementById('nftD7Synopsis')?.value.trim() || '',
-      kas_awal: document.getElementById('nftD7KasAwal')?.value || '0',
-      kas_realisasi: document.getElementById('nftD7KasRealisasi')?.value || '0',
-      kas_sisa: document.getElementById('nftD7KasSisa')?.value || 'Rp 0',
-      kas_rincian: document.getElementById('nftD7KasRincian')?.value.trim() || '',
-      kas_refleksi: document.getElementById('nftD7KasRefleksi')?.value.trim() || '',
+      video_title: (document.getElementById('nftD7VideoTitle')?.value || '').trim(),
+      youtube_url: (document.getElementById('nftD7YoutubeUrl')?.value || '').trim(),
+      is_combined: isCombinedEl ? isCombinedEl.checked : true,
+      bts_youtube_url: (document.getElementById('nftD7BtsYoutubeUrl')?.value || '').trim(),
+      refl_pengalaman: (document.getElementById('nftD7Refl1')?.value || '').trim(),
+      refl_wawasan: (document.getElementById('nftD7Refl2')?.value || '').trim(),
+      refl_pesan: (document.getElementById('nftD7Refl3')?.value || '').trim(),
       updated_at: new Date().toISOString()
     };
     try {
@@ -6006,34 +6180,94 @@
     } catch(e) {}
   }
 
+  // Submit Official LKPD Day 7
   function submitNonFieldTripDay7LKPD() {
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
     const cleanNisn = String(u.nisn || u.identifier || '-').trim();
+    const isCombinedEl = document.getElementById('nftD7IsCombinedVideo');
+    const isCombined = isCombinedEl ? isCombinedEl.checked : true;
+
     const data = {
-      video_title: document.getElementById('nftD7VideoTitle')?.value.trim() || '',
-      video_app: document.getElementById('nftD7VideoApp')?.value || 'CapCut',
-      youtube_url: document.getElementById('nftD7YoutubeUrl')?.value.trim() || '',
-      synopsis: document.getElementById('nftD7Synopsis')?.value.trim() || '',
-      kas_awal: document.getElementById('nftD7KasAwal')?.value || '0',
-      kas_realisasi: document.getElementById('nftD7KasRealisasi')?.value || '0',
-      kas_sisa: document.getElementById('nftD7KasSisa')?.value || 'Rp 0',
-      kas_rincian: document.getElementById('nftD7KasRincian')?.value.trim() || '',
-      kas_refleksi: document.getElementById('nftD7KasRefleksi')?.value.trim() || '',
+      video_title: (document.getElementById('nftD7VideoTitle')?.value || '').trim(),
+      youtube_url: (document.getElementById('nftD7YoutubeUrl')?.value || '').trim(),
+      is_combined: isCombined,
+      bts_youtube_url: (document.getElementById('nftD7BtsYoutubeUrl')?.value || '').trim(),
+      refl_pengalaman: (document.getElementById('nftD7Refl1')?.value || '').trim(),
+      refl_wawasan: (document.getElementById('nftD7Refl2')?.value || '').trim(),
+      refl_pesan: (document.getElementById('nftD7Refl3')?.value || '').trim(),
       submitted: true,
       submitted_at: new Date().toISOString()
     };
 
-    if (!data.video_title || !data.youtube_url || !data.synopsis || !data.kas_rincian || !data.kas_refleksi) {
-      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Harap lengkapi tautan video YouTube, sinopsis, dan laporan kas sebelum menyerahkan.', 'warning');
+    if (data.video_title.length < 3) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Tuliskan judul video YouTube karya Anda (minimal 3 karakter)!', 'warning');
+      document.getElementById('nftD7VideoTitle')?.focus();
+      return;
+    }
+
+    if (!data.youtube_url || !data.youtube_url.includes('youtu')) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Tuliskan tautan link video YouTube yang valid (contoh: https://youtu.be/...)!', 'warning');
+      document.getElementById('nftD7YoutubeUrl')?.focus();
+      return;
+    }
+
+    if (!isCombined && (!data.bts_youtube_url || !data.bts_youtube_url.includes('youtu'))) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Anda memilih video BTS terpisah. Harap masukkan tautan link video BTS di YouTube!', 'warning');
+      document.getElementById('nftD7BtsYoutubeUrl')?.focus();
+      return;
+    }
+
+    if (data.refl_pengalaman.length < 80) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 1 minimal 80 karakter (saat ini ' + data.refl_pengalaman.length + ' karakter)!', 'warning');
+      document.getElementById('nftD7Refl1')?.focus();
+      return;
+    }
+
+    if (data.refl_wawasan.length < 80) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 2 minimal 80 karakter (saat ini ' + data.refl_wawasan.length + ' karakter)!', 'warning');
+      document.getElementById('nftD7Refl2')?.focus();
+      return;
+    }
+
+    if (data.refl_pesan.length < 80) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 3 minimal 80 karakter (saat ini ' + data.refl_pesan.length + ' karakter)!', 'warning');
+      document.getElementById('nftD7Refl3')?.focus();
       return;
     }
 
     try {
       localStorage.setItem('fincestem_lkpd_nft_day7_' + cleanNisn, JSON.stringify(data));
+      localStorage.setItem('fincestem_lkpd_day7_' + cleanNisn, JSON.stringify(data));
+
       if (window.FincestemCore && FincestemCore.progress) {
         FincestemCore.progress.saveTaskRecord(cleanNisn, 7, 'lkpd', data, 100);
       }
-      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Karya Final Riset Mandiri Day 7 Berhasil Diserahkan Resmi!', 'success');
+
+      // =========================================================================
+      // OTOMATIS TUNTAS ASESMEN DAY 7 (BEBAS KUIS / APRESIASI PORTOFOLIO 100/100)
+      // =========================================================================
+      const asesmenPayload = {
+        day: 7,
+        score: 100,
+        score_percent: 100,
+        is_passed: true,
+        predicate: 'Sangat Baik (Tuntas)',
+        status: 'completed',
+        submittedAt: new Date().toISOString(),
+        answers: { note: 'Day 7 Bebas Kuis Asesmen (Auto-Tuntas Portofolio Final)' }
+      };
+      localStorage.setItem('fincestem_asesmen_nft_day7_' + cleanNisn, JSON.stringify(asesmenPayload));
+      localStorage.setItem('fincestem_asesmen_day7_' + cleanNisn, JSON.stringify(asesmenPayload));
+      localStorage.setItem('fincestem_exam_state_d7_' + cleanNisn, JSON.stringify({ isSubmitted: true, score: 100 }));
+
+      if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+        FincestemCore.progress.submitTask(cleanNisn, 7, 'asesmen', asesmenPayload);
+      }
+
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Alhamdulillah! Seluruh Karya Riset Day 7 Berhasil Dikirim Resmi. Asesmen Otomatis Tuntas 100/100!', 'success');
+      }
+
       renderNonFieldTripDay7LKPD(true);
     } catch(e) {}
   }

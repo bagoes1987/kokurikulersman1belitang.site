@@ -390,7 +390,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261107_v13_windi_custom_teachers"></script>
+  <script src="../js/core.js?v=20261109_d7_finale"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -581,15 +581,15 @@
           }
         },
         7: {
-          title: 'Day 7: Gelar Karya Ilmiah, Presentasi & Refleksi',
-          theme: 'Diseminasi Temuan Riset & Refleksi Kokurikuler FINCESTEM',
+          title: 'Day 7: Foto Bebas Diri (Google Geotag / GPS Map Camera)',
+          theme: 'Dokumentasi Akhir Riset Mandiri Day 1–7 (Lokasi Bebas, Wajib Geotagging GPS)',
           defaultPillar: 'Exploration',
-          fileSlug: 'Gelar_Karya_Ilmiah',
+          fileSlug: 'Foto_Akhir_Geotag_Day7',
           pillars: {
-            STEM: 'STEM (Presentasi Ilmiah Dewan Penguji)',
-            Financial: 'Financial (Evaluasi Efektivitas Riset)',
-            Culture: 'Culture (Refleksi Profil Pelajar Pancasila)',
-            Exploration: 'Exploration (Pameran Stand Poster Riset)'
+            Exploration: 'Exploration (Foto Bebas Diri Ber-Google Geotag)',
+            Culture: 'Culture (Refleksi Akhir Riset Mandiri)',
+            Financial: 'Financial (Kemandirian Belajar Siswa)',
+            STEM: 'STEM (Verifikasi Lokasi GPS Digital)'
           }
         }
       }
@@ -857,6 +857,13 @@
           dayBadge = `DAY 3 • ${sData.badge}`;
           subTitle = sData.title;
           subTheme = sData.theme;
+        }
+
+        // Penyesuaian khusus Day 7 Non-Field Trip (Foto Bebas Diri Ber-Google Geotag)
+        if (cat.isNonFieldTrip && Number(dayNum) === 7) {
+          dayBadge = 'DAY 7 • DOKUMENTASI AKHIR NON-FIELD TRIP';
+          subTitle = 'Foto Bebas Diri dengan Google Geotag (GPS Map Camera)';
+          subTheme = 'Lokasi bebas (rumah, sekolah, teras, lingkungan sekitar). Foto wajib memuat watermark Google Geotag / koordinat GPS, tanggal, dan waktu sebagai bukti otentik.';
         }
 
         descEl.innerHTML = `
@@ -3806,6 +3813,11 @@
             dokSuccessMsg = 'Foto bukti simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.';
             dokNextUrl = 'dashboard.html?day=0&task=refleksi';
             dokNextLabel = 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;';
+          } else if (!cat.isFieldTrip && dayNum === 7) {
+            dokDoneTitle = 'Dokumentasi Day 7 (Foto Geotag) Selesai';
+            dokSuccessMsg = 'Foto bebas diri ber-Google Geotag Anda telah tersimpan resmi. Silakan lanjut ke Tahap 3: LKPD Digital Day 7 (Link Video Refleksi, BTS & Jurnal Refleksi).';
+            dokNextUrl = 'lkpd.html?day=7';
+            dokNextLabel = 'Lanjut ke Tahap 3: LKPD Day 7 &rarr;';
           } else if (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6)) {
             dokSuccessMsg = 'Foto bukti dokumentasi telah tersimpan. Silakan lanjut ke Tahap 3: Lembar Kerja (LKPD Video) Day ' + dayNum + '.';
             dokNextUrl = 'lkpd.html?day=' + dayNum;
@@ -3842,20 +3854,21 @@
           `;
         } else {
           container.innerHTML = `
-            <div class="p-4 sm:p-5 rounded-3xl ${isDay0 ? 'bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-teal-500/10 border-2 border-amber-400' : 'bg-surface-container-lowest border-2 border-primary/40'} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
+            <div class="p-4 sm:p-5 rounded-3xl ${isDay0 ? 'bg-gradient-to-br from-amber-500/15 via-orange-500/10 to-teal-500/10 border-2 border-amber-400' : (!cat.isFieldTrip && dayNum === 7 ? 'bg-gradient-to-br from-purple-500/15 via-indigo-500/10 to-slate-50 border-2 border-purple-400' : 'bg-surface-container-lowest border-2 border-primary/40')} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
               <div class="flex items-start sm:items-center gap-3 w-full sm:w-auto">
-                <div class="w-12 h-12 rounded-2xl ${isDay0 ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-amber-500/20' : 'bg-primary/10 text-primary'} flex items-center justify-center shrink-0 shadow-xs">
-                  <span class="material-symbols-outlined text-2xl">${isDay0 ? 'science' : 'photo_camera'}</span>
+                <div class="w-12 h-12 rounded-2xl ${isDay0 ? 'bg-gradient-to-br from-amber-500 to-orange-600 text-white shadow-amber-500/20' : (!cat.isFieldTrip && dayNum === 7 ? 'bg-gradient-to-br from-purple-600 to-indigo-700 text-white shadow-purple-500/20' : 'bg-primary/10 text-primary')} flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">${isDay0 ? 'science' : (!cat.isFieldTrip && dayNum === 7 ? 'location_on' : 'photo_camera')}</span>
                 </div>
                 <div class="flex flex-col gap-1 min-w-0">
                   <div class="flex items-center gap-2 flex-wrap">
-                    <span class="font-black text-sm text-slate-900 leading-snug">${(isDay0 && cat.isFieldTrip) ? 'Dokumentasi Kesiapan Pra-Keberangkatan Field Trip' : (isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : `Dokumentasi Foto Day ${dayNum}`)}</span>
+                    <span class="font-black text-sm text-slate-900 leading-snug">${(isDay0 && cat.isFieldTrip) ? 'Dokumentasi Kesiapan Pra-Keberangkatan Field Trip' : (isDay0 ? 'Dokumentasi Foto Day 0 (Simulasi & Gladi Bersih)' : (!cat.isFieldTrip && dayNum === 7 ? 'Dokumentasi Akhir Day 7: Foto Bebas Diri (Google Geotag)' : `Dokumentasi Foto Day ${dayNum}`))}</span>
+                    ${!cat.isFieldTrip && dayNum === 7 ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-purple-100 text-purple-900 uppercase tracking-wide border border-purple-200 shrink-0">Lokasi Bebas • Wajib Geotag</span>' : ''}
                     ${isDay0 ? '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950 uppercase tracking-wide border border-amber-500 shadow-2xs shrink-0">' + (cat.isFieldTrip ? 'Field Trip' : 'Uji Coba') + '</span>' : ''}
                   </div>
-                  <span class="text-xs text-slate-600 leading-relaxed">${(isDay0 && cat.isFieldTrip) ? 'Unggah bukti foto persiapan koper, ransel, seragam, atau perlengkapan (Bebas radius wilayah)' : (isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini')}</span>
+                  <span class="text-xs text-slate-600 leading-relaxed">${(isDay0 && cat.isFieldTrip) ? 'Unggah bukti foto persiapan koper, ransel, seragam, atau perlengkapan (Bebas radius wilayah)' : (isDay0 ? 'Uji coba deteksi sinyal satelit GPS real-time dan stempel geotag kamera HP' : (!cat.isFieldTrip && dayNum === 7 ? 'Ambil atau unggah 1 lembar foto diri Anda di mana saja (rumah, sekolah, teras) dengan watermark Google Geotag / GPS Map Camera' : 'Unggah bukti foto kegiatan lapangan kelompok Anda hari ini'))}</span>
                 </div>
               </div>
-              <button type="button" onclick="toggleUploadModal(true)" class="w-full sm:w-auto py-3 px-5 rounded-2xl ${isDay0 ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-amber-600/30' : 'bg-primary hover:bg-primary/90'} text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer shrink-0">
+              <button type="button" onclick="toggleUploadModal(true)" class="w-full sm:w-auto py-3 px-5 rounded-2xl ${isDay0 ? 'bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-amber-600/30' : (!cat.isFieldTrip && dayNum === 7 ? 'bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 shadow-purple-600/20' : 'bg-primary hover:bg-primary/90')} text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-sm active:scale-95 transition-all cursor-pointer shrink-0">
                 <span class="material-symbols-outlined text-xl">add_a_photo</span>
                 <span class="whitespace-nowrap">${(isDay0 && cat.isFieldTrip) ? 'Ambil / Unggah Foto Kesiapan' : (isDay0 ? 'Ambil Foto Simulasi' : 'Ambil Foto')}</span>
               </button>

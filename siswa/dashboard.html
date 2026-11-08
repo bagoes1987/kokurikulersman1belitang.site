@@ -2668,8 +2668,8 @@
         // (Untuk Non-Field Trip, Day 2 dan Day 7 memiliki 50 soal Asesmen CBT tersendiri)
         if (isFieldTrip && dayNum === 2 && hasLkpd) {
           hasAsesmen = true;
-        } else if (isFieldTrip && dayNum === 7 && hasLkpd) {
-          // Khusus Day 7 Field Trip: Bebas Asesmen Kepulangan (otomatis tuntas jika LKPD selesai)
+        } else if ((isFieldTrip || !isFieldTrip) && dayNum === 7 && hasLkpd) {
+          // Khusus Day 7 (Field Trip & Non-Field Trip): Bebas Asesmen Kepulangan / Final (otomatis tuntas jika LKPD selesai)
           hasAsesmen = true;
         } else {
           for (const id of idList) {
@@ -2777,7 +2777,7 @@
       // Cascading logic berurutan mutlak
       const isFtDay7 = isFieldTrip && dayNum === 7;
       const isFtDay0 = isFieldTrip && dayNum === 0;
-      const isNonFtD5D6 = !isFieldTrip && (dayNum === 5 || dayNum === 6);
+      const isNonFtD5D6 = !isFieldTrip && (dayNum === 5 || dayNum === 6 || dayNum === 7);
       const isNonFtOrderedDay = !isFieldTrip && (dayNum >= 1 && dayNum <= 7);
       let canLkpd = isFtDay0 ? true : (isNonFtD5D6 ? (hasMateri && hasDok) : hasMateri);
       let canDok = isFtDay0 ? true : (isNonFtD5D6
@@ -2805,7 +2805,7 @@
           ? (hasLkpd && hasMateri && hasDok)
           : (hasLkpd && hasMateri),
         hasAsesmen: isNonFtD5D6
-          ? (hasAsesmen && hasDok && hasLkpd && hasMateri)
+          ? (dayNum === 7 ? (hasLkpd && hasMateri && hasDok) : (hasAsesmen && hasDok && hasLkpd && hasMateri))
           : (isFtDay0
               ? (hasAsesmen && hasDok && hasLkpd && hasMateri)
               : (isNonFtOrderedDay
@@ -4294,7 +4294,7 @@
       if ((dNum >= 1 && dNum <= 7) || dNum === 0) {
         const progStatus = getFTProgressStatus(null, dNum);
         const isFtDay0 = isFieldTrip && dNum === 0;
-        const isNonFtD5D6 = !isFieldTrip && (dNum === 5 || dNum === 6);
+        const isNonFtD5D6 = !isFieldTrip && (dNum === 5 || dNum === 6 || dNum === 7);
         const isNonFtOrderedDay = !isFieldTrip && (dNum >= 1 && dNum <= 7);
 
         if (isFtDay0) {

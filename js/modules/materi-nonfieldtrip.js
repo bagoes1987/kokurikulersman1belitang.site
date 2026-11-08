@@ -2246,6 +2246,10 @@
       renderDay5Or6VideoModule(container, dayNum);
       return;
     }
+    if (dayNum === 7) {
+      renderDay7ReflectionVideoModule(container);
+      return;
+    }
 
     const cfg = NFT_MATERI_CONFIG[dayNum] || NFT_MATERI_CONFIG[1];
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
@@ -4825,6 +4829,559 @@
 
     if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
       FincestemCore.progress.submitTask(cleanNisn, dayNum, 'materi', payload, function() {
+        onDone();
+      });
+    } else {
+      onDone();
+    }
+  };
+
+
+    // =========================================================================
+  // 6D. MODUL KHUSUS DAY 7: PANDUAN VIDEO REFLEKSI (DAY 1–7) & BEHIND THE SCENE (BTS)
+  // =========================================================================
+  function renderDay7ReflectionVideoModule(container) {
+    if (!container) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const studentName = u.name || 'Peserta Non-Field Trip';
+    const studentNisn = u.nisn || u.identifier || '-';
+    const studentClass = u.class || u.class_name || 'Kelas X';
+    const cleanNisn = String(studentNisn).trim();
+
+    let fasilName = '';
+    if (window.FincestemMentorship && typeof window.FincestemMentorship.getMentorsForStudent === 'function') {
+      const m = window.FincestemMentorship.getMentorsForStudent(cleanNisn, studentClass);
+      if (m && m.facilitator && m.facilitator !== '-' && m.facilitator !== 'Belum Ditentukan') {
+        fasilName = m.facilitator;
+      }
+    }
+    if (!fasilName && window.FincestemCore && FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator) {
+      const sf = FincestemCore.assignments.getStudentFacilitator(cleanNisn, studentClass);
+      if (sf && sf !== 'Belum Ditentukan' && sf !== 'Tim Fasilitator SMAN 1 Belitang') fasilName = sf;
+    }
+    if (!fasilName && u.facilitator_name && u.facilitator_name !== 'Belum Ditentukan' && u.facilitator_name !== 'Tim Fasilitator SMAN 1 Belitang' && !u.facilitator_name.includes('\n')) {
+      fasilName = u.facilitator_name;
+    }
+    if (!fasilName) fasilName = 'Tim Fasilitator SMAN 1 Belitang';
+
+    let savedOfficial = null;
+    try {
+      const rawOff = localStorage.getItem('fincestem_materi_nft_day7_' + cleanNisn) ||
+                     localStorage.getItem('fincestem_materi_day7_' + cleanNisn);
+      if (rawOff) savedOfficial = JSON.parse(rawOff);
+    } catch (e) {}
+
+    if (!savedOfficial) {
+      try {
+        const storedP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+        if (storedP) {
+          const prog = JSON.parse(storedP);
+          const tMap = (prog && prog.task_map) ? prog.task_map['7_materi'] : null;
+          if (tMap && tMap.content) {
+            let c = tMap.content;
+            if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
+              try { c = JSON.parse(c); } catch(e) {}
+            }
+            if (typeof c === 'object' && c) {
+              savedOfficial = c;
+            } else if (typeof c === 'string' && c.trim()) {
+              savedOfficial = { day: 7, submitted: true, conclusion: c, summary: c };
+            }
+          }
+        }
+      } catch(eHyd) {}
+    }
+
+    let draft = {};
+    try {
+      const rawDraft = localStorage.getItem('fincestem_draft_nft_materi_d7_' + cleanNisn);
+      if (rawDraft) draft = JSON.parse(rawDraft);
+    } catch (e) {}
+
+    const isSubmitted = !!(savedOfficial && (savedOfficial.submitted || savedOfficial.submittedAt || savedOfficial.conclusion || savedOfficial.summary));
+    window.isNftD7Submitted = isSubmitted;
+
+    // Deteksi sektor yang pernah diamati siswa pada Day 3-6
+    let observedSectorName = 'Sektor Riset Pilihan';
+    try {
+      const pastSec = (savedOfficial && savedOfficial.selectedSector) ||
+                      (draft && draft.selectedSector) ||
+                      localStorage.getItem('fincestem_nft_sector_d6_' + cleanNisn) ||
+                      localStorage.getItem('fincestem_nft_sector_d5_' + cleanNisn) ||
+                      localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) ||
+                      localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
+      if (pastSec && window.NFT_VIDEO_SECTORS_GUIDE && window.NFT_VIDEO_SECTORS_GUIDE[pastSec]) {
+        observedSectorName = window.NFT_VIDEO_SECTORS_GUIDE[pastSec].name;
+      }
+    } catch(e) {}
+
+    const savedTitle = (savedOfficial && savedOfficial.objectName) || (draft && draft.objectName) || 'Video Refleksi Perjalanan Riset Day 1–7 & Behind The Scene (BTS)';
+    const savedResume = (savedOfficial && (savedOfficial.userConclusion || savedOfficial.conclusion || savedOfficial.summary)) ||
+                        (draft && draft.conclusion) || '';
+
+    const segments = [
+      {
+        time: '00:00 – 01:30',
+        part: 'Bagian 1 dari 4',
+        duration: '⏱️ Durasi: ~1.5 Menit',
+        title: '1. Pembukaan & Kilas Balik Fondasi Riset (Day 1 – 3)',
+        desc: 'Berdiri atau duduk tegak di tempat yang terang. Tatap kamera HP dengan senyum hangat dan percaya diri. Sapa penonton, sebutkan identitas lengkap (Nama, NISN, Kelas, Nama Fasilitator), lalu rangkum kilas balik perjalanan awal dari Day 1 (Literasi Keuangan & Anggaran Kas), Day 2 (Kearifan Budaya Lokal & Mata Pencaharian), hingga Day 3 (Analisis 4 Pilar STEM Sektor Unggulan).',
+        speechScript: 'Halo semuanya! Perkenalkan nama saya [Nama Siswa] dari kelas [Kelas] SMAN 1 Belitang, di bawah bimbingan guru fasilitator [Nama Fasilitator]. Pada video tugas puncak Day 7 Non-Field Trip ini, saya mempersembahkan video refleksi akhir dari seluruh rangkaian kegiatan riset mandiri yang telah saya laksanakan dari Day 1 hingga Day 7 di Kabupaten OKU Timur. Dimulai dari Day 1 saya mempelajari fondasi literasi keuangan dan pengelolaan kas, berlanjut ke Day 2 mendalami kearifan budaya lokal dan mata pencaharian daerah, hingga Day 3 menganalisis integrasi 4 pilar STEM pada sektor-sektor unggulan di sekitar tempat tinggal saya...'
+      },
+      {
+        time: '01:30 – 03:30',
+        part: 'Bagian 2 dari 4',
+        duration: '⏱️ Durasi: ~2 Menit',
+        title: '2. Pengalaman Lapangan & Pembuatan Video Mandiri (Day 4 – 6)',
+        desc: 'Ceritakan dengan antusias momen terjun langsung ke lapangan saat observasi Day 4, dan tantangan saat harus berdiri berbicara mandiri di depan kamera HP untuk merekam video Day 5 (Sains & Teknologi) serta Day 6 (Rekayasa Solusi Kendala & Matematika Finansial). Ungkapkan bagaimana Anda mengatasi rasa gugup atau canggung hingga berhasil menyelesaikan tugas video tersebut.',
+        speechScript: 'Pengalaman yang paling menantang sekaligus berkesan adalah saat memasuki fase lapangan di Day 4 hingga Day 6. Saya terjun langsung mengamati sektor [Sektor Pilihan] di desa saya, lalu harus berdiri berbicara mandiri di depan kamera HP untuk menjelaskan Sains dan Teknologi di Day 5, serta membedah Rekayasa Solusi dan Matematika Finansial di Day 6. Awalnya saya sempat gugup dan canggung berbicara sendiri di depan kamera, tetapi tantangan ini melatih kepercayaan diri saya dan membuat saya paham betapa gigihnya perjuangan para pelaku usaha di desa kita...'
+      },
+      {
+        time: '03:30 – 05:00',
+        part: 'Bagian 3 dari 4',
+        duration: '⏱️ Durasi: ~1.5 Menit',
+        title: '3. Makna Pembelajaran, Refleksi Diri & Ucapan Terima Kasih',
+        desc: 'Sampaikan hikmah dan perubahan pola pikir yang Anda rasakan setelah 7 hari belajar mandiri. Ungkapkan kebanggaan atas potensi ekonomi dan alam di OKU Timur, serta sampaikan ucapan terima kasih yang tulus kepada guru fasilitator pembimbing, orang tua di rumah, dan rekan-rekan yang mendampingi selama riset.',
+        speechScript: 'Dari seluruh 7 hari riset mandiri FINCESTEM ini, saya menyadari bahwa ilmu sains, teknologi, dan pengelolaan finansial sangat nyata manfaatnya bagi kemajuan masyarakat OKU Timur. Saya mengucapkan terima kasih sebesar-besarnya kepada guru pembimbing/fasilitator saya [Nama Fasilitator] atas bimbingan dan masukannya, serta orang tua dan rekan-rekan yang selalu mendukung saya. Dan sebagai penutup, mari kita saksikan cuplikan di balik layar atau Behind The Scene selama proses riset saya!'
+      },
+      {
+        time: '05:00 – 08:00',
+        part: 'Bagian 4 dari 4',
+        duration: '⏱️ Durasi: ~2 – 3 Menit',
+        title: '4. Segmen Behind The Scene (BTS) & Bloopers',
+        desc: 'Tampilkan kompilasi klip video di balik layar: rekaman saat salah bicara (bloopers/tertawa), perjuangan menyandarkan HP di tiang/pohon/sepeda motor, suasana terik atau gerimis saat di jalan, serta bantuan dari keluarga atau teman. Tambahkan musik latar ceria dan akhiri dengan tulisan penutup (End Screen / Ucapan Terima Kasih).',
+        speechScript: '(Bagian ini berupa kompilasi video seru BTS & Bloopers di balik layar dengan iringan musik santai/ceria, teks keterangan lucu pada klip bloopers, dan ditutup kartu ucapan: Terima Kasih Telah Menyaksikan Perjalanan Riset FINCESTEM 2026 - SMAN 1 Belitang)'
+      }
+    ];
+
+    container.innerHTML = `
+      <div class="flex flex-col gap-6 pb-14 max-w-4xl mx-auto w-full">
+
+        <!-- BANNER STATUS TERKIRIM JIKA SUDAH SUBMIT -->
+        ${isSubmitted ? `
+          <div class="p-4 sm:p-5 rounded-3xl bg-emerald-500/15 border-2 border-emerald-400 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+            <div class="flex items-center gap-3.5">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-inner">
+                <span class="material-symbols-outlined text-2xl">verified</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-[11px] font-black uppercase text-emerald-800 tracking-wider">Modul Puncak Day 7 Tuntas</span>
+                <h3 class="text-sm sm:text-base font-black text-emerald-950">Rencana Video Refleksi Day 7 Telah Tersimpan Resmi ✓</h3>
+                <p class="text-xs text-emerald-800/90 font-medium mt-0.5 leading-relaxed">
+                  Panduan naskah menit demi menit di bawah ini siap dijadikan acuan rekaman video refleksi &amp; BTS. Anda dapat lanjut ke Tahap 2: Dokumentasi Foto Bebas Google Geotag.
+                </p>
+              </div>
+            </div>
+            <a href="dokumentasi.html?day=7" class="w-full sm:w-auto px-5 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black shadow-sm shrink-0 flex items-center justify-center gap-1.5 cursor-pointer transition-all active:scale-[0.98]">
+              <span>Lanjut ke Dokumentasi Day 7</span>
+              <span class="material-symbols-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+        ` : ''}
+
+        <!-- HEADER MODUL PANDUAN VIDEO DAY 7 -->
+        <div class="bg-gradient-to-br from-purple-900 via-indigo-950 to-slate-950 rounded-3xl p-5 sm:p-7 text-white shadow-xl flex flex-col gap-4 border border-purple-500/40">
+          <div class="flex items-center justify-between gap-2.5 flex-wrap">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/15 text-amber-200 backdrop-blur-md flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm">movie</span>
+                <span>Non-Field Trip • Modul Day 7 (Grand Finale)</span>
+              </span>
+              <span class="px-3 py-1 rounded-full text-[11px] font-extrabold bg-gradient-to-r from-amber-400 to-yellow-300 text-slate-950 shadow-2xs">
+                Video Refleksi Perjalanan Riset &amp; BTS (5–8 Menit)
+              </span>
+            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold ${isSubmitted ? 'bg-emerald-400 text-slate-950 font-black' : 'bg-white/20 text-white'}">
+              ${isSubmitted ? '✓ Modul Selesai' : 'Panduan Naskah Video YouTube'}
+            </span>
+          </div>
+
+          <div>
+            <h1 class="font-black text-xl sm:text-2xl lg:text-3xl leading-tight">
+              Modul Day 7: Panduan Video Refleksi Perjalanan Riset Day 1–7 &amp; Behind The Scene (BTS)
+            </h1>
+            <p class="text-xs sm:text-sm text-slate-200/95 leading-relaxed font-medium mt-2 text-justify">
+              Selamat datang di Hari Puncak Riset FINCESTEM 2026! Hari ini Anda membuat <strong>Video Refleksi Perjalanan (Day 1 s.d. Day 7)</strong> berdurasi <strong>5–8 Menit</strong> yang dilengkapi dengan rekaman cuplikan <strong>Behind The Scene (BTS / Bloopers)</strong> di balik layar. Rekam video Anda di depan kamera HP dengan rileks, jujur, dan hangat, lalu unggah ke YouTube!
+            </p>
+          </div>
+
+          <!-- IDENTITAS SISWA & FASILITATOR -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-3.5 border-t border-white/15 text-xs">
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-slate-300 text-[10px] font-medium uppercase tracking-wider">Nama Peserta Didik</span>
+              <span class="font-extrabold truncate text-white mt-0.5">${escapeHtml(studentName)}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-slate-300 text-[10px] font-medium uppercase tracking-wider">NISN / Identitas</span>
+              <span class="font-extrabold truncate text-white mt-0.5">${escapeHtml(studentNisn)}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-slate-300 text-[10px] font-medium uppercase tracking-wider">Kelas / Rombel</span>
+              <span class="font-extrabold truncate text-white mt-0.5">${escapeHtml(studentClass)}</span>
+            </div>
+            <div class="p-2.5 rounded-2xl bg-white/10 flex flex-col">
+              <span class="text-slate-300 text-[10px] font-medium uppercase tracking-wider">Fasilitator Pembimbing</span>
+              <span class="font-extrabold truncate text-white mt-0.5">${escapeHtml(fasilName)}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- LANGKAH 1: ATURAN EMAS PRODUKSI VIDEO DAY 7 -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-purple-200 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+            <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center justify-center font-black text-sm shadow-xs">1</span>
+            <div>
+              <h2 class="font-black text-sm sm:text-base text-slate-900">Aturan Penting Video Refleksi &amp; BTS Day 7:</h2>
+              <p class="text-[11px] text-slate-500 font-medium">Pedomani 4 poin utama ini agar proses perekaman berjalan santai, menyenangkan, dan berbobot:</p>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+            <div class="p-4 rounded-2xl bg-purple-50/80 border border-purple-200 flex flex-col gap-1.5 shadow-2xs">
+              <div class="flex items-center gap-2 text-purple-900 font-black">
+                <span class="material-symbols-outlined text-lg text-purple-700">timer</span>
+                <span>Durasi: 5 – 8 Menit</span>
+              </div>
+              <p class="text-slate-600 text-[11px] leading-relaxed text-justify">
+                Terbagi seimbang: Refleksi Day 1–7 berdurasi <strong>3–5 menit</strong>, dilanjutkan cuplikan video BTS berdurasi <strong>2–3 menit</strong> di bagian akhir.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-indigo-50/80 border border-indigo-200 flex flex-col gap-1.5 shadow-2xs">
+              <div class="flex items-center gap-2 text-indigo-900 font-black">
+                <span class="material-symbols-outlined text-lg text-indigo-700">person_play</span>
+                <span>Tampil Mandiri &amp; Santai</span>
+              </div>
+              <p class="text-slate-600 text-[11px] leading-relaxed text-justify">
+                Bicaralah langsung di depan kamera dengan rileks dan tulus. Ceritakan apa adanya pengalaman dan perasaan Anda selama 7 hari riset.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-amber-50/80 border border-amber-200 flex flex-col gap-1.5 shadow-2xs">
+              <div class="flex items-center gap-2 text-amber-900 font-black">
+                <span class="material-symbols-outlined text-lg text-amber-700">theater_comedy</span>
+                <span>Cuplikan BTS / Bloopers</span>
+              </div>
+              <p class="text-slate-600 text-[11px] leading-relaxed text-justify">
+                Tampilkan momen lucu salah bicara (bloopers), usaha menaruh HP/tripod, cuaca panas, atau bantuan keluarga/teman di balik layar!
+              </p>
+            </div>
+
+            <div class="p-4 rounded-2xl bg-rose-50/80 border border-rose-200 flex flex-col gap-1.5 shadow-2xs">
+              <div class="flex items-center gap-2 text-rose-900 font-black">
+                <span class="material-symbols-outlined text-lg text-rose-700">cloud_upload</span>
+                <span>Upload ke YouTube</span>
+              </div>
+              <p class="text-slate-600 text-[11px] leading-relaxed text-justify">
+                Unggah video ke channel YouTube dengan visibilitas <strong>Publik</strong> atau <strong>Tidak Terdaftar (Unlisted)</strong>, lalu kirimkan link-nya di LKPD Day 7.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- LANGKAH 2: RUNTUTAN SEGMEN NASKAH VIDEO MENIT DEMI MENIT -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-amber-400/80 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center justify-between gap-2.5 border-b border-slate-100 pb-3.5 flex-wrap">
+            <div class="flex items-center gap-3">
+              <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-slate-950 flex items-center justify-center font-black text-sm shadow-xs">2</span>
+              <div>
+                <h2 class="font-black text-sm sm:text-base text-slate-900">Panduan Runtutan Naskah Menit ke Menit (Refleksi &amp; BTS)</h2>
+                <p class="text-[11px] text-slate-600 font-medium">Ikuti 4 urutan langkah menit demi menit berikut saat Anda berbicara di depan kamera HP dan menyusun klip BTS:</p>
+              </div>
+            </div>
+            <span class="px-3.5 py-1.5 rounded-full text-xs font-black bg-amber-100 text-amber-950 border border-amber-300 shadow-2xs">
+              Durasi Total: 5 – 8 Menit
+            </span>
+          </div>
+
+          <!-- BANNER PETUNJUK NASKAH BICARA -->
+          <div class="p-3.5 rounded-2xl bg-amber-50/80 border border-amber-300/80 text-xs text-slate-800 flex items-start gap-2.5">
+            <span class="material-symbols-outlined text-amber-700 text-xl shrink-0 mt-0.5">record_voice_over</span>
+            <div class="leading-relaxed">
+              <strong class="text-amber-950 font-bold block mb-0.5">Petunjuk Naskah Percakapan di Depan Kamera:</strong>
+              <span>Di setiap segmen di bawah ini telah disediakan <strong>Contoh Naskah Bicara Siswa</strong> (kotak bergaris kuning). Anda dapat menghafalkan, membaca langsung, atau memodifikasi kalimat tersebut sesuai dengan pengalaman nyata Anda selama riset!</span>
+            </div>
+          </div>
+
+          <!-- DAFTAR 4 SEGMEN MENIT KE MENIT -->
+          <div class="grid grid-cols-1 gap-4">
+            ${segments.map((seg, idx) => `
+              <div class="p-4 sm:p-5 rounded-3xl bg-slate-50/80 border-2 border-slate-200/90 hover:border-amber-400 transition-all flex flex-col gap-3 shadow-2xs">
+                
+                <!-- BARIS ATAS: WAKTU & JUDUL SEGMEN -->
+                <div class="flex items-center justify-between gap-2 border-b border-slate-200/70 pb-2.5 flex-wrap">
+                  <div class="flex items-center gap-2">
+                    <span class="px-3 py-1.5 rounded-xl bg-slate-950 text-amber-300 font-mono font-black text-xs flex items-center gap-1.5 shadow-2xs">
+                      <span class="material-symbols-outlined text-sm">schedule</span>
+                      <span>${escapeHtml(seg.time)}</span>
+                    </span>
+                    <span class="px-2.5 py-0.5 rounded-md text-[10.5px] font-black uppercase tracking-wider bg-slate-200 text-slate-700">
+                      ${escapeHtml(seg.part)}
+                    </span>
+                  </div>
+                  <span class="text-[11px] font-bold text-slate-500">
+                    ${escapeHtml(seg.duration)}
+                  </span>
+                </div>
+
+                <!-- JUDUL SEGMEN -->
+                <div>
+                  <h3 class="font-black text-sm sm:text-base text-slate-900 leading-snug">${escapeHtml(seg.title)}</h3>
+                </div>
+
+                <!-- PETUNJUK TINDAKAN / SOROTAN KAMERA -->
+                <div class="p-3 rounded-2xl bg-white border border-slate-200/80 text-xs text-slate-700 flex items-start gap-2.5">
+                  <span class="material-symbols-outlined text-slate-500 text-base shrink-0 mt-0.5">videocam</span>
+                  <div class="leading-relaxed text-justify">
+                    <strong class="text-slate-900 font-bold block mb-0.5">Fokus Pengambilan Gambar &amp; Penjelasan:</strong>
+                    <span>${escapeHtml(seg.desc)}</span>
+                  </div>
+                </div>
+
+                <!-- KOTAK TELEPROMPTER / NASKAH BICARA SISWA -->
+                <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50/60 border-2 border-amber-300 text-xs flex flex-col gap-2 shadow-2xs">
+                  <div class="flex items-center justify-between gap-2">
+                    <div class="flex items-center gap-1.5 font-black text-amber-950 text-xs">
+                      <span class="w-6 h-6 rounded-lg bg-amber-500 text-slate-950 flex items-center justify-center font-bold text-xs shadow-2xs">
+                        <span class="material-symbols-outlined text-sm">mic</span>
+                      </span>
+                      <span>Contoh Naskah Bicara di Depan Kamera (Bisa Diikuti / Dimodifikasi):</span>
+                    </div>
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-200/80 text-amber-900 shrink-0">
+                      Naskah Bicara
+                    </span>
+                  </div>
+                  <div class="p-3 rounded-xl bg-white/95 border border-amber-200/70 text-slate-800 text-xs sm:text-[12px] leading-relaxed font-medium italic text-justify shadow-inner">
+                    “${escapeHtml(
+                      seg.speechScript
+                        .replace(/\[Nama Siswa\]/g, studentName)
+                        .replace(/\[Kelas\]/g, studentClass)
+                        .replace(/\[Nama Fasilitator\]/g, fasilName)
+                        .replace(/\[Sektor Pilihan\]/g, observedSectorName)
+                    )}”
+                  </div>
+                </div>
+
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <!-- LANGKAH 3: FORMULIR DRAF RENCANA VIDEO REFLEKSI & CATATAN BTS -->
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-purple-300 shadow-sm flex flex-col gap-4">
+          <div class="flex items-center gap-3 border-b border-slate-100 pb-3.5">
+            <span class="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-600 to-indigo-700 text-white flex items-center justify-center font-black text-sm shadow-xs">3</span>
+            <div>
+              <h2 class="font-black text-sm sm:text-base text-slate-900">Tuliskan Rencana / Draf Ringkas Video Refleksi &amp; BTS Anda</h2>
+              <p class="text-[11px] text-slate-500 font-medium">Rangkum poin-poin yang akan Anda sampaikan di video refleksi dan ide cuplikan BTS apa saja yang akan Anda masukkan:</p>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 mb-1.5">
+                Judul Rencana Video YouTube Refleksi &amp; BTS Anda:
+              </label>
+              <input
+                type="text"
+                id="nftVideoModObjectD7"
+                value="${escapeHtml(savedTitle)}"
+                ${isSubmitted ? 'readonly' : ''}
+                placeholder="Contoh: Kilas Balik Riset Mandiri 7 Hari FINCESTEM & Behind The Scene - [Nama Anda]"
+                class="w-full px-4 py-3 rounded-2xl border border-slate-300 ${isSubmitted ? 'bg-slate-100 text-slate-600' : 'bg-slate-50 focus:bg-white focus:border-purple-600'} text-xs font-semibold outline-none transition-all"
+              />
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="block text-xs font-bold text-slate-700">
+                  Draf Rencana Isi Video Refleksi &amp; Catatan Klip BTS (Minimal 80 Karakter):
+                </label>
+                <span id="nftD7ResumeCharCounter" class="text-[11px] font-mono font-bold text-slate-500">
+                  0 / 80 karakter
+                </span>
+              </div>
+              <textarea
+                id="nftVideoModResumeD7"
+                rows="5"
+                ${isSubmitted ? 'readonly' : ''}
+                oninput="
+                  const c = (this.value || '').trim().length;
+                  const el = document.getElementById('nftD7ResumeCharCounter');
+                  if (el) {
+                    el.textContent = (c >= 80 ? '✓ ' : '') + c + ' / 80 karakter';
+                    el.className = 'text-[11px] font-mono font-bold ' + (c >= 80 ? 'text-emerald-700' : 'text-amber-700');
+                  }
+                  try {
+                    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+                    const n = String(u.nisn || u.identifier || '').trim();
+                    localStorage.setItem('fincestem_draft_nft_materi_d7_' + n, JSON.stringify({
+                      objectName: (document.getElementById('nftVideoModObjectD7') ? document.getElementById('nftVideoModObjectD7').value : ''),
+                      conclusion: this.value
+                    }));
+                  } catch(e) {}
+                "
+                placeholder="Tuliskan draf singkat refleksi Anda: dari Day 1 hingga Day 6 apa saja yang Anda pelajari, suka duka selama rekaman mandiri di lapangan, ucapan terima kasih kepada guru pembimbing/fasilitator dan orang tua, serta momen seru apa saja yang akan Anda masukkan ke klip Behind The Scene... (Minimal 80 karakter)"
+                class="w-full p-4 rounded-2xl border border-slate-300 ${isSubmitted ? 'bg-slate-100 text-slate-600' : 'bg-slate-50 focus:bg-white focus:border-purple-600'} text-xs leading-relaxed outline-none transition-all"
+              >${escapeHtml(savedResume)}</textarea>
+            </div>
+
+            <div class="flex items-center justify-between gap-3 pt-2 flex-wrap">
+              ${isSubmitted ? `
+                <div class="flex items-center gap-2 text-xs font-bold text-emerald-800">
+                  <span class="material-symbols-outlined text-emerald-600 text-lg">check_circle</span>
+                  <span>Modul Panduan Day 7 Telah Terkirim Resmi</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onclick="window.enableEditNftDay7Reflection()"
+                    class="px-4 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 text-xs font-bold transition-all cursor-pointer"
+                  >
+                    Edit Kembali
+                  </button>
+                  <a
+                    href="dokumentasi.html?day=7"
+                    class="px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                  >
+                    <span>Lanjut ke Dokumentasi Day 7</span>
+                    <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                  </a>
+                </div>
+              ` : `
+                <button
+                  type="button"
+                  onclick="
+                    try {
+                      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+                      const n = String(u.nisn || u.identifier || '').trim();
+                      const obj = (document.getElementById('nftVideoModObjectD7') ? document.getElementById('nftVideoModObjectD7').value : '').trim();
+                      const txt = (document.getElementById('nftVideoModResumeD7') ? document.getElementById('nftVideoModResumeD7').value : '').trim();
+                      localStorage.setItem('fincestem_draft_nft_materi_d7_' + n, JSON.stringify({ objectName: obj, conclusion: txt }));
+                      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Draf rencana video Day 7 berhasil disimpan!', 'success');
+                    } catch(e) {}
+                  "
+                  class="px-4 py-3 rounded-2xl border border-slate-300 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span class="material-symbols-outlined text-base text-slate-600">save</span>
+                  <span>Simpan Draf Saja</span>
+                </button>
+
+                <button
+                  type="button"
+                  onclick="window.submitNftDay7ReflectionModule()"
+                  class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-indigo-800 hover:from-purple-800 hover:to-indigo-900 active:scale-[0.98] text-white text-xs font-black shadow-lg shadow-purple-600/20 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <span class="material-symbols-outlined text-lg">send</span>
+                  <span>Kirim &amp; Selesaikan Modul Day 7</span>
+                </button>
+              `}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    `;
+
+    // Initialize character counter
+    setTimeout(() => {
+      const txtEl = document.getElementById('nftVideoModResumeD7');
+      const cntEl = document.getElementById('nftD7ResumeCharCounter');
+      if (txtEl && cntEl) {
+        const len = (txtEl.value || '').trim().length;
+        cntEl.textContent = (len >= 80 ? '✓ ' : '') + len + ' / 80 karakter';
+        cntEl.className = 'text-[11px] font-mono font-bold ' + (len >= 80 ? 'text-emerald-700' : 'text-amber-700');
+      }
+    }, 50);
+  }
+
+  // Window helper methods for Day 7
+  window.enableEditNftDay7Reflection = function() {
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+    try {
+      localStorage.removeItem('fincestem_materi_nft_day7_' + cleanNisn);
+      localStorage.removeItem('fincestem_materi_day7_' + cleanNisn);
+      const storedP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+      if (storedP) {
+        const prog = JSON.parse(storedP);
+        if (prog && prog.task_map && prog.task_map['7_materi']) {
+          delete prog.task_map['7_materi'];
+          localStorage.setItem('fincestem_progress_' + cleanNisn, JSON.stringify(prog));
+        }
+      }
+    } catch(e) {}
+    window.isNftD7Submitted = false;
+    const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
+    if (mainEl) renderDay7ReflectionVideoModule(mainEl);
+  };
+
+  window.submitNftDay7ReflectionModule = function() {
+    const objectName = ((document.getElementById('nftVideoModObjectD7') ? document.getElementById('nftVideoModObjectD7').value : '') || '').trim();
+    const resumeText = ((document.getElementById('nftVideoModResumeD7') ? document.getElementById('nftVideoModResumeD7').value : '') || '').trim();
+
+    if (objectName.length < 3) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Tuliskan judul rencana video refleksi & BTS Anda (minimal 3 karakter)!', 'warning');
+      } else {
+        alert('Tuliskan judul rencana video refleksi & BTS Anda!');
+      }
+      var _fEl1 = document.getElementById('nftVideoModObjectD7'); if (_fEl1) _fEl1.focus();
+      return;
+    }
+
+    if (resumeText.length < 80) {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Draf rencana video refleksi minimal 80 karakter (saat ini ' + resumeText.length + ' karakter).', 'warning');
+      } else {
+        alert('Draf rencana video refleksi minimal 80 karakter!');
+      }
+      var _fEl2 = document.getElementById('nftVideoModResumeD7'); if (_fEl2) _fEl2.focus();
+      return;
+    }
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const cleanNisn = String(u.nisn || u.identifier || '').trim();
+    const summaryFull = '[Modul Video Day 7 - Refleksi & BTS] Judul: ' + objectName + ' | Draf Rencana: ' + resumeText;
+    const nowIso = new Date().toISOString();
+
+    const payload = {
+      day: 7,
+      isVideoModule: true,
+      selectedSector: 'refleksi',
+      sectorName: 'Refleksi Perjalanan Riset Day 1–7 & Behind The Scene (BTS)',
+      objectName: objectName,
+      userConclusion: resumeText,
+      conclusion: summaryFull,
+      summary: summaryFull,
+      submitted: true,
+      submittedAt: nowIso,
+      studentName: u.name || '',
+      studentNisn: cleanNisn,
+      studentClass: u.class || u.class_name || '',
+      cardA: {
+        title: 'Video Refleksi & BTS: ' + objectName,
+        text: resumeText,
+        sources: 'Draf Naskah Klip Refleksi & Catatan BTS (Day 7 Non-Field Trip).'
+      }
+    };
+
+    try {
+      localStorage.setItem('fincestem_materi_nft_day7_' + cleanNisn, JSON.stringify(payload));
+      localStorage.setItem('fincestem_materi_day7_' + cleanNisn, JSON.stringify(payload));
+    } catch(e) {}
+
+    window.isNftD7Submitted = true;
+
+    const onDone = function() {
+      showSuccessNftMateriModalUnified(7);
+      const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
+      if (mainEl) renderDay7ReflectionVideoModule(mainEl);
+    };
+
+    if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+      FincestemCore.progress.submitTask(cleanNisn, 7, 'materi', payload, function() {
         onDone();
       });
     } else {

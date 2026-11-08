@@ -453,6 +453,12 @@
       return;
     }
 
+    // Khusus Day 7: Bebas Kuis Asesmen (Langsung Tampil Layar Apresiasi Kelulusan 100/100)
+    if (dayNum === 7) {
+      renderDay7CelebrationScreen(hasMateri, hasLkpd, hasDok);
+      return;
+    }
+
     // Cek apakah siswa sudah pernah menyelesaikan asesmen resmi
     const officialResult = getSavedOfficialAsesmen(dayNum, examState.cleanNisn);
     if (officialResult && (officialResult.submitted || officialResult.score !== undefined)) {
@@ -2676,6 +2682,100 @@
       </div>
     `;
   }
+
+  
+  // =========================================================================
+  // LAYAR SELEBRASI DAY 7: BEBAS KUIS ASESMEN (100% TUNTAS APRESIASI PORTOFOLIO)
+  // =========================================================================
+  function renderDay7CelebrationScreen(hasMateri, hasLkpd, hasDok) {
+    const mainEl = document.querySelector('main') || document.getElementById('mainContentArea');
+    if (!mainEl) return;
+
+    if (!hasMateri || !hasLkpd || !hasDok) {
+      renderPrerequisiteLockedScreen(hasMateri, hasLkpd, 7, hasDok);
+      return;
+    }
+
+    const cleanNisn = examState.cleanNisn;
+    const student = examState.student || {};
+    const studentName = student.name || 'Peserta Non-Field Trip';
+    const studentClass = student.class || student.class_name || 'Kelas X';
+
+    // Auto-save 100 score if not already saved
+    const asesmenPayload = {
+      day: 7,
+      score: 100,
+      score_percent: 100,
+      is_passed: true,
+      predicate: 'Sangat Baik (Tuntas)',
+      status: 'completed',
+      submittedAt: new Date().toISOString(),
+      answers: { note: 'Day 7 Bebas Kuis Asesmen (Auto-Tuntas Portofolio Final)' }
+    };
+    try {
+      localStorage.setItem('fincestem_asesmen_nft_day7_' + cleanNisn, JSON.stringify(asesmenPayload));
+      localStorage.setItem('fincestem_asesmen_day7_' + cleanNisn, JSON.stringify(asesmenPayload));
+      localStorage.setItem('fincestem_exam_state_d7_' + cleanNisn, JSON.stringify({ isSubmitted: true, score: 100 }));
+      if (window.FincestemCore && FincestemCore.progress) {
+        FincestemCore.progress.saveTaskRecord(cleanNisn, 7, 'asesmen', asesmenPayload, 100);
+      }
+    } catch(e) {}
+
+    mainEl.innerHTML = `
+      <div class="max-w-2xl mx-auto px-4 py-8 flex flex-col items-center text-center gap-6 animate-fade-in">
+        <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-amber-400 via-amber-500 to-yellow-600 text-slate-950 flex items-center justify-center shadow-xl shadow-amber-500/30">
+          <span class="material-symbols-outlined text-5xl">military_tech</span>
+        </div>
+
+        <div class="flex flex-col gap-2">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300 text-xs font-black uppercase tracking-wider mx-auto">
+            <span class="material-symbols-outlined text-sm">verified</span>
+            <span>DAY 7 • BEBAS KUIS ASESMEN (100% TUNTAS)</span>
+          </div>
+          <h1 class="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+            Selamat, Seluruh Rangkaian Riset Day 1 s.d. Day 7 Telah Tuntas Sempurna!
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-lg mx-auto text-justify sm:text-center">
+            Pada hari penutupan (Day 7), Anda <strong>dibebaskan dari kuis pilihan ganda maupun tes tulis</strong>. Sebagai bentuk penghargaan atas kerja keras Anda menyelesaikan video refleksi, kompilasi BTS, dan jurnal refleksi, sistem memberikan <strong>Nilai Partisipasi Sempurna: 100 / 100</strong>.
+          </p>
+        </div>
+
+        <!-- Kartu Skor & Predikat -->
+        <div class="w-full p-6 rounded-3xl bg-gradient-to-br from-purple-900 via-indigo-950 to-slate-950 text-white shadow-xl border border-purple-500/40 flex flex-col gap-4">
+          <div class="flex items-center justify-between border-b border-white/15 pb-3">
+            <span class="text-xs text-purple-200 font-medium">Peserta: <strong>${escapeHtml(studentName)}</strong> (${escapeHtml(studentClass)})</span>
+            <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-amber-400 text-slate-950">Grand Finale</span>
+          </div>
+          <div class="flex items-center justify-center gap-6 py-2">
+            <div class="flex flex-col items-center">
+              <span class="text-xs text-purple-200 font-medium">Skor Asesmen Day 7</span>
+              <span class="text-4xl sm:text-5xl font-black text-amber-300 font-mono">100</span>
+            </div>
+            <div class="w-px h-14 bg-white/20"></div>
+            <div class="flex flex-col items-center">
+              <span class="text-xs text-purple-200 font-medium">Predikat Kelulusan</span>
+              <span class="text-xl sm:text-2xl font-black text-emerald-400">Sangat Baik</span>
+            </div>
+          </div>
+          <div class="text-[11px] text-purple-200/90 text-center border-t border-white/10 pt-2.5">
+            Portofolio akhir Anda telah tersimpan dan siap direkapitulasi ke dalam lembar Rapor Resmi FINCESTEM oleh Tim Fasilitator Pembimbing.
+          </div>
+        </div>
+
+        <!-- Tombol Aksi -->
+        <div class="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md pt-2">
+          <a href="dashboard.html" class="w-full sm:flex-1 py-3.5 px-5 rounded-2xl bg-gradient-to-r from-purple-700 via-indigo-700 to-indigo-800 hover:from-purple-800 hover:to-indigo-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg shadow-purple-600/20 active:scale-95 transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-lg">dashboard</span>
+            <span>Buka Dasbor Rapor Akhir</span>
+          </a>
+          <a href="lkpd.html?day=7" class="w-full sm:w-auto py-3.5 px-5 rounded-2xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-700 font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer shadow-2xs">
+            <span>Lihat LKPD Day 7</span>
+          </a>
+        </div>
+      </div>
+    `;
+  }
+
 
   window.initNonFieldTripAsesmenPage = initNonFieldTripAsesmenPage;
   window.generateStudentPackage = generateStudentPackage;
