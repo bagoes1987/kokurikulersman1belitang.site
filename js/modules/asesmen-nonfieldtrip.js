@@ -862,7 +862,7 @@
                 <select id="selectExamSector" onchange="window.handleSwitchExamSector(this.value)" class="w-full text-xs font-bold text-slate-900 bg-white rounded-xl px-2.5 py-2 border border-amber-300 focus:outline-none shadow-xs">
                   <option value="pangan" ${(currentSectorKey === 'pangan' || currentSectorKey === 'pertanian') ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang &amp; Palawija)</option>
                   <option value="perkebunan" ${currentSectorKey === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
-                  <option value="peternakan" ${currentSectorKey === 'peternakan' ? 'selected' : ''}>3. Peternakan Sapi Mandiri &amp; Peternakan Kambing</option>
+                  <option value="peternakan" ${currentSectorKey === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat &amp; Budidaya Ternak (Sapi, Kambing/Domba, &amp; Unggas/Ayam)</option>
                   <option value="perikanan" ${currentSectorKey === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele &amp; Nila)</option>
                   <option value="industri" ${(currentSectorKey === 'industri' || currentSectorKey === 'jasa') ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (RMU, Tahu-Tempe, Kemplang)</option>
                   <option value="perdagangan" ${currentSectorKey === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi, Pasar &amp; Sembako)</option>
@@ -1718,7 +1718,7 @@
     'pangan': 'Pertanian Tanaman Pangan (Padi & Palawija)',
     'pertanian': 'Pertanian Tanaman Pangan & Hortikultura',
     'perkebunan': 'Perkebunan Rakyat (Karet & Sawit)',
-    'peternakan': 'Peternakan Mandiri OKU Timur (Sapi & Kambing)',
+    'peternakan': 'Peternakan Rakyat & Budidaya Ternak (Sapi, Kambing & Unggas)',
     'perikanan': 'Perikanan Budidaya Air Tawar (Patin & Nila)',
     'industri': 'Agro-Industri Pangan & RMU / UMKM Olahan',
     'jasa': 'Agro-Industri Pangan & Jasa Teknik',

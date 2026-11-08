@@ -1136,1120 +1136,1190 @@
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "A",
+      "indicatorKey": "etos_merumat_ternak",
+      "indicatorName": "Budaya, Nilai Sosial & Falsafah Beternak di Pedesaan OKU Timur",
       "cognitiveLevel": "C2",
-      "question": "Di kalangan masyarakat petani dan pedesaan OKU Timur, memelihara sapi mandiri sering disebut sebagai tradisi memelihara 'rojokoyo'. Nilai budaya dan fungsi ekonomi utama dari tradisi rojokoyo ini adalah...",
+      "question": "Di kalangan masyarakat petani dan perdesaan OKU Timur, memelihara ternak (sapi, kambing, maupun unggas ayam) memiliki nilai sosial-budaya yang mendalam selain sekadar mencari uang. Istilah lokal \"merumat ternak\" mencerminkan filosofi hidup berupa...",
       "options": [
         {
           "key": "A",
-          "text": "Ternak diposisikan sebagai aset tabungan hidup keluarga yang bernilai tinggi dan dapat dicairkan sewaktu-waktu untuk biaya pendidikan anak atau modal usaha"
+          "text": "Ketelatenan, kesabaran, dan kasih sayang merawat makhluk hidup secara disiplin dari fajar hingga malam"
         },
         {
           "key": "B",
-          "text": "Ternak wajib disembelih seluruhnya setiap kali musim panen padi tiba"
+          "text": "Upaya mengejar keuntungan instan tanpa perlu memperhatikan sanitasi kandang dan pakan"
         },
         {
           "key": "C",
-          "text": "Ternak hanya digunakan sebagai hewan aduan dalam pesta rakyat tahunan"
+          "text": "Kebiasaan membiarkan hewan ternak berkeliaran bebas mencari makan di pekarangan tetangga"
         },
         {
           "key": "D",
-          "text": "Ternak dianggap sebagai simbol mistis penolak hujan di wilayah persawahan"
+          "text": "Perilaku gengsi sosial untuk memamerkan jumlah hewan kurban di media sosial"
         },
         {
           "key": "E",
-          "text": "Ternak dilarang diperjualbelikan kepada sesama warga desa seumur hidup"
+          "text": "Ketergantungan penuh petani pada bantuan subsidi bibit ternak dari pemerintah pusat"
         }
       ],
       "correct": "A",
-      "explanation": "Istilah Jawa-Komering rojokoyo bermakna 'raja kaya' atau sumber kekayaan riil penyimpan nilai (store of value) yang tahan inflasi bagi keluarga tani."
+      "explanation": "Filosofi \"merumat ternak\" mencerminkan etos ketelatenan, disiplin jadwal pakan/minum, pembersihan kandang, dan empati kesejahteraan hewan (animal welfare)."
     },
     {
       "id": 2202,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "tata_letak_kandang",
+      "indicatorName": "Manajemen Tata Ruang Kandang Ternak & Unggas",
       "cognitiveLevel": "C3",
-      "question": "Berdasarkan lembar observasi sistem pemeliharaan peternakan sapi di OKU Timur, perbedaan mendasar antara sistem intensif (feedlot/kandang penuh) dengan sistem semi-intensif adalah...",
+      "question": "Berdasarkan lembar observasi kesehatan lingkungan peternakan di OKU Timur, penataan arah membujur kandang sapi, kambing, maupun kandang ayam yang paling tepat adalah membujur dari timur ke barat dengan tujuan...",
       "options": [
         {
           "key": "A",
-          "text": "Sistem intensif memelihara sapi terus-menerus di dalam kandang dengan pakan dan minum diantar penuh oleh peternak, sedangkan semi-intensif menggabungkan kandang malam dengan gembala siang"
+          "text": "Menghindari tiupan angin kencang dari arah persawahan saat musim hujan lebat"
         },
         {
           "key": "B",
-          "text": "Sistem intensif tidak memberikan pakan rumput sama sekali pada ternak sapi"
+          "text": "Memperoleh sinar matahari pagi yang cukup untuk membunuh kuman penyakit tanpa menyebabkan suhu kandang terlalu panas saat siang"
         },
         {
           "key": "C",
-          "text": "Sistem semi-intensif hanya memelihara sapi liar yang dibiarkan hidup di hutan"
+          "text": "Menyesuaikan arah aliran parit irigasi teknis di sepanjang jalan desa"
         },
         {
           "key": "D",
-          "text": "Sistem intensif khusus diperuntukkan bagi ternak kambing pedaging saja"
+          "text": "Memudahkan kendaraan truk pengangkut pakan membongkar muatan di depan kandang"
         },
         {
           "key": "E",
-          "text": "Sistem semi-intensif mewajibkan kandang sapi berada di dalam rumah pemilik"
+          "text": "Menghemat kebutuhan tiang kayu penyangga dan konstruksi atap seng kandang"
         }
       ],
-      "correct": "A",
-      "explanation": "Sistem intensif/cut and carry mengontrol penuh asupan nutrisi pakan di kandang untuk target penggemukan cepat (feedlot)."
+      "correct": "B",
+      "explanation": "Orientasi kandang timur-barat memaksimalkan masuknya sinar ultraviolet matahari pagi (membantu sintesis vitamin D dan sanitasi alami) serta menghindari panas terik menyengat di siang hari."
     },
     {
       "id": 2203,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
+      "indicatorKey": "mekanisasi_peternakan",
+      "indicatorName": "Teknologi & Mekanisasi Peralatan Peternakan Modern",
       "cognitiveLevel": "C2",
-      "question": "Peralatan mekanisasi utama yang diamati di kandang peternakan sapi modern mandiri adalah mesin chopper (mesin perajang rumput/pakan). Fungsi pokok mesin chopper tersebut adalah...",
+      "question": "Pada observasi teknologi peternakan modern di OKU Timur, mesin chopper rumput digunakan pada kandang ruminansia (sapi/kambing), sedangkan pada kandang unggas ayam broiler/petelur modern dipasang peralatan otomatis berupa...",
       "options": [
         {
           "key": "A",
-          "text": "Mencacah rumput gajah, jerami, dan tebon jagung menjadi potongan kecil (2–5 cm) agar mudah dikunyah, meningkatkan palatabilitas, dan mempermudah proses fermentasi"
+          "text": "Traktor roda empat dan bajak singkal pembalik sekam kandang"
         },
         {
           "key": "B",
-          "text": "Memisahkan daging sapi dari tulang belulang secara otomatis di dalam kandang"
+          "text": "Nipple drinker (tempat minum tetes otomatis) dan exhaust fan pengatur sirkulasi udara"
         },
         {
           "key": "C",
-          "text": "Memompa kotoran cair sapi menuju sungai terdekat agar kandang selalu kering"
+          "text": "Mesin perontok padi dan ayakan gabah manual"
         },
         {
           "key": "D",
-          "text": "Memanaskan suhu ruangan kandang sapi pada saat musim hujan dingin"
+          "text": "Kompresor udara tekanan tinggi pencuci bulu ayam"
         },
         {
           "key": "E",
-          "text": "Menghaluskan butiran garam jilat menjadi debu halus konsentrat"
+          "text": "Mesin pemanen gabah combine harvester berskala mini"
         }
       ],
-      "correct": "A",
-      "explanation": "Chopping memperkecil ukuran partikel hijauan (2-5 cm), memecah serat kasar, mengurangi sisa pakan terbuang, dan memaksimalkan luas permukaan kontak fermentasi."
+      "correct": "B",
+      "explanation": "Pada kandang ayam broiler/layer modern, nipple drinker otomatis menyediakan air higienis tanpa tumpah, dan exhaust fan (kipas penyedot) menjaga sirkulasi udara dan suhu kandang tetap sejuk."
     },
     {
       "id": 2204,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
-      "cognitiveLevel": "C3",
-      "question": "Mesin chopper pakan ternak digerakkan oleh motor penggerak bensin atau diesel melalui mekanisme transmisi puli dan v-belt. Prinsip kerja pisau di dalam ruang perajang adalah...",
+      "indicatorKey": "mesin_chopper_rumput",
+      "indicatorName": "Sistem Kerja Mesin Chopper Hijauan Pakan Ternak",
+      "cognitiveLevel": "C4",
+      "question": "Mesin chopper perajang rumput digerakkan oleh motor bensin 6,5 HP. Prinsip kerja teknis mesin ini yang memberikan dampak efisiensi konsumsi pakan pada sapi dan kambing adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Pisau baja berputar dengan kecepatan tinggi memotong batang hijauan yang didorong oleh rol penarik (feeder roll) ke arah landasan pisau (counter blade)"
+          "text": "Mencampur rumput dengan bahan kimia pewarna agar ternak lebih bernafsu makan"
         },
         {
           "key": "B",
-          "text": "Menggunakan tekanan uap panas untuk melunakkan serat rumput secara kimiawi"
+          "text": "Memotong serat rumput menjadi ukuran pendek (2–5 cm) sehingga memperluas bidang sentuh mikroba rumen dan ternak tidak menyisakan batang keras"
         },
         {
           "key": "C",
-          "text": "Batu gerinda bundar yang saling bergesekan menumbuk rumput hingga hancur"
+          "text": "Memanaskan rumput hingga matang agar terhindar dari kuman pembusuk"
         },
         {
           "key": "D",
-          "text": "Sinar laser berdaya rendah yang membelah daun rumput secara presisi"
+          "text": "Mengeringkan kadar air rumput segar seketika hingga menjadi tepung pelet kering"
         },
         {
           "key": "E",
-          "text": "Kawat baja statis yang ditarik manual menggunakan tuas tangan oleh operator"
+          "text": "Menghilangkan kandungan serat kasar rumput gajah secara total"
         }
       ],
-      "correct": "A",
-      "explanation": "Rotary blades memotong batang rumput berkecepatan tinggi terhadap stationary anvil/counter blade, menghasilkan cacahan berukuran homogen."
+      "correct": "B",
+      "explanation": "Pencacahan rumput menjadi ukuran 2-5 cm mempermudah ternak mengunyah, memperluas fermentasi mikroba rumen, dan mencegah ternak hanya memilih daun serta membuang batang keras."
     },
     {
       "id": 2205,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
-      "cognitiveLevel": "C4",
-      "question": "OKU Timur menghasilkan limbah jerami padi pascapanen yang sangat melimpah. Peternak sapi terampil mengolah jerami tersebut menjadi pakan awetan berkualitas melalui teknik silase/fermentasi dengan tujuan...",
+      "indicatorKey": "fermentasi_jerami_padi",
+      "indicatorName": "Pengolahan Limbah Jerami Padi Sawah Belitang untuk Pakan",
+      "cognitiveLevel": "C3",
+      "question": "Kawasan Belitang OKU Timur menghasilkan limbah jerami padi pascapanen dalam jumlah masif. Metode bioteknologi tepat guna untuk meningkatkan nilai kecernaan dan kadar protein jerami padi kering agar layak dijadikan pakan sapi dan kambing adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Memecah dinding sel lignin dan selulosa jerami yang keras sehingga protein kasarnya meningkat dan daya cerna ternak menjadi jauh lebih tinggi"
+          "text": "Pembakaran jerami di petak sawah hingga menjadi abu gosok kandang"
         },
         {
           "key": "B",
-          "text": "Mengubah jerami padi menjadi butiran pelet ikan yang terapung di air"
+          "text": "Amoniasi menggunakan urea atau fermentasi anaerob dengan inokulan mikroba (silase jerami)"
         },
         {
           "key": "C",
-          "text": "Menghilangkan seluruh kandungan serat dari jerami agar sapi tidak cepat kenyang"
+          "text": "Perendaman jerami dalam air saluran irigasi selama 30 hari hingga membusuk"
         },
         {
           "key": "D",
-          "text": "Membuat jerami mengering seketika dalam waktu 5 menit tanpa bantuan udara"
+          "text": "Penggilingan jerami bercampur pasir dan tanah lempung sawah"
         },
         {
           "key": "E",
-          "text": "Mencegah jerami dimakan oleh hama tikus sawah di dalam gudang terbuka"
+          "text": "Penjemuran jerami di atas aspal jalan raya sampai kering rapuh"
         }
       ],
-      "correct": "A",
-      "explanation": "Fermentasi anaerob oleh bakteri asam laktat merenggangkan ikatan lignoselulosa jerami, melunakkan tekstur, dan menaikkan kecernaan (TDN)."
+      "correct": "B",
+      "explanation": "Amoniasi urea atau fermentasi silase memecah ikatan lignoselulosa jerami yang alot, meningkatkan kecernaan serat, serta menaikkan kadar protein kasar pakan ternak."
     },
     {
       "id": 2206,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
-      "cognitiveLevel": "C3",
-      "question": "Bahan aditif starter yang dicampurkan peternak saat membuat silase jerami atau tebon jagung di dalam drum/silo anaerobik adalah...",
+      "indicatorKey": "pemanfaatan_dedak_padi",
+      "indicatorName": "Pemanfaatan Dedak dan Bekatul Hasil RMU Belitang",
+      "cognitiveLevel": "C2",
+      "question": "Pabrik Penggilingan Padi (RMU) di Belitang melimpah menghasilkan dedak dan bekatul halus. Dalam manajemen nutrisi peternakan, dedak padi ini menjadi pakan sangat strategis bagi sapi, kambing, maupun ayam/bebek karena kaya akan...",
       "options": [
         {
           "key": "A",
-          "text": "Tetes tebu (molase) dan dedak halus bekatul sebagai sumber karbohidrat terlarut bagi bakteri fermentasi"
+          "text": "Kalsium murni dan zat pewarna kuning alami"
         },
         {
           "key": "B",
-          "text": "Pestisida insektisida cair dosis tinggi untuk membunuh serangga mikro"
+          "text": "Energi metabolis, karbohidrat, dan vitamin B kompleks dengan harga relatif terjangkau"
         },
         {
           "key": "C",
-          "text": "Minyak tanah dan bensin untuk mematikan jamur pembusuk di dalam drum"
+          "text": "Klorofil daun dan antibiotik sintetis dosis tinggi"
         },
         {
           "key": "D",
-          "text": "Kapur tohor pekat yang dicampur dengan tatal kayu gergaji"
+          "text": "Zat pengawet kimia yang membuat pakan tahan hingga 5 tahun"
         },
         {
           "key": "E",
-          "text": "Cuka getah asam format murni yang digunakan pada pembekuan karet"
+          "text": "Zat racun alami yang mampu membasmi lalat kandang"
         }
       ],
-      "correct": "A",
-      "explanation": "Molase menyediakan gula sederhana (WSC/water soluble carbohydrates) sebagai substrat energi mikroba pembentuk asam laktat dalam kondisi anaerob."
+      "correct": "B",
+      "explanation": "Dedak padi kaya akan karbohidrat/energi, protein nabati (11-13%), dan vitamin B, menjadikannya bahan pakan utama ransum sapi comboran, kambing, serta pakan unggas ayam dan bebek."
     },
     {
       "id": 2207,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "inseminasi_buatan_ib",
+      "indicatorName": "Penerapan Teknologi Inseminasi Buatan (IB) pada Sapi",
       "cognitiveLevel": "C3",
-      "question": "Dalam peningkatan mutu genetik sapi potong di OKU Timur, dinas peternakan gencar menerapkan teknologi Inseminasi Buatan (IB) atau 'kawin suntik'. Keuntungan utama IB bagi peternak rakyat adalah...",
+      "question": "Dalam peningkatan mutu genetik sapi potong di OKU Timur, petugas Poskeswan rutin melakukan program Inseminasi Buatan (IB/kawin suntik). Keunggulan utama program IB dibandingkan kawin alami pemacek jantan adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Memperoleh anakan sapi unggul berbobot besar (Simental, Limousin, Brahman) dari pejantan elit tanpa peternak harus memelihara pejantan pemacek mahal"
+          "text": "Biaya anakan sapi hasil IB otomatis disubsidi gratis oleh bank daerah"
         },
         {
           "key": "B",
-          "text": "Induk sapi dijamin pasti melahirkan anak kembar tiga setiap tahun"
+          "text": "Mempercepat perbaikan mutu genetik (Limousin, Simmental, Brahman) tanpa perlu membeli pejantan unggul yang sangat mahal"
         },
         {
           "key": "C",
-          "text": "Induk sapi tidak perlu diberi makan konsentrat selama masa kebuntingan"
+          "text": "Menjamin induk sapi pasti melahirkan anak kembar tiga setiap tahun"
         },
         {
           "key": "D",
-          "text": "Menghilangkan masa kebuntingan sapi dari 9 bulan menjadi hanya 2 bulan"
+          "text": "Menghilangkan kewajiban peternak membersihkan kotoran kandang"
         },
         {
           "key": "E",
-          "text": "Biaya kawin suntik sepenuhnya gratis tanpa perlu menghubungi petugas mantri"
+          "text": "Membuat sapi kebal terhadap semua jenis gigitan nyamuk dan lalat kandang"
         }
       ],
-      "correct": "A",
-      "explanation": "Inseminasi buatan menggunakan straw sperma beku pejantan unggul bersertifikat untuk menghasilkan anakan heterosis silangan berpertumbuhan pesat."
+      "correct": "B",
+      "explanation": "Inseminasi Buatan (IB) memungkinkan peternak rakyat menghasilkan pedet persilangan unggul berbobot besar (Limousin/Simmental) dari pejantan elit bersertifikat dengan biaya murah."
     },
     {
       "id": 2208,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "manajemen_brooding_ayam",
+      "indicatorName": "Fase Pemeliharaan Brooding pada Peternakan Ayam Broiler",
       "cognitiveLevel": "C3",
-      "question": "Ketepatan waktu inseminasi buatan sangat ditentukan oleh kejelian peternak mendeteksi tanda birahi induk sapi yang dikenal dengan istilah kearifan lokal '3A', yaitu...",
+      "question": "Pada budidaya ayam broiler (pedaging) di OKU Timur, fase \"brooding\" (pemeliharaan anak ayam umur 1–14 hari) merupakan periode paling kritis. Peternak memasang tirai melingkar (chick guard) dan alat pemanas (brooder/gasolec) bertujuan untuk...",
       "options": [
         {
           "key": "A",
-          "text": "Abang (merah), Aboh (bengkak), dan Anget (hangat pada bagian vulva ternak)"
+          "text": "Menjaga suhu lingkungan hangat (32°–35°C) karena termoregulasi tubuh anak ayam DOC belum sempurna"
         },
         {
           "key": "B",
-          "text": "Agresif, Amuk, dan Anjlok (sapi mengamuk menabrak dinding kandang)"
+          "text": "Memaksa anak ayam tidur terus sepanjang hari agar pakan tidak cepat habis"
         },
         {
           "key": "C",
-          "text": "Abadi, Aman, dan Akurat (sapi tertidur pulas sepanjang hari)"
+          "text": "Mencegah ayam melihat lingkungan luar agar tidak berkokok di malam hari"
         },
         {
           "key": "D",
-          "text": "Amanah, Adil, dan Asli (sapi berhenti mengunyah pakan rumput)"
+          "text": "Mengurangi kebutuhan air minum hingga separuh takaran standar"
         },
         {
           "key": "E",
-          "text": "Aktif, Anggun, dan Anteng (sapi melompat keluar dari pagar pembatas)"
+          "text": "Membuat bulu anak ayam berubah warna menjadi putih berkilau"
         }
       ],
       "correct": "A",
-      "explanation": "Gejala klinis estrus 3A (Abang, Aboh, Anget) disertai keluarnya lendir bening transparan adalah waktu optimal bagi mantri ternak menyuntikkan semen beku."
+      "explanation": "Anak ayam (DOC) belum mampu mengatur suhu tubuhnya sendiri (termoregulasi belum matang). Pemanas brooder menjaga suhu hangat 32-35°C agar DOC tidak kedinginan, tidak menumpuk, dan saluran pencernaannya tumbuh optimal."
     },
     {
       "id": 2209,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
-      "cognitiveLevel": "C3",
-      "question": "Desain konstruksi lantai kandang sapi yang memenuhi standar sanitasi dan ergonomis di pedesaan OKU Timur memiliki ciri teknis...",
+      "indicatorKey": "desain_lantai_kandang",
+      "indicatorName": "Rancang Bangun Konstruksi Lantai Kandang Sapi, Kambing & Ayam",
+      "cognitiveLevel": "C4",
+      "question": "Hasil analisis komparatif konstruksi lantai kandang menunjukkan perbedaan spesifik: kandang sapi memakai lantai semen beralur dengan kemiringan 2°–5°, kandang kambing memakai panggung bilah kayu bercelah 1,5 cm, sedangkan kandang ayam broiler memakai lantai postal sekam padi. Alasan teknis digunakannya sekam padi pada kandang ayam broiler adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Permukaan semen kasar anti-selip dengan kemiringan 2–3 derajat mengarah ke saluran parit pembuangan kotoran di belakang"
+          "text": "Sebagai bahan makanan pokok tambahan pengganti jagung giling"
         },
         {
           "key": "B",
-          "text": "Lantai keramik licin mengkilap tanpa adanya saluran pembuangan air"
+          "text": "Menyerap kelembapan feses/kotoran, menjaga kehangatan kaki ayam, dan mencegah luka pada dada (blister)"
         },
         {
           "key": "C",
-          "text": "Tanah lumpur becek yang dibiarkan tergenang air kotoran setinggi 30 cm"
+          "text": "Membuat feses ayam mengeras seperti batu bata bangunan"
         },
         {
           "key": "D",
-          "text": "Papan kayu lapuk yang berlubang besar di bawah kaki ternak sapi"
+          "text": "Mencegah ayam bertelur sebelum waktunya tiba"
         },
         {
           "key": "E",
-          "text": "Lantai aspal jalan raya yang dilapisi pasir pantai halus"
+          "text": "Menghemat kebutuhan atap pelindung seng kandang"
         }
       ],
-      "correct": "A",
-      "explanation": "Kemiringan 2-3% memperlancar drainase urin dan air cuci kandang ke gutter, sementara tekstur semen kasar mencegah sapi terpeleset (cedera terkilir)."
+      "correct": "B",
+      "explanation": "Sekam padi padi sawah Belitang berfungsi sebagai bedding/litter yang menyerap air kotoran ayam, memberi isolasi termal hangat, dan menjaga permukaan empuk agar dada/kaki ayam broiler tidak lecet/blister."
     },
     {
       "id": 2210,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
+      "indicatorKey": "ventilasi_atap_kandang",
+      "indicatorName": "Arsitektur Atap Sistem Monitor untuk Kelancaran Sirkulasi Udara",
       "cognitiveLevel": "C3",
-      "question": "Model atap kandang sapi yang banyak dijumpai pada peternak maju adalah model 'monitor' (atap bertingkat dengan celah ventilasi di puncak). Keunggulan model atap ini adalah...",
+      "question": "Bentuk atap kandang tipe monitor (atap bertingkat dengan ventilasi udara di puncaknya) sangat banyak diterapkan pada peternakan sapi dan kandang ayam open house di OKU Timur. Keuntungan aerodinamika dari model atap ini adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Memperlancar sirkulasi pembuangan gas panas dan gas amonia ke atas sehingga ruangan kandang tetap sejuk dan sapi terhindar dari stres panas"
+          "text": "Menampung air hujan secara maksimal untuk dialirkan ke bak minum"
         },
         {
           "key": "B",
-          "text": "Menampung air hujan agar langsung jatuh membasahi punggung sapi"
+          "text": "Memfasilitasi udara panas dan gas amonia yang bermassa jenis lebih ringan untuk keluar secara alami lewat puncak atap"
         },
         {
           "key": "C",
-          "text": "Membuat suara petir terdengar lebih keras di dalam kandang"
+          "text": "Mencegah masuknya burung liar dan kelelawar secara permanen"
         },
         {
           "key": "D",
-          "text": "Mencegah burung terbang melintasi area sekitar peternakan"
+          "text": "Mengurangi beban tiang pancang dari goncangan gempa bumi"
         },
         {
           "key": "E",
-          "text": "Mempercepat seng atap berkarat agar menyatu dengan alam perdesaan"
+          "text": "Membuat suara petir teredam sehingga ternak tidak kaget"
         }
       ],
-      "correct": "A",
-      "explanation": "Efek cerobong termal pada atap monitor mengalirkan gas amonia dan panas tubuh ternak keluar melalui ventilasi puncak, menjaga iklim mikro kandang."
+      "correct": "B",
+      "explanation": "Udara panas dan gas amonia di dalam kandang akan naik ke atas (efek cerobong termal). Ventilasi atap monitor memungkinkan gas amonia keluar lancar sehingga udara di lantai kandang tetap segar."
     },
     {
       "id": 2211,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
-      "cognitiveLevel": "C3",
-      "question": "Tindakan biosekuriti dan sanitasi kandang yang wajib dilakukan peternak sapi untuk mencegah penularan wabah Penyakit Mulut dan Kuku (PMK) meliputi...",
+      "indicatorKey": "biosekuriti_sanitasi_kandang",
+      "indicatorName": "Penerapan Prosedur Biosekuriti 3 Zona di Peternakan",
+      "cognitiveLevel": "C4",
+      "question": "Pencegahan wabah penyakit menular pada peternakan ayam pedaging/petelur maupun kandang sapi di OKU Timur menerapkan konsep biosekuriti ketat. Salah satu implementasi biosekuriti konseptual di pintu masuk kandang adalah penyediaan \"foot bath\", yaitu...",
       "options": [
         {
           "key": "A",
-          "text": "Penyemprotan desinfektan berkala pada kandang, mencuci kaki sapi dengan larutan klorin/citric acid, dan menaburkan kapur tohor di gerbang masuk"
+          "text": "Bak air hangat untuk merendam kaki ternak yang pegal setelah merumput"
         },
         {
           "key": "B",
-          "text": "Mengundang seluruh warga desa masuk ke kandang untuk melihat sapi yang sedang sakit"
+          "text": "Bak berisi larutan desinfektan untuk mencelupkan sepatu boot pekerja/tamu sebelum melangkah masuk ke area kandang"
         },
         {
           "key": "C",
-          "text": "Membiarkan kotoran sapi menumpuk hingga setinggi lutut sapi dewasa"
+          "text": "Saluran pembuangan kotoran cair menuju kolam ikan lele"
         },
         {
           "key": "D",
-          "text": "Mencampur air minum sapi dengan air comberan saluran irigasi"
+          "text": "Tempat mencuci peralatan mesin chopper rumput setelah dipakai"
         },
         {
           "key": "E",
-          "text": "Menutup seluruh jendela kandang secara rapat menggunakan terpal plastik hitam"
+          "text": "Bak penampung air minum otomatis bagi ayam yang kehausan"
         }
       ],
-      "correct": "A",
-      "explanation": "Desinfeksi rutin, footbath celup kaki dengan asam sitrat/desinfektan resmi, dan pembatasan tamu luar adalah standar SOP biosekuriti anti-PMK."
+      "correct": "B",
+      "explanation": "Foot bath (bak celup kaki) berisi larutan desinfektan mematikan virus, bakteri, dan patogen yang menempel pada alas kaki pekerja atau tamu sebelum memasuki zona bersih kandang."
     },
     {
       "id": 2212,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
-      "cognitiveLevel": "C4",
-      "question": "Tanda-tanda klinis khas pada sapi yang terindikasi terserang virus Penyakit Mulut dan Kuku (PMK) yang harus segera dilaporkan kepada mantri hewan adalah...",
+      "indicatorKey": "vaksinasi_pencegahan_penyakit",
+      "indicatorName": "Jadwal Vaksinasi & Pengendalian Penyakit Viral Ternak",
+      "cognitiveLevel": "C3",
+      "question": "Penyakit viral pada peternakan unggas dan ternak besar tidak dapat diobati dengan antibiotik, melainkan harus dicegah melalui program vaksinasi terjadwal. Pasangan penyakit dan jenis ternak yang tepat di bawah ini adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Demam tinggi, keluar lendir busa berlebihan dari mulut (hipersalivasi), serta lepuh luka melepuh pada gusi, lidah, dan celah kuku kaki"
+          "text": "Penyakit Tetelo/ND (Newcastle Disease) pada ayam, dan Penyakit Mulut dan Kuku (PMK) pada sapi/kambing"
         },
         {
           "key": "B",
-          "text": "Bulu sapi berubah warna menjadi keemasan dan tanduk tumbuh memanjang"
+          "text": "Penyakit Mulut dan Kuku (PMK) pada ayam broiler, dan Flu Burung pada sapi potong"
         },
         {
           "key": "C",
-          "text": "Sapi mampu melompat pagar kandang setinggi 3 meter secara lincah"
+          "text": "Penyakit Gumboro pada sapi perah, dan Penyakit Antraks pada bebek petelur"
         },
         {
           "key": "D",
-          "text": "Nafsu makan sapi meningkat empat kali lipat dari porsi harian normal"
+          "text": "Penyakit Ngorok (SE) pada ayam pedaging, dan Cacing Hati pada burung puyuh"
         },
         {
           "key": "E",
-          "text": "Kotoran sapi berubah mengeras seperti batu karang hitam di dalam perut"
+          "text": "Penyakit Rabies pada kambing etawa, dan Penyakit Surra pada ayam joper"
         }
       ],
       "correct": "A",
-      "explanation": "Vesikel (lepuh) pada mukosa mulut dan korona kuku menyebabkan sapi kesakitan saat mengunyah (drooling/busa saliva) dan pincang berdiri."
+      "explanation": "ND (Newcastle Disease/Tetelo) dan AI (Avian Influenza) adalah penyakit viral fatal pada unggas, sedangkan PMK (Foot and Mouth Disease) dan LSD (Lumpy Skin Disease) menyerang ternak ruminansia sapi dan kambing."
     },
     {
       "id": 2213,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "kalkulasi_fcr_pakan",
+      "indicatorName": "Konsep Matematis & Efisiensi FCR (Feed Conversion Ratio)",
       "cognitiveLevel": "C4",
-      "question": "Komposisi pakan konsentrat tambahan buatan mandiri yang umum diracik peternak sapi penggemukan di OKU Timur untuk mencukupi kebutuhan protein dan energi adalah...",
+      "question": "Dalam evaluasi finansial usaha peternakan ayam broiler maupun penggemukan sapi di Belitang, dikenal indikator FCR (Feed Conversion Ratio). Jika seekor ayam broiler mengonsumsi total pakan 3,0 kg dan menghasilkan bobot badan hidup 2,0 kg, maka nilai FCR dan maknanya adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Campuran bekatul padi, jagung giling, bungkil kelapa/sawit, molase, dan mineral premiks dengan perbandingan terukur"
+          "text": "FCR 0,67; artinya setiap 0,67 kg bobot ayam butuh 2 kg pakan"
         },
         {
           "key": "B",
-          "text": "Campuran pasir sungai, abu gosok, garam dapur, dan semen putih"
+          "text": "FCR 1,50; artinya dibutuhkan 1,5 kg pakan untuk menghasilkan 1 kg pertambahan bobot badan"
         },
         {
           "key": "C",
-          "text": "Nasi basi sisa warung makan yang dicampur air sabun deterjen"
+          "text": "FCR 5,00; artinya ayam mengalami pemborosan pakan 5 kali lipat"
         },
         {
           "key": "D",
-          "text": "Potongan plastik kemasan yang dicelupkan ke dalam minyak goreng bekas"
+          "text": "FCR 6,00; artinya keuntungan peternak mencapai 6 kali modal bibit"
         },
         {
           "key": "E",
-          "text": "Dedaunan kering pohon karet yang disiram dengan air cuka pekat"
+          "text": "FCR 1,00; artinya seluruh pakan berubah menjadi daging tanpa ada kotoran"
         }
       ],
-      "correct": "A",
-      "explanation": "Konsentrat berbasis by-product pertanian lokal (bekatul, bungkil sawit, jagung) menyuplai Total Digestible Nutrients (TDN) dan Protein Kasar (CP) 12-14%."
+      "correct": "B",
+      "explanation": "FCR dihitung dari Total Pakan : Bobot Hidup = 3,0 kg : 2,0 kg = 1,50. Semakin kecil nilai FCR, semakin efisien dan hemat penggunaan pakan ternak tersebut."
     },
     {
       "id": 2214,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
-      "cognitiveLevel": "C2",
-      "question": "Penyediaan air minum untuk ternak sapi potong di kandang harus menganut prinsip 'ad libitum', yang artinya...",
+      "indicatorKey": "manajemen_air_minum_unggas",
+      "indicatorName": "Penyediaan Air Minum Nipple Drinker & Kualitas Air Ternak",
+      "cognitiveLevel": "C3",
+      "question": "Penyediaan air minum pada peternakan ayam modern menggunakan sistem pipa tertutup dengan \"nipple drinker\". Keunggulan sistem ini dibandingkan tempat minum manual berbentuk galon gantung adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Tersedia secara terus-menerus dan bebas dikonsumsi kapan saja sapi merasa haus (sekitar 40–60 liter per ekor per hari)"
+          "text": "Air minum tidak mudah tumpah sehingga lantai sekam tetap kering dan bebas bau amonia menyengat"
         },
         {
           "key": "B",
-          "text": "Hanya diberikan satu gelas kecil pada waktu tengah malam"
+          "text": "Air di dalam pipa berubah menjadi manis secara otomatis tanpa gula"
         },
         {
           "key": "C",
-          "text": "Diberikan hanya jika sapi telah selesai membajak sawah selama 5 jam"
+          "text": "Ayam tidak perlu minum air setiap hari karena nipple menyimpan cadangan air di tubuh ayam"
         },
         {
           "key": "D",
-          "text": "Air minum dicampur dengan es batu beku setiap 10 menit sekali"
+          "text": "Membuat ayam tidak buang kotoran selama masa pemeliharaan"
         },
         {
           "key": "E",
-          "text": "Sapi dilarang minum air bersih sebelum berusia di atas 3 tahun"
+          "text": "Menggantikan fungsi kipas blower pendingin kandang"
         }
       ],
       "correct": "A",
-      "explanation": "Kebutuhan air ad libitum (unrestricted) sangat vital untuk metabolisme rumen, regulasi suhu tubuh, dan pencernaan serat hijauan."
+      "explanation": "Nipple drinker hanya meneteskan air saat dipatuk ayam, menjaga air tetap steril dari debu/feses, dan mencegah air tumpah membasahi litter sekam padi, sehingga menekan pembentukan gas amonia."
     },
     {
       "id": 2215,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "pupuk_kandang_organik",
+      "indicatorName": "Pengolahan Limbah Kotoran Ternak Menjadi Pupuk Organik Kompos",
       "cognitiveLevel": "C3",
-      "question": "Pengolahan limbah kotoran padat sapi menjadi pupuk organik bokashi bernilai jual tinggi dilakukan peternak dengan cara...",
+      "question": "Pengolahan limbah kotoran padat sapi, kambing, atau kotoran ayam menjadi pupuk kandang matang sebelum diaplikasikan ke sawah padi Belitang harus melalui proses fermentasi/pematangan terlebih dahulu karena...",
       "options": [
         {
           "key": "A",
-          "text": "Mencampur kotoran padat dengan sekam, dedak, dan larutan mikroba dekomposer (EM4), lalu ditutup terpal untuk proses fermentasi aerob-anaerob"
+          "text": "Kotoran segar mengeluarkan bau wangi yang mengundang hama tikus sawah"
         },
         {
           "key": "B",
-          "text": "Membuang kotoran langsung ke dalam saluran irigasi primer BK Belitang"
+          "text": "Kotoran segar masih mengalami proses dekomposisi bersuhu tinggi dan menghasilkan gas beracun yang dapat membakar perakaran tanaman padi"
         },
         {
           "key": "C",
-          "text": "Membakar kotoran basah menggunakan minyak tanah di tengah jalan desa"
+          "text": "Kotoran ternak segar dilarang oleh peraturan adat desa Belitang"
         },
         {
           "key": "D",
-          "text": "Menjemur kotoran di bawah terik matahari hingga berubah menjadi debu pasir"
+          "text": "Fermentasi membuat volume kotoran bertambah sepuluh kali lipat"
         },
         {
           "key": "E",
-          "text": "Menyimpan kotoran di dalam kulkas bersama bahan makanan rumah tangga"
+          "text": "Kotoran segar tidak laku dijual di pasar hewan mingguan"
         }
       ],
-      "correct": "A",
-      "explanation": "Dekomposisi terkontrol oleh mikroorganisme EM4 menghasilkan pupuk kompos matang dengan C/N rasio rendah (< 20) tanpa bau menyengat."
+      "correct": "B",
+      "explanation": "Kotoran ternak segar memiliki rasio C/N tinggi dan masih panas (mengeluarkan gas amonia dan metana) akibat aktivitas bakteri pengurai. Fermentasi mendinginkan suhu dan mematangkan unsur hara agar siap diserap akar tanaman."
     },
     {
       "id": 2216,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
-      "cognitiveLevel": "C4",
-      "question": "Limbah cair urine sapi yang ditampung dalam tandon penampung dapat difermentasi menjadi pupuk organik cair (POC / biourine). Keunggulan biourine bagi tanaman cabai dan padi adalah...",
+      "indicatorKey": "kotoran_ayam_sekam",
+      "indicatorName": "Nilai Ekonomis Kotoran Ayam Bercampur Sekam Padi",
+      "cognitiveLevel": "C2",
+      "question": "Limbah kotoran ayam broiler yang bercampur sekam padi saat masa panen di OKU Timur sangat diminati oleh para petani hortikultura dan palawija karena...",
       "options": [
         {
           "key": "A",
-          "text": "Mengandung unsur Nitrogen alami, Kalium, dan zat pengatur tumbuh (fitohormon auksin) yang merangsang pertumbuhan daun serta mengusir hama serangga"
+          "text": "Mengandung kadar nitrogen (N), fosfor (P), dan kalium (K) yang relatif tinggi serta memperbaiki struktur kegemburan tanah"
         },
         {
           "key": "B",
-          "text": "Dapat membasmi seluruh cacing tanah yang menyuburkan lahan persawahan"
+          "text": "Mampu membasmi gulma rumput teki secara instan tanpa herbisida"
         },
         {
           "key": "C",
-          "text": "Membuat tanah sawah mengeras seperti semen beton cor"
+          "text": "Dapat digunakan sebagai bahan baku pengganti semen plester dinding"
         },
         {
           "key": "D",
-          "text": "Mengubah warna gabah padi menjadi ungu gelap kehitaman"
+          "text": "Membuat warna daun sayuran berubah menjadi keemasan"
         },
         {
           "key": "E",
-          "text": "Menghilangkan seluruh kebutuhan air pada tanaman padi sawah"
+          "text": "Mencegah terjadinya banjir genangan di petak sawah irigasi"
         }
       ],
       "correct": "A",
-      "explanation": "Urin sapi kaya urea organik, asam amino, dan hormon alami yang setelah fermentasi bau amonianya hilang dan efektif sebagai pupuk daun bio-repelen."
+      "explanation": "Kotoran ayam merupakan pupuk kandang dengan kandungan unsur hara makro (N, P, K) tertinggi di antara kotoran ternak lainnya, dan sekam padi membantu menggemburkan aerasi tanah pertanian."
     },
     {
       "id": 2217,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
+      "indicatorKey": "reaktor_biogas_kotoran",
+      "indicatorName": "Teknologi Energi Mandiri Reaktor Biogas Kotoran Sapi",
       "cognitiveLevel": "C4",
-      "question": "Peternak inovatif di beberapa desa Belitang membangun reaktor biogas dari kotoran sapi. Energi alternatif biogas yang dihasilkan berupa gas metana (CH4) bermanfaat langsung untuk...",
+      "question": "Peternak sapi inovatif di desa peternakan OKU Timur membangun reaktor biogas (biodigester) dari kotoran sapi. Gas yang dihasilkan dari proses fermentasi anaerobik di dalam kubah biodigester dan dapat menyalakan kompor masak adalah gas...",
       "options": [
         {
           "key": "A",
-          "text": "Bahan bakar kompor memasak di dapur keluarga dan penerangan lampu biogas, menghemat pengeluaran gas elpiji 3 kg"
+          "text": "Oksigen (O2) murni"
         },
         {
           "key": "B",
-          "text": "Mengisi daya baterai smartphone secara nirkabel dari jarak jauh"
+          "text": "Metana (CH4) dan Karbon Dioksida (CO2)"
         },
         {
           "key": "C",
-          "text": "Mendinginkan ruangan rumah seperti pendingin udara (AC)"
+          "text": "Klorin dan Freon pendingin"
         },
         {
           "key": "D",
-          "text": "Menghilangkan bau badan pemilik peternakan saat memerah susu"
+          "text": "Nitrogen monoksida cair"
         },
         {
           "key": "E",
-          "text": "Menggantikan peran air minum bersih bagi ternak di kandang"
+          "text": "Helium pengisi balon udara"
         }
       ],
-      "correct": "A",
-      "explanation": "Anaerobic digester mengubah kotoran menjadi gas metana bersih untuk substitusi LPG rumah tangga dan menghasilkan pupuk ampas (slurry/bioslurry)."
+      "correct": "B",
+      "explanation": "Bakteri metanogenik mengurai materi organik kotoran ternak dalam kondisi kedap udara (anaerob) menghasilkan biogas yang didominasi oleh gas metana (CH4 55-70%) yang mudah terbakar sebagai energi terbarukan."
     },
     {
       "id": 2218,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
+      "indicatorKey": "kandang_panggung_kambing",
+      "indicatorName": "Rancang Bangun Kandang Panggung Kambing & Domba",
       "cognitiveLevel": "C3",
-      "question": "Pada peternakan kambing dan domba di OKU Timur, konstruksi kandang yang paling direkomendasikan penyuluh adalah model kandang panggung berlantai celah (slat) 50–70 cm dari tanah. Alasan utamanya adalah...",
+      "question": "Pada peternakan kambing dan domba di OKU Timur, konstruksi kandang yang paling banyak dianjurkan adalah model panggung setinggi 50–100 cm dari tanah. Manfaat biologis dan ergonomis dari kandang panggung ini adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Kotoran dan urine langsung jatuh ke kolong bawah sehingga lantai kandang selalu kering, mencegah penyakit kuku busuk (foot rot) dan kudis (scabies)"
+          "text": "Menghindarkan kambing dari predator harimau sumatera secara permanen"
         },
         {
           "key": "B",
-          "text": "Membuat kambing dapat melompat lebih tinggi saat bermain di dalam kandang"
+          "text": "Memisahkan ternak dari kotoran dan air kencingnya sendiri sehingga kaki tetap kering, bebas kutu, dan terhindar dari penyakit kuku busuk (foot rot)"
         },
         {
           "key": "C",
-          "text": "Memudahkan pemilik kandang tidur bersama ternak di kolong panggung"
+          "text": "Membuat kambing rajin memanjat tiang kayu agar otot kakinya kekar"
         },
         {
           "key": "D",
-          "text": "Menghindari kambing terkena hembusan angin sepoi-sepoi di pedesaan"
+          "text": "Memudahkan kambing melompat ke luar kandang saat siang hari"
         },
         {
           "key": "E",
-          "text": "Mempercepat kambing berubah menjadi ternak sapi pedaging"
+          "text": "Mengurangi kebutuhan genteng atap pelindung panas"
         }
       ],
-      "correct": "A",
-      "explanation": "Lantai panggung berjarak celah 1.5-2 cm menjaga kuku kambing tetap kering, higienis, terbebas dari genangan amonia, dan memudahkan panen pupuk kandang."
+      "correct": "B",
+      "explanation": "Lantai panggung berkisi membuat kotoran padat dan air kencing langsung jatuh ke kolong tanah, menjaga lantai pijakan kambing tetap kering, higienis, serta mencegah penyakit kuku busuk dan cacingan."
     },
     {
       "id": 2219,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
-      "cognitiveLevel": "C2",
-      "question": "Jenis kambing pedaging unggul yang banyak dibudidayakan peternak rakyat di Belitang karena pertumbuhannya cepat dan bertubuh tegap besar adalah...",
+      "indicatorKey": "kandang_baterai_layer",
+      "indicatorName": "Sistem Kandang Baterai pada Budidaya Ayam Petelur (Layer)",
+      "cognitiveLevel": "C3",
+      "question": "Pada usaha ayam petelur (layer) komersial di OKU Timur, peternak menggunakan kandang sistem baterai (sekat individual/ganda dengan lantai berkemiringan khusus). Fungsi utama lantai miring pada kandang baterai tersebut adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Kambing Peranakan Etawa (PE), kambing Boer, dan kambing Jawa Randu"
+          "text": "Memaksa ayam terus berdiri agar lemak tubuhnya terbakar"
         },
         {
           "key": "B",
-          "text": "Kambing kerdil hutan lindung"
+          "text": "Agar telur yang baru dikeluarkan induk langsung menggelinding perlahan ke talang depan sehingga tidak terinjak, tidak kotor, dan mudah diambil"
         },
         {
           "key": "C",
-          "text": "Kambing gunung es kutub utara"
+          "text": "Memudahkan sirkulasi angin sejuk dari kipas angin lantai"
         },
         {
           "key": "D",
-          "text": "Domba merino wol tebal iklim dingin eropa"
+          "text": "Mencegah ayam mematuk wadah pakan konsentrat di depannya"
         },
         {
           "key": "E",
-          "text": "Kambing liar pemakan semak rawa gambut"
+          "text": "Membuat suara ayam berkokok menjadi lebih merdu"
         }
       ],
-      "correct": "A",
-      "explanation": "Kambing PE dan persilangan Boer memiliki konversi pakan baik, toleran terhadap iklim tropis OKU Timur, dan sangat diminati untuk hewan qurban."
+      "correct": "B",
+      "explanation": "Kemiringan lantai kawat kandang baterai (±7-8 derajat) dirancang agar saat ayam bertelur, telur otomatis menggelinding ke penampung depan tanpa pecah atau terinjak oleh kaki ayam."
     },
     {
       "id": 2220,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "B",
+      "indicatorKey": "siklus_ekonomi_peternakan",
+      "indicatorName": "Dinamika Pasar & Permintaan Musiman Komoditas Ternak",
       "cognitiveLevel": "C3",
-      "question": "Siklus ekonomi peternak sapi dan kambing di OKU Timur sangat dipengaruhi oleh momentum budaya keagamaan Hari Raya Idul Adha (Kurban). Strategi bisnis yang dijalankan peternak adalah...",
+      "question": "Siklus ekonomi peternak di OKU Timur sangat dipengaruhi oleh momentum hari besar keagamaan dan tradisi lokal. Pola penjualan yang mencerminkan kecerdasan finansial peternak adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Mempersiapkan sapi dan kambing jantan berumur cukup (poel gigi) melalui program penggemukan intensif 3–6 bulan menjelang hari raya kurban"
+          "text": "Menjual seluruh sapi betina produktif saat harga daging sapi sedang anjlok"
         },
         {
           "key": "B",
-          "text": "Menjual seluruh induk sapi betina produktif yang sedang bunting"
+          "text": "Menyiapkan panen sapi/kambing jantan untuk Idul Adha (kurban) dan panen ayam potong/telur menjelang Hari Raya Idul Fitri saat harga puncak"
         },
         {
           "key": "C",
-          "text": "Menghentikan pemberian pakan ternak satu bulan sebelum hari raya"
+          "text": "Memborong pakan konsentrat dengan hutang bunga tinggi saat musim paceklik panen padi"
         },
         {
           "key": "D",
-          "text": "Menolak pembelian hewan ternak dari panitia masjid desa sekitar"
+          "text": "Menjual telur ayam hanya kepada tetangga dekat secara barter dengan gabah"
         },
         {
           "key": "E",
-          "text": "Menurunkan bobot sapi agar harga jual menjadi lebih murah"
+          "text": "Menolak menjual ternak meskipun usia ternak sudah melewati masa produktif optimum"
         }
       ],
-      "correct": "A",
-      "explanation": "Peak demand Idul Adha memberikan margin keuntungan tertinggi bagi peternak yang berhasil menyediakan ternak sehat dan telah poel (cukup umur syar'i)."
+      "correct": "B",
+      "explanation": "Peternak yang cerdas mengatur siklus penggemukan dan populasi kandang agar panen bertepatan dengan lonjakan permintaan tertinggi (Idul Adha untuk kurban ruminansia, Lebaran untuk ayam/telur)."
     },
     {
       "id": 2221,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "B",
+      "indicatorKey": "rantai_pasok_ternak",
+      "indicatorName": "Peran Lembaga Pemasaran & Lembaga Perantara di OKU Timur",
       "cognitiveLevel": "C2",
-      "question": "Di Pasar Hewan Belitang (atau pasar hewan mingguan OKU Timur), terdapat tradisi budaya transaksi jual beli sapi unik di mana pembeli dan belantik (makelar) saling bersalaman di balik sarung atau topi. Tujuan tradisi ini adalah...",
+      "question": "Dalam pemasaran hasil peternakan rakyat di Belitang, perputaran sapi dan kambing banyak melibatkan \"blantik\" (pedagang perantara hewan), sedangkan peternakan ayam broiler umumnya bermitra dengan \"bakul ayam/broker\". Peran positif pedagang perantara ini bagi peternak desa adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Melakukan tawar-menawar harga secara rahasia dan saling menghargai tanpa diketahui oleh pembeli lain di sekitar lokasi pasar"
+          "text": "Menetapkan harga sepihak di bawah biaya pokok produksi peternak"
         },
         {
           "key": "B",
-          "text": "Memastikan tangan pedagang dalam kondisi bersih tanpa terkena lumpur kandang"
+          "text": "Menyediakan akses pasar yang cepat mencairkan uang tunai (likuiditas) dan menanggung biaya transportasi angkutan hewan ke luar daerah"
         },
         {
           "key": "C",
-          "text": "Menguji kekuatan genggaman tangan antara pedagang dan pembeli sapi"
+          "text": "Mengambil alih kepemilikan sertifikat tanah kandang peternak"
         },
         {
           "key": "D",
-          "text": "Menghindari kewajiban membayar retribusi pasar kepada pengelola"
+          "text": "Melarang peternak menjual hewan ternaknya kepada warga sekitar"
         },
         {
           "key": "E",
-          "text": "Tanda bahwa transaksi jual beli dibatalkan secara sepihak"
+          "text": "Menghapuskan kewajiban surat keterangan kesehatan hewan (SKKH) dari dinas"
         }
       ],
-      "correct": "A",
-      "explanation": "Tradisi tawar sarung/maro rego adalah kode etik negosiasi privat tradisional untuk menjaga harga pasar dan etika persaingan antarpedagang hewan."
+      "correct": "B",
+      "explanation": "Pedagang perantara (blantik/bakul) menghubungkan peternak di pelosok desa dengan pasar hewan kota/konsumen besar, menyediakan armada truk angkut, dan memberikan pembayaran tunai seketika."
     },
     {
       "id": 2222,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
-      "cognitiveLevel": "C2",
-      "question": "Dalam lembar observasi K3 peternakan, peternak yang sedang membantu kelahiran pedet (anak sapi) atau membersihkan plasenta induk wajib memakai alat pelindung...",
+      "indicatorKey": "k3_peternakan_unggas_ternak",
+      "indicatorName": "Penerapan K3 (Kesehatan & Keselamatan Kerja) di Area Kandang",
+      "cognitiveLevel": "C3",
+      "question": "Saat mengamati aktivitas harian pekerja di kandang ayam broiler atau kandang sapi penggemukan di Belitang, Alat Pelindung Diri (APD) mutlak yang wajib dipakai pekerja saat membersihkan kotoran kandang adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Sarung tangan palpasi panjang (obstetri) higienis dan sepatu bot karet anti-air"
+          "text": "Jas hujan plastik tebal dan helm pelindung kepala sepeda motor"
         },
         {
           "key": "B",
-          "text": "Sarung tangan kain rajut berpori tipis tanpa antiseptik"
+          "text": "Masker respirator penyaring partikel/amonia, sarung tangan karet, dan sepatu boot tahan air"
         },
         {
           "key": "C",
-          "text": "Sandal jepit busa dan celana pendek kain katun"
+          "text": "Kacamata hitam gaya dan sarung tangan kain rajut tipis"
         },
         {
           "key": "D",
-          "text": "Helm las pelindung percikan api besi"
+          "text": "Sepatu kets olahraga beralas licin dan celana pendek"
         },
         {
           "key": "E",
-          "text": "Kacamata renang silikon kedap air laut"
+          "text": "Topi caping anyaman bambu tanpa alas kaki"
         }
       ],
-      "correct": "A",
-      "explanation": "Sarung tangan obstetri panjang melindungi tangan peternak dari risiko penularan zoonosis (misal Brucellosis) dan mencegah infeksi rahim induk sapi."
+      "correct": "B",
+      "explanation": "Masker respirator melindungi paru-paru dari gas amonia dan debu sekam/pakan, sarung tangan karet melindungi dari kuman patogen feses, dan sepatu boot karet mencegah tergelincir serta infeksi kuman."
     },
     {
       "id": 2223,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "pengendalian_bau_dan_lalat",
+      "indicatorName": "Pengendalian Bau Gas Amonia dan Hama Lalat Kandang",
       "cognitiveLevel": "C3",
-      "question": "Populasi lalat kandang (Stomoxys calcitrans) yang terlalu padat dapat membuat sapi gelisah dan bobot badan turun. Pengendalian lalat ramah lingkungan yang diterapkan peternak adalah...",
+      "question": "Salah satu tantangan sosial peternakan yang berlokasi dekat pemukiman warga adalah bau amonia dan kerumunan lalat. Langkah bioteknologi ramah lingkungan yang dilakukan peternak untuk menekan bau kandang adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Pemasangan perangkap lalat lem kuning, menjaga kebersihan lantai kandang, dan pengasapan serai wangi di sekitar kandang sore hari"
+          "text": "Menyemprotkan parfum kimia sintetis sebanyak mungkin ke tubuh ternak setiap pagi"
         },
         {
           "key": "B",
-          "text": "Menyemprotkan racun serangga dosis tinggi langsung ke pakan dan mata sapi"
+          "text": "Pemberian probiotik pengurai pada air minum/pakan dan penyemprotan mikroba dekomposer (seperti EM4) pada alas kotoran secara berkala"
         },
         {
           "key": "C",
-          "text": "Membiarkan lalat menghisap darah sapi hingga kenyang"
+          "text": "Membakar ban bekas di sekitar pagar kandang sepanjang malam"
         },
         {
           "key": "D",
-          "text": "Menangkap lalat satu per satu menggunakan tangan kosong"
+          "text": "Mengurangi ventilasi kandang dengan menutup seluruh dinding rapat-rapat memakai seng"
         },
         {
           "key": "E",
-          "text": "Menenggelamkan seluruh tubuh sapi ke dalam lumpur sawah"
+          "text": "Menghentikan pemberian air minum pada ternak selama tiga hari berturut-turut"
         }
       ],
-      "correct": "A",
-      "explanation": "Manajemen kotoran kering, perangkap mekanis lem kuning, dan pengasapan herbal repellent efektif menekan lalat tanpa residu kimia berbahaya."
+      "correct": "B",
+      "explanation": "Probiotik (bakteri menguntungkan seperti Lactobacillus) memperbaiki pencernaan protein sehingga feses tidak berbau busuk, dan penyemprotan dekomposer menekan pembentukan gas amonia dan perkembangbiakan belatung lalat."
     },
     {
       "id": 2224,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "hijauan_makanan_ternak_hmt",
+      "indicatorName": "Budidaya Hijauan Makanan Ternak Unggul (Rumput Odot & Pakchong)",
       "cognitiveLevel": "C3",
-      "question": "Untuk menjamin ketersediaan pakan hijauan sepanjang tahun, peternak mandiri di OKU Timur membudidayakan tanaman bank pakan di pematang sawah atau lahan pekarangan, seperti...",
+      "question": "Untuk menjamin pasokan pakan serat berkualitas bagi sapi dan kambing tanpa bergantung pada rumput liar pinggir jalan, peternak maju di OKU Timur membudidayakan rumput unggul seperti Rumput Odot dan Rumput Pakchong di pematang sawah. Keunggulan Rumput Odot adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Rumput Odot, Rumput Pakchong, Rumput Gajah Taiwan, dan legum tanaman Indigofera"
+          "text": "Tumbuh merambat di atas pohon kelapa sawit setinggi 10 meter"
         },
         {
           "key": "B",
-          "text": "Pohon kaktus berduri dan semak ilalang kering"
+          "text": "Berdaun lembut, batang empuk disukai ternak, kandungan protein relatif tinggi (12–14%), dan cepat bertunas kembali setelah dipangkas"
         },
         {
           "key": "C",
-          "text": "Pohon pinus hutan dan pohon jati belanda"
+          "text": "Dapat menghasilkan beras merah saat dipanen di musim hujan"
         },
         {
           "key": "D",
-          "text": "Tanaman eceng gondok rawa beracun"
+          "text": "Tidak membutuhkan air dan pupuk sama sekali sepanjang tahun"
         },
         {
           "key": "E",
-          "text": "Tanaman padi liar yang tidak berbulir gabah"
+          "text": "Mempunyai duri tajam yang melindungi dari serangan hama serangga"
         }
       ],
-      "correct": "A",
-      "explanation": "Rumput Odot dan Indigofera memiliki biomassa tinggi, daun lunak disukai ternak, dan kandungan protein kasar tinggi (16-24%)."
+      "correct": "B",
+      "explanation": "Rumput Odot (Pennisetum purpureum cv. Mott) berbatang empuk dan pendek, tidak berbulu gatal, sangat disukai sapi/kambing, dan memiliki rasio daun terhadap batang yang sangat tinggi."
     },
     {
       "id": 2225,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
-      "cognitiveLevel": "C3",
-      "question": "Untuk memperkirakan berat badan sapi hidup di kandang peternak tanpa timbangan mekanik lantai yang mahal, alat ukur praktis yang digunakan adalah...",
+      "indicatorKey": "estimasi_bobot_dan_hdp",
+      "indicatorName": "Kalkulasi Produktivitas Harian Ternak (ADG & Hen Day Production)",
+      "cognitiveLevel": "C4",
+      "question": "Pada peternakan sapi, penambahan berat badan harian diukur dengan ADG (Average Daily Gain). Sedangkan pada peternakan ayam petelur (layer) di Belitang, produktivitas bertelur diukur dengan rumus HDP (Hen Day Production). Jika dari 1.000 ekor ayam layer yang dipelihara dihasilkan 850 butir telur pada hari itu, maka persentase HDP kandang tersebut adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Pita ukur Rondo / pita meteran lingkar dada sapi yang dikonversikan dengan rumus Schoorl atau rumus Denmark"
+          "text": "8,5%"
         },
         {
           "key": "B",
-          "text": "Timbangan gantung pegas kapasitas 10 kilogram"
+          "text": "85%"
         },
         {
           "key": "C",
-          "text": "Alat ukur tinggi badan anak sekolah bergaris centimeter"
+          "text": "117%"
         },
         {
           "key": "D",
-          "text": "Termometer raksa pengukur suhu badan ketiak"
+          "text": "850%"
         },
         {
           "key": "E",
-          "text": "Penggaris plastik segitiga berukuran 30 cm"
+          "text": "75%"
         }
       ],
-      "correct": "A",
-      "explanation": "Lingkar dada (heart girth) memiliki korelasi linear kuat dengan massa tubuh riil sapi; rumus Schoorl: Bobot (kg) = (Lingkar Dada + 22)^2 / 100."
+      "correct": "B",
+      "explanation": "HDP dihitung dari: (Jumlah Butir Telur : Jumlah Ekor Ayam Hidup) x 100% = (850 : 1.000) x 100% = 85%. Nilai HDP di atas 80% menunjukkan performa produksi telur yang sangat baik dan menguntungkan."
     },
     {
       "id": 2226,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
-      "cognitiveLevel": "C4",
-      "question": "Dalam manajemen penggemukan sapi potong (feedlot) selama 90 hari, target Pertambahan Bobot Badan Harian (PBBH) yang ideal untuk sapi persilangan Simental/Limousin adalah...",
+      "indicatorKey": "nutrisi_kalsium_ayam_layer",
+      "indicatorName": "Pentingnya Unsur Kalsium (Ca) pada Pembentukan Cangkang Telur",
+      "cognitiveLevel": "C3",
+      "question": "Peternak ayam petelur di OKU Timur menambahkan grit batu kapur atau tepung kulit kerang ke dalam pakan konsentrat terutama pada sore hari. Tujuan biologis penambahan suplemen ini adalah...",
       "options": [
         {
           "key": "A",
-          "text": "0,9 hingga 1,4 kg per ekor per hari dengan efisiensi pakan yang baik"
+          "text": "Membuat kuning telur berwarna oranye pekat seperti wortel"
         },
         {
           "key": "B",
-          "text": "10 hingga 15 kg per ekor per hari dalam waktu 24 jam"
+          "text": "Memenuhi kebutuhan kalsium (Ca) yang tinggi untuk proses kalsifikasi pembentukan kerabang/cangkang telur yang berlangsung di malam hari"
         },
         {
           "key": "C",
-          "text": "Hanya 0,05 kg per ekor per hari tanpa penambahan daging"
+          "text": "Mencegah ayam bersuara ribut saat malam hari"
         },
         {
           "key": "D",
-          "text": "Bobot sapi harus konstan tidak boleh mengalami penambahan"
+          "text": "Membuat ukuran telur bertambah berat menjadi 200 gram per butir"
         },
         {
           "key": "E",
-          "text": "Bobot sapi wajib berkurang separuh agar daging menjadi padat"
+          "text": "Mengurangi kebutuhan air minum ayam hingga separuhnya"
         }
       ],
-      "correct": "A",
-      "explanation": "ADG (Average Daily Gain) sapi silangan eksotis mencapai 0.9-1.4 kg/hari dengan rasio pakan konsentrat-hijauan 60:40."
+      "correct": "B",
+      "explanation": "Sekitar 95% cangkang telur tersusun atas kalsium karbonat (CaCO3). Penambahan grit kalsium berbutir kasar pada sore hari menyediakan pelepasan kalsium lambat di saluran pencernaan saat uterus membentuk cangkang di malam hari."
     },
     {
       "id": 2227,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "pencegahan_parasit_dan_stres",
+      "indicatorName": "Pencegahan Parasit & Manajemen Stres Cuaca Ekstrem (Pancaroba)",
       "cognitiveLevel": "C3",
-      "question": "Pemberian obat cacing (anthelmintik) seperti Albendazole atau Ivermectin secara berkala setiap 3–4 bulan sekali pada ternak sapi dan kambing bertujuan untuk...",
+      "question": "Saat pergantian musim kemarau ke musim hujan (pancaroba) di OKU Timur, ternak ruminansia dan unggas rentan mengalami stres dan penurunan imunitas. Tindakan pemeliharaan preventif yang lazim dilakukan peternak adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Membasmi parasit cacing hati (Fasciola hepatica) dan cacing saluran pencernaan agar nutrisi pakan terserap optimal menjadi daging"
+          "text": "Memberikan obat cacing secara berkala dan menambahkan vitamin antistres (seperti vitamin C dan elektrolit) ke dalam air minum"
         },
         {
           "key": "B",
-          "text": "Mencegah bulu sapi rontok saat terkena air hujan di kandang"
+          "text": "Memandikan ayam potong dengan air es setiap tengah hari"
         },
         {
           "key": "C",
-          "text": "Membuat suara lenguhan sapi terdengar lebih nyaring di pagi hari"
+          "text": "Menghentikan pemberian pakan hijauan segar selama satu bulan penuh"
         },
         {
           "key": "D",
-          "text": "Mengubah tanduk sapi menjadi lebih lunak agar aman bagi peternak"
+          "text": "Menyalakan pengeras suara musik dengan volume keras di dalam kandang"
         },
         {
           "key": "E",
-          "text": "Menggantikan kewajiban peternak memberikan pakan rumput segar"
+          "text": "Mengunci pintu kandang rapat-rapat tanpa ventilasi udara sama sekali"
         }
       ],
       "correct": "A",
-      "explanation": "Infestasi cacing saluran cerna dan cacing hati parasitik menyebabkan anemia, malnutrisi, dan penurunan konversi pakan secara drastis."
+      "explanation": "Obat cacing (anthelmintik) membasmi parasit internal yang menyerap nutrisi tubuh, sementara vitamin antistres dan elektrolit menstabilkan metabolisme tubuh saat terjadi fluktuasi suhu dan kelembapan ekstrem."
     },
     {
       "id": 2228,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "B",
-      "cognitiveLevel": "C3",
-      "question": "Keberadaan Kelompok Peternak Mandiri di desa-desa OKU Timur memberikan manfaat ekonomi bersama bagi anggotanya, antara lain...",
+      "indicatorKey": "kemitraan_inti_plasma",
+      "indicatorName": "Pola Kemitraan Inti-Plasma pada Usaha Ayam Broiler",
+      "cognitiveLevel": "C4",
+      "question": "Banyak peternak ayam broiler di OKU Timur bergabung dalam sistem \"Kemitraan Inti-Plasma\" dengan perusahaan peternakan (integrator). Dalam perjanjian kemitraan ini, pembagian peran yang adil dan benar adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Pembelian pakan konsentrat/mineral secara grosir dengan harga murah dan kemudahan akses bantuan pejantan/vaksin dari dinas peternakan"
+          "text": "Peternak plasma wajib menanggung kerugian jika harga ayam di pasar jatuh bebas tanpa batas"
         },
         {
           "key": "B",
-          "text": "Mewajibkan seluruh anggota menyerahkan sapi miliknya kepada ketua kelompok"
+          "text": "Perusahaan inti menyediakan sarana produksi (bibit DOC, pakan, obat/vaksin, dan bimbingan teknis), sedangkan peternak plasma menyediakan kandang, peralatan, listrik/air, dan tenaga pemeliharaan"
         },
         {
           "key": "C",
-          "text": "Melarang peternak menjual sapi kepada panitia kurban masjid luar desa"
+          "text": "Peternak plasma bebas menjual ayam panen ke pasar gelap tanpa sepengetahuan perusahaan inti"
         },
         {
           "key": "D",
-          "text": "Mengambil potongan keuntungan 90 persen dari setiap penjualan ternak"
+          "text": "Perusahaan inti mengambil 100% laba hasil panen tanpa memberikan upah jasa pemeliharaan"
         },
         {
           "key": "E",
-          "text": "Menghapus kepemilikan pribadi kandang ternak di wilayah desa"
+          "text": "Peternak plasma bertugas sebagai sopir truk pengantar pakan ke seluruh wilayah provinsi"
         }
       ],
-      "correct": "A",
-      "explanation": "Kelompok peternak menciptakan skala ekonomi bersama (collective bargaining power) dalam pengadaan input dan kemitraan pemerintah."
+      "correct": "B",
+      "explanation": "Pola kemitraan inti-plasma melindungi peternak rakyat dari fluktuasi harga pasar yang tajam, di mana inti menjamin pasokan sapronak berkualitas dan membeli kembali hasil panen sesuai kontrak harga garansi."
     },
     {
       "id": 2229,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
-      "cognitiveLevel": "C3",
-      "question": "Pencatatan data ternak (recording) yang tertib pada peternakan sapi mandiri mencakup informasi penting berupa...",
+      "indicatorKey": "recording_dan_digitalisasi",
+      "indicatorName": "Pentingnya Pencatatan Data Harian (Recording) di Kandang",
+      "cognitiveLevel": "C4",
+      "question": "Peternak sapi, kambing, maupun peternak ayam komersial yang tertib manajemen selalu memiliki papan atau buku \"recording kandang\". Manfaat utama pencatatan recording harian ini adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Kartu identitas ternak yang mencatat tanggal lahir, silsilah induk/pejantan, tanggal kawin/IB, riwayat vaksinasi, dan riwayat bobot badan"
+          "text": "Sebagai syarat formalitas agar kandang bisa difoto untuk pameran desa"
         },
         {
           "key": "B",
-          "text": "Daftar nama-nama warna cat kayu yang digunakan pada tiang kandang"
+          "text": "Memantau jumlah konsumsi pakan, angka kematian (mortalitas), pertambahan bobot, riwayat vaksinasi, dan menghitung keuntungan secara presisi"
         },
         {
           "key": "C",
-          "text": "Jumlah kendaraan bermotor yang melintas di depan jalan kandang"
+          "text": "Menghafal nama-nama panggilan unik untuk setiap ekor ayam di dalam kandang"
         },
         {
           "key": "D",
-          "text": "Daftar harga sembako di pasar tradisional kecamatan tetangga"
+          "text": "Mencegah petugas dinas peternakan datang memeriksa kandang"
         },
         {
           "key": "E",
-          "text": "Buku catatan ramalan cuaca tradisional tanpa data ternak riil"
+          "text": "Menggantikan kewajiban peternak memberi pakan di pagi hari"
         }
       ],
-      "correct": "A",
-      "explanation": "Recording ternak yang rapi mencegah inbreeding (kawin sedarah), menghitung estimasi tanggal partus (melahirkan), dan memantau efisiensi pakan."
+      "correct": "B",
+      "explanation": "Recording adalah dasar manajemen profesional peternakan. Tanpa pencatatan akurat, peternak tidak dapat mendeteksi dini gejala penyakit, kebocoran pakan, maupun mengevaluasi keuntungan finansial."
     },
     {
       "id": 2230,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "program_pencahayaan_unggas",
+      "indicatorName": "Manajemen Pencahayaan (Lighting Program) pada Peternakan Ayam",
       "cognitiveLevel": "C4",
-      "question": "Pada musim kemarau panjang, ketersediaan rumput gajah segar di persawahan OKU Timur sering menyusut drastis. Solusi cadangan pakan darurat yang disiapkan peternak adalah...",
+      "question": "Pada kandang ayam petelur (layer) dan broiler di OKU Timur, peternak mengatur jadwal penyalaan lampu penerangan (lighting program). Efek fisiologis pencahayaan lampu pada ayam petelur adalah merangsang...",
       "options": [
         {
           "key": "A",
-          "text": "Pemanfaatan cadangan pakan kering (hay), amoniasi jerami padi yang disimpan di lumbung pakan, dan pelepah sawit cacah"
+          "text": "Kelenjar hipotalamus dan pituitari di otak untuk memproduksi hormon reproduksi yang memicu ovulasi pembentukan telur"
         },
         {
           "key": "B",
-          "text": "Membiarkan sapi kelaparan hingga musim hujan tiba kembali"
+          "text": "Pertumbuhan bulu ekor ayam agar menjadi lebih panjang dan indah"
         },
         {
           "key": "C",
-          "text": "Memberikan makan kayu balok dan kertas koran bekas kepada ternak"
+          "text": "Ayam untuk meminum air sebanyak mungkin hingga perutnya membesar"
         },
         {
           "key": "D",
-          "text": "Memindahkan seluruh sapi ke dalam hutan lindung tanpa pengawasan"
+          "text": "Perubahan jenis kelamin ayam betina menjadi pejantan tangguh"
         },
         {
           "key": "E",
-          "text": "Menjual seluruh sapi dengan harga obral murah tanpa menimbang bobot"
+          "text": "Ayam agar tidur lelap selama 20 jam per hari"
         }
       ],
       "correct": "A",
-      "explanation": "Teknologi pengawetan pakan hay (rumput kering) dan amoniasi jerami menjamin kontinuitas pakan bernutrisi saat paceklik rumput hijau."
+      "explanation": "Cahaya yang ditangkap mata ayam diteruskan ke hipotalamus, merangsang sekresi hormon FSH dan LH dari kelenjar pituitari, yang sangat vital untuk perkembangan folikel ovarium dan keteraturan siklus bertelur."
     },
     {
       "id": 2231,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "A",
-      "cognitiveLevel": "C4",
-      "question": "Berdasarkan wawancara aspek sosial budaya Day 2, peran generasi muda petani (pemuda desa) dalam modernisasi sektor peternakan sapi di OKU Timur adalah...",
+      "indicatorKey": "karakter_pemuda_peternak",
+      "indicatorName": "Pendidikan Karakter & Regenerasi Peternak Muda Milenial",
+      "cognitiveLevel": "C2",
+      "question": "Berdasarkan wawancara dengan tokoh peternak di OKU Timur, keterlibatan pelajar dan generasi muda dalam mengelola peternakan (sapi, kambing, atau ayam) menumbuhkan karakter profil pelajar pancasila yang nyata, yaitu...",
       "options": [
         {
           "key": "A",
-          "text": "Menerapkan teknologi digital recording, manajemen pakan fermentasi terukur, dan pemasaran hewan kurban daring melalui media sosial"
+          "text": "Kemandirian, etos kerja pantang menyerah, rasa tanggung jawab merawat kehidupan, dan jiwa kewirausahaan berbasis potensi desa"
         },
         {
           "key": "B",
-          "text": "Meninggalkan seluruh desa dan melarang pemeliharaan ternak sapi di desa"
+          "text": "Sikap konsumtif dan ketergantungan pada pinjaman uang tanpa bekerja"
         },
         {
           "key": "C",
-          "text": "Menolak penggunaan mesin chopper dan kembali ke cara manual sabit tumpul"
+          "text": "Keinginan untuk cepat kaya tanpa melalui proses belajar dan ketekunan"
         },
         {
           "key": "D",
-          "text": "Membatasi penjualan hewan ternak hanya kepada kerabat sedarah satu marga"
+          "text": "Rasa malu dan gengsi jika harus membersihkan lingkungan kandang"
         },
         {
           "key": "E",
-          "text": "Menggantikan seluruh sapi lokal dengan hewan peliharaan hias impor"
+          "text": "Sikap mengabaikan kelestarian lingkungan demi mengejar uang semata"
         }
       ],
       "correct": "A",
-      "explanation": "Pemuda tani berperan sebagai agen modernisasi: adopsi mekanisasi, formulasi nutrisi presisi, dan penetrasi pasar qurban berbasis konten digital."
+      "explanation": "Aktivitas peternakan melatih disiplin harian, kepekaan terhadap makhluk hidup, kemandirian ekonomi, dan kemampuan memecahkan masalah praktis di lapangan."
     },
     {
       "id": 2232,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "C",
+      "indicatorKey": "ayam_kampung_unggul",
+      "indicatorName": "Budidaya Ayam Kampung Unggul (KUB/Joper) Semi-Intensif",
       "cognitiveLevel": "C3",
-      "question": "Peternak sering menggantung 'mineral block' (batu garam jilat) di tiang kandang sapi. Manfaat penting dari mineral block tersebut adalah...",
+      "question": "Selain ayam broiler ras pedaging, peternakan ayam kampung unggul (seperti Ayam KUB atau Joper / Jowo Super) kian marak di pekarangan rumah pedesaan OKU Timur. Alasan utama peternak memilih ayam kampung unggul daripada ayam kampung liar tradisional adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Menyediakan asupan makro dan mikromineral (Kalsium, Fosfor, Natrium, Seng, Selenium) guna mencegah defisiensi mineral dan kelumpuhan pascamelahirkan"
+          "text": "Ayam kampung unggul tidak memerlukan pakan dan air minum sama sekali"
         },
         {
           "key": "B",
-          "text": "Sebagai mainan agar sapi tidak bersuara keras saat malam hari"
+          "text": "Waktu panen jauh lebih cepat (60–75 hari bobot 0,8–1,0 kg) dengan cita rasa daging gurih khas ayam kampung asli yang berharga jual tinggi"
         },
         {
           "key": "C",
-          "text": "Membuat gigi sapi menjadi tumpul agar tidak merusak palungan kayu"
+          "text": "Ayam kampung unggul dapat dipelihara di dalam kamar tidur rumah"
         },
         {
           "key": "D",
-          "text": "Mendinginkan lidah sapi saat udara siang hari terasa sangat panas"
+          "text": "Telur ayam kampung unggul berukuran sebesar buah kelapa"
         },
         {
           "key": "E",
-          "text": "Mengubah warna kulit sapi menjadi belang putih hitam seperti sapi perah"
+          "text": "Ayam kampung unggul dapat berkokok menirukan suara sirine ambulans"
         }
       ],
-      "correct": "A",
-      "explanation": "Mineral lick block mencegah penyakit milk fever (hipokalsemia), pica (kebiasaan makan tanah/kayu), dan mengoptimalkan fungsi enzim pencernaan."
+      "correct": "B",
+      "explanation": "Ayam KUB dan Joper diseleksi secara genetik agar tumbuh jauh lebih cepat dibandingkan ayam kampung liar (yang butuh 5-6 bulan), namun tetap mempertahankan tekstur daging padat dan gurih yang disukai konsumen lokal."
     },
     {
       "id": 2233,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "D",
-      "cognitiveLevel": "C2",
-      "question": "Telinga sapi yang terdata resmi di OKU Timur kini dipasangi anting kuning ber-barcode (ear tag). Fungsi identifikasi digital ear tag tersebut adalah...",
+      "indicatorKey": "kandang_closed_house",
+      "indicatorName": "Teknologi Kandang Sistem Tertutup (Closed House) di Iklim Tropis",
+      "cognitiveLevel": "C4",
+      "question": "Modernisasi peternakan ayam broiler di Belitang kini mulai beralih ke sistem \"Closed House\" (kandang tertutup berpemanas dan berpendingin). Komponen utama yang bekerja mendinginkan udara kandang saat terik siang adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Merekam data vaksinasi PMK, riwayat kepemilikan, dan status kesehatan ternak secara nasional melalui aplikasi terintegrasi"
+          "text": "Penyiraman lantai sekam dengan air lumpur irigasi"
         },
         {
           "key": "B",
-          "text": "Sebagai perhiasan telinga agar sapi terlihat cantik saat dijual di pasar"
+          "text": "Kipas penyedot udara (exhaust fan) di ujung belakang dan bantalan pendingin basah (cooling pad / evaporative pad) di ujung depan kandang"
         },
         {
           "key": "C",
-          "text": "Mencegah telinga sapi digigit oleh nyamuk dan lalat kandang"
+          "text": "Bongkahan es batu yang digantung di setiap tiang kandang"
         },
         {
           "key": "D",
-          "text": "Membuat sapi dapat mendengarkan siaran radio musik peternakan"
+          "text": "Pemasangan ratusan unit AC kamar tidur berdaya listrik tinggi"
         },
         {
           "key": "E",
-          "text": "Menandai bahwa sapi tersebut dilarang untuk disembelih selamanya"
+          "text": "Membuka seluruh dinding terpal selebar-lebarnya saat angin kencang"
         }
       ],
-      "correct": "A",
-      "explanation": "Ear-tag QR-code terhubung dengan database Identik PKH Kementan RI untuk ketertelusuran (traceability) lalu lintas hewan dan status vaksinasi."
+      "correct": "B",
+      "explanation": "Sistem evaporative cooling memanfaatkan exhaust fan berdaya besar untuk menarik udara luar melewati cooling pad basah. Penguapan air di bantalan menyerap panas udara, menurunkan suhu kandang 4-7°C lebih sejuk."
     },
     {
       "id": 2234,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "A",
+      "indicatorKey": "solidaritas_kelompok_ternak",
+      "indicatorName": "Tradisi Sambatan & Solidaritas Kelompok Peternak Desa",
       "cognitiveLevel": "C2",
-      "question": "Tradisi gotong royong mencari rumput bersama ('ngarit bareng') di areal persawahan atau tanggul saluran irigasi mencerminkan nilai budaya...",
+      "question": "Di desa-desa sentra peternakan OKU Timur, ketika seorang peternak hendak mendirikan bangunan kandang baru atau menghadapi ternaknya sakit, warga sekitar datang membantu secara sukarela tanpa meminta upah harian. Nilai kearifan lokal ini merupakan wujud tradisi...",
       "options": [
         {
           "key": "A",
-          "text": "Solidaritas sosial, kerukunan antar-warga peternak, dan sarana saling bertukar informasi seputar perawatan hewan ternak"
+          "text": "Sambatan atau gotong royong sosial yang mempererat kerukunan antar-warga perdesaan"
         },
         {
           "key": "B",
-          "text": "Persaingan bermusuhan memperebutkan lahan rumput dengan kekerasan"
+          "text": "Sistem ijon pinjaman rentenir perdesaan yang mengikat peternak"
         },
         {
           "key": "C",
-          "text": "Kewajiban upeti rumput yang harus diserahkan kepada kepala desa"
+          "text": "Persaingan dagang tidak sehat antar-pemilik hewan ternak"
         },
         {
           "key": "D",
-          "text": "Upaya mengumpulkan rumput untuk dijual ke luar negeri dengan kapal kargo"
+          "text": "Monopoli usaha peternakan oleh keluarga kepala desa"
         },
         {
           "key": "E",
-          "text": "Larangan bagi peternak untuk merawat sapinya di rumah sendiri"
+          "text": "Kewajiban upeti hasil ternak kepada aparat keamanan setempat"
         }
       ],
       "correct": "A",
-      "explanation": "Aktivitas ngarit bareng mempererat kohesi sosial paguyuban peternak desa dan menjadi media informal transfer pengetahuan agribisnis."
+      "explanation": "Tradisi gotong royong sambatan adalah modal sosial berharga di OKU Timur yang memangkas biaya modal pembangunan kandang dan memperkokoh solidaritas masyarakat petani-peternak."
     },
     {
       "id": 2235,
       "day": 2,
       "sector": "peternakan",
       "indicatorCode": "B",
-      "cognitiveLevel": "C5",
-      "question": "Konsep integrasi tanaman-ternak (Crop-Livestock System) antara persawahan padi Belitang dengan peternakan sapi mandiri mewujudkan ekonomi sirkular ramah lingkungan karena...",
+      "indicatorKey": "integrasi_tanaman_ternak_sitt",
+      "indicatorName": "Model Ekonomi Sirkular Sistem Integrasi Tanaman-Ternak (SITT)",
+      "cognitiveLevel": "C4",
+      "question": "Konsep Sistem Integrasi Tanaman-Ternak (SITT) atau \"Crop-Livestock System\" di OKU Timur mengintegrasikan persawahan padi irigasi dengan peternakan (sapi, kambing, dan unggas). Hubungan simbiosis mutualisme ekonomi sirkular yang terwujud adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Jerami padi sawah diolah menjadi pakan sapi, sementara kotoran sapi difermentasi menjadi pupuk organik yang menyuburkan sawah kembali (zero waste)"
+          "text": "Peternak membiarkan ternaknya memakan tanaman padi muda milik tetangga sampai habis"
         },
         {
           "key": "B",
-          "text": "Sapi dilepaskan memakan seluruh tanaman padi yang sedang berbuah di sawah"
+          "text": "Limbah jerami dan dedak padi sawah dimanfaatkan sebagai pakan murah berkualitas, sedangkan limbah kotoran ternak diolah menjadi pupuk organik yang menyuburkan kembali tanah sawah"
         },
         {
           "key": "C",
-          "text": "Petani tidak perlu menanam padi lagi dan hanya mengandalkan bantuan daging sapi"
+          "text": "Petani menjual seluruh tanah sawahnya untuk dijadikan area pembuangan kotoran ayam"
         },
         {
           "key": "D",
-          "text": "Lahan sawah diubah seluruhnya menjadi kolam kubangan kotoran sapi"
+          "text": "Peternak mewajibkan penggilingan padi membagikan beras gratis setiap bulan"
         },
         {
           "key": "E",
-          "text": "Seluruh jerami padi dibakar habis agar abu menutupi pemukiman warga"
+          "text": "Penanaman padi dihentikan sepenuhnya dan diganti dengan kolam pembuangan limbah kandang"
         }
       ],
-      "correct": "A",
-      "explanation": "Sistem integrasi padi-sapi (CLS) memutus ketergantungan pupuk kimia sintetis, menekan emisi pembakaran jerami, dan melipatgandakan pendapatan petani."
+      "correct": "B",
+      "explanation": "Sistem integrasi tanaman-ternak (SITT) menciptakan ekonomi sirkular tanpa limbah (zero waste): jerami dan dedak padi menjadi pakan ternak, dan kotoran ternak menjadi pupuk organik kaya hara bagi tanah sawah Belitang."
     }
   ],
   "perikanan": [

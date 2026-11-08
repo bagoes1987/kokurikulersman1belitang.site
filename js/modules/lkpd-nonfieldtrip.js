@@ -1205,36 +1205,36 @@
     },
     peternakan: {
       key: 'peternakan',
-      name: 'Peternakan Sapi Mandiri & Peternakan Kambing',
-      cultureTheme: 'Falsafah ketelatenan merumat ternak, integrasi pakan sawah, dan tabungan keluarga',
+      name: 'Peternakan Rakyat & Budidaya Ternak (Sapi, Kambing/Domba, & Unggas/Ayam)',
+      cultureTheme: 'Falsafah ketelatenan merumat ternak/unggas, integrasi pakan limbah pertanian, dan tabungan ekonomi keluarga',
       badgeColor: 'bg-amber-100 text-amber-800 border-amber-300',
       labels: {
-        locLabel: 'Lokasi Kandang Usaha Ternak:',
-        locPlaceholder: 'Contoh: Kandang Sapi Mandiri Desa Karang Binangun',
-        narLabel: 'Nama Peternak / Pemilik Ternak:',
-        narPlaceholder: 'Contoh: Bapak H. Suparman / Mas Danu',
+        locLabel: 'Lokasi Kandang Peternakan (Sapi/Kambing/Ayam):',
+        locPlaceholder: 'Contoh: Kandang Sapi Karang Binangun / Peternakan Ayam Broiler Desa Gumawang',
+        narLabel: 'Nama Peternak / Pemilik Usaha Ternak:',
+        narPlaceholder: 'Contoh: Bapak H. Suparman / Mas Danu (Peternak Sapi/Ayam)',
         durLabel: 'Lama Menjalankan Usaha Peternakan:',
-        durPlaceholder: 'Contoh: 12 Tahun Beternak Sapi & Kambing',
-        extraLabel: 'Populasi Ternak (Jumlah Ekor):',
-        extraPlaceholder: 'Contoh: 8 Ekor Sapi Bali/Limousin & 12 Ekor Kambing Jawarandu'
+        durPlaceholder: 'Contoh: 8 Tahun Beternak Sapi / 5 Tahun Kemitraan Ayam Broiler',
+        extraLabel: 'Komoditas & Populasi Ternak (Ekor):',
+        extraPlaceholder: 'Contoh: 10 Ekor Sapi Bali / 25 Ekor Kambing / 3.000 Ekor Ayam Broiler'
       },
       questions: [
-        { id: 1, text: 'Masyarakat sering menyebut beternak butuh sikap telaten (sabar dan teliti). Kebiasaan harian apa yang wajib dilakukan dari pagi hingga malam dalam merawat ternak?', hint: 'Kaji falsafah merumat ternak, kebersihan kandang, pemberian pakan comboran, dan kepedulian peternak...' },
-        { id: 2, text: 'Bagaimana Bapak/Ibu memanfaatkan limbah jerami padi sawah dan dedak penggilingan beras sebagai pakan ternak? Bagaimana cara mengolah pakan agar ternak cepat gemuk?', hint: 'Kaji mencari rumput hijauan, fermentasi amoniasi jerami padi sawah melimpah Belitang, dan konsentrat dedak padi...' },
-        { id: 3, text: 'Apakah memelihara ternak ini diniatkan sebagai tabungan keluarga (biaya sekolah anak/kurban Idul Adha)? Bagaimana peran ternak dalam ketahanan ekonomi keluarga?', hint: 'Kaji ternak sebagai aset tabungan hidup keluarga petani, antisipasi kebutuhan mendadak, dan nilai ibadah...' },
-        { id: 4, text: 'Apakah Bapak/Ibu tergabung dalam kelompok peternak atau dibantu petugas penyuluh/mantri hewan (kawin suntik/IB)? Bagaimana kerja sama jika ada ternak yang sakit?', hint: 'Kaji paguyuban peternak, peran mantri hewan poskeswan dalam inseminasi buatan, dan solidaritas peternak...' },
-        { id: 5, text: 'Apakah generasi muda di sekitar sini tertarik membantu mencari rumput (ngarit) atau beternak sapi/kambing? Bagaimana cara memotivasi pemuda agar melirik peternakan modern?', hint: 'Kaji minat pemuda sekitar, tantangan gengsi generasi muda, dan potensi peternakan kambing/sapi modern...' }
+        { id: 1, text: 'Masyarakat sering menyebut beternak butuh sikap telaten (sabar, disiplin, dan teliti). Kebiasaan harian apa yang wajib dilakukan dari pagi hingga malam dalam merawat ternak/unggas peliharaan?', hint: 'Kaji falsafah merumat ternak, kedisiplinan jadwal pemberian pakan/minum, kontrol suhu/ventilasi kandang, dan kebersihan kotoran harian...' },
+        { id: 2, text: 'Bagaimana Bapak/Ibu mengelola dan menyediakan ransum pakan (rumput hijauan/jerami amoniasi untuk sapi/kambing, atau konsentrat/dedak/jagung untuk ayam)? Bagaimana cara menjaga efisiensi biaya pakan?', hint: 'Kaji sumber pakan (ngarit hijauan, limbah jerami/dedak padi Belitang, pakan pabrikan/konsentrat), teknik fermentasi/silase, dan perhitungan konversi pakan (FCR)...' },
+        { id: 3, text: 'Apakah usaha ternak ini diniatkan sebagai tabungan keluarga, usaha harian (telur/susu), atau siklus panen komersial (kurban Idul Adha / panen ayam pedaging)? Bagaimana peran ternak dalam ketahanan ekonomi keluarga?', hint: 'Kaji perputaran modal usaha, peran ternak sebagai aset tabungan likuid petani, nilai ekonomi musiman (kurban/lebaran), dan keuntungan rutin usaha...' },
+        { id: 4, text: 'Apakah Bapak/Ibu tergabung dalam kelompok ternak/kemitraan, atau didampingi petugas penyuluh/mantri hewan/PPL? Bagaimana upaya menjaga kesehatan hewan dan langkah pencegahan wabah penyakit (vaksinasi/biosekuriti)?', hint: 'Kaji peran Poskeswan/mantri hewan, jadwal vaksinasi (PMK/LSD pada ruminansia atau ND/AI pada ayam), desinfeksi kandang, dan sanitasi biosekuriti...' },
+        { id: 5, text: 'Apakah generasi muda di sekitar lingkungan tertarik membantu mengelola atau memulai wirausaha peternakan (sapi, kambing modern, atau ayam closed house)? Bagaimana peluang wirausaha ternak bagi pemuda desa?', hint: 'Kaji persepsi pemuda desa, peluang modernisasi kandang (otomatisasi minum/pakan, breeding kambing perah/kontes, kemitraan ayam), dan potensi keuntungan...' }
       ],
       obsHints: [
-        'Amati kebersihan kandang, sirkulasi udara, pencahayaan alami, dan jarak kandang dari rumah tinggal...',
-        'Catat peralatan kandang (mesin chopper perajang rumput, sabit ngarit, ember minum, sekop kotoran)...',
-        'Uraikan rutinitas kerja peternak: membersihkan kandang, meracik comboran dedak, hingga memberi rumput...',
-        'Amati ketelitian peternak memeriksa nafsu makan ternak, kilau bulu, dan keaktifan gerak sapi/kambing...',
-        'Amati pembagian tugas antar-anggota keluarga peternak (siapa mencari rumput, memberi pakan, dll)...',
-        'Amati rasa kasih sayang peternak membelai ternaknya dan doa keselamatan hewan peliharaan...',
-        'Catat teknologi yang digunakan: mesin chopper pakan, instalasi air minum otomatis, atau suntik vitamin...',
-        'Amati kendala nyata: bau kotoran kandang, lalat, mahalnya konsentrat, atau sulitnya rumput di kemarau...',
-        'Amati pengolahan kotoran ternak (apakah dikeringkan jadi pupuk kompos sawah atau instalasi biogas)...'
+        'Amati kebersihan kandang, ventilasi udara, suhu, pencahayaan alami/buatan, dan jarak kandang dari pemukiman warga...',
+        'Catat peralatan kandang (mesin chopper perajang rumput, instalasi tempat minum otomatis nipple/drinker, blower ventilasi, lampu pemanas chick guard, sabit, terpal penutup)...',
+        'Uraikan alur kerja harian peternak: membersihkan lantai kandang/litter, meracik pakan/konsentrat/comboran, hingga kontrol air minum...',
+        'Amati ketelitian peternak memeriksa nafsu makan, keaktifan gerak, kondisi mata/feses, dan bobot perkembangan ternak/unggas...',
+        'Amati pembagian tugas antar-anggota keluarga atau pekerja kandang (pencarian pakan, peracikan, sanitasi, dan pengawasan malam)...',
+        'Amati kepedulian peternak terhadap kesejahteraan hewan (animal welfare), pencegahan stres, dan perlakuan kasih sayang pada ternak...',
+        'Catat teknologi yang diterapkan: chopper pakan, nipple drinker otomatis, pemanas indukan (gasolec/brooder), atau rekaman recording pertumbuhan ternak...',
+        'Amati kendala nyata: bau kotoran, lalat, lonjakan harga pakan konsentrat/DOC/bakalan, cuaca ekstrem, atau risiko serangan penyakit...',
+        'Amati pengolahan limbah kotoran (apakah kotoran sapi/ayam dikeringkan/difermentasi menjadi pupuk kandang organik untuk sawah Belitang atau dimanfaatkan biogas)...'
       ]
     },
     perikanan: {
@@ -1676,7 +1676,7 @@
               <select id="nftD2_sectorKey" ${readOnlyAttr} onchange="onNftDay2SectorChange(this.value)" class="w-full p-3 rounded-xl border-2 border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs sm:text-sm font-bold text-indigo-950 bg-white cursor-pointer transition-all shadow-2xs">
                 <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang &amp; Palawija)</option>
                 <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
-                <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Sapi Mandiri &amp; Peternakan Kambing</option>
+                <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat &amp; Budidaya Ternak (Sapi, Kambing/Domba, &amp; Unggas/Ayam)</option>
                 <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele &amp; Nila)</option>
                 <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (Pabrik Penggilingan Padi / RMU, UMKM Tahu-Tempe, Kerupuk Kemplang)</option>
                 <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi / Pupuk &amp; Obat Tani, Pasar Tradisional / Grosir Sembako)</option>
