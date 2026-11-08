@@ -6264,6 +6264,26 @@
         FincestemCore.progress.submitTask(cleanNisn, 7, 'asesmen', asesmenPayload);
       }
 
+      // =========================================================================
+      // OTOMATIS TUNTAS REFLEKSI DAY 7 (3 PERTANYAAN JURNAL REFLEKSI AKBAR)
+      // =========================================================================
+      const refleksiPayload = {
+        day: 7,
+        refl_pengalaman: data.refl_pengalaman,
+        refl_wawasan: data.refl_wawasan,
+        refl_pesan: data.refl_pesan,
+        content: `1. Pelajaran Berharga:\n${data.refl_pengalaman}\n\n2. Solusi Kendala:\n${data.refl_wawasan}\n\n3. Kontribusi Masa Depan:\n${data.refl_pesan}`,
+        catatan: `1. Pelajaran Berharga:\n${data.refl_pengalaman}\n\n2. Solusi Kendala:\n${data.refl_wawasan}\n\n3. Kontribusi Masa Depan:\n${data.refl_pesan}`,
+        status: 'completed',
+        submitted: true,
+        submittedAt: new Date().toISOString()
+      };
+      localStorage.setItem('fincestem_refleksi_nft_day7_' + cleanNisn, JSON.stringify(refleksiPayload));
+      localStorage.setItem('fincestem_refleksi_day7_' + cleanNisn, JSON.stringify(refleksiPayload));
+      if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+        FincestemCore.progress.submitTask(cleanNisn, 7, 'refleksi', refleksiPayload);
+      }
+
       if (window.FincestemCore && FincestemCore.ui) {
         FincestemCore.ui.toast('Alhamdulillah! Seluruh Karya Riset Day 7 Berhasil Dikirim Resmi. Asesmen Otomatis Tuntas 100/100!', 'success');
       }

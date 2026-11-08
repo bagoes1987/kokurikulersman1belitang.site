@@ -4555,9 +4555,13 @@ const FincestemCore = {
 
       const tm = prog.task_map || {};
       if (!isFt) {
+        if (d === 7) {
+          // Khusus Day 7 Non-Field Trip: Selesai jika LKPD (Video Refleksi, BTS & Jurnal) dan Dokumentasi selesai
+          if (tm['7_lkpd'] && (tm['7_dokumentasi'] || tm['7_asesmen'] || tm['7_materi'])) return true;
+        }
         const hasAnyTaskOnDay = !!(tm[d + '_materi'] || tm[d + '_lkpd'] || tm[d + '_asesmen'] || tm[d + '_dokumentasi'] || tm[d + '_refleksi']);
         if (hasAnyTaskOnDay) {
-          return !!(tm[d + '_materi'] && tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi'] && tm[d + '_refleksi']);
+          return !!(tm[d + '_materi'] && tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi'] && (d === 7 ? true : tm[d + '_refleksi']));
         }
       }
 
