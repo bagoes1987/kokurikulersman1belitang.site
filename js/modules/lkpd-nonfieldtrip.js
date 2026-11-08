@@ -3798,9 +3798,9 @@
       focus: 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.'
     },
     7: {
-      title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas',
-      theme: 'Editing Video Dokumenter, Publikasi Link YouTube, Audit Kas & Evaluasi Akhir 4 Pilar',
-      focus: 'Penggabungan video dokumenter utuh (durasi 3-5 menit) di HP (CapCut/VN), pengunggahan ke YouTube, penyerahan link video riset di portal, serta penyusunan laporan rekonsiliasi tutup buku kas riset mandiri.'
+      title: 'Day 7: Video Refleksi, BTS & Jurnal Refleksi',
+      theme: 'Video Refleksi Perjalanan Day 1–7, Behind The Scene (BTS), Jurnal Refleksi & Bebas Asesmen',
+      focus: 'Pembuatan video refleksi perjalanan riset mandiri dari Day 1 s.d. Day 7 (durasi 5–8 menit) dilengkapi rekaman Behind The Scene (BTS/Bloopers) di HP, penyerahan link YouTube di LKPD, pengisian 3 jurnal refleksi, serta bebas kuis asesmen (otomatis tuntas 100/100).'
     }
   };
 

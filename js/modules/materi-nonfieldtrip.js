@@ -2144,7 +2144,7 @@
 
     7: {
       dayNum: 7,
-      title: 'Modul Riset Day 7: Final Editing, Link Video YouTube & Audit Kas',
+      title: 'Modul Riset Day 7: Video Refleksi Perjalanan Riset Day 1–7 & Behind The Scene (BTS)',
       theme: 'Sintesis Komprehensif 4 Pilar FINCESTEM',
       gradientClass: 'from-amber-950 via-slate-900 to-indigo-950 border-amber-700/40',
       tagColorClass: 'bg-white/20 text-amber-100',

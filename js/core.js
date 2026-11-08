@@ -1109,7 +1109,7 @@ const FincestemCore = {
         { day_number: 4, title: 'Day 4: EXPLORATION', theme: 'Eksplorasi Peralatan, Perlengkapan Kerja & Analisis 4 Dimensi STEM Sektor Pilihan', date: '2026-11-12', date_formatted: '12 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Eksplorasi mendalam peralatan, perlengkapan kerja (APD), dan mesin mekanisasi pada sektor pilihan Day 3 serta mengaitkannya langsung dengan Science, Technology, Engineering, dan Mathematics (STEM).' },
         { day_number: 5, title: 'Day 5: Video Observasi YouTube (5–10 Menit): Penerapan STEM & Eksplorasi Alat', theme: 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Culture, Exploration (Peralatan) & 4 Unsur STEM', date: '2026-11-13', date_formatted: '13 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pembuatan video observasi lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan (Pertanian, Perkebunan, Peternakan, Perikanan, Perdagangan/UMKM, Koperasi/BRI-Link, atau Jasa/Bengkel), membahas Culture, Exploration peralatan kerja, serta penerapan Science, Technology, Engineering, dan Mathematics (STEM).' },
         { day_number: 6, title: 'Day 6: Video Analisis YouTube (5–10 Menit): Finansial, Kendala & Solusi Inovasi', theme: 'Produksi Video YouTube Mandiri (7 Pilihan Sektor): Analisis Finansial, Evaluasi Kendala & Solusi FINCESTEM', date: '2026-11-14', date_formatted: '14 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pembuatan video analisis lapangan mandiri berdurasi 5–10 menit (tanpa wawancara narasumber) yang diunggah ke YouTube pada 1 dari 7 sektor pilihan, membahas perputaran modal/biaya/HPP/laba (Financial), identifikasi kendala usaha, serta rekomendasi solusi inovasi berbasis FINCESTEM.' },
-        { day_number: 7, title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas', theme: 'Editing Video Dokumenter, Publikasi Link YouTube, Audit Kas & Evaluasi Akhir 4 Pilar', date: '2026-11-15', date_formatted: '15 November 2026', start_time: '07:00', end_time: '20:00', is_active: 0, auto_schedule: 1, description: 'Penggabungan video dokumenter utuh (durasi 3-5 menit) di HP (CapCut/VN), pengunggahan ke YouTube, penyerahan link video riset di portal, serta penyusunan laporan rekonsiliasi tutup buku kas riset mandiri.' }
+        { day_number: 7, title: 'Day 7: Video Refleksi, BTS & Jurnal Refleksi', theme: 'Refleksi Perjalanan Riset Day 1–7, Video YouTube, BTS & Bebas Asesmen', date: '2026-11-15', date_formatted: '15 November 2026', start_time: '07:00', end_time: '18:00', is_active: 0, auto_schedule: 1, description: 'Pembuatan video refleksi perjalanan riset mandiri dari Day 1 s.d. Day 7 (5–8 menit) dilengkapi cuplikan Behind The Scene (BTS / Bloopers), unggah foto bebas diri ber-Google Geotag, pengisian jurnal refleksi, serta apresiasi kelulusan riset (Bebas Kuis Asesmen 100/100).' }
       ];
     },
 
@@ -1402,13 +1402,13 @@ const FincestemCore = {
       },
       7: {
         day_number: 7,
-        title: 'Day 7: Final Editing, Link Video YouTube & Audit Kas',
-        theme: 'Editing Video Dokumenter, Publikasi Link YouTube, Audit Kas & Evaluasi Akhir 4 Pilar',
+        title: 'Day 7: Video Refleksi, BTS & Jurnal Refleksi',
+        theme: 'Refleksi Perjalanan Riset Day 1–7, Video YouTube, BTS & Bebas Asesmen',
         date_formatted: 'Minggu, 15 November 2026',
-        time_range: '07.00 - 20.00 WIB',
-        description: 'Penggabungan video dokumenter utuh (durasi 3-5 menit) di HP (CapCut/VN), pengunggahan ke YouTube, penyerahan link video riset di portal, serta penyusunan laporan rekonsiliasi tutup buku kas riset mandiri.' ,
-        refl_title: 'Jurnal Refleksi Day 7: Penutupan Ekspedisi Riset Mandiri FINCESTEM',
-        refl_prompt: 'Tuliskan refleksi penutup komprehensif Anda setelah menjalani 7 hari riset mandiri FINCESTEM: karya video dokumenter yang dihasilkan, perubahan cara pandang Anda dalam mengelola keuangan, dan kebanggaan atas potensi lokal OKU Timur!',
+        time_range: '07.00 - 18.00 WIB',
+        description: 'Pembuatan video refleksi perjalanan riset mandiri dari Day 1 s.d. Day 7 (5–8 menit) dilengkapi cuplikan Behind The Scene (BTS / Bloopers), unggah foto bebas diri ber-Google Geotag, pengisian jurnal refleksi, serta apresiasi kelulusan riset (Bebas Kuis Asesmen 100/100).',
+        refl_title: 'Jurnal Refleksi Day 7: Penutupan Riset Mandiri FINCESTEM (Grand Finale)',
+        refl_prompt: 'Tuliskan refleksi penutup komprehensif Anda setelah menjalani 7 hari riset mandiri FINCESTEM: karya video refleksi dan BTS yang dihasilkan, perubahan cara pandang Anda, apresiasi untuk fasilitator dan keluarga, serta kebanggaan atas potensi lokal OKU Timur!',
         refl_placeholder: 'Tuliskan kesan, pesan, dan refleksi utuh perjalanan riset mandiri Anda selama 7 hari...'
       }
     },
