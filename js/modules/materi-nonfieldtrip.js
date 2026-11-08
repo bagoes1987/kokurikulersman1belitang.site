@@ -2483,6 +2483,22 @@
           </div>
         </div>
 
+        <!-- TIPS TABUNGAN KLIP BTS DAY 7 (DAY 1 - DAY 4) -->
+        <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 text-white border-2 border-purple-400/40 flex items-start gap-3.5 shadow-sm">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-500 text-slate-950 font-black flex items-center justify-center shrink-0 shadow-xs">
+            <span class="material-symbols-outlined text-xl">video_camera_front</span>
+          </div>
+          <div class="flex-1 text-xs">
+            <div class="flex items-center gap-2 flex-wrap mb-1">
+              <span class="font-extrabold text-amber-300 text-xs sm:text-sm">💡 Tabungan Klip Video BTS (Day 1 s.d. Day 6):</span>
+              <span class="px-2.5 py-0.5 rounded-full bg-purple-500/30 text-purple-200 text-[10px] font-bold border border-purple-300/30">Misi Menuju Day 7</span>
+            </div>
+            <p class="text-purple-100 text-xs leading-relaxed text-justify">
+              Saat melakukan observasi lapangan dan dokumentasi foto hari ini, sempatkan merekam <strong>klip video singkat (5–15 detik) momen di balik layar</strong> (suasana perjalanan, candid saat diskusi/wawancara, mencari referensi, atau momen seru kelompok). <strong>Simpan klipnya di galeri HP Anda</strong> untuk digabungkan menjadi Video BTS (Behind The Scene) di Day 7 nanti!
+            </p>
+          </div>
+        </div>
+
         <!-- PETUNJUK KERJA AKADEMIK (ATURAN KETAT DENGAN BULLET & NUMBERING RAPI RATA KANAN-KIRI) -->
         <div class="p-4 sm:p-5 rounded-3xl bg-amber-50 border border-amber-300/80 text-amber-950 flex flex-col gap-2.5 shadow-2xs">
           <div class="flex items-center gap-2 font-black text-xs sm:text-sm text-amber-900">
@@ -4376,6 +4392,22 @@
                 <strong class="text-slate-900 block font-bold">Upload ke YouTube</strong>
                 <span class="text-slate-600 text-[11px] leading-snug">Setel visibilitas ke <strong>Publik</strong> atau <strong>Tidak Terdaftar (Unlisted)</strong>, lalu tempel link di LKPD.</span>
               </div>
+            </div>
+          </div>
+
+          <!-- PENGINGAT BTS DAY 7: SIMPAN BLOOPERS / REKAMAN GAGAL! -->
+          <div class="p-3.5 sm:p-4 rounded-2xl bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 text-white border border-purple-400/40 flex items-start gap-3 shadow-xs">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-yellow-500 text-slate-950 font-black flex items-center justify-center shrink-0 shadow-xs">
+              <span class="material-symbols-outlined text-lg">video_camera_front</span>
+            </div>
+            <div class="flex-1 text-xs">
+              <div class="flex items-center gap-2 flex-wrap mb-0.5">
+                <span class="font-extrabold text-amber-300">💡 Tips Tabungan BTS Day 7:</span>
+                <span class="px-2 py-0.5 rounded-full bg-purple-500/30 text-purple-200 text-[10px] font-bold border border-purple-300/30">PENTING: Jangan Hapus Rekaman Gagal!</span>
+              </div>
+              <p class="text-purple-100 text-[11px] sm:text-xs leading-relaxed text-justify">
+                Saat proses syuting video Day ${dayNum} ini, pasti ada momen salah bicara, tertawa lepas, gagap, atau kena angin (<em>bloopers</em>). <strong>Jangan langsung dihapus dari HP!</strong> Simpan potongan rekaman tersebut sebagai bahan utama video kompilasi <em>Behind The Scene</em> (BTS) pada Day 7 nanti.
+              </p>
             </div>
           </div>
         </div>

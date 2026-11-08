@@ -3292,6 +3292,32 @@
         container.appendChild(testerBanner);
       }
 
+      // Banner Pengingat Celengan Klip BTS Day 7 (Khusus Non-Field Trip)
+      if (!isFieldTrip) {
+        const btsBanner = document.createElement('div');
+        btsBanner.className = 'mb-2 p-4 sm:p-5 rounded-3xl bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 text-white border-2 border-purple-400/50 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3.5';
+        btsBanner.innerHTML = `
+          <div class="flex items-start gap-3.5">
+            <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-amber-400 to-yellow-500 text-slate-950 font-black flex items-center justify-center shrink-0 shadow-md">
+              <span class="material-symbols-outlined text-2xl">video_camera_front</span>
+            </div>
+            <div class="flex flex-col gap-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black text-[10px] uppercase tracking-wider shadow-2xs">Misi Menuju Day 7</span>
+                <h4 class="font-extrabold text-xs sm:text-sm text-white">Celengan Klip Video BTS (Behind The Scene)</h4>
+              </div>
+              <p class="text-xs text-purple-100 leading-relaxed text-justify">
+                Sambil menjalankan riset dan foto dari <strong>Day 1 sampai Day 6</strong>, jangan lupa rekam klip video pendek (5–15 detik) momen di balik layar (saat di jalan, cari sinyal, salah bicara, <em>bloopers</em>, atau suasana seru riset). <strong>Simpan di galeri HP Anda</strong> untuk dirangkai menjadi Video BTS di Day 7!
+              </p>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-xl bg-white/10 text-amber-300 font-bold text-[11px] border border-white/15 shrink-0 self-end sm:self-center">
+            Day 1 s.d. Day 6
+          </span>
+        `;
+        container.appendChild(btsBanner);
+      }
+
       // Pilih hari yang terbuka: jika belum dipilih, buka hari yang aktif dan belum selesai
       if (expandedDayNumber === null || expandedDayNumber === undefined || (expandedDayNumber === 0 && !visibleDays.some(x => Number(x.day_number) === 0))) {
         const openIncompleteDay = visibleDays.find(x => x.is_open && !FincestemCore.progress.isDayStudentTasksDone(studentProgress, Number(x.day_number)));
