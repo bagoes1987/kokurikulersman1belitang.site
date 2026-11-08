@@ -3227,12 +3227,22 @@
               </p>
             </div>
           </div>
-          ${isFromAdminSession ? `
-            <button type="button" onclick="returnToAdminFromTester()" class="px-4 py-2.5 rounded-2xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer shrink-0">
-              <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
-              <span>Kembali ke Portal Admin</span>
+          <div class="flex items-center gap-2 flex-wrap shrink-0">
+            <button type="button" onclick="resetTesterStudentProgress(2)" class="px-3 py-2 rounded-xl bg-purple-950/80 hover:bg-purple-800 text-amber-300 border border-amber-400/50 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shadow-xs" title="Bersihkan draf &amp; data Day 2 untuk uji coba ulang">
+              <span class="material-symbols-outlined text-sm">restart_alt</span>
+              <span>Reset Uji Coba Day 2</span>
             </button>
-          ` : ''}
+            <button type="button" onclick="resetTesterStudentProgress(3)" class="px-3 py-2 rounded-xl bg-teal-950/80 hover:bg-teal-800 text-emerald-300 border border-emerald-400/50 font-bold text-xs flex items-center gap-1 transition-all cursor-pointer shadow-xs" title="Bersihkan draf &amp; data Day 3 untuk uji coba ulang">
+              <span class="material-symbols-outlined text-sm">restart_alt</span>
+              <span>Reset Uji Coba Day 3</span>
+            </button>
+            ${isFromAdminSession ? `
+              <button type="button" onclick="returnToAdminFromTester()" class="px-3.5 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer">
+                <span class="material-symbols-outlined text-sm">admin_panel_settings</span>
+                <span>Kembali ke Admin</span>
+              </button>
+            ` : ''}
+          </div>
         `;
         container.appendChild(testerBanner);
       }
@@ -7773,7 +7783,64 @@
     window.saveStudentContactInfo = saveStudentContactInfo;
     window.loadStudentContactInfo = loadStudentContactInfo;
 
-    function returnToAdminFromTester() {
+    window.resetTesterStudentProgress = function(targetDay) {
+    targetDay = Number(targetDay) || 2;
+    if (!confirm('Hapus draf dan data pengerjaan Day ' + targetDay + ' untuk akun ini agar bisa diuji coba ulang dari awal dengan instrumen dan soal terbaru?')) return;
+
+    const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+    const nisn = u.nisn || u.identifier || '0103684751';
+    const cleanNisn = String(nisn).replace(/\D/g, '');
+
+    // 1. Bersihkan localStorage lokal
+    const keysToPurge = [
+      'fincestem_lkpd_nft_day' + targetDay + '_' + cleanNisn,
+      'fincestem_lkpd_day' + targetDay + '_' + cleanNisn,
+      'fincestem_draft_nft_lkpd_d' + targetDay + '_' + cleanNisn,
+      'fincestem_asesmen_nft_day' + targetDay + '_' + cleanNisn,
+      'fincestem_asesmen_day' + targetDay + '_' + cleanNisn,
+      'fincestem_pkg_nft_asesmen_v3_d' + targetDay + '_' + cleanNisn,
+      'fincestem_materi_nft_day' + targetDay + '_' + cleanNisn,
+      'fincestem_materi_day' + targetDay + '_' + cleanNisn,
+      'fincestem_refleksi_nft_day' + targetDay + '_' + cleanNisn,
+      'fincestem_refleksi_day' + targetDay + '_' + cleanNisn,
+      'fincestem_nft_sector_d' + targetDay + '_' + cleanNisn
+    ];
+    keysToPurge.forEach(k => localStorage.removeItem(k));
+    Object.keys(localStorage).forEach(k => {
+      if (k.includes('_d' + targetDay + '_') && k.includes(cleanNisn)) {
+        localStorage.removeItem(k);
+      }
+    });
+
+    // 2. Request ke server reset_student
+    fetch('../api/progress.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'reset_student',
+        student_nisn: nisn,
+        scope: 'day_x',
+        target_day: targetDay,
+        components: { materi: false, lkpd: true, asesmen: true, refleksi: true, dokumentasi: false, foto_profil: false }
+      })
+    }).then(r => r.json()).then(res => {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Data pengerjaan Day ' + targetDay + ' berhasil di-reset bersih! Silakan coba buka menu Day ' + targetDay + '.', 'success');
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 700);
+    }).catch(err => {
+      if (window.FincestemCore && FincestemCore.ui) {
+        FincestemCore.ui.toast('Draf lokal Day ' + targetDay + ' dibersihkan!', 'info');
+      }
+      setTimeout(() => {
+        window.location.reload();
+      }, 700);
+    });
+  };
+
+  function returnToAdminFromTester() {
       try {
         const savedAdminUser = localStorage.getItem('fincestem_saved_admin_user');
         if (savedAdminUser) {
