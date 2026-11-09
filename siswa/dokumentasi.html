@@ -941,9 +941,17 @@
               }
             } catch(eExist) {}
 
-            if (isReadOnlyUrl || hasExistingDok) {
+            // Jaminan Akses Dokumentasi:
+            // Peserta Field Trip & Non-Field Trip (Day 0 s.d. Day 7) selalu memiliki hak akses untuk membuka halaman dan mengunggah foto
+            // jika hari sebelumnya telah tuntas (atau Day 0 / Day 1) atau jika ada riwayat foto sebelumnya
+            const prevDone = (dayNum <= 1) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
+            if (prevDone || hasExistingDok || isReadOnlyUrl) {
               access.canAccess = true;
-              if (isReadOnlyUrl) access.canEdit = false;
+              if (isReadOnlyUrl) {
+                access.canEdit = false;
+              } else {
+                access.canEdit = true;
+              }
             }
 
             if (!access.canAccess) {
@@ -1137,20 +1145,16 @@
               }
             }
             let canEdit = access.canEdit;
-            // Peserta Field Trip (Day 0 s.d. Day 7) selalu memiliki izin unggah / edit tanpa terblokir status tutup
-            if (studentCategory.isFieldTrip && (dayNum >= 0 && dayNum <= 7)) {
+            // Peserta Field Trip & Non-Field Trip (Day 0 s.d. Day 7) selalu memiliki izin unggah / edit selama memiliki hak akses
+            if (dayNum >= 0 && dayNum <= 7 && access.canAccess) {
               canEdit = true;
             }
-            // Siswa Non-Field Trip Day 0 & Day 1 yang memiliki hak akses diberikan izin edit
-            if (!studentCategory.isFieldTrip && (dayNum === 0 || dayNum === 1) && access.canAccess) {
-              canEdit = true;
-            }
-            // Jaminan Mutlak Khusus Field Trip Day 0: Jangan pernah dikunci ke mode read-only
-            if (studentCategory.isFieldTrip && dayNum === 0) {
+            // Jaminan Mutlak Khusus Day 0 & Siswa Aktif: Jangan pernah dikunci ke mode read-only kecuali parameter URL ?readonly=1 eksplisit
+            if (dayNum === 0) {
               canEdit = true;
               window.isDayReadOnlyMode = false;
             }
-            if (!canEdit || (isReadOnlyUrl && !(studentCategory.isFieldTrip && dayNum === 0))) {
+            if (!canEdit || (isReadOnlyUrl && dayNum !== 0)) {
               window.isDayReadOnlyMode = true;
               // Sembunyikan tombol tambah foto jika mode hanya lihat
               const upBtns = document.querySelectorAll('button[onclick="toggleUploadModal(true)"]');

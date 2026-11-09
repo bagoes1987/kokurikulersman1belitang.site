@@ -4441,15 +4441,15 @@
         return;
       }
 
-      // Siswa Non-Field Trip Day 1 yang dapat diakses tidak boleh dipaksa mode readonly
-      const isDay1ActiveNonFt = (!isFieldTrip && Number(dayNumber) === 1 && access.canAccess);
+      // Siswa Non-Field Trip Day 1 s.d. 7 yang dapat diakses tidak boleh dipaksa mode readonly
+      const isDayActiveNonFt = (!isFieldTrip && Number(dayNumber) >= 1 && Number(dayNumber) <= 7 && access.canAccess);
 
       // Selalu ambil data penilaian teranyar dari server agar feedback & nilai guru langsung tampil instan tanpa lag/cache
       if (type === 'penilaian') {
         const currentUser = FincestemCore.auth.getUser() || {};
         const stu = currentStudent || currentUser;
         const cleanNisn = String(stu.nisn || stu.identifier || currentUser.nisn || currentUser.identifier || '').trim();
-        const isReadOnlyMode = (!access.canEdit && !isDay1ActiveNonFt);
+        const isReadOnlyMode = (!access.canEdit && !isDayActiveNonFt);
 
         if (cleanNisn && FincestemCore.progress) {
           FincestemCore.progress.getStudentProgress(cleanNisn, function(freshProg) {
@@ -4465,7 +4465,7 @@
         return;
       }
 
-      if (!access.canEdit && !isDay1ActiveNonFt && !isFieldTrip && dNum > 0) {
+      if (!access.canEdit && !isDayActiveNonFt && !isFieldTrip && dNum > 0) {
         FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} ditutup oleh Admin (Hanya Lihat). Pengumpulan tugas dinonaktifkan.`, 'warning');
         if (type === 'lkpd') {
           window.location.href = (isFieldTrip && Number(dayNumber) === 6) ? 'lkpd.html?day=6&sesi=1&readonly=1' : ('lkpd.html?day=' + dayNumber + '&readonly=1');
