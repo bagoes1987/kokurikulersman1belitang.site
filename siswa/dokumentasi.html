@@ -18,6 +18,17 @@
         var auth = localStorage.getItem('fincestem_auth');
         var role = localStorage.getItem('fincestem_role');
         if (auth !== 'true' || role !== 'siswa') {
+          var u = localStorage.getItem('fincestem_user');
+          if (u) {
+            try {
+              var parsedU = JSON.parse(u);
+              if (parsedU && (parsedU.role === 'siswa' || !parsedU.role)) {
+                localStorage.setItem('fincestem_auth', 'true');
+                localStorage.setItem('fincestem_role', 'siswa');
+                return;
+              }
+            } catch(eU) {}
+          }
           window.location.replace('index.html');
         }
       } catch (e) {}
@@ -221,8 +232,8 @@
           <!-- Notice Ketentuan Geotagging Berdasarkan Kategori Siswa -->
           <div id="uploadPolicyNotice" class="mb-2"></div>
 
-          <!-- Input Kamera HP (capture="environment") dan File Picker Galeri -->
-          <input id="modalPhotoCameraInput" type="file" accept="image/*" capture="environment" style="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;width:1px;height:1px;" onchange="handlePhotoFileSelected(event, 'camera')">
+          <!-- Input Kamera HP dan File Picker Galeri (Tanpa capture='environment' agar HP Android tidak force-close/reboot browser saat buka kamera) -->
+          <input id="modalPhotoCameraInput" type="file" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;width:1px;height:1px;" onchange="handlePhotoFileSelected(event, 'camera')">
           <input id="modalPhotoFileInput" type="file" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;width:1px;height:1px;" onchange="handlePhotoFileSelected(event, 'gallery')">
 
           <!-- Tombol Pilihan Pengambilan Foto -->
@@ -1096,6 +1107,8 @@
                     return;
                   }
                 }
+              } else if (dayNum === 1) {
+                // Khusus Day 1 Field Trip (Perjalanan Keberangkatan): Dokumentasi foto perjalanan bebas diunggah setelah Modul/LKPD tanpa terblokir asesmen
               } else {
                 // Hari lainnya: Asesmen wajib selesai dulu
                 const taskMap = (prog && prog.task_map) || {};
@@ -2421,7 +2434,7 @@
     }
 
     function renderGeotaggedWatermark(img, gps, studentInfo, callback) {
-      const maxDimension = 1200;
+      const maxDimension = 1080;
       let w = img.naturalWidth || img.width;
       let h = img.naturalHeight || img.height;
 
@@ -2602,7 +2615,7 @@
         ctx.restore();
 
         try {
-          const resultDataUrl = canvas.toDataURL('image/jpeg', 0.72);
+          const resultDataUrl = canvas.toDataURL('image/jpeg', 0.70);
           callback(resultDataUrl);
         } catch (e) {
           console.error('Canvas export error:', e);
@@ -2678,7 +2691,7 @@
     let selectedPhotoHasGeotag = false;
 
     function renderCleanGalleryPhoto(img, callback) {
-      const maxDimension = 1200;
+      const maxDimension = 1080;
       let w = img.naturalWidth || img.width;
       let h = img.naturalHeight || img.height;
 
@@ -2700,7 +2713,7 @@
       ctx.drawImage(img, 0, 0, w, h);
 
       try {
-        const resultDataUrl = canvas.toDataURL('image/jpeg', 0.72);
+        const resultDataUrl = canvas.toDataURL('image/jpeg', 0.70);
         callback(resultDataUrl);
       } catch (e) {
         console.error('Gallery canvas export error:', e);
@@ -2741,94 +2754,99 @@
         if (stampDesc) stampDesc.textContent = 'Menyesuaikan resolusi tanpa stempel geotag (unggah dokumen album)';
       }
 
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const rawDataUrl = e.target.result;
-        const img = new Image();
-        img.onload = function() {
-          if (source === 'camera') {
-            // FOTO KAMERA HP: bubuhkan stempel Geotag + Radar Peta + Waktu Detik Otentik
-            if (!currentGPS) {
-              applyFallbackGPS();
+      // Gunakan URL.createObjectURL untuk efisiensi memori mutlak (anti Out-Of-Memory di HP siswa)
+      const blobUrl = (window.URL || window.webkitURL).createObjectURL(file);
+      const img = new Image();
+      img.onload = function() {
+        try { (window.URL || window.webkitURL).revokeObjectURL(blobUrl); } catch(eRev) {}
+
+        if (source === 'camera') {
+          // FOTO KAMERA HP: bubuhkan stempel Geotag + Radar Peta + Waktu Detik Otentik
+          if (!currentGPS) {
+            applyFallbackGPS();
+          }
+
+          const urlParams = new URLSearchParams(window.location.search);
+          const currentDayNum = urlParams.has('day') ? parseInt(urlParams.get('day')) : 1;
+
+          const user = FincestemCore.auth.getUser() || {};
+          const studentInfo = {
+            name: user.name || 'Siswa SMAN 1 Belitang',
+            nisn: user.nisn || user.identifier || '-',
+            group: user.group || 'Kelompok Riset',
+            class_name: user.class_name || user.class || 'Fase E',
+            day: currentDayNum
+          };
+
+          renderGeotaggedWatermark(img, currentGPS, studentInfo, function(watermarkedDataUrl) {
+            selectedPhotoBase64 = watermarkedDataUrl;
+
+            if (stampBox) stampBox.classList.add('hidden');
+            if (previewCard) previewCard.classList.remove('hidden');
+
+            const previewImg = document.getElementById('uploadPreviewImg');
+            if (previewImg) previewImg.src = watermarkedDataUrl;
+
+            initPreviewZoom();
+
+            if (previewBadge) {
+              previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
+              previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">location_on</span><span>📍 Kamera Geotag (Otentik)</span>';
             }
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const currentDayNum = urlParams.has('day') ? parseInt(urlParams.get('day')) : 1;
+            const previewMeta = document.getElementById('previewPhotoMeta');
+            if (previewMeta) {
+              previewMeta.textContent = `📍 Kamera HP • Geotag: ${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)} • ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB`;
+            }
+            FincestemCore.ui.toast('Foto kamera berhasil distempel geotag! Cubit 2 jari / ketuk 2x untuk perbesar.', 'success');
+          });
+        } else {
+          // FOTO GALERI: foto bersih TANPA stempel geotag & TANPA radar map
+          renderCleanGalleryPhoto(img, function(cleanDataUrl) {
+            selectedPhotoBase64 = cleanDataUrl;
 
-            const user = FincestemCore.auth.getUser() || {};
-            const studentInfo = {
-              name: user.name || 'Siswa SMAN 1 Belitang',
-              nisn: user.nisn || user.identifier || '-',
-              group: user.group || 'Kelompok Riset',
-              class_name: user.class_name || user.class || 'Fase E',
-              day: currentDayNum
-            };
+            if (stampBox) stampBox.classList.add('hidden');
+            if (previewCard) previewCard.classList.remove('hidden');
 
-            renderGeotaggedWatermark(img, currentGPS, studentInfo, function(watermarkedDataUrl) {
-              selectedPhotoBase64 = watermarkedDataUrl;
+            const previewImg = document.getElementById('uploadPreviewImg');
+            if (previewImg) previewImg.src = cleanDataUrl;
 
-              if (stampBox) stampBox.classList.add('hidden');
-              if (previewCard) previewCard.classList.remove('hidden');
+            initPreviewZoom();
 
-              const previewImg = document.getElementById('uploadPreviewImg');
-              if (previewImg) previewImg.src = watermarkedDataUrl;
-
-              initPreviewZoom();
-
-              if (previewBadge) {
-                previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-emerald-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
-                previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">location_on</span><span>📍 Kamera Geotag (Otentik)</span>';
-              }
-
-              const previewMeta = document.getElementById('previewPhotoMeta');
-              if (previewMeta) {
-                previewMeta.textContent = `📍 Kamera HP • Geotag: ${currentGPS.lat.toFixed(5)}, ${currentGPS.lng.toFixed(5)} • ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB`;
-              }
-              FincestemCore.ui.toast('Foto kamera berhasil distempel geotag! Cubit 2 jari / ketuk 2x untuk perbesar.', 'success');
-            });
-          } else {
-            // FOTO GALERI: foto bersih TANPA stempel geotag & TANPA radar map
-            renderCleanGalleryPhoto(img, function(cleanDataUrl) {
-              selectedPhotoBase64 = cleanDataUrl;
-
-              if (stampBox) stampBox.classList.add('hidden');
-              if (previewCard) previewCard.classList.remove('hidden');
-
-              const previewImg = document.getElementById('uploadPreviewImg');
-              if (previewImg) previewImg.src = cleanDataUrl;
-
-              initPreviewZoom();
-
-              const cat = getStudentCategoryInfo();
-              if (previewBadge) {
-                if (cat.isNonFieldTrip) {
-                  previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-rose-700/95 text-amber-200 backdrop-blur-xs flex items-center gap-1 shadow-md border border-rose-500/40';
-                  previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">warning</span><span>📁 Galeri (Rekomendasi ⭐1)</span>';
-                } else {
-                  previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-amber-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
-                  previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">photo_library</span><span>📁 Galeri (Field Trip)</span>';
-                }
-              }
-
-              const previewMeta = document.getElementById('previewPhotoMeta');
-              if (previewMeta) {
-                if (cat.isNonFieldTrip) {
-                  previewMeta.textContent = `📁 Galeri Tanpa Geotag • Rekomendasi Penilaian Fasilitator: Bintang 1 (⭐☆☆☆☆)`;
-                } else {
-                  previewMeta.textContent = `📁 Unggahan Galeri • Field Trip`;
-                }
-              }
+            const cat = getStudentCategoryInfo();
+            if (previewBadge) {
               if (cat.isNonFieldTrip) {
-                FincestemCore.ui.toast('Perhatian: Foto galeri untuk Non-Field Trip menghasilkan rekomendasi nilai Bintang 1!', 'warning');
+                previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-rose-700/95 text-amber-200 backdrop-blur-xs flex items-center gap-1 shadow-md border border-rose-500/40';
+                previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">warning</span><span>📁 Galeri (Rekomendasi ⭐1)</span>';
               } else {
-                FincestemCore.ui.toast('Foto galeri diproses. Cubit 2 jari / ketuk 2x untuk perbesar.', 'info');
+                previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-amber-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
+                previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">photo_library</span><span>📁 Galeri (Field Trip)</span>';
               }
-            });
-          }
-        };
-        img.src = rawDataUrl;
+            }
+
+            const previewMeta = document.getElementById('previewPhotoMeta');
+            if (previewMeta) {
+              if (cat.isNonFieldTrip) {
+                previewMeta.textContent = `📁 Galeri Tanpa Geotag • Rekomendasi Penilaian Fasilitator: Bintang 1 (⭐☆☆☆☆)`;
+              } else {
+                previewMeta.textContent = `📁 Unggahan Galeri • Field Trip`;
+              }
+            }
+            if (cat.isNonFieldTrip) {
+              FincestemCore.ui.toast('Perhatian: Foto galeri untuk Non-Field Trip menghasilkan rekomendasi nilai Bintang 1!', 'warning');
+            } else {
+              FincestemCore.ui.toast('Foto galeri diproses. Cubit 2 jari / ketuk 2x untuk perbesar.', 'info');
+            }
+          });
+        }
       };
-      reader.readAsDataURL(file);
+      img.onerror = function() {
+        try { (window.URL || window.webkitURL).revokeObjectURL(blobUrl); } catch(eRev) {}
+        if (stampBox) stampBox.classList.add('hidden');
+        if (actionsContainer) actionsContainer.classList.remove('hidden');
+        FincestemCore.ui.toast('Gagal memproses berkas gambar. Silakan coba kembali.', 'error');
+      };
+      img.src = blobUrl;
     }
 
     function getPhotoDay(p) {
@@ -4248,14 +4266,14 @@
 
           db.documentation.unshift(newPhoto);
 
-          // Batasi maksimal 15 item foto lokal
-          if (db.documentation.length > 15) {
-            db.documentation = db.documentation.slice(0, 15);
+          // Batasi maksimal 10 item foto lokal
+          if (db.documentation.length > 10) {
+            db.documentation = db.documentation.slice(0, 10);
           }
 
-          // Bersihkan string base64 untuk foto ke-3 dan seterusnya agar ukuran localStorage tetap di bawah 1MB
+          // Bersihkan string base64 untuk foto ke-2 dan seterusnya agar ukuran localStorage tetap di bawah 300KB
           db.documentation.forEach((pItem, pIdx) => {
-            if (pIdx >= 2 && pItem && pItem.url && pItem.url.startsWith('data:image')) {
+            if (pIdx >= 1 && pItem && pItem.url && pItem.url.startsWith('data:image')) {
               pItem.url = ''; // Simpan metadata saja, foto fisik aman di server
             }
           });
