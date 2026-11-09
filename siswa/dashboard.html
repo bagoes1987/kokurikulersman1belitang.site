@@ -1190,7 +1190,7 @@
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261109_d7_time_title_fix"></script>
+  <script src="../js/core.js?v=20261109_refleksi_flow_fix"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -2664,11 +2664,13 @@
 
       let hasAsesmen = !!taskMap[dayNum + '_asesmen'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'asesmen');
       if (!hasAsesmen) {
-        // Khusus Day 2 Field Trip: Asesmen terintegrasi dalam LKPD Esai AKPOL & Lawang Sewu
-        // (Untuk Non-Field Trip, Day 2 dan Day 7 memiliki 50 soal Asesmen CBT tersendiri)
-        if (isFieldTrip && dayNum === 2 && hasLkpd) {
+        // Khusus Day 1 Field Trip (Perjalanan Keberangkatan): Bebas Asesmen tertulis
+        if (isFieldTrip && dayNum === 1 && hasLkpd) {
           hasAsesmen = true;
-        } else if ((isFieldTrip || !isFieldTrip) && dayNum === 7 && hasLkpd) {
+        } else if (isFieldTrip && dayNum === 2 && hasLkpd) {
+          // Khusus Day 2 Field Trip: Asesmen terintegrasi dalam LKPD Esai AKPOL & Lawang Sewu
+          hasAsesmen = true;
+        } else if (dayNum === 7 && hasLkpd) {
           // Khusus Day 7 (Field Trip & Non-Field Trip): Bebas Asesmen Kepulangan / Final (otomatis tuntas jika LKPD selesai)
           hasAsesmen = true;
         } else {
@@ -2774,51 +2776,21 @@
         };
       }
 
-      // Cascading logic berurutan mutlak
+      // Cascading logic berurutan mutlak (Bebas Deadlock & Selalu Ramah Pengguna)
       const isFtDay7 = isFieldTrip && dayNum === 7;
       const isFtDay0 = isFieldTrip && dayNum === 0;
-      const isNonFtD5D6 = !isFieldTrip && (dayNum === 5 || dayNum === 6 || dayNum === 7);
-      const isNonFtOrderedDay = !isFieldTrip && (dayNum >= 1 && dayNum <= 7);
-      let canLkpd = isFtDay0 ? true : (isNonFtD5D6 ? (hasMateri && hasDok) : hasMateri);
-      let canDok = isFtDay0 ? true : (isNonFtD5D6
-        ? hasMateri
-        : (isNonFtOrderedDay
-            ? (hasMateri && hasLkpd)
-            : (isFtDay7 ? (hasMateri && hasLkpd) : (hasMateri && hasLkpd && hasAsesmen))));
-      let canAsesmen = isNonFtD5D6
-        ? (hasMateri && hasDok && hasLkpd)
-        : (isFtDay0
-            ? (hasDok || hasLkpd || hasMateri)
-            : (isNonFtOrderedDay
-                ? (hasMateri && hasLkpd && hasDok)
-                : (hasMateri && hasLkpd)));
-      let canRefleksi = isFtDay0
-        ? (hasAsesmen || hasDok || hasLkpd)
-        : (isFtDay7 ? (hasMateri && hasLkpd && hasDok) : (hasMateri && hasLkpd && hasAsesmen && hasDok));
-      let canPenilaian = isFtDay0
-        ? true
-        : (isFtDay7 ? (hasMateri && hasLkpd && hasDok && hasRefleksi) : (hasMateri && hasLkpd && hasAsesmen && hasDok && hasRefleksi));
+      let canLkpd = isFtDay0 ? true : hasMateri;
+      let canDok = isFtDay0 ? true : (hasMateri && hasLkpd);
+      let canAsesmen = isFtDay0 ? true : (hasMateri && hasLkpd);
+      let canRefleksi = isFtDay0 ? true : (hasMateri && hasLkpd && (hasDok || hasAsesmen));
+      let canPenilaian = isFtDay0 ? true : (hasMateri && hasLkpd && hasDok && hasRefleksi);
 
       return {
         hasMateri,
-        hasLkpd: isNonFtD5D6
-          ? (hasLkpd && hasMateri && hasDok)
-          : (hasLkpd && hasMateri),
-        hasAsesmen: isNonFtD5D6
-          ? (dayNum === 7 ? (hasLkpd && hasMateri && hasDok) : (hasAsesmen && hasDok && hasLkpd && hasMateri))
-          : (isFtDay0
-              ? (hasAsesmen && hasDok && hasLkpd && hasMateri)
-              : (isNonFtOrderedDay
-                  ? (hasAsesmen && hasDok && hasLkpd && hasMateri)
-                  : (isFtDay7 ? (hasLkpd && hasMateri) : (hasAsesmen && hasLkpd && hasMateri)))),
-        hasDok: isNonFtD5D6
-          ? (hasDok && hasMateri)
-          : ((isNonFtOrderedDay || isFtDay0)
-              ? (hasDok && hasLkpd && hasMateri)
-              : (isFtDay7 ? (hasDok && hasLkpd && hasMateri) : (hasDok && hasAsesmen && hasLkpd && hasMateri))),
-        hasRefleksi: isFtDay0
-          ? (hasRefleksi && hasAsesmen && hasDok && hasLkpd && hasMateri)
-          : (isFtDay7 ? (hasRefleksi && hasDok && hasLkpd && hasMateri) : (hasRefleksi && hasDok && hasAsesmen && hasLkpd && hasMateri)),
+        hasLkpd: (hasLkpd && hasMateri),
+        hasAsesmen: (hasAsesmen && hasMateri && hasLkpd),
+        hasDok: (hasDok && hasMateri && hasLkpd),
+        hasRefleksi: (hasRefleksi && hasMateri && hasLkpd && (hasDok || hasAsesmen)),
         canLkpd,
         canAsesmen,
         canDok,
@@ -4364,20 +4336,21 @@
             return;
           }
 
-          // Tahap 5: Refleksi butuh Modul, Dokumentasi, LKPD & Asesmen
+          // Tahap 5: Refleksi butuh Modul & Lembar Kerja
           if (type === 'refleksi' && !progStatus.canRefleksi) {
-            if (!progStatus.hasDok) {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 2: Dokumentasi Foto Riset Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 1: Modul Belajar Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
             } else if (!progStatus.hasLkpd) {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 3: Lembar Kerja (LKPD Video) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+              showStepLockedModal('Jurnal Refleksi', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+            } else if (!progStatus.hasDok) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap Dokumentasi Foto Riset/Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
             } else {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 4: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
+              openDayActivityModal(day, 'refleksi', false);
             }
             return;
           }
         } else if (isNonFtOrderedDay) {
-          // Non-Field Trip Day 1-4 & 7: 1. Modul -> 2. LKPD -> 3. Dokumentasi -> 4. Asesmen -> 5. Refleksi -> 6. Penilaian
-          // Tahap 2: LKPD butuh Modul
+          // Non-Field Trip Day 1-7
           if (type === 'lkpd' && !progStatus.canLkpd) {
             showStepLockedModal('LKPD Digital', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
             return;
@@ -4395,29 +4368,31 @@
           if (type === 'asesmen' && !progStatus.canAsesmen) {
             if (!progStatus.hasMateri) {
               showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
-            } else if (!progStatus.hasLkpd) {
-              showStepLockedModal('Kuis Asesmen', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
             } else {
-              showStepLockedModal('Kuis Asesmen', `Tahap 3: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
+              showStepLockedModal('Kuis Asesmen', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
             }
             return;
           }
 
           if (type === 'refleksi' && !progStatus.canRefleksi) {
-            if (!progStatus.hasDok) {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 3: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 1: Modul Belajar Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
+            } else if (!progStatus.hasLkpd) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+            } else if (!progStatus.hasDok) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap Dokumentasi Foto Riset Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
             } else {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 4: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
+              openDayActivityModal(day, 'refleksi', false);
             }
             return;
           }
         } else {
-          // Field Trip Day 1-7 (100% Tidak Terganggu):
+          // Field Trip Day 1-7
           if (type === 'lkpd' && !progStatus.canLkpd) {
             showStepLockedModal('LKPD Digital', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
             return;
           }
-          // Tahap 3: Asesmen butuh Modul & LKPD
+
           if (type === 'asesmen' && !progStatus.canAsesmen) {
             if (!progStatus.hasMateri) {
               showStepLockedModal('Kuis Asesmen', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
@@ -4427,24 +4402,24 @@
             return;
           }
 
-          // Tahap 4: Dokumentasi butuh Modul, LKPD & Asesmen
           if (type === 'dokumentasi' && !progStatus.canDok) {
             if (!progStatus.hasMateri) {
               showStepLockedModal('Dokumentasi Foto', `Tahap 1: Modul Belajar & Resume Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
-            } else if (!progStatus.hasLkpd) {
-              showStepLockedModal('Dokumentasi Foto', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
             } else {
-              showStepLockedModal('Dokumentasi Foto', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
+              showStepLockedModal('Dokumentasi Foto', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
             }
             return;
           }
 
-          // Tahap 5: Refleksi butuh Modul, LKPD, Asesmen & Dokumentasi
           if (type === 'refleksi' && !progStatus.canRefleksi) {
-            if (!progStatus.canDok) {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 3: Kuis Asesmen Day ${dNum}`, () => { handleActivityClick(dNum, 'asesmen'); }, dNum);
+            if (!progStatus.hasMateri) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 1: Modul Belajar Day ${dNum}`, () => { window.location.href = `materi.html?day=${dNum}`; }, dNum);
+            } else if (!progStatus.hasLkpd) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap 2: Lembar Kerja (LKPD) Day ${dNum}`, () => { window.location.href = `lkpd.html?day=${dNum}`; }, dNum);
+            } else if (!progStatus.hasDok) {
+              showStepLockedModal('Jurnal Refleksi', `Tahap Dokumentasi Foto Lapangan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
             } else {
-              showStepLockedModal('Jurnal Refleksi', `Tahap 4: Dokumentasi Foto Kegiatan Day ${dNum}`, () => { window.location.href = `dokumentasi.html?day=${dNum}`; }, dNum);
+              openDayActivityModal(day, 'refleksi', false);
             }
             return;
           }
@@ -5186,9 +5161,13 @@
 
             ${isSubmitted ? `
               <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=3';" class="flex-1 py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
-                  <span class="material-symbols-outlined text-lg">photo_camera</span>
-                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
+                <button type="button" onclick="closeDayActivityModal(); handleActivityClick(3, 'refleksi');" class="flex-1 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">psychology</span>
+                  <span>Lanjut ke Jurnal Refleksi Day 3</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=3';" class="py-3 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Dokumentasi Foto</span>
                 </button>
                 <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
                   Tutup
@@ -5359,9 +5338,13 @@
 
             ${isSubmitted ? `
               <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=4';" class="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
-                  <span class="material-symbols-outlined text-lg">photo_camera</span>
-                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
+                <button type="button" onclick="closeDayActivityModal(); handleActivityClick(4, 'refleksi');" class="flex-1 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">psychology</span>
+                  <span>Lanjut ke Jurnal Refleksi Day 4</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=4';" class="py-3 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Dokumentasi Foto</span>
                 </button>
                 <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
                   Tutup
@@ -5532,9 +5515,13 @@
 
             ${isSubmitted ? `
               <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=5';" class="flex-1 py-3 px-4 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
-                  <span class="material-symbols-outlined text-lg">photo_camera</span>
-                  <span>Lanjut ke Dokumentasi Foto (Tahap 4)</span>
+                <button type="button" onclick="closeDayActivityModal(); handleActivityClick(5, 'refleksi');" class="flex-1 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">psychology</span>
+                  <span>Lanjut ke Jurnal Refleksi Day 5</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=5';" class="py-3 px-4 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-900 border border-purple-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Dokumentasi Foto</span>
                 </button>
                 <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
                   Tutup
@@ -5705,9 +5692,13 @@
 
             ${isSubmitted ? `
               <div class="flex flex-col sm:flex-row gap-2 pt-2">
-                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=6&sesi=1';" class="flex-1 py-3 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
-                  <span class="material-symbols-outlined text-lg">photo_camera</span>
-                  <span>Lanjut ke Dokumentasi Foto Sesi 1 (Pabrik Bakpia) &rarr;</span>
+                <button type="button" onclick="closeDayActivityModal(); handleActivityClick(6, 'refleksi');" class="flex-1 py-3 px-4 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-lg">psychology</span>
+                  <span>Lanjut ke Jurnal Refleksi Day 6</span>
+                </button>
+                <button type="button" onclick="closeDayActivityModal(); window.location.href='dokumentasi.html?day=6&sesi=1';" class="py-3 px-4 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Dokumentasi Bakpia</span>
                 </button>
                 <button type="button" onclick="closeDayActivityModal()" class="py-3 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm cursor-pointer transition-all">
                   Tutup

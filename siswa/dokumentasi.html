@@ -401,7 +401,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261109_d7_finale"></script>
+  <script src="../js/core.js?v=20261109_refleksi_flow_fix"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -1051,13 +1051,7 @@
                       } catch(e) {}
                     }
                   }
-                  if (!hasAsesmenS1) {
-                    FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day 6 Sesi 1 sebelum mengunggah Dokumentasi!', 'warning');
-                    setTimeout(() => {
-                      window.location.replace('dashboard.html?day=6&task=asesmen');
-                    }, 1200);
-                    return;
-                  }
+                  // Sesi 1: Dokumentasi Pabrik Bakpia dapat langsung diunggah
                 }
               } else if (dayNum === 7) {
                 // Khusus Day 7: Bebas Asesmen! Hanya perlu LKPD Day 7 (Tutup Buku Kas Saku & Kesan Pesan) selesai
@@ -1110,36 +1104,7 @@
               } else if (dayNum === 1) {
                 // Khusus Day 1 Field Trip (Perjalanan Keberangkatan): Dokumentasi foto perjalanan bebas diunggah setelah Modul/LKPD tanpa terblokir asesmen
               } else {
-                // Hari lainnya: Asesmen wajib selesai dulu
-                const taskMap = (prog && prog.task_map) || {};
-                let hasAsesmen = !!taskMap[dayNum + '_asesmen'];
-                if (!hasAsesmen) {
-                  for (const id of ids) {
-                    try {
-                      const ask = localStorage.getItem(`fincestem_asesmen_ft_day${dayNum}_` + id) ||
-                                  localStorage.getItem(`fincestem_asesmen_nft_day${dayNum}_` + id) ||
-                                  localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + id);
-                      if (ask) {
-                        try {
-                          const parsed = JSON.parse(ask);
-                          if (parsed && (parsed.submitted || parsed.score !== undefined || parsed.answers || parsed.correctCount !== undefined)) {
-                            hasAsesmen = true;
-                            break;
-                          }
-                        } catch(e) {
-                          if (ask.trim().length > 5) { hasAsesmen = true; break; }
-                        }
-                      }
-                    } catch(e) {}
-                  }
-                }
-                if (!hasAsesmen) {
-                  FincestemCore.ui.toast(`Aktivitas Berurutan: Anda wajib menyelesaikan kuis Asesmen Day ${dayNum} sebelum mengunggah Dokumentasi!`, 'warning');
-                  setTimeout(() => {
-                    window.location.replace(`dashboard.html?day=${dayNum}&task=asesmen`);
-                  }, 1200);
-                  return;
-                }
+                // Hari lainnya: Dokumentasi foto lapangan bebas diunggah setelah LKPD tuntas
               }
             }
             let canEdit = access.canEdit;
@@ -3361,9 +3326,9 @@
                   </p>
                 </div>
                 <div class="flex flex-col sm:flex-row gap-2 pt-1">
-                  <a href="dashboard.html?day=3&task=asesmen" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
-                    <span class="material-symbols-outlined text-xl">fact_check</span>
-                    <span>Lanjut ke Asesmen Day 3 &rarr;</span>
+                  <a href="dashboard.html?day=3&task=refleksi" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-xl">psychology</span>
+                    <span>Lanjut ke Jurnal Refleksi Day 3 &rarr;</span>
                   </a>
                   <button type="button" onclick="openModalRefleksiMuseum()" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-purple-900 border border-purple-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
                     <span class="material-symbols-outlined text-base">edit_note</span>
@@ -3422,7 +3387,7 @@
                 <div class="flex flex-col sm:flex-row gap-2 pt-1">
                   <button type="button" onclick="submitInlineRefleksiMuseum()" class="flex-1 py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
                     <span class="material-symbols-outlined text-lg">send</span>
-                    <span>Kirim Refleksi &amp; Lanjut ke Asesmen Day 3 &rarr;</span>
+                    <span>Kirim Refleksi &amp; Lanjut ke Tahap 5 Refleksi &rarr;</span>
                   </button>
                   <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-purple-900 border border-purple-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
                     <span class="material-symbols-outlined text-base">add_a_photo</span>
@@ -3508,7 +3473,7 @@
               <div class="flex flex-col sm:flex-row gap-2 pt-1">
                 <button type="button" onclick="submitInlineRefleksiBromo()" class="flex-1 py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 active:scale-[0.99] text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all cursor-pointer">
                   <span class="material-symbols-outlined text-lg">send</span>
-                  <span>Kirim Refleksi &amp; Lanjut ke Asesmen Day 4 &rarr;</span>
+                  <span>Kirim Refleksi &amp; Lanjut ke Tahap 5 Refleksi &rarr;</span>
                 </button>
                 <button type="button" onclick="toggleUploadModal(true)" class="py-3 px-4 rounded-2xl bg-white hover:bg-slate-100 text-amber-900 border border-amber-200 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
                   <span class="material-symbols-outlined text-base">add_a_photo</span>
@@ -3822,28 +3787,14 @@
           let dokNextUrl = 'dashboard.html?day=' + dayNum + '&task=refleksi';
           let dokNextLabel = 'Lanjut ke Tahap 5: Jurnal Refleksi Day ' + dayNum + ' &rarr;';
 
-          if (isDay0 && cat.isFieldTrip) {
-            dokDoneTitle = 'Dokumentasi Day 0 (Field Trip) Selesai';
-            dokSuccessMsg = 'Foto bukti kesiapan Day 0 telah tersimpan. Silakan lanjut ke Tahap 4: Asesmen 10 Soal Esai Day 0.';
-            dokNextUrl = 'dashboard.html?day=0&task=asesmen';
-            dokNextLabel = 'Lanjut ke Tahap 4: Asesmen Day 0 &rarr;';
-          } else if (isDay0) {
-            dokSuccessMsg = 'Foto bukti simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.';
+          if (isDay0) {
+            dokSuccessMsg = 'Foto bukti kesiapan dan simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.';
             dokNextUrl = 'dashboard.html?day=0&task=refleksi';
             dokNextLabel = 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;';
-          } else if (!cat.isFieldTrip && dayNum === 7) {
-            dokDoneTitle = 'Dokumentasi Day 7 (Foto Geotag) Selesai';
-            dokSuccessMsg = 'Foto bebas diri ber-Google Geotag Anda telah tersimpan resmi. Silakan lanjut ke Tahap 3: LKPD Digital Day 7 (Link Video Refleksi, BTS & Jurnal Refleksi).';
-            dokNextUrl = 'lkpd.html?day=7';
-            dokNextLabel = 'Lanjut ke Tahap 3: LKPD Day 7 &rarr;';
-          } else if (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6)) {
-            dokSuccessMsg = 'Foto bukti dokumentasi telah tersimpan. Silakan lanjut ke Tahap 3: Lembar Kerja (LKPD Video) Day ' + dayNum + '.';
-            dokNextUrl = 'lkpd.html?day=' + dayNum;
-            dokNextLabel = 'Lanjut ke Tahap 3: LKPD Video Day ' + dayNum + ' &rarr;';
-          } else if (!cat.isFieldTrip) {
-            dokSuccessMsg = 'Foto bukti riset Anda telah tersimpan. Silakan lanjut ke Tahap 4: Kuis Asesmen Day ' + dayNum + '.';
-            dokNextUrl = 'asesmen.html?day=' + dayNum;
-            dokNextLabel = 'Lanjut ke Tahap 4: Kuis Asesmen Day ' + dayNum + ' &rarr;';
+          } else {
+            dokSuccessMsg = 'Foto bukti dokumentasi kegiatan telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Mandiri Day ' + dayNum + '.';
+            dokNextUrl = 'dashboard.html?day=' + dayNum + '&task=refleksi';
+            dokNextLabel = 'Lanjut ke Tahap 5: Jurnal Refleksi Day ' + dayNum + ' &rarr;';
           }
 
           container.innerHTML = `
@@ -4739,34 +4690,19 @@
           }
         }
       } else {
-        const isFtDay0 = cat.isFieldTrip && (dayNum === 0);
-        const isNonFtD5D6 = !cat.isFieldTrip && (dayNum === 5 || dayNum === 6);
-        const isNonFtDay1To7 = !cat.isFieldTrip && (dayNum >= 1 && dayNum <= 7);
         if (subtitle) {
-          subtitle.textContent = isFtDay0
-            ? 'Bukti foto kesiapan Day 0 Anda telah tersimpan. Silakan lanjutkan ke Tahap 4: Asesmen 10 Soal Esai Kesiapan Lapangan:'
-            : ((dayNum === 0)
-                ? 'Foto dokumentasi simulasi Day 0 telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam alur aktivitas simulasi:'
-                : (isNonFtD5D6
-                    ? `Bukti foto riset Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke Tahap 3: Lembar Kerja (LKPD Video):`
-                    : `Bukti foto lapangan Day ${dayNum} Anda telah tersimpan. Silakan lanjutkan ke tahap berikutnya dalam rangkaian alur aktivitas berurutan:`));
+          subtitle.textContent = (dayNum === 0)
+            ? 'Foto dokumentasi simulasi Day 0 telah tersimpan. Silakan lanjutkan ke Tahap 5: Jurnal Refleksi Day 0.'
+            : `Bukti foto dokumentasi Day ${dayNum} Anda telah tersimpan resmi. Silakan lanjutkan ke Tahap 5: Jurnal Refleksi Mandiri Day ${dayNum}.`;
         }
         if (nextBtn) {
-          nextBtn.href = isFtDay0
-            ? `dashboard.html?day=0&task=asesmen`
-            : (isNonFtD5D6
-                ? `lkpd.html?day=${dayNum}`
-                : (isNonFtDay1To7 ? `asesmen.html?day=${dayNum}` : `dashboard.html?day=${dayNum}&task=refleksi`));
-          nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+          nextBtn.href = `dashboard.html?day=${dayNum}&task=refleksi`;
+          nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
         }
         if (nextBtnText) {
-          nextBtnText.textContent = isFtDay0
-            ? 'Lanjut ke Tahap 4: Asesmen Day 0 →'
-            : ((dayNum === 0)
-                ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0'
-                : (isNonFtD5D6
-                    ? `Lanjut ke Tahap 3: LKPD Video Day ${dayNum} →`
-                    : (isNonFtDay1To7 ? `Lanjut ke Kuis Asesmen Day ${dayNum} (Tahap 4)` : 'Lanjut ke Refleksi Mandiri (Tahap 5)')));
+          nextBtnText.textContent = (dayNum === 0)
+            ? 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 →'
+            : `Lanjut ke Tahap 5: Jurnal Refleksi Day ${dayNum} →`;
         }
       }
 
@@ -5043,14 +4979,14 @@
       }
 
       closeModalRefleksiMuseum();
-      FincestemCore.ui.toast('Jurnal Refleksi Kendaraan Museum Angkut berhasil disimpan! Mengarahkan ke Asesmen Day 3...', 'success');
+      FincestemCore.ui.toast('Jurnal Refleksi Kendaraan Museum Angkut berhasil disimpan! Mengarahkan ke Jurnal Refleksi Day 3...', 'success');
       
       const urlParams = new URLSearchParams(window.location.search);
       const dayParam = urlParams.get('day') || 3;
       renderSessionActionCard(Number(dayParam));
 
       setTimeout(() => {
-        window.location.href = 'dashboard.html?day=3&task=asesmen';
+        window.location.href = 'dashboard.html?day=3&task=refleksi';
       }, 1200);
     }
 
@@ -5096,14 +5032,14 @@
         }
       }
 
-      FincestemCore.ui.toast('Jurnal Refleksi Day 4 berhasil disimpan! Mengarahkan ke Asesmen Day 4...', 'success');
+      FincestemCore.ui.toast('Jurnal Refleksi Day 4 berhasil disimpan! Mengarahkan ke Jurnal Refleksi Day 4...', 'success');
       
       const urlParams = new URLSearchParams(window.location.search);
       const dayParam = urlParams.get('day') || 4;
       renderSessionActionCard(Number(dayParam));
 
       setTimeout(() => {
-        window.location.href = 'dashboard.html?day=4&task=asesmen';
+        window.location.href = 'dashboard.html?day=4&task=refleksi';
       }, 1200);
     }
 
