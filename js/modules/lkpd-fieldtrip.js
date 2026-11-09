@@ -48,7 +48,8 @@
       const mainEl = document.querySelector('main');
       if (!mainEl) return;
 
-      const studentName = activeUser.name || 'Peserta Field Trip';
+      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+      const studentName = u.name || activeUser.name || 'Peserta Field Trip';
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
       const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
@@ -2962,7 +2963,8 @@
       const mainEl = document.querySelector('main');
       if (!mainEl) return;
 
-      const studentName = activeUser.name || 'Peserta Field Trip';
+      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+      const studentName = u.name || activeUser.name || 'Peserta Field Trip';
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const cleanNisn = String(studentNisn).trim();
 
@@ -3483,12 +3485,13 @@
       const mainEl = document.querySelector('main');
       if (!mainEl) return;
 
-      const studentName = activeUser.name || 'Peserta Field Trip';
-      const studentNisn = activeUser.nisn || activeUser.identifier || '-';
-      const studentClass = activeUser.class || activeUser.class_name || 'Kelas X';
+      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+      const studentName = u.name || activeUser.name || 'Peserta Field Trip';
+      const studentNisn = u.nisn || activeUser.nisn || activeUser.identifier || '-';
+      const studentClass = u.class || activeUser.class || activeUser.class_name || 'Kelas X';
       const fasilName = (FincestemCore.assignments && FincestemCore.assignments.getStudentFacilitator)
-        ? FincestemCore.assignments.getStudentFacilitator(activeUser.nisn || activeUser.identifier, studentClass)
-        : (activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
+        ? FincestemCore.assignments.getStudentFacilitator(studentNisn, studentClass)
+        : (u.facilitator_name || activeUser.facilitator_name || 'Tim Fasilitator SMAN 1 Belitang');
 
       const cleanNisn = String(studentNisn).trim();
       const unpadded = cleanNisn.replace(/^0+/, '');
@@ -5323,6 +5326,8 @@
       const mainEl = document.querySelector('main');
       if (!mainEl) return;
 
+      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+
       const ftCfg = (FincestemCore.schedule && FincestemCore.schedule.getFieldTripDayConfig)
         ? FincestemCore.schedule.getFieldTripDayConfig(dayNum)
         : null;
@@ -6622,6 +6627,14 @@
     }
 
     window.renderFieldTripDay0LKPD = renderFieldTripDay0LKPD;
+    window.renderFieldTripDay1LKPD = renderFieldTripDay1LKPD;
+    window.renderFieldTripDay2LKPD = renderFieldTripDay2LKPD;
+    window.renderFieldTripDay3LKPD = renderFieldTripDay3LKPD;
+    window.renderFieldTripDay4LKPD = renderFieldTripDay4LKPD;
+    window.renderFieldTripDay5LKPD = renderFieldTripDay5LKPD;
+    window.renderFieldTripDay6LKPD = renderFieldTripDay6LKPD;
+    window.renderFieldTripDay7LKPD = renderFieldTripDay7LKPD;
+    window.renderFieldTripGenericLKPD = renderFieldTripGenericLKPD;
     window.handleFtD0BudgetInput = handleFtD0BudgetInput;
     window.updateFtD0BudgetDiagnosis = updateFtD0BudgetDiagnosis;
     window.saveFtDay0LKPD = saveFtDay0LKPD;
