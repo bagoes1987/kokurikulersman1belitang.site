@@ -16511,6 +16511,24 @@ window.FincestemMasterStudents = [
     "zone": "FINCESTEM OKU TIMUR"
   },
   {
+    "no": 36,
+    "level": "XII",
+    "class": "KELAS XII.4",
+    "nis": "15246",
+    "nisn": "0094755736",
+    "nama": "RIKY DWI ARIYANTO",
+    "gender": "L",
+    "agama": "ISLAM",
+    "pekerjaan_ortu": "-",
+    "ttl": "OKU TIMUR",
+    "alamat": "Kab:OKU TIMUR",
+    "ayah": "-",
+    "ibu": "-",
+    "asal_sekolah": "SMAN 1 BELITANG",
+    "hp": "",
+    "zone": "FINCESTEM OKU TIMUR"
+  },
+  {
     "no": 1,
     "level": "XII",
     "class": "KELAS XII.5",

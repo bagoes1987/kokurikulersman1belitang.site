@@ -167,6 +167,20 @@ if ($action === 'login') {
         } catch (Exception $eSiswaHeal) {}
     }
 
+    // Auto-heal / Auto-insert data akun siswa RIKY DWI ARIYANTO (Kelas XII.4, NIS 15246, NISN 0094755736)
+    if ($identifier === '0094755736' || $identifier === '15246' || preg_replace('/\D/', '', $identifier) === '0094755736' || preg_replace('/\D/', '', $identifier) === '94755736' || $password === '15246') {
+        try {
+            $chkRiky = $pdo->prepare("SELECT id FROM `users` WHERE `identifier` = '0094755736' OR `nis` = '15246' OR `name` LIKE '%RIKY DWI ARIYANTO%' LIMIT 1");
+            $chkRiky->execute();
+            $rikyRow = $chkRiky->fetch();
+            if ($rikyRow) {
+                $pdo->exec("UPDATE `users` SET `identifier` = '0094755736', `nis` = '15246', `name` = 'RIKY DWI ARIYANTO', `class_name` = 'KELAS XII.4', `grade_level` = 'XII', `zone` = 'FINCESTEM OKU TIMUR' WHERE `id` = " . (int)$rikyRow['id']);
+            } else {
+                $pdo->exec("INSERT INTO `users` (`identifier`, `nis`, `password_hash`, `name`, `role`, `grade_level`, `class_name`, `gender`, `agama`, `birth_info`, `address`, `parent_father`, `parent_mother`, `parent_job`, `school_origin`, `zone`) VALUES ('0094755736', '15246', '15246', 'RIKY DWI ARIYANTO', 'siswa', 'XII', 'KELAS XII.4', 'L', 'ISLAM', 'OKU TIMUR', 'Kab:OKU TIMUR', '-', '-', '-', 'SMAN 1 BELITANG', 'FINCESTEM OKU TIMUR')");
+            }
+        } catch (Exception $eRikyHeal) {}
+    }
+
     // Query user by identifier (mendukung NISN 10 digit padded, atau NIS)
     $cleanId = preg_replace('/\D/', '', $identifier);
     $paddedId = (strlen($cleanId) >= 8 && strlen($cleanId) <= 10) ? str_pad($cleanId, 10, '0', STR_PAD_LEFT) : $identifier;
