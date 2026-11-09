@@ -232,8 +232,8 @@
           <!-- Notice Ketentuan Geotagging Berdasarkan Kategori Siswa -->
           <div id="uploadPolicyNotice" class="mb-2"></div>
 
-          <!-- Input Kamera HP dan File Picker Galeri (Tanpa capture='environment' agar HP Android tidak force-close/reboot browser saat buka kamera) -->
-          <input id="modalPhotoCameraInput" type="file" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;width:1px;height:1px;" onchange="handlePhotoFileSelected(event, 'camera')">
+          <!-- Input Kamera HP Langsung (capture='environment' membuka kamera belakang HP) dan File Picker Galeri Album -->
+          <input id="modalPhotoCameraInput" type="file" accept="image/*" capture="environment" style="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;width:1px;height:1px;" onchange="handlePhotoFileSelected(event, 'camera')">
           <input id="modalPhotoFileInput" type="file" accept="image/*" style="position:fixed;top:-9999px;left:-9999px;opacity:0;pointer-events:none;width:1px;height:1px;" onchange="handlePhotoFileSelected(event, 'gallery')">
 
           <!-- Tombol Pilihan Pengambilan Foto -->
