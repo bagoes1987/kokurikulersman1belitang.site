@@ -917,11 +917,40 @@
               access.canAccess = true;
               access.canEdit = true;
             }
+
+            // Jika mode readonly atau siswa sudah punya riwayat dokumentasi pada hari ini, selalu izinkan akses
+            let hasExistingDok = false;
+            try {
+              const ids = [nisn, String(nisn).trim(), user.nis, user.identifier].filter(Boolean);
+              for (const id of ids) {
+                if (localStorage.getItem(`fincestem_dok_ft_day${dayNum}_` + id) === 'true' ||
+                    localStorage.getItem(`fincestem_dok_nft_day${dayNum}_` + id) === 'true' ||
+                    localStorage.getItem(`fincestem_dok_day${dayNum}_` + id) === 'true') {
+                  hasExistingDok = true;
+                  break;
+                }
+              }
+              if (!hasExistingDok) {
+                const dbStr = localStorage.getItem('fincestem_db_2026_v1');
+                if (dbStr) {
+                  const db = JSON.parse(dbStr);
+                  if (Array.isArray(db.documentation)) {
+                    hasExistingDok = db.documentation.some(p => Number(p.day || p.day_number || 0) === Number(dayNum));
+                  }
+                }
+              }
+            } catch(eExist) {}
+
+            if (isReadOnlyUrl || hasExistingDok) {
+              access.canAccess = true;
+              if (isReadOnlyUrl) access.canEdit = false;
+            }
+
             if (!access.canAccess) {
-              FincestemCore.ui.toast(`Dokumentasi Day ${dayNum} belum dapat diakses! Harap selesaikan dan tunggu penetapan status 'Completed' dari Fasilitator pada Day ${dayNum - 1}.`, 'error');
+              FincestemCore.ui.toast(access.reason || `Dokumentasi Day ${dayNum} belum dapat diakses! Harap selesaikan seluruh tugas mandiri pada hari sebelumnya.`, 'warning');
               setTimeout(() => {
                 window.location.replace('dashboard.html');
-              }, 1200);
+              }, 1500);
               return;
             }
 
@@ -1395,11 +1424,12 @@
       const cat = getStudentCategoryInfo();
       const urlParams = new URLSearchParams(window.location.search);
       const isDay0 = (urlParams.get('day') === '0');
+      const isDay7 = (urlParams.get('day') === '7');
 
-      if (cat.isNonFieldTrip && !isDay0) {
+      if (cat.isNonFieldTrip && !isDay0 && !isDay7) {
         const proceed = confirm(
           "⚠️ PERINGATAN REKOMENDASI PENILAIAN BINTANG 1:\n\n" +
-          "Sebagai peserta NON-FIELD TRIP, Anda diwajibkan mengambil foto langsung menggunakan 'Kamera HP (Geotag)' di lokasi kegiatan.\n\n" +
+          "Sebagai peserta NON-FIELD TRIP (Day 1–6), Anda diwajibkan mengambil foto langsung menggunakan 'Kamera HP (Geotag)' di lokasi kegiatan.\n\n" +
           "Jika Anda mengunggah dari Galeri (tanpa stempel GPS live), sistem otomatis menandai berkas ini dengan REKOMENDASI BINTANG 1 (⭐☆☆☆☆) kepada Fasilitator untuk hari ini.\n\n" +
           "Apakah Anda yakin tetap ingin mengunggah dari Galeri?"
         );
@@ -2584,72 +2614,19 @@
           callback(resultDataUrl);
         } catch (e) {
           console.error('Canvas export error:', e);
-          callback(img.src);
+          try {
+            const fallbackUrl = canvas.toDataURL('image/jpeg', 0.50);
+            callback(fallbackUrl);
+          } catch(e2) {
+            callback(canvas.toDataURL ? canvas.toDataURL() : '');
+          }
         }
       }
 
-      // Render Minimap (OSM Tile jika online atau Vector Radar jika offline)
-      const zoom = 14;
-      const n = Math.pow(2, zoom);
-      const tileX = Math.floor((gps.lng + 180) / 360 * n);
-      const latRad = gps.lat * Math.PI / 180;
-      const tileY = Math.floor((1 - Math.log(Math.tan(latRad) + 1 / Math.cos(latRad)) / Math.PI) / 2 * n);
-      const tileUrl = `https://tile.openstreetmap.org/${zoom}/${tileX}/${tileY}.png`;
-
-      let mapRendered = false;
-      const tileTimeout = setTimeout(() => {
-        if (!mapRendered) {
-          mapRendered = true;
-          drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
-          renderWatermarkText();
-        }
-      }, 1200);
-
-      const tileImg = new Image();
-      tileImg.crossOrigin = 'anonymous';
-      tileImg.onload = function() {
-        if (!mapRendered) {
-          mapRendered = true;
-          clearTimeout(tileTimeout);
-          try {
-            ctx.save();
-            roundRectHelper(ctx, mapX, mapY, mapW, mapH, 12);
-            ctx.clip();
-            ctx.drawImage(tileImg, mapX, mapY, mapW, mapH);
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.22)';
-            ctx.fillRect(mapX, mapY, mapW, mapH);
-            drawMapPin(ctx, mapX + mapW / 2, mapY + mapH / 2);
-
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.88)';
-            ctx.fillRect(mapX, mapY + mapH - 18, mapW, 18);
-            ctx.fillStyle = '#38bdf8';
-            ctx.font = 'bold 9px monospace';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('OSM GPS MAP', mapX + mapW / 2, mapY + mapH - 9);
-            ctx.restore();
-
-            ctx.save();
-            ctx.strokeStyle = 'rgba(56, 189, 248, 0.7)';
-            ctx.lineWidth = 2;
-            roundRectHelper(ctx, mapX, mapY, mapW, mapH, 12);
-            ctx.stroke();
-            ctx.restore();
-          } catch (err) {
-            drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
-          }
-          renderWatermarkText();
-        }
-      };
-      tileImg.onerror = function() {
-        if (!mapRendered) {
-          mapRendered = true;
-          clearTimeout(tileTimeout);
-          drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
-          renderWatermarkText();
-        }
-      };
-      tileImg.src = tileUrl;
+      // Render Minimap menggunakan Vector Radar Map langsung
+      // Cepat, tajam, tidak memakan kuota, tidak bergantung koneksi eksternal, dan anti-taint canvas
+      drawVectorRadarMap(ctx, mapX, mapY, mapW, mapH, gps.lat, gps.lng, gps.isFallback);
+      renderWatermarkText();
     }
 
     let selectedPhotoSource = 'camera';
@@ -2779,10 +2756,15 @@
             initPreviewZoom();
 
             const cat = getStudentCategoryInfo();
+            const urlParams = new URLSearchParams(window.location.search);
+            const isDay7 = (urlParams.get('day') === '7');
             if (previewBadge) {
-              if (cat.isNonFieldTrip) {
+              if (cat.isNonFieldTrip && !isDay7) {
                 previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-rose-700/95 text-amber-200 backdrop-blur-xs flex items-center gap-1 shadow-md border border-rose-500/40';
                 previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">warning</span><span>📁 Galeri (Rekomendasi ⭐1)</span>';
+              } else if (cat.isNonFieldTrip && isDay7) {
+                previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-purple-700/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md border border-purple-500/40';
+                previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">location_on</span><span>📍 Geotag / GPS Map Camera Day 7</span>';
               } else {
                 previewBadge.className = 'absolute top-2.5 left-2.5 px-2.5 py-1 rounded-lg text-[10px] font-black bg-amber-600/95 text-white backdrop-blur-xs flex items-center gap-1 shadow-md';
                 previewBadge.innerHTML = '<span class="material-symbols-outlined text-xs">photo_library</span><span>📁 Galeri (Field Trip)</span>';
@@ -2791,14 +2773,18 @@
 
             const previewMeta = document.getElementById('previewPhotoMeta');
             if (previewMeta) {
-              if (cat.isNonFieldTrip) {
+              if (cat.isNonFieldTrip && !isDay7) {
                 previewMeta.textContent = `📁 Galeri Tanpa Geotag • Rekomendasi Penilaian Fasilitator: Bintang 1 (⭐☆☆☆☆)`;
+              } else if (cat.isNonFieldTrip && isDay7) {
+                previewMeta.textContent = `📍 Unggahan Foto Bebas Diri • Watermark Geotag / GPS Map Camera Day 7`;
               } else {
                 previewMeta.textContent = `📁 Unggahan Galeri • Field Trip`;
               }
             }
-            if (cat.isNonFieldTrip) {
+            if (cat.isNonFieldTrip && !isDay7) {
               FincestemCore.ui.toast('Perhatian: Foto galeri untuk Non-Field Trip menghasilkan rekomendasi nilai Bintang 1!', 'warning');
+            } else if (cat.isNonFieldTrip && isDay7) {
+              FincestemCore.ui.toast('Foto bebas diri Day 7 berhasil diproses! Pastikan foto memuat watermark geotag/waktu.', 'success');
             } else {
               FincestemCore.ui.toast('Foto galeri diproses. Cubit 2 jari / ketuk 2x untuk perbesar.', 'info');
             }
