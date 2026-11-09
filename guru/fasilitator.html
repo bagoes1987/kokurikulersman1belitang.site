@@ -2344,7 +2344,7 @@
 
         if (prog && prog.task_map) {
           for (let d = 1; d <= 7; d++) {
-            const hasDailySub = prog.task_map[d + '_lkpd'] || prog.task_map[d + '_materi'] || prog.task_map[d + '_asesmen'] || prog.task_map[d + '_refleksi'];
+            const hasDailySub = prog.task_map[d + '_lkpd'] || prog.task_map[d + '_materi'] || prog.task_map[d + '_asesmen'] || prog.task_map[d + '_refleksi'] || prog.task_map[d + '_dokumentasi'];
             if (hasDailySub) {
               hasAnySubmission = true;
               const dRec = prog.records ? prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'final')) : null;
@@ -4934,27 +4934,52 @@
         const sPad = sCln.padStart(10, '0');
         const sIds = new Set([sRaw, sCln, sUnp, sPad].filter(Boolean));
 
-        const targetDay = (dayNum === 0 || dayNum === '0') ? 0 : (parseInt(dayNum) || 0);
+        // Tambahkan padanan NIS/NISN dari cache siswa master / binaan jika ada
+        try {
+          const allStu = (window.assignedStudents || window.FincestemMasterStudents || []);
+          const mStu = allStu.find(s => String(s.nisn || '').trim() === sRaw || String(s.nis || '').trim() === sRaw || String(s.identifier || '').trim() === sRaw);
+          if (mStu) {
+            [mStu.nisn, mStu.nis, mStu.identifier].filter(Boolean).forEach(id => {
+              const rId = String(id).trim();
+              sIds.add(rId);
+              sIds.add(rId.replace(/\D/g, ''));
+              sIds.add(rId.replace(/^0+/, ''));
+            });
+          }
+        } catch(eStu) {}
 
-        // 1. Filter milik siswa ini & hari yang sedang dinilai
-        const studentRawDocs = docs.filter(d => {
+        const targetDay = (dayNum === 0 || dayNum === '0') ? 0 : (parseInt(dayNum) || 1);
+
+        // 1. Kumpulkan seluruh foto milik siswa ini terlebih dahulu
+        const allStudentDocs = docs.filter(d => {
           const dRaw = String(d.nisn || d.uploaded_by_nisn || d.author_nisn || '').trim();
           const dCln = dRaw.replace(/\D/g, '');
           const dUnp = dCln.replace(/^0+/, '');
           const dPad = dCln.padStart(10, '0');
-          const isMine = sIds.has(dRaw) || sIds.has(dCln) || sIds.has(dUnp) || sIds.has(dPad);
-          if (!isMine) return false;
+          return sIds.has(dRaw) || sIds.has(dCln) || sIds.has(dUnp) || sIds.has(dPad);
+        });
 
-          let dDay = (d.day !== undefined && d.day !== null) ? parseInt(d.day) : ((d.day_number !== undefined && d.day_number !== null) ? parseInt(d.day_number) : -1);
-          const txt = ((d.title || '') + ' ' + (d.caption || '') + ' ' + (d.url || '')).toLowerCase();
-          if (txt.includes('simulasi') || txt.includes('gladi') || txt.includes('uji coba') || txt.includes('ujicoba')) {
-            dDay = 0;
-          } else if (dDay < 0) {
-            const m = txt.match(/day[_\-\s]*([0-7])/i);
-            dDay = m ? parseInt(m[1]) : 0;
+        // 2. Filter foto spesifik untuk hari targetDay
+        let isFallbackDay = false;
+        let studentRawDocs = allStudentDocs.filter(d => {
+          let dDay = (d.day !== undefined && d.day !== null && d.day !== '') ? parseInt(d.day) : ((d.day_number !== undefined && d.day_number !== null) ? parseInt(d.day_number) : -1);
+          if (dDay < 0) {
+            const txt = ((d.title || '') + ' ' + (d.caption || '') + ' ' + (d.url || '')).toLowerCase();
+            if (txt.includes('simulasi') || txt.includes('gladi')) {
+              dDay = 0;
+            } else {
+              const m = txt.match(/day[_\-\s]*([0-7])/i);
+              dDay = m ? parseInt(m[1]) : 1;
+            }
           }
           return dDay === targetDay;
         });
+
+        // Fallback cerdas: Jika pada targetDay belum ditemukan foto spesifik hari itu, tetapi siswa memiliki foto dokumentasi, tampilkan foto yang ada agar guru tetap dapat memeriksa bukti visual siswa!
+        if (studentRawDocs.length === 0 && allStudentDocs.length > 0) {
+          studentRawDocs = allStudentDocs;
+          isFallbackDay = true;
+        }
 
         // 2. DEDUPLIKASI KETAT & MULTI-FINGERPRINT (HILANGKAN DUPLIKASI BASE64 LOKAL VS SERVER)
         const seenFingerprints = new Set();
@@ -5251,12 +5276,23 @@
         let classPhotos = list;
         if (assignedStudents && assignedStudents.length > 0) {
           const binaanNisns = new Set();
+          const allStu = (window.FincestemMasterStudents || []);
           assignedStudents.forEach(s => {
             const raw = String(s.nisn || s.identifier || '').trim();
             const cln = raw.replace(/\D/g, '');
             const unp = cln.replace(/^0+/, '');
             const pad = cln.padStart(10, '0');
             [raw, cln, unp, pad, String(s.nis || '').trim()].filter(Boolean).forEach(id => binaanNisns.add(id));
+
+            const m = allStu.find(x => String(x.nisn || '').trim() === raw || String(x.nis || '').trim() === raw);
+            if (m) {
+              [m.nisn, m.nis, m.identifier].filter(Boolean).forEach(id => {
+                const r = String(id).trim();
+                binaanNisns.add(r);
+                binaanNisns.add(r.replace(/\D/g, ''));
+                binaanNisns.add(r.replace(/^0+/, ''));
+              });
+            }
           });
           classPhotos = list.filter(p => {
             const pRaw = String(p.uploaded_by_nisn || p.nisn || '').trim();
@@ -5265,6 +5301,10 @@
             const pPad = pCln.padStart(10, '0');
             return binaanNisns.has(pRaw) || binaanNisns.has(pCln) || binaanNisns.has(pUnp) || binaanNisns.has(pPad);
           });
+          // Jika filter binaan menghasilkan 0 foto padahal list ada foto, jangan kosongkan jika guru memegang kelas
+          if (classPhotos.length === 0 && list.length > 0 && assignedClass && assignedClass !== 'Binaan Anda' && assignedClass !== 'Belum Ada Siswa Binaan') {
+            classPhotos = list;
+          }
         }
         let filtered = classPhotos;
         if (fasilPhotoFilterCurrent === 'camera') {
@@ -5360,7 +5400,8 @@
       } catch(e) {}
 
       if (window.location.protocol.startsWith('http')) {
-        const clsQuery = assignedClass ? ('&class_name=' + encodeURIComponent(assignedClass)) : '';
+        const isVirtualClass = !assignedClass || assignedClass.toLowerCase().includes('binaan') || assignedClass.toLowerCase().includes('belum');
+        const clsQuery = isVirtualClass ? '' : ('&class_name=' + encodeURIComponent(assignedClass));
         fetch(FincestemCore.api.base + '/dokumentasi.php?action=list' + clsQuery)
           .then(r => r.json())
           .then(res => {

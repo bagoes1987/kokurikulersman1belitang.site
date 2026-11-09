@@ -9,11 +9,6 @@ require_once __DIR__ . '/db.php';
 $action = $_GET['action'] ?? 'list';
 $pdo = getDB();
 
-// Auto-fix: Pastikan seluruh dokumentasi simulasi/gladi bersih terpetakan ke day = 0
-try {
-    $pdo->exec("UPDATE `dokumentasi_media` SET `day` = 0 WHERE (`title` LIKE '%simulasi%' OR `title` LIKE '%gladi%' OR `title` LIKE '%ujicoba%' OR `title` LIKE '%uji coba%') AND (`day` != 0 OR `day` IS NULL)");
-} catch (Exception $e) {}
-
 if ($action === 'list') {
     $where = [];
     $params = [];
@@ -30,14 +25,27 @@ if ($action === 'list') {
         $unpadded = ltrim($cleanNisn, '0');
         $padded = (strlen($cleanNisn) >= 8 && strlen($cleanNisn) <= 10) ? str_pad($cleanNisn, 10, '0', STR_PAD_LEFT) : $cleanNisn;
         $allNisnIds = array_values(array_unique(array_filter([$nisn, $cleanNisn, $unpadded, $padded])));
+
+        // Cari padanan NIS dan NISN dari tabel users agar foto selalu ditemukan
+        try {
+            $uStmt = $pdo->prepare("SELECT identifier, nis FROM `users` WHERE identifier = :id1 OR identifier = :id2 OR nis = :id3 OR nis = :id4 LIMIT 1");
+            $uStmt->execute([':id1' => $cleanNisn, ':id2' => $padded, ':id3' => $cleanNisn, ':id4' => $unpadded]);
+            $uRow = $uStmt->fetch();
+            if ($uRow) {
+                if (!empty($uRow['identifier'])) $allNisnIds[] = $uRow['identifier'];
+                if (!empty($uRow['nis'])) $allNisnIds[] = $uRow['nis'];
+                $allNisnIds = array_values(array_unique(array_filter($allNisnIds)));
+            }
+        } catch (Exception $eUser) {}
+
         $inNisnSql = "'" . implode("','", array_map('addslashes', $allNisnIds)) . "'";
         $where[] = "(d.uploaded_by_nisn IN ($inNisnSql) OR u.identifier IN ($inNisnSql) OR u.nis IN ($inNisnSql) OR TRIM(LEADING '0' FROM d.uploaded_by_nisn) = '" . addslashes($unpadded) . "')";
     }
 
     $className = trim($_GET['class_name'] ?? '');
-    if ($className !== '') {
+    if ($className !== '' && stripos($className, 'binaan') === false && stripos($className, 'belum ada') === false) {
         $cleanCls = trim(preg_replace('/^kelas\s+/i', '', $className));
-        $where[] = "(g.class_name = :cls OR u.class_name = :cls OR g.class_name = :ccls OR u.class_name = :ccls OR g.class_name LIKE :cls_like OR u.class_name LIKE :cls_like)";
+        $where[] = "(u.class_name = :cls OR g.class_name = :cls OR u.class_name = :ccls OR g.class_name = :ccls OR u.class_name LIKE :cls_like OR g.class_name LIKE :cls_like)";
         $params[':cls'] = $className;
         $params[':ccls'] = $cleanCls;
         $params[':cls_like'] = '%' . $cleanCls . '%';
@@ -55,8 +63,8 @@ if ($action === 'list') {
     $sql = "
         SELECT d.*, 
                COALESCE(g.name, 'Kelompok Riset') AS group_name, 
-               COALESCE(g.class_name, u.class_name, '-') AS class_name, 
-               COALESCE(g.zone, u.zone, 'OKU TIMUR') AS zone,
+               COALESCE(NULLIF(u.class_name, ''), NULLIF(g.class_name, ''), '-') AS class_name, 
+               COALESCE(u.zone, g.zone, 'OKU TIMUR') AS zone,
                COALESCE(u.name, d.uploaded_by_nisn, 'Peserta Didik') AS student_name
         FROM `dokumentasi_media` d
         LEFT JOIN `groups` g ON d.group_id = g.id
@@ -64,6 +72,7 @@ if ($action === 'list') {
             d.uploaded_by_nisn = u.identifier 
             OR d.uploaded_by_nisn = u.nis 
             OR TRIM(LEADING '0' FROM d.uploaded_by_nisn) = TRIM(LEADING '0' FROM u.identifier)
+            OR TRIM(LEADING '0' FROM d.uploaded_by_nisn) = TRIM(LEADING '0' FROM u.nis)
             OR LPAD(d.uploaded_by_nisn, 10, '0') = LPAD(u.identifier, 10, '0')
         )
         $whereSql
@@ -96,27 +105,14 @@ if ($action === 'list') {
         $r['has_geotag'] = $hasGps;
 
         $dayNum = (isset($r['day']) && $r['day'] !== null && $r['day'] !== '') ? (int)$r['day'] : -1;
-        $txt = ($r['title'] ?? '') . ' ' . ($r['caption'] ?? '') . ' ' . ($r['file_url'] ?? '');
-        $isSimulasi = (stripos($txt, 'simulasi') !== false || stripos($txt, 'gladi') !== false || stripos($txt, 'uji coba') !== false || stripos($txt, 'ujicoba') !== false);
-        if ($isSimulasi) {
-            $dayNum = 0;
-        } else if ($dayNum < 0) {
-            if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
-                $dayNum = (int)$m[1];
-            } else if (stripos($txt, 'akpol') !== false || stripos($txt, 'lawang sewu') !== false || stripos($txt, 'semarang') !== false) {
-                $dayNum = 2;
-            } else if (stripos($txt, 'bromo') !== false) {
-                $dayNum = 3;
-            } else if (stripos($txt, 'malang') !== false || stripos($txt, 'apel') !== false) {
-                $dayNum = 4;
-            } else if (stripos($txt, 'jogja') !== false || stripos($txt, 'malioboro') !== false) {
-                $dayNum = 5;
-            } else if (stripos($txt, 'drini') !== false || stripos($txt, 'pantai') !== false) {
-                $dayNum = 6;
-            } else if (stripos($txt, 'bakpia') !== false) {
-                $dayNum = 7;
-            } else {
+        if ($dayNum < 0) {
+            $txt = ($r['title'] ?? '') . ' ' . ($r['caption'] ?? '') . ' ' . ($r['file_url'] ?? '');
+            if (stripos($txt, 'simulasi') !== false || stripos($txt, 'gladi') !== false) {
                 $dayNum = 0;
+            } else if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
+                $dayNum = (int)$m[1];
+            } else {
+                $dayNum = 1;
             }
         }
         $r['day'] = $dayNum;
@@ -157,26 +153,14 @@ if ($action === 'add') {
 
     $rawDay = $input['day'] ?? $input['day_number'] ?? null;
     $day = ($rawDay !== null && $rawDay !== '') ? (int)$rawDay : -1;
-    $txt = $title . ' ' . $caption . ' ' . $fileUrl;
-    if (stripos($txt, 'simulasi') !== false || stripos($txt, 'gladi') !== false || stripos($txt, 'uji coba') !== false || stripos($txt, 'ujicoba') !== false) {
-        $day = 0;
-    } else if ($day < 0) {
-        if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
-            $day = (int)$m[1];
-        } else if (stripos($txt, 'akpol') !== false || stripos($txt, 'lawang sewu') !== false) {
-            $day = 2;
-        } else if (stripos($txt, 'bromo') !== false) {
-            $day = 3;
-        } else if (stripos($txt, 'malang') !== false || stripos($txt, 'apel') !== false) {
-            $day = 4;
-        } else if (stripos($txt, 'jogja') !== false || stripos($txt, 'malioboro') !== false) {
-            $day = 5;
-        } else if (stripos($txt, 'drini') !== false || stripos($txt, 'pantai') !== false) {
-            $day = 6;
-        } else if (stripos($txt, 'bakpia') !== false) {
-            $day = 7;
-        } else {
+    if ($day < 0) {
+        $txt = $title . ' ' . $caption . ' ' . $fileUrl;
+        if (stripos($txt, 'simulasi') !== false || stripos($txt, 'gladi') !== false) {
             $day = 0;
+        } else if (preg_match('/day[_\-\s]*([0-7])/i', $txt, $m)) {
+            $day = (int)$m[1];
+        } else {
+            $day = 1;
         }
     }
 
