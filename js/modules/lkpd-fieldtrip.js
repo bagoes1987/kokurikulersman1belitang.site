@@ -1059,24 +1059,23 @@
         <!-- ========================================== -->
         <div id="contentLkpdD2S1" class="flex flex-col gap-4">
           ${!hasResumeAkpol ? `
-            <div class="p-5 sm:p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <span class="material-symbols-outlined text-2xl">lock</span>
+            <div class="p-4 sm:p-5 rounded-3xl bg-blue-500/10 border border-blue-300 text-blue-950 flex flex-col gap-2 shadow-2xs">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <span class="material-symbols-outlined text-xl">info</span>
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Prasyarat Belum Terpenuhi</span>
-                  <h3 class="text-base sm:text-lg font-black text-amber-950">LKPD AKPOL Masih Terkunci!</h3>
+                  <span class="text-[11px] font-black uppercase text-blue-800 tracking-wider">Panduan Pengisian Sesi 1</span>
+                  <h4 class="text-sm sm:text-base font-extrabold text-blue-950">LKPD AKPOL Siap Diisi</h4>
                 </div>
               </div>
-              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                Anda belum membaca modul materi AKPOL atau belum menyimpan kesimpulan pemahaman materi AKPOL.
+              <p class="text-xs text-slate-700 leading-relaxed">
+                Anda dapat langsung menuliskan jawaban esai AKPOL di bawah ini selama kunjungan berlangsung.
               </p>
-              <div class="pt-1">
-                <a href="materi.html?day=2&sesi=1" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-all">
-                  <span class="material-symbols-outlined text-base">menu_book</span>
-                  <span>Buka &amp; Simpan Resume Modul AKPOL</span>
-                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              <div class="pt-0.5">
+                <a href="materi.html?day=2&sesi=1" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-all">
+                  <span class="material-symbols-outlined text-sm">menu_book</span>
+                  <span>Modul Materi AKPOL</span>
                 </a>
               </div>
             </div>
@@ -1101,7 +1100,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 1. Tuliskan rumusan Visi Akademi Kepolisian (AKPOL) yang menjadi cita-cita utama dalam pembentukan perwira Polri:
               </label>
-              <textarea id="d2AkpolQ1" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan rumusan visi AKPOL secara lengkap..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q1 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ1" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan rumusan visi AKPOL secara lengkap..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q1 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 2: Kepanjangan & Tanggal Pendaftaran AKPOL 2026 -->
@@ -1109,7 +1108,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 2. Apa kepanjangan dari AKPOL dan kapan tanggal Pendaftaran Online serta Verifikasi Penerimaan Taruna AKPOL Tahun 2026?
               </label>
-              <textarea id="d2AkpolQ2" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan kepanjangan dari AKPOL dan tanggal pendaftaran online serta verifikasi (contoh: Akademi Kepolisian, tanggal 9 Maret – 30 Maret 2026)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q2 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ2" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan kepanjangan dari AKPOL dan tanggal pendaftaran online serta verifikasi (contoh: Akademi Kepolisian, tanggal 9 Maret – 30 Maret 2026)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q2 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 3: Tingkatan Kepangkatan Taruna (Perkap 21/2010) -->
@@ -1117,7 +1116,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 3. Berdasarkan Peraturan Kapolri (Perkap) No. 21 Tahun 2010, sebutkan secara urut 4 tingkatan kepangkatan Taruna AKPOL dari tingkat I (awal masuk) sampai dengan tingkat IV (kelulusan):
               </label>
-              <textarea id="d2AkpolQ3" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan urutan pangkat: Bharatutar, Brigdatar, Brigtutar, Brigtar, serta pangkat saat dilantik kelulusan..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q3 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ3" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan urutan pangkat: Bharatutar, Brigdatar, Brigtutar, Brigtar, serta pangkat saat dilantik kelulusan..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q3 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 4: Nama Gubernur & Wagub AKPOL -->
@@ -1125,7 +1124,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 4. Sebutkan nama lengkap beserta pangkat dan gelar resmi dari Gubernur AKPOL dan Wakil Gubernur AKPOL yang saat ini memimpin Akademi Kepolisian:
               </label>
-              <textarea id="d2AkpolQ4" rows="3" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Tuliskan nama lengkap Gubernur dan Wagub beserta pangkat jenderal dan gelar..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q4 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ4" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan nama lengkap Gubernur dan Wagub beserta pangkat jenderal dan gelar..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q4 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 5: 5 Fasilitas Utama Kampus AKPOL -->
@@ -1133,7 +1132,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 5. Sebutkan dan jelaskan fungsi dari minimal 5 Fasilitas Utama yang terdapat di lingkungan Kampus Akademi Kepolisian (dari 9 fasilitas resmi web akpol.ac.id):
               </label>
-              <textarea id="d2AkpolQ5" rows="4" ${isAkpolSubmitted ? 'disabled' : ''} placeholder="Sebutkan minimal 5 fasilitas (contoh: Smart Classroom, Lab Bahasa, Lab Cyber Crime, Kolam Renang Standar Internasional, Gedung Catur Prasetya, dsb.) beserta fungsinya..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q5 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ5" rows="4" ${isReadOnly ? 'disabled' : ''} placeholder="Sebutkan minimal 5 fasilitas (contoh: Smart Classroom, Lab Bahasa, Lab Cyber Crime, Kolam Renang Standar Internasional, Gedung Catur Prasetya, dsb.) beserta fungsinya..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q5 || '') : ''}</textarea>
             </div>
           </div>
 
@@ -1144,26 +1143,35 @@
               <span>Kembali ke Modul AKPOL</span>
             </a>
 
-            ${isAkpolSubmitted ? `
-              <div class="p-3 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
-                <span class="material-symbols-outlined text-teal-600">lock</span>
-                <span>LKPD AKPOL Telah Dikirim &amp; Terkunci</span>
-              </div>
-              <a href="dokumentasi.html?day=2&sesi=1" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
-                <span class="material-symbols-outlined text-base">photo_camera</span>
-                <span>Lanjut ke Foto Dokumentasi AKPOL</span>
-              </a>
-            ` : (hasResumeAkpol ? `
-              <button id="btnSaveLkpdAkpol" onclick="saveLkpdAkpol()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                <span class="material-symbols-outlined text-lg">save</span>
-                <span>Simpan LKPD AKPOL &amp; Lanjut ke Foto</span>
-              </button>
-            ` : `
-              <button disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm cursor-not-allowed flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined text-base">lock</span>
-                <span>Selesaikan Modul AKPOL Terlebih Dahulu</span>
-              </button>
-            `)}
+            <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+              ${isAkpolSubmitted ? `
+                <div class="px-3.5 py-2.5 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
+                  <span class="material-symbols-outlined text-teal-600 text-base">check_circle</span>
+                  <span>Jawaban AKPOL Tersimpan</span>
+                </div>
+                ${!isReadOnly ? `
+                  <button id="btnSaveLkpdAkpol" onclick="saveLkpdAkpol()" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-base">edit_note</span>
+                    <span>Perbarui Jawaban LKPD AKPOL</span>
+                  </button>
+                ` : ''}
+                <a href="dokumentasi.html?day=2&sesi=1" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Foto Dokumentasi</span>
+                </a>
+              ` : `
+                ${!isReadOnly ? `
+                  <button id="btnSaveLkpdAkpol" onclick="saveLkpdAkpol()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-lg">save</span>
+                    <span>Simpan LKPD AKPOL &amp; Lanjut ke Foto</span>
+                  </button>
+                ` : ''}
+                <a href="dokumentasi.html?day=2&sesi=1" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Dokumentasi</span>
+                </a>
+              `}
+            </div>
           </div>
         </div>
         ` : `
@@ -1171,54 +1179,36 @@
         <!-- KONTEN SESI 2: LKPD LAWANG SEWU (5 SOAL ESAI) -->
         <!-- ========================================== -->
         <div id="contentLkpdD2S2" class="flex flex-col gap-4">
-          ${!hasFotoAkpol ? `
-            <div class="p-5 sm:p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <span class="material-symbols-outlined text-2xl">lock</span>
+          ${!hasFotoAkpol || !hasResumeLawang ? `
+            <div class="p-4 sm:p-5 rounded-3xl bg-amber-500/10 border border-amber-300 text-amber-950 flex flex-col gap-2.5 shadow-2xs">
+              <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
+                  <span class="material-symbols-outlined text-xl">info</span>
                 </div>
                 <div class="flex flex-col">
-                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Aktivitas Berurutan (Prasyarat Wajib)</span>
-                  <h3 class="text-base sm:text-lg font-black text-amber-950">LKPD Lawang Sewu Masih Terkunci!</h3>
+                  <span class="text-[11px] font-black uppercase text-amber-800 tracking-wider">Panduan Kunjungan Lapangan Day 2</span>
+                  <h4 class="text-sm sm:text-base font-extrabold text-amber-950">LKPD Lawang Sewu Siap Diisi</h4>
                 </div>
               </div>
-              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                Anda harus menyelesaikan seluruh rangkaian <strong>Sesi 1 (LKPD AKPOL &amp; Upload Foto Dokumentasi AKPOL)</strong> terlebih dahulu sebelum mengerjakan LKPD Lawang Sewu.
+              <p class="text-xs text-slate-700 leading-relaxed">
+                Anda dapat langsung menulis dan menyimpan lembar kerja Lawang Sewu di bawah ini di lokasi cagar budaya. Jangan lupa untuk melengkapi dokumentasi foto AKPOL dan membaca modul Lawang Sewu saat senggang.
               </p>
               <div class="flex items-center gap-2 pt-1 flex-wrap">
-                <button type="button" onclick="switchD2LkpdSession(1)" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
-                  <span class="material-symbols-outlined text-base">arrow_back</span>
+                <button type="button" onclick="switchD2LkpdSession(1)" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-sm">arrow_back</span>
                   <span>Buka LKPD AKPOL</span>
                 </button>
-                <a href="dokumentasi.html?day=2&sesi=1" class="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm flex items-center gap-1.5 transition-all">
-                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                <a href="dokumentasi.html?day=2&sesi=1" class="px-3.5 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs flex items-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-sm">photo_camera</span>
                   <span>Unggah Foto AKPOL</span>
                 </a>
-              </div>
-            </div>
-          ` : (!hasResumeLawang ? `
-            <div class="p-5 sm:p-6 rounded-3xl bg-amber-500/15 border-2 border-amber-400 text-amber-950 flex flex-col gap-3 shadow-sm">
-              <div class="flex items-center gap-3">
-                <div class="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                  <span class="material-symbols-outlined text-2xl">lock</span>
-                </div>
-                <div class="flex flex-col">
-                  <span class="text-xs font-black uppercase text-amber-800 tracking-wider">Prasyarat Modul Sesi 2</span>
-                  <h3 class="text-base sm:text-lg font-black text-amber-950">Resume Modul Lawang Sewu Belum Disimpan!</h3>
-                </div>
-              </div>
-              <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
-                Anda wajib membaca modul Lawang Sewu dan menyimpan kesimpulan pemahaman materi Lawang Sewu terlebih dahulu.
-              </p>
-              <div class="pt-1">
-                <a href="materi.html?day=2&sesi=2" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs sm:text-sm shadow-xs transition-all">
-                  <span class="material-symbols-outlined text-base">menu_book</span>
-                  <span>Buka &amp; Simpan Resume Lawang Sewu</span>
-                  <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                <a href="materi.html?day=2&sesi=2" class="px-3.5 py-2 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-bold text-xs flex items-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-sm">menu_book</span>
+                  <span>Modul Lawang Sewu</span>
                 </a>
               </div>
             </div>
-          ` : '')}
+          ` : ''}
 
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-amber-200/80 shadow-xs flex flex-col gap-4">
             <div class="flex items-center justify-between gap-3">
@@ -1239,7 +1229,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 1. Apa kepanjangan dari NISM, dan apa fungsi utama gedung Lawang Sewu saat pertama kali dibangun pada masa Hindia Belanda?
               </label>
-              <textarea id="d2LawangQ1" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Tuliskan kepanjangan NISM dan perannya sebagai kantor pusat perkeretaapian..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q1 || '') : ''}</textarea>
+              <textarea id="d2LawangQ1" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan kepanjangan NISM dan perannya sebagai kantor pusat perkeretaapian..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q1 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 2: Etimologi & Fakta Jumlah Pintu -->
@@ -1247,7 +1237,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 2. Mengapa masyarakat Semarang menyebut gedung ini "Lawang Sewu" (Seribu Pintu), dan berapa jumlah daun pintu fisik yang sebenarnya berdasarkan data sejarah arsitektur?
               </label>
-              <textarea id="d2LawangQ2" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Jelaskan alasan sebutan Lawang Sewu dan jumlah fisik pintu sebenarnya (928 bidang pintu)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q2 || '') : ''}</textarea>
+              <textarea id="d2LawangQ2" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Jelaskan alasan sebutan Lawang Sewu dan jumlah fisik pintu sebenarnya (928 bidang pintu)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q2 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 3: Arsitek & Gaya Nieuwe Indische Bouwstijl -->
@@ -1255,7 +1245,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 3. Sebutkan nama arsitek perancang gedung Lawang Sewu serta gaya arsitektur khas yang diterapkannya:
               </label>
-              <textarea id="d2LawangQ3" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Tuliskan arsitek (Prof. Jacob F. Klinkhamer & B.J. Ouëndag) serta gaya Nieuwe Indische Bouwstijl..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q3 || '') : ''}</textarea>
+              <textarea id="d2LawangQ3" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan arsitek (Prof. Jacob F. Klinkhamer & B.J. Ouëndag) serta gaya Nieuwe Indische Bouwstijl..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q3 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 4: STEM Fisika Bangunan Tropis -->
@@ -1263,7 +1253,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 4. Bagaimana para perancang Lawang Sewu menyiasati iklim panas Kota Semarang agar gedung tetap sejuk alami tanpa AC? Jelaskan minimal 2 rekayasa fisik bangunannya:
               </label>
-              <textarea id="d2LawangQ4" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Jelaskan prinsip ventilasi silang, plafon tinggi > 4 meter, atau ruang bawah tanah penampung air..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q4 || '') : ''}</textarea>
+              <textarea id="d2LawangQ4" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Jelaskan prinsip ventilasi silang, plafon tinggi > 4 meter, atau ruang bawah tanah penampung air..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q4 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 5: Heroisme Pertempuran Lima Hari AMKA -->
@@ -1271,7 +1261,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 5. Jelaskan peristiwa bersejarah yang pernah terjadi di Lawang Sewu pada bulan Oktober 1945 dan organisasi pemuda apa yang berjuang mempertahankan gedung tersebut:
               </label>
-              <textarea id="d2LawangQ5" rows="3" ${isLawangSubmitted || !hasFotoAkpol || !hasResumeLawang ? 'disabled' : ''} placeholder="Jelaskan Pertempuran Lima Hari di Semarang melawan Kidō Butai dan perjuangan pemuda AMKA..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q5 || '') : ''}</textarea>
+              <textarea id="d2LawangQ5" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Jelaskan Pertempuran Lima Hari di Semarang melawan Kidō Butai dan perjuangan pemuda AMKA..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q5 || '') : ''}</textarea>
             </div>
           </div>
 
@@ -1282,26 +1272,35 @@
               <span>Kembali ke Modul Lawang Sewu</span>
             </a>
 
-            ${isLawangSubmitted ? `
-              <div class="p-3 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
-                <span class="material-symbols-outlined text-teal-600">lock</span>
-                <span>LKPD Lawang Sewu Telah Dikirim &amp; Terkunci</span>
-              </div>
-              <a href="dokumentasi.html?day=2&sesi=2" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
-                <span class="material-symbols-outlined text-base">photo_camera</span>
-                <span>Lanjut ke Foto Dokumentasi Lawang Sewu</span>
-              </a>
-            ` : (hasFotoAkpol && hasResumeLawang ? `
-              <button id="btnSaveLkpdLawang" onclick="saveLkpdLawang()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                <span class="material-symbols-outlined text-lg">save</span>
-                <span>Simpan LKPD Lawang Sewu &amp; Lanjut ke Foto</span>
-              </button>
-            ` : `
-              <button disabled class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-slate-200 text-slate-400 font-bold text-xs sm:text-sm cursor-not-allowed flex items-center justify-center gap-2">
-                <span class="material-symbols-outlined text-base">lock</span>
-                <span>Tuntaskan Sesi 1 &amp; Modul Lawang Sewu Terlebih Dahulu</span>
-              </button>
-            `)}
+            <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+              ${isLawangSubmitted ? `
+                <div class="px-3.5 py-2.5 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
+                  <span class="material-symbols-outlined text-teal-600 text-base">check_circle</span>
+                  <span>Jawaban Lawang Sewu Tersimpan</span>
+                </div>
+                ${!isReadOnly ? `
+                  <button id="btnSaveLkpdLawang" onclick="saveLkpdLawang()" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-base">edit_note</span>
+                    <span>Perbarui Jawaban LKPD Lawang Sewu</span>
+                  </button>
+                ` : ''}
+                <a href="dokumentasi.html?day=2&sesi=2" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Foto Dokumentasi</span>
+                </a>
+              ` : `
+                ${!isReadOnly ? `
+                  <button id="btnSaveLkpdLawang" onclick="saveLkpdLawang()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-lg">save</span>
+                    <span>Simpan LKPD Lawang Sewu &amp; Lanjut ke Foto</span>
+                  </button>
+                ` : ''}
+                <a href="dokumentasi.html?day=2&sesi=2" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Dokumentasi</span>
+                </a>
+              `}
+            </div>
           </div>
         </div>
         `}
@@ -1393,6 +1392,10 @@
         }
 
         FincestemCore.ui.toast('LKPD AKPOL berhasil disimpan! Silakan lanjut mengunggah foto geotag AKPOL.', 'success');
+        if (btn) {
+          btn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>Perbarui Jawaban LKPD AKPOL</span>';
+          btn.classList.remove('pointer-events-none', 'opacity-80');
+        }
 
         // Buka modal sukses
         const modal = document.getElementById('modalD2LkpdSuccess');
@@ -1457,13 +1460,24 @@
       setTimeout(() => {
         try {
           localStorage.setItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn, JSON.stringify(payload));
+          localStorage.setItem('fincestem_lkpd_lawang_saved_' + cleanNisn, 'true');
         } catch (e) {}
 
         if (FincestemCore.progress && cleanNisn) {
           FincestemCore.progress.submitTask(cleanNisn, 2, 'lkpd_lawang', payload);
+          try {
+            const curP = window.currentStudentProgress;
+            if (!curP || !curP.task_map || !curP.task_map['2_lkpd']) {
+              FincestemCore.progress.submitTask(cleanNisn, 2, 'lkpd', payload);
+            }
+          } catch (e) {}
         }
 
         FincestemCore.ui.toast('LKPD Lawang Sewu berhasil disimpan! Silakan lanjut mengunggah foto geotag Lawang Sewu.', 'success');
+        if (btn) {
+          btn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>Perbarui Jawaban LKPD Lawang Sewu</span>';
+          btn.classList.remove('pointer-events-none', 'opacity-80');
+        }
 
         // Buka modal sukses
         const modal = document.getElementById('modalD2LkpdSuccess');
