@@ -2555,13 +2555,13 @@
                 </span>
               </div>
               <select id="materiDay${dayNum}SectorSelect" onchange="${dayNum === 6 ? 'selectDay6Sector(this.value)' : (dayNum === 5 ? 'selectDay5Sector(this.value)' : (dayNum === 4 ? 'selectDay4Sector(this.value)' : 'selectDay3Sector(this.value)'))}" class="w-full p-3 rounded-xl border-2 border-emerald-500 focus:border-emerald-700 bg-emerald-50/40 text-emerald-950 font-black text-xs sm:text-sm shadow-xs outline-none cursor-pointer transition-all">
-                <option value="pertanian" ${selectedSector === 'pertanian' ? 'selected' : ''}>1. Sektor Pertanian Padi Sawah (Lumbung Pangan Komering)</option>
+                <option value="pertanian" ${selectedSector === 'pertanian' ? 'selected' : ''}>1. Sektor Pertanian Padi Sawah &amp; Hortikultura (Padi, Kebun Melon, Semangka, &amp; Palawija)</option>
                 <option value="perkebunan" ${selectedSector === 'perkebunan' ? 'selected' : ''}>2. Sektor Perkebunan Rakyat (Karet &amp; Kelapa Sawit)</option>
                 <option value="peternakan" ${selectedSector === 'peternakan' ? 'selected' : ''}>3. Sektor Peternakan Rakyat OKU Timur (Sapi, Kambing &amp; Unggas)</option>
                 <option value="perikanan" ${selectedSector === 'perikanan' ? 'selected' : ''}>4. Sektor Perikanan Air Tawar (Sentra Patin &amp; Lele Belitang)</option>
                 <option value="industri" ${selectedSector === 'industri' ? 'selected' : ''}>5. Sektor Agro-Industri Pangan (Pabrik RMU, Tahu &amp; Kemplang)</option>
-                <option value="perdagangan" ${selectedSector === 'perdagangan' ? 'selected' : ''}>6. Sektor Perdagangan &amp; Saprotan (Kios Pupuk Bersubsidi, Grosir)</option>
-                <option value="formal" ${selectedSector === 'formal' ? 'selected' : ''}>7. Sektor Jasa Keuangan Mikro (Agen BRILink, BUMDes, Jasa Usaha)</option>
+                <option value="perdagangan" ${selectedSector === 'perdagangan' ? 'selected' : ''}>6. Sektor Perdagangan &amp; UMKM Niaga (Toko Pakaian, Sembako, Kios Pasar, &amp; Saprotan)</option>
+                <option value="formal" ${selectedSector === 'formal' ? 'selected' : ''}>7. Sektor Jasa Keuangan Mikro &amp; Jasa Perorangan (Agen BRILink, BUMDes, Bengkel &amp; Jasa)</option>
               </select>
             </div>
 

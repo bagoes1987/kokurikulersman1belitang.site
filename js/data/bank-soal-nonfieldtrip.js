@@ -14194,34 +14194,34 @@ window.NFT_BANK_SOAL_DAYS = {
     "sector": "pertanian",
     "indicatorCode": "A",
     "indicatorKey": "pilar_science",
-    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Biologi Komoditas)",
+    "indicatorName": "Pilar Science (Sains Terapan Tanah, Air, Cuaca & Hortikultura)",
     "cognitiveLevel": "C2",
     "numberInIndicator": 4,
-    "question": "Dalam siklus hidup padi, fase pengisian bulir gabah (generatif matang susu hingga matang penuh) sangat dipengaruhi oleh intensitas radiasi sinar matahari. Proses fisiologis apa yang paling dominan berlangsung pada fase ini?",
+    "question": "Selain padi sawah, petani di Belitang aktif membudidayakan hortikultura buah melon dan semangka. Pada 10-14 hari menjelang panen, petani sengaja mengurangi penyiraman air secara bertahap. Berdasarkan sains fisiologi tumbuhan, tujuan utama pengurangan suplai air tersebut adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Respirasi anaerobik di dalam perakaran untuk memecah lignin batang"
+        "text": "Membuat tanaman cepat mati agar daunnya gugur ke tanah"
       },
       {
         "key": "B",
-        "text": "Translokasi hasil fotosintesis (fotosintat berupa glukosa dan pati) dari daun bendera ke dalam bulir gabah"
+        "text": "Menghambat penyerapan air berlebih agar kadar gula (brix) di dalam daging buah melon terakumulasi pekat dan mencegah kulit buah pecah (cracking)"
       },
       {
         "key": "C",
-        "text": "Pembentukan anakan produktif baru di pangkal batang bawah"
+        "text": "Membuat biji buah menjadi lebih keras dari biasanya"
       },
       {
         "key": "D",
-        "text": "Penyerapan unsur hara mikro boron untuk memperpanjang pelepah daun"
+        "text": "Menarik kehadiran lebah madu untuk penyerbukan ulang"
       },
       {
         "key": "E",
-        "text": "Penguapan kutikula daun untuk mendinginkan suhu air sawah di sekitarnya"
+        "text": "Menghentikan pertumbuhan akar lateral secara permanen"
       }
     ],
     "correct": "B",
-    "explanation": "Daun bendera bertindak sebagai produsen utama fotosintat pada fase generatif, di mana karbohidrat hasil fotosintesis ditranslokasikan secara masif untuk mengisi bulir gabah hingga padat berisi."
+    "explanation": "Pengurangan air pada fase pematangan akhir tanaman melon/semangka memicu konsentrasi sukrosa dan fruktosa daging buah meningkat tajam (brix tinggi) serta mencegah sel daging buah memuai berlebih yang dapat menyebabkan kulit melon meledak retak."
   },
   {
     "id": 5,
@@ -14544,34 +14544,34 @@ window.NFT_BANK_SOAL_DAYS = {
     "sector": "pertanian",
     "indicatorCode": "B",
     "indicatorKey": "pilar_technology",
-    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Efisiensi Energi)",
+    "indicatorName": "Pilar Technology (Mekanisasi, Alat Mesin & Mulsa Pertanian)",
     "cognitiveLevel": "C3",
     "numberInIndicator": 4,
-    "question": "Alat mesin transplanter (jarwo transplanter) menggunakan teknologi penanaman pola Jajar Legowo secara otomatis. Apa keunggulan agronomis dan mekanis dari pola tanam jajar legowo 2:1 atau 4:1?",
+    "question": "Pada budidaya hortikultura semangka dan melon di hamparan lahan Belitang, petani menerapkan teknologi mulsa plastik hitam perak (MPHP) dan sistem selang tetes (drip irrigation). Fungsi sisi berwarna perak pada mulsa plastik tersebut adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Menghilangkan populasi tanaman hingga 75% dari luasan lahan"
+        "text": "Menyerap panas matahari sebesar-besarnya agar tanah mendidih"
       },
       {
         "key": "B",
-        "text": "Menciptakan efek tanaman pinggir (border effect) yang memaksimalkan penyerapan cahaya matahari dan mempermudah pemeliharaan"
+        "text": "Memantulkan sinar matahari guna mengusir hama serangga kutu daun (thrips dan aphids) serta meratakan pencahayaan ke bagian bawah daun tanaman"
       },
       {
         "key": "C",
-        "text": "Mengharuskan petani menambah kebutuhan air genangan setinggi 40 cm"
+        "text": "Menyaring air hujan menjadi air murni bebas mineral"
       },
       {
         "key": "D",
-        "text": "Mencegah traktor roda empat masuk ke petakan sawah"
+        "text": "Menjadi perekat tanaman semangka agar tidak tertiup angin"
       },
       {
         "key": "E",
-        "text": "Mengharuskan jarak tanam seragam tanpa adanya lorong kosong"
+        "text": "Mencegah pupuk kimia menguap ke udara sekitar"
       }
     ],
     "correct": "B",
-    "explanation": "Pola jajar legowo memberikan ruang terbuka (lorong) yang memberikan efek border effect bagi rumpun pinggir sehingga fotosintesis maksimal, anakan lebih produktif, dan sirkulasi udara baik untuk menekan hama."
+    "explanation": "Sisi perak mulsa MPHP memantulkan spektrum radiasi ultraviolet matahari yang membingungkan dan mengusir vektor virus hama thrips/aphids, sedangkan sisi hitam menghadap ke tanah untuk menekan pertumbuhan gulma rumput liar."
   },
   {
     "id": 15,
@@ -14894,34 +14894,34 @@ window.NFT_BANK_SOAL_DAYS = {
     "sector": "pertanian",
     "indicatorCode": "C",
     "indicatorKey": "pilar_engineering",
-    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Penanganan Kendala Lapangan)",
+    "indicatorName": "Pilar Engineering (Rekayasa Solusi Praktis & Konstruksi Lanjaran Hortikultura)",
     "cognitiveLevel": "C4",
     "numberInIndicator": 4,
-    "question": "Untuk menanggulangi serangan hama tikus sawah (Rattus argentiventer) secara ramah lingkungan tanpa racun berbahaya, kelompok tani di Belitang menerapkan rekayasa Trap Barrier System (TBS). Bagian rancangan apakah yang menjadi penarik tikus ke perangkap?",
+    "question": "Dalam budidaya melon sistem lanjaran vertikal di OKU Timur, petani merekayasa tiang lanjaran bambu segitiga (A-frame trellis) dan mengikat tangkai buah melon yang membesar dengan jaring buah gantung (fruit net). Alasan rekayasa penyanggaan ini adalah...",
     "options": [
       {
         "key": "A",
-        "text": "Petak tanaman perangkap yang ditanam 2-3 minggu lebih awal dari hamparan utama dan dikelilingi pagar plastik berpasang bubu perangkap satu arah"
+        "text": "Mencegah buah melon menyentuh tanah basah agar tidak busuk berjamur, menopang beban berat buah agar tangkai tidak patah, serta memastikan bentuk buah bulat sempurna dengan jaring merata"
       },
       {
         "key": "B",
-        "text": "Lampu petromaks berkekuatan 1000 watt yang dinyalakan sepanjang malam"
+        "text": "Menghalangi sinar matahari agar buah melon berwarna putih pucat"
       },
       {
         "key": "C",
-        "text": "Penebaran bangkai tikus yang dibakar di sekeliling pematang"
+        "text": "Menghubungkan buah melon dengan aliran listrik pengusir hama"
       },
       {
         "key": "D",
-        "text": "Pemasangan kawat beraliran listrik tegangan tinggi dari kabel PLN rumah"
+        "text": "Membuat buah melon tumbuh berbentuk kubus kotak"
       },
       {
         "key": "E",
-        "text": "Parit yang diisi solar dan oli bekas setinggi 10 cm"
+        "text": "Menghentikan pertumbuhan sulur tanaman melon"
       }
     ],
     "correct": "A",
-    "explanation": "TBS memanfaatkan sifat alami tikus yang tertarik pada tanaman padi stadium bunting/generatif lebih awal. Pagar plastik memblokir akses tikus dan mengarahkannya masuk ke perangkap bubu kawat satu arah (multi-catch trap)."
+    "explanation": "Teknik fruit net gantung pada rangka lanjaran menyalurkan beban buah ke kawat penopang, mencegah gesekan tanah yang memicu busuk cendawan Pythium, serta memungkinkan paparan sinar merata 360 derajat untuk pembentukan jaring kulit melon yang mulus."
   },
   {
     "id": 25,
@@ -15384,34 +15384,34 @@ window.NFT_BANK_SOAL_DAYS = {
     "sector": "pertanian",
     "indicatorCode": "D",
     "indicatorKey": "pilar_mathematics",
-    "indicatorName": "Pilar Mathematics (Kalkulasi Modal, Penjualan, HPP/FCR & Laba Bersih)",
+    "indicatorName": "Pilar Mathematics (Kalkulasi Modal Hortikultura & Laba Bersih)",
     "cognitiveLevel": "C3",
     "numberInIndicator": 8,
-    "question": "Pada proses penggilingan padi di RMU Belitang, 5.000 kg Gabah Kering Giling (GKG) menghasilkan 3.250 kg beras putih kualitas medium. Berapakah persentase rendemen beras giling tersebut?",
+    "question": "Seorang petani di Belitang membudidayakan melon golden di lahan sawah seluas 0,5 hektar dengan total modal sarana produksi (benih unggul, mulsa MPHP, pupuk, dan instalasi lanjaran) sebesar Rp12.000.000. Saat panen, dihasilkan 3.500 kg melon grade super yang terjual seharga Rp8.000 per kg. Berapakah keuntungan bersih yang dinikmati petani melon tersebut?",
     "options": [
       {
         "key": "A",
-        "text": "55%"
+        "text": "Rp12.000.000"
       },
       {
         "key": "B",
-        "text": "65%"
+        "text": "Rp16.000.000"
       },
       {
         "key": "C",
-        "text": "75%"
+        "text": "Rp20.000.000"
       },
       {
         "key": "D",
-        "text": "60%"
+        "text": "Rp28.000.000"
       },
       {
         "key": "E",
-        "text": "70%"
+        "text": "Rp8.000.000"
       }
     ],
     "correct": "B",
-    "explanation": "Rendemen beras = (Total Beras / Total GKG) × 100% = (3.250 / 5.000) × 100% = 65%."
+    "explanation": "Total Penjualan = 3.500 kg x Rp8.000 = Rp28.000.000. Laba Bersih = Total Penjualan - Total Modal = Rp28.000.000 - Rp12.000.000 = Rp16.000.000."
   },
   {
     "id": 39,

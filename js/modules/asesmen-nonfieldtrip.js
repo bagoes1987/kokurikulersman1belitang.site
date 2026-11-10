@@ -1764,14 +1764,14 @@
 
   const NFT_DAY3_SECTOR_MAP = {
     'pangan': 'Pertanian Tanaman Pangan (Padi & Palawija)',
-    'pertanian': 'Pertanian Padi Sawah (Lumbung Pangan Komering)',
+    'pertanian': 'Pertanian Padi Sawah & Hortikultura (Padi, Kebun Melon/Semangka)',
     'perkebunan': 'Perkebunan Rakyat (Karet & Sawit)',
     'peternakan': 'Peternakan Rakyat OKU Timur (Sapi, Kambing & Unggas)',
     'perikanan': 'Perikanan Budidaya Air Tawar (Patin, Lele & Nila)',
     'industri': 'Agro-Industri & Pengolahan Pangan (RMU, Tahu-Tempe & Kemplang)',
     'jasa': 'Agro-Industri & Pengolahan Pangan (RMU, Tahu-Tempe & Kemplang)',
-    'perdagangan': 'Perdagangan (Kios Pupuk/Saprotan Resmi & Grosir Sembako)',
-    'formal': 'Jasa Keuangan Mikro & Jasa Perorangan (Agen BRILink & BUMDes)',
+    'perdagangan': 'Perdagangan & UMKM Niaga (Toko Pakaian, Sembako, Saprotan & Pasar)',
+    'formal': 'Jasa Keuangan Mikro & Jasa Perorangan (Agen BRILink, BUMDes & Bengkel)',
     'keuangan': 'Jasa Keuangan Mikro & Jasa Perorangan (Agen BRILink & BUMDes)'
   };
 

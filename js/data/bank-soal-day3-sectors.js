@@ -1700,35 +1700,34 @@
       "day": 3,
       "sector": "perdagangan",
       "indicatorCode": "A",
-      "indicatorName": "Pilar Science: Karakteristik Kimiawi Produk Saprotan & Pengawetan Pangan",
+      "indicatorName": "Pilar Science: Karakteristik Kimiawi Produk Saprotan & Pengawetan Pangan/Tekstil",
       "cognitiveLevel": "C3",
-      "question": "Di toko saprotan, botol pestisida kimia mencantumkan formula seperti EC (Emulsifiable Concentrate), WP (Wettable Powder), atau SL (Soluble Liquid). Secara kimia larutan, arti formulasi EC adalah...",
+      "question": "Di toko busana dan pakaian jadi (distro/butik) di Pasar Belitang, pengelola toko meletakkan kantong gel silika (silica gel) dan kapur barus di antara tumpukan kain pakaian katun dan sutra. Secara ilmu sains bahan dan kelembapan udara, fungsi utama penempatan zat higroskopis tersebut adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Bubuk padat kering yang tidak dapat larut dalam air sama sekali"
+          "text": "Menambah bobot berat kain agar terlihat lebih tebal dan mahal"
         },
         {
           "key": "B",
-          "text": "Cairan pekatan yang jika dicampur dengan air akan membentuk emulsi putih susu yang stabil karena mengandung zat pengemulsi (emulsifier)"
+          "text": "Menyerap uap air berlebih di udara lemari guna mencegah kelembapan tinggi, pertumbuhan jamur kain (mildew), dan bau apek pada serat pakaian"
         },
         {
           "key": "C",
-          "text": "Gas bertekanan tinggi yang disemprotkan langsung tanpa air"
+          "text": "Mengubah warna pakaian menjadi lebih cerah tanpa dicuci"
         },
         {
           "key": "D",
-          "text": "Butiran granul padat yang ditaburkan langsung ke petak sawah"
+          "text": "Mempercepat proses pelapukan benang jahitan pakaian"
         },
         {
           "key": "E",
-          "text": "Cairan kental manis yang berfungsi sebagai perekat makanan"
+          "text": "Membuat pakaian mengeluarkan aroma wangi bunga sintetis secara permanen"
         }
       ],
       "correct": "B",
-      "explanation": "Formulasi EC (Emulsifiable Concentrate) melarutkan bahan aktif pestisida nonpolar dalam pelarut organik + emulsifier, sehingga saat diaduk dengan air terbentuk emulsi keruh stabil."
-    },
-    {
+      "explanation": "Silica gel bersifat higroskopis aktif yang menyerap kelembapan udara (relatif humidity) di area display tertutup, mencegah timbulnya bintik jamur dan kerusakan serat pakaian akibat kelembapan tinggi di daerah tropis."
+    }, {
       "id": 3503,
       "day": 3,
       "sector": "perdagangan",
@@ -1865,35 +1864,34 @@
       "day": 3,
       "sector": "perdagangan",
       "indicatorCode": "A",
-      "indicatorName": "Pilar Science: Karakteristik Kimiawi Produk Saprotan & Pengawetan Pangan",
+      "indicatorName": "Pilar Science: Karakteristik Kimiawi Produk Saprotan & Kualitas Hortikultura/Pangan",
       "cognitiveLevel": "C3",
-      "question": "Di toko saprotan resmi, benih padi unggul bersertifikat (label biru/ungu) dikemas dalam kantong kedap udara dengan kadar air benih maksimal 12%. Alasan sains kadar air benih padi harus lebih rendah dari beras konsumsi (14%) adalah...",
+      "question": "Di kios buah Pasar Gumawang Belitang, pedagang menyeleksi buah melon dan semangka segar dengan mengukur kemanisan menggunakan refraktometer brix serta mengamati jaring urat (netting) pada kulit melon. Alasan sains mengapa melon dengan jaring urat tebal, rapat, dan timbul merata menunjukkan mutu super adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Membuat benih tenggelam saat dimasukkan ke dalam lumpur"
+          "text": "Menandakan melon tersebut disuntik pemanis buatan sebelum dipetik"
         },
         {
           "key": "B",
-          "text": "Mempertahankan daya kecambah (viabilitas) dan vigor benih selama masa simpan dengan menekan metabolisme dormansi biji seminimal mungkin"
+          "text": "Jaring urat terbentuk akibat retakan mikroskopis alami saat pemuaian daging buah yang terisi konsentrasi sukrosa gula tinggi pada fase matang optimal di pohon"
         },
         {
           "key": "C",
-          "text": "Mencegah benih dimakan oleh burung pipit saat di toko"
+          "text": "Menunjukkan bahwa buah melon terkena serangan kutu kebul tanaman"
         },
         {
           "key": "D",
-          "text": "Membuat benih padi tahan terhadap rendaman air panas 100°C"
+          "text": "Membuktikan bahwa kulit melon sangat rapuh dan mudah busuk"
         },
         {
           "key": "E",
-          "text": "Mengurangi ukuran fisik butir benih menjadi seukuran biji wijen"
+          "text": "Menandakan buah melon dipanen saat masih mentah dan bergetah"
         }
       ],
       "correct": "B",
-      "explanation": "Embrio benih adalah organisme hidup dalam fase dormansi. Kadar air rendah (11–12%) memperlambat penuaan sel embrio dan mempertahankan daya perkecambahan benih di atas 85%."
-    },
-    {
+      "explanation": "Pola jaring (netting) pada melon terbentuk dari proses gabus penyembuhan alami (suberisasi) dinding buah saat sel-sel daging buah mengembang maksimal akibat akumulasi karbohidrat dan gula matang sempurna."
+    }, {
       "id": 3508,
       "day": 3,
       "sector": "perdagangan",
@@ -2096,35 +2094,34 @@
       "day": 3,
       "sector": "perdagangan",
       "indicatorCode": "B",
-      "indicatorName": "Pilar Technology: Sistem Kasir POS, Barcode Scanner & Instrumentasi Digital",
+      "indicatorName": "Pilar Technology: Sistem Kasir POS, Barcode Scanner & Instrumentasi Digital Toko",
       "cognitiveLevel": "C2",
-      "question": "Timbangan duduk digital (Bench Scale) di toko perdagangan beras dan telur di Belitang wajib melewati proses \"Tera Ulang\" berkala oleh Dinas Perdagangan. Tujuan proses tera teknologi timbangan ini adalah...",
+      "question": "Pada toko pakaian dan butik busana di Belitang, karyawan menggunakan alat setrika uap vertikal (garment steamer) pada pakaian gantung dan pemindai barcode nirkabel pada label harga (hangtag). Keunggulan teknologi garment steamer dibanding setrika plat logam biasa adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Mewarnai bodi timbangan dengan cat anti-karat"
+          "text": "Mengubah warna pakaian yang kusam menjadi warna baru secara instan"
         },
         {
           "key": "B",
-          "text": "Mengkalibrasi akurasi sensor timbangan menggunakan massa standar anak timbang bersertifikat agar pengukuran bobot presisi dan melindungi hak konsumen"
+          "text": "Uap air panas bertekanan merelaksasi serat kain tanpa kontak plat panas langsung, sehingga pakaian gantung halus seketika tanpa risiko gosong, mengkilap, serta membunuh bakteri penyebab bau"
         },
         {
           "key": "C",
-          "text": "Menghubungkan timbangan dengan satelit navigasi GPS"
+          "text": "Membuat pakaian menyusut hingga satu ukuran lebih kecil"
         },
         {
           "key": "D",
-          "text": "Menghapus memori digital seluruh transaksi masa lalu toko"
+          "text": "Menghilangkan seluruh kancing dan resleting baju dengan cepat"
         },
         {
           "key": "E",
-          "text": "Mengubah satuan kilogram menjadi satuan liter secara paksa"
+          "text": "Memerlukan waktu pemanasan alat lebih dari 2 jam"
         }
       ],
       "correct": "B",
-      "explanation": "Kalibrasi tera ulang memastikan deviasi pengukuran berada dalam batas toleransi kesalahan yang diizinkan (BKD) menurut UU Metrologi Legal guna menjamin keadilan transaksi perdagangan."
-    },
-    {
+      "explanation": "Garment steamer bekerja dengan uap air mikro bertekanan yang melepaskan tegangan antar-serat tekstil pada posisi gantung vertikal secara cepat dan aman untuk semua jenis kain (katun, sifon, sutra, wol) tanpa menimbulkan efek mengkilap (shine effect)."
+    }, {
       "id": 3515,
       "day": 3,
       "sector": "perdagangan",
@@ -2261,35 +2258,34 @@
       "day": 3,
       "sector": "perdagangan",
       "indicatorCode": "B",
-      "indicatorName": "Pilar Technology: Sistem Kasir POS, Barcode Scanner & Instrumentasi Digital",
+      "indicatorName": "Pilar Technology: Digital Marketing, Live Streaming & E-Commerce Toko",
       "cognitiveLevel": "C3",
-      "question": "Pengelola kios saprotan memanfaatkan platform pesan instan WhatsApp Business yang terintegrasi fitur katalog digital dan pesan otomatis (auto-reply). Pemanfaatan teknologi ini bertujuan untuk...",
+      "question": "Pemilik toko busana/pakaian dan kios buah segar di Belitang memanfaatkan teknologi siaran langsung (live streaming shopping) di TikTok/Instagram dan katalog digital WhatsApp Business untuk melayani pelanggan. Keunggulan utama adopsi teknologi pemasaran digital ini adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Mengirimkan pesan spam berulang kepada nomor telepon acak"
+          "text": "Menghindari kewajiban membayar ongkos kirim kurir"
         },
         {
           "key": "B",
-          "text": "Mempermudah kelompok tani mengecek ketersediaan stok pupuk/pestisida, memesan barang tanpa antre panjang di toko, dan menerima nota pemesanan resmi"
+          "text": "Memperlihatkan detail fisik produk (tekstur/jatuh kain pakaian atau kesegaran buah) secara langsung kepada konsumen interaktif sehingga memperluas pasar lintas wilayah tanpa terbatas sekat toko fisik"
         },
         {
           "key": "C",
-          "text": "Mengambil alih nomor telepon seluruh petani di satu desa"
+          "text": "Menghilangkan kebutuhan tempat penyimpanan stok barang dagangan"
         },
         {
           "key": "D",
-          "text": "Menghapus kewajiban menyetor pajak penghasilan usaha"
+          "text": "Membuat harga modal barang menjadi gratis dari produsen"
         },
         {
           "key": "E",
-          "text": "Mengubah harga pupuk subsidi secara sepihak di luar HET"
+          "text": "Mencegah pembeli menawar harga barang dagangan"
         }
       ],
       "correct": "B",
-      "explanation": "WhatsApp Business dengan katalog online menyajikan foto, harga, dan spesifikasi saprotan secara transparan, mempercepat konfirmasi pesanan petani, dan membangun relasi pelanggan profesional."
-    },
-    {
+      "explanation": "Pemasaran digital live streaming memadukan demonstrasi produk nyata, interaksi tanya-jawab seketika (real-time Q&A), dan pemesanan praktis lewat katalog online, melipatgandakan jangkauan penjualan UMKM ritel modern."
+    }, {
       "id": 3520,
       "day": 3,
       "sector": "perdagangan",
@@ -2492,35 +2488,34 @@
       "day": 3,
       "sector": "perdagangan",
       "indicatorCode": "C",
-      "indicatorName": "Pilar Engineering: Tata Ruang Gudang, Rekayasa Rak, Ergonomi & K3",
+      "indicatorName": "Pilar Engineering: Tata Ruang Toko, Display Vertikal & Kenyamanan Konsumen",
       "cognitiveLevel": "C4",
-      "question": "Pada desain rak gondola pajang barang di toko perdagangan sembako, barang-barang yang memiliki perputaran cepat (Fast-Moving Items) dan berbobot sedang diletakkan pada posisi rak sejajar pandangan mata (Eye Level). Alasan ergonomi marketing ini adalah...",
+      "question": "Dalam rekayasa penataan ruang (layout interior) toko pakaian dan busana di Belitang, pemilik mengatur lorong sirkulasi pembeli selebar minimal 1 meter, menggunakan rak gantungan dinding vertikal, serta memasang cermin penuh di ruang pas (fitting room). Manfaat teknik tata ruang ini adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Menyembunyikan barang-barang yang sudah mendekati masa kedaluwarsa"
+          "text": "Menyembunyikan pakaian cacat produksi di sudut belakang lorong"
         },
         {
           "key": "B",
-          "text": "Memaksimalkan visibilitas produk (zona emas pandangan 120–160 cm), mempermudah konsumen menjangkau tanpa harus membungkuk atau menjinjit, dan meningkatkan volume penjualan"
+          "text": "Mengoptimalkan kapasitas pajangan pakaian pada ruangan terbatas, memudahkan mobilitas alur jalan pengunjung, dan memberikan kenyamanan psikologis saat mencoba pakaian sehingga memantapkan keputusan beli"
         },
         {
           "key": "C",
-          "text": "Mencegah anak kecil menyentuh barang-barang murah"
+          "text": "Membuat toko terlihat gelap dan sepi dari luar"
         },
         {
           "key": "D",
-          "text": "Membuat rak terlihat penuh sesak tanpa celah ruang"
+          "text": "Mencegah pembeli masuk ke dalam toko lebih dari 3 orang"
         },
         {
           "key": "E",
-          "text": "Mengurangi jumlah lampu penerangan di lorong toko"
+          "text": "Memaksa pengunjung langsung menuju meja kasir tanpa melihat barang lain"
         }
       ],
       "correct": "B",
-      "explanation": "Eye level (ketinggian pandang mata pembeli) adalah area pajang paling bernilai komersial di toko ritel karena langsung menangkap atensi visual konsumen tanpa hambatan fisik."
-    },
-    {
+      "explanation": "Desain tata letak interior ritel busana mengutamakan zonasi display vertikal untuk memaksimalkan kapasitas pajang tanpa mempersempit lorong gerak pembeli, serta ruang pas yang nyaman sebagai penentu konversi penjualan pakaian."
+    }, {
       "id": 3527,
       "day": 3,
       "sector": "perdagangan",
@@ -2657,35 +2652,34 @@
       "day": 3,
       "sector": "perdagangan",
       "indicatorCode": "D",
-      "indicatorName": "Pilar Mathematics: Margin Laba, Perputaran Stok (ITO), HPP & Kalkulasi Finansial",
+      "indicatorName": "Pilar Mathematics: Margin Laba, HPP & Kalkulasi Finansial Toko Pakaian",
       "cognitiveLevel": "C4",
-      "question": "Sebuah kios saprotan di Belitang membeli pupuk NPK non-subsidi seharga Rp16.000 per kg dari distributor resmi. Pemilik kios menetapkan target margin laba sebesar 15% dari harga beli. Harga jual pupuk per kg yang ditetapkan kios tersebut adalah...",
+      "question": "Sebuah toko pakaian muslim di Belitang membeli 1 kodi (20 potong) baju gamis dari grosir konveksi seharga Rp1.800.000 (modal Rp90.000 per potong). Pemilik toko menjual eceran dengan menetapkan target margin keuntungan sebesar 35% di atas harga beli modal. Berapakah harga jual per potong pakaian gamis tersebut?",
       "options": [
         {
           "key": "A",
-          "text": "Rp17.500"
+          "text": "Rp110.000"
         },
         {
           "key": "B",
-          "text": "Rp18.400"
+          "text": "Rp121.500"
         },
         {
           "key": "C",
-          "text": "Rp19.200"
+          "text": "Rp135.000"
         },
         {
           "key": "D",
-          "text": "Rp20.000"
+          "text": "Rp145.000"
         },
         {
           "key": "E",
-          "text": "Rp22.500"
+          "text": "Rp150.000"
         }
       ],
       "correct": "B",
-      "explanation": "Besar margin laba = 15% x Rp16.000 = Rp2.400. Harga jual = Harga beli + Margin = Rp16.000 + Rp2.400 = Rp18.400 per kg."
-    },
-    {
+      "explanation": "Margin laba per potong = 35% x Rp90.000 = Rp31.500. Harga jual = Modal + Margin = Rp90.000 + Rp31.500 = Rp121.500 per potong."
+    }, {
       "id": 3532,
       "day": 3,
       "sector": "perdagangan",
@@ -2921,35 +2915,34 @@
       "day": 3,
       "sector": "perdagangan",
       "indicatorCode": "D",
-      "indicatorName": "Pilar Mathematics: Margin Laba, Perputaran Stok (ITO), HPP & Kalkulasi Finansial",
+      "indicatorName": "Pilar Mathematics: Kalkulasi Susut Hortikultura & Laba Bersih Kios Buah",
       "cognitiveLevel": "C4",
-      "question": "Di toko sembako, telur ayam dibeli dari peternak sebanyak 1 peti kayu isi 15 kg seharga Rp360.000. Saat dibongkar, ditemukan telur retak/pecah sebanyak 0,6 kg yang tidak layak jual. Jika sisa telur yang utuh dijual eceran seharga Rp28.000 per kg, total keuntungan yang diperoleh dari 1 peti tersebut adalah...",
+      "question": "Pedagang buah di Belitang membeli 200 kg melon dari petani lokal seharga Rp8.000 per kg (total modal Rp1.600.000). Karena faktor susut dan lecet saat sortir, terdapat 10 kg melon lecet yang dijual murah Rp4.000 per kg, sedangkan sisa 190 kg melon grade super terjual habis seharga Rp12.000 per kg. Berapakah total laba bersih yang diperoleh pedagang buah tersebut?",
       "options": [
         {
           "key": "A",
-          "text": "Rp16.800"
+          "text": "Rp500.000"
         },
         {
           "key": "B",
-          "text": "Rp43.200"
+          "text": "Rp720.000"
         },
         {
           "key": "C",
-          "text": "Rp60.000"
+          "text": "Rp850.000"
         },
         {
           "key": "D",
-          "text": "Rp84.000"
+          "text": "Rp920.000"
         },
         {
           "key": "E",
-          "text": "Rp100.000"
+          "text": "Rp1.050.000"
         }
       ],
       "correct": "B",
-      "explanation": "Telur utuh yang terjual = 15 kg - 0,6 kg = 14,4 kg. Penerimaan = 14,4 kg x Rp28.000 = Rp403.200. Keuntungan = Rp403.200 - Rp360.000 = Rp43.200 per peti."
-    },
-    {
+      "explanation": "Total Penerimaan = (10 kg x Rp4.000) + (190 kg x Rp12.000) = Rp40.000 + Rp2.280.000 = Rp2.320.000. Laba Bersih = Penerimaan - Modal = Rp2.320.000 - Rp1.600.000 = Rp720.000."
+    }, {
       "id": 3540,
       "day": 3,
       "sector": "perdagangan",
