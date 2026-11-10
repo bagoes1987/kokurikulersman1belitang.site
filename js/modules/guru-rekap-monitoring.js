@@ -189,6 +189,27 @@
         }
       }
 
+      // Sinkronkan nilai 4 pilar dari server MySQL secara real-time
+      const cleanNisn = String(stu.nisn || '').trim();
+      const sSum = window._fasilStudentSummaryMap && window._fasilStudentSummaryMap[cleanNisn];
+      const sDay1 = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanNisn + '_1'];
+      const sDay2 = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanNisn + '_2'];
+      const sDay3 = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanNisn + '_3'];
+      const sDay4 = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanNisn + '_4'];
+      const sDay7 = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanNisn + '_7'];
+
+      if (sDay1 && sDay1.score && finScore === null) finScore = parseFloat(sDay1.score);
+      if (sDay2 && sDay2.score && culScore === null) culScore = parseFloat(sDay2.score);
+      if (sDay3 && sDay3.score && stemScore === null) stemScore = parseFloat(sDay3.score);
+      if (sDay4 && sDay4.score && expScore === null) expScore = parseFloat(sDay4.score);
+      if (sDay7 && sDay7.score && finalScore === null) {
+        finalScore = parseFloat(sDay7.score);
+        finalPred = sDay7.predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+      } else if (sSum && sSum.avg_score && finalScore === null) {
+        finalScore = Math.round(parseFloat(sSum.avg_score) * 10) / 10;
+        finalPred = sSum.day7_predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+      }
+
       if (finalPred === 'Mahir') countMahir++;
       else if (finalPred === 'Cakap') countCakap++;
       else if (finalPred === 'Berkembang') countBerkembang++;

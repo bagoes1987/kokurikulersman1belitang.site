@@ -404,6 +404,26 @@
         </button>
       </div>
 
+      <!-- Filter Hari Fokus Kegiatan (Semua Hari | 🏛️ Day 2 (Hari Ini) | 💰 Day 1) -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar pb-0.5 text-xs font-bold bg-surface-container-low/60 p-2 rounded-2xl border border-outline-variant/20">
+        <span class="text-slate-500 text-[11px] font-bold shrink-0 mr-1 flex items-center gap-1">
+          <span class="material-symbols-outlined text-sm text-[#006a61]">filter_alt</span>
+          <span>Filter Hari:</span>
+        </span>
+        <button id="btnFasDayAll" onclick="filterFasByDay('all')" class="px-3 py-1 rounded-xl bg-slate-900 text-white shadow-2xs whitespace-nowrap cursor-pointer transition-all">
+          <span>Semua Hari</span>
+        </button>
+        <button id="btnFasDay2" onclick="filterFasByDay('2')" class="px-3 py-1 rounded-xl bg-teal-600 text-white shadow-2xs whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all ring-2 ring-teal-300/60 font-black">
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-300 animate-ping"></span>
+          <span>🏛️ Day 2 (Hari Ini)</span>
+          <span id="badgeFasDay2Count" class="px-1.5 py-0.2 rounded-md bg-white/20 text-[10px]">0</span>
+        </button>
+        <button id="btnFasDay1" onclick="filterFasByDay('1')" class="px-3 py-1 rounded-xl bg-surface-container-lowest text-emerald-900 border border-emerald-300 hover:bg-emerald-50 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all">
+          <span>💰 Day 1</span>
+          <span id="badgeFasDay1Count" class="px-1.5 py-0.2 rounded-md bg-emerald-100 text-[10px]">0</span>
+        </button>
+      </div>
+
       <!-- RINGKASAN KPI STATUS PENILAIAN SISWA BINAAN -->
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
         <div onclick="filterFasByStatus('all')" class="bg-surface-container-lowest p-3 rounded-2xl border border-outline-variant/30 flex items-center justify-between shadow-2xs cursor-pointer hover:border-teal-500/50 transition-all">
@@ -1727,7 +1747,7 @@
   <script src="../js/modules/mentorship-fasil.js?v=20261107_v11_fix_fasil_auth"></script>
   <script src="../js/core.js?v=20261109_sync"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261107_v11_fix_fasil_auth"></script>
-  <script src="../js/modules/guru-rekap-monitoring.js?v=20261107_v11_fix_fasil_auth"></script>
+  <script src="../js/modules/guru-rekap-monitoring.js?v=20261110_day2_live_sync"></script>
   <script>
     // Kamus Narasi Resmi Rapor Kokurikuler Sesuai Kriteria Admin & SK Kelulusan
     window.FINCESTEM_NARRASI_RAPOR = {
@@ -2253,10 +2273,86 @@
           if (updated) renderAssignedStudentList();
         });
       }
+
+      // 5. Sinkronkan progres dan nilai tugas harian siswa secara real-time dari server MySQL
+      syncFacilitatorServerProgress();
+    }
+
+    // Cache Global Progres Siswa dari Server (MySQL via api/progress.php?action=admin_recap)
+    window._fasilServerRecapData = null;
+    window._fasilStudentDayMap = {};
+    window._fasilStudentSummaryMap = {};
+    let _fasilSyncInProgress = false;
+
+    function syncFacilitatorServerProgress(callback) {
+      if (_fasilSyncInProgress) return;
+      _fasilSyncInProgress = true;
+
+      const apiBase = (typeof FincestemCore !== 'undefined' && FincestemCore.api && FincestemCore.api.base) ? FincestemCore.api.base : '../api';
+      fetch(apiBase + '/progress.php?action=admin_recap&_t=' + Date.now())
+        .then(res => res.json())
+        .then(json => {
+          _fasilSyncInProgress = false;
+          if (json && json.success && json.data) {
+            window._fasilServerRecapData = json.data;
+            const dayMap = {};
+            const sumMap = {};
+            if (Array.isArray(json.data.days)) {
+              json.data.days.forEach(d => {
+                const cleanNisn = String(d.student_nisn || '').trim();
+                const key = cleanNisn + '_' + String(d.day_number);
+                dayMap[key] = d;
+              });
+            }
+            if (Array.isArray(json.data.students)) {
+              json.data.students.forEach(s => {
+                sumMap[String(s.student_nisn || '').trim()] = s;
+              });
+            }
+            window._fasilStudentDayMap = dayMap;
+            window._fasilStudentSummaryMap = sumMap;
+            
+            // Re-render kartu siswa & tabel rekap binaan
+            renderAssignedStudentList();
+            if (typeof renderFasRekapBinaanTable === 'function') {
+              renderFasRekapBinaanTable();
+            }
+            if (typeof window.renderFasRekapBinaanView === 'function') {
+              window.renderFasRekapBinaanView();
+            }
+          }
+          if (callback) callback(json ? json.data : null);
+        })
+        .catch(err => {
+          _fasilSyncInProgress = false;
+          console.warn('Gagal memuat progres server fasilitator:', err);
+          if (callback) callback(null);
+        });
     }
 
     let fasStatusFilter = 'all';
     let fasJalurFilter = 'all';
+    let fasDayFilter = 'all'; // 'all', '1', '2'
+
+    function filterFasByDay(dayKey) {
+      fasDayFilter = String(dayKey);
+      ['All', '2', '1'].forEach(k => {
+        const btn = document.getElementById('btnFasDay' + k);
+        if (btn) {
+          const isActive = (fasDayFilter === 'all' && k === 'All') || (fasDayFilter === k);
+          if (isActive) {
+            btn.className = (k === '2')
+              ? 'px-3 py-1 rounded-xl bg-teal-600 text-white shadow-2xs whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all ring-2 ring-teal-300/60 font-black'
+              : (k === '1'
+                ? 'px-3 py-1 rounded-xl bg-emerald-700 text-white shadow-2xs whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all font-black'
+                : 'px-3 py-1 rounded-xl bg-slate-900 text-white shadow-2xs whitespace-nowrap cursor-pointer transition-all font-black');
+          } else {
+            btn.className = 'px-3 py-1 rounded-xl bg-surface-container-lowest text-slate-700 border border-outline-variant/30 hover:bg-slate-100 whitespace-nowrap cursor-pointer flex items-center gap-1.5 transition-all font-semibold';
+          }
+        }
+      });
+      renderAssignedStudentList();
+    }
 
     function filterFasByJalur(jalur) {
       fasJalurFilter = jalur;
@@ -2322,6 +2418,8 @@
       let countCompleted = 0;
       let countSubmitted = 0;
       let countNotStarted = 0;
+      let countDay1Done = 0;
+      let countDay2Done = 0;
 
       const studentMetaList = assignedStudents.map(stu => {
         let prog = null;
@@ -2330,15 +2428,90 @@
           if (pStr) prog = JSON.parse(pStr);
         } catch (e) {}
 
+        const cleanNisn = String(stu.nisn || '').trim();
+        const sSummary = (window._fasilStudentSummaryMap && window._fasilStudentSummaryMap[cleanNisn]) || null;
+
+        // Hidrasi otomatis objek prog dari data server jika localStorage kosong / belum ada
+        if (!prog) {
+          prog = {
+            nisn: stu.nisn,
+            records: [],
+            task_map: {},
+            completed_days: sSummary ? parseInt(sSummary.graded_days_count || 0) : 0,
+            percentage: sSummary ? Math.min(100, Math.round((parseInt(sSummary.graded_days_count || 0) / 7) * 100)) : 0,
+            average_score: sSummary && sSummary.avg_score ? parseFloat(sSummary.avg_score) : null
+          };
+        }
+        if (!prog.records) prog.records = [];
+        if (!prog.task_map) prog.task_map = {};
+
         const isFT = isStudentFieldTripFasil(stu.nisn, stu);
         stu.zone = isFT ? 'FINCESTEM LUAR OKU TIMUR' : 'FINCESTEM OKU TIMUR';
         stu.is_field_trip = isFT;
         if (isFT) countJalurFT++;
         else countJalurNonFT++;
 
-        const completedDays = prog ? (prog.completed_days || 0) : (stu.completed_days || 0);
-        const percentage = prog ? (prog.percentage || 0) : (stu.percentage || 0);
-        let avgScore = prog ? prog.average_score : (stu.avg_score || null);
+        // Sinkronkan catatan harian (Day 1 - 7) dari server MySQL secara real-time
+        let srvCompletedDays = 0;
+        let srvTotalScore = 0;
+        let srvScoreCount = 0;
+        let hasDay1 = false;
+        let hasDay2 = false;
+
+        for (let d = 1; d <= 7; d++) {
+          const srvDay = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanNisn + '_' + d];
+          if (srvDay) {
+            const hasSub = parseInt(srvDay.student_tasks_count) > 0 || srvDay.status === 'submitted' || srvDay.status === 'completed';
+            const hasSc = srvDay.score !== null && srvDay.score !== undefined && srvDay.score !== '';
+
+            if (d === 1 && (hasSub || hasSc)) hasDay1 = true;
+            if (d === 2 && (hasSub || hasSc)) hasDay2 = true;
+
+            if (hasSub || hasSc) {
+              srvCompletedDays++;
+              if (hasSc) {
+                srvTotalScore += parseFloat(srvDay.score);
+                srvScoreCount++;
+              }
+              if (parseInt(srvDay.student_tasks_count) > 0) {
+                prog.task_map[d + '_materi'] = prog.task_map[d + '_materi'] || { submitted: true };
+                prog.task_map[d + '_lkpd'] = prog.task_map[d + '_lkpd'] || { submitted: true };
+                prog.task_map[d + '_asesmen'] = prog.task_map[d + '_asesmen'] || { submitted: true, score: srvDay.score };
+              }
+              let rec = prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.score));
+              if (!rec) {
+                rec = {
+                  day_number: d,
+                  task_type: 'general',
+                  score: srvDay.score,
+                  predicate: srvDay.predicate,
+                  score_financial: srvDay.fin,
+                  score_culture: srvDay.cul,
+                  score_exploration: srvDay.exp,
+                  score_stem: srvDay.stem,
+                  status: srvDay.status,
+                  facilitator_name: srvDay.facilitator_name,
+                  updated_at: srvDay.updated_at
+                };
+                prog.records.push(rec);
+              } else {
+                if (hasSc && (!rec.score || isNaN(rec.score))) rec.score = srvDay.score;
+                if (srvDay.predicate && !rec.predicate) rec.predicate = srvDay.predicate;
+                if (srvDay.status) rec.status = srvDay.status;
+              }
+            }
+          }
+        }
+
+        if (hasDay1) countDay1Done++;
+        if (hasDay2) countDay2Done++;
+
+        const completedDays = Math.max(prog.completed_days || 0, srvCompletedDays);
+        const percentage = Math.min(100, Math.round((completedDays / 7) * 100));
+        let avgScore = (srvScoreCount > 0)
+          ? Math.round((srvTotalScore / srvScoreCount) * 10) / 10
+          : (prog.average_score || (stu.avg_score || null));
+
         if ((avgScore === null || isNaN(avgScore) || avgScore <= 0) && prog && (prog.records || prog.task_map)) {
           try {
             let totalSc = 0;
@@ -2416,7 +2589,7 @@
         else if (studentCategoryStatus === 'submitted') countSubmitted++;
         else countNotStarted++;
 
-        return { stu, prog, isFT, completedDays, percentage, avgScore, latestStatus: rawStatus, isAllDone, studentCategoryStatus };
+        return { stu, prog, isFT, completedDays, percentage, avgScore, latestStatus: rawStatus, isAllDone, studentCategoryStatus, hasDay1, hasDay2 };
       });
 
       const bJalurAll = document.getElementById('badgeJalurAllCount');
@@ -2425,6 +2598,11 @@
       if (bJalurFT) bJalurFT.textContent = countJalurFT;
       const bJalurNonFT = document.getElementById('badgeJalurNonFTCount');
       if (bJalurNonFT) bJalurNonFT.textContent = countJalurNonFT;
+
+      const bDay1 = document.getElementById('badgeFasDay1Count');
+      if (bDay1) bDay1.textContent = countDay1Done;
+      const bDay2 = document.getElementById('badgeFasDay2Count');
+      if (bDay2) bDay2.textContent = countDay2Done;
 
       const bAll = document.getElementById('badgeCountAll');
       if (bAll) bAll.textContent = countAll;
@@ -2452,6 +2630,11 @@
           if (fasJalurFilter === 'non_field_trip') return !m.isFT;
           return true;
         });
+      }
+      if (fasDayFilter === '2') {
+        filteredMeta = filteredMeta.filter(m => m.hasDay2);
+      } else if (fasDayFilter === '1') {
+        filteredMeta = filteredMeta.filter(m => m.hasDay1);
       }
       if (fasStudentSearchQuery) {
         const q = fasStudentSearchQuery.toLowerCase();
@@ -2710,6 +2893,95 @@
                 "${prog.latest_feedback.feedback}"
               </p>
             ` : ''}
+
+            <!-- Baris 3: Status 7 Hari Penugasan (Interaktif) -->
+            ${(() => {
+              const dayPillDefs = [
+                { day: 1, label: 'D1', title: 'Day 1: FINANCIAL', icon: '💰' },
+                { day: 2, label: 'D2', title: 'Day 2: CULTURE (Hari Ini)', icon: '🏛️', isToday: true },
+                { day: 3, label: 'D3', title: 'Day 3: STEM (Buka Besok)', icon: '🔬', isFuture: true },
+                { day: 4, label: 'D4', title: 'Day 4: EXPLORATION', icon: '🧭', isFuture: true },
+                { day: 5, label: 'D5', title: 'Day 5: VIDEO SAINS', icon: '🎬', isFuture: true },
+                { day: 6, label: 'D6', title: 'Day 6: VIDEO REKAYASA', icon: '🎥', isFuture: true },
+                { day: 7, label: 'D7', title: 'Day 7: RAPOR 4 PILAR', icon: '🏆', isFuture: true }
+              ];
+
+              const pills = dayPillDefs.map(dp => {
+                const srvDay = window._fasilStudentDayMap && window._fasilStudentDayMap[stu.nisn + '_' + dp.day];
+                const hasScore = srvDay && srvDay.score !== null && srvDay.score !== undefined && srvDay.score !== '';
+                const hasTasks = srvDay && (parseInt(srvDay.student_tasks_count) > 0 || srvDay.status === 'submitted');
+                const isDone = hasScore || (srvDay && srvDay.status === 'completed');
+
+                if (dp.isToday) {
+                  if (isDone || hasTasks) {
+                    const scText = hasScore ? Math.round(parseFloat(srvDay.score)) : 'Masuk';
+                    return `
+                      <button type="button" onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', 2)" class="py-1 px-1 rounded-xl bg-teal-600 text-white border-2 border-teal-400 ring-2 ring-teal-200/80 hover:bg-teal-700 flex flex-col items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95" title="Day 2 (CULTURE - Hari Ini): Nilai ${scText} • Klik untuk Nilai / Periksa">
+                        <div class="flex items-center gap-0.5 text-[9px] font-black text-amber-200">
+                          <span>${dp.label}</span>
+                          <span class="w-1.5 h-1.5 rounded-full bg-amber-300 animate-ping"></span>
+                        </div>
+                        <span class="text-[9.5px] font-black text-white leading-none">${scText}</span>
+                      </button>
+                    `;
+                  } else {
+                    return `
+                      <button type="button" onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', 2)" class="py-1 px-1 rounded-xl bg-amber-50 border-2 border-amber-400 hover:bg-amber-100 flex flex-col items-center justify-center transition-all cursor-pointer active:scale-95" title="Day 2 (CULTURE - Hari Ini): Belum Mengirim Tugas">
+                        <span class="text-[9px] font-black text-amber-900 leading-tight">${dp.label}</span>
+                        <span class="text-[9.5px] font-bold text-amber-600 leading-none">⏳</span>
+                      </button>
+                    `;
+                  }
+                } else if (dp.day === 1) {
+                  if (isDone || hasTasks) {
+                    const scText = hasScore ? Math.round(parseFloat(srvDay.score)) : '✓';
+                    return `
+                      <button type="button" onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', 1)" class="py-1 px-1 rounded-xl bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 flex flex-col items-center justify-center transition-all cursor-pointer active:scale-95" title="Day 1 (FINANCIAL): Nilai ${scText}">
+                        <span class="text-[9px] font-black text-emerald-900 leading-tight">${dp.label}</span>
+                        <span class="text-[9.5px] font-black text-emerald-700 leading-none">${scText}</span>
+                      </button>
+                    `;
+                  } else {
+                    return `
+                      <button type="button" onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', 1)" class="py-1 px-1 rounded-xl bg-slate-100 border border-slate-200 hover:bg-slate-200 flex flex-col items-center justify-center transition-all cursor-pointer active:scale-95" title="Day 1: Belum Mengerjakan">
+                        <span class="text-[9px] font-bold text-slate-500 leading-tight">${dp.label}</span>
+                        <span class="text-[9px] text-slate-400 leading-none">-</span>
+                      </button>
+                    `;
+                  }
+                } else {
+                  if (isDone || hasTasks) {
+                    const scText = hasScore ? Math.round(parseFloat(srvDay.score)) : '✓';
+                    return `
+                      <button type="button" onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', ${dp.day})" class="py-1 px-1 rounded-xl bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 flex flex-col items-center justify-center transition-all cursor-pointer active:scale-95" title="Day ${dp.day}: Nilai ${scText}">
+                        <span class="text-[9px] font-black text-emerald-900 leading-tight">${dp.label}</span>
+                        <span class="text-[9.5px] font-black text-emerald-700 leading-none">${scText}</span>
+                      </button>
+                    `;
+                  } else {
+                    return `
+                      <div class="py-1 px-1 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col items-center justify-center text-slate-400 opacity-60" title="Day ${dp.day}: ${dp.day === 3 ? 'Buka Besok Rabu 07:00 WIB' : 'Terkunci'}">
+                        <span class="text-[9px] font-semibold leading-tight">${dp.label}</span>
+                        <span class="text-[9px] leading-none">🔒</span>
+                      </div>
+                    `;
+                  }
+                }
+              });
+
+              return `
+                <div class="pt-2 border-t border-outline-variant/15 flex flex-col gap-1.5">
+                  <div class="flex items-center justify-between text-[10.5px]">
+                    <span class="font-bold text-slate-600 flex items-center gap-1">
+                      <span class="material-symbols-outlined text-xs text-[#006a61]">calendar_today</span>
+                      <span>Tugas Harian (Day 1 - 7):</span>
+                    </span>
+                    <span class="text-[10px] text-teal-800 font-extrabold bg-teal-50 px-2 py-0.5 rounded-md border border-teal-200">Fokus Hari Ini: Day 2</span>
+                  </div>
+                  <div class="grid grid-cols-7 gap-1">${pills.join('')}</div>
+                </div>
+              `;
+            })()}
           </div>
 
           <!-- Tombol Aksi Fasilitator: Simulasi Day 0, Nilai Harian, Nilai Akhir, & Dispensasi Buka Kunci -->
@@ -2719,9 +2991,9 @@
                 <span class="text-sm">🎮</span>
                 <span>Simulasi Day 0</span>
               </button>
-              <button onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', 1)" class="py-2.5 px-2.5 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-98 cursor-pointer" title="Penilaian Lapangan Harian (Day 1 - 7)">
+              <button onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', 2)" class="py-2.5 px-2.5 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-98 cursor-pointer" title="Penilaian Lapangan Harian (Day 2 Hari Ini / Day 1-7)">
                 <span class="material-symbols-outlined text-base">edit_note</span>
-                <span>Nilai Harian</span>
+                <span>Nilai Day 2</span>
               </button>
               <button onclick="openFinalGradeModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', ${studentFinalScore || 'null'})" class="py-2.5 px-2.5 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-98 cursor-pointer" title="Penetapan Nilai Akhir Rapor & Predikat">
                 <span class="material-symbols-outlined text-base">verified</span>
@@ -2793,9 +3065,9 @@
       // Deteksi kategori siswa: Field Trip vs Non-Field Trip (100% mengikuti pengaturan Admin)
       const isFieldTrip = isStudentFieldTripFasil(targetNisn);
 
-      // Update opsi target day dropdown dengan Day 0 (Simulasi) ditempatkan jelas
+      // Update opsi target day dropdown dengan Day 0 (Simulasi) ditempatkan jelas (Default Hari Ini: Day 2)
       const daySelect = document.getElementById('gradeTargetDay');
-      const targetSelection = (initialDay !== undefined && initialDay !== null) ? String(initialDay) : (daySelect.value || '1');
+      const targetSelection = (initialDay !== undefined && initialDay !== null) ? String(initialDay) : (daySelect.value || '2');
 
       if (isFieldTrip) {
         daySelect.innerHTML = `
@@ -2826,7 +3098,7 @@
       }
 
       const rawVal = document.getElementById('gradeTargetDay').value;
-      const targetDay = (rawVal === '0' || rawVal === 0) ? 0 : (parseInt(rawVal) || 1);
+      const targetDay = (rawVal === '0' || rawVal === 0) ? 0 : (parseInt(rawVal) || 2);
       loadStudentDayEvaluation(targetNisn, targetDay);
 
       const modal = document.getElementById('modalGradingFasilitator');
@@ -2840,7 +3112,7 @@
 
     function onTargetDayChange(dayNum) {
       const nisn = document.getElementById('modalGradingTargetNisn').value;
-      const d = (dayNum === '0' || dayNum === 0) ? 0 : (parseInt(dayNum) || 1);
+      const d = (dayNum === '0' || dayNum === 0) ? 0 : (parseInt(dayNum) || 2);
       if (nisn) loadStudentDayEvaluation(nisn, d);
     }
 
@@ -3096,11 +3368,30 @@
             const records = prog.records || [];
 
             // Prioritaskan penilaian fasilitator (general / memiliki skor 4 pilar)
-            const r = records.find(x => parseInt(x.day_number) === dayNum && x.task_type === 'general')
+            let r = records.find(x => parseInt(x.day_number) === dayNum && x.task_type === 'general')
                    || taskMap[dayNum + '_general']
                    || records.find(x => parseInt(x.day_number) === dayNum && x.score_financial !== undefined && x.score_financial !== null)
                    || records.find(x => parseInt(x.day_number) === dayNum && x.score !== null && x.score !== undefined && x.score !== '')
                    || records.find(x => parseInt(x.day_number) === dayNum);
+
+            // Sinkronkan data dari cache server jika r belum ada di records lokal
+            const cleanTargetNisn = String(nisn || '').trim();
+            const srvDay = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanTargetNisn + '_' + dayNum];
+            if (!r && srvDay) {
+              r = {
+                day_number: dayNum,
+                task_type: 'general',
+                score: srvDay.score,
+                predicate: srvDay.predicate,
+                score_financial: srvDay.fin,
+                score_culture: srvDay.cul,
+                score_exploration: srvDay.exp,
+                score_stem: srvDay.stem,
+                status: srvDay.status,
+                facilitator_name: srvDay.facilitator_name,
+                updated_at: srvDay.updated_at
+              };
+            }
 
             if (r) {
               if (r.score !== undefined && r.score !== null && r.score !== '') currentScore = parseFloat(r.score);
@@ -3900,6 +4191,32 @@
                         </div>
                       `;
                     } else if (isSectorObservasi) {
+                      let specQuestionsHtml = '';
+                      const qSpecMap = (nftLkpd.qSpecific && typeof nftLkpd.qSpecific === 'object')
+                        ? (nftLkpd.qSpecific[nftLkpd.sectorKey] || nftLkpd.qSpecific)
+                        : null;
+                      if (qSpecMap && typeof qSpecMap === 'object') {
+                        const entries = Object.entries(qSpecMap).filter(([k, v]) => v && typeof v === 'string');
+                        if (entries.length > 0) {
+                          specQuestionsHtml = `
+                            <div class="mt-2 p-2.5 rounded-xl bg-white/95 border border-indigo-200 flex flex-col gap-1.5 text-[10.5px]">
+                              <span class="font-bold text-indigo-950 flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs text-indigo-700">forum</span>
+                                <span>Wawancara Khusus Sektor Budaya (${entries.length} Pertanyaan):</span>
+                              </span>
+                              <div class="space-y-1.5 pt-1">
+                                ${entries.map(([qNum, ans]) => `
+                                  <div class="p-2 rounded-lg bg-indigo-50/50 border border-indigo-100">
+                                    <div class="font-extrabold text-indigo-900 text-[10px]">Pertanyaan #${qNum}:</div>
+                                    <p class="text-slate-800 italic mt-0.5 leading-relaxed font-medium">"${escapeHtml(ans)}"</p>
+                                  </div>
+                                `).join('')}
+                              </div>
+                            </div>
+                          `;
+                        }
+                      }
+
                       lkpdHtml = `
                         <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
                           <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
@@ -3910,14 +4227,19 @@
                             <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
                               <span class="text-slate-500 block text-[9.5px]">Sektor / Fokus Observasi:</span>
                               <div class="font-black text-teal-950 text-xs">${nftLkpd.sectorName || '-'}</div>
-                              <div class="text-[9.5px] text-slate-600 mt-0.5">📍 ${nftLkpd.location || (nftLkpd.village ? `${nftLkpd.village}, Kec. ${nftLkpd.district}` : '-')}</div>
+                              ${nftLkpd.cultureTheme ? `<span class="inline-block mt-1 px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-100 text-indigo-900 border border-indigo-200">${escapeHtml(nftLkpd.cultureTheme)}</span>` : ''}
+                              <div class="text-[9.5px] text-slate-600 mt-1">📍 ${nftLkpd.location || (nftLkpd.village ? `${nftLkpd.village}, Kec. ${nftLkpd.district}` : '-')}</div>
                             </div>
                             <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
                               <span class="text-slate-500 block text-[9.5px]">Narasumber Wawancara:</span>
                               <div class="font-bold text-slate-800 text-xs">👤 ${nftLkpd.narasumberName || '-'}</div>
                               <div class="text-[9.5px] text-slate-600 mt-0.5">${nftLkpd.narasumberRole || 'Pelaku Sektor'} ${nftLkpd.narasumberPhone ? `(${nftLkpd.narasumberPhone})` : ''}</div>
+                              ${(nftLkpd.narasumberAge || nftLkpd.durationWorking) ? `
+                                <div class="text-[9px] text-slate-500 mt-1">Usia: ${nftLkpd.narasumberAge || '-'} thn &bull; Pengalaman: ${nftLkpd.durationWorking || '-'}</div>
+                              ` : ''}
                             </div>
                           </div>
+                          ${specQuestionsHtml}
                           ${(nftLkpd.conclusion_6 || nftLkpd.conclusion_1) ? `
                             <div class="bg-white/95 p-2 rounded-xl border border-teal-200 text-[10.5px]">
                               <strong class="text-teal-900 text-[10px] block">💡 Sintesis &amp; Rekomendasi Observasi Siswa:</strong>
@@ -3944,45 +4266,53 @@
 
                   let nftAsesmenHtml = '';
                   try {
-                    if (storedNftAsesmen) {
-                      const aData = JSON.parse(storedNftAsesmen);
-                      if (aData && aData.score !== undefined) {
-                        nftAsesmenHtml = `
-                          <div class="mt-2 bg-white/95 p-2.5 rounded-xl border border-teal-300 flex items-center justify-between text-xs shadow-2xs">
-                            <div class="flex items-center gap-2">
-                              <span class="w-7 h-7 rounded-lg bg-teal-800 text-white flex items-center justify-center font-black text-xs">
-                                <span class="material-symbols-outlined text-sm">quiz</span>
-                              </span>
-                              <div>
-                                <span class="font-extrabold text-teal-950 block text-[11px]">Kuis Asesmen Day ${dayNum} (50 Soal Acak Exam Shield)</span>
-                                <span class="text-[10px] text-slate-500">${aData.correctCount || 0}/${aData.totalQuestions || 50} Benar &bull; Durasi: ${Math.round((aData.durationSpentSeconds || 0)/60)} Menit &bull; <span class="${(aData.violationCount || 0) > 0 ? 'text-rose-600 font-black' : 'text-slate-500'}">Pelanggaran: ${aData.violationCount || 0}/3 ${(aData.violationCount || 0) > 0 ? '⚠️' : ''}</span></span>
-                              </div>
-                            </div>
-                            <span class="px-2.5 py-1 rounded-lg bg-teal-100 text-teal-900 font-black text-xs border border-teal-300">
-                              Skor: ${aData.score} / 100
+                    const aData = nftAsesmen || (storedNftAsesmen ? JSON.parse(storedNftAsesmen) : null);
+                    if (aData && aData.score !== undefined) {
+                      nftAsesmenHtml = `
+                        <div class="mt-2 bg-white/95 p-2.5 rounded-xl border border-teal-300 flex items-center justify-between text-xs shadow-2xs">
+                          <div class="flex items-center gap-2">
+                            <span class="w-7 h-7 rounded-lg bg-teal-800 text-white flex items-center justify-center font-black text-xs">
+                              <span class="material-symbols-outlined text-sm">quiz</span>
                             </span>
+                            <div>
+                              <span class="font-extrabold text-teal-950 block text-[11px]">Kuis Asesmen Day ${dayNum} (50 Soal Acak Exam Shield)</span>
+                              <span class="text-[10px] text-slate-500">${aData.correctCount || 0}/${aData.totalQuestions || 50} Benar &bull; Durasi: ${Math.round((aData.durationSpentSeconds || 0)/60)} Menit &bull; <span class="${(aData.violationCount || 0) > 0 ? 'text-rose-600 font-black' : 'text-slate-500'}">Pelanggaran: ${aData.violationCount || 0}/3 ${(aData.violationCount || 0) > 0 ? '⚠️' : ''}</span></span>
+                            </div>
                           </div>
-                        `;
-                      }
+                          <span class="px-2.5 py-1 rounded-lg bg-teal-100 text-teal-900 font-black text-xs border border-teal-300">
+                            Skor: ${aData.score} / 100
+                          </span>
+                        </div>
+                      `;
                     }
                   } catch(e) {}
 
                   let nftReflHtml = '';
                   try {
-                    if (storedNftRefl) {
-                      const rData = JSON.parse(storedNftRefl);
-                      const rText = rData && (rData.content || rData.reflection || rData.note || (typeof rData === 'string' ? rData : ''));
-                      if (rText) {
-                        nftReflHtml = `
-                          <div class="mt-2 bg-white/95 p-2 rounded-xl border border-teal-200 text-[10.5px]">
-                            <strong class="text-teal-900 text-[10px] flex items-center gap-1">
-                              <span class="material-symbols-outlined text-xs text-teal-700">edit_note</span>
-                              <span>Jurnal Refleksi Mandiri Day ${dayNum}:</span>
-                            </strong>
-                            <p class="text-slate-700 italic mt-0.5 line-clamp-3">"${rText}"</p>
-                          </div>
-                        `;
+                    let rText = '';
+                    if (nftRefl) {
+                      if (typeof nftRefl === 'string') {
+                        try { const pr = JSON.parse(nftRefl); rText = pr.catatan || pr.text || pr.content || pr.reflection || nftRefl; } catch(e) { rText = nftRefl; }
+                      } else if (typeof nftRefl === 'object') {
+                        rText = nftRefl.catatan || nftRefl.text || nftRefl.content || nftRefl.reflection || '';
                       }
+                    }
+                    if (!rText && storedNftRefl) {
+                      try {
+                        const rData = JSON.parse(storedNftRefl);
+                        rText = rData && (rData.content || rData.reflection || rData.note || (typeof rData === 'string' ? rData : ''));
+                      } catch(e) {}
+                    }
+                    if (rText) {
+                      nftReflHtml = `
+                        <div class="mt-2 bg-white/95 p-2 rounded-xl border border-teal-200 text-[10.5px]">
+                          <strong class="text-teal-900 text-[10px] flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs text-teal-700">edit_note</span>
+                            <span>Jurnal Refleksi Mandiri Day ${dayNum}:</span>
+                          </strong>
+                          <p class="text-slate-700 italic mt-0.5 line-clamp-3">"${escapeHtml(rText)}"</p>
+                        </div>
+                      `;
                     }
                   } catch(e) {}
 
@@ -4049,6 +4379,54 @@
                         <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
                           <strong class="text-slate-700 block">Komitmen Finansial Siswa:</strong>
                           <p class="text-slate-600 italic mt-0.5">"${ftData.commitment}"</p>
+                        </div>
+                      ` : ''}
+                    </div>
+                  `;
+                }
+              } catch(e) {}
+            } else if (!renderedNftPreview && dayNum === 2) {
+              try {
+                const storedFtAkpol = localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + nisn);
+                const storedFtLawang = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + nisn);
+                const storedFtGeneric = localStorage.getItem('fincestem_lkpd_ft_day2_' + nisn);
+                const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day2_' + nisn);
+                let ftAsesmen = null;
+                if (storedAsesmen) {
+                  try { ftAsesmen = JSON.parse(storedAsesmen); } catch(e) {}
+                }
+                const ftAkpol = storedFtAkpol ? JSON.parse(storedFtAkpol) : null;
+                const ftLawang = storedFtLawang ? JSON.parse(storedFtLawang) : null;
+                const ftGen = storedFtGeneric ? JSON.parse(storedFtGeneric) : null;
+
+                if (ftAkpol || ftLawang || ftGen) {
+                  lkpdPreviewEl.innerHTML = `
+                    <div class="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex flex-col gap-2 text-xs">
+                      <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <span class="font-extrabold text-indigo-950 flex items-center gap-1">
+                          <span class="material-symbols-outlined text-sm text-indigo-700">museum</span>
+                          <span>Eksplorasi AKPOL &amp; Lawang Sewu (LKPD Day 2 Field Trip)</span>
+                        </span>
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-indigo-600 text-white">
+                          Field Trip
+                        </span>
+                      </div>
+                      ${ftAkpol ? `
+                        <div class="bg-white/90 p-2.5 rounded-xl border border-indigo-200">
+                          <span class="font-bold text-indigo-950 block text-[11px]">Sesi 1: Museum Taruna &amp; Etos Kedisiplinan AKPOL</span>
+                          <p class="text-slate-700 text-[10.5px] italic mt-0.5">${ftAkpol.resume || ftAkpol.reflection || '-'}</p>
+                        </div>
+                      ` : ''}
+                      ${ftLawang ? `
+                        <div class="bg-white/90 p-2.5 rounded-xl border border-indigo-200">
+                          <span class="font-bold text-indigo-950 block text-[11px]">Sesi 2: Arsitektur &amp; Sejarah Lawang Sewu (Sains Ventilasi)</span>
+                          <p class="text-slate-700 text-[10.5px] italic mt-0.5">${ftLawang.resume || ftLawang.reflection || '-'}</p>
+                        </div>
+                      ` : ''}
+                      ${ftAsesmen ? `
+                        <div class="bg-indigo-100/70 p-2 rounded-xl border border-indigo-300 text-[11px] flex items-center justify-between">
+                          <span class="font-bold text-indigo-950">Skor Asesmen Culture &amp; STEM:</span>
+                          <span class="font-black text-indigo-900 bg-white px-2 py-0.5 rounded-lg border border-indigo-200">${ftAsesmen.score || 0} / 100</span>
                         </div>
                       ` : ''}
                     </div>
@@ -5985,6 +6363,25 @@
           }
         }
 
+        // Sinkronkan dengan data server recap
+        const sSummary = window._fasilStudentSummaryMap && window._fasilStudentSummaryMap[String(s.nisn).trim()];
+        let srvGradedDays = 0;
+        let srvSubmittedDays = 0;
+        for (let d = 1; d <= 7; d++) {
+          const srvDay = window._fasilStudentDayMap && window._fasilStudentDayMap[String(s.nisn).trim() + '_' + d];
+          if (srvDay) {
+            const hasSub = parseInt(srvDay.student_tasks_count) > 0 || srvDay.status === 'submitted' || srvDay.status === 'completed';
+            const hasSc = srvDay.score !== null && srvDay.score !== undefined && srvDay.score !== '';
+            if (hasSub || hasSc) srvSubmittedDays++;
+            if (hasSc) srvGradedDays++;
+          }
+        }
+        submittedDays = Math.max(submittedDays, srvSubmittedDays);
+        gradedDays = Math.max(gradedDays, srvGradedDays);
+        if (sSummary && sSummary.avg_score && (finalScore === null || isNaN(finalScore))) {
+          finalScore = Math.round(parseFloat(sSummary.avg_score) * 10) / 10;
+        }
+
         let statusCategory = 'unstarted';
         if (hasPending) {
           statusCategory = 'pending';
@@ -6065,10 +6462,10 @@
             let actionBtn = '';
             if (item.statusCategory === 'pending') {
               statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>Belum Dinilai</span>`;
-              actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, 1)" class="px-3 py-1 rounded-xl text-xs font-black bg-[#0875D1] hover:bg-blue-600 text-white shadow-2xs cursor-pointer active:scale-95 transition-all">Nilai Sekarang</button>`;
+              actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, 2)" class="px-3 py-1 rounded-xl text-xs font-black bg-[#0875D1] hover:bg-blue-600 text-white shadow-2xs cursor-pointer active:scale-95 transition-all">Nilai Day 2</button>`;
             } else if (item.statusCategory === 'graded') {
               statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">✅ Sudah Dinilai</span>`;
-              actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, 1)" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">Lihat/Ubah</button>`;
+              actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, 2)" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">Lihat/Ubah</button>`;
             } else {
               statusBadge = `<span class="text-slate-400 text-xs italic">Belum Kumpul</span>`;
               actionBtn = `<span class="text-slate-300 text-xs font-semibold">-</span>`;
