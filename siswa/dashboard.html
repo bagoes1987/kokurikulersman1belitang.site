@@ -2779,18 +2779,19 @@
       // Cascading logic berurutan mutlak (Bebas Deadlock & Selalu Ramah Pengguna)
       const isFtDay7 = isFieldTrip && dayNum === 7;
       const isFtDay0 = isFieldTrip && dayNum === 0;
-      let canLkpd = isFtDay0 ? true : hasMateri;
-      let canDok = isFtDay0 ? true : (hasMateri && hasLkpd);
-      let canAsesmen = isFtDay0 ? true : (hasMateri && hasLkpd);
-      let canRefleksi = isFtDay0 ? true : (hasMateri && hasLkpd && (hasDok || hasAsesmen));
-      let canPenilaian = isFtDay0 ? true : (hasMateri && hasLkpd && hasDok && hasRefleksi);
+      const isDay2Flexible = (dayNum === 2);
+      let canLkpd = (isFtDay0 || isDay2Flexible) ? true : hasMateri;
+      let canDok = (isFtDay0 || isDay2Flexible) ? true : (hasMateri && hasLkpd);
+      let canAsesmen = (isFtDay0 || isDay2Flexible) ? true : (hasMateri && hasLkpd);
+      let canRefleksi = (isFtDay0 || isDay2Flexible) ? true : (hasMateri && hasLkpd && (hasDok || hasAsesmen));
+      let canPenilaian = (isFtDay0 || isDay2Flexible) ? true : (hasMateri && hasLkpd && hasDok && hasRefleksi);
 
       return {
         hasMateri,
-        hasLkpd: (hasLkpd && hasMateri),
-        hasAsesmen: (hasAsesmen && hasMateri && hasLkpd),
-        hasDok: (hasDok && hasMateri && hasLkpd),
-        hasRefleksi: (hasRefleksi && hasMateri && hasLkpd && (hasDok || hasAsesmen)),
+        hasLkpd: isDay2Flexible ? hasLkpd : (hasLkpd && hasMateri),
+        hasAsesmen: isDay2Flexible ? hasAsesmen : (hasAsesmen && hasMateri && hasLkpd),
+        hasDok: isDay2Flexible ? hasDok : (hasDok && hasMateri && hasLkpd),
+        hasRefleksi: isDay2Flexible ? hasRefleksi : (hasRefleksi && hasMateri && hasLkpd && (hasDok || hasAsesmen)),
         canLkpd,
         canAsesmen,
         canDok,

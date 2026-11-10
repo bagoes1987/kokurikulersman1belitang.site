@@ -211,7 +211,7 @@
     const rawForm = saved || draft || {};
     const formData = isSubmitted ? Object.assign({}, d1DefaultLKPDFields, rawForm) : rawForm;
     const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
-    const isLockedByPrereq = !hasMateri && !isTesterBypass;
+    const isLockedByPrereq = false; // Day 2 terbuka langsung untuk dikerjakan seluruh siswa
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
     const val = function(k) { return (formData && formData[k] !== undefined && formData[k] !== null) ? formData[k] : ''; };
     let d1CurDistrict = normalizeDistrictName(val('district') || '');
@@ -1493,7 +1493,7 @@
     const rawD2Form = saved || draft || {};
     const formData = isSubmitted ? Object.assign({}, d2DefaultLKPDFields, rawD2Form) : rawD2Form;
     const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
-    const isLockedByPrereq = !hasMateri && !isTesterBypass;
+    const isLockedByPrereq = false; // Day 2 terbuka bebas untuk dikerjakan siswa
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
     const readOnlyAttr = isFormLocked ? 'disabled' : '';
     const draftTimeStr = (draft && draft.updatedAt) 

@@ -4674,9 +4674,9 @@ const FincestemCore = {
       } catch (e) {}
 
       // 1. SISWA FIELD TRIP:
-      // Harus memenuhi: (1) Jadwal Day ini terbuka oleh Admin/Tanggal (isOpenByAdmin), dan (2) Day sebelumnya selesai
+      // Day 1 & Day 2 langsung terbuka penuh untuk semua siswa tanpa harus menunggu penilaian fasilitator
       if (isFt) {
-        const prevDone = (d <= 1) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+        const prevDone = (d <= 2) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
         const canOpen = isOpenByAdmin && prevDone;
         return {
           canAccess: canOpen,
@@ -4690,16 +4690,14 @@ const FincestemCore = {
       }
 
       // 2. SISWA NON-FIELD TRIP:
-      // Day 1:
-      if (d === 1) {
-        const isD1Done = this.isDayStudentTasksDone(prog, 1) || this.isDayCompleted(prog, 1);
-        const canOpenD1 = isOpenByAdmin || !isD1Done;
+      // Day 1 & Day 2: Langsung terbuka untuk seluruh siswa tanpa harus dinilai oleh fasilitator
+      if (d === 1 || d === 2) {
         return {
-          canAccess: canOpenD1,
-          canEdit: canOpenD1,
+          canAccess: isOpenByAdmin,
+          canEdit: isOpenByAdmin,
           isOpen: isOpenByAdmin,
           isPreviousCompleted: true,
-          reason: canOpenD1 ? '' : (sched ? sched.status_label : 'Aktivitas Day 1 telah selesai dituntaskan.')
+          reason: isOpenByAdmin ? '' : (sched ? sched.status_label : `Aktivitas Day ${d} ditutup oleh Admin (Hanya Lihat).`)
         };
       }
 

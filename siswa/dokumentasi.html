@@ -963,8 +963,8 @@
 
             // Jaminan Akses Dokumentasi:
             // Peserta Field Trip & Non-Field Trip (Day 0 s.d. Day 7) selalu memiliki hak akses untuk membuka halaman dan mengunggah foto
-            // jika hari sebelumnya telah tuntas (atau Day 0 / Day 1) atau jika ada riwayat foto sebelumnya
-            const prevDone = (dayNum <= 1) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
+            // jika hari sebelumnya telah tuntas (atau Day 0 / Day 1 / Day 2) atau jika ada riwayat foto sebelumnya
+            const prevDone = (dayNum <= 2) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
             if (prevDone || hasExistingDok || isReadOnlyUrl) {
               access.canAccess = true;
               if (isReadOnlyUrl) {
