@@ -17,6 +17,8 @@
 (function(window) {
   'use strict';
 
+  var FincestemCore = window.FincestemCore || {};
+
   // State Ujian
   let examState = {
     dayNum: 1,

@@ -4561,6 +4561,10 @@ const FincestemCore = {
         }
         const hasAnyTaskOnDay = !!(tm[d + '_materi'] || tm[d + '_lkpd'] || tm[d + '_asesmen'] || tm[d + '_dokumentasi'] || tm[d + '_refleksi']);
         if (hasAnyTaskOnDay) {
+          // Toleran & Tanggap: Jika Refleksi (tahap akhir siswa) telah terkirim, tandai tuntas
+          if (tm[d + '_refleksi'] && (tm[d + '_refleksi'].status === 'submitted' || tm[d + '_refleksi'].status === 'completed')) return true;
+          // Atau jika LKPD dan Dokumentasi / Asesmen telah terkirim
+          if (tm[d + '_lkpd'] && (tm[d + '_dokumentasi'] || tm[d + '_asesmen'])) return true;
           return !!(tm[d + '_materi'] && tm[d + '_lkpd'] && tm[d + '_asesmen'] && tm[d + '_dokumentasi'] && (d === 7 ? true : tm[d + '_refleksi']));
         }
       }
@@ -4686,14 +4690,16 @@ const FincestemCore = {
       }
 
       // 2. SISWA NON-FIELD TRIP:
-      // Day 1: CAN_ACCESS_DAY_1 = (ADMIN_DAY_1 == OPEN)
+      // Day 1:
       if (d === 1) {
+        const isD1Done = this.isDayStudentTasksDone(prog, 1) || this.isDayCompleted(prog, 1);
+        const canOpenD1 = isOpenByAdmin || !isD1Done;
         return {
-          canAccess: isOpenByAdmin,
-          canEdit: isOpenByAdmin,
+          canAccess: canOpenD1,
+          canEdit: canOpenD1,
           isOpen: isOpenByAdmin,
           isPreviousCompleted: true,
-          reason: isOpenByAdmin ? '' : (sched ? sched.status_label : 'Aktivitas Day 1 ditutup oleh Admin (Hanya Lihat).')
+          reason: canOpenD1 ? '' : (sched ? sched.status_label : 'Aktivitas Day 1 telah selesai dituntaskan.')
         };
       }
 
@@ -4708,7 +4714,7 @@ const FincestemCore = {
           canEdit: false,
           isOpen: isOpenByAdmin,
           isPreviousCompleted: false,
-          reason: `Harap selesaikan seluruh rangkaian tugas mandiri (Modul, LKPD, Asesmen, Foto, dan Refleksi) pada Day ${d - 1} terlebih dahulu.`
+          reason: `Harap selesaikan seluruh rangkaian tugas mandiri pada Day ${d - 1} terlebih dahulu.`
         };
       }
 

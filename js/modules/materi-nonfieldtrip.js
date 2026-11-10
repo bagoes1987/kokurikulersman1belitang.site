@@ -9,6 +9,8 @@
 (function(window) {
   'use strict';
 
+  var FincestemCore = window.FincestemCore || {};
+
   // 1. HELPER ANTI-SPAM & VALIDASI KARAKTER ILMIAH
   function validateScientificContent(text, minChars) {
     if (!text || typeof text !== 'string') return { valid: false, count: 0, reason: 'Teks masih kosong' };

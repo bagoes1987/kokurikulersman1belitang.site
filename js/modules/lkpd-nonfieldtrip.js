@@ -8,6 +8,8 @@
 (function(window) {
   'use strict';
 
+  var FincestemCore = window.FincestemCore || {};
+
   // 20 Kecamatan Resmi di Kabupaten OKU Timur
   const OKU_TIMUR_DISTRICTS = [
     'Belitang',
@@ -7234,9 +7236,7 @@
   window.submitNonFieldTripDay5LKPD = submitNonFieldTripDay5LKPD;
   window.saveNonFieldTripDay6Draft = saveNonFieldTripDay6Draft;
   window.submitNonFieldTripDay6LKPD = submitNonFieldTripDay6LKPD;
-  window.saveNonFieldTripDay7Draft = saveNonFieldTripDay7Draft;
+  window.saveDraftNonFieldTripDay7LKPD = saveDraftNonFieldTripDay7LKPD;
   window.submitNonFieldTripDay7LKPD = submitNonFieldTripDay7LKPD;
-  window.previewNftDay7Youtube = previewNftDay7Youtube;
-  window.recalcNftDay7Kas = recalcNftDay7Kas;
 
 })(window);
