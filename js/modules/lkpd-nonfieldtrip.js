@@ -1281,70 +1281,70 @@
     },
     industri: {
       key: 'industri',
-      name: 'Agro-Industri Penggilingan Padi (RMU) & Pengolahan Pangan',
-      cultureTheme: 'Etos industri pedesaan, menjaga mutu beras Belitang, dan sirkular limbah sekam/dedak',
+      name: 'Agro-Industri & Pengolahan Pangan (Pabrik RMU/Kilang Padi, UMKM Tahu-Tempe, Kemplang, Kue/Roti)',
+      cultureTheme: 'Etos industri pedesaan, menjaga mutu produk pangan, dan sirkular pemanfaatan limbah usaha',
       badgeColor: 'bg-rose-100 text-rose-800 border-rose-300',
       labels: {
-        locLabel: 'Nama Kilang Padi (RMU) / Unit Pengolahan:',
-        locPlaceholder: 'Contoh: Kilang Padi RMU Berkah Tani / Sentra Kerupuk Kemplang',
-        narLabel: 'Nama Pemilik Kilang / Pengelola Usaha:',
+        locLabel: 'Nama Kilang Padi (RMU) / Unit Usaha Pengolahan:',
+        locPlaceholder: 'Contoh: Kilang Padi RMU Berkah Tani / Sentra Kerupuk Kemplang / Pabrik Tahu Desa',
+        narLabel: 'Nama Pemilik Usaha / Pengelola Produksi:',
         narPlaceholder: 'Contoh: Bapak H. Darmawan / Ibu Yuliana',
         durLabel: 'Lama Mengoperasikan Usaha Pengolahan:',
         durPlaceholder: 'Contoh: 16 Tahun Beroperasi di Belitang',
         extraLabel: 'Kapasitas Pengolahan / Produksi Harian:',
-        extraPlaceholder: 'Contoh: 8 Ton Gabah / Hari (Beras Kemasan Premium) / 100 kg Kemplang'
+        extraPlaceholder: 'Contoh: 8 Ton Gabah / Hari (Beras Premium) / 100 kg Kemplang / 2 Kuintal Kedelai'
       },
       questions: [
-        { id: 1, text: 'Bagaimana Bapak/Ibu membangun ikatan saling percaya dengan petani yang menjual gabahnya ke kilang ini? Mengapa kejujuran timbangan dan keadilan harga sangat dijaga?', hint: 'Kaji hubungan kepercayaan bisnis beras, kejujuran timbangan, dan kepastian pembayaran kepada petani...' },
-        { id: 2, text: 'Hanya dengan meremas segenggam gabah atau menggigitnya, bagaimana Bapak/Ibu bisa tahu kadar air dan kualitas gabah tersebut? Dari mana ilmu tersebut dipelajari?', hint: 'Kaji insting tradisional memeriksa kadar air gabah, rendemen beras kepala, dan butir mengapur...' },
-        { id: 3, text: 'Dahulu gabah hanya dijemur di bawah terik matahari. Bagaimana kehadiran mesin pengering bed dryer mengubah kebiasaan kerja kilang ini, terutama saat musim penghujan?', hint: 'Kaji transformasi dari jemur manual di lantai semen ke mesin pengering mekanis bed dryer/vertical dryer...' },
-        { id: 4, text: 'Limbah sekam padi dan dedak halus biasanya disalurkan ke mana? Bagaimana kilang ini bekerja sama dengan peternak sapi dan pembudidaya ikan di sekitar desa?', hint: 'Kaji pemanfaatan dedak bekatul untuk pakan ternak/ikan dan sekam untuk bahan bakar batu bata...' },
-        { id: 5, text: 'Apakah usaha penggilingan padi ini merupakan rintisan keluarga turun-temurun? Bagaimana generasi muda dilatih mengoperasikan mesin dan mengelola pembukuan usaha?', hint: 'Kaji regenerasi keluarga pemilik kilang padi, pembagian tugas, dan pembukuan arus kas usaha...' }
+        { id: 1, text: 'Bagaimana Bapak/Ibu membangun ikatan saling percaya dengan pemasok bahan baku (petani gabah / pemasok kedelai/ikan/tepung)? Mengapa kejujuran timbangan dan keadilan harga sangat dijaga?', hint: 'Kaji hubungan kepercayaan bisnis, kejujuran timbangan bahan baku, dan kepastian pembayaran kepada pemasok/petani...' },
+        { id: 2, text: 'Bagaimana keahlian Bapak/Ibu dalam menguji kualitas bahan baku sebelum diolah (seperti mengecek kadar air gabah, mutu kedelai, atau kesegaran bahan pangan)? Dari mana keterampilan tersebut dipelajari?', hint: 'Kaji insting dan teknik tradisional memeriksa mutu bahan baku, rendemen hasil olahan, dan standar mutu produk...' },
+        { id: 3, text: 'Dahulu pengeringan atau pengolahan hanya mengandalkan panas matahari dan tenaga otot. Bagaimana kehadiran mesin produksi modern (mesin bed dryer, gilingan, oven, atau mixer) mengubah kecepatan kerja dan produktivitas usaha?', hint: 'Kaji transformasi alat manual ke mesin pengering mekanis (bed dryer/oven) atau mesin pengolah modern...' },
+        { id: 4, text: 'Limbah sisa produksi (seperti sekam padi/dedak, ampas tahu, atau kulit/potongan bahan) biasanya dimanfaatkan untuk apa? Bagaimana bentuk kerja sama dengan peternak sapi/ikan atau perajin batu bata di sekitar desa?', hint: 'Kaji pemanfaatan limbah sisa (dedak/ampas tahu untuk pakan ternak/ikan, sekam untuk bahan bakar bata/kompos)...' },
+        { id: 5, text: 'Apakah usaha pengolahan pangan ini merupakan rintisan keluarga turun-temurun? Bagaimana generasi muda dilatih mengoperasikan mesin dan mengelola pembukuan usaha?', hint: 'Kaji regenerasi keluarga pemilik usaha, pembagian tugas produksi, dan pembukuan arus kas usaha...' }
       ],
       obsHints: [
-        'Amati tata letak kilang padi: area penerimaan gabah, lantai jemur semen, dan ruang mesin giling...',
-        'Catat mesin industri yang ada: mesin bed dryer, husker pemecah kulit, polisher penyosoh, penjahit karung...',
-        'Uraikan alur pengolahan: dari penimbangan gabah basah, pengeringan, penggilingan, hingga beras masuk karung...',
-        'Amati keterampilan operator menyetel kerapatan roll husker dan ketelitian mengecek butir beras patah...',
-        'Amati komunikasi pekerja kilang dengan sopir truk angkut gabah dan petani yang datang menjual gabah...',
-        'Amati etos disiplin kerja kilang: ketahanan terhadap debu sekam, kebisingan mesin, dan ketepatan waktu...',
-        'Catat teknologi modern: timbangan digital duduk, conveyor pemindah beras, dan mesin jahit karung cepat...',
-        'Amati kendala industri: debu sekam beterbangan, mati lampu PLN, atau kadar air gabah terlalu basah...',
-        'Amati penanganan limbah: penumpukan sekam untuk pembakaran batu bata dan pengarungan dedak halus...'
+        'Amati tata letak lokasi produksi: area penerimaan bahan baku, lantai jemur/pengeringan, dan ruang mesin pengolahan...',
+        'Catat mesin industri/pengolahan yang ada: mesin pengering (dryer/oven), mesin giling/pemecah kulit, mixer, mesin pres, atau penjahit/sealer kemasan...',
+        'Uraikan alur pengolahan: dari penimbangan bahan mentah, pencucian/perendaman, penggilingan, hingga pengemasan produk...',
+        'Amati keterampilan operator menyetel mesin dan ketelitian mengecek hasil olahan agar sesuai standar mutu...',
+        'Amati komunikasi pekerja dengan pemasok bahan baku dan pelanggan yang datang membeli produk...',
+        'Amati etos disiplin kerja di lokasi: ketahanan terhadap panas/debu/kebisingan, kekompakan tim, dan ketepatan waktu kerja...',
+        'Catat teknologi modern: timbangan digital, conveyor/gerobak dorong, dan alat pengemas/penyegel cepat...',
+        'Amati kendala industri: debu/asap produksi, fluktuasi pasokan listrik/hujan lebat, atau kadar air bahan baku yang terlalu basah...',
+        'Amati penanganan limbah: penumpukan sisa produksi untuk pakan ternak/pupuk/bahan bakar dan kebersihan area kerja...'
       ]
     },
     perdagangan: {
       key: 'perdagangan',
-      name: 'Perdagangan (Kios Sarana Pertanian Resmi & Toko Sembako Pasar)',
-      cultureTheme: 'Etika niaga, sistem kepercayaan utang tempo panen, dan modal sosial pelanggan',
+      name: 'Perdagangan & UMKM Niaga (Toko Pakaian/Busana, Sembako, Kios Pasar, Saprotan & Aneka Toko Niaga)',
+      cultureTheme: 'Etika niaga, sistem kepercayaan transaksi tempo/tunai, pelayanan ramah, dan modal sosial pelanggan',
       badgeColor: 'bg-indigo-100 text-indigo-800 border-indigo-300',
       labels: {
-        locLabel: 'Nama Kios Saprotan / Toko / Los Pasar:',
-        locPlaceholder: 'Contoh: Kios Pupuk & Obat Tani Resmi Tani Makmur, Pasar Gumawang',
-        narLabel: 'Nama Pemilik Kios / Pedagang:',
-        narPlaceholder: 'Contoh: Bapak Ahmad Fauzi / Ibu Endang',
-        durLabel: 'Lama Berdagang di Wilayah Ini:',
-        durPlaceholder: 'Contoh: 14 Tahun Melayani Petani Belitang',
-        extraLabel: 'Jenis Komoditas Dagangan Pokok:',
-        extraPlaceholder: 'Contoh: Pupuk NPK Phonska, Benih Padi Inpari 32, Pestisida & Sembako'
+        locLabel: 'Nama Toko / Kios / Usaha Dagang / Los Pasar:',
+        locPlaceholder: 'Contoh: Toko Pakaian Rahayu / Toko Sembako Berkah / Kios Pasar Gumawang',
+        narLabel: 'Nama Pemilik Toko / Pedagang:',
+        narPlaceholder: 'Contoh: Ibu Siti Rahayu / Bapak Ahmad Fauzi',
+        durLabel: 'Lama Menjalankan Usaha Dagang:',
+        durPlaceholder: 'Contoh: 10 Tahun Berdagang di Belitang',
+        extraLabel: 'Komoditas / Jenis Barang Dagangan Utama:',
+        extraPlaceholder: 'Contoh: Pakaian Jadi & Busana / Sembako / Pupuk & Saprotan / Aneka Barang Dagang'
       },
       questions: [
-        { id: 1, text: 'Banyak petani mengambil pupuk atau benih dulu dan membayarnya setelah panen (sistem tempo). Nilai kepercayaan dan kekeluargaan apa yang membuat sistem ini bisa bertahan?', hint: 'Kaji sistem tempo bayar saat panen, risiko piutang macet, dan modal sosial saling percaya...' },
-        { id: 2, text: 'Bagaimana prinsip kejujuran dalam menakar timbangan dan menentukan harga? Nilai moral apa yang diajarkan orang tua agar toko membawa berkah bagi pelanggan?', hint: 'Kaji etika berdagang, ketepatan timbangan, dan kepuasan pelanggan tetap...' },
-        { id: 3, text: 'Apakah kios pupuk/toko ini sering jadi tempat bertukar informasi antar-petani mengenai serangan hama atau harga panen? Bagaimana peran sosial toko ini di desa?', hint: 'Kaji kios sebagai ruang publik petukaran informasi agronomi dan keluh kesah petani...' },
-        { id: 4, text: 'Bagaimana perputaran keuangan kios saat musim tanam (banyak piutang) dibandingkan saat musim panen raya? Bagaimana kiat pedagang menjaga kas modal agar tidak macet?', hint: 'Kaji manajemen arus kas pedagang dalam menghadapi siklus musiman pertanian padi...' },
-        { id: 5, text: 'Apakah pelanggan petani di sini sudah mulai membayar menggunakan QRIS atau transfer bank? Bagaimana anak muda membantu toko menerapkan pencatatan digital?', hint: 'Kaji adopsi pembayaran digital di toko dan keterlibatan anak muda dalam pembukuan kas...' }
+        { id: 1, text: 'Dalam aktivitas perdagangan di OKU Timur, sering ada pelanggan yang meminta sistem tempo/kredit atau membayar saat musim panen/gajian. Bagaimana Bapak/Ibu membangun nilai kepercayaan dan kekeluargaan dengan para pelanggan agar modal usaha tetap lancar?', hint: 'Kaji sistem kepercayaan pelanggan, sistem pembayaran tempo/tunai, cara menjaga relasi baik dengan pembeli, dan strategi agar kas modal tidak macet...' },
+        { id: 2, text: 'Bagaimana Bapak/Ibu menerapkan prinsip kejujuran dalam menentukan harga jual, kualitas barang (tidak cacat/sesuai mutu), atau takaran timbangan? Nilai moral dan etika apa yang dipegang agar toko membawa berkah bagi pelanggan?', hint: 'Kaji etika berdagang, keterbukaan informasi mutu barang kepada pembeli, kejujuran harga/timbangan, dan kepuasan pelanggan tetap...' },
+        { id: 3, text: 'Toko atau kios sering menjadi ruang interaksi sosial warga sekitar untuk bersilaturahmi, bertukar kabar, atau berbagi cerita. Bagaimana Bapak/Ibu membangun keramahan, tutur bahasa santun, dan suasana guyub rukun dengan para pembeli yang datang?', hint: 'Kaji fungsi sosial toko sebagai tempat temu warga, keramahan dan etika tutur kata penjual, serta kehangatan relasi antarwarga di lingkungan sekitar...' },
+        { id: 4, text: 'Keramaian pembeli dan daya beli masyarakat di OKU Timur umumnya sangat dipengaruhi oleh siklus panen raya pertanian atau momen hari raya. Bagaimana fluktuasi penjualan di toko ini saat musim panen/hari raya dibanding hari biasa, dan bagaimana kiat Bapak/Ibu menyiasatinya?', hint: 'Kaji pengaruh musim panen raya atau hari besar keagamaan terhadap omzet penjualan toko, strategi penyediaan stok barang dagangan, dan pengaturan arus kas...' },
+        { id: 5, text: 'Apakah pembeli di toko ini sudah mulai memanfaatkan pembayaran nontunai (seperti QRIS atau transfer bank), atau promosi produk lewat media sosial (WhatsApp/TikTok/FB)? Bagaimana peran generasi muda dalam membantu modernisasi toko ini?', hint: 'Kaji adopsi pembayaran digital (QRIS/transfer), pemasaran dan pemesanan online lewat medsos/WhatsApp, serta keterlibatan anak muda dalam pembukuan usaha...' }
       ],
       obsHints: [
-        'Amati penataan barang di kios/toko: tumpukan karung pupuk, botol obat hama di etalase, atau sembako...',
-        'Catat peralatan niaga: timbangan gantung/duduk/digital, kalkulator kasir, nota kontan, dan rak barang...',
-        'Uraikan alur pelayanan pembeli: menyapa petani, memberi konsultasi obat hama yang pas, hingga pembayaran...',
-        'Amati pengetahuan pedagang saat menjelaskan dosis pemupukan dan cara pakai racun rumput kepada petani...',
-        'Amati kehangatan interaksi sosial: tegur sapa khas pedesaan, tawar-menawar santun, dan canda tawa warga...',
-        'Amati nilai amanah dan kejujuran: ketelitian mengembalikan uang kembalian dan mengecek segel kemasan asli...',
-        'Catat teknologi transaksi: mesin EDC mini ATM, stiker QRIS di meja, atau smartphone pemesanan via WA...',
-        'Amati kendala niaga: keterbatasan stok pupuk subsidi, petani telat bayar utang tempo, atau persaingan harga...',
-        'Amati upaya toko menjaga mutu: menjaga pupuk agar tidak lembap/menggumpal dan kebersihan lingkungan toko...'
+        'Amati tata ruang dan penataan barang di toko: etalase kaca, gantungan pakaian/hanger, rak susun barang dagangan, atau kebersihan ruangan...',
+        'Catat peralatan niaga yang ada: gantungan pakaian/manekin, rak display, timbangan (jika ada), kalkulator kasir, nota kontan, atau cermin...',
+        'Uraikan alur pelayanan pembeli: menyapa pembeli yang masuk, menawarkan pilihan model/ukuran/varian barang, tawar-menawar santun, hingga transaksi pembayaran...',
+        'Amati keterampilan pedagang: kecepatan mencari stok barang/ukuran yang pas, pengetahuan bahan/kualitas produk, serta kelihaian menghitung total harga...',
+        'Amati kehangatan interaksi sosial: tegur sapa khas pedesaan, keramahan senyum penjual, tawar-menawar yang akrab, dan canda tawa dengan pelanggan...',
+        'Amati nilai amanah dan kejujuran: ketelitian mengecek barang sebelum dibungkus agar tidak ada yang cacat/rusak, serta ketepatan menghitung uang kembalian...',
+        'Catat teknologi transaksi yang digunakan: kalkulator, mesin EDC/QRIS, smartphone untuk cek transfer/stok via WA, atau sistem pencatatan kasir...',
+        'Amati kendala nyata di tempat usaha: penurunan pembeli di luar musim panen, persaingan harga dengan toko lain/online, atau keterbatasan ruang display...',
+        'Amati upaya toko menjaga mutu produk: membersihkan barang dari debu, menutup pakaian/barang berharga dengan plastik, serta kerapian penataan etalase toko...'
       ]
     },
     formal: {
@@ -1686,9 +1686,9 @@
                 <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
                 <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat &amp; Budidaya Ternak (Sapi, Kambing/Domba, &amp; Unggas/Ayam)</option>
                 <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele &amp; Nila)</option>
-                <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (Pabrik Penggilingan Padi / RMU, UMKM Tahu-Tempe, Kerupuk Kemplang)</option>
-                <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi / Pupuk &amp; Obat Tani, Pasar Tradisional / Grosir Sembako)</option>
-                <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Jasa Keuangan &amp; Jasa Perorangan (Layanan Keuangan Tanpa Kantor / Agen BRILink, Koperasi Simpan Pinjam / KSP, BUMDes)</option>
+                <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (Pabrik RMU/Kilang Padi, UMKM Tahu-Tempe, Kemplang, Kue/Roti)</option>
+                <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan &amp; UMKM Niaga (Toko Pakaian/Busana, Sembako, Kios Pasar, Saprotan &amp; Aneka Toko Niaga)</option>
+                <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Jasa Keuangan &amp; Jasa Perorangan (Layanan Keuangan Tanpa Kantor / Agen BRILink, KSP, BUMDes, Bengkel &amp; Jasa Desa)</option>
               </select>
               <p class="text-[11px] text-indigo-900 leading-relaxed font-semibold mt-0.5 flex items-start gap-1.5">
                 <span class="material-symbols-outlined text-indigo-600 text-sm shrink-0">info</span>
@@ -2709,30 +2709,30 @@
   },
   "perdagangan": {
     "key": "perdagangan",
-    "name": "Perdagangan Sarana Pertanian & Sembako",
-    "badge": "Kios Saprotan & Grosir",
+    "name": "Perdagangan & UMKM Niaga (Toko Pakaian, Sembako, Saprotan & Pasar)",
+    "badge": "Toko & Niaga",
     "icon": "storefront",
     "colorClass": "emerald",
-    "scalePlaceholder": "Contoh: Kios Pupuk Bersubsidi & Obat Tanaman Desa",
-    "scaleLabel": "Jenis Usaha Dagang / Luas Kios:",
-    "sainsA1Label": "1. Jenis Pupuk, Benih & Produk yang Dijual:",
-    "sainsA1Hint": "Amati dan jelaskan: jenis pupuk (urea, NPK, organik), benih padi unggul, atau jenis obat pertanian yang paling banyak dicari petani...",
+    "scalePlaceholder": "Contoh: Toko Pakaian Rahayu / Kios Sembako & Saprotan Pasar",
+    "scaleLabel": "Jenis Usaha Dagang / Luas Toko:",
+    "sainsA1Label": "1. Jenis Barang, Komoditas / Produk yang Dijual:",
+    "sainsA1Hint": "Amati dan jelaskan: jenis produk dagangan (pakaian jadi/busana, sembako, benih/pupuk, dll.) dan varian yang paling diminati pembeli...",
     "sainsA2Label": "2. Cara Menjaga Kualitas & Daya Simpan Barang Toko:",
-    "sainsA2Hint": "Amati dan jelaskan: bagaimana pemilik toko menjaga karung pupuk agar tidak lembap/menggumpal dan obat tanaman tetap aman...",
+    "sainsA2Hint": "Amati dan jelaskan: bagaimana pemilik toko menjaga pakaian/barang dagangan agar tidak kotor berdebu, tidak lembap, dan tetap rapi...",
     "tekB1Label": "1. Peralatan Bantu Kerja di Toko / Kios:",
-    "tekB1Hint": "Catat alat kerja yang digunakan: timbangan digital platform, troli roda dorong angkut karung, atau smartphone aplikasi transaksi...",
-    "tekB2Label": "2. Fungsi Alat Digital & Akurasi Timbangan Toko:",
-    "tekB2Hint": "Jelaskan: bagaimana timbangan digital mempermudah transaksi cepat dan adil, serta aplikasi kasir atau aplikasi pupuk (i-Pubers)...",
-    "engC1Label": "1. Kendala Penataan Barang & Alur Angkut di Toko:",
-    "engC1Hint": "Tuliskan kendala teknis: misalnya ruang gudang yang sempit, karung pupuk yang berat saat dipindahkan, atau lantai yang rentan lembap...",
-    "engC2Label": "2. Solusi Rekayasa Penataan Palet Kayu & Lorong Gudang:",
-    "engC2Hint": "Tuliskan trik pedagang: misalnya menyusun karung di atas palet kayu penahan rembesan air, serta membuat lorong khusus troli barang...",
-    "engC3Label": "3. Pendapat Anda Mengenai Penataan Gudang Toko Tersebut:",
-    "engC3Hint": "Jelaskan: Mengapa penataan barang yang rapi dan beralas kayu sangat penting untuk mencegah kerusakan barang dagangan?...",
-    "mathD1Label": "1. Estimasi Harga Modal Beli Barang Grosir dari Distributor:",
-    "mathD1Hint": "Tuliskan perkiraan harga beli modal barang per karung atau per botol obat dari distributor grosir pabrik...",
-    "mathD2Label": "2. Harga Jual Eceran ke Petani & Margin Keuntungan:",
-    "mathD2Hint": "Tuliskan harga jual eceran toko ke petani dan hitung selisih laba (margin) yang didapat per karung atau per barang...",
+    "tekB1Hint": "Catat alat kerja yang digunakan: gantungan baju/manekin, rak display, timbangan (jika ada), kalkulator kasir, atau smartphone transaksi...",
+    "tekB2Label": "2. Fungsi Alat Digital & Transaksi Toko:",
+    "tekB2Hint": "Jelaskan: bagaimana alat kasir, timbangan, pembayaran QRIS/transfer, atau media sosial mempermudah transaksi dagang...",
+    "engC1Label": "1. Kendala Penataan Barang & Alur Ruang di Toko:",
+    "engC1Hint": "Tuliskan kendala teknis: misalnya ruang toko/display sempit, penataan barang/gantungan yang padat, atau pencahayaan ruangan...",
+    "engC2Label": "2. Solusi Rekayasa Penataan Display & Lorong Toko:",
+    "engC2Hint": "Tuliskan trik pedagang: penataan pakaian/barang berdasarkan kategori/warna, rak vertikal hemat ruang, dan lorong jalan pembeli...",
+    "engC3Label": "3. Pendapat Anda Mengenai Penataan Ruang Toko Tersebut:",
+    "engC3Hint": "Jelaskan: Mengapa penataan barang dagangan yang rapi dan menarik sangat penting untuk memikat minat beli konsumen?...",
+    "mathD1Label": "1. Estimasi Harga Modal Beli Barang dari Agen/Distributor:",
+    "mathD1Hint": "Tuliskan perkiraan harga beli modal barang per potong pakaian / per barang dari distributor grosir pabrik...",
+    "mathD2Label": "2. Harga Jual Eceran ke Konsumen & Margin Keuntungan:",
+    "mathD2Hint": "Tuliskan harga jual eceran toko ke pembeli dan hitung selisih laba (margin) yang didapat per potong pakaian atau per barang...",
     "mathD3Label": "3. Estimasi Keuntungan Bersih Toko per Hari/Bulan:",
     "mathD3Hint": "Hitung perkiraan keuntungan: Jumlah rata-rata barang terjual per hari dikalikan margin laba bersih toko..."
   },
@@ -3020,7 +3020,7 @@
                   <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba, Ayam Broiler/Petelur &amp; Bebek)</option>
                   <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin &amp; Lele Belitang, Aerator &amp; Pakan)</option>
                   <option value="industri" ${selSector === 'industri' ? 'selected' : ''}>5. Agro-Industri &amp; Pengolahan Pangan (Pabrik Beras RMU, Tahu-Tempe &amp; Kemplang)</option>
-                  <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan (Kios Sarana Pertanian Resmi, Pasar Tradisional &amp; Grosir Sembako)</option>
+                  <option value="perdagangan" ${selSector === 'perdagangan' ? 'selected' : ''}>6. Perdagangan &amp; UMKM Niaga (Toko Pakaian, Sembako, Kios Pasar, &amp; Saprotan)</option>
                   <option value="formal" ${selSector === 'formal' ? 'selected' : ''}>7. Jasa Keuangan Mikro &amp; Jasa Perorangan (Agen BRILink, BUMDes, Koperasi &amp; Bengkel)</option>
                 </select>
                 <p class="text-[11px] text-emerald-900/80 leading-relaxed font-medium mt-0.5">
