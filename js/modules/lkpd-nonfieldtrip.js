@@ -1281,25 +1281,25 @@
     },
     industri: {
       key: 'industri',
-      name: 'Agro-Industri & Pengolahan Pangan (Pabrik RMU/Kilang Padi, UMKM Tahu-Tempe, Kemplang, Kue/Roti)',
-      cultureTheme: 'Etos industri pedesaan, menjaga mutu produk pangan, dan sirkular pemanfaatan limbah usaha',
+      name: 'Agro-Industri & Pengolahan Pangan (Pabrik RMU/Kilang Padi, UMKM Tahu-Tempe, Kemplang, Kue/Roti & Kuliner)',
+      cultureTheme: 'Etos industri olahan pangan, standar higienis mutu produk, dan pemanfaatan sirkular limbah usaha',
       badgeColor: 'bg-rose-100 text-rose-800 border-rose-300',
       labels: {
-        locLabel: 'Nama Kilang Padi (RMU) / Unit Usaha Pengolahan:',
-        locPlaceholder: 'Contoh: Kilang Padi RMU Berkah Tani / Sentra Kerupuk Kemplang / Pabrik Tahu Desa',
+        locLabel: 'Nama Kilang Padi (RMU) / Unit Usaha UMKM Olahan Pangan:',
+        locPlaceholder: 'Contoh: Pabrik Tahu-Tempe Berkah / Sentra Kerupuk Kemplang / Usaha Kue & Roti / Kilang RMU',
         narLabel: 'Nama Pemilik Usaha / Pengelola Produksi:',
         narPlaceholder: 'Contoh: Bapak H. Darmawan / Ibu Yuliana',
         durLabel: 'Lama Mengoperasikan Usaha Pengolahan:',
-        durPlaceholder: 'Contoh: 16 Tahun Beroperasi di Belitang',
+        durPlaceholder: 'Contoh: 10 Tahun Mengelola Usaha Pengolahan Pangan',
         extraLabel: 'Kapasitas Pengolahan / Produksi Harian:',
-        extraPlaceholder: 'Contoh: 8 Ton Gabah / Hari (Beras Premium) / 100 kg Kemplang / 2 Kuintal Kedelai'
+        extraPlaceholder: 'Contoh: 2 Kuintal Kedelai / 100 kg Kemplang / 500 Pcs Roti / 8 Ton Gabah'
       },
       questions: [
-        { id: 1, text: 'Bagaimana Bapak/Ibu membangun ikatan saling percaya dengan pemasok bahan baku (petani gabah / pemasok kedelai/ikan/tepung)? Mengapa kejujuran timbangan dan keadilan harga sangat dijaga?', hint: 'Kaji hubungan kepercayaan bisnis, kejujuran timbangan bahan baku, dan kepastian pembayaran kepada pemasok/petani...' },
-        { id: 2, text: 'Bagaimana keahlian Bapak/Ibu dalam menguji kualitas bahan baku sebelum diolah (seperti mengecek kadar air gabah, mutu kedelai, atau kesegaran bahan pangan)? Dari mana keterampilan tersebut dipelajari?', hint: 'Kaji insting dan teknik tradisional memeriksa mutu bahan baku, rendemen hasil olahan, dan standar mutu produk...' },
-        { id: 3, text: 'Dahulu pengeringan atau pengolahan hanya mengandalkan panas matahari dan tenaga otot. Bagaimana kehadiran mesin produksi modern (mesin bed dryer, gilingan, oven, atau mixer) mengubah kecepatan kerja dan produktivitas usaha?', hint: 'Kaji transformasi alat manual ke mesin pengering mekanis (bed dryer/oven) atau mesin pengolah modern...' },
-        { id: 4, text: 'Limbah sisa produksi (seperti sekam padi/dedak, ampas tahu, atau kulit/potongan bahan) biasanya dimanfaatkan untuk apa? Bagaimana bentuk kerja sama dengan peternak sapi/ikan atau perajin batu bata di sekitar desa?', hint: 'Kaji pemanfaatan limbah sisa (dedak/ampas tahu untuk pakan ternak/ikan, sekam untuk bahan bakar bata/kompos)...' },
-        { id: 5, text: 'Apakah usaha pengolahan pangan ini merupakan rintisan keluarga turun-temurun? Bagaimana generasi muda dilatih mengoperasikan mesin dan mengelola pembukuan usaha?', hint: 'Kaji regenerasi keluarga pemilik usaha, pembagian tugas produksi, dan pembukuan arus kas usaha...' }
+        { id: 1, text: 'Bagaimana Bapak/Ibu membangun ikatan saling percaya dengan pemasok bahan baku (misal pemasok kedelai, tepung, bumbu/ikan, atau petani gabah)? Mengapa kejujuran takaran/timbangan dan kepastian harga sangat dijaga?', hint: 'Kaji hubungan kepercayaan bisnis, kejujuran timbangan bahan baku, dan kepastian pembayaran kepada pemasok/petani...' },
+        { id: 2, text: 'Bagaimana keahlian Bapak/Ibu dalam menguji mutu dan kesegaran bahan baku sebelum diolah (seperti mengecek kesegaran bahan makanan, mutu kedelai/tepung, atau kadar air gabah)? Dari mana keterampilan tersebut dipelajari?', hint: 'Kaji insting dan teknik tradisional memeriksa mutu bahan baku, rendemen hasil olahan, dan standar mutu produk...' },
+        { id: 3, text: 'Dahulu pengeringan atau pengolahan sering mengandalkan cara manual atau panas matahari. Bagaimana kehadiran mesin/alat produksi modern (seperti mixer, oven/dryer, mesin giling, pres, atau pencetak) mempercepat kerja dan menjaga mutu higienis?', hint: 'Kaji transformasi alat manual ke mesin pengering/pengolah modern atau oven/dryer yang mempercepat proses produksi...' },
+        { id: 4, text: 'Limbah sisa produksi (seperti ampas tahu, sisa potongan bahan olahan, atau sekam padi/dedak) biasanya dimanfaatkan untuk apa? Apakah ada kerja sama dengan warga sekitar atau peternak sapi/ikan/unggas?', hint: 'Kaji pemanfaatan limbah sisa (ampas tahu/dedak untuk pakan ternak/ikan, sekam untuk bahan bakar bata/kompos)...' },
+        { id: 5, text: 'Apakah usaha olahan pangan/UMKM ini merupakan rintisan keluarga turun-temurun? Bagaimana pembagian tugas dan bagaimana generasi muda dilatih mengoperasikan alat/mesin serta mengelola keuangan usaha?', hint: 'Kaji regenerasi keluarga pemilik usaha, pembagian tugas produksi, dan pembukuan arus kas usaha...' }
       ],
       obsHints: [
         'Amati tata letak lokasi produksi: area penerimaan bahan baku, lantai jemur/pengeringan, dan ruang mesin pengolahan...',
@@ -1827,6 +1827,10 @@
             <p class="text-xs text-slate-600 leading-relaxed font-medium">
               Berikut 5 pertanyaan spesifik untuk mendalami sektor yang Anda pilih. Dengarkan narasumber, lalu <strong>ketikkan rincian hasil wawancara Anda</strong> (minimal 25 karakter per pertanyaan):
             </p>
+
+            <div class="p-3 bg-sky-50 rounded-2xl border border-sky-200 text-xs text-sky-950 font-medium leading-relaxed">
+              <strong>Tips Jawaban Lapangan:</strong> Ketikkan jawaban sesuai dengan fakta nyata dan jenis usaha yang Anda amati di lapangan (misalnya jika mengamati UMKM toko pakaian, sembako, pabrik tahu/tempe, kerupuk kemplang, usaha roti/kue, atau kebun buah/melon, silakan sesuaikan deskripsi jawaban dengan produk dan kegiatan usaha tersebut).
+            </div>
 
             <div id="nftD2_specificQuestionsContainer" class="flex flex-col gap-4">
               <!-- Render otomatis oleh script renderSpecificQuestionsD2() -->
@@ -2876,7 +2880,7 @@
 
     const formData = isSubmitted ? (saved || {}) : (draft || {});
     const isTesterD3 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
-    const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTesterD3);
+    const isLockedByPrereq = false; // Day 3 terbuka langsung untuk dikerjakan siswa tanpa lock prasyarat
 
     const val = (k) => (formData && formData[k] !== undefined) ? formData[k] : '';
     const valMoney = (k) => {

@@ -614,66 +614,66 @@
 
   perdagangan: {
     key: 'perdagangan',
-    name: 'Perdagangan Sarana Pertanian & Sembako',
-    badge: 'Kios Saprotan & Grosir',
+    name: 'Perdagangan & UMKM Niaga (Toko Pakaian, Sembako, Kios Pasar & Saprotan)',
+    badge: 'Toko Niaga, Sembako & Pasar',
     icon: 'storefront',
-    desc: 'Kios Pupuk Bersubsidi, Toko Obat Pertanian, Sembako, Timbangan Digital & Margin Untung',
+    desc: 'Toko Pakaian/Busana, Kios Sembako Pasar, Sarana Pertanian, Penataan Display & Margin Laba',
     cards: [
       {
         key: 'A',
-        title: 'Science (Sains): Pengetahuan Jenis Pupuk, Obat Hama & Daya Simpan Barang',
-        subtitle: 'Klasifikasi Pupuk Kimia/Organik, Obat Pembasmi Gulma/Hama & Pengaruh Kelembapan',
+        title: 'Science (Sains): Karakteristik Produk Dagang, Bahan Kain/Pangan & Daya Simpan',
+        subtitle: 'Kualitas Bahan Produk (Kain/Pangan/Kemasan), Pencegahan Kerusakan & Pengaruh Suhu/Lembap',
         guidedPoints: [
-          'Jenis barang dagangan apa yang dijual di kios (pupuk bersubsidi urea/NPK, benih bersertifikat, obat semprot pestisida, atau sembako)?',
-          'Apa fungsi dasar dari jenis pupuk atau obat tanaman yang paling laris dibeli petani?',
-          'Bagaimana pedagang menjaga barang dagangan agar tidak rusak akibat kelembapan udara atau panas matahari?'
+          'Jenis barang dagangan apa yang dijual di toko/kios (pakaian jadi/busana, sembako pangan, pupuk/saprotan, atau barang harian)?',
+          'Apa karakteristik mutu produk yang paling diminati pembeli (kualitas bahan kain adem, mutu beras/minyak bersih, dsb)?',
+          'Bagaimana pedagang menjaga barang dagangan agar tidak rusak akibat kelembapan udara, debu, atau panas matahari?'
         ],
-        placeholder: 'Jelaskan jenis pupuk/sarana pertanian yang dijual, fungsinya bagi tanaman, dan cara penyimpanannya di toko... (Minimal 80 karakter)',
-        sourcePlaceholder: 'Contoh: Pengamatan di Kios Saprotan Desa / Buku Paket Kimia/Pertanian SMA',
-        defaultExp: 'Kios sarana pertanian di Belitang melayani kebutuhan pupuk urea untuk pertumbuhan daun dan pupuk NPK Phonska untuk pembentukan buah padi. Pemilik kios menjaga gudang agar tetap kering dengan sirkulasi udara baik supaya karung pupuk tidak menyerap uap air dan tidak menggumpal keras.',
-        defaultSources: '1. Pengamatan di Kios Pupuk Resmi Saprotan Belitang.\n2. Buku Petunjuk Penggunaan Pupuk dan Pestisida Pertanian.'
+        placeholder: 'Jelaskan jenis barang/pakaian/sarana yang dijual, karakteristik mutunya, dan cara penyimpanannya di toko... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan di Toko Busana / Kios Sembako Pasar Gumawang / Wawancara Pemilik',
+        defaultExp: 'Toko pakaian dan perlengkapan niaga di Belitang menjual aneka busana muslim, seragam, dan pakaian harian berbahan katun yang adem dan menyerap keringat. Pemilik toko menjaga kebersihan etalase kaca dan menggunakan penutup plastik transparan agar pakaian tidak terkena debu jalanan serta menjaga sirkulasi udara toko agar tidak lembap.',
+        defaultSources: '1. Pengamatan di Toko Pakaian dan Kios Niaga Belitang.\n2. Wawancara Pemilik Usaha Perdagangan.'
       },
       {
         key: 'B',
-        title: 'Technology (Teknologi): Peralatan Toko, Timbangan Digital & Aplikasi Kasir',
-        subtitle: 'Penggunaan Timbangan Digital Platform, Troli Angkut & Aplikasi Catatan Penjualan',
+        title: 'Technology (Teknologi): Peralatan Toko, Display Manekin, Timbangan & Kasir Digital',
+        subtitle: 'Pemanfaatan Manekin/Rak Display, Kalkulator/Mesin Kasir, QRIS & Media Promosi Online',
         guidedPoints: [
-          'Alat bantu kerja apa saja yang digunakan di kios/toko (timbangan digital gantung/duduk, troli roda dorong karung, atau mesin kasir/HP)?',
-          'Bagaimana timbangan digital membantu memastikan berat timbangan barang akurat dan tidak merugikan pembeli?',
-          'Apakah toko sudah menggunakan aplikasi pembukuan atau aplikasi i-Pubers untuk menebus pupuk bersubsidi?'
+          'Alat bantu kerja apa saja yang digunakan di toko (gantungan/manekin display pakaian, rak susun, timbangan digital, kalkulator, atau smartphone)?',
+          'Bagaimana alat display atau timbangan membantu pembeli melihat pilihan produk dengan jelas dan nyaman?',
+          'Apakah toko sudah menggunakan pembayaran digital nontunai (QRIS/transfer) atau promosi pemesanan lewat WhatsApp/medsos?'
         ],
-        placeholder: 'Sebutkan alat bantu kerja yang digunakan di toko, fungsinya, dan kemudahan yang diberikan bagi pedagang... (Minimal 80 karakter)',
-        sourcePlaceholder: 'Contoh: Wawancara Pemilik Toko / Pengamatan Transaksi Kasir',
-        defaultExp: 'Kios saprotan memanfaatkan timbangan digital platform berkapasitas 300 kg untuk menimbang karung pupuk dan benih secara cepat dan presisi. Dalam penyaluran pupuk bersubsidi, pemilik kios memakai smartphone dengan aplikasi i-Pubers berbasis barcode KTP petani yang terhubung langsung ke kementerian.',
-        defaultSources: '1. Observasi Kios Pengecer Pupuk Resmi Bersubsidi Belitang.\n2. Modul Aplikasi Digital Penyaluran Pupuk Kementan.'
+        placeholder: 'Sebutkan alat bantu kerja yang digunakan di toko, fungsinya, dan kemudahan transaksi digital bagi pedagang... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Wawancara Pemilik Toko / Pengamatan Transaksi Kasir & QRIS',
+        defaultExp: 'Toko memanfaatkan gantungan baju display berbahan besi kokoh, manekin pajangan etalase, dan cermin besar agar pembeli dapat melihat model pakaian secara optimal. Untuk mempermudah transaksi, pemilik menyediakan barcode QRIS dan menggunakan aplikasi WhatsApp Bisnis untuk promosi stok baru kepada pelanggan tetap.',
+        defaultSources: '1. Observasi Langsung Operasional Toko Pakaian & Sembako Belitang.\n2. Dokumentasi Sistem Transaksi Digital UMKM.'
       },
       {
         key: 'C',
-        title: 'Engineering (Rekayasa): Penataan Gudang Rapi & Sistem Bongkar Muat Barang',
-        subtitle: 'Penyusunan Palet Kayu Penahan Lembap, Penataan Rak Barang & Jalur Angkut',
+        title: 'Engineering (Rekayasa): Penataan Display Toko Rapi & Desain Alur Pengunjung',
+        subtitle: 'Penataan Rak Bertingkat, Zonasi Jenis Pakaian/Barang & Desain Sirkulasi Udara/Cahaya',
         guidedPoints: [
-          'Kendala apa yang sering dialami di toko atau gudang (ruang sempit, karung pupuk berat sulit dipindahkan, atau risiko barang tertindih rusak)?',
-          'Trik penataan apa yang dibuat pedagang (menyusun karung di atas palet kayu agar tidak menempel lantai semen, membuat rak bertingkat rapi)?',
-          'Bagaimana trik tersebut membuat alur melayani pembeli menjadi lebih cepat dan aman?'
+          'Kendala apa yang sering dialami di ruang toko (ruangan toko sempit, tumpukan pakaian/barang padat, atau pencahayaan kurang terang)?',
+          'Trik rekayasa apa yang dibuat pedagang (menyusun pakaian berdasarkan warna/ukuran di rak gantung, rak dinding hemat ruang, lorong jalan leluasa)?',
+          'Bagaimana penataan ruang toko tersebut membuat pembeli nyaman dan mempercepat proses mencari barang?'
         ],
-        placeholder: 'Uraikan cara pedagang menata barang di toko/gudang agar rapi, mudah diambil, dan aman dari kerusakan... (Minimal 80 karakter)',
-        sourcePlaceholder: 'Contoh: Pengamatan Tata Letak Gudang Toko / Diskusi dengan Pekerja Toko',
-        defaultExp: 'Pemilik toko menyusun karung pupuk dengan pola saling mengunci di atas palet kayu setinggi 10 cm dari lantai agar terhindar dari rembesan air tanah. Jalur lorong selebar 1 meter dibuat di tengah gudang agar gerobak sorong dapat keluar-masuk membawa barang tanpa menyenggol tumpukan lain.',
-        defaultSources: '1. Pengamatan Manajemen Pergudangan Toko Pertanian Belitang.\n2. Pedoman Praktis Tata Kelola Kios Dagang.'
+        placeholder: 'Uraikan cara pedagang menata pakaian/barang di toko agar menarik, hemat ruang, dan nyaman bagi pengunjung... (Minimal 80 karakter)',
+        sourcePlaceholder: 'Contoh: Pengamatan Tata Letak Display Toko / Diskusi dengan Pelayan Toko',
+        defaultExp: 'Pemilik toko merekayasa tata ruang dengan memasang rak dinding vertikal gantung tiga tingkat untuk memaksimalkan ruangan sempit. Pakaian dikelompokkan rapi berdasarkan kategori usia dan warna cerah di bagian depan etalase, serta disediakan lorong jalan selebar 1 meter dengan lampu sorot LED putih agar pembeli nyaman memilih.',
+        defaultSources: '1. Pengamatan Tata Ruang Display Usaha Busana Belitang.\n2. Prinsip Ergonomi dan Penataan Ruang Niaga Sederhana.'
       },
       {
         key: 'D',
-        title: 'Mathematics (Matematika): Hitungan Modal Kulakan vs Margin Laba Penjualan',
-        subtitle: 'Estimasi Modal Pembelian Barang Grosir dikali Margin Keuntungan Eceran',
+        title: 'Mathematics (Matematika): Perhitungan Harga Modal Kulakan vs Margin Laba Penjualan',
+        subtitle: 'Estimasi Modal Pembelian Grosir, Penetapan Harga Jual & Estimasi Keuntungan Bersih',
         guidedPoints: [
-          'Berapa harga modal beli barang dagangan dari distributor grosir pabrik?',
-          'Berapa harga jual eceran ke petani dan berapa selisih keuntungan (margin laba) per karung atau per botol obat?',
-          'Berapa perkiraan total keuntungan bersih per hari atau per bulan yang didapatkan dari toko tersebut?'
+          'Berapa harga modal beli barang/pakaian dari distributor grosir atau produsen?',
+          'Berapa harga jual eceran ke pembeli dan berapa margin laba bersih per potong pakaian atau per barang?',
+          'Berapa perkiraan total keuntungan bersih per hari atau per bulan dari perputaran barang di toko tersebut?'
         ],
-        placeholder: 'Tuliskan perbandingan harga beli dan harga jual barang, margin keuntungan, serta estimasi laba toko... (Minimal 80 karakter)',
+        placeholder: 'Tuliskan perbandingan harga beli modal dan harga jual pakaian/barang, margin laba, serta estimasi omzet toko... (Minimal 80 karakter)',
         sourcePlaceholder: 'Contoh: Nota Pembelian Barang / Analisis Keuangan Usaha Dagang Sederhana',
-        defaultExp: 'Kios membeli pupuk non-subsidi seharga Rp280.000 per karung isi 50 kg dan menjualnya kembali seharga Rp305.000 per karung (margin keuntungan Rp25.000 per karung). Jika dalam sehari terjual rata-rata 20 karung ditambah aneka obat pertanian, laba kotor harian mencapai Rp700.000 atau sekitar Rp18.000.000 per bulan.',
-        defaultSources: '1. Catatan Penjualan Kios Pertanian Mitra Tani Belitang.\n2. Simulasi Laporan Laba Rugi Usaha Dagang SMA.'
+        defaultExp: 'Toko membeli pakaian gamis/kemeja secara grosir seharga Rp65.000 per potong dan menjualnya ke konsumen seharga Rp90.000 (margin laba Rp25.000 per potong). Dengan rata-rata penjualan 15 potong pakaian per hari ditambah barang perlengkapan lain, toko memperoleh laba kotor harian sekitar Rp450.000 atau Rp13.500.000 per bulan.',
+        defaultSources: '1. Catatan Pembukuan Penjualan Toko Busana Rahayu Belitang.\n2. Simulasi Laporan Keuangan Usaha Dagang Eceran.'
       }
     ]
   },

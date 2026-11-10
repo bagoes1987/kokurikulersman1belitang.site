@@ -410,7 +410,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261109_refleksi_flow_fix"></script>
+  <script src="../js/core.js?v=20261110_d3_prep"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -963,8 +963,8 @@
 
             // Jaminan Akses Dokumentasi:
             // Peserta Field Trip & Non-Field Trip (Day 0 s.d. Day 7) selalu memiliki hak akses untuk membuka halaman dan mengunggah foto
-            // jika hari sebelumnya telah tuntas (atau Day 0 / Day 1 / Day 2) atau jika ada riwayat foto sebelumnya
-            const prevDone = (dayNum <= 2) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
+            // jika hari sebelumnya telah tuntas (atau Day 0 / Day 1 / Day 2 / Day 3) atau jika ada riwayat foto sebelumnya
+            const prevDone = (dayNum <= 3) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
             if (prevDone || hasExistingDok || isReadOnlyUrl) {
               access.canAccess = true;
               if (isReadOnlyUrl) {
