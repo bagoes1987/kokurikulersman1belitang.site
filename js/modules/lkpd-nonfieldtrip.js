@@ -1975,8 +1975,9 @@
       </div>
     `;
 
-    // Render Pertanyaan Khusus Sektor Sesuai Pilihan
+    // Render Pertanyaan Khusus Sektor Sesuai Pilihan & 9 Aspek Observasi
     renderSpecificQuestionsD2(selSector, formData);
+    renderObservationAspectsD2(selSector, formData);
 
     // Initial Evaluasi Validasi & Progres
     setTimeout(() => {
@@ -1999,6 +2000,9 @@
       badgeEl.className = `px-2.5 py-0.5 rounded-full text-[10.5px] font-bold border ${sectorObj.badgeColor}`;
     }
 
+    const isLocked = !!(formData && (formData.submitted || formData.submittedAt));
+    const readOnlyAttr = isLocked ? 'disabled' : '';
+
     const valSpec = (id) => {
       if (formData && formData.qSpecific && formData.qSpecific[sectorKey] && formData.qSpecific[sectorKey][id] !== undefined) {
         return formData.qSpecific[sectorKey][id];
@@ -2014,7 +2018,7 @@
         <label class="text-xs font-bold text-slate-900 leading-snug">
           ${q.id}. ${q.text} <span class="text-rose-600">*</span>
         </label>
-        <textarea id="nftD2_qSpecific_${q.id}" rows="3" oninput="onNftDay2FieldInput()" placeholder="${q.hint} (Minimal 25 karakter)" class="w-full p-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-900 resize-y transition-all leading-relaxed">${valSpec(q.id)}</textarea>
+        <textarea id="nftD2_qSpecific_${q.id}" ${readOnlyAttr} rows="3" oninput="onNftDay2FieldInput()" placeholder="${q.hint} (Minimal 25 karakter)" class="w-full p-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-900 resize-y transition-all leading-relaxed">${valSpec(q.id)}</textarea>
         <div class="flex items-center justify-between text-[10.5px]">
           <span id="msgValD2_qS_${q.id}" class="text-rose-600 font-medium">Minimal 25 karakter</span>
           <span id="cntD2_qS_${q.id}" class="text-slate-400 font-bold">0 / 25</span>
@@ -2055,6 +2059,8 @@
     const cont = document.getElementById('nftD2_obsAspectsContainer');
     if (!cont) return;
 
+    const isLocked = !!(formData && (formData.submitted || formData.submittedAt));
+    const readOnlyAttr = isLocked ? 'disabled' : '';
     const s = NFT_DAY2_SECTOR_DATA[sectorKey] || NFT_DAY2_SECTOR_DATA.pangan;
     const hints = s.obsHints || [
       'Gambarkan kondisi fisik lokasi, kebersihan, suhu udara, luas lahan/kandang/ruang toko, serta keamanan tempat kerja...',
@@ -2088,7 +2094,7 @@
       return `
         <div class="p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200 flex flex-col gap-1.5 transition-all">
           <label class="text-xs font-bold text-slate-900 leading-snug">${title} <span class="text-rose-600">*</span></label>
-          <textarea id="nftD2_obs_${id}" rows="3" oninput="onNftDay2FieldInput()" placeholder="${hint} (Minimal 20 karakter)" class="w-full p-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-900 resize-y transition-all leading-relaxed">${valObs(id)}</textarea>
+          <textarea id="nftD2_obs_${id}" ${readOnlyAttr} rows="3" oninput="onNftDay2FieldInput()" placeholder="${hint} (Minimal 20 karakter)" class="w-full p-3 rounded-xl border border-slate-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs text-slate-900 resize-y transition-all leading-relaxed">${valObs(id)}</textarea>
           <div class="flex items-center justify-between text-[10.5px]">
             <span id="msgValD2_obs_${id}" class="text-rose-600 font-medium">Minimal 20 karakter</span>
             <span id="cntD2_obs_${id}" class="text-slate-400 font-bold">0 / 20</span>
