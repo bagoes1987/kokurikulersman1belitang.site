@@ -2779,7 +2779,7 @@
       // Cascading logic berurutan mutlak (Bebas Deadlock & Selalu Ramah Pengguna)
       const isFtDay7 = isFieldTrip && dayNum === 7;
       const isFtDay0 = isFieldTrip && dayNum === 0;
-      const isDayFlexible = (dayNum === 2 || dayNum === 3);
+      const isDayFlexible = (dayNum === 2);
       let canLkpd = (isFtDay0 || isDayFlexible) ? true : hasMateri;
       let canDok = (isFtDay0 || isDayFlexible) ? true : (hasMateri && hasLkpd);
       let canAsesmen = (isFtDay0 || isDayFlexible) ? true : (hasMateri && hasLkpd);
