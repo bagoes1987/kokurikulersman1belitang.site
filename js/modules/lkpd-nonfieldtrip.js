@@ -1145,36 +1145,36 @@
   const NFT_DAY2_SECTOR_DATA = {
     pangan: {
       key: 'pangan',
-      name: 'Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang & Palawija)',
-      cultureTheme: 'Pengetahuan musim, etos kerja sawah, tradisi sambatan & modernisasi alsintan',
+      name: 'Pertanian Tanaman Pangan & Hortikultura (Padi Sawah, Palawija, Kebun Melon, Semangka & Sayuran)',
+      cultureTheme: 'Pengetahuan musim, etos kerja agrikultur, kearifan lokal, dan modernisasi teknologi budidaya',
       badgeColor: 'bg-emerald-100 text-emerald-800 border-emerald-300',
       labels: {
-        locLabel: 'Nama Blok Irigasi BK / Hamparan Sawah:',
-        locPlaceholder: 'Contoh: Blok Sawah BK 9, Desa Sidodadi',
-        narLabel: 'Nama Petani / Ketua Poktan:',
-        narPlaceholder: 'Contoh: Bapak Sukardi (Ketua Poktan Mulyo Tani)',
-        durLabel: 'Lama Mengelola Usaha Tani:',
-        durPlaceholder: 'Contoh: 18 Tahun Mengelola Sawah (Sejak 2008)',
-        extraLabel: 'Luas Lahan Garapan & Pola Tanam:',
-        extraPlaceholder: 'Contoh: 1,5 Hektar (Pola IP-200 Rendeng-Gadu)'
+        locLabel: 'Nama Blok Irigasi BK / Lahan Sawah / Kebun Buah:',
+        locPlaceholder: 'Contoh: Blok Sawah BK 9, Desa Sidodadi / Kebun Melon Desa Nusa Bakti',
+        narLabel: 'Nama Petani / Pemilik Kebun / Ketua Poktan:',
+        narPlaceholder: 'Contoh: Bapak Sukardi / Pak Wayan (Petani Melon)',
+        durLabel: 'Lama Mengelola Usaha Tani / Kebun:',
+        durPlaceholder: 'Contoh: 12 Tahun Mengelola Kebun Melon / Usaha Tani',
+        extraLabel: 'Luas Lahan & Komoditas yang Ditanam:',
+        extraPlaceholder: 'Contoh: 0,5 Hektar (Budidaya Melon Mulsa) / 1,5 Hektar (Padi IP-200)'
       },
       questions: [
-        { id: 1, text: 'Bagaimana Bapak/Ibu menentukan waktu yang tepat untuk mengolah lahan, semai bibit, dan memanen? Apakah masih mempedomani tanda alam (pranata mangsa) atau jadwal giliran air irigasi Komering?', hint: 'Kaji metode penentuan jadwal musim tanam, kalender pranata mangsa/musim hujan, atau jadwal giliran air irigasi Komering...' },
-        { id: 2, text: 'Bagaimana bentuk kerja sama tolong-menolong (tradisi sambatan) yang masih berjalan saat musim tanam atau panen? Bagaimana tradisi ini membantu meringankan biaya upah kerja?', hint: 'Kaji tradisi sambatan/rewang, gotong royong membersihkan parit tersier, atau giliran tenaga tanam/panen...' },
-        { id: 3, text: 'Apakah di lingkungan petani sini masih ada tradisi syukuran panen, sedekah bumi, atau doa tolak bala sebelum turun ke sawah? Apa makna nilai tersebut bagi ketenangan batin petani?', hint: 'Kaji kearifan lokal seperti tanda-tanda alam, ritual selamatan wiwit/sedekah bumi, atau nasihat leluhur tani...' },
-        { id: 4, text: 'Bagaimana kehadiran traktor roda 4 dan mesin panen combine harvester mengubah kebiasaan dan kecepatan bertani Bapak/Ibu dibanding zaman dahulu?', hint: 'Kaji perbandingan waktu kerja manual vs mesin, biaya sewa alsintan, dan penghematan tenaga kerja...' },
-        { id: 5, text: 'Bagaimana Bapak/Ibu mewariskan pengetahuan dan keterampilan bertani kepada generasi muda? Apakah pemuda di lingkungan ini masih berminat meneruskan mata pencaharian sawah ini?', hint: 'Kaji pandangan narasumber mengenai regenerasi petani muda, kendala minat pemuda, atau peluang smart farming...' }
+        { id: 1, text: 'Bagaimana Bapak/Ibu menentukan waktu yang tepat untuk mengolah lahan, semai bibit, dan memanen (misalnya pola tanam padi atau siklus musim buah melon/palawija)? Apakah masih mempedomani tanda alam/cuaca atau jadwal pasokan air irigasi?', hint: 'Kaji metode penentuan jadwal musim tanam, pola rotasi tanam padi-melon/semangka, kalender cuaca, atau pengaturan air irigasi...' },
+        { id: 2, text: 'Bagaimana bentuk kerja sama tolong-menolong (tradisi sambatan/rewang) yang berjalan saat pengolahan bedengan, penanaman, atau panen? Bagaimana tradisi ini membantu meringankan biaya upah kerja?', hint: 'Kaji tradisi sambatan/gotong royong, kerja sama antar-petani di desa, pembagian tenaga kerja saat tanam/panen raya...' },
+        { id: 3, text: 'Apakah di lingkungan petani/kebun di sini masih ada tradisi syukuran panen, sedekah bumi, atau doa bersama sebelum tanam? Apa makna nilai tersebut bagi ketenangan batin petani?', hint: 'Kaji kearifan lokal seperti tanda-tanda alam, doa selamatan wiwit/syukuran panen buah/padi, atau nasihat leluhur...' },
+        { id: 4, text: 'Bagaimana kehadiran teknologi modern (seperti traktor pembajak bedengan, pemasangan mulsa plastik, instalasi pompa/irigasi tetes, atau mesin panen) mengubah kebiasaan dan kecepatan bertani Bapak/Ibu dibanding cara manual lama?', hint: 'Kaji perbandingan cara kerja manual vs teknologi (traktor, mulsa peredam gulma, pompa air, alsintan), biaya sewa/operasional, dan penghematan waktu...' },
+        { id: 5, text: 'Bagaimana Bapak/Ibu mewariskan pengetahuan dan keterampilan budidaya ini kepada generasi muda? Apakah pemuda di lingkungan ini tertarik mengembangkan wirausaha pertanian/kebun buah modern (seperti melon/hortikultura)?', hint: 'Kaji pandangan narasumber mengenai regenerasi petani muda, peluang wirausaha agribisnis buah melon, dan teknologi smart farming...' }
       ],
       obsHints: [
-        'Amati kondisi fisik petak sawah, pematang, dan kejernihan serta debit aliran air saluran irigasi BK...',
-        'Catat daftar perkakas tradisional (cangkul, sabit, caping) berdampingan dengan mesin alsintan (traktor/combine)...',
-        'Uraikan kronologi proses kerja petani di sawah dari pagi hingga petang yang Anda saksikan langsung...',
-        'Amati ketangkasan gerak tangan petani, cara menyemai bibit, membajak, atau mencabut gulma sawah...',
-        'Amati interaksi sosial, tegur sapa antar-petani di pematang, dan suasana tolong-menolong di sawah...',
-        'Amati nilai kesabaran, busana kerja penahan terik, atau kebiasaan makan bekal bersama di gubuk sawah...',
-        'Catat cara pengoperasian mesin alsintan traktor/combine atau pompa air alkon di petak sawah...',
-        'Amati kendala fisik lapangan yang terlihat, seperti lumpur dalam, serangan keong/wereng, atau air macet...',
-        'Amati upaya pemilahan gabah bernas, pemanfaatan jerami sisa panen, dan kebersihan parit sawah...'
+        'Amati kondisi fisik lahan/kebun melon/sawah: bedengan tanah, kerapian mulsa plastik, sistem parit irigasi, dan paparan sinar matahari...',
+        'Catat daftar perkakas dan sarana: cangkul, bambu lanjaran/ajir, mulsa plastik, tangki semprot, mesin pompa air, atau traktor...',
+        'Uraikan kronologi proses kerja: dari pembuatan bedengan, pemasangan mulsa, penanaman bibit, pemangkasan tunas/sulur, hingga panen buah...',
+        'Amati ketangkasan tangan petani: cara memilih buah melon terbaik (seleksi buah), mengikat sulur ke lanjaran, atau mengatur dosis pupuk cor...',
+        'Amati interaksi sosial, tegur sapa antar-pekerja kebun di pematang, dan suasana kekeluargaan saat merawat tanaman...',
+        'Amati nilai ketelatenan, kesabaran merawat tanaman buah setiap hari, busana kerja penahan terik, dan etos kerja keras...',
+        'Catat teknologi budidaya yang diterapkan: pompa air penyiraman, sistem mulsa plastik hitam perak, instalasi kocor pupuk, atau alsintan...',
+        'Amati kendala nyata di kebun: serangan hama lalat buah/jamur daun, curah hujan tinggi yang membuat buah pecah, atau fluktuasi harga pasar...',
+        'Amati upaya pemilahan mutu (grading buah melon manis/super), perawatan kebersihan bedengan, dan penanganan sampah plastik mulsa...'
       ]
     },
     perkebunan: {
@@ -1682,7 +1682,7 @@
                 <span class="text-[10.5px] font-extrabold text-indigo-800 bg-white px-2.5 py-0.5 rounded-full border border-indigo-200 shadow-2xs">1 dari 7 Sektor Pilihan</span>
               </div>
               <select id="nftD2_sectorKey" ${readOnlyAttr} onchange="onNftDay2SectorChange(this.value)" class="w-full p-3 rounded-xl border-2 border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs sm:text-sm font-bold text-indigo-950 bg-white cursor-pointer transition-all shadow-2xs">
-                <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan (Padi Sawah Irigasi Belitang &amp; Palawija)</option>
+                <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan &amp; Hortikultura (Padi Sawah, Palawija, Kebun Melon, Semangka, &amp; Sayuran)</option>
                 <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
                 <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat &amp; Budidaya Ternak (Sapi, Kambing/Domba, &amp; Unggas/Ayam)</option>
                 <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin Belitang, Lele &amp; Nila)</option>
@@ -3015,7 +3015,7 @@
                   </span>
                 </div>
                 <select id="nftD3_sectorKey" ${disabledAttr} onchange="onNftDay3SectorChange(this.value)" class="w-full p-2.5 rounded-xl border border-emerald-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs font-bold text-emerald-950 bg-white cursor-pointer transition-all mt-1">
-                  <option value="pertanian" ${selSector === 'pertanian' ? 'selected' : ''}>1. Pertanian Padi Sawah (Lumbung Pangan Komering, Irigasi BK, Traktor/Combine)</option>
+                  <option value="pertanian" ${selSector === 'pertanian' ? 'selected' : ''}>1. Pertanian Padi Sawah &amp; Hortikultura (Padi, Kebun Melon, Semangka, &amp; Palawija)</option>
                   <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet &amp; Kelapa Sawit, Sadap Lateks, Panen TBS)</option>
                   <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba, Ayam Broiler/Petelur &amp; Bebek)</option>
                   <option value="perikanan" ${selSector === 'perikanan' ? 'selected' : ''}>4. Perikanan Air Tawar (Sentra Kolam Patin &amp; Lele Belitang, Aerator &amp; Pakan)</option>
