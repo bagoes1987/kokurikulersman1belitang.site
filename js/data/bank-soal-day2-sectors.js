@@ -4573,11 +4573,11 @@
       "sector": "perdagangan",
       "indicatorCode": "B",
       "cognitiveLevel": "C2",
-      "question": "Kios Sarana Produksi Pertanian (Saprotan) resmi memiliki posisi strategis dalam ekosistem pertanian OKU Timur karena...",
+      "question": "Aktivitas usaha perdagangan dan toko niaga (seperti toko pakaian/busana, toko sembako, los pasar tradisional, dan kios saprotan) memiliki peran strategis di OKU Timur karena...",
       "options": [
         {
           "key": "A",
-          "text": "Menjadi ujung tombak penyalur pupuk bersubsidi, benih unggul, pestisida terdaftar, dan peralatan alsintan langsung kepada petani di pedesaan"
+          "text": "Menjadi ujung tombak penyalur kebutuhan sandang, bahan pokok pangan harian, dan sarana produksi langsung kepada masyarakat konsumen di pedesaan"
         },
         {
           "key": "B",
@@ -4589,7 +4589,7 @@
         },
         {
           "key": "D",
-          "text": "Melarang petani membeli pupuk saat musim tanam padi tiba"
+          "text": "Melarang warga membeli kebutuhan pokok saat musim tanam tiba"
         },
         {
           "key": "E",
@@ -4597,7 +4597,7 @@
         }
       ],
       "correct": "A",
-      "explanation": "Kios saprotan resmi menjamin ketersediaan input produksi pertanian vital secara tepat waktu, tepat mutu, dan sesuai HET pemerintah."
+      "explanation": "Toko niaga, toko busana, dan sembako resmi menjamin ketersediaan barang kebutuhan harian masyarakat secara merata di pelosok kecamatan."
     },
     {
       "id": 2502,
@@ -4605,31 +4605,31 @@
       "sector": "perdagangan",
       "indicatorCode": "C",
       "cognitiveLevel": "C3",
-      "question": "Sistem tata kelola distribusi pupuk bersubsidi saat ini menggunakan basis data digital 'e-Alokasi'. Fungsi utama dari sistem e-Alokasi ini adalah...",
+      "question": "Dalam pengelolaan persediaan barang di toko pakaian, sembako, maupun kios niaga, pemilik toko menerapkan pencatatan stok dan kode barang (SKU/barcode). Fungsi utama sistem pencatatan persediaan ini adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Menentukan jatah kuota pupuk bersubsidi secara tepat sasaran per petani berdasarkan data NIK KTP yang terdaftar dalam e-RDKK kelompok tani"
+          "text": "Memantau jumlah stok barang yang masih tersedia, mencatat barang yang paling laris, dan mencegah kehabisan persediaan barang dagangan"
         },
         {
           "key": "B",
-          "text": "Menghapus seluruh alokasi bantuan pupuk untuk petani di luar Jawa"
+          "text": "Menghapus seluruh alokasi bantuan sembako untuk pedagang kecil"
         },
         {
           "key": "C",
-          "text": "Mengundi pemenang kupon pupuk gratis setiap minggu secara acak"
+          "text": "Mengundi pemenang kupon undian gratis setiap minggu secara acak"
         },
         {
           "key": "D",
-          "text": "Menaikkan harga pupuk bersubsidi sepuluh kali lipat tanpa pemberitahuan"
+          "text": "Menaikkan harga barang sepuluh kali lipat tanpa pemberitahuan"
         },
         {
           "key": "E",
-          "text": "Menggantikan peran pupuk kimia dengan air garam laut"
+          "text": "Menggantikan peran kasir dengan mesin pembakar struk"
         }
       ],
       "correct": "A",
-      "explanation": "e-Alokasi mengintegrasikan NIK petani dengan luasan sawah garapan (maksimal 2 ha per musim) untuk mencegah kebocoran kuota subsidi."
+      "explanation": "Manajemen stok barang (inventory control) berbasis SKU/barcode mempermudah pelacakan arus masuk-keluar barang dagangan dan estimasi belanja ulang (reorder)."
     },
     {
       "id": 2503,
@@ -4637,31 +4637,31 @@
       "sector": "perdagangan",
       "indicatorCode": "D",
       "cognitiveLevel": "C3",
-      "question": "Saat petani di Belitang menebus pupuk bersubsidi di Kios Pupuk Lengkap (KPL), prosedur digital resmi yang diterapkan melalui aplikasi iPubers (Integrasi Pupuk Bersubsidi) adalah...",
+      "question": "Pada toko pakaian dan perlengkapan busana di Belitang, teknik pemajangan barang dagangan (merchandising) menggunakan manekin display dan gantungan baju bertingkat bertujuan untuk...",
       "options": [
         {
           "key": "A",
-          "text": "Petani menunjukkan KTP asli, difoto wajah bersama KTP dan pupuk tebusan oleh pemilik kios, lalu menandatangani bukti transaksi digital di smartphone"
+          "text": "Menampilkan contoh paduan busana agar terlihat menarik, rapi, dan mempermudah pembeli melihat ukuran, warna, serta model pakaian"
         },
         {
           "key": "B",
-          "text": "Petani wajib menyanyikan lagu mars pertanian di depan kasir kios"
+          "text": "Menakut-nakuti anak kecil yang ikut berbelanja bersama orang tuanya"
         },
         {
           "key": "C",
-          "text": "Petani menitipkan sertifikat tanah sawah asli sebagai jaminan"
+          "text": "Mempersempit ruang jalan toko sehingga pembeli kesulitan masuk"
         },
         {
           "key": "D",
-          "text": "Petani cukup mengirimkan pesan suara WhatsApp tanpa perlu menunjukkan KTP"
+          "text": "Menyembunyikan model pakaian baru agar tidak dibeli pelanggan"
         },
         {
           "key": "E",
-          "text": "Penebusan pupuk diwakilkan kepada anak di bawah umur tanpa identitas"
+          "text": "Menggantikan peran pramuniaga dalam mencatat pembukuan kas"
         }
       ],
       "correct": "A",
-      "explanation": "Aplikasi iPubers menggunakan teknologi geotagging foto dan pencocokan KTP/face recognition untuk verifikasi pertanggungjawaban penyaluran pupuk subsidi."
+      "explanation": "Visual merchandising display manekin memberikan visualisasi nyata paduan pakaian kepada calon pembeli sehingga meningkatkan daya tarik beli."
     },
     {
       "id": 2504,
@@ -4669,31 +4669,31 @@
       "sector": "perdagangan",
       "indicatorCode": "C",
       "cognitiveLevel": "C2",
-      "question": "Dua jenis pupuk bersubsidi yang difasilitasi pemerintah bagi petani tanaman pangan (padi, jagung, kedelai) di OKU Timur adalah...",
+      "question": "Dalam usaha perdagangan pakaian jadi dan busana di OKU Timur, jenis bahan kain yang paling banyak diminati oleh konsumen masyarakat daerah agraris untuk beraktivitas sehari-hari adalah bahan yang memiliki sifat...",
       "options": [
         {
           "key": "A",
-          "text": "Pupuk Urea (kandungan Nitrogen 46%) dan NPK Phonska (formula N-P-K berimbang 15-10-12)"
+          "text": "Kain katun atau linen yang adem, berpori serat alami yang menyerap keringat dengan baik, dan nyaman dipakai di cuaca panas pedesaan"
         },
         {
           "key": "B",
-          "text": "Pupuk kalsium murni dan abu gosok dapur"
+          "text": "Kain wol tebal berlapis bulu beruang kutub yang sangat panas"
         },
         {
           "key": "C",
-          "text": "Garam inggris dan serbuk kapur tohor dinding"
+          "text": "Bahan plastik kedap udara yang tidak menyerap keringat sama sekali"
         },
         {
           "key": "D",
-          "text": "Pupuk cair beralkohol dan minyak tanah"
+          "text": "Kain beraroma bahan kimia menyengat dan mudah sobek"
         },
         {
           "key": "E",
-          "text": "Bubuk mesiu dan sulfur klorin industri"
+          "text": "Kain berlogam berat yang kaku dan menyulitkan tubuh bergerak"
         }
       ],
       "correct": "A",
-      "explanation": "Sesuai Permentan No. 10/2022 jo. No. 01/2024, pupuk bersubsidi difokuskan pada Urea (sumber N) dan NPK (hara makro majemuk lengkap)."
+      "explanation": "Masyarakat pedesaan beriklim tropis memilih pakaian berbahan serat katun alami karena daya serap keringat tinggi dan sirkulasi udara baik."
     },
     {
       "id": 2505,
@@ -4701,11 +4701,11 @@
       "sector": "perdagangan",
       "indicatorCode": "B",
       "cognitiveLevel": "C3",
-      "question": "Legalitas resmi yang wajib dipenuhi oleh sebuah toko pertanian untuk dapat beroperasi sebagai Kios Pengecer Resmi (KPL) di wilayah OKU Timur adalah...",
+      "question": "Legalitas resmi yang wajib dipenuhi oleh sebuah unit usaha perdagangan (toko pakaian, grosir sembako, maupun kios niaga) untuk beroperasi secara sah menurut regulasi pemerintah adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Memiliki Nomor Induk Berusaha (NIB), Surat Izin Usaha Perdagangan, dan Surat Perjanjian Jual Beli (SPJB) resmi dari distributor pupuk terdaftar"
+          "text": "Memiliki Nomor Induk Berusaha (NIB) dan izin operasional usaha perdagangan resmi melalui sistem Online Single Submission (OSS)"
         },
         {
           "key": "B",
@@ -4725,7 +4725,7 @@
         }
       ],
       "correct": "A",
-      "explanation": "KPL adalah lembaga penyalur resmi lini IV yang terikat SPJB kontraktual dengan distributor resmi pupuk holding Pupuk Indonesia."
+      "explanation": "NIB berbasis OSS menjadi legalitas tunggal identitas pelaku usaha perdagangan resmi di Indonesia untuk mempermudah akses permodalan perbankan."
     },
     {
       "id": 2506,
@@ -4733,11 +4733,11 @@
       "sector": "perdagangan",
       "indicatorCode": "D",
       "cognitiveLevel": "C3",
-      "question": "Dalam lembar observasi gudang penyimpanan kios pupuk, karung pupuk ditumpuk di atas palet kayu dengan jarak minimal 30 cm dari dinding tembok. Prosedur standar ini bertujuan untuk...",
+      "question": "Dalam lembar observasi gudang penyimpanan toko (baik toko pakaian/kain, grosir sembako, maupun saprotan), barang ditata di atas palet atau rak gantung berjarak dari lantai dan dinding. Prosedur standar ini bertujuan untuk...",
       "options": [
         {
           "key": "A",
-          "text": "Mencegah kelembapan dinding dan lantai meresap ke dalam karung yang dapat menyebabkan pupuk mencair atau menggumpal membatu"
+          "text": "Mencegah kelembapan dinding dan lantai meresap ke dalam kain atau kemasan barang yang dapat memicu jamur, bau apek, atau kerusakan mutu barang"
         },
         {
           "key": "B",
@@ -4745,7 +4745,7 @@
         },
         {
           "key": "C",
-          "text": "Membuat tumpukan karung mudah roboh saat tersenggol pekerja"
+          "text": "Membuat tumpukan barang mudah roboh saat tersenggol pekerja"
         },
         {
           "key": "D",
@@ -4757,7 +4757,7 @@
         }
       ],
       "correct": "A",
-      "explanation": "Sifat higroskopis pupuk (terutama urea) menyerap uap air; palet kayu dan celah sirkulasi dinding menjaga karung tetap kering dan tidak menggumpal (caking)."
+      "explanation": "Sirkulasi udara dan jarak palet dari lantai semen menjaga kelembapan ruangan gudang agar kain pakaian tidak apek/berjamur dan kemasan sembako tetap kering."
     },
     {
       "id": 2507,
@@ -4765,31 +4765,31 @@
       "sector": "perdagangan",
       "indicatorCode": "C",
       "cognitiveLevel": "C3",
-      "question": "Obat-obatan pertanian (pestisida) yang dijual di kios saprotan diklasifikasikan berdasarkan fungsinya. Pestisida yang diformulasikan khusus untuk membasmi rumput liar atau gulma di sawah disebut...",
+      "question": "Pada toko pakaian, busana muslim, dan aneka toko niaga di Pasar Gumawang dan sekitarnya, omzet penjualan biasanya mengalami lonjakan (puncak musiman) paling tinggi pada periode...",
       "options": [
         {
           "key": "A",
-          "text": "Herbisida"
+          "text": "Menjelang Hari Raya Idul Fitri dan momen panen raya padi di mana daya beli dan kebutuhan belanja sandang masyarakat meningkat tajam"
         },
         {
           "key": "B",
-          "text": "Insektisida"
+          "text": "Saat tengah malam ketika seluruh pintu pasar sedang terkunci rapat"
         },
         {
           "key": "C",
-          "text": "Fungisida"
+          "text": "Saat musim banjir besar yang merendam seluruh ruas jalan desa"
         },
         {
           "key": "D",
-          "text": "Rodentisida"
+          "text": "Pada hari di mana seluruh toko diinstruksikan tutup serentak"
         },
         {
           "key": "E",
-          "text": "Akarisida"
+          "text": "Ketika tidak ada pasokan listrik PLN selama satu bulan penuh"
         }
       ],
       "correct": "A",
-      "explanation": "Herbisida (racun rumput) mengendalikan gulma, insektisida mengendalikan serangga, fungisida mengendalikan jamur, dan rodentisida mengendalikan tikus."
+      "explanation": "Budaya menyambut hari raya Idul Fitri dan cairnya pendapatan panen raya padi menjadi penggerak utama lonjakan transaksi belanja sandang masyarakat OKU Timur."
     },
     {
       "id": 2508,
@@ -4797,31 +4797,31 @@
       "sector": "perdagangan",
       "indicatorCode": "D",
       "cognitiveLevel": "C4",
-      "question": "Pada kemasan botol pestisida di kios, terdapat pita warna peringatan toksisitas (merah, kuning, biru, atau hijau). Pita warna merah tua dengan simbol tengkorak memiliki makna bahaya...",
+      "question": "Dalam penataan ruang toko pakaian atau toko niaga agar pembeli merasa nyaman dan leluasa berbelanja, prinsip ergonomi tata letak (layout) yang paling tepat diterapkan adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Tingkat bahaya sangat beracun tinggi (Kelas Ia/Ib) yang membutuhkan kehati-hatian ekstra dan APD lengkap saat penanganan"
+          "text": "Menyediakan lorong jalan yang cukup leluasa, pencahayaan lampu yang terang terfokus pada pakaian display, serta pengelompokan barang berdasarkan kategori dan ukuran"
         },
         {
           "key": "B",
-          "text": "Bahan pangan manis yang aman diminum langsung oleh manusia"
+          "text": "Menumpuk semua baju secara acak bercampur di atas lantai pintu masuk"
         },
         {
           "key": "C",
-          "text": "Produk pupuk organik cair yang terbuat dari sari buah segar"
+          "text": "Mematikan seluruh lampu penerangan agar toko bernuansa gelap gulita"
         },
         {
           "key": "D",
-          "text": "Bahan kimia yang sama sekali tidak memiliki efek racun"
+          "text": "Menyembunyikan cermin rias dan kamar pas di gudang belakang tertutup"
         },
         {
           "key": "E",
-          "text": "Pewarna pakaian batik tradisional ramah lingkungan"
+          "text": "Memasang pagar berduri di antara gantungan baju agar tidak disentuh"
         }
       ],
       "correct": "A",
-      "explanation": "Standar WHO dan Kementan menetapkan pita merah sebagai kategori racun akut sangat berbahaya yang memerlukan SOP penyimpanan dan aplikasi ketat."
+      "explanation": "Ergonomi layout toko dengan zonasi kategori yang rapi, sirkulasi lorong minimal 1 meter, dan pencahayaan optimal meningkatkan kenyamanan dan pengalaman belanja konsumen."
     },
     {
       "id": 2509,
@@ -5373,11 +5373,11 @@
       "sector": "perdagangan",
       "indicatorCode": "B",
       "cognitiveLevel": "C3",
-      "question": "Pemerintah menetapkan regulasi Harga Eceran Tertinggi (HET) untuk pupuk bersubsidi. Sanksi tegas bagi KPL yang terbukti menjual pupuk bersubsidi di atas HET resmi atau menimbun barang adalah...",
+      "question": "Pemerintah menetapkan regulasi perlindungan konsumen dan stabilitas harga barang kebutuhan pokok dan barang penting. Sanksi tegas bagi pedagang toko atau grosir yang terbukti melakukan penimbunan barang dagangan secara ilegal saat stok langka adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Pencabutan izin operasional sebagai pengecer resmi pupuk bersubsidi dan diproses secara hukum pidana perundang-undangan"
+          "text": "Pencabutan izin operasional usaha perdagangan dan diproses secara hukum pidana sesuai regulasi perundang-undangan perlindungan konsumen"
         },
         {
           "key": "B",
@@ -5385,7 +5385,7 @@
         },
         {
           "key": "C",
-          "text": "Diberikan tambahan kuota pupuk gratis sebanyak sepuluh truk"
+          "text": "Diberikan tambahan kuota barang gratis sebanyak sepuluh truk"
         },
         {
           "key": "D",
@@ -5397,7 +5397,7 @@
         }
       ],
       "correct": "A",
-      "explanation": "Pelanggaran HET dan penyelewengan barang subsidi melanggar UU Perdagangan dan Kepmentan dengan ancaman delik pidana ekonomi dan pemutusan SPJB."
+      "explanation": "Penimbunan komoditas pokok dan spekulasi harga melanggar UU Perdagangan dan UU Perlindungan Konsumen dengan ancaman sanksi pidana dan pencabutan izin usaha."
     },
     {
       "id": 2527,
@@ -5405,31 +5405,31 @@
       "sector": "perdagangan",
       "indicatorCode": "C",
       "cognitiveLevel": "C3",
-      "question": "Jika terdapat karung pupuk bersubsidi yang robek atau kemasan pestisida yang bocor saat proses pengiriman dari distributor ke kios, SOP pergudangan yang benar adalah...",
+      "question": "Jika terdapat barang dagangan yang rusak (misalnya pakaian bernoda/jahitan cacat atau kemasan sembako yang bocor) saat proses pengiriman dari distributor ke toko, SOP manajemen ritel yang benar adalah...",
       "options": [
         {
           "key": "A",
-          "text": "Segera mengisolasi produk rusak ke area karantina retur, menampung tumpahan agar tidak mencemari toko, dan mengajukan klaim penggantian (retur) resmi"
+          "text": "Segera memisahkan barang cacat ke area karantina retur barang rusak, tidak memajangnya di etalase penjualan, dan mengajukan klaim retur penggantian ke distributor"
         },
         {
           "key": "B",
-          "text": "Menyiram tumpahan racun kimia ke dalam parit depan rumah warga"
+          "text": "Menjual barang rusak tersebut dengan harga dinaikkan dua kali lipat"
         },
         {
           "key": "C",
-          "text": "Mencampur pupuk rusak dengan pasir untuk dijual ke petani miskin"
+          "text": "Membuang barang rusak ke tengah jalan raya di depan toko"
         },
         {
           "key": "D",
-          "text": "Menyembunyikan karung robek di bawah tumpukan karung baru"
+          "text": "Menyembunyikan barang cacat di balik lipatan baju baru agar terbeli konsumen"
         },
         {
           "key": "E",
-          "text": "Membiarkan cairan kimia tumpah membasahi beras sembako"
+          "text": "Menyalahkan pembeli yang datang berkunjung ke toko"
         }
       ],
       "correct": "A",
-      "explanation": "Penanganan karantina retur mencegah kontaminasi toksik pada lingkungan kerja toko dan menjaga integritas kualitas barang dagangan."
+      "explanation": "SOP retur barang cacat (damaged goods) melindungi hak konsumen mendapatkan produk berkualitas prima serta menjaga reputasi dan kepercayaan terhadap toko."
     },
     {
       "id": 2528,

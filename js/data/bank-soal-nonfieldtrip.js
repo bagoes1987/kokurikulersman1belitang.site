@@ -10077,7 +10077,7 @@ window.NFT_BANK_SOAL_DAYS = {
     "indicatorName": "Ragam Sistem Mata Pencaharian Sektor Agrikultur Unggulan Ogan Komering Ulu Timur",
     "cognitiveLevel": "C1",
     "numberInIndicator": 3,
-    "question": "Praktik pergiliran tanaman palawija (seperti jagung atau kedelai) di lahan sawah setelah dua musim tanam padi secara agronomis bertujuan untuk...",
+    "question": "Praktik pergiliran tanaman hortikultura dan palawija (seperti melon, semangka, jagung, atau kedelai) di lahan sawah setelah musim panen padi secara agronomis bertujuan untuk...",
     "options": [
       {
         "key": "A",
