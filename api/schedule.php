@@ -97,6 +97,28 @@ function ensureDaySchedulesTable($pdo) {
                 WHERE `day_number` = 1
             ");
             $pdo->exec("UPDATE `day_schedules_field_trip` SET `is_active` = 1, `auto_schedule` = 0 WHERE `day_number` = 1");
+
+            // Auto-update Day 2: pastikan aktif dan auto_schedule = 0 (buka penuh hingga 23:59)
+            $pdo->exec("
+                UPDATE `day_schedules`
+                SET `is_active` = 1, `auto_schedule` = 0, `end_time` = '23:59:00'
+                WHERE `day_number` = 2
+            ");
+            $pdo->exec("UPDATE `day_schedules_field_trip` SET `is_active` = 1, `auto_schedule` = 0, `end_time` = '23:59:00' WHERE `day_number` = 2");
+
+            // Auto-update Day 3: Analisis STEM pada 7 Sektor Unggulan OKU Timur (buka penuh hingga 23:59)
+            $pdo->exec("
+                UPDATE `day_schedules`
+                SET `title` = 'Day 3: Analisis STEM pada 7 Sektor Unggulan OKU Timur',
+                    `theme` = 'Kajian Sains, Teknologi, Rekayasa Lapangan & Matematika Finansial',
+                    `description` = 'Observasi dan investigasi lapangan autentik memadukan 4 pilar STEM (Sains, Teknologi, Engineering, dan Matematika) pada sektor agrikultur pangan, perkebunan, peternakan, perikanan, agro-industri pangan, perdagangan niaga, atau jasa keuangan di Kabupaten OKU Timur.',
+                    `is_active` = 1,
+                    `auto_schedule` = 0,
+                    `end_time` = '23:59:00'
+                WHERE `day_number` = 3
+            ");
+            $pdo->exec("UPDATE `day_schedules_field_trip` SET `is_active` = 1, `auto_schedule` = 0, `end_time` = '23:59:00' WHERE `day_number` = 3");
+
             // Auto-update Day 4 Non-Field Trip ke konsep Eksplorasi Peralatan & Analisis STEM
             $pdo->exec("
                 UPDATE `day_schedules` 
