@@ -3121,13 +3121,13 @@
     }
 
     let selSector = 'pertanian';
-    const directD3Sec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
+    const directD3Sec = mapToD3SectorKey(localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
     if (directD3Sec && NFT_DAY3_SECTOR_DATA[directD3Sec]) {
       selSector = directD3Sec;
-    } else if (formData && formData.sectorKey && NFT_DAY3_SECTOR_DATA[formData.sectorKey]) {
-      selSector = formData.sectorKey;
-    } else if (sectorFromMateri && NFT_DAY3_SECTOR_DATA[sectorFromMateri]) {
-      selSector = sectorFromMateri;
+    } else if (formData && formData.sectorKey && NFT_DAY3_SECTOR_DATA[mapToD3SectorKey(formData.sectorKey)]) {
+      selSector = mapToD3SectorKey(formData.sectorKey);
+    } else if (sectorFromMateri && NFT_DAY3_SECTOR_DATA[mapToD3SectorKey(sectorFromMateri)]) {
+      selSector = mapToD3SectorKey(sectorFromMateri);
     }
     const sectorObj = NFT_DAY3_SECTOR_DATA[selSector] || NFT_DAY3_SECTOR_DATA.pertanian;
 
@@ -3250,7 +3250,7 @@
                     Otomatis dari Pilihan Modul Belajar
                   </span>
                 </div>
-                <select id="nftD3_sectorKey" ${disabledAttr} onchange="onNftDay3SectorChange(this.value)" class="w-full p-2.5 rounded-xl border border-emerald-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs font-bold text-emerald-950 bg-white cursor-pointer transition-all mt-1">
+                <select id="nftD3_sectorKey" onchange="onNftDay3SectorChange(this.value)" class="w-full p-2.5 rounded-xl border border-emerald-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs font-bold text-emerald-950 bg-white cursor-pointer transition-all mt-1">
                   <option value="pertanian" ${selSector === 'pertanian' ? 'selected' : ''}>1. Pertanian Padi Sawah &amp; Hortikultura (Padi, Kebun Melon, Semangka, &amp; Palawija)</option>
                   <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet &amp; Kelapa Sawit, Sadap Lateks, Panen TBS)</option>
                   <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat OKU Timur (Sapi, Kambing/Domba, Ayam Broiler/Petelur &amp; Bebek)</option>
@@ -3764,6 +3764,29 @@
     draft.sectorKey = newSectorKey;
     localStorage.setItem('fincestem_draft_nft_lkpd_d3_' + cleanNisn, JSON.stringify(draft));
 
+    // Sinkronkan ke submisi LKPD yang tersimpan jika sudah diserahkan resmi
+    try {
+      const rawSavedLkpd = localStorage.getItem('fincestem_lkpd_nft_day3_' + cleanNisn);
+      if (rawSavedLkpd) {
+        const pLkpd = JSON.parse(rawSavedLkpd);
+        pLkpd.sectorKey = newSectorKey;
+        const secObj = NFT_DAY3_SECTOR_DATA[newSectorKey] || NFT_DAY3_SECTOR_DATA.pertanian;
+        pLkpd.sectorName = secObj.name;
+        localStorage.setItem('fincestem_lkpd_nft_day3_' + cleanNisn, JSON.stringify(pLkpd));
+        localStorage.setItem('fincestem_lkpd_day3_' + cleanNisn, JSON.stringify(pLkpd));
+        if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+          FincestemCore.progress.submitTask(cleanNisn, 3, 'lkpd', pLkpd);
+        }
+      }
+      // Sinkronkan juga ke submisi Modul Day 3
+      const rawSavedMateri = localStorage.getItem('fincestem_materi_nft_day3_' + cleanNisn);
+      if (rawSavedMateri) {
+        const pMat = JSON.parse(rawSavedMateri);
+        pMat.selectedSector = newSectorKey;
+        localStorage.setItem('fincestem_materi_nft_day3_' + cleanNisn, JSON.stringify(pMat));
+      }
+    } catch(e) {}
+
     if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
       const secName = (NFT_DAY3_SECTOR_DATA[newSectorKey] && NFT_DAY3_SECTOR_DATA[newSectorKey].name) || newSectorKey;
       FincestemCore.ui.toast('Sektor LKPD diubah ke: ' + secName + '. Instrumen telah disesuaikan!', 'info');
@@ -3983,6 +4006,14 @@
       localStorage.setItem('fincestem_lkpd_nft_day3_' + cleanNisn, JSON.stringify(officialPayload));
       localStorage.setItem('fincestem_lkpd_day3_' + cleanNisn, JSON.stringify(officialPayload));
       localStorage.setItem('fincestem_nft_sector_d3_' + cleanNisn, data.sectorKey);
+      try {
+        const rawM = localStorage.getItem('fincestem_materi_nft_day3_' + cleanNisn);
+        if (rawM) {
+          const pm = JSON.parse(rawM);
+          pm.selectedSector = data.sectorKey;
+          localStorage.setItem('fincestem_materi_nft_day3_' + cleanNisn, JSON.stringify(pm));
+        }
+      } catch(e) {}
       // Bersihkan cache paket asesmen agar asesmen otomatis tersinkron sektor baru
       try {
         localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d3_' + cleanNisn);

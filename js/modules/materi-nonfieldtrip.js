@@ -57,6 +57,20 @@
     return { valid: true, count: count, sourcesCount: 1, reason: '✓ Sumber rujukan valid' };
   }
 
+  function mapToMateriSectorKey(raw) {
+    if (!raw) return '';
+    const s = String(raw).toLowerCase().trim();
+    if (s.includes('brilink') || s.includes('bank') || s.includes('koperasi') || s.includes('bumdes') || s.includes('keuangan') || s.includes('formal') || s.includes('bengkel') || s.includes('salon')) return 'formal';
+    if (s.includes('toko') || s.includes('pasar') || s.includes('sembako') || s.includes('dagang') || s.includes('perdagangan') || s.includes('grosir') || s.includes('saprotan') || s.includes('warung') || s.includes('niaga') || s.includes('kelontong') || s.includes('umkm')) return 'perdagangan';
+    if (s.includes('industri') || s.includes('rmu') || s.includes('giling') || s.includes('pabrik') || s.includes('tahu') || s.includes('tempe') || s.includes('kemplang') || s.includes('olah') || s.includes('jasa')) return 'industri';
+    if (s.includes('ikan') || s.includes('patin') || s.includes('lele') || s.includes('kolam') || s.includes('perikanan') || s.includes('tambak')) return 'perikanan';
+    if (s.includes('ternak') || s.includes('sapi') || s.includes('kambing') || s.includes('ayam') || s.includes('bebek') || s.includes('peternakan') || s.includes('unggas') || s.includes('domba')) return 'peternakan';
+    if (s.includes('kebun') || s.includes('karet') || s.includes('sawit') || s.includes('lateks') || s.includes('perkebunan') || s.includes('tbs')) return 'perkebunan';
+    if (s.includes('padi') || s.includes('tani') || s.includes('sawah') || s.includes('melon') || s.includes('semangka') || s.includes('pangan') || s.includes('pertanian') || s.includes('horti') || s.includes('palawija')) return 'pertanian';
+    const valid = ['pertanian', 'perkebunan', 'peternakan', 'perikanan', 'industri', 'perdagangan', 'formal'];
+    return valid.includes(s) ? s : '';
+  }
+
   // 2. MASTER KONFIGURASI MODUL DAY 1 S.D. DAY 7 NON-FIELD TRIP
   const NFT_MATERI_CONFIG = {
             1: {
@@ -3047,14 +3061,30 @@
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
     const cfg = NFT_MATERI_CONFIG[dayNum] || NFT_MATERI_CONFIG[1];
 
-    let curSec = 'pertanian';
-    if (dayNum === 3) {
-      curSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
-    } else if (dayNum === 4) {
-      curSec = localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
+    let curSec = '';
+    const selEl = document.getElementById(`materiDay${dayNum}SectorSelect`);
+    if (selEl && selEl.value) {
+      curSec = mapToMateriSectorKey(selEl.value);
     }
+    if (!curSec) {
+      if (dayNum === 3) {
+        curSec = mapToMateriSectorKey(localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
+      } else if (dayNum === 4) {
+        curSec = mapToMateriSectorKey(localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
+      } else if (dayNum === 5) {
+        curSec = mapToMateriSectorKey(localStorage.getItem('fincestem_nft_sector_d5_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
+      } else if (dayNum === 6) {
+        curSec = mapToMateriSectorKey(localStorage.getItem('fincestem_nft_sector_d6_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
+      }
+    }
+    if (!curSec) curSec = 'pertanian';
 
-    const activeCards = ((dayNum === 3 || dayNum === 4) && cfg.sectors && cfg.sectors[curSec])
+    try {
+      localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn, curSec);
+      if (dayNum === 3) localStorage.setItem('fincestem_nft_sector_d3_' + cleanNisn, curSec);
+    } catch(e) {}
+
+    const activeCards = ((dayNum >= 3 && dayNum <= 6) && cfg.sectors && cfg.sectors[curSec])
       ? cfg.sectors[curSec].cards
       : (cfg.cards || []);
     const keys = activeCards.length > 0 ? activeCards.map(c => c.key) : ['A', 'B', 'C', 'D'];
@@ -3086,14 +3116,39 @@
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
 
-    let curSec = 'pertanian';
-    if (dayNum === 3) {
-      curSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
-    } else if (dayNum === 4) {
-      curSec = localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn) || 'pertanian';
+    let curSec = '';
+    const selEl = document.getElementById(`materiDay${dayNum}SectorSelect`);
+    if (selEl && selEl.value) {
+      curSec = mapToMateriSectorKey(selEl.value);
     }
+    if (!curSec) {
+      if (dayNum === 3) {
+        curSec = mapToMateriSectorKey(localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
+      } else if (dayNum === 4) {
+        curSec = mapToMateriSectorKey(localStorage.getItem('fincestem_nft_sector_d4_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
+      } else if (dayNum === 5) {
+        curSec = mapToMateriSectorKey(localStorage.getItem('fincestem_nft_sector_d5_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
+      } else if (dayNum === 6) {
+        curSec = mapToMateriSectorKey(localStorage.getItem('fincestem_nft_sector_d6_' + cleanNisn) || localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn));
+      }
+    }
+    if (!curSec) curSec = 'pertanian';
 
-    const activeCardsForSubmit = ((dayNum === 3 || dayNum === 4) && cfg.sectors && cfg.sectors[curSec])
+    // Pastikan tersimpan ke localStorage sektor agar LKPD dan Asesmen langsung sinkron!
+    try {
+      localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn, curSec);
+      if (dayNum === 3) {
+        localStorage.setItem('fincestem_nft_sector_d3_' + cleanNisn, curSec);
+        localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d3_' + cleanNisn);
+        Object.keys(localStorage).forEach(k => {
+          if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d3_') && k.endsWith(cleanNisn)) {
+            localStorage.removeItem(k);
+          }
+        });
+      }
+    } catch(e) {}
+
+    const activeCardsForSubmit = ((dayNum >= 3 && dayNum <= 6) && cfg.sectors && cfg.sectors[curSec])
       ? cfg.sectors[curSec].cards
       : (cfg.cards || []);
     const keys = activeCardsForSubmit.length > 0 ? activeCardsForSubmit.map(c => c.key) : ['A', 'B', 'C', 'D'];
@@ -5459,20 +5514,35 @@
 
   // 7. EKSPOR FUNGSI KE WINDOW GLOBAL (SEMUA HARI DAY 0 S.D. DAY 7)
   window.selectDay3Sector = function(sectorKey) {
-    if (window[`isNftD3Submitted`]) {
-      if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Sektor ini telah dikirim resmi bersama laporan riset Anda.', 'info');
-      }
-      return;
-    }
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
-    localStorage.setItem('fincestem_nft_sector_d3_' + cleanNisn, sectorKey);
+    const mappedSec = mapToMateriSectorKey(sectorKey) || 'pertanian';
+    localStorage.setItem('fincestem_nft_sector_d3_' + cleanNisn, mappedSec);
+
+    // Jika sudah pernah disubmit, perbarui juga payload resmi yang tersimpan agar sinkron ke LKPD & Asesmen
+    try {
+      const rawSaved = localStorage.getItem('fincestem_materi_nft_day3_' + cleanNisn);
+      if (rawSaved) {
+        const p = JSON.parse(rawSaved);
+        p.selectedSector = mappedSec;
+        localStorage.setItem('fincestem_materi_nft_day3_' + cleanNisn, JSON.stringify(p));
+        if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+          FincestemCore.progress.submitTask(cleanNisn, 3, 'materi', p);
+        }
+      }
+      // Hapus cache paket soal asesmen Day 3 agar otomatis menyesuaikan dengan sektor baru
+      localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d3_' + cleanNisn);
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d3_') && k.endsWith(cleanNisn)) {
+          localStorage.removeItem(k);
+        }
+      });
+    } catch(e) {}
 
     const cfg3 = (window.NFT_MATERI_CONFIG && window.NFT_MATERI_CONFIG[3]) || {};
-    const secName = (cfg3.sectors && cfg3.sectors[sectorKey]) ? cfg3.sectors[sectorKey].name : sectorKey;
+    const secName = (cfg3.sectors && cfg3.sectors[mappedSec]) ? cfg3.sectors[mappedSec].name : mappedSec;
     if (window.FincestemCore && FincestemCore.ui) {
-      FincestemCore.ui.toast('Sektor riset Day 3 diubah ke: ' + secName + '. Kartu panduan STEM telah disesuaikan!', 'success');
+      FincestemCore.ui.toast('Sektor riset Day 3 disesuaikan ke: ' + secName + '. Kartu panduan STEM telah disesuaikan!', 'success');
     }
 
     const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
@@ -5482,20 +5552,27 @@
   };
 
   window.selectDay4Sector = function(sectorKey) {
-    if (window[`isNftD4Submitted`]) {
-      if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Sektor ini telah dikirim resmi bersama laporan riset Day 4 Anda.', 'info');
-      }
-      return;
-    }
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
-    localStorage.setItem('fincestem_nft_sector_d4_' + cleanNisn, sectorKey);
+    const mappedSec = mapToMateriSectorKey(sectorKey) || 'pertanian';
+    localStorage.setItem('fincestem_nft_sector_d4_' + cleanNisn, mappedSec);
+
+    try {
+      const rawSaved = localStorage.getItem('fincestem_materi_nft_day4_' + cleanNisn);
+      if (rawSaved) {
+        const p = JSON.parse(rawSaved);
+        p.selectedSector = mappedSec;
+        localStorage.setItem('fincestem_materi_nft_day4_' + cleanNisn, JSON.stringify(p));
+        if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+          FincestemCore.progress.submitTask(cleanNisn, 4, 'materi', p);
+        }
+      }
+    } catch(e) {}
 
     const cfg4 = (window.NFT_MATERI_CONFIG && window.NFT_MATERI_CONFIG[4]) || {};
-    const secName = (cfg4.sectors && cfg4.sectors[sectorKey]) ? cfg4.sectors[sectorKey].name : sectorKey;
+    const secName = (cfg4.sectors && cfg4.sectors[mappedSec]) ? cfg4.sectors[mappedSec].name : mappedSec;
     if (window.FincestemCore && FincestemCore.ui) {
-      FincestemCore.ui.toast('Sektor jelajah lingkungan Day 4 diubah ke: ' + secName + '. Kartu riset telah disesuaikan!', 'success');
+      FincestemCore.ui.toast('Sektor jelajah Day 4 diubah ke: ' + secName + '. Kartu riset telah disesuaikan!', 'success');
     }
 
     const mainEl = document.getElementById('mainContentArea') || document.querySelector('main');
@@ -5504,20 +5581,26 @@
     }
   };
 
-  
   window.selectDay5Sector = function(sectorKey) {
-    if (window[`isNftD5Submitted`]) {
-      if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Sektor ini telah dikirim resmi bersama laporan riset Day 5 Anda.', 'info');
-      }
-      return;
-    }
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
-    localStorage.setItem('fincestem_nft_sector_d5_' + cleanNisn, sectorKey);
+    const mappedSec = mapToMateriSectorKey(sectorKey) || 'pertanian';
+    localStorage.setItem('fincestem_nft_sector_d5_' + cleanNisn, mappedSec);
+
+    try {
+      const rawSaved = localStorage.getItem('fincestem_materi_nft_day5_' + cleanNisn);
+      if (rawSaved) {
+        const p = JSON.parse(rawSaved);
+        p.selectedSector = mappedSec;
+        localStorage.setItem('fincestem_materi_nft_day5_' + cleanNisn, JSON.stringify(p));
+        if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+          FincestemCore.progress.submitTask(cleanNisn, 5, 'materi', p);
+        }
+      }
+    } catch(e) {}
 
     const cfg5 = (window.NFT_MATERI_CONFIG && window.NFT_MATERI_CONFIG[5]) || {};
-    const secName = (cfg5.sectors && cfg5.sectors[sectorKey]) ? cfg5.sectors[sectorKey].name : sectorKey;
+    const secName = (cfg5.sectors && cfg5.sectors[mappedSec]) ? cfg5.sectors[mappedSec].name : mappedSec;
     if (window.FincestemCore && FincestemCore.ui) {
       FincestemCore.ui.toast('Sektor video Day 5 diubah ke: ' + secName + '. Kartu panduan Sains & Teknologi telah disesuaikan!', 'success');
     }
@@ -5529,18 +5612,25 @@
   };
 
   window.selectDay6Sector = function(sectorKey) {
-    if (window[`isNftD6Submitted`]) {
-      if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Sektor ini telah dikirim resmi bersama laporan riset Day 6 Anda.', 'info');
-      }
-      return;
-    }
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
     const cleanNisn = String(u.nisn || u.identifier || '').trim();
-    localStorage.setItem('fincestem_nft_sector_d6_' + cleanNisn, sectorKey);
+    const mappedSec = mapToMateriSectorKey(sectorKey) || 'pertanian';
+    localStorage.setItem('fincestem_nft_sector_d6_' + cleanNisn, mappedSec);
+
+    try {
+      const rawSaved = localStorage.getItem('fincestem_materi_nft_day6_' + cleanNisn);
+      if (rawSaved) {
+        const p = JSON.parse(rawSaved);
+        p.selectedSector = mappedSec;
+        localStorage.setItem('fincestem_materi_nft_day6_' + cleanNisn, JSON.stringify(p));
+        if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+          FincestemCore.progress.submitTask(cleanNisn, 6, 'materi', p);
+        }
+      }
+    } catch(e) {}
 
     const cfg6 = (window.NFT_MATERI_CONFIG && window.NFT_MATERI_CONFIG[6]) || {};
-    const secName = (cfg6.sectors && cfg6.sectors[sectorKey]) ? cfg6.sectors[sectorKey].name : sectorKey;
+    const secName = (cfg6.sectors && cfg6.sectors[mappedSec]) ? cfg6.sectors[mappedSec].name : mappedSec;
     if (window.FincestemCore && FincestemCore.ui) {
       FincestemCore.ui.toast('Sektor video Day 6 diubah ke: ' + secName + '. Kartu panduan Rekayasa & Finansial telah disesuaikan!', 'success');
     }

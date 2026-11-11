@@ -96,7 +96,7 @@
    */
   function generateStudentPackage(dayNum, cleanNisn) {
     const isSecDay = (dayNum === 2 || dayNum === 3 || dayNum === 4 || dayNum === 5 || dayNum === 6);
-    let selectedSector = isSecDay ? getStudentDay3Sector(cleanNisn, dayNum) : '';
+    let selectedSector = isSecDay ? (examState && examState.selectedSector ? examState.selectedSector : getStudentDay3Sector(cleanNisn, dayNum)) : '';
     const storageKey = isSecDay
       ? `fincestem_pkg_nft_asesmen_v3_d${dayNum}_${selectedSector}_${cleanNisn}`
       : `fincestem_pkg_nft_asesmen_v3_d${dayNum}_${cleanNisn}`;
@@ -908,29 +908,34 @@
             </div>
           </div>
           ${isSectorDay ? `
-            <div class="p-3.5 rounded-2xl bg-amber-400 text-slate-950 flex flex-col gap-2 shadow-sm border border-amber-300">
+            <div class="p-4 rounded-2xl bg-amber-400 text-slate-950 flex flex-col gap-2.5 shadow-sm border border-amber-300">
               <div class="flex items-center justify-between gap-2 flex-wrap">
                 <div class="flex items-center gap-1.5 text-xs font-black text-slate-950">
-                  <span class="material-symbols-outlined text-base">lock</span>
-                  <span>Sektor Asesmen (Terkunci Otomatis Sesuai LKPD):</span>
+                  <span class="material-symbols-outlined text-base">hub</span>
+                  <span>Sektor Soal Asesmen Day ${examState.dayNum}:</span>
                 </div>
-                <span class="px-2.5 py-0.5 rounded-full bg-slate-950 text-amber-300 font-black text-[10.5px] uppercase tracking-wider shadow-2xs">Sinkronisasi Otomatis</span>
+                <span class="px-2.5 py-0.5 rounded-full bg-slate-950 text-amber-300 font-black text-[10.5px] uppercase tracking-wider shadow-2xs">Bebas Dipilih / Disesuaikan</span>
               </div>
-              <div class="px-3.5 py-2.5 rounded-xl bg-slate-950 text-white flex items-center gap-2.5 shadow-2xs">
-                <span class="material-symbols-outlined text-amber-400 text-xl shrink-0">verified</span>
-                <span class="text-xs sm:text-sm font-black truncate">${escapeHtml(currentSectorName)}</span>
+              
+              <div class="flex flex-col gap-1">
+                <label for="examSectorSelector" class="text-[11px] font-bold text-slate-900">
+                  Pastikan pilihan sektor di bawah ini sesuai dengan sektor observasi Anda:
+                </label>
+                <select id="examSectorSelector" onchange="window.handleSwitchExamSector(this.value)" class="w-full p-2.5 rounded-xl border-2 border-slate-900 bg-white text-slate-950 font-black text-xs sm:text-sm shadow-xs cursor-pointer outline-none">
+                  <option value="pertanian" ${(currentSectorKey === 'pertanian' || currentSectorKey === 'pangan') ? 'selected' : ''}>1. Sektor Pertanian Padi Sawah &amp; Hortikultura (Padi, Kebun Melon/Semangka)</option>
+                  <option value="perkebunan" ${currentSectorKey === 'perkebunan' ? 'selected' : ''}>2. Sektor Perkebunan Rakyat (Karet &amp; Kelapa Sawit)</option>
+                  <option value="peternakan" ${currentSectorKey === 'peternakan' ? 'selected' : ''}>3. Sektor Peternakan Rakyat OKU Timur (Sapi, Kambing &amp; Unggas)</option>
+                  <option value="perikanan" ${currentSectorKey === 'perikanan' ? 'selected' : ''}>4. Sektor Perikanan Air Tawar (Sentra Patin &amp; Lele Belitang)</option>
+                  <option value="industri" ${(currentSectorKey === 'industri' || currentSectorKey === 'jasa') ? 'selected' : ''}>5. Sektor Agro-Industri &amp; Olahan Pangan (RMU, Tahu-Tempe &amp; Kemplang)</option>
+                  <option value="perdagangan" ${currentSectorKey === 'perdagangan' ? 'selected' : ''}>6. Sektor Perdagangan &amp; UMKM Niaga (Toko Pakaian, Sembako, Saprotan &amp; Pasar)</option>
+                  <option value="formal" ${(currentSectorKey === 'formal' || currentSectorKey === 'keuangan') ? 'selected' : ''}>7. Sektor Jasa Keuangan Mikro &amp; Jasa Perorangan (Agen BRILink, BUMDes &amp; Bengkel)</option>
+                </select>
               </div>
-              <p class="text-[11px] text-slate-900 leading-tight font-semibold flex items-center gap-1">
+
+              <p class="text-[11px] text-slate-900 leading-tight font-semibold flex items-center gap-1 mt-0.5">
                 <span class="material-symbols-outlined text-xs shrink-0 text-slate-950">info</span>
-                <span>Paket ${(isDay0 || isDay4 || isDay5 || isDay6) ? "10" : "50"} butir soal spesifik otomatis diambil dari sektor observasi LKPD Day ${examState.dayNum} yang telah Anda pilih.</span>
+                <span>Paket ${(isDay0 || isDay4 || isDay5 || isDay6) ? "10" : "50"} butir soal PG spesifik otomatis dicocokkan dengan sektor pilihan di atas. Jika berbeda dengan riset Anda, silakan ubah dropdown di atas sebelum mulai.</span>
               </p>
-              <div class="mt-1 pt-2 border-t border-amber-950/20 flex items-center justify-between text-[11px]">
-                <span class="font-bold text-slate-900">Ingin mengganti sektor observasi?</span>
-                <a href="lkpd.html?day=${examState.dayNum}" class="underline font-black text-slate-950 hover:text-emerald-900 flex items-center gap-0.5">
-                  <span>Sesuaikan di LKPD Day ${examState.dayNum}</span>
-                  <span class="material-symbols-outlined text-xs">open_in_new</span>
-                </a>
-              </div>
             </div>
           ` : ''}
         </div>
@@ -1791,11 +1796,29 @@
   function normalizeSectorKey(key, dayNum) {
     const d = Number(dayNum) || 2;
     if (!key) return (d === 2 ? 'pangan' : 'pertanian');
-    const k = String(key).toLowerCase().trim();
-    if (k === 'pertanian' || k === 'pangan') return (d === 2 ? 'pangan' : 'pertanian');
-    if (k === 'jasa' || k === 'agroindustri' || k === 'industri') return 'industri';
-    if (k === 'keuangan' || k === 'formal') return 'formal';
-    if (NFT_DAY3_SECTOR_MAP[k]) return k;
+    const s = String(key).toLowerCase().trim();
+    if (s.includes('brilink') || s.includes('bank') || s.includes('koperasi') || s.includes('bumdes') || s.includes('keuangan') || s.includes('formal') || s.includes('bengkel') || s.includes('salon')) {
+      return 'formal';
+    }
+    if (s.includes('toko') || s.includes('pasar') || s.includes('sembako') || s.includes('dagang') || s.includes('perdagangan') || s.includes('grosir') || s.includes('saprotan') || s.includes('warung') || s.includes('niaga') || s.includes('kelontong') || s.includes('umkm')) {
+      return 'perdagangan';
+    }
+    if (s.includes('industri') || s.includes('rmu') || s.includes('giling') || s.includes('pabrik') || s.includes('tahu') || s.includes('tempe') || s.includes('kemplang') || s.includes('olah') || s.includes('jasa')) {
+      return 'industri';
+    }
+    if (s.includes('ikan') || s.includes('patin') || s.includes('lele') || s.includes('kolam') || s.includes('perikanan') || s.includes('tambak')) {
+      return 'perikanan';
+    }
+    if (s.includes('ternak') || s.includes('sapi') || s.includes('kambing') || s.includes('ayam') || s.includes('bebek') || s.includes('peternakan') || s.includes('unggas') || s.includes('domba')) {
+      return 'peternakan';
+    }
+    if (s.includes('kebun') || s.includes('karet') || s.includes('sawit') || s.includes('lateks') || s.includes('perkebunan') || s.includes('tbs')) {
+      return 'perkebunan';
+    }
+    if (s.includes('padi') || s.includes('tani') || s.includes('sawah') || s.includes('melon') || s.includes('semangka') || s.includes('pangan') || s.includes('pertanian') || s.includes('horti') || s.includes('palawija')) {
+      return (d === 2 ? 'pangan' : 'pertanian');
+    }
+    if (NFT_DAY3_SECTOR_MAP[s]) return s;
     return (d === 2 ? 'pangan' : 'pertanian');
   }
 
@@ -1859,13 +1882,28 @@
 
   window.handleSwitchExamSector = function(newSec) {
     if (!newSec) return;
-    examState.selectedSector = newSec;
+    const norm = normalizeSectorKey(newSec, examState.dayNum);
+    examState.selectedSector = norm;
     try {
-      localStorage.setItem(`fincestem_nft_sector_d${examState.dayNum}_` + examState.cleanNisn, newSec);
+      localStorage.setItem(`fincestem_nft_sector_d${examState.dayNum}_` + examState.cleanNisn, norm);
+      if (examState.dayNum === 3) {
+        localStorage.setItem('fincestem_nft_sector_d3_' + examState.cleanNisn, norm);
+      }
+      // Hapus cache paket soal lama agar di-generate ulang untuk sektor baru
+      localStorage.removeItem(`fincestem_pkg_nft_asesmen_v3_d${examState.dayNum}_` + examState.cleanNisn);
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith(`fincestem_pkg_nft_asesmen_v3_d${examState.dayNum}_`) && k.endsWith(examState.cleanNisn)) {
+          localStorage.removeItem(k);
+        }
+      });
     } catch(e) {}
     // Re-generate paket soal khusus sektor baru ini
     examState.pkg = generateStudentPackage(examState.dayNum, examState.cleanNisn);
     renderExamWelcomeScreen();
+    if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+      const secName = NFT_DAY3_SECTOR_MAP[norm] || norm;
+      FincestemCore.ui.toast('Sektor asesmen disesuaikan ke: ' + secName + '. Soal ujian telah diperbarui!', 'success');
+    }
   };
 
   let lastViolationTime = 0;
