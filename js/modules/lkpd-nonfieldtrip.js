@@ -4314,7 +4314,7 @@
     const disabledAttr = finalReadOnly ? 'disabled' : '';
 
     const isTesterD4 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
-    const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTesterD4);
+    const isLockedByPrereq = false; // Day 4 terbuka langsung untuk dikerjakan siswa tanpa lock prasyarat
 
     // Deteksi sektor pilihan siswa (terhubung otomatis dari Day 3 / Modul Day 4)
     const defaultSector = saved.sectorKey ||
@@ -4420,7 +4420,7 @@
               <span>Ganti Sektor Jelajah Lapangan (Jika Berbeda dari Day 3):</span>
               <span class="text-[10px] text-slate-400 font-semibold">Tersinkron otomatis</span>
             </label>
-            <select id="nftD4_sectorKey" ${disabledAttr} onchange="onNftDay4SectorChange(this.value)" class="w-full p-3 rounded-2xl border-2 border-emerald-500 bg-white font-black text-xs sm:text-sm text-emerald-950 focus:ring-2 focus:ring-emerald-500/30 outline-none cursor-pointer shadow-2xs">
+            <select id="nftD4_sectorKey" onchange="onNftDay4SectorChange(this.value)" class="w-full p-3 rounded-2xl border-2 border-emerald-500 bg-white font-black text-xs sm:text-sm text-emerald-950 focus:ring-2 focus:ring-emerald-500/30 outline-none cursor-pointer shadow-2xs">
               <option value="pertanian" ${selectedSector === 'pertanian' ? 'selected' : ''}>1. Sektor Pertanian Padi Sawah &amp; Tanaman Pangan</option>
               <option value="perkebunan" ${selectedSector === 'perkebunan' ? 'selected' : ''}>2. Sektor Perkebunan Rakyat (Karet &amp; Kelapa Sawit)</option>
               <option value="peternakan" ${selectedSector === 'peternakan' ? 'selected' : ''}>3. Sektor Peternakan Rakyat OKU Timur (Sapi, Kambing &amp; Ayam)</option>
@@ -4753,6 +4753,28 @@
       });
     } catch(e) {}
 
+    // Sinkronkan ke submisi LKPD & Modul jika sudah diserahkan resmi
+    try {
+      const rawSavedLkpd = localStorage.getItem('fincestem_lkpd_nft_day4_' + cleanNisn);
+      if (rawSavedLkpd) {
+        const pLkpd = JSON.parse(rawSavedLkpd);
+        pLkpd.sectorKey = newSectorKey;
+        const guide = NFT_DAY4_EXPLORATION_GUIDE[newSectorKey] || NFT_DAY4_EXPLORATION_GUIDE.pertanian;
+        pLkpd.sectorName = guide.name;
+        localStorage.setItem('fincestem_lkpd_nft_day4_' + cleanNisn, JSON.stringify(pLkpd));
+        localStorage.setItem('fincestem_lkpd_day4_' + cleanNisn, JSON.stringify(pLkpd));
+        if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+          FincestemCore.progress.submitTask(cleanNisn, 4, 'lkpd', pLkpd);
+        }
+      }
+      const rawSavedMateri = localStorage.getItem('fincestem_materi_nft_day4_' + cleanNisn);
+      if (rawSavedMateri) {
+        const pMat = JSON.parse(rawSavedMateri);
+        pMat.selectedSector = newSectorKey;
+        localStorage.setItem('fincestem_materi_nft_day4_' + cleanNisn, JSON.stringify(pMat));
+      }
+    } catch(e) {}
+
     if (window.FincestemCore && FincestemCore.ui) {
       const guide = NFT_DAY4_EXPLORATION_GUIDE[newSectorKey];
       const secName = guide ? guide.name : newSectorKey;
@@ -4911,6 +4933,20 @@
       localStorage.setItem('fincestem_lkpd_nft_day4_' + cleanNisn, JSON.stringify(data));
       localStorage.setItem('fincestem_lkpd_day4_' + cleanNisn, JSON.stringify(data));
       localStorage.setItem('fincestem_nft_sector_d4_' + cleanNisn, data.sectorKey);
+      // Bersihkan cache paket asesmen Day 4 agar soalnya otomatis sinkron ke sektor pilihan
+      localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d4_' + cleanNisn);
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d4_') && k.endsWith(cleanNisn)) {
+          localStorage.removeItem(k);
+        }
+      });
+      // Sinkronkan ke Modul Day 4
+      const rawM = localStorage.getItem('fincestem_materi_nft_day4_' + cleanNisn);
+      if (rawM) {
+        const pm = JSON.parse(rawM);
+        pm.selectedSector = data.sectorKey;
+        localStorage.setItem('fincestem_materi_nft_day4_' + cleanNisn, JSON.stringify(pm));
+      }
     } catch(e) {}
 
     const onDone = function() {

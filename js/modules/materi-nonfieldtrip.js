@@ -5567,6 +5567,13 @@
           FincestemCore.progress.submitTask(cleanNisn, 4, 'materi', p);
         }
       }
+      // Hapus cache soal asesmen Day 4 agar otomatis sinkron ke sektor baru
+      localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d4_' + cleanNisn);
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d4_') && k.endsWith(cleanNisn)) {
+          localStorage.removeItem(k);
+        }
+      });
     } catch(e) {}
 
     const cfg4 = (window.NFT_MATERI_CONFIG && window.NFT_MATERI_CONFIG[4]) || {};

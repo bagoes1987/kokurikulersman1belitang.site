@@ -4674,9 +4674,9 @@ const FincestemCore = {
       } catch (e) {}
 
       // 1. SISWA FIELD TRIP:
-      // Day 1, Day 2, & Day 3 langsung terbuka penuh untuk semua siswa tanpa harus menunggu penilaian fasilitator / tugas hari sebelumnya
+      // Day 1 s.d. Day 4 langsung terbuka penuh untuk semua siswa tanpa harus menunggu penilaian fasilitator / tugas hari sebelumnya
       if (isFt) {
-        const prevDone = (d <= 3) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
+        const prevDone = (d <= 4) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
         const canOpen = isOpenByAdmin && prevDone;
         return {
           canAccess: canOpen,
@@ -4690,8 +4690,8 @@ const FincestemCore = {
       }
 
       // 2. SISWA NON-FIELD TRIP:
-      // Day 1, Day 2, & Day 3: Langsung terbuka untuk seluruh siswa tanpa harus dinilai oleh fasilitator atau terhalang tugas hari sebelumnya
-      if (d <= 3) {
+      // Day 1 s.d. Day 4: Langsung terbuka untuk seluruh siswa tanpa harus dinilai oleh fasilitator atau terhalang tugas hari sebelumnya
+      if (d <= 4) {
         return {
           canAccess: isOpenByAdmin,
           canEdit: isOpenByAdmin,
