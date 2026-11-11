@@ -9,13 +9,10 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 // Pastikan tabel student_progress_eval dan tabel sinkronisasi reset ada
 function ensureProgressTable($pdo) {
+    if (file_exists(__DIR__ . '/.db_schema_ready')) return;
     static $checked = false;
     if ($checked) return;
-    $lockFile = sys_get_temp_dir() . '/fincestem_progress_table_v3.lock';
-    if (file_exists($lockFile) && (time() - filemtime($lockFile) < 3600)) {
-        $checked = true;
-        return;
-    }
+    $lockFile = __DIR__ . '/.db_schema_ready';
 
     $sql = "
     CREATE TABLE IF NOT EXISTS `student_progress_eval` (

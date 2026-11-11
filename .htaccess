@@ -72,9 +72,6 @@ DirectoryIndex index.html index.php
 <IfModule mod_headers.c>
     Header set X-Content-Type-Options "nosniff"
     Header set X-Frame-Options "SAMEORIGIN"
-    
-    # Enable Keep-Alive to maintain persistent TCP connections for 1,500 users
-    Header set Connection keep-alive
 </IfModule>
 
 # 4. BLOCK ACCESS TO SENSITIVE SERVER FILES

@@ -1,0 +1,3 @@
+# Database schema initialized for production
+# This lock file bypasses DDL (CREATE TABLE / ALTER TABLE) on every request to prevent MySQL metadata locks and connection exhaustion.
+initialized_at=2026-11-11

@@ -16,6 +16,7 @@ $method = $_SERVER['REQUEST_METHOD'];
  * Pastikan tabel day_schedules dan day_schedules_field_trip ada dan memiliki data awal
  */
 function ensureDaySchedulesTable($pdo) {
+    if (file_exists(__DIR__ . '/.db_schema_ready')) return;
     static $checked = false;
     if ($checked) return;
     $checked = true;

@@ -572,11 +572,13 @@ if ($action === 'reset_device') {
     $pdo = getDB();
 
     // Pastikan kolom ada
-    try {
-        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_id` VARCHAR(100) DEFAULT NULL AFTER `zone`");
-        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_info` VARCHAR(255) DEFAULT NULL AFTER `device_id`");
-        $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_locked_at` DATETIME DEFAULT NULL AFTER `device_info`");
-    } catch (Exception $eDev) {}
+    if (!file_exists(__DIR__ . '/.db_schema_ready')) {
+        try {
+            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_id` VARCHAR(100) DEFAULT NULL AFTER `zone`");
+            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_info` VARCHAR(255) DEFAULT NULL AFTER `device_id`");
+            $pdo->exec("ALTER TABLE `users` ADD COLUMN `device_locked_at` DATETIME DEFAULT NULL AFTER `device_info`");
+        } catch (Exception $eDev) {}
+    }
 
     if ($mode === 'all') {
         $stmtResetAll = $pdo->prepare("UPDATE `users` SET `device_id` = NULL, `device_info` = NULL, `device_locked_at` = NULL WHERE `role` = 'siswa'");

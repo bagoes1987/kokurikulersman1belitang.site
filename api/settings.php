@@ -13,6 +13,7 @@ header('Expires: 0');
 $method = $_SERVER['REQUEST_METHOD'];
 
 function ensureStudentContactsTable($pdo) {
+    if (file_exists(__DIR__ . '/.db_schema_ready')) return;
     static $ensured = false;
     if ($ensured) return;
     try {
@@ -31,6 +32,7 @@ function ensureStudentContactsTable($pdo) {
 }
 
 function ensureTeacherProfilesTable($pdo) {
+    if (file_exists(__DIR__ . '/.db_schema_ready')) return;
     static $ensured = false;
     if ($ensured) return;
     try {
@@ -138,6 +140,7 @@ function seedMasterTeachersIfEmpty($pdo) {
 }
 
 function ensureRoleTables($pdo) {
+    if (file_exists(__DIR__ . '/.db_schema_ready')) return;
     static $checked = false;
     if ($checked) return;
     $lockFile = sys_get_temp_dir() . '/fincestem_tables_v2.lock';
