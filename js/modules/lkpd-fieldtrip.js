@@ -1678,7 +1678,7 @@
           if (lkpdRaw) {
             try {
               const p = JSON.parse(lkpdRaw);
-              if (p && (p.submitted || p.varietas || p.applesEaten !== undefined)) return true;
+              if (p && (p.submitted || (p.varietas && p.ciriFisik))) return true;
             } catch(e) {}
           }
           // 2. Cek Asesmen Day 3
@@ -1813,6 +1813,11 @@
         if (raw) {
           saved = JSON.parse(raw);
         }
+        const rawDraft = localStorage.getItem('fincestem_lkpd_ft_day3_apel_draft_' + cleanNisn);
+        if (rawDraft) {
+          const draftObj = JSON.parse(rawDraft);
+          saved = Object.assign({}, saved || {}, draftObj);
+        }
       } catch(e) {}
 
       // Fallback progress server untuk Day 3 jika pindah HP
@@ -1840,7 +1845,7 @@
 
       const isSubmitted = !!(saved && saved.submitted);
       const isLockedByPrereq = false;
-      const isFormLocked = isReadOnly || isSubmitted;
+      const isFormLocked = !!isReadOnly; // Form tetap bisa diedit siswa meskipun sudah submit agar bisa diperbarui
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
       // 1. MENU TAB NAVIGASI UTAMA 3 SESI LKPD (DI ATAS)
@@ -1966,19 +1971,19 @@
                   </label>
                   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2 pt-1">
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-emerald-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-600 has-[:checked]:text-emerald-950">
-                      <input type="radio" name="ftD3Varietas" value="Manalagi" class="accent-emerald-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Manalagi') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3Varietas" value="Manalagi" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('apel')" class="accent-emerald-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Manalagi') ? 'checked' : ''}>
                       <span>🍏 Apel Manalagi</span>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-rose-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-rose-50 has-[:checked]:border-rose-600 has-[:checked]:text-rose-950">
-                      <input type="radio" name="ftD3Varietas" value="Rome Beauty" class="accent-rose-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Rome Beauty') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3Varietas" value="Rome Beauty" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('apel')" class="accent-rose-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Rome Beauty') ? 'checked' : ''}>
                       <span>🍎 Rome Beauty</span>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-red-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-red-50 has-[:checked]:border-red-600 has-[:checked]:text-red-950">
-                      <input type="radio" name="ftD3Varietas" value="Anna" class="accent-red-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Anna') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3Varietas" value="Anna" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('apel')" class="accent-red-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Anna') ? 'checked' : ''}>
                       <span>🍎 Apel Anna</span>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-amber-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-amber-50 has-[:checked]:border-amber-600 has-[:checked]:text-amber-950">
-                      <input type="radio" name="ftD3Varietas" value="Campuran" class="accent-amber-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Campuran') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3Varietas" value="Campuran" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('apel')" class="accent-amber-600" ${readOnlyAttr} ${(saved && saved.varietas === 'Campuran') ? 'checked' : ''}>
                       <span>🍏🍎 Campuran (Mencicipi >1)</span>
                     </label>
                   </div>
@@ -1991,7 +1996,7 @@
                   <p class="text-[11.5px] text-slate-500 leading-relaxed">
                     Jelaskan warna kulit buah, tekstur renyah/empuknya daging buah, tingkat rasa manis atau asam segar, serta aroma khas yang kamu rasakan. (Perhatikan ciri apel masak: berwarna merah/kuning, baru dipetik terasa asam segar, dan lebih manis setelah disimpan 2–3 hari).
                   </p>
-                  <textarea id="ftD3CiriFisik" rows="3" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Apel yang saya petik kulitnya merah semburat kuning, daging buah renyah berair, rasanya ada asam segar khas baru dipetik dari pohon, sesuai dengan ciri apel yang masak di kebun...">${saved ? (saved.ciriFisik || '') : ''}</textarea>
+                  <textarea id="ftD3CiriFisik" rows="3" ${readOnlyAttr} oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('apel')" class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Apel yang saya petik kulitnya merah semburat kuning, daging buah renyah berair, rasanya ada asam segar khas baru dipetik dari pohon, sesuai dengan ciri apel yang masak di kebun...">${saved ? (saved.ciriFisik || '') : ''}</textarea>
                 </div>
               </div>
 
@@ -2052,7 +2057,7 @@
                   <label for="ftD3AnalisisGps" class="text-xs sm:text-sm font-bold text-slate-800">
                     Analisis Pembuktian Ketinggian Dataran Tinggi (≥800 mdpl):
                   </label>
-                  <textarea id="ftD3AnalisisGps" rows="2" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Dari pembacaan sensor GPS HP, kebun berada pada elevasi 965 mdpl. Hal ini membuktikan kebenaran hipotesis bahwa tanaman apel membutuhkan ketinggian di atas 800 mdpl agar beriklim sejuk...">${saved ? (saved.analisisGps || '') : ''}</textarea>
+                  <textarea id="ftD3AnalisisGps" rows="2" ${readOnlyAttr} oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('apel')" class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all placeholder:text-slate-400 ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Dari pembacaan sensor GPS HP, kebun berada pada elevasi 965 mdpl. Hal ini membuktikan kebenaran hipotesis bahwa tanaman apel membutuhkan ketinggian di atas 800 mdpl agar beriklim sejuk...">${saved ? (saved.analisisGps || '') : ''}</textarea>
                 </div>
               </div>
 
@@ -2070,7 +2075,7 @@
                   <p class="text-[11.5px] text-slate-500 leading-relaxed">
                     Jelaskan cara kerja dan manfaat teknik rekayasa yang dilakukan petani (misalnya: pelengkungan cabang mendatar / <em>branch bending</em>, perompesan daun buatan / <em>defoliasi</em> untuk panen 2x setahun, atau teknik okulasi sambung pucuk).
                   </p>
-                  <textarea id="ftD3SistemRekayasa" rows="4" ${readOnlyAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-slate-400 leading-relaxed ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Kami mengamati petani melakukan pelengkungan cabang (branch bending) dengan tali pengikat mendatar. Tujuannya memperlambat hormon auksin ke atas sehingga merangsang tunas bunga tumbuh merata di setiap cabang. Petani juga merompes daun secara manual setelah panen untuk menggantikan musim gugur alami...">${saved ? (saved.sistemRekayasa || '') : ''}</textarea>
+                  <textarea id="ftD3SistemRekayasa" rows="4" ${readOnlyAttr} oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('apel')" class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-slate-400 leading-relaxed ${isFormLocked ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : ''}" placeholder="Contoh: Kami mengamati petani melakukan pelengkungan cabang (branch bending) dengan tali pengikat mendatar. Tujuannya memperlambat hormon auksin ke atas sehingga merangsang tunas bunga tumbuh merata di setiap cabang. Petani juga merompes daun secara manual setelah panen untuk menggantikan musim gugur alami...">${saved ? (saved.sistemRekayasa || '') : ''}</textarea>
                 </div>
               </div>
 
@@ -2097,7 +2102,7 @@
                       Jumlah Butir Apel yang Kamu Makan di Kebun:
                     </label>
                     <div class="flex items-center gap-2">
-                      <input type="number" min="0" max="50" id="ftD3ApplesEaten" oninput="calculateD3PetikApelMath()" value="${saved ? (saved.applesEaten !== undefined ? saved.applesEaten : 6) : 6}" ${readOnlyAttr} class="w-full p-2.5 rounded-xl border border-slate-300 font-mono text-sm font-bold text-emerald-800 outline-none focus:border-indigo-500 bg-white">
+                      <input type="number" min="0" max="50" id="ftD3ApplesEaten" oninput="calculateD3PetikApelMath(); window.onFieldTripD3Input && window.onFieldTripD3Input('apel');" value="${saved ? (saved.applesEaten !== undefined ? saved.applesEaten : 6) : 6}" ${readOnlyAttr} class="w-full p-2.5 rounded-xl border border-slate-300 font-mono text-sm font-bold text-emerald-800 outline-none focus:border-indigo-500 bg-white">
                       <span class="text-slate-600 font-bold shrink-0">Butir</span>
                     </div>
                     <span class="text-[11px] text-slate-500">Estimasi praktis agrikultur: 1 kg rata-rata berisi 8 butir buah.</span>
@@ -2109,7 +2114,7 @@
                     </label>
                     <div class="flex items-center gap-2">
                       <span class="text-slate-600 font-bold shrink-0">Rp</span>
-                      <input type="text" id="ftD3PricePerKg" oninput="formatRupiahInput(this); calculateD3PetikApelMath()" value="${saved ? (formatNumberId(saved.pricePerKg) || '35.000') : '35.000'}" ${readOnlyAttr} class="w-full p-2.5 rounded-xl border border-slate-300 font-mono text-sm font-bold text-slate-900 outline-none focus:border-indigo-500 bg-white">
+                      <input type="text" id="ftD3PricePerKg" oninput="formatRupiahInput(this); calculateD3PetikApelMath(); window.onFieldTripD3Input && window.onFieldTripD3Input('apel');" value="${saved ? (formatNumberId(saved.pricePerKg) || '35.000') : '35.000'}" ${readOnlyAttr} class="w-full p-2.5 rounded-xl border border-slate-300 font-mono text-sm font-bold text-slate-900 outline-none focus:border-indigo-500 bg-white">
                       <span class="text-slate-600 font-bold shrink-0">/ kg</span>
                     </div>
                     <span class="text-[11px] text-slate-500">Tanyakan langsung harga petik segar ke petani kebun di tempat (kisaran Rp 35.000 – Rp 40.000 / kg).</span>
@@ -2157,31 +2162,63 @@
                 
               </div>
 
-              <!-- TOMBOL AKSI SIMPAN & SUBMIT LKPD -->
-              ${!isFormLocked ? `
-                <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                  <button type="button" onclick="saveDay3PetikApelLKPD(false)" class="flex-1 py-3.5 px-4 rounded-2xl bg-white border border-emerald-600 text-emerald-800 hover:bg-emerald-50 font-black text-xs sm:text-sm transition-all shadow-xs cursor-pointer flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined text-lg">save</span>
-                    <span>Simpan Sebagai Draft</span>
-                  </button>
-
-                  <button type="button" onclick="saveDay3PetikApelLKPD(true)" id="btnSubmitD3Lkpd" class="flex-1 py-3.5 px-4 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm transition-all shadow-md cursor-pointer flex items-center justify-center gap-2">
-                    <span class="material-symbols-outlined text-lg">send</span>
-                    <span>Kirim Laporan LKPD Petik Apel</span>
-                  </button>
-                </div>
-              ` : (isSubmitted ? `
-                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-300 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3">
-                  <div class="flex items-center gap-2 text-xs font-bold">
-                    <span class="material-symbols-outlined text-emerald-600 text-xl">verified</span>
-                    <span>LKPD Day 3 Sesi 1 (Petik Apel) telah berhasil dikirimkan pada ${saved ? (saved.submittedAt || '') : 'hari ini'}.</span>
+              <!-- TOMBOL AKSI SIMPAN & SUBMIT LKPD DAY 3 SESI 1 (PETIK APEL) -->
+              <div class="flex flex-col gap-3 pt-2">
+                ${isSubmitted ? `
+                  <div class="p-4 sm:p-5 rounded-3xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <span class="material-symbols-outlined text-2xl">verified</span>
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="text-xs font-black uppercase text-emerald-800 tracking-wider">Status: LKPD Petik Apel Telah Terkirim Resmi</span>
+                        <p class="text-xs text-slate-700 font-medium">Telah dikirim pada ${saved ? (saved.submittedAt || '') : 'hari ini'}. Anda tetap dapat melengkapi atau mengoreksi jawaban di atas kapan saja lalu klik <strong>"Perbarui Jawaban Resmi ke Fasilitator"</strong>.</p>
+                      </div>
+                    </div>
                   </div>
-                  <a href="dokumentasi.html?day=3&sesi=1" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs shadow-xs transition-all flex items-center gap-1.5">
-                    <span class="material-symbols-outlined text-base">photo_camera</span>
-                    <span>Lanjut ke Dokumentasi Foto Petik Apel &rarr;</span>
-                  </a>
+                ` : ''}
+
+                <div class="p-4 sm:p-5 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col gap-3">
+                  <div class="flex items-center justify-between gap-2 text-xs flex-wrap">
+                    <span id="lblD3ApelDraftStatus" class="text-slate-500 font-semibold flex items-center gap-1">
+                      <span class="material-symbols-outlined text-sm text-teal-600">cloud_done</span>
+                      <span>${saved && saved.draftAt ? 'Draf tersimpan (' + saved.draftAt + ')' : (isSubmitted ? 'Jawaban telah tersimpan resmi' : 'Draf otomatis tersimpan saat Anda mengetik')}</span>
+                    </span>
+                    ${isSubmitted ? `
+                      <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[11px] flex items-center gap-1">
+                        <span class="material-symbols-outlined text-xs">check_circle</span>
+                        <span>Telah Terkirim Resmi</span>
+                      </span>
+                    ` : ''}
+                  </div>
+
+                  <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+                    <a href="materi.html?day=3&sesi=1" class="w-full sm:w-auto px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all text-center">
+                      <span class="material-symbols-outlined text-base">arrow_back</span>
+                      <span>Modul Petik Apel</span>
+                    </a>
+
+                    <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+                      ${!isReadOnly ? `
+                        <button type="button" onclick="saveDay3PetikApelLKPD(false)" class="w-full sm:w-auto px-4 py-3.5 rounded-2xl border border-slate-300 hover:bg-slate-100 active:scale-95 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                          <span class="material-symbols-outlined text-base">save</span>
+                          <span>Simpan Draf Saja</span>
+                        </button>
+
+                        <button type="button" onclick="saveDay3PetikApelLKPD(true)" id="btnSubmitD3Lkpd" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl ${isSubmitted ? 'bg-emerald-600 hover:bg-emerald-700 ring-2 ring-emerald-400/40' : 'bg-emerald-600 hover:bg-emerald-700'} active:scale-95 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                          <span class="material-symbols-outlined text-base">${isSubmitted ? 'published_with_changes' : 'send'}</span>
+                          <span>${isSubmitted ? 'Perbarui Jawaban Resmi ke Fasilitator' : 'Kirim Laporan LKPD Petik Apel'}</span>
+                        </button>
+                      ` : ''}
+
+                      <a href="dokumentasi.html?day=3&sesi=1" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all text-center">
+                        <span class="material-symbols-outlined text-base">photo_camera</span>
+                        <span>Foto Dokumentasi</span>
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              ` : '')}
+              </div>
             </form>
           </div>
 
@@ -2292,15 +2329,39 @@
           if (raw) {
             savedMuseum = JSON.parse(raw);
           }
+          const rawDraft = localStorage.getItem('fincestem_lkpd_ft_day3_museum_draft_' + cleanNisn);
+          if (rawDraft) {
+            const draftObj = JSON.parse(rawDraft);
+            savedMuseum = Object.assign({}, savedMuseum || {}, draftObj);
+          }
         } catch(e) {}
 
         if (savedMuseum && (savedMuseum.submitted || savedMuseum.namaKendaraan)) {
           hasMateriMuseum = true;
         }
 
+        // Fallback progress server untuk Day 3 Museum jika pindah HP
+        if (!savedMuseum || !hasMateriMuseum) {
+          try {
+            let prog = window.currentStudentProgress;
+            if (!prog) {
+              const rawP = localStorage.getItem('fincestem_progress_' + cleanNisn);
+              if (rawP) prog = JSON.parse(rawP);
+            }
+            if (prog && prog.task_map) {
+              if (prog.task_map['3_materi_museum']) hasMateriMuseum = true;
+              if (!savedMuseum && prog.task_map['3_lkpd_museum'] && prog.task_map['3_lkpd_museum'].content) {
+                let p = prog.task_map['3_lkpd_museum'].content;
+                if (typeof p === 'string') { try { p = JSON.parse(p); } catch(e) {} }
+                if (p && typeof p === 'object') savedMuseum = p;
+              }
+            }
+          } catch(e) {}
+        }
+
         const isMuseumSubmitted = !!(savedMuseum && savedMuseum.submitted);
-        const isMuseumLockedByPrereq = !hasMateriMuseum;
-        const isMuseumFormLocked = isReadOnly || isMuseumLockedByPrereq || isMuseumSubmitted;
+        const isMuseumLockedByPrereq = false; // Form LKPD Museum Angkut selalu dapat diisi siswa di lokasi
+        const isMuseumFormLocked = !!isReadOnly; // Siswa yang sudah submit tetap bisa edit & perbarui
         const readOnlyMuseumAttr = isMuseumFormLocked ? 'disabled' : '';
 
         mainEl.innerHTML = `
@@ -2383,14 +2444,14 @@
                     <label for="ftD3MuseumNamaKendaraan" class="text-xs sm:text-sm font-bold text-slate-800">
                       Nama / Model Kendaraan Pilihan: <span class="text-rose-500">*</span>
                     </label>
-                    <input type="text" id="ftD3MuseumNamaKendaraan" value="${(savedMuseum && savedMuseum.namaKendaraan) ? savedMuseum.namaKendaraan.replace(/"/g, '&quot;') : ''}" ${readOnlyMuseumAttr} placeholder="Contoh: Chrysler Windsor Limousine 1947 / Boeing 737-200 / Ford Model T" class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400">
+                    <input type="text" id="ftD3MuseumNamaKendaraan" oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" value="${(savedMuseum && savedMuseum.namaKendaraan) ? savedMuseum.namaKendaraan.replace(/"/g, '&quot;') : ''}" ${readOnlyMuseumAttr} placeholder="Contoh: Chrysler Windsor Limousine 1947 / Boeing 737-200 / Ford Model T" class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400">
                   </div>
 
                   <div class="flex flex-col gap-1.5">
                     <label for="ftD3MuseumZona" class="text-xs sm:text-sm font-bold text-slate-800">
                       Zona Lokasi di Museum Angkut: <span class="text-rose-500">*</span>
                     </label>
-                    <select id="ftD3MuseumZona" ${readOnlyMuseumAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all bg-white">
+                    <select id="ftD3MuseumZona" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" ${readOnlyMuseumAttr} class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all bg-white">
                       <option value="">-- Pilih Zona Temuan --</option>
                       <option value="Hall Utama (Koleksi Kepresidenan & Sejarah RI)" ${(savedMuseum && savedMuseum.zona === 'Hall Utama (Koleksi Kepresidenan & Sejarah RI)') ? 'selected' : ''}>Hall Utama (Koleksi Kepresidenan &amp; Sejarah RI)</option>
                       <option value="Zona Edukasi (Bedah Mesin & Rekayasa Powertrain)" ${(savedMuseum && savedMuseum.zona === 'Zona Edukasi (Bedah Mesin & Rekayasa Powertrain)') ? 'selected' : ''}>Zona Edukasi (Bedah Mesin &amp; Rekayasa Powertrain)</option>
@@ -2405,7 +2466,7 @@
                     <label for="ftD3MuseumTahunAsal" class="text-xs sm:text-sm font-bold text-slate-800">
                       Perkiraan Tahun Pembuatan &amp; Negara Asal Pabrikan:
                     </label>
-                    <input type="text" id="ftD3MuseumTahunAsal" value="${(savedMuseum && savedMuseum.tahunAsal) ? savedMuseum.tahunAsal.replace(/"/g, '&quot;') : ''}" ${readOnlyMuseumAttr} placeholder="Contoh: Tahun 1947 - Amerika Serikat / Tahun 1908 - Detroit, USA / Tahun 1968 - Boeing Seattle" class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400">
+                    <input type="text" id="ftD3MuseumTahunAsal" oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" value="${(savedMuseum && savedMuseum.tahunAsal) ? savedMuseum.tahunAsal.replace(/"/g, '&quot;') : ''}" ${readOnlyMuseumAttr} placeholder="Contoh: Tahun 1947 - Amerika Serikat / Tahun 1908 - Detroit, USA / Tahun 1968 - Boeing Seattle" class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400">
                   </div>
                 </div>
               </div>
@@ -2423,21 +2484,21 @@
                   </label>
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-purple-400 cursor-pointer flex items-start gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-purple-50 has-[:checked]:border-purple-600 has-[:checked]:text-purple-950">
-                      <input type="radio" name="ftD3MuseumBentukBodi" value="Boxy / Bersudut Kaku" class="accent-purple-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.bentukBodi === 'Boxy / Bersudut Kaku') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumBentukBodi" value="Boxy / Bersudut Kaku" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-purple-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.bentukBodi === 'Boxy / Bersudut Kaku') ? 'checked' : ''}>
                       <div>
                         <span>Boxy / Bersudut Kaku</span>
                         <span class="block text-[11px] font-normal text-slate-500 mt-0.5">Klasik era awal (1900–1930), hambatan udara tinggi (Cd ≈ 0.7–0.9).</span>
                       </div>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-purple-400 cursor-pointer flex items-start gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-purple-50 has-[:checked]:border-purple-600 has-[:checked]:text-purple-950">
-                      <input type="radio" name="ftD3MuseumBentukBodi" value="Curved / Streamline Melengkung" class="accent-purple-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.bentukBodi === 'Curved / Streamline Melengkung') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumBentukBodi" value="Curved / Streamline Melengkung" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-purple-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.bentukBodi === 'Curved / Streamline Melengkung') ? 'checked' : ''}>
                       <div>
                         <span>Curved / Melengkung Aerodinamis</span>
                         <span class="block text-[11px] font-normal text-slate-500 mt-0.5">Lekukan streamline, membelah aliran udara laminar (Cd ≈ 0.28–0.45).</span>
                       </div>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-purple-400 cursor-pointer flex items-start gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-purple-50 has-[:checked]:border-purple-600 has-[:checked]:text-purple-950">
-                      <input type="radio" name="ftD3MuseumBentukBodi" value="Fuselage / Sayap Airfoil" class="accent-purple-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.bentukBodi === 'Fuselage / Sayap Airfoil') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumBentukBodi" value="Fuselage / Sayap Airfoil" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-purple-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.bentukBodi === 'Fuselage / Sayap Airfoil') ? 'checked' : ''}>
                       <div>
                         <span>Fuselage / Sayap Airfoil (Aviasi)</span>
                         <span class="block text-[11px] font-normal text-slate-500 mt-0.5">Bodi pesawat/helikopter, memanfaatkan Hukum Bernoulli untuk gaya angkat.</span>
@@ -2451,7 +2512,7 @@
                     B. Analisis Sains Hambatan Aliran Udara (Aerodynamic Drag Force): <span class="text-rose-500">*</span>
                   </label>
                   <span class="text-[11px] text-slate-500">Jelaskan bagaimana bentuk bodi dan lekukan kendaraan pilihanmu mempengaruhi hambatan aliran udara saat melaju kencang, serta dampaknya terhadap efisiensi energi atau stabilitas laju kendaraan (minimal 15–20 kata):</span>
-                  <textarea id="ftD3MuseumAnalisisAero" rows="3" ${readOnlyMuseumAttr} placeholder="Contoh: Mobil Chrysler 1947 ini memiliki kontur bodi melengkung pada fender roda depan dan atap membulat. Walaupun belum seringan mobil masa kini, lekukan ini membantu mengalirkan udara ke samping sehingga mengurangi turbulensi drag di bagian belakang mobil dan menjaga kestabilan bodi saat melaju kencang..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm leading-relaxed outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400">${(savedMuseum && savedMuseum.analisisAerodinamika) ? savedMuseum.analisisAerodinamika : ''}</textarea>
+                  <textarea id="ftD3MuseumAnalisisAero" rows="3" ${readOnlyMuseumAttr} oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" placeholder="Contoh: Mobil Chrysler 1947 ini memiliki kontur bodi melengkung pada fender roda depan dan atap membulat. Walaupun belum seringan mobil masa kini, lekukan ini membantu mengalirkan udara ke samping sehingga mengurangi turbulensi drag di bagian belakang mobil dan menjaga kestabilan bodi saat melaju kencang..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm leading-relaxed outline-none focus:border-purple-600 focus:ring-2 focus:ring-purple-100 transition-all placeholder:text-slate-400">${(savedMuseum && savedMuseum.analisisAerodinamika) ? savedMuseum.analisisAerodinamika : ''}</textarea>
                 </div>
               </div>
 
@@ -2468,19 +2529,19 @@
                   </label>
                   <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5 pt-1">
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-blue-50 has-[:checked]:border-blue-600 has-[:checked]:text-blue-950">
-                      <input type="radio" name="ftD3MuseumSumberTenaga" value="Mesin Pembakaran Dalam (ICE Bensin/Diesel)" class="accent-blue-600" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.sumberTenaga === 'Mesin Pembakaran Dalam (ICE Bensin/Diesel)') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumSumberTenaga" value="Mesin Pembakaran Dalam (ICE Bensin/Diesel)" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-blue-600" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.sumberTenaga === 'Mesin Pembakaran Dalam (ICE Bensin/Diesel)') ? 'checked' : ''}>
                       <span>⛽ Mesin ICE (Bensin/Diesel)</span>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-blue-50 has-[:checked]:border-blue-600 has-[:checked]:text-blue-950">
-                      <input type="radio" name="ftD3MuseumSumberTenaga" value="Mesin Turbofan / Jet Aviasi" class="accent-blue-600" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.sumberTenaga === 'Mesin Turbofan / Jet Aviasi') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumSumberTenaga" value="Mesin Turbofan / Jet Aviasi" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-blue-600" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.sumberTenaga === 'Mesin Turbofan / Jet Aviasi') ? 'checked' : ''}>
                       <span>✈️ Turbofan / Jet Aviasi</span>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-blue-50 has-[:checked]:border-blue-600 has-[:checked]:text-blue-950">
-                      <input type="radio" name="ftD3MuseumSumberTenaga" value="Mesin Uap Eksternal" class="accent-blue-600" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.sumberTenaga === 'Mesin Uap Eksternal') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumSumberTenaga" value="Mesin Uap Eksternal" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-blue-600" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.sumberTenaga === 'Mesin Uap Eksternal') ? 'checked' : ''}>
                       <span>🚂 Mesin Uap Eksternal</span>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-blue-400 cursor-pointer flex items-center gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-blue-50 has-[:checked]:border-blue-600 has-[:checked]:text-blue-950">
-                      <input type="radio" name="ftD3MuseumSumberTenaga" value="Motor Listrik / Hybrid" class="accent-blue-600" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.sumberTenaga === 'Motor Listrik / Hybrid') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumSumberTenaga" value="Motor Listrik / Hybrid" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-blue-600" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.sumberTenaga === 'Motor Listrik / Hybrid') ? 'checked' : ''}>
                       <span>⚡ Motor Listrik / Hybrid</span>
                     </label>
                   </div>
@@ -2491,7 +2552,7 @@
                     B. Analisis Komparasi Teknologi Mesin &amp; Efisiensi Energi: <span class="text-rose-500">*</span>
                   </label>
                   <span class="text-[11px] text-slate-500">Bandingkan teknologi mesin kendaraan pilihanmu dengan kendaraan modern masa kini (misal efisiensi termal bahan bakar fosil vs motor listrik tanpa emisi, atau teknologi starter kunci/tombol vs engkol putar kuno):</span>
-                  <textarea id="ftD3MuseumAnalisisTekno" rows="3" ${readOnlyMuseumAttr} placeholder="Contoh: Mesin bensin 6-silinder pada mobil ini masih mengandalkan karburator mekanik sederhana dengan efisiensi termal sekitar 20%, di mana 80% energi terbuang menjadi panas knalpot. Dibandingkan teknologi Electric Vehicle (EV) modern saat ini, motor listrik mampu mengubah lebih dari 85% energi baterai menjadi gerak putar roda tanpa menghasilkan emisi gas buang karbon monoksida..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm leading-relaxed outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all placeholder:text-slate-400">${(savedMuseum && savedMuseum.analisisTeknologi) ? savedMuseum.analisisTeknologi : ''}</textarea>
+                  <textarea id="ftD3MuseumAnalisisTekno" rows="3" ${readOnlyMuseumAttr} oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" placeholder="Contoh: Mesin bensin 6-silinder pada mobil ini masih mengandalkan karburator mekanik sederhana dengan efisiensi termal sekitar 20%, di mana 80% energi terbuang menjadi panas knalpot. Dibandingkan teknologi Electric Vehicle (EV) modern saat ini, motor listrik mampu mengubah lebih dari 85% energi baterai menjadi gerak putar roda tanpa menghasilkan emisi gas buang karbon monoksida..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm leading-relaxed outline-none focus:border-blue-600 focus:ring-2 focus:ring-blue-100 transition-all placeholder:text-slate-400">${(savedMuseum && savedMuseum.analisisTeknologi) ? savedMuseum.analisisTeknologi : ''}</textarea>
                 </div>
               </div>
 
@@ -2508,21 +2569,21 @@
                   </label>
                   <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-emerald-400 cursor-pointer flex items-start gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-600 has-[:checked]:text-emerald-950">
-                      <input type="radio" name="ftD3MuseumKonstruksiSasis" value="Body-on-Frame Baja Solid Tebal" class="accent-emerald-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.konstruksiSasis === 'Body-on-Frame Baja Solid Tebal') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumKonstruksiSasis" value="Body-on-Frame Baja Solid Tebal" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-emerald-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.konstruksiSasis === 'Body-on-Frame Baja Solid Tebal') ? 'checked' : ''}>
                       <div>
                         <span>Body-on-Frame Baja Solid Tebal</span>
                         <span class="block text-[11px] font-normal text-slate-500 mt-0.5">Sasis tangga baja kaku & bodi tebal tanpa zona deformasi (klasik).</span>
                       </div>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-emerald-400 cursor-pointer flex items-start gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-600 has-[:checked]:text-emerald-950">
-                      <input type="radio" name="ftD3MuseumKonstruksiSasis" value="Monocoque dengan Crumple Zone Terintegrasi" class="accent-emerald-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.konstruksiSasis === 'Monocoque dengan Crumple Zone Terintegrasi') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumKonstruksiSasis" value="Monocoque dengan Crumple Zone Terintegrasi" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-emerald-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.konstruksiSasis === 'Monocoque dengan Crumple Zone Terintegrasi') ? 'checked' : ''}>
                       <div>
                         <span>Monocoque + Crumple Zone</span>
                         <span class="block text-[11px] font-normal text-slate-500 mt-0.5">Sasis terintegrasi bodi ringan dengan zona penyerap benturan.</span>
                       </div>
                     </label>
                     <label class="p-3 rounded-xl border border-slate-200 hover:border-emerald-400 cursor-pointer flex items-start gap-2.5 bg-slate-50 text-xs font-bold text-slate-800 transition-all has-[:checked]:bg-emerald-50 has-[:checked]:border-emerald-600 has-[:checked]:text-emerald-950">
-                      <input type="radio" name="ftD3MuseumKonstruksiSasis" value="Duralumin & Komposit Serat Karbon" class="accent-emerald-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.konstruksiSasis === 'Duralumin & Komposit Serat Karbon') ? 'checked' : ''}>
+                      <input type="radio" name="ftD3MuseumKonstruksiSasis" value="Duralumin & Komposit Serat Karbon" onchange="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" class="accent-emerald-600 mt-0.5" ${readOnlyMuseumAttr} ${(savedMuseum && savedMuseum.konstruksiSasis === 'Duralumin & Komposit Serat Karbon') ? 'checked' : ''}>
                       <div>
                         <span>Duralumin &amp; Serat Karbon</span>
                         <span class="block text-[11px] font-normal text-slate-500 mt-0.5">Struktur aviasi/supercar, bobot ultra-ringan dengan kekuatan tarik tinggi.</span>
@@ -2536,7 +2597,7 @@
                     B. Analisis Rekayasa Keselamatan (Hukum Impuls Fisika I = F · Δt): <span class="text-rose-500">*</span>
                   </label>
                   <span class="text-[11px] text-slate-500">Berdasarkan hukum impuls (I = F · Δt = Δp), jelaskan mengapa mobil modern sengaja dirancang memiliki crumple zone (zona depan sengaja ringsek saat tabrakan), berbeda dengan mobil tua klasik yang sangat kaku namun berbahaya bagi organ tubuh penumpang:</span>
-                  <textarea id="ftD3MuseumAnalisisRekayasa" rows="3" ${readOnlyMuseumAttr} placeholder="Contoh: Mobil klasik memiliki bodi baja tebal yang sangat kaku. Saat tabrakan, mobil tidak ringsek namun waktu henti (Δt) sangat singkat (mendadak), sehingga gaya tumbukan impak (F = Δp / Δt) yang dialami penumpang menjadi sangat besar dan mematikan. Sebaliknya, rekayasa crumple zone modern sengaja dibuat ringsek untuk memperpanjang waktu deselerasi (Δt), sehingga gaya benturan yang diteruskan ke kabin berkurang drastis..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm leading-relaxed outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 transition-all placeholder:text-slate-400">${(savedMuseum && savedMuseum.analisisRekayasa) ? savedMuseum.analisisRekayasa : ''}</textarea>
+                  <textarea id="ftD3MuseumAnalisisRekayasa" rows="3" ${readOnlyMuseumAttr} oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" placeholder="Contoh: Mobil klasik memiliki bodi baja tebal yang sangat kaku. Saat tabrakan, mobil tidak ringsek namun waktu henti (Δt) sangat singkat (mendadak), sehingga gaya tumbukan impak (F = Δp / Δt) yang dialami penumpang menjadi sangat besar dan mematikan. Sebaliknya, rekayasa crumple zone modern sengaja dibuat ringsek untuk memperpanjang waktu deselerasi (Δt), sehingga gaya benturan yang diteruskan ke kabin berkurang drastis..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm leading-relaxed outline-none focus:border-emerald-600 focus:ring-2 focus:ring-emerald-100 transition-all placeholder:text-slate-400">${(savedMuseum && savedMuseum.analisisRekayasa) ? savedMuseum.analisisRekayasa : ''}</textarea>
                 </div>
               </div>
 
@@ -2556,22 +2617,22 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 bg-slate-50 p-4 rounded-2xl border border-slate-200">
                   <div class="flex flex-col gap-1">
                     <label for="ftD3MuseumDistance" class="text-[11px] font-bold text-slate-700">Jarak Tempuh PP (km):</label>
-                    <input type="number" id="ftD3MuseumDistance" value="${(savedMuseum && savedMuseum.jarakKm) ? savedMuseum.jarakKm : 120}" ${readOnlyMuseumAttr} oninput="calculateD3MuseumMath()" class="p-2.5 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-amber-600 bg-white">
+                    <input type="number" id="ftD3MuseumDistance" value="${(savedMuseum && savedMuseum.jarakKm) ? savedMuseum.jarakKm : 120}" ${readOnlyMuseumAttr} oninput="calculateD3MuseumMath(); window.onFieldTripD3Input && window.onFieldTripD3Input('museum');" class="p-2.5 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-amber-600 bg-white">
                   </div>
 
                   <div class="flex flex-col gap-1">
                     <label for="ftD3MuseumFuelEff" class="text-[11px] font-bold text-slate-700">Konsumsi (km / Liter):</label>
-                    <input type="number" id="ftD3MuseumFuelEff" value="${(savedMuseum && savedMuseum.konsumsiKmL) ? savedMuseum.konsumsiKmL : 8}" ${readOnlyMuseumAttr} oninput="calculateD3MuseumMath()" class="p-2.5 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-amber-600 bg-white">
+                    <input type="number" id="ftD3MuseumFuelEff" value="${(savedMuseum && savedMuseum.konsumsiKmL) ? savedMuseum.konsumsiKmL : 8}" ${readOnlyMuseumAttr} oninput="calculateD3MuseumMath(); window.onFieldTripD3Input && window.onFieldTripD3Input('museum');" class="p-2.5 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-amber-600 bg-white">
                   </div>
 
                   <div class="flex flex-col gap-1">
                     <label for="ftD3MuseumFuelPrice" class="text-[11px] font-bold text-slate-700">Harga BBM / Liter (Rp):</label>
-                    <input type="text" id="ftD3MuseumFuelPrice" value="${(savedMuseum && savedMuseum.hargaBbm) ? Number(savedMuseum.hargaBbm).toLocaleString('id-ID') : '12.500'}" ${readOnlyMuseumAttr} oninput="formatRupiahInput(this); calculateD3MuseumMath();" class="p-2.5 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-amber-600 bg-white">
+                    <input type="text" id="ftD3MuseumFuelPrice" value="${(savedMuseum && savedMuseum.hargaBbm) ? Number(savedMuseum.hargaBbm).toLocaleString('id-ID') : '12.500'}" ${readOnlyMuseumAttr} oninput="formatRupiahInput(this); calculateD3MuseumMath(); window.onFieldTripD3Input && window.onFieldTripD3Input('museum');" class="p-2.5 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-amber-600 bg-white">
                   </div>
 
                   <div class="flex flex-col gap-1">
                     <label for="ftD3MuseumSplitCount" class="text-[11px] font-bold text-slate-700">Anggota Patungan (Orang):</label>
-                    <input type="number" id="ftD3MuseumSplitCount" value="${(savedMuseum && savedMuseum.jumlahSiswa) ? savedMuseum.jumlahSiswa : 4}" ${readOnlyMuseumAttr} oninput="calculateD3MuseumMath()" class="p-2.5 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-amber-600 bg-white">
+                    <input type="number" id="ftD3MuseumSplitCount" value="${(savedMuseum && savedMuseum.jumlahSiswa) ? savedMuseum.jumlahSiswa : 4}" ${readOnlyMuseumAttr} oninput="calculateD3MuseumMath(); window.onFieldTripD3Input && window.onFieldTripD3Input('museum');" class="p-2.5 rounded-xl border border-slate-200 text-xs font-bold outline-none focus:border-amber-600 bg-white">
                   </div>
                 </div>
 
@@ -2601,41 +2662,56 @@
                     Refleksi Matematis &amp; Strategi Efisiensi Finansial: <span class="text-rose-500">*</span>
                   </label>
                   <span class="text-[11px] text-slate-500">Jelaskan bagaimana perhitungan matematis di atas membantu rombongan merencanakan anggaran perjalanan secara transparan dan akuntabel (minimal 15 kata):</span>
-                  <textarea id="ftD3MuseumAnalisisFinansial" rows="3" ${readOnlyMuseumAttr} placeholder="Contoh: Dengan jarak 120 km dan rasio 1:8, mobil memerlukan 15 liter bensin senilai Rp 187.500. Jika dibagi rata berempat, masing-masing siswa hanya perlu urunan sebesar Rp 46.875. Perhitungan matematis ini penting dalam literasi finansial agar pengeluaran bahan bakar transparan dan tidak menguras uang saku cadangan..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm leading-relaxed outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-slate-400">${(savedMuseum && savedMuseum.analisisFinansial) ? savedMuseum.analisisFinansial : ''}</textarea>
+                  <textarea id="ftD3MuseumAnalisisFinansial" rows="3" ${readOnlyMuseumAttr} oninput="window.onFieldTripD3Input && window.onFieldTripD3Input('museum')" placeholder="Contoh: Dengan jarak 120 km dan rasio 1:8, mobil memerlukan 15 liter bensin senilai Rp 187.500. Jika dibagi rata berempat, masing-masing siswa hanya perlu urunan sebesar Rp 46.875. Perhitungan matematis ini penting dalam literasi finansial agar pengeluaran bahan bakar transparan dan tidak menguras uang saku cadangan..." class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm leading-relaxed outline-none focus:border-amber-600 focus:ring-2 focus:ring-amber-100 transition-all placeholder:text-slate-400">${(savedMuseum && savedMuseum.analisisFinansial) ? savedMuseum.analisisFinansial : ''}</textarea>
                 </div>
               </div>
 
               <!-- TOMBOL SIMPAN & KIRIM LKPD SESI 3 -->
-              ${isMuseumSubmitted ? `
-                <div class="pt-2 flex flex-col sm:flex-row gap-3 items-center justify-between p-4 rounded-3xl bg-emerald-50 border-2 border-emerald-300 text-emerald-950">
-                  <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0">
-                      <span class="material-symbols-outlined text-xl">verified</span>
-                    </div>
-                    <div>
-                      <h4 class="font-black text-sm">LKPD Sesi 3 Museum Angkut Telah Disimpan &amp; Terkirim!</h4>
-                      <p class="text-xs text-emerald-800">Terkirim pada: ${savedMuseum && savedMuseum.submittedAt ? savedMuseum.submittedAt : 'Selesai'}</p>
+              <div class="flex flex-col gap-3 pt-2">
+                ${isMuseumSubmitted ? `
+                  <div class="p-4 rounded-3xl bg-purple-50 border-2 border-purple-300 text-purple-950 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                      <div class="w-10 h-10 rounded-2xl bg-purple-600 text-white flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-xl">verified</span>
+                      </div>
+                      <div>
+                        <h4 class="font-black text-sm">Status: LKPD Sesi 3 Museum Angkut Telah Terkirim Resmi!</h4>
+                        <p class="text-xs text-purple-800">Telah dikirim pada ${savedMuseum && savedMuseum.submittedAt ? savedMuseum.submittedAt : 'hari ini'}. Anda tetap dapat melengkapi atau mengoreksi jawaban di atas lalu klik <strong>"Perbarui Jawaban Resmi ke Fasilitator"</strong>.</p>
+                      </div>
                     </div>
                   </div>
-                  <div class="flex items-center gap-2 w-full sm:w-auto">
-                    <a href="dokumentasi.html?day=3&sesi=3" class="flex-1 sm:flex-initial px-5 py-3 rounded-2xl bg-purple-600 hover:bg-purple-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
-                      <span class="material-symbols-outlined text-base">photo_camera</span>
-                      <span>Lanjut ke Dokumentasi &amp; Refleksi &rarr;</span>
-                    </a>
-                  </div>
+                ` : ''}
+
+                <div class="flex items-center justify-between gap-2 text-xs flex-wrap px-1">
+                  <span id="lblD3MuseumDraftStatus" class="text-slate-500 font-semibold flex items-center gap-1">
+                    <span class="material-symbols-outlined text-sm text-teal-600">cloud_done</span>
+                    <span>${savedMuseum && savedMuseum.draftAt ? 'Draf tersimpan (' + savedMuseum.draftAt + ')' : (isMuseumSubmitted ? 'Jawaban telah tersimpan resmi' : 'Draf otomatis tersimpan saat Anda mengetik')}</span>
+                  </span>
+                  ${isMuseumSubmitted ? `
+                    <span class="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 font-bold text-[11px] flex items-center gap-1">
+                      <span class="material-symbols-outlined text-xs">check_circle</span>
+                      <span>Telah Terkirim Resmi</span>
+                    </span>
+                  ` : ''}
                 </div>
-              ` : `
+
                 <div class="pt-2 flex flex-col sm:flex-row gap-3">
-                  <button id="btnSubmitD3MuseumLkpd" type="button" onclick="saveDay3MuseumLKPD(true)" class="flex-1 py-4 px-6 rounded-2xl bg-purple-600 hover:bg-purple-700 active:scale-[0.99] text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer">
-                    <span class="material-symbols-outlined text-xl">send</span>
-                    <span>Simpan &amp; Kirim LKPD Sesi 3 (Museum Angkut)</span>
-                  </button>
-                  <button type="button" onclick="saveDay3MuseumLKPD(false)" class="py-3 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
-                    <span class="material-symbols-outlined text-base">save</span>
-                    <span>Simpan Draf Saja</span>
-                  </button>
+                  ${!isReadOnly ? `
+                    <button type="button" onclick="saveDay3MuseumLKPD(false)" class="py-3 px-5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                      <span class="material-symbols-outlined text-base">save</span>
+                      <span>Simpan Draf Saja</span>
+                    </button>
+                    <button id="btnSubmitD3MuseumLkpd" type="button" onclick="saveDay3MuseumLKPD(true)" class="flex-1 py-4 px-6 rounded-2xl bg-purple-600 hover:bg-purple-700 active:scale-[0.99] text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all cursor-pointer">
+                      <span class="material-symbols-outlined text-xl">${isMuseumSubmitted ? 'published_with_changes' : 'send'}</span>
+                      <span>${isMuseumSubmitted ? 'Perbarui Jawaban Resmi ke Fasilitator' : 'Simpan &amp; Kirim LKPD Sesi 3 (Museum Angkut)'}</span>
+                    </button>
+                  ` : ''}
+                  <a href="dokumentasi.html?day=3&sesi=3" class="py-3.5 px-5 rounded-2xl bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Lanjut ke Dokumentasi &amp; Refleksi &rarr;</span>
+                  </a>
                 </div>
-              `}
+              </div>
             </form>
 
             <!-- MODAL SUKSES SUBMIT LKPD SESI 3 -->
@@ -2809,7 +2885,19 @@
       }
     }
 
-    function saveDay3PetikApelLKPD(isSubmit) {
+    let d3FtDraftTimer = null;
+    window.onFieldTripD3Input = function(sesi) {
+      clearTimeout(d3FtDraftTimer);
+      d3FtDraftTimer = setTimeout(() => {
+        if (sesi === 'apel' || sesi === 1) {
+          saveDay3PetikApelLKPD(false, true);
+        } else if (sesi === 'museum' || sesi === 3) {
+          saveDay3MuseumLKPD(false, true);
+        }
+      }, 700);
+    };
+
+    function saveDay3PetikApelLKPD(isSubmit = true, isSilent = false) {
       const studentNisn = activeUser.nisn || activeUser.identifier || '';
       const cleanNisn = String(studentNisn).trim();
 
@@ -2823,32 +2911,77 @@
       const sistemRekayasa = (document.getElementById('ftD3SistemRekayasa')?.value || '').trim();
       const applesEaten = parseInt(document.getElementById('ftD3ApplesEaten')?.value) || 0;
       const pricePerKg = parseRupiah(document.getElementById('ftD3PricePerKg')?.value) || 24000;
-      
-
-      if (isSubmit) {
-        if (!selectedVarietas) {
-          FincestemCore.ui.toast('Pilih salah satu varietas apel yang kamu makan (Bagian 1A)!', 'warning');
-          return;
-        }
-        if (!ciriFisik || ciriFisik.length < 15) {
-          FincestemCore.ui.toast('Tuliskan deskripsi ciri fisik & rasa apel minimal 10-15 kata (Bagian 1B)!', 'warning');
-          document.getElementById('ftD3CiriFisik')?.focus();
-          return;
-        }
-        if (!gpsLat || !gpsLng) {
-          FincestemCore.ui.toast('Tekan tombol Ambil Data Sensor GPS Otomatis (Bagian 2)!', 'warning');
-          return;
-        }
-        if (!sistemRekayasa || sistemRekayasa.length < 20) {
-          FincestemCore.ui.toast('Jelaskan sistem rekayasa pertanian yang kalian amati di kebun apel (Bagian 3)!', 'warning');
-          document.getElementById('ftD3SistemRekayasa')?.focus();
-          return;
-        }
-        
-      }
-
       const totalKg = Number((applesEaten / 8).toFixed(2));
       const totalRupiah = Math.round(totalKg * pricePerKg);
+
+      const timeNow = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB';
+      const timeShort = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+      // JIKA HANYA SIMPAN DRAF LOKAL (isSubmit === false) -> TIDAK MENGIRIM KE SERVER
+      if (!isSubmit) {
+        const draftPayload = {
+          day_number: 3,
+          session: 1,
+          location: 'Kebun Petik Apel Mandiri Batu',
+          varietas: selectedVarietas,
+          ciriFisik: ciriFisik,
+          gpsLat: gpsLat,
+          gpsLng: gpsLng,
+          gpsAlt: gpsAlt,
+          gpsAccuracy: gpsAccuracy,
+          analisisGps: analisisGps,
+          sistemRekayasa: sistemRekayasa,
+          applesEaten: applesEaten,
+          pricePerKg: pricePerKg,
+          totalKg: totalKg,
+          totalRupiah: totalRupiah,
+          kesimpulanMath: '',
+          draftAt: timeShort
+        };
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day3_apel_draft_' + cleanNisn, JSON.stringify(draftPayload));
+          const curSaved = localStorage.getItem('fincestem_lkpd_ft_day3_apel_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_ft_day3_' + cleanNisn);
+          if (curSaved) {
+            try {
+              const p = JSON.parse(curSaved);
+              if (p && p.submitted) {
+                Object.assign(p, draftPayload, { submitted: true, submittedAt: p.submittedAt });
+                localStorage.setItem('fincestem_lkpd_ft_day3_apel_' + cleanNisn, JSON.stringify(p));
+                localStorage.setItem('fincestem_lkpd_ft_day3_' + cleanNisn, JSON.stringify(p));
+              }
+            } catch(e) {}
+          }
+        } catch(e) {}
+
+        const statusEl = document.getElementById('lblD3ApelDraftStatus');
+        if (statusEl) {
+          statusEl.innerHTML = `<span class="material-symbols-outlined text-sm text-teal-600">cloud_done</span><span>Draf tersimpan di HP (pk ${timeShort})</span>`;
+        }
+        if (!isSilent && window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+          FincestemCore.ui.toast('Draf LKPD Petik Apel tersimpan di perangkat Anda (belum dikirim ke Fasilitator).', 'info');
+        }
+        return;
+      }
+
+      // SUBMIT RESMI KE FASILITATOR (isSubmit === true)
+      if (!selectedVarietas) {
+        FincestemCore.ui.toast('Pilih salah satu varietas apel yang kamu makan (Bagian 1A)!', 'warning');
+        return;
+      }
+      if (!ciriFisik || ciriFisik.length < 15) {
+        FincestemCore.ui.toast('Tuliskan deskripsi ciri fisik & rasa apel minimal 10-15 kata (Bagian 1B)!', 'warning');
+        document.getElementById('ftD3CiriFisik')?.focus();
+        return;
+      }
+      if (!gpsLat || !gpsLng) {
+        FincestemCore.ui.toast('Tekan tombol Ambil Data Sensor GPS Otomatis (Bagian 2)!', 'warning');
+        return;
+      }
+      if (!sistemRekayasa || sistemRekayasa.length < 20) {
+        FincestemCore.ui.toast('Jelaskan sistem rekayasa pertanian yang kalian amati di kebun apel (Bagian 3)!', 'warning');
+        document.getElementById('ftD3SistemRekayasa')?.focus();
+        return;
+      }
 
       const payload = {
         day_number: 3,
@@ -2867,12 +3000,12 @@
         totalKg: totalKg,
         totalRupiah: totalRupiah,
         kesimpulanMath: '',
-        submitted: !!isSubmit,
-        submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
+        submitted: true,
+        submittedAt: timeNow
       };
 
       const btnSubmit = document.getElementById('btnSubmitD3Lkpd');
-      if (btnSubmit && isSubmit) {
+      if (btnSubmit) {
         btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Mengirimkan Laporan...</span>';
         btnSubmit.classList.add('pointer-events-none', 'opacity-80');
       }
@@ -2887,24 +3020,24 @@
           FincestemCore.progress.submitTask(cleanNisn, 3, 'lkpd', payload);
         }
 
-        if (isSubmit) {
-          if (btnSubmit) {
-            btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Terkirim</span>';
-            btnSubmit.classList.remove('pointer-events-none', 'opacity-80');
-          }
-          const statusBadge = document.getElementById('ftD3StatusBadge');
-          if (statusBadge) {
-            statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-300 text-slate-950';
-            statusBadge.textContent = '✓ Telah Dikirim / Selesai';
-          }
-          FincestemCore.ui.toast('LKPD Petik Apel Day 3 Sesi 1 berhasil dikirim! Mengarahkan ke Dokumentasi Foto...', 'success');
-          showD3LkpdSuccessModal();
-          setTimeout(() => {
-            window.location.href = 'dokumentasi.html?day=3&sesi=1';
-          }, 1200);
-        } else {
-          FincestemCore.ui.toast('Draft LKPD Petik Apel tersimpan.', 'info');
+        if (btnSubmit) {
+          btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Terkirim</span>';
+          btnSubmit.classList.remove('pointer-events-none', 'opacity-80');
         }
+        const statusBadge = document.getElementById('ftD3StatusBadge');
+        if (statusBadge) {
+          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-300 text-slate-950';
+          statusBadge.textContent = '✓ Telah Dikirim / Selesai';
+        }
+        const statusEl = document.getElementById('lblD3ApelDraftStatus');
+        if (statusEl) {
+          statusEl.innerHTML = `<span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span><span>Jawaban resmi terkirim (${timeNow})</span>`;
+        }
+        FincestemCore.ui.toast('LKPD Petik Apel Day 3 Sesi 1 berhasil dikirim! Mengarahkan ke Dokumentasi Foto...', 'success');
+        showD3LkpdSuccessModal();
+        setTimeout(() => {
+          window.location.href = 'dokumentasi.html?day=3&sesi=1';
+        }, 1200);
       }, 400);
     }
 
@@ -2925,6 +3058,14 @@
       const inner = modal.querySelector('div');
       if (inner) { inner.classList.remove('scale-100'); inner.classList.add('scale-95'); }
     }
+
+    window.saveDay3PetikApelLKPD = saveDay3PetikApelLKPD;
+    window.calculateD3PetikApelMath = calculateD3PetikApelMath;
+    window.detectD3PetikApelGps = detectD3PetikApelGps;
+    window.showD3LkpdSuccessModal = showD3LkpdSuccessModal;
+    window.closeD3LkpdSuccessModal = closeD3LkpdSuccessModal;
+    window.switchD3LkpdSession = switchD3LkpdSession;
+    window.handleLockedD3LkpdSessionClick = handleLockedD3LkpdSessionClick;
 
     // ==========================================
     // HANDLER KHUSUS LKPD DAY 3 SESI 3 (MUSEUM ANGKUT)
@@ -2955,7 +3096,7 @@
       if (costPerPersonEl) costPerPersonEl.textContent = 'Rp ' + costPerPerson.toLocaleString('id-ID');
     }
 
-    function saveDay3MuseumLKPD(isSubmit) {
+    function saveDay3MuseumLKPD(isSubmit = true, isSilent = false) {
       const studentNisn = activeUser.nisn || activeUser.identifier || '';
       const cleanNisn = String(studentNisn).trim();
 
@@ -2974,54 +3115,105 @@
       const splitCount = parseInt(document.getElementById('ftD3MuseumSplitCount')?.value) || 4;
       const analisisFinansial = (document.getElementById('ftD3MuseumAnalisisFinansial')?.value || '').trim();
 
-      if (isSubmit) {
-        if (!namaKendaraan || namaKendaraan.length < 3) {
-          FincestemCore.ui.toast('Tuliskan nama/model kendaraan pilihan Anda di Bagian Identifikasi!', 'warning');
-          document.getElementById('ftD3MuseumNamaKendaraan')?.focus();
-          return;
-        }
-        if (!zona) {
-          FincestemCore.ui.toast('Pilih salah satu zona temuan di Museum Angkut!', 'warning');
-          document.getElementById('ftD3MuseumZona')?.focus();
-          return;
-        }
-        if (!bentukBodi) {
-          FincestemCore.ui.toast('Pilih salah satu klasifikasi bentuk bodi kendaraan (Pilar 1A)!', 'warning');
-          return;
-        }
-        if (!analisisAero || analisisAero.length < 15) {
-          FincestemCore.ui.toast('Tuliskan analisis aerodinamika & drag force minimal 15 kata (Pilar 1B)!', 'warning');
-          document.getElementById('ftD3MuseumAnalisisAero')?.focus();
-          return;
-        }
-        if (!sumberTenaga) {
-          FincestemCore.ui.toast('Pilih jenis sumber tenaga/mesin penggerak (Pilar 2A)!', 'warning');
-          return;
-        }
-        if (!analisisTekno || analisisTekno.length < 15) {
-          FincestemCore.ui.toast('Tuliskan analisis komparasi teknologi mesin minimal 15 kata (Pilar 2B)!', 'warning');
-          document.getElementById('ftD3MuseumAnalisisTekno')?.focus();
-          return;
-        }
-        if (!konstruksiSasis) {
-          FincestemCore.ui.toast('Pilih konstruksi sasis & material bodi kendaraan (Pilar 3A)!', 'warning');
-          return;
-        }
-        if (!analisisRekayasa || analisisRekayasa.length < 15) {
-          FincestemCore.ui.toast('Tuliskan analisis rekayasa keselamatan crumple zone minimal 15 kata (Pilar 3B)!', 'warning');
-          document.getElementById('ftD3MuseumAnalisisRekayasa')?.focus();
-          return;
-        }
-        if (!analisisFinansial || analisisFinansial.length < 15) {
-          FincestemCore.ui.toast('Tuliskan refleksi matematis & efisiensi finansial minimal 15 kata (Pilar 4)!', 'warning');
-          document.getElementById('ftD3MuseumAnalisisFinansial')?.focus();
-          return;
-        }
-      }
-
       const totalFuelLiters = Number((distance / fuelEff).toFixed(1));
       const totalCost = Math.round(totalFuelLiters * fuelPrice);
       const costPerPerson = Math.round(totalCost / splitCount);
+
+      const timeNow = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB';
+      const timeShort = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+
+      // JIKA HANYA SIMPAN DRAF LOKAL (isSubmit === false) -> TIDAK MENGIRIM KE SERVER
+      if (!isSubmit) {
+        const draftPayload = {
+          day_number: 3,
+          session: 3,
+          location: 'Museum Angkut Kota Batu',
+          namaKendaraan,
+          zona,
+          tahunAsal,
+          bentukBodi,
+          analisisAerodinamika: analisisAero,
+          sumberTenaga,
+          analisisTeknologi: analisisTekno,
+          konstruksiSasis,
+          analisisRekayasa,
+          jarakKm: distance,
+          konsumsiKmL: fuelEff,
+          hargaBbm: fuelPrice,
+          jumlahSiswa: splitCount,
+          totalLiter: totalFuelLiters,
+          totalBiaya: totalCost,
+          biayaPerSiswa: costPerPerson,
+          analisisFinansial,
+          draftAt: timeShort
+        };
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day3_museum_draft_' + cleanNisn, JSON.stringify(draftPayload));
+          const curSaved = localStorage.getItem('fincestem_lkpd_ft_day3_museum_' + cleanNisn);
+          if (curSaved) {
+            try {
+              const p = JSON.parse(curSaved);
+              if (p && p.submitted) {
+                Object.assign(p, draftPayload, { submitted: true, submittedAt: p.submittedAt });
+                localStorage.setItem('fincestem_lkpd_ft_day3_museum_' + cleanNisn, JSON.stringify(p));
+              }
+            } catch(e) {}
+          }
+        } catch(e) {}
+
+        const statusEl = document.getElementById('lblD3MuseumDraftStatus');
+        if (statusEl) {
+          statusEl.innerHTML = `<span class="material-symbols-outlined text-sm text-teal-600">cloud_done</span><span>Draf tersimpan di HP (pk ${timeShort})</span>`;
+        }
+        if (!isSilent && window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+          FincestemCore.ui.toast('Draf LKPD Museum Angkut tersimpan di perangkat Anda (belum dikirim ke Fasilitator).', 'info');
+        }
+        return;
+      }
+
+      // SUBMIT RESMI KE FASILITATOR (isSubmit === true)
+      if (!namaKendaraan || namaKendaraan.length < 3) {
+        FincestemCore.ui.toast('Tuliskan nama/model kendaraan pilihan Anda di Bagian Identifikasi!', 'warning');
+        document.getElementById('ftD3MuseumNamaKendaraan')?.focus();
+        return;
+      }
+      if (!zona) {
+        FincestemCore.ui.toast('Pilih salah satu zona temuan di Museum Angkut!', 'warning');
+        document.getElementById('ftD3MuseumZona')?.focus();
+        return;
+      }
+      if (!bentukBodi) {
+        FincestemCore.ui.toast('Pilih salah satu klasifikasi bentuk bodi kendaraan (Pilar 1A)!', 'warning');
+        return;
+      }
+      if (!analisisAero || analisisAero.length < 15) {
+        FincestemCore.ui.toast('Tuliskan analisis aerodinamika & drag force minimal 15 kata (Pilar 1B)!', 'warning');
+        document.getElementById('ftD3MuseumAnalisisAero')?.focus();
+        return;
+      }
+      if (!sumberTenaga) {
+        FincestemCore.ui.toast('Pilih jenis sumber tenaga/mesin penggerak (Pilar 2A)!', 'warning');
+        return;
+      }
+      if (!analisisTekno || analisisTekno.length < 15) {
+        FincestemCore.ui.toast('Tuliskan analisis komparasi teknologi mesin minimal 15 kata (Pilar 2B)!', 'warning');
+        document.getElementById('ftD3MuseumAnalisisTekno')?.focus();
+        return;
+      }
+      if (!konstruksiSasis) {
+        FincestemCore.ui.toast('Pilih konstruksi sasis & material bodi kendaraan (Pilar 3A)!', 'warning');
+        return;
+      }
+      if (!analisisRekayasa || analisisRekayasa.length < 15) {
+        FincestemCore.ui.toast('Tuliskan analisis rekayasa keselamatan crumple zone minimal 15 kata (Pilar 3B)!', 'warning');
+        document.getElementById('ftD3MuseumAnalisisRekayasa')?.focus();
+        return;
+      }
+      if (!analisisFinansial || analisisFinansial.length < 15) {
+        FincestemCore.ui.toast('Tuliskan refleksi matematis & efisiensi finansial minimal 15 kata (Pilar 4)!', 'warning');
+        document.getElementById('ftD3MuseumAnalisisFinansial')?.focus();
+        return;
+      }
 
       const payload = {
         day_number: 3,
@@ -3044,12 +3236,12 @@
         totalBiaya: totalCost,
         biayaPerSiswa: costPerPerson,
         analisisFinansial,
-        submitted: !!isSubmit,
-        submittedAt: new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' }) + ' WIB'
+        submitted: true,
+        submittedAt: timeNow
       };
 
       const btnSubmit = document.getElementById('btnSubmitD3MuseumLkpd');
-      if (btnSubmit && isSubmit) {
+      if (btnSubmit) {
         btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Mengirimkan Laporan...</span>';
         btnSubmit.classList.add('pointer-events-none', 'opacity-80');
       }
@@ -3063,24 +3255,24 @@
           FincestemCore.progress.submitTask(cleanNisn, 3, 'lkpd_museum', payload);
         }
 
-        if (isSubmit) {
-          if (btnSubmit) {
-            btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Terkirim</span>';
-            btnSubmit.classList.remove('pointer-events-none', 'opacity-80');
-          }
-          const statusBadge = document.getElementById('ftD3MuseumStatusBadge');
-          if (statusBadge) {
-            statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-300 text-slate-950';
-            statusBadge.textContent = '✓ Telah Dikirim / Selesai';
-          }
-          FincestemCore.ui.toast('LKPD Museum Angkut Sesi 3 berhasil dikirim! Mengarahkan ke Dokumentasi & Refleksi Kendaraan...', 'success');
-          showD3MuseumLkpdSuccessModal();
-          setTimeout(() => {
-            window.location.href = 'dokumentasi.html?day=3&sesi=3';
-          }, 1200);
-        } else {
-          FincestemCore.ui.toast('Draft LKPD Museum Angkut tersimpan.', 'info');
+        if (btnSubmit) {
+          btnSubmit.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span><span>Laporan Terkirim</span>';
+          btnSubmit.classList.remove('pointer-events-none', 'opacity-80');
         }
+        const statusBadge = document.getElementById('ftD3MuseumStatusBadge');
+        if (statusBadge) {
+          statusBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-300 text-slate-950';
+          statusBadge.textContent = '✓ Telah Dikirim / Selesai';
+        }
+        const statusEl = document.getElementById('lblD3MuseumDraftStatus');
+        if (statusEl) {
+          statusEl.innerHTML = `<span class="material-symbols-outlined text-sm text-emerald-600">check_circle</span><span>Jawaban resmi terkirim (${timeNow})</span>`;
+        }
+        FincestemCore.ui.toast('LKPD Museum Angkut Sesi 3 berhasil dikirim! Mengarahkan ke Dokumentasi & Refleksi Kendaraan...', 'success');
+        showD3MuseumLkpdSuccessModal();
+        setTimeout(() => {
+          window.location.href = 'dokumentasi.html?day=3&sesi=3';
+        }, 1200);
       }, 400);
     }
 
