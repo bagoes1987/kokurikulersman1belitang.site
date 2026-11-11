@@ -105,13 +105,19 @@
       // Bersihkan cache paket v1 & v2 lama jika ada
       localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d${dayNum}_${cleanNisn}`);
       localStorage.removeItem(`fincestem_pkg_nft_asesmen_d${dayNum}_${cleanNisn}`);
+      if (isSecDay) {
+        // Hapus paket non-sektor lama jika ada
+        localStorage.removeItem(`fincestem_pkg_nft_asesmen_v3_d${dayNum}_${cleanNisn}`);
+      }
       const savedPkg = localStorage.getItem(storageKey);
       if (savedPkg) {
         const parsedPkg = JSON.parse(savedPkg);
         if (Array.isArray(parsedPkg) && parsedPkg.length === expectedLength) {
           if (isSecDay) {
-            if (parsedPkg[0] && (!parsedPkg[0].sector || parsedPkg[0].sector === selectedSector)) {
+            if (parsedPkg[0] && parsedPkg[0].sector === selectedSector) {
               return parsedPkg;
+            } else {
+              localStorage.removeItem(storageKey);
             }
           } else {
             return parsedPkg;
@@ -918,6 +924,13 @@
                 <span class="material-symbols-outlined text-xs shrink-0 text-slate-950">info</span>
                 <span>Paket ${(isDay0 || isDay4 || isDay5 || isDay6) ? "10" : "50"} butir soal spesifik otomatis diambil dari sektor observasi LKPD Day ${examState.dayNum} yang telah Anda pilih.</span>
               </p>
+              <div class="mt-1 pt-2 border-t border-amber-950/20 flex items-center justify-between text-[11px]">
+                <span class="font-bold text-slate-900">Ingin mengganti sektor observasi?</span>
+                <a href="lkpd.html?day=${examState.dayNum}" class="underline font-black text-slate-950 hover:text-emerald-900 flex items-center gap-0.5">
+                  <span>Sesuaikan di LKPD Day ${examState.dayNum}</span>
+                  <span class="material-symbols-outlined text-xs">open_in_new</span>
+                </a>
+              </div>
             </div>
           ` : ''}
         </div>

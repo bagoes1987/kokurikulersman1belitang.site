@@ -2568,12 +2568,12 @@
   const NFT_DAY3_SECTOR_DATA = {
   "pertanian": {
     "key": "pertanian",
-    "name": "Pertanian Padi Sawah (Lumbung Pangan Komering)",
-    "badge": "Sektor Pertanian Padi",
+    "name": "Pertanian Padi Sawah & Hortikultura (Padi, Kebun Melon, Semangka, & Palawija)",
+    "badge": "Sektor Pertanian Padi & Hortikultura",
     "icon": "agriculture",
     "colorClass": "emerald",
     "scalePlaceholder": "Contoh: 1,5 Hektar (Sawah Irigasi Saluran BK 10)",
-    "scaleLabel": "Luas Lahan Sawah (Hektar / Rantai):",
+    "scaleLabel": "Luas Lahan Sawah / Kebun (Hektar / Rantai):",
     "sainsA1Label": "1. Kondisi Tanah & Sumber Air Saluran Irigasi BK:",
     "sainsA1Hint": "Amati dan jelaskan: jenis tanah sawah (berlumpur/lempung), ketersediaan air irigasi dari saluran BK, dan kejernihan airnya...",
     "sainsA2Label": "2. Pertumbuhan Tanaman Padi & Gejala Hama Sawah:",
@@ -2593,11 +2593,34 @@
     "mathD2Label": "2. Perkiraan Hasil Panen Gabah & Harga Jual per Kg:",
     "mathD2Hint": "Tuliskan perkiraan hasil panen (berapa karung atau ton gabah) dikalikan harga jual per kg ke tengkulak/pabrik...",
     "mathD3Label": "3. Estimasi Keuntungan Bersih Petani Padi:",
-    "mathD3Hint": "Hitung selisihnya: Total hasil penjualan gabah dikurangi seluruh biaya modal awal yang dikeluarkan..."
+    "mathD3Hint": "Hitung selisihnya: Total hasil penjualan gabah dikurangi seluruh biaya modal awal yang dikeluarkan...",
+    "costTableTitle": "1. Biaya Modal & Pengeluaran Operasional Tani (Satu Musim Tanam):",
+    "cost1Label": "Biaya Bibit / Benih Padi/Palawija (Rp):",
+    "cost1Placeholder": "Contoh: 750.000",
+    "cost2Label": "Biaya Pupuk Urea/NPK & Obat Tani (Rp):",
+    "cost2Placeholder": "Contoh: 2.800.000",
+    "cost3Label": "BBM Solar & Sewa Mesin Traktor/Pompa (Rp):",
+    "cost3Placeholder": "Contoh: 1.500.000",
+    "cost4Label": "Upah Tenaga Kerja Tanam & Panen (Rp):",
+    "cost4Placeholder": "Contoh: 1.800.000",
+    "harvestTableTitle": "2. Hasil Panen & Penjualan Gabah / Komoditas Tani:",
+    "yieldLabel": "Volume Hasil Panen Gabah / Buah:",
+    "yieldPlaceholder": "Contoh: 3500",
+    "defaultUnit": "Kg",
+    "unitOptions": [
+      { "value": "Kg", "label": "Kilogram (Kg)" },
+      { "value": "Ton", "label": "Ton" },
+      { "value": "Sak/Zak", "label": "Sak / Zak Gabah" }
+    ],
+    "priceLabel": "Harga Jual Gabah/Hasil Tani per Satuan (Rp):",
+    "pricePlaceholder": "Contoh: 6.500 (per kg gabah)",
+    "revenueLabel": "Total Pendapatan Kotor (Hasil Panen × Harga Jual):",
+    "finNotesLabel": "Catatan Analisis Efisiensi Finansial (HPP per kg Gabah / Margin Laba):",
+    "finNotesHint": "Uraikan perhitungan efisiensi: misalnya harga pokok produksi (HPP) per kg gabah, perbandingan biaya sewa mesin vs manual, dan margin laba petani..."
   },
   "perkebunan": {
     "key": "perkebunan",
-    "name": "Perkebunan Rakyat (Karet & Sawit)",
+    "name": "Perkebunan Rakyat (Karet & Kelapa Sawit)",
     "badge": "Komoditas Unggulan Perkebunan",
     "icon": "forest",
     "colorClass": "emerald",
@@ -2622,7 +2645,30 @@
     "mathD2Label": "2. Hasil Timbangan Getah/Sawit & Harga Jual per Kg:",
     "mathD2Hint": "Tuliskan perkiraan hasil timbangan (kg getah per minggu atau ton sawit per panen) dikalikan harga per kg di pengepul/RAM...",
     "mathD3Label": "3. Estimasi Pendapatan & Keuntungan Bersih Pekebun:",
-    "mathD3Hint": "Hitung selisihnya: Total hasil penjualan dikurangi biaya pembelian asam cuka atau ongkos angkut..."
+    "mathD3Hint": "Hitung selisihnya: Total hasil penjualan dikurangi biaya pembelian asam cuka atau ongkos angkut...",
+    "costTableTitle": "1. Biaya Modal & Pengeluaran Perawatan Kebun (Satu Siklus/Bulan):",
+    "cost1Label": "Biaya Asam Cuka Pembeku / Pembersih Gulma (Rp):",
+    "cost1Placeholder": "Contoh: 450.000",
+    "cost2Label": "Biaya Pupuk NPK / Nutrisi Pohon Kebun (Rp):",
+    "cost2Placeholder": "Contoh: 1.800.000",
+    "cost3Label": "BBM Angkutan & Perawatan Alat Sadap/Dodos (Rp):",
+    "cost3Placeholder": "Contoh: 600.000",
+    "cost4Label": "Upah Tenaga Kerja Penyadaр / Pemanen TBS (Rp):",
+    "cost4Placeholder": "Contoh: 1.200.000",
+    "harvestTableTitle": "2. Hasil Timbangan & Penjualan Getah Karet / Buah Sawit:",
+    "yieldLabel": "Total Bobot Hasil Timbang Kebun:",
+    "yieldPlaceholder": "Contoh: 1200",
+    "defaultUnit": "Kg",
+    "unitOptions": [
+      { "value": "Kg", "label": "Kilogram (Kg)" },
+      { "value": "Ton", "label": "Ton" },
+      { "value": "Liter", "label": "Liter (Getah Lateks Cair)" }
+    ],
+    "priceLabel": "Harga Jual Timbangan per Kg di Pengepul/RAM (Rp):",
+    "pricePlaceholder": "Contoh: 11.500 (per kg getah karet)",
+    "revenueLabel": "Total Pendapatan Kotor (Hasil Timbang × Harga Jual):",
+    "finNotesLabel": "Catatan Analisis Efisiensi Finansial (HPP per kg Karet/Sawit & Bagi Hasil):",
+    "finNotesHint": "Uraikan efisiensi biaya: perbandingan pengeluaran cuka/pupuk terhadap hasil timbangan, sistem bagi hasil penyadap (misal 60:40), dan margin laba bersih..."
   },
   "peternakan": {
     "key": "peternakan",
@@ -2651,7 +2697,30 @@
     "mathD2Label": "2. Nilai Jual Hewan Ternak Setelah Dipelihara:",
     "mathD2Hint": "Tuliskan perkiraan harga jual hewan ternak saat sudah besar (misalnya saat Idul Adha atau pasar hewan)...",
     "mathD3Label": "3. Estimasi Keuntungan Bersih Usaha Peternakan:",
-    "mathD3Hint": "Hitung selisihnya: Harga jual akhir ternak dikurangi modal pembelian bibit dan total biaya pakan..."
+    "mathD3Hint": "Hitung selisihnya: Harga jual akhir ternak dikurangi modal pembelian bibit dan total biaya pakan...",
+    "costTableTitle": "1. Biaya Modal Pembelian Bibit & Operasional Ternak (Per Siklus/Bulan):",
+    "cost1Label": "Biaya Pembelian Bibit / Bakalan Ternak (Rp):",
+    "cost1Placeholder": "Contoh: 5.000.000",
+    "cost2Label": "Biaya Pakan Konsentrat, Dedak & Vitamin (Rp):",
+    "cost2Placeholder": "Contoh: 2.200.000",
+    "cost3Label": "Listrik / BBM Chopper & Perawatan Kandang (Rp):",
+    "cost3Placeholder": "Contoh: 500.000",
+    "cost4Label": "Upah Tenaga Ngarit / Perawat Kandang (Rp):",
+    "cost4Placeholder": "Contoh: 1.000.000",
+    "harvestTableTitle": "2. Hasil Penjualan Ternak / Telur / Susu:",
+    "yieldLabel": "Jumlah Ternak / Produk yang Terjual:",
+    "yieldPlaceholder": "Contoh: 5",
+    "defaultUnit": "Ekor",
+    "unitOptions": [
+      { "value": "Ekor", "label": "Ekor (Ternak / Unggas)" },
+      { "value": "Kg", "label": "Kilogram (Kg Daging / Bobot Hidup)" },
+      { "value": "Bungkus/Kemasan", "label": "Karung / Piring Telur (Rak)" }
+    ],
+    "priceLabel": "Harga Jual per Ekor / per Satuan Produk (Rp):",
+    "pricePlaceholder": "Contoh: 3.500.000 (per ekor kambing/sapi)",
+    "revenueLabel": "Total Pendapatan Kotor (Jumlah Terjual × Harga Satuan):",
+    "finNotesLabel": "Catatan Analisis Efisiensi Finansial (Biaya Pakan vs Kenaikan Bobot Harian):",
+    "finNotesHint": "Uraikan efisiensi: rasio biaya pakan terhadap pertambahan bobot ternak, penghematan pakan silase, dan laba peternak..."
   },
   "perikanan": {
     "key": "perikanan",
@@ -2680,7 +2749,30 @@
     "mathD2Label": "2. Total Kilogram Hasil Panen & Harga Jual per Kg:",
     "mathD2Hint": "Tuliskan perkiraan total panen ikan (kg) dikalikan harga jual per kg ke pasar ikan atau pengepul...",
     "mathD3Label": "3. Estimasi Keuntungan Bersih Budidaya Ikan:",
-    "mathD3Hint": "Hitung selisihnya: Total hasil penjualan ikan dikurangi seluruh biaya bibit dan pakan..."
+    "mathD3Hint": "Hitung selisihnya: Total hasil penjualan ikan dikurangi seluruh biaya bibit dan pakan...",
+    "costTableTitle": "1. Biaya Modal Benih Ikan & Operasional Kolam (Satu Siklus Budidaya):",
+    "cost1Label": "Biaya Pembelian Benih / Bibit Ikan Patin/Lele (Rp):",
+    "cost1Placeholder": "Contoh: 1.200.000",
+    "cost2Label": "Biaya Pakan Pelet Terapung & Probiotik Air (Rp):",
+    "cost2Placeholder": "Contoh: 4.500.000",
+    "cost3Label": "Listrik Pompa Air & Aerator Kincir Oksigen (Rp):",
+    "cost3Placeholder": "Contoh: 800.000",
+    "cost4Label": "Upah Tenaga Rawat Kolam & Pemanenan (Rp):",
+    "cost4Placeholder": "Contoh: 900.000",
+    "harvestTableTitle": "2. Hasil Panen Ikan & Penjualan ke Pasar/Pengepul:",
+    "yieldLabel": "Total Bobot Hasil Panen Ikan:",
+    "yieldPlaceholder": "Contoh: 850",
+    "defaultUnit": "Kg",
+    "unitOptions": [
+      { "value": "Kg", "label": "Kilogram (Kg)" },
+      { "value": "Ton", "label": "Ton" },
+      { "value": "Ekor", "label": "Ekor" }
+    ],
+    "priceLabel": "Harga Jual Ikan Timbang Basah per Kg (Rp):",
+    "pricePlaceholder": "Contoh: 18.000 (per kg ikan patin/lele)",
+    "revenueLabel": "Total Pendapatan Kotor (Total Kg Panen × Harga Jual):",
+    "finNotesLabel": "Catatan Analisis Efisiensi Finansial (Feed Conversion Ratio / FCR Pelet):",
+    "finNotesHint": "Uraikan efisiensi pakan: perbandingan total kilogram pakan pelet yang dihabiskan dengan total kilogram bobot ikan yang dipanen (FCR), serta margin keuntungan..."
   },
   "industri": {
     "key": "industri",
@@ -2709,7 +2801,31 @@
     "mathD2Label": "2. Jumlah Produk yang Dihasilkan & Harga Jual Satuan:",
     "mathD2Hint": "Tuliskan jumlah produk jadi yang dihasilkan per hari dikalikan harga jual per papan tahu, karung beras, atau bungkus kemplang...",
     "mathD3Label": "3. Estimasi Keuntungan Bersih Usaha Olahan Pangan:",
-    "mathD3Hint": "Hitung selisihnya: Total omzet penjualan harian dikurangi seluruh biaya modal bahan baku dan operasional..."
+    "mathD3Hint": "Hitung selisihnya: Total omzet penjualan harian dikurangi seluruh biaya modal bahan baku dan operasional...",
+    "costTableTitle": "1. Biaya Modal Bahan Baku & Operasional Pabrik/RMU (Harian / Mingguan):",
+    "cost1Label": "Biaya Bahan Baku Utama (Kedelai / Gabah / Tepung) (Rp):",
+    "cost1Placeholder": "Contoh: 3.000.000",
+    "cost2Label": "Bahan Penolong (Ragi, Bumbu, Kemasan & Label) (Rp):",
+    "cost2Placeholder": "Contoh: 700.000",
+    "cost3Label": "BBM Solar / Listrik Dinamo Mesin Giling/Dryer (Rp):",
+    "cost3Placeholder": "Contoh: 800.000",
+    "cost4Label": "Upah Pekerja / Operator Mesin Produksi (Rp):",
+    "cost4Placeholder": "Contoh: 1.200.000",
+    "harvestTableTitle": "2. Hasil Produk Olahan Pangan Jadi & Penjualan:",
+    "yieldLabel": "Jumlah Produk Olahan Jadi yang Terjual:",
+    "yieldPlaceholder": "Contoh: 400",
+    "defaultUnit": "Bungkus/Kemasan",
+    "unitOptions": [
+      { "value": "Bungkus/Kemasan", "label": "Bungkus / Kemasan" },
+      { "value": "Papan", "label": "Papan Tahu" },
+      { "value": "Kg", "label": "Kilogram (Kg Beras / Kemplang)" },
+      { "value": "Sak/Zak", "label": "Sak / Zak (Beras Kemasan)" }
+    ],
+    "priceLabel": "Harga Jual per Satuan Produk Jadi (Rp):",
+    "pricePlaceholder": "Contoh: 15.000 (per kemasan kemplang/tahu)",
+    "revenueLabel": "Total Omzet Penjualan (Jumlah Produk × Harga Satuan):",
+    "finNotesLabel": "Catatan Analisis Efisiensi Finansial (HPP Produk / Rendemen Olahan):",
+    "finNotesHint": "Uraikan efisiensi pengolahan: persentase rendemen beras atau tahu yang dihasilkan dari bahan mentah, biaya energi bahan bakar per batch, dan margin laba bersih..."
   },
   "perdagangan": {
     "key": "perdagangan",
@@ -2738,7 +2854,32 @@
     "mathD2Label": "2. Harga Jual Eceran ke Konsumen & Margin Keuntungan:",
     "mathD2Hint": "Tuliskan harga jual eceran toko ke pembeli dan hitung selisih laba (margin) yang didapat per potong pakaian atau per barang...",
     "mathD3Label": "3. Estimasi Keuntungan Bersih Toko per Hari/Bulan:",
-    "mathD3Hint": "Hitung perkiraan keuntungan: Jumlah rata-rata barang terjual per hari dikalikan margin laba bersih toko..."
+    "mathD3Hint": "Hitung perkiraan keuntungan: Jumlah rata-rata barang terjual per hari dikalikan margin laba bersih toko...",
+    "costTableTitle": "1. Modal Kulakan Stok Barang Dagangan & Operasional Toko (Mingguan/Bulanan):",
+    "cost1Label": "Modal Kulakan / Beli Stok Barang Grosir Toko (Rp):",
+    "cost1Placeholder": "Contoh: 5.000.000 (beli stok baju/sembako)",
+    "cost2Label": "Kantong Plastik, Label Toko & ATK Kasir (Rp):",
+    "cost2Placeholder": "Contoh: 250.000",
+    "cost3Label": "Ongkos Angkut / BBM Kirim & Listrik Toko (Rp):",
+    "cost3Placeholder": "Contoh: 500.000",
+    "cost4Label": "Upah Karyawan Toko / Retribusi Los Pasar (Rp):",
+    "cost4Placeholder": "Contoh: 1.000.000",
+    "harvestTableTitle": "2. Penjualan Barang Dagangan ke Konsumen:",
+    "yieldLabel": "Jumlah Barang / Item Dagang yang Terjual:",
+    "yieldPlaceholder": "Contoh: 80",
+    "defaultUnit": "Pcs / Potong",
+    "unitOptions": [
+      { "value": "Pcs / Potong", "label": "Pcs / Potong (Pakaian / Busana)" },
+      { "value": "Bungkus/Kemasan", "label": "Bungkus / Kemasan (Sembako)" },
+      { "value": "Kg", "label": "Kilogram (Kg)" },
+      { "value": "Sak/Zak", "label": "Sak / Zak (Beras / Pakan Toko)" },
+      { "value": "Unit / Paket", "label": "Unit / Paket Barang Dagang" }
+    ],
+    "priceLabel": "Rata-rata Harga Jual Eceran per Barang/Pcs (Rp):",
+    "pricePlaceholder": "Contoh: 95.000 (per potong pakaian)",
+    "revenueLabel": "Total Omzet Penjualan Toko (Jumlah Terjual × Rata-rata Harga):",
+    "finNotesLabel": "Catatan Analisis Efisiensi Finansial (Margin Laba Kotor / Perputaran Stok Toko):",
+    "finNotesHint": "Uraikan efisiensi niaga: persentase keuntungan (margin) dari harga beli grosir ke harga jual eceran, kecepatan perputaran stok barang, dan laba bersih toko..."
   },
   "formal": {
     "key": "formal",
@@ -2767,7 +2908,30 @@
     "mathD2Label": "2. Tarif Biaya Admin Jasa (Fee) per Transaksi:",
     "mathD2Hint": "Tuliskan besaran tarif jasa admin (fee) per transaksi (misalnya Rp5.000 per tarik tunai atau transfer uang)...",
     "mathD3Label": "3. Estimasi Keuntungan Bersih Agen per Hari/Bulan:",
-    "mathD3Hint": "Hitung keuntungannya: Rata-rata jumlah transaksi per hari dikalikan tarif fee admin, dikurangi biaya pulsa internet dan kertas struk..."
+    "mathD3Hint": "Hitung keuntungannya: Rata-rata jumlah transaksi per hari dikalikan tarif fee admin, dikurangi biaya pulsa internet dan kertas struk...",
+    "costTableTitle": "1. Kebutuhan Biaya Operasional Gerai Layanan Keuangan (Harian / Bulanan):",
+    "cost1Label": "Biaya Administrasi Bank & Top-Up Kuota Transaksi (Rp):",
+    "cost1Placeholder": "Contoh: 200.000",
+    "cost2Label": "Kertas Struk Kasir, Kuota Internet & ATK Layanan (Rp):",
+    "cost2Placeholder": "Contoh: 250.000",
+    "cost3Label": "Listrik Gerai, Cas Mesin EDC & Sewa Tempat (Rp):",
+    "cost3Placeholder": "Contoh: 400.000",
+    "cost4Label": "Upah Karyawan Jaga Gerai / Petugas Layanan (Rp):",
+    "cost4Placeholder": "Contoh: 1.000.000",
+    "harvestTableTitle": "2. Layanan Transaksi Keuangan & Penerimaan Jasa (Fee Admin):",
+    "yieldLabel": "Total Jumlah Transaksi yang Dilayani (Tarik/Transfer):",
+    "yieldPlaceholder": "Contoh: 450",
+    "defaultUnit": "Transaksi/Unit",
+    "unitOptions": [
+      { "value": "Transaksi/Unit", "label": "Transaksi / Nasabah Dilayani" },
+      { "value": "Unit Layanan / Service", "label": "Unit Layanan Jasa / Service" },
+      { "value": "Pelanggan", "label": "Pelanggan Terlayani" }
+    ],
+    "priceLabel": "Tarif Jasa (Fee Admin) Rata-rata per Transaksi (Rp):",
+    "pricePlaceholder": "Contoh: 5.000 (per transaksi)",
+    "revenueLabel": "Total Pendapatan Jasa / Fee (Jumlah Transaksi × Tarif Fee Admin):",
+    "finNotesLabel": "Catatan Analisis Efisiensi Finansial (Rasio Fee terhadap Biaya Operasional Gerai):",
+    "finNotesHint": "Uraikan efisiensi gerai: perbandingan pendapatan fee admin terhadap biaya kuota/kertas struk/listrik, rata-rata transaksi harian, dan margin laba bersih agen..."
   }
 };
 
@@ -2819,6 +2983,25 @@
           }
         } catch(e) {}
       }
+      if (!d2Sec) {
+        try {
+          const rawLkpd2 = localStorage.getItem('fincestem_lkpd_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day2_' + cleanNisn);
+          if (rawLkpd2) {
+            const p2 = JSON.parse(rawLkpd2);
+            if (p2 && (p2.sectorKey || p2.sector)) d2Sec = p2.sectorKey || p2.sector;
+          }
+        } catch(e) {}
+      }
+      if (!d2Sec && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const t2 = window.currentStudentProgress.task_map['2_lkpd'];
+        if (t2 && t2.content) {
+          let c = t2.content;
+          if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
+            try { c = JSON.parse(c); } catch(e) {}
+          }
+          if (c && (c.sectorKey || c.sector)) d2Sec = c.sectorKey || c.sector;
+        }
+      }
       if (d2Sec) {
         let mapped = String(d2Sec).toLowerCase().trim();
         if (mapped === 'pangan') mapped = 'pertanian';
@@ -2865,20 +3048,21 @@
     }
 
     const isSubmitted = !!(saved && (saved.submitted || saved.submittedAt || saved.narasumberName));
-    const finalReadOnly = !!(isReadOnly || isSubmitted);
+    const isEditMode = !isReadOnly && !!window._nftD3EditMode;
+    const finalReadOnly = !!(isReadOnly || (isSubmitted && !isEditMode));
     const readOnlyAttr = finalReadOnly ? 'readonly' : '';
     const disabledAttr = finalReadOnly ? 'disabled' : '';
 
-    // Ambil data draft lokal jika belum resmi
+    // Ambil data draft lokal jika belum resmi atau dalam mode edit
     let draft = {};
-    if (!isSubmitted) {
+    if (!isSubmitted || isEditMode) {
       try {
         const rawDraft = localStorage.getItem('fincestem_draft_nft_lkpd_d3_' + cleanNisn);
         if (rawDraft) draft = JSON.parse(rawDraft);
       } catch(e) {}
     }
 
-    const formData = isSubmitted ? (saved || {}) : (draft || {});
+    const formData = isSubmitted && !isEditMode ? (saved || {}) : ((draft && Object.keys(draft).length > 2) ? draft : (saved || draft || {}));
     const isTesterD3 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
     const isLockedByPrereq = false; // Day 3 terbuka langsung untuk dikerjakan siswa tanpa lock prasyarat
 
@@ -2896,7 +3080,16 @@
     if (!d3CurDistrict && val('location')) {
       d3CurDistrict = OKU_TIMUR_DISTRICTS.find(d => val('location').toLowerCase().includes(d.toLowerCase())) || '';
     }
-    const selSector = formData.sectorKey || sectorFromMateri || 'pertanian';
+
+    let selSector = 'pertanian';
+    const directD3Sec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
+    if (directD3Sec && NFT_DAY3_SECTOR_DATA[directD3Sec]) {
+      selSector = directD3Sec;
+    } else if (formData && formData.sectorKey && NFT_DAY3_SECTOR_DATA[formData.sectorKey]) {
+      selSector = formData.sectorKey;
+    } else if (sectorFromMateri && NFT_DAY3_SECTOR_DATA[sectorFromMateri]) {
+      selSector = sectorFromMateri;
+    }
     const sectorObj = NFT_DAY3_SECTOR_DATA[selSector] || NFT_DAY3_SECTOR_DATA.pertanian;
 
     const draftTimeStr = draft && draft.updatedAt 
@@ -3253,32 +3446,32 @@
             <div class="flex flex-col gap-2 bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <h4 class="text-xs font-black text-slate-800 flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-sm text-purple-700">payments</span>
-                <span>1. Biaya Modal &amp; Pengeluaran Operasional (Satu Musim / Siklus):</span>
+                <span>${sectorObj.costTableTitle || '1. Biaya Modal & Pengeluaran Operasional (Satu Musim / Siklus):'}</span>
               </h4>
 
               <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1">
-                <!-- Biaya Bibit/Benih -->
+                <!-- Biaya 1 -->
                 <div class="flex flex-col gap-1">
-                  <label class="text-[11px] font-bold text-slate-700">Biaya Bibit / Benih (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="text" inputmode="numeric" id="nftD3_costSeed" ${readOnlyAttr} value="${valMoney('costSeed')}" placeholder="Contoh: 750.000" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <label class="text-[11px] font-bold text-slate-700">${sectorObj.cost1Label || 'Biaya Bibit / Benih (Rp):'} <span class="text-rose-600">*</span></label>
+                  <input type="text" inputmode="numeric" id="nftD3_costSeed" ${readOnlyAttr} value="${valMoney('costSeed')}" placeholder="${sectorObj.cost1Placeholder || 'Contoh: 750.000'}" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
 
-                <!-- Biaya Pupuk / Pakan -->
+                <!-- Biaya 2 -->
                 <div class="flex flex-col gap-1">
-                  <label class="text-[11px] font-bold text-slate-700">Biaya Pupuk / Pakan (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="text" inputmode="numeric" id="nftD3_costFeedFertilizer" ${readOnlyAttr} value="${valMoney('costFeedFertilizer')}" placeholder="Contoh: 2.800.000" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <label class="text-[11px] font-bold text-slate-700">${sectorObj.cost2Label || 'Biaya Pupuk / Pakan (Rp):'} <span class="text-rose-600">*</span></label>
+                  <input type="text" inputmode="numeric" id="nftD3_costFeedFertilizer" ${readOnlyAttr} value="${valMoney('costFeedFertilizer')}" placeholder="${sectorObj.cost2Placeholder || 'Contoh: 2.800.000'}" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
 
-                <!-- Biaya Solar/Listrik & Sewa Mesin -->
+                <!-- Biaya 3 -->
                 <div class="flex flex-col gap-1">
-                  <label class="text-[11px] font-bold text-slate-700">BBM / Listrik &amp; Sewa Mesin (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="text" inputmode="numeric" id="nftD3_costEnergyMachine" ${readOnlyAttr} value="${valMoney('costEnergyMachine')}" placeholder="Contoh: 1.500.000" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <label class="text-[11px] font-bold text-slate-700">${sectorObj.cost3Label || 'BBM / Listrik & Sewa Mesin (Rp):'} <span class="text-rose-600">*</span></label>
+                  <input type="text" inputmode="numeric" id="nftD3_costEnergyMachine" ${readOnlyAttr} value="${valMoney('costEnergyMachine')}" placeholder="${sectorObj.cost3Placeholder || 'Contoh: 1.500.000'}" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
 
                 <!-- Upah Tenaga Kerja -->
                 <div class="flex flex-col gap-1">
-                  <label class="text-[11px] font-bold text-slate-700">Upah Tenaga Kerja (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="text" inputmode="numeric" id="nftD3_costLabor" ${readOnlyAttr} value="${valMoney('costLabor')}" placeholder="Contoh: 1.800.000" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <label class="text-[11px] font-bold text-slate-700">${sectorObj.cost4Label || 'Upah Tenaga Kerja (Rp):'} <span class="text-rose-600">*</span></label>
+                  <input type="text" inputmode="numeric" id="nftD3_costLabor" ${readOnlyAttr} value="${valMoney('costLabor')}" placeholder="${sectorObj.cost4Placeholder || 'Contoh: 1.800.000'}" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
               </div>
 
@@ -3293,40 +3486,44 @@
             <div class="flex flex-col gap-2 bg-slate-50 p-4 rounded-2xl border border-slate-200">
               <h4 class="text-xs font-black text-slate-800 flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-sm text-emerald-700">shopping_cart_checkout</span>
-                <span>2. Hasil Panen &amp; Penjualan Produk:</span>
+                <span>${sectorObj.harvestTableTitle || '2. Hasil Panen & Penjualan Produk:'}</span>
               </h4>
 
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
-                <!-- Volume Hasil Panen -->
+                <!-- Volume Hasil -->
                 <div class="flex flex-col gap-1">
-                  <label class="text-[11px] font-bold text-slate-700">Volume Hasil Panen: <span class="text-rose-600">*</span></label>
-                  <input type="number" id="nftD3_harvestYield" min="0" step="any" ${readOnlyAttr} value="${valYield('harvestYield')}" placeholder="Contoh: 3500" onfocus="if (this.value === '0') this.value = '';" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <label class="text-[11px] font-bold text-slate-700">${sectorObj.yieldLabel || 'Volume Hasil Panen:'} <span class="text-rose-600">*</span></label>
+                  <input type="number" id="nftD3_harvestYield" min="0" step="any" ${readOnlyAttr} value="${valYield('harvestYield')}" placeholder="${sectorObj.yieldPlaceholder || 'Contoh: 3500'}" onfocus="if (this.value === '0') this.value = '';" oninput="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
 
                 <!-- Satuan Panen -->
                 <div class="flex flex-col gap-1">
-                  <label class="text-[11px] font-bold text-slate-700">Satuan Ukuran Panen: <span class="text-rose-600">*</span></label>
+                  <label class="text-[11px] font-bold text-slate-700">Satuan Ukuran: <span class="text-rose-600">*</span></label>
                   <select id="nftD3_harvestUnit" ${disabledAttr} onchange="calcDay3Financials()" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs font-bold text-slate-800 bg-white cursor-pointer transition-all">
-                    <option value="Kg" ${val('harvestUnit') === 'Kg' ? 'selected' : ''}>Kilogram (Kg)</option>
-                    <option value="Ton" ${val('harvestUnit') === 'Ton' ? 'selected' : ''}>Ton</option>
-                    <option value="Ekor" ${val('harvestUnit') === 'Ekor' ? 'selected' : ''}>Ekor (Ternak/Unggas)</option>
-                    <option value="Liter" ${val('harvestUnit') === 'Liter' ? 'selected' : ''}>Liter (Getah Lateks / Susu)</option>
-                    <option value="Bungkus/Kemasan" ${val('harvestUnit') === 'Bungkus/Kemasan' ? 'selected' : ''}>Bungkus / Kemasan (Produk Industri / Pangan)</option>
-                    <option value="Sak/Zak" ${val('harvestUnit') === 'Sak/Zak' ? 'selected' : ''}>Sak / Zak (Pupuk / Beras Grosir)</option>
-                    <option value="Transaksi/Unit" ${val('harvestUnit') === 'Transaksi/Unit' ? 'selected' : ''}>Transaksi / Unit Jasa (Keuangan Mikro / Service)</option>
+                    ${(sectorObj.unitOptions || [
+                      { value: 'Kg', label: 'Kilogram (Kg)' },
+                      { value: 'Ton', label: 'Ton' },
+                      { value: 'Ekor', label: 'Ekor (Ternak/Unggas)' },
+                      { value: 'Liter', label: 'Liter' },
+                      { value: 'Bungkus/Kemasan', label: 'Bungkus / Kemasan' },
+                      { value: 'Sak/Zak', label: 'Sak / Zak' },
+                      { value: 'Transaksi/Unit', label: 'Transaksi / Unit Jasa' }
+                    ]).map(u => `
+                      <option value="${u.value}" ${(val('harvestUnit') === u.value || (!val('harvestUnit') && u.value === sectorObj.defaultUnit)) ? 'selected' : ''}>${u.label}</option>
+                    `).join('')}
                   </select>
                 </div>
 
                 <!-- Harga Jual per Satuan -->
                 <div class="flex flex-col gap-1">
-                  <label class="text-[11px] font-bold text-slate-700">Harga Jual per Satuan (Rp): <span class="text-rose-600">*</span></label>
-                  <input type="text" inputmode="numeric" id="nftD3_pricePerUnit" ${readOnlyAttr} value="${valMoney('pricePerUnit')}" placeholder="Contoh: 6.500 (per kg gabah)" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
+                  <label class="text-[11px] font-bold text-slate-700">${sectorObj.priceLabel || 'Harga Jual per Satuan (Rp):'} <span class="text-rose-600">*</span></label>
+                  <input type="text" inputmode="numeric" id="nftD3_pricePerUnit" ${readOnlyAttr} value="${valMoney('pricePerUnit')}" placeholder="${sectorObj.pricePlaceholder || 'Contoh: 6.500'}" onfocus="if (this.value === '0') this.value = '';" oninput="this.value = formatRupiahInput(this.value); calcDay3Financials();" class="w-full p-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 outline-none text-xs text-slate-800 transition-all font-semibold bg-white">
                 </div>
               </div>
 
               <!-- Total Pendapatan Card -->
               <div class="p-3 rounded-xl bg-emerald-100/70 border border-emerald-300 flex items-center justify-between text-xs mt-1">
-                <span class="font-extrabold text-emerald-950">Total Pendapatan Kotor (Hasil Panen × Harga Jual):</span>
+                <span class="font-extrabold text-emerald-950">${sectorObj.revenueLabel || 'Total Pendapatan Kotor (Hasil × Harga Jual):'}</span>
                 <span id="lblD3_totalRevenue" class="font-black text-sm text-emerald-900">Rp 0</span>
               </div>
             </div>
@@ -3348,14 +3545,14 @@
               </div>
             </div>
 
-            <!-- Analisis Indikator Efisiensi (HPP / FCR / Laba per Luas) -->
+            <!-- Analisis Indikator Efisiensi -->
             <div class="flex flex-col gap-1.5 pt-1">
               <label class="text-xs font-bold text-slate-800 flex items-center justify-between">
-                <span>Catatan Analisis Efisiensi Finansial (HPP per kg / Rasio Pakan FCR / Margin Laba): <span class="text-rose-600">*</span></span>
+                <span>${sectorObj.finNotesLabel || 'Catatan Analisis Efisiensi Finansial (HPP per kg / Rasio Pakan FCR / Margin Laba):'} <span class="text-rose-600">*</span></span>
                 <span id="countD3_finNotes" class="text-[10px] text-slate-400 font-bold">0 / 40 Karakter</span>
               </label>
               <p class="text-[11px] text-slate-500 italic">
-                Uraikan perhitungan efisiensi: misalnya harga pokok produksi (HPP) per kg gabah, perbandingan biaya pakan terhadap bobot ikan/ternak, atau seberapa menguntungkan usaha ini bagi narasumber...
+                ${sectorObj.finNotesHint || 'Uraikan perhitungan efisiensi: misalnya harga pokok produksi (HPP) per kg gabah, perbandingan biaya sewa mesin vs manual, atau seberapa menguntungkan usaha ini bagi narasumber...'}
               </p>
               <textarea id="nftD3_financialEfficiencyNotes" rows="3" ${readOnlyAttr} oninput="onNftDay3FieldInput()" placeholder="Tuliskan analisis efisiensi biaya dan keuntungan narasumber... (Minimal 40 karakter)" style="text-align: justify; text-justify: inter-word;" class="w-full p-3 rounded-xl border border-slate-300 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none text-xs text-slate-800 transition-all font-medium resize-y ${finalReadOnly ? 'bg-slate-50' : ''}">${val('financialEfficiencyNotes')}</textarea>
             </div>
@@ -3379,10 +3576,10 @@
             <div class="p-3.5 rounded-2xl bg-indigo-50/70 border border-indigo-200 text-xs text-indigo-950 flex flex-col gap-1.5 shadow-2xs">
               <span class="font-bold text-indigo-900 text-xs flex items-center gap-1.5">
                 <span class="material-symbols-outlined text-sm text-indigo-700">psychology</span>
-                <span>Panduan Perumusan Kesimpulan Lapangan:</span>
+                <span>Panduan Perumusan Kesimpulan Lapangan (${sectorObj.name}):</span>
               </span>
               <p class="text-xs text-indigo-950/90 leading-relaxed font-medium text-justify">
-                Tuliskan rangkuman menyeluruh dari apa yang Anda amati: bagaimana faktor sains (tanah/air), teknologi alat mesin, kecerdasan rekayasa teknis petani, dan manajemen modal matematika saling terkait untuk meningkatkan hasil panen dan pendapatan petani OKU Timur.
+                Tuliskan rangkuman menyeluruh dari apa yang Anda amati: bagaimana faktor sains (lingkungan/bahan), teknologi alat mesin, kecerdasan rekayasa teknis praktisi, dan manajemen modal matematika saling terkait untuk meningkatkan hasil usaha dan pendapatan praktisi sektor ${sectorObj.name} di OKU Timur.
               </p>
             </div>
 
@@ -3412,13 +3609,23 @@
                 </button>
                 <button type="button" id="btnSubmitNftLkpdD3" onclick="submitNftDay3LkpdOfficial()" class="flex-1 sm:flex-none px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer ring-2 ring-emerald-400/40">
                   <span class="material-symbols-outlined text-base">send</span>
-                  <span>Kirim Resmi ke Fasilitator</span>
+                  <span>${isSubmitted ? 'Perbarui Jawaban Resmi ke Fasilitator' : 'Kirim Resmi ke Fasilitator'}</span>
                 </button>
               ` : `
-                <div class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-950 font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-xs">
+                <div class="px-4 py-3 rounded-2xl bg-emerald-100 border border-emerald-300 text-emerald-950 font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-2xs">
                   <span class="material-symbols-outlined text-base text-emerald-700">verified</span>
-                  <span>LKPD Day 3 Telah Terkirim Resmi ke Fasilitator</span>
+                  <span>LKPD Day 3 Telah Terkirim Resmi</span>
                 </div>
+                ${!isReadOnly ? `
+                  <button type="button" onclick="enableNftDay3EditMode()" class="px-5 py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">edit_note</span>
+                    <span>Perbarui / Koreksi Jawaban</span>
+                  </button>
+                ` : ''}
+                <a href="dokumentasi.html?day=3" class="px-5 py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
+                  <span class="material-symbols-outlined text-base">photo_camera</span>
+                  <span>Dokumentasi Foto</span>
+                </a>
               `}
             </div>
           </div>
@@ -3484,6 +3691,14 @@
     onNftDay3FieldInput();
   }
   window.calcDay3Financials = calcDay3Financials;
+
+  window.enableNftDay3EditMode = function() {
+    window._nftD3EditMode = true;
+    renderNonFieldTripDay3LKPD(false);
+    if (window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+      FincestemCore.ui.toast('Mode edit dibuka. Anda dapat mengganti sektor dan memperbarui rincian observasi.', 'info');
+    }
+  };
 
   // ========================================================
   // REAL-TIME INPUT & VALIDATION HANDLERS
@@ -3723,9 +3938,21 @@
       submittedAt: new Date().toISOString()
     };
 
+    window._nftD3EditMode = false;
+
     try {
       localStorage.setItem('fincestem_lkpd_nft_day3_' + cleanNisn, JSON.stringify(officialPayload));
       localStorage.setItem('fincestem_lkpd_day3_' + cleanNisn, JSON.stringify(officialPayload));
+      localStorage.setItem('fincestem_nft_sector_d3_' + cleanNisn, data.sectorKey);
+      // Bersihkan cache paket asesmen agar asesmen otomatis tersinkron sektor baru
+      try {
+        localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d3_' + cleanNisn);
+        Object.keys(localStorage).forEach(k => {
+          if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d3_') && k.endsWith(cleanNisn)) {
+            localStorage.removeItem(k);
+          }
+        });
+      } catch(e) {}
     } catch(e) {}
 
     if (window.FincestemCore && FincestemCore.progress && FincestemCore.progress.submitTask) {
