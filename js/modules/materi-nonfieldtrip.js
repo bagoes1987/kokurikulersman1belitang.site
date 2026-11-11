@@ -2372,27 +2372,60 @@
           localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
         }
 
+        function mapToMateriSectorKey(raw) {
+          if (!raw) return '';
+          const s = String(raw).toLowerCase().trim();
+          if (s.includes('brilink') || s.includes('bank') || s.includes('koperasi') || s.includes('bumdes') || s.includes('keuangan') || s.includes('formal') || s.includes('bengkel') || s.includes('salon')) return 'formal';
+          if (s.includes('toko') || s.includes('pasar') || s.includes('sembako') || s.includes('dagang') || s.includes('perdagangan') || s.includes('grosir') || s.includes('saprotan') || s.includes('warung') || s.includes('niaga') || s.includes('kelontong')) return 'perdagangan';
+          if (s.includes('industri') || s.includes('rmu') || s.includes('giling') || s.includes('pabrik') || s.includes('tahu') || s.includes('tempe') || s.includes('kemplang') || s.includes('olah')) return 'industri';
+          if (s.includes('ikan') || s.includes('patin') || s.includes('lele') || s.includes('kolam') || s.includes('perikanan') || s.includes('tambak')) return 'perikanan';
+          if (s.includes('ternak') || s.includes('sapi') || s.includes('kambing') || s.includes('ayam') || s.includes('bebek') || s.includes('peternakan') || s.includes('unggas') || s.includes('domba')) return 'peternakan';
+          if (s.includes('kebun') || s.includes('karet') || s.includes('sawit') || s.includes('lateks') || s.includes('perkebunan') || s.includes('tbs')) return 'perkebunan';
+          if (s.includes('padi') || s.includes('tani') || s.includes('sawah') || s.includes('melon') || s.includes('semangka') || s.includes('pangan') || s.includes('pertanian') || s.includes('horti') || s.includes('palawija')) return 'pertanian';
+          return (cfg.sectors && cfg.sectors[s]) ? s : '';
+        }
+
         if (localSec && cfg.sectors && cfg.sectors[localSec]) {
           selectedSector = localSec;
-        } else if (dayNum >= 3 && dayNum <= 6) {
-          // Fallback ke Day 2 jika belum diset
-          let d2Sec = localStorage.getItem('fincestem_nft_sector_d2_' + cleanNisn);
-          if (!d2Sec) {
-            try {
-              const rawM2 = localStorage.getItem('fincestem_materi_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_materi_day2_' + cleanNisn);
-              if (rawM2) {
-                const p2 = JSON.parse(rawM2);
-                if (p2 && p2.selectedSector) d2Sec = p2.selectedSector;
+        } else {
+          const directMapped = mapToMateriSectorKey(localSec);
+          if (directMapped && cfg.sectors && cfg.sectors[directMapped]) {
+            selectedSector = directMapped;
+          } else if (dayNum >= 3 && dayNum <= 6) {
+            // Fallback ke Day 2 atau Day 1 jika belum diset
+            let d2Sec = localStorage.getItem('fincestem_nft_sector_d2_' + cleanNisn);
+            if (!d2Sec) {
+              try {
+                const rawM2 = localStorage.getItem('fincestem_materi_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_materi_day2_' + cleanNisn);
+                if (rawM2) {
+                  const p2 = JSON.parse(rawM2);
+                  if (p2 && p2.selectedSector) d2Sec = p2.selectedSector;
+                }
+              } catch(e) {}
+            }
+            if (!d2Sec) {
+              try {
+                const rawLkpd2 = localStorage.getItem('fincestem_lkpd_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day2_' + cleanNisn);
+                if (rawLkpd2) {
+                  const p2 = JSON.parse(rawLkpd2);
+                  if (p2 && (p2.sectorKey || p2.sector)) d2Sec = p2.sectorKey || p2.sector;
+                }
+              } catch(e) {}
+            }
+            if (!d2Sec) {
+              try {
+                const rawLkpd1 = localStorage.getItem('fincestem_lkpd_nft_day1_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day1_' + cleanNisn);
+                if (rawLkpd1) {
+                  const p1 = JSON.parse(rawLkpd1);
+                  if (p1 && (p1.businessType || p1.sectorKey || p1.sector)) d2Sec = p1.businessType || p1.sectorKey || p1.sector;
+                }
+              } catch(e) {}
+            }
+            if (d2Sec) {
+              const mapped = mapToMateriSectorKey(d2Sec);
+              if (mapped && cfg.sectors && cfg.sectors[mapped]) {
+                selectedSector = mapped;
               }
-            } catch(e) {}
-          }
-          if (d2Sec) {
-            let mapped = String(d2Sec).toLowerCase().trim();
-            if (mapped === 'pangan') mapped = 'pertanian';
-            if (mapped === 'jasa') mapped = 'industri';
-            if (mapped === 'keuangan') mapped = 'formal';
-            if (cfg.sectors && cfg.sectors[mapped]) {
-              selectedSector = mapped;
             }
           }
         }

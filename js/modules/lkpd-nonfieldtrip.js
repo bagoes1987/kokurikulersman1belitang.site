@@ -2967,48 +2967,87 @@
       }
     } catch(e) {}
 
+    function mapToD3SectorKey(raw) {
+      if (!raw) return '';
+      const s = String(raw).toLowerCase().trim();
+      if (s.includes('brilink') || s.includes('bank') || s.includes('koperasi') || s.includes('bumdes') || s.includes('keuangan') || s.includes('formal') || s.includes('bengkel') || s.includes('salon')) {
+        return 'formal';
+      }
+      if (s.includes('toko') || s.includes('pasar') || s.includes('sembako') || s.includes('dagang') || s.includes('perdagangan') || s.includes('grosir') || s.includes('saprotan') || s.includes('warung') || s.includes('niaga') || s.includes('kelontong')) {
+        return 'perdagangan';
+      }
+      if (s.includes('industri') || s.includes('rmu') || s.includes('giling') || s.includes('pabrik') || s.includes('tahu') || s.includes('tempe') || s.includes('kemplang') || s.includes('olah')) {
+        return 'industri';
+      }
+      if (s.includes('ikan') || s.includes('patin') || s.includes('lele') || s.includes('kolam') || s.includes('perikanan') || s.includes('tambak')) {
+        return 'perikanan';
+      }
+      if (s.includes('ternak') || s.includes('sapi') || s.includes('kambing') || s.includes('ayam') || s.includes('bebek') || s.includes('peternakan') || s.includes('unggas') || s.includes('domba')) {
+        return 'peternakan';
+      }
+      if (s.includes('kebun') || s.includes('karet') || s.includes('sawit') || s.includes('lateks') || s.includes('perkebunan') || s.includes('tbs')) {
+        return 'perkebunan';
+      }
+      if (s.includes('padi') || s.includes('tani') || s.includes('sawah') || s.includes('melon') || s.includes('semangka') || s.includes('pangan') || s.includes('pertanian') || s.includes('horti') || s.includes('palawija')) {
+        return 'pertanian';
+      }
+      return (NFT_DAY3_SECTOR_DATA && NFT_DAY3_SECTOR_DATA[s]) ? s : '';
+    }
+
     // Cek juga sektor yang tersimpan di memori khusus Day 3
     const localSec = localStorage.getItem('fincestem_nft_sector_d3_' + cleanNisn);
     if (localSec && NFT_DAY3_SECTOR_DATA[localSec]) {
       sectorFromMateri = localSec;
-    } else if (!sectorFromMateri || sectorFromMateri === 'pertanian') {
-      // Fallback: warisi pilihan sektor dari Day 2 jika belum diset di Day 3
-      let d2Sec = localStorage.getItem('fincestem_nft_sector_d2_' + cleanNisn);
-      if (!d2Sec) {
-        try {
-          const rawM2 = localStorage.getItem('fincestem_materi_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_materi_day2_' + cleanNisn);
-          if (rawM2) {
-            const p2 = JSON.parse(rawM2);
-            if (p2 && p2.selectedSector) d2Sec = p2.selectedSector;
-          }
-        } catch(e) {}
-      }
-      if (!d2Sec) {
-        try {
-          const rawLkpd2 = localStorage.getItem('fincestem_lkpd_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day2_' + cleanNisn);
-          if (rawLkpd2) {
-            const p2 = JSON.parse(rawLkpd2);
-            if (p2 && (p2.sectorKey || p2.sector)) d2Sec = p2.sectorKey || p2.sector;
-          }
-        } catch(e) {}
-      }
-      if (!d2Sec && window.currentStudentProgress && window.currentStudentProgress.task_map) {
-        const t2 = window.currentStudentProgress.task_map['2_lkpd'];
-        if (t2 && t2.content) {
-          let c = t2.content;
-          if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
-            try { c = JSON.parse(c); } catch(e) {}
-          }
-          if (c && (c.sectorKey || c.sector)) d2Sec = c.sectorKey || c.sector;
+    } else {
+      const mappedDirect = mapToD3SectorKey(localSec);
+      if (mappedDirect) {
+        sectorFromMateri = mappedDirect;
+      } else if (!sectorFromMateri || sectorFromMateri === 'pertanian') {
+        // Fallback: warisi pilihan sektor dari Day 2 jika belum diset di Day 3
+        let d2Sec = localStorage.getItem('fincestem_nft_sector_d2_' + cleanNisn);
+        if (!d2Sec) {
+          try {
+            const rawM2 = localStorage.getItem('fincestem_materi_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_materi_day2_' + cleanNisn);
+            if (rawM2) {
+              const p2 = JSON.parse(rawM2);
+              if (p2 && p2.selectedSector) d2Sec = p2.selectedSector;
+            }
+          } catch(e) {}
         }
-      }
-      if (d2Sec) {
-        let mapped = String(d2Sec).toLowerCase().trim();
-        if (mapped === 'pangan') mapped = 'pertanian';
-        if (mapped === 'jasa') mapped = 'industri';
-        if (mapped === 'keuangan') mapped = 'formal';
-        if (NFT_DAY3_SECTOR_DATA[mapped]) {
-          sectorFromMateri = mapped;
+        if (!d2Sec) {
+          try {
+            const rawLkpd2 = localStorage.getItem('fincestem_lkpd_nft_day2_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day2_' + cleanNisn);
+            if (rawLkpd2) {
+              const p2 = JSON.parse(rawLkpd2);
+              if (p2 && (p2.sectorKey || p2.sector)) d2Sec = p2.sectorKey || p2.sector;
+            }
+          } catch(e) {}
+        }
+        if (!d2Sec && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const t2 = window.currentStudentProgress.task_map['2_lkpd'];
+          if (t2 && t2.content) {
+            let c = t2.content;
+            if (typeof c === 'string' && (c.startsWith('{') || c.startsWith('['))) {
+              try { c = JSON.parse(c); } catch(e) {}
+            }
+            if (c && (c.sectorKey || c.sector)) d2Sec = c.sectorKey || c.sector;
+          }
+        }
+        // Fallback tambahan: cek Day 1 jika di Day 2 belum terdeteksi
+        if (!d2Sec) {
+          try {
+            const rawLkpd1 = localStorage.getItem('fincestem_lkpd_nft_day1_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day1_' + cleanNisn);
+            if (rawLkpd1) {
+              const p1 = JSON.parse(rawLkpd1);
+              if (p1 && (p1.businessType || p1.sectorKey || p1.sector)) d2Sec = p1.businessType || p1.sectorKey || p1.sector;
+            }
+          } catch(e) {}
+        }
+        if (d2Sec) {
+          const mapped = mapToD3SectorKey(d2Sec);
+          if (mapped && NFT_DAY3_SECTOR_DATA[mapped]) {
+            sectorFromMateri = mapped;
+          }
         }
       }
     }
