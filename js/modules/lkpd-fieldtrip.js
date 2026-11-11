@@ -877,6 +877,11 @@
       try {
         const rawAkpol = localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_ft_day2_' + cleanNisn);
         if (rawAkpol) savedAkpol = JSON.parse(rawAkpol);
+        const rawAkpolDraft = localStorage.getItem('fincestem_lkpd_ft_day2_akpol_draft_' + cleanNisn);
+        if (rawAkpolDraft) {
+          const dAkpol = JSON.parse(rawAkpolDraft);
+          savedAkpol = Object.assign({}, savedAkpol || {}, dAkpol);
+        }
       } catch (e) {}
 
       // Ambil data tersimpan untuk Sesi 2 (Lawang Sewu)
@@ -884,6 +889,11 @@
       try {
         const rawLawang = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn);
         if (rawLawang) savedLawang = JSON.parse(rawLawang);
+        const rawLawangDraft = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_draft_' + cleanNisn);
+        if (rawLawangDraft) {
+          const dLawang = JSON.parse(rawLawangDraft);
+          savedLawang = Object.assign({}, savedLawang || {}, dLawang);
+        }
       } catch (e) {}
 
       // Fallback progress server untuk Day 2 jika pindah HP
@@ -962,7 +972,7 @@
                 </span>
               </div>
               <span id="ftD2StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isLawangSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}">
-                ${isLawangSubmitted ? 'LKPD Lawang Sewu Terkirim' : 'Draft LKPD Lawang Sewu'}
+                ${isLawangSubmitted ? 'LKPD Lawang Sewu Terkirim Resmi' : 'Belum Dikirim (Draf)'}
               </span>
             </div>
 
@@ -1012,7 +1022,7 @@
                 </span>
               </div>
               <span id="ftD2StatusBadge" class="px-3 py-1 rounded-full text-xs font-bold ${isAkpolSubmitted ? 'bg-teal-100 text-teal-800' : 'bg-white/20 text-white'}">
-                ${isAkpolSubmitted ? 'LKPD AKPOL Terkirim' : 'Draft LKPD AKPOL'}
+                ${isAkpolSubmitted ? 'LKPD AKPOL Terkirim Resmi' : 'Belum Dikirim (Draf)'}
               </span>
             </div>
 
@@ -1058,7 +1068,22 @@
         <!-- KONTEN SESI 1: LKPD AKPOL (5 SOAL ESAI) -->
         <!-- ========================================== -->
         <div id="contentLkpdD2S1" class="flex flex-col gap-4">
-          ${!hasResumeAkpol ? `
+          ${isAkpolSubmitted ? `
+            <div class="p-4 sm:p-5 rounded-3xl bg-emerald-50 border-2 border-emerald-400 text-emerald-950 flex flex-col gap-2.5 shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">verified</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-black uppercase text-emerald-800 tracking-wider">Status: LKPD AKPOL Telah Terkirim Resmi ke Fasilitator</span>
+                  <h4 class="text-sm sm:text-base font-extrabold text-emerald-950">Jawaban Anda Sudah Tersimpan di Sistem</h4>
+                </div>
+              </div>
+              <p class="text-xs text-slate-700 leading-relaxed text-justify">
+                <strong>Ingin mengedit atau melengkapi jawaban?</strong> Jangan khawatir! Seluruh kolom jawaban esai di bawah <strong>TETAP BISA DIUBAH / DILENGKAPI</strong> kapan saja. Cukup ketik pembaruan jawaban Anda, lalu klik tombol <strong>"Perbarui Jawaban Resmi ke Fasilitator"</strong> di bagian bawah. Jawaban terbaru Anda akan langsung menimpa data lama di Fasilitator.
+              </p>
+            </div>
+          ` : (!hasResumeAkpol ? `
             <div class="p-4 sm:p-5 rounded-3xl bg-blue-500/10 border border-blue-300 text-blue-950 flex flex-col gap-2 shadow-2xs">
               <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-2xs">
@@ -1070,7 +1095,7 @@
                 </div>
               </div>
               <p class="text-xs text-slate-700 leading-relaxed">
-                Anda dapat langsung menuliskan jawaban esai AKPOL di bawah ini selama kunjungan berlangsung.
+                Anda dapat langsung menuliskan jawaban esai AKPOL di bawah ini selama kunjungan berlangsung. Ketikan otomatis tersimpan sebagai draf.
               </p>
               <div class="pt-0.5">
                 <a href="materi.html?day=2&sesi=1" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs transition-all">
@@ -1079,7 +1104,7 @@
                 </a>
               </div>
             </div>
-          ` : ''}
+          ` : '')}
 
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-blue-200/80 shadow-xs flex flex-col gap-4">
             <div class="flex items-center justify-between gap-3">
@@ -1100,7 +1125,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 1. Tuliskan rumusan Visi Akademi Kepolisian (AKPOL) yang menjadi cita-cita utama dalam pembentukan perwira Polri:
               </label>
-              <textarea id="d2AkpolQ1" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan rumusan visi AKPOL secara lengkap..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q1 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ1" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('akpol')" placeholder="Tuliskan rumusan visi AKPOL secara lengkap..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q1 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 2: Kepanjangan & Tanggal Pendaftaran AKPOL 2026 -->
@@ -1108,7 +1133,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 2. Apa kepanjangan dari AKPOL dan kapan tanggal Pendaftaran Online serta Verifikasi Penerimaan Taruna AKPOL Tahun 2026?
               </label>
-              <textarea id="d2AkpolQ2" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan kepanjangan dari AKPOL dan tanggal pendaftaran online serta verifikasi (contoh: Akademi Kepolisian, tanggal 9 Maret – 30 Maret 2026)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q2 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ2" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('akpol')" placeholder="Tuliskan kepanjangan dari AKPOL dan tanggal pendaftaran online serta verifikasi (contoh: Akademi Kepolisian, tanggal 9 Maret – 30 Maret 2026)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q2 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 3: Tingkatan Kepangkatan Taruna (Perkap 21/2010) -->
@@ -1116,7 +1141,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 3. Berdasarkan Peraturan Kapolri (Perkap) No. 21 Tahun 2010, sebutkan secara urut 4 tingkatan kepangkatan Taruna AKPOL dari tingkat I (awal masuk) sampai dengan tingkat IV (kelulusan):
               </label>
-              <textarea id="d2AkpolQ3" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan urutan pangkat: Bharatutar, Brigdatar, Brigtutar, Brigtar, serta pangkat saat dilantik kelulusan..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q3 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ3" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('akpol')" placeholder="Tuliskan urutan pangkat: Bharatutar, Brigdatar, Brigtutar, Brigtar, serta pangkat saat dilantik kelulusan..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q3 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 4: Nama Gubernur & Wagub AKPOL -->
@@ -1124,7 +1149,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 4. Sebutkan nama lengkap beserta pangkat dan gelar resmi dari Gubernur AKPOL dan Wakil Gubernur AKPOL yang saat ini memimpin Akademi Kepolisian:
               </label>
-              <textarea id="d2AkpolQ4" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan nama lengkap Gubernur dan Wagub beserta pangkat jenderal dan gelar..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q4 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ4" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('akpol')" placeholder="Tuliskan nama lengkap Gubernur dan Wagub beserta pangkat jenderal dan gelar..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q4 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 5: 5 Fasilitas Utama Kampus AKPOL -->
@@ -1132,45 +1157,47 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 5. Sebutkan dan jelaskan fungsi dari minimal 5 Fasilitas Utama yang terdapat di lingkungan Kampus Akademi Kepolisian (dari 9 fasilitas resmi web akpol.ac.id):
               </label>
-              <textarea id="d2AkpolQ5" rows="4" ${isReadOnly ? 'disabled' : ''} placeholder="Sebutkan minimal 5 fasilitas (contoh: Smart Classroom, Lab Bahasa, Lab Cyber Crime, Kolam Renang Standar Internasional, Gedung Catur Prasetya, dsb.) beserta fungsinya..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q5 || '') : ''}</textarea>
+              <textarea id="d2AkpolQ5" rows="4" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('akpol')" placeholder="Sebutkan minimal 5 fasilitas (contoh: Smart Classroom, Lab Bahasa, Lab Cyber Crime, Kolam Renang Standar Internasional, Gedung Catur Prasetya, dsb.) beserta fungsinya..." class="w-full p-3 rounded-xl border border-blue-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-blue-500/20 leading-relaxed font-medium">${savedAkpol ? (savedAkpol.q5 || '') : ''}</textarea>
             </div>
           </div>
 
-          <!-- TOMBOL SIMPAN LKPD AKPOL -->
-          <div class="p-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
-            <a href="materi.html?day=2&sesi=1" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all text-center">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Kembali ke Modul AKPOL</span>
-            </a>
-
-            <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+          <!-- TOMBOL AKSI LKPD AKPOL (DRAF & KIRIM RESMI) -->
+          <div class="p-4 sm:p-5 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 text-xs flex-wrap">
+              <span id="lblD2AkpolDraftStatus" class="text-slate-500 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-teal-600">cloud_done</span>
+                <span>${savedAkpol && savedAkpol.draftAt ? 'Draf tersimpan (' + savedAkpol.draftAt + ')' : (isAkpolSubmitted ? 'Jawaban telah tersimpan resmi' : 'Draf otomatis tersimpan saat Anda mengetik')}</span>
+              </span>
               ${isAkpolSubmitted ? `
-                <div class="px-3.5 py-2.5 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
-                  <span class="material-symbols-outlined text-teal-600 text-base">check_circle</span>
-                  <span>Jawaban AKPOL Tersimpan</span>
-                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold text-[11px] flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs">check_circle</span>
+                  <span>Telah Terkirim Resmi</span>
+                </span>
+              ` : ''}
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+              <a href="materi.html?day=2&sesi=1" class="w-full sm:w-auto px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all text-center">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
+                <span>Modul AKPOL</span>
+              </a>
+
+              <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
                 ${!isReadOnly ? `
-                  <button id="btnSaveLkpdAkpol" onclick="saveLkpdAkpol()" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                    <span class="material-symbols-outlined text-base">edit_note</span>
-                    <span>Perbarui Jawaban LKPD AKPOL</span>
+                  <button type="button" onclick="saveLkpdAkpol(false)" class="w-full sm:w-auto px-4 py-3.5 rounded-2xl border border-slate-300 hover:bg-slate-100 active:scale-95 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">save</span>
+                    <span>Simpan Draf Saja</span>
+                  </button>
+                  <button id="btnSaveLkpdAkpol" type="button" onclick="saveLkpdAkpol(true)" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl ${isAkpolSubmitted ? 'bg-emerald-600 hover:bg-emerald-700 ring-2 ring-emerald-400/40' : 'bg-blue-600 hover:bg-blue-700 ring-2 ring-blue-400/40'} active:scale-95 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-base">${isAkpolSubmitted ? 'published_with_changes' : 'send'}</span>
+                    <span>${isAkpolSubmitted ? 'Perbarui Jawaban Resmi ke Fasilitator' : 'Kirim Resmi ke Fasilitator &amp; Lanjut Foto'}</span>
                   </button>
                 ` : ''}
                 <a href="dokumentasi.html?day=2&sesi=1" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
                   <span class="material-symbols-outlined text-base">photo_camera</span>
                   <span>Foto Dokumentasi</span>
                 </a>
-              ` : `
-                ${!isReadOnly ? `
-                  <button id="btnSaveLkpdAkpol" onclick="saveLkpdAkpol()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                    <span class="material-symbols-outlined text-lg">save</span>
-                    <span>Simpan LKPD AKPOL &amp; Lanjut ke Foto</span>
-                  </button>
-                ` : ''}
-                <a href="dokumentasi.html?day=2&sesi=1" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all">
-                  <span class="material-symbols-outlined text-base">photo_camera</span>
-                  <span>Dokumentasi</span>
-                </a>
-              `}
+              </div>
             </div>
           </div>
         </div>
@@ -1179,7 +1206,22 @@
         <!-- KONTEN SESI 2: LKPD LAWANG SEWU (5 SOAL ESAI) -->
         <!-- ========================================== -->
         <div id="contentLkpdD2S2" class="flex flex-col gap-4">
-          ${!hasFotoAkpol || !hasResumeLawang ? `
+          ${isLawangSubmitted ? `
+            <div class="p-4 sm:p-5 rounded-3xl bg-amber-50 border-2 border-amber-400 text-amber-950 flex flex-col gap-2.5 shadow-sm">
+              <div class="flex items-center gap-2.5">
+                <div class="w-10 h-10 rounded-2xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-xs">
+                  <span class="material-symbols-outlined text-2xl">verified</span>
+                </div>
+                <div class="flex flex-col">
+                  <span class="text-[11px] font-black uppercase text-amber-800 tracking-wider">Status: LKPD Lawang Sewu Telah Terkirim Resmi ke Fasilitator</span>
+                  <h4 class="text-sm sm:text-base font-extrabold text-amber-950">Jawaban Anda Sudah Tersimpan di Sistem</h4>
+                </div>
+              </div>
+              <p class="text-xs text-slate-700 leading-relaxed text-justify">
+                <strong>Ingin mengedit atau melengkapi jawaban?</strong> Jangan khawatir! Seluruh kolom jawaban esai di bawah <strong>TETAP BISA DIUBAH / DILENGKAPI</strong> kapan saja. Cukup ketik pembaruan jawaban Anda, lalu klik tombol <strong>"Perbarui Jawaban Resmi ke Fasilitator"</strong> di bagian bawah. Jawaban terbaru Anda akan langsung menimpa data lama di Fasilitator.
+              </p>
+            </div>
+          ` : (!hasFotoAkpol || !hasResumeLawang ? `
             <div class="p-4 sm:p-5 rounded-3xl bg-amber-500/10 border border-amber-300 text-amber-950 flex flex-col gap-2.5 shadow-2xs">
               <div class="flex items-center gap-2.5">
                 <div class="w-9 h-9 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
@@ -1191,7 +1233,7 @@
                 </div>
               </div>
               <p class="text-xs text-slate-700 leading-relaxed">
-                Anda dapat langsung menulis dan menyimpan lembar kerja Lawang Sewu di bawah ini di lokasi cagar budaya. Jangan lupa untuk melengkapi dokumentasi foto AKPOL dan membaca modul Lawang Sewu saat senggang.
+                Anda dapat langsung menulis dan menyimpan lembar kerja Lawang Sewu di bawah ini di lokasi cagar budaya. Ketikan otomatis tersimpan sebagai draf.
               </p>
               <div class="flex items-center gap-2 pt-1 flex-wrap">
                 <button type="button" onclick="switchD2LkpdSession(1)" class="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs flex items-center gap-1.5 transition-all">
@@ -1208,7 +1250,7 @@
                 </a>
               </div>
             </div>
-          ` : ''}
+          ` : '')}
 
           <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-amber-200/80 shadow-xs flex flex-col gap-4">
             <div class="flex items-center justify-between gap-3">
@@ -1229,7 +1271,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 1. Apa kepanjangan dari NISM, dan apa fungsi utama gedung Lawang Sewu saat pertama kali dibangun pada masa Hindia Belanda?
               </label>
-              <textarea id="d2LawangQ1" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan kepanjangan NISM dan perannya sebagai kantor pusat perkeretaapian..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q1 || '') : ''}</textarea>
+              <textarea id="d2LawangQ1" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('lawang')" placeholder="Tuliskan kepanjangan NISM dan perannya sebagai kantor pusat perkeretaapian..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q1 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 2: Etimologi & Fakta Jumlah Pintu -->
@@ -1237,7 +1279,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 2. Mengapa masyarakat Semarang menyebut gedung ini "Lawang Sewu" (Seribu Pintu), dan berapa jumlah daun pintu fisik yang sebenarnya berdasarkan data sejarah arsitektur?
               </label>
-              <textarea id="d2LawangQ2" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Jelaskan alasan sebutan Lawang Sewu dan jumlah fisik pintu sebenarnya (928 bidang pintu)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q2 || '') : ''}</textarea>
+              <textarea id="d2LawangQ2" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('lawang')" placeholder="Jelaskan alasan sebutan Lawang Sewu dan jumlah fisik pintu sebenarnya (928 bidang pintu)..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q2 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 3: Arsitek & Gaya Nieuwe Indische Bouwstijl -->
@@ -1245,7 +1287,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 3. Sebutkan nama arsitek perancang gedung Lawang Sewu serta gaya arsitektur khas yang diterapkannya:
               </label>
-              <textarea id="d2LawangQ3" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Tuliskan arsitek (Prof. Jacob F. Klinkhamer & B.J. Ouëndag) serta gaya Nieuwe Indische Bouwstijl..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q3 || '') : ''}</textarea>
+              <textarea id="d2LawangQ3" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('lawang')" placeholder="Tuliskan arsitek (Prof. Jacob F. Klinkhamer & B.J. Ouëndag) serta gaya Nieuwe Indische Bouwstijl..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q3 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 4: STEM Fisika Bangunan Tropis -->
@@ -1253,7 +1295,7 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 4. Bagaimana para perancang Lawang Sewu menyiasati iklim panas Kota Semarang agar gedung tetap sejuk alami tanpa AC? Jelaskan minimal 2 rekayasa fisik bangunannya:
               </label>
-              <textarea id="d2LawangQ4" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Jelaskan prinsip ventilasi silang, plafon tinggi > 4 meter, atau ruang bawah tanah penampung air..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q4 || '') : ''}</textarea>
+              <textarea id="d2LawangQ4" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('lawang')" placeholder="Jelaskan prinsip ventilasi silang, plafon tinggi > 4 meter, atau ruang bawah tanah penampung air..." class="w-full p-3 rounded-xl border border-slate-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q4 || '') : ''}</textarea>
             </div>
 
             <!-- Soal 5: Heroisme Pertempuran Lima Hari AMKA -->
@@ -1261,45 +1303,47 @@
               <label class="font-extrabold text-xs sm:text-sm text-slate-900 leading-snug">
                 5. Jelaskan peristiwa bersejarah yang pernah terjadi di Lawang Sewu pada bulan Oktober 1945 dan organisasi pemuda apa yang berjuang mempertahankan gedung tersebut:
               </label>
-              <textarea id="d2LawangQ5" rows="3" ${isReadOnly ? 'disabled' : ''} placeholder="Jelaskan Pertempuran Lima Hari di Semarang melawan Kidō Butai dan perjuangan pemuda AMKA..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q5 || '') : ''}</textarea>
+              <textarea id="d2LawangQ5" rows="3" ${isReadOnly ? 'disabled' : ''} oninput="window.onFieldTripD2Input && window.onFieldTripD2Input('lawang')" placeholder="Jelaskan Pertempuran Lima Hari di Semarang melawan Kidō Butai dan perjuangan pemuda AMKA..." class="w-full p-3 rounded-xl border border-amber-300 bg-white text-xs sm:text-sm outline-none focus:ring-2 focus:ring-amber-500/20 leading-relaxed font-medium">${savedLawang ? (savedLawang.q5 || '') : ''}</textarea>
             </div>
           </div>
 
-          <!-- TOMBOL SIMPAN LKPD LAWANG SEWU -->
-          <div class="p-4 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-3">
-            <a href="materi.html?day=2&sesi=2" class="w-full sm:w-auto px-5 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all text-center">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Kembali ke Modul Lawang Sewu</span>
-            </a>
-
-            <div class="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+          <!-- TOMBOL AKSI LKPD LAWANG SEWU (DRAF & KIRIM RESMI) -->
+          <div class="p-4 sm:p-5 rounded-3xl bg-surface-container-lowest border border-outline-variant/30 shadow-sm flex flex-col gap-3">
+            <div class="flex items-center justify-between gap-2 text-xs flex-wrap">
+              <span id="lblD2LawangDraftStatus" class="text-slate-500 font-semibold flex items-center gap-1">
+                <span class="material-symbols-outlined text-sm text-teal-600">cloud_done</span>
+                <span>${savedLawang && savedLawang.draftAt ? 'Draf tersimpan (' + savedLawang.draftAt + ')' : (isLawangSubmitted ? 'Jawaban telah tersimpan resmi' : 'Draf otomatis tersimpan saat Anda mengetik')}</span>
+              </span>
               ${isLawangSubmitted ? `
-                <div class="px-3.5 py-2.5 rounded-2xl bg-teal-50 border border-teal-300 text-teal-950 font-bold text-xs sm:text-sm flex items-center gap-2">
-                  <span class="material-symbols-outlined text-teal-600 text-base">check_circle</span>
-                  <span>Jawaban Lawang Sewu Tersimpan</span>
-                </div>
+                <span class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold text-[11px] flex items-center gap-1">
+                  <span class="material-symbols-outlined text-xs">check_circle</span>
+                  <span>Telah Terkirim Resmi</span>
+                </span>
+              ` : ''}
+            </div>
+
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-2.5 pt-2 border-t border-slate-100">
+              <a href="materi.html?day=2&sesi=2" class="w-full sm:w-auto px-4 py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all text-center">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
+                <span>Modul Lawang Sewu</span>
+              </a>
+
+              <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
                 ${!isReadOnly ? `
-                  <button id="btnSaveLkpdLawang" onclick="saveLkpdLawang()" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                    <span class="material-symbols-outlined text-base">edit_note</span>
-                    <span>Perbarui Jawaban LKPD Lawang Sewu</span>
+                  <button type="button" onclick="saveLkpdLawang(false)" class="w-full sm:w-auto px-4 py-3.5 rounded-2xl border border-slate-300 hover:bg-slate-100 active:scale-95 text-slate-700 font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all cursor-pointer">
+                    <span class="material-symbols-outlined text-base">save</span>
+                    <span>Simpan Draf Saja</span>
+                  </button>
+                  <button id="btnSaveLkpdLawang" type="button" onclick="saveLkpdLawang(true)" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl ${isLawangSubmitted ? 'bg-emerald-600 hover:bg-emerald-700 ring-2 ring-emerald-400/40' : 'bg-amber-600 hover:bg-amber-700 ring-2 ring-amber-400/40'} active:scale-95 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                    <span class="material-symbols-outlined text-base">${isLawangSubmitted ? 'published_with_changes' : 'send'}</span>
+                    <span>${isLawangSubmitted ? 'Perbarui Jawaban Resmi ke Fasilitator' : 'Kirim Resmi ke Fasilitator &amp; Lanjut Foto'}</span>
                   </button>
                 ` : ''}
                 <a href="dokumentasi.html?day=2&sesi=2" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
                   <span class="material-symbols-outlined text-base">photo_camera</span>
                   <span>Foto Dokumentasi</span>
                 </a>
-              ` : `
-                ${!isReadOnly ? `
-                  <button id="btnSaveLkpdLawang" onclick="saveLkpdLawang()" class="w-full sm:w-auto px-7 py-3.5 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
-                    <span class="material-symbols-outlined text-lg">save</span>
-                    <span>Simpan LKPD Lawang Sewu &amp; Lanjut ke Foto</span>
-                  </button>
-                ` : ''}
-                <a href="dokumentasi.html?day=2&sesi=2" class="w-full sm:w-auto px-5 py-3.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 transition-all">
-                  <span class="material-symbols-outlined text-base">photo_camera</span>
-                  <span>Dokumentasi</span>
-                </a>
-              `}
+              </div>
             </div>
           </div>
         </div>
@@ -1349,7 +1393,19 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function saveLkpdAkpol() {
+    let d2FtDraftTimer = null;
+    window.onFieldTripD2Input = function(sesi) {
+      clearTimeout(d2FtDraftTimer);
+      d2FtDraftTimer = setTimeout(() => {
+        if (sesi === 'akpol') {
+          saveLkpdAkpol(false, true);
+        } else {
+          saveLkpdLawang(false, true);
+        }
+      }, 700);
+    };
+
+    function saveLkpdAkpol(isSubmit = true, isSilent = false) {
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const cleanNisn = String(studentNisn).trim();
       const q1 = (document.getElementById('d2AkpolQ1') ? document.getElementById('d2AkpolQ1').value : '').trim();
@@ -1358,8 +1414,48 @@
       const q4 = (document.getElementById('d2AkpolQ4') ? document.getElementById('d2AkpolQ4').value : '').trim();
       const q5 = (document.getElementById('d2AkpolQ5') ? document.getElementById('d2AkpolQ5').value : '').trim();
 
+      // JIKA HANYA SIMPAN DRAF LOKAL (isSubmit === false)
+      if (!isSubmit) {
+        const draftPayload = {
+          day: 2,
+          session: 'akpol',
+          q1: q1,
+          q2: q2,
+          q3: q3,
+          q4: q4,
+          q5: q5,
+          draftAt: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
+        };
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day2_akpol_draft_' + cleanNisn, JSON.stringify(draftPayload));
+          const curSaved = localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + cleanNisn);
+          if (curSaved) {
+            try {
+              const p = JSON.parse(curSaved);
+              if (p && p.submitted) {
+                p.q1 = q1; p.q2 = q2; p.q3 = q3; p.q4 = q4; p.q5 = q5;
+                p.draftAt = draftPayload.draftAt;
+                localStorage.setItem('fincestem_lkpd_ft_day2_akpol_' + cleanNisn, JSON.stringify(p));
+                localStorage.setItem('fincestem_lkpd_ft_day2_' + cleanNisn, JSON.stringify(p));
+              }
+            } catch(e) {}
+          }
+        } catch (e) {}
+
+        const statusEl = document.getElementById('lblD2AkpolDraftStatus');
+        if (statusEl) {
+          statusEl.innerHTML = `<span class="material-symbols-outlined text-sm text-teal-600">cloud_done</span><span>Draf tersimpan di HP (pk ${draftPayload.draftAt})</span>`;
+        }
+
+        if (!isSilent && window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+          FincestemCore.ui.toast('Draf LKPD AKPOL berhasil disimpan di perangkat Anda! (Belum diserahkan ke Fasilitator)', 'info');
+        }
+        return;
+      }
+
+      // SUBMIT RESMI KE FASILITATOR (isSubmit === true)
       if (!q1 || !q2 || !q3 || !q4 || !q5) {
-        FincestemCore.ui.toast('Harap lengkapi seluruh 5 butir soal esai LKPD AKPOL sebelum menyimpan!', 'warning');
+        FincestemCore.ui.toast('Harap lengkapi seluruh 5 butir soal esai LKPD AKPOL sebelum mengirim ke Fasilitator!', 'warning');
         return;
       }
 
@@ -1377,7 +1473,7 @@
 
       const btn = document.getElementById('btnSaveLkpdAkpol');
       if (btn) {
-        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan LKPD AKPOL...</span>';
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Mengirim ke Fasilitator...</span>';
         btn.classList.add('pointer-events-none', 'opacity-80');
       }
 
@@ -1385,15 +1481,16 @@
         try {
           localStorage.setItem('fincestem_lkpd_ft_day2_akpol_' + cleanNisn, JSON.stringify(payload));
           localStorage.setItem('fincestem_lkpd_ft_day2_' + cleanNisn, JSON.stringify(payload));
+          localStorage.removeItem('fincestem_lkpd_ft_day2_akpol_draft_' + cleanNisn);
         } catch (e) {}
 
         if (FincestemCore.progress && cleanNisn) {
           FincestemCore.progress.submitTask(cleanNisn, 2, 'lkpd', payload);
         }
 
-        FincestemCore.ui.toast('LKPD AKPOL berhasil disimpan! Silakan lanjut mengunggah foto geotag AKPOL.', 'success');
+        FincestemCore.ui.toast('LKPD AKPOL berhasil dikirim ke Fasilitator! Silakan lanjut mengunggah foto geotag AKPOL.', 'success');
         if (btn) {
-          btn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>Perbarui Jawaban LKPD AKPOL</span>';
+          btn.innerHTML = '<span class="material-symbols-outlined text-base">published_with_changes</span><span>Perbarui Jawaban Resmi ke Fasilitator</span>';
           btn.classList.remove('pointer-events-none', 'opacity-80');
         }
 
@@ -1409,8 +1506,8 @@
         if (modal) {
           if (iconBox) iconBox.className = 'w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center shrink-0 shadow-md';
           if (sub) { sub.textContent = 'Sesi 1 Tuntas'; sub.className = 'text-xs font-black uppercase text-blue-700 tracking-wider'; }
-          if (tit) tit.textContent = 'LKPD AKPOL Berhasil Disimpan!';
-          if (desc) desc.textContent = 'Kelima jawaban esai Anda telah tersimpan di server. Lanjutkan mengambil dan mengunggah Foto Dokumentasi Geotag AKPOL.';
+          if (tit) tit.textContent = 'LKPD AKPOL Berhasil Dikirim ke Fasilitator!';
+          if (desc) desc.textContent = 'Kelima jawaban esai Anda telah tersimpan resmi di sistem. Jika nanti perlu revisi, Anda tetap bisa mengedit dan memperbaruinya kapan saja.';
           if (nextBtn) {
             nextBtn.href = 'dokumentasi.html?day=2&sesi=1';
             nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center';
@@ -1425,7 +1522,7 @@
       }, 400);
     }
 
-    function saveLkpdLawang() {
+    function saveLkpdLawang(isSubmit = true, isSilent = false) {
       const studentNisn = activeUser.nisn || activeUser.identifier || '-';
       const cleanNisn = String(studentNisn).trim();
       const q1 = (document.getElementById('d2LawangQ1') ? document.getElementById('d2LawangQ1').value : '').trim();
@@ -1434,8 +1531,47 @@
       const q4 = (document.getElementById('d2LawangQ4') ? document.getElementById('d2LawangQ4').value : '').trim();
       const q5 = (document.getElementById('d2LawangQ5') ? document.getElementById('d2LawangQ5').value : '').trim();
 
+      // JIKA HANYA SIMPAN DRAF LOKAL (isSubmit === false)
+      if (!isSubmit) {
+        const draftPayload = {
+          day: 2,
+          session: 'lawang_sewu',
+          q1: q1,
+          q2: q2,
+          q3: q3,
+          q4: q4,
+          q5: q5,
+          draftAt: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB'
+        };
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day2_lawang_draft_' + cleanNisn, JSON.stringify(draftPayload));
+          const curSaved = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn);
+          if (curSaved) {
+            try {
+              const p = JSON.parse(curSaved);
+              if (p && p.submitted) {
+                p.q1 = q1; p.q2 = q2; p.q3 = q3; p.q4 = q4; p.q5 = q5;
+                p.draftAt = draftPayload.draftAt;
+                localStorage.setItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn, JSON.stringify(p));
+              }
+            } catch(e) {}
+          }
+        } catch (e) {}
+
+        const statusEl = document.getElementById('lblD2LawangDraftStatus');
+        if (statusEl) {
+          statusEl.innerHTML = `<span class="material-symbols-outlined text-sm text-teal-600">cloud_done</span><span>Draf tersimpan di HP (pk ${draftPayload.draftAt})</span>`;
+        }
+
+        if (!isSilent && window.FincestemCore && FincestemCore.ui && FincestemCore.ui.toast) {
+          FincestemCore.ui.toast('Draf LKPD Lawang Sewu berhasil disimpan di perangkat Anda! (Belum diserahkan ke Fasilitator)', 'info');
+        }
+        return;
+      }
+
+      // SUBMIT RESMI KE FASILITATOR (isSubmit === true)
       if (!q1 || !q2 || !q3 || !q4 || !q5) {
-        FincestemCore.ui.toast('Harap lengkapi seluruh 5 butir soal esai LKPD Lawang Sewu sebelum menyimpan!', 'warning');
+        FincestemCore.ui.toast('Harap lengkapi seluruh 5 butir soal esai LKPD Lawang Sewu sebelum mengirim ke Fasilitator!', 'warning');
         return;
       }
 
@@ -1453,7 +1589,7 @@
 
       const btn = document.getElementById('btnSaveLkpdLawang');
       if (btn) {
-        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Menyimpan LKPD Lawang Sewu...</span>';
+        btn.innerHTML = '<span class="material-symbols-outlined text-lg animate-spin">refresh</span><span>Mengirim ke Fasilitator...</span>';
         btn.classList.add('pointer-events-none', 'opacity-80');
       }
 
@@ -1461,6 +1597,7 @@
         try {
           localStorage.setItem('fincestem_lkpd_ft_day2_lawang_' + cleanNisn, JSON.stringify(payload));
           localStorage.setItem('fincestem_lkpd_lawang_saved_' + cleanNisn, 'true');
+          localStorage.removeItem('fincestem_lkpd_ft_day2_lawang_draft_' + cleanNisn);
         } catch (e) {}
 
         if (FincestemCore.progress && cleanNisn) {
@@ -1473,9 +1610,9 @@
           } catch (e) {}
         }
 
-        FincestemCore.ui.toast('LKPD Lawang Sewu berhasil disimpan! Silakan lanjut mengunggah foto geotag Lawang Sewu.', 'success');
+        FincestemCore.ui.toast('LKPD Lawang Sewu berhasil dikirim ke Fasilitator! Silakan lanjut mengunggah foto geotag Lawang Sewu.', 'success');
         if (btn) {
-          btn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>Perbarui Jawaban LKPD Lawang Sewu</span>';
+          btn.innerHTML = '<span class="material-symbols-outlined text-base">published_with_changes</span><span>Perbarui Jawaban Resmi ke Fasilitator</span>';
           btn.classList.remove('pointer-events-none', 'opacity-80');
         }
 
@@ -1491,8 +1628,8 @@
         if (modal) {
           if (iconBox) iconBox.className = 'w-12 h-12 rounded-2xl bg-amber-600 text-white flex items-center justify-center shrink-0 shadow-md';
           if (sub) { sub.textContent = 'Sesi 2 Tuntas'; sub.className = 'text-xs font-black uppercase text-amber-700 tracking-wider'; }
-          if (tit) tit.textContent = 'LKPD Lawang Sewu Berhasil Disimpan!';
-          if (desc) desc.textContent = 'Seluruh jawaban esai Lawang Sewu telah tersimpan. Langkah berikutnya adalah mengambil foto geotag di fasad Lawang Sewu.';
+          if (tit) tit.textContent = 'LKPD Lawang Sewu Berhasil Dikirim ke Fasilitator!';
+          if (desc) desc.textContent = 'Seluruh jawaban esai Lawang Sewu telah tersimpan resmi. Jika nanti perlu revisi, Anda tetap bisa mengedit dan memperbaruinya kapan saja.';
           if (nextBtn) {
             nextBtn.href = 'dokumentasi.html?day=2&sesi=2';
             nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all text-center';
@@ -1515,6 +1652,10 @@
       const inner = modal.querySelector('div');
       if (inner) { inner.classList.remove('scale-100'); inner.classList.add('scale-95'); }
     }
+    window.saveLkpdAkpol = saveLkpdAkpol;
+    window.saveLkpdLawang = saveLkpdLawang;
+    window.switchD2LkpdSession = switchD2LkpdSession;
+    window.closeD2LkpdSuccessModal = closeD2LkpdSuccessModal;
 
 
     // ==========================================
