@@ -4348,7 +4348,7 @@
 
     // Deteksi sektor pilihan siswa (bisa dari Day 5/6, atau warisan dari Day 4/3)
     let selectedSector = 'pertanian';
-    const candidateSec = (savedOfficial && savedOfficial.selectedSector) ||
+    let candidateSec = (savedOfficial && savedOfficial.selectedSector) ||
                          (draft && draft.selectedSector) ||
                          localStorage.getItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn) ||
                          localStorage.getItem('fincestem_nft_sector_d5_' + cleanNisn) ||
