@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lembar Penjelasan Artefak AI & Bukti Inovasi Digital - Smart School 2026</title>
+  <link rel="icon" type="image/png" href="LOGO FICESTEM2026.png">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 15mm 18mm 15mm;
+    }
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+      color: #1e293b;
+      background: #f8fafc;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.5;
+    }
+    .paper {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 36px 40px;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+    }
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .paper {
+        border: none;
+        box-shadow: none;
+        padding: 0;
+        max-width: 100%;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+    .header {
+      border-bottom: 3px double #006a61;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .header img {
+      width: 68px;
+      height: 68px;
+      object-fit: contain;
+    }
+    .header-text {
+      flex: 1;
+      text-align: center;
+    }
+    .header-text h3 {
+      margin: 0;
+      font-size: 11pt;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #475569;
+      text-transform: uppercase;
+    }
+    .header-text h2 {
+      margin: 2px 0;
+      font-size: 14pt;
+      font-weight: 800;
+      color: #00236f;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .header-text p {
+      margin: 0;
+      font-size: 8.5pt;
+      color: #64748b;
+    }
+    .title-box {
+      background: linear-gradient(135deg, #00236f 0%, #006a61 100%);
+      color: #ffffff;
+      padding: 14px 20px;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 22px;
+    }
+    .title-box h1 {
+      margin: 0;
+      font-size: 13pt;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+    .title-box p {
+      margin: 4px 0 0 0;
+      font-size: 9.5pt;
+      opacity: 0.95;
+    }
+    .section-title {
+      font-size: 10.5pt;
+      font-weight: 800;
+      color: #00236f;
+      text-transform: uppercase;
+      border-left: 4px solid #006a61;
+      padding-left: 8px;
+      margin: 18px 0 10px 0;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    table.info-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 9pt;
+      margin-bottom: 14px;
+    }
+    table.info-table td {
+      padding: 6px 8px;
+      vertical-align: top;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    table.info-table td.label {
+      width: 28%;
+      font-weight: 700;
+      color: #334155;
+    }
+    table.info-table td.colon {
+      width: 2%;
+      font-weight: 700;
+    }
+    table.info-table td.val {
+      width: 70%;
+      color: #0f172a;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 8pt;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-primary { background: #e0e7ff; color: #3730a3; }
+    .badge-teal { background: #ccfbf1; color: #115e59; }
+    .badge-amber { background: #fef3c7; color: #92400e; }
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .feature-card {
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: #f8fafc;
+      font-size: 8.5pt;
+    }
+    .feature-card h4 {
+      margin: 0 0 4px 0;
+      font-size: 9.5pt;
+      font-weight: 800;
+      color: #00236f;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .feature-card p {
+      margin: 0;
+      color: #475569;
+      line-height: 1.4;
+    }
+    .link-box {
+      background: #eff6ff;
+      border: 1px dashed #3b82f6;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin: 12px 0;
+      font-size: 8.5pt;
+    }
+    .link-box a {
+      color: #1d4ed8;
+      font-weight: 700;
+      text-decoration: underline;
+    }
+    .stat-bar {
+      display: flex;
+      gap: 10px;
+      margin: 14px 0;
+    }
+    .stat-item {
+      flex: 1;
+      background: #f1f5f9;
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+      border-top: 3px solid #006a61;
+    }
+    .stat-number {
+      font-size: 14pt;
+      font-weight: 800;
+      color: #00236f;
+      display: block;
+    }
+    .stat-label {
+      font-size: 7.5pt;
+      font-weight: 600;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+    .signature {
+      margin-top: 26px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 9pt;
+      page-break-inside: avoid;
+    }
+    .sig-col {
+      text-align: center;
+      width: 220px;
+    }
+    .btn-print {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #006a61;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 9pt;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      margin-bottom: 16px;
+    }
+    .btn-print:hover {
+      background: #004f48;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="no-print" style="max-width: 800px; margin: 0 auto 10px auto; text-align: right;">
+    <button class="btn-print" onclick="window.print()">
+      🖨️ Cetak / Simpan sebagai PDF (A4)
+    </button>
+  </div>
+
+  <div class="paper">
+    <!-- KOP RESMI -->
+    <div class="header">
+      <img src="LOGO FICESTEM2026.png" alt="Logo FINCESTEM">
+      <div class="header-text">
+        <h3>Pemerintah Provinsi Sumatera Selatan • Dinas Pendidikan</h3>
+        <h2>SMA NEGERI 1 BELITANG</h2>
+        <p>Jl. Jenderal Sudirman No. 01, Gumawang, Kec. Belitang, Kab. OKU Timur, Sumatera Selatan 32382</p>
+        <p>Laman: kokurikulersman1belitang.site • Surel: sman1belitang@yahoo.co.id</p>
+      </div>
+    </div>
+
+    <!-- JUDUL FORMULIR PENGANTAR -->
+    <div class="title-box">
+      <h1>LEMBAR PENGANTAR BUKTI IMPLEMENTASI & ARTEFAK AI</h1>
+      <p>Program Inovasi Pembelajaran Digital & Pembinaan Kokurikuler "Smart School 2026"</p>
+    </div>
+
+    <!-- BAGIAN 1: IDENTITAS INOVASI -->
+    <div class="section-title">1. Identitas Program Inovasi</div>
+    <table class="info-table">
+      <tr>
+        <td class="label">Nama Inovasi / Aplikasi</td>
+        <td class="colon">:</td>
+        <td class="val"><strong>APP FINCESTEM 2026</strong> (Financial, Culture, Exploration, STEM)</td>
+      </tr>
+      <tr>
+        <td class="label">Satuan Pendidikan</td>
+        <td class="colon">:</td>
+        <td class="val">SMA Negeri 1 Belitang (Kabupaten Ogan Komering Ulu Timur)</td>
+      </tr>
+      <tr>
+        <td class="label">Bidang Inovasi</td>
+        <td class="colon">:</td>
+        <td class="val"><span class="badge badge-primary">LMS Kokurikuler</span> <span class="badge badge-teal">Smart Assessment</span> <span class="badge badge-amber">AI-Powered Facilitator</span></td>
+      </tr>
+      <tr>
+        <td class="label">Target & Sasaran Pengguna</td>
+        <td class="colon">:</td>
+        <td class="val">1.165 Peserta Didik (Kelas X) & 40+ Guru Fasilitator / Pembina</td>
+      </tr>
+      <tr>
+        <td class="label">Jalur Pembelajaran</td>
+        <td class="colon">:</td>
+        <td class="val">Dual-Track: <strong>Field Trip</strong> (Jawa–Bromo) & <strong>Non-Field Trip</strong> (Riset Mandiri 7 Sektor OKU Timur)</td>
+      </tr>
+    </table>
+
+    <!-- STATISTIK IMPLEMENTASI -->
+    <div class="stat-bar">
+      <div class="stat-item">
+        <span class="stat-number">1.165</span>
+        <span class="stat-label">Siswa Terdaftar Aktif</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">7 Sektor</span>
+        <span class="stat-label">Riset Lokal OKU Timur</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">100%</span>
+        <span class="stat-label">Real-Time Geotag & CBT</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number">4 Pilar</span>
+        <span class="stat-label">Financial, Culture, Exp, STEM</span>
+      </div>
+    </div>
+
+    <!-- BAGIAN 2: TAUTAN AKSES RESMI & KREDENSIAL TIM PENILAI -->
+    <div class="section-title">2. Tautan Aktif & Akses Tim Penilai (Live Demo)</div>
+    <div class="link-box">
+      <strong>🌐 Tautan Website Resmi (PWA Aktif):</strong><br>
+      <a href="https://kokurikulersman1belitang.site" target="_blank">https://kokurikulersman1belitang.site</a><br><br>
+      <strong>💻 Repositori Kode Sumber (GitHub Orisinal):</strong><br>
+      <a href="https://github.com/bagoes1987/kokurikulersman1belitang.site" target="_blank">https://github.com/bagoes1987/kokurikulersman1belitang.site</a>
+    </div>
+
+    <table class="info-table">
+      <thead>
+        <tr style="background:#f1f5f9; text-align:left;">
+          <th style="padding:6px 8px; font-size:8.5pt;">Peran Akun (Role)</th>
+          <th style="padding:6px 8px; font-size:8.5pt;">ID / NISN Pengujian</th>
+          <th style="padding:6px 8px; font-size:8.5pt;">Akses Halaman & Keterangan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Siswa (Field Trip)</strong></td>
+          <td><code>0113393520</code> (Gebrina) / <code>0093091268</code> (Rezha)</td>
+          <td>Login Siswa &rarr; Dashboard Field Trip (7 Hari Ekspedisi Jawa-Bromo)</td>
+        </tr>
+        <tr>
+          <td><strong>Siswa (Non-Field Trip)</strong></td>
+          <td><code>0113085435</code> (Ahdan Agantha)</td>
+          <td>Login Siswa &rarr; Dashboard Riset 7 Sektor Mandiri OKU Timur</td>
+        </tr>
+        <tr>
+          <td><strong>Guru Fasilitator</strong></td>
+          <td>Akses Menu Guru / Portal Fasilitator</td>
+          <td><code>guru/fasilitator.html</code> (Smart Grading & Validasi Geotag)</td>
+        </tr>
+        <tr>
+          <td><strong>Koordinator / Pimpinan</strong></td>
+          <td>Akses Portal Koordinator</td>
+          <td><code>guru/koordinator.html</code> (Monitoring Progres Real-Time 1.165 Siswa)</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- BAGIAN 3: FITUR CERDAS & ARTEFAK AI YANG DIUJI -->
+    <div class="section-title">3. Deskripsi Artefak AI & Fitur Cerdas Aplikasi</div>
+    <div class="card-grid">
+      <div class="feature-card">
+        <h4>🤖 1. Smart Geotagging & Fraud Detection</h4>
+        <p>Validasi live koordinat GPS radius wilayah Kabupaten OKU Timur (siswa non-field trip) serta deteksi penalti otomatis apabila foto diunggah via galeri tanpa stempel geotag kamera live.</p>
+      </div>
+      <div class="feature-card">
+        <h4>⚡ 2. AI Smart Grading & Auto-Recommendation</h4>
+        <p>Asistensi guru fasilitator berupa kalkulasi otomatis pembobotan 4 pilar (STEM, Exploration, Culture, Financial), auto-predikat (Mahir, Cakap, Berkembang), dan saran umpan balik berbasis ketepatan waktu pengumpulan.</p>
+      </div>
+      <div class="feature-card">
+        <h4>🛡️ 3. Exam Shield (Anti-Screenshot & Fraud Guard)</h4>
+        <p>Proteksi ujian berbasis browser: zero-latency blackout saat upaya screen capture, pemblokiran split-window/tab switching, serta timer adaptif untuk menjamin kejujuran asesmen harian siswa.</p>
+      </div>
+      <div class="feature-card">
+        <h4>📊 4. Portfolio YouTube Analytics & Live Sync</h4>
+        <p>Integrasi video riset lapangan YouTube berdurasi 5-10 menit dengan validasi durasi dan pratinjau instan pada portal fasilitator, sinkronisasi dua arah multi-perangkat via REST-API cPanel.</p>
+      </div>
+    </div>
+
+    <!-- BAGIAN 4: BUKTI IMPLEMENTASI (EVIDENCE PORTFOLIO) -->
+    <div class="section-title">4. Bukti Implementasi & Dampak Pembelajaran</div>
+    <table class="info-table">
+      <tr>
+        <td class="label">Dokumentasi Foto Geotag</td>
+        <td class="colon">:</td>
+        <td class="val">Tersimpan ribuan foto kegiatan terverifikasi koordinat GPS (pertanian padi, rmu, peternakan, perkebunan karet/sawit OKU Timur, dan situs cagar budaya nasional).</td>
+      </tr>
+      <tr>
+        <td class="label">Kuis & Asesmen Digital</td>
+        <td class="colon">:</td>
+        <td class="val">Bank soal digital 50 butir per hari dan asesmen spesifik 7 sektor (Day 5 Sains-Teknologi & Day 6 Rekayasa-Finansial) dengan riwayat skor otomatis.</td>
+      </tr>
+      <tr>
+        <td class="label">Rapor Kokurikuler Otomatis</td>
+        <td class="colon">:</td>
+        <td class="val">Penetapan nilai akhir 4 pilar terintegrasi siap cetak dengan deskripsi capaian kompetensi individual siswa.</td>
+      </tr>
+    </table>
+
+    <!-- TANDA TANGAN PENGESAHAN -->
+    <div class="signature">
+      <div class="sig-col">
+        Mengetahui,<br>
+        <strong>Kepala SMAN 1 Belitang</strong><br><br><br><br>
+        <strong><u>H. PRIOYONO, S.Pd., M.M.</u></strong><br>
+        NIP. 19680315 199512 1 002
+      </div>
+      <div class="sig-col">
+        OKU Timur, 13 November 2026<br>
+        <strong>Koordinator Tim Pengembang Inovasi</strong><br><br><br><br>
+        <strong><u>TIM INOVASI DIGITAL FINCESTEM</u></strong><br>
+        SMAN 1 Belitang
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
