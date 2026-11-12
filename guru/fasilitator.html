@@ -2337,29 +2337,21 @@
     let fasDayFilter = 'all'; // 'all', '1', '2', '3', '4', '5', '6', '7'
 
     // Helper Dinamis: Menentukan Hari Aktif Kegiatan FINCESTEM Saat Ini
-    function getFacilitatorActiveDay() {
-      let openDays = [];
-      try {
-        ['non_field_trip', 'field_trip'].forEach(cat => {
-          const raw = localStorage.getItem('fincestem_schedules_' + cat) || localStorage.getItem('fincestem_schedules');
-          if (raw) {
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed)) {
-              parsed.forEach(d => {
-                const dNum = Number(d.day_number);
-                if (dNum >= 1 && dNum <= 7 && (d.is_open === true || d.status_code === 'OPEN' || Number(d.is_active) === 1)) {
-                  if (!openDays.includes(dNum)) openDays.push(dNum);
-                }
-              });
-            }
-          }
-        });
-      } catch (e) {}
-
-      if (openDays.length > 0) {
-        return Math.max(...openDays);
+    function getFacilitatorActiveDay(explicitDay) {
+      if (explicitDay !== undefined && explicitDay !== null && !isNaN(explicitDay)) {
+        const ed = Number(explicitDay);
+        if (ed >= 0 && ed <= 7) return ed;
       }
 
+      // 1. Jika guru sedang memfilter hari tertentu di filter bar atas, utamakan hari pilihan guru
+      if (typeof fasDayFilter !== 'undefined' && fasDayFilter && fasDayFilter !== 'all') {
+        const fNum = Number(fasDayFilter);
+        if (!isNaN(fNum) && fNum >= 0 && fNum <= 7) {
+          return fNum;
+        }
+      }
+
+      // 2. Hitung hari aktif berdasarkan kalender resmi FINCESTEM (WIB UTC+7)
       const now = new Date();
       const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
       const wib = new Date(utc + (3600000 * 7));
@@ -2381,8 +2373,34 @@
       if (dateDayMap[dateStr]) {
         return dateDayMap[dateStr];
       }
+
+      // 3. Cek apakah ada jadwal yang secara spesifik berstatus OPEN dari evaluasi waktu
+      try {
+        let evaluatedOpenDays = [];
+        ['non_field_trip', 'field_trip'].forEach(cat => {
+          const raw = localStorage.getItem('fincestem_schedules_' + cat);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed)) {
+              parsed.forEach(d => {
+                const dNum = Number(d.day_number);
+                if (dNum >= 1 && dNum <= 7) {
+                  if (d.status_code === 'OPEN' && d.is_open === true) {
+                    if (!evaluatedOpenDays.includes(dNum)) evaluatedOpenDays.push(dNum);
+                  }
+                }
+              });
+            }
+          }
+        });
+        if (evaluatedOpenDays.length > 0) {
+          return evaluatedOpenDays[0];
+        }
+      } catch (e) {}
+
       if (dateStr > '2026-11-15') return 7;
-      return 4;
+      if (dateStr < '2026-11-09') return 1;
+      return 5;
     }
 
     // Helper Cek Keterbukaan Hari untuk Guru Fasilitator
@@ -3172,7 +3190,7 @@
       // Update opsi target day dropdown dengan Day 0 (Simulasi) ditempatkan jelas (Default Hari Ini: Mengikuti Hari Aktif)
       const daySelect = document.getElementById('gradeTargetDay');
       const activeFasDay = getFacilitatorActiveDay();
-      const targetSelection = (initialDay !== undefined && initialDay !== null) ? String(initialDay) : (daySelect.value || String(activeFasDay));
+      const targetSelection = (initialDay !== undefined && initialDay !== null) ? String(initialDay) : String(activeFasDay);
 
       if (isFieldTrip) {
         daySelect.innerHTML = `
@@ -3183,7 +3201,7 @@
           <option value="4">Day 4: Wisata Bromo &amp; Tengger (🧭 EXPLORATION &amp; 🏛️ CULTURE 25%)</option>
           <option value="5">Day 5: Prambanan, Praktik Batik &amp; UNY (🔬 STEM &amp; 🧭 EXPLORATION 25%)</option>
           <option value="6">Day 6: Pabrik Bakpia &amp; Pantai Drini (🧭 EXPLORATION &amp; 💰 FINANCIAL 25%)</option>
-          <option value="7">Day 7: Perjalanan Pulang → Belitang (💰 FINANCIAL - Audit Kas 25%)</option>
+          <option value="7">Day 7: Perjalanan Pulang → Belitang (📝 Penilaian Harian)</option>
         `;
       } else {
         daySelect.innerHTML = `
