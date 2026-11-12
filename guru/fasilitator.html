@@ -2356,6 +2356,10 @@
         });
       } catch (e) {}
 
+      if (openDays.length > 0) {
+        return Math.max(...openDays);
+      }
+
       const now = new Date();
       const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
       const wib = new Date(utc + (3600000 * 7));
@@ -2377,11 +2381,8 @@
       if (dateDayMap[dateStr]) {
         return dateDayMap[dateStr];
       }
-      if (openDays.length > 0) {
-        return Math.max(...openDays);
-      }
       if (dateStr > '2026-11-15') return 7;
-      return 3; // Default 11 Nov (Day 3)
+      return 4;
     }
 
     // Helper Cek Keterbukaan Hari untuk Guru Fasilitator

@@ -4873,7 +4873,17 @@
 
     // Card 4: Bagian D (Foto HP)
     // Cek ada photoUrl1 atau siswa sudah pernah simpan
-    const c4Ok = (data.photoUrl1 && data.photoUrl1.length > 50) || (saved && saved.photoUrl1);
+    let hasSavedPhoto = false;
+    try {
+      const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+      const cid = String(u.nisn || u.identifier || '').trim();
+      const rawD4 = localStorage.getItem('fincestem_lkpd_nft_day4_' + cid) || localStorage.getItem('fincestem_lkpd_nft_day4_draft_' + cid);
+      if (rawD4) {
+        const p = JSON.parse(rawD4);
+        if (p && p.photoUrl1) hasSavedPhoto = true;
+      }
+    } catch(e) {}
+    const c4Ok = (data.photoUrl1 && data.photoUrl1.length > 50) || hasSavedPhoto;
     updateCardUI(4, c4Ok);
 
     // Card 5: Bagian E

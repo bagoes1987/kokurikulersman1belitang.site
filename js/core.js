@@ -4490,6 +4490,25 @@ const FincestemCore = {
       if (prog.records && Array.isArray(prog.records)) {
         if (prog.records.some(r => parseInt(r.day_number) === d && (r.status === 'completed' || (r.task_type === 'general' && r.status === 'reviewed')))) return true;
       }
+      if (isFt) {
+        try {
+          const u = (FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+          const id = String(prog.nisn || u.nisn || u.identifier || '').trim();
+          if (id) {
+            const idClean = id.replace(/^0+/, '');
+            const idList = [id, idClean];
+            for (const cid of idList) {
+              if (d === 3 && (localStorage.getItem('fincestem_refleksi_ft_d3_sesi2_' + cid) || localStorage.getItem('fincestem_refleksi_ft_d3_sesi3_' + cid) || localStorage.getItem('fincestem_refleksi_ft_day3_' + cid))) {
+                return true;
+              }
+              if (d === 2 && (localStorage.getItem('fincestem_dok_ft_day2_akpol_' + cid) === 'true' || localStorage.getItem('fincestem_lkpd_akpol_saved_' + cid) === 'true')) {
+                const hasLawang = localStorage.getItem('fincestem_dok_ft_day2_lawang_' + cid) === 'true' || localStorage.getItem('fincestem_lkpd_lawang_saved_' + cid) === 'true';
+                if (hasLawang) return true;
+              }
+            }
+          }
+        } catch(e) {}
+      }
       if (prog.task_map) {
         const refl = prog.task_map[d + '_refleksi'];
         if (refl && (refl.status === 'completed' || refl.status === 'submitted')) return true;

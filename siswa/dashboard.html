@@ -1190,7 +1190,7 @@
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261112_day4_flow_fix"></script>
+  <script src="../js/core.js?v=20261112_completed_badge_fix"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -2648,6 +2648,27 @@
                 break;
               }
             }
+            if (dayNum === 3) {
+              const lkpdApel = !!localStorage.getItem('fincestem_lkpd_ft_day3_apel_' + id);
+              const lkpdJtp = !!localStorage.getItem('fincestem_lkpd_ft_day3_jtp1_' + id) || !!localStorage.getItem('fincestem_refleksi_ft_d3_sesi2_' + id);
+              const lkpdMus = !!localStorage.getItem('fincestem_lkpd_ft_day3_museum_' + id) || !!localStorage.getItem('fincestem_refleksi_ft_d3_sesi3_' + id);
+              if (lkpdApel || lkpdJtp || lkpdMus) {
+                hasLkpd = true;
+                break;
+              }
+            }
+            if (dayNum === 5) {
+              if (localStorage.getItem('fincestem_lkpd_ft_day5_prambanan_' + id) || localStorage.getItem('fincestem_lkpd_ft_day5_batik_' + id) || localStorage.getItem('fincestem_lkpd_ft_day5_uny_' + id)) {
+                hasLkpd = true;
+                break;
+              }
+            }
+            if (dayNum === 6) {
+              if (localStorage.getItem('fincestem_lkpd_ft_day6_bakpia_' + id) || localStorage.getItem('fincestem_lkpd_ft_day6_pantai_' + id)) {
+                hasLkpd = true;
+                break;
+              }
+            }
             const raw = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + id) ||
@@ -2715,6 +2736,26 @@
                 break;
               }
             }
+            if (dayNum === 3) {
+              const dokJatim = localStorage.getItem('fincestem_dok_ft_day3_jatim_' + id) === 'true';
+              const dokMuseum = localStorage.getItem('fincestem_dok_ft_day3_museum_' + id) === 'true';
+              if (dokJatim || dokMuseum) {
+                hasDok = true;
+                break;
+              }
+            }
+            if (dayNum === 5) {
+              if (localStorage.getItem('fincestem_dok_ft_day5_prambanan_' + id) === 'true' || localStorage.getItem('fincestem_dok_ft_day5_batik_' + id) === 'true') {
+                hasDok = true;
+                break;
+              }
+            }
+            if (dayNum === 6) {
+              if (localStorage.getItem('fincestem_dok_ft_day6_bakpia_' + id) === 'true' || localStorage.getItem('fincestem_dok_ft_day6_pantai_' + id) === 'true' || localStorage.getItem('fincestem_dok_ft_day6_drini_' + id) === 'true') {
+                hasDok = true;
+                break;
+              }
+            }
             if (dayNum === 7) {
               const dokKenangan = localStorage.getItem('fincestem_dok_ft_day7_kenangan_' + id) === 'true';
               const dokKeluarga = localStorage.getItem('fincestem_dok_ft_day7_keluarga_' + id) === 'true';
@@ -2752,6 +2793,26 @@
       if (!hasRefleksi) {
         for (const id of idList) {
           try {
+            if (dayNum === 3) {
+              const reflS2 = !!localStorage.getItem('fincestem_refleksi_ft_d3_sesi2_' + id);
+              const reflS3 = !!localStorage.getItem('fincestem_refleksi_ft_d3_sesi3_' + id);
+              if (reflS2 || reflS3) {
+                hasRefleksi = true;
+                break;
+              }
+            }
+            if (dayNum === 5) {
+              if (localStorage.getItem('fincestem_refleksi_ft_day5_prambanan_' + id) || localStorage.getItem('fincestem_refleksi_ft_day5_batik_' + id) || localStorage.getItem('fincestem_refleksi_ft_day5_uny_' + id)) {
+                hasRefleksi = true;
+                break;
+              }
+            }
+            if (dayNum === 6) {
+              if (localStorage.getItem('fincestem_refleksi_ft_day6_bakpia_' + id) || localStorage.getItem('fincestem_refleksi_ft_day6_pantai_' + id)) {
+                hasRefleksi = true;
+                break;
+              }
+            }
             const raw = localStorage.getItem(`fincestem_refleksi_ft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_refleksi_nft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_refleksi_day${dayNum}_` + id);
@@ -3379,7 +3440,34 @@
         // Day N (N > 1) mensyaratkan Day N-1 berstatus Selesai
         // Dan Day N harus dibuka (is_open) oleh Admin
         const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, days);
-        const dayStatus = FincestemCore.progress.getDayStatus(studentProgress, dNum);
+        let dayStatus = FincestemCore.progress.getDayStatus(studentProgress, dNum);
+
+        let isDayDone = false;
+        if (isFieldTrip) {
+          const ftProg = ftStatus || (dayProg || {});
+          let ftTasksDone = 0;
+          if (ftProg.hasMateri) ftTasksDone++;
+          if (ftProg.hasLkpd) ftTasksDone++;
+          if (ftProg.hasAsesmen) ftTasksDone++;
+          if (ftProg.hasDok) ftTasksDone++;
+          if (ftProg.hasRefleksi) ftTasksDone++;
+
+          if (ftProg.hasRefleksi || ftTasksDone >= 4 || FincestemCore.progress.isDayStudentTasksDone(studentProgress, dNum)) {
+            isDayDone = true;
+          }
+        } else {
+          if (hasRefleksi || (hasMateri && hasLkpd && hasAsesmen && hasDok)) {
+            isDayDone = true;
+          }
+        }
+
+        if (isDayDone) {
+          if (dayStatus !== 'reviewed' && dayStatus !== 'revision') {
+            dayStatus = 'completed';
+          }
+        }
+
+        const isDayDoneOrSubmitted = (dayStatus === 'completed' || dayStatus === 'reviewed' || dayStatus === 'submitted' || isDayDone);
 
         // Ekstraksi Skor Kuis Asesmen (khusus Non-Field Trip & Day 0)
         let nftScoreText = '';
@@ -3408,9 +3496,50 @@
         let badgeHtml = '';
         let lockAlertHtml = '';
 
-        // Prioritas 1: Jika Jadwal belum dibuka / di masa depan / ditutup Admin,
-        // pesan UTAMA adalah jadwal resmi (Akan dibuka tanggal ..., dsb), BUKAN menunggu tugas selesai.
-        if (!access.isOpen) {
+        // Prioritas 1: Jika Siswa sudah menuntaskan tugas hari tersebut, prioritaskan status SELESAI (Completed / Reviewed / Submitted)
+        if (isDayDoneOrSubmitted) {
+          if (dayStatus === 'reviewed') {
+            borderClass = 'border-blue-400/70 shadow-xs ring-1 ring-blue-400/20';
+            bgClass = 'bg-blue-50/15';
+            dayIconBg = 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-blue-100 text-blue-900 border border-blue-300/80 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-blue-600">rate_review</span>
+                Reviewed
+              </span>
+            `;
+          } else if (dayStatus === 'submitted') {
+            borderClass = 'border-teal-400/70 shadow-xs ring-1 ring-teal-400/20';
+            bgClass = 'bg-teal-50/15';
+            dayIconBg = 'bg-gradient-to-br from-[#08A7B5] to-[#045D66] text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-teal-100 text-teal-900 border border-teal-300/80 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
+                Submitted
+              </span>
+            `;
+          } else {
+            borderClass = 'border-emerald-500/50 shadow-xs ring-1 ring-emerald-500/20';
+            bgClass = 'bg-emerald-50/20';
+            dayIconBg = 'bg-gradient-to-br from-emerald-500 to-teal-700 text-white';
+            badgeHtml = `
+              <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300/80 flex items-center gap-1.5 shadow-2xs">
+                <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+                Completed
+              </span>
+            `;
+          }
+
+          if (!access.isOpen && d.status_code === 'EXPIRED') {
+            lockAlertHtml = `
+              <div class="px-3.5 py-2.5 rounded-2xl bg-emerald-50/90 border border-emerald-200 flex items-center gap-2.5 text-xs sm:text-sm text-emerald-950 font-medium leading-relaxed">
+                <span class="material-symbols-outlined text-lg text-emerald-600 shrink-0">check_circle</span>
+                <span>Seluruh rangkaian tugas Day ${dNum} telah tuntas dikerjakan. Hari ini telah berakhir (Mode Rekap Portofolio).</span>
+              </div>
+            `;
+          }
+        } else if (!access.isOpen) {
+          // Prioritas 2: Jika Jadwal belum dibuka / di masa depan / ditutup Admin, dan siswa BELUM menyelesaikan tugas
           const isUpcoming = (d.status_code === 'UPCOMING');
           const isExpired = (d.status_code === 'EXPIRED');
           borderClass = 'border-slate-200/80 shadow-xs opacity-95';
@@ -3458,7 +3587,7 @@
             `;
           }
         } else if (!access.isPreviousCompleted) {
-          // Prioritas 2: Jadwal hari ini SUDAH BUKA (hari H atau Uji Coba Semua Hari Aktif), tetapi siswa belum menuntaskan Day sebelumnya
+          // Prioritas 3: Jadwal hari ini SUDAH BUKA, tetapi siswa belum menuntaskan Day sebelumnya
           borderClass = 'border-rose-200/80 shadow-xs opacity-90';
           bgClass = 'bg-rose-50/20';
           dayIconBg = 'bg-slate-300 text-slate-500';
@@ -3485,16 +3614,6 @@
                 Simulasi Aktif
               </span>
             `;
-          } else if (dayStatus === 'completed') {
-            borderClass = 'border-emerald-500/50 shadow-xs ring-1 ring-emerald-500/20';
-            bgClass = 'bg-emerald-50/20';
-            dayIconBg = 'bg-gradient-to-br from-emerald-500 to-teal-700 text-white';
-            badgeHtml = `
-              <span class="px-3 py-1 rounded-xl text-xs font-black bg-emerald-100 text-emerald-800 border border-emerald-300/80 flex items-center gap-1.5 shadow-2xs">
-                <span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
-                Completed
-              </span>
-            `;
           } else if (dayStatus === 'revision') {
             borderClass = 'border-amber-400/70 shadow-xs ring-1 ring-amber-400/20';
             bgClass = 'bg-amber-50/15';
@@ -3503,26 +3622,6 @@
               <span class="px-3 py-1 rounded-xl text-xs font-black bg-amber-100 text-amber-900 border border-amber-300/80 flex items-center gap-1.5 shadow-2xs">
                 <span class="material-symbols-outlined text-sm text-amber-600">warning</span>
                 Perlu Revisi
-              </span>
-            `;
-          } else if (dayStatus === 'reviewed') {
-            borderClass = 'border-blue-400/70 shadow-xs ring-1 ring-blue-400/20';
-            bgClass = 'bg-blue-50/15';
-            dayIconBg = 'bg-gradient-to-br from-blue-500 to-indigo-600 text-white';
-            badgeHtml = `
-              <span class="px-3 py-1 rounded-xl text-xs font-black bg-blue-100 text-blue-900 border border-blue-300/80 flex items-center gap-1.5 shadow-2xs">
-                <span class="material-symbols-outlined text-sm text-blue-600">rate_review</span>
-                Reviewed
-              </span>
-            `;
-          } else if (dayStatus === 'submitted') {
-            borderClass = 'border-teal-400/70 shadow-xs ring-1 ring-teal-400/20';
-            bgClass = 'bg-teal-50/15';
-            dayIconBg = 'bg-gradient-to-br from-[#08A7B5] to-[#045D66] text-white';
-            badgeHtml = `
-              <span class="px-3 py-1 rounded-xl text-xs font-black bg-teal-100 text-teal-900 border border-teal-300/80 flex items-center gap-1.5 shadow-2xs">
-                <span class="material-symbols-outlined text-sm text-teal-600">schedule</span>
-                Submitted
               </span>
             `;
           } else {
