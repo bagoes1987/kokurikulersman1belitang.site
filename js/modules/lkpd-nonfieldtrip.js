@@ -4294,17 +4294,62 @@
       hasMateri = true;
     }
 
-    // Ambil data tersimpan resmi atau draf
+    // Ambil data tersimpan resmi atau draf dari seluruh kemungkinan identifier
+    const candidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    if (u.nis) candidateIds.add(String(u.nis).trim());
+    if (u.identifier) candidateIds.add(String(u.identifier).trim());
+
     let saved = null;
-    try {
-      const raw = localStorage.getItem('fincestem_lkpd_nft_day4_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_day4_' + cleanNisn);
-      if (raw) saved = JSON.parse(raw);
-    } catch(e) {}
-    if (!saved) {
+    for (const cid of candidateIds) {
       try {
-        const d = localStorage.getItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn);
-        if (d) saved = JSON.parse(d);
+        const raw = localStorage.getItem('fincestem_lkpd_nft_day4_' + cid) ||
+                    localStorage.getItem('fincestem_lkpd_day4_' + cid);
+        if (raw) {
+          const p = JSON.parse(raw);
+          if (p && (p.submitted || p.location || p.district || p.roadNotes)) {
+            saved = p;
+            break;
+          }
+        }
       } catch(e) {}
+    }
+    if (!saved) {
+      for (const cid of candidateIds) {
+        try {
+          const d = localStorage.getItem('fincestem_lkpd_nft_day4_draft_' + cid) ||
+                    localStorage.getItem('fincestem_draft_nft_lkpd_d4_' + cid) ||
+                    localStorage.getItem('fincestem_lkpd_draft_day4_' + cid);
+          if (d) {
+            const p = JSON.parse(d);
+            if (p && (p.location || p.district || p.roadNotes || p.answers)) {
+              saved = p;
+              break;
+            }
+          }
+        } catch(e) {}
+      }
+    }
+    if (!saved) {
+      for (const cid of candidateIds) {
+        try {
+          const pRaw = localStorage.getItem('fincestem_progress_' + cid);
+          if (pRaw) {
+            const prog = JSON.parse(pRaw);
+            if (prog && prog.task_map && prog.task_map['4_lkpd'] && prog.task_map['4_lkpd'].content) {
+              const c = prog.task_map['4_lkpd'].content;
+              if (typeof c === 'object') saved = c;
+              else if (typeof c === 'string') {
+                try { saved = JSON.parse(c); } catch(ec) {}
+              }
+              if (saved) break;
+            }
+          }
+        } catch(e) {}
+      }
     }
     saved = saved || {};
 
