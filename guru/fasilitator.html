@@ -1293,7 +1293,7 @@
             </div>
             <button type="button" onclick="autoCalculateDay7ReportGrades()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-xs flex items-center gap-1.5 cursor-pointer shrink-0 transition-all">
               <span class="material-symbols-outlined text-sm">calculate</span>
-              <span>⚡ Hitung Rekomendasi Nilai Day 7</span>
+              <span>⚡ Hitung Rekomendasi Penilaian Harian</span>
             </button>
           </div>
 
@@ -3097,7 +3097,7 @@
               </button>
               <button onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', getFacilitatorActiveDay())" class="py-2.5 px-2.5 rounded-2xl bg-[#006a61] hover:bg-[#004f48] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-98 cursor-pointer" title="Penilaian Lapangan Harian (Day ${getFacilitatorActiveDay()} Hari Ini / Day 1-7)">
                 <span class="material-symbols-outlined text-base">edit_note</span>
-                <span>Nilai Day ${getFacilitatorActiveDay()}</span>
+                <span>Penilaian Harian</span>
               </button>
               <button onclick="openFinalGradeModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', ${studentFinalScore || 'null'})" class="py-2.5 px-2.5 rounded-2xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 transition-all shadow-xs active:scale-98 cursor-pointer" title="Penetapan Nilai Akhir Rapor & Predikat">
                 <span class="material-symbols-outlined text-base">verified</span>
@@ -6629,7 +6629,7 @@
             let actionBtn = '';
             if (item.statusCategory === 'pending') {
               statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs"><span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>Belum Dinilai</span>`;
-              actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, ${activeDay})" class="px-3 py-1 rounded-xl text-xs font-black bg-[#0875D1] hover:bg-blue-600 text-white shadow-2xs cursor-pointer active:scale-95 transition-all">Nilai Day ${activeDay}</button>`;
+              actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, ${activeDay})" class="px-3 py-1 rounded-xl text-xs font-black bg-[#0875D1] hover:bg-blue-600 text-white shadow-2xs cursor-pointer active:scale-95 transition-all">Penilaian Harian</button>`;
             } else if (item.statusCategory === 'graded') {
               statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10.5px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">✅ Sudah Dinilai</span>`;
               actionBtn = `<button type="button" onclick="openGradingModal('${s.nisn}', '${escapeHtml(s.nama || '')}', null, ${activeDay})" class="px-2.5 py-1 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 cursor-pointer">Lihat/Ubah</button>`;
