@@ -535,11 +535,37 @@
   }
 
   function checkPrerequisiteLkpd(dayNum, cleanNisn) {
+    const u = (examState && examState.student) || (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
     const candidateIds = new Set([cleanNisn]);
     if (cleanNisn) {
       candidateIds.add(cleanNisn.replace(/^0+/, ''));
       if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
     }
+    if (u.nis) candidateIds.add(String(u.nis).trim());
+    if (u.identifier) candidateIds.add(String(u.identifier).trim());
+
+    // 1. Cek dari task_map atau records jika sudah dinilai / diserahkan
+    if (window.currentStudentProgress) {
+      const p = window.currentStudentProgress;
+      if (p.task_map && p.task_map[`${dayNum}_lkpd`]) return true;
+      if (Array.isArray(p.records) && p.records.some(r => Number(r.day_number) === dayNum && (r.task_type === 'lkpd' || (r.score !== undefined && r.score !== null)))) return true;
+    }
+
+    // 2. Cek fincestem_progress_ di localStorage
+    for (const cid of candidateIds) {
+      try {
+        const pRaw = localStorage.getItem('fincestem_progress_' + cid);
+        if (pRaw) {
+          const p = JSON.parse(pRaw);
+          if (p) {
+            if (p.task_map && p.task_map[`${dayNum}_lkpd`]) return true;
+            if (Array.isArray(p.records) && p.records.some(r => Number(r.day_number) === dayNum && (r.task_type === 'lkpd' || (r.score !== undefined && r.score !== null)))) return true;
+          }
+        }
+      } catch(e) {}
+    }
+
+    // 3. Cek localStorage langsung (submisi resmi atau draf aktif)
     for (const cid of candidateIds) {
       try {
         const rawLk = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + cid) ||
@@ -553,18 +579,7 @@
         }
       } catch(e) {}
     }
-    if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
-      if (window.currentStudentProgress.task_map[`${dayNum}_lkpd`]) return true;
-    }
-    for (const cid of candidateIds) {
-      try {
-        const pRaw = localStorage.getItem('fincestem_progress_' + cid);
-        if (pRaw) {
-          const p = JSON.parse(pRaw);
-          if (p && p.task_map && p.task_map[`${dayNum}_lkpd`]) return true;
-        }
-      } catch(e) {}
-    }
+
     return false;
   }
 

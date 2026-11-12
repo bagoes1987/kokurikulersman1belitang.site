@@ -2636,7 +2636,7 @@
         }
       }
 
-      let hasLkpd = !!taskMap[dayNum + '_lkpd'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'lkpd');
+      let hasLkpd = !!taskMap[dayNum + '_lkpd'] || records.some(r => Number(r.day_number) === dayNum && (r.task_type === 'lkpd' || (r.score !== undefined && r.score !== null)));
       if (!hasLkpd) {
         for (const id of idList) {
           try {
