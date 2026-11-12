@@ -1190,7 +1190,7 @@
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261110_d3_prep"></script>
+  <script src="../js/core.js?v=20261112_day4_flow_fix"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -2650,16 +2650,21 @@
             }
             const raw = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
-                        localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + id);
+                        localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + id) ||
+                        localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + id) ||
+                        localStorage.getItem(`fincestem_lkpd_draft_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);
-              if (p && (p.submitted || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined || p.answers || p.content || p.businessName || p.isVideoLkpd || p.youtube_url)) {
+              if (p && (p.submitted || p.is_submitted || p.submitted_at || p.submittedAt || p.totalSaku || p.d1 !== undefined || p.akpolQ1 || p.expJajan !== undefined || p.answers || p.content || p.businessName || p.isVideoLkpd || p.youtube_url || p.location || p.district || p.roadNotes || p.roadCondition || p.summary)) {
                 hasLkpd = true;
                 break;
               }
             }
           } catch(e) {}
         }
+      }
+      if (hasLkpd) {
+        hasMateri = true;
       }
 
       let hasAsesmen = !!taskMap[dayNum + '_asesmen'] || records.some(r => Number(r.day_number) === dayNum && r.task_type === 'asesmen');
@@ -2780,18 +2785,18 @@
       const isFtDay7 = isFieldTrip && dayNum === 7;
       const isFtDay0 = isFieldTrip && dayNum === 0;
       const isDayFlexible = (dayNum === 2);
-      let canLkpd = (isFtDay0 || isDayFlexible) ? true : hasMateri;
-      let canDok = (isFtDay0 || isDayFlexible) ? true : (hasMateri && hasLkpd);
-      let canAsesmen = (isFtDay0 || isDayFlexible) ? true : (hasMateri && hasLkpd);
-      let canRefleksi = (isFtDay0 || isDayFlexible) ? true : (hasMateri && hasLkpd && (hasDok || hasAsesmen));
-      let canPenilaian = (isFtDay0 || isDayFlexible) ? true : (hasMateri && hasLkpd && hasDok && hasRefleksi);
+      let canLkpd = (isFtDay0 || isDayFlexible) ? true : (hasMateri || hasLkpd);
+      let canDok = (isFtDay0 || isDayFlexible) ? true : (hasLkpd || hasMateri);
+      let canAsesmen = (isFtDay0 || isDayFlexible) ? true : (hasLkpd || hasMateri);
+      let canRefleksi = (isFtDay0 || isDayFlexible) ? true : (hasLkpd && (hasDok || hasAsesmen));
+      let canPenilaian = (isFtDay0 || isDayFlexible) ? true : (hasLkpd && hasDok && hasRefleksi);
 
       return {
         hasMateri,
-        hasLkpd: isDayFlexible ? hasLkpd : (hasLkpd && hasMateri),
-        hasAsesmen: isDayFlexible ? hasAsesmen : (hasAsesmen && hasMateri && hasLkpd),
-        hasDok: isDayFlexible ? hasDok : (hasDok && hasMateri && hasLkpd),
-        hasRefleksi: isDayFlexible ? hasRefleksi : (hasRefleksi && hasMateri && hasLkpd && (hasDok || hasAsesmen)),
+        hasLkpd,
+        hasAsesmen,
+        hasDok,
+        hasRefleksi,
         canLkpd,
         canAsesmen,
         canDok,

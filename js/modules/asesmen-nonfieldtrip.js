@@ -450,11 +450,12 @@
       examState.selectedSector = getStudentDay3Sector(examState.cleanNisn, dayNum);
     }
 
-    // Cek Prasyarat: Modul Belajar, LKPD, & Dokumentasi (khusus Day 1-7) harus selesai
+    // Cek Prasyarat: Modul Belajar, LKPD, & Dokumentasi (khusus Day 1-7)
     const isTesterBypass = (window.FincestemCore && window.FincestemCore.schedule && typeof window.FincestemCore.schedule.isTesterStudent === 'function' && window.FincestemCore.schedule.isTesterStudent(examState.cleanNisn));
-    const hasMateri = isTesterBypass ? true : checkPrerequisiteMateri(dayNum, examState.cleanNisn);
     const hasLkpd = isTesterBypass ? true : checkPrerequisiteLkpd(dayNum, examState.cleanNisn);
-    const hasDok = isTesterBypass ? true : ((dayNum >= 1 && dayNum <= 7) ? checkPrerequisiteDok(dayNum, examState.cleanNisn) : true);
+    const hasMateri = isTesterBypass ? true : (hasLkpd || checkPrerequisiteMateri(dayNum, examState.cleanNisn));
+    // Khusus Day 5-6 (video) Dokumentasi mendahului LKPD video, Day 1-4 Dokumentasi fleksibel bersamaan asesmen
+    const hasDok = isTesterBypass ? true : ((dayNum === 5 || dayNum === 6) ? checkPrerequisiteDok(dayNum, examState.cleanNisn) : true);
 
     if (!hasMateri || !hasLkpd || !hasDok) {
       renderPrerequisiteLockedScreen(hasMateri, hasLkpd, dayNum, hasDok);
@@ -502,6 +503,7 @@
   }
 
   function checkPrerequisiteMateri(dayNum, cleanNisn) {
+    if (checkPrerequisiteLkpd(dayNum, cleanNisn)) return true;
     const candidateIds = new Set([cleanNisn]);
     if (cleanNisn) {
       candidateIds.add(cleanNisn.replace(/^0+/, ''));
@@ -541,10 +543,12 @@
     for (const cid of candidateIds) {
       try {
         const rawLk = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + cid) ||
-                      localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + cid);
+                      localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + cid) ||
+                      localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + cid) ||
+                      localStorage.getItem(`fincestem_lkpd_draft_day${dayNum}_` + cid);
         if (rawLk) {
           const p = JSON.parse(rawLk);
-          if (p && (p.submitted || p.is_submitted || p.submitted_at || p.submittedAt || p.answers || p.location)) return true;
+          if (p && (p.submitted || p.is_submitted || p.submitted_at || p.submittedAt || p.answers || p.location || p.district || p.roadNotes || p.roadCondition || p.summary || p.sectorKey)) return true;
         }
       } catch(e) {}
     }
