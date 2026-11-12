@@ -1159,7 +1159,7 @@
             <option value="4">🧭 Day 4: EXPLORATION</option>
             <option value="5">🎬 Day 5: Video Observasi YouTube (5–10 Menit): Sains &amp; Teknologi Sektor</option>
             <option value="6">🎥 Day 6: Video Analisis YouTube (5–10 Menit): Rekayasa Kendala &amp; Matematika Finansial</option>
-            <option value="7">🏆 Day 7: Video Refleksi, BTS &amp; Jurnal Refleksi (Rapor Akhir 4 Pilar)</option>
+            <option value="7">📝 Day 7: Penilaian Harian (Refleksi &amp; Evaluasi)</option>
           </select>
           <p id="modalPillarFocusDesc" class="text-[10.5px] text-slate-500 leading-tight">
             Pedoman penilaian instrumen &amp; LKPD harian siswa.
@@ -1287,13 +1287,13 @@
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-indigo-700 text-xl">auto_awesome</span>
               <div>
-                <h5 class="text-xs font-black text-indigo-950">Asistensi Cerdas Nilai Rapor Day 7 (4 Pilar)</h5>
-                <p class="text-[10.5px] text-indigo-800">Hitung akumulasi skor tugas Day 1 s.d. Day 6 atau auto-kalkulasi kelengkapan & waktu pengerjaan tugas siswa.</p>
+                <h5 class="text-xs font-black text-indigo-950">Asistensi Cerdas Penilaian Harian Day 7 (Refleksi)</h5>
+                <p class="text-[10.5px] text-indigo-800">Auto-kalkulasi kelengkapan &amp; waktu pengerjaan tugas refleksi siswa Day 7.</p>
               </div>
             </div>
             <button type="button" onclick="autoCalculateDay7ReportGrades()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs shadow-xs flex items-center gap-1.5 cursor-pointer shrink-0 transition-all">
               <span class="material-symbols-outlined text-sm">calculate</span>
-              <span>⚡ Hitung Rekomendasi Rapor</span>
+              <span>⚡ Hitung Rekomendasi Nilai Day 7</span>
             </button>
           </div>
 
@@ -1674,7 +1674,7 @@
           <option value="4">🧭 Day 4: EXPLORATION</option>
           <option value="5">🎬 Day 5: Video Observasi YouTube (5–10 Menit): Sains &amp; Teknologi Sektor</option>
           <option value="6">🎥 Day 6: Video Analisis YouTube (5–10 Menit): Rekayasa Kendala &amp; Matematika Finansial</option>
-          <option value="7">🏆 Day 7: Video Refleksi, BTS &amp; Jurnal Refleksi (Rapor Akhir 4 Pilar)</option>
+          <option value="7">📝 Day 7: Penilaian Harian (Refleksi &amp; Evaluasi)</option>
         </select>
       </div>
 
@@ -2411,7 +2411,7 @@
       4: { icon: '🧭', title: 'Day 4: EXPLORATION' },
       5: { icon: '🎬', title: 'Day 5: VIDEO SAINS' },
       6: { icon: '🎥', title: 'Day 6: VIDEO REKAYASA' },
-      7: { icon: '🏆', title: 'Day 7: RAPOR 4 PILAR' }
+      7: { icon: '📝', title: 'Day 7: Penilaian Harian' }
     };
 
     function renderFasDayFilterBar(dayCounts) {
@@ -3005,7 +3005,7 @@
                 { day: 4, label: 'D4', title: 'Day 4: EXPLORATION', icon: '🧭' },
                 { day: 5, label: 'D5', title: 'Day 5: VIDEO SAINS', icon: '🎬' },
                 { day: 6, label: 'D6', title: 'Day 6: VIDEO REKAYASA', icon: '🎥' },
-                { day: 7, label: 'D7', title: 'Day 7: RAPOR 4 PILAR', icon: '🏆' }
+                { day: 7, label: 'D7', title: 'Day 7: Penilaian Harian', icon: '📝' }
               ];
 
               const pills = dayPillDefs.map(dp => {
@@ -3194,7 +3194,7 @@
           <option value="4">🧭 Day 4: EXPLORATION</option>
           <option value="5">🎬 Day 5: Video Observasi YouTube (5–10 Menit): Sains &amp; Teknologi Sektor</option>
           <option value="6">🎥 Day 6: Video Analisis YouTube (5–10 Menit): Rekayasa Kendala &amp; Matematika Finansial</option>
-          <option value="7">🏆 Day 7: Video Refleksi, BTS &amp; Jurnal Refleksi (Rapor Akhir 4 Pilar)</option>
+          <option value="7">📝 Day 7: Penilaian Harian (Refleksi &amp; Evaluasi)</option>
         `;
       }
 
@@ -3225,6 +3225,15 @@
       // Deteksi kategori siswa: Field Trip vs Non-Field Trip (100% mengikuti pengaturan Admin)
       const isFieldTrip = isStudentFieldTripFasil(nisn);
 
+      const candidateIds = [nisn, String(nisn).replace(/^0+/, ''), String(nisn).padStart(10, '0')];
+      const allStu = window.FincestemMasterStudents || [];
+      const stuObj = allStu.find(s => String(s.nisn).trim() === String(nisn).trim() || String(s.nis).trim() === String(nisn).trim());
+      if (stuObj) {
+        if (stuObj.nis) candidateIds.push(String(stuObj.nis).trim());
+        if (stuObj.username) candidateIds.push(String(stuObj.username).trim());
+        if (stuObj.identifier) candidateIds.push(String(stuObj.identifier).trim());
+      }
+
       // Cari tahu apakah siswa ini BENAR-BENAR sudah mengerjakan Day 0 (Simulasi)
       let hasStudentD0Work = false;
       let storedD0Lkpd = null;
@@ -3232,14 +3241,6 @@
       let storedD0Refl = null;
 
       if (dayNum === 0) {
-        const candidateIds = [nisn, String(nisn).replace(/^0+/, ''), String(nisn).padStart(10, '0')];
-        const allStu = window.FincestemMasterStudents || [];
-        const stuObj = allStu.find(s => String(s.nisn).trim() === String(nisn).trim() || String(s.nis).trim() === String(nisn).trim());
-        if (stuObj) {
-          if (stuObj.nis) candidateIds.push(stuObj.nis);
-          if (stuObj.username) candidateIds.push(stuObj.username);
-        }
-
         for (const cid of candidateIds) {
           if (!storedD0Lkpd) storedD0Lkpd = localStorage.getItem('fincestem_lkpd_nft_day0_' + cid) || localStorage.getItem('fincestem_lkpd_day0_' + cid);
           if (!storedD0Asesmen) storedD0Asesmen = localStorage.getItem('fincestem_asesmen_nft_day0_' + cid) || localStorage.getItem('fincestem_asesmen_day0_' + cid);
@@ -3340,7 +3341,7 @@
           4: { title: 'Day 4: EXPLORATION', badge: 'Bobot 25%', desc: 'Penilaian 1 kolom: Bentang alam persawahan, geospasial & irigasi Komering.', active: ['EXPLORATION'] },
           5: { title: 'Day 5: Video Observasi YouTube (5–10 Menit): Sains & Teknologi Sektor', badge: 'Bobot 25%', desc: 'Penilaian Video YouTube (7 Sektor Pilihan): Prinsip Sains Sektor & Aplikasi Teknologi/Alat Kerja.', active: ['STEM', 'EXPLORATION'] },
           6: { title: 'Day 6: Video Analisis YouTube (5–10 Menit): Rekayasa Kendala & Matematika Finansial', badge: 'Bobot 25%', desc: 'Penilaian Video YouTube (7 Sektor Pilihan): Rekayasa Solusi Kendala Lapangan & Matematika Finansial.', active: ['STEM', 'FINANCIAL'] },
-          7: { title: 'Day 7: Video Refleksi, BTS & Jurnal Refleksi', badge: 'Rapor Akhir 4 Pilar (25%)', desc: 'Penilaian Lengkap 4 Pilar: Video Refleksi 7 Hari, Video BTS, 3 Jurnal Refleksi & Evaluasi Rapor Akhir.', active: ['FINANCIAL', 'CULTURE', 'EXPLORATION', 'STEM'] }
+          7: { title: 'Day 7: Penilaian Harian', badge: 'Penilaian Harian', desc: 'Penilaian harian instrumen pembelajaran Day 7 (Refleksi, Evaluasi & Kepulangan).', active: ['FINANCIAL', 'CULTURE', 'EXPLORATION', 'STEM'] }
         };
 
         const curNft = nftMap[dayNum] || { title: `Day ${dayNum}`, badge: 'Non-Field Trip', desc: 'Riset mandiri OKU Timur.', active: [] };
@@ -3424,13 +3425,13 @@
             if (lFin) lFin.innerHTML = '💰 Nilai Matematika Finansial (0-100)';
           }
         } else if (dayNum === 7) {
-          // DAY 7: 4 PILAR LENGKAP UNTUK RAPOR AKHIR
+          // DAY 7: PENILAIAN HARIAN
           [cFin, cCul, cExp, cStem].forEach(c => { if (c) c.classList.remove('hidden'); });
-          if (lFin) lFin.innerHTML = '💰 Rapor Financial (0-100)';
-          if (lCul) lCul.innerHTML = '🏛️ Rapor Culture (0-100)';
-          if (lExp) lExp.innerHTML = '🧭 Rapor Exploration (0-100)';
-          if (lStem) lStem.innerHTML = '🔬 Rapor STEM (0-100)';
-          if (boxRec) boxRec.classList.remove('hidden');
+          if (lFin) lFin.innerHTML = '💰 Financial Day 7 (0-100)';
+          if (lCul) lCul.innerHTML = '🏛️ Culture Day 7 (0-100)';
+          if (lExp) lExp.innerHTML = '🧭 Exploration Day 7 (0-100)';
+          if (lStem) lStem.innerHTML = '🔬 STEM Day 7 (0-100)';
+          if (boxRec) boxRec.classList.add('hidden');
         }
       }
 
@@ -3873,24 +3874,49 @@
             } else if (dayNum >= 1 && dayNum <= 7) {
               try {
                 const taskMap = (prog && prog.task_map) || {};
-                let srvLkpd = taskMap[dayNum + '_lkpd'] ? taskMap[dayNum + '_lkpd'].content : null;
-                if (typeof srvLkpd === 'string') { try { srvLkpd = JSON.parse(srvLkpd); } catch(e){} }
-                let srvMat = taskMap[dayNum + '_materi'] ? taskMap[dayNum + '_materi'].content : null;
-                if (typeof srvMat === 'string') { try { srvMat = JSON.parse(srvMat); } catch(e){} }
-                let srvAsesmen = taskMap[dayNum + '_asesmen'] ? taskMap[dayNum + '_asesmen'].content : null;
-                if (typeof srvAsesmen === 'string') { try { srvAsesmen = JSON.parse(srvAsesmen); } catch(e){} }
-                let srvRefl = taskMap[dayNum + '_refleksi'] ? taskMap[dayNum + '_refleksi'].content : null;
-                if (typeof srvRefl === 'string') { try { srvRefl = JSON.parse(srvRefl); } catch(e){} }
 
-                const storedNftLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + nisn);
-                const storedNftMat = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + nisn);
-                const storedNftAsesmen = localStorage.getItem(`fincestem_asesmen_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + nisn);
-                const storedNftRefl = localStorage.getItem(`fincestem_refleksi_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_refl_nft_day${dayNum}_` + nisn) || localStorage.getItem(`fincestem_refleksi_day${dayNum}_` + nisn);
+                const getTaskContent = (d, t) => {
+                  const key = d + '_' + t;
+                  if (taskMap && taskMap[key] && taskMap[key].content) {
+                    let c = taskMap[key].content;
+                    if (typeof c === 'string') {
+                      try { return JSON.parse(c); } catch(e) { return { text: c }; }
+                    }
+                    return c;
+                  }
+                  const rec = (prog && prog.records ? prog.records : []).find(r => Number(r.day_number) === d && (r.task_type === t || (t === 'lkpd' && (r.task_type === 'lkpd' || r.task_type === 'general'))) && r.content);
+                  if (rec && rec.content) {
+                    let c = rec.content;
+                    if (typeof c === 'string') {
+                      try { return JSON.parse(c); } catch(e) { return { text: c }; }
+                    }
+                    return c;
+                  }
+                  for (const cid of candidateIds) {
+                    try {
+                      const raw = localStorage.getItem(`fincestem_${t}_nft_day${d}_` + cid) ||
+                                  localStorage.getItem(`fincestem_${t}_ft_day${d}_` + cid) ||
+                                  localStorage.getItem(`fincestem_${t}_day${d}_` + cid) ||
+                                  localStorage.getItem(`fincestem_${t}_d${d}_` + cid) ||
+                                  (t === 'lkpd' ? (
+                                    localStorage.getItem(`fincestem_lkpd_nft_day${d}_` + cid) ||
+                                    localStorage.getItem(`fincestem_lkpd_ft_day${d}_` + cid) ||
+                                    localStorage.getItem(`fincestem_lkpd_day${d}_` + cid) ||
+                                    localStorage.getItem(`fincestem_lkpd_nft_day${d}_draft_` + cid) ||
+                                    localStorage.getItem(`fincestem_draft_nft_lkpd_d${d}_` + cid)
+                                  ) : null);
+                      if (raw) {
+                        try { return JSON.parse(raw); } catch(e) { return { text: raw }; }
+                      }
+                    } catch(e) {}
+                  }
+                  return null;
+                };
 
-                const nftLkpd = srvLkpd || (storedNftLkpd ? JSON.parse(storedNftLkpd) : null);
-                const nftMat = srvMat || (storedNftMat ? JSON.parse(storedNftMat) : null);
-                const nftAsesmen = srvAsesmen || (storedNftAsesmen ? JSON.parse(storedNftAsesmen) : null);
-                const nftRefl = srvRefl || (storedNftRefl ? JSON.parse(storedNftRefl) : null);
+                const nftLkpd = getTaskContent(dayNum, 'lkpd');
+                const nftMat = getTaskContent(dayNum, 'materi');
+                const nftAsesmen = getTaskContent(dayNum, 'asesmen');
+                const nftRefl = getTaskContent(dayNum, 'refleksi');
 
                 if (!isFieldTrip && (nftLkpd || nftMat || nftAsesmen || nftRefl)) {
                   renderedNftPreview = true;
@@ -3960,7 +3986,69 @@
                   if (nftLkpd) {
                     const isNewAudit = !!(nftLkpd.businessName || nftLkpd.businessType || nftLkpd.incomeMonthly !== undefined);
                     const isSectorObservasi = !!(nftLkpd.sectorName || nftLkpd.narasumberName || nftLkpd.conclusion_1 || nftLkpd.conclusion_6);
-                    if (dayNum === 4 || (nftLkpd && (nftLkpd.mainTools || nftLkpd.scienceAnalysis || nftLkpd.channel_type))) {
+                    const isD4Jelajah = dayNum === 4 && !!(nftLkpd.district || nftLkpd.roadCondition || nftLkpd.environmentSurroundings || nftLkpd.supplyOrigin || nftLkpd.salesTarget || nftLkpd.roadNotes || nftLkpd.envNotes || nftLkpd.supplyNotes || nftLkpd.conclusion || nftLkpd.location);
+                    if (isD4Jelajah) {
+                      lkpdHtml = `
+                        <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
+                          <div class="flex items-center justify-between gap-2 flex-wrap">
+                            <span class="font-bold text-teal-950 text-[11px] flex items-center gap-1">
+                              <span class="material-symbols-outlined text-xs text-emerald-700">explore</span>
+                              <span>Jelajah Lingkungan &amp; Alur Distribusi Sektor (LKPD Day 4):</span>
+                            </span>
+                            <span class="text-[9.5px] px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 font-extrabold">${nftLkpd.sectorName || 'Sektor Pilihan'}</span>
+                          </div>
+                          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10.5px]">
+                            <!-- Bagian A: Lokasi & Akses Jalan -->
+                            <div class="bg-white/95 p-2.5 rounded-xl border border-emerald-200 flex flex-col gap-1">
+                              <div class="flex items-center justify-between gap-1">
+                                <span class="text-slate-500 font-semibold text-[9.5px]">📍 Lokasi &amp; Akses Jalan:</span>
+                                <span class="text-[9px] px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-900 font-bold">${nftLkpd.distanceRange || '-'}</span>
+                              </div>
+                              <div class="font-black text-emerald-950 text-xs">${nftLkpd.location || '-'} (${nftLkpd.district || 'OKU Timur'})</div>
+                              <div class="text-[10px] text-slate-700 font-medium">Kondisi: <strong>${nftLkpd.roadCondition || '-'}</strong></div>
+                              <p class="text-slate-600 italic line-clamp-3 mt-0.5">"${nftLkpd.roadNotes || '-'}"</p>
+                            </div>
+                            <!-- Bagian B: Suasana Lingkungan & Utilitas -->
+                            <div class="bg-white/95 p-2.5 rounded-xl border border-emerald-200 flex flex-col gap-1">
+                              <span class="text-slate-500 font-semibold text-[9.5px]">🏡 Lingkungan &amp; Utilitas:</span>
+                              <div class="font-bold text-slate-800 text-[11px]">${nftLkpd.environmentSurroundings || '-'}</div>
+                              <div class="text-[10px] text-slate-600 flex items-center gap-2">
+                                <span>💧 Air: <strong>${nftLkpd.waterSupply || '-'}</strong></span>
+                                <span>⚡ Listrik: <strong>${nftLkpd.powerSupply || '-'}</strong></span>
+                              </div>
+                              <p class="text-slate-600 italic line-clamp-3 mt-0.5">"${nftLkpd.envNotes || '-'}"</p>
+                            </div>
+                            <!-- Bagian C: Alur Pasokan & Transaksi Pasar -->
+                            <div class="bg-white/95 p-2.5 rounded-xl border border-sky-200 col-span-1 sm:col-span-2 flex flex-col gap-1">
+                              <div class="flex items-center justify-between gap-1">
+                                <span class="text-sky-800 font-extrabold text-[9.5px]">🔄 Alur Pasokan, Penjualan &amp; Pembayaran:</span>
+                                <span class="text-[9px] px-2 py-0.5 rounded bg-sky-100 text-sky-900 font-bold">Bayar: ${nftLkpd.paymentMethod || '-'}</span>
+                              </div>
+                              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10px] text-slate-700">
+                                <div>📦 <strong>Asal Pasokan:</strong> ${nftLkpd.supplyOrigin || '-'}</div>
+                                <div>🎯 <strong>Target Penjualan:</strong> ${nftLkpd.salesTarget || '-'}</div>
+                              </div>
+                              <p class="text-slate-600 italic mt-0.5">"${nftLkpd.supplyNotes || '-'}"</p>
+                            </div>
+                            <!-- Bagian D & E: Kesimpulan & Foto Dokumentasi -->
+                            <div class="bg-amber-50/90 p-2.5 rounded-xl border border-amber-200 col-span-1 sm:col-span-2 flex flex-col gap-1">
+                              <span class="text-amber-900 font-extrabold text-[9.5px] flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs text-amber-700">psychology</span>
+                                <span>Kesimpulan Jelajah Lapangan Siswa:</span>
+                              </span>
+                              <p class="text-slate-800 italic leading-relaxed font-medium">"${nftLkpd.conclusion || '-'}"</p>
+                              ${(nftLkpd.photoUrl1 && nftLkpd.photoUrl1.length > 50) || (nftLkpd.photoUrl2 && nftLkpd.photoUrl2.length > 50) ? `
+                                <div class="flex items-center gap-2 mt-1 pt-1 border-t border-amber-200">
+                                  <span class="text-[9.5px] text-amber-900 font-bold">📷 Foto Observasi:</span>
+                                  ${nftLkpd.photoUrl1 && nftLkpd.photoUrl1.length > 50 ? `<a href="${nftLkpd.photoUrl1}" target="_blank" class="px-2 py-0.5 rounded-md bg-white text-teal-800 border border-teal-300 text-[9.5px] font-bold hover:bg-teal-50">Lihat Foto Usaha ↗</a>` : ''}
+                                  ${nftLkpd.photoUrl2 && nftLkpd.photoUrl2.length > 50 ? `<a href="${nftLkpd.photoUrl2}" target="_blank" class="px-2 py-0.5 rounded-md bg-white text-teal-800 border border-teal-300 text-[9.5px] font-bold hover:bg-teal-50">Lihat Foto Jalan ↗</a>` : ''}
+                                </div>
+                              ` : ''}
+                            </div>
+                          </div>
+                        </div>
+                      `;
+                    } else if (dayNum === 4 || (nftLkpd && (nftLkpd.mainTools || nftLkpd.scienceAnalysis || nftLkpd.channel_type))) {
                       if (nftLkpd.mainTools || nftLkpd.scienceAnalysis) {
                         lkpdHtml = `
                           <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
@@ -4444,9 +4532,8 @@
 
             if (!renderedNftPreview && dayNum === 1) {
               try {
-                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day1_' + nisn);
-                if (storedFt) {
-                  const ftData = JSON.parse(storedFt);
+                const ftData = getTaskContent(1, 'lkpd');
+                if (ftData) {
                   const isGood = ftData.diagnosis && ftData.diagnosis.includes('Sangat Baik');
                   const isWasteful = ftData.diagnosis && ftData.diagnosis.includes('Boros');
                   const badgeColor = isGood ? 'bg-emerald-600 text-white' : (isWasteful ? 'bg-rose-600 text-white' : 'bg-amber-600 text-white');
@@ -4492,19 +4579,11 @@
               } catch(e) {}
             } else if (!renderedNftPreview && dayNum === 2) {
               try {
-                const storedFtAkpol = localStorage.getItem('fincestem_lkpd_ft_day2_akpol_' + nisn);
-                const storedFtLawang = localStorage.getItem('fincestem_lkpd_ft_day2_lawang_' + nisn);
-                const storedFtGeneric = localStorage.getItem('fincestem_lkpd_ft_day2_' + nisn);
-                const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day2_' + nisn);
-                let ftAsesmen = null;
-                if (storedAsesmen) {
-                  try { ftAsesmen = JSON.parse(storedAsesmen); } catch(e) {}
-                }
-                const ftAkpol = storedFtAkpol ? JSON.parse(storedFtAkpol) : null;
-                const ftLawang = storedFtLawang ? JSON.parse(storedFtLawang) : null;
-                const ftGen = storedFtGeneric ? JSON.parse(storedFtGeneric) : null;
+                const ftAkpol = getTaskContent(2, 'lkpd_akpol') || getTaskContent(2, 'lkpd');
+                const ftLawang = getTaskContent(2, 'lkpd_lawang');
+                const ftAsesmen = getTaskContent(2, 'asesmen');
 
-                if (ftAkpol || ftLawang || ftGen) {
+                if (ftAkpol || ftLawang) {
                   lkpdPreviewEl.innerHTML = `
                     <div class="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex flex-col gap-2 text-xs">
                       <div class="flex items-center justify-between gap-1 flex-wrap">
@@ -4540,16 +4619,10 @@
               } catch(e) {}
             } else if (!renderedNftPreview && dayNum === 3) {
               try {
-                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day3_apel_' + nisn) ||
-                                 localStorage.getItem('fincestem_lkpd_ft_day3_' + nisn);
-                const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day3_' + nisn);
-                let ftAsesmen = null;
-                if (storedAsesmen) {
-                  try { ftAsesmen = JSON.parse(storedAsesmen); } catch(e) {}
-                }
+                const ftData = getTaskContent(3, 'lkpd');
+                const ftAsesmen = getTaskContent(3, 'asesmen');
 
-                if (storedFt) {
-                  const ftData = JSON.parse(storedFt);
+                if (ftData) {
                   lkpdPreviewEl.innerHTML = `
                     <div class="p-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col gap-2 text-xs">
                       <div class="flex items-center justify-between gap-1 flex-wrap">
@@ -4597,70 +4670,106 @@
               } catch(e) {}
             } else if (!renderedNftPreview && dayNum === 4) {
               try {
-                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day4_' + nisn);
-                const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day4_' + nisn);
-                let ftAsesmen = null;
-                if (storedAsesmen) {
-                  try { ftAsesmen = JSON.parse(storedAsesmen); } catch(e) {}
-                }
+                const ftData = getTaskContent(4, 'lkpd');
+                const ftAsesmen = getTaskContent(4, 'asesmen');
 
-                if (storedFt) {
-                  const ftData = JSON.parse(storedFt);
-                  const lokasiList = Array.isArray(ftData.q1_lokasi) ? ftData.q1_lokasi.join(', ') : (ftData.q1_lokasi || '-');
-                  lkpdPreviewEl.innerHTML = `
-                    <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col gap-2 text-xs">
-                      <div class="flex items-center justify-between gap-1 flex-wrap">
-                        <span class="font-extrabold text-amber-950 flex items-center gap-1">
-                          <span class="material-symbols-outlined text-sm text-amber-700">landscape</span>
-                          <span>Eksplorasi Kaldera Bromo &amp; Kearifan Budaya Tengger (LKPD Day 4)</span>
-                        </span>
-                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${ftData.submitted ? 'bg-amber-600 text-white' : 'bg-slate-600 text-white'}">
-                          ${ftData.submitted ? 'Terkirim ✓' : 'Draft'}
-                        </span>
+                if (ftData) {
+                  // Cek apakah data ini adalah LKPD Non-Field Trip Jelajah Lapangan (fallback cross-zone)
+                  if (ftData.district || ftData.roadNotes || ftData.supplyNotes || ftData.roadCondition || ftData.environmentSurroundings) {
+                    lkpdPreviewEl.innerHTML = `
+                      <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-300 flex flex-col gap-2 text-xs shadow-2xs">
+                        <div class="flex items-center justify-between gap-1 flex-wrap">
+                          <span class="font-black text-teal-950 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm text-teal-700">explore</span>
+                            <span>Jelajah Lingkungan &amp; Alur Distribusi Sektor (LKPD Day 4)</span>
+                          </span>
+                          <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase bg-teal-600 text-white">
+                            ${ftData.submitted ? 'Terkirim ✓' : 'Draft'}
+                          </span>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10.5px]">
+                          <div class="bg-white/95 p-2.5 rounded-xl border border-teal-200">
+                            <span class="text-slate-500 font-semibold text-[9.5px]">📍 Lokasi &amp; Akses Jalan:</span>
+                            <div class="font-black text-teal-950 text-xs">${ftData.location || '-'} (${ftData.district || 'OKU Timur'})</div>
+                            <div class="text-[10px] text-slate-700 font-medium">Kondisi: <strong>${ftData.roadCondition || '-'}</strong></div>
+                            <p class="text-slate-600 italic mt-0.5 line-clamp-2">"${ftData.roadNotes || '-'}"</p>
+                          </div>
+                          <div class="bg-white/95 p-2.5 rounded-xl border border-teal-200">
+                            <span class="text-slate-500 font-semibold text-[9.5px]">🏡 Lingkungan &amp; Utilitas:</span>
+                            <div class="font-bold text-slate-800 text-[11px]">${ftData.environmentSurroundings || '-'}</div>
+                            <p class="text-slate-600 italic mt-0.5 line-clamp-2">"${ftData.envNotes || '-'}"</p>
+                          </div>
+                          <div class="bg-white/95 p-2.5 rounded-xl border border-teal-200 col-span-1 sm:col-span-2">
+                            <span class="text-teal-800 font-extrabold text-[9.5px]">🔄 Alur Pasokan &amp; Pasar:</span>
+                            <p class="text-slate-700 mt-0.5 italic">"${ftData.supplyNotes || '-'}"</p>
+                          </div>
+                          ${ftData.conclusion ? `
+                            <div class="bg-amber-50/90 p-2.5 rounded-xl border border-amber-200 col-span-1 sm:col-span-2">
+                              <span class="text-amber-900 font-extrabold text-[9.5px]">Kesimpulan Siswa:</span>
+                              <p class="text-slate-800 italic mt-0.5">"${ftData.conclusion}"</p>
+                            </div>
+                          ` : ''}
+                        </div>
+                        ${ftAsesmen ? `
+                          <div class="bg-emerald-100/70 p-2 rounded-xl border border-emerald-300 text-[11px] flex items-center justify-between">
+                            <span class="font-bold text-emerald-950">Skor Asesmen Day 4:</span>
+                            <span class="font-black text-emerald-900 bg-white px-2 py-0.5 rounded-lg border border-emerald-200">${ftAsesmen.score || 0} / 100</span>
+                          </div>
+                        ` : ''}
                       </div>
-                      <div class="grid grid-cols-2 gap-2 text-[11px]">
-                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
-                          <span class="text-slate-500 block font-semibold">Zona Dikunjungi:</span>
-                          <span class="font-black text-amber-950 truncate block">${lokasiList}</span>
+                    `;
+                  } else {
+                    const lokasiList = Array.isArray(ftData.q1_lokasi) ? ftData.q1_lokasi.join(', ') : (ftData.q1_lokasi || '-');
+                    lkpdPreviewEl.innerHTML = `
+                      <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col gap-2 text-xs">
+                        <div class="flex items-center justify-between gap-1 flex-wrap">
+                          <span class="font-extrabold text-amber-950 flex items-center gap-1">
+                            <span class="material-symbols-outlined text-sm text-amber-700">landscape</span>
+                            <span>Eksplorasi Kaldera Bromo &amp; Kearifan Budaya Tengger (LKPD Day 4)</span>
+                          </span>
+                          <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${ftData.submitted ? 'bg-amber-600 text-white' : 'bg-slate-600 text-white'}">
+                            ${ftData.submitted ? 'Terkirim ✓' : 'Draft'}
+                          </span>
                         </div>
-                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
-                          <span class="text-slate-500 block font-semibold">Kondisi Udara:</span>
-                          <span class="font-black text-blue-900">${ftData.q2_suhu || '-'}</span>
+                        <div class="grid grid-cols-2 gap-2 text-[11px]">
+                          <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
+                            <span class="text-slate-500 block font-semibold">Zona Dikunjungi:</span>
+                            <span class="font-black text-amber-950 truncate block">${lokasiList}</span>
+                          </div>
+                          <div class="bg-white/90 p-2 rounded-xl border border-amber-200">
+                            <span class="text-slate-500 block font-semibold">Kondisi Udara:</span>
+                            <span class="font-black text-blue-900">${ftData.q2_suhu || '-'}</span>
+                          </div>
                         </div>
+                        ${ftData.q2_deskripsi ? `
+                          <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
+                            <strong class="text-slate-700 block">Kesan Bentang Alam Bromo:</strong>
+                            <p class="text-slate-600 italic mt-0.5">${ftData.q2_deskripsi}</p>
+                          </div>
+                        ` : ''}
+                        ${ftData.q5_etika ? `
+                          <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
+                            <strong class="text-slate-700 block">Aturan Etika &amp; Konservasi TNBTS:</strong>
+                            <p class="text-slate-600 italic mt-0.5">${ftData.q5_etika}</p>
+                          </div>
+                        ` : ''}
+                        ${ftAsesmen ? `
+                          <div class="bg-amber-100/70 p-2 rounded-xl border border-amber-300 text-[11px] flex items-center justify-between">
+                            <span class="font-bold text-amber-950">Skor Asesmen Exploration &amp; Culture:</span>
+                            <span class="font-black text-amber-900 bg-white px-2 py-0.5 rounded-lg border border-amber-200">${ftAsesmen.score || 0} / 100</span>
+                          </div>
+                        ` : ''}
                       </div>
-                      ${ftData.q2_deskripsi ? `
-                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
-                          <strong class="text-slate-700 block">Kesan Bentang Alam Bromo:</strong>
-                          <p class="text-slate-600 italic mt-0.5">${ftData.q2_deskripsi}</p>
-                        </div>
-                      ` : ''}
-                      ${ftData.q5_etika ? `
-                        <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
-                          <strong class="text-slate-700 block">Aturan Etika &amp; Konservasi TNBTS:</strong>
-                          <p class="text-slate-600 italic mt-0.5">${ftData.q5_etika}</p>
-                        </div>
-                      ` : ''}
-                      ${ftAsesmen ? `
-                        <div class="bg-amber-100/70 p-2 rounded-xl border border-amber-300 text-[11px] flex items-center justify-between">
-                          <span class="font-bold text-amber-950">Skor Asesmen Exploration &amp; Culture:</span>
-                          <span class="font-black text-amber-900 bg-white px-2 py-0.5 rounded-lg border border-amber-200">${ftAsesmen.score || 0} / 100</span>
-                        </div>
-                      ` : ''}
-                    </div>
-                  `;
+                    `;
+                  }
                 }
               } catch(e) {}
             } else if (!renderedNftPreview && dayNum === 5) {
               try {
-                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day5_' + nisn);
-                const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day5_' + nisn);
-                let ftAsesmen = null;
-                if (storedAsesmen) {
-                  try { ftAsesmen = JSON.parse(storedAsesmen); } catch(e) {}
-                }
+                const ftData = getTaskContent(5, 'lkpd') || getTaskContent(5, 'lkpd_prambanan');
+                const ftAsesmen = getTaskContent(5, 'asesmen');
 
-                if (storedFt || ftAsesmen) {
-                  const ftData = storedFt ? JSON.parse(storedFt) : {};
+                if (ftData || ftAsesmen) {
                   lkpdPreviewEl.innerHTML = `
                     <div class="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex flex-col gap-2 text-xs">
                       <div class="flex items-center justify-between gap-1 flex-wrap">
@@ -4668,11 +4777,11 @@
                           <span class="material-symbols-outlined text-sm text-indigo-700">temple_hindu</span>
                           <span>Candi Prambanan, Praktik Batik &amp; Kampus UNY (Day 5)</span>
                         </span>
-                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${ftData.submitted ? 'bg-indigo-600 text-white' : (ftAsesmen ? 'bg-emerald-600 text-white' : 'bg-slate-600 text-white')}">
-                          ${ftData.submitted ? 'LKPD Terkirim ✓' : (ftAsesmen ? 'Asesmen Selesai' : 'Draft')}
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${ftData && ftData.submitted ? 'bg-indigo-600 text-white' : (ftAsesmen ? 'bg-emerald-600 text-white' : 'bg-slate-600 text-white')}">
+                          ${ftData && ftData.submitted ? 'LKPD Terkirim ✓' : (ftAsesmen ? 'Asesmen Selesai' : 'Draft')}
                         </span>
                       </div>
-                      ${ftData.obsSains ? `
+                      ${ftData && ftData.obsSains ? `
                         <div class="bg-white/90 p-2 rounded-xl border border-indigo-200 text-[10.5px]">
                           <strong class="text-slate-700 block">Observasi Sains Kimia Batik &amp; Arsitektur:</strong>
                           <p class="text-slate-600 italic mt-0.5">${ftData.obsSains}</p>
@@ -4690,15 +4799,10 @@
               } catch(e) {}
             } else if (!renderedNftPreview && dayNum === 6) {
               try {
-                const storedFt = localStorage.getItem('fincestem_lkpd_ft_day6_' + nisn) || localStorage.getItem('fincestem_lkpd_ft_day6_bakpia_' + nisn);
-                const storedAsesmen = localStorage.getItem('fincestem_asesmen_ft_day6_' + nisn);
-                let ftAsesmen = null;
-                if (storedAsesmen) {
-                  try { ftAsesmen = JSON.parse(storedAsesmen); } catch(e) {}
-                }
+                const ftData = getTaskContent(6, 'lkpd') || getTaskContent(6, 'lkpd_bakpia');
+                const ftAsesmen = getTaskContent(6, 'asesmen');
 
-                if (storedFt || ftAsesmen) {
-                  const ftData = storedFt ? JSON.parse(storedFt) : {};
+                if (ftData || ftAsesmen) {
                   lkpdPreviewEl.innerHTML = `
                     <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col gap-2 text-xs">
                       <div class="flex items-center justify-between gap-1 flex-wrap">
@@ -4706,11 +4810,11 @@
                           <span class="material-symbols-outlined text-sm text-amber-700">bakery_dining</span>
                           <span>Pabrik Bakpia Jogja &amp; Pantai Drini (Day 6)</span>
                         </span>
-                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${ftData.submitted ? 'bg-amber-600 text-white' : (ftAsesmen ? 'bg-emerald-600 text-white' : 'bg-slate-600 text-white')}">
-                          ${ftData.submitted ? 'LKPD Terkirim ✓' : (ftAsesmen ? 'Asesmen Selesai' : 'Draft')}
+                        <span class="px-2 py-0.5 rounded-md text-[10px] font-black uppercase ${ftData && ftData.submitted ? 'bg-amber-600 text-white' : (ftAsesmen ? 'bg-emerald-600 text-white' : 'bg-slate-600 text-white')}">
+                          ${ftData && ftData.submitted ? 'LKPD Terkirim ✓' : (ftAsesmen ? 'Asesmen Selesai' : 'Draft')}
                         </span>
                       </div>
-                      ${ftData.tipsBelanja ? `
+                      ${ftData && ftData.tipsBelanja ? `
                         <div class="bg-white/90 p-2 rounded-xl border border-amber-200 text-[10.5px]">
                           <strong class="text-slate-700 block">Catatan Literasi Finansial &amp; Belanja Cerdas:</strong>
                           <p class="text-slate-600 italic mt-0.5">${ftData.tipsBelanja}</p>
@@ -4800,14 +4904,14 @@
       if (FincestemCore.progress) {
         FincestemCore.progress.submitEvaluation(targetNisn, {
           day_number: dayNum,
-          task_type: dayNum === 7 ? 'final' : 'general',
+          task_type: 'general',
           score: avg,
           score_financial: sFin,
           score_culture: sCul,
           score_exploration: sExp,
           score_stem: sStem,
           predicate: pred,
-          feedback: fb || (dayNum === 7 ? (narrasiDict[pred.toUpperCase()] || 'Rapor akhir kokurikuler 4 pilar.') : (dayNum === 0 ? 'Simulasi penilaian dan gladi bersih sangat baik.' : 'Umpan balik fasilitator.')),
+          feedback: fb || (dayNum === 7 ? 'Penilaian harian instrumen Day 7 selesai.' : (dayNum === 0 ? 'Simulasi penilaian dan gladi bersih sangat baik.' : 'Umpan balik fasilitator.')),
           status: status,
           facilitator_name: fasilName
         }, function() {
@@ -5140,7 +5244,7 @@
             <option value="4">🧭 Day 4: EXPLORATION</option>
             <option value="5">🎬 Day 5: Video Observasi YouTube (5–10 Menit): STEM &amp; Eksplorasi</option>
             <option value="6">🎥 Day 6: Video Analisis YouTube (5–10 Menit): Finansial &amp; Solusi</option>
-            <option value="7">🏆 Day 7: Video Refleksi, BTS &amp; Jurnal Refleksi (Rapor Akhir 4 Pilar)</option>
+            <option value="7">📝 Day 7: Penilaian Harian (Refleksi &amp; Evaluasi)</option>
           `;
         }
       }
@@ -5426,55 +5530,12 @@
       const elStars = document.getElementById('heroAutoStars');
       if (elStars) elStars.textContent = '⭐'.repeat(stars) + '☆'.repeat(Math.max(0, 5 - stars));
       const elPred = document.getElementById('heroAutoPredicate');
-      if (elPred) elPred.textContent = (dayNum === 7) ? `Rapor: ${pred}` : pred;
+      if (elPred) elPred.textContent = pred;
 
-      // KHUSUS DAY 7: DETEKSI RAPOR KOKURIKULER LIVE
+      // KHUSUS DAY 7: DETEKSI RAPOR KOKURIKULER LIVE (Diatur melalui modal Nilai Akhir Rapor)
       const boxReportDet = document.getElementById('boxDay7ReportDetection');
       if (boxReportDet) {
-        if (dayNum === 7) {
-          boxReportDet.classList.remove('hidden');
-          const badgePred = document.getElementById('badgeDay7ReportPredicate');
-          const textAvg = document.getElementById('textDay7ReportAvg');
-          const descNarrative = document.getElementById('descDay7ReportNarrative');
-
-          const upperPred = pred.toUpperCase();
-          if (badgePred) {
-            if (upperPred === 'MAHIR') {
-              badgePred.innerHTML = '🏆 MAHIR';
-              badgePred.className = 'px-3.5 py-1 rounded-xl text-xs font-black bg-amber-500 text-slate-950 uppercase tracking-wider shadow-2xs border border-amber-600';
-            } else if (upperPred === 'CAKAP') {
-              badgePred.innerHTML = '🌟 CAKAP';
-              badgePred.className = 'px-3.5 py-1 rounded-xl text-xs font-black bg-emerald-600 text-white uppercase tracking-wider shadow-2xs border border-emerald-700';
-            } else {
-              badgePred.innerHTML = '🌱 BERKEMBANG';
-              badgePred.className = 'px-3.5 py-1 rounded-xl text-xs font-black bg-blue-600 text-white uppercase tracking-wider shadow-2xs border border-blue-700';
-            }
-          }
-          if (textAvg) textAvg.textContent = `${avg} / 100`;
-          const textStars = document.getElementById('textDay7ReportStars');
-          if (textStars) textStars.textContent = `${'⭐'.repeat(stars)} (${stars} Bintang)`;
-
-          // Highlight the active standard row
-          const rMahir = document.getElementById('rowStdMahir');
-          const rCakap = document.getElementById('rowStdCakap');
-          const rBerk = document.getElementById('rowStdBerkembang');
-          [rMahir, rCakap, rBerk].forEach(r => {
-            if (r) r.classList.remove('ring-2', 'ring-emerald-500', 'font-black', 'bg-white', 'shadow-2xs');
-          });
-          if (upperPred === 'MAHIR' && rMahir) {
-            rMahir.classList.add('ring-2', 'ring-amber-500', 'font-black', 'bg-white', 'shadow-2xs');
-          } else if (upperPred === 'CAKAP' && rCakap) {
-            rCakap.classList.add('ring-2', 'ring-emerald-500', 'font-black', 'bg-white', 'shadow-2xs');
-          } else if (rBerk) {
-            rBerk.classList.add('ring-2', 'ring-blue-500', 'font-black', 'bg-white', 'shadow-2xs');
-          }
-
-          if (descNarrative) {
-            descNarrative.textContent = FINCESTEM_NARRASI_RAPOR[upperPred] || FINCESTEM_NARRASI_RAPOR.CAKAP;
-          }
-        } else {
-          boxReportDet.classList.add('hidden');
-        }
+        boxReportDet.classList.add('hidden');
       }
     }
 
