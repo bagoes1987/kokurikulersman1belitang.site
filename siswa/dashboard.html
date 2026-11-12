@@ -1190,7 +1190,7 @@
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261112_d4_unlock_all_fix"></script>
+  <script src="../js/core.js?v=20261112_day5_prep"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -2846,7 +2846,7 @@
       // Cascading logic berurutan mutlak (Bebas Deadlock & Selalu Ramah Pengguna)
       const isFtDay7 = isFieldTrip && dayNum === 7;
       const isFtDay0 = isFieldTrip && dayNum === 0;
-      const isDayFlexible = (dayNum === 2 || dayNum === 3 || dayNum === 4);
+      const isDayFlexible = (dayNum === 2 || dayNum === 3 || dayNum === 4 || dayNum === 5);
       let canLkpd = (isFtDay0 || isDayFlexible) ? true : (hasMateri || hasLkpd);
       let canDok = (isFtDay0 || isDayFlexible || (isFieldTrip && dayNum <= 7)) ? true : (hasLkpd || hasMateri || hasDok);
       let canAsesmen = (isFtDay0 || isDayFlexible) ? true : (hasLkpd || hasMateri || hasDok);

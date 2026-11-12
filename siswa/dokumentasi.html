@@ -410,7 +410,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261112_flourenchia_ft_d4_fix"></script>
+  <script src="../js/core.js?v=20261112_day5_prep"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -965,7 +965,7 @@
             // Peserta Field Trip & Non-Field Trip (Day 0 s.d. Day 7) selalu memiliki hak akses untuk membuka halaman dan mengunggah foto
             // jika hari sebelumnya telah tuntas (atau Day 0 s.d. Day 4, atau Field Trip Day 1-7) atau jika ada riwayat foto sebelumnya
             const studentCategory = getStudentCategoryInfo();
-            const prevDone = (dayNum <= 4) || (studentCategory.isFieldTrip && dayNum <= 7) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
+            const prevDone = (dayNum <= 5) || (studentCategory.isFieldTrip && dayNum <= 7) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
             if (prevDone || hasExistingDok || isReadOnlyUrl) {
               access.canAccess = true;
               if (isReadOnlyUrl) {

@@ -123,6 +123,8 @@ function ensureDaySchedulesTable($pdo) {
             $pdo->exec("UPDATE `day_schedules_field_trip` SET `date` = '2026-11-11', `start_time` = '07:00:00', `end_time` = '23:59:00', `is_active` = 1, `auto_schedule` = 1 WHERE `day_number` = 3");
             $pdo->exec("UPDATE `day_schedules_field_trip` SET `date` = '2026-11-12', `start_time` = '04:00:00', `end_time` = '23:59:00', `is_active` = 1, `auto_schedule` = 1 WHERE `day_number` = 4");
             $pdo->exec("UPDATE `day_schedules` SET `date` = '2026-11-12', `start_time` = '07:00:00', `end_time` = '23:59:00', `is_active` = 1, `auto_schedule` = 1 WHERE `day_number` = 4");
+            $pdo->exec("UPDATE `day_schedules_field_trip` SET `date` = '2026-11-13', `start_time` = '07:00:00', `end_time` = '23:59:00', `is_active` = 1, `auto_schedule` = 1 WHERE `day_number` = 5");
+            $pdo->exec("UPDATE `day_schedules` SET `date` = '2026-11-13', `start_time` = '07:00:00', `end_time` = '23:59:00', `is_active` = 1, `auto_schedule` = 1 WHERE `day_number` = 5");
 
             // Auto-update Day 4 Non-Field Trip ke konsep Eksplorasi Peralatan & Analisis STEM
             $pdo->exec("

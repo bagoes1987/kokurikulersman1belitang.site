@@ -5580,8 +5580,7 @@
       (localStorage.getItem('fincestem_admin_testing_session') === 'true') ||
       (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn))
     );
-    const hasDok = isTester ? true : checkNftPrerequisiteDok(dayNum, cleanNisn);
-    const isLockedByPrereq = (!hasMateri || !hasDok) && !isSubmitted && !isTester;
+    const isLockedByPrereq = !hasMateri && !isSubmitted && !isTester;
     const readOnlyMode = isReadOnly || isSubmitted || isLockedByPrereq;
 
     const valObjectName = saved.objectName || saved.placeName || saved.fin_subject || saved.exp_location || (materiObj && materiObj.objectName) || '';
@@ -6119,8 +6118,21 @@
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
     const cleanNisn = String(u.nisn || u.identifier || '-').trim();
     const data = collectNftVideoDayData(dayNum);
+
+    const draftCandidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      draftCandidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) draftCandidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    if (u.nis) draftCandidateIds.add(String(u.nis).trim());
+    if (u.identifier) draftCandidateIds.add(String(u.identifier).trim());
+
     try {
-      localStorage.setItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + cleanNisn, JSON.stringify(data));
+      draftCandidateIds.forEach(id => {
+        try {
+          localStorage.setItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + id, JSON.stringify(data));
+        } catch(e) {}
+      });
       const infoEl = document.getElementById(`txtNftVidDraftInfoD${dayNum}`);
       if (infoEl) {
         const t = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -6146,14 +6158,14 @@
     if (!data.youtube_id) missing.push('Link / URL Video YouTube Valid (https://youtu.be/... atau youtube.com/watch?v=...)');
 
     if (isDay5) {
-      if (data.science_summary.length < 25) missing.push('Ringkasan Poin SCIENCE (Sains) di Video');
-      if (data.tech_summary.length < 25) missing.push('Ringkasan Poin TECHNOLOGY (Teknologi & Alat) di Video');
-      if (data.eng_summary.length < 25) missing.push('Ringkasan Poin ENGINEERING (Rekayasa) di Video');
-      if (data.math_summary.length < 25) missing.push('Ringkasan Poin MATHEMATICS (Perhitungan) di Video');
+      if (data.science_summary.length < 10) missing.push('Ringkasan Poin SCIENCE (Sains) di Video (Min 10 karakter)');
+      if (data.tech_summary.length < 10) missing.push('Ringkasan Poin TECHNOLOGY (Teknologi & Alat) di Video (Min 10 karakter)');
+      if (data.eng_summary.length < 10) missing.push('Ringkasan Poin ENGINEERING (Rekayasa) di Video (Min 10 karakter)');
+      if (data.math_summary.length < 10) missing.push('Ringkasan Poin MATHEMATICS (Perhitungan) di Video (Min 10 karakter)');
     } else {
-      if (data.financial_summary.length < 25) missing.push('Ringkasan Analisis PILAR FINANCIAL (Modal, Biaya & Laba)');
-      if (data.constraints_summary.length < 25) missing.push('Ringkasan Evaluasi KENDALA & RISIKO Usaha');
-      if (data.innovation_summary.length < 25) missing.push('Ringkasan GAGASAN SOLUSI & INOVASI FINCESTEM');
+      if (data.financial_summary.length < 10) missing.push('Ringkasan Analisis PILAR FINANCIAL (Modal, Biaya & Laba) (Min 10 karakter)');
+      if (data.constraints_summary.length < 10) missing.push('Ringkasan Evaluasi KENDALA & RISIKO Usaha (Min 10 karakter)');
+      if (data.innovation_summary.length < 10) missing.push('Ringkasan GAGASAN SOLUSI & INOVASI FINCESTEM (Min 10 karakter)');
     }
 
     if (missing.length > 0) {
