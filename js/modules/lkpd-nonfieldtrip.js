@@ -4930,22 +4930,22 @@
     // Card 1: Bagian A
     const rLen = data.roadNotes.length;
     const cntR = document.getElementById('countD4_road');
-    if (cntR) cntR.textContent = `${rLen} / 25 Karakter`;
-    const c1Ok = (data.location.length >= 3 && data.district.length >= 2 && rLen >= 25);
+    if (cntR) cntR.textContent = `${rLen} / 10 Karakter`;
+    const c1Ok = (data.location.length >= 2 && rLen >= 10);
     updateCardUI(1, c1Ok);
 
     // Card 2: Bagian B
     const eLen = data.envNotes.length;
     const cntE = document.getElementById('countD4_env');
-    if (cntE) cntE.textContent = `${eLen} / 25 Karakter`;
-    const c2Ok = (eLen >= 25);
+    if (cntE) cntE.textContent = `${eLen} / 10 Karakter`;
+    const c2Ok = (eLen >= 10);
     updateCardUI(2, c2Ok);
 
     // Card 3: Bagian C
     const sLen = data.supplyNotes.length;
     const cntS = document.getElementById('countD4_supply');
-    if (cntS) cntS.textContent = `${sLen} / 25 Karakter`;
-    const c3Ok = (sLen >= 25);
+    if (cntS) cntS.textContent = `${sLen} / 10 Karakter`;
+    const c3Ok = (sLen >= 10);
     updateCardUI(3, c3Ok);
 
     // Card 4: Bagian D (Foto HP)
@@ -4970,8 +4970,8 @@
     // Card 5: Bagian E
     const concLen = data.conclusion.length;
     const cntConc = document.getElementById('countD4_conc');
-    if (cntConc) cntConc.textContent = `${concLen} / 30 Karakter`;
-    const c5Ok = (concLen >= 30);
+    if (cntConc) cntConc.textContent = `${concLen} / 15 Karakter`;
+    const c5Ok = (concLen >= 15);
     updateCardUI(5, c5Ok);
 
     return { c1Ok, c2Ok, c3Ok, c4Ok, c5Ok, allOk: (c1Ok && c2Ok && c3Ok && c4Ok && c5Ok) };
@@ -4981,9 +4981,30 @@
     const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
     const cleanNisn = String(u.nisn || u.identifier || '-').trim();
     const data = collectNftDay4Data();
+
+    const draftCandidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      draftCandidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) draftCandidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    if (u.nis) draftCandidateIds.add(String(u.nis).trim());
+    if (u.identifier) draftCandidateIds.add(String(u.identifier).trim());
+
     try {
-      localStorage.setItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn, JSON.stringify(data));
-      localStorage.setItem('fincestem_draft_nft_lkpd_d4_' + cleanNisn, JSON.stringify(data));
+      draftCandidateIds.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_nft_day4_draft_' + id, JSON.stringify(data));
+          localStorage.setItem('fincestem_draft_nft_lkpd_d4_' + id, JSON.stringify(data));
+        } catch(e) {
+          try {
+            const light = Object.assign({}, data);
+            if (light.photoUrl1 && light.photoUrl1.length > 200) light.photoUrl1 = 'photo_draft_day4';
+            if (light.photoUrl2 && light.photoUrl2.length > 200) light.photoUrl2 = 'photo_draft_day4';
+            localStorage.setItem('fincestem_lkpd_nft_day4_draft_' + id, JSON.stringify(light));
+            localStorage.setItem('fincestem_draft_nft_lkpd_d4_' + id, JSON.stringify(light));
+          } catch(e2) {}
+        }
+      });
       const infoEl = document.getElementById('txtNftD4DraftInfo');
       if (infoEl) {
         const timeStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -4992,16 +5013,7 @@
       if (showToast !== false && window.FincestemCore && FincestemCore.ui) {
         FincestemCore.ui.toast('Draf LKPD Day 4 berhasil disimpan!', 'success');
       }
-    } catch(e) {
-      // Quota exceeded fallback: simpan tanpa string foto panjang
-      try {
-        const light = Object.assign({}, data);
-        if (light.photoUrl1 && light.photoUrl1.length > 200) light.photoUrl1 = 'photo_draft_day4';
-        if (light.photoUrl2 && light.photoUrl2.length > 200) light.photoUrl2 = 'photo_draft_day4';
-        localStorage.setItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn, JSON.stringify(light));
-        localStorage.setItem('fincestem_draft_nft_lkpd_d4_' + cleanNisn, JSON.stringify(light));
-      } catch(e2) {}
-    }
+    } catch(e) {}
   }
 
   function submitNonFieldTripDay4LKPD() {
@@ -5032,13 +5044,13 @@
     }
 
     const missing = [];
-    if (data.location.length < 3) missing.push('Nama Lokasi / Desa di OKU Timur');
+    if (data.location.length < 2) missing.push('Nama Lokasi / Desa di OKU Timur');
     if (!data.district) missing.push('Kecamatan di OKU Timur');
-    if (data.roadNotes.length < 25) missing.push('Catatan Akses Jalan (Min 25 karakter)');
-    if (data.envNotes.length < 25) missing.push('Catatan Lingkungan Sekitar (Min 25 karakter)');
-    if (data.supplyNotes.length < 25) missing.push('Catatan Alur Masuk & Keluar Barang (Min 25 karakter)');
+    if (data.roadNotes.length < 10) missing.push('Catatan Akses Jalan (Min 10 karakter)');
+    if (data.envNotes.length < 10) missing.push('Catatan Lingkungan Sekitar (Min 10 karakter)');
+    if (data.supplyNotes.length < 10) missing.push('Catatan Alur Masuk & Keluar Barang (Min 10 karakter)');
     if (!hasPhotoOk) missing.push('Foto Tempat Usaha / Jalan Depan (Bagian D)');
-    if (data.conclusion.length < 30) missing.push('Kesimpulan Jelajah Lapangan (Min 30 karakter)');
+    if (data.conclusion.length < 15) missing.push('Kesimpulan Jelajah Lapangan (Min 15 karakter)');
 
     if (missing.length > 0) {
       if (window.FincestemCore && FincestemCore.ui) {
@@ -5062,6 +5074,8 @@
       saveCandidateIds.add(cleanNisn.replace(/^0+/, ''));
       if (cleanNisn.length >= 8 && cleanNisn.length <= 10) saveCandidateIds.add(cleanNisn.padStart(10, '0'));
     }
+    if (u.nis) saveCandidateIds.add(String(u.nis).trim());
+    if (u.identifier) saveCandidateIds.add(String(u.identifier).trim());
 
     try {
       saveCandidateIds.forEach(id => {

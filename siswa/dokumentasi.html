@@ -410,7 +410,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261110_d3_prep"></script>
+  <script src="../js/core.js?v=20261112_flourenchia_ft_d4_fix"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -963,8 +963,9 @@
 
             // Jaminan Akses Dokumentasi:
             // Peserta Field Trip & Non-Field Trip (Day 0 s.d. Day 7) selalu memiliki hak akses untuk membuka halaman dan mengunggah foto
-            // jika hari sebelumnya telah tuntas (atau Day 0 / Day 1 / Day 2 / Day 3) atau jika ada riwayat foto sebelumnya
-            const prevDone = (dayNum <= 3) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
+            // jika hari sebelumnya telah tuntas (atau Day 0 s.d. Day 4, atau Field Trip Day 1-7) atau jika ada riwayat foto sebelumnya
+            const studentCategory = getStudentCategoryInfo();
+            const prevDone = (dayNum <= 4) || (studentCategory.isFieldTrip && dayNum <= 7) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
             if (prevDone || hasExistingDok || isReadOnlyUrl) {
               access.canAccess = true;
               if (isReadOnlyUrl) {
@@ -983,7 +984,6 @@
             }
 
             // Validasi alur berurutan khusus Day 1 s.d. 7 Field Trip
-            const studentCategory = getStudentCategoryInfo();
             const isTesterDok = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(nisn));
             if (!isTesterDok && studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
               const ids = [nisn, String(nisn).trim(), String(nisn).trim().replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
@@ -1053,21 +1053,9 @@
                   return;
                 }
               } else if (dayNum === 4) {
-                // Khusus Day 4: LKPD Bromo wajib selesai dulu
-                let hasLkpdBromo = false;
-                for (const id of ids) {
-                  if (localStorage.getItem('fincestem_lkpd_ft_day4_' + id) || localStorage.getItem('fincestem_lkpd_bromo_saved_' + id) === 'true') {
-                    hasLkpdBromo = true;
-                    break;
-                  }
-                }
-                if (!hasLkpdBromo) {
-                  FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan LKPD Day 4 (Eksplorasi Bromo & Kearifan Budaya Tengger) sebelum mengunggah Dokumentasi!', 'warning');
-                  setTimeout(() => {
-                    window.location.replace('lkpd.html?day=4');
-                  }, 1200);
-                  return;
-                }
+                // Khusus Day 4 Field Trip (Bromo): Dokumentasi foto lapangan bebas diunggah kapan saja saat eksplorasi Bromo
+                // Siswa dapat mengambil foto sunrise, kawah, jeep & pasir berbisik tanpa terblokir LKPD
+                // Akses dokumentasi selalu terbuka penuh
               } else if (dayNum === 6) {
                 // Khusus Day 6: Alur 2 Sesi Berurutan
                 const urlParams = new URLSearchParams(window.location.search);

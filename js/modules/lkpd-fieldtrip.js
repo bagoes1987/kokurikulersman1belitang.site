@@ -3681,9 +3681,24 @@
       }
 
       setTimeout(() => {
-        try {
-          localStorage.setItem('fincestem_lkpd_ft_day4_' + cleanNisn, JSON.stringify(payload));
-        } catch(e) {}
+        const ftD4CandidateIds = new Set([cleanNisn]);
+        if (cleanNisn) {
+          ftD4CandidateIds.add(cleanNisn.replace(/^0+/, ''));
+          if (cleanNisn.length >= 8 && cleanNisn.length <= 10) ftD4CandidateIds.add(cleanNisn.padStart(10, '0'));
+        }
+        const uCurrent = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+        if (uCurrent.nis) ftD4CandidateIds.add(String(uCurrent.nis).trim());
+        if (uCurrent.identifier) ftD4CandidateIds.add(String(uCurrent.identifier).trim());
+
+        ftD4CandidateIds.forEach(id => {
+          try {
+            localStorage.setItem('fincestem_lkpd_ft_day4_' + id, JSON.stringify(payload));
+            localStorage.setItem('fincestem_lkpd_day4_' + id, JSON.stringify(payload));
+            if (isSubmit) {
+              localStorage.setItem('fincestem_lkpd_bromo_saved_' + id, 'true');
+            }
+          } catch(e) {}
+        });
 
         if (FincestemCore.progress && cleanNisn) {
           FincestemCore.progress.submitTask(cleanNisn, 4, 'lkpd', payload);
