@@ -4388,13 +4388,18 @@
               <span class="material-symbols-outlined text-emerald-700 text-2xl">verified</span>
               <div>
                 <h4 class="font-extrabold text-xs sm:text-sm text-emerald-950">LKPD Jelajah Lapangan Day 4 Telah Berhasil Diserahkan Resmi!</h4>
-                <p class="text-[11px] text-emerald-800">Tersimpan aman pada sistem pembinaan fasilitator. Anda dapat melanjutkan ke Kuis Asesmen Day 4.</p>
+                <p class="text-[11px] text-emerald-800">Tersimpan aman pada sistem pembinaan fasilitator. Silakan melanjutkan ke Tahap 3 (Dokumentasi Foto) lalu ke Asesmen Day 4.</p>
               </div>
             </div>
-            <a href="asesmen.html?day=4" class="px-4 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white text-xs font-black flex items-center justify-center gap-1.5 shrink-0 shadow-xs">
-              <span>Lanjut Asesmen Day 4 (10 Soal PG)</span>
-              <span class="material-symbols-outlined text-sm">arrow_forward</span>
-            </a>
+            <div class="flex items-center gap-2 shrink-0">
+              <a href="dokumentasi.html?day=4" class="px-4 py-2 rounded-xl bg-teal-800 hover:bg-teal-900 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow-xs">
+                <span>Lanjut ke Dokumentasi Foto</span>
+                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+              </a>
+              <a href="asesmen.html?day=4" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold flex items-center justify-center gap-1">
+                <span>Asesmen</span>
+              </a>
+            </div>
           </div>
         ` : ''}
 
@@ -4929,24 +4934,32 @@
     data.submittedAt = data.submitted_at;
     data.summary = `LKPD Day 4 (Jelajah Lapangan & Distribusi - ${data.sectorName}): Lokasi: ${data.location} (${data.district}) | Alur Pasokan & Akses Jalan Terverifikasi.`;
 
+    const saveCandidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      saveCandidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) saveCandidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+
     try {
-      localStorage.setItem('fincestem_lkpd_nft_day4_' + cleanNisn, JSON.stringify(data));
-      localStorage.setItem('fincestem_lkpd_day4_' + cleanNisn, JSON.stringify(data));
-      localStorage.setItem('fincestem_nft_sector_d4_' + cleanNisn, data.sectorKey);
-      // Bersihkan cache paket asesmen Day 4 agar soalnya otomatis sinkron ke sektor pilihan
-      localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d4_' + cleanNisn);
+      saveCandidateIds.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_nft_day4_' + id, JSON.stringify(data));
+          localStorage.setItem('fincestem_lkpd_day4_' + id, JSON.stringify(data));
+          localStorage.setItem('fincestem_nft_sector_d4_' + id, data.sectorKey);
+          localStorage.removeItem('fincestem_pkg_nft_asesmen_v3_d4_' + id);
+          const rawM = localStorage.getItem('fincestem_materi_nft_day4_' + id);
+          if (rawM) {
+            const pm = JSON.parse(rawM);
+            pm.selectedSector = data.sectorKey;
+            localStorage.setItem('fincestem_materi_nft_day4_' + id, JSON.stringify(pm));
+          }
+        } catch(e) {}
+      });
       Object.keys(localStorage).forEach(k => {
-        if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d4_') && k.endsWith(cleanNisn)) {
+        if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d4_')) {
           localStorage.removeItem(k);
         }
       });
-      // Sinkronkan ke Modul Day 4
-      const rawM = localStorage.getItem('fincestem_materi_nft_day4_' + cleanNisn);
-      if (rawM) {
-        const pm = JSON.parse(rawM);
-        pm.selectedSector = data.sectorKey;
-        localStorage.setItem('fincestem_materi_nft_day4_' + cleanNisn, JSON.stringify(pm));
-      }
     } catch(e) {}
 
     const onDone = function() {
@@ -4973,11 +4986,15 @@
             </p>
           </div>
           <div class="w-full flex flex-col gap-2 pt-2">
-            <a href="asesmen.html?day=4" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-              <span class="material-symbols-outlined text-base">quiz</span>
-              <span>Lanjut ke Kuis Asesmen Day 4 (10 Soal PG)</span>
+            <a href="dokumentasi.html?day=4" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">photo_camera</span>
+              <span>Lanjut ke Tahap 3: Dokumentasi Foto Day 4</span>
             </a>
-            <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
+            <a href="asesmen.html?day=4" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">
+              <span class="material-symbols-outlined text-base">quiz</span>
+              <span>Buka Kuis Asesmen Day 4</span>
+            </a>
+            <a href="dashboard.html" class="w-full py-2 rounded-xl text-slate-500 hover:text-slate-800 font-medium text-[11px] flex items-center justify-center gap-1 transition-all cursor-pointer">
               <span>Kembali ke Beranda Dashboard</span>
             </a>
           </div>

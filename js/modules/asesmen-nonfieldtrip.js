@@ -544,7 +544,7 @@
                       localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + cid);
         if (rawLk) {
           const p = JSON.parse(rawLk);
-          if (p && (p.submitted || p.submittedAt || p.answers)) return true;
+          if (p && (p.submitted || p.is_submitted || p.submitted_at || p.submittedAt || p.answers || p.location)) return true;
         }
       } catch(e) {}
     }
