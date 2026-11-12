@@ -1190,7 +1190,7 @@
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261112_completed_badge_fix"></script>
+  <script src="../js/core.js?v=20261112_photo_compress_d4_fix"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -2673,6 +2673,7 @@
                         localStorage.getItem(`fincestem_lkpd_ft_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + id) ||
+                        localStorage.getItem(`fincestem_draft_nft_lkpd_d${dayNum}_` + id) ||
                         localStorage.getItem(`fincestem_lkpd_draft_day${dayNum}_` + id);
             if (raw) {
               const p = JSON.parse(raw);

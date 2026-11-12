@@ -545,6 +545,7 @@
         const rawLk = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + cid) ||
                       localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + cid) ||
                       localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + cid) ||
+                      localStorage.getItem(`fincestem_draft_nft_lkpd_d${dayNum}_` + cid) ||
                       localStorage.getItem(`fincestem_lkpd_draft_day${dayNum}_` + cid);
         if (rawLk) {
           const p = JSON.parse(rawLk);

@@ -4702,23 +4702,32 @@
   }
   window.renderNonFieldTripDay4LKPD = renderNonFieldTripDay4LKPD;
 
-  // Real-time photo handling with Base64 preview
+  // Real-time photo handling with Base64 preview & auto-compression (<80 KB)
   window.onNftDay4PhotoSelected = function(photoIndex) {
     const inputEl = document.getElementById('nftD4_filePhoto' + photoIndex);
     const previewEl = document.getElementById('previewD4_photo' + photoIndex);
     if (!inputEl || !inputEl.files || !inputEl.files[0]) return;
 
     const file = inputEl.files[0];
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      const b64 = e.target.result;
+    const applyCompressedPhoto = function(b64) {
       if (previewEl) {
         previewEl.innerHTML = `<img src="${b64}" class="w-full h-full object-cover rounded-xl">`;
+        previewEl.setAttribute('data-photo-url', b64);
       }
-      previewEl.setAttribute('data-photo-url', b64);
       onNftDay4FieldInput();
     };
-    reader.readAsDataURL(file);
+
+    if (window.FincestemCore && FincestemCore.camera && typeof FincestemCore.camera.compressImage === 'function') {
+      FincestemCore.camera.compressImage(file, 640, 0.72, function(compressedDataUrl) {
+        applyCompressedPhoto(compressedDataUrl || '');
+      });
+    } else {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        applyCompressedPhoto(e.target.result || '');
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   let day4DraftTimer = null;
@@ -4792,8 +4801,31 @@
     const valOf = (id) => (document.getElementById(id)?.value || '').trim();
     const p1El = document.getElementById('previewD4_photo1');
     const p2El = document.getElementById('previewD4_photo2');
-    const photo1 = (p1El && p1El.getAttribute('data-photo-url')) || (p1El?.querySelector('img')?.src) || '';
-    const photo2 = (p2El && p2El.getAttribute('data-photo-url')) || (p2El?.querySelector('img')?.src) || '';
+    let photo1 = (p1El && p1El.getAttribute('data-photo-url')) || (p1El?.querySelector('img')?.src) || '';
+    let photo2 = (p2El && p2El.getAttribute('data-photo-url')) || (p2El?.querySelector('img')?.src) || '';
+
+    // Fallback otomatis jika foto belum terambil di preview tapi siswa sudah pernah simpan draf / dokumentasi Day 4
+    if (!photo1) {
+      try {
+        const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
+        const cid = String(u.nisn || u.identifier || '').trim();
+        const rawSaved = localStorage.getItem('fincestem_lkpd_nft_day4_' + cid) || localStorage.getItem('fincestem_lkpd_nft_day4_draft_' + cid) || localStorage.getItem('fincestem_draft_nft_lkpd_d4_' + cid);
+        if (rawSaved) {
+          const p = JSON.parse(rawSaved);
+          if (p && p.photoUrl1) photo1 = p.photoUrl1;
+        }
+        if (!photo1) {
+          const rawDb = localStorage.getItem('fincestem_db_2026_v1');
+          if (rawDb) {
+            const db = JSON.parse(rawDb);
+            if (Array.isArray(db.documentation)) {
+              const dokItem = db.documentation.find(d => Number(d.day || d.day_number) === 4 && (d.nisn === cid || d.author_nisn === cid));
+              if (dokItem && dokItem.url) photo1 = dokItem.url;
+            }
+          }
+        }
+      } catch(e) {}
+    }
 
     const secKey = valOf('nftD4_sectorKey') || 'pertanian';
     const guide = NFT_DAY4_EXPLORATION_GUIDE[secKey] || NFT_DAY4_EXPLORATION_GUIDE.pertanian;
@@ -4872,18 +4904,22 @@
     updateCardUI(3, c3Ok);
 
     // Card 4: Bagian D (Foto HP)
-    // Cek ada photoUrl1 atau siswa sudah pernah simpan
+    // Cek ada photoUrl1, siswa sudah pernah simpan, atau sudah unggah di Tahap Dokumentasi
     let hasSavedPhoto = false;
     try {
       const u = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || window.activeUser || {};
       const cid = String(u.nisn || u.identifier || '').trim();
-      const rawD4 = localStorage.getItem('fincestem_lkpd_nft_day4_' + cid) || localStorage.getItem('fincestem_lkpd_nft_day4_draft_' + cid);
+      const rawD4 = localStorage.getItem('fincestem_lkpd_nft_day4_' + cid) || localStorage.getItem('fincestem_lkpd_nft_day4_draft_' + cid) || localStorage.getItem('fincestem_draft_nft_lkpd_d4_' + cid);
       if (rawD4) {
         const p = JSON.parse(rawD4);
         if (p && p.photoUrl1) hasSavedPhoto = true;
       }
+      if (!hasSavedPhoto) {
+        const hasDokStored = localStorage.getItem('fincestem_dok_nft_day4_' + cid) === 'true' || localStorage.getItem('fincestem_dok_day4_' + cid) === 'true';
+        if (hasDokStored) hasSavedPhoto = true;
+      }
     } catch(e) {}
-    const c4Ok = (data.photoUrl1 && data.photoUrl1.length > 50) || hasSavedPhoto;
+    const c4Ok = !!(data.photoUrl1 && data.photoUrl1.length > 50) || hasSavedPhoto;
     updateCardUI(4, c4Ok);
 
     // Card 5: Bagian E
@@ -4902,6 +4938,7 @@
     const data = collectNftDay4Data();
     try {
       localStorage.setItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn, JSON.stringify(data));
+      localStorage.setItem('fincestem_draft_nft_lkpd_d4_' + cleanNisn, JSON.stringify(data));
       const infoEl = document.getElementById('txtNftD4DraftInfo');
       if (infoEl) {
         const timeStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -4910,7 +4947,16 @@
       if (showToast !== false && window.FincestemCore && FincestemCore.ui) {
         FincestemCore.ui.toast('Draf LKPD Day 4 berhasil disimpan!', 'success');
       }
-    } catch(e) {}
+    } catch(e) {
+      // Quota exceeded fallback: simpan tanpa string foto panjang
+      try {
+        const light = Object.assign({}, data);
+        if (light.photoUrl1 && light.photoUrl1.length > 200) light.photoUrl1 = 'photo_draft_day4';
+        if (light.photoUrl2 && light.photoUrl2.length > 200) light.photoUrl2 = 'photo_draft_day4';
+        localStorage.setItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn, JSON.stringify(light));
+        localStorage.setItem('fincestem_draft_nft_lkpd_d4_' + cleanNisn, JSON.stringify(light));
+      } catch(e2) {}
+    }
   }
 
   function submitNonFieldTripDay4LKPD() {
@@ -4918,13 +4964,35 @@
     const cleanNisn = String(u.nisn || u.identifier || '-').trim();
     const data = collectNftDay4Data();
 
+    // Cek kelengkapan foto dengan fallback ke dokumentasi tersimpan
+    let hasPhotoOk = !!(data.photoUrl1 && data.photoUrl1.length >= 50);
+    if (!hasPhotoOk) {
+      try {
+        const rawD4 = localStorage.getItem('fincestem_lkpd_nft_day4_' + cleanNisn) || localStorage.getItem('fincestem_lkpd_nft_day4_draft_' + cleanNisn) || localStorage.getItem('fincestem_draft_nft_lkpd_d4_' + cleanNisn);
+        if (rawD4) {
+          const p = JSON.parse(rawD4);
+          if (p && p.photoUrl1) {
+            data.photoUrl1 = p.photoUrl1;
+            hasPhotoOk = true;
+          }
+        }
+        if (!hasPhotoOk) {
+          const hasDokDay4 = localStorage.getItem('fincestem_dok_nft_day4_' + cleanNisn) === 'true' || localStorage.getItem('fincestem_dok_day4_' + cleanNisn) === 'true';
+          if (hasDokDay4) {
+            data.photoUrl1 = 'photo_dok_day4_verified';
+            hasPhotoOk = true;
+          }
+        }
+      } catch(e) {}
+    }
+
     const missing = [];
     if (data.location.length < 3) missing.push('Nama Lokasi / Desa di OKU Timur');
     if (!data.district) missing.push('Kecamatan di OKU Timur');
     if (data.roadNotes.length < 25) missing.push('Catatan Akses Jalan (Min 25 karakter)');
     if (data.envNotes.length < 25) missing.push('Catatan Lingkungan Sekitar (Min 25 karakter)');
     if (data.supplyNotes.length < 25) missing.push('Catatan Alur Masuk & Keluar Barang (Min 25 karakter)');
-    if (!data.photoUrl1 || data.photoUrl1.length < 50) missing.push('Foto Tempat Usaha / Jalan Depan (Bagian D)');
+    if (!hasPhotoOk) missing.push('Foto Tempat Usaha / Jalan Depan (Bagian D)');
     if (data.conclusion.length < 30) missing.push('Kesimpulan Jelajah Lapangan (Min 30 karakter)');
 
     if (missing.length > 0) {
@@ -4963,7 +5031,17 @@
             pm.selectedSector = data.sectorKey;
             localStorage.setItem('fincestem_materi_nft_day4_' + id, JSON.stringify(pm));
           }
-        } catch(e) {}
+        } catch(e) {
+          // Quota exceeded fallback: simpan payload ringan dengan flag submitted: true
+          try {
+            const light = Object.assign({}, data);
+            if (light.photoUrl1 && light.photoUrl1.length > 200) light.photoUrl1 = 'photo_submitted_day4';
+            if (light.photoUrl2 && light.photoUrl2.length > 200) light.photoUrl2 = 'photo_submitted_day4';
+            localStorage.setItem('fincestem_lkpd_nft_day4_' + id, JSON.stringify(light));
+            localStorage.setItem('fincestem_lkpd_day4_' + id, JSON.stringify(light));
+            localStorage.setItem('fincestem_nft_sector_d4_' + id, data.sectorKey);
+          } catch(e2) {}
+        }
       });
       Object.keys(localStorage).forEach(k => {
         if (k.startsWith('fincestem_pkg_nft_asesmen_v3_d4_')) {
