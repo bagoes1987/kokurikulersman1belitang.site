@@ -19,6 +19,17 @@
         var role = localStorage.getItem('fincestem_role');
         if (auth !== 'true' || role !== 'siswa') {
           window.location.replace('index.html');
+          return;
+        }
+        var FINCESTEM_BUILD = '20261112_day4_flow_fix_v3';
+        var lastBuild = localStorage.getItem('fincestem_dashboard_build');
+        if (lastBuild !== FINCESTEM_BUILD) {
+          localStorage.setItem('fincestem_dashboard_build', FINCESTEM_BUILD);
+          var url = new URL(window.location.href);
+          if (url.searchParams.get('_v') !== FINCESTEM_BUILD) {
+            url.searchParams.set('_v', FINCESTEM_BUILD);
+            window.location.replace(url.href);
+          }
         }
       } catch (e) {}
     })();
@@ -4399,9 +4410,11 @@
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
       const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
+      const isDayFlexible = (dNum === 2 || dNum === 3 || dNum === 4 || dNum === 5);
 
       // VALIDASI ALUR BERURUTAN: DAY 1 S.D. 7 (SEMUA SISWA) & DAY 0 (SEMUA SISWA)
-      if ((dNum >= 1 && dNum <= 7) || dNum === 0) {
+      // Khusus Day 2, 3, 4, 5 (Flexible Flow): Bebas akses seluruh menu tanpa pop-up peringatan terkunci
+      if (!isDayFlexible && ((dNum >= 1 && dNum <= 7) || dNum === 0)) {
         const progStatus = getFTProgressStatus(null, dNum);
         const isFtDay0 = isFieldTrip && dNum === 0;
         const isNonFtD5D6 = !isFieldTrip && (dNum === 5 || dNum === 6 || dNum === 7);
