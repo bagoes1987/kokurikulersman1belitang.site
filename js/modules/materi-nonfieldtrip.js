@@ -3231,13 +3231,15 @@
             Modul Day ${dayNum} Berhasil Dikirim!
           </h3>
           <p class="text-xs text-slate-600 leading-relaxed mt-1 text-justify">
-            Selamat! Seluruh 5 kartu kajian riset mandiri Day ${dayNum} Anda telah tervalidasi lengkap dan tercatat resmi di sistem pembinaan fasilitator. Tahap selanjutnya adalah <strong>LKPD Investigasi Lapangan Day ${dayNum}</strong>.
+            ${(dayNum === 5 || dayNum === 6)
+              ? `Selamat! Resume rencana video Day ${dayNum} Anda telah tercatat resmi. Tahap selanjutnya adalah <strong>Dokumentasi Foto Riset Lapangan Day ${dayNum}</strong>.`
+              : `Selamat! Seluruh 5 kartu kajian riset mandiri Day ${dayNum} Anda telah tervalidasi lengkap dan tercatat resmi di sistem pembinaan fasilitator. Tahap selanjutnya adalah <strong>LKPD Investigasi Lapangan Day ${dayNum}</strong>.`}
           </p>
         </div>
 
         <div class="w-full flex flex-col gap-2 pt-2">
-          <a href="lkpd.html?day=${dayNum}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
-            <span>Lanjut ke LKPD Day ${dayNum}</span>
+          <a href="${(dayNum === 5 || dayNum === 6) ? `dokumentasi.html?day=${dayNum}` : `lkpd.html?day=${dayNum}`}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span>${(dayNum === 5 || dayNum === 6) ? `Lanjut ke Tahap 2: Dokumentasi Foto Day ${dayNum}` : `Lanjut ke LKPD Day ${dayNum}`}</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
           </a>
           <a href="dashboard.html" class="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs flex items-center justify-center gap-1 transition-all cursor-pointer">

@@ -451,12 +451,11 @@
     }
 
     // Cek Prasyarat: Modul Belajar, LKPD, & Dokumentasi (khusus Day 1-7)
-    // Day 0 s.d. Day 5: Fleksibel tanpa deadlock agar siswa tidak terblokir saat mengerjakan di lapangan
+    // Day 0 s.d. Day 6: Fleksibel tanpa deadlock agar siswa tidak terblokir saat mengerjakan di lapangan
     const isTesterBypass = (window.FincestemCore && window.FincestemCore.schedule && typeof window.FincestemCore.schedule.isTesterStudent === 'function' && window.FincestemCore.schedule.isTesterStudent(examState.cleanNisn));
-    const isFlexibleDay = (dayNum >= 0 && dayNum <= 5);
+    const isFlexibleDay = (dayNum >= 0 && dayNum <= 6);
     const hasLkpd = (isTesterBypass || isFlexibleDay) ? true : checkPrerequisiteLkpd(dayNum, examState.cleanNisn);
     const hasMateri = (isTesterBypass || isFlexibleDay) ? true : (hasLkpd || checkPrerequisiteMateri(dayNum, examState.cleanNisn));
-    // Khusus Day 6 (video) Dokumentasi mendahului LKPD video, Day 1-5 Dokumentasi fleksibel bersamaan asesmen
     const hasDok = (isTesterBypass || isFlexibleDay) ? true : (dayNum === 6 ? checkPrerequisiteDok(dayNum, examState.cleanNisn) : true);
 
     if (!hasMateri || !hasLkpd || !hasDok) {

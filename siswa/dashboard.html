@@ -3487,6 +3487,12 @@
         // Day N (N > 1) mensyaratkan Day N-1 berstatus Selesai
         // Dan Day N harus dibuka (is_open) oleh Admin
         const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, days);
+        if (!isFieldTrip && (dNum === 5 || dNum === 6)) {
+          access.canAccess = true;
+          access.canEdit = true;
+          access.isOpen = true;
+          access.isPreviousCompleted = true;
+        }
         let dayStatus = FincestemCore.progress.getDayStatus(studentProgress, dNum);
 
         let isDayDone = false;
@@ -4427,13 +4433,6 @@
         return;
       }
 
-      const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
-
-      if (!access.canAccess) {
-        FincestemCore.ui.toast(access.reason || `Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan seluruh 5 tugas mandiri pada Day ${dNum - 1} terlebih dahulu.`, 'error');
-        return;
-      }
-
       // Deteksi Kategori Siswa (Field Trip vs Non-Field Trip)
       const u = FincestemCore.auth.getUser() || {};
       const stu = currentStudent || u;
@@ -4444,6 +4443,16 @@
         : (stu.zone || 'FINCESTEM OKU TIMUR');
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
+
+      const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
+
+      if (!isFieldTrip && (dNum === 5 || dNum === 6)) {
+        // Khusus Day 5 & Day 6 Non-Field Trip: Selalu dapat diakses langsung tanpa harus menunggu Day sebelumnya tuntas
+      } else if (!access.canAccess) {
+        FincestemCore.ui.toast(access.reason || `Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan seluruh 5 tugas mandiri pada Day ${dNum - 1} terlebih dahulu.`, 'error');
+        return;
+      }
+
       const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
       const isDayFlexible = (dNum === 2 || dNum === 3 || dNum === 4 || dNum === 5 || dNum === 6);
 

@@ -179,7 +179,7 @@
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
       // Proteksi Alur Berurutan Cepat: Day N (N > 1) mewajibkan Day N-1 selesai
-      if (dayNum > 1 && window.FincestemCore && FincestemCore.progress) {
+      if (dayNum > 1 && window.FincestemCore && FincestemCore.progress && !(!isFieldTrip && (dayNum === 5 || dayNum === 6))) {
         let cachedProg = null;
         try {
           const rawP = localStorage.getItem('fincestem_progress_' + (activeUser.nisn || activeUser.identifier));
@@ -269,6 +269,10 @@
             FincestemCore.progress.getStudentProgress(nisn, function(prog) {
               window.currentStudentProgress = prog;
               const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
+              if (!isFieldTrip && (dayNum === 5 || dayNum === 6)) {
+                access.canAccess = true;
+                access.canEdit = true;
+              }
               if (!access.canAccess) {
                 const reasonMsg = access.reason || `Aktivitas Day ${dayNum} terkunci! Harap selesaikan Day ${dayNum - 1} terlebih dahulu.`;
                 FincestemCore.ui.toast(reasonMsg, 'error');

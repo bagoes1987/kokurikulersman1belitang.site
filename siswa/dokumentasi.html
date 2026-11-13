@@ -965,8 +965,8 @@
             // Peserta Field Trip & Non-Field Trip (Day 0 s.d. Day 7) selalu memiliki hak akses untuk membuka halaman dan mengunggah foto
             // jika hari sebelumnya telah tuntas (atau Day 0 s.d. Day 4, atau Field Trip Day 1-7) atau jika ada riwayat foto sebelumnya
             const studentCategory = getStudentCategoryInfo();
-            const prevDone = (dayNum <= 5) || (studentCategory.isFieldTrip && dayNum <= 7) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
-            if (prevDone || hasExistingDok || isReadOnlyUrl) {
+            const prevDone = (dayNum <= 6) || (studentCategory.isFieldTrip && dayNum <= 7) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
+            if (prevDone || hasExistingDok || isReadOnlyUrl || (!studentCategory.isFieldTrip && (dayNum === 5 || dayNum === 6))) {
               access.canAccess = true;
               if (isReadOnlyUrl) {
                 access.canEdit = false;
@@ -3892,6 +3892,10 @@
             dokSuccessMsg = 'Foto bukti kesiapan dan simulasi telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Day 0.';
             dokNextUrl = 'dashboard.html?day=0&task=refleksi';
             dokNextLabel = 'Lanjut ke Tahap 5: Jurnal Refleksi Day 0 &rarr;';
+          } else if (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6)) {
+            dokSuccessMsg = 'Foto dokumentasi riset lapangan telah tersimpan resmi. Silakan melangkah ke Tahap 3: Lembar Kerja (LKPD Video YouTube) Day ' + dayNum + '.';
+            dokNextUrl = 'lkpd.html?day=' + dayNum;
+            dokNextLabel = 'Lanjut ke Tahap 3: LKPD Video Day ' + dayNum + ' &rarr;';
           } else {
             dokSuccessMsg = 'Foto bukti dokumentasi kegiatan telah tersimpan. Silakan lanjut ke Tahap 5: Jurnal Refleksi Mandiri Day ' + dayNum + '.';
             dokNextUrl = 'dashboard.html?day=' + dayNum + '&task=refleksi';
@@ -4789,6 +4793,17 @@
           if (nextBtnText) {
             nextBtnText.textContent = 'Lanjut ke Misi 2: Foto Bersama Keluarga →';
           }
+        }
+      } else if (!cat.isFieldTrip && (dayNum === 5 || dayNum === 6)) {
+        if (subtitle) {
+          subtitle.innerHTML = `<strong>Foto Dokumentasi Riset Lapangan Berhasil Diunggah!</strong><br><span class="text-slate-600 mt-1 inline-block">Foto kegiatan Day ${dayNum} Anda telah tersimpan rapi. Silakan melangkah ke Tahap 3: Lembar Kerja (LKPD Video YouTube) Day ${dayNum}.</span>`;
+        }
+        if (nextBtn) {
+          nextBtn.href = `lkpd.html?day=${dayNum}`;
+          nextBtn.className = 'w-full py-3.5 px-4 rounded-2xl bg-teal-800 hover:bg-teal-900 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all text-center';
+        }
+        if (nextBtnText) {
+          nextBtnText.textContent = `Lanjut ke Tahap 3: LKPD Video Day ${dayNum} →`;
         }
       } else {
         if (subtitle) {
