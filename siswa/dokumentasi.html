@@ -1162,7 +1162,7 @@
               canEdit = true;
               window.isDayReadOnlyMode = false;
             }
-            if (!canEdit || (isReadOnlyUrl && dayNum !== 0)) {
+            if ((!canEdit || (isReadOnlyUrl && dayNum !== 0)) && dayNum > 6) {
               window.isDayReadOnlyMode = true;
               // Sembunyikan tombol tambah foto jika mode hanya lihat
               const upBtns = document.querySelectorAll('button[onclick="toggleUploadModal(true)"]');
@@ -1253,6 +1253,11 @@
         } else {
           currentGPS = null;
           updateCameraButtonState('LOCATING');
+          setTimeout(() => {
+            if (!currentGPS) {
+              applyFallbackGPS('Titik koordinat acuan riset OKU Timur');
+            }
+          }, 1200);
         }
 
         const galText = document.getElementById('btnTriggerGalleryText');

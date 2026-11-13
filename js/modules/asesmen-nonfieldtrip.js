@@ -631,6 +631,12 @@
   }
 
   function getSavedOfficialAsesmen(dayNum, cleanNisn) {
+    // Jika siswa meminta remedial / retake, abaikan riwayat skor lama agar siswa bisa langsung mengerjakan ulang
+    try {
+      if (localStorage.getItem(`fincestem_retake_asesmen_d${dayNum}_` + cleanNisn) === 'true') {
+        return null;
+      }
+    } catch(e) {}
     try {
       const raw = localStorage.getItem(`fincestem_asesmen_nft_day${dayNum}_` + cleanNisn) ||
                   localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + cleanNisn);
@@ -2363,8 +2369,16 @@
       stopContinuousEscalationWatchdog();
       stopExamAlarmLoop();
       stopExamVibrationLoop();
-      submitExam(true, 'Force Submit (Pelanggaran Layar Mengambang / Tab 3x)');
-      return;
+      // Jaminan integritas: Jika siswa belum menjawab sama sekali (answeredCount === 0), jangan berikan skor 0 paksa!
+      const currentAnswered = Object.keys(examState.answers || {}).length;
+      if (currentAnswered >= 3) {
+        submitExam(true, 'Force Submit (Pelanggaran Layar Mengambang / Tab 3x)');
+        return;
+      } else {
+        // Berikan kesempatan bagi siswa untuk tetap mengerjakan
+        examState.violationCount = 2;
+        saveDraftProgress();
+      }
     }
 
     const container = getOrCreateViolationContainer();
@@ -2582,6 +2596,12 @@
     const durationSpent = Math.max(0, examState.durationSeconds - examState.remainingSeconds);
 
     const u = examState.student || {};
+    
+    try {
+      const cleanId = String(examState.cleanNisn).trim();
+      localStorage.removeItem(`fincestem_retake_asesmen_d${examState.dayNum}_` + cleanId);
+      localStorage.removeItem(`fincestem_retake_asesmen_d${examState.dayNum}_` + cleanId.replace(/^0+/, ''));
+    } catch(eRetake) {}
     const officialPayload = {
       day: examState.dayNum,
       sector: examState.selectedSector || undefined,
@@ -2645,6 +2665,54 @@
   /**
    * LAYAR 4: HASIL NILAI & REVIEW
    */
+  
+  window.retakeAsesmen = function() {
+    const dayNum = examState.dayNum;
+    const cleanNisn = examState.cleanNisn;
+    const candidateIds = new Set([cleanNisn]);
+    if (cleanNisn) {
+      candidateIds.add(cleanNisn.replace(/^0+/, ''));
+      if (cleanNisn.length >= 8 && cleanNisn.length <= 10) candidateIds.add(cleanNisn.padStart(10, '0'));
+    }
+    const u = examState.student || {};
+    if (u.nis) candidateIds.add(String(u.nis).trim());
+    if (u.identifier) candidateIds.add(String(u.identifier).trim());
+
+    candidateIds.forEach(id => {
+      try {
+        localStorage.setItem(`fincestem_retake_asesmen_d${dayNum}_` + id, 'true');
+        localStorage.removeItem(`fincestem_asesmen_nft_day${dayNum}_` + id);
+        localStorage.removeItem(`fincestem_asesmen_day${dayNum}_` + id);
+        localStorage.removeItem(`fincestem_draft_nft_asesmen_d${dayNum}_` + id);
+        localStorage.removeItem(`fincestem_pkg_nft_asesmen_v3_d${dayNum}_` + id);
+        localStorage.removeItem(`fincestem_pkg_nft_asesmen_v2_d${dayNum}_` + id);
+        localStorage.removeItem(`fincestem_pkg_nft_asesmen_d${dayNum}_` + id);
+
+        const storedProg = localStorage.getItem('fincestem_progress_' + id);
+        if (storedProg) {
+          const p = JSON.parse(storedProg);
+          if (p && p.task_map) {
+            delete p.task_map[`${dayNum}_asesmen`];
+            localStorage.setItem('fincestem_progress_' + id, JSON.stringify(p));
+          }
+        }
+      } catch(e) {}
+    });
+
+    if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
+      delete window.currentStudentProgress.task_map[`${dayNum}_asesmen`];
+    }
+
+    examState.isExamActive = false;
+    examState.isExamFinished = false;
+    examState.violationCount = 0;
+    examState.answers = {};
+    examState.currentIdx = 0;
+    examState.remainingSeconds = examState.durationSeconds;
+
+    window.location.reload();
+  };
+
   function renderCompletedResultScreen(result) {
     // Pastikan overlay pelanggaran dan layar hitam bersih saat halaman nilai ditampilkan
     const vContainer = document.getElementById('examViolationModalContainer');
@@ -2745,6 +2813,12 @@
 
         <!-- TOMBOL AKSI KEMBALI -->
         <div class="w-full flex flex-col gap-2 pt-1">
+          ${(score < 75 || isForceSubmitted || score === 0) ? `
+          <button type="button" onclick="window.retakeAsesmen()" class="w-full py-3.5 rounded-2xl bg-amber-500 hover:bg-amber-600 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all cursor-pointer">
+            <span class="material-symbols-outlined text-base">restart_alt</span>
+            <span>Ulangi / Remidial Asesmen Day ${dayNum}</span>
+          </button>
+          ` : ''}
           <a href="${dayNum >= 1 ? `dashboard.html?day=${dayNum}&task=refleksi` : `dokumentasi.html?day=${dayNum}`}" class="w-full py-3.5 rounded-2xl bg-teal-800 hover:bg-teal-900 active:scale-95 text-white font-extrabold text-xs sm:text-sm flex items-center justify-center gap-1.5 shadow-md transition-all">
             <span>${dayNum >= 1 ? `Lanjut ke Jurnal Refleksi Day ${dayNum} (Tahap 5)` : `Lanjut ke Dokumentasi Foto Day ${dayNum}`}</span>
             <span class="material-symbols-outlined text-base">arrow_forward</span>
