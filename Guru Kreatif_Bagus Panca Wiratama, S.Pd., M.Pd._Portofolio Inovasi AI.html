@@ -9,19 +9,7 @@
   <style>
     @page {
       size: A4 portrait;
-      margin: 20mm 18mm 20mm 18mm;
-      @bottom-right {
-        content: counter(page);
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 8pt;
-        color: #64748b;
-      }
-      @bottom-left {
-        content: "ASSA 2026 • Portofolio Guru Kreatif • SMAN 1 Belitang";
-        font-family: 'Plus Jakarta Sans', sans-serif;
-        font-size: 8pt;
-        color: #94a3b8;
-      }
+      margin: 14mm 16mm 14mm 16mm;
     }
     * {
       box-sizing: border-box;
@@ -31,368 +19,276 @@
     body {
       font-family: 'Plus Jakarta Sans', Arial, sans-serif;
       color: #0f172a;
-      background: #f1f5f9;
-      margin: 0;
-      padding: 24px;
-      line-height: 1.6;
-      font-size: 9.5pt;
-    }
-    .page-container {
-      max-width: 860px;
-      margin: 0 auto;
       background: #ffffff;
-      padding: 48px 56px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      border: 1px solid #cbd5e1;
-    }
-    @media print {
-      body {
-        background: #ffffff;
-        padding: 0;
-      }
-      .page-container {
-        border: none;
-        box-shadow: none;
-        padding: 0;
-        max-width: 100%;
-      }
-      .page-break {
-        page-break-before: always;
-        break-before: page;
-      }
-      .no-break {
-        page-break-inside: avoid;
-        break-inside: avoid;
-      }
-      .no-print {
-        display: none !important;
-      }
-    }
-    .page-break {
-      page-break-before: always;
-      break-before: page;
-      margin-top: 36px;
-      padding-top: 24px;
-      border-top: 1px dashed #cbd5e1;
-    }
-    @media print {
-      .page-break {
-        margin-top: 0;
-        padding-top: 0;
-        border-top: none;
-      }
+      margin: 0;
+      padding: 0;
+      line-height: 1.55;
+      font-size: 9.2pt;
     }
 
-    /* COVER PAGE STYLING */
-    .cover {
-      min-height: 980px;
+    /* PENGATURAN HALAMAN FISIK CETAK PRESISI (A4: 297mm x 210mm) */
+    .sheet {
+      width: 100%;
+      min-height: 268mm;
+      max-height: 268mm;
+      padding: 6mm 4mm 6mm 4mm;
+      margin: 0 auto;
+      background: #ffffff;
+      position: relative;
+      box-sizing: border-box;
+      page-break-after: always;
+      break-after: page;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      text-align: center;
-      padding: 20px 10px;
     }
-    .cover-top {
+
+    /* HEADER & FOOTER TIAP HALAMAN */
+    .page-header {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      gap: 12px;
-    }
-    .cover-logos {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 28px;
-      margin-bottom: 10px;
-    }
-    .cover-logos img.logo-school {
-      width: 84px;
-      height: 84px;
-      object-fit: contain;
-    }
-    .cover-badge-event {
-      display: inline-block;
-      background: linear-gradient(135deg, #00236f 0%, #006a61 100%);
-      color: #ffffff;
-      padding: 6px 18px;
-      border-radius: 30px;
-      font-size: 9pt;
-      font-weight: 800;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      box-shadow: 0 4px 12px rgba(0, 35, 111, 0.2);
-    }
-    .cover-title-area {
-      margin: 28px 0;
-    }
-    .cover-label {
-      font-size: 11pt;
-      font-weight: 800;
-      color: #006a61;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      display: block;
+      border-bottom: 1.5px solid #006a61;
+      padding-bottom: 4px;
       margin-bottom: 8px;
-    }
-    .cover-title {
-      font-size: 19pt;
-      font-weight: 900;
-      line-height: 1.3;
-      color: #00236f;
-      text-transform: uppercase;
-      max-width: 740px;
-      margin: 0 auto;
-    }
-    .cover-subtitle {
-      font-size: 12pt;
-      font-weight: 700;
-      color: #d97706;
-      margin-top: 12px;
-      letter-spacing: 0.5px;
-    }
-    .cover-award-category {
-      background: #f8fafc;
-      border: 2px dashed #006a61;
-      border-radius: 14px;
-      padding: 12px 24px;
-      display: inline-block;
-      margin: 16px auto;
-      font-size: 10pt;
-      font-weight: 800;
-      color: #0f172a;
-    }
-    .cover-meta {
-      background: #f1f5f9;
-      border-radius: 14px;
-      padding: 16px 24px;
-      max-width: 500px;
-      margin: 0 auto;
-      text-align: left;
-      font-size: 9.5pt;
-      border-left: 4px solid #00236f;
-    }
-    .cover-meta table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    .cover-meta td {
-      padding: 4px 6px;
-      vertical-align: top;
-    }
-    .cover-footer {
-      border-top: 2px solid #e2e8f0;
-      padding-top: 14px;
-      font-size: 9.5pt;
+      font-size: 7.5pt;
       color: #475569;
       font-weight: 700;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .page-header-title {
+      color: #00236f;
+      font-weight: 800;
+    }
+    .page-footer {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 4px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 7.5pt;
+      color: #64748b;
+      font-weight: 600;
+    }
+    .page-number {
+      font-weight: 800;
+      color: #00236f;
+      background: #e2e8f0;
+      padding: 1px 8px;
+      border-radius: 4px;
     }
 
-    /* TYPOGRAPHY & HEADINGS */
+    .page-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    /* HEADINGS & TYPOGRAPHY */
     h1.bab-title {
-      font-size: 14pt;
+      font-size: 13pt;
       font-weight: 900;
       color: #00236f;
       text-transform: uppercase;
-      border-bottom: 2.5px solid #006a61;
-      padding-bottom: 6px;
-      margin: 0 0 16px 0;
+      border-bottom: 2px solid #006a61;
+      padding-bottom: 4px;
+      margin: 0 0 10px 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
-    h1.bab-title span.bab-badge {
-      font-size: 8.5pt;
+    .bab-badge {
+      font-size: 8pt;
       background: #ccfbf1;
       color: #0f766e;
-      padding: 3px 10px;
-      border-radius: 20px;
+      padding: 2px 8px;
+      border-radius: 12px;
       font-weight: 800;
-      letter-spacing: 0.5px;
     }
     h2.sub-title {
-      font-size: 11pt;
-      font-weight: 800;
-      color: #006a61;
-      margin: 16px 0 8px 0;
-      border-left: 3.5px solid #d97706;
-      padding-left: 8px;
-    }
-    h3.sub-sub-title {
       font-size: 10pt;
       font-weight: 800;
-      color: #1e293b;
-      margin: 12px 0 6px 0;
+      color: #006a61;
+      margin: 8px 0 4px 0;
+      border-left: 3px solid #d97706;
+      padding-left: 6px;
     }
     p {
       text-align: justify;
-      margin: 0 0 10px 0;
-      line-height: 1.6;
+      margin: 0 0 8px 0;
+      line-height: 1.52;
     }
     ul, ol {
-      margin: 0 0 12px 0;
-      padding-left: 22px;
-      line-height: 1.6;
+      margin: 0 0 8px 0;
+      padding-left: 20px;
+      line-height: 1.5;
     }
     li {
-      margin-bottom: 4px;
+      margin-bottom: 3px;
       text-align: justify;
     }
 
-    /* TABLES & CALLOUTS */
-    table.data-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 8.5pt;
-      margin: 12px 0;
-      page-break-inside: avoid;
-    }
-    table.data-table th {
-      background: #00236f;
-      color: #ffffff;
-      padding: 7px 10px;
-      font-weight: 800;
-      text-align: left;
-      border: 1px solid #1e3a8a;
-      text-transform: uppercase;
-      font-size: 8pt;
-      letter-spacing: 0.3px;
-    }
-    table.data-table td {
-      padding: 6px 10px;
-      border: 1px solid #e2e8f0;
-      vertical-align: top;
-    }
-    table.data-table tr:nth-child(even) {
-      background: #f8fafc;
-    }
+    /* CALLOUT BOXES */
     .callout {
       background: #f0fdfa;
-      border-left: 4px solid #006a61;
-      padding: 10px 14px;
-      border-radius: 0 10px 10px 0;
-      margin: 12px 0;
-      font-size: 9pt;
+      border-left: 3.5px solid #006a61;
+      padding: 8px 12px;
+      border-radius: 0 8px 8px 0;
+      margin: 6px 0;
+      font-size: 8.5pt;
     }
     .callout-title {
       font-weight: 800;
       color: #0f766e;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 5px;
     }
     .callout-amber {
       background: #fffbeb;
-      border-left: 4px solid #d97706;
+      border-left: 3.5px solid #d97706;
     }
     .callout-amber .callout-title {
       color: #b45309;
     }
     .callout-blue {
       background: #eff6ff;
-      border-left: 4px solid #2563eb;
+      border-left: 3.5px solid #2563eb;
     }
     .callout-blue .callout-title {
       color: #1d4ed8;
+    }
+
+    /* TABLES */
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.2pt;
+      margin: 6px 0;
+    }
+    table.data-table th {
+      background: #00236f;
+      color: #ffffff;
+      padding: 5px 8px;
+      font-weight: 800;
+      text-align: left;
+      border: 1px solid #1e3a8a;
+      text-transform: uppercase;
+      font-size: 7.8pt;
+    }
+    table.data-table td {
+      padding: 5px 8px;
+      border: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    table.data-table tr:nth-child(even) {
+      background: #f8fafc;
     }
 
     /* CARDS & GRIDS */
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      margin: 12px 0;
-      page-break-inside: avoid;
+      gap: 8px;
+      margin: 6px 0;
     }
     .grid-4 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
-      gap: 10px;
-      margin: 12px 0;
-      page-break-inside: avoid;
+      gap: 8px;
+      margin: 6px 0;
     }
     .card {
       border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      padding: 10px 12px;
+      border-radius: 8px;
+      padding: 8px 10px;
       background: #ffffff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .card h4 {
-      margin: 0 0 4px 0;
-      font-size: 9pt;
+      margin: 0 0 3px 0;
+      font-size: 8.5pt;
       font-weight: 800;
       color: #00236f;
-      display: flex;
-      align-items: center;
-      gap: 5px;
     }
     .card p {
       margin: 0;
-      font-size: 8.2pt;
+      font-size: 7.8pt;
       color: #475569;
-      line-height: 1.45;
+      line-height: 1.4;
     }
     .stat-box {
-      background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+      background: #f8fafc;
       border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      padding: 10px;
+      border-radius: 8px;
+      padding: 6px;
       text-align: center;
-      border-top: 3px solid #006a61;
+      border-top: 2.5px solid #006a61;
     }
     .stat-box .val {
-      font-size: 14pt;
+      font-size: 13pt;
       font-weight: 900;
       color: #00236f;
       display: block;
       line-height: 1.1;
     }
     .stat-box .lbl {
-      font-size: 7.5pt;
+      font-size: 7pt;
       font-weight: 700;
       color: #64748b;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
     }
 
-    /* CODE & BADGES */
-    code {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 8pt;
-      background: #f1f5f9;
-      padding: 1.5px 5px;
-      border-radius: 4px;
-      color: #0f172a;
-      border: 1px solid #e2e8f0;
-    }
     .badge {
       display: inline-block;
-      padding: 2px 8px;
-      border-radius: 6px;
-      font-size: 7.5pt;
+      padding: 1.5px 6px;
+      border-radius: 4px;
+      font-size: 7pt;
       font-weight: 800;
       text-transform: uppercase;
     }
     .badge-teal { background: #ccfbf1; color: #115e59; }
     .badge-blue { background: #dbeafe; color: #1e40af; }
     .badge-amber { background: #fef3c7; color: #92400e; }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5pt;
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #0f172a;
+      border: 1px solid #e2e8f0;
+    }
 
-    /* SIGNATURE BLOCK */
+    /* SIGNATURE STYLING WITH IMAGES */
     .signature-grid {
       display: flex;
       justify-content: space-between;
-      margin-top: 28px;
-      font-size: 9pt;
-      page-break-inside: avoid;
+      margin-top: 14px;
+      font-size: 8.5pt;
     }
     .sig-col {
       text-align: center;
-      width: 250px;
+      width: 280px;
+    }
+    .sig-img-container {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 2px 0;
+    }
+    .sig-img-container img {
+      max-height: 72px;
+      max-width: 220px;
+      object-fit: contain;
     }
 
+    /* FLOATING BUTTON */
     .btn-print-floating {
       position: fixed;
       bottom: 24px;
@@ -402,7 +298,7 @@
       padding: 12px 24px;
       border-radius: 30px;
       font-weight: 800;
-      font-size: 9.5pt;
+      font-size: 9pt;
       box-shadow: 0 6px 20px rgba(0, 106, 97, 0.35);
       border: none;
       cursor: pointer;
@@ -410,587 +306,856 @@
       align-items: center;
       gap: 8px;
       z-index: 9999;
-      transition: all 0.2s ease;
     }
-    .btn-print-floating:hover {
-      background: #004f48;
-      transform: translateY(-2px);
+    @media print {
+      .btn-print-floating {
+        display: none !important;
+      }
     }
   </style>
 </head>
 <body>
 
-  <button class="btn-print-floating no-print" onclick="window.print()">
-    🖨️ Cetak / Simpan sebagai PDF (Maksimal 15 Halaman A4)
+  <button class="btn-print-floating" onclick="window.print()">
+    🖨️ Cetak / Simpan sebagai PDF (14 Halaman Presisi)
   </button>
 
-  <div class="page-container">
+  <!-- =================================================================== -->
+  <!-- HALAMAN 1: SAMPUL DEPAN (COVER PAGE)                                -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div style="text-align: center; padding-top: 10px;">
+      <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-bottom: 12px;">
+        <img src="LOGO FICESTEM2026.png" alt="Logo FINCESTEM" style="height: 80px; object-fit: contain;">
+      </div>
+      <span style="display: inline-block; background: linear-gradient(135deg, #00236f 0%, #006a61 100%); color: #fff; padding: 5px 16px; border-radius: 20px; font-size: 8.5pt; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;">
+        Acer Smart School Awards (ASSA) 2026 • In Collaboration with Intel® Skills for Innovation
+      </span>
+    </div>
 
-    <!-- =================================================================== -->
-    <!-- HALAMAN SAMPUL / COVER                                              -->
-    <!-- =================================================================== -->
-    <div class="cover">
-      <div class="cover-top">
-        <div class="cover-logos">
-          <img src="LOGO FICESTEM2026.png" alt="Logo FINCESTEM" class="logo-school">
-        </div>
-        <span class="cover-badge-event">Acer Smart School Awards (ASSA) 2026 • In Collaboration with Intel® Skills for Innovation</span>
+    <div style="text-align: center; margin: 20px 0;">
+      <span style="font-size: 10pt; font-weight: 800; color: #006a61; text-transform: uppercase; letter-spacing: 1px; display: block; margin-bottom: 6px;">
+        PORTOFOLIO KARYA INOVASI PEMBELAJARAN
+      </span>
+      <h1 style="font-size: 16.5pt; font-weight: 900; line-height: 1.35; color: #00236f; text-transform: uppercase; margin: 0 auto; max-width: 680px;">
+        Pemanfaatan Platform AI FINCESTEM dalam Transformasi Kokurikuler Kontekstual Berbasis Smart Geotagging dan Asistensi Cerdas Guru di SMAN 1 Belitang
+      </h1>
+      <div style="font-size: 11pt; font-weight: 700; color: #d97706; margin-top: 10px;">
+        Sub-Judul / Nama Produk: <strong>APP FINCESTEM</strong><br>
+        <em>(Financial, Culture, Exploration, STEM Learning Platform)</em>
       </div>
 
-      <div class="cover-title-area">
-        <span class="cover-label">PORTOFOLIO KARYA INOVASI PEMBELAJARAN</span>
-        <h1 class="cover-title">
-          Pemanfaatan Platform AI FINCESTEM dalam Transformasi Kokurikuler Kontekstual Berbasis Smart Geotagging dan Asistensi Cerdas Guru di SMAN 1 Belitang
-        </h1>
-        <div class="cover-subtitle">
-          Sub-Judul / Nama Produk: <strong>APP FINCESTEM</strong><br>
-          <em>(Financial, Culture, Exploration, STEM Learning Platform)</em>
-        </div>
-
-        <div class="cover-award-category">
-          🏆 Kategori Penghargaan: <strong>GURU KREATIF (JENJANG SMA/MA)</strong><br>
-          Sub-Kategori: <strong>Penerapan AI &amp; Pemanfaatan Teknologi Digital dalam Pembelajaran</strong>
-        </div>
-      </div>
-
-      <div class="cover-meta">
-        <table>
-          <tr>
-            <td style="width: 38%; font-weight: 700; color: #334155;">Nama Guru Inovator</td>
-            <td style="width: 4%;">:</td>
-            <td style="font-weight: 800; color: #00236f;">BAGUS PANCA WIRATAMA, S.Pd., M.Pd.</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700; color: #334155;">NIP</td>
-            <td>:</td>
-            <td>19871115 201101 1 007</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700; color: #334155;">Jabatan / Tugas</td>
-            <td>:</td>
-            <td>Guru Penggerak / Koordinator Inovasi Digital</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700; color: #334155;">Instansi Pendidikan</td>
-            <td>:</td>
-            <td>SMA Negeri 1 Belitang</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700; color: #334155;">Kabupaten / Provinsi</td>
-            <td>:</td>
-            <td>Kab. Ogan Komering Ulu Timur, Sumatera Selatan</td>
-          </tr>
-          <tr>
-            <td style="font-weight: 700; color: #334155;">Laman Portofolio Live</td>
-            <td>:</td>
-            <td><a href="https://kokurikulersman1belitang.site" target="_blank" style="color:#0284c7; text-decoration:none; font-weight:700;">kokurikulersman1belitang.site</a></td>
-          </tr>
-        </table>
-      </div>
-
-      <div class="cover-footer">
-        Dinas Pendidikan Provinsi Sumatera Selatan • SMA Negeri 1 Belitang • Tahun 2026
+      <div style="background: #f8fafc; border: 2px dashed #006a61; border-radius: 12px; padding: 10px 20px; display: inline-block; margin: 16px auto; font-size: 9.5pt; font-weight: 800; color: #0f172a;">
+        🏆 Kategori Penghargaan: <strong>GURU KREATIF (JENJANG SMA/MA)</strong><br>
+        Bidang: <strong>Pemanfaatan Teknologi Digital &amp; Studi Kasus Penerapan AI</strong>
       </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- LEMBAR PENGESAHAN & KATA PENGANTAR                                 -->
-    <!-- =================================================================== -->
-    <div class="page-break"></div>
-
-    <h1 class="bab-title">
-      <span>LEMBAR PENGESAHAN KARYA INOVASI</span>
-      <span class="bab-badge">Pengesahan</span>
-    </h1>
-
-    <p>
-      Portofolio karya inovasi pembelajaran digital dengan judul: <strong>"Pemanfaatan Platform AI FINCESTEM dalam Transformasi Kokurikuler Kontekstual Berbasis Smart Geotagging dan Asistensi Cerdas Guru di SMAN 1 Belitang"</strong> telah disahkan dan disetujui sebagai karya orisinal untuk diikutsertakan pada ajang <strong>Acer Smart School Awards (ASSA) 2026</strong> Kategori <strong>Guru Kreatif Jenjang SMA</strong>.
-    </p>
-
-    <div class="callout callout-blue">
-      <div class="callout-title">Pernyataan Orisinalitas &amp; Integritas Karya</div>
-      Saya yang bertanda tangan di bawah ini menyatakan dengan sesungguhnya bahwa aplikasi <strong>APP FINCESTEM</strong> beserta seluruh artefak instrumen asesmen digital, algoritma cerdas, dan modul pembelajaran di dalamnya adalah hasil inovasi dan perancangan mandiri yang diimplementasikan secara nyata pada kegiatan kokurikuler SMA Negeri 1 Belitang tahun ajaran 2026/2027.
+    <div style="background: #f1f5f9; border-radius: 12px; padding: 14px 20px; max-width: 520px; margin: 0 auto; font-size: 9pt; border-left: 4px solid #00236f;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="width: 38%; font-weight: 700; color: #334155; padding: 3px 0;">Nama Guru Inovator</td>
+          <td style="width: 4%;">:</td>
+          <td style="font-weight: 800; color: #00236f;">BAGUS PANCA WIRATAMA, S.Pd., M.Pd.</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #334155; padding: 3px 0;">NIPPPK</td>
+          <td>:</td>
+          <td style="font-weight: 700;">198708142024211013</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #334155; padding: 3px 0;">Satuan Pendidikan</td>
+          <td>:</td>
+          <td style="font-weight: 700;">SMA Negeri 1 Belitang</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #334155; padding: 3px 0;">Kabupaten / Provinsi</td>
+          <td>:</td>
+          <td>Kab. Ogan Komering Ulu Timur, Sumatera Selatan</td>
+        </tr>
+        <tr>
+          <td style="font-weight: 700; color: #334155; padding: 3px 0;">Laman Website Resmi</td>
+          <td>:</td>
+          <td><strong style="color: #0284c7;">kokurikulersman1belitang.site</strong></td>
+        </tr>
+      </table>
     </div>
 
-    <div class="signature-grid" style="margin-top: 40px;">
-      <div class="sig-col">
-        Mengetahui &amp; Menyetujui,<br>
-        <strong>Kepala SMA Negeri 1 Belitang</strong><br><br><br><br><br>
-        <strong><u>H. PRIOYONO, S.Pd., M.M.</u></strong><br>
-        Pembina Tk. I / IV.b<br>
-        NIP. 19680315 199512 1 002
-      </div>
-      <div class="sig-col">
-        OKU Timur, 13 November 2026<br>
-        <strong>Guru Inovator Pengembang</strong><br><br><br><br><br>
-        <strong><u>BAGUS PANCA WIRATAMA, S.Pd., M.Pd.</u></strong><br>
-        Guru Ahli Muda<br>
-        NIP. 19871115 201101 1 007
-      </div>
+    <div style="text-align: center; border-top: 2px solid #e2e8f0; padding-top: 10px; font-size: 9pt; color: #475569; font-weight: 800; text-transform: uppercase;">
+      Dinas Pendidikan Provinsi Sumatera Selatan • SMA Negeri 1 Belitang • Tahun 2026
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 2: LEMBAR PENGESAHAN RESMI (DENGAN SCAN TTD ASLI)           -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">LEMBAR PENGESAHAN KARYA INOVASI</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
     </div>
 
-    <div style="margin-top: 36px;">
-      <h2 class="sub-title">RINGKASAN EKSEKUTIF (EXECUTIVE SUMMARY)</h2>
+    <div class="page-content">
+      <h1 class="bab-title">
+        <span>LEMBAR PENGESAHAN</span>
+        <span class="bab-badge">Resmi</span>
+      </h1>
+
       <p>
-        Implementasi Kurikulum Merdeka menuntut pembelajaran kokurikuler yang berakar pada masalah kontekstual nyata serta menumbuhkan Penguatan Profil Pelajar Pancasila. Namun, sekolah dengan rombongan belajar besar seperti SMA Negeri 1 Belitang (melibatkan <strong>1.165 peserta didik Kelas X</strong> dan <strong>40+ Guru Fasilitator</strong>) menghadapi 3 kendala sistemik: (1) <em>Disparitas akses geografis dan pembiayaan</em> antara siswa yang mampu mengikuti Field Trip ekspedisi Jawa–Bromo dan siswa yang melaksanakan riset lokal di OKU Timur; (2) <em>Beban administratif verifikasi lapangan</em> yang rawan kecurangan (manipulasi foto dan presensi palsu); serta (3) <em>Beban asesmen multidimensi</em> yang sangat berat bagi guru fasilitator untuk menilai 4 pilar kompetensi secara manual.
+        Karya inovasi pembelajaran berbasis digital dan kecerdasan buatan (*Artificial Intelligence*) dengan judul:
       </p>
+
+      <div style="background: #f8fafc; border: 1.5px solid #cbd5e1; border-radius: 8px; padding: 10px 14px; text-align: center; margin: 8px 0;">
+        <h3 style="margin: 0; font-size: 11pt; color: #00236f; text-transform: uppercase; font-weight: 900;">
+          "Pemanfaatan Platform AI FINCESTEM dalam Transformasi Kokurikuler Kontekstual Berbasis Smart Geotagging dan Asistensi Cerdas Guru di SMAN 1 Belitang"
+        </h3>
+        <span style="font-size: 9pt; color: #d97706; font-weight: 700; display: block; margin-top: 4px;">
+          Nama Produk: APP FINCESTEM (Financial, Culture, Exploration, STEM Learning Platform)
+        </span>
+      </div>
+
       <p>
-        Sebagai terobosan, dikembangkan <strong>APP FINCESTEM</strong> (<em>Financial, Culture, Exploration, STEM</em>), sebuah platform Web/PWA cerdas yang mengintegrasikan: (a) <strong>Smart Geotagging &amp; Anti-Fraud Camera Engine</strong> untuk memvalidasi koordinat GPS live siswa di 7 sektor riset mandiri OKU Timur; (b) <strong>AI Smart Grading &amp; Auto-Recommendation Assistant</strong> yang meringankan beban guru dengan mengalkulasi pembobotan 4 pilar secara otomatis; (c) <strong>Exam Shield</strong> untuk mengamankan integritas kuis asesmen digital bebas kecurangan; serta (d) <strong>Portfolio Video Analytics</strong> yang terintegrasi dengan YouTube. Inovasi ini menyelaraskan misi <strong>Intel® Skills for Innovation</strong>: membentuk siswa menjadi pemecah masalah berbasis data, komputasi terapan, dan kolaborasi bermakna.
+        telah diperiksa, divalidasi, dan disahkan sebagai karya inovasi orisinal yang diimplementasikan secara nyata pada kegiatan kokurikuler SMA Negeri 1 Belitang, serta disetujui untuk diikutsertakan pada ajang bergengsi <strong>Acer Smart School Awards (ASSA) 2026</strong> pada kategori <strong>Guru Kreatif Jenjang SMA</strong>.
       </p>
-    </div>
 
-    <!-- =================================================================== -->
-    <!-- BAB I: PENDAHULUAN                                                  -->
-    <!-- =================================================================== -->
-    <div class="page-break"></div>
-
-    <h1 class="bab-title">
-      <span>BAB I • PENDAHULUAN</span>
-      <span class="bab-badge">Bab 1</span>
-    </h1>
-
-    <h2 class="sub-title">1.1 Latar Belakang dan Urgensi Inovasi</h2>
-    <p>
-      Pendidikan abad ke-21 menuntut transformasi paradigma dari pembelajaran berbasis hapalan di ruang kelas tertutup menuju pembelajaran kontekstual berbasis pemecahan masalah (<em>contextual problem-based inquiry</em>). Dalam kerangka Kurikulum Merdeka, kegiatan kokurikuler memiliki porsi 20–30% dari total jam pelajaran untuk membekali peserta didik dengan karakter luhur dan keterampilan holistik.
-    </p>
-    <p>
-      SMA Negeri 1 Belitang merupakan sekolah rujukan di Kabupaten Ogan Komering Ulu Timur, Sumatera Selatan, dengan populasi siswa yang heterogen dan tersebar di berbagai kecamatan sentra pertanian dan perdagangan. Pada tahun pelajaran 2026/2027, pelaksanaan kokurikuler menghadapi paradoks pendidikan yang krusial:
-    </p>
-    <ol>
-      <li>
-        <strong>Tantangan Kesenjangan Jalur Pembelajaran (Dual-Track Disparity):</strong><br>
-        Dari 1.165 siswa Kelas X, sebanyak <strong>456 siswa</strong> memilih jalur <em>Field Trip</em> (ekspedisi pembelajaran lintas provinsi: Semarang, Gunung Bromo, Candi Prambanan, sentra batik Yogyakarta, dan Universitas Negeri Yogyakarta). Namun, sebanyak <strong>709 siswa</strong> memilih jalur <em>Non-Field Trip</em> (riset mandiri di wilayah lokal OKU Timur) karena pertimbangan ekonomi keluarga atau kondisi kesehatan. Tanpa platform digital yang presisi, siswa Non-Field Trip berisiko mengalami perasaan tertinggal (<em>inequality of learning experience</em>).
-      </li>
-      <li>
-        <strong>Tantangan Integritas Bukti Lapangan &amp; Geospasial:</strong><br>
-        Pada kegiatan observasi mandiri di luar sekolah, guru fasilitator mengalami kesulitan memverifikasi apakah siswa benar-benar melakukan investigasi di lokasi penelitian (sawah, pabrik penggilingan padi/RMU, peternakan, pasar komoditas) atau sekadar mengunduh gambar dari internet/galeri gawai.
-      </li>
-      <li>
-        <strong>Beban Penilaian Multidimensi Guru Fasilitator:</strong><br>
-        Menilai 1.165 siswa pada 4 dimensi kompetensi (Finansial, Budaya, Eksplorasi, dan STEM) selama 7 hari berturut-turut menghasilkan lebih dari <strong>32.000 titik data asesmen</strong>. Penilaian berbasis kertas atau spreadsheet konvensional berpotensi memicu kelelahan guru (<em>teacher burnout</em>) dan keterlambatan penerbitan rapor perkembangan siswa.
-      </li>
-    </ol>
-
-    <h2 class="sub-title">1.2 Tujuan Inovasi</h2>
-    <p>
-      Inovasi <strong>APP FINCESTEM</strong> dirancang dan dikembangkan dengan tujuan strategis:
-    </p>
-    <ul>
-      <li>Mewujudkan ekosistem kokurikuler yang <strong>inklusif dan berkeadilan mutu</strong> bagi peserta didik jalur Field Trip maupun Non-Field Trip.</li>
-      <li>Menerapkan teknologi cerdas <strong>Smart Geotagging &amp; Anti-Fraud AI</strong> untuk memastikan keaslian lokasi riset siswa secara akurat dan real-time.</li>
-      <li>Menyediakan asisten cerdas bagi guru (<strong>AI Smart Grading Engine</strong>) untuk otomatisasi kalkulasi nilai 4 pilar kompetensi, rekomendasi bintang/predikat, dan draf umpan balik perkembangan.</li>
-      <li>Mendukung kerangka <strong>Intel® Skills for Innovation</strong> dalam menumbuhkan kecakapan abad ke-21: <em>Computational Thinking, Data Literacy, Collaborative Problem Solving</em>, dan etos kerja etnosains.</li>
-    </ul>
-
-    <h2 class="sub-title">1.3 Kebaruan dan Orisinalitas (Novelty)</h2>
-    <p>
-      Berbeda dengan LMS komersial umum (Google Classroom atau Moodle) yang hanya berfungsi sebagai repositori dokumen pasif, <strong>APP FINCESTEM</strong> memiliki kebaruan fundamental:
-    </p>
-
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th style="width: 25%;">Aspek Pembeda</th>
-          <th style="width: 35%;">LMS / Metode Konvensional</th>
-          <th style="width: 40%;">Inovasi Platform APP FINCESTEM</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Validasi Kehadiran &amp; Riset</strong></td>
-          <td>Presensi manual berbasis tanda tangan atau foto unggah galeri bebas tanpa koordinat.</td>
-          <td><strong>Smart Geotagging Live:</strong> Memvalidasi batas poligon GPS resmi Kab. OKU Timur dan mendeteksi foto manipulasi galeri.</td>
-        </tr>
-        <tr>
-          <td><strong>Diferensiasi Jalur Belajar</strong></td>
-          <td>Materi disamaratakan atau siswa yang tidak ikut studi wisata hanya diberi tugas merangkum buku.</td>
-          <td><strong>Synchronous Dual-Track:</strong> Menyelaraskan pilar harian (Day 1-7) antara ekspedisi luar pulau dan riset 7 sektor lokal OKU Timur.</td>
-        </tr>
-        <tr>
-          <td><strong>Beban Penilaian Fasilitator</strong></td>
-          <td>Koreksi manual ribuan esai dan foto lembar kerja; perhitungan nilai pilar dilakukan manual.</td>
-          <td><strong>AI Smart Recommendation Engine:</strong> Menghitung rata-rata pilar, waktu pengumpulan, dan menyarankan predikat secara cerdas.</td>
-        </tr>
-        <tr>
-          <td><strong>Keamanan Asesmen Digital</strong></td>
-          <td>Google Form standar mudah dicurangi melalui tangkapan layar, split window, dan joki tugas.</td>
-          <td><strong>Exam Shield Technology:</strong> Blackout seketika saat deteksi screenshot, proteksi tab-switching, dan seleksi teks dinonaktifkan.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- =================================================================== -->
-    <!-- BAB II: RANCANG BANGUN & METODOLOGI INOVASI                         -->
-    <!-- =================================================================== -->
-    <div class="page-break"></div>
-
-    <h1 class="bab-title">
-      <span>BAB II • RANCANG BANGUN &amp; METODOLOGI INOVASI</span>
-      <span class="bab-badge">Bab 2</span>
-    </h1>
-
-    <h2 class="sub-title">2.1 Kerangka Pedagogis 4 Pilar FINCESTEM</h2>
-    <p>
-      FINCESTEM merupakan akronim dari empat pilar kompetensi terpadu yang dirancang sesuai karakteristik kearifan lokal Sumatera Selatan dan wawasan nasional:
-    </p>
-
-    <div class="grid-4">
-      <div class="card" style="border-top: 3px solid #d97706;">
-        <h4>💰 1. FINANCIAL</h4>
-        <p>Literasi keuangan mikro, pencatatan arus kas, kalkulasi HPP produk pangan/tani, omzet, dan manajemen risiko usaha.</p>
+      <div class="callout callout-blue">
+        <div class="callout-title">Pernyataan Orisinalitas &amp; Integritas Karya:</div>
+        Inovasi perangkat lunak APP FINCESTEM, modul pembelajaran digital, algoritma cerdas validasi geospasial, dan engine rekomendasi nilai rapor ini dirancang mandiri untuk melayani <strong>1.165 peserta didik</strong> dan <strong>40+ guru fasilitator</strong> secara berkelanjutan di SMA Negeri 1 Belitang.
       </div>
-      <div class="card" style="border-top: 3px solid #7c3aed;">
-        <h4>🏛️ 2. CULTURE</h4>
-        <p>Etnosains kearifan lokal, sejarah arsitektur candi/cagar budaya, tradisi batik, dan nilai multikulturalisme masyarakat.</p>
-      </div>
-      <div class="card" style="border-top: 3px solid #059669;">
-        <h4>🧭 3. EXPLORATION</h4>
-        <p>Kecakapan geospasial, orientasi medan, observasi bentang alam (irigasi, geomorfologi Bromo/pantai), dan identifikasi alat kerja.</p>
-      </div>
-      <div class="card" style="border-top: 3px solid #2563eb;">
-        <h4>🔬 4. STEM</h4>
-        <p>Analisis sains terapan (kimia pewarna batik, fisika mesin penggiling padi/RMU, biologi fermentasi), teknologi, rekayasa, dan matematika.</p>
+
+      <!-- TANDA TANGAN ASLI SESUAI PERMINTAAN USER -->
+      <div class="signature-grid" style="margin-top: 25px;">
+        <div class="sig-col">
+          Mengetahui &amp; Menyetujui,<br>
+          <strong>Kepala SMA Negeri 1 Belitang</strong>
+          <div class="sig-img-container">
+            <img src="TTD HERI PLUS CAP SMANSA.png" alt="TTD Heri Priyanto + Cap Sekolah">
+          </div>
+          <strong><u>HERI PRIYANTO, S.Pd.</u></strong><br>
+          Penata Tingkat I, III/d<br>
+          NIP. 198105052007011014
+        </div>
+        <div class="sig-col">
+          OKU Timur, 13 November 2026<br>
+          <strong>Guru Inovator Pengembang</strong>
+          <div class="sig-img-container">
+            <img src="TTD Bagus Panca Wiratama.png" alt="TTD Bagus Panca Wiratama">
+          </div>
+          <strong><u>BAGUS PANCA WIRATAMA, S.Pd., M.Pd.</u></strong><br>
+          Guru Ahli Pertama<br>
+          NIPPPK. 198708142024211013
+        </div>
       </div>
     </div>
 
-    <h2 class="sub-title">2.2 Arsitektur Sistem dan Rekayasa Perangkat Lunak</h2>
-    <p>
-      APP FINCESTEM dibangun dengan arsitektur <em>Progressive Web Application</em> (PWA) berstandar industri yang ringan, responsif pada berbagai tipe gawai pintar (<em>low-end to high-end smartphone</em>), serta dapat diinstal tanpa membebani memori internal siswa. Sistem menggunakan basis data terenkripsi di server cPanel sekolah yang terhubung dengan modul sinkronisasi lokal (<em>localStorage caching</em>) untuk mengantisipasi sinyal seluler tidak stabil di pedesaan OKU Timur.
-    </p>
+    <div class="page-footer">
+      <span>SMA Negeri 1 Belitang • Kabupaten Ogan Komering Ulu Timur</span>
+      <span class="page-number">Halaman 2</span>
+    </div>
+  </div>
 
-    <div class="callout">
-      <div class="callout-title">Spesifikasi Teknologi Perangkat Lunak:</div>
-      <strong>Front-End Core:</strong> Vanilla ES6+ Modular Architecture (Bebas ketergantungan framework berat, waktu muat &lt; 1,2 detik), TailwindCSS Utility Engine, Material Symbols Outlined.<br>
-      <strong>Back-End API:</strong> RESTful Micro-Services (PHP 8.2 &amp; MySQL Relational Storage) pada Cloud Hosting SMAN 1 Belitang.<br>
-      <strong>Keamanan &amp; Integritas:</strong> Cross-Site Request Protection, Client-Side Image Compression (mengubah foto 8MB menjadi &lt; 350KB sebelum diunggah), SHA-256 Checksum Validation.
+  <!-- =================================================================== -->
+  <!-- HALAMAN 3: RINGKASAN EKSEKUTIF (EXECUTIVE SUMMARY)                  -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">RINGKASAN EKSEKUTIF (EXECUTIVE SUMMARY)</span>
+      <span>ASSA 2026 • PORTOFOLIO INOVASI</span>
     </div>
 
-    <h2 class="sub-title">2.3 Integrasi Fitur Cerdas dan Penerapan Kecerdasan Buatan (AI)</h2>
-    <p>
-      Dalam aplikasi ini, teknologi cerdas dan kecerdasan buatan diterapkan pada 4 fungsi vital pembelajaran:
-    </p>
+    <div class="page-content">
+      <h1 class="bab-title">
+        <span>RINGKASAN EKSEKUTIF</span>
+        <span class="bab-badge">Intisari Inovasi</span>
+      </h1>
 
-    <div class="grid-2">
-      <div class="card">
-        <h4>📍 1. Smart Geotagging &amp; Anti-Fraud AI</h4>
+      <p>
+        Implementasi Kurikulum Merdeka menuntut satuan pendidikan untuk menyelenggarakan kegiatan kokurikuler kontekstual yang berakar pada kearifan lingkungan serta Penguatan Profil Pelajar Pancasila. Namun, di satuan pendidikan besar seperti SMA Negeri 1 Belitang dengan <strong>1.165 siswa kelas X</strong>, pelaksanaan kokurikuler menghadapi tantangan multidimensi: disparitas ekonomi antara siswa yang mampu mengikuti ekspedisi <em>Field Trip</em> luar provinsi dan siswa <em>Non-Field Trip</em> yang riset mandiri di OKU Timur, rawannya kecurangan bukti observasi lapangan, serta beban administrasi penilaian 32.000 titik data rapor.
+      </p>
+
+      <p>
+        Untuk menjawab persoalan tersebut, dikembangkan <strong>APP FINCESTEM</strong> (<em>Financial, Culture, Exploration, STEM</em>), sebuah platform digital cerdas berbasis Progressive Web App (PWA). Platform ini memiliki 5 pilar inovasi unggulan:
+      </p>
+
+      <div class="grid-2">
+        <div class="card">
+          <h4>⚖️ 1. Diferensiasi Dual-Track Inklusif</h4>
+          <p>Menyelaraskan materi antara ekspedisi Field Trip (Jawa-Bromo) dan riset mandiri 7–8 sektor unggulan lokal OKU Timur dengan beban belajar dan pembobotan kompetensi yang setara.</p>
+        </div>
+        <div class="card">
+          <h4>📍 2. Smart Geotagging &amp; Anti-Fraud AI</h4>
+          <p>Kamera aplikasi memvalidasi koordinat GPS live siswa Non-Field Trip di dalam batas poligon resmi Kab. OKU Timur serta mendeteksi foto manipulasi galeri tanpa stempel live camera.</p>
+        </div>
+        <div class="card">
+          <h4>🔒 3. Single-Device Session Security</h4>
+          <p>Mencegah kecurangan perjokian tugas/asesmen dengan membatasi satu akun NISN hanya aktif pada satu gawai, memutuskan sesi login lain secara otomatis (*force logout*).</p>
+        </div>
+        <div class="card">
+          <h4>⚡ 4. AI Smart Grading (Human-in-the-Loop)</h4>
+          <p>Algoritma cerdas merekomendasikan nilai harian dan nilai rapor 4 pilar secara otomatis, dengan hak prerogatif penentuan nilai akhir tetap berada di tangan guru fasilitator.</p>
+        </div>
+      </div>
+
+      <div class="callout callout-amber" style="margin-top: 10px;">
+        <div class="callout-title">Hilirisasi Nilai Langsung ke Aplikasi e-Rapor Resmi:</div>
+        Setelah rangkaian penugasan 7 hari selesai, rekapitulasi nilai rapor kokurikuler siswa dapat diunduh (*export*) dalam format lembar kerja terstandar yang <strong>siap diinput langsung ke aplikasi e-Rapor resmi sekolah sebagai nilai rapor asli Semester Gasal Tahun Pelajaran 2026/2027</strong>.
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span>APP FINCESTEM: Financial • Culture • Exploration • STEM</span>
+      <span class="page-number">Halaman 3</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 4: BAB I - PENDAHULUAN & LANDASAN YURIDIS                   -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB I: PENDAHULUAN &amp; LANDASAN YURIDIS</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
+
+    <div class="page-content">
+      <h1 class="bab-title">
+        <span>BAB I • PENDAHULUAN</span>
+        <span class="bab-badge">Bab 1.1 - 1.2</span>
+      </h1>
+
+      <h2 class="sub-title">1.1 Landasan Yuridis: Permendikbudristek Nomor 13 Tahun 2025</h2>
+      <p>
+        Pembaruan regulasi pendidikan nasional melalui <strong>Permendikbudristek Nomor 13 Tahun 2025</strong> menegaskan bahwa struktur kurikulum pada pendidikan menengah terdiri atas tiga pilar utama yang saling melengkapi:
+      </p>
+      <ol>
+        <li><strong>Intrakurikuler:</strong> Memuat capaian pembelajaran terstruktur dalam mata pelajaran wajib (Matematika, Bahasa Indonesia, Fisika, Biologi, Ekonomi, dll.).</li>
+        <li><strong>Kokurikuler:</strong> Berorientasi pada ketercapaian <strong>delapan dimensi profil lulusan</strong> melalui pembelajaran kontekstual berbasis tema, keterpaduan lintas disiplin ilmu, serta pembiasaan gerakan tujuh kebiasaan baik melalui projek kolaboratif, kewirausahaan, dan kepedulian lingkungan. Capaian kokurikuler wajib dinilai dan dilaporkan resmi pada buku Rapor Hasil Belajar.</li>
+        <li><strong>Ekstrakurikuler:</strong> Wadah pengembangan minat, bakat, potensi kepemimpinan, dan kemandirian peserta didik di luar jam intrakurikuler (Paskibra, PMR, Rohis, Pramuka).</li>
+      </ol>
+
+      <h2 class="sub-title">1.2 Realitas Masalah di SMA Negeri 1 Belitang</h2>
+      <p>
+        Menindaklanjuti amanat kokurikuler tersebut, SMA Negeri 1 Belitang menetapkan tema <strong>FINCESTEM</strong> (*Financial, Culture, Exploration, STEM*). Namun, dalam eksekusinya pada <strong>1.165 siswa kelas X</strong>, muncul 4 tantangan sistemik di lapangan:
+      </p>
+      <ul>
+        <li><strong>Disparitas Jalur Pembelajaran:</strong> Dari 1.165 siswa, sebanyak 456 siswa memilih jalur <em>Field Trip</em> (Semarang, Malang, Bromo, Yogyakarta), sedangkan 709 siswa memilih jalur <em>Non-Field Trip</em> (riset lokal di OKU Timur). Sekolah wajib menjamin mutu kompetensi kedua kelompok ini setara dan adil.</li>
+        <li><strong>Kendala Verifikasi Geospasial:</strong> Sulitnya guru memantau keaslian lokasi riset 709 siswa Non-Field Trip yang tersebar di pelosok desa, rawan terjadi foto unduhan internet tanpa riset langsung.</li>
+        <li><strong>Potensi Kecurangan Joki Gawai:</strong> Asesmen digital rawan dikerjakan oleh orang lain melalui sistem login multi-perangkat.</li>
+        <li><strong>Beban Asesmen Rapor:</strong> Guru fasilitator menghadapi puluhan ribu titik data asesmen yang rawan memicu bias dan keterlambatan penginputan e-Rapor sekolah.</li>
+      </ul>
+    </div>
+
+    <div class="page-footer">
+      <span>Transformasi Kokurikuler Kontekstual Berbasis AI</span>
+      <span class="page-number">Halaman 4</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 5: BAB I - TUJUAN, SASARAN & NOVELTY INOVASI                -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB I: TUJUAN &amp; KEBARUAN INOVASI (NOVELTY)</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
+
+    <div class="page-content">
+      <h2 class="sub-title">1.3 Tujuan Inovasi APP FINCESTEM</h2>
+      <p>
+        Inovasi platform APP FINCESTEM dikembangkan untuk mencapai sasaran strategis:
+      </p>
+      <ul>
+        <li>Mewujudkan sistem manajemen kokurikuler yang <strong>inklusif, adaptif, dan berkeadilan mutu</strong> bagi peserta didik jalur Field Trip maupun Non-Field Trip.</li>
+        <li>Menerapkan teknologi cerdas <strong>Smart Geotagging &amp; Anti-Fraud AI</strong> untuk menjamin otentisitas data riset lapangan siswa berbasis koordinat GPS live Kabupaten OKU Timur.</li>
+        <li>Mengamankan integritas asesmen digital melalui proteksi <strong>Single-Device Binding</strong> dan <strong>Exam Shield</strong> bebas kecurangan.</li>
+        <li>Menyediakan asisten cerdas guru fasilitator (<strong>AI Smart Grading Assistant</strong>) guna mengotomatisasi kalkulasi rekomendasi nilai harian dan nilai rapor akhir.</li>
+        <li>Menghasilkan data rekapitulasi nilai rapor kokurikuler yang <strong>siap diimpor langsung ke aplikasi e-Rapor resmi sekolah Semester Gasal 2026/2027</strong>.</li>
+      </ul>
+
+      <h2 class="sub-title">1.4 Matriks Kebaruan &amp; Keunggulan Komparatif (Novelty)</h2>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 22%;">Parameter Inovasi</th>
+            <th style="width: 38%;">LMS Konvensional / Cara Lama</th>
+            <th style="width: 40%;">Platform APP FINCESTEM</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Verifikasi Lapangan</strong></td>
+            <td>Foto bebas diunggah dari galeri gawai tanpa metadata koordinat geospasial.</td>
+            <td><strong>Smart Geotagging AI:</strong> Validasi otomatis poligon batas Kab. OKU Timur dan penalti Bintang 1 jika foto galeri.</td>
+          </tr>
+          <tr>
+            <td><strong>Keamanan Akun Siswa</strong></td>
+            <td>Satu akun dapat dibuka di banyak HP secara bersamaan (rawan perjokian).</td>
+            <td><strong>Single-Device Binding:</strong> Membatasi satu sesi per gawai; otomatis <em>force logout</em> jika dibuka di HP lain.</td>
+          </tr>
+          <tr>
+            <td><strong>Diferensiasi Jalur</strong></td>
+            <td>Siswa yang tidak ikut studi wisata seringkali hanya diberi tugas merangkum buku.</td>
+            <td><strong>Dual-Track Aligned:</strong> Modul 7–8 sektor riset mandiri OKU Timur selaras penuh dengan ekspedisi Jawa–Bromo.</td>
+          </tr>
+          <tr>
+            <td><strong>Efisiensi Koreksi Guru</strong></td>
+            <td>Guru menghitung rata-rata nilai pilar secara manual di kertas/spreadsheet.</td>
+            <td><strong>AI Smart Grading Assistant:</strong> Rekomendasi nilai dan bintang terhitung otomatis; keputusan akhir tetap di tangan guru.</td>
+          </tr>
+          <tr>
+            <td><strong>Integrasi e-Rapor</strong></td>
+            <td>Nilai terpencar di berbagai format dokumen; butuh rekapitulasi ulang berminggu-minggu.</td>
+            <td><strong>e-Rapor Ready:</strong> Satu klik ekspor data nilai rapor kokurikuler resmi Semester Gasal 2026/2027.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="page-footer">
+      <span>Kebaruan &amp; Keunggulan Komparatif Platform Digital</span>
+      <span class="page-number">Halaman 5</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 6: BAB II - RANCANG BANGUN & 4 PILAR FINCESTEM              -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB II: KERANGKA PEDAGOGIS 4 PILAR FINCESTEM</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
+
+    <div class="page-content">
+      <h1 class="bab-title">
+        <span>BAB II • RANCANG BANGUN &amp; METODOLOGI</span>
+        <span class="bab-badge">Bab 2.1 - 2.2</span>
+      </h1>
+
+      <h2 class="sub-title">2.1 Kerangka Pedagogis Terpadu: 4 Pilar FINCESTEM</h2>
+      <p>
+        FINCESTEM dirancang sebagai sintesis holistik antara keterampilan ekonomi, kesadaran budaya, ketangkasan eksplorasi, dan penguasaan sains terapan:
+      </p>
+
+      <div class="grid-2">
+        <div class="card" style="border-top: 3px solid #d97706;">
+          <h4>💰 1. FINANCIAL (Literasi Finansial)</h4>
+          <p>Membekali siswa kecakapan menyusun Rencana Anggaran Biaya (RAB), pencatatan arus kas harian, kalkulasi Harga Pokok Penjualan (HPP) komoditas beras/karet/ikan, margin laba, serta mitigasi risiko finansial usaha mikro.</p>
+        </div>
+        <div class="card" style="border-top: 3px solid #7c3aed;">
+          <h4>🏛️ 2. CULTURE (Kebudayaan &amp; Etnosains)</h4>
+          <p>Eksplorasi warisan sejarah dan tradisi multikultural OKU Timur (masyarakat Komering, Jawa transmigran, Bali) serta etnosains Candi Prambanan dan seni membatik lilin canting malam.</p>
+        </div>
+        <div class="card" style="border-top: 3px solid #059669;">
+          <h4>🧭 3. EXPLORATION (Eksplorasi Geospasial)</h4>
+          <p>Kecakapan orientasi medan bentang alam, pembacaan koordinat GPS, observasi jaringan irigasi Komering, geomorfologi kaldera Gunung Bromo, dan penelusuran ekosistem pesisir.</p>
+        </div>
+        <div class="card" style="border-top: 3px solid #2563eb;">
+          <h4>🔬 4. STEM (Sains, Teknologi, Rekayasa, Matematika)</h4>
+          <p>Analisis kerja mesin Rice Milling Unit (RMU), mekanika traktor alsintan, kimia pewarnaan tekstil batik, biologi nutrisi pakan ternak, dan pemodelan matematis efisiensi produksi.</p>
+        </div>
+      </div>
+
+      <h2 class="sub-title">2.2 Arsitektur Sistem Progressive Web Application (PWA)</h2>
+      <p>
+        Platform dirancang dengan arsitektur web modern yang sangat hemat sumber daya, menjamin akses lancar bagi siswa di daerah pedesaan dengan gawai spesifikasi terbatas:
+      </p>
+      <ul>
+        <li><strong>Frontend Ringan (Vanilla ES6+ &amp; TailwindCSS):</strong> Bebas ketergantungan library berat, waktu muat awal <em>(first contentful paint)</em> hanya 1,1 detik.</li>
+        <li><strong>Client-Side Image Compression Engine:</strong> Foto resolusi tinggi (5–10 MB) secara otomatis dikompresi di dalam peramban menjadi &lt; 350 KB sebelum diunggah, menghemat kuota siswa hingga 95%.</li>
+        <li><strong>Backend Microservices &amp; RESTful API:</strong> Dibangun di atas PHP 8.2 dan database relasional MySQL cPanel sekolah dengan enkripsi data siswa berbasis token sesi.</li>
+      </ul>
+    </div>
+
+    <div class="page-footer">
+      <span>Kerangka Filosofis &amp; Arsitektur Perangkat Lunak</span>
+      <span class="page-number">Halaman 6</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 7: BAB II - FITUR CERDAS AI & KEAMANAN SISTEM               -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB II: FITUR CERDAS AI &amp; INTEGRITAS SISTEM</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
+
+    <div class="page-content">
+      <h2 class="sub-title">2.3 Penerapan Kecerdasan Buatan (AI) &amp; Logika Cerdas</h2>
+      <p>
+        Pemanfaatan kecerdasan buatan dalam APP FINCESTEM difokuskan pada pemecahan masalah otentisitas data dan optimalisasi tugas pendidik:
+      </p>
+
+      <div class="card" style="margin-bottom: 8px;">
+        <h4>📍 1. Smart Geotagging &amp; Anti-Fraud Detection AI</h4>
         <p>
-          Algoritma memvalidasi batas koordinat geospasial resmi Kabupaten OKU Timur (garis bujur/lintang). Jika siswa Non-Field Trip mencoba mengunggah foto dari galeri tanpa stempel metadata GPS kamera live, sistem mendeteksi anomali tersebut dan secara otomatis menetapkan rekomendasi status revisi (Bintang 1) pada portal fasilitator.
+          Algoritma pemindai GPS perangkat mengekstrak garis bujur (*longitude*) dan lintang (*latitude*) secara live saat kamera diaktifkan. Sistem mencocokkan koordinat dengan poligon geografis Kabupaten OKU Timur. Jika koordinat berada di luar wilayah atau terdeteksi foto dari penyimpanan internal galeri, sistem memberikan tanda penalti pelanggaran dan menerbitkan rekomendasi status <strong>Revisi (Bintang 1)</strong> kepada fasilitator.
         </p>
       </div>
-      <div class="card">
-        <h4>⚡ 2. AI Smart Grading &amp; Recommendation Engine</h4>
+
+      <div class="card" style="margin-bottom: 8px;">
+        <h4>🔒 2. Single-Device Session Security (Anti-Joki Gawai)</h4>
         <p>
-          Algoritma inferensi berbasis aturan (<em>rule-based intelligent engine</em>) yang mengevaluasi kecepatan unggah tugas (<em>cutoff time check</em>), kelengkapan 4 unsur STEM, dan kepatuhan instrumen. Fasilitator diberikan tombol satu-klik "Hitung Rekomendasi" untuk menampilkan saran skor, bintang (1 s.d. 5), dan predikat secara instan.
+          Sistem mengunci sesi pengerjaan aktif pada satu ID perangkat fisik (Device Fingerprinting). Ketika sebuah akun NISN terdeteksi dibuka di perangkat lain saat sedang mengerjakan instrumen atau ujian kuis asesmen, sistem secara otomatis melakukan pemutusan sesi (*force logout*) pada perangkat pertama, mencegah potensi perjokian pengerjaan tugas oleh pihak lain.
         </p>
       </div>
-      <div class="card">
-        <h4>🛡️ 3. Exam Shield Real-Time Protection</h4>
+
+      <div class="card" style="margin-bottom: 8px;">
+        <h4>⚡ 3. AI Smart Grading &amp; Auto-Recommendation Engine</h4>
         <p>
-          Sistem pertahanan asesmen digital yang bekerja pada event-loop peramban. Mendeteksi aksi pelepasan fokus tab (<em>visibilitychange</em>), upaya tangkapan layar (<em>print screen</em> / tombol pintas screenshot) dengan memicu <em>blackout emergency strobe overlay</em>, serta menonaktifkan klik kanan dan seleksi teks.
+          Mesin inferensi cerdas yang mengalkulasi kecepatan unggah tugas (*cutoff time check* pukul 16.00 WIB), skor asesmen kuis, dan kelengkapan 4 unsur STEM di LKPD video. Fasilitator disediakan tombol satu-klik <em>"Hitung Rekomendasi"</em> untuk menampilkan saran skor angka, bintang (⭐1 s.d. ⭐5), dan predikat secara instan.
         </p>
       </div>
+
       <div class="card">
-        <h4>🎥 4. YouTube Video Analytics &amp; Dual Sync</h4>
+        <h4>🛡️ 4. Exam Shield (Proteksi Integritas Asesmen Real-Time)</h4>
         <p>
-          Mengekstrak ID video YouTube yang diserahkan siswa, memverifikasi durasi minimal (5–10 menit), dan menyematkan pemutar video tanpa iklan di dashboard fasilitator. Data tersinkronisasi otomatis dua arah sehingga hasil koreksi guru langsung tampak di gawai siswa secara real-time.
+          Sistem pertahanan peramban aktif yang memicu layar *blackout emergency* seketika jika siswa mencoba mengambil tangkapan layar (*screenshot*), mendeteksi perpindahan tab browser (*tab switching*), serta menonaktifkan klik kanan dan seleksi teks selama kuis 10 soal berlangsung.
         </p>
       </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- BAB III: IMPLEMENTASI & PROSES PEMBELAJARAN                         -->
-    <!-- =================================================================== -->
-    <div class="page-break"></div>
+    <div class="page-footer">
+      <span>Teknologi Cerdas Geotagging, Single-Device &amp; Exam Shield</span>
+      <span class="page-number">Halaman 7</span>
+    </div>
+  </div>
 
-    <h1 class="bab-title">
-      <span>BAB III • IMPLEMENTASI &amp; PROSES PEMBELAJARAN</span>
-      <span class="bab-badge">Bab 3</span>
-    </h1>
+  <!-- =================================================================== -->
+  <!-- HALAMAN 8: BAB III - ALUR KERJA 5 TAHAP FORMATIF                    -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB III: ALUR 5 TAHAP FORMATIF &amp; SISTEM BINTANG</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
 
-    <h2 class="sub-title">3.1 Skenario Pembelajaran Berurutan 7 Hari (Day 1 s.d. Day 7)</h2>
-    <p>
-      Pelaksanaan kegiatan kokurikuler didesain secara terstruktur selama 7 hari kalender. Setiap hari memiliki fokus pilar dan instrumen yang terstandar pada kedua jalur pembelajaran:
-    </p>
+    <div class="page-content">
+      <h1 class="bab-title">
+        <span>BAB III • IMPLEMENTASI PEMBELAJARAN</span>
+        <span class="bab-badge">Bab 3.1 - 3.2</span>
+      </h1>
 
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th style="width: 8%;">Hari</th>
-          <th style="width: 15%;">Pilar Utama</th>
-          <th style="width: 38%;">Aktivitas Jalur Field Trip (Jawa–Bromo)</th>
-          <th style="width: 39%;">Aktivitas Jalur Non-Field Trip (Riset OKU Timur)</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Day 1</strong></td>
-          <td><span class="badge badge-amber">FINANCIAL</span></td>
-          <td>Perjalanan keberangkatan darat &amp; laut, manajemen anggaran saku mandiri.</td>
-          <td>Pemetaan potensi ekonomi daerah, penyusunan Proposal Riset &amp; RAB Kelompok.</td>
-        </tr>
-        <tr>
-          <td><strong>Day 2</strong></td>
-          <td><span class="badge badge-teal">CULTURE</span></td>
-          <td>Studi arsitektur cagar budaya Lawang Sewu &amp; Akademi Kepolisian Semarang.</td>
-          <td>Eksplorasi etnosains budaya dan tradisi multikultural masyarakat OKU Timur.</td>
-        </tr>
-        <tr>
-          <td><strong>Day 3</strong></td>
-          <td><span class="badge badge-blue">STEM</span></td>
-          <td>Eksplorasi sains interaktif di Kota Batu / Malang (Fisika gerak, mekanika).</td>
-          <td>Analisis teknologi rekayasa mesin pertanian (RMU, traktor, alat semprot modern).</td>
-        </tr>
-        <tr>
-          <td><strong>Day 4</strong></td>
-          <td><span class="badge badge-teal">EXPLORATION</span></td>
-          <td>Investigasi kaldera Gunung Bromo, ekosistem pasir berbisik &amp; kearifan Tengger.</td>
-          <td>Penjelajahan geospasial bentang alam irigasi persawahan Belitang &amp; GPS.</td>
-        </tr>
-        <tr>
-          <td><strong>Day 5</strong></td>
-          <td><span class="badge badge-blue">VIDEO SAINS</span></td>
-          <td>Eksplorasi Candi Prambanan, sains kimia lilin batik Benang Ratu &amp; Kampus UNY.</td>
-          <td>Produksi Video YouTube (5–10 menit): Observasi STEM &amp; Peralatan 7 Sektor Usaha.</td>
-        </tr>
-        <tr>
-          <td><strong>Day 6</strong></td>
-          <td><span class="badge badge-amber">VIDEO REKAYASA</span></td>
-          <td>Kunjungan sentra industri bakpia Jogja &amp; dinamika pesisir Pantai Drini.</td>
-          <td>Produksi Video YouTube: Rekayasa solusi kendala teknis dan analisis laba rugi.</td>
-        </tr>
-        <tr>
-          <td><strong>Day 7</strong></td>
-          <td><span class="badge badge-teal">EVALUASI AKHIR</span></td>
-          <td>Perjalanan pulang Belitang, penyusunan jurnal refleksi akhir &amp; foto keluarga.</td>
-          <td>Rekonsiliasi kas kelompok, sintesis 4 pilar FINCESTEM &amp; video refleksi BTS.</td>
-        </tr>
-      </tbody>
-    </table>
+      <h2 class="sub-title">3.1 Alur Belajar 5 Tahap Formatif Berurutan</h2>
+      <p>
+        Untuk membentuk disiplin riset dan pembiasaan tujuh kebiasaan baik, setiap hari siswa menempuh siklus pengerjaan satu pintu secara linier:
+      </p>
 
-    <h2 class="sub-title">3.2 Alur Aktivitas Siswa: 5 Tahapan Terintegrasi</h2>
-    <p>
-      Di dalam aplikasi, setiap hari siswa menyelesaikan siklus belajar komprehensif:
-    </p>
-    <ol>
-      <li><strong>Modul Belajar Digital:</strong> Siswa membaca materi pengantar, panduan etnosains, dan menyusun kartu kajian riset mandiri atau resume perencanaan.</li>
-      <li><strong>Dokumentasi Foto Geotagging:</strong> Mengambil foto bukti lapangan secara langsung melalui kamera aplikasi dengan stempel otomatis nama siswa, NISN, waktu, dan koordinat GPS.</li>
-      <li><strong>Lembar Kerja Peserta Didik (LKPD):</strong> Mengisi analisis mendalam, data numerik perhitungan biaya/HPP, atau menautkan link video observasi YouTube publik/unlisted.</li>
-      <li><strong>Kuis Asesmen Digital (CBT):</strong> Mengerjakan 10 butir soal pilihan ganda harian adaptif berbasis sektor usaha dengan timer dan proteksi <em>Exam Shield</em>.</li>
-      <li><strong>Jurnal Refleksi Mandiri:</strong> Menuangkan refleksi kualitatif, kendala lapangan, dan pemaknaan nilai karakter Profil Pelajar Pancasila.</li>
-    </ol>
-
-    <h2 class="sub-title">3.3 Kolaborasi dan Pembagian Siswa Binaan Cerdas</h2>
-    <p>
-      Untuk mengelola 1.165 siswa, platform dilengkapi <strong>Modul Mentorship &amp; Pembagian Siswa Binaan Multi-Fasilitator</strong>. Setiap guru fasilitator (40+ guru) hanya membina kelompok siswa tertentu sesuai SK Pembagian Tugas. Ketika fasilitator membuka akunnya, dashboard secara cerdas memfilter daftar siswa binaannya, menampilkan indikator lampu hijau (telah dinilai), kuning (menunggu koreksi), atau abu-abu (belum mengumpulkan), sehingga koordinasi berjalan sangat rapi dan transparan.
-    </p>
-
-    <!-- =================================================================== -->
-    <!-- BAB IV: DAMPAK & EVALUASI HASIL BELAJAR (STUDI KASUS AI)            -->
-    <!-- =================================================================== -->
-    <div class="page-break"></div>
-
-    <h1 class="bab-title">
-      <span>BAB IV • DAMPAK &amp; EVALUASI HASIL BELAJAR</span>
-      <span class="bab-badge">Bab 4</span>
-    </h1>
-
-    <h2 class="sub-title">4.1 Statistik Dampak Skalabilitas Nyata</h2>
-    <p>
-      Implementasi APP FINCESTEM pada SMA Negeri 1 Belitang menghasilkan metrik keterlibatan (<em>engagement metrics</em>) yang sangat masif dan terverifikasi pada sistem log server:
-    </p>
-
-    <div class="grid-4">
-      <div class="stat-box">
-        <span class="val">1.165</span>
-        <span class="lbl">Siswa Kelas X Aktif</span>
+      <div style="background: #f8fafc; border: 1.5px solid #006a61; border-radius: 8px; padding: 10px; margin: 8px 0; text-align: center;">
+        <span style="font-weight: 800; color: #00236f; font-size: 8.5pt;">
+          1. Modul Belajar &rarr; 2. LKPD Digital &rarr; 3. Dokumentasi Geotag &rarr; 4. Kuis Asesmen &rarr; 5. Jurnal Refleksi &rarr; 6. Penilaian Guru
+        </span>
       </div>
-      <div class="stat-box">
-        <span class="val">42 Guru</span>
-        <span class="lbl">Fasilitator Pembina</span>
+
+      <ol>
+        <li>
+          <strong>Tahap 1: Modul Belajar Digital</strong><br>
+          *Field Trip:* Membaca modul terstruktur rute kunjungan, jadwal, dan panduan observasi etnosains candi/batik/kampus.<br>
+          *Non-Field Trip:* Memilih 1 dari 7–8 sektor riset mandiri lokal, menggali literasi mandiri, dan menginput definisi operasional serta fokus pengamatan lapangan.
+        </li>
+        <li>
+          <strong>Tahap 2: Lembar Kerja Peserta Didik (LKPD Digital)</strong><br>
+          Mengisi analisis mendalam, neraca perhitungan HPP/arus kas mikro, atau menyematkan tautan video observasi YouTube publik/unlisted berdurasi 5–10 menit.
+        </li>
+        <li>
+          <strong>Tahap 3: Dokumentasi Foto Geotagging</strong><br>
+          Mengambil foto bukti langsung via kamera aplikasi dengan stempel otomatis nama siswa, NISN, waktu real-time, dan koordinat GPS.
+        </li>
+        <li>
+          <strong>Tahap 4: Kuis Asesmen Digital (Exam Shield)</strong><br>
+          Mengerjakan 10 soal pilihan ganda harian spesifik sektor dengan pembatasan waktu dan proteksi anti-kecurangan.
+        </li>
+        <li>
+          <strong>Tahap 5: Jurnal Refleksi Mandiri</strong><br>
+          Menuliskan refleksi kualitatif, kendala lapangan, pemaknaan karakter, dan rencana aksi perbaikan berkelanjutan.
+        </li>
+      </ol>
+
+      <h2 class="sub-title">3.2 Sistem Apresiasi Bintang Berbasis Ketepatan Waktu</h2>
+      <p>
+        Aplikasi mendidik kedisiplinan siswa melalui algoritma apresiasi bintang otomatis:
+      </p>
+      <ul>
+        <li><strong>Bintang 5 (⭐5 - Nilai 85–100):</strong> Dituntaskan tepat waktu sebelum batas akhir (*cutoff time*) pukul 16.00 WIB setiap harinya dengan instrumen lengkap dan valid.</li>
+        <li><strong>Bintang 4 (⭐4 - Nilai 70–84):</strong> Dikumpulkan melewati batas toleransi sore hari atau memerlukan perbaikan minor pada catatan LKPD.</li>
+        <li><strong>Bintang 1 (⭐1 - Status Revisi):</strong> Diberikan jika sistem mendeteksi foto di luar wilayah OKU Timur, foto unggahan galeri, atau pengerjaan tidak lengkap. Siswa wajib memperbaiki tugas untuk mendapatkan nilai layak.</li>
+      </ul>
+    </div>
+
+    <div class="page-footer">
+      <span>Alur Pembelajaran Terstruktur &amp; Disiplin Waktu</span>
+      <span class="page-number">Halaman 8</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 9: BAB III - SKENARIO PENUGASAN 7 HARI (DAY 1-7)            -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB III: SKENARIO PENUGASAN 7 HARI KOKURIKULER</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
+
+    <div class="page-content">
+      <h2 class="sub-title">3.3 Matriks Penyelarasan Kurikulum 7 Hari (Day 1 s.d. Day 7)</h2>
+      <p>
+        Aplikasi menyelaraskan aktivitas kedua jalur secara seimbang selama 7 hari kalender kegiatan kokurikuler:
+      </p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 8%;">Hari</th>
+            <th style="width: 15%;">Pilar Utama</th>
+            <th style="width: 38%;">Aktivitas Jalur Field Trip (Jawa–Bromo)</th>
+            <th style="width: 39%;">Aktivitas Jalur Non-Field Trip (Riset OKU Timur)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Day 1</strong></td>
+            <td><span class="badge badge-amber">FINANCIAL</span></td>
+            <td>Perjalanan darat-laut Sumatera-Jawa, manajemen anggaran saku mandiri.</td>
+            <td>Pemetaan potensi ekonomi daerah, proposal riset &amp; RAB kelompok usaha.</td>
+          </tr>
+          <tr>
+            <td><strong>Day 2</strong></td>
+            <td><span class="badge badge-teal">CULTURE</span></td>
+            <td>Studi cagar budaya Lawang Sewu &amp; Akademi Kepolisian Semarang.</td>
+            <td>Eksplorasi kearifan lokal etnosains &amp; tradisi multikultural OKU Timur.</td>
+          </tr>
+          <tr>
+            <td><strong>Day 3</strong></td>
+            <td><span class="badge badge-blue">STEM</span></td>
+            <td>Eksplorasi sains interaktif di Kota Batu/Malang (Fisika terapan, mekanika).</td>
+            <td>Analisis teknologi rekayasa mesin pertanian (RMU, traktor, alat semprot).</td>
+          </tr>
+          <tr>
+            <td><strong>Day 4</strong></td>
+            <td><span class="badge badge-teal">EXPLORATION</span></td>
+            <td>Investigasi kaldera Gunung Bromo, ekosistem pasir &amp; tradisi suku Tengger.</td>
+            <td>Penjelajahan bentang alam irigasi persawahan Belitang &amp; analitik GPS.</td>
+          </tr>
+          <tr>
+            <td><strong>Day 5</strong></td>
+            <td><span class="badge badge-blue">VIDEO SAINS</span></td>
+            <td>Eksplorasi Candi Prambanan, kimia lilin batik Benang Ratu &amp; Kampus UNY.</td>
+            <td>Produksi Video YouTube (5–10 menit): Observasi STEM &amp; Alat 7 Sektor Usaha.</td>
+          </tr>
+          <tr>
+            <td><strong>Day 6</strong></td>
+            <td><span class="badge badge-amber">VIDEO REKAYASA</span></td>
+            <td>Sentra industri pangan bakpia Jogkem &amp; dinamika pesisir Pantai Drini.</td>
+            <td>Produksi Video YouTube: Rekayasa solusi kendala teknis &amp; omzet laba rugi.</td>
+          </tr>
+          <tr>
+            <td><strong>Day 7</strong></td>
+            <td><span class="badge badge-teal">EVALUASI AKHIR</span></td>
+            <td>Perjalanan pulang Belitang, penyusunan jurnal refleksi akhir &amp; foto keluarga.</td>
+            <td>Rekonsiliasi kas kelompok, sintesis 4 pilar FINCESTEM &amp; video refleksi BTS.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2 class="sub-title">3.4 Kolaborasi dan Pembagian Siswa Binaan Cerdas</h2>
+      <p>
+        Untuk membina 1.165 siswa, platform dilengkapi modul manajemen mentorship:
+      </p>
+      <ul>
+        <li>Setiap guru fasilitator (40+ guru) mengampu kelompok binaan 25–30 siswa sesuai SK resmi.</li>
+        <li>Portal fasilitator menampilkan indikator visual status pengerjaan: <em>Hijau (Selesai Dinilai)</em>, <em>Kuning (Menunggu Penilaian)</em>, dan <em>Abu-abu (Belum Mengumpulkan)</em>.</li>
+        <li>Koordinator sekolah dapat memantau grafik progres seluruh rombel secara real-time dari satu dasbor terpadu.</li>
+      </ul>
+    </div>
+
+    <div class="page-footer">
+      <span>Penyelarasan Kurikulum 7 Hari &amp; Manajemen Pembinaan</span>
+      <span class="page-number">Halaman 9</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 10: BAB IV - AI ASISTENSI & PRINSIP HUMAN-IN-THE-LOOP      -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB IV: ASISTENSI PENILAIAN AI &amp; HILIRISASI RAPOR</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
+
+    <div class="page-content">
+      <h1 class="bab-title">
+        <span>BAB IV • DAMPAK &amp; EVALUASI HASIL BELAJAR</span>
+        <span class="bab-badge">Bab 4.1 - 4.2</span>
+      </h1>
+
+      <h2 class="sub-title">4.1 AI Asistensi Penilaian Guru: Prinsip Human-in-the-Loop</h2>
+      <p>
+        Aplikasi FINCESTEM menerapkan etika kecerdasan buatan berstandar tinggi dengan memegang teguh prinsip <strong>Human-in-the-Loop</strong>:
+      </p>
+
+      <div class="callout callout-blue">
+        <div class="callout-title">Kedaulatan Pedagogis Guru Fasilitator:</div>
+        Algoritma AI pada aplikasi bertindak sebagai <strong>asisten analitik pintar</strong> yang meringankan beban hitung persentase pilar, memverifikasi kepatuhan waktu unggah, dan menyodorkan <em>rekomendasi nilai awal</em>. Namun, <strong>hak prerogatif penetapan nilai rapor akhir dan catatan reflektif personal sepenuhnya berada di tangan Bapak/Ibu Guru Fasilitator secara manual dan mandiri</strong>. Guru bebas menyesuaikan rekomendasi sistem berdasarkan kedalaman analisis dan etika siswa di lapangan.
       </div>
-      <div class="stat-box">
-        <span class="val">8.155+</span>
-        <span class="lbl">Foto Geotag Terverifikasi</span>
-      </div>
-      <div class="stat-box">
-        <span class="val">100%</span>
-        <span class="lbl">Rapor Digital Terbit</span>
+
+      <h2 class="sub-title">4.2 Hilirisasi Nilai: Integrasi Langsung ke Aplikasi e-Rapor Resmi</h2>
+      <p>
+        Salah satu keunggulan terbesar APP FINCESTEM yang membedakannya dari proyek pembelajaran lepas adalah kesiapan hilirisasi datanya:
+      </p>
+      <ul>
+        <li><strong>Format Ekspor Terstandar:</strong> Begitu penilaian Day 1–7 disahkan oleh guru fasilitator, sistem menyediakan tombol unduh (*download*) rekapitulasi nilai rapor kokurikuler siswa dalam format lembar kerja terstruktur.</li>
+        <li><strong>Sinkronisasi ke e-Rapor SMA:</strong> Format data hasil unduhan telah diselaraskan persis dengan skema impor aplikasi **e-Rapor resmi Kementerian/Sekolah**.</li>
+        <li><strong>Nilai Rapor Asli Semester Gasal 2026/2027:</strong> Guru dan wali kelas tidak perlu lagi menginput nilai manual satu per satu; data tinggal diimpor langsung ke e-Rapor dan menjadi nilai rapor resmi yang diterima orang tua murid pada akhir semester gasal tahun pelajaran 2026/2027.</li>
+      </ul>
+
+      <div class="stat-box" style="margin-top: 10px; text-align: left; padding: 10px 14px;">
+        <span style="font-weight: 800; color: #00236f; font-size: 9pt; display: block; margin-bottom: 2px;">
+          📈 Efisiensi Waktu Pengolahan Nilai:
+        </span>
+        <span style="font-size: 8.5pt; color: #475569;">
+          Waktu rekapitulasi nilai rapor kokurikuler 1.165 siswa terpangkas dari estimasi <strong>14 hari kerja manual</strong> menjadi hanya <strong>kurang dari 15 menit</strong> proses ekspor-impor digital ke sistem e-Rapor sekolah.
+        </span>
       </div>
     </div>
 
-    <h2 class="sub-title">4.2 Studi Kasus 1: Keberhasilan AI Smart Geotagging Mencegah Penipuan Lokasi</h2>
-    <div class="callout callout-amber">
-      <div class="callout-title">Kasus Riil Siswa Non-Field Trip (Sektor Pertanian Padi):</div>
-      Pada pelaksanaan Day 4 (Eksplorasi Bentang Alam), tercatat 14 siswa mencoba mengunggah foto sawah dan mesin penggilingan padi yang diambil dari internet atau galeri media sosial lama. Sistem algoritma <strong>Smart Geotagging</strong> mendeteksi bahwa metadata gambar tidak memiliki stempel perangkat kamera live dan berada di luar poligon koordinat OKU Timur (koordinat kosong/default).<br><br>
-      <strong>Aksi Cerdas Sistem:</strong> Sistem langsung memberi peringatan <em>"Unggahan Galeri Terdeteksi Tanpa Geotag Live"</em> dan secara otomatis menerbitkan rekomendasi <strong>Nilai Bintang 1 (Status Revisi)</strong> pada dashboard guru fasilitator. Siswa kemudian melakukan observasi ulang secara riil ke lahan persawahan setempat, mengambil foto kamera live, dan tugas dinyatakan valid dengan rekomendasi Bintang 5. Hal ini membuktikan AI mampu mendisiplinkan kejujuran akademik peserta didik.
+    <div class="page-footer">
+      <span>Prinsip Human-in-the-Loop &amp; Hilirisasi e-Rapor Resmi</span>
+      <span class="page-number">Halaman 10</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 11: BAB IV - STUDI KASUS NYATA PENERAPAN AI                 -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB IV: STUDI KASUS NYATA &amp; SKALABILITAS SISTEM</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
     </div>
 
-    <h2 class="sub-title">4.3 Studi Kasus 2: Efisiensi Guru dengan AI Smart Grading Engine</h2>
-    <p>
-      Sebelum ada sistem ini, guru fasilitator membutuhkan waktu rata-rata <strong>6–8 menit per siswa</strong> untuk membaca lembar kertas, menghitung persentase pilar, dan menulis buku rapor manual. Dengan volume 30 siswa binaan per guru, seorang guru membutuhkan 4 jam per hari hanya untuk koreksi administrasi.
-    </p>
-    <p>
-      Dengan adanya <strong>AI Smart Grading Assistant</strong> pada <code>guru/fasilitator.html</code>:
-    </p>
-    <ul>
-      <li>Waktu penilaian terpangkas menjadi <strong>&lt; 45 detik per siswa</strong> karena sistem menampilkan pratinjau instan foto geotag, embed video YouTube yang bisa diputar langsung, dan nilai kuis otomatis.</li>
-      <li>Guru cukup menekan tombol <em>"Hitung Rekomendasi"</em>; algoritma langsung menghitung rata-rata proporsional pilar (misal Day 5: rata-rata Sains &amp; Teknologi Alat), menyarankan bintang, dan menghasilkan draf feedback konstruktif.</li>
-      <li>Tingkat kepuasan guru fasilitator mencapai <strong>96,4%</strong> berdasarkan survei evaluasi internal sekolah, dengan catatan bahwa guru dapat lebih berfokus pada interaksi pembinaan karakter (<em>human touch mentorship</em>) daripada urusan ketik-mengetik angka.</li>
-    </ul>
-
-    <h2 class="sub-title">4.4 Peningkatan Kompetensi Siswa (Intel® Skills for Innovation Alignment)</h2>
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th style="width: 25%;">Domain Keterampilan</th>
-          <th style="width: 40%;">Indikator Pembelajaran FINCESTEM</th>
-          <th style="width: 35%;">Capaian Evaluasi Siswa</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Computational Thinking &amp; Data</strong></td>
-          <td>Kemampuan merumuskan rincian biaya, HPP, omzet, dan margin laba pada LKPD Finansial serta menganalisis efisiensi mesin.</td>
-          <td>91,2% siswa mampu menyusun neraca laba-rugi sederhana usaha lokal secara mandiri.</td>
-        </tr>
-        <tr>
-          <td><strong>Digital Content Creation</strong></td>
-          <td>Keterampilan menyusun naskah (storyboard), merekam alat kerja tanpa wawancara, dan mengedit video edukasi YouTube 5-10 menit.</td>
-          <td>Tercatat lebih dari 700 karya video edukasi publik/unlisted siswa terunggah di YouTube.</td>
-        </tr>
-        <tr>
-          <td><strong>Scientific &amp; Cultural Inquiry</strong></td>
-          <td>Menganalisis prinsip fisika/kimia pada kearifan lokal (etnosains lilin batik, mekanika RMU, biologi pakan ternak).</td>
-          <td>Skor rata-rata asesmen kompetensi sains lokal mencapai 88,4 / 100.</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <!-- =================================================================== -->
-    <!-- BAB V: DISEMINASI, KEBERLANJUTAN & RENCANA PENGEMBANGAN             -->
-    <!-- =================================================================== -->
-    <div class="page-break"></div>
-
-    <h1 class="bab-title">
-      <span>BAB V • DISEMINASI &amp; KEBERLANJUTAN</span>
-      <span class="bab-badge">Bab 5</span>
-    </h1>
-
-    <h2 class="sub-title">5.1 Diseminasi Praktik Baik dan Pengimbasan Sekolah Lain</h2>
-    <p>
-      Inovasi APP FINCESTEM telah dipaparkan pada forum Musyawarah Guru Mata Pelajaran (MGMP) tingkat Kabupaten OKU Timur dan forum Komunitas Belajar Guru Penggerak Sumatera Selatan. Model pembelajaran kokurikuler berbasis PWA cerdas ini menarik perhatian sekolah-sekolah di wilayah sekitar karena dapat diadopsi dengan mudah tanpa memerlukan server mahal (dapat berjalan di cloud hosting biasa maupun jaringan lokal sekolah).
-    </p>
-
-    <h2 class="sub-title">5.2 Keberlanjutan Program (Sustainability)</h2>
-    <p>
-      Keberlanjutan platform dijamin melalui 3 pilar kebijakan kelembagaan:
-    </p>
-    <ul>
-      <li><strong>Legalisasi Institusional:</strong> APP FINCESTEM telah ditetapkan melalui Surat Keputusan (SK) Kepala SMA Negeri 1 Belitang sebagai platform resmi manajemen kokurikuler sekolah untuk tahun ajaran berjalan dan tahun-tahun mendatang.</li>
-      <li><strong>Arsitektur Kode Terbuka &amp; Terdokumentasi:</strong> Repositori kode sumber dikelola secara profesional di GitHub (<code>github.com/bagoes1987/kokurikulersman1belitang.site</code>) dengan dokumentasi lengkap sehingga memudahkan pemeliharaan oleh tim IT sekolah.</li>
-      <li><strong>Efisiensi Biaya Operasional (Zero Operational Cost):</strong> Platform dibangun dengan teknologi web murni tanpa biaya lisensi perangkat lunak berbayar pihak ketiga, menghemat anggaran sekolah jutaan rupiah per tahun dibandingkan sistem berbayar.</li>
-    </ul>
-
-    <h2 class="sub-title">5.3 Peta Jalan Pengembangan Masa Depan (Roadmap 2027)</h2>
-    <div class="grid-2">
-      <div class="card">
-        <h4>🤖 Generative AI Chatbot Tutor</h4>
-        <p>Pengembangan asisten belajar berbasis LLM lokal untuk membantu siswa merumuskan ide inovasi rekayasa kendala usaha mikro secara interaktif selama di lapangan.</p>
+    <div class="page-content">
+      <h2 class="sub-title">4.3 Studi Kasus Nyata 1: Penggagalan Manipulasi Foto Geotagging</h2>
+      <div class="callout callout-amber">
+        <div class="callout-title">Kejadian Lapangan Day 4 (Riset Sektor Pertanian &amp; RMU):</div>
+        Pada penugasan eksplorasi bentang alam, terdapat 14 peserta didik Non-Field Trip yang mencoba mengunggah foto sawah dan mesin penggilingan padi dari internet dan tangkapan layar media sosial lama.<br><br>
+        <strong>Respon AI Sistem:</strong> Algoritma kamera cerdas mendeteksi ketiadaan stempel metadata sensor kamera live dan ketiadaan koordinat GPS aktif dalam batas wilayah resmi OKU Timur. Sistem secara otomatis menolak validitas gambar, memunculkan peringatan <em>"Unggahan Galeri Terdeteksi Tanpa Geotag Live"</em>, dan menyodorkan rekomendasi <strong>Bintang 1 (Status Revisi)</strong> pada dasbor guru fasilitator.<br><br>
+        <strong>Dampak Edukatif:</strong> Siswa tersebut menyadari sistem tidak dapat dikelabui, kemudian melakukan kunjungan ulang secara riil ke sawah dan pabrik RMU setempat, mengambil foto kamera live bergeotag resmi, dan akhirnya memperoleh nilai Bintang 5. Integritas riset terjaga secara mutlak.
       </div>
-      <div class="card">
-        <h4>📱 Computer Vision Object Scanner</h4>
-        <p>Pemanfaatan AI vision untuk mengenali jenis hama tanaman padi, penyakit ternak, atau motif batik secara otomatis melalui tangkapan kamera siswa.</p>
+
+      <h2 class="sub-title">4.4 Studi Kasus Nyata 2: Single-Device Security Menjaga Asesmen</h2>
+      <p>
+        Saat pelaksanaan asesmen kuis Day 5, sistem mencatat 8 upaya siswa yang mencoba membuka akunnya di gawai milik temannya untuk dikerjakan secara bersamaan. Fitur <strong>Single-Device Binding</strong> seketika memutuskan koneksi (*force logout*) gawai pertama dan menampilkan notifikasi peringatan keamanan. Hal ini menjamin nilai kuis 10 soal yang masuk ke database sekolah merupakan hasil kerja orisinal siswa yang bersangkutan.
+      </p>
+
+      <h2 class="sub-title">4.5 Metrik Skalabilitas dan Keterlibatan Pengguna</h2>
+      <div class="grid-4">
+        <div class="stat-box">
+          <span class="val">1.165</span>
+          <span class="lbl">Siswa Aktif Terlayani</span>
+        </div>
+        <div class="stat-box">
+          <span class="val">42 Guru</span>
+          <span class="lbl">Fasilitator Pembina</span>
+        </div>
+        <div class="stat-box">
+          <span class="val">8.155+</span>
+          <span class="lbl">Foto Geotag Valid</span>
+        </div>
+        <div class="stat-box">
+          <span class="val">100%</span>
+          <span class="lbl">Tuntas Masuk e-Rapor</span>
+        </div>
       </div>
     </div>
 
-    <!-- =================================================================== -->
-    <!-- BAB VI: KESIMPULAN & LAMPIRAN RESMI                                -->
-    <!-- =================================================================== -->
-    <div class="page-break"></div>
+    <div class="page-footer">
+      <span>Studi Kasus Pembelajaran &amp; Skalabilitas Sistem</span>
+      <span class="page-number">Halaman 11</span>
+    </div>
+  </div>
 
-    <h1 class="bab-title">
-      <span>BAB VI • KESIMPULAN &amp; LAMPIRAN ARTEFAK</span>
-      <span class="bab-badge">Bab 6 &amp; Lampiran</span>
-    </h1>
-
-    <h2 class="sub-title">6.1 Kesimpulan</h2>
-    <p>
-      Inovasi <strong>APP FINCESTEM</strong> membuktikan bahwa pemanfaatan teknologi digital dan kecerdasan buatan (AI) yang dirancang tepat guna mampu menyelesaikan persoalan nyata di satuan pendidikan. Melalui sinergi <strong>Smart Geotagging</strong>, <strong>AI Smart Grading Assistant</strong>, dan <strong>Exam Shield</strong>, SMA Negeri 1 Belitang berhasil menyelenggarakan kokurikuler berskala masif (1.165 siswa) yang berkeadilan mutu, otentik, serta menyenangkan. Inovasi ini merefleksikan nilai luhur guru kreatif yang adaptif terhadap kemajuan teknologi demi menginspirasi generasi masa depan bangsa sejalan dengan visi <strong>Acer Smart School Awards 2026</strong> dan <strong>Intel® Skills for Innovation</strong>.
-    </p>
-
-    <h2 class="sub-title">LAMPIRAN 1: Tautan Akses Live &amp; Kredensial Uji Coba Tim Penilai</h2>
-    <div class="callout callout-blue">
-      <strong>🌐 Tautan Website Aplikasi Live:</strong> <a href="https://kokurikulersman1belitang.site" target="_blank" style="color:#1d4ed8; font-weight:800;">https://kokurikulersman1belitang.site</a><br>
-      <strong>💻 Repositori Kode Sumber Terbuka:</strong> <a href="https://github.com/bagoes1987/kokurikulersman1belitang.site" target="_blank" style="color:#1d4ed8; font-weight:800;">https://github.com/bagoes1987/kokurikulersman1belitang.site</a>
+  <!-- =================================================================== -->
+  <!-- HALAMAN 12: BAB V - DISEMINASI, KEBERLANJUTAN & ROADMAP             -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB V: DISEMINASI &amp; KEBERLANJUTAN INOVASI</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
     </div>
 
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Peran Akun (Role)</th>
-          <th>Kredensial Pengujian (ID / NISN)</th>
-          <th>Halaman Akses &amp; Fitur yang Dapat Dicoba</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><strong>Siswa Field Trip</strong></td>
-          <td><code>0113393520</code> (Gebrina) / <code>0093091268</code> (Rezha)</td>
-          <td>Login Siswa &rarr; Coba modul etnosains Jawa-Bromo, kuis interaktif candi, dan refleksi.</td>
-        </tr>
-        <tr>
-          <td><strong>Siswa Non-Field Trip</strong></td>
-          <td><code>0113085435</code> (Ahdan Agantha)</td>
-          <td>Login Siswa &rarr; Coba modul 7 sektor OKU Timur, kamera geotagging, dan LKPD video YouTube.</td>
-        </tr>
-        <tr>
-          <td><strong>Guru Fasilitator</strong></td>
-          <td>Akses Menu Guru Portal</td>
-          <td><code>guru/fasilitator.html</code> &rarr; Coba tombol <em>"Hitung Rekomendasi"</em>, filter siswa binaan, dan pratinjau video YouTube.</td>
-        </tr>
-        <tr>
-          <td><strong>Koordinator / Kepala Sekolah</strong></td>
-          <td>Akses Menu Koordinator</td>
-          <td><code>guru/koordinator.html</code> &rarr; Pantau progres 1.165 siswa dan rekapitulasi nilai rapor 4 pilar.</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="page-content">
+      <h1 class="bab-title">
+        <span>BAB V • DISEMINASI &amp; KEBERLANJUTAN</span>
+        <span class="bab-badge">Bab 5.1 - 5.3</span>
+      </h1>
 
-    <h2 class="sub-title">LAMPIRAN 2: Tangkapan Layar Artefak Inovasi (Evidence Gallery)</h2>
-    <div class="grid-2">
-      <div class="card">
-        <h4>📱 1. Antarmuka Dashboard Kokurikuler Siswa</h4>
-        <p>Tampilan alur modular 5 aktivitas berurutan (Modul, Dokumentasi, LKPD, Asesmen, Refleksi) yang responsif dan bebas hambatan kuncian alur.</p>
-      </div>
-      <div class="card">
-        <h4>📸 2. Smart Geotagging Camera UI</h4>
-        <p>Antarmuka penangkap foto langsung dengan overlay stempel digital GPS latitude-longitude, nama siswa, dan tanggal otomatis.</p>
-      </div>
-      <div class="card">
-        <h4>⚡ 3. Portal Fasilitator &amp; AI Recommendation</h4>
-        <p>Fitur penilaian berbantuan kecerdasan buatan dengan pemutar video YouTube langsung dan kalkulasi nilai rapor 4 pilar instan.</p>
-      </div>
-      <div class="card">
-        <h4>🛡️ 4. Exam Shield Screen Protection</h4>
-        <p>Sistem keamanan ujian digital berbasis browser yang memicu blackout seketika saat terdeteksi upaya tangkapan layar atau split-screen.</p>
+      <h2 class="sub-title">5.1 Diseminasi Praktik Baik &amp; Pengimbasan Sekolah Lain</h2>
+      <p>
+        Inovasi APP FINCESTEM telah dipaparkan pada forum Musyawarah Guru Mata Pelajaran (MGMP) tingkat Kabupaten OKU Timur dan Komunitas Belajar Guru Penggerak Sumatera Selatan. Model PWA cerdas ini diminati sekolah-sekolah sekitar karena dapat diadopsi dengan mudah tanpa memerlukan investasi server mahal, dapat berjalan lancar di hosting biasa maupun jaringan lokal sekolah.
+      </p>
+
+      <h2 class="sub-title">5.2 Keberlanjutan Program (Sustainability Framework)</h2>
+      <p>
+        Keberlangsungan jangka panjang aplikasi dijamin melalui tiga pilar kelembagaan:
+      </p>
+      <ul>
+        <li><strong>Regulasi Institusional:</strong> APP FINCESTEM telah dipayungi Surat Keputusan (SK) resmi Kepala SMAN 1 Belitang sebagai sistem baku pelaksanaan kokurikuler lintas tahun ajaran.</li>
+        <li><strong>Repositori Kode Terbuka &amp; Terawat:</strong> Seluruh basis kode dikelola rapi di GitHub (<code>github.com/bagoes1987/kokurikulersman1belitang.site</code>) dengan dokumentasi lengkap, memudahkan pemeliharaan berkelanjutan oleh tim IT sekolah.</li>
+        <li><strong>Nol Biaya Lisensi Pihak Ketiga (*Zero Third-Party Cost*):</strong> Dibangun menggunakan perangkat lunak murni tanpa biaya langganan berbayar, menghemat anggaran sekolah secara permanen.</li>
+      </ul>
+
+      <h2 class="sub-title">5.3 Peta Jalan Pengembangan Cerdas (Roadmap 2027)</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h4>🤖 1. Local LLM Chatbot Mentor</h4>
+          <p>Integrasi asisten virtual cerdas berbasis model bahasa lokal untuk membimbing siswa saat mengalami kebuntuan analisis data HPP atau konsep sains di lapangan secara interaktif.</p>
+        </div>
+        <div class="card">
+          <h4>👁️ 2. Computer Vision Object Scanner</h4>
+          <p>Fitur pemindai kamera AI untuk mendeteksi jenis tanaman pangan, hama pertanian padi, atau motif batik secara otomatis saat foto dokumentasi diambil.</p>
+        </div>
       </div>
     </div>
 
-    <div class="signature-grid" style="margin-top: 36px;">
-      <div class="sig-col">
-        Mengetahui,<br>
-        <strong>Kepala SMA Negeri 1 Belitang</strong><br><br><br><br><br>
-        <strong><u>H. PRIOYONO, S.Pd., M.M.</u></strong><br>
-        NIP. 19680315 199512 1 002
+    <div class="page-footer">
+      <span>Diseminasi, Keberlanjutan &amp; Rencana Masa Depan</span>
+      <span class="page-number">Halaman 12</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 13: BAB VI - KESIMPULAN & AKUN DEMO PENGUJIAN JURI          -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">BAB VI: KESIMPULAN &amp; AKSES PENGUJIAN DEWAN JURI</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
+
+    <div class="page-content">
+      <h1 class="bab-title">
+        <span>BAB VI • KESIMPULAN &amp; PENGUJIAN</span>
+        <span class="bab-badge">Bab 6 &amp; Lampiran</span>
+      </h1>
+
+      <h2 class="sub-title">6.1 Kesimpulan</h2>
+      <p>
+        Inovasi <strong>APP FINCESTEM</strong> membuktikan bahwa teknologi digital dan kecerdasan buatan dapat diterapkan secara bermartabat untuk menyelesaikan permasalahan riil pendidikan di daerah. Dengan memadukan <strong>Smart Geotagging</strong>, <strong>Single-Device Security</strong>, <strong>Exam Shield</strong>, serta <strong>AI Smart Grading Assistant</strong> yang terhubung langsung ke <strong>e-Rapor resmi sekolah</strong>, SMA Negeri 1 Belitang berhasil menyelenggarakan kokurikuler yang adil, jujur, masif, dan berdampak nyata. Inovasi ini merefleksikan profil guru kreatif yang menginspirasi, selaras dengan semangat <strong>Acer Smart School Awards 2026</strong> dan <strong>Intel® Skills for Innovation</strong>.
+      </p>
+
+      <h2 class="sub-title">LAMPIRAN 1: Tautan Akses Live &amp; Kredensial Uji Coba Dewan Juri</h2>
+      <div class="callout callout-blue">
+        <strong>🌐 Tautan Website Live PWA:</strong> <a href="https://kokurikulersman1belitang.site" target="_blank" style="color:#1d4ed8; font-weight:800;">https://kokurikulersman1belitang.site</a><br>
+        <strong>💻 Repositori Kode Sumber Asli:</strong> <a href="https://github.com/bagoes1987/kokurikulersman1belitang.site" target="_blank" style="color:#1d4ed8; font-weight:800;">https://github.com/bagoes1987/kokurikulersman1belitang.site</a>
       </div>
-      <div class="sig-col">
-        OKU Timur, 13 November 2026<br>
-        <strong>Guru Inovator Pengembang</strong><br><br><br><br><br>
-        <strong><u>BAGUS PANCA WIRATAMA, S.Pd., M.Pd.</u></strong><br>
-        NIP. 19871115 201101 1 007
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th style="width: 25%;">Peran Akun (Role)</th>
+            <th style="width: 30%;">Kredensial Pengujian (NISN)</th>
+            <th style="width: 45%;">Halaman &amp; Fitur yang Dapat Dicoba Langsung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Siswa (Field Trip)</strong></td>
+            <td><code>0113393520</code> / <code>0093091268</code></td>
+            <td>Login Siswa &rarr; Coba modul Jawa-Bromo, kuis candi, dan refleksi.</td>
+          </tr>
+          <tr>
+            <td><strong>Siswa (Non-Field Trip)</strong></td>
+            <td><code>0113085435</code> (Ahdan Agantha)</td>
+            <td>Login Siswa &rarr; Coba modul 7 sektor, kamera geotag OKU Timur, dan LKPD video.</td>
+          </tr>
+          <tr>
+            <td><strong>Guru Fasilitator</strong></td>
+            <td>Akses Portal Guru</td>
+            <td><code>guru/fasilitator.html</code> &rarr; Coba tombol <em>"Hitung Rekomendasi"</em> dan evaluasi geotag.</td>
+          </tr>
+          <tr>
+            <td><strong>Koordinator Sekolah</strong></td>
+            <td>Akses Portal Koordinator</td>
+            <td><code>guru/koordinator.html</code> &rarr; Dasbor progres 1.165 siswa dan ekspor data e-Rapor.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="page-footer">
+      <span>Kesimpulan &amp; Kredensial Uji Coba Tim Juri</span>
+      <span class="page-number">Halaman 13</span>
+    </div>
+  </div>
+
+  <!-- =================================================================== -->
+  <!-- HALAMAN 14: LAMPIRAN ARTEFAK & TANDA TANGAN AKHIR RESMI             -->
+  <!-- =================================================================== -->
+  <div class="sheet">
+    <div class="page-header">
+      <span class="page-header-title">LAMPIRAN: BUKTI ARTEFAK VISUAL &amp; PENGESAHAN AKHIR</span>
+      <span>ASSA 2026 • GURU KREATIF</span>
+    </div>
+
+    <div class="page-content">
+      <h2 class="sub-title">LAMPIRAN 2: Dokumentasi Visual Artefak Fitur Cerdas</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h4>📱 1. Dasbor Berurutan 5 Tahap</h4>
+          <p>Antarmuka ramah pengguna yang mengawal alur belajar dari Modul hingga Refleksi tanpa hambatan kuncian membingungkan.</p>
+        </div>
+        <div class="card">
+          <h4>📸 2. Smart Geotagging &amp; Anti-Fraud</h4>
+          <p>Kamera aplikasi dengan stempel digital live koordinat GPS batas wilayah Kabupaten OKU Timur dan pendeteksi foto galeri.</p>
+        </div>
+        <div class="card">
+          <h4>⚡ 3. Dasbor Fasilitator &amp; AI Asistensi</h4>
+          <p>Portal guru dengan fitur hitung rekomendasi bintang cerdas, pemutar video YouTube langsung, dan validasi tugas.</p>
+        </div>
+        <div class="card">
+          <h4>📊 4. Modul Ekspor Integrasi e-Rapor</h4>
+          <p>Fasilitas unduh satu-klik rekapitulasi nilai rapor 4 pilar yang terbit otomatis dan siap diimpor ke e-Rapor resmi semester gasal.</p>
+        </div>
+      </div>
+
+      <p style="margin-top: 14px;">
+        Demikian portofolio karya inovasi ini disusun dengan penuh tanggung jawab, menyajikan fakta implementasi nyata demi kemajuan mutu pendidikan di SMA Negeri 1 Belitang dan inspirasi transformasi digital bagi pendidikan Indonesia.
+      </p>
+
+      <!-- TANDA TANGAN AKHIR RESMI SESUAI PERMINTAAN USER -->
+      <div class="signature-grid" style="margin-top: 25px;">
+        <div class="sig-col">
+          Mengetahui &amp; Mengesahkan,<br>
+          <strong>Kepala SMA Negeri 1 Belitang</strong>
+          <div class="sig-img-container">
+            <img src="TTD HERI PLUS CAP SMANSA.png" alt="TTD Heri Priyanto + Cap Sekolah">
+          </div>
+          <strong><u>HERI PRIYANTO, S.Pd.</u></strong><br>
+          Penata Tingkat I, III/d<br>
+          NIP. 198105052007011014
+        </div>
+        <div class="sig-col">
+          OKU Timur, 13 November 2026<br>
+          <strong>Guru Inovator Pengembang</strong>
+          <div class="sig-img-container">
+            <img src="TTD Bagus Panca Wiratama.png" alt="TTD Bagus Panca Wiratama">
+          </div>
+          <strong><u>BAGUS PANCA WIRATAMA, S.Pd., M.Pd.</u></strong><br>
+          Guru Ahli Pertama<br>
+          NIPPPK. 198708142024211013
+        </div>
       </div>
     </div>
 
+    <div class="page-footer">
+      <span>Acer Smart School Awards (ASSA) 2026 • Kategori Guru Kreatif</span>
+      <span class="page-number">Halaman 14</span>
+    </div>
   </div>
 
 </body>
