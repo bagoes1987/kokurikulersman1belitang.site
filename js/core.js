@@ -3719,7 +3719,15 @@ const FincestemCore = {
               // (termasuk saat reset pertama kali ketika clientLastReset masih kosong/null), WAJIB jalankan purge sesuai komponen!
               let shouldPurge = false;
               if (resetSig && clientLastReset !== resetSig) {
-                shouldPurge = true;
+                const srvResetMs = new Date(serverResetAt).getTime();
+                const nowMs = Date.now();
+                // Hanya purge jika perintah reset dari server berjarak dalam 24 jam terakhir
+                if (!isNaN(srvResetMs) && (nowMs - srvResetMs) < 86400000) {
+                  shouldPurge = true;
+                } else {
+                  // Tandai agar tidak trigger berulang kali
+                  localStorage.setItem('fincestem_client_reset_' + cleanNisn, resetSig);
+                }
               }
 
               if (shouldPurge) {
@@ -3756,14 +3764,20 @@ const FincestemCore = {
                   if (!serverResetAt) return false;
                   try {
                     const parsed = JSON.parse(rawStr);
-                    const subTimeStr = parsed && (parsed.submittedAt || parsed.submitted_at || parsed.savedAt || parsed.updatedAt || parsed.startTime);
+                    const subTimeStr = parsed && (parsed.submittedAt || parsed.submitted_at || parsed.savedAt || parsed.updatedAt || parsed.startTime || parsed.created_at || parsed.timestamp);
+                    const serverResetMs = new Date(serverResetAt).getTime();
+                    if (subTimeStr && !isNaN(serverResetMs)) {
+                      const subMs = new Date(subTimeStr).getTime();
+                      // Jika tugas dikerjakan/disimpan SETELAH reset server, jangan pernah dihapus!
+                      if (!isNaN(subMs) && subMs >= serverResetMs) return false;
+                    }
                     if (subTimeStr) {
                       const subMs = new Date(subTimeStr).getTime();
-                      // Lindungi tugas yang baru saja dikirim dalam 20 detik terakhir di perangkat ini
-                      if (!isNaN(subMs) && (nowMs - subMs) < 20000) return false;
+                      // Lindungi pengerjaan baru dalam 2 jam terakhir
+                      if (!isNaN(subMs) && (nowMs - subMs) < 7200000) return false;
                     }
                   } catch (e) {}
-                  return true;
+                  return false; // Jangan sembarangan hapus data lokal siswa
                 };
 
                 for (let d = 0; d <= 7; d++) {

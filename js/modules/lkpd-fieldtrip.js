@@ -3976,7 +3976,7 @@
       }
 
       const isSubmitted = !!(saved && saved.submitted);
-      const isLockedByPrereq = (currentD5LkpdSession === 1) ? (!hasMateriPrambanan && !isTesterFt5) : false;
+      const isLockedByPrereq = false; // Memastikan form LKPD Day 5 selalu dapat dibuka fleksibel
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
@@ -3992,7 +3992,7 @@
 
           <!-- TAB 2: BATIK BENANG RATU (STEM) -->
           <button type="button" onclick="switchD5LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD5LkpdSession === 2 ? 'bg-amber-600 text-white shadow-xs ring-2 ring-amber-400/40' : (isS1RefleksiDone ? 'bg-slate-50 hover:bg-amber-50 text-amber-950 border border-amber-300' : 'bg-slate-100 text-slate-400 border border-slate-200')}">
-            <span class="material-symbols-outlined text-base ${currentD5LkpdSession === 2 ? 'text-amber-200' : (isS1RefleksiDone ? 'text-amber-700' : 'text-slate-400')}">${isS1RefleksiDone ? 'palette' : 'lock'}</span>
+            <span class="material-symbols-outlined text-base ${currentD5LkpdSession === 2 ? 'text-amber-200' : 'text-amber-700'}">palette</span>
             <span class="truncate">Sesi 2: LKPD Seni Batik</span>
             ${isS2Submitted ? '<span class="text-[11px] text-amber-200 font-bold ml-1">✓</span>' : (!isS1RefleksiDone ? '<span class="text-[10px] text-amber-800 bg-amber-100 px-1.5 py-0.5 rounded font-bold ml-1">Kunci</span>' : (currentD5LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-amber-300 animate-pulse ml-0.5"></span>' : ''))}
           </button>
@@ -4007,45 +4007,7 @@
       `;
 
       if (currentD5LkpdSession === 2) {
-        if (!isS1RefleksiDone) {
-          // KONDISI TERKUNCI: WAJIB SELESAIKAN REFLEKSI SESI 1 TERLEBIH DAHULU
-          mainEl.innerHTML = `
-            ${tabNavHtml}
-            <div class="bg-gradient-to-br from-amber-700 via-orange-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
-              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-amber-100 backdrop-blur-md w-fit">
-                Field Trip • Day 5 • Sesi 2
-              </span>
-              <h2 class="font-black text-xl sm:text-2xl leading-tight">
-                LKPD Sesi 2: Praktik Membatik (Pilar STEM)
-              </h2>
-              <p class="text-xs sm:text-sm text-amber-100/90 leading-relaxed font-medium">
-                Lembar kerja pengamatan sains kimia lilin malam, termodinamika canting tembaga, dan proses pelorotan kain mori di Sentra Batik Benang Ratu Yogyakarta.
-              </p>
-            </div>
-            <div class="p-6 sm:p-8 rounded-3xl bg-surface-container-lowest border border-amber-300 shadow-sm flex flex-col items-center text-center gap-3.5">
-              <div class="w-16 h-16 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center ring-4 ring-amber-200/80 shadow-2xs">
-                <span class="material-symbols-outlined text-3xl">lock</span>
-              </div>
-              <div class="flex flex-col gap-1 max-w-md">
-                <h3 class="font-black text-lg text-slate-900">LKPD Sesi 2 (Batik Benang Ratu) Masih Terkunci</h3>
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                  Anda wajib menyelesaikan seluruh tahapan <strong>Sesi 1 Candi Prambanan</strong> hingga pengisian <strong>Jurnal Refleksi Sesi 1</strong> sebelum dapat membuka dan mengisi LKPD Sesi 2 Seni Batik.
-                </p>
-              </div>
-              <div class="flex flex-col sm:flex-row items-center gap-2 mt-2 w-full max-w-sm justify-center">
-                <button type="button" onclick="switchD5LkpdSession(1)" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
-                  <span class="material-symbols-outlined text-base">arrow_back</span>
-                  <span>Buka LKPD Sesi 1 Prambanan</span>
-                </button>
-                <a href="dashboard.html?day=5&task=refleksi" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
-                  <span class="material-symbols-outlined text-base">psychology</span>
-                  <span>Buka Jurnal Refleksi Sesi 1</span>
-                </a>
-              </div>
-            </div>
-          `;
-          return;
-        }
+        // Tampilkan formulir pengerjaan LKPD Sesi 2 Batik Benang Ratu secara langsung dan fleksibel
 
         // KONDISI TERBUKA: SISWA TELAH MENYELESAIKAN REFLEKSI SESI 1!
         const valAliran = savedS2 ? (savedS2.aliranLilin || '') : '';

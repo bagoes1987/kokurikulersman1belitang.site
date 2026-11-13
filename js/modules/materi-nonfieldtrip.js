@@ -4831,21 +4831,27 @@
     const resVal = (document.getElementById(`nftVideoModResumeD${dayNum}`) ? document.getElementById(`nftVideoModResumeD${dayNum}`).value : '') || '';
 
     try {
-      localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn, sectorKey);
-      localStorage.setItem(`fincestem_draft_nft_materi_d${dayNum}_` + cleanNisn, JSON.stringify({
-        day: dayNum,
-        selectedSector: sectorKey,
-        objectName: objVal,
-        conclusion: resVal,
-        updatedAt: new Date().toISOString()
-      }));
-      // Jika sudah pernah submit, perbarui juga pilihan sektor di record tersimpan agar tampilan langsung berubah
-      const rawOff = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn);
-      if (rawOff) {
-        const parsed = JSON.parse(rawOff);
-        parsed.selectedSector = sectorKey;
-        localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn, JSON.stringify(parsed));
-      }
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idList = Array.from(new Set([cleanNisn, unpadded, padded])).filter(Boolean);
+      idList.forEach(id => {
+        localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + id, sectorKey);
+        localStorage.setItem(`fincestem_draft_nft_materi_d${dayNum}_` + id, JSON.stringify({
+          day: dayNum,
+          selectedSector: sectorKey,
+          objectName: objVal,
+          conclusion: resVal,
+          updatedAt: new Date().toISOString()
+        }));
+        const rawOff = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + id);
+        if (rawOff) {
+          try {
+            const parsed = JSON.parse(rawOff);
+            parsed.selectedSector = sectorKey;
+            localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + id, JSON.stringify(parsed));
+          } catch(e) {}
+        }
+      });
     } catch (e) {}
 
     const sGuide = NFT_VIDEO_SECTORS_GUIDE[sectorKey] || NFT_VIDEO_SECTORS_GUIDE.pertanian;
@@ -4935,10 +4941,15 @@
     };
 
     try {
-      localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn, sectorKey);
-      localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + cleanNisn, JSON.stringify(payload));
-      localStorage.setItem(`fincestem_materi_day${dayNum}_` + cleanNisn, JSON.stringify(payload));
-      localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + cleanNisn, JSON.stringify({ conclusion: summaryFull, savedAt: nowIso }));
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idList = Array.from(new Set([cleanNisn, unpadded, padded])).filter(Boolean);
+      idList.forEach(id => {
+        localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + id, sectorKey);
+        localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + id, JSON.stringify(payload));
+        localStorage.setItem(`fincestem_materi_day${dayNum}_` + id, JSON.stringify(payload));
+        localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + id, JSON.stringify({ conclusion: summaryFull, savedAt: nowIso }));
+      });
     } catch (e) {}
 
     window[`isNftD${dayNum}Submitted`] = true;

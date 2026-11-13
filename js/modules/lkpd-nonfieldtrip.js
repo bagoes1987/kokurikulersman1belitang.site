@@ -1681,7 +1681,7 @@
                 </label>
                 <span class="text-[10.5px] font-extrabold text-indigo-800 bg-white px-2.5 py-0.5 rounded-full border border-indigo-200 shadow-2xs">1 dari 7 Sektor Pilihan</span>
               </div>
-              <select id="nftD2_sectorKey" ${readOnlyAttr} onchange="onNftDay2SectorChange(this.value)" class="w-full p-3 rounded-xl border-2 border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs sm:text-sm font-bold text-indigo-950 bg-white cursor-pointer transition-all shadow-2xs">
+              <select id="nftD2_sectorKey" onchange="onNftDay2SectorChange(this.value)" class="w-full p-3 rounded-xl border-2 border-indigo-300 focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 outline-none text-xs sm:text-sm font-bold text-indigo-950 bg-white cursor-pointer transition-all shadow-2xs">
                 <option value="pangan" ${selSector === 'pangan' ? 'selected' : ''}>1. Pertanian Tanaman Pangan &amp; Hortikultura (Padi Sawah, Palawija, Kebun Melon, Semangka, &amp; Sayuran)</option>
                 <option value="perkebunan" ${selSector === 'perkebunan' ? 'selected' : ''}>2. Perkebunan Rakyat (Karet Alam &amp; Kelapa Sawit)</option>
                 <option value="peternakan" ${selSector === 'peternakan' ? 'selected' : ''}>3. Peternakan Rakyat &amp; Budidaya Ternak (Sapi, Kambing/Domba, &amp; Unggas/Ayam)</option>
@@ -5580,8 +5580,8 @@
       (localStorage.getItem('fincestem_admin_testing_session') === 'true') ||
       (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn))
     );
-    const isLockedByPrereq = !hasMateri && !isSubmitted && !isTester;
-    const readOnlyMode = isReadOnly || isSubmitted || isLockedByPrereq;
+    const isLockedByPrereq = false; // Memastikan form LKPD Video Day 5/6 dan pemilihan sektor selalu interaktif
+    const readOnlyMode = isReadOnly || isSubmitted;
 
     const valObjectName = saved.objectName || saved.placeName || saved.fin_subject || saved.exp_location || (materiObj && materiObj.objectName) || '';
     const valDistrict = saved.district || 'Belitang';
@@ -6059,8 +6059,13 @@
     curData.sectorShortName = secGuide.shortName;
 
     try {
-      localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + cleanNisn, newSectorKey);
-      localStorage.setItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + cleanNisn, JSON.stringify(curData));
+      const unpadded = cleanNisn.replace(/^0+/, '');
+      const padded = cleanNisn.padStart(10, '0');
+      const idList = Array.from(new Set([cleanNisn, unpadded, padded])).filter(Boolean);
+      idList.forEach(id => {
+        localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + id, newSectorKey);
+        localStorage.setItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + id, JSON.stringify(curData));
+      });
     } catch(e) {}
 
     if (window.FincestemCore && FincestemCore.ui) {
