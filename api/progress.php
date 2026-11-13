@@ -117,7 +117,7 @@ if ($method === 'GET') {
                     MAX(`score_stem`) as stem,
                     MAX(CASE WHEN `status` = 'completed' THEN 'completed' WHEN `status` = 'submitted' THEN 'submitted' ELSE `status` END) as status,
                     MAX(`facilitator_name`) as facilitator_name,
-                    COUNT(DISTINCT CASE WHEN `task_type` IN ('materi', 'lkpd', 'asesmen', 'refleksi', 'dokumentasi') THEN `task_type` END) as student_tasks_count,
+                    COUNT(DISTINCT CASE WHEN `task_type` IN ('materi', 'lkpd', 'asesmen', 'refleksi', 'dokumentasi') OR `task_type` LIKE '%lkpd%' OR `task_type` LIKE '%materi%' OR `task_type` LIKE '%asesmen%' OR `task_type` LIKE '%refleksi%' OR `task_type` LIKE '%dok%' THEN `task_type` END) as student_tasks_count,
                     MAX(`updated_at`) as updated_at
                 FROM `student_progress_eval`
                 WHERE `day_number` BETWEEN 1 AND 7
@@ -262,7 +262,9 @@ if ($method === 'GET') {
             foreach ($records as $r) {
                 $d = (int)$r['day_number'];
                 $t = $r['task_type'];
-                $taskMap[$d . '_' . $t] = $r;
+                if (!isset($taskMap[$d . '_' . $t])) {
+                    $taskMap[$d . '_' . $t] = $r;
+                }
 
                 if ($d >= 1 && $d <= 7 && $t !== 'general') {
                     $submittedTasks[$d . '_' . $t] = true;

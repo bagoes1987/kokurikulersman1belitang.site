@@ -2302,13 +2302,22 @@
             if (Array.isArray(json.data.days)) {
               json.data.days.forEach(d => {
                 const cleanNisn = String(d.student_nisn || '').trim();
-                const key = cleanNisn + '_' + String(d.day_number);
-                dayMap[key] = d;
+                const unpadded = cleanNisn.replace(/^0+/, '');
+                const padded = (cleanNisn.length >= 8 && cleanNisn.length <= 10) ? cleanNisn.padStart(10, '0') : cleanNisn;
+                const dDay = String(d.day_number);
+                [cleanNisn, unpadded, padded].filter(Boolean).forEach(k => {
+                  dayMap[k + '_' + dDay] = d;
+                });
               });
             }
             if (Array.isArray(json.data.students)) {
               json.data.students.forEach(s => {
-                sumMap[String(s.student_nisn || '').trim()] = s;
+                const cleanNisn = String(s.student_nisn || '').trim();
+                const unpadded = cleanNisn.replace(/^0+/, '');
+                const padded = (cleanNisn.length >= 8 && cleanNisn.length <= 10) ? cleanNisn.padStart(10, '0') : cleanNisn;
+                [cleanNisn, unpadded, padded].filter(Boolean).forEach(k => {
+                  sumMap[k] = s;
+                });
               });
             }
             window._fasilStudentDayMap = dayMap;
@@ -2585,7 +2594,11 @@
         let hasDay = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false };
 
         for (let d = 1; d <= 7; d++) {
-          const srvDay = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanNisn + '_' + d];
+          const srvDay = window._fasilStudentDayMap && (
+            window._fasilStudentDayMap[cleanNisn + '_' + d] ||
+            window._fasilStudentDayMap[cleanNisn.replace(/^0+/, '') + '_' + d] ||
+            window._fasilStudentDayMap[cleanNisn.padStart(10, '0') + '_' + d]
+          );
           if (srvDay) {
             const hasSub = parseInt(srvDay.student_tasks_count) > 0 || srvDay.status === 'submitted' || srvDay.status === 'completed';
             const hasSc = srvDay.score !== null && srvDay.score !== undefined && srvDay.score !== '';
@@ -3029,9 +3042,22 @@
               const pills = dayPillDefs.map(dp => {
                 const isToday = (dp.day === activeDay);
                 const isOpen = isDayOpenForGrading(dp.day);
-                const srvDay = window._fasilStudentDayMap && window._fasilStudentDayMap[stu.nisn + '_' + dp.day];
+                const cleanNisnForPill = String(stu.nisn || '').trim();
+                const srvDay = window._fasilStudentDayMap && (
+                  window._fasilStudentDayMap[cleanNisnForPill + '_' + dp.day] ||
+                  window._fasilStudentDayMap[cleanNisnForPill.replace(/^0+/, '') + '_' + dp.day] ||
+                  window._fasilStudentDayMap[cleanNisnForPill.padStart(10, '0') + '_' + dp.day]
+                );
                 const hasScore = srvDay && srvDay.score !== null && srvDay.score !== undefined && srvDay.score !== '';
-                const hasTasks = srvDay && (parseInt(srvDay.student_tasks_count) > 0 || srvDay.status === 'submitted');
+                const hasLocalTasks = prog && prog.task_map && (
+                  prog.task_map[dp.day + '_lkpd'] ||
+                  prog.task_map[dp.day + '_asesmen'] ||
+                  prog.task_map[dp.day + '_refleksi'] ||
+                  prog.task_map[dp.day + '_materi'] ||
+                  prog.task_map[dp.day + '_dokumentasi'] ||
+                  (prog.records && prog.records.some(r => parseInt(r.day_number) === dp.day))
+                );
+                const hasTasks = (srvDay && (parseInt(srvDay.student_tasks_count) > 0 || srvDay.status === 'submitted')) || !!hasLocalTasks;
                 const isDone = hasScore || (srvDay && srvDay.status === 'completed');
 
                 if (isToday) {
@@ -3239,58 +3265,8 @@
       if (nisn) loadStudentDayEvaluation(nisn, d);
     }
 
-    function loadStudentDayEvaluation(nisn, dayNum) {
-      // Deteksi kategori siswa: Field Trip vs Non-Field Trip (100% mengikuti pengaturan Admin)
-      const isFieldTrip = isStudentFieldTripFasil(nisn);
-
-      const candidateIds = [nisn, String(nisn).replace(/^0+/, ''), String(nisn).padStart(10, '0')];
-      const allStu = window.FincestemMasterStudents || [];
-      const stuObj = allStu.find(s => String(s.nisn).trim() === String(nisn).trim() || String(s.nis).trim() === String(nisn).trim());
-      if (stuObj) {
-        if (stuObj.nis) candidateIds.push(String(stuObj.nis).trim());
-        if (stuObj.username) candidateIds.push(String(stuObj.username).trim());
-        if (stuObj.identifier) candidateIds.push(String(stuObj.identifier).trim());
-      }
-
-      // Cari tahu apakah siswa ini BENAR-BENAR sudah mengerjakan Day 0 (Simulasi)
-      let hasStudentD0Work = false;
-      let storedD0Lkpd = null;
-      let storedD0Asesmen = null;
-      let storedD0Refl = null;
-
-      if (dayNum === 0) {
-        for (const cid of candidateIds) {
-          if (!storedD0Lkpd) storedD0Lkpd = localStorage.getItem('fincestem_lkpd_nft_day0_' + cid) || localStorage.getItem('fincestem_lkpd_day0_' + cid);
-          if (!storedD0Asesmen) storedD0Asesmen = localStorage.getItem('fincestem_asesmen_nft_day0_' + cid) || localStorage.getItem('fincestem_asesmen_day0_' + cid);
-          if (!storedD0Refl) storedD0Refl = localStorage.getItem('fincestem_refleksi_nft_day0_' + cid) || localStorage.getItem('fincestem_refl_nft_day0_' + cid) || localStorage.getItem('fincestem_refleksi_day0_' + cid);
-        }
-
-        if (storedD0Lkpd || storedD0Asesmen || storedD0Refl) {
-          hasStudentD0Work = true;
-        }
-      }
-
-      // Nilai otomatis awal: untuk Day 0 yang belum dikerjakan, HARUS KOSONG (0 / -)
-      const autoScore = (dayNum === 0 && !hasStudentD0Work)
-        ? { score: 0, stars: 0, predicate: 'Belum Ada', reason: 'Belum ada pengerjaan simulasi' }
-        : ((FincestemCore.fieldTripRules && FincestemCore.fieldTripRules.calculateFieldTripScore)
-            ? FincestemCore.fieldTripRules.calculateFieldTripScore(dayNum, null, nisn)
-            : { score: 95, stars: 5, predicate: 'Sangat Baik' });
-
-      const autoFb = (dayNum === 0 && !hasStudentD0Work)
-        ? ''
-        : ((FincestemCore.feedback && FincestemCore.feedback.generateThemedFeedback)
-            ? FincestemCore.feedback.generateThemedFeedback(dayNum, autoScore.stars || 5, isFieldTrip, autoScore.score || 95)
-            : 'Kerja sama tim dan analisis data lapangan sangat memuaskan.');
-
-      let fin = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
-      let cul = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
-      let exp = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
-      let stem = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
-      let fb = autoFb;
-      let st = (dayNum === 0 && !hasStudentD0Work) ? 'belum_mulai' : 'completed';
-
-      // Update Banner Panduan Matriks Keseimbangan 4 Pilar & Kartu Fokus
+    
+    function applyFacilitatorPillarLayout(dayNum, isFieldTrip) {
       const titleEl = document.getElementById('modalPillarFocusTitle');
       const badgeEl = document.getElementById('modalPillarFocusBadge');
       const descEl = document.getElementById('modalPillarFocusDesc');
@@ -3452,9 +3428,115 @@
           if (boxRec) boxRec.classList.add('hidden');
         }
       }
+    }
+
+    function loadStudentDayEvaluation(nisn, dayNum) {
+      // Deteksi kategori siswa: Field Trip vs Non-Field Trip (100% mengikuti pengaturan Admin)
+      let isFieldTrip = isStudentFieldTripFasil(nisn);
+
+      const candidateIds = [nisn, String(nisn).replace(/^0+/, ''), String(nisn).padStart(10, '0')];
+      const allStu = window.FincestemMasterStudents || [];
+      const stuObj = allStu.find(s => String(s.nisn).trim() === String(nisn).trim() || String(s.nis).trim() === String(nisn).trim());
+      if (stuObj) {
+        if (stuObj.nis) candidateIds.push(String(stuObj.nis).trim());
+        if (stuObj.username) candidateIds.push(String(stuObj.username).trim());
+        if (stuObj.identifier) candidateIds.push(String(stuObj.identifier).trim());
+      }
+
+      // Kumpulkan cache lokal untuk seluruh varian ID siswa
+      let storedNftLkpd = null;
+      let storedNftAsesmen = null;
+      let storedNftRefl = null;
+      let storedNftMat = null;
+      for (const cid of candidateIds) {
+        if (!storedNftLkpd) storedNftLkpd = localStorage.getItem(`fincestem_lkpd_nft_day${dayNum}_` + cid) || localStorage.getItem(`fincestem_lkpd_day${dayNum}_` + cid);
+        if (!storedNftAsesmen) storedNftAsesmen = localStorage.getItem(`fincestem_asesmen_nft_day${dayNum}_` + cid) || localStorage.getItem(`fincestem_asesmen_day${dayNum}_` + cid);
+        if (!storedNftRefl) storedNftRefl = localStorage.getItem(`fincestem_refleksi_nft_day${dayNum}_` + cid) || localStorage.getItem(`fincestem_refleksi_day${dayNum}_` + cid) || localStorage.getItem(`fincestem_refl_nft_day${dayNum}_` + cid);
+        if (!storedNftMat) storedNftMat = localStorage.getItem(`fincestem_materi_nft_day${dayNum}_` + cid) || localStorage.getItem(`fincestem_materi_day${dayNum}_` + cid);
+      }
+
+      // Cari tahu apakah siswa ini BENAR-BENAR sudah mengerjakan Day 0 (Simulasi)
+      let hasStudentD0Work = false;
+      let storedD0Lkpd = null;
+      let storedD0Asesmen = null;
+      let storedD0Refl = null;
+
+      if (dayNum === 0) {
+        for (const cid of candidateIds) {
+          if (!storedD0Lkpd) storedD0Lkpd = localStorage.getItem('fincestem_lkpd_nft_day0_' + cid) || localStorage.getItem('fincestem_lkpd_day0_' + cid);
+          if (!storedD0Asesmen) storedD0Asesmen = localStorage.getItem('fincestem_asesmen_nft_day0_' + cid) || localStorage.getItem('fincestem_asesmen_day0_' + cid);
+          if (!storedD0Refl) storedD0Refl = localStorage.getItem('fincestem_refleksi_nft_day0_' + cid) || localStorage.getItem('fincestem_refl_nft_day0_' + cid) || localStorage.getItem('fincestem_refleksi_day0_' + cid);
+        }
+
+        if (storedD0Lkpd || storedD0Asesmen || storedD0Refl) {
+          hasStudentD0Work = true;
+        }
+      }
+
+      // Nilai otomatis awal: untuk Day 0 yang belum dikerjakan, HARUS KOSONG (0 / -)
+      const autoScore = (dayNum === 0 && !hasStudentD0Work)
+        ? { score: 0, stars: 0, predicate: 'Belum Ada', reason: 'Belum ada pengerjaan simulasi' }
+        : ((FincestemCore.fieldTripRules && FincestemCore.fieldTripRules.calculateFieldTripScore)
+            ? FincestemCore.fieldTripRules.calculateFieldTripScore(dayNum, null, nisn)
+            : { score: 95, stars: 5, predicate: 'Sangat Baik' });
+
+      const autoFb = (dayNum === 0 && !hasStudentD0Work)
+        ? ''
+        : ((FincestemCore.feedback && FincestemCore.feedback.generateThemedFeedback)
+            ? FincestemCore.feedback.generateThemedFeedback(dayNum, autoScore.stars || 5, isFieldTrip, autoScore.score || 95)
+            : 'Kerja sama tim dan analisis data lapangan sangat memuaskan.');
+
+      let fin = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
+      let cul = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
+      let exp = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
+      let stem = (dayNum === 0 && !hasStudentD0Work) ? 0 : (autoScore.score || 95);
+      let fb = autoFb;
+      let st = (dayNum === 0 && !hasStudentD0Work) ? 'belum_mulai' : 'completed';
+
+      applyFacilitatorPillarLayout(dayNum, isFieldTrip);
 
       if (FincestemCore.progress) {
         FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+          // Sinkronisasi kategori riil siswa dari database/server (Server-Truth)
+          if (prog) {
+            if (prog.zone) {
+              isFieldTrip = String(prog.zone).toUpperCase().includes('LUAR');
+            } else if (prog.records && prog.records.some(r => r.task_type === 'lkpd' && typeof r.content === 'string' && (r.content.includes('isVideoLkpd') || r.content.includes('youtube')))) {
+              isFieldTrip = false;
+            } else if (prog.task_map && (prog.task_map['5_lkpd'] || prog.task_map['6_lkpd'] || prog.task_map['4_lkpd'])) {
+              const lkSample = prog.task_map['5_lkpd'] || prog.task_map['4_lkpd'];
+              if (lkSample && typeof lkSample.content === 'string' && (lkSample.content.includes('isVideoLkpd') || lkSample.content.includes('sectorKey') || lkSample.content.includes('science_summary') || lkSample.content.includes('distanceRange'))) {
+                isFieldTrip = false;
+              }
+            }
+          }
+          if (isFieldTrip) {
+            for (const cid of candidateIds) {
+              if (localStorage.getItem('fincestem_lkpd_nft_day5_' + cid) || localStorage.getItem('fincestem_materi_nft_day5_' + cid) || localStorage.getItem('fincestem_asesmen_nft_day5_' + cid)) {
+                isFieldTrip = false;
+                break;
+              }
+            }
+          }
+          applyFacilitatorPillarLayout(dayNum, isFieldTrip);
+          const daySelectEl = document.getElementById('gradeTargetDay');
+          if (daySelectEl && !isFieldTrip) {
+            const currentSelVal = daySelectEl.value;
+            daySelectEl.innerHTML = `
+              <option value="0" class="font-extrabold text-amber-700 bg-amber-50">🎮 Day 0: Simulasi</option>
+              <option value="1">💰 Day 1: FINANCIAL</option>
+              <option value="2">🏛️ Day 2: CULTURE</option>
+              <option value="3">🔬 Day 3: STEM</option>
+              <option value="4">🧭 Day 4: EXPLORATION</option>
+              <option value="5">🎬 Day 5: Video Observasi YouTube (5–10 Menit): Sains &amp; Teknologi Sektor</option>
+              <option value="6">🎥 Day 6: Video Analisis YouTube (5–10 Menit): Rekayasa Kendala &amp; Matematika Finansial</option>
+              <option value="7">📝 Day 7: Penilaian Harian (Refleksi &amp; Evaluasi)</option>
+            `;
+            if (['0','1','2','3','4','5','6','7'].includes(currentSelVal)) {
+              daySelectEl.value = currentSelVal;
+            }
+          }
+
           if (prog && prog.task_map && prog.task_map['0_kesehatan']) {
             try {
               const kRecord = prog.task_map['0_kesehatan'];
@@ -3500,7 +3582,11 @@
 
             // Sinkronkan data dari cache server jika r belum ada di records lokal
             const cleanTargetNisn = String(nisn || '').trim();
-            const srvDay = window._fasilStudentDayMap && window._fasilStudentDayMap[cleanTargetNisn + '_' + dayNum];
+            const srvDay = window._fasilStudentDayMap && (
+              window._fasilStudentDayMap[cleanTargetNisn + '_' + dayNum] ||
+              window._fasilStudentDayMap[cleanTargetNisn.replace(/^0+/, '') + '_' + dayNum] ||
+              window._fasilStudentDayMap[cleanTargetNisn.padStart(10, '0') + '_' + dayNum]
+            );
             if (!r && srvDay) {
               r = {
                 day_number: dayNum,
@@ -3936,7 +4022,13 @@
                 const nftAsesmen = getTaskContent(dayNum, 'asesmen');
                 const nftRefl = getTaskContent(dayNum, 'refleksi');
 
-                if (!isFieldTrip && (nftLkpd || nftMat || nftAsesmen || nftRefl)) {
+                // Deteksi cerdas: jika ada data pengerjaan Non-Field Trip (video/sektor), pastikan siswa adalah Non-Field Trip
+                if (nftLkpd && (nftLkpd.isVideoLkpd || nftLkpd.sectorKey || nftLkpd.youtube_url || (dayNum === 5 && (nftLkpd.video_title || nftLkpd.objectName || nftLkpd.science_summary)))) {
+                  isFieldTrip = false;
+                  applyFacilitatorPillarLayout(dayNum, false);
+                }
+
+                if (!isFieldTrip) {
                   renderedNftPreview = true;
 
                   let cardsHtml = '';
@@ -4128,11 +4220,28 @@
                         `;
                       }
                     } else if (dayNum === 5 || dayNum === 6 || (nftLkpd && (nftLkpd.isVideoLkpd || nftLkpd.fin_subject || nftLkpd.exp_location))) {
-                      const ytUrl56 = nftLkpd.youtube_url || nftLkpd.cul_file || nftLkpd.stem_file || '';
-                      const yId56 = (function(u){ if(!u) return ''; const m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|live\/|watch\?v=|watch\?.+&v=))([\w-]{11})/); return m ? m[1] : ''; })(ytUrl56);
                       const isVid5 = (dayNum === 5);
+                      if (!nftLkpd) {
+                        lkpdHtml = `
+                          <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
+                            <div class="flex items-center justify-between gap-2 flex-wrap">
+                              <span class="font-bold text-rose-950 text-[11px] flex items-center gap-1">
+                                <span class="material-symbols-outlined text-xs text-rose-600">smart_display</span>
+                                <span>${isVid5 ? 'Video Observasi Lapangan & 4 Unsur STEM (LKPD Day 5):' : 'Video Analisis Finansial, Kendala & Inovasi (LKPD Day 6):'}</span>
+                              </span>
+                              <span class="text-[9.5px] px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-extrabold">⏳ Belum Mengunggah</span>
+                            </div>
+                            <div class="p-3 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-center gap-2">
+                              <span class="material-symbols-outlined text-amber-600">hourglass_empty</span>
+                              <span>Siswa belum mengunggah lembar kerja LKPD Day ${dayNum} (${isVid5 ? 'Link Video YouTube Observasi STEM Sektor' : 'Link Video YouTube Analisis Finansial &amp; Kendala'}).</span>
+                            </div>
+                          </div>
+                        `;
+                      } else {
+                        const ytUrl56 = nftLkpd.youtube_url || nftLkpd.cul_file || nftLkpd.stem_file || '';
+                        const yId56 = (function(u){ if(!u) return ''; const m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|live\/|watch\?v=|watch\?.+&v=))([\w-]{11})/); return m ? m[1] : ''; })(ytUrl56);
 
-                      if (nftLkpd.isVideoLkpd || yId56 || nftLkpd.youtube_url) {
+                        if (nftLkpd.isVideoLkpd || yId56 || nftLkpd.youtube_url || (isVid5 && (nftLkpd.video_title || nftLkpd.objectName || nftLkpd.science_summary))) {
                         lkpdHtml = `
                           <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
                             <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -4251,6 +4360,7 @@
                             </div>
                           </div>
                         `;
+                      }
                       }
                     } else if (dayNum === 7 || (nftLkpd && (nftLkpd.youtube_url || nftLkpd.video_title))) {
                       const yId = (function(u){ if(!u) return ''; const m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/); return m ? m[1] : ''; })(nftLkpd.youtube_url || '');
@@ -4787,7 +4897,65 @@
                 const ftData = getTaskContent(5, 'lkpd') || getTaskContent(5, 'lkpd_prambanan');
                 const ftAsesmen = getTaskContent(5, 'asesmen');
 
-                if (ftData || ftAsesmen) {
+                // Cross-Zone Fallback: Jika data pengerjaan Day 5 ternyata adalah LKPD Video Non-Field Trip
+                if (ftData && (ftData.isVideoLkpd || ftData.youtube_url || ftData.science_summary || ftData.sectorName || (ftData.summary && ftData.summary.includes('YouTube')))) {
+                  const ytUrl = ftData.youtube_url || '';
+                  const yId = (function(u){ if(!u) return ''; const m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|live\/|watch\?v=|watch\?.+&v=))([\w-]{11})/i); return m ? m[1] : ''; })(ytUrl);
+                  lkpdPreviewEl.innerHTML = `
+                    <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-300 flex flex-col gap-2 text-xs shadow-2xs">
+                      <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <span class="font-black text-teal-950 flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-sm text-teal-700">smart_display</span>
+                          <span>Video Observasi Lapangan &amp; 4 Unsur STEM (LKPD Day 5 Non-Field Trip)</span>
+                        </span>
+                        <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-teal-700 text-white shadow-2xs">
+                          Riset Mandiri
+                        </span>
+                      </div>
+                      <div class="p-3 rounded-2xl bg-slate-900 border border-slate-800 text-white flex flex-col gap-2">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                          <div class="min-w-0">
+                            <div class="text-xs font-black text-rose-300 truncate">${escapeHtml(ftData.video_title || 'Video Observasi FINCESTEM Day 5')}</div>
+                            <div class="text-[10px] text-slate-300">📍 Objek: <strong>${escapeHtml(ftData.objectName || ftData.placeName || '-')}</strong> (${escapeHtml(ftData.sectorName || 'Sektor Pilihan')})</div>
+                          </div>
+                          ${ytUrl ? `
+                            <a href="${escapeHtml(ytUrl)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-[10.5px] flex items-center gap-1 shadow-sm shrink-0">
+                              <span class="material-symbols-outlined text-xs">play_circle</span>
+                              <span>▶️ Tonton di YouTube</span>
+                            </a>
+                          ` : ''}
+                        </div>
+                        ${yId ? `
+                          <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-inner">
+                            <iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(yId)}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                          </div>
+                        ` : `
+                          <div class="p-2.5 bg-slate-800 rounded-xl text-center text-slate-300 text-xs">
+                            Link Video YouTube: <a href="${escapeHtml(ytUrl || '#')}" target="_blank" class="text-cyan-400 underline font-mono break-all">${escapeHtml(ytUrl || '-')}</a>
+                          </div>
+                        `}
+                      </div>
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-[10.5px]">
+                        <div class="bg-white/95 p-2 rounded-xl border border-sky-200">
+                          <strong class="text-sky-900 block text-[9.5px]">🔬 1. Poin SCIENCE (Sains):</strong>
+                          <p class="text-slate-700 mt-0.5 italic line-clamp-3">"${escapeHtml(ftData.science_summary || '-')}"</p>
+                        </div>
+                        <div class="bg-white/95 p-2 rounded-xl border border-teal-200">
+                          <strong class="text-teal-900 block text-[9.5px]">⚙️ 2. Poin TECHNOLOGY (Alat &amp; Teknologi):</strong>
+                          <p class="text-slate-700 mt-0.5 italic line-clamp-3">"${escapeHtml(ftData.tech_summary || '-')}"</p>
+                        </div>
+                        <div class="bg-white/95 p-2 rounded-xl border border-amber-200">
+                          <strong class="text-amber-900 block text-[9.5px]">🛠️ 3. Poin ENGINEERING (Rekayasa):</strong>
+                          <p class="text-slate-700 mt-0.5 italic line-clamp-3">"${escapeHtml(ftData.eng_summary || '-')}"</p>
+                        </div>
+                        <div class="bg-white/95 p-2 rounded-xl border border-purple-200">
+                          <strong class="text-purple-900 block text-[9.5px]">📐 4. Poin MATHEMATICS (Perhitungan):</strong>
+                          <p class="text-slate-700 mt-0.5 italic line-clamp-3">"${escapeHtml(ftData.math_summary || '-')}"</p>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                } else if (ftData || ftAsesmen) {
                   lkpdPreviewEl.innerHTML = `
                     <div class="p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/30 flex flex-col gap-2 text-xs">
                       <div class="flex items-center justify-between gap-1 flex-wrap">
@@ -4820,7 +4988,61 @@
                 const ftData = getTaskContent(6, 'lkpd') || getTaskContent(6, 'lkpd_bakpia');
                 const ftAsesmen = getTaskContent(6, 'asesmen');
 
-                if (ftData || ftAsesmen) {
+                // Cross-Zone Fallback: Jika data pengerjaan Day 6 ternyata adalah LKPD Video Non-Field Trip
+                if (ftData && (ftData.isVideoLkpd || ftData.youtube_url || ftData.financial_summary || ftData.constraints_summary || ftData.innovation_summary || (ftData.summary && ftData.summary.includes('YouTube')))) {
+                  const ytUrl = ftData.youtube_url || '';
+                  const yId = (function(u){ if(!u) return ''; const m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|live\/|watch\?v=|watch\?.+&v=))([\w-]{11})/i); return m ? m[1] : ''; })(ytUrl);
+                  lkpdPreviewEl.innerHTML = `
+                    <div class="p-3.5 rounded-2xl bg-teal-50 border border-teal-300 flex flex-col gap-2 text-xs shadow-2xs">
+                      <div class="flex items-center justify-between gap-1 flex-wrap">
+                        <span class="font-black text-teal-950 flex items-center gap-1.5">
+                          <span class="material-symbols-outlined text-sm text-teal-700">smart_display</span>
+                          <span>Video Analisis Finansial &amp; Kendala (LKPD Day 6 Non-Field Trip)</span>
+                        </span>
+                        <span class="px-2.5 py-0.5 rounded-md text-[10px] font-black uppercase bg-teal-700 text-white shadow-2xs">
+                          Riset Mandiri
+                        </span>
+                      </div>
+                      <div class="p-3 rounded-2xl bg-slate-900 border border-slate-800 text-white flex flex-col gap-2">
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                          <div class="min-w-0">
+                            <div class="text-xs font-black text-rose-300 truncate">${escapeHtml(ftData.video_title || 'Video Analisis FINCESTEM Day 6')}</div>
+                            <div class="text-[10px] text-slate-300">📍 Objek: <strong>${escapeHtml(ftData.objectName || ftData.placeName || '-')}</strong> (${escapeHtml(ftData.sectorName || 'Sektor Pilihan')})</div>
+                          </div>
+                          ${ytUrl ? `
+                            <a href="${escapeHtml(ytUrl)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-[10.5px] flex items-center gap-1 shadow-sm shrink-0">
+                              <span class="material-symbols-outlined text-xs">play_circle</span>
+                              <span>▶️ Tonton di YouTube</span>
+                            </a>
+                          ` : ''}
+                        </div>
+                        ${yId ? `
+                          <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black shadow-inner">
+                            <iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(yId)}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                          </div>
+                        ` : `
+                          <div class="p-2.5 bg-slate-800 rounded-xl text-center text-slate-300 text-xs">
+                            Link Video YouTube: <a href="${escapeHtml(ytUrl || '#')}" target="_blank" class="text-cyan-400 underline font-mono break-all">${escapeHtml(ytUrl || '-')}</a>
+                          </div>
+                        `}
+                      </div>
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[10.5px]">
+                        <div class="bg-white/95 p-2 rounded-xl border border-emerald-200">
+                          <strong class="text-emerald-900 block text-[9.5px]">💰 1. Analisis Finansial:</strong>
+                          <p class="text-slate-700 mt-0.5 italic line-clamp-3">"${escapeHtml(ftData.financial_summary || '-')}"</p>
+                        </div>
+                        <div class="bg-white/95 p-2 rounded-xl border border-rose-200">
+                          <strong class="text-rose-900 block text-[9.5px]">⚠️ 2. Evaluasi Kendala:</strong>
+                          <p class="text-slate-700 mt-0.5 italic line-clamp-3">"${escapeHtml(ftData.constraints_summary || '-')}"</p>
+                        </div>
+                        <div class="bg-white/95 p-2 rounded-xl border border-indigo-200">
+                          <strong class="text-indigo-900 block text-[9.5px]">💡 3. Gagasan Solusi &amp; Inovasi:</strong>
+                          <p class="text-slate-700 mt-0.5 italic line-clamp-3">"${escapeHtml(ftData.innovation_summary || '-')}"</p>
+                        </div>
+                      </div>
+                    </div>
+                  `;
+                } else if (ftData || ftAsesmen) {
                   lkpdPreviewEl.innerHTML = `
                     <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex flex-col gap-2 text-xs">
                       <div class="flex items-center justify-between gap-1 flex-wrap">
@@ -6548,11 +6770,19 @@
         }
 
         // Sinkronkan dengan data server recap
-        const sSummary = window._fasilStudentSummaryMap && window._fasilStudentSummaryMap[String(s.nisn).trim()];
+        const sSummary = window._fasilStudentSummaryMap && (
+          window._fasilStudentSummaryMap[String(s.nisn).trim()] ||
+          window._fasilStudentSummaryMap[String(s.nisn).trim().replace(/^0+/, '')] ||
+          window._fasilStudentSummaryMap[String(s.nisn).trim().padStart(10, '0')]
+        );
         let srvGradedDays = 0;
         let srvSubmittedDays = 0;
         for (let d = 1; d <= 7; d++) {
-          const srvDay = window._fasilStudentDayMap && window._fasilStudentDayMap[String(s.nisn).trim() + '_' + d];
+          const srvDay = window._fasilStudentDayMap && (
+            window._fasilStudentDayMap[String(s.nisn).trim() + '_' + d] ||
+            window._fasilStudentDayMap[String(s.nisn).trim().replace(/^0+/, '') + '_' + d] ||
+            window._fasilStudentDayMap[String(s.nisn).trim().padStart(10, '0') + '_' + d]
+          );
           if (srvDay) {
             const hasSub = parseInt(srvDay.student_tasks_count) > 0 || srvDay.status === 'submitted' || srvDay.status === 'completed';
             const hasSc = srvDay.score !== null && srvDay.score !== undefined && srvDay.score !== '';
