@@ -966,7 +966,7 @@
             // jika hari sebelumnya telah tuntas (atau Day 0 s.d. Day 4, atau Field Trip Day 1-7) atau jika ada riwayat foto sebelumnya
             const studentCategory = getStudentCategoryInfo();
             const prevDone = (dayNum <= 6) || (studentCategory.isFieldTrip && dayNum <= 7) || (FincestemCore.progress.isDayStudentTasksDone && FincestemCore.progress.isDayStudentTasksDone(prog, dayNum - 1)) || (FincestemCore.progress.isDayCompleted && FincestemCore.progress.isDayCompleted(prog, dayNum - 1));
-            if (prevDone || hasExistingDok || isReadOnlyUrl || (!studentCategory.isFieldTrip && (dayNum === 5 || dayNum === 6))) {
+            if (prevDone || hasExistingDok || isReadOnlyUrl || (!studentCategory.isFieldTrip && (dayNum === 5 || dayNum === 6 || dayNum === 7))) {
               access.canAccess = true;
               if (isReadOnlyUrl) {
                 access.canEdit = false;

@@ -248,7 +248,7 @@
           if (!hasInputActive && !window[`isNftD${dayNum}Submitted`]) {
             renderActiveMateriModule();
           }
-          if (dayNum > 1 && dayNum !== 6 && !(!isFieldTrip && dayNum === 5)) {
+          if (dayNum > 1 && dayNum !== 6 && !(!isFieldTrip && (dayNum === 5 || dayNum === 7))) {
             FincestemCore.schedule.getSchedule(function(days) {
               const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
               if (!access.canAccess) {
@@ -268,7 +268,7 @@
       FincestemCore.schedule.getSchedule(function(days) {
         const isTester = FincestemCore.schedule.isTesterStudent && FincestemCore.schedule.isTesterStudent(user.nisn || user.identifier);
         const d = days.find(x => x.day_number === dayNum);
-        if (!isTester && d && !d.is_open && dayNum !== 6 && !(!isFieldTrip && dayNum === 5)) {
+        if (!isTester && d && !d.is_open && dayNum !== 6 && !(!isFieldTrip && (dayNum === 5 || dayNum === 7))) {
           FincestemCore.ui.toast(`Materi Day ${dayNum} sedang ditutup/terkunci oleh Admin! Mengalihkan ke Dashboard...`, 'error');
           setTimeout(() => {
             window.location.replace('dashboard.html');

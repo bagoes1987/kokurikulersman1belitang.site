@@ -2892,7 +2892,7 @@
       // Cascading logic berurutan mutlak (Bebas Deadlock & Selalu Ramah Pengguna)
       const isFtDay7 = isFieldTrip && dayNum === 7;
       const isFtDay0 = isFieldTrip && dayNum === 0;
-      const isDayFlexible = (dayNum === 2 || dayNum === 3 || dayNum === 4 || dayNum === 5 || dayNum === 6);
+      const isDayFlexible = (dayNum === 2 || dayNum === 3 || dayNum === 4 || dayNum === 5 || dayNum === 6 || (!isFieldTrip && dayNum === 7));
       let canLkpd = (isFtDay0 || isDayFlexible) ? true : (hasMateri || hasLkpd);
       let canDok = true;
       let canAsesmen = true;
@@ -3487,7 +3487,7 @@
         // Day N (N > 1) mensyaratkan Day N-1 berstatus Selesai
         // Dan Day N harus dibuka (is_open) oleh Admin
         const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, days);
-        if (dNum === 6 || (!isFieldTrip && dNum === 5)) {
+        if (dNum === 6 || (!isFieldTrip && (dNum === 5 || dNum === 7))) {
           access.canAccess = true;
           access.canEdit = true;
           access.isOpen = true;
@@ -4446,15 +4446,15 @@
 
       const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
 
-      if (dNum === 6 || (!isFieldTrip && dNum === 5)) {
-        // Day 6 (Field Trip & Non-Field Trip) serta Day 5 Non-Field Trip selalu dapat diakses langsung tanpa terblokir
+      if (dNum === 6 || (!isFieldTrip && (dNum === 5 || dNum === 7))) {
+        // Day 6 (Field Trip & Non-Field Trip) serta Day 5 & Day 7 Non-Field Trip selalu dapat diakses langsung tanpa terblokir
       } else if (!access.canAccess) {
         FincestemCore.ui.toast(access.reason || `Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan seluruh 5 tugas mandiri pada Day ${dNum - 1} terlebih dahulu.`, 'error');
         return;
       }
 
       const isFTDay = isFieldTrip && (dNum >= 1 && dNum <= 7);
-      const isDayFlexible = (dNum === 2 || dNum === 3 || dNum === 4 || dNum === 5 || dNum === 6);
+      const isDayFlexible = (dNum === 2 || dNum === 3 || dNum === 4 || dNum === 5 || dNum === 6 || (!isFieldTrip && dNum === 7));
 
       // VALIDASI ALUR BERURUTAN: DAY 1 S.D. 7 (SEMUA SISWA) & DAY 0 (SEMUA SISWA)
       // Khusus Day 2, 3, 4, 5 (Flexible Flow): Bebas akses seluruh menu tanpa pop-up peringatan terkunci

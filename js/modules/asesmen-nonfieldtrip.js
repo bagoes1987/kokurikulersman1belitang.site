@@ -451,9 +451,9 @@
     }
 
     // Cek Prasyarat: Modul Belajar, LKPD, & Dokumentasi (khusus Day 1-7)
-    // Day 0 s.d. Day 6: Fleksibel tanpa deadlock agar siswa tidak terblokir saat mengerjakan di lapangan
+    // Day 0 s.d. Day 7 Non-Field Trip: Fleksibel tanpa deadlock agar siswa tidak terblokir saat mengerjakan
     const isTesterBypass = (window.FincestemCore && window.FincestemCore.schedule && typeof window.FincestemCore.schedule.isTesterStudent === 'function' && window.FincestemCore.schedule.isTesterStudent(examState.cleanNisn));
-    const isFlexibleDay = (dayNum >= 0 && dayNum <= 6);
+    const isFlexibleDay = (dayNum >= 0 && dayNum <= 7);
     const hasLkpd = (isTesterBypass || isFlexibleDay) ? true : checkPrerequisiteLkpd(dayNum, examState.cleanNisn);
     const hasMateri = (isTesterBypass || isFlexibleDay) ? true : (hasLkpd || checkPrerequisiteMateri(dayNum, examState.cleanNisn));
     const hasDok = (isTesterBypass || isFlexibleDay) ? true : (dayNum === 6 ? checkPrerequisiteDok(dayNum, examState.cleanNisn) : true);

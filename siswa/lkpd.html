@@ -191,7 +191,7 @@
           if (rawD) cachedDays = JSON.parse(rawD);
         } catch(e) {}
 
-        if (cachedProg && cachedDays) {
+        if (cachedProg && cachedDays && dayNum !== 6 && !(!isFieldTrip && (dayNum === 5 || dayNum === 7))) {
           const syncAccess = FincestemCore.progress.canAccessDay(dayNum, cachedProg, cachedDays);
           if (!syncAccess.canAccess) {
             FincestemCore.ui.toast(syncAccess.reason || `Aktivitas Day ${dayNum} terkunci! Harap selesaikan Day ${dayNum - 1} terlebih dahulu.`, 'error');
@@ -269,7 +269,7 @@
             FincestemCore.progress.getStudentProgress(nisn, function(prog) {
               window.currentStudentProgress = prog;
               const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
-              if (dayNum === 6 || (!isFieldTrip && dayNum === 5)) {
+              if (dayNum === 6 || (!isFieldTrip && (dayNum === 5 || dayNum === 7))) {
                 access.canAccess = true;
                 access.canEdit = true;
               }
