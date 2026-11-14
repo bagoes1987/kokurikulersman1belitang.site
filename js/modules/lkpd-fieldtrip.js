@@ -6242,6 +6242,9 @@
       const pesanOrtu = (saved && saved.pesanOrtu) ? saved.pesanOrtu : '';
       const pesanGuru = (saved && saved.pesanGuru) ? saved.pesanGuru : '';
       const komitmenAkhir = (saved && saved.komitmenAkhir) ? saved.komitmenAkhir : '';
+      const videoTitle = (saved && saved.videoTitle) ? saved.videoTitle : '';
+      const videoUrl = (saved && saved.videoUrl) ? saved.videoUrl : '';
+      const videoFileName = (saved && saved.videoFileName) ? saved.videoFileName : '';
       const isSubmitted = !!(saved && saved.submitted);
 
       mainEl.innerHTML = `
@@ -6515,6 +6518,61 @@
             </div>
           </div>
 
+          <!-- BAGIAN 3: UPLOAD VIDEO PERJALANAN FIELD TRIP -->
+          <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
+            <div class="flex items-center gap-2.5 text-slate-900 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
+              <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
+                <span class="material-symbols-outlined text-lg">videocam</span>
+              </span>
+              <div>
+                <span>Bagian 3: Upload Video Perjalanan Field Trip</span>
+                <span class="block text-[11px] font-semibold text-slate-500">Unggah langsung video kenangan perjalanan Field Trip Anda (.mp4 / .mov / .webm, maks. 100 MB)</span>
+              </div>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+              <label for="ftD7_videoTitle" class="font-extrabold text-xs text-slate-800">Judul / Keterangan Singkat Video:</label>
+              <input type="text" id="ftD7_videoTitle" value="${videoTitle.replace(/"/g, '&quot;')}" ${isReadOnly ? 'disabled' : ''} placeholder="Contoh: Video Perjalanan Field Trip 2026 - ${studentName}" class="w-full p-3 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-900 bg-slate-50/50 outline-none focus:border-rose-500">
+            </div>
+
+            <input type="hidden" id="ftD7_videoUrl" value="${videoUrl.replace(/"/g, '&quot;')}">
+            <input type="hidden" id="ftD7_videoFileName" value="${videoFileName.replace(/"/g, '&quot;')}">
+
+            ${!isReadOnly ? `
+              <label for="ftD7_videoFile" class="p-5 rounded-2xl border-2 border-dashed border-rose-300 bg-rose-50/40 hover:bg-rose-50 transition-all cursor-pointer flex flex-col items-center justify-center text-center gap-2">
+                <div class="w-12 h-12 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-2xl">cloud_upload</span>
+                </div>
+                <div class="text-xs font-extrabold text-rose-950">Pilih File Video dari Galeri / Penyimpanan HP</div>
+                <span class="text-[11px] text-slate-500">Format MP4, MOV, atau WebM (Maksimal 100 MB)</span>
+                <input type="file" id="ftD7_videoFile" accept="video/mp4,video/quicktime,video/webm,video/*" onchange="handleFtD7VideoUpload(this)" class="hidden">
+              </label>
+            ` : ''}
+
+            <div id="ftD7_videoProgressWrap" class="hidden flex flex-col gap-1.5 p-3 rounded-2xl bg-slate-50 border border-slate-200">
+              <div class="flex items-center justify-between text-xs font-bold text-slate-700">
+                <span id="ftD7_videoProgressLabel">Mengunggah video perjalanan...</span>
+                <span id="ftD7_videoProgressPct">0%</span>
+              </div>
+              <div class="w-full h-2.5 rounded-full bg-slate-200 overflow-hidden">
+                <div id="ftD7_videoProgressBar" class="h-full bg-rose-600 transition-all duration-200" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div id="ftD7_videoPreviewWrap" class="${videoUrl ? '' : 'hidden'} flex flex-col gap-2 p-3 rounded-2xl bg-slate-900 border border-slate-800 text-white">
+              <div class="flex items-center justify-between gap-2">
+                <div class="flex items-center gap-2 min-w-0">
+                  <span class="material-symbols-outlined text-rose-400 text-lg shrink-0">play_circle</span>
+                  <span id="ftD7_videoPreviewName" class="text-xs font-bold text-slate-200 truncate">${videoFileName || 'Video Perjalanan Terunggah'}</span>
+                </div>
+                ${!isReadOnly ? `
+                  <button type="button" onclick="removeFtD7Video()" class="px-2.5 py-1 rounded-lg bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white text-[11px] font-bold transition-all cursor-pointer shrink-0">Hapus</button>
+                ` : ''}
+              </div>
+              <video id="ftD7_videoPlayer" controls playsinline class="w-full max-h-72 rounded-xl bg-black" src="${videoUrl ? ('../' + videoUrl.replace(/^\/+/, '')) : ''}"></video>
+            </div>
+          </div>
+
           <!-- TOMBOL AKSI SUBMIT LKPD -->
           ${!isReadOnly ? `
             <div class="pt-2">
@@ -6617,6 +6675,9 @@
       const pesanOrtu = (document.getElementById('ftD7_pesanOrtu')?.value || '').trim();
       const pesanGuru = (document.getElementById('ftD7_pesanGuru')?.value || '').trim();
       const komitmenAkhir = (document.getElementById('ftD7_komitmenAkhir')?.value || '').trim();
+      const videoTitle = (document.getElementById('ftD7_videoTitle')?.value || '').trim();
+      const videoUrl = (document.getElementById('ftD7_videoUrl')?.value || '').trim();
+      const videoFileName = (document.getElementById('ftD7_videoFileName')?.value || '').trim();
 
       if (!pesanOrtu || pesanOrtu.length < 5) {
         FincestemCore.ui.toast('Harap tuliskan pesan terima kasih untuk Orang Tua di rumah!', 'warning');
@@ -6641,6 +6702,9 @@
         pesanOrtu: pesanOrtu,
         pesanGuru: pesanGuru,
         komitmenAkhir: komitmenAkhir,
+        videoTitle: videoTitle,
+        videoUrl: videoUrl,
+        videoFileName: videoFileName,
         submitted_at: new Date().toISOString()
       };
 
@@ -6705,11 +6769,110 @@
       renderFieldTripDay7LKPD(false);
     }
 
+    function handleFtD7VideoUpload(input) {
+      const file = input && input.files && input.files[0];
+      if (!file) return;
+
+      const maxBytes = 100 * 1024 * 1024;
+      if (file.size > maxBytes) {
+        FincestemCore.ui.toast('Ukuran video maksimal 100 MB. Kompres video terlebih dahulu ya.', 'warning');
+        input.value = '';
+        return;
+      }
+
+      const progressWrap = document.getElementById('ftD7_videoProgressWrap');
+      const progressBar = document.getElementById('ftD7_videoProgressBar');
+      const progressPct = document.getElementById('ftD7_videoProgressPct');
+      const progressLabel = document.getElementById('ftD7_videoProgressLabel');
+
+      if (progressWrap) progressWrap.classList.remove('hidden');
+      if (progressBar) progressBar.style.width = '0%';
+      if (progressPct) progressPct.textContent = '0%';
+      if (progressLabel) progressLabel.textContent = 'Mengunggah video...';
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('category', 'video');
+
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', '../api/upload.php', true);
+
+      xhr.upload.onprogress = function(e) {
+        if (e.lengthComputable) {
+          const pct = Math.min(99, Math.round((e.loaded / e.total) * 100));
+          if (progressBar) progressBar.style.width = pct + '%';
+          if (progressPct) progressPct.textContent = pct + '%';
+        }
+      };
+
+      xhr.onload = function() {
+        if (progressWrap) progressWrap.classList.add('hidden');
+        try {
+          const res = JSON.parse(xhr.responseText || '{}');
+          if (xhr.status >= 200 && xhr.status < 300 && res.success && res.data && res.data.file_url) {
+            const fileUrl = res.data.file_url;
+            const origName = res.data.original_name || file.name;
+
+            const urlEl = document.getElementById('ftD7_videoUrl');
+            const nameEl = document.getElementById('ftD7_videoFileName');
+            const playerEl = document.getElementById('ftD7_videoPlayer');
+            const previewNameEl = document.getElementById('ftD7_videoPreviewName');
+            const previewWrap = document.getElementById('ftD7_videoPreviewWrap');
+
+            if (urlEl) urlEl.value = fileUrl;
+            if (nameEl) nameEl.value = origName;
+            if (playerEl) {
+              playerEl.src = '../' + fileUrl.replace(/^\/+/, '');
+              playerEl.load();
+            }
+            if (previewNameEl) previewNameEl.textContent = origName;
+            if (previewWrap) previewWrap.classList.remove('hidden');
+
+            saveFtDay7LKPD(false);
+            FincestemCore.ui.toast('Video perjalanan berhasil diunggah!', 'success');
+          } else {
+            FincestemCore.ui.toast(res.message || 'Gagal mengunggah video. Coba lagi.', 'error');
+          }
+        } catch(err) {
+          FincestemCore.ui.toast('Terjadi kesalahan saat memproses respon upload.', 'error');
+        }
+      };
+
+      xhr.onerror = function() {
+        if (progressWrap) progressWrap.classList.add('hidden');
+        FincestemCore.ui.toast('Koneksi terputus saat mengunggah video.', 'error');
+      };
+
+      xhr.send(formData);
+    }
+
+    function removeFtD7Video() {
+      const urlEl = document.getElementById('ftD7_videoUrl');
+      const nameEl = document.getElementById('ftD7_videoFileName');
+      const fileEl = document.getElementById('ftD7_videoFile');
+      const playerEl = document.getElementById('ftD7_videoPlayer');
+      const previewWrap = document.getElementById('ftD7_videoPreviewWrap');
+
+      if (urlEl) urlEl.value = '';
+      if (nameEl) nameEl.value = '';
+      if (fileEl) fileEl.value = '';
+      if (playerEl) {
+        playerEl.pause();
+        playerEl.removeAttribute('src');
+        playerEl.load();
+      }
+      if (previewWrap) previewWrap.classList.add('hidden');
+      saveFtDay7LKPD(false);
+      FincestemCore.ui.toast('Video dihapus dari draft.', 'info');
+    }
+
     window.renderFieldTripDay7LKPD = renderFieldTripDay7LKPD;
     window.calculateD7CashBalance = calculateD7CashBalance;
     window.saveFtDay7LKPD = saveFtDay7LKPD;
     window.showFtD7LkpdModal = showFtD7LkpdModal;
     window.closeFtD7LkpdModal = closeFtD7LkpdModal;
+    window.handleFtD7VideoUpload = handleFtD7VideoUpload;
+    window.removeFtD7Video = removeFtD7Video;
 
     /* ========================================================
        LKPD DIGITAL KHUSUS FIELD TRIP DAY 0 (SIMULASI BUDGETING)
