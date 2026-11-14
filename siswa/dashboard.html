@@ -1201,7 +1201,7 @@
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
   <script src="../js/guru_data.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
-  <script src="../js/core.js?v=20261112_day5_prep"></script>
+  <script src="../js/core.js?v=20261114_ft_d6_open_all"></script>
   <script>
     function escapeHtml(str) {
       if (!str) return "";
@@ -3487,7 +3487,7 @@
         // Day N (N > 1) mensyaratkan Day N-1 berstatus Selesai
         // Dan Day N harus dibuka (is_open) oleh Admin
         const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, days);
-        if (!isFieldTrip && (dNum === 5 || dNum === 6)) {
+        if (dNum === 6 || (!isFieldTrip && dNum === 5)) {
           access.canAccess = true;
           access.canEdit = true;
           access.isOpen = true;
@@ -4446,8 +4446,8 @@
 
       const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
 
-      if (!isFieldTrip && (dNum === 5 || dNum === 6)) {
-        // Khusus Day 5 & Day 6 Non-Field Trip: Selalu dapat diakses langsung tanpa harus menunggu Day sebelumnya tuntas
+      if (dNum === 6 || (!isFieldTrip && dNum === 5)) {
+        // Day 6 (Field Trip & Non-Field Trip) serta Day 5 Non-Field Trip selalu dapat diakses langsung tanpa terblokir
       } else if (!access.canAccess) {
         FincestemCore.ui.toast(access.reason || `Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan seluruh 5 tugas mandiri pada Day ${dNum - 1} terlebih dahulu.`, 'error');
         return;

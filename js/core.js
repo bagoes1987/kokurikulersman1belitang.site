@@ -4709,8 +4709,17 @@ const FincestemCore = {
       } catch (e) {}
 
       // 1. SISWA FIELD TRIP:
-      // Day 1 s.d. Day 7 langsung terbuka penuh untuk semua siswa tanpa harus menunggu penilaian fasilitator / tugas hari sebelumnya
+      // Day 1 s.d. Day 6 langsung terbuka penuh untuk semua siswa tanpa harus menunggu jadwal/penilaian fasilitator / tugas hari sebelumnya
       if (isFt) {
+        if (d === 6) {
+          return {
+            canAccess: true,
+            canEdit: true,
+            isOpen: true,
+            isPreviousCompleted: true,
+            reason: ''
+          };
+        }
         const prevDone = (d <= 7) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
         const canOpen = isOpenByAdmin && prevDone;
         return {

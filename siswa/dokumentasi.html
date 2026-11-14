@@ -410,7 +410,7 @@
     </div>
   </div>
 
-  <script src="../js/core.js?v=20261112_day5_prep"></script>
+  <script src="../js/core.js?v=20261114_ft_d6_open_all"></script>
   <script>    let currentFilter = 'all';
     let currentGalleryTab = 'current'; // 'current' (per day) or 'all' (galeri utama)
     let currentGalleryDayFilter = null; // optional specific day filter in main gallery
@@ -1070,14 +1070,7 @@
                 const isSesi2 = (sesiParam === '2');
 
                 if (isSesi2) {
-                  // Sesi 2: Dokumentasi Pantai Drini memerlukan Dokumentasi Sesi 1 tuntas
-                  if (!hasDokBakpia) {
-                    FincestemCore.ui.toast('Aktivitas Berurutan: Anda wajib menyelesaikan Dokumentasi Sesi 1 (Pabrik Bakpia Jogkem) terlebih dahulu!', 'warning');
-                    setTimeout(() => {
-                      window.location.replace('dokumentasi.html?day=6&sesi=1');
-                    }, 1200);
-                    return;
-                  }
+                  // Sesi 2: Dokumentasi Pantai Drini bebas diakses langsung tanpa harus menunggu Sesi 1
                 } else {
                   // Sesi 1: Dokumentasi Pabrik Bakpia memerlukan Asesmen Day 6 Sesi 1 tuntas
                   const taskMap = (prog && prog.task_map) || {};
