@@ -3431,10 +3431,12 @@
     }
 
     function loadStudentDayEvaluation(nisn, dayNum) {
+      dayNum = (dayNum === '0' || dayNum === 0) ? 0 : (parseInt(dayNum) || 1);
       // Deteksi kategori siswa: Field Trip vs Non-Field Trip (100% mengikuti pengaturan Admin)
       let isFieldTrip = isStudentFieldTripFasil(nisn);
 
       const candidateIds = [nisn, String(nisn).replace(/^0+/, ''), String(nisn).padStart(10, '0')];
+      const cleanTargetNisn = String(nisn || '').replace(/[^A-Za-z0-9]/g, '');
       const allStu = window.FincestemMasterStudents || [];
       const stuObj = allStu.find(s => String(s.nisn).trim() === String(nisn).trim() || String(s.nis).trim() === String(nisn).trim());
       if (stuObj) {
@@ -3504,8 +3506,7 @@
           </div>`;
       }
 
-      if (FincestemCore.progress) {
-        FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+      const doRenderEvaluation = function(prog) {
           // Sinkronisasi kategori riil siswa dari database/server (Server-Truth)
           if (prog) {
             if (prog.zone) {
@@ -3993,20 +3994,20 @@
                   const recs = (prog && Array.isArray(prog.records)) ? prog.records : [];
 
                   // 1. Cari exact match di prog.records dengan task_type === t DAN r.content
-                  let match = recs.find(r => Number(r.day_number) === d && r.task_type === t && r.content);
+                  let match = recs.find(r => Number(r.day_number) === d && r.task_type === t && (r.content || r.score !== null));
 
                   // Variasi task_type lkpd (lkpd_video, lkpd_nonfieldtrip, lkpd_prambanan, dll), TAPI JANGAN 'general'
                   if (!match && t === 'lkpd') {
-                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'lkpd' || (typeof r.task_type === 'string' && r.task_type.startsWith('lkpd_'))) && r.content);
+                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'lkpd' || (typeof r.task_type === 'string' && r.task_type.startsWith('lkpd_'))) && (r.content || r.score !== null));
                   }
                   if (!match && t === 'materi') {
-                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'materi' || (typeof r.task_type === 'string' && r.task_type.startsWith('materi_'))) && r.content);
+                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'materi' || (typeof r.task_type === 'string' && r.task_type.startsWith('materi_'))) && (r.content || r.score !== null));
                   }
                   if (!match && t === 'asesmen') {
                     match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'asesmen' || (typeof r.task_type === 'string' && r.task_type.startsWith('asesmen_'))) && (r.content || r.score !== null));
                   }
                   if (!match && t === 'refleksi') {
-                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'refleksi' || (typeof r.task_type === 'string' && r.task_type.startsWith('refl'))) && r.content);
+                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'refleksi' || (typeof r.task_type === 'string' && r.task_type.startsWith('refl'))) && (r.content || r.score !== null));
                   }
 
                   if (match) {
@@ -4026,6 +4027,9 @@
                     if (typeof c === 'object' && c !== null) {
                       if (match.score !== null && c.score === undefined) c.score = match.score;
                       return c;
+                    }
+                    if (typeof match === 'object' && (match.isVideoLkpd || match.youtube_url || match.science_summary || match.financial_summary || match.answers || match.userConclusion)) {
+                      return match;
                     }
                     if (match.score !== null) return { score: match.score };
                   }
@@ -4048,7 +4052,16 @@
                           return { text: c, score: item.score };
                         }
                       }
+                      if (typeof c === 'object' && c !== null) {
+                        if (item.score !== null && c.score === undefined) c.score = item.score;
+                        return c;
+                      }
                       return c;
+                    }
+                    if (typeof item === 'object' && item !== null) {
+                      if (item.isVideoLkpd || item.youtube_url || item.video_title || item.isVideoModule || item.sectorKey || item.sectorName || item.objectName || item.answers || item.correctCount !== undefined || item.cardA || item.userConclusion || item.summary || item.science_summary || item.financial_summary) {
+                        return item;
+                      }
                     }
                     if (item.score !== null && item.score !== undefined) {
                       return { score: item.score, status: item.status };
@@ -4105,14 +4118,14 @@
                   // ==========================================
                   if (dayNum === 5 || dayNum === 6) {
                     const isVid5 = (dayNum === 5);
-                    const ytUrl56 = (nftLkpd && (nftLkpd.youtube_url || nftLkpd.cul_file || nftLkpd.stem_file)) || '';
+                    const ytUrl56 = (nftLkpd && (nftLkpd.youtube_url || nftLkpd.cul_file || nftLkpd.stem_file || nftLkpd.video_url || nftLkpd.voiceover)) || '';
                     const yId56 = (function(u){ if(!u) return ''; const m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|live\/|watch\?v=|watch\?.+&v=))([\w-]{11})/); return m ? m[1] : ''; })(ytUrl56);
 
                     // A. Modul Belajar (Resume & Rencana Video Day 5/6)
-                    if (nftMat) {
-                      const secLabel = nftMat.sectorName || nftMat.selectedSector || 'Sektor Pilihan';
-                      const objLabel = nftMat.objectName || '-';
-                      const resText = nftMat.userConclusion || nftMat.conclusion || nftMat.summary || (nftMat.cardA && nftMat.cardA.text) || '-';
+                    if (nftMat && (nftMat.isVideoModule || nftMat.selectedSector || nftMat.sectorName || nftMat.objectName || nftMat.userConclusion || nftMat.cardA || nftMat.conclusion || nftMat.summary || nftMat.text)) {
+                      const secLabel = nftMat.sectorName || nftMat.selectedSector || (nftMat.cardA && nftMat.cardA.title) || 'Sektor Pilihan';
+                      const objLabel = nftMat.objectName || (nftMat.cardA && nftMat.cardA.title) || '-';
+                      const resText = nftMat.userConclusion || nftMat.conclusion || nftMat.summary || (nftMat.cardA && nftMat.cardA.text) || nftMat.text || '-';
                       cardsHtml = `
                         <div class="mt-2 flex flex-col gap-1.5 border-t border-teal-200 pt-2">
                           <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -4138,7 +4151,7 @@
                     }
 
                     // B. Lembar Kerja LKPD Video Observasi (Player & 4 STEM Cards)
-                    if (nftLkpd && (nftLkpd.isVideoLkpd || yId56 || ytUrl56 || nftLkpd.video_title || nftLkpd.science_summary || nftLkpd.financial_summary || nftLkpd.objectName)) {
+                    if (nftLkpd && (nftLkpd.isVideoLkpd || yId56 || ytUrl56 || nftLkpd.video_title || nftLkpd.science_summary || nftLkpd.financial_summary || nftLkpd.objectName || nftLkpd.sectorKey || nftLkpd.sectorName || nftLkpd.summary)) {
                       lkpdHtml = `
                         <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
                           <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -4368,8 +4381,11 @@
                   // ==========================================
                   try {
                     const aData = nftAsesmen || (storedNftAsesmen ? JSON.parse(storedNftAsesmen) : null);
-                    if (aData && (aData.score !== undefined || aData.submitted || aData.summary)) {
+                    if (aData && (aData.score !== undefined || aData.submitted || aData.summary || aData.correctCount !== undefined || aData.answeredCount !== undefined)) {
                       const scVal = (aData.score !== undefined && aData.score !== null) ? aData.score : (aData.answeredCount !== undefined ? aData.score : '-');
+                      const corrCount = aData.correctCount !== undefined ? aData.correctCount : (aData.score !== undefined ? Math.round((parseFloat(aData.score)/100)*10) : 10);
+                      const totQ = aData.totalQuestions || 10;
+                      const durMin = aData.durationSpentSeconds ? Math.round(aData.durationSpentSeconds / 60) : 0;
                       nftAsesmenHtml = `
                         <div class="mt-2 bg-white/95 p-2.5 rounded-xl border border-teal-300 flex items-center justify-between text-xs shadow-2xs flex-wrap gap-2">
                           <div class="flex items-center gap-2">
@@ -4378,7 +4394,7 @@
                             </span>
                             <div>
                               <span class="font-extrabold text-teal-950 block text-[11px]">3. Kuis Asesmen CBT Day ${dayNum}</span>
-                              <span class="text-[10px] text-slate-500">${aData.correctCount || 0}/${aData.totalQuestions || 10} Benar &bull; Durasi: ${Math.round((aData.durationSpentSeconds || 0)/60)} Menit &bull; <span class="${(aData.violationCount || 0) > 0 ? 'text-rose-600 font-black' : 'text-slate-500'}">Pelanggaran: ${aData.violationCount || 0}/3 ${(aData.violationCount || 0) > 0 ? '⚠️' : ''}</span></span>
+                              <span class="text-[10px] text-slate-500">${corrCount}/${totQ} Benar &bull; Durasi: ${durMin} Menit &bull; <span class="${(aData.violationCount || 0) > 0 ? 'text-rose-600 font-black' : 'text-slate-500'}">Pelanggaran: ${aData.violationCount || 0}/3 ${(aData.violationCount || 0) > 0 ? '⚠️' : ''}</span></span>
                             </div>
                           </div>
                           <span class="px-2.5 py-1 rounded-lg bg-teal-100 text-teal-900 font-black text-xs border border-teal-300">
@@ -4403,15 +4419,15 @@
                     let rText = '';
                     if (nftRefl) {
                       if (typeof nftRefl === 'string') {
-                        try { const pr = JSON.parse(nftRefl); rText = pr.catatan || pr.text || pr.content || pr.reflection || nftRefl; } catch(e) { rText = nftRefl; }
+                        try { const pr = JSON.parse(nftRefl); rText = pr.catatan || pr.text || pr.content || pr.reflection || pr.note || nftRefl; } catch(e) { rText = nftRefl; }
                       } else if (typeof nftRefl === 'object') {
-                        rText = nftRefl.catatan || nftRefl.text || nftRefl.content || nftRefl.reflection || '';
+                        rText = nftRefl.catatan || nftRefl.text || nftRefl.content || nftRefl.reflection || nftRefl.note || nftRefl.summary || '';
                       }
                     }
                     if (!rText && storedNftRefl) {
                       try {
                         const rData = JSON.parse(storedNftRefl);
-                        rText = rData && (rData.content || rData.reflection || rData.note || (typeof rData === 'string' ? rData : ''));
+                        rText = rData && (rData.catatan || rData.content || rData.reflection || rData.note || rData.text || (typeof rData === 'string' ? rData : ''));
                       } catch(e) {}
                     }
                     if (rText) {
@@ -4875,9 +4891,51 @@
 
           // Muat foto dokumentasi siswa untuk hari/sesi ini
           renderGradingPhotos(nisn, dayNum);
+      };
+
+      const fetchDirectServerProgress = function(fallbackProg) {
+        if (!window.location.protocol.startsWith('http')) {
+          doRenderEvaluation(fallbackProg);
+          return;
+        }
+        const apiBase = (typeof FincestemCore !== 'undefined' && FincestemCore.api && FincestemCore.api.base) ? FincestemCore.api.base : '../api';
+        fetch(apiBase + '/progress.php?nisn=' + encodeURIComponent(nisn) + '&_t=' + Date.now(), { cache: 'no-store' })
+          .then(r => r.json())
+          .then(res => {
+            if (res && res.success && res.data) {
+              try {
+                localStorage.setItem('fincestem_progress_' + nisn, JSON.stringify(res.data));
+                candidateIds.forEach(id => {
+                  try { localStorage.setItem('fincestem_progress_' + id, JSON.stringify(res.data)); } catch(e){}
+                });
+                if (FincestemCore && FincestemCore.progress && FincestemCore.progress.hydrateLocalStorageFromProgress) {
+                  FincestemCore.progress.hydrateLocalStorageFromProgress(cleanTargetNisn, res.data);
+                }
+              } catch(e) {}
+              doRenderEvaluation(res.data);
+            } else {
+              doRenderEvaluation(fallbackProg);
+            }
+          })
+          .catch(() => {
+            doRenderEvaluation(fallbackProg);
+          });
+      };
+
+      if (FincestemCore.progress) {
+        FincestemCore.progress.getStudentProgress(nisn, function(prog) {
+          const hasDayWork = prog && (
+            (Array.isArray(prog.records) && prog.records.some(r => Number(r.day_number) === dayNum && (r.content || r.score !== null))) ||
+            (prog.task_map && (prog.task_map[dayNum + '_lkpd'] || prog.task_map[dayNum + '_materi'] || prog.task_map[dayNum + '_asesmen'] || prog.task_map[dayNum + '_refleksi']))
+          );
+          if (!hasDayWork && window.location.protocol.startsWith('http')) {
+            fetchDirectServerProgress(prog);
+          } else {
+            doRenderEvaluation(prog);
+          }
         });
       } else {
-        renderGradingPhotos(nisn, dayNum);
+        fetchDirectServerProgress(null);
       }
     }
 

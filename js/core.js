@@ -3360,7 +3360,9 @@ const FincestemCore = {
               const cText = parsed.conclusion || parsed.summary || parsed.text || 'Riset Mandiri Terverifikasi';
               ftObj = { conclusion: cText, savedAt: savedTime };
               
-              if (day >= 1 && day <= 7) {
+              if ((day === 5 || day === 6) && (parsed.isVideoModule || parsed.selectedSector || parsed.sectorName || parsed.objectName || parsed.userConclusion)) {
+                nftObj = Object.assign({}, parsed, { day: day, submitted: true, submittedAt: parsed.submittedAt || savedTime, conclusion: cText });
+              } else if (day >= 1 && day <= 7) {
                 const rich = buildRichDayMateriCards(day, (parsed.cardA && parsed.cardA.text) || cText, (parsed.cardB && parsed.cardB.text) || cText, (parsed.cardC && parsed.cardC.text) || cText, (parsed.cardD && parsed.cardD.text) || cText, (parsed.cardE && parsed.cardE.text) || cText);
                 nftObj = Object.assign({}, parsed, rich, { day: day, submitted: true, submittedAt: parsed.submittedAt || savedTime, conclusion: cText });
               } else {
@@ -3697,7 +3699,7 @@ const FincestemCore = {
       const self = this;
       if (window.location.protocol.startsWith('http')) {
         const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-        const timer = controller ? setTimeout(() => controller.abort(), 4000) : null;
+        const timer = controller ? setTimeout(() => controller.abort(), 25000) : null;
         fetch(FincestemCore.api.base + '/progress.php?nisn=' + encodeURIComponent(nisn) + '&_t=' + Date.now(), {
           signal: controller ? controller.signal : undefined
         })
@@ -4309,7 +4311,7 @@ const FincestemCore = {
         // 2. Sinkronisasi ke MySQL server secara background (aman & asynchronous)
         if (window.location.protocol.startsWith('http')) {
           const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-          const timer = controller ? setTimeout(() => controller.abort(), 6000) : null;
+          const timer = controller ? setTimeout(() => controller.abort(), 25000) : null;
           fetch(FincestemCore.api.base + '/progress.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

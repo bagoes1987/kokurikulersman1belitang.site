@@ -74,7 +74,7 @@ function ensureProgressTable($pdo) {
 }
 
 if ($method === 'GET') {
-    $nisn = trim($_GET['nisn'] ?? '');
+    $nisn = trim($_GET['nisn'] ?? $_GET['student_id'] ?? $_GET['identifier'] ?? '');
     $className = trim($_GET['class_name'] ?? '');
     $action = trim($_GET['action'] ?? '');
 
