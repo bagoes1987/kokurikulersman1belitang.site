@@ -4550,9 +4550,35 @@
             } catch(e) {}
           }
         }
-        if (window.currentStudentProgress && window.currentStudentProgress.task_map) {
-          const tm = window.currentStudentProgress.task_map;
+        if (window.currentStudentProgress) {
+          const tm = window.currentStudentProgress.task_map || {};
           if (tm['6_materi_bakpia'] || tm['6_materi']) return true;
+          const recs = Array.isArray(window.currentStudentProgress.records) ? window.currentStudentProgress.records : [];
+          if (recs.some(r => Number(r.day_number) === 6 && (r.task_type === 'materi_bakpia' || r.task_type === 'materi'))) return true;
+        }
+      } catch(e) {}
+      return false;
+    }
+
+    function checkIsD6Sesi2Done(cleanNisn) {
+      try {
+        const user = FincestemCore.auth.getUser() || {};
+        const nisn = String(cleanNisn || user.nisn || user.identifier || '').trim();
+        const ids = Array.from(new Set([nisn, nisn.replace(/^0+/, ''), nisn.padStart(10, '0'), user.nis, user.identifier])).filter(Boolean);
+        for (const id of ids) {
+          const raw = localStorage.getItem('fincestem_materi_ft_day6_pantai_' + id) || localStorage.getItem('fincestem_materi_ft_day6_drini_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && (p.conclusion || p.text || p.content)) return true;
+            } catch(e) {}
+          }
+        }
+        if (window.currentStudentProgress) {
+          const tm = window.currentStudentProgress.task_map || {};
+          if (tm['6_materi_pantai'] || tm['6_materi_drini']) return true;
+          const recs = Array.isArray(window.currentStudentProgress.records) ? window.currentStudentProgress.records : [];
+          if (recs.some(r => Number(r.day_number) === 6 && (r.task_type === 'materi_pantai' || r.task_type === 'materi_drini'))) return true;
         }
       } catch(e) {}
       return false;
@@ -4573,6 +4599,7 @@
       const cleanNisn = String(nisn).trim();
 
       const isS1Done = checkIsD6Sesi1Done(cleanNisn);
+      const isS2Done = checkIsD6Sesi2Done(cleanNisn);
 
       if (targetSesi !== undefined && targetSesi !== null) {
         currentD6Session = Number(targetSesi);
@@ -4600,47 +4627,13 @@
           <button type="button" onclick="switchD6Session(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD6Session === 2 ? 'bg-teal-600 text-white shadow-xs ring-2 ring-teal-400/40' : 'bg-slate-50 hover:bg-teal-50 text-teal-950 border border-teal-200'}">
             <span class="material-symbols-outlined text-base ${currentD6Session === 2 ? 'text-teal-200' : 'text-teal-600'}">beach_access</span>
             <span class="truncate">Sesi 2: Pantai Drini &amp; Park</span>
+            ${isS2Done ? '<span class="text-[11px] text-teal-200 font-bold ml-1">✓</span>' : (currentD6Session === 2 ? '<span class="w-2 h-2 rounded-full bg-teal-300 animate-pulse ml-0.5"></span>' : '')}
           </button>
         </div>
       `;
 
       if (currentD6Session === 2) {
-        // PREVIEW SESI 2: PANTAI DRINI & DRINI PARK
-        mainEl.innerHTML = `
-          ${tabNavHtml}
-          <div class="bg-gradient-to-br from-teal-700 via-teal-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-teal-100 backdrop-blur-md">
-                Field Trip • Day 6 • Sesi 2
-              </span>
-              <span class="text-xs font-bold text-teal-200">Pukul 11.30 - 15.30 WIB</span>
-            </div>
-            <h2 class="font-black text-xl sm:text-2xl leading-tight">
-              Sesi 2: Eksplorasi Ekosistem Karst &amp; Bahari Pantai Drini
-            </h2>
-            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-teal-400/20 text-teal-200 font-extrabold text-xs w-fit">
-              <span class="material-symbols-outlined text-base">beach_access</span>
-              <span>Pilar Murni: 🧭 EXPLORATION (Geomorfologi Karst &amp; Ekowisata)</span>
-            </div>
-            <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium">
-              Eksplorasi bentang alam karst Pegunungan Sewu, fenomena pulau karang pemecah ombak, dan observasi tata kelola wisata pesisir terpadu Drini Park.
-            </p>
-          </div>
-
-          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-teal-200/80 shadow-xs flex flex-col items-center text-center gap-3">
-            <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center">
-              <span class="material-symbols-outlined text-3xl">beach_access</span>
-            </div>
-            <h3 class="font-extrabold text-base text-slate-900">Sesi 2: Kunjungan Pantai Drini &amp; Park</h3>
-            <p class="text-xs text-slate-600 max-w-sm">
-              Sesi ini dibuka pada siang hari pukul 11.30 WIB setelah rombongan tiba di kawasan pesisir Gunungkidul.
-            </p>
-            <button type="button" onclick="switchD6Session(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Buka Sesi 1 Pabrik Bakpia</span>
-            </button>
-          </div>
-        `;
+        renderD6S2PantaiModule(mainEl, tabNavHtml, cleanNisn);
         return;
       }
 
@@ -5257,7 +5250,7 @@
                 <span class="material-symbols-outlined text-base">save</span>
                 <span>Simpan Catatan</span>
               </button>
-              <button id="ftD6S1GoLkpdBtn" type="button" onclick="handleGoToLkpdD6S1()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all opacity-50 pointer-events-none">
+              <button id="ftD6S1GoLkpdBtn" type="button" onclick="handleGoToLkpdD6S1()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all">
                 <span>Buka LKPD Sesi 1 Bakpia</span>
                 <span class="material-symbols-outlined text-base">arrow_forward</span>
               </button>
@@ -5303,17 +5296,19 @@
       } catch(e) {}
     }
 
-    function saveMateriConclusionD6S1() {
+    function saveMateriConclusionD6S1(silent) {
       const user = FincestemCore.auth.getUser() || {};
       const nisn = user.nisn || user.identifier || '';
       const cleanNisn = String(nisn).trim();
       const txt = (document.getElementById('ftD6S1ConclusionInput')?.value || '').trim();
 
       if (!txt || txt.length < 5) {
-        FincestemCore.ui.toast('Tuliskan catatan pemahaman singkat Anda minimal beberapa kata!', 'warning');
-        const el = document.getElementById('ftD6S1ConclusionInput');
-        if (el) el.focus();
-        return;
+        if (!silent) {
+          FincestemCore.ui.toast('Tuliskan catatan pemahaman singkat Anda minimal beberapa kata!', 'warning');
+          const el = document.getElementById('ftD6S1ConclusionInput');
+          if (el) el.focus();
+        }
+        return false;
       }
 
       const now = new Date().toISOString();
@@ -5330,17 +5325,17 @@
         } catch(e) {}
       });
 
-      if (FincestemCore.progress) {
-        FincestemCore.progress.submitTask(cleanNisn, 6, 'materi_bakpia', payload, function() {
-          FincestemCore.progress.submitTask(cleanNisn, 6, 'materi', payload, function() {
-            applyMateriConclusionStateD6S1(txt, now);
-            FincestemCore.ui.toast('Catatan pemahaman Modul Sesi 1 Bakpia berhasil disimpan! LKPD Sesi 1 sekarang telah terbuka.', 'success');
-          });
-        });
-      } else {
-        applyMateriConclusionStateD6S1(txt, now);
-        FincestemCore.ui.toast('Catatan pemahaman Modul Sesi 1 Bakpia berhasil disimpan! LKPD Sesi 1 sekarang telah terbuka.', 'success');
+      // Optimistic UI: langsung aktifkan state tersimpan agar tidak tertahan jaringan lambat
+      applyMateriConclusionStateD6S1(txt, now);
+      if (!silent) {
+        FincestemCore.ui.toast('Catatan pemahaman Modul Sesi 1 Bakpia berhasil disimpan! Silakan buka LKPD Sesi 1.', 'success');
       }
+
+      if (FincestemCore.progress) {
+        try { FincestemCore.progress.submitTask(cleanNisn, 6, 'materi_bakpia', payload); } catch(e) {}
+        try { FincestemCore.progress.submitTask(cleanNisn, 6, 'materi', payload); } catch(e) {}
+      }
+      return true;
     }
 
     function applyMateriConclusionStateD6S1(savedText, savedTime) {
@@ -5376,16 +5371,237 @@
     }
 
     function handleGoToLkpdD6S1() {
+      const user = FincestemCore.auth.getUser() || {};
+      const cleanNisn = String(user.nisn || user.identifier || '').trim();
+      const inputVal = (document.getElementById('ftD6S1ConclusionInput')?.value || '').trim();
+      if (!checkIsD6Sesi1Done(cleanNisn)) {
+        if (inputVal.length >= 5) {
+          saveMateriConclusionD6S1(true);
+        } else {
+          FincestemCore.ui.toast('Tuliskan catatan pemahaman singkat (min. 5 huruf) terlebih dahulu sebelum membuka LKPD!', 'warning');
+          const el = document.getElementById('ftD6S1ConclusionInput');
+          if (el) el.focus();
+          return;
+        }
+      }
       window.location.href = 'lkpd.html?day=6&sesi=1';
+    }
+
+    function renderD6S2PantaiModule(mainEl, tabNavHtml, cleanNisn) {
+      const user = FincestemCore.auth.getUser() || {};
+      mainEl.innerHTML = `
+        ${tabNavHtml}
+        <div class="bg-gradient-to-br from-teal-700 via-teal-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-teal-100 backdrop-blur-md">
+              Field Trip • Day 6 • Sesi 2
+            </span>
+            <span class="text-xs font-bold text-teal-200 flex items-center gap-1">
+              <span class="material-symbols-outlined text-sm">schedule</span>
+              <span>Pukul 11.30 - 15.30 WIB</span>
+            </span>
+          </div>
+          <h2 class="font-black text-xl sm:text-2xl leading-tight">
+            Sesi 2: Eksplorasi Ekosistem Karst &amp; Bahari Pantai Drini &amp; Park
+          </h2>
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-teal-400/20 text-teal-200 font-extrabold text-xs w-fit">
+            <span class="material-symbols-outlined text-base">beach_access</span>
+            <span>Pilar Murni: 🧭 EXPLORATION (Geomorfologi Karst &amp; Ekowisata Pesisir)</span>
+          </div>
+          <p class="text-xs sm:text-sm text-teal-100/90 leading-relaxed font-medium">
+            Observasi langsung bentang alam kawasan karst Pegunungan Sewu, fenomena unik Pulau Karang Drini sebagai pemecah ombak alami, keanekaragaman zona pasang surut, dan manajemen ekowisata modern di Drini Park Gunungkidul.
+          </p>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-4">
+          <div class="flex items-center gap-2.5 border-b border-slate-100 pb-2.5">
+            <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center font-black text-sm shrink-0">1</span>
+            <div>
+              <h3 class="font-black text-sm sm:text-base text-slate-900">Geomorfologi Karst &amp; Pulau Karang Pemecah Ombak</h3>
+              <span class="text-[11px] font-bold text-teal-700">Mengapa Pantai Drini terbelah menjadi dua sisi yang sangat berbeda?</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs leading-relaxed">
+            <div class="p-3.5 rounded-2xl bg-teal-50/70 border border-teal-200">
+              <strong class="text-teal-950 block mb-1">🌊 Sisi Timur (Tenang &amp; Dangkal)</strong>
+              <p class="text-slate-700">Terlindung oleh pulau karang besar di tengah laut yang berfungsi sebagai pemecah gelombang alami (<em>natural breakwater</em>). Cocok untuk pengamatan biota karang, alga, dan laguna pasang surut.</p>
+            </div>
+            <div class="p-3.5 rounded-2xl bg-sky-50/70 border border-sky-200">
+              <strong class="text-sky-950 block mb-1">🌬️ Sisi Barat (Ombak Besar &amp; Nelayan)</strong>
+              <p class="text-slate-700">Berhadapan langsung dengan Samudra Hindia sehingga energi gelombang lebih kuat, dimanfaatkan sebagai jalur keluar-masuk perahu nelayan tradisional serta tempat pelelangan ikan lokal.</p>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2.5 border-b border-slate-100 pb-2.5 pt-2">
+            <span class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-black text-sm shrink-0">2</span>
+            <div>
+              <h3 class="font-black text-sm sm:text-base text-slate-900">Ekowisata Terpadu Drini Park &amp; Konservasi Pesisir</h3>
+              <span class="text-[11px] font-bold text-emerald-700">Sinergi pelestarian tebing karst dan pemberdayaan ekonomi masyarakat</span>
+            </div>
+          </div>
+          <p class="text-xs text-slate-700 leading-relaxed text-justify">
+            Kawasan Pantai Drini dan <strong>Drini Park</strong> berada pada jalur bentang alam <em>UNESCO Global Geopark Gunungsewu</em> yang tersusun atas batuan kapur/karst. Pengembangan wahana wisata modern seperti jembatan pandang, area kuliner UMKM pesisir, serta pengelolaan sampah terpadu menjadi contoh penerapan prinsip ekowisata berkelanjutan agar daya tarik wisata tidak merusak ekosistem pesisir.
+          </p>
+        </div>
+
+        <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-teal-300 shadow-xs flex flex-col gap-3 mt-1">
+          <div class="flex items-center gap-2.5 text-teal-950 border-b border-slate-100 pb-2">
+            <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0">
+              <span class="material-symbols-outlined text-lg">edit_note</span>
+            </span>
+            <div>
+              <h3 class="font-black text-sm sm:text-base">Catatan Pemahaman Sesi 2</h3>
+              <span class="text-[11px] font-bold text-teal-800">Simpan ringkasan pengamatan Pantai Drini sebelum mengisi LKPD Sesi 2</span>
+            </div>
+          </div>
+          <textarea id="ftD6S2ConclusionInput" rows="3" class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 bg-white" placeholder="Contoh: Saya belajar bahwa pulau karang di Pantai Drini memecah ombak Samudra Hindia sehingga sisi timur menjadi tenang untuk biota laut, sedangkan tebing karst Gunungsewu perlu dijaga keberlanjutannya..."></textarea>
+
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+            <div id="ftD6S2ConclusionStatus" class="hidden text-xs text-emerald-700 font-bold flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-base">check_circle</span>
+              <span>Tersimpan di sistem (<span id="ftD6S2ConclusionSavedTime">-</span>)</span>
+            </div>
+            <div class="flex items-center gap-2 w-full sm:w-auto ml-auto">
+              <button id="ftD6S2SaveConclusionBtn" type="button" onclick="saveMateriConclusionD6S2()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all">
+                <span class="material-symbols-outlined text-base">save</span>
+                <span>Simpan Catatan</span>
+              </button>
+              <button id="ftD6S2GoLkpdBtn" type="button" onclick="handleGoToLkpdD6S2()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-xs flex items-center justify-center gap-1.5 cursor-pointer shadow-xs transition-all">
+                <span>Buka LKPD Sesi 2 Pantai Drini</span>
+                <span class="material-symbols-outlined text-base">arrow_forward</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Hydrate saved S2 conclusion
+      try {
+        const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), user.nis, user.identifier];
+        let savedText = '';
+        let savedTime = '';
+        for (const id of idVars) {
+          if (!id) continue;
+          const raw = localStorage.getItem('fincestem_materi_ft_day6_pantai_' + id) || localStorage.getItem('fincestem_materi_ft_day6_drini_' + id);
+          if (raw) {
+            try {
+              const p = JSON.parse(raw);
+              if (p && (p.conclusion || p.text || p.content)) {
+                savedText = p.conclusion || p.text || p.content;
+                savedTime = p.savedAt || p.date || '';
+                break;
+              }
+            } catch(e) {}
+          }
+        }
+        if (!savedText && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+          const tm = window.currentStudentProgress.task_map;
+          const task = tm['6_materi_pantai'] || tm['6_materi_drini'];
+          if (task && task.content) {
+            try {
+              const p = JSON.parse(task.content);
+              savedText = p.conclusion || p.text || task.content;
+            } catch(e) {
+              savedText = task.content;
+            }
+          }
+        }
+        if (savedText) {
+          applyMateriConclusionStateD6S2(savedText, savedTime);
+        }
+      } catch(e) {}
+    }
+
+    function saveMateriConclusionD6S2(silent) {
+      const user = FincestemCore.auth.getUser() || {};
+      const nisn = user.nisn || user.identifier || '';
+      const cleanNisn = String(nisn).trim();
+      const txt = (document.getElementById('ftD6S2ConclusionInput')?.value || '').trim();
+
+      if (!txt || txt.length < 5) {
+        if (!silent) {
+          FincestemCore.ui.toast('Tuliskan catatan pemahaman singkat Pantai Drini terlebih dahulu!', 'warning');
+          const el = document.getElementById('ftD6S2ConclusionInput');
+          if (el) el.focus();
+        }
+        return false;
+      }
+
+      const now = new Date().toISOString();
+      const payload = { conclusion: txt, savedAt: now };
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), user.nis, user.identifier].filter(Boolean);
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_materi_ft_day6_pantai_' + id, JSON.stringify(payload));
+          localStorage.setItem('fincestem_materi_ft_day6_drini_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      applyMateriConclusionStateD6S2(txt, now);
+      if (!silent) {
+        FincestemCore.ui.toast('Catatan pemahaman Modul Sesi 2 Pantai Drini berhasil disimpan! Silakan buka LKPD Sesi 2.', 'success');
+      }
+
+      if (FincestemCore.progress) {
+        try { FincestemCore.progress.submitTask(cleanNisn, 6, 'materi_pantai', payload); } catch(e) {}
+      }
+      return true;
+    }
+
+    function applyMateriConclusionStateD6S2(savedText, savedTime) {
+      const input = document.getElementById('ftD6S2ConclusionInput');
+      const saveBtn = document.getElementById('ftD6S2SaveConclusionBtn');
+      const statusBox = document.getElementById('ftD6S2ConclusionStatus');
+      const timeBox = document.getElementById('ftD6S2ConclusionSavedTime');
+      const nextBtn = document.getElementById('ftD6S2GoLkpdBtn');
+
+      if (input) {
+        input.value = savedText;
+        input.disabled = true;
+        input.classList.add('bg-slate-100', 'text-slate-600', 'cursor-not-allowed');
+      }
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.classList.remove('bg-teal-600', 'hover:bg-teal-700', 'cursor-pointer');
+        saveBtn.classList.add('bg-emerald-600', 'text-white', 'cursor-default');
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-base">check_circle</span><span>Catatan Telah Disimpan</span>';
+      }
+      if (statusBox) statusBox.classList.remove('hidden');
+      if (timeBox && savedTime) {
+        try {
+          timeBox.textContent = new Date(savedTime).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+        } catch (e) {
+          timeBox.textContent = savedTime;
+        }
+      }
+      if (nextBtn) {
+        nextBtn.classList.add('animate-pulse');
+      }
+    }
+
+    function handleGoToLkpdD6S2() {
+      const user = FincestemCore.auth.getUser() || {};
+      const cleanNisn = String(user.nisn || user.identifier || '').trim();
+      const inputVal = (document.getElementById('ftD6S2ConclusionInput')?.value || '').trim();
+      if (!checkIsD6Sesi2Done(cleanNisn) && inputVal.length >= 5) {
+        saveMateriConclusionD6S2(true);
+      }
+      window.location.href = 'lkpd.html?day=6&sesi=2';
     }
 
     window.renderDay6FieldTripModule = renderDay6FieldTripModule;
     window.switchD6Session = switchD6Session;
     window.renderD6S1BakpiaModule = renderD6S1BakpiaModule;
+    window.renderD6S2PantaiModule = renderD6S2PantaiModule;
     window.saveMateriConclusionD6S1 = saveMateriConclusionD6S1;
+    window.saveMateriConclusionD6S2 = saveMateriConclusionD6S2;
     window.applyMateriConclusionStateD6S1 = applyMateriConclusionStateD6S1;
+    window.applyMateriConclusionStateD6S2 = applyMateriConclusionStateD6S2;
     window.handleGoToLkpdD6S1 = handleGoToLkpdD6S1;
+    window.handleGoToLkpdD6S2 = handleGoToLkpdD6S2;
     window.checkIsD6Sesi1Done = checkIsD6Sesi1Done;
+    window.checkIsD6Sesi2Done = checkIsD6Sesi2Done;
 
 
     // MODUL BELAJAR KHUSUS FIELD TRIP DAY 4 S.D. 7

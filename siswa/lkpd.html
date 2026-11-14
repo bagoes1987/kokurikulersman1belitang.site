@@ -145,7 +145,7 @@
   </main>
 
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
-  <script src="../js/core.js?v=20261112_day5_prep"></script>
+  <script src="../js/core.js?v=20261114_ft_d6_fix"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_video_d56_v1"></script>
   <script>
     window.activeUser = (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {
@@ -158,7 +158,7 @@
     };
     var activeUser = window.activeUser;
   </script>
-  <script src="../js/modules/lkpd-fieldtrip.js?v=20261112_unlock_d4_all"></script>
+  <script src="../js/modules/lkpd-fieldtrip.js?v=20261114_ft_d6_fix"></script>
   <script src="../js/modules/lkpd-nonfieldtrip.js?v=20261112_day5_prep"></script>
   <script>
 
@@ -178,8 +178,8 @@
       const zUpper = (studentZone || '').toUpperCase();
       const isFieldTrip = zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP');
 
-      // Proteksi Alur Berurutan Cepat: Day N (N > 1) mewajibkan Day N-1 selesai
-      if (dayNum > 1 && window.FincestemCore && FincestemCore.progress && !(!isFieldTrip && (dayNum === 5 || dayNum === 6))) {
+      // Proteksi Alur Berurutan Cepat: Day N (N > 1) mewajibkan Day N-1 selesai (Day 6 selalu terbuka agar siswa bisa langsung mengerjakan)
+      if (dayNum > 1 && dayNum !== 6 && window.FincestemCore && FincestemCore.progress && !(!isFieldTrip && dayNum === 5)) {
         let cachedProg = null;
         try {
           const rawP = localStorage.getItem('fincestem_progress_' + (activeUser.nisn || activeUser.identifier));
@@ -269,7 +269,7 @@
             FincestemCore.progress.getStudentProgress(nisn, function(prog) {
               window.currentStudentProgress = prog;
               const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
-              if (!isFieldTrip && (dayNum === 5 || dayNum === 6)) {
+              if (dayNum === 6 || (!isFieldTrip && dayNum === 5)) {
                 access.canAccess = true;
                 access.canEdit = true;
               }
@@ -282,8 +282,11 @@
                 return;
               }
 
-              // Re-render LKPD otomatis seketika data progres server terhidrasi (membuka kunci & mengisi jawaban)
-              renderActiveLkpd();
+              // Re-render LKPD otomatis seketika data progres server terhidrasi hanya jika user belum aktif mengetik di form
+              const hasActiveInput = document.querySelector('textarea:focus, input:focus, select:focus');
+              if (!hasActiveInput) {
+                renderActiveLkpd();
+              }
 
               if (!access.canEdit || isReadOnlyUrl) {
                 const saveBtns = document.querySelectorAll('#btnSubmitLkpdApel, #saveLkpdBtn, #btnSubmitLkpdD2Akpol, #btnSubmitLkpdD2Lawang, #saveFtLkpdBtn');

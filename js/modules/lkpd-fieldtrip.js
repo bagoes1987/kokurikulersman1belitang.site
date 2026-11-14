@@ -5067,6 +5067,30 @@
       }
       const isS1Submitted = !!(savedS1 && savedS1.submitted);
 
+      // Cek status LKPD Sesi 2 Pantai Drini
+      let savedS2 = null;
+      for (const id of idVars) {
+        const rawS2 = localStorage.getItem('fincestem_lkpd_ft_day6_pantai_' + id) || localStorage.getItem('fincestem_lkpd_ft_day6_drini_' + id);
+        if (rawS2) {
+          try {
+            savedS2 = JSON.parse(rawS2);
+            break;
+          } catch(e) {}
+        }
+      }
+      if (!savedS2 && window.currentStudentProgress && window.currentStudentProgress.task_map) {
+        const tm = window.currentStudentProgress.task_map;
+        const task2 = tm['6_lkpd_pantai'] || tm['6_lkpd_drini'];
+        if (task2 && task2.content) {
+          let p2 = task2.content;
+          if (typeof p2 === 'string') {
+            try { p2 = JSON.parse(p2); } catch(e) {}
+          }
+          if (p2 && typeof p2 === 'object') savedS2 = p2;
+        }
+      }
+      const isS2Submitted = !!(savedS2 && savedS2.submitted);
+
       // Cek prasyarat Modul Sesi 1
       let hasMateriBakpia = false;
       for (const id of idVars) {
@@ -5074,16 +5098,20 @@
         if (rawM) {
           try {
             const p = JSON.parse(rawM);
-            if (p && (p.conclusion || p.text)) {
+            if (p && (p.conclusion || p.text || p.content)) {
               hasMateriBakpia = true;
               break;
             }
           } catch(e) {}
         }
       }
-      if (!hasMateriBakpia && window.currentStudentProgress && window.currentStudentProgress.task_map) {
-        const tm = window.currentStudentProgress.task_map;
+      if (!hasMateriBakpia && window.currentStudentProgress) {
+        const tm = window.currentStudentProgress.task_map || {};
         if (tm['6_materi_bakpia'] || tm['6_materi']) hasMateriBakpia = true;
+        const recs = Array.isArray(window.currentStudentProgress.records) ? window.currentStudentProgress.records : [];
+        if (recs.some(r => Number(r.day_number) === 6 && (r.task_type === 'materi_bakpia' || r.task_type === 'materi'))) {
+          hasMateriBakpia = true;
+        }
       }
       if (savedS1 && (savedS1.submitted || savedS1.hargaKotak || savedS1.varianRasa)) {
         hasMateriBakpia = true;
@@ -5103,18 +5131,27 @@
           <button type="button" onclick="switchD6LkpdSession(2)" class="w-full py-2.5 px-3 rounded-xl flex items-center justify-center gap-1.5 text-xs font-black transition-all cursor-pointer ${currentD6LkpdSession === 2 ? 'bg-teal-600 text-white shadow-xs ring-2 ring-teal-400/40' : 'bg-slate-50 hover:bg-teal-50 text-teal-950 border border-teal-200'}">
             <span class="material-symbols-outlined text-base ${currentD6LkpdSession === 2 ? 'text-teal-200' : 'text-teal-600'}">beach_access</span>
             <span class="truncate">Sesi 2: LKPD Pantai Drini</span>
+            ${isS2Submitted ? '<span class="text-[11px] text-teal-200 font-bold ml-1">✓</span>' : (currentD6LkpdSession === 2 ? '<span class="w-2 h-2 rounded-full bg-teal-300 animate-pulse ml-0.5"></span>' : '')}
           </button>
         </div>
       `;
 
       if (currentD6LkpdSession === 2) {
-        // PREVIEW SESI 2 LKPD
+        const s2Disabled = (isReadOnly || isS2Submitted) ? 'disabled' : '';
+        const valKarst = savedS2 ? (savedS2.karstObservation || '') : '';
+        const valZona = savedS2 ? (savedS2.zonaPantai || '') : '';
+        const valEkowisata = savedS2 ? (savedS2.ekowisataNote || '') : '';
+        const valReflDrini = savedS2 ? (savedS2.kesimpulanDrini || '') : '';
+
         mainEl.innerHTML = `
           ${tabNavHtml}
           <div class="bg-gradient-to-br from-teal-700 via-teal-800 to-slate-900 rounded-3xl p-5 sm:p-6 text-white shadow-lg flex flex-col gap-2.5">
-            <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-teal-100 backdrop-blur-md w-fit">
-              Field Trip • Day 6 • Sesi 2
-            </span>
+            <div class="flex items-center justify-between gap-2 flex-wrap">
+              <span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/20 text-teal-100 backdrop-blur-md w-fit">
+                Field Trip • Day 6 • Sesi 2
+              </span>
+              <span class="text-xs font-bold text-teal-200">Pukul 11.30 - 15.30 WIB</span>
+            </div>
             <h2 class="font-black text-xl sm:text-2xl leading-tight">
               LKPD Sesi 2: Eksplorasi Ekosistem Karst &amp; Bahari Pantai Drini
             </h2>
@@ -5122,19 +5159,97 @@
               Lembar observasi bentang alam karst Pegunungan Sewu, keunikan pulau karang pemecah ombak, dan tata kelola wisata pesisir terpadu Drini Park.
             </p>
           </div>
-          <div class="p-6 rounded-3xl bg-surface-container-lowest border border-teal-200/80 shadow-xs flex flex-col items-center text-center gap-3">
-            <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center">
-              <span class="material-symbols-outlined text-3xl">beach_access</span>
+
+          <form id="formFtDay6S2LKPD" onsubmit="event.preventDefault();" class="flex flex-col gap-4">
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-teal-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0 font-black text-sm">1</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Geomorfologi Karst &amp; Pulau Karang Pemecah Ombak</h3>
+                  <span class="text-[11px] font-bold text-teal-700">Fungsi pulau karang di tengah Pantai Drini</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 gap-2 text-xs">
+                <label class="p-3 rounded-2xl border ${valKarst === 'breakwater_alami' ? 'border-teal-500 bg-teal-50/70 ring-1 ring-teal-400' : 'border-slate-200 bg-white'} cursor-pointer flex items-center gap-2.5">
+                  <input type="radio" name="ftD6S2_karst" value="breakwater_alami" ${valKarst === 'breakwater_alami' ? 'checked' : ''} ${s2Disabled} class="accent-teal-600">
+                  <span class="text-slate-900 font-bold">[A] Memecah energi ombak Samudra Hindia sehingga sisi timur tenang &amp; aman untuk biota pesisir ✓</span>
+                </label>
+                <label class="p-3 rounded-2xl border ${valKarst === 'hiasan_saja' ? 'border-teal-500 bg-teal-50/70 ring-1 ring-teal-400' : 'border-slate-200 bg-white'} cursor-pointer flex items-center gap-2.5">
+                  <input type="radio" name="ftD6S2_karst" value="hiasan_saja" ${valKarst === 'hiasan_saja' ? 'checked' : ''} ${s2Disabled} class="accent-teal-600">
+                  <span class="text-slate-900">[B] Tidak memengaruhi gelombang laut di kedua sisi pantai</span>
+                </label>
+              </div>
             </div>
-            <h3 class="font-extrabold text-base text-slate-900">LKPD Sesi 2 Pantai Drini &amp; Park</h3>
-            <p class="text-xs text-slate-600 max-w-sm">
-              Sesi observasi pantai dibuka pada siang hari pukul 11.30 WIB setelah rombongan tiba di kawasan Pantai Drini.
-            </p>
-            <button type="button" onclick="switchD6LkpdSession(1)" class="mt-2 px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-extrabold text-xs flex items-center gap-2 cursor-pointer transition-all">
-              <span class="material-symbols-outlined text-base">arrow_back</span>
-              <span>Buka LKPD Sesi 1 Pabrik Bakpia</span>
-            </button>
-          </div>
+
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-teal-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0 font-black text-sm">2</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Observasi Zona Pasang Surut &amp; Aktivitas Pesisir</h3>
+                  <span class="text-[11px] font-bold text-teal-700">Kondisi sisi pantai yang kamu amati langsung</span>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                <label class="p-3 rounded-2xl border ${valZona === 'sisi_timur' ? 'border-teal-500 bg-teal-50/70 ring-1 ring-teal-400' : 'border-slate-200 bg-white'} cursor-pointer flex items-center gap-2.5">
+                  <input type="radio" name="ftD6S2_zona" value="sisi_timur" ${valZona === 'sisi_timur' ? 'checked' : ''} ${s2Disabled} class="accent-teal-600">
+                  <span class="text-slate-900 font-bold">Sisi Timur (Tenang, laguna karang &amp; alga)</span>
+                </label>
+                <label class="p-3 rounded-2xl border ${valZona === 'sisi_barat' ? 'border-teal-500 bg-teal-50/70 ring-1 ring-teal-400' : 'border-slate-200 bg-white'} cursor-pointer flex items-center gap-2.5">
+                  <input type="radio" name="ftD6S2_zona" value="sisi_barat" ${valZona === 'sisi_barat' ? 'checked' : ''} ${s2Disabled} class="accent-teal-600">
+                  <span class="text-slate-900 font-bold">Sisi Barat (Ombak besar &amp; dermaga perahu nelayan)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="bg-surface-container-lowest rounded-3xl p-5 sm:p-6 border border-outline-variant/30 shadow-xs flex flex-col gap-3">
+              <div class="flex items-center gap-2.5 text-teal-950 border-b border-slate-100 pb-2">
+                <span class="w-8 h-8 rounded-xl bg-teal-100 text-teal-800 flex items-center justify-center shrink-0 font-black text-sm">3</span>
+                <div>
+                  <h3 class="font-black text-sm sm:text-base">Tata Kelola Ekowisata Drini Park &amp; Konservasi</h3>
+                  <span class="text-[11px] font-bold text-teal-700">Sinergi wisata modern dengan pelestarian tebing karst</span>
+                </div>
+              </div>
+              <textarea id="ftD6S2_ekowisata" rows="2" ${s2Disabled} class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 ${s2Disabled ? 'bg-slate-100 text-slate-500' : 'bg-white'}" placeholder="Tuliskan pengamatanmu tentang fasilitas ekowisata di Pantai Drini / Drini Park serta cara menjaga kebersihan pesisir...">${valEkowisata}</textarea>
+              <label class="text-xs font-bold text-slate-800 mt-1">Kesimpulan Observasi Sesi 2 Pantai Drini:</label>
+              <textarea id="ftD6S2_kesimpulan" rows="2" ${s2Disabled} class="w-full p-3.5 rounded-2xl border border-slate-200 text-xs sm:text-sm outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 ${s2Disabled ? 'bg-slate-100 text-slate-500' : 'bg-white'}" placeholder="Contoh: Saya mempelajari keunikan ekosistem karst Gunungsewu dan pentingnya konservasi terumbu karang...">${valReflDrini}</textarea>
+            </div>
+
+            ${!isS2Submitted && !isReadOnly ? `
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-3xl bg-surface-container-lowest border border-teal-300 shadow-xs">
+              <a href="dashboard.html?day=6" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+                <span class="material-symbols-outlined text-base">dashboard</span>
+                <span>Dashboard</span>
+              </a>
+              <div class="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+                <button type="button" onclick="saveFtDay6S2LKPD(false)" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all">
+                  <span class="material-symbols-outlined text-base">save</span>
+                  <span>Simpan Draft</span>
+                </button>
+                <button id="btnSaveFtD6S2Lkpd" type="button" onclick="saveFtDay6S2LKPD(true)" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-extrabold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-xs transition-all">
+                  <span class="material-symbols-outlined text-base">send</span>
+                  <span>Kirim Jawaban Resmi LKPD Sesi 2</span>
+                </button>
+              </div>
+            </div>
+            ` : `
+            <div class="p-4 rounded-3xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs">
+              <div class="flex items-center gap-2.5 text-emerald-900 font-bold">
+                <span class="material-symbols-outlined text-emerald-700 text-xl">verified</span>
+                <span>LKPD Sesi 2 (Pantai Drini) Telah Tersimpan Resmi!</span>
+              </div>
+              <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                <a href="dokumentasi.html?day=6&sesi=2" class="px-4 py-2 rounded-xl bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs">
+                  <span class="material-symbols-outlined text-sm">photo_camera</span>
+                  <span>Dokumentasi Sesi 2</span>
+                </a>
+                <a href="dashboard.html?day=6" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center gap-1.5 shadow-xs">
+                  <span class="material-symbols-outlined text-sm">dashboard</span>
+                  <span>Dashboard</span>
+                </a>
+              </div>
+            </div>
+            `}
+          </form>
         `;
         return;
       }
@@ -5599,17 +5714,92 @@
       });
 
       if (isFinal) {
-        if (FincestemCore.progress) {
-          FincestemCore.progress.submitTask(studentNisn, 6, 'lkpd_bakpia', payload, function() {
-            FincestemCore.progress.submitTask(studentNisn, 6, 'lkpd', payload, function() {
-              showFtD6S1LkpdModal();
-            });
-          });
-        } else {
+        let modalShown = false;
+        const triggerSuccess = () => {
+          if (modalShown) return;
+          modalShown = true;
           showFtD6S1LkpdModal();
+        };
+        const safetyTimer = setTimeout(triggerSuccess, 2500);
+        if (FincestemCore.progress) {
+          try { FincestemCore.progress.submitTask(studentNisn, 6, 'lkpd_bakpia', payload); } catch(e) {}
+          try {
+            FincestemCore.progress.submitTask(studentNisn, 6, 'lkpd', payload, function() {
+              clearTimeout(safetyTimer);
+              triggerSuccess();
+            });
+          } catch(e) {
+            clearTimeout(safetyTimer);
+            triggerSuccess();
+          }
+        } else {
+          clearTimeout(safetyTimer);
+          triggerSuccess();
         }
       } else {
         FincestemCore.ui.toast('Draft LKPD Sesi 1 Pabrik Bakpia berhasil disimpan.', 'info');
+      }
+    }
+
+    function saveFtDay6S2LKPD(isFinal) {
+      if (isFinal === undefined) isFinal = true;
+      const u = (typeof activeUser !== 'undefined' && activeUser) || (window.activeUser) || (window.FincestemCore && FincestemCore.auth && FincestemCore.auth.getUser()) || {};
+      const studentNisn = u.nisn || u.identifier || '-';
+      const cleanNisn = String(studentNisn).trim();
+
+      const karstObservation = document.querySelector('input[name="ftD6S2_karst"]:checked')?.value || '';
+      const zonaPantai = document.querySelector('input[name="ftD6S2_zona"]:checked')?.value || '';
+      const ekowisataNote = (document.getElementById('ftD6S2_ekowisata')?.value || '').trim();
+      const kesimpulanDrini = (document.getElementById('ftD6S2_kesimpulan')?.value || '').trim();
+
+      if (isFinal) {
+        if (!karstObservation) {
+          FincestemCore.ui.toast('Pilih jawaban fungsi pulau karang Pantai Drini (Bagian 1)!', 'warning');
+          return;
+        }
+        if (!zonaPantai) {
+          FincestemCore.ui.toast('Pilih sisi pantai yang kamu amati (Bagian 2)!', 'warning');
+          return;
+        }
+        if (!ekowisataNote || ekowisataNote.length < 5) {
+          FincestemCore.ui.toast('Tuliskan catatan pengamatan ekowisata Pantai Drini / Drini Park (Bagian 3)!', 'warning');
+          const el = document.getElementById('ftD6S2_ekowisata');
+          if (el) el.focus();
+          return;
+        }
+        if (!kesimpulanDrini || kesimpulanDrini.length < 5) {
+          FincestemCore.ui.toast('Tuliskan kesimpulan observasi Pantai Drini (Bagian 3)!', 'warning');
+          const el = document.getElementById('ftD6S2_kesimpulan');
+          if (el) el.focus();
+          return;
+        }
+      }
+
+      const payload = {
+        karstObservation,
+        zonaPantai,
+        ekowisataNote,
+        kesimpulanDrini,
+        submitted: !!isFinal,
+        submittedAt: new Date().toISOString()
+      };
+
+      const idVars = [cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0'), studentNisn].filter(Boolean);
+      idVars.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_ft_day6_pantai_' + id, JSON.stringify(payload));
+          localStorage.setItem('fincestem_lkpd_ft_day6_drini_' + id, JSON.stringify(payload));
+        } catch(e) {}
+      });
+
+      if (isFinal) {
+        FincestemCore.ui.toast('LKPD Sesi 2 (Pantai Drini & Park) Berhasil Disimpan & Dikirim!', 'success');
+        if (FincestemCore.progress) {
+          try { FincestemCore.progress.submitTask(studentNisn, 6, 'lkpd_pantai', payload); } catch(e) {}
+        }
+        renderFieldTripDay6LKPD(false, 2);
+      } else {
+        FincestemCore.ui.toast('Draft LKPD Sesi 2 Pantai Drini berhasil disimpan.', 'info');
       }
     }
 
@@ -5640,6 +5830,7 @@
     window.renderFieldTripDay6LKPD = renderFieldTripDay6LKPD;
     window.switchD6LkpdSession = switchD6LkpdSession;
     window.saveFtDay6S1LKPD = saveFtDay6S1LKPD;
+    window.saveFtDay6S2LKPD = saveFtDay6S2LKPD;
     window.showFtD6S1LkpdModal = showFtD6S1LkpdModal;
     window.closeFtD6S1LkpdModal = closeFtD6S1LkpdModal;
 

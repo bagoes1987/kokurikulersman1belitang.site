@@ -170,9 +170,9 @@
   </main>
 
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
-  <script src="../js/core.js?v=20261112_day5_prep"></script>
+  <script src="../js/core.js?v=20261114_ft_d6_fix"></script>
   <script src="../js/modules/mentorship-fasil.js?v=20261106_video_d56_v1"></script>
-  <script src="../js/modules/materi-fieldtrip.js?v=20261110_d3_prep"></script>
+  <script src="../js/modules/materi-fieldtrip.js?v=20261114_ft_d6_fix"></script>
   <script src="../js/modules/materi-nonfieldtrip.js?v=20261112_day5_prep"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -243,11 +243,12 @@
       // Sinkronisasi data progres server di background
       if (FincestemCore.progress) {
         FincestemCore.progress.getStudentProgress(user.nisn || user.identifier, function(prog) {
+          window.currentStudentProgress = prog;
           const hasInputActive = document.querySelector('textarea:focus, input:focus');
           if (!hasInputActive && !window[`isNftD${dayNum}Submitted`]) {
             renderActiveMateriModule();
           }
-          if (dayNum > 1 && !(!isFieldTrip && (dayNum === 5 || dayNum === 6))) {
+          if (dayNum > 1 && dayNum !== 6 && !(!isFieldTrip && dayNum === 5)) {
             FincestemCore.schedule.getSchedule(function(days) {
               const access = FincestemCore.progress.canAccessDay(dayNum, prog, days);
               if (!access.canAccess) {
@@ -267,7 +268,7 @@
       FincestemCore.schedule.getSchedule(function(days) {
         const isTester = FincestemCore.schedule.isTesterStudent && FincestemCore.schedule.isTesterStudent(user.nisn || user.identifier);
         const d = days.find(x => x.day_number === dayNum);
-        if (!isTester && d && !d.is_open && !(!isFieldTrip && (dayNum === 5 || dayNum === 6))) {
+        if (!isTester && d && !d.is_open && dayNum !== 6 && !(!isFieldTrip && dayNum === 5)) {
           FincestemCore.ui.toast(`Materi Day ${dayNum} sedang ditutup/terkunci oleh Admin! Mengalihkan ke Dashboard...`, 'error');
           setTimeout(() => {
             window.location.replace('dashboard.html');
