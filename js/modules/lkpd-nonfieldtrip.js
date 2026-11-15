@@ -6582,7 +6582,7 @@
                 <span class="material-symbols-outlined text-emerald-600 text-lg">check_circle</span>
                 <span>Portofolio Day 7 Telah Terkirim Resmi (Asesmen Otomatis 100/100)</span>
               </div>
-              <div class="flex items-center gap-2">
+              <div class="flex items-center gap-2 flex-wrap">
                 <button
                   type="button"
                   onclick="window.enableEditNftDay7Lkpd()"
@@ -6590,6 +6590,13 @@
                 >
                   Edit Kembali
                 </button>
+                <a
+                  href="dokumentasi.html?day=7"
+                  class="px-4 py-2.5 rounded-xl bg-pink-600 hover:bg-pink-700 text-white text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>Lanjut Dokumentasi Foto</span>
+                  <span class="material-symbols-outlined text-sm">photo_camera</span>
+                </a>
                 <a
                   href="dashboard.html"
                   class="px-5 py-2.5 rounded-xl bg-purple-700 hover:bg-purple-800 text-white text-xs font-black shadow-sm transition-all flex items-center gap-1.5 cursor-pointer"
@@ -6762,12 +6769,20 @@
     }
 
     try {
-      localStorage.setItem('fincestem_lkpd_nft_day7_' + cleanNisn, JSON.stringify(data));
-      localStorage.setItem('fincestem_lkpd_day7_' + cleanNisn, JSON.stringify(data));
+      const idVariants = Array.from(new Set([
+        cleanNisn,
+        cleanNisn.replace(/^0+/, ''),
+        cleanNisn.padStart(10, '0'),
+        String(u.nis || '').trim(),
+        String(u.identifier || '').trim()
+      ])).filter(Boolean);
 
-      if (window.FincestemCore && FincestemCore.progress) {
-        FincestemCore.progress.saveTaskRecord(cleanNisn, 7, 'lkpd', data, 100);
-      }
+      idVariants.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_lkpd_nft_day7_' + id, JSON.stringify(data));
+          localStorage.setItem('fincestem_lkpd_day7_' + id, JSON.stringify(data));
+        } catch(eLS) {}
+      });
 
       // =========================================================================
       // OTOMATIS TUNTAS ASESMEN DAY 7 (BEBAS KUIS / APRESIASI PORTOFOLIO 100/100)
@@ -6782,13 +6797,13 @@
         submittedAt: new Date().toISOString(),
         answers: { note: 'Day 7 Bebas Kuis Asesmen (Auto-Tuntas Portofolio Final)' }
       };
-      localStorage.setItem('fincestem_asesmen_nft_day7_' + cleanNisn, JSON.stringify(asesmenPayload));
-      localStorage.setItem('fincestem_asesmen_day7_' + cleanNisn, JSON.stringify(asesmenPayload));
-      localStorage.setItem('fincestem_exam_state_d7_' + cleanNisn, JSON.stringify({ isSubmitted: true, score: 100 }));
-
-      if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
-        FincestemCore.progress.submitTask(cleanNisn, 7, 'asesmen', asesmenPayload);
-      }
+      idVariants.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_asesmen_nft_day7_' + id, JSON.stringify(asesmenPayload));
+          localStorage.setItem('fincestem_asesmen_day7_' + id, JSON.stringify(asesmenPayload));
+          localStorage.setItem('fincestem_exam_state_d7_' + id, JSON.stringify({ isSubmitted: true, score: 100 }));
+        } catch(eLS) {}
+      });
 
       // =========================================================================
       // OTOMATIS TUNTAS REFLEKSI DAY 7 (3 PERTANYAAN JURNAL REFLEKSI AKBAR)
@@ -6804,18 +6819,37 @@
         submitted: true,
         submittedAt: new Date().toISOString()
       };
-      localStorage.setItem('fincestem_refleksi_nft_day7_' + cleanNisn, JSON.stringify(refleksiPayload));
-      localStorage.setItem('fincestem_refleksi_day7_' + cleanNisn, JSON.stringify(refleksiPayload));
+      idVariants.forEach(id => {
+        try {
+          localStorage.setItem('fincestem_refleksi_nft_day7_' + id, JSON.stringify(refleksiPayload));
+          localStorage.setItem('fincestem_refleksi_day7_' + id, JSON.stringify(refleksiPayload));
+        } catch(eLS) {}
+      });
+
+      const finishUi = function() {
+        if (window.FincestemCore && FincestemCore.ui) {
+          FincestemCore.ui.toast('Alhamdulillah! Seluruh Karya Riset Day 7 Berhasil Dikirim Resmi. Asesmen & Refleksi Otomatis Tuntas!', 'success');
+        }
+        renderNonFieldTripDay7LKPD(true);
+      };
+
       if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
-        FincestemCore.progress.submitTask(cleanNisn, 7, 'refleksi', refleksiPayload);
+        FincestemCore.progress.submitTask(cleanNisn, 7, 'lkpd', data, function() {
+          FincestemCore.progress.submitTask(cleanNisn, 7, 'asesmen', asesmenPayload, function() {
+            FincestemCore.progress.submitTask(cleanNisn, 7, 'refleksi', refleksiPayload, function() {
+              finishUi();
+            });
+          });
+        });
+      } else {
+        finishUi();
       }
-
+    } catch(e) {
+      console.error('submitNonFieldTripDay7LKPD error:', e);
       if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Alhamdulillah! Seluruh Karya Riset Day 7 Berhasil Dikirim Resmi. Asesmen Otomatis Tuntas 100/100!', 'success');
+        FincestemCore.ui.toast('Gagal mengirim LKPD Day 7: ' + (e.message || 'Kesalahan sistem'), 'error');
       }
-
-      renderNonFieldTripDay7LKPD(true);
-    } catch(e) {}
+    }
   }
 
 

@@ -2864,8 +2864,8 @@
       localStorage.setItem('fincestem_asesmen_nft_day7_' + cleanNisn, JSON.stringify(asesmenPayload));
       localStorage.setItem('fincestem_asesmen_day7_' + cleanNisn, JSON.stringify(asesmenPayload));
       localStorage.setItem('fincestem_exam_state_d7_' + cleanNisn, JSON.stringify({ isSubmitted: true, score: 100 }));
-      if (window.FincestemCore && FincestemCore.progress) {
-        FincestemCore.progress.saveTaskRecord(cleanNisn, 7, 'asesmen', asesmenPayload, 100);
+      if (window.FincestemCore && FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+        FincestemCore.progress.submitTask(cleanNisn, 7, 'asesmen', asesmenPayload);
       }
     } catch(e) {}
 
