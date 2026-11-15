@@ -4950,6 +4950,15 @@
                             <iframe class="w-full h-full" src="https://www.youtube.com/embed/${escapeHtml(ytId)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                           </div>
                         </div>
+                      ` : (rawYt ? `
+                        <div class="bg-white p-3 rounded-xl border border-violet-200 flex items-center justify-between gap-2">
+                          <div class="min-w-0">
+                            <div class="text-[11px] font-bold text-violet-900">🎬 Link Video Perjalanan (${escapeHtml(String(rawYt).toLowerCase().includes('tiktok') ? 'TikTok' : (String(rawYt).toLowerCase().includes('insta') ? 'Instagram' : 'Tautan'))})</div>
+                            ${ft7.videoTitle ? `<div class="text-xs font-semibold text-slate-700 truncate">${escapeHtml(ft7.videoTitle)}</div>` : ''}
+                            <div class="text-[11px] text-slate-500 truncate">${escapeHtml(rawYt)}</div>
+                          </div>
+                          <a href="${escapeHtml(rawYt)}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-[11px] font-bold shrink-0">Buka Video ↗</a>
+                        </div>
                       ` : (videoSrc ? `
                         <div class="bg-white p-3 rounded-xl border border-violet-200 space-y-2">
                           <div class="flex items-center justify-between gap-2">
@@ -4963,9 +4972,9 @@
                         </div>
                       ` : `
                         <div class="text-[11px] text-slate-500 italic bg-white/70 p-2 rounded-lg border border-violet-100">
-                          Belum ada link YouTube video perjalanan yang dikirim.
+                          Belum ada link video perjalanan yang dikirim.
                         </div>
-                      `)}
+                      `)))}
                     </div>
                   `;
                 }

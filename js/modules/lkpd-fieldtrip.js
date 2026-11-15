@@ -6251,7 +6251,15 @@
         const m = String(url).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
         return m ? m[1] : '';
       }
+      function detectFtD7Platform(url) {
+        const uStr = String(url || '').toLowerCase();
+        if (uStr.includes('youtube.com') || uStr.includes('youtu.be')) return 'youtube';
+        if (uStr.includes('tiktok.com')) return 'tiktok';
+        if (uStr.includes('instagram.com') || uStr.includes('instagr.am')) return 'instagram';
+        return '';
+      }
       const initialYtId = getFtD7YtId(youtubeUrl);
+      const initialPlatform = detectFtD7Platform(youtubeUrl);
 
       mainEl.innerHTML = `
         <div class="flex flex-col gap-5 pb-12 max-w-4xl mx-auto w-full">
@@ -6524,15 +6532,15 @@
             </div>
           </div>
 
-          <!-- BAGIAN 3: TAUTAN VIDEO YOUTUBE PERJALANAN FIELD TRIP -->
+          <!-- BAGIAN 3: TAUTAN VIDEO PERJALANAN FIELD TRIP (YOUTUBE / TIKTOK / INSTAGRAM) -->
           <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-2xs flex flex-col gap-3.5">
             <div class="flex items-center gap-2.5 text-slate-900 font-black text-base sm:text-lg border-b border-slate-100 pb-3">
               <span class="w-8 h-8 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0">
                 <span class="material-symbols-outlined text-lg">smart_display</span>
               </span>
               <div>
-                <span>Bagian 3: Upload Link YouTube Video Perjalanan Field Trip</span>
-                <span class="block text-[11px] font-semibold text-slate-500">Unggah video perjalanan Anda ke YouTube (Publik / Tidak Publik / Unlisted), lalu tempelkan tautannya di bawah ini.</span>
+                <span>Bagian 3: Upload Link Video Perjalanan Field Trip (YouTube / TikTok / IG)</span>
+                <span class="block text-[11px] font-semibold text-slate-500">Unggah video perjalanan Anda ke YouTube, TikTok, atau Instagram (Reels/Post), lalu tempelkan tautannya di bawah ini.</span>
               </div>
             </div>
 
@@ -6542,20 +6550,20 @@
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="ftD7_youtubeUrl" class="font-extrabold text-xs text-slate-800">Tautan (Link) YouTube Video Perjalanan:</label>
-              <input type="url" id="ftD7_youtubeUrl" value="${youtubeUrl.replace(/"/g, '&quot;')}" ${isReadOnly ? 'disabled' : ''} oninput="previewFtD7Youtube(this.value)" placeholder="https://youtu.be/... atau https://www.youtube.com/watch?v=... atau /shorts/..." class="w-full p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-900 bg-slate-50/50 outline-none focus:border-rose-500">
-              <span class="text-[11px] text-slate-500">Pastikan link dapat diakses oleh Guru Fasilitator (setel visibilitas YouTube ke <strong>Publik</strong> atau <strong>Tidak Publik / Unlisted</strong>).</span>
+              <label for="ftD7_youtubeUrl" class="font-extrabold text-xs text-slate-800">Tautan (Link) Video (YouTube / TikTok / Instagram):</label>
+              <input type="url" id="ftD7_youtubeUrl" value="${youtubeUrl.replace(/"/g, '&quot;')}" ${isReadOnly ? 'disabled' : ''} oninput="previewFtD7Youtube(this.value)" placeholder="https://youtu.be/... atau https://www.tiktok.com/... atau https://www.instagram.com/reel/..." class="w-full p-3.5 rounded-xl border border-slate-200 text-xs sm:text-sm font-semibold text-slate-900 bg-slate-50/50 outline-none focus:border-rose-500">
+              <span class="text-[11px] text-slate-500">Pastikan link dapat dibuka oleh Guru Fasilitator (akun tidak diprivat / video berstatus <strong>Publik</strong> atau <strong>Unlisted</strong> untuk YouTube).</span>
             </div>
 
-            <div id="ftD7_ytPreviewWrap" class="${initialYtId ? '' : 'hidden'} flex flex-col gap-2 p-3 rounded-2xl bg-slate-900 border border-slate-800 text-white">
+            <div id="ftD7_ytPreviewWrap" class="${(initialYtId || initialPlatform === 'tiktok' || initialPlatform === 'instagram') ? '' : 'hidden'} flex flex-col gap-2 p-3 rounded-2xl bg-slate-900 border border-slate-800 text-white">
               <div class="flex items-center justify-between gap-2">
                 <div class="flex items-center gap-2 min-w-0">
                   <span class="material-symbols-outlined text-rose-400 text-lg shrink-0">play_circle</span>
-                  <span class="text-xs font-bold text-slate-200 truncate">Pratinjau Video YouTube</span>
+                  <span id="ftD7_previewLabel" class="text-xs font-bold text-slate-200 truncate">${initialPlatform === 'tiktok' ? 'Tautan Video TikTok Terdeteksi' : (initialPlatform === 'instagram' ? 'Tautan Video Instagram Terdeteksi' : 'Pratinjau Video YouTube')}</span>
                 </div>
-                <a id="ftD7_ytExternalLink" href="${youtubeUrl.replace(/"/g, '&quot;')}" target="_blank" rel="noopener" class="text-[11px] font-bold text-rose-300 hover:underline shrink-0">Buka di YouTube ↗</a>
+                <a id="ftD7_ytExternalLink" href="${youtubeUrl.replace(/"/g, '&quot;')}" target="_blank" rel="noopener" class="text-[11px] font-bold text-rose-300 hover:underline shrink-0">${initialPlatform === 'tiktok' ? 'Buka di TikTok ↗' : (initialPlatform === 'instagram' ? 'Buka di Instagram ↗' : 'Buka di YouTube ↗')}</a>
               </div>
-              <div class="w-full aspect-video rounded-xl overflow-hidden bg-black">
+              <div id="ftD7_ytIframeWrap" class="${initialYtId ? '' : 'hidden'} w-full aspect-video rounded-xl overflow-hidden bg-black">
                 <iframe id="ftD7_ytIframe" class="w-full h-full" src="${initialYtId ? ('https://www.youtube.com/embed/' + initialYtId) : ''}" title="Pratinjau Video Perjalanan Field Trip" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </div>
             </div>
@@ -6679,10 +6687,18 @@
         return;
       }
 
+      let videoPlatform = '';
+      const lowerUrl = youtubeUrl.toLowerCase();
+      if (lowerUrl.includes('youtube.com') || lowerUrl.includes('youtu.be')) videoPlatform = 'youtube';
+      else if (lowerUrl.includes('tiktok.com')) videoPlatform = 'tiktok';
+      else if (lowerUrl.includes('instagram.com') || lowerUrl.includes('instagr.am')) videoPlatform = 'instagram';
+
       if (isFinal) {
+        const isHttpUrl = /^https?:\/\//i.test(youtubeUrl);
         const ytMatch = youtubeUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-        if (!youtubeUrl || !ytMatch) {
-          FincestemCore.ui.toast('Harap masukkan tautan (link) YouTube video perjalanan Field Trip yang valid!', 'warning');
+        const isValidSocial = isHttpUrl && (videoPlatform === 'tiktok' || videoPlatform === 'instagram' || (videoPlatform === 'youtube' && !!ytMatch));
+        if (!youtubeUrl || !isValidSocial) {
+          FincestemCore.ui.toast('Harap masukkan tautan video YouTube, TikTok, atau Instagram yang valid (diawali https://)!', 'warning');
           const ytInput = document.getElementById('ftD7_youtubeUrl');
           if (ytInput) { ytInput.focus(); ytInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
           return;
@@ -6707,6 +6723,7 @@
         komitmenAkhir: komitmenAkhir,
         videoTitle: videoTitle,
         youtubeUrl: youtubeUrl,
+        videoPlatform: videoPlatform,
         submitted_at: new Date().toISOString()
       };
 
@@ -6785,15 +6802,30 @@
 
     function previewFtD7Youtube(url) {
       const wrap = document.getElementById('ftD7_ytPreviewWrap');
+      const iframeWrap = document.getElementById('ftD7_ytIframeWrap');
       const iframe = document.getElementById('ftD7_ytIframe');
       const extLink = document.getElementById('ftD7_ytExternalLink');
-      const m = String(url || '').match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+      const label = document.getElementById('ftD7_previewLabel');
+      const raw = String(url || '').trim();
+      const lower = raw.toLowerCase();
+      const m = raw.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+
       if (m && m[1]) {
         if (iframe) iframe.src = 'https://www.youtube.com/embed/' + m[1];
-        if (extLink) extLink.href = String(url).trim();
+        if (iframeWrap) iframeWrap.classList.remove('hidden');
+        if (label) label.textContent = 'Pratinjau Video YouTube';
+        if (extLink) { extLink.href = raw; extLink.textContent = 'Buka di YouTube ↗'; }
+        if (wrap) wrap.classList.remove('hidden');
+      } else if (/^https?:\/\//i.test(raw) && (lower.includes('tiktok.com') || lower.includes('instagram.com') || lower.includes('instagr.am'))) {
+        const isTikTok = lower.includes('tiktok.com');
+        if (iframe) iframe.src = '';
+        if (iframeWrap) iframeWrap.classList.add('hidden');
+        if (label) label.textContent = isTikTok ? 'Tautan Video TikTok Terdeteksi' : 'Tautan Video Instagram Terdeteksi';
+        if (extLink) { extLink.href = raw; extLink.textContent = isTikTok ? 'Buka di TikTok ↗' : 'Buka di Instagram ↗'; }
         if (wrap) wrap.classList.remove('hidden');
       } else {
         if (iframe) iframe.src = '';
+        if (iframeWrap) iframeWrap.classList.add('hidden');
         if (wrap) wrap.classList.add('hidden');
       }
     }
