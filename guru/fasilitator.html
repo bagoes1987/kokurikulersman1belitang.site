@@ -4890,9 +4890,12 @@
               try {
                 const rawFtLkpd7 = getTaskContent(7, 'lkpd');
                 const ft7 = typeof rawFtLkpd7 === 'string' ? JSON.parse(rawFtLkpd7) : rawFtLkpd7;
-                if (ft7 && (ft7.modalAwal !== undefined || ft7.pesanOrtu || ft7.videoUrl)) {
+                if (ft7 && (ft7.modalAwal !== undefined || ft7.pesanOrtu || ft7.youtubeUrl || ft7.videoUrl)) {
                   const fmtRp = (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
-                  const videoSrc = ft7.videoUrl ? '../' + String(ft7.videoUrl).replace(/^\/+/, '') : '';
+                  const rawYt = ft7.youtubeUrl || '';
+                  const ytMatch = String(rawYt).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+                  const ytId = ytMatch ? ytMatch[1] : '';
+                  const videoSrc = (!ytId && ft7.videoUrl) ? '../' + String(ft7.videoUrl).replace(/^\/+/, '') : '';
                   const momentLabels = {
                     bromo: 'Sunrise Gunung Bromo',
                     jatimpark: 'Edukasi & Wahana Jatim Park',
@@ -4934,7 +4937,20 @@
                           <div class="text-slate-700 whitespace-pre-line">${escapeHtml(ft7.pesanOrtu)}</div>
                         </div>
                       ` : ''}
-                      ${videoSrc ? `
+                      ${ytId ? `
+                        <div class="bg-white p-3 rounded-xl border border-violet-200 space-y-2">
+                          <div class="flex items-center justify-between gap-2">
+                            <div>
+                              <div class="text-[11px] font-bold text-violet-900">🎬 Video YouTube Perjalanan Field Trip</div>
+                              ${ft7.videoTitle ? `<div class="text-xs font-semibold text-slate-700">${escapeHtml(ft7.videoTitle)}</div>` : ''}
+                            </div>
+                            <a href="${escapeHtml(rawYt)}" target="_blank" rel="noopener" class="text-[11px] font-bold text-rose-600 hover:underline shrink-0">Buka di YouTube ↗</a>
+                          </div>
+                          <div class="w-full aspect-video rounded-lg overflow-hidden bg-black">
+                            <iframe class="w-full h-full" src="https://www.youtube.com/embed/${escapeHtml(ytId)}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                          </div>
+                        </div>
+                      ` : (videoSrc ? `
                         <div class="bg-white p-3 rounded-xl border border-violet-200 space-y-2">
                           <div class="flex items-center justify-between gap-2">
                             <div>
@@ -4947,9 +4963,9 @@
                         </div>
                       ` : `
                         <div class="text-[11px] text-slate-500 italic bg-white/70 p-2 rounded-lg border border-violet-100">
-                          Belum ada video perjalanan yang diunggah.
+                          Belum ada link YouTube video perjalanan yang dikirim.
                         </div>
-                      `}
+                      `)}
                     </div>
                   `;
                 }
