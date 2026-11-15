@@ -6563,11 +6563,17 @@
 
           <!-- TOMBOL AKSI SUBMIT LKPD -->
           ${!isReadOnly ? `
-            <div class="pt-2">
+            <div class="pt-2 flex flex-col gap-2.5">
               <button id="btnSubmitFtDay7Lkpd" type="button" onclick="saveFtDay7LKPD(true)" class="w-full py-4 px-5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black text-sm flex items-center justify-center gap-2 shadow-md hover:shadow-xl transition-all cursor-pointer">
                 <span class="material-symbols-outlined text-xl">send</span>
                 <span>${isSubmitted ? 'Perbarui &amp; Kirim Ulang LKPD Day 7' : 'Kirim LKPD Day 7 &amp; Buka Dokumentasi Foto (Tahap 4)'}</span>
               </button>
+              ${isSubmitted ? `
+                <a href="dokumentasi.html?day=7&sesi=1" class="w-full py-3.5 px-5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs sm:text-sm flex items-center justify-center gap-2 shadow-md transition-all">
+                  <span class="material-symbols-outlined text-lg">photo_camera</span>
+                  <span>Lanjut ke Dokumentasi Dua Potret (Tahap 4) &rarr;</span>
+                </a>
+              ` : ''}
             </div>
           ` : ''}
         </div>
@@ -6727,6 +6733,12 @@
       });
 
       if (isFinal) {
+        const btn = document.getElementById('btnSubmitFtDay7Lkpd');
+        if (btn) {
+          btn.disabled = true;
+          btn.classList.add('opacity-70', 'pointer-events-none');
+          btn.innerHTML = '<span class="material-symbols-outlined text-xl animate-spin">progress_activity</span><span>Mengirim LKPD Day 7...</span>';
+        }
         if (FincestemCore.progress) {
           FincestemCore.progress.submitTask(studentNisn, 7, 'lkpd', payload, function() {
             FincestemCore.progress.submitTask(studentNisn, 7, 'asesmen', asesmenPayload, function() {
@@ -6742,6 +6754,12 @@
     }
 
     function showFtD7LkpdModal() {
+      const btn = document.getElementById('btnSubmitFtDay7Lkpd');
+      if (btn) {
+        btn.disabled = false;
+        btn.classList.remove('opacity-70', 'pointer-events-none');
+        btn.innerHTML = '<span class="material-symbols-outlined text-xl">send</span><span>Perbarui &amp; Kirim Ulang LKPD Day 7</span>';
+      }
       const modal = document.getElementById('modalLkpdFtDay7Success');
       if (!modal) {
         FincestemCore.ui.toast('LKPD Day 7 Berhasil Dikirim! Asesmen bebas kuis (Skor 100).', 'success');
