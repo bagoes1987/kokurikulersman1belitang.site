@@ -1118,8 +1118,8 @@
     const selFasil = document.getElementById('selRekapMatrixFasil');
     if (!selKelas || selKelas.children.length > 1) return; // Sudah terisi
 
-    // Isi Dropdown Kelas
-    const classes = Array.from(new Set(state.enrichedStudents.map(st => st.className))).sort();
+    // Isi Dropdown Kelas (urut numerik X.1, X.2, ..., X.10, X.11, XI.1, ...)
+    const classes = Array.from(new Set(state.enrichedStudents.map(st => st.className))).sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: 'base' }));
     classes.forEach(c => {
       const opt = document.createElement('option');
       opt.value = c;
@@ -1358,7 +1358,7 @@
     const selFasil = document.getElementById('selRekapRaporFasil');
     if (!selKelas || selKelas.children.length > 1) return;
 
-    const classes = Array.from(new Set(state.enrichedStudents.map(st => st.className))).sort();
+    const classes = Array.from(new Set(state.enrichedStudents.map(st => st.className))).sort((a, b) => String(a).localeCompare(String(b), undefined, { numeric: true, sensitivity: 'base' }));
     classes.forEach(c => {
       const opt = document.createElement('option');
       opt.value = c;
