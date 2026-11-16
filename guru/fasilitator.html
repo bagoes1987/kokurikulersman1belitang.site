@@ -3357,11 +3357,32 @@
           if (descEl) descEl.textContent = 'Uji coba teknis LKPD dan instrumen asesmen pra-keberangkatan.';
         }
 
-        // Tampilkan semua kolom untuk Field Trip
-        ['colGradeFin', 'colGradeCul', 'colGradeExp', 'colGradeStem'].forEach(id => {
-          const el = document.getElementById(id);
-          if (el) el.classList.remove('hidden');
-        });
+        // Khusus Day 7 (Field Trip & Non-Field Trip): cukup 1 kolom penilaian (Refleksi dan Evaluasi)
+        if (dayNum === 7) {
+          if (titleEl) titleEl.innerHTML = '🎯 <b>Fokus Day 7:</b> Refleksi dan Evaluasi';
+          if (badgeEl) badgeEl.textContent = '1 Kolom Penilaian';
+          if (descEl) descEl.textContent = 'Penilaian 1 kolom: Refleksi dan Evaluasi akhir kegiatan Day 7.';
+          ['colGradeCul', 'colGradeExp', 'colGradeStem'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+          });
+          const cFin7 = document.getElementById('colGradeFin');
+          const lFin7 = document.getElementById('lblGradeFin');
+          if (cFin7) cFin7.classList.remove('hidden');
+          if (lFin7) lFin7.innerHTML = '📝 Nilai Refleksi &amp; Evaluasi Day 7 (0-100)';
+          [cardFin, cardCul, cardExp, cardStem].forEach(c => {
+            if (c) c.classList.remove('ring-2', 'ring-teal-600', 'ring-offset-1', 'shadow-sm');
+          });
+          [bFin, bCul, bExp, bStem].forEach(b => {
+            if (b) b.classList.add('hidden');
+          });
+        } else {
+          // Tampilkan semua kolom untuk Field Trip Day 1-6
+          ['colGradeFin', 'colGradeCul', 'colGradeExp', 'colGradeStem'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove('hidden');
+          });
+        }
         const boxRec = document.getElementById('boxDay7SmartRecommendation');
         if (boxRec) boxRec.classList.add('hidden');
       } else {
@@ -3374,7 +3395,7 @@
           4: { title: 'Day 4: EXPLORATION', badge: 'Bobot 25%', desc: 'Penilaian 1 kolom: Bentang alam persawahan, geospasial & irigasi Komering.', active: ['EXPLORATION'] },
           5: { title: 'Day 5: Video Observasi YouTube (5–10 Menit): Sains & Teknologi Sektor', badge: 'Bobot 25%', desc: 'Penilaian Video YouTube (7 Sektor Pilihan): Prinsip Sains Sektor & Aplikasi Teknologi/Alat Kerja.', active: ['STEM', 'EXPLORATION'] },
           6: { title: 'Day 6: Video Analisis YouTube (5–10 Menit): Rekayasa Kendala & Matematika Finansial', badge: 'Bobot 25%', desc: 'Penilaian Video YouTube (7 Sektor Pilihan): Rekayasa Solusi Kendala Lapangan & Matematika Finansial.', active: ['STEM', 'FINANCIAL'] },
-          7: { title: 'Day 7: Penilaian Harian', badge: 'Penilaian Harian', desc: 'Penilaian harian instrumen pembelajaran Day 7 (Refleksi, Evaluasi & Kepulangan).', active: ['FINANCIAL', 'CULTURE', 'EXPLORATION', 'STEM'] }
+          7: { title: 'Day 7: Refleksi dan Evaluasi', badge: '1 Kolom Penilaian', desc: 'Penilaian 1 kolom: Refleksi dan Evaluasi akhir kegiatan Day 7.', active: [] }
         };
 
         const curNft = nftMap[dayNum] || { title: `Day ${dayNum}`, badge: 'Non-Field Trip', desc: 'Riset mandiri OKU Timur.', active: [] };
@@ -3458,12 +3479,11 @@
             if (lFin) lFin.innerHTML = '💰 Nilai Matematika Finansial (0-100)';
           }
         } else if (dayNum === 7) {
-          // DAY 7: PENILAIAN HARIAN
-          [cFin, cCul, cExp, cStem].forEach(c => { if (c) c.classList.remove('hidden'); });
-          if (lFin) lFin.innerHTML = '💰 Financial Day 7 (0-100)';
-          if (lCul) lCul.innerHTML = '🏛️ Culture Day 7 (0-100)';
-          if (lExp) lExp.innerHTML = '🧭 Exploration Day 7 (0-100)';
-          if (lStem) lStem.innerHTML = '🔬 STEM Day 7 (0-100)';
+          // DAY 7: 1 KOLOM PENILAIAN (REFLEKSI DAN EVALUASI)
+          if (cFin) {
+            cFin.classList.remove('hidden');
+            if (lFin) lFin.innerHTML = '📝 Nilai Refleksi &amp; Evaluasi Day 7 (0-100)';
+          }
           if (boxRec) boxRec.classList.add('hidden');
         }
       }
@@ -5189,7 +5209,9 @@
       let avg = Math.round((fin + cul + exp + stem) / 4);
       let sFin = fin, sCul = cul, sExp = exp, sStem = stem;
 
-      if (!isFieldTrip) {
+      if (dayNum === 7) {
+        avg = fin; sFin = fin; sCul = fin; sExp = fin; sStem = fin;
+      } else if (!isFieldTrip) {
         if (dayNum === 0 || dayNum === 1) {
           avg = fin; sFin = fin; sCul = fin; sExp = fin; sStem = fin;
         } else if (dayNum === 2) {
@@ -5202,8 +5224,6 @@
           avg = Math.round((stem + exp) / 2); sStem = stem; sExp = exp; sFin = avg; sCul = avg;
         } else if (dayNum === 6) {
           avg = Math.round((stem + fin) / 2); sStem = stem; sFin = fin; sExp = avg; sCul = avg;
-        } else if (dayNum === 7) {
-          avg = Math.round((fin + cul + exp + stem) / 4);
         }
       }
 
@@ -5845,14 +5865,15 @@
       const stem = parseInt((document.getElementById('gradeSTEM') ? document.getElementById('gradeSTEM').value : "")) || 0;
 
       let avg = 0;
-      if (!isFieldTrip) {
+      if (dayNum === 7) {
+        avg = fin;
+      } else if (!isFieldTrip) {
         if (dayNum === 0 || dayNum === 1) avg = fin;
         else if (dayNum === 2) avg = cul;
         else if (dayNum === 3) avg = stem;
         else if (dayNum === 4) avg = exp;
         else if (dayNum === 5) avg = Math.round((stem + exp) / 2);
         else if (dayNum === 6) avg = Math.round((stem + fin) / 2);
-        else if (dayNum === 7) avg = Math.round((fin + cul + exp + stem) / 4);
       } else {
         avg = Math.round((fin + cul + exp + stem) / 4);
       }
