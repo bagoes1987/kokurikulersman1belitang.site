@@ -3577,7 +3577,7 @@
           if (prog) {
             if (prog.zone) {
               isFieldTrip = String(prog.zone).toUpperCase().includes('LUAR');
-            } else if (prog.records && prog.records.some(r => r.task_type === 'lkpd' && typeof r.content === 'string' && (r.content.includes('isVideoLkpd') || r.content.includes('youtube')))) {
+            } else if (prog.records && prog.records.some(r => r.task_type === 'lkpd' && typeof r.content === 'string' && !r.content.includes('modalAwal') && !r.content.includes('momenFavorit') && (r.content.includes('isVideoLkpd') || r.content.includes('youtube_url')))) {
               isFieldTrip = false;
             } else if (prog.task_map && (prog.task_map['5_lkpd'] || prog.task_map['6_lkpd'] || prog.task_map['4_lkpd'])) {
               const lkSample = prog.task_map['5_lkpd'] || prog.task_map['4_lkpd'];
@@ -4059,21 +4059,23 @@
                   d = Number(d);
                   const recs = (prog && Array.isArray(prog.records)) ? prog.records : [];
 
-                  // 1. Cari exact match di prog.records dengan task_type === t DAN r.content
-                  let match = recs.find(r => Number(r.day_number) === d && r.task_type === t && (r.content || r.score !== null));
+                  const hasContentVal = (c) => c !== null && c !== undefined && String(c).trim() !== '' && String(c).trim() !== 'null';
+
+                  // 1. Cari exact match di prog.records yang memiliki content terlebih dahulu
+                  let match = recs.find(r => Number(r.day_number) === d && r.task_type === t && hasContentVal(r.content));
 
                   // Variasi task_type lkpd (lkpd_video, lkpd_nonfieldtrip, lkpd_prambanan, dll), TAPI JANGAN 'general'
                   if (!match && t === 'lkpd') {
-                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'lkpd' || (typeof r.task_type === 'string' && r.task_type.startsWith('lkpd_'))) && (r.content || r.score !== null));
+                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'lkpd' || (typeof r.task_type === 'string' && r.task_type.startsWith('lkpd_'))) && hasContentVal(r.content));
                   }
                   if (!match && t === 'materi') {
-                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'materi' || (typeof r.task_type === 'string' && r.task_type.startsWith('materi_'))) && (r.content || r.score !== null));
+                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'materi' || (typeof r.task_type === 'string' && r.task_type.startsWith('materi_'))) && hasContentVal(r.content));
                   }
                   if (!match && t === 'asesmen') {
-                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'asesmen' || (typeof r.task_type === 'string' && r.task_type.startsWith('asesmen_'))) && (r.content || r.score !== null));
+                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'asesmen' || (typeof r.task_type === 'string' && r.task_type.startsWith('asesmen_'))) && hasContentVal(r.content));
                   }
                   if (!match && t === 'refleksi') {
-                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'refleksi' || (typeof r.task_type === 'string' && r.task_type.startsWith('refl'))) && (r.content || r.score !== null));
+                    match = recs.find(r => Number(r.day_number) === d && (r.task_type === 'refleksi' || (typeof r.task_type === 'string' && r.task_type.startsWith('refl'))) && hasContentVal(r.content));
                   }
 
                   if (match) {
@@ -4162,7 +4164,8 @@
                 const nftRefl = getTaskContent(dayNum, 'refleksi');
 
                 // Deteksi cerdas: jika ada data pengerjaan Non-Field Trip (video/sektor), pastikan siswa adalah Non-Field Trip
-                if (nftLkpd && (nftLkpd.isVideoLkpd || nftLkpd.sectorKey || nftLkpd.youtube_url || (dayNum === 5 && (nftLkpd.video_title || nftLkpd.objectName || nftLkpd.science_summary)))) {
+                const isFtPayload = nftLkpd && (nftLkpd.modalAwal !== undefined || nftLkpd.momenFavorit || nftLkpd.pesanOrtu);
+                if (nftLkpd && !isFtPayload && (nftLkpd.isVideoLkpd || nftLkpd.sectorKey || nftLkpd.youtube_url || nftLkpd.refl_pengalaman || ((dayNum === 5 || dayNum === 7) && (nftLkpd.video_title || nftLkpd.objectName || nftLkpd.science_summary)))) {
                   isFieldTrip = false;
                   applyFacilitatorPillarLayout(dayNum, false);
                 }
@@ -4316,8 +4319,8 @@
                     // ==========================================
                     // 1B. TAMPILAN KHUSUS DAY 7 NON-FIELD TRIP (VIDEO KARYA & JURNAL REFLEKSI AKBAR)
                     // ==========================================
-                    const ytUrl7 = (nftLkpd && nftLkpd.youtube_url) ? nftLkpd.youtube_url : '';
-                    const btsUrl7 = (nftLkpd && nftLkpd.bts_youtube_url) ? nftLkpd.bts_youtube_url : '';
+                    const ytUrl7 = (nftLkpd && (nftLkpd.youtube_url || nftLkpd.youtubeUrl || nftLkpd.video_url || nftLkpd.videoUrl)) || '';
+                    const btsUrl7 = (nftLkpd && (nftLkpd.bts_youtube_url || nftLkpd.btsYoutubeUrl)) || '';
                     const extractYt7 = (u) => {
                       if (!u) return '';
                       const m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|live\/|watch\?v=|watch\?.+&v=))([\w-]{11})/i);
@@ -4326,8 +4329,8 @@
                     const yId7 = extractYt7(ytUrl7);
                     const btsId7 = extractYt7(btsUrl7);
 
-                    if (nftMat && (nftMat.reflection || nftMat.text || nftMat.content || nftMat.summary || nftMat.submitted)) {
-                      const mText7 = nftMat.reflection || nftMat.text || nftMat.content || nftMat.summary || 'Modul Belajar Day 7 Selesai';
+                    if (nftMat && (nftMat.reflection || nftMat.text || nftMat.content || nftMat.summary || nftMat.userConclusion || nftMat.objectName || nftMat.submitted)) {
+                      const mText7 = nftMat.reflection || nftMat.text || nftMat.content || nftMat.summary || nftMat.userConclusion || nftMat.objectName || 'Modul Belajar Day 7 Selesai';
                       cardsHtml = `
                         <div class="mt-2 bg-white/95 p-2.5 rounded-xl border border-teal-200 text-[10.5px]">
                           <span class="font-bold text-teal-950 block mb-1">1. Modul Belajar Day 7:</span>
@@ -4343,7 +4346,7 @@
                       `;
                     }
 
-                    if (nftLkpd && (ytUrl7 || nftLkpd.video_title || nftLkpd.refl_pengalaman || nftLkpd.submitted)) {
+                    if (nftLkpd && (ytUrl7 || btsUrl7 || nftLkpd.video_title || nftLkpd.videoTitle || nftLkpd.refl_pengalaman || nftLkpd.refl_wawasan || nftLkpd.refl_pesan || nftLkpd.submitted || nftLkpd.text || nftLkpd.summary)) {
                       lkpdHtml = `
                         <div class="mt-2 flex flex-col gap-2 border-t border-teal-200 pt-2">
                           <div class="flex items-center justify-between gap-2 flex-wrap">
@@ -4357,18 +4360,23 @@
                             <div class="p-3 rounded-2xl bg-slate-900 border border-slate-800 text-white flex flex-col gap-2 shadow-xs">
                               <div class="flex items-center justify-between flex-wrap gap-2">
                                 <div class="min-w-0">
-                                  <div class="text-xs font-black text-rose-300 truncate">${escapeHtml(nftLkpd.video_title || 'Video Karya Refleksi Day 7')}</div>
+                                  <div class="text-xs font-black text-rose-300 truncate">${escapeHtml(nftLkpd.video_title || nftLkpd.videoTitle || 'Video Karya Refleksi Day 7')}</div>
                                   <div class="text-[10px] text-slate-300">${nftLkpd.is_combined === false ? 'Video Utama &amp; BTS Terpisah' : 'Video Refleksi + BTS Gabungan'}</div>
                                 </div>
                                 <a href="${escapeHtml(ytUrl7)}" target="_blank" rel="noopener noreferrer" class="px-3 py-1.5 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-black text-[10.5px] flex items-center gap-1 shadow-sm shrink-0">
-                                  <span>▶️ Tonton di YouTube</span>
+                                  <span>▶️ Buka Video</span>
                                 </a>
                               </div>
                               ${yId7 ? `
                                 <div class="relative w-full aspect-video rounded-xl overflow-hidden bg-black border border-slate-700">
                                   <iframe src="https://www.youtube-nocookie.com/embed/${escapeHtml(yId7)}" class="w-full h-full border-0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 </div>
-                              ` : ''}
+                              ` : `
+                                <div class="p-2 rounded-xl bg-slate-800 text-slate-300 text-[10.5px] break-all flex items-center gap-1.5">
+                                  <span class="material-symbols-outlined text-rose-400 text-sm shrink-0">link</span>
+                                  <span>Link Video: <a href="${escapeHtml(ytUrl7)}" target="_blank" rel="noopener noreferrer" class="text-cyan-300 underline font-mono font-bold">${escapeHtml(ytUrl7)}</a></span>
+                                </div>
+                              `}
                               ${btsUrl7 ? `
                                 <div class="pt-1 border-t border-slate-700 flex items-center justify-between gap-2 text-[10.5px]">
                                   <span class="text-slate-300">🎬 Video BTS Terpisah:</span>
@@ -5038,9 +5046,10 @@
               try {
                 const rawFtLkpd7 = getTaskContent(7, 'lkpd');
                 const ft7 = typeof rawFtLkpd7 === 'string' ? JSON.parse(rawFtLkpd7) : rawFtLkpd7;
-                if (ft7 && (ft7.modalAwal !== undefined || ft7.pesanOrtu || ft7.youtubeUrl || ft7.videoUrl)) {
+                if (ft7 && (ft7.modalAwal !== undefined || ft7.pesanOrtu || ft7.youtubeUrl || ft7.youtube_url || ft7.videoUrl || ft7.video_url || ft7.videoTitle || ft7.video_title || ft7.submitted)) {
                   const fmtRp = (n) => 'Rp ' + Number(n || 0).toLocaleString('id-ID');
-                  const rawYt = ft7.youtubeUrl || '';
+                  const rawYt = ft7.youtubeUrl || ft7.youtube_url || ft7.video_url || '';
+                  const ftVideoTitle = ft7.videoTitle || ft7.video_title || '';
                   const ytMatch = String(rawYt).match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|shorts\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
                   const ytId = ytMatch ? ytMatch[1] : '';
                   const videoSrc = (!ytId && ft7.videoUrl) ? '../' + String(ft7.videoUrl).replace(/^\/+/, '') : '';
