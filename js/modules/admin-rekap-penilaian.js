@@ -32,6 +32,7 @@
     // Raw Server & Client Data
     serverStudents: {}, // nisn -> summary
     serverDays: {},     // `${nisn}_${day}` -> day record
+    serverFinalGrades: {}, // nisn -> student_final_grades row
     enrichedStudents: [],
     facilitatorStats: [],
     
@@ -170,9 +171,36 @@
       }
     });
 
-    Promise.all([pRecap, pMentorship]).then(([json, mentorData]) => {
+    const pFinalGrades = fetch(apiBase + '/settings.php?action=get_role_assignments&_t=' + Date.now(), { cache: 'no-store' })
+      .then(res => res.json())
+      .catch(() => null);
+
+    Promise.all([pRecap, pMentorship, pFinalGrades]).then(([json, mentorData, roleAssignData]) => {
       state.isLoading = false;
       updateSyncButtonState(false);
+
+      // Parse official final_grades from server + localStorage fallback
+      const fgMap = {};
+      const ingestFg = (arr) => {
+        if (!Array.isArray(arr)) return;
+        arr.forEach(g => {
+          if (!g || !g.student_nisn) return;
+          const rawN = String(g.student_nisn).trim();
+          const noZero = rawN.replace(/^0+/, '');
+          const pad10 = rawN.padStart(10, '0');
+          [rawN, noZero, pad10].filter(Boolean).forEach(k => { fgMap[k] = g; });
+        });
+      };
+      try {
+        if (window.FincestemCore && FincestemCore.assignments) {
+          const localA = FincestemCore.assignments.getLocalAssignments();
+          if (localA && localA.final_grades) ingestFg(localA.final_grades);
+        }
+      } catch (eLoc) {}
+      if (roleAssignData && roleAssignData.success && roleAssignData.data && Array.isArray(roleAssignData.data.final_grades)) {
+        ingestFg(roleAssignData.data.final_grades);
+      }
+      state.serverFinalGrades = fgMap;
 
       if (json && json.success && json.data) {
         const sMap = {};
@@ -365,34 +393,65 @@
         };
       }
 
-      // Rapor Akhir Day 7
+      // Rapor Akhir: Prioritaskan Penetapan Resmi Fasilitator (student_final_grades / 7_final), lalu Day 7, lalu estimasi
       const day7 = days[7];
+      const fgRec = state.serverFinalGrades[nisn] ||
+                    state.serverFinalGrades[nisn.replace(/^0+/, '')] ||
+                    state.serverFinalGrades[nisn.padStart(10, '0')] ||
+                    null;
+
+      const isFT = (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function')
+        ? FincestemCore.zones.isFieldTripStudent(nisn, st.class_name || st.class || st.kelas, st.zone)
+        : ((st.category || st.zone || '').toUpperCase().includes('LUAR') || (st.category || '').toUpperCase().includes('FIELD_TRIP') || st.is_field_trip === true);
+
       let finalScore = null;
       let finalPred = null;
+      let finalNotes = '';
+      let finalSource = 'pending';
       let finScore = null;
       let culScore = null;
       let expScore = null;
       let stemScore = null;
 
-      if (day7 && day7.status === 'graded') {
-        finalScore = day7.score;
-        finalPred = day7.predicate;
-        if (day7.record) {
-          finScore = day7.record.fin !== null ? parseFloat(day7.record.fin) : finalScore;
-          culScore = day7.record.cul !== null ? parseFloat(day7.record.cul) : finalScore;
-          expScore = day7.record.exp !== null ? parseFloat(day7.record.exp) : finalScore;
-          stemScore = day7.record.stem !== null ? parseFloat(day7.record.stem) : finalScore;
-        }
-      } else if (st.category === 'FIELD_TRIP' && totalGradedDays >= 7) {
-        // Field Trip auto calc jika tuntas
-        finalScore = 95.0;
-        finalPred = 'Mahir';
-        finScore = 95; culScore = 95; expScore = 95; stemScore = 95;
+      if (day7 && day7.record) {
+        if (day7.record.fin !== null && day7.record.fin !== undefined && day7.record.fin !== '') finScore = parseFloat(day7.record.fin);
+        if (day7.record.cul !== null && day7.record.cul !== undefined && day7.record.cul !== '') culScore = parseFloat(day7.record.cul);
+        if (day7.record.exp !== null && day7.record.exp !== undefined && day7.record.exp !== '') expScore = parseFloat(day7.record.exp);
+        if (day7.record.stem !== null && day7.record.stem !== undefined && day7.record.stem !== '') stemScore = parseFloat(day7.record.stem);
       }
 
-      const isFT = (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function')
-        ? FincestemCore.zones.isFieldTripStudent(nisn, st.class_name || st.class || st.kelas, st.zone)
-        : ((st.category || st.zone || '').toUpperCase().includes('LUAR') || (st.category || '').toUpperCase().includes('FIELD_TRIP') || st.is_field_trip === true);
+      if (fgRec && fgRec.final_score !== null && fgRec.final_score !== undefined && fgRec.final_score !== '') {
+        finalScore = parseFloat(fgRec.final_score);
+        const rawP = String(fgRec.final_predicate || '').trim();
+        finalPred = rawP || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+        finalNotes = fgRec.notes || '';
+        finalSource = 'fasil_final';
+        if (finScore === null) finScore = finalScore;
+        if (culScore === null) culScore = finalScore;
+        if (expScore === null) expScore = finalScore;
+        if (stemScore === null) stemScore = finalScore;
+      } else if (day7 && day7.status === 'graded' && day7.score !== null) {
+        finalScore = day7.score;
+        finalPred = day7.predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+        finalSource = 'day7';
+        if (finScore === null) finScore = finalScore;
+        if (culScore === null) culScore = finalScore;
+        if (expScore === null) expScore = finalScore;
+        if (stemScore === null) stemScore = finalScore;
+      } else if (srvSumm && srvSumm.final_score !== null && srvSumm.final_score !== undefined && srvSumm.final_score !== '') {
+        finalScore = parseFloat(srvSumm.final_score);
+        finalPred = srvSumm.final_predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+        finalSource = 'fasil_final';
+        if (finScore === null) finScore = finalScore;
+        if (culScore === null) culScore = finalScore;
+        if (expScore === null) expScore = finalScore;
+        if (stemScore === null) stemScore = finalScore;
+      } else if (isFT && totalGradedDays >= 7) {
+        finalScore = 95.0;
+        finalPred = 'Mahir';
+        finalSource = 'system_ft';
+        finScore = 95; culScore = 95; expScore = 95; stemScore = 95;
+      }
 
       return {
         nisn: nisn,
@@ -409,6 +468,8 @@
         days: days,
         finalScore: finalScore,
         finalPred: finalPred,
+        finalNotes: finalNotes,
+        finalSource: finalSource,
         finScore: finScore,
         culScore: culScore,
         expScore: expScore,
@@ -1130,7 +1191,31 @@
     if (elM) elM.textContent = `${countMahir} Mahir`;
     if (elC) elC.textContent = `${countCakap} Cakap`;
     if (elB) elB.textContent = `${countBerkembang} Berkembang`;
-    if (elPending) elPending.textContent = `${countBelum} Menunggu Day 7`;
+    if (elPending) elPending.textContent = `${countBelum} Belum Dinilai`;
+
+    // Update Executive Summary Bar & Per-Class Download Label
+    const totalFiltered = list.length;
+    const readyCount = countMahir + countCakap + countBerkembang;
+    const readyPct = totalFiltered > 0 ? Math.round((readyCount / totalFiltered) * 100) : 0;
+
+    const elTot = document.getElementById('lblRaporTotalFiltered');
+    const elReady = document.getElementById('lblRaporReadyFiltered');
+    const elPct = document.getElementById('lblRaporReadyPct');
+    const elBtnCsv = document.getElementById('lblBtnExportRaporCsv');
+
+    if (elTot) elTot.textContent = `${totalFiltered} Siswa`;
+    if (elReady) elReady.textContent = `${readyCount} Siswa (${countBelum} Menunggu)`;
+    if (elPct) elPct.textContent = `${readyPct}%`;
+    if (elBtnCsv) elBtnCsv.textContent = f.kelas !== 'ALL' ? `Download Excel (Kelas ${f.kelas})` : 'Download Excel (Semua Kelas)';
+
+    const setBar = (id, count) => {
+      const el = document.getElementById(id);
+      if (el) el.style.width = (totalFiltered > 0 ? ((count / totalFiltered) * 100).toFixed(1) : 0) + '%';
+    };
+    setBar('barRaporMahir', countMahir);
+    setBar('barRaporCakap', countCakap);
+    setBar('barRaporBerkembang', countBerkembang);
+    setBar('barRaporPending', countBelum);
 
     // Pagination
     const totalItems = list.length;
@@ -1165,44 +1250,57 @@
       // Predikat Badge
       let predBadge = '';
       if (st.finalPred === 'Mahir') {
-        predBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-500 text-white shadow-2xs">Mahir</span>`;
+        predBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-emerald-500 text-white shadow-2xs">🏆 Mahir</span>`;
       } else if (st.finalPred === 'Cakap') {
-        predBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-sky-500 text-white shadow-2xs">Cakap</span>`;
+        predBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-sky-500 text-white shadow-2xs">🌟 Cakap</span>`;
       } else if (st.finalPred === 'Berkembang') {
-        predBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-500 text-white shadow-2xs">Berkembang</span>`;
+        predBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-black bg-amber-500 text-white shadow-2xs">🌱 Berkembang</span>`;
       } else {
-        predBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-400 border border-slate-200">Menunggu Day 7</span>`;
+        predBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-slate-100 text-slate-400 border border-slate-200">⏳ Belum Dinilai</span>`;
       }
+
+      const jalurBadge = st.category === 'FIELD_TRIP'
+        ? `<span class="inline-block px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-bold text-[9.5px] border border-amber-200">🚌 Field Trip</span>`
+        : `<span class="inline-block px-1.5 py-0.5 rounded bg-teal-100 text-teal-800 font-bold text-[9.5px] border border-teal-200">🏫 Non-FT</span>`;
+
+      const sourceTag = st.finalSource === 'fasil_final'
+        ? `<div class="text-[9.5px] font-bold text-emerald-700 mt-0.5">✓ Disahkan Fasil</div>`
+        : (st.finalSource === 'day7'
+            ? `<div class="text-[9.5px] font-semibold text-sky-700 mt-0.5">Evaluasi Day 7</div>`
+            : (st.finalSource === 'system_ft' ? `<div class="text-[9.5px] font-semibold text-amber-700 mt-0.5">Otomatis FT</div>` : ''));
 
       html += `
         <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition-colors">
-          <td class="px-4 py-3 text-center text-xs font-semibold text-slate-500">${rowNum}</td>
-          <td class="px-4 py-3">
+          <td class="px-3 py-3 text-center text-xs font-semibold text-slate-500">${rowNum}</td>
+          <td class="px-3 py-3">
             <div class="font-bold text-slate-800 text-xs sm:text-sm leading-tight">${escapeHtml(st.name)}</div>
-            <div class="text-[11px] text-slate-400 font-mono">NISN: ${escapeHtml(st.nisn)}</div>
+            <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+              <span class="text-[10.5px] text-slate-400 font-mono">NISN: ${escapeHtml(st.nisn)}</span>
+              ${jalurBadge}
+            </div>
           </td>
-          <td class="px-4 py-3 text-xs font-bold text-slate-700">
+          <td class="px-3 py-3 text-xs font-bold text-slate-700 whitespace-nowrap">
             ${escapeHtml(st.className)}
           </td>
-          <td class="px-4 py-3 text-xs text-slate-700 font-medium max-w-xs truncate">
+          <td class="px-3 py-3 text-xs text-slate-700 font-medium max-w-xs truncate">
             ${escapeHtml(st.mentorName)}
           </td>
-          <td class="px-4 py-3 text-center font-bold text-xs text-emerald-700">
+          <td class="px-3 py-3 text-center font-bold text-xs text-emerald-700">
             ${st.finScore !== null ? st.finScore : '-'}
           </td>
-          <td class="px-4 py-3 text-center font-bold text-xs text-indigo-700">
+          <td class="px-3 py-3 text-center font-bold text-xs text-indigo-700">
             ${st.culScore !== null ? st.culScore : '-'}
           </td>
-          <td class="px-4 py-3 text-center font-bold text-xs text-amber-700">
+          <td class="px-3 py-3 text-center font-bold text-xs text-amber-700">
             ${st.expScore !== null ? st.expScore : '-'}
           </td>
-          <td class="px-4 py-3 text-center font-bold text-xs text-cyan-700">
+          <td class="px-3 py-3 text-center font-bold text-xs text-cyan-700">
             ${st.stemScore !== null ? st.stemScore : '-'}
           </td>
-          <td class="px-4 py-3 text-center">
-            ${st.finalScore !== null ? `<span class="font-black text-sm text-[#0875D1]">${st.finalScore}</span>` : '<span class="text-slate-400 text-xs">-</span>'}
+          <td class="px-3 py-3 text-center">
+            ${st.finalScore !== null ? `<span class="font-black text-sm text-[#0875D1]">${st.finalScore}</span>${sourceTag}` : '<span class="text-slate-400 text-xs">-</span>'}
           </td>
-          <td class="px-4 py-3 text-center">
+          <td class="px-3 py-3 text-center">
             ${predBadge}
           </td>
         </tr>
@@ -1369,9 +1467,10 @@
     }
 
     let csv = '\uFEFF'; // UTF-8 BOM agar Excel membaca rapi tanpa error encoding
-    csv += 'No,NISN,Nama Siswa,Kelas,Jalur,Guru Fasilitator,Skor Finansial,Skor Budaya,Skor Eksplorasi,Skor STEM,Nilai Akhir Rapor,Predikat Rapor\n';
+    csv += 'No,NISN,Nama Siswa,Kelas,Jalur,Guru Fasilitator,Skor Finansial,Skor Budaya,Skor Eksplorasi,Skor STEM,Nilai Akhir Rapor,Predikat Rapor,Status Pengesahan,Narasi Rapor\n';
 
     list.forEach((st, idx) => {
+      const statusTxt = st.finalSource === 'fasil_final' ? 'Disahkan Fasilitator' : (st.finalSource === 'day7' ? 'Evaluasi Day 7' : (st.finalSource === 'system_ft' ? 'Otomatis FT' : 'Belum Dinilai'));
       const row = [
         idx + 1,
         `"${st.nisn}"`,
@@ -1384,7 +1483,9 @@
         st.expScore !== null ? st.expScore : '',
         st.stemScore !== null ? st.stemScore : '',
         st.finalScore !== null ? st.finalScore : '',
-        `"${st.finalPred || 'Belum Ada'}"`
+        `"${st.finalPred || 'Belum Ada'}"`,
+        `"${statusTxt}"`,
+        `"${(st.finalNotes || '').replace(/"/g, '""').replace(/\r?\n/g, ' ')}"`
       ];
       csv += row.join(',') + '\n';
     });
