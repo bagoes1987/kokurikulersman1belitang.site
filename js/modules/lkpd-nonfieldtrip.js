@@ -6905,7 +6905,7 @@
     const formData = saved || draft;
     const isSubmitted = !!(saved && (saved.submitted || saved.submittedAt));
     const isTesterBypass = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn));
-    const isLockedByPrereq = !hasMateri && !isTesterBypass;
+    const isLockedByPrereq = false; // Seluruh Day Non-Field Trip terbuka agar siswa yang belum selesai dapat langsung mengerjakan
     const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
     const readOnlyAttr = isFormLocked ? 'disabled' : '';
     const draftTimeStr = (draft && draft.updatedAt) 
