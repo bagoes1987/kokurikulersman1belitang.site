@@ -4684,59 +4684,9 @@ const FincestemCore = {
       const sched = (daysSchedule || []).find(s => parseInt(s.day_number) === d);
       const isOpenByAdmin = sched ? Boolean(sched.is_open) : true;
 
-      // Day 0 (Trial / Gladi)
-      if (d === 0) {
-        const isAct = sched ? (Number(sched.is_active) === 1 && Boolean(sched.is_open)) : true;
-        return {
-          canAccess: isAct,
-          canEdit: isAct,
-          isOpen: isAct,
-          isPreviousCompleted: true,
-          reason: isAct ? '' : 'Aktivitas Day 0 (Simulasi) sedang ditutup oleh Admin.'
-        };
-      }
-
-      let isFt = false;
-      try {
-        const user = FincestemCore.auth.getUser() || {};
-        const studentZone = (FincestemCore.zones && FincestemCore.zones.getStudentZone)
-          ? FincestemCore.zones.getStudentZone(user.nisn || user.identifier, user.class || user.class_name, user.zone)
-          : (user.zone || '');
-        const zUpper = (studentZone || '').toUpperCase();
-        if (zUpper.includes('LUAR') || zUpper.includes('FIELD') || zUpper.includes('TRIP')) {
-          isFt = true;
-        }
-      } catch (e) {}
-
-      // 1. SISWA FIELD TRIP:
-      // Day 1 s.d. Day 6 langsung terbuka penuh untuk semua siswa tanpa harus menunggu jadwal/penilaian fasilitator / tugas hari sebelumnya
-      if (isFt) {
-        if (d === 6) {
-          return {
-            canAccess: true,
-            canEdit: true,
-            isOpen: true,
-            isPreviousCompleted: true,
-            reason: ''
-          };
-        }
-        const prevDone = (d <= 7) || this.isDayStudentTasksDone(prog, d - 1) || this.isDayCompleted(prog, d - 1);
-        const canOpen = isOpenByAdmin && prevDone;
-        return {
-          canAccess: canOpen,
-          canEdit: canOpen,
-          isOpen: isOpenByAdmin,
-          isPreviousCompleted: prevDone,
-          reason: !isOpenByAdmin 
-            ? (sched ? sched.status_label : 'Aktivitas Day ' + d + ' belum dibuka sesuai jadwal resmi.') 
-            : (prevDone ? '' : `Harap selesaikan seluruh aktivitas pengerjaan pada Day ${d - 1} terlebih dahulu.`)
-        };
-      }
-
-      // 2. SISWA NON-FIELD TRIP:
-      // Day 0 s.d. Day 6: Seluruh menu terbuka penuh (Modul, LKPD, Dokumentasi, Asesmen, Refleksi)
-      // Siswa tidak diblokir oleh jadwal admin, hari sebelumnya, ataupun penilaian fasilitator
-      if (d <= 6) {
+      // Day 0 s.d. Day 7 (Field Trip & Non-Field Trip):
+      // Seluruh hari dan seluruh menu terbuka penuh agar semua siswa dapat menyelesaikan tugas
+      if (d >= 0 && d <= 7) {
         return {
           canAccess: true,
           canEdit: true,

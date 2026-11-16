@@ -7122,8 +7122,8 @@
     function saveStudentNote(dayNumber, type) {
       const dNum = Number(dayNumber);
       const access = FincestemCore.progress.canAccessDay(dayNumber, studentProgress, daysSchedule);
-      // Siswa Day 0 s.d. Day 6 selalu diizinkan mengirim dan menyimpan tugas (tidak diblokir oleh canEdit)
-      if (!access.canEdit && dNum > 6) {
+      // Siswa Day 0 s.d. Day 7 selalu diizinkan mengirim dan menyimpan tugas (tidak diblokir oleh canEdit)
+      if (!access.canEdit && dNum > 7) {
         FincestemCore.ui.toast(`Aktivitas Day ${dayNumber} sedang ditutup oleh Admin. Tidak dapat mengirim data.`, 'error');
         return;
       }
