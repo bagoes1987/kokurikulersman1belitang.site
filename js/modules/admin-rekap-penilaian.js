@@ -431,10 +431,21 @@
         if (day7.record.stem !== null && day7.record.stem !== undefined && day7.record.stem !== '') stemScore = parseFloat(day7.record.stem);
       }
 
+      const toRaporPred = (sc, rawP) => {
+        if (sc !== null && sc !== undefined && !isNaN(sc)) {
+          const n = parseFloat(sc);
+          return n >= 85 ? 'Mahir' : (n >= 70 ? 'Cakap' : 'Berkembang');
+        }
+        const p = String(rawP || '').trim().toLowerCase();
+        if (p === 'mahir' || p === 'sangat baik') return 'Mahir';
+        if (p === 'cakap' || p === 'baik') return 'Cakap';
+        if (p === 'berkembang' || p === 'cukup' || p.includes('bimbingan') || p.includes('perlu')) return 'Berkembang';
+        return null;
+      };
+
       if (fgRec && fgRec.final_score !== null && fgRec.final_score !== undefined && fgRec.final_score !== '') {
         finalScore = parseFloat(fgRec.final_score);
-        const rawP = String(fgRec.final_predicate || '').trim();
-        finalPred = rawP || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+        finalPred = toRaporPred(finalScore, fgRec.final_predicate);
         finalNotes = fgRec.notes || '';
         finalSource = 'fasil_final';
         if (finScore === null) finScore = finalScore;
@@ -443,7 +454,7 @@
         if (stemScore === null) stemScore = finalScore;
       } else if (day7 && day7.status === 'graded' && day7.score !== null) {
         finalScore = day7.score;
-        finalPred = day7.predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+        finalPred = toRaporPred(finalScore, day7.predicate);
         finalSource = 'day7';
         if (finScore === null) finScore = finalScore;
         if (culScore === null) culScore = finalScore;
@@ -451,7 +462,7 @@
         if (stemScore === null) stemScore = finalScore;
       } else if (srvSumm && srvSumm.final_score !== null && srvSumm.final_score !== undefined && srvSumm.final_score !== '') {
         finalScore = parseFloat(srvSumm.final_score);
-        finalPred = srvSumm.final_predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+        finalPred = toRaporPred(finalScore, srvSumm.final_predicate);
         finalSource = 'fasil_final';
         if (finScore === null) finScore = finalScore;
         if (culScore === null) culScore = finalScore;

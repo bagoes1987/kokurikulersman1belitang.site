@@ -173,11 +173,23 @@
       let expScore = null;
       let stemScore = null;
 
+      const toRaporPred = (sc, rawP) => {
+        if (sc !== null && sc !== undefined && !isNaN(sc)) {
+          const n = parseFloat(sc);
+          return n >= 85 ? 'Mahir' : (n >= 70 ? 'Cakap' : 'Berkembang');
+        }
+        const p = String(rawP || '').trim().toLowerCase();
+        if (p === 'mahir' || p === 'sangat baik') return 'Mahir';
+        if (p === 'cakap' || p === 'baik') return 'Cakap';
+        if (p === 'berkembang' || p === 'cukup' || p.includes('bimbingan') || p.includes('perlu')) return 'Berkembang';
+        return null;
+      };
+
       if (prog && prog.records) {
         const d7 = prog.records.find(r => parseInt(r.day_number) === 7 && (r.task_type === 'final' || r.task_type === 'general' || r.score));
         if (d7 && d7.score !== null && d7.score !== undefined && d7.score !== '') {
           finalScore = parseFloat(d7.score);
-          finalPred = d7.predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+          finalPred = toRaporPred(finalScore, d7.predicate);
           finScore = d7.score_financial !== null ? parseFloat(d7.score_financial) : finalScore;
           culScore = d7.score_culture !== null ? parseFloat(d7.score_culture) : finalScore;
           expScore = d7.score_exploration !== null ? parseFloat(d7.score_exploration) : finalScore;
@@ -204,10 +216,10 @@
       if (sDay4 && sDay4.score && expScore === null) expScore = parseFloat(sDay4.score);
       if (sDay7 && sDay7.score && finalScore === null) {
         finalScore = parseFloat(sDay7.score);
-        finalPred = sDay7.predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+        finalPred = toRaporPred(finalScore, sDay7.predicate);
       } else if (sSum && sSum.avg_score && finalScore === null) {
         finalScore = Math.round(parseFloat(sSum.avg_score) * 10) / 10;
-        finalPred = sSum.day7_predicate || (finalScore >= 85 ? 'Mahir' : (finalScore >= 70 ? 'Cakap' : 'Berkembang'));
+        finalPred = toRaporPred(finalScore, sSum.day7_predicate);
       }
 
       if (finalPred === 'Mahir') countMahir++;
