@@ -4465,7 +4465,11 @@
       const access = FincestemCore.progress.canAccessDay(dNum, studentProgress, daysSchedule);
 
       if (dNum >= 0 && dNum <= 7) {
-        // Seluruh Day (Day 0 s.d. 7) Field Trip & Non-Field Trip selalu dapat diakses langsung tanpa terblokir
+        // Seluruh Day (Day 0 s.d. 7) Field Trip & Non-Field Trip selalu dapat diakses dan diedit langsung tanpa mode readonly
+        access.canAccess = true;
+        access.canEdit = true;
+        access.isOpen = true;
+        access.isPreviousCompleted = true;
       } else if (!access.canAccess) {
         FincestemCore.ui.toast(access.reason || `Aktivitas Day ${dayNumber} belum dapat diakses! Harap selesaikan seluruh 5 tugas mandiri pada Day ${dNum - 1} terlebih dahulu.`, 'error');
         return;
