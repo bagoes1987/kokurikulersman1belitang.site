@@ -985,7 +985,7 @@
 
             // Validasi alur berurutan khusus Day 1 s.d. 7 Field Trip
             const isTesterDok = (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(nisn));
-            if (!isTesterDok && studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
+            if (false && !isTesterDok && studentCategory.isFieldTrip && (dayNum >= 1 && dayNum <= 7)) {
               const ids = [nisn, String(nisn).trim(), String(nisn).trim().replace(/^0+/, ''), user.nis, user.identifier].filter(Boolean);
 
               if (dayNum === 2) {

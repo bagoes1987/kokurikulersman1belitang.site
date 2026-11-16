@@ -166,7 +166,7 @@
 
       const isSubmitted = saved && saved.submitted;
       const isTesterFt1 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
-      const isLockedByPrereq = !hasMateri && !isTesterFt1;
+      const isLockedByPrereq = false;
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
@@ -3361,7 +3361,7 @@
 
       const isSubmitted = !!(saved && saved.submitted);
       const isTesterFt4 = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
-      const isLockedByPrereq = !hasMateri && !isTesterFt4;
+      const isLockedByPrereq = false;
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
@@ -5898,7 +5898,7 @@
 
       const isSubmitted = saved && saved.submitted;
       const isTesterFtGen = !!((u && u.is_tester) || (localStorage.getItem('fincestem_admin_testing_session') === 'true') || (window.FincestemCore && FincestemCore.schedule && typeof FincestemCore.schedule.isTesterStudent === 'function' && FincestemCore.schedule.isTesterStudent(cleanNisn)));
-      const isLockedByPrereq = !hasMateri && !isTesterFtGen;
+      const isLockedByPrereq = false;
       const isFormLocked = isReadOnly || isLockedByPrereq || isSubmitted;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
@@ -6884,7 +6884,7 @@
       }
       saved = saved || {};
       const isSubmitted = !!(saved.submitted || saved.is_submitted || saved.submitted_at);
-      const isLockedByPrereq = (!hasMateri && !isSubmitted && !isTester);
+      const isLockedByPrereq = false;
       const isFormLocked = isReadOnly || isSubmitted || isLockedByPrereq;
       const readOnlyAttr = isFormLocked ? 'disabled' : '';
 
