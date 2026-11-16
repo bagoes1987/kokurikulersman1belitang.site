@@ -7541,16 +7541,18 @@
         }
         const idList = getStudentStorageIdentifiers();
         idList.forEach(id => {
-          if (isFieldTrip) {
-            localStorage.setItem(`fincestem_refleksi_ft_day${dayNumber}_` + id, JSON.stringify(refleksiPayload));
-            if (Number(dayNumber) === 5) {
-              localStorage.setItem('fincestem_refleksi_ft_day5_prambanan_' + id, JSON.stringify(refleksiPayload));
-              localStorage.setItem('fincestem_refleksi_ft_day5_batik_' + id, JSON.stringify(refleksiPayload));
+          try {
+            if (isFieldTrip) {
+              localStorage.setItem(`fincestem_refleksi_ft_day${dayNumber}_` + id, JSON.stringify(refleksiPayload));
+              if (Number(dayNumber) === 5) {
+                localStorage.setItem('fincestem_refleksi_ft_day5_prambanan_' + id, JSON.stringify(refleksiPayload));
+                localStorage.setItem('fincestem_refleksi_ft_day5_batik_' + id, JSON.stringify(refleksiPayload));
+              }
+            } else {
+              localStorage.setItem(`fincestem_refleksi_nft_day${dayNumber}_` + id, JSON.stringify(refleksiPayload));
+              localStorage.setItem(`fincestem_refleksi_day${dayNumber}_` + id, JSON.stringify(refleksiPayload));
             }
-          } else {
-            localStorage.setItem(`fincestem_refleksi_nft_day${dayNumber}_` + id, JSON.stringify(refleksiPayload));
-            localStorage.setItem(`fincestem_refleksi_day${dayNumber}_` + id, JSON.stringify(refleksiPayload));
-          }
+          } catch (eQuota) {}
         });
         if (studentProgress && studentProgress.task_map) {
           studentProgress.task_map[`${dayNumber}_refleksi`] = { status: 'submitted', content: note };
