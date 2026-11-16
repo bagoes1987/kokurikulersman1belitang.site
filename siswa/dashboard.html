@@ -2015,7 +2015,18 @@
       const statVBadge = document.getElementById('statVerificationBadge');
 
       if (statAvgEl && statPredEl && statVBadge) {
-        if (isFieldTrip) {
+        const day7EvalHeader = taskMap['7_final'] || taskMap['7_general'] || records.find(r => Number(r.day_number) === 7 && r.score !== null && r.score !== undefined && r.score !== '');
+        const hasOfficialFinalHeader = !!(taskMap['7_final'] && taskMap['7_final'].score !== null && taskMap['7_final'].score !== undefined && taskMap['7_final'].score !== '');
+
+        if (hasOfficialFinalHeader) {
+          const sc = parseFloat(taskMap['7_final'].score);
+          const rawPr = taskMap['7_final'].predicate ? taskMap['7_final'].predicate.toUpperCase().replace(/\s*\(.*\)/, '').trim() : '';
+          const pr = rawPr || (sc >= 85 ? 'MAHIR' : (sc >= 70 ? 'CAKAP' : 'BERKEMBANG'));
+          statAvgEl.textContent = sc;
+          statPredEl.textContent = '• ' + pr;
+          statVBadge.className = 'px-2 py-0.5 rounded-lg text-[10.5px] font-extrabold bg-emerald-100 text-emerald-800 shadow-2xs';
+          statVBadge.textContent = 'Disahkan Fasilitator';
+        } else if (isFieldTrip) {
           if (allDaysDone) {
             statAvgEl.textContent = avgScore;
             statPredEl.textContent = `• ${category}`;
@@ -2034,12 +2045,11 @@
           }
         } else {
           // Siswa Non-Field Trip: Rapor HANYA tampil jika Day 7 telah resmi dievaluasi oleh Guru Fasilitator
-          const day7Eval = taskMap['7_final'] || taskMap['7_general'] || records.find(r => Number(r.day_number) === 7 && r.score !== null && r.score !== undefined && r.score !== '');
-          const hasOfficialDay7 = !!(day7Eval && day7Eval.score !== null && day7Eval.score !== undefined && day7Eval.score !== '');
+          const hasOfficialDay7 = !!(day7EvalHeader && day7EvalHeader.score !== null && day7EvalHeader.score !== undefined && day7EvalHeader.score !== '');
 
           if (hasOfficialDay7) {
-            const sc = parseFloat(day7Eval.score);
-            const rawPr = day7Eval.predicate ? day7Eval.predicate.toUpperCase().replace(/\s*\(.*\)/, '').trim() : '';
+            const sc = parseFloat(day7EvalHeader.score);
+            const rawPr = day7EvalHeader.predicate ? day7EvalHeader.predicate.toUpperCase().replace(/\s*\(.*\)/, '').trim() : '';
             const pr = rawPr || (sc >= 85 ? 'MAHIR' : (sc >= 70 ? 'CAKAP' : 'BERKEMBANG'));
             statAvgEl.textContent = sc;
             statPredEl.textContent = '• ' + pr;
@@ -2249,7 +2259,9 @@
         // KONDISI 2: DAY 1 S.D. 7 SUDAH SELESAI (NILAI RAPOR AKHIR RESMI / ESTIMASI)
         // =========================================================================
         const activePred = hasOfficialDay7 ? finalReportPred : category;
-        const narrasi = NARRASI_RAPOR[activePred] || NARRASI_RAPOR.CAKAP;
+        const customFasilNotes = (day7Eval && (day7Eval.notes || day7Eval.content)) ? String(day7Eval.notes || day7Eval.content).trim() : '';
+        const narrasi = customFasilNotes || NARRASI_RAPOR[activePred] || NARRASI_RAPOR.CAKAP;
+        const hasFasilFinalOverride = !!(taskMap['7_final'] && taskMap['7_final'].score !== null && taskMap['7_final'].score !== undefined && taskMap['7_final'].score !== '');
         const isFasilValidated = (!isFieldTrip && (hasOfficialDay7 || (prog.average_score && prog.predicate)));
 
         // Buka accordion otomatis HANYA jika Field Trip atau Non-Field Trip sudah resmi dinilai Day 7
@@ -2260,37 +2272,43 @@
         }
 
         if (isFieldTrip) {
-          // --- SISWA FIELD TRIP (OTOMATIS KELUAR RESMI) ---
+          // --- SISWA FIELD TRIP (TERINTEGRASI DENGAN PENETAPAN NILAI AKHIR FASILITATOR) ---
+          const ftDisplayScore = hasFasilFinalOverride ? finalReportScore : avgScore;
+          const ftDisplayStars = hasFasilFinalOverride ? finalReportStars : totalStars;
+          const ftDisplayPred = hasFasilFinalOverride ? finalReportPred : category;
+          const ftDisplayNarrasi = hasFasilFinalOverride ? narrasi : (NARRASI_RAPOR[ftDisplayPred] || NARRASI_RAPOR.CAKAP);
           if (subTitleEl) {
-            subTitleEl.textContent = 'Field Trip • Nilai Rapor Akhir Terverifikasi Otomatis';
+            subTitleEl.textContent = hasFasilFinalOverride
+              ? 'Field Trip • Nilai Rapor Resmi Disahkan Fasilitator'
+              : 'Field Trip • Nilai Rapor Akhir Terverifikasi Otomatis';
           }
           if (badgeEl) {
             badgeEl.className = 'text-xs font-black text-white bg-emerald-600 px-3 py-1 rounded-full shadow-2xs flex items-center gap-1.5';
             badgeEl.innerHTML = `
               <span class="material-symbols-outlined text-sm">verified</span>
-              <span>Nilai Rapor Resmi (Terverifikasi Sistem)</span>
+              <span>${hasFasilFinalOverride ? 'Nilai Rapor Resmi (Disahkan Fasilitator)' : 'Nilai Rapor Resmi (Terverifikasi Sistem)'}</span>
             `;
           }
 
           if (bodyEl) {
             bodyEl.innerHTML = `
               <!-- Banner Predikat Rapor Mahir/Cakap/Berkembang -->
-              <div class="p-4 rounded-2xl ${category === 'MAHIR' ? 'bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-transparent border-amber-300 text-amber-950' : (category === 'CAKAP' ? 'bg-gradient-to-r from-emerald-500/20 via-emerald-400/10 to-transparent border-emerald-300 text-emerald-950' : 'bg-gradient-to-r from-blue-500/20 via-blue-400/10 to-transparent border-blue-300 text-blue-950')} border flex items-center justify-between gap-3 flex-wrap shadow-2xs">
+              <div class="p-4 rounded-2xl ${ftDisplayPred === 'MAHIR' ? 'bg-gradient-to-r from-amber-500/20 via-amber-400/10 to-transparent border-amber-300 text-amber-950' : (ftDisplayPred === 'CAKAP' ? 'bg-gradient-to-r from-emerald-500/20 via-emerald-400/10 to-transparent border-emerald-300 text-emerald-950' : 'bg-gradient-to-r from-blue-500/20 via-blue-400/10 to-transparent border-blue-300 text-blue-950')} border flex items-center justify-between gap-3 flex-wrap shadow-2xs">
                 <div class="flex items-center gap-3">
-                  <span class="text-3xl">${category === 'MAHIR' ? '🏆' : (category === 'CAKAP' ? '🌟' : '🌱')}</span>
+                  <span class="text-3xl">${ftDisplayPred === 'MAHIR' ? '🏆' : (ftDisplayPred === 'CAKAP' ? '🌟' : '🌱')}</span>
                   <div class="flex flex-col">
-                    <span class="text-[11px] font-black uppercase tracking-wider ${category === 'MAHIR' ? 'text-amber-800' : (category === 'CAKAP' ? 'text-emerald-800' : 'text-blue-800')}">Predikat Rapor Kokurikuler</span>
-                    <h4 class="text-xl sm:text-2xl font-black leading-tight">${category}</h4>
+                    <span class="text-[11px] font-black uppercase tracking-wider ${ftDisplayPred === 'MAHIR' ? 'text-amber-800' : (ftDisplayPred === 'CAKAP' ? 'text-emerald-800' : 'text-blue-800')}">Predikat Rapor Kokurikuler</span>
+                    <h4 class="text-xl sm:text-2xl font-black leading-tight">${ftDisplayPred}</h4>
                   </div>
                 </div>
                 <div class="flex items-center gap-2">
                   <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200/80 text-center shadow-2xs">
                     <span class="block text-[10px] font-bold text-slate-500 uppercase">Total Bintang</span>
-                    <span class="text-sm font-black text-amber-600">⭐ ${totalStars} / 35</span>
+                    <span class="text-sm font-black text-amber-600">⭐ ${ftDisplayStars} / 35</span>
                   </div>
                   <div class="px-3 py-1.5 rounded-xl bg-white border border-slate-200/80 text-center shadow-2xs">
                     <span class="block text-[10px] font-bold text-slate-500 uppercase">Nilai Akhir</span>
-                    <span class="text-sm font-black text-slate-800">${avgScore}</span>
+                    <span class="text-sm font-black text-slate-800">${ftDisplayScore}</span>
                   </div>
                 </div>
               </div>
@@ -2302,7 +2320,7 @@
                   Deskripsi Capaian Rapor Kokurikuler (Profil Lulusan &amp; FINCESTEM)
                 </span>
                 <p class="text-[13px] sm:text-[13.5px] text-slate-800 leading-relaxed text-justify font-normal pt-1">
-                  ${narrasi}
+                  ${ftDisplayNarrasi}
                 </p>
               </div>
             `;

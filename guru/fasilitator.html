@@ -2859,21 +2859,23 @@
           badgeStatusText = 'Reviewed';
         }
 
-        // Hitung Nilai Akhir Rapor Siswa secara sinkron
+        // Hitung Nilai Akhir Rapor Siswa secara sinkron (prioritaskan hasil simpan/edit terbaru di final_grades)
         let studentFinalScore = stu.final_score;
         let studentFinalPred = stu.final_predicate;
-        if (!studentFinalScore) {
-          try {
-            const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
-            if (local && local.final_grades) {
-              const fg = local.final_grades.find(g => String(g.student_nisn).trim() === String(stu.nisn).trim());
-              if (fg && fg.final_score) {
-                studentFinalScore = fg.final_score;
-                studentFinalPred = fg.final_predicate;
-              }
+        try {
+          const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
+          if (local && local.final_grades) {
+            const cleanStuNisn = String(stu.nisn || '').trim().replace(/^0+/, '');
+            const fg = local.final_grades.find(g => {
+              const gn = String(g.student_nisn || '').trim();
+              return gn === String(stu.nisn || '').trim() || gn.replace(/^0+/, '') === cleanStuNisn;
+            });
+            if (fg && fg.final_score !== null && fg.final_score !== undefined && fg.final_score !== '') {
+              studentFinalScore = fg.final_score;
+              studentFinalPred = fg.final_predicate;
             }
-          } catch (e) {}
-        }
+          }
+        } catch (e) {}
         if (!studentFinalScore && (completedDays >= 7 || percentage >= 100)) {
           studentFinalScore = avgScore || 98.8;
         }
@@ -5316,23 +5318,25 @@
       let score = null;
       let notes = '';
 
-      // 1. Prioritas Utama: Nilai kalkulasi riil dari card siswa diteruskan langsung (garansi 100% sama persis dengan kartu rapor siswa)
-      if (calculatedFinalScore !== null && calculatedFinalScore !== undefined && !isNaN(calculatedFinalScore) && parseFloat(calculatedFinalScore) > 0) {
-        score = parseFloat(calculatedFinalScore);
-      }
-
-      // 2. Cek apakah sudah pernah disimpan manual oleh fasilitator di database/local final_grades
-      if (score === null || isNaN(score)) {
-        try {
-          const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
-          if (local && local.final_grades) {
-            const fg = local.final_grades.find(g => String(g.student_nisn).trim() === String(targetNisn).trim());
-            if (fg && fg.final_score !== null && fg.final_score !== undefined && fg.final_score !== '') {
-              score = parseFloat(fg.final_score);
-              notes = fg.notes || '';
-            }
+      // 1. Prioritas Utama: Cek apakah sudah pernah disimpan/diubah oleh fasilitator di database/local final_grades
+      try {
+        const local = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
+        if (local && local.final_grades) {
+          const cleanTarget = String(targetNisn || '').trim().replace(/^0+/, '');
+          const fg = local.final_grades.find(g => {
+            const gn = String(g.student_nisn || '').trim();
+            return gn === String(targetNisn || '').trim() || gn.replace(/^0+/, '') === cleanTarget;
+          });
+          if (fg && fg.final_score !== null && fg.final_score !== undefined && fg.final_score !== '') {
+            score = parseFloat(fg.final_score);
+            notes = fg.notes || '';
           }
-        } catch (e) {}
+        }
+      } catch (e) {}
+
+      // 2. Fallback: Nilai kalkulasi riil dari card siswa jika belum ada di final_grades
+      if ((score === null || isNaN(score)) && calculatedFinalScore !== null && calculatedFinalScore !== undefined && !isNaN(calculatedFinalScore) && parseFloat(calculatedFinalScore) > 0) {
+        score = parseFloat(calculatedFinalScore);
       }
 
       // 3. Jika belum tersimpan manual, hitung otomatis dari nilai riil tugas Day 1 - 7 siswa
@@ -5475,6 +5479,35 @@
 
       const user = FincestemCore.auth.getUser();
       const fasilUser = (user && user.username) || (user && user.nip) || '';
+      const fasilFullName = (typeof getFasilOfficialFullName === 'function') ? getFasilOfficialFullName() : ((user && user.name) || 'Guru Fasilitator');
+
+      // Perbarui cache in-memory siswa agar daftar langsung menampilkan nilai terbaru
+      try {
+        if (Array.isArray(assignedStudents)) {
+          const cleanT = String(targetNisn || '').trim().replace(/^0+/, '');
+          const sObj = assignedStudents.find(s => String(s.nisn || '').trim() === String(targetNisn || '').trim() || String(s.nisn || '').trim().replace(/^0+/, '') === cleanT);
+          if (sObj) {
+            sObj.final_score = score;
+            sObj.final_predicate = pred;
+            sObj.final_notes = notes;
+          }
+        }
+      } catch (eMem) {}
+
+      // Sinkronkan juga ke progress.php (task_type: 'final' pada Day 7) agar langsung terbaca di dashboard siswa (Field Trip & Non-Field Trip)
+      try {
+        if (FincestemCore.progress && typeof FincestemCore.progress.submitTask === 'function') {
+          FincestemCore.progress.submitTask(targetNisn, 7, 'final', {
+            score: score,
+            predicate: pred,
+            notes: notes,
+            content: notes,
+            facilitator_name: fasilFullName,
+            submitted: true,
+            updated_at: new Date().toISOString()
+          });
+        }
+      } catch (eProg) {}
 
       if (FincestemCore.assignments) {
         FincestemCore.assignments.saveFinalGrade({
