@@ -191,7 +191,7 @@
   </main>
 
   <script src="../js/siswa_data.js?v=20261109_riky_xii4"></script>
-  <script src="../js/core.js?v=20261108_smart_devlock_v3"></script>
+  <script src="../js/core.js?v=20261116_unlock_all_v2"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       if (FincestemCore.auth.isLoggedIn() && FincestemCore.auth.getRole() === 'siswa') {
@@ -261,12 +261,25 @@
 
       // 2. Jika online, daftarkan / validasi Single Device Lock
       if (window.location.protocol.startsWith('http')) {
-        const deviceId = FincestemCore.auth.getDeviceId();
-        const deviceInfo = FincestemCore.auth.getDeviceInfo();
+        let deviceId = 'dev_fallback';
+        let deviceInfo = 'Browser';
+        try {
+          deviceId = FincestemCore.auth.getDeviceId();
+          deviceInfo = FincestemCore.auth.getDeviceInfo();
+        } catch (eDev) {}
 
-        // Gunakan timeout 4 detik agar HP tidak pernah macet/hang jika koneksi lambat
+        let finished = false;
+        const goDashboard = function() {
+          if (finished) return;
+          finished = true;
+          FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
+          window.location.replace('dashboard.html?_v=' + Date.now());
+        };
+
+        // Jaminan mutlak: maksimal 4.5 detik, tidak pernah macet di "Memverifikasi Perangkat & Akun..."
+        const hardFallback = setTimeout(goDashboard, 4500);
         const controller = (typeof AbortController !== 'undefined') ? new AbortController() : null;
-        const fetchTimeout = controller ? setTimeout(() => controller.abort(), 4000) : null;
+        const fetchTimeout = controller ? setTimeout(() => { try { controller.abort(); } catch(e){} }, 4000) : null;
 
         fetch(FincestemCore.api.base + '/auth.php?action=login', {
           method: 'POST',
@@ -283,16 +296,21 @@
         .then(r => r.json())
         .then(apiRes => {
           if (fetchTimeout) clearTimeout(fetchTimeout);
-          if (!apiRes.success && apiRes.data && apiRes.data.error_code === 'DEVICE_LOCKED') {
-            // Jika perangkat terkunci di HP lain, batalkan sesi dan tolak
+          clearTimeout(hardFallback);
+          if (finished) return;
+
+          if (apiRes && !apiRes.success && apiRes.data && apiRes.data.error_code === 'DEVICE_LOCKED') {
+            finished = true;
             localStorage.removeItem('fincestem_auth');
             localStorage.removeItem('fincestem_user');
             localStorage.removeItem('fincestem_role');
             btnText.textContent = 'Masuk ke Portal Siswa';
             btn.classList.remove('opacity-80', 'pointer-events-none');
             alert(apiRes.message || 'Akun Anda sudah terkunci di perangkat lain! Anda tidak diizinkan login di perangkat ini kecuali telah di-reset / disetujui oleh Admin.');
-          } else {
-            // Berhasil login: Simpan data profil & zona termutakhir dari server jika tersedia
+            return;
+          }
+
+          try {
             if (apiRes && apiRes.data && apiRes.data.user) {
               const serverUser = Object.assign({}, res.user, apiRes.data.user);
               const sNisn = String(serverUser.nisn || serverUser.identifier || '').trim();
@@ -306,43 +324,35 @@
                 try { localStorage.setItem('fincestem_student_zone_' + sNisn, serverUser.zone); } catch (e) {}
               }
 
-              // Deteksi Reset dari Server:
               const clientReset = localStorage.getItem('fincestem_client_reset_' + cleanNisn);
               const serverResetAt = serverUser.reset_at;
               const isResetNewer = serverResetAt && clientReset && (new Date(serverResetAt).getTime() > new Date(clientReset).getTime());
 
               if (isResetNewer) {
-                // Eksekusi pembersihan total storage siswa di perangkat ini
-                FincestemCore.progress.purgeStudentLocalStorage(cleanNisn, { scope: 'all_days', target_day: -1 });
-                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
+                try { FincestemCore.progress.purgeStudentLocalStorage(cleanNisn, { scope: 'all_days', target_day: -1 }); } catch (e) {}
+                try { localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt); } catch (e) {}
                 serverUser.photo_url = '';
               } else if (serverResetAt && !clientReset) {
-                // Login perdana di perangkat/gawai baru: catat token reset tanpa melakukan purge
-                localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt);
+                try { localStorage.setItem('fincestem_client_reset_' + cleanNisn, serverResetAt); } catch (e) {}
               }
 
-              // JIKA FOTO PROFIL KOSONG DARI SERVER (Karena di-reset admin / belum pernah upload):
-              // Pastikan seluruh kunci cache foto lama di HP terhapus bersih!
               if (!serverUser.photo_url) {
                 idVars.forEach(id => {
-                  try {
-                    localStorage.removeItem('fincestem_photo_' + id);
-                  } catch (e) {}
+                  try { localStorage.removeItem('fincestem_photo_' + id); } catch (e) {}
                 });
                 serverUser.photo_url = '';
               }
 
               FincestemCore.auth.setUser(serverUser, 'siswa');
             }
-            FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
-            window.location.replace('dashboard.html?_v=' + Date.now());
-          }
+          } catch (eSync) {}
+
+          goDashboard();
         })
         .catch(() => {
           if (fetchTimeout) clearTimeout(fetchTimeout);
-          // Jika server lambat atau offline, tetap alihkan ke dashboard
-          FincestemCore.ui.toast('Berhasil masuk! Mengalihkan ke Dashboard...', 'success');
-          window.location.replace('dashboard.html?_v=' + Date.now());
+          clearTimeout(hardFallback);
+          goDashboard();
         });
       } else {
         // Mode offline/lokal file://
