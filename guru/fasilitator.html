@@ -2591,6 +2591,9 @@
         let srvCompletedDays = 0;
         let srvTotalScore = 0;
         let srvScoreCount = 0;
+        let hasPendingTask = false;
+        let hasAnyGraded = false;
+        let hasAnySubmission = false;
         let hasDay = { 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false };
 
         for (let d = 1; d <= 7; d++) {
@@ -2610,6 +2613,10 @@
               if (hasSc) {
                 srvTotalScore += parseFloat(srvDay.score);
                 srvScoreCount++;
+                hasAnyGraded = true;
+              }
+              if (srvDay.status === 'completed' || srvDay.status === 'reviewed') {
+                hasAnyGraded = true;
               }
               if (parseInt(srvDay.student_tasks_count) > 0) {
                 prog.task_map[d + '_materi'] = prog.task_map[d + '_materi'] || { submitted: true };
@@ -2678,16 +2685,12 @@
         let rawStatus = latestFeedbackStatus || day1Status || (stu.task_status || 'belum_mulai');
 
         // Deteksi akurat apakah ada tugas siswa yang belum dinilai (antrean)
-        let hasPendingTask = false;
-        let hasAnyGraded = false;
-        let hasAnySubmission = false;
-
         if (prog && Array.isArray(prog.records)) {
           prog.records.forEach(r => {
             if (r.status === 'submitted' || ['materi', 'lkpd', 'asesmen', 'refleksi', 'dokumentasi'].includes(r.task_type)) {
               hasAnySubmission = true;
             }
-            if (r.score !== null && r.score !== undefined && r.score !== '') {
+            if ((r.score !== null && r.score !== undefined && r.score !== '') || r.status === 'completed' || r.status === 'reviewed') {
               hasAnyGraded = true;
             }
           });
@@ -2734,6 +2737,10 @@
         }
         if (hasOfficialFinal || isAllDone) {
           hasPendingTask = false;
+          hasAnyGraded = true;
+        }
+        if (srvScoreCount > 0 || (prog && prog.average_score && parseFloat(prog.average_score) > 0)) {
+          hasAnyGraded = true;
         }
 
         let studentCategoryStatus = 'belum_mulai';
@@ -5252,6 +5259,25 @@
             ? `Simulasi penilaian Day 0 (${avg}/100) berhasil disimpan! Siswa dapat melihat feedback latihan Anda.`
             : `Penyesuaian manual nilai ${avg}/100 (${statusText}) berhasil disimpan!`;
           FincestemCore.ui.toast(toastMsg, 'success');
+          try {
+            if (!window._fasilStudentDayMap) window._fasilStudentDayMap = {};
+            const cleanT = String(targetNisn || '').trim();
+            [cleanT, cleanT.replace(/^0+/, ''), cleanT.padStart(10, '0')].filter(Boolean).forEach(k => {
+              const key = k + '_' + dayNum;
+              window._fasilStudentDayMap[key] = Object.assign(window._fasilStudentDayMap[key] || {}, {
+                student_nisn: cleanT,
+                day_number: dayNum,
+                score: avg,
+                predicate: pred,
+                fin: sFin,
+                cul: sCul,
+                exp: sExp,
+                stem: sStem,
+                status: status,
+                facilitator_name: fasilName
+              });
+            });
+          } catch(eMap) {}
           loadStudentDayEvaluation(targetNisn, dayNum);
           renderAssignedStudentList();
         });
