@@ -5511,18 +5511,34 @@
       }
     };
 
+    const safeSet = (k, v) => {
+      try {
+        localStorage.setItem(k, v);
+      } catch (eQ) {
+        try {
+          localStorage.removeItem('fincestem_db_2026_v1');
+          Object.keys(localStorage).forEach(key => {
+            if (key.startsWith('fincestem_photo_') || (key.startsWith('fincestem_draft_') && key !== 'fincestem_draft_nft_materi_d7_' + cleanNisn)) {
+              localStorage.removeItem(key);
+            }
+          });
+          localStorage.setItem(k, v);
+        } catch (_) {}
+      }
+    };
+
     try {
       const idList = Array.from(new Set([cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0')])).filter(Boolean);
       idList.forEach(id => {
-        localStorage.setItem('fincestem_materi_nft_day7_' + id, JSON.stringify(payload));
-        localStorage.setItem('fincestem_materi_day7_' + id, JSON.stringify(payload));
+        safeSet('fincestem_materi_nft_day7_' + id, JSON.stringify(payload));
+        safeSet('fincestem_materi_day7_' + id, JSON.stringify(payload));
         try {
           const pRaw = localStorage.getItem('fincestem_progress_' + id);
           if (pRaw) {
             const pObj = JSON.parse(pRaw);
             pObj.task_map = pObj.task_map || {};
             pObj.task_map['7_materi'] = { status: 'submitted', content: summaryFull, updated_at: nowIso };
-            localStorage.setItem('fincestem_progress_' + id, JSON.stringify(pObj));
+            safeSet('fincestem_progress_' + id, JSON.stringify(pObj));
           }
         } catch(eP) {}
       });

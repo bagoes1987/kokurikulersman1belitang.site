@@ -4310,7 +4310,15 @@ const FincestemCore = {
         idVars.forEach(id => {
           try {
             localStorage.setItem('fincestem_progress_' + id, JSON.stringify(prog));
-          } catch (e) {}
+          } catch (e) {
+            try {
+              localStorage.removeItem('fincestem_db_2026_v1');
+              Object.keys(localStorage).forEach(k => {
+                if (k.startsWith('fincestem_photo_')) localStorage.removeItem(k);
+              });
+              localStorage.setItem('fincestem_progress_' + id, JSON.stringify(prog));
+            } catch (_) {}
+          }
         });
 
         // 1. Panggil callback seketika (Optimistic UI) agar tombol tidak muter-muter di HP siswa
