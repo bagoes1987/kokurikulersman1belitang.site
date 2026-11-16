@@ -6217,6 +6217,13 @@
         localStorage.setItem(`fincestem_lkpd_day${dayNum}_` + key, JSON.stringify(data));
         localStorage.setItem(`fincestem_nft_sector_d${dayNum}_` + key, data.sectorKey);
         localStorage.removeItem(`fincestem_lkpd_nft_day${dayNum}_draft_` + key);
+        const pRaw = localStorage.getItem('fincestem_progress_' + key);
+        if (pRaw) {
+          const pObj = JSON.parse(pRaw);
+          pObj.task_map = pObj.task_map || {};
+          pObj.task_map[dayNum + '_lkpd'] = { status: 'submitted', content: data.summary, updated_at: nowIso };
+          localStorage.setItem('fincestem_progress_' + key, JSON.stringify(pObj));
+        }
       } catch(e) {}
     });
 
@@ -6750,20 +6757,20 @@
       return;
     }
 
-    if (data.refl_pengalaman.length < 80) {
-      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 1 minimal 80 karakter (saat ini ' + data.refl_pengalaman.length + ' karakter)!', 'warning');
+    if (data.refl_pengalaman.length < 15) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 1 minimal 15 karakter (saat ini ' + data.refl_pengalaman.length + ' karakter)!', 'warning');
       document.getElementById('nftD7Refl1')?.focus();
       return;
     }
 
-    if (data.refl_wawasan.length < 80) {
-      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 2 minimal 80 karakter (saat ini ' + data.refl_wawasan.length + ' karakter)!', 'warning');
+    if (data.refl_wawasan.length < 15) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 2 minimal 15 karakter (saat ini ' + data.refl_wawasan.length + ' karakter)!', 'warning');
       document.getElementById('nftD7Refl2')?.focus();
       return;
     }
 
-    if (data.refl_pesan.length < 80) {
-      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 3 minimal 80 karakter (saat ini ' + data.refl_pesan.length + ' karakter)!', 'warning');
+    if (data.refl_pesan.length < 15) {
+      if (window.FincestemCore && FincestemCore.ui) FincestemCore.ui.toast('Refleksi Pertanyaan 3 minimal 15 karakter (saat ini ' + data.refl_pesan.length + ' karakter)!', 'warning');
       document.getElementById('nftD7Refl3')?.focus();
       return;
     }
@@ -6823,6 +6830,15 @@
         try {
           localStorage.setItem('fincestem_refleksi_nft_day7_' + id, JSON.stringify(refleksiPayload));
           localStorage.setItem('fincestem_refleksi_day7_' + id, JSON.stringify(refleksiPayload));
+          const pRaw = localStorage.getItem('fincestem_progress_' + id);
+          if (pRaw) {
+            const pObj = JSON.parse(pRaw);
+            pObj.task_map = pObj.task_map || {};
+            pObj.task_map['7_lkpd'] = { status: 'submitted', content: data.video_title || 'LKPD Day 7', updated_at: data.submitted_at };
+            pObj.task_map['7_asesmen'] = { status: 'submitted', score: 100, updated_at: data.submitted_at };
+            pObj.task_map['7_refleksi'] = { status: 'submitted', content: refleksiPayload.content, updated_at: data.submitted_at };
+            localStorage.setItem('fincestem_progress_' + id, JSON.stringify(pObj));
+          }
         } catch(eLS) {}
       });
 

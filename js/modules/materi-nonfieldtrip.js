@@ -4904,11 +4904,11 @@
       return;
     }
 
-    if (resumeText.length < 80) {
+    if (resumeText.length < 15) {
       if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast(`Resume rencana video Day ${dayNum} minimal 80 karakter (saat ini ${resumeText.length} karakter).`, 'warning');
+        FincestemCore.ui.toast(`Resume rencana video Day ${dayNum} minimal 15 karakter (saat ini ${resumeText.length} karakter).`, 'warning');
       } else {
-        alert(`Resume rencana video Day ${dayNum} minimal 80 karakter!`);
+        alert(`Resume rencana video Day ${dayNum} minimal 15 karakter!`);
       }
       var _fEl2 = document.getElementById(`nftVideoModResumeD${dayNum}`); if (_fEl2) _fEl2.focus();
       return;
@@ -4951,6 +4951,15 @@
         localStorage.setItem(`fincestem_materi_nft_day${dayNum}_` + id, JSON.stringify(payload));
         localStorage.setItem(`fincestem_materi_day${dayNum}_` + id, JSON.stringify(payload));
         localStorage.setItem(`fincestem_materi_ft_day${dayNum}_` + id, JSON.stringify({ conclusion: summaryFull, savedAt: nowIso }));
+        try {
+          const pRaw = localStorage.getItem('fincestem_progress_' + id);
+          if (pRaw) {
+            const pObj = JSON.parse(pRaw);
+            pObj.task_map = pObj.task_map || {};
+            pObj.task_map[dayNum + '_materi'] = { status: 'submitted', content: summaryFull, updated_at: nowIso };
+            localStorage.setItem('fincestem_progress_' + id, JSON.stringify(pObj));
+          }
+        } catch(eP) {}
       });
     } catch (e) {}
 
@@ -5466,11 +5475,11 @@
       return;
     }
 
-    if (resumeText.length < 80) {
+    if (resumeText.length < 15) {
       if (window.FincestemCore && FincestemCore.ui) {
-        FincestemCore.ui.toast('Draf rencana video refleksi minimal 80 karakter (saat ini ' + resumeText.length + ' karakter).', 'warning');
+        FincestemCore.ui.toast('Draf rencana video refleksi minimal 15 karakter (saat ini ' + resumeText.length + ' karakter).', 'warning');
       } else {
-        alert('Draf rencana video refleksi minimal 80 karakter!');
+        alert('Draf rencana video refleksi minimal 15 karakter!');
       }
       var _fEl2 = document.getElementById('nftVideoModResumeD7'); if (_fEl2) _fEl2.focus();
       return;
@@ -5503,8 +5512,20 @@
     };
 
     try {
-      localStorage.setItem('fincestem_materi_nft_day7_' + cleanNisn, JSON.stringify(payload));
-      localStorage.setItem('fincestem_materi_day7_' + cleanNisn, JSON.stringify(payload));
+      const idList = Array.from(new Set([cleanNisn, cleanNisn.replace(/^0+/, ''), cleanNisn.padStart(10, '0')])).filter(Boolean);
+      idList.forEach(id => {
+        localStorage.setItem('fincestem_materi_nft_day7_' + id, JSON.stringify(payload));
+        localStorage.setItem('fincestem_materi_day7_' + id, JSON.stringify(payload));
+        try {
+          const pRaw = localStorage.getItem('fincestem_progress_' + id);
+          if (pRaw) {
+            const pObj = JSON.parse(pRaw);
+            pObj.task_map = pObj.task_map || {};
+            pObj.task_map['7_materi'] = { status: 'submitted', content: summaryFull, updated_at: nowIso };
+            localStorage.setItem('fincestem_progress_' + id, JSON.stringify(pObj));
+          }
+        } catch(eP) {}
+      });
     } catch(e) {}
 
     window.isNftD7Submitted = true;
