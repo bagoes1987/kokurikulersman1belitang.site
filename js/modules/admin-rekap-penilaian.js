@@ -370,7 +370,10 @@
       let hasPendingDay = false;
 
       for (let d = 1; d <= 7; d++) {
-        const dRec = state.serverDays[`${nisn}_${d}`] || null;
+        const dRec = state.serverDays[`${nisn}_${d}`] ||
+                     state.serverDays[`${nisn.replace(/^0+/, '')}_${d}`] ||
+                     state.serverDays[`${nisn.padStart(10, '0')}_${d}`] ||
+                     null;
         let dayStatus = 'not_submitted'; // 'not_submitted', 'pending', 'graded'
         let dayScore = null;
         let dayPred = null;
@@ -380,6 +383,9 @@
             dayStatus = 'graded';
             dayScore = parseFloat(dRec.score);
             dayPred = dRec.predicate || (dayScore >= 85 ? 'Mahir' : (dayScore >= 70 ? 'Cakap' : 'Berkembang'));
+            totalGradedDays++;
+          } else if (dRec.status === 'completed' || dRec.status === 'reviewed') {
+            dayStatus = 'graded';
             totalGradedDays++;
           } else if (parseInt(dRec.student_tasks_count || 0) > 0 || dRec.status === 'submitted') {
             dayStatus = 'pending';
@@ -401,6 +407,9 @@
                     state.serverFinalGrades[nisn.replace(/^0+/, '')] ||
                     state.serverFinalGrades[nisn.padStart(10, '0')] ||
                     null;
+      if (fgRec && fgRec.final_score !== null && fgRec.final_score !== undefined && fgRec.final_score !== '') {
+        hasPendingDay = false;
+      }
 
       const isFT = (window.FincestemCore && FincestemCore.zones && typeof FincestemCore.zones.isFieldTripStudent === 'function')
         ? FincestemCore.zones.isFieldTripStudent(nisn, st.class_name || st.class || st.kelas, st.zone)

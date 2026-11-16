@@ -2703,16 +2703,37 @@
                 window._fasilStudentDayMap[cleanNisn.replace(/^0+/, '') + '_' + d] ||
                 window._fasilStudentDayMap[cleanNisn.padStart(10, '0') + '_' + d]
               );
-              const srvHasSc = srvDayChk && srvDayChk.score !== null && srvDayChk.score !== undefined && srvDayChk.score !== '';
+              const srvHasSc = srvDayChk && (
+                (srvDayChk.score !== null && srvDayChk.score !== undefined && srvDayChk.score !== '') ||
+                srvDayChk.status === 'completed' ||
+                srvDayChk.status === 'reviewed'
+              );
               const dRec = prog.records ? (
-                prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'final') && r.score !== null && r.score !== undefined && r.score !== '') ||
-                prog.records.find(r => parseInt(r.day_number) === d && r.score !== null && r.score !== undefined && r.score !== '')
+                prog.records.find(r => parseInt(r.day_number) === d && ((r.score !== null && r.score !== undefined && r.score !== '') || r.status === 'completed' || r.status === 'reviewed'))
               ) : null;
               if (!srvHasSc && !dRec) {
                 hasPendingTask = true;
               }
             }
           }
+        }
+
+        // Jika nilai akhir rapor sudah ditetapkan fasilitator (final_grades / 7_final) atau seluruh 7 hari tuntas, siswa tidak lagi berstatus antrean belum dinilai
+        let hasOfficialFinal = !!(stu.final_score || (prog && prog.task_map && prog.task_map['7_final']));
+        if (!hasOfficialFinal) {
+          try {
+            const localA = FincestemCore.assignments ? FincestemCore.assignments.getLocalAssignments() : null;
+            if (localA && Array.isArray(localA.final_grades)) {
+              const noZero = cleanNisn.replace(/^0+/, '');
+              hasOfficialFinal = localA.final_grades.some(g => {
+                const gn = String(g.student_nisn || '').trim();
+                return (gn === cleanNisn || gn.replace(/^0+/, '') === noZero) && g.final_score !== null && g.final_score !== undefined && g.final_score !== '';
+              });
+            }
+          } catch (eFg) {}
+        }
+        if (hasOfficialFinal || isAllDone) {
+          hasPendingTask = false;
         }
 
         let studentCategoryStatus = 'belum_mulai';
