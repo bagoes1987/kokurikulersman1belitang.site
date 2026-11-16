@@ -448,10 +448,10 @@
         finalPred = toRaporPred(finalScore, fgRec.final_predicate);
         finalNotes = fgRec.notes || '';
         finalSource = 'fasil_final';
-        if (finScore === null) finScore = finalScore;
-        if (culScore === null) culScore = finalScore;
-        if (expScore === null) expScore = finalScore;
-        if (stemScore === null) stemScore = finalScore;
+        finScore = finalScore;
+        culScore = finalScore;
+        expScore = finalScore;
+        stemScore = finalScore;
       } else if (day7 && day7.status === 'graded' && day7.score !== null) {
         finalScore = day7.score;
         finalPred = toRaporPred(finalScore, day7.predicate);
@@ -464,15 +464,25 @@
         finalScore = parseFloat(srvSumm.final_score);
         finalPred = toRaporPred(finalScore, srvSumm.final_predicate);
         finalSource = 'fasil_final';
-        if (finScore === null) finScore = finalScore;
-        if (culScore === null) culScore = finalScore;
-        if (expScore === null) expScore = finalScore;
-        if (stemScore === null) stemScore = finalScore;
+        finScore = finalScore;
+        culScore = finalScore;
+        expScore = finalScore;
+        stemScore = finalScore;
       } else if (isFT && totalGradedDays >= 7) {
         finalScore = 95.0;
         finalPred = 'Mahir';
         finalSource = 'system_ft';
         finScore = 95; culScore = 95; expScore = 95; stemScore = 95;
+      }
+
+      // Jika Fasilitator menetapkan Nilai Akhir manual, selaraskan nilai per-hari (Day 1–7) yang sudah dinilai/dikerjakan
+      if (finalSource === 'fasil_final' && finalScore !== null) {
+        for (let d = 1; d <= 7; d++) {
+          if (days[d] && (days[d].status === 'graded' || days[d].score !== null)) {
+            days[d].score = finalScore;
+            days[d].predicate = finalPred;
+          }
+        }
       }
 
       return {

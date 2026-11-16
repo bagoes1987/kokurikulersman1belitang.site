@@ -5583,6 +5583,69 @@
             updated_at: new Date().toISOString()
           });
         }
+        // Selaraskan nilai per-hari (Day 1–7) yang sudah dikerjakan/dinilai agar mengikuti pembagian Nilai Akhir Fasilitator
+        if (FincestemCore.progress && typeof FincestemCore.progress.getLocalProgress === 'function') {
+          FincestemCore.progress.getLocalProgress(targetNisn, function(prog) {
+            if (!prog) prog = FincestemCore.progress.getDefaultProgress(targetNisn);
+            if (!prog.records) prog.records = [];
+            const daysToSync = new Set([7]);
+            prog.records.forEach(r => {
+              const d = parseInt(r.day_number);
+              if (d >= 1 && d <= 7 && (r.score !== null && r.score !== undefined || r.status === 'completed' || r.status === 'reviewed' || r.status === 'submitted')) {
+                daysToSync.add(d);
+              }
+            });
+            if (prog.task_map) {
+              Object.keys(prog.task_map).forEach(k => {
+                const d = parseInt(k.split('_')[0]);
+                if (d >= 1 && d <= 7) daysToSync.add(d);
+              });
+            }
+            const nowIso = new Date().toISOString();
+            daysToSync.forEach(d => {
+              let rec = prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.score !== null));
+              if (!rec) {
+                rec = { day_number: d, task_type: 'general', status: 'completed' };
+                prog.records.push(rec);
+              }
+              rec.score = score;
+              rec.predicate = pred;
+              rec.score_financial = score;
+              rec.score_culture = score;
+              rec.score_exploration = score;
+              rec.score_stem = score;
+              rec.facilitator_name = fasilFullName;
+              rec.updated_at = nowIso;
+              if (window.location.protocol.startsWith('http')) {
+                fetch(FincestemCore.api.base + '/progress.php', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    action: 'submit_grade',
+                    student_nisn: targetNisn,
+                    day_number: d,
+                    task_type: 'general',
+                    score: score,
+                    predicate: pred,
+                    score_financial: score,
+                    score_culture: score,
+                    score_exploration: score,
+                    score_stem: score,
+                    feedback: notes || ('Penyesuaian nilai akhir oleh fasilitator (' + score + ' - ' + pred + ').'),
+                    status: 'completed',
+                    facilitator_name: fasilFullName
+                  })
+                }).catch(() => {});
+              }
+            });
+            try {
+              const cleanN = String(targetNisn || '').replace(/[^A-Za-z0-9]/g, '');
+              Array.from(new Set([targetNisn, cleanN, cleanN.replace(/^0+/, ''), cleanN.padStart(10, '0')])).filter(Boolean).forEach(id => {
+                localStorage.setItem('fincestem_progress_' + id, JSON.stringify(prog));
+              });
+            } catch (eLs) {}
+          });
+        }
       } catch (eProg) {}
 
       if (FincestemCore.assignments) {

@@ -222,6 +222,19 @@
         finalPred = toRaporPred(finalScore, sSum.day7_predicate);
       }
 
+      // Jika Nilai Akhir manual sudah ditetapkan Fasilitator, selaraskan 4 pilar & nilai akhir
+      const fasilFinalRaw = (stu.final_score !== undefined && stu.final_score !== null && stu.final_score !== '')
+        ? stu.final_score
+        : (sSum && sSum.final_score !== undefined && sSum.final_score !== null && sSum.final_score !== '' ? sSum.final_score : null);
+      if (fasilFinalRaw !== null && !isNaN(parseFloat(fasilFinalRaw))) {
+        finalScore = parseFloat(fasilFinalRaw);
+        finalPred = toRaporPred(finalScore, stu.final_predicate || (sSum && sSum.final_predicate));
+        finScore = finalScore;
+        culScore = finalScore;
+        expScore = finalScore;
+        stemScore = finalScore;
+      }
+
       if (finalPred === 'Mahir') countMahir++;
       else if (finalPred === 'Cakap') countCakap++;
       else if (finalPred === 'Berkembang') countBerkembang++;
