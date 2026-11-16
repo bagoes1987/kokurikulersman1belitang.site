@@ -2698,8 +2698,17 @@
             const hasDailySub = prog.task_map[d + '_lkpd'] || prog.task_map[d + '_materi'] || prog.task_map[d + '_asesmen'] || prog.task_map[d + '_refleksi'] || prog.task_map[d + '_dokumentasi'];
             if (hasDailySub) {
               hasAnySubmission = true;
-              const dRec = prog.records ? prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'final')) : null;
-              if (!dRec || dRec.score === null || dRec.score === undefined || dRec.score === '') {
+              const srvDayChk = window._fasilStudentDayMap && (
+                window._fasilStudentDayMap[cleanNisn + '_' + d] ||
+                window._fasilStudentDayMap[cleanNisn.replace(/^0+/, '') + '_' + d] ||
+                window._fasilStudentDayMap[cleanNisn.padStart(10, '0') + '_' + d]
+              );
+              const srvHasSc = srvDayChk && srvDayChk.score !== null && srvDayChk.score !== undefined && srvDayChk.score !== '';
+              const dRec = prog.records ? (
+                prog.records.find(r => parseInt(r.day_number) === d && (r.task_type === 'general' || r.task_type === 'final') && r.score !== null && r.score !== undefined && r.score !== '') ||
+                prog.records.find(r => parseInt(r.day_number) === d && r.score !== null && r.score !== undefined && r.score !== '')
+              ) : null;
+              if (!srvHasSc && !dRec) {
                 hasPendingTask = true;
               }
             }
@@ -3048,7 +3057,14 @@
                   window._fasilStudentDayMap[cleanNisnForPill.replace(/^0+/, '') + '_' + dp.day] ||
                   window._fasilStudentDayMap[cleanNisnForPill.padStart(10, '0') + '_' + dp.day]
                 );
-                const hasScore = srvDay && srvDay.score !== null && srvDay.score !== undefined && srvDay.score !== '';
+                const recWithScore = prog && prog.records ? (
+                  prog.records.find(r => parseInt(r.day_number) === dp.day && (r.task_type === 'general' || r.task_type === 'final') && r.score !== null && r.score !== undefined && r.score !== '') ||
+                  prog.records.find(r => parseInt(r.day_number) === dp.day && r.score !== null && r.score !== undefined && r.score !== '')
+                ) : null;
+                const rawPillScore = (srvDay && srvDay.score !== null && srvDay.score !== undefined && srvDay.score !== '')
+                  ? srvDay.score
+                  : (recWithScore ? recWithScore.score : null);
+                const hasScore = rawPillScore !== null && rawPillScore !== undefined && rawPillScore !== '';
                 const hasLocalTasks = prog && prog.task_map && (
                   prog.task_map[dp.day + '_lkpd'] ||
                   prog.task_map[dp.day + '_asesmen'] ||
@@ -3062,7 +3078,7 @@
 
                 if (isToday) {
                   if (isDone || hasTasks) {
-                    const scText = hasScore ? Math.round(parseFloat(srvDay.score)) : 'Masuk';
+                    const scText = hasScore ? Math.round(parseFloat(rawPillScore)) : 'Masuk';
                     return `
                       <button type="button" onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', ${dp.day})" class="py-1 px-1 rounded-xl bg-teal-600 text-white border-2 border-teal-400 ring-2 ring-teal-200/80 hover:bg-teal-700 flex flex-col items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95" title="${dp.title} (Hari Ini): Nilai ${scText} • Klik untuk Nilai / Periksa">
                         <div class="flex items-center gap-0.5 text-[9px] font-black text-amber-200">
@@ -3082,7 +3098,7 @@
                   }
                 } else if (isOpen) {
                   if (isDone || hasTasks) {
-                    const scText = hasScore ? Math.round(parseFloat(srvDay.score)) : '✓';
+                    const scText = hasScore ? Math.round(parseFloat(rawPillScore)) : '✓';
                     return `
                       <button type="button" onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', ${dp.day})" class="py-1 px-1 rounded-xl bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 flex flex-col items-center justify-center transition-all cursor-pointer active:scale-95" title="${dp.title}: Nilai ${scText} • Klik untuk Periksa">
                         <span class="text-[9px] font-black text-emerald-900 leading-tight">${dp.label}</span>
@@ -3099,7 +3115,7 @@
                   }
                 } else {
                   if (isDone || hasTasks) {
-                    const scText = hasScore ? Math.round(parseFloat(srvDay.score)) : '✓';
+                    const scText = hasScore ? Math.round(parseFloat(rawPillScore)) : '✓';
                     return `
                       <button type="button" onclick="openGradingModal('${stu.nisn}', '${(stu.name || '').replace(/'/g, "\\'")}', '${stu.class_name} • NISN: ${stu.nisn}', ${dp.day})" class="py-1 px-1 rounded-xl bg-emerald-50 border border-emerald-300 hover:bg-emerald-100 flex flex-col items-center justify-center transition-all cursor-pointer active:scale-95" title="${dp.title}: Nilai ${scText}">
                         <span class="text-[9px] font-black text-emerald-900 leading-tight">${dp.label}</span>
