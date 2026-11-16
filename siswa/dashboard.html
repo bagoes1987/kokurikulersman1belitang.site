@@ -7554,11 +7554,11 @@
             }
           } catch (eQuota) {}
         });
-        if (studentProgress && studentProgress.task_map) {
-          studentProgress.task_map[`${dayNumber}_refleksi`] = { status: 'submitted', content: note };
-          if (isFieldTrip && Number(dayNumber) === 5) {
-            studentProgress.task_map['5_refleksi_prambanan'] = { status: 'submitted', content: note };
-          }
+        if (!studentProgress) studentProgress = { task_map: {}, records: [] };
+        if (!studentProgress.task_map) studentProgress.task_map = {};
+        studentProgress.task_map[`${dayNumber}_refleksi`] = { status: 'submitted', content: note, submitted_at: new Date().toISOString() };
+        if (isFieldTrip && Number(dayNumber) === 5) {
+          studentProgress.task_map['5_refleksi_prambanan'] = { status: 'submitted', content: note };
         }
         // Pastikan local progress tersimpan instan ke storage sebelum modal ditutup
         idList.forEach(id => {
@@ -7568,6 +7568,10 @@
         const noteInput = document.getElementById('txtRefleksiNote');
         note = noteInput ? noteInput.value.trim() : '';
       }
+
+      if (!studentProgress) studentProgress = { task_map: {}, records: [] };
+      if (!studentProgress.task_map) studentProgress.task_map = {};
+      studentProgress.task_map[`${dayNumber}_${type}`] = { status: 'submitted', content: note, submitted_at: new Date().toISOString() };
 
       FincestemCore.progress.submitTask(studentNisn, dayNumber, type, note, function() {
         if (type === 'refleksi') {
@@ -7581,12 +7585,12 @@
         } else {
           FincestemCore.ui.toast(`Tugas ${type.toUpperCase()} Day ${dayNumber} berhasil dikirim (Status: Submitted)!`, 'success');
         }
-        loadStudentProgress();
+        // Render ulang kartu hari & ceklis seketika dari state lokal, lalu sinkron dari server setelah POST selesai
+        try { renderStudentProgressView(studentProgress); } catch(eRend) {}
+        try { if (daysSchedule.length > 0) renderDaysSchedule(daysSchedule); } catch(eDays) {}
+        setTimeout(loadStudentProgress, 1800);
       });
 
-      if (type === 'refleksi') {
-        try { renderStudentProgressView(studentProgress); } catch(eRend) {}
-      }
       closeDayActivityModal();
     }
 
