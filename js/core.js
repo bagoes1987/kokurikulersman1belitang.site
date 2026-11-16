@@ -58,9 +58,23 @@ const FincestemCore = {
       return null;
     },
     setUser: function(userObj, role) {
-      localStorage.setItem('fincestem_auth', 'true');
-      localStorage.setItem('fincestem_role', role || 'siswa');
-      localStorage.setItem('fincestem_user', JSON.stringify(userObj));
+      try {
+        localStorage.setItem('fincestem_auth', 'true');
+        localStorage.setItem('fincestem_role', role || 'siswa');
+        localStorage.setItem('fincestem_user', JSON.stringify(userObj));
+      } catch (eQuota) {
+        // Jika localStorage penuh di HP siswa, bersihkan cache foto/db lama lalu simpan ulang sesi
+        try {
+          Object.keys(localStorage).forEach(k => {
+            if (k.startsWith('fincestem_photo_') || k === 'fincestem_db_2026_v1' || k.startsWith('fincestem_draft_')) {
+              localStorage.removeItem(k);
+            }
+          });
+          localStorage.setItem('fincestem_auth', 'true');
+          localStorage.setItem('fincestem_role', role || 'siswa');
+          localStorage.setItem('fincestem_user', JSON.stringify(userObj));
+        } catch (e2) {}
+      }
     },
     validateLogin: function(identifier, password, role) {
       const id = String(identifier || '').trim();

@@ -247,17 +247,25 @@
       btnText.textContent = 'Memverifikasi Perangkat & Akun...';
       btn.classList.add('opacity-80', 'pointer-events-none');
 
-      // Validasi lokal terlebih dahulu (kredensial NISN/NIS)
-      const res = FincestemCore.auth.validateLogin(nisn, pwd, 'siswa');
-      if (!res.success) {
+      let res;
+      try {
+        // Validasi lokal terlebih dahulu (kredensial NISN/NIS)
+        res = FincestemCore.auth.validateLogin(nisn, pwd, 'siswa');
+        if (!res || !res.success) {
+          btnText.textContent = 'Masuk ke Portal Siswa';
+          btn.classList.remove('opacity-80', 'pointer-events-none');
+          FincestemCore.ui.toast((res && res.message) || 'NISN atau Kata Sandi (NIS) tidak sesuai!', 'error');
+          return;
+        }
+
+        // 1. Simpan sesi user langsung dari data lokal (INSTAN & TANPA DELAY)
+        FincestemCore.auth.setUser(res.user, 'siswa');
+      } catch (eAuth) {
         btnText.textContent = 'Masuk ke Portal Siswa';
         btn.classList.remove('opacity-80', 'pointer-events-none');
-        FincestemCore.ui.toast(res.message, 'error');
+        FincestemCore.ui.toast('Gagal memproses login: ' + (eAuth.message || 'Muat ulang halaman'), 'error');
         return;
       }
-
-      // 1. Simpan sesi user langsung dari data lokal (INSTAN & TANPA DELAY)
-      FincestemCore.auth.setUser(res.user, 'siswa');
 
       // 2. Jika online, daftarkan / validasi Single Device Lock
       if (window.location.protocol.startsWith('http')) {
