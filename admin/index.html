@@ -1611,7 +1611,15 @@
 
         <div class="flex items-center justify-between px-1">
           <span id="lblCountMonitoringFasil" class="text-xs font-bold text-slate-500">Memuat data fasilitator...</span>
-          <span class="text-[11px] text-slate-400">Pembaruan otomatis dari server</span>
+          <div class="flex items-center gap-2">
+            <button id="btnPrevPageMonitoringFasil" onclick="pageMonitoringPrev()" class="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 cursor-pointer" title="Halaman Sebelumnya">
+              <span class="material-symbols-outlined text-sm">chevron_left</span>
+            </button>
+            <span id="lblPageMonitoringFasil" class="text-xs font-bold text-slate-600">Hal 1 dari 1</span>
+            <button id="btnNextPageMonitoringFasil" onclick="pageMonitoringNext()" class="p-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 disabled:opacity-40 cursor-pointer" title="Halaman Berikutnya">
+              <span class="material-symbols-outlined text-sm">chevron_right</span>
+            </button>
+          </div>
         </div>
 
         <!-- Tabel Fasilitator -->
@@ -1623,11 +1631,11 @@
                   <th class="px-4 py-3 text-center w-12">No</th>
                   <th class="px-4 py-3">Guru Fasilitator</th>
                   <th class="px-4 py-3">Kelas Binaan</th>
-                  <th class="px-4 py-3 text-center">Jml Binaan</th>
-                  <th class="px-4 py-3 w-40">% Siswa Kumpul</th>
-                  <th class="px-4 py-3 w-40">% Dinilai Fasil</th>
-                  <th class="px-4 py-3 text-center">Antrean Belum Dinilai</th>
-                  <th class="px-4 py-3 text-center">Status</th>
+                  <th class="px-2.5 py-2.5 text-center whitespace-nowrap">Jml Binaan</th>
+                  <th class="px-2.5 py-2.5 w-28 whitespace-nowrap">% Kumpul</th>
+                  <th class="px-2.5 py-2.5 w-28 whitespace-nowrap">% Dinilai</th>
+                  <th class="px-2.5 py-2.5 text-center whitespace-nowrap">Antrean</th>
+                  <th class="px-2.5 py-2.5 text-center whitespace-nowrap">Status</th>
                 </tr>
               </thead>
               <tbody id="tbodyRekapMonitoringFasil">
@@ -4389,7 +4397,7 @@
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/admin-mentorship.js?v=20261106_zonefix_v6"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
-  <script src="../js/modules/admin-rekap-penilaian.js?v=20261116_rapor_sync"></script>
+  <script src="../js/modules/admin-rekap-penilaian.js?v=20261116_rapor_sync_v2"></script>
   <script>
     let adminCurrentGrade = 'ALL';
     let adminSearchQuery = '';

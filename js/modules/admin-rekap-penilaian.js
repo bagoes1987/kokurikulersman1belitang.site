@@ -64,6 +64,8 @@
     },
     raporPage: 1,
     raporPerPage: 50,
+    monitoringPage: 1,
+    monitoringPerPage: 10,
 
     // Modal Antrean Fasil
     modalFasilKey: null
@@ -805,9 +807,28 @@
       else if (stFilter === 'NONE') list = list.filter(f => f.statusKinerja === 'TERTUNDA');
     }
 
-    if (countEl) countEl.textContent = `Menampilkan ${list.length} dari ${state.facilitatorStats.length} Fasilitator`;
+    const totalItems = list.length;
+    const totalPages = Math.max(1, Math.ceil(totalItems / state.monitoringPerPage));
+    if (state.monitoringPage > totalPages) state.monitoringPage = totalPages;
+    if (state.monitoringPage < 1) state.monitoringPage = 1;
 
-    if (list.length === 0) {
+    const startIdx = (state.monitoringPage - 1) * state.monitoringPerPage;
+    const paginatedList = list.slice(startIdx, startIdx + state.monitoringPerPage);
+
+    const pageEl = document.getElementById('lblPageMonitoringFasil');
+    const prevBtn = document.getElementById('btnPrevPageMonitoringFasil');
+    const nextBtn = document.getElementById('btnNextPageMonitoringFasil');
+
+    if (countEl) {
+      countEl.textContent = totalItems === 0
+        ? 'Menampilkan 0 dari 0 Fasilitator'
+        : `Menampilkan ${startIdx + 1} - ${Math.min(startIdx + state.monitoringPerPage, totalItems)} dari ${totalItems} Fasilitator`;
+    }
+    if (pageEl) pageEl.textContent = `Hal ${state.monitoringPage} dari ${totalPages}`;
+    if (prevBtn) prevBtn.disabled = (state.monitoringPage <= 1);
+    if (nextBtn) nextBtn.disabled = (state.monitoringPage >= totalPages);
+
+    if (paginatedList.length === 0) {
       container.innerHTML = `
         <tr>
           <td colspan="8" class="text-center py-12 text-slate-400">
@@ -820,23 +841,24 @@
     }
 
     let html = '';
-    list.forEach((f, idx) => {
+    paginatedList.forEach((f, idx) => {
+      const rowNum = startIdx + idx + 1;
       const classBadges = f.classes.length > 0 
-        ? f.classes.map(c => `<span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 mr-1 mb-1">${escapeHtml(c)}</span>`).join('')
+        ? `<div class="flex flex-wrap gap-1">${f.classes.map(c => `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200 whitespace-nowrap">${escapeHtml(c)}</span>`).join('')}</div>`
         : '<span class="text-slate-400 text-xs italic">Belum diplot</span>';
 
       // Badge Antrean Belum Dinilai
       let pendingBadge = '';
       if (f.pendingCount > 0) {
         pendingBadge = `
-          <button onclick="openModalAntreanFasil('${escapeHtml(f.teacherKey)}')" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-50 text-amber-700 border border-amber-300 hover:bg-amber-100 transition-all cursor-pointer shadow-2xs" title="Klik untuk lihat nama siswa yang belum dinilai">
-            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+          <button onclick="openModalAntreanFasil('${escapeHtml(f.teacherKey)}')" class="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[11px] font-bold bg-amber-50 text-amber-700 border border-amber-300 hover:bg-amber-100 transition-all cursor-pointer shadow-2xs whitespace-nowrap" title="Klik untuk lihat nama siswa yang belum dinilai">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse shrink-0"></span>
             <span>${f.pendingCount} Menunggu</span>
             <span class="material-symbols-outlined text-xs">visibility</span>
           </button>
         `;
       } else {
-        pendingBadge = `<span class="inline-flex items-center gap-1 text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+        pendingBadge = `<span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200 whitespace-nowrap">
           <span class="material-symbols-outlined text-xs">check_circle</span> 0 Antrean
         </span>`;
       }
@@ -844,32 +866,32 @@
       // Status Badge
       let statusBadge = '';
       if (f.statusKinerja === 'SELESAI') {
-        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-emerald-500 text-white shadow-2xs">Tuntas 100%</span>`;
+        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-emerald-500 text-white shadow-2xs whitespace-nowrap">Tuntas 100%</span>`;
       } else if (f.statusKinerja === 'PROSES') {
-        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-sky-500 text-white shadow-2xs">Aktif Menilai</span>`;
+        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-sky-500 text-white shadow-2xs whitespace-nowrap">Aktif Menilai</span>`;
       } else if (f.statusKinerja === 'TERTUNDA') {
-        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-extrabold bg-rose-500 text-white shadow-2xs">Belum Ada Nilai</span>`;
+        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-rose-500 text-white shadow-2xs whitespace-nowrap">Belum Ada Nilai</span>`;
       } else {
-        statusBadge = `<span class="px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-200 text-slate-600">Non-Aktif</span>`;
+        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-semibold bg-slate-200 text-slate-600 whitespace-nowrap">Non-Aktif</span>`;
       }
 
       html += `
         <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition-colors">
-          <td class="px-4 py-3 text-center text-xs font-semibold text-slate-500">${idx + 1}</td>
-          <td class="px-4 py-3">
-            <div class="font-bold text-slate-800 text-xs sm:text-sm leading-tight">${escapeHtml(f.nama_guru)}</div>
-            <div class="text-[11px] text-slate-400 font-medium">NIP: ${escapeHtml(f.nip)}</div>
+          <td class="px-2.5 py-2.5 text-center text-xs font-semibold text-slate-500">${rowNum}</td>
+          <td class="px-2.5 py-2.5 min-w-[170px] max-w-[220px]">
+            <div class="font-bold text-slate-800 text-xs leading-snug">${escapeHtml(f.nama_guru)}</div>
+            <div class="text-[10.5px] text-slate-400 font-medium truncate">NIP: ${escapeHtml(f.nip)}</div>
           </td>
-          <td class="px-4 py-3 max-w-xs">
+          <td class="px-2.5 py-2.5 max-w-[200px]">
             ${classBadges}
           </td>
-          <td class="px-4 py-3 text-center">
-            <span class="inline-block px-2.5 py-1 rounded-xl text-xs font-extrabold bg-blue-50 text-[#0875D1] border border-blue-200">
+          <td class="px-2.5 py-2.5 text-center whitespace-nowrap">
+            <span class="inline-block px-2 py-0.5 rounded-lg text-[11px] font-extrabold bg-blue-50 text-[#0875D1] border border-blue-200 whitespace-nowrap">
               ${f.totalBinaan} Siswa
             </span>
           </td>
-          <td class="px-4 py-3">
-            <div class="flex items-center justify-between text-xs font-bold text-slate-700 mb-1">
+          <td class="px-2.5 py-2.5 w-28">
+            <div class="flex items-center justify-between text-[11px] font-bold text-slate-700 mb-1 gap-1">
               <span>${f.submittedPct}%</span>
               <span class="text-[10px] text-slate-400 font-normal">(${f.submittedCount}/${f.totalBinaan})</span>
             </div>
@@ -877,8 +899,8 @@
               <div class="h-full bg-cyan-500 rounded-full transition-all" style="width: ${f.submittedPct}%"></div>
             </div>
           </td>
-          <td class="px-4 py-3">
-            <div class="flex items-center justify-between text-xs font-bold text-slate-700 mb-1">
+          <td class="px-2.5 py-2.5 w-28">
+            <div class="flex items-center justify-between text-[11px] font-bold text-slate-700 mb-1 gap-1">
               <span>${f.gradedPct}%</span>
               <span class="text-[10px] text-slate-400 font-normal">(${f.gradedCount}/${f.totalBinaan})</span>
             </div>
@@ -886,10 +908,10 @@
               <div class="h-full bg-emerald-500 rounded-full transition-all" style="width: ${f.gradedPct}%"></div>
             </div>
           </td>
-          <td class="px-4 py-3 text-center">
+          <td class="px-2.5 py-2.5 text-center whitespace-nowrap">
             ${pendingBadge}
           </td>
-          <td class="px-4 py-3 text-center">
+          <td class="px-2.5 py-2.5 text-center whitespace-nowrap">
             ${statusBadge}
           </td>
         </tr>
@@ -904,11 +926,23 @@
    */
   window.filterMonitoringFasilSearch = function(val) {
     state.filterMonitoring.search = val;
+    state.monitoringPage = 1;
     renderSubTabMonitoring();
   };
 
   window.filterMonitoringFasilStatus = function(val) {
     state.filterMonitoring.status = val;
+    state.monitoringPage = 1;
+    renderSubTabMonitoring();
+  };
+
+  window.pageMonitoringNext = function() {
+    state.monitoringPage++;
+    renderSubTabMonitoring();
+  };
+
+  window.pageMonitoringPrev = function() {
+    state.monitoringPage--;
     renderSubTabMonitoring();
   };
 
