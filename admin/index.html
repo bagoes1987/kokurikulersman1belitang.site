@@ -1590,21 +1590,56 @@
 
       <!-- VIEW SUB-TAB 1: MONITORING KINERJA FASILITATOR -->
       <div id="viewAdmRekapSub_monitoring" class="flex flex-col gap-3">
+        <!-- RINGKASAN & QUICK FILTER STATUS PENILAIAN FASILITATOR (1-KLIK) -->
+        <div class="bg-gradient-to-r from-slate-50 via-blue-50/50 to-slate-50 rounded-2xl p-3.5 border border-slate-200/90 shadow-2xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
+          <div class="flex items-center gap-2 flex-wrap">
+            <span class="text-xs font-black text-slate-700 flex items-center gap-1 shrink-0 mr-1">
+              <span class="material-symbols-outlined text-sm text-[#0875D1]">filter_alt</span>
+              <span>Filter Cepat:</span>
+            </span>
+            <button id="pillFasilFilter_ASSIGNED" onclick="filterMonitoringFasilQuick('ASSIGNED')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-[#0875D1] text-white shadow-2xs border border-blue-400/40 cursor-pointer flex items-center gap-1.5">
+              <span>Semua Fasil Aktif</span>
+              <span id="badgeFasilCount_ASSIGNED" class="px-1.5 py-0.2 rounded-full text-[10px] bg-white/20 font-black">82</span>
+            </button>
+            <button id="pillFasilFilter_COMPLETE" onclick="filterMonitoringFasilQuick('COMPLETE')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs cursor-pointer flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Tuntas 100%</span>
+              <span id="badgeFasilCount_COMPLETE" class="px-1.5 py-0.2 rounded-full text-[10px] bg-emerald-100 text-emerald-900 font-black">0</span>
+            </button>
+            <button id="pillFasilFilter_PARTIAL" onclick="filterMonitoringFasilQuick('PARTIAL')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white hover:bg-amber-50 text-amber-800 border border-amber-300 shadow-2xs cursor-pointer flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+              <span>Sebagian / Progres</span>
+              <span id="badgeFasilCount_PARTIAL" class="px-1.5 py-0.2 rounded-full text-[10px] bg-amber-100 text-amber-900 font-black">0</span>
+            </button>
+            <button id="pillFasilFilter_NONE" onclick="filterMonitoringFasilQuick('NONE')" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white hover:bg-rose-50 text-rose-800 border border-rose-300 shadow-2xs cursor-pointer flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+              <span>Belum Menilai (0%)</span>
+              <span id="badgeFasilCount_NONE" class="px-1.5 py-0.2 rounded-full text-[10px] bg-rose-100 text-rose-900 font-black">0</span>
+            </button>
+          </div>
+          <div class="flex items-center gap-2 self-end md:self-auto shrink-0">
+            <button type="button" onclick="copyUnfinishedFasilToWA()" class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-black text-xs shadow-xs flex items-center gap-1.5 transition-all cursor-pointer" title="Salin daftar guru yang belum selesai menilai ke format WhatsApp">
+              <span class="material-symbols-outlined text-sm">content_copy</span>
+              <span>Salin Daftar Belum Menilai (WA)</span>
+            </button>
+          </div>
+        </div>
+
         <!-- Filter Tab 1 -->
         <div class="bg-white rounded-2xl p-4 border border-slate-200/80 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-3">
           <div class="flex items-center gap-2 w-full sm:w-auto">
             <span class="text-xs font-bold text-slate-500 whitespace-nowrap">Filter Status:</span>
-            <select onchange="filterMonitoringFasilStatus(this.value)" class="text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
+            <select id="selFilterMonitoringStatus" onchange="filterMonitoringFasilStatus(this.value)" class="text-xs font-semibold px-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 outline-none focus:border-sky-500">
               <option value="ASSIGNED" selected>Hanya Guru dengan Binaan (Aktif)</option>
               <option value="ALL">Semua Guru (87 Guru)</option>
-              <option value="PENDING">Ada Antrean Belum Dinilai</option>
               <option value="COMPLETE">Tuntas 100%</option>
-              <option value="ACTIVE">Sedang Aktif Menilai</option>
-              <option value="NONE">Belum Ada Nilai Sama Sekali</option>
+              <option value="PARTIAL">Sedang Aktif / Sebagian</option>
+              <option value="NONE">Belum Ada Nilai Sama Sekali (0%)</option>
+              <option value="PENDING">Ada Antrean Belum Dinilai</option>
             </select>
           </div>
           <div class="relative w-full sm:w-80">
-            <input type="text" oninput="filterMonitoringFasilSearch(this.value)" placeholder="Cari nama guru fasilitator / NIP..." class="w-full text-xs font-medium pl-9 pr-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white transition-all">
+            <input type="text" id="inpMonitoringFasilSearch" oninput="filterMonitoringFasilSearch(this.value)" placeholder="Cari nama guru fasilitator / NIP..." class="w-full text-xs font-medium pl-9 pr-3 py-2 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 placeholder-slate-400 outline-none focus:border-sky-500 focus:bg-white transition-all">
             <span class="material-symbols-outlined text-slate-400 text-sm absolute left-3 top-2.5">search</span>
           </div>
         </div>
@@ -1628,14 +1663,14 @@
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-slate-50/90 border-b border-slate-200 text-[11px] font-black uppercase tracking-wider text-slate-500">
-                  <th class="px-4 py-3 text-center w-12">No</th>
-                  <th class="px-4 py-3">Guru Fasilitator</th>
-                  <th class="px-4 py-3">Kelas Binaan</th>
+                  <th class="px-3 py-3 text-center w-12">No</th>
+                  <th class="px-4 py-3 min-w-[180px]">Guru Fasilitator</th>
+                  <th class="px-3 py-3 min-w-[120px]">Kelas Binaan</th>
                   <th class="px-2.5 py-2.5 text-center whitespace-nowrap">Jml Binaan</th>
-                  <th class="px-2.5 py-2.5 w-28 whitespace-nowrap">% Kumpul</th>
-                  <th class="px-2.5 py-2.5 w-28 whitespace-nowrap">% Dinilai</th>
+                  <th class="px-2.5 py-2.5 w-28 whitespace-nowrap">% Kumpul Tugas</th>
+                  <th class="px-3 py-3 w-36 whitespace-nowrap">Nilai Rapor Akhir</th>
                   <th class="px-2.5 py-2.5 text-center whitespace-nowrap">Antrean</th>
-                  <th class="px-2.5 py-2.5 text-center whitespace-nowrap">Status</th>
+                  <th class="px-2.5 py-2.5 text-center whitespace-nowrap">Status Kinerja</th>
                 </tr>
               </thead>
               <tbody id="tbodyRekapMonitoringFasil">
@@ -4397,7 +4432,7 @@
   <script src="../js/modules/mentorship-fasil.js?v=20261106_shield_tito_v2"></script>
   <script src="../js/modules/admin-mentorship.js?v=20261106_zonefix_v6"></script>
   <script src="../js/modules/kriteria-nonfieldtrip-modal.js?v=20261030_v3"></script>
-  <script src="../js/modules/admin-rekap-penilaian.js?v=20261116_rapor_sync_v4"></script>
+  <script src="../js/modules/admin-rekap-penilaian.js?v=20261117_fasil_monitor_v1"></script>
   <script>
     let adminCurrentGrade = 'ALL';
     let adminSearchQuery = '';

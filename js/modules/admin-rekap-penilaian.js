@@ -640,30 +640,32 @@
       const gradedCount = gradedStudents.length;
       const gradedPct = totalBinaan > 0 ? Math.round((gradedCount / totalBinaan) * 100) : 0;
 
+      // Siswa yang sudah dinilai Nilai Rapor Akhir resmi (oleh fasilitator)
+      const finalGradedStudents = binaanEnriched.filter(st => st.finalScore !== null && st.finalScore !== undefined && st.finalScore !== '');
+      const finalGradedCount = finalGradedStudents.length;
+      const finalGradedPct = totalBinaan > 0 ? Math.round((finalGradedCount / totalBinaan) * 100) : 0;
+
       // Siswa yang sudah mengumpulkan tugas namun BELUM DINILAI fasil (Antrean)
       const pendingStudents = binaanEnriched.filter(st => st.hasPendingDay);
       const pendingCount = pendingStudents.length;
 
-      // Siswa yang tuntas Day 7
-      const day7DoneCount = binaanEnriched.filter(st => st.finalScore !== null).length;
-
-      // Tentukan status kinerja guru
+      // Tentukan status kinerja guru berdasarkan Nilai Rapor Akhir
       let statusKinerja = 'TERTUNDA';
-      let statusLabel = 'Belum Ada Penilaian';
+      let statusLabel = 'Belum Menilai (0%)';
       let statusColor = 'rose';
 
       if (totalBinaan === 0) {
         statusKinerja = 'NON_AKTIF';
         statusLabel = 'Tanpa Siswa Binaan';
         statusColor = 'slate';
-      } else if (gradedCount === totalBinaan && pendingCount === 0) {
+      } else if (finalGradedCount === totalBinaan) {
         statusKinerja = 'SELESAI';
         statusLabel = 'Tuntas 100%';
         statusColor = 'emerald';
-      } else if (gradedCount > 0 || submittedCount > 0) {
+      } else if (finalGradedCount > 0) {
         statusKinerja = 'PROSES';
-        statusLabel = pendingCount > 0 ? `${pendingCount} Menunggu Dinilai` : 'Aktif Menilai';
-        statusColor = pendingCount > 0 ? 'amber' : 'sky';
+        statusLabel = `Sebagian (${finalGradedCount}/${totalBinaan})`;
+        statusColor = 'amber';
       }
 
       return {
@@ -677,12 +679,15 @@
         submittedPct: submittedPct,
         gradedCount: gradedCount,
         gradedPct: gradedPct,
+        finalGradedCount: finalGradedCount,
+        finalGradedPct: finalGradedPct,
         pendingCount: pendingCount,
         pendingStudents: pendingStudents,
-        day7DoneCount: day7DoneCount,
+        day7DoneCount: finalGradedCount,
         statusKinerja: statusKinerja,
         statusLabel: statusLabel,
-        statusColor: statusColor
+        statusColor: statusColor,
+        binaanEnriched: binaanEnriched
       };
     });
 
@@ -767,18 +772,24 @@
 
     // Persentase Penilaian Fasilitator Selesai (%)
     let totalAssignedStudents = 0;
-    let totalGradedStudents = 0;
+    let totalFinalGradedStudents = 0;
     let totalPendingQueue = 0;
-    let totalRaporDay7Done = 0;
+    let totalCompleteTeachers = 0;
+    let totalPartialTeachers = 0;
+    let totalNoneTeachers = 0;
 
     state.facilitatorStats.forEach(f => {
-      totalAssignedStudents += f.totalBinaan;
-      totalGradedStudents += f.gradedCount;
-      totalPendingQueue += f.pendingCount;
-      totalRaporDay7Done += f.day7DoneCount;
+      if (f.totalBinaan > 0) {
+        totalAssignedStudents += f.totalBinaan;
+        totalFinalGradedStudents += f.finalGradedCount;
+        totalPendingQueue += f.pendingCount;
+        if (f.statusKinerja === 'SELESAI') totalCompleteTeachers++;
+        else if (f.statusKinerja === 'PROSES') totalPartialTeachers++;
+        else if (f.statusKinerja === 'TERTUNDA') totalNoneTeachers++;
+      }
     });
 
-    const avgFasilGrading = totalAssignedStudents > 0 ? Math.round((totalGradedStudents / totalAssignedStudents) * 100) : 0;
+    const avgFasilGrading = totalAssignedStudents > 0 ? (Math.round((totalFinalGradedStudents / totalAssignedStudents) * 1000) / 10) : 0;
 
     // Update Elemen di UI
     const elTotStud = document.getElementById('kpiRekapTotalStudents');
@@ -790,7 +801,11 @@
 
     if (elTotStud) elTotStud.textContent = totalStudents.toLocaleString('id-ID');
     if (elAvgProg) elAvgProg.textContent = `${avgStudentProgress}%`;
-    if (elAvgFasil) elAvgFasil.textContent = `${avgFasilGrading}% (${totalGradedStudents}/${totalAssignedStudents})`;
+    if (elAvgFasil) {
+      elAvgFasil.textContent = `${avgFasilGrading}%`;
+      const subEl = elAvgFasil.parentElement.nextElementSibling;
+      if (subEl) subEl.textContent = `${totalFinalGradedStudents}/${totalAssignedStudents} Siswa • ${totalCompleteTeachers} Fasil Tuntas`;
+    }
     if (elPending) {
       elPending.textContent = totalPendingQueue;
       if (totalPendingQueue > 0) {
@@ -799,12 +814,22 @@
         elPending.parentElement.classList.remove('text-amber-600');
       }
     }
-    if (elRaporDone) elRaporDone.textContent = `${totalRaporDay7Done} Siswa`;
+    if (elRaporDone) elRaporDone.textContent = `${totalFinalGradedStudents} Siswa`;
 
     if (elSyncTime) {
       const nowStr = state.lastSyncTime ? state.lastSyncTime.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }) + ' WIB' : 'Baru saja';
       elSyncTime.textContent = `Sinkron Terakhir: ${nowStr}`;
     }
+
+    // Update Badge Count di Baris Filter Cepat
+    const bAssigned = document.getElementById('badgeFasilCount_ASSIGNED');
+    const bComplete = document.getElementById('badgeFasilCount_COMPLETE');
+    const bPartial = document.getElementById('badgeFasilCount_PARTIAL');
+    const bNone = document.getElementById('badgeFasilCount_NONE');
+    if (bAssigned) bAssigned.textContent = (totalCompleteTeachers + totalPartialTeachers + totalNoneTeachers);
+    if (bComplete) bComplete.textContent = totalCompleteTeachers;
+    if (bPartial) bPartial.textContent = totalPartialTeachers;
+    if (bNone) bNone.textContent = totalNoneTeachers;
   }
 
   /**
@@ -828,11 +853,35 @@
       );
     }
 
+    // Update highlight button pill filter cepat
+    ['ASSIGNED', 'COMPLETE', 'PARTIAL', 'NONE'].forEach(stKey => {
+      const btn = document.getElementById('pillFasilFilter_' + stKey);
+      if (btn) {
+        const isActive = (stFilter === stKey);
+        if (isActive) {
+          if (stKey === 'COMPLETE') btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-emerald-600 text-white shadow-xs border border-emerald-500 cursor-pointer flex items-center gap-1.5';
+          else if (stKey === 'PARTIAL') btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-amber-600 text-white shadow-xs border border-amber-500 cursor-pointer flex items-center gap-1.5';
+          else if (stKey === 'NONE') btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-rose-600 text-white shadow-xs border border-rose-500 cursor-pointer flex items-center gap-1.5';
+          else btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-[#0875D1] text-white shadow-xs border border-blue-500 cursor-pointer flex items-center gap-1.5';
+        } else {
+          if (stKey === 'COMPLETE') btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white hover:bg-emerald-50 text-emerald-800 border border-emerald-300 shadow-2xs cursor-pointer flex items-center gap-1.5';
+          else if (stKey === 'PARTIAL') btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white hover:bg-amber-50 text-amber-800 border border-amber-300 shadow-2xs cursor-pointer flex items-center gap-1.5';
+          else if (stKey === 'NONE') btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white hover:bg-rose-50 text-rose-800 border border-rose-300 shadow-2xs cursor-pointer flex items-center gap-1.5';
+          else btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-white hover:bg-blue-50 text-slate-700 border border-slate-300 shadow-2xs cursor-pointer flex items-center gap-1.5';
+        }
+      }
+    });
+
+    const selEl = document.getElementById('selFilterMonitoringStatus');
+    if (selEl && selEl.value !== stFilter) {
+      selEl.value = stFilter;
+    }
+
     // Filter Status Kinerja
     if (stFilter !== 'ALL') {
       if (stFilter === 'ASSIGNED') list = list.filter(f => f.totalBinaan > 0);
       else if (stFilter === 'COMPLETE') list = list.filter(f => f.statusKinerja === 'SELESAI');
-      else if (stFilter === 'ACTIVE') list = list.filter(f => f.statusKinerja === 'PROSES');
+      else if (stFilter === 'PARTIAL' || stFilter === 'ACTIVE') list = list.filter(f => f.statusKinerja === 'PROSES');
       else if (stFilter === 'PENDING') list = list.filter(f => f.pendingCount > 0);
       else if (stFilter === 'NONE') list = list.filter(f => f.statusKinerja === 'TERTUNDA');
     }
@@ -893,22 +942,22 @@
         </span>`;
       }
 
-      // Status Badge
+      // Status Badge Kinerja Penilaian Rapor Akhir
       let statusBadge = '';
       if (f.statusKinerja === 'SELESAI') {
-        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-emerald-500 text-white shadow-2xs whitespace-nowrap">Tuntas 100%</span>`;
+        statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10.5px] font-black bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-2xs whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>Tuntas 100%</span>`;
       } else if (f.statusKinerja === 'PROSES') {
-        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-sky-500 text-white shadow-2xs whitespace-nowrap">Aktif Menilai</span>`;
+        statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10.5px] font-black bg-amber-100 text-amber-800 border border-amber-300 shadow-2xs whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>Sebagian</span>`;
       } else if (f.statusKinerja === 'TERTUNDA') {
-        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-extrabold bg-rose-500 text-white shadow-2xs whitespace-nowrap">Belum Ada Nilai</span>`;
+        statusBadge = `<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10.5px] font-black bg-rose-100 text-rose-800 border border-rose-300 shadow-2xs whitespace-nowrap"><span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>Belum Menilai</span>`;
       } else {
-        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-semibold bg-slate-200 text-slate-600 whitespace-nowrap">Non-Aktif</span>`;
+        statusBadge = `<span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-semibold bg-slate-100 text-slate-500 border border-slate-200 whitespace-nowrap">Non-Aktif</span>`;
       }
 
       html += `
         <tr class="border-b border-slate-100 hover:bg-slate-50/80 transition-colors">
           <td class="px-2.5 py-2.5 text-center text-xs font-semibold text-slate-500">${rowNum}</td>
-          <td class="px-2.5 py-2.5 min-w-[170px] max-w-[220px]">
+          <td class="px-3 py-2.5 min-w-[170px] max-w-[220px]">
             <div class="font-bold text-slate-800 text-xs leading-snug">${escapeHtml(f.nama_guru)}</div>
             <div class="text-[10.5px] text-slate-400 font-medium truncate">NIP: ${escapeHtml(f.nip)}</div>
           </td>
@@ -925,17 +974,20 @@
               <span>${f.submittedPct}%</span>
               <span class="text-[10px] text-slate-400 font-normal">(${f.submittedCount}/${f.totalBinaan})</span>
             </div>
-            <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
+            <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden border border-slate-200/60">
               <div class="h-full bg-cyan-500 rounded-full transition-all" style="width: ${f.submittedPct}%"></div>
             </div>
           </td>
-          <td class="px-2.5 py-2.5 w-28">
-            <div class="flex items-center justify-between text-[11px] font-bold text-slate-700 mb-1 gap-1">
-              <span>${f.gradedPct}%</span>
-              <span class="text-[10px] text-slate-400 font-normal">(${f.gradedCount}/${f.totalBinaan})</span>
+          <td class="px-3 py-2.5 w-36">
+            <div class="flex items-center justify-between text-[11px] font-black text-slate-800 mb-1 gap-1">
+              <span class="${f.finalGradedCount === f.totalBinaan && f.totalBinaan > 0 ? 'text-emerald-700 font-black' : (f.finalGradedCount > 0 ? 'text-amber-700 font-black' : 'text-rose-700 font-black')}">${f.finalGradedPct}%</span>
+              <span class="text-[10px] text-slate-500 font-bold">(${f.finalGradedCount}/${f.totalBinaan})</span>
             </div>
-            <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
-              <div class="h-full bg-emerald-500 rounded-full transition-all" style="width: ${f.gradedPct}%"></div>
+            <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden border border-slate-200/80">
+              <div class="h-full rounded-full transition-all ${f.finalGradedCount === f.totalBinaan && f.totalBinaan > 0 ? 'bg-emerald-500' : (f.finalGradedCount > 0 ? 'bg-amber-500' : 'bg-rose-400')}" style="width: ${f.finalGradedPct}%"></div>
+            </div>
+            <div class="text-[9.5px] mt-0.5 font-bold ${f.finalGradedCount === f.totalBinaan && f.totalBinaan > 0 ? 'text-emerald-600' : (f.finalGradedCount > 0 ? 'text-amber-600' : 'text-rose-500')}">
+              ${f.finalGradedCount === f.totalBinaan && f.totalBinaan > 0 ? '✓ Lengkap' : (f.finalGradedCount > 0 ? `Sisa ${f.totalBinaan - f.finalGradedCount} Siswa` : 'Belum Mulai')}
             </div>
           </td>
           <td class="px-2.5 py-2.5 text-center whitespace-nowrap">
@@ -964,6 +1016,68 @@
     state.filterMonitoring.status = val;
     state.monitoringPage = 1;
     renderSubTabMonitoring();
+  };
+
+  window.filterMonitoringFasilQuick = function(statusKey) {
+    state.filterMonitoring.status = statusKey;
+    state.monitoringPage = 1;
+    const selEl = document.getElementById('selFilterMonitoringStatus');
+    if (selEl) selEl.value = statusKey;
+    renderSubTabMonitoring();
+  };
+
+  window.copyUnfinishedFasilToWA = function() {
+    const assigned = state.facilitatorStats.filter(f => f.totalBinaan > 0);
+    const unfinished = assigned.filter(f => f.statusKinerja !== 'SELESAI');
+    
+    if (unfinished.length === 0) {
+      if (window.FincestemCore && FincestemCore.ui && typeof FincestemCore.ui.toast === 'function') {
+        FincestemCore.ui.toast('Alhamdulillah! Seluruh Guru Fasilitator (' + assigned.length + ' guru) sudah 100% menyelesaikan penilaian rapor siswa binaannya.', 'success');
+      } else {
+        alert('Alhamdulillah! Seluruh Guru Fasilitator (' + assigned.length + ' guru) sudah 100% menyelesaikan penilaian rapor siswa binaannya.');
+      }
+      return;
+    }
+
+    const none = unfinished.filter(f => f.statusKinerja === 'TERTUNDA');
+    const partial = unfinished.filter(f => f.statusKinerja === 'PROSES');
+
+    let text = `📢 *PEMBERITAHUAN MONITORING PENILAIAN RAPOR KOKURIKULER FINCESTEM 2026*\n`;
+    text += `_Update per: ${new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} Pukul ${new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })} WIB_\n\n`;
+    text += `Berikut daftar Bapak/Ibu Guru Fasilitator yang *belum menyelesaikan nilai rapor binaan*:\n\n`;
+
+    if (none.length > 0) {
+      text += `🔴 *BELUM MENILAI SAMA SEKALI (${none.length} Guru):*\n`;
+      none.forEach((f, i) => {
+        text += `${i + 1}. ${f.nama_guru} (${f.classes.join(', ') || '-'}) : 0/${f.totalBinaan} siswa\n`;
+      });
+      text += `\n`;
+    }
+
+    if (partial.length > 0) {
+      text += `🟡 *BARU MENILAI SEBAGIAN (${partial.length} Guru):*\n`;
+      partial.forEach((f, i) => {
+        const sisa = f.totalBinaan - f.finalGradedCount;
+        text += `${i + 1}. ${f.nama_guru} (${f.classes.join(', ') || '-'}) : ${f.finalGradedCount}/${f.totalBinaan} siswa (Sisa ${sisa})\n`;
+      });
+      text += `\n`;
+    }
+
+    text += `Mohon Bapak/Ibu Fasilitator dapat segera melengkapi penilaian rapor di portal:\n🔗 https://kokurikulersman1belitang.site/guru/fasilitator.html\n\nTerima kasih atas kerja samanya. 🙏`;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(() => {
+        if (window.FincestemCore && FincestemCore.ui && typeof FincestemCore.ui.toast === 'function') {
+          FincestemCore.ui.toast(`Berhasil menyalin daftar ${unfinished.length} guru belum selesai ke clipboard! Siap dipaste ke WhatsApp.`, 'success');
+        } else {
+          alert(`Daftar ${unfinished.length} guru belum selesai berhasil disalin ke clipboard! Silakan paste ke WhatsApp.`);
+        }
+      }).catch(() => {
+        prompt('Salin teks rekap berikut:', text);
+      });
+    } else {
+      prompt('Salin teks rekap berikut:', text);
+    }
   };
 
   window.pageMonitoringNext = function() {
